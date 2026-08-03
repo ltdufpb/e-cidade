@@ -44,7 +44,7 @@ $cl_tipoproc->rotulo->label();
 $cl_usuarios->rotulo->label();
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 //filtro das listas
 $db_where = "";
@@ -104,7 +104,7 @@ if (pg_num_rows($rsUsuInsti) > 0) {
 
    for ($i = 0; $i < pg_num_rows($rsUsuInsti); $i++) {
 
-     $strWhereinsti .= $strV.pg_result($rsUsuInsti, $i, 0);
+     $strWhereinsti .= $strV.pg_fetch_result($rsUsuInsti, $i, 0);
      $strV           = ", ";
    }
 }
@@ -125,8 +125,8 @@ if( ($_GET["data1"] != "//") and ($_GET["data1"] == $_GET["data2"]) ) {
 /**
  * Organiza as datas para apresentá-las ao usuário
  */
-list($iAno1,$iMes1,$iDia1) = explode ('/', $_GET['data1']);
-list($iAno2,$iMes2,$iDia2) = explode ('/', $_GET['data2']);
+[$iAno1, $iMes1, $iDia1] = explode ('/', (string) $_GET['data1']);
+[$iAno2, $iMes2, $iDia2] = explode ('/', (string) $_GET['data2']);
 $dData1 = "{$iDia1}/{$iMes1}/{$iAno1}";
 $dData2 = "{$iDia2}/{$iMes2}/{$iAno2}";
 
@@ -279,14 +279,14 @@ for($x = 0; $x < $cl_processos->numrows; $x++) {
   $pdf->cell(14, $alt, $to_char, 0, 0, "C", $p);
   $pdf->cell(10, $alt, $p58_hora, 0, 0, "C", $p);
   $pdf->cell(8, $alt, $p58_codigo, 0, 0, "L", $p);
-  $pdf->cell(50, $alt, substr($p51_descr, 0, 28), 0, 0, "L", $p);
-  $pdf->cell(15, $alt, substr($login, 0, 10), 0, 0, "L", $p);
+  $pdf->cell(50, $alt, substr((string) $p51_descr, 0, 28), 0, 0, "L", $p);
+  $pdf->cell(15, $alt, substr((string) $login, 0, 10), 0, 0, "L", $p);
   //$pdf->cell(10, $alt, $p58_numcgm, 0, 0, "C", $p);
   $pdf->cell(10, $alt, $p58_numcgm, 0, 0, "C", $p);
   $pdf->setfont('arial', '', 6.5);
-  $pdf->cell(60, $alt, substr($titular, 0, 40), 0, 0, "L", $p);
-  $pdf->cell(40, $alt, substr($p58_coddepto . "-" . substr($deptoproc, 0, 25), 0, 25), 0, 0, "L", $p);
-  $pdf->cell(40, $alt, substr($p61_coddepto . "-" . substr($deptoandam, 0, 25), 0, 25), 0, 1, "l", $p);
+  $pdf->cell(60, $alt, substr((string) $titular, 0, 40), 0, 0, "L", $p);
+  $pdf->cell(40, $alt, substr($p58_coddepto . "-" . substr((string) $deptoproc, 0, 25), 0, 25), 0, 0, "L", $p);
+  $pdf->cell(40, $alt, substr($p61_coddepto . "-" . substr((string) $deptoandam, 0, 25), 0, 25), 0, 1, "l", $p);
   $pdf->setfont('arial', '', 7);
 
   if ($Observacao == '1') {

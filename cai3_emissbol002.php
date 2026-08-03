@@ -26,7 +26,7 @@
  */
 
 include(modification("fpdf151/pdf.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $seleciona_conta = '';
 $descr_conta = 'TOTAS AS CONTAS';
@@ -53,7 +53,7 @@ if($datai == $dataf){
 
   $head1 = "BOLETIM DA TESOURARIA";
   $head3 = "BOLETIM NÚMERO: ".@$numbol;
-  $head5 = "DATA : ".substr($datai,8,2)."-".substr($datai,5,2)."-".substr($datai,0,4);
+  $head5 = "DATA : ".substr((string) $datai,8,2)."-".substr((string) $datai,5,2)."-".substr((string) $datai,0,4);
 
 }else{
 $head5 = "BOLETIM DE CAIXA E DE BANCOS";
@@ -83,7 +83,7 @@ $pdf->Cell($CoL3,5,"COD.RECEITA",1,0,"C",0);
 $pdf->Cell($CoL4,5,"ARRECADACAO",1,0,"C",0);
 $pdf->Cell($CoL5,5,"ESTORNO",1,1,"C",0);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 
 
@@ -111,7 +111,7 @@ where arrec <> 0 or estorno <> 0 order by k02_estorc
 
 ");
 
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 $QuebraPagina = 10;
 $Total1 = 0;
 $Total2 = 0;
@@ -154,7 +154,7 @@ for($i = 0;$i < $numrows;$i++) {
       $pdf->Cell($CoL1,5,$k02_estorc,1,0,"L",1);
       $pdf->Cell($CoL2,5,$o02_descr,1,0,"L",1);
       $pdf->Cell($CoL3,5,$k12_receit,1,0,"C",1);
-      if(substr($k02_estorc,0,3)=='497'){
+      if(str_starts_with((string) $k02_estorc, '497')){
         $pdf->Cell($CoL4,5,"R$".str_pad(number_format($arrec*-1,2,",","."),14," ",STR_PAD_LEFT),1,0,"R",1);
         $SubTotal1 -= $arrec;
         $Total1 -= $arrec;
@@ -163,7 +163,7 @@ for($i = 0;$i < $numrows;$i++) {
         $SubTotal1 += $arrec;
         $Total1 += $arrec;
       }
-      if(substr($k02_estorc,0,3)=='497'){
+      if(str_starts_with((string) $k02_estorc, '497')){
         $pdf->Cell($CoL5,5,"R$".str_pad(number_format($estorno*-1,2,",","."),14," ",STR_PAD_LEFT),1,1,"R",1);
         $SubTotal2 -= $estorno;
         $Total2 -= $estorno;
@@ -228,7 +228,7 @@ from plano
 ) as x
   on k02_estpla = c01_estrut and c01_anousu = ".$GLOBALS["DB_anousu"]."
 group by k02_estpla,c01_descr,k12_conta,k12_receit;");
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 if($numrows>0){
 

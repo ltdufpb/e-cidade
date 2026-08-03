@@ -80,7 +80,7 @@ db_input('sd70_c_nome',60,$Isd70_c_nome,true,'text',$db_opcao,"")
     </td>
     <td>
 <?php 
-$x = array('F'=>'Feminino','I'=>'Indiferente/Ambos','M'=>'Masculino');
+$x = ['F'=>'Feminino','I'=>'Indiferente/Ambos','M'=>'Masculino'];
 db_select('sd70_c_sexo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -98,7 +98,7 @@ function js_preenchepesquisa(chave){
   db_iframe_sau_cid.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

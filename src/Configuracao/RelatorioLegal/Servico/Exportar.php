@@ -41,11 +41,11 @@ abstract class Exportar
     /**
      * @var Coluna[]
      */
-    protected $colunas = array();
+    protected $colunas = [];
     /**
      * @var Periodo[]
      */
-    protected $periodos = array();
+    protected $periodos = [];
     /**
      * @var stdClass
      */
@@ -110,7 +110,7 @@ abstract class Exportar
      */
     public function formato($formato)
     {
-        if (!in_array($formato, array(self::FORMATO_JSON, self::FORMATO_SQL))) {
+        if (!in_array($formato, [self::FORMATO_JSON, self::FORMATO_SQL])) {
             throw new Exception('Formato inválido para exportação.');
         }
         $this->formatoExportacao = $formato;
@@ -156,9 +156,9 @@ abstract class Exportar
         $informacaoComplementarLancamentoRepositorio = new InformacaoComplementarLancamentoRepositorio();
         $informacaoComplementarLancamentos = $informacaoComplementarLancamentoRepositorio->setUseJoin(true)
             ->scopeRelatorio($this->relatorio)
-            ->get(array(
+            ->get([
                 'distinct orcparamseqinfocomplementarlancamento.*'
-            ));
+            ]);
 
         $linhaRepositorio = new LinhaRepositorio();
         $periodoRelatorioRepositorio = new RelatorioPeriodoRepositorio();
@@ -210,7 +210,7 @@ abstract class Exportar
      */
     protected function processarPeriodos()
     {
-        $this->dadosProcessados->periodos = array();
+        $this->dadosProcessados->periodos = [];
 
         foreach ($this->periodos as $periodo) {
             $this->dadosProcessados->periodos[] = $periodo->toArray();
@@ -222,7 +222,7 @@ abstract class Exportar
      */
     protected function processaColunas()
     {
-        $this->dadosProcessados->colunas = array();
+        $this->dadosProcessados->colunas = [];
 
         foreach ($this->colunas as $coluna) {
             $this->dadosProcessados->colunas[] = $coluna->toArray();

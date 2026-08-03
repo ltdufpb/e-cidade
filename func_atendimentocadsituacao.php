@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendimentocadsituacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatendimentocadsituacao = new cl_atendimentocadsituacao;
 $clatendimentocadsituacao->rotulo->label("at15_sequencial");
 $clatendimentocadsituacao->rotulo->label("at15_descr");
@@ -98,9 +98,9 @@ $clatendimentocadsituacao->rotulo->label("at15_descr");
         }else{
            $sql = $clatendimentocadsituacao->sql_query("",$campos,"at15_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at15_descr)){
-          $repassa = array("chave_at15_sequencial"=>$chave_at15_sequencial,"chave_at15_descr"=>$chave_at15_descr);
+          $repassa = ["chave_at15_sequencial"=>$chave_at15_sequencial,"chave_at15_descr"=>$chave_at15_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

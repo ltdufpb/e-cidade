@@ -3,29 +3,29 @@
 //CLASSE DA ENTIDADE sau_triagemavulsaagravo
 class cl_sau_triagemavulsaagravo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s167_sequencial = 0; 
-   var $s167_sau_triagemavulsa = 0; 
-   var $s167_sau_cid = 0; 
-   var $s167_datasintoma_dia = null; 
-   var $s167_datasintoma_mes = null; 
-   var $s167_datasintoma_ano = null; 
-   var $s167_datasintoma = null; 
-   var $s167_gestante = 'f'; 
+   public $s167_sequencial = 0; 
+   public $s167_sau_triagemavulsa = 0; 
+   public $s167_sau_cid = 0; 
+   public $s167_datasintoma_dia = null; 
+   public $s167_datasintoma_mes = null; 
+   public $s167_datasintoma_ano = null; 
+   public $s167_datasintoma = null; 
+   public $s167_gestante = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s167_sequencial = int4 = Sequencial da tabela 
                  s167_sau_triagemavulsa = int4 = Triagem Avulsa 
                  s167_sau_cid = int4 = Agravo 
@@ -33,10 +33,10 @@ class cl_sau_triagemavulsaagravo {
                  s167_gestante = bool = Gestante 
                  ";
    //funcao construtor da classe 
-   function cl_sau_triagemavulsaagravo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_triagemavulsaagravo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -115,10 +115,10 @@ class cl_sau_triagemavulsaagravo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->s167_sequencial = pg_result($result,0,0); 
+       $this->s167_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sau_triagemavulsaagravo_s167_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $s167_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $s167_sequencial)){
          $this->erro_sql = " Campo s167_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,7 +154,7 @@ class cl_sau_triagemavulsaagravo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Triagem Avulsa com Agravo ($this->s167_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Triagem Avulsa com Agravo já Cadastrado";
@@ -183,14 +183,14 @@ class cl_sau_triagemavulsaagravo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20678,'$this->s167_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3722,20678,'','".AddSlashes(pg_result($resaco,0,'s167_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3722,20679,'','".AddSlashes(pg_result($resaco,0,'s167_sau_triagemavulsa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3722,20680,'','".AddSlashes(pg_result($resaco,0,'s167_sau_cid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3722,20681,'','".AddSlashes(pg_result($resaco,0,'s167_datasintoma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3722,20682,'','".AddSlashes(pg_result($resaco,0,'s167_gestante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3722,20678,'','".AddSlashes(pg_fetch_result($resaco,0,'s167_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3722,20679,'','".AddSlashes(pg_fetch_result($resaco,0,'s167_sau_triagemavulsa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3722,20680,'','".AddSlashes(pg_fetch_result($resaco,0,'s167_sau_cid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3722,20681,'','".AddSlashes(pg_fetch_result($resaco,0,'s167_datasintoma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3722,20682,'','".AddSlashes(pg_fetch_result($resaco,0,'s167_gestante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -200,10 +200,10 @@ class cl_sau_triagemavulsaagravo {
       $this->atualizacampos();
      $sql = " update sau_triagemavulsaagravo set ";
      $virgula = "";
-     if(trim($this->s167_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s167_sequencial"])){ 
+     if(trim((string) $this->s167_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s167_sequencial"])){ 
        $sql  .= $virgula." s167_sequencial = $this->s167_sequencial ";
        $virgula = ",";
-       if(trim($this->s167_sequencial) == null ){ 
+       if(trim((string) $this->s167_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial da tabela não informado.";
          $this->erro_campo = "s167_sequencial";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_sau_triagemavulsaagravo {
          return false;
        }
      }
-     if(trim($this->s167_sau_triagemavulsa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s167_sau_triagemavulsa"])){ 
+     if(trim((string) $this->s167_sau_triagemavulsa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s167_sau_triagemavulsa"])){ 
        $sql  .= $virgula." s167_sau_triagemavulsa = $this->s167_sau_triagemavulsa ";
        $virgula = ",";
-       if(trim($this->s167_sau_triagemavulsa) == null ){ 
+       if(trim((string) $this->s167_sau_triagemavulsa) == null ){ 
          $this->erro_sql = " Campo Triagem Avulsa não informado.";
          $this->erro_campo = "s167_sau_triagemavulsa";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_sau_triagemavulsaagravo {
          return false;
        }
      }
-     if(trim($this->s167_sau_cid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s167_sau_cid"])){ 
+     if(trim((string) $this->s167_sau_cid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s167_sau_cid"])){ 
        $sql  .= $virgula." s167_sau_cid = $this->s167_sau_cid ";
        $virgula = ",";
-       if(trim($this->s167_sau_cid) == null ){ 
+       if(trim((string) $this->s167_sau_cid) == null ){ 
          $this->erro_sql = " Campo Agravo não informado.";
          $this->erro_campo = "s167_sau_cid";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_sau_triagemavulsaagravo {
          return false;
        }
      }
-     if(trim($this->s167_datasintoma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s167_datasintoma_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s167_datasintoma_dia"] !="") ){ 
+     if(trim((string) $this->s167_datasintoma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s167_datasintoma_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s167_datasintoma_dia"] !="") ){ 
        $sql  .= $virgula." s167_datasintoma = '$this->s167_datasintoma' ";
        $virgula = ",";
-       if(trim($this->s167_datasintoma) == null ){ 
+       if(trim((string) $this->s167_datasintoma) == null ){ 
          $this->erro_sql = " Campo Data do primeiro sintoma não informado.";
          $this->erro_campo = "s167_datasintoma_dia";
          $this->erro_banco = "";
@@ -255,7 +255,7 @@ class cl_sau_triagemavulsaagravo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s167_datasintoma_dia"])){ 
          $sql  .= $virgula." s167_datasintoma = null ";
          $virgula = ",";
-         if(trim($this->s167_datasintoma) == null ){ 
+         if(trim((string) $this->s167_datasintoma) == null ){ 
            $this->erro_sql = " Campo Data do primeiro sintoma não informado.";
            $this->erro_campo = "s167_datasintoma_dia";
            $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_sau_triagemavulsaagravo {
          }
        }
      }
-     if(trim($this->s167_gestante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s167_gestante"])){ 
+     if(trim((string) $this->s167_gestante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s167_gestante"])){ 
        $sql  .= $virgula." s167_gestante = '$this->s167_gestante' ";
        $virgula = ",";
-       if(trim($this->s167_gestante) == null ){ 
+       if(trim((string) $this->s167_gestante) == null ){ 
          $this->erro_sql = " Campo Gestante não informado.";
          $this->erro_campo = "s167_gestante";
          $this->erro_banco = "";
@@ -293,19 +293,19 @@ class cl_sau_triagemavulsaagravo {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20678,'$this->s167_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["s167_sequencial"]) || $this->s167_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3722,20678,'".AddSlashes(pg_result($resaco,$conresaco,'s167_sequencial'))."','$this->s167_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3722,20678,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s167_sequencial'))."','$this->s167_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["s167_sau_triagemavulsa"]) || $this->s167_sau_triagemavulsa != "")
-             $resac = db_query("insert into db_acount values($acount,3722,20679,'".AddSlashes(pg_result($resaco,$conresaco,'s167_sau_triagemavulsa'))."','$this->s167_sau_triagemavulsa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3722,20679,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s167_sau_triagemavulsa'))."','$this->s167_sau_triagemavulsa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["s167_sau_cid"]) || $this->s167_sau_cid != "")
-             $resac = db_query("insert into db_acount values($acount,3722,20680,'".AddSlashes(pg_result($resaco,$conresaco,'s167_sau_cid'))."','$this->s167_sau_cid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3722,20680,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s167_sau_cid'))."','$this->s167_sau_cid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["s167_datasintoma"]) || $this->s167_datasintoma != "")
-             $resac = db_query("insert into db_acount values($acount,3722,20681,'".AddSlashes(pg_result($resaco,$conresaco,'s167_datasintoma'))."','$this->s167_datasintoma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3722,20681,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s167_datasintoma'))."','$this->s167_datasintoma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["s167_gestante"]) || $this->s167_gestante != "")
-             $resac = db_query("insert into db_acount values($acount,3722,20682,'".AddSlashes(pg_result($resaco,$conresaco,'s167_gestante'))."','$this->s167_gestante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3722,20682,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s167_gestante'))."','$this->s167_gestante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -359,14 +359,14 @@ class cl_sau_triagemavulsaagravo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20678,'$s167_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3722,20678,'','".AddSlashes(pg_result($resaco,$iresaco,'s167_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3722,20679,'','".AddSlashes(pg_result($resaco,$iresaco,'s167_sau_triagemavulsa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3722,20680,'','".AddSlashes(pg_result($resaco,$iresaco,'s167_sau_cid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3722,20681,'','".AddSlashes(pg_result($resaco,$iresaco,'s167_datasintoma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3722,20682,'','".AddSlashes(pg_result($resaco,$iresaco,'s167_gestante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3722,20678,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s167_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3722,20679,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s167_sau_triagemavulsa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3722,20680,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s167_sau_cid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3722,20681,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s167_datasintoma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3722,20682,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s167_gestante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -427,7 +427,7 @@ class cl_sau_triagemavulsaagravo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sau_triagemavulsaagravo";
@@ -442,7 +442,7 @@ class cl_sau_triagemavulsaagravo {
    function sql_query ( $s167_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_sau_triagemavulsaagravo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_sau_triagemavulsaagravo {
    function sql_query_file ( $s167_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_sau_triagemavulsaagravo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

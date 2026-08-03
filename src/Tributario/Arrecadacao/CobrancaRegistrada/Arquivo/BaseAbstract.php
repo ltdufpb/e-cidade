@@ -59,13 +59,13 @@ abstract class BaseAbstract
      * Recibos válidos gerados no arquivo
      * @var array
      */
-    protected $aRecibosGerados = array();
+    protected $aRecibosGerados = [];
 
     /**
      * Recibos inválidos que não foram no arquivo
      * @var array
      */
-    protected $aRecibosInvalidos = array();
+    protected $aRecibosInvalidos = [];
 
     /**
      * Controle de linhas de registros
@@ -126,8 +126,8 @@ abstract class BaseAbstract
         /**
          * Zera os arrays de controle dos recibos
          */
-        $this->aRecibosInvalidos = array();
-        $this->aRecibosGerados = array();
+        $this->aRecibosInvalidos = [];
+        $this->aRecibosGerados = [];
 
         $sNomeArquivo = "tmp/cobranca_registrada_remessa_" . time() . ".txt";
 
@@ -211,7 +211,7 @@ abstract class BaseAbstract
      */
     protected function getSegmentosRecibo(Registro $oRegistro)
     {
-        $aRegistros = array();
+        $aRegistros = [];
 
         $oSegmentoP = $this->gerarSegmentoP($oRegistro);
 
@@ -250,7 +250,7 @@ abstract class BaseAbstract
         $oHeader->numero_inscricao      = $this->oHeader->getInstituicao()->getCNPJ();
         $oHeader->codigo_convenio_banco = str_pad('', 20, ' ');
         $oHeader->codigo_agencia        = str_pad(
-            $this->oHeader->getContaBancaria()->getNumeroAgencia(),
+            (string) $this->oHeader->getContaBancaria()->getNumeroAgencia(),
             5,
             0,
             STR_PAD_LEFT
@@ -258,10 +258,10 @@ abstract class BaseAbstract
         $oHeader->dv_agencia            = $this->oHeader->getContaBancaria()->getDVAgencia();
         $oHeader->exclusivo_banco_1     = str_pad('', 14, ' ');
         $oHeader->nome_empresa          = \DBString::removerAcentuacao(
-            str_pad($this->oHeader->getInstituicao()->getDescricao(), 30, ' ', STR_PAD_RIGHT)
+            str_pad((string) $this->oHeader->getInstituicao()->getDescricao(), 30, ' ', STR_PAD_RIGHT)
         );
         $oHeader->nome_banco            = \DBString::removerAcentuacao(
-            str_pad($this->oHeader->getContaBancaria()->getDescricaoBanco(), 30, ' ', STR_PAD_RIGHT)
+            str_pad((string) $this->oHeader->getContaBancaria()->getDescricaoBanco(), 30, ' ', STR_PAD_RIGHT)
         );
         $oHeader->exclusivo_febraban_2  = str_pad('', 10, ' ');
 
@@ -315,14 +315,14 @@ abstract class BaseAbstract
         $oHeaderLote->exclusivo_febraban_2  = ' ';
         $oHeaderLote->tipo_inscricao        = '2';
         $oHeaderLote->numero_inscricao      = str_pad(
-            $this->oHeader->getInstituicao()->getCNPJ(),
+            (string) $this->oHeader->getInstituicao()->getCNPJ(),
             15,
             '0',
             STR_PAD_LEFT
         );
         $oHeaderLote->codigo_convenio_banco = str_pad('', 20, ' ');
         $oHeaderLote->codigo_agencia        = str_pad(
-            $this->oHeader->getContaBancaria()->getNumeroAgencia(),
+            (string) $this->oHeader->getContaBancaria()->getNumeroAgencia(),
             5,
             '0',
             STR_PAD_LEFT
@@ -330,7 +330,7 @@ abstract class BaseAbstract
         $oHeaderLote->dv_agencia            = $this->oHeader->getContaBancaria()->getDVAgencia();
         $oHeaderLote->exclusivo_banco_1     = str_pad('', 14, ' ');
         $oHeaderLote->nome_empresa          = \DBString::removerAcentuacao(
-            str_pad($this->oHeader->getInstituicao()->getDescricao(), 30, ' ', STR_PAD_RIGHT)
+            str_pad((string) $this->oHeader->getInstituicao()->getDescricao(), 30, ' ', STR_PAD_RIGHT)
         );
         $oHeaderLote->mensagem1             = str_pad('', 40, ' ');
         $oHeaderLote->mensagem2             = str_pad('', 40, ' ');
@@ -369,7 +369,7 @@ abstract class BaseAbstract
         $oSegmentoP->exclusivo_febraban_1     = " ";
         $oSegmentoP->codigo_movimento         = "01";
         $oSegmentoP->codigo_agencia           = str_pad(
-            $this->oHeader->getContaBancaria()->getNumeroAgencia(),
+            (string) $this->oHeader->getContaBancaria()->getNumeroAgencia(),
             5,
             '0',
             STR_PAD_LEFT
@@ -456,8 +456,8 @@ abstract class BaseAbstract
         $oSegmentoQ->nome_sacado             = \DBString::removerAcentuacao($oCgm->getNome());
         $oSegmentoQ->bairro_sacado           = \DBString::removerAcentuacao($oCgm->getBairro());
         $oSegmentoQ->endereco_sacado         = \DBString::removerAcentuacao($oCgm->getLogradouro());
-        $oSegmentoQ->cep_sacado              = substr($oCgm->getCep(), 0, 5);
-        $oSegmentoQ->sufixo_cep_sacado       = substr($oCgm->getCep(), 5, 3);
+        $oSegmentoQ->cep_sacado              = substr((string) $oCgm->getCep(), 0, 5);
+        $oSegmentoQ->sufixo_cep_sacado       = substr((string) $oCgm->getCep(), 5, 3);
         $oSegmentoQ->cidade_sacado           = \DBString::removerAcentuacao($oCgm->getMunicipio());
         $oSegmentoQ->uf_sacado               = $oCgm->getUf();
 

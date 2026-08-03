@@ -34,8 +34,8 @@ include(modification("classes/db_aguacorte_classe.php"));
 include(modification("classes/db_aguacortematnumpre_classe.php"));
 include(modification("classes/db_aguacortematmov_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $claguacortematnumpre = new cl_aguacortematnumpre;
 $claguacortematmov      = new cl_aguacortematmov;

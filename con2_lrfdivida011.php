@@ -38,7 +38,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oGet               = db_utils::postMemory($_GET);
 $oRelatorioContabil = new relatorioContabil($oGet->c83_codrel);
 $anousu             = db_getsession("DB_anousu");
@@ -134,7 +134,7 @@ function js_emite(sFonte){
       <tr> 
         <td colspan=2 nowrap><b>Imprimir Trajetória de Ajuste</b>
           <?php 
-          $matriz = array("N"=>"Não","S"=>"Sim");             
+          $matriz = ["N"=>"Não","S"=>"Sim"];             
           db_select("trajetoria", $matriz,true,1,""); 
           ?>
         </td>
@@ -166,7 +166,7 @@ function js_emite(sFonte){
                 <td>
                    <?php 
                      $aPeriodos = $oRelatorioContabil->getPeriodos();
-                     $aListaPeriodos = array();
+                     $aListaPeriodos = [];
                      $aListaPeriodos[0] = "Selecione";
                      foreach ($aPeriodos as $oPeriodo) {
                        $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;

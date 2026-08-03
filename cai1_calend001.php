@@ -30,15 +30,15 @@ require_once modification("libs/db_conecta.php");
 require_once modification("libs/db_sessoes.php");
 require_once modification("libs/db_usuariosonline.php");
 
-if(isset($HTTP_POST_VARS["excluir"])) {
-  $data = mktime(0,0,0,$HTTP_POST_VARS["data_mes"],$HTTP_POST_VARS["data_dia"],$HTTP_POST_VARS["data_ano"]);
+if(isset($_POST["excluir"])) {
+  $data = mktime(0,0,0,$_POST["data_mes"],$_POST["data_dia"],$_POST["data_ano"]);
   db_query("delete from calend where k13_data = '".date("Y-m-d",$data)."'") or die("Erro(9) excluindo calend");
-  unset($HTTP_POST_VARS);
+  unset($_POST);
 }
 
-if(isset($HTTP_POST_VARS["sabdom"])) {
-  $anoexe = $HTTP_POST_VARS["exercicio"];
-  if(!preg_match("/[12][0-9][0-9][0-9]/",$anoexe) || preg_match("/[^0-9]/",$anoexe))
+if(isset($_POST["sabdom"])) {
+  $anoexe = $_POST["exercicio"];
+  if(!preg_match("/[12][0-9][0-9][0-9]/",(string) $anoexe) || preg_match("/[^0-9]/",(string) $anoexe))
     db_erro("Exercício inválido");
   for($i = 1;$i <= 12;$i++) {
     $totdia = date("t",mktime(0,0,0,$i,1,$anoexe));
@@ -46,12 +46,12 @@ if(isset($HTTP_POST_VARS["sabdom"])) {
 	  $data = mktime(0,0,0,$i,$j,$anoexe);
 	  if(date("w",$data) == "0" || date("w",$data) == "6") {
 	    $result = db_query("select k13_data from calend where k13_data = '".date("Y-m-d",$data)."'");
-		if(pg_numrows($result) == 0)
+		if(pg_num_rows($result) == 0)
 		  db_query("insert into calend values('".date("Y-m-d",$data)."')") or die("Erro(67)($i)($j) inserindo em calend");
 	  }
 	}
   }
-  unset($HTTP_POST_VARS);
+  unset($_POST);
   $MSG = "Exercício $anoexe inserido com sucesso.";
 }
 ?>
@@ -73,7 +73,7 @@ if(isset($HTTP_POST_VARS["sabdom"])) {
         <table>
           <tr>
             <td><strong>Exercício:</strong></td>
-            <td><input name="exercicio" type="text" id="exercicio" value="<?php echo !empty($HTTP_POST_VARS["exercicio"]) ? $HTTP_POST_VARS["exercicio"] : ''; ?>" size="4" maxlength="4"></td>
+            <td><input name="exercicio" type="text" id="exercicio" value="<?php echo !empty($_POST["exercicio"]) ? $_POST["exercicio"] : ''; ?>" size="4" maxlength="4"></td>
           </tr>
           <tr>
             <td>&nbsp;</td>
@@ -84,7 +84,7 @@ if(isset($HTTP_POST_VARS["sabdom"])) {
             <td>
       			  <?php
       			  include modification("dbforms/db_funcoes.php");
-      			  db_inputdata("data",@$HTTP_POST_VARS["data_dia"],@$HTTP_POST_VARS["data_mes"],@$HTTP_POST_VARS["data_ano"],true,"text",1);
+      			  db_inputdata("data",@$_POST["data_dia"],@$_POST["data_mes"],@$_POST["data_ano"],true,"text",1);
       			  ?>
     			  </td>
           </tr>
@@ -143,10 +143,10 @@ if(isset($HTTP_POST_VARS["sabdom"])) {
 </body>
 </html>
 <?php
-if(isset($HTTP_POST_VARS["feriado"])) {
-  $data = mktime(0,0,0,$HTTP_POST_VARS["data_mes"],$HTTP_POST_VARS["data_dia"],$HTTP_POST_VARS["data_ano"]);
+if(isset($_POST["feriado"])) {
+  $data = mktime(0,0,0,$_POST["data_mes"],$_POST["data_dia"],$_POST["data_ano"]);
   $result = db_query("select k13_data from calend where k13_data = '".date("Y-m-d",$data)."'");
-  if(pg_numrows($result) > 0) {
+  if(pg_num_rows($result) > 0) {
   ?>
     <script>
       if(confirm("Esta data já esta cadastrada, deseja exclui-la?")) {

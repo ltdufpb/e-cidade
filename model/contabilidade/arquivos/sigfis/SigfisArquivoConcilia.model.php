@@ -43,7 +43,7 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
 
     $this->addLog("=====Arquivo".$this->getNomeArquivo()." Erros:\n");
 
-    $aCompetencia = explode('-',$this->dtDataFinal);
+    $aCompetencia = explode('-',(string) $this->dtDataFinal);
     $sCompetencia = $aCompetencia[0].$aCompetencia[1];
     $iAnoUsu      = $aCompetencia[0];
 
@@ -91,7 +91,7 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
       throw new BusinessException("Sem contas conciliadas para a competência selecionada.");
     }
 
-    $aProcessados = array();
+    $aProcessados = [];
 
     for ($iRowConciliacao = 0; $iRowConciliacao < $iTotalLinhasConciliacao; $iRowConciliacao++) {
 
@@ -131,14 +131,14 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
       for ($iRowPendenciaCaixa = 0; $iRowPendenciaCaixa < $iTotalPendenciaCaixa; $iRowPendenciaCaixa++) {
 
         $oStdPendenciaCaixa       = db_utils::fieldsMemory($rsPendenciaCaixa, $iRowPendenciaCaixa);
-        list($iAno, $iMes, $iDia) = explode("-", $oStdPendenciaCaixa->data_conciliacao);
-        list($iCodigoTabelaConciliacao, $sDescricaoTabelaConciliacao) = $this->getDadosTabelaConciliacao(true, $oStdPendenciaCaixa->tipomovimentacao);
+        [$iAno, $iMes, $iDia] = explode("-", (string) $oStdPendenciaCaixa->data_conciliacao);
+        [$iCodigoTabelaConciliacao, $sDescricaoTabelaConciliacao] = $this->getDadosTabelaConciliacao(true, $oStdPendenciaCaixa->tipomovimentacao);
 
-        list($iAnoSequencial, $iMesSequencial, $iDiaSequencial) = explode("-", $oStdPendenciaCaixa->k89_data);
+        [$iAnoSequencial, $iMesSequencial, $iDiaSequencial] = explode("-", (string) $oStdPendenciaCaixa->k89_data);
 
         $oStdLinhaArquivo = new stdClass();
         $oStdLinhaArquivo->dt_anocriacao            = $iAno;
-        $oStdLinhaArquivo->cd_unidade               = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT); 
+        $oStdLinhaArquivo->cd_unidade               = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT); 
         $oStdLinhaArquivo->cd_contacontabil         = $oStdContaConciliacao->c60_estrut;
         $oStdLinhaArquivo->dt_anomes                = "{$iAno}{$iMes}";
         $oStdLinhaArquivo->rv_tce                   = "0";
@@ -186,8 +186,8 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
       for ($iRowPendenciaExtrato = 0; $iRowPendenciaExtrato < $iTotalLinhasExtrato; $iRowPendenciaExtrato++) {
 
         $oStdPendenciaExtrato       = db_utils::fieldsMemory($rsPendenciaExtrato, $iRowPendenciaExtrato);
-        list($iAno, $iMes, $iDia)   = explode("-", $oStdPendenciaExtrato->data_conciliacao);
-        list($iCodigoTabelaConciliacao,$sDescricaoTabelaConciliacao) = $this->getDadosTabelaConciliacao(false,
+        [$iAno, $iMes, $iDia]   = explode("-", (string) $oStdPendenciaExtrato->data_conciliacao);
+        [$iCodigoTabelaConciliacao, $sDescricaoTabelaConciliacao] = $this->getDadosTabelaConciliacao(false,
                                                                               $oStdPendenciaExtrato->tipomovimentacao);
         
 
@@ -197,7 +197,7 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
 
         $oStdLinhaArquivo = new stdClass();
         $oStdLinhaArquivo->dt_anocriacao            = $iAno;
-        $oStdLinhaArquivo->cd_unidade               = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
+        $oStdLinhaArquivo->cd_unidade               = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
         $oStdLinhaArquivo->cd_contacontabil         = $oStdContaConciliacao->c60_estrut;
         $oStdLinhaArquivo->dt_anomes                = "{$iAno}{$iMes}";
         $oStdLinhaArquivo->rv_tce                   = "0";
@@ -244,11 +244,11 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
       }
 
       $oStdSaldoExtrato = db_utils::fieldsMemory($rsSaldoExtrato, 0);
-      list($iAno, $iMes, $iDia) = explode("-", $oStdContaConciliacao->k68_data);
+      [$iAno, $iMes, $iDia] = explode("-", (string) $oStdContaConciliacao->k68_data);
 
       $oStdLinhaArquivo = new stdClass();
       $oStdLinhaArquivo->dt_anocriacao            = $iAno;
-      $oStdLinhaArquivo->cd_unidade               = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);;
+      $oStdLinhaArquivo->cd_unidade               = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);;
       $oStdLinhaArquivo->cd_contacontabil         = $oStdContaConciliacao->c60_estrut;
       $oStdLinhaArquivo->dt_anomes                = "{$iAno}{$iMes}";
       $oStdLinhaArquivo->rv_tce                   = "0";
@@ -286,11 +286,11 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
     $aHashTipoMovimentacao[false]["C"] = "4";
     $aHashTipoMovimentacao[false]["D"] = "5";
 
-    $aTiposMovimentacoes = array( "1" => array("1", "Entrada não considerada pelo banco"),
-                                  "2" => array("2", "Entrada não considerada pela contabilidade"),
-                                  "3" => array("3", "Saldo conforme extrato bancário"),
-                                  "4" => array("4", "Saida não considerada pelo banco"),
-                                  "5" => array("5", "Saída não considerada pela contabilidade") );
+    $aTiposMovimentacoes = [ "1" => ["1", "Entrada não considerada pelo banco"],
+                                  "2" => ["2", "Entrada não considerada pela contabilidade"],
+                                  "3" => ["3", "Saldo conforme extrato bancário"],
+                                  "4" => ["4", "Saida não considerada pelo banco"],
+                                  "5" => ["5", "Saída não considerada pela contabilidade"] ];
 
     return $aTiposMovimentacoes[$aHashTipoMovimentacao[$lCaixa][$sTipoMovimentacao]];
 

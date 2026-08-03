@@ -44,8 +44,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("pc71_codigo");
 $clrotulo->label("pc71_descr");
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $DB_coddepto = db_getsession("DB_coddepto");
 $oParam = db_utils::fieldsMemory($clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"))),0);
@@ -60,7 +60,7 @@ if (isset ($atualizar)) {
 	$clpcfornecertif->pc74_pctipocertif = $pc72_pctipocertif;
 	$clpcfornecertif->pc74_solicitante  = "$pc74_solicitante";
 	$clpcfornecertif->pc74_coddepto     = $DB_coddepto;	
-	$clpcfornecertif->pc74_validade     = implode("-", array_reverse(explode("/",$pc74_validade)));
+	$clpcfornecertif->pc74_validade     = implode("-", array_reverse(explode("/",(string) $pc74_validade)));
 	if ($oParam->pc30_validadepadraocertificado > 0 && $clpcfornecertif->pc74_validade == "") {
     $sqlerro = true;
     $erro_msg = "AVISO: Campo: Validade do Certificado não informado!";	
@@ -81,7 +81,7 @@ if (isset ($atualizar)) {
 	 	  $sqlerro = true;
 	  }
   }
-	$vt = $HTTP_POST_VARS;
+	$vt = $_POST;
 	$ta = sizeof($vt);
 	reset($vt);
 	$dadosant = "";
@@ -89,12 +89,12 @@ if (isset ($atualizar)) {
 	for ($i = 0; $i < $ta; $i ++) {
 		$chave = key($vt);
 		
-		if (substr($chave, 0, 4) == "DATA") {
-			$dados = split("_", $chave);
+		if (str_starts_with((string) $chave, "DATA")) {
+			$dados = preg_split("#_#m", (string) $chave);
  		  if ($dados[1] != $dadosant) {
        
 			  $dadosant = $dados[1];
-				$obtes = $HTTP_POST_VARS;
+				$obtes = $_POST;
 				if (array_key_exists("OBS_".$dados[1], $obtes)) {
 					$obs = $obtes["OBS_".$dados[1]];
 				} else {
@@ -119,7 +119,7 @@ if (isset ($atualizar)) {
               //Se a validade está em branco concatena a observação com a expressão "- DOCUMENTO NÃO ATUALIZADO"
               if($valid == "--"){
                 
-                if ( isset($pc75_obs) && (trim(substr($pc75_obs,-26)) == "- DOCUMENTO NÃO ATUALIZADO" || trim(substr($obs,-26)) == "- DOCUMENTO NÃO ATUALIZADO") ) {
+                if ( isset($pc75_obs) && (trim(substr($pc75_obs,-26)) == "- DOCUMENTO NÃO ATUALIZADO" || trim(substr((string) $obs,-26)) == "- DOCUMENTO NÃO ATUALIZADO") ) {
                   $clpcfornecertifdoc->pc75_obs         = $obs;
                 } else {
                   $clpcfornecertifdoc->pc75_obs         = $obs."- DOCUMENTO NÃO ATUALIZADO";
@@ -297,26 +297,26 @@ if (isset ($pc72_pctipocertif) && $pc72_pctipocertif != "") {
 		if ($clpcfornecertifdoc->numrows>0){
 			db_fieldsmemory($result_docforne,0);
 			if ($pc75_validade>date('Y-m-d',db_getsession("DB_datausu"))){
-			  $$ano=substr($pc75_validade,0,4);
-			  $$mes=substr($pc75_validade,5,2);
-			  $$dia=substr($pc75_validade,8,2);
+			  ${$ano}=substr($pc75_validade,0,4);
+			  ${$mes}=substr($pc75_validade,5,2);
+			  ${$dia}=substr($pc75_validade,8,2);
 			}		
 		}	
     echo "<tr>
                  <td  class='$corpo'  align='center' title='$Tpc71_codigo'><small>$pc71_codigo</small></td>
                  <td  class='$corpo'  align='center' title='$Tpc71_descr'><small>$pc71_descr</small></td>
                          <td  class='$corpo'  align='center' title='Validade' nowrap ><b>$ast</b>";
-    db_inputdata("DATA_$pc71_codigo", @$$dia, @$$mes, @$$ano, true, "text", 1);
+    db_inputdata("DATA_$pc71_codigo", @${$dia}, @${$mes}, @${$ano}, true, "text", 1);
     echo "       </td>
                          <td  class='$corpo'  align='center' title='Validade' nowrap >";
                          
 
-    db_inputdata("EMISSAO_$pc71_codigo", @$$dia_e, @$$mes_e, @$$ano_e, true, "text", 1);
+    db_inputdata("EMISSAO_$pc71_codigo", @${$dia_e}, @${$mes_e}, @${$ano_e}, true, "text", 1);
     echo "       </td>
                          <td  class='$corpo'  align='center' title='Validade' nowrap >";
                          
                                                  
-    $x = array(0=>"Selecione...", 1=>"SIM", 2=>"NÂO");
+    $x = [0=>"Selecione...", 1=>"SIM", 2=>"NÂO"];
     db_select("APRESENTADO_$pc71_codigo", $x, true, 1, "");
     echo "       </td>
                          <td  class='$corpo'  align='center' title='Validade' nowrap >";                         
@@ -346,10 +346,10 @@ if (isset ($atualizar)) {
 		db_msgbox($erro_msg);
 
     echo"";
-     
+
 ?>
 		<script>
-		    
+
 		    if (confirm("Imprimir certificado?")){
                          jan = window.open("com2_certforne002.php?codigo=<?=$codigo?>&oSocial=<?=$oSocial?>",'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
                          jan.moveTo(0,0);  

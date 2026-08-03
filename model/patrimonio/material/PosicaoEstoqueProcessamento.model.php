@@ -36,12 +36,6 @@ require_once(modification("model/patrimonio/material/PosicaoEstoque.model.php"))
 class PosicaoEstoqueProcessamento {
 
   /**
-   * Código sequencial
-   * @var integer
-   */
-  private $iCodigo;
-
-  /**
    * Código do usuário que executou o processamento
    * @var integer
    */
@@ -63,20 +57,23 @@ class PosicaoEstoqueProcessamento {
    * Coleção de Posições para o processamento
    * @var PosicaoEstoque[]
    */
-  private $aPosicoesEstoque = array();
+  private $aPosicoesEstoque = [];
 
   /**
    * Carrega os dados do objeto de acordo com o parâmetro passado
    * @param integer
    * @throws BusinessException
+   * @param int $iCodigo
    */
-  public function __construct($iCodigo = null) {
+  public function __construct(/**
+   * Código sequencial
+   */
+  private $iCodigo = null) {
 
-    $this->iCodigo = $iCodigo;
     if ( !empty($this->iCodigo) ) {
 
       $oDaoEstoqueProcessamento = db_utils::getDao('posicaoestoqueprocessamento');
-      $sSqlBuscaProcessamento   = $oDaoEstoqueProcessamento->sql_query_file($iCodigo);
+      $sSqlBuscaProcessamento   = $oDaoEstoqueProcessamento->sql_query_file($this->iCodigo);
       $rsBuscaProcessamento     = $oDaoEstoqueProcessamento->sql_record($sSqlBuscaProcessamento);
       if ($oDaoEstoqueProcessamento->erro_status == "0") {
         throw new BusinessException (_M(URL_MENSAGEM_POSICAOESTOQUEPROCESSAMENTO."erro_busca_processamento"));
@@ -277,7 +274,7 @@ class PosicaoEstoqueProcessamento {
        * Código das movimentações (matestoqueinimei) utilizadas para encontrarmos os dados
        * salvos na tabela posicaoestoque
        */
-      $aCodigosMovimentacao    = array();
+      $aCodigosMovimentacao    = [];
 
       /**
        * Busca se há processamentos anteriores, caso haja assumiremos a quantidade do último processamento
@@ -298,17 +295,17 @@ class PosicaoEstoqueProcessamento {
       if ($oDaoPosicaoEstoqueProcessamento->numrows == 1) {
 
         $oStdDadoMovimentacaoAnterior = db_utils::fieldsMemory($rsBuscaProcessamentoAnterior, 0);
-        $dtProcessamentoAnterior      = strtotime($oStdDadoMovimentacaoAnterior->m05_data);
+        $dtProcessamentoAnterior      = strtotime((string) $oStdDadoMovimentacaoAnterior->m05_data);
         $dtProcessamentoAnterior      = strtotime("+1 day", $dtProcessamentoAnterior);
         $dtProcessamentoAnterior      = date('Y-m-d', $dtProcessamentoAnterior);
         $nQuantidadeTotal             = $oStdDadoMovimentacaoAnterior->m06_quantidade;
       }
 
-      $aParametrosQuery    = array( $oStdDadoMaterial->m60_codmater
+      $aParametrosQuery    = [ $oStdDadoMaterial->m60_codmater
                                    ,$oStdDadoMaterial->m70_codigo
                                    ,$this->iCodigoInstituicao
                                    ,$dtProcessamentoAnterior
-                                   ,$this->oDataProcessamento->getDate());
+                                   ,$this->oDataProcessamento->getDate()];
 
 
       $rsBuscaMovimentacao = pg_execute("busca_movimentacao_material", $aParametrosQuery);

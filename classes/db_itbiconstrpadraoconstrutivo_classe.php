@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE itbiconstrpadraoconstrutivo
 class cl_itbiconstrpadraoconstrutivo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $it34_codigo = 0; 
-   var $it34_caract = 0; 
+   public $it34_codigo = 0; 
+   public $it34_caract = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  it34_codigo = int4 = Construção 
                  it34_caract = int4 = Característica 
                  ";
    //funcao construtor da classe 
-   function cl_itbiconstrpadraoconstrutivo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiconstrpadraoconstrutivo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_itbiconstrpadraoconstrutivo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Padrão Construtivo ($this->it34_codigo."-".$this->it34_caract) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Padrão Construtivo já Cadastrado";
@@ -135,12 +135,12 @@ class cl_itbiconstrpadraoconstrutivo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20281,'$this->it34_codigo','I')");
          $resac = db_query("insert into db_acountkey values($acount,20282,'$this->it34_caract','I')");
-         $resac = db_query("insert into db_acount values($acount,3644,20281,'','".AddSlashes(pg_result($resaco,0,'it34_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3644,20282,'','".AddSlashes(pg_result($resaco,0,'it34_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3644,20281,'','".AddSlashes(pg_fetch_result($resaco,0,'it34_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3644,20282,'','".AddSlashes(pg_fetch_result($resaco,0,'it34_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -150,10 +150,10 @@ class cl_itbiconstrpadraoconstrutivo {
       $this->atualizacampos();
      $sql = " update itbiconstrpadraoconstrutivo set ";
      $virgula = "";
-     if(trim($this->it34_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it34_codigo"])){ 
+     if(trim((string) $this->it34_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it34_codigo"])){ 
        $sql  .= $virgula." it34_codigo = $this->it34_codigo ";
        $virgula = ",";
-       if(trim($this->it34_codigo) == null ){ 
+       if(trim((string) $this->it34_codigo) == null ){ 
          $this->erro_sql = " Campo Construção não informado.";
          $this->erro_campo = "it34_codigo";
          $this->erro_banco = "";
@@ -163,10 +163,10 @@ class cl_itbiconstrpadraoconstrutivo {
          return false;
        }
      }
-     if(trim($this->it34_caract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it34_caract"])){ 
+     if(trim((string) $this->it34_caract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it34_caract"])){ 
        $sql  .= $virgula." it34_caract = $this->it34_caract ";
        $virgula = ",";
-       if(trim($this->it34_caract) == null ){ 
+       if(trim((string) $this->it34_caract) == null ){ 
          $this->erro_sql = " Campo Característica não informado.";
          $this->erro_campo = "it34_caract";
          $this->erro_banco = "";
@@ -193,14 +193,14 @@ class cl_itbiconstrpadraoconstrutivo {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20281,'$this->it34_codigo','A')");
            $resac = db_query("insert into db_acountkey values($acount,20282,'$this->it34_caract','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it34_codigo"]) || $this->it34_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3644,20281,'".AddSlashes(pg_result($resaco,$conresaco,'it34_codigo'))."','$this->it34_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3644,20281,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it34_codigo'))."','$this->it34_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it34_caract"]) || $this->it34_caract != "")
-             $resac = db_query("insert into db_acount values($acount,3644,20282,'".AddSlashes(pg_result($resaco,$conresaco,'it34_caract'))."','$this->it34_caract',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3644,20282,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it34_caract'))."','$this->it34_caract',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -254,12 +254,12 @@ class cl_itbiconstrpadraoconstrutivo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20281,'$it34_codigo','E')");
            $resac  = db_query("insert into db_acountkey values($acount,20282,'$it34_caract','E')");
-           $resac  = db_query("insert into db_acount values($acount,3644,20281,'','".AddSlashes(pg_result($resaco,$iresaco,'it34_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3644,20282,'','".AddSlashes(pg_result($resaco,$iresaco,'it34_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3644,20281,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it34_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3644,20282,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it34_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -326,7 +326,7 @@ class cl_itbiconstrpadraoconstrutivo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:itbiconstrpadraoconstrutivo";
@@ -341,7 +341,7 @@ class cl_itbiconstrpadraoconstrutivo {
    function sql_query ( $it34_codigo=null,$it34_caract=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -374,7 +374,7 @@ class cl_itbiconstrpadraoconstrutivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -387,7 +387,7 @@ class cl_itbiconstrpadraoconstrutivo {
    function sql_query_file ( $it34_codigo=null,$it34_caract=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_itbiconstrpadraoconstrutivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

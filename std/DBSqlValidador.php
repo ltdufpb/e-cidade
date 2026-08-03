@@ -38,7 +38,7 @@ abstract class DBSqlValidador
      */
     public static function sqlAlteraDadosOuEstrutura($sql)
     {
-        $commands = array(
+        $commands = [
           "drop.+?table",
           "alter.+?table",
           "create.+?table",
@@ -47,11 +47,11 @@ abstract class DBSqlValidador
           "update.+?set",
           "delete.+?from",
           "copy.+?from"
-        );
+        ];
 
         $commands = implode("|", $commands);
 
-        $matches = preg_match_all("/$commands/i", $sql,$result);
+        $matches = preg_match_all("/$commands/i", (string) $sql,$result);
 
         if (empty($matches)) {
             return false;

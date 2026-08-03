@@ -31,7 +31,7 @@ class Importacao
      * Importacao constructor.
      * @param \DBCompetencia $competencia
      */
-    public function __construct(\DBCompetencia $competencia = null)
+    public function __construct(?\DBCompetencia $competencia = null)
     {
         $this->competencia = $competencia;
     }
@@ -67,7 +67,7 @@ class Importacao
             throw new \Exception("Arquivo {$arquivo} não é um arquivo válido da MSC. Header inválido");
         }
         array_splice($file, 0, 2);
-        return implode($file);
+        return implode('', $file);
     }
 
     public function setCodigoTribunal($codigoTribunal)
@@ -89,7 +89,7 @@ class Importacao
 
         $daoConarquivospad = new \cl_conarquivospad();
         $nomeArquivo = "MSC_EXTERNO_{$this->competencia->getMes()}_{$this->competencia->getAno()}";
-        $where = array("c54_nomearq =  '{$nomeArquivo}'");
+        $where = ["c54_nomearq =  '{$nomeArquivo}'"];
         $where[] = " c54_codtrib = " . $this->getCodigoTribunal();
         $daoConarquivospad->excluir(null, implode(" and ", $where));
         if ($daoConarquivospad->erro_status == 0) {
@@ -122,7 +122,7 @@ class Importacao
         );
         $rsArquivos = db_query($sqlArquivos);
         $arquivos = \db_utils::makeCollectionFromRecord($rsArquivos, function ($arquivo) {
-            $partesNomeArquivo = explode("_", $arquivo->nome);
+            $partesNomeArquivo = explode("_", (string) $arquivo->nome);
             $arquivo->competencia = $partesNomeArquivo[2] . "/" . $partesNomeArquivo[3];
             return $arquivo;
         });
@@ -151,10 +151,10 @@ class Importacao
     public static function getArquivosPorCompetencia($ano, $mes)
     {
 
-        $mes = str_pad($mes, 2, '0', STR_PAD_LEFT);
+        $mes = str_pad((string) $mes, 2, '0', STR_PAD_LEFT);
         $daoConarquivospad = new \cl_conarquivospad();
         $nomeArquivo = "MSC_EXTERNO_{$mes}_{$ano}";
-        $where = array("c54_nomearq =  '{$nomeArquivo}'");
+        $where = ["c54_nomearq =  '{$nomeArquivo}'"];
         $sCampos = "c54_arquivo as conteudo_arquivo ";
         $sWhere = implode(' and ', $where);
         $sqlBuscaArquivo = $daoConarquivospad->sql_query_file(null, $sCampos, null, $sWhere);
@@ -166,6 +166,6 @@ class Importacao
         if (pg_num_rows($rsBuscaArquivo) > 0) {
             return \db_utils::getCollectionByRecord($rsBuscaArquivo);
         }
-        return array();
+        return [];
     }
 }

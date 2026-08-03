@@ -45,15 +45,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof ValidationException || substr($request->getPathInfo(), 0, 4) === '/web') {
+        if ($exception instanceof ValidationException || str_starts_with((string) $request->getPathInfo(), '/web')) {
             return parent::render($request, $exception);
         }
 
         $message = $exception->getMessage();
         if (!\db_utils::isUTF8($exception->getMessage())) {
-            $message = utf8_encode($exception->getMessage());
+            $message = mb_convert_encoding($exception->getMessage(), 'UTF-8', 'ISO-8859-1');
         }
-        $response = array('error' => true, 'message' => $message);
+        $response = ['error' => true, 'message' => $message];
         $statusCode = $this->getStatusCode($exception);
 
         if (config('app.debug') === 'true') {
@@ -73,7 +73,7 @@ class Handler extends ExceptionHandler
     protected function getStatusCode(Exception $exception)
     {
         $statusCode = 500;
-        if (is_callable(array($exception, 'getStatusCode'))
+        if (is_callable([$exception, 'getStatusCode'])
             && $exception->getStatusCode() >= 99 && $exception->getStatusCode() < 600
         ) {
             $statusCode = $exception->getStatusCode();
@@ -84,7 +84,7 @@ class Handler extends ExceptionHandler
             case ($exception instanceof \ParameterException):
             case ($exception instanceof \BusinessException):
             case ($exception instanceof \Exception):
-                if (is_callable(array($exception, 'getCode'))
+                if (is_callable($exception->getCode(...))
                     && $exception->getCode() >= 99 && $exception->getCode() < 600
                 ) {
                     $statusCode = $exception->getCode();

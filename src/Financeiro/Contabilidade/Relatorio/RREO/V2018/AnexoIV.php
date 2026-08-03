@@ -42,6 +42,7 @@ class AnexoIV extends AnexoIV2017
      */
     const CODIGO_RELATORIO = 176;
 
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         if (empty($this->aLinhasConsistencia)) {
@@ -54,6 +55,7 @@ class AnexoIV extends AnexoIV2017
      * Retorna os dados do relatórios simplificado
      * @return \stdClass
      */
+    #[\Override]
     public function getDadosSimplificado()
     {
 

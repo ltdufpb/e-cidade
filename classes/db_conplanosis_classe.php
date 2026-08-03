@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE conplanosis
 class cl_conplanosis { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c64_codpla = 0; 
-   var $c64_estrut = null; 
-   var $c64_descr = null; 
+   public $c64_codpla = 0; 
+   public $c64_estrut = null; 
+   public $c64_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c64_codpla = int4 = Código Reduzido 
                  c64_estrut = varchar(13) = Estrutural 
                  c64_descr = varchar(60) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_conplanosis() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanosis"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_conplanosis {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c64_codpla = pg_result($result,0,0); 
+       $this->c64_codpla = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from conplanosis_c64_codpla_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c64_codpla)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c64_codpla)){
          $this->erro_sql = " Campo c64_codpla maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_conplanosis {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Sistema de Contas ($this->c64_codpla) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Sistema de Contas já Cadastrado";
@@ -166,12 +166,12 @@ class cl_conplanosis {
      $resaco = $this->sql_record($this->sql_query_file($this->c64_codpla));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5233,'$this->c64_codpla','I')");
-       $resac = db_query("insert into db_acount values($acount,782,5233,'','".AddSlashes(pg_result($resaco,0,'c64_codpla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,782,5231,'','".AddSlashes(pg_result($resaco,0,'c64_estrut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,782,5232,'','".AddSlashes(pg_result($resaco,0,'c64_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,782,5233,'','".AddSlashes(pg_fetch_result($resaco,0,'c64_codpla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,782,5231,'','".AddSlashes(pg_fetch_result($resaco,0,'c64_estrut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,782,5232,'','".AddSlashes(pg_fetch_result($resaco,0,'c64_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_conplanosis {
       $this->atualizacampos();
      $sql = " update conplanosis set ";
      $virgula = "";
-     if(trim($this->c64_codpla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c64_codpla"])){ 
+     if(trim((string) $this->c64_codpla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c64_codpla"])){ 
        $sql  .= $virgula." c64_codpla = $this->c64_codpla ";
        $virgula = ",";
-       if(trim($this->c64_codpla) == null ){ 
+       if(trim((string) $this->c64_codpla) == null ){ 
          $this->erro_sql = " Campo Código Reduzido nao Informado.";
          $this->erro_campo = "c64_codpla";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_conplanosis {
          return false;
        }
      }
-     if(trim($this->c64_estrut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c64_estrut"])){ 
+     if(trim((string) $this->c64_estrut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c64_estrut"])){ 
        $sql  .= $virgula." c64_estrut = '$this->c64_estrut' ";
        $virgula = ",";
-       if(trim($this->c64_estrut) == null ){ 
+       if(trim((string) $this->c64_estrut) == null ){ 
          $this->erro_sql = " Campo Estrutural nao Informado.";
          $this->erro_campo = "c64_estrut";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_conplanosis {
          return false;
        }
      }
-     if(trim($this->c64_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c64_descr"])){ 
+     if(trim((string) $this->c64_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c64_descr"])){ 
        $sql  .= $virgula." c64_descr = '$this->c64_descr' ";
        $virgula = ",";
-       if(trim($this->c64_descr) == null ){ 
+       if(trim((string) $this->c64_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "c64_descr";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_conplanosis {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5233,'$this->c64_codpla','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c64_codpla"]))
-           $resac = db_query("insert into db_acount values($acount,782,5233,'".AddSlashes(pg_result($resaco,$conresaco,'c64_codpla'))."','$this->c64_codpla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,782,5233,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c64_codpla'))."','$this->c64_codpla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c64_estrut"]))
-           $resac = db_query("insert into db_acount values($acount,782,5231,'".AddSlashes(pg_result($resaco,$conresaco,'c64_estrut'))."','$this->c64_estrut',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,782,5231,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c64_estrut'))."','$this->c64_estrut',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c64_descr"]))
-           $resac = db_query("insert into db_acount values($acount,782,5232,'".AddSlashes(pg_result($resaco,$conresaco,'c64_descr'))."','$this->c64_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,782,5232,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c64_descr'))."','$this->c64_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_conplanosis {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5233,'$c64_codpla','E')");
-         $resac = db_query("insert into db_acount values($acount,782,5233,'','".AddSlashes(pg_result($resaco,$iresaco,'c64_codpla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,782,5231,'','".AddSlashes(pg_result($resaco,$iresaco,'c64_estrut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,782,5232,'','".AddSlashes(pg_result($resaco,$iresaco,'c64_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,782,5233,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c64_codpla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,782,5231,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c64_estrut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,782,5232,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c64_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from conplanosis
@@ -345,7 +345,7 @@ class cl_conplanosis {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conplanosis";
@@ -363,35 +363,35 @@ class cl_conplanosis {
       return true;
     }
     if($nivel==8){
-      $codigo = substr($sistema,0,11);
+      $codigo = substr((string) $sistema,0,11);
       $where="substr(c64_estrut,1,11)='$codigo' and substr(c64_estrut,12,2)<>'00' ";
     }
     if($nivel==7){
-      $codigo = substr($sistema,0,7);
+      $codigo = substr((string) $sistema,0,7);
       $where="substr(c64_estrut,1,9)='$codigo' and substr(c64_estrut,10,4)<>'0000' ";
     }
     if($nivel==6){
-      $codigo = substr($sistema,0,7);
+      $codigo = substr((string) $sistema,0,7);
       $where="substr(c64_estrut,1,7)='$codigo' and substr(c64_estrut,8,6)<>'000000' ";
     }
     if($nivel==5){
-      $codigo = substr($sistema,0,5);
+      $codigo = substr((string) $sistema,0,5);
       $where="substr(c64_estrut,1,5)='$codigo' and substr(c64_estrut,6,8)<>'00000000' ";
     }
     if($nivel==4){
-      $codigo = substr($sistema,0,4);
+      $codigo = substr((string) $sistema,0,4);
       $where="substr(c64_estrut,1,4)='$codigo' and substr(c64_estrut,5,9)<>'000000000' ";
     }
     if($nivel==3){
-      $codigo = substr($sistema,0,3);
+      $codigo = substr((string) $sistema,0,3);
       $where="substr(c64_estrut,1,3)='$codigo' and substr(c64_estrut,4,10)<>'0000000000' ";
     }
     if($nivel==2){
-      $codigo = substr($sistema,0,2);
+      $codigo = substr((string) $sistema,0,2);
       $where="substr(c64_estrut,1,2)='$codigo' and substr(c64_estrut,3,11)<>'00000000000' ";
     }
     if($nivel==1){
-      $codigo = substr($sistema,0,1);
+      $codigo = substr((string) $sistema,0,1);
       $where="substr(c64_estrut,1,1)='$codigo' and substr(c64_estrut,2,11)<>'00000000000' ";
     }
     $result= $this->sql_record($this->sql_query_file("","c64_estrut","",$where));
@@ -405,7 +405,7 @@ class cl_conplanosis {
    function sql_query ( $c64_codpla=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_conplanosis {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_conplanosis {
    function sql_query_file ( $c64_codpla=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_conplanosis {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_conplanosis {
    function sql_vs_planocontas ( $c64_codpla=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -492,7 +492,7 @@ class cl_conplanosis {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

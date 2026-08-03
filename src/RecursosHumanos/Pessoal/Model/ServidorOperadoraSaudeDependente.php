@@ -172,12 +172,12 @@ class ServidorOperadoraSaudeDependente
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'tipo' => $this->getTipo(),
             'valor' => $this->getValor(),
             'servidorOperadoraSaude' => $this->getServidorOperadoraSaude()->toArray(),
             'dependente' => $this->getDependente()->toArray()
-        );
+        ];
     }
 }

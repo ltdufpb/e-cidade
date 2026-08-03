@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("classes/db_selecao_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clselecao = new cl_selecao();
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
@@ -54,7 +54,7 @@ db_criatermometro('calculo_folha2','Concluido...','blue',1,'Efetuando Geracao ca
 </body>
 <?php 
 $where = " ";
-if(trim($selecao) != ""){
+if(trim((string) $selecao) != ""){
   $result_selecao = $clselecao->sql_record($clselecao->sql_query_file($selecao," r44_descr, r44_where ",db_getsession("DB_instit")));
   if($clselecao->numrows > 0){
     db_fieldsmemory($result_selecao, 0);
@@ -139,12 +139,12 @@ where rh30_vinculo = 'A'
   
 //  echo $sql;exit;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
 //    echo 'Total de : '.$num.' / '.$x."\r";
    db_atutermometro($x,$num,'calculo_folha',1);
     
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
     ////  verifica se tem conjuge
     
@@ -157,8 +157,8 @@ where rh30_vinculo = 'A'
 				 
     $res1 = db_query($sql1);
     
-    if(pg_numrows($res1) > 0){
-      $dtconj  = pg_result($res1,0,'nasc');
+    if(pg_num_rows($res1) > 0){
+      $dtconj  = pg_fetch_result($res1,0,'nasc');
       $temconj = 'S'; 
     }else{
       $dtconj = '0000';
@@ -175,8 +175,8 @@ where rh30_vinculo = 'A'
 				 
     $res2 = db_query($sql2);
     
-    if(pg_numrows($res2) > 0){
-      $numfilhos = pg_result($res2,0,'soma_filhos');
+    if(pg_num_rows($res2) > 0){
+      $numfilhos = pg_fetch_result($res2,0,'soma_filhos');
     }else{
       $numfilhos = '00';
     }
@@ -193,8 +193,8 @@ where rh30_vinculo = 'A'
 				 
     $res3 = db_query($sql3);
     
-    if(pg_numrows($res3) > 0){
-      $cacula = pg_result($res3,0,'nasc');
+    if(pg_num_rows($res3) > 0){
+      $cacula = pg_fetch_result($res3,0,'nasc');
     }else{
       $cacula = '0000';
     }
@@ -203,7 +203,7 @@ where rh30_vinculo = 'A'
 		$anofolhas_trabalho  = "1";
 		$mesfolhaes_anterior = "000";
 		
-  fputs($arquivo,pg_result($result,$x,'todo')."#".$mesfolhaes_inss."#".$dtconj."#".$cacula."#".$numfilhos."#".$anofolhas_trabalho."#".$mesfolhaes_anterior."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."#".$mesfolhaes_inss."#".$dtconj."#".$cacula."#".$numfilhos."#".$anofolhas_trabalho."#".$mesfolhaes_anterior."\r\n");
   }
   fclose($arquivo);
 
@@ -262,13 +262,13 @@ where rh30_vinculo = 'I'
 //  echo $sql;
   $result = db_query($sql);
 //  echo "gerou o result"."\n\n";
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
 //    echo 'Total de : '.$num.' / '.$x."\r";
     
    db_atutermometro($x,$num,'calculo_folha1',1);
 
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
     ////  verifica se tem conjuge
     
@@ -281,8 +281,8 @@ where rh30_vinculo = 'I'
 				 
     $res1 = db_query($sql1);
     
-    if(pg_numrows($res1) > 0){
-      $dtconj  = pg_result($res1,0,'nasc');
+    if(pg_num_rows($res1) > 0){
+      $dtconj  = pg_fetch_result($res1,0,'nasc');
       $temconj = 'S'; 
     }else{
       $dtconj = '0000';
@@ -299,8 +299,8 @@ where rh30_vinculo = 'I'
 				 
     $res2 = db_query($sql2);
     
-    if(pg_numrows($res2) > 0){
-      $numfilhos = pg_result($res2,0,'soma_filhos');
+    if(pg_num_rows($res2) > 0){
+      $numfilhos = pg_fetch_result($res2,0,'soma_filhos');
     }else{
       $numfilhos = '0';
     }
@@ -317,8 +317,8 @@ where rh30_vinculo = 'I'
 				 
     $res3 = db_query($sql3);
     
-    if(pg_numrows($res3) > 0){
-      $cacula = pg_result($res3,0,'nasc');
+    if(pg_num_rows($res3) > 0){
+      $cacula = pg_fetch_result($res3,0,'nasc');
     }else{
       $cacula = '0000';
     }
@@ -330,7 +330,7 @@ where rh30_vinculo = 'I'
 		$tempo_contrib = "000";
 		$tempo_total_contrib = "000";
 		
-  fputs($arquivo,pg_result($result,$x,'todo')."#".$dtconj."#".$numfilhos."#".$cacula."#".$tipo_apos."#".$mesfolhaes_anterior."#".$valor_prov_inicial."#".$tempo_contrib."#".$tempo_total_contrib."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."#".$dtconj."#".$numfilhos."#".$cacula."#".$tipo_apos."#".$mesfolhaes_anterior."#".$valor_prov_inicial."#".$tempo_contrib."#".$tempo_total_contrib."\r\n");
   }
   fclose($arquivo);
 
@@ -399,13 +399,13 @@ where rh30_vinculo = 'P'
 //  echo $sql;
   $result = db_query($sql);
 //  echo "gerou o result"."\n\n";
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
 //    echo 'Total de : '.$num.' / '.$x."\r";
     
    db_atutermometro($x,$num,'calculo_folha2',1);
 
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
     ////  verifica se tem conjuge
     
@@ -418,8 +418,8 @@ where rh30_vinculo = 'P'
 				 
     $res1 = db_query($sql1);
     
-    if(pg_numrows($res1) > 0){
-      $dtconj  = pg_result($res1,0,'nasc');
+    if(pg_num_rows($res1) > 0){
+      $dtconj  = pg_fetch_result($res1,0,'nasc');
       $temconj = 'S'; 
     }else{
       $dtconj = '0000';
@@ -436,8 +436,8 @@ where rh30_vinculo = 'P'
 				 
     $res2 = db_query($sql2);
     
-    if(pg_numrows($res2) > 0){
-      $numfilhos = pg_result($res2,0,'soma_filhos');
+    if(pg_num_rows($res2) > 0){
+      $numfilhos = pg_fetch_result($res2,0,'soma_filhos');
     }else{
       $numfilhos = '00';
     }
@@ -454,13 +454,13 @@ where rh30_vinculo = 'P'
 				 
     $res3 = db_query($sql3);
     
-    if(pg_numrows($res3) > 0){
-      $cacula = pg_result($res3,0,'nasc');
+    if(pg_num_rows($res3) > 0){
+      $cacula = pg_fetch_result($res3,0,'nasc');
     }else{
       $cacula = '0000';
     }
 
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 
@@ -527,13 +527,13 @@ where rh30_vinculo = 'A'
 
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
 //    echo 'Total de : '.$num.' / '.$x."\r";
 
    db_atutermometro($x,$num,'calculo_folha',1);
     
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
     ////  verifica se tem conjuge
     
@@ -546,8 +546,8 @@ where rh30_vinculo = 'A'
 				 
     $res1 = db_query($sql1);
     
-    if(pg_numrows($res1) > 0){
-      $dtconj  = pg_result($res1,0,'nasc');
+    if(pg_num_rows($res1) > 0){
+      $dtconj  = pg_fetch_result($res1,0,'nasc');
       $temconj = 'S'; 
     }else{
       $dtconj = '';
@@ -567,8 +567,8 @@ where rh30_vinculo = 'A'
 				 
     $res2 = db_query($sql2);
     
-    if(pg_numrows($res2) > 0){
-      $dtespec = pg_result($res2,0,'nasc');
+    if(pg_num_rows($res2) > 0){
+      $dtespec = pg_fetch_result($res2,0,'nasc');
     }else{
       $dtespec = '';
     }
@@ -586,12 +586,12 @@ where rh30_vinculo = 'A'
 				 
     $res3 = db_query($sql3);
     
-    if(pg_numrows($res3) > 0){
-      $dtnespec = pg_result($res3,0,'nasc');
+    if(pg_num_rows($res3) > 0){
+      $dtnespec = pg_fetch_result($res3,0,'nasc');
     }else{
       $dtnespec = '';
     }
-  fputs($arquivo,pg_result($result,$x,'todo')."#".$temconj."#".$dtconj."#".$dtespec."#".$dtnespec."#".chr(13)."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."#".$temconj."#".$dtconj."#".$dtespec."#".$dtnespec."#".chr(13)."\r\n");
   }
   fclose($arquivo);
 
@@ -642,13 +642,13 @@ where rh30_vinculo = 'I'
   
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     //echo 'Total de : '.$num.' / '.$x."\r";
     
     db_atutermometro($x,$num,'calculo_folha1',1);
 
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
     ////  verifica se tem conjuge
     
@@ -661,8 +661,8 @@ where rh30_vinculo = 'I'
 				 
     $res1 = db_query($sql1);
     
-    if(pg_numrows($res1) > 0){
-      $dtconj  = pg_result($res1,0,'nasc');
+    if(pg_num_rows($res1) > 0){
+      $dtconj  = pg_fetch_result($res1,0,'nasc');
       $temconj = 'S'; 
     }else{
       $dtconj = '';
@@ -682,8 +682,8 @@ where rh30_vinculo = 'I'
 				 
     $res2 = db_query($sql2);
     
-    if(pg_numrows($res2) > 0){
-      $dtespec = pg_result($res2,0,'nasc');
+    if(pg_num_rows($res2) > 0){
+      $dtespec = pg_fetch_result($res2,0,'nasc');
     }else{
       $dtespec = '';
     }
@@ -701,12 +701,12 @@ where rh30_vinculo = 'I'
 				 
     $res3 = db_query($sql3);
     
-    if(pg_numrows($res3) > 0){
-      $dtnespec = pg_result($res3,0,'nasc');
+    if(pg_num_rows($res3) > 0){
+      $dtnespec = pg_fetch_result($res3,0,'nasc');
     }else{
       $dtnespec = '';
     }
-  fputs($arquivo,pg_result($result,$x,'todo')."#".$temconj."#".$dtconj."#".$dtespec."#".$dtnespec."#".chr(13)."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."#".$temconj."#".$dtconj."#".$dtespec."#".$dtnespec."#".chr(13)."\r\n");
   }
   fclose($arquivo);
 
@@ -764,13 +764,13 @@ where rh30_vinculo = 'P'
   
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
   //  echo 'Total de : '.$num.' / '.$x."\r";
     
     db_atutermometro($x,$num,'calculo_folha2',1);
 
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
     ////  verifica se tem conjuge
     
@@ -783,8 +783,8 @@ where rh30_vinculo = 'P'
 				 
     $res1 = db_query($sql1);
     
-    if(pg_numrows($res1) > 0){
-      $dtconj  = pg_result($res1,0,'nasc');
+    if(pg_num_rows($res1) > 0){
+      $dtconj  = pg_fetch_result($res1,0,'nasc');
       $temconj = 'S'; 
     }else{
       $dtconj = '';
@@ -804,8 +804,8 @@ where rh30_vinculo = 'P'
 				 
     $res2 = db_query($sql2);
     
-    if(pg_numrows($res2) > 0){
-      $dtespec = pg_result($res2,0,'nasc');
+    if(pg_num_rows($res2) > 0){
+      $dtespec = pg_fetch_result($res2,0,'nasc');
     }else{
       $dtespec = '';
     }
@@ -823,12 +823,12 @@ where rh30_vinculo = 'P'
 				 
     $res3 = db_query($sql3);
     
-    if(pg_numrows($res3) > 0){
-      $dtnespec = pg_result($res3,0,'nasc');
+    if(pg_num_rows($res3) > 0){
+      $dtnespec = pg_fetch_result($res3,0,'nasc');
     }else{
       $dtnespec = '';
     }
-  fputs($arquivo,pg_result($result,$x,'todo')."#"."#".$dtespec."#".$dtnespec."#".chr(13)."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."#"."#".$dtespec."#".$dtnespec."#".chr(13)."\r\n");
   }
   fclose($arquivo);
 

@@ -102,7 +102,7 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
     </td>
     <td>
     <?php 
-        $aRegraCGM = array('1'=>'Somente CGM', '2'=>'CGM Geral');
+        $aRegraCGM = ['1'=>'Somente CGM', '2'=>'CGM Geral'];
 
         db_select('regra_cgm', $aRegraCGM, true, 1);
     ?>  

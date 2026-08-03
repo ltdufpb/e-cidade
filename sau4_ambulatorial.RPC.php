@@ -51,13 +51,13 @@ function formataData($dData, $iTipo = 1) {
 
   if ($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
 
   }
 
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
 
  return $dData;
@@ -87,14 +87,14 @@ if ($oParam->exec == 'getCotasEspecialidades') {
   $rsResult           = $oDaoUnidadeMedicos->sql_record($sSql);
   $iLinhas            = $oDaoUnidadeMedicos->numrows;
   $iProximo           = 0;
-  $aEspec             = array();
+  $aEspec             = [];
   for ($iInd=0; $iInd < $iLinhas; $iInd++) {
 
     $oEspecialidade    = db_utils::fieldsmemory($rsResult,$iInd);
     $oEspec            = new stdClass();
     $oEspec->iCodEspec = $oEspecialidade->cod;
     $oEspec->iEspec    = $oEspecialidade->estrutural;
-    $oEspec->sNome     = urlencode($oEspecialidade->descr);
+    $oEspec->sNome     = urlencode((string) $oEspecialidade->descr);
     $oEspec->iCotas    = $oEspecialidade->cotas;
     $oEspec->iSaldo    = $oEspecialidade->saldo;
     $iProximo          = $oEspecialidade->proximo;
@@ -111,13 +111,13 @@ if ($oParam->exec == 'getCotasEspecialidades') {
     $sWhere   .= " and sd27_i_rhcbo = $oEspecialidade->cod ";
     $sSql      = $oDaoUnidadeMedicos->sql_query("", $sCampos, "", $sWhere);
     $rsResult2 = $oDaoUnidadeMedicos->sql_record($sSql);
-    $aProf     = array();
+    $aProf     = [];
     for ($iInd2=0; $iInd2 < $oDaoUnidadeMedicos->numrows; $iInd2++) {
 
       $oMedico              = db_utils::fieldsmemory($rsResult2, $iInd2);
       $oProf                = new stdClass();
       $oProf->iCodigo       = $oMedico->codigo;
-      $oProf->sNome         = urlencode($oMedico->nome);
+      $oProf->sNome         = urlencode((string) $oMedico->nome);
       $oProf->iCotas        = $oMedico->cotas;
       $oProf->iSaldo        = $oMedico->saldo;
       $aProf[count($aProf)] = $oProf;
@@ -165,8 +165,8 @@ if ($oParam->exec == 'getCotasUnidadesDuplicar') {
   $swhere       .= " and s163_i_upsprestadora = ".$oParam->iUps;
   $sSql          = $oDaoSauCotas->sql_query_cotas("", $sCampos, "", $swhere);
   $rsCotas       = $oDaoSauCotas->sql_record($sSql);
-  $aEspec        = array();
-  $aCotas        = array();
+  $aEspec        = [];
+  $aCotas        = [];
   $iLinhas       = $oDaoSauCotas->numrows;
   for ($iInd=0; $iInd < $iLinhas; $iInd++) {
 
@@ -184,7 +184,7 @@ if ($oParam->exec == 'getCotasUnidadesDuplicar') {
       $iTam              = count($aEspec);
       $oEspec            = new stdClass();
       $oEspec->iEspecEst = $oDados->cbo_estrutural;
-      $oEspec->sEspecDes = urlencode($oDados->cbo_descr);
+      $oEspec->sEspecDes = urlencode((string) $oDados->cbo_descr);
       $oEspec->iEspecSeq = $oDados->cbo_sequencial;
       $oEspec->iCotas    = $oDados->cotas;
       $oEspec->iSaldo    = $oDados->saldo;
@@ -206,7 +206,7 @@ if ($oParam->exec == 'getCotasUnidadesDuplicar') {
       $sSql        = $oDaoSauCotas->sql_query_cotas("", $sCampos, "", $sWhere);
       $rsResult    = $oDaoSauCotas->sql_record($sSql);
       $iLinhasProf = $oDaoSauCotas->numrows;
-      $aProf       = array();
+      $aProf       = [];
       for ($iX = 0; $iX < $iLinhasProf; $iX++) {
 
         $oDadosProf           = db_utils::fieldsmemory($rsResult, $iX);
@@ -225,9 +225,9 @@ if ($oParam->exec == 'getCotasUnidadesDuplicar') {
 
     $oCotas               = new stdClass();
     $oCotas->icodigo      = $oDados->codigo;
-    $oCotas->sEspecDes    = urlencode($oDados->cbo_descr);
+    $oCotas->sEspecDes    = urlencode((string) $oDados->cbo_descr);
     $oCotas->sUndSoliCod  = $oDados->ups_solicitante;
-    $oCotas->sUndSoliDes  = urlencode($oDados->ups_descr);
+    $oCotas->sUndSoliDes  = urlencode((string) $oDados->ups_descr);
     $oCotas->iDistribuido = $oDados->quant;
     $oCotas->iEspecEst    = $oDados->cbo_estrutural;
     $oCotas->iEspecSeq    = $oDados->cbo_sequencial;
@@ -255,7 +255,7 @@ if ($oParam->exec == 'getCotasUnidadesDuplicar') {
     $rsResult    = $oDaoSauCotas->sql_record($sSql);
 
     $iLinhasProf = $oDaoSauCotas->numrows;
-    $aProf       = array();
+    $aProf       = [];
     for ($iX = 0; $iX < $iLinhasProf; $iX++) {
 
       $oDados               = db_utils::fieldsmemory($rsResult, $iX);
@@ -372,13 +372,13 @@ if ($oParam->exec == 'getCotasUnidades') {
   $sSql             .= " where $sWhere order by $sOrder;";
 
   $rsResult          = $oDaoUnidades->sql_record($sSql);
-  $aSolicitantes     = array();
+  $aSolicitantes     = [];
   for ($iInd=0; $iInd < $oDaoUnidades->numrows; $iInd++) {
 
     $oUnidade                             = db_utils::fieldsmemory($rsResult,$iInd);
     $oUnidadeCotas                        = new stdClass();
     $oUnidadeCotas->iCodigo               = $oUnidade->cod;
-    $oUnidadeCotas->sNome                 = urlencode($oUnidade->descr);
+    $oUnidadeCotas->sNome                 = urlencode((string) $oUnidade->descr);
     if ($oParam->iProfissional != -1) {
       $oUnidadeCotas->iCotas = $oUnidade->cotas;
     }
@@ -474,7 +474,7 @@ if ($oParam->exec == 'duplicarCotas') {
 
       $oDaoSauCotas->erro_status = "0";
       $oDaoSauCotas->erro_msg    = "Nenhuma grade de horario para a prestadora ".$oParam->aUps."!";
-      break;
+      return;
 
     }
   }
@@ -609,7 +609,7 @@ if ($oParam->exec == 'saveCotas') {
   $oDaoSauCotasProfissional = new cl_sau_cotasagendamentoprofissional();
 
   $iTotalUnidades          = count( $oParam->aUnidades );
-  $aUnidadesCotasExcedidas = array();
+  $aUnidadesCotasExcedidas = [];
 
   foreach( $oParam->aUnidades as $oDadosUnidade ) {
 
@@ -816,12 +816,12 @@ if ($oParam->exec == 'getUnidadesMedicos') {
   $iLinhas            = $oDaoUnidadeMedicos->numrows;
   if ($iLinhas > 0) {
 
-    $oRetorno->aUnidades = array();
+    $oRetorno->aUnidades = [];
     for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
 
        $oDadosUnidadeMedicos                 = db_utils::fieldsmemory($rsUnidadeMedicos, $iCont);
        $oRetorno->aUnidades[$iCont]->iCodigo = $oDadosUnidadeMedicos->sd04_i_unidade;
-       $oRetorno->aUnidades[$iCont]->sDescr  = urlencode($oDadosUnidadeMedicos->descrdepto);
+       $oRetorno->aUnidades[$iCont]->sDescr  = urlencode((string) $oDadosUnidadeMedicos->descrdepto);
 
     }
 
@@ -845,7 +845,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
     $oDadosCgsCartaoSus     = db_utils::fieldsmemory($rsCgsCartaoSus, 0);
     $oRetorno->z01_i_cgsund = $oDadosCgsCartaoSus->z01_i_cgsund;
-    $oRetorno->z01_v_nome   = urlencode($oDadosCgsCartaoSus->z01_v_nome);
+    $oRetorno->z01_v_nome   = urlencode((string) $oDadosCgsCartaoSus->z01_v_nome);
 
   } else {
 
@@ -870,7 +870,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
   if ($oDaoSauTriagemAvulsa->numrows > 0) { // se encontrou uma triagem para o paciente
 
-    $oRetorno->aTriagens = array();
+    $oRetorno->aTriagens = [];
     for ($iCont = 0; $iCont < $oDaoSauTriagemAvulsa->numrows; $iCont++) {
 
       $oDados                                                       = db_utils::fieldsmemory($rs, $iCont);
@@ -883,13 +883,13 @@ if ($oParam->exec == 'getUnidadesMedicos') {
       $oRetorno->aTriagens[$iCont]->s152_i_glicemia                 = $oDados->s152_i_glicemia;
       $oRetorno->aTriagens[$iCont]->s152_i_alimentacaoexameglicemia = $oDados->s152_i_alimentacaoexameglicemia;
       $oRetorno->aTriagens[$iCont]->sd03_i_codigo                   = $oDados->sd03_i_codigo;
-      $oRetorno->aTriagens[$iCont]->z01_nome                        = urlencode($oDados->z01_nome);
+      $oRetorno->aTriagens[$iCont]->z01_nome                        = urlencode((string) $oDados->z01_nome);
       $oRetorno->aTriagens[$iCont]->sd04_i_unidade                  = $oDados->sd04_i_unidade;
       $oRetorno->aTriagens[$iCont]->sd04_i_codigo                   = $oDados->sd04_i_codigo;
       $oRetorno->aTriagens[$iCont]->descrdepto                      = $oDados->descrdepto;
-      $oRetorno->aTriagens[$iCont]->s152_d_dataconsulta             = urlencode($oDados->s152_d_dataconsulta);
+      $oRetorno->aTriagens[$iCont]->s152_d_dataconsulta             = urlencode((string) $oDados->s152_d_dataconsulta);
       $oRetorno->aTriagens[$iCont]->s152_i_cgsund                   = $oDados->s152_i_cgsund;
-      $oRetorno->aTriagens[$iCont]->z01_v_nome                      = urlencode($oDados->z01_v_nome);
+      $oRetorno->aTriagens[$iCont]->z01_v_nome                      = urlencode((string) $oDados->z01_v_nome);
       if ($oDados->s152_i_glicemia > 0 && $oDados->s152_i_alimentacaoexameglicemia != 0) {
 
         $oRetorno->aTriagens[$iCont]->sAlimentacao = urlencode($oDados->s152_i_alimentacaoexameglicemia == 1 ?
@@ -965,7 +965,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
   if ($oDaoFarCadAcompPacHiperdia->numrows > 0) { // se encontrou um cadastro / acompanhamento para o paciente
 
-    $oRetorno->aAcompanhamentos = array();
+    $oRetorno->aAcompanhamentos = [];
     for ($iCont = 0; $iCont < $oDaoFarCadAcompPacHiperdia->numrows; $iCont++) {
 
       $oDados                                                              = db_utils::fieldsmemory($rs, $iCont);
@@ -979,13 +979,13 @@ if ($oParam->exec == 'getUnidadesMedicos') {
       $oRetorno->aAcompanhamentos[$iCont]->s152_i_glicemia                 = $oDados->s152_i_glicemia;
       $oRetorno->aAcompanhamentos[$iCont]->s152_i_alimentacaoexameglicemia = $oDados->s152_i_alimentacaoexameglicemia;
       $oRetorno->aAcompanhamentos[$iCont]->sd03_i_codigo                   = $oDados->sd03_i_codigo;
-      $oRetorno->aAcompanhamentos[$iCont]->z01_nome                        = urlencode($oDados->z01_nome);
+      $oRetorno->aAcompanhamentos[$iCont]->z01_nome                        = urlencode((string) $oDados->z01_nome);
       $oRetorno->aAcompanhamentos[$iCont]->sd04_i_unidade                  = $oDados->sd04_i_unidade;
       $oRetorno->aAcompanhamentos[$iCont]->sd04_i_codigo                   = $oDados->sd04_i_codigo;
       $oRetorno->aAcompanhamentos[$iCont]->descrdepto                      = $oDados->descrdepto;
-      $oRetorno->aAcompanhamentos[$iCont]->s152_d_dataconsulta             = urlencode($oDados->s152_d_dataconsulta);
+      $oRetorno->aAcompanhamentos[$iCont]->s152_d_dataconsulta             = urlencode((string) $oDados->s152_d_dataconsulta);
       $oRetorno->aAcompanhamentos[$iCont]->s152_i_cgsund                   = $oDados->s152_i_cgsund;
-      $oRetorno->aAcompanhamentos[$iCont]->z01_v_nome                      = urlencode($oDados->z01_v_nome);
+      $oRetorno->aAcompanhamentos[$iCont]->z01_v_nome                      = urlencode((string) $oDados->z01_v_nome);
       if ($oDados->s152_i_glicemia > 0 && $oDados->s152_i_alimentacaoexameglicemia != 0) {
 
         $oRetorno->aAcompanhamentos[$iCont]->sAlimentacao = urlencode($oDados->s152_i_alimentacaoexameglicemia == 1 ?
@@ -1028,7 +1028,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
   if ($oDaoFarMedicamentoCadAcomp->numrows > 0) { // se encontrou algum medicamento
 
-    $oRetorno->aMedicamentos = array();
+    $oRetorno->aMedicamentos = [];
     for ($iCont = 0; $iCont < $oDaoFarMedicamentoCadAcomp->numrows; $iCont++) {
 
       $oDados                                              = db_utils::fieldsmemory($rs, $iCont);
@@ -1055,24 +1055,24 @@ if ($oParam->exec == 'getUnidadesMedicos') {
   if ($oDaoCgsUnd->numrows > 0) { // se encontrou o cgs
 
     $oDadosCgsUnd           = db_utils::fieldsmemory($rsCgsUnd, 0);
-    $oRetorno->z01_v_ender  = urlencode($oDadosCgsUnd->z01_v_ender);
-    $oRetorno->z01_v_bairro = urlencode($oDadosCgsUnd->z01_v_bairro);
-    $oRetorno->z01_v_munic  = urlencode($oDadosCgsUnd->z01_v_munic);
-    $oRetorno->z01_v_cep    = urlencode($oDadosCgsUnd->z01_v_cep);
-    $oRetorno->z01_v_uf     = urlencode($oDadosCgsUnd->z01_v_uf);
-    $oRetorno->z01_v_email  = urlencode($oDadosCgsUnd->z01_v_email);
-    $oRetorno->z01_v_telef  = urlencode($oDadosCgsUnd->z01_v_telef);
-    $oRetorno->z01_v_telcel = urlencode($oDadosCgsUnd->z01_v_telcel);
+    $oRetorno->z01_v_ender  = urlencode((string) $oDadosCgsUnd->z01_v_ender);
+    $oRetorno->z01_v_bairro = urlencode((string) $oDadosCgsUnd->z01_v_bairro);
+    $oRetorno->z01_v_munic  = urlencode((string) $oDadosCgsUnd->z01_v_munic);
+    $oRetorno->z01_v_cep    = urlencode((string) $oDadosCgsUnd->z01_v_cep);
+    $oRetorno->z01_v_uf     = urlencode((string) $oDadosCgsUnd->z01_v_uf);
+    $oRetorno->z01_v_email  = urlencode((string) $oDadosCgsUnd->z01_v_email);
+    $oRetorno->z01_v_telef  = urlencode((string) $oDadosCgsUnd->z01_v_telef);
+    $oRetorno->z01_v_telcel = urlencode((string) $oDadosCgsUnd->z01_v_telcel);
     $oRetorno->z01_d_nasc   = $oDadosCgsUnd->z01_d_nasc;
-    $oRetorno->z01_v_cgccpf = urlencode($oDadosCgsUnd->z01_v_cgccpf);
-    $oRetorno->z01_v_ident  = urlencode($oDadosCgsUnd->z01_v_ident);
-    $oRetorno->z01_v_mae    = urlencode($oDadosCgsUnd->z01_v_mae);
-    $oRetorno->z01_v_pai    = urlencode($oDadosCgsUnd->z01_v_pai);
-    $oRetorno->z01_v_nome   = urlencode($oDadosCgsUnd->z01_v_nome);
-    $oRetorno->z01_i_estciv = urlencode($oDadosCgsUnd->z01_i_estciv);
-    $oRetorno->z01_v_sexo   = urlencode($oDadosCgsUnd->z01_v_sexo);
-    $oRetorno->z01_i_numero = urlencode($oDadosCgsUnd->z01_i_numero);
-    $oRetorno->z01_v_compl  = urlencode($oDadosCgsUnd->z01_v_compl);
+    $oRetorno->z01_v_cgccpf = urlencode((string) $oDadosCgsUnd->z01_v_cgccpf);
+    $oRetorno->z01_v_ident  = urlencode((string) $oDadosCgsUnd->z01_v_ident);
+    $oRetorno->z01_v_mae    = urlencode((string) $oDadosCgsUnd->z01_v_mae);
+    $oRetorno->z01_v_pai    = urlencode((string) $oDadosCgsUnd->z01_v_pai);
+    $oRetorno->z01_v_nome   = urlencode((string) $oDadosCgsUnd->z01_v_nome);
+    $oRetorno->z01_i_estciv = urlencode((string) $oDadosCgsUnd->z01_i_estciv);
+    $oRetorno->z01_v_sexo   = urlencode((string) $oDadosCgsUnd->z01_v_sexo);
+    $oRetorno->z01_i_numero = urlencode((string) $oDadosCgsUnd->z01_i_numero);
+    $oRetorno->z01_v_compl  = urlencode((string) $oDadosCgsUnd->z01_v_compl);
 
   } else {
 
@@ -1106,9 +1106,9 @@ if ($oParam->exec == 'getUnidadesMedicos') {
   if ($oDaoCgsCartaoSus->numrows != 0) { // se o paciente tem um cartao sus
 
     $oDadosCgsCartaoSus         = db_utils::fieldsmemory($rsCgsCartaoSus, 0);
-    $oRetorno->s115_c_cartaosus = urlencode($oDadosCgsCartaoSus->s115_c_cartaosus);
-    $oRetorno->s115_c_tipo      = urlencode($oDadosCgsCartaoSus->s115_c_tipo);
-    $oRetorno->s115_i_codigo    = urlencode($oDadosCgsCartaoSus->s115_i_codigo);
+    $oRetorno->s115_c_cartaosus = urlencode((string) $oDadosCgsCartaoSus->s115_c_cartaosus);
+    $oRetorno->s115_c_tipo      = urlencode((string) $oDadosCgsCartaoSus->s115_c_tipo);
+    $oRetorno->s115_i_codigo    = urlencode((string) $oDadosCgsCartaoSus->s115_i_codigo);
 
   } else {
 
@@ -1128,15 +1128,15 @@ if ($oParam->exec == 'getUnidadesMedicos') {
                                                     );
   $rsCgsCartaoSus     = $oDaoCgsCartaoSus->sql_record($sSql);
 
-  $oRetorno->aCartoes = array();
+  $oRetorno->aCartoes = [];
   if ($oDaoCgsCartaoSus->numrows > 0) { // se o paciente tem um cartao sus
 
     for ($iCont = 0; $iCont < $oDaoCgsCartaoSus->numrows; $iCont++) {
 
       $oDadosCgsCartaoSus                           = db_utils::fieldsmemory($rsCgsCartaoSus, $iCont);
-      $oRetorno->aCartoes[$iCont]->s115_c_cartaosus = urlencode($oDadosCgsCartaoSus->s115_c_cartaosus);
-      $oRetorno->aCartoes[$iCont]->s115_c_tipo      = urlencode($oDadosCgsCartaoSus->s115_c_tipo);
-      $oRetorno->aCartoes[$iCont]->s115_i_codigo    = urlencode($oDadosCgsCartaoSus->s115_i_codigo);
+      $oRetorno->aCartoes[$iCont]->s115_c_cartaosus = urlencode((string) $oDadosCgsCartaoSus->s115_c_cartaosus);
+      $oRetorno->aCartoes[$iCont]->s115_c_tipo      = urlencode((string) $oDadosCgsCartaoSus->s115_c_tipo);
+      $oRetorno->aCartoes[$iCont]->s115_i_codigo    = urlencode((string) $oDadosCgsCartaoSus->s115_i_codigo);
 
     }
 
@@ -1179,7 +1179,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
                                                                  );
   $rs               = $oDaoAgendamentos->sql_record($sSql);
 
-  $oRetorno->aAgendamentos = array();
+  $oRetorno->aAgendamentos = [];
   if ($oDaoAgendamentos->numrows > 0) { // se o paciente possui agendamentos
 
     for ($iCont = 0; $iCont < $oDaoAgendamentos->numrows; $iCont++) {
@@ -1192,18 +1192,18 @@ if ($oParam->exec == 'getUnidadesMedicos') {
                                                                              $oDados->situacao);
 
       /* Seto as variáveis para retorno */
-      $oRetorno->aAgendamentos[$iCont]->sd23_d_agendamento = urlencode($oDados->sd23_d_agendamento);
-      $oRetorno->aAgendamentos[$iCont]->id_usuario         = urlencode($oDados->id_usuario);
-      $oRetorno->aAgendamentos[$iCont]->login              = urlencode($oDados->login);
-      $oRetorno->aAgendamentos[$iCont]->sd101_c_descr      = urlencode($oDados->sd101_c_descr);
-      $oRetorno->aAgendamentos[$iCont]->sd23_d_consulta    = urlencode($oDados->sd23_d_consulta);
-      $oRetorno->aAgendamentos[$iCont]->sd23_c_hora        = urlencode($oDados->sd23_c_hora);
-      $oRetorno->aAgendamentos[$iCont]->sd03_i_codigo      = urlencode($oDados->sd03_i_codigo);
-      $oRetorno->aAgendamentos[$iCont]->z01_nome           = urlencode($oDados->z01_nome);
-      $oRetorno->aAgendamentos[$iCont]->situacao           = urlencode($sSituacao);
-      $oRetorno->aAgendamentos[$iCont]->data_anulacao      = urlencode($oDados->data_anulacao);
-      $oRetorno->aAgendamentos[$iCont]->motivo_anulacao    = urlencode($oDados->motivo_anulacao);
-      $oRetorno->aAgendamentos[$iCont]->usuario_anulacao   = urlencode($oDados->usuario_anulacao);
+      $oRetorno->aAgendamentos[$iCont]->sd23_d_agendamento = urlencode((string) $oDados->sd23_d_agendamento);
+      $oRetorno->aAgendamentos[$iCont]->id_usuario         = urlencode((string) $oDados->id_usuario);
+      $oRetorno->aAgendamentos[$iCont]->login              = urlencode((string) $oDados->login);
+      $oRetorno->aAgendamentos[$iCont]->sd101_c_descr      = urlencode((string) $oDados->sd101_c_descr);
+      $oRetorno->aAgendamentos[$iCont]->sd23_d_consulta    = urlencode((string) $oDados->sd23_d_consulta);
+      $oRetorno->aAgendamentos[$iCont]->sd23_c_hora        = urlencode((string) $oDados->sd23_c_hora);
+      $oRetorno->aAgendamentos[$iCont]->sd03_i_codigo      = urlencode((string) $oDados->sd03_i_codigo);
+      $oRetorno->aAgendamentos[$iCont]->z01_nome           = urlencode((string) $oDados->z01_nome);
+      $oRetorno->aAgendamentos[$iCont]->situacao           = urlencode((string) $sSituacao);
+      $oRetorno->aAgendamentos[$iCont]->data_anulacao      = urlencode((string) $oDados->data_anulacao);
+      $oRetorno->aAgendamentos[$iCont]->motivo_anulacao    = urlencode((string) $oDados->motivo_anulacao);
+      $oRetorno->aAgendamentos[$iCont]->usuario_anulacao   = urlencode((string) $oDados->usuario_anulacao);
 
     }
 
@@ -1229,7 +1229,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
                                                                 );
   $rs              = $oDaoProntProced->sql_record($sSql);
 
-  $oRetorno->aProntuarios = array();
+  $oRetorno->aProntuarios = [];
   if ($oDaoProntProced->numrows > 0) { // se o paciente possui prontuarios
 
     for ($iCont = 0; $iCont < $oDaoProntProced->numrows; $iCont++) {
@@ -1238,20 +1238,20 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
       /* Seto as variáveis para retorno */
       $oRetorno->aProntuarios[$iCont]                     = new stdClass();
-      $oRetorno->aProntuarios[$iCont]->sd24_i_codigo      = urlencode($oDados->sd24_i_codigo);
-      $oRetorno->aProntuarios[$iCont]->s102_i_agendamento = urlencode($oDados->s102_i_agendamento);
-      $oRetorno->aProntuarios[$iCont]->sd29_d_data        = urlencode($oDados->sd29_d_data);
-      $oRetorno->aProntuarios[$iCont]->sd29_c_hora        = urlencode($oDados->sd29_c_hora);
-      $oRetorno->aProntuarios[$iCont]->coddepto           = urlencode($oDados->coddepto);
-      $oRetorno->aProntuarios[$iCont]->descrdepto         = urlencode($oDados->descrdepto);
-      $oRetorno->aProntuarios[$iCont]->sd03_i_codigo      = urlencode($oDados->sd03_i_codigo);
-      $oRetorno->aProntuarios[$iCont]->z01_nome           = urlencode($oDados->z01_nome);
-      $oRetorno->aProntuarios[$iCont]->rh70_estrutural    = urlencode($oDados->rh70_estrutural);
-      $oRetorno->aProntuarios[$iCont]->rh70_descr         = urlencode($oDados->rh70_descr);
-      $oRetorno->aProntuarios[$iCont]->sd29_i_usuario     = urlencode($oDados->sd29_i_usuario);
-      $oRetorno->aProntuarios[$iCont]->login              = urlencode($oDados->login);
-      $oRetorno->aProntuarios[$iCont]->sd29_d_cadastro    = urlencode($oDados->sd29_d_cadastro);
-      $oRetorno->aProntuarios[$iCont]->sd29_c_cadastro    = urlencode($oDados->sd29_c_cadastro);
+      $oRetorno->aProntuarios[$iCont]->sd24_i_codigo      = urlencode((string) $oDados->sd24_i_codigo);
+      $oRetorno->aProntuarios[$iCont]->s102_i_agendamento = urlencode((string) $oDados->s102_i_agendamento);
+      $oRetorno->aProntuarios[$iCont]->sd29_d_data        = urlencode((string) $oDados->sd29_d_data);
+      $oRetorno->aProntuarios[$iCont]->sd29_c_hora        = urlencode((string) $oDados->sd29_c_hora);
+      $oRetorno->aProntuarios[$iCont]->coddepto           = urlencode((string) $oDados->coddepto);
+      $oRetorno->aProntuarios[$iCont]->descrdepto         = urlencode((string) $oDados->descrdepto);
+      $oRetorno->aProntuarios[$iCont]->sd03_i_codigo      = urlencode((string) $oDados->sd03_i_codigo);
+      $oRetorno->aProntuarios[$iCont]->z01_nome           = urlencode((string) $oDados->z01_nome);
+      $oRetorno->aProntuarios[$iCont]->rh70_estrutural    = urlencode((string) $oDados->rh70_estrutural);
+      $oRetorno->aProntuarios[$iCont]->rh70_descr         = urlencode((string) $oDados->rh70_descr);
+      $oRetorno->aProntuarios[$iCont]->sd29_i_usuario     = urlencode((string) $oDados->sd29_i_usuario);
+      $oRetorno->aProntuarios[$iCont]->login              = urlencode((string) $oDados->login);
+      $oRetorno->aProntuarios[$iCont]->sd29_d_cadastro    = urlencode((string) $oDados->sd29_d_cadastro);
+      $oRetorno->aProntuarios[$iCont]->sd29_c_cadastro    = urlencode((string) $oDados->sd29_c_cadastro);
 
     }
 
@@ -1275,7 +1275,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
                                                                  );
   $rs               = $oDaoLabRequiItem->sql_record($sSql);
 
-  $oRetorno->aExames = array();
+  $oRetorno->aExames = [];
   if ($oDaoLabRequiItem->numrows > 0) { // se o paciente possui agendamentos
 
     for ($iCont = 0; $iCont < $oDaoLabRequiItem->numrows; $iCont++) {
@@ -1283,11 +1283,11 @@ if ($oParam->exec == 'getUnidadesMedicos') {
       $oDados = db_utils::fieldsmemory($rs, $iCont);
 
       /* Seto as variáveis para retorno */
-      $oRetorno->aExames[$iCont]->la21_d_data  = urlencode($oDados->la21_d_data);
-      $oRetorno->aExames[$iCont]->la02_c_descr = urlencode($oDados->la02_c_descr);
-      $oRetorno->aExames[$iCont]->la08_c_descr = urlencode($oDados->la08_c_descr);
-      $oRetorno->aExames[$iCont]->la32_d_data  = urlencode($oDados->la32_d_data);
-      $oRetorno->aExames[$iCont]->la31_d_data  = urlencode($oDados->la31_d_data);
+      $oRetorno->aExames[$iCont]->la21_d_data  = urlencode((string) $oDados->la21_d_data);
+      $oRetorno->aExames[$iCont]->la02_c_descr = urlencode((string) $oDados->la02_c_descr);
+      $oRetorno->aExames[$iCont]->la08_c_descr = urlencode((string) $oDados->la08_c_descr);
+      $oRetorno->aExames[$iCont]->la32_d_data  = urlencode((string) $oDados->la32_d_data);
+      $oRetorno->aExames[$iCont]->la31_d_data  = urlencode((string) $oDados->la31_d_data);
 
     }
 
@@ -1309,28 +1309,28 @@ if ($oParam->exec == 'getUnidadesMedicos') {
   if ($oDaoCgm->numrows > 0) { // se encontrou o cgs
 
     $oDados                   = db_utils::fieldsmemory($rs, 0);
-    $oRetorno->z01_ender      = urlencode($oDados->z01_ender);
-    $oRetorno->z01_bairro     = urlencode($oDados->z01_bairro);
-    $oRetorno->z01_munic      = urlencode($oDados->z01_munic);
-    $oRetorno->z01_cep        = urlencode($oDados->z01_cep);
-    $oRetorno->z01_uf         = urlencode($oDados->z01_uf);
-    $oRetorno->z01_email      = urlencode($oDados->z01_email);
-    $oRetorno->z01_telef      = urlencode($oDados->z01_telef);
-    $oRetorno->z01_telcel     = urlencode($oDados->z01_telcel);
-    $oRetorno->z01_nasc       = urlencode($oDados->z01_nasc);
-    $oRetorno->z01_cgccpf     = urlencode($oDados->z01_cgccpf);
-    $oRetorno->z01_ident      = urlencode($oDados->z01_ident);
-    $oRetorno->z01_mae        = urlencode($oDados->z01_mae);
-    $oRetorno->z01_pai        = urlencode($oDados->z01_pai);
-    $oRetorno->z01_nome       = urlencode($oDados->z01_nome);
-    $oRetorno->z01_nomecomple = urlencode($oDados->z01_nomecomple);
-    $oRetorno->z01_estciv     = urlencode($oDados->z01_estciv);
-    $oRetorno->z01_sexo       = urlencode($oDados->z01_sexo);
-    $oRetorno->z01_numero     = urlencode($oDados->z01_numero);
-    $oRetorno->z01_compl      = urlencode($oDados->z01_compl);
-    $oRetorno->z01_cxpostal   = urlencode($oDados->z01_cxpostal);
-    $oRetorno->z01_cadast     = urlencode($oDados->z01_cadast);
-    $oRetorno->z01_ultalt     = urlencode($oDados->z01_ultalt);
+    $oRetorno->z01_ender      = urlencode((string) $oDados->z01_ender);
+    $oRetorno->z01_bairro     = urlencode((string) $oDados->z01_bairro);
+    $oRetorno->z01_munic      = urlencode((string) $oDados->z01_munic);
+    $oRetorno->z01_cep        = urlencode((string) $oDados->z01_cep);
+    $oRetorno->z01_uf         = urlencode((string) $oDados->z01_uf);
+    $oRetorno->z01_email      = urlencode((string) $oDados->z01_email);
+    $oRetorno->z01_telef      = urlencode((string) $oDados->z01_telef);
+    $oRetorno->z01_telcel     = urlencode((string) $oDados->z01_telcel);
+    $oRetorno->z01_nasc       = urlencode((string) $oDados->z01_nasc);
+    $oRetorno->z01_cgccpf     = urlencode((string) $oDados->z01_cgccpf);
+    $oRetorno->z01_ident      = urlencode((string) $oDados->z01_ident);
+    $oRetorno->z01_mae        = urlencode((string) $oDados->z01_mae);
+    $oRetorno->z01_pai        = urlencode((string) $oDados->z01_pai);
+    $oRetorno->z01_nome       = urlencode((string) $oDados->z01_nome);
+    $oRetorno->z01_nomecomple = urlencode((string) $oDados->z01_nomecomple);
+    $oRetorno->z01_estciv     = urlencode((string) $oDados->z01_estciv);
+    $oRetorno->z01_sexo       = urlencode((string) $oDados->z01_sexo);
+    $oRetorno->z01_numero     = urlencode((string) $oDados->z01_numero);
+    $oRetorno->z01_compl      = urlencode((string) $oDados->z01_compl);
+    $oRetorno->z01_cxpostal   = urlencode((string) $oDados->z01_cxpostal);
+    $oRetorno->z01_cadast     = urlencode((string) $oDados->z01_cadast);
+    $oRetorno->z01_ultalt     = urlencode((string) $oDados->z01_ultalt);
 
   } else {
 
@@ -1382,8 +1382,8 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
   $oDaoAusencias    = new cl_ausencias();
 
-  $aHorariosIni = explode(',', $oParam->sHorariosIni);
-  $aHorariosFim = explode(',', $oParam->sHorariosFim);
+  $aHorariosIni = explode(',', (string) $oParam->sHorariosIni);
+  $aHorariosFim = explode(',', (string) $oParam->sHorariosFim);
   $iTam         = count($aHorariosIni);
 
   db_inicio_transacao();
@@ -1586,7 +1586,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
   if ($oRetorno->iStatus != 0) {
 
     /* Inclusão dos medicamentos da receita médica */
-    $aCodMed                                    = array();
+    $aCodMed                                    = [];
     $oDaoSauMedicamentosReceita->s159_i_receita = $oDaoSauReceitaMedica->s158_i_codigo;
     $iTam                                       = count($oParam->aMedicamentos);
     for ($iCont = 0; $iCont < $iTam; $iCont++) {
@@ -1673,7 +1673,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
   if ($oRetorno->iStatus != 0) {
 
     /* Inclusão dos medicamentos da receita médica */
-    $aCodMed                                    = array();
+    $aCodMed                                    = [];
     $oDaoSauMedicamentosReceita->s159_i_receita = $oDaoSauReceitaMedica->s158_i_codigo;
     $iTam                                       = count($oParam->aMedicamentos);
     for ($iCont = 0; $iCont < $iTam; $iCont++) {
@@ -1775,7 +1775,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
     $oDataUnidade                             = db_utils::fieldsmemory($rsUnidades,$iInd);
     $oRetorno->unidades[$iInd]->sd02_i_codigo = $oDataUnidade->cod;
-    $oRetorno->unidades[$iInd]->descrdepto    = urlencode($oDataUnidade->desc);
+    $oRetorno->unidades[$iInd]->descrdepto    = urlencode((string) $oDataUnidade->desc);
 
   }
   if ($oDaoUnidades->numrows == 0) {
@@ -1798,7 +1798,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
     $oDataGrupo                      = db_utils::fieldsmemory($rsGrupo, $iInd);
     $oRetorno->grupo[$iInd]->codigo  = $oDataGrupo->sd60_i_codigo;
-    $oRetorno->grupo[$iInd]->nome    = urlencode($oDataGrupo->nome);
+    $oRetorno->grupo[$iInd]->nome    = urlencode((string) $oDataGrupo->nome);
 
   }
   if ($oDaoGrupo->numrows == 0) {
@@ -1822,7 +1822,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
     $oDataSubGrupo                      = db_utils::fieldsmemory($rsSubGrupo, $iInd);
     $oRetorno->subgrupo[$iInd]->codigo  = $oDataSubGrupo->sd61_i_codigo;
-    $oRetorno->subgrupo[$iInd]->nome    = urlencode($oDataSubGrupo->nome);
+    $oRetorno->subgrupo[$iInd]->nome    = urlencode((string) $oDataSubGrupo->nome);
 
   }
   if ($oDaoSubGrupo->numrows == 0) {
@@ -1848,7 +1848,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
     $oDataFormaOrganizacao                      = db_utils::fieldsmemory($rsFormaOrganizacao, $iInd);
     $oRetorno->formaorganizacao[$iInd]->codigo  = $oDataFormaOrganizacao->sd62_i_codigo;
-    $oRetorno->formaorganizacao[$iInd]->nome    = urlencode($oDataFormaOrganizacao->nome);
+    $oRetorno->formaorganizacao[$iInd]->nome    = urlencode((string) $oDataFormaOrganizacao->nome);
 
   }
   if ($oDaoFormaOrganizacao->numrows == 0) {
@@ -1893,8 +1893,8 @@ if ($oParam->exec == 'getUnidadesMedicos') {
 
     $oDataProcedimento                                  = db_utils::fieldsmemory($rsProcedimento, $iInd);
     $oRetorno->procedimento[$iInd]->sd63_i_codigo       = $oDataProcedimento->sd63_i_codigo;
-    $oRetorno->procedimento[$iInd]->sd63_c_nome         = urlencode($oDataProcedimento->sd63_c_nome);
-    $oRetorno->procedimento[$iInd]->sd63_c_procedimento = urlencode($oDataProcedimento->sd63_c_procedimento);
+    $oRetorno->procedimento[$iInd]->sd63_c_nome         = urlencode((string) $oDataProcedimento->sd63_c_nome);
+    $oRetorno->procedimento[$iInd]->sd63_c_procedimento = urlencode((string) $oDataProcedimento->sd63_c_procedimento);
 
   }
   if ($oDaoProcedimento->numrows == 0) {
@@ -1909,7 +1909,7 @@ if ($oParam->exec == 'getUnidadesMedicos') {
   $pArquivo = fopen("tmp/".$oParam->sNomeArquivo, "w");
   if ($pArquivo) {
 
-    fwrite($pArquivo, $oParam->sProcedimentos, strlen($oParam->sProcedimentos));
+    fwrite($pArquivo, (string) $oParam->sProcedimentos, strlen((string) $oParam->sProcedimentos));
     fclose($pArquivo);
     $oRetorno->sNomeArquivo = $oParam->sNomeArquivo;
 
@@ -1986,7 +1986,7 @@ if ($oParam->exec == 'gerarFAATXT') {
                                               $sWhere);
       $rsAgendamento = $clagendamentos->sql_record ($sSql);
       $oAgendamento  = db_utils::fieldsMemory($rsAgendamento, 0);
-      $aTotalAgenda  = explode (",", $oAgendamento->total_agendado);
+      $aTotalAgenda  = explode (",", (string) $oAgendamento->total_agendado);
       $iQtd          = $clagendamentos->numrows;
     }
 
@@ -2036,7 +2036,7 @@ if ($oParam->exec == 'gerarFAATXT') {
           //Gerar número prontuário automático
           $sFcNumatend  = "select fc_numatend()";
           $rsFcNumatend = db_query($sFcNumatend);
-          $aFcNumatend  = explode(",", pg_result($rsFcNumatend, 0, 0));
+          $aFcNumatend  = explode(",", pg_fetch_result($rsFcNumatend, 0, 0));
 
           $clprontuarios->sd24_i_ano              = trim($aFcNumatend[0]);
           $clprontuarios->sd24_i_mes              = trim($aFcNumatend[1]);
@@ -2341,7 +2341,7 @@ if ($oParam->exec == 'gerarFAATXT') {
 
       }
       $oGeral = db_utils::getCollectionByRecord($rs);
-      $aDados = array($oGeral);
+      $aDados = [$oGeral];
 
      if ($iModelo == 6) {
 
@@ -2376,7 +2376,7 @@ if ($oParam->exec == 'gerarFAATXT') {
         if ($iLinhasProc > 0) {
           $aDados[ ] = db_utils::getCollectionByRecord($rs);
         }else{
-          $aDados[ ] = array();
+          $aDados[ ] = [];
         }
 
               $sSqlConsultas   = $clprontproced->sql_query_ext(null,
@@ -2394,7 +2394,7 @@ if ($oParam->exec == 'gerarFAATXT') {
         if ($iLinhasConsultas > 0) {
           $aDados[ ] = db_utils::getCollectionByRecord($rsProntprocedConsultas);
         } else {
-          $aDados[ ] = array();
+          $aDados[ ] = [];
         }
 
       }
@@ -2441,8 +2441,8 @@ if ($oParam->exec == 'gerarFAATXT') {
     $sSql             = $oCfauntent->sql_query(null,$sCampos);
     $rs               = $oCfauntent->sql_record($sSql);
     $iTam             = $oCfauntent->numrows;
-    $aImpressoraId    = array();
-    $aImpressoraDescr = array();
+    $aImpressoraId    = [];
+    $aImpressoraDescr = [];
     $iIpPadrao        = 0;
     for ($iInd = 0; $iInd < $iTam; $iInd++) {
 
@@ -2514,7 +2514,7 @@ if ($oParam->exec == 'gerarFAATXT') {
 
     $oRetorno->iStatus  = 2;
     $sErro = "não foi possível salvar o arquivo em '$sNomeArquivo'. Verique se o caminho está correto.";
-    $oRetorno->sMessage = urlencode(str_replace('"', '\"', sErro));
+    $oRetorno->sMessage = urlencode(str_replace('"', '\"', \SERRO));
     echo $oJson->encode($oRetorno);
     exit;
 
@@ -2548,9 +2548,9 @@ if ($oParam->exec == 'gerarFAATXT') {
 
   }
   $oAgendamentos = new cl_agendamentos();
-  $ad23_i_codigo = explode(",",$oParam->sd23_i_codigo);
+  $ad23_i_codigo = explode(",",(string) $oParam->sd23_i_codigo);
   $iTam          = count($ad23_i_codigo);
-  $aArquivos     = array();
+  $aArquivos     = [];
   $sCampos  = " (select munic from db_config where codigo = $iInstitui) as municipio, ";
   $sCampos .= " sd23_i_codigo      as nro_agendamento, ";
   $sCampos .= " fc_formatadata(sd23_d_agendamento) as data_agendamento, ";
@@ -2586,13 +2586,13 @@ if ($oParam->exec == 'gerarFAATXT') {
 
     $sSql      = $oAgendamentos->sql_query_comprovante($ad23_i_codigo[$iInd], $sCampos);
     $rs        = $oAgendamentos->sql_record($sSql);
-    $aDados    = array();
+    $aDados    = [];
     $aDados[0] = db_utils::getCollectionByRecord($rs);
     if ($oAgendamentos->numrows < 0) {
 
       $oRetorno->iStatus  = 2;
       $sErro = "Nenhum registro para o relatório.";
-      $oRetorno->sMessage = urlencode(str_replace('"', '\"', sErro));
+      $oRetorno->sMessage = urlencode(str_replace('"', '\"', \SERRO));
       echo $oJson->encode($oRetorno);
       exit;
 

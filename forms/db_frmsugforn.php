@@ -91,7 +91,7 @@ if(isset($db_opcaoal)){
   <tr>
     <td valign="top"  align="center">
     <?php 
-		  $chavepri= array("pc40_solic" => @$pc40_solic, "pc40_numcgm" => @$pc40_numcgm);
+		  $chavepri= ["pc40_solic" => @$pc40_solic, "pc40_numcgm" => @$pc40_numcgm];
 		  $cliframe_alterar_excluir->chavepri      = $chavepri;
 		  $cliframe_alterar_excluir->sql           = $clpcsugforn->sql_query(@$pc40_solic, null, "distinct pc40_solic,pc40_numcgm,z01_nome");
 		  $cliframe_alterar_excluir->campos        = "pc40_solic, pc40_numcgm, z01_nome";

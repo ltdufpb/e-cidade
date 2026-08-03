@@ -51,14 +51,14 @@ $instits = "(" . str_replace('-', ', ', $db_selinstit) . ")";
 $resultinst = db_query("select codigo, nomeinstabrev from db_config where codigo in $instits");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinstabrev;
     $xvirg = ', ';
 }
 $dtDataFinal = $posicaoate;
 $mesini = 1;
-$aDataFinalPartes = explode("/", $dtDataFinal);
+$aDataFinalPartes = explode("/", (string) $dtDataFinal);
 $mesfin = $aDataFinalPartes[1];
 
 $head3 = "INSTITUIÇÕES : " . $descr_inst;
@@ -159,13 +159,13 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
     //echo "::".$sele_recursos; die();
 
     //
-    $receita_arre = array();
-    $despesa_arre = array();
+    $receita_arre = [];
+    $despesa_arre = [];
     //
-    $despesa_paga = array();
-    $despesa_paga_rp = array();
-    $despesa_liquidada = array();
-    $totalExtra = array();
+    $despesa_paga = [];
+    $despesa_paga_rp = [];
+    $despesa_liquidada = [];
+    $totalExtra = [];
 
     for ($x = 0; $x <= 12; $x++) {
         $despesa_paga[$x] = 0;
@@ -267,7 +267,7 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
 
             //      db_criatabela($result); exit;
 
-            for ($i = 0; $i < pg_numrows($result); $i++) {
+            for ($i = 0; $i < pg_num_rows($result); $i++) {
                 db_fieldsmemory($result, $i);
                 if (db_conplano_grupo($anousu, $o57_fonte, 9004) == true) {
                     $valor_arrecadado += $saldo_arrecadado;
@@ -320,7 +320,7 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
                 $saldo_liquidado = 0;
                 $saldo_empenhado = 0;
                 $saldo_pago = 0;
-                for ($i = 0; $i < pg_numrows($result); $i++) {
+                for ($i = 0; $i < pg_num_rows($result); $i++) {
                     db_fieldsmemory($result, $i);
                     $saldo_liquidado += $liquidado;
                     $saldo_empenhado += ($empenhado - $anulado);

@@ -95,7 +95,7 @@ if( !empty( $iPedido ) ) {
         <td>
           <?php
           $dDataAtual = date("'Y-m-d'", db_getsession('DB_datausu'));
-          $aX         = array();
+          $aX         = [];
           $sWhere     = " tf08_d_validade is null or tf08_d_validade >= {$dDataAtual}";
           $sSql       = $oDaotfd_motivoacompanhamento->sql_query_file(null, ' * ', ' tf08_c_descr ', $sWhere);
           $rs         = $oDaotfd_motivoacompanhamento->sql_record($sSql);
@@ -895,7 +895,7 @@ function validaCampos() {
 
 <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
 ?>
 

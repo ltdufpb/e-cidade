@@ -30,7 +30,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -63,7 +63,7 @@ db_postmemory($HTTP_POST_VARS);
         <td><strong>Tipo:</strong></td>
         <td>
         <?php
-	       $tipo_ordem = array("T"=>"Todos","E"=>"Somente Erros");
+	       $tipo_ordem = ["T"=>"Todos","E"=>"Somente Erros"];
 	       db_select("tipo",$tipo_ordem,true,2);
         ?>
         </td>

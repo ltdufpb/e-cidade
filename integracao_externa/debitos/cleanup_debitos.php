@@ -88,7 +88,7 @@ if ($iNumrows==0) {
 db_log("", $sArquivoLog);
 
 for ($i=0; $i<$iNumrows; $i++) {
-	$oParticao = db_utils::fieldsMemory($rsProcessamento, $i);
+	$oParticao = (new db_utils())->fieldsMemory($rsProcessamento, $i);
 
 	$iPercPrincipal = round((($i+1)/$iNumrows)*100, 2);
 
@@ -118,7 +118,7 @@ for ($i=0; $i<$iNumrows; $i++) {
 		$sSqlListas .= "   AND k60_instit  = {$oParticao->instit} ";
 
 		$rsListas = db_query($pConexaoDestino, $sSqlListas, $sArquivoLog);
-		$oLista = db_utils::fieldsMemory($rsListas, 0);
+		$oLista = (new db_utils())->fieldsMemory($rsListas, 0);
 
 		if ($oLista->meses < 12) {
 			db_log("> existe(m) a(s) seguinte(s) lista(s) gerada(s) para essa particao: {$oLista->listas} ... LIMPANDO particao {$oParticao->tabela}...", $sArquivoLog);

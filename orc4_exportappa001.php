@@ -41,7 +41,7 @@ include(modification("classes/db_orcdotacao_classe.php"));
 include(modification("classes/db_orcparametro_classe.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcorgao = new cl_orcorgao;
 $clrotulo = new rotulocampo;
@@ -157,7 +157,7 @@ if (isset ($exportar) && $exportar == "Exportar") {
 			// db_criatabela($res);
 			for ($x = 0; $x < $clorcppa->numrows; $x ++) {
 				db_fieldsmemory($res, $x);
-				
+
 				$clorcdotacao->o58_anousu = $anoexe_exporta;
 				$clorcdotacao->o58_coddot = null;
 				$clorcdotacao->o58_orgao = $o23_orgao;
@@ -243,7 +243,7 @@ db_input('o21_codleippa', 8, $Io21_codleippa, true, 'text', 1, " onchange='js_pe
 	echo "<select name=anoexe_exporta>";
 	$sql = "select * from orcppalei";
 	$res = db_query($sql);
-	if (pg_numrows($res) > 0) {
+	if (pg_num_rows($res) > 0) {
 		db_fieldsmemory($res, 0);
 		for ($x = $o21_anoini; $x <= $o21_anofim; $x ++) {
 			echo "<option value=$x > $x </option>";

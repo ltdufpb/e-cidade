@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cfautent_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcfautent = new cl_cfautent;
 $clcfautent->rotulo->label("k11_id");
 $clcfautent->rotulo->label("k11_local");
@@ -104,9 +104,9 @@ $clcfautent->rotulo->label("k11_local");
         }else{
            $sql = $clcfautent->sql_query("",$campos,"k11_id","k11_instit = ".db_getsession("DB_instit").$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k11_local)){
-          $repassa = array("chave_k11_id"=>$chave_k11_id,"chave_k11_local"=>$chave_k11_local);
+          $repassa = ["chave_k11_id"=>$chave_k11_id,"chave_k11_local"=>$chave_k11_local];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

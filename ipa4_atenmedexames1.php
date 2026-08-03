@@ -32,26 +32,26 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
 //////////INCLUIR/////////////
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $result = db_query("select max(codexa) + 1 from exames");
-  $codexa = pg_result($result,0,0);
+  $codexa = pg_fetch_result($result,0,0);
   $codexa = $codexa==""?"1":$codexa;
   db_query("insert into exames values($codexa,".db_getsession("DB_id_usuario").",'$descr')") or die("Erro(24) inserindo em exames");
   db_redireciona();
   exit;		   
 ////////////////ALTERAR////////////////  
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   db_query("update exames set descr = '$descr'
            where codexa = $codigo
 		   and codmed = ".db_getsession("DB_id_usuario")) or die("Erro(22) atualizando exames");
-  db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+  db_redireciona($_SERVER['PHP_SELF']);
   exit;		     
 ////////////////EXCLUIR//////////////
-} else if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from exames where codexa = ".$HTTP_POST_VARS["codigo"]) or die("Erro(15) deletando tabela exames");
-  db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+} else if(isset($_POST["excluir"])) {
+  db_query("delete from exames where codexa = ".$_POST["codigo"]) or die("Erro(15) deletando tabela exames");
+  db_redireciona($_SERVER['PHP_SELF']);
   exit;  
 }
 

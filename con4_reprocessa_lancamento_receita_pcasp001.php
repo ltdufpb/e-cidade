@@ -67,7 +67,7 @@ if (!USE_PCASP) {
 
 }
 
-$aTables = array(
+$aTables = [
     "cornump",
     "corrente",
     "corcla",
@@ -88,7 +88,7 @@ $aTables = array(
     "conlancaminstit",
     "contacorrentedetalheconlancamval",
     "conlancamconcarpeculiar"
-);
+];
 if (isset($_POST["processar"])) {
 
     foreach ($aTables as $sTabela) {
@@ -157,10 +157,8 @@ if (isset($_POST["processar"])) {
             throw new DBException("Erro ao buscar as instituições configuradas");
         }
 
-        $instituicoes = array();
-        $instituicoes = db_utils::makeCollectionFromRecord($rsInstituicoes, function ($dadosInstituicao) {
-            return new Instituicao($dadosInstituicao->codigo);
-        });
+        $instituicoes = [];
+        $instituicoes = db_utils::makeCollectionFromRecord($rsInstituicoes, fn($dadosInstituicao) => new Instituicao($dadosInstituicao->codigo));
 
         if (count($instituicoes) > 0) {
             $daoConPlanoAtributosLancamentos->removerLancametosCompetencia($oData->getMes(), $oData->getAno(),

@@ -257,20 +257,20 @@ $lotacao_atual = "";
 db_fieldsmemory($rsResult,0);
 
 if($oGet->tipoquebra == 'a'){
-    $quebra = substr($codigo_banco,0,3).$codigo_agencia;
+    $quebra = substr((string) $codigo_banco,0,3).$codigo_agencia;
 }else{
-    $quebra = substr($codigo_banco,0,3);
+    $quebra = substr((string) $codigo_banco,0,3);
 }
 $troca = 0;
 
 
 if($oGet->func != 's'){
   
-  for($x = 0; $x < pg_numrows($rsResult);$x++){
+  for($x = 0; $x < pg_num_rows($rsResult);$x++){
      
      db_fieldsmemory($rsResult,$x);
 
-     if ($quebra != substr($codigo_banco,0,3).$codigo_agencia && $oGet->tipoquebra == 'a') {
+     if ($quebra != substr((string) $codigo_banco,0,3).$codigo_agencia && $oGet->tipoquebra == 'a') {
 
         $oPDF->setfont('arial','b',8);
         $oPDF->cell(122,$alt,'Total da Agência',"T",0,"C",0);
@@ -278,10 +278,10 @@ if($oGet->func != 's'){
         $oPDF->cell(30,$alt,db_formatar($total,'f'),"T",1,"R",0);
         $oPDF->sety(300);
         $total = 0;
-        $quebra = substr($codigo_banco,0,3).$codigo_agencia;
+        $quebra = substr((string) $codigo_banco,0,3).$codigo_agencia;
      }
 
-     if ($quebra != substr($codigo_banco,0,3) && $oGet->tipoquebra != 'a') {
+     if ($quebra != substr((string) $codigo_banco,0,3) && $oGet->tipoquebra != 'a') {
 
         $oPDF->setfont('arial','b',8);
         $oPDF->cell(122,$alt,'Total do Banco',"T",0,"C",0);
@@ -289,7 +289,7 @@ if($oGet->func != 's'){
         $oPDF->cell(30,$alt,db_formatar($total,'f'),"T",1,"R",0);
         $oPDF->sety(300);
         $total = 0;
-        $quebra = substr($codigo_banco,0,3);
+        $quebra = substr((string) $codigo_banco,0,3);
      }
 
      if ($oPDF->getY() > $oPDF->getH() - 30 || $troca == 0) {
@@ -340,26 +340,26 @@ if($oGet->func != 's'){
   
 } else {
 
-  for ($x = 0; $x < pg_numrows($rsResult);$x++) {
+  for ($x = 0; $x < pg_num_rows($rsResult);$x++) {
      
       db_fieldsmemory($rsResult,$x);
       
-      if ($quebra != substr($codigo_banco,0,3).$codigo_agencia && $oGet->tipoquebra == 'a') {
+      if ($quebra != substr((string) $codigo_banco,0,3).$codigo_agencia && $oGet->tipoquebra == 'a') {
           
           $oPDF->setfont('arial','b',8);
           $oPDF->cell(249,$alt,"Total da Agência {$codigo_agencia}","T",0,"C",0);
           $oPDF->cell(25,$alt,db_formatar($total,'f'),"T",1,"R",0);
           $total = 0;
-          $quebra = substr($codigo_banco,0,3).$codigo_agencia;
+          $quebra = substr((string) $codigo_banco,0,3).$codigo_agencia;
       }
       
-      if ($quebra != substr($codigo_banco,0,3) && $oGet->tipoquebra != 'a') {
+      if ($quebra != substr((string) $codigo_banco,0,3) && $oGet->tipoquebra != 'a') {
           
           $oPDF->setfont('arial','b',8);
           $oPDF->cell(249,$alt,"Total do Banco {$banco_atual}","T",0,"R",0);
           $oPDF->cell(25,$alt,db_formatar($total,'f'),"T",1,"R",0);
           $total = 0;
-          $quebra = substr($codigo_banco,0,3);
+          $quebra = substr((string) $codigo_banco,0,3);
       }
      
      if ($oPDF->getY() > $oPDF->getH() - 30 || $troca == 0) {

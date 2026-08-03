@@ -36,8 +36,6 @@ use DOMDocument;
 class RecepcaoDSM implements RequisicaoInterface
 {
     private $oXml;
-    private $iMes;
-    private $iAno;
     private $sOperacao;
 
   /**
@@ -45,13 +43,11 @@ class RecepcaoDSM implements RequisicaoInterface
    *
    * @param stdClass $oRegistroHabitese
    */
-    public function __construct($iMes, $iAno)
+    public function __construct(private $iMes, private $iAno)
     {
         $this->oXml                      = new DOMDocument("1.0", "utf-8");
         $this->oXml->preserveWhiteSpace  = false;
         $this->oXml->formatOutput        = true;
-        $this->iMes                      = $iMes;
-        $this->iAno                      = $iAno;
         $this->sOperacao                 = "recepcaoDSM";
     }
 

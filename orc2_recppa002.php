@@ -30,7 +30,7 @@ include(modification("libs/db_sql.php"));
 include(modification("classes/db_orcppalei_classe.php"));
 include(modification("libs/db_libcontabilidade.php"));
 include(modification("libs/db_liborcamento.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 $clorcppalei = new cl_orcppalei;
@@ -42,11 +42,11 @@ $clrotulo->label('r37_cbo');
 $clrotulo->label('r37_lei');
 $clrotulo->label('r37_class');
 
-$anosql = Array();
+$anosql = [];
 
 $ano1 = $ano;
 $ano = substr(str_replace('-',',',$ano1),1);
-$ano_arr = 	split(',',$ano);
+$ano_arr = 	preg_split('#,#m',$ano);
 $anoini =$ano_arr[0];
 $anofim = $ano_arr[count($ano_arr) - 1];
 
@@ -160,7 +160,7 @@ if($tipo == 'R')
   }
 }
 //db_criatabela($result);exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.@$o21_anoini.' / '.@$o21_anofim);
 }
@@ -188,7 +188,7 @@ $estrut = '';
 if($tipo == 'R'){
 ///// quebrar por recurso
 
-  for($x = 0; $x < pg_numrows($result);$x++){
+  for($x = 0; $x < pg_num_rows($result);$x++){
      db_fieldsmemory($result,$x);
     
      // quando for escolhido 2 ou mais exercicios
@@ -303,7 +303,7 @@ if($tipo == 'R'){
 }else{
 ////// quebrar por receita
 
-  for($x = 0; $x < pg_numrows($result);$x++){
+  for($x = 0; $x < pg_num_rows($result);$x++){
      db_fieldsmemory($result,$x);
 
      // se algum exercicio tiver valor maior que zero então imprime a linha 

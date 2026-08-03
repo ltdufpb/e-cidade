@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE mer_caractpreparo
 class cl_mer_caractpreparo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $me06_i_codigo = 0; 
-   var $me06_c_tempopreparo = null; 
-   var $me06_c_graudificuldade = null; 
-   var $me06_c_descr = null; 
-   var $me06_i_cardapio = 0; 
+   public $me06_i_codigo = 0; 
+   public $me06_c_tempopreparo = null; 
+   public $me06_c_graudificuldade = null; 
+   public $me06_c_descr = null; 
+   public $me06_i_cardapio = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  me06_i_codigo = int4 = Código 
                  me06_c_tempopreparo = char(10) = Tempo de Preparo 
                  me06_c_graudificuldade = char(20) = Grau Dificuldade 
@@ -56,10 +56,10 @@ class cl_mer_caractpreparo {
                  me06_i_cardapio = int4 = Cardápio 
                  ";
    //funcao construtor da classe 
-   function cl_mer_caractpreparo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_caractpreparo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_mer_caractpreparo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->me06_i_codigo = pg_result($result,0,0); 
+       $this->me06_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from mercaractpreparo_me06_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $me06_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $me06_i_codigo)){
          $this->erro_sql = " Campo me06_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_mer_caractpreparo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "mer_caractpreparo ($this->me06_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "mer_caractpreparo já Cadastrado";
@@ -194,14 +194,14 @@ class cl_mer_caractpreparo {
      $resaco = $this->sql_record($this->sql_query_file($this->me06_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12776,'$this->me06_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2238,12776,'','".AddSlashes(pg_result($resaco,0,'me06_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2238,12778,'','".AddSlashes(pg_result($resaco,0,'me06_c_tempopreparo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2238,12777,'','".AddSlashes(pg_result($resaco,0,'me06_c_graudificuldade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2238,12779,'','".AddSlashes(pg_result($resaco,0,'me06_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2238,12794,'','".AddSlashes(pg_result($resaco,0,'me06_i_cardapio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2238,12776,'','".AddSlashes(pg_fetch_result($resaco,0,'me06_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2238,12778,'','".AddSlashes(pg_fetch_result($resaco,0,'me06_c_tempopreparo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2238,12777,'','".AddSlashes(pg_fetch_result($resaco,0,'me06_c_graudificuldade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2238,12779,'','".AddSlashes(pg_fetch_result($resaco,0,'me06_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2238,12794,'','".AddSlashes(pg_fetch_result($resaco,0,'me06_i_cardapio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_mer_caractpreparo {
       $this->atualizacampos();
      $sql = " update mer_caractpreparo set ";
      $virgula = "";
-     if(trim($this->me06_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me06_i_codigo"])){ 
+     if(trim((string) $this->me06_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me06_i_codigo"])){ 
        $sql  .= $virgula." me06_i_codigo = $this->me06_i_codigo ";
        $virgula = ",";
-       if(trim($this->me06_i_codigo) == null ){ 
+       if(trim((string) $this->me06_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "me06_i_codigo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_mer_caractpreparo {
          return false;
        }
      }
-     if(trim($this->me06_c_tempopreparo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me06_c_tempopreparo"])){ 
+     if(trim((string) $this->me06_c_tempopreparo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me06_c_tempopreparo"])){ 
        $sql  .= $virgula." me06_c_tempopreparo = '$this->me06_c_tempopreparo' ";
        $virgula = ",";
-       if(trim($this->me06_c_tempopreparo) == null ){ 
+       if(trim((string) $this->me06_c_tempopreparo) == null ){ 
          $this->erro_sql = " Campo Tempo de Preparo nao Informado.";
          $this->erro_campo = "me06_c_tempopreparo";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_mer_caractpreparo {
          return false;
        }
      }
-     if(trim($this->me06_c_graudificuldade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me06_c_graudificuldade"])){ 
+     if(trim((string) $this->me06_c_graudificuldade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me06_c_graudificuldade"])){ 
        $sql  .= $virgula." me06_c_graudificuldade = '$this->me06_c_graudificuldade' ";
        $virgula = ",";
-       if(trim($this->me06_c_graudificuldade) == null ){ 
+       if(trim((string) $this->me06_c_graudificuldade) == null ){ 
          $this->erro_sql = " Campo Grau Dificuldade nao Informado.";
          $this->erro_campo = "me06_c_graudificuldade";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_mer_caractpreparo {
          return false;
        }
      }
-     if(trim($this->me06_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me06_c_descr"])){ 
+     if(trim((string) $this->me06_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me06_c_descr"])){ 
        $sql  .= $virgula." me06_c_descr = '$this->me06_c_descr' ";
        $virgula = ",";
-       if(trim($this->me06_c_descr) == null ){ 
+       if(trim((string) $this->me06_c_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "me06_c_descr";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_mer_caractpreparo {
          return false;
        }
      }
-     if(trim($this->me06_i_cardapio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me06_i_cardapio"])){ 
+     if(trim((string) $this->me06_i_cardapio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me06_i_cardapio"])){ 
        $sql  .= $virgula." me06_i_cardapio = $this->me06_i_cardapio ";
        $virgula = ",";
-       if(trim($this->me06_i_cardapio) == null ){ 
+       if(trim((string) $this->me06_i_cardapio) == null ){ 
          $this->erro_sql = " Campo Cardápio nao Informado.";
          $this->erro_campo = "me06_i_cardapio";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_mer_caractpreparo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12776,'$this->me06_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me06_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,2238,12776,'".AddSlashes(pg_result($resaco,$conresaco,'me06_i_codigo'))."','$this->me06_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2238,12776,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me06_i_codigo'))."','$this->me06_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me06_c_tempopreparo"]))
-           $resac = db_query("insert into db_acount values($acount,2238,12778,'".AddSlashes(pg_result($resaco,$conresaco,'me06_c_tempopreparo'))."','$this->me06_c_tempopreparo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2238,12778,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me06_c_tempopreparo'))."','$this->me06_c_tempopreparo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me06_c_graudificuldade"]))
-           $resac = db_query("insert into db_acount values($acount,2238,12777,'".AddSlashes(pg_result($resaco,$conresaco,'me06_c_graudificuldade'))."','$this->me06_c_graudificuldade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2238,12777,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me06_c_graudificuldade'))."','$this->me06_c_graudificuldade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me06_c_descr"]))
-           $resac = db_query("insert into db_acount values($acount,2238,12779,'".AddSlashes(pg_result($resaco,$conresaco,'me06_c_descr'))."','$this->me06_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2238,12779,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me06_c_descr'))."','$this->me06_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me06_i_cardapio"]))
-           $resac = db_query("insert into db_acount values($acount,2238,12794,'".AddSlashes(pg_result($resaco,$conresaco,'me06_i_cardapio'))."','$this->me06_i_cardapio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2238,12794,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me06_i_cardapio'))."','$this->me06_i_cardapio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_mer_caractpreparo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12776,'$me06_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2238,12776,'','".AddSlashes(pg_result($resaco,$iresaco,'me06_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2238,12778,'','".AddSlashes(pg_result($resaco,$iresaco,'me06_c_tempopreparo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2238,12777,'','".AddSlashes(pg_result($resaco,$iresaco,'me06_c_graudificuldade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2238,12779,'','".AddSlashes(pg_result($resaco,$iresaco,'me06_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2238,12794,'','".AddSlashes(pg_result($resaco,$iresaco,'me06_i_cardapio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2238,12776,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me06_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2238,12778,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me06_c_tempopreparo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2238,12777,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me06_c_graudificuldade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2238,12779,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me06_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2238,12794,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me06_i_cardapio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from mer_caractpreparo
@@ -407,7 +407,7 @@ class cl_mer_caractpreparo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:mer_caractpreparo";
@@ -422,7 +422,7 @@ class cl_mer_caractpreparo {
    function sql_query ( $me06_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,7 +444,7 @@ class cl_mer_caractpreparo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -457,7 +457,7 @@ class cl_mer_caractpreparo {
    function sql_query_file ( $me06_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -478,7 +478,7 @@ class cl_mer_caractpreparo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

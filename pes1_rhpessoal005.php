@@ -68,7 +68,7 @@ $visibilityContratoEmergencial = false;
 if(isset($alterar)){
     $sqlerro=false;
     db_inicio_transacao();
-    if(trim($rh01_anoche) == "" && $rh01_nacion != 10){
+    if(trim((string) $rh01_anoche) == "" && $rh01_nacion != 10){
         $sqlerro = true;
         $erro_msg = "Ano de chegada inválido.";
     }
@@ -82,7 +82,7 @@ if(isset($alterar)){
       $dataAlteracaoESocial = $dataTrocaCargoFuncao;
     }
   
-    $nasc   = explode('/', $rh01_nasc);
+    $nasc   = explode('/', (string) $rh01_nasc);
     $dtmin  = strtotime('1890-01-01');
     $dtnasc = strtotime($nasc[2].'-'.$nasc[1].'-'.$nasc[0]);
 
@@ -105,14 +105,14 @@ if(isset($alterar)){
         }
 
         if(!$sqlerro) {
-          (new S2405($rh01_regist))->setDataS2405($dadosAtuais, $clrhpessoal);
+          new S2405($rh01_regist)->setDataS2405($dadosAtuais, $clrhpessoal);
         }
 
         // Registra alteração para envio do formulário S2205
         foreach(S2205::getCamposControleAlteracao() as $campo){
-            if(isset($$campo)){
+            if(isset(${$campo})){
                 if(isset($dadosAtuais->$campo)){
-                    if( $dadosAtuais->$campo != $$campo){
+                    if( $dadosAtuais->$campo != ${$campo}){
                         $servidorAlteracao = ServidorAlteracao::findMatriculaByLayout($rh01_regist, Tipo::S2205);
                         $servidorAlteracao->setDataS2205(new DBDate(date('Y-m-d')));
                         $servidorAlteracao->save();
@@ -124,7 +124,7 @@ if(isset($alterar)){
         }
 
         if($sqlerro == false){
-            if(trim($rh15_banco)!=""){
+            if(trim((string) $rh15_banco)!=""){
                 $result_fgts = $clrhpesfgts->sql_record($clrhpesfgts->sql_query_file($rh01_regist));
                 if($clrhpesfgts->numrows > 0){
                     $clrhpesfgts->rh15_regist = $rh01_regist;
@@ -149,7 +149,7 @@ if(isset($alterar)){
         }
     }
 
-    if($sqlerro == false && trim($localrecebefoto) != ""){
+    if($sqlerro == false && trim((string) $localrecebefoto) != ""){
         $clrhfotos->excluir($rh01_numcgm);
         if($clrhfotos->erro_status==0){
             $erro_msg = $clrhfotos->erro_msg;
@@ -339,9 +339,9 @@ if(isset($alterar)){
                 $dadosAtuais = pg_fetch_object($resultadoImigrante,0);
 
                 foreach (S2205::getCamposControleAlteracao() as $campo) {
-                    if (isset($$campo)) {
+                    if (isset(${$campo})) {
                         if (isset($dadosAtuais->$campo)) {
-                            if ($dadosAtuais->$campo != $$campo) {
+                            if ($dadosAtuais->$campo != ${$campo}) {
                                 $servidorAlteracao = ServidorAlteracao::findMatriculaByLayout($rh01_regist, Tipo::S2205);
                                 $servidorAlteracao->setDataS2205(new DBDate(date('Y-m-d')));
                                 $servidorAlteracao->save();

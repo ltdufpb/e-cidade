@@ -60,17 +60,17 @@ $clcriaabas = new cl_criaabas;
     <center>
     <?php 
     
-    $clcriaabas->identifica = array( "dados"=>"Dados Transação", "formapgto"=>"Formas de Pagamento");
-    $clcriaabas->title      = array( "dados"=>"Dados Transação", "formapgto"=>"Formas de Pagamento");
+    $clcriaabas->identifica = [ "dados"=>"Dados Transação", "formapgto"=>"Formas de Pagamento"];
+    $clcriaabas->title      = [ "dados"=>"Dados Transação", "formapgto"=>"Formas de Pagamento"];
     
-    $clcriaabas->src  		= array( "dados"	  => "itb1_itbitransacao011.php",
-    								 "formapgto"  => "itb1_itbitransacao111.php");
+    $clcriaabas->src  		= [ "dados"	  => "itb1_itbitransacao011.php",
+    								 "formapgto"  => "itb1_itbitransacao111.php"];
     
-    $clcriaabas->sizecampo  = array( "dados"     =>"23",
-    							     "formapgto" =>"23");
+    $clcriaabas->sizecampo  = [ "dados"     =>"23",
+    							     "formapgto" =>"23"];
 	
-	$clcriaabas->disabled   = array( "dados"	 =>false,
-								     "formapgto" =>true);
+	$clcriaabas->disabled   = [ "dados"	 =>false,
+								     "formapgto" =>true];
     
     $clcriaabas->cria_abas();    
     ?>

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoidentificacaocredorgenerica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipoidentificacaocredorgenerica = new cl_tipoidentificacaocredorgenerica;
 $cltipoidentificacaocredorgenerica->rotulo->label("c25_sequencial");
 $cltipoidentificacaocredorgenerica->rotulo->label("c25_descricao");
@@ -98,9 +98,9 @@ $cltipoidentificacaocredorgenerica->rotulo->label("c25_descricao");
         }else{
            $sql = $cltipoidentificacaocredorgenerica->sql_query("",$campos,"c25_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c25_descricao)){
-          $repassa = array("chave_c25_sequencial"=>$chave_c25_sequencial,"chave_c25_descricao"=>$chave_c25_descricao);
+          $repassa = ["chave_c25_sequencial"=>$chave_c25_sequencial,"chave_c25_descricao"=>$chave_c25_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

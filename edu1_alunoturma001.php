@@ -58,9 +58,9 @@ if ( (!isset($ed52_c_descr) || !isset($ed57_c_descr)) && isset($ed60_i_turma) ) 
 
 function montaStringTurnoMatriculado ($sTurnoReferente) {
 
-  $aTurnos      = array(1 => "Manhã", 2 => "Tarde", 3 => "Noite");
-  $aCodigoTurno = explode(",", $sTurnoReferente);
-  $aStringTurno = array();
+  $aTurnos      = [1 => "Manhã", 2 => "Tarde", 3 => "Noite"];
+  $aCodigoTurno = explode(",", (string) $sTurnoReferente);
+  $aStringTurno = [];
 
   foreach ($aCodigoTurno as $iCodigoTurnoReferente) {
     $aStringTurno[] = $aTurnos[$iCodigoTurnoReferente];
@@ -147,8 +147,8 @@ $result = $clmatricula->sql_record($sSql);
 if (isset($classificar)) {
 
    $numaluno = "";
-   if (pg_result($result,0,"ed60_i_numaluno") != "") {
-     $numaluno = pg_result($result,0,"ed60_i_numaluno");
+   if (pg_fetch_result($result,0,"ed60_i_numaluno") != "") {
+     $numaluno = pg_fetch_result($result,0,"ed60_i_numaluno");
    }
   ?>
     <script type="text/javascript">
@@ -177,7 +177,7 @@ if (isset($classificar)) {
       <input name="ed52_c_descr" type="hidden" value="<?=$ed52_c_descr?>">
       <input name="ed57_c_descr" type="hidden" value="<?=$ed57_c_descr?>">
       <label for="trocaTurma"><strong>Exibir Trocas de Turma:</strong></label>
-      <?=db_select('trocaTurma', array(1 => "Não", 2 => "Sim"), true, 1); ?>
+      <?=db_select('trocaTurma', [1 => "Não", 2 => "Sim"], true, 1); ?>
     </td>
      </form>
    </tr>

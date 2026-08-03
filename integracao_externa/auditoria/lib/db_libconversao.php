@@ -135,12 +135,12 @@ function db_numrows_table($pConexao, $sTabela, $sArquivoLog="") {
 
   $sSql = " select count(*) as total_linhas from {$sTabela} ";
 
-  return pg_result(db_query($pConexao, $sSql, $sArquivoLog), 0, "total_linhas");
+  return pg_fetch_result(db_query($pConexao, $sSql, $sArquivoLog), 0, "total_linhas");
 
 }
 
 function db_sqlformat($variavel=null) {
-  if ((is_string($variavel) && $variavel <> 'null') || trim($variavel) == '') {
+  if ((is_string($variavel) && $variavel <> 'null') || trim((string) $variavel) == '') {
     return "'".$variavel."'";
   } else if (is_bool($variavel)) {
     if ($variavel == true ) {
@@ -213,8 +213,8 @@ function db_format_copy($value) {
 
 
 function _size_pretty($size) {
-    $unit=array('b','kb','mb','gb','tb','pb');
-    return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+    $unit=['b','kb','mb','gb','tb','pb'];
+    return @round($size/1024 ** $i=floor(log($size,1024)),2).' '.$unit[$i];
 }
 
 // 0 = Atual 1 = Pico de Memoria

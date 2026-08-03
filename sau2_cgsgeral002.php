@@ -76,8 +76,8 @@ function novoCgs($oPdf, $iCgs, $sNome, $sCns, $sRg, $sCpf, $dNasc) {
   $oPdf->cell(15, $iTam, $iCgs, 1, 0, 'L', $lCor);
   $oPdf->cell(88, $iTam, $sNome, 1, 0, 'L', $lCor);
   $oPdf->cell(27, $iTam, $sCns, 1, 0, 'L', $lCor);
-  $oPdf->cell(20, $iTam, substr(trim($sRg), 0, 10), 1, 0, 'L', $lCor);
-  $oPdf->cell(20, $iTam, substr(trim($sCpf), 0, 11), 1, 0, 'L', $lCor);
+  $oPdf->cell(20, $iTam, substr(trim((string) $sRg), 0, 10), 1, 0, 'L', $lCor);
+  $oPdf->cell(20, $iTam, substr(trim((string) $sCpf), 0, 11), 1, 0, 'L', $lCor);
   $oPdf->cell(25, $iTam, $dNasc, 1, 1, 'L', $lCor);
 
 }
@@ -120,8 +120,8 @@ function novoCgsTxt($oFd, $iCgs, $sNome, $sCns, $sRg, $sCpf, $dNasc) {
   $sLinha = str_pad("$iCgs,", 10);
   $sLinha .= str_pad("$sNome,", 45);
   $sLinha .= str_pad("$sCns,", 20);
-  $sLinha .= str_pad(substr(trim($sRg), 0, 10).',',  14);
-  $sLinha .= str_pad(substr(trim($sCpf), 0, 10).',', 16);
+  $sLinha .= str_pad(substr(trim((string) $sRg), 0, 10).',',  14);
+  $sLinha .= str_pad(substr(trim((string) $sCpf), 0, 10).',', 16);
   $sLinha .= str_pad("$dNasc,", 14);
   $sLinha .=  $sNovaLinha;
   fwrite($oFd, $sLinha);
@@ -136,13 +136,13 @@ function formataData($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
  return $dData;
 
@@ -155,23 +155,11 @@ if($tipoOrdem == 1) {
   $sTipoOrdem = ' desc ';
 }
 
-switch($ordem) {
-
-  case 1:
-   
-    $sOrderBy = ' z01_v_nome ';
-    break;
-  
-  case 2:
-
-    $sOrderBy = ' z01_i_cgsund ';
-    break;
-
-  default:
-
-    $sOrderBy = ' z01_d_nasc ';
-
-}
+$sOrderBy = match ($ordem) {
+    1 => ' z01_v_nome ',
+    2 => ' z01_i_cgsund ',
+    default => ' z01_d_nasc ',
+};
 
 $sOrderBy .= $sTipoOrdem;
 $sCampos = " cgs_und.z01_i_cgsund,
@@ -186,7 +174,7 @@ db_query('begin');
 $sSql  = ' declare pCursor cursor for '.$sSql;
 db_query($sSql);
 $rs = db_query('fetch forward 1000 from pCursor;');
-$iLinhas = pg_numrows($rs);
+$iLinhas = pg_num_rows($rs);
 
 if($iLinhas == 0) {
 ?>
@@ -252,7 +240,7 @@ if($formato == 1) {
     }
 
    $rs = db_query('fetch forward 1000 from pCursor;');
-   $iLinhas = pg_numrows($rs);
+   $iLinhas = pg_num_rows($rs);
 
   }
 
@@ -283,7 +271,7 @@ if($formato == 1) {
     exit;
   }
   
-  $e_linux = strpos(strtolower($HTTP_USER_AGENT), 'linux');
+  $e_linux = strpos(strtolower((string) $HTTP_USER_AGENT), 'linux');
 	if ($e_linux > 0) {
 		$sNovaLinha = "\n";
 	} else {
@@ -316,7 +304,7 @@ if($formato == 1) {
     }
 
     $rs = db_query('fetch forward 1000 from pCursor;');
-    $iLinhas = pg_numrows($rs);
+    $iLinhas = pg_num_rows($rs);
 
   }
   novoTotalTxt($oFd, $iTotal);

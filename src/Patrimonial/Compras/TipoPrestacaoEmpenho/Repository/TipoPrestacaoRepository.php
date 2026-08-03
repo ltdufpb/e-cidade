@@ -39,20 +39,15 @@ class TipoPrestacaoRepository
     /**
      * @var array
      */
-    private $scopes = array();
-
-    /**
-     * @var Object
-     */
-    private $dao;
+    private $scopes = [];
 
     /**
      * TipoPrestacaoRepository constructor.
      * @param $dao \cl_empprestatip
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**
@@ -61,7 +56,7 @@ class TipoPrestacaoRepository
      * @return bool|TipoPrestacao
      * @throws \Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query_file($id, implode(', ', $columns));
         $rs = db_query($sql);

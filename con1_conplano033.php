@@ -49,8 +49,8 @@ require_once(modification("classes/db_db_config_classe.php"));
 require_once(modification("classes/db_conplanogrupo_classe.php"));
 require_once(modification("classes/db_conplanoref_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clestrutura_sistema     = new cl_estrutura_sistema;
 $clconparametro          = new cl_conparametro;
@@ -91,7 +91,7 @@ $db_botao = false;
 function temContaSinteticas($estrutural, $anousu) {
 
   $stringnova = "";
-  $string = strrev($estrutural);
+  $string = strrev((string) $estrutural);
   for ($i = 0;  $i < strlen($string);$i++) {
 
     $stringnova =  substr($string, $i,1);
@@ -259,8 +259,8 @@ if (isset ($excluir)) {
   		}
   		//rotina que verifica se foi  incluido no orcelemento ou no orcfontes
   		if ($sqlerro == false) {
-  			$arr_tipo = array ("orcelemento" => "3", "orcfontes" => array("4","9"));
-  			if (substr($codigo, 0, 1) == $arr_tipo["orcelemento"] || substr($codigo, 0, 3) == '512') {
+  			$arr_tipo =  ["orcelemento" => "3", "orcfontes" => ["4","9"]];
+  			if (substr($codigo, 0, 1) == $arr_tipo["orcelemento"] || str_starts_with($codigo, '512')) {
   				$clorcelemento->sql_record($clorcelemento->sql_query_file($c60_codcon,$iAno));
   				if ($clorcelemento->numrows > 0) {
   					$clorcelemento->o56_codele = $c60_codcon;
@@ -274,7 +274,7 @@ if (isset ($excluir)) {
   				}
   			} else {
 
-  				if (in_array(substr($codigo, 0, 1),$arr_tipo["orcfontes"]) || substr($codigo, 0, 3) == '612') {
+  				if (in_array(substr($codigo, 0, 1),$arr_tipo["orcfontes"]) || str_starts_with($codigo, '612')) {
 
   					$clorcfontes->o57_codfon = $c60_codcon;
   					$clorcfontes->o57_anousu = $iAno;

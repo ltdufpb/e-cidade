@@ -117,20 +117,20 @@ $clcidadaofamiliacadastrounico->rotulo->label("as15_codigofamiliarcadastrounico"
            $sql = $clcidadaofamilia->sql_query_responsavel("",$campos,"as04_sequencial","");
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_as15_codigofamiliarcadastrounico)) {
 
           if (isset($sTipoRetorno) && $sTipoRetorno == 'relatorio') {
 
-            $repassa = array("chave_as04_sequencial"=>$chave_as04_sequencial,
+            $repassa = ["chave_as04_sequencial"=>$chave_as04_sequencial,
                              "chave_as15_codigofamiliarcadastrounico"=>$chave_as15_codigofamiliarcadastrounico,
                              "chave_ov02_nome"=>$chave_ov02_nome,
                              "chave_as02_nis"=>$chave_as02_nis
-                             );
+                             ];
           } else {
 
-            $repassa = array("chave_as04_sequencial"=>$chave_as04_sequencial,
-                             "chave_as15_codigofamiliarcadastrounico"=>$chave_as15_codigofamiliarcadastrounico);
+            $repassa = ["chave_as04_sequencial"=>$chave_as04_sequencial,
+                             "chave_as15_codigofamiliarcadastrounico"=>$chave_as15_codigofamiliarcadastrounico];
           }
         }
 

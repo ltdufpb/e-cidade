@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_tipo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_tipo = new cl_db_tipo;
 ?>
 <html>
@@ -153,7 +153,7 @@ input {
 </form>
 </center>
 <?php 
-if(isset($Submit) || count($HTTP_POST_VARS)>0){
+if(isset($Submit) || count($_POST)>0){
 	$query = "SELECT po01_sequencial as sequencial, po01_email as email, 
 									 w03_tipo as dl_categoria, 
 									 to_char(po01_data,'DD-MM-YYYY')::varchar as dl_data_da_Solicitação, 

@@ -44,15 +44,15 @@ include(modification("libs/db_usuariosonline.php"));
   }else{
      $resultsql = @db_query(str_replace('\\','',$sql.@$limit ));
      $result = db_query("select max(codger) + 1 from db_gerador");
-     $codger = pg_result($result,0,0);
+     $codger = pg_fetch_result($result,0,0);
      $codger = $codger==""?"1":$codger;
       db_query("insert into db_gerador values($codger,'$nome','$titulo','$finalidade','$sql',$limite,'$visualizacao','$intercalar1','$intercalar2',$pcabecaltura,$pcorpaltura)");
   }  
 
  
- $HTTP_SERVER_VARS['SCRIPT_FILENAME'];
- $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
- $nomeok=ereg_replace(" ","",$nome);
+ $_SERVER['SCRIPT_FILENAME'];
+ $root = substr((string) $_SERVER['SCRIPT_FILENAME'],0,strrpos((string) $_SERVER['SCRIPT_FILENAME'],"/"));
+ $nomeok=preg_replace("# #m","",(string) $nome);
  $arquivo = ($root."/"."gerador/".$nomeok."002.php");
  $fd = fopen($arquivo,"w");
  fputs($fd,'<?php  '."\n");
@@ -99,96 +99,96 @@ include(modification("libs/db_usuariosonline.php"));
   $resultsql = db_query(str_replace('\\','',$sql));
   for ($i = 0;$i < $fm_numfields;$i++){
     $v="cabecfonte_".$i;
-    fputs($fd,' $cabecfonte_'.$i.'="'.$$v.'";'."\n");
-    $cabecfonte=$$v;
+    fputs($fd,' $cabecfonte_'.$i.'="'.${$v}.'";'."\n");
+    $cabecfonte=${$v};
   
     $v="cabeccortexto_".$i;
-    fputs($fd,' $cabeccortexto_'.$i.'="'.$$v.'";'."\n");
-    $cabeccortexto=$$v;    
+    fputs($fd,' $cabeccortexto_'.$i.'="'.${$v}.'";'."\n");
+    $cabeccortexto=${$v};    
 
     $v="cabectamanho_".$i;
-    fputs($fd,' $cabectamanho_'.$i.'="'.$$v.'";'."\n");
-    $cabectamanho=$$v;   
+    fputs($fd,' $cabectamanho_'.$i.'="'.${$v}.'";'."\n");
+    $cabectamanho=${$v};   
     
     $v="cabecn_".$i;
-    fputs($fd,' $cabecn_'.$i.'="'.@$$v.'";'."\n");
-    $cabecn=@$$v;
+    fputs($fd,' $cabecn_'.$i.'="'.@${$v}.'";'."\n");
+    $cabecn=@${$v};
    
     $v="cabeci_".$i;
-    fputs($fd,' $cabeci_'.$i.'="'.@$$v.'";'."\n");
-    $cabeci=@$$v;
+    fputs($fd,' $cabeci_'.$i.'="'.@${$v}.'";'."\n");
+    $cabeci=@${$v};
 
     $v="cabecs_".$i;
-    fputs($fd,' $cabecs_'.$i.'="'.@$$v.'";'."\n");
-    $cabecs=@$$v;
+    fputs($fd,' $cabecs_'.$i.'="'.@${$v}.'";'."\n");
+    $cabecs=@${$v};
 
     $v="cabeccortexto_".$i;
-    fputs($fd,' $cabeccortexto_'.$i.'="'.$$v.'";'."\n");
-    $cabeccortexto=$$v; 
+    fputs($fd,' $cabeccortexto_'.$i.'="'.${$v}.'";'."\n");
+    $cabeccortexto=${$v}; 
        
     $v="cabeccorborda_".$i;
-    fputs($fd,' $cabeccorborda_'.$i.'="'.$$v.'";'."\n");
-    $cabeccorborda=$$v;    
+    fputs($fd,' $cabeccorborda_'.$i.'="'.${$v}.'";'."\n");
+    $cabeccorborda=${$v};    
 
     $v="cabeccorfundo_".$i;
-    fputs($fd,' $cabeccorfundo_'.$i.'="'.$$v.'";'."\n");
-    $cabeccorfundo=$$v;    
+    fputs($fd,' $cabeccorfundo_'.$i.'="'.${$v}.'";'."\n");
+    $cabeccorfundo=${$v};    
 
     $v="cabecaltura_".$i;
-    fputs($fd,' $cabecaltura_'.$i.'="'.$$v.'";'."\n");
-    $cabecaltura=$$v;    
+    fputs($fd,' $cabecaltura_'.$i.'="'.${$v}.'";'."\n");
+    $cabecaltura=${$v};    
 
     $v="cabeclargura_".$i;
-    fputs($fd,' $cabeclargura_'.$i.'="'.$$v.'";'."\n");
-    $cabeclargura=$$v;
+    fputs($fd,' $cabeclargura_'.$i.'="'.${$v}.'";'."\n");
+    $cabeclargura=${$v};
 
 //corpo
 
     $v="corpfonte_".$i;
-    fputs($fd,' $corpfonte_'.$i.'="'.$$v.'";'."\n");
-    $corpfonte=$$v;    
+    fputs($fd,' $corpfonte_'.$i.'="'.${$v}.'";'."\n");
+    $corpfonte=${$v};    
 
     $v="corpopcao_".$i;
-    fputs($fd,' $corpopcao_'.$i.'="'.$$v.'";'."\n");
-    $corpopcao=$$v;
+    fputs($fd,' $corpopcao_'.$i.'="'.${$v}.'";'."\n");
+    $corpopcao=${$v};
  
     $v="corpcortexto_".$i;
-    fputs($fd,' $corpcortexto_'.$i.'="'.$$v.'";'."\n");
-    $corpcortexto=$$v; 
+    fputs($fd,' $corpcortexto_'.$i.'="'.${$v}.'";'."\n");
+    $corpcortexto=${$v}; 
      
     $v="corptamanho_".$i;
-    fputs($fd,' $corptamanho_'.$i.'="'.$$v.'";'."\n");
-    $corptamanho=$$v;      
+    fputs($fd,' $corptamanho_'.$i.'="'.${$v}.'";'."\n");
+    $corptamanho=${$v};      
 
     $v="corpn_".$i;
-    fputs($fd,' $corpn_'.$i.'="'.@$$v.'";'."\n");
-    $corpn=@$$v;
+    fputs($fd,' $corpn_'.$i.'="'.@${$v}.'";'."\n");
+    $corpn=@${$v};
 
     $v="corpi_".$i;
-    fputs($fd,' $corpi_'.$i.'="'.@$$v.'";'."\n");
-    $corpi=@$$v;
+    fputs($fd,' $corpi_'.$i.'="'.@${$v}.'";'."\n");
+    $corpi=@${$v};
 
     $v="corps_".$i;
-    fputs($fd,' $corps_'.$i.'="'.@$$v.'";'."\n");
-    $corps=@$$v;
+    fputs($fd,' $corps_'.$i.'="'.@${$v}.'";'."\n");
+    $corps=@${$v};
     
     $v="corpcorborda_".$i;
-    fputs($fd,' $corpcorborda_'.$i.'="'.$$v.'";'."\n");
-    $corpcorborda=$$v;
+    fputs($fd,' $corpcorborda_'.$i.'="'.${$v}.'";'."\n");
+    $corpcorborda=${$v};
     
     $v="corpcorfundo_".$i;
-    fputs($fd,' $corpcorfundo_'.$i.'="'.$$v.'";'."\n");
-    $corpcorfundo=$$v;    
+    fputs($fd,' $corpcorfundo_'.$i.'="'.${$v}.'";'."\n");
+    $corpcorfundo=${$v};    
 
     $v="corpaltura_".$i;
-    fputs($fd,' $corpaltura_'.$i.'="'.$$v.'";'."\n");
-    $corpaltura=$$v;
+    fputs($fd,' $corpaltura_'.$i.'="'.${$v}.'";'."\n");
+    $corpaltura=${$v};
 
     $v="corplargura_".$i;
-    fputs($fd,' $corplargura_'.$i.'="'.$$v.'";'."\n");
-    $corplargura=$$v;
+    fputs($fd,' $corplargura_'.$i.'="'.${$v}.'";'."\n");
+    $corplargura=${$v};
     
-    $coluna = pg_fieldname($resultsql,$i);
+    $coluna = pg_field_name($resultsql,$i);
 
     if(@$libera==true){
       //db_query("update  db_gerpref set coluna ='$coluna',cabecfonte='$cabecfonte', cabectamanho=$cabectamanho, cabecn='$cabecn', cabeci='$cabeci', cabecs='$cabecs',cabeccortexto='$cabeccortexto', cabeccorborda='$cabeccorborda', cabeccorfundo='$cabeccorfundo', cabecaltura=$cabecaltura, cabeclargura='$cabeclargura', corpfonte='$corpfonte',corpopcao='$corpopcao',corptamanho=$corptamanho, corpn='$corpn', corpi='$corpi',corps='$corps', corpcortexto='$corpcortexto', corpcorborda='$corpcorborda', corpcorfundo='$corpcorfundo', corpaltura='$corpaltura', corplargura='$corplargura' where codger=$codigo");
@@ -415,8 +415,8 @@ include(modification("libs/db_usuariosonline.php"));
    system("rm -f gerador/".$nomeok."001.php");
  }
  $visualizacaook=$visualizacao=="P"?"Retrato":"Paisagem";
- $HTTP_SERVER_VARS['SCRIPT_FILENAME'];
- $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
+ $_SERVER['SCRIPT_FILENAME'];
+ $root = substr((string) $_SERVER['SCRIPT_FILENAME'],0,strrpos((string) $_SERVER['SCRIPT_FILENAME'],"/"));
  $arquivo = ($root."/"."gerador/".$nomeok."001.php");
  $fd = fopen($arquivo,"w");
  fputs($fd,'<?php '."\n");

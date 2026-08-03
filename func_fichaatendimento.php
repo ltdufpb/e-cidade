@@ -36,7 +36,7 @@ $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
 $oData = new DBDate( date('d/m/Y') );
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $oDaoProntuarios = new cl_prontuarios;
 $oDaoProntuarios->rotulo->label();
@@ -68,7 +68,7 @@ if ( !empty($oPost->iUnidade) ) {
   $iUnidade = $oPost->iUnidade;
 }
 
-$aWhere     = array();
+$aWhere     = [];
 $aWhere[]   = " sd24_i_unidade = {$iUnidade} ";
 
 /**
@@ -195,7 +195,7 @@ $sCampos .= " cast('<div style=\'background-color: ' || classificacaorisco.sd78_
 
       if ( !isset($pesquisa_chave) ) {
 
-        $aRepassa                               = array();
+        $aRepassa                               = [];
         $aRepassa["chave_z01_v_nome"]           = !empty($chave_z01_v_nome) ? $chave_z01_v_nome : '';
         $aRepassa["sd24_d_cadastro_inicio"]     = $sd24_d_cadastro_inicio;
         $aRepassa["sd24_d_cadastro_inicio_dia"] = $sd24_d_cadastro_inicio_dia;

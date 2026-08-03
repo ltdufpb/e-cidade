@@ -260,7 +260,7 @@ db_input('q23_mesusu',2,$Iq23_mesusu,true,'text',$db_opcao,"")
   <td><b>Ação</b></td>
   <td>
   <?php 
-   $acoes = array("0"=>"Processo Normal","1" => "Gerar isscomplementar");
+   $acoes = ["0"=>"Processo Normal","1" => "Gerar isscomplementar"];
    db_select("q23_acao",$acoes,true,1);
   ?>
   </td>
@@ -275,7 +275,7 @@ db_input('q23_mesusu',2,$Iq23_mesusu,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">
     <?php 
-	 $chavepri= array("q23_sequencial"=>@$q23_sequencial);
+	 $chavepri= ["q23_sequencial"=>@$q23_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
    $sSQL  = "select * ";
    $sSQL .= "  From issarqsimplesreg ";

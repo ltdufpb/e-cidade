@@ -113,7 +113,7 @@
             </td>
             <td> 
               <?php 
-                $x = array("f"=>"NAO","t"=>"SIM");
+                $x = ["f"=>"NAO","t"=>"SIM"];
                 db_select('ed316_ativo', $x, true, $db_opcao, $sDisabled);
               ?>
             </td>
@@ -124,7 +124,7 @@
             </td>
             <td>
               <?php 
-                $aValores = array("1"=>"0","2"=>"00");
+                $aValores = ["1"=>"0","2"=>"00"];
                 db_select('ed316_casasdecimaisarredondamento', $aValores, true, $db_opcao, $sDisabled);
               ?>
             </td>
@@ -162,7 +162,7 @@ function js_preenchepesquisa(chave){
   db_iframe_regraarredondamento.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
 ?>
 }

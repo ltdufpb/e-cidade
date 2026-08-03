@@ -33,7 +33,7 @@ class MovimentacaoFichaAtendimentoRepository {
   /**
    * @var array
    */
-  private $aMovimentacaoFichaAtendimento = array();
+  private $aMovimentacaoFichaAtendimento = [];
 
   /**
    * @var MovimentacaoFichaAtendimentoRepository
@@ -110,7 +110,7 @@ class MovimentacaoFichaAtendimentoRepository {
     }
 
     $iLinhas        = pg_num_rows($rsMovimentacoes);
-    $aMovimentacoes = array();
+    $aMovimentacoes = [];
 
     if ( $iLinhas > 0 ) {
 

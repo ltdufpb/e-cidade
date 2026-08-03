@@ -36,7 +36,7 @@ require_once(modification("classes/db_corrente_classe.php"));
 require_once(modification("classes/db_concilia_classe.php"));
 require_once(modification("libs/JSON.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcorrente        = new cl_corrente;
 $clconcilia        = new cl_concilia;
 
@@ -68,7 +68,7 @@ switch ($oParam->exec){
     
     //Objeto com o retorno do result set
     $oDatas = db_utils::getCollectionByRecord($rsDatas); 
-    $aDatas = array();
+    $aDatas = [];
     
     if ($numrows > 0) {
 
@@ -98,16 +98,16 @@ switch ($oParam->exec){
 
     if ($iLinhas > 0) {
       
-      $oRetorno->dados = array();
+      $oRetorno->dados = [];
       
       for ($i = 0; $i < $iLinhas; $i++) {
         
         $oDadoAnoMes     = db_utils::fieldsMemory($rsBuscaDatas, $i);
         $oAnoMes         = new stdClass();
         $oAnoMes->ano    = $oDadoAnoMes->ano;
-        $oAnoMes->aMeses = array();
+        $oAnoMes->aMeses = [];
         
-        $aMeses = explode(",", $oDadoAnoMes->mes);
+        $aMeses = explode(",", (string) $oDadoAnoMes->mes);
         foreach ($aMeses as $iMes) {
           
           $oMes              = new stdClass();
@@ -166,14 +166,14 @@ switch ($oParam->exec){
     $rsContas    = $oDaoSaltes->sql_record($sqlConta);
     $numrows     = $oDaoSaltes->numrows;
     
-    $oRetorno->dados = array();
+    $oRetorno->dados = [];
     
     for ($i = 0; $i < $numrows; $i++) {
       
       $oDadosConta        = db_utils::fieldsMemory($rsContas,$i);
       $oConta             = new stdClass();
       $oConta->sequencial = $oDadosConta->db83_sequencial;
-      $oConta->descricao  = urlencode($oDadosConta->db83_descricao);
+      $oConta->descricao  = urlencode((string) $oDadosConta->db83_descricao);
       $oRetorno->dados[]  = $oConta;
       unset($oConta);
     }

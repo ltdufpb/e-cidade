@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_materialcoleta_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_materialcoleta = new cl_lab_materialcoleta;
 $cllab_materialcoleta->rotulo->label("la15_i_codigo");
 $cllab_materialcoleta->rotulo->label("la15_c_descr");
@@ -98,9 +98,9 @@ $cllab_materialcoleta->rotulo->label("la15_c_descr");
         }else{
            $sql = $cllab_materialcoleta->sql_query("",$campos,"la15_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la15_c_descr)){
-          $repassa = array("chave_la15_i_codigo"=>$chave_la15_i_codigo,"chave_la15_c_descr"=>$chave_la15_c_descr);
+          $repassa = ["chave_la15_i_codigo"=>$chave_la15_i_codigo,"chave_la15_c_descr"=>$chave_la15_c_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

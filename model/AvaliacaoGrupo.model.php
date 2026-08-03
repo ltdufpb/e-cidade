@@ -33,7 +33,7 @@ class AvaliacaoGrupo
 
     protected $sDescricao;
 
-    protected $aPerguntas = array();
+    protected $aPerguntas = [];
 
     /**
      * Identificador do grupo
@@ -80,9 +80,9 @@ class AvaliacaoGrupo
     }
     /**
      * @return integer
-     * @deprecated
      * @see self::getCodigo()
      */
+    #[\Deprecated]
     public function getGrupo()
     {
         return $this->iGrupo;

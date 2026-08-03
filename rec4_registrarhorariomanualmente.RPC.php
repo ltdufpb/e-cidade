@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 $oPost       = db_utils::postMemory($_REQUEST);
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParametro  = JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'erro' => false, 'mensagem' => '');
+$oRetorno    = (object)[ 'erro' => false, 'mensagem' => ''];
 
 try {
 
@@ -58,12 +58,12 @@ try {
 
             $oData = new DBDate($oParametro->data);
 
-            $whereArquivoImportacao = array(
+            $whereArquivoImportacao = [
                 'rh228_instituicao  = '. db_getsession('DB_instit'), 
                 'rh228_data_inicio  = \''. $oData->getDate() .'\'',
                 'rh228_data_fim     = \''. $oData->getDate() .'\'',
                 'rh228_serial       ilike \'REGISTRO%MANUAL\''
-            );
+            ];
             $oDaoArquivoImportacao = new cl_pontoeletronicoarquivoimportacao();
             $sSqlArquivoImportacao = $oDaoArquivoImportacao->sql_query_file(null, "*", null, implode(' AND ', $whereArquivoImportacao));
             $rsArquivoImportacao   = db_query($sSqlArquivoImportacao);
@@ -110,7 +110,7 @@ try {
                     throw new DBException($oDaoArquivoImportacaoRegistro->erro_msg);
                 }
 
-                $oRetorno->registro[] = array(
+                $oRetorno->registro[] = [
                     'sequencial'                       => $oDaoArquivoImportacaoRegistro->rh229_sequencial,
                     'pontoeletronicoarquivoimportacao' => $oDaoArquivoImportacaoRegistro->rh229_pontoeletronicoarquivoimportacao,
                     'pis'                              => $oDaoArquivoImportacaoRegistro->rh229_pis,
@@ -119,7 +119,7 @@ try {
                     'data'                             => $oData->getDate(DBDate::DATA_PTBR),
                     'hora'                             => $sHorario,
                     'serial'                           => $oDaoArquivoImportacaoRegistro->rh229_serial
-                );
+                ];
             }
 
             $oRetorno->mensagem = "Marcação incluída com sucesso.";
@@ -132,10 +132,10 @@ try {
                 // throw new DBException('Informe a matrícula para a marcação.');
             // }
 
-            $whereArquivoImportacaoRegistro = array(
+            $whereArquivoImportacaoRegistro = [
                 'instituicao                                     = '. db_getsession('DB_instit'),
                 'recursoshumanos.pontoeletronicoarquivoimportacao.serial = \'REGISTRO MANUAL\''
-            );
+            ];
 
             if(!empty($oParametro->data)) {
                 
@@ -147,7 +147,7 @@ try {
                 $whereArquivoImportacaoRegistro[] = 'matricula = '. $oParametro->matricula;
             }
 
-            $camposArquivoImportacaoRegistro = array(
+            $camposArquivoImportacaoRegistro = [
                 'recursoshumanos.pontoeletronicoarquivoimportacaoregistro.rh229_sequencial',
                 'recursoshumanos.pontoeletronicoarquivoimportacaoregistro.rh229_pontoeletronicoarquivoimportacao',
                 'recursoshumanos.pontoeletronicoarquivoimportacaoregistro.rh229_pis',
@@ -155,7 +155,7 @@ try {
                 'recursoshumanos.pontoeletronicoarquivoimportacaoregistro.rh229_data',
                 'recursoshumanos.pontoeletronicoarquivoimportacaoregistro.rh229_hora',
                 'recursoshumanos.pontoeletronicoarquivoimportacaoregistro.rh229_serial',
-            );
+            ];
             $oDaoArquivoImportacaoRegistro   = new cl_pontoeletronicoarquivoimportacaoregistro();
             $sSqlArquivoImportacaoRegistro   = $oDaoArquivoImportacaoRegistro->sql_query(
                 null,
@@ -169,7 +169,7 @@ try {
                 throw new DBException('Não foi possível consultar os arquivos de importação.'. pg_last_error());
             }
             
-            $oRetorno->aRegistros = array();
+            $oRetorno->aRegistros = [];
             if(pg_num_rows($rsArquivoImportacaoRegistro) > 0) {
             
                 $oRetorno->aRegistros = db_utils::makeCollectionFromRecord($rsArquivoImportacaoRegistro, function ($oRetorno) {
@@ -177,7 +177,7 @@ try {
                     $oData     = new DBDate($oRetorno->rh229_data);
                     $oServidor = ServidorRepository::getInstanciaByCodigo($oRetorno->rh229_matricula);
 
-                    return (object)array(
+                    return (object)[
                         'sequencial'                       => $oRetorno->rh229_sequencial,
                         'pontoeletronicoarquivoimportacao' => $oRetorno->rh229_pontoeletronicoarquivoimportacao,
                         'pis'                              => $oRetorno->rh229_pis,
@@ -186,7 +186,7 @@ try {
                         'data'                             => $oData->getDate(DBDate::DATA_PTBR),
                         'hora'                             => $oRetorno->rh229_hora,
                         'serial'                           => $oRetorno->rh229_serial
-                    );
+                    ];
                 });
             }
 

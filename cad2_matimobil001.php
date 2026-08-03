@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $aux = new cl_arquivo_auxiliar;
 ?>
 <html>
@@ -99,7 +99,7 @@ $aux = new cl_arquivo_auxiliar;
        	<br>
        	    <b>Tipo :</b>
        	   <?php        	   
-       	   $tipo_arr = array("s"=>"Sintético","a"=>"Analítico");
+       	   $tipo_arr = ["s"=>"Sintético","a"=>"Analítico"];
        	   db_select("tipo",$tipo_arr,true,"text",4);
        	   ?>
        	   
@@ -110,7 +110,7 @@ $aux = new cl_arquivo_auxiliar;
        	<br>
        	    <b>Ordem :</b>
        	   <?php        	   
-       	   $ordem_arr = array("m"=>"Matrícula","c"=>"Contribuinte");
+       	   $ordem_arr = ["m"=>"Matrícula","c"=>"Contribuinte"];
        	   db_select("ordem",$ordem_arr,true,"text",4);
        	   ?>
        	   

@@ -35,6 +35,7 @@ class MetasArrecadacaoPdf extends Pdf
         parent::__construct($orientation, $unit, $format);
     }
 
+    #[\Override]
     public function setDados(array $dados)
     {
         parent::setDados($dados);
@@ -61,6 +62,7 @@ class MetasArrecadacaoPdf extends Pdf
     }
 
 
+    #[\Override]
     public function headers($titulo)
     {
         parent::headers($titulo);

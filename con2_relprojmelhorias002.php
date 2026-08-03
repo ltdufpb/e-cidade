@@ -26,7 +26,7 @@
  */
 
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 if ($tipo == 1) {
    include(modification("fpdf151/scpdf.php"));
 } else {
@@ -59,7 +59,7 @@ db_fieldsmemory($result,0);
 $sql="select ruas.j14_nome, j88_descricao as j14_tipo, z01_nome, z01_ender, cgm.z01_telef, d40_trecho from projmelhorias inner join ruas on ruas.j14_codigo = projmelhorias.d40_codlog inner join ruastipo on j88_codigo = j14_tipo left outer join projmelhoriasresp on projmelhoriasresp.d42_codigo = projmelhorias.d40_codigo left outer join cgm on cgm.z01_numcgm = projmelhoriasresp.d42_numcgm where d40_codigo = $d40_codigo";
 $result = db_query($sql) or die($sql);
 db_fieldsmemory($result,0);
-if ( pg_numrows($result) == 0 ) {
+if ( pg_num_rows($result) == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Lista nao cadastrada!');
 }
 
@@ -115,7 +115,7 @@ $pdf->SetFillColor(235);
 
 $sql="select distinct proprietario, j39_numero, z01_nome, j01_matric, j40_refant, d41_testada, d41_eixo, d41_obs, d41_pgtopref from projmelhoriasmatric inner join proprietario on proprietario.j01_matric = projmelhoriasmatric.d41_matric where d41_codigo = $d40_codigo order by j40_refant";
 $result = db_query($sql);
-if ( pg_numrows($result) == 0 ) {
+if ( pg_num_rows($result) == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Lista nao cadastrada!');
 }
 
@@ -138,7 +138,7 @@ if ($tipo == 1) {
 
 $quant_reg=0;
 
-for($s=0;$s<pg_numrows($result);$s++){
+for($s=0;$s<pg_num_rows($result);$s++){
 
   if ($pdf->gety() > ($pdf->h-40)) {
       $pdf->AddPage();

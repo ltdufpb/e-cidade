@@ -87,7 +87,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed55_i_codigo"=>@$ed55_i_codigo,"ed55_c_descr"=>@$ed55_c_descr,"ed55_i_numperiodos"=>@$ed55_i_numperiodos,"ed55_i_diasprox"=>@$ed55_i_diasprox);
+   $chavepri= ["ed55_i_codigo"=>@$ed55_i_codigo,"ed55_c_descr"=>@$ed55_c_descr,"ed55_i_numperiodos"=>@$ed55_i_numperiodos,"ed55_i_diasprox"=>@$ed55_i_diasprox];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clduracaocal->sql_query($ed55_i_codigo,"*","ed55_i_codigo");
    $cliframe_alterar_excluir->campos  ="ed55_i_codigo,ed55_c_descr,ed55_i_numperiodos";

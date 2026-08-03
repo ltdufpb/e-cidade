@@ -66,7 +66,7 @@ $oRetorno           = new stdClass();
 $oRetorno->iStatus  = 1;
 $oRetorno->sMessage = '';
 
-$aDadosRetorno      = array();
+$aDadosRetorno      = [];
 
   switch ($oParam->exec) {
 
@@ -92,7 +92,7 @@ $aDadosRetorno      = array();
         $sResumo                 = $oParam->sResumo                                         ;
         $lLiquidar               = $oParam->lLiquidar == 1 ? true : false;
         $iNumeroNota             = $oParam->iNota                                           ;
-        $dtNota                  = implode("-", array_reverse(explode("/",$oParam->dNota))) ;
+        $dtNota                  = implode("-", array_reverse(explode("/",(string) $oParam->dNota))) ;
         $sInfoPagamento          = $oParam->sInfoPagamento                                  ;
         $iAnousu                 = db_getsession("DB_anousu");
 
@@ -182,7 +182,7 @@ $aDadosRetorno      = array();
   		   * Pegamos os itens da autorização inclusos anteriormente pois precisamos do mesmo e55_sequen na empempitem
   		   */
   		  $aItensAutorizacao  = $oAutorizacaoEmpenho->getItens();
-  		  $aItensLiquidarNota = array();
+  		  $aItensLiquidarNota = [];
   		  foreach ($aItensAutorizacao as $oItemAutorizacao) {
 
           $oEmpenhoItem = new EmpenhoFinanceiroItem();
@@ -323,7 +323,7 @@ $aDadosRetorno      = array();
           throw new BusinessException("A inscrição passiva {$oParam->iInscricao} já está empenhada.");
         }
 
-      } catch (BusinessException $eErro) {
+      } catch (BusinessException) {
 
         $oRetorno->iStatus  = 2;
         $oRetorno->sMessage = urlencode(str_replace("\\n", "\n", $eErros->getMessage()));

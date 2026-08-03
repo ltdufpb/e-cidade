@@ -37,12 +37,12 @@ function js_ProtegeTextoEsc() {
 $clrotulo = new rotulocampo;
 $clrotulo->label("or10_codatend");
   $resultPesquisaNome = db_query("select nome from db_usuarios where id_usuario = $DB_id_usuario");
-  $nomeUsuario = pg_result($resultPesquisaNome,0,0);
+  $nomeUsuario = pg_fetch_result($resultPesquisaNome,0,0);
   
   //Implementação da troca dos items do menu departamento e usuário através de javaScript
   //seleciona todos os departamentos e verifica o total de registros encontrados
   $departamentos = db_query("select * from db_depart");
-  $numeroDepartamentos = pg_numrows($departamentos);
+  $numeroDepartamentos = pg_num_rows($departamentos);
 
   //para cada departamento encontrado verifica quais sao seus usuarios e separa em arrays
   //se tiver ao menos um usuario encontrado na pesquisa anterior
@@ -54,13 +54,13 @@ $clrotulo->label("or10_codatend");
 	                   from db_usuarios us
         	           inner join db_depusu du 
 		        	   on du.id_usuario = us.id_usuario
-        			   where coddepto = ".pg_result($departamentos,$i,"coddepto"));
-	  $numusu = pg_numrows($usu);
+        			   where coddepto = ".pg_fetch_result($departamentos,$i,"coddepto"));
+	  $numusu = pg_num_rows($usu);
 	  $aux= '';
 	  $c = '';
- 	  echo "a".pg_result($departamentos,$i,"coddepto")." = new Array(";
+ 	  echo "a".pg_fetch_result($departamentos,$i,"coddepto")." = new Array(";
       for($j=0;$j<$numusu;$j++) {
-        $aux .= "$c'".pg_result($usu,$j,"nome")."'";
+        $aux .= "$c'".pg_fetch_result($usu,$j,"nome")."'";
 		$c = ",";
 	  }
 	  echo $aux.");\n";
@@ -72,13 +72,13 @@ $clrotulo->label("or10_codatend");
 	                   from db_usuarios us
         	           inner join db_depusu du 
 		        	   on du.id_usuario = us.id_usuario
-        			   where coddepto = ".pg_result($departamentos,$i,"coddepto"));
-	  $numusu = pg_numrows($usu);
+        			   where coddepto = ".pg_fetch_result($departamentos,$i,"coddepto"));
+	  $numusu = pg_num_rows($usu);
 	  $aux= '';
 	  $c = '';
- 	  echo "a".pg_result($departamentos,$i,"coddepto")."1 = new Array(";
+ 	  echo "a".pg_fetch_result($departamentos,$i,"coddepto")."1 = new Array(";
       for($j=0;$j<$numusu;$j++) {
-        $aux .= "$c'".pg_result($usu,$j,"id_usuario")."'";
+        $aux .= "$c'".pg_fetch_result($usu,$j,"id_usuario")."'";
 		$c = ",";
 	  }
 	  echo $aux.");\n";
@@ -122,7 +122,7 @@ $clrotulo->label("or10_codatend");
         </td>
         <?php  
 		  //Gera numero negativo temporario para gravação dos arquivos anexado
-		  $numTemp = rand(-1000,-1);
+		  $numTemp = random_int(-1000,-1);
 		?>
       </tr>
       <tr align="left" valign="middle"> 
@@ -137,15 +137,15 @@ $clrotulo->label("or10_codatend");
 									   inner join db_depart p on d.coddepto = p.coddepto
 									   where d.id_usuario = $DB_id_usuario limit 1
 									  ");
-					$descratual = pg_result($result,0,"descrdepto");
+					$descratual = pg_fetch_result($result,0,"descrdepto");
 					$listaDepartamentos = db_query("select * from db_depart where descrdepto not like '$descratual'");
-					$numdep = pg_numrows($listaDepartamentos);
+					$numdep = pg_num_rows($listaDepartamentos);
 					// Deixa selecionado o departamento da pessoa que está acessando
- 				    echo "<option selected value=\"".pg_result($result,0,"coddepto")."\">".pg_result($result,0,"descrdepto")."</option>\n";
+ 				    echo "<option selected value=\"".pg_fetch_result($result,0,"coddepto")."\">".pg_fetch_result($result,0,"descrdepto")."</option>\n";
 					//carrega a lista com o resto dos departamentos cadastrados. isto é usado somente na primeira vez que esta janela aparece.
 					//depois a troca desses items é feita pela função "vai" javaScript.
 					for ($i=0;$i<$numdep;$i++) {
-					  echo "<option value=\"".pg_result($listaDepartamentos,$i,"coddepto")."\">".pg_result($listaDepartamentos,$i,"descrdepto")."</option>\n";
+					  echo "<option value=\"".pg_fetch_result($listaDepartamentos,$i,"coddepto")."\">".pg_fetch_result($listaDepartamentos,$i,"descrdepto")."</option>\n";
 					}
 				?>
                 </select></td>
@@ -160,16 +160,16 @@ $clrotulo->label("or10_codatend");
                   <?php  
 						// Carrega a lista de usuarios do departamento selecionado na rotina acima
 						// e deixa selecionado o nome do usuario que está acessando
-    					$coddepartamento = pg_result($result,0,"coddepto");
+    					$coddepartamento = pg_fetch_result($result,0,"coddepto");
 		    			$listanomes = db_query("select u.id_usuario , d.nome
 			    	                           from db_depusu u 
 				     					       inner join db_usuarios d
 					    				       on d.id_usuario = u.id_usuario
 					    				       where u.coddepto = $coddepartamento");
-    					$numnomes = pg_numrows($listanomes); 
+    					$numnomes = pg_num_rows($listanomes); 
 	    				for ($i=0;$i<$numnomes;$i++) {
-			    		  if (pg_result($listanomes,$i,"nome")==$nomeUsuario) {$estado="selected";} else {$estado="";}
-		      			  echo "<option ".$estado." value=\"".pg_result($listanomes,$i,"id_usuario")."\">".pg_result($listanomes,$i,"nome")."</option>\n";
+			    		  if (pg_fetch_result($listanomes,$i,"nome")==$nomeUsuario) {$estado="selected";} else {$estado="";}
+		      			  echo "<option ".$estado." value=\"".pg_fetch_result($listanomes,$i,"id_usuario")."\">".pg_fetch_result($listanomes,$i,"nome")."</option>\n";
 				    	}
 					?>
                 </select>
@@ -212,10 +212,10 @@ $clrotulo->label("or10_codatend");
                   <?php 
 		  // Carrega a lista de modulos
 		  $listaDeModulos = db_query("Select id_item, nome_modulo from db_modulos");
-		  $numListaDeModulos = pg_numrows($listaDeModulos);
+		  $numListaDeModulos = pg_num_rows($listaDeModulos);
           for ($i=0;$i<$numListaDeModulos;$i++) {
 		    echo "
-			<option value=\"".pg_result($listaDeModulos,$i,"id_item")."\">".pg_result($listaDeModulos,$i,"nome_modulo")."</option>
+			<option value=\"".pg_fetch_result($listaDeModulos,$i,"id_item")."\">".pg_fetch_result($listaDeModulos,$i,"nome_modulo")."</option>
 			/n";
 		  }
 		?>

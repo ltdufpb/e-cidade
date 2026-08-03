@@ -75,14 +75,14 @@ class Imovel {
 	 * Coleção com todos os proprietarios do imóvel
 	 * @var array
 	 */
-	private $aProprietarios = array();
+	private $aProprietarios = [];
 	
 	/**
  	 *
 	 * Coleção com todos os promitentes do imóvel
 	 * @var array
 	 */
-	private $aPromitentes = array();
+	private $aPromitentes = [];
 	
 	/**
 	 * Construtor da Classe
@@ -341,7 +341,7 @@ class Imovel {
 
 		$rsConstrucoes   = $oDaoIPTUConstr->sql_record($sSqlConstrucoes);
 
-		$aConstrucoes    = array();
+		$aConstrucoes    = [];
 		
 		if ($oDaoIPTUConstr->numrows > 0) {
 			

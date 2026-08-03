@@ -33,14 +33,8 @@ use ECidade\Tributario\Juridico\Inicial\Inicial;
 
 final class CalculoAdministrativaParcelamentoDocumento extends CalculoColecao implements Interfaces\Calculo
 {
-    private $termo;
-
-    private $inicial;
-
-    public function __construct(Termo $termo, Inicial $inicial) 
+    public function __construct(private readonly Termo $termo, private readonly Inicial $inicial)
     {
-        $this->termo = $termo;
-        $this->inicial = $inicial;
     }
 
     public function calcular()
@@ -75,7 +69,7 @@ final class CalculoAdministrativaParcelamentoDocumento extends CalculoColecao im
     {
         $rows = pg_fetch_all($rs);
 
-        $valores = array();
+        $valores = [];
 
         foreach ($rows as $row) {
             $valores[$row["numpar"]] = $this->factory($row["valor"], 0, 0, 0);

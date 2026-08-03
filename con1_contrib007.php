@@ -42,24 +42,24 @@ $GLOBALS["desabilita"]="false";
 
 $clcontrib->rotulo->label();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
   if(isset($confirma) && $confirma=="ok"){
   db_inicio_transacao();
   $clcontrib->d07_contri=$contri;
   $clcontrib->excluir($contri);
   if($clcontrib->erro_status=='0'){
     $sqlerro = true;
-     break;
+     return;
   }
   $sqlerro=false;
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+    if(str_starts_with((string) $chave, "CHECK")){
+      $dados=preg_split("#_#m",(string) $chave); 
       $matric=$dados[1];
       $valor=$vt["d07_valor_".$matric];
       $vlrdes=$vt["d07_vlrdes_".$matric];
@@ -105,7 +105,7 @@ db_postmemory($HTTP_POST_VARS);
 			where d05_contri=$contri
 			and d06_valor is null and d07_matric is null;
                   ");     
-  $numeli=pg_numrows($resultos);
+  $numeli=pg_num_rows($resultos);
   if($numeli>0){
     for($l=0; $l<$numeli; $l++){
       db_fieldsmemory($resultos,$l); 
@@ -163,7 +163,7 @@ class cl_fate extends cl_contrib {
 	  $d07_vlrdes=$GLOBALS["d07_vlrdes"];
          
 	  $resil=db_query("select d09_contri from contricalc where d09_contri=$numcontri and d09_matric=$j01_matric");
-		if(pg_numrows($resil)>0){
+		if(pg_num_rows($resil)>0){
 			$GLOBALS["desabilita"]="true";
 		  $cor="#669900";
 		}else{
@@ -178,7 +178,7 @@ class cl_fate extends cl_contrib {
 	   $resultad=db_query("	select d06_valor as valtot 
 													from contlotv 
 													where d06_contri=$numcontri and d06_idbql=$j34_idbql");
-	   $nu=pg_numrows($resultad);
+	   $nu=pg_num_rows($resultad);
 	   if($nu>0){
 	     $total="";
 	     for($q=0; $q<$nu; $q++){
@@ -196,18 +196,18 @@ class cl_fate extends cl_contrib {
 	     $valparc=$d07_valor+$d07_vlrdes;  
 	   }  
 	   $y="d07_vlrdes_$j01_matric";
-	   global $$y;
-	   $$y=number_format($d07_vlrdes,2,'.','');
+	   global ${$y};
+	   ${$y}=number_format($d07_vlrdes,2,'.','');
 	   $x="d07_valor_$j01_matric";
-	   global $$x;
-	   $$x=number_format($d07_valor,2,'.','');
+	   global ${$x};
+	   ${$x}=number_format($d07_valor,2,'.','');
 	  echo "
    	       <tr>
                  <input name='j34_idbql_$j01_matric' id='j34_idbql_$j01_matric' type='hidden' value='$j34_idbql'>
 	         <td align='left'><input id='CHECK_".$j01_matric."_ok' name='CHECK_".$j01_matric."_ok' type='checkbox' checked ".($GLOBALS["desabilita"]=="true"?"style='visibility:hidden;'":"")."></td>
                  <td>$j01_matric</td>
                  <td>$j40_refant</td>
-                 <td>".substr($z01_nome,0,20)."</td>
+                 <td>".substr((string) $z01_nome,0,20)."</td>
   	         <td id='td'>".$j34_setor."</td> 
 	         <td id='td'>".$j34_quadra."</td> 
  	         <td id='td'>".$j34_lote."</td>
@@ -311,7 +311,7 @@ function js_incluirlinha(matri,refant,nome,setor,quadra,lote,zona,total,desconto
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
   <form name="form1" method="post" action="">
-  <input name="contri" type="hidden" value="<?=(isset($contri)?$contri:$numcontri)?>">
+  <input name="contri" type="hidden" value="<?=($contri ?? $numcontri)?>">
   <input name="confirma" type="hidden">
   <table border="0">
     <table id='id_tabela' cellpadding="0" cellspacing="0" border="1" >

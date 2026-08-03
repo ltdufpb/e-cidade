@@ -63,7 +63,7 @@ $clrotulo->label("r36_mesusu");
     <td align='left'>
       <?php 
       $identificador = 1;
-      $arr_identificador = Array('1'=>'Manutenção','3'=>'Inclusão');
+      $arr_identificador = ['1'=>'Manutenção','3'=>'Inclusão'];
       db_select("identificador",$arr_identificador,true,1);
       ?>
     </td>
@@ -72,7 +72,7 @@ $clrotulo->label("r36_mesusu");
     <td align='right'><b>Unifica I.P.E:</b></td>
     <td align='left'>
       <?php 
-      $arr_unifica  = Array('f'=>'Não', 't'=>'Sim');
+      $arr_unifica  = ['f'=>'Não', 't'=>'Sim'];
       db_select("unifica_ipe",$arr_unifica,true,1);
       ?>
     </td>

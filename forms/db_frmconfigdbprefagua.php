@@ -112,9 +112,9 @@ if(isset($db_opcaoal)){
 		    </td>
 		    <td>
 		    <?php 
-				    $aTipoDebito = array("1"=>"mostra os débitos e permite emitir recibo",
+				    $aTipoDebito = ["1"=>"mostra os débitos e permite emitir recibo",
 				    										 "2"=>"mostra os débitos, mas não permite emitir recibo",
-				    										 "3"=>"não mostra os débitos");
+				    										 "3"=>"não mostra os débitos"];
 				  	db_select("w16_recibodbpref",$aTipoDebito,true,$db_opcao,"");
 				?> 
 				</td>
@@ -134,7 +134,7 @@ if(isset($db_opcaoal)){
 	    <td valign="top"  align="center">  
 	      <?php 
 	                    
-		 	$chavepri= array("w16_sequencial"=>@$w16_sequencial);
+		 	$chavepri= ["w16_sequencial"=>@$w16_sequencial];
 		 	$cliframe_alterar_excluir->chavepri=$chavepri;
 		 	$cliframe_alterar_excluir->sql     = $clconfigdbprefagua->sql_query(null,'*',"w16_sequencial", "w16_instit=".$w16_instit);
 		 	//$cliframe_alterar_excluir->sql     = $clconfigdbprefagua->sql_query();
@@ -205,7 +205,7 @@ function js_preenchepesquisa(chave){
   db_iframe_configdbprefagua.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -55,7 +55,7 @@ db_input('ve29_codigo',10,$Ive29_codigo,true,'text',3,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Interno','2'=>'Externo');
+$x = ['1'=>'Interno','2'=>'Externo'];
 db_select('ve29_tipo',$x,true,$db_opcao,"onchange='document.form1.submit()'");
 ?>
     </td>
@@ -159,7 +159,7 @@ function js_preenchepesquisa(chave){
   db_iframe_veiccadposto.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

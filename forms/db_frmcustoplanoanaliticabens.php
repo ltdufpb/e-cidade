@@ -71,7 +71,7 @@ $clrotulo->label("cc05_sequencial");
 	include(modification("dbforms/db_classesgenericas.php"));
     $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 
-	 $chavepri = array("cc05_sequencial"=>@$cc05_sequencial);
+	 $chavepri = ["cc05_sequencial"=>@$cc05_sequencial];
 	 $cliframe_alterar_excluir->chavepri = $chavepri;
 	 $cliframe_alterar_excluir->sql      = $clcustoplanoanaliticabens->sql_query(null,'cc05_sequencial, cc05_bens, t52_descr',null,"  cc05_custoplanoanalitica = ".@$cc05_custoplanoanalitica);
 	 $cliframe_alterar_excluir->campos   = "cc05_bens, t52_descr";
@@ -140,7 +140,7 @@ function js_preenchepesquisa(chave){
   db_iframe_custoplanoanaliticabens.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

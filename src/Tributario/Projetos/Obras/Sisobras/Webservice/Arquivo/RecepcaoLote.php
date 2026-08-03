@@ -38,27 +38,19 @@ use ECidade\Tributario\Projetos\Obras\Sisobras\Webservice\Arquivo\RecepcaoLoteHa
 class RecepcaoLote implements RequisicaoInterface
 {
     private $oXml;
-    private $arrayRegistroAlvara;
-    private $arrayRegistroHabitese;
     private $sOperacao;
-    private $localA1;
-    private $senhaA1;
 
   /**
    * Criamos o objeto da classe com as informações necessárias para a sua exitência
    *
    * @param stdClass $oRegistroHabitese
    */
-    public function __construct($arrayRegistroAlvara, $arrayRegistroHabitese, $localA1, $senhaA1)
+    public function __construct(private $arrayRegistroAlvara, private $arrayRegistroHabitese, private $localA1, private $senhaA1)
     {
         $this->oXml                      = new DOMDocument("1.0", "utf-8");
         $this->oXml->preserveWhiteSpace  = false;
         $this->oXml->formatOutput        = true;
-        $this->arrayRegistroAlvara       = $arrayRegistroAlvara;
-        $this->arrayRegistroHabitese     = $arrayRegistroHabitese;
         $this->sOperacao                 = "recepcaoLote";
-        $this->localA1                  = $localA1;
-        $this->senhaA1                  = $senhaA1;
     }
 
     public function gerar()

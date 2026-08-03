@@ -71,7 +71,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed21_i_codigo"=>@$ed21_i_codigo,"ed21_c_descr"=>@$ed21_c_descr);
+   $chavepri= ["ed21_i_codigo"=>@$ed21_i_codigo,"ed21_c_descr"=>@$ed21_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltipoformacao->sql_query($ed21_i_codigo,"*","ed21_i_codigo");
    $cliframe_alterar_excluir->campos  ="ed21_i_codigo,ed21_c_descr";

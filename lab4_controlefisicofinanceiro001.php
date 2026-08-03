@@ -35,7 +35,7 @@ require_once(modification('libs/db_utils.php'));
 require_once(modification('dbforms/db_funcoes.php'));
 
 $queryString = [];
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 db_postmemory($queryString);
 db_postmemory($_POST);
 

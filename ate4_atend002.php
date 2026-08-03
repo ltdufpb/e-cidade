@@ -52,9 +52,9 @@ include(modification("classes/db_tarefaitem_classe.php"));
 include(modification("classes/db_tarefalog_classe.php"));
 include(modification("classes/db_tarefalogsituacao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clatendimento = new cl_atendimento;
 $cltecnico = new cl_tecnico;
 $cltarefa = new cl_tarefa;
@@ -544,7 +544,7 @@ function imprime_cabecalho($codatend=null) {
        				<td colspan=3 align=left><b>Cliente:&nbsp;&nbsp;$at01_codcli&nbsp;&nbsp;-&nbsp;&nbsp;$at01_nomecli</b></td>
 				  </tr>";
    		  	echo "<tr>
-       				<td colspan=3 align=left><b>Solicitado pelo usuário:&nbsp;&nbsp;$at10_usuario&nbsp;&nbsp;-&nbsp;&nbsp;".strtoupper($at10_nome)."</b></td>
+       				<td colspan=3 align=left><b>Solicitado pelo usuário:&nbsp;&nbsp;$at10_usuario&nbsp;&nbsp;-&nbsp;&nbsp;".strtoupper((string) $at10_nome)."</b></td>
 				  </tr>";
    		  	echo "<tr>
        				<td colspan=3 align=left><b>Tipo de atendimento:&nbsp;&nbsp;$at04_codtipo&nbsp;&nbsp;-&nbsp;&nbsp;$at04_descr</b></td>

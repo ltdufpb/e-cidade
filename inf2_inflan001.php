@@ -39,7 +39,7 @@ $rotulocampo->label("DBtxt12");
 $rotulocampo->label("DBtxt13");
 $clinfla = new cl_infla;
 $clinflan= new cl_inflan;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>

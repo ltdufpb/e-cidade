@@ -38,8 +38,8 @@ include(modification("classes/db_saltes_classe.php"));
 require(modification("classes/planilhaCaixa.model.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clplacaixarec = new cl_placaixarec;
 $clplacaixa = new cl_placaixa;
@@ -215,10 +215,10 @@ if(isset($incluir)){
 
     $resulttab = $cltabrec->sql_record($cltabrec->sql_query_inst($k81_receita));
 
-    $recurso = pg_result($resulttab,0,'recurso');
+    $recurso = pg_fetch_result($resulttab,0,'recurso');
 
     $resulttab = $clsaltes->sql_record($clsaltes->sql_query($k81_conta));
-    $c61_codigo = pg_result($resulttab,0,'c61_codigo');
+    $c61_codigo = pg_fetch_result($resulttab,0,'c61_codigo');
 
   }
 }

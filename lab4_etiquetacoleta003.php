@@ -27,7 +27,7 @@
 
 include(modification("fpdf151/scpdf.php"));
 include(modification("classes/db_lab_requiitem_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oDaoRequisicao = new cl_lab_requisicao;
 $sCampos         = "la22_i_cgs, la22_i_codigo, la08_i_codigo, la08_c_descr, z01_v_nome, la23_c_descr, la21_i_codigo";
@@ -72,8 +72,8 @@ for ( $i = 0; $i < $linhas; $i++ ) {
   $pdf->rect($rectx,$recty,$largura_ret,$altura_ret,'D');//retangulo
   $pdf->setfont('arial','',9);
 
-  $la22_i_codigo = str_pad($la22_i_codigo,6,0, STR_PAD_LEFT);
-  $la08_i_codigo = str_pad($la08_i_codigo,6,0, STR_PAD_LEFT);
+  $la22_i_codigo = str_pad((string) $la22_i_codigo,6,0, STR_PAD_LEFT);
+  $la08_i_codigo = str_pad((string) $la08_i_codigo,6,0, STR_PAD_LEFT);
   $codigo        = $la22_i_codigo.''.$la08_i_codigo;
 
   $oDaoColetaItem = new cl_lab_coletaitem();
@@ -89,13 +89,13 @@ for ( $i = 0; $i < $linhas; $i++ ) {
   $pdf->text($numx,$numy,$codigo);//numero codigo de barras
   $pdf->setfont('arial','',7);
   $pdf->SetFillColor(000);//fundo codbarras
-  $pdf->text($setorx,$setory,substr($la23_c_descr,0,25));//nome setor
+  $pdf->text($setorx,$setory,substr((string) $la23_c_descr,0,25));//nome setor
   if ( isset( $la32_d_data ) && isset ( $la32_c_hora ) ) {
     $pdf->text($datax,$datay,db_formatar($la32_d_data,'d')."   ".$la32_c_hora);// data e hora da coletaitem
   }
   $pdf->int25($codx,$cody,$codigo,12,0.341);//codbarras
-  $pdf->text($pacx,$pacy,$la22_i_cgs." - ".substr($z01_v_nome,0,25));//nome paciente
-  $pdf->text($exax,$exay,$la08_i_codigo." - ".substr($la08_c_descr,0,25));//nome exame
+  $pdf->text($pacx,$pacy,$la22_i_cgs." - ".substr((string) $z01_v_nome,0,25));//nome paciente
+  $pdf->text($exax,$exay,$la08_i_codigo." - ".substr((string) $la08_c_descr,0,25));//nome exame
 
   $rectx  += $largura_ret + 1;
   $pacx   += $largura_ret + 1;

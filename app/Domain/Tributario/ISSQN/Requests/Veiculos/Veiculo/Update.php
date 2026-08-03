@@ -9,6 +9,7 @@ class Update extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -44,53 +45,54 @@ class Update extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
 
-            "q172_sequencial.required" => utf8_encode("Sequencial não informado."),
-            "q172_sequencial.filled"   => utf8_encode("Sequencial informado está vazio."),
-            "q172_sequencial.integer"  => utf8_encode("Sequencial inválido."),
-            "q172_sequencial.exists"   => utf8_encode("Nenhum registro para o código informado."),
+            "q172_sequencial.required" => mb_convert_encoding("Sequencial não informado.", 'UTF-8', 'ISO-8859-1'),
+            "q172_sequencial.filled"   => mb_convert_encoding("Sequencial informado está vazio.", 'UTF-8', 'ISO-8859-1'),
+            "q172_sequencial.integer"  => mb_convert_encoding("Sequencial inválido.", 'UTF-8', 'ISO-8859-1'),
+            "q172_sequencial.exists"   => mb_convert_encoding("Nenhum registro para o código informado.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_datacadastro.required" => utf8_encode("Data de cadastro não informada."),
-            "q172_datacadastro.filled"   => utf8_encode("Data de cadastro vazia."),
-            "q172_datacadastro.date"     => utf8_encode("Data de cadastro inválida."),
+            "q172_datacadastro.required" => mb_convert_encoding("Data de cadastro não informada.", 'UTF-8', 'ISO-8859-1'),
+            "q172_datacadastro.filled"   => mb_convert_encoding("Data de cadastro vazia.", 'UTF-8', 'ISO-8859-1'),
+            "q172_datacadastro.date"     => mb_convert_encoding("Data de cadastro inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_issbase.required"        => utf8_encode("Inscrição não informada."),
-            "q172_issbase.filled"          => utf8_encode("Inscrição informada está vazia."),
-            "q172_issbase.integer"         => utf8_encode("Inscrição inválida."),
+            "q172_issbase.required"        => mb_convert_encoding("Inscrição não informada.", 'UTF-8', 'ISO-8859-1'),
+            "q172_issbase.filled"          => mb_convert_encoding("Inscrição informada está vazia.", 'UTF-8', 'ISO-8859-1'),
+            "q172_issbase.integer"         => mb_convert_encoding("Inscrição inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_tipo.integer"          => utf8_encode("Tipo inválido."),
+            "q172_tipo.integer"          => mb_convert_encoding("Tipo inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_marca.integer"         => utf8_encode("Marca inválida."),
+            "q172_marca.integer"         => mb_convert_encoding("Marca inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_modelo.integer"        => utf8_encode("Modelo inválido."),
+            "q172_modelo.integer"        => mb_convert_encoding("Modelo inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_procedencia.integer"   => utf8_encode("Procedencia inválida."),
+            "q172_procedencia.integer"   => mb_convert_encoding("Procedencia inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_categoria.integer"     => utf8_encode("Categoria inválida."),
+            "q172_categoria.integer"     => mb_convert_encoding("Categoria inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_chassi.string"        => utf8_encode("Chassi inválido."),
+            "q172_chassi.string"        => mb_convert_encoding("Chassi inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_renavam.string"       => utf8_encode("Renavan inválido."),
+            "q172_renavam.string"       => mb_convert_encoding("Renavan inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_placa.string"         => utf8_encode("Placa inválida."),
+            "q172_placa.string"         => mb_convert_encoding("Placa inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_potencia.string"      => utf8_encode("Potencia inválida."),
+            "q172_potencia.string"      => mb_convert_encoding("Potencia inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_capacidade.integer"    => utf8_encode("Capacidade inválida."),
+            "q172_capacidade.integer"    => mb_convert_encoding("Capacidade inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_anofabricacao.integer" => utf8_encode("Ano de Fabricação inválido."),
+            "q172_anofabricacao.integer" => mb_convert_encoding("Ano de Fabricação inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "q172_anomodelo.integer"     => utf8_encode("Ano modelo inválido."),
+            "q172_anomodelo.integer"     => mb_convert_encoding("Ano modelo inválido.", 'UTF-8', 'ISO-8859-1'),
 
 
         ];

@@ -45,7 +45,7 @@ try {
     if (empty($get->lancamentos)) {
         throw new ParameterException("Lançamentos não informados.");
     }
-    $lancamentos = explode(',', $get->lancamentos);
+    $lancamentos = explode(',', (string) $get->lancamentos);
 
     $relatorio = new NotaDeLancamento($lancamentos);
     $relatorio->emitir();

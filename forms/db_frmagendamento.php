@@ -242,11 +242,11 @@ $clrotulo->label("s165_formatocomprovanteagend");
                     <td width="80%" nowrap title="<?=$Tsd30_c_tipograde?>">
                       <?php
                       echo $Lsd30_c_tipograde;
-                      $x = array('I' => 'Intervalo', 'P' => 'Período');
+                      $x = ['I' => 'Intervalo', 'P' => 'Período'];
                       db_input('sd30_c_tipograde', 10, $Isd30_c_tipograde, true, 'text', 3);
 
                       echo "&nbsp;&nbsp;&nbsp;".$Ls165_formatocomprovanteagend;
-                      $aOpcoes = array("1" => "PDF", "2" => "TXT");
+                      $aOpcoes = ["1" => "PDF", "2" => "TXT"];
                       db_select('s165_formatocomprovanteagend',$aOpcoes,true,$db_opcao,"");
                       ?>
                     </td>

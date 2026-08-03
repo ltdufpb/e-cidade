@@ -41,7 +41,7 @@ $sSqlExercicios = $oDaoEmpresto->sql_query_empenho( db_getsession("DB_anousu"),
                                                     'e60_anousu desc' );
 $rsExercicios   = $oDaoEmpresto->sql_record( $sSqlExercicios );
 
-$aExercicios = array();
+$aExercicios = [];
 
 if ($rsExercicios && $oDaoEmpresto->numrows > 0) {
 
@@ -84,10 +84,10 @@ if ($rsExercicios && $oDaoEmpresto->numrows > 0) {
               <td>
                 <?php
 
-                  $aOpcoes = array(
+                  $aOpcoes = [
                       RelatorioRelacaoRestosPagar::RESTOS_PROCESSADOS => 'Processados',
                       RelatorioRelacaoRestosPagar::RESTOS_NAO_PROCESSADOS => 'Não Processados'
-                    );
+                    ];
 
                   db_select('tipo', $aOpcoes, true, 1);
                 ?>

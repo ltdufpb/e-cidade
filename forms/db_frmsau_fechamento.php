@@ -66,7 +66,7 @@ $oDaoSauFechamento->rotulo->label();
         <td><b>Tipo Financiamento:</b></td>
         <td colspan="3">
           <?php 
-            $x = array();
+            $x = [];
             $sWhere = "sd65_i_anocomp=(select max(sd65_i_anocomp) from sau_financiamento) and sd65_i_mescomp=( 
                        select max(sd65_i_mescomp) from sau_financiamento where sd65_i_anocomp=(
                        select max(sd65_i_anocomp) from sau_financiamento))";
@@ -127,7 +127,7 @@ $oDaoSauFechamento->rotulo->label();
     <tr>
       <td valign="top">
         <?php 
-          $chavepri                     = array("sd97_i_codigo"=>@$sd97_i_codigo);
+          $chavepri                     = ["sd97_i_codigo"=>@$sd97_i_codigo];
           $oIframeAltExc->chavepri      = $chavepri;
           $sCampos                      = "sd97_i_compmes||'/'||sd97_i_compano as sd97_i_compmes,";
           $sCampos                     .= "sd97_d_dataini,sd65_c_nome,";
@@ -240,7 +240,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_sau_fechamento.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

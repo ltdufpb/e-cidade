@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE procedparag
 class cl_procedparag { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v80_proced = 0; 
-   var $v80_docum = 0; 
-   var $v80_docmetcalculo = 0; 
+   public $v80_proced = 0; 
+   public $v80_docum = 0; 
+   public $v80_docmetcalculo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v80_proced = int4 = procedencia 
                  v80_docum = int4 = Código 
                  v80_docmetcalculo = int4 = Cód. Met. Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_procedparag() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procedparag"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,7 +119,7 @@ class cl_procedparag {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Procedencia e Parágrafos ($this->v80_proced) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Procedencia e Parágrafos já Cadastrado";
@@ -143,12 +143,12 @@ class cl_procedparag {
      $resaco = $this->sql_record($this->sql_query_file($this->v80_proced));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7851,'$this->v80_proced','I')");
-       $resac = db_query("insert into db_acount values($acount,1316,7851,'','".AddSlashes(pg_result($resaco,0,'v80_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1316,7852,'','".AddSlashes(pg_result($resaco,0,'v80_docum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1316,14546,'','".AddSlashes(pg_result($resaco,0,'v80_docmetcalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1316,7851,'','".AddSlashes(pg_fetch_result($resaco,0,'v80_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1316,7852,'','".AddSlashes(pg_fetch_result($resaco,0,'v80_docum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1316,14546,'','".AddSlashes(pg_fetch_result($resaco,0,'v80_docmetcalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -157,10 +157,10 @@ class cl_procedparag {
       $this->atualizacampos();
      $sql = " update procedparag set ";
      $virgula = "";
-     if(trim($this->v80_proced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v80_proced"])){ 
+     if(trim((string) $this->v80_proced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v80_proced"])){ 
        $sql  .= $virgula." v80_proced = $this->v80_proced ";
        $virgula = ",";
-       if(trim($this->v80_proced) == null ){ 
+       if(trim((string) $this->v80_proced) == null ){ 
          $this->erro_sql = " Campo procedencia nao Informado.";
          $this->erro_campo = "v80_proced";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_procedparag {
          return false;
        }
      }
-     if(trim($this->v80_docum)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v80_docum"])){ 
+     if(trim((string) $this->v80_docum)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v80_docum"])){ 
        $sql  .= $virgula." v80_docum = $this->v80_docum ";
        $virgula = ",";
-       if(trim($this->v80_docum) == null ){ 
+       if(trim((string) $this->v80_docum) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "v80_docum";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_procedparag {
          return false;
        }
      }
-     if(trim($this->v80_docmetcalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v80_docmetcalculo"])){ 
+     if(trim((string) $this->v80_docmetcalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v80_docmetcalculo"])){ 
        $sql  .= $virgula." v80_docmetcalculo = $this->v80_docmetcalculo ";
        $virgula = ",";
-       if(trim($this->v80_docmetcalculo) == null ){ 
+       if(trim((string) $this->v80_docmetcalculo) == null ){ 
          $this->erro_sql = " Campo Cód. Met. Cálculo nao Informado.";
          $this->erro_campo = "v80_docmetcalculo";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_procedparag {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7851,'$this->v80_proced','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v80_proced"]) || $this->v80_proced != "")
-           $resac = db_query("insert into db_acount values($acount,1316,7851,'".AddSlashes(pg_result($resaco,$conresaco,'v80_proced'))."','$this->v80_proced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1316,7851,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v80_proced'))."','$this->v80_proced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v80_docum"]) || $this->v80_docum != "")
-           $resac = db_query("insert into db_acount values($acount,1316,7852,'".AddSlashes(pg_result($resaco,$conresaco,'v80_docum'))."','$this->v80_docum',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1316,7852,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v80_docum'))."','$this->v80_docum',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v80_docmetcalculo"]) || $this->v80_docmetcalculo != "")
-           $resac = db_query("insert into db_acount values($acount,1316,14546,'".AddSlashes(pg_result($resaco,$conresaco,'v80_docmetcalculo'))."','$this->v80_docmetcalculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1316,14546,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v80_docmetcalculo'))."','$this->v80_docmetcalculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -257,12 +257,12 @@ class cl_procedparag {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7851,'$v80_proced','E')");
-         $resac = db_query("insert into db_acount values($acount,1316,7851,'','".AddSlashes(pg_result($resaco,$iresaco,'v80_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1316,7852,'','".AddSlashes(pg_result($resaco,$iresaco,'v80_docum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1316,14546,'','".AddSlashes(pg_result($resaco,$iresaco,'v80_docmetcalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1316,7851,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v80_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1316,7852,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v80_docum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1316,14546,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v80_docmetcalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from procedparag
@@ -322,7 +322,7 @@ class cl_procedparag {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procedparag";
@@ -337,7 +337,7 @@ class cl_procedparag {
    function sql_query ( $v80_proced=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -365,7 +365,7 @@ class cl_procedparag {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -378,7 +378,7 @@ class cl_procedparag {
 	function sql_query_duplo ( $v80_proced=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -407,7 +407,7 @@ class cl_procedparag {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -420,7 +420,7 @@ class cl_procedparag {
    function sql_query_file ( $v80_proced=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -441,7 +441,7 @@ class cl_procedparag {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

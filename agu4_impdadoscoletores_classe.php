@@ -59,7 +59,7 @@ class cl_importaDadosColetor {
    * conteudo de uma linha de um arquivo
    * @var array
    */
-  protected $linha = array();
+  protected $linha = [];
 
   /**
    * numero de linhas do arquivo
@@ -81,9 +81,9 @@ class cl_importaDadosColetor {
 
   public $countExportaDados = 0;
 
-  public $arrayExportacao = array();
+  public $arrayExportacao = [];
 
-  public $arrayArquivo = array();
+  public $arrayArquivo = [];
 
   public $iCodExportacao;
 
@@ -209,7 +209,7 @@ class cl_importaDadosColetor {
      
     for($i = 0; $i < count($arrayArquivos); $i++) {
        
-      $codFoto = explode("-", $arrayArquivos[$i]);
+      $codFoto = explode("-", (string) $arrayArquivos[$i]);
        
       if ($codFoto[0] == $iCodMatricula) {
         
@@ -240,7 +240,7 @@ class cl_importaDadosColetor {
     $nomeArquivo        = $arquivo;
     $localRecebeArquivo = $arquivo;
 
-    if ( trim($localRecebeArquivo) != "") {
+    if ( trim((string) $localRecebeArquivo) != "") {
       
       $arquivoGrava = fopen($localRecebeArquivo, "rb");
       
@@ -297,7 +297,7 @@ class cl_importaDadosColetor {
        
       for ($i = 0; $i < count($arrayArquivos); $i++) {
          
-        $tipoArquivo = explode(".", $arrayArquivos[$i]);
+        $tipoArquivo = explode(".", (string) $arrayArquivos[$i]);
         $extensao    = array_pop($tipoArquivo);
         
         if ($extensao == "txt") {
@@ -414,7 +414,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getLinha($linha) {
-    return trim($this->linha[$linha]);
+    return trim((string) $this->linha[$linha]);
   }
 
   /**
@@ -423,7 +423,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getCodLeitura($linha) {
-    return trim(substr($this->linha[$linha], 0, 8));
+    return trim(substr((string) $this->linha[$linha], 0, 8));
   }
 
   /**
@@ -432,7 +432,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getCodRota($linha) {
-    return trim(substr($this->linha[$linha], 8, 4));
+    return trim(substr((string) $this->linha[$linha], 8, 4));
   }
 
   /**
@@ -441,7 +441,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getTipoLogradouro($linha) {
-    return trim(substr($this->linha[$linha], 12, 4));
+    return trim(substr((string) $this->linha[$linha], 12, 4));
   }
 
   /**
@@ -450,7 +450,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getNomeLogradouro($linha) {
-    return trim(substr($this->linha[$linha], 16, 55));
+    return trim(substr((string) $this->linha[$linha], 16, 55));
   }
 
   /**
@@ -459,7 +459,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getCodLeiturista($linha) {
-    return trim(substr($this->linha[$linha], 71, 10));
+    return trim(substr((string) $this->linha[$linha], 71, 10));
   }
 
   /**
@@ -468,7 +468,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getCodMatricula($linha) {
-    return trim(substr($this->linha[$linha], 81, 10));
+    return trim(substr((string) $this->linha[$linha], 81, 10));
   }
 
   /**
@@ -477,7 +477,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getCodHidrometro($linha) {
-    return trim(substr($this->linha[$linha], 91, 20));
+    return trim(substr((string) $this->linha[$linha], 91, 20));
   }
 
   /**
@@ -486,7 +486,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getDataLeituraAtual($linha) {
-    return trim(substr($this->linha[$linha], 111, 10));
+    return trim(substr((string) $this->linha[$linha], 111, 10));
   }
 
   /**
@@ -495,7 +495,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getDataLeituraAnterior($linha) {
-    return trim(substr($this->linha[$linha], 121, 10));
+    return trim(substr((string) $this->linha[$linha], 121, 10));
   }
 
   /**
@@ -504,7 +504,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getConsumoAtual($linha) {
-    return trim(substr($this->linha[$linha], 131, 8));
+    return trim(substr((string) $this->linha[$linha], 131, 8));
   }
 
   /**
@@ -513,7 +513,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getDiasEntreLeituras($linha) {
-    return trim(substr($this->linha[$linha], 139, 4));
+    return trim(substr((string) $this->linha[$linha], 139, 4));
   }
 
   /**
@@ -522,7 +522,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getMediaConsumo($linha) {
-    return trim(substr($this->linha[$linha], 143, 10));
+    return trim(substr((string) $this->linha[$linha], 143, 10));
   }
 
   /**
@@ -531,7 +531,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getDataVencimento($linha) {
-    return trim(substr($this->linha[$linha], 153, 10));
+    return trim(substr((string) $this->linha[$linha], 153, 10));
   }
 
   /**
@@ -540,7 +540,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getValorAcrescimo($linha) {
-    return trim(substr($this->linha[$linha], 163, 10));
+    return trim(substr((string) $this->linha[$linha], 163, 10));
   }
 
   /**
@@ -549,7 +549,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getValorDesconto($linha) {
-    return trim(substr($this->linha[$linha], 173, 10));
+    return trim(substr((string) $this->linha[$linha], 173, 10));
   }
 
   /**
@@ -558,7 +558,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getValorTotal($linha) {
-    return trim(substr($this->linha[$linha], 183, 10));
+    return trim(substr((string) $this->linha[$linha], 183, 10));
   }
 
   /**
@@ -567,7 +567,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getMesLeitura($linha) {
-    return trim(substr($this->linha[$linha], 193, 2));
+    return trim(substr((string) $this->linha[$linha], 193, 2));
   }
 
   /**
@@ -576,7 +576,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getSituacaoLeitura($linha) {
-    return trim(substr($this->linha[$linha], 195, 3));
+    return trim(substr((string) $this->linha[$linha], 195, 3));
   }
 
   /**
@@ -585,7 +585,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getLeitura($linha) {
-    return trim(substr($this->linha[$linha], 198, 7));
+    return trim(substr((string) $this->linha[$linha], 198, 7));
   }
 
   /**
@@ -594,7 +594,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getConsumo($linha) {
-    return trim(substr($this->linha[$linha], 205, 8));
+    return trim(substr((string) $this->linha[$linha], 205, 8));
   }
 
   /**
@@ -603,7 +603,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getExcesso($linha) {
-    return trim(substr($this->linha[$linha], 213, 6));
+    return trim(substr((string) $this->linha[$linha], 213, 6));
   }
 
   /**
@@ -612,7 +612,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getDiasLeitura($linha) {
-    return trim(substr($this->linha[$linha], 219, 10));
+    return trim(substr((string) $this->linha[$linha], 219, 10));
   }
 
   /**
@@ -621,7 +621,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getContaImpressa($linha) {
-    return trim(substr($this->linha[$linha], 229, 1));
+    return trim(substr((string) $this->linha[$linha], 229, 1));
   }
 
   /**
@@ -630,7 +630,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getObsLeitura($linha) {
-    return trim(substr($this->linha[$linha], 230, 70));
+    return trim(substr((string) $this->linha[$linha], 230, 70));
   }
 
   /**
@@ -639,7 +639,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getLinhaDigitavel($linha) {
-    return trim(substr($this->linha[$linha], 300, 70));
+    return trim(substr((string) $this->linha[$linha], 300, 70));
   }
 
   /**
@@ -648,7 +648,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getCodigoBarras($linha) {
-    return trim(substr($this->linha[$linha], 370, 70));
+    return trim(substr((string) $this->linha[$linha], 370, 70));
   }
 
   /**
@@ -657,7 +657,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getValorExcessoCalc($linha) {
-    return trim(substr($this->linha[$linha], 440, 10));
+    return trim(substr((string) $this->linha[$linha], 440, 10));
   }
 
   /**
@@ -666,7 +666,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getLeituraColetada($linha) {
-    return trim(substr($this->linha[$linha], 450, 1));
+    return trim(substr((string) $this->linha[$linha], 450, 1));
   }
 
   /**
@@ -675,7 +675,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getHidrometroVirou($linha) {
-    return trim(substr($this->linha[$linha], 451, 1));
+    return trim(substr((string) $this->linha[$linha], 451, 1));
   }
   
   /**
@@ -684,7 +684,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getLeituraReal($linha) {
-    return trim(substr($this->linha[$linha], 452, 7));
+    return trim(substr((string) $this->linha[$linha], 452, 7));
   }
   
   /**
@@ -693,7 +693,7 @@ class cl_importaDadosColetor {
    * @return String
    */
   public function getDataLeituraReal($linha) {
-    return trim(substr($this->linha[$linha], 459, 10));
+    return trim(substr((string) $this->linha[$linha], 459, 10));
   }
 
   /**

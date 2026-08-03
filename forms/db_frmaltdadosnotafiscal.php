@@ -47,14 +47,14 @@ if ($lDisabled2) {
     $opcaoB = 3;
 }
 
-$Tm51_codordem = isset($Tm51_codordem) ? $Tm51_codordem : null;
-$Lm51_numcgm = isset($Lm51_numcgm) ? $Lm51_numcgm : null;
-$Tdescrdepto = isset($Tdescrdepto) ? $Tdescrdepto : null;
-$Lm51_depto = isset($Lm51_depto) ? $Lm51_depto : null;
-$Te11_cfop = isset($Te11_cfop) ? $Te11_cfop : null;
-$Tm51_valortotal = isset($Tm51_valortotal) ? $Tm51_valortotal : null;
-$Ie11_basecalculoicms = isset($Ie11_basecalculoicms) ? $Ie11_basecalculoicms : null;
-$Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11_basecalculosubstitutotrib : null;
+$Tm51_codordem ??= null;
+$Lm51_numcgm ??= null;
+$Tdescrdepto ??= null;
+$Lm51_depto ??= null;
+$Te11_cfop ??= null;
+$Tm51_valortotal ??= null;
+$Ie11_basecalculoicms ??= null;
+$Ie11_basecalculosubstitutotrib ??= null;
 
 ?>
 <form name="form1" method="post" action="">

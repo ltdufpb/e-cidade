@@ -10,7 +10,7 @@ final class ReciboParcelaService extends Service
 {
     public function build($cfiptu, $recibos)
     {
-        $parcelasRecibo = array();
+        $parcelasRecibo = [];
 
         foreach ($recibos as $recibo) {
 

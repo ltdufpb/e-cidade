@@ -33,8 +33,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $claluno  = new cl_aluno;
 $clescola = new cl_escola;
@@ -87,7 +87,7 @@ $escola = db_getsession("DB_coddepto");
 
                     if ( $clescola->numrows == 0 ) {
 
-                      $x = array( '' => 'NENHUM REGISTRO' );
+                      $x = [ '' => 'NENHUM REGISTRO' ];
                       db_select( 'chave_ed56_i_escola', $x, true, 1 );
                     } else {
                       db_selectrecord( "chave_ed56_i_escola", $result_esc, "", "", "", "chave_ed56_i_escola", "", "  ", "", 1 );
@@ -168,16 +168,16 @@ $escola = db_getsession("DB_coddepto");
             $sWhere .= "   AND ed52_c_passivo   = 'N'                ";
             $sWhere .= "   AND ed56_i_escola != {$escola}            ";
 
-            $repassa       = array();
+            $repassa       = [];
             $lCarregaDados = false;
 
             if ( isset( $chave_ed47_i_codigo ) ) {
 
-              $repassa = array(
+              $repassa = [
                                 "chave_ed47_i_codigo" => $chave_ed47_i_codigo,
                                 "chave_ed47_v_nome"   => $chave_ed47_v_nome,
                                 "chave_ed56_i_escola" => $chave_ed56_i_escola
-                              );
+                              ];
             }
 
             if ( isset( $chave_ed47_i_codigo ) && ( trim( $chave_ed47_i_codigo ) != "" ) ) {

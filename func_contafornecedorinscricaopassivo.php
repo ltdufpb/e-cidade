@@ -61,7 +61,7 @@ $iAnoSessao = db_getsession("DB_anousu");
 
         $sSqlLancamentoInscricao  = $oDAOInscricaoPassivo->sql_lancamento_inscricao(null, $sCampos, null, $sWhere);
 
-        db_lovrot($sSqlLancamentoInscricao, 15, "()", "", $funcao_js, "", "NoMe", array(), false);
+        db_lovrot($sSqlLancamentoInscricao, 15, "()", "", $funcao_js, "", "NoMe", [], false);
       ?>
      </td>
    </tr>

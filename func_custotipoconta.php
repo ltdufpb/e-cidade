@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_custotipoconta_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcustotipoconta = new cl_custotipoconta;
 $clcustotipoconta->rotulo->label("cc02_sequencial");
 $clcustotipoconta->rotulo->label("cc02_descricao");
@@ -98,9 +98,9 @@ $clcustotipoconta->rotulo->label("cc02_descricao");
         }else{
            $sql = $clcustotipoconta->sql_query("",$campos,"cc02_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cc02_descricao)){
-          $repassa = array("chave_cc02_sequencial"=>$chave_cc02_sequencial,"chave_cc02_descricao"=>$chave_cc02_descricao);
+          $repassa = ["chave_cc02_sequencial"=>$chave_cc02_sequencial,"chave_cc02_descricao"=>$chave_cc02_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -32,14 +32,14 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_vinculos_classe.php"));
 include(modification("classes/db_rhcadregime_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clvinculos = new cl_vinculos;
 $clrhcadregime = new cl_rhcadregime;
 $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   db_inicio_transacao();
-  $clvinculos->h11_cert02 = substr($h11_cert01, 199, 200);
+  $clvinculos->h11_cert02 = substr((string) $h11_cert01, 199, 200);
   $clvinculos->incluir($h11_codigo);
   db_fim_transacao();
 }

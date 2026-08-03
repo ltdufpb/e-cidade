@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE tfd_prestadora
 class cl_tfd_prestadora { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tf25_i_codigo = 0; 
-   var $tf25_i_cgm = 0; 
-   var $tf25_c_cnes = null; 
-   var $tf25_i_destino = 0; 
+   public $tf25_i_codigo = 0; 
+   public $tf25_i_cgm = 0; 
+   public $tf25_c_cnes = null; 
+   public $tf25_i_destino = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tf25_i_codigo = int4 = Código 
                  tf25_i_cgm = int4 = CGM 
                  tf25_c_cnes = varchar(10) = CNES 
                  tf25_i_destino = int4 = Destino 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_prestadora() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_prestadora"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_tfd_prestadora {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tf25_i_codigo = pg_result($result,0,0); 
+       $this->tf25_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tfd_prestadora_tf25_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf25_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf25_i_codigo)){
          $this->erro_sql = " Campo tf25_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_tfd_prestadora {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tfd_prestadora ($this->tf25_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tfd_prestadora já Cadastrado";
@@ -180,13 +180,13 @@ class cl_tfd_prestadora {
      $resaco = $this->sql_record($this->sql_query_file($this->tf25_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16444,'$this->tf25_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2881,16444,'','".AddSlashes(pg_result($resaco,0,'tf25_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2881,16446,'','".AddSlashes(pg_result($resaco,0,'tf25_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2881,16447,'','".AddSlashes(pg_result($resaco,0,'tf25_c_cnes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2881,16445,'','".AddSlashes(pg_result($resaco,0,'tf25_i_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2881,16444,'','".AddSlashes(pg_fetch_result($resaco,0,'tf25_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2881,16446,'','".AddSlashes(pg_fetch_result($resaco,0,'tf25_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2881,16447,'','".AddSlashes(pg_fetch_result($resaco,0,'tf25_c_cnes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2881,16445,'','".AddSlashes(pg_fetch_result($resaco,0,'tf25_i_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_tfd_prestadora {
       $this->atualizacampos();
      $sql = " update tfd_prestadora set ";
      $virgula = "";
-     if(trim($this->tf25_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf25_i_codigo"])){ 
+     if(trim((string) $this->tf25_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf25_i_codigo"])){ 
        $sql  .= $virgula." tf25_i_codigo = $this->tf25_i_codigo ";
        $virgula = ",";
-       if(trim($this->tf25_i_codigo) == null ){ 
+       if(trim((string) $this->tf25_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "tf25_i_codigo";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_tfd_prestadora {
          return false;
        }
      }
-     if(trim($this->tf25_i_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf25_i_cgm"])){ 
+     if(trim((string) $this->tf25_i_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf25_i_cgm"])){ 
        $sql  .= $virgula." tf25_i_cgm = $this->tf25_i_cgm ";
        $virgula = ",";
-       if(trim($this->tf25_i_cgm) == null ){ 
+       if(trim((string) $this->tf25_i_cgm) == null ){ 
          $this->erro_sql = " Campo CGM nao Informado.";
          $this->erro_campo = "tf25_i_cgm";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_tfd_prestadora {
          return false;
        }
      }
-     if(trim($this->tf25_c_cnes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf25_c_cnes"])){ 
+     if(trim((string) $this->tf25_c_cnes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf25_c_cnes"])){ 
        $sql  .= $virgula." tf25_c_cnes = '$this->tf25_c_cnes' ";
        $virgula = ",";
-       if(trim($this->tf25_c_cnes) == null ){ 
+       if(trim((string) $this->tf25_c_cnes) == null ){ 
          $this->erro_sql = " Campo CNES nao Informado.";
          $this->erro_campo = "tf25_c_cnes";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_tfd_prestadora {
          return false;
        }
      }
-     if(trim($this->tf25_i_destino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf25_i_destino"])){ 
+     if(trim((string) $this->tf25_i_destino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf25_i_destino"])){ 
        $sql  .= $virgula." tf25_i_destino = $this->tf25_i_destino ";
        $virgula = ",";
-       if(trim($this->tf25_i_destino) == null ){ 
+       if(trim((string) $this->tf25_i_destino) == null ){ 
          $this->erro_sql = " Campo Destino nao Informado.";
          $this->erro_campo = "tf25_i_destino";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_tfd_prestadora {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16444,'$this->tf25_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf25_i_codigo"]) || $this->tf25_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2881,16444,'".AddSlashes(pg_result($resaco,$conresaco,'tf25_i_codigo'))."','$this->tf25_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2881,16444,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf25_i_codigo'))."','$this->tf25_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf25_i_cgm"]) || $this->tf25_i_cgm != "")
-           $resac = db_query("insert into db_acount values($acount,2881,16446,'".AddSlashes(pg_result($resaco,$conresaco,'tf25_i_cgm'))."','$this->tf25_i_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2881,16446,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf25_i_cgm'))."','$this->tf25_i_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf25_c_cnes"]) || $this->tf25_c_cnes != "")
-           $resac = db_query("insert into db_acount values($acount,2881,16447,'".AddSlashes(pg_result($resaco,$conresaco,'tf25_c_cnes'))."','$this->tf25_c_cnes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2881,16447,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf25_c_cnes'))."','$this->tf25_c_cnes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf25_i_destino"]) || $this->tf25_i_destino != "")
-           $resac = db_query("insert into db_acount values($acount,2881,16445,'".AddSlashes(pg_result($resaco,$conresaco,'tf25_i_destino'))."','$this->tf25_i_destino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2881,16445,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf25_i_destino'))."','$this->tf25_i_destino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_tfd_prestadora {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16444,'$tf25_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2881,16444,'','".AddSlashes(pg_result($resaco,$iresaco,'tf25_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2881,16446,'','".AddSlashes(pg_result($resaco,$iresaco,'tf25_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2881,16447,'','".AddSlashes(pg_result($resaco,$iresaco,'tf25_c_cnes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2881,16445,'','".AddSlashes(pg_result($resaco,$iresaco,'tf25_i_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2881,16444,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf25_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2881,16446,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf25_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2881,16447,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf25_c_cnes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2881,16445,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf25_i_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tfd_prestadora
@@ -376,7 +376,7 @@ class cl_tfd_prestadora {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tfd_prestadora";
@@ -391,7 +391,7 @@ class cl_tfd_prestadora {
    function sql_query ( $tf25_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_tfd_prestadora {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,7 +428,7 @@ class cl_tfd_prestadora {
    function sql_query_file ( $tf25_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_tfd_prestadora {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

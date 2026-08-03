@@ -31,7 +31,7 @@ $clrotulo = new rotulocampo;
 
 $clrotulo->label("cm01_i_codigo");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $rsOssoario = $clossoario->sql_record($clossoario->sql_query(null, "*", null, "cm06_i_sepultamento = {$sepultamento}"));
 
@@ -165,7 +165,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_ossoario.hide();
   <?php
     if ($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

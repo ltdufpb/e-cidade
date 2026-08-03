@@ -147,9 +147,9 @@ $utilizaGradeHorario = isset($oParametros->tf11_i_utilizagradehorario) && $oPara
                         if ($oParametros->tf11_i_utilizagradehorario == 1) {
                             $db_opcaosaida = 3;
                             if ($db_opcaoNaoMudar == 3) {
-                                $aX = array("$tf18_c_horasaida ## $tf18_c_localsaida ## $total" => $tf18_c_horasaida);
+                                $aX = ["$tf18_c_horasaida ## $tf18_c_localsaida ## $total" => $tf18_c_horasaida];
                             } else {
-                                $aX = array('' => '');
+                                $aX = ['' => ''];
                             }
                             db_select('tf18_c_horasaida', $aX, true, $db_opcao, " onchange=\"js_loadGridCgs();\"");
                         } else {
@@ -1128,7 +1128,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
     db_iframe_tfd_veiculodestino.hide();
     <?php
-    echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?tf18_i_codigo='+chave";
+    echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?tf18_i_codigo='+chave";
     ?>
 }
 

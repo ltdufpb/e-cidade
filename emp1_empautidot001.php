@@ -43,7 +43,7 @@ require_once(modification("classes/db_empautitem_classe.php"));
 
 $clempautitem = new cl_empautitem;
 $e56_orctiporec = "null";
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 db_postmemory($_POST);
 $clorcdotacao = new cl_orcdotacao;
 $clempautidot = new cl_empautidot;
@@ -93,7 +93,7 @@ if (isset($confirmar)) {
             $clempautidot->e56_coddot = $o47_coddot;
             $numrows_verifica = $clempautidot->numrows;
             if ($numrows_verifica > 0) {
-                if ($e56_orctiporec == 0) {
+                if (0 == 0) {
                     $clempautidot->e56_orctiporec = "null";
                 }
                 $clempautidot->alterar($e56_autori);
@@ -101,7 +101,7 @@ if (isset($confirmar)) {
                     $sqlerro = true;
                 }
             } else {
-                if ($e56_orctiporec == 0) {
+                if (0 == 0) {
                     $clempautidot->e56_orctiporec = "null";
                 }
                 $clempautidot->incluir($e56_autori);

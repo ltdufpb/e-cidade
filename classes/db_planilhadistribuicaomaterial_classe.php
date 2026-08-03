@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE planilhadistribuicaomaterial
 class cl_planilhadistribuicaomaterial { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pd03_sequencial = 0; 
-   var $pd03_planilhadistribuicao = 0; 
-   var $pd03_material = 0; 
+   public $pd03_sequencial = 0; 
+   public $pd03_planilhadistribuicao = 0; 
+   public $pd03_material = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pd03_sequencial = int4 = Código 
                  pd03_planilhadistribuicao = int4 = Planilha de Distribuição 
                  pd03_material = int4 = Material 
                  ";
    //funcao construtor da classe 
-   function cl_planilhadistribuicaomaterial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("planilhadistribuicaomaterial"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_planilhadistribuicaomaterial {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pd03_sequencial = pg_result($result,0,0); 
+       $this->pd03_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from planilhadistribuicaomaterial_pd03_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pd03_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pd03_sequencial)){
          $this->erro_sql = " Campo pd03_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_planilhadistribuicaomaterial {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Material da Planilha de Distribuição ($this->pd03_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Material da Planilha de Distribuição já Cadastrado";
@@ -145,12 +145,12 @@ class cl_planilhadistribuicaomaterial {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21588,'$this->pd03_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3876,21588,'','".AddSlashes(pg_result($resaco,0,'pd03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3876,21589,'','".AddSlashes(pg_result($resaco,0,'pd03_planilhadistribuicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3876,21590,'','".AddSlashes(pg_result($resaco,0,'pd03_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3876,21588,'','".AddSlashes(pg_fetch_result($resaco,0,'pd03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3876,21589,'','".AddSlashes(pg_fetch_result($resaco,0,'pd03_planilhadistribuicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3876,21590,'','".AddSlashes(pg_fetch_result($resaco,0,'pd03_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_planilhadistribuicaomaterial {
       $this->atualizacampos();
      $sql = " update planilhadistribuicaomaterial set ";
      $virgula = "";
-     if(trim($this->pd03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pd03_sequencial"])){ 
+     if(trim((string) $this->pd03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pd03_sequencial"])){ 
        $sql  .= $virgula." pd03_sequencial = $this->pd03_sequencial ";
        $virgula = ",";
-       if(trim($this->pd03_sequencial) == null ){ 
+       if(trim((string) $this->pd03_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "pd03_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_planilhadistribuicaomaterial {
          return false;
        }
      }
-     if(trim($this->pd03_planilhadistribuicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pd03_planilhadistribuicao"])){ 
+     if(trim((string) $this->pd03_planilhadistribuicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pd03_planilhadistribuicao"])){ 
        $sql  .= $virgula." pd03_planilhadistribuicao = $this->pd03_planilhadistribuicao ";
        $virgula = ",";
-       if(trim($this->pd03_planilhadistribuicao) == null ){ 
+       if(trim((string) $this->pd03_planilhadistribuicao) == null ){ 
          $this->erro_sql = " Campo Planilha de Distribuição não informado.";
          $this->erro_campo = "pd03_planilhadistribuicao";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_planilhadistribuicaomaterial {
          return false;
        }
      }
-     if(trim($this->pd03_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pd03_material"])){ 
+     if(trim((string) $this->pd03_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pd03_material"])){ 
        $sql  .= $virgula." pd03_material = $this->pd03_material ";
        $virgula = ",";
-       if(trim($this->pd03_material) == null ){ 
+       if(trim((string) $this->pd03_material) == null ){ 
          $this->erro_sql = " Campo Material não informado.";
          $this->erro_campo = "pd03_material";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_planilhadistribuicaomaterial {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21588,'$this->pd03_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pd03_sequencial"]) || $this->pd03_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3876,21588,'".AddSlashes(pg_result($resaco,$conresaco,'pd03_sequencial'))."','$this->pd03_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3876,21588,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pd03_sequencial'))."','$this->pd03_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pd03_planilhadistribuicao"]) || $this->pd03_planilhadistribuicao != "")
-             $resac = db_query("insert into db_acount values($acount,3876,21589,'".AddSlashes(pg_result($resaco,$conresaco,'pd03_planilhadistribuicao'))."','$this->pd03_planilhadistribuicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3876,21589,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pd03_planilhadistribuicao'))."','$this->pd03_planilhadistribuicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pd03_material"]) || $this->pd03_material != "")
-             $resac = db_query("insert into db_acount values($acount,3876,21590,'".AddSlashes(pg_result($resaco,$conresaco,'pd03_material'))."','$this->pd03_material',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3876,21590,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pd03_material'))."','$this->pd03_material',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_planilhadistribuicaomaterial {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21588,'$pd03_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3876,21588,'','".AddSlashes(pg_result($resaco,$iresaco,'pd03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3876,21589,'','".AddSlashes(pg_result($resaco,$iresaco,'pd03_planilhadistribuicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3876,21590,'','".AddSlashes(pg_result($resaco,$iresaco,'pd03_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3876,21588,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pd03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3876,21589,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pd03_planilhadistribuicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3876,21590,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pd03_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

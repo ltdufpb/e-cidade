@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 //$ano = 2006;
@@ -90,7 +90,7 @@ order by z01_nome
 ";
 //echo $sql;exit;
 $result = pg_exec($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if($xxnum == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=No nenhum registro encontrado no perodo de '.$mes.' / '.$ano);
 }
@@ -108,7 +108,7 @@ $xsec = 0;
 $pre = 1;
 $pdf->setfillcolor(235);
 if($totais == 't'){
-  for($x = 0; $x < pg_numrows($result);$x++){
+  for($x = 0; $x < pg_num_rows($result);$x++){
      db_fieldsmemory($result,$x);
      if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
         $pdf->addpage();
@@ -209,7 +209,7 @@ group by sec
 $pdf->ln(4);
 $result1 = pg_exec($sql1);
 $pdf->cell(35,10,'TOTALIZAO',0,1,"L",0);
-for($xx = 0; $xx < pg_numrows($result1);$xx++){
+for($xx = 0; $xx < pg_num_rows($result1);$xx++){
    db_fieldsmemory($result1,$xx);
    if($pre == 1){
      $pre = 0;
@@ -290,7 +290,7 @@ $result2 = pg_exec($sql2);
 $pdf->ln(4);
 $pdf->cell(35,10,'TOTAL DA EDUCACAO',0,1,"L",0);
 $pdf->setfont('arial','',8);
-for($xx = 0; $xx < pg_numrows($result2);$xx++){
+for($xx = 0; $xx < pg_num_rows($result2);$xx++){
    db_fieldsmemory($result2,$xx);
    if($pre == 1){
      $pre = 0;

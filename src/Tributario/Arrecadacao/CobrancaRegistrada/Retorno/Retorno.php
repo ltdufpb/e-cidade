@@ -29,20 +29,8 @@ namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Retorno;
 
 class Retorno
 {
-  private $iNumpre;
-
-  private $iCodigoMovimento;
-
-  private $iCodRet;
-
-  private $aOcorrencias;
-
-  public function __construct($iNumpre, $iCodigoMovimento, $iCodRet, $aOcorrencias)
+  public function __construct(private $iNumpre, private $iCodigoMovimento, private $iCodRet, private $aOcorrencias)
   {
-    $this->iNumpre          = $iNumpre;
-    $this->iCodigoMovimento = $iCodigoMovimento;
-    $this->iCodRet          = $iCodRet;
-    $this->aOcorrencias     = $aOcorrencias;
   }
 
   public function getNumpre()

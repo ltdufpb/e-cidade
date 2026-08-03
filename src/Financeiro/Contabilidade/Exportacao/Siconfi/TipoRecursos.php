@@ -29,11 +29,11 @@ class TipoRecursos
             throw new \DBException("Não foi localizado nenhum Tipo de Recurso.");
         }
 
-        $dados = array();
-        $dados[] = array("Código no e-cidade", "Descrição do Recurso", "Código do SICONFI");
+        $dados = [];
+        $dados[] = ["Código no e-cidade", "Descrição do Recurso", "Código do SICONFI"];
 
         for ($i=0; $i < pg_num_rows($rs); $i++) {
-            $dado = array();
+            $dado = [];
             $oStd = \db_utils::fieldsMemory($rs, $i);
             $dado[]  = $oStd->o15_recurso;
             $dado[]  = $oStd->o15_descr;

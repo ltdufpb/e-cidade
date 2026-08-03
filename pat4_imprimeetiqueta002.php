@@ -33,7 +33,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 ?>
 <html>

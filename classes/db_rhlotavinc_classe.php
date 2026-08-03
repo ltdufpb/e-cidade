@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE rhlotavinc
 class cl_rhlotavinc {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $rh25_codlotavinc = 0;
-   var $rh25_codigo = 0;
-   var $rh25_vinculo = null;
-   var $rh25_anousu = 0;
-   var $rh25_projativ = 0;
-   var $rh25_recurso = 0;
-   var $rh25_programa = 0;
-   var $rh25_subfuncao = 0;
-   var $rh25_funcao = 0;
+   public $rh25_codlotavinc = 0;
+   public $rh25_codigo = 0;
+   public $rh25_vinculo = null;
+   public $rh25_anousu = 0;
+   public $rh25_projativ = 0;
+   public $rh25_recurso = 0;
+   public $rh25_programa = 0;
+   public $rh25_subfuncao = 0;
+   public $rh25_funcao = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  rh25_codlotavinc = int8 = Código
                  rh25_codigo = int4 = Código da Lotação
                  rh25_vinculo = varchar(1) = Vínculo
@@ -64,10 +64,10 @@ class cl_rhlotavinc {
                  rh25_funcao = int4 = Função
                  ";
    //funcao construtor da classe
-   function cl_rhlotavinc() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlotavinc");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -161,10 +161,10 @@ class cl_rhlotavinc {
          $this->erro_status = "0";
          return false;
        }
-       $this->rh25_codlotavinc = pg_result($result,0,0);
+       $this->rh25_codlotavinc = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from rhlotavinc_codlotav_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh25_codlotavinc)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh25_codlotavinc)){
          $this->erro_sql = " Campo rh25_codlotavinc maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_rhlotavinc {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Vínculo entre lotação/vínculo/atividade ($this->rh25_codlotavinc) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Vínculo entre lotação/vínculo/atividade já Cadastrado";
@@ -232,18 +232,18 @@ class cl_rhlotavinc {
      $resaco = $this->sql_record($this->sql_query_file($this->rh25_codlotavinc));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7134,'$this->rh25_codlotavinc','I')");
-       $resac = db_query("insert into db_acount values($acount,1182,7134,'','".AddSlashes(pg_result($resaco,0,'rh25_codlotavinc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1182,7135,'','".AddSlashes(pg_result($resaco,0,'rh25_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1182,7136,'','".AddSlashes(pg_result($resaco,0,'rh25_vinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1182,7137,'','".AddSlashes(pg_result($resaco,0,'rh25_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1182,7138,'','".AddSlashes(pg_result($resaco,0,'rh25_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1182,7238,'','".AddSlashes(pg_result($resaco,0,'rh25_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1182,19146,'','".AddSlashes(pg_result($resaco,0,'rh25_programa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1182,19147,'','".AddSlashes(pg_result($resaco,0,'rh25_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1182,19148,'','".AddSlashes(pg_result($resaco,0,'rh25_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1182,7134,'','".AddSlashes(pg_fetch_result($resaco,0,'rh25_codlotavinc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1182,7135,'','".AddSlashes(pg_fetch_result($resaco,0,'rh25_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1182,7136,'','".AddSlashes(pg_fetch_result($resaco,0,'rh25_vinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1182,7137,'','".AddSlashes(pg_fetch_result($resaco,0,'rh25_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1182,7138,'','".AddSlashes(pg_fetch_result($resaco,0,'rh25_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1182,7238,'','".AddSlashes(pg_fetch_result($resaco,0,'rh25_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1182,19146,'','".AddSlashes(pg_fetch_result($resaco,0,'rh25_programa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1182,19147,'','".AddSlashes(pg_fetch_result($resaco,0,'rh25_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1182,19148,'','".AddSlashes(pg_fetch_result($resaco,0,'rh25_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -252,10 +252,10 @@ class cl_rhlotavinc {
       $this->atualizacampos();
      $sql = " update rhlotavinc set ";
      $virgula = "";
-     if(trim($this->rh25_codlotavinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_codlotavinc"])){
+     if(trim((string) $this->rh25_codlotavinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_codlotavinc"])){
        $sql  .= $virgula." rh25_codlotavinc = $this->rh25_codlotavinc ";
        $virgula = ",";
-       if(trim($this->rh25_codlotavinc) == null ){
+       if(trim((string) $this->rh25_codlotavinc) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "rh25_codlotavinc";
          $this->erro_banco = "";
@@ -265,10 +265,10 @@ class cl_rhlotavinc {
          return false;
        }
      }
-     if(trim($this->rh25_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_codigo"])){
+     if(trim((string) $this->rh25_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_codigo"])){
        $sql  .= $virgula." rh25_codigo = $this->rh25_codigo ";
        $virgula = ",";
-       if(trim($this->rh25_codigo) == null ){
+       if(trim((string) $this->rh25_codigo) == null ){
          $this->erro_sql = " Campo Código da Lotação nao Informado.";
          $this->erro_campo = "rh25_codigo";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_rhlotavinc {
          return false;
        }
      }
-     if(trim($this->rh25_vinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_vinculo"])){
+     if(trim((string) $this->rh25_vinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_vinculo"])){
        $sql  .= $virgula." rh25_vinculo = '$this->rh25_vinculo' ";
        $virgula = ",";
-       if(trim($this->rh25_vinculo) == null ){
+       if(trim((string) $this->rh25_vinculo) == null ){
          $this->erro_sql = " Campo Vínculo nao Informado.";
          $this->erro_campo = "rh25_vinculo";
          $this->erro_banco = "";
@@ -291,10 +291,10 @@ class cl_rhlotavinc {
          return false;
        }
      }
-     if(trim($this->rh25_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_anousu"])){
+     if(trim((string) $this->rh25_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_anousu"])){
        $sql  .= $virgula." rh25_anousu = $this->rh25_anousu ";
        $virgula = ",";
-       if(trim($this->rh25_anousu) == null ){
+       if(trim((string) $this->rh25_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "rh25_anousu";
          $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_rhlotavinc {
          return false;
        }
      }
-     if(trim($this->rh25_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_projativ"])){
+     if(trim((string) $this->rh25_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_projativ"])){
        $sql  .= $virgula." rh25_projativ = $this->rh25_projativ ";
        $virgula = ",";
-       if(trim($this->rh25_projativ) == null ){
+       if(trim((string) $this->rh25_projativ) == null ){
          $this->erro_sql = " Campo Projetos / Atividades nao Informado.";
          $this->erro_campo = "rh25_projativ";
          $this->erro_banco = "";
@@ -317,10 +317,10 @@ class cl_rhlotavinc {
          return false;
        }
      }
-     if(trim($this->rh25_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_recurso"])){
+     if(trim((string) $this->rh25_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_recurso"])){
        $sql  .= $virgula." rh25_recurso = $this->rh25_recurso ";
        $virgula = ",";
-       if(trim($this->rh25_recurso) == null ){
+       if(trim((string) $this->rh25_recurso) == null ){
          $this->erro_sql = " Campo Recurso nao Informado.";
          $this->erro_campo = "rh25_recurso";
          $this->erro_banco = "";
@@ -330,22 +330,22 @@ class cl_rhlotavinc {
          return false;
        }
      }
-     if(trim($this->rh25_programa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_programa"])){
-        if(trim($this->rh25_programa)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh25_programa"])){
+     if(trim((string) $this->rh25_programa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_programa"])){
+        if(trim((string) $this->rh25_programa)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh25_programa"])){
            $this->rh25_programa = "null" ;
         }
        $sql  .= $virgula." rh25_programa = $this->rh25_programa ";
        $virgula = ",";
      }
-     if(trim($this->rh25_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_subfuncao"])){
-        if(trim($this->rh25_subfuncao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh25_subfuncao"])){
+     if(trim((string) $this->rh25_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_subfuncao"])){
+        if(trim((string) $this->rh25_subfuncao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh25_subfuncao"])){
            $this->rh25_subfuncao = "null" ;
         }
        $sql  .= $virgula." rh25_subfuncao = $this->rh25_subfuncao ";
        $virgula = ",";
      }
-     if(trim($this->rh25_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_funcao"])){
-        if(trim($this->rh25_funcao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh25_funcao"])){
+     if(trim((string) $this->rh25_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh25_funcao"])){
+        if(trim((string) $this->rh25_funcao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh25_funcao"])){
            $this->rh25_funcao = "null" ;
         }
        $sql  .= $virgula." rh25_funcao = $this->rh25_funcao ";
@@ -359,27 +359,27 @@ class cl_rhlotavinc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7134,'$this->rh25_codlotavinc','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh25_codlotavinc"]) || $this->rh25_codlotavinc != "")
-           $resac = db_query("insert into db_acount values($acount,1182,7134,'".AddSlashes(pg_result($resaco,$conresaco,'rh25_codlotavinc'))."','$this->rh25_codlotavinc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1182,7134,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh25_codlotavinc'))."','$this->rh25_codlotavinc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh25_codigo"]) || $this->rh25_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,1182,7135,'".AddSlashes(pg_result($resaco,$conresaco,'rh25_codigo'))."','$this->rh25_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1182,7135,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh25_codigo'))."','$this->rh25_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh25_vinculo"]) || $this->rh25_vinculo != "")
-           $resac = db_query("insert into db_acount values($acount,1182,7136,'".AddSlashes(pg_result($resaco,$conresaco,'rh25_vinculo'))."','$this->rh25_vinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1182,7136,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh25_vinculo'))."','$this->rh25_vinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh25_anousu"]) || $this->rh25_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,1182,7137,'".AddSlashes(pg_result($resaco,$conresaco,'rh25_anousu'))."','$this->rh25_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1182,7137,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh25_anousu'))."','$this->rh25_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh25_projativ"]) || $this->rh25_projativ != "")
-           $resac = db_query("insert into db_acount values($acount,1182,7138,'".AddSlashes(pg_result($resaco,$conresaco,'rh25_projativ'))."','$this->rh25_projativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1182,7138,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh25_projativ'))."','$this->rh25_projativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh25_recurso"]) || $this->rh25_recurso != "")
-           $resac = db_query("insert into db_acount values($acount,1182,7238,'".AddSlashes(pg_result($resaco,$conresaco,'rh25_recurso'))."','$this->rh25_recurso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1182,7238,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh25_recurso'))."','$this->rh25_recurso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh25_programa"]) || $this->rh25_programa != "")
-           $resac = db_query("insert into db_acount values($acount,1182,19146,'".AddSlashes(pg_result($resaco,$conresaco,'rh25_programa'))."','$this->rh25_programa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1182,19146,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh25_programa'))."','$this->rh25_programa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh25_subfuncao"]) || $this->rh25_subfuncao != "")
-           $resac = db_query("insert into db_acount values($acount,1182,19147,'".AddSlashes(pg_result($resaco,$conresaco,'rh25_subfuncao'))."','$this->rh25_subfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1182,19147,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh25_subfuncao'))."','$this->rh25_subfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh25_funcao"]) || $this->rh25_funcao != "")
-           $resac = db_query("insert into db_acount values($acount,1182,19148,'".AddSlashes(pg_result($resaco,$conresaco,'rh25_funcao'))."','$this->rh25_funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1182,19148,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh25_funcao'))."','$this->rh25_funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,18 +424,18 @@ class cl_rhlotavinc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7134,'$rh25_codlotavinc','E')");
-         $resac = db_query("insert into db_acount values($acount,1182,7134,'','".AddSlashes(pg_result($resaco,$iresaco,'rh25_codlotavinc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1182,7135,'','".AddSlashes(pg_result($resaco,$iresaco,'rh25_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1182,7136,'','".AddSlashes(pg_result($resaco,$iresaco,'rh25_vinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1182,7137,'','".AddSlashes(pg_result($resaco,$iresaco,'rh25_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1182,7138,'','".AddSlashes(pg_result($resaco,$iresaco,'rh25_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1182,7238,'','".AddSlashes(pg_result($resaco,$iresaco,'rh25_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1182,19146,'','".AddSlashes(pg_result($resaco,$iresaco,'rh25_programa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1182,19147,'','".AddSlashes(pg_result($resaco,$iresaco,'rh25_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1182,19148,'','".AddSlashes(pg_result($resaco,$iresaco,'rh25_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1182,7134,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh25_codlotavinc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1182,7135,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh25_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1182,7136,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh25_vinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1182,7137,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh25_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1182,7138,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh25_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1182,7238,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh25_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1182,19146,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh25_programa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1182,19147,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh25_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1182,19148,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh25_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhlotavinc
@@ -495,7 +495,7 @@ class cl_rhlotavinc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhlotavinc";
@@ -543,7 +543,7 @@ class cl_rhlotavinc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -577,7 +577,7 @@ class cl_rhlotavinc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

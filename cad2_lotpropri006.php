@@ -37,8 +37,8 @@ $clface->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 //die($HTTP_SERVER_VARS["QUERY_STRING"]);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //if(isset($j37_quadra) && $j37_quadra != ""){
 //  $quadra = split(",",$j37_quadra);
@@ -91,7 +91,7 @@ if(isset($_SESSION["quadra"]) && isset($_SESSION["setor"])){
   $set = db_getsession('setor');
 
 
-  $quadra = split(",",$qua);
+  $quadra = preg_split("#,#m",$qua);
   $vir = "";
   $qua = "";
   for($i=0;$i<count($quadra);$i++){

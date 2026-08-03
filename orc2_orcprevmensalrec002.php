@@ -40,10 +40,10 @@ require_once modification('model/relatorioContabil.model.php');
 try {
     $oGet = db_utils::postMemory($_GET);
     $codigoRelatorio = $oGet->iCodRel;
-    $recursos = $oGet->slistaRecursos == '' ? null : explode(',', $oGet->slistaRecursos);
+    $recursos = $oGet->slistaRecursos == '' ? null : explode(',', (string) $oGet->slistaRecursos);
     $oRelatorioContabil = new relatorioContabil($codigoRelatorio);
     $clcronogramaFinanceiro = new cronogramaFinanceiro($oGet->iRec);
-    $clcronogramaFinanceiro->setInstituicoes(explode('-', $oGet->sListaInstit));
+    $clcronogramaFinanceiro->setInstituicoes(explode('-', (string) $oGet->sListaInstit));
     $receitas = $clcronogramaFinanceiro->getMetasReceita(null, $recursos);
     $iSomaTotalGeral = 0;
 
@@ -56,8 +56,8 @@ try {
         $head4 = "Orçamento do exercício de {$clcronogramaFinanceiro->getAno()}";
         $head5 = 'Valores expressos por conta de receita';
 
-        $receitasRelatorio = array();
-        $totaisRelatorio = array();
+        $receitasRelatorio = [];
+        $totaisRelatorio = [];
 
         foreach ($receitas as $receita) {
             if (empty($receita->o70_codigo)) {
@@ -71,7 +71,7 @@ try {
             $receitaRelatorio->o57_fonte = $receita->o57_fonte;
             $receitaRelatorio->o57_descr = substr(urldecode($receita->o57_descr), 0, 35);
             $receitaRelatorio->aMetas = new stdClass();
-            $receitaRelatorio->aMetas->dados = array();
+            $receitaRelatorio->aMetas->dados = [];
 
             foreach ($receita->aMetas->dados as $chave => $dado) {
                 $dadoRelatorio = new stdClass();
@@ -98,8 +98,8 @@ try {
             $head4 = "Orçamento do exercício de {$clcronogramaFinanceiro->getAno()}";
             $head5 = 'Valores expressos por recurso';
 
-            $receitasRelatorio = array();
-            $totaisRelatorio = array();
+            $receitasRelatorio = [];
+            $totaisRelatorio = [];
 
             for ($jInd = 0; $jInd < 12; $jInd++) {
                 $totaisRelatorio[$jInd] = 0;
@@ -159,8 +159,8 @@ try {
                 $head4 = "Orçamento do exercício de {$clcronogramaFinanceiro->getAno()}";
                 $head5 = 'Valores expressos por conta de receita';
 
-                $receitasRelatorio = array();
-                $totaisRelatorio = array();
+                $receitasRelatorio = [];
+                $totaisRelatorio = [];
 
                 for ($iInd = 0; $iInd < 6; $iInd++) {
                     $totaisRelatorio[$iInd] = 0;
@@ -204,8 +204,8 @@ try {
                     $head4 = "Orçamento do exercício de {$clcronogramaFinanceiro->getAno()}";
                     $head5 = 'Valores expressos por recurso';
 
-                    $receitasRelatorio = array();
-                    $totaisRelatorio = array();
+                    $receitasRelatorio = [];
+                    $totaisRelatorio = [];
 
                     for ($iInd = 0; $iInd < 6; $iInd++) {
                         $totaisRelatorio[$iInd] = 0;
@@ -281,13 +281,13 @@ try {
     }
 
     $oRelatorio = new stdClass();
-    $oRelatorio->linha = array();
+    $oRelatorio->linha = [];
     $oRelatorio->linha[0] = criaStdClass($descricao, 86);
     $oRelatorio->linha[1] = criaStdClass($descricao1, 194);
 
     if ($oGet->iPeriodoImpr == 1) {
         $tamanho = 26;
-        $aCabecalho = array();
+        $aCabecalho = [];
         $aCabecalho[0] = criaStdClass('Estrutural', 26);
         $aCabecalho[1] = criaStdClass('Descricao', 60);
         $aCabecalho[2] = criaStdClass('Janeiro', $tamanho);
@@ -313,7 +313,7 @@ try {
         if ($oGet->iPeriodoImpr == 2) {
             $tamanho = 27;
 
-            $aCabecalho = array();
+            $aCabecalho = [];
             $aCabecalho[0] = criaStdClass('Estrutural', 26);
             $aCabecalho[1] = criaStdClass('Descricao', 60);
             $aCabecalho[2] = criaStdClass('1º Bimestre', $tamanho);
@@ -335,7 +335,7 @@ try {
     $rsConfig = $cldb_config->sql_record($cldb_config->sql_query_file(db_getsession('DB_instit')));
     $oConfig = db_utils::fieldsMemory($rsConfig, 0);
 
-    $head1 = "MUNICÍPIO DE " . strtoupper($oConfig->munic);
+    $head1 = "MUNICÍPIO DE " . strtoupper((string) $oConfig->munic);
 
     $pdf = new PDF('L');
     $pdf->Open();

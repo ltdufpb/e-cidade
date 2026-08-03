@@ -88,7 +88,7 @@ class AlteracaoContratadoService
         $justificativa = db_stdClass::normalizeStringJsonEscapeString($parametros->justificativa);
         $posicoes = $acordo->getUltimaPosicao();
 
-        $aItens = array();
+        $aItens = [];
         foreach ($posicoes->getItens() as $posicao) {
             $item = new stdClass();
             $item->codigo = $posicao->getCodigo();
@@ -100,15 +100,15 @@ class AlteracaoContratadoService
             $item->valor = 0;
             $item->servico = $posicao->getMaterial()->isServico();
             $item->servicoquantidade = $posicao->getControlaQuantidade();
-            $item->dotacoes = array();
+            $item->dotacoes = [];
 
             foreach ($posicao->getDotacoes() as $oDotacao) {
-                $item->dotacoes[] = (object) array(
+                $item->dotacoes[] = (object) [
                     'dotacao' => $oDotacao->dotacao,
                     'quantidade' => $oDotacao->quantidade,
                     'valor' => $oDotacao->valor,
                     'valororiginal' => $oDotacao->valor
-                );
+                ];
             }
 
             $aItens[] = $item;

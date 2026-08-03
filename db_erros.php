@@ -34,7 +34,7 @@ if (defined('ECIDADE_EXTENSION_PATH') && Registry::has('app.response')) {
 $sMensagemErro = empty($_GET['db_erro']) ? '' : $_GET['db_erro'];
 
 // converte para latin1
-$encode = mb_detect_encoding($sMensagemErro, "UTF-8, ISO-8859-1, ISO-8859-15", true);
+$encode = mb_detect_encoding((string) $sMensagemErro, "UTF-8, ISO-8859-1, ISO-8859-15", true);
 $sMensagemErro = mb_convert_encoding($sMensagemErro, 'ISO-8859-1', $encode);
 
 // troca \n por tag br

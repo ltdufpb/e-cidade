@@ -29,43 +29,43 @@
 require_once modification("model/impressao.model.php");
 
 final class impressaoOS214 extends impressao {
-	
+
 	function __construct($sIp, $sPorta){
-		
+
 		parent::setIp($sIp);
 		parent::setPorta($sPorta);
-		
+
 	}
-	
+
 	/**
 	 * Método para escrever o testo em uma linha
 	 *
 	 * @param string $sTexto
 	 */
-	
+
 	function imprimeLinha($sTexto,$sX,$sY){
 		$sLinha = db_removeAcentuacao($sTexto);
 		$sLinha = substr($sLinha,0,23);
 		$sLinha = str_pad($sLinha,23,' ',STR_PAD_BOTH);
     $sLinha = 'A'.$sX.','.$sY.',0,3,1,1,N,"'.$sLinha.'"';
 		parent::addComando($sLinha);
-		
+
 	}
-	
+
 	/**
 	 * Método para escrever o código de barras
 	 *
 	 * @param string $sTexto
 	 */
-	
+
 	function imprimeCodigoBarras($sCodigo,$sX,$sY,$sType){
-		
-    $sLinha = str_pad(trim($sCodigo),7,'0',STR_PAD_LEFT);
+
+    $sLinha = str_pad(trim((string) $sCodigo),7,'0',STR_PAD_LEFT);
     $sCodigoBarra = 'B'.$sX.','.$sY.',0,9,'.$sType.',3,41,B,"'.$sLinha.'"';
 		parent::addComando($sCodigoBarra);
-		
+
 	}
-	
+
 	/**
 	 * Método para iniciar a impressao de uma etiqueta
 	 *
@@ -74,9 +74,9 @@ final class impressaoOS214 extends impressao {
 	function inicializa(){
 		$sTexto = "N";
 		parent::addComando($sTexto);
-		
+
 	}
-	
+
 	/**
 	 * Método para finalizar a impressao
 	 *
@@ -86,19 +86,20 @@ final class impressaoOS214 extends impressao {
 		$sTexto = "P1";
 		parent::addComando($sTexto);		
 	}
-	
+
 	/**
 	 * Método para finalizar os comandos
 	 *
 	 * @param string $sFinalizadorCoamando
 	 */
-	
-	function rodarComandos(){
+
+	#[\Override]
+    function rodarComandos(){
 		$sFinalizadorComando = "\n";
 		parent::rodarComandos($sFinalizadorComando);
-	
+
 	}
-	
+
 //	function resetComandos(){
 //       echo w jfilaflkjçsdjf
 //       $t = afksjdhkjhf shf;

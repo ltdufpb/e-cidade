@@ -124,7 +124,7 @@ $oGet  = db_utils::postMemory($_GET);
             echo "<TR>";
             echo "  <TD><B>Tipo de Pesquisa: </B></TD>";
             echo "  <TD>";
-            db_select("cboOrigem", array("0" => "Selecione", "C"=>"CGM","M"=>"Matrícula","I"=>"Inscrição"),true, 1, "onChange =\"js_montaForm(this.value);\"");
+            db_select("cboOrigem", ["0" => "Selecione", "C"=>"CGM","M"=>"Matrícula","I"=>"Inscrição"],true, 1, "onChange =\"js_montaForm(this.value);\"");
             echo "  </TD>";
             echo "</TR>";
           }

@@ -122,14 +122,14 @@ class Cgs
      * Estados civis indexados pelo seu código
      * @var array
      */
-    protected $aEstadosCivis = array(
+    protected $aEstadosCivis = [
       1 => "SOLTEIRO",
       2 => "CASADO",
       3 => "VIÚVO",
       4 => "SEPARADO",
       5 => "UNIÃO C.",
       9 => "IGNORADO"
-    );
+    ];
 
     /**
      * Identidade do paciente
@@ -159,7 +159,7 @@ class Cgs
      * Requisições de exames realizadas pelo cgs
      * @var RequisicaoExame[]
      */
-    protected $aRequisicaoExame = array();
+    protected $aRequisicaoExame = [];
 
     protected $iOid;
 
@@ -373,7 +373,7 @@ class Cgs
         }
 
         $iLinhasCartaoSus = pg_num_rows($rsCartaoSus);
-        $aCartaoSus = array();
+        $aCartaoSus = [];
 
         if ($iLinhasCartaoSus > 0) {
             for ($iContador = 0; $iContador < $iLinhasCartaoSus; $iContador++) {
@@ -889,7 +889,7 @@ class Cgs
     public function getDocumentos()
     {
         if (is_null($this->iCodigo)) {
-            return array();
+            return [];
         }
 
         return DocumentoBaseRepository::getDocumentosBaseCgsDocumento($this);
@@ -926,7 +926,7 @@ class Cgs
     {
         $oDaoCgs = new cl_cgs();
 
-        if (trim($oDadosCgs->dados_pessoais->cns) != '') {
+        if (trim((string) $oDadosCgs->dados_pessoais->cns) != '') {
             $sWhereValidaCgs = "z01_c_cartaosus = '{$oDadosCgs->dados_pessoais->cns}'";
 
             if (!is_null($this->iCodigo)) {
@@ -945,10 +945,10 @@ class Cgs
             }
         }
 
-        $tipoSangue = isset($oDadosCgs->dados_pessoais->tipoSangue) ? $oDadosCgs->dados_pessoais->tipoSangue : '';
+        $tipoSangue = $oDadosCgs->dados_pessoais->tipoSangue ?? '';
 
         $oDaoCgs->z01_i_tiposangue = $tipoSangue;
-        $oDaoCgs->z01_i_fatorrh = isset($oDadosCgs->dados_pessoais->fatorRH) ? $oDadosCgs->dados_pessoais->fatorRH : '';
+        $oDaoCgs->z01_i_fatorrh = $oDadosCgs->dados_pessoais->fatorRH ?? '';
         $oDaoCgs->z01_c_cartaosus = $oDadosCgs->dados_pessoais->cns;
         $oDaoCgs->z01_v_familia = '';
         $oDaoCgs->z01_v_microarea = '';
@@ -981,7 +981,7 @@ class Cgs
     public function salvarCgsCartaoSus($oDadosCgs)
     {
         $oDaoCgsCartaoSus = new cl_cgs_cartaosus();
-        $sCns = trim($oDadosCgs->dados_pessoais->cns);
+        $sCns = trim((string) $oDadosCgs->dados_pessoais->cns);
 
         /**
          * Quando não houver CNS ou ele for igual ao existente, não inclui nenhum registro
@@ -1139,7 +1139,7 @@ class Cgs
         /**
          * DADOS PESSOAIS
          */
-        $nomeSocial = isset($oDadosCgs->dados_pessoais->nomeSocial) ? $oDadosCgs->dados_pessoais->nomeSocial : '';
+        $nomeSocial = $oDadosCgs->dados_pessoais->nomeSocial ?? '';
         $dataNascimento = null;
         if (!empty($oDadosCgs->dados_pessoais->dataNascimento)) {
             $oDataNascimento = new DBDate($oDadosCgs->dados_pessoais->dataNascimento);
@@ -1293,8 +1293,8 @@ class Cgs
              * GERAIS
              */
             case 3000000:
-                $oDaoCgsUnd->z01_c_pis = isset($aAtributosValor[0]->valor) ? $aAtributosValor[0]->valor : '';
-                $oDaoCgsUnd->z01_d_datapais = isset($aAtributosValor[1]->valor) ? $aAtributosValor[1]->valor : '';
+                $oDaoCgsUnd->z01_c_pis = $aAtributosValor[0]->valor ?? '';
+                $oDaoCgsUnd->z01_d_datapais = $aAtributosValor[1]->valor ?? '';
 
                 break;
 
@@ -1302,12 +1302,12 @@ class Cgs
              * IDENTIDADE
              */
             case 3000001:
-                $orgaoEmissor = isset($aAtributosValor[2]->valor) ? $aAtributosValor[2]->valor : '';
+                $orgaoEmissor = $aAtributosValor[2]->valor ?? '';
 
-                $oDaoCgsUnd->z01_v_ident = isset($aAtributosValor[0]->valor) ? $aAtributosValor[0]->valor : '';
-                $oDaoCgsUnd->z01_d_dtemissao = isset($aAtributosValor[1]->valor) ? $aAtributosValor[1]->valor : '';
+                $oDaoCgsUnd->z01_v_ident = $aAtributosValor[0]->valor ?? '';
+                $oDaoCgsUnd->z01_d_dtemissao = $aAtributosValor[1]->valor ?? '';
                 $oDaoCgsUnd->z01_orgaoemissoridentidade = $orgaoEmissor;
-                $oDaoCgsUnd->z01_c_ufident = isset($aAtributosValor[3]->valor) ? $aAtributosValor[3]->valor : '';
+                $oDaoCgsUnd->z01_c_ufident = $aAtributosValor[3]->valor ?? '';
 
                 break;
 
@@ -1315,10 +1315,10 @@ class Cgs
              * CTPS
              */
             case 3000002:
-                $oDaoCgsUnd->z01_c_numctps = isset($aAtributosValor[0]->valor) ? $aAtributosValor[0]->valor : '';
-                $oDaoCgsUnd->z01_c_seriectps = isset($aAtributosValor[1]->valor) ? $aAtributosValor[1]->valor : '';
-                $oDaoCgsUnd->z01_d_dtemissaoctps = isset($aAtributosValor[2]->valor) ? $aAtributosValor[2]->valor : '';
-                $oDaoCgsUnd->z01_c_ufctps = isset($aAtributosValor[3]->valor) ? $aAtributosValor[3]->valor : '';
+                $oDaoCgsUnd->z01_c_numctps = $aAtributosValor[0]->valor ?? '';
+                $oDaoCgsUnd->z01_c_seriectps = $aAtributosValor[1]->valor ?? '';
+                $oDaoCgsUnd->z01_d_dtemissaoctps = $aAtributosValor[2]->valor ?? '';
+                $oDaoCgsUnd->z01_c_ufctps = $aAtributosValor[3]->valor ?? '';
 
                 break;
 
@@ -1326,12 +1326,12 @@ class Cgs
              * CERTIDÃO
              */
             case 3000003:
-                $oDaoCgsUnd->z01_c_certidaotipo = isset($aAtributosValor[0]->valor) ? $aAtributosValor[0]->valor : '';
-                $oDaoCgsUnd->z01_c_certidaolivro = isset($aAtributosValor[1]->valor) ? $aAtributosValor[1]->valor : '';
-                $oDaoCgsUnd->z01_c_certidaotermo = isset($aAtributosValor[2]->valor) ? $aAtributosValor[2]->valor : '';
-                $oDaoCgsUnd->z01_c_certidaocart = isset($aAtributosValor[3]->valor) ? $aAtributosValor[3]->valor : '';
-                $oDaoCgsUnd->z01_c_certidaofolha = isset($aAtributosValor[4]->valor) ? $aAtributosValor[4]->valor : '';
-                $oDaoCgsUnd->z01_c_certidaodata = isset($aAtributosValor[5]->valor) ? $aAtributosValor[5]->valor : '';
+                $oDaoCgsUnd->z01_c_certidaotipo = $aAtributosValor[0]->valor ?? '';
+                $oDaoCgsUnd->z01_c_certidaolivro = $aAtributosValor[1]->valor ?? '';
+                $oDaoCgsUnd->z01_c_certidaotermo = $aAtributosValor[2]->valor ?? '';
+                $oDaoCgsUnd->z01_c_certidaocart = $aAtributosValor[3]->valor ?? '';
+                $oDaoCgsUnd->z01_c_certidaofolha = $aAtributosValor[4]->valor ?? '';
+                $oDaoCgsUnd->z01_c_certidaodata = $aAtributosValor[5]->valor ?? '';
 
                 break;
 
@@ -1339,11 +1339,11 @@ class Cgs
              * CNH
              */
             case 3000004:
-                $oDaoCgsUnd->z01_v_cnh = isset($aAtributosValor[0]->valor) ? $aAtributosValor[0]->valor : '';
-                $oDaoCgsUnd->z01_v_categoria = isset($aAtributosValor[1]->valor) ? $aAtributosValor[1]->valor : '';
-                $oDaoCgsUnd->z01_d_dtemissaocnh = isset($aAtributosValor[2]->valor) ? $aAtributosValor[2]->valor : '';
-                $oDaoCgsUnd->z01_d_dthabilitacao = isset($aAtributosValor[3]->valor) ? $aAtributosValor[3]->valor : '';
-                $oDaoCgsUnd->z01_d_dtvencimento = isset($aAtributosValor[4]->valor) ? $aAtributosValor[4]->valor : '';
+                $oDaoCgsUnd->z01_v_cnh = $aAtributosValor[0]->valor ?? '';
+                $oDaoCgsUnd->z01_v_categoria = $aAtributosValor[1]->valor ?? '';
+                $oDaoCgsUnd->z01_d_dtemissaocnh = $aAtributosValor[2]->valor ?? '';
+                $oDaoCgsUnd->z01_d_dthabilitacao = $aAtributosValor[3]->valor ?? '';
+                $oDaoCgsUnd->z01_d_dtvencimento = $aAtributosValor[4]->valor ?? '';
 
                 break;
 
@@ -1351,9 +1351,9 @@ class Cgs
              * DADOS BANCÁRIOS
              */
             case 3000005:
-                $oDaoCgsUnd->z01_c_banco = isset($aAtributosValor[0]->valor) ? $aAtributosValor[0]->valor : '';
-                $oDaoCgsUnd->z01_c_agencia = isset($aAtributosValor[1]->valor) ? $aAtributosValor[1]->valor : '';
-                $oDaoCgsUnd->z01_c_conta = isset($aAtributosValor[2]->valor) ? $aAtributosValor[2]->valor : '';
+                $oDaoCgsUnd->z01_c_banco = $aAtributosValor[0]->valor ?? '';
+                $oDaoCgsUnd->z01_c_agencia = $aAtributosValor[1]->valor ?? '';
+                $oDaoCgsUnd->z01_c_conta = $aAtributosValor[2]->valor ?? '';
 
                 break;
         }

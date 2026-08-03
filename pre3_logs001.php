@@ -63,7 +63,7 @@ input {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC">
-<?php  if(!isset($HTTP_POST_VARS["consultar"])) { ?>
+<?php  if(!isset($_POST["consultar"])) { ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr> 
     <td width="360" height="18">&nbsp;</td>
@@ -88,7 +88,7 @@ input {
                   <tr bgcolor="#CCFF99"> 
                     <td width="12%"><strong>Ordenar:</strong></td>
                     <td width="88%" nowrap> <input type="radio" name="ascdesc" value="asc" <?=@$ascdesc=="asc"?"checked":""?>>
-                      ascendente&nbsp;&nbsp; <input name="ascdesc" type="radio" value="desc" <?php  echo !isset($ascdesc)?"checked":$ascdesc=="desc"?"checked":"" ?>>
+                      ascendente&nbsp;&nbsp; <input name="ascdesc" type="radio" value="desc" <?php  echo (!isset($ascdesc) ? "checked" : $ascdesc=="desc")?"checked":"" ?>>
                       descendente</td>
                   </tr>
                 </table></td>
@@ -101,7 +101,7 @@ input {
             </tr>
             <tr> 
               <td nowrap><strong>Por Data:</strong></td>
-              <td align="center" valign="middle" bgcolor="#CCFF99"> <input name="ordenar" type="radio" value="data" <?php  echo !isset($ordenar)?"checked":$ordenar=="data"?"checked":"" ?>></td>
+              <td align="center" valign="middle" bgcolor="#CCFF99"> <input name="ordenar" type="radio" value="data" <?php  echo (!isset($ordenar) ? "checked" : $ordenar=="data")?"checked":"" ?>></td>
               <td> 
 	        <?php 
                 db_inputdata('data','','','',true,'text',2);
@@ -160,7 +160,7 @@ input {
 </table>
 <?php  } else { ?>
 <?php 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 	    $query = "select ip,to_char(data,'DD-MM-YYYY') as data,hora,arquivo,matricula,inscricao,numcgm,obs from db_logs WHERE 2 > 1";	   

@@ -114,6 +114,7 @@ class AnexoIII extends AnexoIIIMdf
      * @return array
      * @throws \Exception
      */
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         $linhas = parent::getDados($trazerConfiguracaoPadrao);

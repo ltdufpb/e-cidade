@@ -29,15 +29,15 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_db_permherda_classe.php"));
 include(modification("classes/db_db_depart_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_permherda = new cl_db_permherda;
 $cldb_depart = new cl_db_depart;
 
-$totalpormodulo = array();
-$listausuarios_interno = array();
-$listausuarios_externo  = array();
-$listausuarios_perfil  = array();
-$listausuarios  = array();
+$totalpormodulo = [];
+$listausuarios_interno = [];
+$listausuarios_externo  = [];
+$listausuarios_perfil  = [];
+$listausuarios  = [];
 $total_usuarios = 0;
 
 if(!isset($codigo) || (isset($codigo) && trim($codigo) == "")){
@@ -129,7 +129,7 @@ $sql_executa = " select distinct * from (($sql_verifica_permissoesusu) union ($s
 
 /////////////////////////////////////////
 $result_executa = db_query($sql_executa);
-$numrows_executa = pg_numrows($result_executa);
+$numrows_executa = pg_num_rows($result_executa);
 /////////////////////////////////////////
 
 if($numrows_executa == 0){
@@ -145,7 +145,7 @@ $pdf->setfillcolor(235);
 $alt = 4;
 
 $head3 = "RELATÓRIO DE USUÁRIOS";
-$head4 = strtoupper($nomeinst);
+$head4 = strtoupper((string) $nomeinst);
 
 $cabec_usuarios_tipo = "";
 if (isset($tipo_principal) && trim(@$tipo_principal) != ""){
@@ -174,23 +174,13 @@ $head5 = $cabec_usuarios_tipo;
 $cabec_usuarios_situacao = "";
 if (isset($tipo_usuario) && trim(@$tipo_usuario) != ""){
 
-  switch (trim(@$tipo_usuario)) {
-    case "0":
-      $cabec_usuarios_situacao = "SITUAÇÃO: INATIVOS";
-      break;
-    case "1":
-      $cabec_usuarios_situacao = "SITUAÇÃO: ATIVOS";
-      break;
-    case "2":
-      $cabec_usuarios_situacao = "SITUAÇÃO: BLOQUEADOS";
-      break;
-    case "3":
-      $cabec_usuarios_situacao = "SITUAÇÃO: AGUARDANDO ATIVAÇÃO";
-      break;
-    default:
-      $cabec_usuarios_situacao = "SITUAÇÃO: TODOS";
-      
-  }
+  $cabec_usuarios_situacao = match (trim(@$tipo_usuario)) {
+      "0" => "SITUAÇÃO: INATIVOS",
+      "1" => "SITUAÇÃO: ATIVOS",
+      "2" => "SITUAÇÃO: BLOQUEADOS",
+      "3" => "SITUAÇÃO: AGUARDANDO ATIVAÇÃO",
+      default => "SITUAÇÃO: TODOS",
+  };
 }
 $head6 = $cabec_usuarios_situacao;
 
@@ -247,10 +237,10 @@ for($a=0; $a<$numrows_executa; $a++){
   recGravaMenus($id_usuario, $id_modulo, $id_modulo);
   $pass --;
 
-  if (!isset($totalpormodulo[strtoupper($descr_modulo)])) {
-    $totalpormodulo[strtoupper($descr_modulo)] = 1;
+  if (!isset($totalpormodulo[strtoupper((string) $descr_modulo)])) {
+    $totalpormodulo[strtoupper((string) $descr_modulo)] = 1;
   } else {
-    $totalpormodulo[strtoupper($descr_modulo)] ++;
+    $totalpormodulo[strtoupper((string) $descr_modulo)] ++;
   }
 
 }
@@ -380,7 +370,7 @@ function recGravaMenus($id_usuario, $id_modulo, $id_item){
   $sql_executa_item = " select distinct * from (($sql_itens_pai_usu) union ($sql_itens_pai_per)) as x order by pai, menusequencia, id_item_filho";
   /////////////////////////////////////////
   $result_executa_item = db_query($sql_executa_item);
-  $numrows_executa_item = pg_numrows($result_executa_item);
+  $numrows_executa_item = pg_num_rows($result_executa_item);
   /////////////////////////////////////////
   
   for($b=0; $b<$numrows_executa_item; $b++){
@@ -388,7 +378,7 @@ function recGravaMenus($id_usuario, $id_modulo, $id_item){
     $conta=1;
     $pdf->setfont("arial","",8);
     $pdf->cell(($pass * 3),$alt,""         , 0, 0, "L", 0);
-    $pdf->cell(80,$alt,substr($descricao,0,80) , 0, 0, "L", 0);
+    $pdf->cell(80,$alt,substr((string) $descricao,0,80) , 0, 0, "L", 0);
     $pdf->setfont('arial','',5);
 
     verificaPerfilMenu($id_usuario, $id_modulo, $id_item, $id_item_filho, false, ($pass * 3));

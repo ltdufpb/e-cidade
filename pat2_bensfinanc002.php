@@ -37,7 +37,7 @@ $clrotulo->label('t64_descr');
 $clrotulo->label('c60_estrut');
 $clrotulo->label('c60_descr');
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sCampos = "";
 $sJoin = " inner join clabens         on clabens.t64_codcla          = bens.t52_codcla ";
@@ -67,7 +67,7 @@ $sJoin .= "  left join benscadcedente  on t09_benscadcedente = t04_sequencial";
 
 $sOrderBy = "";
 $sQuebrarApos = "";
-$aCamposRelatorio = array();
+$aCamposRelatorio = [];
 $tamanhoValorAquisicaoAtual = 30;
 $tamanhoValorTotal = 220;
 
@@ -334,7 +334,7 @@ switch ($opcoescedentes) {
 
 if (isset($data_base) && isset($data_base_fim)) {
     if ($data_base != "" && $data_base_fim == "") {
-        $sdtIni = implode("-", array_reverse(explode("/", $data_base)));
+        $sdtIni = implode("-", array_reverse(explode("/", (string) $data_base)));
         if($tipoData == 1){
             $sWhere .= " and t52_dtaqu >= '{$sdtIni}' ";
         } else {
@@ -342,8 +342,8 @@ if (isset($data_base) && isset($data_base_fim)) {
         }
     } else {
         if ($data_base != "" && $data_base_fim != "") {
-            $sdtIni = implode("-", array_reverse(explode("/", $data_base)));
-            $sdtFim = implode("-", array_reverse(explode("/", $data_base_fim)));
+            $sdtIni = implode("-", array_reverse(explode("/", (string) $data_base)));
+            $sdtFim = implode("-", array_reverse(explode("/", (string) $data_base_fim)));
             if($tipoData == 1) {
                 $sWhere .= " and t52_dtaqu between '{$sdtIni}' and '{$sdtFim}' ";
             } else {
@@ -394,8 +394,8 @@ if (isset($listabens) && $listabens != "") {
 
     if (isset($baixaini) && isset($baixafim)) {
         if ($baixaini != '' && $baixafim != '') {
-            $dBaixaIni = implode('-', array_reverse(explode('/', $baixaini)));
-            $dBaixaFim = implode('-', array_reverse(explode('/', $baixafim)));
+            $dBaixaIni = implode('-', array_reverse(explode('/', (string) $baixaini)));
+            $dBaixaFim = implode('-', array_reverse(explode('/', (string) $baixafim)));
             $sWhereBaixados = " and t55_codbem is not null and t55_baixa between '$dBaixaIni' and '$dBaixaFim' ";
             $sWhereSemBaixa = " and (t55_codbem is null or t55_baixa not between '$dBaixaIni' and '$dBaixaFim') ";
             $sHeadBaixa = "PERÍODO DE BAIXA: {$baixaini} a {$baixafim}";
@@ -403,7 +403,7 @@ if (isset($listabens) && $listabens != "") {
             $lPeriodoBaixa = true;
         } else {
             if ($baixaini != '' && $baixafim == '') {
-                $dBaixaIni = implode('-', array_reverse(explode('/', $baixaini)));
+                $dBaixaIni = implode('-', array_reverse(explode('/', (string) $baixaini)));
                 $sWhereBaixados = " and t55_codbem is not null and t55_baixa >= '$dBaixaIni' ";
                 $sWhereSemBaixa = " and (t55_codbem is null or t55_baixa >= '$dBaixaIni' )";
                 $sHeadBaixa = "PERÍODO DE BAIXA A PARTIR DE $baixaini";
@@ -411,7 +411,7 @@ if (isset($listabens) && $listabens != "") {
                 $lPeriodoBaixa = true;
             } else {
                 if ($baixaini == '' && $baixafim != '') {
-                    $dBaixaFim = implode('-', array_reverse(explode('/', $baixafim)));
+                    $dBaixaFim = implode('-', array_reverse(explode('/', (string) $baixafim)));
                     $sWhereBaixados = " and t55_codbem is not null and t55_baixa <= '$dBaixaFim' ";
                     $sWhereSemBaixa = " and (t55_codbem is null or t55_baixa <= '$dBaixaFim' )";
                     $sHeadBaixa = "PERÍODO DE BAIXA ATÉ $baixafim";
@@ -430,8 +430,8 @@ if (isset($listabens) && $listabens != "") {
             if (isset($data_base_fim) && trim($data_base_fim) != '') {
                 $sData = implode('-', array_reverse(explode('/', $data_base_fim)));
             }
-            if (isset($$sqldBaixaFim) && trim($dBaixaFim) != '') {
-                $sData = implode('-', array_reverse(explode('/', $dBaixaFim)));
+            if (isset(${$sqldBaixaFim}) && trim((string) $dBaixaFim) != '') {
+                $sData = implode('-', array_reverse(explode('/', (string) $dBaixaFim)));
             }
             $sWhere .= ($lPeriodoBaixa) ? $sWhereSemBaixa : " and (t55_codbem is null or t55_baixa > '{$sData}') ";
         }

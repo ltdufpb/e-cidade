@@ -39,11 +39,11 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+db_postmemory($_POST);
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $anousu     = db_getsession("DB_anousu");
 $codrel      = 54;
@@ -82,21 +82,21 @@ if (db_getsession("DB_anousu") >= 2014) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php
-    $clcriaabas->identifica = array("relatorio" => "Relatório",
+    $clcriaabas->identifica = ["relatorio" => "Relatório",
                                     "parametro" => "Parâmetros",
-                                    "notas"     => "Fonte/Notas Explicativas");
+                                    "notas"     => "Fonte/Notas Explicativas"];
 
-    $clcriaabas->title = array("relatorio" =>"Relatório",
+    $clcriaabas->title = ["relatorio" =>"Relatório",
                                "parametro" =>"Parâmetros",
-                               "notas"     =>"Fonte/Notas Explicativas");
+                               "notas"     =>"Fonte/Notas Explicativas"];
 
-    $clcriaabas->src = array("relatorio" => $sNomeFonte,
+    $clcriaabas->src = ["relatorio" => $sNomeFonte,
                              "parametro" => $sParametros,
-                             "notas"     => $sNotas);
+                             "notas"     => $sNotas];
 
-    $clcriaabas->sizecampo= array("relatorio" => "30",
+    $clcriaabas->sizecampo= ["relatorio" => "30",
                                   "parametro" => "30",
-                                  "notas"     => "30");
+                                  "notas"     => "30"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

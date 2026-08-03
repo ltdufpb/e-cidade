@@ -50,7 +50,7 @@ $sCampos = "
 ";
 
 $sWhere = "";
-if (trim($oGet->e69_codnota) != '') {
+if (trim((string) $oGet->e69_codnota) != '') {
     $sWhere .= "e69_codnota = " . $oGet->e69_codnota;
 }
 $e69_codnota = $oGet->e69_codnota;
@@ -72,8 +72,8 @@ if (pg_num_rows($rsNota) > 0) {
     $oNota = db_utils::fieldsMemory($rsNota, 0);
 
     if (isParaiba() && !empty($oNota->e69_outrosdados)) {
-        $outrosDados = json_decode($oNota->e69_outrosdados);
-        $tipo = (new TiposNotasParaiba())->getTipoByID($outrosDados->tipo_nota);
+        $outrosDados = json_decode((string) $oNota->e69_outrosdados);
+        $tipo = new TiposNotasParaiba()->getTipoByID($outrosDados->tipo_nota);
 
         $tipoNota = sprintf('%s - %s', $tipo['id'], $tipo['label']);
         $numeroSerie = $outrosDados->serie_nota;

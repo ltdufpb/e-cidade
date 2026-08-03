@@ -11,12 +11,12 @@ class DeParaAtributos
     /**
      * @var array
      */
-    private static $deParaFR = array();
+    private static $deParaFR = [];
 
     /**
      * @var array
      */
-    private static $deParaPO = array();
+    private static $deParaPO = [];
 
     /**
      * @param int $ano
@@ -30,13 +30,13 @@ class DeParaAtributos
                 $conteudo = file_get_contents($caminho);
                 $linhas = explode("\n", $conteudo);
 
-                static::$deParaFR[$ano] = array();
+                static::$deParaFR[$ano] = [];
 
                 foreach ($linhas as $linha) {
                     $dadosLinha = explode('#', $linha);
 
                     if (empty(static::$deParaFR[$ano][$dadosLinha[2]])) {
-                        static::$deParaFR[$ano][$dadosLinha[2]] = array();
+                        static::$deParaFR[$ano][$dadosLinha[2]] = [];
                     }
 
                     static::$deParaFR[$ano][$dadosLinha[2]][] = $dadosLinha[0];
@@ -55,16 +55,16 @@ class DeParaAtributos
         static::carregarFR($ano);
 
         if (empty(static::$deParaFR[$ano])) {
-            return array();
+            return [];
         }
 
-        $dePara = array();
+        $dePara = [];
 
         if (DBString::contem($codigoSiconfi, '_')) {
             $pattern = self::montarRegex($codigoSiconfi);
 
             foreach (static::$deParaFR[$ano] as $indexSiconfi => $codigos) {
-                if (preg_match($pattern, $indexSiconfi)) {
+                if (preg_match($pattern, (string) $indexSiconfi)) {
                     $dePara = array_merge($dePara, $codigos);
                 }
             }
@@ -72,7 +72,7 @@ class DeParaAtributos
             return $dePara;
         }
 
-        return empty(static::$deParaFR[$ano][$codigoSiconfi]) ? array() : static::$deParaFR[$ano][$codigoSiconfi];
+        return empty(static::$deParaFR[$ano][$codigoSiconfi]) ? [] : static::$deParaFR[$ano][$codigoSiconfi];
     }
 
 
@@ -83,9 +83,7 @@ class DeParaAtributos
     private static function carregarPO(array $instituicoes)
     {
         if (empty(static::$deParaPO) && !empty($instituicoes)) {
-            $codigoInstituicoes = implode(', ', array_map(function (Instituicao $instituicao) {
-                return $instituicao->getCodigo();
-            }, $instituicoes));
+            $codigoInstituicoes = implode(', ', array_map(fn(Instituicao $instituicao) => $instituicao->getCodigo(), $instituicoes));
 
             $sql = "
                 SELECT db_config.codtrib, db_tipoinstit.db21_codigosiconfi AS codigo_siconfi
@@ -102,7 +100,7 @@ class DeParaAtributos
 
             while ($registro = pg_fetch_object($rs)) {
                 if (empty(static::$deParaPO[$registro->codigo_siconfi])) {
-                    static::$deParaPO[$registro->codigo_siconfi] = array();
+                    static::$deParaPO[$registro->codigo_siconfi] = [];
                 }
 
                 static::$deParaPO[$registro->codigo_siconfi][] = $registro->codtrib;
@@ -119,7 +117,7 @@ class DeParaAtributos
     public static function getPO(array $instituicoes, $codigoSiconfi)
     {
         static::carregarPO($instituicoes);
-        return empty(static::$deParaPO[$codigoSiconfi]) ? array() : static::$deParaPO[$codigoSiconfi];
+        return empty(static::$deParaPO[$codigoSiconfi]) ? [] : static::$deParaPO[$codigoSiconfi];
     }
 
     /**
@@ -129,7 +127,7 @@ class DeParaAtributos
     private static function montarRegex($codigoSiconfi)
     {
         $pattern = '';
-        $caracteres = str_split($codigoSiconfi);
+        $caracteres = str_split((string) $codigoSiconfi);
         $underlines = 0;
         $concatenouPattern = false;
 

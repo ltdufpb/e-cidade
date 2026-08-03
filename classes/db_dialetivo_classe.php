@@ -58,7 +58,7 @@ class cl_dialetivo
     public function __construct()
     {
         $this->rotulo = new rotulo("dialetivo");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -123,10 +123,10 @@ class cl_dialetivo
          $this->erro_status = "0";
          return false;
        }
-       $this->ed04_i_codigo = pg_result($result,0,0);
+       $this->ed04_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from dialetivo_ed04_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed04_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed04_i_codigo)){
          $this->erro_sql = " Campo ed04_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -160,7 +160,7 @@ class cl_dialetivo
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dias da Semana Letivos ($this->ed04_i_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dias da Semana Letivos já Cadastrado";
@@ -189,13 +189,13 @@ class cl_dialetivo
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008565,'$this->ed04_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010100,1008565,'','".AddSlashes(pg_result($resaco,0,'ed04_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010100,1008566,'','".AddSlashes(pg_result($resaco,0,'ed04_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010100,1008567,'','".AddSlashes(pg_result($resaco,0,'ed04_i_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010100,1008568,'','".AddSlashes(pg_result($resaco,0,'ed04_c_letivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010100,1008565,'','".AddSlashes(pg_fetch_result($resaco,0,'ed04_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010100,1008566,'','".AddSlashes(pg_fetch_result($resaco,0,'ed04_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010100,1008567,'','".AddSlashes(pg_fetch_result($resaco,0,'ed04_i_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010100,1008568,'','".AddSlashes(pg_fetch_result($resaco,0,'ed04_c_letivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -206,10 +206,10 @@ class cl_dialetivo
       $this->atualizacampos();
      $sql = " update dialetivo set ";
      $virgula = "";
-     if(trim($this->ed04_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed04_i_codigo"])){
+     if(trim((string) $this->ed04_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed04_i_codigo"])){
        $sql  .= $virgula." ed04_i_codigo = $this->ed04_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed04_i_codigo) == null ){
+       if(trim((string) $this->ed04_i_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed04_i_codigo";
          $this->erro_banco = "";
@@ -219,10 +219,10 @@ class cl_dialetivo
          return false;
        }
      }
-     if(trim($this->ed04_i_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed04_i_escola"])){
+     if(trim((string) $this->ed04_i_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed04_i_escola"])){
        $sql  .= $virgula." ed04_i_escola = $this->ed04_i_escola ";
        $virgula = ",";
-       if(trim($this->ed04_i_escola) == null ){
+       if(trim((string) $this->ed04_i_escola) == null ){
          $this->erro_sql = " Campo Escola não informado.";
          $this->erro_campo = "ed04_i_escola";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_dialetivo
          return false;
        }
      }
-     if(trim($this->ed04_i_diasemana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed04_i_diasemana"])){
+     if(trim((string) $this->ed04_i_diasemana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed04_i_diasemana"])){
        $sql  .= $virgula." ed04_i_diasemana = $this->ed04_i_diasemana ";
        $virgula = ",";
-       if(trim($this->ed04_i_diasemana) == null ){
+       if(trim((string) $this->ed04_i_diasemana) == null ){
          $this->erro_sql = " Campo Dia da Semana não informado.";
          $this->erro_campo = "ed04_i_diasemana";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_dialetivo
          return false;
        }
      }
-     if(trim($this->ed04_c_letivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed04_c_letivo"])){
+     if(trim((string) $this->ed04_c_letivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed04_c_letivo"])){
        $sql  .= $virgula." ed04_c_letivo = '$this->ed04_c_letivo' ";
        $virgula = ",";
-       if(trim($this->ed04_c_letivo) == null ){
+       if(trim((string) $this->ed04_c_letivo) == null ){
          $this->erro_sql = " Campo Dia Letivo não informado.";
          $this->erro_campo = "ed04_c_letivo";
          $this->erro_banco = "";
@@ -272,17 +272,17 @@ class cl_dialetivo
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1008565,'$this->ed04_i_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed04_i_codigo"]) || $this->ed04_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010100,1008565,'".AddSlashes(pg_result($resaco,$conresaco,'ed04_i_codigo'))."','$this->ed04_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010100,1008565,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed04_i_codigo'))."','$this->ed04_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed04_i_escola"]) || $this->ed04_i_escola != "")
-             $resac = db_query("insert into db_acount values($acount,1010100,1008566,'".AddSlashes(pg_result($resaco,$conresaco,'ed04_i_escola'))."','$this->ed04_i_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010100,1008566,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed04_i_escola'))."','$this->ed04_i_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed04_i_diasemana"]) || $this->ed04_i_diasemana != "")
-             $resac = db_query("insert into db_acount values($acount,1010100,1008567,'".AddSlashes(pg_result($resaco,$conresaco,'ed04_i_diasemana'))."','$this->ed04_i_diasemana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010100,1008567,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed04_i_diasemana'))."','$this->ed04_i_diasemana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed04_c_letivo"]) || $this->ed04_c_letivo != "")
-             $resac = db_query("insert into db_acount values($acount,1010100,1008568,'".AddSlashes(pg_result($resaco,$conresaco,'ed04_c_letivo'))."','$this->ed04_c_letivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010100,1008568,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed04_c_letivo'))."','$this->ed04_c_letivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -336,13 +336,13 @@ class cl_dialetivo
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1008565,'$ed04_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010100,1008565,'','".AddSlashes(pg_result($resaco,$iresaco,'ed04_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010100,1008566,'','".AddSlashes(pg_result($resaco,$iresaco,'ed04_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010100,1008567,'','".AddSlashes(pg_result($resaco,$iresaco,'ed04_i_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010100,1008568,'','".AddSlashes(pg_result($resaco,$iresaco,'ed04_c_letivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010100,1008565,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed04_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010100,1008566,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed04_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010100,1008567,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed04_i_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010100,1008568,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed04_c_letivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

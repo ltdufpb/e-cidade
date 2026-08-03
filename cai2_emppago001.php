@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label('k13_conta');
@@ -130,7 +130,7 @@ function js_emite(){
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
           <?php 
-          $xx = array("e"=>"Empenho","a"=>"Autenticação");
+          $xx = ["e"=>"Empenho","a"=>"Autenticação"];
 db_select('ordem',$xx,true,4,"");
           ?>
         </td>
@@ -140,7 +140,7 @@ db_select('ordem',$xx,true,4,"");
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
           <?php 
-          $xx = array("s"=>"Sim","n"=>"Não");
+          $xx = ["s"=>"Sim","n"=>"Não"];
 db_select('quebra',$xx,true,4,"");
           ?>
         </td>
@@ -150,7 +150,7 @@ db_select('quebra',$xx,true,4,"");
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
           <?php 
-          $xx = array("0"=>"Geral","1"=>"Exercício","2"=>"Restos à Pagar");
+          $xx = ["0"=>"Geral","1"=>"Exercício","2"=>"Restos à Pagar"];
 db_select('filtraemp',$xx,true,4,"");
           ?>
         </td>

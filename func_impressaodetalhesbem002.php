@@ -212,7 +212,7 @@ if (isset($oGet->lHistoricoFinanceiro)){
 
 if (isset($oGet->lHistoricoPlaca)){
 
-  $aHistoricoPlaca = array(); // @todo tratar para exibir se oPlaca for nulo no relatório em sí
+  $aHistoricoPlaca = []; // @todo tratar para exibir se oPlaca for nulo no relatório em sí
   if ($oPlaca != null){
 
     $oDaoBensPlaca              = new cl_bensplaca;
@@ -431,8 +431,8 @@ if (isset($oGet->lHistoricoPlaca)){
   foreach ($aHistoricoPlaca as $oPlacaInfo){
 
     $oPdf->setfont('arial','',7);
-    $oPdf->SetWidths(array(27,67,67,27));
-    $oPdf->Row(array(db_formatar($oPlacaInfo->t41_data, "d"), $oPlacaInfo->t41_obs, $oPlacaInfo->descrdepto, $oPlacaInfo->placa));
+    $oPdf->SetWidths([27,67,67,27]);
+    $oPdf->Row([db_formatar($oPlacaInfo->t41_data, "d"), $oPlacaInfo->t41_obs, $oPlacaInfo->descrdepto, $oPlacaInfo->placa]);
   }
 }
 $oPdf->Output();

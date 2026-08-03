@@ -32,8 +32,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrechumano   = new cl_rechumano;
 $clatividaderh = new cl_atividaderh;
@@ -500,10 +500,10 @@ if ($clatividaderh->numrows > 0) {
 
       $sql     = $clrechumano->sql_query_escola("", "distinct {$campos}", "z01_nome", "ed75_i_escola = {$escola} {$where} ");
       //die($sql);
-      $repassa = array();
+      $repassa = [];
 
       if (isset($chave_ed284_i_rhpessoal)) {
-        $repassa = array(
+        $repassa = [
           "chave_ed284_i_rhpessoal" => $chave_ed284_i_rhpessoal,
           "chave_ed285_i_cgm" => $chave_ed285_i_cgm,
           "chave_z01_nome" => $chave_z01_nome,
@@ -512,7 +512,7 @@ if ($clatividaderh->numrows > 0) {
           "subgrupo" => @$subgrupo,
           "grupo" => @$grupo,
           "atividaderh" => @$atividaderh
-        );
+        ];
       }
 
       if ($termo == true) {

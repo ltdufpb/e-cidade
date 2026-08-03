@@ -29,39 +29,39 @@
 //CLASSE DA ENTIDADE manprev
 class cl_manprev { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t10_bem = null; 
-   var $t10_obs = null; 
-   var $t10_dtagen_dia = null; 
-   var $t10_dtagen_mes = null; 
-   var $t10_dtagen_ano = null; 
-   var $t10_dtagen = null; 
-   var $t10_dtreal_dia = null; 
-   var $t10_dtreal_mes = null; 
-   var $t10_dtreal_ano = null; 
-   var $t10_dtreal = null; 
-   var $t10_numemp = null; 
-   var $t10_numcgm = 0; 
-   var $t10_ntfisc = null; 
-   var $t10_valor = 0; 
-   var $t10_garant_dia = null; 
-   var $t10_garant_mes = null; 
-   var $t10_garant_ano = null; 
-   var $t10_garant = null; 
+   public $t10_bem = null; 
+   public $t10_obs = null; 
+   public $t10_dtagen_dia = null; 
+   public $t10_dtagen_mes = null; 
+   public $t10_dtagen_ano = null; 
+   public $t10_dtagen = null; 
+   public $t10_dtreal_dia = null; 
+   public $t10_dtreal_mes = null; 
+   public $t10_dtreal_ano = null; 
+   public $t10_dtreal = null; 
+   public $t10_numemp = null; 
+   public $t10_numcgm = 0; 
+   public $t10_ntfisc = null; 
+   public $t10_valor = 0; 
+   public $t10_garant_dia = null; 
+   public $t10_garant_mes = null; 
+   public $t10_garant_ano = null; 
+   public $t10_garant = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t10_bem = char(    13) = Codigo do Bem 
                  t10_obs = char(    60) = Observacoes e Anotacoes 
                  t10_dtagen = date = Data Agendada/Limite 
@@ -73,10 +73,10 @@ class cl_manprev {
                  t10_garant = date = Garantia (em dias) 
                  ";
    //funcao construtor da classe 
-   function cl_manprev() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("manprev"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -232,7 +232,7 @@ class cl_manprev {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Manutencoes Preventivas                () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Manutencoes Preventivas                já Cadastrado";
@@ -259,10 +259,10 @@ class cl_manprev {
       $this->atualizacampos();
      $sql = " update manprev set ";
      $virgula = "";
-     if(trim($this->t10_bem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_bem"])){ 
+     if(trim((string) $this->t10_bem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_bem"])){ 
        $sql  .= $virgula." t10_bem = '$this->t10_bem' ";
        $virgula = ",";
-       if(trim($this->t10_bem) == null ){ 
+       if(trim((string) $this->t10_bem) == null ){ 
          $this->erro_sql = " Campo Codigo do Bem nao Informado.";
          $this->erro_campo = "t10_bem";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_manprev {
          return false;
        }
      }
-     if(trim($this->t10_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_obs"])){ 
+     if(trim((string) $this->t10_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_obs"])){ 
        $sql  .= $virgula." t10_obs = '$this->t10_obs' ";
        $virgula = ",";
-       if(trim($this->t10_obs) == null ){ 
+       if(trim((string) $this->t10_obs) == null ){ 
          $this->erro_sql = " Campo Observacoes e Anotacoes nao Informado.";
          $this->erro_campo = "t10_obs";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_manprev {
          return false;
        }
      }
-     if(trim($this->t10_dtagen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_dtagen_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t10_dtagen_dia"] !="") ){ 
+     if(trim((string) $this->t10_dtagen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_dtagen_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t10_dtagen_dia"] !="") ){ 
        $sql  .= $virgula." t10_dtagen = '$this->t10_dtagen' ";
        $virgula = ",";
-       if(trim($this->t10_dtagen) == null ){ 
+       if(trim((string) $this->t10_dtagen) == null ){ 
          $this->erro_sql = " Campo Data Agendada/Limite nao Informado.";
          $this->erro_campo = "t10_dtagen_dia";
          $this->erro_banco = "";
@@ -301,7 +301,7 @@ class cl_manprev {
        if(isset($GLOBALS["HTTP_POST_VARS"]["t10_dtagen_dia"])){ 
          $sql  .= $virgula." t10_dtagen = null ";
          $virgula = ",";
-         if(trim($this->t10_dtagen) == null ){ 
+         if(trim((string) $this->t10_dtagen) == null ){ 
            $this->erro_sql = " Campo Data Agendada/Limite nao Informado.";
            $this->erro_campo = "t10_dtagen_dia";
            $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_manprev {
          }
        }
      }
-     if(trim($this->t10_dtreal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_dtreal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t10_dtreal_dia"] !="") ){ 
+     if(trim((string) $this->t10_dtreal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_dtreal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t10_dtreal_dia"] !="") ){ 
        $sql  .= $virgula." t10_dtreal = '$this->t10_dtreal' ";
        $virgula = ",";
-       if(trim($this->t10_dtreal) == null ){ 
+       if(trim((string) $this->t10_dtreal) == null ){ 
          $this->erro_sql = " Campo Data da Realizacao da Manutenc nao Informado.";
          $this->erro_campo = "t10_dtreal_dia";
          $this->erro_banco = "";
@@ -328,7 +328,7 @@ class cl_manprev {
        if(isset($GLOBALS["HTTP_POST_VARS"]["t10_dtreal_dia"])){ 
          $sql  .= $virgula." t10_dtreal = null ";
          $virgula = ",";
-         if(trim($this->t10_dtreal) == null ){ 
+         if(trim((string) $this->t10_dtreal) == null ){ 
            $this->erro_sql = " Campo Data da Realizacao da Manutenc nao Informado.";
            $this->erro_campo = "t10_dtreal_dia";
            $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_manprev {
          }
        }
      }
-     if(trim($this->t10_numemp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_numemp"])){ 
+     if(trim((string) $this->t10_numemp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_numemp"])){ 
        $sql  .= $virgula." t10_numemp = '$this->t10_numemp' ";
        $virgula = ",";
-       if(trim($this->t10_numemp) == null ){ 
+       if(trim((string) $this->t10_numemp) == null ){ 
          $this->erro_sql = " Campo Numero do Empenho nao Informado.";
          $this->erro_campo = "t10_numemp";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_manprev {
          return false;
        }
      }
-     if(trim($this->t10_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_numcgm"])){ 
+     if(trim((string) $this->t10_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_numcgm"])){ 
        $sql  .= $virgula." t10_numcgm = $this->t10_numcgm ";
        $virgula = ",";
-       if(trim($this->t10_numcgm) == null ){ 
+       if(trim((string) $this->t10_numcgm) == null ){ 
          $this->erro_sql = " Campo Numero CGM nao Informado.";
          $this->erro_campo = "t10_numcgm";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_manprev {
          return false;
        }
      }
-     if(trim($this->t10_ntfisc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_ntfisc"])){ 
+     if(trim((string) $this->t10_ntfisc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_ntfisc"])){ 
        $sql  .= $virgula." t10_ntfisc = '$this->t10_ntfisc' ";
        $virgula = ",";
-       if(trim($this->t10_ntfisc) == null ){ 
+       if(trim((string) $this->t10_ntfisc) == null ){ 
          $this->erro_sql = " Campo Numero da Nota Fiscal nao Informado.";
          $this->erro_campo = "t10_ntfisc";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_manprev {
          return false;
        }
      }
-     if(trim($this->t10_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_valor"])){ 
+     if(trim((string) $this->t10_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_valor"])){ 
        $sql  .= $virgula." t10_valor = $this->t10_valor ";
        $virgula = ",";
-       if(trim($this->t10_valor) == null ){ 
+       if(trim((string) $this->t10_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "t10_valor";
          $this->erro_banco = "";
@@ -391,10 +391,10 @@ class cl_manprev {
          return false;
        }
      }
-     if(trim($this->t10_garant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_garant_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t10_garant_dia"] !="") ){ 
+     if(trim((string) $this->t10_garant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t10_garant_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t10_garant_dia"] !="") ){ 
        $sql  .= $virgula." t10_garant = '$this->t10_garant' ";
        $virgula = ",";
-       if(trim($this->t10_garant) == null ){ 
+       if(trim((string) $this->t10_garant) == null ){ 
          $this->erro_sql = " Campo Garantia (em dias) nao Informado.";
          $this->erro_campo = "t10_garant_dia";
          $this->erro_banco = "";
@@ -407,7 +407,7 @@ class cl_manprev {
        if(isset($GLOBALS["HTTP_POST_VARS"]["t10_garant_dia"])){ 
          $sql  .= $virgula." t10_garant = null ";
          $virgula = ",";
-         if(trim($this->t10_garant) == null ){ 
+         if(trim((string) $this->t10_garant) == null ){ 
            $this->erro_sql = " Campo Garantia (em dias) nao Informado.";
            $this->erro_campo = "t10_garant_dia";
            $this->erro_banco = "";
@@ -499,7 +499,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:manprev";

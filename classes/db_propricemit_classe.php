@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE propricemit
 class cl_propricemit {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $cm28_i_codigo = 0;
-   var $cm28_i_processo = 0;
-   var $cm28_i_proprietario = 0;
-   var $cm28_i_ossoariojazigo = 0;
-   var $cm28_d_aquisicao_dia = null;
-   var $cm28_d_aquisicao_mes = null;
-   var $cm28_d_aquisicao_ano = null;
-   var $cm28_d_aquisicao = null;
+   public $cm28_i_codigo = 0;
+   public $cm28_i_processo = 0;
+   public $cm28_i_proprietario = 0;
+   public $cm28_i_ossoariojazigo = 0;
+   public $cm28_d_aquisicao_dia = null;
+   public $cm28_d_aquisicao_mes = null;
+   public $cm28_d_aquisicao_ano = null;
+   public $cm28_d_aquisicao = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  cm28_i_codigo = int4 = Código Ossário/ Jazigo
                  cm28_i_processo = int4 = Processo
                  cm28_i_proprietario = int4 = Proprietário
@@ -59,10 +59,10 @@ class cl_propricemit {
                  cm28_d_aquisicao = date = Aquisição
                  ";
    //funcao construtor da classe
-   function cl_propricemit() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("propricemit");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -136,10 +136,10 @@ class cl_propricemit {
          $this->erro_status = "0";
          return false;
        }
-       $this->cm28_i_codigo = pg_result($result,0,0);
+       $this->cm28_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from propricemit_cm28_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cm28_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cm28_i_codigo)){
          $this->erro_sql = " Campo cm28_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -175,7 +175,7 @@ class cl_propricemit {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Proprietário Ossário/Jazigo ($this->cm28_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Proprietário Ossário/Jazigo já Cadastrado";
@@ -199,14 +199,14 @@ class cl_propricemit {
      $resaco = $this->sql_record($this->sql_query_file($this->cm28_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10368,'$this->cm28_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1794,10368,'','".AddSlashes(pg_result($resaco,0,'cm28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1794,10369,'','".AddSlashes(pg_result($resaco,0,'cm28_i_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1794,10370,'','".AddSlashes(pg_result($resaco,0,'cm28_i_proprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1794,10371,'','".AddSlashes(pg_result($resaco,0,'cm28_i_ossoariojazigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1794,10372,'','".AddSlashes(pg_result($resaco,0,'cm28_d_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1794,10368,'','".AddSlashes(pg_fetch_result($resaco,0,'cm28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1794,10369,'','".AddSlashes(pg_fetch_result($resaco,0,'cm28_i_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1794,10370,'','".AddSlashes(pg_fetch_result($resaco,0,'cm28_i_proprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1794,10371,'','".AddSlashes(pg_fetch_result($resaco,0,'cm28_i_ossoariojazigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1794,10372,'','".AddSlashes(pg_fetch_result($resaco,0,'cm28_d_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -215,10 +215,10 @@ class cl_propricemit {
       $this->atualizacampos();
      $sql = " update propricemit set ";
      $virgula = "";
-     if(trim($this->cm28_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_codigo"])){
+     if(trim((string) $this->cm28_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_codigo"])){
        $sql  .= $virgula." cm28_i_codigo = $this->cm28_i_codigo ";
        $virgula = ",";
-       if(trim($this->cm28_i_codigo) == null ){
+       if(trim((string) $this->cm28_i_codigo) == null ){
          $this->erro_sql = " Campo Código Ossário/ Jazigo nao Informado.";
          $this->erro_campo = "cm28_i_codigo";
          $this->erro_banco = "";
@@ -228,7 +228,7 @@ class cl_propricemit {
          return false;
        }
      }
-     if(trim($this->cm28_i_processo)!="" && isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_processo"])){
+     if(trim((string) $this->cm28_i_processo)!="" && isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_processo"])){
 
        $sql  .= $virgula." cm28_i_processo = $this->cm28_i_processo ";
        $virgula = ",";
@@ -246,10 +246,10 @@ class cl_propricemit {
        */
 
      }
-     if(trim($this->cm28_i_proprietario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_proprietario"])){
+     if(trim((string) $this->cm28_i_proprietario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_proprietario"])){
        $sql  .= $virgula." cm28_i_proprietario = $this->cm28_i_proprietario ";
        $virgula = ",";
-       if(trim($this->cm28_i_proprietario) == null ){
+       if(trim((string) $this->cm28_i_proprietario) == null ){
          $this->erro_sql = " Campo Proprietário nao Informado.";
          $this->erro_campo = "cm28_i_proprietario";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_propricemit {
          return false;
        }
      }
-     if(trim($this->cm28_i_ossoariojazigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_ossoariojazigo"])){
+     if(trim((string) $this->cm28_i_ossoariojazigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_ossoariojazigo"])){
        $sql  .= $virgula." cm28_i_ossoariojazigo = $this->cm28_i_ossoariojazigo ";
        $virgula = ",";
-       if(trim($this->cm28_i_ossoariojazigo) == null ){
+       if(trim((string) $this->cm28_i_ossoariojazigo) == null ){
          $this->erro_sql = " Campo N Ossário/ Jazigo nao Informado.";
          $this->erro_campo = "cm28_i_ossoariojazigo";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_propricemit {
          return false;
        }
      }
-     if(trim($this->cm28_d_aquisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm28_d_aquisicao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm28_d_aquisicao_dia"] !="") ){
+     if(trim((string) $this->cm28_d_aquisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm28_d_aquisicao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm28_d_aquisicao_dia"] !="") ){
        $sql  .= $virgula." cm28_d_aquisicao = '$this->cm28_d_aquisicao' ";
        $virgula = ",";
-       if(trim($this->cm28_d_aquisicao) == null ){
+       if(trim((string) $this->cm28_d_aquisicao) == null ){
          $this->erro_sql = " Campo Aquisição nao Informado.";
          $this->erro_campo = "cm28_d_aquisicao_dia";
          $this->erro_banco = "";
@@ -288,7 +288,7 @@ class cl_propricemit {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm28_d_aquisicao_dia"])){
          $sql  .= $virgula." cm28_d_aquisicao = null ";
          $virgula = ",";
-         if(trim($this->cm28_d_aquisicao) == null ){
+         if(trim((string) $this->cm28_d_aquisicao) == null ){
            $this->erro_sql = " Campo Aquisição nao Informado.";
            $this->erro_campo = "cm28_d_aquisicao_dia";
            $this->erro_banco = "";
@@ -308,19 +308,19 @@ class cl_propricemit {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10368,'$this->cm28_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1794,10368,'".AddSlashes(pg_result($resaco,$conresaco,'cm28_i_codigo'))."','$this->cm28_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1794,10368,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm28_i_codigo'))."','$this->cm28_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_processo"]))
-           $resac = db_query("insert into db_acount values($acount,1794,10369,'".AddSlashes(pg_result($resaco,$conresaco,'cm28_i_processo'))."','$this->cm28_i_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1794,10369,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm28_i_processo'))."','$this->cm28_i_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_proprietario"]))
-           $resac = db_query("insert into db_acount values($acount,1794,10370,'".AddSlashes(pg_result($resaco,$conresaco,'cm28_i_proprietario'))."','$this->cm28_i_proprietario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1794,10370,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm28_i_proprietario'))."','$this->cm28_i_proprietario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm28_i_ossoariojazigo"]))
-           $resac = db_query("insert into db_acount values($acount,1794,10371,'".AddSlashes(pg_result($resaco,$conresaco,'cm28_i_ossoariojazigo'))."','$this->cm28_i_ossoariojazigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1794,10371,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm28_i_ossoariojazigo'))."','$this->cm28_i_ossoariojazigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm28_d_aquisicao"]))
-           $resac = db_query("insert into db_acount values($acount,1794,10372,'".AddSlashes(pg_result($resaco,$conresaco,'cm28_d_aquisicao'))."','$this->cm28_d_aquisicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1794,10372,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm28_d_aquisicao'))."','$this->cm28_d_aquisicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -365,14 +365,14 @@ class cl_propricemit {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10368,'$cm28_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1794,10368,'','".AddSlashes(pg_result($resaco,$iresaco,'cm28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1794,10369,'','".AddSlashes(pg_result($resaco,$iresaco,'cm28_i_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1794,10370,'','".AddSlashes(pg_result($resaco,$iresaco,'cm28_i_proprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1794,10371,'','".AddSlashes(pg_result($resaco,$iresaco,'cm28_i_ossoariojazigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1794,10372,'','".AddSlashes(pg_result($resaco,$iresaco,'cm28_d_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1794,10368,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1794,10369,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm28_i_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1794,10370,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm28_i_proprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1794,10371,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm28_i_ossoariojazigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1794,10372,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm28_d_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from propricemit
@@ -432,7 +432,7 @@ class cl_propricemit {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:propricemit";
@@ -446,7 +446,7 @@ class cl_propricemit {
    function sql_query ( $cm28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,7 +482,7 @@ class cl_propricemit {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -494,7 +494,7 @@ class cl_propricemit {
    function sql_query_file ( $cm28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_propricemit {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

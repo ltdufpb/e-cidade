@@ -34,18 +34,6 @@
 class Unidade{
 
   /**
-   * Ano da Unidade
-   * @var integer
-   */
-  private $iAnousu;
-
-  /**
-   * Código da Unidade
-   * @var integer
-   */
-  private $iCodigoUnidade;
-
-  /**
    * Código do tributário
    * @var string
    */
@@ -76,12 +64,6 @@ class Unidade{
   private $iCodigoInstituicao;
 
   /**
-   * Código do Órgão
-   * @var integer
-   */
-  private $iCodigoOrgao;
-
-  /**
    * Objeto Instituição
    * @var Instituicao
    */
@@ -103,24 +85,29 @@ class Unidade{
    * Busca a Unidade conforme os parâmetros passados e seta os atributos do objeto
    * conforme o que resultou da busca na base de dados
    *
-   * @param int $iAno
+   * @param int $iAnousu
    * @param int $iCodigoOrgao
    * @param int $iCodigoUnidade
    */
-  public function __construct($iAno = null, $iCodigoOrgao = null, $iCodigoUnidade = null) {
+  public function __construct(/**
+   * Ano da Unidade
+   */
+  private $iAnousu = null, /**
+   * Código do Órgão
+   */
+  private $iCodigoOrgao = null, /**
+   * Código da Unidade
+   */
+  private $iCodigoUnidade = null) {
 
-    $this->iAnousu        = $iAno;
-    $this->iCodigoOrgao   = $iCodigoOrgao;
-    $this->iCodigoUnidade = $iCodigoUnidade;
-
-    if (!empty($iAno) && !empty($iCodigoOrgao) && !empty($iCodigoUnidade)) {
+    if (!empty($this->iAnousu) && !empty($this->iCodigoOrgao) && !empty($this->iCodigoUnidade)) {
 
       $oDaoOrcUnidade   = db_utils::getDao("orcunidade");
-      $sSqlBuscaUnidade = $oDaoOrcUnidade->sql_query_file($iAno, $iCodigoOrgao, $iCodigoUnidade);
+      $sSqlBuscaUnidade = $oDaoOrcUnidade->sql_query_file($this->iAnousu, $this->iCodigoOrgao, $this->iCodigoUnidade);
       $rsBuscaUnidade   = $oDaoOrcUnidade->sql_record($sSqlBuscaUnidade);
 
       if ($oDaoOrcUnidade->numrows == 0) {
-        throw new BusinessException("Unidade {$iCodigoUnidade} não encontrada para o ano {$iAno} e órgão {$iCodigoOrgao}.");
+        throw new BusinessException("Unidade {$this->iCodigoUnidade} não encontrada para o ano {$this->iAnousu} e órgão {$this->iCodigoOrgao}.");
       }
 
       $oStdUnidade = db_utils::fieldsMemory($rsBuscaUnidade, 0);

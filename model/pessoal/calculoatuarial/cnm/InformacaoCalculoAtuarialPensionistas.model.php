@@ -364,7 +364,7 @@ class InformacaoCalculoAtuarialPensionistas extends InformacaoCalculoAtuarial {
   }
   
   public function toArray() {
-    $oRetorno = array();
+    $oRetorno = [];
   
     $oRetorno[] = $this->getMatricula();
     $oRetorno[] = $this->getCpf();

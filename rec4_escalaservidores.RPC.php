@@ -156,14 +156,14 @@ try {
       $rsEscalasServidor   = db_query($sSqlEscalasServidor);
       $aEscalasServidor    = db_utils::getCollectionByRecord($rsEscalasServidor);
 
-      $aRetornoEscalas     = array();
+      $aRetornoEscalas     = [];
 
       foreach ($aEscalasServidor as $oEscalaServidor) {
 
         $oEscala              = new stdClass();
         $oEscala->iCodigo     = $oEscalaServidor->sequencial;
         $oEscala->iCodigoEscala = $oEscalaServidor->codigoescala;
-        $oEscala->sDescricao  = urlencode($oEscalaServidor->descricao);
+        $oEscala->sDescricao  = urlencode((string) $oEscalaServidor->descricao);
         $oEscala->dDataEscala = $oEscalaServidor->dataescala;
 
         $aRetornoEscalas[]    = $oEscala;

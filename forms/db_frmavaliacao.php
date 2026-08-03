@@ -60,7 +60,7 @@ if ($db_opcao == 1) {
         $sSqlAvaliacaoTipo  = $clavaliacaotipo->sql_query(null, "*", "db100_sequencial", "");
         $rsSqlAvaliacaoTipo = $clavaliacaotipo->sql_record($sSqlAvaliacaoTipo);
 
-        $aAvaliacaoTipo     = array();
+        $aAvaliacaoTipo     = [];
         $aAvaliacaoTipo[0]  = "Selecione ...";
         for ($iInd = 0; $iInd < $clavaliacaotipo->numrows; $iInd++) {
 
@@ -98,7 +98,7 @@ if ($db_opcao == 1) {
     </td>
     <td>
       <?php 
-        $lAtivo = array("t"=>"SIM","f"=>"NÃO");
+        $lAtivo = ["t"=>"SIM","f"=>"NÃO"];
         db_select('db101_ativo',$lAtivo,true,$db_opcao,"");
       ?>
     </td>
@@ -109,7 +109,7 @@ if ($db_opcao == 1) {
     </td>
     <td>
       <?php 
-        $lAtivo = array("t"=>"SIM","f"=>"NÃO");
+        $lAtivo = ["t"=>"SIM","f"=>"NÃO"];
         db_select('db101_permiteedicao',$lAtivo,true,$db_opcao,"");
       ?>
     </td>
@@ -190,10 +190,10 @@ function js_preenchepesquisa(chave){
   <?php 
   if($db_opcao!=1){
     if(isset($iTipoAvaliacao) && ($iTipoAvaliacao == 5 || $iTipoAvaliacao == 6)){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])
         . "?iTipoAvaliacao=" . $iTipoAvaliacao . "&chavepesquisa='+chave";
     } else {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   }
   ?>

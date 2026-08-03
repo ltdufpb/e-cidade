@@ -40,7 +40,7 @@ class AtividadeComplementarRegistry
     /**
      * @var AtividadeComplementar[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param AtividadeComplementar $atividade

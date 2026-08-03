@@ -75,7 +75,7 @@ $oRetorno->message = '';
       
       $oLicitacao    = new licitacao($oParam->iLicitacao);
       $aDadosItens   = $oLicitacao->getItensPorProcessoDeCompras($oParam->iProcessoCompras);
-      $aRetornoItens = array();
+      $aRetornoItens = [];
       
       foreach ($aDadosItens as $oItemSolicitacao) {
         

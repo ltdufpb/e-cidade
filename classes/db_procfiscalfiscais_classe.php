@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE procfiscalfiscais
 class cl_procfiscalfiscais { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y106_sequencial = 0; 
-   var $y106_procfiscal = 0; 
-   var $y106_cadfiscais = 0; 
-   var $y106_principal = 'f'; 
+   public $y106_sequencial = 0; 
+   public $y106_procfiscal = 0; 
+   public $y106_cadfiscais = 0; 
+   public $y106_principal = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y106_sequencial = int4 = Código 
                  y106_procfiscal = int4 = Processo Fiscal 
                  y106_cadfiscais = int4 = Fiscal 
                  y106_principal = bool = Principal 
                  ";
    //funcao construtor da classe 
-   function cl_procfiscalfiscais() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procfiscalfiscais"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_procfiscalfiscais {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y106_sequencial = pg_result($result,0,0); 
+       $this->y106_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from procfiscalfiscais_y106_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y106_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y106_sequencial)){
          $this->erro_sql = " Campo y106_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_procfiscalfiscais {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Fiscais ($this->y106_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Fiscais já Cadastrado";
@@ -180,13 +180,13 @@ class cl_procfiscalfiscais {
      $resaco = $this->sql_record($this->sql_query_file($this->y106_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12044,'$this->y106_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2087,12044,'','".AddSlashes(pg_result($resaco,0,'y106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2087,12045,'','".AddSlashes(pg_result($resaco,0,'y106_procfiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2087,12046,'','".AddSlashes(pg_result($resaco,0,'y106_cadfiscais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2087,12074,'','".AddSlashes(pg_result($resaco,0,'y106_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2087,12044,'','".AddSlashes(pg_fetch_result($resaco,0,'y106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2087,12045,'','".AddSlashes(pg_fetch_result($resaco,0,'y106_procfiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2087,12046,'','".AddSlashes(pg_fetch_result($resaco,0,'y106_cadfiscais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2087,12074,'','".AddSlashes(pg_fetch_result($resaco,0,'y106_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_procfiscalfiscais {
       $this->atualizacampos();
      $sql = " update procfiscalfiscais set ";
      $virgula = "";
-     if(trim($this->y106_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y106_sequencial"])){ 
+     if(trim((string) $this->y106_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y106_sequencial"])){ 
        $sql  .= $virgula." y106_sequencial = $this->y106_sequencial ";
        $virgula = ",";
-       if(trim($this->y106_sequencial) == null ){ 
+       if(trim((string) $this->y106_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "y106_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_procfiscalfiscais {
          return false;
        }
      }
-     if(trim($this->y106_procfiscal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y106_procfiscal"])){ 
+     if(trim((string) $this->y106_procfiscal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y106_procfiscal"])){ 
        $sql  .= $virgula." y106_procfiscal = $this->y106_procfiscal ";
        $virgula = ",";
-       if(trim($this->y106_procfiscal) == null ){ 
+       if(trim((string) $this->y106_procfiscal) == null ){ 
          $this->erro_sql = " Campo Processo Fiscal nao Informado.";
          $this->erro_campo = "y106_procfiscal";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_procfiscalfiscais {
          return false;
        }
      }
-     if(trim($this->y106_cadfiscais)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y106_cadfiscais"])){ 
+     if(trim((string) $this->y106_cadfiscais)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y106_cadfiscais"])){ 
        $sql  .= $virgula." y106_cadfiscais = $this->y106_cadfiscais ";
        $virgula = ",";
-       if(trim($this->y106_cadfiscais) == null ){ 
+       if(trim((string) $this->y106_cadfiscais) == null ){ 
          $this->erro_sql = " Campo Fiscal nao Informado.";
          $this->erro_campo = "y106_cadfiscais";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_procfiscalfiscais {
          return false;
        }
      }
-     if(trim($this->y106_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y106_principal"])){ 
+     if(trim((string) $this->y106_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y106_principal"])){ 
        $sql  .= $virgula." y106_principal = '$this->y106_principal' ";
        $virgula = ",";
-       if(trim($this->y106_principal) == null ){ 
+       if(trim((string) $this->y106_principal) == null ){ 
          $this->erro_sql = " Campo Principal nao Informado.";
          $this->erro_campo = "y106_principal";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_procfiscalfiscais {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12044,'$this->y106_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y106_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2087,12044,'".AddSlashes(pg_result($resaco,$conresaco,'y106_sequencial'))."','$this->y106_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2087,12044,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y106_sequencial'))."','$this->y106_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y106_procfiscal"]))
-           $resac = db_query("insert into db_acount values($acount,2087,12045,'".AddSlashes(pg_result($resaco,$conresaco,'y106_procfiscal'))."','$this->y106_procfiscal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2087,12045,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y106_procfiscal'))."','$this->y106_procfiscal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y106_cadfiscais"]))
-           $resac = db_query("insert into db_acount values($acount,2087,12046,'".AddSlashes(pg_result($resaco,$conresaco,'y106_cadfiscais'))."','$this->y106_cadfiscais',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2087,12046,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y106_cadfiscais'))."','$this->y106_cadfiscais',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y106_principal"]))
-           $resac = db_query("insert into db_acount values($acount,2087,12074,'".AddSlashes(pg_result($resaco,$conresaco,'y106_principal'))."','$this->y106_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2087,12074,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y106_principal'))."','$this->y106_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_procfiscalfiscais {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12044,'$y106_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2087,12044,'','".AddSlashes(pg_result($resaco,$iresaco,'y106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2087,12045,'','".AddSlashes(pg_result($resaco,$iresaco,'y106_procfiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2087,12046,'','".AddSlashes(pg_result($resaco,$iresaco,'y106_cadfiscais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2087,12074,'','".AddSlashes(pg_result($resaco,$iresaco,'y106_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2087,12044,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2087,12045,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y106_procfiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2087,12046,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y106_cadfiscais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2087,12074,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y106_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from procfiscalfiscais
@@ -376,7 +376,7 @@ class cl_procfiscalfiscais {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procfiscalfiscais";
@@ -390,7 +390,7 @@ class cl_procfiscalfiscais {
    function sql_query ( $y106_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_procfiscalfiscais {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_procfiscalfiscais {
    function sql_query_file ( $y106_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_procfiscalfiscais {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

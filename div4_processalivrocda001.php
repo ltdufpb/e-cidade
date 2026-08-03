@@ -46,7 +46,7 @@ $clrotulo->label("v01_livro");
 $clrotulo->label("v01_dtoper");
 $clrotulo->label("v14_certid");
 $db_opcao = 1;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -72,11 +72,11 @@ db_postmemory($HTTP_POST_VARS);
         </td>
         <td>
           <?php 
-            $aTipos = array( 
+            $aTipos = [ 
                             1 => "Ambos",
                             2 => "Dívida",
                             3 => "Parcelamento"
-                            );              
+                            ];              
             db_select('tipo',$aTipos,true,4,"onchange='js_setArquivolookup(this.value)'");                 
                                
           ?>
@@ -120,10 +120,10 @@ db_postmemory($HTTP_POST_VARS);
         </td>
         <td>
           <?php 
-            $aComplementar = array( 
+            $aComplementar = [ 
                                    1 => "Não",
                                    2 => "Sim",
-                                  );              
+                                  ];              
             db_select('tipolivro',$aComplementar,true,4,"");                               
           ?>
         </td>

@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_iptuender_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $oDaoIptuEnder = new cl_iptuender;
@@ -76,7 +76,7 @@ if ( isset($alterar) ) {
     db_fieldsmemory($rsEndereco, 0);
     $db_botao = true;
 
-    $lMunicipio = mb_strtoupper($oPrefeitura->getUf()) == $j43_uf && mb_strtoupper($oPrefeitura->getMunicipio()) == mb_strtoupper($j43_munic);
+    $lMunicipio = mb_strtoupper((string) $oPrefeitura->getUf()) == $j43_uf && mb_strtoupper((string) $oPrefeitura->getMunicipio()) == mb_strtoupper((string) $j43_munic);
 
     $iEnderecoMunicipio = 0;
     if ($lMunicipio) {

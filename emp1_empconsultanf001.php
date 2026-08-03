@@ -59,7 +59,7 @@ $clcgm->rotulo->label();
 $clempempenho->rotulo->label();
 $clorcdotacao->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 

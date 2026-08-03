@@ -114,7 +114,7 @@ class Associado
 
         $oRetornoDadosServidor->sTipocartaosus = '';
         $oRetornoDadosServidor->sCartaoSus = '';
-        if (pg_numrows($rsCartaoSus) > 0) {
+        if (pg_num_rows($rsCartaoSus) > 0) {
             $oCartaoSus = db_utils::fieldsMemory($rsCartaoSus, 0);
             $oRetornoDadosServidor->sTipocartaosus = $oCartaoSus->s115_c_tipo;
             $oRetornoDadosServidor->sCartaoSus = $oCartaoSus->s115_c_cartaosus;
@@ -225,7 +225,7 @@ class Associado
             throw new DBException("Cadastro de situações vazio, verifique." . pg_last_error());
         }
 
-        $aSituacoes = array();
+        $aSituacoes = [];
   
         while ($aRetornoSituacao = pg_fetch_object($rsAssociadoSituacao)) {
             $aSituacoes[$aRetornoSituacao->fm02_situacao] = $aRetornoSituacao->fm02_descricao;

@@ -80,9 +80,7 @@ class AnexoXIII extends Layout
 
     private function montarLinhasImpactosContratacoesPPP()
     {
-        $linhas = array_filter($this->linhas, function ($linha) {
-            return $linha->ordem <= Relatorio::LINHA_OUTROS_PASSIVOS_CONTINGENTES;
-        });
+        $linhas = array_filter($this->linhas, fn($linha) => $linha->ordem <= Relatorio::LINHA_OUTROS_PASSIVOS_CONTINGENTES);
 
         $preenche = false;
 
@@ -100,9 +98,7 @@ class AnexoXIII extends Layout
 
     private function montarLinhasDespesasPPP()
     {
-        $linhas = array_filter($this->linhas, function ($linha) {
-            return $linha->ordem > Relatorio::LINHA_OUTROS_PASSIVOS_CONTINGENTES;
-        });
+        $linhas = array_filter($this->linhas, fn($linha) => $linha->ordem > Relatorio::LINHA_OUTROS_PASSIVOS_CONTINGENTES);
 
         foreach ($linhas as $linha) {
             $totalizar = $linha->totalizar;

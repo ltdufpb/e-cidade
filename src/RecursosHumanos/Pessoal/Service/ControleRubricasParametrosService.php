@@ -44,15 +44,12 @@ use Selecao;
  */
 class ControleRubricasParametrosService
 {
-    private $repositorio;
-
     /**
      * ControleHorasExtrasService constructor.
      * @param ControleRubricasParametrosRepository $repositorio
      */
-    public function __construct(ControleRubricasParametrosRepository $repositorio)
+    public function __construct(private readonly ControleRubricasParametrosRepository $repositorio)
     {
-        $this->repositorio = $repositorio;
     }
 
     /**
@@ -87,7 +84,7 @@ class ControleRubricasParametrosService
         $controleHorasExtras->setMes($competencia->getMes());
 
         if (!empty($parametros->rubricas)) {
-            $codigosRubricas =  explode(",", $parametros->rubricas);
+            $codigosRubricas =  explode(",", (string) $parametros->rubricas);
 
             foreach ($codigosRubricas as $codigo) {
                 $controleHorasExtrasRubricas = new ControleRubricasParametrosRubricas();
@@ -99,7 +96,7 @@ class ControleRubricasParametrosService
 
         try {
             $controleHorasExtras = $this->repositorio->salvar($controleHorasExtras);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception('Não foi possível salvar o controle de horas extras.');
         }
 

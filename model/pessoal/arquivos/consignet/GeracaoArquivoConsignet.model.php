@@ -105,7 +105,7 @@ class GeracaoArquivoConsignet{
                                                               $this->iMesUsu,
                                                               $oMargem->codigo_instituicao
                                                               );
-      } catch ( BusinessException $eException ) {
+      } catch ( BusinessException ) {
         $oServidor = new Servidor($oMargem->rh02_regist, $this->iAnoUsu, $this->iMesUsu, $oMargem->codigo_instituicao);
       }
 
@@ -157,20 +157,20 @@ class GeracaoArquivoConsignet{
 
     $sLinha                 = new stdClass();
 
-    $sLinha->matricula      = str_pad($oMargem->rh02_regist, 10, 0, STR_PAD_LEFT);   // Matricula 10 caracteres
-    $sLinha->cpf            = str_pad($oMargem->z01_cgccpf,  11, 0, STR_PAD_LEFT);   // CPF 11 caracteres
+    $sLinha->matricula      = str_pad((string) $oMargem->rh02_regist, 10, 0, STR_PAD_LEFT);   // Matricula 10 caracteres
+    $sLinha->cpf            = str_pad((string) $oMargem->z01_cgccpf,  11, 0, STR_PAD_LEFT);   // CPF 11 caracteres
     $sLinha->nome_servidor  = $oMargem->z01_nome;                                    // Nome Servidor 40 caracteres
     $sLinha->nome_instit    = $oMargem->nomeinst;                                    // Instituicao Servidor 80 caracteres
     $sLinha->nome_orgao     = $oMargem->o40_descr;                                   // Orgão Servidor 50 caracteres
-    $sLinha->margem_valor   = str_pad($sMargem, 10, 0, STR_PAD_LEFT);                // Margem 10 Caracteres
+    $sLinha->margem_valor   = str_pad((string) $sMargem, 10, 0, STR_PAD_LEFT);                // Margem 10 Caracteres
     $sLinha->data_nasc      = str_replace('/', '', $sDataNascimento);                // Data Nascimento 8 caracteres
     $sLinha->data_adm       = str_replace('/', '', $sDataAdmissao);                  // Data Admissao 8 caracteres
     $sLinha->data_recis     = str_replace('/', '', $sDataRescisao);                  // Data Rescisao 8 caracteres  
     $sLinha->vinculo        = $oMargem->rh30_descr;                                  // Vínculo do servidor com o orgão
     $sLinha->lota           = $oMargem->r70_descr;                                   // Lotacao 50 caracteres
-    $sLinha->identidade     = str_pad($oMargem->z01_ident, 15 , '0', STR_PAD_LEFT);  // Identidade do servidor
-    if(strlen($oMargem->z01_ident) > 15){
-      $sLinha->identidade   = str_pad(substr($oMargem->z01_ident, strlen($oMargem->z01_ident)-15, 15) , 15 , '0', STR_PAD_LEFT);   // Identidade do servidor
+    $sLinha->identidade     = str_pad((string) $oMargem->z01_ident, 15 , '0', STR_PAD_LEFT);  // Identidade do servidor
+    if(strlen((string) $oMargem->z01_ident) > 15){
+      $sLinha->identidade   = str_pad(substr((string) $oMargem->z01_ident, strlen((string) $oMargem->z01_ident)-15, 15) , 15 , '0', STR_PAD_LEFT);   // Identidade do servidor
     }
 
     $oLayout->setByLineOfDBUtils($sLinha, 3);
@@ -193,7 +193,7 @@ class GeracaoArquivoConsignet{
 
     if (pg_num_rows($rsGerfSal) == 0) {
 
-      $aCompetencia = array("iAno" => $this->iAnoUsu, "iMes" => $this->iMesUsu);
+      $aCompetencia = ["iAno" => $this->iAnoUsu, "iMes" => $this->iMesUsu];
       throw new BusinessException(_M(self::MENSAGEM . "erro_calculo", (object) $aCompetencia));
     }
 

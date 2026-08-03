@@ -80,22 +80,22 @@ class EspelhoPonto
     /**
      * @var array
      */
-    private $aObservacoes = array();
+    private $aObservacoes = [];
 
     /**
      * @var array
      */
-    private $aControleObservacoes = array();
+    private $aControleObservacoes = [];
 
     /**
      * @var Periodo[]
      */
-    private $aPeriodos = array();
+    private $aPeriodos = [];
 
     /**
      * @var array
      */
-    private $totalHorasAssentamentos = array();
+    private $totalHorasAssentamentos = [];
 
     /**
      * @var DiaTrabalhoModel
@@ -139,38 +139,38 @@ class EspelhoPonto
     private function getEstruturaDadosBasico()
     {
 
-        $this->aDados = array(
+        $this->aDados = [
             'dados' => $this->getDadosServidor(),
-            'dadosGerais' => array(),
-            'datas' => array(),
-            'datasSemMarcacao' => array(),
-            'aHorasJornada' => array(),
-            'observacoes' => array(),
-            'nTotalHorasNormais' => array('0:00'),
-            'nTotalHorasFaltas' => array('0:00'),
-            'nTotalHorasFaltasNoturna' => array('0:00'),
-            'nTotalHorasExt50diurnas' => array('0:00'),
-            'nTotalHorasExt50noturnas' => array('0:00'),
-            'nTotalHorasExt75diurnas' => array('0:00'),
-            'nTotalHorasExt75noturnas' => array('0:00'),
-            'nTotalHorasExt100diurnas' => array('0:00'),
-            'nTotalHorasExt100noturnas' => array('0:00'),
-            'nTotalHorasExt50NaoAutorizadasdiurnas' => array('0:00'),
-            'nTotalHorasExt50NaoAutorizadasnoturnas' => array('0:00'),
-            'nTotalHorasExt75NaoAutorizadasdiurnas' => array('0:00'),
-            'nTotalHorasExt75NaoAutorizadasnoturnas' => array('0:00'),
-            'nTotalHorasExt100NaoAutorizadasdiurnas' => array('0:00'),
-            'nTotalHorasExt100NaoAutorizadasnoturnas' => array('0:00'),
-            'nTotalHorasExtNaoAutorizadasnoturnas' => array('0:00'),
-            'nTotalHorasExtNaoAutorizadasdiurnas' => array('0:00'),
-            'nTotalHorasAdicional' => array('0:00'),
-            'nTotalHorasAtraso' => array('0:00'),
-            'nTotalHorasAtrasoDesmembrado' => array('0:00'),
-            'nTotalHorasAtrasoNoturno' => array('0:00'),
-            'nTotalHorasSaidaAtencipada' => array('0:00'),
-            'nTotalHorasSaidaAtencipadaNoturna' => array('0:00'),
-            'totalHorasAssentamento' => array('0:00'),
-        );
+            'dadosGerais' => [],
+            'datas' => [],
+            'datasSemMarcacao' => [],
+            'aHorasJornada' => [],
+            'observacoes' => [],
+            'nTotalHorasNormais' => ['0:00'],
+            'nTotalHorasFaltas' => ['0:00'],
+            'nTotalHorasFaltasNoturna' => ['0:00'],
+            'nTotalHorasExt50diurnas' => ['0:00'],
+            'nTotalHorasExt50noturnas' => ['0:00'],
+            'nTotalHorasExt75diurnas' => ['0:00'],
+            'nTotalHorasExt75noturnas' => ['0:00'],
+            'nTotalHorasExt100diurnas' => ['0:00'],
+            'nTotalHorasExt100noturnas' => ['0:00'],
+            'nTotalHorasExt50NaoAutorizadasdiurnas' => ['0:00'],
+            'nTotalHorasExt50NaoAutorizadasnoturnas' => ['0:00'],
+            'nTotalHorasExt75NaoAutorizadasdiurnas' => ['0:00'],
+            'nTotalHorasExt75NaoAutorizadasnoturnas' => ['0:00'],
+            'nTotalHorasExt100NaoAutorizadasdiurnas' => ['0:00'],
+            'nTotalHorasExt100NaoAutorizadasnoturnas' => ['0:00'],
+            'nTotalHorasExtNaoAutorizadasnoturnas' => ['0:00'],
+            'nTotalHorasExtNaoAutorizadasdiurnas' => ['0:00'],
+            'nTotalHorasAdicional' => ['0:00'],
+            'nTotalHorasAtraso' => ['0:00'],
+            'nTotalHorasAtrasoDesmembrado' => ['0:00'],
+            'nTotalHorasAtrasoNoturno' => ['0:00'],
+            'nTotalHorasSaidaAtencipada' => ['0:00'],
+            'nTotalHorasSaidaAtencipadaNoturna' => ['0:00'],
+            'totalHorasAssentamento' => ['0:00'],
+        ];
     }
 
     /**
@@ -265,7 +265,7 @@ class EspelhoPonto
 
         $supervisor = $oParametrosLotacao->getSupervisor();
 
-        return (object)array(
+        return (object)[
             'nome' => $this->oServidor->getCgm()->getNome(),
             'matricula' => $this->oServidor->getMatricula(),
             'admissao' => $this->oServidor->getDataAdmissao()->getDate(\DBDate::DATA_PTBR),
@@ -275,7 +275,7 @@ class EspelhoPonto
             'supervisor' => $supervisor->getCgm()->getNome(),
             'matriculaSupervisor' => $supervisor->getMatricula(),
             'localTrabalho' => $localTrabalho
-        );
+        ];
     }
 
     /**
@@ -283,10 +283,10 @@ class EspelhoPonto
      */
     private function getDadosGerais()
     {
-        return (object)array(
+        return (object)[
             'lTemTodasMarcacoes' => $this->lTemTodasMarcacoes,
             'configuracoesGerais' => ParametrosRepository::create()->getConfiguracoesGerais($this->oInstituicao->getCodigo())
-        );
+        ];
     }
 
     /**
@@ -317,7 +317,7 @@ class EspelhoPonto
         $oDados->lTemMarcacoes      = !$oDiaTrabalho->getMarcacoes()->isEmpty();
         $oDados->lFeriado           = $oDiaTrabalho->getFeriado() != null;
         $oDados->lEscalaRevezamento = ($oDiaTrabalho->getServidor()->getEscala($oDiaTrabalho->getData()) instanceof EscalaServidor ? $oDiaTrabalho->getServidor()->getEscala($oDiaTrabalho->getData())->getEscalaTrabalho()->isRevezamento() : false);
-        $oDados->afastamento        = (object)array('isAfastado' => false);
+        $oDados->afastamento        = (object)['isAfastado' => false];
 
         if ($oDiaTrabalho->isAfastado()) {
             $oDados->afastamento->isAfastado = true;
@@ -401,7 +401,7 @@ class EspelhoPonto
         $aMarcacoesOriginais = $this->getMarcacoesOriginais($oDiaTrabalho->getData(),
             $oDiaTrabalho->getServidor()->getMatricula());
 
-        $oDados->aMarcacoes = array($oEntradaSaida1, $oEntradaSaida2, $oEntradaSaida3);
+        $oDados->aMarcacoes = [$oEntradaSaida1, $oEntradaSaida2, $oEntradaSaida3];
         $oDados->aMarcacoesOriginais = $aMarcacoesOriginais;
         $oDados->normais = $this->validaHoraZerada($oDiaTrabalho->getHorasTrabalho() != '' ? new \DateTime($oDiaTrabalho->getHorasTrabalho()) : '',
             true);
@@ -415,18 +415,18 @@ class EspelhoPonto
         $oDados->ext75noturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra75Noturna() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra75Noturna()) : '');
         $oDados->ext100diurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra100() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra100()) : '');
         $oDados->ext100noturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra100Noturna() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra100Noturna()) : '');
-        $oDados->ext50 = $this->validaHoraZerada(new \DateTime($this->somarTotalizador(array(
+        $oDados->ext50 = $this->validaHoraZerada(new \DateTime(static::somarTotalizador([
             $oDados->ext50diurnas,
             $oDados->ext50noturnas
-        ))), true);
-        $oDados->ext75 = $this->validaHoraZerada(new \DateTime($this->somarTotalizador(array(
+        ])), true);
+        $oDados->ext75 = $this->validaHoraZerada(new \DateTime(static::somarTotalizador([
             $oDados->ext75diurnas,
             $oDados->ext75noturnas
-        ))), true);
-        $oDados->ext100 = $this->validaHoraZerada(new \DateTime($this->somarTotalizador(array(
+        ])), true);
+        $oDados->ext100 = $this->validaHoraZerada(new \DateTime(static::somarTotalizador([
             $oDados->ext100diurnas,
             $oDados->ext100noturnas
-        ))), true);
+        ])), true);
         $oDados->adicional = $this->validaHoraZerada($oDiaTrabalho->getHorasAdicionalNoturno() != '' ? new \DateTime($oDiaTrabalho->getHorasAdicionalNoturno()) : '',
             true);
         $oDados->saidaAntecipada = $this->validaHoraZerada($oDiaTrabalho->getHorasSaidaAntecipada() != '' ? new \DateTime($oDiaTrabalho->getHorasSaidaAntecipada()) : '',
@@ -616,7 +616,7 @@ class EspelhoPonto
      */
     public function retornaDados($lApenasDiasComHorasExtras = false)
     {
-        $aHorasJornada = array();
+        $aHorasJornada = [];
 
         foreach ($this->aPeriodos as $oPeriodoEfetividade) {
             $this->oPeriodoEfetividade = $oPeriodoEfetividade;
@@ -634,13 +634,13 @@ class EspelhoPonto
                     $this->aDados['datasSemMarcacao'][] = $oDiaTrabalho->getData()->getDate();
                 }
 
-                $aHorasJornada[$oJornada->getCodigo()] = (object)array(
+                $aHorasJornada[$oJornada->getCodigo()] = (object)[
                     'fixo' => $oJornada->isFixo(),
                     'folga' => $oJornada->isFolga(),
                     'DSR' => $oJornada->isDSR(),
                     'diaTrabalhado' => $oJornada->isDiaTrabalhado(),
                     'horas' => $oJornada->getHoras()
-                );
+                ];
 
                 $oStdDiaTrabalho = $this->montarValoresGrade($oDiaTrabalho);
                 
@@ -692,7 +692,7 @@ class EspelhoPonto
                     continue;
                 }
 
-                list($iHora, $iMinute) = explode(':', $horario);
+                [$iHora, $iMinute] = explode(':', (string) $horario);
                 $nTotalMinutos += $iHora * 60;
                 $nTotalMinutos += $iMinute;
             }
@@ -731,18 +731,18 @@ class EspelhoPonto
      */
     private function getMarcacoesOriginais($data, $matricula)
     {
-        $camposRegistros = array(
+        $camposRegistros = [
             'rh229_pis as pis',
             'rh229_matricula as matricula',
             'to_char(rh229_data, \'DD/MM/YYYY\'::text) as data',
             'to_char(rh229_hora, \'HH24:MI\'::text) as hora',
             'rh229_serial as serial',
-        );
+        ];
 
-        $whereRegistros = array(
+        $whereRegistros = [
             "rh229_matricula  = {$matricula}",
             "rh229_data       = '{$data->getDate()}'"
-        );
+        ];
 
         $oDaoPontoEletronicoArquivoImportacaoRegistro = new \cl_pontoeletronicoarquivoimportacaoregistro;
 
@@ -755,18 +755,16 @@ class EspelhoPonto
         }
 
         if (pg_num_rows($rsRegistros) == 0) {
-            return array();
+            return [];
         }
 
-        return \db_utils::makeCollectionFromRecord($rsRegistros, function ($retorno) {
-            return (object)array(
-                'pis' => $retorno->pis,
-                'matricula' => $retorno->matricula,
-                'data' => $retorno->data,
-                'hora' => $retorno->hora,
-                'serial' => $retorno->serial
-            );
-        });
+        return \db_utils::makeCollectionFromRecord($rsRegistros, fn($retorno) => (object)[
+            'pis' => $retorno->pis,
+            'matricula' => $retorno->matricula,
+            'data' => $retorno->data,
+            'hora' => $retorno->hora,
+            'serial' => $retorno->serial
+        ]);
     }
 
     /**
@@ -779,12 +777,12 @@ class EspelhoPonto
     {
         $assentamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($diaTrabalho->getServidor(),
             'S', $diaTrabalho->getData(), \Assentamento::NATUREZA_AUTORIZA_HORA_EXTRA);
-        $horasAutorizadas = array();
+        $horasAutorizadas = [];
 
         if (!empty($assentamentos)) {
             foreach ($assentamentos as $assentamento) {
                 $horasAutorizadas[] = $assentamento->getHora();
-                return $this->somarTotalizador($horasAutorizadas);
+                return static::somarTotalizador($horasAutorizadas);
             }
         }
 
@@ -835,7 +833,7 @@ class EspelhoPonto
     public function totalizarHorasAssentamentosServidorNaData(DiaTrabalho $diaTrabalho)
     {
         if (empty($this->totalHorasAssentamentos)) {
-            $this->totalHorasAssentamentos = array_merge($this->totalizarHorasGeraisNaData($diaTrabalho), $this->totalizarAssentamentoNaDataPorNatureza($diaTrabalho), $this->totalizarAfastamentoNaData($diaTrabalho));
+            $this->totalHorasAssentamentos = array_merge($this->totalizarHorasGeraisNaData(), $this->totalizarAssentamentoNaDataPorNatureza($diaTrabalho), $this->totalizarAfastamentoNaData($diaTrabalho));
         }
 
         return $this->totalHorasAssentamentos;
@@ -848,19 +846,19 @@ class EspelhoPonto
      * @throws \DBException
      * @throws \ParameterException
      */
-    private function totalizarAssentamentoNaDataPorNatureza(DiaTrabalho $diaTrabalho, $naturezas = array(\Assentamento::NATUREZA_JUSTIFICATIVA, \Assentamento::NATUREZA_ABONO_FALTA, \Assentamento::NATUREZA_AUTORIZA_HORA_EXTRA))
+    private function totalizarAssentamentoNaDataPorNatureza(DiaTrabalho $diaTrabalho, $naturezas = [\Assentamento::NATUREZA_JUSTIFICATIVA, \Assentamento::NATUREZA_ABONO_FALTA, \Assentamento::NATUREZA_AUTORIZA_HORA_EXTRA])
     {
         $justificativaRepository = new JustivicativaRepository();
         $tipoAssentamentosJustificativas = $justificativaRepository->getTipoAssentamentosConfigurados();
 
-        $assentamentos = array();
+        $assentamentos = [];
         foreach ($naturezas as $natureza) {
             $assentamentosFiltrados = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($this->oServidor,
                 'S',
                 $diaTrabalho->getData(),
                 $natureza);
 
-            $assentamentosFiltrados = is_null($assentamentosFiltrados) ? array() : $assentamentosFiltrados;
+            $assentamentosFiltrados ??= [];
 
             $assentamentos = array_merge($assentamentos, $assentamentosFiltrados);
         }
@@ -880,7 +878,7 @@ class EspelhoPonto
         }
 
 
-        $assentamentosAgrupados = array();
+        $assentamentosAgrupados = [];
         foreach ($assentamentos as $assentamento) {
             $assentamento->calcularHorasDiurnasNoturnasNoDia($diaTrabalho);
 
@@ -897,8 +895,8 @@ class EspelhoPonto
                 $horasDiurnas = $assentamentosAgrupados[$assentamento->getTipoAssentamento()]->horasDiurnas;
                 $horasNoturnas = $assentamentosAgrupados[$assentamento->getTipoAssentamento()]->horasNoturnas;
 
-                $assentamentosAgrupados[$assentamento->getTipoAssentamento()]->horasDiurnas = $this->somarTotalizador(array($horasDiurnas, $assentamento->getHoraDiurna()));
-                $assentamentosAgrupados[$assentamento->getTipoAssentamento()]->horasNoturnas = $this->somarTotalizador(array($horasNoturnas, $assentamento->getHoraNoturna()));
+                $assentamentosAgrupados[$assentamento->getTipoAssentamento()]->horasDiurnas = static::somarTotalizador([$horasDiurnas, $assentamento->getHoraDiurna()]);
+                $assentamentosAgrupados[$assentamento->getTipoAssentamento()]->horasNoturnas = static::somarTotalizador([$horasNoturnas, $assentamento->getHoraNoturna()]);
             }
         }
 
@@ -916,9 +914,9 @@ class EspelhoPonto
         $afastamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($this->oServidor,
             'A',
             $diaTrabalho->getData());
-        $afastamentos = is_null($afastamentos) ? array() : $afastamentos;
+        $afastamentos ??= [];
 
-        $afastamentosAgrupados = array();
+        $afastamentosAgrupados = [];
         foreach ($afastamentos as $afastamento) {
             $afastamento->calcularHorasDiurnasNoturnasNoDia($diaTrabalho);
 
@@ -956,73 +954,73 @@ class EspelhoPonto
      */
     private function mapearParametrosGeraisTotalizadores()
     {
-        return array(
-            (object) array(
+        return [
+            (object) [
                 'totalizador'=>'nTotalHorasNormais',
                 'totalizadorNoturno'=>'nTotalHorasAdicional',
                 'sequencial'=>'HorasNormais',
                 'descricao'=>'Total Horas Trabalhadas',
-            ),
-            (object) array(
+            ],
+            (object) [
                 'totalizador'=>'nTotalHorasFaltas',
                 'totalizadorNoturno'=>'nTotalHorasFaltasNoturna',
                 'sequencial'=>'HorasFaltas',
-                'descricao'=>'Total Horas Faltas'),
-            (object) array(
+                'descricao'=>'Total Horas Faltas'],
+            (object) [
                 'totalizador'=>'nTotalHorasExt50diurnas',
                 'totalizadorNoturno'=>'nTotalHorasExt50noturnas',
                 'sequencial'=>'HorasExt50',
                 'descricao'=>'Total Horas Extra 50'
-            ),
-            (object) array(
+            ],
+            (object) [
                 'totalizador'=>'nTotalHorasExt75diurnas',
                 'totalizadorNoturno'=>'nTotalHorasExt75noturnas',
                 'sequencial'=>'HorasExt75',
                 'descricao'=>'Total Horas Extra 75'
-            ),
-            (object) array(
+            ],
+            (object) [
                 'totalizador'=>'nTotalHorasExt100diurnas',
                 'totalizadorNoturno'=>'nTotalHorasExt100noturnas',
                 'sequencial'=>'HorasExt100',
                 'descricao'=>'Total Horas Extra 100'
-            ),
-            (object) array(
+            ],
+            (object) [
                 'totalizador'=>'nTotalHorasAtrasoDesmembrado',
                 'totalizadorNoturno'=>'nTotalHorasAtrasoNoturno',
                 'sequencial'=>'HorasAtraso',
                 'descricao'=>'Total Horas Atraso'
-            ),
-            (object) array(
+            ],
+            (object) [
                 'totalizador'=>'nTotalHorasSaidaAtencipada',
                 'totalizadorNoturno'=>'nTotalHorasSaidaAtencipadaNoturna',
                 'sequencial'=>'HorasSaidaAntecipada',
                 'descricao'=>'Total Horas Saida Antecipada'
-            ),
-            (object) array(
+            ],
+            (object) [
                 'totalizador'=>'nTotalHorasExt50NaoAutorizadasdiurnas',
                 'totalizadorNoturno'=>'nTotalHorasExt50NaoAutorizadasnoturnas',
                 'sequencial'=>'HorasExt50NaoAutorizadas',
                 'descricao'=>'Horas Extras Não Autorizadas 50%'
-            ),
-            (object) array(
+            ],
+            (object) [
                 'totalizador'=>'nTotalHorasExt75NaoAutorizadasdiurnas',
                 'totalizadorNoturno'=>'nTotalHorasExt75NaoAutorizadasnoturnas',
                 'sequencial'=>'HorasExt75NaoAutorizadas',
                 'descricao'=>'Horas Extras Não Autorizadas 75%'
-            ),
-            (object) array(
+            ],
+            (object) [
                 'totalizador'=>'nTotalHorasExt100NaoAutorizadasdiurnas',
                 'totalizadorNoturno'=>'nTotalHorasExt100NaoAutorizadasnoturnas',
                 'sequencial'=>'HorasExt100NaoAutorizadas',
                 'descricao'=>'Horas Extras Não Autorizadas 100%'
-            ),
-            (object) array(
+            ],
+            (object) [
                 'totalizador'=>'nTotalHorasExtNaoAutorizadasnoturnas',
                 'totalizadorNoturno'=>'nTotalHorasExtNaoAutorizadasdiurnas',
                 'sequencial'=>'HorasExtNaoAutorizadas',
                 'descricao'=>'Horas Extras Não Autorizadas'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -1030,7 +1028,7 @@ class EspelhoPonto
      */
     private function totalizarHorasGeraisNaData()
     {
-        $totalizador = array();
+        $totalizador = [];
 
         $mapeadorParametrosGerais = $this->mapearParametrosGeraisTotalizadores();
         foreach ($mapeadorParametrosGerais as $mapeador) {

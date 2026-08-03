@@ -122,7 +122,7 @@ db_input('c91_hora',5,$Ic91_hora,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Ativo','2'=>'Processado','3'=>'Cancelado');
+$x = ['1'=>'Ativo','2'=>'Processado','3'=>'Cancelado'];
 db_select('c91_situacao',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -133,7 +133,7 @@ db_select('c91_situacao',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Contábil','2'=>'Dotações','3'=>'Receitas');
+$x = ['1'=>'Contábil','2'=>'Dotações','3'=>'Receitas'];
 db_select('c91_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -144,7 +144,7 @@ db_select('c91_tipo',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Com PPA','2'=>'Sem PPA');
+$x = ['1'=>'Com PPA','2'=>'Sem PPA'];
 db_select('c91_ppa',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -155,7 +155,7 @@ db_select('c91_ppa',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Previsão Inicial','2'=>'Previsão Atualizada');
+$x = ['1'=>'Previsão Inicial','2'=>'Previsão Atualizada'];
 db_select('c91_origem',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -219,7 +219,7 @@ function js_preenchepesquisa(chave){
   db_iframe_conaberturaexe.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

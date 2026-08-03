@@ -33,11 +33,11 @@ require_once modification('dbforms/db_funcoes.php');
 
 use ECidade\Tributario\Agua\EmissaoCarnes\ConfiguracaoDebitos;
 
-$oParam   = JSON::create()->parse(stripslashes($_POST['json']));
-$oRetorno = (object) array(
+$oParam   = JSON::create()->parse(stripslashes((string) $_POST['json']));
+$oRetorno = (object) [
   'message' => '',
   'erro'    => false
-);
+];
 
 try {
 

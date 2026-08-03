@@ -114,7 +114,7 @@ db_input('o64_proces',8,$Io64_proces,true,'hidden',3);
     for($i=0; $i<$numrows03; $i++){
        db_fieldsmemory($result03,$i,1);
        $c = "valor_$exercicio";
-       $$c = $valor;
+       ${$c} = $valor;
     }
 ?>	
     </td> 	
@@ -123,17 +123,17 @@ db_input('o64_proces',8,$Io64_proces,true,'hidden',3);
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
     
      $x  = "o64_codseqimpmov_$i";
-     $$x  = "";
+     ${$x}  = "";
     
      $x = "o64_valor_$i";
-     $$x  = "";
+     ${$x}  = "";
       
      $x = "o56_elemento_$i";
-     $$x = "";
+     ${$x} = "";
      
      
      $x = "o67_codigo_$i";
-     $$x = "";
+     ${$x} = "";
 
       
    if(isset($o64_proces) && $o64_proces!='' && empty($novo) && empty($incluir) && empty($alterar)){
@@ -143,10 +143,10 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
        db_fieldsmemory($result,0);
    
        $x  = "o64_codseqimpmov_$i";
-       $$x  = $o64_codseqimpmov;
+       ${$x}  = $o64_codseqimpmov;
 	  
        $x = "o64_valor_$i";
-       $$x = $o64_valor;
+       ${$x} = $o64_valor;
        
    
        //retorna os dados do orcimpactotiporec 
@@ -154,7 +154,7 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
        if($clorcimpactomovtiporec->numrows>0){
          db_fieldsmemory($result,0);
          $x = "o67_codigo_$i";
-         $$x = $o67_codigo;
+         ${$x} = $o67_codigo;
        }  	 
        
        //retorna os dados do orcimpactovaele 
@@ -162,7 +162,7 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
        if($clorcimpactovalmovele->numrows>0){
          db_fieldsmemory($result,0);
          $x = "o56_elemento_$i";
-         $$x = $o56_elemento;
+         ${$x} = $o56_elemento;
        }  	 
        
      }
@@ -185,8 +185,8 @@ db_input("o64_codseqimpmov_$i",8,$Io64_codseqimpmov,true,'hidden',1);
     <td> 
 <?php 
 $x = "o64_exercicio_$i";
-if(empty($$x)){
-  $$x = $i;
+if(empty(${$x})){
+  ${$x} = $i;
 }
 db_input("o64_exercicio_$i",4,$Io64_exercicio,true,'text',3)
 ?>
@@ -224,7 +224,7 @@ db_input("o64_valor_$i",8,$Io64_valor,true,'text',$db_opcao,($i == $o96_anoini?"
     <?php 
        $x = "o56_elemento_$i";
     ?>
-    <input type="text"  value="<?=@$$x?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o56_elemento_<?=$i?>" size="9" maxlength='7'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_elemento_<?=$i?>(false);'>
+    <input type="text"  value="<?=@${$x}?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o56_elemento_<?=$i?>" size="9" maxlength='7'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_elemento_<?=$i?>(false);'>
     
     </td>
     <td nowrap title="<?=@$To67_codigo?>">
@@ -235,8 +235,8 @@ db_input("o64_valor_$i",8,$Io64_valor,true,'text',$db_opcao,($i == $o96_anoini?"
     <td> 
 <?php 
 $x = "o67_codigo_$i";
-if(empty($$x)){
-  $$x = 1;
+if(empty(${$x})){
+  ${$x} = 1;
 }  
 db_input("o67_codigo_$i",4,$Io67_codigo,true,'text',$db_opcao," onchange='js_codigo_$i(false);'")
 ?>
@@ -261,7 +261,7 @@ db_input("o67_codigo_$i",4,$Io67_codigo,true,'text',$db_opcao," onchange='js_cod
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("o64_codseqimpmov"=>@$o64_codseqimpmov,"o64_proces"=>@$o64_proces);
+	 $chavepri= ["o64_codseqimpmov"=>@$o64_codseqimpmov,"o64_proces"=>@$o64_proces];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clorcimpactovalmov->sql_query_dad(null,"o64_codseqimpmov,o64_codimpmov,o64_exercicio,o64_valor,o64_proces,o56_elemento,o15_codigo","","o64_codimpmov =$o64_codimpmov");
 	 $cliframe_alterar_excluir->campos  ="o64_codseqimpmov,o64_codimpmov,o64_exercicio,o64_valor,o64_proces,o56_elemento,o15_codigo";

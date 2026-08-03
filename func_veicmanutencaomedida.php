@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veicmanutencaomedida_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveicmanutencaomedida = new cl_veicmanutencaomedida;
 $clveicmanutencaomedida->rotulo->label("ve66_sequencial");
 $clveicmanutencaomedida->rotulo->label("ve66_veiculo");
@@ -100,9 +100,9 @@ $clveicmanutencaomedida->rotulo->label("ve66_veiculo");
         }else{
            $sql = $clveicmanutencaomedida->sql_query("",$campos,"ve66_sequencial","{$sWhereAtivo}");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve66_veiculo)){
-          $repassa = array("chave_ve66_sequencial"=>$chave_ve66_sequencial,"chave_ve66_veiculo"=>$chave_ve66_veiculo);
+          $repassa = ["chave_ve66_sequencial"=>$chave_ve66_sequencial,"chave_ve66_veiculo"=>$chave_ve66_veiculo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

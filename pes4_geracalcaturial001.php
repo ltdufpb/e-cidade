@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
@@ -94,11 +94,11 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
           <td><strong>Vínculo:</strong></td>
           <td>
             <?php 
-              $aVinculos = array (
+              $aVinculos =  [
                                   ''  => 'Selecione',
                                   'A' => 'Ativo',
                                   'I' => 'Inativos',
-                                  'P' => 'Pensionistas');
+                                  'P' => 'Pensionistas'];
               db_select("vinculo",$aVinculos,true,1);
             ?>
           </td>
@@ -107,7 +107,7 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
           <td><strong>Usa Separador de Campo:</strong></td>
           <td>
             <?php 
-              $aSeparadorCampo = array('S' => 'Sim', 'N' => 'Não');
+              $aSeparadorCampo = ['S' => 'Sim', 'N' => 'Não'];
               db_select("separador",$aSeparadorCampo,true,1);
             ?>
           </td>
@@ -119,7 +119,7 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
             echo '<tr>';
             echo '  <td><strong>Versão:</strong></td>';
             echo '  <td>';
-            $aAno = array (1 => 'Até 2010', 2 => '2010 a 2015', 3=> 'A partir de 2016');
+            $aAno =  [1 => 'Até 2010', 2 => '2010 a 2015', 3=> 'A partir de 2016'];
             db_select('versao', $aAno, true, 1);
             echo '  </td>';
             echo '</tr>';
@@ -177,7 +177,7 @@ $('versao').value=3;
 <?php
 
   if (isset($_GET["funcao_downloadArquivo"])) {
-    echo base64_decode($_GET["funcao_downloadArquivo"]);
+    echo base64_decode((string) $_GET["funcao_downloadArquivo"]);
   }
 ?>
 </script>

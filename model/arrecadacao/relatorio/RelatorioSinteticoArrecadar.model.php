@@ -216,7 +216,7 @@ class RelatorioSinteticoArrecadar {
     
     $oDataSessao  = new DBDate(date('Y-m-d', db_getsession("DB_datausu")));
     $DB_DATACALC  = $oDataSessao->getTimeStamp();
-    $aWhere       = array();
+    $aWhere       = [];
     $where        = "";
     $and          = " and ";
        
@@ -256,16 +256,16 @@ class RelatorioSinteticoArrecadar {
     }
 
     $oDadosRelatorio              = new stdClass();
-    $oDadosRelatorio->aDebitos    = array();
-    $aTiposDebitosDetalhe         = array();
-    $oDadosRelatorio->aSuspensoes = array();
+    $oDadosRelatorio->aDebitos    = [];
+    $aTiposDebitosDetalhe         = [];
+    $oDadosRelatorio->aSuspensoes = [];
     $aValoresTipoDebito           = $oDadosRelatorio->aDebitos;
 
     
     /**
      * Parametros da Funcao
      */
-    $aParametros     = array();
+    $aParametros     = [];
     $aParametros[]   = $this->sChavePesquisa;           // Valor do Tipo de Pesquisa Ex.: Numero do CGM, MATRICULA...
     $aParametros[]   = 0;                         // Limite de Registros
     $aParametros[]   = $oTipoDebito->k00_tipo;    // Tipo de Debito
@@ -296,8 +296,8 @@ class RelatorioSinteticoArrecadar {
       if ( !is_resource($rsDebitos) ) {
         throw new DBException( "Não existem debitos({$oTipoDebito->k00_descr}) para o Exercicio/Periodo informado.");
       }
-      $aNumpreDebito  = array();
-      $oOrigem        = array();
+      $aNumpreDebito  = [];
+      $oOrigem        = [];
       
       for ( $iIndiceDebitos = 0; $iIndiceDebitos < pg_num_rows($rsDebitos); $iIndiceDebitos++ ) {
       

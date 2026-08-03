@@ -95,13 +95,13 @@ class AssentamentoEncerramentoEfetividade
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'assentamento' => $this->getAssentamento()->toArray(),
             'ano' => $this->getAno(),
             'mes' => $this->getMes(),
             'instituicao' => $this->getInstituicao()->toArray()
-        );
+        ];
     }
 
     /**

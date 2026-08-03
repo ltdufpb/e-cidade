@@ -54,7 +54,7 @@ class DiarioClasse extends Controller
         return response()->json(
             [
                 'data'=> $path,
-                "message"=> utf8_encode("Diário de Classe emitido com sucesso.")
+                "message"=> mb_convert_encoding("Diário de Classe emitido com sucesso.", 'UTF-8', 'ISO-8859-1')
             ]
         );
     }
@@ -74,7 +74,7 @@ class DiarioClasse extends Controller
         return response()->json(
             [
                 'data'=> $path,
-                "message"=> utf8_encode("Diário de Classe emitido com sucesso.")
+                "message"=> mb_convert_encoding("Diário de Classe emitido com sucesso.", 'UTF-8', 'ISO-8859-1')
             ]
         );
     }

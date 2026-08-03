@@ -48,7 +48,7 @@ $clrhpessoal->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label('r14_valor');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_POST_VARS,2);exit;
 $db_opcao = 1;
 $db_botao = true;
@@ -59,7 +59,7 @@ if(isset($gerarq)){
   for($i=0; $i<$clrhvisavale->numrows; $i++){
   	db_fieldsmemory($result_dadosvisavale, $i);
   	$interloc  = "inter".($i+1);
-  	$$interloc = $inter;
+  	${$interloc} = $inter;
   }
 
 	$result_instituicao = $cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_instit"),"*"));
@@ -444,7 +444,7 @@ $nomearquivo_csv = "VisaVale_".db_formatar($pedido_dia,"s","0",2,"e",0).
 $fd=fopen("tmp/$nomearquivo_csv","wr");
 
 for ($j=0;$j<$linhas;$j++){
-$res=pg_result($result,$j,0);
+$res=pg_fetch_result($result,$j,0);
 
 fputs($fd,$res."\n");
 

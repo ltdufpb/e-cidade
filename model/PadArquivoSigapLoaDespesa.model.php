@@ -46,7 +46,7 @@ final class PadArquivoSigapLoaDespesa extends PadArquivoSigap
     {
 
         $this->sNomeArquivo = "LoaDespesa";
-        $this->aDados = array();
+        $this->aDados = [];
     }
 
     /**
@@ -67,7 +67,7 @@ final class PadArquivoSigapLoaDespesa extends PadArquivoSigap
         /**
          * Separamos a data do em ano, mes, dia
          */
-        list($iAno, $iMes, $iDia) = explode("-", $this->sDataFinal);
+        [$iAno, $iMes, $iDia] = explode("-", $this->sDataFinal);
         $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
         $sListaInstit = db_getsession("DB_instit");
         require_once(modification("model/cronogramaMetaDespesa.model.php"));
@@ -75,7 +75,7 @@ final class PadArquivoSigapLoaDespesa extends PadArquivoSigap
         $oCronograma = new cronogramaFinanceiro($this->iCodigoVersao);
         $aMetas = $oCronograma->getMetasDespesa(99);
 
-        $aMeses = array(1 => "Janeiro",
+        $aMeses = [1 => "Janeiro",
             2 => "Fevereiro",
             3 => "Marco",
             4 => "Abril",
@@ -87,7 +87,7 @@ final class PadArquivoSigapLoaDespesa extends PadArquivoSigap
             10 => "Outubro",
             11 => "Novembro",
             12 => "Dezembro",
-        );
+        ];
 
         $sDiaMesAno = "{$iAno}-" . str_pad($iMes, 2, "0", STR_PAD_LEFT) . "-" . str_pad($iDia, 2, "0", STR_PAD_LEFT);
         foreach ($aMetas as $oMeta) {
@@ -128,7 +128,7 @@ final class PadArquivoSigapLoaDespesa extends PadArquivoSigap
     public function getNomeElementos()
     {
 
-        $aElementos = array(
+        $aElementos = [
             "ldeCodigoEntidade",
             "ldeCodigoOrgao",
             "ldeCodigoUnidadeOrcamentaria",
@@ -152,7 +152,7 @@ final class PadArquivoSigapLoaDespesa extends PadArquivoSigap
             "ldeDesembolsoDezembro",
             "ldeExercicio",
             "ldeMesAnoMovimento"
-        );
+        ];
         return $aElementos;
     }
 

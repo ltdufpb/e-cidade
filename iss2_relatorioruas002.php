@@ -44,7 +44,7 @@ $sHeaderDataDebitos   = "Data: Todas";
 /**
  * Verifica os logradouros selecionados no formulario.
  */
-if (trim($oGet->logradouro) != "") {
+if (trim((string) $oGet->logradouro) != "") {
   
   $sHeaderLogradouro = "Logradouro: ( {$oGet->logradouro} )";
   $sWhere           .= "{$sAnd} ruas.j14_codigo in($oGet->logradouro) ";
@@ -54,7 +54,7 @@ if (trim($oGet->logradouro) != "") {
 /**
  * Verifica o tipo de atividade selecionados no formulario.
  */
-if (trim($oGet->tipoatividade) != "") {
+if (trim((string) $oGet->tipoatividade) != "") {
   
   $sHeaderTipoAtividade = "Tipo de Atividade: ( {$oGet->tipoatividade} )";
   $sWhere              .= "{$sAnd} ativid.q03_ativ in($oGet->tipoatividade) ";
@@ -64,7 +64,7 @@ if (trim($oGet->tipoatividade) != "") {
 /**
  * Verifica o tipo de débito selecionados no formulario.
  */
-if (trim($oGet->tipodebito) != "") {
+if (trim((string) $oGet->tipodebito) != "") {
   
   $sHeaderTipoDebito = "Tipo de Débito: ( {$oGet->tipodebito} )";
   $sWhere           .= "{$sAnd} debitos.k22_tipo in($oGet->tipodebito) ";
@@ -74,14 +74,14 @@ if (trim($oGet->tipodebito) != "") {
 /**
  * Verifica incricoes selecionadas no formulario.
  */
-if (trim($oGet->inscricao) != "") {
+if (trim((string) $oGet->inscricao) != "") {
   
-	if (trim($oGet->inscricao) == 'BA') {
+	if (trim((string) $oGet->inscricao) == 'BA') {
 		
 	  $sHeaderInscricao  = "Incrições: Baixadas";
 	  $sWhere           .= "{$sAnd} issbase.q02_dtbaix is not null ";
 	  $sAnd              = " and ";
-	} else if (trim($oGet->inscricao) == 'NBA') {
+	} else if (trim((string) $oGet->inscricao) == 'NBA') {
 		
     $sHeaderInscricao  = "Incrições: Não Baixadas";
     $sWhere           .= "{$sAnd} issbase.q02_dtbaix is null ";
@@ -92,7 +92,7 @@ if (trim($oGet->inscricao) != "") {
 /**
  * Verifica a data na tabela debitos
  */
-if (trim($oGet->datadebitos) != "") {
+if (trim((string) $oGet->datadebitos) != "") {
   
   $sDataDebitos        = db_formatar($oGet->datadebitos, 'd');
   $sHeaderDataDebitos  = "Data: {$sDataDebitos} ";
@@ -103,9 +103,9 @@ if (trim($oGet->datadebitos) != "") {
 /**
  * Verifica ordem selecionada para o order by do sql.
  */
-if (trim($oGet->ordenar) != "") {
+if (trim((string) $oGet->ordenar) != "") {
   
-  switch (trim($oGet->ordenar)) {
+  switch (trim((string) $oGet->ordenar)) {
 
     case 'A':
       $sOrderBy = "ativid.q03_descr";
@@ -181,7 +181,7 @@ $sSql .= "           debitos.k22_multa                                          
 $sSql .= " {$sOrderBy}                                                                                        ";
 
 $rsSqlDebitos = db_query($sSql);
-$iNumRows     = pg_numrows($rsSqlDebitos);
+$iNumRows     = pg_num_rows($rsSqlDebitos);
 if ($iNumRows == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.');
 }
@@ -201,7 +201,7 @@ for ($i = 0; $i < $iNumRows; $i++) {
 	
 	$oDebitos = db_utils::fieldsMemory($rsSqlDebitos, $i);
 	
-  imprimeCabecalho($pdf, $iAlt, $lMostrar);
+  imprimeCabecalho($pdf, $iAlt);
   $lMostrar = false;
 
   if ( $iPrenc == 0 ) {
@@ -216,7 +216,7 @@ for ($i = 0; $i < $iNumRows; $i++) {
   $sCpfCnpj = '';
   if (!empty($oDebitos->z01_cgccpf)) {
   	
-	  if (trim(strlen($oDebitos->z01_cgccpf)) == 11) {
+	  if (trim(strlen((string) $oDebitos->z01_cgccpf)) == 11) {
 	  	$sCpfCnpj = db_formatar($oDebitos->z01_cgccpf, 'cpf');
 	  } else {
 	  	$sCpfCnpj = db_formatar($oDebitos->z01_cgccpf, 'cnpj');
@@ -224,11 +224,11 @@ for ($i = 0; $i < $iNumRows; $i++) {
   }
   
   $pdf->cell(23,$iAlt,$sCpfCnpj                                                             ,0,0,"L",$iPrenc);
-  $pdf->cell(33,$iAlt,substr($oDebitos->z01_nome, 0, 20)                                    ,0,0,"L",$iPrenc);
-  $pdf->cell(33,$iAlt,substr($oDebitos->j14_nome, 0, 20)                                    ,0,0,"L",$iPrenc);
+  $pdf->cell(33,$iAlt,substr((string) $oDebitos->z01_nome, 0, 20)                                    ,0,0,"L",$iPrenc);
+  $pdf->cell(33,$iAlt,substr((string) $oDebitos->j14_nome, 0, 20)                                    ,0,0,"L",$iPrenc);
   $pdf->cell(15,$iAlt,$oDebitos->q02_numero                                                 ,0,0,"C",$iPrenc);
-  $pdf->cell(28,$iAlt,substr($oDebitos->q02_compl, 0, 10)                                   ,0,0,"L",$iPrenc);
-  $pdf->cell(28,$iAlt,substr($oDebitos->q03_descr, 0, 18)                                   ,0,0,"L",$iPrenc);   
+  $pdf->cell(28,$iAlt,substr((string) $oDebitos->q02_compl, 0, 10)                                   ,0,0,"L",$iPrenc);
+  $pdf->cell(28,$iAlt,substr((string) $oDebitos->q03_descr, 0, 18)                                   ,0,0,"L",$iPrenc);   
   $pdf->cell(22,$iAlt,db_formatar($oDebitos->k22_vlrhis, 'f')                               ,0,0,"R",$iPrenc);
   $pdf->cell(22,$iAlt,db_formatar($oDebitos->k22_vlrcor, 'f')                               ,0,0,"R",$iPrenc);
   $pdf->cell(22,$iAlt,db_formatar($oDebitos->k22_juros, 'f')                                ,0,0,"R",$iPrenc);

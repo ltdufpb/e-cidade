@@ -35,8 +35,8 @@ include(modification("classes/db_sanitario_classe.php"));
 require_once(modification('libs/db_utils.php'));
 require_once(modification("libs/db_libpostgres.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clpostgresqlutils  = new PostgreSQLUtils;
 $clsetor            = new cl_setor;
@@ -99,8 +99,8 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 	           <td colspan=2  align="left">
 	            <strong>Opções:</strong>  
 			        <?php 
-			          $aVer = array("com" => "Com os Cgm's selecionadas",
-			                        "sem" => "Sem os Cgm's selecionadas");
+			          $aVer = ["com" => "Com os Cgm's selecionadas",
+			                        "sem" => "Sem os Cgm's selecionadas"];
 			          db_select("ver",$aVer,true,$db_opcao);        
 			        ?>                
 	          </td>
@@ -142,7 +142,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 	      <td colspan=2 align='right' >
      	    <b>Ordenar:</b>
 		      <?php 
-		        $tipo_t = array("s"=>"Setor/Quadra/Lote","m"=>"Matrícula","r"=>"Rua");
+		        $tipo_t = ["s"=>"Setor/Quadra/Lote","m"=>"Matrícula","r"=>"Rua"];
 		        db_select("ordem",$tipo_t,true,$db_opcao); 	      
 		      ?>
 	      </td>

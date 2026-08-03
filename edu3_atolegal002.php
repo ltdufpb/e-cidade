@@ -44,7 +44,7 @@ $oDaoTipoAtoLegal->rotulo->label();
 
 function DBFormataData($dData) {
 
-  $aData = explode('-', $dData);
+  $aData = explode('-', (string) $dData);
   return $aData[2]."/".$aData[1]."/".$aData[0];
 
 }
@@ -70,14 +70,14 @@ function DBCompetencia($sCompetencia) {
 }
 
 function DBTipoAto($iTipo) {
-  
+
   $oDaoTipoAtoLegal  = db_utils::getdao('tipoato');
   $sWhere            = " ed83_i_codigo = ".$iTipo;
   $sSql              = $oDaoTipoAtoLegal->sql_query("", "*", "", $sWhere);
   $rsTipo            = $oDaoTipoAtoLegal->sql_record($sSql);
 
   if ($oDaoTipoAtoLegal->numrows > 0) {
-    
+
     return db_utils::fieldsmemory($rsTipo, 0)->ed83_c_descr;
 
   } else {
@@ -87,7 +87,7 @@ function DBTipoAto($iTipo) {
 }
 
 if (!isset($iAtoLegal)) {
-  
+
   echo("<center>Selecione um ato legal.</center>");
 
 } else {
@@ -111,7 +111,7 @@ if (!isset($iAtoLegal)) {
       $sLib .= "estilos.css,tab.style.css";
       db_app::load($sLib);
     ?>
-    
+
   </head>
   <body>
     <!-- Dados dos Atos Legais -->
@@ -210,7 +210,7 @@ if (!isset($iAtoLegal)) {
     <fieldset><legend><b>Detalhamento</b></legend>
     <center>
       <?php 
-        
+
         $oMenuLateral = new verticalTab('menus', '200');
 
         $oMenuLateral->add('cursos', 'Cursos', 'edu3_atolegal003.php?iAtoLegal='.$ed05_i_codigo);

@@ -83,7 +83,7 @@ $sObservacao   = $observacao;
 
 $processar     = true;
 
-$aMensagemErros = array();
+$aMensagemErros = [];
 
 if (isset($processar)&&$processar!=""){
 
@@ -118,7 +118,7 @@ if (isset($processar)&&$processar!=""){
 
         $oErro             = new stdClass();
         $oErro->sTipo      = "ERRO";
-        $oErro->sDescricao = utf8_encode("CDA $certidao está sob Cobrança Extrajudicial.");
+        $oErro->sDescricao = mb_convert_encoding("CDA $certidao está sob Cobrança Extrajudicial.", 'UTF-8', 'ISO-8859-1');
 
         $aMensagemErros[]  = $oErro;
 
@@ -224,7 +224,7 @@ if (isset($processar)&&$processar!=""){
 
       if ($sqlerro==false){
         $clarrecad->k00_tipo= $k00_tipo;
-        for ($arreforo=0; $arreforo < pg_numrows($result_forotip); $arreforo++) {
+        for ($arreforo=0; $arreforo < pg_num_rows($result_forotip); $arreforo++) {
           db_fieldsmemory($result_forotip,$arreforo);
           $clarrecad->alterar_arrecad("k00_numpre=$k00_numpre and k00_numpar=$k00_numpar");
           if ($clarrecad->erro_status==0){
@@ -293,7 +293,7 @@ if (isset($processar)&&$processar!=""){
       if ($sqlerro==false){
         $clarrecad->k00_tipo= $k00_tipo;
 
-        for ($arreforo=0; $arreforo < pg_numrows($result_forotip); $arreforo++) {
+        for ($arreforo=0; $arreforo < pg_num_rows($result_forotip); $arreforo++) {
           db_fieldsmemory($result_forotip,$arreforo);
           $clarrecad->alterar_arrecad("k00_numpre=$k00_numpre");
           if ($clarrecad->erro_status==0){

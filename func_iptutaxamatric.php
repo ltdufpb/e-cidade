@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptutaxamatric_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptutaxamatric = new cl_iptutaxamatric;
 $cliptutaxamatric->rotulo->label("j09_iptutaxamatric");
 $cliptutaxamatric->rotulo->label("j09_iptucadtaxa");
@@ -98,9 +98,9 @@ $cliptutaxamatric->rotulo->label("j09_iptucadtaxa");
         }else{
            $sql = $cliptutaxamatric->sql_query("",$campos,"j09_iptutaxamatric","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j09_iptucadtaxa)){
-          $repassa = array("chave_j09_iptutaxamatric"=>$chave_j09_iptutaxamatric,"chave_j09_iptucadtaxa"=>$chave_j09_iptucadtaxa);
+          $repassa = ["chave_j09_iptutaxamatric"=>$chave_j09_iptutaxamatric,"chave_j09_iptucadtaxa"=>$chave_j09_iptucadtaxa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

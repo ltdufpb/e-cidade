@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -84,11 +84,11 @@ db_postmemory($HTTP_POST_VARS);
          <td ><b>Ordem :</b></td>
          <td >
           <?php 
-             $aOrdem = array( 'habitinscricao.ht15_datalancamento' => 'Data de Lançamento da Inscrição',
+             $aOrdem = [ 'habitinscricao.ht15_datalancamento' => 'Data de Lançamento da Inscrição',
                               'cgm.z01_nome'                       => 'Nome do Candidato',
                               'habitprograma.ht01_sequencial'      => 'Programa',
                               'habitinscricao.ht15_sequencial'     => 'Inscrição'   
-                             );
+                             ];
              db_select('filtro_ordem',$aOrdem,true,1,'');            
           ?>
          </td>
@@ -97,11 +97,11 @@ db_postmemory($HTTP_POST_VARS);
          <td ><b>Quebra :</b></td>
          <td >
           <?php 
-             $aQuebra = array( '1' => 'Nenhum',
+             $aQuebra = [ '1' => 'Nenhum',
                                '2' => 'Data de Lançamento da Inscrição',
                                '3' => 'Nome do candidato',
                                '4' => 'Programa'
-                             );
+                             ];
              db_select('filtro_quebra',$aQuebra,true,1,'');            
           ?>         
          </td>

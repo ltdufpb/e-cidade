@@ -34,7 +34,7 @@ include(modification("classes/db_db_itenshelp_classe.php"));
 include(modification("classes/db_db_tipohelp_classe.php"));
 include(modification("classes/db_db_modulos_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <html>
@@ -197,20 +197,20 @@ function js_contageral(numero,idobj){
 		  	and i.itemativo = $ambiente
       order by menusequencia"); 
 //			and m.id_item_filho in (select id_item from db_itenshelp h where h.id_item = m.id_item_filho) ");
-      $numrows = pg_numrows($sub);
+      $numrows = pg_num_rows($sub);
       if($numrows > 0) {
 	      for($x = 0;$x < $numrows;$x++) {                  
-	        $valor = pg_result($sub,$x,"id_item_filho");
+	        $valor = pg_fetch_result($sub,$x,"id_item_filho");
 	        echo "<img src=\"imagens/alinha.gif\" height=\"5\" id=\"Img".$conta."\" width=\"".$wid."\" >";
 	         
-          lista_help(pg_result($sub,$x,"id_item_filho"),pg_result($sub,$x,"descricao"));
+          lista_help(pg_fetch_result($sub,$x,"id_item_filho"),pg_fetch_result($sub,$x,"descricao"));
           //echo pg_result($sub,$x,"descricao")."<br>\n";
 
 
 	        $wid += 15;
 	        $conta++;
 	        $contageral ++;
-	        submenus(pg_result($sub,$x,"id_item_filho"),$id,$mod);
+	        submenus(pg_fetch_result($sub,$x,"id_item_filho"),$id,$mod);
 	        $wid -= 15;
 	      }				                
       }
@@ -224,11 +224,11 @@ function js_contageral(numero,idobj){
       and i.libcliente = true
 		  and m.id_item = ".$modulo." order by menusequencia";
     $result = db_query($SQL);			
-    for($i = 0;$i < pg_numrows($result);$i++) {
-      $valor = pg_result($result,$i,"id_item_filho");
+    for($i = 0;$i < pg_num_rows($result);$i++) {
+      $valor = pg_fetch_result($result,$i,"id_item_filho");
       echo "<tr><td valign=\"top\" nowrap>
-	    <label for=\"ID$valor\">".pg_result($result,$i,"descricao")."</label><br>\n";
-      submenus(pg_result($result,$i,"pai"),"col".$i,db_strpos($modulo,"##"));
+	    <label for=\"ID$valor\">".pg_fetch_result($result,$i,"descricao")."</label><br>\n";
+      submenus(pg_fetch_result($result,$i,"pai"),"col".$i,db_strpos($modulo,"##"));
       echo "</td></tr>\n";
     }	   
   }

@@ -183,7 +183,7 @@ if (isset($oPost->incluir)) {
 	<tr>
 	  <td valign="top"  align="center">  
 	    <?php 
-		  $chavepri= array("k101_sequencial"=>@$k101_sequencial);
+		  $chavepri= ["k101_sequencial"=>@$k101_sequencial];
 		  
 		  $cliframe_alterar_excluir->chavepri	    = $chavepri;
 		  $cliframe_alterar_excluir->sql     	    = $clnotificaarratipodoc->sql_query(null,"*",null,"");

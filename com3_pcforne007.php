@@ -39,8 +39,8 @@ $clpcdoccertif = new cl_pcdoccertif;
 $clrotulo = new rotulocampo;
 $clrotulo->label("pc71_codigo");
 $clrotulo->label("pc71_descr");
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 <html>
 <head>

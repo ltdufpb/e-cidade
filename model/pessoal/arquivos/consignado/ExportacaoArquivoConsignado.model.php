@@ -68,7 +68,7 @@ class ExportacaoArquivoConsignado {
 	protected $sCaminhoArquivoRetorno;
 
 	
-	function __construct(\Banco $oBanco, \DBCompetencia $oCompetencia, \Instituicao $oInstituicao = null) {
+	function __construct(\Banco $oBanco, \DBCompetencia $oCompetencia, ?\Instituicao $oInstituicao = null) {
 
 		$this->oBanco        = $oBanco;
 		$this->oCompetencia  = $oCompetencia;
@@ -84,7 +84,7 @@ class ExportacaoArquivoConsignado {
 		$this->sCaminhoArquivoRetorno  = 'tmp/consignado_retorno_' . $this->oBanco->getCodigo() . '_' . $this->oCompetencia->getCompetencia(DBCompetencia::FORMATO_AAAAMM, false) .'.txt';
 	}
 
-	public function processar() {
+	public function processar(): never {
 		throw new BusinessException("Não há implementação de exportação de arquivo consignado para o banco informado.");
 	}
 }

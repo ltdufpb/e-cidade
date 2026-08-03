@@ -45,7 +45,7 @@ final class PRD implements DeparaInterface
      */
     public function __construct()
     {
-        $this->aFundamentacoes = array(
+        $this->aFundamentacoes = [
           'A24I',
           'A24II',
           'A24III',
@@ -114,7 +114,7 @@ final class PRD implements DeparaInterface
           'A75XVI',
           'A75P7',
           'OUTD'
-        );
+        ];
     }
 
     /**

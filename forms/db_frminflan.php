@@ -68,7 +68,7 @@ db_input('i01_pict',12,$Ii01_pict,true,'text',$db_opcao,"")
     <td> 
 	  <?php 
 	  //$x = array('0'=>'Diário','1'=>'Mensal','2'=>'Anual');
-	  $x = array('1'=>'Diário','0'=>'Mensal','2'=>'Anual');
+	  $x = ['1'=>'Diário','0'=>'Mensal','2'=>'Anual'];
 	  db_select('i01_dm',$x,true,$db_opcao,"");
 	  ?>
     </td>
@@ -79,7 +79,7 @@ db_input('i01_pict',12,$Ii01_pict,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Divide Valor pelo indice da data base e multiplica pelo indice da data atual','2'=>'Aplica índice mês a mês sobre o valor','3'=>'Aplica índice do mês do vencimento sobre o valor','9'=>'Sem correção ( Moeda Corrente Nacional )');
+$x = ['1'=>'Divide Valor pelo indice da data base e multiplica pelo indice da data atual','2'=>'Aplica índice mês a mês sobre o valor','3'=>'Aplica índice do mês do vencimento sobre o valor','9'=>'Sem correção ( Moeda Corrente Nacional )'];
 db_select('i01_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -123,7 +123,7 @@ function js_preenchepesquisa(chave){
   db_iframe_inflan.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

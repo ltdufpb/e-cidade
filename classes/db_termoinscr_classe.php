@@ -34,7 +34,7 @@ class cl_termoinscr
     public function __construct()
     {
         $this->rotulo = new rotulo("termoinscr"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -106,10 +106,10 @@ class cl_termoinscr
          $this->erro_status = "0";
          return false; 
        }
-       $this->v92_termo = pg_result($result,0,0); 
+       $this->v92_termo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from termoinscr_v92_termo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v92_termo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v92_termo)){
          $this->erro_sql = " Campo v92_termo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -143,7 +143,7 @@ class cl_termoinscr
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "termoinscr ($this->v92_termo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "termoinscr já Cadastrado";
@@ -172,13 +172,13 @@ class cl_termoinscr
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1013798,'$this->v92_termo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010872,1013798,'','".AddSlashes(pg_result($resaco,0,'v92_termo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010872,1013799,'','".AddSlashes(pg_result($resaco,0,'v92_dtinsc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010872,1013800,'','".AddSlashes(pg_result($resaco,0,'v92_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010872,1013802,'','".AddSlashes(pg_result($resaco,0,'v92_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010872,1013798,'','".AddSlashes(pg_fetch_result($resaco,0,'v92_termo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010872,1013799,'','".AddSlashes(pg_fetch_result($resaco,0,'v92_dtinsc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010872,1013800,'','".AddSlashes(pg_fetch_result($resaco,0,'v92_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010872,1013802,'','".AddSlashes(pg_fetch_result($resaco,0,'v92_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -189,10 +189,10 @@ class cl_termoinscr
       $this->atualizacampos();
      $sql = " update termoinscr set ";
      $virgula = "";
-     if(trim($this->v92_termo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v92_termo"])){ 
+     if(trim((string) $this->v92_termo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v92_termo"])){ 
        $sql  .= $virgula." v92_termo = $this->v92_termo ";
        $virgula = ",";
-       if(trim($this->v92_termo) == null ){ 
+       if(trim((string) $this->v92_termo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "v92_termo";
          $this->erro_banco = "";
@@ -202,10 +202,10 @@ class cl_termoinscr
          return false;
        }
      }
-     if(trim($this->v92_dtinsc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v92_dtinsc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v92_dtinsc_dia"] !="") ){ 
+     if(trim((string) $this->v92_dtinsc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v92_dtinsc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v92_dtinsc_dia"] !="") ){ 
        $sql  .= $virgula." v92_dtinsc = '$this->v92_dtinsc' ";
        $virgula = ",";
-       if(trim($this->v92_dtinsc) == null ){ 
+       if(trim((string) $this->v92_dtinsc) == null ){ 
          $this->erro_sql = " Campo Data de inscrição não informado.";
          $this->erro_campo = "v92_dtinsc_dia";
          $this->erro_banco = "";
@@ -218,7 +218,7 @@ class cl_termoinscr
        if(isset($GLOBALS["HTTP_POST_VARS"]["v92_dtinsc_dia"])){ 
          $sql  .= $virgula." v92_dtinsc = null ";
          $virgula = ",";
-         if(trim($this->v92_dtinsc) == null ){ 
+         if(trim((string) $this->v92_dtinsc) == null ){ 
            $this->erro_sql = " Campo Data de inscrição não informado.";
            $this->erro_campo = "v92_dtinsc_dia";
            $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_termoinscr
          }
        }
      }
-     if(trim($this->v92_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v92_usuario"])){ 
+     if(trim((string) $this->v92_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v92_usuario"])){ 
        $sql  .= $virgula." v92_usuario = $this->v92_usuario ";
        $virgula = ",";
-       if(trim($this->v92_usuario) == null ){ 
+       if(trim((string) $this->v92_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "v92_usuario";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_termoinscr
          return false;
        }
      }
-     if(trim($this->v92_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v92_instit"])){ 
+     if(trim((string) $this->v92_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v92_instit"])){ 
        $sql  .= $virgula." v92_instit = $this->v92_instit ";
        $virgula = ",";
-       if(trim($this->v92_instit) == null ){ 
+       if(trim((string) $this->v92_instit) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "v92_instit";
          $this->erro_banco = "";
@@ -269,17 +269,17 @@ class cl_termoinscr
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1013798,'$this->v92_termo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v92_termo"]) || $this->v92_termo != "")
-             $resac = db_query("insert into db_acount values($acount,1010872,1013798,'".AddSlashes(pg_result($resaco,$conresaco,'v92_termo'))."','$this->v92_termo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010872,1013798,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v92_termo'))."','$this->v92_termo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v92_dtinsc"]) || $this->v92_dtinsc != "")
-             $resac = db_query("insert into db_acount values($acount,1010872,1013799,'".AddSlashes(pg_result($resaco,$conresaco,'v92_dtinsc'))."','$this->v92_dtinsc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010872,1013799,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v92_dtinsc'))."','$this->v92_dtinsc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v92_usuario"]) || $this->v92_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,1010872,1013800,'".AddSlashes(pg_result($resaco,$conresaco,'v92_usuario'))."','$this->v92_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010872,1013800,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v92_usuario'))."','$this->v92_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v92_instit"]) || $this->v92_instit != "")
-             $resac = db_query("insert into db_acount values($acount,1010872,1013802,'".AddSlashes(pg_result($resaco,$conresaco,'v92_instit'))."','$this->v92_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010872,1013802,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v92_instit'))."','$this->v92_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -333,13 +333,13 @@ class cl_termoinscr
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1013798,'$v92_termo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010872,1013798,'','".AddSlashes(pg_result($resaco,$iresaco,'v92_termo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010872,1013799,'','".AddSlashes(pg_result($resaco,$iresaco,'v92_dtinsc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010872,1013800,'','".AddSlashes(pg_result($resaco,$iresaco,'v92_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010872,1013802,'','".AddSlashes(pg_result($resaco,$iresaco,'v92_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010872,1013798,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v92_termo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010872,1013799,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v92_dtinsc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010872,1013800,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v92_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010872,1013802,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v92_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

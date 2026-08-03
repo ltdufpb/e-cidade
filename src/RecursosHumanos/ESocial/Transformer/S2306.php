@@ -66,6 +66,7 @@ class S2306 extends S2300
      * @param $valor
      * @return mixed $valor O valor retornado deve ser o correspondente/equivalente no eSocial
      */
+    #[\Override]
     protected function buscarValorCorrespondenteESocial($nomeCampo, $valor)
     {
         return $valor;
@@ -74,6 +75,7 @@ class S2306 extends S2300
     /**
      * Realiza algum tratamento nos dados após o parse
      */
+    #[\Override]
     protected function posProcessamento()
     {
         // TODO: Implement posProcessamento() method.
@@ -84,6 +86,7 @@ class S2306 extends S2300
      * @return null|array
      * @throws Exception
      */
+    #[\Override]
     protected function buscarDados()
     {
         $dadosAlteracao = $this->getDadosPorArquivo(Tipo::S2306);
@@ -100,11 +103,11 @@ class S2306 extends S2300
      */
     private function getDadosPorArquivo($codigoArquivo)
     {
-        $where = implode(' and ', array(
+        $where = implode(' and ', [
             "rh213_evento = '{$codigoArquivo}'",
             "rh213_empregador = {$this->empregador->getCodigo()}",
             "rh213_responsavelpreenchimento = '{$this->servidor->getMatricula()}'",
-        ));
+        ]);
         $daoEsocialEnvio = new \cl_esocialenvio();
         $buscaPreenchimento = $daoEsocialEnvio->sql_query_file(null, "rh213_dados", '1 desc limit 1', $where);
         $buscaPreenchimento = db_query($buscaPreenchimento);
@@ -114,7 +117,7 @@ class S2306 extends S2300
 
         $retornoJsonToArray = null;
         if (pg_num_rows($buscaPreenchimento) > 0) {
-            $retornoJsonToArray = json_decode(\db_utils::fieldsMemory($buscaPreenchimento, 0)->rh213_dados, true);
+            $retornoJsonToArray = json_decode((string) \db_utils::fieldsMemory($buscaPreenchimento, 0)->rh213_dados, true);
         }
         return $retornoJsonToArray;
     }
@@ -123,6 +126,7 @@ class S2306 extends S2300
      * @return array|null
      * @throws \DBException
      */
+    #[\Override]
     public function parse()
     {
         if ($this->possuiPreenchimento()) {
@@ -145,7 +149,7 @@ class S2306 extends S2300
                 if (is_array($valor)) {
                     $this->transformToObject($valor);
                 }
-                $this->adicionarValor(strtolower($indice), $valor);
+                $this->adicionarValor(strtolower((string) $indice), $valor);
             }
         }
     }
@@ -155,14 +159,15 @@ class S2306 extends S2300
      * @return bool
      * @throws \DBException
      */
+    #[\Override]
     protected function possuiPreenchimento()
     {
-        $where = array(
+        $where = [
             "avaliacaogruporespostatsvealteracao.eso23_rhpessoal = {$this->servidor->getMatricula()}",
             "rhlota.r70_numcgm = {$this->empregador->getCodigo()}"
-        );
+        ];
         $daotsve = new \cl_avaliacaogruporespostatsvealteracao();
-        $buscaPreenchimento = $daotsve->sql_query_busca_avaliacao(array('eso23_avaliacaogruporesposta'), $where);
+        $buscaPreenchimento = $daotsve->sql_query_busca_avaliacao(['eso23_avaliacaogruporesposta'], $where);
         $buscaPreenchimento = db_query($buscaPreenchimento);
         if (!$buscaPreenchimento) {
             throw new \DBException("Ocorreu um erro ao consultar os dados do preenchimento.");

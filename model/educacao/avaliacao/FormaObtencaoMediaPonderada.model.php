@@ -100,6 +100,7 @@ class FormaObtencaoMediaPonderada extends FormaObtencao implements IFormaObtenca
    * @param AvaliacaoAproveitamento[] $aElementosAvaliacoes
    * @return string
    */
+  #[\Override]
   public function calcularNotaProjetada(array $aElementosAvaliacoes) {
 
     $nMinimoAprovacao = $this->oResultadoAvaliacao->getAproveitamentoMinimo();

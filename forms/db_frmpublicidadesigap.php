@@ -115,8 +115,8 @@ $clrotulo->label("nomeinst");
 	    </td>
 	    <td> 
 				<?php 
-				  $aTipoRelatorio = array('01' => 'Relatório Resumido de Execução Orçamentária',
-				                          '02' => 'Relatório de Gestão Fiscal');
+				  $aTipoRelatorio = ['01' => 'Relatório Resumido de Execução Orçamentária',
+				                          '02' => 'Relatório de Gestão Fiscal'];
 				  db_select('c48_tiporelatoriofiscal', $aTipoRelatorio, true, $db_opcao);
 				?>
 	    </td>
@@ -183,7 +183,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_publicidadesigap.hide();
   <?php 
 	  if($db_opcao!=1){
-	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+	    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	  }
   ?>
 }

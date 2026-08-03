@@ -40,7 +40,7 @@ class TipoCompraRepository {
    * Collection de TipoCompra
    * @var array
    */
-  private $aTipoCompra = array();
+  private $aTipoCompra = [];
 
   /**
    * Instancia da classe

@@ -31,13 +31,13 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clsiopeservidormanutencao = new cl_siopeservidormanutencao;
 $clsiopeservidorqualificacao = new cl_siopeservidorqualificacao;
@@ -160,7 +160,7 @@ if (isset($rh01_regist)) {
       db_msgbox($clsiopeservidormanutencao->erro_msg);
    }
 
-   db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]));
+   db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]));
 
 }
 

@@ -10,7 +10,7 @@ for($i=0;$i<2;$i++){
 	$this->objpdf->SetTextColor(0,0,0);
 	$this->objpdf->SetFillColor(250,250,250);
 	$this->objpdf->SetFont('Arial','',5);
-	
+
 // Identificacao (Nome, Endereco, Municipio, Bairro, Cep e CNPJ/CPF
 //	die($this->predescr3_2);
 	$this->objpdf->Text($col,$lin,  $this->predescr3_1);  // contribuinte dados do cgm
@@ -24,7 +24,7 @@ for($i=0;$i<2;$i++){
 	$this->objpdf->SetFont('Arial','B',7);
 	$this->objpdf->Text($col+74,$lin-9,$this->predescr6); //data do recibo 
 	$this->objpdf->SetFont('Arial','',5);
-	
+
   // Origem do Debito
 	$this->objpdf->Text($col+76,$lin,  $this->pretitulo8);                          // titulo matricula ou inscricao  
 	$this->objpdf->Text($col+88,$lin,  $this->predescr8);                           // descr matricula ou inscricao  
@@ -56,7 +56,7 @@ for($i=0;$i<2;$i++){
 			}else{
 				$this->objpdf->Text($reccol,$bklin,"");    
 			}
-			
+
 			if(isset($this->arrayreduzreceitas[$x]) && $this->arrayreduzreceitas[$x] != "" && $this->arrayreduzreceitas[$x] > 0){
 				$this->objpdf->Text($reccol+5,$bklin," (".$this->arrayreduzreceitas[$x].")");   
 			}else{
@@ -108,7 +108,7 @@ for($i=0;$i<2;$i++){
 	  $this->objpdf->Text($col+072.5,$lin+65,$this->predescr6);  // Data de Vencimento
 	  $this->objpdf->Text($col+084.5,$lin+65,$this->predescr7);  // qtd de URM ou valor
 	  $this->objpdf->Text($col+107.5,$lin+65,$this->predescr9);  // cod. de arrecadação
-		
+
 	  $this->objpdf->SetFillColor(0,0,0); 
   //		
 	// Segunda Via
@@ -119,11 +119,11 @@ for($i=0;$i<2;$i++){
 	  $this->objpdf->Text($col-11,$lin+51,$this->predescr6);  // Data de Vencimento
 	  $this->objpdf->Text($col+03,$lin+51,$this->predescr7);  // qtd de URM ou valor
 	  $this->objpdf->Text($col+22,$lin+51,$this->predescr9);  // cod. de arrecadação
-  
+
 	  // Imprime Usuario, Data e Base de Dados
     $this->objpdf->SetFont('Arial','',4);
     $this->objpdf->Text ($col+10,$lin+63,$texto);
-		
+
 		// Linha Digitavel
 	  $this->objpdf->SetFont('Arial','',10);
 		if ($this->linha_digitavel != null) {
@@ -139,7 +139,7 @@ for($i=0;$i<2;$i++){
 	}
 
 //	$this->objpdf->TextWithDirection($col-15,$lin+35,$texto,'U');
-	
+
     $lin += 103;   // LINHA Q COMEÇA A IMPERSSAO DA SEGUNDA VIA  
 
 }

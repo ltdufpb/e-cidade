@@ -120,9 +120,9 @@ $clprotprocesso->rotulo->label("p58_requer");
         	$sql = '';
         }
         
-      	$repassa = array();
+      	$repassa = [];
         if(isset($chave_p58_codproc)){
-        	$repassa = array("chave_p58_codproc"=>$chave_p58_codproc);
+        	$repassa = ["chave_p58_codproc"=>$chave_p58_codproc];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

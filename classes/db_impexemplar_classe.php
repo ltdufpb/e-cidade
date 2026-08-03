@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE impexemplar
 class cl_impexemplar { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $bi24_codigo = 0; 
-   var $bi24_biblioteca = 0; 
-   var $bi24_usuario = 0; 
-   var $bi24_data_dia = null; 
-   var $bi24_data_mes = null; 
-   var $bi24_data_ano = null; 
-   var $bi24_data = null; 
-   var $bi24_hora = null; 
-   var $bi24_modelo = null; 
+   public $bi24_codigo = 0; 
+   public $bi24_biblioteca = 0; 
+   public $bi24_usuario = 0; 
+   public $bi24_data_dia = null; 
+   public $bi24_data_mes = null; 
+   public $bi24_data_ano = null; 
+   public $bi24_data = null; 
+   public $bi24_hora = null; 
+   public $bi24_modelo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  bi24_codigo = int8 = Código 
                  bi24_biblioteca = int8 = Biblioteca 
                  bi24_usuario = int8 = Usuário 
@@ -61,10 +61,10 @@ class cl_impexemplar {
                  bi24_modelo = char(2) = Modelo 
                  ";
    //funcao construtor da classe 
-   function cl_impexemplar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("impexemplar"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_impexemplar {
          $this->erro_status = "0";
          return false; 
        }
-       $this->bi24_codigo = pg_result($result,0,0); 
+       $this->bi24_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from impexemplar_bi24_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $bi24_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $bi24_codigo)){
          $this->erro_sql = " Campo bi24_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_impexemplar {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Impressão de Exemplares ($this->bi24_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Impressão de Exemplares já Cadastrado";
@@ -218,15 +218,15 @@ class cl_impexemplar {
      $resaco = $this->sql_record($this->sql_query_file($this->bi24_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12248,'$this->bi24_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2129,12248,'','".AddSlashes(pg_result($resaco,0,'bi24_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2129,12251,'','".AddSlashes(pg_result($resaco,0,'bi24_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2129,12250,'','".AddSlashes(pg_result($resaco,0,'bi24_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2129,12249,'','".AddSlashes(pg_result($resaco,0,'bi24_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2129,12259,'','".AddSlashes(pg_result($resaco,0,'bi24_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2129,12296,'','".AddSlashes(pg_result($resaco,0,'bi24_modelo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2129,12248,'','".AddSlashes(pg_fetch_result($resaco,0,'bi24_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2129,12251,'','".AddSlashes(pg_fetch_result($resaco,0,'bi24_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2129,12250,'','".AddSlashes(pg_fetch_result($resaco,0,'bi24_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2129,12249,'','".AddSlashes(pg_fetch_result($resaco,0,'bi24_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2129,12259,'','".AddSlashes(pg_fetch_result($resaco,0,'bi24_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2129,12296,'','".AddSlashes(pg_fetch_result($resaco,0,'bi24_modelo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_impexemplar {
       $this->atualizacampos();
      $sql = " update impexemplar set ";
      $virgula = "";
-     if(trim($this->bi24_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_codigo"])){ 
+     if(trim((string) $this->bi24_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_codigo"])){ 
        $sql  .= $virgula." bi24_codigo = $this->bi24_codigo ";
        $virgula = ",";
-       if(trim($this->bi24_codigo) == null ){ 
+       if(trim((string) $this->bi24_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "bi24_codigo";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_impexemplar {
          return false;
        }
      }
-     if(trim($this->bi24_biblioteca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_biblioteca"])){ 
+     if(trim((string) $this->bi24_biblioteca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_biblioteca"])){ 
        $sql  .= $virgula." bi24_biblioteca = $this->bi24_biblioteca ";
        $virgula = ",";
-       if(trim($this->bi24_biblioteca) == null ){ 
+       if(trim((string) $this->bi24_biblioteca) == null ){ 
          $this->erro_sql = " Campo Biblioteca nao Informado.";
          $this->erro_campo = "bi24_biblioteca";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_impexemplar {
          return false;
        }
      }
-     if(trim($this->bi24_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_usuario"])){ 
+     if(trim((string) $this->bi24_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_usuario"])){ 
        $sql  .= $virgula." bi24_usuario = $this->bi24_usuario ";
        $virgula = ",";
-       if(trim($this->bi24_usuario) == null ){ 
+       if(trim((string) $this->bi24_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "bi24_usuario";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_impexemplar {
          return false;
        }
      }
-     if(trim($this->bi24_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi24_data_dia"] !="") ){ 
+     if(trim((string) $this->bi24_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi24_data_dia"] !="") ){ 
        $sql  .= $virgula." bi24_data = '$this->bi24_data' ";
        $virgula = ",";
-       if(trim($this->bi24_data) == null ){ 
+       if(trim((string) $this->bi24_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "bi24_data_dia";
          $this->erro_banco = "";
@@ -290,7 +290,7 @@ class cl_impexemplar {
        if(isset($GLOBALS["HTTP_POST_VARS"]["bi24_data_dia"])){ 
          $sql  .= $virgula." bi24_data = null ";
          $virgula = ",";
-         if(trim($this->bi24_data) == null ){ 
+         if(trim((string) $this->bi24_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "bi24_data_dia";
            $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_impexemplar {
          }
        }
      }
-     if(trim($this->bi24_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_hora"])){ 
+     if(trim((string) $this->bi24_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_hora"])){ 
        $sql  .= $virgula." bi24_hora = '$this->bi24_hora' ";
        $virgula = ",";
-       if(trim($this->bi24_hora) == null ){ 
+       if(trim((string) $this->bi24_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "bi24_hora";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_impexemplar {
          return false;
        }
      }
-     if(trim($this->bi24_modelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_modelo"])){ 
+     if(trim((string) $this->bi24_modelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi24_modelo"])){ 
        $sql  .= $virgula." bi24_modelo = '$this->bi24_modelo' ";
        $virgula = ",";
-       if(trim($this->bi24_modelo) == null ){ 
+       if(trim((string) $this->bi24_modelo) == null ){ 
          $this->erro_sql = " Campo Modelo nao Informado.";
          $this->erro_campo = "bi24_modelo";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_impexemplar {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12248,'$this->bi24_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi24_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,2129,12248,'".AddSlashes(pg_result($resaco,$conresaco,'bi24_codigo'))."','$this->bi24_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2129,12248,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi24_codigo'))."','$this->bi24_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi24_biblioteca"]))
-           $resac = db_query("insert into db_acount values($acount,2129,12251,'".AddSlashes(pg_result($resaco,$conresaco,'bi24_biblioteca'))."','$this->bi24_biblioteca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2129,12251,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi24_biblioteca'))."','$this->bi24_biblioteca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi24_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,2129,12250,'".AddSlashes(pg_result($resaco,$conresaco,'bi24_usuario'))."','$this->bi24_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2129,12250,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi24_usuario'))."','$this->bi24_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi24_data"]))
-           $resac = db_query("insert into db_acount values($acount,2129,12249,'".AddSlashes(pg_result($resaco,$conresaco,'bi24_data'))."','$this->bi24_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2129,12249,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi24_data'))."','$this->bi24_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi24_hora"]))
-           $resac = db_query("insert into db_acount values($acount,2129,12259,'".AddSlashes(pg_result($resaco,$conresaco,'bi24_hora'))."','$this->bi24_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2129,12259,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi24_hora'))."','$this->bi24_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi24_modelo"]))
-           $resac = db_query("insert into db_acount values($acount,2129,12296,'".AddSlashes(pg_result($resaco,$conresaco,'bi24_modelo'))."','$this->bi24_modelo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2129,12296,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi24_modelo'))."','$this->bi24_modelo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_impexemplar {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12248,'$bi24_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2129,12248,'','".AddSlashes(pg_result($resaco,$iresaco,'bi24_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2129,12251,'','".AddSlashes(pg_result($resaco,$iresaco,'bi24_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2129,12250,'','".AddSlashes(pg_result($resaco,$iresaco,'bi24_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2129,12249,'','".AddSlashes(pg_result($resaco,$iresaco,'bi24_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2129,12259,'','".AddSlashes(pg_result($resaco,$iresaco,'bi24_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2129,12296,'','".AddSlashes(pg_result($resaco,$iresaco,'bi24_modelo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2129,12248,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi24_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2129,12251,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi24_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2129,12250,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi24_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2129,12249,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi24_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2129,12259,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi24_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2129,12296,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi24_modelo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from impexemplar
@@ -462,7 +462,7 @@ class cl_impexemplar {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:impexemplar";
@@ -476,7 +476,7 @@ class cl_impexemplar {
    function sql_query ( $bi24_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -500,7 +500,7 @@ class cl_impexemplar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -512,7 +512,7 @@ class cl_impexemplar {
    function sql_query_file ( $bi24_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -533,7 +533,7 @@ class cl_impexemplar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

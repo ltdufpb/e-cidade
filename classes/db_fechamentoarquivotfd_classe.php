@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE fechamentoarquivotfd
 class cl_fechamentoarquivotfd { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tf36_sequencial = 0; 
-   var $tf36_id_usuario = 0; 
-   var $tf36_tfd_fechamento = 0; 
-   var $tf36_data_dia = null; 
-   var $tf36_data_mes = null; 
-   var $tf36_data_ano = null; 
-   var $tf36_data = null; 
-   var $tf36_hora = null; 
-   var $tf36_nomearquivo = null; 
-   var $tf36_oidarquivo = 0; 
+   public $tf36_sequencial = 0; 
+   public $tf36_id_usuario = 0; 
+   public $tf36_tfd_fechamento = 0; 
+   public $tf36_data_dia = null; 
+   public $tf36_data_mes = null; 
+   public $tf36_data_ano = null; 
+   public $tf36_data = null; 
+   public $tf36_hora = null; 
+   public $tf36_nomearquivo = null; 
+   public $tf36_oidarquivo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tf36_sequencial = int4 = Código arquivo 
                  tf36_id_usuario = int4 = Cod. Usuário 
                  tf36_tfd_fechamento = int4 = Código 
@@ -63,10 +63,10 @@ class cl_fechamentoarquivotfd {
                  tf36_oidarquivo = oid = BInário do Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_fechamentoarquivotfd() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fechamentoarquivotfd"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_fechamentoarquivotfd {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tf36_sequencial = pg_result($result,0,0); 
+       $this->tf36_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from fechamentoarquivotfd_tf36_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf36_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf36_sequencial)){
          $this->erro_sql = " Campo tf36_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_fechamentoarquivotfd {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Arquivo de Fechamento do TFD ($this->tf36_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Arquivo de Fechamento do TFD já Cadastrado";
@@ -237,16 +237,16 @@ class cl_fechamentoarquivotfd {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20313,'$this->tf36_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3652,20313,'','".AddSlashes(pg_result($resaco,0,'tf36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3652,20314,'','".AddSlashes(pg_result($resaco,0,'tf36_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3652,20315,'','".AddSlashes(pg_result($resaco,0,'tf36_tfd_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3652,20316,'','".AddSlashes(pg_result($resaco,0,'tf36_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3652,20317,'','".AddSlashes(pg_result($resaco,0,'tf36_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3652,20318,'','".AddSlashes(pg_result($resaco,0,'tf36_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3652,20319,'','".AddSlashes(pg_result($resaco,0,'tf36_oidarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3652,20313,'','".AddSlashes(pg_fetch_result($resaco,0,'tf36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3652,20314,'','".AddSlashes(pg_fetch_result($resaco,0,'tf36_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3652,20315,'','".AddSlashes(pg_fetch_result($resaco,0,'tf36_tfd_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3652,20316,'','".AddSlashes(pg_fetch_result($resaco,0,'tf36_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3652,20317,'','".AddSlashes(pg_fetch_result($resaco,0,'tf36_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3652,20318,'','".AddSlashes(pg_fetch_result($resaco,0,'tf36_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3652,20319,'','".AddSlashes(pg_fetch_result($resaco,0,'tf36_oidarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -256,10 +256,10 @@ class cl_fechamentoarquivotfd {
       $this->atualizacampos();
      $sql = " update fechamentoarquivotfd set ";
      $virgula = "";
-     if(trim($this->tf36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_sequencial"])){ 
+     if(trim((string) $this->tf36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_sequencial"])){ 
        $sql  .= $virgula." tf36_sequencial = $this->tf36_sequencial ";
        $virgula = ",";
-       if(trim($this->tf36_sequencial) == null ){ 
+       if(trim((string) $this->tf36_sequencial) == null ){ 
          $this->erro_sql = " Campo Código arquivo não informado.";
          $this->erro_campo = "tf36_sequencial";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_fechamentoarquivotfd {
          return false;
        }
      }
-     if(trim($this->tf36_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_id_usuario"])){ 
+     if(trim((string) $this->tf36_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_id_usuario"])){ 
        $sql  .= $virgula." tf36_id_usuario = $this->tf36_id_usuario ";
        $virgula = ",";
-       if(trim($this->tf36_id_usuario) == null ){ 
+       if(trim((string) $this->tf36_id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário não informado.";
          $this->erro_campo = "tf36_id_usuario";
          $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_fechamentoarquivotfd {
          return false;
        }
      }
-     if(trim($this->tf36_tfd_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_tfd_fechamento"])){ 
+     if(trim((string) $this->tf36_tfd_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_tfd_fechamento"])){ 
        $sql  .= $virgula." tf36_tfd_fechamento = $this->tf36_tfd_fechamento ";
        $virgula = ",";
-       if(trim($this->tf36_tfd_fechamento) == null ){ 
+       if(trim((string) $this->tf36_tfd_fechamento) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "tf36_tfd_fechamento";
          $this->erro_banco = "";
@@ -295,10 +295,10 @@ class cl_fechamentoarquivotfd {
          return false;
        }
      }
-     if(trim($this->tf36_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf36_data_dia"] !="") ){ 
+     if(trim((string) $this->tf36_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf36_data_dia"] !="") ){ 
        $sql  .= $virgula." tf36_data = '$this->tf36_data' ";
        $virgula = ",";
-       if(trim($this->tf36_data) == null ){ 
+       if(trim((string) $this->tf36_data) == null ){ 
          $this->erro_sql = " Campo Data da Geraçao não informado.";
          $this->erro_campo = "tf36_data_dia";
          $this->erro_banco = "";
@@ -311,7 +311,7 @@ class cl_fechamentoarquivotfd {
        if(isset($GLOBALS["HTTP_POST_VARS"]["tf36_data_dia"])){ 
          $sql  .= $virgula." tf36_data = null ";
          $virgula = ",";
-         if(trim($this->tf36_data) == null ){ 
+         if(trim((string) $this->tf36_data) == null ){ 
            $this->erro_sql = " Campo Data da Geraçao não informado.";
            $this->erro_campo = "tf36_data_dia";
            $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_fechamentoarquivotfd {
          }
        }
      }
-     if(trim($this->tf36_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_hora"])){ 
+     if(trim((string) $this->tf36_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_hora"])){ 
        $sql  .= $virgula." tf36_hora = '$this->tf36_hora' ";
        $virgula = ",";
-       if(trim($this->tf36_hora) == null ){ 
+       if(trim((string) $this->tf36_hora) == null ){ 
          $this->erro_sql = " Campo Hora da Geração não informado.";
          $this->erro_campo = "tf36_hora";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_fechamentoarquivotfd {
          return false;
        }
      }
-     if(trim($this->tf36_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_nomearquivo"])){ 
+     if(trim((string) $this->tf36_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_nomearquivo"])){ 
        $sql  .= $virgula." tf36_nomearquivo = '$this->tf36_nomearquivo' ";
        $virgula = ",";
-       if(trim($this->tf36_nomearquivo) == null ){ 
+       if(trim((string) $this->tf36_nomearquivo) == null ){ 
          $this->erro_sql = " Campo Nome do Arquivo não informado.";
          $this->erro_campo = "tf36_nomearquivo";
          $this->erro_banco = "";
@@ -348,10 +348,10 @@ class cl_fechamentoarquivotfd {
          return false;
        }
      }
-     if(trim($this->tf36_oidarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_oidarquivo"])){ 
+     if(trim((string) $this->tf36_oidarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf36_oidarquivo"])){ 
        $sql  .= $virgula." tf36_oidarquivo = $this->tf36_oidarquivo ";
        $virgula = ",";
-       if(trim($this->tf36_oidarquivo) == null ){ 
+       if(trim((string) $this->tf36_oidarquivo) == null ){ 
          $this->erro_sql = " Campo BInário do Arquivo não informado.";
          $this->erro_campo = "tf36_oidarquivo";
          $this->erro_banco = "";
@@ -375,23 +375,23 @@ class cl_fechamentoarquivotfd {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20313,'$this->tf36_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf36_sequencial"]) || $this->tf36_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3652,20313,'".AddSlashes(pg_result($resaco,$conresaco,'tf36_sequencial'))."','$this->tf36_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3652,20313,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf36_sequencial'))."','$this->tf36_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf36_id_usuario"]) || $this->tf36_id_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,3652,20314,'".AddSlashes(pg_result($resaco,$conresaco,'tf36_id_usuario'))."','$this->tf36_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3652,20314,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf36_id_usuario'))."','$this->tf36_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf36_tfd_fechamento"]) || $this->tf36_tfd_fechamento != "")
-             $resac = db_query("insert into db_acount values($acount,3652,20315,'".AddSlashes(pg_result($resaco,$conresaco,'tf36_tfd_fechamento'))."','$this->tf36_tfd_fechamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3652,20315,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf36_tfd_fechamento'))."','$this->tf36_tfd_fechamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf36_data"]) || $this->tf36_data != "")
-             $resac = db_query("insert into db_acount values($acount,3652,20316,'".AddSlashes(pg_result($resaco,$conresaco,'tf36_data'))."','$this->tf36_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3652,20316,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf36_data'))."','$this->tf36_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf36_hora"]) || $this->tf36_hora != "")
-             $resac = db_query("insert into db_acount values($acount,3652,20317,'".AddSlashes(pg_result($resaco,$conresaco,'tf36_hora'))."','$this->tf36_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3652,20317,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf36_hora'))."','$this->tf36_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf36_nomearquivo"]) || $this->tf36_nomearquivo != "")
-             $resac = db_query("insert into db_acount values($acount,3652,20318,'".AddSlashes(pg_result($resaco,$conresaco,'tf36_nomearquivo'))."','$this->tf36_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3652,20318,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf36_nomearquivo'))."','$this->tf36_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf36_oidarquivo"]) || $this->tf36_oidarquivo != "")
-             $resac = db_query("insert into db_acount values($acount,3652,20319,'".AddSlashes(pg_result($resaco,$conresaco,'tf36_oidarquivo'))."','$this->tf36_oidarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3652,20319,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf36_oidarquivo'))."','$this->tf36_oidarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -445,16 +445,16 @@ class cl_fechamentoarquivotfd {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20313,'$tf36_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3652,20313,'','".AddSlashes(pg_result($resaco,$iresaco,'tf36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3652,20314,'','".AddSlashes(pg_result($resaco,$iresaco,'tf36_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3652,20315,'','".AddSlashes(pg_result($resaco,$iresaco,'tf36_tfd_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3652,20316,'','".AddSlashes(pg_result($resaco,$iresaco,'tf36_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3652,20317,'','".AddSlashes(pg_result($resaco,$iresaco,'tf36_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3652,20318,'','".AddSlashes(pg_result($resaco,$iresaco,'tf36_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3652,20319,'','".AddSlashes(pg_result($resaco,$iresaco,'tf36_oidarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3652,20313,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3652,20314,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf36_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3652,20315,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf36_tfd_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3652,20316,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf36_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3652,20317,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf36_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3652,20318,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf36_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3652,20319,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf36_oidarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -515,7 +515,7 @@ class cl_fechamentoarquivotfd {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:fechamentoarquivotfd";
@@ -530,7 +530,7 @@ class cl_fechamentoarquivotfd {
    function sql_query ( $tf36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -554,7 +554,7 @@ class cl_fechamentoarquivotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -567,7 +567,7 @@ class cl_fechamentoarquivotfd {
    function sql_query_file ( $tf36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -588,7 +588,7 @@ class cl_fechamentoarquivotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -62,7 +62,8 @@ class AnexoIIN13 extends AnexoI
      * @return \stdClass[]
      * @throws Exception
      */
-    public function getDados()
+    #[\Override]
+    public function getDados($trazerConfiguracaoPadrao = true)
     {
         parent::getDados();
         $this->inicializaValoresDespesaPorLinhaMes();
@@ -85,6 +86,7 @@ class AnexoIIN13 extends AnexoI
         return $this->aLinhasConsistencia;
     }
 
+    #[\Override]
     protected function processarCalculoPorMeses()
     {
         $this->calculaLinha6();
@@ -97,6 +99,7 @@ class AnexoIIN13 extends AnexoI
    * Dados preparados para serem emitidos no Anexo VI - Simplificado
    * @return \stdClass
    */
+    #[\Override]
     public function getDadosSimplificado()
     {
         $this->getDados();
@@ -223,6 +226,7 @@ class AnexoIIN13 extends AnexoI
         return $meses;
     }
 
+    #[\Override]
     protected function agruparValoresNasLinhas()
     {
         parent::agruparValoresNasLinhas();
@@ -339,7 +343,7 @@ class AnexoIIN13 extends AnexoI
             $this->iAnoUsu
         );
 
-        $aMesesManuais = array();
+        $aMesesManuais = [];
 
         foreach ($meses as $indiceMes => $mes) {
             //dump("indiceMes: {$indiceMes}");

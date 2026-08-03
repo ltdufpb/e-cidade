@@ -13,16 +13,14 @@ abstract class ProcessaDocumentoTemplate
     private $documentoTemplate;
     private $dadosVariaveis = [];
     private $nomeDocumento  = "DocTemplate";
-    private $extensaoArquivo;
     public function __construct(
         $iTipo = '',
         $iCodDocumento = null,
         $sCaminhoArquivo = '',
         $lTemTransacaoAtiva = false,
-        $extensaoArquivo = "docx"
+        private $extensaoArquivo = "docx"
     ) {
 
-        $this->extensaoArquivo = $extensaoArquivo;
         Settings::setTempDir("tmp/");
         if (!is_dir(Settings::getTempDir())) {
             throw new \Exception("Pasta temporária não encontrada");
@@ -33,7 +31,7 @@ abstract class ProcessaDocumentoTemplate
             $iCodDocumento,
             $sCaminhoArquivo,
             $lTemTransacaoAtiva,
-            $extensaoArquivo
+            $this->extensaoArquivo
         );
     }
 

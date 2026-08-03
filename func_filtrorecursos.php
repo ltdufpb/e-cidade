@@ -78,7 +78,7 @@ if (FONTE_RECURSO_2020 === true) {
                     <td class="bold" nowrap="nowrap"><label for="identificadorUso">Identificador de Uso:</label></td>
                     <td>
                         <?php
-                        $identificadorUso = array("" => 'Selecione');
+                        $identificadorUso = ["" => 'Selecione'];
                         foreach (IdentificadorUso::getAll() as $indice => $valor) {
                             $identificadorUso[$indice] = $valor;
                         }
@@ -94,7 +94,7 @@ if (FONTE_RECURSO_2020 === true) {
                     </td>
                     <td>
                         <?php
-                        $tipoDetalhamento = array("" => 'Selecione');
+                        $tipoDetalhamento = ["" => 'Selecione'];
                         foreach (TipoDetalhamento::getAll() as $indice => $valor) {
                             $tipoDetalhamento[$indice] = $valor;
                         }
@@ -111,7 +111,7 @@ if (FONTE_RECURSO_2020 === true) {
                     <td colspan="2">
 
                         <?php
-                        $grupoFonteRecurso = array("" => 'Selecione');
+                        $grupoFonteRecurso = ["" => 'Selecione'];
                         foreach (Grupo::getAll() as $indice => $valor) {
                             $grupoFonteRecurso[$indice] = $valor;
                         }
@@ -128,7 +128,7 @@ if (FONTE_RECURSO_2020 === true) {
                     </td>
                     <td colspan="2">
                         <?php
-                        $especificacaoFonte = array("" => 'Selecione');
+                        $especificacaoFonte = ["" => 'Selecione'];
                         foreach (Especificacao::getAll() as $indice => $valor) {
                             $especificacaoFonte[$indice] = $valor;
                         }

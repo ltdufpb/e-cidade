@@ -34,8 +34,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification('libs/db_utils.php'));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clserie  = new cl_serie;
 $clturma  = new cl_turma;
@@ -125,8 +125,8 @@ if ( isset( $oGet->lReclassificacao ) ) {
     */
    if (isset($lEliminarSeriesAnteriores) && $lConsistirMatricula) {
 
-     $aEnsino     = array();
-     $aOrdemSerie = array();
+     $aEnsino     = [];
+     $aOrdemSerie = [];
 
      /* Descubro a última série que o aluno cursou e que foi aprovado */
      $oDaoHistorico = db_utils::getdao('historico');
@@ -173,7 +173,7 @@ if ( isset( $oGet->lReclassificacao ) ) {
                                                              " ed60_i_aluno = $aluno ".
                                                              " and exists(select s.ed11_i_codigo $sSubAux)"
                                                             );
-     
+
      $rsMat         = $oDaoMatricula->sql_record($sSqlTmp);
 
      if ($oDaoHistorico->numrows > 0) {
@@ -185,7 +185,7 @@ if ( isset( $oGet->lReclassificacao ) ) {
 
        /* dados do  MATRICULA */
        $oDadosUltimaEtapaTmp = db_utils::fieldsmemory($rsMat, 0);
-       
+
        /**
         * Alterado para verificar a etapa com a maior sequência, 
         * somente quando o ensino do histórico for igual ao da matricula

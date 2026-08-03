@@ -31,7 +31,7 @@ abstract class ArquivoSiprevEscritor {
 
   protected $sOutPut;
 
-  protected $aListaArquivos = array();
+  protected $aListaArquivos = [];
 
   /**
    *

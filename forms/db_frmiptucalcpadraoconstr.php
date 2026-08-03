@@ -126,7 +126,7 @@ if(isset($db_opcaoal)){
     	$sql .= "                                      and j27_anousu         = j22_anousu     ";
     	$sql .= "where j11_matric = $j11_matric and  j10_anousu =  {$iAnoUsu}                  ";
 
-      $chavepri = array("j11_sequencial"=>@$j11_sequencial);
+      $chavepri = ["j11_sequencial"=>@$j11_sequencial];
       $cliframe_alterar_excluir->chavepri      = $chavepri;
       $cliframe_alterar_excluir->sql           = $sql;
       $cliframe_alterar_excluir->alignlegenda  = "left";

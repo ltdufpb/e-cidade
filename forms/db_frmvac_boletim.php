@@ -147,7 +147,7 @@ $clrotulo->label("vc06_c_descr");
     </td>
     <td> 
       <?php 
-        $aTipos= Array("1"=>"ATIVO","2"=>"INATIVO");
+        $aTipos= ["1"=>"ATIVO","2"=>"INATIVO"];
         db_select("vc13_i_situacao",$aTipos,$Ivc13_i_situacao,$db_opcao,"");
       ?>
     </td>
@@ -384,7 +384,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_vac_boletim.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

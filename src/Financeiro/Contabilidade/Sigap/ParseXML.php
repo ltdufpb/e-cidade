@@ -38,21 +38,6 @@ use Exception;
 class ParseXML
 {
     /**
-     * @var string
-     */
-    private $nomeArquivo;
-
-    /**
-     * @var string
-     */
-    private $caminhoArquivo;
-
-    /**
-     * @var string
-     */
-    private $extensao;
-
-    /**
      * @var array
      */
     private $linhas = [];
@@ -86,12 +71,10 @@ class ParseXML
      * @param string $nomeArquivo
      * @param string $caminhoArquivo
      * @param integer $ano
+     * @param string $extensao
      */
-    public function __construct($nomeArquivo, $caminhoArquivo, $extensao)
+    public function __construct(private $nomeArquivo, private $caminhoArquivo, private $extensao)
     {
-        $this->nomeArquivo = $nomeArquivo;
-        $this->caminhoArquivo = $caminhoArquivo;
-        $this->extensao = $extensao;
     }
 
 
@@ -157,8 +140,8 @@ class ParseXML
     private function getNomeCabecalho($string)
     {
         foreach ($this->prefixos as $prefixo) {
-            if (strpos($string, $prefixo) === 0) {
-                return substr($string, strlen($prefixo));
+            if (str_starts_with((string) $string, (string) $prefixo)) {
+                return substr((string) $string, strlen((string) $prefixo));
             }
         }
 
@@ -172,9 +155,7 @@ class ParseXML
     private function normalizaLinhas($linhas)
     {
         return array_map(function ($colunas) {
-            $colunas = array_map(function ($coluna) {
-                return array_shift($coluna);
-            }, $colunas);
+            $colunas = array_map(fn($coluna) => array_shift($coluna), $colunas);
             return array_values($colunas);
         }, $linhas);
     }

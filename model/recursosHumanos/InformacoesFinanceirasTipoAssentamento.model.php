@@ -29,7 +29,7 @@
 class InformacoesFinanceirasTipoAssentamento
 {
 
-    private static $aInstance = array();
+    private static $aInstance = [];
 
     private $sFormula;
     private $oRubrica;

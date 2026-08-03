@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrotulo = new rotulocampo;
 $clcriaabas     = new cl_criaabas;
 $sChavePesquisa = "";
@@ -60,13 +60,13 @@ if (isset($chave_pesquisa)) {
   <tr> 
      <td>
      <?php 
-	     $clcriaabas->identifica = array("dadosgerais"=>"Dados Gerais","tipodebito"=>"Tipo de Débito");//nome do iframe e o label    
-	     $clcriaabas->title      = array("dadosgerais"=>"Descrição dos vencimentos",
-	                                     "tipodebito"=>"Datas do vencimento");    
-	     $clcriaabas->src        = array("dadosgerais"=>"Cai1_recreparcori006.php".$sChavePesquisa, 
-	                                     "tipodebito"=>"cai1_reparcoritipodebito001.php");  
-	     $clcriaabas->sizecampo  = array("dadosgerais"=>"10");    
-	     $clcriaabas->disabled   = array("tipodebito"=>"false");    
+	     $clcriaabas->identifica = ["dadosgerais"=>"Dados Gerais","tipodebito"=>"Tipo de Débito"];//nome do iframe e o label    
+	     $clcriaabas->title      = ["dadosgerais"=>"Descrição dos vencimentos",
+	                                     "tipodebito"=>"Datas do vencimento"];    
+	     $clcriaabas->src        = ["dadosgerais"=>"Cai1_recreparcori006.php".$sChavePesquisa, 
+	                                     "tipodebito"=>"cai1_reparcoritipodebito001.php"];  
+	     $clcriaabas->sizecampo  = ["dadosgerais"=>"10"];    
+	     $clcriaabas->disabled   = ["tipodebito"=>"false"];    
 	     $clcriaabas->cria_abas();     
 	     
      /*

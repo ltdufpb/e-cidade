@@ -54,7 +54,7 @@ class Individual extends Mensal
    */
   public function getProcedimentoArray()
   {
-    return array($this->iProcedimento);
+    return [$this->iProcedimento];
   }
 
   /**

@@ -54,10 +54,10 @@ class cl_itbinumpre {
                  it15_ultimaguia = bool = Ultima Guia Emitida 
                  ";
    //funcao construtor da classe 
-   public function  cl_itbinumpre() { 
+   public function  __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbinumpre"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    public function  erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_itbinumpre {
          $this->erro_status = "0";
          return false; 
        }
-       $this->it15_sequencial = pg_result($result,0,0); 
+       $this->it15_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from itbinumpre_it15_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $it15_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $it15_sequencial)){
          $this->erro_sql = " Campo it15_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_itbinumpre {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Numpre da guia de itbi ($this->it15_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Numpre da guia de itbi já Cadastrado";
@@ -180,13 +180,13 @@ class cl_itbinumpre {
      $resaco = $this->sql_record($this->sql_query_file($this->it15_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18284,'$this->it15_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,882,5566,'','".AddSlashes(pg_result($resaco,0,'it15_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,882,5567,'','".AddSlashes(pg_result($resaco,0,'it15_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,882,18284,'','".AddSlashes(pg_result($resaco,0,'it15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,882,18285,'','".AddSlashes(pg_result($resaco,0,'it15_ultimaguia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,882,5566,'','".AddSlashes(pg_fetch_result($resaco,0,'it15_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,882,5567,'','".AddSlashes(pg_fetch_result($resaco,0,'it15_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,882,18284,'','".AddSlashes(pg_fetch_result($resaco,0,'it15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,882,18285,'','".AddSlashes(pg_fetch_result($resaco,0,'it15_ultimaguia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_itbinumpre {
       $this->atualizacampos();
      $sql = " update itbinumpre set ";
      $virgula = "";
-     if(trim($this->it15_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it15_guia"])){ 
+     if(trim((string) $this->it15_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it15_guia"])){ 
        $sql  .= $virgula." it15_guia = $this->it15_guia ";
        $virgula = ",";
-       if(trim($this->it15_guia) == null ){ 
+       if(trim((string) $this->it15_guia) == null ){ 
          $this->erro_sql = " Campo Número da guia de ITBI nao Informado.";
          $this->erro_campo = "it15_guia";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_itbinumpre {
          return false;
        }
      }
-     if(trim($this->it15_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it15_numpre"])){ 
+     if(trim((string) $this->it15_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it15_numpre"])){ 
        $sql  .= $virgula." it15_numpre = $this->it15_numpre ";
        $virgula = ",";
-       if(trim($this->it15_numpre) == null ){ 
+       if(trim((string) $this->it15_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre da guia de itbi nao Informado.";
          $this->erro_campo = "it15_numpre";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_itbinumpre {
          return false;
        }
      }
-     if(trim($this->it15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it15_sequencial"])){ 
+     if(trim((string) $this->it15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it15_sequencial"])){ 
        $sql  .= $virgula." it15_sequencial = $this->it15_sequencial ";
        $virgula = ",";
-       if(trim($this->it15_sequencial) == null ){ 
+       if(trim((string) $this->it15_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial da Tabela nao Informado.";
          $this->erro_campo = "it15_sequencial";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_itbinumpre {
          return false;
        }
      }
-     if(trim($this->it15_ultimaguia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it15_ultimaguia"])){ 
+     if(trim((string) $this->it15_ultimaguia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it15_ultimaguia"])){ 
        $sql  .= $virgula." it15_ultimaguia = '$this->it15_ultimaguia' ";
        $virgula = ",";
-       if(trim($this->it15_ultimaguia) == null ){ 
+       if(trim((string) $this->it15_ultimaguia) == null ){ 
          $this->erro_sql = " Campo Ultima Guia Emitida nao Informado.";
          $this->erro_campo = "it15_ultimaguia";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_itbinumpre {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18284,'$this->it15_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it15_guia"]) || $this->it15_guia != "")
-           $resac = db_query("insert into db_acount values($acount,882,5566,'".AddSlashes(pg_result($resaco,$conresaco,'it15_guia'))."','$this->it15_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,882,5566,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it15_guia'))."','$this->it15_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it15_numpre"]) || $this->it15_numpre != "")
-           $resac = db_query("insert into db_acount values($acount,882,5567,'".AddSlashes(pg_result($resaco,$conresaco,'it15_numpre'))."','$this->it15_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,882,5567,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it15_numpre'))."','$this->it15_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it15_sequencial"]) || $this->it15_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,882,18284,'".AddSlashes(pg_result($resaco,$conresaco,'it15_sequencial'))."','$this->it15_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,882,18284,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it15_sequencial'))."','$this->it15_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it15_ultimaguia"]) || $this->it15_ultimaguia != "")
-           $resac = db_query("insert into db_acount values($acount,882,18285,'".AddSlashes(pg_result($resaco,$conresaco,'it15_ultimaguia'))."','$this->it15_ultimaguia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,882,18285,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it15_ultimaguia'))."','$this->it15_ultimaguia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_itbinumpre {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18284,'$it15_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,882,5566,'','".AddSlashes(pg_result($resaco,$iresaco,'it15_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,882,5567,'','".AddSlashes(pg_result($resaco,$iresaco,'it15_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,882,18284,'','".AddSlashes(pg_result($resaco,$iresaco,'it15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,882,18285,'','".AddSlashes(pg_result($resaco,$iresaco,'it15_ultimaguia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,882,5566,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it15_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,882,5567,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it15_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,882,18284,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,882,18285,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it15_ultimaguia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from itbinumpre
@@ -376,7 +376,7 @@ class cl_itbinumpre {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:itbinumpre";
@@ -416,7 +416,7 @@ class cl_itbinumpre {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_itbinumpre {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

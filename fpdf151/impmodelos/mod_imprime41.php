@@ -34,7 +34,7 @@ $this->objpdf->Setfont("Times", "", 12);
 $this->objpdf->cell(75, 5, $this->z01_nome, 0, 1, 'L');
 if ($this->z01_cgccpf != "") {
 	$this->objpdf->Setfont("Times", "B", 14);
-	$this->objpdf->cell(50, 5, (strlen($this->z01_cgccpf) == 11 ? "CPF: " : "CNPJ: "), 0, 0, 'L');
+	$this->objpdf->cell(50, 5, (strlen((string) $this->z01_cgccpf) == 11 ? "CPF: " : "CNPJ: "), 0, 0, 'L');
 	$this->objpdf->Setfont("Times", "", 12);
 	$this->objpdf->cell(40, 5, $this->z01_cgccpf, 0, ($this->z01_telef != "" ? 0 : 1), 'L');
 }
@@ -44,7 +44,7 @@ if ($this->z01_telef != "") {
 	$this->objpdf->Setfont("Times", "", 12);
 	$this->objpdf->cell(30, 5, $this->z01_telef, 0, 1, 'L');
 }
-if (trim($this->p58_requer) != trim($this->z01_nome)) {
+if (trim((string) $this->p58_requer) != trim((string) $this->z01_nome)) {
 	$this->objpdf->Setfont("Times", "B", 14);
 	$this->objpdf->cell(50, 5, "REQUERENTE: ", 0, 0, 'L');
 	$this->objpdf->Setfont("Times", "", 12);
@@ -73,8 +73,8 @@ if ($this->p58_dtproc != "") {
 	$this->objpdf->cell(75, 5, db_formatar($this->p58_dtproc, 'd'), 0, 1, 'L');
 }
 $result_impusu = db_query("select p90_impusuproc from protparam where p90_instit=".db_getsession("DB_instit"));
-if (pg_numrows($result_impusu) > 0) {
-	$p90_impusuproc = pg_result($result_impusu,0,0);
+if (pg_num_rows($result_impusu) > 0) {
+	$p90_impusuproc = pg_fetch_result($result_impusu,0,0);
 	if ($p90_impusuproc == 't') {
 		if ($this->nome  != "") {
 			$this->objpdf->Setfont("Times", "B", 14);
@@ -90,14 +90,14 @@ $sqlproc = "select coddepto,descrdepto,p51_descr
 				inner join tipoproc on p51_codigo = p53_codigo where p53_codigo = ".$this->p58_codigo ."";
 $resproc = db_query($sqlproc);
 if (pg_num_rows($resproc)) {
-	$coddepto   = pg_result($resproc,0,0);
-	$descrdepto = pg_result($resproc,0,1);
-	$p51_descr = pg_result($resproc,0,2);
+	$coddepto   = pg_fetch_result($resproc,0,0);
+	$descrdepto = pg_fetch_result($resproc,0,1);
+	$p51_descr = pg_fetch_result($resproc,0,2);
 	$this->objpdf->setfillcolor(235);
 	$this->objpdf->Setfont("Times", "B", 8);
   $sqldepto = "select p90_impdepto from protparam where p90_instit = ".db_getsession('DB_instit');
 	$resultdepto = db_query($sqldepto);
-	$impdepto = pg_result($resultdepto,0,0);
+	$impdepto = pg_fetch_result($resultdepto,0,0);
 	if ($impdepto == 't') {
 		$this->objpdf->cell(180, 8, "DEPARTAMENTO PADRÃO: $coddepto - $descrdepto", 0, 1, 'L', 1);
 	}
@@ -120,20 +120,20 @@ $texto = $this->p58_obs;
 
 
 
-$this->objpdf->multicell(185, 5,mb_strimwidth($texto,0,300, "..."),0,1,"L");
+$this->objpdf->multicell(185, 5,mb_strimwidth((string) $texto,0,300, "..."),0,1,"L");
 $this->objpdf->multicell(185, 5,$str,0,1,"L");
 
 
 
 // Variaveis
 if ($this->result_vars != ""){
-     $numrows     = pg_numrows($this->result_vars);
+     $numrows     = pg_num_rows($this->result_vars);
      $result_vars = $this->result_vars;
      $imprime_str = "";
      $separador   = " - ";
      for ($i = 0; $i < $numrows; $i++){
-     $rotulo   = pg_result($result_vars,$i,0);
-     $conteudo = pg_result($result_vars,$i,1);
+     $rotulo   = pg_fetch_result($result_vars,$i,0);
+     $conteudo = pg_fetch_result($result_vars,$i,1);
      if (($i+1) == $numrows){
           $separador = "";
      }
@@ -141,7 +141,7 @@ if ($this->result_vars != ""){
      }
 
      $this->objpdf->multicell(185, 5, $imprime_str,0,1,"L");
-	 mb_strimwidth($this->p58_obs, 0, 200, "...");
+	 mb_strimwidth((string) $this->p58_obs, 0, 200, "...");
 }
 $this->objpdf->Setfont("Times", "", 12);
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,15 +157,15 @@ $sql_doc = "select p81_doc,p56_descr from procprocessodoc
                inner join procdoc on p81_coddoc = p56_coddoc
 	        where p81_codproc=".$this->p58_codproc ;
 $result_doc = db_query($sql_doc);
-$numrows_doc = pg_numrows($result_doc);
+$numrows_doc = pg_num_rows($result_doc);
 if ($numrows_doc > 0) {
 	$m = 0;
 	$this->objpdf->cell(180, 2, '', 0, 1, "C");
 	for ($y = 0; $y < $numrows_doc; $y ++) {
 		$x = " ";
 		$this->objpdf->Setfont("Times", "", 10);
-		$p81_doc=pg_result($result_doc,$y,0);
-		$p56_descr=pg_result($result_doc,$y,1);
+		$p81_doc=pg_fetch_result($result_doc,$y,0);
+		$p56_descr=pg_fetch_result($result_doc,$y,1);
 		if ($p81_doc == 't') {
 			$x = "X";
 		}
@@ -190,9 +190,9 @@ $this->objpdf->Text(25, 164, "ASSINATURAS");
 $this->objpdf->Text(112, 164, "ASSINATURA RETIRADA DE DOCUMENTOS");
 $this->objpdf->Text(50, 224, "COMPROVANTE DE ENTRADA DE PROCESSO");
 $this->objpdf->Text(13, 172, 'TIT./REQ.:', 0, 35);
-$this->objpdf->Text(13, 182, substr($this->p58_requer, 0, 35)); //texto: acarte..
+$this->objpdf->Text(13, 182, substr((string) $this->p58_requer, 0, 35)); //texto: acarte..
 $usuario = db_query("select nome from db_usuarios where id_usuario =".db_getsession("DB_id_usuario"));
-$nome=pg_result($usuario,0,0);
+$nome=pg_fetch_result($usuario,0,0);
 $this->objpdf->Text(13, 195, 'EMISSOR:', 0, 35);
 $this->objpdf->Text(13, 206, $nome, 0, 35); //texto: libre soluções..
 $this->objpdf->Text(150, 174, "DATA: ____/____/_______");
@@ -200,7 +200,7 @@ $this->objpdf->Text(112, 182, "NOME:");
 $this->objpdf->Text(112, 195, "CPF/CI:");
 // Comprovante de retirada
 $this->objpdf->Text(15, 230, "CGM:".$this->p58_numcgm);
-$this->objpdf->Text(45, 230, "NOME:".substr($this->z01_nome, 0, 35));
+$this->objpdf->Text(45, 230, "NOME:".substr((string) $this->z01_nome, 0, 35));
 $this->objpdf->Text(150, 230, "CNPJ/CPF:".$this->z01_cgccpf);
 $this->objpdf->Text(15, 235, "N° DE CONTROLE/ASSUNTO: ".$this->p58_codproc."/".$this->p51_descr);
 $this->objpdf->Text(150, 235, "DATA:".$this->dtproc);
@@ -213,7 +213,7 @@ $this->objpdf->Setfont("Times", "", 10);
 $imprime_str = "";
 $tamstr = 290;
 
-$texto = mb_strimwidth($this->p58_obs, 0, 200, "...");
+$texto = mb_strimwidth((string) $this->p58_obs, 0, 200, "...");
 $this->objpdf->multicell(185, 4,$texto,0,1,"L");
 $this->objpdf->Setfont("Times", "", 12);
 $this->objpdf->multicell(185, 4, "");
@@ -223,20 +223,20 @@ $this->objpdf->Setfont("Times", "", 10);
 
 // Variaveis
 if ($this->result_vars != ""){
-     $numrows     = pg_numrows($this->result_vars);
+     $numrows     = pg_num_rows($this->result_vars);
      $result_vars = $this->result_vars;
      $imprime_str = "";
      $separador   = " - ";
      for ($i = 0; $i < $numrows; $i++){
-     $rotulo   = pg_result($result_vars,$i,0);
-     $conteudo = pg_result($result_vars,$i,1);
+     $rotulo   = pg_fetch_result($result_vars,$i,0);
+     $conteudo = pg_fetch_result($result_vars,$i,1);
      if (($i+1) == $numrows){
           $separador = "";
      }
            $imprime_str .= ucfirst($rotulo).": ".$conteudo.$separador;
      }
 
-     $linha = split("-",$imprime_str);
+     $linha = preg_split("#\\-#m",$imprime_str);
      $this->objpdf->multicell(185, 4, $imprime_str,0,1,"L");
 }
 

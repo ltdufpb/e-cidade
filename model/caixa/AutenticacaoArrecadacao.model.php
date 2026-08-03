@@ -29,17 +29,13 @@
 class AutenticacaoArrecadacao extends Autenticacao {
 
   private $iNumpre;
-  private $iNumpar;
   private $iContaDebito;
   private $sCodigoAutenticacao;
   private $dtSessao;
   private $iIpTerminal;
   private $iAnoUsu;
   private $iCodigoInstituicao;
-  private $iCodigoGrupoArrecadacao;
   private $iCodigoRecurso;
-  private $sCaracteristicaPeculiar = null;
-  private $iSequencialEmpenho = null;
   private $retencao = null;
 
     /**
@@ -50,9 +46,9 @@ class AutenticacaoArrecadacao extends Autenticacao {
   private $lancamentoOutraInstuicao = false;
 
 
-    public function __construct($iNumpre = null, $iNumpar = null, $iContaDebito=null,
-                             $iCodigoGrupoArrecadacao = null, $dDataAutenticacao = null,
-                             $sCaracteristicaPeculiar = null, $iSequencialEmpenho = null) {
+    public function __construct($iNumpre = null, private $iNumpar = null, $iContaDebito=null,
+                             private $iCodigoGrupoArrecadacao = null, $dDataAutenticacao = null,
+                             private $sCaracteristicaPeculiar = null, private $iSequencialEmpenho = null) {
 
     if (empty($iNumpre)) {
       throw new ParameterException("Numpre não informado !");
@@ -62,11 +58,7 @@ class AutenticacaoArrecadacao extends Autenticacao {
     }
 
     $this->iNumpre                 = $iNumpre;
-    $this->iNumpar                 = $iNumpar;
     $this->iContaDebito            = $iContaDebito;
-    $this->iCodigoGrupoArrecadacao = $iCodigoGrupoArrecadacao;
-    $this->sCaracteristicaPeculiar = $sCaracteristicaPeculiar;
-    $this->iSequencialEmpenho      = $iSequencialEmpenho;
 
     if (!empty($dDataAutenticacao)) {
       $this->dtSessao = $dDataAutenticacao;
@@ -237,7 +229,7 @@ class AutenticacaoArrecadacao extends Autenticacao {
      * @throws BusinessException
      */
   public function efetuarLancamentos($dtAutenticacao="", $iId="", $iAutent="",
-                  $iCodigoContaDebito, $lEstorno, $lDesconto=false, $lArrecadaDesconto = false) {
+                  $iCodigoContaDebito = null, $lEstorno = null, $lDesconto=false, $lArrecadaDesconto = false) {
 
     if (USE_PCASP) {
 
@@ -246,7 +238,7 @@ class AutenticacaoArrecadacao extends Autenticacao {
       $clconplanoreduz      = db_utils::getDao('conplanoreduz');
       $oDaoCorgrupoCorrente = db_utils::getDao('corgrupocorrente');
 
-      list($c70_data_ano, $c70_data_mes, $c70_data_dia) = explode("-", $dtAutenticacao);
+      [$c70_data_ano, $c70_data_mes, $c70_data_dia] = explode("-", $dtAutenticacao);
 
       $aContasSemVinculo = self::getReceitasSemVinculoPcasp($iId, $dtAutenticacao, $iAutent);
       if (count($aContasSemVinculo) > 0 ) {
@@ -370,7 +362,7 @@ class AutenticacaoArrecadacao extends Autenticacao {
     $rsVerificaContasPcasp = $oDaoCorNump->sql_record($sSqlBuscaReceitas);
     $iLinhasContaPcasp     = $oDaoCorNump->numrows;
 
-    $aContasSemVinculo = array();
+    $aContasSemVinculo = [];
     if ($iLinhasContaPcasp > 0) {
 
       for ($iRowContaPcasp = 0; $iRowContaPcasp < $iLinhasContaPcasp; $iRowContaPcasp++) {
@@ -405,7 +397,7 @@ class AutenticacaoArrecadacao extends Autenticacao {
    * @throws BusinessException
    * @return boolean
    */
-  public function efetuarLancamentosReceitaExtra($lEstorno = false, $dtAutenticacao, $iAutenticacao, $iId) {
+  public function efetuarLancamentosReceitaExtra($lEstorno = false, $dtAutenticacao = null, $iAutenticacao = null, $iId = null) {
 
     /**
      * Em caso do cliente não utilizar PCASP retornamos true
@@ -497,7 +489,7 @@ class AutenticacaoArrecadacao extends Autenticacao {
          * quando a conta for 21881
          */
       $oContaContabil = new ContaPlanoPCASP(null, $iAnoSessao, $oDadoAutenticacao->k02_reduz);
-      if ( substr($oContaContabil->getEstrutural(), 0, 4) != '2188' ) {
+      if ( !str_starts_with($oContaContabil->getEstrutural(), '2188') ) {
          $iCodigoDocumento = ( $lEstorno? 152: 150 );
       }
       $oLancamentoAuxiliar = new LancamentoAuxiliarArrecadacaoReceitaExtraOrcamentaria();

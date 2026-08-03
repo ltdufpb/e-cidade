@@ -145,16 +145,16 @@ if ($oGet->iOpcaoTipoDebito<>1 and !empty($oGet->sTiposDebitos)) {
 /**
  * Arrays que guardarão as procedências selecionadas como filtro, separando por Dívida ou Diversos
  */
-$aProcedenciasDividaFiltros   = array();
-$aProcedenciasDiversosFiltros = array();
+$aProcedenciasDividaFiltros   = [];
+$aProcedenciasDiversosFiltros = [];
 
 $sProcedenciasDividaAtiva  = '';
 $sProcedenciasDiversos     = '';
 
 if(!empty($oGet->sProcedencias)) {
 
-  $sProcedenciasDividaAtiva  = preg_replace(array('/(\d+-DI\,*)/', '/^\,*(\d.*\w)\,*$/', '/(\d+)-DA(\,*)/'), array('', '$1', "$1$2"), $oGet->sProcedencias);
-  $sProcedenciasDiversos     = preg_replace(array('/(\d+-DA\,*)/', '/^\,*(\d.*\w)\,*$/', '/(\d+)-DI(\,*)/'), array('', '$1', "$1$2"), $oGet->sProcedencias);
+  $sProcedenciasDividaAtiva  = preg_replace(['/(\d+-DI\,*)/', '/^\,*(\d.*\w)\,*$/', '/(\d+)-DA(\,*)/'], ['', '$1', "$1$2"], (string) $oGet->sProcedencias);
+  $sProcedenciasDiversos     = preg_replace(['/(\d+-DA\,*)/', '/^\,*(\d.*\w)\,*$/', '/(\d+)-DI(\,*)/'], ['', '$1', "$1$2"], (string) $oGet->sProcedencias);
 }
 
 if(!empty($sProcedenciasDividaAtiva)) {
@@ -165,9 +165,7 @@ if(!empty($sProcedenciasDividaAtiva)) {
   $rsProced      = db_query($sSqlProced);
 
   if($rsProced && pg_num_rows($rsProced) > 0) {
-    $aProcedenciasDividaFiltros = db_utils::makeCollectionFromRecord($rsProced, function($oProced) {
-      return $oProced->procedencias;
-    });
+    $aProcedenciasDividaFiltros = db_utils::makeCollectionFromRecord($rsProced, fn($oProced) => $oProced->procedencias);
   }
 }
 
@@ -179,9 +177,7 @@ if(!empty($sProcedenciasDiversos)) {
   $rsProcDiver      = db_query($sSqlProcDiver);
 
   if($rsProcDiver && pg_num_rows($rsProcDiver) > 0) {
-    $aProcedenciasDiversosFiltros = db_utils::makeCollectionFromRecord($rsProcDiver, function($oProcDiver) {
-      return $oProcDiver->procedencias;
-    });
+    $aProcedenciasDiversosFiltros = db_utils::makeCollectionFromRecord($rsProcDiver, fn($oProcDiver) => $oProcDiver->procedencias);
   }
 }
 
@@ -214,7 +210,7 @@ $sFiltro .= " # Usuário: {$iUsuario} - {$oUsuario->login} - {$oUsuario->nome}";
 $sFiltro .= " # Inicio Processamento: ".date("d/m/Y H:i:s", $tInicio);
 
 /* Array para armazenar SQLs */
-$sSqlEtapa = array();
+$sSqlEtapa = [];
 
 ?>
 <html>
@@ -310,7 +306,7 @@ if (!empty($oGet->sReceitas)) {
     $sSqlEtapa["001"] .= " AND k22_receit  IN ({$oGet->sReceitas}) ";
 }
 
-$aWhereProcedencias = array();
+$aWhereProcedencias = [];
 
 if(!empty($sProcedenciasDividaAtiva)) {
 
@@ -840,7 +836,7 @@ if (!empty($sWhereParcelas)) {
  * 3 - Invalidos
  *
  */
-if ( in_array($oGet->consistirCpfCnpj, array (2,3))) {
+if ( in_array($oGet->consistirCpfCnpj,  [2,3])) {
 
     $sNot = ($oGet->consistirCpfCnpj == '3' ? "": "not");
 
@@ -879,7 +875,7 @@ if ($oGet->incluirDebitosAjuizados == 1) {
  * 3 - Invalidos
  *
  */
-if ( in_array($oGet->consistirEndereco, array (2,3))) {
+if ( in_array($oGet->consistirEndereco,  [2,3])) {
 
     $sNot = ($oGet->consistirEndereco == '3' ? " not ": "");
 
@@ -1066,7 +1062,7 @@ if (!$lSqlErro) {
         $oParms->sResultado = pg_result_error($rResult);
         $lSqlErro = true;
         $sErroMsg = _M('tributario.notificacoes.cai4_lista002.erro_executar_query_inclui', $oParms);
-        break;
+        return;
       }
 
     }

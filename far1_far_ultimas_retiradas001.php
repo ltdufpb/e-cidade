@@ -54,7 +54,7 @@ $sql="select * from far_retiradaitens";
                                fa04_i_cgsund=$cgs
                                and fa06_i_matersaude=$medicamento
                              order by fa04_d_data desc";
-                      $repassa = array("cgs"=>$cgs,"remedio"=>$medicamento);
+                      $repassa = ["cgs"=>$cgs,"remedio"=>$medicamento];
 			          //echo"SQL: $sql";
                       db_lovrot($sql,15,"()","","","","NoMe",$repassa);
 			      ?>

@@ -37,7 +37,7 @@ $oPost = db_utils::postMemory($_POST);
 
 if ($oPost->sAction == 'pesquisaSenhaHash') {
   
-  $sql   = "select count(*) from agualeiturista where x16_numcgm = {$oPost->cgm} and x16_senha = '".md5($oPost->s)."'";
+  $sql   = "select count(*) from agualeiturista where x16_numcgm = {$oPost->cgm} and x16_senha = '".md5((string) $oPost->s)."'";
   
   $rsSql = db_query($sql);
   

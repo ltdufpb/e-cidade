@@ -139,7 +139,7 @@
   $iTotalMatriculasGeral = 0;
   $iCodigoRua            = "";
   $fLinha                = 0;
-  $aDados                = array();
+  $aDados                = [];
   
   foreach ($aResultado as $oRegistro) {
     
@@ -147,7 +147,7 @@
     $oDados->iMatricula         = $oRegistro->x01_matric;
     $oDados->sComplemento       = $oRegistro->x11_complemento;
     $oDados->sNumeroHidrometro  = $oRegistro->x04_nrohidro;
-    $oDados->sTipoImovel        = substr($oRegistro->j31_descr, 0, 35);
+    $oDados->sTipoImovel        = substr((string) $oRegistro->j31_descr, 0, 35);
     $oDados->sDescricaoZona     = $oRegistro->j50_descr;
     $oDados->sDescricaoZonaEntr = $oRegistro->j85_descr;
     

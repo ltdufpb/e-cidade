@@ -32,11 +32,11 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_orcelemento_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_liborcamento.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clorcelemento = new cl_orcelemento;
 $db_opcao = 1;
 $db_botao = true;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   $codigo=$o56_elemento; 
   $clorcelemento->sql_record($clorcelemento->sql_query_file("","","*","","o56_anousu = ".db_getsession("DB_anousu")." and o56_elemento='$codigo'"));
   if($clorcelemento->numrows>0){
@@ -92,7 +92,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 if(isset($erro_elem)){
     db_msgbox($erro_elem);
 }  
-if(empty($erro_elem) && (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if(empty($erro_elem) && (isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clorcelemento->erro_status=="0"){
     $clorcelemento->erro(true,false);
     $db_botao=true;

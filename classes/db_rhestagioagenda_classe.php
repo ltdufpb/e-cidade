@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE rhestagioagenda
 class cl_rhestagioagenda { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h57_sequencial = 0; 
-   var $h57_rhestagio = 0; 
-   var $h57_regist = 0; 
-   var $h57_instit = 0; 
+   public $h57_sequencial = 0; 
+   public $h57_rhestagio = 0; 
+   public $h57_regist = 0; 
+   public $h57_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h57_sequencial = int4 = Cód. Sequencial 
                  h57_rhestagio = int4 = Cód. Estágio 
                  h57_regist = int4 = Cód. Registro 
                  h57_instit = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_rhestagioagenda() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhestagioagenda"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_rhestagioagenda {
          $this->erro_status = "0";
          return false; 
        }
-       $this->h57_sequencial = pg_result($result,0,0); 
+       $this->h57_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhestagioagenda_h57_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $h57_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $h57_sequencial)){
          $this->erro_sql = " Campo h57_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_rhestagioagenda {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agenda de estágios ($this->h57_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agenda de estágios já Cadastrado";
@@ -180,13 +180,13 @@ class cl_rhestagioagenda {
      $resaco = $this->sql_record($this->sql_query_file($this->h57_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10884,'$this->h57_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1877,10884,'','".AddSlashes(pg_result($resaco,0,'h57_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1877,10885,'','".AddSlashes(pg_result($resaco,0,'h57_rhestagio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1877,10886,'','".AddSlashes(pg_result($resaco,0,'h57_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1877,10947,'','".AddSlashes(pg_result($resaco,0,'h57_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1877,10884,'','".AddSlashes(pg_fetch_result($resaco,0,'h57_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1877,10885,'','".AddSlashes(pg_fetch_result($resaco,0,'h57_rhestagio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1877,10886,'','".AddSlashes(pg_fetch_result($resaco,0,'h57_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1877,10947,'','".AddSlashes(pg_fetch_result($resaco,0,'h57_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_rhestagioagenda {
       $this->atualizacampos();
      $sql = " update rhestagioagenda set ";
      $virgula = "";
-     if(trim($this->h57_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h57_sequencial"])){ 
+     if(trim((string) $this->h57_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h57_sequencial"])){ 
        $sql  .= $virgula." h57_sequencial = $this->h57_sequencial ";
        $virgula = ",";
-       if(trim($this->h57_sequencial) == null ){ 
+       if(trim((string) $this->h57_sequencial) == null ){ 
          $this->erro_sql = " Campo Cód. Sequencial nao Informado.";
          $this->erro_campo = "h57_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_rhestagioagenda {
          return false;
        }
      }
-     if(trim($this->h57_rhestagio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h57_rhestagio"])){ 
+     if(trim((string) $this->h57_rhestagio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h57_rhestagio"])){ 
        $sql  .= $virgula." h57_rhestagio = $this->h57_rhestagio ";
        $virgula = ",";
-       if(trim($this->h57_rhestagio) == null ){ 
+       if(trim((string) $this->h57_rhestagio) == null ){ 
          $this->erro_sql = " Campo Cód. Estágio nao Informado.";
          $this->erro_campo = "h57_rhestagio";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_rhestagioagenda {
          return false;
        }
      }
-     if(trim($this->h57_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h57_regist"])){ 
+     if(trim((string) $this->h57_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h57_regist"])){ 
        $sql  .= $virgula." h57_regist = $this->h57_regist ";
        $virgula = ",";
-       if(trim($this->h57_regist) == null ){ 
+       if(trim((string) $this->h57_regist) == null ){ 
          $this->erro_sql = " Campo Cód. Registro nao Informado.";
          $this->erro_campo = "h57_regist";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_rhestagioagenda {
          return false;
        }
      }
-     if(trim($this->h57_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h57_instit"])){ 
+     if(trim((string) $this->h57_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h57_instit"])){ 
        $sql  .= $virgula." h57_instit = $this->h57_instit ";
        $virgula = ",";
-       if(trim($this->h57_instit) == null ){ 
+       if(trim((string) $this->h57_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "h57_instit";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_rhestagioagenda {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10884,'$this->h57_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h57_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1877,10884,'".AddSlashes(pg_result($resaco,$conresaco,'h57_sequencial'))."','$this->h57_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1877,10884,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h57_sequencial'))."','$this->h57_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h57_rhestagio"]))
-           $resac = db_query("insert into db_acount values($acount,1877,10885,'".AddSlashes(pg_result($resaco,$conresaco,'h57_rhestagio'))."','$this->h57_rhestagio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1877,10885,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h57_rhestagio'))."','$this->h57_rhestagio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h57_regist"]))
-           $resac = db_query("insert into db_acount values($acount,1877,10886,'".AddSlashes(pg_result($resaco,$conresaco,'h57_regist'))."','$this->h57_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1877,10886,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h57_regist'))."','$this->h57_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h57_instit"]))
-           $resac = db_query("insert into db_acount values($acount,1877,10947,'".AddSlashes(pg_result($resaco,$conresaco,'h57_instit'))."','$this->h57_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1877,10947,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h57_instit'))."','$this->h57_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_rhestagioagenda {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10884,'$h57_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1877,10884,'','".AddSlashes(pg_result($resaco,$iresaco,'h57_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1877,10885,'','".AddSlashes(pg_result($resaco,$iresaco,'h57_rhestagio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1877,10886,'','".AddSlashes(pg_result($resaco,$iresaco,'h57_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1877,10947,'','".AddSlashes(pg_result($resaco,$iresaco,'h57_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1877,10884,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h57_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1877,10885,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h57_rhestagio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1877,10886,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h57_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1877,10947,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h57_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhestagioagenda
@@ -376,7 +376,7 @@ class cl_rhestagioagenda {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhestagioagenda";
@@ -390,7 +390,7 @@ class cl_rhestagioagenda {
    function sql_query ( $h57_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_rhestagioagenda {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,7 +433,7 @@ class cl_rhestagioagenda {
    function sql_query_file ( $h57_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -454,7 +454,7 @@ class cl_rhestagioagenda {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -466,7 +466,7 @@ class cl_rhestagioagenda {
    function sql_query_resultado ( $h57_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -496,7 +496,7 @@ class cl_rhestagioagenda {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

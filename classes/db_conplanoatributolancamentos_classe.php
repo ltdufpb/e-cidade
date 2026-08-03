@@ -172,11 +172,11 @@ class cl_conplanoatributolancamentos extends DAOBasica
         $ano,
         array $instituicoes,
         $SistemaContaCorrente = 1,
-        array $listaLancamentos = null,
-        array $tiposDocumentos = array()
+        ?array $listaLancamentos = null,
+        array $tiposDocumentos = []
     ) {
 
-        $codigoInstituicoes = array();
+        $codigoInstituicoes = [];
         foreach ($instituicoes as $instituicao) {
             $codigoInstituicoes[] = $instituicao->getCodigo();
         }
@@ -337,7 +337,7 @@ class cl_conplanoatributolancamentos extends DAOBasica
         return $sSql;
     }
 
-    public function inserirSaldoContaAtributo($mes, $ano, $hashContaAtributos, $valor, $natureza, $tipo, $sistema = 1, $tipoSaldo)
+    public function inserirSaldoContaAtributo($mes, $ano, $hashContaAtributos, $valor, $natureza, $tipo, $sistema = 1, $tipoSaldo = null)
     {
 
         $sql = " insert into conplanoatributosaldo (c125_sequencial, c125_anousu, c125_mesusu, c125_hashcontaatributos, c125_valor, c125_natureza, c125_tipo, c125_conplanosistema, c125_tiposaldo) ";

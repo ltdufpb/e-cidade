@@ -45,15 +45,15 @@ $db_opcao   = 1;
   </head>
   <body class="body-default abas">
     <?php
-      $clcriaabas->identifica = array( "orcam" => "Orçamento",
+      $clcriaabas->identifica = [ "orcam" => "Orçamento",
                                         "item" => "Itens",
-                                        "fornec" => "Fornecedores" );//nome do iframe e o label
-      $clcriaabas->src        = array("orcam"=>"com1_processo005.php");
-      $clcriaabas->title      = array( "orcam" => "Orçamento",
+                                        "fornec" => "Fornecedores" ];//nome do iframe e o label
+      $clcriaabas->src        = ["orcam"=>"com1_processo005.php"];
+      $clcriaabas->title      = [ "orcam" => "Orçamento",
                                        "item" => "Itens",
-                                       "fornec" => "Fornecedores" );//nome do iframe e o label
-      $clcriaabas->sizecampo  = array("orcam"=>"20", "fornec"=>"20", "item" => "20");
-      $clcriaabas->disabled   = array("fornec" => "true", "item" => "true");
+                                       "fornec" => "Fornecedores" ];//nome do iframe e o label
+      $clcriaabas->sizecampo  = ["orcam"=>"20", "fornec"=>"20", "item" => "20"];
+      $clcriaabas->disabled   = ["fornec" => "true", "item" => "true"];
       $clcriaabas->cria_abas();
 
       db_menu( db_getsession("DB_id_usuario"),

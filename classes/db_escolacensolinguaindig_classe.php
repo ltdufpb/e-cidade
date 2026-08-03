@@ -33,7 +33,7 @@ class cl_escolacensolinguaindig
     public function __construct()
     {
         $this->rotulo = new rotulo("escolacensolinguaindig"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -90,10 +90,10 @@ class cl_escolacensolinguaindig
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed144_i_codigo = pg_result($result,0,0); 
+       $this->ed144_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from escolacensolinguaindig_ed144_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed144_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed144_i_codigo)){
          $this->erro_sql = " Campo ed144_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -129,7 +129,7 @@ class cl_escolacensolinguaindig
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Escola Censo Lingua Indigena ($this->ed144_i_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Escola Censo Lingua Indigena já Cadastrado";
@@ -158,14 +158,14 @@ class cl_escolacensolinguaindig
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1010424,'$this->ed144_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010440,1010428,'','".AddSlashes(pg_result($resaco,0,'ed144_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010440,1010425,'','".AddSlashes(pg_result($resaco,0,'ed144_i_linguaindigena1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010440,1010426,'','".AddSlashes(pg_result($resaco,0,'ed144_i_linguaindigena2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010440,1010427,'','".AddSlashes(pg_result($resaco,0,'ed144_i_linguaindigena3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010440,1010424,'','".AddSlashes(pg_result($resaco,0,'ed144_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010440,1010428,'','".AddSlashes(pg_fetch_result($resaco,0,'ed144_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010440,1010425,'','".AddSlashes(pg_fetch_result($resaco,0,'ed144_i_linguaindigena1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010440,1010426,'','".AddSlashes(pg_fetch_result($resaco,0,'ed144_i_linguaindigena2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010440,1010427,'','".AddSlashes(pg_fetch_result($resaco,0,'ed144_i_linguaindigena3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010440,1010424,'','".AddSlashes(pg_fetch_result($resaco,0,'ed144_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -176,10 +176,10 @@ class cl_escolacensolinguaindig
       $this->atualizacampos();
      $sql = " update escolacensolinguaindig set ";
      $virgula = "";
-     if(trim($this->ed144_i_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_escola"])){ 
+     if(trim((string) $this->ed144_i_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_escola"])){ 
        $sql  .= $virgula." ed144_i_escola = $this->ed144_i_escola ";
        $virgula = ",";
-       if(trim($this->ed144_i_escola) == null ){ 
+       if(trim((string) $this->ed144_i_escola) == null ){ 
          $this->erro_sql = " Campo Escola não informado.";
          $this->erro_campo = "ed144_i_escola";
          $this->erro_banco = "";
@@ -189,31 +189,31 @@ class cl_escolacensolinguaindig
          return false;
        }
      }
-     if(trim($this->ed144_i_linguaindigena1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena1"])){ 
-        if(trim($this->ed144_i_linguaindigena1)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena1"])){ 
+     if(trim((string) $this->ed144_i_linguaindigena1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena1"])){ 
+        if(trim((string) $this->ed144_i_linguaindigena1)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena1"])){ 
            $this->ed144_i_linguaindigena1 = "0" ; 
         } 
        $sql  .= $virgula." ed144_i_linguaindigena1 = $this->ed144_i_linguaindigena1 ";
        $virgula = ",";
      }
-     if(trim($this->ed144_i_linguaindigena2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena2"])){ 
-        if(trim($this->ed144_i_linguaindigena2)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena2"])){ 
+     if(trim((string) $this->ed144_i_linguaindigena2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena2"])){ 
+        if(trim((string) $this->ed144_i_linguaindigena2)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena2"])){ 
            $this->ed144_i_linguaindigena2 = "0" ; 
         } 
        $sql  .= $virgula." ed144_i_linguaindigena2 = $this->ed144_i_linguaindigena2 ";
        $virgula = ",";
      }
-     if(trim($this->ed144_i_linguaindigena3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena3"])){ 
-        if(trim($this->ed144_i_linguaindigena3)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena3"])){ 
+     if(trim((string) $this->ed144_i_linguaindigena3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena3"])){ 
+        if(trim((string) $this->ed144_i_linguaindigena3)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena3"])){ 
            $this->ed144_i_linguaindigena3 = "0" ; 
         } 
        $sql  .= $virgula." ed144_i_linguaindigena3 = $this->ed144_i_linguaindigena3 ";
        $virgula = ",";
      }
-     if(trim($this->ed144_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_codigo"])){ 
+     if(trim((string) $this->ed144_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_codigo"])){ 
        $sql  .= $virgula." ed144_i_codigo = $this->ed144_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed144_i_codigo) == null ){ 
+       if(trim((string) $this->ed144_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed144_i_codigo";
          $this->erro_banco = "";
@@ -237,19 +237,19 @@ class cl_escolacensolinguaindig
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1010424,'$this->ed144_i_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_escola"]) || $this->ed144_i_escola != "")
-             $resac = db_query("insert into db_acount values($acount,1010440,1010428,'".AddSlashes(pg_result($resaco,$conresaco,'ed144_i_escola'))."','$this->ed144_i_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010440,1010428,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed144_i_escola'))."','$this->ed144_i_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena1"]) || $this->ed144_i_linguaindigena1 != "")
-             $resac = db_query("insert into db_acount values($acount,1010440,1010425,'".AddSlashes(pg_result($resaco,$conresaco,'ed144_i_linguaindigena1'))."','$this->ed144_i_linguaindigena1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010440,1010425,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed144_i_linguaindigena1'))."','$this->ed144_i_linguaindigena1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena2"]) || $this->ed144_i_linguaindigena2 != "")
-             $resac = db_query("insert into db_acount values($acount,1010440,1010426,'".AddSlashes(pg_result($resaco,$conresaco,'ed144_i_linguaindigena2'))."','$this->ed144_i_linguaindigena2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010440,1010426,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed144_i_linguaindigena2'))."','$this->ed144_i_linguaindigena2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_linguaindigena3"]) || $this->ed144_i_linguaindigena3 != "")
-             $resac = db_query("insert into db_acount values($acount,1010440,1010427,'".AddSlashes(pg_result($resaco,$conresaco,'ed144_i_linguaindigena3'))."','$this->ed144_i_linguaindigena3',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010440,1010427,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed144_i_linguaindigena3'))."','$this->ed144_i_linguaindigena3',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed144_i_codigo"]) || $this->ed144_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010440,1010424,'".AddSlashes(pg_result($resaco,$conresaco,'ed144_i_codigo'))."','$this->ed144_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010440,1010424,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed144_i_codigo'))."','$this->ed144_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -303,14 +303,14 @@ class cl_escolacensolinguaindig
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1010424,'$ed144_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010440,1010428,'','".AddSlashes(pg_result($resaco,$iresaco,'ed144_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010440,1010425,'','".AddSlashes(pg_result($resaco,$iresaco,'ed144_i_linguaindigena1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010440,1010426,'','".AddSlashes(pg_result($resaco,$iresaco,'ed144_i_linguaindigena2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010440,1010427,'','".AddSlashes(pg_result($resaco,$iresaco,'ed144_i_linguaindigena3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010440,1010424,'','".AddSlashes(pg_result($resaco,$iresaco,'ed144_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010440,1010428,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed144_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010440,1010425,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed144_i_linguaindigena1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010440,1010426,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed144_i_linguaindigena2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010440,1010427,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed144_i_linguaindigena3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010440,1010424,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed144_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE sau_lote
 class cl_sau_lote { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd58_i_codigo = 0; 
-   var $sd58_i_login = 0; 
-   var $sd58_d_data_dia = null; 
-   var $sd58_d_data_mes = null; 
-   var $sd58_d_data_ano = null; 
-   var $sd58_d_data = null; 
-   var $sd58_c_hora = null; 
-   var $sd58_c_digitada = null; 
+   public $sd58_i_codigo = 0; 
+   public $sd58_i_login = 0; 
+   public $sd58_d_data_dia = null; 
+   public $sd58_d_data_mes = null; 
+   public $sd58_d_data_ano = null; 
+   public $sd58_d_data = null; 
+   public $sd58_c_hora = null; 
+   public $sd58_c_digitada = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd58_i_codigo = int4 = Lote 
                  sd58_i_login = int4 = Login 
                  sd58_d_data = date = Cadastro 
@@ -59,10 +59,10 @@ class cl_sau_lote {
                  sd58_c_digitada = char(1) = Digitado 
                  ";
    //funcao construtor da classe 
-   function cl_sau_lote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_lote"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -123,10 +123,10 @@ class cl_sau_lote {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sd58_i_codigo = pg_result($result,0,0); 
+       $this->sd58_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sau_lote_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sd58_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sd58_i_codigo)){
          $this->erro_sql = " Campo sd58_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -162,7 +162,7 @@ class cl_sau_lote {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Lotes Saúde ($this->sd58_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Lotes Saúde já Cadastrado";
@@ -186,14 +186,14 @@ class cl_sau_lote {
      $resaco = $this->sql_record($this->sql_query_file($this->sd58_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12302,'$this->sd58_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2145,12302,'','".AddSlashes(pg_result($resaco,0,'sd58_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2145,12303,'','".AddSlashes(pg_result($resaco,0,'sd58_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2145,12304,'','".AddSlashes(pg_result($resaco,0,'sd58_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2145,12305,'','".AddSlashes(pg_result($resaco,0,'sd58_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2145,12313,'','".AddSlashes(pg_result($resaco,0,'sd58_c_digitada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2145,12302,'','".AddSlashes(pg_fetch_result($resaco,0,'sd58_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2145,12303,'','".AddSlashes(pg_fetch_result($resaco,0,'sd58_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2145,12304,'','".AddSlashes(pg_fetch_result($resaco,0,'sd58_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2145,12305,'','".AddSlashes(pg_fetch_result($resaco,0,'sd58_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2145,12313,'','".AddSlashes(pg_fetch_result($resaco,0,'sd58_c_digitada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -202,17 +202,17 @@ class cl_sau_lote {
       $this->atualizacampos();
      $sql = " update sau_lote set ";
      $virgula = "";
-     if(trim($this->sd58_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd58_i_codigo"])){ 
-        if(trim($this->sd58_i_codigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd58_i_codigo"])){ 
+     if(trim((string) $this->sd58_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd58_i_codigo"])){ 
+        if(trim((string) $this->sd58_i_codigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd58_i_codigo"])){ 
            $this->sd58_i_codigo = "0" ; 
         } 
        $sql  .= $virgula." sd58_i_codigo = $this->sd58_i_codigo ";
        $virgula = ",";
      }
-     if(trim($this->sd58_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd58_i_login"])){ 
+     if(trim((string) $this->sd58_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd58_i_login"])){ 
        $sql  .= $virgula." sd58_i_login = $this->sd58_i_login ";
        $virgula = ",";
-       if(trim($this->sd58_i_login) == null ){ 
+       if(trim((string) $this->sd58_i_login) == null ){ 
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "sd58_i_login";
          $this->erro_banco = "";
@@ -222,7 +222,7 @@ class cl_sau_lote {
          return false;
        }
      }
-     if(trim($this->sd58_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd58_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd58_d_data_dia"] !="") ){ 
+     if(trim((string) $this->sd58_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd58_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd58_d_data_dia"] !="") ){ 
        $sql  .= $virgula." sd58_d_data = '$this->sd58_d_data' ";
        $virgula = ",";
      }     else{ 
@@ -231,11 +231,11 @@ class cl_sau_lote {
          $virgula = ",";
        }
      }
-     if(trim($this->sd58_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd58_c_hora"])){ 
+     if(trim((string) $this->sd58_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd58_c_hora"])){ 
        $sql  .= $virgula." sd58_c_hora = '$this->sd58_c_hora' ";
        $virgula = ",";
      }
-     if(trim($this->sd58_c_digitada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd58_c_digitada"])){ 
+     if(trim((string) $this->sd58_c_digitada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd58_c_digitada"])){ 
        $sql  .= $virgula." sd58_c_digitada = '$this->sd58_c_digitada' ";
        $virgula = ",";
      }
@@ -247,19 +247,19 @@ class cl_sau_lote {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12302,'$this->sd58_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd58_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,2145,12302,'".AddSlashes(pg_result($resaco,$conresaco,'sd58_i_codigo'))."','$this->sd58_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2145,12302,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd58_i_codigo'))."','$this->sd58_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd58_i_login"]))
-           $resac = db_query("insert into db_acount values($acount,2145,12303,'".AddSlashes(pg_result($resaco,$conresaco,'sd58_i_login'))."','$this->sd58_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2145,12303,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd58_i_login'))."','$this->sd58_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd58_d_data"]))
-           $resac = db_query("insert into db_acount values($acount,2145,12304,'".AddSlashes(pg_result($resaco,$conresaco,'sd58_d_data'))."','$this->sd58_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2145,12304,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd58_d_data'))."','$this->sd58_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd58_c_hora"]))
-           $resac = db_query("insert into db_acount values($acount,2145,12305,'".AddSlashes(pg_result($resaco,$conresaco,'sd58_c_hora'))."','$this->sd58_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2145,12305,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd58_c_hora'))."','$this->sd58_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd58_c_digitada"]))
-           $resac = db_query("insert into db_acount values($acount,2145,12313,'".AddSlashes(pg_result($resaco,$conresaco,'sd58_c_digitada'))."','$this->sd58_c_digitada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2145,12313,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd58_c_digitada'))."','$this->sd58_c_digitada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -304,14 +304,14 @@ class cl_sau_lote {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12302,'$sd58_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2145,12302,'','".AddSlashes(pg_result($resaco,$iresaco,'sd58_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2145,12303,'','".AddSlashes(pg_result($resaco,$iresaco,'sd58_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2145,12304,'','".AddSlashes(pg_result($resaco,$iresaco,'sd58_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2145,12305,'','".AddSlashes(pg_result($resaco,$iresaco,'sd58_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2145,12313,'','".AddSlashes(pg_result($resaco,$iresaco,'sd58_c_digitada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2145,12302,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd58_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2145,12303,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd58_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2145,12304,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd58_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2145,12305,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd58_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2145,12313,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd58_c_digitada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sau_lote
@@ -371,7 +371,7 @@ class cl_sau_lote {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sau_lote";
@@ -386,7 +386,7 @@ class cl_sau_lote {
    function sql_query ( $sd58_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,7 +408,7 @@ class cl_sau_lote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_sau_lote {
    function sql_query_file ( $sd58_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_sau_lote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

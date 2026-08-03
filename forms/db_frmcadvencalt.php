@@ -143,10 +143,10 @@ db_input('k01_descr',26,$Ik01_descr,true,'text',3,'')
     </td>
     <td>
       <?php 
-        $xw = array(
+        $xw = [
                      't'=>"Sim",
                      'f'=>"Nao"
-                   );
+                   ];
         db_select('q82_calculaparcvenc',$xw,true,$db_opcao,"");
       ?>
     </td>
@@ -170,7 +170,7 @@ db_input('k01_descr',26,$Ik01_descr,true,'text',3,'')
 <tr>
   <td valign="top" colspan="2">  
    <?php 
-    $chavepri= array("q82_codigo"=>$q82_codigo,"q82_parc"=>@$q82_parc);
+    $chavepri= ["q82_codigo"=>$q82_codigo,"q82_parc"=>@$q82_parc];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->sql     = $clcadvenc->sql_query_file($q82_codigo,"","q82_codigo,q82_parc,q82_venc,q82_desc,q82_perc,q82_hist, case when q82_calculaparcvenc is true then 'Sim' else 'Nao' end as q82_calculaparcvenc","q82_parc");
     $cliframe_alterar_excluir->campos  ="q82_codigo,q82_parc,q82_venc,q82_desc,q82_perc,q82_hist,q82_calculaparcvenc ";
@@ -218,7 +218,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_cadvenc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }  

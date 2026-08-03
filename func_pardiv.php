@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pardiv_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpardiv = new cl_pardiv;
 $clpardiv->rotulo->label("v04_instit");
 $clpardiv->rotulo->label("ultcoddiv");
@@ -98,9 +98,9 @@ $clpardiv->rotulo->label("ultcoddiv");
         }else{
            $sql = $clpardiv->sql_query("",$campos,"v04_instit","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ultcoddiv)){
-          $repassa = array("chave_v04_instit"=>$chave_v04_instit,"chave_ultcoddiv"=>$chave_ultcoddiv);
+          $repassa = ["chave_v04_instit"=>$chave_v04_instit,"chave_ultcoddiv"=>$chave_ultcoddiv];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

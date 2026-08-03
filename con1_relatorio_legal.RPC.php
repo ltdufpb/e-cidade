@@ -53,7 +53,7 @@ try {
     switch ($parametros->acao) {
         case 'salvarConfiguracao':
             $padrao = !isset($parametros->customizada);
-            $lancamentos = array();
+            $lancamentos = [];
 
             $informacoesComplementares = JSON::create()->parse($parametros->informacoesComplementares);
 
@@ -68,7 +68,7 @@ try {
                 $codigoLancamento = $informacaoComplementar->getInformacaoComplementarLancamento()->getSequencial();
 
                 if (empty($lancamentos[$codigoLancamento])) {
-                    $lancamentos[$codigoLancamento] = array();
+                    $lancamentos[$codigoLancamento] = [];
                 }
 
                 if (empty($lancamentos[$codigoLancamento]['lancamento'])) {
@@ -85,7 +85,7 @@ try {
             break;
         case 'buscarConfiguracao':
             $padrao = !isset($parametros->customizada);
-            $lancamentos = array();
+            $lancamentos = [];
 
             $linhaInformacoesComplementares = $linhaServico->buscarLinhaInformacaoComplementar($padrao);
 
@@ -142,7 +142,7 @@ try {
             $linhaColunaServico = new LinhaColunaServico($parametros);
             $linhaColunas = $linhaColunaServico->buscarPorRelatorioLinha();
 
-            $resposta->linhaColunas = array();
+            $resposta->linhaColunas = [];
             foreach ($linhaColunas as $linhaColuna) {
                 $codigoColuna = $linhaColuna->getColuna()->getSequencial();
                 $periodo = PeriodoRegistry::get($linhaColuna->getPeriodo());
@@ -153,7 +153,7 @@ try {
                     $stdLinhaColuna->descricao = $linhaColuna->getColuna()->getDescricao();
                     $stdLinhaColuna->formula = $linhaColuna->getFormula();
                     $stdLinhaColuna->campo = $linhaColuna->getColuna()->getNome();
-                    $stdLinhaColuna->periodos = array();
+                    $stdLinhaColuna->periodos = [];
                     $stdLinhaColuna->periodos[$periodo->getSequencial()] = $periodo->getSigla();
                     $resposta->linhaColunas[$codigoColuna] = $stdLinhaColuna;
                     continue;

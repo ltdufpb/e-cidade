@@ -59,10 +59,10 @@ if(isset($gerar)) {
   $sqlerro      = false;
   $dbcontator   = 0;
   $dbrejeitados = 0;
-  $r54_codrel   = trim($r54_codrel);
+  $r54_codrel   = trim((string) $r54_codrel);
 
   $sWhereMovRel  = "     r54_instit = ".db_getsession('DB_instit');
-  $sWhereMovRel .= " and r54_anomes = '".$r54_anousu . str_pad($r54_mesusu, 2, '0', STR_PAD_LEFT) . "'";
+  $sWhereMovRel .= " and r54_anomes = '".$r54_anousu . str_pad((string) $r54_mesusu, 2, '0', STR_PAD_LEFT) . "'";
   $sWhereMovRel .= " and trim(r54_codrel) = '{$r54_codrel}' limit 1 ";
 
   $sSqlMovRel   = $clmovrel->sql_query_file(null, "r54_codeve", "", $sWhereMovRel);
@@ -80,7 +80,7 @@ if(isset($gerar)) {
 
     db_fieldsmemory($result_dados, 0);
 
-    if(trim($r55_rubr01) != "") {
+    if(trim((string) $r55_rubr01) != "") {
 
       include(modification("dbforms/db_layouttxt.php"));
 

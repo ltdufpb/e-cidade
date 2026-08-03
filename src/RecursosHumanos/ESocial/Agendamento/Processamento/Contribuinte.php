@@ -18,12 +18,9 @@ use stdClass;
 
 class Contribuinte extends ProcessamentoAbstract implements ProcessamentoInterface
 {
-    private $cgm;
-
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
         $config = db_getsession('DB_instit');
-        $this->cgm = $cgm;
         $this->config = ConfiguracaoService::getInstance($config);
     }
 

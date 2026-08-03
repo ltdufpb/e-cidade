@@ -57,8 +57,8 @@ $clempagemod  = new cl_empagemod;
 
 
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 
 $db_botao = false;
 
@@ -105,11 +105,11 @@ if(isset($atualizar) || isset($adicionar)){
   }
   //-----------------------------------
  //inclui na tabela empageconf
-    $arr =  split("XX",$movs);
+    $arr =  preg_split("#XX#m",$movs);
     $tot_valor ='';
     for($i=0; $i<count($arr); $i++ ){
        $mov = $arr[$i];  
-       
+
        if($sqlerro==false){
    $clempageconf->e86_codmov = $mov;
 //   $clempageconf->e86_data   = date("Y-m-d",db_getsession("DB_datausu"));
@@ -123,7 +123,7 @@ if(isset($atualizar) || isset($adicionar)){
          $sqlerro = true;
    }     
        }  
-   
+
    //-------------
    //manutenção empageconfgera
    //soh quando for banco do brasil
@@ -131,7 +131,7 @@ if(isset($atualizar) || isset($adicionar)){
      $clempageconfgera->e90_codmov   = $mov;
      $clempageconfgera->e90_codgera = $gera;
          $clempageconfgera->e90_correto = "true";
-                 
+
      $clempageconfgera->incluir($mov,$gera);
      $erro_msg = $clempageconfgera->erro_msg;
      if($clempageconfgera->erro_status==0){
@@ -219,7 +219,7 @@ where e90_codgera = $gera
 order by c63_conta,e90_codmov   
      ";
 $result  =  db_query($sql);
-$numrows =  pg_numrows($result);
+$numrows =  pg_num_rows($result);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
     //////LAYOUTS////////////////////////////////////////////////////////////////////////////////////////////////////////
     //// LAYOUT BANCO DO BRASIL
@@ -262,7 +262,7 @@ $numrows =  pg_numrows($result);
         $cllayouts_bb->cabec10 = substr($conta_pre,0,9);      // conta
         $cllayouts_bb->cabec11 = strtoupper(substr($conta_pre,9,1));    // digito da conta
         $cllayouts_bb->cabec12 = '     ' ;        // brancos
-        $cllayouts_bb->cabec13 = substr(strtoupper($nomeinst),0,30) ;   // nome da empresa
+        $cllayouts_bb->cabec13 = substr(strtoupper((string) $nomeinst),0,30) ;   // nome da empresa
         $cllayouts_bb->cabec14 = '001';           // codigo do banco
         $cllayouts_bb->cabec15 = $convenio ;        // numero do converio
         $cllayouts_bb->cabec16 = '   ' ;          // brancos
@@ -284,8 +284,8 @@ $numrows =  pg_numrows($result);
          //gera detalhe    
       if($tam == 14){
         $conf = 4;
-        $cgccpf = substr($z01_cgccpf,0,12);
-        $dig_cgccpf = substr($z01_cgccpf,12,2);
+        $cgccpf = substr((string) $z01_cgccpf,0,12);
+        $dig_cgccpf = substr((string) $z01_cgccpf,12,2);
       }elseif($tam == 11){
         if($z01_cgccpf == '00000000000'){
           $conf = 1;
@@ -293,8 +293,8 @@ $numrows =  pg_numrows($result);
           $dig_cgccpf = '00';
         }else{
           $conf = 2;
-          $cgccpf = str_pad(substr($z01_cgccpf,0,9),12,"0",STR_PAD_LEFT);
-          $dig_cgccpf = substr($z01_cgccpf,9,2);
+          $cgccpf = str_pad(substr((string) $z01_cgccpf,0,9),12,"0",STR_PAD_LEFT);
+          $dig_cgccpf = substr((string) $z01_cgccpf,9,2);
         }
       }else{
         $conf = 1;
@@ -304,7 +304,7 @@ $numrows =  pg_numrows($result);
 
       $agencia_fav = db_formatar(str_replace('-','',$pc63_agencia),'s','0',5,'e',0);
       $conta_fav   = db_formatar(str_replace('-','',$pc63_conta),'s','0',13,'e',0);
-      
+
       $cllayouts_bb->corp01 = '1' ;           // fixo 
       $cllayouts_bb->corp02 = ' ' ;           // brancos 
       $cllayouts_bb->corp03 = $conf ;         // indicador de conferencia
@@ -325,7 +325,7 @@ $numrows =  pg_numrows($result);
       $cllayouts_bb->corp18 = ($pc63_banco = 001?substr($conta_fav,12,1):db_CalculaDV(substr($conta_fav,0,4))) ;   // digito da conta
       $cllayouts_bb->corp19 = '  ' ;          // brancos 
       $cllayouts_bb->corp20 = db_formatar($z01_nome,'s',' ',40,'d',0) ; // nome do favorecido 
-      $cllayouts_bb->corp21 =  $deposito_dia.$deposito_mes.substr($deposito_ano,2,2) ;          // data do depósito(DDMMAA) 
+      $cllayouts_bb->corp21 =  $deposito_dia.$deposito_mes.substr((string) $deposito_ano,2,2) ;          // data do depósito(DDMMAA) 
       $cllayouts_bb->corp22 = db_formatar(str_replace('.','',$valor),'s','0',13,'e',0) ;  // valor 
       $cllayouts_bb->corp23 = ($pc63_banco = 001?'002':'017') ;   // codigo do serviço 
       $cllayouts_bb->corp24 = str_repeat(' ',40) ;        // livre 

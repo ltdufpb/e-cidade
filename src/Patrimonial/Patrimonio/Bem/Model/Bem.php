@@ -280,7 +280,7 @@ class Bem
     {
         if (empty($this->bemPlacas)) {
             $repository = new BemPlacaRepository(new \cl_bensplaca());
-            $bemPlacas = $repository->buscaBemPlacasPorIdBem($this->id, array('bensplaca.*'));
+            $bemPlacas = $repository->buscaBemPlacasPorIdBem($this->id, ['bensplaca.*']);
             $this->setBemPlacas($bemPlacas);
         }
 
@@ -349,7 +349,7 @@ class Bem
     public function toArray()
     {
         $placasAux = $this->getBemPlacas();
-        $placas = array();
+        $placas = [];
         
         foreach ($placasAux as $placa) {
             $placas[] = $placa->toArray();

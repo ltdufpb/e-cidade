@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $escola = db_getsession("DB_coddepto");
 function db_criatermometro_edu($dbnametermo='termometro',$dbtexto='Concluído',$dbcor='blue',$dbborda=1,$dbacao='Aguarde Processando...'){
  //#00#//db_criatermometro
@@ -120,7 +120,7 @@ $ano_atual = date("Y",db_getsession("DB_datausu"));
    <fieldset style="width:95%"><legend><b>Importação de informações do CENSO ESCOLAR -> ESCOLA / TURMA / DOCENTE / ALUNO</b></legend>
     <?php 
     $result = db_query("SELECT ed18_c_codigoinep FROM escola WHERE ed18_i_codigo = $escola");
-    $codigoinep_banco = pg_result($result,0,0);
+    $codigoinep_banco = pg_fetch_result($result,0,0);
     ?>
     <table border="0" align="left">
      <tr>
@@ -242,7 +242,7 @@ $result_nomes = db_query($sql_nomes);
 $linhas_nomes = pg_num_rows($result_nomes);
 for($t=0;$t<$linhas_nomes;$t++){
  db_fieldsmemory($result_nomes,$t);
- $nome_partes = explode(" ",$nome1);
+ $nome_partes = explode(" ",(string) $nome1);
  $novo_nome = "";
  $espaco = "";
  for($e=0;$e<count($nome_partes);$e++){
@@ -276,7 +276,7 @@ if(isset($processar)){
   $contador_geral = 0;
   while(!feof($ponteiro3)){
    $linhaponteiro = fgets($ponteiro3,500);
-   if($contador_geral==0 && substr($linhaponteiro,0,2)!="00"){
+   if($contador_geral==0 && !str_starts_with($linhaponteiro, "00")){
     $valida_arquivo1 = true;
     break;
    }
@@ -288,16 +288,16 @@ if(isset($processar)){
     $valida_arquivo3 = true;
     break;
    }
-      if(substr($linhaponteiro,0,2)=="00" || substr($linhaponteiro,0,2)=="10"){
+      if(str_starts_with($linhaponteiro, "00") || str_starts_with($linhaponteiro, "10")){
     $contador_escola++;
    }
-   if(substr($linhaponteiro,0,2)=="20"){
+   if(str_starts_with($linhaponteiro, "20")){
     $contador_turma++;
    }
-   if(substr($linhaponteiro,0,2)=="30" || substr($linhaponteiro,0,2)=="40" || substr($linhaponteiro,0,2)=="50"){
+   if(str_starts_with($linhaponteiro, "30") || str_starts_with($linhaponteiro, "40") || str_starts_with($linhaponteiro, "50")){
     $contador_docente++;
    }
-   if(substr($linhaponteiro,0,2)=="60" || substr($linhaponteiro,0,2)=="70" || substr($linhaponteiro,0,2)=="80"){
+   if(str_starts_with($linhaponteiro, "60") || str_starts_with($linhaponteiro, "70") || str_starts_with($linhaponteiro, "80")){
     $contador_aluno++;
    }
    if(substr($linhaponteiro,0,2)!=""){
@@ -335,7 +335,7 @@ if(isset($processar)){
    $cont_aluno_while = 0;
    $primeiro_turma = false;
    $primeiro_docente = false;
-   $array_docente = array();
+   $array_docente = [];
    while(!feof($ponteiro4)){
     $linha = str_replace(chr(39)," ",fgets($ponteiro4,500));
     if(trim($linha)==""){
@@ -359,103 +359,103 @@ if(isset($processar)){
        die("ERRO ESCOLA: ".$sql44."<br><br>");
       }
       $linhas44 = pg_num_rows($result44);
-      $codigoescola = pg_result($result44,0,'ed18_i_codigo');
+      $codigoescola = pg_fetch_result($result44,0,'ed18_i_codigo');
 
       $sqlupdateescola = " UPDATE escola SET ed18_i_codigo = $codigoescola ";
 
       $funcionamento_escola = trim(substr($linha,20,1));
-      if($funcionamento_escola!="" && $funcionamento_escola!=trim(pg_result($result44,0,'ed18_i_funcionamento'))){
+      if($funcionamento_escola!="" && $funcionamento_escola!=trim(pg_fetch_result($result44,0,'ed18_i_funcionamento'))){
        $sqlupdateescola  .= " ,ed18_i_funcionamento = $funcionamento_escola ";
       }
       $cep_escola = trim(substr($linha,137,8));
-      if($cep_escola!="" && $cep_escola!=trim(pg_result($result44,0,'ed18_c_cep'))){
+      if($cep_escola!="" && $cep_escola!=trim(pg_fetch_result($result44,0,'ed18_c_cep'))){
        $sqlupdateescola  .= " ,ed18_c_cep = '$cep_escola' ";
       }
       $numero_escola = (int) substr($linha,245,10);
-      if($numero_escola!="" && $numero_escola!=trim(pg_result($result44,0,'ed18_i_numero'))){
+      if($numero_escola!=0 && $numero_escola!=trim(pg_fetch_result($result44,0,'ed18_i_numero'))){
        $sqlupdateescola  .= " ,ed18_i_numero = $numero_escola ";
       }
       $compl_escola = trim(substr($linha,255,20));
-      if($compl_escola!="" && $compl_escola!=trim(pg_result($result44,0,'ed18_c_compl'))){
+      if($compl_escola!="" && $compl_escola!=trim(pg_fetch_result($result44,0,'ed18_c_compl'))){
        $sqlupdateescola  .= " ,ed18_c_compl  = '$compl_escola' ";
       }
       $email_escola = trim(substr($linha,370,50));
-      if($email_escola!="" && $email_escola!=trim(pg_result($result44,0,'ed18_c_email'))){
+      if($email_escola!="" && $email_escola!=trim(pg_fetch_result($result44,0,'ed18_c_email'))){
        $sqlupdateescola  .= " ,ed18_c_email = '$email_escola' ";
       }
       $censouf_escola = trim(substr($linha,325,2));
-      if($censouf_escola!="" && $censouf_escola!=trim(pg_result($result44,0,'ed18_i_censouf'))){
+      if($censouf_escola!="" && $censouf_escola!=trim(pg_fetch_result($result44,0,'ed18_i_censouf'))){
        $sqlupdateescola  .= " ,ed18_i_censouf  = $censouf_escola ";
       }
       $censomunic_escola = trim(substr($linha,327,7));
-      if($censomunic_escola!="" && $censomunic_escola!=trim(pg_result($result44,0,'ed18_i_censomunic'))){
+      if($censomunic_escola!="" && $censomunic_escola!=trim(pg_fetch_result($result44,0,'ed18_i_censomunic'))){
        $sqlupdateescola  .= " ,ed18_i_censomunic = $censomunic_escola ";
       }
       $censodistrito_escola  = trim(substr($linha,334,2));
-      if($censodistrito_escola!="" && $censodistrito_escola!=trim(pg_result($result44,0,'ed18_i_censodistrito'))){
+      if($censodistrito_escola!="" && $censodistrito_escola!=trim(pg_fetch_result($result44,0,'ed18_i_censodistrito'))){
        $sql_distrito = "SELECT ed262_i_codigo FROM censodistrito
                         WHERE ed262_i_censomunic = $censomunic_escola
                         AND ed262_i_coddistrito = $censodistrito_escola";
        $res_distrito = db_query($sql_distrito);
        if(pg_num_rows($res_distrito)>0){
-        $censodistrito_escola = pg_result($res_distrito,0,0);
+        $censodistrito_escola = pg_fetch_result($res_distrito,0,0);
        }else{
         $censodistrito_escola = "null";
        }
        $sqlupdateescola  .= " ,ed18_i_censodistrito = $censodistrito_escola ";
       }
       $censoorgreg_escola = trim(substr($linha,420,5));
-      if($censoorgreg_escola!="" && $censoorgreg_escola!=trim(pg_result($result44,0,'ed18_i_censoorgreg'))){
+      if($censoorgreg_escola!="" && $censoorgreg_escola!=trim(pg_fetch_result($result44,0,'ed18_i_censoorgreg'))){
        $sql_orgreg = "SELECT ed263_i_codigo
                       FROM censoorgreg
                       WHERE ed263_i_censouf = $censouf_escola
                       AND ed263_i_codigocenso = $censoorgreg_escola";
        $res_orgreg = db_query($sql_orgreg);
        if(pg_num_rows($res_orgreg)>0){
-        $censoorgreg_escola = pg_result($res_orgreg,0,0);
+        $censoorgreg_escola = pg_fetch_result($res_orgreg,0,0);
        }else{
         $censoorgreg_escola = "null";
        }
        $sqlupdateescola  .= " ,ed18_i_censoorgreg = $censoorgreg_escola ";
       }
       $local_escola = trim(substr($linha,426,1));
-      if($local_escola!="" && $local_escola!=trim(pg_result($result44,0,'ed18_c_local'))){
+      if($local_escola!="" && $local_escola!=trim(pg_fetch_result($result44,0,'ed18_c_local'))){
        $sqlupdateescola  .= " ,ed18_c_local = '$local_escola' ";
       }
       $categprivada_escola = trim(substr($linha,441,1));
-      if($categprivada_escola!="" && $categprivada_escola!=trim(pg_result($result44,0,'ed18_i_categprivada'))){
+      if($categprivada_escola!="" && $categprivada_escola!=trim(pg_fetch_result($result44,0,'ed18_i_categprivada'))){
        $sqlupdateescola  .= " ,ed18_i_categprivada = '$categprivada_escola' ";
       }
       $conveniada_escola = trim(substr($linha,442,1));
-      if($conveniada_escola!="" && $conveniada_escola!=trim(pg_result($result44,0,'ed18_i_conveniada'))){
+      if($conveniada_escola!="" && $conveniada_escola!=trim(pg_fetch_result($result44,0,'ed18_i_conveniada'))){
        $sqlupdateescola  .= " ,ed18_i_conveniada = $conveniada_escola ";
       }
       $cnas_escola = trim(substr($linha,443,15));
-      if($cnas_escola!="" && $cnas_escola!=trim(pg_result($result44,0,'ed18_i_cnas'))){
+      if($cnas_escola!="" && $cnas_escola!=trim(pg_fetch_result($result44,0,'ed18_i_cnas'))){
        $sqlupdateescola  .= " ,ed18_i_cnas = $cnas_escola ";
       }
       $cebas_escola = trim(substr($linha,458,15));
-      if($cebas_escola!="" && $cebas_escola!=trim(pg_result($result44,0,'ed18_i_cebas'))){
+      if($cebas_escola!="" && $cebas_escola!=trim(pg_fetch_result($result44,0,'ed18_i_cebas'))){
        $sqlupdateescola  .= " ,ed18_i_cebas = $cebas_escola ";
       }
       $mantenedora_escola = trim(substr($linha,425,1));
-      if($mantenedora_escola!="" && $mantenedora_escola!=trim(pg_result($result44,0,'ed18_c_mantenedora'))){
+      if($mantenedora_escola!="" && $mantenedora_escola!=trim(pg_fetch_result($result44,0,'ed18_c_mantenedora'))){
        $sqlupdateescola  .= " ,ed18_c_mantenedora = '$mantenedora_escola'";
       }
       $mantprivada_escola = trim(substr($linha,473,4));
-      if($mantprivada_escola!="" && $mantprivada_escola!=trim(pg_result($result44,0,'ed18_c_mantprivada'))){
+      if($mantprivada_escola!="" && $mantprivada_escola!=trim(pg_fetch_result($result44,0,'ed18_c_mantprivada'))){
        $sqlupdateescola  .= " ,ed18_c_mantprivada = '$mantprivada_escola' ";
       }
       $cnpjprivada_escola = trim(substr($linha,477,14));
-      if($cnpjprivada_escola!="" && $cnpjprivada_escola!=trim(pg_result($result44,0,'ed18_i_cnpjprivada'))){
+      if($cnpjprivada_escola!="" && $cnpjprivada_escola!=trim(pg_fetch_result($result44,0,'ed18_i_cnpjprivada'))){
        $sqlupdateescola  .= " ,ed18_i_cnpjprivada = $cnpjprivada_escola ";
       }
       $cnpj_escola = trim(substr($linha,427,14));
-      if($cnpj_escola!="" && $cnpj_escola!=trim(pg_result($result44,0,'ed18_i_cnpj'))){
+      if($cnpj_escola!="" && $cnpj_escola!=trim(pg_fetch_result($result44,0,'ed18_i_cnpj'))){
        $sqlupdateescola  .= " ,ed18_i_cnpj = $cnpj_escola ";
       }
       $credenciamento_escola = trim(substr($linha,491,1));
-      if($credenciamento_escola!="" && $credenciamento_escola!=trim(pg_result($result44,0,'ed18_i_credenciamento'))){
+      if($credenciamento_escola!="" && $credenciamento_escola!=trim(pg_fetch_result($result44,0,'ed18_i_credenciamento'))){
        $sqlupdateescola  .= " ,ed18_i_credenciamento = $credenciamento_escola ";
       }
       $bairro_escola = trim(substr($linha,275,50));
@@ -464,7 +464,7 @@ if(isset($processar)){
        $res_bairro = db_query($sql_bairro);
        $linhas_bairro = pg_num_rows($res_bairro);
        if($linhas_bairro>0){
-        $codbairro = pg_result($res_bairro,0,0);
+        $codbairro = pg_fetch_result($res_bairro,0,0);
         $sqlupdateescola  .= " ,ed18_i_bairro = $codbairro ";
        }
       }
@@ -474,11 +474,11 @@ if(isset($processar)){
        $res_endereco = db_query($sql_endereco);
        $linhas_endereco = pg_num_rows($res_endereco);
        if($linhas_endereco>0){
-        $codendereco = pg_result($res_endereco,0,0);
+        $codendereco = pg_fetch_result($res_endereco,0,0);
         $sqlupdateescola  .= " ,ed18_i_rua = $codendereco ";
        }
       }
-      if($credenciamento_escola!="" && $credenciamento_escola!=trim(pg_result($result44,0,'ed18_i_credenciamento'))){
+      if($credenciamento_escola!="" && $credenciamento_escola!=trim(pg_fetch_result($result44,0,'ed18_i_credenciamento'))){
        $sqlupdateescola  .= " ,ed18_i_credenciamento = $credenciamento_escola ";
       }
       $sqlupdateescola .= " WHERE ed18_i_codigo = $codigoescola";
@@ -492,23 +492,23 @@ if(isset($processar)){
       $cont_escola_while++;
       $sqlescola = " UPDATE escola SET ed18_i_codigo = $codigoescola ";
       $locdiferenciada_escola = trim(substr($linha,415,1));
-      if($locdiferenciada_escola!="" && $locdiferenciada_escola!=trim(pg_result($result44,0,'ed18_i_locdiferenciada'))){
+      if($locdiferenciada_escola!="" && $locdiferenciada_escola!=trim(pg_fetch_result($result44,0,'ed18_i_locdiferenciada'))){
        $sqlescola  .= " ,ed18_i_locdiferenciada = $locdiferenciada_escola ";
       }
       $educindigena_escola = trim(substr($linha,419,1));
-      if($educindigena_escola!="" && $educindigena_escola!=trim(pg_result($result44,0,'ed18_i_educindigena'))){
+      if($educindigena_escola!="" && $educindigena_escola!=trim(pg_fetch_result($result44,0,'ed18_i_educindigena'))){
        $sqlescola  .= " ,ed18_i_educindigena = $educindigena_escola ";
       }
       $tipolinguain_escola = trim(substr($linha,420,1));
-      if($tipolinguain_escola!="" && $tipolinguain_escola!=trim(pg_result($result44,0,'ed18_i_tipolinguain'))){
+      if($tipolinguain_escola!="" && $tipolinguain_escola!=trim(pg_fetch_result($result44,0,'ed18_i_tipolinguain'))){
        $sqlescola  .= " ,ed18_i_tipolinguain = $tipolinguain_escola ";
       }
       $tipolinguapt_escola = trim(substr($linha,421,2));
-      if($tipolinguapt_escola!="" && $tipolinguapt_escola!=trim(pg_result($result44,0,'ed18_i_tipolinguapt'))){
+      if($tipolinguapt_escola!="" && $tipolinguapt_escola!=trim(pg_fetch_result($result44,0,'ed18_i_tipolinguapt'))){
        $sqlescola  .= " ,ed18_i_tipolinguapt = $tipolinguapt_escola ";
       }
       $linguaindigena_escola = trim(substr($linha,422,5));
-      if($linguaindigena_escola!="" && $linguaindigena_escola!=trim(pg_result($result44,0,'ed18_i_linguaindigena'))){
+      if($linguaindigena_escola!="" && $linguaindigena_escola!=trim(pg_fetch_result($result44,0,'ed18_i_linguaindigena'))){
        $sqlescola  .= " ,ed18_i_linguaindigena = $linguaindigena_escola ";
       }
       $sqlescola .= " WHERE ed18_i_codigo = $codigoescola ";
@@ -519,100 +519,100 @@ if(isset($processar)){
       $sql45 = "SELECT * FROM escolaestrutura WHERE ed255_i_escola = $codigoescola";
       $result45 = db_query($sql45);
       if(pg_num_rows($result45)>0){
-       $codigoescolaestrutura = pg_result($result45,0,'ed255_i_codigo');
+       $codigoescolaestrutura = pg_fetch_result($result45,0,'ed255_i_codigo');
 
        $sqlescola = " UPDATE escolaestrutura SET ed255_i_codigo = $codigoescolaestrutura ";
 
        $compartilhado_escola = trim(substr($linha,269,1));
-       if($compartilhado_escola!="" && $compartilhado_escola!=trim(pg_result($result45,0,'ed255_i_compartilhado'))){
+       if($compartilhado_escola!="" && $compartilhado_escola!=trim(pg_fetch_result($result45,0,'ed255_i_compartilhado'))){
         $sqlescola  .= " ,ed255_i_compartilhado = $compartilhado_escola ";
        }
        $escolacompartilhada_escola = trim(substr($linha,270,8));
-       if($escolacompartilhada_escola!="" && $escolacompartilhada_escola!=trim(pg_result($result45,0,'ed255_i_escolacompartilhada'))){
+       if($escolacompartilhada_escola!="" && $escolacompartilhada_escola!=trim(pg_fetch_result($result45,0,'ed255_i_escolacompartilhada'))){
         $sqlescola  .= " ,ed255_i_escolacompartilhada = $escolacompartilhada_escola ";
        }
        $salaexite_escola = trim(substr($linha,354,4));
-       if($salaexite_escola!="" && $salaexite_escola!=trim(pg_result($result45,0,'ed255_i_salaexistente'))){
+       if($salaexite_escola!="" && $salaexite_escola!=trim(pg_fetch_result($result45,0,'ed255_i_salaexistente'))){
         $sqlescola  .= " ,ed255_i_salaexistente = $salaexite_escola ";
        }
        $salautil_escola = trim(substr($linha,358,4));
-       if($salautil_escola!="" && $salautil_escola!=trim(pg_result($result45,0,'ed255_i_salautilizada'))){
+       if($salautil_escola!="" && $salautil_escola!=trim(pg_fetch_result($result45,0,'ed255_i_salautilizada'))){
         $sqlescola  .= " ,ed255_i_salautilizada = $salautil_escola ";
        }
        $abastagua_escola = trim(substr($linha,319,5));
-       if($abastagua_escola!="" && $abastagua_escola!=trim(pg_result($result45,0,'ed255_c_abastagua'))){
+       if($abastagua_escola!="" && $abastagua_escola!=trim(pg_fetch_result($result45,0,'ed255_c_abastagua'))){
         $sqlescola  .= " ,ed255_c_abastagua = '$abastagua_escola' ";
        }
        $abastenergia_escola = trim(substr($linha,324,4));
-       if($abastenergia_escola!="" && $abastenergia_escola!=trim(pg_result($result45,0,'ed255_c_abastenergia'))){
+       if($abastenergia_escola!="" && $abastenergia_escola!=trim(pg_fetch_result($result45,0,'ed255_c_abastenergia'))){
         $sqlescola  .= " ,ed255_c_abastenergia = '$abastenergia_escola' ";
        }
        $aguafiltrada_escola = trim(substr($linha,318,1));
-       if($aguafiltrada_escola!="" && $aguafiltrada_escola!=trim(pg_result($result45,0,'ed255_i_aguafiltrada'))){
+       if($aguafiltrada_escola!="" && $aguafiltrada_escola!=trim(pg_fetch_result($result45,0,'ed255_i_aguafiltrada'))){
         $sqlescola  .= " ,ed255_i_aguafiltrada = $aguafiltrada_escola ";
        }
        $esgotosanitario_escola = trim(substr($linha,328,3));
-       if($esgotosanitario_escola!="" && $esgotosanitario_escola!=trim(pg_result($result45,0,'ed255_c_esgotosanitario'))){
+       if($esgotosanitario_escola!="" && $esgotosanitario_escola!=trim(pg_fetch_result($result45,0,'ed255_c_esgotosanitario'))){
         $sqlescola  .= " ,ed255_c_esgotosanitario = '$esgotosanitario_escola' ";
        }
        $destinolixo_escola = trim(substr($linha,331,6));
-       if($destinolixo_escola!="" && $destinolixo_escola!=trim(pg_result($result45,0,'ed255_c_destinolixo'))){
+       if($destinolixo_escola!="" && $destinolixo_escola!=trim(pg_fetch_result($result45,0,'ed255_c_destinolixo'))){
         $sqlescola  .= " ,ed255_c_destinolixo = '$destinolixo_escola' ";
        }
        $localizacao_escola = trim(substr($linha,261,8));
-       if($localizacao_escola!="" && $localizacao_escola!=trim(pg_result($result45,0,'ed255_c_localizacao'))){
+       if($localizacao_escola!="" && $localizacao_escola!=trim(pg_fetch_result($result45,0,'ed255_c_localizacao'))){
         $sqlescola  .= " ,ed255_c_localizacao = '$localizacao_escola' ";
        }
        $dependencias_escola = trim(substr($linha,337,17));
-       if($dependencias_escola!="" && $dependencias_escola!=trim(pg_result($result45,0,'ed255_c_dependencias'))){
+       if($dependencias_escola!="" && $dependencias_escola!=trim(pg_fetch_result($result45,0,'ed255_c_dependencias'))){
         $sqlescola  .= " ,ed255_c_dependencias = '$dependencias_escola' ";
        }
        $equipamentos_escola = trim(substr($linha,362,7));
-       if($equipamentos_escola!="" && $equipamentos_escola!=trim(pg_result($result45,0,'ed255_c_equipamentos'))){
+       if($equipamentos_escola!="" && $equipamentos_escola!=trim(pg_fetch_result($result45,0,'ed255_c_equipamentos'))){
         $sqlescola  .= " ,ed255_c_equipamentos = '$equipamentos_escola' ";
        }
        $computadores_escola = trim(substr($linha,369,1));
-       if($computadores_escola!="" && $computadores_escola!=trim(pg_result($result45,0,'ed255_i_computadores'))){
+       if($computadores_escola!="" && $computadores_escola!=trim(pg_fetch_result($result45,0,'ed255_i_computadores'))){
         $sqlescola  .= " ,ed255_i_computadores = $computadores_escola ";
        }
        $qtdcomp_escola = trim(substr($linha,370,4));
-       if($qtdcomp_escola!="" && $qtdcomp_escola!=trim(pg_result($result45,0,'ed255_i_qtdcomp'))){
+       if($qtdcomp_escola!="" && $qtdcomp_escola!=trim(pg_fetch_result($result45,0,'ed255_i_qtdcomp'))){
         $sqlescola  .= " ,ed255_i_qtdcomp = $qtdcomp_escola ";
        }
        $qtdcompadm_escola = trim(substr($linha,374,4));
-       if($qtdcompadm_escola!="" && $qtdcompadm_escola!=trim(pg_result($result45,0,'ed255_i_qtdcompadm'))){
+       if($qtdcompadm_escola!="" && $qtdcompadm_escola!=trim(pg_fetch_result($result45,0,'ed255_i_qtdcompadm'))){
         $sqlescola  .= " ,ed255_i_qtdcompadm = $qtdcompadm_escola ";
        }
        $qtdcompalu_escola = trim(substr($linha,378,4));
-       if($qtdcompalu_escola!="" && $qtdcompalu_escola!=trim(pg_result($result45,0,'ed255_i_qtdcompalu'))){
+       if($qtdcompalu_escola!="" && $qtdcompalu_escola!=trim(pg_fetch_result($result45,0,'ed255_i_qtdcompalu'))){
         $sqlescola  .= " ,ed255_i_qtdcompalu = $qtdcompalu_escola ";
        }
        $internet_escola = trim(substr($linha,382,1));
-       if($internet_escola!="" && $internet_escola!=trim(pg_result($result45,0,'ed255_i_internet'))){
+       if($internet_escola!="" && $internet_escola!=trim(pg_fetch_result($result45,0,'ed255_i_internet'))){
         $sqlescola  .= " ,ed255_i_internet = $internet_escola ";
        }
        $bandalarga_escola = trim(substr($linha,383,1));
-       if($bandalarga_escola!="" && $bandalarga_escola!=trim(pg_result($result45,0,'ed255_i_bandalarga'))){
+       if($bandalarga_escola!="" && $bandalarga_escola!=trim(pg_fetch_result($result45,0,'ed255_i_bandalarga'))){
         $sqlescola  .= " ,ed255_i_bandalarga = $bandalarga_escola ";
        }
        $alimentacao_escola = trim(substr($linha,388,1));
-       if($alimentacao_escola!="" && $alimentacao_escola!=trim(pg_result($result45,0,'ed255_i_alimentacao'))){
+       if($alimentacao_escola!="" && $alimentacao_escola!=trim(pg_fetch_result($result45,0,'ed255_i_alimentacao'))){
         $sqlescola  .= " ,ed255_i_alimentacao = $alimentacao_escola ";
        }
        $ativcomplementar_escola = trim(substr($linha,390,1));
-       if($ativcomplementar_escola!="" && $ativcomplementar_escola!=trim(pg_result($result45,0,'ed255_i_ativcomplementar'))){
+       if($ativcomplementar_escola!="" && $ativcomplementar_escola!=trim(pg_fetch_result($result45,0,'ed255_i_ativcomplementar'))){
         $sqlescola  .= " ,ed255_i_ativcomplementar = $ativcomplementar_escola ";
        }
        $aee_escola = trim(substr($linha,389,1));
-       if($aee_escola!="" && $aee_escola!=trim(pg_result($result45,0,'ed255_i_aee'))){
+       if($aee_escola!="" && $aee_escola!=trim(pg_fetch_result($result45,0,'ed255_i_aee'))){
         $sqlescola  .= " ,ed255_i_aee = $aee_escola ";
        }
        $efciclos_escola = trim(substr($linha,414,1));
-       if($efciclos_escola!="" && $efciclos_escola!=trim(pg_result($result45,0,'ed255_i_efciclos'))){
+       if($efciclos_escola!="" && $efciclos_escola!=trim(pg_fetch_result($result45,0,'ed255_i_efciclos'))){
         $sqlescola  .= " ,ed255_i_efciclos = $efciclos_escola ";
        }
        $materdidatico_escola = trim(substr($linha,416,3));
-       if($materdidatico_escola!="" && $materdidatico_escola!=trim(pg_result($result45,0,'ed255_c_materdidatico'))){
+       if($materdidatico_escola!="" && $materdidatico_escola!=trim(pg_fetch_result($result45,0,'ed255_c_materdidatico'))){
         $sqlescola  .= " ,ed255_c_materdidatico = $materdidatico_escola ";
        }
        $sqlescola .= " WHERE ed255_i_codigo = $codigoescolaestrutura ";
@@ -666,7 +666,7 @@ if(isset($processar)){
         fwrite($ponteiro_log,"TURMA: $nome_turmacenso\n");
         $erro_naoencontrado = true;
        }else{
-        $codigoturma = pg_result($resultturma33,0,0);
+        $codigoturma = pg_fetch_result($resultturma33,0,0);
         $sqlupdate_turma = "UPDATE turma SET
                              ed57_i_codigoinep = $codigoinep_turmacenso
                             WHERE ed57_i_codigo = $codigoturma ";
@@ -698,14 +698,14 @@ if(isset($processar)){
         fwrite($ponteiro_log,"TURMA: $nome_turmacenso\n");
         $erro_naoencontrado = true;
        }else{
-        $codigoturma = pg_result($resultturma33,0,'ed268_i_codigo');
+        $codigoturma = pg_fetch_result($resultturma33,0,'ed268_i_codigo');
         $sqlupdate_turma = "UPDATE turmaac SET ed268_i_codigoinep = $codigoinep_turmacenso";
         $ativqtd_turma = trim(substr($linha,414,1));
-        if($ativqtd_turma!="" && $ativqtd_turma!=trim(pg_result($resultturma33,0,'ed268_i_ativqtd'))){
+        if($ativqtd_turma!="" && $ativqtd_turma!=trim(pg_fetch_result($resultturma33,0,'ed268_i_ativqtd'))){
          $sqlupdate_turma .= " ,ed268_i_ativqtd = $ativqtd_turma ";
         }
         $aee_turma = trim(substr($linha,170,11));
-        if($aee_turma!="" && $aee_turma!=trim(pg_result($resultturma33,0,'ed268_c_aee'))){
+        if($aee_turma!="" && $aee_turma!=trim(pg_fetch_result($resultturma33,0,'ed268_c_aee'))){
          $sqlupdate_turma .= " ,ed268_c_aee = '$aee_turma' ";
         }
         $sqlupdate_turma .= " WHERE ed268_i_codigo = $codigoturma ";
@@ -766,36 +766,36 @@ if(isset($processar)){
        $erro_naoencontrado = true;
       }else{
        for($tt=0;$tt<$linhas22;$tt++){
-        $codigodocente = pg_result($result22,$tt,0);
+        $codigodocente = pg_fetch_result($result22,$tt,0);
 
         $sqlupdatedocente = " update rechumano set ed20_i_codigo = $codigodocente ";
 
         $ed20_i_codigoinep = trim(substr($linha,20,12));
-        if($ed20_i_codigoinep!="" && $ed20_i_codigoinep!=trim(pg_result($result22,0,'ed20_i_codigoinep'))){
+        if($ed20_i_codigoinep!="" && $ed20_i_codigoinep!=trim(pg_fetch_result($result22,0,'ed20_i_codigoinep'))){
          $sqlupdatedocente .= " ,ed20_i_codigoinep = $ed20_i_codigoinep ";
         }
         $ed20_c_nis = trim(substr($linha,252,11));
-        if($ed20_c_nis!="" && $ed20_c_nis!=trim(pg_result($result22,0,'ed20_c_nis'))){
+        if($ed20_c_nis!="" && $ed20_c_nis!=trim(pg_fetch_result($result22,0,'ed20_c_nis'))){
          $sqlupdatedocente .= " ,ed20_c_nis = '$ed20_c_nis' ";
         }
         $ed20_i_raca = trim(substr($linha,272,1));
-        if($ed20_i_raca!="" && $ed20_i_raca!=trim(pg_result($result22,0,'ed20_i_raca'))){
+        if($ed20_i_raca!="" && $ed20_i_raca!=trim(pg_fetch_result($result22,0,'ed20_i_raca'))){
          $sqlupdatedocente .= " ,ed20_i_raca = $ed20_i_raca ";
         }
         $ed20_i_nacionalidade = trim(substr($linha,373,1));
-        if($ed20_i_nacionalidade!="" && $ed20_i_nacionalidade!=trim(pg_result($result22,0,'ed20_i_nacionalidade'))){
+        if($ed20_i_nacionalidade!="" && $ed20_i_nacionalidade!=trim(pg_fetch_result($result22,0,'ed20_i_nacionalidade'))){
          $sqlupdatedocente .= " ,ed20_i_nacionalidade = $ed20_i_nacionalidade ";
         }
         $ed20_i_pais = trim(substr($linha,374,3));
-        if($ed20_i_pais!="" && $ed20_i_pais!=trim(pg_result($result22,0,'ed20_i_pais'))){
+        if($ed20_i_pais!="" && $ed20_i_pais!=trim(pg_fetch_result($result22,0,'ed20_i_pais'))){
          $sqlupdatedocente .= " ,ed20_i_pais = $ed20_i_pais ";
         }
         $ed20_i_censoufnat = trim(substr($linha,377,2));
-        if($ed20_i_censoufnat!="" && $ed20_i_censoufnat!=trim(pg_result($result22,0,'ed20_i_censoufnat'))){
+        if($ed20_i_censoufnat!="" && $ed20_i_censoufnat!=trim(pg_fetch_result($result22,0,'ed20_i_censoufnat'))){
          $sqlupdatedocente .= " ,ed20_i_censoufnat = $ed20_i_censoufnat ";
         }
         $ed20_i_censomunicnat = trim(substr($linha,379,7));
-        if($ed20_i_censomunicnat!="" && $ed20_i_censomunicnat!=trim(pg_result($result22,0,'ed20_i_censomunicnat'))){
+        if($ed20_i_censomunicnat!="" && $ed20_i_censomunicnat!=trim(pg_fetch_result($result22,0,'ed20_i_censomunicnat'))){
          $sqlupdatedocente .= " ,ed20_i_censomunicnat = $ed20_i_censomunicnat ";
         }
         $sqlupdatedocente .= " WHERE ed20_i_codigo = $codigodocente ";        
@@ -811,66 +811,66 @@ if(isset($processar)){
       $cont_docente_while++;
       if($codigodocente!=""){
        for($tt=0;$tt<$linhas22;$tt++){
-        $codigodocente = pg_result($result22,$tt,0);
+        $codigodocente = pg_fetch_result($result22,$tt,0);
 
         $sqldocente = " update rechumano set ed20_i_codigo=$codigodocente ";
 
         $ed20_c_identcompl = trim(substr($linha,72,4));
-        if($ed20_c_identcompl !="" && $ed20_c_identcompl!= trim(pg_result($result22,0,'ed20_c_identcompl'))){
+        if($ed20_c_identcompl !="" && $ed20_c_identcompl!= trim(pg_fetch_result($result22,0,'ed20_c_identcompl'))){
          $sqldocente  .= " ,ed20_c_identcompl      = '$ed20_c_identcompl' ";
         }
         $ed20_i_censoorgemiss   = trim(substr($linha,76,2));
-        if($ed20_i_censoorgemiss !="" && $ed20_i_censoorgemiss!= trim(pg_result($result22,0,'ed20_i_censoorgemiss'))){
+        if($ed20_i_censoorgemiss !="" && $ed20_i_censoorgemiss!= trim(pg_fetch_result($result22,0,'ed20_i_censoorgemiss'))){
          $sqldocente  .= " ,ed20_i_censoorgemiss   = $ed20_i_censoorgemiss ";
         }
         $ed20_i_censoufident = trim(substr($linha,78,2));
-        if($ed20_i_censoufident !="" && $ed20_i_censoufident!= trim(pg_result($result22,0,'ed20_i_censoufident'))){
+        if($ed20_i_censoufident !="" && $ed20_i_censoufident!= trim(pg_fetch_result($result22,0,'ed20_i_censoufident'))){
          $sqldocente  .= " ,ed20_i_censoufident    = $ed20_i_censoufident ";
         }
         $ed20_d_dataident = trim(substr($linha,80,8));
-        if($ed20_d_dataident !="" && $ed20_d_dataident!= trim(pg_result($result22,0,'ed20_d_dataident'))){
+        if($ed20_d_dataident !="" && $ed20_d_dataident!= trim(pg_fetch_result($result22,0,'ed20_d_dataident'))){
          $ed20_d_dataident = "'".substr($ed20_d_dataident,4,4)."-".substr($ed20_d_dataident,2,2)."-".substr($ed20_d_dataident,0,2)."'";       	 
          $sqldocente  .= " ,ed20_d_dataident    = $ed20_d_dataident ";
         }
         $ed20_i_certidaotipo = trim(substr($linha,88,1));
-        if($ed20_i_certidaotipo !="" && $ed20_i_certidaotipo!= trim(pg_result($result22,0,'ed20_i_certidaotipo'))){
+        if($ed20_i_certidaotipo !="" && $ed20_i_certidaotipo!= trim(pg_fetch_result($result22,0,'ed20_i_certidaotipo'))){
          $sqldocente  .= " ,ed20_i_certidaotipo    = $ed20_i_certidaotipo ";
         }
         $ed20_c_certidaonum     = trim(substr($linha,89,8));
-        if($ed20_c_certidaonum !="" && $ed20_c_certidaonum!= trim(pg_result($result22,0,'ed20_c_certidaonum'))){
+        if($ed20_c_certidaonum !="" && $ed20_c_certidaonum!= trim(pg_fetch_result($result22,0,'ed20_c_certidaonum'))){
          $sqldocente  .= " ,ed20_c_certidaonum     = '$ed20_c_certidaonum' ";
         }
         $ed20_c_certidaofolha   = trim(substr($linha,97,4));
-        if($ed20_c_certidaofolha !="" && $ed20_c_certidaofolha!= trim(pg_result($result22,0,'ed20_c_certidaofolha'))){
+        if($ed20_c_certidaofolha !="" && $ed20_c_certidaofolha!= trim(pg_fetch_result($result22,0,'ed20_c_certidaofolha'))){
          $sqldocente  .= " ,ed20_c_certidaofolha   = '$ed20_c_certidaofolha' ";
         }
         $ed20_c_certidaolivro   = trim(substr($linha,101,8));
-        if($ed20_c_certidaolivro !="" && $ed20_c_certidaolivro!= trim(pg_result($result22,0,'ed20_c_certidaolivro'))){
+        if($ed20_c_certidaolivro !="" && $ed20_c_certidaolivro!= trim(pg_fetch_result($result22,0,'ed20_c_certidaolivro'))){
          $sqldocente  .= " ,ed20_c_certidaolivro   = '$ed20_c_certidaolivro' ";
         }
         $ed20_c_certidaodata = trim(substr($linha,109,8));
-        if($ed20_c_certidaodata !="" && $ed20_c_certidaodata!= trim(pg_result($result22,0,'ed20_c_certidaodata'))){
+        if($ed20_c_certidaodata !="" && $ed20_c_certidaodata!= trim(pg_fetch_result($result22,0,'ed20_c_certidaodata'))){
        	 $ed20_c_certidaodata = "'".substr($ed20_c_certidaodata,4,4)."-".substr($ed20_c_certidaodata,2,2)."-".substr($ed20_c_certidaodata,0,2)."'";
          $sqldocente  .= " ,ed20_c_certidaodata    = $ed20_c_certidaodata ";
         }        
         $ed20_c_certidaocart = trim(substr($linha,117,100));
-        if($ed20_c_certidaocart !="" && $ed20_c_certidaocart!= trim(pg_result($result22,0,'ed20_c_certidaocart'))){
+        if($ed20_c_certidaocart !="" && $ed20_c_certidaocart!= trim(pg_fetch_result($result22,0,'ed20_c_certidaocart'))){
          $sqldocente  .= " ,ed20_c_certidaocart    = '$ed20_c_certidaocart' ";
         }
         $ed20_i_censoufcert = trim(substr($linha,217,2));
-        if($ed20_i_censoufcert !="" && $ed20_i_censoufcert!= trim(pg_result($result22,0,'ed20_i_censoufcert'))){
+        if($ed20_i_censoufcert !="" && $ed20_i_censoufcert!= trim(pg_fetch_result($result22,0,'ed20_i_censoufcert'))){
          $sqldocente  .= " ,ed20_i_censoufcert     = $ed20_i_censoufcert ";
         }
         $ed20_c_passaporte = trim(substr($linha,230,20));
-        if($ed20_c_passaporte !="" && $ed20_c_passaporte!= trim(pg_result($result22,0,'ed20_c_passaporte'))){
+        if($ed20_c_passaporte !="" && $ed20_c_passaporte!= trim(pg_fetch_result($result22,0,'ed20_c_passaporte'))){
          $sqldocente  .= " ,ed20_c_passaporte      = '$ed20_c_passaporte' ";
         }
         $ed20_i_censoufender = trim(substr($linha,438,2));
-        if($ed20_i_censoufender !="" && $ed20_i_censoufender!= trim(pg_result($result22,0,'ed20_i_censoufender'))){
+        if($ed20_i_censoufender !="" && $ed20_i_censoufender!= trim(pg_fetch_result($result22,0,'ed20_i_censoufender'))){
          $sqldocente  .= " ,ed20_i_censoufender    = $ed20_i_censoufender ";
         }
         $ed20_i_censomunicender = trim(substr($linha,440,7));
-        if($ed20_i_censomunicender !="" && $ed20_i_censomunicender!= trim(pg_result($result22,0,'ed20_i_censomunicender'))){
+        if($ed20_i_censomunicender !="" && $ed20_i_censomunicender!= trim(pg_fetch_result($result22,0,'ed20_i_censomunicender'))){
          $sqldocente  .= " ,ed20_i_censomunicender = $ed20_i_censomunicender ";
         }
         $sqldocente .= " WHERE ed20_i_codigo = $codigodocente ";        
@@ -886,20 +886,20 @@ if(isset($processar)){
       $cont_docente_while++;
       if($codigodocente!=""){
        for($tt=0;$tt<$linhas22;$tt++){
-        $codigodocente = pg_result($result22,$tt,0);
+        $codigodocente = pg_fetch_result($result22,$tt,0);
 
         $update = " update rechumano set ed20_i_codigo=$codigodocente ";
 
         $ed20_i_escolaridade = trim(substr($linha,52,1));
-        if($ed20_i_escolaridade !="" && $ed20_i_escolaridade!= trim(pg_result($result22,0,'ed20_i_escolaridade'))){
+        if($ed20_i_escolaridade !="" && $ed20_i_escolaridade!= trim(pg_fetch_result($result22,0,'ed20_i_escolaridade'))){
          $update  .= " ,ed20_i_escolaridade = $ed20_i_escolaridade ";
         }
         $ed20_c_posgraduacao = trim(substr($linha,110,4));
-        if($ed20_c_posgraduacao !="" && $ed20_c_posgraduacao!= trim(pg_result($result22,0,'ed20_c_posgraduacao'))){
+        if($ed20_c_posgraduacao !="" && $ed20_c_posgraduacao!= trim(pg_fetch_result($result22,0,'ed20_c_posgraduacao'))){
          $update  .= " ,ed20_c_posgraduacao = '$ed20_c_posgraduacao' ";
         }
         $ed20_c_outroscursos = trim(substr($linha,114,6));
-        if($ed20_c_outroscursos !="" && $ed20_c_outroscursos!= trim(pg_result($result22,0,'ed20_c_outroscursos'))){
+        if($ed20_c_outroscursos !="" && $ed20_c_outroscursos!= trim(pg_fetch_result($result22,0,'ed20_c_outroscursos'))){
          $update  .= " ,ed20_c_outroscursos = '$ed20_c_outroscursos' ";
         }        
         $update .= " WHERE ed20_i_codigo = $codigodocente ";
@@ -927,7 +927,7 @@ if(isset($processar)){
        $array_formacao[2][4] = trim(substr($linha,103,7));
 
        for($rr=0;$rr<count($array_formacao);$rr++){
-        if(trim($array_formacao[$rr][1])!=""){
+        if(trim((string) $array_formacao[$rr][1])!=""){
          $sql_del = "DELETE FROM formacao WHERE ed27_i_rechumano = $codigodocente";
          $result_del = db_query($sql_del);
          $sql_cursoformacao = "SELECT ed94_i_codigo
@@ -936,7 +936,7 @@ if(isset($processar)){
                               ";
          $result_cursoformacao = db_query($sql_cursoformacao);
          if(pg_num_rows($result_cursoformacao)>0){
-          $codigo_cursoformacao = pg_result($result_cursoformacao,0,0);
+          $codigo_cursoformacao = pg_fetch_result($result_cursoformacao,0,0);
           $insert_formacao = "INSERT INTO formacao
                                (ed27_i_codigo
                                ,ed27_i_rechumano
@@ -950,9 +950,9 @@ if(isset($processar)){
                                ,$codigodocente
                                ,$codigo_cursoformacao
                                ,'CON'
-                               ,".trim($array_formacao[$rr][0])."
-                               ,".trim($array_formacao[$rr][2])."
-                               ,".trim($array_formacao[$rr][4]).")
+                               ,".trim((string) $array_formacao[$rr][0])."
+                               ,".trim((string) $array_formacao[$rr][2])."
+                               ,".trim((string) $array_formacao[$rr][4]).")
                              ";
           $result_formacao = db_query($insert_formacao);
           if(!$result_formacao){
@@ -985,12 +985,12 @@ if(isset($processar)){
        fwrite($ponteiro_log,"\nAluno $nome_censo2: Nome cadastrado no censo não existe no sistema.");
        $erro_naoencontrado = true;
       }else{
-       $vinculo_escola = pg_result($result11,0,'vinculo_escola');
+       $vinculo_escola = pg_fetch_result($result11,0,'vinculo_escola');
        if(trim($vinculo_escola)!=trim($codigoinep_banco)){
         fwrite($ponteiro_log,"\nAluno $nome_censo2: aluno não está mais vinculado a esta escola.");
         $erro_naoencontrado = true;
        }else{
-        $codigoaluno = pg_result($result11,0,'ed47_i_codigo');
+        $codigoaluno = pg_fetch_result($result11,0,'ed47_i_codigo');
 
         $sqlupdate11 = " UPDATE aluno SET ed47_i_codigo = $codigoaluno ";
 
@@ -1000,15 +1000,15 @@ if(isset($processar)){
          $sqlupdate11 .= " ,ed47_d_nasc = '$nasc_censo' ";
         }
         $ed47_c_codigoinep = trim(substr($linha,20,12));
-        if($ed47_c_codigoinep!="" && $ed47_c_codigoinep!=trim(pg_result($result11,0,'ed47_c_codigoinep'))){
+        if($ed47_c_codigoinep!="" && $ed47_c_codigoinep!=trim(pg_fetch_result($result11,0,'ed47_c_codigoinep'))){
          $sqlupdate11 .= " ,ed47_c_codigoinep = '$ed47_c_codigoinep' ";
         }
         $ed47_c_nis = trim(substr($linha,152,11));
-        if($ed47_c_nis!="" && $ed47_c_nis!=trim(pg_result($result11,0,'ed47_c_nis'))){
+        if($ed47_c_nis!="" && $ed47_c_nis!=trim(pg_fetch_result($result11,0,'ed47_c_nis'))){
          $sqlupdate11 .= " ,ed47_c_nis = '$ed47_c_nis' ";
         }
         $ed47_v_sexo = trim(substr($linha,171,1));
-        if($ed47_v_sexo!="" && $ed47_v_sexo!=trim(pg_result($result11,0,'ed47_v_sexo'))){
+        if($ed47_v_sexo!="" && $ed47_v_sexo!=trim(pg_fetch_result($result11,0,'ed47_v_sexo'))){
          if($ed47_v_sexo==1){
           $ed47_v_sexo = 'M';
          }else{
@@ -1017,7 +1017,7 @@ if(isset($processar)){
          $sqlupdate11 .= " ,ed47_v_sexo = '$ed47_v_sexo' ";
         }
         $ed47_c_raca = trim(substr($linha,172,1));
-        if($ed47_c_raca!="" && $ed47_c_raca!=trim(pg_result($result11,0,'ed47_c_raca'))){
+        if($ed47_c_raca!="" && $ed47_c_raca!=trim(pg_fetch_result($result11,0,'ed47_c_raca'))){
          if($ed47_c_raca==0){
           $ed47_c_raca = 'NÃO DECLARADA';
          }elseif($ed47_c_raca==1){
@@ -1034,23 +1034,23 @@ if(isset($processar)){
          $sqlupdate11 .= " ,ed47_c_raca = '$ed47_c_raca' ";
         }
         $ed47_i_filiacao = trim(substr($linha,173,1));
-        if($ed47_i_filiacao!="" && $ed47_i_filiacao!=trim(pg_result($result11,0,'ed47_i_filiacao'))){
+        if($ed47_i_filiacao!="" && $ed47_i_filiacao!=trim(pg_fetch_result($result11,0,'ed47_i_filiacao'))){
           $sqlupdate11 .= " ,ed47_i_filiacao = $ed47_i_filiacao ";
         }
         $ed47_i_nacion = trim(substr($linha,374,1));
-        if($ed47_i_nacion!="" && $ed47_i_nacion!=trim(pg_result($result11,0,'ed47_i_nacion'))){
+        if($ed47_i_nacion!="" && $ed47_i_nacion!=trim(pg_fetch_result($result11,0,'ed47_i_nacion'))){
           $sqlupdate11 .= " ,ed47_i_nacion = $ed47_i_nacion ";
         }
         $ed47_i_pais = trim(substr($linha,375,3));
-        if($ed47_i_pais!="" && $ed47_i_pais!=trim(pg_result($result11,0,'ed47_i_pais'))){
+        if($ed47_i_pais!="" && $ed47_i_pais!=trim(pg_fetch_result($result11,0,'ed47_i_pais'))){
           $sqlupdate11 .= " ,ed47_i_pais = $ed47_i_pais ";
         }
         $ed47_i_censoufnat = trim(substr($linha,378,2));
-        if($ed47_i_censoufnat!="" && $ed47_i_censoufnat!=trim(pg_result($result11,0,'ed47_i_censoufnat'))){
+        if($ed47_i_censoufnat!="" && $ed47_i_censoufnat!=trim(pg_fetch_result($result11,0,'ed47_i_censoufnat'))){
           $sqlupdate11 .= " ,ed47_i_censoufnat = $ed47_i_censoufnat ";
         }
         $ed47_i_censomunicnat = trim(substr($linha,380,7));
-        if($ed47_i_censomunicnat!="" && $ed47_i_censomunicnat!=trim(pg_result($result11,0,'ed47_i_censomunicnat'))){
+        if($ed47_i_censomunicnat!="" && $ed47_i_censomunicnat!=trim(pg_fetch_result($result11,0,'ed47_i_censomunicnat'))){
           $sqlupdate11 .= " ,ed47_i_censomunicnat = $ed47_i_censomunicnat ";
         }
         $sqlupdate11 .= " WHERE ed47_i_codigo = $codigoaluno";
@@ -1067,28 +1067,28 @@ if(isset($processar)){
       if($codigoaluno!=""){
        $sqlupdate70 = " update aluno set ed47_i_codigo = $codigoaluno ";
        $ed47_v_ident = trim(substr($linha,52,20));
-       if($ed47_v_ident !="" && $ed47_v_ident!= trim(pg_result($result11,0,'ed47_v_ident'))){
+       if($ed47_v_ident !="" && $ed47_v_ident!= trim(pg_fetch_result($result11,0,'ed47_v_ident'))){
          $sqlupdate70  .= " ,ed47_v_ident = '$ed47_v_ident' ";
        }
        $ed47_v_identcompl = trim(substr($linha,72,4));
-       if($ed47_v_identcompl !="" && $ed47_v_identcompl!= trim(pg_result($result11,0,'ed47_v_identcompl'))){
+       if($ed47_v_identcompl !="" && $ed47_v_identcompl!= trim(pg_fetch_result($result11,0,'ed47_v_identcompl'))){
          $sqlupdate70  .= " ,ed47_v_identcompl = '$ed47_v_identcompl'  ";
        }
        $ed47_i_censoorgemissrg =trim(substr($linha,76,2));
-       if($ed47_i_censoorgemissrg !="" && $ed47_i_censoorgemissrg!= trim(pg_result($result11,0,'ed47_i_censoorgemissrg'))){
+       if($ed47_i_censoorgemissrg !="" && $ed47_i_censoorgemissrg!= trim(pg_fetch_result($result11,0,'ed47_i_censoorgemissrg'))){
          $sqlupdate70  .= " ,ed47_i_censoorgemissrg = $ed47_i_censoorgemissrg ";
        }
        $ed47_i_censoufident = trim(substr($linha,78,2));
-       if($ed47_i_censoufident !="" && $ed47_i_censoufident!= trim(pg_result($result11,0,'ed47_i_censoufident'))){
+       if($ed47_i_censoufident !="" && $ed47_i_censoufident!= trim(pg_fetch_result($result11,0,'ed47_i_censoufident'))){
          $sqlupdate70  .= " ,ed47_i_censoufident = $ed47_i_censoufident ";
        }
        $ed47_d_identdtexp = trim(substr($linha,80,8));
-       if($ed47_d_identdtexp !="" && $ed47_d_identdtexp!= trim(pg_result($result11,0,'ed47_d_identdtexp'))){
+       if($ed47_d_identdtexp !="" && $ed47_d_identdtexp!= trim(pg_fetch_result($result11,0,'ed47_d_identdtexp'))){
       	$ed47_d_identdtexp = "'".substr($ed47_d_identdtexp,4,4)."-".substr($ed47_d_identdtexp,2,2)."-".substr($ed47_d_identdtexp,0,2)."'";
         $sqlupdate70  .= " ,ed47_d_identdtexp = $ed47_d_identdtexp ";
        }                     
        $ed47_c_certidaotipo = trim(substr($linha,88,1));
-       if($ed47_c_certidaotipo !="" && $ed47_c_certidaotipo!= trim(pg_result($result11,0,'ed47_c_certidaotipo'))){
+       if($ed47_c_certidaotipo !="" && $ed47_c_certidaotipo!= trim(pg_fetch_result($result11,0,'ed47_c_certidaotipo'))){
         if($ed47_c_certidaotipo==1){
          $ed47_c_certidaotipo = 'N';
         }elseif($ed47_c_certidaotipo==2){
@@ -1099,65 +1099,65 @@ if(isset($processar)){
         $sqlupdate70  .= " ,ed47_c_certidaotipo = '$ed47_c_certidaotipo' ";
        }
        $ed47_c_certidaonum = trim(substr($linha,89,8));
-       if($ed47_c_certidaonum !="" && $ed47_c_certidaonum!= trim(pg_result($result11,0,'ed47_c_certidaonum'))){
+       if($ed47_c_certidaonum !="" && $ed47_c_certidaonum!= trim(pg_fetch_result($result11,0,'ed47_c_certidaonum'))){
          $sqlupdate70  .= " ,ed47_c_certidaonum = '$ed47_c_certidaonum' ";
        }
        $ed47_c_certidaofolha = trim(substr($linha,97,4));
-       if($ed47_c_certidaofolha !="" && $ed47_c_certidaofolha!= trim(pg_result($result11,0,'ed47_c_certidaofolha'))){
+       if($ed47_c_certidaofolha !="" && $ed47_c_certidaofolha!= trim(pg_fetch_result($result11,0,'ed47_c_certidaofolha'))){
          $sqlupdate70  .= " ,ed47_c_certidaofolha = '$ed47_c_certidaofolha' ";
        }
        $ed47_c_certidaolivro = trim(substr($linha,101,8));
-       if($ed47_c_certidaolivro !="" && $ed47_c_certidaolivro!= trim(pg_result($result11,0,'ed47_c_certidaolivro'))){
+       if($ed47_c_certidaolivro !="" && $ed47_c_certidaolivro!= trim(pg_fetch_result($result11,0,'ed47_c_certidaolivro'))){
          $sqlupdate70  .= " ,ed47_c_certidaolivro = '$ed47_c_certidaolivro' ";
        }
        $ed47_c_certidaodata = trim(substr($linha,109,8));
-       if($ed47_c_certidaodata !="" && $ed47_c_certidaodata!= trim(pg_result($result11,0,'ed47_c_certidaodata'))){        
+       if($ed47_c_certidaodata !="" && $ed47_c_certidaodata!= trim(pg_fetch_result($result11,0,'ed47_c_certidaodata'))){        
          $ed47_c_certidaodata = "'".substr($ed47_c_certidaodata,4,4)."-".substr($ed47_c_certidaodata,2,2)."-".substr($ed47_c_certidaodata,0,2)."'";
          $sqlupdate70  .= " ,ed47_c_certidaodata = $ed47_c_certidaodata ";
        }
        $ed47_c_certidaocart = trim(substr($linha,117,100));
-       if($ed47_c_certidaocart !="" && $ed47_c_certidaocart!= trim(pg_result($result11,0,'ed47_c_certidaocart'))){
+       if($ed47_c_certidaocart !="" && $ed47_c_certidaocart!= trim(pg_fetch_result($result11,0,'ed47_c_certidaocart'))){
          $sqlupdate70  .= " ,ed47_c_certidaocart = '$ed47_c_certidaocart' ";
        }
        $ed47_i_censoufcert = trim(substr($linha,217,2));
-       if($ed47_i_censoufcert !="" && $ed47_i_censoufcert!= trim(pg_result($result11,0,'ed47_i_censoufcert'))){
+       if($ed47_i_censoufcert !="" && $ed47_i_censoufcert!= trim(pg_fetch_result($result11,0,'ed47_i_censoufcert'))){
          $sqlupdate70  .= " ,ed47_i_censoufcert = $ed47_i_censoufcert ";
        }
        $ed47_v_cpf = trim(substr($linha,219,11));
-       if($ed47_v_cpf !="" && $ed47_v_cpf!= trim(pg_result($result11,0,'ed47_v_cpf'))){
+       if($ed47_v_cpf !="" && $ed47_v_cpf!= trim(pg_fetch_result($result11,0,'ed47_v_cpf'))){
          $sqlupdate70  .= " ,ed47_v_cpf = '$ed47_v_cpf' ";
        }
        $ed47_c_passaporte = trim(substr($linha,230,20));
-       if($ed47_c_passaporte !="" && $ed47_c_passaporte!= trim(pg_result($result11,0,'ed47_c_passaporte'))){
+       if($ed47_c_passaporte !="" && $ed47_c_passaporte!= trim(pg_fetch_result($result11,0,'ed47_c_passaporte'))){
          $sqlupdate70  .= " ,ed47_c_passaporte = '$ed47_c_passaporte' ";
        }
        $ed47_v_cep = trim(substr($linha,250,8));
-       if($ed47_v_cep !="" && $ed47_v_cep!= trim(pg_result($result11,0,'ed47_v_cep'))){
+       if($ed47_v_cep !="" && $ed47_v_cep!= trim(pg_fetch_result($result11,0,'ed47_v_cep'))){
          $sqlupdate70  .= " ,ed47_v_cep = '$ed47_v_cep' ";
          $virgula = ",";
        }
        $ed47_v_ender = trim(substr($linha,258,100));
-       if($ed47_v_ender !="" && $ed47_v_ender!= trim(pg_result($result11,0,'ed47_v_ender'))){
+       if($ed47_v_ender !="" && $ed47_v_ender!= trim(pg_fetch_result($result11,0,'ed47_v_ender'))){
          $sqlupdate70  .= " ,ed47_v_ender = '$ed47_v_ender' ";
        }
        $ed47_c_numero = trim(substr($linha,358,10));
-       if($ed47_c_numero !="" && $ed47_c_numero!= trim(pg_result($result11,0,'ed47_c_numero'))){
+       if($ed47_c_numero !="" && $ed47_c_numero!= trim(pg_fetch_result($result11,0,'ed47_c_numero'))){
          $sqlupdate70  .= " ,ed47_c_numero = '$ed47_c_numero' ";
        }
        $ed47_v_compl = trim(substr($linha,368,20));
-       if($ed47_v_compl !="" && $ed47_v_compl!= trim(pg_result($result11,0,'ed47_v_compl'))){
+       if($ed47_v_compl !="" && $ed47_v_compl!= trim(pg_fetch_result($result11,0,'ed47_v_compl'))){
          $sqlupdate70  .= " ,ed47_v_compl = '$ed47_v_compl' ";
        }
        $ed47_v_bairro = trim(substr($linha,388,50));
-       if($ed47_v_bairro !="" && $ed47_v_bairro!= trim(pg_result($result11,0,'ed47_v_bairro'))){
+       if($ed47_v_bairro !="" && $ed47_v_bairro!= trim(pg_fetch_result($result11,0,'ed47_v_bairro'))){
          $sqlupdate70  .= " ,ed47_v_bairro = '".substr($ed47_v_bairro,0,40)."' ";
        }
        $ed47_i_censoufend = trim(substr($linha,438,2));
-       if($ed47_i_censoufend !="" && $ed47_i_censoufend!= trim(pg_result($result11,0,'ed47_i_censoufend'))){
+       if($ed47_i_censoufend !="" && $ed47_i_censoufend!= trim(pg_fetch_result($result11,0,'ed47_i_censoufend'))){
          $sqlupdate70  .= " ,ed47_i_censoufend = $ed47_i_censoufend ";
        }
        $ed47_i_censomunicend = trim(substr($linha,440,7));
-       if($ed47_i_censomunicend !="" && $ed47_i_censomunicend!= trim(pg_result($result11,0,'ed47_i_censomunicend'))){
+       if($ed47_i_censomunicend !="" && $ed47_i_censomunicend!= trim(pg_fetch_result($result11,0,'ed47_i_censomunicend'))){
          $sqlupdate70  .= " ,ed47_i_censomunicend = $ed47_i_censomunicend ";
        }
        $sqlupdate70 .= " WHERE ed47_i_codigo = $codigoaluno";
@@ -1170,7 +1170,7 @@ if(isset($processar)){
          $res_bairro = db_query($sql_bairro);
          $linhas_bairro = pg_num_rows($res_bairro);
          if($linhas_bairro>0){
-          $codbairro = pg_result($res_bairro,0,0);
+          $codbairro = pg_fetch_result($res_bairro,0,0);
           $deletebairro = db_query("DELETE FROM alunobairro WHERE ed225_i_aluno = $codigoaluno");
 	  $sqlinsertbairro = "INSERT INTO alunobairro VALUES(nextval('alunobairro_ed225_i_codigo_seq'),$codigoaluno,$codbairro)";
 	  $insertbairro = db_query($sqlinsertbairro);
@@ -1188,19 +1188,19 @@ if(isset($processar)){
       if($codigoaluno!=""){
        $sqlupdate800 = " update aluno set ed47_i_codigo = $codigoaluno ";
        $ed47_c_atenddifer = trim(substr($linha,85,1));
-       if($ed47_c_atenddifer !="" && $ed47_c_atenddifer!= trim(pg_result($result11,0,'ed47_c_atenddifer'))){
+       if($ed47_c_atenddifer !="" && $ed47_c_atenddifer!= trim(pg_fetch_result($result11,0,'ed47_c_atenddifer'))){
          $sqlupdate800  .= " ,ed47_c_atenddifer = '$ed47_c_atenddifer'	 ";
        } 
        $ed47_i_transpublico = trim(substr($linha,86,1));
-       if($ed47_i_transpublico !="" && $ed47_i_transpublico!= trim(pg_result($result11,0,'ed47_i_transpublico'))){
+       if($ed47_i_transpublico !="" && $ed47_i_transpublico!= trim(pg_fetch_result($result11,0,'ed47_i_transpublico'))){
          $sqlupdate800  .= " ,ed47_i_transpublico = $ed47_i_transpublico";
        } 
        $ed47_c_transporte = trim(substr($linha,87,1));
-       if($ed47_c_transporte!= trim(pg_result($result11,0,'ed47_c_transporte'))){
+       if($ed47_c_transporte!= trim(pg_fetch_result($result11,0,'ed47_c_transporte'))){
          $sqlupdate800  .= " ,ed47_c_transporte = '$ed47_c_transporte' ";
        }        
        $ed47_c_zona = trim(substr($linha,88,1));
-       if($ed47_c_zona !="" && $ed47_c_zona!= trim(pg_result($result11,0,'ed47_c_zona'))){
+       if($ed47_c_zona !="" && $ed47_c_zona!= trim(pg_fetch_result($result11,0,'ed47_c_zona'))){
         if($ed47_c_zona==1){
          $ed47_c_zona = 'URBANA';
         }elseif($ed47_c_zona==2){
@@ -1209,7 +1209,7 @@ if(isset($processar)){
         $sqlupdate800  .= " ,ed47_c_zona = '$ed47_c_zona' ";
        }
        $ed47_i_atendespec = trim(substr($linha,89,1));
-       if($ed47_i_atendespec !="" && $ed47_i_atendespec!= trim(pg_result($result11,0,'ed47_i_atendespec'))){
+       if($ed47_i_atendespec !="" && $ed47_i_atendespec!= trim(pg_fetch_result($result11,0,'ed47_i_atendespec'))){
          $sqlupdate800  .= " ,ed47_i_atendespec = $ed47_i_atendespec ";
        }
        $sqlupdate800 .= " WHERE ed47_i_codigo = $codigoaluno";

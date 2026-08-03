@@ -29,7 +29,7 @@ class cl_matestoqueitemanulacao
     public function __construct()
     {
         $this->rotulo = new rotulo("matestoqueitemanulacao");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -84,10 +84,10 @@ class cl_matestoqueitemanulacao
          $this->erro_status = "0";
          return false;
        }
-       $this->m104_codigo = pg_result($result,0,0);
+       $this->m104_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from matestoqueitemanulacao_m104_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m104_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m104_codigo)){
          $this->erro_sql = " Campo m104_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -119,7 +119,7 @@ class cl_matestoqueitemanulacao
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "matestoqueitem anulacao ($this->m104_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "matestoqueitem anulacao já Cadastrado";
@@ -148,12 +148,12 @@ class cl_matestoqueitemanulacao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1013608,'$this->m104_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010851,1013608,'','".AddSlashes(pg_result($resaco,0,'m104_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010851,1013606,'','".AddSlashes(pg_result($resaco,0,'m104_matestoqueitemanular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010851,1013607,'','".AddSlashes(pg_result($resaco,0,'m104_matestoqueitemusasaldo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010851,1013608,'','".AddSlashes(pg_fetch_result($resaco,0,'m104_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010851,1013606,'','".AddSlashes(pg_fetch_result($resaco,0,'m104_matestoqueitemanular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010851,1013607,'','".AddSlashes(pg_fetch_result($resaco,0,'m104_matestoqueitemusasaldo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -164,10 +164,10 @@ class cl_matestoqueitemanulacao
       $this->atualizacampos();
      $sql = " update matestoqueitemanulacao set ";
      $virgula = "";
-     if(trim($this->m104_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m104_codigo"])){
+     if(trim((string) $this->m104_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m104_codigo"])){
        $sql  .= $virgula." m104_codigo = $this->m104_codigo ";
        $virgula = ",";
-       if(trim($this->m104_codigo) == null ){
+       if(trim((string) $this->m104_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "m104_codigo";
          $this->erro_banco = "";
@@ -177,10 +177,10 @@ class cl_matestoqueitemanulacao
          return false;
        }
      }
-     if(trim($this->m104_matestoqueitemanular)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m104_matestoqueitemanular"])){
+     if(trim((string) $this->m104_matestoqueitemanular)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m104_matestoqueitemanular"])){
        $sql  .= $virgula." m104_matestoqueitemanular = $this->m104_matestoqueitemanular ";
        $virgula = ",";
-       if(trim($this->m104_matestoqueitemanular) == null ){
+       if(trim((string) $this->m104_matestoqueitemanular) == null ){
          $this->erro_sql = " Campo Estoque Item Anulação não informado.";
          $this->erro_campo = "m104_matestoqueitemanular";
          $this->erro_banco = "";
@@ -190,10 +190,10 @@ class cl_matestoqueitemanulacao
          return false;
        }
      }
-     if(trim($this->m104_matestoqueitemusasaldo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m104_matestoqueitemusasaldo"])){
+     if(trim((string) $this->m104_matestoqueitemusasaldo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m104_matestoqueitemusasaldo"])){
        $sql  .= $virgula." m104_matestoqueitemusasaldo = $this->m104_matestoqueitemusasaldo ";
        $virgula = ",";
-       if(trim($this->m104_matestoqueitemusasaldo) == null ){
+       if(trim((string) $this->m104_matestoqueitemusasaldo) == null ){
          $this->erro_sql = " Campo Estoque Item Com Saldo não informado.";
          $this->erro_campo = "m104_matestoqueitemusasaldo";
          $this->erro_banco = "";
@@ -217,15 +217,15 @@ class cl_matestoqueitemanulacao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1013608,'$this->m104_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m104_codigo"]) || $this->m104_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010851,1013608,'".AddSlashes(pg_result($resaco,$conresaco,'m104_codigo'))."','$this->m104_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010851,1013608,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m104_codigo'))."','$this->m104_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m104_matestoqueitemanular"]) || $this->m104_matestoqueitemanular != "")
-             $resac = db_query("insert into db_acount values($acount,1010851,1013606,'".AddSlashes(pg_result($resaco,$conresaco,'m104_matestoqueitemanular'))."','$this->m104_matestoqueitemanular',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010851,1013606,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m104_matestoqueitemanular'))."','$this->m104_matestoqueitemanular',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m104_matestoqueitemusasaldo"]) || $this->m104_matestoqueitemusasaldo != "")
-             $resac = db_query("insert into db_acount values($acount,1010851,1013607,'".AddSlashes(pg_result($resaco,$conresaco,'m104_matestoqueitemusasaldo'))."','$this->m104_matestoqueitemusasaldo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010851,1013607,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m104_matestoqueitemusasaldo'))."','$this->m104_matestoqueitemusasaldo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -279,12 +279,12 @@ class cl_matestoqueitemanulacao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1013608,'$m104_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010851,1013608,'','".AddSlashes(pg_result($resaco,$iresaco,'m104_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010851,1013606,'','".AddSlashes(pg_result($resaco,$iresaco,'m104_matestoqueitemanular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010851,1013607,'','".AddSlashes(pg_result($resaco,$iresaco,'m104_matestoqueitemusasaldo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010851,1013608,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m104_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010851,1013606,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m104_matestoqueitemanular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010851,1013607,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m104_matestoqueitemusasaldo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

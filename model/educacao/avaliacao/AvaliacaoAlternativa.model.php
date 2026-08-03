@@ -58,7 +58,7 @@ class AvaliacaoAlternativa {
    * @todo  documentar tag @var
    * @var array
    */
-  private $aConfiguracao = array();
+  private $aConfiguracao = [];
 
   function __construct( $iCodigo = null ) {
 

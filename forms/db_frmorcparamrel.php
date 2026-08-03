@@ -274,7 +274,7 @@ if ($db_opcao == 1) {
             <input type="button" id="exportar" value="Exportar"/>
             <?php
         }
-        if (in_array($db_opcao, array(1, 2, 22))) {
+        if (in_array($db_opcao, [1, 2, 22])) {
             ?>
             <input type="button" id="importarRelatorio" value="Importar" onClick="js_importar()"/>
             <?php
@@ -591,7 +591,7 @@ if ($db_opcao == 1) {
         <?php
         if ($db_opcao != 1) {
             ?>
-        location.href = `<?php echo basename($_SERVER['PHP_SELF']); ?>?chavepesquisa=${chave}`;
+        location.href = `<?php echo basename((string) $_SERVER['PHP_SELF']); ?>?chavepesquisa=${chave}`;
             <?php
         }
         ?>

@@ -51,10 +51,10 @@ class Custas extends Contract
     const ALTURA_LINHA = 4;
 
     /** @var ProcessoForoEntity[] */
-    private $processos = array();
+    private $processos = [];
 
     /** @var InicialEntity[] */
-    private $iniciais = array();
+    private $iniciais = [];
 
     /** @var array */
     private $recibos = null;
@@ -164,6 +164,7 @@ class Custas extends Contract
     /**
      * @inheritdoc
      */
+    #[\Override]
     protected function montarEnteFederativo()
     {
         parent::montarEnteFederativo();
@@ -208,7 +209,7 @@ class Custas extends Contract
      */
     private function montarQuadroProcesso($processo, $indice)
     {
-        $certidoes = array();
+        $certidoes = [];
         $iniciais = $processo->getIniciais();
         $title = 'Processo: ' . $processo->getCodigoForo();
 
@@ -327,7 +328,7 @@ class Custas extends Contract
             $multa = 0;
             $valorTotal = 0;
 
-            $numpres = array();
+            $numpres = [];
             foreach ($certidao->getCertidaoDividas() as $certidaoDivida) {
                 $numpres[$certidaoDivida->getDivida()->getNumpre()][] = $certidaoDivida->getDivida()->getNumpar();
                 $exercicio = $certidaoDivida->getDivida()->getExercicio();
@@ -340,7 +341,7 @@ class Custas extends Contract
                     $numpre,
                     0,
                     0,
-                    strtotime($this->datasVencimentos[$indice]),
+                    strtotime((string) $this->datasVencimentos[$indice]),
                     db_getsession("DB_anousu"),
                     0,
                     "",
@@ -433,7 +434,7 @@ class Custas extends Contract
                         $numpre,
                         0,
                         0,
-                        strtotime($this->datasVencimentos[$indice]),
+                        strtotime((string) $this->datasVencimentos[$indice]),
                         db_getsession("DB_anousu"),
                         0,
                         "",
@@ -531,14 +532,14 @@ class Custas extends Contract
         }
 
         $numpres = $recibo->getDebitosRecibo();
-        $numpares = array();
+        $numpares = [];
 
         foreach ($numpres as $numpre) {
             $numpares[] = $numpre->k00_numpar;
         }
 
         $numpre = $numpres[0]->k00_numpre;
-        $termoRepository = Termo::getInstance();
+        $termoRepository = (new Termo())->getInstance();
         $termo = $termoRepository->getByNumpre($numpre);
 
         $this->montarTituloQuadro('Parcelamento: ' . $termo->getCodigo());
@@ -590,12 +591,12 @@ class Custas extends Contract
         $reciboService = new Service\Recibo(null);
         $custas = $reciboService->getCustas($recibo->getNumpreRecibo());
 
-        $processoForoPartilhaRepository = ProcessoForoPartilhaRepository::getInstance();
+        $processoForoPartilhaRepository = (new ProcessoForoPartilhaRepository())->getInstance();
         $custasPagas = $processoForoPartilhaRepository->getPagoManualByNumnov($recibo->getNumpreRecibo());
 
         $custas = array_merge($custas, $custasPagas);
 
-        $partilhas = array();
+        $partilhas = [];
 
         foreach ($custas as $custa) {
             $taxa = new \taxa($custa->taxa);

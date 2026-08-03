@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -62,8 +62,8 @@ db_postmemory($HTTP_POST_VARS);
              <option value="0">Nenhum...</option>
              <?php 
 			         $result = db_query("select codmod,nomemod from db_sysmodulo order by nomemod");
-			         for($i=0;$i<pg_numrows($result);$i++){
-			           echo '<option value="'.pg_result($result,$i,"codmod").'" '.(isset($HTTP_POST_VARS["dbh_modulo"]) && $HTTP_POST_VARS["dbh_modulo"] == pg_result($result,$i,"codmod")?"selected":"").'>'.pg_result($result,$i,"nomemod").'</option>';
+			         for($i=0;$i<pg_num_rows($result);$i++){
+			           echo '<option value="'.pg_fetch_result($result,$i,"codmod").'" '.(isset($_POST["dbh_modulo"]) && $_POST["dbh_modulo"] == pg_fetch_result($result,$i,"codmod")?"selected":"").'>'.pg_fetch_result($result,$i,"nomemod").'</option>';
 			         }
 			        ?>
            </select> 
@@ -76,11 +76,11 @@ db_postmemory($HTTP_POST_VARS);
 			        $sql  = "select m.codarq,nomearq "; 
 			        $sql .= "  from db_sysarquivo a  ";
   						$sql .= "       inner join db_sysarqmod m on a.codarq = m.codarq ";
-    		      $sql .= " where m.codmod = ".$HTTP_POST_VARS["dbh_modulo"];						  
+    		      $sql .= " where m.codmod = ".$_POST["dbh_modulo"];						  
   			      $sql .= " order by nomearq";
   			      $result = db_query($sql);
-  			      for ($i=0;$i<pg_numrows($result);$i++) {
-  			        echo '<option value="'.pg_result($result,$i,"codarq").'" '.(isset($HTTP_POST_VARS["dbh_tabela"]) && $HTTP_POST_VARS["dbh_tabela"] == pg_result($result,$i,"codarq")?"selected":"").'>'.pg_result($result,$i,"nomearq").'</option>';
+  			      for ($i=0;$i<pg_num_rows($result);$i++) {
+  			        echo '<option value="'.pg_fetch_result($result,$i,"codarq").'" '.(isset($_POST["dbh_tabela"]) && $_POST["dbh_tabela"] == pg_fetch_result($result,$i,"codarq")?"selected":"").'>'.pg_fetch_result($result,$i,"nomearq").'</option>';
   			      }
   			     ?>
            </select>
@@ -95,11 +95,11 @@ db_postmemory($HTTP_POST_VARS);
    			      $sql = "select c.codcam,nomecam "; 
   			      $sql .= "  from db_syscampo c   ";
   						$sql .= "       inner join db_sysarqcamp m on c.codcam = m.codcam "; 
-  		        $sql .= " where m.codarq = ".$HTTP_POST_VARS["dbh_tabela"];						  
+  		        $sql .= " where m.codarq = ".$_POST["dbh_tabela"];						  
   			      $sql .= " order by m.seqarq";
   			      $result = db_query($sql);
-  			      for($i=0;$i<pg_numrows($result);$i++){
-  			        echo '<option value="'.pg_result($result,$i,"codcam").'" '.(isset($HTTP_POST_VARS["dbh_campo"]) && $HTTP_POST_VARS["dbh_campo"] == pg_result($result,$i,"codcam")?"selected":"").'>'.pg_result($result,$i,"nomecam").'</option>';
+  			      for($i=0;$i<pg_num_rows($result);$i++){
+  			        echo '<option value="'.pg_fetch_result($result,$i,"codcam").'" '.(isset($_POST["dbh_campo"]) && $_POST["dbh_campo"] == pg_fetch_result($result,$i,"codcam")?"selected":"").'>'.pg_fetch_result($result,$i,"nomecam").'</option>';
   			      }
   			     ?>
            </select>
@@ -113,8 +113,8 @@ db_postmemory($HTTP_POST_VARS);
 			                   from db_usuarios
 			                  order by nome";
 			         $result = db_query($sql);
-			         for ($i=0;$i<pg_numrows($result);$i++) {
-			          echo '<option value="'.pg_result($result,$i,"id_usuario").'" '.(isset($HTTP_POST_VARS["dbh_usuario"]) && $HTTP_POST_VARS["dbh_usuario"] == pg_result($result,$i,"id_usuario")?"selected":"").'>'.str_pad(pg_result($result,$i,"login"),20).'</option>';
+			         for ($i=0;$i<pg_num_rows($result);$i++) {
+			          echo '<option value="'.pg_fetch_result($result,$i,"id_usuario").'" '.(isset($_POST["dbh_usuario"]) && $_POST["dbh_usuario"] == pg_fetch_result($result,$i,"id_usuario")?"selected":"").'>'.str_pad(pg_fetch_result($result,$i,"login"),20).'</option>';
 			         }
 			       ?>
            </select>
@@ -133,14 +133,14 @@ db_postmemory($HTTP_POST_VARS);
                <td colspan="2"><strong>Chaves de Acesso:</strong></td>
              </tr>
              <?php 
-               if (isset($HTTP_POST_VARS["dbh_tabela"]) && $HTTP_POST_VARS["dbh_tabela"] != '0') {
+               if (isset($_POST["dbh_tabela"]) && $_POST["dbh_tabela"] != '0') {
 				  
                  $result = db_query("select c.codcam,nomecam,tamanho
 				                               from db_sysprikey p
 						      	                        inner join db_syscampo c on c.codcam = p.codcam
 					        				            where codarq = $dbh_tabela");
  				         $clrotulocampo = new rotulocampo;
-				         for ($x=0;$x<pg_numrows($result);$x++) {
+				         for ($x=0;$x<pg_num_rows($result);$x++) {
 				           db_fieldsmemory($result,$x);
 				           
 				           $qcampos[$x] = $codcam;
@@ -148,11 +148,11 @@ db_postmemory($HTTP_POST_VARS);
 					         $clrotulocampo->label($nomecam);
                    echo "<tr>\n"; 
 					         $campo = "L".$nomecam;
-                   echo "  <td width=\"50%\" align=\"right\">".$$campo."</td>\n";
+                   echo "  <td width=\"50%\" align=\"right\">".${$campo}."</td>\n";
                    echo "  <td width=\"50%\" align=\"left\">";
 					         ($tamanho>60?60:$tamanho);
 					         $campo = "I".$nomecam;
-					         db_input($nomecam,$tamanho,$$campo,true,'text',4);
+					         db_input($nomecam,$tamanho,${$campo},true,'text',4);
 					         echo "  </td>\n";
 					         echo "</tr>\n";
 				         }
@@ -176,7 +176,7 @@ db_postmemory($HTTP_POST_VARS);
        </tr>
      </table>
      <?php 	  
-       if(isset($HTTP_POST_VARS["pesquisar"])) {
+       if(isset($_POST["pesquisar"])) {
 		 ?>
           
         <table width="100%" border="1" cellpadding="0" cellspacing="0">
@@ -194,9 +194,9 @@ db_postmemory($HTTP_POST_VARS);
               $sqlor = "";
               $contador = 0;
 		          for ($c=0;$c<sizeof($vcampos);$c++) {
-		            if (trim($$vcampos[$c])!="") {
+		            if (trim((string) ${$vcampos}[$c])!="") {
                   $contador += 1 ;
- 		              $sqlkey .= $sqlor."( id_codcam = ".$qcampos[$c]." and campotext = '".$$vcampos[$c]."' ) ";
+ 		              $sqlkey .= $sqlor."( id_codcam = ".$qcampos[$c]." and campotext = '".${$vcampos}[$c]."' ) ";
                   $sqlor = " or ";
 		            }
 		          }
@@ -230,15 +230,15 @@ db_postmemory($HTTP_POST_VARS);
          		  $sql .= " order by id_acount ";
 
 		          $result = db_query($sql);
-              if ( pg_numrows($result) > 0 ) {
-                $id_acount_ant = pg_result($result,0,"id_acount");
+              if ( pg_num_rows($result) > 0 ) {
+                $id_acount_ant = pg_fetch_result($result,0,"id_acount");
                 $cor="#CCCCCC";
               }
 
-		          for ($x=0;$x<pg_numrows($result);$x++) {
+		          for ($x=0;$x<pg_num_rows($result);$x++) {
               
-                if ( pg_result($result,$x,"id_acount") != $id_acount_ant ) {
-                  $id_acount_ant = pg_result($result,$x,"id_acount");
+                if ( pg_fetch_result($result,$x,"id_acount") != $id_acount_ant ) {
+                  $id_acount_ant = pg_fetch_result($result,$x,"id_acount");
                   if ( $cor=="#7F7F7F" ) {
                     $cor="#CCCCCC";
                   } else {
@@ -256,7 +256,7 @@ db_postmemory($HTTP_POST_VARS);
                          where id_acount = $id_acount";
                 $res = db_query($sql);
                 if ($res!=false) {
-                  for ($ii=0;$ii<pg_numrows($res);$ii++) {
+                  for ($ii=0;$ii<pg_num_rows($res);$ii++) {
                     db_fieldsmemory($res,$ii);
                     $chavetitle .= $nomecamkey."->".$keychave."\n";
                   }
@@ -273,7 +273,7 @@ db_postmemory($HTTP_POST_VARS);
 		                echo "<tr>\n"; 
 		                echo "  <td bgcolor=$cor width=\"11%\" title=\"".$chavetitle."\">".date("d-m-Y",$datahr)."</td>\n";
 		                echo "  <td bgcolor=$cor width=\"10%\" title=\"".$chavetitle."\">".date("H-i",$datahr)."</td>\n";
-		                echo "  <td bgcolor=$cor width=\"22%\" title=\"".$chavetitle."\">(".$id_usuario.")".substr($nome,0,20)."</td>\n";
+		                echo "  <td bgcolor=$cor width=\"22%\" title=\"".$chavetitle."\">(".$id_usuario.")".substr((string) $nome,0,20)."</td>\n";
 		                echo "  <td bgcolor=$cor width=\"22%\" title=\"".$chavetitle."\">".$nomecam."</td>\n";
 		                echo "  <td bgcolor=$cor width=\"2%\"  title=\"".$chavetitle."\">".$actipo."</td>\n";
 		                echo "  <td bgcolor=$cor width=\"16%\">".$contatu."&nbsp;</td>\n";

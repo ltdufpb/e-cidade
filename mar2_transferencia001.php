@@ -69,7 +69,7 @@ $clcgm->rotulo->label('z01_numcgm');
      <td>
       &nbsp;&nbsp;&nbsp;
       <?php 
-      $tipo = array("Todas"=>"Todas","Por Marca"=>"Por Marca","Por CGM"=>"Por CGM");
+      $tipo = ["Todas"=>"Todas","Por Marca"=>"Por Marca","Por CGM"=>"Por CGM"];
       db_select("escolha",$tipo,true,2,"onchange=\"js_opcao(this.value)\"");
       ?>
      </td>

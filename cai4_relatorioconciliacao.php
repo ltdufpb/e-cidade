@@ -31,7 +31,7 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification('libs/db_utils.php'));
 
 db_postmemory($_GET);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 /**
  * Quando o relatório for uma reemissão, busca o código sequencial da tabela concilia.
@@ -71,7 +71,7 @@ if($clconcilia->numrows > 0){
   db_fieldsmemory($rsDadosConcilia,0);
 }
 
-if ( substr($k68_data,0,4) <= 2012 and false) {
+if ( substr((string) $k68_data,0,4) <= 2012 and false) {
 
   $sqlTotalExtrato  = " select k97_saldofinal as  saldoextrato         ";
   $sqlTotalExtrato .= "   from extratosaldo                            ";
@@ -169,25 +169,25 @@ $pdf->cell(35,$alt,$banco,0,0,"L",0);
 $pdf->setfont($fonte,'b',8);
 $pdf->cell(25,$alt,"SEQ. CONTA : ",0,0,"L",0);
 $pdf->setfont($fonte,'',8);
-$pdf->cell(75,$alt,(isset($reduzido) ? $reduzido : null),0,1,"L",0);
+$pdf->cell(75,$alt,($reduzido ?? null),0,1,"L",0);
 
 $pdf->setfont($fonte,'b',8);
 $pdf->cell(25,$alt,"AGÊNCIA : ",0,0,"L",0);
 $pdf->setfont($fonte,'',8);
-$pdf->cell(35,$alt,(isset($agencia) ? $agencia : null),0,0,"L",0);
+$pdf->cell(35,$alt,($agencia ?? null),0,0,"L",0);
 $pdf->setfont($fonte,'b',8);
 $pdf->cell(40,$alt,"REDUZIDO CONTABIL: ",0,0,"L",0);
 $pdf->setfont($fonte,'',8);
-$pdf->multicell(60,$alt,(isset($reduzido_contabil) ? $reduzido_contabil : null),0,1,"L",0);
+$pdf->multicell(60,$alt,($reduzido_contabil ?? null),0,1,"L",0);
 
 $pdf->setfont($fonte,'b',8);
 $pdf->cell(25,$alt,"CONTA : ",0,0,"L",0);
 $pdf->setfont($fonte,'',8);
-$pdf->cell(35,$alt,(isset($conta) ? $conta : null),0,0,"L",0);
+$pdf->cell(35,$alt,($conta ?? null),0,0,"L",0);
 $pdf->setfont($fonte,'b',8);
 $pdf->cell(25,$alt,"DESCRIÇÃO : ",0,0,"L",0);
 $pdf->setfont($fonte,'',8);
-$pdf->cell(75,$alt,(isset($descricao) ? $descricao : null),0,1,"L",0);
+$pdf->cell(75,$alt,($descricao ?? null),0,1,"L",0);
 
 $pdf->ln(1);
 $pdf->setfont($fonte,'b',8);

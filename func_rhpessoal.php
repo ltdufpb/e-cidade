@@ -71,7 +71,7 @@ if (isset($sRescindidos)) {
     $selecao = 'R';
 }
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -204,11 +204,11 @@ $styleDivSelecao = !empty($somenteAtivos) ? 'display: none;' : '';
     <div style="<?=$styleDivSelecao;?>">
       <label><strong>Seleção Por:</strong></label>
         <?php
-        $aSelecao = array(
+        $aSelecao = [
           "T" => "Todos",
           "A" => "Ativos",
           "R" => "Rescindidos"
-        );
+        ];
         db_select("selecao", $aSelecao, true, $db_opcao, "");
         ?>
     </div>
@@ -228,7 +228,7 @@ if (isset($_GET['lTodos'])) {
     $sFiltraInstit = " 1 = 1 ";
 }
 
-$aWhere = array();
+$aWhere = [];
 
 $aWhere[] = "((rh02_instit is null and $sFiltraInstit) or $sFiltraInstit)";
 
@@ -270,8 +270,8 @@ if ($lotelotacao) {
 
         $oDaoCfpess           = new cl_cfpess();
         $oDaoDbUsuarioLotacao = new cl_db_usuariosrhlota();
-        $aEstruturais         = array();
-        $aResultados          = array();
+        $aEstruturais         = [];
+        $aResultados          = [];
         $iInstit              = db_getsession('DB_instit');
         $iAno                 = DBPessoal::getAnoFolha();
         $iMes                 = DBPessoal::getMesFolha();
@@ -394,12 +394,12 @@ if (!isset($pesquisa_chave)) {
         }
     }
 
-    $repassa = array(
+    $repassa = [
       "chave_z01_nome"    => @$chave_z01_nome,
       "chave_rh01_regist" => @$chave_rh01_regist,
       "chave_rh01_numcgm" => @$chave_rh01_numcgm,
       "rh01_instit"       => @$instit
-    );
+    ];
 
     if (count($_POST) > 0) {
         $sWhere = implode(' and ', $aWhere);
@@ -507,11 +507,11 @@ if (!isset($pesquisa_chave)) {
     require_once("scripts/classes/configuracao/DBViewPreferenciaUsuario.classe.js");
     require_once("scripts/classes/DBViewFormularioFolha/FiltroDinamicoPesquisaServidores.classe.js");
 
-    DBViewFormularioFolha.FiltroDinamicoPesquisaServidores.oValores.rh37_descr   = "<?php echo isset($rh37_descr)  ? $rh37_descr  : ""; ?>";
-    DBViewFormularioFolha.FiltroDinamicoPesquisaServidores.oValores.rh37_funcao  = "<?php echo isset($rh37_funcao) ? $rh37_funcao : ""; ?>";
+    DBViewFormularioFolha.FiltroDinamicoPesquisaServidores.oValores.rh37_descr   = "<?php echo $rh37_descr ?? ""; ?>";
+    DBViewFormularioFolha.FiltroDinamicoPesquisaServidores.oValores.rh37_funcao  = "<?php echo $rh37_funcao ?? ""; ?>";
     DBViewFormularioFolha.FiltroDinamicoPesquisaServidores.oValores.r70_codigo   = "<?php echo isset($r70_descr)   ? $r70_codigo  : ""; ?>";
     DBViewFormularioFolha.FiltroDinamicoPesquisaServidores.oValores.r70_descr    = "<?php echo isset($r70_codigo)  ? $r70_descr   : ""; ?>";
-    DBViewFormularioFolha.FiltroDinamicoPesquisaServidores.oValores.rh30_regime = "<?php echo isset($rh30_regime)? $rh30_regime: ""; ?>";
+    DBViewFormularioFolha.FiltroDinamicoPesquisaServidores.oValores.rh30_regime = "<?php echo $rh30_regime ?? ""; ?>";
 
     var oPreferencias = new DBViewPreferenciaUsuario();
     var aComponentes  = oPreferencias.oDados.oFiltrosPersonalizados["func_rhpessoal.php"];

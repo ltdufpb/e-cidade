@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_txossoariojazigo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltxossoariojazigo = new cl_txossoariojazigo;
 $cltxossoariojazigo->rotulo->label("cm30_i_codigo");
 $cltxossoariojazigo->rotulo->label("cm30_i_codigo");
@@ -98,9 +98,9 @@ $cltxossoariojazigo->rotulo->label("cm30_i_codigo");
         }else{
            $sql = $cltxossoariojazigo->sql_query("",$campos,"cm30_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cm30_i_codigo)){
-          $repassa = array("chave_cm30_i_codigo"=>$chave_cm30_i_codigo,"chave_cm30_i_codigo"=>$chave_cm30_i_codigo);
+          $repassa = ["chave_cm30_i_codigo"=>$chave_cm30_i_codigo,"chave_cm30_i_codigo"=>$chave_cm30_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -156,7 +156,7 @@ $ed52_d_fim_ano = $aDataFim[2];
                         </td>
                         <td>
                             <?php
-                            $aOptions = array("1" => "TXT", "2" => "PDF");
+                            $aOptions = ["1" => "TXT", "2" => "PDF"];
                             db_select("formatoarquivo", $aOptions, "", 1);
                             ?>
                         </td>

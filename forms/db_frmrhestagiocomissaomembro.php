@@ -106,7 +106,7 @@ db_input('h59_sequencial',10,$Ih59_sequencial,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Presidente','2'=>'Membro');
+$x = ['1'=>'Presidente','2'=>'Membro'];
 db_select('h60_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -125,7 +125,7 @@ db_select('h60_tipo',$x,true,$db_opcao,"");
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("h60_sequencial"=>@$h60_sequencial);
+	 $chavepri= ["h60_sequencial"=>@$h60_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhestagiocomissaomembro->sql_query(null,"distinct h60_sequencial,h60_regist,
                                         z01_nome,h60_rhestagiocomissao,

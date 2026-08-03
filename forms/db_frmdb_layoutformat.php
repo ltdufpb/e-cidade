@@ -67,7 +67,7 @@ db_input('db53_mascara',40,$Idb53_mascara,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'String','2'=>'Inteiro','3'=>'Decimal','4'=>'Data','5'=>'Hora','6'=>'CEP','7'=>'CGC / CPF','8'=>'Executa eval','9'=>'String livre');
+$x = ['1'=>'String','2'=>'Inteiro','3'=>'Decimal','4'=>'Data','5'=>'Hora','6'=>'CEP','7'=>'CGC / CPF','8'=>'Executa eval','9'=>'String livre'];
 db_select('db53_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -108,7 +108,7 @@ db_input('db53_caracdec',4,$Idb53_caracdec,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('d'=>'Esquerda','e'=>'Direita');
+$x = ['d'=>'Esquerda','e'=>'Direita'];
 db_select('db53_alinha',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -126,7 +126,7 @@ function js_preenchepesquisa(chave){
   db_iframe_db_layoutformat.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

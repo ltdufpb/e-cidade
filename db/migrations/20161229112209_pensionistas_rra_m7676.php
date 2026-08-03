@@ -28,15 +28,15 @@ class PensionistasRraM7676 extends PostgresMigration
     $this->execute("update configuracoes.db_sysarqcamp set codsequencia = 1000644 where codarq = 4018 and codcam = 22307;");
 
     $this->execute("CREATE SEQUENCE pessoal.lancamentorrapensionista_rh201_sequencial_seq");
-    $tabela = $this->table('lancamentorrapensionista',  array('schema'=>'pessoal', 'id'=> false, 'primary_key'=>'rh201_sequencial', 'constraint'=>' lancamentorrapensionista_rh201_sequencial_pk'));
+    $tabela = $this->table('lancamentorrapensionista',  ['schema'=>'pessoal', 'id'=> false, 'primary_key'=>'rh201_sequencial', 'constraint'=>' lancamentorrapensionista_rh201_sequencial_pk']);
     $tabela->addColumn('rh201_sequencial', 'integer')
            ->addColumn('rh201_lancamentorra', 'integer')
            ->addColumn('rh201_numcgm', 'integer')
-           ->addColumn("rh201_valor", 'float', array('scale' => 2, 'precision'=> 30))
-           ->addForeignKey('rh201_lancamentorra', 'pessoal.lancamentorra', 'rh173_sequencial', array('constraint'=>'lancamentorrapensionista_rh201_lancamentorra_fk'))
-           ->addForeignKey('rh201_numcgm', 'protocolo.cgm', 'z01_numcgm',  array('constraint'=>'lancamentorrapensionista_rh201_numcgm'))
-           ->addIndex(array('rh201_lancamentorra'), array('name' => 'lancamentorrapensionista_rh201_lancamentorra_in'))
-           ->addIndex(array('rh201_numcgm'), array('name' => 'lancamentorrapensionista_cgm_in'))
+           ->addColumn("rh201_valor", 'float', ['scale' => 2, 'precision'=> 30])
+           ->addForeignKey('rh201_lancamentorra', 'pessoal.lancamentorra', 'rh173_sequencial', ['constraint'=>'lancamentorrapensionista_rh201_lancamentorra_fk'])
+           ->addForeignKey('rh201_numcgm', 'protocolo.cgm', 'z01_numcgm',  ['constraint'=>'lancamentorrapensionista_rh201_numcgm'])
+           ->addIndex(['rh201_lancamentorra'], ['name' => 'lancamentorrapensionista_rh201_lancamentorra_in'])
+           ->addIndex(['rh201_numcgm'], ['name' => 'lancamentorrapensionista_cgm_in'])
            ->create();
     $this->execute("ALTER TABLE pessoal.lancamentorrapensionista ALTER COLUMN rh201_sequencial SET DEFAULT nextval('pessoal.lancamentorrapensionista_rh201_sequencial_seq')");
   }
@@ -52,7 +52,7 @@ class PensionistasRraM7676 extends PostgresMigration
     $this->execute("delete from db_syscampo where codcam in(22307, 22308,22309,22310); ");
     $this->execute("delete from db_sysarqmod where codarq = 4018;");
     $this->execute("delete from db_sysarquivo where codarq = 4018;");
-    $this->table('lancamentorrapensionista',  array('schema'=>'pessoal'))->drop();
+    $this->table('lancamentorrapensionista',  ['schema'=>'pessoal'])->drop();
     $this->execute('drop sequence pessoal.lancamentorrapensionista_rh201_sequencial_seq');
 
   }

@@ -79,7 +79,7 @@ $clrotulo->label("it04_descr");
      echo "     $it03_nome";  
      echo "   </td> ";
      echo "   <td> ";
-     echo "     ".(strlen($it03_cpfcnpj)>11?db_formatar($it03_cpfcnpj,'cnpj'):db_formatar($it03_cpfcnpj,'cpf'));
+     echo "     ".(strlen((string) $it03_cpfcnpj)>11?db_formatar($it03_cpfcnpj,'cnpj'):db_formatar($it03_cpfcnpj,'cpf'));
      echo "   </td> ";
      echo "   <td> ";
      echo "     $it03_princ";
@@ -124,7 +124,7 @@ $clrotulo->label("it04_descr");
      echo "   </td> ";
      echo "   <td> ";
 //     echo "     ".db_formatar($it03_cpfcnpj,'cpf');
-     echo "     ".(strlen($it03_cpfcnpj)>11?db_formatar($it03_cpfcnpj,'cnpj'):db_formatar($it03_cpfcnpj,'cpf'));
+     echo "     ".(strlen((string) $it03_cpfcnpj)>11?db_formatar($it03_cpfcnpj,'cnpj'):db_formatar($it03_cpfcnpj,'cpf'));
      echo "   </td> ";
      echo "   <td> ";
      echo "     $it03_princ";
@@ -276,13 +276,13 @@ $clrotulo->label("it04_descr");
        <?=@$Lit14_dtliber?>
     </th>
     <td> 
-    <?=(isset($it14_dtliber_dia)?$it14_dtliber_dia."/":"").(isset($it14_dtliber_mes)?$it14_dtliber_mes."/":"").(isset($it14_dtliber_ano)?$it14_dtliber_ano:"")?>
+    <?=(isset($it14_dtliber_dia)?$it14_dtliber_dia."/":"").(isset($it14_dtliber_mes)?$it14_dtliber_mes."/":"").($it14_dtliber_ano ?? "")?>
     </td>
     <th align="right"  nowrap title="<?=@$Tit14_dtvenc?>">
        <?=@$Lit14_dtvenc?>
     </th>
     <td> 
-    <?=(isset($it14_dtvenc_dia)?$it14_dtvenc_dia."/":"").(isset($it14_dtvenc_mes)?$it14_dtvenc_mes."/":"").(isset($it14_dtvenc_ano)?$it14_dtvenc_ano:"")?>
+    <?=(isset($it14_dtvenc_dia)?$it14_dtvenc_dia."/":"").(isset($it14_dtvenc_mes)?$it14_dtvenc_mes."/":"").($it14_dtvenc_ano ?? "")?>
     </td>
   </tr>
 

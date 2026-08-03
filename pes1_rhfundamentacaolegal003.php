@@ -8,8 +8,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 define('MENSAGENS', 'recursoshumanos.pessoal.pes1_rhfundamentacaolegal.');
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oDaoRhfundamentacaolegal = new cl_rhfundamentacaolegal;
 $oDaoRubricas             = new cl_rhrubricas();
@@ -98,7 +98,7 @@ if (isset($excluir)) {
     $sPosScripts .= 'alert("' . $oDaoRhfundamentacaolegal->erro_msg . '");' . "\n";
     
     if ($oDaoRhfundamentacaolegal->erro_status != "0") {
-      $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+      $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
     }
   
   } catch (Exception $eErro) {

@@ -58,7 +58,7 @@ $clrotulo->label("z01_nome");
 $clcadtipo->rotulo->label();
 
 $db_opcao = 1;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if ( isset($importar) ) {
   $result_fiscais=$cllevusu->sql_record($cllevusu->sql_query_file($y60_codlev));
@@ -98,7 +98,7 @@ if ( isset($importar) ) {
         db_fieldsmemory($result,0);
 
 
-        $arr = array();
+        $arr = [];
         $cont = 0;
         while(1==1){
           $arr[$cont][0] =  $min_ano;
@@ -158,7 +158,7 @@ if ( isset($importar) ) {
                  and q68_issvar is null";
 
       $result11  = db_query($sql11);
-      $numrows11 = pg_numrows($result11);
+      $numrows11 = pg_num_rows($result11);
 
       for($x=0; $x<$numrows11; $x++){
 

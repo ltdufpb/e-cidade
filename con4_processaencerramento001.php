@@ -67,7 +67,7 @@ $rsEnc = $clconencerramento->sql_record($clconencerramento->sql_query(null,"*","
 if ($clconencerramento->numrows > 0){
 
 	$oEnc        = db_utils::fieldsMemory($rsEnc,0);
-	$data        = explode("-",$oEnc->c42_data);
+	$data        = explode("-",(string) $oEnc->c42_data);
 	$datalancdia = $data[2];
 	$datalancmes = $data[1];
 	$datalancano = $data[0];
@@ -126,7 +126,7 @@ if ($clconencerramento->numrows > 0){
 	$db_opcao     = 1;
 
 }
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //$db_opcao = 22;
 $db_botao = false;
 

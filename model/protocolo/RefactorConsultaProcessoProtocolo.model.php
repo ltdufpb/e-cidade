@@ -34,14 +34,12 @@
 class RefactorConsultaProcessoProtocolo
 {
 
-    private $iCodigoProcesso;
     private $iUsuarioLogado;
     private $aMovimentacoes;
 
-    public function __construct($iCodigoProcesso)
+    public function __construct(private $iCodigoProcesso)
     {
 
-        $this->iCodigoProcesso = $iCodigoProcesso;
         $this->iUsuarioLogado = db_getsession("DB_id_usuario");
         $this->processarMovimentacoes();
     }
@@ -52,10 +50,10 @@ class RefactorConsultaProcessoProtocolo
         $codproc = $this->iCodigoProcesso;
 
 
-        $aTiposTextoDespachos   = array(
+        $aTiposTextoDespachos   = [
                                     1 => "Interno",
                                     2 => ""
-                                  );
+                                  ];
         $clprotprocesso          = db_utils::getDao('protprocesso');
         $clprotprocessodoc       = db_utils::getDao('procprocessodoc');
         $clprotprocessoapensados = db_utils::getDao('processosapensados');
@@ -656,7 +654,7 @@ class RefactorDadosMovimentacaoProcessoProtocolo
     {
 
         if (!property_exists($this, $sVariavel)) {
-            throw new Exception(__CLASS__ . ": Propriedade {$sVariavel} não encontrada.");
+            throw new Exception(self::class . ": Propriedade {$sVariavel} não encontrada.");
         }
 
         $this->{$sVariavel} = $mValor;

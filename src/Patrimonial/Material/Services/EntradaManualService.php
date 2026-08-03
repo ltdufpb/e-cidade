@@ -155,16 +155,11 @@ class EntradaManualService
      */
     private function buscarTipoMovimentoInverso(LancamentoMovimentacao $lancamentoEntradaManual)
     {
-        switch ($lancamentoEntradaManual->m80_codtipo) {
-            case TipoMovimentacaoEstoque::IMPLANTACAO:
-            case TipoMovimentacaoEstoque::IMPLANTACAO_ALTERADA:
-                return TipoMovimentacaoEstoque::IMPLANTACAO_CANCELADA;
-            case TipoMovimentacaoEstoque::ENTRADA_MANUAL:
-            case TipoMovimentacaoEstoque::ENTRADA_MANUAL_ALTERADA:
-                return TipoMovimentacaoEstoque::ENTRADA_MANUAL_CANCELADA;
-            default:
-                throw new Exception("Tipo de lançamento inválido para esse cancelamento!");
-        }
+        return match ($lancamentoEntradaManual->m80_codtipo) {
+            TipoMovimentacaoEstoque::IMPLANTACAO, TipoMovimentacaoEstoque::IMPLANTACAO_ALTERADA => TipoMovimentacaoEstoque::IMPLANTACAO_CANCELADA,
+            TipoMovimentacaoEstoque::ENTRADA_MANUAL, TipoMovimentacaoEstoque::ENTRADA_MANUAL_ALTERADA => TipoMovimentacaoEstoque::ENTRADA_MANUAL_CANCELADA,
+            default => throw new Exception("Tipo de lançamento inválido para esse cancelamento!"),
+        };
     }
 
     /**

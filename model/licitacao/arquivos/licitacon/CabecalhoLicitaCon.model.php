@@ -130,13 +130,13 @@ class CabecalhoLicitaCon {
    */
   public function getDadosLayout() {
 
-    return (object) array(
+    return (object) [
       'NOME_SETOR'      => $this->getInstituicao()->getDescricao(),
       'CNPJ'            => $this->getInstituicao()->getCnpj(),
       'DATA_INICIAL'    => $this->getDataInicial()->getDate('d/m/Y'),
       'DATA_FINAL'      => $this->getDataFinal()->getDate('d/m/Y'),
       'DATA_GERACAO'    => $this->getDataGeracao()->getDate('d/m/Y'),
       'TOTAL_REGISTROS' => $this->getTotalRegistros()
-    );
+    ];
   }
 }

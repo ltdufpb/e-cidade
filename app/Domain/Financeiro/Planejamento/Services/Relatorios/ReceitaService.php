@@ -66,7 +66,7 @@ abstract class ReceitaService
             throw new Exception('A instituição deve ser informada.', 403);
         }
         if (!empty($this->filtros['natureza'])) {
-            $fonte = str_pad($this->filtros['natureza'], 15, '0', STR_PAD_RIGHT);
+            $fonte = str_pad((string) $this->filtros['natureza'], 15, '0', STR_PAD_RIGHT);
             $estrutural = new EstruturalReceita($fonte);
             $this->nivel = $estrutural->getNivel();
         }
@@ -168,11 +168,9 @@ abstract class ReceitaService
                 $nivel = $estrutural->getNivel();
 
                 if (!array_key_exists($fonte, $receitas)) {
-                    $fonteReceita = $fontesReceitas->filter(function (FonteReceita $fonteReceita) use ($fonte) {
-                        return $fonteReceita->o57_fonte === $fonte;
-                    })->shift();
+                    $fonteReceita = $fontesReceitas->filter(fn(FonteReceita $fonteReceita) => $fonteReceita->o57_fonte === $fonte)->shift();
 
-                    $receitas[$fonte] = $this->builder($estrutural, $fonteReceita->o57_descr, $nivel);
+                    $receitas[$fonte] = $this->builder($estrutural, $fonteReceita->o57_descr);
                 }
 
                 $receitas[$fonte]->valor_base += $estimativa->valor_base;

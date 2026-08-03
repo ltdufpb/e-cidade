@@ -33,7 +33,7 @@ include(modification("classes/db_db_sysarquivo_classe.php"));
 include(modification("classes/db_db_sysfuncoes_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if(isset($retorno)) {
   $sql = "select  t.codtrigger,t.nometrigger,t.quandotrigger,t.eventotrigger,f.nomefuncao as db_funcao,f.codfuncao ,a.codarq ,a.nomearq 
           from db_systriggers t
@@ -46,11 +46,11 @@ if(isset($retorno)) {
   db_fieldsmemory($result,0);
 }
 //////////INCLUIR/////////////
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   //$result = db_query("select max(codtrigger) + 1 from db_systriggers");
   $result = db_query("select nextval('db_systriggers_codtrigger_seq')");
-  $codtrigger = pg_result($result,0,0);
+  $codtrigger = pg_fetch_result($result,0,0);
   $codtrigger = $codtrigger==""?"1":$codtrigger;
   db_query("insert into db_systriggers  (codtrigger,nometrigger,quandotrigger,eventotrigger,codfuncao,codarq )
                                        values($codtrigger,
@@ -61,8 +61,8 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 					     $codarq)") or die("Erro(23) inserindo em db_systriggers");
   db_redireciona("sys1_triggers001.php");											
 ////////////////ALTERAR////////////////  
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   db_query("update db_systriggers set nometrigger = '$nometrigger',
 									 quandotrigger = '$quandotrigger',
 									 eventotrigger = '$eventotrigger',
@@ -71,8 +71,8 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 			where codtrigger = $codtrigger") or die("Erro(32) alterando db_systrigger");
   db_redireciona("sys1_triggers001.php");
 ////////////////EXCLUIR//////////////
-} else if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from db_systriggers where codtrigger = ".$HTTP_POST_VARS["codtrigger"]) or die("Erro(36) excluindo db_systrigger");			
+} else if(isset($_POST["excluir"])) {
+  db_query("delete from db_systriggers where codtrigger = ".$_POST["codtrigger"]) or die("Erro(36) excluindo db_systrigger");			
   db_redireciona("sys1_triggers001.php");
 }
 
@@ -141,10 +141,10 @@ input {
   <tr> 
     <td height="430" align="center" valign="middle" bgcolor="#CCCCCC"> 
       <?php 
-      if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {	  
+      if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {	  
 		 $sql = "SELECT codtrigger as \"Código\",nometrigger as \"Nome\"
                  FROM db_systriggers
-			     WHERE nometrigger like '".$HTTP_POST_VARS["nometrigger"]."%'
+			     WHERE nometrigger like '".$_POST["nometrigger"]."%'
                  ORDER BY nometrigger";
 		db_lov($sql,15,"sys1_triggers001.php"); 
 	  } else {

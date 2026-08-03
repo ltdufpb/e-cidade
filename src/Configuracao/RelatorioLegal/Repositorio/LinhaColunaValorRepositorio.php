@@ -25,7 +25,7 @@ class LinhaColunaValorRepositorio extends Repositorio
      * @param LinhaColunaValor|null $linhaColunaValor
      * @throws Exception
      */
-    public function delete(LinhaColunaValor $linhaColunaValor = null)
+    public function delete(?LinhaColunaValor $linhaColunaValor = null)
     {
         $id = $linhaColunaValor instanceof LinhaColunaValor ? $linhaColunaValor->getSequencial() : null;
 
@@ -44,7 +44,7 @@ class LinhaColunaValorRepositorio extends Repositorio
      * @return LinhaColunaValor[]
      * @throws Exception
      */
-    public function get($columns = array('*'))
+    public function get($columns = ['*'])
     {
         $dao = new cl_orcparamseqorcparamseqcolunavalor();
         $sql = $dao->sql_query(null, implode(', ', $columns), '', implode(' AND ', $this->scopes));
@@ -54,7 +54,7 @@ class LinhaColunaValorRepositorio extends Repositorio
             throw new Exception("Não foi possível buscar as edições manuais da linha.\nContate o suporte.");
         }
 
-        $registros = array();
+        $registros = [];
 
         if (pg_num_rows($resultado) === 0) {
             return $registros;

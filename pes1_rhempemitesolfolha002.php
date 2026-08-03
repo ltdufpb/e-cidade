@@ -38,7 +38,7 @@ include(modification("classes/db_orcreservasol_classe.php"));
 include(modification("classes/db_pcparam_classe.php"));
 include(modification("classes/db_empparametro_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 //echo $HTTP_SERVER_VARS["QUERY_STRING"]; exit;
 
@@ -148,7 +148,7 @@ for($contador=0;$contador<$numrows_solicita;$contador++){
   $pdf1->Snumero    = $pc10_numero;
   $pdf1->Sdata      = $pc10_data;
   $pdf1->Svalor     = $pc12_vlrap;
-  $pdf1->Sresumo    = stripslashes(addslashes($pc10_resumo));
+  $pdf1->Sresumo    = stripslashes(addslashes((string) $pc10_resumo));
   $pdf1->Stipcom    = $pc50_descr;
   $pdf1->Sdepart    = $descrdepto;
   $pdf1->Srespdepart= $nomeresponsavel;

@@ -34,15 +34,15 @@ include(modification("classes/db_pcsubgrupo_classe.php"));
 include(modification("classes/db_pcmater_classe.php"));
 include(modification("classes/db_pcmaterele_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clpcmater = new cl_pcmater;
 $clpcmaterele = new cl_pcmaterele;
 $clpcgrupo = new cl_pcgrupo;
 $clpcsubgrupo = new cl_pcsubgrupo;
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
   $sqlerro = false;
@@ -117,7 +117,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clpcmater->erro_status=="0"){
     $clpcmater->erro(true,false);
   }else{

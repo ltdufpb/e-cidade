@@ -82,7 +82,7 @@ require_once(modification("classes/materialestoque.model.php"));
   $valordev        = 0;
   $valor_uni       = 0;
 
-  $aItens = array();
+  $aItens = [];
   if (trim($valores) != '') {
 
     $sql               = $oDaoAtendrequiitem->sql_query(null, 'm40_codigo', null, "m43_codatendrequi = $m42_codigo");
@@ -350,12 +350,7 @@ require_once(modification("classes/materialestoque.model.php"));
         }
       }
     }
-  } catch (BusinessException $eException) {
-
-    $erro_msg = str_replace("\n", "\\n", $eException->getMessage());
-    db_msgbox($erro_msg);
-    return true;
-  } catch (Exception $eException) {
+  } catch (BusinessException|Exception $eException) {
 
     $erro_msg = str_replace("\n", "\\n", $eException->getMessage());
     db_msgbox($erro_msg);

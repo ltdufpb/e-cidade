@@ -276,11 +276,11 @@ function js_anular(){
 		    }
 		    $arr[$codtipo] = $e83_descr;
  	            $re = 'e83_sequencia_'.$codtipo;
-		    $$re = $e83_sequencia;
+		    ${$re} = $e83_sequencia;
 		    db_input($re,10,'',true,'hidden',1,'');
 
  	            $valsaldo = 'vervaloratualsaltes_'.$codtipo;
-		    $$valsaldo = trim(db_formatar($vervaloratualsaltes,"f"));
+		    ${$valsaldo} = trim(db_formatar($vervaloratualsaltes,"f"));
 		    db_input($valsaldo,10,'',true,'hidden',1,'');
 		    
 		    $pardata = "";
@@ -319,19 +319,19 @@ function js_anular(){
                     $resss = db_query($sqlll) or die($sqlll);
                     // cheque emitidos
                     $valsaldoc = 'vervaloratualsaltescheque_'.$codtipo;
-                    if( pg_numrows($resss) > 0 ){
-                      $$valsaldoc = trim(db_formatar(pg_result($resss,0,'sum'),"f"));
+                    if( pg_num_rows($resss) > 0 ){
+                      ${$valsaldoc} = trim(db_formatar(pg_fetch_result($resss,0,'sum'),"f"));
                     }else{
-                      $$valsaldoc = "0";
+                      ${$valsaldoc} = "0";
                     }
                     db_input($valsaldoc,10,'',true,'hidden',1,'');
                   
                     // saldo - cheque
                     $valsaldol = 'vervaloratualsalteschequeliq_'.$codtipo;
-                    if( pg_numrows($resss) > 0 ){
-                      $$valsaldol = trim(db_formatar( $vervaloratualsaltes - pg_result($resss,0,'sum'),"f"));
+                    if( pg_num_rows($resss) > 0 ){
+                      ${$valsaldol} = trim(db_formatar( $vervaloratualsaltes - pg_fetch_result($resss,0,'sum'),"f"));
                     }else{
-                      $$valsaldol = "0";
+                      ${$valsaldol} = "0";
                     }
                     db_input($valsaldol,10,'',true,'hidden',1,'');
 		    
@@ -436,7 +436,7 @@ function js_anular(){
 	     <?=db_input('total',10,'',true,'text',3)?>
             <b>Cheques: </b>
              <?php 
-	          $arr_c = array("1"=>"1","2"=>"2","3"=>"3","4"=>"4","5"=>"5","6"=>"6");
+	          $arr_c = ["1"=>"1","2"=>"2","3"=>"3","4"=>"4","5"=>"5","6"=>"6"];
 	          db_select("cheques",$arr_c,true,1,"onchange='js_liberar_botao(true);'");
 	     ?>
          <input name="valorescheques" type="button" value="Informar valores" onclick='js_informar_valores();' disabled>

@@ -27,7 +27,7 @@
 
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $data1 = str_replace("X","-",$data1);
 $data2 = str_replace("X","-",$data2);
 $unidade = @$unidade;
@@ -114,7 +114,7 @@ $pdf->AliasNbPages();
 $head1 = "Relatório de FAA por usuários";
 $head2 = "Periodo:".substr($data1,8,2)."/".substr($data1,5,2)."/".substr($data1,0,4)." A ".substr($data2,8,2)."/".substr($data2,5,2)."/".substr($data2,0,4);
 if( !empty($unidade) && pg_num_rows( $query_pront ) > 0){
-    $head3 = "Unidade: $unidade - ".pg_result($query_pront,0,'descrdepto');
+    $head3 = "Unidade: $unidade - ".pg_fetch_result($query_pront,0,'descrdepto');
 }
 $pdf->addpage();
 $pdf->setfillcolor(195);

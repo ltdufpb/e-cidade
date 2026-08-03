@@ -32,15 +32,13 @@ class libparagrafo {
   const TIPO_TABELA_SIMPLES = 2;
   const TIPO_CODIGO_PHP = 3;
 
-  var $iTipoParagrafo = null;
-  var $oParag         = null;
-  var $aParametros    = array();
+  public $iTipoParagrafo = null;
+  public $aParametros    = [];
 
   //function libparagrafo( $oParag, $aParametros ) {
-  function libparagrafo( $oParag ) {
+  function __construct( public $oParag ) {
 
-    $this->oParag      = $oParag;
-//    $this->aParametros = $aParametros;
+    //    $this->aParametros = $aParametros;
 
   }
 

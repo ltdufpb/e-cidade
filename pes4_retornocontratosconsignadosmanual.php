@@ -40,24 +40,24 @@ $iCodigobanco = $oGet->banco;
 $iAno         = $oGet->ano;
 $iMes         = $oGet->mes;
 
-$aServidores = array();
+$aServidores = [];
 $oBanco      = new Banco($iCodigobanco);
 $aParcelas   = ArquivoConsignadoManualParcelaRepository::getParcelasProcessadasNaCompetenciaPorBanco(new DBCompetencia($iAno, $iMes), $oBanco);
 
 foreach ($aParcelas as $oParcela) {
 
-	$sMotivo = 'Não descontado - ' . ucfirst(strtolower($oParcela->getMotivo()));
+	$sMotivo = 'Não descontado - ' . ucfirst(strtolower((string) $oParcela->getMotivo()));
 
-	if(trim($oParcela->getMotivo())==false && $oParcela->getValorDescontado() > 0) {
+	if(trim((string) $oParcela->getMotivo())==false && $oParcela->getValorDescontado() > 0) {
 		$sMotivo = 'Descontado';
 	}
 
-  $aServidores[] = (object)array('iMatricula'       => $oParcela->getServidor()->getMatricula(),
+  $aServidores[] = (object)['iMatricula'       => $oParcela->getServidor()->getMatricula(),
 							  								 'sNome'            => $oParcela->getServidor()->getCgm()->getNome(),
 							  								 'sSituacao'        => $sMotivo,
 							  								 'nValorDescontar'  => $oParcela->getValor(),
 							  								 'nValorDescontado' => $oParcela->getValorDescontado()
-						  								  );	
+						  								  ];	
 }
 
 $oPdf = new PDFNovo();

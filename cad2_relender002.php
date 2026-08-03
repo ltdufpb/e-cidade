@@ -36,7 +36,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('id_usuario');
 $clrotulo->label('nome');
 $clrotulo->label('descrdepto');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $txt_where="";
 $and="";
 if ($listacgm != "") {
@@ -50,7 +50,7 @@ if ($listacgm != "") {
 }
 if ($listaset != "") {
 	$vir = "";
-	$dados_list = split(",",$listaset);
+	$dados_list = preg_split("#,#m",(string) $listaset);
 	$listaset = "";
 	for($w=0;$w<count($dados_list);$w++){
 		$listaset .= $vir."'".$dados_list[$w]."'";
@@ -117,10 +117,10 @@ for($x = 0; $x < $cliptuender->numrows;$x++){
    $pdf->setfont('arial','',7);
    $pdf->cell(15,$alt,$j43_matric,0,0,"C",$p);  
 
-   if(strlen($j43_dest) < 33){
+   if(strlen((string) $j43_dest) < 33){
       $pdf->cell(56,$alt,$j43_dest ,0,0,"L",$p);   
    }else{
-      $pdf->cell(56,$alt,substr($j43_dest,0,35)."..."  ,0,0,"L",$p);   
+      $pdf->cell(56,$alt,substr((string) $j43_dest,0,35)."..."  ,0,0,"L",$p);   
    }
      
    $pdf->cell(50,$alt,$j43_ender ,0,0,"L",$p);   

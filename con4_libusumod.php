@@ -43,14 +43,14 @@ if(isset($_GET["retorno"])){
 }
 if(isset($retorno)) {
   $aux = explode("_",$retorno); 
-  $HTTP_POST_VARS["usuario"] = $aux[1];
-  $HTTP_POST_VARS["selecionar"] = "eco";
+  $_POST["usuario"] = $aux[1];
+  $_POST["selecionar"] = "eco";
   $instituicao = $aux[0];
   $usuario = $aux[1];
   $modulo = $aux[2];
 }
-if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from db_usermod where id_instit = $instit and id_usuario = $usuario and id_modulo = $modulos") or die("Erro(15) excluindo db_usermod: ".pg_errormessage());
+if(isset($_POST["excluir"])) {
+  db_query("delete from db_usermod where id_instit = $instit and id_usuario = $usuario and id_modulo = $modulos") or die("Erro(15) excluindo db_usermod: ".pg_last_error());
 
   /**
    * Limpa o cache dos menus
@@ -58,9 +58,9 @@ if(isset($HTTP_POST_VARS["excluir"])) {
   DBMenu::limpaCache($usuario);
 }
 if(isset($inserir)) {
-  db_query("delete from db_usermod where id_instit = $instit and id_usuario = $usuario and id_modulo = $modulos") or die("Erro(15) excluindo db_usermod: ".pg_errormessage());
-  db_query("insert into db_usermod values($instit,$usuario,$modulos)") or die("Erro(8) inserindo em db_usermod: ".pg_errormessage());
-  $HTTP_POST_VARS["selecionar"] = "eco";
+  db_query("delete from db_usermod where id_instit = $instit and id_usuario = $usuario and id_modulo = $modulos") or die("Erro(15) excluindo db_usermod: ".pg_last_error());
+  db_query("insert into db_usermod values($instit,$usuario,$modulos)") or die("Erro(8) inserindo em db_usermod: ".pg_last_error());
+  $_POST["selecionar"] = "eco";
 
   /**
    * Limpa o cache dos menus
@@ -145,8 +145,8 @@ input {
                                on u.id_instit = c.codigo
 							   and ( u.id_usuario = ".$usuario." or ".db_getsession("DB_id_usuario")." = 1)");
 		  }
-		    for($i = 0;$i < pg_numrows($result);$i++) {
-		      echo "<option value=\"".pg_result($result,$i,"codigo")."\" ".($instituicao==pg_result($result,$i,"codigo")?"selected":"").">".pg_result($result,$i,"nomeinst")."</option>\n";
+		    for($i = 0;$i < pg_num_rows($result);$i++) {
+		      echo "<option value=\"".pg_fetch_result($result,$i,"codigo")."\" ".($instituicao==pg_fetch_result($result,$i,"codigo")?"selected":"").">".pg_fetch_result($result,$i,"nomeinst")."</option>\n";
 		    }
 	      ?>
               </select> </td>
@@ -166,16 +166,16 @@ input {
                                              where libcliente is true
                                              order by lower(nome_modulo)");
 			}
-			  $numrows = pg_numrows($result);
+			  $numrows = pg_num_rows($result);
 			  for($i = 0;$i < $numrows;$i++) {
-			    echo "<option value=\"".pg_result($result,$i,"id_item")."\" ".($modulo==pg_result($result,$i,"id_item")?"selected":"").">".pg_result($result,$i,"nome_modulo")."</option>\n";
+			    echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."\" ".($modulo==pg_fetch_result($result,$i,"id_item")?"selected":"").">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
 			  }  
 		  ?>
               </select> </td>
           </Tr>
           <Tr> 
             <td valign="top">
-              <input type="hidden" name="usuario" value="<?=$HTTP_POST_VARS["usuario"]?>">
+              <input type="hidden" name="usuario" value="<?=$_POST["usuario"]?>">
             </td>
             <td valign="top" nowrap>
               <input name="inserir" onClick="if(document.form1.instit.selectedIndex == -1 || document.form1.modulos.selectedIndex == -1) { alert('Voce precisa selecionar um modulo e uma instituição!'); return false; }" type="submit" value="Inserir" <?php  echo !isset($retorno)?"":"disabled" ?>> 
@@ -198,9 +198,9 @@ input {
 			  <select onDblClick="document.form1.selecionar.click()" name="usuario" size="18" onChange="js_msg_status(this.value.substr(this.value.search('##') + 2))" onBlur="js_lmp_status()">
                   <?php 
 			  $result = db_query("select id_usuario,nome,login from db_usuarios where usuext = 0 and usuarioativo = 1 order by lower(login)");
-			  $numrows = pg_numrows($result);
+			  $numrows = pg_num_rows($result);
 			  for($i = 0;$i < $numrows;$i++) {
-			    echo "<option value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
+			    echo "<option value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"login")."</option>\n";
 			  }  
 		      ?>
                 </select> </td>

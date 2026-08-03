@@ -44,7 +44,7 @@ class ParametrosRepository extends Repository
      */
     public static function getFromEscola(Escola $escola, $campos = '*')
     {
-        $where = array("ed233_i_escola = {$escola->getCodigo()}");
+        $where = ["ed233_i_escola = {$escola->getCodigo()}"];
         $dao = new cl_edu_parametros();
         $sql = $dao->sql_query_file(null, $campos, null, implode(' and ', $where));
         $rs = db_query($sql);
@@ -54,7 +54,7 @@ class ParametrosRepository extends Repository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
         return Parametros::fromState(pg_fetch_array($rs));

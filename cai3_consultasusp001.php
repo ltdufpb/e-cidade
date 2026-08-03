@@ -136,7 +136,7 @@ function js_marca(obj){
     </table>
 </fieldset>
 <?php 
-  if ( trim($oSuspensao->ar19_sequencial) != "" ) {
+  if ( trim((string) $oSuspensao->ar19_sequencial) != "" ) {
 
   	 $sCamposFinaliza  = " nome, 	  ";
   	 $sCamposFinaliza .= " ar19_data, ";
@@ -189,7 +189,7 @@ function js_marca(obj){
            <a class='selecionados' onclick='js_marca(this);this.blur()' href='arr3_consultadebitossuspensos.php?suspensao=<?=$oGet->suspensao;?>'  target='dados'><b> Débitos   </b></a> 
            <a class='dados'        onclick='js_marca(this);this.blur()' href='arr3_consultaprocessos001.php?suspensao=<?=$oGet->suspensao;?>'      target='dados'><b> Processo  </b></a>
            <?php 
-		 	 if ( trim($oSuspensao->v63_sequencial) != "") {
+		 	 if ( trim((string) $oSuspensao->v63_sequencial) != "") {
 		 	   echo "<a class='dados' onclick='js_marca(this);this.blur()' href='arr3_consultprocjuradvog001.php?suspensao={$oGet->suspensao}' 	   target='dados'><b> Advogados  </b></a>";
 		 	 }         
            ?>

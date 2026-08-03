@@ -45,7 +45,7 @@ $clrotulo->label("nome");
       $result_cods=$clliclicitem->sql_record($clliclicitem->sql_query_file(null,"*",null,"l21_codliclicita=$licitacao"));
       if ($clliclicitem->numrows>0){
       	if (!isset($_SESSION['cods'])){
-      		$_SESSION['cods'] = array();
+      		$_SESSION['cods'] = [];
       	}
     	  $vir="";
     	  for ($w=0;$w<$clliclicitem->numrows;$w++){

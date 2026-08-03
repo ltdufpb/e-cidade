@@ -82,7 +82,7 @@ class ContaCorrenteContratoRepository extends ContaCorrenteRepositoryBase {
    */
   private function agrupar() {
 
-    $aContas = array();
+    $aContas = [];
 
     /**
      * Para cada índice do array, buscamos seus atributos e os agrupamos
@@ -157,7 +157,7 @@ class ContaCorrenteContratoRepository extends ContaCorrenteRepositoryBase {
        */
       $sAgrupamento = $oConta->c19_instit.$oConta->c19_numcgm.$oConta->c19_acordo;
 
-      $aContas[$sAgrupamento]->aCabecalho = array();
+      $aContas[$sAgrupamento]->aCabecalho = [];
 
 
 

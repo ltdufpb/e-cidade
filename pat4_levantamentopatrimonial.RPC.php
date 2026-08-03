@@ -108,7 +108,7 @@ try {
        * Códigos dos bens
        * @var string[]
        */
-      $aBens = array();
+      $aBens = [];
 
       if (empty($iDepartamento)) {
         throw new Exception("Não foi encontrado o departamento no arquivo.");
@@ -134,7 +134,7 @@ try {
 
       try {
         (new DBDepartamento($iDepartamento));
-      } catch (Exception $e) {
+      } catch (Exception) {
         throw new Exception("O departamento de código {$iDepartamento} não foi encontrado no sistema. Verifique o arquivo.");
       }
 

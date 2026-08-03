@@ -115,7 +115,7 @@ abstract class ResultadoFormulaRescisao {
               $rubrica_contem = $carregarubricas_geral[$campo_rubrica];
 
               $campo_pd       = (substr("#".$rubrica_contem,1,1)=="+"?"1":"2");
-              $formula2       = '$formula1 = '.substr("#".$rubrica_contem,2,strlen($rubrica_contem)-1).";";
+              $formula2       = '$formula1 = '.substr("#".$rubrica_contem,2,strlen((string) $rubrica_contem)-1).";";
 
               global $basesr;
               $achou = false;
@@ -266,7 +266,7 @@ abstract class ResultadoFormulaRescisao {
             //echo "<BR> base 1.3 --> $base";
             LogCalculoFolha::write("Percorrendo os dados da tabela $area0");
 
-            for($i=0;$i<count($$area0);$i++){
+            for($i=0;$i<count(${$area0});$i++){
 
               eval('$campo_rubrica = $'.$area0."[$i]['".$sigla."_rubric'];");
 
@@ -298,7 +298,7 @@ abstract class ResultadoFormulaRescisao {
               $conteudo_rubrica = "R".$campo_rubrica;
               $rubrica_contem   = $carregarubricas_geral[$campo_rubrica];
               $campo_pd         = (substr("#".$rubrica_contem,1,1)=="+"?"1":"2");
-              $formula1         = substr("#".$rubrica_contem,2,strlen($rubrica_contem)-1);
+              $formula1         = substr("#".$rubrica_contem,2,strlen((string) $rubrica_contem)-1);
 
               global $basesr;
               $achou            = false;
@@ -338,7 +338,7 @@ abstract class ResultadoFormulaRescisao {
                   $condicaoaux .= " and ".$sigla2."_pd = ".db_sqlformat( $campo_pd );
                   $condicaoaux .= " and ".$sigla2."_rubric = ".db_sqlformat( $campo_rubrica );
                   if( db_at($area0,"pontoprovfer pontoprovs13 pontofr") > 0 ){
-                    $condicaoaux .= " and upper(".$sigla2."_tpp) = ".db_sqlformat( strtoupper($tpgto) );
+                    $condicaoaux .= " and upper(".$sigla2."_tpp) = ".db_sqlformat( strtoupper((string) $tpgto) );
                   }
                   global $transacao;
                   if( db_selectmax( "transacao", "select * from ".$area1." ".bb_condicaosubpes( $sigla2."_" ).$condicaoaux )){

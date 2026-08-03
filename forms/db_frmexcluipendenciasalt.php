@@ -68,7 +68,7 @@
 
 										$rsContas    = $clsaltes->sql_record($sqlConta);
 										$numrows     = $clsaltes->numrows;
-										$arrayContas = array( 0 => " Selecione a conta para o processamento ");
+										$arrayContas = [ 0 => " Selecione a conta para o processamento "];
 										for($i=0;$i<$numrows;$i++){
 											 db_fieldsmemory($rsContas,$i);
                        $arrayContas[$db83_sequencial] = $db83_sequencial." - ".$db83_descricao;
@@ -83,7 +83,7 @@
 						      </td>
 					       	<td>
                    <?php 
-                    $arrayDatas = array(0 => " Selecione a data para o processamento ");
+                    $arrayDatas = [0 => " Selecione a data para o processamento "];
                     db_select('data',$arrayDatas,'',1,"style='width:400px' onchange='js_enabled()'; ","","");
                   ?>
     						  </td>

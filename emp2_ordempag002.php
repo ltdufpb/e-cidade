@@ -40,7 +40,7 @@ $clrotulo->label('e53_valor');
 $clrotulo->label('e60_numcgm');
 $clrotulo->label('z01_nome');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($ordem == 'e'){
@@ -123,7 +123,7 @@ $alt = 4;
 $total = 0;
 $totalvalor = 0;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
   db_fieldsmemory($result,$x,true);
 
   if ($e53_valor == 0) continue;

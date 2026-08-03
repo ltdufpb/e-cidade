@@ -36,7 +36,7 @@ if ($sqlerro == false) {
 	
   	$sSqlTabelasConfig   = $oDaoIptuTabelasConfig->sql_query(null, "db_sysarquivo.nomearq", null, "");
   	$rsTablasConfig      = $oDaoIptuTabelasConfig->sql_record($sSqlTabelasConfig);
-  	$aListaTabelasConfig = array();
+  	$aListaTabelasConfig = [];
   	if ($oDaoIptuTabelasConfig->numrows == 0) {
   		
       $sMensagem = "ERRO: Não existe tabela de iptu configurada!";

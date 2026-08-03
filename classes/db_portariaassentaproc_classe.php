@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE portariaassentaproc
 class cl_portariaassentaproc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h34_sequencial = 0; 
-   var $h34_portariaassenta = 0; 
-   var $h34_protprocesso = 0; 
+   public $h34_sequencial = 0; 
+   public $h34_portariaassenta = 0; 
+   public $h34_protprocesso = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h34_sequencial = int8 = Cod. Sequencial 
                  h34_portariaassenta = int8 = Portaria Assentada 
                  h34_protprocesso = int4 = Código do processo 
                  ";
    //funcao construtor da classe 
-   function cl_portariaassentaproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariaassentaproc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_portariaassentaproc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->h34_sequencial = pg_result($result,0,0); 
+       $this->h34_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from portariaassentaproc_h34_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $h34_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $h34_sequencial)){
          $this->erro_sql = " Campo h34_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_portariaassentaproc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Portaria Protocolada ($this->h34_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Portaria Protocolada já Cadastrado";
@@ -166,12 +166,12 @@ class cl_portariaassentaproc {
      $resaco = $this->sql_record($this->sql_query_file($this->h34_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10136,'$this->h34_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1745,10136,'','".AddSlashes(pg_result($resaco,0,'h34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1745,10137,'','".AddSlashes(pg_result($resaco,0,'h34_portariaassenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1745,10138,'','".AddSlashes(pg_result($resaco,0,'h34_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1745,10136,'','".AddSlashes(pg_fetch_result($resaco,0,'h34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1745,10137,'','".AddSlashes(pg_fetch_result($resaco,0,'h34_portariaassenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1745,10138,'','".AddSlashes(pg_fetch_result($resaco,0,'h34_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_portariaassentaproc {
       $this->atualizacampos();
      $sql = " update portariaassentaproc set ";
      $virgula = "";
-     if(trim($this->h34_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h34_sequencial"])){ 
+     if(trim((string) $this->h34_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h34_sequencial"])){ 
        $sql  .= $virgula." h34_sequencial = $this->h34_sequencial ";
        $virgula = ",";
-       if(trim($this->h34_sequencial) == null ){ 
+       if(trim((string) $this->h34_sequencial) == null ){ 
          $this->erro_sql = " Campo Cod. Sequencial nao Informado.";
          $this->erro_campo = "h34_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_portariaassentaproc {
          return false;
        }
      }
-     if(trim($this->h34_portariaassenta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h34_portariaassenta"])){ 
+     if(trim((string) $this->h34_portariaassenta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h34_portariaassenta"])){ 
        $sql  .= $virgula." h34_portariaassenta = $this->h34_portariaassenta ";
        $virgula = ",";
-       if(trim($this->h34_portariaassenta) == null ){ 
+       if(trim((string) $this->h34_portariaassenta) == null ){ 
          $this->erro_sql = " Campo Portaria Assentada nao Informado.";
          $this->erro_campo = "h34_portariaassenta";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_portariaassentaproc {
          return false;
        }
      }
-     if(trim($this->h34_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h34_protprocesso"])){ 
+     if(trim((string) $this->h34_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h34_protprocesso"])){ 
        $sql  .= $virgula." h34_protprocesso = $this->h34_protprocesso ";
        $virgula = ",";
-       if(trim($this->h34_protprocesso) == null ){ 
+       if(trim((string) $this->h34_protprocesso) == null ){ 
          $this->erro_sql = " Campo Código do processo nao Informado.";
          $this->erro_campo = "h34_protprocesso";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_portariaassentaproc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10136,'$this->h34_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h34_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1745,10136,'".AddSlashes(pg_result($resaco,$conresaco,'h34_sequencial'))."','$this->h34_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1745,10136,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h34_sequencial'))."','$this->h34_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h34_portariaassenta"]))
-           $resac = db_query("insert into db_acount values($acount,1745,10137,'".AddSlashes(pg_result($resaco,$conresaco,'h34_portariaassenta'))."','$this->h34_portariaassenta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1745,10137,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h34_portariaassenta'))."','$this->h34_portariaassenta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h34_protprocesso"]))
-           $resac = db_query("insert into db_acount values($acount,1745,10138,'".AddSlashes(pg_result($resaco,$conresaco,'h34_protprocesso'))."','$this->h34_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1745,10138,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h34_protprocesso'))."','$this->h34_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_portariaassentaproc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10136,'$h34_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1745,10136,'','".AddSlashes(pg_result($resaco,$iresaco,'h34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1745,10137,'','".AddSlashes(pg_result($resaco,$iresaco,'h34_portariaassenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1745,10138,'','".AddSlashes(pg_result($resaco,$iresaco,'h34_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1745,10136,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1745,10137,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h34_portariaassenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1745,10138,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h34_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from portariaassentaproc
@@ -345,7 +345,7 @@ class cl_portariaassentaproc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:portariaassentaproc";

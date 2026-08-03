@@ -55,9 +55,9 @@
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	     $clcriaabas->identifica = array("regraarredondamento"     =>"Regra","regraarredondamentofaixa"=>"Faixa"); 
-	     $clcriaabas->src        = array("regraarredondamento"     =>"edu1_regraarredondamento005.php");
-	     $clcriaabas->disabled   = array("regraarredondamentofaixa"=>"true"); 
+	     $clcriaabas->identifica = ["regraarredondamento"     =>"Regra","regraarredondamentofaixa"=>"Faixa"]; 
+	     $clcriaabas->src        = ["regraarredondamento"     =>"edu1_regraarredondamento005.php"];
+	     $clcriaabas->disabled   = ["regraarredondamentofaixa"=>"true"]; 
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

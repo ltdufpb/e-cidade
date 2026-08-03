@@ -118,7 +118,7 @@ class ReceitaInfracao extends \BaseClassRepository
     public function getByAnoNivel($ano, $nivel)
     {
         $oDaoReceitaInfracao = new \cl_receitainfracao;
-        $aWhere = array();
+        $aWhere = [];
         $aWhere[] = "i06_anousu = {$ano}";
         $aWhere[] = "i06_nivel  = {$nivel}";
         $sWhere = implode(" AND ", $aWhere);
@@ -186,11 +186,11 @@ class ReceitaInfracao extends \BaseClassRepository
     public function verificaFaltantes($ano)
     {
         $oDaoReceitaInfracao = new \cl_receitainfracao;
-        $aWhere = array();
+        $aWhere = [];
         $aWhere[] = "i06_anousu = {$ano}";
         $sWhere = implode(" AND ", $aWhere);
         $oRetorno = new \stdClass;
-        $oRetorno->Nivel = array();
+        $oRetorno->Nivel = [];
 
         $sSqlNivel = $oDaoReceitaInfracao->sql_query_file(null, "i06_nivel, i06_conta", "i06_nivel", $sWhere);
         $rsNivel = db_query($sSqlNivel);
@@ -199,7 +199,7 @@ class ReceitaInfracao extends \BaseClassRepository
             throw new \DBException("Não foi possível pesquisar as receitas do ano {$ano}.\nTente novamente.");
         }
 
-        $aNivel = array(1 => 1, 2 => 2, 3 => 3, 4 => 4);
+        $aNivel = [1 => 1, 2 => 2, 3 => 3, 4 => 4];
         $aNivelConfig = \db_utils::getCollectionByRecord($rsNivel);
 
         foreach ($aNivelConfig as $key => $value) {
@@ -223,7 +223,7 @@ class ReceitaInfracao extends \BaseClassRepository
      */
     private function makeCollection($rsResult)
     {
-        $aReceitasCollection = array();
+        $aReceitasCollection = [];
         $aReceitas = pg_fetch_all($rsResult);
 
         if (empty($aReceitas)) {

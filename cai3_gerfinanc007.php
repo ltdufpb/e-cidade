@@ -30,9 +30,9 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("classes/db_notificacao_classe.php"));
 require_once(modification("libs/db_sessoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 ?>
 <html>
 <head>
@@ -95,13 +95,13 @@ if(isset($erro1)) { ?>
 
    $sql = $clnotificacao->sql_query_usuario("",$sCampos," k50_notifica ",$numpres." notificacao.k50_instit = ".db_getsession('DB_instit') );
 
-   db_lovrot($sql,10,"()","16","js_recebenotif|0",null,"NoMe",array(),false);
+   db_lovrot($sql,10,"()","16","js_recebenotif|0",null,"NoMe",[],false);
 
 
    $result = db_query("select k03_msg from numpref where k03_instit = " .db_getsession("DB_instit") . " and k03_anousu = ".db_getsession("DB_anousu"));
 
-  if(pg_numrows($result)!=0){
-    $str = str_replace("\n","<br>",pg_result($result,0,0));
+  if(pg_num_rows($result)!=0){
+    $str = str_replace("\n","<br>",pg_fetch_result($result,0,0));
     ?>
     </td>
   </tr>

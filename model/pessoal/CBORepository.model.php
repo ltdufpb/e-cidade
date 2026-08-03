@@ -35,7 +35,7 @@
  */
 class CBORepository {
 
-  private $aCBO = array();
+  private $aCBO = [];
 
   private static $oInstance;
 
@@ -90,6 +90,6 @@ class CBORepository {
   public static function removeAll() {
 
     unset(self::getInstance()->aCBO);
-    self::getInstance()->aCBO = array();
+    self::getInstance()->aCBO = [];
   }
 }

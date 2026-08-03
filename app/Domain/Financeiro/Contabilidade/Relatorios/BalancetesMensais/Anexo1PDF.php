@@ -67,7 +67,7 @@ class Anexo1PDF extends Pdf
     private function getMes($mes)
     {
 
-        $meses=array(
+        $meses=[
         "1" => "Janeiro",
         "2" => "Feveireiro",
         "3" => "Março",
@@ -79,7 +79,7 @@ class Anexo1PDF extends Pdf
         "9" => "Setembro",
         "10" => "Outubro",
         "11" => "Novembro",
-        "12" => "Dezembro");
+        "12" => "Dezembro"];
         return $meses[$mes];
     }
 

@@ -54,7 +54,7 @@ $clrotulo->label("l20_codigo");
 $oDaoLogJulgamento     = db_utils::getDao('pcorcamjulgamentolog');
 $oDaoLogJulgamentoItem = db_utils::getDao('pcorcamjulgamentologitem');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 $action   = "lic1_liclicitacancjulg001.php";
@@ -71,7 +71,7 @@ if (isset($l20_codigo) && trim($l20_codigo) != "") {
     
     $oRegistroPreco = $oLicitacao->getCompilacaoRegistroPreco();
     $lRegistroPreco = true;
-  } catch (Exception $eErro) {
+  } catch (Exception) {
     $lRegistroPreco = false;
   }
   

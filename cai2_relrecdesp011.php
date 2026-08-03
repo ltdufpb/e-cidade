@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_liborcamento.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -66,7 +66,7 @@ db_postmemory($HTTP_POST_VARS);
 		echo "<b>Deficit/Superavit baseado em:</b>";
 		echo "</td>";
 		echo "<td align='right'>";
-	  $x = array ("e" => "Empenhado", "l" => "Liquidado");
+	  $x =  ["e" => "Empenhado", "l" => "Liquidado"];
 	  db_select('deficitsuperavit', $x, true, 4, "");
 		echo "</td>";
 		echo "</tr>";
@@ -75,7 +75,7 @@ db_postmemory($HTTP_POST_VARS);
 		echo "<b>Quebrar por recurso:</b>";
 		echo "</td>";
 		echo "<td align='right'>";
-	  $x = array ("s" => "Sim", "n" => "Não");
+	  $x =  ["s" => "Sim", "n" => "Não"];
 		$quebrarporrecurso = 'n';
 	  db_select('quebrarporrecurso', $x, true, 4, "");
 		echo "</td>";
@@ -85,7 +85,7 @@ db_postmemory($HTTP_POST_VARS);
 		echo "<b>Considerar Rec/Desp Extra-Orcamentárias:</b>";
 		echo "</td>";
 		echo "<td align='right'>";
-	  $x = array ("s" => "Sim", "n" => "Não");
+	  $x =  ["s" => "Sim", "n" => "Não"];
 		$consideraextra = 'n';
 	  db_select('consideraextra', $x, true, 4, "");
 		echo "</td>";
@@ -95,7 +95,7 @@ db_postmemory($HTTP_POST_VARS);
 		echo "<b>Totalização Acumulada:</b>";
 		echo "</td>";
 		echo "<td align='right'>";
-	  $x = array ("2" => "Sim", "1" => "Não");
+	  $x =  ["2" => "Sim", "1" => "Não"];
 		$sAgrupa = '1';
 	  db_select('sAgrupa', $x, true, 4, "");
 		echo "</td>";

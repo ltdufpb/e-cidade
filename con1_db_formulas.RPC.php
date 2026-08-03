@@ -50,7 +50,7 @@ try {
   case "verificaNomeVariavel":
 
     $oVarErros            = new stdClass();
-    $oParam->sNomeVariavel= trim($oParam->sNomeVariavel);
+    $oParam->sNomeVariavel= trim((string) $oParam->sNomeVariavel);
     $oDaoDbformulas       = new cl_db_formulas;
     $sWhereDaoDbformulas  = " db148_nome ilike '{$oParam->sNomeVariavel}' ";
     if ( !empty($oParam->db148_sequencial) ) {
@@ -64,7 +64,7 @@ try {
     }
 
     if(pg_num_rows($rsDaoDbformulas) > 0) {
-      
+
       $oRetorno->erro      = true;
       $oVarErros->sNome    = $oParam->sNomeVariavel;
       $oRetorno->message   = urlencode(_M(MENSAGENS ."variavel_existente", $oVarErros));

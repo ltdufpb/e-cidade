@@ -104,7 +104,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("rh47_codigo"=>@$rh47_codigo);
+	 $chavepri= ["rh47_codigo"=>@$rh47_codigo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhvisavalecgm->sql_query_file($rh47_codigo);
 	 $cliframe_alterar_excluir->campos  ="rh47_codigo,rh48_instit,rh48_numcgm";

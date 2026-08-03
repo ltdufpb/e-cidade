@@ -180,7 +180,7 @@ if ($daoParProjetos->erro_status != "0") {
                 $p58_dtproc_ano = '';
 
                 if (!empty($p58_dtproc)) {
-                    $dataFinal = explode('-', $p58_dtproc);
+                    $dataFinal = explode('-', (string) $p58_dtproc);
 
                     if (count($dataFinal) === 3) {
                         $p58_dtproc_dia = $dataFinal[2];
@@ -204,7 +204,7 @@ if ($daoParProjetos->erro_status != "0") {
             $ob09_data_ano = '';
 
             if (!empty($ob09_data)) {
-                $data = explode('-', $ob09_data);
+                $data = explode('-', (string) $ob09_data);
 
                 if (count($data) === 3) {
                     $ob09_data_dia = $data[2];
@@ -228,7 +228,7 @@ if ($daoParProjetos->erro_status != "0") {
             $ob09_data_ano = '';
 
             if (!empty($ob09_datafinalobra)) {
-                $dataFinal = explode('-', $ob09_datafinalobra);
+                $dataFinal = explode('-', (string) $ob09_datafinalobra);
 
                 if (count($dataFinal) === 3) {
                     $ob09_data_dia = $dataFinal[2];
@@ -248,7 +248,7 @@ if ($daoParProjetos->erro_status != "0") {
         </td>
         <td>
             <?php
-            $x = array('t' => 'SIM', 'f' => 'NÃO');
+            $x = ['t' => 'SIM', 'f' => 'NÃO'];
             db_select('ob09_parcial', $x, true, $db_opcao,
               " style='width:110'; onChange='(this.value ==\"t\"?document.form1.ob09_area.readOnly = false:document.form1.ob09_area.readOnly = true)'");
             ?>
@@ -630,7 +630,7 @@ if ($daoParProjetos->erro_status != "0") {
     db_iframe_obrashabite.hide();
       <?php
       if ($db_opcao != 1) {
-          echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+          echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }
       ?>
   }

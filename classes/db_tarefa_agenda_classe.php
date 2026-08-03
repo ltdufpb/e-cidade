@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE tarefa_agenda
 class cl_tarefa_agenda { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at13_sequencial = 0; 
-   var $at13_tarefa = 0; 
-   var $at13_dia_dia = null; 
-   var $at13_dia_mes = null; 
-   var $at13_dia_ano = null; 
-   var $at13_dia = null; 
-   var $at13_horaini = null; 
-   var $at13_horafim = null; 
+   public $at13_sequencial = 0; 
+   public $at13_tarefa = 0; 
+   public $at13_dia_dia = null; 
+   public $at13_dia_mes = null; 
+   public $at13_dia_ano = null; 
+   public $at13_dia = null; 
+   public $at13_horaini = null; 
+   public $at13_horafim = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at13_sequencial = int4 = Sequencia 
                  at13_tarefa = int4 = Tarefa 
                  at13_dia = date = Data 
@@ -59,10 +59,10 @@ class cl_tarefa_agenda {
                  at13_horafim = char(5) = Hora final 
                  ";
    //funcao construtor da classe 
-   function cl_tarefa_agenda() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefa_agenda"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_tarefa_agenda {
          $this->erro_status = "0";
          return false; 
        }
-       $this->at13_sequencial = pg_result($result,0,0); 
+       $this->at13_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tarefa_agenda_at13_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $at13_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $at13_sequencial)){
          $this->erro_sql = " Campo at13_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_tarefa_agenda {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tarefas agendadas ($this->at13_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tarefas agendadas já Cadastrado";
@@ -204,14 +204,14 @@ class cl_tarefa_agenda {
      $resaco = $this->sql_record($this->sql_query_file($this->at13_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8767,'$this->at13_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1497,8767,'','".AddSlashes(pg_result($resaco,0,'at13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1497,8771,'','".AddSlashes(pg_result($resaco,0,'at13_tarefa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1497,8768,'','".AddSlashes(pg_result($resaco,0,'at13_dia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1497,8769,'','".AddSlashes(pg_result($resaco,0,'at13_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1497,8770,'','".AddSlashes(pg_result($resaco,0,'at13_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1497,8767,'','".AddSlashes(pg_fetch_result($resaco,0,'at13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1497,8771,'','".AddSlashes(pg_fetch_result($resaco,0,'at13_tarefa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1497,8768,'','".AddSlashes(pg_fetch_result($resaco,0,'at13_dia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1497,8769,'','".AddSlashes(pg_fetch_result($resaco,0,'at13_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1497,8770,'','".AddSlashes(pg_fetch_result($resaco,0,'at13_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_tarefa_agenda {
       $this->atualizacampos();
      $sql = " update tarefa_agenda set ";
      $virgula = "";
-     if(trim($this->at13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at13_sequencial"])){ 
+     if(trim((string) $this->at13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at13_sequencial"])){ 
        $sql  .= $virgula." at13_sequencial = $this->at13_sequencial ";
        $virgula = ",";
-       if(trim($this->at13_sequencial) == null ){ 
+       if(trim((string) $this->at13_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencia nao Informado.";
          $this->erro_campo = "at13_sequencial";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_tarefa_agenda {
          return false;
        }
      }
-     if(trim($this->at13_tarefa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at13_tarefa"])){ 
+     if(trim((string) $this->at13_tarefa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at13_tarefa"])){ 
        $sql  .= $virgula." at13_tarefa = $this->at13_tarefa ";
        $virgula = ",";
-       if(trim($this->at13_tarefa) == null ){ 
+       if(trim((string) $this->at13_tarefa) == null ){ 
          $this->erro_sql = " Campo Tarefa nao Informado.";
          $this->erro_campo = "at13_tarefa";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_tarefa_agenda {
          return false;
        }
      }
-     if(trim($this->at13_dia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at13_dia_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at13_dia_dia"] !="") ){ 
+     if(trim((string) $this->at13_dia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at13_dia_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at13_dia_dia"] !="") ){ 
        $sql  .= $virgula." at13_dia = '$this->at13_dia' ";
        $virgula = ",";
-       if(trim($this->at13_dia) == null ){ 
+       if(trim((string) $this->at13_dia) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "at13_dia_dia";
          $this->erro_banco = "";
@@ -262,7 +262,7 @@ class cl_tarefa_agenda {
        if(isset($GLOBALS["HTTP_POST_VARS"]["at13_dia_dia"])){ 
          $sql  .= $virgula." at13_dia = null ";
          $virgula = ",";
-         if(trim($this->at13_dia) == null ){ 
+         if(trim((string) $this->at13_dia) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "at13_dia_dia";
            $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_tarefa_agenda {
          }
        }
      }
-     if(trim($this->at13_horaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at13_horaini"])){ 
+     if(trim((string) $this->at13_horaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at13_horaini"])){ 
        $sql  .= $virgula." at13_horaini = '$this->at13_horaini' ";
        $virgula = ",";
-       if(trim($this->at13_horaini) == null ){ 
+       if(trim((string) $this->at13_horaini) == null ){ 
          $this->erro_sql = " Campo Hora inicial nao Informado.";
          $this->erro_campo = "at13_horaini";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_tarefa_agenda {
          return false;
        }
      }
-     if(trim($this->at13_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at13_horafim"])){ 
+     if(trim((string) $this->at13_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at13_horafim"])){ 
        $sql  .= $virgula." at13_horafim = '$this->at13_horafim' ";
        $virgula = ",";
-       if(trim($this->at13_horafim) == null ){ 
+       if(trim((string) $this->at13_horafim) == null ){ 
          $this->erro_sql = " Campo Hora final nao Informado.";
          $this->erro_campo = "at13_horafim";
          $this->erro_banco = "";
@@ -315,19 +315,19 @@ class cl_tarefa_agenda {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8767,'$this->at13_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at13_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1497,8767,'".AddSlashes(pg_result($resaco,$conresaco,'at13_sequencial'))."','$this->at13_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1497,8767,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at13_sequencial'))."','$this->at13_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at13_tarefa"]))
-           $resac = db_query("insert into db_acount values($acount,1497,8771,'".AddSlashes(pg_result($resaco,$conresaco,'at13_tarefa'))."','$this->at13_tarefa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1497,8771,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at13_tarefa'))."','$this->at13_tarefa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at13_dia"]))
-           $resac = db_query("insert into db_acount values($acount,1497,8768,'".AddSlashes(pg_result($resaco,$conresaco,'at13_dia'))."','$this->at13_dia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1497,8768,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at13_dia'))."','$this->at13_dia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at13_horaini"]))
-           $resac = db_query("insert into db_acount values($acount,1497,8769,'".AddSlashes(pg_result($resaco,$conresaco,'at13_horaini'))."','$this->at13_horaini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1497,8769,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at13_horaini'))."','$this->at13_horaini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at13_horafim"]))
-           $resac = db_query("insert into db_acount values($acount,1497,8770,'".AddSlashes(pg_result($resaco,$conresaco,'at13_horafim'))."','$this->at13_horafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1497,8770,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at13_horafim'))."','$this->at13_horafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -372,14 +372,14 @@ class cl_tarefa_agenda {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8767,'$at13_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1497,8767,'','".AddSlashes(pg_result($resaco,$iresaco,'at13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1497,8771,'','".AddSlashes(pg_result($resaco,$iresaco,'at13_tarefa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1497,8768,'','".AddSlashes(pg_result($resaco,$iresaco,'at13_dia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1497,8769,'','".AddSlashes(pg_result($resaco,$iresaco,'at13_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1497,8770,'','".AddSlashes(pg_result($resaco,$iresaco,'at13_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1497,8767,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1497,8771,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at13_tarefa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1497,8768,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at13_dia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1497,8769,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at13_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1497,8770,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at13_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tarefa_agenda
@@ -439,7 +439,7 @@ class cl_tarefa_agenda {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tarefa_agenda";
@@ -453,7 +453,7 @@ class cl_tarefa_agenda {
    function sql_query ( $at13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_tarefa_agenda {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,7 +486,7 @@ class cl_tarefa_agenda {
    function sql_query_envol ( $at13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_tarefa_agenda {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -521,7 +521,7 @@ class cl_tarefa_agenda {
    function sql_query_file ( $at13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -542,7 +542,7 @@ class cl_tarefa_agenda {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -609,9 +609,9 @@ class cl_tarefa_agenda {
     while($data_inicial < $data_final) {
 
 	    if($primeiro_dia == true) {  // grava o 1 registro com a hora inicial da tarefa com a 1 data de inicio
-	    
+
             $this->at13_horaini = $cltarefa->at40_horainidia;
-            
+
             if($cltarefa->at40_horainidia <= $at53_horafim_manha) {
 			    $this->at13_horafim = $at53_horafim_manha;
 			    $hora_inicial       = $at53_horaini_tarde;
@@ -622,22 +622,22 @@ class cl_tarefa_agenda {
         		} else { 
 				    $this->at13_horafim = $at53_horaini_manha;
         		}
-        		    	
+
 			    $hora_inicial = $at53_horaini_manha;
 			    $hora_final   = $at53_horafim_manha;
             }
 
             $this->at13_dia = $data_inicial;
             $this->incluir(null);
-          
+
             if($this->erro_status == 0) {
 			    $sqlerro  = true;
 		        $erro_msg = $this->erro_msg;
 		        break;
 		    }
-		    
+
             $primeiro_dia = false;
-            		 
+
 		    if ($this->at13_horafim == $at53_horafim_tarde) {
 		        $sqlsoma = "select '$data_inicial'::date + '1 day'::interval as data_inicial";
 			$resultsoma = db_query($sqlsoma) or die($sqlsoma);
@@ -645,15 +645,15 @@ class cl_tarefa_agenda {
 //		    	$data_inicial++;
 		    	continue;
 		    }
-		 	
+
             $this->at13_dia     = $data_inicial;
             $this->at13_horaini = $hora_inicial;
 		    $this->at13_horafim = $hora_final;
 
 			$hora_inicial = $hora_final;
-			
+
             $this->incluir(null);
-          
+
             if($this->erro_status == 0) {
 			    $sqlerro  = true;
 		        $erro_msg = $this->erro_msg;
@@ -661,33 +661,33 @@ class cl_tarefa_agenda {
 		    }
 
         } else {
-        	
+
             $this->at13_dia     = $data_inicial;
             $this->at13_horaini = $at53_horaini_manha;
 		    $this->at13_horafim = $at53_horafim_manha;
 
             $this->incluir(null);
-          
+
             if($this->erro_status == 0) {
 			    $sqlerro  = true;
 		        $erro_msg = $this->erro_msg;
 		        break;
 		    }
-		    
+
             $this->at13_dia     = $data_inicial;
             $this->at13_horaini = $at53_horaini_tarde;
 		    $this->at13_horafim = $at53_horafim_tarde;
 
             $this->incluir(null);
-          
+
             if($this->erro_status == 0) {
 			    $sqlerro  = true;
 		        $erro_msg = $this->erro_msg;
 		        break;
 		    }
-        	
+
 	    }
-	
+
 	    $sqlsoma = "select '$data_inicial'::date + '1 day'::interval as data_inicial";
 	    $resultsoma = db_query($sqlsoma) or die($sqlsoma);
 	    db_fieldsmemory($resultsoma, 0);

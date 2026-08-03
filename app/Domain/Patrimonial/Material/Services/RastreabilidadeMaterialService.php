@@ -68,7 +68,7 @@ class RastreabilidadeMaterialService
     /**
      * @return \App\Domain\Patrimonial\Material\Contracts\RelatorioRastreabilidadeMaterial
      */
-    public function getRelatorio(array $dados)
+    public function getRelatorio(array $dados): never
     {
         throw new \Exception('Relatório de rastreabilidade material não configurado.', 406);
     }

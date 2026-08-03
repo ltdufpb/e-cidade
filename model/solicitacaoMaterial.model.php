@@ -142,7 +142,7 @@ class SolicitacaoMaterial {
 		//die("SQL: $sSqlsolItens");
 		$rsSolItem = $oDaoSolicitacaoItens->sql_record ( $sSqlsolItens );
 		
-		$aItensSolicitacao = array ();
+		$aItensSolicitacao =  [];
 		
 		if ($oDaoSolicitacaoItens->numrows > 0) {
 			

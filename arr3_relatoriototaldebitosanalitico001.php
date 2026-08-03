@@ -40,9 +40,9 @@ $oParametrosJuridico = $oDaoParjuridico->getParametrosJuridico(db_getsession("DB
 $oParametrosJuridico = $oParametrosJuridico[0];
 
 db_postmemory($_SERVER);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-$DB_DATACALC = mktime(0, 0, 0, substr($db_datausu, 5, 2), substr($db_datausu, 8, 2), substr($db_datausu, 0, 4));
+$DB_DATACALC = mktime(0, 0, 0, substr((string) $db_datausu, 5, 2), substr((string) $db_datausu, 8, 2), substr((string) $db_datausu, 0, 4));
 
 $sTiposDebitos            = $tipos;
 $aTipoDebitosSelecionados = explode(",", $tipos);
@@ -246,15 +246,15 @@ $oDadosCgm[0]->z01_nome = $oCgmEnvolvidoRegra->getNome();
  *  mas tambem dos exercícios das dividas que compõe essa inicial.
  *
  */
-$aCadTipoBuscaDadosDivida = array(5, 12, 18);
-$aCadTipoBuscaDadosInicialForo = array(12, 13, 18);
-$aCadTipoBuscaDadosParcelamento = array(6, 13, 18);
+$aCadTipoBuscaDadosDivida = [5, 12, 18];
+$aCadTipoBuscaDadosInicialForo = [12, 13, 18];
+$aCadTipoBuscaDadosParcelamento = [6, 13, 18];
 
-$aDadosRelatorio = array();
-$aDadosNumpre = array();
-$aDadosOrigem = array();
-$aDadosTipo = array();
-$aExercDivida = array();
+$aDadosRelatorio = [];
+$aDadosNumpre = [];
+$aDadosOrigem = [];
+$aDadosTipo = [];
+$aExercDivida = [];
 
 $sHashNumpre = "";
 
@@ -269,14 +269,14 @@ $oDadosTotal->custas_geral = 0;
 $lOutrosDebitos = false;
 $lOutrosTipos = false;
 
-if (pg_num_rows($rsOutrosDebitos) > pg_numrows($rsDebitos)) {
+if (pg_num_rows($rsOutrosDebitos) > pg_num_rows($rsDebitos)) {
     $lOutrosDebitos = true;
 }
 
 if (count($aTipoDebitos) != count($aTipoDebitosSelecionados)) {
     $lOutrosTipos = true;
 }
-$aTotalNumpres = array();
+$aTotalNumpres = [];
 
 foreach ($oDadosDebitos as $aDados) {
     $aDadosProcessado = new stdClass();
@@ -355,7 +355,7 @@ foreach ($oDadosDebitos as $aDados) {
             if ($oDaoDivida->numrows > 0) {
                 $sExercicios = db_utils::fieldsMemory($rsDadosDivida, 0)->exercicios;
 
-                $aDadosProcessado->divida_exercicios = ereg_replace("[{}]", "", $sExercicios);
+                $aDadosProcessado->divida_exercicios = preg_replace("#[\\{\\}]#m", "", $sExercicios);
                 $aDadosProcessado->complemento_numpre = " - Exercício: " . $aDadosProcessado->divida_exercicios;
             }
         }
@@ -366,8 +366,8 @@ foreach ($oDadosDebitos as $aDados) {
 	        /*
              * Dados quando parcelamento está diretamente ligado a Divida
              */
-            $aTermosRetornados = array();
-            $aTermo = array();
+            $aTermosRetornados = [];
+            $aTermo = [];
 
             $parcelamentoAtual = retornaParcelamentoAtual($aDados->k00_numpre);
 
@@ -440,14 +440,14 @@ foreach ($oDadosDebitos as $aDados) {
             if ($iLinhasTermo > 0) {
 
                 $oDadosTermo = new stdClass();
-                $aExercicios = array();
-                $aParcel     = array();
+                $aExercicios = [];
+                $aParcel     = [];
 
                 for ($i = 0; $i < $iLinhasTermo; $i++) {
 
                     $aTermo = db_utils::fieldsMemory($rsDadosTermo, $i);
                     $oDadosTermo->parcel = $aTermo->v07_parcel;
-                    $aExerciciosRetornados = explode(",", $aTermo->exercicios);
+                    $aExerciciosRetornados = explode(",", (string) $aTermo->exercicios);
 
                     foreach ($aExerciciosRetornados as $iExercicio) {
 
@@ -468,7 +468,7 @@ foreach ($oDadosDebitos as $aDados) {
             }
         }
 
-        $aDadosProcessado->processo_foro = array();
+        $aDadosProcessado->processo_foro = [];
         $aDadosProcessado->custas_situacao = "";
         $aDadosProcessado->custas_total = "";
         $iProcessoForo = 0;
@@ -492,7 +492,7 @@ foreach ($oDadosDebitos as $aDados) {
             
             $rsProcessoForo = db_query($sSqlProcessoForo);
 
-            $oDadosProcessoForo = array();
+            $oDadosProcessoForo = [];
 
             if (pg_num_rows($rsProcessoForo) > 0) {
                 $oDadosProcessoForo = db_utils::getCollectionByRecord($rsProcessoForo);
@@ -626,7 +626,7 @@ foreach ($oDadosDebitos as $aDados) {
         $aDadosProcessado->divida_exercicios = "";
 
         if (in_array($oDadosArreTipo->k03_tipo, $aCadTipoBuscaDadosDivida) && !empty($sExercicios)) {
-            $aDadosProcessado->divida_exercicios = ereg_replace("[{}]", "", $sExercicios);
+            $aDadosProcessado->divida_exercicios = preg_replace("#[\\{\\}]#m", "", $sExercicios);
             $aDadosProcessado->complemento_numpre = " - Exercício: " . $aDadosProcessado->divida_exercicios;
         }
 
@@ -639,7 +639,7 @@ foreach ($oDadosDebitos as $aDados) {
             $aDadosProcessado->numero_parcelamento = $parcelamentoAtual;
         }
 
-        $aDadosProcessado->processo_foro = array();
+        $aDadosProcessado->processo_foro = [];
         $aDadosProcessado->custas_situacao = "";
         $aDadosProcessado->custas_total = "";
         if (in_array($oDadosArreTipo->k03_tipo, $aCadTipoBuscaDadosInicialForo)
@@ -699,7 +699,7 @@ foreach ($oDadosDebitos as $aDados) {
      * setamos o caracter ascii char(253) para o campo sSinal do objeto aDados do contrário o valor deste objeto é nulo.
      *
      */
-    $dDtVenc = mktime(0, 0, 0, substr($aDados->k00_dtvenc, 5, 2), substr($aDados->k00_dtvenc, 8, 2), substr($aDados->k00_dtvenc, 0, 4));
+    $dDtVenc = mktime(0, 0, 0, substr((string) $aDados->k00_dtvenc, 5, 2), substr((string) $aDados->k00_dtvenc, 8, 2), substr((string) $aDados->k00_dtvenc, 0, 4));
 
     if ($dDtVenc < $DB_DATACALC) {
         $aDadosProcessado->sSinal = chr(253);
@@ -823,7 +823,7 @@ foreach ($aDadosRelatorio as $aDadosOrigem) {
 
                     $oTotalNumpre->numpre = $aDadosNumpre->numpre;
                     $oTotalNumpre->numpre_complemento = $aDadosNumpre->complemento_numpre;
-                    $oTotalNumpre->numero_parcelamento = isset($aDadosNumpre->numero_parcelamento) ? $aDadosNumpre->numero_parcelamento : null;
+                    $oTotalNumpre->numero_parcelamento = $aDadosNumpre->numero_parcelamento ?? null;
                     $oTotalNumpre->total_historico += $aDadosNumpre->total_historico;
                     $oTotalNumpre->total_corrigido += $aDadosNumpre->total_corrigido;
                     $oTotalNumpre->total_juros += $aDadosNumpre->total_juros;
@@ -896,9 +896,9 @@ foreach ($aDadosRelatorio as $aDadosOrigem) {
                     $oPdf->Cell(13, 4, db_formatar($aDadosNumpre->dtoper, "d"), 1, 0, "C", 0);
                     $oPdf->Cell(13, 4, db_formatar($aDadosNumpre->dtvenc, "d"), 1, 0, "C", 0);
                     $oPdf->cell(13, 4, $aDadosNumpre->origem, 1, 0, "L", 0);
-                    $oPdf->Cell(30, 4, substr(trim($aDadosNumpre->histcalc_descricao), 0, 20), 1, 0, "L", 0);
+                    $oPdf->Cell(30, 4, substr(trim((string) $aDadosNumpre->histcalc_descricao), 0, 20), 1, 0, "L", 0);
                     $oPdf->Cell(6, 4, $aDadosNumpre->receita, 1, 0, "C", 0);
-                    $oPdf->Cell(23, 4, substr(trim($aDadosNumpre->receita_descricao), 0, 15), 1, 0, "L", 0);
+                    $oPdf->Cell(23, 4, substr(trim((string) $aDadosNumpre->receita_descricao), 0, 15), 1, 0, "L", 0);
 
                     $oPdf->SetFont('arial', '', 6);
                     $oPdf->Cell(15, 4, db_formatar($aDadosNumpre->total_historico, 'f'), 1, 0, "R", 0);
@@ -1034,7 +1034,7 @@ if (isset($matric)) {
 $sSqlWhere .= " and suspensao.ar18_situacao = 1 ";
 $sSqlWhere .= " and arresusp.k00_tipo in ({$sTiposDebitos}) ";
 $sSqlWhere .= " and arretipo.k00_instit = " . db_getsession('DB_instit');
-if (trim($parReceit) != "") {
+if (trim((string) $parReceit) != "") {
     $sSqlWhere .= " and arresusp.k00_receit in ({$parReceit}) ";
 }
 
@@ -1057,7 +1057,7 @@ $sSqlSuspensao .= "                   arresusp.k00_numpar,                      
 $sSqlSuspensao .= "                   arresusp.k00_receit                                                               ";
 $rsSuspensao = db_query($sSqlSuspensao);
 $iLinhasSuspensao = pg_num_rows($rsSuspensao);
-$aSuspensao = array();
+$aSuspensao = [];
 
 if ($iLinhasSuspensao > 0) {
     $nTotNumprehis = 0;
@@ -1105,9 +1105,9 @@ if ($iLinhasSuspensao > 0) {
         $oPdf->Cell(13, 4, $oSuspensao->k00_dtoper, "R", 0, "C", 0);
         $oPdf->Cell(13, 4, $oSuspensao->k00_dtvenc, "R", 0, "C", 0);
         $oPdf->cell(13, 4, $oSuspensao->matinscr, "R", 0, "L", 0);
-        $oPdf->Cell(30, 4, substr(trim($oSuspensao->k00_descr), 0, 20), "R", 0, "L", 0);
+        $oPdf->Cell(30, 4, substr(trim((string) $oSuspensao->k00_descr), 0, 20), "R", 0, "L", 0);
         $oPdf->Cell(6, 4, $oSuspensao->k00_receit, "R", 0, "C", 0);
-        $oPdf->Cell(23, 4, substr(trim($oSuspensao->k02_descr), 0, 15), "R", 0, "L", 0);
+        $oPdf->Cell(23, 4, substr(trim((string) $oSuspensao->k02_descr), 0, 15), "R", 0, "L", 0);
         $oPdf->Cell(15, 4, db_formatar($oSuspensao->k00_valor, 'f'), "R", 0, "R", 0);
         $oPdf->Cell(15, 4, db_formatar($oSuspensao->k00_vlrcor, 'f'), "R", 0, "R", 0);
         $oPdf->Cell(15, 4, db_formatar($oSuspensao->k00_vlrjur, 'f'), "R", 0, "R", 0);
@@ -1305,7 +1305,7 @@ function fc_quebraPagina($oPdf, $oDadosCgm)
 function fc_totalTipo($oPdf, $oDadosTipo)
 {
 
-    $aCadTipoInicialForo = array(12, 13, 18);
+    $aCadTipoInicialForo = [12, 13, 18];
 
     $oPdf->setx(5);
     $oPdf->SetFont('arial', 'B', 6);
@@ -1348,7 +1348,7 @@ function fc_totalNumpre($oPdf, $oDadosNumpre)
                              limit 1";
 
     $rsExercDiver = db_query($sSqlExercDiver);
-    if (pg_numrows($rsExercDiver) > 0) {
+    if (pg_num_rows($rsExercDiver) > 0) {
         $strExercicioDiver = "- Exercício: " . db_utils::fieldsMemory($rsExercDiver, 0)->dv05_exerc;
     }
 

@@ -55,7 +55,7 @@ class RegraLancamentoReavaliacaoBem implements IRegraLancamentoContabil {
 
     $aRegrasDoLancamento = $oLancamentoEventoContabil->getRegrasLancamento();    
     $iConta              = $oLancamentoAuxiliar->getContaCredito();
-    $aContasEncontradas  = array();
+    $aContasEncontradas  = [];
 
     foreach ($aRegrasDoLancamento as  $oRegraLancamentoContabil ) {
 

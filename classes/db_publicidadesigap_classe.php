@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE publicidadesigap
 class cl_publicidadesigap {
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c48_sequencial = 0; 
-   var $c48_meiocomunicacaosigap = 0; 
-   var $c48_instit = 0; 
-   var $c48_mes = 0; 
-   var $c48_ano = 0; 
-   var $c48_descricao = null; 
-   var $c48_datapublicacao_dia = null; 
-   var $c48_datapublicacao_mes = null; 
-   var $c48_datapublicacao_ano = null; 
-   var $c48_datapublicacao = null; 
-   var $c48_tiporelatoriofiscal = 0; 
+   public $c48_sequencial = 0; 
+   public $c48_meiocomunicacaosigap = 0; 
+   public $c48_instit = 0; 
+   public $c48_mes = 0; 
+   public $c48_ano = 0; 
+   public $c48_descricao = null; 
+   public $c48_datapublicacao_dia = null; 
+   public $c48_datapublicacao_mes = null; 
+   public $c48_datapublicacao_ano = null; 
+   public $c48_datapublicacao = null; 
+   public $c48_tiporelatoriofiscal = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c48_sequencial = int4 = Código Sequencial 
                  c48_meiocomunicacaosigap = int4 = Meio de Comunicação 
                  c48_instit = int4 = Instituição 
@@ -65,10 +65,10 @@ class cl_publicidadesigap {
                  c48_tiporelatoriofiscal = int4 = Tipo Relatório Fiscal 
                  ";
    //funcao construtor da classe 
-   function cl_publicidadesigap() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("publicidadesigap"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -177,10 +177,10 @@ class cl_publicidadesigap {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c48_sequencial = pg_result($result,0,0); 
+       $this->c48_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from publicidadesigap_c48_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c48_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c48_sequencial)){
          $this->erro_sql = " Campo c48_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -222,7 +222,7 @@ class cl_publicidadesigap {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "publicidadesigap ($this->c48_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "publicidadesigap já Cadastrado";
@@ -246,17 +246,17 @@ class cl_publicidadesigap {
      $resaco = $this->sql_record($this->sql_query_file($this->c48_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17841,'$this->c48_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3150,17841,'','".AddSlashes(pg_result($resaco,0,'c48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3150,17842,'','".AddSlashes(pg_result($resaco,0,'c48_meiocomunicacaosigap'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3150,17843,'','".AddSlashes(pg_result($resaco,0,'c48_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3150,17844,'','".AddSlashes(pg_result($resaco,0,'c48_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3150,17845,'','".AddSlashes(pg_result($resaco,0,'c48_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3150,17846,'','".AddSlashes(pg_result($resaco,0,'c48_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3150,17847,'','".AddSlashes(pg_result($resaco,0,'c48_datapublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3150,17848,'','".AddSlashes(pg_result($resaco,0,'c48_tiporelatoriofiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3150,17841,'','".AddSlashes(pg_fetch_result($resaco,0,'c48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3150,17842,'','".AddSlashes(pg_fetch_result($resaco,0,'c48_meiocomunicacaosigap'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3150,17843,'','".AddSlashes(pg_fetch_result($resaco,0,'c48_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3150,17844,'','".AddSlashes(pg_fetch_result($resaco,0,'c48_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3150,17845,'','".AddSlashes(pg_fetch_result($resaco,0,'c48_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3150,17846,'','".AddSlashes(pg_fetch_result($resaco,0,'c48_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3150,17847,'','".AddSlashes(pg_fetch_result($resaco,0,'c48_datapublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3150,17848,'','".AddSlashes(pg_fetch_result($resaco,0,'c48_tiporelatoriofiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -265,10 +265,10 @@ class cl_publicidadesigap {
       $this->atualizacampos();
      $sql = " update publicidadesigap set ";
      $virgula = "";
-     if(trim($this->c48_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_sequencial"])){ 
+     if(trim((string) $this->c48_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_sequencial"])){ 
        $sql  .= $virgula." c48_sequencial = $this->c48_sequencial ";
        $virgula = ",";
-       if(trim($this->c48_sequencial) == null ){ 
+       if(trim((string) $this->c48_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "c48_sequencial";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_publicidadesigap {
          return false;
        }
      }
-     if(trim($this->c48_meiocomunicacaosigap)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_meiocomunicacaosigap"])){ 
+     if(trim((string) $this->c48_meiocomunicacaosigap)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_meiocomunicacaosigap"])){ 
        $sql  .= $virgula." c48_meiocomunicacaosigap = $this->c48_meiocomunicacaosigap ";
        $virgula = ",";
-       if(trim($this->c48_meiocomunicacaosigap) == null ){ 
+       if(trim((string) $this->c48_meiocomunicacaosigap) == null ){ 
          $this->erro_sql = " Campo Meio de Comunicação nao Informado.";
          $this->erro_campo = "c48_meiocomunicacaosigap";
          $this->erro_banco = "";
@@ -291,10 +291,10 @@ class cl_publicidadesigap {
          return false;
        }
      }
-     if(trim($this->c48_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_instit"])){ 
+     if(trim((string) $this->c48_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_instit"])){ 
        $sql  .= $virgula." c48_instit = $this->c48_instit ";
        $virgula = ",";
-       if(trim($this->c48_instit) == null ){ 
+       if(trim((string) $this->c48_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "c48_instit";
          $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_publicidadesigap {
          return false;
        }
      }
-     if(trim($this->c48_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_mes"])){ 
+     if(trim((string) $this->c48_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_mes"])){ 
        $sql  .= $virgula." c48_mes = $this->c48_mes ";
        $virgula = ",";
-       if(trim($this->c48_mes) == null ){ 
+       if(trim((string) $this->c48_mes) == null ){ 
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "c48_mes";
          $this->erro_banco = "";
@@ -317,10 +317,10 @@ class cl_publicidadesigap {
          return false;
        }
      }
-     if(trim($this->c48_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_ano"])){ 
+     if(trim((string) $this->c48_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_ano"])){ 
        $sql  .= $virgula." c48_ano = $this->c48_ano ";
        $virgula = ",";
-       if(trim($this->c48_ano) == null ){ 
+       if(trim((string) $this->c48_ano) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "c48_ano";
          $this->erro_banco = "";
@@ -330,10 +330,10 @@ class cl_publicidadesigap {
          return false;
        }
      }
-     if(trim($this->c48_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_descricao"])){ 
+     if(trim((string) $this->c48_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_descricao"])){ 
        $sql  .= $virgula." c48_descricao = '$this->c48_descricao' ";
        $virgula = ",";
-       if(trim($this->c48_descricao) == null ){ 
+       if(trim((string) $this->c48_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "c48_descricao";
          $this->erro_banco = "";
@@ -343,10 +343,10 @@ class cl_publicidadesigap {
          return false;
        }
      }
-     if(trim($this->c48_datapublicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_datapublicacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c48_datapublicacao_dia"] !="") ){ 
+     if(trim((string) $this->c48_datapublicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_datapublicacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c48_datapublicacao_dia"] !="") ){ 
        $sql  .= $virgula." c48_datapublicacao = '$this->c48_datapublicacao' ";
        $virgula = ",";
-       if(trim($this->c48_datapublicacao) == null ){ 
+       if(trim((string) $this->c48_datapublicacao) == null ){ 
          $this->erro_sql = " Campo Data de Publicação nao Informado.";
          $this->erro_campo = "c48_datapublicacao_dia";
          $this->erro_banco = "";
@@ -359,7 +359,7 @@ class cl_publicidadesigap {
        if(isset($GLOBALS["HTTP_POST_VARS"]["c48_datapublicacao_dia"])){ 
          $sql  .= $virgula." c48_datapublicacao = null ";
          $virgula = ",";
-         if(trim($this->c48_datapublicacao) == null ){ 
+         if(trim((string) $this->c48_datapublicacao) == null ){ 
            $this->erro_sql = " Campo Data de Publicação nao Informado.";
            $this->erro_campo = "c48_datapublicacao_dia";
            $this->erro_banco = "";
@@ -370,10 +370,10 @@ class cl_publicidadesigap {
          }
        }
      }
-     if(trim($this->c48_tiporelatoriofiscal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_tiporelatoriofiscal"])){ 
+     if(trim((string) $this->c48_tiporelatoriofiscal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c48_tiporelatoriofiscal"])){ 
        $sql  .= $virgula." c48_tiporelatoriofiscal = $this->c48_tiporelatoriofiscal ";
        $virgula = ",";
-       if(trim($this->c48_tiporelatoriofiscal) == null ){ 
+       if(trim((string) $this->c48_tiporelatoriofiscal) == null ){ 
          $this->erro_sql = " Campo Tipo Relatório Fiscal nao Informado.";
          $this->erro_campo = "c48_tiporelatoriofiscal";
          $this->erro_banco = "";
@@ -391,25 +391,25 @@ class cl_publicidadesigap {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17841,'$this->c48_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c48_sequencial"]) || $this->c48_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3150,17841,'".AddSlashes(pg_result($resaco,$conresaco,'c48_sequencial'))."','$this->c48_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3150,17841,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c48_sequencial'))."','$this->c48_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c48_meiocomunicacaosigap"]) || $this->c48_meiocomunicacaosigap != "")
-           $resac = db_query("insert into db_acount values($acount,3150,17842,'".AddSlashes(pg_result($resaco,$conresaco,'c48_meiocomunicacaosigap'))."','$this->c48_meiocomunicacaosigap',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3150,17842,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c48_meiocomunicacaosigap'))."','$this->c48_meiocomunicacaosigap',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c48_instit"]) || $this->c48_instit != "")
-           $resac = db_query("insert into db_acount values($acount,3150,17843,'".AddSlashes(pg_result($resaco,$conresaco,'c48_instit'))."','$this->c48_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3150,17843,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c48_instit'))."','$this->c48_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c48_mes"]) || $this->c48_mes != "")
-           $resac = db_query("insert into db_acount values($acount,3150,17844,'".AddSlashes(pg_result($resaco,$conresaco,'c48_mes'))."','$this->c48_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3150,17844,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c48_mes'))."','$this->c48_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c48_ano"]) || $this->c48_ano != "")
-           $resac = db_query("insert into db_acount values($acount,3150,17845,'".AddSlashes(pg_result($resaco,$conresaco,'c48_ano'))."','$this->c48_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3150,17845,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c48_ano'))."','$this->c48_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c48_descricao"]) || $this->c48_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,3150,17846,'".AddSlashes(pg_result($resaco,$conresaco,'c48_descricao'))."','$this->c48_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3150,17846,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c48_descricao'))."','$this->c48_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c48_datapublicacao"]) || $this->c48_datapublicacao != "")
-           $resac = db_query("insert into db_acount values($acount,3150,17847,'".AddSlashes(pg_result($resaco,$conresaco,'c48_datapublicacao'))."','$this->c48_datapublicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3150,17847,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c48_datapublicacao'))."','$this->c48_datapublicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c48_tiporelatoriofiscal"]) || $this->c48_tiporelatoriofiscal != "")
-           $resac = db_query("insert into db_acount values($acount,3150,17848,'".AddSlashes(pg_result($resaco,$conresaco,'c48_tiporelatoriofiscal'))."','$this->c48_tiporelatoriofiscal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3150,17848,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c48_tiporelatoriofiscal'))."','$this->c48_tiporelatoriofiscal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -454,17 +454,17 @@ class cl_publicidadesigap {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17841,'$c48_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3150,17841,'','".AddSlashes(pg_result($resaco,$iresaco,'c48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3150,17842,'','".AddSlashes(pg_result($resaco,$iresaco,'c48_meiocomunicacaosigap'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3150,17843,'','".AddSlashes(pg_result($resaco,$iresaco,'c48_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3150,17844,'','".AddSlashes(pg_result($resaco,$iresaco,'c48_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3150,17845,'','".AddSlashes(pg_result($resaco,$iresaco,'c48_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3150,17846,'','".AddSlashes(pg_result($resaco,$iresaco,'c48_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3150,17847,'','".AddSlashes(pg_result($resaco,$iresaco,'c48_datapublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3150,17848,'','".AddSlashes(pg_result($resaco,$iresaco,'c48_tiporelatoriofiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3150,17841,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3150,17842,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c48_meiocomunicacaosigap'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3150,17843,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c48_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3150,17844,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c48_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3150,17845,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c48_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3150,17846,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c48_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3150,17847,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c48_datapublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3150,17848,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c48_tiporelatoriofiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from publicidadesigap
@@ -524,7 +524,7 @@ class cl_publicidadesigap {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:publicidadesigap";
@@ -539,7 +539,7 @@ class cl_publicidadesigap {
    function sql_query ( $c48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -564,7 +564,7 @@ class cl_publicidadesigap {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -577,7 +577,7 @@ class cl_publicidadesigap {
    function sql_query_file ( $c48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -598,7 +598,7 @@ class cl_publicidadesigap {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

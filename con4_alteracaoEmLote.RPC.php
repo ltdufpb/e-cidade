@@ -56,14 +56,14 @@ try {
             }
             $template = JSON::create()->parse(file_get_contents($arquivo));
 
-            $novoTemplate = array();
+            $novoTemplate = [];
             $totalTamanhoColunas = 100;
             foreach ($template as &$coluna) {
                 if (empty($coluna->dinamico)) {
                     $coluna->width = ((int)$coluna->width)."%";
 
-                    if (isset($coluna->lista) && !is_array($coluna->lista) && strpos($coluna->lista, "::") !== false) {
-                        $classe = explode('::', $coluna->lista);
+                    if (isset($coluna->lista) && !is_array($coluna->lista) && str_contains((string) $coluna->lista, "::")) {
+                        $classe = explode('::', (string) $coluna->lista);
                         if ($coluna->utilizaParametro && !empty($parametro->parametros)) {
                             $parametrosMetodo = $parametro->parametros;
                             $coluna->lista = call_user_func($classe, $parametrosMetodo);

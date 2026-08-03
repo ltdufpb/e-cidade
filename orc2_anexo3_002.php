@@ -40,18 +40,18 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $head2 = "RELATÓRIO DAS FONTES DA RECEITA - ANEXO 3";
 $head3 = "SEGUNDO A CATEGORIA ECONÔMICA";
 $head4 = "ANEXO (3) EXERCÍCIO: ".db_getsession("DB_anousu");
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
      $descr_inst .= $xvirg.$nomeinstabrev;
      $xvirg = ', ';
@@ -84,7 +84,7 @@ $troca = 1;
 $alt = 4;
 $aux = 0;
 $col = 0;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    $sQuery 	= "select o57_finali from orcfontes where o57_fonte = '$o57_fonte' and o57_anousu = ".db_getsession("DB_anousu");
    $rsQuery = db_query($sQuery);
@@ -92,23 +92,23 @@ for($x = 0; $x < pg_numrows($result);$x++){
    	  db_fieldsmemory($rsQuery,0);
    }
    $aux = $o57_fonte;
-   if (substr($aux,1,14) == "00000000000000")
+   if (substr((string) $aux,1,14) == "00000000000000")
       continue;
-   elseif (substr($aux,2,12) == "000000000000")
+   elseif (substr((string) $aux,2,12) == "000000000000")
       $col = 1;
-   elseif (substr($aux,3,12) == "000000000000")
+   elseif (substr((string) $aux,3,12) == "000000000000")
       $col = 2;
-   elseif (substr($aux,4,11) == "00000000000")
+   elseif (substr((string) $aux,4,11) == "00000000000")
       $col = 3;
-   elseif (substr($aux,5,10) == "0000000000")
+   elseif (substr((string) $aux,5,10) == "0000000000")
       $col = 4;
-   elseif (substr($aux,7,8)  == "00000000")
+   elseif (substr((string) $aux,7,8)  == "00000000")
       $col = 5;
-   elseif (substr($aux,9,6)  == "000000")
+   elseif (substr((string) $aux,9,6)  == "000000")
       $col = 6;
-   elseif (substr($aux,11,4) == "0000")
+   elseif (substr((string) $aux,11,4) == "0000")
       $col = 7;
-   elseif (substr($aux,13,2) == "00")
+   elseif (substr((string) $aux,13,2) == "00")
       $col = 8;
    else
       $col = 9;
@@ -119,7 +119,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $pdf->cell($col+18,$alt,'',0,0,"L",0);
    $pdf->cell(90,$alt,str_repeat(" ",$col*2).$o57_descr,0,0,"L",0);
    //$pdf->cell(20+(9-$col)+$col,$alt,(8-$col),1,0,"L",0);
-   $pdf->cell(20,$alt,substr($o57_finali,0,40),0,1,"L",0);
+   $pdf->cell(20,$alt,substr((string) $o57_finali,0,40),0,1,"L",0);
 }
 $pdf->ln(14);
 $pdf->Output();

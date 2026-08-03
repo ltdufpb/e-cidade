@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -108,7 +108,7 @@ function js_detectaarquivo(arquivo,pdf){
           $sqlanomes = "select max(cast(r11_anousu as text)||lpad(cast(r11_mesusu as text),2,'0')) from cfpess";
           $resultanomes = db_query($sqlanomes);
           db_fieldsmemory($resultanomes,0);
-          $ano_base = substr($max,0,4);
+          $ano_base = substr((string) $max,0,4);
             db_input('ano_base',4,'',true,'text',2,'')
           ?>
         </td>
@@ -130,7 +130,7 @@ function js_detectaarquivo(arquivo,pdf){
 	</td>  
         <td align="left">
           <?php 
-          $arr_ = array('p'=>'Pref','f'=>'Funpas','t'=>'Todos');
+          $arr_ = ['p'=>'Pref','f'=>'Funpas','t'=>'Todos'];
           db_select("pref_fun", $arr_, true, 1);
           ?>                             
         </td>                            

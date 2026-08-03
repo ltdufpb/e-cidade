@@ -33,8 +33,8 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_compnome.location.href='itb1_itbinomecomp002.php?chavepesquisa=$it03_guia&chavepesquisa1=$it03_seq&db_opcao=2&db_botao=true'</script>";
@@ -209,7 +209,7 @@ if( $rsDAOParItbi ){
         <td colspan="3">
           <?php
           if( empty($aOptionsSexo) || ( $lHabilitaEdicaoCGM === false ) ){
-            $aOptionsSexo = array('m'=>'Masculino','f'=>'Feminino');
+            $aOptionsSexo = ['m'=>'Masculino','f'=>'Feminino'];
           }
           db_select('it03_sexo',$aOptionsSexo,true,$db_opcao,"");
           ?>
@@ -225,9 +225,9 @@ if( $rsDAOParItbi ){
             }
             $result = $clitbinome->sql_record($clitbinome->sql_query_file(null,"*",null," it03_guia = $it03_guia and it03_princ = 't' and upper(it03_tipo) = 'C'"));
             if($clitbinome->numrows > 0 && $db_opcao == 1){
-              $x = array("f"=>"NÃO");
+              $x = ["f"=>"NÃO"];
             }else{
-              $x = array("t"=>"SIM","f"=>"NÃO");
+              $x = ["t"=>"SIM","f"=>"NÃO"];
             }
             db_select('it03_princ',$x,true,$db_opcao,"");
           ?>
@@ -244,7 +244,7 @@ if( $rsDAOParItbi ){
       <tr>
         <td align="top" colspan="4">
          <?php
-          $chavepri = array("it03_guia"=>@$it03_guia,"it03_seq"=>@$it03_seq);
+          $chavepri = ["it03_guia"=>@$it03_guia,"it03_seq"=>@$it03_seq];
           $sql      = $clitbinome->sql_query_file(null,"*",null," it03_guia = $it03_guia and upper(it03_tipo) = 'C'");
 
           $cliframe_alterar_excluir->chavepri      = $chavepri;
@@ -415,7 +415,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_itbinome.hide();
   <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

@@ -27,7 +27,7 @@ class ItemRepository
      * @return bool|Item
      * @throws \Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query_file($id, implode(', ', $columns));
         $rs = db_query($sql);
@@ -62,7 +62,7 @@ class ItemRepository
             return null;
         }
 
-        $retorno = array();
+        $retorno = [];
 
         for ($i = 0; $i < $numrows; $i++) {
             $codigo = pg_fetch_result($rs, $i, 'e55_item');

@@ -49,10 +49,10 @@ $clrotulo->label("ed296_cursoedu");
         </td>
         <td> 
           <?php 
-            $aHabilita = array(
+            $aHabilita = [
                                '1' => 'Desabilitada',
                                '2'=>'Habilitada'
-                              );
+                              ];
             db_select('ed295_habilitaprogressao', $aHabilita, true, $db_opcao, "onchange = 'js_troca(this.value)';");
           ?>
         </td>
@@ -71,11 +71,11 @@ $clrotulo->label("ed296_cursoedu");
         </td>
         <td> 
           <?php 
-            $aControleDependencia = array(
+            $aControleDependencia = [
                                           '0' => 'Selecione',
                                           '1' => 'Por Etapa',
                                           '2' => 'Por Base Curricular'
-                                         );
+                                         ];
             db_select('ed295_controledependencia',$aControleDependencia,true,$db_opcao,"");
           ?>
         </td>
@@ -86,10 +86,10 @@ $clrotulo->label("ed296_cursoedu");
         </td>
         <td> 
           <?php 
-            $aControleFreq = array(
+            $aControleFreq = [
                                    '1' => 'Sim',
                                    '2' => 'Não'
-                                  );
+                                  ];
             db_select('ed295_controlefreq',$aControleFreq,true,$db_opcao,"");
           ?>
         </td>
@@ -100,10 +100,10 @@ $clrotulo->label("ed296_cursoedu");
         </td>
         <td> 
           <?php 
-            $aDiscEliminaDep = array(
+            $aDiscEliminaDep = [
                                      '1' => 'Não',
                                      '2' => 'Sim'
-                                    );
+                                    ];
             db_select('ed295_disceliminadep',$aDiscEliminaDep,true,$db_opcao,"");
           ?>
         </td>
@@ -531,7 +531,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_parametrodependencia.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
   

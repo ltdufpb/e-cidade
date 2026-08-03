@@ -43,7 +43,7 @@ class ImportacaoGeralDiversos extends ImportacaoDiversos {
    * @var array
    * @access protected
    */
-  protected $aReceitaVencimento  = array();
+  protected $aReceitaVencimento  = [];
 
   /**
    * Vencimentos guarda os vencimentos de cada receita
@@ -51,7 +51,7 @@ class ImportacaoGeralDiversos extends ImportacaoDiversos {
    * @var ProcedenciaDiversos[]
    * @access protected
    */
-  protected $aReceitaProcedencia  = array();
+  protected $aReceitaProcedencia  = [];
 
   /**
    * Adiciona receita a ser processada
@@ -62,7 +62,7 @@ class ImportacaoGeralDiversos extends ImportacaoDiversos {
    * @access public
    * @return void
    */
-  public function adicionarReceita ($iReceita, DBDate $oDataVencimento = null, ProcedenciaDiversos $oProcedenciaDiversos) {
+  public function adicionarReceita ($iReceita, ?DBDate $oDataVencimento = null, ?ProcedenciaDiversos $oProcedenciaDiversos = null) {
 
     $this->aReceitaProcedencia[$iReceita] = $oProcedenciaDiversos;
     $this->aReceitaVencimento[$iReceita] = $oDataVencimento;
@@ -86,6 +86,7 @@ class ImportacaoGeralDiversos extends ImportacaoDiversos {
    * @return bool
    * @throws DBException
    */
+  #[\Override]
   public function processar ($sObservacoes = '') {
 
     $iCodDiverImporta = $this->salvarDiverImporta(ImportacaoDiversos::PROCESSAMENTO_GERAL);
@@ -126,7 +127,7 @@ class ImportacaoGeralDiversos extends ImportacaoDiversos {
       if (!$rsDebitos) {
 
         throw new DBException(
-          _M('tributario.diversos.ImportacaoGeralDiversos.falha_buscar_debitos', (object)array("sErro" => pg_last_error() ) )
+          _M('tributario.diversos.ImportacaoGeralDiversos.falha_buscar_debitos', (object)["sErro" => pg_last_error() ] )
         );
       }
 
@@ -157,9 +158,9 @@ class ImportacaoGeralDiversos extends ImportacaoDiversos {
                                           $iReceita);
 
 
-          $aDados[0][0] = (object)array("k00_numpre" => $oDadosDebitos->k00_numpre,
+          $aDados[0][0] = (object)["k00_numpre" => $oDadosDebitos->k00_numpre,
                                         "k00_numpar" => $iParcela,
-                                        "k00_receit" => $iReceita);
+                                        "k00_receit" => $iReceita];
           $this->processaArrecad($aDados,
                                  $this->aReceitaProcedencia[$iReceita],
                                  null,
@@ -167,9 +168,9 @@ class ImportacaoGeralDiversos extends ImportacaoDiversos {
                                  $oDataVencimento);
 
           foreach ((array)$oMatriculas as $iMatricula => $nPercentual) {
-            $oDados = (object)array("k00_numpre" => $oDiverso->iNumpreGerado,
+            $oDados = (object)["k00_numpre" => $oDiverso->iNumpreGerado,
                                     "k00_matric" => $iMatricula,
-                                    "k00_perc"   => $nPercentual);
+                                    "k00_perc"   => $nPercentual];
             $this->aDataManager['arrematric']->setByLineOfDBUtils($oDados, true);
           }
         }

@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcriaabas = new cl_criaabas;
 
@@ -55,14 +55,14 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("relatorio" => "Relatório",
-                                       "parametro" => "Parâmetros");
+       $clcriaabas->identifica = ["relatorio" => "Relatório",
+                                       "parametro" => "Parâmetros"];
        
-       $clcriaabas->title = array("relatorio" => "Gerar Relatório",
-                                  "parametro" => "Definição de Parâmetros");
+       $clcriaabas->title = ["relatorio" => "Gerar Relatório",
+                                  "parametro" => "Definição de Parâmetros"];
        
-       $clcriaabas->src = array("relatorio" => "con2_despesacomeducacao002.php",
-                                "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=121");
+       $clcriaabas->src = ["relatorio" => "con2_despesacomeducacao002.php",
+                                "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=121"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

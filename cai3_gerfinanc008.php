@@ -33,7 +33,7 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_utils.php"));
 include(modification("classes/db_tabrec_classe.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
 
 $cltabrec = new cl_tabrec;
 $cltabrec->rotulo->label("k02_codigo");
@@ -80,19 +80,19 @@ if(isset($Parcelamento) && $Parcelamento != ""){
             echo "&y50_codauto=$y50_codauto";                                  
         } 
 
-        if(!empty($HTTP_POST_VARS["datainicial_dia"])) {
-           echo "&datainicial=".$datainicial = $HTTP_POST_VARS['datainicial_ano']."-".$HTTP_POST_VARS['datainicial_mes']."-".$HTTP_POST_VARS['datainicial_dia'];
-           echo "&datafinal=".$datafinal = $HTTP_POST_VARS['datafinal_ano']."-".$HTTP_POST_VARS['datafinal_mes']."-".$HTTP_POST_VARS['datafinal_dia'];
+        if(!empty($_POST["datainicial_dia"])) {
+           echo "&datainicial=".$datainicial = $_POST['datainicial_ano']."-".$_POST['datainicial_mes']."-".$_POST['datainicial_dia'];
+           echo "&datafinal=".$datafinal = $_POST['datafinal_ano']."-".$_POST['datafinal_mes']."-".$_POST['datafinal_dia'];
         }
-        if(!empty($HTTP_POST_VARS['k02_codigo'])) {
-            echo "&k02_codigo=".$HTTP_POST_VARS['k02_codigo'];
+        if(!empty($_POST['k02_codigo'])) {
+            echo "&k02_codigo=".$_POST['k02_codigo'];
         }
-        if(!empty($HTTP_POST_VARS['conta'])) {
-           echo "&conta=".$HTTP_POST_VARS['conta'];
+        if(!empty($_POST['conta'])) {
+           echo "&conta=".$_POST['conta'];
         }
 
-        if(!empty($HTTP_POST_VARS['v70_sequencial'])) {
-           echo "&v70_sequencial=".$HTTP_POST_VARS['v70_sequencial'];
+        if(!empty($_POST['v70_sequencial'])) {
+           echo "&v70_sequencial=".$_POST['v70_sequencial'];
         }
       ?>','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
       jandb.moveTo(0,0);
@@ -103,7 +103,7 @@ if(isset($Parcelamento) && $Parcelamento != ""){
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <center>
 <?php 
-if(isset($tipo_cert) && !isset($HTTP_POST_VARS["procurar"])) {
+if(isset($tipo_cert) && !isset($_POST["procurar"])) {
 ?>
 <br><br>
 <form name="form1" method="post" >
@@ -170,7 +170,7 @@ function js_validar() {
 <?php 
 } else {
 
-  $aWherePagamento    = array();
+  $aWherePagamento    = [];
   $sWhereNumpreNormal = "";
   $sWhereNumprePgto   = "";
 
@@ -221,22 +221,22 @@ function js_validar() {
   }
 
 
-  if (!empty($HTTP_POST_VARS["datainicial_dia"])) {
+  if (!empty($_POST["datainicial_dia"])) {
 
-    $datainicial       = $HTTP_POST_VARS["datainicial_ano"]."-".$HTTP_POST_VARS["datainicial_mes"]."-".$HTTP_POST_VARS["datainicial_dia"];
-    $datafinal         = $HTTP_POST_VARS["datafinal_ano"]  ."-".$HTTP_POST_VARS["datafinal_mes"]  ."-".$HTTP_POST_VARS["datafinal_dia"];
+    $datainicial       = $_POST["datainicial_ano"]."-".$_POST["datainicial_mes"]."-".$_POST["datainicial_dia"];
+    $datafinal         = $_POST["datafinal_ano"]  ."-".$_POST["datafinal_mes"]  ."-".$_POST["datafinal_dia"];
     $aWherePagamento[] = " arrepaga.k00_dtpaga between '$datainicial' and '$datafinal' ";
   }
 
-  if (!empty($HTTP_POST_VARS["k02_codigo"])) {
-    $aWherePagamento[] = " arrepaga.k00_receit = ".$HTTP_POST_VARS["k02_codigo"];
+  if (!empty($_POST["k02_codigo"])) {
+    $aWherePagamento[] = " arrepaga.k00_receit = ".$_POST["k02_codigo"];
   }
 
-  if (!empty($HTTP_POST_VARS["conta"])) {
-    $aWherePagamento[] = " arrepaga.k00_conta = ".$HTTP_POST_VARS["conta"];
+  if (!empty($_POST["conta"])) {
+    $aWherePagamento[] = " arrepaga.k00_conta = ".$_POST["conta"];
   }
 
-  if (!empty($HTTP_POST_VARS["v70_sequencial"])) {
+  if (!empty($_POST["v70_sequencial"])) {
 
     $sInnerPagamento .= " inner join ( select distinct";
     $sInnerPagamento .= "                     case ";
@@ -249,7 +249,7 @@ function js_validar() {
     $sInnerPagamento .= "                left join termo         on termo.v07_parcel = termoini.parcel ";
     $sInnerPagamento .= "                                       and termo.v07_situacao = 1 ";
     $sInnerPagamento .= "                left join inicialnumpre on inicialnumpre.v59_inicial = v71_inicial ";
-    $sInnerPagamento .= "               where processoforoinicial.v71_processoforo = {$HTTP_POST_VARS["v70_sequencial"]}
+    $sInnerPagamento .= "               where processoforoinicial.v71_processoforo = {$_POST["v70_sequencial"]}
                                           UNION ALL
                                         SELECT DISTINCT
                                                 abatimentorecibo.k127_numprerecibo as numpre
@@ -258,7 +258,7 @@ function js_validar() {
                                                 INNER JOIN arreckey ON arreckey.k00_numpre = inicialnumpre.v59_numpre
                                                 INNER JOIN abatimentoarreckey ON abatimentoarreckey.k128_arreckey = arreckey.k00_sequencial
                                                 INNER JOIN abatimentorecibo ON abatimentorecibo.k127_abatimento = abatimentoarreckey.k128_abatimento
-                                        WHERE processoforoinicial.v71_processoforo = {$HTTP_POST_VARS["v70_sequencial"]}
+                                        WHERE processoforoinicial.v71_processoforo = {$_POST["v70_sequencial"]}
     ";
     $sInnerPagamento .= "            ) as processoforo on processoforo.numpre = arrepaga.k00_numpre ";
 
@@ -469,7 +469,7 @@ function js_validar() {
         $oPagamento = db_utils::fieldsMemory($rsPagamentos,$iInd);
 
 
-         if ( trim($oPagamento->k00_tipo) == '' ) {
+         if ( trim((string) $oPagamento->k00_tipo) == '' ) {
 
           $oPagamento->k00_tipo = 0;
 
@@ -480,7 +480,7 @@ function js_validar() {
 
           $rsTipo  = db_query($sSqlTipo);
 
-          if (pg_numrows($rsTipo) > 0) {
+          if (pg_num_rows($rsTipo) > 0) {
             $oPagamento->k00_tipo = db_utils::fieldsMemory($rsTipo,0)->k00_tipo;
           }
          }
@@ -502,7 +502,7 @@ function js_validar() {
           }
         }
 
-        $aHistorico    = array();
+        $aHistorico    = [];
         $sSqlHistorico = " select k00_dtoper as dtlhist,
                                   k00_hora,
                                   login,
@@ -552,7 +552,7 @@ function js_validar() {
         </td>
         <td align="center" nowrap >
           <?php
-            if ( trim($oPagamento->abatimento) != 0 ) {
+            if ( trim((string) $oPagamento->abatimento) != 0 ) {
               db_ancora('PARCIAL',"js_consultaOrigemAbatimento($oPagamento->abatimento)",1,'');
             } else {
               echo "NORMAL";
@@ -571,9 +571,9 @@ function js_validar() {
         <td align="right"  nowrap ><?=$oPagamento->k00_numtot?>                     </td>
         <td align="center" nowrap ><?=db_formatar($oPagamento->k00_dtvenc,"d")?>    </td>
         <td align="right"  nowrap ><?=$oPagamento->k00_hist?>                       </td>
-        <td align="left"   nowrap ><?=str_pad($oPagamento->k01_descr,20)?>          </td>
+        <td align="left"   nowrap ><?=str_pad((string) $oPagamento->k01_descr,20)?>          </td>
         <td align="center" nowrap ><?=$oPagamento->k00_receit?>                     </td>
-        <td align="left"   nowrap ><?=str_pad($oPagamento->k02_drecei,40)?>         </td>
+        <td align="left"   nowrap ><?=str_pad((string) $oPagamento->k02_drecei,40)?>         </td>
         <td align="right"  nowrap ><?=db_formatar(($oPagamento->k00_valor*-1),"f")?></td>
         <td align="center" nowrap ><?=$oPagamento->k00_conta?>                      </td>
         <td align="center" nowrap ><?=db_formatar($oPagamento->k00_dtpaga,"d")?>    </td>

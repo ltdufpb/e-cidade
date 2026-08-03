@@ -32,8 +32,8 @@ require_once(modification('libs/db_sessoes.php'));
 require_once(modification('libs/db_usuariosonline.php'));
 require_once(modification('dbforms/db_funcoes.php'));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 //die($iNumCgm ." = ". $iInscricao);
 
@@ -77,21 +77,21 @@ $clcadescrito      = new cl_cadescrito();
             }
             
             
-            if ((trim($iInscricao) != "") && (trim($iNumCgm) == "")) {
+            if ((trim((string) $iInscricao) != "") && (trim((string) $iNumCgm) == "")) {
               
               $sSql = $clrequisicaoaidof->sql_query  (null,
                                                    $sCampos,
                                                    $sOrderBy,
                                                    "y116_inscricaomunicipal = {$iInscricao}");
               
-            } else if ((trim($iNumCgm) != "") && (trim($iInscricao) == "")) {
+            } else if ((trim((string) $iNumCgm) != "") && (trim((string) $iInscricao) == "")) {
               
               $sSql = $clrequisicaoaidof->sql_query_RequisicoesPorEscritorio($iNumCgm,null,
                                                                             $sCampos,
                                                                             $sOrderBy);
               
               
-            } else if ((trim($iNumCgm) != "") && (trim($iInscricao) != "")){  
+            } else if ((trim((string) $iNumCgm) != "") && (trim((string) $iInscricao) != "")){  
               
               $sSql = $clrequisicaoaidof->sql_query_RequisicoesPorEscritorio($iNumCgm, $iInscricao, $sCampos, $sOrderBy);
               
@@ -102,7 +102,7 @@ $clcadescrito      = new cl_cadescrito();
               
             }
             
-            $repassa = array();
+            $repassa = [];
             
             db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
             

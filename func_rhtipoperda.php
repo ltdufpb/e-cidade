@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhtipoperda_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhtipoperda = new cl_rhtipoperda;
 $clrhtipoperda->rotulo->label("h70_sequencial");
 $clrhtipoperda->rotulo->label("h70_descricao");
@@ -98,9 +98,9 @@ $clrhtipoperda->rotulo->label("h70_descricao");
         }else{
            $sql = $clrhtipoperda->sql_query("",$campos,"h70_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h70_descricao)){
-          $repassa = array("chave_h70_sequencial"=>$chave_h70_sequencial,"chave_h70_descricao"=>$chave_h70_descricao);
+          $repassa = ["chave_h70_sequencial"=>$chave_h70_sequencial,"chave_h70_descricao"=>$chave_h70_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

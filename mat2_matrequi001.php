@@ -134,11 +134,11 @@ function js_abre(){
 				</td>
 				<td>
 				  <?php 
-            $aAtendimento = array ( "a"  => "Atendidas",
+            $aAtendimento =  [ "a"  => "Atendidas",
 																		"pa" => "Parcialmente Atendidas", 
 												         	  "na" => "Não Atendidas", 
 													          "t"  => "Todas"
-												 				  );
+												 				  ];
 					  db_select("atendimento",$aAtendimento,true,1);
 				 ?>
 				</td>
@@ -176,7 +176,7 @@ function js_abre(){
 				</td>
 				<td>
 				  <?php 
-            $aObs = array( 18 => "Resumida", 181 => "Completa");
+            $aObs = [ 18 => "Resumida", 181 => "Completa"];
 					  db_select("tobserva",$aObs,true,1);
 				  ?>
 				</td>

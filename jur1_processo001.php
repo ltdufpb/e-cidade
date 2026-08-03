@@ -30,11 +30,11 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["enviar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["enviar"])) {
+  db_postmemory($_POST);
   db_query($conn,"BEGIN");
   $result = db_query("select max(v50_codigo) + 1 from juridico");
-  $v50_codigo = pg_result($result,0,0);
+  $v50_codigo = pg_fetch_result($result,0,0);
   $v50_codigo = $v50_codigo==""?"1":$v50_codigo;
   $data = "$data_ano-$data_mes-$data_dia";
   $data = $data=="--"?"null":"'$data'";
@@ -61,7 +61,7 @@ if(isset($HTTP_POST_VARS["enviar"])) {
 					        $data,
 					        '$v50_movim')";
   $result = db_query($sql) or die("Erro(34) inserindo em juridico");
-  $aux_autor = split("#",$aux_autor);
+  $aux_autor = preg_split("#\\##m",(string) $aux_autor);
   $tam = sizeof($aux_autor);
   for($i = 1;$i < $tam;$i++)
     $result = db_query("INSERT INTO autproc VALUES($v50_codigo,'".$aux_autor[$i]."',$i)") or die("Erro(37) inserindo em autproc: $i");

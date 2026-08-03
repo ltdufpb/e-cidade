@@ -68,7 +68,7 @@ db_app::import("Dotacao");
 
 db_app::import("contabilidade.contacorrente.*");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatrequi = new cl_matrequi;
 $clmatrequiitem = new cl_matrequiitem;
 $clatendrequiitem = new cl_atendrequiitem;
@@ -86,9 +86,9 @@ $clmatrequi->rotulo->label();
 $db_opcao = 1;
 $db_botao = true;
 $pesq     = false;
-$aParamKeys = array(
+$aParamKeys = [
                     db_getsession("DB_anousu")
-                   );
+                   ];
 $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
 $iTipoControleCustos = 0;
 

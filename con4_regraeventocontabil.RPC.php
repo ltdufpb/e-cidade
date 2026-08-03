@@ -56,7 +56,7 @@ switch ($oParam->exec) {
 
     case "getTipoBem" :
 
-        $aTipoBem = array();
+        $aTipoBem = [];
         $oDaoBemTipos = new cl_bemtipos;
         $sSqlTipoAquisicao = $oDaoBemTipos->sql_query_file(null, "t24_sequencial, t24_descricao", 1, null);
         $rsTipoAquisicao = $oDaoBemTipos->sql_record($sSqlTipoAquisicao);
@@ -77,7 +77,7 @@ switch ($oParam->exec) {
 
                 $oValores = new stdClass();
                 $oValores->t24_sequencial = $oAlteracao->t24_sequencial;
-                $oValores->t24_descricao = urlencode($oAlteracao->t24_descricao);
+                $oValores->t24_descricao = urlencode((string) $oAlteracao->t24_descricao);
                 $aTipoBem[0] = $oValores;
 
             }
@@ -87,7 +87,7 @@ switch ($oParam->exec) {
                 $oDados = db_utils::fieldsMemory($rsTipoAquisicao, $iIndice);
                 $oValores = new stdClass();
                 $oValores->t24_sequencial = $oDados->t24_sequencial;
-                $oValores->t24_descricao = urlencode($oDados->t24_descricao);
+                $oValores->t24_descricao = urlencode((string) $oDados->t24_descricao);
                 $aTipoBem[] = $oValores;
             }
         }
@@ -100,7 +100,7 @@ switch ($oParam->exec) {
 
     case "getTipoAquisicao" :
 
-        $aTipoEvento = array();
+        $aTipoEvento = [];
         $oDaoBensTipoAquisicao = new cl_benstipoaquisicao;
         $sSqlTipoAquisicao = $oDaoBensTipoAquisicao->sql_query_file(null, "*", 1, null);
         $rsTipoAquisicao = $oDaoBensTipoAquisicao->sql_record($sSqlTipoAquisicao);
@@ -122,7 +122,7 @@ switch ($oParam->exec) {
 
                 $oValores = new stdClass();
                 $oValores->t45_sequencial = $oAlteracao->t45_sequencial;
-                $oValores->t45_descricao = urlencode($oAlteracao->t45_descricao);
+                $oValores->t45_descricao = urlencode((string) $oAlteracao->t45_descricao);
                 $aTipoEvento[0] = $oValores;
 
             }
@@ -132,7 +132,7 @@ switch ($oParam->exec) {
                 $oDados = db_utils::fieldsMemory($rsTipoAquisicao, $iIndice);
                 $oValores = new stdClass();
                 $oValores->t45_sequencial = $oDados->t45_sequencial;
-                $oValores->t45_descricao = urlencode($oDados->t45_descricao);
+                $oValores->t45_descricao = urlencode((string) $oDados->t45_descricao);
                 $aTipoEvento[] = $oValores;
             }
         }
@@ -143,7 +143,7 @@ switch ($oParam->exec) {
 
     case "getTipoBaixa" :
 
-        $aTipoEvento = array();
+        $aTipoEvento = [];
         $oDaoBensTipoBaixa = new cl_bensmotbaixa;
         $sSqlTipoBaixa = $oDaoBensTipoBaixa->sql_query_file(null, "*", 1, null);
         $rsTipoBaixa = $oDaoBensTipoBaixa->sql_record($sSqlTipoBaixa);
@@ -165,7 +165,7 @@ switch ($oParam->exec) {
 
                 $oValores = new stdClass();
                 $oValores->t51_motivo = $oAlteracao->t51_motivo;
-                $oValores->t51_descr = urlencode($oAlteracao->t51_descr);
+                $oValores->t51_descr = urlencode((string) $oAlteracao->t51_descr);
                 $aTipoEvento[0] = $oValores;
 
             }
@@ -175,7 +175,7 @@ switch ($oParam->exec) {
                 $oDados = db_utils::fieldsMemory($rsTipoBaixa, $iIndice);
                 $oValores = new stdClass();
                 $oValores->t51_motivo = $oDados->t51_motivo;
-                $oValores->t51_descr = urlencode($oDados->t51_descr);
+                $oValores->t51_descr = urlencode((string) $oDados->t51_descr);
                 $aTipoEvento[] = $oValores;
             }
         }
@@ -191,7 +191,7 @@ switch ($oParam->exec) {
      */
     case "getTiposEventoEmpenho" :
 
-        $aTipoEvento = array();
+        $aTipoEvento = [];
 
         $oDaoEmpPrestaTip = new cl_empprestatip;
         $sSqlEmpPrestaTip = $oDaoEmpPrestaTip->sql_query_file(null, "*", 1, null);
@@ -218,7 +218,7 @@ switch ($oParam->exec) {
 
                 $oValores = new stdClass();
                 $oValores->e44_tipo = $oAlteracao->e44_tipo;
-                $oValores->e44_descr = urlencode($oAlteracao->e44_descr);
+                $oValores->e44_descr = urlencode((string) $oAlteracao->e44_descr);
                 $oValores->e44_obriga = $oAlteracao->e44_obriga;
                 $aTipoEvento[0] = $oValores;
 
@@ -229,7 +229,7 @@ switch ($oParam->exec) {
                 $oDados = db_utils::fieldsMemory($rsEmpPrestaTip, $iIndice);
                 $oValores = new stdClass();
                 $oValores->e44_tipo = $oDados->e44_tipo;
-                $oValores->e44_descr = urlencode($oDados->e44_descr);
+                $oValores->e44_descr = urlencode((string) $oDados->e44_descr);
                 $oValores->e44_obriga = $oDados->e44_obriga;
                 $aTipoEvento[] = $oValores;
             }
@@ -241,7 +241,7 @@ switch ($oParam->exec) {
 
     case "getTipoReconhecimentoContabil" :
 
-        $aTipos = array();
+        $aTipos = [];
         $sWhere = "";
         $aTiposReconhecimentoContabil = TipoReconhecimentoContabil::buscaDadosTiposDeReconhecimento('c111_sequencial,
     		                                                                                         c111_descricao',
@@ -251,7 +251,7 @@ switch ($oParam->exec) {
 
             $oDados = new stdClass();
             $oDados->c111_sequencial = $oTipoReconhecimentoContabil->c111_sequencial;
-            $oDados->c111_descricao = urlencode($oTipoReconhecimentoContabil->c111_descricao);
+            $oDados->c111_descricao = urlencode((string) $oTipoReconhecimentoContabil->c111_descricao);
 
             $aTipos[] = $oDados;
 
@@ -280,7 +280,7 @@ switch ($oParam->exec) {
             $oRegraLancamentoContabil->setContaDebito($oParam->c47_debito);
             $oRegraLancamentoContabil->setContaCredito($oParam->c47_credito);
             $oRegraLancamentoContabil->setReferencia($oParam->c47_ref);
-            $aCodigosReduzidosCadastrados = array();
+            $aCodigosReduzidosCadastrados = [];
             /**
              * Caso o usuário informe que é necessário fazer a comparação da conta crédito/débito
              */
@@ -290,7 +290,7 @@ switch ($oParam->exec) {
             /**
              * Elemento informado e tipo de compara 1, 2, 3 ou 4
              */
-            if (!empty($oParam->sElemento) && in_array($oParam->c47_compara, array(1, 2, 3, 4))) {
+            if (!empty($oParam->sElemento) && in_array($oParam->c47_compara, [1, 2, 3, 4])) {
 
                 $sCampos = "distinct conplanoreduz.c61_reduz";
 
@@ -369,10 +369,10 @@ switch ($oParam->exec) {
                     $oRegraLancamentoContabil->$sNomeMetodo($iCodigoReduzido);
                     $oRegraLancamentoContabil->salvar();
 
-                    $aComparacao = array(
+                    $aComparacao = [
                         RegraLancamentoContabil::COMPARA_DEBITO,
                         RegraLancamentoContabil::COMPARA_CREDITO,
-                    );
+                    ];
                     if (!empty($oParam->sElemento) && in_array($oParam->c47_compara, $aComparacao)) {
                         $oRegraLancamentoContabil->vincularElemento($oParam->sElemento);
                     }
@@ -383,11 +383,11 @@ switch ($oParam->exec) {
             } else {
 
                 $oRegraLancamentoContabil->salvar();
-                if (!empty($oParam->sElemento) && in_array($oParam->c47_compara, array(
+                if (!empty($oParam->sElemento) && in_array($oParam->c47_compara, [
                         RegraLancamentoContabil::COMPARA_CREDITO_ELEMENTO,
                         RegraLancamentoContabil::COMPARA_DEBITO_ELEMENTO,
                         RegraLancamentoContabil::COMPARA_TIPO_RETENCAO
-                    ))) {
+                    ])) {
 
                     $oLancamentoOrigem = new EventoContabilLancamento($oParam->c47_seqtranslan);
                     $aRegrasCadastradas = $oLancamentoOrigem->getRegrasLancamento();
@@ -531,7 +531,7 @@ switch ($oParam->exec) {
 
             $oEventoContabilLancamento = new EventoContabilLancamento($oParam->iCodigoLancamento);
             $aRegraLancamentos = $oEventoContabilLancamento->getRegrasLancamento();
-            $aRetornoRegra = array();
+            $aRetornoRegra = [];
 
             if (count($aRegraLancamentos) > 0) {
 

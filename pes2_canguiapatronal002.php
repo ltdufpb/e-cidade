@@ -33,7 +33,7 @@ $clbasesr = new cl_basesr;
 
 $sql_in = $clbasesr->sql_query_file($ano,$mes,"B995",null,db_getsession("DB_instit"),"r09_rubric");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $sql_inst = "select * from db_config where codigo = ".db_getsession("DB_instit");
@@ -57,7 +57,7 @@ $res_nome = db_query($sql_nome);
 $virg_nome = '';
 $descr_nome = '';
 
-for($inome=0;$inome<pg_numrows($res_nome);$inome++){
+for($inome=0;$inome<pg_num_rows($res_nome);$inome++){
  db_fieldsmemory($res_nome,$inome);
  $descr_nome .= $virg_nome.$r33_nome;
  $virg_nome   = ', '; 
@@ -78,7 +78,7 @@ $dev      = 0;
 $desco    = 0;
 $patronal = 0;
 
-for($inome=0;$inome<pg_numrows($res_nome);$inome++){
+for($inome=0;$inome<pg_num_rows($res_nome);$inome++){
     db_fieldsmemory($res_nome,$inome);
 
     if($recurso == 'g'){
@@ -577,7 +577,7 @@ for($inome=0;$inome<pg_numrows($res_nome);$inome++){
     $result = db_query($sql);
     //echo $sql;
     //db_criatabela($result);exit;
-    $xxnum = pg_numrows($result);
+    $xxnum = pg_num_rows($result);
     if ($xxnum == 0){
       db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mes.' / '.$ano);
 
@@ -608,7 +608,7 @@ $total2                 = 0;
 $total3                 = 0;
 $total4                 = 0;
 $total5                 = 0;
-for($iguia=0;$iguia<pg_numrows($result);$iguia++){
+for($iguia=0;$iguia<pg_num_rows($result);$iguia++){
 //$pdf1->modelo     	= 25;
   db_fieldsmemory($result,$iguia);
   $soma     = $soma1;

@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pagordemrec_classe.php"));
 include(modification("classes/db_pagordemnota_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clpagordemrec = new cl_pagordemrec;
 $clpagordemnota = new cl_pagordemnota;
@@ -87,10 +87,10 @@ if (isset ($codop) && $codop != "false") {
 		             <?php 
 
 				$campovalor = "val_".$e52_receit."_".$cont;
-				$$campovalor = $e52_valor;
+				${$campovalor} = $e52_valor;
 				db_input($campovalor, 8, 0, true, "text", 3, "readonly", '', '', 'text-align:right');
-				
-						
+
+
 			     ?>
 		             </td>
 			     <td>

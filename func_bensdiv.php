@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensdiv_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbensdiv = new cl_bensdiv;
 $clbensdiv->rotulo->label("t33_bem");
 $clbensdiv->rotulo->label("t33_bem");
@@ -98,9 +98,9 @@ $clbensdiv->rotulo->label("t33_bem");
         }else{
            $sql = $clbensdiv->sql_query("",$campos,"t33_bem","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t33_bem)){
-          $repassa = array("chave_t33_bem"=>$chave_t33_bem,"chave_t33_bem"=>$chave_t33_bem);
+          $repassa = ["chave_t33_bem"=>$chave_t33_bem,"chave_t33_bem"=>$chave_t33_bem];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

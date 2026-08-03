@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE parametrointegracaopatrimonial
 class cl_parametrointegracaopatrimonial { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c01_sequencial = 0; 
-   var $c01_modulo = 0; 
-   var $c01_data_dia = null; 
-   var $c01_data_mes = null; 
-   var $c01_data_ano = null; 
-   var $c01_data = null; 
-   var $c01_instit = 0; 
+   public $c01_sequencial = 0; 
+   public $c01_modulo = 0; 
+   public $c01_data_dia = null; 
+   public $c01_data_mes = null; 
+   public $c01_data_ano = null; 
+   public $c01_data = null; 
+   public $c01_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c01_sequencial = int4 = sequencial 
                  c01_modulo = int4 = Modulo 
                  c01_data = date = Data 
                  c01_instit = int4 = Cod. Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_parametrointegracaopatrimonial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parametrointegracaopatrimonial"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -129,10 +129,10 @@ class cl_parametrointegracaopatrimonial {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c01_sequencial = pg_result($result,0,0); 
+       $this->c01_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from parametrointegracaopatrimonial_c01_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c01_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c01_sequencial)){
          $this->erro_sql = " Campo c01_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_parametrointegracaopatrimonial {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parametro Integracao Patrimonial ($this->c01_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parametro Integracao Patrimonial já Cadastrado";
@@ -195,13 +195,13 @@ class cl_parametrointegracaopatrimonial {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20414,'$this->c01_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3670,20414,'','".AddSlashes(pg_result($resaco,0,'c01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3670,20415,'','".AddSlashes(pg_result($resaco,0,'c01_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3670,20416,'','".AddSlashes(pg_result($resaco,0,'c01_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3670,20417,'','".AddSlashes(pg_result($resaco,0,'c01_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3670,20414,'','".AddSlashes(pg_fetch_result($resaco,0,'c01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3670,20415,'','".AddSlashes(pg_fetch_result($resaco,0,'c01_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3670,20416,'','".AddSlashes(pg_fetch_result($resaco,0,'c01_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3670,20417,'','".AddSlashes(pg_fetch_result($resaco,0,'c01_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -211,10 +211,10 @@ class cl_parametrointegracaopatrimonial {
       $this->atualizacampos();
      $sql = " update parametrointegracaopatrimonial set ";
      $virgula = "";
-     if(trim($this->c01_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c01_sequencial"])){ 
+     if(trim((string) $this->c01_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c01_sequencial"])){ 
        $sql  .= $virgula." c01_sequencial = $this->c01_sequencial ";
        $virgula = ",";
-       if(trim($this->c01_sequencial) == null ){ 
+       if(trim((string) $this->c01_sequencial) == null ){ 
          $this->erro_sql = " Campo sequencial não informado.";
          $this->erro_campo = "c01_sequencial";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_parametrointegracaopatrimonial {
          return false;
        }
      }
-     if(trim($this->c01_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c01_modulo"])){ 
+     if(trim((string) $this->c01_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c01_modulo"])){ 
        $sql  .= $virgula." c01_modulo = $this->c01_modulo ";
        $virgula = ",";
-       if(trim($this->c01_modulo) == null ){ 
+       if(trim((string) $this->c01_modulo) == null ){ 
          $this->erro_sql = " Campo Modulo não informado.";
          $this->erro_campo = "c01_modulo";
          $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_parametrointegracaopatrimonial {
          return false;
        }
      }
-     if(trim($this->c01_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c01_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c01_data_dia"] !="") ){ 
+     if(trim((string) $this->c01_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c01_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c01_data_dia"] !="") ){ 
        $sql  .= $virgula." c01_data = '$this->c01_data' ";
        $virgula = ",";
-       if(trim($this->c01_data) == null ){ 
+       if(trim((string) $this->c01_data) == null ){ 
          $this->erro_sql = " Campo Data não informado.";
          $this->erro_campo = "c01_data_dia";
          $this->erro_banco = "";
@@ -253,7 +253,7 @@ class cl_parametrointegracaopatrimonial {
        if(isset($GLOBALS["HTTP_POST_VARS"]["c01_data_dia"])){ 
          $sql  .= $virgula." c01_data = null ";
          $virgula = ",";
-         if(trim($this->c01_data) == null ){ 
+         if(trim((string) $this->c01_data) == null ){ 
            $this->erro_sql = " Campo Data não informado.";
            $this->erro_campo = "c01_data_dia";
            $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_parametrointegracaopatrimonial {
          }
        }
      }
-     if(trim($this->c01_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c01_instit"])){ 
+     if(trim((string) $this->c01_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c01_instit"])){ 
        $sql  .= $virgula." c01_instit = $this->c01_instit ";
        $virgula = ",";
-       if(trim($this->c01_instit) == null ){ 
+       if(trim((string) $this->c01_instit) == null ){ 
          $this->erro_sql = " Campo Cod. Instituição não informado.";
          $this->erro_campo = "c01_instit";
          $this->erro_banco = "";
@@ -291,17 +291,17 @@ class cl_parametrointegracaopatrimonial {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20414,'$this->c01_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c01_sequencial"]) || $this->c01_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3670,20414,'".AddSlashes(pg_result($resaco,$conresaco,'c01_sequencial'))."','$this->c01_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3670,20414,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c01_sequencial'))."','$this->c01_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c01_modulo"]) || $this->c01_modulo != "")
-             $resac = db_query("insert into db_acount values($acount,3670,20415,'".AddSlashes(pg_result($resaco,$conresaco,'c01_modulo'))."','$this->c01_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3670,20415,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c01_modulo'))."','$this->c01_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c01_data"]) || $this->c01_data != "")
-             $resac = db_query("insert into db_acount values($acount,3670,20416,'".AddSlashes(pg_result($resaco,$conresaco,'c01_data'))."','$this->c01_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3670,20416,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c01_data'))."','$this->c01_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c01_instit"]) || $this->c01_instit != "")
-             $resac = db_query("insert into db_acount values($acount,3670,20417,'".AddSlashes(pg_result($resaco,$conresaco,'c01_instit'))."','$this->c01_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3670,20417,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c01_instit'))."','$this->c01_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -355,13 +355,13 @@ class cl_parametrointegracaopatrimonial {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20414,'$c01_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3670,20414,'','".AddSlashes(pg_result($resaco,$iresaco,'c01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3670,20415,'','".AddSlashes(pg_result($resaco,$iresaco,'c01_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3670,20416,'','".AddSlashes(pg_result($resaco,$iresaco,'c01_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3670,20417,'','".AddSlashes(pg_result($resaco,$iresaco,'c01_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3670,20414,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3670,20415,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c01_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3670,20416,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c01_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3670,20417,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c01_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -422,7 +422,7 @@ class cl_parametrointegracaopatrimonial {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:parametrointegracaopatrimonial";
@@ -437,7 +437,7 @@ class cl_parametrointegracaopatrimonial {
    function sql_query ( $c01_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_parametrointegracaopatrimonial {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_parametrointegracaopatrimonial {
    function sql_query_file ( $c01_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -495,7 +495,7 @@ class cl_parametrointegracaopatrimonial {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

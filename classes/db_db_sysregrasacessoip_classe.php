@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_sysregrasacessoip
 class cl_db_sysregrasacessoip {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $db48_idacesso = 0;
-   var $db48_ip = null;
-   var $db48_tokenpublico = null;
-   var $db48_tokenprivado = null;
+   public $db48_idacesso = 0;
+   public $db48_ip = null;
+   public $db48_tokenpublico = null;
+   public $db48_tokenprivado = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  db48_idacesso = int4 = Código da Regra 
                  db48_ip = varchar(40) = Máscara do IP 
                  db48_tokenpublico = varchar(64) = Token Publico 
                  db48_tokenprivado = varchar(64) = Token Privado 
                  ";
    //funcao construtor da classe
-   function cl_db_sysregrasacessoip() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysregrasacessoip");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -115,7 +115,7 @@ class cl_db_sysregrasacessoip {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro da Mascara (IP) de Acesso ($this->db48_idacesso) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro da Mascara (IP) de Acesso já Cadastrado";
@@ -144,13 +144,13 @@ class cl_db_sysregrasacessoip {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10270,'$this->db48_idacesso','I')");
-         $resac = db_query("insert into db_acount values($acount,1774,10270,'','".AddSlashes(pg_result($resaco,0,'db48_idacesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1774,10271,'','".AddSlashes(pg_result($resaco,0,'db48_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1774,1009250,'','".AddSlashes(pg_result($resaco,0,'db48_tokenpublico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1774,1009248,'','".AddSlashes(pg_result($resaco,0,'db48_tokenprivado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1774,10270,'','".AddSlashes(pg_fetch_result($resaco,0,'db48_idacesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1774,10271,'','".AddSlashes(pg_fetch_result($resaco,0,'db48_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1774,1009250,'','".AddSlashes(pg_fetch_result($resaco,0,'db48_tokenpublico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1774,1009248,'','".AddSlashes(pg_fetch_result($resaco,0,'db48_tokenprivado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_db_sysregrasacessoip {
       $this->atualizacampos();
      $sql = " update db_sysregrasacessoip set ";
      $virgula = "";
-     if(trim($this->db48_idacesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db48_idacesso"])){
+     if(trim((string) $this->db48_idacesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db48_idacesso"])){
        $sql  .= $virgula." db48_idacesso = $this->db48_idacesso ";
        $virgula = ",";
-       if(trim($this->db48_idacesso) == null ){
+       if(trim((string) $this->db48_idacesso) == null ){
          $this->erro_sql = " Campo Código da Regra não informado.";
          $this->erro_campo = "db48_idacesso";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_db_sysregrasacessoip {
          return false;
        }
      }
-     if(trim($this->db48_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db48_ip"])){
+     if(trim((string) $this->db48_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db48_ip"])){
        $sql  .= $virgula." db48_ip = '$this->db48_ip' ";
        $virgula = ",";
-       if(trim($this->db48_ip) == null ){
+       if(trim((string) $this->db48_ip) == null ){
          $this->erro_sql = " Campo Máscara do IP não informado.";
          $this->erro_campo = "db48_ip";
          $this->erro_banco = "";
@@ -186,11 +186,11 @@ class cl_db_sysregrasacessoip {
          return false;
        }
      }
-     if(trim($this->db48_tokenpublico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db48_tokenpublico"])){
+     if(trim((string) $this->db48_tokenpublico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db48_tokenpublico"])){
        $sql  .= $virgula." db48_tokenpublico = '$this->db48_tokenpublico' ";
        $virgula = ",";
      }
-     if(trim($this->db48_tokenprivado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db48_tokenprivado"])){
+     if(trim((string) $this->db48_tokenprivado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db48_tokenprivado"])){
        $sql  .= $virgula." db48_tokenprivado = '$this->db48_tokenprivado' ";
        $virgula = ",";
      }
@@ -208,17 +208,17 @@ class cl_db_sysregrasacessoip {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,10270,'$this->db48_idacesso','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db48_idacesso"]) || $this->db48_idacesso != "")
-             $resac = db_query("insert into db_acount values($acount,1774,10270,'".AddSlashes(pg_result($resaco,$conresaco,'db48_idacesso'))."','$this->db48_idacesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1774,10270,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db48_idacesso'))."','$this->db48_idacesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db48_ip"]) || $this->db48_ip != "")
-             $resac = db_query("insert into db_acount values($acount,1774,10271,'".AddSlashes(pg_result($resaco,$conresaco,'db48_ip'))."','$this->db48_ip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1774,10271,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db48_ip'))."','$this->db48_ip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db48_tokenpublico"]) || $this->db48_tokenpublico != "")
-             $resac = db_query("insert into db_acount values($acount,1774,1009250,'".AddSlashes(pg_result($resaco,$conresaco,'db48_tokenpublico'))."','$this->db48_tokenpublico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1774,1009250,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db48_tokenpublico'))."','$this->db48_tokenpublico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db48_tokenprivado"]) || $this->db48_tokenprivado != "")
-             $resac = db_query("insert into db_acount values($acount,1774,1009248,'".AddSlashes(pg_result($resaco,$conresaco,'db48_tokenprivado'))."','$this->db48_tokenprivado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1774,1009248,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db48_tokenprivado'))."','$this->db48_tokenprivado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -272,13 +272,13 @@ class cl_db_sysregrasacessoip {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,10270,'$db48_idacesso','E')");
-           $resac  = db_query("insert into db_acount values($acount,1774,10270,'','".AddSlashes(pg_result($resaco,$iresaco,'db48_idacesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1774,10271,'','".AddSlashes(pg_result($resaco,$iresaco,'db48_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1774,1009250,'','".AddSlashes(pg_result($resaco,$iresaco,'db48_tokenpublico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1774,1009248,'','".AddSlashes(pg_result($resaco,$iresaco,'db48_tokenprivado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1774,10270,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db48_idacesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1774,10271,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db48_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1774,1009250,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db48_tokenpublico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1774,1009248,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db48_tokenprivado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -353,7 +353,7 @@ class cl_db_sysregrasacessoip {
    function sql_query ( $db48_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -376,7 +376,7 @@ class cl_db_sysregrasacessoip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -388,7 +388,7 @@ class cl_db_sysregrasacessoip {
    function sql_query_file ( $db48_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,7 +409,7 @@ class cl_db_sysregrasacessoip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -57,7 +57,7 @@ db_input('c50_descr',40,$Ic50_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('c50_compl',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -75,7 +75,7 @@ function js_preenchepesquisa(chave){
   db_iframe_conhist.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

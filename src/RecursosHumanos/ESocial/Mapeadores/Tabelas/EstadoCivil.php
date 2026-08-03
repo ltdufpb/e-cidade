@@ -15,13 +15,13 @@ class EstadoCivil implements TabelasInterface
      * valor é o código do eSocial
      * @var array
      */
-    protected $estadoCivil = array(
+    protected $estadoCivil = [
         1 => 1,
         2 => 2,
         3 => 5,
         4 => 4,
         5 => 3,
-    );
+    ];
 
     /**
      * Retorna o valor da tabela do esocial equivalente ao valor de um dado no e-cidade
@@ -30,10 +30,6 @@ class EstadoCivil implements TabelasInterface
      */
     public function getValue($valor)
     {
-        if (isset($this->estadoCivil[$valor])) {
-            return $this->estadoCivil[$valor];
-        }
-
-        return null;
+        return $this->estadoCivil[$valor] ?? null;
     }
 }

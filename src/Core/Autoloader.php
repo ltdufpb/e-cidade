@@ -84,13 +84,13 @@ class Autoloader
      *
      * @var array
      */
-    protected $prefixes = array();
+    protected $prefixes = [];
 
     /**
      * Indica quais prefixos usam modification nos requires
      * @var array
      */
-    protected $prefixesWithModification = array();
+    protected $prefixesWithModification = [];
 
     /**
      * Register loader with SPL autoloader stack.
@@ -99,7 +99,7 @@ class Autoloader
      */
     public function register()
     {
-        spl_autoload_register(array($this, 'loadClass'), true, true);
+        spl_autoload_register($this->loadClass(...), true, true);
     }
 
     /**
@@ -124,7 +124,7 @@ class Autoloader
 
         // initialize the namespace prefix array
         if (isset($this->prefixes[$prefix]) === false) {
-            $this->prefixes[$prefix] = array();
+            $this->prefixes[$prefix] = [];
         }
 
         // retain the base directory for the namespace prefix

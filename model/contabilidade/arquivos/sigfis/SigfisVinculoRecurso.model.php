@@ -36,7 +36,7 @@ class SigfisVinculoRecurso {
 
   static $oInstance;
    
-  protected $aListaRecursos = array();
+  protected $aListaRecursos = [];
   
   /**
    * método construtor

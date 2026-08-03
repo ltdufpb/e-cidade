@@ -39,14 +39,12 @@ use Exception;
  */
 class ColetaItemService
 {
-    private $repositorio;
     /**
      * ColetaItemService constructor.
      * @param ColetaItemRepository $repositorio
      */
-    public function __construct(ColetaItemRepository $repositorio)
+    public function __construct(private readonly ColetaItemRepository $repositorio)
     {
-        $this->repositorio = $repositorio;
     }
 
     public function buscar($item)

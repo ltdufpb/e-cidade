@@ -45,7 +45,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
      *
      * @var array
      */
-    private $aTipos = array(3, 7, 4, 11, 16, 17, 19);
+    private $aTipos = [3, 7, 4, 11, 16, 17, 19];
 
     /**
      * Codigo da Importacao
@@ -64,12 +64,12 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
     /**
      * @var \ProcedenciaDivida[]
      */
-    protected $aReceitaProcedencia = array();
+    protected $aReceitaProcedencia = [];
 
     /**
      * @var array
      */
-    protected $aCertidaoDivida = array();
+    protected $aCertidaoDivida = [];
 
     /**
      * @var \processoProtocolo
@@ -142,7 +142,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
 
         $this->criarHistoricoDebitos();
 
-        $relacaoNumpreAntigoNovo = array();
+        $relacaoNumpreAntigoNovo = [];
 
         foreach ($this->oDadosDebitos as $stdDebitoOrigem) {
             $relacaoNumpreAntigoNovo[$stdDebitoOrigem->k00_numpre] = \cl_numpref::getNumpre();
@@ -300,7 +300,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
             $inicial->setSituacao(1);
             $inicial->salvar();
 
-            $numpresInceridos = array();
+            $numpresInceridos = [];
 
             foreach ($dadosCertidao->dividas as $divida) {
                 if (in_array($divida->iNumpre, $numpresInceridos)) {
@@ -371,11 +371,11 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
     protected function incluirDebito(\stdClass $debito, $indiceParcela, $numpreNovo)
     {
         $procedenciaDivida = $this->aReceitaProcedencia[$debito->k00_receit];
-        $valoresParcelas = explode(',', $debito->colecao_valor);
-        $datasVencimento = explode(',', $debito->data_vencimento);
-        $historicos = explode(',', $debito->colecao_historico);
-        $parcelas = explode(',', $debito->colecao_numpar);
-        $dataOperacao = explode(',', $debito->colecao_dtoper);
+        $valoresParcelas = explode(',', (string) $debito->colecao_valor);
+        $datasVencimento = explode(',', (string) $debito->data_vencimento);
+        $historicos = explode(',', (string) $debito->colecao_historico);
+        $parcelas = explode(',', (string) $debito->colecao_numpar);
+        $dataOperacao = explode(',', (string) $debito->colecao_dtoper);
         $daoArrecad = new \cl_arrecad();
         $daoArrecad->k00_numpre = $numpreNovo;
         $daoArrecad->k00_numpar = $this->lUnificarDebitos ? 1 : $parcelas[$indiceParcela];
@@ -414,8 +414,8 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
             $this->vincularMatriculasInscricoes = false;
 
             if (!empty($debito->colecao_matricula)) {
-                foreach (explode(',', $debito->colecao_matricula) as $indice => $matriculas) {
-                    list($codigoMatricula, $percentualMatricula) = explode('|', $matriculas);
+                foreach (explode(',', (string) $debito->colecao_matricula) as $indice => $matriculas) {
+                    [$codigoMatricula, $percentualMatricula] = explode('|', $matriculas);
                     $daoArreMatricMatricula = new \cl_arrematric();
                     $daoArreMatricMatricula->k00_numpre = $numpreNovo;
                     $daoArreMatricMatricula->k00_matric = $codigoMatricula;
@@ -432,8 +432,8 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
             }
 
             if (!empty($debito->colecao_inscricao)) {
-                foreach (explode(',', $debito->colecao_inscricao) as $indice => $inscricoes) {
-                    list($codigoInscricao, $percentualInscricao) = explode('|', $inscricoes);
+                foreach (explode(',', (string) $debito->colecao_inscricao) as $indice => $inscricoes) {
+                    [$codigoInscricao, $percentualInscricao] = explode('|', $inscricoes);
                     $daoArreInscricao = new \cl_arreinscr();
                     $daoArreInscricao->k00_numpre = $numpreNovo;
                     $daoArreInscricao->k00_inscr = $codigoInscricao;
@@ -459,10 +459,10 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
     {
         $daoDivida = new \cl_divida();
 
-        $valor = explode(",", $debito->colecao_valor);
-        $datasVencimento = explode(",", $debito->data_vencimento);
-        $parcelas = explode(",", $debito->colecao_numpar);
-        $dataOperacao = explode(",", $debito->colecao_numpar);
+        $valor = explode(",", (string) $debito->colecao_valor);
+        $datasVencimento = explode(",", (string) $debito->data_vencimento);
+        $parcelas = explode(",", (string) $debito->colecao_numpar);
+        $dataOperacao = explode(",", (string) $debito->colecao_numpar);
         $exercicioDivida = $debito->exercicio_divida;
 
         $valor_divida = $valor[$indiceParcela];
@@ -578,7 +578,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
 
         $sCampos = implode(
             ",",
-            array(
+            [
                 "k00_numpre",
                 "1 as k00_numpar",
                 "k00_numcgm",
@@ -608,12 +608,12 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
                 "array_to_string(array_accum(k00_dtvenc), ',') as data_vencimento",
                 "(select dv05_obs from diversos where dv05_numpre = x.k00_numpre) as obs",
                 "(select dv05_exerc as exercicio from diversos where dv05_numpre = x.k00_numpre) AS exercicio_divida"
-            )
+            ]
         );
 
         $sGroupBy = implode(
             ",",
-            array(
+            [
                 "x.k00_numpre",
                 "x.k00_numcgm",
                 "x.k00_receit",
@@ -622,7 +622,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
                 "x.k00_tipojm",
                 "x.k00_numtot",
                 "x.k00_numdig"
-            )
+            ]
         );
 
         $sSql = "select $sCampos           ";
@@ -666,7 +666,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
 
         $oRetorno = \db_utils::fieldsMemory($rsSimulacao, 0);
 
-        if (strpos($oRetorno->simulacao, 'OK') === false) {
+        if (!str_contains((string) $oRetorno->simulacao, 'OK')) {
             throw new \DBException($oRetorno->simulacao);
         }
 
@@ -695,12 +695,12 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
 
         $oAnulacao = \db_utils::fieldsMemory($rsAnulacao, 0);
 
-        if (strpos($oAnulacao->anulacao, 'OK') === false) {
+        if (!str_contains((string) $oAnulacao->anulacao, 'OK')) {
             throw new \DBException($oAnulacao->anulacao);
         }
 
-        $aNumpres = array();
-        $retornoOrigem = array();
+        $aNumpres = [];
+        $retornoOrigem = [];
         foreach ($oOrigemParcelamento as $indice => $debito) {
             $aNumpres[$debito->k00_numpre] = $debito->k00_numpre;
 
@@ -817,13 +817,13 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
     {
         $this->onProgressBarSetMessageLog("Buscando origens de parcelamentos (Etapa 5/11)");
 
-        $aNumpres = array();
+        $aNumpres = [];
 
         foreach ($this->oDadosDebitos as $debito) {
             $aNumpres[] = $debito->k00_numpre;
         }
 
-        $aOrigens = array();
+        $aOrigens = [];
 
         $parcelamentos = $this->verificarParcelamentos($aNumpres);
 
@@ -878,7 +878,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
             throw new \ParameterException("Informe os débitos que devem ser processados.");
         }
 
-        $aWhere = array();
+        $aWhere = [];
 
         foreach ($this->debitosProcessar['aDebitos'] as $stdDebito) {
             if (isset($stdDebito->iCodigoProcedencia)) {
@@ -917,7 +917,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
             $sWhere = "arrecad.k00_numpre in (select distinct k61_numpre
                                               from listadeb where k61_codigo = {$this->iListaDebitos} )";
         } elseif (count($this->aReceitaProcedencia) > 0) {
-            $aReceitas = array();
+            $aReceitas = [];
 
             foreach ($this->aReceitaProcedencia as $indice => $oReceita) {
                 $aReceitas[] = $indice;
@@ -946,7 +946,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
                 throw new \Exception('Erro ao buscar receitas.');
             }
 
-            $aReceitasArrecad = array();
+            $aReceitasArrecad = [];
             $collectionReceitas = \db_utils::getCollectionByRecord($resultado, false, false, true);
 
             foreach ($collectionReceitas as $oReceita) {
@@ -1026,12 +1026,12 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
 
             $sql = "INSERT INTO arreold VALUES";
 
-            $parcelas = explode(',', $debito->colecao_numpar);
-            $valores = explode(',', $debito->colecao_valor);
-            $datasVencimento = explode(',', $debito->data_vencimento);
-            $datasOperacao = explode(',', $debito->colecao_dtoper);
-            $historicos = explode(',', $debito->colecao_historico);
-            $digito = explode(',', $debito->k00_numdig);
+            $parcelas = explode(',', (string) $debito->colecao_numpar);
+            $valores = explode(',', (string) $debito->colecao_valor);
+            $datasVencimento = explode(',', (string) $debito->data_vencimento);
+            $datasOperacao = explode(',', (string) $debito->colecao_dtoper);
+            $historicos = explode(',', (string) $debito->colecao_historico);
+            $digito = explode(',', (string) $debito->k00_numdig);
 
             if (!empty($debito->colecao_numpar)) {
                 foreach ($parcelas as $chaveParcela => $parcela) {
@@ -1078,23 +1078,23 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
             $sql = "";
             $contadorRegistros++;
 
-            $parcelas = explode(',', $debito->colecao_numpar);
-            $valores = explode(',', $debito->colecao_valor);
-            $datasVencimento = explode(',', $debito->data_vencimento);
-            $historicos = explode(',', $debito->colecao_historico);
-            $competencias = explode(',', $debito->colecao_competencia);
+            $parcelas = explode(',', (string) $debito->colecao_numpar);
+            $valores = explode(',', (string) $debito->colecao_valor);
+            $datasVencimento = explode(',', (string) $debito->data_vencimento);
+            $historicos = explode(',', (string) $debito->colecao_historico);
+            $competencias = explode(',', (string) $debito->colecao_competencia);
 
             $unificou = false;
 
             $procedenciaDivida = $this->aReceitaProcedencia[$debito->k00_receit];
             $historicoCalculoProcedencia = $procedenciaDivida->getHistoricoCalculo();
 
-            $dados = array(
+            $dados = [
                 'numpre_novo' => $relacaoNumpreAntigoNovo[$debito->k00_numpre],
                 'receita' => $procedenciaDivida->getReceitaDivida(),
                 'tipo' => $procedenciaDivida->getTipoDebito(),
                 'numero_total' => $debito->k00_numtot
-            );
+            ];
 
             asort($parcelas);
 
@@ -1151,10 +1151,10 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
             }
 
             if (!empty($debito->colecao_matricula)) {
-                $matriculas = explode(',', $debito->colecao_matricula);
+                $matriculas = explode(',', (string) $debito->colecao_matricula);
 
                 foreach ($matriculas as $indice => $matricula) {
-                    list($codigoMatricula, $percentualMatricula) = explode('|', $matricula);
+                    [$codigoMatricula, $percentualMatricula] = explode('|', $matricula);
 
                     $sSqlMatric = "SELECT  k00_numpre FROM  arrematric
                                    WHERE k00_numpre = {$dados['numpre_novo']} AND k00_matric = {$codigoMatricula} ;";
@@ -1171,10 +1171,10 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
             }
 
             if (!empty($debito->colecao_inscricao)) {
-                $inscricoes = explode(',', $debito->colecao_inscricao);
+                $inscricoes = explode(',', (string) $debito->colecao_inscricao);
 
                 foreach ($inscricoes as $indice => $inscricao) {
-                    list($codigoInscricao, $percentualInscricao) = explode('|', $inscricao);
+                    [$codigoInscricao, $percentualInscricao] = explode('|', $inscricao);
 
                     $sSqlInscr = "SELECT  k00_numpre FROM  arreinscr
                                   WHERE k00_numpre = {$dados['numpre_novo']} AND k00_inscr = {$codigoInscricao} ;";
@@ -1236,11 +1236,11 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
                 $sql = "";
                 $contadorRegistros++;
 
-                $parcelas = explode(',', $debito->colecao_numpar);
-                $valores = explode(',', $debito->colecao_valor);
-                $datasVencimento = explode(',', $debito->data_vencimento);
-                $historicos = explode(',', $debito->colecao_historico);
-                $competencias = explode(',', $debito->colecao_competencia);
+                $parcelas = explode(',', (string) $debito->colecao_numpar);
+                $valores = explode(',', (string) $debito->colecao_valor);
+                $datasVencimento = explode(',', (string) $debito->data_vencimento);
+                $historicos = explode(',', (string) $debito->colecao_historico);
+                $competencias = explode(',', (string) $debito->colecao_competencia);
 
                 $unificou = false;
 
@@ -1252,12 +1252,12 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
                     throw new \Exception($msg);
                 }
 
-                $dados = array(
+                $dados = [
                     'numpre_novo' => $relacaoNumpreAntigoNovo[$debito->k00_numpre],
                     'receita' => $procedenciaDivida->getReceitaDivida(),
                     'tipo' => $procedenciaDivida->getTipoDebito(),
                     'numero_total' => $debito->k00_numtot
-                );
+                ];
 
                 asort($parcelas);
 
@@ -1311,10 +1311,10 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
                 }
 
                 if (!empty($debito->colecao_matricula)) {
-                    $matriculas = explode(',', $debito->colecao_matricula);
+                    $matriculas = explode(',', (string) $debito->colecao_matricula);
 
                     foreach ($matriculas as $indice => $matricula) {
-                        list($codigoMatricula, $percentualMatricula) = explode('|', $matricula);
+                        [$codigoMatricula, $percentualMatricula] = explode('|', $matricula);
 
                         $sSqlMatric  = "SELECT  k00_numpre FROM  arrematric";
                         $sSqlMatric .= "                   WHERE k00_numpre = {$dados['numpre_novo']}";
@@ -1332,10 +1332,10 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
                 }
 
                 if (!empty($debito->colecao_inscricao)) {
-                    $inscricoes = explode(',', $debito->colecao_inscricao);
+                    $inscricoes = explode(',', (string) $debito->colecao_inscricao);
 
                     foreach ($inscricoes as $indice => $inscricao) {
-                        list($codigoInscricao, $percentualInscricao) = explode('|', $inscricao);
+                        [$codigoInscricao, $percentualInscricao] = explode('|', $inscricao);
 
                         $sSqlInscr = "SELECT  k00_numpre FROM  arreinscr
                                       WHERE k00_numpre = {$dados['numpre_novo']} AND k00_inscr = {$codigoInscricao} ;";
@@ -1366,13 +1366,13 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
     {
         $sql = '';
 
-        $sets = array(
+        $sets = [
             "k00_numpre = {$dados['numpre_novo']}",
             "k00_receit = {$dados['receita']}",
             "k00_numdig = 1",
             "k00_tipojm = '0'",
             "k00_tipo = {$dados['tipo']}"
-        );
+        ];
 
         $sets[] = "k00_numpar = {$parcela}";
         $sets[] = "k00_hist = {$dados['historico']}";
@@ -1415,7 +1415,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
             $titular = $this->stdProcesso->titular;
         }
 
-        $dataOperacao = explode(',', $debito->colecao_dtoper);
+        $dataOperacao = explode(',', (string) $debito->colecao_dtoper);
 
         if (empty($debito->exercicio_divida)) {
             $debito->exercicio_divida = substr($dataOperacao[0], 0, 4);
@@ -1557,7 +1557,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
 
     private function reagruparDividas()
     {
-        $numpres = array();
+        $numpres = [];
         foreach ($this->aDividasArrecad as $indiceDono => $aDividasArrecad) {
             foreach ($aDividasArrecad as $indiceExercicio => $aDivida) {
                 foreach ($aDivida as $indice => $divida) {
@@ -1579,7 +1579,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
         }
 
         $autoNumpre = \db_utils::getCollectionByRecord($rsAutoNumpre);
-        $autos = array();
+        $autos = [];
 
         foreach ($autoNumpre as $auto) {
             $autos[$auto->v01_numpre] = $auto->k00_auto;
@@ -1612,7 +1612,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
     private function reagruparDividasParcelamento()
     {
 
-        $numpres = array();
+        $numpres = [];
         foreach ($this->aDividasArrecadParcelamento as $indiceDono => $aDividasArrecadParcelamento) {
             foreach ($aDividasArrecadParcelamento as $indiceParcelamento => $aDivida) {
                 foreach ($aDivida as $indice => $divida) {
@@ -1633,7 +1633,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
         }
 
         $autoNumpre = \db_utils::getCollectionByRecord($rsAutoNumpre);
-        $autos = array();
+        $autos = [];
 
         foreach ($autoNumpre as $auto) {
             $autos[$auto->v01_numpre] = $auto->k00_auto;

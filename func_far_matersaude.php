@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_matersaude_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_matersaude = new cl_far_matersaude;
 $clmatmater       = new cl_matmater ( );
 $clfar_matersaude->rotulo->label("fa01_i_codigo");
@@ -114,11 +114,11 @@ $clmatmater->rotulo->label("m60_descr");
           }
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa01_i_codigo)){
-          $repassa = array("chave_fa01_i_codigo"=>$chave_fa01_i_codigo,"chave_fa01_i_codigo"=>$chave_fa01_i_codigo);
+          $repassa = ["chave_fa01_i_codigo"=>$chave_fa01_i_codigo,"chave_fa01_i_codigo"=>$chave_fa01_i_codigo];
         }else if(isset($chave_fa01_codigobarras)) {
-          $repassa = array("chave_fa01_codigobarras"=>$chave_fa01_codigobarras,"chave_fa01_codigobarras"=>$chave_fa01_codigobarras);
+          $repassa = ["chave_fa01_codigobarras"=>$chave_fa01_codigobarras,"chave_fa01_codigobarras"=>$chave_fa01_codigobarras];
         }
 
         echo '<div class="container">';

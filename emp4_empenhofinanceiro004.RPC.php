@@ -81,7 +81,7 @@ try {
         $oRetorno->oFinalidadePagamentoFundeb                  = new stdClass();
         $oRetorno->oFinalidadePagamentoFundeb->e151_sequencial = $oFinalidade->getCodigoSequencial();
         $oRetorno->oFinalidadePagamentoFundeb->e151_codigo     = $oFinalidade->getCodigo();
-        $oRetorno->oFinalidadePagamentoFundeb->e151_descricao  = urlencode($oFinalidade->getDescricao());
+        $oRetorno->oFinalidadePagamentoFundeb->e151_descricao  = urlencode((string) $oFinalidade->getDescricao());
       }
 
       break;

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cidadaofamiliavisita_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcidadaofamiliavisita = new cl_cidadaofamiliavisita;
 $clcidadaofamiliavisita->rotulo->label("as05_sequencial");
 $clcidadaofamiliavisita->rotulo->label("as05_cidadaofamilia");
@@ -97,9 +97,9 @@ $clcidadaofamiliavisita->rotulo->label("as05_cidadaofamilia");
         }else{
            $sql = $clcidadaofamiliavisita->sql_query_visita_contato("",$campos,"as05_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_as05_cidadaofamilia)){
-          $repassa = array("chave_as05_sequencial"=>$chave_as05_sequencial,"chave_as05_cidadaofamilia"=>$chave_as05_cidadaofamilia);
+          $repassa = ["chave_as05_sequencial"=>$chave_as05_sequencial,"chave_as05_cidadaofamilia"=>$chave_as05_cidadaofamilia];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

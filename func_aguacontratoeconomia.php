@@ -31,14 +31,14 @@ require_once (modification("libs/db_sessoes.php"));
 require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPOST = (object) $_POST;
 $oGET = (object) $_GET;
 
-$iContrato = isset($oGET->filtro_contrato) ? $oGET->filtro_contrato : null;
-$iCgm      = isset($oGET->filtro_cgm) ? $oGET->filtro_cgm : null;
+$iContrato = $oGET->filtro_contrato ?? null;
+$iCgm      = $oGET->filtro_cgm ?? null;
 
 $oDaoEconomia = new cl_aguacontratoeconomia;
 $oDaoEconomia->rotulo->label("x38_sequencial");
@@ -75,10 +75,10 @@ $oDaoEconomia->rotulo->label("x38_sequencial");
     require_once(modification("funcoes/db_func_aguacontratoeconomia.php"));
   }
 
-  $aWhere = array();
+  $aWhere = [];
   if (isset($pesquisa_chave) || isset($chave_x38_sequencial)) {
 
-    $iCodigo = $pesquisa_chave ? $pesquisa_chave : $chave_x38_sequencial;
+    $iCodigo = $pesquisa_chave ?: $chave_x38_sequencial;
     $aWhere[] = "x38_sequencial = {$iCodigo}";
   }
 
@@ -96,12 +96,12 @@ $oDaoEconomia->rotulo->label("x38_sequencial");
 
   if (!isset($pesquisa_chave)) {
 
-    $aRepassa = array();
+    $aRepassa = [];
     if (isset($chave_x38_sequencial)) {
 
-      $aRepassa = array(
+      $aRepassa = [
         'chave_x38_sequencial' => $chave_x38_sequencial,
-      );
+      ];
     }
 
     echo '<div class="container">';

@@ -51,8 +51,8 @@ $sCampos .= 'la56_i_teto                  as iteto,';
 $sCampos .= "case when la56_i_periodo = 1 then 'Diario' else 'Mensal' end as speriodo,";
 $sCampos .= "case when la56_i_teto = 1 then 'Fisico' else 'Financeiro' end as steto";
 
-$dDataIniDB = implode('-', array_reverse(explode('/', $dDataIni)));
-$dDataFimDB = implode('-', array_reverse(explode('/', $dDataFim)));
+$dDataIniDB = implode('-', array_reverse(explode('/', (string) $dDataIni)));
+$dDataFimDB = implode('-', array_reverse(explode('/', (string) $dDataFim)));
 $overlaps = "DATE '{$dDataIniDB}' - interval '1 day', DATE '{$dDataFimDB}' + interval '1 day'";
 $sWhere = " (la56_d_ini, la56_d_fim) OVERLAPS ($overlaps) ";
 
@@ -120,14 +120,14 @@ function valorUtilizado($oDados, $periodoInicial, $periodoFinal)
     $sJoin .= ' left join (select distinct on (sd61_c_subgrupo) * from sau_subgrupo) as ssg ';
     $sJoin .= ' on ssg.sd61_c_subgrupo = substr(prc.sd63_c_procedimento,3,2) ';
 
-    $dataIni = implode('-', array_reverse(explode('/', $oDados->dtinicio)));
-    $dataFim = implode('-', array_reverse(explode('/', $oDados->dtfim)));
+    $dataIni = implode('-', array_reverse(explode('/', (string) $oDados->dtinicio)));
+    $dataFim = implode('-', array_reverse(explode('/', (string) $oDados->dtfim)));
 
-    if (strtotime($dataIni) > strtotime($periodoInicial)) {
+    if (strtotime($dataIni) > strtotime((string) $periodoInicial)) {
         $periodoInicial = $dataIni;
     }
 
-    if (!empty($dataFim) && strtotime($dataFim) < strtotime($periodoFinal)) {
+    if (!empty($dataFim) && strtotime($dataFim) < strtotime((string) $periodoFinal)) {
         $periodoFinal = $dataFim;
     }
 
@@ -198,7 +198,7 @@ $oPdf->setLeftMargin(8.5);
 
 //Cabeçalho
 $oPdf->addTitulo("RELATÓRIO CONTROLE FINANCEIRO DO LABORATÓRIO");
-$oPdf->addTitulo(" " . utf8_decode($sQuebraLabel) . ": " . (($iValor1 == -1) ? 'Todos' : $iValor1));
+$oPdf->addTitulo(" " . mb_convert_encoding($sQuebraLabel, 'ISO-8859-1') . ": " . (($iValor1 == -1) ? 'Todos' : $iValor1));
 $oPdf->addTitulo(" Periodo : " . $dDataIni . " a " . $dDataFim);
 
 $oPdf->addpage('P');
@@ -284,7 +284,7 @@ for ($iInd = 0; $iInd < $iLinhas; $iInd++) {
     if ($oDados->itpcontrole == 1) {
         $oPdf->cell(75, $iTam, $oDados->idepartamento . " - " . $oDados->sdepartamento, 1, 0, 'L', $lCor);
     } elseif ($oDados->itpcontrole == 9 || $oDados->itpcontrole == 4) {
-        $oPdf->cell(75, $iTam, substr($oDados->slaboratorio, 0, 45), 1, 0, 'L', $lCor);
+        $oPdf->cell(75, $iTam, substr((string) $oDados->slaboratorio, 0, 45), 1, 0, 'L', $lCor);
     } elseif ($oDados->itpcontrole == 3 || $oDados->itpcontrole == 6 || $oDados->itpcontrole == 7) {
         $oPdf->cell(25, $iTam, $oDados->igrupo, 1, 0, 'C', $lCor);
         $oPdf->cell(25, $iTam, $oDados->isubgrupo, 1, 0, 'C', $lCor);

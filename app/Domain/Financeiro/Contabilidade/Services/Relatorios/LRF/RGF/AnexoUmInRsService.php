@@ -53,6 +53,7 @@ class AnexoUmInRsService extends AnexoUmService
         parent::__construct($filtros);
     }
 
+    #[\Override]
     public function emitir()
     {
         $this->processar();

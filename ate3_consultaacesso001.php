@@ -33,7 +33,7 @@ include(modification("classes/db_clientes_classe.php"));
 include(modification("classes/db_atendcadarea_classe.php"));
 include(modification("classes/db_db_modulos_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clclientes          = new cl_clientes;
 $clatendcadarea      = new cl_atendcadarea;
@@ -216,7 +216,7 @@ if(isset($pesquisar)){
   $result = db_query($sql);
   
   echo "<td  bgcolor='lightgreen' rowspan='2'><strong>Clientes</strong></td>";
-  echo "<td  bgcolor='lightgreen' colspan='".(pg_numrows($resultmod)+1)."'><strong>Módulos</strong></td>";
+  echo "<td  bgcolor='lightgreen' colspan='".(pg_num_rows($resultmod)+1)."'><strong>Módulos</strong></td>";
   echo "</tr>";
   echo "<tr>";
   
@@ -230,27 +230,27 @@ if(isset($pesquisar)){
     }
   }
 
-  $tmatcli_col = array();
-  for($i=0;$i<pg_numrows($resultmod);$i++){
+  $tmatcli_col = [];
+  for($i=0;$i<pg_num_rows($resultmod);$i++){
   
     if($tipototal==2){
-      echo "<td  bgcolor='lightgreen' title='Área:".pg_result($resultmod,$i,'id_modulo')."'>".pg_result($resultmod,$i,'nome_modulo')."</td>"; 
+      echo "<td  bgcolor='lightgreen' title='Área:".pg_fetch_result($resultmod,$i,'id_modulo')."'>".pg_fetch_result($resultmod,$i,'nome_modulo')."</td>"; 
     }else{
-      echo "<td  bgcolor='lightgreen' title='Clique Acesso Geral - Módulo:".pg_result($resultmod,$i,'id_modulo')."'><a href=\"#\" onclick='js_pesquisautilizacao($tipototal,".pg_result($resultmod,$i,'id_modulo').")'>".pg_result($resultmod,$i,'nome_modulo')."</a></td>"; 
+      echo "<td  bgcolor='lightgreen' title='Clique Acesso Geral - Módulo:".pg_fetch_result($resultmod,$i,'id_modulo')."'><a href=\"#\" onclick='js_pesquisautilizacao($tipototal,".pg_fetch_result($resultmod,$i,'id_modulo').")'>".pg_fetch_result($resultmod,$i,'nome_modulo')."</a></td>"; 
     }
-    $tmatcli_col[pg_result($resultmod,$i,'id_modulo')] = 0; 
+    $tmatcli_col[pg_fetch_result($resultmod,$i,'id_modulo')] = 0; 
   }  
   echo "<td  bgcolor='lightgreen' title='Total dos Acessos'>Total</td>"; 
   
   $codcli = 0;
-  $tmatcli_lin = array();
+  $tmatcli_lin = [];
   
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
      db_fieldsmemory($result,$i);
      if($codcli==0 || $codcli != $at99_codcli ){
        if($codcli > 0 && $codcli != $at99_codcli){
          $tmatcli_lin[$codcli] = 0;
-         for($x=0;$x<pg_numrows($resultmod);$x++){
+         for($x=0;$x<pg_num_rows($resultmod);$x++){
            db_fieldsmemory($resultmod,$x);
            $cor = "";
            if( $tipototal == 1 ){
@@ -258,8 +258,8 @@ if(isset($pesquisar)){
              $sql = "select at74_data from clientesmodulos 
                      where at74_id_item = ".$id_modulo." and at74_codcli = $codcli ";
              $ress = db_query($sql);
-             if( pg_numrows($ress) > 0 ){
-               if( pg_result($ress,0,'at74_data') != "" ){
+             if( pg_num_rows($ress) > 0 ){
+               if( pg_fetch_result($ress,0,'at74_data') != "" ){
                  $cor = " bgcolor='lightblue' ";
                }else{
                  if( $matcli[$id_modulo] > 0 ){
@@ -286,14 +286,14 @@ if(isset($pesquisar)){
        echo "<tr>";
        echo "<td bgcolor='lightgreen' title='$at99_codcli' >$at01_nomecli</td>";
        $codcli = $at99_codcli;
-       $matcli = array();
+       $matcli = [];
      }
      $matcli[$at99_itemcodmod] = $totacesso;
   }
-  if(pg_numrows($result)>0){
+  if(pg_num_rows($result)>0){
   
     $tmatcli_lin[$codcli] = 0;
-    for($x=0;$x<pg_numrows($resultmod);$x++){
+    for($x=0;$x<pg_num_rows($resultmod);$x++){
        db_fieldsmemory($resultmod,$x);
 
        $cor = "";
@@ -302,8 +302,8 @@ if(isset($pesquisar)){
          $sql = "select at74_data from clientesmodulos 
                  where at74_id_item = ".$id_modulo." and at74_codcli = $codcli ";
          $ress = db_query($sql);
-         if( pg_numrows($ress) > 0 ){
-           if( pg_result($ress,0,'at74_data') != "" ){
+         if( pg_num_rows($ress) > 0 ){
+           if( pg_fetch_result($ress,0,'at74_data') != "" ){
              $cor = " bgcolor='lightblue' ";
            }else{
              if( $matcli[$id_modulo] > 0 ){

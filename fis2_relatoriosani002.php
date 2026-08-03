@@ -41,7 +41,7 @@ $clsanitario = new cl_sanitario;
 $clsaniatividade = new cl_saniatividade;
 $clsaniatividade->rotulo->label();
 $clsanitario->rotulo->label();
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //print_r($HTTP_SERVER_VARS['QUERY_STRING']);
 //exit;
 
@@ -188,7 +188,7 @@ if ($tipo=="ana"){
     $pdf->Cell(50,6,$RLz01_cep.': '.@$z01_cep,1,0,"J",1);
     $pdf->Ln(6);
     $pdf->Cell(70,6,$RLy80_data.': '.db_formatar(@$y80_data,'d'),1,0,"J",1);
-    $pdf->Cell(70,6,$RLy80_obs.': '.substr(@$y80_obs,0,20)."...",1,0,"J",1);
+    $pdf->Cell(70,6,$RLy80_obs.': '.substr((string) @$y80_obs,0,20)."...",1,0,"J",1);
     $pdf->Cell(50,6,$RLy80_area.': '.@$y80_area,1,0,"J",1);
     $pdf->Ln(6);
     $pdf->SetFillColor(200);
@@ -209,7 +209,7 @@ if ($tipo=="ana"){
         $pdf->Cell(20,6,''.$y83_seq,1,0,"C",0);
         $pdf->Cell(45,6,''.($y83_dtini != ""?db_formatar($y83_dtini,'d'):''),1,0,"C",0);
         $pdf->Cell(45,6,''.($y83_dtfim != ""?db_formatar($y83_dtfim,'d'):''),1,0,"C",0);
-        $pdf->Cell(55,6,''.substr($q03_descr,0,22),1,0,"L",0);
+        $pdf->Cell(55,6,''.substr((string) $q03_descr,0,22),1,0,"L",0);
         $pdf->Cell(25,6,''.$y83_area,1,1,"C",0);
       }
     }else{
@@ -226,7 +226,7 @@ if ($tipo=="ana"){
         $pdf->Cell(20,6,''.$y83_seq,1,0,"C",0);
         $pdf->Cell(45,6,''.($y83_dtini != ""?db_formatar($y83_dtini,'d'):''),1,0,"C",0);
         $pdf->Cell(45,6,''.($y83_dtfim != ""?db_formatar($y83_dtfim,'d'):''),1,0,"C",0);
-        $pdf->Cell(55,6,''.substr($q03_descr,0,22),1,0,"L",0);
+        $pdf->Cell(55,6,''.substr((string) $q03_descr,0,22),1,0,"L",0);
         $pdf->Cell(25,6,''.$y83_area,1,1,"C",0);
       }
     }
@@ -247,13 +247,13 @@ if ($tipo=="ana"){
   $pdf->setfont('arial','b',8);
   $troca = 1;
   $alt = 4;
-  for($x = 0; $x < pg_numrows($result);$x++){
+  for($x = 0; $x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
 
     $head3 = "TIPO:  SINTÉTICO";
 
-    $pontos = strlen($q03_descr) > 50 ? " ..." : '';
-    $q03_descr = substr($q03_descr, 0, 50).$pontos;
+    $pontos = strlen((string) $q03_descr) > 50 ? " ..." : '';
+    $q03_descr = substr((string) $q03_descr, 0, 50).$pontos;
 
 	 if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
      $pdf->addpage("L");

@@ -39,5 +39,5 @@ interface PesquisaRubricas
      * @param array $ordem
      * @return string
      */
-    public function sqlRubricas($campos = '*', $where = array(), $ordem = array());
+    public function sqlRubricas($campos = '*', $where = [], $ordem = []);
 }

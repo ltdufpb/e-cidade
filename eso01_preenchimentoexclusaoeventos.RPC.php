@@ -94,15 +94,10 @@ try {
             $parametros->aFiltros->inscricaoEmpregador = $cgm->getCnpj();
             $parametros->aFiltros->naoExcluidos = true;
             if ($parametros->aFiltros->cpf) {
-                switch ($parametros->aFiltros->idEvento) {
-                    case Tipo::S1210:
-                    case Tipo::S2400:
-                            $parametros->aFiltros->eventojson = json_encode(array('cpfBenef' => $parametros->aFiltros->cpf));
-                        break;
-                    default:
-                        $parametros->aFiltros->eventojson = json_encode(array('cpfTrab' => $parametros->aFiltros->cpf));
-                        break;
-                }
+                $parametros->aFiltros->eventojson = match ($parametros->aFiltros->idEvento) {
+                    Tipo::S1210, Tipo::S2400 => json_encode(['cpfBenef' => $parametros->aFiltros->cpf]),
+                    default => json_encode(['cpfTrab' => $parametros->aFiltros->cpf]),
+                };
             }
             $eSocial->setDados($parametros->aFiltros);
             $dados = $eSocial->request('GET');
@@ -110,11 +105,11 @@ try {
                 throw new \BusinessException("Não há nenhum recibo cadastrado para o empregador {$cgm->getCnpj()}.");
             }
 
-            $retorno->recibos = array();
+            $retorno->recibos = [];
 
             foreach ($dados as $dado) {
                 $eSocialEnvio = new ESocialEnvio();
-                $eSocialEnvio->setEvento(preg_replace('/[^0-9]/', '', $dado->tipo));
+                $eSocialEnvio->setEvento(preg_replace('/[^0-9]/', '', (string) $dado->tipo));
                 $eSocialEnvio->setEmpregador($dado->empregador->inscricao);
                 $eSocialEnvio->setDados($dado->evento);
                 $eSocialEnvio->setResponsavelPreenchimento($dado->referencia);
@@ -123,22 +118,18 @@ try {
                     $item = new stdClass();
                     $item->cpftrab = '';
 
-                    switch ($parametros->aFiltros->idEvento) {
-                        case Tipo::S1210:
-                            $item->cpftrab = JSON::hasKey('cpfBenef', $dado->evento)
-                                ? db_formatar(JSON::search('cpfBenef', $dado->evento), 'CPF')
-                                : '';
-                            break;
-                        default:
-                            $item->cpftrab = JSON::hasKey('cpfTrab', $dado->evento)
-                                ? db_formatar(JSON::search('cpfTrab', $dado->evento), 'CPF')
-                                : '';
-                            break;
-                    }
+                    $item->cpftrab = match ($parametros->aFiltros->idEvento) {
+                        Tipo::S1210 => JSON::hasKey('cpfBenef', $dado->evento)
+                            ? db_formatar(JSON::search('cpfBenef', $dado->evento), 'CPF')
+                            : '',
+                        default => JSON::hasKey('cpfTrab', $dado->evento)
+                            ? db_formatar(JSON::search('cpfTrab', $dado->evento), 'CPF')
+                            : '',
+                    };
                     $item->tipo_evento = $dado->tipo;
                     $data = '';
                     if (!empty($recibo->updated_at)) {
-                        $data = date('d/m/Y H:i', strtotime($recibo->updated_at));
+                        $data = date('d/m/Y H:i', strtotime((string) $recibo->updated_at));
                     }
                     $item->data = $data;
                     $item->numero = $recibo->numero;

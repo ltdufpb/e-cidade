@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_certidcartoriorecibopaga_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcertidcartoriorecibopaga = new cl_certidcartoriorecibopaga;
 $clcertidcartoriorecibopaga->rotulo->label("v33_sequencial");
@@ -80,9 +80,9 @@ $clcertidcartoriorecibopaga->rotulo->label("v33_numnov");
         }else{
            $sql = $clcertidcartoriorecibopaga->sql_query("",$campos,"v33_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v33_numnov)){
-          $repassa = array("chave_v33_sequencial"=>$chave_v33_sequencial,"chave_v33_numnov"=>$chave_v33_numnov);
+          $repassa = ["chave_v33_sequencial"=>$chave_v33_sequencial,"chave_v33_numnov"=>$chave_v33_numnov];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

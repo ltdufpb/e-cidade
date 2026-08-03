@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -68,7 +68,7 @@ echo "<tr><td>";
 db_ancora("$Lat40_sequencial"," js_pesquisa_tarefa() ",2);
 echo "</td><td>";
 db_input("at40_sequencial",10,$Iat40_sequencial,true,'text',2," onchange='js_troca_cliente()'");
-$mata = array("1"=>"Tarefas não finalizadas","2"=>"Tarefas executadas","3"=>"Tarefas encerradas");
+$mata = ["1"=>"Tarefas não finalizadas","2"=>"Tarefas executadas","3"=>"Tarefas encerradas"];
 db_select("tipo_pesquisa",$mata,true,2," onchange='js_troca_cliente()'");
 db_selectrecord("at30_codigo",$result_proced,true,2,"","","","0"," js_troca_cliente(); ");
 echo "</td></tr>";
@@ -138,4 +138,4 @@ if(!isset($cliente)){
   $cale->sql_cruzamento    .= $filtro;
 
 $cale->monta_calendario_semanal_turno(@$exercicio,@$metodo,@$data);
-$cale->monta_fim_pagina(false);
+$cale->monta_fim_pagina();

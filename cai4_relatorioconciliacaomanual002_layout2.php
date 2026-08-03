@@ -83,7 +83,7 @@ if (isset($lReemissao) && $lReemissao) {
           }
 
           $processa_geral = true;
-          $contas_nao_conciliadas = array();
+          $contas_nao_conciliadas = [];
   }
 
 
@@ -117,7 +117,7 @@ $pdf->setFont($fonte,'b',8);
 for ( $lista = 0 ; $lista < pg_num_rows($rsCodigoConcilia); $lista ++ ) {
 
 
-    $aQuadroJustificativas = array();
+    $aQuadroJustificativas = [];
     
 	$concilia = db_utils::fieldsMemory($rsCodigoConcilia, $lista)->k68_sequencial;
 	if( $processa_geral == true ){
@@ -198,7 +198,7 @@ for ( $lista = 0 ; $lista < pg_num_rows($rsCodigoConcilia); $lista ++ ) {
 		$numrows     = $clsaltes->numrows;
 		$d="";
 		for($i=0;$i<$numrows;$i++){
-		   $d .= db_formatar(pg_result($rsContas,$i,0),'d');
+		   $d .= db_formatar(pg_fetch_result($rsContas,$i,0),'d');
 		   if( $i+1 <= $numrows ) {
 			 $d .= " - ";
 		   }
@@ -212,7 +212,7 @@ for ( $lista = 0 ; $lista < pg_num_rows($rsCodigoConcilia); $lista ++ ) {
 		   }
 		}
 
-	if ( substr($oDadosConcilia->k68_data,0,4) <= 2012 && false) {
+	if ( substr((string) $oDadosConcilia->k68_data,0,4) <= 2012 && false) {
 
 	  $sqlTotalExtrato  = " select k97_saldofinal as  saldoextrato         ";
 	  $sqlTotalExtrato .= "   from extratosaldo                            ";
@@ -484,25 +484,25 @@ for ( $lista = 0 ; $lista < pg_num_rows($rsCodigoConcilia); $lista ++ ) {
 	$pdf->setFont($fonte,'b',8);
 	$pdf->cell(25,$alt,"SEQ. CONTA : ",0,0,"L",0);
 	$pdf->setFont($fonte,'',8);
-	$pdf->cell(75,$alt,(isset($oDadosConta->reduzido) ? $oDadosConta->reduzido : null),0,1,"L",0);
+	$pdf->cell(75,$alt,($oDadosConta->reduzido ?? null),0,1,"L",0);
 
 	$pdf->setFont($fonte,'b',8);
 	$pdf->cell(25,$alt,"AGÊNCIA : ",0,0,"L",0);
 	$pdf->setFont($fonte,'',8);
-	$pdf->cell(35,$alt,(isset($oDadosConta->agencia) ? $oDadosConta->agencia : null),0,0,"L",0);
+	$pdf->cell(35,$alt,($oDadosConta->agencia ?? null),0,0,"L",0);
 	$pdf->setFont($fonte,'b',8);
 	$pdf->cell(40,$alt,"REDUZIDO CONTABIL: ",0,0,"L",0);
 	$pdf->setFont($fonte,'',8);
-	$pdf->multicell(60,$alt,(isset($oDadosConta->reduzido_contabil) ? $oDadosConta->reduzido_contabil : null),0,1,"L",0);
+	$pdf->multicell(60,$alt,($oDadosConta->reduzido_contabil ?? null),0,1,"L",0);
 
 	$pdf->setFont($fonte,'b',8);
 	$pdf->cell(25,$alt,"CONTA : ",0,0,"L",0);
 	$pdf->setFont($fonte,'',8);
-	$pdf->cell(35,$alt,(isset($oDadosConta->conta) ? $oDadosConta->conta : null),0,0,"L",0);
+	$pdf->cell(35,$alt,($oDadosConta->conta ?? null),0,0,"L",0);
 	$pdf->setFont($fonte,'b',8);
 	$pdf->cell(25,$alt,"DESCRIÇÃO : ",0,0,"L",0);
 	$pdf->setFont($fonte,'',8);
-	$pdf->cell(75,$alt,(isset($oDadosConta->descricao) ? $oDadosConta->descricao : null),0,1,"L",0);
+	$pdf->cell(75,$alt,($oDadosConta->descricao ?? null),0,1,"L",0);
 
 	$pdf->ln(2);
 	$pdf->setFont($fonte,'b',8);
@@ -775,7 +775,7 @@ for ( $lista = 0 ; $lista < pg_num_rows($rsCodigoConcilia); $lista ++ ) {
 	        }
 	        $pdf->cell(22,$iAlturaLinha,$justificativa->data,1,0,"C",0);
 	        $pdf->cell(24,$iAlturaLinha,$justificativa->valor,1,0,"R",0);
-	        $pdf->MultiCell(142, $alt, str_replace("\n", " ", strtoupper($justificativa->justificativa)),1);
+	        $pdf->MultiCell(142, $alt, str_replace("\n", " ", strtoupper((string) $justificativa->justificativa)),1);
 	    }
 	}
 	

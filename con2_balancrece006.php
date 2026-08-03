@@ -44,18 +44,18 @@ $tipo_impressao = 1;
 // 1 = orcamento
 // 2 = balanco
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (" . str_replace('-', ', ',
         $db_selinstit) . ") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
-    if (strlen(trim($nomeinstabrev)) > 0) {
+    if (strlen(trim((string) $nomeinstabrev)) > 0) {
         $descr_inst .= $xvirg . $nomeinstabrev;
         $flag_abrev = true;
     } else {
@@ -72,7 +72,7 @@ if ($origem == "O") {
     if ($opcao == 3) {
         $head6 = "PERÍODO : " . db_formatar($perini, 'd') . " A " . db_formatar($perfin, 'd');
     } else {
-        $head6 = "PERÍODO : " . strtoupper(db_mes(substr($perini, 5, 2))) . " A " . strtoupper(db_mes(substr($perfin, 5,
+        $head6 = "PERÍODO : " . strtoupper(db_mes(substr((string) $perini, 5, 2))) . " A " . strtoupper(db_mes(substr((string) $perfin, 5,
                 2)));
     }
 }
@@ -82,7 +82,7 @@ if ($recurso == 0) {
 } else {
 $head2 = "BALANCETE DA RECEITA ";
     $resrec = db_query("select o15_descr from orctiporec where o15_codigo = $recurso");
-    $head3 = "Recurso: " . $recurso . "-" . substr(pg_result($resrec, 0, 0), 0, 30);
+    $head3 = "Recurso: " . $recurso . "-" . substr(pg_fetch_result($resrec, 0, 0), 0, 30);
     $db_filtro .= " and o70_codigo = $recurso";
 }
 $head4 = "EXERCÍCIO: " . db_getsession("DB_anousu") . " - " . $xtipo;
@@ -121,7 +121,7 @@ if (EMENTARIO_RECEITA) {
 
 
 //$fp = fopen("tmp/balrec.csv", "w");
-$todasLinhas = array();
+$todasLinhas = [];
 $todasLinhas[] = "Receita;Descrição;Reduz;Rec;Previsto;Prev.Adic;Arrecadado;Arrec.Ano;Diferença;Caract.Peculiar";
 //fputs($fp, "Receita;Descrição;Reduz;Rec;Previsto;Prev.Adic;Arrecadado;Arrec.Ano;Diferença;Caract.Peculiar\n");
 while ($ln = pg_fetch_array($result)) {
@@ -130,7 +130,7 @@ while ($ln = pg_fetch_array($result)) {
         db_fieldsmemory($res_orcreceita, 0);
     }
     
-    $linha = array(
+    $linha = [
         $ln["o57_fonte"],
         str_replace('"', '', $ln["o57_descr"]),
         $ln["o70_codrec"],
@@ -141,7 +141,7 @@ while ($ln = pg_fetch_array($result)) {
         trim(db_formatar($ln["saldo_arrecadado_acumulado"], 'f')),
         trim(db_formatar($ln["saldo_a_arrecadar"], 'f')),
         !empty($c58_descr) ? $c58_descr : ''
-    );
+    ];
     $todasLinhas[] = implode(';', $linha);
 
 }

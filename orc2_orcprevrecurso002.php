@@ -30,7 +30,7 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("classes/db_orctiporec_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $ano = db_getsession("DB_anousu");
 
@@ -126,7 +126,7 @@ $instits = "(".db_getsession("DB_instit").")";
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in $instits");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $descr_inst .= $xvirg.$nomeinst ; 
   $xvirg = ', ';
@@ -262,7 +262,7 @@ $resultdesp = db_query($sql);
 db_query("commit");
 db_query("drop table prev_desp");
 
-if(pg_numrows($resultdesp)==0){
+if(pg_num_rows($resultdesp)==0){
   continue;
 }
 
@@ -271,7 +271,7 @@ if(pg_numrows($resultdesp)==0){
 
 $dbwhere = "";
 
-if(trim($recurso) != ''){
+if(trim((string) $recurso) != ''){
   $dbwhere = ' and o15_codigo = '.$recurso;
 }
 
@@ -331,7 +331,7 @@ group by o70_codigo,o15_descr
 $result = db_query($sql);
 
 
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
   continue;
 }
@@ -537,7 +537,7 @@ if($mensal == 'm'){
 		$pdf->SetFont('Arial', 'BIU', 10);
 
 		
-		$meses   = array("Desp Jan"=>$djan,
+		$meses   = ["Desp Jan"=>$djan,
 		                 "Rec  Jan"=>$jan, 
                          "Desp Fev"=>$dfev,
 		                 "Rec  Fev"=>$fev,
@@ -561,20 +561,20 @@ if($mensal == 'm'){
 		                 "Rec  Nov"=>$nov,
                          "Desp Dez"=>$ddez,
 		                 "Rec  Dez"=>$dez
-		                 );
+		                 ];
 		
-		                 $col1=array(255);
-		                 $col2=array(255);
-		                 $col3=array(255);
-		                 $col4=array(255);
-		                 $col5=array(255);
-		                 $col6=array(255);
-		                 $col7=array(255);
-		                 $col8=array(255);
-		                 $col9=array(255);
-		                 $col10=array(255);
-		                 $col11=array(255);
-		                 $col12=array(255);
+		                 $col1=[255];
+		                 $col2=[255];
+		                 $col3=[255];
+		                 $col4=[255];
+		                 $col5=[255];
+		                 $col6=[255];
+		                 $col7=[255];
+		                 $col8=[255];
+		                 $col9=[255];
+		                 $col10=[255];
+		                 $col11=[255];
+		                 $col12=[255];
 
         }else{
         	
@@ -584,7 +584,7 @@ if($mensal == 'm'){
 		$pdf->SetFont('Arial', 'BIU', 10);
 
 		
-		$meses   = array("Despesa 1 Bim"=>$djan+$dfev,
+		$meses   = ["Despesa 1 Bim"=>$djan+$dfev,
 		                 "Receita  1 Bim"=>$jan+$fev, 
                          "Despesa 2 Bim"=>$dmar+$dabr,
 		                 "Receita  2 Bim"=>$mar+$abr,
@@ -596,14 +596,14 @@ if($mensal == 'm'){
 		                 "Receita  5 Bim"=>$set+$out,
                          "Despesa 6 Bim"=>$dnov+$ddez,
 		                 "Receita  6 Bim"=>$nov+$dez
-		                 );
+		                 ];
 		
-		                 $col1=array(255);
-		                 $col2=array(255);
-		                 $col3=array(255);
-		                 $col4=array(255);
-		                 $col5=array(255);
-		                 $col6=array(255);
+		                 $col1=[255];
+		                 $col2=[255];
+		                 $col3=[255];
+		                 $col4=[255];
+		                 $col5=[255];
+		                 $col6=[255];
         	
         }
 
@@ -618,7 +618,7 @@ if($mensal == 'm'){
 
 
 
-		$pdf->BarDiagram(200, 120, $meses, '%l',array(235,205) );
+		$pdf->BarDiagram(200, 120, $meses, '%l',[235,205] );
      
      if($cltiporec->numrows>1){
      	

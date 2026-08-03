@@ -46,7 +46,7 @@ db_inicio_transacao();
 global $opcao, $r110_lotaci, $r110_lotacf, $r110_regisi, $r110_regisf, $opcao_gml, $opcao_geral, $faixa_lotac, $faixa_regis;
 global $lotacao_faixa;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (!isset($r110_lotaci)) {
     $r110_lotaci = '    ';
@@ -111,7 +111,7 @@ db_selectmax("db_config",
 
 $db21_codcli = $db_config[0]["codcli"];
 
-if (trim($db_config[0]["cgc"]) == "90940172000138") {
+if (trim((string) $db_config[0]["cgc"]) == "90940172000138") {
     $d08_carnes = "daeb";
 } else {
     $d08_carnes = $db_config[0]["d08_carnes"];
@@ -141,9 +141,9 @@ function diferenca_163()
     global $opcao, $opcao_filtro, $opcao_gml, $r110_regisi, $r110_regisf, $r110_lotaci,
            $r110_lotacf, $faixa_regis, $faixa_lotac, $d08_carnes, $subpes, $db21_codcli;
 
-    $m_rubr = array();
-    $m_valor = array();
-    $m_quant = array();
+    $m_rubr = [];
+    $m_valor = [];
+    $m_quant = [];
 
     $condicaoaux = db_condicaoaux($opcao_filtro, $opcao_gml, "rh02_", $r110_regisi, $r110_regisf, $r110_lotaci,
       $r110_lotacf, $faixa_regis, $faixa_lotac);
@@ -179,8 +179,8 @@ function diferenca_163()
     }
     $imax = count($pessoal);
 
-    $matriz1 = array();
-    $matriz2 = array();
+    $matriz1 = [];
+    $matriz2 = [];
 
     $matriz1[1] = "r10_regist";
     $matriz1[2] = "r10_rubric";
@@ -304,8 +304,8 @@ function gera_ponto()
     $dbLog->escreverLog("=> Ano/Mês folha: {$subpes}");
 
     $r11_sald13 = ($opcao == 1 ? '0' : '1');
-    $matriz1 = array();
-    $matriz2 = array();
+    $matriz1 = [];
+    $matriz2 = [];
     $matriz1[1] = "r11_sald13";
     $matriz2[1] = (db_boolean($r11_sald13) == true ? 't' : 'f');
 
@@ -359,14 +359,14 @@ function gera_ponto()
 
         $dbLog->escreverLog("----- Matrícula: {$pessoal[$Ipessoal]["r01_regist"]} -----");
 
-        $m_rubric = array();
-        $m_tipo = array();
-        $m_media = array();
-        $m_valor = array();
-        $m_quant = array();
-        $m_form = array();
-        $qten = array();
-        $vlrn = array();
+        $m_rubric = [];
+        $m_tipo = [];
+        $m_media = [];
+        $m_valor = [];
+        $m_quant = [];
+        $m_form = [];
+        $qten = [];
+        $vlrn = [];
 
         db_atutermometro($Ipessoal, count($pessoal), 'calculo_folha', 1);
         flush();
@@ -529,8 +529,8 @@ function gera_ponto()
         $vlrn[1] = 0;
 
 
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1] = "r34_regist";
         $matriz1[2] = "r34_rubric";
         $matriz1[3] = "r34_valor";
@@ -551,11 +551,11 @@ function gera_ponto()
         // faz levantamento e avalia mes a mes
         for ($cont = 1; $cont <= $mesana; $cont++) {
 
-            $mes_rubric = array();
-            $mes_valor = array();
-            $mes_quant = array();
-            $qten_mes = array();
-            $vlrn_mes = array();
+            $mes_rubric = [];
+            $mes_valor = [];
+            $mes_quant = [];
+            $qten_mes = [];
+            $vlrn_mes = [];
             $maxmes = 0;
             $tem_no_mes_tipo_9 = true;
 
@@ -1302,9 +1302,9 @@ function calcula_afastamentos()
                         $dias_mes = db_datedif(db_ctod("01/" . db_str($Imes, 2, 0, "0") . "/" . db_str($ano, 4)),
                             $afasta[$Iafasta]["r45_dtafas"]) - 1;
                         //// timestamp da primeira data
-                        $data_time1 = strtotime($afasta[$Iafasta]["r45_dtafas"]);
+                        $data_time1 = strtotime((string) $afasta[$Iafasta]["r45_dtafas"]);
                         $data_time2 = strtotime(db_ctod("01/" . db_str($Imes, 2, 0, "0") . "/" . db_str($ano, 4)));
-                        $dif_entre_time1_time2 = int((strtotime($afasta[$Iafasta]["r45_dtafas"]) - strtotime(db_ctod("01/" . db_str($Imes,
+                        $dif_entre_time1_time2 = int((strtotime((string) $afasta[$Iafasta]["r45_dtafas"]) - strtotime(db_ctod("01/" . db_str($Imes,
                                 2, 0, "0") . "/" . db_str($ano, 4)))) / (60 * 60 * 24));
                         $dias_mes = $dif_entre_time1_time2 + 1;
 

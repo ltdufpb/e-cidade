@@ -32,7 +32,7 @@
   require_once(modification("dbforms/db_funcoes.php"));
   require_once(modification("libs/db_app.utils.php"));
   
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   
   $rotulocampo = new rotulocampo;
   
@@ -80,12 +80,12 @@
               </td>
               <td>
                 <?php
-                  $arr_tipo = array("g" => "Geral",
+                  $arr_tipo = ["g" => "Geral",
                                     "o" => "Órgão",
                                     "u" => "Unidade",
                                     "t" => "Locais de Trabalho",
                                     "r" => "Recurso",
-                                    );
+                                    ];
                   
                   db_select("tipo", $arr_tipo, true, 4);
                 ?>
@@ -97,8 +97,8 @@
               </td>
               <td>
                 <?php
-                  $arr_troca = array("n" => "Não",
-                                     "s" => "Sim");
+                  $arr_troca = ["n" => "Não",
+                                     "s" => "Sim"];
                   
                   db_select("troca", $arr_troca, true, 4, "style='width: 60px;'");
                 ?>
@@ -110,8 +110,8 @@
               </td>
               <td>
                 <?php
-                  $arr_Formatos = array("pdf" => "PDF",
-                                        "csv" => "CSV");
+                  $arr_Formatos = ["pdf" => "PDF",
+                                        "csv" => "CSV"];
                   
                   db_select("formato", $arr_Formatos, true, 4, "style='width: 60px;'");
                 ?>

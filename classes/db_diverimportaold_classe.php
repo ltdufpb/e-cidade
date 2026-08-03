@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE diverimportaold
 class cl_diverimportaold { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $dv13_sequencial = 0; 
-   var $dv13_diversos = 0; 
-   var $dv13_numpre = 0; 
-   var $dv13_numpar = 0; 
-   var $dv13_receita = 0; 
+   public $dv13_sequencial = 0; 
+   public $dv13_diversos = 0; 
+   public $dv13_numpre = 0; 
+   public $dv13_numpar = 0; 
+   public $dv13_receita = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  dv13_sequencial = int8 = Código 
                  dv13_diversos = int4 = Código do diversos 
                  dv13_numpre = int8 = Numpre 
@@ -56,10 +56,10 @@ class cl_diverimportaold {
                  dv13_receita = int4 = Receita 
                  ";
    //funcao construtor da classe 
-   function cl_diverimportaold() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diverimportaold"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_diverimportaold {
          $this->erro_status = "0";
          return false; 
        }
-       $this->dv13_sequencial = pg_result($result,0,0); 
+       $this->dv13_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from diverimportaold_dv13_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $dv13_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $dv13_sequencial)){
          $this->erro_sql = " Campo dv13_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_diverimportaold {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "diverimportaold ($this->dv13_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "diverimportaold já Cadastrado";
@@ -194,14 +194,14 @@ class cl_diverimportaold {
      $resaco = $this->sql_record($this->sql_query_file($this->dv13_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18613,'$this->dv13_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3295,18613,'','".AddSlashes(pg_result($resaco,0,'dv13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3295,18614,'','".AddSlashes(pg_result($resaco,0,'dv13_diversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3295,18615,'','".AddSlashes(pg_result($resaco,0,'dv13_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3295,18616,'','".AddSlashes(pg_result($resaco,0,'dv13_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3295,18617,'','".AddSlashes(pg_result($resaco,0,'dv13_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3295,18613,'','".AddSlashes(pg_fetch_result($resaco,0,'dv13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3295,18614,'','".AddSlashes(pg_fetch_result($resaco,0,'dv13_diversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3295,18615,'','".AddSlashes(pg_fetch_result($resaco,0,'dv13_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3295,18616,'','".AddSlashes(pg_fetch_result($resaco,0,'dv13_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3295,18617,'','".AddSlashes(pg_fetch_result($resaco,0,'dv13_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_diverimportaold {
       $this->atualizacampos();
      $sql = " update diverimportaold set ";
      $virgula = "";
-     if(trim($this->dv13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_sequencial"])){ 
+     if(trim((string) $this->dv13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_sequencial"])){ 
        $sql  .= $virgula." dv13_sequencial = $this->dv13_sequencial ";
        $virgula = ",";
-       if(trim($this->dv13_sequencial) == null ){ 
+       if(trim((string) $this->dv13_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "dv13_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_diverimportaold {
          return false;
        }
      }
-     if(trim($this->dv13_diversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_diversos"])){ 
+     if(trim((string) $this->dv13_diversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_diversos"])){ 
        $sql  .= $virgula." dv13_diversos = $this->dv13_diversos ";
        $virgula = ",";
-       if(trim($this->dv13_diversos) == null ){ 
+       if(trim((string) $this->dv13_diversos) == null ){ 
          $this->erro_sql = " Campo Código do diversos nao Informado.";
          $this->erro_campo = "dv13_diversos";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_diverimportaold {
          return false;
        }
      }
-     if(trim($this->dv13_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_numpre"])){ 
+     if(trim((string) $this->dv13_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_numpre"])){ 
        $sql  .= $virgula." dv13_numpre = $this->dv13_numpre ";
        $virgula = ",";
-       if(trim($this->dv13_numpre) == null ){ 
+       if(trim((string) $this->dv13_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "dv13_numpre";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_diverimportaold {
          return false;
        }
      }
-     if(trim($this->dv13_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_numpar"])){ 
+     if(trim((string) $this->dv13_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_numpar"])){ 
        $sql  .= $virgula." dv13_numpar = $this->dv13_numpar ";
        $virgula = ",";
-       if(trim($this->dv13_numpar) == null ){ 
+       if(trim((string) $this->dv13_numpar) == null ){ 
          $this->erro_sql = " Campo Numpar nao Informado.";
          $this->erro_campo = "dv13_numpar";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_diverimportaold {
          return false;
        }
      }
-     if(trim($this->dv13_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_receita"])){ 
+     if(trim((string) $this->dv13_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_receita"])){ 
        $sql  .= $virgula." dv13_receita = $this->dv13_receita ";
        $virgula = ",";
-       if(trim($this->dv13_receita) == null ){ 
+       if(trim((string) $this->dv13_receita) == null ){ 
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "dv13_receita";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_diverimportaold {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18613,'$this->dv13_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv13_sequencial"]) || $this->dv13_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3295,18613,'".AddSlashes(pg_result($resaco,$conresaco,'dv13_sequencial'))."','$this->dv13_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3295,18613,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv13_sequencial'))."','$this->dv13_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv13_diversos"]) || $this->dv13_diversos != "")
-           $resac = db_query("insert into db_acount values($acount,3295,18614,'".AddSlashes(pg_result($resaco,$conresaco,'dv13_diversos'))."','$this->dv13_diversos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3295,18614,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv13_diversos'))."','$this->dv13_diversos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv13_numpre"]) || $this->dv13_numpre != "")
-           $resac = db_query("insert into db_acount values($acount,3295,18615,'".AddSlashes(pg_result($resaco,$conresaco,'dv13_numpre'))."','$this->dv13_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3295,18615,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv13_numpre'))."','$this->dv13_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv13_numpar"]) || $this->dv13_numpar != "")
-           $resac = db_query("insert into db_acount values($acount,3295,18616,'".AddSlashes(pg_result($resaco,$conresaco,'dv13_numpar'))."','$this->dv13_numpar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3295,18616,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv13_numpar'))."','$this->dv13_numpar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv13_receita"]) || $this->dv13_receita != "")
-           $resac = db_query("insert into db_acount values($acount,3295,18617,'".AddSlashes(pg_result($resaco,$conresaco,'dv13_receita'))."','$this->dv13_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3295,18617,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv13_receita'))."','$this->dv13_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_diverimportaold {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18613,'$dv13_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3295,18613,'','".AddSlashes(pg_result($resaco,$iresaco,'dv13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3295,18614,'','".AddSlashes(pg_result($resaco,$iresaco,'dv13_diversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3295,18615,'','".AddSlashes(pg_result($resaco,$iresaco,'dv13_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3295,18616,'','".AddSlashes(pg_result($resaco,$iresaco,'dv13_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3295,18617,'','".AddSlashes(pg_result($resaco,$iresaco,'dv13_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3295,18613,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3295,18614,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv13_diversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3295,18615,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv13_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3295,18616,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv13_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3295,18617,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv13_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from diverimportaold
@@ -407,7 +407,7 @@ class cl_diverimportaold {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:diverimportaold";
@@ -422,7 +422,7 @@ class cl_diverimportaold {
    function sql_query ( $dv13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_diverimportaold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -463,7 +463,7 @@ class cl_diverimportaold {
    function sql_query_file ( $dv13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,7 +484,7 @@ class cl_diverimportaold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

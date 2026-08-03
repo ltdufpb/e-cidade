@@ -48,7 +48,7 @@ $clslipnum       = new cl_slipnum;
 $clsliprecurso   = new cl_sliprecurso;
 $clempparamentro = new cl_empparametro;
 $oPost           = db_utils::postMemory($_POST);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 // parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 
 $db_erro = "";
@@ -157,7 +157,7 @@ if (isset($oPost->confirmar)) {
 
   		$lErro    = true;
       $sMsgErro = $oDaoSlipMov->erro_msg;
-      break;
+      return;
 
   	}
   }
@@ -263,7 +263,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_slip.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	?>
 }
 

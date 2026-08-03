@@ -6,8 +6,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_criterioavaliacao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory( $_POST );
 
@@ -15,7 +15,7 @@ $oDaoCriterioAvaliacao = new cl_criterioavaliacao();
 $oDaoCriterioAvaliacao->rotulo->label();
 
 $iEscola = db_getsession( "DB_coddepto" );
-$aWhere  = array();
+$aWhere  = [];
 
 $aWhere[] = " ed338_escola = {$iEscola} ";
 ?>
@@ -81,7 +81,7 @@ $aWhere[] = " ed338_escola = {$iEscola} ";
 
         $sql    = $oDaoCriterioAvaliacao->sql_query(null, $sCampos, $sOrdem, $sWhere);
 
-        $repassa = array();
+        $repassa = [];
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {
 

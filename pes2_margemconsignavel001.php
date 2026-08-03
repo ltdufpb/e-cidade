@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 
 $clrotulo->label('r08_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -161,7 +161,7 @@ function js_emite(){
         </td>
         <td>
          <?php 
-           $xx = array("t"=>"Todos","s"=>"Sem Margem","c"=>"Com Margem");
+           $xx = ["t"=>"Todos","s"=>"Sem Margem","c"=>"Com Margem"];
            db_select('tipo_margem',$xx,true,4,"");
          ?>
 	      </td>
@@ -170,7 +170,7 @@ function js_emite(){
         <td align="right" nowrap><strong>Ordem :</strong></td>
         <td>
          <?php 
-           $xy = array("a"=>"Nome","n"=>"Matricula");
+           $xy = ["a"=>"Nome","n"=>"Matricula"];
            db_select('ordem',$xy,true,4,"");
          ?>
         </td>

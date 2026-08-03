@@ -197,7 +197,7 @@ function js_relatorio2() {
 		    </td>
 		    <td align="left" nowrap>&nbsp; &nbsp; 
 		      <?php 
-		         $x = array('f'=>'Não','t'=>'Sim');
+		         $x = ['f'=>'Não','t'=>'Sim'];
 		         db_select('k29_contassemmovimento',$x,true,2,"");
 		      ?>
 		    </td>

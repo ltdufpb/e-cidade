@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 $clrotulo = new rotulocampo;

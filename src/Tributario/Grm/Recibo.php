@@ -132,7 +132,7 @@ class Recibo {
    */
   protected $processo;
 
-  protected $atributos = array();
+  protected $atributos = [];
 
   /**
    * @var string

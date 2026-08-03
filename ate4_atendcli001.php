@@ -50,7 +50,7 @@ require_once(modification("classes/db_tipoatend_classe.php"));
 require_once(modification("classes/db_atendtipoausencia_classe.php"));
 require_once(modification("classes/db_atendtecnicoocupado_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltipoatend        	  = new cl_tipoatend;
 $clatendimento_top   	  = new cl_atendimento_top;
 $clatendimentoorigem 	  = new cl_atendimentoorigem;

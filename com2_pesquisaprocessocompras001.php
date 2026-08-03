@@ -35,7 +35,7 @@ $clsolicita = new cl_solicita;
 $oRotulo = new rotulocampo;
 $oRotulo->label("pc80_codproc");
 $clsolicita->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

@@ -52,19 +52,19 @@ if(empty($oGet->relatorio)) {
 
       $clcriaabas  = new cl_criaabas;
 
-      $clcriaabas->identifica = array("relatorio" => "Relatório",
+      $clcriaabas->identifica = ["relatorio" => "Relatório",
                                       "parametro" => "Parâmetros"
-      );
-      $clcriaabas->title      = array("relatorio" => "Relatório",
-                                      "parametro"=> "Parâmetros");
+      ];
+      $clcriaabas->title      = ["relatorio" => "Relatório",
+                                      "parametro"=> "Parâmetros"];
 
-      $clcriaabas->src        = array("relatorio" => "con2_relatoriosiconfi011.php?relatorio=" . $oGet->relatorio,
+      $clcriaabas->src        = ["relatorio" => "con2_relatoriosiconfi011.php?relatorio=" . $oGet->relatorio,
                                       "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=" . $oGet->relatorio
-      );
+      ];
 
-      $clcriaabas->sizecampo  = array("relatorio" => "23",
+      $clcriaabas->sizecampo  = ["relatorio" => "23",
                                       "parametro" => "23"
-      );
+      ];
       $clcriaabas->cria_abas();
 
       db_menu();

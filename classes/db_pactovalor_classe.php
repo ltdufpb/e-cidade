@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE pactovalor
 class cl_pactovalor { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o87_sequencial = 0; 
-   var $o87_pactoplano = 0; 
-   var $o87_pactoprograma = 0; 
-   var $o87_orcprojativativprojeto = 0; 
-   var $o87_orcprojativanoprojeto = 0; 
-   var $o87_pactoatividade = 0; 
-   var $o87_pactoacoes = 0; 
-   var $o87_categoriapacto = 0; 
-   var $o87_pactoitem = 0; 
-   var $o87_quantidade = 0; 
-   var $o87_vlraproximado = 0; 
-   var $o87_orcprogramaano = 0; 
+   public $o87_sequencial = 0; 
+   public $o87_pactoplano = 0; 
+   public $o87_pactoprograma = 0; 
+   public $o87_orcprojativativprojeto = 0; 
+   public $o87_orcprojativanoprojeto = 0; 
+   public $o87_pactoatividade = 0; 
+   public $o87_pactoacoes = 0; 
+   public $o87_categoriapacto = 0; 
+   public $o87_pactoitem = 0; 
+   public $o87_quantidade = 0; 
+   public $o87_vlraproximado = 0; 
+   public $o87_orcprogramaano = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o87_sequencial = int4 = Sequencial 
                  o87_pactoplano = int4 = Código do Plano 
                  o87_pactoprograma = int4 = Programa 
@@ -70,10 +70,10 @@ class cl_pactovalor {
                  o87_orcprogramaano = int4 = Ano do Porgrama 
                  ";
    //funcao construtor da classe 
-   function cl_pactovalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pactovalor"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -161,10 +161,10 @@ class cl_pactovalor {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o87_sequencial = pg_result($result,0,0); 
+       $this->o87_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pactovalor_o87_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o87_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o87_sequencial)){
          $this->erro_sql = " Campo o87_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -214,7 +214,7 @@ class cl_pactovalor {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ações do Pacto ($this->o87_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ações do Pacto já Cadastrado";
@@ -238,21 +238,21 @@ class cl_pactovalor {
      $resaco = $this->sql_record($this->sql_query_file($this->o87_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13911,'$this->o87_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2446,13911,'','".AddSlashes(pg_result($resaco,0,'o87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,13966,'','".AddSlashes(pg_result($resaco,0,'o87_pactoplano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,13976,'','".AddSlashes(pg_result($resaco,0,'o87_pactoprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,13982,'','".AddSlashes(pg_result($resaco,0,'o87_orcprojativativprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,13983,'','".AddSlashes(pg_result($resaco,0,'o87_orcprojativanoprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,13977,'','".AddSlashes(pg_result($resaco,0,'o87_pactoatividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,13925,'','".AddSlashes(pg_result($resaco,0,'o87_pactoacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,13923,'','".AddSlashes(pg_result($resaco,0,'o87_categoriapacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,13965,'','".AddSlashes(pg_result($resaco,0,'o87_pactoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,13926,'','".AddSlashes(pg_result($resaco,0,'o87_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,13927,'','".AddSlashes(pg_result($resaco,0,'o87_vlraproximado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2446,14049,'','".AddSlashes(pg_result($resaco,0,'o87_orcprogramaano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13911,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13966,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_pactoplano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13976,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_pactoprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13982,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_orcprojativativprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13983,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_orcprojativanoprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13977,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_pactoatividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13925,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_pactoacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13923,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_categoriapacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13965,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_pactoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13926,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,13927,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_vlraproximado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2446,14049,'','".AddSlashes(pg_fetch_result($resaco,0,'o87_orcprogramaano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -261,10 +261,10 @@ class cl_pactovalor {
       $this->atualizacampos();
      $sql = " update pactovalor set ";
      $virgula = "";
-     if(trim($this->o87_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_sequencial"])){ 
+     if(trim((string) $this->o87_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_sequencial"])){ 
        $sql  .= $virgula." o87_sequencial = $this->o87_sequencial ";
        $virgula = ",";
-       if(trim($this->o87_sequencial) == null ){ 
+       if(trim((string) $this->o87_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "o87_sequencial";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_pactovalor {
          return false;
        }
      }
-     if(trim($this->o87_pactoplano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoplano"])){ 
+     if(trim((string) $this->o87_pactoplano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoplano"])){ 
        $sql  .= $virgula." o87_pactoplano = $this->o87_pactoplano ";
        $virgula = ",";
-       if(trim($this->o87_pactoplano) == null ){ 
+       if(trim((string) $this->o87_pactoplano) == null ){ 
          $this->erro_sql = " Campo Código do Plano nao Informado.";
          $this->erro_campo = "o87_pactoplano";
          $this->erro_banco = "";
@@ -287,66 +287,66 @@ class cl_pactovalor {
          return false;
        }
      }
-     if(trim($this->o87_pactoprograma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoprograma"])){ 
-        if(trim($this->o87_pactoprograma)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoprograma"])){ 
+     if(trim((string) $this->o87_pactoprograma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoprograma"])){ 
+        if(trim((string) $this->o87_pactoprograma)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoprograma"])){ 
            $this->o87_pactoprograma = "0" ; 
         } 
        $sql  .= $virgula." o87_pactoprograma = $this->o87_pactoprograma ";
        $virgula = ",";
      }
-     if(trim($this->o87_orcprojativativprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprojativativprojeto"])){ 
-        if(trim($this->o87_orcprojativativprojeto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprojativativprojeto"])){ 
+     if(trim((string) $this->o87_orcprojativativprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprojativativprojeto"])){ 
+        if(trim((string) $this->o87_orcprojativativprojeto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprojativativprojeto"])){ 
            $this->o87_orcprojativativprojeto = "null" ; 
         } 
        $sql  .= $virgula." o87_orcprojativativprojeto = $this->o87_orcprojativativprojeto ";
        $virgula = ",";
      }
-     if(trim($this->o87_orcprojativanoprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprojativanoprojeto"])){ 
-        if(trim($this->o87_orcprojativanoprojeto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprojativanoprojeto"])){ 
+     if(trim((string) $this->o87_orcprojativanoprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprojativanoprojeto"])){ 
+        if(trim((string) $this->o87_orcprojativanoprojeto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprojativanoprojeto"])){ 
            $this->o87_orcprojativanoprojeto = "null" ; 
         } 
        $sql  .= $virgula." o87_orcprojativanoprojeto = $this->o87_orcprojativanoprojeto ";
        $virgula = ",";
      }
-     if(trim($this->o87_pactoatividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoatividade"])){ 
-        if(trim($this->o87_pactoatividade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoatividade"])){ 
+     if(trim((string) $this->o87_pactoatividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoatividade"])){ 
+        if(trim((string) $this->o87_pactoatividade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoatividade"])){ 
            $this->o87_pactoatividade = "null" ; 
         } 
        $sql  .= $virgula." o87_pactoatividade = $this->o87_pactoatividade ";
        $virgula = ",";
      }
-     if(trim($this->o87_pactoacoes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoacoes"])){ 
-        if(trim($this->o87_pactoacoes)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoacoes"])){ 
+     if(trim((string) $this->o87_pactoacoes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoacoes"])){ 
+        if(trim((string) $this->o87_pactoacoes)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoacoes"])){ 
            $this->o87_pactoacoes = "null" ; 
         } 
        $sql  .= $virgula." o87_pactoacoes = $this->o87_pactoacoes ";
        $virgula = ",";
      }
-     if(trim($this->o87_categoriapacto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_categoriapacto"])){ 
-        if(trim($this->o87_categoriapacto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_categoriapacto"])){ 
+     if(trim((string) $this->o87_categoriapacto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_categoriapacto"])){ 
+        if(trim((string) $this->o87_categoriapacto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_categoriapacto"])){ 
            $this->o87_categoriapacto = "null" ; 
         } 
        $sql  .= $virgula." o87_categoriapacto = $this->o87_categoriapacto ";
        $virgula = ",";
      }
-     if(trim($this->o87_pactoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoitem"])){ 
-        if(trim($this->o87_pactoitem)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoitem"])){ 
+     if(trim((string) $this->o87_pactoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoitem"])){ 
+        if(trim((string) $this->o87_pactoitem)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoitem"])){ 
            $this->o87_pactoitem = "null" ; 
         } 
        $sql  .= $virgula." o87_pactoitem = $this->o87_pactoitem ";
        $virgula = ",";
      }
-     if(trim($this->o87_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_quantidade"])){ 
-        if(trim($this->o87_quantidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_quantidade"])){ 
+     if(trim((string) $this->o87_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_quantidade"])){ 
+        if(trim((string) $this->o87_quantidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_quantidade"])){ 
            $this->o87_quantidade = "null" ; 
         } 
        $sql  .= $virgula." o87_quantidade = $this->o87_quantidade ";
        $virgula = ",";
      }
-     if(trim($this->o87_vlraproximado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_vlraproximado"])){ 
+     if(trim((string) $this->o87_vlraproximado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_vlraproximado"])){ 
        $sql  .= $virgula." o87_vlraproximado = $this->o87_vlraproximado ";
        $virgula = ",";
-       if(trim($this->o87_vlraproximado) == null ){ 
+       if(trim((string) $this->o87_vlraproximado) == null ){ 
          $this->erro_sql = " Campo Valor Aproximado nao Informado.";
          $this->erro_campo = "o87_vlraproximado";
          $this->erro_banco = "";
@@ -356,8 +356,8 @@ class cl_pactovalor {
          return false;
        }
      }
-     if(trim($this->o87_orcprogramaano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprogramaano"])){ 
-        if(trim($this->o87_orcprogramaano)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprogramaano"])){ 
+     if(trim((string) $this->o87_orcprogramaano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprogramaano"])){ 
+        if(trim((string) $this->o87_orcprogramaano)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprogramaano"])){ 
            $this->o87_orcprogramaano = "null" ; 
         } 
        $sql  .= $virgula." o87_orcprogramaano = $this->o87_orcprogramaano ";
@@ -371,33 +371,33 @@ class cl_pactovalor {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13911,'$this->o87_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_sequencial"]) || $this->o87_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13911,'".AddSlashes(pg_result($resaco,$conresaco,'o87_sequencial'))."','$this->o87_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13911,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_sequencial'))."','$this->o87_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoplano"]) || $this->o87_pactoplano != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13966,'".AddSlashes(pg_result($resaco,$conresaco,'o87_pactoplano'))."','$this->o87_pactoplano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13966,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_pactoplano'))."','$this->o87_pactoplano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoprograma"]) || $this->o87_pactoprograma != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13976,'".AddSlashes(pg_result($resaco,$conresaco,'o87_pactoprograma'))."','$this->o87_pactoprograma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13976,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_pactoprograma'))."','$this->o87_pactoprograma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprojativativprojeto"]) || $this->o87_orcprojativativprojeto != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13982,'".AddSlashes(pg_result($resaco,$conresaco,'o87_orcprojativativprojeto'))."','$this->o87_orcprojativativprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13982,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_orcprojativativprojeto'))."','$this->o87_orcprojativativprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprojativanoprojeto"]) || $this->o87_orcprojativanoprojeto != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13983,'".AddSlashes(pg_result($resaco,$conresaco,'o87_orcprojativanoprojeto'))."','$this->o87_orcprojativanoprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13983,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_orcprojativanoprojeto'))."','$this->o87_orcprojativanoprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoatividade"]) || $this->o87_pactoatividade != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13977,'".AddSlashes(pg_result($resaco,$conresaco,'o87_pactoatividade'))."','$this->o87_pactoatividade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13977,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_pactoatividade'))."','$this->o87_pactoatividade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoacoes"]) || $this->o87_pactoacoes != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13925,'".AddSlashes(pg_result($resaco,$conresaco,'o87_pactoacoes'))."','$this->o87_pactoacoes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13925,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_pactoacoes'))."','$this->o87_pactoacoes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_categoriapacto"]) || $this->o87_categoriapacto != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13923,'".AddSlashes(pg_result($resaco,$conresaco,'o87_categoriapacto'))."','$this->o87_categoriapacto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13923,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_categoriapacto'))."','$this->o87_categoriapacto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_pactoitem"]) || $this->o87_pactoitem != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13965,'".AddSlashes(pg_result($resaco,$conresaco,'o87_pactoitem'))."','$this->o87_pactoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13965,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_pactoitem'))."','$this->o87_pactoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_quantidade"]) || $this->o87_quantidade != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13926,'".AddSlashes(pg_result($resaco,$conresaco,'o87_quantidade'))."','$this->o87_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13926,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_quantidade'))."','$this->o87_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_vlraproximado"]) || $this->o87_vlraproximado != "")
-           $resac = db_query("insert into db_acount values($acount,2446,13927,'".AddSlashes(pg_result($resaco,$conresaco,'o87_vlraproximado'))."','$this->o87_vlraproximado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,13927,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_vlraproximado'))."','$this->o87_vlraproximado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o87_orcprogramaano"]) || $this->o87_orcprogramaano != "")
-           $resac = db_query("insert into db_acount values($acount,2446,14049,'".AddSlashes(pg_result($resaco,$conresaco,'o87_orcprogramaano'))."','$this->o87_orcprogramaano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2446,14049,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o87_orcprogramaano'))."','$this->o87_orcprogramaano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -442,21 +442,21 @@ class cl_pactovalor {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13911,'$o87_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2446,13911,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,13966,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_pactoplano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,13976,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_pactoprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,13982,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_orcprojativativprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,13983,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_orcprojativanoprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,13977,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_pactoatividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,13925,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_pactoacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,13923,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_categoriapacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,13965,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_pactoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,13926,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,13927,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_vlraproximado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2446,14049,'','".AddSlashes(pg_result($resaco,$iresaco,'o87_orcprogramaano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13911,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13966,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_pactoplano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13976,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_pactoprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13982,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_orcprojativativprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13983,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_orcprojativanoprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13977,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_pactoatividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13925,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_pactoacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13923,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_categoriapacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13965,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_pactoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13926,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,13927,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_vlraproximado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2446,14049,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o87_orcprogramaano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pactovalor
@@ -516,7 +516,7 @@ class cl_pactovalor {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pactovalor";
@@ -531,7 +531,7 @@ class cl_pactovalor {
    function sql_query ( $o87_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -566,7 +566,7 @@ class cl_pactovalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -579,7 +579,7 @@ class cl_pactovalor {
    function sql_query_file ( $o87_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -600,7 +600,7 @@ class cl_pactovalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

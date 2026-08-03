@@ -48,7 +48,7 @@ $oDaoReciboUnica = new cl_recibounica();
 (float)$percentualdesconto = 0;
 $diavenc         = '';
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cliptubase = new cl_iptubase;
 $cliptubase->rotulo->label();
@@ -91,7 +91,7 @@ if (isset($calcular)) {
             db_redireciona('cad4_calciptu.php');
         }
 
-        if (isset($HTTP_POST_VARS['j01_matric'])) {
+        if (isset($_POST['j01_matric'])) {
             /*
              * Verifica a situação do Calculo de IPTU
              *  Situações de bloqueio:
@@ -100,7 +100,7 @@ if (isset($calcular)) {
             $sql = "select fc_iptu_verificacalculo($j01_matric::integer,$anousu::integer, 0, 0)";
             $result = db_query($sql);
 
-            $retorno_result = pg_result($result,0,0);
+            $retorno_result = pg_fetch_result($result,0,0);
 
             $retorno_erro = substr($retorno_result,3,2);
             $retorno_erro = str_replace(")", "", $retorno_erro);
@@ -126,7 +126,7 @@ if (isset($calcular)) {
                 } else {
                     $result = db_query("select distinct j18_anousu, j18_permvenc from cfiptu order by j18_anousu desc");
                     $j18_permvenc = 1;
-                    if (pg_numrows($result) > 0) {
+                    if (pg_num_rows($result) > 0) {
                         db_fieldsmemory($result,0);
                     }
                     if ($j18_permvenc == 0) {
@@ -312,7 +312,7 @@ if (isset($calcular)) {
                             db_query("ROLLBACK");
                         }
 
-                        if (pg_numrows($result2) > 0) {
+                        if (pg_num_rows($result2) > 0) {
 
                             db_fieldsmemory($result2, 0);
 
@@ -348,8 +348,8 @@ if (isset($calcular)) {
 
                         $cliptubase->erro_msg = $sErro;
                         $cliptubase->erro_status = '0';
-                    } else if (pg_numrows($result) > 0 && !$taxa_erro) {
-                        $retorno_result = pg_result($result,0,0);
+                    } else if (pg_num_rows($result) > 0 && !$taxa_erro) {
+                        $retorno_result = pg_fetch_result($result,0,0);
 
                         preg_match('/[0-9]*/', trim($retorno_result), $aTipoLogCalc);
 
@@ -362,7 +362,7 @@ if (isset($calcular)) {
                             $cliptubase->erro_msg = "Cálculo Efetuado.";
                             $cliptubase->erro_status = '1';
                         }
-                        $insert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric,$retorno,'".trim(preg_replace('/^[0-9]*/', '',trim($retorno_result)))."')";
+                        $insert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric,$retorno,'".trim((string) preg_replace('/^[0-9]*/', '',trim($retorno_result)))."')";
                         $resultinsert = db_query($insert) or die($insert);
 
                         db_query("commit");
@@ -409,14 +409,14 @@ if (isset($calcular)) {
                                 $erro = true;
                                 $perc = 0;
 
-                                if (pg_numrows($sqlunica) != 0) {
-                                    $perc = pg_result($sqlunica,0,'k00_percdes');
+                                if (pg_num_rows($sqlunica) != 0) {
+                                    $perc = pg_fetch_result($sqlunica,0,'k00_percdes');
                                     $sqlresultunica = "delete from recibounica where k00_numpre = $j20_numpre and k00_dtvenc = '$anousu-$mesini-$diavenc'";
                                     $resultunica = db_query($sqlresultunica );
                                     $descricao_erro = "Vencimento Excluído.";
                                 }
 
-                                if (($perc != $percentualdesconto) || (pg_numrows($sqlunica) == 0)) {
+                                if (($perc != $percentualdesconto) || (pg_num_rows($sqlunica) == 0)) {
                                     $oDaoReciboUnica->k00_numpre = $j20_numpre;
                                     $oDaoReciboUnica->k00_dtvenc = "$anousu-$mesini-$diavenc";
                                     $oDaoReciboUnica->k00_dtoper = date("Y-m-d",db_getsession("DB_datausu"));
@@ -490,9 +490,9 @@ if (isset($demonstrativo)) {
             colocar logica aqui
         */
     } else { 
-        if (isset($HTTP_POST_VARS['j01_matric'])) {
+        if (isset($_POST['j01_matric'])) {
             $result = db_query("select distinct j18_anousu, j18_permvenc from cfiptu order by j18_anousu desc");
-            if (pg_numrows($result) > 0) {
+            if (pg_num_rows($result) > 0) {
                 db_fieldsmemory($result, 0);
             } else {
                 $j18_permvenc = 0;
@@ -521,8 +521,8 @@ if (isset($demonstrativo)) {
                 $cliptubase->erro_msg = $sErro;
                 $cliptubase->erro_status = '0';
 
-            } else if (pg_numrows($result) > 0) {
-                $retorno_result = pg_result($result,0,0);
+            } else if (pg_num_rows($result) > 0) {
+                $retorno_result = pg_fetch_result($result,0,0);
                 preg_match('/[0-9]*/', trim($retorno_result), $aTipoLogCalc);
                 $retorno = $aTipoLogCalc[0];
 
@@ -683,9 +683,9 @@ if (isset($demonstrativo)) {
                             <td>
                                 <?php
                                 $result = db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
-                                if (pg_numrows($result) > 0) {
-                                    $opcoes = array();
-                                    for ($i = 0; $i < pg_numrows($result); $i++) {
+                                if (pg_num_rows($result) > 0) {
+                                    $opcoes = [];
+                                    for ($i = 0; $i < pg_num_rows($result); $i++) {
                                         db_fieldsmemory($result, $i);
                                         $opcoes[$j18_anousu] = $j18_anousu;
                                     }
@@ -778,7 +778,7 @@ if (isset($demonstrativo)) {
                                 </td>
                                 <td>
                                     <?php
-                                    $k00_histtxt = trim($k00_histtxt);
+                                    $k00_histtxt = trim((string) $k00_histtxt);
                                     db_textarea('k00_histtxt', 5, 30, $Ik00_histtxt, true, 'text', 4);
                                     ?>
                                 </td>
@@ -956,7 +956,7 @@ if ($cliptubase->erro_status != '0') {
     if (isset($calcular)) {
         ?>
         <script>
-            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_funcnome', 'cad3_conscadastro_002_detalhes.php?solicitacao=Calculo&parametro=<?=$HTTP_POST_VARS['j01_matric']?>', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_funcnome', 'cad3_conscadastro_002_detalhes.php?solicitacao=Calculo&parametro=<?=$_POST['j01_matric']?>', 'Pesquisa', true);
         </script>
         <?php
     } else if (isset($demonstrativo)) {

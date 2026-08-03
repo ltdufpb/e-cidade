@@ -55,11 +55,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
- 	 $clcriaabas->identifica = array("apolice"=>"Cadastro de apolices","apolitem"=>"Itens da apolice");
-  	 $clcriaabas->sizecampo  = array("apolice"=>"20","apolitem"=>"20");
-  	 $clcriaabas->title      = array("apolice"=>"Cadastrar apolice","apolitem"=>"Cadastrar itens da apolice");$clcriaabas->src = array("benscorlanc"=>"pat1_benscorlanc005.php");
-	 $clcriaabas->src = array("apolice"=>"pat1_apolice006.php");
-	 $clcriaabas->disabled   =  array("apolitem"=>"true"); 
+ 	 $clcriaabas->identifica = ["apolice"=>"Cadastro de apolices","apolitem"=>"Itens da apolice"];
+  	 $clcriaabas->sizecampo  = ["apolice"=>"20","apolitem"=>"20"];
+  	 $clcriaabas->title      = ["apolice"=>"Cadastrar apolice","apolitem"=>"Cadastrar itens da apolice"];$clcriaabas->src = ["benscorlanc"=>"pat1_benscorlanc005.php"];
+	 $clcriaabas->src = ["apolice"=>"pat1_apolice006.php"];
+	 $clcriaabas->disabled   =  ["apolitem"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

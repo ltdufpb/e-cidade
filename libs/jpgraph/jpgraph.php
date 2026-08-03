@@ -444,14 +444,14 @@ class JpGraphErrObjectImg {
 	    'YcWaR5OKOhkYt+ZsTFdJRfPAApOpQYJTNHvCRSJR6SJngQadfc'.
 	    'vd69OLMddVOPCGVnmrFD8bVYd3JXfxXPtLR/+mtv59/ALWiiMx'.
 	    'qL72fwAAAABJRU5ErkJggg==' ;
-	
+
 	if( headers_sent() ) {
 	    // Special case for headers already sent error. Dont
 	    // return an image since it can't be displayed
 	    die("<b>JpGraph Error:</b> ".$aMsg);		
 	}
 
-	$aMsg = wordwrap($aMsg,55);
+	$aMsg = wordwrap((string) $aMsg,55);
 	$lines = substr_count($aMsg,"\n");
 
 	// Create the error icon GD
@@ -474,7 +474,7 @@ class JpGraphErrObjectImg {
 	$img->FilledRectangle(5,5,$w-1,$h-1,10);
 	$img->SetColor("gray:0.7");
 	$img->FilledRectangle(5,5,$w-3,$h-3,10);
-	
+
 	// Window background
 	$img->SetColor("lightblue");
 	$img->FilledRectangle(1,1,$w-5,$h-5);
@@ -484,7 +484,7 @@ class JpGraphErrObjectImg {
 	$img->SetColor("black");
 	$img->Rectangle(1,1,$w-5,$h-5);
 	$img->Rectangle(0,0,$w-4,$h-4);
-	
+
 	// Window top row
 	$img->SetColor("darkred");
 	for($y=3; $y < 18; $y += 2 ) 
@@ -557,11 +557,11 @@ else {
 //
 
 function _phpErrorHandler($errno,$errmsg,$filename, $linenum, $vars) {
-    JpGraphError::Raise('In '.basename($filename).'#'.$linenum."\n".$errmsg);
+    JpGraphError::Raise('In '.basename((string) $filename).'#'.$linenum."\n".$errmsg);
 }
 
 if( INSTALL_PHP_ERR_HANDLER ) {
-    set_error_handler("_phpErrorHandler");
+    set_error_handler(_phpErrorHandler(...));
     error_reporting(1);
 }
 
@@ -620,7 +620,7 @@ function sign($a) {return $a >= 0 ? 1 : -1;}
 // (top level), i.e it is safe to call this function
 // from a script that uses JpGraph
 function GenImgName() {
-    global $HTTP_SERVER_VARS;
+    global $_SERVER;
     global $_SERVER;
 
     // Determine what format we should use when we save the images
@@ -629,12 +629,12 @@ function GenImgName() {
     elseif( $supported & IMG_GIF ) $img_format="gif";
     elseif( $supported & IMG_JPG ) $img_format="jpeg";
 
-    if( !isset($HTTP_SERVER_VARS['PHP_SELF']) )
+    if( !isset($_SERVER['PHP_SELF']) )
 	JpGraphError::Raise(" Can't access PHP_SELF, PHP global variable. You can't run PHP from command line if you want to use the 'auto' naming of cache or image files.");
-    $fname = basename($HTTP_SERVER_VARS['PHP_SELF']);
+    $fname = basename((string) $_SERVER['PHP_SELF']);
     $q = @$_SERVER['QUERY_STRING'];
     if( !empty($q) ) {
-	$fname .= '?'.preg_replace("/\W/", "_", $q).'.'.$img_format;
+	$fname .= '?'.preg_replace("/\W/", "_", (string) $q).'.'.$img_format;
     }
     else {
 	$fname = substr($fname,0,strlen($fname)-4).'.'.$img_format;
@@ -643,7 +643,7 @@ function GenImgName() {
 }
 
 class LanguageConv {
-    var $g2312 = null ;
+    public $g2312 = null ;
 
     function Convert($aTxt,$aFF) {
 	if( LANGUAGE_CYRILLIC ) {
@@ -666,7 +666,7 @@ class LanguageConv {
 	    if( !function_exists('iconv') ) {
 		JpGraphError::Raise('Usage of FF_CHINESE (FF_BIG5) font family requires that your PHP setup has the iconv() function. By default this is not compiled into PHP (needs the "--width-iconv" when configured).');
 	    }
-	    return iconv('BIG-5','UTF8',$aTxt);
+	    return iconv('BIG-5','UTF8',(string) $aTxt);
 	}
 	else 
 	    return $aTxt;
@@ -674,8 +674,8 @@ class LanguageConv {
 
     // Translate iso encoding to unicode
     function iso2uni ($isoline){
-	for ($i=0; $i < strlen($isoline); $i++){
-	    $thischar=substr($isoline,$i,1);
+	for ($i=0; $i < strlen((string) $isoline); $i++){
+	    $thischar=substr((string) $isoline,$i,1);
 	    $charcode=ord($thischar);
 	    $uniline.=($charcode>175) ? "&#" . (1040+($charcode-176)). ";" : $thischar;
 	}
@@ -690,8 +690,8 @@ class LanguageConv {
 // timers can be started.
 //===================================================
 class JpgTimer {
-    var $start;
-    var $idx;	
+    public $start;
+    public $idx;	
 //---------------
 // CONSTRUCTOR
     function JpgTimer() {
@@ -703,7 +703,7 @@ class JpgTimer {
 
     // Push a new timer start on stack
     function Push() {
-	list($ms,$s)=explode(" ",microtime());	
+	[$ms, $s]=explode(" ",microtime());	
 	$this->start[$this->idx++]=floor($ms*1000) + 1000*$s;	
     }
 
@@ -711,7 +711,7 @@ class JpgTimer {
     // current time
     function Pop() {
 	assert($this->idx>0);
-	list($ms,$s)=explode(" ",microtime());	
+	[$ms, $s]=explode(" ",microtime());	
 	$etime=floor($ms*1000) + (1000*$s);
 	$this->idx--;
 	return $etime-$this->start[$this->idx];
@@ -724,13 +724,13 @@ $gJpgBrandTiming = BRAND_TIMING;
 // Description: Hold localized text used in dates
 //===================================================
 class DateLocale {
- 
-    var $iLocale = 'C'; // environmental locale be used by default
 
-    var $iDayAbb = null;
-    var $iShortDay = null;
-    var $iShortMonth = null;
-    var $iMonthName = null;
+    public $iLocale = 'C'; // environmental locale be used by default
+
+    public $iDayAbb = null;
+    public $iShortDay = null;
+    public $iShortMonth = null;
+    public $iMonthName = null;
 
 //---------------
 // CONSTRUCTOR	
@@ -758,22 +758,22 @@ class DateLocale {
 	    JpGraphError::Raise("You are trying to use the locale ($aLocale) which your PHP installation does not support. Hint: Use '' to indicate the default locale for this geographic region.");
 	    return FALSE;
 	}
- 
+
 	$this->iLocale = $aLocale;
 
 	for ( $i = 0, $ofs = 0 - strftime('%w'); $i < 7; $i++, $ofs++ ){
 	    $day = strftime('%a', strtotime("$ofs day"));
-	    $day{0} = strtoupper($day{0});
-	    $this->iDayAbb[$aLocale][]= $day{0};
+	    $day[0] = strtoupper($day[0]);
+	    $this->iDayAbb[$aLocale][]= $day[0];
 	    $this->iShortDay[$aLocale][]= $day;
 	}
 
 	for($i=1; $i<=12; ++$i) {
-	    list($short ,$full) = explode('|', strftime("%b|%B",strtotime("2001-$i-01")));
+	    [$short, $full] = explode('|', strftime("%b|%B",strtotime("2001-$i-01")));
 	    $this->iShortMonth[$aLocale][] = ucfirst($short);
 	    $this->iMonthName [$aLocale][] = ucfirst($full);
 	}
-		
+
 	setlocale(LC_TIME, $pLocale);
 
 	return TRUE;
@@ -783,7 +783,7 @@ class DateLocale {
     function GetDayAbb() {
 	return $this->iDayAbb[$this->iLocale];
     }
-	
+
     function GetShortDay() {
 	return $this->iShortDay[$this->iLocale];
     }
@@ -791,7 +791,7 @@ class DateLocale {
     function GetShortMonth() {
 	return $this->iShortMonth[$this->iLocale];
     }
-	
+
     function GetShortMonthName($aNbr) {
 	return $this->iShortMonth[$this->iLocale][$aNbr];
     }
@@ -815,13 +815,13 @@ $gJpgDateLocale = new DateLocale();
 // The class supports both parametric and regular functions.
 //===================================================
 class FuncGenerator {
-    var $iFunc='',$iXFunc='',$iMin,$iMax,$iStepSize;
-	
+    public $iFunc='',$iXFunc='',$iMin,$iMax,$iStepSize;
+
     function FuncGenerator($aFunc,$aXFunc='') {
 	$this->iFunc = $aFunc;
 	$this->iXFunc = $aXFunc;
     }
-	
+
     function E($aXMin,$aXMax,$aSteps=50) {
 	$this->iMin = $aXMin;
 	$this->iMax = $aXMax;
@@ -833,15 +833,15 @@ class FuncGenerator {
 	    $t = 'for($x='.$aXMin.'; $x<='.$aXMax.'; $x += '.$this->iStepSize.') {$ya[]='.$this->iFunc.';$xa[]=$x;} $x='.$aXMax.';$ya[]='.$this->iFunc.';$xa[]=$x;';
 	else
 	    JpGraphError::Raise('FuncGenerator : No function specified. ');
-			
+
 	@eval($t);
-		
+
 	// If there is an error in the function specifcation this is the only
 	// way we can discover that.
 	if( empty($xa) || empty($ya) )
 	    JpGraphError::Raise('FuncGenerator : Syntax error in function specification ');
-				
-	return array($xa,$ya);
+
+	return [$xa,$ya];
     }
 }
 
@@ -850,10 +850,10 @@ class FuncGenerator {
 // Description: Encapsulates the footer line in the Graph
 //=======================================================
 class Footer {
-    var $left,$center,$right;
-    var $iLeftMargin = 3;
-    var $iRightMargin = 3;
-    var $iBottomMargin = 3;
+    public $left,$center,$right;
+    public $iLeftMargin = 3;
+    public $iRightMargin = 3;
+    public $iBottomMargin = 3;
 
     function Footer() {
 	$this->left = new Text();
@@ -886,62 +886,62 @@ class Footer {
 // Description: Main class to handle graphs
 //===================================================
 class Graph {
-    var $cache=null;		// Cache object (singleton)
-    var $img=null;			// Img object (singleton)
-    var $plots=array();	// Array of all plot object in the graph (for Y 1 axis)
-    var $y2plots=array();// Array of all plot object in the graph (for Y 2 axis)
-    var $xscale=null;		// X Scale object (could be instance of LinearScale or LogScale
-    var $yscale=null,$y2scale=null;
-    var $iIcons = array();      // Array of Icons to add to 
-    var $cache_name;		// File name to be used for the current graph in the cache directory
-    var $xgrid=null;		// X Grid object (linear or logarithmic)
-    var $ygrid=null,$y2grid=null; //dito for Y
-    var $doframe=true,$frame_color=array(0,0,0), $frame_weight=1;	// Frame around graph
-    var $boxed=false, $box_color=array(0,0,0), $box_weight=1;		// Box around plot area
-    var $doshadow=false,$shadow_width=4,$shadow_color=array(102,102,102);	// Shadow for graph
-    var $xaxis=null;		// X-axis (instane of Axis class)
-    var $yaxis=null, $y2axis=null;	// Y axis (instance of Axis class)
-    var $margin_color=array(200,200,200);	// Margin color of graph
-    var $plotarea_color=array(255,255,255);	// Plot area color
-    var $title,$subtitle,$subsubtitle; 	// Title and subtitle(s) text object
-    var $axtype="linlin";	// Type of axis
-    var $xtick_factor;	// Factot to determine the maximum number of ticks depending on the plot with
-    var $texts=null, $y2texts=null;		// Text object to ge shown in the graph
-    var $lines=null, $y2lines=null;
-    var $bands=null, $y2bands=null;
-    var $text_scale_off=0;	// Text scale offset in world coordinates
-    var $background_image="",$background_image_type=-1,$background_image_format="png";
-    var $background_image_bright=0,$background_image_contr=0,$background_image_sat=0;
-    var $image_bright=0, $image_contr=0, $image_sat=0;
-    var $inline;
-    var $showcsim=0,$csimcolor="red"; //debug stuff, draw the csim boundaris on the image if <>0
-    var $grid_depth=DEPTH_BACK;	// Draw grid under all plots as default
-    var $iAxisStyle = AXSTYLE_SIMPLE;
-    var $iCSIMdisplay=false,$iHasStroked = false;
-    var $footer;
-    var $csimcachename = '', $csimcachetimeout = 0;
-    var $iDoClipping = false;
-    var $y2orderback=true;
-    var $tabtitle;
-    var $bkg_gradtype=-1,$bkg_gradstyle=BGRAD_MARGIN;
-    var $bkg_gradfrom='navy', $bkg_gradto='silver';
-    var $titlebackground = false;
-    var	$titlebackground_color = 'lightblue',
+    public $cache=null;		// Cache object (singleton)
+    public $img=null;			// Img object (singleton)
+    public $plots=[];	// Array of all plot object in the graph (for Y 1 axis)
+    public $y2plots=[];// Array of all plot object in the graph (for Y 2 axis)
+    public $xscale=null;		// X Scale object (could be instance of LinearScale or LogScale
+    public $yscale=null,$y2scale=null;
+    public $iIcons = [];      // Array of Icons to add to 
+    public $cache_name;		// File name to be used for the current graph in the cache directory
+    public $xgrid=null;		// X Grid object (linear or logarithmic)
+    public $ygrid=null,$y2grid=null; //dito for Y
+    public $doframe=true,$frame_color=[0,0,0], $frame_weight=1;	// Frame around graph
+    public $boxed=false, $box_color=[0,0,0], $box_weight=1;		// Box around plot area
+    public $doshadow=false,$shadow_width=4,$shadow_color=[102,102,102];	// Shadow for graph
+    public $xaxis=null;		// X-axis (instane of Axis class)
+    public $yaxis=null, $y2axis=null;	// Y axis (instance of Axis class)
+    public $margin_color=[200,200,200];	// Margin color of graph
+    public $plotarea_color=[255,255,255];	// Plot area color
+    public $title,$subtitle,$subsubtitle; 	// Title and subtitle(s) text object
+    public $axtype="linlin";	// Type of axis
+    public $xtick_factor;	// Factot to determine the maximum number of ticks depending on the plot with
+    public $texts=null, $y2texts=null;		// Text object to ge shown in the graph
+    public $lines=null, $y2lines=null;
+    public $bands=null, $y2bands=null;
+    public $text_scale_off=0;	// Text scale offset in world coordinates
+    public $background_image="",$background_image_type=-1,$background_image_format="png";
+    public $background_image_bright=0,$background_image_contr=0,$background_image_sat=0;
+    public $image_bright=0, $image_contr=0, $image_sat=0;
+    public $inline;
+    public $showcsim=0,$csimcolor="red"; //debug stuff, draw the csim boundaris on the image if <>0
+    public $grid_depth=DEPTH_BACK;	// Draw grid under all plots as default
+    public $iAxisStyle = AXSTYLE_SIMPLE;
+    public $iCSIMdisplay=false,$iHasStroked = false;
+    public $footer;
+    public $csimcachename = '', $csimcachetimeout = 0;
+    public $iDoClipping = false;
+    public $y2orderback=true;
+    public $tabtitle;
+    public $bkg_gradtype=-1,$bkg_gradstyle=BGRAD_MARGIN;
+    public $bkg_gradfrom='navy', $bkg_gradto='silver';
+    public $titlebackground = false;
+    public $titlebackground_color = 'lightblue',
 	$titlebackground_style = 1,
 	$titlebackground_framecolor = 'blue',
 	$titlebackground_framestyle = 2,
 	$titlebackground_frameweight = 1,
 	$titlebackground_bevelheight = 3 ;
-    var $titlebkg_fillstyle=TITLEBKG_FILLSTYLE_SOLID;
-    var $titlebkg_scolor1='black',$titlebkg_scolor2='white';
-    var $framebevel = false, $framebeveldepth = 2 ;
-    var $framebevelborder = false, $framebevelbordercolor='black';
-    var $framebevelcolor1='white@0.4', $framebevelcolor2='black@0.4';
-    var $background_image_mix=100;
-    var $background_cflag = '';
-    var $background_cflag_type = BGIMG_FILLPLOT;
-    var $background_cflag_mix = 100;
-    var $iImgTrans=false,
+    public $titlebkg_fillstyle=TITLEBKG_FILLSTYLE_SOLID;
+    public $titlebkg_scolor1='black',$titlebkg_scolor2='white';
+    public $framebevel = false, $framebeveldepth = 2 ;
+    public $framebevelborder = false, $framebevelbordercolor='black';
+    public $framebevelcolor1='white@0.4', $framebevelcolor2='black@0.4';
+    public $background_image_mix=100;
+    public $background_cflag = '';
+    public $background_cflag_type = BGIMG_FILLPLOT;
+    public $background_cflag_mix = 100;
+    public $iImgTrans=false,
 	$iImgTransHorizon = 100,$iImgTransSkewDist=150,
 	$iImgTransDirection = 1, $iImgTransMinSize = true,
 	$iImgTransFillColor='white',$iImgTransHighQ=false,
@@ -964,15 +964,15 @@ class Graph {
 	    $tim = new JpgTimer();
 	    $tim->Push();
 	}
-		
+
 	// Automatically generate the image file name based on the name of the script that
 	// generates the graph
 	if( $aCachedName=="auto" )
 	    $aCachedName=GenImgName();
-			
+
 	// Should the image be streamed back to the browser or only to the cache?
 	$this->inline=$aInline;
-		
+
 	$this->img	= new RotImage($aWidth,$aHeight);
 
 	$this->cache 	= new ImgStreamCache($this->img);
@@ -1003,7 +1003,7 @@ class Graph {
 	    if( $this->cache->GetAndStream($aCachedName) ) {
 		exit();
 	    }
-				
+
 	$this->cache_name = $aCachedName;
 	$this->SetTickDensity(); // Normal density
 
@@ -1011,7 +1011,7 @@ class Graph {
     }
 //---------------
 // PUBLIC METHODS	
-    
+
     // Enable final image perspective transformation
     function Set3DPerspective($aDir=1,$aHorizon=100,$aSkewDist=120,$aQuality=false,$aFillColor='#FFFFFF',$aBorder=false,$aMinSize=true,$aHorizonPos=0.5) {
 	$this->iImgTrans = true;
@@ -1031,7 +1031,7 @@ class Graph {
     function SetGridDepth($aDepth) {
 	$this->grid_depth=$aDepth;
     }
-	
+
     // Specify graph angle 0-360 degrees.
     function SetAngle($aAngle) {
 	$this->img->SetAngle($aAngle);
@@ -1068,7 +1068,7 @@ class Graph {
 	$this->xaxis->SetLabelAlign('right','center');
 	$this->yaxis->SetLabelAlign('center','bottom');
     }
-	
+
     function SetClipping($aFlg=true) {
 	$this->iDoClipping = $aFlg ;
     }
@@ -1078,9 +1078,9 @@ class Graph {
 	if( $aPlot == null )
 	    JpGraphError::Raise("Graph::Add() You tried to add a null plot to the graph.");
 	if( is_array($aPlot) && count($aPlot) > 0 )
-	    $cl = get_class($aPlot[0]);
+	    $cl = $aPlot[0]::class;
 	else
-	    $cl = get_class($aPlot);
+	    $cl = $aPlot::class;
 
 	if( $cl == 'text' ) 
 	    $this->AddText($aPlot);
@@ -1110,9 +1110,9 @@ class Graph {
 	    JpGraphError::Raise("Graph::AddY2() You tried to add a null plot to the graph.");	
 
 	if( is_array($aPlot) && count($aPlot) > 0 )
-	    $cl = get_class($aPlot[0]);
+	    $cl = $aPlot[0]::class;
 	else
-	    $cl = get_class($aPlot);
+	    $cl = $aPlot::class;
 
 	if( $cl == 'text' ) 
 	    $this->AddText($aPlot,true);
@@ -1123,7 +1123,7 @@ class Graph {
 	else
 	    $this->y2plots[] = &$aPlot;
     }
-	
+
     // Add text object to the graph
     function AddText(&$aTxt,$aToY2=false) {
 	if( $aTxt == null )
@@ -1145,7 +1145,7 @@ class Graph {
 		$this->texts[] = &$aTxt;
 	}
     }
-	
+
     // Add a line object (class PlotLine) to the graph
     function AddLine(&$aLine,$aToY2=false) {
 	if( $aLine == null )
@@ -1198,7 +1198,7 @@ class Graph {
 	$this->bkg_gradfrom = $aFrom;
 	$this->bkg_gradto = $aTo;
     } 
-	
+
     // Set a country flag in the background
     function SetBackgroundCFlag($aName,$aBgType=BGIMG_FILLPLOT,$aMix=100) {
 	$this->background_cflag = $aName;
@@ -1223,12 +1223,12 @@ class Graph {
 
 	// Get extension to determine image type
 	if( $aImgFormat == "auto" ) {
-	    $e = explode('.',$aFileName);
+	    $e = explode('.',(string) $aFileName);
 	    if( !$e ) {
 		JpGraphError::Raise('Incorrect file name for Graph::SetBackgroundImage() : '.$aFileName.' Must have a valid image extension (jpg,gif,png) when using autodetection of image type');
 	    }
 
-	    $valid_formats = array('png', 'jpg', 'gif');
+	    $valid_formats = ['png', 'jpg', 'gif'];
 	    $aImgFormat = strtolower($e[count($e)-1]);
 	    if ($aImgFormat == 'jpeg')  {
 		$aImgFormat = 'jpg';
@@ -1246,14 +1246,14 @@ class Graph {
     function SetBackgroundImageMix($aMix) {
 	$this->background_image_mix = $aMix ;
     }
-	
+
     // Adjust brightness and constrast for background image
     function AdjBackgroundImage($aBright,$aContr=0,$aSat=0) {
 	$this->background_image_bright=$aBright;
 	$this->background_image_contr=$aContr;
 	$this->background_image_sat=$aSat;
     }
-	
+
     // Adjust brightness and constrast for image
     function AdjImage($aBright,$aContr=0,$aSat=0) {
 	$this->image_bright=$aBright;
@@ -1265,26 +1265,26 @@ class Graph {
     function SetAxisStyle($aStyle) {
         $this->iAxisStyle = $aStyle ;
     }
-	
+
     // Set a frame around the plot area
-    function SetBox($aDrawPlotFrame=true,$aPlotFrameColor=array(0,0,0),$aPlotFrameWeight=1) {
+    function SetBox($aDrawPlotFrame=true,$aPlotFrameColor=[0,0,0],$aPlotFrameWeight=1) {
 	$this->boxed = $aDrawPlotFrame;
 	$this->box_weight = $aPlotFrameWeight;
 	$this->box_color = $aPlotFrameColor;
     }
-	
+
     // Specify color for the plotarea (not the margins)
     function SetColor($aColor) {
 	$this->plotarea_color=$aColor;
     }
-	
+
     // Specify color for the margins (all areas outside the plotarea)
     function SetMarginColor($aColor) {
 	$this->margin_color=$aColor;
     }
-	
+
     // Set a frame around the entire image
-    function SetFrame($aDrawImgFrame=true,$aImgFrameColor=array(0,0,0),$aImgFrameWeight=1) {
+    function SetFrame($aDrawImgFrame=true,$aImgFrameColor=[0,0,0],$aImgFrameWeight=1) {
 	$this->doframe = $aDrawImgFrame;
 	$this->frame_color = $aImgFrameColor;
 	$this->frame_weight = $aImgFrameWeight;
@@ -1302,7 +1302,7 @@ class Graph {
     }
 
     // Set the shadow around the whole image
-    function SetShadow($aShowShadow=true,$aShadowWidth=5,$aShadowColor=array(102,102,102)) {
+    function SetShadow($aShowShadow=true,$aShadowWidth=5,$aShadowColor=[102,102,102]) {
 	$this->doshadow = $aShowShadow;
 	$this->shadow_color = $aShadowColor;
 	$this->shadow_width = $aShadowWidth;
@@ -1318,7 +1318,7 @@ class Graph {
 	if( $aYMax < $aYMin || $aXMax < $aXMin )
 	    JpGraphError::Raise('Graph::SetScale(): Specified Max value must be larger than the specified Min value.');
 
-	$yt=substr($aAxisType,-3,3);
+	$yt=substr((string) $aAxisType,-3,3);
 	if( $yt=="lin" )
 	    $this->yscale = new LinearScale($aYMin,$aYMax);
 	elseif( $yt == "int" ) {
@@ -1329,8 +1329,8 @@ class Graph {
 	    $this->yscale = new LogScale($aYMin,$aYMax);
 	else
 	    JpGraphError::Raise("Unknown scale specification for Y-scale. ($aAxisType)");
-			
-	$xt=substr($aAxisType,0,3);
+
+	$xt=substr((string) $aAxisType,0,3);
 	if( $xt == "lin" || $xt == "tex" ) {
 	    $this->xscale = new LinearScale($aXMin,$aXMax,"x");
 	    $this->xscale->textscale = ($xt == "tex");
@@ -1346,14 +1346,14 @@ class Graph {
 
 	$this->xscale->Init($this->img);
 	$this->yscale->Init($this->img);						
-					
+
 	$this->xaxis = new Axis($this->img,$this->xscale);
 	$this->yaxis = new Axis($this->img,$this->yscale);
 	$this->xgrid = new Grid($this->xaxis);
 	$this->ygrid = new Grid($this->yaxis);	
 	$this->ygrid->Show();			
     }
-	
+
     // Specify secondary Y scale
     function SetY2Scale($aAxisType="lin",$aY2Min=1,$aY2Max=1) {
 	if( $aAxisType=="lin" ) 
@@ -1366,16 +1366,16 @@ class Graph {
 	    $this->y2scale = new LogScale($aY2Min,$aY2Max);
 	}
 	else JpGraphError::Raise("JpGraph: Unsupported Y2 axis type: $axtype<br>");
-			
+
 	$this->y2scale->Init($this->img);	
 	$this->y2axis = new Axis($this->img,$this->y2scale);
 	$this->y2axis->scale->ticks->SetDirection(SIDE_LEFT); 
 	$this->y2axis->SetLabelSide(SIDE_RIGHT); 
-		
+
 	// Deafult position is the max x-value
 	$this->y2grid = new Grid($this->y2axis);							
     }
-	
+
     // Specify density of ticks when autoscaling 'normal', 'dense', 'sparse', 'verysparse'
     // The dividing factor have been determined heuristically according to my aesthetic 
     // sense (or lack off) y.m.m.v !
@@ -1415,7 +1415,7 @@ class Graph {
 		JpGraphError::Raise("JpGraph: Unsupported Tick density: $densx");
 	}		
     }
-	
+
 
     // Get a string of all image map areas	
     function GetCSIMareas() {
@@ -1433,7 +1433,7 @@ class Graph {
 
 	return $csim;
     }
-	
+
     // Get a complete <MAP>..</MAP> tag for the final image map
     function GetHTMLImageMap($aMapName) {
 	$im = "<MAP NAME=\"$aMapName\">\n";
@@ -1443,10 +1443,10 @@ class Graph {
     }
 
     function CheckCSIMCache($aCacheName,$aTimeOut=60) {
-	global $HTTP_SERVER_VARS;
+	global $_SERVER;
 
 	if( $aCacheName=='auto' )
-	    $aCacheName=basename($HTTP_SERVER_VARS['PHP_SELF']);
+	    $aCacheName=basename((string) $_SERVER['PHP_SELF']);
 
 	$this->csimcachename = CSIMCACHE_DIR.$aCacheName;
 	$this->csimcachetimeout = $aTimeOut;
@@ -1466,9 +1466,9 @@ class Graph {
 	    $baseimg = $dir.'/'.$base.'.'.$this->img->img_format;
 
 	    $timedout=false;
-		
+
 	    // Does it exist at all ?
-	    
+
 	    if( file_exists($basecsim) && file_exists($baseimg) ) {
 		// Check that it hasn't timed out
 		$diff=time()-filemtime($basecsim);
@@ -1491,15 +1491,15 @@ class Graph {
     }
 
     function StrokeCSIM($aScriptName='',$aCSIMName='',$aBorder=0) {
-	GLOBAL $HTTP_GET_VARS;
+	GLOBAL $_GET;
 
 	if( $aCSIMName=='' ) {
 	    // create a random map name
-	    srand ((double) microtime() * 1000000);
-	    $r = rand(0,100000);
+	    mt_srand ((double) microtime() * 1000000);
+	    $r = random_int(0,100000);
 	    $aCSIMName='__mapname'.$r.'__';
 	}
-	if( empty($HTTP_GET_VARS[_CSIM_DISPLAY]) ) {
+	if( empty($_GET[_CSIM_DISPLAY]) ) {
 	    // First determine if we need to check for a cached version
 	    // This differs from the standard cache in the sense that the
 	    // image and CSIM map HTML file is written relative to the directory
@@ -1507,8 +1507,8 @@ class Graph {
 	    // The reason for this is that the cache directory is not necessarily
 	    // accessible from the HTTP server.
 	    if( $this->csimcachename != '' ) {
-		$dir = dirname($this->csimcachename);
-		$base = basename($this->csimcachename);
+		$dir = dirname((string) $this->csimcachename);
+		$base = basename((string) $this->csimcachename);
 		$base = strtok($base,'.');
 		$suffix = strtok('.');
 		$basecsim = $dir.'/'.$base.'_csim_.html';
@@ -1519,7 +1519,7 @@ class Graph {
 		if( file_exists($dir) && !is_writeable($dir) ) {
 		    JpgraphError::Raise('Apache/PHP does not have permission to write to the CSIM cache directory ('.$dir.'). Check permissions.');
 		}
-		
+
 		// Make sure directory exists
 		$this->cache->MakeDirs($dir);
 
@@ -1546,24 +1546,24 @@ class Graph {
 
 		// Construct the HTML wrapper page
 		// Get all user defined URL arguments
-		reset($HTTP_GET_VARS);
-		
+		reset($_GET);
+
 		// This is a JPGRAPH internal defined that prevents
 		// us from recursively coming here again
 		$urlarg='?'._CSIM_DISPLAY.'=1';
 
-		while( list($key,$value) = each($HTTP_GET_VARS) ) {
-		    if( is_array($value) ) {
+		foreach ($_GET as $key => $value) {
+            if( is_array($value) ) {
 			$n = count($value);
 			for( $i=0; $i < $n; ++$i ) {
-			    $urlarg .= '&'.$key.'%5B%5D='.urlencode($value[$i]);
+			    $urlarg .= '&'.$key.'%5B%5D='.urlencode((string) $value[$i]);
 			}
 		    }
 		    else {
-			$urlarg .= '&'.$key.'='.urlencode($value);
+			$urlarg .= '&'.$key.'='.urlencode((string) $value);
 		    }
-		}
-		
+        }
+
 		echo $this->GetHTMLImageMap($aCSIMName);
 
 		echo "<img src='".$aScriptName.$urlarg."' ISMAP USEMAP='#".$aCSIMName."' border=$aBorder>";
@@ -1595,7 +1595,7 @@ class Graph {
 	    }
 	}
 	if( $min !== null ) {
-	    return array($min,$max);
+	    return [$min,$max];
 	}
 	else
 	    return null;
@@ -1622,30 +1622,30 @@ class Graph {
 	    }
 	}
 	if( $min !== null ) {
-	    return array($min,$max);
+	    return [$min,$max];
 	}
 	else
 	    return null;
     }
 
     function GetXMinMax() {
-	list($min,$ymin) = $this->plots[0]->Min();
-	list($max,$ymax) = $this->plots[0]->Max();
+	[$min, $ymin] = $this->plots[0]->Min();
+	[$max, $ymax] = $this->plots[0]->Max();
 	foreach( $this->plots as $p ) {
-	    list($xmin,$ymin) = $p->Min();
-	    list($xmax,$ymax) = $p->Max();			
+	    [$xmin, $ymin] = $p->Min();
+	    [$xmax, $ymax] = $p->Max();			
 	    $min = Min($xmin,$min);
 	    $max = Max($xmax,$max);
 	}
 	if( $this->y2axis != null ) {
 	    foreach( $this->y2plots as $p ) {
-		list($xmin,$ymin) = $p->Min();
-			list($xmax,$ymax) = $p->Max();			
+		[$xmin, $ymin] = $p->Min();
+			[$xmax, $ymax] = $p->Max();			
 			$min = Min($xmin,$min);
 			$max = Max($xmax,$max);
 	    }		    
 	}
-	return array($min,$max);
+	return [$min,$max];
     }
 
     function AdjustMarginsForTitles() {
@@ -1656,7 +1656,7 @@ class Graph {
 	     $this->subtitle->GetTextHeight($this->img) + $this->subtitle->margin + 5 : 0 ) + 
 	    ($this->subsubtitle->t != '' ? 
 	     $this->subsubtitle->GetTextHeight($this->img) + $this->subsubtitle->margin + 5 : 0 ) ;
-	
+
 
 	$btotrequired = 0;
 	if( !$this->xaxis->hide && !$this->xaxis->hide_labels ) {
@@ -1669,7 +1669,7 @@ class Graph {
 	    }
 	    else
 		$btotrequired = 0;
-	    
+
 	    if( $this->img->a == 90 ) {
 		$this->img->SetFont($this->yaxis->font_family,$this->yaxis->font_style,
 				    $this->yaxis->font_size);
@@ -1680,7 +1680,7 @@ class Graph {
 				    $this->xaxis->font_size);
 		$lh = $this->img->GetTextHeight('Mg',$this->xaxis->label_angle);
 	    }
-	    
+
 	    $btotrequired += $lh + 5;
 	}
 
@@ -1733,7 +1733,7 @@ class Graph {
 	    $this->plots[$i]->PreStrokeAdjust($this);
 	    $this->plots[$i]->DoLegend($this);
 	}
-		
+
 	// Any plots on the second Y scale?
 	if( $this->y2scale != null ) {
 	    for($i=0; $i<count($this->y2plots)	; ++$i ) {
@@ -1741,7 +1741,7 @@ class Graph {
 		$this->y2plots[$i]->DoLegend($this);
 	    }
 	}
-		
+
 	// Bail out if any of the Y-axis not been specified and
 	// has no plots. (This means it is impossible to do autoscaling and
 	// no other scale was given so we can't possible draw anything). If you use manual
@@ -1754,23 +1754,23 @@ class Graph {
 	    $e .= "2. Specified a scale manually but have forgot to specify the tick steps";
 	    JpGraphError::Raise($e);
 	}
-		
+
 	// Bail out if no plots and no specified X-scale
 	if( (!$this->xscale->IsSpecified() && count($this->plots)==0 && count($this->y2plots)==0) )
 	    JpGraphError::Raise("<strong>JpGraph: Can't draw unspecified X-scale.</strong><br>No plots.<br>");
 
 	//Check if we should autoscale y-axis
 	if( !$this->yscale->IsSpecified() && count($this->plots)>0 ) {
-	    list($min,$max) = $this->GetPlotsYMinMax($this->plots);
+	    [$min, $max] = $this->GetPlotsYMinMax($this->plots);
  	    $lres = $this->GetLinesYMinMax($this->lines);
 	    if( is_array($lres) ) {
-		list($linmin,$linmax) = $lres ;
+		[$linmin, $linmax] = $lres ;
 		$min = min($min,$linmin);
 		$max = max($max,$linmax);
 	    }
 	    $tres = $this->GetTextsYMinMax();
 	    if( is_array($tres) ) {
-		list($tmin,$tmax) = $tres ;
+		[$tmin, $tmax] = $tres ;
 		$min = min($min,$tmin);
 		$max = max($max,$tmax);
 	    }
@@ -1793,17 +1793,17 @@ class Graph {
 
 	if( $this->y2scale != null) {
 	    if( !$this->y2scale->IsSpecified() && count($this->y2plots)>0 ) {
-		list($min,$max) = $this->GetPlotsYMinMax($this->y2plots);
+		[$min, $max] = $this->GetPlotsYMinMax($this->y2plots);
 
 		$lres = $this->GetLinesYMinMax($this->y2lines);
 		if( is_array($lres) ) {
-		    list($linmin,$linmax) = $lres ;
+		    [$linmin, $linmax] = $lres ;
 		    $min = min($min,$linmin);
 		    $max = max($max,$linmax);
 		}
 		$tres = $this->GetTextsYMinMax(true);
 		if( is_array($tres) ) {
-		    list($tmin,$tmax) = $tres ;
+		    [$tmin, $tmax] = $tres ;
 		    $min = min($min,$tmin);
 		    $max = max($max,$tmax);
 		}
@@ -1823,10 +1823,10 @@ class Graph {
 					  $this->y2scale->auto_ticks);
 	    }
 	}
-				
+
 	//Check if we should autoscale x-axis
 	if( !$this->xscale->IsSpecified() ) {
-	    if( substr($this->axtype,0,4) == "text" ) {
+	    if( str_starts_with((string) $this->axtype, "text") ) {
 		$max=0;
 		foreach( $this->plots as $p ) {
 		    $max=max($max,$p->numpoints-1);
@@ -1842,38 +1842,38 @@ class Graph {
 		$this->xscale->ticks->SupressMinorTickMarks();
 	    }
 	    else {
-		list($min,$max) = $this->GetXMinMax();
+		[$min, $max] = $this->GetXMinMax();
 		$lres = $this->GetLinesXMinMax($this->lines);
 		if( $lres ) {
-		    list($linmin,$linmax) = $lres ;
+		    [$linmin, $linmax] = $lres ;
 		    $min = min($min,$linmin);
 		    $max = max($max,$linmax);
 		}
 
 		$lres = $this->GetLinesXMinMax($this->y2lines);
 		if( $lres ) {
-		    list($linmin,$linmax) = $lres ;
+		    [$linmin, $linmax] = $lres ;
 		    $min = min($min,$linmin);
 		    $max = max($max,$linmax);
 		}
 
 		$tres = $this->GetTextsXMinMax();
 		if( $tres ) {
-		    list($tmin,$tmax) = $tres ;
+		    [$tmin, $tmax] = $tres ;
 		    $min = min($min,$tmin);
 		    $max = max($max,$tmax);
 		}
 
 		$tres = $this->GetTextsXMinMax(true);
 		if( $tres ) {
-		    list($tmin,$tmax) = $tres ;
+		    [$tmin, $tmax] = $tres ;
 		    $min = min($min,$tmin);
 		    $max = max($max,$tmax);
 		}
 
 		$this->xscale->AutoScale($this->img,$min,$max,$this->img->plotwidth/$this->xtick_factor);
 	    }
-			
+
 	    //Adjust position of y-axis and y2-axis to minimum/maximum of x-scale
 	    if( !is_numeric($this->yaxis->pos) && !is_string($this->yaxis->pos) )
 	    	$this->yaxis->SetPos($this->xscale->GetMinVal());
@@ -1903,7 +1903,7 @@ class Graph {
 	    }
 
 	}
-		
+
 	// If we have a negative values and x-axis position is at 0
 	// we need to supress the first and possible the last tick since
 	// they will be drawn on top of the y-axis (and possible y2 axis)
@@ -1918,7 +1918,7 @@ class Graph {
 	if( ($this->yaxis->pos==$this->xscale->GetMinVal() || 
 	     (is_string($this->yaxis->pos) && $this->yaxis->pos=='min')) &&  
 	    !is_numeric($this->xaxis->pos) && $this->yscale->GetMinVal() < 0 && 
-	    substr($this->axtype,0,4) != 'text' && $this->xaxis->pos!="min" ) {
+	    !str_starts_with((string) $this->axtype, 'text') && $this->xaxis->pos!="min" ) {
 
 	    //$this->yscale->ticks->SupressZeroLabel(false);
 	    $this->xscale->ticks->SupressFirst();
@@ -1929,7 +1929,7 @@ class Graph {
 	elseif( !is_numeric($this->yaxis->pos) && $this->yaxis->pos=='max' ) {
 	    $this->xscale->ticks->SupressLast();
 	}
-	
+
 
 	if( !$_csim ) {
 	    $this->StrokePlotArea();
@@ -1956,15 +1956,15 @@ class Graph {
 	    $this->ygrid->Stroke();
 	    $this->xgrid->Stroke();
 	}
-				
+
 	// Stroke Y2-axis
 	if( $this->y2axis != null && !$_csim) {		
 	    $this->y2axis->Stroke($this->xscale); 				
 	    $this->y2grid->Stroke();
 	}
-		
+
 	$oldoff=$this->xscale->off;
-	if(substr($this->axtype,0,4)=="text") {
+	if(str_starts_with((string) $this->axtype, "text")) {
 	    $this->xscale->off += 
 		ceil($this->xscale->scale_factor*$this->text_scale_off*$this->xscale->ticks->minor_step);
 	}
@@ -2019,7 +2019,7 @@ class Graph {
 	}
 
 	$this->xscale->off=$oldoff;
-		
+
 	if( $this->grid_depth == DEPTH_FRONT && !$_csim ) {
 	    $this->ygrid->Stroke();
 	    $this->xgrid->Stroke();
@@ -2054,7 +2054,7 @@ class Graph {
 	    }
 	}
 
-		
+
 	// Finally draw the axis again since some plots may have nagged
 	// the axis in the edges.
 	if( !$_csim )
@@ -2062,11 +2062,11 @@ class Graph {
 
 	if( $this->y2scale != null && !$_csim ) 
 	    $this->y2axis->Stroke($this->xscale); 	
-		
+
 	if( !$_csim ) {
 	    $this->StrokePlotBox();
 	}
-		
+
 	if( !$_csim ) {
 	    // The titles and legends never gets rotated so make sure
 	    // that the angle is 0 before stroking them				
@@ -2081,12 +2081,12 @@ class Graph {
 
 	    $this->StrokeTexts();	
 	    $this->img->SetAngle($aa);	
-			
+
 	    // Draw an outline around the image map	
 	    if(_JPG_DEBUG) {
 		$this->DisplayClientSideaImageMapAreas();		
 	    }
-	    
+
 	    // Adjust the appearance of the image
 	    $this->AdjustSaturationBrightnessContrast();
 
@@ -2096,7 +2096,7 @@ class Graph {
 		    require_once(modification('jpgraph_imgtrans.php'));
 		    //JpGraphError::Raise('In order to use image transformation you must include the file jpgraph_imgtrans.php in your script.');
 		}
-	       
+
 		$tform = new ImgTrans($this->img->img);
 		$this->img->img = $tform->Skew3D($this->iImgTransHorizon,$this->iImgTransSkewDist,
 						 $this->iImgTransDirection,$this->iImgTransHighQ,
@@ -2120,7 +2120,7 @@ class Graph {
 //---------------
 // PRIVATE METHODS	
     function StrokeAxis() {
-		
+
 	// Stroke axis
 	if( $this->iAxisStyle != AXSTYLE_SIMPLE ) {
 	    switch( $this->iAxisStyle ) {
@@ -2153,13 +2153,13 @@ class Graph {
 	            break;
 	    }
 	    $this->xaxis->SetPos('min');
-	    
+
 	    // By default we hide the first label so it doesn't cross the
 	    // Y-axis in case the positon hasn't been set by the user.
 	    // However, if we use a box we always want the first value
 	    // displayed so we make sure it will be displayed.
 	    $this->xscale->ticks->SupressFirst(false);
-	    
+
 	    $this->xaxis->SetLabelSide(SIDE_DOWN);
 	    $this->xaxis->scale->ticks->SetSide($bottompos);
 	    $this->xaxis->Stroke($this->yscale);
@@ -2187,7 +2187,7 @@ class Graph {
 	    $myaxis->title->Set('');
 	    $myaxis->scale->ticks->SetSide($rightpos);
 	    $myaxis->Stroke($this->xscale);
-	    
+
 	}
 	else {
 	    $this->xaxis->Stroke($this->yscale);
@@ -2202,12 +2202,12 @@ class Graph {
 	    $aFile = $this->background_image;
 	// Remove case sensitivity and setup appropriate function to create image
 	// Get file extension. This should be the LAST '.' separated part of the filename
-	$e = explode('.',$aFile);
+	$e = explode('.',(string) $aFile);
 	$ext = strtolower($e[count($e)-1]);
 	if ($ext == "jpeg")  {
 	    $ext = "jpg";
 	}
-	
+
 	if( trim($ext) == '' ) 
 	    $ext = 'png';  // Assume PNG if no extension specified
 
@@ -2270,7 +2270,7 @@ class Graph {
 	    }
 	}
 	if( $this->doframe ) {
-	    
+
 	    $xl += $this->frame_weight;
 	    $xr -= $this->frame_weight;
 	}
@@ -2310,7 +2310,7 @@ class Graph {
 	// No matter what the angle is we always stroke the image and frame
 	// assuming it is 0 degree
 	$aa = $this->img->SetAngle(0);
-		
+
 	switch( $this->background_image_type ) {
 	    case BGIMG_FILLPLOT: // Resize to just fill the plotarea
 		$this->FillMarginArea();
@@ -2367,7 +2367,7 @@ class Graph {
 	else {
 	    $c = false;
 	}
-	
+
 	if( $this->doshadow ) {
 	    $this->img->SetColor($this->frame_color);			
 	    $this->img->ShadowRectangle(0,0,$this->img->width,$this->img->height,
@@ -2427,7 +2427,7 @@ class Graph {
 				    $this->img->height-$this->img->bottom_margin);	
 	$this->img->PopColor();
     }
-    
+
     // Stroke the plot area with either a solid color or a background image
     function StrokePlotArea() {
 	// Note: To be consistent we really should take a possible shadow
@@ -2461,7 +2461,7 @@ class Graph {
 	    $this->iIcons[$i]->Stroke($this->img);
 	}
     }
-	
+
     function StrokePlotBox() {
 	// Should we draw a box around the plot area?
 	if( $this->boxed ) {
@@ -2553,7 +2553,7 @@ class Graph {
 	    if( $this->doshadow ) {
 		$x2 -= $this->shadow_width ;
 	    }
-	    
+
 	    $indent=0;
 	    if( $this->titlebackground_framestyle == TITLEBKG_FRAME_BEVEL ) {
 		$ind = $this->titlebackground_bevelheight;
@@ -2618,7 +2618,7 @@ class Graph {
 	    $this->title->SetPos($this->img->width-$this->title->margin-$indent,$y,'right');	    
 	}
 	$this->title->Stroke($this->img);
-		
+
 	// ... and subtitle
 	$y += $this->title->GetTextHeight($this->img) + $margin + $this->subtitle->margin;
 	if( $this->subtitle->halign == 'center' ) 
@@ -2727,7 +2727,7 @@ class Graph {
 		if( $max < $v ) $max = $v ;
 	    }
 	}
-	return $flg ? array($min,$max) : false ;
+	return $flg ? [$min,$max] : false ;
     }
 
     // Get X min and max values for added lines
@@ -2745,16 +2745,16 @@ class Graph {
 		if( $max < $v ) $max = $v ;
 	    }
 	}
-	return $flg ? array($min,$max) : false ;
+	return $flg ? [$min,$max] : false ;
     }
 
     // Get min and max values for all included plots
     function GetPlotsYMinMax(&$aPlots) {
-	list($xmax,$max) = $aPlots[0]->Max();
-	list($xmin,$min) = $aPlots[0]->Min();
+	[$xmax, $max] = $aPlots[0]->Max();
+	[$xmin, $min] = $aPlots[0]->Min();
 	for($i=0; $i < count($aPlots); ++$i ) {
-	    list($xmax,$ymax)=$aPlots[$i]->Max();
-	    list($xmin,$ymin)=$aPlots[$i]->Min();
+	    [$xmax, $ymax]=$aPlots[$i]->Max();
+	    [$xmin, $ymin]=$aPlots[$i]->Min();
 	    if (is_numeric($ymax)) $max=max($max,$ymax);
 	    if (is_numeric($ymin)) $min=min($min,$ymin);
 	}
@@ -2764,7 +2764,7 @@ class Graph {
 	    // Special case if all values are 0
 	    $min=0;$max=1;			
 	}
-	return array($min,$max);
+	return [$min,$max];
     }
 
 } // Class
@@ -2775,33 +2775,33 @@ class Graph {
 // Description: Handle TTF font names
 //===================================================
 class TTF {
-    var $font_files,$style_names;
+    public $font_files,$style_names;
 //---------------
 // CONSTRUCTOR
     function TTF() {
-	$this->style_names=array(FS_NORMAL=>'normal',FS_BOLD=>'bold',FS_ITALIC=>'italic',FS_BOLDITALIC=>'bolditalic');
+	$this->style_names=[FS_NORMAL=>'normal',FS_BOLD=>'bold',FS_ITALIC=>'italic',FS_BOLDITALIC=>'bolditalic'];
 	// File names for available fonts
-	$this->font_files=array(
-	    FF_COURIER => array(FS_NORMAL=>'cour.ttf', FS_BOLD=>'courbd.ttf', FS_ITALIC=>'couri.ttf', FS_BOLDITALIC=>'courbi.ttf' ),
-	    FF_GEORGIA => array(FS_NORMAL=>'georgia.ttf', FS_BOLD=>'georgiab.ttf', FS_ITALIC=>'georgiai.ttf', FS_BOLDITALIC=>'' ),
-	    FF_TREBUCHE =>array(FS_NORMAL=>'trebuc.ttf', FS_BOLD=>'trebucbd.ttf',   FS_ITALIC=>'trebucit.ttf', FS_BOLDITALIC=>'trebucbi.ttf' ),
-	    FF_VERDANA => array(FS_NORMAL=>'verdana.ttf', FS_BOLD=>'verdanab.ttf',  FS_ITALIC=>'verdanai.ttf', FS_BOLDITALIC=>'' ),
-	    FF_TIMES =>   array(FS_NORMAL=>'times.ttf',   FS_BOLD=>'timesbd.ttf',   FS_ITALIC=>'timesi.ttf',   FS_BOLDITALIC=>'timesbi.ttf' ),
-	    FF_COMIC =>   array(FS_NORMAL=>'comic.ttf',   FS_BOLD=>'comicbd.ttf',   FS_ITALIC=>'.ttf',         FS_BOLDITALIC=>'' ),
-	    FF_ARIAL =>   array(FS_NORMAL=>'arial.ttf',   FS_BOLD=>'arialbd.ttf',   FS_ITALIC=>'ariali.ttf',   FS_BOLDITALIC=>'arialbi.ttf' ) ,
-	    FF_VERA =>    array(FS_NORMAL=>'Vera.ttf',   FS_BOLD=>'VeraBd.ttf',   FS_ITALIC=>'VeraIt.ttf',   FS_BOLDITALIC=>'VeraBI.ttf' ),
-	    FF_VERAMONO => array(FS_NORMAL=>'VeraMono.ttf', FS_BOLD=>'VeraMoBd.ttf', FS_ITALIC=>'VeraMoIt.ttf', FS_BOLDITALIC=>'VeraMoBI.ttf' ),
-	    FF_VERASERIF => array(FS_NORMAL=>'VeraSe.ttf', FS_BOLD=>'VeraSeBd.ttf', FS_ITALIC=>'', FS_BOLDITALIC=>'' ) ,
-	    FF_SIMSUN =>  array(FS_NORMAL=>'simsun.ttc',  FS_BOLD=>'simhei.ttf',   FS_ITALIC=>'',   FS_BOLDITALIC=>'' ),
-	    FF_CHINESE => array(FS_NORMAL=>CHINESE_TTF_FONT, FS_BOLD=>'', FS_ITALIC=>'', FS_BOLDITALIC=>'' )    
-);
+	$this->font_files=[
+	    FF_COURIER => [FS_NORMAL=>'cour.ttf', FS_BOLD=>'courbd.ttf', FS_ITALIC=>'couri.ttf', FS_BOLDITALIC=>'courbi.ttf' ],
+	    FF_GEORGIA => [FS_NORMAL=>'georgia.ttf', FS_BOLD=>'georgiab.ttf', FS_ITALIC=>'georgiai.ttf', FS_BOLDITALIC=>'' ],
+	    FF_TREBUCHE =>[FS_NORMAL=>'trebuc.ttf', FS_BOLD=>'trebucbd.ttf',   FS_ITALIC=>'trebucit.ttf', FS_BOLDITALIC=>'trebucbi.ttf' ],
+	    FF_VERDANA => [FS_NORMAL=>'verdana.ttf', FS_BOLD=>'verdanab.ttf',  FS_ITALIC=>'verdanai.ttf', FS_BOLDITALIC=>'' ],
+	    FF_TIMES =>   [FS_NORMAL=>'times.ttf',   FS_BOLD=>'timesbd.ttf',   FS_ITALIC=>'timesi.ttf',   FS_BOLDITALIC=>'timesbi.ttf' ],
+	    FF_COMIC =>   [FS_NORMAL=>'comic.ttf',   FS_BOLD=>'comicbd.ttf',   FS_ITALIC=>'.ttf',         FS_BOLDITALIC=>'' ],
+	    FF_ARIAL =>   [FS_NORMAL=>'arial.ttf',   FS_BOLD=>'arialbd.ttf',   FS_ITALIC=>'ariali.ttf',   FS_BOLDITALIC=>'arialbi.ttf' ] ,
+	    FF_VERA =>    [FS_NORMAL=>'Vera.ttf',   FS_BOLD=>'VeraBd.ttf',   FS_ITALIC=>'VeraIt.ttf',   FS_BOLDITALIC=>'VeraBI.ttf' ],
+	    FF_VERAMONO => [FS_NORMAL=>'VeraMono.ttf', FS_BOLD=>'VeraMoBd.ttf', FS_ITALIC=>'VeraMoIt.ttf', FS_BOLDITALIC=>'VeraMoBI.ttf' ],
+	    FF_VERASERIF => [FS_NORMAL=>'VeraSe.ttf', FS_BOLD=>'VeraSeBd.ttf', FS_ITALIC=>'', FS_BOLDITALIC=>'' ] ,
+	    FF_SIMSUN =>  [FS_NORMAL=>'simsun.ttc',  FS_BOLD=>'simhei.ttf',   FS_ITALIC=>'',   FS_BOLDITALIC=>'' ],
+	    FF_CHINESE => [FS_NORMAL=>CHINESE_TTF_FONT, FS_BOLD=>'', FS_ITALIC=>'', FS_BOLDITALIC=>'' ]    
+];
     }
 
 //---------------
 // PUBLIC METHODS	
     // Create the TTF file from the font specification
     function File($family,$style=FS_NORMAL) {
-	
+
 	if( $family == FF_HANDWRT || $family==FF_BOOK ) {
 	    JpGraphError::Raise('Font families FF_HANDWRT and FF_BOOK are no longer available due to copyright problem with these fonts. Fonts can no longer be distributed with JpGraph. Please download fonts from http://corefonts.sourceforge.net/');
 	}
@@ -2833,27 +2833,27 @@ class TTF {
 // Description: Holds properties for a line
 //===================================================
 class LineProperty {
-    var $iWeight=1, $iColor="black",$iStyle="solid";
-    var $iShow=true;
-	
+    public $iWeight=1, $iColor="black",$iStyle="solid";
+    public $iShow=true;
+
 //---------------
 // PUBLIC METHODS	
     function SetColor($aColor) {
 	$this->iColor = $aColor;
     }
-	
+
     function SetWeight($aWeight) {
 	$this->iWeight = $aWeight;
     }
-	
+
     function SetStyle($aStyle) {
 	$this->iStyle = $aStyle;
     }
-		
+
     function Show($aShow=true) {
 	$this->iShow=$aShow;
     }
-	
+
     function Stroke($aImg,$aX1,$aY1,$aX2,$aY2) {
 	if( $this->iShow ) {
 	    $aImg->SetColor($this->iColor);
@@ -2870,15 +2870,15 @@ class LineProperty {
 // Description: Arbitrary text object that can be added to the graph
 //===================================================
 class Text {
-    var $t,$x=0,$y=0,$halign="left",$valign="top",$color=array(0,0,0);
-    var $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12;
-    var $hide=false, $dir=0;
-    var $boxed=false;	// Should the text be boxed
-    var $paragraph_align="left";
-    var $margin=0;
-    var $icornerradius=0,$ishadowwidth=3;
-    var $iScalePosY=null,$iScalePosX=null;
-    var $iWordwrap=0;
+    public $t,$x=0,$y=0,$halign="left",$valign="top",$color=[0,0,0];
+    public $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12;
+    public $hide=false, $dir=0;
+    public $boxed=false;	// Should the text be boxed
+    public $paragraph_align="left";
+    public $margin=0;
+    public $icornerradius=0,$ishadowwidth=3;
+    public $iScalePosY=null,$iScalePosX=null;
+    public $iWordwrap=0;
 
 //---------------
 // CONSTRUCTOR
@@ -2899,12 +2899,12 @@ class Text {
     function Set($aTxt) {
 	$this->t = $aTxt;
     }
-	
+
     // Alias for Pos()
     function SetPos($aXAbsPos=0,$aYAbsPos=0,$aHAlign="left",$aVAlign="top") {
 	$this->Pos($aXAbsPos,$aYAbsPos,$aHAlign,$aVAlign);
     }
-    
+
     // Specify the position and alignment for the text object
     function Pos($aXAbsPos=0,$aYAbsPos=0,$aHAlign="left",$aVAlign="top") {
 	$this->x = $aXAbsPos;
@@ -2917,7 +2917,7 @@ class Text {
 	$this->iScalePosX = $aX;
 	$this->iScalePosY = $aY;
     }
-	
+
     // Specify alignment for the text
     function Align($aHAlign,$aVAlign="top",$aParagraphAlign="") {
 	$this->halign = $aHAlign;
@@ -2925,7 +2925,7 @@ class Text {
 	if( $aParagraphAlign != "" )
 	    $this->paragraph_align = $aParagraphAlign;
     }		
-    
+
     // Alias
     function SetAlign($aHAlign,$aVAlign="top",$aParagraphAlign="") {
 	$this->Align($aHAlign,$aVAlign,$aParagraphAlign);
@@ -2950,10 +2950,10 @@ class Text {
     function SetWordWrap($aCol) {
 	$this->iWordwrap = $aCol ;
     }
-	
+
     // Specify that the text should be boxed. fcolor=frame color, bcolor=border color,
     // $shadow=drop shadow should be added around the text.
-    function SetBox($aFrameColor=array(255,255,255),$aBorderColor=array(0,0,0),$aShadowColor=false,$aCornerRadius=4,$aShadowWidth=3) {
+    function SetBox($aFrameColor=[255,255,255],$aBorderColor=[0,0,0],$aShadowColor=false,$aCornerRadius=4,$aShadowWidth=3) {
 	if( $aFrameColor==false )
 	    $this->boxed=false;
 	else
@@ -2967,12 +2967,12 @@ class Text {
 	$this->icornerradius=$aCornerRadius;
 	$this->ishadowwidth=$aShadowWidth;
     }
-	
+
     // Hide the text
     function Hide($aHide=true) {
 	$this->hide=$aHide;
     }
-	
+
     // This looks ugly since it's not a very orthogonal design 
     // but I added this "inverse" of Hide() to harmonize
     // with some classes which I designed more recently (especially) 
@@ -2980,14 +2980,14 @@ class Text {
     function Show($aShow=true) {
 	$this->hide=!$aShow;
     }
-	
+
     // Specify font
     function SetFont($aFamily,$aStyle=FS_NORMAL,$aSize=10) {
 	$this->font_family=$aFamily;
 	$this->font_style=$aStyle;
 	$this->font_size=$aSize;
     }
-			
+
     // Center the text between $left and $right coordinates
     function Center($aLeft,$aRight,$aYAbsPos=false) {
 	$this->x = $aLeft + ($aRight-$aLeft	)/2;
@@ -2995,16 +2995,16 @@ class Text {
 	if( is_numeric($aYAbsPos) )
 	    $this->y = $aYAbsPos;		
     }
-	
+
     // Set text color
     function SetColor($aColor) {
 	$this->color = $aColor;
     }
-	
+
     function SetAngle($aAngle) {
 	$this->SetOrientation($aAngle);
     }
-	
+
     // Orientation of text. Note only TTF fonts can have an arbitrary angle
     function SetOrientation($aDirection=0) {
 	if( is_numeric($aDirection) )
@@ -3015,14 +3015,14 @@ class Text {
 	    $this->dir = 90;
 	else JpGraphError::Raise(" Invalid direction specified for text.");
     }
-	
+
     // Total width of text
     function GetWidth($aImg) {
 	$aImg->SetFont($this->font_family,$this->font_style,$this->font_size);
 	$w = $aImg->GetTextWidth($this->t,$this->dir);
 	return $w;	
     }
-	
+
     // Hight of font
     function GetFontHeight($aImg) {
 	$aImg->SetFont($this->font_family,$this->font_style,$this->font_size);
@@ -3061,7 +3061,7 @@ class Text {
 			  round($ayscale->Translate($this->iScalePosY)));
 	}
     }
-	
+
     // Display text in image
     function Stroke($aImg,$x=null,$y=null) {
 
@@ -3070,7 +3070,7 @@ class Text {
 
 	// Insert newlines
 	if( $this->iWordwrap > 0 ) {
-	    $this->t = wordwrap($this->t,$this->iWordwrap,"\n");
+	    $this->t = wordwrap((string) $this->t,$this->iWordwrap,"\n");
 	}
 
 	// If position been given as a fraction of the image size
@@ -3099,9 +3099,9 @@ class Text {
 } // Class
 
 class GraphTabTitle extends Text{
-    var $corner = 6 , $posx = 7, $posy = 4;
-    var $color='darkred',$fillcolor='lightyellow',$bordercolor='black';
-    var $align = 'left', $width=TABTITLE_WIDTHFIT;
+    public $corner = 6 , $posx = 7, $posy = 4;
+    public $color='darkred',$fillcolor='lightyellow',$bordercolor='black';
+    public $align = 'left', $width=TABTITLE_WIDTHFIT;
     function GraphTabTitle() {
 	$this->t = '';
 	$this->font_style = FS_BOLD;
@@ -3126,7 +3126,7 @@ class GraphTabTitle extends Text{
     function SetPos($aAlign) {
 	$this->align = $aAlign;
     }
-    
+
     function SetWidth($aWidth) {
 	$this->width = $aWidth ;
     }
@@ -3152,30 +3152,30 @@ class GraphTabTitle extends Text{
 
 	if( $this->width === TABTITLE_WIDTHFIT ) {
 	    if( $this->align == 'left' ) {
-		$p = array($x,                $y,
+		$p = [$x,                $y,
 			   $x,                $y-$h+$this->corner,
 			   $x + $this->corner,$y-$h,
 			   $x + $w - $this->corner, $y-$h,
 			   $x + $w, $y-$h+$this->corner,
-			   $x + $w, $y);
+			   $x + $w, $y];
 	    }
 	    elseif( $this->align == 'center' ) {
 		$x += round($aImg->plotwidth/2) - round($w/2);
-		$p = array($x, $y,
+		$p = [$x, $y,
 			   $x, $y-$h+$this->corner,
 			   $x + $this->corner, $y-$h,
 			   $x + $w - $this->corner, $y-$h,
 			   $x + $w, $y-$h+$this->corner,
-			   $x + $w, $y);
+			   $x + $w, $y];
 	    }
 	    else {
 		$x += $aImg->plotwidth -$w;
-		$p = array($x, $y,
+		$p = [$x, $y,
 			   $x, $y-$h+$this->corner,
 			   $x + $this->corner,$y-$h,
 			   $x + $w - $this->corner, $y-$h,
 			   $x + $w, $y-$h+$this->corner,
-			   $x + $w, $y);
+			   $x + $w, $y];
 	    }
 	}
 	else {
@@ -3185,13 +3185,13 @@ class GraphTabTitle extends Text{
 		$w = $this->width ;
 
 	    // Make the tab fit the width of the plot area
-	    $p = array($x,                $y,
+	    $p = [$x,                $y,
 		       $x,                $y-$h+$this->corner,
 		       $x + $this->corner,$y-$h,
 		       $x + $w - $this->corner, $y-$h,
 		       $x + $w, $y-$h+$this->corner,
-		       $x + $w, $y);
-	    
+		       $x + $w, $y];
+
 	}
 	$aImg->SetTextAlign('left','bottom');
 	$x += $this->posx;
@@ -3202,7 +3202,7 @@ class GraphTabTitle extends Text{
 
 	$aImg->SetColor($this->bordercolor);
 	$aImg->Polygon($p,true);
-	
+
 	$aImg->SetColor($this->color);
 	$aImg->SetFont($this->font_family,$this->font_style,$this->font_size);
 	$aImg->StrokeText($x,$y,$this->t,0,'center');
@@ -3215,11 +3215,11 @@ class GraphTabTitle extends Text{
 // Description: Format a superscript text
 //===================================================
 class SuperScriptText extends Text {
-    var $iSuper="";
-    var $sfont_family="",$sfont_style="",$sfont_size=8;
-    var $iSuperMargin=2,$iVertOverlap=4,$iSuperScale=0.65;
-    var $iSDir=0;
-    var $iSimple=false;
+    public $iSuper="";
+    public $sfont_family="",$sfont_style="",$sfont_size=8;
+    public $iSuperMargin=2,$iVertOverlap=4,$iSuperScale=0.65;
+    public $iSDir=0;
+    public $iSimple=false;
 
     function SuperScriptText($aTxt="",$aSuper="",$aXAbsPos=0,$aYAbsPos=0) {
 	parent::Text($aTxt,$aXAbsPos,$aYAbsPos);
@@ -3233,12 +3233,12 @@ class SuperScriptText extends Text {
 	    $neg = -1.0;
 	    $aVal = -$aVal;
 	}
-		
+
 	$l = floor(log10($aVal));
-	$a = sprintf("%0.".$aPrecision."f",round($aVal / pow(10,$l),$aPrecision));
+	$a = sprintf("%0.".$aPrecision."f",round($aVal / 10 ** $l,$aPrecision));
 	$a *= $neg;
 	if( $this->iSimple && ($a == 1 || $a==-1) ) $a = '';
-	
+
 	if( $a != '' )
 	    $this->t = $a.' * 10';
 	else {
@@ -3270,7 +3270,7 @@ class SuperScriptText extends Text {
 	$w += $this->iSuperMargin;
 	return $w;
     }
-	
+
     // Hight of font (approximate the height of the text)
     function GetFontHeight(&$aImg) {
 	$aImg->SetFont($this->font_family,$this->font_style,$this->font_size);	
@@ -3290,11 +3290,11 @@ class SuperScriptText extends Text {
     }
 
     function Stroke($aImg,$ax=-1,$ay=-1) {
-	
+
         // To position the super script correctly we need different
 	// cases to handle the alignmewnt specified since that will
 	// determine how we can interpret the x,y coordinates
-	
+
 	$w = parent::GetWidth($aImg);
 	$h = parent::GetTextHeight($aImg);
 	switch( $this->valign ) {
@@ -3391,12 +3391,12 @@ class SuperScriptText extends Text {
 // Description: responsible for drawing grid lines in graph
 //===================================================
 class Grid {
-    var $img;
-    var $scale;
-    var $grid_color='#DDDDDD',$grid_mincolor='#DDDDDD';
-    var $type="solid";
-    var $show=false, $showMinor=false,$weight=1;
-    var $fill=false,$fillcolor=array('#EFEFEF','#BBCCFF');
+    public $img;
+    public $scale;
+    public $grid_color='#DDDDDD',$grid_mincolor='#DDDDDD';
+    public $type="solid";
+    public $show=false, $showMinor=false,$weight=1;
+    public $fill=false,$fillcolor=['#EFEFEF','#BBCCFF'];
 //---------------
 // CONSTRUCTOR
     function Grid(&$aAxis) {
@@ -3411,27 +3411,27 @@ class Grid {
 	    $aMinColor = $aMajColor ;
 	$this->grid_mincolor = $aMinColor;
     }
-	
+
     function SetWeight($aWeight) {
 	$this->weight=$aWeight;
     }
-	
+
     // Specify if grid should be dashed, dotted or solid
     function SetLineStyle($aType) {
 	$this->type = $aType;
     }
-	
+
     // Decide if both major and minor grid should be displayed
     function Show($aShowMajor=true,$aShowMinor=false) {
 	$this->show=$aShowMajor;
 	$this->showMinor=$aShowMinor;
     }
-    
+
     function SetFill($aFlg=true,$aColor1='lightgray',$aColor2='lightblue') {
 	$this->fill = $aFlg;
-	$this->fillcolor = array( $aColor1, $aColor2 );
+	$this->fillcolor = [ $aColor1, $aColor2 ];
     }
-	
+
     // Display the grid
     function Stroke() {
 	if( $this->showMinor ) {
@@ -3446,7 +3446,7 @@ class Grid {
 	    $this->DoStroke($this->scale->ticks->maj_ticks_pos);
 	}
     }
-	
+
 //--------------
 // Private methods	
     // Draw the grid
@@ -3458,7 +3458,7 @@ class Grid {
 	if( $this->scale->type=="y" ) {
 	    $xl=$this->img->left_margin;
 	    $xr=$this->img->width-$this->img->right_margin;
-	    
+
 	    if( $this->fill ) {
 		// Draw filled areas
 		$y2 = $aTicksPos[0];
@@ -3541,32 +3541,32 @@ class Grid {
 // follow. 
 //===================================================
 class Axis {
-    var $pos = false;
-    var $weight=1;
-    var $color=array(0,0,0),$label_color=array(0,0,0);
-    var $img=null,$scale=null; 
-    var $hide=false;
-    var $ticks_label=false, $ticks_label_colors=null;
-    var $show_first_label=true,$show_last_label=true;
-    var $label_step=1; // Used by a text axis to specify what multiple of major steps
+    public $pos = false;
+    public $weight=1;
+    public $color=[0,0,0],$label_color=[0,0,0];
+    public $img=null,$scale=null; 
+    public $hide=false;
+    public $ticks_label=false, $ticks_label_colors=null;
+    public $show_first_label=true,$show_last_label=true;
+    public $label_step=1; // Used by a text axis to specify what multiple of major steps
     // should be labeled.
-    var $tick_step=1;
-    var $labelPos=0;   // Which side of the axis should the labels be?
-    var $title=null,$title_adjust,$title_margin,$title_side=SIDE_LEFT;
-    var $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12,$label_angle=0;
-    var $tick_label_margin=5;
-    var $label_halign = '',$label_valign = '', $label_para_align='left';
-    var $hide_line=false,$hide_labels=false;
+    public $tick_step=1;
+    public $labelPos=0;   // Which side of the axis should the labels be?
+    public $title=null,$title_adjust,$title_margin,$title_side=SIDE_LEFT;
+    public $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12,$label_angle=0;
+    public $tick_label_margin=5;
+    public $label_halign = '',$label_valign = '', $label_para_align='left';
+    public $hide_line=false,$hide_labels=false;
     //var $hide_zero_label=false;
 
 //---------------
 // CONSTRUCTOR
-    function Axis(&$img,&$aScale,$color=array(0,0,0)) {
+    function Axis(&$img,&$aScale,$color=[0,0,0]) {
 	$this->img = &$img;
 	$this->scale = &$aScale;
 	$this->color = $color;
 	$this->title=new Text("");
-		
+
 	if( $aScale->type=="y" ) {
 	    $this->title_margin = 25;
 	    $this->title_adjust="middle";
@@ -3586,15 +3586,15 @@ class Axis {
     }
 //---------------
 // PUBLIC METHODS	
-	
+
     function SetLabelFormat($aFormStr) {
 	$this->scale->ticks->SetLabelFormat($aFormStr);
     }
-	
+
     function SetLabelFormatString($aFormStr) {
 	$this->scale->ticks->SetLabelFormat($aFormStr);
     }
-	
+
     function SetLabelFormatCallback($aFuncName) {
 	$this->scale->ticks->SetFormatCallback($aFuncName);
     }
@@ -3624,7 +3624,7 @@ class Axis {
 	$this->scale->ticks->SupressZeroLabel();
 	//$this->hide_zero_label = $aFlag;
     }
-	
+
     function HideFirstLastLabel() {
 	// The two first calls to ticks method will supress 
 	// automatically generated scale values. However, that
@@ -3636,7 +3636,7 @@ class Axis {
 	$this->show_first_label	= false;
 	$this->show_last_label = false;
     }
-	
+
     // Hide the axis
     function Hide($aHide=true) {
 	$this->hide=$aHide;
@@ -3650,7 +3650,7 @@ class Axis {
     function HideLabels($aHide=true) {
 	$this->hide_labels = $aHide;
     }
-    
+
 
     // Weight of axis
     function SetWeight($aWeight) {
@@ -3663,18 +3663,18 @@ class Axis {
 	if( !$aLabelColor ) $this->label_color = $aColor;
 	else $this->label_color = $aLabelColor;
     }
-	
+
     // Title on axis
     function SetTitle($aTitle,$aAdjustAlign="high") {
 	$this->title->Set($aTitle);
 	$this->title_adjust=$aAdjustAlign;
     }
-	
+
     // Specify distance from the axis
     function SetTitleMargin($aMargin) {
 	$this->title_margin=$aMargin;
     }
-	
+
     // Which side of the axis should the axis title be?
     function SetTitleSide($aSideOfAxis) {
 	$this->title_side = $aSideOfAxis;
@@ -3687,17 +3687,17 @@ class Axis {
 	    JpGraphError::Raise('Axis::SetTickDirection() is deprecated. Use Axis::SetTickSide() instead');
 	$this->scale->ticks->SetSide($aDir);
     }
-    
+
     function SetTickSide($aDir) {
 	$this->scale->ticks->SetSide($aDir);
     }
-	
+
     // Specify text labels for the ticks. One label for each data point
     function SetTickLabels($aLabelArray,$aLabelColorArray=null) {
 	$this->ticks_label = $aLabelArray;
 	$this->ticks_label_colors = $aLabelColorArray;
     }
-	
+
     // How far from the axis should the labels be drawn
     function SetTickLabelMargin($aMargin) {
 	if( ERR_DEPRECATED )    	
@@ -3708,7 +3708,7 @@ class Axis {
     function SetLabelMargin($aMargin) {
 	$this->tick_label_margin=$aMargin;
     }
-	
+
     // Specify that every $step of the ticks should be displayed starting
     // at $start
     // DEPRECATED FUNCTION: USE SetTextTickInterval() INSTEAD
@@ -3722,7 +3722,7 @@ class Axis {
 	$this->scale->ticks->SetTextLabelStart($aStart);
 	$this->tick_step=$aStep;
     }
-	 
+
     // Specify that every $step tick mark should have a label 
     // should be displayed starting
     function SetTextLabelInterval($aStep) {
@@ -3730,7 +3730,7 @@ class Axis {
 	    JpGraphError::Raise(" Text label interval must be specified >= 1.");
 	$this->label_step=$aStep;
     }
-	
+
     // Which side of the axis should the labels be on?
     function SetLabelPos($aSidePos) {
     	// This will be deprecated from 1.7
@@ -3738,7 +3738,7 @@ class Axis {
 	    JpGraphError::Raise('SetLabelPos() is deprecated. Use Axis::SetLabelSide() instead.');
 	$this->labelPos=$aSidePos;
     }
-    
+
     function SetLabelSide($aSidePos) {
 	$this->labelPos=$aSidePos;
     }
@@ -3754,12 +3754,12 @@ class Axis {
     function SetPos($aPosOnOtherScale) {
 	$this->pos=$aPosOnOtherScale;
     }
-	
+
     // Specify the angle for the tick labels
     function SetLabelAngle($aAngle) {
 	$this->label_angle = $aAngle;
     }	
-	
+
     // Stroke the axis.
     function Stroke($aOtherAxisScale) {		
 	if( $this->hide ) return;		
@@ -3828,7 +3828,7 @@ class Axis {
 		$this->title->Pos($x,$this->img->height-$this->img->bottom_margin,$halign,"bottom");
 	    else	
 		JpGraphError::Raise('Unknown alignment specified for Y-axis title. ('.$this->title_adjust.')');
-		
+
 	}
 	$this->scale->ticks->Stroke($this->img,$this->scale,$pos);
 	if( !$this->hide_labels ) {
@@ -3859,7 +3859,7 @@ class Axis {
 	$ncolor=0;
 	if( isset($this->ticks_label_colors) )
 	    $ncolor=count($this->ticks_label_colors);
-	
+
 	while( $i<$nbr ) {
 	    // $tpos holds the absolute text position for the label
 	    $tpos=$this->scale->ticks->maj_ticklabels_pos[$i];
@@ -3876,11 +3876,11 @@ class Axis {
 		// Set specific label color if specified
 		if( $ncolor > 0 )
 		    $this->img->SetColor($this->ticks_label_colors[$i % $ncolor]);
-		
+
 		// If the label has been specified use that and in other case
 		// just label the mark with the actual scale value 
 		$m=$this->scale->ticks->GetMajor();
-				
+
 		// ticks_label has an entry for each data point and is the array
 		// that holds the labels set by the user. If the user hasn't 
 		// specified any values we use whats in the automatically asigned
@@ -3896,12 +3896,12 @@ class Axis {
 			++$label;
 		    }
 		}
-					
+
 		//if( $this->hide_zero_label && $label==0.0 ) {
 		//	++$i;
 		//	continue;
 		//}					
-					
+
 		if( $this->scale->type == "x" ) {
 		    if( $this->labelPos == SIDE_DOWN ) {
 			if( $this->label_angle==0 || $this->label_angle==90 ) {
@@ -3909,7 +3909,7 @@ class Axis {
 				$this->img->SetTextAlign('center','top');
 			    else
 			    	$this->img->SetTextAlign($this->label_halign,$this->label_valign);
-			    
+
 			}
 			else {
 			    if( $this->label_halign=='' && $this->label_valign=='')
@@ -3970,17 +3970,17 @@ class Axis {
 // tick marks on axis
 //===================================================
 class Ticks {
-    var $minor_abs_size=3, $major_abs_size=5;
-    var $direction=1; // Should ticks be in(=1) the plot area or outside (=-1)?
-    var $scale;
-    var $is_set=false;
-    var $precision;
-    var $supress_zerolabel=false,$supress_first=false;
-    var $supress_last=false,$supress_tickmarks=false,$supress_minor_tickmarks=false;
-    var $mincolor="",$majcolor="";
-    var $weight=1;
-    var $label_formatstr='';   // C-style format string to use for labels
-    var $label_formfunc='';
+    public $minor_abs_size=3, $major_abs_size=5;
+    public $direction=1; // Should ticks be in(=1) the plot area or outside (=-1)?
+    public $scale;
+    public $is_set=false;
+    public $precision;
+    public $supress_zerolabel=false,$supress_first=false;
+    public $supress_last=false,$supress_tickmarks=false,$supress_minor_tickmarks=false;
+    public $mincolor="",$majcolor="";
+    public $weight=1;
+    public $label_formatstr='';   // C-style format string to use for labels
+    public $label_formfunc='';
 
 
 //---------------
@@ -3996,31 +3996,31 @@ class Ticks {
     function SetLabelFormat($aFormatString) {
 	$this->label_formatstr=$aFormatString;
     }
-	
+
     function SetFormatCallback($aCallbackFuncName) {
 	$this->label_formfunc = $aCallbackFuncName;
     }
-	
+
     // Don't display the first zero label
     function SupressZeroLabel($aFlag=true) {
 	$this->supress_zerolabel=$aFlag;
     }
-	
+
     // Don't display minor tick marks
     function SupressMinorTickMarks($aHide=true) {
 	$this->supress_minor_tickmarks=$aHide;
     }
-	
+
     // Don't display major tick marks
     function SupressTickMarks($aHide=true) {
 	$this->supress_tickmarks=$aHide;
     }
-	
+
     // Hide the first tick mark
     function SupressFirst($aHide=true) {
 	$this->supress_first=$aHide;
     }
-	
+
     // Hide the last tick mark
     function SupressLast($aHide=true) {
 	$this->supress_last=$aHide;
@@ -4030,12 +4030,12 @@ class Ticks {
     function GetMinTickAbsSize() {
 	return $this->minor_abs_size;
     }
-	
+
     // Size (in pixels) of major tick marks
     function GetMajTickAbsSize() {
 	return $this->major_abs_size;		
     }
-	
+
     function SetSize($aMajSize,$aMinSize=3) {
 	$this->major_abs_size = $aMajSize;		
 	$this->minor_abs_size = $aMinSize;		
@@ -4045,14 +4045,14 @@ class Ticks {
     function IsSpecified() {
 	return $this->is_set;
     }
-	
+
     // Set the distance between major and minor tick marks
     function Set($aMaj,$aMin) {
 	// "Virtual method"
 	// Should be implemented by the concrete subclass
 	// if any action is wanted.
     }
-	
+
     // Specify number of decimals in automatic labels
     // Deprecated from 1.4. Use SetFormatString() instead
     function SetPrecision($aPrecision) { 	
@@ -4064,31 +4064,31 @@ class Ticks {
     function SetSide($aSide) {
 	$this->direction=$aSide;
     }
-	
+
     // Which side of the axis should the ticks be on
     function SetDirection($aSide=SIDE_RIGHT) {
 	$this->direction=$aSide;
     }
-	
+
     // Set colors for major and minor tick marks
     function SetMarkColor($aMajorColor,$aMinorColor="") {
 	$this->SetColor($aMajorColor,$aMinorColor);
     }
-    
+
     function SetColor($aMajorColor,$aMinorColor="") {
 	$this->majcolor=$aMajorColor;
-		
+
 	// If not specified use same as major
 	if( $aMinorColor=="" ) 
 	    $this->mincolor=$aMajorColor;
 	else
 	    $this->mincolor=$aMinorColor;
     }
-	
+
     function SetWeight($aWeight) {
 	$this->weight=$aWeight;
     }
-	
+
 } // Class
 
 //===================================================
@@ -4096,11 +4096,11 @@ class Ticks {
 // Description: Draw linear ticks on axis
 //===================================================
 class LinearTicks extends Ticks {
-    var $minor_step=1, $major_step=2;
-    var $xlabel_offset=0,$xtick_offset=0;
-    var $label_offset=0; // What offset should the displayed label have
+    public $minor_step=1, $major_step=2;
+    public $xlabel_offset=0,$xtick_offset=0;
+    public $label_offset=0; // What offset should the displayed label have
     // i.e should we display 0,1,2 or 1,2,3,4 or 2,3,4 etc
-    var $text_label_start=0;
+    public $text_label_start=0;
 //---------------
 // CONSTRUCTOR
     function LinearTicks() {
@@ -4109,23 +4109,23 @@ class LinearTicks extends Ticks {
 
 //---------------
 // PUBLIC METHODS	
-	
-	
+
+
     // Return major step size in world coordinates
     function GetMajor() {
 	return $this->major_step;
     }
-	
+
     // Return minor step size in world coordinates
     function GetMinor() {
 	return $this->minor_step;
     }
-	
+
     // Set Minor and Major ticks (in world coordinates)
     function Set($aMajStep,$aMinStep=false) {
 	if( $aMinStep==false ) 
 	    $aMinStep=$aMajStep;
-    	
+
 	if( $aMajStep <= 0 || $aMinStep <= 0 ) {
 	    JpGraphError::Raise(" Minor or major step size is 0. Check that you haven't
 				got an accidental SetTextTicks(0) in your code.<p>
@@ -4133,7 +4133,7 @@ class LinearTicks extends Ticks {
 				Please report this and if possible include the data that caused the
 				problem.");
 	}
-		
+
 	$this->major_step=$aMajStep;
 	$this->minor_step=$aMinStep;
 	$this->is_set = true;
@@ -4149,7 +4149,7 @@ class LinearTicks extends Ticks {
 	$limit = $scale->scale_abs[1];	
 	$nbrmajticks=floor(1.000001*(($scale->GetMaxVal()-$scale->GetMinVal())/$this->major_step))+1;
 	$first=0;
-		
+
 	// If precision hasn't been specified set it to a sensible value
 	if( $this->precision==-1 ) { 
 	    $t = log10($this->minor_step);
@@ -4160,14 +4160,14 @@ class LinearTicks extends Ticks {
 	}
 	else
 	    $precision = $this->precision;
-			
+
 	$img->SetLineWeight($this->weight);			
-		
+
 	// Handle ticks on X-axis
 	if( $scale->type == "x" ) {
 
 	    // Draw the minor tick marks
-			
+
 	    $yu = $pos - $this->direction*$this->GetMinTickAbsSize();
 	    $label = $scale->GetMinVal();	    
 	    $x=$scale->scale_abs[0];
@@ -4191,22 +4191,22 @@ class LinearTicks extends Ticks {
 
 		++$i;
 		$x += $min_step_abs;
-		
+
 	    }
 	    $this->maj_ticks_pos[$j]=$x;
 
 	    // Draw the major tick marks
-			
+
 	    $yu = $pos - $this->direction*$this->GetMajTickAbsSize();
-			
+
 	    // TODO: Add logic to set label_offset for text labels
 	    $label = (float)$scale->GetMinVal()+$this->text_label_start+$this->label_offset;	
-			
+
 	    $start_abs=$scale->scale_factor*$this->text_label_start;
-			
+
 	    $nbrmajticks=ceil(($scale->GetMaxVal()-$scale->GetMinVal()-$this->text_label_start )/$this->major_step)+1;	
-	    
-	    
+
+
 	    $x = $scale->scale_abs[0]+$start_abs+$this->xlabel_offset*$min_step_abs;	
 	    for( $i=0; $label <= $scale->GetMaxVal()+$this->label_offset; ++$i ) {
 
@@ -4221,7 +4221,7 @@ class LinearTicks extends Ticks {
 		    $v = round($label,$precision);
 		    $l = sprintf("%01.".$precision."f",$v);
 		}
-					
+
 		if( ($this->supress_zerolabel && $l==0) || 
 		    ($this->supress_first && $i==0) ||
 		    ($this->supress_last  && $i==$nbrmajticks-1) ) {
@@ -4255,16 +4255,16 @@ class LinearTicks extends Ticks {
 	    // Draw the major tick marks
 	    $xr = $pos + $this->direction*$this->GetMajTickAbsSize();
 	    $label = $scale->GetMinVal();
-	    
-	    $tmpmaj=array();
-	    $tmpmin=array();
+
+	    $tmpmaj=[];
+	    $tmpmin=[];
 
 	    for( $i=0; $i<$nbrmajticks; ++$i) {
 		$y=$scale->scale_abs[0]+$i*$maj_step_abs;				
 
 		$tmpmaj[]=$y;
 
-	
+
 		// THe following two lines might seem to be unecessary but they are not!
 		// The reason being that for X-axis we separate the position of the labels
 		// and the tick marks which we don't do for the Y-axis.
@@ -4273,7 +4273,7 @@ class LinearTicks extends Ticks {
 		// the tick positions.
 		$this->maj_ticklabels_pos[$i]=$y;
 		$this->maj_ticks_pos[$i]=$y;
-		
+
 		if( $this->label_formfunc != "" ) {
 		    $f=$this->label_formfunc;
 		    $l = call_user_func($f,$label);
@@ -4282,12 +4282,12 @@ class LinearTicks extends Ticks {
 		    $l = sprintf($this->label_formatstr,$label);
 		else
 		    $l = sprintf("%01.".$precision."f",round($label,$precision));
-								
+
 		if( ($this->supress_zerolabel && ($l + 0)==0) ||  ($this->supress_first && $i==0) ||
 		    ($this->supress_last  && $i==$nbrmajticks-1) ) {
 		    $l="";
 		}
-		
+
 		$this->maj_ticks_label[$i]=$l; 
 		$label+=$this->major_step;	
 		if( !$this->supress_tickmarks ) {
@@ -4339,7 +4339,7 @@ class LinearTicks extends Ticks {
     function SetTextLabelStart($aTextLabelOff) {
 	$this->text_label_start=$aTextLabelOff;
     }
-	
+
 } // Class
 
 //===================================================
@@ -4347,35 +4347,35 @@ class LinearTicks extends Ticks {
 // Description: Handle linear scaling between screen and world 
 //===================================================
 class LinearScale {
-    var $scale=array(0,0);
-    var $scale_abs=array(0,0);
-    var $scale_factor; // Scale factor between world and screen
-    var $world_size;	// Plot area size in world coordinates
-    var $world_abs_size; // Plot area size in pixels
-    var $off; // Offset between image edge and plot area
-    var $type; // is this x or y scale ?
-    var $ticks=null; // Store ticks
-    var $autoscale_min=false; // Forced minimum value, auto determine max
-    var $autoscale_max=false; // Forced maximum value, auto determine min
-    var $gracetop=0,$gracebottom=0;
-    var $intscale=false; // Restrict autoscale to integers
-    var $textscale=false; // Just a flag to let the Plot class find out if
+    public $scale=[0,0];
+    public $scale_abs=[0,0];
+    public $scale_factor; // Scale factor between world and screen
+    public $world_size;	// Plot area size in world coordinates
+    public $world_abs_size; // Plot area size in pixels
+    public $off; // Offset between image edge and plot area
+    public $type; // is this x or y scale ?
+    public $ticks=null; // Store ticks
+    public $autoscale_min=false; // Forced minimum value, auto determine max
+    public $autoscale_max=false; // Forced maximum value, auto determine min
+    public $gracetop=0,$gracebottom=0;
+    public $intscale=false; // Restrict autoscale to integers
+    public $textscale=false; // Just a flag to let the Plot class find out if
     // we are a textscale or not. This is a cludge since
     // this ionformatyion is availabale in Graph::axtype but
     // we don't have access to the graph object in the Plots
     // stroke method. So we let graph store the status here
     // when the linear scale is created. A real cludge...
-    var $text_scale_off = 0;
-    var $auto_ticks=false; // When using manual scale should the ticks be automatically set?
-    var $name = 'lin';
+    public $text_scale_off = 0;
+    public $auto_ticks=false; // When using manual scale should the ticks be automatically set?
+    public $name = 'lin';
 //---------------
 // CONSTRUCTOR
     function LinearScale($aMin=0,$aMax=0,$aType="y") {
 	assert($aType=="x" || $aType=="y" );
 	assert($aMin<=$aMax);
-		
+
 	$this->type=$aType;
-	$this->scale=array($aMin,$aMax);		
+	$this->scale=[$aMin,$aMax];		
 	$this->world_size=$aMax-$aMin;	
 	$this->ticks = new LinearTicks();
     }
@@ -4391,11 +4391,11 @@ class LinearScale {
 	// SINCE (FOR SOME REASON) IT IS IMPOSSIBLE TO PASS A REFERENCE
 	// TO 'this' INSTEAD IT WILL ADD AN ANONYMOUS COPY OF THIS OBJECT WHICH WILL
 	// GET ALL THE NOTIFICATIONS. (This took a while to track down...)
-		
+
 	// Add us as an observer to class Image
 	$aImg->AddObserver("InitConstants",$this);
     }
-	
+
     // Check if scale is set or if we should autoscale
     // We should do this is either scale or ticks has not been set
     function IsSpecified() {
@@ -4404,7 +4404,7 @@ class LinearScale {
 	}
 	return true;
     }
-	
+
     // Set the minimum data value when the autoscaling is used. 
     // Usefull if you want a fix minimum (like 0) but have an
     // automatic maximum
@@ -4432,24 +4432,24 @@ class LinearScale {
 	$this->gracetop=$aGraceTop;
 	$this->gracebottom=$aGraceBottom;
     }
-	
+
     // Get the minimum value in the scale
     function GetMinVal() {
 	return $this->scale[0];
     }
-	
+
     // get maximum value for scale
     function GetMaxVal() {
 	return $this->scale[1];
     }
-		
+
     // Specify a new min/max value for sclae	
     function Update(&$aImg,$aMin,$aMax) {
-	$this->scale=array($aMin,$aMax);		
+	$this->scale=[$aMin,$aMax];		
 	$this->world_size=$aMax-$aMin;		
 	$this->InitConstants($aImg);					
     }
-	
+
     // Translate between world and screen
     function Translate($aCoord) {
 	if( !is_numeric($aCoord) ) {
@@ -4458,7 +4458,7 @@ class LinearScale {
 	}
 	return $this->off+($aCoord - $this->GetMinVal()) * $this->scale_factor; 
     }
-	
+
     // Relative translate (don't include offset) usefull when we just want
     // to know the relative position (in pixels) on the axis
     function RelTranslate($aCoord) {
@@ -4468,12 +4468,12 @@ class LinearScale {
 	}
 	return ($aCoord - $this->GetMinVal()) * $this->scale_factor; 
     }
-	
+
     // Restrict autoscaling to only use integers
     function SetIntScale($aIntScale=true) {
 	$this->intscale=$aIntScale;
     }
-	
+
     // Calculate an integer autoscale
     function IntAutoScale(&$img,$min,$max,$maxsteps,$majend=true) {
 	// Make sure limits are integers
@@ -4483,7 +4483,7 @@ class LinearScale {
 	    --$min; ++$max;
 	}
 	$maxsteps = floor($maxsteps);
-		
+
 	$gracetop=round(($this->gracetop/100.0)*abs($max-$min));
 	$gracebottom=round(($this->gracebottom/100.0)*abs($max-$min));
 	if( is_numeric($this->autoscale_min) ) {
@@ -4506,56 +4506,56 @@ class LinearScale {
 	    ++$max;
 	    --$min;
 	}
-			
+
 	$min -= $gracebottom;
 	$max += $gracetop;		
 
 	// First get tickmarks as multiples of 1, 10, ...	
 	if( $majend ) {
-	    list($num1steps,$adj1min,$adj1max,$maj1step) = 
+	    [$num1steps, $adj1min, $adj1max, $maj1step] = 
 		$this->IntCalcTicks($maxsteps,$min,$max,1);
 	}
 	else {
 	    $adj1min = $min;
 	    $adj1max = $max;
-	    list($num1steps,$maj1step) = 
+	    [$num1steps, $maj1step] = 
 		$this->IntCalcTicksFreeze($maxsteps,$min,$max,1);
 	}
 
 	if( abs($min-$max) > 2 ) {
 	    // Then get tick marks as 2:s 2, 20, ...
 	    if( $majend ) {
-		list($num2steps,$adj2min,$adj2max,$maj2step) = 
+		[$num2steps, $adj2min, $adj2max, $maj2step] = 
 		    $this->IntCalcTicks($maxsteps,$min,$max,5);
 	    }
 	    else {
 		$adj2min = $min;
 		$adj2max = $max;
-		list($num2steps,$maj2step) = 
+		[$num2steps, $maj2step] = 
 		    $this->IntCalcTicksFreeze($maxsteps,$min,$max,5);
 	    }
 	}
 	else {
 	    $num2steps = 10000;	// Dummy high value so we don't choose this
 	}
-	
+
 	if( abs($min-$max) > 5 ) {	
 	    // Then get tickmarks as 5:s 5, 50, 500, ...
 	    if( $majend ) {
-		list($num5steps,$adj5min,$adj5max,$maj5step) = 
+		[$num5steps, $adj5min, $adj5max, $maj5step] = 
 		    $this->IntCalcTicks($maxsteps,$min,$max,2);
 	    }
 	    else {
 		$adj5min = $min;
 		$adj5max = $max;
-		list($num5steps,$maj5step) = 
+		[$num5steps, $maj5step] = 
 		    $this->IntCalcTicksFreeze($maxsteps,$min,$max,2);
 	    }
 	}
 	else {
 	    $num5steps = 10000;	// Dummy high value so we don't choose this		
 	}
-	
+
 	// Check to see whichof 1:s, 2:s or 5:s fit better with
 	// the requested number of major ticks		
 	$match1=abs($num1steps-$maxsteps);		
@@ -4564,7 +4564,7 @@ class LinearScale {
 	    $match5=abs($num5steps-$maxsteps);
 	else
 	    $match5=10000; 	// Dummy high value 
-		
+
 	// Compare these three values and see which is the closest match
 	// We use a 0.6 weight to gravitate towards multiple of 5:s 
 	if( $match1 < $match2 ) {
@@ -4595,8 +4595,8 @@ class LinearScale {
 		break;			
 	}		
     }
-	
-	
+
+
     // Calculate autoscale. Used if user hasn't given a scale and ticks
     // $maxsteps is the maximum number of major tickmarks allowed.
     function AutoScale(&$img,$min,$max,$maxsteps,$majend=true) {
@@ -4616,7 +4616,7 @@ class LinearScale {
 		$max += $delta;
 	    }
 	}
-		
+
 	$gracetop=($this->gracetop/100.0)*abs($max-$min);
 	$gracebottom=($this->gracebottom/100.0)*abs($max-$min);
 	if( is_numeric($this->autoscale_min) ) {
@@ -4639,43 +4639,43 @@ class LinearScale {
 		$min *= 0.8;
 	}
 
-	
+
 	$min -= $gracebottom;
 	$max += $gracetop;
 
 	// First get tickmarks as multiples of 0.1, 1, 10, ...	
 	if( $majend ) {
-	    list($num1steps,$adj1min,$adj1max,$min1step,$maj1step) = 
+	    [$num1steps, $adj1min, $adj1max, $min1step, $maj1step] = 
 		$this->CalcTicks($maxsteps,$min,$max,1,2);
 	}
 	else {
 	    $adj1min=$min;
 	    $adj1max=$max;
-	    list($num1steps,$min1step,$maj1step) = 
+	    [$num1steps, $min1step, $maj1step] = 
 		$this->CalcTicksFreeze($maxsteps,$min,$max,1,2,false);
 	}
-		
+
 	// Then get tick marks as 2:s 0.2, 2, 20, ...
 	if( $majend ) {
-	    list($num2steps,$adj2min,$adj2max,$min2step,$maj2step) = 
+	    [$num2steps, $adj2min, $adj2max, $min2step, $maj2step] = 
 		$this->CalcTicks($maxsteps,$min,$max,5,2);
 	}
 	else {
 	    $adj2min=$min;
 	    $adj2max=$max;
-	    list($num2steps,$min2step,$maj2step) = 
+	    [$num2steps, $min2step, $maj2step] = 
 		$this->CalcTicksFreeze($maxsteps,$min,$max,5,2,false);
 	}
-		
+
 	// Then get tickmarks as 5:s 0.05, 0.5, 5, 50, ...
 	if( $majend ) {
-	    list($num5steps,$adj5min,$adj5max,$min5step,$maj5step) = 
+	    [$num5steps, $adj5min, $adj5max, $min5step, $maj5step] = 
 		$this->CalcTicks($maxsteps,$min,$max,2,5);		
 	}
 	else {
 	    $adj5min=$min;
 	    $adj5max=$max;
-	    list($num5steps,$min5step,$maj5step) = 
+	    [$num5steps, $min5step, $maj5step] = 
 		$this->CalcTicksFreeze($maxsteps,$min,$max,2,5,false);
 	}
 
@@ -4726,9 +4726,9 @@ class LinearScale {
 		$this->scale_factor=-$this->world_abs_size/($this->world_size*1.0);	
 	}
 	$size = $this->world_size * $this->scale_factor;
-	$this->scale_abs=array($this->off,$this->off + $size);	
+	$this->scale_abs=[$this->off,$this->off + $size];	
     }
-	
+
     // Initialize the conversion constants for this scale
     // This tries to pre-calculate as much as possible to speed up the
     // actual conversion (with Translate()) later on
@@ -4738,7 +4738,7 @@ class LinearScale {
     function SetConstants($aStart,$aLen) {
 	$this->world_abs_size=$aLen;
 	$this->off=$aStart;
-		
+
 	if( $this->world_size<=0 ) {
 	    // This should never ever happen !!
 	    JpGraphError::Raise("JpGraph Fatal Error:<br>
@@ -4751,15 +4751,15 @@ class LinearScale {
 		 values in the input data arrays (like trying to send in strings or
 		 only NULL values) which causes the autoscaling to fail.");
 	}
-		
+
 	// scale_factor = number of pixels per world unit
 	$this->scale_factor=$this->world_abs_size/($this->world_size*1.0);
-		
+
 	// scale_abs = start and end points of scale in absolute pixels
-	$this->scale_abs=array($this->off,$this->off+$this->world_size*$this->scale_factor);		
+	$this->scale_abs=[$this->off,$this->off+$this->world_size*$this->scale_factor];		
     }
-	
-	
+
+
     // Calculate number of ticks steps with a specific division
     // $a is the divisor of 10**x to generate the first maj tick intervall
     // $a=1, $b=2 give major ticks with multiple of 10, ...,0.1,1,10,...
@@ -4777,19 +4777,19 @@ class LinearScale {
 	    $ld=floor(log10($diff));
 
 	// Gravitate min towards zero if we are close		
-	if( $min>0 && $min < pow(10,$ld) ) $min=0;
-		
+	if( $min>0 && $min < 10 ** $ld ) $min=0;
+
 	//$majstep=pow(10,$ld-1)/$a; 
-	$majstep=pow(10,$ld)/$a; 
+	$majstep=10 ** $ld/$a; 
 	$minstep=$majstep/$b;
-	
+
 	$adjmax=ceil($max/$minstep)*$minstep;
 	$adjmin=floor($min/$minstep)*$minstep;	
 	$adjdiff = $adjmax-$adjmin;
 	$numsteps=$adjdiff/$majstep; 
-	
+
 	while( $numsteps>$maxsteps ) {
-	    $majstep=pow(10,$ld)/$a; 
+	    $majstep=10 ** $ld/$a; 
 	    $numsteps=$adjdiff/$majstep;
 	    ++$ld;
 	}
@@ -4805,7 +4805,7 @@ class LinearScale {
 	else
 	    $adjmax=ceil($max/$minstep)*$minstep;
 
-	return array($numsteps,$adjmin,$adjmax,$minstep,$majstep);
+	return [$numsteps,$adjmin,$adjmax,$minstep,$majstep];
     }
 
     function CalcTicksFreeze($maxsteps,$min,$max,$a,$b) {
@@ -4817,47 +4817,47 @@ class LinearScale {
 	    $ld=floor(log10($diff));
 
 	//$majstep=pow(10,$ld-1)/$a; 
-	$majstep=pow(10,$ld)/$a; 
+	$majstep=10 ** $ld/$a; 
 	$minstep=$majstep/$b;
 	$numsteps=floor($diff/$majstep); 
-	
+
 	while( $numsteps > $maxsteps ) {
-	    $majstep=pow(10,$ld)/$a; 
+	    $majstep=10 ** $ld/$a; 
 	    $numsteps=floor($diff/$majstep);
 	    ++$ld;
 	}
 	$minstep=$majstep/$b;
-	return array($numsteps,$minstep,$majstep);
+	return [$numsteps,$minstep,$majstep];
     }
 
-	
+
     function IntCalcTicks($maxsteps,$min,$max,$a,$majend=true) {
 	$diff=$max-$min; 
 	if( $diff==0 )
 	    JpGraphError::Raise('Can\'t automatically determine ticks since min==max.');
 	else
 	    $ld=floor(log10($diff));
-		
+
 	// Gravitate min towards zero if we are close		
-	if( $min>0 && $min < pow(10,$ld) ) $min=0;
-		
+	if( $min>0 && $min < 10 ** $ld ) $min=0;
+
 	if( $ld == 0 ) $ld=1;
-	
+
 	if( $a == 1 ) 
 	    $majstep = 1;
 	else
-	    $majstep=pow(10,$ld)/$a; 
+	    $majstep=10 ** $ld/$a; 
 	$adjmax=ceil($max/$majstep)*$majstep;
 
 	$adjmin=floor($min/$majstep)*$majstep;	
 	$adjdiff = $adjmax-$adjmin;
 	$numsteps=$adjdiff/$majstep; 
 	while( $numsteps>$maxsteps ) {
-	    $majstep=pow(10,$ld)/$a; 
+	    $majstep=10 ** $ld/$a; 
 	    $numsteps=$adjdiff/$majstep;
 	    ++$ld;
 	}
-		
+
 	$adjmin=floor($min/$majstep)*$majstep;	
 	$adjdiff = $adjmax-$adjmin;		
 	if( $majend ) {
@@ -4867,8 +4867,8 @@ class LinearScale {
 	}
 	else
 	    $adjmax=ceil($max/$majstep)*$majstep;
-			
-	return array($numsteps,$adjmin,$adjmax,$majstep);		
+
+	return [$numsteps,$adjmin,$adjmax,$majstep];		
     }
 
 
@@ -4879,26 +4879,26 @@ class LinearScale {
 	    JpGraphError::Raise('Can\'t automatically determine ticks since min==max.');
 	else
 	    $ld=floor(log10($diff));
-		
+
 	if( $ld == 0 ) $ld=1;
-	
+
 	if( $a == 1 ) 
 	    $majstep = 1;
 	else
-	    $majstep=pow(10,$ld)/$a; 
+	    $majstep=10 ** $ld/$a; 
 
 	$numsteps=floor($diff/$majstep); 
 	while( $numsteps > $maxsteps ) {
-	    $majstep=pow(10,$ld)/$a; 
+	    $majstep=10 ** $ld/$a; 
 	    $numsteps=floor($diff/$majstep);
 	    ++$ld;
 	}
-					
-	return array($numsteps,$majstep);		
+
+	return [$numsteps,$majstep];		
     }
 
 
-	
+
     // Determine the minimum of three values witha  weight for last value
     function MatchMin3($a,$b,$c,$weight) {
 	if( $a < $b ) {
@@ -4918,449 +4918,449 @@ class LinearScale {
 // Description: Color definitions as RGB triples
 //===================================================
 class RGB {
-    var $rgb_table;
-    var $img;
+    public $rgb_table;
+    public $img;
     function RGB($aImg=null) {
 	$this->img = $aImg;
-		
+
 	// Conversion array between color names and RGB
-	$this->rgb_table = array(
-	    "aqua"=> array(0,255,255),		
-	    "lime"=> array(0,255,0),		
-	    "teal"=> array(0,128,128),
-	    "whitesmoke"=>array(245,245,245),
-	    "gainsboro"=>array(220,220,220),
-	    "oldlace"=>array(253,245,230),
-	    "linen"=>array(250,240,230),
-	    "antiquewhite"=>array(250,235,215),
-	    "papayawhip"=>array(255,239,213),
-	    "blanchedalmond"=>array(255,235,205),
-	    "bisque"=>array(255,228,196),
-	    "peachpuff"=>array(255,218,185),
-	    "navajowhite"=>array(255,222,173),
-	    "moccasin"=>array(255,228,181),
-	    "cornsilk"=>array(255,248,220),
-	    "ivory"=>array(255,255,240),
-	    "lemonchiffon"=>array(255,250,205),
-	    "seashell"=>array(255,245,238),
-	    "mintcream"=>array(245,255,250),
-	    "azure"=>array(240,255,255),
-	    "aliceblue"=>array(240,248,255),
-	    "lavender"=>array(230,230,250),
-	    "lavenderblush"=>array(255,240,245),
-	    "mistyrose"=>array(255,228,225),
-	    "white"=>array(255,255,255),
-	    "black"=>array(0,0,0),
-	    "darkslategray"=>array(47,79,79),
-	    "dimgray"=>array(105,105,105),
-	    "slategray"=>array(112,128,144),
-	    "lightslategray"=>array(119,136,153),
-	    "gray"=>array(190,190,190),
-	    "lightgray"=>array(211,211,211),
-	    "midnightblue"=>array(25,25,112),
-	    "navy"=>array(0,0,128),
-	    "cornflowerblue"=>array(100,149,237),
-	    "darkslateblue"=>array(72,61,139),
-	    "slateblue"=>array(106,90,205),
-	    "mediumslateblue"=>array(123,104,238),
-	    "lightslateblue"=>array(132,112,255),
-	    "mediumblue"=>array(0,0,205),
-	    "royalblue"=>array(65,105,225),
-	    "blue"=>array(0,0,255),
-	    "dodgerblue"=>array(30,144,255),
-	    "deepskyblue"=>array(0,191,255),
-	    "skyblue"=>array(135,206,235),
-	    "lightskyblue"=>array(135,206,250),
-	    "steelblue"=>array(70,130,180),
-	    "lightred"=>array(211,167,168),
-	    "lightsteelblue"=>array(176,196,222),
-	    "lightblue"=>array(173,216,230),
-	    "powderblue"=>array(176,224,230),
-	    "paleturquoise"=>array(175,238,238),
-	    "darkturquoise"=>array(0,206,209),
-	    "mediumturquoise"=>array(72,209,204),
-	    "turquoise"=>array(64,224,208),
-	    "cyan"=>array(0,255,255),
-	    "lightcyan"=>array(224,255,255),
-	    "cadetblue"=>array(95,158,160),
-	    "mediumaquamarine"=>array(102,205,170),
-	    "aquamarine"=>array(127,255,212),
-	    "darkgreen"=>array(0,100,0),
-	    "darkolivegreen"=>array(85,107,47),
-	    "darkseagreen"=>array(143,188,143),
-	    "seagreen"=>array(46,139,87),
-	    "mediumseagreen"=>array(60,179,113),
-	    "lightseagreen"=>array(32,178,170),
-	    "palegreen"=>array(152,251,152),
-	    "springgreen"=>array(0,255,127),
-	    "lawngreen"=>array(124,252,0),
-	    "green"=>array(0,255,0),
-	    "chartreuse"=>array(127,255,0),
-	    "mediumspringgreen"=>array(0,250,154),
-	    "greenyellow"=>array(173,255,47),
-	    "limegreen"=>array(50,205,50),
-	    "yellowgreen"=>array(154,205,50),
-	    "forestgreen"=>array(34,139,34),
-	    "olivedrab"=>array(107,142,35),
-	    "darkkhaki"=>array(189,183,107),
-	    "khaki"=>array(240,230,140),
-	    "palegoldenrod"=>array(238,232,170),
-	    "lightgoldenrodyellow"=>array(250,250,210),
-	    "lightyellow"=>array(255,255,200),
-	    "yellow"=>array(255,255,0),
-	    "gold"=>array(255,215,0),
-	    "lightgoldenrod"=>array(238,221,130),
-	    "goldenrod"=>array(218,165,32),
-	    "darkgoldenrod"=>array(184,134,11),
-	    "rosybrown"=>array(188,143,143),
-	    "indianred"=>array(205,92,92),
-	    "saddlebrown"=>array(139,69,19),
-	    "sienna"=>array(160,82,45),
-	    "peru"=>array(205,133,63),
-	    "burlywood"=>array(222,184,135),
-	    "beige"=>array(245,245,220),
-	    "wheat"=>array(245,222,179),
-	    "sandybrown"=>array(244,164,96),
-	    "tan"=>array(210,180,140),
-	    "chocolate"=>array(210,105,30),
-	    "firebrick"=>array(178,34,34),
-	    "brown"=>array(165,42,42),
-	    "darksalmon"=>array(233,150,122),
-	    "salmon"=>array(250,128,114),
-	    "lightsalmon"=>array(255,160,122),
-	    "orange"=>array(255,165,0),
-	    "darkorange"=>array(255,140,0),
-	    "coral"=>array(255,127,80),
-	    "lightcoral"=>array(240,128,128),
-	    "tomato"=>array(255,99,71),
-	    "orangered"=>array(255,69,0),
-	    "red"=>array(255,0,0),
-	    "hotpink"=>array(255,105,180),
-	    "deeppink"=>array(255,20,147),
-	    "pink"=>array(255,192,203),
-	    "lightpink"=>array(255,182,193),
-	    "palevioletred"=>array(219,112,147),
-	    "maroon"=>array(176,48,96),
-	    "mediumvioletred"=>array(199,21,133),
-	    "violetred"=>array(208,32,144),
-	    "magenta"=>array(255,0,255),
-	    "violet"=>array(238,130,238),
-	    "plum"=>array(221,160,221),
-	    "orchid"=>array(218,112,214),
-	    "mediumorchid"=>array(186,85,211),
-	    "darkorchid"=>array(153,50,204),
-	    "darkviolet"=>array(148,0,211),
-	    "blueviolet"=>array(138,43,226),
-	    "purple"=>array(160,32,240),
-	    "mediumpurple"=>array(147,112,219),
-	    "thistle"=>array(216,191,216),
-	    "snow1"=>array(255,250,250),
-	    "snow2"=>array(238,233,233),
-	    "snow3"=>array(205,201,201),
-	    "snow4"=>array(139,137,137),
-	    "seashell1"=>array(255,245,238),
-	    "seashell2"=>array(238,229,222),
-	    "seashell3"=>array(205,197,191),
-	    "seashell4"=>array(139,134,130),
-	    "AntiqueWhite1"=>array(255,239,219),
-	    "AntiqueWhite2"=>array(238,223,204),
-	    "AntiqueWhite3"=>array(205,192,176),
-	    "AntiqueWhite4"=>array(139,131,120),
-	    "bisque1"=>array(255,228,196),
-	    "bisque2"=>array(238,213,183),
-	    "bisque3"=>array(205,183,158),
-	    "bisque4"=>array(139,125,107),
-	    "peachPuff1"=>array(255,218,185),
-	    "peachpuff2"=>array(238,203,173),
-	    "peachpuff3"=>array(205,175,149),
-	    "peachpuff4"=>array(139,119,101),
-	    "navajowhite1"=>array(255,222,173),
-	    "navajowhite2"=>array(238,207,161),
-	    "navajowhite3"=>array(205,179,139),
-	    "navajowhite4"=>array(139,121,94),
-	    "lemonchiffon1"=>array(255,250,205),
-	    "lemonchiffon2"=>array(238,233,191),
-	    "lemonchiffon3"=>array(205,201,165),
-	    "lemonchiffon4"=>array(139,137,112),
-	    "ivory1"=>array(255,255,240),
-	    "ivory2"=>array(238,238,224),
-	    "ivory3"=>array(205,205,193),
-	    "ivory4"=>array(139,139,131),
-	    "honeydew"=>array(193,205,193),
-	    "lavenderblush1"=>array(255,240,245),
-	    "lavenderblush2"=>array(238,224,229),
-	    "lavenderblush3"=>array(205,193,197),
-	    "lavenderblush4"=>array(139,131,134),
-	    "mistyrose1"=>array(255,228,225),
-	    "mistyrose2"=>array(238,213,210),
-	    "mistyrose3"=>array(205,183,181),
-	    "mistyrose4"=>array(139,125,123),
-	    "azure1"=>array(240,255,255),
-	    "azure2"=>array(224,238,238),
-	    "azure3"=>array(193,205,205),
-	    "azure4"=>array(131,139,139),
-	    "slateblue1"=>array(131,111,255),
-	    "slateblue2"=>array(122,103,238),
-	    "slateblue3"=>array(105,89,205),
-	    "slateblue4"=>array(71,60,139),
-	    "royalblue1"=>array(72,118,255),
-	    "royalblue2"=>array(67,110,238),
-	    "royalblue3"=>array(58,95,205),
-	    "royalblue4"=>array(39,64,139),
-	    "dodgerblue1"=>array(30,144,255),
-	    "dodgerblue2"=>array(28,134,238),
-	    "dodgerblue3"=>array(24,116,205),
-	    "dodgerblue4"=>array(16,78,139),
-	    "steelblue1"=>array(99,184,255),
-	    "steelblue2"=>array(92,172,238),
-	    "steelblue3"=>array(79,148,205),
-	    "steelblue4"=>array(54,100,139),
-	    "deepskyblue1"=>array(0,191,255),
-	    "deepskyblue2"=>array(0,178,238),
-	    "deepskyblue3"=>array(0,154,205),
-	    "deepskyblue4"=>array(0,104,139),
-	    "skyblue1"=>array(135,206,255),
-	    "skyblue2"=>array(126,192,238),
-	    "skyblue3"=>array(108,166,205),
-	    "skyblue4"=>array(74,112,139),
-	    "lightskyblue1"=>array(176,226,255),
-	    "lightskyblue2"=>array(164,211,238),
-	    "lightskyblue3"=>array(141,182,205),
-	    "lightskyblue4"=>array(96,123,139),
-	    "slategray1"=>array(198,226,255),
-	    "slategray2"=>array(185,211,238),
-	    "slategray3"=>array(159,182,205),
-	    "slategray4"=>array(108,123,139),
-	    "lightsteelblue1"=>array(202,225,255),
-	    "lightsteelblue2"=>array(188,210,238),
-	    "lightsteelblue3"=>array(162,181,205),
-	    "lightsteelblue4"=>array(110,123,139),
-	    "lightblue1"=>array(191,239,255),
-	    "lightblue2"=>array(178,223,238),
-	    "lightblue3"=>array(154,192,205),
-	    "lightblue4"=>array(104,131,139),
-	    "lightcyan1"=>array(224,255,255),
-	    "lightcyan2"=>array(209,238,238),
-	    "lightcyan3"=>array(180,205,205),
-	    "lightcyan4"=>array(122,139,139),
-	    "paleturquoise1"=>array(187,255,255),
-	    "paleturquoise2"=>array(174,238,238),
-	    "paleturquoise3"=>array(150,205,205),
-	    "paleturquoise4"=>array(102,139,139),
-	    "cadetblue1"=>array(152,245,255),
-	    "cadetblue2"=>array(142,229,238),
-	    "cadetblue3"=>array(122,197,205),
-	    "cadetblue4"=>array(83,134,139),
-	    "turquoise1"=>array(0,245,255),
-	    "turquoise2"=>array(0,229,238),
-	    "turquoise3"=>array(0,197,205),
-	    "turquoise4"=>array(0,134,139),
-	    "cyan1"=>array(0,255,255),
-	    "cyan2"=>array(0,238,238),
-	    "cyan3"=>array(0,205,205),
-	    "cyan4"=>array(0,139,139),
-	    "darkslategray1"=>array(151,255,255),
-	    "darkslategray2"=>array(141,238,238),
-	    "darkslategray3"=>array(121,205,205),
-	    "darkslategray4"=>array(82,139,139),
-	    "aquamarine1"=>array(127,255,212),
-	    "aquamarine2"=>array(118,238,198),
-	    "aquamarine3"=>array(102,205,170),
-	    "aquamarine4"=>array(69,139,116),
-	    "darkseagreen1"=>array(193,255,193),
-	    "darkseagreen2"=>array(180,238,180),
-	    "darkseagreen3"=>array(155,205,155),
-	    "darkseagreen4"=>array(105,139,105),
-	    "seagreen1"=>array(84,255,159),
-	    "seagreen2"=>array(78,238,148),
-	    "seagreen3"=>array(67,205,128),
-	    "seagreen4"=>array(46,139,87),
-	    "palegreen1"=>array(154,255,154),
-	    "palegreen2"=>array(144,238,144),
-	    "palegreen3"=>array(124,205,124),
-	    "palegreen4"=>array(84,139,84),
-	    "springgreen1"=>array(0,255,127),
-	    "springgreen2"=>array(0,238,118),
-	    "springgreen3"=>array(0,205,102),
-	    "springgreen4"=>array(0,139,69),
-	    "chartreuse1"=>array(127,255,0),
-	    "chartreuse2"=>array(118,238,0),
-	    "chartreuse3"=>array(102,205,0),
-	    "chartreuse4"=>array(69,139,0),
-	    "olivedrab1"=>array(192,255,62),
-	    "olivedrab2"=>array(179,238,58),
-	    "olivedrab3"=>array(154,205,50),
-	    "olivedrab4"=>array(105,139,34),
-	    "darkolivegreen1"=>array(202,255,112),
-	    "darkolivegreen2"=>array(188,238,104),
-	    "darkolivegreen3"=>array(162,205,90),
-	    "darkolivegreen4"=>array(110,139,61),
-	    "khaki1"=>array(255,246,143),
-	    "khaki2"=>array(238,230,133),
-	    "khaki3"=>array(205,198,115),
-	    "khaki4"=>array(139,134,78),
-	    "lightgoldenrod1"=>array(255,236,139),
-	    "lightgoldenrod2"=>array(238,220,130),
-	    "lightgoldenrod3"=>array(205,190,112),
-	    "lightgoldenrod4"=>array(139,129,76),
-	    "yellow1"=>array(255,255,0),
-	    "yellow2"=>array(238,238,0),
-	    "yellow3"=>array(205,205,0),
-	    "yellow4"=>array(139,139,0),
-	    "gold1"=>array(255,215,0),
-	    "gold2"=>array(238,201,0),
-	    "gold3"=>array(205,173,0),
-	    "gold4"=>array(139,117,0),
-	    "goldenrod1"=>array(255,193,37),
-	    "goldenrod2"=>array(238,180,34),
-	    "goldenrod3"=>array(205,155,29),
-	    "goldenrod4"=>array(139,105,20),
-	    "darkgoldenrod1"=>array(255,185,15),
-	    "darkgoldenrod2"=>array(238,173,14),
-	    "darkgoldenrod3"=>array(205,149,12),
-	    "darkgoldenrod4"=>array(139,101,8),
-	    "rosybrown1"=>array(255,193,193),
-	    "rosybrown2"=>array(238,180,180),
-	    "rosybrown3"=>array(205,155,155),
-	    "rosybrown4"=>array(139,105,105),
-	    "indianred1"=>array(255,106,106),
-	    "indianred2"=>array(238,99,99),
-	    "indianred3"=>array(205,85,85),
-	    "indianred4"=>array(139,58,58),
-	    "sienna1"=>array(255,130,71),
-	    "sienna2"=>array(238,121,66),
-	    "sienna3"=>array(205,104,57),
-	    "sienna4"=>array(139,71,38),
-	    "burlywood1"=>array(255,211,155),
-	    "burlywood2"=>array(238,197,145),
-	    "burlywood3"=>array(205,170,125),
-	    "burlywood4"=>array(139,115,85),
-	    "wheat1"=>array(255,231,186),
-	    "wheat2"=>array(238,216,174),
-	    "wheat3"=>array(205,186,150),
-	    "wheat4"=>array(139,126,102),
-	    "tan1"=>array(255,165,79),
-	    "tan2"=>array(238,154,73),
-	    "tan3"=>array(205,133,63),
-	    "tan4"=>array(139,90,43),
-	    "chocolate1"=>array(255,127,36),
-	    "chocolate2"=>array(238,118,33),
-	    "chocolate3"=>array(205,102,29),
-	    "chocolate4"=>array(139,69,19),
-	    "firebrick1"=>array(255,48,48),
-	    "firebrick2"=>array(238,44,44),
-	    "firebrick3"=>array(205,38,38),
-	    "firebrick4"=>array(139,26,26),
-	    "brown1"=>array(255,64,64),
-	    "brown2"=>array(238,59,59),
-	    "brown3"=>array(205,51,51),
-	    "brown4"=>array(139,35,35),
-	    "salmon1"=>array(255,140,105),
-	    "salmon2"=>array(238,130,98),
-	    "salmon3"=>array(205,112,84),
-	    "salmon4"=>array(139,76,57),
-	    "lightsalmon1"=>array(255,160,122),
-	    "lightsalmon2"=>array(238,149,114),
-	    "lightsalmon3"=>array(205,129,98),
-	    "lightsalmon4"=>array(139,87,66),
-	    "orange1"=>array(255,165,0),
-	    "orange2"=>array(238,154,0),
-	    "orange3"=>array(205,133,0),
-	    "orange4"=>array(139,90,0),
-	    "darkorange1"=>array(255,127,0),
-	    "darkorange2"=>array(238,118,0),
-	    "darkorange3"=>array(205,102,0),
-	    "darkorange4"=>array(139,69,0),
-	    "coral1"=>array(255,114,86),
-	    "coral2"=>array(238,106,80),
-	    "coral3"=>array(205,91,69),
-	    "coral4"=>array(139,62,47),
-	    "tomato1"=>array(255,99,71),
-	    "tomato2"=>array(238,92,66),
-	    "tomato3"=>array(205,79,57),
-	    "tomato4"=>array(139,54,38),
-	    "orangered1"=>array(255,69,0),
-	    "orangered2"=>array(238,64,0),
-	    "orangered3"=>array(205,55,0),
-	    "orangered4"=>array(139,37,0),
-	    "deeppink1"=>array(255,20,147),
-	    "deeppink2"=>array(238,18,137),
-	    "deeppink3"=>array(205,16,118),
-	    "deeppink4"=>array(139,10,80),
-	    "hotpink1"=>array(255,110,180),
-	    "hotpink2"=>array(238,106,167),
-	    "hotpink3"=>array(205,96,144),
-	    "hotpink4"=>array(139,58,98),
-	    "pink1"=>array(255,181,197),
-	    "pink2"=>array(238,169,184),
-	    "pink3"=>array(205,145,158),
-	    "pink4"=>array(139,99,108),
-	    "lightpink1"=>array(255,174,185),
-	    "lightpink2"=>array(238,162,173),
-	    "lightpink3"=>array(205,140,149),
-	    "lightpink4"=>array(139,95,101),
-	    "palevioletred1"=>array(255,130,171),
-	    "palevioletred2"=>array(238,121,159),
-	    "palevioletred3"=>array(205,104,137),
-	    "palevioletred4"=>array(139,71,93),
-	    "maroon1"=>array(255,52,179),
-	    "maroon2"=>array(238,48,167),
-	    "maroon3"=>array(205,41,144),
-	    "maroon4"=>array(139,28,98),
-	    "violetred1"=>array(255,62,150),
-	    "violetred2"=>array(238,58,140),
-	    "violetred3"=>array(205,50,120),
-	    "violetred4"=>array(139,34,82),
-	    "magenta1"=>array(255,0,255),
-	    "magenta2"=>array(238,0,238),
-	    "magenta3"=>array(205,0,205),
-	    "magenta4"=>array(139,0,139),
-	    "mediumred"=>array(140,34,34),         
-	    "orchid1"=>array(255,131,250),
-	    "orchid2"=>array(238,122,233),
-	    "orchid3"=>array(205,105,201),
-	    "orchid4"=>array(139,71,137),
-	    "plum1"=>array(255,187,255),
-	    "plum2"=>array(238,174,238),
-	    "plum3"=>array(205,150,205),
-	    "plum4"=>array(139,102,139),
-	    "mediumorchid1"=>array(224,102,255),
-	    "mediumorchid2"=>array(209,95,238),
-	    "mediumorchid3"=>array(180,82,205),
-	    "mediumorchid4"=>array(122,55,139),
-	    "darkorchid1"=>array(191,62,255),
-	    "darkorchid2"=>array(178,58,238),
-	    "darkorchid3"=>array(154,50,205),
-	    "darkorchid4"=>array(104,34,139),
-	    "purple1"=>array(155,48,255),
-	    "purple2"=>array(145,44,238),
-	    "purple3"=>array(125,38,205),
-	    "purple4"=>array(85,26,139),
-	    "mediumpurple1"=>array(171,130,255),
-	    "mediumpurple2"=>array(159,121,238),
-	    "mediumpurple3"=>array(137,104,205),
-	    "mediumpurple4"=>array(93,71,139),
-	    "thistle1"=>array(255,225,255),
-	    "thistle2"=>array(238,210,238),
-	    "thistle3"=>array(205,181,205),
-	    "thistle4"=>array(139,123,139),
-	    "gray1"=>array(10,10,10),
-	    "gray2"=>array(40,40,30),
-	    "gray3"=>array(70,70,70),
-	    "gray4"=>array(100,100,100),
-	    "gray5"=>array(130,130,130),
-	    "gray6"=>array(160,160,160),
-	    "gray7"=>array(190,190,190),
-	    "gray8"=>array(210,210,210),
-	    "gray9"=>array(240,240,240),
-	    "darkgray"=>array(100,100,100),
-	    "darkblue"=>array(0,0,139),
-	    "darkcyan"=>array(0,139,139),
-	    "darkmagenta"=>array(139,0,139),
-	    "darkred"=>array(139,0,0),
-	    "silver"=>array(192, 192, 192),
-	    "eggplant"=>array(144,176,168),
-	    "lightgreen"=>array(144,238,144));		
+	$this->rgb_table = [
+	    "aqua"=> [0,255,255],		
+	    "lime"=> [0,255,0],		
+	    "teal"=> [0,128,128],
+	    "whitesmoke"=>[245,245,245],
+	    "gainsboro"=>[220,220,220],
+	    "oldlace"=>[253,245,230],
+	    "linen"=>[250,240,230],
+	    "antiquewhite"=>[250,235,215],
+	    "papayawhip"=>[255,239,213],
+	    "blanchedalmond"=>[255,235,205],
+	    "bisque"=>[255,228,196],
+	    "peachpuff"=>[255,218,185],
+	    "navajowhite"=>[255,222,173],
+	    "moccasin"=>[255,228,181],
+	    "cornsilk"=>[255,248,220],
+	    "ivory"=>[255,255,240],
+	    "lemonchiffon"=>[255,250,205],
+	    "seashell"=>[255,245,238],
+	    "mintcream"=>[245,255,250],
+	    "azure"=>[240,255,255],
+	    "aliceblue"=>[240,248,255],
+	    "lavender"=>[230,230,250],
+	    "lavenderblush"=>[255,240,245],
+	    "mistyrose"=>[255,228,225],
+	    "white"=>[255,255,255],
+	    "black"=>[0,0,0],
+	    "darkslategray"=>[47,79,79],
+	    "dimgray"=>[105,105,105],
+	    "slategray"=>[112,128,144],
+	    "lightslategray"=>[119,136,153],
+	    "gray"=>[190,190,190],
+	    "lightgray"=>[211,211,211],
+	    "midnightblue"=>[25,25,112],
+	    "navy"=>[0,0,128],
+	    "cornflowerblue"=>[100,149,237],
+	    "darkslateblue"=>[72,61,139],
+	    "slateblue"=>[106,90,205],
+	    "mediumslateblue"=>[123,104,238],
+	    "lightslateblue"=>[132,112,255],
+	    "mediumblue"=>[0,0,205],
+	    "royalblue"=>[65,105,225],
+	    "blue"=>[0,0,255],
+	    "dodgerblue"=>[30,144,255],
+	    "deepskyblue"=>[0,191,255],
+	    "skyblue"=>[135,206,235],
+	    "lightskyblue"=>[135,206,250],
+	    "steelblue"=>[70,130,180],
+	    "lightred"=>[211,167,168],
+	    "lightsteelblue"=>[176,196,222],
+	    "lightblue"=>[173,216,230],
+	    "powderblue"=>[176,224,230],
+	    "paleturquoise"=>[175,238,238],
+	    "darkturquoise"=>[0,206,209],
+	    "mediumturquoise"=>[72,209,204],
+	    "turquoise"=>[64,224,208],
+	    "cyan"=>[0,255,255],
+	    "lightcyan"=>[224,255,255],
+	    "cadetblue"=>[95,158,160],
+	    "mediumaquamarine"=>[102,205,170],
+	    "aquamarine"=>[127,255,212],
+	    "darkgreen"=>[0,100,0],
+	    "darkolivegreen"=>[85,107,47],
+	    "darkseagreen"=>[143,188,143],
+	    "seagreen"=>[46,139,87],
+	    "mediumseagreen"=>[60,179,113],
+	    "lightseagreen"=>[32,178,170],
+	    "palegreen"=>[152,251,152],
+	    "springgreen"=>[0,255,127],
+	    "lawngreen"=>[124,252,0],
+	    "green"=>[0,255,0],
+	    "chartreuse"=>[127,255,0],
+	    "mediumspringgreen"=>[0,250,154],
+	    "greenyellow"=>[173,255,47],
+	    "limegreen"=>[50,205,50],
+	    "yellowgreen"=>[154,205,50],
+	    "forestgreen"=>[34,139,34],
+	    "olivedrab"=>[107,142,35],
+	    "darkkhaki"=>[189,183,107],
+	    "khaki"=>[240,230,140],
+	    "palegoldenrod"=>[238,232,170],
+	    "lightgoldenrodyellow"=>[250,250,210],
+	    "lightyellow"=>[255,255,200],
+	    "yellow"=>[255,255,0],
+	    "gold"=>[255,215,0],
+	    "lightgoldenrod"=>[238,221,130],
+	    "goldenrod"=>[218,165,32],
+	    "darkgoldenrod"=>[184,134,11],
+	    "rosybrown"=>[188,143,143],
+	    "indianred"=>[205,92,92],
+	    "saddlebrown"=>[139,69,19],
+	    "sienna"=>[160,82,45],
+	    "peru"=>[205,133,63],
+	    "burlywood"=>[222,184,135],
+	    "beige"=>[245,245,220],
+	    "wheat"=>[245,222,179],
+	    "sandybrown"=>[244,164,96],
+	    "tan"=>[210,180,140],
+	    "chocolate"=>[210,105,30],
+	    "firebrick"=>[178,34,34],
+	    "brown"=>[165,42,42],
+	    "darksalmon"=>[233,150,122],
+	    "salmon"=>[250,128,114],
+	    "lightsalmon"=>[255,160,122],
+	    "orange"=>[255,165,0],
+	    "darkorange"=>[255,140,0],
+	    "coral"=>[255,127,80],
+	    "lightcoral"=>[240,128,128],
+	    "tomato"=>[255,99,71],
+	    "orangered"=>[255,69,0],
+	    "red"=>[255,0,0],
+	    "hotpink"=>[255,105,180],
+	    "deeppink"=>[255,20,147],
+	    "pink"=>[255,192,203],
+	    "lightpink"=>[255,182,193],
+	    "palevioletred"=>[219,112,147],
+	    "maroon"=>[176,48,96],
+	    "mediumvioletred"=>[199,21,133],
+	    "violetred"=>[208,32,144],
+	    "magenta"=>[255,0,255],
+	    "violet"=>[238,130,238],
+	    "plum"=>[221,160,221],
+	    "orchid"=>[218,112,214],
+	    "mediumorchid"=>[186,85,211],
+	    "darkorchid"=>[153,50,204],
+	    "darkviolet"=>[148,0,211],
+	    "blueviolet"=>[138,43,226],
+	    "purple"=>[160,32,240],
+	    "mediumpurple"=>[147,112,219],
+	    "thistle"=>[216,191,216],
+	    "snow1"=>[255,250,250],
+	    "snow2"=>[238,233,233],
+	    "snow3"=>[205,201,201],
+	    "snow4"=>[139,137,137],
+	    "seashell1"=>[255,245,238],
+	    "seashell2"=>[238,229,222],
+	    "seashell3"=>[205,197,191],
+	    "seashell4"=>[139,134,130],
+	    "AntiqueWhite1"=>[255,239,219],
+	    "AntiqueWhite2"=>[238,223,204],
+	    "AntiqueWhite3"=>[205,192,176],
+	    "AntiqueWhite4"=>[139,131,120],
+	    "bisque1"=>[255,228,196],
+	    "bisque2"=>[238,213,183],
+	    "bisque3"=>[205,183,158],
+	    "bisque4"=>[139,125,107],
+	    "peachPuff1"=>[255,218,185],
+	    "peachpuff2"=>[238,203,173],
+	    "peachpuff3"=>[205,175,149],
+	    "peachpuff4"=>[139,119,101],
+	    "navajowhite1"=>[255,222,173],
+	    "navajowhite2"=>[238,207,161],
+	    "navajowhite3"=>[205,179,139],
+	    "navajowhite4"=>[139,121,94],
+	    "lemonchiffon1"=>[255,250,205],
+	    "lemonchiffon2"=>[238,233,191],
+	    "lemonchiffon3"=>[205,201,165],
+	    "lemonchiffon4"=>[139,137,112],
+	    "ivory1"=>[255,255,240],
+	    "ivory2"=>[238,238,224],
+	    "ivory3"=>[205,205,193],
+	    "ivory4"=>[139,139,131],
+	    "honeydew"=>[193,205,193],
+	    "lavenderblush1"=>[255,240,245],
+	    "lavenderblush2"=>[238,224,229],
+	    "lavenderblush3"=>[205,193,197],
+	    "lavenderblush4"=>[139,131,134],
+	    "mistyrose1"=>[255,228,225],
+	    "mistyrose2"=>[238,213,210],
+	    "mistyrose3"=>[205,183,181],
+	    "mistyrose4"=>[139,125,123],
+	    "azure1"=>[240,255,255],
+	    "azure2"=>[224,238,238],
+	    "azure3"=>[193,205,205],
+	    "azure4"=>[131,139,139],
+	    "slateblue1"=>[131,111,255],
+	    "slateblue2"=>[122,103,238],
+	    "slateblue3"=>[105,89,205],
+	    "slateblue4"=>[71,60,139],
+	    "royalblue1"=>[72,118,255],
+	    "royalblue2"=>[67,110,238],
+	    "royalblue3"=>[58,95,205],
+	    "royalblue4"=>[39,64,139],
+	    "dodgerblue1"=>[30,144,255],
+	    "dodgerblue2"=>[28,134,238],
+	    "dodgerblue3"=>[24,116,205],
+	    "dodgerblue4"=>[16,78,139],
+	    "steelblue1"=>[99,184,255],
+	    "steelblue2"=>[92,172,238],
+	    "steelblue3"=>[79,148,205],
+	    "steelblue4"=>[54,100,139],
+	    "deepskyblue1"=>[0,191,255],
+	    "deepskyblue2"=>[0,178,238],
+	    "deepskyblue3"=>[0,154,205],
+	    "deepskyblue4"=>[0,104,139],
+	    "skyblue1"=>[135,206,255],
+	    "skyblue2"=>[126,192,238],
+	    "skyblue3"=>[108,166,205],
+	    "skyblue4"=>[74,112,139],
+	    "lightskyblue1"=>[176,226,255],
+	    "lightskyblue2"=>[164,211,238],
+	    "lightskyblue3"=>[141,182,205],
+	    "lightskyblue4"=>[96,123,139],
+	    "slategray1"=>[198,226,255],
+	    "slategray2"=>[185,211,238],
+	    "slategray3"=>[159,182,205],
+	    "slategray4"=>[108,123,139],
+	    "lightsteelblue1"=>[202,225,255],
+	    "lightsteelblue2"=>[188,210,238],
+	    "lightsteelblue3"=>[162,181,205],
+	    "lightsteelblue4"=>[110,123,139],
+	    "lightblue1"=>[191,239,255],
+	    "lightblue2"=>[178,223,238],
+	    "lightblue3"=>[154,192,205],
+	    "lightblue4"=>[104,131,139],
+	    "lightcyan1"=>[224,255,255],
+	    "lightcyan2"=>[209,238,238],
+	    "lightcyan3"=>[180,205,205],
+	    "lightcyan4"=>[122,139,139],
+	    "paleturquoise1"=>[187,255,255],
+	    "paleturquoise2"=>[174,238,238],
+	    "paleturquoise3"=>[150,205,205],
+	    "paleturquoise4"=>[102,139,139],
+	    "cadetblue1"=>[152,245,255],
+	    "cadetblue2"=>[142,229,238],
+	    "cadetblue3"=>[122,197,205],
+	    "cadetblue4"=>[83,134,139],
+	    "turquoise1"=>[0,245,255],
+	    "turquoise2"=>[0,229,238],
+	    "turquoise3"=>[0,197,205],
+	    "turquoise4"=>[0,134,139],
+	    "cyan1"=>[0,255,255],
+	    "cyan2"=>[0,238,238],
+	    "cyan3"=>[0,205,205],
+	    "cyan4"=>[0,139,139],
+	    "darkslategray1"=>[151,255,255],
+	    "darkslategray2"=>[141,238,238],
+	    "darkslategray3"=>[121,205,205],
+	    "darkslategray4"=>[82,139,139],
+	    "aquamarine1"=>[127,255,212],
+	    "aquamarine2"=>[118,238,198],
+	    "aquamarine3"=>[102,205,170],
+	    "aquamarine4"=>[69,139,116],
+	    "darkseagreen1"=>[193,255,193],
+	    "darkseagreen2"=>[180,238,180],
+	    "darkseagreen3"=>[155,205,155],
+	    "darkseagreen4"=>[105,139,105],
+	    "seagreen1"=>[84,255,159],
+	    "seagreen2"=>[78,238,148],
+	    "seagreen3"=>[67,205,128],
+	    "seagreen4"=>[46,139,87],
+	    "palegreen1"=>[154,255,154],
+	    "palegreen2"=>[144,238,144],
+	    "palegreen3"=>[124,205,124],
+	    "palegreen4"=>[84,139,84],
+	    "springgreen1"=>[0,255,127],
+	    "springgreen2"=>[0,238,118],
+	    "springgreen3"=>[0,205,102],
+	    "springgreen4"=>[0,139,69],
+	    "chartreuse1"=>[127,255,0],
+	    "chartreuse2"=>[118,238,0],
+	    "chartreuse3"=>[102,205,0],
+	    "chartreuse4"=>[69,139,0],
+	    "olivedrab1"=>[192,255,62],
+	    "olivedrab2"=>[179,238,58],
+	    "olivedrab3"=>[154,205,50],
+	    "olivedrab4"=>[105,139,34],
+	    "darkolivegreen1"=>[202,255,112],
+	    "darkolivegreen2"=>[188,238,104],
+	    "darkolivegreen3"=>[162,205,90],
+	    "darkolivegreen4"=>[110,139,61],
+	    "khaki1"=>[255,246,143],
+	    "khaki2"=>[238,230,133],
+	    "khaki3"=>[205,198,115],
+	    "khaki4"=>[139,134,78],
+	    "lightgoldenrod1"=>[255,236,139],
+	    "lightgoldenrod2"=>[238,220,130],
+	    "lightgoldenrod3"=>[205,190,112],
+	    "lightgoldenrod4"=>[139,129,76],
+	    "yellow1"=>[255,255,0],
+	    "yellow2"=>[238,238,0],
+	    "yellow3"=>[205,205,0],
+	    "yellow4"=>[139,139,0],
+	    "gold1"=>[255,215,0],
+	    "gold2"=>[238,201,0],
+	    "gold3"=>[205,173,0],
+	    "gold4"=>[139,117,0],
+	    "goldenrod1"=>[255,193,37],
+	    "goldenrod2"=>[238,180,34],
+	    "goldenrod3"=>[205,155,29],
+	    "goldenrod4"=>[139,105,20],
+	    "darkgoldenrod1"=>[255,185,15],
+	    "darkgoldenrod2"=>[238,173,14],
+	    "darkgoldenrod3"=>[205,149,12],
+	    "darkgoldenrod4"=>[139,101,8],
+	    "rosybrown1"=>[255,193,193],
+	    "rosybrown2"=>[238,180,180],
+	    "rosybrown3"=>[205,155,155],
+	    "rosybrown4"=>[139,105,105],
+	    "indianred1"=>[255,106,106],
+	    "indianred2"=>[238,99,99],
+	    "indianred3"=>[205,85,85],
+	    "indianred4"=>[139,58,58],
+	    "sienna1"=>[255,130,71],
+	    "sienna2"=>[238,121,66],
+	    "sienna3"=>[205,104,57],
+	    "sienna4"=>[139,71,38],
+	    "burlywood1"=>[255,211,155],
+	    "burlywood2"=>[238,197,145],
+	    "burlywood3"=>[205,170,125],
+	    "burlywood4"=>[139,115,85],
+	    "wheat1"=>[255,231,186],
+	    "wheat2"=>[238,216,174],
+	    "wheat3"=>[205,186,150],
+	    "wheat4"=>[139,126,102],
+	    "tan1"=>[255,165,79],
+	    "tan2"=>[238,154,73],
+	    "tan3"=>[205,133,63],
+	    "tan4"=>[139,90,43],
+	    "chocolate1"=>[255,127,36],
+	    "chocolate2"=>[238,118,33],
+	    "chocolate3"=>[205,102,29],
+	    "chocolate4"=>[139,69,19],
+	    "firebrick1"=>[255,48,48],
+	    "firebrick2"=>[238,44,44],
+	    "firebrick3"=>[205,38,38],
+	    "firebrick4"=>[139,26,26],
+	    "brown1"=>[255,64,64],
+	    "brown2"=>[238,59,59],
+	    "brown3"=>[205,51,51],
+	    "brown4"=>[139,35,35],
+	    "salmon1"=>[255,140,105],
+	    "salmon2"=>[238,130,98],
+	    "salmon3"=>[205,112,84],
+	    "salmon4"=>[139,76,57],
+	    "lightsalmon1"=>[255,160,122],
+	    "lightsalmon2"=>[238,149,114],
+	    "lightsalmon3"=>[205,129,98],
+	    "lightsalmon4"=>[139,87,66],
+	    "orange1"=>[255,165,0],
+	    "orange2"=>[238,154,0],
+	    "orange3"=>[205,133,0],
+	    "orange4"=>[139,90,0],
+	    "darkorange1"=>[255,127,0],
+	    "darkorange2"=>[238,118,0],
+	    "darkorange3"=>[205,102,0],
+	    "darkorange4"=>[139,69,0],
+	    "coral1"=>[255,114,86],
+	    "coral2"=>[238,106,80],
+	    "coral3"=>[205,91,69],
+	    "coral4"=>[139,62,47],
+	    "tomato1"=>[255,99,71],
+	    "tomato2"=>[238,92,66],
+	    "tomato3"=>[205,79,57],
+	    "tomato4"=>[139,54,38],
+	    "orangered1"=>[255,69,0],
+	    "orangered2"=>[238,64,0],
+	    "orangered3"=>[205,55,0],
+	    "orangered4"=>[139,37,0],
+	    "deeppink1"=>[255,20,147],
+	    "deeppink2"=>[238,18,137],
+	    "deeppink3"=>[205,16,118],
+	    "deeppink4"=>[139,10,80],
+	    "hotpink1"=>[255,110,180],
+	    "hotpink2"=>[238,106,167],
+	    "hotpink3"=>[205,96,144],
+	    "hotpink4"=>[139,58,98],
+	    "pink1"=>[255,181,197],
+	    "pink2"=>[238,169,184],
+	    "pink3"=>[205,145,158],
+	    "pink4"=>[139,99,108],
+	    "lightpink1"=>[255,174,185],
+	    "lightpink2"=>[238,162,173],
+	    "lightpink3"=>[205,140,149],
+	    "lightpink4"=>[139,95,101],
+	    "palevioletred1"=>[255,130,171],
+	    "palevioletred2"=>[238,121,159],
+	    "palevioletred3"=>[205,104,137],
+	    "palevioletred4"=>[139,71,93],
+	    "maroon1"=>[255,52,179],
+	    "maroon2"=>[238,48,167],
+	    "maroon3"=>[205,41,144],
+	    "maroon4"=>[139,28,98],
+	    "violetred1"=>[255,62,150],
+	    "violetred2"=>[238,58,140],
+	    "violetred3"=>[205,50,120],
+	    "violetred4"=>[139,34,82],
+	    "magenta1"=>[255,0,255],
+	    "magenta2"=>[238,0,238],
+	    "magenta3"=>[205,0,205],
+	    "magenta4"=>[139,0,139],
+	    "mediumred"=>[140,34,34],         
+	    "orchid1"=>[255,131,250],
+	    "orchid2"=>[238,122,233],
+	    "orchid3"=>[205,105,201],
+	    "orchid4"=>[139,71,137],
+	    "plum1"=>[255,187,255],
+	    "plum2"=>[238,174,238],
+	    "plum3"=>[205,150,205],
+	    "plum4"=>[139,102,139],
+	    "mediumorchid1"=>[224,102,255],
+	    "mediumorchid2"=>[209,95,238],
+	    "mediumorchid3"=>[180,82,205],
+	    "mediumorchid4"=>[122,55,139],
+	    "darkorchid1"=>[191,62,255],
+	    "darkorchid2"=>[178,58,238],
+	    "darkorchid3"=>[154,50,205],
+	    "darkorchid4"=>[104,34,139],
+	    "purple1"=>[155,48,255],
+	    "purple2"=>[145,44,238],
+	    "purple3"=>[125,38,205],
+	    "purple4"=>[85,26,139],
+	    "mediumpurple1"=>[171,130,255],
+	    "mediumpurple2"=>[159,121,238],
+	    "mediumpurple3"=>[137,104,205],
+	    "mediumpurple4"=>[93,71,139],
+	    "thistle1"=>[255,225,255],
+	    "thistle2"=>[238,210,238],
+	    "thistle3"=>[205,181,205],
+	    "thistle4"=>[139,123,139],
+	    "gray1"=>[10,10,10],
+	    "gray2"=>[40,40,30],
+	    "gray3"=>[70,70,70],
+	    "gray4"=>[100,100,100],
+	    "gray5"=>[130,130,130],
+	    "gray6"=>[160,160,160],
+	    "gray7"=>[190,190,190],
+	    "gray8"=>[210,210,210],
+	    "gray9"=>[240,240,240],
+	    "darkgray"=>[100,100,100],
+	    "darkblue"=>[0,0,139],
+	    "darkcyan"=>[0,139,139],
+	    "darkmagenta"=>[139,0,139],
+	    "darkred"=>[139,0,0],
+	    "silver"=>[192, 192, 192],
+	    "eggplant"=>[144,176,168],
+	    "lightgreen"=>[144,238,144]];		
     }
 //----------------
 // PUBLIC METHODS
@@ -5404,7 +5404,7 @@ class RGB {
 	    if( $adj < 0 )
 		JpGraphError::Raise('Adjustment factor for color must be > 0');
 
-	    if (substr($aColor, 0, 1) == "#") {
+	    if (str_starts_with($aColor, "#")) {
 		$r = hexdec(substr($aColor, 1, 2));
 		$g = hexdec(substr($aColor, 3, 2));
 		$b = hexdec(substr($aColor, 5, 2));
@@ -5421,14 +5421,14 @@ class RGB {
 	    // and adj=1 neutral and adj=0 black.
 	    if( $adj > 1 ) {
 		$m = ($adj-1.0)*(255-min(255,min($r,min($g,$b))));
-		return array(min(255,$r+$m), min(255,$g+$m), min(255,$b+$m),$alpha);
+		return [min(255,$r+$m), min(255,$g+$m), min(255,$b+$m),$alpha];
 	    }
 	    elseif( $adj < 1 ) {
 		$m = ($adj-1.0)*max(255,max($r,max($g,$b)));
-		return array(max(0,$r+$m), max(0,$g+$m), max(0,$b+$m),$alpha);
+		return [max(0,$r+$m), max(0,$g+$m), max(0,$b+$m),$alpha];
 	    }
 	    else {
-		return array($r,$g,$b,$alpha);
+		return [$r,$g,$b,$alpha];
 	    }
 
 	} elseif( is_array($aColor) ) {
@@ -5442,7 +5442,7 @@ class RGB {
 	else
 	    JpGraphError::Raise(" Unknown color specification: $aColor , size=".count($aColor));
     }
-	
+
     // Compare two colors
     // return true if equal
     function Equal($aCol1,$aCol2) {
@@ -5453,11 +5453,11 @@ class RGB {
 	else
 	    return false;
     }
-	
+
     // Allocate a new color in the current image
     // Return new color index, -1 if no more colors could be allocated
     function Allocate($aColor,$aAlpha=0.0) {
-	list ($r, $g, $b, $a) = $this->color($aColor);
+	[$r, $g, $b, $a] = $this->color($aColor);
 	// If alpha is specified in the color string then this
 	// takes precedence over the second argument
 	if( $a > 0 )
@@ -5480,34 +5480,34 @@ class RGB {
     }
 } // Class
 
-	
+
 //===================================================
 // CLASS Image
 // Description: Wrapper class with some goodies to form the
 // Interface to low level image drawing routines.
 //===================================================
 class Image {
-    var $img_format;
-    var $expired=true;
-    var $img;
-    var $left_margin=30,$right_margin=30,$top_margin=20,$bottom_margin=30;
-    var $plotwidth=0,$plotheight=0;
-    var $rgb=null;
-    var $current_color,$current_color_name;
-    var $lastx=0, $lasty=0;
-    var $width, $height;
-    var $line_weight=1;
-    var $line_style=1;	// Default line style is solid
-    var $obs_list=array();
-    var $font_size=12,$font_family=FF_FONT1, $font_style=FS_NORMAL;
-    var $font_file='';
-    var $text_halign="left",$text_valign="bottom";
-    var $ttf=null;
-    var $use_anti_aliasing=false;
-    var $quality=null;
-    var $colorstack=array(),$colorstackidx=0;
-    var $canvascolor = 'white' ;
-    var $langconv = null ;
+    public $img_format;
+    public $expired=true;
+    public $img;
+    public $left_margin=30,$right_margin=30,$top_margin=20,$bottom_margin=30;
+    public $plotwidth=0,$plotheight=0;
+    public $rgb=null;
+    public $current_color,$current_color_name;
+    public $lastx=0, $lasty=0;
+    public $width, $height;
+    public $line_weight=1;
+    public $line_style=1;	// Default line style is solid
+    public $obs_list=[];
+    public $font_size=12,$font_family=FF_FONT1, $font_style=FS_NORMAL;
+    public $font_file='';
+    public $text_halign="left",$text_valign="bottom";
+    public $ttf=null;
+    public $use_anti_aliasing=false;
+    public $quality=null;
+    public $colorstack=[],$colorstackidx=0;
+    public $canvascolor = 'white' ;
+    public $langconv = null ;
 
     //---------------
     // CONSTRUCTOR
@@ -5555,18 +5555,18 @@ class Image {
 	imagecopy($this->img,$oldimage,0,0,0,0,$this->width,$this->height);
 	return $oldimage;
     }
-    
+
     function CreateImgCanvas($aWidth=0,$aHeight=0) {
 
-	$old = array($this->img,$this->width,$this->height);
-	
+	$old = [$this->img,$this->width,$this->height];
+
 	$aWidth = round($aWidth);
 	$aHeight = round($aHeight);
 
 	$this->width=$aWidth;
 	$this->height=$aHeight;		
 
-	
+
 	if( $aWidth==0 || $aHeight==0 ) {
 	    // We will set the final size later. 
 	    // Note: The size must be specified before any other
@@ -5575,9 +5575,9 @@ class Image {
 	    $this->rgb = null;
 	    return $old;
 	}
-	
+
 	$this->CreateRawCanvas($aWidth,$aHeight);
-		
+
 	// Set canvas color (will also be the background color for a 
 	// a pallett image
 	$this->SetColor($this->canvascolor);	
@@ -5643,7 +5643,7 @@ class Image {
 	    $aImg = $this->img;
 	return imagesy($aImg);
     }
-    
+
     function CreateFromString($aStr) {
 	return imagecreatefromstring($aStr);
     }
@@ -5664,7 +5664,7 @@ class Image {
 	    JpGraphError::Raise('You only seem to have GD 1.x installed. To enable Alphablending requires GD 2.x or higher. Please install GD or make sure the constant USE_GD2 is specified correctly to reflect your installation. By default it tries to autodetect what version of GD you have installed. On some very rare occasions it may falsely detect GD2 where only GD1 is installed. You must then set USE_GD2 to false.');
     }
 
-	
+
     function SetAutoMargin() {	
 	GLOBAL $gJpgBrandTiming;
 	$min_bm=0;
@@ -5679,16 +5679,16 @@ class Image {
 	$this->SetMargin($lm,$rm,$tm,$bm);		
     }
 
-				
+
     //---------------
     // PUBLIC METHODS	
 
     // Add observer. The observer will be notified when
     // the margin changes
     function AddObserver($aMethod,&$aObject) {
-	$this->obs_list[]=array($aMethod,&$aObject);
+	$this->obs_list[]=[$aMethod,&$aObject];
     }
-	
+
     // Call all observers
     function NotifyObservers() {
 	//	foreach($this->obs_list as $o)
@@ -5699,12 +5699,12 @@ class Image {
 	    $obj->$method($this);
 	}
     }	
-	
+
     function SetFont($family,$style=FS_NORMAL,$size=10) {
 	if($family==FONT1_BOLD || $family==FONT2_BOLD || $family==FONT0 || $family==FONT1 || $family==FONT2 )
 	    JpGraphError::Raise(" Usage of FONT0, FONT1, FONT2 is deprecated. Use FF_xxx instead.");
-	
-	
+
+
 	$this->font_family=$family;
 	$this->font_style=$style;
 	$this->font_size=$size;
@@ -5725,11 +5725,11 @@ class Image {
 
     // Get the specific height for a text string
     function GetTextHeight($txt="",$angle=0) {
-	$tmp = split("\n",$txt);
+	$tmp = preg_split("#\n#m",(string) $txt);
 	$n = count($tmp);
 	$m=0;
 	for($i=0; $i< $n; ++$i)
-	    $m = max($m,strlen($tmp[$i]));
+	    $m = max($m,strlen((string) $tmp[$i]));
 
 	if( $this->font_family <= FF_FONT2+1 ) {
 	    if( $angle==0 ) {
@@ -5754,29 +5754,29 @@ class Image {
 	    return $bbox[1]-$bbox[5];
 	}
     }
-	
+
     // Estimate font height
     function GetFontHeight($angle=0) {
 	$txt = "XOMg";
 	return $this->GetTextHeight($txt,$angle);
     }
-	
+
     // Approximate font width with width of letter "O"
     function GetFontWidth($angle=0) {
 	$txt = 'O';
 	return $this->GetTextWidth($txt,$angle);
     }
-	
+
     // Get actual width of text in absolute pixels
     function GetTextWidth($txt,$angle=0) {
 
-	$tmp = split("\n",$txt);
+	$tmp = preg_split("#\n#m",(string) $txt);
 	$n = count($tmp);
 	if( $this->font_family <= FF_FONT2+1 ) {
 
 	    $m=0;
 	    for($i=0; $i < $n; ++$i) {
-		$l=strlen($tmp[$i]);
+		$l=strlen((string) $tmp[$i]);
 		if( $l > $m ) {
 		    $m = $l;
 		}
@@ -5812,7 +5812,7 @@ class Image {
 	    return $m;
 	}
     }
-	
+
     // Draw text with a box around it
     function StrokeBoxedText($x,$y,$txt,$dir=0,$fcolor="white",$bcolor="black",
 			     $shadowcolor=false,$paragraph_align="left",
@@ -5823,7 +5823,7 @@ class Image {
 	    elseif( $dir=="v" ) $dir=90;
 	    else JpGraphError::Raise(" Unknown direction specified in call to StrokeBoxedText() [$dir]");
 	}
-		
+
 	if( $this->font_family >= FF_FONT0 && $this->font_family <= FF_FONT2+1) {	
 	    $width=$this->GetTextWidth($txt,$dir) ;
 	    $height=$this->GetTextHeight($txt,$dir) ;
@@ -5840,7 +5840,7 @@ class Image {
 	elseif( $this->text_halign=="center" ) $x -= $width/2;
 	if( $this->text_valign=="bottom" ) $y -= $height;
 	elseif( $this->text_valign=="center" ) $y -= $height/2;
-	
+
 	if( $shadowcolor ) {
 	    $this->PushColor($shadowcolor);
 	    $this->FilledRoundedRectangle($x-$xmarg+$dropwidth,$y-$ymarg+$dropwidth,
@@ -5871,7 +5871,7 @@ class Image {
 		$this->current_color=$oc;			
 	    }
 	}
-		
+
 	$h=$this->text_halign;
 	$v=$this->text_valign;
 	$this->SetTextAlign("left","top");
@@ -5884,17 +5884,17 @@ class Image {
 	$this->text_halign=$halign;
 	$this->text_valign=$valign;
     }
-	
+
 
     function _StrokeBuiltinFont($x,$y,$txt,$dir=0,$paragraph_align="left") {
 
 	if( is_numeric($dir) && $dir!=90 && $dir!=0) 
 	    JpGraphError::Raise(" Internal font does not support drawing text at arbitrary angle. Use TTF fonts instead.");
-	
+
 	$h=$this->GetTextHeight($txt);
 	$fh=$this->GetFontHeight();
 	$w=$this->GetTextWidth($txt);
-	
+
 	if( $this->text_halign=="right") 				
 	    $x -= $dir==0 ? $w : $h;
 	elseif( $this->text_halign=="center" ) {
@@ -5906,30 +5906,30 @@ class Image {
 	    $y += $dir==0 ? $h : $w;
 	elseif( $this->text_valign=="center" ) 				
 	    $y += $dir==0 ? $h/2 : $w/2;
-	
+
 	if( $dir==90 )
-	    imagestringup($this->img,$this->font_family,$x,$y,$txt,$this->current_color);
+	    imagestringup($this->img,$this->font_family,$x,$y,(string) $txt,$this->current_color);
 	else {
-	    if( ereg("\n",$txt) ) { 
-		$tmp = split("\n",$txt);
+	    if( preg_match("#\n#m",(string) $txt) ) { 
+		$tmp = preg_split("#\n#m",(string) $txt);
 		for($i=0; $i < count($tmp); ++$i) {
 		    $w1 = $this->GetTextWidth($tmp[$i]);
 		    if( $paragraph_align=="left" ) {
-			imagestring($this->img,$this->font_family,$x,$y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
+			imagestring($this->img,$this->font_family,$x,$y-$h+1+$i*$fh,(string) $tmp[$i],$this->current_color);
 		    }
 		    elseif( $paragraph_align=="right" ) {
 			imagestring($this->img,$this->font_family,$x+($w-$w1),
-				    $y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
+				    $y-$h+1+$i*$fh,(string) $tmp[$i],$this->current_color);
 		    }
 		    else {
 			imagestring($this->img,$this->font_family,$x+$w/2-$w1/2,
-				    $y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
+				    $y-$h+1+$i*$fh,(string) $tmp[$i],$this->current_color);
 		    }
 		}
 	    } 
 	    else {
 		//Put the text
-		imagestring($this->img,$this->font_family,$x,$y-$h+1,$txt,$this->current_color);
+		imagestring($this->img,$this->font_family,$x,$y-$h+1,(string) $txt,$this->current_color);
 	    }
 	}
     }
@@ -5939,7 +5939,7 @@ class Image {
 	// instead of '\n\t' we have to add '\r' since
 	// the width will be too muchy otherwise since when
 	// we print we stroke the individually lines by hand.
-	$e = explode("\n",$aTxt);
+	$e = explode("\n",(string) $aTxt);
 	$n = count($e);
 	for($i=0; $i<$n; ++$i) {
 	    $e[$i]=str_replace("\r","",$e[$i]);
@@ -5948,7 +5948,7 @@ class Image {
     }
 
     function GetTTFBBox($aTxt,$aAngle=0) {
-	$bbox = @ImageTTFBBox($this->font_size,$aAngle,$this->font_file,$aTxt);
+	$bbox = @ImageTTFBBox($this->font_size,$aAngle,$this->font_file,(string) $aTxt);
 	if( $bbox === false ) {
 	    JpGraphError::Raise("There is either a configuration problem with TrueType or a problem reading font file (".$this->font_file."). Make sure file exists and is in a readable place for the HTTP process. (If 'basedir' restriction is enabled in PHP then the font file must be located in the document root.). It might also be a wrongly installed FreeType library. Try uppgrading to at least FreeType 2.1.13 and recompile GD with the correct setup so it can find the new FT library.");
 	}
@@ -5970,38 +5970,38 @@ class Image {
 	    return $bbox;
 	if( $aAngle >= 0 ) {
 	    if(  $aAngle <= 90 ) { //<=0		
-		$bbox = array($bbox[6],$bbox[1],$bbox[2],$bbox[1],
-			      $bbox[2],$bbox[5],$bbox[6],$bbox[5]);
+		$bbox = [$bbox[6],$bbox[1],$bbox[2],$bbox[1],
+			      $bbox[2],$bbox[5],$bbox[6],$bbox[5]];
 	    }
 	    elseif(  $aAngle <= 180 ) { //<= 2
-		$bbox = array($bbox[4],$bbox[7],$bbox[0],$bbox[7],
-			      $bbox[0],$bbox[3],$bbox[4],$bbox[3]);
+		$bbox = [$bbox[4],$bbox[7],$bbox[0],$bbox[7],
+			      $bbox[0],$bbox[3],$bbox[4],$bbox[3]];
 	    }
 	    elseif(  $aAngle <= 270 )  { //<= 3
-		$bbox = array($bbox[2],$bbox[5],$bbox[6],$bbox[5],
-			      $bbox[6],$bbox[1],$bbox[2],$bbox[1]);
+		$bbox = [$bbox[2],$bbox[5],$bbox[6],$bbox[5],
+			      $bbox[6],$bbox[1],$bbox[2],$bbox[1]];
 	    }
 	    else {
-		$bbox = array($bbox[0],$bbox[3],$bbox[4],$bbox[3],
-			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]);
+		$bbox = [$bbox[0],$bbox[3],$bbox[4],$bbox[3],
+			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]];
 	    }
 	}
 	elseif(  $aAngle < 0 ) {
 	    if( $aAngle <= -270 ) { // <= -3
-		$bbox = array($bbox[6],$bbox[1],$bbox[2],$bbox[1],
-			      $bbox[2],$bbox[5],$bbox[6],$bbox[5]);
+		$bbox = [$bbox[6],$bbox[1],$bbox[2],$bbox[1],
+			      $bbox[2],$bbox[5],$bbox[6],$bbox[5]];
 	    }
 	    elseif( $aAngle <= -180 ) { // <= -2
-		$bbox = array($bbox[0],$bbox[3],$bbox[4],$bbox[3],
-			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]);
+		$bbox = [$bbox[0],$bbox[3],$bbox[4],$bbox[3],
+			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]];
 	    }
 	    elseif( $aAngle <= -90 ) { // <= -1
-		$bbox = array($bbox[2],$bbox[5],$bbox[6],$bbox[5],
-			      $bbox[6],$bbox[1],$bbox[2],$bbox[1]);
+		$bbox = [$bbox[2],$bbox[5],$bbox[6],$bbox[5],
+			      $bbox[6],$bbox[1],$bbox[2],$bbox[1]];
 	    }
 	    else {
-		$bbox = array($bbox[0],$bbox[3],$bbox[4],$bbox[3],
-			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]);
+		$bbox = [$bbox[0],$bbox[3],$bbox[4],$bbox[3],
+			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]];
 	    }
 	}	
 	return $bbox;
@@ -6029,13 +6029,13 @@ class Image {
 	    $oy=$y;
 	}
 
-	if( !ereg("\n",$txt) || ($dir>0 && ereg("\n",$txt)) ) {
+	if( !preg_match("#\n#m",(string) $txt) || ($dir>0 && preg_match("#\n#m",(string) $txt)) ) {
 	    // Format a single line
 
 	    $txt = $this->AddTxtCR($txt);
 
 	    $bbox=$this->GetBBoxTTF($txt,$dir);
-	    
+
 	    // Align x,y ot lower left corner of bbox
 	    $x -= $bbox[0];
 	    $y -= $bbox[1];
@@ -6045,18 +6045,18 @@ class Image {
 	    if( $this->text_halign=="right" || $this->text_halign=="topanchor" ) 
 		$x -= $bbox[2]-$bbox[0];
 	    elseif( $this->text_halign=="center" ) $x -= ($bbox[2]-$bbox[0])/2; 
-	    
+
 	    if( $this->text_valign=="top" ) $y += abs($bbox[5])+$bbox[1];
 	    elseif( $this->text_valign=="center" ) $y -= ($bbox[5]-$bbox[1])/2; 
 
 	    ImageTTFText ($this->img, $this->font_size, $dir, $x, $y, 
-			  $this->current_color,$this->font_file,$txt); 
+			  $this->current_color,$this->font_file,(string) $txt); 
 
             if( $debug ) {
 		// Draw the bounding rectangle and the bounding box
-		$box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,$txt);
-		$p = array();
-		$p1 = array();
+		$box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,(string) $txt);
+		$p = [];
+		$p1 = [];
 		for($i=0; $i < 4; ++$i) {
 		    $p[] = $bbox[$i*2]+$x;
 		    $p[] = $bbox[$i*2+1]+$y;
@@ -6068,12 +6068,12 @@ class Image {
 		$this->PushColor('green');
 		$this->Polygon($p1,true);
 		$this->PopColor();
-		
+
 		// Draw bounding rectangle
 		$this->PushColor('darkgreen');
 		$this->Polygon($p,true);
 		$this->PopColor();
-		
+
 		// Draw a cross at the anchor point
 		$this->PushColor('red');
 		$this->Line($ox-15,$oy,$ox+15,$oy);
@@ -6091,7 +6091,7 @@ class Image {
 	    $w=$this->GetTextWidth($txt);
 
 	    $y -= $linemargin/2;
-	    $tmp = split("\n",$txt);
+	    $tmp = preg_split("#\n#m",(string) $txt);
 	    $nl = count($tmp);
 	    $h = $nl * $fh;
 
@@ -6100,7 +6100,7 @@ class Image {
 	    elseif( $this->text_halign=="center" ) {
 		$x -= $dir==0 ? $w/2 : $h/2;
 	    }
-	    
+
 	    if( $this->text_valign=="top" )
 		$y +=	$dir==0 ? $h : $w;
 	    elseif( $this->text_valign=="center" ) 				
@@ -6137,18 +6137,18 @@ class Image {
 		$xl = $xl  - $xadj; 
 		ImageTTFText ($this->img, $this->font_size, $dir, 
 			      $xl, $yl-($h-$fh)+$fh*$i,
-			      $this->current_color,$this->font_file,$tmp[$i]); 
+			      $this->current_color,$this->font_file,(string) $tmp[$i]); 
 
 
 		if( $debug  ) {
 		    // Draw the bounding rectangle around each line
-		    $box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,$tmp[$i]);
-		    $p = array();
+		    $box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,(string) $tmp[$i]);
+		    $p = [];
 		    for($j=0; $j < 4; ++$j) {
 			$p[] = $bbox[$j*2]+$xl;
 			$p[] = $bbox[$j*2+1]+$yl-($h-$fh)+$fh*$i;
 		    }
-		    
+
 		    // Draw bounding rectangle
 		    $this->PushColor('darkgreen');
 		    $this->Polygon($p,true);
@@ -6157,7 +6157,7 @@ class Image {
 	    }
 
 	    if( $debug ) {
-		
+
 		// Draw a cross at the anchor point
 		$this->PushColor('red');
 		$this->Line($ox-25,$oy,$ox+25,$oy);
@@ -6167,7 +6167,7 @@ class Image {
 
 	}
     }
-	
+
     function StrokeText($x,$y,$txt,$dir=0,$paragraph_align="left",$debug=false) {
 
 	$x = round($x);
@@ -6178,7 +6178,7 @@ class Image {
 
 	if( !is_numeric($dir) )
 	    JpGraphError::Raise(" Direction for text most be given as an angle between 0 and 90.");
-			
+
 	if( $this->font_family >= FF_FONT0 && $this->font_family <= FF_FONT2+1) {	
 	    $this->_StrokeBuiltinFont($x,$y,$txt,$dir,$paragraph_align,$debug);
 	}
@@ -6188,7 +6188,7 @@ class Image {
 	else
 	    JpGraphError::Raise(" Unknown font font family specification. ");
     }
-	
+
     function SetMargin($lm,$rm,$tm,$bm) {
 	$this->left_margin=$lm;
 	$this->right_margin=$rm;
@@ -6204,7 +6204,7 @@ class Image {
     function SetTransparent($color) {
 	imagecolortransparent ($this->img,$this->rgb->allocate($color));
     }
-	
+
     function SetColor($color,$aAlpha=0) {
 	$this->current_color_name = $color;
 	$this->current_color=$this->rgb->allocate($color,$aAlpha);
@@ -6233,7 +6233,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	}
 	return $this->current_color;
     }
-	
+
     function PushColor($color) {
 	if( $color != "" ) {
 	    $this->colorstack[$this->colorstackidx]=$this->current_color_name;
@@ -6245,15 +6245,15 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    JpGraphError::Raise("Color specified as empty string in PushColor().");
 	}
     }
-	
+
     function PopColor() {
 	if($this->colorstackidx<1)
 	    JpGraphError::Raise(" Negative Color stack index. Unmatched call to PopColor()");
 	$this->current_color=$this->colorstack[--$this->colorstackidx];
 	$this->current_color_name=$this->colorstack[--$this->colorstackidx];
     }
-	
-	
+
+
     // Why this duplication? Because this way we can call this method
     // for any image and not only the current objsct
     function AdjSat($sat) {	
@@ -6261,7 +6261,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    return;
 	$this->_AdjSat($this->img,$sat);	
     }	
-	
+
     function _AdjSat($img,$sat) {
 	$nbr = imagecolorstotal ($img);
 	for( $i=0; $i<$nbr; ++$i ) {
@@ -6273,7 +6273,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    imagecolorset ($img, $i, $rgb[0], $rgb[1], $rgb[2]);
 	}
     }
-	
+
     function AdjBrightContrast($bright,$contr=0) {
 	if( $GLOBALS['gd2'] && USE_TRUECOLOR )
 	    return;
@@ -6292,7 +6292,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    imagecolorset ($img, $i, $r, $g, $b);
 	}
     }
-	
+
     // Private helper function for adj sat
     // Adjust saturation for RGB array $u. $sat is a value between -1 and 1
     // Note: Due to GD inability to handle true color the RGB values are only between
@@ -6312,7 +6312,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
     function AdjRGBSat($rgb,$sat) {
 	// TODO: Should be moved to the RGB class
 	// Grey vector
-	$v=array(1,1,1);
+	$v=[1,1,1];
 
 	// Dot product
 	$dot = $rgb[0]*$v[0]+$rgb[1]*$v[1]+$rgb[2]*$v[2];
@@ -6335,7 +6335,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	}
 	else
 	    $tadj=1;
-		
+
 	$tadj = $tadj*$sat;	
 	for($i=0; $i<3; ++$i) {
 	    $un[$i] = round($rgb[$i] + $tadj*$r[$i]);		
@@ -6360,32 +6360,32 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    if( $rgb < 128 ) $rgb = $rgb - ($rgb * $contr);
 	    else $rgb = $rgb + ((255-$rgb) * $contr);
 	}
-	
+
 	// Add (or remove) various amount of white
 	$rgb += $bright*255;	
 	$rgb=min($rgb,255);
 	$rgb=max($rgb,0);
 	return $rgb;	
     }
-	
+
     function SetLineWeight($weight) {
 	$this->line_weight = $weight;
     }
-	
+
     function SetStartPoint($x,$y) {
 	$this->lastx=round($x);
 	$this->lasty=round($y);
     }
-	
+
     function Arc($cx,$cy,$w,$h,$s,$e) {
 	// GD Arc doesn't like negative angles
 	while( $s < 0) $s += 360;
 	while( $e < 0) $e += 360;
-    	
+
 	imagearc($this->img,round($cx),round($cy),round($w),round($h),
 		 $s,$e,$this->current_color);
     }
-    
+
     function FilledArc($xc,$yc,$w,$h,$s,$e,$style="") {
 
 	if( $GLOBALS['gd2'] ) {
@@ -6436,8 +6436,8 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	if( $numsteps == 0 ) return;
 	if( $numsteps < 7 ) $numsteps=7;
 	$delta = abs($da)/$numsteps;
-	
-	$pa=array();
+
+	$pa=[];
 	$a = $s;
 	for($i=1; $i<=$numsteps; ++$i ) {
 	    $p[2*$i] = round($xc + $w*cos($a));
@@ -6500,7 +6500,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
     function Ellipse($xc,$yc,$w,$h) {
 	$this->Arc($xc,$yc,$w,$h,0,360);
     }
-	
+
     // Breseham circle gives visually better result then using GD
     // built in arc(). It takes some more time but gives better
     // accuracy.
@@ -6513,12 +6513,12 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    $this->Point($xc+$x,$yc-$y);
 	    $this->Point($xc-$x,$yc+$y);
 	    $this->Point($xc-$x,$yc-$y);
-			
+
 	    $this->Point($xc+$y,$yc+$x);
 	    $this->Point($xc+$y,$yc-$x);
 	    $this->Point($xc-$y,$yc+$x);
 	    $this->Point($xc-$y,$yc-$x);
-			
+
 	    if( $d<0 ) $d += 4*$x+6;
 	    else {
 		$d += 4*($x-$y)+10;		
@@ -6527,7 +6527,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    ++$x;
 	}
     }
-			
+
     function Circle($xc,$yc,$r) {
 	if( USE_BRESENHAM )
 	    $this->BresenhamCircle($xc,$yc,$r);
@@ -6557,7 +6557,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    //imageellipse($this->img,$xc,$yc,$r,$r,$this->current_color);
 	}
     }
-	
+
     function FilledCircle($xc,$yc,$r) {
 	if( $GLOBALS['gd2'] ) {
 	    imagefilledellipse($this->img,round($xc),round($yc),
@@ -6573,14 +6573,14 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    }
 	}	
     }
-	
+
     // Linear Color InterPolation
     function lip($f,$t,$p) {
 	$p = round($p,1);
 	$r = $f[0] + ($t[0]-$f[0])*$p;
 	$g = $f[1] + ($t[1]-$f[1])*$p;
 	$b = $f[2] + ($t[2]-$f[2])*$p;
-	return array($r,$g,$b);
+	return [$r,$g,$b];
     }
 
     // Anti-aliased line. 
@@ -6588,11 +6588,11 @@ DEFINE(\"USE_APPROX_COLORS\",true);
     function WuLine($x1,$y1,$x2,$y2) {
 	// Get foreground line color
 	$lc = imagecolorsforindex($this->img,$this->current_color);
-	$lc = array($lc["red"],$lc["green"],$lc["blue"]);
+	$lc = [$lc["red"],$lc["green"],$lc["blue"]];
 
 	$dx = $x2-$x1;
 	$dy = $y2-$y1;
-	
+
 	if( abs($dx) > abs($dy) ) {
 	    if( $dx<0 ) {
 		$dx = -$dx;$dy = -$dy;
@@ -6602,13 +6602,13 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    $x=$x1<<16; $y=$y1<<16;
 	    $yinc = ($dy*65535)/$dx;
 	    while( ($x >> 16) < $x2 ) {
-				
+
 		$bc = @imagecolorsforindex($this->img,imagecolorat($this->img,$x>>16,$y>>16));
 		if( $bc <= 0 ) {
 		    JpGraphError::Raise('Problem with color palette and your GD setup. Please disable anti-aliasing or use GD2 with true-color. If you have GD2 library installed please make sure that you have set the USE_GD2 constant to true and that truecolor is enabled.');
 		}
-		$bc=array($bc["red"],$bc["green"],$bc["blue"]);
-				
+		$bc=[$bc["red"],$bc["green"],$bc["blue"]];
+
 		$this->SetColor($this->lip($lc,$bc,($y & 0xFFFF)/65535));
 		imagesetpixel($this->img,$x>>16,$y>>16,$this->current_color);
 		$this->SetColor($this->lip($lc,$bc,(~$y & 0xFFFF)/65535));
@@ -6625,15 +6625,15 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    $x=$x1<<16; $y=$y1<<16;
 	    $xinc = ($dx*65535)/$dy;	
 	    while( ($y >> 16) < $y2 ) {
-				
+
 		$bc = @imagecolorsforindex($this->img,imagecolorat($this->img,$x>>16,$y>>16));
 		if( $bc <= 0 ) {
 		    JpGraphError::Raise('Problem with color palette and your GD setup. Please disable anti-aliasing or use GD2 with true-color. If you have GD2 library installed please make sure that you have set the USE_GD2 constant to true and truecolor is enabled.');
 
 		}
 
-		$bc=array($bc["red"],$bc["green"],$bc["blue"]);				
-				
+		$bc=[$bc["red"],$bc["green"],$bc["blue"]];				
+
 		$this->SetColor($this->lip($lc,$bc,($x & 0xFFFF)/65535));
 		imagesetpixel($this->img,$x>>16,$y>>16,$this->current_color);
 		$this->SetColor($this->lip($lc,$bc,(~$x & 0xFFFF)/65535));
@@ -6662,26 +6662,20 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	else JpGraphError::Raise(" Illegal argument to SetLineStyle $s");
 	$this->line_style=$s;
     }
-	
+
     // Same as Line but take the line_style into account
     function StyleLine($x1,$y1,$x2,$y2) {
-	switch( $this->line_style ) {
-	    case 1:// Solid
-		$this->Line($x1,$y1,$x2,$y2);
-		break;
-	    case 2: // Dotted
-		$this->DashedLine($x1,$y1,$x2,$y2,1,6);
-		break;
-	    case 3: // Dashed
-		$this->DashedLine($x1,$y1,$x2,$y2,2,4);
-		break;
-	    case 4: // Longdashes
-		$this->DashedLine($x1,$y1,$x2,$y2,8,6);
-		break;
-	    default:
-		JpGraphError::Raise(" Unknown line style: $this->line_style ");
-		break;
-	}
+	match ($this->line_style) {
+        // Solid
+        1 => $this->Line($x1,$y1,$x2,$y2),
+        // Dotted
+        2 => $this->DashedLine($x1,$y1,$x2,$y2,1,6),
+        // Dashed
+        3 => $this->DashedLine($x1,$y1,$x2,$y2,2,4),
+        // Longdashes
+        4 => $this->DashedLine($x1,$y1,$x2,$y2,8,6),
+        default => JpGraphError::Raise(" Unknown line style: $this->line_style "),
+    };
     }
 
     function Line($x1,$y1,$x2,$y2) {
@@ -6728,13 +6722,13 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    // bit involved since we are dealing with integer functions and we
 	    // want the apperance to be as smooth as possible and never be thicker
 	    // then the specified width.
-			
+
 	    // We do the trig stuff to make sure that the endpoints of the line
 	    // are perpendicular to the line itself.
 	    $dx=(sin($a)*$this->line_weight/2);
 	    $dy=(cos($a)*$this->line_weight/2);
 
-	    $pnts = array($x2+$dx,$y2+$dy,$x2-$dx,$y2-$dy,$x1-$dx,$y1-$dy,$x1+$dx,$y1+$dy);
+	    $pnts = [$x2+$dx,$y2+$dy,$x2-$dx,$y2-$dy,$x1-$dx,$y1-$dy,$x1+$dx,$y1+$dy];
 	    imagefilledpolygon($this->img,$pnts,count($pnts)/2,$this->current_color);
 	}		
 	$this->lastx=$x2; $this->lasty=$y2;		
@@ -6753,7 +6747,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	if( $closed )
 	    $this->Line($oldx,$oldy,$p[0],$p[1]);
     }
-	
+
     function FilledPolygon($pts) {
 	$n=count($pts);
 	if( $n == 0 ) {
@@ -6763,13 +6757,13 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    $pts[$i] = round($pts[$i]);
 	imagefilledpolygon($this->img,$pts,count($pts)/2,$this->current_color);
     }
-	
+
     function Rectangle($xl,$yu,$xr,$yl) {
-	$this->Polygon(array($xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl,$xl,$yu));
+	$this->Polygon([$xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl,$xl,$yu]);
     }
-	
+
     function FilledRectangle($xl,$yu,$xr,$yl) {
-	$this->FilledPolygon(array($xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl));
+	$this->FilledPolygon([$xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl]);
     }
 
     function FilledRectangle2($xl,$yu,$xr,$yl,$color1,$color2,$style=1) {
@@ -6801,7 +6795,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	}
     }
 
-    function ShadowRectangle($xl,$yu,$xr,$yl,$fcolor=false,$shadow_width=3,$shadow_color=array(102,102,102)) {
+    function ShadowRectangle($xl,$yu,$xr,$yl,$fcolor=false,$shadow_width=3,$shadow_color=[102,102,102]) {
 	// This is complicated by the fact that we must also handle the case where
         // the reactangle has no fill color
 	$this->PushColor($shadow_color);
@@ -6828,7 +6822,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	// To avoid overlapping fillings (which will look strange
 	// when alphablending is enabled) we have no choice but 
 	// to fill the five distinct areas one by one.
-	
+
 	// Center square
 	$this->FilledRectangle($xt+$r,$yt+$r,$xr-$r,$yl-$r);
 	// Top band
@@ -6886,7 +6880,7 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	    $this->Line($x1+$i,$y1+$i,$x2-$i,$y1+$i);
 	}
 	$this->PopColor();
-	
+
 	$this->PushColor($color2);
 	for( $i=0; $i < $depth; ++$i ) {
 	    $this->Line($x1+$i,$y2-$i,$x2-$i,$y2-$i);
@@ -6900,17 +6894,17 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	$this->lastx=$x;
 	$this->lasty=$y;
     }
-	
+
     function LineTo($x,$y) {
 	$this->Line($this->lastx,$this->lasty,$x,$y);
 	$this->lastx=$x;
 	$this->lasty=$y;
     }
-	
+
     function Point($x,$y) {
 	imagesetpixel($this->img,round($x),round($y),$this->current_color);
     }
-	
+
     function Fill($x,$y) {
 	imagefill($this->img,round($x),round($y),$this->current_color);
     }
@@ -6923,10 +6917,10 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	}
 	imagefilltoborder($this->img,round($x),round($y),$bc,$this->current_color);
     }
-	
+
     function DashedLine($x1,$y1,$x2,$y2,$dash_length=1,$dash_space=4) {
 	// Code based on, but not identical to, work by Ariel Garza and James Pine
-	$line_length = ceil (sqrt(pow(($x2 - $x1),2) + pow(($y2 - $y1),2)) );
+	$line_length = ceil (sqrt(($x2 - $x1) ** 2 + ($y2 - $y1) ** 2) );
 	$dx = ($line_length) ? ($x2 - $x1) / $line_length : 0;
 	$dy = ($line_length) ? ($y2 - $y1) / $line_length : 0;
 	$lastx = $x1; $lasty = $y1;
@@ -6937,12 +6931,12 @@ DEFINE(\"USE_APPROX_COLORS\",true);
 	for ($i = 0; $i < $line_length; $i += ($dash_length + $dash_space)) {
 	    $x = ($dash_length * $dx) + $lastx;
 	    $y = ($dash_length * $dy) + $lasty;
-			
+
 	    // The last section might overshoot so we must take a computational hit
 	    // and check this.
 	    if( $x>$xmax ) $x=$xmax;
 	    if( $y>$ymax ) $y=$ymax;
-			
+
 	    if( $x<$xmin ) $x=$xmin;
 	    if( $y<$ymin ) $y=$ymin;
 
@@ -6955,25 +6949,25 @@ DEFINE(\"USE_APPROX_COLORS\",true);
     function SetExpired($aFlg=true) {
 	$this->expired = $aFlg;
     }
-	
+
     // Generate image header
     function Headers() {
-	
+
 	// In case we are running from the command line with the client version of
 	// PHP we can't send any headers.
 	$sapi = php_sapi_name();
 	if( $sapi == 'cli' )
 	    return;
-	
+
 	if( headers_sent() ) {
-	    
+
 	    echo "<table border=1><tr><td><font color=darkred size=4><b>JpGraph Error:</b> 
 HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b><br>HTTP headers have already been sent back to the browser indicating the data as text before the library got a chance to send it's image HTTP header to this browser. This makes it impossible for the library to send back image data to the browser (since that would be interpretated as text by the browser and show up as junk text).<p>Most likely you have some text in your script before the call to <i>Graph::Stroke()</i>. If this texts gets sent back to the browser the browser will assume that all data is plain text. Look for any text, even spaces and newlines, that might have been sent back to the browser. <p>For example it is a common mistake to leave a blank line before the opening \"<b>&lt;?php</b>\".</td></tr></table>";
 
 	die();
 
 	}	
-	
+
 	if ($this->expired) {
 	    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 	    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . "GMT");
@@ -6987,7 +6981,7 @@ HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b>
     function SetQuality($q) {
 	$this->quality = $q;
     }
-	
+
     // Stream image to browser or to file
     function Stream($aFile="") {
 	$func="image".$this->img_format;
@@ -7004,16 +6998,16 @@ HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b>
 	if( !$res )
 	    JpGraphError::Raise("Can't create or stream image to file $aFile Check that PHP has enough permission to write a file to the current directory.");
     }
-		
+
     // Clear resource tide up by image
     function Destroy() {
 	imagedestroy($this->img);
     }
-	
+
     // Specify image format. Note depending on your installation
     // of PHP not all formats may be supported.
     function SetImgFormat($aFormat) {		
-	$aFormat = strtolower($aFormat);
+	$aFormat = strtolower((string) $aFormat);
 	$tst = true;
 	$supported = imagetypes();
 	if( $aFormat=="auto" ) {
@@ -7027,7 +7021,7 @@ HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b>
 		JpGraphError::Raise(" Your PHP (and GD-lib) installation does not appear to support any known graphic formats.".
 				    "You need to first make sure GD is compiled as a module to PHP. If you also want to use JPEG images".
 				    "you must get the JPEG library. Please see the PHP docs for details.");
-				
+
 	    return true;
 	}
 	else {
@@ -7057,28 +7051,28 @@ HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b>
 // a specified angle around a specified rotation point.
 //===================================================
 class RotImage extends Image {
-    var $m=array();
-    var $a=0;
-    var $dx=0,$dy=0,$transx=0,$transy=0; 
-	
+    public $m=[];
+    public $a=0;
+    public $dx=0,$dy=0,$transx=0,$transy=0; 
+
     function RotImage($aWidth,$aHeight,$a=0,$aFormat=DEFAULT_GFORMAT) {
 	$this->Image($aWidth,$aHeight,$aFormat);
 	$this->dx=$this->left_margin+$this->plotwidth/2;
 	$this->dy=$this->top_margin+$this->plotheight/2;
 	$this->SetAngle($a);	
     }
-	
+
     function SetCenter($dx,$dy) {
 	$old_dx = $this->dx;
 	$old_dy = $this->dy;
 	$this->dx=$dx;
 	$this->dy=$dy;
 	$this->SetAngle($this->a);
-	return array($old_dx,$old_dy);
+	return [$old_dx,$old_dy];
     }
-	
+
     function SetTranslation($dx,$dy) {
-	$old = array($this->transx,$this->transy);
+	$old = [$this->transx,$this->transy];
 	$this->transx = $dx;
 	$this->transy = $dy;
 	return $old;
@@ -7115,21 +7109,21 @@ class RotImage extends Image {
 	// call to Arc so it will get rotated through the Arc
 	// call.
 	if( $GLOBALS['gd2'] ) {
-	    list($xc,$yc) = $this->Rotate($xc,$yc);
+	    [$xc, $yc] = $this->Rotate($xc,$yc);
 	}
 	parent::FilledCircle($xc,$yc,$r);
     }
 
-	
+
     function Arc($xc,$yc,$w,$h,$s,$e) {
-	list($xc,$yc) = $this->Rotate($xc,$yc);
+	[$xc, $yc] = $this->Rotate($xc,$yc);
 	$s += $this->a;
 	$e += $this->a;
 	parent::Arc($xc,$yc,$w,$h,$s,$e);
     }
 
     function FilledArc($xc,$yc,$w,$h,$s,$e) {
-	list($xc,$yc) = $this->Rotate($xc,$yc);
+	[$xc, $yc] = $this->Rotate($xc,$yc);
 	$s += $this->a;
 	$e += $this->a;
 	parent::FilledArc($xc,$yc,$w,$h,$s,$e);
@@ -7141,28 +7135,28 @@ class RotImage extends Image {
 	$this->dy=$this->top_margin+$this->plotheight/2;
 	$this->UpdateRotMatrice();
     }
-	
+
     function Rotate($x,$y) {
 	// Optimization. Ignore rotation if Angle==0 || ANgle==360
 	if( $this->a == 0 || $this->a == 360 ) {
-	    return array($x + $this->transx, $y + $this->transy );
+	    return [$x + $this->transx, $y + $this->transy ];
 	}
 	else {
 	    $x1=round($this->m[0][0]*$x + $this->m[0][1]*$y,1) + $this->m[0][2] + $this->transx;
 	    $y1=round($this->m[1][0]*$x + $this->m[1][1]*$y,1) + $this->m[1][2] + $this->transy;
-	    return array($x1,$y1);
+	    return [$x1,$y1];
 	}
     }
-	
+
     function ArrRotate($pnts) {
 	for($i=0; $i < count($pnts)-1; $i+=2)
-	    list($pnts[$i],$pnts[$i+1]) = $this->Rotate($pnts[$i],$pnts[$i+1]);
+	    [$pnts[$i], $pnts[$i+1]] = $this->Rotate($pnts[$i],$pnts[$i+1]);
 	return $pnts;
     }
-	
+
     function Line($x1,$y1,$x2,$y2) {
-	list($x1,$y1) = $this->Rotate($x1,$y1);
-	list($x2,$y2) = $this->Rotate($x2,$y2);
+	[$x1, $y1] = $this->Rotate($x1,$y1);
+	[$x2, $y2] = $this->Rotate($x2,$y2);
 	parent::Line($x1,$y1,$x2,$y2);
     }
 
@@ -7170,30 +7164,30 @@ class RotImage extends Image {
 	// Rectangle uses Line() so it will be rotated through that call
 	parent::Rectangle($x1,$y1,$x2,$y2);
     }
-	
+
     function FilledRectangle($x1,$y1,$x2,$y2) {
 	if( $y1==$y2 || $x1==$x2 )
 	    $this->Line($x1,$y1,$x2,$y2);
 	else 
-	    $this->FilledPolygon(array($x1,$y1,$x2,$y1,$x2,$y2,$x1,$y2));
+	    $this->FilledPolygon([$x1,$y1,$x2,$y1,$x2,$y2,$x1,$y2]);
     }
-	
+
     function Polygon($pnts,$closed=FALSE) {
 	//Polygon uses Line() so it will be rotated through that call
 	parent::Polygon($pnts,$closed);
     }
-	
+
     function FilledPolygon($pnts) {
 	parent::FilledPolygon($this->ArrRotate($pnts));
     }
-	
+
     function Point($x,$y) {
-	list($xp,$yp) = $this->Rotate($x,$y);
+	[$xp, $yp] = $this->Rotate($x,$y);
 	parent::Point($xp,$yp);
     }
-	
+
     function StrokeText($x,$y,$txt,$dir=0,$paragraph_align="left",$debug=false) {
-	list($xp,$yp) = $this->Rotate($x,$y);
+	[$xp, $yp] = $this->Rotate($x,$y);
 	parent::StrokeText($xp,$yp,$txt,$dir,$paragraph_align,$debug);
     }
 }
@@ -7203,9 +7197,9 @@ class RotImage extends Image {
 // Description: Handle caching of graphs to files
 //===================================================
 class ImgStreamCache {
-    var $cache_dir;
-    var $img=null;
-    var $timeout=0; 	// Infinite timeout
+    public $cache_dir;
+    public $img=null;
+    public $timeout=0; 	// Infinite timeout
     //---------------
     // CONSTRUCTOR
     function ImgStreamCache(&$aImg, $aCacheDir=CACHE_DIR) {
@@ -7223,13 +7217,13 @@ class ImgStreamCache {
     function SetTimeout($aTimeout) {
 	$this->timeout=$aTimeout;	
     }
-	
+
     // Output image to browser and also write it to the cache
     function PutAndStream(&$aImage,$aCacheFileName,$aInline,$aStrokeFileName) {
 	// Some debugging code to brand the image with numbe of colors
 	// used
 	GLOBAL $gJpgBrandTiming;
-	
+
 	if( $gJpgBrandTiming ) {
 	    global $tim;
 	    $t=$tim->Pop()/1000.0;
@@ -7280,16 +7274,16 @@ class ImgStreamCache {
 		}
 		$aImage->Stream($aCacheFileName);
 	    }
-			
+
 	    $res=true;
 	    // Set group to specified
 	    if( CACHE_FILE_GROUP != "" )
 		$res = @chgrp($aCacheFileName,CACHE_FILE_GROUP);
-	    if( CACHE_FILE_MOD != "" )
+	    if( CACHE_FILE_MOD != 0 )
 		$res = @chmod($aCacheFileName,CACHE_FILE_MOD);
 	    if( !$res )
 		JpGraphError::Raise(" Can't set permission for cached image $aStrokeFileName. Permission problem?");
-			
+
 	    $aImage->Destroy();
 	    if( $aInline ) {
 		if ($fh = @fopen($aCacheFileName, "rb") ) {
@@ -7307,7 +7301,7 @@ class ImgStreamCache {
 	    return;
 	}
     }
-	
+
     // Check if a given image is in cache and in that case
     // pass it directly on to web browser. Return false if the
     // image file doesn't exist or exists but is to old
@@ -7330,15 +7324,15 @@ class ImgStreamCache {
 	} 
 	return false;
     }
-	
+
     //---------------
     // PRIVATE METHODS	
     // Create all necessary directories in a path
     function MakeDirs($aFile) {
-	$dirs = array();
+	$dirs = [];
 	while ( !(file_exists($aFile)) ) {
 	    $dirs[] = $aFile;
-	    $aFile = dirname($aFile);
+	    $aFile = dirname((string) $aFile);
 	}
 	for ($i = sizeof($dirs)-1; $i>=0; $i--) {
 	    if(! @mkdir($dirs[$i],0777) )
@@ -7358,7 +7352,7 @@ class ImgStreamCache {
 	return true;
     }	
 } // CLASS Cache
-	
+
 //===================================================
 // CLASS Legend
 // Description: Responsible for drawing the box containing
@@ -7366,21 +7360,21 @@ class ImgStreamCache {
 //===================================================
 DEFINE('_DEFAULT_LPM_SIZE',8);
 class Legend {
-    var $color=array(0,0,0); // Default fram color
-    var $fill_color=array(235,235,235); // Default fill color
-    var $shadow=true; // Shadow around legend "box"
-    var $shadow_color='gray';
-    var $txtcol=array();
-    var $mark_abs_size=_DEFAULT_LPM_SIZE;
-    var $xmargin=10,$ymargin=6,$shadow_width=2;
-    var $xpos=0.05, $ypos=0.15, $xabspos=-1, $yabspos=-1;
-	var $halign="right", $valign="top";
-    var $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12;
-    var $font_color='black';
-    var $hide=false,$layout_n=1;
-    var $weight=1,$frameweight=1;
-    var $csimareas='';
-    var $reverse = false ;
+    public $color=[0,0,0]; // Default fram color
+    public $fill_color=[235,235,235]; // Default fill color
+    public $shadow=true; // Shadow around legend "box"
+    public $shadow_color='gray';
+    public $txtcol=[];
+    public $mark_abs_size=_DEFAULT_LPM_SIZE;
+    public $xmargin=10,$ymargin=6,$shadow_width=2;
+    public $xpos=0.05, $ypos=0.15, $xabspos=-1, $yabspos=-1;
+	public $halign="right", $valign="top";
+    public $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12;
+    public $font_color='black';
+    public $hide=false,$layout_n=1;
+    public $weight=1,$frameweight=1;
+    public $csimareas='';
+    public $reverse = false ;
 //---------------
 // CONSTRUCTOR
     function Legend() {
@@ -7391,7 +7385,7 @@ class Legend {
     function Hide($aHide=true) {
 	$this->hide=$aHide;
     }
-	
+
     function SetShadow($aShow='gray',$aWidth=2) {
 	if( is_string($aShow) ) {
 	    $this->shadow_color = $aShow;
@@ -7413,11 +7407,11 @@ class Legend {
     function SetFrameWeight($aWeight) {
 	$this->frameweight = $aWeight;
     }
-	
+
     function SetLayout($aDirection=LEGEND_VERT) {
 	$this->layout_n = $aDirection==LEGEND_VERT ? 1 : 99 ;
     }
-	
+
     function SetColumns($aCols) {
 	$this->layout_n = $aCols ;
     }
@@ -7435,13 +7429,13 @@ class Legend {
 	$this->font_color=$aFontColor;
 	$this->color=$aColor;
     }
-	
+
     function SetFont($aFamily,$aStyle=FS_NORMAL,$aSize=10) {
 	$this->font_family = $aFamily;
 	$this->font_style = $aStyle;
 	$this->font_size = $aSize;
     }
-	
+
     function SetPos($aX,$aY,$aHAlign="right",$aVAlign="top") {
 	$this->Pos($aX,$aY,$aHAlign,$aVAlign);
     }
@@ -7466,15 +7460,15 @@ class Legend {
     function SetFillColor($aColor) {
 	$this->fill_color=$aColor;
     }
-	
+
     function Add($aTxt,$aColor,$aPlotmark="",$aLinestyle=0,$csimtarget="",$csimalt="") {
-	$this->txtcol[]=array($aTxt,$aColor,$aPlotmark,$aLinestyle,$csimtarget,$csimalt);
+	$this->txtcol[]=[$aTxt,$aColor,$aPlotmark,$aLinestyle,$csimtarget,$csimalt];
     }
 
     function GetCSIMAreas() {
 	return $this->csimareas;
     }
-	
+
     function Stroke(&$aImg) {
 	if( $this->hide ) return;
 
@@ -7515,14 +7509,14 @@ class Legend {
 	// Make sure that the height is at least as high as mark size + ymargin
 	$abs_height = max($abs_height,$this->mark_abs_size+$this->ymargin);
 	$abs_height += 2*$this->ymargin;
-						
+
 	// Find out the maximum width in each column
 	for( $i=$numcolumns; $i < $n; ++$i ) {
 	    $colwidth[$i % $numcolumns] = max(
 		$aImg->GetTextWidth($this->txtcol[$i][0])+2*$this->xmargin+2*$this->mark_abs_size, 
 		$colwidth[$i % $numcolumns]);
 	}
-	
+
 	// Get the total width
 	$mtw = 0;
 	for( $i=0; $i < $numcolumns; ++$i ) {
@@ -7550,7 +7544,7 @@ class Legend {
 	    $yp-=$abs_height/2;
 	elseif( $this->valign=="bottom" )
 	    $yp-=$abs_height;
-			
+
 	// Stroke legend box
 	$aImg->SetColor($this->color);	
 	$aImg->SetLineWeight($this->frameweight);
@@ -7570,7 +7564,7 @@ class Legend {
 	$aImg->SetLineWeight($this->weight);
 	$x1=$xp+$this->mark_abs_size+8;
 	$y1=$yp + $this->mark_abs_size/2 + $this->ymargin/2; 
-	
+
 	$f2 =  round($aImg->GetTextHeight('X')/2);
 
 	$grad = new Gradient($aImg);
@@ -7599,7 +7593,7 @@ class Legend {
 			    $p[2]->GetType() == MARK_CIRCLE ) {
 		        $p[2]->SetSize($this->mark_abs_size/2);
 			$p[2]->Stroke($aImg,$x1,$y1+$f2);
-		    
+
 		    }
 		    else {
 		        $p[2]->SetSize($this->mark_abs_size);
@@ -7664,20 +7658,20 @@ class Legend {
 	}	
     }
 } // Class
-	
+
 
 //===================================================
 // CLASS DisplayValue
 // Description: Used to print data values at data points
 //===================================================
 class DisplayValue {
-    var $show=false,$format="%.1f",$negformat="";
-    var $iFormCallback='';
-    var $angle=0;
-    var $ff=FF_FONT1,$fs=FS_NORMAL,$fsize=10;
-    var $color="navy",$negcolor="";
-    var $margin=5,$valign="",$halign="center";
-    var $iHideZero=false;
+    public $show=false,$format="%.1f",$negformat="";
+    public $iFormCallback='';
+    public $angle=0;
+    public $ff=FF_FONT1,$fs=FS_NORMAL,$fsize=10;
+    public $color="navy",$negcolor="";
+    public $margin=5,$valign="",$halign="center";
+    public $iHideZero=false;
 
     function Show($aFlag=true) {
 	$this->show=$aFlag;
@@ -7721,7 +7715,7 @@ class DisplayValue {
     }
 
     function Stroke($img,$aVal,$x,$y) {
-	
+
 	if( $this->show ) 
 	{
 	    if( $this->negformat=="" ) $this->negformat=$this->format;
@@ -7781,12 +7775,12 @@ class DisplayValue {
 // to the graph
 //===================================================
 class IconPlot {
-    var $iHorAnchor='left',$iVertAnchor='top';
-    var $iX=0,$iY=0;
-    var $iFile='';
-    var $iScale=1.0,$iMix=100;
-    var $iAnchors = array('left','right','top','bottom','center');
-    var $iCountryFlag='',$iCountryStdSize=3;
+    public $iHorAnchor='left',$iVertAnchor='top';
+    public $iX=0,$iY=0;
+    public $iFile='';
+    public $iScale=1.0,$iMix=100;
+    public $iAnchors = ['left','right','top','bottom','center'];
+    public $iCountryFlag='',$iCountryStdSize=3;
 
     function IconPlot($aFile="",$aX=0,$aY=0,$aScale=1.0,$aMix=100) {
 	$this->iFile = $aFile;
@@ -7835,7 +7829,7 @@ class IconPlot {
 	$this->iHorAnchor=$aXAnchor;
 	$this->iVertAnchor=$aYAnchor;
     }
-    
+
     function Stroke($aImg) {
 	if( $this->iFile != '' && $this->iCountryFlag != '' ) {
 	    JpGraphError::Raise('It is not possible to specify both an image file and a country flag for the same icon.');	
@@ -7861,7 +7855,7 @@ class IconPlot {
 	}
 	$iconw = imagesx($gdimg);
 	$iconh = imagesy($gdimg);
-	
+
 	if( $this->iHorAnchor == 'center' ) 
 	    $this->iX -= round($iconw*$this->iScale/2);
 	if( $this->iHorAnchor == 'right' ) 
@@ -7884,19 +7878,19 @@ class IconPlot {
 // Description: Abstract base class for all concrete plot classes
 //===================================================
 class Plot {
-    var $line_weight=1;
-    var $coords=array();
-    var $legend='',$hidelegend=false;
-    var $csimtargets=array();	// Array of targets for CSIM
-    var $csimareas="";			// Resultant CSIM area tags	
-    var $csimalts=null;			// ALT:s for corresponding target
-    var $color="black";
-    var $numpoints=0;
-    var $weight=1;	
-    var $value;
-    var $center=false;
-    var $legendcsimtarget='';
-    var $legendcsimalt='';
+    public $line_weight=1;
+    public $coords=[];
+    public $legend='',$hidelegend=false;
+    public $csimtargets=[];	// Array of targets for CSIM
+    public $csimareas="";			// Resultant CSIM area tags	
+    public $csimalts=null;			// ALT:s for corresponding target
+    public $color="black";
+    public $numpoints=0;
+    public $weight=1;	
+    public $value;
+    public $center=false;
+    public $legendcsimtarget='';
+    public $legendcsimalt='';
 //---------------
 // CONSTRUCTOR
     function Plot(&$aDatay,$aDatax=false) {
@@ -7931,26 +7925,26 @@ class Plot {
     function StrokeDataValue($img,$aVal,$x,$y) {
 	$this->value->Stroke($img,$aVal,$x,$y);
     }
-	
+
     // Set href targets for CSIM	
     function SetCSIMTargets($aTargets,$aAlts=null) {
 	$this->csimtargets=$aTargets;
 	$this->csimalts=$aAlts;		
     }
- 	
+
     // Get all created areas
     function GetCSIMareas() {
 	return $this->csimareas;
     }	
-	
+
     // "Virtual" function which gets called before any scale
     // or axis are stroked used to do any plot specific adjustment
     function PreStrokeAdjust(&$aGraph) {
-	if( substr($aGraph->axtype,0,4) == "text" && (isset($this->coords[1])) )
+	if( str_starts_with((string) $aGraph->axtype, "text") && (isset($this->coords[1])) )
 	    JpGraphError::Raise("JpGraph: You can't use a text X-scale with specified X-coords. Use a \"int\" or \"lin\" scale instead.");
 	return true;	
     }
-	
+
     // Get minimum values in plot
     function Min() {
 	if( isset($this->coords[1]) )
@@ -7976,9 +7970,9 @@ class Plot {
 	}
 	else 
 	    $ym="";
-	return array($xm,$ym);
+	return [$xm,$ym];
     }
-	
+
     // Get maximum value in plot
     function Max() {
 	if( isset($this->coords[1]) )
@@ -8010,13 +8004,13 @@ class Plot {
 	}
 	else 
 	    $ym="";
-	return array($xm,$ym);
+	return [$xm,$ym];
     }
-	
+
     function SetColor($aColor) {
 	$this->color=$aColor;
     }
-	
+
     function SetLegend($aLegend,$aCSIM="",$aCSIMAlt="") {
 	$this->legend = $aLegend;
 	$this->legendcsimtarget = $aCSIM;
@@ -8026,15 +8020,15 @@ class Plot {
     function SetWeight($aWeight) {
 	$this->weight=$aWeight;
     }
-		
+
     function SetLineWeight($aWeight=1) {
 	$this->line_weight=$aWeight;
     }
-	
+
     function SetCenter($aCenter=true) {
 	$this->center = $aCenter;
     }
-	
+
     // This method gets called by Graph class to plot anything that should go
     // into the margin after the margin color has been set.
     function StrokeMargin(&$aImg) {
@@ -8046,7 +8040,7 @@ class Plot {
 	if( $this->legend != "" )
 	    $aGraph->legend->Add($this->legend,$this->color,"",0,$this->legendcsimtarget,$this->legendcsimalt);    
     }
-	
+
 } // Class
 
 require_once modification("jpgraph_plotmark.inc") ;
@@ -8057,8 +8051,8 @@ require_once modification("jpgraph_plotmark.inc") ;
 
 // Utility class to hold coordinates for a rectangle
 class Rectangle {
-    var $x,$y,$w,$h;
-    var $xe, $ye;
+    public $x,$y,$w,$h;
+    public $xe, $ye;
     function Rectangle($aX,$aY,$aWidth,$aHeight) {
 	$this->x=$aX;
 	$this->y=$aY;
@@ -8077,13 +8071,13 @@ class Rectangle {
 // for drawing the pattern onto the graph.
 //=====================================================================
 class RectPattern {
-    var $color;
-    var $weight;
-    var $rect=null;
-    var $doframe=true;
-    var $linespacing;	// Line spacing in pixels
-    var $iBackgroundColor=-1;  // Default is no background fill
-	
+    public $color;
+    public $weight;
+    public $rect=null;
+    public $doframe=true;
+    public $linespacing;	// Line spacing in pixels
+    public $iBackgroundColor=-1;  // Default is no background fill
+
     function RectPattern($aColor,$aWeight=1) {
 	$this->color = $aColor;
 	$this->weight = $aWeight;		
@@ -8096,7 +8090,7 @@ class RectPattern {
     function SetPos(&$aRect) {
 	$this->rect = $aRect;
     }
-	
+
     function ShowFrame($aShow=true) {
 	$this->doframe=$aShow;
     }
@@ -8155,12 +8149,12 @@ class RectPatternSolid extends RectPattern {
 // Implements horizontal line pattern
 //=====================================================================
 class RectPatternHor extends RectPattern {
-		
+
     function RectPatternHor($aColor="black",$aWeight=1,$aLineSpacing=7) {
 	parent::RectPattern($aColor,$aWeight);
 	$this->linespacing = $aLineSpacing;
     }
-		
+
     function DoPattern(&$aImg) {
 	$x0 = $this->rect->x;		
 	$x1 = $this->rect->xe;
@@ -8177,8 +8171,8 @@ class RectPatternHor extends RectPattern {
 // Implements vertical line pattern
 //=====================================================================
 class RectPatternVert extends RectPattern {
-    var $linespacing=10;	// Line spacing in pixels
-		
+    public $linespacing=10;	// Line spacing in pixels
+
     function RectPatternVert($aColor="black",$aWeight=1,$aLineSpacing=7) {
 	parent::RectPattern($aColor,$aWeight);
 	$this->linespacing = $aLineSpacing;
@@ -8204,8 +8198,8 @@ class RectPatternVert extends RectPattern {
 // Implements right diagonal pattern
 //=====================================================================
 class RectPatternRDiag extends RectPattern {
-    var $linespacing;	// Line spacing in pixels
-		
+    public $linespacing;	// Line spacing in pixels
+
     function RectPatternRDiag($aColor="black",$aWeight=1,$aLineSpacing=12) {
 	parent::RectPattern($aColor,$aWeight);
 	$this->linespacing = $aLineSpacing;
@@ -8240,7 +8234,7 @@ class RectPatternRDiag extends RectPattern {
 		$x0 += $this->linespacing;
 		$x1 += $this->linespacing;
 	    }
-	    
+
 	    $y0=$this->rect->y + ($x0-$xe);
 	    $x0=$xe;
 	}
@@ -8255,7 +8249,7 @@ class RectPatternRDiag extends RectPattern {
 		$y1 += $this->linespacing;
 		$y0 += $this->linespacing;
 	    }
-	    
+
 	    $diff = $y1-$ye;
 	    $y1 = $ye;
 	    $x1 = $diff + $this->rect->x;
@@ -8268,14 +8262,14 @@ class RectPatternRDiag extends RectPattern {
 	}
     }
 }
- 
+
 //=====================================================================
 // Class RectPatternLDiag
 // Implements left diagonal pattern
 //=====================================================================
 class RectPatternLDiag extends RectPattern {
-    var $linespacing;	// Line spacing in pixels
-		
+    public $linespacing;	// Line spacing in pixels
+
     function RectPatternLDiag($aColor="black",$aWeight=1,$aLineSpacing=12) {
 	$this->linespacing = $aLineSpacing;
 	parent::RectPattern($aColor,$aWeight);
@@ -8308,7 +8302,7 @@ class RectPatternLDiag extends RectPattern {
 		$x0 += $this->linespacing;
 		$x1 += $this->linespacing;
 	    }
-	    
+
 	    $y0=$this->rect->ye - ($x0-$xe);
 	    $x0=$xe;
 	}
@@ -8339,7 +8333,7 @@ class RectPatternLDiag extends RectPattern {
 // Implements "3D" plane pattern
 //=====================================================================
 class RectPattern3DPlane extends RectPattern {
-    var $alpha=50;  // Parameter that specifies the distance
+    public $alpha=50;  // Parameter that specifies the distance
     // to "simulated" horizon in pixel from the
     // top of the band. Specifies how fast the lines
     // converge.
@@ -8352,7 +8346,7 @@ class RectPattern3DPlane extends RectPattern {
     function SetHorizon($aHorizon) {
 	$this->alpha=$aHorizon;
     }
-	
+
     function DoPattern(&$aImg) {
 	// "Fake" a nice 3D grid-effect. 
 	$x0 = $this->rect->x + $this->rect->w/2;
@@ -8401,29 +8395,29 @@ class RectPattern3DPlane extends RectPattern {
 	    $x0_right =  $middle + $dist * $factor;			
 	    $c = $apa - $d*$apa/$dist;
 	}		
-		
+
 	// Horizontal lines
 	// They need some serious consideration since they are a function
 	// of perspective depth (alpha) and density (linespacing)
 	$x0=$this->rect->x;
 	$x1=$this->rect->xe;
 	$y=$this->rect->ye;
-		
+
 	// The first line is drawn directly. Makes the loop below slightly
 	// more readable.
 	$aImg->Line($x0,$y,$x1,$y);
 	$hls = $this->linespacing;
-		
+
 	// A correction factor for vertical "brick" line spacing to account for
 	// a) the difference in number of pixels hor vs vert
 	// b) visual apperance to make the first layer of "bricks" look more
 	// square.
 	$vls = $this->linespacing*0.6;
-		
+
 	$ds = $hls*($apa-$vls)/$apa;
 	// Get the slope for the "perspective line" going from bottom right
 	// corner to top left corner of the "first" brick.
-		
+
 	// Uncomment the following lines if you want to get a visual understanding
 	// of what this helpline does. BTW this mimics the way you would get the
 	// perspective right when drawing on paper.
@@ -8437,7 +8431,7 @@ class RectPattern3DPlane extends RectPattern {
 	  $aImg->Line($x0,$y0,$x1,$y1);
 	  $aImg->PopColor();
 	*/
-		
+
 	$y -= $vls;		
 	$k=($this->rect->ye-($this->rect->ye-$vls))/($middle-($middle-$ds));
 	$dist = $hls;
@@ -8456,8 +8450,8 @@ class RectPattern3DPlane extends RectPattern {
 // Vert/Hor crosses
 //=====================================================================
 class RectPatternCross extends RectPattern {
-    var $vert=null;
-    var $hor=null;
+    public $vert=null;
+    public $hor=null;
     function RectPatternCross($aColor="black",$aWeight=1) {
 	parent::RectPattern($aColor,$aWeight);
 	$this->vert = new RectPatternVert($aColor,$aWeight);
@@ -8492,8 +8486,8 @@ class RectPatternCross extends RectPattern {
 //=====================================================================
 
 class RectPatternDiagCross extends RectPattern {
-    var $left=null;
-    var $right=null;
+    public $left=null;
+    public $right=null;
     function RectPatternDiagCross($aColor="black",$aWeight=1) {
 	parent::RectPattern($aColor,$aWeight);
 	$this->right = new RectPatternRDiag($aColor,$aWeight);
@@ -8572,9 +8566,9 @@ class RectPatternFactory {
 // concrete class.
 //=====================================================================
 class PlotBand {
-    var $prect=null;
-    var $depth;
-    var $dir, $min, $max;
+    public $prect=null;
+    public $depth;
+    public $dir, $min, $max;
 
     function PlotBand($aDir,$aPattern,$aMin,$aMax,$aColor="black",$aWeight=1,$aDepth=DEPTH_BACK) {
 	$f =  new RectPatternFactory();
@@ -8586,13 +8580,13 @@ class PlotBand {
 	$this->max = $aMax;
 	$this->depth=$aDepth;
     }
-	
+
     // Set position. aRect contains absolute image coordinates
     function SetPos(&$aRect) {
 	assert( $this->prect != null ) ;
 	$this->prect->SetPos($aRect);
     }
-	
+
     function ShowFrame($aFlag=true) {
 	$this->prect->ShowFrame($aFlag);
     }
@@ -8601,23 +8595,23 @@ class PlotBand {
     function SetOrder($aDepth) {
 	$this->depth=$aDepth;
     }
-	
+
     function SetDensity($aDens) {
 	$this->prect->SetDensity($aDens);
     }
-	
+
     function GetDir() {
 	return $this->dir;
     }
-	
+
     function GetMin() {
 	return $this->min;
     }
-	
+
     function GetMax() {
 	return $this->max;
     }
-	
+
     // Display band
     function Stroke(&$aImg,&$aXScale,&$aYScale) {
 	assert( $this->prect != null ) ;
@@ -8627,7 +8621,7 @@ class PlotBand {
 
             // Only draw the bar if it actually appears in the range
             if ($this->min < $aYScale->GetMaxVal() && $this->max > $aYScale->GetMinVal()) {
-	    
+
 	    // Trucate to limit of axis
 	    $this->min = max($this->min, $aYScale->GetMinVal());
 	    $this->max = min($this->max, $aYScale->GetMaxVal());
@@ -8643,10 +8637,10 @@ class PlotBand {
 	else {	// VERTICAL
 	    if( $this->min === 'min' ) $this->min = $aXScale->GetMinVal();
 	    if( $this->max === 'max' ) $this->max = $aXScale->GetMaxVal();
-            
+
             // Only draw the bar if it actually appears in the range
 	    if ($this->min < $aXScale->GetMaxVal() && $this->max > $aXScale->GetMinVal()) {
-	    
+
 	    // Trucate to limit of axis
 	    $this->min = max($this->min, $aXScale->GetMinVal());
 	    $this->max = min($this->max, $aXScale->GetMaxVal());
@@ -8671,10 +8665,10 @@ class PlotBand {
 // for example set-values
 //===================================================
 class PlotLine {
-    var $weight=1;
-    var $color="black";
-    var $direction=-1; 
-    var $scaleposition;
+    public $weight=1;
+    public $color="black";
+    public $direction=-1; 
+    public $scaleposition;
 
 //---------------
 // CONSTRUCTOR
@@ -8684,25 +8678,25 @@ class PlotLine {
 	$this->weight=$aWeight;
 	$this->scaleposition=$aPos;
     }
-	
+
 //---------------
 // PUBLIC METHODS	
     function SetPosition($aScalePosition) {
 	$this->scaleposition=$aScalePosition;
     }
-	
+
     function SetDirection($aDir) {
 	$this->direction = $aDir;
     }
-	
+
     function SetColor($aColor) {
 	$this->color=$aColor;
     }
-	
+
     function SetWeight($aWeight) {
 	$this->weight=$aWeight;
     }
-	
+
     function Stroke(&$aImg,&$aXScale,&$aYScale) {
 	$aImg->SetColor($this->color);
 	$aImg->SetLineWeight($this->weight);		

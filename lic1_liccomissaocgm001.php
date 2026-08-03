@@ -34,8 +34,8 @@ require_once(modification("classes/db_liccomissao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oPOST = db_utils::postMemory($_POST);
 $oGET = db_utils::postMemory($_GET);
@@ -46,8 +46,8 @@ $clliccomissao    = new cl_liccomissao;
 
 $lTemVinculo     = false;
 $iCodigoGrupo    = null;
-$l31_codigo      = isset($l31_codigo) ? $l31_codigo : null;
-$l31_liccomissao = isset($l31_liccomissao) ? $l31_liccomissao : null;
+$l31_codigo ??= null;
+$l31_liccomissao ??= null;
 
 $oDaoComissaoAtributosDinamico = new cl_liccomissaocgmcadattdinamicovalorgrupo;
 $db_opcao = 22;

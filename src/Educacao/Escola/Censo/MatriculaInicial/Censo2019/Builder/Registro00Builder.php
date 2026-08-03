@@ -114,7 +114,7 @@ class Registro00Builder
         $this->registro->setUf($this->dadosEscola['ed18_i_censouf']);
         $this->registro->setMunicipio($this->dadosEscola['ed18_i_censomunic']);
         $this->registro->setDistrito($this->dadosEscola['ed262_i_coddistrito']);
-        $this->registro->setEmail(mb_strtoupper($this->dadosEscola['ed18_c_email']));
+        $this->registro->setEmail(mb_strtoupper((string) $this->dadosEscola['ed18_c_email']));
         $this->registro->setCodigoOrgaoRegionalEnsino($this->dadosEscola['ed263_i_codigocenso']);
         $this->registro->setDependenciaAdministrativa($this->dadosEscola['ed18_c_mantenedora']);
         $this->registro->setZonaEscola($this->dadosEscola['ed18_c_local']);
@@ -124,7 +124,7 @@ class Registro00Builder
         $this->registro->setCnpjEscolaPrivada($this->dadosEscola['ed18_i_cnpjmantprivada']);
 
         // Define esfera administrativa apenas quando Regulamentação for: 1 Credenciada ou 2 Em Tramitação
-        if (in_array($this->registro->getRegulamentacao(), array(1,2))) {
+        if (in_array($this->registro->getRegulamentacao(), [1,2])) {
             $esfera = $this->dadosEscola['ed18_i_esferaadministrativa'];
             switch ($esfera) {
                 case self::ESFERA_FEDERAL:

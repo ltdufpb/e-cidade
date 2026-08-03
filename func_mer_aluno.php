@@ -34,8 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aluno_classe.php"));
 include(modification("classes/db_serie_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claluno  = new cl_aluno;
 $clserie  = new cl_serie;
 $clrotulo = new rotulocampo;
@@ -70,7 +70,7 @@ $clrotulo->label("ed223_i_serie");
                                                                      ""
                                                                     ));
       if ($clserie->numrows == 0) {
-        $x = array(''=>'NENHUM REGISTRO');
+        $x = [''=>'NENHUM REGISTRO'];
         db_select('ed223_i_serie',$x,true,1,"");
       } else {
         db_selectrecord("ed223_i_serie",$result_serie,"","","","chave_ed223_i_serie","","  ","",1);
@@ -78,7 +78,7 @@ $clrotulo->label("ed223_i_serie");
       ?>
       <b>Situação:</b>
       <?php 
-       $x = array(''=>'',
+       $x = [''=>'',
                   'APROVADO'=>'APROVADO',
                   'CANCELADO'=>'CANCELADO',
                   'CANDIDATO'=>'CANDIDATO',
@@ -89,7 +89,7 @@ $clrotulo->label("ed223_i_serie");
                   'REPETENTE'=>'REPETENTE',
                   'TRANSFERIDO FORA'=>'TRANSFERIDO FORA',
                   'TRANSFERIDO REDE'=>'TRANSFERIDO REDE'
-                 );
+                 ];
        db_select('situacao',$x,true,1,"");
       ?>
      </td>
@@ -164,11 +164,11 @@ $clrotulo->label("ed223_i_serie");
     $sql .= "               left join serie on  serie.ed11_i_codigo = alunopossib.ed79_i_serie ";
     if (isset($chave_ed47_i_codigo)) {
     	
-      $repassa = array( "chave_ed47_i_codigo" => $chave_ed47_i_codigo,
+      $repassa = [ "chave_ed47_i_codigo" => $chave_ed47_i_codigo,
                         "chave_ed47_v_nome"   => $chave_ed47_v_nome,
                         "chave_ed223_i_serie" => $chave_ed223_i_serie,
                         "situacao"            => $situacao
-                      );
+                      ];
                       
     }
     if (isset($chave_ed47_i_codigo) && (trim($chave_ed47_i_codigo) != "")) {

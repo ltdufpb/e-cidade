@@ -121,7 +121,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_db_layouttxt.hide();
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 function js_pesquisadb50_layouttxtgrupo(mostra){

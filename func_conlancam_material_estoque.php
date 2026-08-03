@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_conlancam_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconlancam = new cl_conlancam;
 $clconlancam->rotulo->label("c70_codlan");
 $clconlancam->rotulo->label("c70_anousu");
@@ -95,7 +95,7 @@ $oRotuloRequiItem->label('m41_codmatrequi');
     <td align="center" valign="top">
       <?php 
 
-      $aWherePadrao   = array();
+      $aWherePadrao   = [];
       $aWherePadrao[] = "c70_data >= '2013-01-01'";
       $aWherePadrao[] = "c71_coddoc = 400";
 

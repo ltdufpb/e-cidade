@@ -66,7 +66,7 @@ class QualificacaoCadastral
     /**
      * @var array
      */
-    private $inconsistencias = array();
+    private $inconsistencias = [];
 
     /**
      * @return string
@@ -211,7 +211,7 @@ class QualificacaoCadastral
         $erroOrientacaoNIS .= "\n  2- se vinculado a órgão público, a atualização cadastral deve ser solicitada no Banco do Brasil.";
         $erroOrientacaoNIS .= "\nObs: a atualização cadastral poderá ser realizada pelo interessado ou pela empresa/órgão público¹.";
 
-        $descricoesInconsistencia = array(
+        $descricoesInconsistencia = [
             -1 => $erroOrientacaoNIS,
             5 => "NIS inválido.",
             6 => "CPF inválido.",
@@ -236,7 +236,7 @@ class QualificacaoCadastral
             1008 => "Data de Nascimento inconsistente.",
             1009 => "Separador inválido.",
             1010 => "Formatação inválida."
-        );
+        ];
 
         if (!array_key_exists($codigo, $descricoesInconsistencia)) {
             throw new \Exception("Código da inconsistência informada não encontrado.");

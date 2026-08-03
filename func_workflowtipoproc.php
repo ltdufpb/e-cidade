@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_workflowtipoproc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clworkflowtipoproc = new cl_workflowtipoproc;
 $clworkflowtipoproc->rotulo->label("db116_sequencial");
 $clworkflowtipoproc->rotulo->label("db116_sequencial");
@@ -98,9 +98,9 @@ $clworkflowtipoproc->rotulo->label("db116_sequencial");
         }else{
            $sql = $clworkflowtipoproc->sql_query("",$campos,"db116_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db116_sequencial)){
-          $repassa = array("chave_db116_sequencial"=>$chave_db116_sequencial,"chave_db116_sequencial"=>$chave_db116_sequencial);
+          $repassa = ["chave_db116_sequencial"=>$chave_db116_sequencial,"chave_db116_sequencial"=>$chave_db116_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

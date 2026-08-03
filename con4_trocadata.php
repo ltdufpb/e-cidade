@@ -105,10 +105,10 @@ if (!empty($lParametroExibeMenu) && $lParametroExibeMenu === "false") {
                                 <?php
                                 $sSqlDataUsuarios  = "select * from db_datausuarios where id_usuario = ".db_getsession("DB_id_usuario");
                                 $rsSqlDataUsuarios = db_query($sSqlDataUsuarios);
-                                if (pg_numrows($rsSqlDataUsuarios) > 0) {
-                                    $anousu = substr(pg_result($rsSqlDataUsuarios, 0, 'data'), 0, 4);
-                                    $mesusu = substr(pg_result($rsSqlDataUsuarios, 0, 'data'), 5, 2);
-                                    $diausu = substr(pg_result($rsSqlDataUsuarios, 0, 'data'), 8, 2);
+                                if (pg_num_rows($rsSqlDataUsuarios) > 0) {
+                                    $anousu = substr(pg_fetch_result($rsSqlDataUsuarios, 0, 'data'), 0, 4);
+                                    $mesusu = substr(pg_fetch_result($rsSqlDataUsuarios, 0, 'data'), 5, 2);
+                                    $diausu = substr(pg_fetch_result($rsSqlDataUsuarios, 0, 'data'), 8, 2);
                                 } else {
                                     $anousu = date("Y", db_getsession("DB_datausu"));
                                     $mesusu = date("m", db_getsession("DB_datausu"));

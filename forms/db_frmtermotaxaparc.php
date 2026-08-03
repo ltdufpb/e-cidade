@@ -65,14 +65,14 @@ if ($db_opcao == 1) {
             </table>
         </fieldset>
         <input name="<?php echo $sNameBotaoProcessar; ?>" type="submit" id="db_opcao" value="<?php echo ucfirst($sNameBotaoProcessar); ?>" <?php echo (!$db_botao ? "disabled" : ""); ?> >
-        <?php if (in_array($sNameBotaoProcessar, array('alterar', 'excluir'))) { ?>
+        <?php if (in_array($sNameBotaoProcessar, ['alterar', 'excluir'])) { ?>
           <input name="novo" id="cancelar" value="<?=$sNameBotaoProcessar == 'excluir' ? 'Cancelar' : 'Novo' ?>" onclick="js_cancelar();" type="button">
         <?php } ?>
         <table>
             <tr>
                 <td valign="top"  align="center">
                     <?php
-                    $chavepri = array("ar29_sequencial" => @$ar29_sequencial);
+                    $chavepri = ["ar29_sequencial" => @$ar29_sequencial];
                     $cliframe_alterar_excluir->chavepri = $chavepri;
                     $cliframe_alterar_excluir->sql = $oDaoTermotaxaparc->sql_query(null, "*", "ar29_numpar");
                     $cliframe_alterar_excluir->campos = "ar29_numpar,ar36_descricao";
@@ -142,11 +142,11 @@ if ($db_opcao == 1) {
         db_iframe_termotaxaparc.hide();
         <?php
         if ($db_opcao != 1) {
-            echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
+            echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
         }
         ?>
     }
 
-    <?php echo (isset($sPosScripts) ? $sPosScripts : ""); ?>
+    <?php echo ($sPosScripts ?? ""); ?>
 </script>
 </html>

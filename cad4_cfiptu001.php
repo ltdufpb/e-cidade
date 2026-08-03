@@ -34,8 +34,8 @@ include(modification("classes/db_cfiptu_classe.php"));
 include(modification("classes/db_iptubase_classe.php"));
 
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $db_botao=1;
 $db_opcao=1;
@@ -199,7 +199,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 function js_pesquisaj44_matric(mostra){
   if(mostra==true){

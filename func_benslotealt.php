@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benslote_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbenslote = new cl_benslote;
 $clbenslote->rotulo->label();
 $clrotulo = new rotulocampo;
@@ -100,11 +100,11 @@ $clrotulo->label("t42_descr");
         }else{
            $sql = $clbenslote->sql_query("",$campos,"t42_codigo","t52_instit = " . db_getsession("DB_instit"));
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t43_codlote)){
-          $repassa = array("chave_t43_codlote"=>$chave_t43_codlote,"chave_t42_descr"=>$chave_t42_descr);
+          $repassa = ["chave_t43_codlote"=>$chave_t43_codlote,"chave_t42_descr"=>$chave_t42_descr];
         }
-		  $repassa = array();
+		  $repassa = [];
 	//echo $sql;
         db_lovrot($sql,15,"()","",$funcao_js,null,"NoMe",$repassa,false);
         //db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

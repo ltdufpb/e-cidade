@@ -40,8 +40,8 @@ require_once(modification("classes/db_conlancamdig_classe.php"));
 require_once(modification("classes/db_conlancamdoc_classe.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $post = db_utils::postMemory($_POST);
 
@@ -55,7 +55,7 @@ $clconlancamdoc = new cl_conlancamdoc;
 $anousu = db_getsession("DB_anousu");
 $db_opcao = 22;
 $db_botao = false;
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alterar") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
 
 
     $erro = false;
@@ -99,7 +99,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
 
                         try {
 
-                            $options = array('ignorar_conta_corrente' => true);
+                            $options = ['ignorar_conta_corrente' => true];
                             /* estorno lançamento original */
                             $campos = 'conlancamval.*, c72_complem, c53_coddoc';
                             $where = "c69_codlan = {$post->c70_codlan}";
@@ -149,7 +149,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                                         if (empty($dadosContaCorrente)) {
                                             continue;
                                         }
-                                        $atributosIndexados = array();
+                                        $atributosIndexados = [];
                                         foreach ($dadosContaCorrente->atributos as $dadosAtributos) {
                                             $atributosIndexados[$dadosAtributos->sigla] = $dadosAtributos->valor;
                                             if ($dadosAtributos->sigla === "FR") {
@@ -195,7 +195,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                             $atributosCredito = JSON::create()->parse(
                                 str_replace("\\", "",$_POST['atributosCredito']));
 
-                            $atributos = array($atributosDebito, $atributosCredito);
+                            $atributos = [$atributosDebito, $atributosCredito];
                             foreach ($atributos as $indice => $atributo) {
 
                                 $atributoDebito = $indice === 0;
@@ -207,7 +207,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                                             if (empty($dadosContaCorrente)) {
                                                 continue;
                                             }
-                                            $atributosIndexados = array();
+                                            $atributosIndexados = [];
                                             foreach ($dadosContaCorrente->atributos as $dadosAtributos) {
                                                 $atributosIndexados[$dadosAtributos->sigla] = $dadosAtributos->valor;
                                                 if ($dadosAtributos->sigla === "FR") {
@@ -230,11 +230,11 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                                 $codigoLancamentoNovo
                             );
 
-                            $alteracaoComplemento = array(
+                            $alteracaoComplemento = [
                                 $post->c70_codlan => "Lançamento Retificado. Estorno do lançamento gerado no código de lançamento: {$codigoLancamentoEstorno}. Novo lançamento criado: {$codigoLancamentoNovo}.",
                                 $codigoLancamentoEstorno => "Lançamento criado a partir da retificação do lançamento {$post->c70_codlan}. Novo lançamento criado: {$codigoLancamentoNovo}.",
                                 $codigoLancamentoNovo => "Lançamento criado a partir da retificação do lançamento {$post->c70_codlan}. Lançamento de estorno criado: {$codigoLancamentoEstorno}."
-                            );
+                            ];
                             foreach ($alteracaoComplemento as $codigo => $mensagem) {
 
 
@@ -323,7 +323,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
 </body>
 </html>
 <?PHP
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alterar") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
 //  if($clconlancamval->erro_status=="0"){
 //    $clconlancamval->erro(true,false);
 

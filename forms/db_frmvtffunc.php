@@ -118,7 +118,7 @@ if(isset($opcao)){
               if(!isset($r17_tipo)){
                 $r17_tipo = "t";
               }
-              $x = array("f"=>"Diário","t"=>"Mensal");
+              $x = ["f"=>"Diário","t"=>"Mensal"];
               db_select('r17_tipo',$x,true,$db_opcao,"onchange='js_verificatipo(this.value);'");
               ?>
             </td>
@@ -127,7 +127,7 @@ if(isset($opcao)){
             </td>
             <td> 
               <?php 
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('r17_difere',$x,true,(isset($opcao)?3:$db_opcao));
               ?>
             </td>
@@ -146,7 +146,7 @@ if(isset($opcao)){
             </td>
             <td> 
               <?php 
-              $x = array("A"=>"Ativo","I"=>"Inativo");
+              $x = ["A"=>"Ativo","I"=>"Inativo"];
               db_select('r17_situac',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -220,7 +220,7 @@ if(isset($opcao)){
                     <tr>
                       <td align="center">
                         <?php 
-                        $arr_obrigatorio = array("t"=>"Sim","f"=>"Não");
+                        $arr_obrigatorio = ["t"=>"Sim","f"=>"Não"];
                         if(!isset($odom)){
                           $odom = "f";
                         }
@@ -312,7 +312,7 @@ if(isset($opcao)){
       if(isset($codigo) && trim($codigo) != "" && isset($difere) && trim($difere) != ""){
         $dbwhere.= " and (r17_codigo <> '".$codigo."' or (r17_codigo = '".$codigo."' and r17_difere <> '".$difere."'))";
       }
-      $chavepri = array("r17_anousu"=>$ano,"r17_mesusu"=>$mes,"r17_regist"=>@$r17_regist,"r17_codigo"=>@$r17_codigo,"r17_difere"=>@$r17_difere);
+      $chavepri = ["r17_anousu"=>$ano,"r17_mesusu"=>$mes,"r17_regist"=>@$r17_regist,"r17_codigo"=>@$r17_codigo,"r17_difere"=>@$r17_difere];
       $cliframe_alterar_excluir->chavepri = $chavepri;
       $cliframe_alterar_excluir->sql = $clvtffunc->sql_query(
                                                              null,
@@ -501,7 +501,7 @@ function js_preenchepesquisa(chave,chave1,chave2,chave3,chave4){
   db_iframe_vtffunc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3+'&chavepesquisa4='+chave4";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3+'&chavepesquisa4='+chave4";
   }
   ?>
 }

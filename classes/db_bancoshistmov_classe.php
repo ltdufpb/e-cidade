@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE bancoshistmov
 class cl_bancoshistmov { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k66_sequencial = 0; 
-   var $k66_codbco = 0; 
-   var $k66_bancoshistmovcategoria = 0; 
-   var $k66_historico = 0; 
-   var $k66_descricao = null; 
-   var $k66_vigencia_dia = null; 
-   var $k66_vigencia_mes = null; 
-   var $k66_vigencia_ano = null; 
-   var $k66_vigencia = null; 
-   var $k66_sigla = null; 
+   public $k66_sequencial = 0; 
+   public $k66_codbco = 0; 
+   public $k66_bancoshistmovcategoria = 0; 
+   public $k66_historico = 0; 
+   public $k66_descricao = null; 
+   public $k66_vigencia_dia = null; 
+   public $k66_vigencia_mes = null; 
+   public $k66_vigencia_ano = null; 
+   public $k66_vigencia = null; 
+   public $k66_sigla = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k66_sequencial = int4 = Codigo sequencial 
                  k66_codbco = int4 = codigo do banco 
                  k66_bancoshistmovcategoria = int4 = Codigo da categoria do movimento 
@@ -63,10 +63,10 @@ class cl_bancoshistmov {
                  k66_sigla = char(3) = Sigla 
                  ";
    //funcao construtor da classe 
-   function cl_bancoshistmov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bancoshistmov"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_bancoshistmov {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k66_sequencial = pg_result($result,0,0); 
+       $this->k66_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from bancoshistmov_k66_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k66_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k66_sequencial)){
          $this->erro_sql = " Campo k66_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_bancoshistmov {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de movimento bancario ($this->k66_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de movimento bancario já Cadastrado";
@@ -232,16 +232,16 @@ class cl_bancoshistmov {
      $resaco = $this->sql_record($this->sql_query_file($this->k66_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10044,'$this->k66_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1727,10044,'','".AddSlashes(pg_result($resaco,0,'k66_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1727,10045,'','".AddSlashes(pg_result($resaco,0,'k66_codbco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1727,10046,'','".AddSlashes(pg_result($resaco,0,'k66_bancoshistmovcategoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1727,10047,'','".AddSlashes(pg_result($resaco,0,'k66_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1727,10048,'','".AddSlashes(pg_result($resaco,0,'k66_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1727,10049,'','".AddSlashes(pg_result($resaco,0,'k66_vigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1727,10050,'','".AddSlashes(pg_result($resaco,0,'k66_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1727,10044,'','".AddSlashes(pg_fetch_result($resaco,0,'k66_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1727,10045,'','".AddSlashes(pg_fetch_result($resaco,0,'k66_codbco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1727,10046,'','".AddSlashes(pg_fetch_result($resaco,0,'k66_bancoshistmovcategoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1727,10047,'','".AddSlashes(pg_fetch_result($resaco,0,'k66_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1727,10048,'','".AddSlashes(pg_fetch_result($resaco,0,'k66_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1727,10049,'','".AddSlashes(pg_fetch_result($resaco,0,'k66_vigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1727,10050,'','".AddSlashes(pg_fetch_result($resaco,0,'k66_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,10 +250,10 @@ class cl_bancoshistmov {
       $this->atualizacampos();
      $sql = " update bancoshistmov set ";
      $virgula = "";
-     if(trim($this->k66_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_sequencial"])){ 
+     if(trim((string) $this->k66_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_sequencial"])){ 
        $sql  .= $virgula." k66_sequencial = $this->k66_sequencial ";
        $virgula = ",";
-       if(trim($this->k66_sequencial) == null ){ 
+       if(trim((string) $this->k66_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "k66_sequencial";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_bancoshistmov {
          return false;
        }
      }
-     if(trim($this->k66_codbco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_codbco"])){ 
+     if(trim((string) $this->k66_codbco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_codbco"])){ 
        $sql  .= $virgula." k66_codbco = $this->k66_codbco ";
        $virgula = ",";
-       if(trim($this->k66_codbco) == null ){ 
+       if(trim((string) $this->k66_codbco) == null ){ 
          $this->erro_sql = " Campo codigo do banco nao Informado.";
          $this->erro_campo = "k66_codbco";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_bancoshistmov {
          return false;
        }
      }
-     if(trim($this->k66_bancoshistmovcategoria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_bancoshistmovcategoria"])){ 
+     if(trim((string) $this->k66_bancoshistmovcategoria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_bancoshistmovcategoria"])){ 
        $sql  .= $virgula." k66_bancoshistmovcategoria = $this->k66_bancoshistmovcategoria ";
        $virgula = ",";
-       if(trim($this->k66_bancoshistmovcategoria) == null ){ 
+       if(trim((string) $this->k66_bancoshistmovcategoria) == null ){ 
          $this->erro_sql = " Campo Codigo da categoria do movimento nao Informado.";
          $this->erro_campo = "k66_bancoshistmovcategoria";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_bancoshistmov {
          return false;
        }
      }
-     if(trim($this->k66_historico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_historico"])){ 
+     if(trim((string) $this->k66_historico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_historico"])){ 
        $sql  .= $virgula." k66_historico = $this->k66_historico ";
        $virgula = ",";
-       if(trim($this->k66_historico) == null ){ 
+       if(trim((string) $this->k66_historico) == null ){ 
          $this->erro_sql = " Campo Codigo do movimento no banco nao Informado.";
          $this->erro_campo = "k66_historico";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_bancoshistmov {
          return false;
        }
      }
-     if(trim($this->k66_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_descricao"])){ 
+     if(trim((string) $this->k66_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_descricao"])){ 
        $sql  .= $virgula." k66_descricao = '$this->k66_descricao' ";
        $virgula = ",";
-       if(trim($this->k66_descricao) == null ){ 
+       if(trim((string) $this->k66_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição da categoria nao Informado.";
          $this->erro_campo = "k66_descricao";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_bancoshistmov {
          return false;
        }
      }
-     if(trim($this->k66_vigencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_vigencia_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k66_vigencia_dia"] !="") ){ 
+     if(trim((string) $this->k66_vigencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_vigencia_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k66_vigencia_dia"] !="") ){ 
        $sql  .= $virgula." k66_vigencia = '$this->k66_vigencia' ";
        $virgula = ",";
-       if(trim($this->k66_vigencia) == null ){ 
+       if(trim((string) $this->k66_vigencia) == null ){ 
          $this->erro_sql = " Campo Vigencia nao Informado.";
          $this->erro_campo = "k66_vigencia_dia";
          $this->erro_banco = "";
@@ -331,7 +331,7 @@ class cl_bancoshistmov {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k66_vigencia_dia"])){ 
          $sql  .= $virgula." k66_vigencia = null ";
          $virgula = ",";
-         if(trim($this->k66_vigencia) == null ){ 
+         if(trim((string) $this->k66_vigencia) == null ){ 
            $this->erro_sql = " Campo Vigencia nao Informado.";
            $this->erro_campo = "k66_vigencia_dia";
            $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_bancoshistmov {
          }
        }
      }
-     if(trim($this->k66_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_sigla"])){ 
+     if(trim((string) $this->k66_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k66_sigla"])){ 
        $sql  .= $virgula." k66_sigla = '$this->k66_sigla' ";
        $virgula = ",";
-       if(trim($this->k66_sigla) == null ){ 
+       if(trim((string) $this->k66_sigla) == null ){ 
          $this->erro_sql = " Campo Sigla nao Informado.";
          $this->erro_campo = "k66_sigla";
          $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_bancoshistmov {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10044,'$this->k66_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k66_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1727,10044,'".AddSlashes(pg_result($resaco,$conresaco,'k66_sequencial'))."','$this->k66_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1727,10044,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k66_sequencial'))."','$this->k66_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k66_codbco"]))
-           $resac = db_query("insert into db_acount values($acount,1727,10045,'".AddSlashes(pg_result($resaco,$conresaco,'k66_codbco'))."','$this->k66_codbco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1727,10045,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k66_codbco'))."','$this->k66_codbco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k66_bancoshistmovcategoria"]))
-           $resac = db_query("insert into db_acount values($acount,1727,10046,'".AddSlashes(pg_result($resaco,$conresaco,'k66_bancoshistmovcategoria'))."','$this->k66_bancoshistmovcategoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1727,10046,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k66_bancoshistmovcategoria'))."','$this->k66_bancoshistmovcategoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k66_historico"]))
-           $resac = db_query("insert into db_acount values($acount,1727,10047,'".AddSlashes(pg_result($resaco,$conresaco,'k66_historico'))."','$this->k66_historico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1727,10047,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k66_historico'))."','$this->k66_historico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k66_descricao"]))
-           $resac = db_query("insert into db_acount values($acount,1727,10048,'".AddSlashes(pg_result($resaco,$conresaco,'k66_descricao'))."','$this->k66_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1727,10048,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k66_descricao'))."','$this->k66_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k66_vigencia"]))
-           $resac = db_query("insert into db_acount values($acount,1727,10049,'".AddSlashes(pg_result($resaco,$conresaco,'k66_vigencia'))."','$this->k66_vigencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1727,10049,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k66_vigencia'))."','$this->k66_vigencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k66_sigla"]))
-           $resac = db_query("insert into db_acount values($acount,1727,10050,'".AddSlashes(pg_result($resaco,$conresaco,'k66_sigla'))."','$this->k66_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1727,10050,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k66_sigla'))."','$this->k66_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_bancoshistmov {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10044,'$k66_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1727,10044,'','".AddSlashes(pg_result($resaco,$iresaco,'k66_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1727,10045,'','".AddSlashes(pg_result($resaco,$iresaco,'k66_codbco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1727,10046,'','".AddSlashes(pg_result($resaco,$iresaco,'k66_bancoshistmovcategoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1727,10047,'','".AddSlashes(pg_result($resaco,$iresaco,'k66_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1727,10048,'','".AddSlashes(pg_result($resaco,$iresaco,'k66_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1727,10049,'','".AddSlashes(pg_result($resaco,$iresaco,'k66_vigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1727,10050,'','".AddSlashes(pg_result($resaco,$iresaco,'k66_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1727,10044,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k66_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1727,10045,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k66_codbco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1727,10046,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k66_bancoshistmovcategoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1727,10047,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k66_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1727,10048,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k66_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1727,10049,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k66_vigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1727,10050,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k66_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from bancoshistmov
@@ -493,7 +493,7 @@ class cl_bancoshistmov {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bancoshistmov";
@@ -507,7 +507,7 @@ class cl_bancoshistmov {
    function sql_query ( $k66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,7 +530,7 @@ class cl_bancoshistmov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -542,7 +542,7 @@ class cl_bancoshistmov {
    function sql_query_file ( $k66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -563,7 +563,7 @@ class cl_bancoshistmov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

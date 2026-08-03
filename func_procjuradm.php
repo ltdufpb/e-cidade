@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procjuradm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocjuradm = new cl_procjuradm;
 $clprocjuradm->rotulo->label("v64_sequencial");
 $clprocjuradm->rotulo->label("v64_protprocesso");
@@ -98,9 +98,9 @@ $clprocjuradm->rotulo->label("v64_protprocesso");
         }else{
            $sql = $clprocjuradm->sql_query("",$campos,"v64_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v64_protprocesso)){
-          $repassa = array("chave_v64_sequencial"=>$chave_v64_sequencial,"chave_v64_protprocesso"=>$chave_v64_protprocesso);
+          $repassa = ["chave_v64_sequencial"=>$chave_v64_sequencial,"chave_v64_protprocesso"=>$chave_v64_protprocesso];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

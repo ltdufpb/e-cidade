@@ -45,7 +45,7 @@ class CalculoEfetividade {
       throw new Exception ('Mês Afastamento não informado.');
     }
 
-    $iMesAfastamento                      = str_pad($iMesAfastamento, 2, '0', STR_PAD_LEFT);
+    $iMesAfastamento                      = str_pad((string) $iMesAfastamento, 2, '0', STR_PAD_LEFT);
     $oDaoConfiguracoesdatasafastamento    = new cl_configuracoesdatasefetividade();
     $sWhereConfiguracoesdatasafastamento  = "     rh186_exercicio   = {$iAnoAfastamento}";
     $sWhereConfiguracoesdatasafastamento .= " and rh186_competencia = '{$iMesAfastamento}'";
@@ -94,7 +94,7 @@ class CalculoEfetividade {
     $oDaoEscalaServidor                = new cl_escalaservidor();
     $sSqlDiasEscala                    = $oDaoEscalaServidor->sql_diasTrabalhados ($iMatricula, $oConfiguracoesdatasefetividade->rh186_datainicioefetividade, $oConfiguracoesdatasefetividade->rh186_datafechamentoefetividade);
     $rsDiasEscala                      = db_query($sSqlDiasEscala);
-    $aEventoDia                        = array();
+    $aEventoDia                        = [];
 
     //foreach ($aDiasEscala as $oDiaEscala) {
     for ($iDiaEscala =0; $iDiaEscala < pg_num_rows($rsDiasEscala); $iDiaEscala++) {
@@ -103,7 +103,7 @@ class CalculoEfetividade {
 
       $oEvento                         = new stdClass();
       $oEvento->sTipo                  = 'jornada';
-      $oEvento->lDiaTrabalhado         = in_array($oDiaEscala->jornada, array (1, 2)) ? false : true;
+      $oEvento->lDiaTrabalhado         = in_array($oDiaEscala->jornada,  [1, 2]) ? false : true;
       $aEventoDia[$oDiaEscala->data]   = $oEvento;
 
     }
@@ -143,7 +143,7 @@ class CalculoEfetividade {
 
     $sSqlDiasEscala     = $oDaoEscalaServidor->sql_diasTrabalhados ($iMatricula, $oConfiguracoesdatasafastamento->rh186_datainicioefetividade, $oConfiguracoesdatasafastamento->rh186_datafechamentoefetividade);
     $rsDiasEscala       = db_query($sSqlDiasEscala);
-    $aEventoAfastamento = array();
+    $aEventoAfastamento = [];
 
     for ($iDiaEscala = 0; $iDiaEscala < pg_num_rows($rsDiasEscala); $iDiaEscala++) {
 
@@ -151,7 +151,7 @@ class CalculoEfetividade {
 
       $oEvento                               = new stdClass();
       $oEvento->sTipo                        = 'jornada';
-      $oEvento->lDiaTrabalhado               = in_array($oDiaEscala->jornada, array (1, 2)) ? false : true;
+      $oEvento->lDiaTrabalhado               = in_array($oDiaEscala->jornada,  [1, 2]) ? false : true;
       $aEventoAfastamento[$oDiaEscala->data] = $oEvento;
 
     }
@@ -207,17 +207,17 @@ class CalculoEfetividade {
 
       if (isset($aEventoAfastamento[$oAfastamento->h16_dtconc])
         and $aEventoAfastamento[$oAfastamento->h16_dtconc]->lDiaTrabalhado == true
-        and trim($oAfastamento->h12_assent) != 'D-EXT') {
+        and trim((string) $oAfastamento->h12_assent) != 'D-EXT') {
 
         $iDiasAfastados++;
       }
 
       //Caso o afastamento for D-EXT(DIA EXTRA), soma mais um dia aos dias trabalhados
-      if (trim($oAfastamento->h12_assent) == 'D-EXT') {
+      if (trim((string) $oAfastamento->h12_assent) == 'D-EXT') {
         $iDiasTrabalhados++;
       }
     }
 
-    return (Object) array('iDiasAfastados' => $iDiasAfastados, 'iDiasTrabalhados' => $iDiasTrabalhados);
+    return (Object) ['iDiasAfastados' => $iDiasAfastados, 'iDiasTrabalhados' => $iDiasTrabalhados];
   }
 }

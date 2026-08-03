@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE acordoitemprevisao
 class cl_acordoitemprevisao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ac37_sequencial = 0; 
-   var $ac37_acordoitem = 0; 
-   var $ac37_quantidade = 0; 
-   var $ac37_valor = 0; 
-   var $ac37_acordoperiodo = 0; 
-   var $ac37_datainicial_dia = null; 
-   var $ac37_datainicial_mes = null; 
-   var $ac37_datainicial_ano = null; 
-   var $ac37_datainicial = null; 
-   var $ac37_datafinal_dia = null; 
-   var $ac37_datafinal_mes = null; 
-   var $ac37_datafinal_ano = null; 
-   var $ac37_datafinal = null; 
-   var $ac37_quantidadeprevista = 0; 
-   var $ac37_valorunitario = 0; 
+   public $ac37_sequencial = 0; 
+   public $ac37_acordoitem = 0; 
+   public $ac37_quantidade = 0; 
+   public $ac37_valor = 0; 
+   public $ac37_acordoperiodo = 0; 
+   public $ac37_datainicial_dia = null; 
+   public $ac37_datainicial_mes = null; 
+   public $ac37_datainicial_ano = null; 
+   public $ac37_datainicial = null; 
+   public $ac37_datafinal_dia = null; 
+   public $ac37_datafinal_mes = null; 
+   public $ac37_datafinal_ano = null; 
+   public $ac37_datafinal = null; 
+   public $ac37_quantidadeprevista = 0; 
+   public $ac37_valorunitario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ac37_sequencial = int4 = Codigo_sequencial 
                  ac37_acordoitem = int4 = Item Acordo 
                  ac37_quantidade = float4 = Quantidade 
@@ -70,10 +70,10 @@ class cl_acordoitemprevisao {
                  ac37_valorunitario = float8 = Valor Unitário 
                  ";
    //funcao construtor da classe 
-   function cl_acordoitemprevisao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordoitemprevisao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -181,10 +181,10 @@ class cl_acordoitemprevisao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ac37_sequencial = pg_result($result,0,0); 
+       $this->ac37_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from acordoitemprevisao_ac37_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ac37_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ac37_sequencial)){
          $this->erro_sql = " Campo ac37_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -228,7 +228,7 @@ class cl_acordoitemprevisao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "acordoitemprevisao ($this->ac37_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "acordoitemprevisao já Cadastrado";
@@ -252,18 +252,18 @@ class cl_acordoitemprevisao {
      $resaco = $this->sql_record($this->sql_query_file($this->ac37_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18041,'$this->ac37_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3188,18041,'','".AddSlashes(pg_result($resaco,0,'ac37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3188,18042,'','".AddSlashes(pg_result($resaco,0,'ac37_acordoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3188,18043,'','".AddSlashes(pg_result($resaco,0,'ac37_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3188,18044,'','".AddSlashes(pg_result($resaco,0,'ac37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3188,18045,'','".AddSlashes(pg_result($resaco,0,'ac37_acordoperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3188,18046,'','".AddSlashes(pg_result($resaco,0,'ac37_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3188,18047,'','".AddSlashes(pg_result($resaco,0,'ac37_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3188,18077,'','".AddSlashes(pg_result($resaco,0,'ac37_quantidadeprevista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3188,18107,'','".AddSlashes(pg_result($resaco,0,'ac37_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3188,18041,'','".AddSlashes(pg_fetch_result($resaco,0,'ac37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3188,18042,'','".AddSlashes(pg_fetch_result($resaco,0,'ac37_acordoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3188,18043,'','".AddSlashes(pg_fetch_result($resaco,0,'ac37_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3188,18044,'','".AddSlashes(pg_fetch_result($resaco,0,'ac37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3188,18045,'','".AddSlashes(pg_fetch_result($resaco,0,'ac37_acordoperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3188,18046,'','".AddSlashes(pg_fetch_result($resaco,0,'ac37_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3188,18047,'','".AddSlashes(pg_fetch_result($resaco,0,'ac37_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3188,18077,'','".AddSlashes(pg_fetch_result($resaco,0,'ac37_quantidadeprevista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3188,18107,'','".AddSlashes(pg_fetch_result($resaco,0,'ac37_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -272,10 +272,10 @@ class cl_acordoitemprevisao {
       $this->atualizacampos();
      $sql = " update acordoitemprevisao set ";
      $virgula = "";
-     if(trim($this->ac37_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_sequencial"])){ 
+     if(trim((string) $this->ac37_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_sequencial"])){ 
        $sql  .= $virgula." ac37_sequencial = $this->ac37_sequencial ";
        $virgula = ",";
-       if(trim($this->ac37_sequencial) == null ){ 
+       if(trim((string) $this->ac37_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo_sequencial nao Informado.";
          $this->erro_campo = "ac37_sequencial";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_acordoitemprevisao {
          return false;
        }
      }
-     if(trim($this->ac37_acordoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoitem"])){ 
+     if(trim((string) $this->ac37_acordoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoitem"])){ 
        $sql  .= $virgula." ac37_acordoitem = $this->ac37_acordoitem ";
        $virgula = ",";
-       if(trim($this->ac37_acordoitem) == null ){ 
+       if(trim((string) $this->ac37_acordoitem) == null ){ 
          $this->erro_sql = " Campo Item Acordo nao Informado.";
          $this->erro_campo = "ac37_acordoitem";
          $this->erro_banco = "";
@@ -298,17 +298,17 @@ class cl_acordoitemprevisao {
          return false;
        }
      }
-     if(trim($this->ac37_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidade"])){ 
-        if(trim($this->ac37_quantidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidade"])){ 
+     if(trim((string) $this->ac37_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidade"])){ 
+        if(trim((string) $this->ac37_quantidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidade"])){ 
            $this->ac37_quantidade = "0" ; 
         } 
        $sql  .= $virgula." ac37_quantidade = $this->ac37_quantidade ";
        $virgula = ",";
      }
-     if(trim($this->ac37_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_valor"])){ 
+     if(trim((string) $this->ac37_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_valor"])){ 
        $sql  .= $virgula." ac37_valor = $this->ac37_valor ";
        $virgula = ",";
-       if(trim($this->ac37_valor) == null ){ 
+       if(trim((string) $this->ac37_valor) == null ){ 
          $this->erro_sql = " Campo valor nao Informado.";
          $this->erro_campo = "ac37_valor";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_acordoitemprevisao {
          return false;
        }
      }
-     if(trim($this->ac37_acordoperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoperiodo"])){ 
+     if(trim((string) $this->ac37_acordoperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoperiodo"])){ 
        $sql  .= $virgula." ac37_acordoperiodo = $this->ac37_acordoperiodo ";
        $virgula = ",";
-       if(trim($this->ac37_acordoperiodo) == null ){ 
+       if(trim((string) $this->ac37_acordoperiodo) == null ){ 
          $this->erro_sql = " Campo Acordo Perido nao Informado.";
          $this->erro_campo = "ac37_acordoperiodo";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_acordoitemprevisao {
          return false;
        }
      }
-     if(trim($this->ac37_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial_dia"] !="") ){ 
+     if(trim((string) $this->ac37_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial_dia"] !="") ){ 
        $sql  .= $virgula." ac37_datainicial = '$this->ac37_datainicial' ";
        $virgula = ",";
-       if(trim($this->ac37_datainicial) == null ){ 
+       if(trim((string) $this->ac37_datainicial) == null ){ 
          $this->erro_sql = " Campo Data inicial nao Informado.";
          $this->erro_campo = "ac37_datainicial_dia";
          $this->erro_banco = "";
@@ -347,7 +347,7 @@ class cl_acordoitemprevisao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial_dia"])){ 
          $sql  .= $virgula." ac37_datainicial = null ";
          $virgula = ",";
-         if(trim($this->ac37_datainicial) == null ){ 
+         if(trim((string) $this->ac37_datainicial) == null ){ 
            $this->erro_sql = " Campo Data inicial nao Informado.";
            $this->erro_campo = "ac37_datainicial_dia";
            $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_acordoitemprevisao {
          }
        }
      }
-     if(trim($this->ac37_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal_dia"] !="") ){ 
+     if(trim((string) $this->ac37_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal_dia"] !="") ){ 
        $sql  .= $virgula." ac37_datafinal = '$this->ac37_datafinal' ";
        $virgula = ",";
-       if(trim($this->ac37_datafinal) == null ){ 
+       if(trim((string) $this->ac37_datafinal) == null ){ 
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "ac37_datafinal_dia";
          $this->erro_banco = "";
@@ -374,7 +374,7 @@ class cl_acordoitemprevisao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal_dia"])){ 
          $sql  .= $virgula." ac37_datafinal = null ";
          $virgula = ",";
-         if(trim($this->ac37_datafinal) == null ){ 
+         if(trim((string) $this->ac37_datafinal) == null ){ 
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "ac37_datafinal_dia";
            $this->erro_banco = "";
@@ -385,15 +385,15 @@ class cl_acordoitemprevisao {
          }
        }
      }
-     if(trim($this->ac37_quantidadeprevista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidadeprevista"])){ 
-        if(trim($this->ac37_quantidadeprevista)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidadeprevista"])){ 
+     if(trim((string) $this->ac37_quantidadeprevista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidadeprevista"])){ 
+        if(trim((string) $this->ac37_quantidadeprevista)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidadeprevista"])){ 
            $this->ac37_quantidadeprevista = "0" ; 
         } 
        $sql  .= $virgula." ac37_quantidadeprevista = $this->ac37_quantidadeprevista ";
        $virgula = ",";
      }
-     if(trim($this->ac37_valorunitario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_valorunitario"])){ 
-        if(trim($this->ac37_valorunitario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_valorunitario"])){ 
+     if(trim((string) $this->ac37_valorunitario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_valorunitario"])){ 
+        if(trim((string) $this->ac37_valorunitario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_valorunitario"])){ 
            $this->ac37_valorunitario = "0" ; 
         } 
        $sql  .= $virgula." ac37_valorunitario = $this->ac37_valorunitario ";
@@ -407,27 +407,27 @@ class cl_acordoitemprevisao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18041,'$this->ac37_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_sequencial"]) || $this->ac37_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3188,18041,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_sequencial'))."','$this->ac37_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3188,18041,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_sequencial'))."','$this->ac37_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoitem"]) || $this->ac37_acordoitem != "")
-           $resac = db_query("insert into db_acount values($acount,3188,18042,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_acordoitem'))."','$this->ac37_acordoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3188,18042,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_acordoitem'))."','$this->ac37_acordoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidade"]) || $this->ac37_quantidade != "")
-           $resac = db_query("insert into db_acount values($acount,3188,18043,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_quantidade'))."','$this->ac37_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3188,18043,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_quantidade'))."','$this->ac37_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_valor"]) || $this->ac37_valor != "")
-           $resac = db_query("insert into db_acount values($acount,3188,18044,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_valor'))."','$this->ac37_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3188,18044,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_valor'))."','$this->ac37_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoperiodo"]) || $this->ac37_acordoperiodo != "")
-           $resac = db_query("insert into db_acount values($acount,3188,18045,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_acordoperiodo'))."','$this->ac37_acordoperiodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3188,18045,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_acordoperiodo'))."','$this->ac37_acordoperiodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial"]) || $this->ac37_datainicial != "")
-           $resac = db_query("insert into db_acount values($acount,3188,18046,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_datainicial'))."','$this->ac37_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3188,18046,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_datainicial'))."','$this->ac37_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal"]) || $this->ac37_datafinal != "")
-           $resac = db_query("insert into db_acount values($acount,3188,18047,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_datafinal'))."','$this->ac37_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3188,18047,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_datafinal'))."','$this->ac37_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidadeprevista"]) || $this->ac37_quantidadeprevista != "")
-           $resac = db_query("insert into db_acount values($acount,3188,18077,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_quantidadeprevista'))."','$this->ac37_quantidadeprevista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3188,18077,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_quantidadeprevista'))."','$this->ac37_quantidadeprevista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_valorunitario"]) || $this->ac37_valorunitario != "")
-           $resac = db_query("insert into db_acount values($acount,3188,18107,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_valorunitario'))."','$this->ac37_valorunitario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3188,18107,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_valorunitario'))."','$this->ac37_valorunitario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -471,10 +471,10 @@ class cl_acordoitemprevisao {
      $this->atualizacampos();
      $sql = " update acordoitemprevisao set ";
      $virgula = "";
-     if(trim($this->ac37_acordoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoitem"])){
+     if(trim((string) $this->ac37_acordoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoitem"])){
        $sql  .= $virgula." ac37_acordoitem = $this->ac37_acordoitem ";
        $virgula = ",";
-       if(trim($this->ac37_acordoitem) == null ){
+       if(trim((string) $this->ac37_acordoitem) == null ){
          $this->erro_sql = " Campo Item Acordo nao Informado.";
          $this->erro_campo = "ac37_acordoitem";
          $this->erro_banco = "";
@@ -484,17 +484,17 @@ class cl_acordoitemprevisao {
          return false;
        }
      }
-     if(trim($this->ac37_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidade"])){
-       if(trim($this->ac37_quantidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidade"])){
+     if(trim((string) $this->ac37_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidade"])){
+       if(trim((string) $this->ac37_quantidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidade"])){
          $this->ac37_quantidade = "0" ;
        }
        $sql  .= $virgula." ac37_quantidade = $this->ac37_quantidade ";
        $virgula = ",";
      }
-     if(trim($this->ac37_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_valor"])){
+     if(trim((string) $this->ac37_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_valor"])){
        $sql  .= $virgula." ac37_valor = $this->ac37_valor ";
        $virgula = ",";
-       if(trim($this->ac37_valor) == null ){
+       if(trim((string) $this->ac37_valor) == null ){
          $this->erro_sql = " Campo valor nao Informado.";
          $this->erro_campo = "ac37_valor";
          $this->erro_banco = "";
@@ -504,10 +504,10 @@ class cl_acordoitemprevisao {
          return false;
        }
      }
-     if(trim($this->ac37_acordoperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoperiodo"])){
+     if(trim((string) $this->ac37_acordoperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoperiodo"])){
        $sql  .= $virgula." ac37_acordoperiodo = $this->ac37_acordoperiodo ";
        $virgula = ",";
-       if(trim($this->ac37_acordoperiodo) == null ){
+       if(trim((string) $this->ac37_acordoperiodo) == null ){
          $this->erro_sql = " Campo Acordo Perido nao Informado.";
          $this->erro_campo = "ac37_acordoperiodo";
          $this->erro_banco = "";
@@ -517,10 +517,10 @@ class cl_acordoitemprevisao {
          return false;
        }
      }
-     if(trim($this->ac37_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial_dia"] !="") ){
+     if(trim((string) $this->ac37_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial_dia"] !="") ){
        $sql  .= $virgula." ac37_datainicial = '$this->ac37_datainicial' ";
        $virgula = ",";
-       if(trim($this->ac37_datainicial) == null ){
+       if(trim((string) $this->ac37_datainicial) == null ){
          $this->erro_sql = " Campo Data inicial nao Informado.";
          $this->erro_campo = "ac37_datainicial_dia";
          $this->erro_banco = "";
@@ -533,7 +533,7 @@ class cl_acordoitemprevisao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial_dia"])){
          $sql  .= $virgula." ac37_datainicial = null ";
          $virgula = ",";
-         if(trim($this->ac37_datainicial) == null ){
+         if(trim((string) $this->ac37_datainicial) == null ){
            $this->erro_sql = " Campo Data inicial nao Informado.";
            $this->erro_campo = "ac37_datainicial_dia";
            $this->erro_banco = "";
@@ -544,10 +544,10 @@ class cl_acordoitemprevisao {
          }
        }
      }
-     if(trim($this->ac37_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal_dia"] !="") ){
+     if(trim((string) $this->ac37_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal_dia"] !="") ){
        $sql  .= $virgula." ac37_datafinal = '$this->ac37_datafinal' ";
        $virgula = ",";
-       if(trim($this->ac37_datafinal) == null ){
+       if(trim((string) $this->ac37_datafinal) == null ){
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "ac37_datafinal_dia";
          $this->erro_banco = "";
@@ -560,7 +560,7 @@ class cl_acordoitemprevisao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal_dia"])){
          $sql  .= $virgula." ac37_datafinal = null ";
          $virgula = ",";
-         if(trim($this->ac37_datafinal) == null ){
+         if(trim((string) $this->ac37_datafinal) == null ){
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "ac37_datafinal_dia";
            $this->erro_banco = "";
@@ -571,15 +571,15 @@ class cl_acordoitemprevisao {
          }
        }
      }
-     if(trim($this->ac37_quantidadeprevista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidadeprevista"])){
-       if(trim($this->ac37_quantidadeprevista)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidadeprevista"])){
+     if(trim((string) $this->ac37_quantidadeprevista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidadeprevista"])){
+       if(trim((string) $this->ac37_quantidadeprevista)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidadeprevista"])){
          $this->ac37_quantidadeprevista = "0" ;
        }
        $sql  .= $virgula." ac37_quantidadeprevista = $this->ac37_quantidadeprevista ";
        $virgula = ",";
      }
-     if(trim($this->ac37_valorunitario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_valorunitario"])){
-       if(trim($this->ac37_valorunitario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_valorunitario"])){
+     if(trim((string) $this->ac37_valorunitario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac37_valorunitario"])){
+       if(trim((string) $this->ac37_valorunitario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac37_valorunitario"])){
          $this->ac37_valorunitario = "0" ;
        }
        $sql  .= $virgula." ac37_valorunitario = $this->ac37_valorunitario ";
@@ -596,27 +596,27 @@ class cl_acordoitemprevisao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18041,'$this->ac37_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_sequencial"]) || $this->ac37_sequencial != "")
-         $resac = db_query("insert into db_acount values($acount,3188,18041,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_sequencial'))."','$this->ac37_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18041,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_sequencial'))."','$this->ac37_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoitem"]) || $this->ac37_acordoitem != "")
-         $resac = db_query("insert into db_acount values($acount,3188,18042,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_acordoitem'))."','$this->ac37_acordoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18042,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_acordoitem'))."','$this->ac37_acordoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidade"]) || $this->ac37_quantidade != "")
-         $resac = db_query("insert into db_acount values($acount,3188,18043,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_quantidade'))."','$this->ac37_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18043,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_quantidade'))."','$this->ac37_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_valor"]) || $this->ac37_valor != "")
-         $resac = db_query("insert into db_acount values($acount,3188,18044,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_valor'))."','$this->ac37_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18044,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_valor'))."','$this->ac37_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_acordoperiodo"]) || $this->ac37_acordoperiodo != "")
-         $resac = db_query("insert into db_acount values($acount,3188,18045,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_acordoperiodo'))."','$this->ac37_acordoperiodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18045,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_acordoperiodo'))."','$this->ac37_acordoperiodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_datainicial"]) || $this->ac37_datainicial != "")
-         $resac = db_query("insert into db_acount values($acount,3188,18046,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_datainicial'))."','$this->ac37_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18046,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_datainicial'))."','$this->ac37_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_datafinal"]) || $this->ac37_datafinal != "")
-         $resac = db_query("insert into db_acount values($acount,3188,18047,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_datafinal'))."','$this->ac37_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18047,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_datafinal'))."','$this->ac37_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_quantidadeprevista"]) || $this->ac37_quantidadeprevista != "")
-         $resac = db_query("insert into db_acount values($acount,3188,18077,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_quantidadeprevista'))."','$this->ac37_quantidadeprevista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18077,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_quantidadeprevista'))."','$this->ac37_quantidadeprevista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac37_valorunitario"]) || $this->ac37_valorunitario != "")
-         $resac = db_query("insert into db_acount values($acount,3188,18107,'".AddSlashes(pg_result($resaco,$conresaco,'ac37_valorunitario'))."','$this->ac37_valorunitario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18107,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac37_valorunitario'))."','$this->ac37_valorunitario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -662,18 +662,18 @@ class cl_acordoitemprevisao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18041,'$ac37_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3188,18041,'','".AddSlashes(pg_result($resaco,$iresaco,'ac37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3188,18042,'','".AddSlashes(pg_result($resaco,$iresaco,'ac37_acordoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3188,18043,'','".AddSlashes(pg_result($resaco,$iresaco,'ac37_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3188,18044,'','".AddSlashes(pg_result($resaco,$iresaco,'ac37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3188,18045,'','".AddSlashes(pg_result($resaco,$iresaco,'ac37_acordoperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3188,18046,'','".AddSlashes(pg_result($resaco,$iresaco,'ac37_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3188,18047,'','".AddSlashes(pg_result($resaco,$iresaco,'ac37_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3188,18077,'','".AddSlashes(pg_result($resaco,$iresaco,'ac37_quantidadeprevista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3188,18107,'','".AddSlashes(pg_result($resaco,$iresaco,'ac37_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18041,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18042,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac37_acordoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18043,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac37_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18044,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18045,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac37_acordoperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18046,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac37_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18047,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac37_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18077,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac37_quantidadeprevista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3188,18107,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac37_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from acordoitemprevisao
@@ -733,7 +733,7 @@ class cl_acordoitemprevisao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:acordoitemprevisao";
@@ -748,7 +748,7 @@ class cl_acordoitemprevisao {
    function sql_query ( $ac37_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -775,7 +775,7 @@ class cl_acordoitemprevisao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -788,7 +788,7 @@ class cl_acordoitemprevisao {
    function sql_query_file ( $ac37_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -809,7 +809,7 @@ class cl_acordoitemprevisao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -821,7 +821,7 @@ class cl_acordoitemprevisao {
    function sql_query_execucao ( $ac38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -845,7 +845,7 @@ class cl_acordoitemprevisao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -860,7 +860,7 @@ class cl_acordoitemprevisao {
   function sql_queryItemPeriodoPrevisao ( $ac37_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -888,7 +888,7 @@ class cl_acordoitemprevisao {
           $sql .= $sql2;
           if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
               $sql .= $virgula.$campos_sql[$i];

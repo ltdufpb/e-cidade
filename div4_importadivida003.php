@@ -118,8 +118,8 @@ $wherereceita = "";
 if (isset ($chave_origem) && trim($chave_origem) != "" && isset ($chave_destino) && trim($chave_destino) != "") {
 	if (isset ($procreg) && $procreg == 't') {
 
-	    $teste      = substr($codreceita, -1);
-	    $codreceita = substr($codreceita, 0, strlen($codreceita) - 1);
+	    $teste      = substr((string) $codreceita, -1);
+	    $codreceita = substr((string) $codreceita, 0, strlen((string) $codreceita) - 1);
 	    if ($teste != ',') {
 		    $codreceita .= $teste;
 	    }
@@ -404,13 +404,13 @@ if (isset ($procreg) && $procreg == 't') {
 					               k00_receit
                          $order_k00_numpar  ";
 		$result_pesq_divida = db_query($sql_pesq);
-		$numrows = pg_numrows($result_pesq_divida);
+		$numrows = pg_num_rows($result_pesq_divida);
 
 		if (isset ($numrows) && $numrows == 0) {
 			db_msgbox("Nenhum registro para o filtro selecionado !");
 		}
-		$codigo_k02 = split(",", $codreceita);
-		$codigo_v03 = split(",", $cod_v03_codigo);
+		$codigo_k02 = preg_split("#,#m", (string) $codreceita);
+		$codigo_v03 = preg_split("#,#m", $cod_v03_codigo);
 		$sqlerro    = false;
 		$dataini    = date("Y-m-d", db_getsession('DB_datausu'));
 		$horaini    = db_hora();
@@ -465,7 +465,7 @@ if (isset ($procreg) && $procreg == 't') {
 
 				if ($k00_receit == $cod_k02_codigo && $sqlerro == false) {
 
-					if ($numpre_par_rec <> str_pad($k00_numpre, 10, "0", STR_PAD_LEFT).str_pad($k00_receit, 5, "0", STR_PAD_LEFT)) {
+					if ($numpre_par_rec <> str_pad((string) $k00_numpre, 10, "0", STR_PAD_LEFT).str_pad((string) $k00_receit, 5, "0", STR_PAD_LEFT)) {
 
 						$whe     = "";
 						$whe_div = "";
@@ -496,7 +496,7 @@ if (isset ($procreg) && $procreg == 't') {
 						$resultjadivida = db_query($sqljadivida);
 
 						$jaexiste        = false;
-						$numrowsjadivida = pg_numrows($resultjadivida);
+						$numrowsjadivida = pg_num_rows($resultjadivida);
 
 							// Trata tipo de Debito 20 - Saneamento Basico
 							if ($numrowsjadivida > 0 && $k03_tipo = 20) {
@@ -509,7 +509,7 @@ if (isset ($procreg) && $procreg == 't') {
 						$nextval_numpre = db_query("select nextval('numpref_k03_numpre_seq') as numpre_novo");
 						db_fieldsmemory($nextval_numpre, 0);
 
-						$numpre_par_rec    = str_pad($k00_numpre, 10, "0", STR_PAD_LEFT).str_pad($k00_receit, 5, "0", STR_PAD_LEFT);
+						$numpre_par_rec    = str_pad((string) $k00_numpre, 10, "0", STR_PAD_LEFT).str_pad((string) $k00_receit, 5, "0", STR_PAD_LEFT);
 						$result_arrematric = $clarrematric->sql_record($clarrematric->sql_query_file($k00_numpre, 0, "k00_matric"));
 
 						if ($clarrematric->numrows > 0) {
@@ -549,7 +549,7 @@ if (isset ($procreg) && $procreg == 't') {
 					 * inclui na divida
            */
           $v01_obs                  = $cldivida->resumo_importacao($k00_numpre, $iCadTipo);
-          $exerc_div                = $cldivida->getExercicioDivida($k00_numpre, $iCadTipo, substr($k00_dtoper, 6, 4));
+          $exerc_div                = $cldivida->getExercicioDivida($k00_numpre, $iCadTipo, substr((string) $k00_dtoper, 6, 4));
           $cldivida->v01_exerc      = $exerc_div;
 					$cldivida->v01_instit     = db_getsession('DB_instit');
 					$cldivida->v01_numcgm     = $k00_numcgm;
@@ -557,7 +557,7 @@ if (isset ($procreg) && $procreg == 't') {
 					$cldivida->v01_dtinclusao = date('Y-m-d',db_getsession('DB_datausu'));
 					$cldivida->v01_numpre     = $numpre_novo;
 
-          $dt_venc = explode("/", $k00_dtvenc);
+          $dt_venc = explode("/", (string) $k00_dtvenc);
 
           if ( is_array($dt_venc) && count($dt_venc) > 1) {
 					  $dt_venc_data = $dt_venc[2]."-".$dt_venc[1]."-".$dt_venc[0];
@@ -565,7 +565,7 @@ if (isset ($procreg) && $procreg == 't') {
             $dt_venc_data = $k00_dtvenc;
           }
 
-					$dt_oper = split("/", $k00_dtoper);
+					$dt_oper = preg_split("#\\/#m", (string) $k00_dtoper);
 					$dt_oper_data =  $dt_oper[2]."-".$dt_oper[1]."-".$dt_oper[0];
 
 					if (isset ($uni) && $uni == 'p') {
@@ -704,7 +704,7 @@ if (isset ($procreg) && $procreg == 't') {
 
 						$sqlBk = " select * from arrecad where k00_numpre = $k00_numpre and k00_receit = $k00_receit";
 						$rsBk  = db_query($sqlBk) or die($sqlBk);
-						$intBk = pg_numrows($rsBk);
+						$intBk = pg_num_rows($rsBk);
 
 						if ($intBk == 0) {
 

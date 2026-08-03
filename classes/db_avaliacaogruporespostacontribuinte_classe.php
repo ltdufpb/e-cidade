@@ -29,7 +29,7 @@ class cl_avaliacaogruporespostacontribuinte
     public function __construct()
     {
         $this->rotulo = new rotulo("avaliacaogruporespostacontribuinte"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -84,10 +84,10 @@ class cl_avaliacaogruporespostacontribuinte
          $this->erro_status = "0";
          return false; 
        }
-       $this->eso27_sequencial = pg_result($result,0,0); 
+       $this->eso27_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from avaliacaogruporespostacontribuinte_eso27_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $eso27_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $eso27_sequencial)){
          $this->erro_sql = " Campo eso27_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -119,7 +119,7 @@ class cl_avaliacaogruporespostacontribuinte
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Vínculo entre preenchimento e contribuinte ($this->eso27_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Vínculo entre preenchimento e contribuinte já Cadastrado";
@@ -148,12 +148,12 @@ class cl_avaliacaogruporespostacontribuinte
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1010179,'$this->eso27_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010353,1010179,'','".AddSlashes(pg_result($resaco,0,'eso27_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010353,1010180,'','".AddSlashes(pg_result($resaco,0,'eso27_avaliacaogruporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010353,1010181,'','".AddSlashes(pg_result($resaco,0,'eso27_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010353,1010179,'','".AddSlashes(pg_fetch_result($resaco,0,'eso27_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010353,1010180,'','".AddSlashes(pg_fetch_result($resaco,0,'eso27_avaliacaogruporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010353,1010181,'','".AddSlashes(pg_fetch_result($resaco,0,'eso27_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -164,10 +164,10 @@ class cl_avaliacaogruporespostacontribuinte
       $this->atualizacampos();
      $sql = " update avaliacaogruporespostacontribuinte set ";
      $virgula = "";
-     if(trim($this->eso27_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso27_sequencial"])){ 
+     if(trim((string) $this->eso27_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso27_sequencial"])){ 
        $sql  .= $virgula." eso27_sequencial = $this->eso27_sequencial ";
        $virgula = ",";
-       if(trim($this->eso27_sequencial) == null ){ 
+       if(trim((string) $this->eso27_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "eso27_sequencial";
          $this->erro_banco = "";
@@ -177,10 +177,10 @@ class cl_avaliacaogruporespostacontribuinte
          return false;
        }
      }
-     if(trim($this->eso27_avaliacaogruporesposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso27_avaliacaogruporesposta"])){ 
+     if(trim((string) $this->eso27_avaliacaogruporesposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso27_avaliacaogruporesposta"])){ 
        $sql  .= $virgula." eso27_avaliacaogruporesposta = $this->eso27_avaliacaogruporesposta ";
        $virgula = ",";
-       if(trim($this->eso27_avaliacaogruporesposta) == null ){ 
+       if(trim((string) $this->eso27_avaliacaogruporesposta) == null ){ 
          $this->erro_sql = " Campo Código do Grupo de Resposta não informado.";
          $this->erro_campo = "eso27_avaliacaogruporesposta";
          $this->erro_banco = "";
@@ -190,10 +190,10 @@ class cl_avaliacaogruporespostacontribuinte
          return false;
        }
      }
-     if(trim($this->eso27_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso27_cgm"])){ 
+     if(trim((string) $this->eso27_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso27_cgm"])){ 
        $sql  .= $virgula." eso27_cgm = $this->eso27_cgm ";
        $virgula = ",";
-       if(trim($this->eso27_cgm) == null ){ 
+       if(trim((string) $this->eso27_cgm) == null ){ 
          $this->erro_sql = " Campo Cgm do Contribuinte não informado.";
          $this->erro_campo = "eso27_cgm";
          $this->erro_banco = "";
@@ -220,15 +220,15 @@ class cl_avaliacaogruporespostacontribuinte
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1010179,'$this->eso27_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso27_sequencial"]) || $this->eso27_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010353,1010179,'".AddSlashes(pg_result($resaco,$conresaco,'eso27_sequencial'))."','$this->eso27_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010353,1010179,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso27_sequencial'))."','$this->eso27_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso27_avaliacaogruporesposta"]) || $this->eso27_avaliacaogruporesposta != "")
-             $resac = db_query("insert into db_acount values($acount,1010353,1010180,'".AddSlashes(pg_result($resaco,$conresaco,'eso27_avaliacaogruporesposta'))."','$this->eso27_avaliacaogruporesposta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010353,1010180,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso27_avaliacaogruporesposta'))."','$this->eso27_avaliacaogruporesposta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso27_cgm"]) || $this->eso27_cgm != "")
-             $resac = db_query("insert into db_acount values($acount,1010353,1010181,'".AddSlashes(pg_result($resaco,$conresaco,'eso27_cgm'))."','$this->eso27_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010353,1010181,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso27_cgm'))."','$this->eso27_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -282,12 +282,12 @@ class cl_avaliacaogruporespostacontribuinte
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1010179,'$eso27_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010353,1010179,'','".AddSlashes(pg_result($resaco,$iresaco,'eso27_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010353,1010180,'','".AddSlashes(pg_result($resaco,$iresaco,'eso27_avaliacaogruporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010353,1010181,'','".AddSlashes(pg_result($resaco,$iresaco,'eso27_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010353,1010179,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso27_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010353,1010180,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso27_avaliacaogruporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010353,1010181,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso27_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -418,7 +418,7 @@ class cl_avaliacaogruporespostacontribuinte
         return $sql;
     }
 
-    public function buscarRespostasPreenchimento($campos = array('*'), $where = array(), $outrosComandos = "")
+    public function buscarRespostasPreenchimento($campos = ['*'], $where = [], $outrosComandos = "")
     {
         $sql  = " SELECT DISTINCT " . implode(', ', $campos);
         $sql .= "   FROM avaliacaogruporespostacontribuinte";

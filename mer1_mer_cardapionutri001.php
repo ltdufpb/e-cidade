@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_cardapionutri_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_cardapionutri      = new cl_mer_cardapionutri;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $db_opcao                 = 1;

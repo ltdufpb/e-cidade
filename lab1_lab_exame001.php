@@ -34,20 +34,20 @@ include(modification("classes/db_lab_exasinonima_classe.php"));
 include(modification("classes/db_lab_sinonima_classe.php"));
 require(modification("libs/db_app.utils.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllab_exame = new cl_lab_exame;
 $cllab_exasinonima = new cl_lab_exasinonima;
 $cllab_sinonima = new cl_lab_sinonima;
 $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
-  $x = isset($chk_masc)?$chk_masc:0;
-  $y = isset($chk_fem)?$chk_fem:0;
+  $x = $chk_masc ?? 0;
+  $y = $chk_fem ?? 0;
   $fator = $x+$y;  
   $cllab_exame->la08_i_sexo=$fator;
-  $x = isset($chk_mapa)?$chk_mapa:0;
-  $y = isset($chk_etiqueta1)?$chk_etiqueta1:0;
-  $z = isset($chk_etiqueta2)?$chk_etiqueta2:0;
+  $x = $chk_mapa ?? 0;
+  $y = $chk_etiqueta1 ?? 0;
+  $z = $chk_etiqueta2 ?? 0;
   $fator = $x+$y+$z;
   $cllab_exame->la08_i_gerar=$fator;
   db_inicio_transacao();
@@ -56,8 +56,8 @@ if(isset($incluir)){
      $iExame=$cllab_exame->la08_i_codigo;
      
      if ($cllab_exame->erro_status != "0") {
-         $vet=explode(",",$str_sinonimia);
-         $vet2=explode(",",$str_sinonimia2);
+         $vet=explode(",",(string) $str_sinonimia);
+         $vet2=explode(",",(string) $str_sinonimia2);
          //die("STR1:$str_sinonimia STR2:$str_sinonimia2 ");
          $cllab_exasinonima->la18_i_exame=$iExame;
          for($x=0;$x<count($vet);$x++){
@@ -139,7 +139,7 @@ if(isset($incluir)){
   }else{
     $cllab_exame->erro(true,false);
     $result = @db_query("select last_value from lab_exame_la08_i_codigo_seq");
-    $ultimo = pg_result($result,0,0);
+    $ultimo = pg_fetch_result($result,0,0);
     db_redireciona("lab1_lab_exame002.php?chavepesquisa=$ultimo");
   }
 }

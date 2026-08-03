@@ -34,7 +34,7 @@ include(modification("classes/db_procescola_classe.php"));
 include(modification("classes/db_escola_classe.php"));
 include(modification("classes/db_turma_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clprocescola = new cl_procescola;
 $clescola     = new cl_escola;

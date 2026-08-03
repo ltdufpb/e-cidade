@@ -43,7 +43,7 @@ $clsau_config        = new cl_sau_config_ext;
 $clsau_upsparalisada = new cl_sau_upsparalisada_ext;
 
 $res_sau_config  = db_query( $clsau_config->sql_query_ext() );
-$booProced       = pg_num_rows( $res_sau_config ) > 0 && pg_result($res_sau_config, 0, "s103_c_agendaproc") == "S";
+$booProced       = pg_num_rows( $res_sau_config ) > 0 && pg_fetch_result($res_sau_config, 0, "s103_c_agendaproc") == "S";
 
 $sd02_c_centralagenda = "N";
 $upssolicitante       = db_getsession("DB_coddepto");
@@ -97,7 +97,7 @@ $db_opcao = 1;
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
   <?php
-  db_app::load(array(
+  db_app::load([
     "scripts.js",
     "prototype.js",
     "datagrid.widget.js",
@@ -105,7 +105,7 @@ $db_opcao = 1;
     "grid.style.css",
     "estilos.css",
     "/widgets/dbautocomplete.widget.js",
-  ));
+  ]);
   ?>
 </head>
 <body>

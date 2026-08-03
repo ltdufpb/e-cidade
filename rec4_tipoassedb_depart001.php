@@ -36,7 +36,7 @@ require_once(modification("classes/db_tipoasse_classe.php"));
 <html>
 <head>
 <?php
-  db_app::load(array(
+  db_app::load([
     "scripts.js",
     "strings.js",
     "prototype.js",
@@ -45,7 +45,7 @@ require_once(modification("classes/db_tipoasse_classe.php"));
     "widgets/Collection.widget.js",
     "widgets/DatagridCollection.widget.js",
     "estilos.css"
-  ));
+  ]);
 ?>
 </head>
 <body>

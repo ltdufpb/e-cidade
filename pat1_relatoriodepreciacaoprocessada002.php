@@ -71,7 +71,7 @@ $oPdf->setfillcolor(235);
 $iAltura       = 4;
 $lPrimeiroLaco = true;
 
-$aMesesParaImprimir     = array("1"  => "Janeiro",
+$aMesesParaImprimir     = ["1"  => "Janeiro",
               						  		"2"  => "Fevereiro",
               						  		"3"  => "Março",
               						  		"4"  => "Abril",
@@ -82,12 +82,12 @@ $aMesesParaImprimir     = array("1"  => "Janeiro",
                                 "9"  => "Setembro",
                                 "10" => "Outubro",
                                 "11" => "Novembro",
-                              	"12" => "Dezembro");
-$aMesesComProcessamento = array();
+                              	"12" => "Dezembro"];
+$aMesesComProcessamento = [];
 foreach ($aCalculosEncontrados as $oRegistro) {
 
   $oProcessamento                            = new stdClass();
-  $oProcessamento->dataprocessamento         = implode("/", array_reverse(explode("-", $oRegistro->t57_datacalculo)));
+  $oProcessamento->dataprocessamento         = implode("/", array_reverse(explode("-", (string) $oRegistro->t57_datacalculo)));
   $oProcessamento->usuario                   = $oRegistro->id_usuario ." - ".$oRegistro->login;
   $oProcessamento->mes                       = $aMesesParaImprimir[$oRegistro->t57_mes];
   $oProcessamento->tipodepreciacao           = $oRegistro->tipoprocessamento;

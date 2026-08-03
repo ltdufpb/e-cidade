@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhlocaltrab_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhlocaltrab = new cl_rhlocaltrab;
 $clrhlocaltrab->rotulo->label("rh55_codigo");
 $clrhlocaltrab->rotulo->label("rh55_descr");
@@ -105,8 +105,8 @@ $clrhlocaltrab->rotulo->label("rh55_estrut");
                  
                  $oDaoCfpess           = new cl_cfpess();
                  $oDaoDbUsuarioLotacao = new cl_db_usuariosrhlota();
-                 $aEstruturais         = array();
-                 $aResultados          = array();
+                 $aEstruturais         = [];
+                 $aResultados          = [];
                  $iInstit              = db_getsession('DB_instit');
                  $iAno                 = DBPessoal::getAnoFolha();
                  $iMes                 = DBPessoal::getMesFolha();
@@ -139,9 +139,9 @@ $clrhlocaltrab->rotulo->label("rh55_estrut");
                  $aEstruturais = db_utils::getCollectionByRecord($rsLotacoesUsuario);
                  
                  foreach ($aEstruturais as $oEstrutural) {
-                     $iLocal = substr(trim($oEstrutural->r70_estrut),0,2);
+                     $iLocal = substr(trim((string) $oEstrutural->r70_estrut),0,2);
                      if (!in_array($iLocal, $aResultados)) {
-                       $aResultados[] = substr(trim($oEstrutural->r70_estrut),0,2);
+                       $aResultados[] = substr(trim((string) $oEstrutural->r70_estrut),0,2);
                      }
                  }
                  
@@ -165,7 +165,7 @@ $clrhlocaltrab->rotulo->label("rh55_estrut");
            $campos = "rhlocaltrab.*";
            }
         }
-        $aWhere = array();
+        $aWhere = [];
         if(isset($mInstituicoes) && !empty($mInstituicoes)) {
           if(is_array($mInstituicoes)) {
             $aWhere[] = " rh55_instit IN (". implode(", ", $mInstituicoes) .")";
@@ -200,15 +200,15 @@ $clrhlocaltrab->rotulo->label("rh55_estrut");
         }else{
            $sql = $clrhlocaltrab->sql_query("",null,$campos,"rh55_codigo", $dbwhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh55_descr)){
-          $repassa = array("chave_rh55_codigo"=>$chave_rh55_codigo,"chave_rh55_descr"=>$chave_rh55_descr);
+          $repassa = ["chave_rh55_codigo"=>$chave_rh55_codigo,"chave_rh55_descr"=>$chave_rh55_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
           
-          $aWhere = array();
+          $aWhere = [];
           $aWhere[] = "rh55_codigo = {$pesquisa_chave}";
           $aWhere[] = "rh55_instit = ".db_getsession("DB_instit");
           if (isset($sWhereEstrutural)) {

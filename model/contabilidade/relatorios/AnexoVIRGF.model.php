@@ -38,7 +38,7 @@ final class AnexoVIRGF extends RelatoriosLegaisBase {
 
   protected $oAnexoV;
 
-  private $aCacheRecursos = array ();
+  private $aCacheRecursos =  [];
   
   /**
    * @param integer $iAnoUsu ano de emissao do relatorio
@@ -66,7 +66,8 @@ final class AnexoVIRGF extends RelatoriosLegaisBase {
    *                               ->disponibilidadeliquida
    * @return Object - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     /**
      * separamos o RPPS das outras instituicoes
@@ -93,7 +94,7 @@ final class AnexoVIRGF extends RelatoriosLegaisBase {
     
     unset($aInstituicoes);
     
-    $aLinhas = array ();
+    $aLinhas =  [];
     $oRetorno = new stdClass();
     $oRecursos = $this->initRecursosRetorno();
     $oRetorno->recursosVinculados = $oRecursos->recursosVinculados;
@@ -356,7 +357,7 @@ final class AnexoVIRGF extends RelatoriosLegaisBase {
     /**
      * percorremos todos os recursos informados, e mostramos apenas os que possuim movimentacoes.
      */
-    $aRecursosVinculados = array ();
+    $aRecursosVinculados =  [];
     foreach ( $oRetorno->recursosVinculados as $iRecurso => &$oRecurso ) {
       
       if (round($oRecurso->disponibilidadedecaixa, 2) != 0 || round($oRecurso->insuficienciafinanceira, 2) != 0 || round($oRecurso->restospagarnaoprocessadosexercicioanterior, 2) != 0 || round($oRecurso->restospagarnaoprocessadosexercicio, 2) || round($oRecurso->restospagarprocessadosexercicioanterior, 2)) {
@@ -366,7 +367,7 @@ final class AnexoVIRGF extends RelatoriosLegaisBase {
     
     $this->aDados = $oRetorno;
     
-    $aRecursosNaoVinculados = array ();
+    $aRecursosNaoVinculados =  [];
     foreach ( $oRetorno->recursosNaoVinculados as $iRecurso => &$oRecurso ) {
       
       if (round($oRecurso->disponibilidadedecaixa, 2) != 0 || round($oRecurso->insuficienciafinanceira, 2) != 0 || round($oRecurso->restospagarnaoprocessadosexercicioanterior, 2) != 0 || round($oRecurso->restospagarnaoprocessadosexercicio, 2) || round($oRecurso->restospagarprocessadosexercicioanterior, 2)) {

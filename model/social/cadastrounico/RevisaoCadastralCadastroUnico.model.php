@@ -61,18 +61,14 @@ final class RevisaoCadastralCadastroUnico extends ProcessarSituacaoCadastroUnico
   private $lTemNaoProcessado = false;
 
   /**
-   * Nome do arquivo que esta sendo processado
-   * @var string
-   */
-  private $sNomeArquivo;
-
-  /**
    * Nome do arquivo
-   * @param string $sArquivo
+   * @param string $sNomeArquivo
    */
-  public function __construct($sArquivo) {
+  public function __construct(/**
+   * Nome do arquivo que esta sendo processado
+   */
+  private $sNomeArquivo) {
 
-    $this->sNomeArquivo = $sArquivo;
     $this->fArquivoLog  = fopen("{$this->sNomeArquivoNaoProcessado}", 'w');
     $this->removerSituacao();
   }

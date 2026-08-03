@@ -127,7 +127,7 @@ $clrotulo->label("k00_descr");
 					</td>
 					<td>
 						<?php 
-							$x = array('1'=>'Modelo original','2'=>'Modelo com margem esquerda menor e espaçamentos gerais menores e espaço para juiz despachar em cima');
+							$x = ['1'=>'Modelo original','2'=>'Modelo com margem esquerda menor e espaçamentos gerais menores e espaço para juiz despachar em cima'];
 							db_select('v04_peticaoinicial',$x,true,$db_opcao,"style='width:170'");
 						?>
 					</td>
@@ -138,7 +138,7 @@ $clrotulo->label("k00_descr");
 					</td>
 					<td>
 						<?php 
-							$x = array('0'=>'Todos','1'=>'Somente Proprietários','2'=>'Somente Promitentes');
+							$x = ['0'=>'Todos','1'=>'Somente Proprietários','2'=>'Somente Promitentes'];
 							db_select('v04_envolcdaiptu',$x,true,$db_opcao,"style='width:170'");
 						?>
 					</td>
@@ -149,7 +149,7 @@ $clrotulo->label("k00_descr");
 					</td>
 					<td>
 						<?php 
-							$x = array('0'=>'Não Vincular Sócios','1'=>'Vincular Sócios');
+							$x = ['0'=>'Não Vincular Sócios','1'=>'Vincular Sócios'];
 							db_select('v04_envolcdaiss',$x,true,$db_opcao,"style='width:170'");
 						?>
 					</td>
@@ -160,7 +160,7 @@ $clrotulo->label("k00_descr");
 					</td>
 					<td>
 						<?php 
-							$aOrdemCda = array('1'=>'Origem','2'=>'CGM');
+							$aOrdemCda = ['1'=>'Origem','2'=>'CGM'];
 							db_select('v04_ordemendcda',$aOrdemCda,true,$db_opcao,"style='width:80px;'");
 						?>
 					</td>
@@ -171,7 +171,7 @@ $clrotulo->label("k00_descr");
 					</td>
 					<td>
 						<?php 
-							$aEnvolPrincIptu = array("f"=>"NAO","t"=>"SIM");
+							$aEnvolPrincIptu = ["f"=>"NAO","t"=>"SIM"];
 							db_select('v04_envolprinciptu',$aEnvolPrincIptu,true,$db_opcao,"style='width:80px;'");
 						?>
 					</td>
@@ -182,7 +182,7 @@ $clrotulo->label("k00_descr");
 					</td>
 					<td>
 						<?php 
-							$aImpHistCda = array("f"=>"NAO","t"=>"SIM");
+							$aImpHistCda = ["f"=>"NAO","t"=>"SIM"];
 							db_select('v04_imphistcda',$aImpHistCda,true,$db_opcao,"style='width:80px;'");
 						?>
 					</td>
@@ -193,7 +193,7 @@ $clrotulo->label("k00_descr");
           </td>
           <td>
             <?php 
-              $aImplivrofolha = array("f"=>"NAO","t"=>"SIM");
+              $aImplivrofolha = ["f"=>"NAO","t"=>"SIM"];
               db_select('v04_implivrofolha',$aImplivrofolha,true,$db_opcao,"style='width:80px;'");
             ?>
           </td>
@@ -204,9 +204,9 @@ $clrotulo->label("k00_descr");
           </td>
           <td>
             <?php 
-              $aConfExpFalec = array("1"=>"Somente CDA",
+              $aConfExpFalec = ["1"=>"Somente CDA",
                                      "2"=>"Somente Inicial",
-                                     "3"=>"Em Ambas");
+                                     "3"=>"Em Ambas"];
               db_select('v04_confexpfalec',$aConfExpFalec,true,$db_opcao,"style='width:170px;'");
             ?>
           </td>
@@ -227,8 +227,8 @@ $clrotulo->label("k00_descr");
           </td>
           <td>
             <?php 
-              $x = array('1'=>'Normal',
-                         '2'=>'Individualizar por Origem/ Ano/ Procedência');
+              $x = ['1'=>'Normal',
+                         '2'=>'Individualizar por Origem/ Ano/ Procedência'];
               db_select('v04_formgeracda',$x,true,$db_opcao,"style='width:370'");
             ?>
           </td>
@@ -245,7 +245,7 @@ $clrotulo->label("k00_descr");
             </td>
             <td>
               <?php
-                $aCobrarJurosMultaCda = array('f'=>'Não', 't'=>'Sim');
+                $aCobrarJurosMultaCda = ['f'=>'Não', 't'=>'Sim'];
                 db_select('v04_cobrarjurosmultacda', $aCobrarJurosMultaCda, true, $db_opcao, "style='width:80px;'");
               ?>
             </td>
@@ -390,7 +390,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pardiv.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

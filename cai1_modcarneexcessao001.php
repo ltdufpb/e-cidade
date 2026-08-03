@@ -57,7 +57,7 @@ if(isset($alterar) || isset($incluir) || isset($excluir) ){
   	$rsModCarnePadraoExc = $clmodcarnepadrao->sql_record($clmodcarnepadrao->sql_query(null,"*",null," k36_modcarnepadrao = {$k36_modcarnepadrao} and k36_ip is not null and k36_ip != '{$k36_ip}'"));
     $iNroLinhasRegraExc  = $clmodcarnepadrao->numrows;
 	if ($iNroLinhasRegraExc > 0) {
-      $aListaIp = array();
+      $aListaIp = [];
       for ($i=0; $i < $iNroLinhasRegraExc; $i++) {
         $oModCarnePadraoExc  = db_utils::fieldsMemory($rsModCarnePadraoExc,$i);
         if ($oModCarnePadraoExc->k36_ip != $k36_ip) {
@@ -72,8 +72,8 @@ if(isset($alterar) || isset($incluir) || isset($excluir) ){
     $sWhereValidaRegra .= " and k36_ip 			  = '{$k36_ip}'				 		  		  ";
   }
   
-  if (trim($oModCarnePadrao->k49_tipo) != ""){
-  	$aListaTipo = array();
+  if (trim((string) $oModCarnePadrao->k49_tipo) != ""){
+  	$aListaTipo = [];
   	for ($i=0; $i < $iNroLinhasRegra; $i++) {
   	  $oListaTipo   = db_utils::fieldsMemory($rsModCarnePadrao,$i);
   	  $aListaTipo[] = $oListaTipo->k49_tipo;  

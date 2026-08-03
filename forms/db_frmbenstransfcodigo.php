@@ -201,7 +201,7 @@ if(isset($db_param) && $db_param=='int'){
       <tr>
         <td valign="top"  align="center">
           <?php 
-          $chavepri= array("t95_codtran"=>@$t95_codtran,"t95_codbem"=>@$t95_codbem,"t31_codigo"=>@$t31_codigo);
+          $chavepri= ["t95_codtran"=>@$t95_codtran,"t95_codbem"=>@$t95_codbem,"t31_codigo"=>@$t31_codigo];
           $cliframe_alterar_excluir->chavepri=$chavepri;
           $cliframe_alterar_excluir->sql     = $clbenstransfcodigo->sql_query_div($t95_codtran,null,"distinct t95_codtran, t95_codbem, t52_ident, t52_descr, t95_situac,t95_histor,t31_codigo,t30_descr");
           $cliframe_alterar_excluir->campos  = "t95_codtran,t95_codbem, t52_ident, t52_descr, t95_situac,t95_histor,t30_descr";

@@ -42,7 +42,7 @@ class AssentamentoEncerramentoEfetividadeRepository
     /**
      * @var array
      */
-    protected $scopes = array();
+    protected $scopes = [];
 
     /**
      * @param AssentamentoEncerramentoEfetividade $assentamentoEncerramentoEfetividade
@@ -100,7 +100,7 @@ class AssentamentoEncerramentoEfetividadeRepository
     public function scopeMes($mes, $operator = '=')
     {
         if (mb_strtoupper($operator) === 'IN') {
-            $mes = is_array($mes) ? $mes : array($mes);
+            $mes = is_array($mes) ? $mes : [$mes];
             $mes = implode("'', '", $mes);
             $mes = "('{$mes}')";
         } else {
@@ -130,7 +130,7 @@ class AssentamentoEncerramentoEfetividadeRepository
     public function scopeMatricula($matricula, $operator = '=')
     {
         if (mb_strtoupper($operator) === 'IN') {
-            $matricula = is_array($matricula) ? $matricula : array($matricula);
+            $matricula = is_array($matricula) ? $matricula : [$matricula];
             $matricula = implode("', '", $matricula);
             $matricula = "('{$matricula}')";
         } else {
@@ -146,7 +146,7 @@ class AssentamentoEncerramentoEfetividadeRepository
      * @return AssentamentoEncerramentoEfetividade[]
      * @throws Exception
      */
-    public function get($columns = array('*'))
+    public function get($columns = ['*'])
     {
         $dao = new cl_assentamentosencerramentoefetividade();
 
@@ -159,7 +159,7 @@ class AssentamentoEncerramentoEfetividadeRepository
             );
         }
 
-        $order = array("h16_assent", "h16_regist");
+        $order = ["h16_assent", "h16_regist"];
         $sql = $dao->sql($columns, $this->scopes, $order);
         $resultado = db_query($sql);
 
@@ -169,7 +169,7 @@ class AssentamentoEncerramentoEfetividadeRepository
             );
         }
 
-        $registros = array();
+        $registros = [];
 
         if (pg_num_rows($resultado) === 0) {
             return $registros;
@@ -186,7 +186,7 @@ class AssentamentoEncerramentoEfetividadeRepository
      * @param AssentamentoEncerramentoEfetividade|null $assentamentoEncerramentoEfetividade
      * @throws Exception
      */
-    public function delete(AssentamentoEncerramentoEfetividade $assentamentoEncerramentoEfetividade = null)
+    public function delete(?AssentamentoEncerramentoEfetividade $assentamentoEncerramentoEfetividade = null)
     {
         $id = $assentamentoEncerramentoEfetividade instanceof AssentamentoEncerramentoEfetividade
             ? $assentamentoEncerramentoEfetividade->getSequencial()
@@ -207,7 +207,7 @@ class AssentamentoEncerramentoEfetividadeRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
 
         return $this;
     }

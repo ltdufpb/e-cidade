@@ -32,11 +32,11 @@ require_once(modification("libs/db_stdlibwebseller.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-$aTipos = array(
+$aTipos = [
   'T'=>'Dia de Trabalho',
   'F'=>'Folga',
   'D'=>'Descanso Semanal Remunerado'
-);
+];
 ?>
 <html>
 <head>
@@ -95,7 +95,7 @@ $aTipos = array(
 
     <?php
     $rsTipoRegistro = db_query("select * from tiporegistro");
-    $aTiposRegistro = array();
+    $aTiposRegistro = [];
 
     for ($iTipoRegistro = 0; $iTipoRegistro < pg_num_rows($rsTipoRegistro); $iTipoRegistro++) {
 

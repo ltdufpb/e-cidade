@@ -122,8 +122,8 @@ if(isset($rh01_regist) && trim($rh01_regist) != ""){
   <tr>
     <td nowrap colspan="2">
     <?php 
-    $arr_tipoassent_inicial = Array();
-    $arr_tipoassent_final   = Array();
+    $arr_tipoassent_inicial = [];
+    $arr_tipoassent_final   = [];
     if(isset($classenta->numrows)){
       for($i=0; $i<$classenta->numrows; $i++){
         db_fieldsmemory($result_tipoassent, $i);

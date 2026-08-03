@@ -78,7 +78,7 @@ if ($this->jaimpresso == 'f' && $this->capacarne == 'true') {
   $this->objpdf->Text($x + 1, $y + 2, 'Inscrição');
   $this->objpdf->SetFont('Arial', 'B', FONTE_TEXTO);
   $this->objpdf->SetXY($x, $y + 2);
-  $this->objpdf->Cell($width, ESPACO_TEXTO, substr($this->matricula_carne, 0, -1) . "-" . substr($this->matricula_carne, -1), 0, 0, "R");
+  $this->objpdf->Cell($width, ESPACO_TEXTO, substr((string) $this->matricula_carne, 0, -1) . "-" . substr((string) $this->matricula_carne, -1), 0, 0, "R");
 
   $x += $width;
   $width = COLUNA1;
@@ -105,7 +105,7 @@ if ($this->jaimpresso == 'f' && $this->capacarne == 'true') {
   $this->objpdf->Text($x + 1, $y + 2, 'Quadra');
   $this->objpdf->SetFont('Arial', '', FONTE_TEXTO);
   $this->objpdf->SetXY($x, $y + 2);
-  $this->objpdf->Cell($width, ESPACO_TEXTO, substr($this->quadra_carne, 1), 0, 0, "R");
+  $this->objpdf->Cell($width, ESPACO_TEXTO, substr((string) $this->quadra_carne, 1), 0, 0, "R");
 
   $x += $width;
   $width = COLUNA1;
@@ -151,16 +151,16 @@ if ($this->jaimpresso == 'f' && $this->capacarne == 'true') {
     $quadra_end = (strlen($this->quadra_end_carne) < 3) ? str_pad($this->quadra_end_carne, 3, "0", STR_PAD_LEFT) : $this->quadra_end_carne;
     $lote_end = (strlen($this->lote_end_carne) < 3) ? str_pad($this->lote_end_carne, 3, "0", STR_PAD_LEFT) : $this->lote_end_carne;
 
-    $complemento .= (!empty($this->quadra_end_carne) && strlen(trim($this->quadra_end_carne)) > 0) && ($quadra_end != "000")  ? ", QD: " . $quadra_end  :  "";
-    $complemento .= (!empty($this->lote_end_carne) && strlen(trim($this->lote_end_carne)) > 0) && ($lote_end != "000") ?  " LT: " . $lote_end  :  "";
+    $complemento .= (!empty($this->quadra_end_carne) && strlen(trim((string) $this->quadra_end_carne)) > 0) && ($quadra_end != "000")  ? ", QD: " . $quadra_end  :  "";
+    $complemento .= (!empty($this->lote_end_carne) && strlen(trim((string) $this->lote_end_carne)) > 0) && ($lote_end != "000") ?  " LT: " . $lote_end  :  "";
   } else {
 
     if ($this->num_end_carne == "S/N") {
-      $quadra_end = (strlen($this->quadra_end_carne) < 3) ? str_pad($this->quadra_end_carne, 3, "0", STR_PAD_LEFT) : $this->quadra_end_carne;
-      $lote_end = (strlen($this->lote_end_carne) < 3) ? str_pad($this->lote_end_carne, 3, "0", STR_PAD_LEFT) : $this->lote_end_carne;
+      $quadra_end = (strlen((string) $this->quadra_end_carne) < 3) ? str_pad((string) $this->quadra_end_carne, 3, "0", STR_PAD_LEFT) : $this->quadra_end_carne;
+      $lote_end = (strlen((string) $this->lote_end_carne) < 3) ? str_pad((string) $this->lote_end_carne, 3, "0", STR_PAD_LEFT) : $this->lote_end_carne;
 
-      $complemento = (!empty($this->quadra_end_carne) && strlen(trim($this->quadra_end_carne)) > 0) && ($quadra_end != "000")  ? ", QD: " . $quadra_end  :  "";
-      $complemento .= (!empty($this->lote_end_carne) && strlen(trim($this->lote_end_carne)) > 0) && ($lote_end != "000") ?  " LT: " . $lote_end  :  "";
+      $complemento = (!empty($this->quadra_end_carne) && strlen(trim((string) $this->quadra_end_carne)) > 0) && ($quadra_end != "000")  ? ", QD: " . $quadra_end  :  "";
+      $complemento .= (!empty($this->lote_end_carne) && strlen(trim((string) $this->lote_end_carne)) > 0) && ($lote_end != "000") ?  " LT: " . $lote_end  :  "";
     }
   }
 
@@ -657,7 +657,7 @@ $this->objpdf->sety($y + 25);
 
 // mensagem de instruções da guia prefeitura
 $this->objpdf->SetFont('Arial', 'B', 5);
-$this->objpdf->multicell(80 - $iAjusteColunaX, 2, substr($this->descr12_1, 0, 274)); // Instruções 2 - linha 1
+$this->objpdf->multicell(80 - $iAjusteColunaX, 2, substr((string) $this->descr12_1, 0, 274)); // Instruções 2 - linha 1
 $this->objpdf->multicell(80 - $iAjusteColunaX, 2, $this->descr12_2); // Instruções 2 - linha 2
 $this->objpdf->setxy($xx, $yy);
 

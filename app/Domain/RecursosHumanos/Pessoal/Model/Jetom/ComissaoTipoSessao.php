@@ -113,7 +113,7 @@ class ComissaoTipoSessao extends Model
     {
         return $this
             ->hasOne(
-                'App\Domain\RecursosHumanos\Pessoal\Model\Jetom\TipoSessao',
+                \App\Domain\RecursosHumanos\Pessoal\Model\Jetom\TipoSessao::class,
                 'rh240_sequencial',
                 'rh249_tiposessao'
             );

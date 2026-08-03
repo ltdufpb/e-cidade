@@ -93,9 +93,9 @@ try {
    
 
     foreach ($dados as $key => $value) {
-        $data = explode("-", $value['data']);
+        $data = explode("-", (string) $value['data']);
         if ($value['dataassenta'] != null) {
-            $dataassenta = explode("-", $value['dataassenta']);
+            $dataassenta = explode("-", (string) $value['dataassenta']);
             $dataassenta = $dataassenta[2] . '/' . $dataassenta[1] . '/' . $dataassenta[0];
         } else {
             //$dataassenta = $data[2] . '/' . $data[1] . '/' . $data[0];
@@ -103,7 +103,7 @@ try {
         }
        
         $oPdf->Cell(17, 4, $value['matricula'], 'BRLT', 0, 'C', 0);
-        $oPdf->Cell(60, 4, mb_strimwidth($value['nome'], 0, 35, "..."), 'BRLT', 0, 'L', 0);
+        $oPdf->Cell(60, 4, mb_strimwidth((string) $value['nome'], 0, 35, "..."), 'BRLT', 0, 'L', 0);
         $oPdf->Cell(12, 4, $value['ordem'], 'BRLT', 0, 'C', 0);
         $oPdf->Cell(20, 4, $value['percentual'] . ' %', 'BRLT', 0, 'C', 0);
         $oPdf->Cell(22, 4, $data[2] . '/' . $data[1] . '/' . $data[0], 'BRLT', 0, 'C', 0);

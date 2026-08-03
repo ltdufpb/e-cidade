@@ -84,7 +84,7 @@ db_input('pc84_liberafornecedor',10,$Ipc84_liberafornecedor,true,'hidden',3);
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("pc84_sequencial"=>@$pc82_sequencial);
+	 $chavepri= ["pc84_sequencial"=>@$pc82_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clliberafornecedorpcproc->sql_query_file(null,"*",null,"pc84_liberafornecedor = $pc82_sequencial");
 	 $cliframe_alterar_excluir->campos  ="pc84_sequencial,pc84_liberafornecedor,pc84_pcproc";

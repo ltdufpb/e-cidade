@@ -141,9 +141,7 @@ if ($db_opcao == 1) {
                             $tipocompra = $e54_codcom;
                         }
 
-                        $liberaLicictacao = !empty(array_filter($tiposCompra, function ($dado) use ($tipocompra) {
-                            return ($tipocompra == $dado->e54_codcom && $dado->l44_obrigalicitacao == 't');
-                        }));
+                        $liberaLicictacao = !empty(array_filter($tiposCompra, fn($dado) => $tipocompra == $dado->e54_codcom && $dado->l44_obrigalicitacao == 't'));
 
                         $result = $clcflicita->sql_record($clcflicita->sql_query_file(null, "l03_tipo,l03_descr", '', "l03_codcom=$tipocompra and l03_instit = " . db_getsession('DB_instit')));
                         if ($clcflicita->numrows > 0) {
@@ -250,7 +248,7 @@ if ($db_opcao == 1) {
                     <?php
                     $result = $clempprestatip->sql_record($clempprestatip->sql_query_file(null, "e44_tipo as tipo,e44_descr,e44_obriga", "e44_obriga "));
                     $numrows = $clempprestatip->numrows;
-                    $arr = array();
+                    $arr = [];
 
                     for ($i = 0; $i < $numrows; $i++) {
 
@@ -822,7 +820,7 @@ if ($db_opcao == 1) {
         db_iframe_<?=$iframe?>.hide();
         <?php 
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

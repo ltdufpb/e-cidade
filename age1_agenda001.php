@@ -30,23 +30,23 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["enviar"])) {
-  $organizacao = $HTTP_POST_VARS["organizacao"];
-  $nome = $HTTP_POST_VARS["nome"];
-  $rua = $HTTP_POST_VARS["rua"];
-  $bairro = $HTTP_POST_VARS["bairro"];
-  $cidade = $HTTP_POST_VARS["cidade"];
-  $uf = $HTTP_POST_VARS["uf"];
-  $cep = $HTTP_POST_VARS["cep"];
-  $telefone = $HTTP_POST_VARS["telefone"];
-  $fax = $HTTP_POST_VARS["fax"];
-  $celular = $HTTP_POST_VARS["celular"];
-  $obs = $HTTP_POST_VARS["obs"];
-  $email = $HTTP_POST_VARS["email"];
-  $pagina = $HTTP_POST_VARS["pagina"];
+if(isset($_POST["enviar"])) {
+  $organizacao = $_POST["organizacao"];
+  $nome = $_POST["nome"];
+  $rua = $_POST["rua"];
+  $bairro = $_POST["bairro"];
+  $cidade = $_POST["cidade"];
+  $uf = $_POST["uf"];
+  $cep = $_POST["cep"];
+  $telefone = $_POST["telefone"];
+  $fax = $_POST["fax"];
+  $celular = $_POST["celular"];
+  $obs = $_POST["obs"];
+  $email = $_POST["email"];
+  $pagina = $_POST["pagina"];
 
   $result = db_query("SELECT max(id) FROM db_contatos");
-  $id = pg_result($result,0,0)==""?"1":((integer)pg_result($result,0,0) + 1);
+  $id = pg_fetch_result($result,0,0)==""?"1":((integer)pg_fetch_result($result,0,0) + 1);
   db_query("BEGIN");
   $result = db_query("INSERT INTO db_contatos VALUES($id,
 	                                             '$organizacao',

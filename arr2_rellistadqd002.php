@@ -40,12 +40,12 @@
   
   $clDeclaracaoQuitacao = new cl_declaracaoquitacao();
   
-  $dDataInicial = isset($oGet->datainicial) ? $oGet->datainicial : ''; 
-  $dDataFinal   = isset($oGet->datafinal)   ? $oGet->datafinal   : '';
-  $sStatus      = isset($oGet->status)      ? $oGet->status      : ''; /* todas/ativa/inativa/auto */
-  $sOrigem      = isset($oGet->origem)      ? $oGet->origem      : ''; /* matric/inscr/cgm/... */
-  $iExercicio   = isset($oGet->exercicio)   ? $oGet->exercicio   : ''; 
-  $sTipo        = isset($oGet->tipo)        ? $oGet->tipo        : ''; /* analitico/sintetico */
+  $dDataInicial = $oGet->datainicial ?? ''; 
+  $dDataFinal   = $oGet->datafinal ?? '';
+  $sStatus      = $oGet->status ?? ''; /* todas/ativa/inativa/auto */
+  $sOrigem      = $oGet->origem ?? ''; /* matric/inscr/cgm/... */
+  $iExercicio   = $oGet->exercicio ?? ''; 
+  $sTipo        = $oGet->tipo ?? ''; /* analitico/sintetico */
   
   $sCampos = "";
   
@@ -175,7 +175,7 @@
   
   $rsDeclaracaoQuitacao = $clDeclaracaoQuitacao->sql_record($sSql);
    
-  if (pg_numrows($rsDeclaracaoQuitacao) == 0) {  
+  if (pg_num_rows($rsDeclaracaoQuitacao) == 0) {  
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
     exit;
   }

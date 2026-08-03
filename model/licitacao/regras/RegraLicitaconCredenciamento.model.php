@@ -28,7 +28,7 @@ class RegraLicitaconCredenciamento extends RegraLicitacon {
 
   protected $sMensagem = "O período de Inscrição é de preenchimento obrigatório para a modalidade da Licitação.";
 
-  protected $aModalidades = array('CPC');
+  protected $aModalidades = ['CPC'];
 
   /**
    * @return array

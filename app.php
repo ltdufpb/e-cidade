@@ -94,7 +94,7 @@ try {
     $filePath = str_replace(ECIDADE_PATH, '', $realpath);
     $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
 
-    $isLaravel = preg_match('/w\/[0-9]+\/web/', $_SERVER['REQUEST_URI']);
+    $isLaravel = preg_match('/w\/[0-9]+\/web/', (string) $_SERVER['REQUEST_URI']);
 
     // Arquivo nao existe, 404
     if (($realpath === false || !file_exists($filePath)) && !$isLaravel) {
@@ -103,13 +103,13 @@ try {
 
     // security issue
     // bloqueia acesso a arquivos acima do root path
-    if (strpos($realpath, ECIDADE_PATH) !== 0 && !$isLaravel) {
+    if (!str_starts_with($realpath, ECIDADE_PATH) && !$isLaravel) {
         throw new ResponseException('Acesso negado: ' . $filePath, 403);
     }
 
     // security issue
     // bloqueia execucao scripts php e html no diretorio tmp/
-    if (in_array($fileExtension, array('php', 'html')) && strpos($filePath, 'tmp/') === 0) {
+    if (in_array($fileExtension, ['php', 'html']) && str_starts_with($filePath, 'tmp/')) {
         // @TODO usar ResponseException
         header('HTTP/1.0 403 Forbiden');
         exit;
@@ -150,13 +150,11 @@ try {
     // @see \DBSeller\Legacy\PHP53\Emulate::registerGlobals()
     // atualmente package DBSeller/Legacy é executado antes de criar sessao
     if (!ini_get('register_globals')) {
-        $front->emulateRegisterGlobals(array('SESSION'));
+        $front->emulateRegisterGlobals(['SESSION']);
     }
 
     // lazyload para verificar se usuario tem extensao desktop instalada
-    Registry::get('app.container')->register('ECIDADE_DESKTOP', function () use ($request) {
-        return ExtensionManager::isEnabled('Desktop', $request->session()->get('DB_login'));
-    });
+    Registry::get('app.container')->register('ECIDADE_DESKTOP', fn() => ExtensionManager::isEnabled('Desktop', $request->session()->get('DB_login')));
 
     $request->session()->close();
     $response->send();
@@ -165,7 +163,7 @@ try {
     unset($_SESSION, $front, $request, $response, $router, $config);
 
     if ($isLaravel) {
-        $pos = explode('/', $_SERVER['REQUEST_URI']);
+        $pos = explode('/', (string) $_SERVER['REQUEST_URI']);
         unset($pos[2], $pos[3]);
         $_SERVER['REQUEST_URI'] = implode('/', $pos);
         require_once(__DIR__ . '/public/index.php');

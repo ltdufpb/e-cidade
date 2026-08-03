@@ -61,9 +61,9 @@ if ( $clturma->numrows == 0 ) {?>
 
 function Abreviar( $nome, $max ) {
 
-  if ( strlen( trim( $nome ) ) > $max ) {
+  if ( strlen( trim( (string) $nome ) ) > $max ) {
 
-    $strinv   = strrev(trim($nome));
+    $strinv   = strrev(trim((string) $nome));
     $ultnome  = substr($strinv, 0, strpos($strinv, " "));
     $ultnome  = strrev($ultnome);
     $nome     = strrev($strinv);
@@ -98,7 +98,7 @@ function Abreviar( $nome, $max ) {
     $nome .= " ".$ultnome;
   }
 
-  return trim($nome);
+  return trim((string) $nome);
 }
 
 $pdf = new PDF();
@@ -159,7 +159,7 @@ for ( $x = 0; $x < $linhas; $x++ ) {
 
     for ( $r = 0; $r < count($array_meses); $r++ ) {
 
-      $qtd_diasmes = explode(",", $array_meses[$r]);
+      $qtd_diasmes = explode(",", (string) $array_meses[$r]);
       $pdf->cell($larguraindiv * $qtd_diasmes[1], 4, $qtd_diasmes[0], 1, 0, "C", 0);
     }
   } else {
@@ -180,7 +180,7 @@ for ( $x = 0; $x < $linhas; $x++ ) {
 
     for ( $r = 0; $r < count( $n_dias ); $r++ ) {
 
-      $umdia = explode("-",$n_dias[$r]);
+      $umdia = explode("-",(string) $n_dias[$r]);
       $pdf->cell( $larguraindiv, 4, $umdia[0], 1, 0, "C", 0 );
     }
   } else {
@@ -261,11 +261,11 @@ for ( $x = 0; $x < $linhas; $x++ ) {
     $pdf->setfont( 'arial', '', 6 );
     $pdf->cell( 5, 4, $ed60_i_numaluno, 1, 0, "C", 0 );
 
-    if ( strlen( trim( $ed47_v_nome ) ) > 43 ) {
+    if ( strlen( trim( (string) $ed47_v_nome ) ) > 43 ) {
       $pdf->setfont( 'arial', '', 5 );
     }
 
-    $pdf->cell( 55, 4, substr($ed47_v_nome, 0, 47), "LBT", 0, "L", 0 );
+    $pdf->cell( 55, 4, substr((string) $ed47_v_nome, 0, 47), "LBT", 0, "L", 0 );
     $pdf->setfont('arial', '', 6);
 
     $pdf->cell( 10, 4, $ed11_c_abrev, "RBT", 0, "R", 0 );
@@ -283,12 +283,12 @@ for ( $x = 0; $x < $linhas; $x++ ) {
       $pdf->setfont( 'arial', 'b', 8 );
     } else {
 
-      if( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
+      if( trim( (string) $ed60_c_situacao ) != "MATRICULADO" ) {
 
         $pdf->setfont( 'arial', 'b', 11 );
         $sSituacao = trim(Situacao($ed60_c_situacao,$ed60_i_codigo));
 
-        if ( trim($ed60_c_situacao) == "TRANSFERIDO FORA" || trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+        if ( trim((string) $ed60_c_situacao) == "TRANSFERIDO FORA" || trim((string) $ed60_c_situacao) == "TRANSFERIDO REDE") {
           $sSituacao = "TRANSFERIDO";
         }
 
@@ -312,7 +312,7 @@ for ( $x = 0; $x < $linhas; $x++ ) {
       }
     }
 
-    if ( trim( $ed60_c_situacao ) == "MATRICULADO" ) {
+    if ( trim( (string) $ed60_c_situacao ) == "MATRICULADO" ) {
 
       for ( $r = 0; $r < 4; $r++ ) {
         $pdf->cell( 5, 4, "", 1, 0, "C", 0 );
@@ -325,7 +325,7 @@ for ( $x = 0; $x < $linhas; $x++ ) {
       $pdf->setfont( 'arial', 'b', 11 );
       $sSituacao = trim(Situacao($ed60_c_situacao,$ed60_i_codigo));
 
-      if ( trim($ed60_c_situacao) == "TRANSFERIDO FORA" || trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+      if ( trim((string) $ed60_c_situacao) == "TRANSFERIDO FORA" || trim((string) $ed60_c_situacao) == "TRANSFERIDO REDE") {
         $sSituacao = "TRANSFERIDO";
       }
 
@@ -356,7 +356,7 @@ for ( $x = 0; $x < $linhas; $x++ ) {
 
         for ( $r = 0; $r < count( $array_meses ); $r++ ) {
 
-          $qtd_diasmes = explode( ",", $array_meses[$r] );
+          $qtd_diasmes = explode( ",", (string) $array_meses[$r] );
           $pdf->cell( $larguraindiv * $qtd_diasmes[1], 4, $qtd_diasmes[0], 1, 0, "C", 0 );
         }
       } else {
@@ -378,7 +378,7 @@ for ( $x = 0; $x < $linhas; $x++ ) {
 
         for ( $r = 0; $r < count( $n_dias ); $r++ ) {
 
-          $umdia = explode( "-", $n_dias[$r] );
+          $umdia = explode( "-", (string) $n_dias[$r] );
           $pdf->cell( $larguraindiv, 4, $umdia[0], 1, 0, "C", 0 );
         }
       } else {

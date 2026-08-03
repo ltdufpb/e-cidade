@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cnae_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcnae = new cl_cnae;
 $clcnae->rotulo->label("q71_sequencial");
 $clcnae->rotulo->label("q71_estrutural");
@@ -73,7 +73,7 @@ $clcnae->rotulo->label("q71_estrutural");
 	          <td align="right"><b>Mostrar:</b></td>
 	          <td align="left" > 
 	          <?php 
-		        $arraymostra = array("A" => "Somente analítico ","T" => "Todos");
+		        $arraymostra = ["A" => "Somente analítico ","T" => "Todos"];
 		        db_select("mostra",$arraymostra,1,1,"onchange='document.form2.submit();'");
 		        ?>
 	          </td>
@@ -143,8 +143,8 @@ $clcnae->rotulo->label("q71_estrutural");
 					}
 					$sql .= "q71_estrutural like '%$chave_q71_estrutural%'";
         }else{      	
-            
-            
+
+
           $sql = "select 
 						case when q72_cnae is null then 'Sintetico' else 'Analitico' END as tipo ,
 						q71_sequencial,
@@ -160,11 +160,11 @@ $clcnae->rotulo->label("q71_estrutural");
            
             
         
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q71_estrutural)){ 
             
             
-          $repassa = array("chave_q71_sequencial"=>$chave_q71_sequencial,"chave_q71_estrutural"=>$chave_q71_estrutural);
+          $repassa = ["chave_q71_sequencial"=>$chave_q71_sequencial,"chave_q71_estrutural"=>$chave_q71_estrutural];
         }
         //die($sql);
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

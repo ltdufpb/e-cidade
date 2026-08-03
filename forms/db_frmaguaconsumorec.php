@@ -104,7 +104,7 @@ db_input('x20_valor',15,$Ix20_valor,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("x20_codconsumo"=>@$x20_codconsumo, "x20_codconsumotipo"=>@$x20_codconsumotipo);
+	 $chavepri= ["x20_codconsumo"=>@$x20_codconsumo, "x20_codconsumotipo"=>@$x20_codconsumotipo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $claguaconsumorec->sql_query(@$x20_codconsumo);
 	 $cliframe_alterar_excluir->campos  ="x20_codconsumo,x19_descr,x20_codconsumotipo,x25_descr,x20_valor";

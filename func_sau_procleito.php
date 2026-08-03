@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_procleito_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_procleito = new cl_sau_procleito;
 $clsau_procleito->rotulo->label("sd81_i_codigo");
 $clsau_procleito->rotulo->label("sd81_i_procedimento");
@@ -98,9 +98,9 @@ $clsau_procleito->rotulo->label("sd81_i_procedimento");
         }else{
            $sql = $clsau_procleito->sql_query("",$campos,"sd81_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd81_i_procedimento)){
-          $repassa = array("chave_sd81_i_codigo"=>$chave_sd81_i_codigo,"chave_sd81_i_procedimento"=>$chave_sd81_i_procedimento);
+          $repassa = ["chave_sd81_i_codigo"=>$chave_sd81_i_codigo,"chave_sd81_i_procedimento"=>$chave_sd81_i_procedimento];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

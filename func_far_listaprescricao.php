@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_listaprescricao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_listaprescricao = new cl_far_listaprescricao;
 $clfar_listaprescricao->rotulo->label("fa21_i_codigo");
 $clfar_listaprescricao->rotulo->label("fa21_i_codigo");
@@ -98,9 +98,9 @@ $clfar_listaprescricao->rotulo->label("fa21_i_codigo");
         }else{
            $sql = $clfar_listaprescricao->sql_query("",$campos,"fa21_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa21_i_codigo)){
-          $repassa = array("chave_fa21_i_codigo"=>$chave_fa21_i_codigo,"chave_fa21_i_codigo"=>$chave_fa21_i_codigo);
+          $repassa = ["chave_fa21_i_codigo"=>$chave_fa21_i_codigo,"chave_fa21_i_codigo"=>$chave_fa21_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

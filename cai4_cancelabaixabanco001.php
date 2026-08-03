@@ -66,7 +66,7 @@ if (db_getsession("DB_id_usuario") == 1 || ( $oConfig->db21_codcli == 19985 && $
            <td>
             <?php
 
-           	 $aTipos = array("1" => "Excluir arquivo de retorno", "2" => "Cancelar classificação", "3" => "Excluir Autenticação");
+           	 $aTipos = ["1" => "Excluir arquivo de retorno", "2" => "Cancelar classificação", "3" => "Excluir Autenticação"];
              db_select("tipo", $aTipos, true, 1, "onchange=js_tipoprocessamento()");
             ?>
            </td>

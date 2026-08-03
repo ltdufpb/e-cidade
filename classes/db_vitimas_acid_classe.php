@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE vitimas_acid
 class cl_vitimas_acid { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tr10_id = 0; 
-   var $tr10_idacidente = 0; 
-   var $tr10_idvitima = 0; 
-   var $tr10_nome = null; 
-   var $tr10_sexo = 0; 
-   var $tr10_idade = 0; 
-   var $tr10_situacao = null; 
+   public $tr10_id = 0; 
+   public $tr10_idacidente = 0; 
+   public $tr10_idvitima = 0; 
+   public $tr10_nome = null; 
+   public $tr10_sexo = 0; 
+   public $tr10_idade = 0; 
+   public $tr10_situacao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tr10_id = int8 = Código da vitima 
                  tr10_idacidente = int8 = Código do acidente 
                  tr10_idvitima = int8 = Tipo de vitima 
@@ -60,10 +60,10 @@ class cl_vitimas_acid {
                  tr10_situacao = char(1) = Situação da Vitima 
                  ";
    //funcao construtor da classe 
-   function cl_vitimas_acid() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vitimas_acid"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -140,10 +140,10 @@ class cl_vitimas_acid {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tr10_id = pg_result($result,0,0); 
+       $this->tr10_id = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from vitimas_acid_tr10_id_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tr10_id)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tr10_id)){
          $this->erro_sql = " Campo tr10_id maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -183,7 +183,7 @@ class cl_vitimas_acid {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "vitimas do acidentes ($this->tr10_id) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "vitimas do acidentes já Cadastrado";
@@ -207,16 +207,16 @@ class cl_vitimas_acid {
      $resaco = $this->sql_record($this->sql_query_file($this->tr10_id));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5644,'$this->tr10_id','I')");
-       $resac = db_query("insert into db_acount values($acount,877,5644,'','".AddSlashes(pg_result($resaco,0,'tr10_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,877,5645,'','".AddSlashes(pg_result($resaco,0,'tr10_idacidente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,877,5647,'','".AddSlashes(pg_result($resaco,0,'tr10_idvitima'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,877,5648,'','".AddSlashes(pg_result($resaco,0,'tr10_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,877,5649,'','".AddSlashes(pg_result($resaco,0,'tr10_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,877,5646,'','".AddSlashes(pg_result($resaco,0,'tr10_idade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,877,5650,'','".AddSlashes(pg_result($resaco,0,'tr10_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,877,5644,'','".AddSlashes(pg_fetch_result($resaco,0,'tr10_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,877,5645,'','".AddSlashes(pg_fetch_result($resaco,0,'tr10_idacidente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,877,5647,'','".AddSlashes(pg_fetch_result($resaco,0,'tr10_idvitima'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,877,5648,'','".AddSlashes(pg_fetch_result($resaco,0,'tr10_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,877,5649,'','".AddSlashes(pg_fetch_result($resaco,0,'tr10_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,877,5646,'','".AddSlashes(pg_fetch_result($resaco,0,'tr10_idade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,877,5650,'','".AddSlashes(pg_fetch_result($resaco,0,'tr10_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,10 +225,10 @@ class cl_vitimas_acid {
       $this->atualizacampos();
      $sql = " update vitimas_acid set ";
      $virgula = "";
-     if(trim($this->tr10_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_id"])){ 
+     if(trim((string) $this->tr10_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_id"])){ 
        $sql  .= $virgula." tr10_id = $this->tr10_id ";
        $virgula = ",";
-       if(trim($this->tr10_id) == null ){ 
+       if(trim((string) $this->tr10_id) == null ){ 
          $this->erro_sql = " Campo Código da vitima nao Informado.";
          $this->erro_campo = "tr10_id";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_vitimas_acid {
          return false;
        }
      }
-     if(trim($this->tr10_idacidente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_idacidente"])){ 
+     if(trim((string) $this->tr10_idacidente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_idacidente"])){ 
        $sql  .= $virgula." tr10_idacidente = $this->tr10_idacidente ";
        $virgula = ",";
-       if(trim($this->tr10_idacidente) == null ){ 
+       if(trim((string) $this->tr10_idacidente) == null ){ 
          $this->erro_sql = " Campo Código do acidente nao Informado.";
          $this->erro_campo = "tr10_idacidente";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_vitimas_acid {
          return false;
        }
      }
-     if(trim($this->tr10_idvitima)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_idvitima"])){ 
+     if(trim((string) $this->tr10_idvitima)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_idvitima"])){ 
        $sql  .= $virgula." tr10_idvitima = $this->tr10_idvitima ";
        $virgula = ",";
-       if(trim($this->tr10_idvitima) == null ){ 
+       if(trim((string) $this->tr10_idvitima) == null ){ 
          $this->erro_sql = " Campo Tipo de vitima nao Informado.";
          $this->erro_campo = "tr10_idvitima";
          $this->erro_banco = "";
@@ -264,14 +264,14 @@ class cl_vitimas_acid {
          return false;
        }
      }
-     if(trim($this->tr10_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_nome"])){ 
+     if(trim((string) $this->tr10_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_nome"])){ 
        $sql  .= $virgula." tr10_nome = '$this->tr10_nome' ";
        $virgula = ",";
      }
-     if(trim($this->tr10_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_sexo"])){ 
+     if(trim((string) $this->tr10_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_sexo"])){ 
        $sql  .= $virgula." tr10_sexo = $this->tr10_sexo ";
        $virgula = ",";
-       if(trim($this->tr10_sexo) == null ){ 
+       if(trim((string) $this->tr10_sexo) == null ){ 
          $this->erro_sql = " Campo Sexo nao Informado.";
          $this->erro_campo = "tr10_sexo";
          $this->erro_banco = "";
@@ -281,17 +281,17 @@ class cl_vitimas_acid {
          return false;
        }
      }
-     if(trim($this->tr10_idade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_idade"])){ 
-        if(trim($this->tr10_idade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tr10_idade"])){ 
+     if(trim((string) $this->tr10_idade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_idade"])){ 
+        if(trim((string) $this->tr10_idade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tr10_idade"])){ 
            $this->tr10_idade = "0" ; 
         } 
        $sql  .= $virgula." tr10_idade = $this->tr10_idade ";
        $virgula = ",";
      }
-     if(trim($this->tr10_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_situacao"])){ 
+     if(trim((string) $this->tr10_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr10_situacao"])){ 
        $sql  .= $virgula." tr10_situacao = '$this->tr10_situacao' ";
        $virgula = ",";
-       if(trim($this->tr10_situacao) == null ){ 
+       if(trim((string) $this->tr10_situacao) == null ){ 
          $this->erro_sql = " Campo Situação da Vitima nao Informado.";
          $this->erro_campo = "tr10_situacao";
          $this->erro_banco = "";
@@ -309,23 +309,23 @@ class cl_vitimas_acid {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5644,'$this->tr10_id','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr10_id"]))
-           $resac = db_query("insert into db_acount values($acount,877,5644,'".AddSlashes(pg_result($resaco,$conresaco,'tr10_id'))."','$this->tr10_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,877,5644,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr10_id'))."','$this->tr10_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr10_idacidente"]))
-           $resac = db_query("insert into db_acount values($acount,877,5645,'".AddSlashes(pg_result($resaco,$conresaco,'tr10_idacidente'))."','$this->tr10_idacidente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,877,5645,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr10_idacidente'))."','$this->tr10_idacidente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr10_idvitima"]))
-           $resac = db_query("insert into db_acount values($acount,877,5647,'".AddSlashes(pg_result($resaco,$conresaco,'tr10_idvitima'))."','$this->tr10_idvitima',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,877,5647,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr10_idvitima'))."','$this->tr10_idvitima',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr10_nome"]))
-           $resac = db_query("insert into db_acount values($acount,877,5648,'".AddSlashes(pg_result($resaco,$conresaco,'tr10_nome'))."','$this->tr10_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,877,5648,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr10_nome'))."','$this->tr10_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr10_sexo"]))
-           $resac = db_query("insert into db_acount values($acount,877,5649,'".AddSlashes(pg_result($resaco,$conresaco,'tr10_sexo'))."','$this->tr10_sexo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,877,5649,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr10_sexo'))."','$this->tr10_sexo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr10_idade"]))
-           $resac = db_query("insert into db_acount values($acount,877,5646,'".AddSlashes(pg_result($resaco,$conresaco,'tr10_idade'))."','$this->tr10_idade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,877,5646,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr10_idade'))."','$this->tr10_idade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr10_situacao"]))
-           $resac = db_query("insert into db_acount values($acount,877,5650,'".AddSlashes(pg_result($resaco,$conresaco,'tr10_situacao'))."','$this->tr10_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,877,5650,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr10_situacao'))."','$this->tr10_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -370,16 +370,16 @@ class cl_vitimas_acid {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5644,'$tr10_id','E')");
-         $resac = db_query("insert into db_acount values($acount,877,5644,'','".AddSlashes(pg_result($resaco,$iresaco,'tr10_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,877,5645,'','".AddSlashes(pg_result($resaco,$iresaco,'tr10_idacidente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,877,5647,'','".AddSlashes(pg_result($resaco,$iresaco,'tr10_idvitima'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,877,5648,'','".AddSlashes(pg_result($resaco,$iresaco,'tr10_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,877,5649,'','".AddSlashes(pg_result($resaco,$iresaco,'tr10_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,877,5646,'','".AddSlashes(pg_result($resaco,$iresaco,'tr10_idade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,877,5650,'','".AddSlashes(pg_result($resaco,$iresaco,'tr10_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,877,5644,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr10_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,877,5645,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr10_idacidente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,877,5647,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr10_idvitima'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,877,5648,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr10_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,877,5649,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr10_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,877,5646,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr10_idade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,877,5650,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr10_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from vitimas_acid
@@ -439,7 +439,7 @@ class cl_vitimas_acid {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vitimas_acid";
@@ -453,7 +453,7 @@ class cl_vitimas_acid {
    function sql_query ( $tr10_id=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,7 +482,7 @@ class cl_vitimas_acid {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -494,7 +494,7 @@ class cl_vitimas_acid {
    function sql_query_file ( $tr10_id=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_vitimas_acid {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

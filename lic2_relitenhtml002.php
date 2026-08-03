@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_liclicitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS, 2);
+db_postmemory($_POST, 2);
 $clliclicitem = new cl_liclicitem;
 $clrotulo = new rotulocampo;
 $clrotulo->label("l20_codigo");
@@ -62,27 +62,27 @@ $clabre_arquivo = new cl_abre_arquivo("/tmp/licitacao_$l20_codigo.csv");
 if ($clabre_arquivo->arquivo != false) {
   $vir = $separador;
   $del = $delimitador;
-  fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar("ITEM",     $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar("ITEM",     $vir, $del));
 
   if ( $layout != 2 ) {
-    fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar("SEQ ITEM", $vir, $del));
+    fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar("SEQ ITEM", $vir, $del));
   }
-  fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar("PRODUTO",  $vir, $del));
-  fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar("QUANT.",   $vir, $del));
-  fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar("UNID.",    $vir, $del));
-  fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar("VALOR UNITÁRIO (R$)", $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar("PRODUTO",  $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar("QUANT.",   $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar("UNID.",    $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar("VALOR UNITÁRIO (R$)", $vir, $del));
   fputs($clabre_arquivo->arquivo, "\n");
   
   for ($w = 0; $w < $clliclicitem->numrows; $w ++) {
     db_fieldsmemory($result_itens, $w);
-    fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar($l21_ordem                        , $vir, $del));
+    fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar($l21_ordem                        , $vir, $del));
     if ( $layout != 2 ) {
-      fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar($pc81_codprocitem                 , $vir, $del));
+      fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar($pc81_codprocitem                 , $vir, $del));
     }
-    fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar("{$pc01_descrmater} {$pc11_resum}", $vir, $del));
-    fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar($pc11_quant                       , $vir, $del));
-    fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar($m61_descr                        , $vir, $del));
-    fputs($clabre_arquivo->arquivo, lic2_relitenhtml002_formatar(db_formatar($pc11_vlrun,"v")      , $vir, $del));
+    fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar("{$pc01_descrmater} {$pc11_resum}", $vir, $del));
+    fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar($pc11_quant                       , $vir, $del));
+    fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar($m61_descr                        , $vir, $del));
+    fputs($clabre_arquivo->arquivo, (string) lic2_relitenhtml002_formatar(db_formatar($pc11_vlrun,"v")      , $vir, $del));
     fputs($clabre_arquivo->arquivo, "\n");
   }
   

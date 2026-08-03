@@ -47,7 +47,7 @@ class BemLote {
    * Coleção de objetos do tipo Bem
    * @var Bem
    */
-  protected $aBens = array();
+  protected $aBens = [];
 
   /**
    * Hora de inclusão do lote

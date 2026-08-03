@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_liclicitemlote_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clliclicitemlote        = new cl_liclicitemlote;
 $cliframe_seleciona_lote = new cl_iframe_seleciona;
@@ -43,16 +43,16 @@ $clliclicitemlote->rotulo->label();
 
 $erro_msg  = "";
 
-if (!isset($db_tranca) && trim(@$db_tranca) == ""){
+if (!isset($db_tranca) && trim((string) @$db_tranca) == ""){
      $db_tranca = 1;
 }
 
-if (!isset($flag_auto) && trim(@$flag_auto) == ""){
+if (!isset($flag_auto) && trim((string) @$flag_auto) == ""){
      $flag_auto = false;  // Inicializado antes do submit
 }
 
 if (isset($incluir)&&trim($incluir)!=""){
-     $vetor_itens = split(",",$l04_liclicitem);
+     $vetor_itens = preg_split("#,#m",(string) $l04_liclicitem);
      $sqlerro     = false;
      $flag_auto   = false;
      $auto_descr  = "";
@@ -64,17 +64,17 @@ if (isset($incluir)&&trim($incluir)!=""){
 // Verifica descricao vazia
      if (isset($l04_descricao)      && 
          trim($l04_descricao) == "" && 
-         substr(trim($l04_descricao),0,9) != "AUTO_LOTE"){
+         !str_starts_with(trim($l04_descricao), "AUTO_LOTE")){
           $res_licitacao = $clliclicitemlote->sql_record($clliclicitemlote->sql_query_licitacao(null,"substr(l04_descricao,11,5) as sequencial","l04_codigo desc limit 1","l21_codliclicita = $licitacao"));
           if ($clliclicitemlote->numrows > 0){
                db_fieldsmemory($res_licitacao,0);
 
-               if (trim($sequencial) == ""){
+               if (trim((string) $sequencial) == ""){
                     $flag_auto = true;  // Caso, positivo gera descricao automaticamente
                }
           }
      } else {
-          if (substr(trim($l04_descricao),0,9) == "AUTO_LOTE"){  // Verifica se usuario nao digitou AUTO_LOTE(tentativa de gerar lote automatico)
+          if (str_starts_with(trim((string) $l04_descricao), "AUTO_LOTE")){  // Verifica se usuario nao digitou AUTO_LOTE(tentativa de gerar lote automatico)
                $res_licitacao = $clliclicitemlote->sql_record($clliclicitemlote->sql_query_licitacao(null,"substr(l04_descricao,11,5) as sequencial","l04_codigo desc limit 1","l21_codliclicita = $licitacao and l04_descricao like 'AUTO_LOTE_%'"));
                if ($clliclicitemlote->numrows == 0){
                     $erro_msg  = "Descriçao inválida.";
@@ -118,7 +118,7 @@ if (isset($incluir)&&trim($incluir)!=""){
      if ($flag_auto == true){
           $auto_descr    = "AUTO_LOTE_";
           $sequencial    = 1;
-   
+
           $res_licitacao = $clliclicitemlote->sql_record($clliclicitemlote->sql_query_licitacao(null,"substr(l04_descricao,11,5) as sequencial","l04_codigo desc limit 1","l21_codliclicita = $licitacao and l04_descricao like 'AUTO_LOTE_%'"));
           if ($clliclicitemlote->numrows > 0){
                db_fieldsmemory($res_licitacao,0);
@@ -129,9 +129,9 @@ if (isset($incluir)&&trim($incluir)!=""){
      }
 
      if ($sqlerro == false){
-          $clliclicitemlote->l04_descricao = strtoupper(trim($l04_descricao));
+          $clliclicitemlote->l04_descricao = strtoupper(trim((string) $l04_descricao));
           for($i = 0; $i < sizeof($vetor_itens); $i++){
-               $clliclicitemlote->l04_liclicitem = trim($vetor_itens[$i]);
+               $clliclicitemlote->l04_liclicitem = trim((string) $vetor_itens[$i]);
 
                if ($flag_auto == true){
                     $l04_descricao = $auto_descr;
@@ -285,7 +285,7 @@ if (isset($licitacao)&&trim($licitacao)!=""){
 }
 
 if (isset($db_opcao)&&$db_opcao==3){
-     if ($numrows == 0&&trim(@$incluir)==""){
+     if ($numrows == 0&&trim((string) @$incluir)==""){
           $erro_msg = "Nenhum item cadastrado para esta licitação.";
           echo "<script>
                    document.form2.incluir.disabled = true;

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ativid_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clativid = new cl_ativid;
 $clativid->rotulo->label("q03_ativ");
 $clativid->rotulo->label("q03_descr");
@@ -124,7 +124,7 @@ $clrotulo->label('rh70_estrutural');
     <td align="center" valign="top"> 
       <?php 
 
-      $repassa = array("tipo_pesquisa"=>@$tipo_pesquisa);
+      $repassa = ["tipo_pesquisa"=>@$tipo_pesquisa];
 
       $sAnd   = "";
       $sWhere = ""; 

@@ -35,7 +35,7 @@ include(modification("dbforms/db_balanc_desp.php"));
 $classinatura = new cl_assinatura;
 
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $estrut = str_replace('.', '', $elemento);
 //echo $estrut;exit;
@@ -43,14 +43,14 @@ $estrut = str_replace('.', '', $elemento);
 $head1 = "BALANCETE DA DESPESA POR ELEMENTO";
 $head3 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-', ', ', $db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins ++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins ++) {
 	db_fieldsmemory($resultinst, $xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
   } else {
        $descr_inst .= $xvirg.$nomeinst;
@@ -110,7 +110,7 @@ $r_totgeralatual_a_pagar_liquidado = $totgeralatual_a_pagar_liquidado = 0;
 
 //db_criatabela($result);exit;
 
-for ($i = 0; $i < pg_numrows($result); $i ++) {
+for ($i = 0; $i < pg_num_rows($result); $i ++) {
 
 	db_fieldsmemory($result, $i);
 	$codigo = db_formatar($o58_elemento, 'elemento');

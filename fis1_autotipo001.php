@@ -36,8 +36,8 @@ require_once(modification("classes/db_fandam_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_fiscalprocrec_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clautotipo      = new cl_autotipo;
 $clautoandam     = new cl_autoandam;
@@ -49,7 +49,7 @@ $db_botao = true;
 global $y59_codauto;
 global $y39_codandam;
 $y59_codauto = @$y50_codauto;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   try {
 
@@ -68,7 +68,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
     if ($y59_fator==""){
       $clautotipo->y59_fator='0';
     }
-    if (strpos(trim($y59_valor),',')!=""){
+    if (strpos(trim((string) $y59_valor),',')!=""){
 	   $y59_valor=str_replace('.','',$y59_valor);
 	   $y59_valor=str_replace(',','.',$y59_valor);
     }
@@ -150,7 +150,7 @@ db_fim_transacao();
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clautotipo->erro_status=="0"){
     $clautotipo->erro(true,false);
     $db_botao=true;

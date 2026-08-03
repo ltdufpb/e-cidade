@@ -122,7 +122,7 @@ require_once(modification('std/db_stdClass.php'));
          */
         if (!$rsRhFerias) {
             throw new BusinessException(_M(PeriodoAquisitivoFerias::MENSAGENS . 'erro_buscar_periodo_aquisitivo',
-                (object)array('sErroBanco' => pg_last_error())));
+                (object)['sErroBanco' => pg_last_error()]));
         }
 
         /**
@@ -130,7 +130,7 @@ require_once(modification('std/db_stdClass.php'));
          */
         if (pg_num_rows($rsRhFerias) == 0) {
             throw new BusinessException(_M(PeriodoAquisitivoFerias::MENSAGENS . 'busca_periodo_aquisitivo_pelo_codigo',
-                (object)array('iCodigo' => $iCodigo)));
+                (object)['iCodigo' => $iCodigo]));
         }
 
         $oDadosPeriodoAquisitivo = db_utils::fieldsMemory($rsRhFerias, 0);
@@ -220,7 +220,7 @@ require_once(modification('std/db_stdClass.php'));
      * Define uma instância do objeto DBDate com a data inicial do período aquisitivo
      * @param $oDataInicial
      */
-    public function setDataInicial(DBDate $oDataInicial = null)
+    public function setDataInicial(?DBDate $oDataInicial = null)
     {
         $this->oDataInicial = $oDataInicial;
     }
@@ -238,7 +238,7 @@ require_once(modification('std/db_stdClass.php'));
      * Define uma instância do objeto DBDate com a data final do período aquisitivo
      * @param $oDataFinal
      */
-    public function setDataFinal(DBDate $oDataFinal = null)
+    public function setDataFinal(?DBDate $oDataFinal = null)
     {
         $this->oDataFinal = $oDataFinal;
     }
@@ -371,7 +371,7 @@ require_once(modification('std/db_stdClass.php'));
              * Erro ao incluir periodo aquisitivo
              */
             if ($oDaoRhFerias->erro_status == "0") {
-                $oMensagemErro = (object)array('sErroBanco' => $oDaoRhFerias->erro_banco);
+                $oMensagemErro = (object)['sErroBanco' => $oDaoRhFerias->erro_banco];
                 throw new DBException(_M(PeriodoAquisitivoFerias::MENSAGENS . 'erro_incluir_periodo_aquisitivo',
                     $oMensagemErro));
             }
@@ -391,7 +391,7 @@ require_once(modification('std/db_stdClass.php'));
          * Erro ao alterar periodo aquisitivo
          */
         if ($oDaoRhFerias->erro_status == "0") {
-            $oMensagemErro = (object)array('sErroBanco' => $oDaoRhFerias->erro_banco);
+            $oMensagemErro = (object)['sErroBanco' => $oDaoRhFerias->erro_banco];
             throw new DBException(_M(PeriodoAquisitivoFerias::MENSAGENS . 'erro_alterar_periodo_aquisitivo',
                 $oMensagemErro));
         }
@@ -410,7 +410,7 @@ require_once(modification('std/db_stdClass.php'));
      */
     public static function getDisponivel(Servidor $oServidor, $lSomenteComDireitoFerias = false)
     {
-        $aWhere = $lSomenteComDireitoFerias ? array('rh109_perdeudireitoferias is false') : array();
+        $aWhere = $lSomenteComDireitoFerias ? ['rh109_perdeudireitoferias is false'] : [];
         $oDaoRhFerias = new cl_rhferias();
         $sSqlRhferias = $oDaoRhFerias->sql_query_proximo_periodo_aquisitivo(
           $oServidor->getMatricula(),
@@ -424,7 +424,7 @@ require_once(modification('std/db_stdClass.php'));
          */
         if (!$rsRhFerias) {
             throw new BusinessException(_M(PeriodoAquisitivoFerias::MENSAGENS . 'erro_buscar_periodo_aquisitivo',
-                (object)array('sErroBanco' => pg_last_error())));
+                (object)['sErroBanco' => pg_last_error()]));
         }
 
         /**
@@ -432,7 +432,7 @@ require_once(modification('std/db_stdClass.php'));
          */
         if (pg_num_rows($rsRhFerias) == 0) {
             throw new BusinessException(_M(PeriodoAquisitivoFerias::MENSAGENS . 'busca_periodo_aquisitivo_pela_matricula',
-                (object)array('iCodigo' => $oServidor->getMatricula())));
+                (object)['iCodigo' => $oServidor->getMatricula()]));
         }
 
         $oDadosPeriodoAquisitivo = db_utils::fieldsMemory($rsRhFerias, 0);
@@ -468,7 +468,7 @@ require_once(modification('std/db_stdClass.php'));
 
         if (!$rsSql) {
             throw new DBException(_M(PeriodoAquisitivoFerias::MENSAGENS . 'erro_ao_buscar_quatidade_faltas',
-                (object)array('sErroBanco' => pg_last_error())));
+                (object)['sErroBanco' => pg_last_error()]));
         }
 
         if (pg_num_rows($rsSql) == 0) {
@@ -529,11 +529,11 @@ require_once(modification('std/db_stdClass.php'));
         $rsPeriodos = db_query($sSqlPeriodosAquisitivos);
 
         if (!$rsPeriodos) {
-            $oMensagemErro = (object)array('sErroBanco' => pg_last_error());
+            $oMensagemErro = (object)['sErroBanco' => pg_last_error()];
             throw new DBException(_M(PeriodoAquisitivoFerias::MENSAGENS . 'erro_buscar_periodo_gozo', $oMensagemErro));
         }
 
-        $aPeriodoGozo = array();
+        $aPeriodoGozo = [];
 
         foreach (db_utils::getCollectionByRecord($rsPeriodos) as $oDadoPeriodoGozo) {
             $aPeriodoGozo[] = new PeriodoGozoFerias($oDadoPeriodoGozo->rh110_sequencial);
@@ -562,12 +562,12 @@ require_once(modification('std/db_stdClass.php'));
          */
         if (!$rsRhFerias) {
             throw new BusinessException(_M(PeriodoAquisitivoFerias::MENSAGENS . 'erro_buscar_periodo_aquisitivo',
-                (object)array('sErroBanco' => pg_last_error())));
+                (object)['sErroBanco' => pg_last_error()]));
         }
 
         $oDadosPeriodo = db_utils::getCollectionByRecord($rsRhFerias);
 
-        $aPeriodoAquisito = array();
+        $aPeriodoAquisito = [];
 
         foreach (db_utils::getCollectionByRecord($rsRhFerias) as $oDadoPeriodo) {
             $aPeriodoAquisito[] = new PeriodoAquisitivoFerias($oDadoPeriodo->rh109_sequencial);

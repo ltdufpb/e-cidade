@@ -56,11 +56,11 @@ $clcfiptu      = new cl_cfiptu;
 echo "<pre>";
 var_dump($_REQUEST);
 die;*/
-$numeropg = isset($numeropg)?$numeropg:0;
+$numeropg ??= 0;
 
 db_sel_instit(null, "db21_usasisagua");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $exercicio = db_getsession("DB_anousu");
 $borda        = 1;
@@ -68,7 +68,7 @@ $bordat       = 1;
 $preenc       = 0;
 $TPagina      = 57;
 $dbwhere      = ' 1=1 ';
-$tamanho      = isset($tamanho)?$tamanho:10;
+$tamanho ??= 10;
 $pula         = 2;
 
 $sExpFalecido = "";
@@ -145,16 +145,16 @@ db_fieldsmemory($resultpardiv, 0);
 
 if ( isset($v04_confexpfalec) && $v04_confexpfalec != 1) {
   if ( !empty($v04_expfalecimentocda) ) {
-    $sExpFalecido = trim($v04_expfalecimentocda)." ";
+    $sExpFalecido = trim((string) $v04_expfalecimentocda)." ";
   }
 }
 
 class PDF_INICIAL_CDA extends pdf3 {
  
-  var $B;
-  var $I;
-  var $U;
-  var $HREF;
+  public $B;
+  public $I;
+  public $U;
+  public $HREF;
   function PDF2($orientation='P',$unit='mm',$format='A4')
 {
   //Call parent constructor
@@ -168,7 +168,7 @@ class PDF_INICIAL_CDA extends pdf3 {
 
 function WriteHTML($html)
 {   //HTML parser
-    $html=strip_tags($html,"<b><u><i><a><img><p><br><strong><em><font><tr><blockquote>"); //supprime tous les tags sauf ceux reconnus
+    $html=strip_tags((string) $html,"<b><u><i><a><img><p><br><strong><em><font><tr><blockquote>"); //supprime tous les tags sauf ceux reconnus
     $html=str_replace("\n",' ',$html); //remplace retour à la ligne par un espace
     $a=preg_split('/<(.*)>/U',$html,-1,PREG_SPLIT_DELIM_CAPTURE); //éclate la chaîne avec les balises
     foreach($a as $i=>$e)
@@ -179,7 +179,7 @@ function WriteHTML($html)
             if($this->HREF)
                 $this->PutLink($this->HREF,$e);
             else
-                $this->Write(5,stripslashes($this->txtentities($e)));
+                $this->Write(5,stripslashes((string) $this->txtentities($e)));
         }
         else
         {
@@ -191,7 +191,7 @@ function WriteHTML($html)
                 //Extract attributes
                 $a2=explode(' ',$e);
                 $tag=strtoupper(array_shift($a2));
-                $attr=array();
+                $attr=[];
                 foreach($a2 as $v)
                 {
                     if(preg_match('/([^=]*)=["\']?([^"\']*)/',$v,$a3))
@@ -234,7 +234,7 @@ function SetStyle($tag,$enable)
   //Modify style and select corresponding font
   $this->$tag+=($enable ? 1 : -1);
   $style='';
-  foreach(array('B','I','U') as $s)
+  foreach(['B','I','U'] as $s)
     if($this->$s>0)
       $style.=$s;
   $this->SetFont('',$style);
@@ -261,11 +261,11 @@ function PutLink($URL,$txt)
     $this->SetFont('Arial','I',6);
     $this->SetY(-10);
     $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
-    $nome = substr($nome,strrpos($nome,"/")+1);
+    $nome = substr((string) $nome,strrpos((string) $nome,"/")+1);
     $result_nomeusu = db_query("select nome as nomeusu from db_usuarios where id_usuario =".db_getsession("DB_id_usuario"));
 
-    if (pg_numrows($result_nomeusu)>0){
-      $nomeusu = pg_result($result_nomeusu,0,0);
+    if (pg_num_rows($result_nomeusu)>0){
+      $nomeusu = pg_fetch_result($result_nomeusu,0,0);
     }
     if (isset($nomeusu)&&$nomeusu!=""){
       $emissor = $nomeusu;
@@ -273,7 +273,7 @@ function PutLink($URL,$txt)
       $emissor = @$GLOBALS["DB_login"];
     }
 
-    $this->Cell(0,10,$url.'   '.$nome.'   Emissor: '.substr(ucwords(strtolower($emissor)),0,30).'   Exercício: '.db_getsession("DB_anousu").'   Data: '.date("d-m-Y",db_getsession("DB_datausu"))." - ".date("H:i:s"),"T",0,'L');
+    $this->Cell(0,10,$url.'   '.$nome.'   Emissor: '.substr(ucwords(strtolower((string) $emissor)),0,30).'   Exercício: '.db_getsession("DB_anousu").'   Data: '.date("d-m-Y",db_getsession("DB_datausu"))." - ".date("H:i:s"),"T",0,'L');
     $this->Cell(0,10,' ',0,1,'R');
     
      $this->SetXY(200,-10);
@@ -313,7 +313,7 @@ function PutLink($URL,$txt)
     global $lImpFolha;
 
     db_fieldsmemory($result,0);
-    $db12_extenso = pg_result($result,0,"db12_extenso");
+    $db12_extenso = pg_fetch_result($result,0,"db12_extenso");
 
     $S      = $this->lMargin;
     $this->SetLeftMargin(10);
@@ -369,7 +369,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
   $pdf = new PDF_INICIAL_CDA();
   $head5 = "";
   if (!defined('DB_BIBLIOT')) {
-  
+
     $pdf->Open(); // abre o relatorio
     $pdf->AliasNbPages(); // gera alias para as paginas
   }
@@ -405,7 +405,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
   $rsOrigemInicial  = db_query($sSqlOrigemInicial);
   $iNumRows = pg_num_rows($rsOrigemInicial);
 
-  $aListaExercicio = array();
+  $aListaExercicio = [];
 
   for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
 
@@ -415,7 +415,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
       continue;
     }
 
-    if (trim($iExercicio) != "") {
+    if (trim((string) $iExercicio) != "") {
      $aListaExercicio[] = db_utils::fieldsMemory($rsOrigemInicial,$iInd)->v01_exerc;
     }
   }
@@ -427,7 +427,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
   $sNomeMatricula = "";
 
-  if ( trim($oOrigemInicial->certdiv) != "" ) {
+  if ( trim((string) $oOrigemInicial->certdiv) != "" ) {
 
     $sNomeMatricula = "matric1";
 
@@ -460,7 +460,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
     }
 
 
-  } else if ( trim($oOrigemInicial->certter) != "" ) {
+  } else if ( trim((string) $oOrigemInicial->certter) != "" ) {
 
     $sNomeMatricula = "matric2";
 
@@ -545,7 +545,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
   $rsPagoCancelado = db_query($sqlPagoCancelado);
 
-  if (pg_numrows($rsPagoCancelado) > 0 ) {
+  if (pg_num_rows($rsPagoCancelado) > 0 ) {
     continue;
   }else{
     $lTemInicial = true;
@@ -555,7 +555,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
   $iLinhaDadosInicial = pg_num_rows($rsDadosInicial);
 
-  $aListaProcedencia = array();
+  $aListaProcedencia = [];
 
   for ($iInd=0; $iInd < $iLinhaDadosInicial; $iInd++ ) {
 
@@ -580,7 +580,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
   $rsCertid     = db_query($sSqlCert);
   $iLinhasCert  = pg_num_rows($rsCertid);
-  $aListaCertid = array();
+  $aListaCertid = [];
 
   for ( $iInd=0; $iInd < $iLinhasCert; $iInd++ ) {
     $aListaCertid[] = db_utils::fieldsMemory($rsCertid,$iInd)->v51_certidao;
@@ -600,7 +600,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
     $rsParcelamentos     = db_query($sSqlParcelamentos);
     $iLinhasParcel       = pg_num_rows($rsParcelamentos);
-    $aListaParcelamentos = array();
+    $aListaParcelamentos = [];
 
     for ( $iIndParcel=0; $iIndParcel < $iLinhasParcel; $iIndParcel++) {
 
@@ -666,7 +666,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
       if($corrigirPeloArreold && ($lParcelamento or $lDivida)) {
 
-        $dataemis = mktime(0,0,0,substr($v50_data,5,2),substr($v50_data,8,2),substr($v50_data,0,4));
+        $dataemis = mktime(0,0,0,substr((string) $v50_data,5,2),substr((string) $v50_data,8,2),substr((string) $v50_data,0,4));
         $rsDadosDebitoCorrigido  = debitos_numpre_old($k00_numpre, 0, 0, $dataemis, db_getsession('DB_anousu'), $k00_numpar);
 
       } else {
@@ -680,7 +680,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
       }
 
       if($rsDadosDebitoCorrigido) {
-        for ($iIndDebito = 0; $iIndDebito < pg_numrows($rsDadosDebitoCorrigido); $iIndDebito++) {
+        for ($iIndDebito = 0; $iIndDebito < pg_num_rows($rsDadosDebitoCorrigido); $iIndDebito++) {
           $ValorTotal += db_utils::fieldsMemory($rsDadosDebitoCorrigido, $iIndDebito)->total;
         }
       }
@@ -719,7 +719,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
     $sql    = "select munic, uf, numero as numeroinst from db_config where codigo = " . db_getsession("DB_instit");
     $result = db_query($sql);
 
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
       db_fieldsmemory($result, 0);
     }
 
@@ -732,21 +732,21 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
     $result = db_query($sql);
 
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
 
       $v = '';
 
-      for ($jk = 0;$jk < pg_numrows($result);$jk++) {
-        $ximovel .= $v.trim(pg_result($result, $jk, "j14_tipo")) . ' ' . trim(pg_result($result,$jk , "j14_nome")) . ', ' . trim(pg_result($result, $jk, "j39_numero")) . ' setor/quadra/lote ' . trim(pg_result($result, $jk, "j34_setor")) . "/" . trim(pg_result($result, $jk, "j34_quadra")) . "/" . trim(pg_result($result, $jk, "j34_lote")) . ( $oCfiptu->j18_utilizaloc == 't'? ' - dados de localização: ' . trim(pg_result($result, $jk, "j06_setorloc")) . '-' . trim(pg_result($result, $jk, "j05_descr")) . '/' . trim(pg_result($result, $jk, "j06_quadraloc")) . '/' . trim(pg_result($result, $jk, "j06_lote")) :"") . ', em ' . $munic . '/' . $uf . ' (matrícula municipal n' . chr(176) . ' ' . trim(pg_result($result,$jk,"j01_matric")) . ')';
+      for ($jk = 0;$jk < pg_num_rows($result);$jk++) {
+        $ximovel .= $v.trim(pg_fetch_result($result, $jk, "j14_tipo")) . ' ' . trim(pg_fetch_result($result,$jk , "j14_nome")) . ', ' . trim(pg_fetch_result($result, $jk, "j39_numero")) . ' setor/quadra/lote ' . trim(pg_fetch_result($result, $jk, "j34_setor")) . "/" . trim(pg_fetch_result($result, $jk, "j34_quadra")) . "/" . trim(pg_fetch_result($result, $jk, "j34_lote")) . ( $oCfiptu->j18_utilizaloc == 't'? ' - dados de localização: ' . trim(pg_fetch_result($result, $jk, "j06_setorloc")) . '-' . trim(pg_fetch_result($result, $jk, "j05_descr")) . '/' . trim(pg_fetch_result($result, $jk, "j06_quadraloc")) . '/' . trim(pg_fetch_result($result, $jk, "j06_lote")) :"") . ', em ' . $munic . '/' . $uf . ' (matrícula municipal n' . chr(176) . ' ' . trim(pg_fetch_result($result,$jk,"j01_matric")) . ')';
         $v = ", ";
       }
 
       $ximovel .= ".";
-      $cgmpri = pg_result($result, 0, "z01_numcgm");
+      $cgmpri = pg_fetch_result($result, 0, "z01_numcgm");
     }
 
     $aDadosInicial  = db_utils::getCollectionByRecord($rsDadosInicial);
-    $aCgmEnvolvidos = array();
+    $aCgmEnvolvidos = [];
 
     foreach ($aDadosInicial as $iIndice => $oDadosInicial) {
 
@@ -788,14 +788,14 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
             }
           }
 
-          if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
+          if (strlen((string) $oDadosEnvol->z01_cgccpf) > 11) {
             $sCgcCpf = "CNPJ: ".db_formatar($oDadosEnvol->z01_cgccpf, 'cnpj').",";
           } else {
             $sCgcCpf = "CPF: ".db_formatar($oDadosEnvol->z01_cgccpf, 'cpf').",";
           }
 
           $sNacionalidade = '';
-          if ( strlen ( trim($oDadosEnvol->z01_cgccpf) ) == 11 ){
+          if ( strlen ( trim((string) $oDadosEnvol->z01_cgccpf) ) == 11 ){
 
             if( $oDadosEnvol->z01_nacion == 1 ){
               $sNacionalidade = ", BRASILEIRA(O)";
@@ -804,7 +804,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
             }
           }
 
-          $xender .=  $sExpFalecido . trim($oDadosEnvol->z01_nome) . $sNacionalidade . ($oDadosEnvol->z01_cgccpf!=''?", {$sCgcCpf}":"");
+          $xender .=  $sExpFalecido . trim((string) $oDadosEnvol->z01_nome) . $sNacionalidade . ($oDadosEnvol->z01_cgccpf!=''?", {$sCgcCpf}":"");
           $xender .= " ENDEREÇO: ".$oDadosEnvol->z01_ender.', N°'.$oDadosEnvol->z01_numero.''.($oDadosEnvol->z01_bairro!=""?", BAIRRO: {$oDadosEnvol->z01_bairro}":"").', '.$oDadosEnvol->z01_munic.'-'.$oDadosEnvol->z01_uf.''.($oDadosEnvol->z01_cep !=""?", CEP: {$oDadosEnvol->z01_cep}":"").''.($oDadosEnvol->z01_cxpostal!=""?", CAIXA POSTAL: {$oDadosEnvol->z01_cxpostal}":"").". ";
         }
       }
@@ -838,18 +838,18 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
           }
         }
 
-        if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
+        if (strlen((string) $oDadosEnvol->z01_cgccpf) > 11) {
           $sCgcCpf = "CNPJ: ".db_formatar($oDadosEnvol->z01_cgccpf, 'cnpj').",";
         } else {
           $sCgcCpf = "CPF: ".db_formatar($oDadosEnvol->z01_cgccpf, 'cpf').",";
         }
 
         if ($oEnvolvidos->ritipoenvol == "4") {
-          $xender  = $sExpFalecido.trim($oDadosEnvol->z01_nome).",  " .$sCgcCpf.' sito o endereço: '.$oDadosEnvol->z01_ender.', N° '.$oDadosEnvol->z01_numero.''.($oDadosEnvol->z01_bairro != "" ? ", BAIRRO:{$oDadosEnvol->z01_bairro}" : "").', '.$oDadosEnvol->z01_munic.'-'.$oDadosEnvol->z01_uf.''.($oDadosEnvol->z01_cep != "" ? ", CEP:{$oDadosEnvol->z01_cep}" : "").''.($oDadosEnvol->z01_cxpostal != "" ? ", CAIXA POSTAL:{$oDadosEnvol->z01_cxpostal}" : "");
+          $xender  = $sExpFalecido.trim((string) $oDadosEnvol->z01_nome).",  " .$sCgcCpf.' sito o endereço: '.$oDadosEnvol->z01_ender.', N° '.$oDadosEnvol->z01_numero.''.($oDadosEnvol->z01_bairro != "" ? ", BAIRRO:{$oDadosEnvol->z01_bairro}" : "").', '.$oDadosEnvol->z01_munic.'-'.$oDadosEnvol->z01_uf.''.($oDadosEnvol->z01_cep != "" ? ", CEP:{$oDadosEnvol->z01_cep}" : "").''.($oDadosEnvol->z01_cxpostal != "" ? ", CAIXA POSTAL:{$oDadosEnvol->z01_cxpostal}" : "");
         } else {
 
           $xender .= $sTextoSocios;
-          $xender .= "\n-  ".$sExpFalecido.trim($oDadosEnvol->z01_nome).", " .$sCgcCpf."\n";
+          $xender .= "\n-  ".$sExpFalecido.trim((string) $oDadosEnvol->z01_nome).", " .$sCgcCpf."\n";
           $xender .= "ENDEREÇO: ".$oDadosEnvol->z01_ender.', N°: '.$oDadosEnvol->z01_numero.''.($oDadosEnvol->z01_bairro != "" ? ", BAIRRO: {$oDadosEnvol->z01_bairro}" : "").', '.$oDadosEnvol->z01_munic.'-'.$oDadosEnvol->z01_uf.''.($oDadosEnvol->z01_cep != "" ? ", CEP:{$oDadosEnvol->z01_cep}" : "").''.($oDadosEnvol->z01_cxpostal != "" ? ", CAIXA POSTAL:{$oDadosEnvol->z01_cxpostal}" : "");
           $sTextoSocios = "";
         }
@@ -891,13 +891,13 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
         }
       }
 
-      if (strlen($z01_cgccpf) > 11) {
+      if (strlen((string) $z01_cgccpf) > 11) {
         $sCgcCpf = "CNPJ: ".db_formatar($z01_cgccpf, 'cnpj').",";
       } else {
         $sCgcCpf = "CPF: ".db_formatar($z01_cgccpf, 'cpf').",";
       }
 
-      $xender .= " CGM: " . $z01_numcgm . " - " . $sExpFalecido . trim($z01_nome) . (strlen(trim($z01_cgccpf)) == 11 ? ($z01_nacion == 1 ? ", BRASILEIRA" : ", ESTRANGEIRA") : "") . ($z01_cgccpf != '' ? ", {$sCgcCpf}" : "");
+      $xender .= " CGM: " . $z01_numcgm . " - " . $sExpFalecido . trim((string) $z01_nome) . (strlen(trim((string) $z01_cgccpf)) == 11 ? ($z01_nacion == 1 ? ", BRASILEIRA" : ", ESTRANGEIRA") : "") . ($z01_cgccpf != '' ? ", {$sCgcCpf}" : "");
       $xender .= " ENDEREÇO: " . $z01_ender . ($z01_numero > 0 ? ', N°' . $z01_numero : '') . '' . ($z01_bairro != "" ? ", BAIRRO: $z01_bairro" : "") . ', ' . $z01_munic . '-' . $z01_uf . '' . ($z01_cep != "" ? ", CEP: $z01_cep" : "") . '' . ($z01_cxpostal != "" ? ", CAIXA POSTAL: $z01_cxpostal" : "");
     }
 
@@ -963,30 +963,30 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
   foreach ($aParagrafos as $oParag) {
 
     if ($xmatric > 0) {
-      if(strtolower($oParag->oParag->db02_descr) == "inicial_p4i" || strtolower($oParag->oParag->db02_descr) == "inicial_p4c" ){
+      if(strtolower((string) $oParag->oParag->db02_descr) == "inicial_p4i" || strtolower((string) $oParag->oParag->db02_descr) == "inicial_p4c" ){
         continue;
       }
     } else if ($xinscr > 0) {
-      if(strtolower($oParag->oParag->db02_descr) == "inicial_p4m" || strtolower($oParag->oParag->db02_descr) == "inicial_p4c" ){
+      if(strtolower((string) $oParag->oParag->db02_descr) == "inicial_p4m" || strtolower((string) $oParag->oParag->db02_descr) == "inicial_p4c" ){
         continue;
       }
     } else {
-      if(strtolower($oParag->oParag->db02_descr) == "inicial_p4m" || strtolower($oParag->oParag->db02_descr) == "inicial_p4i" ){
+      if(strtolower((string) $oParag->oParag->db02_descr) == "inicial_p4m" || strtolower((string) $oParag->oParag->db02_descr) == "inicial_p4i" ){
         continue;
       }
     }
 //INICIAL_P4C
     if ($matric2 > 0 || $inscr2 > 0 || $certter > 0) {
-      if(strtolower($oParag->oParag->db02_descr) == "inicial_p51"){
+      if(strtolower((string) $oParag->oParag->db02_descr) == "inicial_p51"){
         continue;
       }
     } else if ($matric1 > 0 || $inscr1 > 0 || $certdiv > 0) {
-      if(strtolower($oParag->oParag->db02_descr) == "inicial_p5m"){
+      if(strtolower((string) $oParag->oParag->db02_descr) == "inicial_p5m"){
         continue;
       }
     }
 
-    if(strtolower($oParag->oParag->db02_descr) == "inicial_p8"){
+    if(strtolower((string) $oParag->oParag->db02_descr) == "inicial_p8"){
 
       $pdf->Ln($pula);
       $pdf->SetFont('Arial', 'B', $tamanho);
@@ -1036,7 +1036,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
     }
 
     if($oParag->oParag->db02_descr == "ASSINATURAS_CODIGOPHP"){
-      eval(trim($oParag->oParag->db02_texto));
+      eval(trim((string) $oParag->oParag->db02_texto));
     }
 
   }

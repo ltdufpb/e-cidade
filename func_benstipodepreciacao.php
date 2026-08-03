@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benstipodepreciacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbenstipodepreciacao = new cl_benstipodepreciacao;
 $clbenstipodepreciacao->rotulo->label("t46_sequencial");
 $clbenstipodepreciacao->rotulo->label("t46_descricao");
@@ -109,9 +109,9 @@ $clbenstipodepreciacao->rotulo->label("t46_descricao");
         }else{
            $sql = $clbenstipodepreciacao->sql_query("",$campos,"t46_sequencial", $sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t46_descricao)){
-          $repassa = array("chave_t46_sequencial"=>$chave_t46_sequencial,"chave_t46_descricao"=>$chave_t46_descricao);
+          $repassa = ["chave_t46_sequencial"=>$chave_t46_sequencial,"chave_t46_descricao"=>$chave_t46_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

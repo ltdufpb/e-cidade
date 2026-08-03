@@ -47,7 +47,7 @@ class cl_rhlocaltrabequipamentoprotecao
     public function __construct()
     {
         $this->rotulo = new rotulo("rhlocaltrabequipamentoprotecao"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -192,10 +192,10 @@ class cl_rhlocaltrabequipamentoprotecao
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh257_sequencial = pg_result($result,0,0); 
+       $this->rh257_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhlocaltrabequipamentoprotecao_rh257_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh257_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh257_sequencial)){
          $this->erro_sql = " Campo rh257_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -245,7 +245,7 @@ class cl_rhlocaltrabequipamentoprotecao
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Equipamentos de proteção do local de trabalho ($this->rh257_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Equipamentos de proteção do local de trabalho já Cadastrado";
@@ -274,21 +274,21 @@ class cl_rhlocaltrabequipamentoprotecao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1013677,'$this->rh257_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013677,'','".AddSlashes(pg_result($resaco,0,'rh257_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013739,'','".AddSlashes(pg_result($resaco,0,'rh257_rhlocaltrabagentesnocivos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013680,'','".AddSlashes(pg_result($resaco,0,'rh257_utilizaepc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013681,'','".AddSlashes(pg_result($resaco,0,'rh257_eficaciaepc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013682,'','".AddSlashes(pg_result($resaco,0,'rh257_utilizaepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013683,'','".AddSlashes(pg_result($resaco,0,'rh257_eficaciaepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013686,'','".AddSlashes(pg_result($resaco,0,'rh257_medidaprotecaoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013687,'','".AddSlashes(pg_result($resaco,0,'rh257_funcionamentoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013688,'','".AddSlashes(pg_result($resaco,0,'rh257_usoininterruptoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013689,'','".AddSlashes(pg_result($resaco,0,'rh257_validadeepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013690,'','".AddSlashes(pg_result($resaco,0,'rh257_periodicidadeepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010859,1013691,'','".AddSlashes(pg_result($resaco,0,'rh257_higienizacaoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013677,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013739,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_rhlocaltrabagentesnocivos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013680,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_utilizaepc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013681,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_eficaciaepc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013682,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_utilizaepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013683,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_eficaciaepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013686,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_medidaprotecaoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013687,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_funcionamentoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013688,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_usoininterruptoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013689,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_validadeepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013690,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_periodicidadeepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010859,1013691,'','".AddSlashes(pg_fetch_result($resaco,0,'rh257_higienizacaoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -299,10 +299,10 @@ class cl_rhlocaltrabequipamentoprotecao
       $this->atualizacampos();
      $sql = " update rhlocaltrabequipamentoprotecao set ";
      $virgula = "";
-     if(trim($this->rh257_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_sequencial"])){ 
+     if(trim((string) $this->rh257_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_sequencial"])){ 
        $sql  .= $virgula." rh257_sequencial = $this->rh257_sequencial ";
        $virgula = ",";
-       if(trim($this->rh257_sequencial) == null ){ 
+       if(trim((string) $this->rh257_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "rh257_sequencial";
          $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_rhlocaltrabagentesnocivos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_rhlocaltrabagentesnocivos"])){ 
+     if(trim((string) $this->rh257_rhlocaltrabagentesnocivos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_rhlocaltrabagentesnocivos"])){ 
        $sql  .= $virgula." rh257_rhlocaltrabagentesnocivos = $this->rh257_rhlocaltrabagentesnocivos ";
        $virgula = ",";
-       if(trim($this->rh257_rhlocaltrabagentesnocivos) == null ){ 
+       if(trim((string) $this->rh257_rhlocaltrabagentesnocivos) == null ){ 
          $this->erro_sql = " Campo Sequencial Agente Nocivo não informado.";
          $this->erro_campo = "rh257_rhlocaltrabagentesnocivos";
          $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_utilizaepc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_utilizaepc"])){ 
+     if(trim((string) $this->rh257_utilizaepc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_utilizaepc"])){ 
        $sql  .= $virgula." rh257_utilizaepc = $this->rh257_utilizaepc ";
        $virgula = ",";
-       if(trim($this->rh257_utilizaepc) == null ){ 
+       if(trim((string) $this->rh257_utilizaepc) == null ){ 
          $this->erro_sql = " Campo Utilização EPC não informado.";
          $this->erro_campo = "rh257_utilizaepc";
          $this->erro_banco = "";
@@ -338,10 +338,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_eficaciaepc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_eficaciaepc"])){ 
+     if(trim((string) $this->rh257_eficaciaepc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_eficaciaepc"])){ 
        $sql  .= $virgula." rh257_eficaciaepc = '$this->rh257_eficaciaepc' ";
        $virgula = ",";
-       if(trim($this->rh257_eficaciaepc) == null ){ 
+       if(trim((string) $this->rh257_eficaciaepc) == null ){ 
          $this->erro_sql = " Campo Eficacia EPC não informado.";
          $this->erro_campo = "rh257_eficaciaepc";
          $this->erro_banco = "";
@@ -351,10 +351,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_utilizaepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_utilizaepi"])){ 
+     if(trim((string) $this->rh257_utilizaepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_utilizaepi"])){ 
        $sql  .= $virgula." rh257_utilizaepi = $this->rh257_utilizaepi ";
        $virgula = ",";
-       if(trim($this->rh257_utilizaepi) == null ){ 
+       if(trim((string) $this->rh257_utilizaepi) == null ){ 
          $this->erro_sql = " Campo Utiliza EPI? não informado.";
          $this->erro_campo = "rh257_utilizaepi";
          $this->erro_banco = "";
@@ -364,10 +364,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_eficaciaepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_eficaciaepi"])){ 
+     if(trim((string) $this->rh257_eficaciaepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_eficaciaepi"])){ 
        $sql  .= $virgula." rh257_eficaciaepi = '$this->rh257_eficaciaepi' ";
        $virgula = ",";
-       if(trim($this->rh257_eficaciaepi) == null ){ 
+       if(trim((string) $this->rh257_eficaciaepi) == null ){ 
          $this->erro_sql = " Campo Eficacia EPI não informado.";
          $this->erro_campo = "rh257_eficaciaepi";
          $this->erro_banco = "";
@@ -377,10 +377,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_medidaprotecaoepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_medidaprotecaoepi"])){ 
+     if(trim((string) $this->rh257_medidaprotecaoepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_medidaprotecaoepi"])){ 
        $sql  .= $virgula." rh257_medidaprotecaoepi = '$this->rh257_medidaprotecaoepi' ";
        $virgula = ",";
-       if(trim($this->rh257_medidaprotecaoepi) == null ){ 
+       if(trim((string) $this->rh257_medidaprotecaoepi) == null ){ 
          $this->erro_sql = " Campo Implementada medida de proteção? não informado.";
          $this->erro_campo = "rh257_medidaprotecaoepi";
          $this->erro_banco = "";
@@ -390,10 +390,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_funcionamentoepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_funcionamentoepi"])){ 
+     if(trim((string) $this->rh257_funcionamentoepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_funcionamentoepi"])){ 
        $sql  .= $virgula." rh257_funcionamentoepi = '$this->rh257_funcionamentoepi' ";
        $virgula = ",";
-       if(trim($this->rh257_funcionamentoepi) == null ){ 
+       if(trim((string) $this->rh257_funcionamentoepi) == null ){ 
          $this->erro_sql = " Campo Observado funcionamento Epi? não informado.";
          $this->erro_campo = "rh257_funcionamentoepi";
          $this->erro_banco = "";
@@ -403,10 +403,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_usoininterruptoepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_usoininterruptoepi"])){ 
+     if(trim((string) $this->rh257_usoininterruptoepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_usoininterruptoepi"])){ 
        $sql  .= $virgula." rh257_usoininterruptoepi = '$this->rh257_usoininterruptoepi' ";
        $virgula = ",";
-       if(trim($this->rh257_usoininterruptoepi) == null ){ 
+       if(trim((string) $this->rh257_usoininterruptoepi) == null ){ 
          $this->erro_sql = " Campo Uso ininterrupto? não informado.";
          $this->erro_campo = "rh257_usoininterruptoepi";
          $this->erro_banco = "";
@@ -416,10 +416,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_validadeepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_validadeepi"])){ 
+     if(trim((string) $this->rh257_validadeepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_validadeepi"])){ 
        $sql  .= $virgula." rh257_validadeepi = '$this->rh257_validadeepi' ";
        $virgula = ",";
-       if(trim($this->rh257_validadeepi) == null ){ 
+       if(trim((string) $this->rh257_validadeepi) == null ){ 
          $this->erro_sql = " Campo Observada Validade? não informado.";
          $this->erro_campo = "rh257_validadeepi";
          $this->erro_banco = "";
@@ -429,10 +429,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_periodicidadeepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_periodicidadeepi"])){ 
+     if(trim((string) $this->rh257_periodicidadeepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_periodicidadeepi"])){ 
        $sql  .= $virgula." rh257_periodicidadeepi = '$this->rh257_periodicidadeepi' ";
        $virgula = ",";
-       if(trim($this->rh257_periodicidadeepi) == null ){ 
+       if(trim((string) $this->rh257_periodicidadeepi) == null ){ 
          $this->erro_sql = " Campo Observada Periodicidade? não informado.";
          $this->erro_campo = "rh257_periodicidadeepi";
          $this->erro_banco = "";
@@ -442,10 +442,10 @@ class cl_rhlocaltrabequipamentoprotecao
          return false;
        }
      }
-     if(trim($this->rh257_higienizacaoepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_higienizacaoepi"])){ 
+     if(trim((string) $this->rh257_higienizacaoepi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh257_higienizacaoepi"])){ 
        $sql  .= $virgula." rh257_higienizacaoepi = '$this->rh257_higienizacaoepi' ";
        $virgula = ",";
-       if(trim($this->rh257_higienizacaoepi) == null ){ 
+       if(trim((string) $this->rh257_higienizacaoepi) == null ){ 
          $this->erro_sql = " Campo Observada higienização? não informado.";
          $this->erro_campo = "rh257_higienizacaoepi";
          $this->erro_banco = "";
@@ -469,33 +469,33 @@ class cl_rhlocaltrabequipamentoprotecao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1013677,'$this->rh257_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_sequencial"]) || $this->rh257_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013677,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_sequencial'))."','$this->rh257_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013677,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_sequencial'))."','$this->rh257_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_rhlocaltrabagentesnocivos"]) || $this->rh257_rhlocaltrabagentesnocivos != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013739,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_rhlocaltrabagentesnocivos'))."','$this->rh257_rhlocaltrabagentesnocivos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013739,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_rhlocaltrabagentesnocivos'))."','$this->rh257_rhlocaltrabagentesnocivos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_utilizaepc"]) || $this->rh257_utilizaepc != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013680,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_utilizaepc'))."','$this->rh257_utilizaepc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013680,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_utilizaepc'))."','$this->rh257_utilizaepc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_eficaciaepc"]) || $this->rh257_eficaciaepc != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013681,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_eficaciaepc'))."','$this->rh257_eficaciaepc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013681,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_eficaciaepc'))."','$this->rh257_eficaciaepc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_utilizaepi"]) || $this->rh257_utilizaepi != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013682,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_utilizaepi'))."','$this->rh257_utilizaepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013682,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_utilizaepi'))."','$this->rh257_utilizaepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_eficaciaepi"]) || $this->rh257_eficaciaepi != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013683,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_eficaciaepi'))."','$this->rh257_eficaciaepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013683,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_eficaciaepi'))."','$this->rh257_eficaciaepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_medidaprotecaoepi"]) || $this->rh257_medidaprotecaoepi != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013686,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_medidaprotecaoepi'))."','$this->rh257_medidaprotecaoepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013686,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_medidaprotecaoepi'))."','$this->rh257_medidaprotecaoepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_funcionamentoepi"]) || $this->rh257_funcionamentoepi != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013687,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_funcionamentoepi'))."','$this->rh257_funcionamentoepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013687,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_funcionamentoepi'))."','$this->rh257_funcionamentoepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_usoininterruptoepi"]) || $this->rh257_usoininterruptoepi != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013688,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_usoininterruptoepi'))."','$this->rh257_usoininterruptoepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013688,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_usoininterruptoepi'))."','$this->rh257_usoininterruptoepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_validadeepi"]) || $this->rh257_validadeepi != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013689,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_validadeepi'))."','$this->rh257_validadeepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013689,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_validadeepi'))."','$this->rh257_validadeepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_periodicidadeepi"]) || $this->rh257_periodicidadeepi != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013690,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_periodicidadeepi'))."','$this->rh257_periodicidadeepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013690,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_periodicidadeepi'))."','$this->rh257_periodicidadeepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh257_higienizacaoepi"]) || $this->rh257_higienizacaoepi != "")
-             $resac = db_query("insert into db_acount values($acount,1010859,1013691,'".AddSlashes(pg_result($resaco,$conresaco,'rh257_higienizacaoepi'))."','$this->rh257_higienizacaoepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010859,1013691,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh257_higienizacaoepi'))."','$this->rh257_higienizacaoepi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -549,21 +549,21 @@ class cl_rhlocaltrabequipamentoprotecao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1013677,'$rh257_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013677,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013739,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_rhlocaltrabagentesnocivos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013680,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_utilizaepc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013681,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_eficaciaepc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013682,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_utilizaepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013683,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_eficaciaepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013686,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_medidaprotecaoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013687,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_funcionamentoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013688,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_usoininterruptoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013689,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_validadeepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013690,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_periodicidadeepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010859,1013691,'','".AddSlashes(pg_result($resaco,$iresaco,'rh257_higienizacaoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013677,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013739,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_rhlocaltrabagentesnocivos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013680,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_utilizaepc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013681,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_eficaciaepc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013682,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_utilizaepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013683,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_eficaciaepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013686,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_medidaprotecaoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013687,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_funcionamentoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013688,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_usoininterruptoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013689,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_validadeepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013690,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_periodicidadeepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010859,1013691,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh257_higienizacaoepi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

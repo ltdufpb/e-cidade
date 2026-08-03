@@ -103,25 +103,25 @@ switch ($oParam->exec) {
        * cidadaofamiliavisitacontato
        */
       if ($oParam->sContatoTelefone == '1') {
-        
+
         $oDaoCidadaoFamiliaVisitaContato->as10_cidadaofamiliavisita = $oFamiliaVisita->getCodigoSequencial();
         $oDaoCidadaoFamiliaVisitaContato->as10_profissionalcontato  = $oParam->iProfissionalContato;
         $oDaoCidadaoFamiliaVisitaContato->as10_data                 = $oParam->sDataContato;
-        
+
         /**
          * Verificamos se foi setado iCodigoVisitaContato. Caso sim, alteramos o registro existente. Caso contrario,
          * inserimos um novo registro
          */
         if (isset($oParam->iCodigoVisitaContato) && $oParam->iCodigoVisitaContato != 0) {
-          
+
           $oDaoCidadaoFamiliaVisitaContato->as10_sequencial = $oParam->iCodigoVisitaContato;
           $oDaoCidadaoFamiliaVisitaContato->alterar($oDaoCidadaoFamiliaVisitaContato->as10_sequencial);
         } else {
-          
+
           $oDaoCidadaoFamiliaVisitaContato->incluir(null);
           $iCodigoVisitaContato = $oDaoCidadaoFamiliaVisitaContato->as10_sequencial;
         }
-        
+
         /**
          * Caso esteja setado como nao (0) o contato telefonico, porem exista iCodigoVisitaContato (alteracao),
          * excluimos o registro da tabela cidadaofamiliavisitacontato
@@ -180,7 +180,7 @@ switch ($oParam->exec) {
     $oRetorno->iCodigoVisita           = $oParam->iCodigoFamiliaVisita;
     $oRetorno->iCodigoCidadaoFamilia   = $oFamiliaVisita->getCodigoCidadaoFamilia();
     $oRetorno->iTipoVisita             = $oFamiliaVisita->getVisitaTipo()->getCodigo();
-    $oRetorno->sTipoVisita             = urlencode($oFamiliaVisita->getVisitaTipo()->getDescricao());
+    $oRetorno->sTipoVisita             = urlencode((string) $oFamiliaVisita->getVisitaTipo()->getDescricao());
     
     $oRetorno->iCgmEncaminhamento      = '';
     $oRetorno->sLocalEncaminhamento    = '';
@@ -188,7 +188,7 @@ switch ($oParam->exec) {
     if (!empty($oCgmEncaminhamento)) {
       
       $oRetorno->iCgmEncaminhamento   = $oCgmEncaminhamento->getCodigo();
-      $oRetorno->sLocalEncaminhamento = urlencode($oCgmEncaminhamento->getNome());
+      $oRetorno->sLocalEncaminhamento = urlencode((string) $oCgmEncaminhamento->getNome());
     }
 
     /**

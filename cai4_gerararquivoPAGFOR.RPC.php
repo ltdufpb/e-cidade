@@ -59,7 +59,7 @@ try {
       $oGeradorArquivoPagFor->setAno(db_getsession("DB_anousu"));
       $oGeradorArquivoPagFor->setCodigoRemessa(null);
 
-      $oFile              = $oGeradorArquivoPagFor->emitir(explode(',', $oParam->sMovimentos));
+      $oFile              = $oGeradorArquivoPagFor->emitir(explode(',', (string) $oParam->sMovimentos));
       $oRetorno->sArquivo = $oFile->getFilePath();
       break;
 

@@ -69,14 +69,14 @@ db_app::import("contabilidade.contacorrente.*");
 
 $escola = db_getsession("DB_coddepto");
 $login = DB_getsession("DB_id_usuario");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldiasemana = new cl_diasemana;
 $clmer_cardapio = new cl_mer_cardapio;
 $clmer_cardapiodata = new cl_mer_cardapiodata;
 $clmatparam               = new cl_matparam;
 $cldb_departorg           = new  cl_db_departorg;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clmatrequiitem           = new cl_matrequiitem;
 $clmatrequi               = new cl_matrequi;
 $clatendrequiitem         = new cl_atendrequiitem;
@@ -112,9 +112,9 @@ if (isset($incluir)) {
     $clmer_cardapiodata->incluir("");
      
   }
-  $vetcod   = explode(",",$cod);
-  $vetitem  = explode(",",$item);
-  $vetquant = explode(",",$quant);  
+  $vetcod   = explode(",",(string) $cod);
+  $vetitem  = explode(",",(string) $item);
+  $vetquant = explode(",",(string) $quant);  
   $sqlerro  = "N";   
   $coddepto = db_getsession("DB_coddepto");
   $sqlalmox = $cldb_almox->sql_query_file(null, "*", null, "m91_depto=$coddepto");
@@ -164,7 +164,7 @@ if (isset($incluir)) {
       $codmater                   = $clmatrequiitem->m41_codmatmater;
       $codreqitem                 = $clmatrequiitem->m41_codigo;
       $tot_quant                  = $clmatrequiitem->m41_quant;
-      $aItens                     = array();
+      $aItens                     = [];
       $aSubItens[$i]->iCodMater   = $codmater;  
       $aSubItens[$i]->iCodItemReq = $codreqitem;
       $aSubItens[$i]->iCodalmox   = $coddepto;

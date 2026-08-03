@@ -85,6 +85,7 @@ class AssentamentoSubstituicao extends Assentamento {
    * Persiste na base de dados um assentamento de substituição, 
    * salvando nas tabelas de assentamento e de assentamentosubstituição
    */
+  #[\Override]
   public function persist() {
 
     $oDaoAssentamentoSubstituicao = new cl_assentamentosubstituicao();
@@ -143,6 +144,7 @@ class AssentamentoSubstituicao extends Assentamento {
    * toJSON
    *
    */
+  #[\Override]
   public function toJSON() {
     
     $oDados = json_decode(parent::toJSON(), false);
@@ -205,7 +207,7 @@ class AssentamentoSubstituicao extends Assentamento {
     $nValor             = 0;
 
     for ( $iEvento = 0; $iEvento < $iQuantidadeEventos; $iEvento++) {
-         
+
       $oEvento = $aEventos[$iEvento];
 
       if ( $oEvento->getNatureza() == EventoFinanceiroFolha::PROVENTO ) {
@@ -265,7 +267,7 @@ class AssentamentoSubstituicao extends Assentamento {
     $nValor             = 0;
 
     for ( $iEvento = 0; $iEvento < $iQuantidadeEventos; $iEvento++) {
-         
+
       $oEvento = $aEventos[$iEvento];
 
       if ( $oEvento->getNatureza() == EventoFinanceiroFolha::PROVENTO ) {

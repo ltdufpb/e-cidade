@@ -35,7 +35,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_parcustos_classe.php"));
 require(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clparcustos = new cl_parcustos;
 $aux = new cl_arquivo_auxiliar;
@@ -123,7 +123,7 @@ if($clparcustos->numrows > 0){
              <td align="right"  title="Quebra por departamento" >
                <strong>Quebra por departamento:</strong></td><td>
 	       <?php  
-	       $tipo_que = array("N"=>"Não","S"=>"Sim");
+	       $tipo_que = ["N"=>"Não","S"=>"Sim"];
 	       db_select("quebra",$tipo_que,true,2,"onchange='js_testord(this.value);'"); ?>
             </td>
 	  </tr>
@@ -131,7 +131,7 @@ if($clparcustos->numrows > 0){
              <td align="right"  title="Listar" >
                <strong>Listar:</strong></td><td>
 	       <?php  
-	       $somente_serv = array("M"=>"Materiais", "T"=>"Todos", "S"=>"Serviços");
+	       $somente_serv = ["M"=>"Materiais", "T"=>"Todos", "S"=>"Serviços"];
 	       db_select("listar_serv",$somente_serv,true,2);
 		   ?>
        		 </td>
@@ -141,7 +141,7 @@ if($clparcustos->numrows > 0){
                <strong>Ordem:</strong>
                </td><td>
 	       <?php  
-	       $tipo_ordem = array("a"=>"Codigo","b"=>"Departamento","c"=>"Alfabética","d"=>"Data");
+	       $tipo_ordem = ["a"=>"Codigo","b"=>"Departamento","c"=>"Alfabética","d"=>"Data"];
 	       db_select("ordem",$tipo_ordem,true,2); ?>
        		 </td>
 	  </tr>

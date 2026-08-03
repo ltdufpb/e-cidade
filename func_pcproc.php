@@ -34,7 +34,7 @@ require_once modification("dbforms/db_funcoes.php");
 
 db_postmemory($_POST);
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clpcproc 	  = new cl_pcproc;
 $clpcprocitem = new cl_pcprocitem;
@@ -218,7 +218,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
 
         $sql .= " and pc10_solicitacaotipo <> 8 ";
         $sql .= " order by pc80_codproc desc ";
-        $repassa = array("dataini" => $dataini, "datafim" => $datafim);
+        $repassa = ["dataini" => $dataini, "datafim" => $datafim];
 
        // echo "<br><br>" . $sql . "<br>";
 

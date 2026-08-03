@@ -33,9 +33,9 @@ include(modification("classes/db_veiculos_classe.php"));
 require(modification("libs/db_utils.php"));
 require(modification("libs/db_app.utils.php"));
 db_app::import("veiculos.*");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveiculos      = new cl_veiculos;
 
@@ -49,7 +49,7 @@ $clveiculos      = new cl_veiculos;
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
 <?php 
-  $metodo = strtolower($metodo);
+  $metodo = strtolower((string) $metodo);
   
   $sWhereA=null; 
   $sWhereM=null;

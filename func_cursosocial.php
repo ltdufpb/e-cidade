@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cursosocial_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcursosocial = new cl_cursosocial;
 $clcursosocial->rotulo->label("as19_sequencial");
 $clcursosocial->rotulo->label("as19_nome");
@@ -114,9 +114,9 @@ $clcursosocial->rotulo->label("as19_nome");
            $sql = $clcursosocial->sql_query_completo("", $campos, "as19_sequencial", $sWhere);
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_as19_nome)) {
-          $repassa = array("chave_as19_sequencial"=>$chave_as19_sequencial, "chave_as19_nome"=>$chave_as19_nome);
+          $repassa = ["chave_as19_sequencial"=>$chave_as19_sequencial, "chave_as19_nome"=>$chave_as19_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

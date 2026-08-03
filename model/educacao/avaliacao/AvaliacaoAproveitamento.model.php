@@ -61,12 +61,6 @@ final class AvaliacaoAproveitamento {
   private $iOrdemSequencia;
 
   /**
-   * Código do Aproveitamento
-   * @var integer
-   */
-  private $iCodigo;
-
-  /**
    * Define se o Aproveitamento foi superior ao aproveitamento minino
    * configurado para o aproveitamento;
    * @var boolean
@@ -144,9 +138,16 @@ final class AvaliacaoAproveitamento {
    */
   private $oAbonoFalta = null;
 
-  public function __construct($iCodigo = null) {
-
-    $this->iCodigo = $iCodigo;
+  /**
+   * @param int $iCodigo
+   */
+  public function __construct(
+      /**
+       * Código do Aproveitamento
+       */
+      private $iCodigo = null
+  )
+  {
   }
 
   /**
@@ -473,8 +474,8 @@ final class AvaliacaoAproveitamento {
             $oAvaliacaoAproveitamentoOrigem->setElementoAvaliacao($oElementoAvaliacao);
             $oAvaliacaoAproveitamentoOrigem->setNumeroFaltas($oDadosDiario->numero_faltas);
             $oAvaliacaoAproveitamentoOrigem->setParecerPadronizado($oDadosDiario->parecerpadronizado);
-            $oAvaliacaoAproveitamentoOrigem->setAmparado(trim($oDadosDiario->amparo) == "S" ? true : false);
-            $oAvaliacaoAproveitamentoOrigem->setConvertido(trim($oDadosDiario->convertido) == "S" ? true : false);
+            $oAvaliacaoAproveitamentoOrigem->setAmparado(trim((string) $oDadosDiario->amparo) == "S" ? true : false);
+            $oAvaliacaoAproveitamentoOrigem->setConvertido(trim((string) $oDadosDiario->convertido) == "S" ? true : false);
 
             if ( !empty($oDadosDiario->codigo_faltas_abonadas) ) {
                 $oAvaliacaoAproveitamentoOrigem->setFaltasAbonadas(AbonoFaltaRepository::getByCodigo($oDadosDiario->codigo_faltas_abonadas));

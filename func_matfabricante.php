@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matfabricante_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatfabricante = new cl_matfabricante;
 $clmatfabricante->rotulo->label("m76_sequencial");
 $clmatfabricante->rotulo->label("m76_numcgm");
@@ -98,9 +98,9 @@ $clmatfabricante->rotulo->label("m76_numcgm");
         }else{
            $sql = $clmatfabricante->sql_query_cgm("",$campos,"m76_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m76_numcgm)){
-          $repassa = array("chave_m76_sequencial"=>$chave_m76_sequencial,"chave_m76_numcgm"=>$chave_m76_numcgm);
+          $repassa = ["chave_m76_sequencial"=>$chave_m76_sequencial,"chave_m76_numcgm"=>$chave_m76_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

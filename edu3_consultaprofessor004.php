@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldiasemana         = new cl_diasemana;
 $clperiodoescola     = new cl_periodoescola;
 $clregenciahorario   = new cl_regenciahorario;
@@ -78,7 +78,7 @@ $clrotulo = new rotulocampo;
        $result = db_query($sql);
        $linhas = pg_num_rows($result);
        if(!isset($escola) && $linhas>0){
-         $escola = pg_result( $result, 0, 'ed18_i_codigo' );
+         $escola = pg_fetch_result( $result, 0, 'ed18_i_codigo' );
        }
        ?>
        <select name="escola"
@@ -115,7 +115,7 @@ $clrotulo = new rotulocampo;
        $result1 = db_query($sql1);
        $linhas1 = pg_num_rows($result1);
        if( !isset( $ano ) && $linhas1 > 0 ) {
-         $ano = pg_result( $result1, 0, 'ed52_i_ano' );
+         $ano = pg_fetch_result( $result1, 0, 'ed52_i_ano' );
        }
 
        for( $x = 0; $x < $linhas1; $x++ ) {
@@ -156,7 +156,7 @@ $clrotulo = new rotulocampo;
           ?>
             <tr bgcolor="#444444">
               <td width="40" align="center" style="font-weight: bold; color: #DEB887;">
-                <?=pg_result($result1,$z,"ed15_c_nome");?>
+                <?=pg_fetch_result($result1,$z,"ed15_c_nome");?>
               </td>
           <?php 
 

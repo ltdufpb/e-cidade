@@ -34,14 +34,14 @@ require_once(modification("libs/db_utils.php"));
 //CLASSE DA ENTIDADE lab_atributo_componente
 class cl_lab_atributo_componente
 {
-    var $db_opcao = 1;
-    var $iRequiitem = "";
-    var $lCheck = false;
-    var $iBordas = 1;
-    var $atributosdisp = Array();
-    var $iExame = 0;
-    var $aRepositorios = Array();
-    var $oPDF = "";
+    public $db_opcao = 1;
+    public $iRequiitem = "";
+    public $lCheck = false;
+    public $iBordas = 1;
+    public $atributosdisp = [];
+    public $iExame = 0;
+    public $aRepositorios = [];
+    public $oPDF = "";
 
     private $irequiitem;
 
@@ -52,9 +52,9 @@ class cl_lab_atributo_componente
         $this->iRequiitem = "";
         $this->lCheck = false;
         $this->iBordas = 1;
-        $this->aAtributosdisp = Array();
+        $this->aAtributosdisp = [];
         $this->iExame = 0;
-        $this->aRepositorios = Array();
+        $this->aRepositorios = [];
         $this->oPDF = "";
     }
 
@@ -222,7 +222,7 @@ class cl_lab_atributo_componente
      */
     function removeCasas($sEstrutural)
     {
-        $aVet = explode(".", $sEstrutural);
+        $aVet = explode(".", (string) $sEstrutural);
         $sStr = "$aVet[0]";
 
         for ($x = 1; $x < count($aVet); $x++) {
@@ -334,7 +334,7 @@ class cl_lab_atributo_componente
      */
     function levantamentoFilhos($iPai_atributo)
     {
-        $oFilhos = array();
+        $oFilhos = [];
         $sCampos = " la26_i_exameatributofilho as codigo ";
         $sWhere = " la26_i_exameatributopai = {$iPai_atributo} ";
         $daoLabExameAtributoLigacao = new cl_lab_exameatributoligacao();
@@ -366,7 +366,7 @@ class cl_lab_atributo_componente
      */
     function valorSelecionavel($iReferencia)
     {
-        $aOptions = array();
+        $aOptions = [];
         $sCampos = " la28_i_codigo as codigo ,la28_c_descr as nome";
         $daoLabValor = new cl_lab_valorrefselgrupo();
         $sSql = $daoLabValor->sql_query("", $sCampos, "la51_i_codigo", " la51_i_referencia = {$iReferencia} ");
@@ -605,7 +605,7 @@ class cl_lab_atributo_componente
         $daoLabExameDisp = new cl_lab_examedisp();
         $sSql = $daoLabExameDisp->sql_query("", $sCampos, "", " la42_i_exame = {$this->iExame} ");
         $rResult = $daoLabExameDisp->sql_record($sSql);
-        $aLista = array();
+        $aLista = [];
 
         if ($rResult != false) {
             $oLista = db_utils::getCollectionByRecord($rResult);
@@ -804,7 +804,7 @@ class cl_lab_atributo_componente
      * @param array $array
      * @return bool
      */
-    function array_to_object($array = array())
+    function array_to_object($array = [])
     {
         if (!empty($array)) {
             $data = false;

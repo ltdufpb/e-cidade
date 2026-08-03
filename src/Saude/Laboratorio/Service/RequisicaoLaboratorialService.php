@@ -12,17 +12,11 @@ use ECidade\Saude\Laboratorio\Repository\RequisicaoLaboratorialRepository;
 class RequisicaoLaboratorialService
 {
     /**
-     * @var RequisicaoLaboratorialRepository
-     */
-    private $repository;
-
-    /**
      * RequisicaoLaboratorialService constructor.
      * @param RequisicaoLaboratorialRepository $repository
      */
-    public function __construct(RequisicaoLaboratorialRepository $repository)
+    public function __construct(private readonly RequisicaoLaboratorialRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     /**

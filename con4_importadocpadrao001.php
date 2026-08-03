@@ -37,8 +37,8 @@ include(modification("classes/db_db_documentopadrao_classe.php"));
 include(modification("classes/db_db_paragrafopadrao_classe.php"));
 include(modification("classes/db_db_docparagpadrao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $cldb_documento = new cl_db_documento;
 $cldb_config = new cl_db_config;
 $cldb_paragrafo = new cl_db_paragrafo;
@@ -50,16 +50,16 @@ $db_opcao = 1;
 $db_botao = true;
 $sqlerro = false;
 if (isset ($documento) && $documento != "") {
-  
+
 	db_inicio_transacao();
 	$result_doc = $cldb_documentopadrao->sql_record($cldb_documentopadrao->sql_query_file($documento));
 
   if ($cldb_documentopadrao->numrows > 0) {
 		db_fieldsmemory($result_doc,0);
-    
+
 		$cldb_documento->db03_instit = db_getsession("DB_instit");
 		$cldb_documento->db03_tipodoc = $db60_tipodoc;
-		$cldb_documento->db03_descr = substr($db60_descr,0,28)."(IMP_PADRAO)";
+		$cldb_documento->db03_descr = substr((string) $db60_descr,0,28)."(IMP_PADRAO)";
 		$cldb_documento->incluir(null);
 		$erro_msg = $cldb_documento->erro_msg;
     $coddoc = $cldb_documento->db03_docum;
@@ -70,7 +70,7 @@ if (isset ($documento) && $documento != "") {
 	} else {
 		$sqlerro = true;
 	}
-  
+
 	if ($sqlerro == false) {
 		$result_paragpadrao = $cldb_docparagpadrao->sql_record($cldb_docparagpadrao->sql_query($documento, null, "*", "db62_ordem"));
 		$numrows_parag = $cldb_docparagpadrao->numrows;
@@ -78,16 +78,16 @@ if (isset ($documento) && $documento != "") {
 			db_fieldsmemory($result_paragpadrao, $w);
 			$ordem = $db62_ordem;
 			if ($sqlerro == false) {
-			
+
         $cldb_paragrafo->db02_espaca      = $db61_espaco;
 				$cldb_paragrafo->db02_inicia      = $db61_inicia;
 				$cldb_paragrafo->db02_alinha      = $db61_alinha;
-				$cldb_paragrafo->db02_texto       = addslashes(stripslashes($db61_texto));
+				$cldb_paragrafo->db02_texto       = addslashes(stripslashes((string) $db61_texto));
 				$cldb_paragrafo->db02_alinhamento = @$db61_alinhamento;
         $cldb_paragrafo->db02_altura      = @$db61_altura;
         $cldb_paragrafo->db02_largura     = @$db61_largura;
         $cldb_paragrafo->db02_tipo        = @$db61_tipo;
-				$cldb_paragrafo->db02_descr       = substr($db61_descr,0,40);
+				$cldb_paragrafo->db02_descr       = substr((string) $db61_descr,0,40);
         $cldb_paragrafo->db02_instit      = db_getsession("DB_instit");
 				$cldb_paragrafo->incluir(null);
 				$codparag = $cldb_paragrafo->db02_idparag;

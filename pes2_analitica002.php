@@ -42,7 +42,7 @@ $clgerasql = new cl_gera_sql_folha;
 $clselecao = new cl_selecao;
 $clrhcadregime = new cl_rhcadregime;
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clgerasql->inner_rub = false;
 $clgerasql->usar_ger = true;
@@ -71,7 +71,7 @@ $head8 = "";
 //$whereRESC = " rh05_seqpes is null and (r45_regist is null or  r45_regist is not null and (r45_dtreto is null or r45_dtreto > '".$ano."-".$mes."-01'))";
 $whereRESC = " rh05_seqpes is null ";
 $andwhere = " and  ";
-$aWhere   = array();
+$aWhere   = [];
 $aWhere[] = " rh05_seqpes is null ";
 
 
@@ -290,7 +290,7 @@ if ($reg != 0) {
   }
 }
 
-if (trim($sel) != "") {
+if (trim((string) $sel) != "") {
 
   $result_selecao = $clselecao->sql_record($clselecao->sql_query_file($sel,db_getsession("DB_instit")," r44_descr, r44_where "));
   if ($clselecao->numrows > 0) {
@@ -309,8 +309,8 @@ if (isset($previdencia) && $previdencia != 0 ) {
       $aWhere[] = " rh02_tbprev = ".$previdencia;
 
       $oINSSIRF = new cl_inssirf();
-      $rsPrevidencia = $oINSSIRF->sql_record($oINSSIRF->sql_query(null, null, r33_nome, null, "r33_anousu = {$ano} and r33_mesusu = {$mes} and r33_codtab = {$previdencia} + 2 "));
-      $head9 = "PREVIDÊNCIA : ".strtoupper(\db_utils::fieldsMemory($rsPrevidencia, 0)->r33_nome);
+      $rsPrevidencia = $oINSSIRF->sql_record($oINSSIRF->sql_query(null, null, \R33_NOME, null, "r33_anousu = {$ano} and r33_mesusu = {$mes} and r33_codtab = {$previdencia} + 2 "));
+      $head9 = "PREVIDÊNCIA : ".strtoupper((string) \db_utils::fieldsMemory($rsPrevidencia, 0)->r33_nome);
 
   } else {
       $aWhere[] = " rh02_tbprev = 0 " ;
@@ -418,7 +418,7 @@ if ($afastado == 'n') {
 $sql_dados1 .= " order by {$orderBY}";
 
 $result_dados = db_query($sql_dados1);
-$numrows_dados = pg_numrows($result_dados);
+$numrows_dados = pg_num_rows($result_dados);
 
 if($numrows_dados == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos no período de '.$mes.' / '.$ano);
@@ -430,62 +430,62 @@ $antigoregistro = "";
 
 // Arrays de auxílio
 // Contador de proventos e descontos por REGISTRO
-$arr_contadorregD = Array();
-$arr_contadorregP = Array();
+$arr_contadorregD = [];
+$arr_contadorregP = [];
 
 // Arrays com os dados dos funcionários
-$arr_indexfuncion = Array(); // Verificar se o Registro já passou pelo FOR
-$arr_funcionarios = Array(); // Registro do funcionário
-$arr_nomesfuncion = Array(); // Nome do funcionário
-$arr_horasfuncion = Array(); // Horas mês do funcionário
-$arr_lotacfuncion = Array(); // Lotação do funcionário
-$arr_descrfuncion = Array(); // Função do funcionário
-$arr_nascifuncion = Array(); // Data de nascimento do funcionário
-$arr_situafuncion = Array(); // Situação do funcionário (Ativo ou Inativo)
-$arr_admisfuncion = Array(); // Data de admissão do funcionário
-$arr_afastfuncion = Array(); // Situação do funcionário (se afastado)
-$arr_dpadrfuncion = Array(); // Descrição do padrão do funcionário
+$arr_indexfuncion = []; // Verificar se o Registro já passou pelo FOR
+$arr_funcionarios = []; // Registro do funcionário
+$arr_nomesfuncion = []; // Nome do funcionário
+$arr_horasfuncion = []; // Horas mês do funcionário
+$arr_lotacfuncion = []; // Lotação do funcionário
+$arr_descrfuncion = []; // Função do funcionário
+$arr_nascifuncion = []; // Data de nascimento do funcionário
+$arr_situafuncion = []; // Situação do funcionário (Ativo ou Inativo)
+$arr_admisfuncion = []; // Data de admissão do funcionário
+$arr_afastfuncion = []; // Situação do funcionário (se afastado)
+$arr_dpadrfuncion = []; // Descrição do padrão do funcionário
 
 // Arrays com as quebras de página
-$arr_quebras_codigo = Array(); // Código da lotação, do local de trabalho ou do órgão
-$arr_quebras_descri = Array(); // Descrição da lotação, do local de trabalho ou do órgão
-$arr_quebras_estrut = Array(); // Estrutural da lotação, do local de trabalho ou do órgão
+$arr_quebras_codigo = []; // Código da lotação, do local de trabalho ou do órgão
+$arr_quebras_descri = []; // Descrição da lotação, do local de trabalho ou do órgão
+$arr_quebras_estrut = []; // Estrutural da lotação, do local de trabalho ou do órgão
 
-$arr_clas1  = Array(); // Data de admissão do funcionário
-$arr_cargo  = Array(); // Data de admissão do funcionário
-$arr_padrao = Array(); // Data de admissão do funcionário
+$arr_clas1  = []; // Data de admissão do funcionário
+$arr_cargo  = []; // Data de admissão do funcionário
+$arr_padrao = []; // Data de admissão do funcionário
 
 // Arrays com as rubricas, quantidades e valores pertencentes a um funcionário
 // -- PROVENTOS
-$arr_rubricascodP = Array(); // Código da rubrica de desconto
-$arr_rubricasdesP = Array(); // Descrição da rubrica de desconto
-$arr_rubricasqtdP = Array(); // Quantidade da rubrica de desconto
-$arr_rubricasvlrP = Array(); // Valor da rubrica de desconto
+$arr_rubricascodP = []; // Código da rubrica de desconto
+$arr_rubricasdesP = []; // Descrição da rubrica de desconto
+$arr_rubricasqtdP = []; // Quantidade da rubrica de desconto
+$arr_rubricasvlrP = []; // Valor da rubrica de desconto
 
 // -- DESCONTOS
-$arr_rubricascodD = Array(); // Código da rubrica de desconto
-$arr_rubricasdesD = Array(); // Descrição da rubrica de desconto
-$arr_rubricasqtdD = Array(); // Quantidade da rubrica de desconto
-$arr_rubricasvlrD = Array(); // Valor da rubrica de desconto
+$arr_rubricascodD = []; // Código da rubrica de desconto
+$arr_rubricasdesD = []; // Descrição da rubrica de desconto
+$arr_rubricasqtdD = []; // Quantidade da rubrica de desconto
+$arr_rubricasvlrD = []; // Valor da rubrica de desconto
 
 // Arrays com as bases dos funcionários
-$arr_salabase = Array(); // Salário base
-$arr_baseFGTS = Array(); // Base FGTS
-$arr_bmesFGTS = Array(); // FGTS Mês
-$arr_baliqIRF = Array(); // Líquido do IRF
-$arr_depenIRF = Array(); // Depend IRF
-$arr_bdeducao = Array(); // Deduções
-$arr_baseINSS = Array(); // Base INSS
-$arr_baseBACL = Array(); // B AC L
-$arr_basePRE1 = Array(); // Previdência INSS
-$arr_baseOUTR = Array(); // B OUTR
-$arr_basePRE2 = Array(); // Previdência B OUTR
-$arr_bINSSPat = Array(); // Base INSS Patronal
-$arr_bOUTRPat = Array(); // B OUTR Patronal
+$arr_salabase = []; // Salário base
+$arr_baseFGTS = []; // Base FGTS
+$arr_bmesFGTS = []; // FGTS Mês
+$arr_baliqIRF = []; // Líquido do IRF
+$arr_depenIRF = []; // Depend IRF
+$arr_bdeducao = []; // Deduções
+$arr_baseINSS = []; // Base INSS
+$arr_baseBACL = []; // B AC L
+$arr_basePRE1 = []; // Previdência INSS
+$arr_baseOUTR = []; // B OUTR
+$arr_basePRE2 = []; // Previdência B OUTR
+$arr_bINSSPat = []; // Base INSS Patronal
+$arr_bOUTRPat = []; // B OUTR Patronal
 
-$arr_SintPrev = Array(); // Array para valores da previdência na folha sintética
-$arr_SintIrrf = Array(); // Array para valores do IRRF na folha sintética
-$arr_SintSalF = Array(); // Array para valores do Salário família na folha sintética
+$arr_SintPrev = []; // Array para valores da previdência na folha sintética
+$arr_SintIrrf = []; // Array para valores do IRRF na folha sintética
+$arr_SintSalF = []; // Array para valores do Salário família na folha sintética
 
 // Quantidade de funcionários e índex, para no segundo FOR, buscar nos Arrays
 $index = 0;
@@ -495,7 +495,7 @@ $virgP = "";
 $virgD = "";
 
 // Esse FOR passará os valores para os Arrays
-for($x = 0;$x < pg_numrows($result_dados);$x++){
+for($x = 0;$x < pg_num_rows($result_dados);$x++){
   db_fieldsmemory($result_dados,$x);
   // Testa se registro já passou pelo for e se não tiver passado, setará os valores em seu respectivos ARRAYS
   if(!isset($arr_indexfuncion[$rh01_regist])){
@@ -888,7 +888,7 @@ if($ansin == "a"){
   $troca = 1;
 }
 
-$arrCamposImprime = Array(
+$arrCamposImprime = [
                          "registro",
                          "nomeregi",
                          "horasmes",
@@ -904,7 +904,7 @@ $arrCamposImprime = Array(
                          "descpadr",
                          "f010rec",
                          "afastame"
-                         );
+                         ];
 
 // Inicia da geracao do relatorio
 

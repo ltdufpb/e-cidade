@@ -76,8 +76,8 @@ $clconlancamnota  = new cl_conlancamnota;
 include(modification("libs/db_libcontabilidade.php"));
 $cltranslan       = new cl_translan;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
   $db_opcao = 22;
   $db_botao = false;
@@ -117,7 +117,7 @@ if(isset($confirmar)){
 
     //db_criatabela($result_erro);exit;
 
-    $erro_msg = pg_result($result_erro,0,0);
+    $erro_msg = pg_fetch_result($result_erro,0,0);
 
     if(substr($erro_msg,0,2) > 0 ){
 
@@ -144,14 +144,14 @@ if(isset($confirmar)){
   }
   if($sqlerro==false){
     //array que irá armazenar os valores de cada elemento para fazer os lancamentos contabeis
-    $arr_codeleval = array();
+    $arr_codeleval = [];
 
     //$arr_dados é um array com todos os elementos
-    $arr_dados = split("#",$dados);
+    $arr_dados = preg_split("#\\##m",$dados);
 
     $tam = count($arr_dados);
     for($i=0; $i<$tam; $i++){
-       $arr_ele = split("-",$arr_dados[$i]);
+       $arr_ele = preg_split("#\\-#m",(string) $arr_dados[$i]);
        $elemento = $arr_ele[0];
        $valor    = $arr_ele[1];
 
@@ -189,7 +189,7 @@ if(isset($confirmar)){
 
   //rotina pega as notas marcadas para atualizar os valores liquidados da notas
    if($sqlerro==false && isset($chaves) && $chaves!=''){
-      $arr_notas = split("#",$chaves);
+      $arr_notas = preg_split("#\\##m",$chaves);
       $tam = count($arr_notas);
       for($i=0; $i<$tam; $i++){
 	  $nota = $arr_notas[$i];
@@ -239,9 +239,9 @@ if(isset($confirmar)){
     /*final*/
 
 	   /*inicio-conlancamval*/
-	      $arr_tipos = array(  "0"=>"33",
+	      $arr_tipos = [  "0"=>"33",
 				   "1"=>"34"
-				 );
+				 ];
 
        //dados comuns
        $anousu  = db_getsession("DB_anousu");
@@ -287,7 +287,7 @@ if(isset($confirmar)){
 	      /*conlancamnota*/
 
 	      if($sqlerro==false && isset($chaves) && $chaves!=''){
-                 $arr_notas = split("#",$chaves);
+                 $arr_notas = preg_split("#\\##m",$chaves);
                  $tam = count($arr_notas);
                  for($inota=0; $inota<$tam; $inota++){
                    $clconlancamnota->c66_codnota = $arr_notas[$inota];
@@ -345,10 +345,10 @@ if(isset($confirmar)){
                         $c71_coddoc = '34';
                         $cltranslan->db_trans_estorna_liquida_resto($e60_codcom,$e64_codele,$e60_anousu,$e60_numemp);
 		  }else{
-		       if(substr($o56_elemento,0,2) == $arr_tipos[0]){
+		       if(substr((string) $o56_elemento,0,2) == $arr_tipos[0]){
                            $c71_coddoc = '4';
                            $cltranslan->db_trans_estorna_liquida($e60_codcom,$e64_codele,$e60_anousu);
-		       }else if(substr($o56_elemento,0,2) == $arr_tipos[1]){
+		       }else if(substr((string) $o56_elemento,0,2) == $arr_tipos[1]){
                            $c71_coddoc = '24';
                            $cltranslan->db_trans_estorna_liquida_capital($e60_codcom,$e64_codele,$e60_anousu);
 		       }
@@ -375,9 +375,9 @@ if(isset($confirmar)){
 
 			$result85 = db_query("select fc_lancam_dotacao($e60_coddot,'$datausu',$c71_coddoc,'$valor_liquidar') as dotacao");
 			db_fieldsmemory($result85,0);
-			if(substr($dotacao,0,1)==0){ //quando o primeiro caractere for igual a zero eh porque deu erro
+			if(substr((string) $dotacao,0,1)==0){ //quando o primeiro caractere for igual a zero eh porque deu erro
 			  $sqlerro = true;
-			  $erro_msg = "Erro na atualização do orçamento \\n ".substr($dotacao,1);
+			  $erro_msg = "Erro na atualização do orçamento \\n ".substr((string) $dotacao,1);
 			}
 		      }
 		  /*fim-orcdotacaoval*/

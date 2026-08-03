@@ -49,13 +49,13 @@ class AtributoExameUnidade {
     if (!empty($iCodigo)) {
 
       $oDaoUnidadeMedida = new cl_lab_undmedida();
-      $oDadosUnidade     = db_utils::getRowFromDao($oDaoUnidadeMedida, array($iCodigo));
+      $oDadosUnidade     = db_utils::getRowFromDao($oDaoUnidadeMedida, [$iCodigo]);
       if (empty($oDadosUnidade)) {
         throw new BusinessException ("Unidade de medida nao cadastrada no sistema");
       }
 
       $this->setCodigo($oDadosUnidade->la13_i_codigo);
-      $this->setNome(trim($oDadosUnidade->la13_c_descr));
+      $this->setNome(trim((string) $oDadosUnidade->la13_c_descr));
     }
   }
 

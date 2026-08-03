@@ -11,6 +11,7 @@ class SessaoProcessamentoRequest extends BaseFormRequest
      *
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -49,12 +50,13 @@ class SessaoProcessamentoRequest extends BaseFormRequest
         ], 406);
     }
 
+    #[\Override]
     public function messages()
     {
         return [
-            'ids.required' => utf8_encode('É necessário informar as Sessões a serem processadas.'),
-            'ids.array' => utf8_encode('É necessário informar as Sessões a serem processadas.'),
-            'ids.*.integer' => utf8_encode('Código da sessão informada é inválido.'),
+            'ids.required' => mb_convert_encoding('É necessário informar as Sessões a serem processadas.', 'UTF-8', 'ISO-8859-1'),
+            'ids.array' => mb_convert_encoding('É necessário informar as Sessões a serem processadas.', 'UTF-8', 'ISO-8859-1'),
+            'ids.*.integer' => mb_convert_encoding('Código da sessão informada é inválido.', 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

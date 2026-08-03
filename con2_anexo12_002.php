@@ -35,25 +35,25 @@ include(modification("classes/db_orcparamrel_classe.php"));
 include(modification("classes/db_empresto_classe.php"));
 include(modification("classes/db_empempenho_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $classinatura = new cl_assinatura;
 $clempresto  = new cl_empresto;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $consolidado = false;
 $flag_abrev  = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
     if ($xvirg==','){
       $consolidado = true;
     }  
 
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     } else {
@@ -92,9 +92,9 @@ $somatorio_despesa_original = 0;
 $saldo_interferencia_passiva=0;
 $where = " c61_instit in (".str_replace('-',', ',$db_selinstit).")  ";
 $result_balancete = db_planocontassaldo_matriz(db_getsession("DB_anousu"),$dataini,$datafin,false,$where);
-for($i=0;$i<pg_numrows($result_balancete);$i++){
+for($i=0;$i<pg_num_rows($result_balancete);$i++){
    db_fieldsmemory($result_balancete,$i);
-   if (substr($estrutural,0,7)=='5120000'){
+   if (str_starts_with((string) $estrutural, '5120000')){
        $saldo_interferencia_passiva += $saldo_final;
    }   
 } 
@@ -145,68 +145,68 @@ $receita_outras_intra_orcamentarias[2] = 0;
 //db_criatabela($result_rec); exit;
 
 //
-for ($i=0;$i<pg_numrows($result_rec);$i++){
+for ($i=0;$i<pg_num_rows($result_rec);$i++){
     db_fieldsmemory($result_rec,$i);   
     $controle=false;
     // receitas correntes
-    if (substr($o57_fonte,0,3)=='411'){
+    if (str_starts_with((string) $o57_fonte, '411')){
        $receita_tributaria[0]+= $saldo_inicial;
        $receita_tributaria[1]+= $saldo_arrecadado_acumulado;
        $controle=true;
     }  
-    if (substr($o57_fonte,0,3)=='412'){      
+    if (str_starts_with((string) $o57_fonte, '412')){      
        $receita_contribuicoes[0]+= $saldo_inicial;   
        $receita_contribuicoes[1]+= $saldo_arrecadado_acumulado;   
        $controle=true;
     }  
-    if (substr($o57_fonte,0,3)=='413'){
+    if (str_starts_with((string) $o57_fonte, '413')){
        $receita_patrimonial[0]+= $saldo_inicial;
        $receita_patrimonial[1]+= $saldo_arrecadado_acumulado;
        $controle=true;
     }  
-    if (substr($o57_fonte,0,3)=='414'){
+    if (str_starts_with((string) $o57_fonte, '414')){
        $receita_agropecuaria[0]+= $saldo_inicial;
        $receita_agropecuaria[1]+= $saldo_arrecadado_acumulado;
        $controle=true;
     }   
-    if (substr($o57_fonte,0,3)=='416'){
+    if (str_starts_with((string) $o57_fonte, '416')){
        $receita_servicos[0]+= $saldo_inicial;
        $receita_servicos[1]+= $saldo_arrecadado_acumulado;
        $controle=true;
     }  
-    if (substr($o57_fonte,0,3)=='417'){
+    if (str_starts_with((string) $o57_fonte, '417')){
        $transf_correntes[0]+= $saldo_inicial;
        $transf_correntes[1]+= $saldo_arrecadado_acumulado;
        $controle=true;
     }  
-    if (substr($o57_fonte,0,2)=='41' && $controle==false ){
+    if (str_starts_with((string) $o57_fonte, '41') && $controle==false ){
        // se não entrou em outras receitas, sendo rec. corrente
        $outras_receitas_correntes[0]+= $saldo_inicial;
        $outras_receitas_correntes[1]+= $saldo_arrecadado_acumulado;
        $controle=true;
     }     
     // receitas de capital
-    if (substr($o57_fonte,0,3)=='421'){
+    if (str_starts_with((string) $o57_fonte, '421')){
        $operacoes_credito[0]+= $saldo_inicial;
        $operacoes_credito[1]+= $saldo_arrecadado_acumulado;
        $controle=true;
     }  
-    if (substr($o57_fonte,0,3)=='422'){
+    if (str_starts_with((string) $o57_fonte, '422')){
        $alienacao_bens[0]+= $saldo_inicial;
        $alienacao_bens[1]+= $saldo_arrecadado_acumulado;
        $controle=true;
     }  
-    if (substr($o57_fonte,0,3)=='423'){
+    if (str_starts_with((string) $o57_fonte, '423')){
        $amortizacao_emprestimos[0]+= $saldo_inicial;
        $amortizacao_emprestimos[1]+= $saldo_arrecadado_acumulado;
        $controle=true;
     }  
-    if (substr($o57_fonte,0,3)=='424'){
+    if (str_starts_with((string) $o57_fonte, '424')){
        $transf_capital[0]+= $saldo_inicial;
        $transf_capital[1]+= $saldo_arrecadado_acumulado;
        $controle=true;
     }  
-    if (substr($o57_fonte,0,2)=='42' && $controle==false){
+    if (str_starts_with((string) $o57_fonte, '42') && $controle==false){
        $outras_receitas_capital[0]+= $saldo_inicial;
        $outras_receitas_capital[1]+= $saldo_arrecadado_acumulado;
     }     
@@ -214,13 +214,13 @@ for ($i=0;$i<pg_numrows($result_rec);$i++){
     // deduções
     $flag_ok = false;
     if ($anousu > 2007) {
-      $estrut = substr($o57_fonte,0,4)."00000000000";
+      $estrut = substr((string) $o57_fonte,0,4)."00000000000";
       if (db_conplano_grupo($anousu,$estrut,9001)==true &&
           $estrut == $o57_fonte){
         $flag_ok = true;
       }
     } else {
-      $estrut = substr($o57_fonte,0,2)."0000000000000";
+      $estrut = substr((string) $o57_fonte,0,2)."0000000000000";
       if (db_conplano_grupo($anousu,$estrut,9001)==true){
         $flag_ok = true;
       }
@@ -228,11 +228,11 @@ for ($i=0;$i<pg_numrows($result_rec);$i++){
 
     $descr_receita = "DEDUÇÕES DA RECEITA CORRENTE";
     if ($flag_ok == true){   // 49 e 9172
-      $estrut     = substr($o57_fonte,0,2)."0000000000000"; 
+      $estrut     = substr((string) $o57_fonte,0,2)."0000000000000"; 
       $sql_estrut = "select o57_descr from orcfontes where o57_fonte = '$estrut' limit 1";
       $result_estrut = @db_query($sql_estrut);
-      if (@pg_numrows($result_estrut) > 0){
-        $descr_receita = pg_result($result_estrut,0,"o57_descr");
+      if (@pg_num_rows($result_estrut) > 0){
+        $descr_receita = pg_fetch_result($result_estrut,0,"o57_descr");
       }
 
       $deducao[0] += $saldo_inicial;
@@ -269,14 +269,14 @@ $m_creditos_extra       [1]= 0;
 
 $reserva_contingencia = 0;
 //db_criatabela($result_desp);exit;
-for ($i=0;$i<pg_numrows($result_desp);$i++){
+for ($i=0;$i<pg_num_rows($result_desp);$i++){
     db_fieldsmemory($result_desp,$i);   
 
     if ($o58_coddot > 0) {
 
 //    echo("$i - elemento: $o58_elemento - dotini: " . $dot_ini . " - creditos_especial_1: " . $m_creditos_especial[1] . " - emp: " . $empenhado_acumulado . " - anu: " . $anulado_acumulado . "<br>");
 
-    if (substr($o58_elemento,0,2)=='39' ){
+    if (str_starts_with((string) $o58_elemento, '39') ){
        $reserva_contingencia += $dot_ini;             
     } else {  
        $m_creditos_orcamentario[0] += $dot_ini+$suplementado_acumulado-$reduzido_acumulado - ($especial_acumulado);

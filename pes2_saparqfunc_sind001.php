@@ -233,7 +233,7 @@ where socio+sind > 0
   }
   
   $result = db_query($sql);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  for($x = 0;$x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
   fputs($arquivo,$tipo."\r\n");
   }
@@ -290,7 +290,7 @@ where socio+sind > 0
         <td align="right"><b>Tipo de Arquivo :&nbsp;&nbsp;<b></td>
 	<td align="left">
 	<?php 
-	  $arr = array('D'=>'Desconto','S'=>'Socios','F'=>'Funcionrios');
+	  $arr = ['D'=>'Desconto','S'=>'Socios','F'=>'Funcionrios'];
 	  db_select("func",$arr,true,1);
 	?>
         </td>

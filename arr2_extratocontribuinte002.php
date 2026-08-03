@@ -53,7 +53,7 @@ use ECidade\File\Excel;
 
 use ECidade\Library\SpreadSheet\Template\Parser;
 
-parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
+parse_str((string) $_SERVER ['QUERY_STRING'], $result);
 db_postmemory($_GET);
 
 $clrotulo = new rotulocampo;
@@ -1347,41 +1347,16 @@ FROM (
 ";
 
 // SQLs por situação de debito
-switch ($selectSituacaoDebito) {
-    case 'pendente':
-        $sql = $sqlPendente;
-        break;
-
-    case 'pago':
-        $sql = $sqlPago;
-        break;
-
-    case 'cancelado':
-        $sql = $sqlCancelado;
-        break;
-
-    case 'prescrito':
-        $sql = $sqlPrescrito;
-        break;
-
-    case 'suspenso':
-        $sql = $sqlSuspenso;
-        break;
-
-    case 'inscrito em cob adm':
-        $sql = $sqlInscritoCobAdm;
-        break;
-
-    case 'inscrito em divida':
-        $sql = $sqlInscritoDivida;
-        break; 
-
-    case 'parcelado':
-        $sql = $sqlParcelado;
-        break;
-
-    default:
-        $sql = "{$sqlPendente}
+$sql = match ($selectSituacaoDebito) {
+    'pendente' => $sqlPendente,
+    'pago' => $sqlPago,
+    'cancelado' => $sqlCancelado,
+    'prescrito' => $sqlPrescrito,
+    'suspenso' => $sqlSuspenso,
+    'inscrito em cob adm' => $sqlInscritoCobAdm,
+    'inscrito em divida' => $sqlInscritoDivida,
+    'parcelado' => $sqlParcelado,
+    default => "{$sqlPendente}
         UNION ALL {$sqlPago}
         UNION ALL {$sqlCancelado}
         UNION ALL {$sqlPrescrito}
@@ -1389,9 +1364,8 @@ switch ($selectSituacaoDebito) {
         UNION ALL {$sqlInscritoCobAdm}
         UNION ALL {$sqlInscritoDivida}
         UNION ALL {$sqlParcelado}
-        ";
-        break;
-}
+        ",
+};
 
 if (empty($matric)) {
     $matric = 0;
@@ -1502,18 +1476,18 @@ if ($tipoArquivo == "2") {
         $aDadosAux[] = $oDados->numpre;
         $aDadosAux[] = $oDados->numpar;
         $aDadosAux[] = $oDados->numtot;
-        $aDadosAux[] = date('Y', strtotime($oDados->data_operacao));
-        $aDadosAux[] = substr($oDados->descricao,0,28);
-        $aDadosAux[] = date('d/m/Y', strtotime($oDados->data_vencimento));
+        $aDadosAux[] = date('Y', strtotime((string) $oDados->data_operacao));
+        $aDadosAux[] = substr((string) $oDados->descricao,0,28);
+        $aDadosAux[] = date('d/m/Y', strtotime((string) $oDados->data_vencimento));
         $aDadosAux[] = $oDados->valor;
         $aDadosAux[] = $oDados->corrigido;
         $aDadosAux[] = $oDados->juros;
         $aDadosAux[] = $oDados->multa;
         $aDadosAux[] = $oDados->desconto;
         $aDadosAux[] = $oDados->total;
-        $aDadosAux[] = strtoupper($oDados->situacao);
+        $aDadosAux[] = strtoupper((string) $oDados->situacao);
         $aDadosAux[] = $oDados->processo;
-        $aDadosAux[] = empty($oDados->data_movimento) ? "-" : date('d/m/Y', strtotime($oDados->data_movimento));
+        $aDadosAux[] = empty($oDados->data_movimento) ? "-" : date('d/m/Y', strtotime((string) $oDados->data_movimento));
 
         return $aDadosAux;
     });
@@ -1534,16 +1508,16 @@ if ($tipoArquivo == "2") {
             logo
         from db_config where codigo = ".db_getsession("DB_instit")
     );
-    $url = @pg_result($dados,0,"url");
-    $sComplento = substr(trim(pg_result($dados,0,"db21_compl") ),0,20 );
+    $url = @pg_fetch_result($dados,0,"url");
+    $sComplento = substr(trim(pg_fetch_result($dados,0,"db21_compl") ),0,20 );
     if ($sComplento != '' || $sComplento != null ) {
-    	$sComplento = ", ".substr(trim(pg_result($dados,0,"db21_compl") ),0,20 );
+    	$sComplento = ", ".substr(trim(pg_fetch_result($dados,0,"db21_compl") ),0,20 );
     }
 
     // Monta cabeçalho do relatório
     $header1 = "Extrato do Contribuinte";
-    $header2 = "Situação do Débito - ".strtoupper($selectSituacaoDebito);
-    $header3 = "Filtro de Busca - ".strtoupper($selectFiltroBusca);
+    $header2 = "Situação do Débito - ".strtoupper((string) $selectSituacaoDebito);
+    $header3 = "Filtro de Busca - ".strtoupper((string) $selectFiltroBusca);
 
     if ($selectFiltroBusca == "cgm") {
         $header4 = "CGM: ".$numcgm;
@@ -1561,26 +1535,26 @@ if ($tipoArquivo == "2") {
 
     // Cria XLS
     $parser = new Parser();
-    $parser->addImage("imagens/files/".pg_result($dados,0,"logo"), "A1", [
+    $parser->addImage("imagens/files/".pg_fetch_result($dados,0,"logo"), "A1", [
         'width'=>75,
         'offsetx'=>04,
         'offsetY'=>10
     ]);
 
     // Células de cabeçalho instituição
-    $parser->addCell('B1',utf8_encode(pg_result($dados,0,"nomeinst")));
-    $parser->addCell('B2',trim(utf8_encode(pg_result($dados,0,"rua"))).", ".trim((pg_result($dados,0,"numero"))).$sComplento );
-    $parser->addCell('B3',trim(utf8_encode(pg_result($dados,0,"munic")))." - ".pg_result($dados,0,"uf"));
-    $parser->addCell('B4',trim(pg_result($dados,0,"telef"))."   -    CNPJ : ".db_formatar(pg_result($dados,0,"cgc"),"cnpj"));
-    $parser->addCell('B5',trim(pg_result($dados,0,"email")));
+    $parser->addCell('B1',mb_convert_encoding(pg_fetch_result($dados,0,"nomeinst"), 'UTF-8', 'ISO-8859-1'));
+    $parser->addCell('B2',trim(mb_convert_encoding(pg_fetch_result($dados,0,"rua"), 'UTF-8', 'ISO-8859-1')).", ".trim((pg_fetch_result($dados,0,"numero"))).$sComplento );
+    $parser->addCell('B3',trim(mb_convert_encoding(pg_fetch_result($dados,0,"munic"), 'UTF-8', 'ISO-8859-1'))." - ".pg_fetch_result($dados,0,"uf"));
+    $parser->addCell('B4',trim(pg_fetch_result($dados,0,"telef"))."   -    CNPJ : ".db_formatar(pg_fetch_result($dados,0,"cgc"),"cnpj"));
+    $parser->addCell('B5',trim(pg_fetch_result($dados,0,"email")));
     $parser->addCell('B6',$url);
 
     // Células de cabeçalho relatório
     $parser->addCell('K1',$header1);
-    $parser->addCell('K2',utf8_encode($header2));
+    $parser->addCell('K2',mb_convert_encoding($header2, 'UTF-8', 'ISO-8859-1'));
     $parser->addCell('K3',$header3);
-    $parser->addCell('K4',utf8_encode($header4));
-    $parser->addCell('K5',utf8_encode($header5));
+    $parser->addCell('K4',mb_convert_encoding($header4, 'UTF-8', 'ISO-8859-1'));
+    $parser->addCell('K5',mb_convert_encoding($header5, 'UTF-8', 'ISO-8859-1'));
 
     // Células de título das colunas dos dados
     $parser->addCell('A8','NUMPRE');
@@ -1706,8 +1680,8 @@ $oPdf->SetAutoPageBreak(false);
 $oPdf->SetFillColor(235);
 
 $head2 = "Extrato do Contribuinte";
-$head4 = "Situação do Débito - ".strtoupper($selectSituacaoDebito);
-$head5 = "Filtro de Busca - ".strtoupper($selectFiltroBusca);
+$head4 = "Situação do Débito - ".strtoupper((string) $selectSituacaoDebito);
+$head5 = "Filtro de Busca - ".strtoupper((string) $selectFiltroBusca);
 
 if ($selectFiltroBusca == "cgm") {
     $head6 = "CGM: ".$numcgm;
@@ -1785,7 +1759,7 @@ foreach (array_unique($arrayDescricaoSituacaoDebito) as $descricao) {
     }
 
     // Imprime totalizador no rodapé do PDF
-    $descricao = strtoupper($descricao);
+    $descricao = strtoupper((string) $descricao);
     $oPdf->SetFont('Arial', 'B', 8);
     $oPdf->Cell(279, 5, "TOTAL $descricao: ".db_formatar($totalSituacaoDebito, "f"), 1, 0, "C", 0);
     $oPdf->Line(10, $oPdf->getY(), 289, $oPdf->getY());
@@ -1798,7 +1772,7 @@ $oPdf->Output();
 function fc_dadosContribuinte(FPDF $oPdf, $contribuinte)
 {
     $oPdf->SetFont('Arial', 'B', 8);
-    $oPdf->Cell(strlen(LABEL_CGM)+10, 5, trim(LABEL_CGM).": ", 0, 0, "L", 0);
+    $oPdf->Cell(strlen((string) LABEL_CGM)+10, 5, trim((string) LABEL_CGM).": ", 0, 0, "L", 0);
     $oPdf->SetFont('Arial', '', 8);
     $oPdf->Cell(160, 5, "$contribuinte->numcgm - $contribuinte->nome", 0, 0, "L", 0);
     $oPdf->SetFont('Arial', 'B', 8);
@@ -1823,9 +1797,9 @@ function fc_dadosContribuinte(FPDF $oPdf, $contribuinte)
     switch (TIPO_BUSCA) {
         case 'matric':
             $oPdf->SetFont('Arial', 'B', 8);
-            $oPdf->Cell(strlen(LABEL_MATRIC)+10, 5, trim(LABEL_MATRIC).": ", 0, 0, "L", 0);
+            $oPdf->Cell(strlen((string) LABEL_MATRIC)+10, 5, trim((string) LABEL_MATRIC).": ", 0, 0, "L", 0);
             $oPdf->SetFont('Arial', '', 8);
-            $oPdf->Cell(strlen(LABEL_MATRIC)+10, 5, "$contribuinte->matric", 0, 0, "L", 0);
+            $oPdf->Cell(strlen((string) LABEL_MATRIC)+10, 5, "$contribuinte->matric", 0, 0, "L", 0);
 
             $oPdf->SetFont('Arial', 'B', 8);
             $oPdf->Cell(28, 5, "Setor/Quadra/Lote : ", 0, 0, "L", 0);
@@ -1833,9 +1807,9 @@ function fc_dadosContribuinte(FPDF $oPdf, $contribuinte)
             $oPdf->Cell(30, 5, "$contribuinte->setor_quadra_lote", 0, 0, "L", 0);
 
             $oPdf->SetFont('Arial', 'B', 8);
-            $oPdf->Cell(strlen(LABEL_IPTUBASE_REFANT)+8, 5, trim(LABEL_IPTUBASE_REFANT).": ", 0, 0, "L", 0);
+            $oPdf->Cell(strlen((string) LABEL_IPTUBASE_REFANT)+8, 5, trim((string) LABEL_IPTUBASE_REFANT).": ", 0, 0, "L", 0);
             $oPdf->SetFont('Arial', '', 8);
-            $oPdf->Cell(strlen(LABEL_IPTUBASE_REFANT)+8, 5, "$contribuinte->refant", 0, 1, "L", 0);
+            $oPdf->Cell(strlen((string) LABEL_IPTUBASE_REFANT)+8, 5, "$contribuinte->refant", 0, 1, "L", 0);
 
             $oPdf->SetFont('Arial', 'B', 8);
             $oPdf->Cell(20, 5, "Logradouro:  ", 0, 0, "L", 0);
@@ -1846,13 +1820,13 @@ function fc_dadosContribuinte(FPDF $oPdf, $contribuinte)
             break;
         case 'inscr':
             $oPdf->SetFont('Arial', 'B', 8);
-            $oPdf->Cell(strlen(LABEL_INSCR)+10, 5, trim(LABEL_INSCR).": ", 0, 0, "L", 0);
+            $oPdf->Cell(strlen((string) LABEL_INSCR)+10, 5, trim((string) LABEL_INSCR).": ", 0, 0, "L", 0);
             $oPdf->SetFont('Arial', '', 8);
-            $oPdf->Cell(strlen(LABEL_INSCR)+10, 5, "$contribuinte->inscr", 0, 0, "L", 0);
+            $oPdf->Cell(strlen((string) LABEL_INSCR)+10, 5, "$contribuinte->inscr", 0, 0, "L", 0);
             $oPdf->SetFont('Arial', 'B', 8);
-            $oPdf->Cell(strlen(LABEL_ISSBASE_REFANT)+8, 5, trim(LABEL_ISSBASE_REFANT).": ", 0, 0, "L", 0);
+            $oPdf->Cell(strlen((string) LABEL_ISSBASE_REFANT)+8, 5, trim((string) LABEL_ISSBASE_REFANT).": ", 0, 0, "L", 0);
             $oPdf->SetFont('Arial', '', 8);
-            $oPdf->Cell(strlen(LABEL_ISSBASE_REFANT)+8, 5, "$contribuinte->refant", 0, 1, "L", 0);
+            $oPdf->Cell(strlen((string) LABEL_ISSBASE_REFANT)+8, 5, "$contribuinte->refant", 0, 1, "L", 0);
             $oPdf->Cell($oPdf->getY(), 5, "", 0, 0, "L", 0);
             break;
             
@@ -1905,19 +1879,19 @@ function fc_imprimedadoscontribuinte($oPdf, $debito, $selectFiltroBusca) {
     $oPdf->Cell(13, 5, $debito->numpre, 1, 0, "C", 0);
     $oPdf->Cell(5, 5,  $debito->numpar, 1, 0, "C", 0);
     $oPdf->Cell(5, 5,  $debito->numtot, 1, 0, "C", 0);
-    $oPdf->Cell(6, 5, date('Y', strtotime($debito->data_operacao)), 1, 0, "C", 0);
+    $oPdf->Cell(6, 5, date('Y', strtotime((string) $debito->data_operacao)), 1, 0, "C", 0);
     $oPdf->Cell(13, 5, $debitoOrigem, 1, 0, "C", 0);
-    $oPdf->Cell(34, 5, substr($debito->descricao,0,28), 1, 0, "C", 0);
-    $oPdf->Cell(13, 5, date('d/m/Y', strtotime($debito->data_vencimento)), 1, 0, "C", 0);
+    $oPdf->Cell(34, 5, substr((string) $debito->descricao,0,28), 1, 0, "C", 0);
+    $oPdf->Cell(13, 5, date('d/m/Y', strtotime((string) $debito->data_vencimento)), 1, 0, "C", 0);
     $oPdf->Cell(20, 5, db_formatar($debito->valor, "f"), 1, 0, "C", 0);
     $oPdf->Cell(20, 5, db_formatar($debito->corrigido, "f"), 1, 0, "C", 0);
     $oPdf->Cell(20, 5, db_formatar($debito->juros, "f"), 1, 0, "C", 0);
     $oPdf->Cell(20, 5, db_formatar($debito->multa, "f"), 1, 0, "C", 0);
     $oPdf->Cell(20, 5, db_formatar($debito->desconto, "f"), 1, 0, "C", 0);
     $oPdf->Cell(20, 5, db_formatar($debito->total,"f"), 1, 0, "C", 0);
-    $oPdf->Cell(30, 5, strtoupper($debito->situacao), 1, 0, "C", 0);
+    $oPdf->Cell(30, 5, strtoupper((string) $debito->situacao), 1, 0, "C", 0);
     $oPdf->Cell(25, 5, $debito->processo, 1, 0, "C", 0);
-    $oPdf->Cell(15, 5, empty($debito->data_movimento) ? "-" : date('d/m/Y', strtotime($debito->data_movimento)), 1, 1, "C", 0);
+    $oPdf->Cell(15, 5, empty($debito->data_movimento) ? "-" : date('d/m/Y', strtotime((string) $debito->data_movimento)), 1, 1, "C", 0);
     $oPdf->SetFont('Arial', '', 6);
 }
 

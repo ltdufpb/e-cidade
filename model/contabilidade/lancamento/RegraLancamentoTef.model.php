@@ -55,7 +55,7 @@ class RegraLancamentoTef implements IRegraLancamentoContabil
             return false;
         }
 
-        if (count($oLancamentos->getRegrasLancamento()) > 1 && !in_array($iCodigoDocumento, array(39, 40))) {
+        if (count($oLancamentos->getRegrasLancamento()) > 1 && !in_array($iCodigoDocumento, [39, 40])) {
             $mensagem = "Mais de uma regra cadastrada para o documento {$iCodigoDocumento} - ";
             $mensagem .= "{$oEventoContabil->getDescricaoDocumento()} de ordem {$oLancamentos->getOrdem()}.";
             throw new Exception($mensagem);

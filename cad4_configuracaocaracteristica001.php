@@ -56,12 +56,12 @@
       <table class="form-container">
         <tr>
           <td style='width:140px'><strong>Grupo de Car. PIT:</strong></td>
-          <td><?php db_select('db139_sequencial', array(), true, 1, 'onchange="js_getCaracteristicasPitPorGrupo();"') ?></td>
+          <td><?php db_select('db139_sequencial', [], true, 1, 'onchange="js_getCaracteristicasPitPorGrupo();"') ?></td>
         </tr>
        
         <tr>
        	  <td align="left"><strong>Característica PIT:</strong></td>
-       	  <td><?php db_select('db140_sequencial', array(), true, 1, 'onchange="js_getCaracteristicasCadastro();"') ?></td>
+       	  <td><?php db_select('db140_sequencial', [], true, 1, 'onchange="js_getCaracteristicasCadastro();"') ?></td>
  	     </tr>
  	    </table>
 	

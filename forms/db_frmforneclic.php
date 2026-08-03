@@ -134,12 +134,12 @@ if(isset($db_opcaoal)){
             </td>
             <td>
               <?php
-                $aOpcoes = array(
+                $aOpcoes = [
                     '' => 'Selecione',
                     1  => "Convidado e Participante",
                     2  => "Convidado e Não Participante",
                     3  => "Não Convidado e Participante"
-                  );
+                  ];
 
                 db_select("pc31_tipocondicao", $aOpcoes, true, $db_opcao);
               ?>
@@ -203,7 +203,7 @@ if(isset($db_opcaoal)){
     <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
     <div style="margin-top: 5px">
       <?php
-        $chavepri= array("pc21_orcamforne"=>@$pc21_orcamforne,"pc21_codorc"=>@$pc21_codorc);
+        $chavepri= ["pc21_orcamforne"=>@$pc21_orcamforne,"pc21_codorc"=>@$pc21_codorc];
         $cliframe_alterar_excluir->chavepri=$chavepri;
 
         $sWhere     = "1!=1";
@@ -294,7 +294,7 @@ if(isset($db_opcaoal)){
   function js_preenchepesquisa(chave){
     db_iframe_liclicita.hide();
     <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
     ?>
   }
 

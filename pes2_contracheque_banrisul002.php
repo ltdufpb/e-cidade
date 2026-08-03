@@ -11,7 +11,7 @@ include("classes/db_rharqbanco_classe.php");
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo = new rotulocampo;
 $clrharqbanco->rotulo->label();
@@ -40,7 +40,7 @@ if(isset($emite)){
 
 
 if (isset($emite) || isset($emite)){
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
 
   $folha = $arquivo;
   $ano   = $DBtxt23;
@@ -150,13 +150,13 @@ $xtipo_folha = '';
   $imp .= db_formatar($ano,'s','0',4,'e',0 )                               ; //  4 - 6  Ano da competência do arquivo .(REFERENCIA)
   $imp .= db_formatar($mes,'s','0',2,'e',0 )                               ; //  2 - 10 Mês da competência do arquivo . (REFERENCIA)
   $imp .= '01'                                                             ; //  2 - 12 Dia da Competência do arquivo  (REFERENCIA)
-  $imp .= db_formatar(substr(trim($nomeinstabrev),0,18),'s',' ',18,'d',0 ) ; // 18 - 14 Nome do convênio , pré acordado com o departamento do banco gestor
+  $imp .= db_formatar(substr(trim((string) $nomeinstabrev),0,18),'s',' ',18,'d',0 ) ; // 18 - 14 Nome do convênio , pré acordado com o departamento do banco gestor
   $imp .= $datadeposit_ano.$datadeposit_mes.$datadeposit_dia               ; //  8 - 32 Data de gravação do arquivo . Formato: AAAAMMDD.
   $imp .= db_formatar($rh34_sequencial,'s','0',4,'e',0)                    ; //  4 - 40 Numero sequêncial  do  arquivo
-  $imp .= db_formatar(substr(trim($nomeinstabrev),0,12),'s',' ',12,'d',0)           ; // 12 - 44 Nome da empresa solicitante. 
+  $imp .= db_formatar(substr(trim((string) $nomeinstabrev),0,12),'s',' ',12,'d',0)           ; // 12 - 44 Nome da empresa solicitante. 
   $imp .= ' '                                                              ; //  1 - 56 Preencher com brancos
   $imp .= db_formatar($rh34_conta,'s','0',6,'e',0 )                        ; //  6 - 57 Código da empresa fornecido pelo Banrisul S.A.(*)
-  $imp .= db_formatar(substr($rh34_convenio,0,3),'s','0',3,'e',0 )         ; //  3 - 63 Código do convenio da empresa fornecido pelo Banrisul S.A. (*)
+  $imp .= db_formatar(substr((string) $rh34_convenio,0,3),'s','0',3,'e',0 )         ; //  3 - 63 Código do convenio da empresa fornecido pelo Banrisul S.A. (*)
   $imp .= ' '                                                              ; //  1 - 66 Brancos
   $imp .= $cod_folha                                                       ; //  2 - 67 01- contra-cheque, 02-folha complementar ,03 ¿ 13º salário ,04-abono , 05- outras folhas  e 06 - outros.
   $imp .= '  '                                                             ; //  2 - 69 Brancos
@@ -169,11 +169,11 @@ $xtipo_folha = '';
   
 //// Registro tipo 05 - Informações de Cabeçalho    (registro opcional)
   $cnpj_inst = db_formatar($cgc,'cnpj'); 
-  $texto = substr($nomeinst,0,27).$cnpj_inst   ;
+  $texto = substr((string) $nomeinst,0,27).$cnpj_inst   ;
   //1234 1234567890123456789012 999.99 999999.99  p '
 
   $imp  = '05'                                                             ; //  1 - 2  Identificador do registro detalhe. Preencher com a constante ¿05¿.
-  $imp .= db_formatar(substr(trim($nomeinstabrev),0,27).$cnpj_inst,'s',' ',48,'d',0 ) ; // 48 - 3  Nome da Instituição + CNPJ
+  $imp .= db_formatar(substr(trim((string) $nomeinstabrev),0,27).$cnpj_inst,'s',' ',48,'d',0 ) ; // 48 - 3  Nome da Instituição + CNPJ
   $imp .= str_repeat(' ',22)                                               ; // 22 - 51
   $imp .= db_formatar($sequencia,'s','0',8,'e',0)                          ; //  8 - 73 Numero sequêncial do registro
   fputs($arquivo_txt,$imp."\r\n");
@@ -182,7 +182,7 @@ $xtipo_folha = '';
 
   $total_servidores = 0;
   $registroaux = 0;
-  for($x_matricula = 0;$x_matricula < pg_numrows($result_matriculas);$x_matricula++){
+  for($x_matricula = 0;$x_matricula < pg_num_rows($result_matriculas);$x_matricula++){
     db_fieldsmemory($result_matriculas,$x_matricula);
 
     //// Registro tipo 10 - Informações do funcionário
@@ -308,7 +308,7 @@ $xtipo_folha = '';
 
   $x_matric_compara = 0;
   $prov = 0; 
-  for($x_prov = 0;$x_prov < pg_numrows($result_prov);$x_prov++){
+  for($x_prov = 0;$x_prov < pg_num_rows($result_prov);$x_prov++){
     db_fieldsmemory($result_prov,$x_prov);
 /*
     if($x_matric_compara != $registro ){
@@ -333,7 +333,7 @@ $xtipo_folha = '';
 
     $prov  += $valor;
     
-    $texto = $rubrica.' '.db_formatar(substr($descricao,0,22),'s',' ',22,'d',0).' '.db_formatar(trim(db_formatar($quantidade,'f')),'s',' ',7,'e',0).' '.db_formatar(trim(db_formatar($valor,'f')),'s',' ',11,'e',0).'+';
+    $texto = $rubrica.' '.db_formatar(substr((string) $descricao,0,22),'s',' ',22,'d',0).' '.db_formatar(trim(db_formatar($quantidade,'f')),'s',' ',7,'e',0).' '.db_formatar(trim(db_formatar($valor,'f')),'s',' ',11,'e',0).'+';
  
       /// Registro Tipo 30 ¿ Linha do documento     Proventos   (registro opcional) 
       $imp  = '30'                                              ; //  2 -  1 Identificador do registro detalhe. Preencher com a constante ¿30¿.
@@ -443,7 +443,7 @@ $xtipo_folha = '';
 
   $x_matric_compara = 0;
   $desc = 0; 
-  for($x_desc = 0;$x_desc < pg_numrows($result_desc);$x_desc++){
+  for($x_desc = 0;$x_desc < pg_num_rows($result_desc);$x_desc++){
     db_fieldsmemory($result_desc,$x_desc);
 /*
     if($x_matric_compara != $registro ){
@@ -466,7 +466,7 @@ $xtipo_folha = '';
 */
     $desc  += $valor;
     
-    $texto = $rubrica.' '.db_formatar(substr($descricao,0,22),'s',' ',22,'d',0).' '.db_formatar(trim(db_formatar($quantidade,'f')),'s',' ',7,'e',0).' '.db_formatar(trim(db_formatar($valor,'f')),'s',' ',11,'e',0).'-';
+    $texto = $rubrica.' '.db_formatar(substr((string) $descricao,0,22),'s',' ',22,'d',0).' '.db_formatar(trim(db_formatar($quantidade,'f')),'s',' ',7,'e',0).' '.db_formatar(trim(db_formatar($valor,'f')),'s',' ',11,'e',0).'-';
  
       /// Registro Tipo 30 ¿ Linha do documento     Proventos   (registro opcional) 
       $imp  = '40'                                              ; //  2 -  1 Identificador do registro detalhe. Preencher com a constante ¿30¿.
@@ -673,7 +673,7 @@ function js_emite(){
     <td><b>Arquivo:</b</td>
     <td>
      <?php 
-       $x = array("r14"=>"Salário","r48"=>"Complementar","r35"=>"13o. Salário","r22"=>"Adiantamento");
+       $x = ["r14"=>"Salário","r48"=>"Complementar","r35"=>"13o. Salário","r22"=>"Adiantamento"];
        db_select('arquivo',$x,true,4,"onchange='document.form1.submit();'");
      ?>
     </td>

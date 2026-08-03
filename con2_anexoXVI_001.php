@@ -63,25 +63,25 @@ $iCodRel    = 110;
     <center>
     <?php 
     
-      $clCriaAbas->identifica = array("relatorio"  => "Relatório",
+      $clCriaAbas->identifica = ["relatorio"  => "Relatório",
                                       "notas"      => "Fonte/Notas Explicativas",   
                                       "parametro" => "Parâmetros"
-                                      );
+                                      ];
       
-      $clCriaAbas->title      = array("relatorio"  => "Relatório",
+      $clCriaAbas->title      = ["relatorio"  => "Relatório",
                                       "notas"      => "Fonte/Notas Explicativas",   
                                       "parametro" => "Parâmetros"
-                                      );
+                                      ];
   
-      $clCriaAbas->src        = array("relatorio"  => "con2_anexoXVI_011.php?c83_codrel={$iCodRel}",
+      $clCriaAbas->src        = ["relatorio"  => "con2_anexoXVI_011.php?c83_codrel={$iCodRel}",
                                       "notas"      => "con2_conrelnotas.php?c83_codrel={$iCodRel}",
                                       "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel={$iCodRel}"
-                                      );
+                                      ];
       
-      $clCriaAbas->sizecampo  = array("relatorio"  => "23",
+      $clCriaAbas->sizecampo  = ["relatorio"  => "23",
                                       "notas"      => "30",
                                       "parametro" => "23"
-                                      );
+                                      ];
       $clCriaAbas->cria_abas();
           
     ?>

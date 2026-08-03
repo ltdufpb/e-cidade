@@ -34,8 +34,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_orcparamseq_classe.php"));
 include(modification("classes/db_orcparamelemento_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clorcparamseq            = new cl_orcparamseq;
 $clorcparamelemento       = new cl_orcparamelemento;
@@ -84,7 +84,7 @@ if (isset ($atualizar) && $atualizar == "atualizar") {
 		}
 
 	}
-	$matriz = explode("#", $lista); //gera matriz com as chaves
+	$matriz = explode("#", (string) $lista); //gera matriz com as chaves
 
 	for ($i = 0; $i < sizeof($matriz); $i ++) {
 		// o teste abaixo e necessario porque quando desmerca todos os itens na tela, o expode acima gera 1 vazio
@@ -118,27 +118,27 @@ if (isset ($atualizar) && $atualizar == "atualizar") {
 
 function espaco($estrutural=""){
     $espaco ="";
-    if(substr($estrutural,1,14)     == '00000000000000'){
+    if(substr((string) $estrutural,1,14)     == '00000000000000'){
        $espaco="";    
-    }elseif(substr($estrutural,2,13)== '0000000000000'){  
+    }elseif(substr((string) $estrutural,2,13)== '0000000000000'){  
        $espaco="&nbsp;&nbsp;";    
-    }elseif(substr($estrutural,3,12)== '000000000000'){   
+    }elseif(substr((string) $estrutural,3,12)== '000000000000'){   
        $espaco="&nbsp;&nbsp;&nbsp;&nbsp;";    
-    }elseif(substr($estrutural,4,11) == '00000000000'){	
+    }elseif(substr((string) $estrutural,4,11) == '00000000000'){	
        $espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    
-    }elseif(substr($estrutural,5,10) == '0000000000'){  
+    }elseif(substr((string) $estrutural,5,10) == '0000000000'){  
        $espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    
-    }elseif(substr($estrutural,7,8)  == '00000000'){   
+    }elseif(substr((string) $estrutural,7,8)  == '00000000'){   
        $espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";   
-    }elseif(substr($estrutural,9,6)  == '000000'){   
+    }elseif(substr((string) $estrutural,9,6)  == '000000'){   
        $espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";   
-    }elseif(substr($estrutural,11,4) == '0000'){ 	
+    }elseif(substr((string) $estrutural,11,4) == '0000'){ 	
        $espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    
-    }elseif(substr($estrutural,12,3) == '000'){
+    }elseif(substr((string) $estrutural,12,3) == '000'){
        $espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    
-    }elseif(substr($estrutural,13,2) == '00'){ 
+    }elseif(substr((string) $estrutural,13,2) == '00'){ 
        $espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; 
-    }elseif(substr($estrutural,14,1) == '0'){ 
+    }elseif(substr((string) $estrutural,14,1) == '0'){ 
        $espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; 
     }
 
@@ -286,7 +286,7 @@ function js_desmarcarTodos(){
 	             and o69_codseq = $o69_codseq 
               ";
 	$r = db_query($s);
-	if (pg_numrows($r)>0){
+	if (pg_num_rows($r)>0){
             db_fieldsmemory($r,0);
 	    echo  "<b>$o69_descr</b>";	
 	}  
@@ -310,7 +310,7 @@ function js_desmarcarTodos(){
     &nbsp;&nbsp;<b>Final:</b><input name="fim_estrut" type="text" size="15" maxlength="15"></td>
     <td nowrap>
     <?php 
-      $matriz = array("T"=>"TODAS AS CONTAS","A"=>"SOMENTE CONTAS ANALITICAS","S"=>"SOMENTE CONTAS SINTETICAS");
+      $matriz = ["T"=>"TODAS AS CONTAS","A"=>"SOMENTE CONTAS ANALITICAS","S"=>"SOMENTE CONTAS SINTETICAS"];
       db_select("filtrar_contas",$matriz,true,4,"onChange='js_filtrarContas();'");
     ?>
     </td>
@@ -393,15 +393,15 @@ function js_desmarcarTodos(){
                                                           (o44_exclusao  is false or o44_exclusao is null)
                             where c60_anousu = $anousu";
         $res_contas = @db_query($sql_contas);
-        $numrows    = @pg_numrows($res_contas);
+        $numrows    = @pg_num_rows($res_contas);
 
         if ($numrows > 0){
              $lista_contas_analiticas = "";
              $lista_contas_sinteticas = "";
              $virgula = "";
              for($i = 0; $i < $numrows; $i++){
-                  $c60_codcon = pg_result($res_contas,$i,"c60_codcon");
-                  $c61_reduz  = pg_result($res_contas,$i,"c61_reduz");
+                  $c60_codcon = pg_fetch_result($res_contas,$i,"c60_codcon");
+                  $c61_reduz  = pg_fetch_result($res_contas,$i,"c61_reduz");
                   if (isset($c61_reduz) && strlen(trim($c61_reduz)) > 0){
                        $lista_contas_analiticas .= $virgula.$c60_codcon;
                   } else {
@@ -439,24 +439,24 @@ function js_desmarcarTodos(){
 
   if (isset($ini_estrut) && trim(@$ini_estrut)!=""){
        $tam_ini = strlen(trim($ini_estrut));
-       $tam_fim = strlen(trim($fim_estrut));
+       $tam_fim = strlen(trim((string) $fim_estrut));
 
        $tam     = min($tam_ini,$tam_fim);
 
-       $sql .= " and (substr(c60_estrut,1,$tam) between '".substr($ini_estrut,0,$tam)."' and '".substr($fim_estrut,0,$tam)."') ";
+       $sql .= " and (substr(c60_estrut,1,$tam) between '".substr($ini_estrut,0,$tam)."' and '".substr((string) $fim_estrut,0,$tam)."') ";
        unset($ini_estrut);
        unset($fim_estrut);
   }
 
   $sql_instit     = "select codigo from db_config";
   $res_insit      = @db_query($sql_instit);
-  $numrows_instit = @pg_numrows($res_insit);
+  $numrows_instit = @pg_num_rows($res_insit);
   if ($numrows_instit > 0){
        $lista_instit = "";
        $virgula      = "";
 
        for($i=0; $i < $numrows_instit; $i++){
-            $lista_instit .= $virgula.pg_result($res_insit,$i,"codigo");
+            $lista_instit .= $virgula.pg_fetch_result($res_insit,$i,"codigo");
             $virgula       = ",";
        }
 
@@ -466,10 +466,10 @@ function js_desmarcarTodos(){
        $sql_reduz     = "select distinct c61_codcon from conplanoreduz where c61_anousu = $anousu and 
                                                                              c61_instit in ($lista_instit)";
        $res_reduz     = @db_query($sql_reduz);
-       $numrows_reduz = @pg_numrows($res_reduz);
+       $numrows_reduz = @pg_num_rows($res_reduz);
        if ($numrows_reduz > 0){
             for($i=0; $i < $numrows_reduz; $i++){
-                 $lista_reduz .= $virgula.pg_result($res_reduz,$i,"c61_codcon");
+                 $lista_reduz .= $virgula.pg_fetch_result($res_reduz,$i,"c61_codcon");
                  $virgula      = ",";
             }
        }

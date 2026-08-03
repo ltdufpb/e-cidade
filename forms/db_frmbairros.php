@@ -81,11 +81,11 @@ $clbairro->rotulo->label();
 </form>
 <script>
 function js_volt(){
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>';
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>';
 }
 function js_preenche(chave){
   func_bairros.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 function js_func_bairros(){
   func_bairros.jan.location.href = 'func_bairro.php?nomeBairro='+document.form1.j13_descr.value+'&funcao_js=parent.js_preenche|0';

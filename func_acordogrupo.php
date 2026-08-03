@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $clacordogrupo = new cl_acordogrupo;
 $clacordogrupo->rotulo->label("ac02_sequencial");
@@ -105,12 +105,12 @@ $clacordogrupo->rotulo->label("ac02_descricao");
                     $sql = $clacordogrupo->sql_query("", $campos, "ac02_sequencial", "");
                 }
             }
-            $repassa = array();
+            $repassa = [];
             if (isset($chave_ac02_sequencial)) {
-                $repassa = array(
+                $repassa = [
                   "chave_ac02_sequencial" => $chave_ac02_sequencial,
                   "chave_ac02_descricao"  => $chave_ac02_descricao
-                );
+                ];
             }
             db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
         } else {

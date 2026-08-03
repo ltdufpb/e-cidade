@@ -103,13 +103,13 @@ $iAno5   = $iAnoRef+1;
 $iAno6   = $iAnoRef+2;
 
 // Lista anos anteriores ao Ano de Referência
-$aListaAnosAnt   = array($iAno1,$iAno2,$iAno3);
+$aListaAnosAnt   = [$iAno1,$iAno2,$iAno3];
 
 // Lista anos posteriores ao Ano de Referência
-$aListaAnosPPA   = array($iAno4,$iAno5,$iAno6);
+$aListaAnosPPA   = [$iAno4,$iAno5,$iAno6];
 
 // Lista todos anos
-$aListaTodosAnos = array($iAno1,$iAno2,$iAno3,$iAno4,$iAno5,$iAno6);
+$aListaTodosAnos = [$iAno1,$iAno2,$iAno3,$iAno4,$iAno5,$iAno6];
 
 // Cria objeto para cada ano de cada linha
 $oValoresRel = new stdClass();
@@ -118,7 +118,7 @@ $oValoresRel->nConstante = 0;
 
 $oReceitaTotal = new stdClass();
 $oReceitaTotal->sDescricao = "";
-$oReceitaTotal->aValores   = array(); 
+$oReceitaTotal->aValores   = []; 
 
 // Cria objeto para cada linha do relatório
 $oReceitasPrimarias = clone $oReceitaTotal;
@@ -130,14 +130,14 @@ $oDivPublicConsol   = clone $oReceitaTotal;
 $oDivConsolLiquid   = clone $oReceitaTotal;
 
 // Cria array com todos objetos "Linhas" do relatório
-$aLista = array( $oReceitaTotal,
+$aLista = [ $oReceitaTotal,
                  $oReceitasPrimarias,
                  $oDespesaTotal,
                  $oDespesasPrimarias,
                  $oResultadoPrimario,
                  $oResultadoNominal,
                  $oDivPublicConsol,                 
-                 $oDivConsolLiquid );
+                 $oDivConsolLiquid ];
 
 // Cria dinâmicamente o objeto valor para cada linha evitando referência de objetos                 
 foreach ( $aLista as $iInd => $oLinha ){
@@ -209,7 +209,7 @@ foreach ( $aListaAnosAnt as $iIndAno => $iAno) {
 	if ( $iAno == db_getsession('DB_anousu') ) {
 		
     $iMesFechado = date('m',db_getsession('DB_datausu')) - 1 ;		
- 		$iMesFechado = str_pad($iMesFechado,2,"0",STR_PAD_LEFT);
+ 		$iMesFechado = str_pad((string) $iMesFechado,2,"0",STR_PAD_LEFT);
     $iDias       = db_dias_mes($iAno,$iMesFechado);        
     $dtDataFin = "{$iAno}-{$iMesFechado}-{$iDias}";
     		
@@ -251,12 +251,12 @@ foreach ( $aListaAnosAnt as $iIndAno => $iAno) {
 	  
 	  $oDespesa = db_utils::fieldsMemory($rsDespesa,$iInd);
 	  
-	  if ( $oDespesa->o58_elemento{0} == 3 ) {
+	  if ( $oDespesa->o58_elemento[0] == 3 ) {
 	    $oDespesaTotal->aValores[$iAno]->nCorrente += $oDespesa->empenhado_acumulado - $oDespesa->anulado_acumulado;
 	  } 
 	    
-	  if ( substr($oDespesa->o58_elemento,0,3) != 332 && 
-	       substr($oDespesa->o58_elemento,0,3) != 346 ) {
+	  if ( substr((string) $oDespesa->o58_elemento,0,3) != 332 && 
+	       substr((string) $oDespesa->o58_elemento,0,3) != 346 ) {
 	      
 	    $oDespesasPrimarias->aValores[$iAno]->nCorrente += $oDespesa->empenhado_acumulado - $oDespesa->anulado_acumulado;
 	      
@@ -283,15 +283,15 @@ $oPPADespesa->setInstituicoes($sListaInstit);
 try {
   $aEstimativaReceita = $oPPAReceita->getQuadroEstimativas();
 } catch (Exception $eException ){
-  $aEstimativaReceita = array();
+  $aEstimativaReceita = [];
 }
  
 
 // Busca todos dados da Despesa
 try {
   $aEstimativaDespesa = $oPPADespesa->getQuadroEstimativas(null,7);
-} catch (Exception $eException ){
-  $aEstimativaDespesa = array();
+} catch (Exception ){
+  $aEstimativaDespesa = [];
 } 
 
 
@@ -300,7 +300,7 @@ foreach ($aListaAnosPPA as $iIndAno => $iAno ) {
 	// Calcula Receita Corrente de todos os anos posteriores ao de referência
 	foreach ( $aEstimativaReceita as $iInd => $oReceita ) {
 		
-	  if ( substr($oReceita->iEstrutural,0,4) == 4000 || substr($oReceita->iEstrutural,0,4) == 9000 ) {
+	  if ( substr((string) $oReceita->iEstrutural,0,4) == 4000 || substr((string) $oReceita->iEstrutural,0,4) == 9000 ) {
       $oReceitaTotal->aValores[$iAno]->nCorrente += $oReceita->aEstimativas[$iAno];
 	  } 
 	  
@@ -318,12 +318,12 @@ foreach ($aListaAnosPPA as $iIndAno => $iAno ) {
   // Calcula Despesa Corrente de todos os anos posteriores ao de referência
 	foreach ( $aEstimativaDespesa as $iInd => $oDespesa ) {
 	  
-	  if ( $oDespesa->iElemento{0} == 3 ) {
+	  if ( $oDespesa->iElemento[0] == 3 ) {
       $oDespesaTotal->aValores[$iAno]->nCorrente += $oDespesa->aEstimativas[$iAno];
 	  } 
 	  
-	  if ( substr($oDespesa->iElemento,0,3) != 332 && 
-	       substr($oDespesa->iElemento,0,3) != 346 ) {
+	  if ( substr((string) $oDespesa->iElemento,0,3) != 332 && 
+	       substr((string) $oDespesa->iElemento,0,3) != 346 ) {
       $oDespesasPrimarias->aValores[$iAno]->nCorrente += $oDespesa->aEstimativas[$iAno];     
 	  }   
 	  
@@ -531,7 +531,7 @@ $pdf->Cell(170,$iAlt,"AMF - Demonstrativo III (LRF, art.4º, §2º, inciso II)",0,0
 $pdf->Cell(105,$iAlt,"R$ 1,00"										                          ,0,1,"R",0);
   
 // Imprime cabeçalho dos valores Correntes
-imprimeCabecalho($pdf,$iAlt,$iFont,$aListaTodosAnos,"CORRENTES");
+imprimeCabecalho($pdf,$iAlt);
 
 // Imprime todas linhas dos valores Correntes
 foreach ( $aLista as $iInd => $oLinha ){
@@ -555,7 +555,7 @@ foreach ( $aLista as $iInd => $oLinha ){
 $pdf->cell(275,$iAlt,"",'T',1,'R',0);
 
 // Imprime cabeçalho dos valores Constantes
-imprimeCabecalho($pdf,$iAlt,$iFont,$aListaTodosAnos,"CONSTANTES");
+imprimeCabecalho($pdf,$iAlt);
 
 // Imprime todas linhas dos valores Constantes
 foreach ( $aLista as $iInd => $oLinha ){
@@ -594,7 +594,7 @@ function imprimeCabecalho($pdf,$iAlt,$iFont,$aListaTodosAnos,$sCabecalho){
 	
 	$pdf->SetX(65);
 	
-	list($iAno1,$iAno2,$iAno3,$iAno4,$iAno5,$iAno6) = $aListaTodosAnos;
+	[$iAno1, $iAno2, $iAno3, $iAno4, $iAno5, $iAno6] = $aListaTodosAnos;
 	
   $pdf->Cell(20,$iAlt,$iAno1,'TLB',0,"C",0);
   $pdf->Cell(20,$iAlt,$iAno2,'TLB',0,"C",0);

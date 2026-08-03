@@ -164,7 +164,7 @@ if ($linhas != 0) {
                     </td>
                     <td align="left" nowrap title="Ordenação">
                         <?php
-                        $ordem = array("bi06_titulo" => "Título", "bi06_seq" => "Código");
+                        $ordem = ["bi06_titulo" => "Título", "bi06_seq" => "Código"];
                         db_select("ordem", $ordem, true, 2)
                         ?>
                     </td>
@@ -175,7 +175,7 @@ if ($linhas != 0) {
                     </td>
                     <td align="left" nowrap title="Tipo de relatório">
                         <?php
-                        $rel = array("resumido" => "Resumido", "completo" => "Completo");
+                        $rel = ["resumido" => "Resumido", "completo" => "Completo"];
                         db_select("rel", $rel, true, 2)
                         ?>
                     </td>

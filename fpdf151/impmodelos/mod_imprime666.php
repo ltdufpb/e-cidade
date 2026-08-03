@@ -164,31 +164,31 @@ $this->objpdf->SetFont('Arial', '', 5);
 $instrucao = "Tipo: " . @$this->tipo_debito . $this->descr12_1 . "\n" . $this->pqllocal . "\n" . $this->sMensagemCaixa . "\n";
 
 if (!empty($this->valororigem)) {
-    $instrucao .= "Vlr Original= " . trim($this->valororigem);
+    $instrucao .= "Vlr Original= " . trim((string) $this->valororigem);
 }
 
 if (!empty($this->corrigido)) {
-    $instrucao .= " Vlr Corrigido = " . trim($this->corrigido);
+    $instrucao .= " Vlr Corrigido = " . trim((string) $this->corrigido);
 }
 
 if (!empty($this->juros)) {
-    $instrucao .= " Juros = " . trim($this->juros);
+    $instrucao .= " Juros = " . trim((string) $this->juros);
 }
 
 if (!empty($this->multas)) {
-    $instrucao .= " Multa = " . trim($this->multas);
+    $instrucao .= " Multa = " . trim((string) $this->multas);
 }
 
 if (!empty($this->desconto_abatimento)) {
-    $instrucao .= " Descontos = " . trim($this->desconto_abatimento);
+    $instrucao .= " Descontos = " . trim((string) $this->desconto_abatimento);
 }
 
 if (!empty($this->nTotalValorTaxas)) {
-    $instrucao .= " Custas = " . trim($this->nTotalValorTaxas);
+    $instrucao .= " Custas = " . trim((string) $this->nTotalValorTaxas);
 }
 
 if (!empty($this->valor_cobrado)) {
-    $instrucao .= " Total = " . trim($this->valor_cobrado);
+    $instrucao .= " Total = " . trim((string) $this->valor_cobrado);
 }
 
 if (!empty($this->taxaExpediente)) {
@@ -238,9 +238,9 @@ $this->objpdf->cell(30, 6, @$this->outros_acrecimos, 0, 0, "R");//outros acresci
 $this->objpdf->setXY($x + 136, $y + 67);
 $this->objpdf->cell(30, 6, "", 0, 0, "R");//valor cobrado .... @$this->valor_cobrado
 $this->objpdf->SetFont('Arial', '', 8);
-$this->objpdf->Text($x + 19, $y + 77, substr($this->descr11_1, 0, 42));         // sacado 1
+$this->objpdf->Text($x + 19, $y + 77, substr((string) $this->descr11_1, 0, 42));         // sacado 1
 $this->objpdf->Text($x + 93, $y + 77,
-  "CPF/CNPJ: " . db_formatar(@$this->cgccpf, (strlen(@$this->cgccpf) < 12 ? 'cpf' : 'cnpj'))); // CPF/CNPJ
+  "CPF/CNPJ: " . db_formatar(@$this->cgccpf, (strlen((string) @$this->cgccpf) < 12 ? 'cpf' : 'cnpj'))); // CPF/CNPJ
 $this->objpdf->Text($x + 19, $y + 80, $this->descr11_2); // $this->ender);    // sacado 2
 if (!isset($this->ufcgm)) {
     $this->ufcgm = $this->uf_config;

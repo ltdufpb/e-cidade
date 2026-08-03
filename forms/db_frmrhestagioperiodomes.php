@@ -105,7 +105,7 @@ db_input('h66_mes',10,$Ih66_mes,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("h66_sequencial"=>@$h66_sequencial);
+	 $chavepri= ["h66_sequencial"=>@$h66_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhestagioperiodomes->sql_query_file(null,"*","h66_mes","h66_rhestagioperiodo={$oGet->h55_rhestagioperiodo}");
 	 $cliframe_alterar_excluir->campos  ="h66_sequencial,h66_rhestagioperiodo,h66_mes";

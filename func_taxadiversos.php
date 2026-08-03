@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_taxadiversos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltaxadiversos = new cl_taxadiversos;
 $cltaxadiversos->rotulo->label("y119_natureza");
 $clgrupotaxadiversos = new cl_grupotaxadiversos;
@@ -57,9 +57,9 @@ $clgrupotaxadiversos->rotulo->label("y118_descricao");
         }else{
            $sql = $cltaxadiversos->sql_query("",$campos,"y119_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_y119_sequencial)){
-          $repassa = array("chave_y119_sequencial"=>$chave_y119_sequencial,"chave_y119_sequencial"=>$chave_y119_sequencial);
+          $repassa = ["chave_y119_sequencial"=>$chave_y119_sequencial,"chave_y119_sequencial"=>$chave_y119_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

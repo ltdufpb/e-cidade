@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 
 $oIframeAE = new cl_iframe_alterar_excluir();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltfd_ajudacusto = new cl_tfd_ajudacusto;
 $db_opcao = 1;
 $db_botao = true;

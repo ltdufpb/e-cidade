@@ -173,7 +173,7 @@ function js_verifica_hora(valor,campo){
   $hora = "00";
   $minu = "00";
   if(isset($pc30_horas)){
-    $arr_horas = split(":",$pc30_horas);    
+    $arr_horas = preg_split("#:#m",$pc30_horas);    
     $hora = $arr_horas[0];
     $minu = $arr_horas[1];
   }
@@ -248,7 +248,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pcorcam.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -49,9 +49,9 @@ db_app::import("contabilidade.contacorrente.*");
 
 $oParametros = db_utils::postMemory($_GET);
 $sWhere      = " m81_tipo in(1, 2) ";
-$sDataFin    = implode('-',array_reverse(explode('/', $oParametros->datafin)));
+$sDataFin    = implode('-',array_reverse(explode('/', (string) $oParametros->datafin)));
 
-if (trim($oParametros->datafin) != "--") {
+if (trim((string) $oParametros->datafin) != "--") {
 
   $sWhere .= " and m80_data <= '{$sDataFin}' ";
   $info   = "Até ".$oParametros->datafin;
@@ -88,7 +88,7 @@ if (!empty($sAlmoxarifados)) {
 
   $rsAlmoxarifados         = db_query($sSqlAlmoxarifados);
   $oDescricaoAlmoxarifado  = db_utils::fieldsMemory($rsAlmoxarifados, 0);
-  $sDescricaoAlmoxarifado = strlen($oDescricaoAlmoxarifado->descricao) > 110?substr($oDescricaoAlmoxarifado->descricao, 0, 110)."...":$oDescricaoAlmoxarifado->descricao;
+  $sDescricaoAlmoxarifado = strlen((string) $oDescricaoAlmoxarifado->descricao) > 110?substr((string) $oDescricaoAlmoxarifado->descricao, 0, 110)."...":$oDescricaoAlmoxarifado->descricao;
 }
 
 $sSqlMovimentacao  = " select  coalesce(sum(case when m81_tipo = 1 then m82_quant ";
@@ -151,9 +151,9 @@ if (!$rsMateriais) {
   exit;
 }
 $iNumRowsItens = pg_num_rows($rsMateriais);
-$aGrupos       = array();
+$aGrupos       = [];
 $iMaximaCodigo = 0;
-$aGlobal = array();
+$aGlobal = [];
 
 for ($i = 0; $i < $iNumRowsItens; $i++) {
 
@@ -169,8 +169,8 @@ for ($i = 0; $i < $iNumRowsItens; $i++) {
 
   criaNopai($oGrupo, $aGrupos, $oItem);
 
-  if (strlen($oItem->material) > $iMaximaCodigo) {
-     $iMaximaCodigo = strlen($oItem->material);
+  if (strlen((string) $oItem->material) > $iMaximaCodigo) {
+     $iMaximaCodigo = strlen((string) $oItem->material);
   }
   if (!isset($aGrupos[$oItem->estrutural])) {
 
@@ -302,7 +302,7 @@ foreach ($aGrupos as $sEstruturalGrupo => $oGrupo) {
 
 
         $pdf->setfont('arial',  '', 6);
-        $sEstrutIdMater = "{$aDadosItem->estrutural}.".str_pad($aDadosItem->material, $iMaximaCodigo,"0", STR_PAD_LEFT);
+        $sEstrutIdMater = "{$aDadosItem->estrutural}.".str_pad((string) $aDadosItem->material, $iMaximaCodigo,"0", STR_PAD_LEFT);
 
         $pdf->Cell(20 , $iAlt, $sEstrutIdMater                                               , 0, 0, "L");
         $pdf->Cell(120, $iAlt, str_repeat("    ",$oGrupo->nivel+1)."{$aDadosItem->descricao}", 0, 0, "L", 0, '', ".");

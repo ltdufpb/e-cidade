@@ -34,8 +34,8 @@ include(modification("classes/db_folha_classe.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
 include(modification("classes/db_orctiporec_classe.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 $rh34_where    = '';
 $cllayouts_bb  = new LayoutBB;
 $cllayout_BBBS = new LayoutBBBSFolha;
@@ -66,7 +66,7 @@ if($clrharqbanco->numrows>0){
   $acodigodobanco = $rh34_codban;
   $atipoinscricao = "2";
   $inscricaoprefa = $cgc;
-  $aconveniobanco = db_formatar(trim($rh34_convenio),'s','0',9,'e',0).'0126';
+  $aconveniobanco = db_formatar(trim((string) $rh34_convenio),'s','0',9,'e',0).'0126';
 
   $dvagenciabanco = "0";
   $dvcontadobanco = "0";
@@ -75,13 +75,13 @@ if($clrharqbanco->numrows>0){
   $agenciadobanco = $rh34_agencia;
   $dacontadobanco = $rh34_conta;
 
-  if(trim($rh34_dvagencia)!=""){
+  if(trim((string) $rh34_dvagencia)!=""){
     $dvagenciabanco = $rh34_dvagencia[0];
   }
 
-  if(trim($rh34_dvconta)!=""){
+  if(trim((string) $rh34_dvconta)!=""){
     $dvcontadobanco = $rh34_dvconta[0];
-    $digitos        = strlen($rh34_dvconta);
+    $digitos        = strlen((string) $rh34_dvconta);
   if($digitos>1){
       $dvcontaagencia = $rh34_dvconta[1];
     }
@@ -91,14 +91,14 @@ if($clrharqbanco->numrows>0){
   $descricaobanco = $db90_descr;
 
   if(isset($datagera) && $datagera!=""){
-    $datag = split('-',$datagera);
+    $datag = preg_split('#\-#m',(string) $datagera);
     $datag_dia=$datag[2];
     $datag_mes=$datag[1];
     $datag_ano=$datag[0];
   }
 
   if(isset($datadeposit) && $datadeposit!=""){
-    $datad = split('-',$datadeposit);
+    $datad = preg_split('#\-#m',(string) $datadeposit);
     $datad_dia = $datad[2];
     $datad_mes = $datad[1];
     $datad_ano = $datad[0];

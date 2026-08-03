@@ -134,7 +134,7 @@ class Devedor
      */
     public function getTipoPessoa()
     {
-        return (strlen($this->cgccpf) > 11 ? "juridica" : "fisica");
+        return (strlen((string) $this->cgccpf) > 11 ? "juridica" : "fisica");
     }
 
     /**

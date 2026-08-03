@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_requi_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_requi = new cl_mer_requi;
 $clmer_requi->rotulo->label("me16_i_codigo");
 $clmer_requi->rotulo->label("me16_i_codigo");
@@ -100,9 +100,9 @@ $clmer_requi->rotulo->label("me16_i_codigo");
         } else {
           $sql = $clmer_requi->sql_query("",$campos,"me16_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_me16_i_codigo)) {
-          $repassa = array("chave_me16_i_codigo"=>$chave_me16_i_codigo,"chave_me16_i_codigo"=>$chave_me16_i_codigo);
+          $repassa = ["chave_me16_i_codigo"=>$chave_me16_i_codigo,"chave_me16_i_codigo"=>$chave_me16_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
         

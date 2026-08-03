@@ -145,18 +145,18 @@ if (isset($oParametros->grupos) && trim($oParametros->grupos) != "") {
     $head4 = $sFiltroGrupo;//"Relatório de Saída de Material por Departamento";
 }
 
-$sDataIni = implode('-', array_reverse(explode('/', $oParametros->dataini)));
-$sDataFin = implode('-', array_reverse(explode('/', $oParametros->datafin)));
+$sDataIni = implode('-', array_reverse(explode('/', (string) $oParametros->dataini)));
+$sDataFin = implode('-', array_reverse(explode('/', (string) $oParametros->datafin)));
 
-if ((trim($oParametros->dataini) != "--") && (trim($oParametros->datafin) != "--")) {
+if ((trim((string) $oParametros->dataini) != "--") && (trim((string) $oParametros->datafin) != "--")) {
     $sWhere .= " and m80_data between '{$sDataIni}' and '{$sDataFin}' ";
     $info = "De " . $oParametros->dataini . " até " . $oParametros->datafin;
 } else {
-    if (trim($oParametros->dataini) != "--") {
+    if (trim((string) $oParametros->dataini) != "--") {
         $sWhere .= " and m80_data >= '{$sDataIni}' ";
         $info = "Apartir de " . $oParametros->dataini;
     } else {
-        if (trim($oParametros->datafin) != "--") {
+        if (trim((string) $oParametros->datafin) != "--") {
             $sWhere .= " and m80_data <= '{$sDataFin}' ";
             $info = "Até " . $oParametros->datafin;
         } else {
@@ -225,7 +225,7 @@ $sSqlSaidas .= " order by {$sOrderBy} ";
 
 $rsSaidas = db_query($sSqlSaidas);
 $iNumRows = pg_num_rows($rsSaidas);
-$aLinhas = array();
+$aLinhas = [];
 
 for ($i = 0; $i < $iNumRows; $i++) {
     $oItem = db_utils::fieldsMemory($rsSaidas, $i);
@@ -261,7 +261,7 @@ foreach ($aLinhas as $oLinha) {
         $pdf->setfont('arial', '', 6);
     }
 
-    $pdf->Cell(15, $iAlt, substr($oLinha->m70_codmatmater, 0, 40), "RTB", 0, "R");
+    $pdf->Cell(15, $iAlt, substr((string) $oLinha->m70_codmatmater, 0, 40), "RTB", 0, "R");
     $pdf->Cell(75, $iAlt, $oLinha->m60_descr, 1, 0, "L");
     $pdf->Cell(32, $iAlt, substr($oLinha->m70_coddepto . " - " . $oLinha->descrdepto, 0, 25), 1, 0, "L");
     $iDeptoDestino = $oLinha->m40_depto;
@@ -284,7 +284,7 @@ foreach ($aLinhas as $oLinha) {
         $iCodigoLancamento = $oLinha->m80_codigo;
     }
 
-    $pdf->Cell(50, $iAlt, substr($oLinha->m81_descr, 0, 30) . "(" . $iCodigoLancamento . ")", 1, 0, "L");
+    $pdf->Cell(50, $iAlt, substr((string) $oLinha->m81_descr, 0, 30) . "(" . $iCodigoLancamento . ")", 1, 0, "L");
     $pdf->Cell(18, $iAlt, db_formatar($oLinha->m80_data, "d"), 1, 0, "C");
     $pdf->Cell(18, $iAlt, number_format($oLinha->precomedio, $iParametroNumeroDecimal), 1, 0, "R");
     $pdf->Cell(20, $iAlt, $oLinha->qtde, 1, 0, "R");

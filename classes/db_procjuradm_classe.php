@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE procjuradm
 class cl_procjuradm { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v64_sequencial = 0; 
-   var $v64_protprocesso = 0; 
-   var $v64_procjur = 0; 
+   public $v64_sequencial = 0; 
+   public $v64_protprocesso = 0; 
+   public $v64_procjur = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v64_sequencial = int4 = Código do processo administrativo 
                  v64_protprocesso = int4 = Protocolo do processo 
                  v64_procjur = int4 = Código do processo jurídico 
                  ";
    //funcao construtor da classe 
-   function cl_procjuradm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procjuradm"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_procjuradm {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v64_sequencial = pg_result($result,0,0); 
+       $this->v64_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from procjuradm_v64_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v64_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v64_sequencial)){
          $this->erro_sql = " Campo v64_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_procjuradm {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Processo Administrativo ($this->v64_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Processo Administrativo já Cadastrado";
@@ -166,12 +166,12 @@ class cl_procjuradm {
      $resaco = $this->sql_record($this->sql_query_file($this->v64_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12678,'$this->v64_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2214,12678,'','".AddSlashes(pg_result($resaco,0,'v64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2214,12679,'','".AddSlashes(pg_result($resaco,0,'v64_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2214,12680,'','".AddSlashes(pg_result($resaco,0,'v64_procjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2214,12678,'','".AddSlashes(pg_fetch_result($resaco,0,'v64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2214,12679,'','".AddSlashes(pg_fetch_result($resaco,0,'v64_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2214,12680,'','".AddSlashes(pg_fetch_result($resaco,0,'v64_procjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_procjuradm {
       $this->atualizacampos();
      $sql = " update procjuradm set ";
      $virgula = "";
-     if(trim($this->v64_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v64_sequencial"])){ 
+     if(trim((string) $this->v64_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v64_sequencial"])){ 
        $sql  .= $virgula." v64_sequencial = $this->v64_sequencial ";
        $virgula = ",";
-       if(trim($this->v64_sequencial) == null ){ 
+       if(trim((string) $this->v64_sequencial) == null ){ 
          $this->erro_sql = " Campo Código do processo administrativo nao Informado.";
          $this->erro_campo = "v64_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_procjuradm {
          return false;
        }
      }
-     if(trim($this->v64_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v64_protprocesso"])){ 
+     if(trim((string) $this->v64_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v64_protprocesso"])){ 
        $sql  .= $virgula." v64_protprocesso = $this->v64_protprocesso ";
        $virgula = ",";
-       if(trim($this->v64_protprocesso) == null ){ 
+       if(trim((string) $this->v64_protprocesso) == null ){ 
          $this->erro_sql = " Campo Protocolo do processo nao Informado.";
          $this->erro_campo = "v64_protprocesso";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_procjuradm {
          return false;
        }
      }
-     if(trim($this->v64_procjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v64_procjur"])){ 
+     if(trim((string) $this->v64_procjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v64_procjur"])){ 
        $sql  .= $virgula." v64_procjur = $this->v64_procjur ";
        $virgula = ",";
-       if(trim($this->v64_procjur) == null ){ 
+       if(trim((string) $this->v64_procjur) == null ){ 
          $this->erro_sql = " Campo Código do processo jurídico nao Informado.";
          $this->erro_campo = "v64_procjur";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_procjuradm {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12678,'$this->v64_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v64_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2214,12678,'".AddSlashes(pg_result($resaco,$conresaco,'v64_sequencial'))."','$this->v64_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2214,12678,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v64_sequencial'))."','$this->v64_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v64_protprocesso"]))
-           $resac = db_query("insert into db_acount values($acount,2214,12679,'".AddSlashes(pg_result($resaco,$conresaco,'v64_protprocesso'))."','$this->v64_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2214,12679,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v64_protprocesso'))."','$this->v64_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v64_procjur"]))
-           $resac = db_query("insert into db_acount values($acount,2214,12680,'".AddSlashes(pg_result($resaco,$conresaco,'v64_procjur'))."','$this->v64_procjur',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2214,12680,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v64_procjur'))."','$this->v64_procjur',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_procjuradm {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12678,'$v64_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2214,12678,'','".AddSlashes(pg_result($resaco,$iresaco,'v64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2214,12679,'','".AddSlashes(pg_result($resaco,$iresaco,'v64_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2214,12680,'','".AddSlashes(pg_result($resaco,$iresaco,'v64_procjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2214,12678,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2214,12679,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v64_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2214,12680,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v64_procjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from procjuradm
@@ -345,7 +345,7 @@ class cl_procjuradm {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procjuradm";
@@ -360,7 +360,7 @@ class cl_procjuradm {
    function sql_query ( $v64_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,7 +389,7 @@ class cl_procjuradm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_procjuradm {
    function sql_query_file ( $v64_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,7 +423,7 @@ class cl_procjuradm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -59,7 +59,7 @@ $clprescricao = new cl_prescricao;
 $clarrecad    = new cl_arrecad;
 $clarreprescr = new cl_arreprescr;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 //db_msgbox("dfhaskd hflkashd lfkhasdl flash k");
@@ -123,7 +123,7 @@ $func_nome ->mostrar();
             </td>
             <td width="" align="left" nowrap title="">
              <?php 
-				$arr_op = array("n"=>"Não","s"=>"Sim");
+				$arr_op = ["n"=>"Não","s"=>"Sim"];
 				db_select("prescrnoti",$arr_op,true,"text");
 				?>
             </td>

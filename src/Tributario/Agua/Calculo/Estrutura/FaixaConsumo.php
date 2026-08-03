@@ -34,10 +34,10 @@ class FaixaConsumo extends Estrutura {
   private function regraIntervaloAte() {
 
     if ($this->iConsumo >= $this->oEstrutura->getValorFinal()) {
-      return bcmul($this->oEstrutura->getValorFinal(), $this->oEstrutura->getValor(), 2);
+      return bcmul((string) $this->oEstrutura->getValorFinal(), (string) $this->oEstrutura->getValor(), 2);
     }
 
-    return bcmul($this->iConsumo, $this->oEstrutura->getValor(), 2);
+    return bcmul($this->iConsumo, (string) $this->oEstrutura->getValor(), 2);
   }
 
   /**
@@ -46,11 +46,11 @@ class FaixaConsumo extends Estrutura {
   private function regraIntervaloDeAte() {
 
     if ($this->iConsumo >= $this->oEstrutura->getValorFinal()) {
-      return bcmul(($this->oEstrutura->getValorFinal() - ($this->oEstrutura->getValorInicial() - 1)), $this->oEstrutura->getValor(), 2);
+      return bcmul(($this->oEstrutura->getValorFinal() - ($this->oEstrutura->getValorInicial() - 1)), (string) $this->oEstrutura->getValor(), 2);
     } else {
 
       if (($this->iConsumo - ($this->oEstrutura->getValorInicial() - 1)) > 0) {
-        return bcmul(($this->iConsumo - ($this->oEstrutura->getValorInicial() - 1)), $this->oEstrutura->getValor(), 2);
+        return bcmul(($this->iConsumo - ($this->oEstrutura->getValorInicial() - 1)), (string) $this->oEstrutura->getValor(), 2);
       }
     }
 
@@ -63,7 +63,7 @@ class FaixaConsumo extends Estrutura {
   private function regraIntervaloAcimaDe() {
 
     if (($this->iConsumo - ($this->oEstrutura->getValorInicial() - 1)) > 0) {
-      return bcmul(($this->iConsumo - ($this->oEstrutura->getValorInicial() - 1)), $this->oEstrutura->getValor(), 2);
+      return bcmul(($this->iConsumo - ($this->oEstrutura->getValorInicial() - 1)), (string) $this->oEstrutura->getValor(), 2);
     }
 
     return 0;

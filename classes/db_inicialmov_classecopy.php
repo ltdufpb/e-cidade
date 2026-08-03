@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE inicialmov
 class cl_inicialmov { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v56_codmov = 0; 
-   var $v56_inicial = 0; 
-   var $v56_codsit = 0; 
-   var $v56_obs = null; 
-   var $v56_data_dia = null; 
-   var $v56_data_mes = null; 
-   var $v56_data_ano = null; 
-   var $v56_data = null; 
-   var $v56_id_login = 0; 
+   public $v56_codmov = 0; 
+   public $v56_inicial = 0; 
+   public $v56_codsit = 0; 
+   public $v56_obs = null; 
+   public $v56_data_dia = null; 
+   public $v56_data_mes = null; 
+   public $v56_data_ano = null; 
+   public $v56_data = null; 
+   public $v56_id_login = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v56_codmov = int4 = Movimento 
                  v56_inicial = int4 = Inicial Numero 
                  v56_codsit = int4 = Situação 
@@ -64,7 +64,7 @@ class cl_inicialmov {
       $v56_data=date("Y-m-d",db_getsession("DB_datausu"));
       $this->v56_data=$v56_data;
       $this->v56_id_login=$v56_usuario;
-      $this->v56_obs=(isset($this->v56_obs)?$this->v56_obs:"0");
+      $this->v56_obs ??= "0";
       $this->v56_codsit=$codsit;
       $this->v56_inicial=$inicial;
       $this->incluir(0);
@@ -75,20 +75,20 @@ class cl_inicialmov {
       $clinicial->v50_data="";
       $clinicial->v50_id_login="";
       $clinicial->v50_codlocal="";
-      if(isset($HTTP_POST_VARS["v50_inicial"])){
-         unset($HTTP_POST_VARS["v50_inicial"]);
+      if(isset($_POST["v50_inicial"])){
+         unset($_POST["v50_inicial"]);
       }  
-      if(isset($HTTP_POST_VARS["v50_advog"])){
-         unset($HTTP_POST_VARS["v50_advog"]);
+      if(isset($_POST["v50_advog"])){
+         unset($_POST["v50_advog"]);
       }  
-      if(isset($HTTP_POST_VARS["v50_data"])){
-         unset($HTTP_POST_VARS["v50_data"]);
+      if(isset($_POST["v50_data"])){
+         unset($_POST["v50_data"]);
       }  
-      if(isset($HTTP_POST_VARS["v50_id_login"])){
-         unset($HTTP_POST_VARS["v50_id_login"]);
+      if(isset($_POST["v50_id_login"])){
+         unset($_POST["v50_id_login"]);
       }  
-      if(isset($HTTP_POST_VARS["v50_codlocal"])){
-         unset($HTTP_POST_VARS["v50_codlocal"]);
+      if(isset($_POST["v50_codlocal"])){
+         unset($_POST["v50_codlocal"]);
       }  
       if(isset($GLOBALS["HTTP_POST_VARS"]["v50_data"])){
          unset($GLOBALS["HTTP_POST_VARS"]["v50_data"]);
@@ -105,10 +105,10 @@ class cl_inicialmov {
 
 		 
    //funcao construtor da classe 
-   function cl_inicialmov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("inicialmov"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -197,10 +197,10 @@ class cl_inicialmov {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v56_codmov = pg_result($result,0,0); 
+       $this->v56_codmov = pg_fetch_result($result,0,0); 
      }else{
        $result = @pg_query("select last_value from inicialmov_v56_codmov_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v56_codmov)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v56_codmov)){
          $this->erro_sql = " Campo v56_codmov maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -237,7 +237,7 @@ class cl_inicialmov {
                       )");
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Movimentação da inicial ($this->v56_codmov) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Movimentação da inicial já Cadastrado";
@@ -259,14 +259,14 @@ class cl_inicialmov {
      $resaco = $this->sql_record($this->sql_query_file($this->v56_codmov));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = pg_query("insert into db_acountkey values($acount,2565,'$this->v56_codmov','I')");
-       $resac = pg_query("insert into db_acount values($acount,420,2565,'','".pg_result($resaco,0,'v56_codmov')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,420,2571,'','".pg_result($resaco,0,'v56_inicial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,420,2572,'','".pg_result($resaco,0,'v56_codsit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,420,2573,'','".pg_result($resaco,0,'v56_obs')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,420,1866,'','".pg_result($resaco,0,'v56_data')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,420,2575,'','".pg_result($resaco,0,'v56_id_login')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,2565,'','".pg_fetch_result($resaco,0,'v56_codmov')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,2571,'','".pg_fetch_result($resaco,0,'v56_inicial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,2572,'','".pg_fetch_result($resaco,0,'v56_codsit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,2573,'','".pg_fetch_result($resaco,0,'v56_obs')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,1866,'','".pg_fetch_result($resaco,0,'v56_data')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,2575,'','".pg_fetch_result($resaco,0,'v56_id_login')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -371,20 +371,20 @@ class cl_inicialmov {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->v56_codmov));
      if($this->numrows>0){       $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = pg_query("insert into db_acountkey values($acount,2565,'$this->v56_codmov','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v56_codmov"]))
-         $resac = pg_query("insert into db_acount values($acount,420,2565,'".pg_result($resaco,0,'v56_codmov')."','$this->v56_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,420,2565,'".pg_fetch_result($resaco,0,'v56_codmov')."','$this->v56_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v56_inicial"]))
-         $resac = pg_query("insert into db_acount values($acount,420,2571,'".pg_result($resaco,0,'v56_inicial')."','$this->v56_inicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,420,2571,'".pg_fetch_result($resaco,0,'v56_inicial')."','$this->v56_inicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v56_codsit"]))
-         $resac = pg_query("insert into db_acount values($acount,420,2572,'".pg_result($resaco,0,'v56_codsit')."','$this->v56_codsit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,420,2572,'".pg_fetch_result($resaco,0,'v56_codsit')."','$this->v56_codsit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v56_obs"]))
-         $resac = pg_query("insert into db_acount values($acount,420,2573,'".pg_result($resaco,0,'v56_obs')."','$this->v56_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,420,2573,'".pg_fetch_result($resaco,0,'v56_obs')."','$this->v56_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v56_data"]))
-         $resac = pg_query("insert into db_acount values($acount,420,1866,'".pg_result($resaco,0,'v56_data')."','$this->v56_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,420,1866,'".pg_fetch_result($resaco,0,'v56_data')."','$this->v56_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v56_id_login"]))
-         $resac = pg_query("insert into db_acount values($acount,420,2575,'".pg_result($resaco,0,'v56_id_login')."','$this->v56_id_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,420,2575,'".pg_fetch_result($resaco,0,'v56_id_login')."','$this->v56_id_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @pg_exec($sql);
      if($result==false){ 
@@ -421,14 +421,14 @@ class cl_inicialmov {
      $resaco = $this->sql_record($this->sql_query_file($this->v56_codmov));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
-       $resac = pg_query("insert into db_acountkey values($acount,2565,'".pg_result($resaco,$iresaco,'v56_codmov')."','E')");
-       $resac = pg_query("insert into db_acount values($acount,420,2565,'','".pg_result($resaco,0,'v56_codmov')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,420,2571,'','".pg_result($resaco,0,'v56_inicial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,420,2572,'','".pg_result($resaco,0,'v56_codsit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,420,2573,'','".pg_result($resaco,0,'v56_obs')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,420,1866,'','".pg_result($resaco,0,'v56_data')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,420,2575,'','".pg_result($resaco,0,'v56_id_login')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $acount = pg_fetch_result($resac,0,0);
+       $resac = pg_query("insert into db_acountkey values($acount,2565,'".pg_fetch_result($resaco,$iresaco,'v56_codmov')."','E')");
+       $resac = pg_query("insert into db_acount values($acount,420,2565,'','".pg_fetch_result($resaco,0,'v56_codmov')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,2571,'','".pg_fetch_result($resaco,0,'v56_inicial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,2572,'','".pg_fetch_result($resaco,0,'v56_codsit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,2573,'','".pg_fetch_result($resaco,0,'v56_obs')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,1866,'','".pg_fetch_result($resaco,0,'v56_data')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,420,2575,'','".pg_fetch_result($resaco,0,'v56_id_login')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $sql = " delete from inicialmov
                     where ";
@@ -480,7 +480,7 @@ class cl_inicialmov {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -495,7 +495,7 @@ class cl_inicialmov {
    function sql_query ( $v56_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -522,7 +522,7 @@ class cl_inicialmov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -535,7 +535,7 @@ class cl_inicialmov {
    function sql_query_file ( $v56_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -556,7 +556,7 @@ class cl_inicialmov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

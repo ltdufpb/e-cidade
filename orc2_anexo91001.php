@@ -34,7 +34,7 @@ include(modification("libs/db_liborcamento.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -171,7 +171,7 @@ function js_limpa(){
              <td align="right" ><strong>Filtro :</strong></td>
              <td align="left">
 	      <?php 
-	        $xy = array('1A'=>'Órgão','3B'=>'Função');
+	        $xy = ['1A'=>'Órgão','3B'=>'Função'];
 	        db_select('nivel',$xy,true,2,"");
 	      ?>
              <td align="left">

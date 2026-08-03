@@ -10,7 +10,7 @@ namespace ECidade\RecursosHumanos\ESocial\Enum;
 class CessacaoBeneficios
 {
 
-    private $tiposCessacao = array();
+    private $tiposCessacao = [];
 
     /**
      *
@@ -30,7 +30,7 @@ class CessacaoBeneficios
         $cd10 = "10 Mudança de CPF do beneficiário";
         $cd11 = "11 Não recadastramento";
 
-        $this->tiposCessacao = array(
+        $this->tiposCessacao = [
             1  => $cd1,
             2  => $cd2,
             3  => $cd3,
@@ -42,7 +42,7 @@ class CessacaoBeneficios
             9  => $cd9,
             10 => $cd10,
             11 => $cd11,
-        );
+        ];
     }
 
     /**

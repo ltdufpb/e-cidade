@@ -165,7 +165,7 @@ $oTermo->anulado = ($oTermo->anulado == 't');
           <form id="agrupamento" name="agrupamento" type="post">
             <label class="bold" for="tipoFiltro">Agrupar por:</label>
             <?php
-              $array = array("s"=>"Parcela","a"=>"Receita");
+              $array = ["s"=>"Parcela","a"=>"Receita"];
               db_select('tipoFiltro', $array, true, "1", "onChange='js_mudaFiltro(this.value);'");
 
               $parcelamento = $iParcelamento;
@@ -175,7 +175,7 @@ $oTermo->anulado = ($oTermo->anulado == 't');
           <?php
             $arrayTot["k00_valor"]  = "k00_valor";
             $arrayTot["totalgeral"] = "status";
-            db_lovrot($sqlTermoParcelas,50,"()","","$funcao_js","","NoMe", array(),false, $arrayTot);
+            db_lovrot($sqlTermoParcelas,50,"()","","$funcao_js","","NoMe", [],false, $arrayTot);
           ?>
         </td>
       </tr>

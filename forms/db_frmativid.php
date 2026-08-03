@@ -134,7 +134,7 @@ $clissgruposervico->rotulo->label("q126_sequencial");
           </td>
           <td>
             <?php
-              $arrayvalores = array("S" => "Selecione", "F" => "Física", "J" => "Juridica");
+              $arrayvalores = ["S" => "Selecione", "F" => "Física", "J" => "Juridica"];
               db_select("pessoa", $arrayvalores, 1, $db_opcaoselect, "onchange='js_limpaCampos()'");
             ?>
           </td>
@@ -581,7 +581,7 @@ $clissgruposervico->rotulo->label("q126_sequencial");
     db_iframe_ativid.hide();
     <?php
     if ($db_opcao != 1) {
-      echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave;";
+      echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave;";
     }
     ?>
   }
@@ -1054,7 +1054,7 @@ $clissgruposervico->rotulo->label("q126_sequencial");
   }
 
   function js_preenchepesquisa(chave){
-    location.href = "<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>"+"?chavepesquisa="+chave;
+    location.href = "<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>"+"?chavepesquisa="+chave;
   }
 
   function js_insSelect(){

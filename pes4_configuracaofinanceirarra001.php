@@ -230,7 +230,7 @@
         <?php
 
           $iInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
-          $aChavePri    = array("rh172_sequencial" => isset($rh172_sequencial) ? $rh172_sequencial : '');
+          $aChavePri    = ["rh172_sequencial" => $rh172_sequencial ?? ''];
 
           $sCampos  = "rh172_sequencial,";
           $sCampos .= "h12_descr as rh172_tipoasse,     ";

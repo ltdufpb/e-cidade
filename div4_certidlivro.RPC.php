@@ -80,7 +80,7 @@ switch ($oParam->exec) {
 
       db_inicio_transacao();
       $oDaoCertid = db_utils::getDao("certid");
-      $oDaoCertid->v13_dtemis = implode("-", array_reverse(explode("/", $oParam->v13_dtemis)));
+      $oDaoCertid->v13_dtemis = implode("-", array_reverse(explode("/", (string) $oParam->v13_dtemis)));
       $oDaoCertid->v13_certid = $oParam->v13_certid;
       $oDaoCertid->alterar($oParam->v13_certid);
       if ($oDaoCertid->erro_status == 0) {
@@ -96,7 +96,7 @@ switch ($oParam->exec) {
         if ($oDaoCertidLivroFolha->erro_status == 0) {
 
           $oRetorno->status  = 2;
-          $oRetorno->message = urlencode($oDaoCertidLivroFolha->erro_msg);
+          $oRetorno->message = urlencode((string) $oDaoCertidLivroFolha->erro_msg);
 
         }
       } else if ($oRetorno->status == 1) {
@@ -114,7 +114,7 @@ switch ($oParam->exec) {
            if ($oDaoCertidLivroFolha->erro_status == 0) {
 
             $oRetorno->status  = 2;
-            $oRetorno->message = urlencode($oDaoCertidLivroFolha->erro_msg);
+            $oRetorno->message = urlencode((string) $oDaoCertidLivroFolha->erro_msg);
 
           }
         } else {

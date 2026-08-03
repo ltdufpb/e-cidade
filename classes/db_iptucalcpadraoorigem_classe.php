@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE iptucalcpadraoorigem
 class cl_iptucalcpadraoorigem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j27_sequencial = 0; 
-   var $j27_iptucalcpadrao = 0; 
-   var $j27_matric = 0; 
-   var $j27_anousu = 0; 
+   public $j27_sequencial = 0; 
+   public $j27_iptucalcpadrao = 0; 
+   public $j27_matric = 0; 
+   public $j27_anousu = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j27_sequencial = int8 = Código 
                  j27_iptucalcpadrao = int8 = Iptu Padrão 
                  j27_matric = int8 = Matrícula do imóvel 
                  j27_anousu = int4 = Ano 
                  ";
    //funcao construtor da classe 
-   function cl_iptucalcpadraoorigem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucalcpadraoorigem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_iptucalcpadraoorigem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j27_sequencial = pg_result($result,0,0); 
+       $this->j27_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptucalcpadraoorigem_j27_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j27_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j27_sequencial)){
          $this->erro_sql = " Campo j27_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_iptucalcpadraoorigem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Origem ($this->j27_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Origem já Cadastrado";
@@ -180,13 +180,13 @@ class cl_iptucalcpadraoorigem {
      $resaco = $this->sql_record($this->sql_query_file($this->j27_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11054,'$this->j27_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1904,11054,'','".AddSlashes(pg_result($resaco,0,'j27_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1904,11055,'','".AddSlashes(pg_result($resaco,0,'j27_iptucalcpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1904,11056,'','".AddSlashes(pg_result($resaco,0,'j27_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1904,7883,'','".AddSlashes(pg_result($resaco,0,'j27_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1904,11054,'','".AddSlashes(pg_fetch_result($resaco,0,'j27_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1904,11055,'','".AddSlashes(pg_fetch_result($resaco,0,'j27_iptucalcpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1904,11056,'','".AddSlashes(pg_fetch_result($resaco,0,'j27_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1904,7883,'','".AddSlashes(pg_fetch_result($resaco,0,'j27_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_iptucalcpadraoorigem {
       $this->atualizacampos();
      $sql = " update iptucalcpadraoorigem set ";
      $virgula = "";
-     if(trim($this->j27_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j27_sequencial"])){ 
+     if(trim((string) $this->j27_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j27_sequencial"])){ 
        $sql  .= $virgula." j27_sequencial = $this->j27_sequencial ";
        $virgula = ",";
-       if(trim($this->j27_sequencial) == null ){ 
+       if(trim((string) $this->j27_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "j27_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_iptucalcpadraoorigem {
          return false;
        }
      }
-     if(trim($this->j27_iptucalcpadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j27_iptucalcpadrao"])){ 
+     if(trim((string) $this->j27_iptucalcpadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j27_iptucalcpadrao"])){ 
        $sql  .= $virgula." j27_iptucalcpadrao = $this->j27_iptucalcpadrao ";
        $virgula = ",";
-       if(trim($this->j27_iptucalcpadrao) == null ){ 
+       if(trim((string) $this->j27_iptucalcpadrao) == null ){ 
          $this->erro_sql = " Campo Iptu Padrão nao Informado.";
          $this->erro_campo = "j27_iptucalcpadrao";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_iptucalcpadraoorigem {
          return false;
        }
      }
-     if(trim($this->j27_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j27_matric"])){ 
+     if(trim((string) $this->j27_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j27_matric"])){ 
        $sql  .= $virgula." j27_matric = $this->j27_matric ";
        $virgula = ",";
-       if(trim($this->j27_matric) == null ){ 
+       if(trim((string) $this->j27_matric) == null ){ 
          $this->erro_sql = " Campo Matrícula do imóvel nao Informado.";
          $this->erro_campo = "j27_matric";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_iptucalcpadraoorigem {
          return false;
        }
      }
-     if(trim($this->j27_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j27_anousu"])){ 
+     if(trim((string) $this->j27_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j27_anousu"])){ 
        $sql  .= $virgula." j27_anousu = $this->j27_anousu ";
        $virgula = ",";
-       if(trim($this->j27_anousu) == null ){ 
+       if(trim((string) $this->j27_anousu) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "j27_anousu";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_iptucalcpadraoorigem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11054,'$this->j27_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j27_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1904,11054,'".AddSlashes(pg_result($resaco,$conresaco,'j27_sequencial'))."','$this->j27_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1904,11054,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j27_sequencial'))."','$this->j27_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j27_iptucalcpadrao"]))
-           $resac = db_query("insert into db_acount values($acount,1904,11055,'".AddSlashes(pg_result($resaco,$conresaco,'j27_iptucalcpadrao'))."','$this->j27_iptucalcpadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1904,11055,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j27_iptucalcpadrao'))."','$this->j27_iptucalcpadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j27_matric"]))
-           $resac = db_query("insert into db_acount values($acount,1904,11056,'".AddSlashes(pg_result($resaco,$conresaco,'j27_matric'))."','$this->j27_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1904,11056,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j27_matric'))."','$this->j27_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j27_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,1904,7883,'".AddSlashes(pg_result($resaco,$conresaco,'j27_anousu'))."','$this->j27_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1904,7883,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j27_anousu'))."','$this->j27_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_iptucalcpadraoorigem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11054,'$j27_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1904,11054,'','".AddSlashes(pg_result($resaco,$iresaco,'j27_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1904,11055,'','".AddSlashes(pg_result($resaco,$iresaco,'j27_iptucalcpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1904,11056,'','".AddSlashes(pg_result($resaco,$iresaco,'j27_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1904,7883,'','".AddSlashes(pg_result($resaco,$iresaco,'j27_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1904,11054,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j27_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1904,11055,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j27_iptucalcpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1904,11056,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j27_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1904,7883,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j27_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptucalcpadraoorigem
@@ -376,7 +376,7 @@ class cl_iptucalcpadraoorigem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptucalcpadraoorigem";
@@ -390,7 +390,7 @@ class cl_iptucalcpadraoorigem {
    function sql_query ( $j27_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_iptucalcpadraoorigem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,7 +428,7 @@ class cl_iptucalcpadraoorigem {
    function sql_query_file ( $j27_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_iptucalcpadraoorigem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

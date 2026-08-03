@@ -58,6 +58,7 @@ class ProgramasTematicosPdf extends PdfDespesa
         }
     }
 
+    #[\Override]
     public function setFiltros(array $filtros)
     {
         parent::setFiltros($filtros);
@@ -101,6 +102,7 @@ class ProgramasTematicosPdf extends PdfDespesa
         $this->SetFont('Arial', '', 7);
     }
 
+    #[\Override]
     protected function cabecalhoObjetivos()
     {
         if (($this->GetY() + 10) > $this->getH()) {
@@ -111,6 +113,7 @@ class ProgramasTematicosPdf extends PdfDespesa
         $this->SetFont('Arial', '', 7);
     }
 
+    #[\Override]
     protected function cabecalhoMetaObjetivo()
     {
         $altura = $this->apresentaValoresMetaObjetivo ? 25 : 15;
@@ -200,6 +203,7 @@ class ProgramasTematicosPdf extends PdfDespesa
         }
     }
 
+    #[\Override]
     protected function imprimeOrgaos(array $orgaos)
     {
         $this->cabecalhoOrgao();

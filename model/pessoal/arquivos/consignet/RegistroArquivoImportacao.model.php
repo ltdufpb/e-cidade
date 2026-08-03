@@ -118,7 +118,7 @@ class RegistroArquivoImportacao{
    * @param String|null  $sRubric
    * @param Float|null   $fValor
    */
-  public function __construct(Integer $iMatricula = null, String $sRubric = null, $fValor = null) {
+  public function __construct(?Integer $iMatricula = null, ?String $sRubric = null, $fValor = null) {
     
     if(!empty($iMatricula)){
 

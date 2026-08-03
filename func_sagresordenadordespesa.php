@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_sagresordenadordespesa_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -62,9 +62,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clsagresordenadordespesa->sql_query("",$campos,"c139_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c139_cgm)){
-          $repassa = array("chave_c139_sequencial"=>$chave_c139_sequencial,"chave_c139_cgm"=>$chave_c139_cgm);
+          $repassa = ["chave_c139_sequencial"=>$chave_c139_sequencial,"chave_c139_cgm"=>$chave_c139_cgm];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

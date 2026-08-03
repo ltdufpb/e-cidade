@@ -20,17 +20,16 @@ require_once(modification('libs/db_stdlib.php'));
 class LotacaoTributaria extends ProcessamentoAbstract implements ProcessamentoInterface
 {
     /**
-     * @var
-     */
-    private $iCgm;
-
-    /**
      * LotacaoTributaria constructor.
      * @param $iCgm
      */
-    public function __construct($iCgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $iCgm
+    )
     {
-        $this->iCgm = $iCgm;
     }
 
     /**

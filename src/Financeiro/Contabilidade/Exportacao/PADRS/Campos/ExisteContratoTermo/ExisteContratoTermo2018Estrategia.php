@@ -6,6 +6,7 @@ use Exception;
 
 class ExisteContratoTermo2018Estrategia extends ExisteContratoTermoEstrategia
 {
+    #[\Override]
     public function getValor()
     {
         // Se empenho for gerado através da folha, enviar X
@@ -50,7 +51,7 @@ class ExisteContratoTermo2018Estrategia extends ExisteContratoTermoEstrategia
         return pg_num_rows($resultado);
     }
 
-    private function tratarErroGetValor()
+    private function tratarErroGetValor(): never
     {
         throw new Exception("Não foi possível verificar se o empenho possui contrato/termo. Por favor entre em contato com o administrador do sistema.");
     }

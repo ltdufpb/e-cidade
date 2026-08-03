@@ -91,7 +91,7 @@ if(isset($oGet->iMatricula)){
     $r16_carth_cat      = $oDocumentos->r16_carth_cat;
     if($oDocumentos->rh16_carth_val != ''){
     	
-	    $aRh16_carth_val    = explode("-", $oDocumentos->rh16_carth_val);
+	    $aRh16_carth_val    = explode("-", (string) $oDocumentos->rh16_carth_val);
 	    $rh16_carth_val_dia = $aRh16_carth_val[2];
 	    $rh16_carth_val_mes = $aRh16_carth_val[1];
 	    $rh16_carth_val_ano = $aRh16_carth_val[0];

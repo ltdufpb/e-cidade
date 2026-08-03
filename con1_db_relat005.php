@@ -46,7 +46,7 @@ $cldb_relatselecionados = new cl_db_relatselecionados;
 $cldb_relatsoma = new cl_db_relatsoma;
 $cldb_relatquebra = new cl_db_relatquebra;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

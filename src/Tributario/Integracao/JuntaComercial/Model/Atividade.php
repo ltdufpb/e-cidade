@@ -34,11 +34,6 @@ namespace ECidade\Tributario\Integracao\JuntaComercial\Model;
 class Atividade
 {
   /**
-   * @var integer $iInscricao
-   */
-  private $iInscricao;
-
-  /**
    * @var integer
    */
   private $iCodigo;
@@ -97,9 +92,8 @@ class Atividade
    * Atividade constructor.
    * @param int $iInscricao
    */
-  public function __construct($iInscricao)
+  public function __construct(private $iInscricao)
   {
-    $this->iInscricao = $iInscricao;
   }
 
   /**

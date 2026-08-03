@@ -48,7 +48,7 @@ $clautonumpre= new cl_autonumpre;
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <?php 
-db_postmemory($HTTP_GET_VARS,0);
+db_postmemory($_GET,0);
 $pesquisaLocalizada = false;
 if ($solicitacao == "Proced") {
   $sql = $clautotipo->sql_query_baixa("","y59_codtipo,y29_descr,y29_descr_obs,y59_valor,y87_dtbaixa,p58_codproc",""," y59_codauto = $auto");
@@ -74,7 +74,7 @@ if ($solicitacao == "Proced") {
 }
 if ($pesquisaLocalizada==true) {
   $result = db_query($sql);
-  if(pg_numrows($result) == 0){
+  if(pg_num_rows($result) == 0){
     echo "<br><br><b>Nenhum Registro Cadastrado!!<b>";
   }else{
     db_lovrot($sql,5,"","","");

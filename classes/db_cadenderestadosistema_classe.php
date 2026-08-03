@@ -3,35 +3,35 @@
 //CLASSE DA ENTIDADE cadenderestadosistema
 class cl_cadenderestadosistema {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $db300_sequencial = 0;
-   var $db300_db_sistemaexterno = 0;
-   var $db300_cadenderestado = 0;
-   var $db300_codigo = null;
+   public $db300_sequencial = 0;
+   public $db300_db_sistemaexterno = 0;
+   public $db300_cadenderestado = 0;
+   public $db300_codigo = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  db300_sequencial = int4 = Código
                  db300_db_sistemaexterno = int4 = Tipo Sistema
                  db300_cadenderestado = int4 = Estado
                  db300_codigo = varchar(50) = Código no sistema externo
                  ";
    //funcao construtor da classe
-   function cl_cadenderestadosistema() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderestadosistema");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -107,7 +107,7 @@ class cl_cadenderestadosistema {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Codigo do Estado Sistema Externo ($this->db300_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Codigo do Estado Sistema Externo já Cadastrado";
@@ -136,13 +136,13 @@ class cl_cadenderestadosistema {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21691,'$this->db300_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3899,21691,'','".AddSlashes(pg_result($resaco,0,'db300_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3899,21692,'','".AddSlashes(pg_result($resaco,0,'db300_db_sistemaexterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3899,21693,'','".AddSlashes(pg_result($resaco,0,'db300_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3899,21694,'','".AddSlashes(pg_result($resaco,0,'db300_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3899,21691,'','".AddSlashes(pg_fetch_result($resaco,0,'db300_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3899,21692,'','".AddSlashes(pg_fetch_result($resaco,0,'db300_db_sistemaexterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3899,21693,'','".AddSlashes(pg_fetch_result($resaco,0,'db300_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3899,21694,'','".AddSlashes(pg_fetch_result($resaco,0,'db300_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -152,10 +152,10 @@ class cl_cadenderestadosistema {
       $this->atualizacampos();
      $sql = " update cadenderestadosistema set ";
      $virgula = "";
-     if(trim($this->db300_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db300_sequencial"])){
+     if(trim((string) $this->db300_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db300_sequencial"])){
        $sql  .= $virgula." db300_sequencial = $this->db300_sequencial ";
        $virgula = ",";
-       if(trim($this->db300_sequencial) == null ){
+       if(trim((string) $this->db300_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "db300_sequencial";
          $this->erro_banco = "";
@@ -165,10 +165,10 @@ class cl_cadenderestadosistema {
          return false;
        }
      }
-     if(trim($this->db300_db_sistemaexterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db300_db_sistemaexterno"])){
+     if(trim((string) $this->db300_db_sistemaexterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db300_db_sistemaexterno"])){
        $sql  .= $virgula." db300_db_sistemaexterno = $this->db300_db_sistemaexterno ";
        $virgula = ",";
-       if(trim($this->db300_db_sistemaexterno) == null ){
+       if(trim((string) $this->db300_db_sistemaexterno) == null ){
          $this->erro_sql = " Campo Tipo Sistema não informado.";
          $this->erro_campo = "db300_db_sistemaexterno";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_cadenderestadosistema {
          return false;
        }
      }
-     if(trim($this->db300_cadenderestado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db300_cadenderestado"])){
+     if(trim((string) $this->db300_cadenderestado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db300_cadenderestado"])){
        $sql  .= $virgula." db300_cadenderestado = $this->db300_cadenderestado ";
        $virgula = ",";
-       if(trim($this->db300_cadenderestado) == null ){
+       if(trim((string) $this->db300_cadenderestado) == null ){
          $this->erro_sql = " Campo Estado não informado.";
          $this->erro_campo = "db300_cadenderestado";
          $this->erro_banco = "";
@@ -191,10 +191,10 @@ class cl_cadenderestadosistema {
          return false;
        }
      }
-     if(trim($this->db300_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db300_codigo"])){
+     if(trim((string) $this->db300_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db300_codigo"])){
        $sql  .= $virgula." db300_codigo = '$this->db300_codigo' ";
        $virgula = ",";
-       if(trim($this->db300_codigo) == null ){
+       if(trim((string) $this->db300_codigo) == null ){
          $this->erro_sql = " Campo Código no sistema externo não informado.";
          $this->erro_campo = "db300_codigo";
          $this->erro_banco = "";
@@ -218,17 +218,17 @@ class cl_cadenderestadosistema {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21691,'$this->db300_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db300_sequencial"]) || $this->db300_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3899,21691,'".AddSlashes(pg_result($resaco,$conresaco,'db300_sequencial'))."','$this->db300_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3899,21691,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db300_sequencial'))."','$this->db300_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db300_db_sistemaexterno"]) || $this->db300_db_sistemaexterno != "")
-             $resac = db_query("insert into db_acount values($acount,3899,21692,'".AddSlashes(pg_result($resaco,$conresaco,'db300_db_sistemaexterno'))."','$this->db300_db_sistemaexterno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3899,21692,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db300_db_sistemaexterno'))."','$this->db300_db_sistemaexterno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db300_cadenderestado"]) || $this->db300_cadenderestado != "")
-             $resac = db_query("insert into db_acount values($acount,3899,21693,'".AddSlashes(pg_result($resaco,$conresaco,'db300_cadenderestado'))."','$this->db300_cadenderestado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3899,21693,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db300_cadenderestado'))."','$this->db300_cadenderestado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db300_codigo"]) || $this->db300_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3899,21694,'".AddSlashes(pg_result($resaco,$conresaco,'db300_codigo'))."','$this->db300_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3899,21694,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db300_codigo'))."','$this->db300_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -282,13 +282,13 @@ class cl_cadenderestadosistema {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21691,'$db300_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3899,21691,'','".AddSlashes(pg_result($resaco,$iresaco,'db300_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3899,21692,'','".AddSlashes(pg_result($resaco,$iresaco,'db300_db_sistemaexterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3899,21693,'','".AddSlashes(pg_result($resaco,$iresaco,'db300_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3899,21694,'','".AddSlashes(pg_result($resaco,$iresaco,'db300_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3899,21691,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db300_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3899,21692,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db300_db_sistemaexterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3899,21693,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db300_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3899,21694,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db300_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

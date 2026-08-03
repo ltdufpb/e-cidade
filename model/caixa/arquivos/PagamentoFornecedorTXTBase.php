@@ -32,7 +32,7 @@ abstract class PagamentoFornecedorTXTBase {
   protected $iCodigoLayout; 
   protected $sCaminhoArquivo;
   protected $oDadosArquivo;
-  protected $aDadosErro = array();
+  protected $aDadosErro = [];
   
   /**
    * Retorna os dados processados do layout
@@ -120,15 +120,15 @@ abstract class PagamentoFornecedorTXTBase {
    */
   protected function getCodigoErro($sCodigoRetorno) {
   	
-    $aCodigosRetorno = array();
-    $aCodigos        = array();
+    $aCodigosRetorno = [];
+    $aCodigos        = [];
     for ($i = 0; $i < floor(strlen(trim($sCodigoRetorno)) / 2); $i++) {
       $aCodigos[] = substr($sCodigoRetorno, $i * 2, 2);
     }
     
     foreach ($aCodigos as $sCodigo) {
       if  (!key_exists($sCodigo, $this->aDadosErro)) {
-        $this->setDadosErroLinha(array($sCodigo));
+        $this->setDadosErroLinha([$sCodigo]);
       }
     	$aCodigosRetorno[$sCodigo] = $this->aDadosErro[$sCodigo];
     }

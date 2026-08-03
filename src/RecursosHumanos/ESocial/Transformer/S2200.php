@@ -21,11 +21,6 @@ use ServidorRepository;
 class S2200 extends Sugestao
 {
     /**
-     * @var int
-     */
-    private $matricula;
-
-    /**
      * Como podem haver vários dependentes, use a string %dep% para servir
      * como um alias para o número do dependente
      *
@@ -33,12 +28,12 @@ class S2200 extends Sugestao
      *
      * @var array
      */
-    private $deParaDependentes = array(
+    private $deParaDependentes = [
         'nome' => 'nmDep_%dep%',
         'nascimento' => 'dtNascto_%dep%',
         'cpf' => 'cpfDep_%dep%',
-        'tipo' => array(
-            'tpDep_%dep%' => array(
+        'tipo' => [
+            'tpDep_%dep%' => [
                 '1' => 'dependente_%dep%_tpDep_01',
                 '2' => 'dependente_%dep%_tpDep_03',
                 '3' => 'dependente_%dep%_tpDep_04',
@@ -48,35 +43,34 @@ class S2200 extends Sugestao
                 '6' => 'dependente_%dep%_tpDep_09',
                 '7' => 'dependente_%dep%_tpDep_10',
                 '8' => 'dependente_%dep%_tpDep_11'
-            )
-        ),
-        'finsPrevidenciarios' => array(
-            'depFinsPrev_%dep%' => array(
+            ]
+        ],
+        'finsPrevidenciarios' => [
+            'depFinsPrev_%dep%' => [
                 true => 'depFinsPrev_sim_%dep%',
                 false => 'depFinsPrev_nao_%dep%'
-            )
-        )
-    );
+            ]
+        ]
+    ];
 
     /**
      * @var array
      */
-    private $deParaCeletista = array(
-        'tpRegJor' => array(
+    private $deParaCeletista = [
+        'tpRegJor' => [
             1 => 'tpRegJor_1',
             2 => 'tpRegJor_2',
             3 => 'tpRegJor_3',
             4 => 'tpRegJor_4'
-        )
-    );
+        ]
+    ];
 
     /**
      * S2200 constructor.
      * @param int $matricula
      */
-    public function __construct($matricula)
+    public function __construct(private $matricula)
     {
-        $this->matricula = $matricula;
     }
 
     /**
@@ -100,9 +94,9 @@ class S2200 extends Sugestao
         $dependenteRepository = new DependenteRepository();
         $dependentes = $dependenteRepository
             ->scopeMatricula($this->matricula)
-            ->orderBy(array('rh31_nome'))
+            ->orderBy(['rh31_nome'])
             ->setUseJoin(true)
-            ->get(array('rh31_nome', 'rh31_dtnasc', 'rh31_irf', 'dp01_cpf', 'rh31_fins_previdenciarios'));
+            ->get(['rh31_nome', 'rh31_dtnasc', 'rh31_irf', 'dp01_cpf', 'rh31_fins_previdenciarios']);
 
         $numeroDependente = 1;
 
@@ -199,9 +193,9 @@ class S2200 extends Sugestao
             ->get();
 
         if (!empty($admissao)) {
-            $this->dados['cadIni'] = array(
+            $this->dados['cadIni'] = [
                 'option' => 'cadIni_S',
-            );
+            ];
         }
     }
 
@@ -215,7 +209,7 @@ class S2200 extends Sugestao
             ->scopeAno(DBPessoal::getAnoFolha())
             ->scopeMes(DBPessoal::getMesFolha())
             ->scopeMatricula($this->matricula)
-            ->first(array('rh02_regimejornadatrabalho'));
+            ->first(['rh02_regimejornadatrabalho']);
 
         $servidor = ServidorRepository::getInstanciaByCodigo($this->matricula);
 
@@ -248,7 +242,7 @@ class S2200 extends Sugestao
 
         $preenchimentos = $admissaoTrabalhadorRepository
             ->scopeMatricula($this->matricula)
-            ->get(array('eso02_sequencial'));
+            ->get(['eso02_sequencial']);
 
         return !empty($preenchimentos);
     }

@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_utils.php"));
 require_once(modification("model/contabilidade/planoconta/ContaPlano.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcontacorrenteregravinculo = new cl_contacorrenteregravinculo;
 $db_opcao = 1;
 $db_botao = true;

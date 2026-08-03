@@ -56,7 +56,7 @@ class ArquivoEConsig {
    * Array com os Registros do ponto
    * @var array
    */
-  private $aRegistrosPonto = array();
+  private $aRegistrosPonto = [];
 
   /**
    * Nome do arquivo
@@ -152,7 +152,7 @@ class ArquivoEConsig {
   }
 
   public function limparRegistros(){
-    $this->aRegistrosPonto = array();
+    $this->aRegistrosPonto = [];
   }
 
   /**
@@ -163,7 +163,7 @@ class ArquivoEConsig {
     
     if ( empty($this->iCodigo) ) {
 
-      $this->aRegistrosPonto =  array();
+      $this->aRegistrosPonto =  [];
       return false;
     }
 
@@ -179,7 +179,7 @@ class ArquivoEConsig {
 
     if ($iQuantidadeRegistros  == 0) {
 
-      $this->aRegistrosPonto =  array();
+      $this->aRegistrosPonto =  [];
       return false;
     }
 
@@ -188,14 +188,14 @@ class ArquivoEConsig {
       $oDadosRegistro = db_utils::fieldsMemory($rsRegistros, $iRegistro); 
       try {
         $oServidor      = ServidorRepository::getInstanciaByCodigo($oDadosRegistro->rh134_regist, $this->oCompetencia->getAno(), $this->oCompetencia->getMes(), $this->oInstituicao->getSequencial());
-      } catch ( BusinessException $eErro ) {
+      } catch ( BusinessException ) {
         $oServidor      = new Servidor();
         $oServidor->setMatricula($oDadosRegistro->rh134_regist);
       }
      
       try { 
         $oRubrica = RubricaRepository::getInstanciaByCodigo( $oDadosRegistro->rh135_rubrica, $this->oInstituicao->getSequencial());
-      } catch ( BusinessException $eException ) {
+      } catch ( BusinessException ) {
 
         $oRubrica = new Rubrica();
         $oRubrica->setCodigo( $oDadosRegistro->rh135_rubrica );

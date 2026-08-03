@@ -43,11 +43,13 @@ class DarumaDR700 extends ImpressoraTermica {
 
   }
 
+  #[\Override]
   public function setMargemDireita($iTam=48) {
 
     $this->iMargemDireita = $iTam;
   }
 
+  #[\Override]
   public function setMargemEsquerda($iTam=1) {
 
     $this->iMargemDireita = $iTam;
@@ -61,19 +63,12 @@ class DarumaDR700 extends ImpressoraTermica {
    */
   private function getAlinhamento($sAlinhamento = 'L') {
 
-    switch($sAlinhamento) {
-      case 'L':
-        return 0;
-        break;
-      case 'C' :
-        return 1;
-        break;
-      case 'D' :
-        return 2;
-        break;
-      default:
-        return 0;
-    }
+    return match ($sAlinhamento) {
+        'L' => 0,
+        'C' => 1,
+        'D' => 2,
+        default => 0,
+    };
   }
 
   /**
@@ -85,6 +80,7 @@ class DarumaDR700 extends ImpressoraTermica {
    * @param string   $sAlinhamento    Tipo de alinhamento : 'L' - Esquerda, 'R' - Direita, 'C'-Centro
    *
    */
+  #[\Override]
   public function escrever($sTexto,$lQuebraLinha=false,$iNroCaracteres='',$sAlinhamento='') {
 
     $sTexto = $this->strToAsc($sTexto);
@@ -107,5 +103,6 @@ class DarumaDR700 extends ImpressoraTermica {
   /**
    * Este modelo da Daruma, não possui opção de corte.
    */
+  #[\Override]
   public function cortarPapel($lTotal=true) {}
 }

@@ -38,7 +38,7 @@ $clrotulo->label('codsubrec');
 $clrotulo->label('k07_descr');
 $clrotulo->label('c60_estrut');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -93,7 +93,7 @@ function js_emite(){
         <td align="right" title="Origem dos dados a serem gerados no relatório."><strong>Origem dos dados :</strong></td>
         <td align="left">
           <?php 
-            $x = array("R"=>"Resumido","C"=>"Completo");
+            $x = ["R"=>"Resumido","C"=>"Completo"];
             db_select('origem',$x,true,2,"");
           ?>
         </td>

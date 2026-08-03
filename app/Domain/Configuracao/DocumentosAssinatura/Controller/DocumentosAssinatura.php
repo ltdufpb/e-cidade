@@ -44,7 +44,7 @@ class DocumentosAssinatura extends Controller
         }
 
         return new DBJsonResponse(
-            (new DocumentosAssinarTransformer())->transform(JSON::create()->parse($response)->data)
+            new DocumentosAssinarTransformer()->transform(JSON::create()->parse($response)->data)
         );
     }
 
@@ -242,7 +242,7 @@ class DocumentosAssinatura extends Controller
                 break;
 
             case 'text\/plain':
-            case (preg_match('/text\/plain.*/', $mime_type, $searched) && $searched):
+            case (preg_match('/text\/plain.*/', (string) $mime_type, $searched) && $searched):
                 $extension = 'txt';
                 break;
 
@@ -251,7 +251,7 @@ class DocumentosAssinatura extends Controller
                 break;
             
             default:
-                $extension = preg_replace('/^.*\/(.*)$/', "$1", $mime_type);
+                $extension = preg_replace('/^.*\/(.*)$/', "$1", (string) $mime_type);
                 break;
         }
 
@@ -315,9 +315,7 @@ class DocumentosAssinatura extends Controller
         $attr = [];
 
         if (!empty($signers)) {
-            $signers = array_map(function ($signer) {
-                return json_encode($signer);
-            }, $signers);
+            $signers = array_map(json_encode(...), $signers);
 
             $attr = [
                 "signers" => $signers,

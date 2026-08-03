@@ -24,6 +24,7 @@ class DadosAlunosApos2016 extends DadosAluno2016 implements DadosInterface
     /**
      * @param stdClass $oDados
      */
+    #[\Override]
     public function popular(stdClass $oDados)
     {
         parent::popular($oDados);
@@ -45,7 +46,7 @@ class DadosAlunosApos2016 extends DadosAluno2016 implements DadosInterface
         }
 
         // campo 10 - regra 2
-        $aMultiEtapaCenso = array(3, 12, 13, 22, 23, 24, 64, 72);
+        $aMultiEtapaCenso = [3, 12, 13, 22, 23, 24, 64, 72];
         if (in_array($this->iEtapaTurma, $aMultiEtapaCenso)) {
             $this->iEtapaArquivo = $this->iEtapaMatricula;
         }
@@ -100,6 +101,7 @@ class DadosAlunosApos2016 extends DadosAluno2016 implements DadosInterface
     /**
      * Realiza as validações do campo 2 Código da Escola - INEP
      */
+    #[\Override]
     protected function validarINEPTurma()
     {
         // campo 4 - regra 1
@@ -115,6 +117,7 @@ class DadosAlunosApos2016 extends DadosAluno2016 implements DadosInterface
     /**
      * Realiza as validações do campo Matrícula (INEP)
      */
+    #[\Override]
     protected function validarINEPMatricula()
     {
         //Regra 1
@@ -246,7 +249,7 @@ class DadosAlunosApos2016 extends DadosAluno2016 implements DadosInterface
         }
 
         // campo 10 - regra 13
-        if ($this->iEtapaTurma == 72 && !in_array($this->iEtapaArquivo, array(69, 70))) {
+        if ($this->iEtapaTurma == 72 && !in_array($this->iEtapaArquivo, [69, 70])) {
             $this->addErro($sMsg);
         }
         // campo 10 - regra 14

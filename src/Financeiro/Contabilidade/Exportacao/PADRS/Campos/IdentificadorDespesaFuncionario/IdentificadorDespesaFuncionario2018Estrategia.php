@@ -76,11 +76,13 @@ class IdentificadorDespesaFuncionario2018Estrategia extends IdentificadorDespesa
         );
     }
 
+    #[\Override]
     public function getDescricao()
     {
         return $this->getIdentificador()->name();
     }
 
+    #[\Override]
     public function getValor()
     {
         return $this->getIdentificador()->value();
@@ -89,7 +91,7 @@ class IdentificadorDespesaFuncionario2018Estrategia extends IdentificadorDespesa
     /**
      * @throws Exception
      */
-    private function handlegetValorError()
+    private function handlegetValorError(): never
     {
         throw new Exception(sprintf(
             '%s %s',
@@ -106,9 +108,7 @@ class IdentificadorDespesaFuncionario2018Estrategia extends IdentificadorDespesa
     private function isFolhaPagamento($classificacao, $natureza)
     {
         // Elementos de despesa de 01 a 12, 16, 17, 53 a 59
-        $valores = array_map(function ($valor) {
-            return str_pad($valor, '2', '0', STR_PAD_LEFT);
-        }, range(1, 12));
+        $valores = array_map(fn($valor) => str_pad((string) $valor, '2', '0', STR_PAD_LEFT), range(1, 12));
 
         $valores = array_merge($valores, [16, 17], range(53, 59));
 

@@ -55,7 +55,7 @@ try {
         case "getDadosInicialTaxa":
             $lDebitoPago = false;
             $lReciboEmitido = false;
-            $aTaxas = array();
+            $aTaxas = [];
 
             $oInicialRepository = InicialRepository::getInstance();
 
@@ -65,7 +65,7 @@ try {
                 $oInicialPartilhaRepository = InicialPartilhaRepository::getInstance();
                 $oInicialPartilha = $oInicialPartilhaRepository->getUltimaByInicial($oParametros->iInicial);
 
-                $oCollectionInicialPartilhaCustas = array();
+                $oCollectionInicialPartilhaCustas = [];
 
                 if (!empty($oInicialPartilha)) {
                     $iCodigoInicialPartilha = $oInicialPartilha->getCodigo();
@@ -88,11 +88,11 @@ try {
                         }
                     }
 
-                    $aTaxas[] = array(
+                    $aTaxas[] = [
                         "iCodigoTaxa" => $oTaxa->getCodigoTaxa(),
                         "sDescricao" => $oTaxa->getDescricao(),
                         "lChecked" => $lDispensaLancamentoRecibo
-                    );
+                    ];
                 }
 
                 $lReciboEmitido = $oInicialRepository->isReciboEmitidoDebito($oParametros->iInicial);
@@ -203,12 +203,12 @@ try {
             $oRetorno->observacaoPagamento = '';
             $oRetorno->dtpagamento = '';
 
-            $statusLancamento = array(1 => '', 2 => 'Pago (Manual)', 3 => 'Isento', 4 => 'Pago Parcialmente');
+            $statusLancamento = [1 => '', 2 => 'Pago (Manual)', 3 => 'Isento', 4 => 'Pago Parcialmente'];
 
             $partilhas = ProcessoForoPartilha::getInstance()->getPartilhaByProcessoSemRecibo($oParametros->processo);
 
             foreach ($oRetorno->taxas as $taxa) {
-                $valorHonorario = array();
+                $valorHonorario = [];
 
                 $taxa->tipoLancamento = null;
                 $taxa->status         = '';
@@ -296,7 +296,7 @@ try {
          * as pagas, isentas e sempre a ultima em aberto
          */
         case 'buscaTaxasProcesso':
-            $campos = array(
+            $campos = [
                 'v76_sequencial as partilha',
                 'v76_tipolancamento',
                 'v76_dtpagamento',
@@ -305,7 +305,7 @@ try {
                 'v77_valor',
                 'v77_taxa',
                 'ar36_descricao as taxa',
-            );
+            ];
 
             $dao = new \cl_processoforopartilha();
             $sqlPartilhas = $dao->sql_partilhas_processo($oParametros->processo, implode(', ', $campos));
@@ -315,7 +315,7 @@ try {
                 throw new \Exception("Erro ao buscar as custas e taxas judiciais.");
             }
 
-            $partilhas = array();
+            $partilhas = [];
             db_utils::makeCollectionFromRecord($rs, function($dado) use (&$partilhas) {
                 if (!array_key_exists($dado->partilha, $partilhas)) {
                     $partilha = new stdClass();
@@ -329,7 +329,7 @@ try {
                     $partilha->data = db_formatar($data, 'd');
 
                     $partilha->status = retornaStatus($dado->v76_tipolancamento, $dado->v76_dtpagamento);
-                    $partilha->taxas = array();
+                    $partilha->taxas = [];
                     $partilhas[$dado->partilha] = $partilha;
                 }
 
@@ -412,10 +412,10 @@ try {
 
             db_inicio_transacao();
             try {
-                $where = array(
+                $where = [
                     "v76_processoforo = {$oParametros->processo}",
                     "v76_tipolancamento = {$oParametros->tipoLancamento}"
-                );
+                ];
 
                 $where[2] = "exists (select 1 from processoforopartilhacusta where ";
                 $where[2] .= "v77_processoforopartilha = v76_sequencial and v77_numnov = 0)";

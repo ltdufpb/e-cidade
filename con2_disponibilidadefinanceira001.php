@@ -40,7 +40,7 @@ require_once(modification("libs/db_app.utils.php"));
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
   <?php
-  $aLibs = array();
+  $aLibs = [];
   $aLibs[] = "scripts.js";
   $aLibs[] = "prototype.js";
   $aLibs[] = "strings.js";
@@ -99,8 +99,8 @@ require_once(modification("libs/db_app.utils.php"));
                   <td><label for="agrupamento" class="bold">Agrupar por:</label></td>
                   <td>
                     <?php
-                    $aOpcoes = array( RelatorioDisponibilidadeFinanceira::AGRUPAMENTO_CARACTERISTICA_PECULIAR => "Recurso/Característica Peculiar",
-                                      RelatorioDisponibilidadeFinanceira::AGRUPAMENTO_RECURSO => "Recurso");
+                    $aOpcoes = [ RelatorioDisponibilidadeFinanceira::AGRUPAMENTO_CARACTERISTICA_PECULIAR => "Recurso/Característica Peculiar",
+                                      RelatorioDisponibilidadeFinanceira::AGRUPAMENTO_RECURSO => "Recurso"];
                     db_select("agrupamento", $aOpcoes, true, 1);
                     ?>
                   </td>
@@ -109,8 +109,8 @@ require_once(modification("libs/db_app.utils.php"));
                   <td><label for="agrupamento" class="bold">Exibir Lançamentos:</label></td>
                   <td>
                     <?php
-                    $aOpcoesLancamentos = array( RelatorioDisponibilidadeFinanceira::MOSTRAR_LANCAMENTOS_SIM => "Sim",
-                                                 RelatorioDisponibilidadeFinanceira::MOSTRAR_LANCAMENTOS_NAO => "Não");
+                    $aOpcoesLancamentos = [ RelatorioDisponibilidadeFinanceira::MOSTRAR_LANCAMENTOS_SIM => "Sim",
+                                                 RelatorioDisponibilidadeFinanceira::MOSTRAR_LANCAMENTOS_NAO => "Não"];
                     db_select("lancamentos", $aOpcoesLancamentos, true, 1);
                     ?>
                   </td>

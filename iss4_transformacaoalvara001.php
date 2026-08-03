@@ -176,14 +176,14 @@ if (isset($oPost->transformar)) {
         </td nowrap="nowrap">
           <td>
            <?php 
-             $aGrupo = array("0"=>"Selecione",
+             $aGrupo = ["0"=>"Selecione",
                              "1"=>"SEM ALVARA",
                              "2"=>"PERMANENTE",
                              "3"=>"PRECARIO",
                              "4"=>"PROVISORIO",
                              "5"=>"TEMPORARIO",
                              "6"=>"ESPECIAL"
-                            );
+                            ];
              db_select("grupo",$aGrupo,true,4,"onchange='mostraTipo();'");
            ?>
         </td>

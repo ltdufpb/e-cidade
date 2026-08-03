@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_zonassetorvalor_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clzonassetorvalor = new cl_zonassetorvalor;
 $clzonassetorvalor->rotulo->label("j141_anousu");
@@ -86,9 +86,9 @@ $clzonassetorvalor->rotulo->label("j141_sequencial");
         }else{
            $sql = $clzonassetorvalor->sql_query(db_getsession('DB_anousu'),"","",$campos,"j141_anousu#j141_zonas#j141_setor","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j141_sequencial)){
-          $repassa = array("chave_j141_anousu"=>$chave_j141_anousu,"chave_j141_sequencial"=>$chave_j141_sequencial);
+          $repassa = ["chave_j141_anousu"=>$chave_j141_anousu,"chave_j141_sequencial"=>$chave_j141_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

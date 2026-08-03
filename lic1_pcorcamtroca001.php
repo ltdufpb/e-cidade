@@ -48,8 +48,8 @@ require_once(modification("model/documentoTemplate.model.php"));
 require_once(modification("model/licitacao.model.php"));
 require_once(modification("model/MaterialCompras.model.php"));
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $oDaoLogJulgamento     = new cl_pcorcamjulgamentolog();
 $oDaoLogJulgamentoItem = new cl_pcorcamjulgamentologitem();
@@ -115,8 +115,8 @@ if (isset($l20_codigo) && $l20_codigo) {
 if (isset($confirmar) && trim($confirmar) != "") {
 
 
-  $vitens       = split(":",$itens);
-  $vpcorcamjulg = array(array());
+  $vitens       = preg_split("#:#m",$itens);
+  $vpcorcamjulg = [[]];
   $linha        = 0;
 
   $_SESSION["modeloataselecionadojulgamento"] = $documentotemplateata;
@@ -124,9 +124,9 @@ if (isset($confirmar) && trim($confirmar) != "") {
   for ($i = 0; $i < count($vitens); $i++) {
 
     $str   = $vitens[$i];
-    $vetor = split(",",$str);
-    $item = trim($vetor[0]);
-    $fornecedor = trim($vetor[1]);
+    $vetor = preg_split("#,#m",(string) $str);
+    $item = trim((string) $vetor[0]);
+    $fornecedor = trim((string) $vetor[1]);
 
     /**
      * verificamos saldo modalidade para cada item da licitacao
@@ -401,8 +401,8 @@ if (isset($confirmar) && trim($confirmar) != "") {
 <?php db_menu() ?>
 </html>
 <?php
-if (trim($erro_msg) != "") {
+if (trim((string) $erro_msg) != "") {
 
-  $erro_msg = urldecode($erro_msg);
+  $erro_msg = urldecode((string) $erro_msg);
   db_msgbox($erro_msg);
 }

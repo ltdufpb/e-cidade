@@ -75,7 +75,7 @@ require_once(modification("dbforms/db_funcoes.php"));
         </td>
         <td>
           <?php 
-          $aFiltro = array('' => 'Nenhum', 'lotacao' => 'Lotação', 'matricula' => 'Matrícula');
+          $aFiltro = ['' => 'Nenhum', 'lotacao' => 'Lotação', 'matricula' => 'Matrícula'];
           db_select('filtro', $aFiltro, true, 1, 'onchange="js_mudaTela()"');
           ?>
         </td>

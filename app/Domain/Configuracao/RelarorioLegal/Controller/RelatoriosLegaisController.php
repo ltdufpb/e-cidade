@@ -27,12 +27,10 @@ class RelatoriosLegaisController extends Controller
     {
 
         $relatorio = Relatorio::find($relatorio);
-        $periodos = $relatorio->periodos->map(function ($c) {
-            return[
-                "codigo" => $c->pivot->o113_periodo,
-                "periodo" => Periodo::find($c->pivot->o113_periodo)->toArray()
-            ];
-        })->toArray();
+        $periodos = $relatorio->periodos->map(fn($c) => [
+            "codigo" => $c->pivot->o113_periodo,
+            "periodo" => Periodo::find($c->pivot->o113_periodo)->toArray()
+        ])->toArray();
 
         return new DBJsonResponse($periodos, "Períodos");
     }

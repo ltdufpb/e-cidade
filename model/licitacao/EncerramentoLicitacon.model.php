@@ -36,15 +36,9 @@ class EncerramentoLicitacon {
    */
   private $oDataAtual;
 
-  /**
-   * @var Instituicao
-   */
-  private $oInstituicao;
-
-  public function __construct(DBDate $oDataAtual, Instituicao $oInstituicao) {
+  public function __construct(DBDate $oDataAtual, private readonly Instituicao $oInstituicao) {
 
     $this->oDataAtual   = $oDataAtual;
-    $this->oInstituicao = $oInstituicao;
   }
 
   /**
@@ -123,12 +117,12 @@ class EncerramentoLicitacon {
     $iInstituicao      = $this->oInstituicao->getCodigo();
 
     $sCampos = "distinct ac16_sequencial";
-    $sWhere  = implode(" and ", array(
+    $sWhere  = implode(" and ", [
       "ac55_tipoevento = " . AcordoEvento::TIPO_EVENTO_ENCERRAMENTO_CONTRATO,
       "ac58_acordo is null",
       "ac16_instit = {$iInstituicao}",
       "ac55_data <= '{$sDataEncerramento}'"
-    ));
+    ]);
 
     $sSqlAcordoEncerrados = $oDaoAcordo->sql_query_encerramento($sCampos, $sWhere);
     $rsAcordoEncerados = db_query($sSqlAcordoEncerrados);

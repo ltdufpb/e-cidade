@@ -71,7 +71,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("bi05_codigo"=>@$bi05_codigo,"bi05_nome"=>@$bi05_nome);
+   $chavepri= ["bi05_codigo"=>@$bi05_codigo,"bi05_nome"=>@$bi05_nome];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltipoitem->sql_query("","*","bi05_nome");
    $cliframe_alterar_excluir->campos  ="bi05_codigo,bi05_nome";

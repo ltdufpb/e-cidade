@@ -37,7 +37,7 @@ require_once(modification("classes/db_solicita_classe.php"));
 
 $oDaoSolicita = new cl_solicita;
 $oDaoPcProc   = db_utils::getDao("pcproc");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoPcProc->rotulo->label();
 $oDaoSolicita->rotulo->label();
@@ -106,11 +106,11 @@ $oDaoSolicita->rotulo->label();
                  </td>
                  <td  colspan="4">
                  <?php 
-                   $aSituacoes = array(
+                   $aSituacoes = [
                                        2 => "Autorizado", 
                                        1 => "Análise",
                                        3 => "Não Autorizado",
-                                       );
+                                       ];
                    db_select("pc80_situacao", $aSituacoes, true, 1);                     
                  ?>
                </tr>

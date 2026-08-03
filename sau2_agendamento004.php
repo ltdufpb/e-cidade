@@ -31,7 +31,7 @@ require_once(modification('libs/db_utils.php'));
 require_once(modification('libs/db_stdlibwebseller.php'));
 require_once(modification('classes/db_sau_config_ext_classe.php'));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 set_time_limit(0);
 
 function novoComprovante(FPDF $oPdf, $oAgendamento, $oDbConfig, $oSauConfig, $sIdade, $sDiaSemana) {
@@ -113,7 +113,7 @@ function novoComprovante(FPDF $oPdf, $oAgendamento, $oDbConfig, $oSauConfig, $sI
   $oPdf->setfont('times', '', 7);
   $oPdf->cell(100, 3, $oAgendamento->id_usuario.' - '.$oAgendamento->nome, 0, 0, 'L', 0);
   $oPdf->cell(40, 3, formataData($oAgendamento->sd23_d_agendamento, 2), 0, 0, 'L', 0);
-  $oPdf->cell(40, 3, substr($oAgendamento->sd23_c_cadastro, 0, 8), 0, 1, 'L', 0);
+  $oPdf->cell(40, 3, substr((string) $oAgendamento->sd23_c_cadastro, 0, 8), 0, 1, 'L', 0);
 
   $iAlturaPadrao = 70 + $iLinhasEspecialidade;
   $oPdf->rect($iXInicial, $iYInicial, 190, $iAlturaPadrao, 'D');
@@ -129,12 +129,12 @@ function formataData($dData, $iTipo = 1) {
 
   if ($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   }
 
-  $dData = explode('-',$dData);
+  $dData = explode('-',(string) $dData);
   $dData = $dData[2] . '/' . $dData[1] . '/' . $dData[0];
 
   return $dData;
@@ -213,9 +213,9 @@ for ($iCont = 0; $iCont < $oDaoAgendamentos->numrows; $iCont++) {
   $sIdade = '';
   if (!empty($oAgendamento->z01_d_nasc)) {
 
-    $iDia = substr($oAgendamento->z01_d_nasc, 8, 2);
-    $iMes = substr($oAgendamento->z01_d_nasc, 5, 2);
-    $iAno = substr($oAgendamento->z01_d_nasc, 0, 4);
+    $iDia = substr((string) $oAgendamento->z01_d_nasc, 8, 2);
+    $iMes = substr((string) $oAgendamento->z01_d_nasc, 5, 2);
+    $iAno = substr((string) $oAgendamento->z01_d_nasc, 0, 4);
 
     $sIdade = calcage($iDia, $iMes, $iAno, date('d'), date('m'), date('Y'));
   }

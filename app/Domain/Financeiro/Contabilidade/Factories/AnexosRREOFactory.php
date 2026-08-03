@@ -45,20 +45,14 @@ class AnexosRREOFactory
      */
     public static function getPrograma($anexo, $exercicio)
     {
-        switch ($anexo) {
-            case 1:
-                return self::getDadosViewAnexoI($exercicio);
-            case 3:
-                return self::getDadosViewAnexoIII($exercicio);
-            case 4:
-                return self::getDadosViewAnexoIV($exercicio);
-            case 6:
-                return self::getDadosViewAnexoVI($exercicio);
-            case 8:
-                return self::getDadosViewAnexoVIII($exercicio);
-            default:
-                throw new Exception('Relatório não encotrado.');
-        }
+        return match ($anexo) {
+            1 => self::getDadosViewAnexoI($exercicio),
+            3 => self::getDadosViewAnexoIII($exercicio),
+            4 => self::getDadosViewAnexoIV($exercicio),
+            6 => self::getDadosViewAnexoVI($exercicio),
+            8 => self::getDadosViewAnexoVIII($exercicio),
+            default => throw new Exception('Relatório não encotrado.'),
+        };
     }
 
     private static function getDadosViewAnexoIV($exercicio)

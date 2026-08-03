@@ -55,7 +55,7 @@ if (!isset($chave_tipo_conta)) {
 
 require_once(modification("forms/db_frmPesquisaContaBancaria.php"));
 
-$aWhere = array();
+$aWhere = [];
 
 if (isset($bancoagencia) && trim($bancoagencia) != '') {
     $aWhere[] = "db83_bancoagencia = {$bancoagencia} ";
@@ -104,9 +104,9 @@ if (!isset($pesquisa_chave)) {
         $sql = $clcontabancaria->sql_query_planocontas("", $campos, "db83_sequencial", $sWhere);
     }
 
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_db83_descricao)) {
-        $repassa = array("chave_db83_sequencial" => $chave_db83_sequencial, "chave_db83_descricao" => $chave_db83_descricao);
+        $repassa = ["chave_db83_sequencial" => $chave_db83_sequencial, "chave_db83_descricao" => $chave_db83_descricao];
     }
 
     echo "<div class='container'>";

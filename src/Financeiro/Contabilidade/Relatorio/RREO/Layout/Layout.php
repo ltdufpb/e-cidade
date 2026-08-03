@@ -86,11 +86,11 @@ abstract class Layout
         /**
          * Variáveis para controle das celulas
          */
-        $aAlturaLinha = array();
+        $aAlturaLinha = [];
         foreach ($this->colunas as $coluna) {
             $aAlturaLinha[] = $this->oPdf->NbLines($coluna->tamanho, $oLinha->{$coluna->campo});
         }
-        $iLinhas = array_reduce($aAlturaLinha, "DBNumber::maiorValor");
+        $iLinhas = array_reduce($aAlturaLinha, DBNumber::maiorValor(...));
         $tamanhoLinha = $iLinhas > 1 ? 3 : 4;
         $iAlturaLinha = $tamanhoLinha * $iLinhas;
 
@@ -104,7 +104,7 @@ abstract class Layout
         $iYAntes = $this->oPdf->getY();
         $iX = $this->oPdf->getX();
 
-        $aDadosBordas = array();
+        $aDadosBordas = [];
         $formatos = $oLinha->formato;
 
         foreach ($this->colunas as $coluna) {

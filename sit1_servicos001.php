@@ -30,34 +30,34 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 if(isset($retorno)) {
   $result = db_query("select s_codigo as codigo,s_localid as localid,s_servico as servico,s_nome as nome,s_endereco as endereco,s_fone as fone,s_email as email from db_guia where s_codigo = $retorno");
   db_fieldsmemory($result,0);
 }
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $result = db_query("select max(s_codigo) from db_guia");
-  $codigo = pg_result($result,0,0)==""?1:(integer)pg_result($result,0,0) + 1;
-  db_query("insert into db_guia values($codigo,'$localid','".ucfirst(trim($servico))."','$nome','$endereco','$fone','$email')");
+  $codigo = pg_fetch_result($result,0,0)==""?1:(integer)pg_fetch_result($result,0,0) + 1;
+  db_query("insert into db_guia values($codigo,'$localid','".ucfirst(trim((string) $servico))."','$nome','$endereco','$fone','$email')");
   //db_redireciona();
   echo "<script>location.href='sit1_servicos001.php'</script>\n";
   exit;
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   db_query("UPDATE db_guia SET
              s_localid = '$localid',
 			 s_nome = '$nome',
-			 s_servico = '".ucfirst(trim($servico))."',
+			 s_servico = '".ucfirst(trim((string) $servico))."',
 			 s_endereco = '$endereco',
 			 s_fone = '$fone',
 			 s_email = '$email'
 		   WHERE s_codigo = $codigo");		   
   db_redireciona();
   exit;
-} else if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from db_guia where s_codigo = ".$HTTP_POST_VARS["codigo"]);
+} else if(isset($_POST["excluir"])) {
+  db_query("delete from db_guia where s_codigo = ".$_POST["codigo"]);
   db_redireciona();
   exit;
 }
@@ -92,7 +92,7 @@ input {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC" onLoad="js_iniciar()">
-<?php  if(!isset($HTTP_POST_VARS["consultar"]) && !isset($HTTP_POST_VARS["priNoMe"]) && !isset($HTTP_POST_VARS["antNoMe"]) && !isset($HTTP_POST_VARS["proxNoMe"]) && !isset($HTTP_POST_VARS["ultNoMe"])) { ?>
+<?php  if(!isset($_POST["consultar"]) && !isset($_POST["priNoMe"]) && !isset($_POST["antNoMe"]) && !isset($_POST["proxNoMe"]) && !isset($_POST["ultNoMe"])) { ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr> 
     <td width="360" height="18">&nbsp;</td>
@@ -150,11 +150,11 @@ input {
 </table>
 <?php  } else { ?>
 <?php 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   if(!empty($nome))
     $filtro = "and upper(s_nome) like upper('$nome%')";
-  if(isset($HTTP_POST_VARS["filtro"]))
-     $filtro = base64_decode($HTTP_POST_VARS["filtro"]);
+  if(isset($_POST["filtro"]))
+     $filtro = base64_decode($_POST["filtro"]);
 	 
   $sql = "select s_codigo as db_codigo,s_localid as localidade,s_servico,s_nome,s_endereco as endereço 
           from db_guia 
@@ -163,7 +163,7 @@ input {
 		  order by s_localid,s_servico,s_nome";
 		  
   echo "<center>\n";
-  db_lov($sql,100,"sit1_servicos001.php",base64_encode(@$filtro),"corpo");
+  db_lov($sql,100,"sit1_servicos001.php",base64_encode((string) @$filtro),"corpo");
   //db_lov($query,$numlinhas,$arquivo="",$filtro="%",$aonde="_self",$mensagem="Clique Aqui",$NomeForm="NoMe") { 
   echo "</center>\n";
 ?>

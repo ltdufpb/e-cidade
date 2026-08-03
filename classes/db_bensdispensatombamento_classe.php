@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE bensdispensatombamento
 class cl_bensdispensatombamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e139_sequencial = 0; 
-   var $e139_empnotaitem = 0; 
-   var $e139_matestoqueitem = 0; 
-   var $e139_justificativa = null; 
+   public $e139_sequencial = 0; 
+   public $e139_empnotaitem = 0; 
+   public $e139_matestoqueitem = 0; 
+   public $e139_justificativa = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e139_sequencial = int4 = Codigo sequencial 
                  e139_empnotaitem = int4 = Item nota de empenho 
                  e139_matestoqueitem = int8 = Item da entrada da ordem de compra 
                  e139_justificativa = text = Justificativa 
                  ";
    //funcao construtor da classe 
-   function cl_bensdispensatombamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bensdispensatombamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_bensdispensatombamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e139_sequencial = pg_result($result,0,0); 
+       $this->e139_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from bensdispensatombamento_e139_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e139_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e139_sequencial)){
          $this->erro_sql = " Campo e139_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_bensdispensatombamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dispensa de tombamento ($this->e139_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dispensa de tombamento já Cadastrado";
@@ -185,13 +185,13 @@ class cl_bensdispensatombamento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20233,'$this->e139_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3634,20233,'','".AddSlashes(pg_result($resaco,0,'e139_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3634,20234,'','".AddSlashes(pg_result($resaco,0,'e139_empnotaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3634,20235,'','".AddSlashes(pg_result($resaco,0,'e139_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3634,20236,'','".AddSlashes(pg_result($resaco,0,'e139_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3634,20233,'','".AddSlashes(pg_fetch_result($resaco,0,'e139_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3634,20234,'','".AddSlashes(pg_fetch_result($resaco,0,'e139_empnotaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3634,20235,'','".AddSlashes(pg_fetch_result($resaco,0,'e139_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3634,20236,'','".AddSlashes(pg_fetch_result($resaco,0,'e139_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -201,10 +201,10 @@ class cl_bensdispensatombamento {
       $this->atualizacampos();
      $sql = " update bensdispensatombamento set ";
      $virgula = "";
-     if(trim($this->e139_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e139_sequencial"])){ 
+     if(trim((string) $this->e139_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e139_sequencial"])){ 
        $sql  .= $virgula." e139_sequencial = $this->e139_sequencial ";
        $virgula = ",";
-       if(trim($this->e139_sequencial) == null ){ 
+       if(trim((string) $this->e139_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial não informado.";
          $this->erro_campo = "e139_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_bensdispensatombamento {
          return false;
        }
      }
-     if(trim($this->e139_empnotaitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e139_empnotaitem"])){ 
+     if(trim((string) $this->e139_empnotaitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e139_empnotaitem"])){ 
        $sql  .= $virgula." e139_empnotaitem = $this->e139_empnotaitem ";
        $virgula = ",";
-       if(trim($this->e139_empnotaitem) == null ){ 
+       if(trim((string) $this->e139_empnotaitem) == null ){ 
          $this->erro_sql = " Campo Item nota de empenho não informado.";
          $this->erro_campo = "e139_empnotaitem";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_bensdispensatombamento {
          return false;
        }
      }
-     if(trim($this->e139_matestoqueitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e139_matestoqueitem"])){ 
+     if(trim((string) $this->e139_matestoqueitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e139_matestoqueitem"])){ 
        $sql  .= $virgula." e139_matestoqueitem = $this->e139_matestoqueitem ";
        $virgula = ",";
-       if(trim($this->e139_matestoqueitem) == null ){ 
+       if(trim((string) $this->e139_matestoqueitem) == null ){ 
          $this->erro_sql = " Campo Item da entrada da ordem de compra não informado.";
          $this->erro_campo = "e139_matestoqueitem";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_bensdispensatombamento {
          return false;
        }
      }
-     if(trim($this->e139_justificativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e139_justificativa"])){ 
+     if(trim((string) $this->e139_justificativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e139_justificativa"])){ 
        $sql  .= $virgula." e139_justificativa = '$this->e139_justificativa' ";
        $virgula = ",";
-       if(trim($this->e139_justificativa) == null ){ 
+       if(trim((string) $this->e139_justificativa) == null ){ 
          $this->erro_sql = " Campo Justificativa não informado.";
          $this->erro_campo = "e139_justificativa";
          $this->erro_banco = "";
@@ -267,17 +267,17 @@ class cl_bensdispensatombamento {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20233,'$this->e139_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e139_sequencial"]) || $this->e139_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3634,20233,'".AddSlashes(pg_result($resaco,$conresaco,'e139_sequencial'))."','$this->e139_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3634,20233,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e139_sequencial'))."','$this->e139_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e139_empnotaitem"]) || $this->e139_empnotaitem != "")
-             $resac = db_query("insert into db_acount values($acount,3634,20234,'".AddSlashes(pg_result($resaco,$conresaco,'e139_empnotaitem'))."','$this->e139_empnotaitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3634,20234,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e139_empnotaitem'))."','$this->e139_empnotaitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e139_matestoqueitem"]) || $this->e139_matestoqueitem != "")
-             $resac = db_query("insert into db_acount values($acount,3634,20235,'".AddSlashes(pg_result($resaco,$conresaco,'e139_matestoqueitem'))."','$this->e139_matestoqueitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3634,20235,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e139_matestoqueitem'))."','$this->e139_matestoqueitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e139_justificativa"]) || $this->e139_justificativa != "")
-             $resac = db_query("insert into db_acount values($acount,3634,20236,'".AddSlashes(pg_result($resaco,$conresaco,'e139_justificativa'))."','$this->e139_justificativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3634,20236,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e139_justificativa'))."','$this->e139_justificativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -331,13 +331,13 @@ class cl_bensdispensatombamento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20233,'$e139_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3634,20233,'','".AddSlashes(pg_result($resaco,$iresaco,'e139_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3634,20234,'','".AddSlashes(pg_result($resaco,$iresaco,'e139_empnotaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3634,20235,'','".AddSlashes(pg_result($resaco,$iresaco,'e139_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3634,20236,'','".AddSlashes(pg_result($resaco,$iresaco,'e139_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3634,20233,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e139_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3634,20234,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e139_empnotaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3634,20235,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e139_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3634,20236,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e139_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -398,7 +398,7 @@ class cl_bensdispensatombamento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bensdispensatombamento";
@@ -413,7 +413,7 @@ class cl_bensdispensatombamento {
    function sql_query ( $e139_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,7 +439,7 @@ class cl_bensdispensatombamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,7 +452,7 @@ class cl_bensdispensatombamento {
    function sql_query_file ( $e139_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,7 +473,7 @@ class cl_bensdispensatombamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_unidaderesp_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clunidaderesp = new cl_unidaderesp;
 $clunidaderesp->rotulo->label("o20_sequencial");
 $clunidaderesp->rotulo->label("o20_descricao");
@@ -98,9 +98,9 @@ $clunidaderesp->rotulo->label("o20_descricao");
         }else{
            $sql = $clunidaderesp->sql_query("",$campos,"o20_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o20_descricao)){
-          $repassa = array("chave_o20_sequencial"=>$chave_o20_sequencial,"chave_o20_descricao"=>$chave_o20_descricao);
+          $repassa = ["chave_o20_sequencial"=>$chave_o20_sequencial,"chave_o20_descricao"=>$chave_o20_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -24,7 +24,7 @@ try {
             $despesas = [];
             $receitas = [];
             foreach ($arquivo as $linha) {
-                list($empenho, $lancamento, $complemento, $dotacao) = explode(',', str_replace("\n", '', $linha));
+                [$empenho, $lancamento, $complemento, $dotacao] = explode(',', str_replace("\n", '', $linha));
 
                 if (empty($complemento)) {
                     continue;
@@ -78,7 +78,7 @@ function salvarDespesa($despesas) {
         $stdDados = db_utils::fieldsMemory($buscaLancamentos, $row);
         $lancamentosExclusao[] = $stdDados->c75_codlan;
         $valor = $despesas[$stdDados->c75_numemp];
-        list($complemento, $dotacao) = explode('#', $valor);
+        [$complemento, $dotacao] = explode('#', (string) $valor);
         $comandosDespesa[] = "insert into conlancamcomplementorecurso values (nextval('conlancamcomplementorecurso_o201_sequencial_seq'), {$stdDados->c75_codlan}, {$complemento});";
         if ($dotacao != "") {
             $comandosDespesa[] = "update conlancamdot set c73_coddot = {$dotacao} where c73_codlan = {$stdDados->c75_codlan};";
@@ -86,7 +86,7 @@ function salvarDespesa($despesas) {
     }
 
     foreach($despesas as $empenho => $valor) {
-        list($complemento, $dotacao) = explode('#', $valor);
+        [$complemento, $dotacao] = explode('#', (string) $valor);
         if (!empty($dotacao)) {
             $comandosDespesa[] = "update empempenho set e60_coddot = {$dotacao} where e60_numemp = {$empenho};";
         }

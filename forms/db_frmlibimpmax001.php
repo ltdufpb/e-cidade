@@ -49,22 +49,22 @@
 		from db_usuarios
 	";
 	$result = db_query($sql);
-	$numrows = pg_numrows($result);
+	$numrows = pg_num_rows($result);
 	for ($i=0;$i<$numrows;$i++) {
 	  $db_select = ""; 
   	  if (isset($usuarios) && sizeof($usuarios)!=0){
-		if (in_array(pg_result($result,$i,"id_usuario"),$usuarios)==1){
+		if (in_array(pg_fetch_result($result,$i,"id_usuario"),$usuarios)==1){
 			$db_select =  " selected ";
 		}
 	  }else{
-		if (isset($usuarios) && $usuarios == pg_result($result,$i,"id_usuario")){
+		if (isset($usuarios) && $usuarios == pg_fetch_result($result,$i,"id_usuario")){
 			$db_select = " selected ";
 		}
 	  }
 
       ?>
-                <option value="<?=@pg_result($result,$i,"id_usuario")?>" <?=$db_select?> >&nbsp; 
-                <?=@pg_result($result,$i,"nome")?>
+                <option value="<?=@pg_fetch_result($result,$i,"id_usuario")?>" <?=$db_select?> >&nbsp; 
+                <?=@pg_fetch_result($result,$i,"nome")?>
                 &nbsp;</option>
                 <?php 
 	}
@@ -92,21 +92,21 @@
 		from db_depart
 	";
 	$result = db_query($sql);
-	$numrows = pg_numrows($result);
+	$numrows = pg_num_rows($result);
 	for ($i=0;$i<$numrows;$i++) {
 ?>
-                <option value="<?=@pg_result($result,$i,"coddepto")?>" <?php 
+                <option value="<?=@pg_fetch_result($result,$i,"coddepto")?>" <?php 
 	if (isset($depto) && sizeof($depto)!=0){
-		if (in_array(pg_result($result,$i,"coddepto"),$depto)==1){
+		if (in_array(pg_fetch_result($result,$i,"coddepto"),$depto)==1){
 			echo " selected ";
 		}
 	}else{
-		if (isset($depto) && $depto == pg_result($result,$i,"coddepto")){
+		if (isset($depto) && $depto == pg_fetch_result($result,$i,"coddepto")){
 			echo " selected ";
 		}
 	}
 ?>>&nbsp; 
-                <?=@pg_result($result,$i,"descrdepto")?>
+                <?=@pg_fetch_result($result,$i,"descrdepto")?>
                 &nbsp;</option>
                 <?php 
 	}
@@ -134,7 +134,7 @@
 		from impres
 	";
 	$result = db_query($sql);
-	$numrows = pg_numrows($result);
+	$numrows = pg_num_rows($result);
 	if (sizeof($usuarios)==1){
 		$sqlPesqisaImpressorasDoUsuario = "
 			select d51_usuario, d51_impres
@@ -142,16 +142,16 @@
 			where d51_usuario = $usuarios[0]
 		";
 		$result_sqlPesqisaImpressorasDoUsuario = db_query($sqlPesqisaImpressorasDoUsuario);
-		$num = pg_numrows($result_sqlPesqisaImpressorasDoUsuario);
+		$num = pg_num_rows($result_sqlPesqisaImpressorasDoUsuario);
 	}
 	for ($i=0;$i<$numrows;$i++) {
 ?>
-                <option value="<?=@pg_result($result,$i,"d50_codigo")?>"
+                <option value="<?=@pg_fetch_result($result,$i,"d50_codigo")?>"
 <?php 
 	$escreveuSelected = false;
 	if (isset($usuarios) && sizeof($usuarios)==1){
 		for ($a=0;$a<$num;$a++) {
-			if (pg_result($result,$i,"d50_codigo") == pg_result($result_sqlPesqisaImpressorasDoUsuario,$a,"d51_impres")){
+			if (pg_fetch_result($result,$i,"d50_codigo") == pg_fetch_result($result_sqlPesqisaImpressorasDoUsuario,$a,"d51_impres")){
 				echo " selected ";
 				$escreveuSelected = true;
 			}
@@ -159,18 +159,18 @@
 	}
 	if (!$escreveuSelected){
 		if (isset($impressoras) && sizeof($impressoras)!=0){
-			if (in_array(pg_result($result,$i,"d50_codigo"),$impressoras)==1){
+			if (in_array(pg_fetch_result($result,$i,"d50_codigo"),$impressoras)==1){
 				echo " selected ";
 			}
 		}else{
-			if (isset($impressoras) && $impressoras == pg_result($result,$i,"d50_codigo")){
+			if (isset($impressoras) && $impressoras == pg_fetch_result($result,$i,"d50_codigo")){
 				echo " selected ";
 			}
 		}
 	}
 ?>
 >&nbsp; 
-                <?=@pg_result($result,$i,"d50_descr")?>
+                <?=@pg_fetch_result($result,$i,"d50_descr")?>
                 &nbsp;</option>
                 <?php 
 	}

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcprojativsubprojeto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcprojativsubprojeto = new cl_orcprojativsubprojeto;
 $clorcprojativsubprojeto->rotulo->label("o99_sequencial");
 $clorcprojativsubprojeto->rotulo->label("o99_orcsubprojeto");
@@ -98,9 +98,9 @@ $clorcprojativsubprojeto->rotulo->label("o99_orcsubprojeto");
         }else{
            $sql = $clorcprojativsubprojeto->sql_query("",$campos,"o99_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o99_orcsubprojeto)){
-          $repassa = array("chave_o99_sequencial"=>$chave_o99_sequencial,"chave_o99_orcsubprojeto"=>$chave_o99_orcsubprojeto);
+          $repassa = ["chave_o99_sequencial"=>$chave_o99_sequencial,"chave_o99_orcsubprojeto"=>$chave_o99_orcsubprojeto];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

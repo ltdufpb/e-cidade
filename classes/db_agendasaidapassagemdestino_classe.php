@@ -28,26 +28,26 @@
 //CLASSE DA ENTIDADE agendasaidapassagemdestino
 class cl_agendasaidapassagemdestino { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tf38_sequencial = 0; 
-   var $tf38_agendasaida = 0; 
-   var $tf38_valorunitario = 0; 
-   var $tf38_cgs = 0; 
-   var $tf38_fica = 'f'; 
+   public $tf38_sequencial = 0; 
+   public $tf38_agendasaida = 0; 
+   public $tf38_valorunitario = 0; 
+   public $tf38_cgs = 0; 
+   public $tf38_fica = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tf38_sequencial = int4 = Código 
                  tf38_agendasaida = int4 = Agenda de Saída 
                  tf38_valorunitario = float8 = Valor Unitário 
@@ -55,10 +55,10 @@ class cl_agendasaidapassagemdestino {
                  tf38_fica = bool = Fica 
                  ";
    //funcao construtor da classe 
-   function cl_agendasaidapassagemdestino() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agendasaidapassagemdestino"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -130,10 +130,10 @@ class cl_agendasaidapassagemdestino {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tf38_sequencial = pg_result($result,0,0); 
+       $this->tf38_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from agendasaidapassagemdestino_tf38_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf38_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf38_sequencial)){
          $this->erro_sql = " Campo tf38_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -169,7 +169,7 @@ class cl_agendasaidapassagemdestino {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Passagem de destino da agenda de saída ($this->tf38_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Passagem de destino da agenda de saída já Cadastrado";
@@ -198,14 +198,14 @@ class cl_agendasaidapassagemdestino {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21855,'$this->tf38_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3935,21855,'','".AddSlashes(pg_result($resaco,0,'tf38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3935,21856,'','".AddSlashes(pg_result($resaco,0,'tf38_agendasaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3935,21857,'','".AddSlashes(pg_result($resaco,0,'tf38_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3935,21866,'','".AddSlashes(pg_result($resaco,0,'tf38_cgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3935,21867,'','".AddSlashes(pg_result($resaco,0,'tf38_fica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3935,21855,'','".AddSlashes(pg_fetch_result($resaco,0,'tf38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3935,21856,'','".AddSlashes(pg_fetch_result($resaco,0,'tf38_agendasaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3935,21857,'','".AddSlashes(pg_fetch_result($resaco,0,'tf38_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3935,21866,'','".AddSlashes(pg_fetch_result($resaco,0,'tf38_cgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3935,21867,'','".AddSlashes(pg_fetch_result($resaco,0,'tf38_fica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -215,10 +215,10 @@ class cl_agendasaidapassagemdestino {
       $this->atualizacampos();
      $sql = " update agendasaidapassagemdestino set ";
      $virgula = "";
-     if(trim($this->tf38_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf38_sequencial"])){ 
+     if(trim((string) $this->tf38_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf38_sequencial"])){ 
        $sql  .= $virgula." tf38_sequencial = $this->tf38_sequencial ";
        $virgula = ",";
-       if(trim($this->tf38_sequencial) == null ){ 
+       if(trim((string) $this->tf38_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "tf38_sequencial";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_agendasaidapassagemdestino {
          return false;
        }
      }
-     if(trim($this->tf38_agendasaida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf38_agendasaida"])){ 
+     if(trim((string) $this->tf38_agendasaida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf38_agendasaida"])){ 
        $sql  .= $virgula." tf38_agendasaida = $this->tf38_agendasaida ";
        $virgula = ",";
-       if(trim($this->tf38_agendasaida) == null ){ 
+       if(trim((string) $this->tf38_agendasaida) == null ){ 
          $this->erro_sql = " Campo Agenda de Saída não informado.";
          $this->erro_campo = "tf38_agendasaida";
          $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_agendasaidapassagemdestino {
          return false;
        }
      }
-     if(trim($this->tf38_valorunitario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf38_valorunitario"])){ 
+     if(trim((string) $this->tf38_valorunitario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf38_valorunitario"])){ 
        $sql  .= $virgula." tf38_valorunitario = $this->tf38_valorunitario ";
        $virgula = ",";
-       if(trim($this->tf38_valorunitario) == null ){ 
+       if(trim((string) $this->tf38_valorunitario) == null ){ 
          $this->erro_sql = " Campo Valor Unitário não informado.";
          $this->erro_campo = "tf38_valorunitario";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_agendasaidapassagemdestino {
          return false;
        }
      }
-     if(trim($this->tf38_cgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf38_cgs"])){ 
+     if(trim((string) $this->tf38_cgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf38_cgs"])){ 
        $sql  .= $virgula." tf38_cgs = $this->tf38_cgs ";
        $virgula = ",";
-       if(trim($this->tf38_cgs) == null ){ 
+       if(trim((string) $this->tf38_cgs) == null ){ 
          $this->erro_sql = " Campo CGS não informado.";
          $this->erro_campo = "tf38_cgs";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_agendasaidapassagemdestino {
          return false;
        }
      }
-     if(trim($this->tf38_fica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf38_fica"])){ 
+     if(trim((string) $this->tf38_fica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf38_fica"])){ 
        $sql  .= $virgula." tf38_fica = '$this->tf38_fica' ";
        $virgula = ",";
-       if(trim($this->tf38_fica) == null ){ 
+       if(trim((string) $this->tf38_fica) == null ){ 
          $this->erro_sql = " Campo Fica não informado.";
          $this->erro_campo = "tf38_fica";
          $this->erro_banco = "";
@@ -294,19 +294,19 @@ class cl_agendasaidapassagemdestino {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21855,'$this->tf38_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf38_sequencial"]) || $this->tf38_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3935,21855,'".AddSlashes(pg_result($resaco,$conresaco,'tf38_sequencial'))."','$this->tf38_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3935,21855,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf38_sequencial'))."','$this->tf38_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf38_agendasaida"]) || $this->tf38_agendasaida != "")
-             $resac = db_query("insert into db_acount values($acount,3935,21856,'".AddSlashes(pg_result($resaco,$conresaco,'tf38_agendasaida'))."','$this->tf38_agendasaida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3935,21856,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf38_agendasaida'))."','$this->tf38_agendasaida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf38_valorunitario"]) || $this->tf38_valorunitario != "")
-             $resac = db_query("insert into db_acount values($acount,3935,21857,'".AddSlashes(pg_result($resaco,$conresaco,'tf38_valorunitario'))."','$this->tf38_valorunitario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3935,21857,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf38_valorunitario'))."','$this->tf38_valorunitario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf38_cgs"]) || $this->tf38_cgs != "")
-             $resac = db_query("insert into db_acount values($acount,3935,21866,'".AddSlashes(pg_result($resaco,$conresaco,'tf38_cgs'))."','$this->tf38_cgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3935,21866,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf38_cgs'))."','$this->tf38_cgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf38_fica"]) || $this->tf38_fica != "")
-             $resac = db_query("insert into db_acount values($acount,3935,21867,'".AddSlashes(pg_result($resaco,$conresaco,'tf38_fica'))."','$this->tf38_fica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3935,21867,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf38_fica'))."','$this->tf38_fica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -360,14 +360,14 @@ class cl_agendasaidapassagemdestino {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21855,'$tf38_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3935,21855,'','".AddSlashes(pg_result($resaco,$iresaco,'tf38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3935,21856,'','".AddSlashes(pg_result($resaco,$iresaco,'tf38_agendasaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3935,21857,'','".AddSlashes(pg_result($resaco,$iresaco,'tf38_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3935,21866,'','".AddSlashes(pg_result($resaco,$iresaco,'tf38_cgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3935,21867,'','".AddSlashes(pg_result($resaco,$iresaco,'tf38_fica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3935,21855,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3935,21856,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf38_agendasaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3935,21857,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf38_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3935,21866,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf38_cgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3935,21867,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf38_fica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

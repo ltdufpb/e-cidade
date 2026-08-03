@@ -29,8 +29,8 @@ require(modification("libs/db_conecta.php"));
 require(modification("libs/db_stdlib.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("dbforms/db_funcoes.php"));
-if(isset($HTTP_POST_VARS["atualizar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["atualizar"])) {
+  db_postmemory($_POST);
   $dataat = $dataat_ano."-".$dataat_mes."-".$dataat_dia;
   if($dataat == "--")
     $dataat = "null";
@@ -54,7 +54,7 @@ if(isset($HTTP_POST_VARS["atualizar"])) {
   db_query("delete from atendmedcid where ag40_codigo = $codigo") or die("Erro(30) excluindo tabela atendmedcid");
   for($i = 0;$i < sizeof(@$ag40_cid);$i++) {
     $result = db_query("insert into atendmedcid values($codigo,'".$ag40_cid[$i]."')");
-	if(pg_cmdtuples($result) == 0) {
+	if(pg_affected_rows($result) == 0) {
 	  db_query("rollback");
 	  db_erro("Erro(32) incluindo em atendmedcid");	  
 	}
@@ -264,7 +264,7 @@ function js_imprimirreceita() {
     <td height="334" valign="top" bgcolor="#FFFF64">	
 	<?php 
 	$result = db_query("select * from atendmed where ag40_codigo = ".db_getsession("COD_atendimento"));
-	if(pg_numrows($result) > 0)
+	if(pg_num_rows($result) > 0)
 	  db_fieldsmemory($result,0);
 	?>
 	<form name="form1" method="post" onSubmit="return js_submeter()">
@@ -349,7 +349,7 @@ function js_imprimirreceita() {
 									   inner join atendmedcid a
 									   on a.ag40_codcid = c.codcid
 									   where ag40_codigo = ".db_getsession("COD_atendimento"));
-					$numrows = pg_numrows($result);
+					$numrows = pg_num_rows($result);
 					if($numrows > 0)
 					  for($i = 0;$i < $numrows;$i++) {
 					    db_fieldsmemory($result,$i);

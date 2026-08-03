@@ -103,20 +103,20 @@ if(isset($pesquisar)) {
 		}
 		$d1=$sd23_d_consulta;
     $rest  = "";
-    $rest  = substr($sd23_d_consulta, 6);
+    $rest  = substr((string) $sd23_d_consulta, 6);
 		$rest .="-";
-    $rest .= substr($sd23_d_consulta, 3, 2);
+    $rest .= substr((string) $sd23_d_consulta, 3, 2);
 		$rest .="-";
-    $rest .= substr($sd23_d_consulta, 0, 2);
+    $rest .= substr((string) $sd23_d_consulta, 0, 2);
     $sql  .= "sd23_d_consulta  BETWEEN '".$rest."' and";
 
     $d2=$sd23_d_consulta2;
 		$rest  = "";
-		$rest  = substr($sd23_d_consulta2, 6);
+		$rest  = substr((string) $sd23_d_consulta2, 6);
 		$rest .="-";
-		$rest .= substr($sd23_d_consulta2, 3, 2);
+		$rest .= substr((string) $sd23_d_consulta2, 3, 2);
 		$rest .="-";
-		$rest .= substr($sd23_d_consulta2, 0, 2);
+		$rest .= substr((string) $sd23_d_consulta2, 0, 2);
 		$sql  .= " '".$rest."'";
     $primeiro=true;
 	} else {
@@ -179,9 +179,9 @@ if(isset($pesquisar)) {
         if($sql!=""){
           $repassa = [
             'pesquisar' => 'Pesquisar',
-            'z01_i_cgsund' => isset($z01_i_cgsund) ? $z01_i_cgsund : '',
-            'sd23_d_consulta' => isset($sd23_d_consulta) ? $sd23_d_consulta : '',
-            'sd23_d_consulta2' => isset($sd23_d_consulta2) ? $sd23_d_consulta2 : '', 
+            'z01_i_cgsund' => $z01_i_cgsund ?? '',
+            'sd23_d_consulta' => $sd23_d_consulta ?? '',
+            'sd23_d_consulta2' => $sd23_d_consulta2 ?? '', 
           ];
           db_lovrot($sql, 15, "()", "", "", "", "NoMe", $repassa, false);
         }

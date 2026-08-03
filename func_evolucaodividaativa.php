@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_evolucaodividaativa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clevolucaodividaativa = new cl_evolucaodividaativa;
 $clevolucaodividaativa->rotulo->label("v30_sequencial");
 $clevolucaodividaativa->rotulo->label("v30_receita");
@@ -78,9 +78,9 @@ $clevolucaodividaativa->rotulo->label("v30_receita");
         }else{
            $sql = $clevolucaodividaativa->sql_query("",$campos,"v30_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v30_receita)){
-          $repassa = array("chave_v30_sequencial"=>$chave_v30_sequencial,"chave_v30_receita"=>$chave_v30_receita);
+          $repassa = ["chave_v30_sequencial"=>$chave_v30_sequencial,"chave_v30_receita"=>$chave_v30_receita];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

@@ -46,7 +46,7 @@ class cl_publicidadesigapfiscal
     public function __construct()
     {
         $this->rotulo = new rotulo("publicidadesigapfiscal"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -160,10 +160,10 @@ class cl_publicidadesigapfiscal
          $this->erro_status = "0";
          return false; 
        }
-       $this->c136_codigo = pg_result($result,0,0); 
+       $this->c136_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from publicidadesigapfiscal_c136_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c136_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c136_codigo)){
          $this->erro_sql = " Campo c136_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -209,7 +209,7 @@ class cl_publicidadesigapfiscal
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Publicidade Sigap Fiscal ($this->c136_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Publicidade Sigap Fiscal já Cadastrado";
@@ -238,19 +238,19 @@ class cl_publicidadesigapfiscal
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1011320,'$this->c136_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010572,1011320,'','".AddSlashes(pg_result($resaco,0,'c136_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010572,1011321,'','".AddSlashes(pg_result($resaco,0,'c136_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010572,1011328,'','".AddSlashes(pg_result($resaco,0,'c136_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010572,1011323,'','".AddSlashes(pg_result($resaco,0,'c136_data_publicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010572,1011322,'','".AddSlashes(pg_result($resaco,0,'c136_tipo_relatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010572,1011324,'','".AddSlashes(pg_result($resaco,0,'c136_meio_comunicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010572,1011325,'','".AddSlashes(pg_result($resaco,0,'c136_periodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010572,1011326,'','".AddSlashes(pg_result($resaco,0,'c136_link'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010572,1011327,'','".AddSlashes(pg_result($resaco,0,'c136_local_publicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010572,1011334,'','".AddSlashes(pg_result($resaco,0,'c136_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010572,1011320,'','".AddSlashes(pg_fetch_result($resaco,0,'c136_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010572,1011321,'','".AddSlashes(pg_fetch_result($resaco,0,'c136_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010572,1011328,'','".AddSlashes(pg_fetch_result($resaco,0,'c136_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010572,1011323,'','".AddSlashes(pg_fetch_result($resaco,0,'c136_data_publicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010572,1011322,'','".AddSlashes(pg_fetch_result($resaco,0,'c136_tipo_relatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010572,1011324,'','".AddSlashes(pg_fetch_result($resaco,0,'c136_meio_comunicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010572,1011325,'','".AddSlashes(pg_fetch_result($resaco,0,'c136_periodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010572,1011326,'','".AddSlashes(pg_fetch_result($resaco,0,'c136_link'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010572,1011327,'','".AddSlashes(pg_fetch_result($resaco,0,'c136_local_publicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010572,1011334,'','".AddSlashes(pg_fetch_result($resaco,0,'c136_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -261,10 +261,10 @@ class cl_publicidadesigapfiscal
       $this->atualizacampos();
      $sql = " update publicidadesigapfiscal set ";
      $virgula = "";
-     if(trim($this->c136_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_codigo"])){ 
+     if(trim((string) $this->c136_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_codigo"])){ 
        $sql  .= $virgula." c136_codigo = $this->c136_codigo ";
        $virgula = ",";
-       if(trim($this->c136_codigo) == null ){ 
+       if(trim((string) $this->c136_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "c136_codigo";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_publicidadesigapfiscal
          return false;
        }
      }
-     if(trim($this->c136_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_ano"])){ 
+     if(trim((string) $this->c136_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_ano"])){ 
        $sql  .= $virgula." c136_ano = $this->c136_ano ";
        $virgula = ",";
-       if(trim($this->c136_ano) == null ){ 
+       if(trim((string) $this->c136_ano) == null ){ 
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "c136_ano";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_publicidadesigapfiscal
          return false;
        }
      }
-     if(trim($this->c136_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_descricao"])){ 
+     if(trim((string) $this->c136_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_descricao"])){ 
        $sql  .= $virgula." c136_descricao = '$this->c136_descricao' ";
        $virgula = ",";
-       if(trim($this->c136_descricao) == null ){ 
+       if(trim((string) $this->c136_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "c136_descricao";
          $this->erro_banco = "";
@@ -300,10 +300,10 @@ class cl_publicidadesigapfiscal
          return false;
        }
      }
-     if(trim($this->c136_data_publicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_data_publicacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c136_data_publicacao_dia"] !="") ){ 
+     if(trim((string) $this->c136_data_publicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_data_publicacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c136_data_publicacao_dia"] !="") ){ 
        $sql  .= $virgula." c136_data_publicacao = '$this->c136_data_publicacao' ";
        $virgula = ",";
-       if(trim($this->c136_data_publicacao) == null ){ 
+       if(trim((string) $this->c136_data_publicacao) == null ){ 
          $this->erro_sql = " Campo Data da Publicação não informado.";
          $this->erro_campo = "c136_data_publicacao_dia";
          $this->erro_banco = "";
@@ -316,7 +316,7 @@ class cl_publicidadesigapfiscal
        if(isset($GLOBALS["HTTP_POST_VARS"]["c136_data_publicacao_dia"])){ 
          $sql  .= $virgula." c136_data_publicacao = null ";
          $virgula = ",";
-         if(trim($this->c136_data_publicacao) == null ){ 
+         if(trim((string) $this->c136_data_publicacao) == null ){ 
            $this->erro_sql = " Campo Data da Publicação não informado.";
            $this->erro_campo = "c136_data_publicacao_dia";
            $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_publicidadesigapfiscal
          }
        }
      }
-     if(trim($this->c136_tipo_relatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_tipo_relatorio"])){ 
+     if(trim((string) $this->c136_tipo_relatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_tipo_relatorio"])){ 
        $sql  .= $virgula." c136_tipo_relatorio = $this->c136_tipo_relatorio ";
        $virgula = ",";
-       if(trim($this->c136_tipo_relatorio) == null ){ 
+       if(trim((string) $this->c136_tipo_relatorio) == null ){ 
          $this->erro_sql = " Campo Tipo do Relatório não informado.";
          $this->erro_campo = "c136_tipo_relatorio";
          $this->erro_banco = "";
@@ -340,10 +340,10 @@ class cl_publicidadesigapfiscal
          return false;
        }
      }
-     if(trim($this->c136_meio_comunicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_meio_comunicacao"])){ 
+     if(trim((string) $this->c136_meio_comunicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_meio_comunicacao"])){ 
        $sql  .= $virgula." c136_meio_comunicacao = $this->c136_meio_comunicacao ";
        $virgula = ",";
-       if(trim($this->c136_meio_comunicacao) == null ){ 
+       if(trim((string) $this->c136_meio_comunicacao) == null ){ 
          $this->erro_sql = " Campo Meio de Comunicação não informado.";
          $this->erro_campo = "c136_meio_comunicacao";
          $this->erro_banco = "";
@@ -353,10 +353,10 @@ class cl_publicidadesigapfiscal
          return false;
        }
      }
-     if(trim($this->c136_periodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_periodo"])){ 
+     if(trim((string) $this->c136_periodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_periodo"])){ 
        $sql  .= $virgula." c136_periodo = $this->c136_periodo ";
        $virgula = ",";
-       if(trim($this->c136_periodo) == null ){ 
+       if(trim((string) $this->c136_periodo) == null ){ 
          $this->erro_sql = " Campo Período não informado.";
          $this->erro_campo = "c136_periodo";
          $this->erro_banco = "";
@@ -366,18 +366,18 @@ class cl_publicidadesigapfiscal
          return false;
        }
      }
-     if(trim($this->c136_link)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_link"])){ 
+     if(trim((string) $this->c136_link)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_link"])){ 
        $sql  .= $virgula." c136_link = '$this->c136_link' ";
        $virgula = ",";
      }
-     if(trim($this->c136_local_publicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_local_publicacao"])){ 
+     if(trim((string) $this->c136_local_publicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_local_publicacao"])){ 
        $sql  .= $virgula." c136_local_publicacao = '$this->c136_local_publicacao' ";
        $virgula = ",";
      }
-     if(trim($this->c136_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_instituicao"])){ 
+     if(trim((string) $this->c136_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c136_instituicao"])){ 
        $sql  .= $virgula." c136_instituicao = $this->c136_instituicao ";
        $virgula = ",";
-       if(trim($this->c136_instituicao) == null ){ 
+       if(trim((string) $this->c136_instituicao) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "c136_instituicao";
          $this->erro_banco = "";
@@ -401,29 +401,29 @@ class cl_publicidadesigapfiscal
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1011320,'$this->c136_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c136_codigo"]) || $this->c136_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010572,1011320,'".AddSlashes(pg_result($resaco,$conresaco,'c136_codigo'))."','$this->c136_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010572,1011320,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c136_codigo'))."','$this->c136_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c136_ano"]) || $this->c136_ano != "")
-             $resac = db_query("insert into db_acount values($acount,1010572,1011321,'".AddSlashes(pg_result($resaco,$conresaco,'c136_ano'))."','$this->c136_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010572,1011321,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c136_ano'))."','$this->c136_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c136_descricao"]) || $this->c136_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,1010572,1011328,'".AddSlashes(pg_result($resaco,$conresaco,'c136_descricao'))."','$this->c136_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010572,1011328,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c136_descricao'))."','$this->c136_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c136_data_publicacao"]) || $this->c136_data_publicacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010572,1011323,'".AddSlashes(pg_result($resaco,$conresaco,'c136_data_publicacao'))."','$this->c136_data_publicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010572,1011323,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c136_data_publicacao'))."','$this->c136_data_publicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c136_tipo_relatorio"]) || $this->c136_tipo_relatorio != "")
-             $resac = db_query("insert into db_acount values($acount,1010572,1011322,'".AddSlashes(pg_result($resaco,$conresaco,'c136_tipo_relatorio'))."','$this->c136_tipo_relatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010572,1011322,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c136_tipo_relatorio'))."','$this->c136_tipo_relatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c136_meio_comunicacao"]) || $this->c136_meio_comunicacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010572,1011324,'".AddSlashes(pg_result($resaco,$conresaco,'c136_meio_comunicacao'))."','$this->c136_meio_comunicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010572,1011324,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c136_meio_comunicacao'))."','$this->c136_meio_comunicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c136_periodo"]) || $this->c136_periodo != "")
-             $resac = db_query("insert into db_acount values($acount,1010572,1011325,'".AddSlashes(pg_result($resaco,$conresaco,'c136_periodo'))."','$this->c136_periodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010572,1011325,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c136_periodo'))."','$this->c136_periodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c136_link"]) || $this->c136_link != "")
-             $resac = db_query("insert into db_acount values($acount,1010572,1011326,'".AddSlashes(pg_result($resaco,$conresaco,'c136_link'))."','$this->c136_link',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010572,1011326,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c136_link'))."','$this->c136_link',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c136_local_publicacao"]) || $this->c136_local_publicacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010572,1011327,'".AddSlashes(pg_result($resaco,$conresaco,'c136_local_publicacao'))."','$this->c136_local_publicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010572,1011327,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c136_local_publicacao'))."','$this->c136_local_publicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c136_instituicao"]) || $this->c136_instituicao != "")
-             $resac = db_query("insert into db_acount values($acount,1010572,1011334,'".AddSlashes(pg_result($resaco,$conresaco,'c136_instituicao'))."','$this->c136_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010572,1011334,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c136_instituicao'))."','$this->c136_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -477,19 +477,19 @@ class cl_publicidadesigapfiscal
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1011320,'$c136_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010572,1011320,'','".AddSlashes(pg_result($resaco,$iresaco,'c136_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010572,1011321,'','".AddSlashes(pg_result($resaco,$iresaco,'c136_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010572,1011328,'','".AddSlashes(pg_result($resaco,$iresaco,'c136_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010572,1011323,'','".AddSlashes(pg_result($resaco,$iresaco,'c136_data_publicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010572,1011322,'','".AddSlashes(pg_result($resaco,$iresaco,'c136_tipo_relatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010572,1011324,'','".AddSlashes(pg_result($resaco,$iresaco,'c136_meio_comunicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010572,1011325,'','".AddSlashes(pg_result($resaco,$iresaco,'c136_periodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010572,1011326,'','".AddSlashes(pg_result($resaco,$iresaco,'c136_link'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010572,1011327,'','".AddSlashes(pg_result($resaco,$iresaco,'c136_local_publicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010572,1011334,'','".AddSlashes(pg_result($resaco,$iresaco,'c136_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010572,1011320,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c136_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010572,1011321,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c136_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010572,1011328,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c136_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010572,1011323,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c136_data_publicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010572,1011322,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c136_tipo_relatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010572,1011324,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c136_meio_comunicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010572,1011325,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c136_periodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010572,1011326,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c136_link'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010572,1011327,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c136_local_publicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010572,1011334,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c136_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

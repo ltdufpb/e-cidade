@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpesorigem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhpesorigem = new cl_rhpesorigem;
 $clrhpesorigem->rotulo->label("rh21_regist");
 $clrhpesorigem->rotulo->label("rh21_regpri");
@@ -98,9 +98,9 @@ $clrhpesorigem->rotulo->label("rh21_regpri");
         }else{
            $sql = $clrhpesorigem->sql_query("",$campos,"rh21_regist","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh21_regpri)){
-          $repassa = array("chave_rh21_regist"=>$chave_rh21_regist,"chave_rh21_regpri"=>$chave_rh21_regpri);
+          $repassa = ["chave_rh21_regist"=>$chave_rh21_regist,"chave_rh21_regpri"=>$chave_rh21_regpri];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

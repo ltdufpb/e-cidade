@@ -62,7 +62,7 @@ class LinhaItinerarioLogradouro {
    * POntos de parada do logradouro
    * @var ItinerarioPontoParada
    */
-  protected $aPontosDeParada  = array();
+  protected $aPontosDeParada  = [];
   
   
   /**
@@ -303,7 +303,7 @@ class LinhaItinerarioLogradouro {
       $rsLinhaTransportePontoParada = $oDaoLinhaTransportePontoParada->sql_record($sSqlLinhaTransportePontoParada);
       $iTotalLinhas                 = $oDaoLinhaTransportePontoParada->numrows;
   
-      $aPontosParada = array();
+      $aPontosParada = [];
       for ($iIndice = 0; $iIndice < $iTotalLinhas; $iIndice++) {
   
         $iCodigoPontoParada      = db_utils::fieldsMemory($rsLinhaTransportePontoParada, $iIndice)->tre11_sequencial;
@@ -409,7 +409,7 @@ class LinhaItinerarioLogradouro {
                                                                                      $sWhereLinhaTransportePontoParada);
     $rsLinhaTransportePontoParada = $oDaoLinhaTransportePontoParada->sql_record($sSqlLinhaTransportePontoParada);
 
-    $aPontosParada = array();
+    $aPontosParada = [];
     for ($iIndice = 0; $iIndice < $oDaoLinhaTransportePontoParada->numrows; $iIndice++) {
 
       $oPontoParada    = db_utils::fieldsMemory($rsLinhaTransportePontoParada, $iIndice, false, false, true);

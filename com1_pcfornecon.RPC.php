@@ -38,7 +38,7 @@ $parametros = JSON::requestParameters();
 $clpcforneconpad = new cl_pcforneconpad;
 $clpcfornecon = new cl_pcfornecon;
 $clempagemovconta = new cl_empagemovconta;
-$retorno = (object)array('erro' => false, 'mensagem' => '');
+$retorno = (object)['erro' => false, 'mensagem' => ''];
 $sqlerro = false;
 
 try {
@@ -62,10 +62,10 @@ try {
                     'conta' => $lancamento['pc63_conta']." - ".$lancamento['pc63_conta_dig'],
                     'conta_solo' => $lancamento['pc63_conta'],
                     'conta_dig' => $lancamento['pc63_conta_dig'],
-                    'conferido' => is_null($lancamento['pc63_dataconf']) ? '' : $lancamento['pc63_dataconf'],
+                    'conferido' => $lancamento['pc63_dataconf'] ?? '',
                     'conta_banco' => $lancamento['pc64_contabanco'],
-                    'tipo_pix' => is_null($lancamento['pc63_tipopix']) ? '' : $lancamento['pc63_tipopix'],
-                    'chave_pix' => is_null($lancamento['pc63_chavepix']) ? '' : $lancamento['pc63_chavepix']
+                    'tipo_pix' => $lancamento['pc63_tipopix'] ?? '',
+                    'chave_pix' => $lancamento['pc63_chavepix'] ?? ''
                 ];
                 
                 $retorno->lancamentos[] = $lanca;

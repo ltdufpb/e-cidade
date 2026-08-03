@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_caractercaracter_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcaractercaracter = new cl_caractercaracter;
 $clcaractercaracter->rotulo->label("j138_sequencial");
@@ -75,9 +75,9 @@ $clcaractercaracter->rotulo->label("j138_sequencial");
         }else{
            $sql = $clcaractercaracter->sql_query("",$campos,"j138_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j138_sequencial)){
-          $repassa = array("chave_j138_sequencial"=>$chave_j138_sequencial,"chave_j138_sequencial"=>$chave_j138_sequencial);
+          $repassa = ["chave_j138_sequencial"=>$chave_j138_sequencial,"chave_j138_sequencial"=>$chave_j138_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

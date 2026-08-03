@@ -119,11 +119,11 @@ db_input('db42_nome',20,$Idb42_nome,true,'text',$db_opcao,"")
             order by tipo, 
                   typname ";
   $result    = db_query($sql);
-  $numrows   = pg_numrows($result);
-  $elementos = array(" Selecione o tipo do parametro ");
+  $numrows   = pg_num_rows($result);
+  $elementos = [" Selecione o tipo do parametro "];
   for($i=0;$i<$numrows;$i++){
      db_fieldsmemory($result,$i);
-     $elementos[$typname] = "Tipo ".trim($tipo)." - ".trim($typname);
+     $elementos[$typname] = "Tipo ".trim((string) $tipo)." - ".trim((string) $typname);
    }
 ?>
 
@@ -189,7 +189,7 @@ db_textarea('db42_descricao',5,50,$Idb42_descricao,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("db42_sysfuncoesparam"=>@$db42_sysfuncoesparam);
+	 $chavepri= ["db42_sysfuncoesparam"=>@$db42_sysfuncoesparam];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 //   echo $cldb_sysfuncoesparam->sql_query_file(null,"*",null," db42_funcao = $db42_funcao " );
 	 $cliframe_alterar_excluir->sql     = $cldb_sysfuncoesparam->sql_query_file(null,"*",null," db42_funcao = $db42_funcao " );

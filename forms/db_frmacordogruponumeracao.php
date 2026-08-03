@@ -129,7 +129,7 @@ if (isset($db_opcaoal)) {
                 $sWhere = "ac03_acordogrupo = {$ac02_sequencial} and ac03_instit = " . db_getsession("DB_instit");
                 $sSqlAcordoGrupoNumeracao = $clacordogruponumeracao->sql_query_file(null,"*","ac03_sequencial",$sWhere);
 
-                $chavepri= array("ac03_sequencial"=>@$ac03_sequencial);
+                $chavepri= ["ac03_sequencial"=>@$ac03_sequencial];
                 $cliframe_alterar_excluir->chavepri      = $chavepri;
                 $cliframe_alterar_excluir->sql           = $sSqlAcordoGrupoNumeracao;
                 $cliframe_alterar_excluir->campos        = "ac03_sequencial,ac03_anousu,ac03_numero";

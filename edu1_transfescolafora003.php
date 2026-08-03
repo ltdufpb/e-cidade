@@ -116,7 +116,7 @@ if (isset($incluir)) {
 
  if ($concluida == "S") {
 
-   if (trim($sitanterior) == "MATRICULADO") {
+   if (trim((string) $sitanterior) == "MATRICULADO") {
 
      $resfinal = ResultadoFinal($matriculaorig,$codigoaluno,$codturmaorig,$sitanterior,$concluida);
      db_msgbox($resfinal);

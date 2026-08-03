@@ -168,7 +168,7 @@ $clrotulo->label("k02_anousu");
                                                  "tabplansaldorecurso.*,o15_codigo, o15_descr",
                                                  "k111_sequencial",
                                                  $dbwhere);
-        $chavepri= array("k111_sequencial"=>@$k111_sequencial);
+        $chavepri= ["k111_sequencial"=>@$k111_sequencial];
         $cliframe_alterar_excluir->chavepri=$chavepri;
         $cliframe_alterar_excluir->sql     = $sql;
         $cliframe_alterar_excluir->campos  ="k111_sequencial, k111_creditoinicial, k111_debitoinicial,o15_codigo,o15_descr";
@@ -306,7 +306,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tabplansaldorecurso.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

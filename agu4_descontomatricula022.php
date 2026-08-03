@@ -38,7 +38,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("classes/db_iptubase_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clarretipo         = new cl_arretipo;

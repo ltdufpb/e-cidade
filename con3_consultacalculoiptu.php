@@ -32,7 +32,7 @@ require_once("libs/db_sessoes.php");
 require_once("libs/db_app.utils.php");
 require_once(modification("dbforms/db_funcoes.php"));
 
-$aMatriculasNoLote = array();
+$aMatriculasNoLote = [];
 $iAnoAtual         = db_getsession('DB_anousu');
 
 db_inicio_transacao();
@@ -85,7 +85,7 @@ function getCarateristicasdoLote($idbql)
 
     $rsCaracteristica = db_query($sSqlCaractetiscasLote);
     $iTotalLinhas = pg_num_rows($rsCaracteristica);
-    $caracteristicas = array();
+    $caracteristicas = [];
 
     for ($contador = 0; $contador < $iTotalLinhas; $contador++) {
 
@@ -119,7 +119,7 @@ function getCarateristicasdosImoveisDaMatricula($matricula, $idConstr = null)
 
     $rsCaracteristica = db_query($sSqlCaractetiscasLote);
     $iTotalLinhas = pg_num_rows($rsCaracteristica);
-    $caracteristicas = array();
+    $caracteristicas = [];
 
     for ($contador = 0; $contador < $iTotalLinhas; $contador++) {
 
@@ -128,7 +128,7 @@ function getCarateristicasdosImoveisDaMatricula($matricula, $idConstr = null)
             $dadosCaracteristica->j48_idcons = $idConstr;
         }
         if (empty($caracteristicas[$dadosCaracteristica->j48_idcons])) {
-            $caracteristicas[$dadosCaracteristica->j48_idcons] = array();
+            $caracteristicas[$dadosCaracteristica->j48_idcons] = [];
         }
         $caracteristicas[$dadosCaracteristica->j48_idcons][$dadosCaracteristica->j32_grupo] = $dadosCaracteristica;
     }
@@ -219,7 +219,7 @@ if (!$result) {
     exit;
 }
 
-if (pg_numrows($result) == 0) {
+if (pg_num_rows($result) == 0) {
 
     echo "<h3>Sem cálculo de IPTU para matrícula {$parametro} no ano de {$iAnoAtual}.</h3>";
     //exit;
@@ -228,7 +228,7 @@ if (pg_numrows($result) == 0) {
 ?>
 <div class='subcontainer' style="width:100%">
 <?php 
-if (pg_numrows($result) != 0) {
+if (pg_num_rows($result) != 0) {
 
     $sSqlIptucalcpadrao = " SELECT j10_vlrter , j11_vlrcons FROM iptucalcpadrao  INNER JOIN iptucalcpadraoconstr 
                           on iptucalcpadraoconstr.j11_iptucalcpadrao = iptucalcpadrao.j10_sequencial
@@ -336,7 +336,7 @@ if (pg_numrows($result) != 0) {
                     <th width="12%" nowrap> Saldo a pagar</th>
                 </tr>
                 <?php
-                for ($contador2 = 0; $contador2 < pg_numrows($result2); $contador2++) {
+                for ($contador2 = 0; $contador2 < pg_num_rows($result2); $contador2++) {
 
                     db_fieldsmemory($result2, $contador2);
 
@@ -350,7 +350,7 @@ if (pg_numrows($result) != 0) {
                             <?= $k02_codigo ?>
                         </td>
                         <td width="40%" nowrap>
-                            <?= substr($j17_descr, 0, 20) ?>
+                            <?= substr((string) $j17_descr, 0, 20) ?>
                         </td>
                         <td width="7%" align="right" nowrap>
                             <?= db_formatar($j21_valor, 'f') ?>
@@ -583,7 +583,7 @@ if (pg_numrows($result) != 0) {
                                 <?php else: ?>
                                     <td width="215" align="left" nowrap>
                                 <?php endif; ?>
-                                        <?= substr($dadosCaracteristica->j32_descr, 0, 30) ?>
+                                        <?= substr((string) $dadosCaracteristica->j32_descr, 0, 30) ?>
                                     </td>
                                 
                                 <?php if($lExibirApenasColunasDescricao): ?>
@@ -599,7 +599,7 @@ if (pg_numrows($result) != 0) {
                                 <?php else: ?>
                                     <td width="171" align="left" nowrap>
                                 <?php endif; ?>
-                                    <?= substr($dadosCaracteristica->j31_descr, 0, 20) ?>
+                                    <?= substr((string) $dadosCaracteristica->j31_descr, 0, 20) ?>
                                     &nbsp;
                                 </td>
 
@@ -818,7 +818,7 @@ if (pg_numrows($result) != 0) {
                                     <?php else: ?>
                                         <td nowrap>
                                     <?php endif; ?>
-                                            <?= substr($caracteristica->j31_descr, 0, 20) ?>
+                                            <?= substr((string) $caracteristica->j31_descr, 0, 20) ?>
                                         </td>
 
                                     <td nowrap>
@@ -844,7 +844,7 @@ if (pg_numrows($result) != 0) {
         if (count($aMatriculasNoLote) > 1) {
 
             $temMatriculaAlterada = false;
-            $outrasMatriculas = array();
+            $outrasMatriculas = [];
             foreach ($aMatriculasNoLote as $oMatricula) {
 
                 if ($oMatricula->situacao == \ECidade\Tributario\Cadastro\Iptu\Recadastramento\Processamento::MATRICULA_NOVA) {

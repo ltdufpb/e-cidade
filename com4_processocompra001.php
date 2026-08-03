@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 $oGet = db_utils::postMemory($_GET);
 
-$iAcao = ($oGet->acao ? $oGet->acao : 3);
+$iAcao = ($oGet->acao ?: 3);
 ?>
 <html>
   <head>

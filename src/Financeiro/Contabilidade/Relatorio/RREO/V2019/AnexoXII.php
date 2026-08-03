@@ -49,9 +49,9 @@ class AnexoXII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     const QUADRO_RP_CANCELADO_OU_PRESCRITO = 1;
     const QUADRO_RP_PERCENTUAL_MINIMO = 2;
 
-    protected $controleRestosAPagar = array();
+    protected $controleRestosAPagar = [];
 
-    protected $linhasRestosPagar = array();
+    protected $linhasRestosPagar = [];
 
     public function __construct($iAnoUsu, $iCodigoPeriodo)
     {
@@ -65,7 +65,7 @@ class AnexoXII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         $this->calcularRPCanceladosOuPrescritos();
         $this->calcularRPPercentual();
 
-        $aLinhasProcessarFormula = array(49, 50);
+        $aLinhasProcessarFormula = [49, 50];
         foreach ($aLinhasProcessarFormula as $iLinha) {
             $this->processarFormulaDaLinha($iLinha);
         }
@@ -102,11 +102,11 @@ class AnexoXII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     /**
      * Calcula o quadro EXECUÇÃO DE RESTOS A PAGAR NÃO PROCESSADOS INSCRITOS COM DISPONIBILDADE DE CAIXA
      */
-    public function executarRestosPagar(array $linhas = array(), $coluna = null)
+    public function executarRestosPagar(array $linhas = [], $coluna = null)
     {
         // Calcula a Linha self::INSCRITOS_RP_DINAMICA que representa as linhas
         // Inscritos em <Exercício de Referência> e Inscritos em <Exercício de Referência - 4>
-        $this->linhasRestosPagar = array();
+        $this->linhasRestosPagar = [];
         $linhaDinamica = $this->aLinhasConsistencia[self::INSCRITOS_RP_DINAMICA];
         $edicaoManual = $linhaDinamica->oLinhaRelatorio->getValoresColunas(
             null,
@@ -252,7 +252,7 @@ class AnexoXII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
             $this->getAno()
         );
         $configuracaoManual = $this->totalizaConfiguracaoManualRPControle($edicaoManual);
-        $linhasSomatorio = array();
+        $linhasSomatorio = [];
         while ($anoCalcular > $anoLimite) {
             $linhaDinamica = $this->clonaLinha(self::RP_CANCELADO_OU_PRESCRITO_MENOS_4_SOMATORIO);
             $linhaDinamica->exercicio = $anoCalcular;
@@ -305,7 +305,7 @@ class AnexoXII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
      */
     protected function mapeiaConfiguracaoManual(array $edicaoManual)
     {
-        $configuracaoManual = array();
+        $configuracaoManual = [];
         // cria um array das colunas indexado por ano
         foreach ($edicaoManual as $colunas) {
             $configuracaoManual[$colunas->colunas[0]->o117_valor] = $colunas;
@@ -320,7 +320,7 @@ class AnexoXII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     private function totalizaConfiguracaoManualRPInscritos(array $edicaoManual)
     {
         $configuracaoManual = $this->mapeiaConfiguracaoManual($edicaoManual);
-        $configuracaoTotalizada = array();
+        $configuracaoTotalizada = [];
         foreach ($configuracaoManual as $configuracao) {
             $ano = $configuracao->colunas[0]->o117_valor;
             $linhaAuxiliar = new \stdClass();
@@ -353,7 +353,7 @@ class AnexoXII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     protected function totalizaConfiguracaoManualRPControle($edicaoManual)
     {
         $configuracaoManual = $this->mapeiaConfiguracaoManual($edicaoManual);
-        $configuracaoTotalizada = array();
+        $configuracaoTotalizada = [];
         foreach ($configuracaoManual as $configuracao) {
             $ano = $configuracao->colunas[0]->o117_valor;
             $linhaAuxiliar = new \stdClass();
@@ -438,7 +438,7 @@ class AnexoXII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
             $this->getAno()
         );
         $configuracaoManual = $this->totalizaConfiguracaoManualRPControle($edicaoManual);
-        $linhasSomatorio = array();
+        $linhasSomatorio = [];
         while ($anoCalcular > $anoLimite) {
             $linhaDinamica = $this->clonaLinha(self::RP_PERCENTUAL_MINIMO_MENOS_5_SOMATORIO);
             $linhaDinamica->exercicio = $anoCalcular;

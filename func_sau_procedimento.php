@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_procedimento_ext_classe.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clsau_procedimento = new cl_sau_procedimento_ext;
 $clsau_procedimento->rotulo->label("sd63_i_codigo");
@@ -109,7 +109,7 @@ if( $rsSauAtualiza && pg_num_rows( $rsSauAtualiza ) > 0 ) {
   <tr>
     <td align="center" valign="top">
       <?php
-      $aWhere      = array();
+      $aWhere      = [];
       $sWhere      = '';
       $sOrdernacao = "sd63_i_anocomp desc, sd63_i_mescomp desc, sd63_c_nome ";
 
@@ -219,9 +219,9 @@ if( $rsSauAtualiza && pg_num_rows( $rsSauAtualiza ) > 0 ) {
           }
         }
 
-        $repassa = array();
+        $repassa = [];
         if( isset( $chave_sd63_c_nome ) ) {
-          $repassa = array( "chave_sd63_i_codigo" => $chave_sd63_i_codigo, "chave_sd63_c_nome" => $chave_sd63_c_nome );
+          $repassa = [ "chave_sd63_i_codigo" => $chave_sd63_i_codigo, "chave_sd63_c_nome" => $chave_sd63_c_nome ];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

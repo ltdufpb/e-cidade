@@ -33,7 +33,7 @@ include(modification("classes/db_pontofs_classe.php"));
 include(modification("classes/db_rhvisavale_classe.php"));
 include(modification("classes/db_rhvisavalecad_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clpontofs = new cl_pontofs;
 $clrhvisavale = new cl_rhvisavale;
 $clrhvisavalecad = new cl_rhvisavalecad;
@@ -147,7 +147,7 @@ if(isset($incluir)){
     db_msgbox($erromsg);
   }else{
     db_msgbox($contador." matrículas lançadas com sucesso.");
-    echo "<script>location.href='".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'</script>";
+    echo "<script>location.href='".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'</script>";
   }
 }
 ?>

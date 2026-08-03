@@ -356,7 +356,7 @@ try {
             break;
         case 'vinculaServidor':
             $registrosExcluidos = [];
-            $matriculas = json_decode($parametros->json, true);
+            $matriculas = json_decode((string) $parametros->json, true);
 
             if (!empty((int) $parametros->codigoSelecao )) {
                 $servidores = ServidorRepository::getServidoresBySelecao(DBPessoal::getAnoFolha(), DBPessoal::getMesFolha(), $parametros->codigoSelecao);
@@ -507,7 +507,7 @@ try {
                         $processo->getDataSentenca() : $processo->getDataCelebracaoAcordo();
                     $desligamento->setDataSentencaAcordo($dataSetencaoAcordo);
                     $codigoMotivoDesligamento = str_pad(
-                        $servidor->getDadosRescisao()->r59_motivoesocial,
+                        (string) $servidor->getDadosRescisao()->r59_motivoesocial,
                         2,
                         '0',
                         STR_PAD_LEFT
@@ -545,7 +545,7 @@ try {
 
                 }
 
-                $sequencialExcluidosMudanca = explode(',',$parametros->sequencialMudancaCategoriaExcluir);
+                $sequencialExcluidosMudanca = explode(',',(string) $parametros->sequencialMudancaCategoriaExcluir);
 
                 foreach ($sequencialExcluidosMudanca as $sequencialExcluido) {
                     if ((int) $sequencialExcluido > 0) {
@@ -560,7 +560,7 @@ try {
                     }
                 }
 
-                $mudancas = json_decode($parametros->lancamentoMudancaCategoria, true);
+                $mudancas = json_decode((string) $parametros->lancamentoMudancaCategoria, true);
                 if(!empty($mudancas)) {
                     foreach ($mudancas as $itemMudanca) {
                         $mudancaRepository = new MudancaRepository();
@@ -584,7 +584,7 @@ try {
                     }
                 }
 
-                $sequencialExcluidosAnoAbono = explode(',',$parametros->sequencialAnoAbonoExcluir);
+                $sequencialExcluidosAnoAbono = explode(',',(string) $parametros->sequencialAnoAbonoExcluir);
 
                 foreach ($sequencialExcluidosAnoAbono as $sequencialExcluido) {
                     if ((int) $sequencialExcluido > 0) {
@@ -599,7 +599,7 @@ try {
                     }
                 }
 
-                $anoAbonos = json_decode($parametros->lancamentoAnoAbono, true);
+                $anoAbonos = json_decode((string) $parametros->lancamentoAnoAbono, true);
 
                 if(!empty($anoAbonos)) {
                     foreach ($anoAbonos as $itemAnoAbono) {
@@ -621,7 +621,7 @@ try {
                     }
                 }
 
-                $sequencialExcluidosUnicidade = explode(',',$parametros->sequencialUnicidadeExcluir);
+                $sequencialExcluidosUnicidade = explode(',',(string) $parametros->sequencialUnicidadeExcluir);
 
                 foreach ($sequencialExcluidosUnicidade as $sequencialExcluido) {
                     if ((int) $sequencialExcluido > 0) {
@@ -636,7 +636,7 @@ try {
                     }
                 }
 
-                $unicidades = json_decode($parametros->lancamentoUnicidade, true);
+                $unicidades = json_decode((string) $parametros->lancamentoUnicidade, true);
                 if(!empty($unicidades)) {
                     foreach ($unicidades as $itemUnicidade) {
                         $unicidadeRepository = new UnicidadeRepository();
@@ -660,7 +660,7 @@ try {
                     }
                 }
 
-                $periodos = json_decode($parametros->lancamentoPrevidenciario, true);
+                $periodos = json_decode((string) $parametros->lancamentoPrevidenciario, true);
 
                 if(!empty($periodos)) {
                     foreach ($periodos as $itemPeriodo) {
@@ -687,7 +687,7 @@ try {
                     }
                 }
 
-                $fgts = json_decode($parametros->lancamentoFGTS, true);
+                $fgts = json_decode((string) $parametros->lancamentoFGTS, true);
                 if(!empty($fgts)) {
                     foreach ($fgts as $itemFgts) {
                         $periodoRepository = new PeriodoRepository();
@@ -873,8 +873,8 @@ try {
 
                 $dadosProcesso = new stdClass();
                 foreach ($processoJudicial as $indice => $dadoProcesso) {
-                    $dataSentenca = implode("/",array_reverse(explode("-",$dadoProcesso->getDataSentenca())));
-                    $dataAcordo = implode("/",array_reverse(explode("-",$dadoProcesso->getDataCelebracaoAcordo())));
+                    $dataSentenca = implode("/",array_reverse(explode("-",(string) $dadoProcesso->getDataSentenca())));
+                    $dataAcordo = implode("/",array_reverse(explode("-",(string) $dadoProcesso->getDataCelebracaoAcordo())));
                     $dataDecisao = !empty($dataSentenca) ? $dataSentenca : $dataAcordo;
                     $dadosProcesso->sequencialProcesso = $dadoProcesso->getSequencial();
                     $dadosProcesso->numeroProcesso = $dadoProcesso->getNumeroProcesso() . ' - ' .
@@ -889,7 +889,7 @@ try {
             $dados = new stdClass();
             if (empty($parametros->codigoMatricula)) {
                 $numeroProcessoNaoValido = true;
-                switch (strlen($parametros->porNumeroProcesso)) {
+                switch (strlen((string) $parametros->porNumeroProcesso)) {
                     case 15:
                         $numeroProcessoNaoValido = false;
                     case 20:
@@ -955,8 +955,8 @@ try {
                     ->get();
                 $dadosProcesso = new stdClass();
                 foreach ($processoJudicial as $indice => $dadoProcesso) {
-                    $dataSentenca = implode("/",array_reverse(explode("-",$dadoProcesso->getDataSentenca())));
-                    $dataAcordo = implode("/",array_reverse(explode("-",$dadoProcesso->getDataCelebracaoAcordo())));
+                    $dataSentenca = implode("/",array_reverse(explode("-",(string) $dadoProcesso->getDataSentenca())));
+                    $dataAcordo = implode("/",array_reverse(explode("-",(string) $dadoProcesso->getDataCelebracaoAcordo())));
                     $dataDecisao = !empty($dataSentenca) ? $dataSentenca : $dataAcordo;
                     $dadosProcesso->sequencialProcesso = $dadoProcesso->getSequencial();
                     $dadosProcesso->numeroProcesso = $dadoProcesso->getNumeroProcesso() . ' - ' .
@@ -1089,15 +1089,15 @@ try {
             $servidorProcesso = $processosServidor[0]->getSequencial();
             $tributoBase = new TributoBase();
 
-            $lancamentoTributosPagamento = json_decode($parametros->lancamentosTributosPagamento);
+            $lancamentoTributosPagamento = json_decode((string) $parametros->lancamentosTributosPagamento);
 
             if (empty($lancamentoTributosPagamento) && empty($parametros->sequencialBaseExcluir)) {
                 throw new Exception("Não há registros de <strong>Identifição do período e da base de cálculo dos tributos</strong> lançados. Favor revisar.");
             }
 
-            $lancamentoTributosPrevidencial = json_decode($parametros->lancamentosTributosPrevidencial);
+            $lancamentoTributosPrevidencial = json_decode((string) $parametros->lancamentosTributosPrevidencial);
             
-            $sequencialBaseExcluidos = explode(',',$parametros->sequencialBaseExcluir);
+            $sequencialBaseExcluidos = explode(',',(string) $parametros->sequencialBaseExcluir);
 
             foreach ($lancamentoTributosPagamento as $lancamento) {
 
@@ -1143,7 +1143,7 @@ try {
                 }
             }
             //Início registro(s) excluído(s) em tela e salvo na base de dados
-            $sequencialPrevidenciaExcluidos = explode(',',$parametros->sequencialPrevidenciaExcluir);
+            $sequencialPrevidenciaExcluidos = explode(',',(string) $parametros->sequencialPrevidenciaExcluir);
 
             foreach ($sequencialPrevidenciaExcluidos as $sequencialPrevidenciaExcluido) {
                 if ((int) $sequencialPrevidenciaExcluido > 0) {
@@ -1175,7 +1175,7 @@ try {
                 }
             }
 
-            $sequencialExcluidosIRRF = explode(',',$parametros->sequencialExcluirIRRF);
+            $sequencialExcluidosIRRF = explode(',',(string) $parametros->sequencialExcluirIRRF);
 
             foreach ($sequencialExcluidosIRRF as $sequencialExcluido) {
                 if ((int) $sequencialExcluido > 0) {
@@ -1281,7 +1281,7 @@ try {
                 }
             }
 
-            $sequencialExcluidosCodigoIRRF = explode(',',$parametros->sequencialCodigoIRRFExcluir);
+            $sequencialExcluidosCodigoIRRF = explode(',',(string) $parametros->sequencialCodigoIRRFExcluir);
             $sequencialExcluidoCodigoIRRF = [];
             foreach ($sequencialExcluidosCodigoIRRF as $sequencialExcluido) {
                 if ((int) $sequencialExcluido > 0) {
@@ -1312,7 +1312,7 @@ try {
                 }
             }
 
-            $sequencialExcluidosAdvogado = explode(',',$parametros->sequencialAdvogadoExcluir);
+            $sequencialExcluidosAdvogado = explode(',',(string) $parametros->sequencialAdvogadoExcluir);
 
             foreach ($sequencialExcluidosAdvogado as $sequencialExcluido) {
                 if ((int) $sequencialExcluido > 0) {
@@ -1329,7 +1329,7 @@ try {
                 }
             }
 
-            $sequencialExcluidosDependente = explode(',',$parametros->sequencialDependenteExcluir);
+            $sequencialExcluidosDependente = explode(',',(string) $parametros->sequencialDependenteExcluir);
 
             foreach ($sequencialExcluidosDependente as $sequencialExcluido) {
                 if ((int) $sequencialExcluido > 0) {
@@ -1346,7 +1346,7 @@ try {
                 }
             }
 
-            $sequencialExcluidosRetencao = explode(',',$parametros->sequencialRetencaoExcluir);
+            $sequencialExcluidosRetencao = explode(',',(string) $parametros->sequencialRetencaoExcluir);
 
             foreach ($sequencialExcluidosRetencao as $sequencialExcluido) {
                 if ((int) $sequencialExcluido > 0) {
@@ -1403,7 +1403,7 @@ try {
                 }
             }
 
-            $sequencialExcluidosValorRetencao = explode(',',$parametros->sequencialValorRetencaoExcluir);
+            $sequencialExcluidosValorRetencao = explode(',',(string) $parametros->sequencialValorRetencaoExcluir);
 
             foreach ($sequencialExcluidosValorRetencao as $sequencialExcluido) {
                 if ((int) $sequencialExcluido > 0) {
@@ -1449,7 +1449,7 @@ try {
                 }
             }
 
-            $sequencialExcluidosDeducaoSuspensa = explode(',',$parametros->sequencialValorDeducaoSuspensaExcluir);
+            $sequencialExcluidosDeducaoSuspensa = explode(',',(string) $parametros->sequencialValorDeducaoSuspensaExcluir);
 
             foreach ($sequencialExcluidosDeducaoSuspensa as $sequencialExcluido) {
                 if ((int) $sequencialExcluido > 0) {
@@ -1480,7 +1480,7 @@ try {
                 }
             }
 
-            $sequencialExcluidosValorSuspensaPensao = explode(',',$parametros->sequencialValorSuspensaPensaoExcluir);
+            $sequencialExcluidosValorSuspensaPensao = explode(',',(string) $parametros->sequencialValorSuspensaPensaoExcluir);
 
             foreach ($sequencialExcluidosValorSuspensaPensao as $sequencialExcluido) {
                 if ((int) $sequencialExcluido > 0) {
@@ -1497,7 +1497,7 @@ try {
                 }
             }
 
-            $sequencialIRComplementarExcluir = explode(',',$parametros->sequencialIRComplementarExcluir);
+            $sequencialIRComplementarExcluir = explode(',',(string) $parametros->sequencialIRComplementarExcluir);
 
             foreach ($sequencialIRComplementarExcluir as $sequencialExcluido) {
                 if ((int) $sequencialExcluido > 0) {
@@ -1542,7 +1542,7 @@ try {
                 }
             }
 
-            $lancamentosTributosIRRF = json_decode($parametros->lancamentosTributosIRRF);
+            $lancamentosTributosIRRF = json_decode((string) $parametros->lancamentosTributosIRRF);
 
             $tributoIRRF = new TributoIRRF();
             $sequencialTributoIRRF = [];
@@ -1576,12 +1576,12 @@ try {
                 }
             }
 
-            $lancamentosCodigoIRRF = json_decode($parametros->lancamentosCodigoIRRF);
+            $lancamentosCodigoIRRF = json_decode((string) $parametros->lancamentosCodigoIRRF);
 
             if (isset($lancamentosCodigoIRRF) && !empty($lancamentosCodigoIRRF)) { 
 
                 foreach ($lancamentosCodigoIRRF as $lancamento) {
-                    $pagamentoCodigo = explode('|',$lancamento->codigoRelativoIRRF);
+                    $pagamentoCodigo = explode('|',(string) $lancamento->codigoRelativoIRRF);
                     $mesAnoPagamento = explode('-',$pagamentoCodigo[0]);
 
                     $tributoIRRFRepository = new TributoIRRFRepository();
@@ -1629,7 +1629,7 @@ try {
                 }
             }
 
-            $lancamentosAdvogado = json_decode($parametros->lancamentosAdvogado);
+            $lancamentosAdvogado = json_decode((string) $parametros->lancamentosAdvogado);
             $advogado = new Advogado();
             if (isset($lancamentosAdvogado) && !empty($lancamentosAdvogado)) { 
                 foreach ($lancamentosAdvogado as $lancamento) {
@@ -1659,7 +1659,7 @@ try {
                 }
             }
 
-            $lancamentosDependente = json_decode($parametros->lancamentosDependente);
+            $lancamentosDependente = json_decode((string) $parametros->lancamentosDependente);
             $dependente = new Dependente();
             if (isset($lancamentosDependente) && !empty($lancamentosDependente)) { 
                 foreach ($lancamentosDependente as $lancamento) {
@@ -1686,7 +1686,7 @@ try {
                 }
             }
 
-            $lancamentosPensao = json_decode($parametros->lancamentosPensao);
+            $lancamentosPensao = json_decode((string) $parametros->lancamentosPensao);
             $pensao = new Pensao();
             if (isset($lancamentosPensao) && !empty($lancamentosPensao)) { 
                 foreach ($lancamentosPensao as $lancamento) {
@@ -1713,7 +1713,7 @@ try {
                 }
             }
 
-            $lancamentosRetencao = json_decode($parametros->lancamentosRetencao);
+            $lancamentosRetencao = json_decode((string) $parametros->lancamentosRetencao);
 
             $retencao = new Retencao();
             $idRetencao = [];
@@ -1743,7 +1743,7 @@ try {
                 }
             }
 
-            $lancamentosValorRetencao = json_decode($parametros->lancamentosValorRetencao);
+            $lancamentosValorRetencao = json_decode((string) $parametros->lancamentosValorRetencao);
             $valorRetencao = new ValorRetencao();
             $idValorRetencao = [];
             if (isset($lancamentosValorRetencao) && !empty($lancamentosValorRetencao)) { 
@@ -1777,13 +1777,13 @@ try {
                 }
             }
 
-            $lancamentosValorDeducaoSuspensa = json_decode($parametros->lancamentosDeducaoSuspensa);
+            $lancamentosValorDeducaoSuspensa = json_decode((string) $parametros->lancamentosDeducaoSuspensa);
 
             $deducaoSuspensa = new DeducaoSuspensa();
 
             if (isset($lancamentosValorDeducaoSuspensa) && !empty($lancamentosValorDeducaoSuspensa)) { 
                 foreach ($lancamentosValorDeducaoSuspensa as $lancamento) {
-                    $idLancamento = substr($lancamento->id,1);
+                    $idLancamento = substr((string) $lancamento->id,1);
                     $sequencialValorRetencao = array_search($idLancamento, $idValorRetencao);
                     if ((int) $lancamento->sequencial == 0) {
                         $deducaoSuspensaRepository = new DeducaoSuspensaRepository();
@@ -1809,7 +1809,7 @@ try {
                 }
             }
 
-            $lancamentosSuspensaPensao = json_decode($parametros->lancamentosSuspensaPensao);
+            $lancamentosSuspensaPensao = json_decode((string) $parametros->lancamentosSuspensaPensao);
 
             $valorSuspensaPensao = new SuspensaPensao();
 
@@ -1840,7 +1840,7 @@ try {
                 }
             }
 
-            $lancamentosIRComplementar = json_decode($parametros->lancamentosIRComplementar);
+            $lancamentosIRComplementar = json_decode((string) $parametros->lancamentosIRComplementar);
 
             $valorIRComplementar = new TributoIRRFComplementar();
 
@@ -1994,12 +1994,12 @@ try {
                     }
                     $dadosIRRF->irrf->sequencialProcessoServidor = $lancamento->getSequencialProcessoServidor();
                     $dadosIRRF->irrf->codigoReceita =
-                        str_pad($lancamento->getCodigoReceita() , 6 , '0' , STR_PAD_LEFT);
+                        str_pad((string) $lancamento->getCodigoReceita() , 6 , '0' , STR_PAD_LEFT);
                     $dadosIRRF->irrf->valorIRRF = $lancamento->getValorIRRF();
                     $dadosIRRF->irrf->contemplado = $lancamento->getPeriodoPagamento();
 
                     $dadosIRRF->complementar = new stdClass();
-                    $dadosIRRF->complementar->codigoReceita = str_pad($lancamento->getCodigoReceita() , 6 , '0' , STR_PAD_LEFT);
+                    $dadosIRRF->complementar->codigoReceita = str_pad((string) $lancamento->getCodigoReceita() , 6 , '0' , STR_PAD_LEFT);
                     $dadosIRRF->complementar->valorRendimentoTributavel = $lancamento->getValorRendimentoTributavel();
                     $dadosIRRF->complementar->valorRendimentoTributavel13 = $lancamento->getValorRendimentoTributavel13();
                     $dadosIRRF->complementar->valorRendimentoMolestia = $lancamento->getValorRendimentoMolestia();

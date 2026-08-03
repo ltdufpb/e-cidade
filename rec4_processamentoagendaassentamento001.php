@@ -34,7 +34,7 @@
   require_once(modification("dbforms/db_classesgenericas.php"));
   require_once(modification("dbforms/db_funcoes.php"));
 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
 
   $oDaoAgendaassentamento = new cl_agendaassentamento;
   $oDaoAgendaassentamento->rotulo->label();
@@ -99,7 +99,7 @@
             </td>
             <td>
               <?php 
-                $aSelecao = array();
+                $aSelecao = [];
 
                 if(isset($iTipoAssentamento) && !empty($iTipoAssentamento)) {
                   $oTipoAssentamento   = TipoAssentamentoRepository::getInstanciaPorCodigo($h82_tipoassentamento);

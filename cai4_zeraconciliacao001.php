@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_contabancaria_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clcontabancaria = new cl_contabancaria;
 $db_opcao = 22;
 $db_botao = false;
@@ -41,7 +41,7 @@ if(isset($processar)){
   db_inicio_transacao();
   // var_dump($_POST);exit;
   
-  $sDataProcessamento = implode('-',array_reverse(explode('/',$data)));
+  $sDataProcessamento = implode('-',array_reverse(explode('/',(string) $data)));
   
   db_query("create temp table w_concilia as 
             select k68_sequencial as concilia 

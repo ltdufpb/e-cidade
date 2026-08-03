@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("libs/db_utils.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $oGet  = db_utils::postMemory($_GET,0);
 
 $clrotulo = new rotulocampo;
@@ -59,7 +59,7 @@ if($oGet->tipo != 'T'){
 	$sAnd   = " and ";
 }
 
-if(trim($oGet->ususel) != ""){
+if(trim((string) $oGet->ususel) != ""){
   
   $sHeaderUsuSel = "Usuários Selecionados: ( ".$oGet->ususel." )";
   $sWhere       .= "{$sAnd} usuario in ($oGet->ususel) ";
@@ -209,7 +209,7 @@ if($linhas > 0){
   	
    	// linha 2
    	$pdf->cell(15,$alt,"Atual",0,0,"L",1);
-   	$pdf->cell(30,$alt,db_formatar($cgccpf,(strlen($cgccpf)==11?'cpf':'cnpj')),0,0,"L",1);
+   	$pdf->cell(30,$alt,db_formatar($cgccpf,(strlen((string) $cgccpf)==11?'cpf':'cnpj')),0,0,"L",1);
     $pdf->cell(65,$alt,$nome,0,0,"L",1);
     $pdf->cell(64,$alt,$ender,0,0,"L",1);
     $pdf->cell(8,$alt,$numero,0,0,"L",1);
@@ -228,7 +228,7 @@ if($linhas > 0){
 	          (<condicao>?<corpo>:<senao>) 
 	       */
 			
-			  $pdf->cell(30,$alt,db_formatar($cgccpf_ant,(strlen($cgccpf_ant)==11?'cpf':'cnpj')),0,0,"L",1);
+			  $pdf->cell(30,$alt,db_formatar($cgccpf_ant,(strlen((string) $cgccpf_ant)==11?'cpf':'cnpj')),0,0,"L",1);
 		    $pdf->cell(65,$alt,$nome_ant,0,0,"L",1);
 		    $pdf->cell(64,$alt,$ender_ant,0,0,"L",1);
 		    $pdf->cell(8 ,$alt,$numero_ant,0,0,"L",1);

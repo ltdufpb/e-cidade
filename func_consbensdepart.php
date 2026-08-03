@@ -37,7 +37,7 @@ $cldb_depart = new cl_db_depart;
 $clrotulo = new rotulocampo;
 $clbens->rotulo->label();
 $clrotulo->label("descrdepto");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

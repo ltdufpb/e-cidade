@@ -33,16 +33,16 @@ require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_utils.php');
 require_once modification('dbforms/db_funcoes.php');
 
-$definicoes = array(
+$definicoes = [
     'escola' => FILTER_VALIDATE_INT,
     'calendario' => FILTER_VALIDATE_INT,
     'turma' => FILTER_VALIDATE_INT,
     'acao' => FILTER_SANITIZE_STRING,
-    'alunos' => array(
+    'alunos' => [
         'filter' => FILTER_VALIDATE_INT,
         'flags' => FILTER_REQUIRE_ARRAY,
-    )
-);
+    ]
+];
 
 $parametros = JSON::requestParameters($definicoes);
 

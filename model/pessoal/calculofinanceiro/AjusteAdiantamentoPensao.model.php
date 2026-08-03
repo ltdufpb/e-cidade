@@ -11,7 +11,7 @@
 abstract class AjusteAdiantamentoPensao {
 
 
-  private static $aValoresDescontoAdiantamentoPensao = array();
+  private static $aValoresDescontoAdiantamentoPensao = [];
 
   private static $lAtivado = false;
 

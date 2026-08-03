@@ -54,10 +54,10 @@ class cl_itbiruralcaract {
                  it19_tipocaract = int4 = Tipo de Característica
                  ";
    //funcao construtor da classe
-   public function cl_itbiruralcaract() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiruralcaract");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    public function erro($mostra,$retorna) {
@@ -134,7 +134,7 @@ class cl_itbiruralcaract {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "características do itbi rural ($this->it19_guia."-".$this->it19_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "características do itbi rural já Cadastrado";
@@ -158,14 +158,14 @@ class cl_itbiruralcaract {
      $resaco = $this->sql_record($this->sql_query_file($this->it19_guia,$this->it19_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5847,'$this->it19_guia','I')");
        $resac = db_query("insert into db_acountkey values($acount,5848,'$this->it19_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,936,5847,'','".AddSlashes(pg_result($resaco,0,'it19_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,936,5848,'','".AddSlashes(pg_result($resaco,0,'it19_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,936,5849,'','".AddSlashes(pg_result($resaco,0,'it19_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,936,13631,'','".AddSlashes(pg_result($resaco,0,'it19_tipocaract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,936,5847,'','".AddSlashes(pg_fetch_result($resaco,0,'it19_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,936,5848,'','".AddSlashes(pg_fetch_result($resaco,0,'it19_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,936,5849,'','".AddSlashes(pg_fetch_result($resaco,0,'it19_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,936,13631,'','".AddSlashes(pg_fetch_result($resaco,0,'it19_tipocaract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -174,10 +174,10 @@ class cl_itbiruralcaract {
       $this->atualizacampos();
      $sql = " update itbiruralcaract set ";
      $virgula = "";
-     if(trim($this->it19_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it19_guia"])){
+     if(trim((string) $this->it19_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it19_guia"])){
        $sql  .= $virgula." it19_guia = $this->it19_guia ";
        $virgula = ",";
-       if(trim($this->it19_guia) == null ){
+       if(trim((string) $this->it19_guia) == null ){
          $this->erro_sql = " Campo Número da guia de ITBI nao Informado.";
          $this->erro_campo = "it19_guia";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_itbiruralcaract {
          return false;
        }
      }
-     if(trim($this->it19_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it19_codigo"])){
+     if(trim((string) $this->it19_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it19_codigo"])){
        $sql  .= $virgula." it19_codigo = $this->it19_codigo ";
        $virgula = ",";
-       if(trim($this->it19_codigo) == null ){
+       if(trim((string) $this->it19_codigo) == null ){
          $this->erro_sql = " Campo Caracteristica nao Informado.";
          $this->erro_campo = "it19_codigo";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_itbiruralcaract {
          return false;
        }
      }
-     if(trim($this->it19_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it19_valor"])){
+     if(trim((string) $this->it19_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it19_valor"])){
        $sql  .= $virgula." it19_valor = $this->it19_valor ";
        $virgula = ",";
-       if(trim($this->it19_valor) == null ){
+       if(trim((string) $this->it19_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "it19_valor";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_itbiruralcaract {
          return false;
        }
      }
-     if(trim($this->it19_tipocaract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it19_tipocaract"])){
+     if(trim((string) $this->it19_tipocaract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it19_tipocaract"])){
        $sql  .= $virgula." it19_tipocaract = $this->it19_tipocaract ";
        $virgula = ",";
-       if(trim($this->it19_tipocaract) == null ){
+       if(trim((string) $this->it19_tipocaract) == null ){
          $this->erro_sql = " Campo Tipo de Característica nao Informado.";
          $this->erro_campo = "it19_tipocaract";
          $this->erro_banco = "";
@@ -251,18 +251,18 @@ class cl_itbiruralcaract {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5847,'$this->it19_guia','A')");
          $resac = db_query("insert into db_acountkey values($acount,5848,'$this->it19_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it19_guia"]))
-           $resac = db_query("insert into db_acount values($acount,936,5847,'".AddSlashes(pg_result($resaco,$conresaco,'it19_guia'))."','$this->it19_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,936,5847,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it19_guia'))."','$this->it19_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it19_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,936,5848,'".AddSlashes(pg_result($resaco,$conresaco,'it19_codigo'))."','$this->it19_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,936,5848,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it19_codigo'))."','$this->it19_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it19_valor"]))
-           $resac = db_query("insert into db_acount values($acount,936,5849,'".AddSlashes(pg_result($resaco,$conresaco,'it19_valor'))."','$this->it19_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,936,5849,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it19_valor'))."','$this->it19_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it19_tipocaract"]))
-           $resac = db_query("insert into db_acount values($acount,936,13631,'".AddSlashes(pg_result($resaco,$conresaco,'it19_tipocaract'))."','$this->it19_tipocaract',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,936,13631,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it19_tipocaract'))."','$this->it19_tipocaract',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -307,14 +307,14 @@ class cl_itbiruralcaract {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5847,'$it19_guia','E')");
          $resac = db_query("insert into db_acountkey values($acount,5848,'$it19_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,936,5847,'','".AddSlashes(pg_result($resaco,$iresaco,'it19_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,936,5848,'','".AddSlashes(pg_result($resaco,$iresaco,'it19_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,936,5849,'','".AddSlashes(pg_result($resaco,$iresaco,'it19_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,936,13631,'','".AddSlashes(pg_result($resaco,$iresaco,'it19_tipocaract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,936,5847,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it19_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,936,5848,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it19_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,936,5849,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it19_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,936,13631,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it19_tipocaract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from itbiruralcaract
@@ -380,7 +380,7 @@ class cl_itbiruralcaract {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:itbiruralcaract";
@@ -435,7 +435,7 @@ class cl_itbiruralcaract {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_itbiruralcaract {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -37,7 +37,7 @@ $clpcorcamitem = new cl_pcorcamitem;
 $clpcorcamitemsol = new cl_pcorcamitemsol;
 $clrotulo = new rotulocampo;
 $clsolicita->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $action = "com1_orcamento004.php";
 if($op == "alterar"){
   $action = "com1_orcamento005.php";

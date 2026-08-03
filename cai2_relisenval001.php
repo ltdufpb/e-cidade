@@ -83,7 +83,7 @@ $aux = new cl_arquivo_auxiliar;
                 </td>
                 <td align="left">
      	 	 			    <?php 
-                     $xx = array("a"=>"Analítico","s"=>"Sintético");
+                     $xx = ["a"=>"Analítico","s"=>"Sintético"];
      	 	 			 		  db_select('seltipo',$xx,true,4,"");
                       ?>
                 </td>

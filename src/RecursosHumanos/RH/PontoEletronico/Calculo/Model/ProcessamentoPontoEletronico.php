@@ -128,7 +128,7 @@ class ProcessamentoPontoEletronico
                 $oPeriodoEspelhoPonto->setDataInicio($oDataEfetividade);
                 $oPeriodoEspelhoPonto->setDataFim($oDataEfetividade);
 
-                $oEspelho = new EspelhoPonto($oServidor, array($oPeriodoEspelhoPonto), $oServidor->getInstituicao());
+                $oEspelho = new EspelhoPonto($oServidor, [$oPeriodoEspelhoPonto], $oServidor->getInstituicao());
                 $oEspelho->calcularTotalizadores();
                 $oEspelho->setDiaTrabalhoCache($oDiaTrabalhoModel);
 
@@ -161,7 +161,7 @@ class ProcessamentoPontoEletronico
             throw new \BusinessException($mensagem);
         }
 
-        $datasFaltas = array();
+        $datasFaltas = [];
 
         foreach ($aDatasEfetividade as $oDataEfetividade) {
             $oEscalaServidorNaData = self::getEscalaNaData($aEscalas, $oDataEfetividade);
@@ -250,7 +250,7 @@ class ProcessamentoPontoEletronico
 
         $oPeriodoRepository = new PeriodoRepository(null, null, true);
         $aPeriodos = $oPeriodoRepository->getPeriodosEntreDatas(new \DBDate($primeiraData), new \DBDate($ultimaData));
-        $aCodigosArquivos = array();
+        $aCodigosArquivos = [];
 
         foreach ($aPeriodos as $oPeriodo) {
             $oCabecalhoRepository = new CabecalhoRepository();
@@ -429,7 +429,7 @@ class ProcessamentoPontoEletronico
                 }
 
                 if (!$oAssentamentoNaData->isTotal()) {
-                    if (in_array($iOrdem, array(1, 2)) && $oAssentamentoNaData->getPeriodo1() != null) {
+                    if (in_array($iOrdem, [1, 2]) && $oAssentamentoNaData->getPeriodo1() != null) {
                         self::salvarJustificativaMarcacao($oJustificativaModel, $oMarcacao->getCodigo());
 
                         if (!$oAssentamentoNaData->getServidor()->registraPontoEletronico()
@@ -438,7 +438,7 @@ class ProcessamentoPontoEletronico
                         }
                     }
 
-                    if (in_array($iOrdem, array(3, 4)) && $oAssentamentoNaData->getPeriodo2() != null) {
+                    if (in_array($iOrdem, [3, 4]) && $oAssentamentoNaData->getPeriodo2() != null) {
                         self::salvarJustificativaMarcacao($oJustificativaModel, $oMarcacao->getCodigo());
 
                         if (!$oAssentamentoNaData->getServidor()->registraPontoEletronico()
@@ -447,7 +447,7 @@ class ProcessamentoPontoEletronico
                         }
                     }
 
-                    if (in_array($iOrdem, array(5, 6)) && $oAssentamentoNaData->getPeriodo3() != null) {
+                    if (in_array($iOrdem, [5, 6]) && $oAssentamentoNaData->getPeriodo3() != null) {
                         self::salvarJustificativaMarcacao($oJustificativaModel, $oMarcacao->getCodigo());
 
                         if (!$oAssentamentoNaData->getServidor()->registraPontoEletronico()) {
@@ -576,9 +576,7 @@ class ProcessamentoPontoEletronico
 
         if (pg_num_rows($rsPontoData) > 0) {
             $iTotalRegistros = pg_num_rows($rsPontoData);
-            $aRegistrosExcluir = \db_utils::makeCollectionFromRecord($rsPontoData, function ($oRetorno) {
-                return $oRetorno->rh198_sequencial;
-            });
+            $aRegistrosExcluir = \db_utils::makeCollectionFromRecord($rsPontoData, fn($oRetorno) => $oRetorno->rh198_sequencial);
 
             $oDaoRegistroJustificativa->excluir(
                 null,
@@ -628,9 +626,7 @@ class ProcessamentoPontoEletronico
 
         foreach ($aPeriodos as $oPeriodo) {
             if (\DBDate::dataEstaNoIntervalo($data, $oPeriodo->getDataInicio(), $oPeriodo->getDataFim())) {
-                return isset($aCodigosArquivos[$oPeriodo->getExercicio() . $oPeriodo->getCompetencia()])
-                    ? $aCodigosArquivos[$oPeriodo->getExercicio() . $oPeriodo->getCompetencia()]
-                    : null;
+                return $aCodigosArquivos[$oPeriodo->getExercicio() . $oPeriodo->getCompetencia()] ?? null;
             }
         }
 
@@ -740,14 +736,12 @@ class ProcessamentoPontoEletronico
     {
         $retornoAjuste = new \stdClass();
         $retornoAjuste->erro = false;
-        $retornoAjuste->matriculasComErro = array();
-        $retornoAjuste->matriculasMarcacoesAjustadas = array();
+        $retornoAjuste->matriculasComErro = [];
+        $retornoAjuste->matriculasMarcacoesAjustadas = [];
 
         $datas = \DBDate::getDatasNoIntervalo($dataInicial, $dataFinal);
 
-        $datasProcessamento = array_map(function ($data) {
-            return (object) array( 'data' => $data->getDate());
-        }, $datas);
+        $datasProcessamento = array_map(fn($data) => (object) [ 'data' => $data->getDate()], $datas);
 
         if (count($matriculas) > 0) {
             $tempo = microtime(true);
@@ -780,7 +774,7 @@ class ProcessamentoPontoEletronico
         foreach ($aPeriodos as $oPeriodo) {
             $oPeriodo = $oPeriodoRepository->getCodigoArquivoPorPeriodo($oPeriodo);
             $datasIntervalo = \DBDate::getDatasNoIntervalo($oPeriodo->getDataInicio(), $oPeriodo->getDataFim());
-            $aDatasProcessar = array();
+            $aDatasProcessar = [];
 
             foreach ($datasIntervalo as $oDataProcessar) {
                 $aDatasProcessar[] = $oDataProcessar->getDate();
@@ -826,7 +820,7 @@ class ProcessamentoPontoEletronico
 
         $oPeriodoRepository = new PeriodoRepository(null, null, true);
         $aPeriodos = $oPeriodoRepository->getPeriodosEntreDatas(new \DBDate($primeiraData), new \DBDate($ultimaData));
-        $aCodigosArquivos   = array();
+        $aCodigosArquivos   = [];
 
         foreach ($aPeriodos as $oPeriodo) {
             $oCabecalhoRepository = new CabecalhoRepository();

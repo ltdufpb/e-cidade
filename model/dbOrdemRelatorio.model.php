@@ -71,7 +71,7 @@ final class dbOrdemRelatorio implements iGeradorRelatorio {
   public function getNome(){
   	
     if (db_utils::isUTF8($this->sNome)) {
-      return utf8_decode($this->sNome);
+      return mb_convert_encoding($this->sNome, 'ISO-8859-1');
     } else {
       return $this->sNome;
     }
@@ -90,7 +90,7 @@ final class dbOrdemRelatorio implements iGeradorRelatorio {
   public function getAlias(){
   	
    if (db_utils::isUTF8($this->sAlias)) {
-      return utf8_decode($this->sAlias);
+      return mb_convert_encoding($this->sAlias, 'ISO-8859-1');
     } else {
       return $this->sAlias;
     }
@@ -135,10 +135,10 @@ final class dbOrdemRelatorio implements iGeradorRelatorio {
   	
   	$oXmlWriter->startElement('Ordem');
 
-  	$oXmlWriter->writeAttribute('id'       ,utf8_encode($this->iId));
-  	$oXmlWriter->writeAttribute('nome'     ,utf8_encode($this->sNome));
-  	$oXmlWriter->writeAttribute('ascdesc'  ,utf8_encode($this->sAscDesc));
-  	$oXmlWriter->writeAttribute('alias'    ,utf8_encode($this->sAlias));	
+  	$oXmlWriter->writeAttribute('id'       ,mb_convert_encoding($this->iId, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('nome'     ,mb_convert_encoding($this->sNome, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('ascdesc'  ,mb_convert_encoding($this->sAscDesc, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('alias'    ,mb_convert_encoding($this->sAlias, 'UTF-8', 'ISO-8859-1'));	
   	$oXmlWriter->endElement();  	
 	
   	return true;

@@ -92,26 +92,26 @@ if ($oParam->acao == "incluir") {
     if($clcidadao->numrows > 0){
       db_fieldsmemory($rsCidadao,0);
       $lerro = true;
-      $oRetorno->message = utf8_encode("Usuário:\\n\\nJá existe um cidadão cadastrado com o CNPJ/CPF informado!\\nValores : $ov02_sequencial\\n\\nAdministrador :\\n\\nInclusão não efetuada!");
+      $oRetorno->message = mb_convert_encoding("Usuário:\\n\\nJá existe um cidadão cadastrado com o CNPJ/CPF informado!\\nValores : $ov02_sequencial\\n\\nAdministrador :\\n\\nInclusão não efetuada!", 'UTF-8', 'ISO-8859-1');
     }
   }
 
   $clcidadao->ov02_sequencial 			= null;
   $clcidadao->ov02_seq							= 1;
-  $clcidadao->ov02_nome      				= db_stdClass::normalizeStringJson(strtoupper($oParam->cidadao->ov02_nome));
+  $clcidadao->ov02_nome      				= db_stdClass::normalizeStringJson(strtoupper((string) $oParam->cidadao->ov02_nome));
   $clcidadao->ov02_ident     				= $oParam->cidadao->ov02_ident;
   $clcidadao->ov02_cnpjcpf					= $oParam->cidadao->ov02_cnpjcpf;
-  $clcidadao->ov02_endereco					=	$oParam->cidadao->ov02_endereco != ''	? utf8_decode($oParam->cidadao->ov02_endereco) : null;
-  $clcidadao->ov02_numero						= $oParam->cidadao->ov02_numero 	!= ''	? utf8_decode($oParam->cidadao->ov02_numero) 	 : '';
-  $clcidadao->ov02_compl						= $oParam->cidadao->ov02_compl 		!= ''	? utf8_decode($oParam->cidadao->ov02_compl)		 : null;
-  $clcidadao->ov02_bairro						= $oParam->cidadao->ov02_bairro 	!= ''	? utf8_decode($oParam->cidadao->ov02_bairro) 	 : null;
-  $clcidadao->ov02_munic						= $oParam->cidadao->ov02_munic 		!= ''	? utf8_decode($oParam->cidadao->ov02_munic) 	 : null;
-  $clcidadao->ov02_uf								= $oParam->cidadao->ov02_uf 			!= ''	? utf8_decode($oParam->cidadao->ov02_uf) 			 : null;
+  $clcidadao->ov02_endereco					=	$oParam->cidadao->ov02_endereco != ''	? mb_convert_encoding($oParam->cidadao->ov02_endereco, 'ISO-8859-1') : null;
+  $clcidadao->ov02_numero						= $oParam->cidadao->ov02_numero 	!= ''	? mb_convert_encoding($oParam->cidadao->ov02_numero, 'ISO-8859-1') 	 : '';
+  $clcidadao->ov02_compl						= $oParam->cidadao->ov02_compl 		!= ''	? mb_convert_encoding($oParam->cidadao->ov02_compl, 'ISO-8859-1')		 : null;
+  $clcidadao->ov02_bairro						= $oParam->cidadao->ov02_bairro 	!= ''	? mb_convert_encoding($oParam->cidadao->ov02_bairro, 'ISO-8859-1') 	 : null;
+  $clcidadao->ov02_munic						= $oParam->cidadao->ov02_munic 		!= ''	? mb_convert_encoding($oParam->cidadao->ov02_munic, 'ISO-8859-1') 	 : null;
+  $clcidadao->ov02_uf								= $oParam->cidadao->ov02_uf 			!= ''	? mb_convert_encoding($oParam->cidadao->ov02_uf, 'ISO-8859-1') 			 : null;
   $clcidadao->ov02_situacaocidadao	= 2;
   $clcidadao->ov02_ativo 						= 't';
   $clcidadao->ov02_cep							= $oParam->cidadao->ov02_cep != '' ? $oParam->cidadao->ov02_cep : null;
   $clcidadao->ov02_data							= date('Y-m-d',db_getsession('DB_datausu'));
-  $clcidadao->ov02_datanascimento   = implode('-',array_reverse(explode('/',$oParam->cidadao->ov02_datanascimento)));
+  $clcidadao->ov02_datanascimento   = implode('-',array_reverse(explode('/',(string) $oParam->cidadao->ov02_datanascimento)));
   $clcidadao->ov02_sexo             = $oParam->cidadao->ov02_sexo;
 
   /*
@@ -133,9 +133,9 @@ if ($oParam->acao == "incluir") {
 
       $lerro             = true;
       $oDataNascimento   = new DBDate($clcidadao->ov02_datanascimento);
-      $oRetorno->message = utf8_encode("Já existe um cidadão cadastrado com o Nome e Data de Nascimento informados!
+      $oRetorno->message = mb_convert_encoding("Já existe um cidadão cadastrado com o Nome e Data de Nascimento informados!
                                       \\nValores : {$clcidadao->ov02_nome}, {$oDataNascimento->convertTo(DBDate::DATA_PTBR)}
-                                      \\nInclusão não efetuada!");
+                                      \\nInclusão não efetuada!", 'UTF-8', 'ISO-8859-1');
     }
   }
 
@@ -156,7 +156,7 @@ if ($oParam->acao == "incluir") {
   }
 
   if ( !$lerro ) {
-    if( trim($oParam->cidadao->ov03_numcgm) !="" ){
+    if( trim((string) $oParam->cidadao->ov03_numcgm) !="" ){
       $clcidadaocgm->ov03_cidadao  = $clcidadao->ov02_sequencial;
       $clcidadaocgm->ov03_seq      = $clcidadao->ov02_seq;
       $clcidadaocgm->ov03_numcgm   = $oParam->cidadao->ov03_numcgm;
@@ -187,7 +187,7 @@ if ($oParam->acao == "incluir") {
 
         $oRetorno->message = urlencode($clcidadaotiporetorno->erro_msg);
         $lerro             = true;
-        break;
+        return;
       }
     } else {
 
@@ -215,7 +215,7 @@ if ($oParam->acao == "incluir") {
 
       $clcidadaoemail->ov08_seq			 = $clcidadao->ov02_seq;
       $clcidadaoemail->ov08_cidadao  = $clcidadao->ov02_sequencial;
-      $clcidadaoemail->ov08_email		 = utf8_decode($oParam->emails[$i]->ov08_email);
+      $clcidadaoemail->ov08_email		 = mb_convert_encoding($oParam->emails[$i]->ov08_email, 'ISO-8859-1');
       $clcidadaoemail->ov08_principal= ($oParam->emails[$i]->ov08_principal == 't' ? 'true' : 'false');
       if(!$lerro){
         $clcidadaoemail->incluir(null);
@@ -234,10 +234,10 @@ if ($oParam->acao == "incluir") {
       $clcidadaotelefone->ov07_sequencial		=	null;
       $clcidadaotelefone->ov07_seq		 			= $clcidadao->ov02_seq;
       $clcidadaotelefone->ov07_cidadao  		= $clcidadao->ov02_sequencial;
-      $clcidadaotelefone->ov07_ddd		 			= $oParam->telefones[$i]->ov07_ddd != ""   ? utf8_decode($oParam->telefones[$i]->ov07_ddd)   : null;
+      $clcidadaotelefone->ov07_ddd		 			= $oParam->telefones[$i]->ov07_ddd != ""   ? mb_convert_encoding($oParam->telefones[$i]->ov07_ddd, 'ISO-8859-1')   : null;
       $clcidadaotelefone->ov07_numero		 		= $oParam->telefones[$i]->ov07_numero;
-      $clcidadaotelefone->ov07_ramal		 		= $oParam->telefones[$i]->ov07_ramal != "" ? utf8_decode($oParam->telefones[$i]->ov07_ramal) : null;
-      $clcidadaotelefone->ov07_obs		 			= $oParam->telefones[$i]->ov07_obs != ""   ? utf8_decode($oParam->telefones[$i]->ov07_obs)   : null;
+      $clcidadaotelefone->ov07_ramal		 		= $oParam->telefones[$i]->ov07_ramal != "" ? mb_convert_encoding($oParam->telefones[$i]->ov07_ramal, 'ISO-8859-1') : null;
+      $clcidadaotelefone->ov07_obs		 			= $oParam->telefones[$i]->ov07_obs != ""   ? mb_convert_encoding($oParam->telefones[$i]->ov07_obs, 'ISO-8859-1')   : null;
       $clcidadaotelefone->ov07_tipotelefone	= $oParam->telefones[$i]->ov07_tipotelefone;
       $clcidadaotelefone->ov07_principal		= ($oParam->telefones[$i]->ov07_principal == 't' ? 'true' : 'false');
 
@@ -290,7 +290,7 @@ if ($oParam->acao == "incluir") {
 
         $oRetorno->message = urlencode($clcidadaocomposicaofamiliar->erro_msg);
         $lerro             = true;
-        break;
+        return;
       }
       $oRetorno->iTipoFamiliar = $iTipoFamiliar;
     } else {
@@ -306,7 +306,7 @@ if ($oParam->acao == "incluir") {
 
         $oRetorno->message = urlencode($clcidadaofamilia->erro_msg);
         $lerro             = true;
-        break;
+        return;
       }
 
       $clcidadaocomposicaofamiliar->as03_cidadao        = $oRetorno->iCodCidadao;
@@ -319,7 +319,7 @@ if ($oParam->acao == "incluir") {
 
         $oRetorno->message = urlencode($clcidadaocomposicaofamiliar->erro_msg);
         $lerro             = true;
-        break;
+        return;
       }
 
       $oDataVinculo                = new DBDate(date("d/m/Y"));
@@ -380,20 +380,20 @@ if ($oParam->acao == "incluir") {
         $oAlteraCidadao->ov02_seq += 1 ;
         $clcidadao->ov02_sequencial 			= $oAlteraCidadao->ov02_sequencial;
         $clcidadao->ov02_seq							= $oAlteraCidadao->ov02_seq;
-        $clcidadao->ov02_nome      				= utf8_decode(strtoupper($oParam->cidadao->ov02_nome));
-        $clcidadao->ov02_ident     				= utf8_decode($oParam->cidadao->ov02_ident);
+        $clcidadao->ov02_nome      				= mb_convert_encoding(strtoupper((string) $oParam->cidadao->ov02_nome), 'ISO-8859-1');
+        $clcidadao->ov02_ident     				= mb_convert_encoding($oParam->cidadao->ov02_ident, 'ISO-8859-1');
         $clcidadao->ov02_cnpjcpf					= $oParam->cidadao->ov02_cnpjcpf;
-        $clcidadao->ov02_endereco					=	$oParam->cidadao->ov02_endereco != ''	? utf8_decode($oParam->cidadao->ov02_endereco): null;
-        $clcidadao->ov02_numero						= $oParam->cidadao->ov02_numero 	!= ''	? utf8_decode($oParam->cidadao->ov02_numero) 	: '';
-        $clcidadao->ov02_compl						= $oParam->cidadao->ov02_compl 		!= ''	? utf8_decode($oParam->cidadao->ov02_compl)		: null;
-        $clcidadao->ov02_bairro						= $oParam->cidadao->ov02_bairro 	!= ''	? utf8_decode($oParam->cidadao->ov02_bairro) 	: null;
-        $clcidadao->ov02_munic						= $oParam->cidadao->ov02_munic 		!= ''	? utf8_decode($oParam->cidadao->ov02_munic) 	: null;
-        $clcidadao->ov02_uf								= $oParam->cidadao->ov02_uf 			!= ''	? utf8_decode($oParam->cidadao->ov02_uf) 			: null;
+        $clcidadao->ov02_endereco					=	$oParam->cidadao->ov02_endereco != ''	? mb_convert_encoding($oParam->cidadao->ov02_endereco, 'ISO-8859-1'): null;
+        $clcidadao->ov02_numero						= $oParam->cidadao->ov02_numero 	!= ''	? mb_convert_encoding($oParam->cidadao->ov02_numero, 'ISO-8859-1') 	: '';
+        $clcidadao->ov02_compl						= $oParam->cidadao->ov02_compl 		!= ''	? mb_convert_encoding($oParam->cidadao->ov02_compl, 'ISO-8859-1')		: null;
+        $clcidadao->ov02_bairro						= $oParam->cidadao->ov02_bairro 	!= ''	? mb_convert_encoding($oParam->cidadao->ov02_bairro, 'ISO-8859-1') 	: null;
+        $clcidadao->ov02_munic						= $oParam->cidadao->ov02_munic 		!= ''	? mb_convert_encoding($oParam->cidadao->ov02_munic, 'ISO-8859-1') 	: null;
+        $clcidadao->ov02_uf								= $oParam->cidadao->ov02_uf 			!= ''	? mb_convert_encoding($oParam->cidadao->ov02_uf, 'ISO-8859-1') 			: null;
         $clcidadao->ov02_situacaocidadao	= 2;
         $clcidadao->ov02_ativo 						= 'true';
         $clcidadao->ov02_cep							= $oParam->cidadao->ov02_cep 			!= '' ? $oParam->cidadao->ov02_cep			: null;
         $clcidadao->ov02_data							= date('Y-m-d',db_getsession('DB_datausu'));
-        $clcidadao->ov02_datanascimento   = implode('-',array_reverse(explode('/',$oParam->cidadao->ov02_datanascimento)));
+        $clcidadao->ov02_datanascimento   = implode('-',array_reverse(explode('/',(string) $oParam->cidadao->ov02_datanascimento)));
         $clcidadao->ov02_sexo             = $oParam->cidadao->ov02_sexo;
 
         /**
@@ -488,7 +488,7 @@ if ($oParam->acao == "incluir") {
 
             $clcidadaoemail->ov08_seq			  = $clcidadao->ov02_seq;
             $clcidadaoemail->ov08_cidadao   = $clcidadao->ov02_sequencial;
-            $clcidadaoemail->ov08_email		  = utf8_decode($oParam->emails[$i]->ov08_email);
+            $clcidadaoemail->ov08_email		  = mb_convert_encoding($oParam->emails[$i]->ov08_email, 'ISO-8859-1');
             $clcidadaoemail->ov08_principal = ($oParam->emails[$i]->ov08_principal == 't' ? 'true' : 'false');
 
             if (!$lerro) {
@@ -539,10 +539,10 @@ if ($oParam->acao == "incluir") {
             $clcidadaotelefone->ov07_sequencial		=	null;
             $clcidadaotelefone->ov07_seq		 			= $clcidadao->ov02_seq;
             $clcidadaotelefone->ov07_cidadao  		= $clcidadao->ov02_sequencial;
-            $clcidadaotelefone->ov07_ddd		 			= $oParam->telefones[$i]->ov07_ddd != ""   ? utf8_decode($oParam->telefones[$i]->ov07_ddd)   : null;
+            $clcidadaotelefone->ov07_ddd		 			= $oParam->telefones[$i]->ov07_ddd != ""   ? mb_convert_encoding($oParam->telefones[$i]->ov07_ddd, 'ISO-8859-1')   : null;
             $clcidadaotelefone->ov07_numero		 		= $oParam->telefones[$i]->ov07_numero;
-            $clcidadaotelefone->ov07_ramal		 		= $oParam->telefones[$i]->ov07_ramal != "" ? utf8_decode($oParam->telefones[$i]->ov07_ramal) : null;
-            $clcidadaotelefone->ov07_obs		 			= $oParam->telefones[$i]->ov07_obs != ""   ? utf8_decode($oParam->telefones[$i]->ov07_obs)   : null;
+            $clcidadaotelefone->ov07_ramal		 		= $oParam->telefones[$i]->ov07_ramal != "" ? mb_convert_encoding($oParam->telefones[$i]->ov07_ramal, 'ISO-8859-1') : null;
+            $clcidadaotelefone->ov07_obs		 			= $oParam->telefones[$i]->ov07_obs != ""   ? mb_convert_encoding($oParam->telefones[$i]->ov07_obs, 'ISO-8859-1')   : null;
             $clcidadaotelefone->ov07_tipotelefone	= $oParam->telefones[$i]->ov07_tipotelefone;
             $clcidadaotelefone->ov07_principal		= ($oParam->telefones[$i]->ov07_principal == 't' ? 'true' : 'false');
 
@@ -578,7 +578,7 @@ if ($oParam->acao == "incluir") {
 
             $oRetorno->message = urlencode($clcidadaocomposicaofamiliar->erro_msg);
             $lerro             = true;
-            break;
+            return;
           }
 
         } else {
@@ -594,7 +594,7 @@ if ($oParam->acao == "incluir") {
 
             $oRetorno->message = urlencode($clcidadaofamilia->erro_msg);
             $lerro             = true;
-            break;
+            return;
           }
 
           $clcidadaocomposicaofamiliar->as03_sequencial     = $oParam->cidadao->as03_sequencial;
@@ -608,7 +608,7 @@ if ($oParam->acao == "incluir") {
 
             $oRetorno->message = urlencode($clcidadaocomposicaofamiliar->erro_msg);
             $lerro             = true;
-            break;
+            return;
           }
 
           $sWhereLocalAtendimentoFamilia = "as23_cidadaofamilia = {$oParam->cidadao->iCidadaoFamilia}";
@@ -725,7 +725,7 @@ if ($oParam->acao == "incluir") {
 
     if ($iNumRows>0){
 
-      $aCidadao = array();
+      $aCidadao = [];
       foreach (db_utils::getCollectionByRecord($rsCidadao,false,false,true) as $oDadosCidadao) {
 
         $oCidadao = new stdClass();
@@ -780,7 +780,7 @@ if ($oParam->acao == "incluir") {
       }
       $oRetorno->cidadao     = $aCidadao;
       $oRetorno->status	     = 0;
-      $oRetorno->tiporetorno = array();
+      $oRetorno->tiporetorno = [];
 
       $dbwhere       = "ov04_seq = ".$oRetorno->cidadao[0]->ov02_seq." and ov04_cidadao = ".$oRetorno->cidadao[0]->ov02_sequencial;
       $rsTipoRetorno = $clcidadaotiporetorno->sql_record($clcidadaotiporetorno->sql_query_file(null,"*",null,$dbwhere));
@@ -805,7 +805,7 @@ if ($oParam->acao == "incluir") {
         $oRetorno->cidadaotelefones = db_utils::getCollectionByRecord($rsCidadaoTelefones,false,false,true);
         $oRetorno->status	          = 0;
       }else {
-        $oRetorno->cidadaotelefones	= array();
+        $oRetorno->cidadaotelefones	= [];
       }
       //Aqui busca os emails do cidadao
       $campos 	 = "ov08_email,ov08_principal,case when ov08_principal is true then 'Sim' else 'Não' end as descricao";
@@ -818,7 +818,7 @@ if ($oParam->acao == "incluir") {
         $oRetorno->cidadaoemails = db_utils::getCollectionByRecord($rsCidadaoEmails,false,false,true);
         $oRetorno->status	       = 0;
       }else {
-        $oRetorno->cidadaoemails	= array();
+        $oRetorno->cidadaoemails	= [];
       }
 
       $oRetorno->status	= 0;
@@ -861,12 +861,12 @@ if ($oParam->acao == "incluir") {
     $oEndereco->ov02_nome       = $oDadosCGM->z01_nome;
     $oEndereco->ov03_numcgm     = $oDadosCGM->z01_numcgm;
 
-    $oRetorno->cidadao          = array($oEndereco);
-    $oRetorno->tiporetorno      = array();
-    $oRetorno->cidadaotelefones = array();
-    $oRetorno->cidadaoemails    = array();
+    $oRetorno->cidadao          = [$oEndereco];
+    $oRetorno->tiporetorno      = [];
+    $oRetorno->cidadaotelefones = [];
+    $oRetorno->cidadaoemails    = [];
 
-    if ( trim($oDadosCGM->z01_telef) != '' ) {
+    if ( trim((string) $oDadosCGM->z01_telef) != '' ) {
       $oTelefone = new stdClass();
       $oTelefone->descricao         = 'Residencial';
       $oTelefone->ov07_ddd          = '';
@@ -879,7 +879,7 @@ if ($oParam->acao == "incluir") {
       $oRetorno->cidadaotelefones[] = $oTelefone;
     }
 
-    if ( trim($oDadosCGM->z01_telcel) != '' ) {
+    if ( trim((string) $oDadosCGM->z01_telcel) != '' ) {
       $oTelefone = new stdClass();
       $oTelefone->descricao         = 'Celular';
       $oTelefone->ov07_ddd          = '';
@@ -892,7 +892,7 @@ if ($oParam->acao == "incluir") {
       $oRetorno->cidadaotelefones[] = $oTelefone;
     }
 
-    if ( trim($oDadosCGM->z01_telcon) != '' ) {
+    if ( trim((string) $oDadosCGM->z01_telcon) != '' ) {
       $oTelefone = new stdClass();
       $oTelefone->descricao         = 'Comercial';
       $oTelefone->ov07_ddd          = '';
@@ -904,7 +904,7 @@ if ($oParam->acao == "incluir") {
       $oTelefone->ov07_principal    = 'f';
       $oRetorno->cidadaotelefones[] = $oTelefone;
     }
-    if ( trim($oDadosCGM->z01_celcon) != '' ) {
+    if ( trim((string) $oDadosCGM->z01_celcon) != '' ) {
       $oTelefone = new stdClass();
       $oTelefone->descricao         = 'Comercial';
       $oTelefone->ov07_ddd          = '';
@@ -917,7 +917,7 @@ if ($oParam->acao == "incluir") {
       $oRetorno->cidadaotelefones[] = $oTelefone;
     }
 
-    if ( trim($oDadosCGM->z01_email) != '' ) {
+    if ( trim((string) $oDadosCGM->z01_email) != '' ) {
       $oEmail = new stdClass();
       $oEmail->ov08_email     = $oDadosCGM->z01_email;
       $oEmail->ov08_principal = 't';
@@ -925,7 +925,7 @@ if ($oParam->acao == "incluir") {
       $oRetorno->cidadaoemails[] = $oEmail;
     }
 
-    if ( trim($oDadosCGM->z01_emailc) != '' ) {
+    if ( trim((string) $oDadosCGM->z01_emailc) != '' ) {
       $oEmail = new stdClass();
       $oEmail->ov08_email     = $oDadosCGM->z01_emailc;
       $oEmail->ov08_principal = 'f';
@@ -941,12 +941,12 @@ if ($oParam->acao == "incluir") {
 
 }else if ($oParam->acao == "vincular") {
   $oRetorno->status = 0;
-  $oRetorno->message = utf8_encode("Usuário:\\n\\n Falha ao vincular Cidadão ao CGM!\\n\\nAdministrador:\\n\\n");
+  $oRetorno->message = mb_convert_encoding("Usuário:\\n\\n Falha ao vincular Cidadão ao CGM!\\n\\nAdministrador:\\n\\n", 'UTF-8', 'ISO-8859-1');
 
   db_inicio_transacao();
   $lerro = false;
 
-  if(trim($oParam->ov03_cidadao)!="" && trim($oParam->ov03_seq)!="" && trim($oParam->ov03_numcgm)!=""){
+  if(trim((string) $oParam->ov03_cidadao)!="" && trim((string) $oParam->ov03_seq)!="" && trim((string) $oParam->ov03_numcgm)!=""){
 
     $clcidadaocgm->ov03_cidadao  = $oParam->ov03_cidadao;
     $clcidadaocgm->ov03_seq			 = $oParam->ov03_seq;
@@ -959,7 +959,7 @@ if ($oParam->acao == "incluir") {
     }
 
     $oRetorno->status = 1;
-    $oRetorno->message = utf8_encode("Usuário:\\n\\n Vínculo do Cidadão com CGM criado com sucesso!\\n\\nAdministrador:\\n\\n");
+    $oRetorno->message = mb_convert_encoding("Usuário:\\n\\n Vínculo do Cidadão com CGM criado com sucesso!\\n\\nAdministrador:\\n\\n", 'UTF-8', 'ISO-8859-1');
     $oRetorno->ov03_numcgm = $oParam->ov03_numcgm;
 
   }else{

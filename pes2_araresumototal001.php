@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 $clrotulo->label('r44_selec');
 $clrotulo->label('r44_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -99,7 +99,7 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xxx = array("b"=>"Banco do Brasil","c"=>"CEF", "t"=>"Todos");
+      $xxx = ["b"=>"Banco do Brasil","c"=>"CEF", "t"=>"Todos"];
       db_select('xbanco',$xxx,true,1);
       ?>
     </td>
@@ -110,7 +110,7 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xcc = array("cc"=>"Com Conta","sc"=>"Sem Conta", "t"=>"Todos");
+      $xcc = ["cc"=>"Com Conta","sc"=>"Sem Conta", "t"=>"Todos"];
       db_select('xconta',$xcc,true,1);
       ?>
     </td>
@@ -121,10 +121,10 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xarq = array("s"=>"Salário",
+      $xarq = ["s"=>"Salário",
                     "c"=>"Complementar", 
                     "d"=>"13o. Salário"
-                   );
+                   ];
       db_select('arquivo',$xarq,true,1);
       ?>
     </td>
@@ -135,7 +135,7 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xfol = array("T"=>"Todos",
+      $xfol = ["T"=>"Todos",
                     "A"=>"Folha A", 
                     "B"=>"Folha B", 
                     "C"=>"Folha C", 
@@ -143,7 +143,7 @@ db_postmemory($HTTP_POST_VARS);
                     "E"=>"Folha E", 
                     "F"=>"Folha F", 
                     "G"=>"Folha G" 
-                    );
+                    ];
       db_select('tip_fol',$xfol,true,1);
       ?>
     </td>
@@ -154,10 +154,10 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xdent = array("T"=>"Todos",
+      $xdent = ["T"=>"Todos",
                      "D"=>"Dentista", 
                      "O"=>"Outros" 
-                    );
+                    ];
       db_select('dentista',$xdent,true,1);
       ?>
     </td>
@@ -168,11 +168,11 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xcom = array("T"=>"Todos",
+      $xcom = ["T"=>"Todos",
                      "D"=>"Outras Secretarias", 
                      "E"=>"Educacao", 
                      "S"=>"Saude" 
-                    );
+                    ];
       db_select('comissionados',$xcom,true,1);
       ?>
     </td>
@@ -183,12 +183,12 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xinat = array("T"=>"Todos",
+      $xinat = ["T"=>"Todos",
                      "I"=>"Inativos", 
                      "P"=>"Pensionistas", 
                      "M"=>"Maternidade", 
                      "D"=>"Aux.Doenca" 
-                    );
+                    ];
       db_select('inapen',$xinat,true,1);
       ?>
     </td>
@@ -197,7 +197,7 @@ db_postmemory($HTTP_POST_VARS);
     <td align="center" colspan="2">
       <?php 
       $result_local = $clrhlocaltrab->sql_record($clrhlocaltrab->sql_query_file(null,db_getsession('DB_instit'), "rh55_codigo, rh55_codigo||'-'||rh55_descr as rh55_descr", "rh55_descr" ));
-      db_multiploselect("rh55_codigo", "rh55_descr", "nselecionados", "sselecionados", $result_local, array(), 9, 250);
+      db_multiploselect("rh55_codigo", "rh55_descr", "nselecionados", "sselecionados", $result_local, [], 9, 250);
       ?>
     </td>
   </tr>

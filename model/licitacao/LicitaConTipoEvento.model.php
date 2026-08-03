@@ -36,7 +36,7 @@ class LicitaConTipoEvento {
    * Descrição dos eventos disponíveis para o LicitaCon
    * @type array
    */
-  public static $aDescricaoEvento = array(
+  public static $aDescricaoEvento = [
      1 => 'ALTERAÇÃO DO EDITAL',
      2 => 'ANULAÇÃO POR DETERMINAÇÃO JUDICIAL',
      3 => 'ANULAÇÃO DE OFÍCIO',
@@ -60,13 +60,13 @@ class LicitaConTipoEvento {
     21 => 'SUSPENSÃO POR MEDIDA CAUTELAR',
     22 => 'SUSPENSÃO DE OFÍCIO',
     23 => 'DOCUMENTOS'
-  );
+  ];
 
   /**
    * Siglas dos eventos esperados pelo LicitaCon
    * @type array
    */
-  public static $aSiglaEvento = array(
+  public static $aSiglaEvento = [
     1 => 'AED',
     2 => 'AND',
     3 => 'ANO',
@@ -90,5 +90,5 @@ class LicitaConTipoEvento {
     21 => 'SUM',
     22 => 'SUO',
     23 => 'NINF',
-  );
+  ];
 }

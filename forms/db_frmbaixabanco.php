@@ -89,9 +89,9 @@
             $mesarq = $mes;
             $anoarq = $ano;
          } else {
-            $diaarq = substr($dtarq,-2);
-            $mesarq = substr($dtarq,5,2);
-            $anoarq = substr($dtarq,0,4);
+            $diaarq = substr((string) $dtarq,-2);
+            $mesarq = substr((string) $dtarq,5,2);
+            $anoarq = substr((string) $dtarq,0,4);
          }
   		  db_inputdata("dtarq",$diaarq,$mesarq,$anoarq,true,'text',1);
   		 ?>
@@ -106,9 +106,9 @@
           $mespago = $mes;
           $anopago = $ano;
         } else {
-          $diapago = substr($dtpago,-2);
-          $mespago = substr($dtpago,5,2);
-          $anopago = substr($dtpago,0,4);
+          $diapago = substr((string) $dtpago,-2);
+          $mespago = substr((string) $dtpago,5,2);
+          $anopago = substr((string) $dtpago,0,4);
         }
   	    db_inputdata("dtpago",$diapago,$mespago,$anopago,true,'text',1);
       ?>
@@ -123,9 +123,9 @@
           $mescredito = $mes;
           $anocredito = $ano;
         } else {
-          $diacredito = substr($dtcredito,-2);
-          $mescredito = substr($dtcredito,5,2);
-          $anocredito = substr($dtcredito,0,4);
+          $diacredito = substr((string) $dtcredito,-2);
+          $mescredito = substr((string) $dtcredito,5,2);
+          $anocredito = substr((string) $dtcredito,0,4);
         }
   	    db_inputdata("dtcredito",$diacredito,$mescredito,$anocredito,true,'text',1);
       ?>
@@ -139,12 +139,12 @@
       <?php 
        if ($oGet->opcao!=5) {
           if ($classi == 'f') {
-             $aClassi = array("f"=>"Não","t"=>"Sim");
+             $aClassi = ["f"=>"Não","t"=>"Sim"];
           } else {
-             $aClassi = array("t"=>"Sim","f"=>"Não");
+             $aClassi = ["t"=>"Sim","f"=>"Não"];
           }
        } else {
-         $aClassi = array("f"=>"Não","t"=>"Sim");
+         $aClassi = ["f"=>"Não","t"=>"Sim"];
        }
 
   		 if (isset($oGet->arquivocodret) && $oGet->arquivocodret != null && $oGet->arquivocodret != '' ) {
@@ -224,7 +224,7 @@
 		     </td>
 		     <td nowrap>
 		     	<?php 
-		     	  db_select('lProcessoSistema', array(true=>'SIM', false=>'NÃO'), true, 1, "onchange='js_processoSistema(this.value)' style='width: 95px'")
+		     	  db_select('lProcessoSistema', [true=>'SIM', false=>'NÃO'], true, 1, "onchange='js_processoSistema(this.value)' style='width: 95px'")
 		     	?>
 		     </td>
 	      </tr>

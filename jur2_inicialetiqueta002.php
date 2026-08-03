@@ -27,7 +27,7 @@
 
 include(modification("libs/db_sql.php"));
 require_once(modification('fpdf151/PDF_Label.php'));
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 echo "inicio = $v50_inicial - fim = $v50_inicial_fim - tamanho = $tamanho";
 ?>

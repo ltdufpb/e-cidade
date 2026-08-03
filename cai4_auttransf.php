@@ -74,8 +74,8 @@ $clrotulo->label('k17_numcgm');
 $clrotulo->label('k17_dtanu');
 $clrotulo->label('k18_motivo');
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 
 //impressora
 $ip = db_getsession("DB_ip");
@@ -83,7 +83,7 @@ $porta = 4444;
 
 $sqltipaut = "select k11_tipautent from cfautent where k11_ipterm = '$ip' and k11_instit = ".db_getsession("DB_instit");
 $resulttipaut = db_query($sqltipaut);
-if (pg_numrows($resulttipaut) > 0) {
+if (pg_num_rows($resulttipaut) > 0) {
 	db_fieldsmemory($resulttipaut, 0);
 }
 
@@ -135,7 +135,7 @@ if (isset ($retorno) || isset ($autentica) || isset ($estorna)) {
 		          where slip.k17_codigo = $retorno and k17_instit = ".db_getsession('DB_instit')."
 							  and k17_situacao <> 4";
 		$result = @ db_query($sql);
-		if (pg_numrows($result) > 0) {
+		if (pg_num_rows($result) > 0) {
 			db_fieldsmemory($result, 0);
 			$credito = $k17_credito;
 			$debito = $k17_debito;
@@ -145,7 +145,7 @@ if (isset ($retorno) || isset ($autentica) || isset ($estorna)) {
 	}
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if (isset ($autentica) || isset ($estorna)) {
 	if (!isset ($e86_codmov) || ($e86_codmov == '')) {
 		$e86_codmov = '0';
@@ -156,7 +156,7 @@ if (isset ($autentica) || isset ($estorna)) {
 			        from slip
 		                where slip.k17_codigo = $numslip and k17_instit = ".db_getsession('DB_instit');
 		$result = db_query($sql);
-		if (pg_numrows($result) == 0) {
+		if (pg_num_rows($result) == 0) {
 			echo "<script>alert('Slip nao Encontrado.');
 				                 location.href='cai4_auttransf.php';
 						 </script)";
@@ -188,7 +188,7 @@ if (isset ($autentica) || isset ($estorna)) {
      	 $db_erro = $clslip->erro_msg;
 	} else {
 		db_fieldsmemory($result03, 0);
-		if (substr($fc_auttransf, 0, 1) != 1) {
+		if (substr((string) $fc_auttransf, 0, 1) != 1) {
 			$db_erro = $fc_auttransf;
 		}
 	}
@@ -312,7 +312,7 @@ $result_conta1 = $clsaltes->sql_record($clsaltes->sql_query());
 						  " order by c01_estrut";
 */
 
-if (pg_numrows($result_conta1) == 0) {
+if (pg_num_rows($result_conta1) == 0) {
 	echo "<script>parent.alert('Sem Contas Cadastradas no Plano de Contas.');</script>";
 	exit;
 }
@@ -496,16 +496,16 @@ if ($k11_tipautent == 1) {
 
 if ((isset ($autentica) || isset ($estorna)) && isset ($fc_auttransf)) {
 	$autent = db_query("select k11_aut1,k11_aut2 from cfautent where k11_instit = ".db_getsession("DB_instit")." and k11_ipterm = '".$ip."'");
-	$aut1 = split(",", pg_result($autent, 0, 0));
-	$aut2 = split(",", pg_result($autent, 0, 1));
+	$aut1 = preg_split("#,#m", pg_fetch_result($autent, 0, 0));
+	$aut2 = preg_split("#,#m", pg_fetch_result($autent, 0, 1));
 	$str_aut1 = "";
 	$str_aut2 = "";
-	if (trim(pg_result($autent, 0, 0)) != "") {
+	if (trim(pg_fetch_result($autent, 0, 0)) != "") {
 		for ($i = 0; $i < sizeof($aut1); $i ++) {
 			$str_aut1 .= chr($aut1[$i]);
 		}
 	}
-	if (trim(pg_result($autent, 0, 1)) != "") {
+	if (trim(pg_fetch_result($autent, 0, 1)) != "") {
 		for ($i = 0; $i < sizeof($aut2); $i ++) {
 			$str_aut2 .= chr($aut2[$i]);
 		}

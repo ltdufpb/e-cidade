@@ -67,8 +67,8 @@ db_input('sd02_c_nome',50,$Isd02_c_nome,true,'text',3,'')
      <strong>Ano/Mes</Strong>
     </td>
     <td>
-     <input type="text" name="ano" value="<?=substr($sd24_c_atendimento,0,4)?>" size="4" maxlength="4" onKeyPress='tab(event, 4)' <?php if($db_opcao == 2){ echo "disabled";}?> >
-     <input type="text" name="mes" value="<?=substr($sd24_c_atendimento,4,2)?>" size="2" maxlength="2" onKeyPress='tab(event, 5)' <?php if($db_opcao == 2){ echo "disabled";}?> >
+     <input type="text" name="ano" value="<?=substr((string) $sd24_c_atendimento,0,4)?>" size="4" maxlength="4" onKeyPress='tab(event, 4)' <?php if($db_opcao == 2){ echo "disabled";}?> >
+     <input type="text" name="mes" value="<?=substr((string) $sd24_c_atendimento,4,2)?>" size="2" maxlength="2" onKeyPress='tab(event, 5)' <?php if($db_opcao == 2){ echo "disabled";}?> >
     </td>
   </tr>
   <tr>
@@ -307,7 +307,7 @@ function js_preenchepesquisa(chave){
   db_iframe_prontuarios.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

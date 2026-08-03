@@ -24,7 +24,7 @@ class InconsistenciasReaberturaEfetividade extends Layout
     /**
      * @var array
      */
-    private $inconsistencias = array();
+    private $inconsistencias = [];
 
     /**
      * @var DBCompetencia

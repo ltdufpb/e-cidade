@@ -9,16 +9,16 @@
 //========================================================================
 
 class ImgData_Bevels extends ImgData {
-    var $name = 'Round Bevels';
-    var $an = array(MARK_IMG_BEVEL => 'imgdata');
+    public $name = 'Round Bevels';
+    public $an = [MARK_IMG_BEVEL => 'imgdata'];
     
-    var $colors = array('green','purple','orange','red','yellow');
-    var $index  = array('green'=>1,'purple'=>4,'orange'=>2,'red'=>0,'yellow'=>3);
-    var $maxidx = 4 ;
+    public $colors = ['green','purple','orange','red','yellow'];
+    public $index  = ['green'=>1,'purple'=>4,'orange'=>2,'red'=>0,'yellow'=>3];
+    public $maxidx = 4 ;
 
-    var $imgdata ;
+    public $imgdata ;
 
-    function ImgData_Bevels() {
+    function __construct() {
 //==========================================================
 // File: bullets_balls_red_013.png
 //==========================================================

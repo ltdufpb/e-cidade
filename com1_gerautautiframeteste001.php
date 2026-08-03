@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcorcamitem_classe.php"));
 include(modification("classes/db_pcorcamjulg_classe.php"));
 include(modification("classes/db_pcorcamval_classe.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clpcorcamitem = new cl_pcorcamitem;
 $clpcorcamjulg = new cl_pcorcamjulg;
 $clpcorcamval = new cl_pcorcamval;
@@ -46,14 +46,14 @@ $db_opcao=1;
 $db_botao=true;
 
 if(isset($incluir)){
-  $valor = split(",",$valores);
+  $valor = preg_split("#,#m",$valores);
   for($i=0;$i<sizeof($valor);$i++){
-    $splitei = split("_",$valor[$i]);
+    $splitei = preg_split("#_#m",(string) $valor[$i]);
     for($ii=0;$ii<sizeof($splitei);$ii++){
       // 'aut_".($contador-1)."_".$pc01_codmater."_".$pc13_coddot."_".$z01_numcgm."'
     }
     $txt = str_replace("aut","txt",$valor[$i]);
-    $e54_valor = $$txt;
+    $e54_valor = ${$txt};
   }
 }
 
@@ -160,7 +160,7 @@ if(isset($pc80_codproc) && trim($pc80_codproc)!=""){
 	echo "<tr>\n";
 	echo "  <td nowrap class='$bordas' align='center' ><input type='checkbox' name='aut_".($contador-1)."_".$pc01_codmater."_".$pc13_coddot."_".$z01_numcgm."' value='aut_".($contador-1)."_".$pc01_codmater."_".$pc13_coddot."_".$z01_numcgm."' onclick='js_disabled(\"aut_".($contador-1)."_".$pc01_codmater."_".$pc13_coddot."_".$z01_numcgm."\",\"txt_".($contador-1)."_".$pc01_codmater."_".$pc13_coddot."_".$z01_numcgm."\");'><input type='hidden' name='txt_".($contador-1)."_".$pc01_codmater."_".$pc13_coddot."_".$z01_numcgm."' value='$pc23_valor' disabled></td>\n";
 	echo "  <td nowrap class='$bordas' align='center' >$pc01_codmater</td>\n";
-	echo "  <td class='$bordas' align='left' >  ".ucfirst(strtolower($pc01_descrmater))."</td>\n";
+	echo "  <td class='$bordas' align='left' >  ".ucfirst(strtolower((string) $pc01_descrmater))."</td>\n";
 	echo "  <td class='$bordas' align='left' >$z01_nome</td>\n";
 	echo "  <td nowrap class='$bordas' align='center' >$pc13_coddot</td>\n";
 	echo "  <td nowrap class='$bordas' align='right'  >$pc23_quant</td>\n";

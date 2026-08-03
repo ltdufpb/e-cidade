@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitfichasocioeconomica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabitfichasocioeconomica = new cl_habitfichasocioeconomica;
 $clhabitfichasocioeconomica->rotulo->label("ht12_sequencial");
 $clhabitfichasocioeconomica->rotulo->label("ht12_avaliacaogruporesposta");
@@ -98,9 +98,9 @@ $clhabitfichasocioeconomica->rotulo->label("ht12_avaliacaogruporesposta");
         }else{
            $sql = $clhabitfichasocioeconomica->sql_query("",$campos,"ht12_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht12_avaliacaogruporesposta)){
-          $repassa = array("chave_ht12_sequencial"=>$chave_ht12_sequencial,"chave_ht12_avaliacaogruporesposta"=>$chave_ht12_avaliacaogruporesposta);
+          $repassa = ["chave_ht12_sequencial"=>$chave_ht12_sequencial,"chave_ht12_avaliacaogruporesposta"=>$chave_ht12_avaliacaogruporesposta];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

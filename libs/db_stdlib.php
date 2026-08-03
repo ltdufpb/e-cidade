@@ -85,14 +85,14 @@ function db_query($param1, $param2=null, $param3="SQL"){
         $dbsql = $sBackTrace . $param1;
         if (!$lExecutaAccount) {
 
-            $aWordsBlock = array(
+            $aWordsBlock = [
                 " db_acount ",
                 " db_acountkey "
-            );
+            ];
 
             foreach ($aWordsBlock as $sWord) {
 
-                $mAchouString = strpos($dbsql, $sWord);
+                $mAchouString = strpos((string) $dbsql, (string) $sWord);
                 if ($mAchouString) {
                     return true;
                 }
@@ -140,26 +140,26 @@ function db_dias_mes($ano,$mes,$ret_data = false){
  * Função para validar PIS
  */
 function checkPIS($pis){
-    $pis = str_pad(ereg_replace('[^0-9]', '', $pis), 11, '0', STR_PAD_LEFT);
+    $pis = str_pad((string) preg_replace('#[^0-9]#m', '', (string) $pis), 11, '0', STR_PAD_LEFT);
 
-    if (strlen($pis) != 11 || intval($pis) == 0) {
+    if (strlen((string) $pis) != 11 || intval($pis) == 0) {
         return false;
     } else {
         for ($d = 0, $p = 3, $c = 0; $c < 10; $c++) {
-            $d += $pis{$c} * $p;
+            $d += $pis[$c] * $p;
             $p = ($p < 3) ? 9 : --$p;
         }
 
         $d = ((10 * $d) % 11) % 10;
 
-        return ($pis{$c} == $d) ? true : false;
+        return ($pis[$c] == $d) ? true : false;
     }
 }
 
 function db_diasemana($dia,$opcao="s"){
     // Opcao = S - Sigla
     //         E - Extenso
-    $arr_SdiasUS = array(
+    $arr_SdiasUS = [
         "Sun" => "Dom",
         "Mon" => "Seg",
         "Tue" => "Ter",
@@ -167,8 +167,8 @@ function db_diasemana($dia,$opcao="s"){
         "Thu" => "Qui",
         "Fri" => "Sex",
         "Sat" => "Sab"
-    );
-    $arr_EdiasUS = array(
+    ];
+    $arr_EdiasUS = [
         "Sun" => "Domingo",
         "Mon" => "Segunda",
         "Tue" => "Terca",
@@ -176,7 +176,7 @@ function db_diasemana($dia,$opcao="s"){
         "Thu" => "Quinta",
         "Fri" => "Sexta",
         "Sat" => "Sabado"
-    );
+    ];
     if ($opcao == "s") {
         return $arr_SdiasUS[date("D",
             mktime(0, 0, 0, db_subdata($dia, "m"), db_subdata($dia, "d"), db_subdata($dia, "a")))];
@@ -199,8 +199,8 @@ function db_subdata($data,$opcao,$formatar="b"){
             $data = date("d/m/Y", $data);
         }
     }
-    $arr_data = explode("/",$data);
-    if (trim($arr_data[0]) == "" || !isset($arr_data[1]) || !isset($arr_data[2])) {
+    $arr_data = explode("/",(string) $data);
+    if (trim((string) $arr_data[0]) == "" || !isset($arr_data[1]) || !isset($arr_data[2])) {
         return 0;
     }
     if ($opcao == "d") {
@@ -215,9 +215,9 @@ function db_subdata($data,$opcao,$formatar="b"){
 // classe para download de arquivos
 class cl_download
 {
-    var $diretorio = 'tmp/';
-    var $arquivo = null;
-    var $texto = "Clique Aqui";
+    public $diretorio = 'tmp/';
+    public $arquivo = null;
+    public $texto = "Clique Aqui";
 
     function cl_download()
     {
@@ -226,7 +226,7 @@ class cl_download
 
     function criaarquivo()
     {
-        $this->arquivo = "rp" . rand(1, 10000) . "_" . time();
+        $this->arquivo = "rp" . random_int(1, 10000) . "_" . time();
     }
 
     function download()
@@ -256,10 +256,10 @@ class cl_verificaboletim
 /**
  * Busca o ano atual da folha
  *
- * @deprecated
  * @see DBPessoal::getAnoFolha()
  * @return integer
  */
+#[\Deprecated]
 function db_anofolha() {
 
     global $max;
@@ -279,7 +279,7 @@ function db_anofolha() {
 
         return DBPessoal::getAnoFolha();
 
-    } catch (Exception $oErro) {
+    } catch (Exception) {
         return 0;
     }
 
@@ -288,10 +288,10 @@ function db_anofolha() {
 /**
  * Busca o mes atual da folha
  *
- * @deprecated
  * @see DBPessoal::getMesFolha()
  * @return integer
  */
+#[\Deprecated]
 function db_mesfolha() {
 
     global $max;
@@ -311,7 +311,7 @@ function db_mesfolha() {
 
         return $iMes;
 
-    } catch (Exception $oErro) {
+    } catch (Exception) {
         return 0;
     }
 
@@ -375,11 +375,11 @@ function db_verifica_ip_banco()
     //#99#//                  testa o tamanho do IP até o asterisco e desconsidera a partir dele.
     //#99#//db_acessa[1][2] = Campo Lógico, quando verdadeiro, poderá acessar, o IP ou máscara do IP e quando
     //#99#//                  falso nao poderá acessar o db_portal
-    global $SERVER, $HTTP_SERVER_VARS, $db48_ip, $db47_id_usuario;
+    global $SERVER, $_SERVER, $db48_ip, $db47_id_usuario;
     if (isset ($_SERVER["HTTP_X_FORWARDED_FOR"])) {
         $db_ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
     } else {
-        $db_ip = $HTTP_SERVER_VARS['REMOTE_ADDR'];
+        $db_ip = $_SERVER['REMOTE_ADDR'];
     }
 
     $usuario_liberado = '0';
@@ -396,7 +396,7 @@ function db_verifica_ip_banco()
             or  ( db46_datafinal = '".date('Y-m-d')."' and db46_horafinal >= '".date("G:i")."' ))
             ";
     $result = db_query($sql);
-    $numrows = pg_numrows($result);
+    $numrows = pg_num_rows($result);
     for ($i = 0; $i < $numrows; $i++) {
         db_fieldsmemory($result, $i);
         if ($db48_ip == "") {
@@ -410,8 +410,8 @@ function db_verifica_ip_banco()
 
                 $aster = strpos("#" . $db48_ip, "*");
                 if ($aster != 0) {
-                    $quantos = substr($db48_ip, 0, $aster - 1);
-                    if (substr($db48_ip, 0, strlen($quantos)) == substr($db_ip, 0, strlen($quantos))) {
+                    $quantos = substr((string) $db48_ip, 0, $aster - 1);
+                    if (substr((string) $db48_ip, 0, strlen($quantos)) == substr((string) $db_ip, 0, strlen($quantos))) {
                         $usuario_liberado = '1';
                     }
                 }
@@ -431,7 +431,7 @@ function db_verifica_ip_banco()
             or  ( db46_dtinicio = '".date('Y-m-d')."' and db46_horaini   <= '".date("H:i")."' )
             or  ( db46_datafinal = '".date('Y-m-d')."' and db46_horafinal >= '".date("H:i")."' ))";
     $result = db_query($sql);
-    $numrows = pg_numrows($result);
+    $numrows = pg_num_rows($result);
     for ($i = 0; $i < $numrows; $i++) {
         db_fieldsmemory($result, $i);
         if ($db48_ip == $db_ip) {
@@ -442,8 +442,8 @@ function db_verifica_ip_banco()
 
             $aster = strpos("#" . $db48_ip, "*");
             if ($aster != 0) {
-                $quantos = substr($db48_ip, 0, $aster - 1);
-                if (substr($db48_ip, 0, strlen($quantos)) == substr($db_ip, 0, strlen($quantos))) {
+                $quantos = substr((string) $db48_ip, 0, $aster - 1);
+                if (substr((string) $db48_ip, 0, strlen($quantos)) == substr((string) $db_ip, 0, strlen($quantos))) {
                     $usuario_liberado = '1';
                 }
             }
@@ -466,11 +466,11 @@ function db_verifica_ip()
     //#99#//                  testa o tamanho do IP até o asterisco e desconsidera a partir dele.
     //#99#//db_acessa[1][2] = Campo Lógico, quando verdadeiro, poderá acessar, o IP ou máscara do IP e quando
     //#99#//                  falso nao poderá acessar o db_portal
-    global $SERVER, $HTTP_SERVER_VARS;
+    global $SERVER, $_SERVER;
     if (isset ($_SERVER["HTTP_X_FORWARDED_FOR"])) {
         $db_ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
     } else {
-        $db_ip = $HTTP_SERVER_VARS['REMOTE_ADDR'];
+        $db_ip = $_SERVER['REMOTE_ADDR'];
     }
 
     include(modification("libs/db_acessa.php"));
@@ -486,8 +486,8 @@ function db_verifica_ip()
     for ($i = 1; $i - 1 < sizeof($db_acessa); $i++) {
         $aster = strpos("#" . $db_acessa[$i][1], "*");
         if ($aster != 0) {
-            $quantos = substr($db_acessa[$i][1], 0, $aster - 1);
-            if (substr($db_acessa[$i][1], 0, strlen($quantos)) == substr($db_ip, 0, strlen($quantos))) {
+            $quantos = substr((string) $db_acessa[$i][1], 0, $aster - 1);
+            if (substr((string) $db_acessa[$i][1], 0, strlen($quantos)) == substr((string) $db_ip, 0, strlen($quantos))) {
                 if ($db_acessa[$i][2] == false) {
                     return '0';
                 }
@@ -505,9 +505,9 @@ class cl_abre_arquivo
     //|10|//Abre um determinado arquivo no diretório DOCUMENT_ROOT do servidor onde estiver rodando o PHP
     //|15|//$clabre_arquivo = new cl_abre_arquivo($nomearq="");
     //|20|//Nome do Arquivo : Nome do arquivo para abrir e colocar na propriedade arquivo
-    var $nomearq = null;
+    public $nomearq = null;
     //|30|//nomearq : Nome do arquivo com o caminho completo
-    var $arquivo = null;
+    public $arquivo = null;
 
     //|30|//arquivo : FD do arquivo - retorno da função fopen()
     function cl_abre_arquivo($nomearq = "")
@@ -518,11 +518,11 @@ class cl_abre_arquivo
         //#20#//Nome do Arquivo : Nome do arquivo a ser gerado, quando em branco, o sistema gera um arquivo aleatório
         //#20#//                  com a função tempnam()
         //#40#//true se o arquivo foi gerado ou false se nao foi gerado
-        global $HTTP_SERVER_VARS;
+        global $_SERVER;
         $Dirroot = "";
         if ($nomearq == "") {
-            $Dirroot = substr($HTTP_SERVER_VARS['DOCUMENT_ROOT'], 0,
-                    strrpos($HTTP_SERVER_VARS['DOCUMENT_ROOT'], "/")) . "/";
+            $Dirroot = substr((string) $_SERVER['DOCUMENT_ROOT'], 0,
+                    strrpos((string) $_SERVER['DOCUMENT_ROOT'], "/")) . "/";
             $nomearq = tempnam("tmp", "");
         }
         $this->arquivo = fopen($Dirroot . $nomearq, "w");
@@ -599,7 +599,7 @@ function db_mes($xmes,$tipo=0)
     } elseif ($tipo == 1) {
         return strtoupper(str_replace("ç", "Ç", $Mes));
     } else {
-        return ucfirst($Mes);
+        return ucfirst((string) $Mes);
     }
 }
 
@@ -608,16 +608,16 @@ function db_mes($xmes,$tipo=0)
 
 function db_geratexto($texto) {
   $texto .= "#";
-    $txt = explode("#", $texto);
+    $txt = explode("#", (string) $texto);
     $texto1 = '';
     for ($x = 0; $x < sizeof($txt); $x++) {
-        if (substr($txt[$x], 0, 1) == "$") {
-            $txt1 = substr($txt[$x], 1);
-            global $$txt1;
-            $texto1 .= $$txt1;
-        } elseif ((substr($txt[$x], 0, 2) == '\n') or (substr($txt[$x], 0, 4) == '<br>')) {
+        if (str_starts_with((string) $txt[$x], "$")) {
+            $txt1 = substr((string) $txt[$x], 1);
+            global ${$txt1};
+            $texto1 .= ${$txt1};
+        } elseif ((str_starts_with((string) $txt[$x], '\n')) or (str_starts_with((string) $txt[$x], '<br>'))) {
             $texto1 .= "\n";
-        } elseif (substr($txt[$x], 0, 2) == '\t') {
+        } elseif (str_starts_with((string) $txt[$x], '\t')) {
             $texto1 .= "\t";
         } else {
             $texto1 .= $txt[$x];
@@ -644,20 +644,20 @@ class janela
     //|99|//$func_iframe->iniciarVisivel = false;      // seta se mostrará ou não a janela (neste caso não)
     //|99|//$func_iframe->mostrar();                   // escreve o objeto iframe na tela
 
-    var $nome;
-    var $arquivo;
-    var $iniciarVisivel = true;
-    var $largura = "780";
-    var $altura = "430";
-    var $posX = "1";
-    var $posY = "20";
-    var $scrollbar = "auto"; // pode ser tb, 0 ou 1
-    var $corFundoTitulo = "#2C7AFE";
-    var $corTitulo = "white";
-    var $fonteTitulo = "Arial, Helvetica, sans-serif";
-    var $tamTitulo = "11";
-    var $titulo = "DBSeller Informática Ltda";
-    var $janBotoes = "111";
+    public $nome;
+    public $arquivo;
+    public $iniciarVisivel = true;
+    public $largura = "780";
+    public $altura = "430";
+    public $posX = "1";
+    public $posY = "20";
+    public $scrollbar = "auto"; // pode ser tb, 0 ou 1
+    public $corFundoTitulo = "#2C7AFE";
+    public $corTitulo = "white";
+    public $fonteTitulo = "Arial, Helvetica, sans-serif";
+    public $tamTitulo = "11";
+    public $titulo = "DBSeller Informática Ltda";
+    public $janBotoes = "111";
 
     function __construct($nome, $arquivo)
     {
@@ -701,9 +701,9 @@ class rotulolov
     //|99|//[variavel]->titulo    // ja com o valor atulizado pelo método label
     //|99|//[variavel]->descricao // ja com o valor atulizado pelo método label
     //|99|//[variavel]->tamanho   // ja com o valor atulizado pelo método label
-    var $titulo = null;
-    var $title = null;
-    var $tamanho = null;
+    public $titulo = null;
+    public $title = null;
+    public $tamanho = null;
 
     function label($nome = "")
     {
@@ -713,20 +713,20 @@ class rotulolov
         //#20#//nome  : Nome do campo a ser gerado as variáveis de controle para função
         //#99#//Caso os campos comecem com dl_ não será pesquisada o label da documentação e sim o próprio
         //#99#//nome da variável sem o "dl_"
-        if (substr($nome, 0, 3) == "dl_") {
-            $this->titulo = substr($nome, 3);
-            $this->title = substr($nome, 3);
+        if (str_starts_with((string) $nome, "dl_")) {
+            $this->titulo = substr((string) $nome, 3);
+            $this->title = substr((string) $nome, 3);
             $this->tamanho = 0;
         } else {
-            $sCampoTrim = trim($nome);
+            $sCampoTrim = trim((string) $nome);
             $result = db_query("select c.descricao,c.rotulo,c.tamanho
                            from db_syscampo c
-                          where c.nomecam = '${sCampoTrim}'");
-            $numrows = pg_numrows($result);
+                          where c.nomecam = '{$sCampoTrim}'");
+            $numrows = pg_num_rows($result);
             if ($numrows != 0) {
-                $this->titulo = ucfirst(pg_result($result, 0, "rotulo"));
-                $this->title = ucfirst(pg_result($result, 0, "descricao"));
-                $this->tamanho = pg_result($result, 0, "tamanho");
+                $this->titulo = ucfirst(pg_fetch_result($result, 0, "rotulo"));
+                $this->title = ucfirst(pg_fetch_result($result, 0, "descricao"));
+                $this->tamanho = pg_fetch_result($result, 0, "tamanho");
             } else {
                 $this->titulo = "";
                 $this->title = "";
@@ -737,14 +737,14 @@ class rotulolov
   //|XX|//
 }
 
-if ( !empty($HTTP_SERVER_VARS)) {
+if ( !empty($_SERVER)) {
 
     //Variavel com a URL absoluta, menos o arquivo
-    $DB_URL_ABS = "http://" . $HTTP_SERVER_VARS['HTTP_HOST'] . substr($HTTP_SERVER_VARS['PHP_SELF'], 0,
-            strrpos($HTTP_SERVER_VARS['PHP_SELF'], "/") + 1);
+    $DB_URL_ABS = "http://" . $_SERVER['HTTP_HOST'] . substr((string) $_SERVER['PHP_SELF'], 0,
+            strrpos((string) $_SERVER['PHP_SELF'], "/") + 1);
     //Variavel com a URL absoluta da pagina que abriu a atual, menos o arquivo
-    if (isset ($HTTP_SERVER_VARS["HTTP_REFERER"]))
-        $DB_URL_REF = substr($HTTP_SERVER_VARS["HTTP_REFERER"], 0, strrpos($HTTP_SERVER_VARS["HTTP_REFERER"], "/") + 1);
+    if (isset ($_SERVER["HTTP_REFERER"]))
+        $DB_URL_REF = substr((string) $_SERVER["HTTP_REFERER"], 0, strrpos((string) $_SERVER["HTTP_REFERER"], "/") + 1);
 
 }
 
@@ -763,11 +763,11 @@ function db_verfPostGet($post)
         } else {
             $dbarraypost = "";
         }
-        if (findword(strtoupper($dbarraypost), "INSERT") || findword(strtoupper($dbarraypost),
-                "UPDATE") || findword(strtoupper($dbarraypost), "DELETE") || db_indexOf(strtoupper($dbarraypost),
-                "EXEC(") > 0 || db_indexOf(strtoupper($dbarraypost),
-                "SYSTEM(") > 0 || db_indexOf(strtoupper($dbarraypost),
-                "<SCRIPT>") > 0 || db_indexOf(strtoupper($dbarraypost), "PASSTHRU(") > 0) {
+        if (findword(strtoupper((string) $dbarraypost), "INSERT") || findword(strtoupper((string) $dbarraypost),
+                "UPDATE") || findword(strtoupper((string) $dbarraypost), "DELETE") || db_indexOf(strtoupper((string) $dbarraypost),
+                "EXEC(") > 0 || db_indexOf(strtoupper((string) $dbarraypost),
+                "SYSTEM(") > 0 || db_indexOf(strtoupper((string) $dbarraypost),
+                "<SCRIPT>") > 0 || db_indexOf(strtoupper((string) $dbarraypost), "PASSTHRU(") > 0) {
             if (defined("TAREFA") == false) {
                 echo "<script>alert('Voce está passando parametros inválidos e sera redirecionado. Verifique INSERT/UPDATE e ... nos campos enviados.');(window.CurrentWindow || parent.CurrentWindow).corpo.location.href='instit.php'</script>\n";
                 exit;
@@ -778,15 +778,15 @@ function db_verfPostGet($post)
   }
 }
 
-if (isset($HTTP_POST_VARS)) {
-    db_verfPostGet($HTTP_POST_VARS);
+if (isset($_POST)) {
+    db_verfPostGet($_POST);
 }
 
-if (isset($HTTP_GET_VARS)) {
-    db_verfPostGet($HTTP_GET_VARS);
+if (isset($_GET)) {
+    db_verfPostGet($_GET);
 }
 
-function db_criatabela($result, $columns = array())
+function db_criatabela($result, $columns = [])
 {
     //#00#//db_criatabela
     //#10#//Esta funcao mostra os dados de um record set na tela, em uma tabela
@@ -794,9 +794,9 @@ function db_criatabela($result, $columns = array())
     //#20#//result  : Record set gerado
     //#20#//columns : Array com nomes das colunas a exibir, se nao passar nada mostra todas colunas do recordset
 
-    $numrows = pg_numrows($result);
+    $numrows = pg_num_rows($result);
     if (count($columns) == 0) {
-        $numcols = pg_numfields($result);
+        $numcols = pg_num_fields($result);
         $bycolumn = false;
     } else {
         $numcols = count($columns);
@@ -807,7 +807,7 @@ function db_criatabela($result, $columns = array())
 
     for ($j = 0; $j < $numcols; $j++) {
         if (!$bycolumn) {
-            echo "<td>" . pg_fieldname($result, $j) . "</td>\n";
+            echo "<td>" . pg_field_name($result, $j) . "</td>\n";
         } else {
             echo "<td>" . $columns[$j] . "</td>\n";
         }
@@ -818,9 +818,9 @@ function db_criatabela($result, $columns = array())
         echo "<tr bgcolor=\"" . ($cor = ($cor == "#07F89D" ? "#51F50A" : "#07F89D")) . "\">\n";
         for ($j = 0; $j < $numcols; $j++) {
             if (!$bycolumn) {
-                echo "<td nowrap>" . pg_result($result, $i, $j) . "</td>\n";
+                echo "<td nowrap>" . pg_fetch_result($result, $i, $j) . "</td>\n";
             } else {
-                echo "<td nowrap>" . pg_result($result, $i, $columns[$j]) . "</td>\n";
+                echo "<td nowrap>" . pg_fetch_result($result, $i, $columns[$j]) . "</td>\n";
             }
         }
         echo "</tr>\n";
@@ -840,10 +840,10 @@ function db_getMaxSizeField($recordset, $campo = 0)
     //#20#//recordset : Record que será pesquisado
     //#20#//campo     : Número do campo do record set que será pesquisado
 
-    $numrows = pg_numrows($recordset);
-    $val = strlen(trim(pg_result($recordset, 0, $campo)));
+    $numrows = pg_num_rows($recordset);
+    $val = strlen(trim(pg_fetch_result($recordset, 0, $campo)));
     for ($i = 1; $i < $numrows; $i++) {
-        $field = strlen(trim(pg_result($recordset, $i, $campo)));
+        $field = strlen(trim(pg_fetch_result($recordset, $i, $campo)));
         if ($val < $field) {
             $val = $field;
         }
@@ -877,7 +877,7 @@ function db_postmemory($vetor, $verNomeIndices = 0)
             echo "$" . $matriz[$i] . "<br>\n";
         } else {
             if ($verNomeIndices == 2) {
-                echo "$" . $matriz[$i] . " = '" . $$matriz[$i] . "';<br>\n";
+                echo "$" . $matriz[$i] . " = '" . ${$matriz}[$i] . "';<br>\n";
             }
         }
         next($vetor);
@@ -946,7 +946,7 @@ function db_translate($db_transforma = null,$expresAdicional = "", $stringAdicio
 {
 
     // Array com expressões regulares
-    $arr_regexp = Array(
+    $arr_regexp = [
         "/º/",
         "/ç/",
         "/Ç/",
@@ -962,9 +962,9 @@ function db_translate($db_transforma = null,$expresAdicional = "", $stringAdicio
         "/Ú|Ù|Û|Ü/",
         "/'|;|:/",
         "/$expresAdicional/"
-    );
+    ];
     // Array com substitutos
-    $arr_replac = Array("o", "c", "C", "a", "A", "e", "E", "i", "I", "o", "O", "u", "U", " ", "$stringAdicional");
+    $arr_replac = ["o", "c", "C", "a", "A", "e", "E", "i", "I", "o", "O", "u", "U", " ", "$stringAdicional"];
 
     // $arr_regexp[0] substituído por $arr_replac[0], ou seja, ç por c
     // $arr_regexp[1] substituído por $arr_replac[1], ou seja, Ç por C
@@ -972,7 +972,7 @@ function db_translate($db_transforma = null,$expresAdicional = "", $stringAdicio
     // $arr_regexp[3] substituído por $arr_replac[3], ou seja, Á ou À ou Ã ou Â ou Ä por A
     // $arr_regexp[n] substituído por $arr_replac[n]
     // ...
-    $db_transforma = preg_replace($arr_regexp, $arr_replac, $db_transforma);
+    $db_transforma = preg_replace($arr_regexp, (string) $arr_replac, (string) $db_transforma);
 
   return $db_transforma;
 
@@ -1027,53 +1027,53 @@ function db_formatar($str, $tipo, $caracter = " ", $quantidade = 0, $TipoDePreen
 
     switch ($tipo) {
         case "sistema" :
-            return substr($str, 0, 1) . "." . substr($str, 1, 1) . "." . substr($str, 2, 1) . "." . substr($str, 3,
-                    1) . "." . substr($str, 4, 1) . "." . substr($str, 5, 2) . "." . substr($str, 7,
-                    2) . "." . substr($str, 9, 2) . "." . substr($str, 11, 2);
+            return substr((string) $str, 0, 1) . "." . substr((string) $str, 1, 1) . "." . substr((string) $str, 2, 1) . "." . substr((string) $str, 3,
+                    1) . "." . substr((string) $str, 4, 1) . "." . substr((string) $str, 5, 2) . "." . substr((string) $str, 7,
+                    2) . "." . substr((string) $str, 9, 2) . "." . substr((string) $str, 11, 2);
         case "receita" :
-            return substr($str, 0, 1) . "." . substr($str, 1, 1) . "." . substr($str, 2, 1) . "." . substr($str, 3,
-                    1) . "." . substr($str, 4, 1) . "." . substr($str, 5, 2) . "." . substr($str, 7,
-                    2) . "." . substr($str, 9, 2) . "." . substr($str, 11, 2) . "." . substr($str, 13, 2);
+            return substr((string) $str, 0, 1) . "." . substr((string) $str, 1, 1) . "." . substr((string) $str, 2, 1) . "." . substr((string) $str, 3,
+                    1) . "." . substr((string) $str, 4, 1) . "." . substr((string) $str, 5, 2) . "." . substr((string) $str, 7,
+                    2) . "." . substr((string) $str, 9, 2) . "." . substr((string) $str, 11, 2) . "." . substr((string) $str, 13, 2);
         case "receita_int" :
-            return substr($str, 0, 1) . "." . substr($str, 1, 1) . "." . substr($str, 2, 1) . "." . substr($str, 3,
-                    1) . "." . substr($str, 4, 1) . "." . substr($str, 5, 2) . "." . substr($str, 7,
-                    2) . "." . substr($str, 9, 2) . "." . substr($str, 11, 2) . "." . substr($str, 13, 2);
+            return substr((string) $str, 0, 1) . "." . substr((string) $str, 1, 1) . "." . substr((string) $str, 2, 1) . "." . substr((string) $str, 3,
+                    1) . "." . substr((string) $str, 4, 1) . "." . substr((string) $str, 5, 2) . "." . substr((string) $str, 7,
+                    2) . "." . substr((string) $str, 9, 2) . "." . substr((string) $str, 11, 2) . "." . substr((string) $str, 13, 2);
         case "ementario_receita":
             return DBEstrutura::mascararString('0.0.0.0.0.00.0.0.00.00.00', $str);
             break;
         case "orgao" :
-            return str_pad($str, 2, "0", STR_PAD_LEFT);
+            return str_pad((string) $str, 2, "0", STR_PAD_LEFT);
         case "unidade" :
-            return str_pad($str, 2, "0", STR_PAD_LEFT);
+            return str_pad((string) $str, 2, "0", STR_PAD_LEFT);
         case "funcao" :
-            return str_pad($str, 2, "0", STR_PAD_LEFT);
+            return str_pad((string) $str, 2, "0", STR_PAD_LEFT);
         case "subfuncao" :
-            return str_pad($str, 3, "0", STR_PAD_LEFT);
+            return str_pad((string) $str, 3, "0", STR_PAD_LEFT);
         case "programa" :
-            return str_pad($str, 4, "0", STR_PAD_LEFT);
+            return str_pad((string) $str, 4, "0", STR_PAD_LEFT);
         case "projativ" :
-            return str_pad($str, 4, "0", STR_PAD_LEFT);
+            return str_pad((string) $str, 4, "0", STR_PAD_LEFT);
         case "elemento_int" :
-            return substr($str, 0, 1) . "." . substr($str, 1, 1) . "." . substr($str, 2, 1) . "." . substr($str, 3,
-                    1) . "." . substr($str, 4, 1) . "." . substr($str, 5, 2) . "." . substr($str, 7,
-                    2) . "." . substr($str, 9, 2) . "." . substr($str, 11, 2);
+            return substr((string) $str, 0, 1) . "." . substr((string) $str, 1, 1) . "." . substr((string) $str, 2, 1) . "." . substr((string) $str, 3,
+                    1) . "." . substr((string) $str, 4, 1) . "." . substr((string) $str, 5, 2) . "." . substr((string) $str, 7,
+                    2) . "." . substr((string) $str, 9, 2) . "." . substr((string) $str, 11, 2);
         case "elemento" :
-            return substr($str, 1, 1) . "." . substr($str, 2, 1) . "." . substr($str, 3, 1) . "." . substr($str, 4,
-                    1) . "." . substr($str, 5, 2) . "." . substr($str, 7, 2) . "." . substr($str, 9,
-                    2) . "." . substr($str, 11, 2);
+            return substr((string) $str, 1, 1) . "." . substr((string) $str, 2, 1) . "." . substr((string) $str, 3, 1) . "." . substr((string) $str, 4,
+                    1) . "." . substr((string) $str, 5, 2) . "." . substr((string) $str, 7, 2) . "." . substr((string) $str, 9,
+                    2) . "." . substr((string) $str, 11, 2);
         case "recurso" :
-            return str_pad($str, 4, "0", STR_PAD_LEFT);
+            return str_pad((string) $str, 4, "0", STR_PAD_LEFT);
         case "atividade" :
-            return str_pad($str, 4, "0", STR_PAD_LEFT);
+            return str_pad((string) $str, 4, "0", STR_PAD_LEFT);
         case "cpf" :
-            return substr($str, 0, 3) . "." . substr($str, 3, 3) . "." . substr($str, 6, 3) . "/" . substr($str, 9, 2);
+            return substr((string) $str, 0, 3) . "." . substr((string) $str, 3, 3) . "." . substr((string) $str, 6, 3) . "/" . substr((string) $str, 9, 2);
         case "CPF" :
-            return substr($str, 0, 3) . "." . substr($str, 3, 3) . "." . substr($str, 6, 3) . "-" . substr($str, 9, 2);
+            return substr((string) $str, 0, 3) . "." . substr((string) $str, 3, 3) . "." . substr((string) $str, 6, 3) . "-" . substr((string) $str, 9, 2);
         case "cep" :
-            return substr($str, 0, 2) . "." . substr($str, 2, 3) . "-" . substr($str, 5, 3);
+            return substr((string) $str, 0, 2) . "." . substr((string) $str, 2, 3) . "-" . substr((string) $str, 5, 3);
         case "cnpj" :
-            return substr($str, 0, 2) . "." . substr($str, 2, 3) . "." . substr($str, 5, 3) . "/" . substr($str, 8,
-                    4) . "-" . substr($str, 12, 2);
+            return substr((string) $str, 0, 2) . "." . substr((string) $str, 2, 3) . "." . substr((string) $str, 5, 3) . "/" . substr((string) $str, 8,
+                    4) . "-" . substr((string) $str, 12, 2);
         //90.832.619/0001-55
         case "telefone" :
             $telefone = substr_replace($str, '(', 0, 0);
@@ -1103,9 +1103,9 @@ function db_formatar($str, $tipo, $caracter = " ", $quantidade = 0, $TipoDePreen
             }
         case "v" :
             // ponto decimal com virgula
-            if (strpos($str, ".") != 0) {
-                if (strpos($str, ",") == 0) {
-                    $casasdecimais = strlen($str) - strpos($str, ".") - 1;
+            if (!str_starts_with((string) $str, ".")) {
+                if (str_starts_with((string) $str, ",")) {
+                    $casasdecimais = strlen((string) $str) - strpos((string) $str, ".") - 1;
                     if ($casasdecimais < 2) {
                         $casasdecimais = 2;
                     }
@@ -1122,14 +1122,14 @@ function db_formatar($str, $tipo, $caracter = " ", $quantidade = 0, $TipoDePreen
                 //        return str_pad(number_format($str,$casasdecimais,",","."),$quantidade,"$caracter",STR_PAD_LEFT);
                 $vlrreturn = str_pad(number_format($str, $casasdecimais, ",", "."), $quantidade + 1, "$caracter",
                     STR_PAD_LEFT);
-                $posponto = strpos($vlrreturn, ",");
-                return substr($vlrreturn, 0, $posponto + $quantidade + 1);
+                $posponto = strpos((string) $vlrreturn, ",");
+                return substr((string) $vlrreturn, 0, $posponto + $quantidade + 1);
             }
         case "vdec" :
             // ponto decimal sem virgula
-            if (strpos($str, ".") != 0) {
-                if (strpos($str, ",") == 0) {
-                    $casasdecimais = strlen($str) - strpos($str, ".") - 1;
+            if (!str_starts_with((string) $str, ".")) {
+                if (str_starts_with((string) $str, ",")) {
+                    $casasdecimais = strlen((string) $str) - strpos((string) $str, ".") - 1;
                     if ($casasdecimais < 2) {
                         $casasdecimais = 2;
                     }
@@ -1144,8 +1144,8 @@ function db_formatar($str, $tipo, $caracter = " ", $quantidade = 0, $TipoDePreen
             } else {
                 $vlrreturn = str_pad(number_format($str, $casasdecimais, ".", ""), $quantidade + 1, "$caracter",
                     STR_PAD_LEFT);
-                $posponto = strpos($vlrreturn, ".");
-                return substr($vlrreturn, 0, $posponto + $quantidade + 1);
+                $posponto = strpos((string) $vlrreturn, ".");
+                return substr((string) $vlrreturn, 0, $posponto + $quantidade + 1);
             }
         case "valsemform" :
 
@@ -1164,7 +1164,7 @@ function db_formatar($str, $tipo, $caracter = " ", $quantidade = 0, $TipoDePreen
 
             $valretornar = str_replace(",", "", $valretornar);
             $valretornar = str_replace(".", "", $valretornar);
-            return str_pad($valretornar, $quantidade, " ", STR_PAD_LEFT);
+            return str_pad((string) $valretornar, $quantidade, " ", STR_PAD_LEFT);
 
         case "f" :
             // ponto decimal com virgula
@@ -1212,26 +1212,26 @@ function db_formatar($str, $tipo, $caracter = " ", $quantidade = 0, $TipoDePreen
             }
         case "s" :
             if ($TipoDePreenchimento == "e") {
-                return str_pad($str, $quantidade, $caracter, STR_PAD_LEFT);
+                return str_pad((string) $str, $quantidade, $caracter, STR_PAD_LEFT);
             } else {
                 if ($TipoDePreenchimento == "d") {
-                    return str_pad($str, $quantidade, $caracter, STR_PAD_RIGHT);
+                    return str_pad((string) $str, $quantidade, $caracter, STR_PAD_RIGHT);
                 } else {
                     if ($TipoDePreenchimento == "a") {
-                        return str_pad($str, $quantidade, $caracter, STR_PAD_BOTH);
+                        return str_pad((string) $str, $quantidade, $caracter, STR_PAD_BOTH);
                     }
                 }
             }
         case "xxxv" : // antigo "v"
-            if (strpos($str, ",") != "") {
+            if (strpos((string) $str, ",") != "") {
                 $str = str_replace(".", "", $str);
                 $str = str_replace(",", ".", $str);
                 return $str;
-            } elseif (strpos($str, "-") != "") {
-                $str = explode('-', $str);
+            } elseif (strpos((string) $str, "-") != "") {
+                $str = explode('-', (string) $str);
                 return $str[2] . "-" . $str[1] . "-" . $str[0];
-            } elseif (strpos($str, "/") != "") {
-                $str = explode("/", $str);
+            } elseif (strpos((string) $str, "/") != "") {
+                $str = explode("/", (string) $str);
                 return $str[2]."-".$str[1]."-".$str[0];
           }
       break;
@@ -1245,7 +1245,7 @@ function db_formatar($str, $tipo, $caracter = " ", $quantidade = 0, $TipoDePreen
 //Retorna false se tiver problemas na execução do sql e numrows caso sql esteja correto (0 se não encontrar instituição e 1 caso encontre)
 function db_sel_instit($instit = null, $campos = " * ")
 {
-    if ($instit == null || trim($instit) == "") {
+    if ($instit == null || trim((string) $instit) == "") {
         $instit = db_getsession("DB_instit");
     }
     if (trim($campos) == ""){
@@ -1258,13 +1258,13 @@ function db_sel_instit($instit = null, $campos = " * ")
     if ($record_config == false) {
         return false;
     } else {
-        $num_rows = pg_numrows($record_config);
+        $num_rows = pg_num_rows($record_config);
         if ($num_rows > 0) {
-            $num_cols = pg_numfields($record_config);
+            $num_cols = pg_num_fields($record_config);
             for ($index = 0; $index < $num_cols; $index++) {
-                $nam_campo = pg_fieldname($record_config, $index);
-                global $$nam_campo;
-                $$nam_campo = pg_result($record_config, 0, $nam_campo);
+                $nam_campo = pg_field_name($record_config, $index);
+                global ${$nam_campo};
+                ${$nam_campo} = pg_fetch_result($record_config, 0, $nam_campo);
       }
     }
   }
@@ -1276,7 +1276,7 @@ function db_sel_instit($instit = null, $campos = " * ")
 //Retorna false se tiver problemas na execução do sql e numrows caso sql esteja correto (0 se não encontrar o usuário e 1 caso encontre)
 function db_sel_usuario($usuario = null, $campos = " * ")
 {
-    if ($usuario == null || trim($usuario) == "") {
+    if ($usuario == null || trim((string) $usuario) == "") {
         $usuario = db_getsession("DB_id_usuario");
     }
     if (trim($campos) == "") {
@@ -1288,13 +1288,13 @@ function db_sel_usuario($usuario = null, $campos = " * ")
     if ($record_usuarios == false) {
         return false;
     } else {
-        $num_rows = pg_numrows($record_usuarios);
+        $num_rows = pg_num_rows($record_usuarios);
         if ($num_rows > 0) {
-            $num_cols = pg_numfields($record_usuarios);
+            $num_cols = pg_num_fields($record_usuarios);
             for ($index = 0; $index < $num_cols; $index++) {
-                $nam_campo = pg_fieldname($record_usuarios, $index);
-                global $$nam_campo;
-                $$nam_campo = pg_result($record_usuarios, 0, $nam_campo);
+                $nam_campo = pg_field_name($record_usuarios, $index);
+                global ${$nam_campo};
+                ${$nam_campo} = pg_fetch_result($record_usuarios, 0, $nam_campo);
       }
     }
   }
@@ -1317,8 +1317,8 @@ function db_fieldsmemory($recordset, $indice, $formatar = "", $mostravar = false
     //#99#//Exemplo:
     //#99#//db_fieldsmemory($result,0);
     //#99#//Cria todas as variáveis com o conteúdo de cada uma sendo o valor do campo
-    $fm_numfields = pg_numfields($recordset);
-    $fm_numrows = pg_numrows($recordset);
+    $fm_numfields = pg_num_fields($recordset);
+    $fm_numrows = pg_num_rows($recordset);
     //if(pg_numrows($recordset)==0){
     // echo "RecordSet Vazio: <br>";
     // for ($i = 0;$i < $fm_numfields;$i++){
@@ -1327,7 +1327,7 @@ function db_fieldsmemory($recordset, $indice, $formatar = "", $mostravar = false
     // exit;
     // }
     for ($i = 0; $i < $fm_numfields; $i++) {
-        $matriz[$i] = pg_fieldname($recordset, $i);
+        $matriz[$i] = pg_field_name($recordset, $i);
         //if($fm_numrows==0){
         //  $aux = trim(pg_result($recordset,$indice,$matriz[$i]));
     //  echo "Record set vazio->".$aux;
@@ -1335,13 +1335,13 @@ function db_fieldsmemory($recordset, $indice, $formatar = "", $mostravar = false
         //}
 
         global ${$matriz[$i]};
-        $aux = pg_result($recordset, $indice, $matriz[$i]);
+        $aux = pg_fetch_result($recordset, $indice, $matriz[$i]);
         if($bTrim) {
-            $aux = trim(pg_result($recordset, $indice, $matriz[$i])); 
+            $aux = trim(pg_fetch_result($recordset, $indice, $matriz[$i])); 
         }
 
         if (($formatar != '')) {
-            switch (pg_fieldtype($recordset, $i)) {
+            switch (pg_field_type($recordset, $i)) {
                 case "float8" :
                 case "float4" :
                 case "float" :
@@ -1351,53 +1351,53 @@ function db_fieldsmemory($recordset, $indice, $formatar = "", $mostravar = false
           }
                     ${$matriz[$i]} = number_format($aux, 2, ".", "");
                     if ($mostravar == true) {
-                        echo $matriz[$i] . "->" . $$matriz[$i] . "<br>";
+                        echo $matriz[$i] . "->" . ${$matriz}[$i] . "<br>";
                     }
                     break;
                 case "date" :
           if ($aux != "") {
-            $data = explode("-", $aux);
+            $data = explode("-", (string) $aux);
               ${$matriz[$i]} = $data[2]."/".$data[1]."/" . $data[0];
           } else {
               ${$matriz[$i]} = "";
           }
                     if ($mostravar == true)
-                        echo $matriz[$i]."->".$$matriz[$i]."<br>";
+                        echo $matriz[$i]."->".${$matriz}[$i]."<br>";
           break;
                 default :
-                    ${$matriz[$i]} = stripslashes($aux);
+                    ${$matriz[$i]} = stripslashes((string) $aux);
                     if ($mostravar == true) {
-                        echo $matriz[$i] . "->" . $$matriz[$i] . "<br>";
+                        echo $matriz[$i] . "->" . ${$matriz}[$i] . "<br>";
                     }
                     break;
             }
         } else
-            switch (pg_fieldtype($recordset, $i)) {
+            switch (pg_field_type($recordset, $i)) {
         case "date" :
-          $datav = explode("-", $aux);
+          $datav = explode("-", (string) $aux);
                     $explode_data = $matriz[$i]."_dia";
             global ${$explode_data};
-            $$explode_data = @ $datav[2];
+            ${$explode_data} = @ $datav[2];
           if ($mostravar == true)
-                        echo $explode_data."->".$$explode_data."<br";
+                        echo $explode_data."->".${$explode_data}."<br";
                     $explode_data = $matriz[$i]."_mes";
-            global $$explode_data;
+            global ${$explode_data};
             ${$explode_data} = @ $datav[1];
           if ($mostravar == true)
-                        echo $explode_data."->".$$explode_data."<br>";
+                        echo $explode_data."->".${$explode_data}."<br>";
                     $explode_data = $matriz[$i]."_ano";
-            global $$explode_data;
+            global ${$explode_data};
             ${$explode_data} = @ $datav[0];
           if ($mostravar == true)
-                        echo $explode_data . "->" . $$explode_data . "<br>";
+                        echo $explode_data . "->" . ${$explode_data} . "<br>";
             ${$matriz[$i]} = $aux;
             if ($mostravar == true)
-                echo $matriz[$i]."->".$$matriz[$i]."<br>";
+                echo $matriz[$i]."->".${$matriz}[$i]."<br>";
           break;
                 default :
-                    ${$matriz[$i]} = stripslashes($aux);
+                    ${$matriz[$i]} = stripslashes((string) $aux);
                     if ($mostravar == true) {
-                        echo $matriz[$i] . "->" . $$matriz[$i] . "<br>";
+                        echo $matriz[$i] . "->" . ${$matriz}[$i] . "<br>";
                     }
                     break;
             }
@@ -1418,7 +1418,7 @@ function db_CalculaDV($sCampo, $iPeso = 11)
     $iDigito = 0;
     $iSoma1 = 0;
     $iDV1 = 0;
-    $iTamCampo = strlen($sCampo);
+    $iTamCampo = strlen((string) $sCampo);
     for ($i = $iTamCampo - 1; $i > -1; $i--) {
         $iDigito = $sCampo[$i];
         $iSoma1 = intval($iSoma1, 10) + intval(($iDigito * $mult), 10);
@@ -1443,11 +1443,11 @@ function db_Calcular_Peso($iPosicao, $iPeso) {
 //formata uma string pra cgc ou cpf
 function db_cgccpf($str)
 {
-    if (strlen($str) == 14)
-        return substr($str, 0, 2) . "." . substr($str, 2, 3) . "." . substr($str, 5, 3) . "/" . substr($str, 8,
-                4) . "-" . substr($str, 12, 2);
-    elseif (strlen($str) == 11)
-        return substr($str, 0, 3) . "." . substr($str, 3, 3).".".substr($str, 6, 3)."-".substr($str, 9, 2);
+    if (strlen((string) $str) == 14)
+        return substr((string) $str, 0, 2) . "." . substr((string) $str, 2, 3) . "." . substr((string) $str, 5, 3) . "/" . substr((string) $str, 8,
+                4) . "-" . substr((string) $str, 12, 2);
+    elseif (strlen((string) $str) == 11)
+        return substr((string) $str, 0, 3) . "." . substr((string) $str, 3, 3).".".substr((string) $str, 6, 3)."-".substr((string) $str, 9, 2);
     else {
         return $str;
     }
@@ -1586,7 +1586,7 @@ function db_getsession($var = "0", $alertarExistencia = true,$decode=false)
             $caract = "&";
         }
         if($decode){
-            return unserialize(base64_decode($str));
+            return unserialize(base64_decode((string) $str));
         }else{
             return $str;
         }
@@ -1594,7 +1594,7 @@ function db_getsession($var = "0", $alertarExistencia = true,$decode=false)
     } else {
         if (isset ($_SESSION[$var])) {
             if($decode){
-               return  unserialize(base64_decode($_SESSION[$var]));
+               return  unserialize(base64_decode((string) $_SESSION[$var]));
             }else{
                 return $_SESSION[$var];
             }
@@ -1631,7 +1631,7 @@ function db_destroysession($var)
 function db_sqlformatar($campo, $quant, $qual)
 {
     $aux = "";
-    for ($i = strlen($campo); $i < $quant; $i ++)
+    for ($i = strlen((string) $campo); $i < $quant; $i ++)
     $aux .= $qual;
   return $aux.$campo;
 
@@ -1640,7 +1640,7 @@ function db_sqlformatar($campo, $quant, $qual)
 //retorna uma string do inicio de $str, até primeiro caractere da ocorrencia em $pos
 function db_strpos($str, $pos)
 {
-    return substr($str, 0, (strpos($str, $pos) == "" ? strlen($str) : strpos($str, $pos)));
+    return substr((string) $str, 0, (strpos((string) $str, (string) $pos) == "" ? strlen((string) $str) : strpos((string) $str, (string) $pos)));
 }
 
 //imprime uma mensagem de erro, com um link pra voltar pra página anterior
@@ -1656,8 +1656,8 @@ function db_erro($msg, $voltar = 1)
 //Tipo a parseInt do javascript
 function db_parse_int($str)
 {
-    $num = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
-    $tam = strlen($str);
+    $num = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+    $tam = strlen((string) $str);
     $aux = "";
     for ($i = 0; $i < $tam; $i ++) {
     if (in_array($str[$i], $num))
@@ -1670,7 +1670,7 @@ function db_parse_int($str)
 function db_indexOf($str, $proc) {
   // 0 nao encontrou
   // > 0 encontrou
-  return strlen(strstr($str, $proc));
+  return strlen(strstr((string) $str, (string) $proc));
 }
 
 
@@ -1709,9 +1709,9 @@ function db_indexOf($str, $proc) {
  * @return mixed                      HTML com a estrutura do datagrid
  */
 function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_self", $campos_layer = "", $NomeForm = "NoMe",
-    $variaveis_repassa = array(),
+    $variaveis_repassa = [],
     $automatico = true,
-    $totalizacao = array(),
+    $totalizacao = [],
     $acao = null
 ) {
 
@@ -1731,15 +1731,15 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
     //recebe os valores do campo hidden
 
     if (isset($_POST["totreg" . $NomeForm])) {
-        $$tot_registros = $_POST["totreg" . $NomeForm];
+        ${$tot_registros} = $_POST["totreg" . $NomeForm];
     } else {
-        $$tot_registros = 0;
+        ${$tot_registros} = 0;
     }
 
     if (isset($_POST["offset" . $NomeForm])) {
-        $$offset = $_POST["offset" . $NomeForm];
+        ${$offset} = $_POST["offset" . $NomeForm];
     } else {
-        $$offset = 0;
+        ${$offset} = 0;
     }
 
     if (isset($_POST["recomecar"])) {
@@ -1747,7 +1747,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
     }
 
     // se for a primeira vez que é rodado, pega o total de registros e guarda no campo hidden
-    if ((empty ($$tot_registros) && !empty ($query)) || isset($recomecar)) {
+    if ((empty (${$tot_registros}) && !empty ($query)) || isset($recomecar)) {
 
         if (isset($recomecar)) {
             $query = db_getsession("dblov_query_inicial");
@@ -1782,9 +1782,9 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
         db_putsession("dblov_query_inicial", $query);
 
-        $$tot_registros = pg_result($tot, 0, 0);
+        ${$tot_registros} = pg_fetch_result($tot, 0, 0);
 
-        if ($$tot_registros == 0) {
+        if (${$tot_registros} == 0) {
             $Dd2 = "disabled";
         }
     }
@@ -1798,53 +1798,53 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
     // testa qual botao foi pressionado
     if (isset($_POST["pri" . $NomeForm])) {
 
-        $$offset = 0;
+        ${$offset} = 0;
         $Dd1 = "disabled";
-        $query = base64_decode($_POST["filtroquery"]);
+        $query = base64_decode((string) $_POST["filtroquery"]);
     } else {
         if (isset($_POST["ant" . $NomeForm])) {
 
-            $query = base64_decode(@$_POST["filtroquery"]);
+            $query = base64_decode((string) @$_POST["filtroquery"]);
 
-            if ($$offset <= $numlinhas) {
+            if (${$offset} <= $numlinhas) {
 
-                $$offset = 0;
+                ${$offset} = 0;
                 $Dd1 = "disabled";
             } else {
-                $$offset = $$offset - $numlinhas;
+                ${$offset} = ${$offset} - $numlinhas;
             }
         } else {
             if (isset($_POST["prox" . $NomeForm])) {
 
-                $query = base64_decode($_POST["filtroquery"]);
+                $query = base64_decode((string) $_POST["filtroquery"]);
 
-                if (($$offset + ($numlinhas * 2)) >= $$tot_registros) {
+                if ((${$offset} + ($numlinhas * 2)) >= ${$tot_registros}) {
                     $Dd2 = "disabled";
                 }
 
-                if ($numlinhas >= ($$tot_registros - $$offset)) {
+                if ($numlinhas >= (${$tot_registros} - ${$offset})) {
 
-                    if ($$tot_registros - $$offset - $numlinhas >= $numlinhas) {
-                        $$offset = $numlinhas;
+                    if (${$tot_registros} - ${$offset} - $numlinhas >= $numlinhas) {
+                        ${$offset} = $numlinhas;
                     } else {
-                        $$offset = $$offset + $numlinhas;
+                        ${$offset} = ${$offset} + $numlinhas;
                     }
 
-                    if ($$offset > $$tot_registros) {
-                        $$offset = 0;
+                    if (${$offset} > ${$tot_registros}) {
+                        ${$offset} = 0;
                     }
 
                     $Dd2 = "disabled";
                 } else {
-                    $$offset = $$offset + $numlinhas;
+                    ${$offset} = ${$offset} + $numlinhas;
                 }
             } else {
                 if (isset ($_POST["ult" . $NomeForm])) {
 
-                    $query = base64_decode($_POST["filtroquery"]);
-                    $$offset = $$tot_registros - $numlinhas;
-                    if ($$offset < 0) {
-                        $$offset = 0;
+                    $query = base64_decode((string) $_POST["filtroquery"]);
+                    ${$offset} = ${$tot_registros} - $numlinhas;
+                    if (${$offset} < 0) {
+                        ${$offset} = 0;
                     }
 
                     $Dd2 = "disabled";
@@ -1854,12 +1854,12 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
                     for ($i = 0; $i < sizeof($_POST); $i++) {
 
-                        $ordem_lov = substr(key($_POST), 0, 11);
+                        $ordem_lov = substr((string) key($_POST), 0, 11);
 
                         if ($ordem_lov == 'ordem_dblov') {
 
-                            $query = base64_decode($_POST["filtroquery"]);
-                            $campo = substr(key($_POST), 11);
+                            $query = base64_decode((string) $_POST["filtroquery"]);
+                            $campo = substr((string) key($_POST), 11);
                             $ordem_ordenacao = '';
 
                             if (isset($_POST['ordem_lov_anterior'])) {
@@ -1889,7 +1889,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
                                      */
                                     if ($sConteudo == 'date') {
 
-                                        $aValorPesquisa = array_reverse(explode("/", $sValorPesquisa));
+                                        $aValorPesquisa = array_reverse(explode("/", (string) $sValorPesquisa));
                                         $sValorPesquisa = "%" . implode("-", $aValorPesquisa);
                                     }
                                 }
@@ -1911,7 +1911,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
                                 }
                             }
 
-                            $$offset = 0;
+                            ${$offset} = 0;
                             break;
                         }
                         next($_POST);
@@ -1928,9 +1928,9 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
         exit;
     }
 
-    $query .= " limit $numlinhas offset " . $$offset;
+    $query .= " limit $numlinhas offset " . ${$offset};
     $result = db_query($query);
-    $NumRows = pg_numrows($result);
+    $NumRows = pg_num_rows($result);
 
     if ($NumRows == 0) {
 
@@ -1962,11 +1962,11 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
                 $tot = db_query("select count(*) from ({$query_anterior}) as temp");
             }
 
-            $$tot_registros = pg_result($tot, 0, 0);
+            ${$tot_registros} = pg_fetch_result($tot, 0, 0);
 
-            $query = $query_anterior . " limit $numlinhas offset " . $$offset;
+            $query = $query_anterior . " limit $numlinhas offset " . ${$offset};
             $result = db_query($query);
-            $NumRows = pg_numrows($result);
+            $NumRows = pg_num_rows($result);
             $filtroquery = $query_anterior;
         }
     } else {
@@ -1999,17 +1999,17 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
                 $tot = db_query("select count(*) from ({$query_novo_filtro}) as temp");
             }
 
-            $$tot_registros = pg_result($tot, 0, 0);
+            ${$tot_registros} = pg_fetch_result($tot, 0, 0);
 
-            if ($$tot_registros == 0) {
+            if (${$tot_registros} == 0) {
                 $Dd2 = "disabled";
             }
         }
     }
 
-    $NumFields = pg_numfields($result);
+    $NumFields = pg_num_fields($result);
 
-    if (($NumRows < $numlinhas) && ($numlinhas < ($$tot_registros - $$offset - $numlinhas ) ) ) {
+    if (($NumRows < $numlinhas) && ($numlinhas < (${$tot_registros} - ${$offset} - $numlinhas ) ) ) {
     $Dd1 = @ $Dd2 = "disabled";
   }
 
@@ -2081,8 +2081,8 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
     $sHtml .= "        <input type=\"submit\" name=\"ant" . $NomeForm . "\"    value=\"Anterior\" " . @ $Dd1 . ">   ";
     $sHtml .= "        <input type=\"submit\" name=\"prox" . $NomeForm . "\"   value=\"Próximo\" " . @ $Dd2 . ">    ";
     $sHtml .= "        <input type=\"submit\" name=\"ult" . $NomeForm . "\"    value=\"Último\" " . @ $Dd2 . ">     ";
-    $sHtml .= "        <input type=\"hidden\" name=\"offset" . $NomeForm . "\" value=\"" . @ $$offset . "\">        ";
-    $sHtml .= "        <input type=\"hidden\" name=\"totreg" . $NomeForm . "\" value=\"" . @ $$tot_registros . "\"> ";
+    $sHtml .= "        <input type=\"hidden\" name=\"offset" . $NomeForm . "\" value=\"" . @ ${$offset} . "\">        ";
+    $sHtml .= "        <input type=\"hidden\" name=\"totreg" . $NomeForm . "\" value=\"" . @ ${$tot_registros} . "\"> ";
     $sHtml .= "        <input type=\"hidden\" name=\"codigo_pesquisa\"     value=\"\">                      ";
     $sHtml .= "        <input type=\"hidden\" name=\"distinct_pesquisa\"   value=\"\">                      ";
     $sHtml .= "        <input type=\"hidden\" name=\"filtro\"              value=\"$filtro\">               ";
@@ -2114,12 +2114,12 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
         if (count($totalizacao) > 0) {
 
-            $totNumfields = pg_numfields($tot);
+            $totNumfields = pg_num_fields($tot);
             for ($totrep = 1; $totrep < $totNumfields; $totrep++) {
 
                 $sHtml .= "<input type=\"hidden\"";
-                $sHtml .= "       name=\"totrep_" . pg_fieldname($tot, $totrep) . "\"";
-                $sHtml .= "       value=\"" . db_formatar(pg_result($tot, 0, $totrep), 'f') . "\">";
+                $sHtml .= "       name=\"totrep_" . pg_field_name($tot, $totrep) . "\"";
+                $sHtml .= "       value=\"" . db_formatar(pg_fetch_result($tot, 0, $totrep), 'f') . "\">";
             }
 
             reset($totalizacao);
@@ -2138,11 +2138,11 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
     }
   } else if( isset( $_POST["totalizacao_repas"] ) ) {
 
-        $totalizacao_explode = explode( "|", $_POST["totalizacao_repas"] );
+        $totalizacao_explode = explode( "|", (string) $_POST["totalizacao_repas"] );
 
         for( $totrep = 0; $totrep < count( $totalizacao_explode ); $totrep++ ) {
 
-            $totalizacao_sep = explode("\=", $totalizacao_explode[$totrep]);
+            $totalizacao_sep = explode("\=", (string) $totalizacao_explode[$totrep]);
             $totalizacao[$totalizacao_sep[0]] = $totalizacao_sep[1];
 
             if (isset($_POST["totrep_" . $totalizacao_sep[0]])) {
@@ -2156,14 +2156,14 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
         $sHtml .= "<input type=\"hidden\" name=\"totalizacao_repas\" value=\"" . $_POST["totalizacao_repas"] . "\">";
     }
 
-    $sHtml .= "<input type=\"hidden\" name=\"filtroquery\" value=\"" . base64_encode(@$filtroquery) . "\">";
+    $sHtml .= "<input type=\"hidden\" name=\"filtroquery\" value=\"" . base64_encode((string) @$filtroquery) . "\">";
 
     if ($NumRows > 0) {
 
-        $sHtml .= "Foram retornados <label class='DBLovrotNumeroRegistros'> " . $$tot_registros . "</label> registros.";
-        $sHtml .= " Mostrando de <label class='DBLovrotNumeroRegistros'>" . (@$$offset + 1) . " </label> até";
+        $sHtml .= "Foram retornados <label class='DBLovrotNumeroRegistros'> " . ${$tot_registros} . "</label> registros.";
+        $sHtml .= " Mostrando de <label class='DBLovrotNumeroRegistros'>" . (@${$offset} + 1) . " </label> até";
         $sHtml .= "<label class='DBLovrotNumeroRegistros'> ";
-        $sHtml .= ($$tot_registros < (@ $$offset + $numlinhas) ? ($NumRows <= $numlinhas ? $$tot_registros : $NumRows) : ($$offset + $numlinhas));
+        $sHtml .= (${$tot_registros} < (@ ${$offset} + $numlinhas) ? ($NumRows <= $numlinhas ? ${$tot_registros} : $NumRows) : (${$offset} + $numlinhas));
         $sHtml .= "</label>.";
     } else {
         $sHtml .= "Nenhum Registro Retornado";
@@ -2184,7 +2184,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
     // se foi passado funcao
         if ($campos_layer != "") {
 
-            $campo_layerexe = explode("|", $campos_layer);
+            $campo_layerexe = explode("|", (string) $campos_layer);
             $sHtml .= "<td bgcolor=\"$db_corcabec\" title=\"Executa Procedimento Específico.\" class='DBLovrotClique'>";
             $sHtml .= "  Clique";
             $sHtml .= "</td>";
@@ -2194,26 +2194,26 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
         for ($i = 0; $i < $NumFields; $i++) {
 
-            if (strlen(strstr(pg_fieldname($result, $i), "db_")) == 0) {
+            if (strlen(strstr(pg_field_name($result, $i), "db_")) == 0) {
 
-                $clrotulocab->label(pg_fieldname($result, $i));
+                $clrotulocab->label(pg_field_name($result, $i));
                 $sHtml .= "<td bgcolor=\"$db_corcabec\" title=\"" . $clrotulocab->title . "\" class = 'DBLovrotTdCabecalho'> ";
-                $sHtml .= "  <input name=\"" . pg_fieldname($result, $i) . "\" ";
-                $sHtml .= "         value=\"" . ucfirst($clrotulocab->titulo) . "\" ";
+                $sHtml .= "  <input name=\"" . pg_field_name($result, $i) . "\" ";
+                $sHtml .= "         value=\"" . ucfirst((string) $clrotulocab->titulo) . "\" ";
                 $sHtml .= "         type=\"button\" ";
                 $sHtml .= "         onclick=\"js_troca_ordem( 'navega_lov" . $NomeForm . "', ";
-                $sHtml .= "                                   'ordem_dblov" . pg_fieldname($result, $i) . "', ";
-                $sHtml .= "                                   '" . pg_fieldname($result, $i) . "');\" ";
+                $sHtml .= "                                   'ordem_dblov" . pg_field_name($result, $i) . "', ";
+                $sHtml .= "                                   '" . pg_field_name($result, $i) . "');\" ";
                 $sHtml .= "         class='DBLovrotInputCabecalho'>";
                 $sHtml .= "</td>";
 
             } else {
 
-                if (strlen(strstr(pg_fieldname($result, $i), "db_m_")) != 0) {
+                if (strlen(strstr(pg_field_name($result, $i), "db_m_")) != 0) {
                     $sHtml .= "<td bgcolor=\"$db_corcabec\" ";
-                    $sHtml .= "    title=\"" . substr(pg_fieldname($result, $i), 5) . "\" ";
+                    $sHtml .= "    title=\"" . substr(pg_field_name($result, $i), 5) . "\" ";
                     $sHtml .= "    class = 'DBLovrotTdCabecalho'> ";
-                    $sHtml .= "  <b><u>" . substr(pg_fieldname($result, $i), 5) . "</u></b> ";
+                    $sHtml .= "  <b><u>" . substr(pg_field_name($result, $i), 5) . "</u></b> ";
                     $sHtml .= "</td>";
                 }
             }
@@ -2230,7 +2230,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
     //cria nome da funcao com parametros
   if( $arquivo == "()" ) {
 
-    $arrayFuncao = explode("|", $aonde);
+    $arrayFuncao = explode("|", (string) $aonde);
       $quantidadeItemsArrayFuncao = count($arrayFuncao);
   }
 
@@ -2250,19 +2250,19 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
                 for ($cont = 1; $cont < $quantidadeItemsArrayFuncao; $cont++) {
 
-                    if (strlen($arrayFuncao[$cont]) > 3) {
+                    if (strlen((string) $arrayFuncao[$cont]) > 3) {
 
-                        for ($luup = 0; $luup < pg_NumFields($result); $luup++) {
+                        for ($luup = 0; $luup < pg_num_fields($result); $luup++) {
 
-                            if (pg_FieldName($result, $luup) == "db_" . $arrayFuncao[$cont]) {
+                            if (pg_field_name($result, $luup) == "db_" . $arrayFuncao[$cont]) {
                                 $arrayFuncao[$cont] = "db_" . $arrayFuncao[$cont];
                             }
                         }
                     }
 
                     $loop .= $caracter . "'";
-                    $loop .= addslashes(str_replace('"', '', @pg_result($result, $i,
-                            (strlen($arrayFuncao[$cont]) < 4 ? (int)$arrayFuncao[$cont] : $arrayFuncao[$cont])))) . "'";
+                    $loop .= addslashes(str_replace('"', '', @pg_fetch_result($result, $i,
+                            (strlen((string) $arrayFuncao[$cont]) < 4 ? (int)$arrayFuncao[$cont] : $arrayFuncao[$cont])))) . "'";
                     $caracter = ",";
                 }
 
@@ -2280,7 +2280,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
         if ($campos_layer != "") {
 
-            $campo_layerexe = explode("|", $campos_layer);
+            $campo_layerexe = explode("|", (string) $campos_layer);
             $sHtml .= "<td id=\"funcao_aux" . $i . "\" ";
             $sHtml .= "    class = 'DBLovrotTdFuncaoAuxiliar' ";
             $sHtml .= "    bgcolor=\"$cor\"> ";
@@ -2298,46 +2298,46 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
             $lTipoEspecifico = true;
             $lPrefixoDb = false;
 
-            if (strlen(strstr(pg_fieldname($result, $j), "db_" ) ) == 0
-        || strlen( strstr( pg_fieldname( $result, $j ), "db_m_" ) ) != 0 ) {
+            if (strlen(strstr(pg_field_name($result, $j), "db_" ) ) == 0
+        || strlen( strstr( pg_field_name( $result, $j ), "db_m_" ) ) != 0 ) {
 
-                if (pg_fieldtype($result, $j) == "timestamp") {
+                if (pg_field_type($result, $j) == "timestamp") {
 
-                    $var_data = date('d/m/Y H:i:s', strtotime(pg_result($result, $i, $j)));
+                    $var_data = date('d/m/Y H:i:s', strtotime(pg_fetch_result($result, $i, $j)));
 
                 } else {
-                    if (pg_fieldtype($result, $j) == "date") {
+                    if (pg_field_type($result, $j) == "date") {
 
-                        if (pg_result($result, $i, $j) != "") {
+                        if (pg_fetch_result($result, $i, $j) != "") {
 
-                            $matriz_data = explode("-", pg_result($result, $i, $j));
+                            $matriz_data = explode("-", pg_fetch_result($result, $i, $j));
                             $var_data = $matriz_data[2] . "/" . $matriz_data[1] . "/" . $matriz_data[0];
                         } else {
                             $var_data = "//";
                         }
                     } else {
-                        if (pg_fieldtype($result, $j) == "float8" || pg_fieldtype($result,
-                                $j) == "float4" || pg_fieldtype($result, $j) == "numeric") {
-                            $var_data = db_formatar(pg_result($result, $i, $j), 'f', ' ');
+                        if (pg_field_type($result, $j) == "float8" || pg_field_type($result,
+                                $j) == "float4" || pg_field_type($result, $j) == "numeric") {
+                            $var_data = db_formatar(pg_fetch_result($result, $i, $j), 'f', ' ');
                         } else {
-                            if (pg_fieldtype($result, $j) == "bool") {
-                                $var_data = (pg_result($result, $i, $j) == 'f' || pg_result($result, $i,
+                            if (pg_field_type($result, $j) == "bool") {
+                                $var_data = (pg_fetch_result($result, $i, $j) == 'f' || pg_fetch_result($result, $i,
                                     $j) == '' ? 'Não' : 'Sim');
                             } else {
-                                if (pg_fieldtype($result, $j) == "text") {
+                                if (pg_field_type($result, $j) == "text") {
 
                                     $lCampoTipoTexto = true;
-                                    if (pg_fieldname($result, $j) == 'p63_codproc') {
-                                        $var_data = pg_result($result, $i, $j);
+                                    if (pg_field_name($result, $j) == 'p63_codproc') {
+                                        $var_data = pg_fetch_result($result, $i, $j);
                                     } else {
-                                        $var_data = substr(pg_result($result, $i, $j), 0, 10) . "...";
+                                        $var_data = substr(pg_fetch_result($result, $i, $j), 0, 10) . "...";
                                     }
                                 } else {
 
                                     $lEncontrouResultado = true;
                                     $sTitulo = "";
                                     $sLabel = "";
-                                    $sCampo = pg_fieldname($result, $j);
+                                    $sCampo = pg_field_name($result, $j);
                                     $lTipoEspecifico = false;
 
                                     switch ($sCampo) {
@@ -2419,18 +2419,18 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
                                     }
 
                                     if ($lEncontrouResultado) {
-                                        $sHtmlCampos = "<td id=\"I" . $i . $j . "\" class='DBLovrotRegistrosRetornados' bgcolor=\"$cor\"><a title='" . $sTitulo . "' onclick=\"js_JanelaAutomatica('" . $sLabel . "','" . (trim(pg_result($result,
+                                        $sHtmlCampos = "<td id=\"I" . $i . $j . "\" class='DBLovrotRegistrosRetornados' bgcolor=\"$cor\"><a title='" . $sTitulo . "' onclick=\"js_JanelaAutomatica('" . $sLabel . "','" . (trim(pg_fetch_result($result,
                                                 $i,
-                                                $j))) . "');return false;\">&nbsp;Inf->&nbsp;</a>" . ($arquivo != "" ? "<a title=\"$mensagem\" class='DBLovrotRegistrosRetornados' href=\"\" " . ($arquivo == "()" ? "OnClick=\"" . $resultadoRetorno . ";return false\">" : "onclick=\"JanBrowse = window.open('" . $arquivo . "?" . base64_encode("retorno=" . ($BrowSe == 1 ? $i : trim(pg_result($result,
+                                                $j))) . "');return false;\">&nbsp;Inf->&nbsp;</a>" . ($arquivo != "" ? "<a title=\"$mensagem\" class='DBLovrotRegistrosRetornados' href=\"\" " . ($arquivo == "()" ? "OnClick=\"" . $resultadoRetorno . ";return false\">" : "onclick=\"JanBrowse = window.open('" . $arquivo . "?" . base64_encode("retorno=" . ($BrowSe == 1 ? $i : trim(pg_fetch_result($result,
                                                             $i,
-                                                            0)))) . "','$aonde','width=800,height=600');return false\">") . trim(pg_result($result,
-                                                    $i, $j)) . "</a>" : (trim(pg_result($result, $i,
+                                                            0)))) . "','$aonde','width=800,height=600');return false\">") . trim(pg_fetch_result($result,
+                                                    $i, $j)) . "</a>" : (trim(pg_fetch_result($result, $i,
                                                 $j)))) . "&nbsp;</td>\n";
                                     } else {
-                                        $sHtmlCampos = "<td id=\"I" . $i . $j . "\" class='DBLovrotRegistrosRetornados' bgcolor=\"$cor\">" . ($arquivo != "" ? "<a title=\"$mensagem\" class='DBLovrotRegistrosRetornados' href=\"\" " . ($arquivo == "()" ? "OnClick=\"" . $resultadoRetorno . ";return false\">" : "onclick=\"JanBrowse = window.open('" . $arquivo . "?" . base64_encode("retorno=" . ($BrowSe == 1 ? $i : trim(pg_result($result,
+                                        $sHtmlCampos = "<td id=\"I" . $i . $j . "\" class='DBLovrotRegistrosRetornados' bgcolor=\"$cor\">" . ($arquivo != "" ? "<a title=\"$mensagem\" class='DBLovrotRegistrosRetornados' href=\"\" " . ($arquivo == "()" ? "OnClick=\"" . $resultadoRetorno . ";return false\">" : "onclick=\"JanBrowse = window.open('" . $arquivo . "?" . base64_encode("retorno=" . ($BrowSe == 1 ? $i : trim(pg_fetch_result($result,
                                                             $i,
-                                                            0)))) . "','$aonde','width=800,height=600');return false\">") . trim(pg_result($result,
-                                                    $i, $j)) . "</a>" : (trim(pg_result($result, $i,
+                                                            0)))) . "','$aonde','width=800,height=600');return false\">") . trim(pg_fetch_result($result,
+                                                    $i, $j)) . "</a>" : (trim(pg_fetch_result($result, $i,
                                                 $j)))) . "&nbsp;</td>\n";
                                     }
                                 }
@@ -2465,16 +2465,16 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
             if ($arquivo != "") {
 
                 $sHtml .= "<a title=\"$mensagem\" class='DBLovrotRegistrosRetornados' ";
-                $sHtml .= "  href=\"\" " . ($arquivo == "()" ? "OnClick=\"" . $resultadoRetorno . ";return false\">" : "onclick=\"JanBrowse = window.open('" . $arquivo . "?" . base64_encode("retorno=" . ($BrowSe == 1 ? $i : trim(pg_result($result,
-                                $i, 0)))) . "','$aonde','width=800,height=600');return false\">") . trim($var_data);
+                $sHtml .= "  href=\"\" " . ($arquivo == "()" ? "OnClick=\"" . $resultadoRetorno . ";return false\">" : "onclick=\"JanBrowse = window.open('" . $arquivo . "?" . base64_encode("retorno=" . ($BrowSe == 1 ? $i : trim(pg_fetch_result($result,
+                                $i, 0)))) . "','$aonde','width=800,height=600');return false\">") . trim((string) $var_data);
                 $sHtml .= "</a>";
             } else {
-                $sHtml .= trim($var_data);
+                $sHtml .= trim((string) $var_data);
             }
 
             $sHtml .= " </td>";
             if($acao != '' && $j+1 == $NumFields){
-                $mensagemOcorrencia = pg_result($result, $i, 2);
+                $mensagemOcorrencia = pg_fetch_result($result, $i, 2);
                 $mensagemOcorrencia = str_replace('VALOR ANTIGO', '<br> VALOR ANTIGO', $mensagemOcorrencia);
                 $mensagemOcorrencia = str_replace('   <br>', '', $mensagemOcorrencia);
                 $sHtml .= "<td class='DBLovrotRegistrosRetornados' bgcolor=\"$cor\" style='text-align: center'><input type='button' value='$acao' name='$mensagemOcorrencia' onclick='mensagem(this.name)' title ='Visualizar Ocorrencia'></td>";
@@ -2488,11 +2488,11 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
         $sHtml .= "<tr>";
         for ($j = 0; $j < $NumFields; $j++) {
 
-            $key_elemento = array_search(pg_fieldname($result, $j), $totalizacao);
+            $key_elemento = array_search(pg_field_name($result, $j), $totalizacao);
 
             if ($key_elemento == true
-                && pg_fieldname($result, $j) == $key_elemento
-                && strlen(strstr(pg_fieldname($result, $j), "db_")) == 0) {
+                && pg_field_name($result, $j) == $key_elemento
+                && strlen(strstr(pg_field_name($result, $j), "db_")) == 0) {
 
                 @$vertotrep = $_POST['totrep_' . $key_elemento];
 
@@ -2505,7 +2505,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
                     if (isset($tot)) {
 
                         $sHtml .= "<td class='DBLovrotRegistrosRetornadosTotalizacao'>";
-                        $sHtml .= db_formatar(pg_result($tot, 0, $key_elemento), 'f') . "&nbsp;";
+                        $sHtml .= db_formatar(pg_fetch_result($tot, 0, $key_elemento), 'f') . "&nbsp;";
                         $sHtml .= "</td>";
                     } else {
                         $sHtml .= "<td class='DBLovrotRegistrosRetornadosTotalizacao'> &nbsp;</td>\n";
@@ -2516,7 +2516,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
                 if ($key_elemento == 'totalgeral') {
                     $sHtml .= "<td class='DBLovrotTdTotalGeral'> Total Geral : </td>";
                 } else {
-                    if (strlen(strstr(pg_fieldname($result, $j), "db_")) == 0) {
+                    if (strlen(strstr(pg_field_name($result, $j), "db_")) == 0) {
                         $sHtml .= "<td></td>";
                     }
                 }
@@ -2564,9 +2564,9 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
         for ($j = 0; $j < $NumFields; $j++) {
 
-            if (pg_fieldtype($result, $j) == "text") {
+            if (pg_field_type($result, $j) == "text") {
 
-                $clrotulocab->label(pg_fieldname($result, $j));
+                $clrotulocab->label(pg_field_name($result, $j));
                 $sHtml .= "<div id='div_text_" . $i . "_" . $j . "' ";
                 $sHtml .= "class ='DBLovrotDivText' >";
                 $sHtml .= "  <table> ";
@@ -2576,7 +2576,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
                 $sHtml .= $clrotulocab->titulo . ":";
                 $sHtml .= "        </label><br> ";
                 $sHtml .= "        <label class='DBLovrotLabelDivTextDescricao'>";
-                $sHtml .= str_replace("\n", "<br>", pg_result($result, $i, $j));
+                $sHtml .= str_replace("\n", "<br>", pg_fetch_result($result, $i, $j));
                 $sHtml .= "        </font> ";
                 $sHtml .= "      </td> ";
                 $sHtml .= "    </tr> ";
@@ -2588,7 +2588,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
     if ($automatico == true) {
 
-        if (pg_numrows($result) == 1 && $$offset == 0) {
+        if (pg_num_rows($result) == 1 && ${$offset} == 0) {
             $sHtml .= "<script>".@$resultadoRetorno."</script>";
     }
   }
@@ -2613,53 +2613,53 @@ function db_lov($query, $numlinhas,
     global $cor2;
     $cor1 = $cor1 == "" ? "#97B5E6" : $cor1;
     $cor2 = $cor2 == "" ? "#E796A4" : $cor2;
-    global $HTTP_POST_VARS;
+    global $_POST;
     $tot_registros = "tot_registros" . $NomeForm;
     $offset = "offset" . $NomeForm;
     //recebe os valores do campo hidden
-    $$tot_registros = @ $HTTP_POST_VARS["totreg" . $NomeForm];
-    $$offset = @ $HTTP_POST_VARS["offset" . $NomeForm];
+    ${$tot_registros} = @ $_POST["totreg" . $NomeForm];
+    ${$offset} = @ $_POST["offset" . $NomeForm];
     // se for a primeira vez que é rodado, pega o total de registros e guarda no campo hidden
-    if (empty ($$tot_registros)) {
+    if (empty (${$tot_registros})) {
         $Dd1 = "disabled";
         $tot = db_query("select count(*) from ($query) as temp");
-        $$tot_registros = pg_result($tot, 0, 0);
+        ${$tot_registros} = pg_fetch_result($tot, 0, 0);
     }
     // testa qual botao foi pressionado
-    if (isset ($HTTP_POST_VARS["pri" . $NomeForm])) {
-        $$offset = 0;
+    if (isset ($_POST["pri" . $NomeForm])) {
+        ${$offset} = 0;
         $Dd1 = "disabled";
     } else {
-        if (isset ($HTTP_POST_VARS["ant" . $NomeForm])) {
-            if ($$offset <= $numlinhas) {
-                $$offset = 0;
+        if (isset ($_POST["ant" . $NomeForm])) {
+            if (${$offset} <= $numlinhas) {
+                ${$offset} = 0;
                 $Dd1 = "disabled";
             } else {
-                $$offset = $$offset - $numlinhas;
+                ${$offset} = ${$offset} - $numlinhas;
             }
         } else {
-            if (isset ($HTTP_POST_VARS["prox" . $NomeForm])) {
-                if ($numlinhas >= ($$tot_registros - $$offset - $numlinhas)) {
-                    $$offset = $$tot_registros - $numlinhas;
+            if (isset ($_POST["prox" . $NomeForm])) {
+                if ($numlinhas >= (${$tot_registros} - ${$offset} - $numlinhas)) {
+                    ${$offset} = ${$tot_registros} - $numlinhas;
                     $Dd2 = "disabled";
                 } else {
-                    $$offset = $$offset + $numlinhas;
+                    ${$offset} = ${$offset} + $numlinhas;
                 }
             } else {
-                if (isset ($HTTP_POST_VARS["ult" . $NomeForm])) {
-                    $$offset = $$tot_registros - $numlinhas;
+                if (isset ($_POST["ult" . $NomeForm])) {
+                    ${$offset} = ${$tot_registros} - $numlinhas;
                     $Dd2 = "disabled";
                 } else {
-                    $$offset = @ $HTTP_POST_VARS["offset" . $NomeForm] == "" ? 0 : @ $HTTP_POST_VARS["offset" . $NomeForm];
+                    ${$offset} = @ $_POST["offset" . $NomeForm] == "" ? 0 : @ $_POST["offset" . $NomeForm];
                 }
             }
         }
     }
     // executa a query e cria a tabela
-    $query .= " limit $numlinhas offset " . $$offset;
+    $query .= " limit $numlinhas offset " . ${$offset};
     $result = db_query($query);
-    $NumRows = pg_numrows($result);
-    $NumFields = pg_numfields($result);
+    $NumRows = pg_num_rows($result);
+    $NumFields = pg_num_fields($result);
     if ($NumRows < $numlinhas) {
         $Dd1 = $Dd2 = "disabled";
     }
@@ -2671,13 +2671,13 @@ function db_lov($query, $numlinhas,
             <input type=\"submit\" name=\"ant".$NomeForm."\" value=\"<\" ".@ $Dd1.">
             <input type=\"submit\" name=\"prox".$NomeForm."\" value=\">\" ".@ $Dd2.">
             <input type=\"submit\" name=\"ult".$NomeForm."\" value=\">>\" ".@ $Dd2.">
-                <input type=\"hidden\" name=\"offset".$NomeForm."\" value=\"".$$offset."\">
-                <input type=\"hidden\" name=\"totreg".$NomeForm."\" value=\"".$$tot_registros."\">
+                <input type=\"hidden\" name=\"offset".$NomeForm."\" value=\"".${$offset}."\">
+                <input type=\"hidden\" name=\"totreg".$NomeForm."\" value=\"".${$tot_registros}."\">
                 <input type=\"hidden\" name=\"filtro\" value=\"$filtro\">
           </form>". ($NumRows > 0 ? "
-          Foram retornados <font color=\"red\"><strong>".$$tot_registros."</strong></font> registros.
-          Mostrando de <font color=\"red\"><strong>". ($$offset +1)."</strong></font> até
-          <font color=\"red\"><strong>". ($$tot_registros < ($$offset + $numlinhas) ? $NumRows : ($$offset + $numlinhas)) . "</strong></font>." : "Nenhum Registro
+          Foram retornados <font color=\"red\"><strong>".${$tot_registros}."</strong></font> registros.
+          Mostrando de <font color=\"red\"><strong>". (${$offset} +1)."</strong></font> até
+          <font color=\"red\"><strong>". (${$tot_registros} < (${$offset} + $numlinhas) ? $NumRows : (${$offset} + $numlinhas)) . "</strong></font>." : "Nenhum Registro
           Retornado") . "
           </td></tr>\n";
     /*********************************/
@@ -2685,8 +2685,8 @@ function db_lov($query, $numlinhas,
     if ($NumRows > 0) {
         echo "<tr>\n";
         for ($i = 0; $i < $NumFields; $i++) {
-            if (strlen(strstr(pg_fieldname($result, $i), "db")) == 0) {
-                echo "<td nowrap bgcolor=\"$db_corcabec\"  style=\"font-size:13px\" align=\"center\"><b><u>" . ucfirst(pg_fieldname($result,
+            if (strlen(strstr(pg_field_name($result, $i), "db")) == 0) {
+                echo "<td nowrap bgcolor=\"$db_corcabec\"  style=\"font-size:13px\" align=\"center\"><b><u>" . ucfirst(pg_field_name($result,
                         $i)) . "</u></b></td>\n";
             }
         }
@@ -2698,11 +2698,11 @@ function db_lov($query, $numlinhas,
         echo "<tr>\n";
         $cor = @ $cor == $cor1 ? $cor2 : $cor1;
         for ($j = 0; $j < $NumFields; $j++) {
-            if (strlen(strstr(pg_fieldname($result, $j), "db")) == 0)
+            if (strlen(strstr(pg_field_name($result, $j), "db")) == 0)
                 echo "<td id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;font-size:13px\" bgcolor=\"$cor\" nowrap>
-                   ". ($arquivo != "" ? "<a title=\"$mensagem\" style=\"text-decoration:none;color:#000000;font-size:13px\" href=\"\" ". ($arquivo == "()" ? "OnClick=\"js_retornaValor('I".$i.$j."');return false\">" : "onclick=\"JanBrowse = window.open('".$arquivo."?".base64_encode("retorno=". ($BrowSe == 1 ? $i : trim(pg_result($result, $i, 0))))."','$aonde','width=800,height=600');return false\">"). (trim(pg_result($result, $i, $j)) == "" ? "&nbsp;" : trim(pg_result($result,
-                            $i, $j))) . "</a>" : (trim(pg_result($result, $i,
-                        $j)) == "" ? "&nbsp;" : trim(pg_result($result, $i, $j))))."</td>\n";
+                   ". ($arquivo != "" ? "<a title=\"$mensagem\" style=\"text-decoration:none;color:#000000;font-size:13px\" href=\"\" ". ($arquivo == "()" ? "OnClick=\"js_retornaValor('I".$i.$j."');return false\">" : "onclick=\"JanBrowse = window.open('".$arquivo."?".base64_encode("retorno=". ($BrowSe == 1 ? $i : trim(pg_fetch_result($result, $i, 0))))."','$aonde','width=800,height=600');return false\">"). (trim(pg_fetch_result($result, $i, $j)) == "" ? "&nbsp;" : trim(pg_fetch_result($result,
+                            $i, $j))) . "</a>" : (trim(pg_fetch_result($result, $i,
+                        $j)) == "" ? "&nbsp;" : trim(pg_fetch_result($result, $i, $j))))."</td>\n";
     }
     echo "</tr>\n";
   }
@@ -2722,16 +2722,16 @@ function db_logs($string = '', $codcam = 0, $chave = 0)
   $sql = "select db_itensmenu.id_item
                   from db_itensmenu
             inner join db_menu  on  db_menu.id_item_filho = db_itensmenu.id_item
-                  where trim(funcao) = '" . trim(addslashes(basename($_SERVER["REQUEST_URI"]))) . "'
+                  where trim(funcao) = '" . trim(addslashes(basename((string) $_SERVER["REQUEST_URI"]))) . "'
             $wheremod limit 1 ";
 
     $result = db_query($sql);
-    if ($result != false && pg_numrows($result) > 0) {
-        $item = pg_result($result, 0, 0);
+    if ($result != false && pg_num_rows($result) > 0) {
+        $item = pg_fetch_result($result, 0, 0);
 
         $sql = "select nextval('db_logsacessa_codsequen_seq')";
         $result = db_query($sql);
-        $codsequen = pg_result($result, 0, 0);
+        $codsequen = pg_fetch_result($result, 0, 0);
 
         // grava codigo na sessao
         db_putsession("DB_itemmenu_acessado",$item);
@@ -2774,11 +2774,11 @@ function db_logsmanual_demais($string = '', $id_usuario = 0, $modulo = 0, $item 
         return false;
     }
 
-    global $SERVER, $HTTP_SERVER_VARS;
+    global $SERVER, $_SERVER;
     if (isset ($_SERVER["HTTP_X_FORWARDED_FOR"])) {
         $db_ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
     } else {
-        $db_ip = $HTTP_SERVER_VARS['REMOTE_ADDR'];
+        $db_ip = $_SERVER['REMOTE_ADDR'];
     }
 
     $sql = "INSERT INTO db_logsacessa VALUES (nextval('db_logsacessa_codsequen_seq'),'$db_ip','" . date("Y-m-d") . "','" . date("H:i:s") . "','" . $_SERVER["REQUEST_URI"] . "','$string',$id_usuario,$modulo,$item,$coddepto,$instit)";
@@ -2801,7 +2801,7 @@ function db_logsmanual_demais($string = '', $id_usuario = 0, $modulo = 0, $item 
 function db_menu($usuario = null, $modulo = null, $anousu = null, $instit = null)
 {
 
-    global $HTTP_SERVER_VARS, $HTTP_SESSION_VARS;
+    global $_SERVER, $_SESSION;
     global $conn, $DB_SELLER;
 
     $usuario = !empty($usuario) ? $usuario : db_getsession("DB_id_usuario");
@@ -2869,7 +2869,7 @@ function db_menu($usuario = null, $modulo = null, $anousu = null, $instit = null
     $DBMenu->setDBSeller(isset($DB_SELLER));
     $DBMenu->setExibeBuscaMenus(($oPreferencias->getExibeBusca() == '1'));
     $DBMenu->setDataUsu((isset($_SESSION["DB_datausu"]) ? date("Y", db_getsession("DB_datausu")) : date("Y")));
-    $DBMenu->setFuncao(strtolower(basename($_SERVER["PHP_SELF"])));
+    $DBMenu->setFuncao(strtolower(basename((string) $_SERVER["PHP_SELF"])));
     $DBMenu->setOrdenacao($sOrdenacao);
 
     $sMenu = $DBMenu->montaMenu($modulo);
@@ -2888,8 +2888,8 @@ function db_menu($usuario = null, $modulo = null, $anousu = null, $instit = null
             $iCodigoDepartamento = db_getsession("DB_coddepto");
             $result = @ db_query("select descrdepto from db_depart where coddepto = " . db_getsession("DB_coddepto"));
 
-            if ($result != false && pg_numrows($result) > 0) {
-                $descrdep = "[<strong>" . db_getsession("DB_coddepto") . "-" . substr(pg_result($result, 0,
+            if ($result != false && pg_num_rows($result) > 0) {
+                $descrdep = "[<strong>" . db_getsession("DB_coddepto") . "-" . substr(pg_fetch_result($result, 0,
                         'descrdepto'), 0, 40) . "</strong>]";
             } else {
                 $descrdep = "";
@@ -2945,8 +2945,8 @@ function db_acessamenu($item_menu, $descr, $acao)
                        inner join db_itensmenu m on m.id_item = p .id_item
                   where p.anousu = " . db_getsession("DB_anousu") . " and p.id_item = $item_menu and id_usuario = " . db_getsession("DB_id_usuario");
     $res = db_query($sql);
-    if (pg_numrows($res) > 0) {
-        $descri = pg_result($res, 0, 'descricao');
+    if (pg_num_rows($res) > 0) {
+        $descri = pg_fetch_result($res, 0, 'descricao');
         echo " <input name='db_acessa_menu_" . $item_menu . "' value='" .$descr."' type='button' onclick=\"document.getElementById('DBmenu_".$item_menu."').click();\" title='$descri'>  ";
     }
 }
@@ -2961,10 +2961,10 @@ function db_extenso($valor = 0, $maiusculas = false)
     //#20#//Maiusculo: Se retorna a string gerada em maiusculo ou não
 
     $rt = '';
-    $singular = array("centavo", "real", "mil", "milhão", "bilhão", "trilhão", "quatrilhão");
-    $plural = array("centavos", "reais", "mil", "milhões", "bilhões", "trilhões", "quatrilhões");
+    $singular = ["centavo", "real", "mil", "milhão", "bilhão", "trilhão", "quatrilhão"];
+    $plural = ["centavos", "reais", "mil", "milhões", "bilhões", "trilhões", "quatrilhões"];
 
-    $c = array(
+    $c = [
         "",
         "cem",
         "duzentos",
@@ -2975,17 +2975,17 @@ function db_extenso($valor = 0, $maiusculas = false)
         "setecentos",
         "oitocentos",
         "novecentos"
-    );
-    $d = array("", "dez", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa");
-    $d10 = array("dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezesete", "dezoito", "dezenove");
-    $u = array("", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove");
+    ];
+    $d = ["", "dez", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"];
+    $d10 = ["dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezesete", "dezoito", "dezenove"];
+    $u = ["", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove"];
 
     $z = 0;
 
     $valor = number_format($valor, 2, ".", ".");
-    $inteiro = explode(".", $valor);
+    $inteiro = explode(".", (string) $valor);
     for ($i = 0; $i < count($inteiro); $i++) {
-        for ($ii = strlen($inteiro[$i]); $ii < 3; $ii++) {
+        for ($ii = strlen((string) $inteiro[$i]); $ii < 3; $ii++) {
             $inteiro[$i] = "0" . $inteiro[$i];
         }
     }
@@ -3014,14 +3014,14 @@ function db_extenso($valor = 0, $maiusculas = false)
   }
 
   if (!$maiusculas) {
-    return ($rt ? $rt : "zero");
+    return ($rt ?: "zero");
   } else { /*
                   Trocando o " E " por " e ", fica muito + apresentável!
                   Rodrigo Cerqueira, rodrigobc@fte.com.br
                   */
     if ($rt)
-      $rt = ereg_replace(" E ", " e ", ucwords($rt));
-      return (($rt) ? ($rt) : "Zero");
+      $rt = preg_replace("# E #m", " e ", ucwords((string) $rt));
+      return ($rt ?: "Zero");
   }
 
 }
@@ -3049,7 +3049,7 @@ function db_permissaomenu($ano, $modulo, $item)
 
         //echo $sql;exit;
     $res = db_query($sql);
-    if (pg_numrows($res) == 0) {
+    if (pg_num_rows($res) == 0) {
       return "false";
     } else {
         return "true";
@@ -3071,15 +3071,16 @@ function print_vars($obj)
 {
     $arr = get_object_vars($obj);
     echo "<table border=0 bgcolor=#AAAAFF style='border:1px solid'>";
-    echo "<tr><td colspan=3>Debug da classe " . get_class($obj) . " </td></tr>";
-  while (list ($prop, $val) = each($arr))
+    echo "<tr><td colspan=3>Debug da classe " . $obj::class . " </td></tr>";
+  foreach ($arr as $prop => $val) {
       echo "<tr><td>&nbsp; </td><td align=left>var $$prop </td><td> $val </td>";
+  }
 }
 
 function print_methods($obj)
 {
     echo "<tr><td colspan=3>Metodos encontrados </td></tr>";
-    $arr = get_class_methods(get_class($obj));
+    $arr = get_class_methods($obj::class);
   foreach ($arr as $method)
       echo "<tr><td>&nbsp; </td><td colspan=2>function $method() </td>";
     echo "<table>";
@@ -3217,7 +3218,7 @@ function db_criacarne($arretipo, $ip, $datahj, $instit, $tipomod)
                    and k48_cadtipomod = $tipomod  ";
     //  die($sqlexe);
     $rsModexe = db_query($sqlexe);
-    $intnumexe = pg_numrows($rsModexe);
+    $intnumexe = pg_num_rows($rsModexe);
     if (isset($intnumexe) && $intnumexe > 0) {
         db_fieldsmemory($rsModexe,0);
     //    db_msgbox("achou excessao");
@@ -3238,7 +3239,7 @@ function db_criacarne($arretipo, $ip, $datahj, $instit, $tipomod)
              ";
       //     die($sqltipo);
       $rsModtipo = db_query($sqltipo);
-      $intnumtipo = pg_numrows($rsModtipo);
+      $intnumtipo = pg_num_rows($rsModtipo);
       if (isset($intnumtipo) && $intnumtipo > 0) {
           //        db_msgbox("achou tipo");
       db_fieldsmemory($rsModtipo,0);
@@ -3260,7 +3261,7 @@ function db_criacarne($arretipo, $ip, $datahj, $instit, $tipomod)
             ";
       //    die($sqlgeral);
       $rsModgeral = db_query($sqlgeral);
-      $intnumgeral = pg_numrows($rsModgeral);
+      $intnumgeral = pg_num_rows($rsModgeral);
       if ($intnumgeral > 0) {
           //        db_msgbox("achou padrao");
           db_fieldsmemory($rsModgeral, 0);
@@ -3276,7 +3277,7 @@ function db_criacarne($arretipo, $ip, $datahj, $instit, $tipomod)
     unset($pdf);
 
     if (isset($k47_altura) && $k47_altura != 0 && isset($k47_largura) && $k47_largura != 0 && isset($k47_orientacao) && $k47_orientacao != "") {
-        $medidas = array($k47_altura, $k47_largura);
+        $medidas = [$k47_altura, $k47_largura];
         $spdf = new scpdf($k47_orientacao, "mm", $medidas);
   }else{
     $spdf    = new scpdf();
@@ -3327,7 +3328,7 @@ function db_preparageratxt($lista, $k00_tipo = null)
     $result = db_query("select nextval('numpref_k03_numpre_seq') as k03_numpre");
     db_fieldsmemory($result, 0);
 
-    $aNumpres = array();
+    $aNumpres = [];
 
     global $k00_codbco, $k00_codage, $k00_descr, $k00_hist1, $k00_hist2, $k00_hist3, $k00_hist4, $k00_hist5, $k00_hist6, $k00_hist7, $k00_hist8, $k03_tipo, $k00_tipoagrup;
 
@@ -3336,7 +3337,7 @@ function db_preparageratxt($lista, $k00_tipo = null)
         $resultnumbco = db_query("select distinct k00_codbco,k00_codage,k00_descr,k00_hist1,k00_hist2,k00_hist3,k00_hist4,k00_hist5,k00_hist6,k00_hist7,k00_hist8,k03_tipo,k00_tipoagrup from arretipo
                         inner join listatipos on k62_tipodeb = k00_tipo where k62_lista = $lista");
 
-        if (pg_numrows($resultnumbco) == 0) {
+        if (pg_num_rows($resultnumbco) == 0) {
             echo "O código do banco não esta cadastrado no arquivo arretipo para este tipo!";
             exit;
         }
@@ -3347,7 +3348,7 @@ function db_preparageratxt($lista, $k00_tipo = null)
                                                                                 where k00_tipo = $k00_tipo";
         $resultnumbco = db_query($sqlnumbco) or die($sqlnumbco);
 
-        if (pg_numrows($resultnumbco) == 0) {
+        if (pg_num_rows($resultnumbco) == 0) {
             echo "O código do banco não esta cadastrado no arquivo arretipo para este tipo!";
             exit;
         }
@@ -3359,7 +3360,7 @@ function db_preparageratxt($lista, $k00_tipo = null)
 
 }
 
-function db_separainstrucao($texto, $comeca=0, &$layout, $linha, $separador, $maximo = 0, $quantidadegeral)
+function db_separainstrucao($texto, $comeca=0, &$layout = null, $linha = null, $separador = null, $maximo = 0, $quantidadegeral = null)
 {
     global $quantidadegeral;
 
@@ -3409,11 +3410,11 @@ function db_separainstrucao($texto, $comeca=0, &$layout, $linha, $separador, $ma
 
             for ($quantsepara = 0 + $totalprocessado; $quantsepara < $processar + $totalprocessado; $quantsepara++) {
                 $nomevar = "instrucao" . ($quantsepara + $comeca + 1 - $totalprocessado);
-                global $$nomevar;
-                $$nomevar = trim($textos[$quantsepara]);
+                global ${$nomevar};
+                ${$nomevar} = trim($textos[$quantsepara]);
                 $contasepara++;
                 if ($mostrar == "1") {
-                    echo "quantsepara: $quantsepara / $nomevar: " . $$nomevar . "<br>";
+                    echo "quantsepara: $quantsepara / $nomevar: " . ${$nomevar} . "<br>";
                 }
                 if ($separador == "04" and 1 == 2) {
                     echo "maximo: $maximo - contasepara: $contasepara - quantsepara: $quantsepara - processar: $processar - total: $totalprocessado<br>";
@@ -3451,7 +3452,7 @@ function db_formatatexto($linhas, $largura, $texto, $tipo = "t")
         $quebra = "<br>";
     }
 
-    $linha = explode("\n", $texto);
+    $linha = explode("\n", (string) $texto);
     $numlinhas = count($linha);
     $obs = "";
 
@@ -3459,7 +3460,7 @@ function db_formatatexto($linhas, $largura, $texto, $tipo = "t")
         $linhatotal = 0;
         for ($i = 0; $i < $numlinhas; $i++) {
             $linhatotal = $linhatotal + 1;
-            $linhastam = strlen($linha[$i]);
+            $linhastam = strlen((string) $linha[$i]);
             if ($linhastam > $largura) {
                 $nlinhas = ($linhastam / $largura);
                 $nlinhas1 = (int)$nlinhas;
@@ -3470,7 +3471,7 @@ function db_formatatexto($linhas, $largura, $texto, $tipo = "t")
 
             if ($linhatotal >= $linhas) {
                 if ($linhastam > $largura) {
-                    $obs .= substr($linha[$i], 1, $largura);
+                    $obs .= substr((string) $linha[$i], 1, $largura);
                     $obs .= "...";
                 } else {
                     $obs .= $linha[$i]."...";
@@ -3490,8 +3491,8 @@ function db_formatatexto($linhas, $largura, $texto, $tipo = "t")
 function db_jsspecialchars($s)
 {
     //$s = string a ser tratada
-  return preg_replace('/([^ !#$%@()*+,-.\x30-\x5b\x5d-\x7e])/e',
-    "'\\x'.(ord('\\1')<16? '0': '').dechex(ord('\\1'))", $s);
+  return preg_replace_callback('/([^ !#$%@()*+,-.\x30-\x5b\x5d-\x7e])/',
+    fn($matches) => '\x' . (ord($matches[1]) < 16 ? '0' : '') . dechex(ord($matches[1])), (string) $s);
 }
 
 
@@ -3544,12 +3545,12 @@ function monta_menu($item_modulo, $id_modulo, $espacos, $lista, $iUsuario = fals
     }
 
     $res = db_query($sql);
-    if (pg_numrows($res) > 0) {
+    if (pg_num_rows($res) > 0) {
 
-        for ($i = 0; $i < pg_numrows($res); $i++) {
-            $item_filho = pg_result($res, $i, 0);
-            $descricao = pg_result($res, $i, 1);
-            $funcao = trim(pg_result($res, $i, 2));
+        for ($i = 0; $i < pg_num_rows($res); $i++) {
+            $item_filho = pg_fetch_result($res, $i, 0);
+            $descricao = pg_fetch_result($res, $i, 1);
+            $funcao = trim(pg_fetch_result($res, $i, 2));
             if (empty($lista) || isset($lista[$item_filho])) {
                 $matriz_item_seleciona[count($matriz_item_seleciona)] = $espacos . "-" . $item_filho;
             }
@@ -3571,9 +3572,9 @@ function db_strtotime($strData)
     }
 
     if (substr(phpversion(), 0, 1) == 4) {
-    return strtotime($strData, date('h:i'));
+    return strtotime((string) $strData, date('h:i'));
     } elseif (substr(phpversion(),0,1) >= 5) {
-    return(strtotime($strData));
+    return(strtotime((string) $strData));
   }
 }
 
@@ -3587,7 +3588,7 @@ function db_getnomelogo(){
   if($rsLogo == false || pg_num_rows($rsLogo) == 0 ){
     return false;
   } else {
-      return pg_result($rsLogo, 0, "logo");
+      return pg_fetch_result($rsLogo, 0, "logo");
   }
 
 }
@@ -3596,7 +3597,7 @@ function db_getnomelogo(){
 function db_dataextenso($timestamp = null, $sMunic = null)
 {
 
-    $aMeses = array(
+    $aMeses = [
         "01" => "Janeiro",
         "02" => "Fevereiro",
         "03" => "Março",
@@ -3609,7 +3610,7 @@ function db_dataextenso($timestamp = null, $sMunic = null)
         "10" => "Outubro",
         "11" => "Novembro",
         "12" => "Dezembro"
-    );
+    ];
 
     if ($timestamp == null) {
         $timestamp = db_getsession('DB_datausu');
@@ -3617,16 +3618,16 @@ function db_dataextenso($timestamp = null, $sMunic = null)
 
     if ($sMunic == null and $sMunic <> "") {
         $sSqlMunic = "select munic from db_config where codigo = " . db_getsession('DB_instit') . " limit 1";
-        $sMunic = pg_result(db_query($sSqlMunic), 0, 'munic');
+        $sMunic = pg_fetch_result(db_query($sSqlMunic), 0, 'munic');
     }
 
-    $sData = ($sMunic == "" ? "" : ucfirst(strtolower( $sMunic ) ).", ").date('d',$timestamp)." de ".$aMeses[date('m',$timestamp)] . " de " . date('Y',
+    $sData = ($sMunic == "" ? "" : ucfirst(strtolower( (string) $sMunic ) ).", ").date('d',$timestamp)." de ".$aMeses[date('m',$timestamp)] . " de " . date('Y',
             $timestamp) . ".";
     return $sData;
 
 }
 
-function db_geraArquivoOid($arquivo, $arquivoAlt = null, $opcao = 1, $conn)
+function db_geraArquivoOid($arquivo, $arquivoAlt = null, $opcao = 1, $conn = null)
 {
     /*
    * $arquivo    => o arquivo do type "file", o arquivo a ser gravado
@@ -3648,7 +3649,7 @@ function db_geraArquivoOid($arquivo, $arquivoAlt = null, $opcao = 1, $conn)
     $nomeArquivo = $_FILES["$arquivo"]["name"];
     $localRecebeArquivo = $_FILES["$arquivo"]["tmp_name"];
 
-    if (trim($localRecebeArquivo) != "") {
+    if (trim((string) $localRecebeArquivo) != "") {
         $arquivoGrava = fopen($localRecebeArquivo, "rb");
         if ($arquivoGrava == false) {
             throw new Exception("Erro arquivo a gravar ");
@@ -3702,17 +3703,17 @@ function db_buscaImagemBanco($cadban, $conn)
     $linhascadban = pg_num_rows($resultcadban);
     if ($linhascadban > 0) {
         //db_fieldsmemory($resultcadban,0);
-        $k15_codbco = pg_result($resultcadban, 0, "k15_codbco");
-        $banco = str_pad($k15_codbco, 3, "0", STR_PAD_LEFT);
+        $k15_codbco = pg_fetch_result($resultcadban, 0, "k15_codbco");
+        $banco = str_pad((string) $k15_codbco, 3, "0", STR_PAD_LEFT);
         // busca os dados do banco..logo etc
         $sqlBanco = "select  * from db_bancos where db90_codban = '" . $banco . "'";
         $resultBanco = db_query($sqlBanco);
         $linhasBanco = pg_num_rows($resultBanco);
         if ($linhasBanco > 0) {
             //db_fieldsmemory($resultBanco,0);
-            $db90_digban = pg_result($resultBanco, 0, "db90_digban");
-            $db90_abrev = pg_result($resultBanco, 0, "db90_abrev");
-            $db90_logo = pg_result($resultBanco, 0, "db90_logo");
+            $db90_digban = pg_fetch_result($resultBanco, 0, "db90_digban");
+            $db90_abrev = pg_fetch_result($resultBanco, 0, "db90_abrev");
+            $db90_logo = pg_fetch_result($resultBanco, 0, "db90_logo");
             // se não tiver os dados do banco na db_bancos não deve emitir o recibo.
       if($db90_digban=="" || $db90_abrev=="" || $db90_logo==""){
         return false;
@@ -3724,11 +3725,11 @@ function db_buscaImagemBanco($cadban, $conn)
             pg_lo_export("$db90_logo", $caminho, $conn);
             db_query($conn, "commit");
 
-            $arr = array(
+            $arr = [
                 "numbanco" => $banco . "-" . $db90_digban,
                 "banco" => $db90_abrev,
                 "imagemlogo" => $caminho
-            );
+            ];
 
             return $arr;
 
@@ -3760,9 +3761,9 @@ function verifica_bissexto($ano)
 function verifica_ultimo_dia_mes($data)
 {
 
-    $iDia = substr($data, 0, 2);
-    $iMes = substr($data, 3, 2);
-    $iAno = substr($data, 6, 4);
+    $iDia = substr((string) $data, 0, 2);
+    $iMes = substr((string) $data, 3, 2);
+    $iAno = substr((string) $data, 6, 4);
 
     $lBisexto = verifica_bissexto($data);
 
@@ -3772,7 +3773,7 @@ function verifica_ultimo_dia_mes($data)
         $iFev = 28;
     }
 
-    $aUltimoDia = array(
+    $aUltimoDia = [
         "01" => "31",
         "02" => $iFev,
         "03" => "31",
@@ -3784,7 +3785,7 @@ function verifica_ultimo_dia_mes($data)
         "09" => "30",
         "10" => "31",
         "11"=>"30",
-                      "12"=>"31");
+                      "12"=>"31"];
   if ($aUltimoDia[$iMes] == $iDia) {
     return true;
   } else {
@@ -3814,7 +3815,7 @@ function conta_meses($dataini, $datafim)
  * @param string       $sNomeAbsoluto        nome do arquivo a ser gerado
  * @param string       $sTipoCompactacao     string identificando o tipo de compactação ('zip') implementado apenas zip
  */
-function compactaArquivos($aArquivosCompactar = array(), $sNomeAbsoluto = "", $sTipoCompactacao = "zip")
+function compactaArquivos($aArquivosCompactar = [], $sNomeAbsoluto = "", $sTipoCompactacao = "zip")
 {
 
     switch ($sTipoCompactacao) {
@@ -3863,10 +3864,10 @@ function db_buscaImagemInstituicao($instit, $tipo)
     $sSqlConfigArquivos .= " where db38_instit = $instit ";
     $sSqlConfigArquivos .= "   and db38_tipo   = $tipo ";
     $rsSqlConfigArquivos = db_query($sSqlConfigArquivos);
-    $iNumRows = pg_numrows($rsSqlConfigArquivos);
+    $iNumRows = pg_num_rows($rsSqlConfigArquivos);
     if ($iNumRows > 0) {
 
-        $arquivo = pg_result($rsSqlConfigArquivos, 0, "db38_arquivo");
+        $arquivo = pg_fetch_result($rsSqlConfigArquivos, 0, "db38_arquivo");
         $caminho = "tmp/" . $arquivo . ".jpg";
         db_query($conn, "begin");
     pg_lo_export($conn,$arquivo,$caminho);
@@ -3888,16 +3889,16 @@ function db_removeAcentuacao($sRemover)
 
     $var = $sRemover;
 
-    $var = ereg_replace("[ÁÀÂÃ]", "A", $var);
-    $var = ereg_replace("[áàâãª]", "a", $var);
-    $var = ereg_replace("[ÉÈÊ]", "E", $var);
-    $var = ereg_replace("[éèê]", "e", $var);
-    $var = ereg_replace("[íì]", "i", $var);
-    $var = ereg_replace("[ÍÌ]", "I", $var);
-    $var = ereg_replace("[ÓÒÔÕ]", "O", $var);
-    $var = ereg_replace("[óòôõº]", "o", $var);
-    $var = ereg_replace("[ÚÙÛ]", "U", $var);
-  $var = ereg_replace("[úùû]","u",$var);
+    $var = preg_replace("#[\xc1\xc0\xc2\xc3]#m", "A", (string) $var);
+    $var = preg_replace("#[\xe1\xe0\xe2\xe3\xaa]#m", "a", (string) $var);
+    $var = preg_replace("#[\xc9\xc8\xca]#m", "E", (string) $var);
+    $var = preg_replace("#[\xe9\xe8\xea]#m", "e", (string) $var);
+    $var = preg_replace("#[\xed\xec]#m", "i", (string) $var);
+    $var = preg_replace("#[\xcd\xcc]#m", "I", (string) $var);
+    $var = preg_replace("#[\xd3\xd2\xd4\xd5]#m", "O", (string) $var);
+    $var = preg_replace("#[\xf3\xf2\xf4\xf5\xba]#m", "o", (string) $var);
+    $var = preg_replace("#[\xda\xd9\xdb]#m", "U", (string) $var);
+  $var = preg_replace("#[\xfa\xf9\xfb]#m","u",(string) $var);
   $var = str_replace("'","",$var);
   $var = str_replace("Ç","C",$var);
   $var = str_replace("ç","c",$var);
@@ -4010,10 +4011,10 @@ function db_formatatempodecorrido($timestampAntes, $timestampDepois)
     }
 
     //retira a ultima virgula
-    $sRetorno = rtrim($sRetorno, ', ');
+    $sRetorno = rtrim((string) $sRetorno, ', ');
 
     //coloca "e" no lugar da ultima virgula
-    $arrExplode = explode(',', $sRetorno);
+    $arrExplode = explode(',', (string) $sRetorno);
     $sRetornoFinal = '';
     $nPedacos = count($arrExplode);
     for ($i = 0; $i < $nPedacos; $i++) {
@@ -4036,7 +4037,7 @@ function db_formatatempodecorrido($timestampAntes, $timestampDepois)
  */
 function db_mesAbreviado($iMes)
 {
-    $aMesAbreviado = array(
+    $aMesAbreviado = [
         "01" => "Jan",
         "02" => "Fev",
         "03" => "Mar",
@@ -4048,7 +4049,7 @@ function db_mesAbreviado($iMes)
         "09" => "Set",
         "10" => "Out",
                           "11" => "Nov",
-                          "12" => "Dez");
+                          "12" => "Dez"];
   return $aMesAbreviado[$iMes];
 }
 
@@ -4064,7 +4065,7 @@ function analiseQueryPlanoOrcamento($sQuery, $iAnoUsu = null)
         $iAnoUsu = db_getsession("DB_anousu");
     }
 
-    $aTablesFrom = array(
+    $aTablesFrom = [
         " conplano ",
         "conplano.",
         "conplanoreduz",
@@ -4072,9 +4073,9 @@ function analiseQueryPlanoOrcamento($sQuery, $iAnoUsu = null)
         "conplanocontabancaria",
         "orccenarioeconomicoconplano ",
         "fc_conplano_grupo"
-    );
+    ];
 
-    $aTablesTo = array(
+    $aTablesTo = [
         " conplanoorcamento ",
         "conplanoorcamento.",
         "conplanoorcamentoanalitica",
@@ -4082,7 +4083,7 @@ function analiseQueryPlanoOrcamento($sQuery, $iAnoUsu = null)
         "conplanoorcamentocontabancaria",
         "orccenarioeconomicoconplanoorcamento ",
         "fc_conplanoorcamento_grupo"
-    );
+    ];
     /**
      * incluido um or no if da constante use pecasp, para verificar tambem a variavel de seção
      * para fazer o parse das tabelas migradas
@@ -4118,7 +4119,7 @@ function db_validarMenuPCASP($iCodigoMenu = null)
 
     if (USE_PCASP && !empty($iCodigoMenu)) {
 
-        $aCodigosMenusBloqueados = array(
+        $aCodigosMenusBloqueados = [
             3973,  // Caixa > Procedimentos > Planilha de Lançamento > Inclusão
             3974,  // Caixa > Procedimentos > Planilha de Lançamento > Alteração,
             3975,  // Caixa > Procedimentos > Planilha de Lançamento > Exclusão
@@ -4135,7 +4136,7 @@ function db_validarMenuPCASP($iCodigoMenu = null)
             3743,  // Contabilidade > Cadastros > Cadastro de Transações > Inclusão
             3744,  // Contabilidade > Cadastros > Cadastro de Transações > Alteração
             3745
-        ); // Contabilidade > Cadastros > Cadastro de Transações > Exclusão
+        ]; // Contabilidade > Cadastros > Cadastro de Transações > Exclusão
 
         if (in_array($iCodigoMenu, $aCodigosMenusBloqueados)) {
 
@@ -4175,7 +4176,7 @@ function findword($sText, $sWord)
     return false;
   }
     $sText = str_replace(";", " ", $sText);
-    return in_array($sWord, explode(" ", $sText));
+    return in_array($sWord, explode(" ", (string) $sText));
 }
 
 function utf8_encode_all($entrada)
@@ -4217,12 +4218,12 @@ function isModuloSecretariaEducacao() {
 
 function verifica_ip_privado ($ip) {
 
-   $pri_addrs = array ( '10.0.0.0|10.255.255.255',     // single CLASS A network
+   $pri_addrs =  [ '10.0.0.0|10.255.255.255',     // single CLASS A network
                         '172.16.0.0|172.31.255.255',   // 16 contiguous CLASS B network
                         '192.168.0.0|192.168.255.255', // 256 contiguous CLASS C network
                         '169.254.0.0|169.254.255.255', // LINK-LOCAL address also refered TO AS Automatic PRIVATE IP Addressing
                         '127.0.0.0|127.255.255.255'    // localhost
-                      );
+                      ];
 
    $long_ip = ip2long ($ip);
 
@@ -4230,7 +4231,7 @@ function verifica_ip_privado ($ip) {
 
       foreach ($pri_addrs AS $pri_addr) {
 
-        list ($start, $end) = explode('|', $pri_addr);
+        [$start, $end] = explode('|', (string) $pri_addr);
         // if is private
 
         if ($long_ip >= ip2long ($start) && $long_ip <= ip2long ($end)) {

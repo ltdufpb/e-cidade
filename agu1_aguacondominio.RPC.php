@@ -67,7 +67,7 @@ switch ($oParam->sExec) {
       
       $aRegistros    = db_utils::getCollectionByRecord($rsDaoClaAguaCondominioMat, false, false, true);
      
-      $oResul = array();
+      $oResul = [];
       
       foreach ($aRegistros as $oRegistro) {
         

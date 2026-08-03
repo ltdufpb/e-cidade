@@ -40,7 +40,7 @@ $clconrelparametro->rotulo->label();
     </td>
     <td> 
    <?php 
-      $x = array("ORGAOSAUDE"=>"Orgao saude","ORGAOEDUCA"=>"Orgão Educação","RECURSOMDE"=>"Recurso MDE");
+      $x = ["ORGAOSAUDE"=>"Orgao saude","ORGAOEDUCA"=>"Orgão Educação","RECURSOMDE"=>"Recurso MDE"];
       db_select('c18_parametro',$x,true,20,'');
    ?>
     </td>
@@ -66,7 +66,7 @@ function js_preenchepesquisa(chave){
   db_iframe_conrelparametro.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

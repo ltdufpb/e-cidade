@@ -44,7 +44,7 @@ require_once(modification("model/processoProtocolo.model.php"));
 
 // **********************************************
 if (!empty($HTTP_SERVER_VAR)) {
-    parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+    parse_str((string) $_SERVER["QUERY_STRING"]);
 }
 
 // Alteracao Plugin TaxonomiaDeProcessosDoMinisterioPublico - pro4_capaprocesso.php #1
@@ -57,7 +57,7 @@ $iAnoUsuFinal = db_getsession("DB_anousu");
 
 if (isset($oGet->numeroProcessoInicial) && !empty($oGet->numeroProcessoInicial)) {
 
-    $aProcessoInicial = explode("/", $oGet->numeroProcessoInicial);
+    $aProcessoInicial = explode("/", (string) $oGet->numeroProcessoInicial);
     $aProcessoFinal = explode("/", $oGet->numeroProcessoFinal);
     $iNumeroProcessoInicical = $aProcessoInicial[0];
     $iNumeroProcessoFinal = $aProcessoFinal[0];
@@ -144,9 +144,9 @@ if ($oProtParam->p90_modelcapaproc != 3) {
 
     $result = db_query($sql);
 
-    $numrows = pg_numrows($result);
+    $numrows = pg_num_rows($result);
 
-    if (pg_numrows($result) == 0) {
+    if (pg_num_rows($result) == 0) {
 
         db_redireciona('db_erros.php?fechar=true&db_erro=Processo nao cadastrado!');
         exit;
@@ -166,38 +166,23 @@ if ($oProtParam->p90_modelcapaproc != 3) {
     
     if (isset($p90_modelcapaproc) ) {
 
-        switch ($p90_modelcapaproc) {
-            case '1':
-
-                $modelo = 41;
-            break;
-
-            case '2':
-
-                $modelo = 42;
-            break;
-
-            case '4':
-
-                $modelo = 401;
-            break;
-
-            default:
-
-                $modelo = 40;
-            break;
-        }
+        $modelo = match ($p90_modelcapaproc) {
+            '1' => 41,
+            '2' => 42,
+            '4' => 401,
+            default => 40,
+        };
     }
 
     $pdf1 = new db_impcarne($pdf, "$modelo");
-    $pdf1->telefinstit = pg_result(db_query("select telef from db_config where codigo = " . db_getsession("DB_instit")),
+    $pdf1->telefinstit = pg_fetch_result(db_query("select telef from db_config where codigo = " . db_getsession("DB_instit")),
       0, 0);
 
     for ($w = 0; $w < $numrows; $w++) {
         db_fieldsmemory($result, $w);
         $dados = db_utils::fieldsMemory($result, $w);
 
-        $dtprocinfo = explode("/", $dados->dtproc);
+        $dtprocinfo = explode("/", (string) $dados->dtproc);
         $pdf1->anoproc = $dtprocinfo[2];
         $pdf1->p58_codproc = $dados->p58_codproc;
         $pdf1->p58_numero = $dados->p58_numero;
@@ -268,7 +253,7 @@ if ($oProtParam->p90_modelcapaproc != 3) {
     $sAgt = "protocolo/capa_processo.agt";
 
     // Parâmetros Utilizado no .agt
-    $aParam = array();
+    $aParam = [];
     $aParam['$codigo_processo'] = $iCodProcInicial;
 
     // Se for imprimir mais de uma capa

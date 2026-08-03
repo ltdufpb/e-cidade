@@ -38,8 +38,8 @@ $db_opcao = 1;
 $db_botao = true;
 $anousu =  db_getsession("DB_anousu");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $codjmOK = true;
 if (isset($incluir)) {
@@ -48,7 +48,7 @@ if (isset($incluir)) {
   $cltabplansaldorecurso->k111_debitoatualizado  = $k111_debitoinicial;
   $cltabplansaldorecurso->k111_anousu            = db_getsession("DB_anousu");
   if ($k111_dataimplantacao!= "") {
-    $cltabplansaldorecurso->k111_dataatualizacao   = implode("-", array_reverse(explode("/", $k111_dataimplantacao)));
+    $cltabplansaldorecurso->k111_dataatualizacao   = implode("-", array_reverse(explode("/", (string) $k111_dataimplantacao)));
   }
   $cltabplansaldorecurso->incluir(null);
 } else if(isset($alterar)){
@@ -58,7 +58,7 @@ if (isset($incluir)) {
   $cltabplansaldorecurso->k111_debitoatualizado  = $k111_debitoinicial;
   $cltabplansaldorecurso->k111_sequencial        = $k111_sequencial;
   if ($k111_dataimplantacao!= "") {
-    $cltabplansaldorecurso->k111_dataatualizacao   = implode("-", array_reverse(explode("/", $k111_dataimplantacao)));
+    $cltabplansaldorecurso->k111_dataatualizacao   = implode("-", array_reverse(explode("/", (string) $k111_dataimplantacao)));
   }
   $cltabplansaldorecurso->alterar($k111_sequencial);
   db_fim_transacao();

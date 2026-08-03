@@ -126,7 +126,7 @@ $oRotulo->label("tf18_c_horasaida");
             </td>
             <td nowrap>
               <?php
-              $aX = array( '' => '' );
+              $aX = [ '' => '' ];
               db_select( 'tf18_c_horasaida', $aX, true, 1, " onchange=\"js_loadGridCgs();\"" );
               ?>
             </td>
@@ -137,9 +137,9 @@ $oRotulo->label("tf18_c_horasaida");
             </td>
             <td>
               <?php
-              $aSituacoes      = array( "A"  => "Somente Ativos", 
+              $aSituacoes      = [ "A"  => "Somente Ativos", 
                                         "E"  => "Somente Encerrados", 
-                                        "AE" => "Ativos e Encerrados" );
+                                        "AE" => "Ativos e Encerrados" ];
 
               db_select( 'situacao', $aSituacoes, true, 1 );
               ?>

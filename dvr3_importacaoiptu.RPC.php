@@ -62,13 +62,13 @@ switch ($oParam->sExec) {
 
     case 'getDebitosOrigem':
 
-        $aNumpres = array();
+        $aNumpres = [];
 
         foreach ($oParam->aDebitos as $debito) {
             $aNumpres[$debito[0]] = $debito[0];
         }
 
-        $aOrigens = array();
+        $aOrigens = [];
 
         foreach ($aNumpres as $numpre) {
             $parcelamento = verificarParcelamento($numpre);
@@ -148,9 +148,9 @@ switch ($oParam->sExec) {
 
         try {
 
-            $oRetorno->aProcdiver = array();
-            $oRetorno->procedenciaDividaAtiva = array();
-            $oRetorno->aDebitos = array();
+            $oRetorno->aProcdiver = [];
+            $oRetorno->procedenciaDividaAtiva = [];
+            $oRetorno->aDebitos = [];
 
             $oDaoDiverImporta = new cl_diverimporta();
             $origemDebito = !empty($oParam->origemDebito) ? $oParam->origemDebito : null;
@@ -272,7 +272,7 @@ switch ($oParam->sExec) {
             $oDaoProcdiver = new cl_procdiver();
             $oDaoArrecad = new cl_arrecad();
 
-            $where = array();
+            $where = [];
             $where[] = "dv09_cobranca = 't' and (dv09_dtlimite is null or dv09_dtlimite >= '{$dtHoje}') and dv09_instit = ". db_getsession("DB_instit");
             if (!empty($oParam->tipoDebitoDestino)) {
                 $where[] = "dv09_tipo = {$oParam->tipoDebitoDestino}";
@@ -294,7 +294,7 @@ switch ($oParam->sExec) {
             $rsBuscaProcedencia = db_query($sSqlProcedencia);
             if (!$rsBuscaProcedencia) {
 
-                $oMensagem = (object)array('sErro'=>pg_last_error());
+                $oMensagem = (object)['sErro'=>pg_last_error()];
                 throw new DBException(_M(MENSAGENS_DVR3_IMPORTACAOIPTU_RPC . 'erro_buscar_dados_procedencia',$oMensagem));
             }
 
@@ -397,7 +397,7 @@ switch ($oParam->sExec) {
 
             if (!$rsDAODebitos) {
 
-                $oMensagem = (object)array('sErro'=>pg_last_error());
+                $oMensagem = (object)['sErro'=>pg_last_error()];
                 throw new DBException(_M(MENSAGENS_DVR3_IMPORTACAOIPTU_RPC . 'erro_buscar_dados_receitas', $oMensagem));
             }
 
@@ -438,7 +438,7 @@ switch ($oParam->sExec) {
 
             if (!$rsDAODiverimporta) {
 
-                $oMensagem = (object)array('sErro'=>pg_last_error());
+                $oMensagem = (object)['sErro'=>pg_last_error()];
                 throw new DBException(_M(MENSAGENS_DVR3_IMPORTACAOIPTU_RPC . 'erro_buscar_importacoes',$oMensagem));
             }
 
@@ -525,18 +525,18 @@ switch ($oParam->sExec) {
              */
             $oDaoArrecad = new cl_arrecad();
 
-            $aCampos = array(
+            $aCampos = [
                 "distinct arretipo.k00_tipo",
                 "arretipo.k00_descr",
                 "arretipo.k03_tipo"
-            );
+            ];
 
-            $aWhere   = array("cadtipo.k03_tipo not in(5, 6, 12, 13, 15, 16, 18)");
+            $aWhere   = ["cadtipo.k03_tipo not in(5, 6, 12, 13, 15, 16, 18)"];
             $aWhere[] = "arretipo.k00_tipo not in (13) ";
             $iTipoDebito = null;
 
             if ( $oParam->importaDividaAtiva ) {
-                $aWhere   = array("arretipo.k00_tipo in(13, 14)");
+                $aWhere   = ["arretipo.k00_tipo in(13, 14)"];
                 $iTipoDebito = 5;
             }
 
@@ -573,12 +573,12 @@ switch ($oParam->sExec) {
 
             $oDaoArrecad = new cl_arrecad();
 
-            $aCampos = array(
+            $aCampos = [
                 "distinct arretipo.k00_tipo",
                 "arretipo.k00_descr"
-            );
+            ];
 
-            $aWhere = array("cadtipo.k03_tipo not in(5, 6, 12, 13, 15, 16, 18)");
+            $aWhere = ["cadtipo.k03_tipo not in(5, 6, 12, 13, 15, 16, 18)"];
             $aWhere[] = "arretipo.k00_tipo not in(13)";
 
             $sSqlArrecad = $oDaoArrecad->sqlTiposDebitosGeral($aCampos, $aWhere);
@@ -611,10 +611,10 @@ switch ($oParam->sExec) {
             $iTipoDebito = !empty($oParam->importaDividaAtiva) && $oParam->importaDividaAtiva === true ? 5 : null;
             $oRetorno->aOpcoesTipoOrigem = db_utils::getCollectionByRecord($rsArrecad, false, false, true);
             $oRetorno->aOpcoesTipoDestino = debitosExercicio($iTipoDebito);
-        } catch (Exception $oErro) {
+        } catch (Exception) {
 
             $oRetorno->status = 2;
-            $oRetorno->message = urlencode($oException->getMessage());
+            $oRetorno->message = urlencode((string) $oException->getMessage());
         }
 
         break;
@@ -726,11 +726,11 @@ switch ($oParam->sExec) {
 
             if ($oParam->processoSistema === false) {
 
-                $importacao->setProcesso((object)array(
+                $importacao->setProcesso((object)[
                     'codigo' => $oParam->codigoProcesso,
                     'titular' => $oParam->titularProcesso,
                     'data' => $oParam->dataProcesso,
-                ));
+                ]);
             }
 
             $importacao->setListaDebitos($oParam->listaDebitos);
@@ -789,11 +789,11 @@ switch ($oParam->sExec) {
 
             if ($oParam->processoSistema === false) {
 
-                $importacao->setProcesso((object)array(
+                $importacao->setProcesso((object)[
                     'codigo' => $oParam->codigoProcesso,
                     'titular' => $oParam->titularProcesso,
                     'data' => $oParam->dataProcesso,
-                ));
+                ]);
             }
 
             if ($oParam->lUnificarDebitos) {
@@ -861,7 +861,7 @@ switch ($oParam->sExec) {
             /* M17476 - Pode ter mais de um tipo
             $sqlListaTipo = $daoListaDeb->sql_query_arrecad_tipo($oParam->listaDebitos, "distinct cadtipo.k03_tipo");
             $rsListaTipo = db_query($sqlListaTipo);
-            
+
             if ( pg_num_rows($rsListaTipo) > 1 ) {
                 throw new BusinessException( _M(MENSAGENS_DVR3_IMPORTACAOIPTU_RPC . "lista_invalida_diversos_parcelamento") );
             }
@@ -942,7 +942,7 @@ function buscarOrigemParcelamento($parcelamento)
     $oDaoTermo  = new \cl_termo();
     $sSqlOrigem = $oDaoTermo->sql_query_origem_parcelamento($parcelamento);
 
-    $sCampos = implode("," , array(
+    $sCampos = implode("," , [
         "x.k00_numpre",
         "x.k00_numpre as numpre",
         "x.k00_numpar",
@@ -950,7 +950,7 @@ function buscarOrigemParcelamento($parcelamento)
         "x.k00_receit",
         "tabrec.k02_descr",
         "x.k00_valor"
-    ));
+    ]);
 
     $sSql  = "select $sCampos           ";
     $sSql .= "  from ($sSqlOrigem) as x ";
@@ -971,8 +971,8 @@ function buscarOrigemParcelamento($parcelamento)
 
     $retorno = \db_utils::getCollectionByRecord($rsOrigem);
 
-    $aNumpres = array();
-    $retornoOrigem = array();
+    $aNumpres = [];
+    $retornoOrigem = [];
 
     foreach ($retorno as $debito) {
         $aNumpres[$debito->k00_numpre] = $debito->k00_numpre;

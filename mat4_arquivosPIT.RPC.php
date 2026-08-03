@@ -59,16 +59,16 @@ switch ($oParam->exec) {
     require_once(modification("model/{$aClasses[$oParam->tipodocumento]->arquivo}.model.php"));
     $oArquivoPit = new arquivoPit50();
     $oArquivoPit->setEncode(true);
-    $dtInicial   = implode("-", array_reverse(explode("/", $oParam->datainicial)));  
-    $dtFinal     = implode("-", array_reverse(explode("/", $oParam->datafinal)));
+    $dtInicial   = implode("-", array_reverse(explode("/", (string) $oParam->datainicial)));  
+    $dtFinal     = implode("-", array_reverse(explode("/", (string) $oParam->datafinal)));
     $aNotas      = $oArquivoPit->getNotasPorPeriodo($dtInicial, $dtFinal);
     $oRetorno->itens = $aNotas;
     break;
     
   case "getArquivos";
     
-    $dtInicial        = implode("-", array_reverse(explode("/", $oParam->datainicial)));  
-    $dtFinal          = implode("-", array_reverse(explode("/", $oParam->datafinal)));
+    $dtInicial        = implode("-", array_reverse(explode("/", (string) $oParam->datainicial)));  
+    $dtFinal          = implode("-", array_reverse(explode("/", (string) $oParam->datafinal)));
     $oDaoEmpArquivos  = db_utils::getDao("emparquivopit");
     $sSqlArquivos     = "select distinct e14_sequencial,";
     $sSqlArquivos    .= "                e14_nomearquivo,";
@@ -103,7 +103,7 @@ switch ($oParam->exec) {
         foreach ($oParam->aArquivos as $oArquivo) {
           
           $oArquivoPit = new arquivoPit50($oArquivo->idArquivo);
-          $oArquivoPit->anularArquivo(addslashes(utf8_decode(urldecode($oArquivo->sMotivo))));
+          $oArquivoPit->anularArquivo(addslashes(mb_convert_encoding(urldecode((string) $oArquivo->sMotivo), 'ISO-8859-1')));
                   
         }
         db_fim_transacao(false);
@@ -129,9 +129,9 @@ switch ($oParam->exec) {
 
   case "getArqReemitir":
   	$e14_sequencial   = $oParam->e14_sequencial;
-  	if(trim($oParam->datainicial) != "" && trim($oParam->datafinal) != ""){
-  	 $dtInicial        = implode("-", array_reverse(explode("/", $oParam->datainicial)));  
-     $dtFinal          = implode("-", array_reverse(explode("/", $oParam->datafinal)));
+  	if(trim((string) $oParam->datainicial) != "" && trim((string) $oParam->datafinal) != ""){
+  	 $dtInicial        = implode("-", array_reverse(explode("/", (string) $oParam->datainicial)));  
+     $dtFinal          = implode("-", array_reverse(explode("/", (string) $oParam->datafinal)));
   	}
     $oDaoEmpArquivos  = db_utils::getDao("emparquivopit");
     $sSqlArquivos     = "select distinct e14_sequencial,";

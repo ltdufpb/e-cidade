@@ -67,7 +67,7 @@ if ($objeto = db_utils::fieldsMemory($rsSql, 0) ) {
       /**
        * Default
        */
-      $aLibs   = array("scripts.js");
+      $aLibs   = ["scripts.js"];
       $aLibs[] = "prototype.js";
       $aLibs[] = "AjaxRequest.js";
       $aLibs[] = "strings.js";

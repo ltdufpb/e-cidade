@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_certidmovimentacao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcertidmovimentacao = new cl_certidmovimentacao;
 $clcertidmovimentacao->rotulo->label("v32_sequencial");
@@ -80,9 +80,9 @@ $clcertidmovimentacao->rotulo->label("v32_certidcartorio");
         }else{
            $sql = $clcertidmovimentacao->sql_query("",$campos,"v32_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v32_certidcartorio)){
-          $repassa = array("chave_v32_sequencial"=>$chave_v32_sequencial,"chave_v32_certidcartorio"=>$chave_v32_certidcartorio);
+          $repassa = ["chave_v32_sequencial"=>$chave_v32_sequencial,"chave_v32_certidcartorio"=>$chave_v32_certidcartorio];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

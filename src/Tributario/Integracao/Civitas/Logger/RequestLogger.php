@@ -57,7 +57,7 @@ class RequestLogger
      * @param array $context
      * @return void
      */
-    public static function emergency($message, array $context = array())
+    public static function emergency($message, array $context = [])
     {
         self::log($message, $context);
     }
@@ -73,7 +73,7 @@ class RequestLogger
      *
      * @return void
      */
-    public static function alert($message, array $context = array())
+    public static function alert($message, array $context = [])
     {
         self::log($message, $context);
     }
@@ -88,7 +88,7 @@ class RequestLogger
      *
      * @return void
      */
-    public static function critical($message, array $context = array())
+    public static function critical($message, array $context = [])
     {
         self::log($message, $context);
     }
@@ -102,7 +102,7 @@ class RequestLogger
      *
      * @return void
      */
-    public static function error($message, array $context = array())
+    public static function error($message, array $context = [])
     {
 
         self::log($message, $context);
@@ -120,7 +120,7 @@ class RequestLogger
      *
      * @return void
      */
-    public static function warning($message, array $context = array())
+    public static function warning($message, array $context = [])
     {
         self::log($message, $context);
     }
@@ -133,7 +133,7 @@ class RequestLogger
      *
      * @return void
      */
-    public function notice($message, array $context = array())
+    public function notice($message, array $context = [])
     {
         self::log($message, $context);
     }
@@ -148,7 +148,7 @@ class RequestLogger
      *
      * @return void
      */
-    public static function info($message, array $context = array())
+    public static function info($message, array $context = [])
     {
         self::log($message, $context);
     }
@@ -161,7 +161,7 @@ class RequestLogger
      *
      * @return void
      */
-    public static function debug($message, array $context = array())
+    public static function debug($message, array $context = [])
     {
         self::log($message, $context);
     }
@@ -175,13 +175,11 @@ class RequestLogger
      *
      * @return void
      */
-    public static function log($level, $logName, $identifier = '', $messages, array $context = array())
+    public static function log($level, $logName, $identifier = '', $messages = null, array $context = [])
     {
 
         if (!empty($context) && !empty($messages)) {
-            $context = self::multidimensionalArrayMap(function ($value) {
-                return addslashes($value);
-            }, $context);
+            $context = self::multidimensionalArrayMap(fn($value) => addslashes((string) $value), $context);
 
             $messages = self::interpolate($messages, $context);
         }
@@ -207,9 +205,9 @@ class RequestLogger
      * @param array $context
      * @return string
      */
-    public static function interpolate($message, array $context = array())
+    public static function interpolate($message, array $context = [])
     {
-        $replace = array();
+        $replace = [];
         foreach ($context as $key => $val) {
             if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString'))) {
                 $replace['{' . $key . '}'] = $val;
@@ -227,13 +225,13 @@ class RequestLogger
      */
     private static function createPackage($json = false)
     {
-        $package = array(
+        $package = [
             'level' => self::$level,
             'host' => self::getUrl(),
             'logName' => self::$logName,
             'identifier' => self::$identifier,
             'messages' => (is_string(self::$messages) ? htmlentities(self::$messages) : self::$messages)
-        );
+        ];
 
         if ($json) {
             return self::encodePackage($package);
@@ -251,7 +249,7 @@ class RequestLogger
      */
     public static function multidimensionalArrayMap($func, $arr)
     {
-        $newArr = array();
+        $newArr = [];
         foreach ($arr as $key => $value) {
             $newArr[$key] = (is_array($value) ? multidimensionalArrayMap($func, $value) : $func($value));
         }
@@ -277,7 +275,7 @@ class RequestLogger
                 $encoded_package = json_encode($package);
 
                 if ($encoded_package == false) {
-                    $package['messages'] = addslashes($package['messages']);
+                    $package['messages'] = addslashes((string) $package['messages']);
                     $encoded_package = json_encode($package);
                 }
 

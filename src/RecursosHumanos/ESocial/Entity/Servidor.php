@@ -196,7 +196,7 @@ class Servidor
     public function setDocumentos($documentos, $chave)
     {
         if (!is_array($this->documentos)) {
-            $this->documentos = array();
+            $this->documentos = [];
         }
 
         $this->documentos[$chave] = $documentos;

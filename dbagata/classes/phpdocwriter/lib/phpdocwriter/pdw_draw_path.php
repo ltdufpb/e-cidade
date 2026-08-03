@@ -26,11 +26,10 @@ import('phpdocwriter.pdw_drawing');
 class pdw_draw_path extends pdw_drawing
 {
 
-function pdw_draw_path(&$obj,$params)
+function __construct(&$obj,$params)
 {
 	$this->parent =& $obj;
 	$this->params =& $params;
-	parent::pdw_drawing();
 		
 	if (!array_key_exists('stroke', $params))
 		$params['stroke']='none';

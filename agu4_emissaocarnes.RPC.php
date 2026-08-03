@@ -36,10 +36,10 @@ use ECidade\Tributario\Agua\EmissaoCarnes\Processamento;
 use ECidade\Tributario\Agua\Configuracao;
 
 $oParam   = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
-$oRetorno = (object) array(
+$oRetorno = (object) [
   'mensagem' => null,
   'erro'     => false
-);
+];
 
 try {
 
@@ -111,16 +111,16 @@ try {
       $oProcessamento->finalizar();
       $oEmissaoAguaModel->removerTabelaTemporaria();
 
-      $oRetorno->aArquivos = array(
-        (object) array(
+      $oRetorno->aArquivos = [
+        (object) [
           'nome' => 'Emissão_Parcial',
           'link' => $sNomeArquivoEmissao
-        ),
-        (object) array(
+        ],
+        (object) [
           'nome' => 'Layout_Emissao',
           'link' => $sNomeArquivoLayout
-        )
-      );
+        ]
+      ];
 
       $oRetorno->mensagem = 'Emissão Concluída.';
       db_fim_transacao();

@@ -55,11 +55,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <?php 
-      $clcriaabas->identifica = array("db_almox"=>"Almoxarifados","db_almoxdepto"=>"Departamentos"); 
-      $clcriaabas->title      = array("db_almox"=>"Almoxarifados","db_almoxdepto"=>"Departamentos"); 
-  	  $clcriaabas->sizecampo  = array("db_almox"=>"30","db_almoxdepto"=>"30");
-	  $clcriaabas->src        = array("db_almox"=>"mat1_db_almox006.php");
-	  $clcriaabas->disabled   = array("db_almoxdepto"=>"true"); 
+      $clcriaabas->identifica = ["db_almox"=>"Almoxarifados","db_almoxdepto"=>"Departamentos"]; 
+      $clcriaabas->title      = ["db_almox"=>"Almoxarifados","db_almoxdepto"=>"Departamentos"]; 
+  	  $clcriaabas->sizecampo  = ["db_almox"=>"30","db_almoxdepto"=>"30"];
+	  $clcriaabas->src        = ["db_almox"=>"mat1_db_almox006.php"];
+	  $clcriaabas->disabled   = ["db_almoxdepto"=>"true"]; 
       $clcriaabas->cria_abas(); 
     ?> 
        </td>

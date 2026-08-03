@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed52_i_ano");
 $clrotulo->label("ed52_d_inicio");
@@ -109,7 +109,7 @@ if(isset($processar)){
  }
  $caminho_arquivo = "tmp/".$name;
  $inicio_nome = "censo_".$escola;
- $explode_nome = explode("_",$name);
+ $explode_nome = explode("_",(string) $name);
  $inicio_nome_arquivo = $explode_nome[0]."_".$explode_nome[1];
  if(trim($inicio_nome)!=trim($inicio_nome_arquivo)){
   db_msgbox("[1] Arquivo informado não é um arquivo de exportação desta escola !");
@@ -121,7 +121,7 @@ if(isset($processar)){
    $valida_arquivo = false;
    while(!feof($ponteiro3)){
     $linha = fgets($ponteiro3,500);
-    if(substr($linha,0,2)!="00"){
+    if(!str_starts_with($linha, "00")){
      $valida_arquivo = true;
     }
     break;

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matpedidoitem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatpedidoitem = new cl_matpedidoitem;
 $clmatpedidoitem->rotulo->label("m98_sequencial");
 $clmatpedidoitem->rotulo->label("m98_sequencial");
@@ -98,9 +98,9 @@ $clmatpedidoitem->rotulo->label("m98_sequencial");
         }else{
            $sql = $clmatpedidoitem->sql_query("",$campos,"m98_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m98_sequencial)){
-          $repassa = array("chave_m98_sequencial"=>$chave_m98_sequencial,"chave_m98_sequencial"=>$chave_m98_sequencial);
+          $repassa = ["chave_m98_sequencial"=>$chave_m98_sequencial,"chave_m98_sequencial"=>$chave_m98_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

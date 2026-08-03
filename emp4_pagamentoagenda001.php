@@ -44,7 +44,7 @@ if ($oGet->iForma == 1) {
   $sCaption = "Débito em Conta";
 }
 $iTipoControleRetencaoMesAnterior = 0;
-$aParametrosEmpenho = db_stdClass::getParametro("empparametro",array(db_getsession("DB_anousu")));
+$aParametrosEmpenho = db_stdClass::getParametro("empparametro",[db_getsession("DB_anousu")]);
 if (count($aParametrosEmpenho) > 0) {
   $iTipoControleRetencaoMesAnterior = $aParametrosEmpenho[0]->e30_retencaomesanterior;
 }

@@ -35,7 +35,7 @@ class SigfisVinculoReceita {
 
   static $oInstance;
    
-  protected $aListaReceita = array();
+  protected $aListaReceita = [];
   
   /**
    * método construtor
@@ -43,7 +43,7 @@ class SigfisVinculoReceita {
   protected function __construct() {
 
     $oDomXml   = new DOMDocument();
-    $aReceitas = array();
+    $aReceitas = [];
     if (file_exists('config/sigfis/vinculoreceita.xml')) {
       
       $oDomXml->load('config/sigfis/vinculoreceita.xml');

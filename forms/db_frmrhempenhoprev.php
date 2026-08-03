@@ -59,8 +59,8 @@ $clrotulo->label('DBtxt25');
 			    <td>
 			     <?php 
 			     
-			       $aSigla = array( "m"=>"Mensal",
-					                    "d"=>"13o. Salário");
+			       $aSigla = [ "m"=>"Mensal",
+					                    "d"=>"13o. Salário"];
 			       
 			       db_select('ponto',$aSigla,true,4,"");
 			     ?>
@@ -79,7 +79,7 @@ $clrotulo->label('DBtxt25');
 		         
 		         $rsPrev = db_query($sql);
 		         
-		         db_multiploselect("r33_codtab", "r33_nome", "nselecionados", "selecionados", $rsPrev, array(), 4, 250);
+		         db_multiploselect("r33_codtab", "r33_nome", "nselecionados", "selecionados", $rsPrev, [], 4, 250);
 	         ?>
 	        </td>
 	      </tr>		    

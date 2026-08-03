@@ -107,7 +107,7 @@ class DeducaoSuspensaRepository
      * @param  DeducaoSuspensa|null $deducaoSuspensa
      * @throws BusinessException
      */
-    public function delete(DeducaoSuspensa $deducaoSuspensa = null)
+    public function delete(?DeducaoSuspensa $deducaoSuspensa = null)
     {
         $id = $deducaoSuspensa instanceof DeducaoSuspensa ? $deducaoSuspensa->getSequencial() : null;
 
@@ -125,7 +125,7 @@ class DeducaoSuspensaRepository
      * @return bool| DeducaoSuspensa
      * @throws BusinessException
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessoreducaosuspensa;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

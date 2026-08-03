@@ -32,13 +32,13 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cgmjuridico_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $dao = new cl_cgm;
 $dao->rotulo->label("z01_numcgm");
 $dao->rotulo->label("z01_nome");
 $dao->rotulo->label("z01_cgccpf");
 
-$where = array('length(z01_cgccpf) = 14');
+$where = ['length(z01_cgccpf) = 14'];
 ?>
 <html>
 <head>
@@ -110,13 +110,13 @@ if (!isset($pesquisa_chave)) {
         $sql = $dao->sql_query_file(null, $campos, "z01_nome", implode(" and ", $where));
     }
 
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_z01_numcgm)) {
-        $repassa = array(
+        $repassa = [
             "chave_z01_numcgm" => $chave_z01_numcgm,
             "chave_z01_nome" => $chave_z01_nome,
             "chave_z01_cgccpf" => $chave_z01_cgccpf,
-        );
+        ];
     }
 
     echo '<div class="container" style="min-width: 750px;">';

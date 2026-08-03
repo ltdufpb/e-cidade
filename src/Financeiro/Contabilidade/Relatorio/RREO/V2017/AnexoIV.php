@@ -48,13 +48,13 @@ class AnexoIV extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
      */
     const CODIGO_RELATORIO = 164;
 
-    const LINHAS_IGNORAR_DESPESA = array(53);
-    const LINHAS_IGNORAR_RECEITA = array();
+    const LINHAS_IGNORAR_DESPESA = [53];
+    const LINHAS_IGNORAR_RECEITA = [];
 
     /**
      * @var \Instituicao[]
      */
-    protected $aInstituicoesRPPS = array();
+    protected $aInstituicoesRPPS = [];
 
     /**
      * @var \DBDate
@@ -83,11 +83,11 @@ class AnexoIV extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
 
         parent::__construct($iAnoSessao, static::CODIGO_RELATORIO, $iCodigoPeriodo);
 
-        $aTiposInstituicoes = array(\Instituicao::TIPO_RPPS_EXCETO_AUTARQUIA, \Instituicao::TIPO_AUTARQUIA_RPPS);
+        $aTiposInstituicoes = [\Instituicao::TIPO_RPPS_EXCETO_AUTARQUIA, \Instituicao::TIPO_AUTARQUIA_RPPS];
         $this->aInstituicoesRPPS = \InstituicaoRepository::getInstituicoesPorTipo($aTiposInstituicoes);
         if (count($this->aInstituicoesRPPS) == 0) {
             $aItensTiposInstituicoes = \InstituicaoRepository::getTiposIntituicao($aTiposInstituicoes);
-            $aDescricoesTiposInstituicoes = array();
+            $aDescricoesTiposInstituicoes = [];
             foreach ($aItensTiposInstituicoes as $itemTipoInstituicao) {
                 $aDescricoesTiposInstituicoes[] = $itemTipoInstituicao->db21_codtipo
                     . ' - ' . $itemTipoInstituicao->db21_nome;
@@ -95,11 +95,11 @@ class AnexoIV extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
 
             $sDescricaoTiposInstituicoes = implode("\n", $aDescricoesTiposInstituicoes);
 
-            $oStdMensagem = (object)array('descricao' => $sDescricaoTiposInstituicoes);
+            $oStdMensagem = (object)['descricao' => $sDescricaoTiposInstituicoes];
             throw new \BusinessException(_M(self::MENSAGEM . 'tipo_instituicao_nao_encontrado', $oStdMensagem));
         }
 
-        $aCodigosInstituicoes = array();
+        $aCodigosInstituicoes = [];
         foreach ($this->aInstituicoesRPPS as $oInstituicao) {
             $aCodigosInstituicoes[] = $oInstituicao->getCodigo();
         }
@@ -192,7 +192,7 @@ class AnexoIV extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
             }
 
             $oLinha = $this->aLinhasConsistencia[$iLinha];
-            $aColunasProcessar = $this->getColunasPorLinha($oLinha, array(3));
+            $aColunasProcessar = $this->getColunasPorLinha($oLinha, [3]);
             $oLinha->recbiexant = 0;
 
             \RelatoriosLegaisBase::calcularValorDaLinha(
@@ -232,7 +232,7 @@ class AnexoIV extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
                 continue;
             }
 
-            $aColunas = array(3, 5);
+            $aColunas = [3, 5];
             if ($this->oPeriodo->getCodigo() == 11) {
                 $aColunas[] = 7;
             }

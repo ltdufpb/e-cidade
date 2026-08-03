@@ -66,7 +66,7 @@ border: 1px solid #999999;
 <tr> 
 <td height="430" align="center" valign="middle" bgcolor="#CCCCCC">
 <?php 
-if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
+if(!isset($_POST["b_estrut"])) { ?>
   <form method="post" name="estrut">                
     <table border="0" cellpadding="0" cellspacing="0">
     <tr> 
@@ -88,9 +88,9 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
     </form>
     <?php 
 } else {
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   // Tabelas
-  $nometab = strtolower($nometab);
+  $nometab = strtolower((string) $nometab);
   if(trim($nometab) == "" && $tabmod == "t")
     $nometab = "%";
   if(trim($nometab) == "" && $tabmod == "m") {
@@ -111,7 +111,7 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
     $qr
     order by codmod";
   $result = db_query($sql);
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
   $RecordsetTabMod = $result;
   if($numrows == 0) {
     if($tabmod == "t")
@@ -120,7 +120,7 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
       db_msgbox("Não foi encontrada nenhum módulo com o nome de $nometab");
     db_redireciona();
   } else {
-    $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
+    $root = substr((string) $_SERVER['SCRIPT_FILENAME'],0,strrpos((string) $_SERVER['SCRIPT_FILENAME'],"/"));
     $arquivo = $root."/forms/"."db_frm".trim($nometab).".php";
     $fd = fopen($arquivo,"w");
     fputs($fd,"<?php \n");
@@ -130,24 +130,24 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
           from db_sysprikey p
           inner join db_sysarquivo a on a.codarq = p.codarq
           inner join db_syscampo c   on c.codcam = p.codcam
-          where a.codarq = ".pg_result($result,$i,"codarq"));
-      if(pg_numrows($pk) > 0) {
-        $Npk = pg_numrows($pk);
+          where a.codarq = ".pg_fetch_result($result,$i,"codarq"));
+      if(pg_num_rows($pk) > 0) {
+        $Npk = pg_num_rows($pk);
         $virgula = "";
         $virconc = "";
         for($p = 0;$p < $Npk;$p++) {
-          $varpk .= "##".trim(pg_result($pk,$p,"nomecam"));
+          $varpk .= "##".trim(pg_fetch_result($pk,$p,"nomecam"));
         } 
       }
       $campo = db_query("select c.*
           from db_syscampo c
           inner join db_sysarqcamp a   on a.codcam = c.codcam
-          where codarq = ".pg_result($result,$i,"codarq").
+          where codarq = ".pg_fetch_result($result,$i,"codarq").
           " order by a.seqarq");
-      $Ncampos = pg_numrows($campo);
+      $Ncampos = pg_num_rows($campo);
       if($Ncampos > 0) {
-        fputs($fd,"//MODULO: ".trim(pg_result($result,$i,"nomemod"))."\n");        
-        fputs($fd,'$cl'.trim(pg_result($result,$i,"nomearq")).'->rotulo->label();'."\n");
+        fputs($fd,"//MODULO: ".trim(pg_fetch_result($result,$i,"nomemod"))."\n");        
+        fputs($fd,'$cl'.trim(pg_fetch_result($result,$i,"nomearq")).'->rotulo->label();'."\n");
 
         // testar se existe chaves estrangeiras deste arquivo
         $forkey = db_query("select distinct f.codcam,b.nomecam as nomecerto,f.referen, q.nomearq, c.camiden, a.nomecam, a.tamanho
@@ -156,14 +156,14 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
             inner join db_syscampo a on a.codcam = c.camiden 
             inner join db_syscampo b on b.codcam = f.codcam 
             inner join db_sysarquivo q on q.codarq = f.referen 
-            where f.codarq = ".pg_result($result,$i,"codarq")); 
-          $Nforkey = pg_numrows($forkey);
+            where f.codarq = ".pg_fetch_result($result,$i,"codarq")); 
+          $Nforkey = pg_num_rows($forkey);
         $campofk="";
         if($Nforkey > 0) { 
           fputs($fd,'$clrotulo = new rotulocampo;'."\n");
           for($fk=0;$fk<$Nforkey;$fk++){
-            $campofk .= "#".trim(pg_result($forkey,$fk,'codcam'));
-            fputs($fd,'$clrotulo->label("'.trim(pg_result($forkey,$fk,'nomecam')).'");'."\n");
+            $campofk .= "#".trim(pg_fetch_result($forkey,$fk,'codcam'));
+            fputs($fd,'$clrotulo->label("'.trim(pg_fetch_result($forkey,$fk,'nomecam')).'");'."\n");
           }
         }
         fputs($fd,'?>'."\n");
@@ -173,63 +173,63 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
         for($j = 0;$j < $Ncampos;$j++) {
           fputs($fd,'  <tr>'."\n");
           //coluna label
-          fputs($fd,'    <td nowrap title="<?=@$T'.trim(pg_result($campo,$j,"nomecam")).'?>">'."\n");
+          fputs($fd,'    <td nowrap title="<?=@$T'.trim(pg_fetch_result($campo,$j,"nomecam")).'?>">'."\n");
           $funcaojava = '""';
-          if( strpos($campofk,trim(pg_result($campo,$j,"codcam"))) > 0 ){
+          if( strpos($campofk,trim(pg_fetch_result($campo,$j,"codcam"))) > 0 ){
             fputs($fd,'       <?php '."\n");
-            $funcaojava = '"js_pesquisa'.trim(pg_result($campo,$j,"nomecam")).'(true);"';
-            fputs($fd,'       db_ancora(@$L'.trim(pg_result($campo,$j,"nomecam")).','.$funcaojava.',$db_opcao);'."\n");
+            $funcaojava = '"js_pesquisa'.trim(pg_fetch_result($campo,$j,"nomecam")).'(true);"';
+            fputs($fd,'       db_ancora(@$L'.trim(pg_fetch_result($campo,$j,"nomecam")).','.$funcaojava.',$db_opcao);'."\n");
             fputs($fd,'       ?>'."\n");
-            $funcaojava = '" onchange=\'js_pesquisa'.trim(pg_result($campo,$j,"nomecam")).'(false);\'"';
+            $funcaojava = '" onchange=\'js_pesquisa'.trim(pg_fetch_result($campo,$j,"nomecam")).'(false);\'"';
           }else{
-            fputs($fd,'       <?=@$L'.trim(pg_result($campo,$j,"nomecam")).'?>'."\n");
+            fputs($fd,'       <?=@$L'.trim(pg_fetch_result($campo,$j,"nomecam")).'?>'."\n");
           }
           fputs($fd,'    </td>'."\n");
           fputs($fd,'    <td> '."\n");
           //$x = pg_result($campo,$j,"tipo");
-          $xc = pg_result($campo,$j,"conteudo");
-          if(substr($xc,0,4)!="date"){  
-            if( (substr($xc,0,3)=="cha") || ( substr($xc,0,3)=="var") || (substr($xc,0,3)=="flo") ){
-              if(strpos($varpk,trim(pg_result($campo,$j,"nomecam")) ) != 0 ){
+          $xc = pg_fetch_result($campo,$j,"conteudo");
+          if(!str_starts_with($xc, "date")){  
+            if( (str_starts_with($xc, "cha")) || ( str_starts_with($xc, "var")) || (str_starts_with($xc, "flo")) ){
+              if(!str_starts_with($varpk, trim(pg_fetch_result($campo,$j,"nomecam"))) ){
                 //chave primaria
                 fputs($fd,"<?php "."\n");
 
-                if(pg_result($campo,$j,"sequencia")==0)
-                  fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."3,".$funcaojava.")"."\n");
+                if(pg_fetch_result($campo,$j,"sequencia")==0)
+                  fputs($fd,"db_input('".trim(pg_fetch_result($campo,$j,"nomecam"))."'".','.trim(pg_fetch_result($campo,$j,"tamanho")).',$I'.trim(pg_fetch_result($campo,$j,"nomecam")).",true,'text',$"."3,".$funcaojava.")"."\n");
                 else
-                  fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
+                  fputs($fd,"db_input('".trim(pg_fetch_result($campo,$j,"nomecam"))."'".','.trim(pg_fetch_result($campo,$j,"tamanho")).',$I'.trim(pg_fetch_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
 
                 fputs($fd,"?>"."\n");
               }else{
                 fputs($fd,"<?php "."\n");
-                fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
+                fputs($fd,"db_input('".trim(pg_fetch_result($campo,$j,"nomecam"))."'".','.trim(pg_fetch_result($campo,$j,"tamanho")).',$I'.trim(pg_fetch_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
                 fputs($fd,"?>"."\n");
               }
-            }else if(substr($xc,0,3)=="boo"){
+            }else if(str_starts_with($xc, "boo")){
               fputs($fd,"<?php "."\n");
               fputs($fd,'$x = array("f"=>"NAO","t"=>"SIM");'."\n");
-              fputs($fd,"db_select('".trim(pg_result($campo,$j,"nomecam"))."',".'$x'.",true,$"."db_opcao,".$funcaojava.");"."\n");
+              fputs($fd,"db_select('".trim(pg_fetch_result($campo,$j,"nomecam"))."',".'$x'.",true,$"."db_opcao,".$funcaojava.");"."\n");
               fputs($fd,"?>"."\n");
-            }else if(substr($xc,0,3)=="tex"){
+            }else if(str_starts_with($xc, "tex")){
               fputs($fd,"<?php "."\n");
-              fputs($fd,"db_textarea('".trim(pg_result($campo,$j,"nomecam"))."'".',0,0,$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n"); 
+              fputs($fd,"db_textarea('".trim(pg_fetch_result($campo,$j,"nomecam"))."'".',0,0,$I'.trim(pg_fetch_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n"); 
               fputs($fd,"?>"."\n");
             }else{
               fputs($fd,"<?php "."\n");
-              fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
+              fputs($fd,"db_input('".trim(pg_fetch_result($campo,$j,"nomecam"))."'".','.trim(pg_fetch_result($campo,$j,"tamanho")).',$I'.trim(pg_fetch_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
               fputs($fd,"?>"."\n");
             }
           }else{
             fputs($fd,"<?php "."\n");
-            fputs($fd,"db_inputdata('".trim(pg_result($campo,$j,"nomecam"))."',@$".trim(pg_result($campo,$j,"nomecam"))."_dia,@$".trim(pg_result($campo,$j,"nomecam"))."_mes,@$".trim(pg_result($campo,$j,"nomecam"))."_ano,true,'text',$"."db_opcao,".$funcaojava.")"."\n");
+            fputs($fd,"db_inputdata('".trim(pg_fetch_result($campo,$j,"nomecam"))."',@$".trim(pg_fetch_result($campo,$j,"nomecam"))."_dia,@$".trim(pg_fetch_result($campo,$j,"nomecam"))."_mes,@$".trim(pg_fetch_result($campo,$j,"nomecam"))."_ano,true,'text',$"."db_opcao,".$funcaojava.")"."\n");
             fputs($fd,"?>"."\n");
           }
           if($funcaojava != '""'){
             // strpos($campofk,pg_result($campo,$j,"codcam")) > 0 ){
             fputs($fd,'       <?php '."\n");
             for($fk=0;$fk<$Nforkey;$fk++){
-              if( pg_result($forkey,$fk,'codcam') == pg_result($campo,$j,"codcam")){
-                fputs($fd,"db_input('".trim(pg_result($forkey,$fk,"nomecam"))."'".','.trim(pg_result($forkey,$fk,"tamanho")).',$I'.trim(pg_result($forkey,$fk,"nomecam")).",true,'text',3,'')"."\n");
+              if( pg_fetch_result($forkey,$fk,'codcam') == pg_fetch_result($campo,$j,"codcam")){
+                fputs($fd,"db_input('".trim(pg_fetch_result($forkey,$fk,"nomecam"))."'".','.trim(pg_fetch_result($forkey,$fk,"tamanho")).',$I'.trim(pg_fetch_result($forkey,$fk,"nomecam")).",true,'text',3,'')"."\n");
               }
             }
             fputs($fd,'       ?>'."\n");
@@ -242,26 +242,26 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
           $arqarq =db_query("select *
               from db_sysarqarq a 
               inner join db_sysarquivo c on c.codarq = f.codarq 
-              where a.codarq = ".pg_result($result,$i,"codarq")); 
-            $Narqarq = pg_numrows($arqarq);
+              where a.codarq = ".pg_fetch_result($result,$i,"codarq")); 
+            $Narqarq = pg_num_rows($arqarq);
           if($Narqarq > 0) { 
             for($aa=0;$aa<$Narqarq;$qq++){ 
               $forkey = db_query("select * 
                   from db_sysforkey f 
                   inner join db_syscampo b on b.codcam = f.codcam 
-                  where f.codarq = ".pg_result($Narqarq,$aa,"codepen")); 
+                  where f.codarq = ".pg_fetch_result($Narqarq,$aa,"codepen")); 
                 $campon = "";
-              for($fk=0;$fk<pg_numrows($forkey);$fk++){
-                $campon .= "#".trim(pg_result($forkey,$fk,"codcam"));
+              for($fk=0;$fk<pg_num_rows($forkey);$fk++){
+                $campon .= "#".trim(pg_fetch_result($forkey,$fk,"codcam"));
               }  
 
               $depcamp= db_query("select * 
                   from db_syscampo a
                   inner join db_sysarqcamp q on q.codarq = a.codarq 
-                  where a.codarq = ".pg_result($Narqarq,$aa,"codepen")); 
+                  where a.codarq = ".pg_fetch_result($Narqarq,$aa,"codepen")); 
                 $tem = false;
               for($fk=0;$fkpg_numrows($depcamp);$fk++){
-                if(strpos($campon,trim(pg_result($depcamp,$fk,'codcam')))==0){
+                if(str_starts_with($campon, trim(pg_fetch_result($depcamp,$fk,'codcam')))){
                   //aqui
 
 
@@ -272,77 +272,77 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
                       inner join db_syscampo a on a.codcam = c.camiden 
                       inner join db_syscampo b on b.codcam = f.codcam 
                       inner join db_sysarquivo q on q.codarq = f.referen 
-                      where f.codarq = ".pg_result($result,$i,"codarq")); 
-                    $Nforkey = pg_numrows($forkey);
+                      where f.codarq = ".pg_fetch_result($result,$i,"codarq")); 
+                    $Nforkey = pg_num_rows($forkey);
                   $campofk="";
                   fputs($fd,'?'."\n");
                   if($Nforkey > 0) { 
                     for($fk=0;$fk<$Nforkey;$fk++){
-                      $campofk .= "#".trim(pg_result($forkey,$fk,'codcam'));
-                      fputs($fd,'$clrotulo->label("'.trim(pg_result($forkey,$fk,'nomecam')).'");'."\n");
+                      $campofk .= "#".trim(pg_fetch_result($forkey,$fk,'codcam'));
+                      fputs($fd,'$clrotulo->label("'.trim(pg_fetch_result($forkey,$fk,'nomecam')).'");'."\n");
                     }
                   }
                   fputs($fd,'?>'."\n");
                   for($j = 0;$j < $Ncampos;$j++) {
                     fputs($fd,'  <tr>'."\n");
                     //coluna label
-                    fputs($fd,'    <td nowrap title="<?=@$T'.trim(pg_result($campo,$j,"nomecam")).'?>">'."\n");
+                    fputs($fd,'    <td nowrap title="<?=@$T'.trim(pg_fetch_result($campo,$j,"nomecam")).'?>">'."\n");
                     $funcaojava = '""';
-                    if( strpos($campofk,trim(pg_result($campo,$j,"codcam"))) > 0 ){
+                    if( strpos($campofk,trim(pg_fetch_result($campo,$j,"codcam"))) > 0 ){
                       fputs($fd,'       <?php '."\n");
-                      $funcaojava = '"js_pesquisa'.trim(pg_result($campo,$j,"nomecam")).'(true);"';
-                      fputs($fd,'       db_ancora(@$L'.trim(pg_result($campo,$j,"nomecam")).','.$funcaojava.',$db_opcao);'."\n");
+                      $funcaojava = '"js_pesquisa'.trim(pg_fetch_result($campo,$j,"nomecam")).'(true);"';
+                      fputs($fd,'       db_ancora(@$L'.trim(pg_fetch_result($campo,$j,"nomecam")).','.$funcaojava.',$db_opcao);'."\n");
                       fputs($fd,'       ?>'."\n");
-                      $funcaojava = '" onchange=\'js_pesquisa'.trim(pg_result($campo,$j,"nomecam")).'(false);\'"';
+                      $funcaojava = '" onchange=\'js_pesquisa'.trim(pg_fetch_result($campo,$j,"nomecam")).'(false);\'"';
                     }else{
-                      fputs($fd,'       <?=@$L'.trim(pg_result($campo,$j,"nomecam")).'?>'."\n");
+                      fputs($fd,'       <?=@$L'.trim(pg_fetch_result($campo,$j,"nomecam")).'?>'."\n");
                     }
                     fputs($fd,'    </td>'."\n");
                     fputs($fd,'    <td> '."\n");
                     //$x = pg_result($campo,$j,"tipo");
-                    $xc = pg_result($campo,$j,"conteudo");
-                    if(substr($xc,0,4)!="date"){  
-                      if( (substr($xc,0,3)=="cha") || ( substr($xc,0,3)=="var") || (substr($xc,0,3)=="flo") ){
-                        if(strpos($varpk,trim(pg_result($campo,$j,"nomecam")) ) != 0 ){
+                    $xc = pg_fetch_result($campo,$j,"conteudo");
+                    if(!str_starts_with($xc, "date")){  
+                      if( (str_starts_with($xc, "cha")) || ( str_starts_with($xc, "var")) || (str_starts_with($xc, "flo")) ){
+                        if(!str_starts_with($varpk, trim(pg_fetch_result($campo,$j,"nomecam"))) ){
                           //chave primaria
                           fputs($fd,"<?php "."\n");
 
-                          if(pg_result($campo,$j,"sequencia")==0)
-                            fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."3,".$funcaojava.")"."\n");
+                          if(pg_fetch_result($campo,$j,"sequencia")==0)
+                            fputs($fd,"db_input('".trim(pg_fetch_result($campo,$j,"nomecam"))."'".','.trim(pg_fetch_result($campo,$j,"tamanho")).',$I'.trim(pg_fetch_result($campo,$j,"nomecam")).",true,'text',$"."3,".$funcaojava.")"."\n");
                           else
-                            fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
+                            fputs($fd,"db_input('".trim(pg_fetch_result($campo,$j,"nomecam"))."'".','.trim(pg_fetch_result($campo,$j,"tamanho")).',$I'.trim(pg_fetch_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
 
                           fputs($fd,"?>"."\n");
                         }else{
                           fputs($fd,"<?php "."\n");
-                          fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
+                          fputs($fd,"db_input('".trim(pg_fetch_result($campo,$j,"nomecam"))."'".','.trim(pg_fetch_result($campo,$j,"tamanho")).',$I'.trim(pg_fetch_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
                           fputs($fd,"?>"."\n");
                         }
-                      }else if(substr($xc,0,3)=="boo"){
+                      }else if(str_starts_with($xc, "boo")){
                         fputs($fd,"<?php "."\n");
                         fputs($fd,'$x = array("f"=>"NAO","t"=>"SIM");'."\n");
-                        fputs($fd,"db_select('".trim(pg_result($campo,$j,"nomecam"))."',".'$x'.",true,$"."db_opcao,".$funcaojava.");"."\n");
+                        fputs($fd,"db_select('".trim(pg_fetch_result($campo,$j,"nomecam"))."',".'$x'.",true,$"."db_opcao,".$funcaojava.");"."\n");
                         fputs($fd,"?>"."\n");
-                      }else if(substr($xc,0,3)=="tex"){
+                      }else if(str_starts_with($xc, "tex")){
                         fputs($fd,"<?php "."\n");
-                        fputs($fd,"db_textarea('".trim(pg_result($campo,$j,"nomecam"))."'".',0,0,$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n"); 
+                        fputs($fd,"db_textarea('".trim(pg_fetch_result($campo,$j,"nomecam"))."'".',0,0,$I'.trim(pg_fetch_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n"); 
                         fputs($fd,"?>"."\n");
                       }else{
                         fputs($fd,"<?php "."\n");
-                        fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
+                        fputs($fd,"db_input('".trim(pg_fetch_result($campo,$j,"nomecam"))."'".','.trim(pg_fetch_result($campo,$j,"tamanho")).',$I'.trim(pg_fetch_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
                         fputs($fd,"?>"."\n");
                       }
                     }else{
                       fputs($fd,"<?php "."\n");
-                      fputs($fd,"db_inputdata('".trim(pg_result($campo,$j,"nomecam"))."',@$".trim(pg_result($campo,$j,"nomecam"))."_dia,@$".trim(pg_result($campo,$j,"nomecam"))."_mes,@$".trim(pg_result($campo,$j,"nomecam"))."_ano,true,'text',$"."db_opcao,".$funcaojava.")"."\n");
+                      fputs($fd,"db_inputdata('".trim(pg_fetch_result($campo,$j,"nomecam"))."',@$".trim(pg_fetch_result($campo,$j,"nomecam"))."_dia,@$".trim(pg_fetch_result($campo,$j,"nomecam"))."_mes,@$".trim(pg_fetch_result($campo,$j,"nomecam"))."_ano,true,'text',$"."db_opcao,".$funcaojava.")"."\n");
                       fputs($fd,"?>"."\n");
                     }
                     if($funcaojava != '""'){
                       // strpos($campofk,pg_result($campo,$j,"codcam")) > 0 ){
                       fputs($fd,'       <?php '."\n");
                       for($fk=0;$fk<$Nforkey;$fk++){
-                        if( pg_result($forkey,$fk,'codcam') == pg_result($campo,$j,"codcam")){
-                          fputs($fd,"db_input('".trim(pg_result($forkey,$fk,"nomecam"))."'".','.trim(pg_result($forkey,$fk,"tamanho")).',$I'.trim(pg_result($forkey,$fk,"nomecam")).",true,'text',3,'')"."\n");
+                        if( pg_fetch_result($forkey,$fk,'codcam') == pg_fetch_result($campo,$j,"codcam")){
+                          fputs($fd,"db_input('".trim(pg_fetch_result($forkey,$fk,"nomecam"))."'".','.trim(pg_fetch_result($forkey,$fk,"tamanho")).',$I'.trim(pg_fetch_result($forkey,$fk,"nomecam")).",true,'text',3,'')"."\n");
                         }
                       }
                       fputs($fd,'       ?>'."\n");
@@ -375,34 +375,34 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
               // escreve os java scripts para controle dos iframe
               fputs($fd,'<script>'."\n");
               for($fk=0;$fk<$Nforkey;$fk++){	
-                fputs($fd,'function js_pesquisa'.trim(pg_result($forkey,$fk,"nomecerto")).'(mostra){'."\n");
+                fputs($fd,'function js_pesquisa'.trim(pg_fetch_result($forkey,$fk,"nomecerto")).'(mostra){'."\n");
                   fputs($fd,'  if(mostra==true){'."\n");
-                    fputs($fd,"    db_iframe.jan.location.href = 'func_".trim(pg_result($forkey,$fk,'nomearq')).".php?funcao_js=parent.js_mostra".trim(pg_result($forkey,$fk,'nomearq'))."1|0|1';"."\n");
+                    fputs($fd,"    db_iframe.jan.location.href = 'func_".trim(pg_fetch_result($forkey,$fk,'nomearq')).".php?funcao_js=parent.js_mostra".trim(pg_fetch_result($forkey,$fk,'nomearq'))."1|0|1';"."\n");
                     fputs($fd,"    db_iframe.mostraMsg();"."\n");
                     fputs($fd,"    db_iframe.show();"."\n");
                     fputs($fd,"    db_iframe.focus();"."\n"); 
                     fputs($fd,"  }else{"."\n");
-                    fputs($fd,"    db_iframe.jan.location.href = 'func_".trim(pg_result($forkey,$fk,'nomearq')).".php?pesquisa_chave='+document.form1.".trim(pg_result($forkey,$fk,'nomecerto')).".value+'&funcao_js=parent.js_mostra".trim(pg_result($forkey,$fk,'nomearq'))."';"."\n");
+                    fputs($fd,"    db_iframe.jan.location.href = 'func_".trim(pg_fetch_result($forkey,$fk,'nomearq')).".php?pesquisa_chave='+document.form1.".trim(pg_fetch_result($forkey,$fk,'nomecerto')).".value+'&funcao_js=parent.js_mostra".trim(pg_fetch_result($forkey,$fk,'nomearq'))."';"."\n");
                     fputs($fd,"  }"."\n");
                     fputs($fd,"}"."\n");
-                    fputs($fd,"function js_mostra".trim(pg_result($forkey,$fk,'nomearq'))."(chave,erro){"."\n");
-                    fputs($fd,"  document.form1.".trim(pg_result($forkey,$fk,'nomecam')).".value = chave; "."\n"); 
+                    fputs($fd,"function js_mostra".trim(pg_fetch_result($forkey,$fk,'nomearq'))."(chave,erro){"."\n");
+                    fputs($fd,"  document.form1.".trim(pg_fetch_result($forkey,$fk,'nomecam')).".value = chave; "."\n"); 
 
                     fputs($fd,"  if(erro==true){ "."\n"); 
-                    fputs($fd,"    document.form1.".trim(pg_result($forkey,$fk,'nomecerto')).".focus(); "."\n"); 
-                    fputs($fd,"    document.form1.".trim(pg_result($forkey,$fk,'nomecerto')).".value = ''; "."\n"); 
+                    fputs($fd,"    document.form1.".trim(pg_fetch_result($forkey,$fk,'nomecerto')).".focus(); "."\n"); 
+                    fputs($fd,"    document.form1.".trim(pg_fetch_result($forkey,$fk,'nomecerto')).".value = ''; "."\n"); 
                     fputs($fd,"  }"."\n");
 
                     fputs($fd,"}"."\n");
 
-                    fputs($fd,"function js_mostra".trim(pg_result($forkey,$fk,'nomearq'))."1(chave1,chave2){"."\n");
-                    fputs($fd,"  document.form1.".trim(pg_result($forkey,$fk,'nomecerto')).".value = chave1;"."\n");
-                    fputs($fd,"  document.form1.".trim(pg_result($forkey,$fk,'nomecam')).".value = chave2;"."\n");
+                    fputs($fd,"function js_mostra".trim(pg_fetch_result($forkey,$fk,'nomearq'))."1(chave1,chave2){"."\n");
+                    fputs($fd,"  document.form1.".trim(pg_fetch_result($forkey,$fk,'nomecerto')).".value = chave1;"."\n");
+                    fputs($fd,"  document.form1.".trim(pg_fetch_result($forkey,$fk,'nomecam')).".value = chave2;"."\n");
                     fputs($fd,"  db_iframe.hide();"."\n");
                     fputs($fd,"}"."\n");
                   }
                   fputs($fd,"function js_pesquisa(){"."\n");
-                  fputs($fd,"  db_iframe.jan.location.href = 'func_".trim(pg_result($result,$i,'nomearq')).".php?funcao_js=parent.js_preenchepesquisa|0';"."\n");
+                  fputs($fd,"  db_iframe.jan.location.href = 'func_".trim(pg_fetch_result($result,$i,'nomearq')).".php?funcao_js=parent.js_preenchepesquisa|0';"."\n");
                   fputs($fd,"  db_iframe.mostraMsg();"."\n");
                   fputs($fd,"  db_iframe.show();"."\n");
                   fputs($fd,"  db_iframe.focus();"."\n");

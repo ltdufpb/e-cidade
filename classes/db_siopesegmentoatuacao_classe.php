@@ -27,7 +27,7 @@ class cl_siopesegmentoatuacao
     public function __construct()
     {
         $this->rotulo = new rotulo("siopesegmentoatuacao"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -72,10 +72,10 @@ class cl_siopesegmentoatuacao
          $this->erro_status = "0";
          return false; 
        }
-       $this->si07_segmento = pg_result($result,0,0); 
+       $this->si07_segmento = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from siopesegmentoatuacao_segmento_seq");
-       if(($result != false) && (pg_result($result,0,0) < $si07_segmento)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $si07_segmento)){
          $this->erro_sql = " Campo si07_segmento maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -105,7 +105,7 @@ class cl_siopesegmentoatuacao
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "siopesegmentoatuacao ($this->si07_segmento) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "siopesegmentoatuacao já Cadastrado";
@@ -134,11 +134,11 @@ class cl_siopesegmentoatuacao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,295376267,'$this->si07_segmento','I')");
-         $resac = db_query("insert into db_acount values($acount,258028027,295376267,'','".AddSlashes(pg_result($resaco,0,'si07_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,258028027,190195507,'','".AddSlashes(pg_result($resaco,0,'si07_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,258028027,295376267,'','".AddSlashes(pg_fetch_result($resaco,0,'si07_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,258028027,190195507,'','".AddSlashes(pg_fetch_result($resaco,0,'si07_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -149,10 +149,10 @@ class cl_siopesegmentoatuacao
       $this->atualizacampos();
      $sql = " update siopesegmentoatuacao set ";
      $virgula = "";
-     if(trim($this->si07_segmento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si07_segmento"])){ 
+     if(trim((string) $this->si07_segmento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si07_segmento"])){ 
        $sql  .= $virgula." si07_segmento = $this->si07_segmento ";
        $virgula = ",";
-       if(trim($this->si07_segmento) == null ){ 
+       if(trim((string) $this->si07_segmento) == null ){ 
          $this->erro_sql = " Campo Código do Segmento de Atuação não informado.";
          $this->erro_campo = "si07_segmento";
          $this->erro_banco = "";
@@ -162,10 +162,10 @@ class cl_siopesegmentoatuacao
          return false;
        }
      }
-     if(trim($this->si07_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si07_descricao"])){ 
+     if(trim((string) $this->si07_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si07_descricao"])){ 
        $sql  .= $virgula." si07_descricao = '$this->si07_descricao' ";
        $virgula = ",";
-       if(trim($this->si07_descricao) == null ){ 
+       if(trim((string) $this->si07_descricao) == null ){ 
          $this->erro_sql = " Campo Segmento de Atuação não informado.";
          $this->erro_campo = "si07_descricao";
          $this->erro_banco = "";
@@ -189,13 +189,13 @@ class cl_siopesegmentoatuacao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,295376267,'$this->si07_segmento','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["si07_segmento"]) || $this->si07_segmento != "")
-             $resac = db_query("insert into db_acount values($acount,258028027,295376267,'".AddSlashes(pg_result($resaco,$conresaco,'si07_segmento'))."','$this->si07_segmento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,258028027,295376267,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'si07_segmento'))."','$this->si07_segmento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["si07_descricao"]) || $this->si07_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,258028027,190195507,'".AddSlashes(pg_result($resaco,$conresaco,'si07_descricao'))."','$this->si07_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,258028027,190195507,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'si07_descricao'))."','$this->si07_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -249,11 +249,11 @@ class cl_siopesegmentoatuacao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,295376267,'$si07_segmento','E')");
-           $resac  = db_query("insert into db_acount values($acount,258028027,295376267,'','".AddSlashes(pg_result($resaco,$iresaco,'si07_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,258028027,190195507,'','".AddSlashes(pg_result($resaco,$iresaco,'si07_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,258028027,295376267,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'si07_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,258028027,190195507,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'si07_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -115,13 +115,13 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
     <td> 
       <?php 
         $listar = 1; // Por padrão Listar Ativos
-        $x = array( 
+        $x = [ 
           "0" => "Todos",
           "1" => "Ativos",
           "2" => "Inativos",
           "3" => "Bloqueados",
           "4" => "Aguardando Ativação"
-        );
+        ];
         db_select('listar',$x,true,$db_opcao,"");
       ?>
     <td>

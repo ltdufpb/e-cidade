@@ -34,199 +34,199 @@ class RegraLicitaconModalidadeTipoLicitacaoTipoObjeto extends RegraLicitacon
     /**
      * @var array
      */
-    protected $aRegrasApendiceC = array(
-        'CPP' => array(
-            'NSA' => array('COM')
-        ),
-        'CPC' => array(
-            'NSA' => array('OUS', 'SAU')
-        ),
-        'CHP' => array(
-            'MTC' => array('CSE', 'COM', 'OUS', 'CON', 'INF', 'SAU'),
-            'MPR' => array('CSE', 'COM', 'LOC', 'OUS', 'SAU', 'INF', 'CON'),
-            'MTX' => array('COM', 'CSE', 'OUS', 'INF', 'SAU'),
-            'TPR' => array('CSE', 'COM', 'OUS', 'CON', 'INF', 'SAU'),
-            'MLO' => array('CON')
-        ),
-        'CCE' => array(
-            'MDE' => array('COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU'),
-            'MOO' => array('COL', 'PER'),
-            'MOQ' => array('COL', 'PER'),
-            'MOT' => array('COL', 'PER'),
-            'MRE' => array('COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU'),
-            'MCA' => array('OUS', 'SAU'),
-            'MPP' => array('COL', 'PER'),
-            'MTC' => array('CSE', 'INF', 'OSE', 'OUS', 'SAU'),
-            'MPR' => array('COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'PPP', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU'),
-            'MVT' => array('COL', 'PPP', 'PER'),
-            'MTO' => array('COL', 'PER'),
-            'MTT' => array('COL', 'PPP', 'PER'),
-            'TPR' => array('COM', 'CSE', 'INF', 'OSE', 'OUS', 'PPP', 'SAU')
-        ),
-        'CCP' => array(
-            'MDE' => array('COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU'),
-            'MOO' => array('COL', 'PER'),
-            'MOQ' => array('COL', 'PER'),
-            'MOT' => array('COL', 'PER'),
-            'MRE' => array('COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU'),
-            'MCA' => array('OUS', 'SAU'),
-            'MPP' => array('COL', 'PER'),
-            'MTC' => array('CSE', 'INF', 'OSE', 'OUS', 'SAU'),
-            'MPR' => array('COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'PPP', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU'),
-            'MVT' => array('COL', 'PPP', 'PER'),
-            'MTO' => array('COL', 'PER'),
-            'MTT' => array('COL', 'PPP', 'PER'),
-            'TPR' => array('COM', 'CSE', 'INF', 'OSE', 'OUS', 'PPP', 'SAU')
-        ),
-        'CNC' => array(
-            'MDE' => array('CSE', 'COM', 'LOC', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MLO' => array('ALB', 'CON', 'PER', 'OUS', 'PRI', 'SAU'),
-            'MOQ' => array('CON', 'PER', 'COL'),
-            'MOT' => array('CON', 'PER', 'COL'),
-            'MOO' => array('CON', 'PER', 'COL'),
-            'MPP' => array('CON', 'PER', 'COL'),
-            'MTC' => array('ALB', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MPR' => array('CSE', 'COM', 'LOC', 'OSE', 'OUS', 'CON', 'INF', 'PPP', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MTO' => array('CON', 'PER', 'COL'),
-            'MTT' => array('CON', 'PER', 'COL', 'PPP'),
-            'MVT' => array('CON', 'PER', 'COL', 'PPP'),
-            'TPR' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU', 'CON', 'PPP')
-        ),
-        'CNS' => array(
-            'MCA' => array('OUS', 'SAU'),
-            'MTC' => array('OSE', 'OUS', 'SAU'),
-            'NSA' => array('OUS', 'OSE', 'SAU')
-        ),
-        'CNV' => array(
-            'MLO' => array('PER'),
-            'MOQ' => array('PER'),
-            'MOT' => array('PER'),
-            'MOO' => array('PER'),
-            'MPP' => array('PER'),
-            'MTC' => array('CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MPR' => array('CSE', 'CON', 'COM', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MTO' => array('PER'),
-            'MTT' => array('PER'),
-            'MVT' => array('PER'),
-            'TPR' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU')
-        ),
-        'ESE' => array(
-            'MDE' => array('OUS', 'OSE', 'CSE', 'COM', 'INF', 'SAU'),
-            'MOP' => array('ALB', 'CON', 'OUS', 'PER'),
-            'MRE' => array('OSE'),
-            'MCA' => array('OUS', 'SAU'),
-            'MDB' => array('ALB'),
-            'MTC' => array('OUS', 'OSE', 'CSE', 'INF', 'SAU'),
-            'MPR' => array('OUS', 'OSE', 'CSE', 'COM', 'INF', 'LOC', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'TPR' => array('OUS', 'OSE', 'CSE', 'COM', 'INF', 'SAU')
-        ),
-        'EST' => array(
-            'MDE' => array('OUS', 'OSE', 'CSE', 'COM', 'INF', 'SAU'),
-            'MOP' => array('ALB', 'CON', 'OUS', 'PER'),
-            'MRE' => array('OSE'),
-            'MCA' => array('OUS', 'SAU'),
-            'MDB' => array('ALB'),
-            'MTC' => array('OUS', 'OSE', 'CSE', 'INF', 'SAU'),
-            'MPR' => array('OUS', 'OSE', 'CSE', 'COM', 'INF', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'TPR' => array('OUS', 'OSE', 'CSE', 'COM', 'INF', 'SAU')
-        ),
-        'LEE' => array(
-            'MLO' => array('ALB')
-        ),
-        'LEI' => array(
-            'MLO' => array('ALB', 'PRI')
-        ),
-        'MAI' => array(
-            'NSA' => array('OSE', 'OUS', 'SAU')
-        ),
-        'PRE' => array(
-            'MDE' => array('CSE', 'COM', 'LOC', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MLO' => array('ALB', 'CON', 'OUS', 'PER', 'SAU'),
-            'MOO' => array('CON', 'PER'),
-            'MPR' => array('CSE', 'COM', 'LOC', 'OSE', 'OUS', 'PER', 'INF', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU')
-        ),
-        'PCE' => array(
-            'MDE' => array('COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU'),
-            'MLO' => array('CON', 'OUS', 'PER', 'SAU'),
-            'MPR' => array('COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU', 'PER'),
-            'MTX' => array('COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU')
-        ),
-        'PCP' => array(
-            'MDE' => array('COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU'),
-            'MLO' => array('CON', 'OUS', 'PER', 'SAU'),
-            'MPR' => array('COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU', 'PER'),
-            'MTX' => array('COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU')
-        ),
-        'PRP' => array(
-            'MDE' => array('CSE', 'COM', 'LOC', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MLO' => array('ALB', 'CON', 'OUS', 'PER', 'SAU'),
-            'MOO' => array('CON', 'PER'),
-            'MPR' => array('CSE', 'COM', 'LOC', 'OSE', 'OUS', 'PER', 'INF', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU')
-        ),
-        'PDE' => array(
-            'MDE' => array('CSE', 'COM', 'LOC', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MLO' => array('ALB', 'CON', 'OUS', 'PER', 'SAU'),
-            'MOO' => array('CON', 'PER'),
-            'MPR' => array('CSE', 'COM', 'LOC', 'OSE', 'OUS', 'PER', 'INF', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU')
-        ),
-        'PRD' => array(
-            'NSA' => array('ALB', 'CSE', 'COM', 'CON', 'LOC', 'OSE', 'OUS', 'PER', 'INF', 'SAU')
-        ),
-        'PRI' => array(
-            'NSA' => array('ALB', 'CSE', 'COM', 'OSE', 'OUS', 'LOC', 'CON', 'INF', 'PER', 'SAU')
-        ),
-        'RDE' => array(
-            'MDE' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MOP' => array('ALB'),
-            'MCA' => array('OUS', 'SAU'),
-            'MTC' => array('OSE', 'OUS', 'SAU'),
-            'MPR' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'TPR' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU')
-        ),
-        'RDC' => array(
-            'MDE' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MOP' => array('ALB'),
-            'MCA' => array('OUS', 'SAU'),
-            'MTC' => array('OSE', 'OUS', 'SAU'),
-            'MPR' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'TPR' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU')
-        ),
-        'RPO' => array(
-            'NSA' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU')
-        ),
-        'RIN' => array(
-            'MLO' => array('ALB'),
-            'MTC' => array('CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MPR' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'TPR' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU')
-        ),
-        'TMP' => array(
-            'MLO' => array('PER'),
-            'MOQ' => array('PER'),
-            'MOT' => array('PER'),
-            'MOO' => array('PER'),
-            'MPP' => array('PER'),
-            'MTC' => array('CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MPR' => array('CSE', 'COM', 'LOC', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MTX' => array('COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'),
-            'MTO' => array('PER'),
-            'MTT' => array('PER'),
-            'MVT' => array('PER'),
-            'TPR' => array('CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU')
-        )
-    );
+    protected $aRegrasApendiceC = [
+        'CPP' => [
+            'NSA' => ['COM']
+        ],
+        'CPC' => [
+            'NSA' => ['OUS', 'SAU']
+        ],
+        'CHP' => [
+            'MTC' => ['CSE', 'COM', 'OUS', 'CON', 'INF', 'SAU'],
+            'MPR' => ['CSE', 'COM', 'LOC', 'OUS', 'SAU', 'INF', 'CON'],
+            'MTX' => ['COM', 'CSE', 'OUS', 'INF', 'SAU'],
+            'TPR' => ['CSE', 'COM', 'OUS', 'CON', 'INF', 'SAU'],
+            'MLO' => ['CON']
+        ],
+        'CCE' => [
+            'MDE' => ['COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU'],
+            'MOO' => ['COL', 'PER'],
+            'MOQ' => ['COL', 'PER'],
+            'MOT' => ['COL', 'PER'],
+            'MRE' => ['COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU'],
+            'MCA' => ['OUS', 'SAU'],
+            'MPP' => ['COL', 'PER'],
+            'MTC' => ['CSE', 'INF', 'OSE', 'OUS', 'SAU'],
+            'MPR' => ['COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'PPP', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU'],
+            'MVT' => ['COL', 'PPP', 'PER'],
+            'MTO' => ['COL', 'PER'],
+            'MTT' => ['COL', 'PPP', 'PER'],
+            'TPR' => ['COM', 'CSE', 'INF', 'OSE', 'OUS', 'PPP', 'SAU']
+        ],
+        'CCP' => [
+            'MDE' => ['COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU'],
+            'MOO' => ['COL', 'PER'],
+            'MOQ' => ['COL', 'PER'],
+            'MOT' => ['COL', 'PER'],
+            'MRE' => ['COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU'],
+            'MCA' => ['OUS', 'SAU'],
+            'MPP' => ['COL', 'PER'],
+            'MTC' => ['CSE', 'INF', 'OSE', 'OUS', 'SAU'],
+            'MPR' => ['COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'PPP', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU'],
+            'MVT' => ['COL', 'PPP', 'PER'],
+            'MTO' => ['COL', 'PER'],
+            'MTT' => ['COL', 'PPP', 'PER'],
+            'TPR' => ['COM', 'CSE', 'INF', 'OSE', 'OUS', 'PPP', 'SAU']
+        ],
+        'CNC' => [
+            'MDE' => ['CSE', 'COM', 'LOC', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MLO' => ['ALB', 'CON', 'PER', 'OUS', 'PRI', 'SAU'],
+            'MOQ' => ['CON', 'PER', 'COL'],
+            'MOT' => ['CON', 'PER', 'COL'],
+            'MOO' => ['CON', 'PER', 'COL'],
+            'MPP' => ['CON', 'PER', 'COL'],
+            'MTC' => ['ALB', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MPR' => ['CSE', 'COM', 'LOC', 'OSE', 'OUS', 'CON', 'INF', 'PPP', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MTO' => ['CON', 'PER', 'COL'],
+            'MTT' => ['CON', 'PER', 'COL', 'PPP'],
+            'MVT' => ['CON', 'PER', 'COL', 'PPP'],
+            'TPR' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU', 'CON', 'PPP']
+        ],
+        'CNS' => [
+            'MCA' => ['OUS', 'SAU'],
+            'MTC' => ['OSE', 'OUS', 'SAU'],
+            'NSA' => ['OUS', 'OSE', 'SAU']
+        ],
+        'CNV' => [
+            'MLO' => ['PER'],
+            'MOQ' => ['PER'],
+            'MOT' => ['PER'],
+            'MOO' => ['PER'],
+            'MPP' => ['PER'],
+            'MTC' => ['CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MPR' => ['CSE', 'CON', 'COM', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MTO' => ['PER'],
+            'MTT' => ['PER'],
+            'MVT' => ['PER'],
+            'TPR' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU']
+        ],
+        'ESE' => [
+            'MDE' => ['OUS', 'OSE', 'CSE', 'COM', 'INF', 'SAU'],
+            'MOP' => ['ALB', 'CON', 'OUS', 'PER'],
+            'MRE' => ['OSE'],
+            'MCA' => ['OUS', 'SAU'],
+            'MDB' => ['ALB'],
+            'MTC' => ['OUS', 'OSE', 'CSE', 'INF', 'SAU'],
+            'MPR' => ['OUS', 'OSE', 'CSE', 'COM', 'INF', 'LOC', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'TPR' => ['OUS', 'OSE', 'CSE', 'COM', 'INF', 'SAU']
+        ],
+        'EST' => [
+            'MDE' => ['OUS', 'OSE', 'CSE', 'COM', 'INF', 'SAU'],
+            'MOP' => ['ALB', 'CON', 'OUS', 'PER'],
+            'MRE' => ['OSE'],
+            'MCA' => ['OUS', 'SAU'],
+            'MDB' => ['ALB'],
+            'MTC' => ['OUS', 'OSE', 'CSE', 'INF', 'SAU'],
+            'MPR' => ['OUS', 'OSE', 'CSE', 'COM', 'INF', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'TPR' => ['OUS', 'OSE', 'CSE', 'COM', 'INF', 'SAU']
+        ],
+        'LEE' => [
+            'MLO' => ['ALB']
+        ],
+        'LEI' => [
+            'MLO' => ['ALB', 'PRI']
+        ],
+        'MAI' => [
+            'NSA' => ['OSE', 'OUS', 'SAU']
+        ],
+        'PRE' => [
+            'MDE' => ['CSE', 'COM', 'LOC', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MLO' => ['ALB', 'CON', 'OUS', 'PER', 'SAU'],
+            'MOO' => ['CON', 'PER'],
+            'MPR' => ['CSE', 'COM', 'LOC', 'OSE', 'OUS', 'PER', 'INF', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU']
+        ],
+        'PCE' => [
+            'MDE' => ['COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU'],
+            'MLO' => ['CON', 'OUS', 'PER', 'SAU'],
+            'MPR' => ['COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU', 'PER'],
+            'MTX' => ['COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU']
+        ],
+        'PCP' => [
+            'MDE' => ['COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU'],
+            'MLO' => ['CON', 'OUS', 'PER', 'SAU'],
+            'MPR' => ['COM', 'CSE', 'INF', 'LOC', 'OSE', 'OUS', 'SAU', 'PER'],
+            'MTX' => ['COM', 'CSE', 'INF', 'OSE', 'OUS', 'SAU']
+        ],
+        'PRP' => [
+            'MDE' => ['CSE', 'COM', 'LOC', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MLO' => ['ALB', 'CON', 'OUS', 'PER', 'SAU'],
+            'MOO' => ['CON', 'PER'],
+            'MPR' => ['CSE', 'COM', 'LOC', 'OSE', 'OUS', 'PER', 'INF', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU']
+        ],
+        'PDE' => [
+            'MDE' => ['CSE', 'COM', 'LOC', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MLO' => ['ALB', 'CON', 'OUS', 'PER', 'SAU'],
+            'MOO' => ['CON', 'PER'],
+            'MPR' => ['CSE', 'COM', 'LOC', 'OSE', 'OUS', 'PER', 'INF', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU']
+        ],
+        'PRD' => [
+            'NSA' => ['ALB', 'CSE', 'COM', 'CON', 'LOC', 'OSE', 'OUS', 'PER', 'INF', 'SAU']
+        ],
+        'PRI' => [
+            'NSA' => ['ALB', 'CSE', 'COM', 'OSE', 'OUS', 'LOC', 'CON', 'INF', 'PER', 'SAU']
+        ],
+        'RDE' => [
+            'MDE' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MOP' => ['ALB'],
+            'MCA' => ['OUS', 'SAU'],
+            'MTC' => ['OSE', 'OUS', 'SAU'],
+            'MPR' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'TPR' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU']
+        ],
+        'RDC' => [
+            'MDE' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MOP' => ['ALB'],
+            'MCA' => ['OUS', 'SAU'],
+            'MTC' => ['OSE', 'OUS', 'SAU'],
+            'MPR' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'TPR' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU']
+        ],
+        'RPO' => [
+            'NSA' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU']
+        ],
+        'RIN' => [
+            'MLO' => ['ALB'],
+            'MTC' => ['CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MPR' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'TPR' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU']
+        ],
+        'TMP' => [
+            'MLO' => ['PER'],
+            'MOQ' => ['PER'],
+            'MOT' => ['PER'],
+            'MOO' => ['PER'],
+            'MPP' => ['PER'],
+            'MTC' => ['CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MPR' => ['CSE', 'COM', 'LOC', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MTX' => ['COM', 'CSE', 'OSE', 'OUS', 'INF', 'SAU'],
+            'MTO' => ['PER'],
+            'MTT' => ['PER'],
+            'MVT' => ['PER'],
+            'TPR' => ['CSE', 'COM', 'OSE', 'OUS', 'INF', 'SAU']
+        ]
+    ];
 
     protected function getRegras()
     {

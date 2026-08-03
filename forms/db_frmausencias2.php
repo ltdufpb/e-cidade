@@ -38,15 +38,15 @@ $db_botao1 = false;
 if(isset($opcao) && $opcao=="alterar"){
  $db_opcao = 2;
  $db_botao1 = true;
- $sd06_d_data_dia = substr($sd06_d_data,0,2);
- $sd06_d_data_mes = substr($sd06_d_data,3,2);
- $sd06_d_data_ano = substr($sd06_d_data,6,4);
+ $sd06_d_data_dia = substr((string) $sd06_d_data,0,2);
+ $sd06_d_data_mes = substr((string) $sd06_d_data,3,2);
+ $sd06_d_data_ano = substr((string) $sd06_d_data,6,4);
 }elseif(isset($opcao) && $opcao=="excluir" || isset($db_opcao) && $db_opcao==3){
  $db_botao1 = true;
  $db_opcao = 3;
- $sd06_d_data_dia = substr($sd06_d_data,0,2);
- $sd06_d_data_mes = substr($sd06_d_data,3,2);
- $sd06_d_data_ano = substr($sd06_d_data,6,4);
+ $sd06_d_data_dia = substr((string) $sd06_d_data,0,2);
+ $sd06_d_data_mes = substr((string) $sd06_d_data,3,2);
+ $sd06_d_data_ano = substr((string) $sd06_d_data,6,4);
 }else{
  if(isset($alterar)){
   $db_opcao = 2;
@@ -116,7 +116,7 @@ db_input('z01_nome',80,@$Iz01_nome,true,'text',3,'')
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("sd06_i_codigo"=>@$sd06_i_codigo,"sd06_i_unidade"=>@$sd06_i_unidade,"descrdepto"=>@$descrdepto,"sd06_i_medico"=>@$sd06_i_medico,"z01_nome"=>@$z01_nome,"sd06_d_data"=>@$sd06_d_data);
+   $chavepri= ["sd06_i_codigo"=>@$sd06_i_codigo,"sd06_i_unidade"=>@$sd06_i_unidade,"descrdepto"=>@$descrdepto,"sd06_i_medico"=>@$sd06_i_medico,"z01_nome"=>@$z01_nome,"sd06_d_data"=>@$sd06_d_data];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    //echo $clausencias->sql_query("","*","","sd06_i_unidade = $sd06_i_unidade and sd06_i_medico = $sd06_i_medico");
    @$cliframe_alterar_excluir->sql = $clausencias->sql_query("","*","sd06_d_data desc","sd06_i_unidade = $sd06_i_unidade and sd06_i_medico = $sd06_i_medico");
@@ -169,7 +169,7 @@ function js_preenchepesquisa(chave){
   db_iframe_undmedhorario.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

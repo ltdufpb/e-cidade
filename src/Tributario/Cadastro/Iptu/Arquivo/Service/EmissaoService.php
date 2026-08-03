@@ -13,36 +13,12 @@ use ECidade\Tributario\Cadastro\Repository\CfiptuRepository;
 
 final class EmissaoService extends Service
 {
-    private $arquivoTxtService;
-
-    private $linhaService;
-
-    private $matriculaRepository;
-
-    private $cfiptuRepository;
-
-    private $arquivoLayoutService;
-
     private $bar;
-
-    private $dataBase;
 
     private $instituicao;
 
-    public function __construct(
-        $dataBase,
-        ArquivoTxtService $arquivoTxtService,
-        LinhaService $linhaService,
-        MatriculaRepository $matriculaRepository,
-        CfiptuRepository $cfiptuRepository,
-        ArquivoLayoutService $arquivoLayoutService
-    ) {
-        $this->dataBase = $dataBase;
-        $this->arquivoTxtService = $arquivoTxtService;
-        $this->linhaService = $linhaService;
-        $this->matriculaRepository = $matriculaRepository;
-        $this->cfiptuRepository = $cfiptuRepository;
-        $this->arquivoLayoutService = $arquivoLayoutService;
+    public function __construct(private $dataBase, private readonly ArquivoTxtService $arquivoTxtService, private readonly LinhaService $linhaService, private readonly MatriculaRepository $matriculaRepository, private readonly CfiptuRepository $cfiptuRepository, private readonly ArquivoLayoutService $arquivoLayoutService)
+    {
     }
 
     public function setBar($bar)

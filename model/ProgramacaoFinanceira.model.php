@@ -57,7 +57,7 @@
     *
     * @var aParcelas collection
     */
-    protected $aParcelas = array();
+    protected $aParcelas = [];
     
    /**
     * Valor Total
@@ -118,9 +118,9 @@
             
             if ($i == 0) {
               $dtPagamento = $oProgramacaoFinanceiraParcela->k118_datapagamento;
-            	$iMesInicial = date("m", mktime(0, 0, 0, substr($dtPagamento, 5, 2), 
-            	                                         substr($dtPagamento, 8, 2), 
-            	                                         substr($dtPagamento, 0, 4)));
+            	$iMesInicial = date("m", mktime(0, 0, 0, substr((string) $dtPagamento, 5, 2), 
+            	                                         substr((string) $dtPagamento, 8, 2), 
+            	                                         substr((string) $dtPagamento, 0, 4)));
               $this->setMesInicial($iMesInicial);
             }
           }
@@ -412,7 +412,7 @@
      /**
       * Verifica se a data e menor que a data da ultima parcela
       */
-      if ( strtotime($dtData) <= strtotime($dtPagamento)) {
+      if ( strtotime((string) $dtData) <= strtotime((string) $dtPagamento)) {
         throw new Exception("Erro data do pagamento menor que última parcela \\nou data já informada! \\n\\n Inclusão abortada.");
       }
       

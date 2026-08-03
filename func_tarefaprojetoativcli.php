@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefaprojetoativcli_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltarefaprojetoativcli = new cl_tarefaprojetoativcli;
 $cltarefaprojetoativcli->rotulo->label("at69_sequencial");
 $cltarefaprojetoativcli->rotulo->label("at69_seqtarefa");
@@ -98,9 +98,9 @@ $cltarefaprojetoativcli->rotulo->label("at69_seqtarefa");
         }else{
            $sql = $cltarefaprojetoativcli->sql_query("",$campos,"at69_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at69_seqtarefa)){
-          $repassa = array("chave_at69_sequencial"=>$chave_at69_sequencial,"chave_at69_seqtarefa"=>$chave_at69_seqtarefa);
+          $repassa = ["chave_at69_sequencial"=>$chave_at69_sequencial,"chave_at69_seqtarefa"=>$chave_at69_seqtarefa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -48,8 +48,8 @@ require_once(modification("classes/db_conplanogrupo_classe.php"));
 require_once(modification("classes/db_conplanocontabancaria_classe.php"));
 require_once(modification("classes/db_conplanoref_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clestrutura_sistema     = new cl_estrutura_sistema;
 $clorcfontes             = new cl_orcfontes;
@@ -228,7 +228,7 @@ if (isset($importar) && $importar == true) {
 	        $clconplanoconta->c63_dvconta       = $c63_dvconta;
 	        $clconplanoconta->c63_codcon = $c60_codcon;
 	        $clconplanoconta->c63_anousu = $iAno;
-	        $clconplanoconta->c63_codigooperacao = "".str_pad($c63_codigooperacao,4,"0",STR_PAD_LEFT)."";
+	        $clconplanoconta->c63_codigooperacao = "".str_pad((string) $c63_codigooperacao,4,"0",STR_PAD_LEFT)."";
 
 	        $sSqlVerificaConplanoConta = $clconplanoconta->sql_query_file($c60_codcon, $iAno,"*");
 	        $rsVerificaConplanoConta   = $clconplanoconta->sql_record($sSqlVerificaConplanoConta);
@@ -248,7 +248,7 @@ if (isset($importar) && $importar == true) {
 
       if ($sqlerro == false) {
 
-         $arr_tipo = array("orcelemento" => "3", "orcfontes" => array("4","9"));
+         $arr_tipo = ["orcelemento" => "3", "orcfontes" => ["4","9"]];
          if (substr($codigo, 0, 1) == $arr_tipo["orcelemento"]) {
 
            $clorcelemento->o56_codele   = $c60_codcon;
@@ -506,7 +506,7 @@ if (isset($incluir)) {
       if ($sqlerro == false) {
         $clconplano->c60_anousu = $anousu;
         $clconplano->c60_estrut = $codigo;
-        if (substr($codigo,0,1) == "3"||substr($codigo,0,1) == "4") {
+        if (str_starts_with($codigo, "3")||str_starts_with($codigo, "4")) {
           $clconplano->c60_codsis = 1;
         }
         $clconplano->c60_consistemaconta         = "0";
@@ -536,10 +536,10 @@ if (isset($incluir)) {
               $clconplano->c60_anousu = $iAnoContador;
               $clconplano->c60_estrut = $codigo;
 
-              if (substr($codigo,0,1) == "3"||substr($codigo,0,1) == "4") {
+              if (str_starts_with($codigo, "3")||str_starts_with($codigo, "4")) {
                 $clconplano->c60_codsis = 1;
               } else {
-                if (trim(@$c60_codsis) != "") {
+                if (trim((string) @$c60_codsis) != "") {
                   $clconplano->c60_codsis = $c60_codsis;
                 }
               }
@@ -677,7 +677,7 @@ if (isset($incluir)) {
           $contador = $c60_anousu - $anousu;
         }
 
-        $arr_tipo     = array("orcelemento" => "3", "orcfontes" => array("4","9"));
+        $arr_tipo     = ["orcelemento" => "3", "orcfontes" => ["4","9"]];
 
         if (substr($codigo, 0, 1) == $arr_tipo["orcelemento"]) {
           $clorcelemento->o56_codele   = $c60_codcon;

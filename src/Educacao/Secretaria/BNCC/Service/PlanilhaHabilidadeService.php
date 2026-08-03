@@ -70,10 +70,10 @@ abstract class PlanilhaHabilidadeService
      */
     protected function extractCodigo($coluna)
     {
-        $pos1 = strpos($coluna, '(');
-        $pos2 = strpos($coluna, ')');
+        $pos1 = strpos((string) $coluna, '(');
+        $pos2 = strpos((string) $coluna, ')');
 
-        return substr($coluna, $pos1+1, $pos2-1);
+        return substr((string) $coluna, $pos1+1, $pos2-1);
     }
 
     /**

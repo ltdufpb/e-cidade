@@ -41,11 +41,6 @@ use stdClass;
 class ColunaEstruturalServico
 {
     /**
-     * @var stdClass
-     */
-    private $parametros;
-
-    /**
      * @var ColunaEstruturalRepositorio
      */
     private $repositorio;
@@ -54,9 +49,8 @@ class ColunaEstruturalServico
      * LinhaServico constructor.
      * @param stdClass $parametros
      */
-    public function __construct(stdClass $parametros)
+    public function __construct(private readonly stdClass $parametros)
     {
-        $this->parametros = $parametros;
         $this->repositorio = new ColunaEstruturalRepositorio();
     }
 

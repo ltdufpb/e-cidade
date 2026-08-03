@@ -36,7 +36,7 @@ require_once modification("classes/db_rhpessoal_classe.php");
 require_once modification("classes/db_portariaassenta_classe.php");
 require_once modification("classes/db_portariatipo_classe.php");
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clportaria        = new cl_portaria;
@@ -138,7 +138,7 @@ if(isset($alterar)){
       $aListaInformacoesExternas = InformacoesExternasTipoAssentamento::getTipoAssentamentoConfiguradosPorCompetencia(DBPessoal::getCompetenciaFolha());
       if(is_array($aListaInformacoesExternas)){
 
-        $aTiposAssentamentoConfigurados = array();
+        $aTiposAssentamentoConfigurados = [];
         foreach ($aListaInformacoesExternas as $oInformacoesExternas) {
           $aTiposAssentamentoConfigurados[] = $oInformacoesExternas->getTipoAssentamento()->getCodigo();
         }
@@ -259,7 +259,7 @@ if(isset($alterar)){
 
   $oDaoAssentaAttr = new cl_assentadb_cadattdinamicovalorgrupo();
   $rsComplemento   = db_query($oDaoAssentaAttr->sql_query(null,null, "h80_db_cadattdinamicovalorgrupo", null, "h80_assenta = {$h33_assenta}"));
-  if (pg_numrows($rsComplemento) > 0) {
+  if (pg_num_rows($rsComplemento) > 0) {
     db_fieldsmemory($rsComplemento,0);
   }
 

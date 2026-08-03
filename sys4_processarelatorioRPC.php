@@ -92,7 +92,7 @@ if ( !$lErro ) {
 
 	  if (!empty($aOrdem)) {
 
-	    $aNomeOrdem = array();
+	    $aNomeOrdem = [];
 
 	    foreach ($aOrdem as $iInd1 => $aOrdem2){
 	      foreach ($aOrdem2 as $iInd2 => $oOrdem ){
@@ -137,11 +137,11 @@ if ( !$lErro ) {
 	      foreach ( $aObjVariaveis as $iInd => $oVariavel) {
 	        if ( $oVariavel->sNome == $oVariavelGerador->getNome()) {
 	          if ( $oVariavelGerador->getTipoDado() == 'date') {
-	            $sValor = implode('-',array_reverse(explode('/',$oVariavel->sValor)));
+	            $sValor = implode('-',array_reverse(explode('/',(string) $oVariavel->sValor)));
 	          } else {
 	            $sValor = $oVariavel->sValor;
 	          }
-	          $api->setParameter($oVariavel->sNome,utf8_decode($sValor));
+	          $api->setParameter($oVariavel->sNome,mb_convert_encoding($sValor, 'ISO-8859-1'));
 	        }
 	      }
 	    }
@@ -206,7 +206,7 @@ if ( !$lErro ) {
 					ob_end_clean();
 
 					if ($api->getRowNum() == 0){
-			 		  $aRetorno = array("sMsg"=>urlencode("Nenhum registro encontrado!"),"erro"=>true);
+			 		  $aRetorno = ["sMsg"=>urlencode("Nenhum registro encontrado!"),"erro"=>true];
 					  echo $oJson->encode($aRetorno);
 					  exit;
 					}
@@ -214,7 +214,7 @@ if ( !$lErro ) {
 			try {
 				$sRetorno = DocumentConverter::docToPdf( $sCaminhoSalvoSxw );
 			} catch (Exception $e) {
-				$aRetorno = array("sMsg"=>urlencode($e->getMessage()),"erro"=>true);
+				$aRetorno = ["sMsg"=>urlencode($e->getMessage()),"erro"=>true];
 						echo $oJson->encode($aRetorno);
 						exit;
           }
@@ -248,7 +248,7 @@ if ( !$lErro ) {
 	      ob_end_clean();
 
 	   	  if ($api->getRowNum() == 0){
-		 		  $aRetorno = array("sMsg"=>urlencode("Nenhum registro encontrado!"),"erro"=>true);
+		 		  $aRetorno = ["sMsg"=>urlencode("Nenhum registro encontrado!"),"erro"=>true];
 				  echo $oJson->encode($aRetorno);
 				  exit;
 		    }
@@ -265,6 +265,6 @@ if ( !$lErro ) {
 
 }
 
-$aRetorno = array("sMsg"=>urlencode($sRetorno),"erro"=>$lErro);
+$aRetorno = ["sMsg"=>urlencode((string) $sRetorno),"erro"=>$lErro];
 
 echo $oJson->encode($aRetorno);

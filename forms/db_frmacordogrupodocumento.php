@@ -105,10 +105,10 @@ if (isset($db_opcaoal)) {
     </td>
     <td colspan="2"> 
       <?php         
-        $aTipoDocumento = array("0"=>"Selecione ...",
+        $aTipoDocumento = ["0"=>"Selecione ...",
                                 "1"=>"Acordo",
                                 "2"=>"Minuta",
-                                "3"=>"Aditivo");
+                                "3"=>"Aditivo"];
         
         db_select('ac06_tipodocumento',$aTipoDocumento,true,$db_opcao,
                   " onchange='js_desabilitaselecionar();' style='width:100%;'");
@@ -152,7 +152,7 @@ if (isset($db_opcaoal)) {
        $sSqlAcordoDocumento = $clacordogrupodocumento->sql_query(null,$sCampos,"acordogrupodocumento.ac06_sequencial",
                                                                  $sWhere);
                                                                  
-			 $chavepri                                = array("ac06_sequencial"=>@$ac06_sequencial);
+			 $chavepri                                = ["ac06_sequencial"=>@$ac06_sequencial];
 			 $cliframe_alterar_excluir->chavepri      = $chavepri;
 			 $cliframe_alterar_excluir->sql           = $sSqlAcordoDocumento;
 			 $cliframe_alterar_excluir->campos        = "ac06_sequencial,db82_descricao,ac06_tipodocumento";

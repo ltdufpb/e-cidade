@@ -75,14 +75,14 @@ $clcriaabas = new cl_criaabas;
   <tr>
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
       <?php 
-      $clcriaabas->identifica    = array("a1"=>"Doses da Vacina",
+      $clcriaabas->identifica    = ["a1"=>"Doses da Vacina",
                                          "a2"=>"Limites",
                                          "a3"=>"Restrições",
-                                         "a4"=>"Dependência");
+                                         "a4"=>"Dependência"];
       $sVacina                   = "vc07_i_vacina=$vc07_i_vacina&vc06_c_descr=$vc06_c_descr";
-      $clcriaabas->src           = array("a1"=>"vac1_vac_vacinadose004.php?$sVacina","a2"=>"","a3"=>"","a4"=>"");
-      $clcriaabas->sizecampo     = array("a1"=>20,"a2"=>20,"a3"=>20,"a4"=>20);
-      $clcriaabas->disabled      = array("a1"=>"false","a2"=>"true","a3"=>"true","a4"=>"true");
+      $clcriaabas->src           = ["a1"=>"vac1_vac_vacinadose004.php?$sVacina","a2"=>"","a3"=>"","a4"=>""];
+      $clcriaabas->sizecampo     = ["a1"=>20,"a2"=>20,"a3"=>20,"a4"=>20];
+      $clcriaabas->disabled      = ["a1"=>"false","a2"=>"true","a3"=>"true","a4"=>"true"];
       $clcriaabas->scrolling     = "no";
       $clcriaabas->iframe_height = "600";
       $clcriaabas->iframe_width  = "100%";

@@ -51,10 +51,10 @@ $sSqlUnid     = $oDaoUnidades->sql_query_file(null, "m61_codmatunid,substr(m61_d
                                                      m61_usaquant,m61_usadec", "m61_descr");
 $rsUnid              = $oDaoUnidades->sql_record($sSqlUnid);
 $aUnidades           = db_utils::getCollectionByRecord($rsUnid); 
-$aParametrosCompras  = db_stdClass::getParametro("pcparam",array(db_getsession("DB_anousu")));
+$aParametrosCompras  = db_stdClass::getParametro("pcparam",[db_getsession("DB_anousu")]);
 
 $sDisplay = '';
-$aParametrosRegistro = db_stdClass::getParametro("registroprecoparam",array(db_getsession("DB_instit")));
+$aParametrosRegistro = db_stdClass::getParametro("registroprecoparam",[db_getsession("DB_instit")]);
 $db_opcao            = 1;
 if (count($aParametrosRegistro) > 0) {
   
@@ -97,7 +97,7 @@ db_app::load("widgets/windowAux.widget.js");
                    $pc17_quant = 1;
                    db_input('pc16_codmater', 8, $Ipc16_codmater, true, 'text', 1, " onchange='js_pesquisapc16_codmater(false);'");
                    db_input('pc01_descrmater', 45, $Ipc01_descrmater, true, 'text', 1, '');
-                   db_select('pc17_unid',array(), true, 1, "style='width:150px' onchange='js_usaQuantidade(this)'");
+                   db_select('pc17_unid',[], true, 1, "style='width:150px' onchange='js_usaQuantidade(this)'");
                    db_input('pc17_quant', 5, 0, true, 'text', 1, "style='display:none'");
                    ?>
                 </td>

@@ -36,7 +36,7 @@ include(modification("classes/db_lab_coletaitem_classe.php"));
 include(modification("classes/db_lab_requiitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_app.utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cllab_coletaitem = new cl_lab_coletaitem;
 $cllab_requiitem = new cl_lab_requiitem;
@@ -79,10 +79,10 @@ if((isset($incluir))||(isset($falta))){
   	 $la32_i_avisapaciente=2;
   }
   db_inicio_transacao();
-     $aVet=explode("/",$la32_d_data);
+     $aVet=explode("/",(string) $la32_d_data);
      $cllab_coletaitem->la32_d_data=$la32_d_data=$aVet[2]."-".$aVet[1]."-".$aVet[0];
      if($la32_d_entrega!=""){
-       $aVet=explode("/",$la32_d_entrega);
+       $aVet=explode("/",(string) $la32_d_entrega);
        $cllab_coletaitem->la32_d_entrega=$la32_d_entrega=$aVet[2]."-".$aVet[1]."-".$aVet[0];
      }
      $cllab_coletaitem->la32_i_avisapaciente=$la32_i_avisapaciente;

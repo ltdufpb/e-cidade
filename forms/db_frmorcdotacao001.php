@@ -73,7 +73,7 @@ if (isset($atualizar)) {
     if ($o50_estrutdespesa == "") {
         $tot = '0';
     } else {
-        $matriz = split('\.', $o50_estrutdespesa);
+        $matriz = preg_split('#\.#m', (string) $o50_estrutdespesa);
         $tot = count($matriz);
     }
 
@@ -95,7 +95,7 @@ if (isset($atualizar)) {
                         db_fieldsmemory($result, 0);
                         $o58_instit  = $o41_instit;
                         $sql         = "select nomeinst from db_config where codigo = $o41_instit";
-                        $nomeinst    = @pg_result(pg_query($sql), 0, "nomeinst");
+                        $nomeinst    = @pg_fetch_result(pg_query($sql), 0, "nomeinst");
                     } else {
                         $o58_unidade = '';
                         $o41_descr = 'Chave (' . $matriz[$i] . ') não encontrado';
@@ -142,7 +142,7 @@ if (isset($atualizar)) {
                 }
                 break;
             case 6://elemento de despesa
-                $result = $clorcelemento->sql_record($clorcelemento->sql_query(null, null, "o56_descr, o56_elemento ", "", "o56_anousu = " . db_getsession("DB_anousu") . " and o56_elemento like '" . substr($matriz[$i], 0, 12) . "%' "));
+                $result = $clorcelemento->sql_record($clorcelemento->sql_query(null, null, "o56_descr, o56_elemento ", "", "o56_anousu = " . db_getsession("DB_anousu") . " and o56_elemento like '" . substr((string) $matriz[$i], 0, 12) . "%' "));
                 if ($clorcelemento->numrows > 0) {
                     db_fieldsmemory($result, 0);
                 } else {
@@ -745,7 +745,7 @@ if (isset($atualizar)) {
 
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
         }
         ?>
     }

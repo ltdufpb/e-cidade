@@ -45,8 +45,6 @@ use ParametrosPessoalRepository;
  */
 class RemuneracaoRPPS extends ProcessamentoAbstract implements ProcessamentoInterface
 {
-    private $cgm;
-
     private $mes;
     private $ano;
 
@@ -71,9 +69,8 @@ class RemuneracaoRPPS extends ProcessamentoAbstract implements ProcessamentoInte
         }
     }
 
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
-        $this->cgm = $cgm;
     }
 
     /**

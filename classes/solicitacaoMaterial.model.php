@@ -162,7 +162,7 @@ class SolicitacaoMaterial {
                                                                      " {$sWhere} $sGroupBy");                                                            
     $rsSolItem            = $oDaoSolicitacaoItens->sql_record($sSqlsolItens);
  
-    $aItensSolicitacao = array ();
+    $aItensSolicitacao =  [];
     
     if ($oDaoSolicitacaoItens->numrows>0) {	
     

@@ -44,7 +44,7 @@ $clempnota = new cl_empnota;
 $clempnotaele = new cl_empnotaele;
 $clempempenho = new cl_empempenho;
 
-$aParametrosEmpenho = db_stdClass::getParametro("empparametro",array(db_getsession("DB_anousu")));
+$aParametrosEmpenho = db_stdClass::getParametro("empparametro",[db_getsession("DB_anousu")]);
 $lUsaNotaLiquidacao = false;
 if (isset($aParametrosEmpenho[0])) {
   
@@ -53,8 +53,8 @@ if (isset($aParametrosEmpenho[0])) {
    }
 }
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if (isset($anular)) {

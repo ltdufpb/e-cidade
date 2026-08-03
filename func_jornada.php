@@ -31,7 +31,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_jornada_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $instituicao = db_getsession('DB_instit');
 $cljornada = new \cl_jornada;
@@ -64,7 +64,7 @@ $cljornada->rotulo->label("rh188_descricao");
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_jornada.hide();">
 </form>
 <?php
-$where = array("rh188_instit = {$instituicao}");
+$where = ["rh188_instit = {$instituicao}"];
 if (!isset($pesquisa_chave)) {
     if (isset ($lMostraFixos) and $lMostraFixos == 'false') {
         $where[] = "rh188_fixo is false ";
@@ -87,9 +87,9 @@ if (!isset($pesquisa_chave)) {
 
     $where = implode(" and ", $where);
     $sql = $cljornada->sql_query("", $campos, "rh188_sequencial", $where);
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_sequencial)) {
-        $repassa = array("chave_sequencial" => $chave_sequencial, "chave_descricao=>$chave_descricao");
+        $repassa = ["chave_sequencial" => $chave_sequencial, "chave_descricao=>$chave_descricao"];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

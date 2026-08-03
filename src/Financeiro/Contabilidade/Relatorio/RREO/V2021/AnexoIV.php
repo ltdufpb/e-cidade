@@ -43,8 +43,8 @@ class AnexoIV extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     const CODIGO_RELATORIO = 244;
 
 
-    const LINHAS_IGNORAR_DESPESA = array();
-    const LINHAS_IGNORAR_RECEITA = array();
+    const LINHAS_IGNORAR_DESPESA = [];
+    const LINHAS_IGNORAR_RECEITA = [];
 
 
 
@@ -59,11 +59,11 @@ class AnexoIV extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     {
 
         parent::__construct($iAnoSessao, static::CODIGO_RELATORIO, $iCodigoPeriodo);
-        $aTiposInstituicoes = array(\Instituicao::TIPO_RPPS_EXCETO_AUTARQUIA, \Instituicao::TIPO_AUTARQUIA_RPPS);
+        $aTiposInstituicoes = [\Instituicao::TIPO_RPPS_EXCETO_AUTARQUIA, \Instituicao::TIPO_AUTARQUIA_RPPS];
         $this->aInstituicoesRPPS = \InstituicaoRepository::getInstituicoesPorTipo($aTiposInstituicoes);
         if (count($this->aInstituicoesRPPS) == 0) {
             $aItensTiposInstituicoes = \InstituicaoRepository::getTiposIntituicao($aTiposInstituicoes);
-            $aDescricoesTiposInstituicoes = array();
+            $aDescricoesTiposInstituicoes = [];
             foreach ($aItensTiposInstituicoes as $itemTipoInstituicao) {
                 $aDescricoesTiposInstituicoes[] = $itemTipoInstituicao->db21_codtipo
                     . ' - ' . $itemTipoInstituicao->db21_nome;
@@ -71,12 +71,12 @@ class AnexoIV extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
 
             $sDescricaoTiposInstituicoes = implode("\n", $aDescricoesTiposInstituicoes);
 
-            $oStdMensagem = (object)array('descricao' => $sDescricaoTiposInstituicoes);
+            $oStdMensagem = (object)['descricao' => $sDescricaoTiposInstituicoes];
             throw new \BusinessException(
                 _M('financeiro.contabilidade.AnexoIV.tipo_instituicao_nao_encontrado', $oStdMensagem)
             );
         }
-        $aCodigosInstituicoes = array();
+        $aCodigosInstituicoes = [];
         foreach ($this->aInstituicoesRPPS as $oInstituicao) {
             $aCodigosInstituicoes[] = $oInstituicao->getCodigo();
         }
@@ -100,7 +100,7 @@ class AnexoIV extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
           sistema se perde e busca na linha que tem 2 colunas uma terceira e quarta coluna devido a linha que a
           utiliza possuir mais colunas que a da origem dos dados
         */
-        $this->aLinhasProcessamentoManual = array(31, 70, 80, 88);
+        $this->aLinhasProcessamentoManual = [31, 70, 80, 88];
 
         if (empty($this->aLinhasConsistencia)) {
             parent::getDados($trazerConfiguracaoPadrao);

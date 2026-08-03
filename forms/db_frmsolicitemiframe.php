@@ -42,7 +42,7 @@
     if ($clpcparam->numrows > 0) {
         db_fieldsmemory($result_gerareserva, 0);
         if ($pc30_ultdotac == "t") {
-            if (!isset($pc13_coddot) && trim(@$pc13_coddot) == "") {
+            if (!isset($pc13_coddot) && trim((string) @$pc13_coddot) == "") {
                 if (db_getsession("DB_coddot", false) != null) {
                     $res_pcdotac = @db_query("select pc13_codigo as coddotseq, pc13_coddot as coddot, pc13_anousu, pc13_depto, descrdepto
                                       from pcdotac
@@ -50,7 +50,7 @@
                     where pc13_anousu = ".db_getsession("DB_anousu")." and
                           pc13_coddot = ".db_getsession("DB_coddot")."
                     order by pc13_codigo desc limit 1");
-                    if (@pg_numrows($res_pcdotac) > 0) {
+                    if (@pg_num_rows($res_pcdotac) > 0) {
                         db_fieldsmemory($res_pcdotac, 0);
                         $pc13_coddot = $coddot;
                     }
@@ -428,7 +428,7 @@
 	  }
 	  valor = 0;
 	  ";
-            if (isset($pc11_vlrun) && $pc11_vlrun!="") {
+            if (isset($pc11_vlrun) && $pc11_vlrun!=0) {
                 echo "valor = '$pc11_vlrun';";
             } else {
                 echo "if(parent.document.form1.pc11_vlrun.value!=''){
@@ -605,7 +605,7 @@
                 // echo ($clpcmaterele->sql_query(null,null,"distinct o56_elemento,substr(o56_descr,1,40) as o56_descr,o56_codele","o56_descr",$where_elemento));
                 $sql_record = $clpcmaterele->sql_record($clpcmaterele->sql_query(null, null, "distinct o56_elemento,substr(o56_descr,1,40) as o56_descr,o56_codele", "o56_descr", $where_elemento));
                 $numrows_pcmatereleteste = $clpcmaterele->numrows;
-                $dad_select = array();
+                $dad_select = [];
                 for ($contamaterele=0; $contamaterele<$numrows_pcmatereleteste; $contamaterele++) {
                     db_fieldsmemory($sql_record, $contamaterele);
                     $dad_select["$o56_elemento"] = $o56_elemento." - ".$o56_descr;
@@ -687,7 +687,7 @@
         }
 
 
-        $planosOrcamentarios = array("" => "Selecione");
+        $planosOrcamentarios = ["" => "Selecione"];
         if (!empty($pc13_coddot)) {
             $daoOrcDotacaPlanoOrcamento = new cl_orcdotacaoplanoorcamentario();
             $where = "o155_coddot = {$pc13_coddot} and o155_anousu = " . db_getsession("DB_anousu");
@@ -788,7 +788,7 @@
                                     if (isset($pc13_coddot) && $pc13_coddot != "" && !isset($incluir) && !isset($alterar) && !isset($excluir)) {
                                         //$where_coddot = " and pc13_coddot<>$pc13_coddot";
                                     }
-                                    $chavepri= array("pc13_sequencial"=>@$pc13_sequencial);
+                                    $chavepri= ["pc13_sequencial"=>@$pc13_sequencial];
                                     $cliframe_alterar_excluir->chavepri= $chavepri;
                                     $cliframe_alterar_excluir->sql     = $clpcdotac->sql_query_descrdot(null, null, null, "pc13_sequencial, pc13_codigo,pc13_coddot,pc19_orctiporec,o56_descr,pc13_anousu,pc13_quant,pc13_valor", "pc13_codigo", " pc13_codigo =".@$pc13_codigo." and pc13_anousu=".@$pc13_anousu);
                                     $cliframe_alterar_excluir->campos  = "pc13_codigo,pc13_coddot,pc19_orctiporec, o56_descr,pc13_anousu,pc13_quant,pc13_valor";
@@ -802,7 +802,7 @@
                                     }
                                     if (isset($pc13_coddot) && trim($pc13_coddot) != "") {
                                         $cliframe_alterar_excluir->msg_vazio  = ($db_opcao==1?"Inclusão":($db_opcao==2||$db_opcao==22?"Alteração":"Exclusão"))." da dotação $pc13_coddot";
-                                    } elseif (isset($pc13_codigo) && trim($pc13_codigo) != "") {
+                                    } elseif (isset($pc13_codigo) && trim((string) $pc13_codigo) != "") {
                                         $cliframe_alterar_excluir->msg_vazio  = "Nenhuma dotação encontrada para este item";
                                     } else {
                                         $cliframe_alterar_excluir->msg_vazio  = "Cadastre o item e após, suas dotações";

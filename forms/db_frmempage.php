@@ -52,11 +52,11 @@ if(isset($dbwhere) && $dbwhere != ''){
   $result05  = $clempagetipo->sql_record($clempagetipo->sql_query(null,"e83_conta, e83_codtipo as codtipo, e83_descr, c61_codigo","e83_conta"));
 }
 $numrows05 = $clempagetipo->numrows;
-$arr = array();
+$arr = [];
 $arr['0']="Nenhum";
 for($r=0; $r<$numrows05; $r++){
   db_fieldsmemory($result05,$r);
-  $arr[$codtipo] = $e83_conta." - ".$e83_descr . " - " . str_pad($c61_codigo, 4, "0", STR_PAD_LEFT);
+  $arr[$codtipo] = $e83_conta." - ".$e83_descr . " - " . str_pad((string) $c61_codigo, 4, "0", STR_PAD_LEFT);
 }
 
 
@@ -339,7 +339,7 @@ if(empty($atualizar)){
   $e83_codtipo ='0';
 }	  
 $recursos = "proprios";
-$ar = array("proprios"=>"Próprios","todos"=>"Todos");
+$ar = ["proprios"=>"Próprios","todos"=>"Todos"];
 db_select("recursos",$ar,true,1);
 ?>
 </td>
@@ -348,7 +348,7 @@ db_select("recursos",$ar,true,1);
 <td><b>Ordens</b></td>
 <td > 
 <?php      
-$xy = array("t"=>"Todas","s"=>"Selecionadas","n"=>"Não selecionadas");
+$xy = ["t"=>"Todas","s"=>"Selecionadas","n"=>"Não selecionadas"];
 db_select('ordens',$xy,true,1);
 //db_select('ordens',$xy,true,1,"onchange='js_troca();'");
 ?>     

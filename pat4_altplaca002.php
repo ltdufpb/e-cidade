@@ -35,8 +35,8 @@ include(modification("classes/db_bensplaca_classe.php"));
 include(modification("classes/db_cfpatriplaca_classe.php"));
 include(modification("classes/db_histbensocorrencia_classe.php"));
 
-parse_str ( $HTTP_SERVER_VARS ["QUERY_STRING"] );
-db_postmemory ( $HTTP_POST_VARS );
+parse_str ( (string) $_SERVER ["QUERY_STRING"], $result );
+db_postmemory ( $_POST );
 
 $clbensplaca = new cl_bensplaca ();
 $clbens = new cl_bens ();
@@ -60,7 +60,7 @@ if (isset ( $alterar )) {
     $erro_msg = _M('patrimonial.patrimonio.db_frmaltplaca.novo_sequencial_placa_igual_atual');
   }
 
-  if (trim ( @$t52_ident ) == "0") {
+  if (trim ( (string) @$t52_ident ) == "0") {
     
     $clbens->erro_campo = "t52_ident";
     $sqlerro = true;
@@ -85,7 +85,7 @@ if (isset ( $alterar )) {
       
       db_fieldsmemory ( $result, 0 );
       
-      if ($t07_obrigplaca == "t" && strlen ( trim ( @$t52_ident ) ) == 0) {
+      if ($t07_obrigplaca == "t" && strlen ( trim ( (string) @$t52_ident ) ) == 0) {
         
         $clbens->erro_campo = "t52_ident";
         $sqlerro = true;
@@ -114,7 +114,7 @@ if (isset ( $alterar )) {
           
           $placaseq = $t52_ident;
           
-          if (strlen ( trim ( $placaseq ) ) > 0) {
+          if (strlen ( trim ( (string) $placaseq ) ) > 0) {
             
             $sWhereInstituicao = null;
             
@@ -141,7 +141,7 @@ if (isset ( $alterar )) {
    */
   if ($sqlerro == false) {
     
-    if (strlen ( trim ( $placa ) ) > 0 && strlen ( trim ( $placaseq ) ) > 0) {
+    if (strlen ( trim ( (string) $placa ) ) > 0 && strlen ( trim ( (string) $placaseq ) ) > 0) {
       $where .= "t41_placa='$placa' and t41_placaseq=$placaseq ";
     } else {
       $where = "";
@@ -168,7 +168,7 @@ if (isset ( $alterar )) {
   
   if ($sqlerro == false) {
     
-    if (strlen ( trim ( @$placaseq ) ) == 0) {
+    if (strlen ( trim ( (string) @$placaseq ) ) == 0) {
       $placaseq = "0";
     }
     
@@ -310,19 +310,19 @@ if (isset ( $alterar )) {
         if ($t07_confplaca == 1) {
           db_msgbox ( _M('patrimonial.patrimonio.db_frmaltplaca.nova_placa', $sParms));
         } else if ($t07_confplaca == 2) {
-          
+
           $sParms->nPlacaseqFormatada = db_formatar ( $placaseq, 'f', '0', $t07_digseqplaca, 'e', 0 );
           db_msgbox ( _M('patrimonial.patrimonio.db_frmaltplaca.nova_placa_formatada', $sParms));
           //db_msgbox ( "A nova placa do bem :" . $placa . db_formatar ( $placaseq, 'f', '0', $t07_digseqplaca, 'e', 0 ) );
           
         } else if ($t07_confplaca == 3) {
-          
+
           $sParms->nPlacaseqFormatada = db_formatar ( $placaseq, 'f', '0', $t07_digseqplaca, 'e', 0 );
           db_msgbox ( _M('patrimonial.patrimonio.db_frmaltplaca.nova_placa_formatada', $sParms));
           //db_msgbox ( "A nova placa do bem :" . $placa . db_formatar ( $placaseq, 'f', '0', $t07_digseqplaca, 'e', 0 ) );
           
         } else if ($t07_confplaca == 4) {
-          if (strlen ( trim ( $t52_ident ) ) > 0) {
+          if (strlen ( trim ( (string) $t52_ident ) ) > 0) {
             $msg = _M('patrimonial.patrimonio.db_frmaltplaca.nova_placa', $sParms);
           } else {
             $msg = _M('patrimonial.patrimonio.db_frmaltplaca.informe_nova_placa');

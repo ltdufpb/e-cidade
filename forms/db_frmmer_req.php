@@ -42,7 +42,7 @@ if (isset($opcao) && $opcao=="alterar") {
 } 
 
 ?>
-<form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>">
+<form name="form1" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>">
 <br><br><br>
 <table>
   <tr>
@@ -138,13 +138,13 @@ if (isset($opcao) && $opcao=="alterar") {
   <tr>
     <td valign="top"> 
     <?php 
-     $chavepri= array( "m40_codigo"=>@$m40_codigo,
+     $chavepri= [ "m40_codigo"=>@$m40_codigo,
                        "m41_codigo"=>@$m41_codigo,
                        "m41_obs"=>@$m41_obs,
                        "m41_quant"=>@$m41_quant,
                        "m41_codmatmater"=>@$m41_codmatmater,
                        "m60_descr"=>@$m60_descr
-                     );
+                     ];
      $cliframe_alterar_excluir->chavepri=$chavepri;
      if (isset($m40_codigo)&&@$m40_codigo!="") {
         $cliframe_alterar_excluir->sql = $clmatrequiitem->sql_query(null,'*',null,"m41_codmatrequi=$m40_codigo");

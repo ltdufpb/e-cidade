@@ -76,9 +76,9 @@ $clRotulo->label('q104_anousu');
                 </td>
                 <td>
                   <?php 
-                    $aTipoReg = array( 1=>"Todos Registros",
+                    $aTipoReg = [ 1=>"Todos Registros",
 								                       2=>"Apenas Registros com Inconsistênca",
-								                       3=>"Apenas Registros sem Inconsistênca" );
+								                       3=>"Apenas Registros sem Inconsistênca" ];
 								                    
                     db_select('tiporeg',$aTipoReg,true,1," style='width:350px;' ");
                   ?>
@@ -92,9 +92,9 @@ $clRotulo->label('q104_anousu');
                 </td>
                 <td>
                   <?php 
-                    $aSituacao = array( 1=>"Todos Registros",
+                    $aSituacao = [ 1=>"Todos Registros",
 		                                    2=>"Apenas Registros Processados",
-		                                    3=>"Apenas Registros Descartados" );
+		                                    3=>"Apenas Registros Descartados" ];
                                     
                     db_select('situacao',$aSituacao,true,1," style='width:350px;' ");
                   ?>
@@ -108,9 +108,9 @@ $clRotulo->label('q104_anousu');
                 </td>
                 <td>
                   <?php 
-                    $aPosicaoAtual = array( 1=>"Todos Registros",
+                    $aPosicaoAtual = [ 1=>"Todos Registros",
 				                                    2=>"Apenas Registros Pendentes para Processamento",
-				                                    3=>"Apenas Registros Processados" );
+				                                    3=>"Apenas Registros Processados" ];
                                     
                     db_select('posicaoatual',$aPosicaoAtual,true,1," style='width:350px;' ");
                   ?>

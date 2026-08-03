@@ -68,7 +68,7 @@ try {
   $oParametrosSoap->location = "http://swp10:8080/wsged/services/GED?wsdl";
   $oSoapClient               = new SoapClient(null, (array)$oParametrosSoap);
   $sNomeMetodo               = "";
-  $aParametrosMetodo         = array();
+  $aParametrosMetodo         = [];
   $oResposta                 = $oSoapClient->indexarArquivo("/mnt/nfs/".$sCaminhoInterno, $sJson);
 
   echo BR . "--------------------- INICIO RESPOSTA ---------------------";

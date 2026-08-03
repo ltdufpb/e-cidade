@@ -13,11 +13,9 @@ class DepartamentoFactory
      */
     public static function getValidador($tipo)
     {
-        switch ($tipo) {
-            case 'unidade':
-                return new ValidaUnidadeService;
-            default:
-                throw new \Exception('Erro ao validar departamento logado. Informe um tipo valido!');
-        }
+        return match ($tipo) {
+            'unidade' => new ValidaUnidadeService,
+            default => throw new \Exception('Erro ao validar departamento logado. Informe um tipo valido!'),
+        };
     }
 }

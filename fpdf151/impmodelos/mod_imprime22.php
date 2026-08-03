@@ -68,13 +68,13 @@
 	
 	for($i = 0;$i < $this->linhasdadospagto ;$i++) {
 	   $this->objpdf->setx(17);
-	   $this->objpdf->cell(5,4,trim(pg_result($this->recorddadospagto,$i,$this->receita)),0,0,"C",0);
-           if ( trim(pg_result($this->recorddadospagto,$i,$this->ddreceita) ) == ''){
-     		$this->objpdf->cell(70,4,trim(pg_result($this->recorddadospagto,$i,$this->dreceita)),0,0,"L",0);
+	   $this->objpdf->cell(5,4,trim(pg_fetch_result($this->recorddadospagto,$i,$this->receita)),0,0,"C",0);
+           if ( trim(pg_fetch_result($this->recorddadospagto,$i,$this->ddreceita) ) == ''){
+     		$this->objpdf->cell(70,4,trim(pg_fetch_result($this->recorddadospagto,$i,$this->dreceita)),0,0,"L",0);
            }else{ 
-		$this->objpdf->cell(70,4,trim(pg_result($this->recorddadospagto,$i,$this->ddreceita)),0,0,"L",0);
+		$this->objpdf->cell(70,4,trim(pg_fetch_result($this->recorddadospagto,$i,$this->ddreceita)),0,0,"L",0);
            }
-	   $this->objpdf->cell(15,4,db_formatar(pg_result($this->recorddadospagto,$i,$this->valor),'f'),0,1,"R",0);
+	   $this->objpdf->cell(15,4,db_formatar(pg_fetch_result($this->recorddadospagto,$i,$this->valor),'f'),0,1,"R",0);
 	}
 
 	/*

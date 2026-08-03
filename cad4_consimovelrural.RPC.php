@@ -51,7 +51,7 @@ try {
                 throw new Exception("Matrícula não informada.");
             }
 
-            $retorno->isencoes = array();
+            $retorno->isencoes = [];
 
             $oDaoIsencao = new cl_iptuisen();
             $rsIptuisen = db_query($oDaoIsencao->sql_query_file("", "*", "", "j46_matric = $parametros->matricula"));
@@ -74,7 +74,7 @@ try {
                 throw new Exception("Matrícula não informada.");
             }
 
-            $retorno->outrosPropri = array();
+            $retorno->outrosPropri = [];
 
             $oDaoPercPosseRural = new cl_percposserural();
             $campos = "j166_sequencial, j166_numcgm, z01_nome, j166_percentual";

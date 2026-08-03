@@ -35,7 +35,7 @@ include(modification("libs/db_libcontabilidade.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplanoexe_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clconplanoexe = new cl_conplanoexe;
 
@@ -46,7 +46,7 @@ if (isset ($reimporta) || isset ($zeraimporta)) {
 
 	$result = db_planocontassaldo_matriz((db_getsession("DB_anousu") - 1), (db_getsession("DB_anousu") - 1).'-01-01', (db_getsession("DB_anousu") - 1).'-12-31', false, ' c61_instit = '.db_getsession("DB_instit"), '', false);
 
-	$numrows = pg_numrows($result);
+	$numrows = pg_num_rows($result);
 	//db_criatabela($result);exit;
 
 	if ($numrows > 0) {

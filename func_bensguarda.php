@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensguarda_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbensguarda = new cl_bensguarda;
 $clbensguarda->rotulo->label("t21_codigo");
 $clbensguarda->rotulo->label("t21_codigo");
@@ -87,9 +87,9 @@ $clbensguarda->rotulo->label("t21_codigo");
         }else{
             $sql = $clbensguarda->sql_query("",$campos,"t21_codigo","$where_instit");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t21_codigo)){
-          $repassa = array("chave_t21_codigo"=>$chave_t21_codigo);
+          $repassa = ["chave_t21_codigo"=>$chave_t21_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

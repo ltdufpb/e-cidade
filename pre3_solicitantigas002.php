@@ -54,7 +54,7 @@ input {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC">
 
 <?php 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $query = "SELECT 
 w11_revisado as \"Revisado\",

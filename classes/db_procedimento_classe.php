@@ -3,28 +3,28 @@
 //CLASSE DA ENTIDADE procedimento
 class cl_procedimento {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed40_i_codigo = 0;
-   var $ed40_i_formaavaliacao = 0;
-   var $ed40_c_descr = null;
-   var $ed40_i_percfreq = 0;
-   var $ed40_c_contrfreqmpd = null;
-   var $ed40_i_calcfreq = 0;
-   var $ed40_desativado = 'f';
+   public $ed40_i_codigo = 0;
+   public $ed40_i_formaavaliacao = 0;
+   public $ed40_c_descr = null;
+   public $ed40_i_percfreq = 0;
+   public $ed40_c_contrfreqmpd = null;
+   public $ed40_i_calcfreq = 0;
+   public $ed40_desativado = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed40_i_codigo = int8 = Código
                  ed40_i_formaavaliacao = int8 = Forma de Avaliação
                  ed40_c_descr = char(40) = Descrição
@@ -34,10 +34,10 @@ class cl_procedimento {
                  ed40_desativado = bool = Desativado
                  ";
    //funcao construtor da classe
-   function cl_procedimento() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procedimento");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -129,10 +129,10 @@ class cl_procedimento {
          $this->erro_status = "0";
          return false;
        }
-       $this->ed40_i_codigo = pg_result($result,0,0);
+       $this->ed40_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from procedimento_ed40_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed40_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed40_i_codigo)){
          $this->erro_sql = " Campo ed40_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -172,7 +172,7 @@ class cl_procedimento {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Procedimento de Avaliação ($this->ed40_i_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Procedimento de Avaliação já Cadastrado";
@@ -201,16 +201,16 @@ class cl_procedimento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008436,'$this->ed40_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010074,1008436,'','".AddSlashes(pg_result($resaco,0,'ed40_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010074,1008437,'','".AddSlashes(pg_result($resaco,0,'ed40_i_formaavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010074,1008438,'','".AddSlashes(pg_result($resaco,0,'ed40_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010074,1008439,'','".AddSlashes(pg_result($resaco,0,'ed40_i_percfreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010074,1008440,'','".AddSlashes(pg_result($resaco,0,'ed40_c_contrfreqmpd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010074,14662,'','".AddSlashes(pg_result($resaco,0,'ed40_i_calcfreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010074,22147,'','".AddSlashes(pg_result($resaco,0,'ed40_desativado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010074,1008436,'','".AddSlashes(pg_fetch_result($resaco,0,'ed40_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010074,1008437,'','".AddSlashes(pg_fetch_result($resaco,0,'ed40_i_formaavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010074,1008438,'','".AddSlashes(pg_fetch_result($resaco,0,'ed40_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010074,1008439,'','".AddSlashes(pg_fetch_result($resaco,0,'ed40_i_percfreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010074,1008440,'','".AddSlashes(pg_fetch_result($resaco,0,'ed40_c_contrfreqmpd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010074,14662,'','".AddSlashes(pg_fetch_result($resaco,0,'ed40_i_calcfreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010074,22147,'','".AddSlashes(pg_fetch_result($resaco,0,'ed40_desativado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -220,10 +220,10 @@ class cl_procedimento {
       $this->atualizacampos();
      $sql = " update procedimento set ";
      $virgula = "";
-     if(trim($this->ed40_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_codigo"])){
+     if(trim((string) $this->ed40_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_codigo"])){
        $sql  .= $virgula." ed40_i_codigo = $this->ed40_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed40_i_codigo) == null ){
+       if(trim((string) $this->ed40_i_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed40_i_codigo";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_procedimento {
          return false;
        }
      }
-     if(trim($this->ed40_i_formaavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_formaavaliacao"])){
+     if(trim((string) $this->ed40_i_formaavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_formaavaliacao"])){
        $sql  .= $virgula." ed40_i_formaavaliacao = $this->ed40_i_formaavaliacao ";
        $virgula = ",";
-       if(trim($this->ed40_i_formaavaliacao) == null ){
+       if(trim((string) $this->ed40_i_formaavaliacao) == null ){
          $this->erro_sql = " Campo Forma de Avaliação não informado.";
          $this->erro_campo = "ed40_i_formaavaliacao";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_procedimento {
          return false;
        }
      }
-     if(trim($this->ed40_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_c_descr"])){
+     if(trim((string) $this->ed40_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_c_descr"])){
        $sql  .= $virgula." ed40_c_descr = '$this->ed40_c_descr' ";
        $virgula = ",";
-       if(trim($this->ed40_c_descr) == null ){
+       if(trim((string) $this->ed40_c_descr) == null ){
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "ed40_c_descr";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_procedimento {
          return false;
        }
      }
-     if(trim($this->ed40_i_percfreq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_percfreq"])){
+     if(trim((string) $this->ed40_i_percfreq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_percfreq"])){
        $sql  .= $virgula." ed40_i_percfreq = $this->ed40_i_percfreq ";
        $virgula = ",";
-       if(trim($this->ed40_i_percfreq) == null ){
+       if(trim((string) $this->ed40_i_percfreq) == null ){
          $this->erro_sql = " Campo Frequencia Mínima para Aprovação não informado.";
          $this->erro_campo = "ed40_i_percfreq";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_procedimento {
          return false;
        }
      }
-     if(trim($this->ed40_c_contrfreqmpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_c_contrfreqmpd"])){
+     if(trim((string) $this->ed40_c_contrfreqmpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_c_contrfreqmpd"])){
        $sql  .= $virgula." ed40_c_contrfreqmpd = '$this->ed40_c_contrfreqmpd' ";
        $virgula = ",";
-       if(trim($this->ed40_c_contrfreqmpd) == null ){
+       if(trim((string) $this->ed40_c_contrfreqmpd) == null ){
          $this->erro_sql = " Campo Controle de Frequência não informado.";
          $this->erro_campo = "ed40_c_contrfreqmpd";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_procedimento {
          return false;
        }
      }
-     if(trim($this->ed40_i_calcfreq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_calcfreq"])){
+     if(trim((string) $this->ed40_i_calcfreq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_calcfreq"])){
        $sql  .= $virgula." ed40_i_calcfreq = $this->ed40_i_calcfreq ";
        $virgula = ",";
-       if(trim($this->ed40_i_calcfreq) == null ){
+       if(trim((string) $this->ed40_i_calcfreq) == null ){
          $this->erro_sql = " Campo Cálculo da Frequência não informado.";
          $this->erro_campo = "ed40_i_calcfreq";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_procedimento {
          return false;
        }
      }
-     if(trim($this->ed40_desativado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_desativado"])){
+     if(trim((string) $this->ed40_desativado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed40_desativado"])){
        $sql  .= $virgula." ed40_desativado = '$this->ed40_desativado' ";
        $virgula = ",";
-       if(trim($this->ed40_desativado) == null ){
+       if(trim((string) $this->ed40_desativado) == null ){
          $this->erro_sql = " Campo Desativado não informado.";
          $this->erro_campo = "ed40_desativado";
          $this->erro_banco = "";
@@ -325,23 +325,23 @@ class cl_procedimento {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1008436,'$this->ed40_i_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_codigo"]) || $this->ed40_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010074,1008436,'".AddSlashes(pg_result($resaco,$conresaco,'ed40_i_codigo'))."','$this->ed40_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010074,1008436,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed40_i_codigo'))."','$this->ed40_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_formaavaliacao"]) || $this->ed40_i_formaavaliacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010074,1008437,'".AddSlashes(pg_result($resaco,$conresaco,'ed40_i_formaavaliacao'))."','$this->ed40_i_formaavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010074,1008437,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed40_i_formaavaliacao'))."','$this->ed40_i_formaavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed40_c_descr"]) || $this->ed40_c_descr != "")
-             $resac = db_query("insert into db_acount values($acount,1010074,1008438,'".AddSlashes(pg_result($resaco,$conresaco,'ed40_c_descr'))."','$this->ed40_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010074,1008438,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed40_c_descr'))."','$this->ed40_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_percfreq"]) || $this->ed40_i_percfreq != "")
-             $resac = db_query("insert into db_acount values($acount,1010074,1008439,'".AddSlashes(pg_result($resaco,$conresaco,'ed40_i_percfreq'))."','$this->ed40_i_percfreq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010074,1008439,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed40_i_percfreq'))."','$this->ed40_i_percfreq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed40_c_contrfreqmpd"]) || $this->ed40_c_contrfreqmpd != "")
-             $resac = db_query("insert into db_acount values($acount,1010074,1008440,'".AddSlashes(pg_result($resaco,$conresaco,'ed40_c_contrfreqmpd'))."','$this->ed40_c_contrfreqmpd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010074,1008440,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed40_c_contrfreqmpd'))."','$this->ed40_c_contrfreqmpd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed40_i_calcfreq"]) || $this->ed40_i_calcfreq != "")
-             $resac = db_query("insert into db_acount values($acount,1010074,14662,'".AddSlashes(pg_result($resaco,$conresaco,'ed40_i_calcfreq'))."','$this->ed40_i_calcfreq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010074,14662,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed40_i_calcfreq'))."','$this->ed40_i_calcfreq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed40_desativado"]) || $this->ed40_desativado != "")
-             $resac = db_query("insert into db_acount values($acount,1010074,22147,'".AddSlashes(pg_result($resaco,$conresaco,'ed40_desativado'))."','$this->ed40_desativado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010074,22147,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed40_desativado'))."','$this->ed40_desativado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -395,16 +395,16 @@ class cl_procedimento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1008436,'$ed40_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010074,1008436,'','".AddSlashes(pg_result($resaco,$iresaco,'ed40_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010074,1008437,'','".AddSlashes(pg_result($resaco,$iresaco,'ed40_i_formaavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010074,1008438,'','".AddSlashes(pg_result($resaco,$iresaco,'ed40_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010074,1008439,'','".AddSlashes(pg_result($resaco,$iresaco,'ed40_i_percfreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010074,1008440,'','".AddSlashes(pg_result($resaco,$iresaco,'ed40_c_contrfreqmpd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010074,14662,'','".AddSlashes(pg_result($resaco,$iresaco,'ed40_i_calcfreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010074,22147,'','".AddSlashes(pg_result($resaco,$iresaco,'ed40_desativado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010074,1008436,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed40_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010074,1008437,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed40_i_formaavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010074,1008438,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed40_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010074,1008439,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed40_i_percfreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010074,1008440,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed40_c_contrfreqmpd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010074,14662,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed40_i_calcfreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010074,22147,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed40_desativado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -522,7 +522,7 @@ class cl_procedimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -559,7 +559,7 @@ class cl_procedimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -593,7 +593,7 @@ class cl_procedimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -59,7 +59,7 @@ try {
 
       $rsRubricas = $oDaoExcecaoRubrica->sql_record($sSql);
 
-      $oRetorno->aRubricas = array();
+      $oRetorno->aRubricas = [];
 
       if ($oDaoExcecaoRubrica->numrows > 0) {
         $oRetorno->aRubricas = db_utils::getCollectionByRecord($rsRubricas, false, false, true);
@@ -70,7 +70,7 @@ try {
     case "validaRubricasSelecionadas":
 
       $sWhereRubricas     = '';
-      $aRubricas          = array();
+      $aRubricas          = [];
       $iTipoFolha         = $oParametros->iTipoFolha;
       $iExcecaoRegra      = $oParametros->iExcecaoRegra;
       $aRubricas          = $oParametros->aRubricasSelecionadas;
@@ -89,7 +89,7 @@ try {
       $sSql       = $oDaoExcecaoRubrica->sql_query( null, 'rh74_rubric', null, $sWhere );
       $rsRubricas = $oDaoExcecaoRubrica->sql_record( $sSql );
 
-      $oRetorno->aRubricasConflitantes = array();
+      $oRetorno->aRubricasConflitantes = [];
 
       $oRetorno->lExisteRegra   = false;
       if ( $oDaoExcecaoRubrica->numrows > 0 ) {
@@ -117,13 +117,13 @@ try {
 
       $oRetorno->oDadoRegra = db_utils::fieldsMemory($rsRegra, 0, false, false, true);
 
-      $aTipoFolha = Array( "0" => "Todos",
+      $aTipoFolha = [ "0" => "Todos",
                            "1" => "Salário",
                            "2" => "Complementar",
                            "3" => "Recisão",
                            "4" => "13º Salário",
                            "5" => "Adiantamento"
-                           );
+                           ];
       $oRetorno->oDadoRegra->sTipoFolha = urlencode($aTipoFolha[$oRetorno->oDadoRegra->rh74_tipofolha]);
 
     break;
@@ -171,7 +171,7 @@ try {
         /**
          * Array que irá conter as exceções que devem ser alteradas
          */
-        $aExcecaoRubrica = array();
+        $aExcecaoRubrica = [];
 
         /**
          * Busca as Exceções que devem ser alteradas

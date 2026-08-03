@@ -43,7 +43,7 @@ class ExameRepository {
    * Array com os Exame
    * @var array
    */
-  private $aExame = array();
+  private $aExame = [];
 
   /**
    * Instância da classe

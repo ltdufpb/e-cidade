@@ -64,7 +64,7 @@ db_input('c91_anousudestino',5,$Ic91_anousudestino,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Despesa','2'=>'Receita');
+$x = ['1'=>'Despesa','2'=>'Receita'];
 db_select('o75_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -125,7 +125,7 @@ db_input('o75_valorduplicar',5,$Io75_valorduplicar,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('o75_importar',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -166,7 +166,7 @@ function js_preenchepesquisa(chave){
   db_iframe_orcduplicacao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

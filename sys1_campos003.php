@@ -28,7 +28,7 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 <html>
 <head>
@@ -76,11 +76,11 @@ input {
 <td>
 <?php 
 $result = db_query("select codcam,nomecam from db_syscampo where nomecam like '$campo%'");
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 if($numrows > 0) {
   echo "<select name=\"voltacampo\" size=\"15\" style=\"width:200px\">\n";
   for($i = 0;$i < $numrows;$i++) {
-    echo "<option value=\"".pg_result($result,$i,"codcam")."\">".pg_result($result,$i,"nomecam")."</option>\n";
+    echo "<option value=\"".pg_fetch_result($result,$i,"codcam")."\">".pg_fetch_result($result,$i,"nomecam")."</option>\n";
   }
   echo "</select>\n";
 } else {

@@ -73,7 +73,7 @@ foreach ($oBensSemDepreciacao as $iIndiceBens => $oBens) {
   }
   $oPdf->SetFont("arial", "", 7);
   $oPdf->Cell(30,  $iHeigth, $oBens->t52_bem, "TB", 0);
-  $oPdf->Cell(100, $iHeigth, substr($oBens->t52_descr, 0, 64), "TB", 0);
+  $oPdf->Cell(100, $iHeigth, substr((string) $oBens->t52_descr, 0, 64), "TB", 0);
   $oPdf->Cell(30,  $iHeigth, $oBens->t41_placa . $oBens->t41_placaseq, "TB", 0);
   $oPdf->Cell(30,  $iHeigth, $oBens->t64_class, "TB", 1);
 }

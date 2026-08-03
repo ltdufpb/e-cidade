@@ -29,9 +29,9 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("dbforms/db_funcoes.php"));
-if(isset($HTTP_POST_VARS["atualizar"])) {
+if(isset($_POST["atualizar"])) {
   @$ag40_horafimate = date("H:i");
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   if(!checkdate($ag40_data_mes,$ag40_data_dia,$ag40_data_ano))
     db_erro("Erro(10) Data Inválida");
   else
@@ -46,9 +46,9 @@ if(isset($HTTP_POST_VARS["atualizar"])) {
   $codmed = trim(db_getsession("codmed"));
   $codmed = db_formatar($codmed,"s"," ",6);
   $result = db_query("select ag40_codigo from atendmed where ag40_codigo = $codigo");  
-  if(pg_numrows($result) == 0) {    
+  if(pg_num_rows($result) == 0) {    
     $result = db_query("select nextval('atendmed_ag40_codate_seq')");
-	$codate = pg_result($result,0,0);
+	$codate = pg_fetch_result($result,0,0);
     db_query("insert into atendmed(ag40_codate,
 	                              ag40_codigo,
                                   ag40_data,
@@ -222,7 +222,7 @@ function js_verificar() {
 	$result = db_query("select *,to_char(ag40_data,'DD') as ag40_data_dia,to_char(ag40_data,'MM') as ag40_data_mes,to_char(ag40_data,'YYYY') as ag40_data_ano 
 	                   from atendmed 
 					   where ag40_codigo = ".db_getsession("COD_atendimento"));
-	if(pg_numrows($result) > 0)
+	if(pg_num_rows($result) > 0)
 	  db_fieldsmemory($result,0);
 	else {
 	  $ag40_data_dia = date("d");
@@ -231,17 +231,17 @@ function js_verificar() {
 	  //$ag40_hora = date("H:i");
 	}
 	$result = db_query("select ag30_hora from agenate where ag30_codigo = ".db_getsession("COD_atendimento"));
-	if(pg_numrows($result) > 0)
-	  $ag40_hora = pg_result($result,0,0);
+	if(pg_num_rows($result) > 0)
+	  $ag40_hora = pg_fetch_result($result,0,0);
 	if(db_getsession("w03_codigo") != "") {
 	  $sql = "select w03_obsmed from depen where w03_codigo = '".db_formatar(db_getsession("w03_codigo"),"s"," ",6)."'";
 	  $result = db_query($sql);
-	  if(pg_numrows($result) > 0)
-	    $obsmed = pg_result($result,0,0);
+	  if(pg_num_rows($result) > 0)
+	    $obsmed = pg_fetch_result($result,0,0);
     } else if(db_getsession("w01_regist") != "") {
 	  $result = db_query("select w01_obsmed from cadastro where w01_regist = '".db_formatar(db_getsession("w01_regist"),"s"," ",6)."'");
-      if(pg_numrows($result) > 0)
-	    $obsmed = pg_result($result,0,0);
+      if(pg_num_rows($result) > 0)
+	    $obsmed = pg_fetch_result($result,0,0);
 	}
 	?>
 	<form name="form1" method="post">

@@ -70,8 +70,8 @@ require_once (modification("classes/db_orcparametro_classe.php"));
 require_once (modification("classes/db_db_config_classe.php"));
 //require_once (modification("classes/empenho.php"));
 $tipo_rateio = 0;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $cldownload = new cl_download;
 $cldb_config = new cl_db_config;
@@ -89,8 +89,8 @@ if ($cldb_config->numrows > 0) {
 
 	$instituicoes[0] = "0000";
 	for ($i = 0; $i < $cldb_config->numrows; $i ++) {
-		$instituicoes[pg_result($resinst, $i, 'codigo')] = pg_result($resinst, $i, 'codtrib');
-		$instit .= $separa.pg_result($resinst, $i, 'codigo');
+		$instituicoes[pg_fetch_result($resinst, $i, 'codigo')] = pg_fetch_result($resinst, $i, 'codtrib');
+		$instit .= $separa.pg_fetch_result($resinst, $i, 'codigo');
 		$separa = ",";
 	}
 
@@ -103,20 +103,20 @@ if ($cldb_config->numrows > 0) {
 		echo "instituição : $instit  ...<br>";
 		echo "Período : ".db_formatar($data_ini, "d")." à ".db_formatar($data_fim, "d")."<br>";
 		echo "Arquivos     : </font>";
-		$matriz = explode('.', $lista);
+		$matriz = explode('.', (string) $lista);
 		flush();
 
 		if (count($matriz) > 1) {
 			// monta header
 			$res = db_query("select nomeinst,cgc from db_config where codigo=".db_getsession("DB_instit"));
 			db_fieldsmemory($res, 0);
-			$ini = split("-", $data_ini);
+			$ini = preg_split("#\\-#m", (string) $data_ini);
 			$ini = "$ini[2]$ini[1]$ini[0]";
-			$fim = split("-", $data_fim);
+			$fim = preg_split("#\\-#m", (string) $data_fim);
 			$fim = "$fim[2]$fim[1]$fim[0]";
-			$dt = split("-", $data_pro);
+			$dt = preg_split("#\\-#m", (string) $data_pro);
 			$dt = "$dt[2]$dt[1]$dt[0]";
-			$header = formatar($cgc, 14, 'n').$ini.$fim.$dt.formatar($nomeinst, 80, 'c');
+			$header = formatar($cgc, 14).$ini.$fim.$dt.formatar($nomeinst, 80);
 
 			// verifica se o orcamento foi feito no elemento ou subelemento
 			$clorcparametro = new cl_orcparametro;

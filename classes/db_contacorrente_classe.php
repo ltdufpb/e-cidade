@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE contacorrente
 class cl_contacorrente {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $c17_sequencial = 0;
-   var $c17_contacorrente = null;
-   var $c17_descricao = null;
+   public $c17_sequencial = 0;
+   public $c17_contacorrente = null;
+   public $c17_descricao = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  c17_sequencial = int4 = Código
                  c17_contacorrente = varchar(10) = Conta
                  c17_descricao = varchar(200) = Descricao
                  ";
    //funcao construtor da classe
-   function cl_contacorrente() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contacorrente");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -107,10 +107,10 @@ class cl_contacorrente {
          $this->erro_status = "0";
          return false;
        }
-       $this->c17_sequencial = pg_result($result,0,0);
+       $this->c17_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from contacorrente_c17_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c17_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c17_sequencial)){
          $this->erro_sql = " Campo c17_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_contacorrente {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Conta Corrente ($this->c17_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Conta Corrente já Cadastrado";
@@ -169,12 +169,12 @@ class cl_contacorrente {
        $resaco = $this->sql_record($this->sql_query_file($this->c17_sequencial));
        if(($resaco!=false)||($this->numrows!=0)){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18622,'$this->c17_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3297,18622,'','".AddSlashes(pg_result($resaco,0,'c17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3297,18623,'','".AddSlashes(pg_result($resaco,0,'c17_contacorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3297,18624,'','".AddSlashes(pg_result($resaco,0,'c17_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3297,18622,'','".AddSlashes(pg_fetch_result($resaco,0,'c17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3297,18623,'','".AddSlashes(pg_fetch_result($resaco,0,'c17_contacorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3297,18624,'','".AddSlashes(pg_fetch_result($resaco,0,'c17_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -184,10 +184,10 @@ class cl_contacorrente {
       $this->atualizacampos();
      $sql = " update contacorrente set ";
      $virgula = "";
-     if(trim($this->c17_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c17_sequencial"])){
+     if(trim((string) $this->c17_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c17_sequencial"])){
        $sql  .= $virgula." c17_sequencial = $this->c17_sequencial ";
        $virgula = ",";
-       if(trim($this->c17_sequencial) == null ){
+       if(trim((string) $this->c17_sequencial) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "c17_sequencial";
          $this->erro_banco = "";
@@ -197,10 +197,10 @@ class cl_contacorrente {
          return false;
        }
      }
-     if(trim($this->c17_contacorrente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c17_contacorrente"])){
+     if(trim((string) $this->c17_contacorrente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c17_contacorrente"])){
        $sql  .= $virgula." c17_contacorrente = '$this->c17_contacorrente' ";
        $virgula = ",";
-       if(trim($this->c17_contacorrente) == null ){
+       if(trim((string) $this->c17_contacorrente) == null ){
          $this->erro_sql = " Campo Conta nao Informado.";
          $this->erro_campo = "c17_contacorrente";
          $this->erro_banco = "";
@@ -210,10 +210,10 @@ class cl_contacorrente {
          return false;
        }
      }
-     if(trim($this->c17_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c17_descricao"])){
+     if(trim((string) $this->c17_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c17_descricao"])){
        $sql  .= $virgula." c17_descricao = '$this->c17_descricao' ";
        $virgula = ",";
-       if(trim($this->c17_descricao) == null ){
+       if(trim((string) $this->c17_descricao) == null ){
          $this->erro_sql = " Campo Descricao nao Informado.";
          $this->erro_campo = "c17_descricao";
          $this->erro_banco = "";
@@ -234,15 +234,15 @@ class cl_contacorrente {
        if($this->numrows>0){
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,18622,'$this->c17_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c17_sequencial"]) || $this->c17_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3297,18622,'".AddSlashes(pg_result($resaco,$conresaco,'c17_sequencial'))."','$this->c17_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3297,18622,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c17_sequencial'))."','$this->c17_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c17_contacorrente"]) || $this->c17_contacorrente != "")
-             $resac = db_query("insert into db_acount values($acount,3297,18623,'".AddSlashes(pg_result($resaco,$conresaco,'c17_contacorrente'))."','$this->c17_contacorrente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3297,18623,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c17_contacorrente'))."','$this->c17_contacorrente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c17_descricao"]) || $this->c17_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3297,18624,'".AddSlashes(pg_result($resaco,$conresaco,'c17_descricao'))."','$this->c17_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3297,18624,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c17_descricao'))."','$this->c17_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -292,12 +292,12 @@ class cl_contacorrente {
 
          for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,18622,'$c17_sequencial','E')");
-           $resac = db_query("insert into db_acount values($acount,3297,18622,'','".AddSlashes(pg_result($resaco,$iresaco,'c17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3297,18623,'','".AddSlashes(pg_result($resaco,$iresaco,'c17_contacorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3297,18624,'','".AddSlashes(pg_result($resaco,$iresaco,'c17_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3297,18622,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3297,18623,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c17_contacorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3297,18624,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c17_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -358,7 +358,7 @@ class cl_contacorrente {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:contacorrente";
@@ -373,7 +373,7 @@ class cl_contacorrente {
    function sql_query ( $c17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_contacorrente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -407,7 +407,7 @@ class cl_contacorrente {
    function sql_query_file ( $c17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,7 +428,7 @@ class cl_contacorrente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

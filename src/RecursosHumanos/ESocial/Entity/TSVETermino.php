@@ -47,7 +47,7 @@ class TSVETermino
     /**
      * @var ServidorOutrosVinculos[]
      */
-    private $servidorOutrosVinculos = array();
+    private $servidorOutrosVinculos = [];
 
     /**
      * @var ServidorOperadoraSaude[]
@@ -57,7 +57,7 @@ class TSVETermino
     /**
      * @var ServidorProcessosJudiciaisFolha[]
      */
-    private $pocessosJudiciais = array();
+    private $pocessosJudiciais = [];
 
     /**
      * @var Servidor
@@ -67,7 +67,7 @@ class TSVETermino
     /**
      * @var array
      */
-    private $pagamentos = array();
+    private $pagamentos = [];
 
     /**
      * @return ServidorOutrosVinculos[]

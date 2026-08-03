@@ -26,7 +26,7 @@
  */
 
 include(modification("fpdf151/pdf.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $pdf = new PDF("L"); 
 $pdf->Open(); 
 $pdf->AliasNbPages(); 
@@ -61,7 +61,7 @@ group by k00_receit,k02_drecei
 //$exercicio = db_getsession("DB_anousu");
 $sql = "select count(*) from iptucalc where j23_anousu = $exercicio";
 $result = db_query($sql);
-$totcontrib = pg_result($result,0);
+$totcontrib = pg_fetch_result($result,0);
 $sql = "
 select * from
 	(select k00_receit as rec_pago,
@@ -230,7 +230,7 @@ select * from
 	on kk.rec_parc5 = x.rec_pago
        "; 
 $result = db_query($sql);
-$num = pg_numrows($result);
+$num = pg_num_rows($result);
 // j23_matric, z01_nome, percentual, valordb, valorsap, diferenca
 $linha = 60;
 //$pdf->MultiCell(0,4,"teste",0,"J",0,0);
@@ -272,10 +272,10 @@ for($i=0;$i<$num;$i++) {
    $pdf->SetFont('Arial','',7);
    if ($rec_calc != '' ){
       $pdf->cell(15,4,$rec_calc,0,0,"R",$pre);
-      $pdf->cell(60,4,strtoupper($drec_calc),0,0,"L",$pre);
+      $pdf->cell(60,4,strtoupper((string) $drec_calc),0,0,"L",$pre);
    }else{
       $pdf->cell(15,4,$rec_pago,0,0,"R",$pre);
-      $pdf->cell(60,4,strtoupper($drec_pago),0,0,"L",$pre);
+      $pdf->cell(60,4,strtoupper((string) $drec_pago),0,0,"L",$pre);
    }
    $pdf->cell(20,4,db_formatar($valor_calc,'f'),0,0,"R",$pre);
    $pdf->cell(20,4,db_formatar($valor_pago,'f'),0,0,"R",$pre);

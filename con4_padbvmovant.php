@@ -27,12 +27,12 @@
 
 
 class bvmovant {
-  var $arq=null;
+  public $arq=null;
 
-  function bvmovant($header){
+  function __construct($header){
     umask(74);
     $this->arq = fopen("tmp/BVMOVANT.TXT",'w+');
-    fputs($this->arq,$header);
+    fputs($this->arq,(string) $header);
     fputs($this->arq,"\r\n");
 
   }
@@ -184,12 +184,12 @@ class bvmovant {
     GLOBAL $sinal_anterior;
     GLOBAL $sinal_final;
 
-    $work_planomae    = array();
-    $work_planoestrut = array();
-    $work_plano = array();
+    $work_planomae    = [];
+    $work_planoestrut = [];
+    $work_plano = [];
     $seq = 0;
 
-    for($i = 0;$i < pg_numrows($result);$i++){
+    for($i = 0;$i < pg_num_rows($result);$i++){
       //  for($i = 0;$i < 20;$i++)
       db_fieldsmemory($result,$i);
       if($sinal_anterior == "C")
@@ -222,7 +222,7 @@ class bvmovant {
       if ($key === false ) {  // não achou
         $work_planomae[$seq]= $estrut_mae;
         $work_planoestrut[$seq]= $estrut;
-        $work_plano[$seq] =  array(0=>"$c61_reduz",
+        $work_plano[$seq] =  [0=>"$c61_reduz",
                                    1=>"$c61_codcon",
                                    2=>"$c61_codigo",
                                    3=>"$c60_descr",
@@ -243,7 +243,7 @@ class bvmovant {
                                    18=>"$credito_6bin",
                                    19=>"$saldo_final",
                                    20=>"$sinal_anterior",
-                                   21=>"$sinal_final");
+                                   21=>"$sinal_final"];
         $seq = $seq+1;
       }else{
         $work_plano[$key][6] += $tot_anterior;
@@ -270,7 +270,7 @@ class bvmovant {
         if ($key === false ) {  // não achou
           // busca no banco e inclui
           $res = db_query("select c60_descr,c60_finali,c60_codcon from conplano where c60_anousu=".$anousu." and c60_estrut = '$estrutural'");
-          if($res == false || pg_numrows($res) == 0){
+          if($res == false || pg_num_rows($res) == 0){
             db_redireciona("db_erros.php?fechar=true&db_erro=Está faltando cadastrar esse estrutural na contabilidade. Nível : $nivel  Estrutural : $estrutural");
             exit;
           }
@@ -278,7 +278,7 @@ class bvmovant {
 
           $work_planomae[$seq]= $estrutural;
           $work_planoestrut[$seq]= '';
-          $work_plano[$seq] =(array(0=> 0,
+          $work_plano[$seq] =([0=> 0,
                                     1=> 0,
                                     2=>$c60_codcon,
                                     3=>$c60_descr,
@@ -299,7 +299,7 @@ class bvmovant {
                                     18=>$credito_6bin,
                                     19=>$saldo_final,
                                     20=>$sinal_anterior,
-                                    21=>$sinal_final));
+                                    21=>$sinal_final]);
 
 
 
@@ -364,8 +364,8 @@ class bvmovant {
       $c61_reduz,
       $c61_codcon,
       $c61_codigo,
-      '".addslashes($c60_descr)."',
-      '".addslashes($c60_finali)."',
+      '".addslashes((string) $c60_descr)."',
+      '".addslashes((string) $c60_finali)."',
       $c61_instit,
       $saldo_anterior,
       $debito_1bin,
@@ -435,7 +435,7 @@ class bvmovant {
   }
 
 
-  function processa($instit=1,$data_ini="",$data_fim="",$tribinst,$subelemento="") {
+  function processa($instit=1,$data_ini="",$data_fim="",$tribinst = null,$subelemento="") {
     global $instituicoes,$contador,$nomeinst,$sinal_anterior,$sinal_final;
     global $debito_1bin,$debito_2bin,$debito_3bin,$debito_4bin,$debito_5bin,$debito_6bin;
     global $credito_1bin,$credito_2bin,$credito_3bin,$credito_4bin,$credito_5bin,$credito_6bin;
@@ -467,7 +467,7 @@ class bvmovant {
       fputs($this->arq, str_replace("\n\r", "", $sArquivo));
       fputs($this->arq,"\r\n");
 
-      $contador = count(explode("\n",$sArquivo));
+      $contador = count(explode("\n",(string) $sArquivo));
 
     } else {
 
@@ -476,8 +476,8 @@ class bvmovant {
 
       $contador=0;
 
-      $array_teste = array();
-      for($x = 0; $x < pg_numrows($result);$x++){
+      $array_teste = [];
+      for($x = 0; $x < pg_num_rows($result);$x++){
         global $instituicoes,$c61_instit,$c61_reduz,$nivel,$estrutural,$saldo_anterior,$saldo_anterior_debito,$saldo_anterior_credito,$saldo_final,$c60_descr;
         db_fieldsmemory($result,$x);
 
@@ -485,7 +485,7 @@ class bvmovant {
           //db_fieldsmemory($result,$x,true,true);exit;
         }
 
-        $line  = formatar($estrutural,20,'n');
+        $line  = formatar($estrutural,20);
         if($c61_instit == 0 || empty($c61_instit))
           $line .= "0000";
         else
@@ -493,93 +493,93 @@ class bvmovant {
 
         if ($debito_1bin >=0 ) {
           if ($debito_1bin == 7600000) {
-            $line .= formatar(7600000,13,'v');
+            $line .= formatar(7600000,13);
           } else {
-            $line .= formatar($debito_1bin,13,'v');
+            $line .= formatar($debito_1bin,13);
           }
         } else {
-          $line .= "-" .formatar(abs($debito_1bin),12,'v');
+          $line .= "-" .formatar(abs($debito_1bin),12);
         }
 
         if ($credito_1bin >= 0) {
           if ($credito_1bin == 96100000) {
-            $line .= formatar(96100000,13,'v');
+            $line .= formatar(96100000,13);
           } else {
             if ($credito_1bin == 7600000) {
-              $line .= formatar(7600000,13,'v');
+              $line .= formatar(7600000,13);
             } else {
-              $line .= formatar($credito_1bin,13,'v');
+              $line .= formatar($credito_1bin,13);
             }
           }
         } else	   {
-          $line .= "-".formatar(abs($credito_1bin),12,'v');
+          $line .= "-".formatar(abs($credito_1bin),12);
         }
 
 
         if ($debito_2bin >= 0)
-          $line .= formatar($debito_2bin,13,'v');
+          $line .= formatar($debito_2bin,13);
         else
-          $line .= "-".formatar(abs($debito_2bin),12,'v');
+          $line .= "-".formatar(abs($debito_2bin),12);
 
 
         if ($credito_2bin>=0)
-          $line .= formatar($credito_2bin,13,'v');
+          $line .= formatar($credito_2bin,13);
         else
-          $line .= "-".formatar(abs($credito_2bin),12,'v');
+          $line .= "-".formatar(abs($credito_2bin),12);
 
         if ($debito_3bin >= 0)
-          $line .= formatar($debito_3bin,13,'v');
+          $line .= formatar($debito_3bin,13);
         else
-          $line .= "-".formatar(abs($debito_3bin),12,'v');
+          $line .= "-".formatar(abs($debito_3bin),12);
 
 
         if ($credito_3bin>=0)
-          $line .= formatar($credito_3bin,13,'v');
+          $line .= formatar($credito_3bin,13);
         else
-          $line .= "-".formatar(abs($credito_3bin),12,'v');
+          $line .= "-".formatar(abs($credito_3bin),12);
 
         if ($debito_4bin>=0)
-          $line .= formatar($debito_4bin,13,'v');
+          $line .= formatar($debito_4bin,13);
         else
-          $line .= "-".formatar(abs($debito_4bin),12,'v');
+          $line .= "-".formatar(abs($debito_4bin),12);
 
         if ($credito_4bin>=0)
-          $line .= formatar($credito_4bin,13,'v');
+          $line .= formatar($credito_4bin,13);
         else
-          $line .= "-".formatar(abs($credito_4bin),12,'v');
+          $line .= "-".formatar(abs($credito_4bin),12);
 
         if ($debito_5bin>=0)
-          $line .= formatar($debito_5bin,13,'v');
+          $line .= formatar($debito_5bin,13);
         else
-          $line .= "-".formatar(abs($debito_5bin),12,'v');
+          $line .= "-".formatar(abs($debito_5bin),12);
 
         if ($credito_5bin>=0)
-          $line .= formatar($credito_5bin,13,'v');
+          $line .= formatar($credito_5bin,13);
         else
-          $line .= "-".formatar(abs($credito_5bin),12,'v');
+          $line .= "-".formatar(abs($credito_5bin),12);
 
         if ($debito_6bin>=0) {
           if ($debito_6bin == 96100000) {
-            $line .= formatar(96100000,13,'v');
+            $line .= formatar(96100000,13);
           } else {
             if ($debito_6bin == 7600000) {
-              $line .= formatar(7600000,13,'v');
+              $line .= formatar(7600000,13);
             } else {
-              $line .= formatar($debito_6bin,13,'v');
+              $line .= formatar($debito_6bin,13);
             }
           }
         } else {
-          $line .= "-".formatar(abs($debito_6bin),12,'v');
+          $line .= "-".formatar(abs($debito_6bin),12);
         }
 
         if ($credito_6bin>=0) {
           if ($credito_6bin == 7600000) {
-            $line .= formatar(7600000,13,'v');
+            $line .= formatar(7600000,13);
           } else {
-            $line .= formatar($credito_6bin,13,'v');
+            $line .= formatar($credito_6bin,13);
           }
         } else {
-          $line .= "-".formatar(abs($credito_6bin),12,'v');
+          $line .= "-".formatar(abs($credito_6bin),12);
         }
 
         $contador ++;
@@ -591,7 +591,7 @@ class bvmovant {
 
     }
     //  trailer
-    $contador = espaco(10-(strlen($contador)),'0').$contador;
+    $contador = espaco(10-(strlen($contador))).$contador;
     $line = "FINALIZADOR".$contador;
     fputs($this->arq,$line);
     fputs($this->arq,"\r\n");

@@ -44,7 +44,7 @@ class Arquivo
             throw new \Exception('URL inválida.');
         }
 
-        $filename = basename($url);
+        $filename = basename((string) $url);
         $path = 'tmp/' . $filename;
 
         file_put_contents($path, file_get_contents($url));

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_extratosaldo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clextratosaldo = new cl_extratosaldo;
 $clextratosaldo->rotulo->label("k97_sequencial");
 $clextratosaldo->rotulo->label("k97_dtsaldofinal");
@@ -98,9 +98,9 @@ $clextratosaldo->rotulo->label("k97_dtsaldofinal");
         }else{
            $sql = $clextratosaldo->sql_query("",$campos,"k97_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k97_dtsaldofinal)){
-          $repassa = array("chave_k97_sequencial"=>$chave_k97_sequencial,"chave_k97_dtsaldofinal"=>$chave_k97_dtsaldofinal);
+          $repassa = ["chave_k97_sequencial"=>$chave_k97_sequencial,"chave_k97_dtsaldofinal"=>$chave_k97_dtsaldofinal];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -71,16 +71,16 @@ td {
     <?php 
 	db_query("delete from db_usuariosonline where uol_inativo < ".(time() - 300)." or uol_inativo is null") or die("erro(46) excluindo tabela db_usuariosonline");
 	$result = db_query("select * from db_usuariosonline order by uol_login");
-	$numrows = pg_numrows($result);
+	$numrows = pg_num_rows($result);
 	for($i = 0;$i < $numrows;$i++) {
-        echo "<tr onclick=\"window.open('con3_usuonline113.php?id_usuario=".pg_result($result,$i,"uol_id")."&usuario=".pg_result($result,$i,"uol_login")."&hora=".pg_result($result,$i,"uol_hora")."&sairfora=2','','height=500,width=410,scrollbars=0')\" style=\"cursor: hand\" bgcolor=\"".($i%2==0?"#31CEB7":"#9EE9DE")."\">
-					 <td nowrap>".pg_result($result,$i,"uol_ip")."</td>
-					 <td nowrap>".date("d-m-Y",pg_result($result,$i,"uol_hora"))."</td>
-					 <td nowrap>".date("H:i:s",pg_result($result,$i,"uol_hora"))."</td>
-					 <td nowrap>".date("00:i:s",((time()) - (int)pg_result($result,$i,"uol_inativo")))."</td>
-					 <td nowrap>".pg_result($result,$i,"uol_login")."</td>
-					 <td nowrap>".(pg_result($result,$i,"uol_arquivo") == "/~dbpref/dbportal2/corpo.php"?"Entrou no Sistema":pg_result($result,$i,"uol_arquivo"))."&nbsp;</td>
-					 <td nowrap>".pg_result($result,$i,"uol_modulo")."&nbsp;</td>
+        echo "<tr onclick=\"window.open('con3_usuonline113.php?id_usuario=".pg_fetch_result($result,$i,"uol_id")."&usuario=".pg_fetch_result($result,$i,"uol_login")."&hora=".pg_fetch_result($result,$i,"uol_hora")."&sairfora=2','','height=500,width=410,scrollbars=0')\" style=\"cursor: hand\" bgcolor=\"".($i%2==0?"#31CEB7":"#9EE9DE")."\">
+					 <td nowrap>".pg_fetch_result($result,$i,"uol_ip")."</td>
+					 <td nowrap>".date("d-m-Y",pg_fetch_result($result,$i,"uol_hora"))."</td>
+					 <td nowrap>".date("H:i:s",pg_fetch_result($result,$i,"uol_hora"))."</td>
+					 <td nowrap>".date("00:i:s",((time()) - (int)pg_fetch_result($result,$i,"uol_inativo")))."</td>
+					 <td nowrap>".pg_fetch_result($result,$i,"uol_login")."</td>
+					 <td nowrap>".(pg_fetch_result($result,$i,"uol_arquivo") == "/~dbpref/dbportal2/corpo.php"?"Entrou no Sistema":pg_fetch_result($result,$i,"uol_arquivo"))."&nbsp;</td>
+					 <td nowrap>".pg_fetch_result($result,$i,"uol_modulo")."&nbsp;</td>
 			  </tr>\n";
    }			
 	/*

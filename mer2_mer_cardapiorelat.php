@@ -33,8 +33,8 @@ require_once(modification("classes/db_mer_cardapiodata_classe.php"));
 require_once(modification('libs/db_stdlibwebseller.php'));
 require_once(modification('libs/db_utils.php'));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clrotulo           = new rotulocampo;
 $clmer_cardapiodia  = new cl_mer_cardapiodia;
@@ -178,9 +178,8 @@ for ($iCont = 0; $iCont < $clmer_cardapiodia->numrows; $iCont++) {
 
   }
 
-  novaLinha($oPdf, $oDados->me01_i_codigo, trim($oDados->me01_c_nome), $oDados->me01_f_versao, 
-            trim($oDados->me03_c_tipo), trim($oDados->me27_c_nome), $oDados->me01_i_percapita, 
-            db_formatar($oDados->me12_d_data, 'd'), db_formatar($oDados->me13_d_data, 'd')
+  novaLinha($oPdf, $oDados->me01_i_codigo, trim((string) $oDados->me01_c_nome), $oDados->me01_f_versao, 
+            trim((string) $oDados->me03_c_tipo), trim((string) $oDados->me27_c_nome), $oDados->me01_i_percapita
            );
 
 }

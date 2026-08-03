@@ -47,44 +47,44 @@ class RelatoriosLegaisBase
      * Linhas que serão processadas os balancetes de receita
      * @var array
      */
-    protected $aLinhasProcessamentoManual = array();
+    protected $aLinhasProcessamentoManual = [];
 
 
     /**
      * Linhas que serão processadas os balancetes de receita
      * @var array
      */
-    protected $aLinhasProcessarReceita = array();
+    protected $aLinhasProcessarReceita = [];
 
     /**
      * Linhas que serão processadas os balancetes de despesa
      * @var array
      */
-    protected $aLinhasProcessarDespesa = array();
+    protected $aLinhasProcessarDespesa = [];
 
     /**
      * Linhas que serão processadas os balancetes de despesa por desdobramento (lancamento contabil)
      * @var array
      */
-    protected $aLinhasProcessarDespesaDesdobramento = array();
+    protected $aLinhasProcessarDespesaDesdobramento = [];
 
     /**
      * Linhas que serão processadas os balancetes de verificação
      * @var array
      */
-    protected $aLinhasProcessarVerificacao = array();
+    protected $aLinhasProcessarVerificacao = [];
 
     /**
      * Linhas que serão processadas com as movimentações dos restos a pagar
      * @var array
      */
-    protected $aLinhasProcessarRestosPagar = array();
+    protected $aLinhasProcessarRestosPagar = [];
 
     /**
      * Linhas para processar na consistência
      * @var array
      */
-    protected $aLinhasConsistencia = array();
+    protected $aLinhasConsistencia = [];
 
     /**
      * instacia da classe RelatorioContabil
@@ -94,26 +94,12 @@ class RelatoriosLegaisBase
     protected $oRelatorioLegal;
 
     /**
-     * Exericio do relatorio
-     *
-     * @var integer
-     */
-    protected $iAnoUsu;
-
-    /**
-     * Codigo do relatorio
-     *
-     * @var integer
-     */
-    protected $iCodigoRelatorio;
-
-    /**
      * Linhas do Relatório
      *
      * @var integer
      *
      */
-    protected $aDados = array();
+    protected $aDados = [];
 
     /**
      * lista de Instituições
@@ -121,13 +107,6 @@ class RelatoriosLegaisBase
      * @var string
      */
     protected $sListaInstit;
-    /**
-     * Codigo do periodo de emissao
-     *
-     * @var integer
-     *
-     */
-    protected $iCodigoPeriodo;
 
     /**
      * Data inicial do período selecionado
@@ -157,7 +136,7 @@ class RelatoriosLegaisBase
      * Campos para cálculo do Balancete de Receita
      * @var array
      */
-    public static $aCamposReceita = array(
+    public static $aCamposReceita = [
         'saldo_inicial',
         'saldo_prevadic_acum',
         'saldo_inicial_prevadic',
@@ -166,13 +145,13 @@ class RelatoriosLegaisBase
         'saldo_a_arrecadar',
         'saldo_arrecadado_acumulado',
         'saldo_prev_anterior'
-    );
+    ];
 
     /**
      * Campos para cálculo do Balancete de Despesa
      * @var array
      */
-    public static $aCamposDespesa = array(
+    public static $aCamposDespesa = [
         'dot_ini',
         'saldo_anterior',
         'empenhado',
@@ -201,14 +180,14 @@ class RelatoriosLegaisBase
         'suplemen_acumulado',
         'especial',
         'especial_acumulado'
-    );
+    ];
 
     /**
      * Campos para cálculo o Balancete despesa detalhado por desdobramento
      * @var array
      */
 
-    public static $aCamposDespesaDesdobramento = array(
+    public static $aCamposDespesaDesdobramento = [
         'dot_ini',
         'saldo_anterior',
         'empenhado',
@@ -237,9 +216,9 @@ class RelatoriosLegaisBase
         'suplemen_acumulado',
         'especial',
         'especial_acumulado'
-    );
+    ];
 
-    public static $aCamposRestoPagar = array(
+    public static $aCamposRestoPagar = [
         'e91_vlremp',
         'e91_vlranu',
         'e91_vlrliq',
@@ -250,26 +229,26 @@ class RelatoriosLegaisBase
         'vlrpagnproc',
         'vlranuliq',
         'vlranuliqnaoproc'
-    );
+    ];
     /**
      * Campos para consulta do Balancete de Verificação
      * @var array
      */
-    public static $aCamposVerificacao = array(
+    public static $aCamposVerificacao = [
         'saldo_anterior',
         'saldo_anterior_debito',
         'saldo_anterior_credito',
         'saldo_final'
-    );
+    ];
 
     /**
      * Marcadores que serão substituidos nas linhas do relatório
      * @var array
      */
-    protected $aMarcadoresLinhasRelatorio = array(
+    protected $aMarcadoresLinhasRelatorio = [
         '#exercicio_anterior' => '',
         '#exercicio' => ''
-    );
+    ];
 
     /**
      * Tipo de cálculo do Balancete de Receita
@@ -307,14 +286,22 @@ class RelatoriosLegaisBase
      * @param integer $iCodigoRelatorio codigo do relatorio
      * @param integer $iCodigoPeriodo Codigo do periodo de emissao do relatorio
      */
-    public function __construct($iAnoUsu, $iCodigoRelatorio, $iCodigoPeriodo)
+    public function __construct(/**
+     * Exericio do relatorio
+     */
+    protected $iAnoUsu, /**
+     * Codigo do relatorio
+     */
+    protected $iCodigoRelatorio, /**
+     * Codigo do periodo de emissao
+     *
+     *
+     */
+    protected $iCodigoPeriodo)
     {
-        $this->iCodigoRelatorio = $iCodigoRelatorio;
-        $this->iAnoUsu = $iAnoUsu;
-        $this->iCodigoPeriodo = $iCodigoPeriodo;
-        $this->oRelatorioLegal = new relatorioContabil($iCodigoRelatorio, false);
+        $this->oRelatorioLegal = new relatorioContabil($this->iCodigoRelatorio, false);
 
-        $this->oPeriodo = new Periodo($iCodigoPeriodo);
+        $this->oPeriodo = new Periodo($this->iCodigoPeriodo);
 
         if (Check::between($this->oPeriodo->getCodigo(), 1, 17)) {
             $aPeriodo = data_periodo($this->iAnoUsu, $this->oPeriodo->getSigla());
@@ -329,7 +316,7 @@ class RelatoriosLegaisBase
         $this->aMarcadoresLinhasRelatorio['#exercicio'] = $this->iAnoUsu;
         $this->aMarcadoresLinhasRelatorio['#exercicio_anterior'] = $this->iAnoUsu - 1;
 
-        $this->setDataInicial(new DBDate("{$iAnoUsu}-01-01"));
+        $this->setDataInicial(new DBDate("{$this->iAnoUsu}-01-01"));
         $this->setDataFinal(new DBDate($sDataExercicio));
     }
 
@@ -376,7 +363,7 @@ class RelatoriosLegaisBase
     {
         if ($lObjeto) {
             $aInstituicoes = explode(',', str_replace("-", ",", $this->sListaInstit));
-            $aInstituicoesRetorno = array();
+            $aInstituicoesRetorno = [];
             foreach ($aInstituicoes as $iCodigoInstituicao) {
                 $aInstituicoesRetorno[$iCodigoInstituicao] = InstituicaoRepository::getInstituicaoByCodigo($iCodigoInstituicao);
             }
@@ -409,7 +396,7 @@ class RelatoriosLegaisBase
 
             if ($oLinha->totalizar) {
                 foreach ($oLinha->colunas as $iColuna => $oColuna) {
-                    if (trim($oColuna->o116_formula) != "") {
+                    if (trim((string) $oColuna->o116_formula) != "") {
                         $this->parseFormula($aLinhas, $iLinha, $iColuna);
                     }
                 }
@@ -422,9 +409,9 @@ class RelatoriosLegaisBase
      * @param array $aLinhas
      * @param integer $iLinha
      * @throws Exception
-     * @deprecated
      * @see processarFormulaDaLinha
      */
+    #[\Deprecated]
     public function processaFormulasLinha($aLinhas, $iLinha)
     {
         $this->processarFormulaDaLinha($iLinha);
@@ -442,7 +429,7 @@ class RelatoriosLegaisBase
         }
 
         foreach ($this->aLinhasConsistencia[$iLinha]->colunas as $iColuna => $oColuna) {
-            if (trim($oColuna->o116_formula) != '') {
+            if (trim((string) $oColuna->o116_formula) != '') {
                 $this->parseFormula($this->aLinhasConsistencia, $iLinha, $iColuna);
             }
         }
@@ -460,7 +447,7 @@ class RelatoriosLegaisBase
         }
 
         $dadosColuna = $this->aLinhasConsistencia[$linha]->colunas[$coluna];
-        if (trim($dadosColuna->o116_formula) !== '') {
+        if (trim((string) $dadosColuna->o116_formula) !== '') {
             $this->parseFormula($this->aLinhasConsistencia, $linha, $coluna);
         }
     }
@@ -505,7 +492,7 @@ class RelatoriosLegaisBase
         $sRetorno = ob_get_contents();
         ob_clean();
 
-        if (strpos(strtolower($sRetorno), "parse error") !== false) {
+        if (str_contains(strtolower($sRetorno), "parse error")) {
             $sMsg = "Linha {$iLinha}, Coluna {$aLinhas[$iLinha]->colunas[$iColuna]->o115_nomecoluna} com erro no cadastro da formula\n{$aLinhas[$iLinha]->colunas[$iColuna]->o116_formula}\n{$sRetorno}";
             throw new Exception($sMsg);
         }
@@ -578,8 +565,8 @@ class RelatoriosLegaisBase
      * @param integer $iPeriodo Codigo do periodo
      * @param integer $iTam Tamanho da celula
      * @return void
-     * @deprecated Utilize o método notaExplicativa
      */
+    #[\Deprecated(message: 'Utilize o método notaExplicativa')]
     public function getNotaExplicativa($oPdf, $iPeriodo, $iTam = 190)
     {
         $this->oRelatorioLegal->getNotaExplicativa($oPdf, $iPeriodo, $iTam);
@@ -648,7 +635,7 @@ class RelatoriosLegaisBase
      */
     public function getLinhasRelatorio($trazerConfiguracaoPadrao = true)
     {
-        $aLinhasRetorno = array();
+        $aLinhasRetorno = [];
         $aLinhasRelatorio = $this->oRelatorioLegal->getLinhasCompleto();
 
         foreach ($aLinhasRelatorio as $oLinha) {
@@ -662,7 +649,7 @@ class RelatoriosLegaisBase
             $oLinhaRetorno->totalizar = $oLinha->isTotalizador();
             $oLinhaRetorno->descricao = $oLinha->getDescricaoLinha();
             $oLinhaRetorno->colunas = $oColunas;
-            $oLinhaRetorno->contas = array();
+            $oLinhaRetorno->contas = [];
             $oLinhaRetorno->desdobrar = false;
             $oLinhaRetorno->nivel = $oLinha->getNivel();
             $oLinhaRetorno->parametros = $oParametros;
@@ -701,7 +688,7 @@ class RelatoriosLegaisBase
      */
     protected static function calcularValorDaLinha($Recordset, stdClass $oLinha, array $aColunasCalcular, $iTipoCalculo)
     {
-        $aListaColunas = array();
+        $aListaColunas = [];
         $sNomeColunaDescricao = '';
         switch ($iTipoCalculo) {
             case RelatoriosLegaisBase::TIPO_CALCULO_RECEITA:
@@ -805,7 +792,7 @@ class RelatoriosLegaisBase
     protected static function agrupar($oLinha, $oColuna, $oResource, $nValor)
     {
         if (!isset($oLinha->{$oColuna->agrupar->nome})) {
-            $oLinha->{$oColuna->agrupar->nome} = array();
+            $oLinha->{$oColuna->agrupar->nome} = [];
         }
 
         if (!isset($oLinha->{$oColuna->agrupar->nome}[$oResource->{$oColuna->agrupar->campo}])) {
@@ -837,7 +824,7 @@ class RelatoriosLegaisBase
     {
         $nValor = 0;
         if (trim($sFormula) != '') {
-            if (strpos($sFormula, 'L[') !== false || strpos($sFormula, 'F[') !== false) {
+            if (str_contains($sFormula, 'L[') || str_contains($sFormula, 'F[')) {
                 return 0;
             }
             $sFormula = str_replace('#', '$oDados->resource->', $sFormula);
@@ -984,11 +971,11 @@ class RelatoriosLegaisBase
      * @param string $dataInicial
      * @param string $dataFinal
      */
-    protected function executarBalanceteDaReceita(array $linhas = null, array $colunas = null, $dataInicial = null, $dataFinal = null)
+    protected function executarBalanceteDaReceita(?array $linhas = null, ?array $colunas = null, $dataInicial = null, $dataFinal = null)
     {
 
         $linhas = empty($linhas) ? $this->aLinhasProcessarReceita : $linhas;
-        $colunas = empty($colunas) ? array() : $colunas;
+        $colunas = empty($colunas) ? [] : $colunas;
         $sWhereReceita = "o70_instit in ({$this->getInstituicoes()})";
 
         $sDataInicial = $this->getDataInicial()->getDate();
@@ -1106,10 +1093,10 @@ class RelatoriosLegaisBase
      * @param null $where
      * @throws Exception
      */
-    protected function executarBalanceteVerificacao(array $linhas = null, array $colunas = null, $where = null)
+    protected function executarBalanceteVerificacao(?array $linhas = null, ?array $colunas = null, $where = null)
     {
         $linhas = empty($linhas) ? $this->aLinhasProcessarVerificacao : $linhas;
-        $colunas = empty($colunas) ? array() : $colunas;
+        $colunas = empty($colunas) ? [] : $colunas;
 
         $sWhereVerificacao = " c61_instit in({$this->getInstituicoes()})";
         $sWhereVerificacao .= !empty($where) ? " and {$where} " : '';
@@ -1144,7 +1131,7 @@ class RelatoriosLegaisBase
      * @param array $linhas
      * @param null $coluna
      */
-    protected function executarRestosPagar(array $linhas = array(), $coluna = null)
+    protected function executarRestosPagar(array $linhas = [], $coluna = null)
     {
         if (empty($linhas)) {
             $linhas = $this->aLinhasProcessarRestosPagar;
@@ -1162,9 +1149,9 @@ class RelatoriosLegaisBase
         $rsRestosPagar = db_query($sSqlRestosaPagar);
         foreach ($linhas as $iLinha) {
             if (empty($coluna) && $coluna !== "0") {
-                $coluna = array();
+                $coluna = [];
             } elseif (!is_array($coluna)) {
-                $coluna = array($coluna);
+                $coluna = [$coluna];
             }
 
             $oLinha = $this->aLinhasConsistencia[$iLinha];
@@ -1184,12 +1171,12 @@ class RelatoriosLegaisBase
      * @param stdClass $oLinha Instancia da linha
      * @param null $iColuna
      * @return array retorna um array com as linhas
-     * @deprecated
      * @see getColunasPorLinha
      */
+    #[\Deprecated]
     protected function processarColunasDaLinha(stdClass $oLinha, $iColuna = null)
     {
-        return $this->getColunasPorLinha($oLinha, !empty($iColuna) ? array($iColuna) : array());
+        return $this->getColunasPorLinha($oLinha, !empty($iColuna) ? [$iColuna] : []);
     }
 
     /**
@@ -1198,10 +1185,10 @@ class RelatoriosLegaisBase
      * @param array $aColunas
      * @return array
      */
-    protected function getColunasPorLinha(stdClass $oLinha, array $aColunas = array())
+    protected function getColunasPorLinha(stdClass $oLinha, array $aColunas = [])
     {
         $aColunasLinha = $oLinha->colunas;
-        $aColunasProcessar = array();
+        $aColunasProcessar = [];
         foreach ($aColunasLinha as $iOrdemColuna => $oColunaRelatorio) {
             if (!empty($aColunas) && !in_array($iOrdemColuna, $aColunas)) {
                 continue;
@@ -1238,13 +1225,13 @@ class RelatoriosLegaisBase
             return $sFormula;
         }
 
-        $aPalavras = str_word_count($sFormula, 2, '1234567890');
+        $aPalavras = str_word_count((string) $sFormula, 2, '1234567890');
         $sFormulaOriginal = $sFormula;
         foreach ($aPalavras as $iInicio => $sPalavra) {
-            $sLetraAnterior = substr($sFormulaOriginal, $iInicio - 1, 1);
+            $sLetraAnterior = substr((string) $sFormulaOriginal, $iInicio - 1, 1);
             if ($sLetraAnterior == '@') {
                 foreach ($oLinha->colunas as $oColunaLinha) {
-                    if (trim($sPalavra) == trim($oColunaLinha->o115_nomecoluna)) {
+                    if (trim($sPalavra) == trim((string) $oColunaLinha->o115_nomecoluna)) {
                         $sFormula = str_replace("@{$sPalavra} ", $oColunaLinha->o116_formula . " ", $sFormula);
                     }
                 }
@@ -1319,7 +1306,7 @@ class RelatoriosLegaisBase
         $sNomeMesInicial = mb_strtoupper(db_mes($this->oPeriodo->getMesInicial()));
         $sNomeMesFinal = mb_strtoupper(db_mes($this->oPeriodo->getMesFinal()));
 
-        $sNomePeriodo = str_replace(array(1, 2, 3, 4, 5, "º"), "", $this->oPeriodo->getDescricao());
+        $sNomePeriodo = str_replace([1, 2, 3, 4, 5, "º"], "", $this->oPeriodo->getDescricao());
 
         $sPeriodo = "JANEIRO À {$sNomeMesFinal}/{$this->iAnoUsu} {$sNomePeriodo}";
         $sPeriodo .= " {$sNomeMesInicial}-{$sNomeMesFinal}";
@@ -1392,7 +1379,7 @@ class RelatoriosLegaisBase
         $lValidarExercicioAnterior = false
     )
     {
-        $aRecursosNaoConfiguradosRetorno = array();
+        $aRecursosNaoConfiguradosRetorno = [];
         $iAnoAnterior = ($oRelatorio->getDataInicial()->getAno() - 1);
         $oDataInicialAnterior = new DBDate("01/01/{$iAnoAnterior}");
         $oDataFinalAnterior = new DBDate("{$oRelatorio->getDataFinal()->getDia()}/{$oRelatorio->getDataFinal()->getMes()}/{$iAnoAnterior}");
@@ -1450,7 +1437,7 @@ class RelatoriosLegaisBase
             );
         }
 
-        $aRecursos = array();
+        $aRecursos = [];
 
         /**
          * Pega os recursos das movimentações do exercício atual
@@ -1482,14 +1469,14 @@ class RelatoriosLegaisBase
         /**
          * Pega os recursos da configuração
          */
-        $aRecursosConfiguradosIn = array();
-        $aRecursosConfiguradosNotIn = array();
+        $aRecursosConfiguradosIn = [];
+        $aRecursosConfiguradosNotIn = [];
 
         $aLinhasRelatorio = $oRelatorio->getLinhasRelatorio();
 
         foreach ($aLinhasValidar as $iLinhaRelatorio) {
             $pArrayToMerge =& $aRecursosConfiguradosIn;
-            if (strtolower(trim($aLinhasRelatorio[$iLinhaRelatorio]->parametros->orcamento->recurso->operador)) != 'in') {
+            if (strtolower(trim((string) $aLinhasRelatorio[$iLinhaRelatorio]->parametros->orcamento->recurso->operador)) != 'in') {
                 $pArrayToMerge =& $aRecursosConfiguradosNotIn;
             }
             $pArrayToMerge = array_merge(
@@ -1595,7 +1582,7 @@ class RelatoriosLegaisBase
 
         foreach ($this->aLinhasProcessarVerificacao as $iLinha) {
             $oLinha = $this->aLinhasConsistencia[$iLinha];
-            $aColunasProcessar = $this->getColunasPorLinha($oLinha, array($iColuna));
+            $aColunasProcessar = $this->getColunasPorLinha($oLinha, [$iColuna]);
             $sNomeColunaLimpar = $aColunasProcessar[0]->nome;
             $oLinha->{$sNomeColunaLimpar} = 0;
 
@@ -1667,10 +1654,10 @@ class RelatoriosLegaisBase
         $sDepartamento = $oDepartamento->getNomeDepartamento();
         $dtEmissao = date("d/m/Y", db_getsession("DB_datausu"));
         $hEmissao = date("H:i:s");
-        $aParseVariaveis = array('[nome_departamento]' => $sDepartamento,
+        $aParseVariaveis = ['[nome_departamento]' => $sDepartamento,
             '[data_emissao]' => $dtEmissao,
             '[hora_emissao]' => $hEmissao
-        );
+        ];
 
         if (isset($oNotaPadrao->o42_notapadrao) && trim($oNotaPadrao->o42_notapadrao) != "") {
 
@@ -1709,10 +1696,10 @@ class RelatoriosLegaisBase
             $sDepartamento = $oDepartamento->getNomeDepartamento();
             $dtEmissao = date("d/m/Y", db_getsession("DB_datausu"));
             $hEmissao = date("H:i:s");
-            $aParseVariaveis = array('[nome_departamento]' => $sDepartamento,
+            $aParseVariaveis = ['[nome_departamento]' => $sDepartamento,
                 '[data_emissao]' => $dtEmissao,
                 '[hora_emissao]' => $hEmissao
-            );
+            ];
             foreach ($aParseVariaveis as $sIndiceValores => $oParseVariaveis) {
                 if (str_replace($sIndiceValores, $oParseVariaveis, $sFonte)) {
                     $sFonte = str_replace($sIndiceValores, $oParseVariaveis, $sFonte);

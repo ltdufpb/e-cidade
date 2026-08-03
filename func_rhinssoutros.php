@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhinssoutros_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhinssoutros = new cl_rhinssoutros;
 $clrhinssoutros->rotulo->label("rh51_seqpes");
 $clrhinssoutros->rotulo->label("rh51_basefo");
@@ -98,9 +98,9 @@ $clrhinssoutros->rotulo->label("rh51_basefo");
         }else{
            $sql = $clrhinssoutros->sql_query("",$campos,"rh51_seqpes","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh51_basefo)){
-          $repassa = array("chave_rh51_seqpes"=>$chave_rh51_seqpes,"chave_rh51_basefo"=>$chave_rh51_basefo);
+          $repassa = ["chave_rh51_seqpes"=>$chave_rh51_seqpes,"chave_rh51_basefo"=>$chave_rh51_basefo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

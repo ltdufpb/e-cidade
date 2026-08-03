@@ -53,6 +53,7 @@ class AidofWebService extends Aidof {
    * @access public
    * @return void
    */
+  #[\Override]
   public function setGrafica($iGrafica) {
     $oGrafica =  new Grafica($iGrafica);
     $oGrafica->validarGrafica();
@@ -67,6 +68,7 @@ class AidofWebService extends Aidof {
    * @access public
    * @return void
    */
+  #[\Override]
   public function setNota($iNota) {
     parent::setNota( new NotaFiscalISSQN($iNota) );
   }
@@ -78,6 +80,7 @@ class AidofWebService extends Aidof {
    * @access public
    * @return void
    */
+  #[\Override]
   public function setDataLimiteSolicitada($sData) {
     parent::setDataLimiteSolicitada(new DBDate($sData));
   }
@@ -89,6 +92,7 @@ class AidofWebService extends Aidof {
    * @access public
    * @return void
    */
+  #[\Override]
   public function setDataLimiteLiberada($sData) {
     parent::setDataLimiteLiberada(new DBDate($sData));
   }
@@ -100,6 +104,7 @@ class AidofWebService extends Aidof {
    * @access public
    * @return void
    */
+  #[\Override]
   public function setDataLiberacaoGrafica($dataLiberacaoGrafica) {
     parent::setDataLiberacaoGrafica( new DBDate($dataLiberacaoGrafica) );
   }
@@ -111,6 +116,7 @@ class AidofWebService extends Aidof {
    * @access public
    * @return void
    */
+  #[\Override]
   public function setDataRecebimentoContribuinte($dataLiberacaoContribuinte) {
     parent::setDataRecebimentoContribuinte( new DBDate($dataLiberacaoContribuinte) );
   }
@@ -199,6 +205,7 @@ class AidofWebService extends Aidof {
    * @access public
    * @return bool
    */
+  #[\Override]
   public function salvar() {
 
     if (!db_utils::inTransaction()) {

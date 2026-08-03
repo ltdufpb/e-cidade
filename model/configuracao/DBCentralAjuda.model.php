@@ -20,12 +20,6 @@ abstract class DBCentralAjuda
     private $sVersao;
 
     /**
-     * Id do item de menu do sistema
-     * @var integer
-     */
-    private $iIdItemMenu;
-
-    /**
      * Instancia da classe de requisicoes HTTP do sistema
      * @var DBHttpRequest
      */
@@ -35,7 +29,10 @@ abstract class DBCentralAjuda
      * @param AppConfig $oSysConfig Instancia da classe de configuracao do sistema
      * @param integer $iIdItemMenu Id do item de menu do sistema
      */
-    public function __construct(AppConfig $oSysConfig, $iIdItemMenu)
+    public function __construct(AppConfig $oSysConfig, /**
+     * Id do item de menu do sistema
+     */
+    private $iIdItemMenu)
     {
         $this->oSysConfig = $oSysConfig;
 
@@ -47,8 +44,6 @@ abstract class DBCentralAjuda
 
         include(modification('libs/db_acessa.php'));
         $this->sVersao = "2.{$db_fonte_codversao}.{$db_fonte_codrelease}={$cgc}";
-
-        $this->iIdItemMenu = $iIdItemMenu;
     }
 
     /**
@@ -112,12 +107,12 @@ abstract class DBCentralAjuda
 
         $this->oHttpRquest = new DBHttpRequest($this->getConfig());
 
-        $this->oHttpRquest->addOptions(array(
+        $this->oHttpRquest->addOptions([
             'baseUrl' => array_key_exists('centraldeajuda', $aApiConfig) ? $aApiConfig['centraldeajuda'] : null,
-            'headers' => array(
+            'headers' => [
                 'Accept' => 'application/json'
-            )
-        ));
+            ]
+        ]);
 
         return $this->oHttpRquest;
     }

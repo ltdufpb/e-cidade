@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_disarq_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cldisarq = new cl_disarq;
 
@@ -65,7 +65,7 @@ $cldisarq = new cl_disarq;
     <td align="center" valign="top"> 
       <?php 
       
-      $aWhere = array();
+      $aWhere = [];
       
       if (isset($iBanco) && trim($iBanco) != '') {
       	$aWhere[] = " k15_codbco = {$iBanco}";

@@ -43,7 +43,7 @@ include(modification("classes/db_averba_classe.php"));
 include(modification("fpdf151/pdf1.php"));
 include(modification("classes/db_db_docparag_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clinicialdoc           = new cl_inicialdoc;
 $clinicial              = new cl_inicial;
@@ -69,11 +69,11 @@ $pdf->AliasNbPages();
 $grupodocumento = 0;
 
 if (isset ($dadosini) && $dadosini != "") {
-	$matriz = split("xx", $dadosini);
+	$matriz = preg_split("#xx#m", (string) $dadosini);
 }
 for ($q = 0; $q < sizeof($matriz); $q ++) {
 	if ($matriz[$q] != "") {
-		$dadosi = split("ww", $matriz[$q]);
+		$dadosi = preg_split("#ww#m", (string) $matriz[$q]);
 		$inicial = $dadosi[0];
 		$chave = $dadosi[1];
 		$modo = $dadosi[2];
@@ -118,7 +118,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 		db_fieldsmemory($resul, 0); //pega o dados da prefa
 
 		$datac = date("d-m-Y");
-		$dat = split("-", $datac);
+		$dat = preg_split("#\\-#m", $datac);
 		$mes = db_mes($dat[1]);
 		$data = $dat[0]." de ".$mes." de ".$dat[2].".";
 
@@ -204,7 +204,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 					}
 				}
 				if (isset ($cgmatu)) {
-					$matricgm = split("x", $cgmatu);
+					$matricgm = preg_split("#x#m", $cgmatu);
 					$outrospropri = "";
 					$xe = "";
 					$inic = false;
@@ -214,7 +214,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 						$numcgm = $matricgm[$j];
 						$re = $clcgm->sql_record($clcgm->sql_query_file($numcgm, "z01_nome as nome,z01_numcgm,z01_ender as endereco,z01_numero as numero,z01_cep,z01_munic,z01_uf,z01_compl,z01_bairro,z01_cep,z01_cgccpf,z01_cxpostal"));
 						db_fieldsmemory($re, 0);
-						$tam_cgccpf = strlen($z01_cgccpf);
+						$tam_cgccpf = strlen((string) $z01_cgccpf);
 						if ($tam_cgccpf == 14) {
 							$cpfcnpj = "CNPJ: ";
 						} else
@@ -278,7 +278,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 		
     if ( $grupodocumento > 0 ) {
   		$resulta = $cldb_docparag->sql_record($cldb_docparag->sql_query(null, "", "db_docparag.*,db02_texto,db02_alinhamento,db02_espaca,db02_alinha,db02_inicia", "db04_ordem"," db03_tipodoc = $grupodocumento"));
-    
+
       //echo "SQL - <br>".$cldb_docparag->sql_query(null, "", "db_docparag.*,db02_texto,db02_alinhamento,db02_espaca,db02_alinha,db02_inicia", "db04_ordem"," db03_tipodoc = $grupodocumento");
       //die();
     } else {
@@ -296,11 +296,11 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 			$pdf->SetX($db02_alinha);
 			$texto = db_geratexto($db02_texto);
 			if ($texto == "*tabela01*") {
-				$cgms = split("x", $nums);
+				$cgms = preg_split("#x#m", $nums);
 				for ($t = 0; $t < sizeof($cgms); $t ++) {
 					if ($cgms[$t] != "") {
-						$numcgm = split("y", $cgms[$t]);
-						$tipos = array ("PROPRIETÁRIO PRINCIPAL", "OUTRO PROPRIETÁRIO", "PROMITENTE COMPRADOR", "PROMITENTE COMPRADOR PRINCIPAL", "SÓCIO");
+						$numcgm = preg_split("#y#m", (string) $cgms[$t]);
+						$tipos =  ["PROPRIETÁRIO PRINCIPAL", "OUTRO PROPRIETÁRIO", "PROMITENTE COMPRADOR", "PROMITENTE COMPRADOR PRINCIPAL", "SÓCIO"];
 						$reiptu = $clcgm->sql_record($clcgm->sql_query_file($numcgm[0], "z01_nome as nome,z01_numcgm,z01_ender as endereco,z01_numero as numero,z01_cep,z01_munic,z01_uf,z01_compl,z01_bairro,z01_cep,z01_cgccpf,z01_cxpostal"));
 
 						db_fieldsmemory($reiptu, 0);
@@ -320,7 +320,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 					if ($texto == "*atupropri*") {
 						$cgm = $cgmatu;
 					}
-					$matricgm = split("x", $cgm);
+					$matricgm = preg_split("#x#m", (string) $cgm);
 					$outrospropri = "";
 					$xe = "";
 					$inic = false;
@@ -356,7 +356,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 					}
 				}
 			elseif ($texto == "*antpropri*") {
-				$matricgm = split("x", $cgmant);
+				$matricgm = preg_split("#x#m", (string) $cgmant);
 				$outrospropri = "";
 				$xe = "";
 				$inic = false;

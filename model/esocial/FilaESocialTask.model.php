@@ -22,11 +22,12 @@ class FilaESocialTask extends Task implements iTarefa
      * @param null $idFila
      * @throws Exception
      */
+    #[\Override]
     public function iniciar($idFila = null)
     {
         // emula sessao
         if (!isset($_SESSION)) {
-            $_SESSION = array();
+            $_SESSION = [];
         }
 
         // desativa accounts, pois nao tem menu
@@ -71,7 +72,7 @@ class FilaESocialTask extends Task implements iTarefa
             $this->updateEvento($idFila, 1, true);
             $this->updateEventStatus($idFila, false, $message);
             return false;
-        } catch (Exception $e) {
+        } catch (Exception) {
 
             $this->updateEvento($idFila, 1, true);
             $this->updateEventStatus(
@@ -85,7 +86,7 @@ class FilaESocialTask extends Task implements iTarefa
     {
         $sRecurso = Recurso::getRecursoByEvento($data->tipoEvento);
         $exportar = new ESocial(Registry::get('app.config'), $sRecurso);
-        $exportar->setDados(array(json_decode($data->evento)));
+        $exportar->setDados([json_decode((string) $data->evento)]);
         return $exportar->request();
     }
 
@@ -101,10 +102,10 @@ class FilaESocialTask extends Task implements iTarefa
 
         $dadosEnvio = \db_utils::fieldsMemory($rs, 0);
 
-        return (object) array(
+        return (object) [
             'tipoEvento' => $dadosEnvio->rh213_evento,
             'evento' => $dadosEnvio->rh213_dados,
-        );
+        ];
     }
 
     private function updateEvento($idFila, $situacao, $clearMD5 = false)

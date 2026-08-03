@@ -94,8 +94,8 @@ if ( isset($_POST["btnAtivarDomicilioBancario"]) ) {
                     </td>
                     <td>
                         <?php 
-                        $aUtilContaBancaria = array( 'f'=>'Não',
-                            't'=>'Sim');
+                        $aUtilContaBancaria = [ 'f'=>'Não',
+                            't'=>'Sim'];
 
                         db_select('c90_utilcontabancaria',$aUtilContaBancaria,true,1,"style='width:80px;'");
                         ?>
@@ -107,7 +107,7 @@ if ( isset($_POST["btnAtivarDomicilioBancario"]) ) {
                     </td>
                     <td>
                         <?php 
-                        $aConfirmaData = array( 'f'=>'Não','t'=>'Sim');
+                        $aConfirmaData = [ 'f'=>'Não','t'=>'Sim'];
 
                         db_select('c90_confirmadata',$aConfirmaData,true,1,"style='width:80px;'");
                         ?>
@@ -120,8 +120,8 @@ if ( isset($_POST["btnAtivarDomicilioBancario"]) ) {
                     </td>
                     <td>
                         <?php
-                        $aUsaPCASP = array( 'f'=>'Não',
-                            't'=>'Sim');
+                        $aUsaPCASP = [ 'f'=>'Não',
+                            't'=>'Sim'];
 
                         db_select('c90_usapcasp', $aUsaPCASP, true, 1, "style='width:80px;'");
                         ?>
@@ -144,10 +144,10 @@ if ( isset($_POST["btnAtivarDomicilioBancario"]) ) {
                             db_getsession("DB_anousu")
                         );
                         $modelo_rreo_anexo3 = empty($opcaoRelatorio) ? 'mdf' : $opcaoRelatorio;
-                        $modelos = array(
+                        $modelos = [
                             'in13' =>'Modelo In13',
                             'in13Ro' =>'Modelo Porto Velho',
-                            'mdf' =>'Modelo MDF')
+                            'mdf' =>'Modelo MDF']
                         ;
 
                         db_select('modelo_rreo_anexo3', $modelos, true, 1, "style='width:200px;'");
@@ -163,11 +163,11 @@ if ( isset($_POST["btnAtivarDomicilioBancario"]) ) {
                             db_getsession("DB_anousu")
                         );
                         $modelo_anexo_1_rgf = empty($opcaoRelatorio) ? 'mdf' : $opcaoRelatorio;
-                        $modelos = array(
+                        $modelos = [
                             'mdf' =>'Modelo MDF',
                             'in13'=>'Modelo IN13',
                             'rondonia'=>'Modelo Rondônia',
-                        );
+                        ];
 
                         db_select('modelo_anexo_1_rgf', $modelos, true, 1, "style='width:200px;'");
                         ?>

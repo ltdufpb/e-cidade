@@ -54,11 +54,11 @@ $clempprestatip->rotulo->label();
           </td>
           <td>
               <?php
-              $arr = array(
+              $arr = [
                 "0" => "Sem prestação de contas",
                 "1" => "Prestação de contas obrigatória",
                 "2" => "Prestação de contas por valor"
-              );
+              ];
               db_select("e44_obriga", $arr, true, $db_opcao);
               ?>
           </td>
@@ -70,11 +70,11 @@ $clempprestatip->rotulo->label();
           </td>
           <td>
               <?php
-              $aOpcoes = array(
+              $aOpcoes = [
                 1 => 'Não se Aplica',
                 2 => 'Adiantamentos Concedidos',
                 3 => 'Subvenções e Auxílios'
-              );
+              ];
 
               db_select('e44_naturezaevento', $aOpcoes, true, $db_opcao);
               ?>
@@ -116,7 +116,7 @@ $clempprestatip->rotulo->label();
 
       <?php
       if ($db_opcao != 1) {
-          echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+          echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }
       ?>
   }

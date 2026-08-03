@@ -55,7 +55,7 @@ $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno = new stdClass();
 $oRetorno->status  = 1;
 $oRetorno->message = "";
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 if (!isset($oParam->sSemestre)) {
   $oParam->sSemestre = 0;
 }
@@ -63,10 +63,10 @@ if (!isset($oParam->sSemestre)) {
 try {
 	switch ($oParam->exec) {
 		case "getDadosEmpenho":
-			$aSiglas = explode(',', $oParam->sSigla);
+			$aSiglas = explode(',', (string) $oParam->sSigla);
 
 			$nTotalDescontos = 0;
-			$aItens          = array();
+			$aItens          = [];
 
 			foreach ($aSiglas as $sSigla) {
 				$oParam->sSigla = trim($sSigla);
@@ -77,7 +77,7 @@ try {
 				if (!isset($oParam->iSeqPes)) {
 					$rsDotacaoSaldo           = db_dotacaosaldo(8, 2, 2, true, "o58_instit=".db_getsession("DB_instit"), db_getsession("DB_anousu"));
 					$aDotacoes      = db_utils::getCollectionByRecord($rsDotacaoSaldo);
-					$aDotacoesSaldo = array();
+					$aDotacoesSaldo = [];
 					foreach ($aDotacoes as $oDotacao) {
 						$aDotacoesSaldo[$oDotacao->o58_coddot] = $oDotacao;
 					}
@@ -204,7 +204,7 @@ try {
 								, db_getsession("DB_anousu"));
 						$aDotacoes      = db_utils::getCollectionByRecord($rsDotacaoSaldo);
 
-						$aDotacoesSaldo = array();
+						$aDotacoesSaldo = [];
 						foreach ($aDotacoes as $oDotacao) {
 							$aDotacoesSaldo[$oDotacao->o58_coddot] = $oDotacao;
 						}
@@ -384,7 +384,7 @@ try {
 
 				$aSeqPes = $oParam->aEmpenhos;
 				$sListaRescisoes  = implode(",", $aSeqPes);
-				$oParam->aEmpenhos = array();
+				$oParam->aEmpenhos = [];
 				$sSqlListaEmpenhosRescisao  = "select distinct rh72_sequencial                                                           ";
 				$sSqlListaEmpenhosRescisao .= "  from rhempenhofolha                                                                     ";
 				$sSqlListaEmpenhosRescisao .= "       inner join rhempenhofolharhemprubrica on rh81_rhempenhofolha = rh72_sequencial     ";
@@ -425,7 +425,7 @@ try {
 
 				$aSeqPes = $oParam->aEmpenhos;
 				$sListaRescisoes  = implode(",", $aSeqPes);
-				$oParam->aEmpenhos = array();
+				$oParam->aEmpenhos = [];
 				$sSqlListaEmpenhosRescisao  = "select distinct rh72_sequencial ";
 				$sSqlListaEmpenhosRescisao .= "  from rhempenhofolha ";
 				$sSqlListaEmpenhosRescisao .= "       inner join rhempenhofolharhemprubrica on rh81_rhempenhofolha = rh72_sequencial ";
@@ -456,7 +456,7 @@ try {
 			/**
 			 * Incluimos uma OP auxiliar nova
 			*/
-			$aRecursos       = array();
+			$aRecursos       = [];
 			$oDaoOPAuxiliar  = db_utils::getDao("empageordem");
 			if (!$oParam->lOPporRecurso) {
 				$oDaoOPAuxiliar->e42_dtpagamento = date("Y-m-d",db_getsession("DB_datausu"));
@@ -466,7 +466,7 @@ try {
 			if (isset($oParam->rescisao) && $oParam->rescisao) {
 				$aSeqPes = $oParam->aEmpenhos;
 				$sListaRescisoes  = implode(",", $aSeqPes);
-				$oParam->aEmpenhos = array();
+				$oParam->aEmpenhos = [];
 				$sSqlListaEmpenhosRescisao  = "select distinct rh72_sequencial,rh01_numcgm, rh73_seqpes ";
 				$sSqlListaEmpenhosRescisao .= "  from rhempenhofolha ";
 				$sSqlListaEmpenhosRescisao .= "       inner join rhempenhofolharhemprubrica on rh81_rhempenhofolha = rh72_sequencial ";
@@ -665,7 +665,7 @@ try {
 			//$sSqlEmpenhos  .= "        WHERE rh73_valor <> 0 ";
 			$rsDadosEmpenho = db_query($sSqlEmpenhos);
 			$iTotalEmpenhos = pg_num_rows($rsDadosEmpenho);
-			$aEmpenhos = array();
+			$aEmpenhos = [];
 			for ($iEmpenho = 0; $iEmpenho < $iTotalEmpenhos; $iEmpenho++) {
 
 				$oEmpenho = db_utils::fieldsMemory($rsDadosEmpenho,$iEmpenho,  false, false, true);

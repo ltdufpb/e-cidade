@@ -35,9 +35,6 @@ class GeracaoArquivoTXTDirf {
   private $iNumeroANS2;
   private $lProcessaEmpenho;
   private $sCnpj;
-  private $sAcima6000;
-  private $aMatriculaSelecionadas;
-  private $lGerarContabil;
 
 
   /**
@@ -45,7 +42,7 @@ class GeracaoArquivoTXTDirf {
   * os tipos usados por mes vao de 1 até 11.
   * os demais são valores unicos, em outro registro.
   */
-  private $aSiglasTipoArquivo = array(
+  private $aSiglasTipoArquivo = [
     1 => "RTRT",
     2 => "RTPO" ,
     3 => "RTPP",
@@ -62,7 +59,7 @@ class GeracaoArquivoTXTDirf {
     14 => "SAUDE2",
     15 => "RIO",
     16 => "RTRT"
-  );
+  ];
 
 
 
@@ -71,11 +68,8 @@ class GeracaoArquivoTXTDirf {
   /**
    *  Contrutor da Classe, define os parametros necessarios para a geração
    */
-  public function __construct($lGerarContabil = false, $aMatriculaSelecionadas = array(), $sAcima6000 = "S") {
-
-    $this->sAcima6000             = $sAcima6000;
-    $this->aMatriculaSelecionadas = $aMatriculaSelecionadas;
-    $this->lGerarContabil         = $lGerarContabil;
+  public function __construct(private $lGerarContabil = false, private $aMatriculaSelecionadas = [], private $sAcima6000 = "S")
+  {
   }
 
   /**
@@ -130,7 +124,7 @@ class GeracaoArquivoTXTDirf {
     $sNomeArquivo  = "dirf_{$this->iAno}_{$this->sCnpj}.txt";
     $iCodigoLayout = $this->oDirf->getCodigoLayout();
 
-    $aArquivosGerar = array("Dirf","DECPJ","RESPO","IDREC","BPFDEC","BPJDEC","RTRT","FIMDirf","PSE","RIO","OPSE","TPSE", "INFPC", "INFPA");
+    $aArquivosGerar = ["Dirf","DECPJ","RESPO","IDREC","BPFDEC","BPJDEC","RTRT","FIMDirf","PSE","RIO","OPSE","TPSE", "INFPC", "INFPA"];
     $this->oWriter   = self::createWriter($this->iAno, new db_layouttxt($iCodigoLayout, "tmp/{$sNomeArquivo}", implode(" ", $aArquivosGerar)));
     $this->oWriter->setGeracaoArquivo($this);
   }
@@ -169,7 +163,7 @@ class GeracaoArquivoTXTDirf {
     }
 
     $iTotalLinhas      = pg_num_rows($rsTipoReceitas);
-    $aLinhasDirf       = array();
+    $aLinhasDirf       = [];
 
     for ($i = 0; $i < $iTotalLinhas; $i++) {
 
@@ -179,8 +173,8 @@ class GeracaoArquivoTXTDirf {
 
         $oLinhaDirf = new stdClass();
         $oLinhaDirf->receita  = $oTipoReceita->rh98_tipoirrf;
-        $oLinhaDirf->fisica   = array();
-        $oLinhaDirf->juridica = array();
+        $oLinhaDirf->fisica   = [];
+        $oLinhaDirf->juridica = [];
 
         $aLinhasDirf[$oTipoReceita->rh98_tipoirrf] = $oLinhaDirf;
       }
@@ -191,7 +185,7 @@ class GeracaoArquivoTXTDirf {
       $oPessoa->cgm            = $oTipoReceita->rh96_numcgm;
       $oPessoa->totalsaude1    = 0;
       $oPessoa->totalsaude2    = 0;
-      $oPessoa->pagamentos     = array();
+      $oPessoa->pagamentos     = [];
       $oPessoa->totaloutros    = 0;
       $oPessoa->informacao_complementar = $this->oDirf->getInformacoesComplementares($oPessoa->cgm);
 
@@ -212,7 +206,7 @@ class GeracaoArquivoTXTDirf {
           $oPessoa->indicador_identificacao_alimentando_rra = "S";
       }
 
-      $this->oDirf->calculaValoresMensaisTipo($oTipoReceita->rh95_sequencial, $oPessoa, $oTipoReceita->rh98_tipoirrf, $oTipoReceita->sem_retencao=='t', array(3,5, 19));
+      $this->oDirf->calculaValoresMensaisTipo($oTipoReceita->rh95_sequencial, $oPessoa, $oTipoReceita->rh98_tipoirrf, $oTipoReceita->sem_retencao=='t', [3,5, 19]);
 
       if ($oTipoReceita->tipopessoa == 11) {
 
@@ -276,13 +270,13 @@ class GeracaoArquivoTXTDirf {
   public function getBeneficiariosRRAPorReceita() {
 
 
-    $aReceitas      = array();
+    $aReceitas      = [];
     foreach ($this->getRegistros() as $oRegistroDirf) {
 
       /**
        *  Zera os beneficiarios da receita
        */
-      $aBeneficiarios = array();
+      $aBeneficiarios = [];
 
       /**
        *  Precorre os registros processaos na dirf para buscar os possiveis beneficiarios do RRA
@@ -301,13 +295,13 @@ class GeracaoArquivoTXTDirf {
         $oDadosRRA          = new stdClass();
         $oDadosRRA->nome    = $oDadosPessoa->nome;
         $oDadosRRA->cpf     = $oDadosPessoa->cpf;
-        $oDadosRRA->RTRT    = array();
-        $oDadosRRA->RTPO    = array();
-        $oDadosRRA->RTPA    = array();
-        $oDadosRRA->RTIRF   = array();
-        $oDadosRRA->DAJUD   = array();
-        $oDadosRRA->QTMESES = array();
-        $oDadosRRA->RIMOG   = array();
+        $oDadosRRA->RTRT    = [];
+        $oDadosRRA->RTPO    = [];
+        $oDadosRRA->RTPA    = [];
+        $oDadosRRA->RTIRF   = [];
+        $oDadosRRA->DAJUD   = [];
+        $oDadosRRA->QTMESES = [];
+        $oDadosRRA->RIMOG   = [];
 
         /**
          *  Percorre os registros da pessoa
@@ -328,7 +322,7 @@ class GeracaoArquivoTXTDirf {
            */
           $lProcessarRRA = true;
 
-          $aValores = array();
+          $aValores = [];
 
           foreach ($aCompetencias as $oDadosCompetencia) {
             $aValores[(int)$oDadosCompetencia->rh98_mes] = $oDadosCompetencia->valor;

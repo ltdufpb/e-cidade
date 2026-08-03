@@ -211,7 +211,7 @@ if (isset($oGet->m71_codlanc) && !empty($oGet->m71_codlanc)) {
             $sCamposGrid = "m80_data, m80_hora, m80_codigo, m81_descr, descrdepto,m89_valorunitario, m89_precomedio , m82_quant, total";
 
             $oIframeAlteraExclui                = new cl_iframe_alterar_excluir;
-            $oIframeAlteraExclui->chavepri      = array("m80_codigo" => 1, "m71_codlanc" => 1);
+            $oIframeAlteraExclui->chavepri      = ["m80_codigo" => 1, "m71_codlanc" => 1];
             $oIframeAlteraExclui->sql           = $sSqlMovimentacao;
             $oIframeAlteraExclui->campos        = $sCamposGrid;
             $oIframeAlteraExclui->legenda       = "Movimentações";

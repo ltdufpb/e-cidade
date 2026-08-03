@@ -50,7 +50,7 @@ switch ($oParam->exec) {
     try {
 
       db_inicio_transacao();
-      if ($oParam->db141_ativo == "t" && (trim($oParam->db141_webserviceuri) == "" || trim($oParam->db141_webservicelocation) == "")) {
+      if ($oParam->db141_ativo == "t" && (trim((string) $oParam->db141_webserviceuri) == "" || trim((string) $oParam->db141_webservicelocation) == "")) {
 
         $sMsgErro  = "Você optou por ativar o GED (Gerenciador Eletrônico de Documentos), neste caso é necessário ";
         $sMsgErro .= "informar as configurações de URI e Location do webservice.";
@@ -88,8 +88,8 @@ switch ($oParam->exec) {
     $oStdConfiguracao = db_utils::fieldsMemory($rsBuscaConfiguracao, 0);
     $oRetorno->db141_sequencial         = $oStdConfiguracao->db141_sequencial;
     $oRetorno->db141_ativo              = $oStdConfiguracao->db141_ativo;
-    $oRetorno->db141_webserviceuri      = urlencode($oStdConfiguracao->db141_webserviceuri);
-    $oRetorno->db141_webservicelocation = urlencode($oStdConfiguracao->db141_webservicelocation);
+    $oRetorno->db141_webserviceuri      = urlencode((string) $oStdConfiguracao->db141_webserviceuri);
+    $oRetorno->db141_webservicelocation = urlencode((string) $oStdConfiguracao->db141_webservicelocation);
 
     break;
 }

@@ -124,7 +124,7 @@ $clrotulo->label("c58_sequencial");
 
           			  $resulttipo = db_query("select 3 as k73_sequencial,'Todos' as k73_descricao union all select k73_sequencial,k73_descricao from cancdebitostipo ");
           			  $linhasTipo = pg_num_rows($resulttipo);
-          			  $tipo = array();
+          			  $tipo = [];
 
           			  if($linhasTipo > 0 ){
 
@@ -145,7 +145,7 @@ $clrotulo->label("c58_sequencial");
               </td>
               <td>
                 <?php
-                  $arr = array("N"=> "Nenhum", "CP"=>"Característica Peculiar");
+                  $arr = ["N"=> "Nenhum", "CP"=>"Característica Peculiar"];
 									db_select("agrupar",$arr,true,1,"onChange='js_mostraQuebrar(document.form1.agrupar.value);'");
                 ?>
               </td>
@@ -157,7 +157,7 @@ $clrotulo->label("c58_sequencial");
               </td>
               <td>
                 <?php
-                  $arrQuebra = array("N"=> "Não", "S"=>"Sim");
+                  $arrQuebra = ["N"=> "Não", "S"=>"Sim"];
 									db_select("quebrar",$arrQuebra,true,1);
                 ?>
               </td>
@@ -169,7 +169,7 @@ $clrotulo->label("c58_sequencial");
               </td>
               <td>
                 <?php
-                  $aMostEnder = array("S"=>"Sim","N"=> "Não");
+                  $aMostEnder = ["S"=>"Sim","N"=> "Não"];
                   db_select("mostender",$aMostEnder,true,1);
                 ?>
               </td>
@@ -189,10 +189,10 @@ $clrotulo->label("c58_sequencial");
                 <td>
                   <?php
 
-                    $aOpcoes = array(
+                    $aOpcoes = [
                       "1" => "Com as caracteríticas peculiares selecionadas",
                       "2" => "Sem as caracteríticas peculiares selecionadas"
-                    );
+                    ];
 
                     db_select( "iFiltroConCarPeculiar", $aOpcoes, true, 1);
                   ?>
@@ -236,7 +236,7 @@ $clrotulo->label("c58_sequencial");
               </td>
               <td align="left">
                 <?php
-                  $xx = array("c"=>"Completo","r"=>"Resumido por tipo","rc"=>"Resumido por contribuinte");
+                  $xx = ["c"=>"Completo","r"=>"Resumido por tipo","rc"=>"Resumido por contribuinte"];
 								  db_select('seltipo',$xx,true,4,"");
                 ?>
                 &nbsp;&nbsp;&nbsp;
@@ -246,7 +246,7 @@ $clrotulo->label("c58_sequencial");
               </td>
               <td align="left">
                 <?php
-								  $xx = array("d"=>"Data","c"=>"CGM","m"=>"Matrícula","i"=>"Inscrição");
+								  $xx = ["d"=>"Data","c"=>"CGM","m"=>"Matrícula","i"=>"Inscrição"];
 							 	  db_select('selordem',$xx,true,4,"");
                 ?>
                 &nbsp;&nbsp;&nbsp;
@@ -256,7 +256,7 @@ $clrotulo->label("c58_sequencial");
               </td>
               <td align="left">
                 <?php
-                  $xx = array("s"=>"Sim","n"=>"Não");
+                  $xx = ["s"=>"Sim","n"=>"Não"];
 							 	  db_select('selhist',$xx,true,4,"");
                 ?>
                 &nbsp;&nbsp;&nbsp;

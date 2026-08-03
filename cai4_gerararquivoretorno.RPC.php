@@ -102,19 +102,12 @@ switch ($oParam->exec) {
        * escrevemos a linha de retorno do lote
        */
       $sLinhaLote  = $sBanco;
-      $sLinhaLote .= str_pad(substr($iCodigoEnvio, 0, 4), 4,"0", STR_PAD_LEFT); //numerodolote;
+      $sLinhaLote .= str_pad(substr((string) $iCodigoEnvio, 0, 4), 4,"0", STR_PAD_LEFT); //numerodolote;
       $sLinhaLote .= 1; //tipo dalinha
-      switch ($sBanco) {
-
-        case '001':
-
-          $sLinhaLote .= str_pad($iCodigoEnvio, 233, "0", STR_PAD_LEFT);
-          break;
-        default:
-
-          $sLinhaLote .= str_pad($iCodigoEnvio, 233, "0", STR_PAD_LEFT);
-          break;
-      }
+      match ($sBanco) {
+          '001' => $sLinhaLote .= str_pad((string) $iCodigoEnvio, 233, "0", STR_PAD_LEFT),
+          default => $sLinhaLote .= str_pad((string) $iCodigoEnvio, 233, "0", STR_PAD_LEFT),
+      };
       fputs($rsArquivo, $sLinhaLote."\n");
 
       /**
@@ -145,18 +138,18 @@ switch ($oParam->exec) {
 
           case '001':
 
-            $sLinhaRegistro .= str_pad($oArquivo->e81_codmov, 20, "0", STR_PAD_LEFT);
+            $sLinhaRegistro .= str_pad((string) $oArquivo->e81_codmov, 20, "0", STR_PAD_LEFT);
             $sLinhaRegistro .= str_repeat(" ", 61);
             break;
           case '041':
 
-            $sLinhaRegistro .= str_pad($oArquivo->e81_codmov, 15, "0", STR_PAD_RIGHT);
+            $sLinhaRegistro .= str_pad((string) $oArquivo->e81_codmov, 15, "0", STR_PAD_RIGHT);
             $sLinhaRegistro .= str_repeat("0", 66);
             break;
 
           case '104':
 
-            $sLinhaRegistro .= str_pad($oArquivo->e81_codmov, 6, "0", STR_PAD_LEFT);
+            $sLinhaRegistro .= str_pad((string) $oArquivo->e81_codmov, 6, "0", STR_PAD_LEFT);
             $sLinhaRegistro .= str_repeat("0", 75);
             break;
         }

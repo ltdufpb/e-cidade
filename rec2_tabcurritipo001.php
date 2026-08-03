@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_tabcurritipo_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltabcurritipo = new cl_tabcurritipo;
 $rotulocampo = new rotulocampo;
 $rotulocampo->label('h02_codigo');
@@ -128,22 +128,22 @@ function js_emite(){
                      $arr_colunas[$h02_codigo]= $h02_descr;
                 }
               }
-              $arr_colunas_final   = Array();
-              $arr_colunas_inicial = Array();
+              $arr_colunas_final   = [];
+              $arr_colunas_inicial = [];
               if(isset($colunas_sselecionados) && $colunas_sselecionados != ""){
-                 $colunas_sselecionados = split(",",$colunas_sselecionados);
+                 $colunas_sselecionados = preg_split("#,#m",$colunas_sselecionados);
                  for($Ic=0;$Ic < count($colunas_sselecionados);$Ic++){
                     $arr_colunas_final[$colunas_sselecionados[$Ic]] = $arr_colunas[$colunas_sselecionados[$Ic]]; 
                  }
               }
               if(isset($colunas_nselecionados) && $colunas_nselecionados != ""){
-                 $colunas_nselecionados = split(",",$colunas_nselecionados);
+                 $colunas_nselecionados = preg_split("#,#m",$colunas_nselecionados);
                  for($Ic=0;$Ic < count($colunas_nselecionados);$Ic++){
                     $arr_colunas_inicial[$colunas_nselecionados[$Ic]] = $arr_colunas[$colunas_nselecionados[$Ic]]; 
                  }
               }
               if(!isset($colunas_sselecionados) || !isset($colunas_sselecionados) || $colunas_sselecionados == ""){
-                 $arr_colunas_final  = Array();
+                 $arr_colunas_final  = [];
                  $arr_colunas_inicial = $arr_colunas;
               }
              db_multiploselect("h02_codigo","h02_descr", "nselecionados", "sselecionados", $arr_colunas_inicial, $arr_colunas_final, 6, 250, "", "", true );
@@ -156,7 +156,7 @@ function js_emite(){
        </td>
        <td align="left">
          <?php 
-           $x = array("a"=>"Analítico","s"=>"Sintético");
+           $x = ["a"=>"Analítico","s"=>"Sintético"];
            db_select('tiposa',$x,true,4,"");
          ?>
   	   </td>
@@ -166,7 +166,7 @@ function js_emite(){
        </td>
        <td align="left">
          <?php 
-           $xy = array("c"=>"Curso","a"=>"Alfabética");
+           $xy = ["c"=>"Curso","a"=>"Alfabética"];
            db_select('ordem',$xy,true,4,"");
          ?>
   	   </td>

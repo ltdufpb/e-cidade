@@ -120,12 +120,12 @@ function formata_data($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   }
 
-  $dData = explode('-',$dData);
+  $dData = explode('-',(string) $dData);
   $dData = $dData[2].'/'.$dData[1].'/'.$dData[0];
   return $dData;
 }
@@ -293,7 +293,7 @@ $oPDF->Open();
 $oPDF->AliasNbPages();
 
 $head1 = 'Relatorio Controle de Validade';
-$head2 = 'Data da Situacao: '.formata_data($data_atual,2);
+$head2 = 'Data da Situacao: '.formata_data($data_atual);
 $head3 = 'Departamento(s): '.$nomes_departamentos;
 $head4 = 'Ordem - '.$sOrdem;
 
@@ -375,7 +375,7 @@ for($iCount_linhas = 0; $iCount_linhas < $iLinhas; $iCount_linhas++) {
   }
 
   if($quebra == 1) {
-    nova_linha1($oPDF,$m77_lote,$m70_quant,$unidade,formata_data($m77_dtvalidade,2),$situacao,$dias);
+    nova_linha1($oPDF,$m77_lote,$m70_quant,$unidade,formata_data($m77_dtvalidade),$situacao,$dias);
   } else {
 
     $sItem = $m60_codmater.' - '.$m60_descr;
@@ -384,7 +384,7 @@ for($iCount_linhas = 0; $iCount_linhas < $iLinhas; $iCount_linhas++) {
       $sItem = substr($sItem,0,strlen($sItem) - 2);
 
     }
-    nova_linha2($oPDF,$sItem,$m77_lote,$m70_quant,$unidade,formata_data($m77_dtvalidade,2),$situacao,$dias);
+    nova_linha2($oPDF,$sItem,$m77_lote,$m70_quant,$unidade,formata_data($m77_dtvalidade),$situacao,$dias);
   }
 
   $iCount_linhas_na_pagina++;

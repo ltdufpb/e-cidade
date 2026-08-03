@@ -119,7 +119,7 @@ $borda = 0;
 						</td>
 						<td colspan=2 nowrap title="">
               <?php 
-                $arrayDatas = array( '0' => " Selecione a data para conciliacao ");
+                $arrayDatas = [ '0' => " Selecione a data para conciliacao "];
                 db_select('data',$arrayDatas,'',1,"style='width:400px' onchange='js_enabled()'; ","","");
               ?>
 						</td>

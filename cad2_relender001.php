@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -103,7 +103,7 @@ $aux = new cl_arquivo_auxiliar;
         </td>
         <td nowrap>  <br> 
 	<?php 
-          $y = array("m"=>"Matrícula","d"=>"Destinatário","e"=>"Endereço","c"=>"CEP","s"=>"Setor","p"=>"Municipio");
+          $y = ["m"=>"Matrícula","d"=>"Destinatário","e"=>"Endereço","c"=>"CEP","s"=>"Setor","p"=>"Municipio"];
           db_select("tipo_ordem",$y,true,2); 
 	?>
         </td>

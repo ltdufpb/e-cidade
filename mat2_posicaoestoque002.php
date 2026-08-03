@@ -53,7 +53,7 @@ try {
 
     $sDepartamento = $oPosicaoEstoque->sDepartamento;
 
-    cabecalho($oPDF, $sDepartamento);
+    cabecalho($oPDF);
 
     foreach ( $oPosicaoEstoque->aDadosItens as $oDadosItem ) {
       linha($oPDF, $oDadosItem);
@@ -100,7 +100,7 @@ function getPosicaoEstoque($sDataProcessamento) {
   $sSqlPosicaoEstoque = $oDaoPosicaoEstoque->sql_query(null, $sCampos, null, $sWhere);
   $rsPosicaoEstoque   = db_query($sSqlPosicaoEstoque);
   $iTotalItens = pg_num_rows($rsPosicaoEstoque);
-  $aPosicaoEstoque = array();
+  $aPosicaoEstoque = [];
 
   if ( !$rsPosicaoEstoque ) {
     throw new Exception("Erro ao buscar posição do estoque.\n\n" . pg_last_error());

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_portariaassinatura_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clportariaassinatura = new cl_portariaassinatura;
 $clportariaassinatura->rotulo->label("rh136_sequencial");
 $clportariaassinatura->rotulo->label("rh136_nome");
@@ -99,9 +99,9 @@ $clportariaassinatura->rotulo->label("rh136_nome");
         }else{
            $sql = $clportariaassinatura->sql_query("",$campos,"rh136_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh136_nome)){
-          $repassa = array("chave_rh136_sequencial"=>$chave_rh136_sequencial,"chave_rh136_nome"=>$chave_rh136_nome);
+          $repassa = ["chave_rh136_sequencial"=>$chave_rh136_sequencial,"chave_rh136_nome"=>$chave_rh136_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -87,7 +87,7 @@ if ($db_opcao==1) {
 				    </td>
 				    <td> 
 							<?php 
-								$x = array('f'=>'Não','t'=>'Sim');
+								$x = ['f'=>'Não','t'=>'Sim'];
 								db_select('pc70_subgrupo', $x, true, $db_opcao, "");
 							?>
 				    </td>
@@ -165,7 +165,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_pctipocertif.hide();
   <?php 
 	  if ($db_opcao != 1) {
-	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+	    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	  }
   ?>
 }

@@ -44,7 +44,7 @@ require_once(modification("classes/db_edu_parametros_classe.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clturma         = new cl_turma;
 $clcalendario    = new cl_calendario;
 $clturno         = new cl_turno;
@@ -109,7 +109,7 @@ if ($oDaoEduParametros->numrows > 0) {
       <?php 
       $result_sala = $clsala->sql_record($clsala->sql_query_file("","ed16_i_codigo,ed16_c_descr","ed16_c_descr"," ed16_i_escola = $escola"));
       if ($clsala->numrows==0) {
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed57_i_sala',$x,true,1,"");
       } else {
        db_selectrecord("ed57_i_sala",$result_sala,"","","","chave_ed57_i_sala","","  ","",1);
@@ -132,7 +132,7 @@ if ($oDaoEduParametros->numrows > 0) {
       $result_tur = db_query($sql_tur);
       $linhas_tur = pg_num_rows($result_tur);
       if ($linhas_tur==0) {
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed57_i_turno',$x,true,1,"");
       } else {
        db_selectrecord("ed57_i_turno",$result_tur,"","","","chave_ed57_i_turno","","  ","",1);
@@ -144,7 +144,7 @@ if ($oDaoEduParametros->numrows > 0) {
       <?php 
       $result_cal = $clcalendario->sql_record($clcalendario->sql_query_calescola("","ed52_i_codigo,ed52_c_descr","ed52_i_ano desc","  ed52_c_passivo = 'N' AND ed38_i_escola = $escola"));
       if ($clcalendario->numrows==0) {
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed57_i_calendario',$x,true,1,"");
       } else {
        db_selectrecord("ed57_i_calendario",$result_cal,"","","","chave_ed57_i_calendario","","  ","",1);
@@ -156,7 +156,7 @@ if ($oDaoEduParametros->numrows > 0) {
       <?php 
       $result_proc = $clprocedimento->sql_record($clprocedimento->sql_query_procturma("","ed40_i_codigo,ed40_c_descr","ed40_c_descr"," ed86_i_escola = $escola GROUP BY ed40_i_codigo,ed40_c_descr"));
       if ($clprocedimento->numrows==0) {
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed220_i_procedimento',$x,true,1,"");
       } else {
        db_selectrecord("ed220_i_procedimento",$result_proc,"","","","chave_ed220_i_procedimento","","  ","",1);
@@ -220,8 +220,8 @@ if ($oDaoEduParametros->numrows > 0) {
    /* Rotina igual a de func_turmamatrtransffora.php */
    if ($lValidaSeriesAnteriores) { // Elimina séries já cursadas e com aprovação do aluno
 
-     $aEnsino     = array();
-     $aOrdemSerie = array();
+     $aEnsino     = [];
+     $aOrdemSerie = [];
 
      /* Descubro a última série que o aluno cursou e que foi aprovado */
      $oDaoHistorico = db_utils::getdao('historico');

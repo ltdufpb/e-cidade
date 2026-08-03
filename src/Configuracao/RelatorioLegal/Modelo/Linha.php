@@ -204,7 +204,7 @@ class Linha
      */
     public function toArray()
     {
-        $dados = array(
+        $dados = [
             'relatorio' => $this->getRelatorio()->getSequencial(),
             'linha' => $this->getLinha(),
             'descricao' => $this->getDescricao(),
@@ -224,10 +224,10 @@ class Linha
             'observacao' => $this->getObservacao(),
             'desdobra' => $this->isDesdobra(),
             'origem' => $this->getOrigem(),
-            'colunas' => array(),
-            'filtroPadrao' => array(),
-            'informacaoComplementar' => array(),
-        );
+            'colunas' => [],
+            'filtroPadrao' => [],
+            'informacaoComplementar' => [],
+        ];
 
         if ($this->linhaColunas) {
             foreach ($this->linhaColunas as $coluna) {

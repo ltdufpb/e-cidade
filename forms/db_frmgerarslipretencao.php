@@ -56,10 +56,10 @@
             </td>
             <td>
               <?php 
-               $aAgrupar = array(
+               $aAgrupar = [
                                  1 => 'Débito/Crédito',
                                  2 => 'Ordem Pagamento'
-                                );
+                                ];
                 db_select("agrupar", $aAgrupar, true,1);
               ?>
             </td>

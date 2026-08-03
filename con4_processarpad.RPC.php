@@ -46,14 +46,14 @@ $oParam   = $oJson->decode(db_stdClass::db_stripTagsJson(str_replace("\\","",$_P
 $oRetorno = new stdClass();
 $oRetorno->status  = 1;
 $oRetorno->message = 1;
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 switch($oParam->exec) {
 
   case "processarSigap":
 
     $sDataInicial = db_getsession("DB_anousu").'-01-01';
     $iUltimoDia   = cal_days_in_month(CAL_GREGORIAN, $oParam->iPeriodo, db_getsession("DB_anousu"));
-    $sDataFinal   = db_getsession("DB_anousu")."-".str_pad($oParam->iPeriodo, 2, "0",STR_PAD_LEFT)."-{$iUltimoDia}";
+    $sDataFinal   = db_getsession("DB_anousu")."-".str_pad((string) $oParam->iPeriodo, 2, "0",STR_PAD_LEFT)."-{$iUltimoDia}";
     if (count($oParam->aArquivos) > 0) {
 
       $oEscritorXML = PadEscritorXMLFactory::getInstance(2021);

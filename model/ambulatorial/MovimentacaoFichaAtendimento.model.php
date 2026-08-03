@@ -87,12 +87,12 @@ class MovimentacaoFichaAtendimento {
    */
   private $sObservacao;
 
-  static $aSituacoes = array(
+  static $aSituacoes = [
     1 => "ENTRADA",
     2 => "ENCAMINHADA",
     3 => "FINALIZADA",
     4 => "ATESTADO EM BRANCO"
-  );
+  ];
 
   public function __construct ($iCodigo = null) {
 

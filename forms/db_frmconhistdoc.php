@@ -58,7 +58,7 @@ $clconhistdoc->rotulo->label();
     <td> 
 <?php 
 
-$x = array ('10' => 'Empenho', '11' => 'Anulação de Empenho', '20' => 'Liquidação', '21' => 'Anulação de Liquidação', '30' => 'Pagamento Empenho', '31' => 'Estorno Pagamento ', '40' => 'Suplementação', '41' => 'Estorno Suplementação', '50' => 'Transposição', '51' => 'Estorno Transporsição', '60' => 'Redução', '61' => 'Estorno Redução', '70' => 'Redução Transposição', '71' => 'Estorno Redução Transp.', '100' => 'Arrecadação Receita', '101' => 'Estorno Receita', '110' => 'Previsao Adicional receita', '111' => 'Estorno previsao Adicional', '1000' => 'Encerramento de Exercício','2000' => 'Abertura de Exercício');
+$x =  ['10' => 'Empenho', '11' => 'Anulação de Empenho', '20' => 'Liquidação', '21' => 'Anulação de Liquidação', '30' => 'Pagamento Empenho', '31' => 'Estorno Pagamento ', '40' => 'Suplementação', '41' => 'Estorno Suplementação', '50' => 'Transposição', '51' => 'Estorno Transporsição', '60' => 'Redução', '61' => 'Estorno Redução', '70' => 'Redução Transposição', '71' => 'Estorno Redução Transp.', '100' => 'Arrecadação Receita', '101' => 'Estorno Receita', '110' => 'Previsao Adicional receita', '111' => 'Estorno previsao Adicional', '1000' => 'Encerramento de Exercício','2000' => 'Abertura de Exercício'];
 db_select('c53_tipo', $x, true, $db_opcao, "");
 ?>
     </td>
@@ -125,7 +125,7 @@ function js_preenchepesquisa(chave){
 
 
 if ($db_opcao != 1) {
-	echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+	echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 }
 ?>
 }

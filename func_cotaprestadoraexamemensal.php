@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cotaprestadoraexamemensal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcotaprestadoraexamemensal = new cl_cotaprestadoraexamemensal;
 $clcotaprestadoraexamemensal->rotulo->label("age01_sequencial");
 $clcotaprestadoraexamemensal->rotulo->label("age01_sequencial");
@@ -52,9 +52,9 @@ $clcotaprestadoraexamemensal->rotulo->label("age01_sequencial");
         }else{
            $sql = $clcotaprestadoraexamemensal->sql_query("",$campos,"age01_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_age01_sequencial)){
-          $repassa = array("chave_age01_sequencial"=>$chave_age01_sequencial,"chave_age01_sequencial"=>$chave_age01_sequencial);
+          $repassa = ["chave_age01_sequencial"=>$chave_age01_sequencial,"chave_age01_sequencial"=>$chave_age01_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

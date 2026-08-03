@@ -32,13 +32,13 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_bancoagencia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbancoagencia = new cl_bancoagencia;
 $clbancoagencia->rotulo->label("db89_sequencial");
 $clbancoagencia->rotulo->label("db89_codagencia");
 
-$aWhereBancos = array("1=1");
+$aWhereBancos = ["1=1"];
 if (isset($db89_db_bancos)) {
   $aWhereBancos[] = "db89_db_bancos = '{$db89_db_bancos}'";
 }
@@ -118,9 +118,9 @@ $sWhere = implode(" and ", $aWhereBancos);
         }else{
            $sql = $clbancoagencia->sql_query("",$campos,"db89_sequencial", $sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db89_codagencia)){
-          $repassa = array("chave_db89_sequencial"=>$chave_db89_sequencial,"chave_db89_codagencia"=>$chave_db89_codagencia);
+          $repassa = ["chave_db89_sequencial"=>$chave_db89_sequencial,"chave_db89_codagencia"=>$chave_db89_codagencia];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

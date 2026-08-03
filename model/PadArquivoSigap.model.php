@@ -107,8 +107,8 @@ abstract class PadArquivoSigap implements iPadArquivoBase {
    */
   public function setDataFinal($sDataFinal) {
     
-    if (strpos($sDataFinal, "/", 0)) {
-      $sDataFinal = implode("-", array_reverse(explode("/", $sDataFinal)));
+    if (strpos((string) $sDataFinal, "/", 0)) {
+      $sDataFinal = implode("-", array_reverse(explode("/", (string) $sDataFinal)));
     }
     $this->sDataFinal = $sDataFinal;
   }
@@ -119,8 +119,8 @@ abstract class PadArquivoSigap implements iPadArquivoBase {
    */
   public function setDataInicial($sDataInicial) {
    
-  if (strpos($sDataInicial, "/",0)) {
-      $sDataInicial = implode("-", array_reverse(explode("/", $sDataInicial)));
+  if (strpos((string) $sDataInicial, "/",0)) {
+      $sDataInicial = implode("-", array_reverse(explode("/", (string) $sDataInicial)));
     }
     $this->sDataInicial = $sDataInicial;
   }
@@ -153,7 +153,7 @@ abstract class PadArquivoSigap implements iPadArquivoBase {
   }
   
   public function addLog($sLog) {
-    fputs($this->rsLogger, $sLog);
+    fputs($this->rsLogger, (string) $sLog);
   }
 }
 

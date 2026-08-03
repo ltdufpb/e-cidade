@@ -95,12 +95,12 @@ $clrotulo->label("z01_nome");
     </td>
     <td colspan="3"> 
        <?php 
-       $arr_ocorre = array(
+       $arr_ocorre = [
                            '05'=>'05 - Não exposto no momento',
                            '06'=>'06 - Exposta (aposentadoria esp. 15 anos)',
                            '07'=>'07 - Exposta (aposentadoria esp. 20 anos)',
                            '08'=>'08 - Exposta (aposentadoria esp. 25 anos)'
-                          );
+                          ];
        db_select("rh51_ocorre",$arr_ocorre,true,$db_opcao);
        ?>
     </td>

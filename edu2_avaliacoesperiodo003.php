@@ -45,7 +45,7 @@ db_app::import("exceptions.*");
 
 $oGet  = db_utils::postMemory($_GET);
 $oTurma            = TurmaRepository::getTurmaByCodigo($oGet->iTurma);
-$aDisciplinas      = explode(",", $oGet->aDisciplinas);
+$aDisciplinas      = explode(",", (string) $oGet->aDisciplinas);
 $aEtapas           = $oTurma->getEtapas();
 $oEtapSelecionada = null;
 
@@ -127,7 +127,7 @@ $lPrimeiroLaco = true;
 /**
  * Filtra as disciplinas selecionadas na tela, criando uma estrutura somente com as regencias da turma
  */
-$aRegenciasSelecionadas = array();
+$aRegenciasSelecionadas = [];
 
 foreach ( $aDisciplinas as $iCodigoDisciplina) {
 
@@ -180,7 +180,7 @@ foreach ($aRegenciasSelecionadas as $oRegencia) {
 		$oPdf->SetFont('arial', '', 6);
 
 		$oPdf->Cell($oDadosRelatorio->iTamanhoColunaAluno - 5, 4,
-				        substr($oMatricula->getAluno()->getNome(), 0, $iTamanhoNomeAluno), 1, 0);
+				        substr((string) $oMatricula->getAluno()->getNome(), 0, $iTamanhoNomeAluno), 1, 0);
 		$oPdf->Cell(14, 4, $oDadosRelatorio->sEtapa, 1, 0, 'C');
 		$oPdf->SetFont('arial', '', 7);
 

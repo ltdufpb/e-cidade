@@ -34,7 +34,7 @@ include(modification("libs/db_liborcamento.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcelemento_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clorcelemento = new cl_orcelemento;
 
@@ -68,8 +68,8 @@ $clorcelemento = new cl_orcelemento;
             }
         }
 
-        parent.document.form1.<?=(isset($qvernivel) ? $qvernivel : "vernivel")?>.value = document.form1.nivel.value;
-        parent.document.form1.<?=(isset($qorgaos) ? $qorgaos : "orgaos")?>.value = org;
+        parent.document.form1.<?=($qvernivel ?? "vernivel")?>.value = document.form1.nivel.value;
+        parent.document.form1.<?=($qorgaos ?? "orgaos")?>.value = org;
     }
 
     function js_marcafilho(qpai) {
@@ -101,8 +101,8 @@ $clorcelemento = new cl_orcelemento;
                 }
             }
         }
-        parent.document.form1.<?=(isset($qvernivel) ? $qvernivel : "vernivel")?>.value = document.form1.nivel.value;
-        parent.document.form1.<?=(isset($qorgaos) ? $qorgaos : "orgaos")?>.value = org;
+        parent.document.form1.<?=($qvernivel ?? "vernivel")?>.value = document.form1.nivel.value;
+        parent.document.form1.<?=($qorgaos ?? "orgaos")?>.value = org;
     }
 
     function js_marcapai(qpai) {
@@ -182,8 +182,8 @@ $clorcelemento = new cl_orcelemento;
             }
         }
 
-        parent.document.form1.<?=(isset($qvernivel) ? $qvernivel : "vernivel")?>.value = document.form1.nivel.value;
-        parent.document.form1.<?=(isset($qorgaos) ? $qorgaos : "orgaos")?>.value = org;
+        parent.document.form1.<?=($qvernivel ?? "vernivel")?>.value = document.form1.nivel.value;
+        parent.document.form1.<?=($qorgaos ?? "orgaos")?>.value = org;
     }
 </script>
 
@@ -198,7 +198,7 @@ $clorcelemento = new cl_orcelemento;
   </tr>
 <?php
 
-$xnumero = substr($nivel, 0, 1);
+$xnumero = substr((string) $nivel, 0, 1);
 if ($xnumero == 1) {
     $xtitulo = 'Nivel 1 - Órgao';
 } elseif ($xnumero == 2) {
@@ -227,13 +227,13 @@ if ($xnumero == 1) {
 
 $sel_orgaos = " o58_instit in (".str_replace('-', ',', $db_selinstit).") ";
 
-if (substr($nivel, 1, 1) == 'B') {
-    $nivela = substr($nivel, 0, 1);
+if (substr((string) $nivel, 1, 1) == 'B') {
+    $nivela = substr((string) $nivel, 0, 1);
     if ($nivela == 9) {
         $nivelb = 7;
         $anousu = db_getsession("DB_anousu");
         $res_grupo = $clorcelemento->sql_record($clorcelemento->sql_query_exercicio(
-            $anousu, split("-", $db_selinstit),
+            $anousu, preg_split("#\\-#m", (string) $db_selinstit),
             null,
             " distinct (o56_codele), o56_elemento",
             "o56_elemento",
@@ -296,7 +296,7 @@ if (substr($nivel, 1, 1) == 'B') {
         $result  = db_query($sSql);
     }
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
         //  db_criatabela($result);exit;
         if ($xnumero == 1) {
@@ -377,7 +377,7 @@ if (substr($nivel, 1, 1) == 'B') {
 	                       and o41_instit  in (".str_replace('-', ',', $db_selinstit).") order by o41_orgao";
 
 		$result1 = db_query($sql1);
-		for ($i1 = 0; $i1 < pg_numrows($result1); $i1 ++) {
+		for ($i1 = 0; $i1 < pg_num_rows($result1); $i1 ++) {
 			db_fieldsmemory($result1, $i1);
 ?>
   <tr>
@@ -397,7 +397,7 @@ if (substr($nivel, 1, 1) == 'B') {
 					        inner join orcorgao on o41_orgao = $o41_orgao
 					                           and o41_anousu = ".db_getsession("DB_anousu");
 				$result2 = db_query($sql2);
-				for ($i2 = 0; $i2 < pg_numrows($result2); $i2 ++) {
+				for ($i2 = 0; $i2 < pg_num_rows($result2); $i2 ++) {
 					db_fieldsmemory($result2, $i2);
 ?>
   <tr>
@@ -418,7 +418,7 @@ if (substr($nivel, 1, 1) == 'B') {
 							           and o58_unidade 	= $o41_unidade
 							           and o58_anousu = ".db_getsession("DB_anousu");
 						$result3 = db_query($sql3);
-						for ($i3 = 0; $i3 < pg_numrows($result3); $i3 ++) {
+						for ($i3 = 0; $i3 < pg_num_rows($result3); $i3 ++) {
 							db_fieldsmemory($result3, $i3);
 ?>
   <tr>
@@ -441,7 +441,7 @@ if (substr($nivel, 1, 1) == 'B') {
 										   and o58_funcao       = $o52_funcao
 									           and o58_anousu = ".db_getsession("DB_anousu");
 								$result4 = db_query($sql4);
-								for ($i4 = 0; $i4 < pg_numrows($result4); $i4 ++) {
+								for ($i4 = 0; $i4 < pg_num_rows($result4); $i4 ++) {
 									db_fieldsmemory($result4, $i4);
 ?>
   <tr>
@@ -467,7 +467,7 @@ if (substr($nivel, 1, 1) == 'B') {
 												   and o58_subfuncao    = $o53_subfuncao
 											           and o58_anousu = ".db_getsession("DB_anousu");
 										$result5 = db_query($sql5);
-										for ($i5 = 0; $i5 < pg_numrows($result5); $i5 ++) {
+										for ($i5 = 0; $i5 < pg_num_rows($result5); $i5 ++) {
 											db_fieldsmemory($result5, $i5);
 ?>
   <tr>
@@ -495,7 +495,7 @@ if (substr($nivel, 1, 1) == 'B') {
 														   and o58_programa     = $o54_programa
 													           and o58_anousu = ".db_getsession("DB_anousu");
 												$result6 = db_query($sql6);
-												for ($i6 = 0; $i6 < pg_numrows($result6); $i6 ++) {
+												for ($i6 = 0; $i6 < pg_num_rows($result6); $i6 ++) {
 													db_fieldsmemory($result6, $i6);
 ?>
   <tr>
@@ -525,7 +525,7 @@ if (substr($nivel, 1, 1) == 'B') {
 																   and o58_projativ     = $o55_projativ
 															           and o58_anousu = ".db_getsession("DB_anousu");
 														$result7 = db_query($sql7);
-														for ($i7 = 0; $i7 < pg_numrows($result7); $i7 ++) {
+														for ($i7 = 0; $i7 < pg_num_rows($result7); $i7 ++) {
 															db_fieldsmemory($result7, $i7);
 ?>
   <tr>
@@ -555,7 +555,7 @@ if (substr($nivel, 1, 1) == 'B') {
 																		   and o58_codele       = $o56_codele
 																		   and o58_anousu = ".db_getsession("DB_anousu");
 																$result8 = db_query($sql8);
-																for ($i8 = 0; $i8 < pg_numrows($result8); $i8 ++) {
+																for ($i8 = 0; $i8 < pg_num_rows($result8); $i8 ++) {
 																	db_fieldsmemory($result8, $i8);
 ?>
   <tr>

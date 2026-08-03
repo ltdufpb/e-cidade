@@ -52,7 +52,7 @@ $clpontof13   = new cl_pontof13;
 $clpontocom   = new cl_pontocom;
 $clrhrubricas = new cl_rhrubricas;
 $clrhpessoal  = new cl_rhpessoal;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 try {
 	/**
@@ -107,25 +107,25 @@ try {
 				 * inclusao
 				 */
 				if( !isset($ativos) && $iae == "i" ) {
-					 $whereatualiza .= " and ".strtolower($r44_where);
+					 $whereatualiza .= " and ".strtolower((string) $r44_where);
 				}
 
 				/**
 				 * alteracao
 				 */
 				if ( $iae == 'a' and $r44_where != '') {
-					$whereatualiza .= " and ".strtolower($r44_where);
+					$whereatualiza .= " and ".strtolower((string) $r44_where);
 				}
 
 				/**
 				 * exclusao
 				 */
 				if ( $iae == 'e' and $r44_where != '') {
-					$whereatualiza .= " and ".strtolower($r44_where);
+					$whereatualiza .= " and ".strtolower((string) $r44_where);
 				}
 
 				if ($r44_where != '') {
-				  $whereatualizacad .= " and ".strtolower($r44_where);
+				  $whereatualizacad .= " and ".strtolower((string) $r44_where);
 				}
 
 			}
@@ -170,11 +170,11 @@ try {
   	 * ------------------------------------------------------------------------------------------------------------------
   	 */
   	case "i":
-			$arr_registrosFA = Array();
-			$arr_registrosFC = Array();
-			$arr_registrosF3 = Array();
-			$arr_registrosFX = Array();
-			$arr_registrosFS = Array();
+			$arr_registrosFA = [];
+			$arr_registrosFC = [];
+			$arr_registrosF3 = [];
+			$arr_registrosFX = [];
+			$arr_registrosFS = [];
 
 			if (isset($ativos)) {
 

@@ -32,15 +32,15 @@ include(modification("dbforms/db_funcoes.php"));
 
 //echo "calc= $forma  j01_matric= $j01_matric exec = $exec";
 //if(isset($exec)){
-  
+
 //  $sqlperc = "select j18_perccorrepadrao from cfiptu where j18_anousu=$exec ";
 
   $sqlperc = "select j18_perccorrepadrao from cfiptu where j18_anousu = ".db_getsession('DB_anousu');
   $resultperc = db_query($sqlperc);
   $linhasperc = pg_num_rows($resultperc);
-  
+
   if($linhasperc>0){
-    
+
     db_fieldsmemory($resultperc,0);
     echo "<script>   
             parent.document.form1.percentual.value = $j18_perccorrepadrao;            
@@ -49,30 +49,30 @@ include(modification("dbforms/db_funcoes.php"));
 //    exit;
 
   }
-      
+
 //}
 
 if(!isset($exec)){
-  
+
 $sql = " select distinct 
                 j23_anousu 
            from iptucalc 
           where j23_matric = $j01_matric 
             and j23_anousu <> ".db_getsession('DB_anousu')." 
           order by j23_anousu desc ";
-          
+
 $result = db_query($sql);
 $linhas = pg_num_rows($result);
 if($linhas>0){
   $xx  = "";  
   $anos= "";
-  
+
   for($i=0;$i<$linhas;$i++){
-    
+
     db_fieldsmemory($result,$i);
     $anos .= $xx.$j23_anousu;
     $xx= "X"; 
- 
+
 /*  if($i==0 && isset($exec) ){
       $sqlperc = "select j18_perccorrepadrao from cfiptu where j18_anousu = ".db_getsession('DB_anousu');
       $resultperc = db_query($sqlperc);
@@ -84,9 +84,9 @@ if($linhas>0){
               </script> ";
       }     
     } */
-   
+
   }
-  
+
 //  echo "ano = $anos";
   echo "<script>
           parent.js_addSelectFromStr('$anos');

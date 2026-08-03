@@ -61,7 +61,7 @@ class RegraLancamentoEntradaEstoque implements IRegraLancamentoContabil {
     /**
      * Percorro todas as transacoes configuradas comparando as contas com a do material.
      */
-    $aRegrasEncontradas = array();
+    $aRegrasEncontradas = [];
 
     for ($i = 0; $i < $iRegistros; $i++) {
 

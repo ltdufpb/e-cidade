@@ -35,7 +35,7 @@ include(modification("classes/db_varfixproc_classe.php"));
 include(modification("classes/db_varfixnotifica_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procfiscalvarfix_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clissbase         = new cl_issbase;
 $clvarfix          = new cl_varfix;
 $clvarfixproc      = new cl_varfixproc;

@@ -42,8 +42,8 @@ $cldb_depart    = new cl_db_depart;
 $clrotulo = new rotulocampo;
 $clsolicita->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $and    = "";
 $and2   = "";
 $where  = "";
@@ -193,7 +193,7 @@ for($i = 0; $i < $numrows;$i++){
     $valor_tot = db_formatar(@$pc11_quant*@$pc11_vlrun,'f');
     $pdf->cell(84,$alt,"",0,0,"C",0);
     $pdf->cell(22,$alt,@$pc11_codigo,0,0,"C",0);
-    $pdf->cell(90,$alt,substr(@$pc01_descrmater,0,50),0,0,"L",0);
+    $pdf->cell(90,$alt,substr((string) @$pc01_descrmater,0,50),0,0,"L",0);
     $pdf->cell(22,$alt,@$pc11_quant,0,0,"C",0);
     $pdf->cell(22,$alt,@$pc11_vlrun,0,0,"R",0);
     $pdf->cell(31,$alt,@$valor_tot,0,1,"R",0);

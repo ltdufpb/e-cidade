@@ -162,23 +162,23 @@ function js_emite(){
                 db_input("valor", 3, 0, true, 'hidden', 3);
                 db_input("colunas_sselecionados", 3, 0, true, 'hidden', 3);
                 db_input("colunas_nselecionados", 3, 0, true, 'hidden', 3);
-                $arr_colunas = Array( "l" =>"Liquido", "p" =>"Provento", "d" =>"Desconto");
-                $arr_colunas_final   = Array();
-                $arr_colunas_inicial = Array();
+                $arr_colunas = [ "l" =>"Liquido", "p" =>"Provento", "d" =>"Desconto"];
+                $arr_colunas_final   = [];
+                $arr_colunas_inicial = [];
                 if(isset($colunas_sselecionados) && $colunas_sselecionados != ""){
-                   $colunas_sselecionados = split(",",$colunas_sselecionados);
+                   $colunas_sselecionados = preg_split("#,#m",$colunas_sselecionados);
                    for($Ic=0;$Ic < count($colunas_sselecionados);$Ic++){
                       $arr_colunas_final[$colunas_sselecionados[$Ic]] = $arr_colunas[$colunas_sselecionados[$Ic]]; 
                    }
                 }
                 if(isset($colunas_nselecionados) && $colunas_nselecionados != ""){
-                   $colunas_nselecionados = split(",",$colunas_nselecionados);
+                   $colunas_nselecionados = preg_split("#,#m",$colunas_nselecionados);
                    for($Ic=0;$Ic < count($colunas_nselecionados);$Ic++){
                       $arr_colunas_inicial[$colunas_nselecionados[$Ic]] = $arr_colunas[$colunas_nselecionados[$Ic]]; 
                    }
                 }
                 if(!isset($colunas_sselecionados) || !isset($colunas_sselecionados) || $colunas_sselecionados == ""){
-                   $arr_colunas_final  = Array();
+                   $arr_colunas_final  = [];
                    $arr_colunas_inicial = $arr_colunas;
                 }
                 db_multiploselect("valor","descr", "nselecionados", "sselecionados", $arr_colunas_inicial, $arr_colunas_final, 6, 250, "", "", true, "js_complementar('c');");
@@ -225,7 +225,7 @@ function js_emite(){
         <td title="Ordem do relatório" >Ordem :</td>
         <td>
           <?php
-          $v = array("a"=>"Alfabética", "n"=>"Numérica");
+          $v = ["a"=>"Alfabética", "n"=>"Numérica"];
           $v = array_merge($v,$arr_colunas_final);
           db_select('xordem',$v,true,4,"");
           ?>
@@ -236,7 +236,7 @@ function js_emite(){
         <td>
           <?php
           if(!isset($xv)){
-             $xv = array("a"=>"Ascendente", "d"=>"Descendente");
+             $xv = ["a"=>"Ascendente", "d"=>"Descendente"];
           }
           db_select('xasc',$xv,true,4,"");
           ?>

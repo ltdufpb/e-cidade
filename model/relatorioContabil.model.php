@@ -28,23 +28,21 @@
 
 class relatorioContabil {
 
-  private $codigo  = null;
-  private $linhas  = array();
+  private $linhas  = [];
   private $sDescricao;
 
-  function __construct($iCodigoRelatorio, $lLoadLinhas=true) {
+  function __construct(private $codigo, $lLoadLinhas=true) {
 
-    $this->codigo = $iCodigoRelatorio;
     if ($lLoadLinhas) {
       $this->linhas = $this->getLinhasRelatorio();
     }
 
-    if ( empty($iCodigoRelatorio) ) {
+    if ( empty($this->codigo) ) {
       return;
     }
 
     $oDaoOrcparamrel    = db_utils::getDao("orcparamrel");
-    $sSqlDadosRelatorio = $oDaoOrcparamrel->sql_query_file($iCodigoRelatorio);
+    $sSqlDadosRelatorio = $oDaoOrcparamrel->sql_query_file($this->codigo);
     $rsDadosRelatorio   = $oDaoOrcparamrel->sql_record($sSqlDadosRelatorio);
 
     if ( $oDaoOrcparamrel->erro_status == '0' ) {
@@ -67,7 +65,7 @@ class relatorioContabil {
   public function getLinhasRelatorio($lLoadCols = true, $iInstit = '', $iAnoUsu = '') {
 
     require_once(modification("model/linhaRelatorioContabil.model.php"));
-    $aLinhas       = array();
+    $aLinhas       = [];
     $oDaoLinhasRel = db_utils::getDao("orcparamseq");
     $sSqlLinhas    = $oDaoLinhasRel->sql_query($this->codigo, null,
                              "o69_codparamrel,
@@ -182,10 +180,10 @@ class relatorioContabil {
     $sDepartamento = $oDepartamento->getNomeDepartamento();
     $dtEmissao     = date("d/m/Y", db_getsession("DB_datausu"));
     $hEmissao      = date("H:i:s");
-    $aParseVariaveis = array('[nome_departamento]' => $sDepartamento,
+    $aParseVariaveis = ['[nome_departamento]' => $sDepartamento,
                              '[data_emissao]'      => $dtEmissao,
                              '[hora_emissao]'      => $hEmissao
-    );
+    ];
 
     if (isset($oNotaPadrao->o42_notapadrao) && trim($oNotaPadrao->o42_notapadrao) != "") {
 
@@ -243,10 +241,10 @@ class relatorioContabil {
       $sDepartamento = $oDepartamento->getNomeDepartamento();
       $dtEmissao     = date("d/m/Y", db_getsession("DB_datausu"));
       $hEmissao      = date("H:i:s");
-      $aParseVariaveis = array('[nome_departamento]' => $sDepartamento,
+      $aParseVariaveis = ['[nome_departamento]' => $sDepartamento,
                                '[data_emissao]'      => $dtEmissao,
                                '[hora_emissao]'      => $hEmissao
-                               );
+                               ];
       foreach ($aParseVariaveis as $sIndiceValores => $oParseVariaveis) {
 
         if (str_replace($sIndiceValores, $oParseVariaveis, $sFonte)) {
@@ -292,10 +290,7 @@ class relatorioContabil {
     return null;
   }
 
-  /**
-   *
-   * @deprecated Utilize o método notaExplicativa
-   */
+  #[\Deprecated(message: 'Utilize o método notaExplicativa')]
   function getNotaExplicativa (FPDF &$oPdf, $iPeriodo,$iTam = 190) {
 
     /**
@@ -324,10 +319,10 @@ class relatorioContabil {
     $sDepartamento = $oDepartamento->getNomeDepartamento();
     $dtEmissao     = date("d/m/Y", db_getsession("DB_datausu"));
     $hEmissao      = date("H:i:s");
-    $aParseVariaveis = array('[nome_departamento]' => $sDepartamento,
+    $aParseVariaveis = ['[nome_departamento]' => $sDepartamento,
                              '[data_emissao]'      => $dtEmissao,
                              '[hora_emissao]'      => $hEmissao
-    );
+    ];
 
 
     if (isset($oNotaPadrao->o42_notapadrao) && trim($oNotaPadrao->o42_notapadrao) != "") {
@@ -386,10 +381,10 @@ class relatorioContabil {
       $sDepartamento = $oDepartamento->getNomeDepartamento();
       $dtEmissao     = date("d/m/Y", db_getsession("DB_datausu"));
       $hEmissao      = date("H:i:s");
-      $aParseVariaveis = array('[nome_departamento]' => $sDepartamento,
+      $aParseVariaveis = ['[nome_departamento]' => $sDepartamento,
                                '[data_emissao]'      => $dtEmissao,
                                '[hora_emissao]'      => $hEmissao
-                               );
+                               ];
       foreach ($aParseVariaveis as $sIndiceValores => $oParseVariaveis) {
 
         if (str_replace($sIndiceValores, $oParseVariaveis, $sFonte)) {
@@ -533,35 +528,35 @@ class relatorioContabil {
     $oFiltro = new stdClass();
     $oFiltro->orgao = new \stdClass();
     $oFiltro->orgao->operador = 'in';
-    $oFiltro->orgao->valor    = array();
+    $oFiltro->orgao->valor    = [];
 
     $oFiltro->unidade = new \stdClass();
     $oFiltro->unidade->operador = 'in';
-    $oFiltro->unidade->valor    =  array();
+    $oFiltro->unidade->valor    =  [];
 
     $oFiltro->funcao = new \stdClass();;
     $oFiltro->funcao->operador = 'in';
-    $oFiltro->funcao->valor    =  array();
+    $oFiltro->funcao->valor    =  [];
 
     $oFiltro->subfuncao = new \stdClass();
     $oFiltro->subfuncao->operador = 'in';
-    $oFiltro->subfuncao->valor    =  array();
+    $oFiltro->subfuncao->valor    =  [];
 
     $oFiltro->programa = new \stdClass();
     $oFiltro->programa->operador = 'in';
-    $oFiltro->programa->valor    =  array();
+    $oFiltro->programa->valor    =  [];
 
     $oFiltro->projativ= new \stdClass();;
     $oFiltro->projativ->operador = 'in';
-    $oFiltro->projativ->valor    =  array();
+    $oFiltro->projativ->valor    =  [];
 
     $oFiltro->elemento = new \stdClass();
     $oFiltro->elemento->operador = 'in';
-    $oFiltro->elemento->valor    =  array();
+    $oFiltro->elemento->valor    =  [];
 
     $oFiltro->recurso = new \stdClass();
     $oFiltro->recurso->operador = 'in';
-    $oFiltro->recurso->valor    =  array();
+    $oFiltro->recurso->valor    =  [];
 
       $oFiltro->fonterecurso = new stdClass();
       $oFiltro->fonterecurso->operador = 'in';
@@ -582,7 +577,7 @@ class relatorioContabil {
       $aOrgao                   = explode(",", $oOrgao->item(0)->getAttribute("valor"));
       $oFiltro->orgao->valor    = $aOrgao;
       if (count($aOrgao) == 1 && $aOrgao[0] == "") {
-        $oFiltro->orgao->valor = array();
+        $oFiltro->orgao->valor = [];
       }
 
       $oUnidade = $oDomXml->getElementsByTagName("unidade");
@@ -590,7 +585,7 @@ class relatorioContabil {
       $aUnidade                   = explode(",", $oUnidade->item(0)->getAttribute("valor"));
       $oFiltro->unidade->valor  = $aUnidade;
       if (count($aUnidade) == 1 && $aUnidade[0] == "") {
-        $oFiltro->unidade->valor = array();
+        $oFiltro->unidade->valor = [];
       }
 
       $oFuncao = $oDomXml->getElementsByTagName("funcao");
@@ -598,14 +593,14 @@ class relatorioContabil {
       $aValores                  = explode(",", $oFuncao->item(0)->getAttribute("valor"));
       $oFiltro->funcao->valor    = $aValores;
       if (count($aValores) == 1 && $aValores[0] == "") {
-        $oFiltro->funcao->valor = array();
+        $oFiltro->funcao->valor = [];
       }
       $oSubFuncao = $oDomXml->getElementsByTagName("subfuncao");
       $oFiltro->subfuncao->operador = $oSubFuncao->item(0)->getAttribute("operador");
       $aValores                  = explode(",", $oSubFuncao->item(0)->getAttribute("valor"));
       $oFiltro->subfuncao->valor    = $aValores;
       if (count($aValores) == 1 && $aValores[0] == "") {
-        $oFiltro->subfuncao->valor = array();
+        $oFiltro->subfuncao->valor = [];
       }
 
       $oPrograma = $oDomXml->getElementsByTagName("programa");
@@ -613,7 +608,7 @@ class relatorioContabil {
       $aValores                  = explode(",", $oPrograma->item(0)->getAttribute("valor"));
       $oFiltro->programa->valor    = $aValores;
       if (count($aValores) == 1 && $aValores[0] == "") {
-        $oFiltro->programa->valor = array();
+        $oFiltro->programa->valor = [];
       }
 
       $oProjAtiv = $oDomXml->getElementsByTagName("projativ");
@@ -621,7 +616,7 @@ class relatorioContabil {
       $aValores                  = explode(",", $oProjAtiv->item(0)->getAttribute("valor"));
       $oFiltro->projativ->valor    = $aValores;
       if (count($aValores) == 1 && $aValores[0] == "") {
-        $oFiltro->projativ->valor = array();
+        $oFiltro->projativ->valor = [];
       }
 
       $oRecurso = $oDomXml->getElementsByTagName("recurso");
@@ -629,7 +624,7 @@ class relatorioContabil {
       $aRecursos                  = explode(",", $oRecurso->item(0)->getAttribute("valor"));
       $oFiltro->recurso->valor    = $aRecursos;
       if (count($aRecursos) == 1 && $aRecursos[0] == "") {
-        $oFiltro->recurso->valor = array();
+        $oFiltro->recurso->valor = [];
       }
 
       $oElemento  = $oDomXml->getElementsByTagName("elemento");
@@ -639,7 +634,7 @@ class relatorioContabil {
         $aValores                    = explode(",", $oElemento->item(0)->getAttribute("valor"));
         $oFiltro->elemento->valor    = $aValores;
         if (count($aValores) == 1 && $aValores[0] == "") {
-          $oFiltro->elemento->valor = array();
+          $oFiltro->elemento->valor = [];
         }
       }
 
@@ -683,7 +678,7 @@ class relatorioContabil {
   public function getLinhasCompleto() {
 
     require_once(modification("model/linhaRelatorioContabil.model.php"));
-    $aLinhas       = array();
+    $aLinhas       = [];
     $oDaoLinhasRel = db_utils::getDao("orcparamseq");
     $sSqlLinhas    = $oDaoLinhasRel->sql_query($this->codigo, null,
                              "o69_codparamrel,

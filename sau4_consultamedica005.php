@@ -36,7 +36,7 @@ include(modification("classes/db_prontuarios_classe.php"));
 include(modification("classes/db_prontproced_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_stdlibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcgs = new cl_cgs;
 $clcgs_und = new cl_cgs_und;
 $clprontproced = new cl_prontproced;
@@ -133,7 +133,7 @@ $sql=$clprontproced->sql_query("","sd03_i_codigo,z01_nome,rh70_estrutural,rh70_d
 $query = db_query($sql);
 $linhas = pg_num_rows($query);
  if($linhas>0){
-  db_lovrot($sql,15,"()","","","","NoMe",array("sd03_i_codigo"=>$sd03_i_codigo,"z01_nome"=>$z01_nome,"rh70_estrutural"=>$rh70_estrutural,"rh70_descr"=>$rh70_descr));
+  db_lovrot($sql,15,"()","","","","NoMe",["sd03_i_codigo"=>$sd03_i_codigo,"z01_nome"=>$z01_nome,"rh70_estrutural"=>$rh70_estrutural,"rh70_descr"=>$rh70_descr]);
  }else{
   echo "<table width='100%'>
         <tr>

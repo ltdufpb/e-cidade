@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_retentributo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_retentributo = new cl_sau_retentributo;
 $clsau_retentributo->rotulo->label("sd39_i_cod_reten");
 $clsau_retentributo->rotulo->label("sd39_v_situacao");
@@ -98,9 +98,9 @@ $clsau_retentributo->rotulo->label("sd39_v_situacao");
         }else{
            $sql = $clsau_retentributo->sql_query("",$campos,"sd39_v_situacao","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd39_i_cod_reten)){
-          $repassa = array("chave_sd39_i_cod_reten"=>$chave_sd39_i_cod_reten,"chave_sd39_v_situacao"=>$chave_sd39_v_situacao);
+          $repassa = ["chave_sd39_i_cod_reten"=>$chave_sd39_i_cod_reten,"chave_sd39_v_situacao"=>$chave_sd39_v_situacao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

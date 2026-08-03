@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadtipomod_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcadtipomod = new cl_cadtipomod;
 $clcadtipomod->rotulo->label("k46_sequencial");
 $clcadtipomod->rotulo->label("k46_descr");
@@ -98,9 +98,9 @@ $clcadtipomod->rotulo->label("k46_descr");
         }else{
            $sql = $clcadtipomod->sql_query("",$campos,"k46_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k46_descr)){
-          $repassa = array("chave_k46_sequencial"=>$chave_k46_sequencial,"chave_k46_descr"=>$chave_k46_descr);
+          $repassa = ["chave_k46_sequencial"=>$chave_k46_sequencial,"chave_k46_descr"=>$chave_k46_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

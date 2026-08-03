@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sam_base_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsam_base = new cl_sam_base;
 $clsam_base->rotulo->label("sm01_sequencial");
 $clsam_base->rotulo->label("sm01_descr");
@@ -98,9 +98,9 @@ $clsam_base->rotulo->label("sm01_descr");
         }else{
            $sql = $clsam_base->sql_query_geral("",$campos,"sm01_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sm01_sequencial)){
-          $repassa = array("chave_sm01_sequencial"=>$chave_sm01_sequencial,"chave_sm01_descr"=>$chave_sm01_descr);
+          $repassa = ["chave_sm01_sequencial"=>$chave_sm01_sequencial,"chave_sm01_descr"=>$chave_sm01_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

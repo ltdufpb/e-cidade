@@ -200,9 +200,7 @@ final class AtendimentoRepository extends BaseRepository implements RepositoryIn
 
             $aTipoprocdepto = \db_utils::getCollectionByRecord($rTipoprocdepto);
 
-            $aTipoProc = array_map(function ($oTipoprocdepto) {
-                return $oTipoprocdepto->p41_tipoproc;
-            }, $aTipoprocdepto);
+            $aTipoProc = array_map(fn($oTipoprocdepto) => $oTipoprocdepto->p41_tipoproc, $aTipoprocdepto);
 
             $sTipoProc = implode(", ", $aTipoProc);
             $aWhere[] = "p51_codigo IN ({$sTipoProc})";

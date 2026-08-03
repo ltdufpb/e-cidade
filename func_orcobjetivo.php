@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_orcobjetivo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcobjetivo = new cl_orcobjetivo;
 $clorcobjetivo->rotulo->label("o143_sequencial");
 $clorcobjetivo->rotulo->label("o143_descricao");
@@ -104,9 +104,9 @@ if (!empty($lVinculado) && $lVinculado === "false") {
         }else{
            $sql = $clorcobjetivo->sql_query("",$campos,"o143_sequencial", $sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o143_descricao)){
-          $repassa = array("chave_o143_sequencial"=>$chave_o143_sequencial,"chave_o143_descricao"=>$chave_o143_descricao);
+          $repassa = ["chave_o143_sequencial"=>$chave_o143_sequencial,"chave_o143_descricao"=>$chave_o143_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

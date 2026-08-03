@@ -64,11 +64,11 @@ db_app::load("estilos.css");
 </table>
 <?php 
 
-  $clcriaabas->identifica = array("g1"=>"Principal","filtro"=>"Filtro");
-  $clcriaabas->title      = array("g1"=>"Principal","filtro"=>"Filtro");
-  $clcriaabas->src        = array("g1"=>"orc4_ppadespesaelemento011.php","filtro"=>"func_selorcdotacao_aba.php?restos=true");
-  $clcriaabas->funcao_js  = array("g1"=>"","filtro"=>"js_atualizar_instit();");
-  $clcriaabas->sizecampo  = array("g1"=>"20","filtro"=>"20");
+  $clcriaabas->identifica = ["g1"=>"Principal","filtro"=>"Filtro"];
+  $clcriaabas->title      = ["g1"=>"Principal","filtro"=>"Filtro"];
+  $clcriaabas->src        = ["g1"=>"orc4_ppadespesaelemento011.php","filtro"=>"func_selorcdotacao_aba.php?restos=true"];
+  $clcriaabas->funcao_js  = ["g1"=>"","filtro"=>"js_atualizar_instit();"];
+  $clcriaabas->sizecampo  = ["g1"=>"20","filtro"=>"20"];
   $clcriaabas->cria_abas();
 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));

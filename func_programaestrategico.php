@@ -36,7 +36,7 @@ db_postmemory($_POST);
 $oRotulo = new rotulocampo();
 $oRotulo->label('pl9_codigo');
 
-$where = array();
+$where = [];
 if (!empty($_GET['planejamento'])) {
     $where[] = "pl9_planejamento = {$_GET['planejamento']}";
 }
@@ -105,9 +105,9 @@ if (!isset($pesquisa_chave)) {
         $sql .= "where " . implode(' and ', $where);
     }
 
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_descricao)) {
-        $repassa = array("chave_descricao" => $chave_descricao, "chave_descricao" => $chave_descricao);
+        $repassa = ["chave_descricao" => $chave_descricao, "chave_descricao" => $chave_descricao];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

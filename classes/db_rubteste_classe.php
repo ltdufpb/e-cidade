@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE rubteste
 class cl_rubteste { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rubant = null; 
-   var $descrrub = null; 
-   var $rubnova = null; 
-   var $anomes = 0; 
+   public $rubant = null; 
+   public $descrrub = null; 
+   public $rubnova = null; 
+   public $anomes = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rubant = varchar(3) = Rubrica Anterior 
                  descrrub = varchar(40) = Descrição da Rubrica 
                  rubnova = varchar(4) = Rubrica Nova 
                  anomes = int4 = Ano/Mês 
                  ";
    //funcao construtor da classe 
-   function cl_rubteste() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rubteste"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,7 +131,7 @@ class cl_rubteste {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "rubteste ($this->rubant."-".$this->descrrub) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "rubteste já Cadastrado";
@@ -153,14 +153,14 @@ class cl_rubteste {
      $resaco = $this->sql_record($this->sql_query_file($this->rubant,$this->descrrub));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5731,'$this->rubant','I')");
        $resac = db_query("insert into db_acountkey values($acount,5732,'$this->descrrub','I')");
-       $resac = db_query("insert into db_acount values($acount,908,5731,'','".AddSlashes(pg_result($resaco,0,'rubant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,908,5732,'','".AddSlashes(pg_result($resaco,0,'descrrub'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,908,5733,'','".AddSlashes(pg_result($resaco,0,'rubnova'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,908,5734,'','".AddSlashes(pg_result($resaco,0,'anomes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,908,5731,'','".AddSlashes(pg_fetch_result($resaco,0,'rubant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,908,5732,'','".AddSlashes(pg_fetch_result($resaco,0,'descrrub'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,908,5733,'','".AddSlashes(pg_fetch_result($resaco,0,'rubnova'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,908,5734,'','".AddSlashes(pg_fetch_result($resaco,0,'anomes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -169,10 +169,10 @@ class cl_rubteste {
       $this->atualizacampos();
      $sql = " update rubteste set ";
      $virgula = "";
-     if(trim($this->rubant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rubant"])){ 
+     if(trim((string) $this->rubant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rubant"])){ 
        $sql  .= $virgula." rubant = '$this->rubant' ";
        $virgula = ",";
-       if(trim($this->rubant) == null ){ 
+       if(trim((string) $this->rubant) == null ){ 
          $this->erro_sql = " Campo Rubrica Anterior nao Informado.";
          $this->erro_campo = "rubant";
          $this->erro_banco = "";
@@ -182,10 +182,10 @@ class cl_rubteste {
          return false;
        }
      }
-     if(trim($this->descrrub)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrrub"])){ 
+     if(trim((string) $this->descrrub)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrrub"])){ 
        $sql  .= $virgula." descrrub = '$this->descrrub' ";
        $virgula = ",";
-       if(trim($this->descrrub) == null ){ 
+       if(trim((string) $this->descrrub) == null ){ 
          $this->erro_sql = " Campo Descrição da Rubrica nao Informado.";
          $this->erro_campo = "descrrub";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_rubteste {
          return false;
        }
      }
-     if(trim($this->rubnova)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rubnova"])){ 
+     if(trim((string) $this->rubnova)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rubnova"])){ 
        $sql  .= $virgula." rubnova = '$this->rubnova' ";
        $virgula = ",";
-       if(trim($this->rubnova) == null ){ 
+       if(trim((string) $this->rubnova) == null ){ 
          $this->erro_sql = " Campo Rubrica Nova nao Informado.";
          $this->erro_campo = "rubnova";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_rubteste {
          return false;
        }
      }
-     if(trim($this->anomes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anomes"])){ 
+     if(trim((string) $this->anomes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anomes"])){ 
        $sql  .= $virgula." anomes = $this->anomes ";
        $virgula = ",";
-       if(trim($this->anomes) == null ){ 
+       if(trim((string) $this->anomes) == null ){ 
          $this->erro_sql = " Campo Ano/Mês nao Informado.";
          $this->erro_campo = "anomes";
          $this->erro_banco = "";
@@ -226,17 +226,17 @@ class cl_rubteste {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->rubant,$this->descrrub));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,5731,'$this->rubant','A')");
        $resac = db_query("insert into db_acountkey values($acount,5732,'$this->descrrub','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rubant"]))
-         $resac = db_query("insert into db_acount values($acount,908,5731,'".AddSlashes(pg_result($resaco,0,'rubant'))."','$this->rubant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,908,5731,'".AddSlashes(pg_fetch_result($resaco,0,'rubant'))."','$this->rubant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["descrrub"]))
-         $resac = db_query("insert into db_acount values($acount,908,5732,'".AddSlashes(pg_result($resaco,0,'descrrub'))."','$this->descrrub',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,908,5732,'".AddSlashes(pg_fetch_result($resaco,0,'descrrub'))."','$this->descrrub',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rubnova"]))
-         $resac = db_query("insert into db_acount values($acount,908,5733,'".AddSlashes(pg_result($resaco,0,'rubnova'))."','$this->rubnova',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,908,5733,'".AddSlashes(pg_fetch_result($resaco,0,'rubnova'))."','$this->rubnova',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["anomes"]))
-         $resac = db_query("insert into db_acount values($acount,908,5734,'".AddSlashes(pg_result($resaco,0,'anomes'))."','$this->anomes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,908,5734,'".AddSlashes(pg_fetch_result($resaco,0,'anomes'))."','$this->anomes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      $result = @db_query($sql);
      if($result==false){ 
@@ -274,14 +274,14 @@ class cl_rubteste {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5731,'$rubant','E')");
          $resac = db_query("insert into db_acountkey values($acount,5732,'$descrrub','E')");
-         $resac = db_query("insert into db_acount values($acount,908,5731,'','".AddSlashes(pg_result($resaco,$iresaco,'rubant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,908,5732,'','".AddSlashes(pg_result($resaco,$iresaco,'descrrub'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,908,5733,'','".AddSlashes(pg_result($resaco,$iresaco,'rubnova'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,908,5734,'','".AddSlashes(pg_result($resaco,$iresaco,'anomes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,908,5731,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rubant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,908,5732,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'descrrub'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,908,5733,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rubnova'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,908,5734,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'anomes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rubteste
@@ -340,7 +340,7 @@ class cl_rubteste {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rubteste";
@@ -354,7 +354,7 @@ class cl_rubteste {
    function sql_query ( $rubant=null,$descrrub=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_rubteste {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_rubteste {
    function sql_query_file ( $rubant=null,$descrrub=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -424,7 +424,7 @@ class cl_rubteste {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

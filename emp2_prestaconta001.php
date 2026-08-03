@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo= new rotulocampo;
 $clrotulo->label("e60_codemp");
 $clrotulo->label("e60_anousu");
@@ -147,7 +147,7 @@ function js_limpa(){
         </td>
         <td>
           <?php 
-          $tipo_ordem = array("a"=>"Todos","b"=>"Pendentes para acerto","c"=>"Conferidos","d"=>"Não conferidos");
+          $tipo_ordem = ["a"=>"Todos","b"=>"Pendentes para acerto","c"=>"Conferidos","d"=>"Não conferidos"];
           db_select("ordem",$tipo_ordem,true,2); ?>
         </td>
       </tr>
@@ -171,7 +171,7 @@ function js_limpa(){
         </td>
         <td>
           <?php 
-          $xxx = array("n"=>"Não","s"=>"Sim");
+          $xxx = ["n"=>"Não","s"=>"Sim"];
           db_select("historico",$xxx,true,2); ?>
         </td>
       </tr>
@@ -189,7 +189,7 @@ function js_limpa(){
         </td>
         <td>
           <?php 
-          $xxx = array("n"=>"Não","s"=>"Sim");
+          $xxx = ["n"=>"Não","s"=>"Sim"];
           db_select("quebrarpagorgao",$xxx,true,2); ?>
         </td>
       </tr>

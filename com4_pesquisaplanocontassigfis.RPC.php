@@ -37,15 +37,15 @@ $sName         = $_POST["string"];
 $oDomXml  = new DOMDocument();
 $oDomXml->load('config/sigfis/planocontas.xml');
 $aContas = $oDomXml->getElementsByTagName("conta");
-$aContasRetorno = array();
+$aContasRetorno = [];
 foreach ($aContas as $oConta) {
 	
   $iCodigo     = $oConta->getAttribute("codigo");
   $sEstrutural = $oConta->getAttribute("estrutural");
   $sDescricao  = $oConta->getAttribute("descricao");
-  $iTamanhoPesquisa = strlen($sName);
+  $iTamanhoPesquisa = strlen((string) $sName);
   if (substr(str_replace(".", "", $sEstrutural), 0, $iTamanhoPesquisa) == $sName || 
-      strpos(strtolower($sDescricao), strtolower($sName)) !== false) {
+      str_contains(strtolower($sDescricao), strtolower((string) $sName))) {
     
     $oContaRetorno        = new stdClass();
     $oContaRetorno->cod   = $iCodigo;

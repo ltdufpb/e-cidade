@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("db_usuarios"=>"Usuários","db_depusu"=>"Departamentos"); 
-	 $clcriaabas->src = array("db_usuarios"=>"con1_db_usuarios006.php");
-	 $clcriaabas->disabled   =  array("db_depusu"=>"true"); 
+	 $clcriaabas->identifica = ["db_usuarios"=>"Usuários","db_depusu"=>"Departamentos"]; 
+	 $clcriaabas->src = ["db_usuarios"=>"con1_db_usuarios006.php"];
+	 $clcriaabas->disabled   =  ["db_depusu"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

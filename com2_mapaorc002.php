@@ -120,7 +120,7 @@ $clliclicitemanu = new cl_liclicitemanu();
 $clrotulo = new rotulocampo();
 $clrotulo->label('');
 
-parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
+parse_str((string) $_SERVER ['QUERY_STRING'], $result);
 //echo $HTTP_SERVER_VARS['QUERY_STRING'];
 
 $sOrigem = "";
@@ -279,7 +279,7 @@ if ($modelo == 1) {
     }
     $alt = 4;
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(60, $alt, $z01_numcgm ." - ". substr($z01_nome, 0, 40), 0, 0, "L", $p);
+    $pdf->cell(60, $alt, $z01_numcgm ." - ". substr((string) $z01_nome, 0, 40), 0, 0, "L", $p);
     $t = 0;
     $cont_quant = 0;
     for($w = $quant_imp; $w < $max_itens; $w ++) {
@@ -465,14 +465,14 @@ if ($modelo == 1) {
   $quant_imp = 0;
   $valor_total = 0;
 
-  $arr_subtotganhoun = array ();
-  $arr_subtotcotadoun = array ();
+  $arr_subtotganhoun =  [];
+  $arr_subtotcotadoun =  [];
 
-  $arr_subtotganhovlr = array ();
-  $arr_subtotcotadovlr = array ();
+  $arr_subtotganhovlr =  [];
+  $arr_subtotcotadovlr =  [];
 
-  $arr_totalganho = array ();
-  $arr_totalcotado = array ();
+  $arr_totalganho =  [];
+  $arr_totalcotado =  [];
 
   $result_forne = $clpcorcamforne->sql_record($clpcorcamforne->sql_query(null, "*", null, "pc21_codorc=$orcamento"));
   $numrows_forne = $clpcorcamforne->numrows;
@@ -541,7 +541,7 @@ if ($modelo == 1) {
           $pdf->cell(20, $alt, "Vlr. Un.", 1, 0, "C", 1);
         }
 
-        $pdf->cell(60, $alt, substr($z01_nome, 0, 25) . "(" . ($w + 1) . ")", 1, $t, "C", 1);
+        $pdf->cell(60, $alt, substr((string) $z01_nome, 0, 25) . "(" . ($w + 1) . ")", 1, $t, "C", 1);
       }
       $troca = 0;
     }
@@ -716,7 +716,7 @@ if ($modelo == 1) {
     $cont = $i;
     $cont ++;
 
-    $pdf->cell(65, $alt, $z01_numcgm." - ".substr($z01_nome, 0, 25) . " (" . $cont . ")", 0, 0, "L", $p);
+    $pdf->cell(65, $alt, $z01_numcgm." - ".substr((string) $z01_nome, 0, 25) . " (" . $cont . ")", 0, 0, "L", $p);
     $pdf->cell(30, $alt, getValorPrint($arr_totalganho [$pc21_orcamforne]), 0, 0, "R", $p);
     $pdf->cell(30, $alt, getValorPrint($arr_totalcotado [$pc21_orcamforne]), 0, 1, "R", $p);
 
@@ -877,14 +877,14 @@ $pdf->ln();
     $quant_imp = 0;
     $valor_total = 0;
 
-    $arr_subtotganhoun = array ();
-    $arr_subtotcotadoun = array ();
+    $arr_subtotganhoun =  [];
+    $arr_subtotcotadoun =  [];
 
-    $arr_subtotganhovlr = array ();
-    $arr_subtotcotadovlr = array ();
+    $arr_subtotganhovlr =  [];
+    $arr_subtotcotadovlr =  [];
 
-    $arr_totalganho = array ();
-    $arr_totalcotado = array ();
+    $arr_totalganho =  [];
+    $arr_totalcotado =  [];
 
     $result_forne = $clpcorcamforne->sql_record($clpcorcamforne->sql_query(null, "*", null, "pc21_codorc=$orcamento"));
     $numrows_forne = $clpcorcamforne->numrows;
@@ -1294,8 +1294,8 @@ if (isset($imp_troca) && $imp_troca == "S") {
         $pdf->cell(40, $alt, $l04_descricao, 0, 0, "L", $p);
       }
 
-      $pdf->cell(60, $alt, substr(@$nome_julgado, 0, 30), 0, 0, "L", $p);
-      $pdf->cell(60, $alt, substr($nome_trocado, 0, 30), 0, 0, "L", $p);
+      $pdf->cell(60, $alt, substr((string) @$nome_julgado, 0, 30), 0, 0, "L", $p);
+      $pdf->cell(60, $alt, substr((string) $nome_trocado, 0, 30), 0, 0, "L", $p);
       $pdf->multicell(110, $alt, $pc25_motivo, 0, "J", $p);
 
       if ($p == 0) {
@@ -1326,7 +1326,7 @@ if ($oConfiguracaoGed->utilizaGED()) {
 
     $pdf->Output("tmp/{$sTipoDocumento}_{$orcamento}.pdf");
 
-    $oGerenciador->moverArquivo(array($oStdDadosGED));
+    $oGerenciador->moverArquivo([$oStdDadosGED]);
 
 
   } catch (Exception $eErro) {

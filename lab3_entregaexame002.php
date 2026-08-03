@@ -74,7 +74,7 @@ $cllab_entrega->rotulo->label();
                        la31_i_usuario as dl_Código_Usuario,
                        nome as dl_Login";
 
-            $aWhere = array();
+            $aWhere = [];
             $sWhere = "";
 
             if( isset( $requisicao ) && $requisicao != "" ) {
@@ -88,7 +88,7 @@ $cllab_entrega->rotulo->label();
               if( isset( $dataini ) && $datafim != "" ) {
 
                 @$d1      = substr( @$dataini, 6, 4 ) . "-" . substr( @$dataini, 3, 2 ) . "-" . substr( @$dataini, 0, 2 );
-                @$d2      = substr( @$datafim, 6, 4 ) . "-" . substr( @$datafim, 3, 2 ) . "-" . substr( @$datafim, 0, 2 );
+                @$d2      = substr( (string) @$datafim, 6, 4 ) . "-" . substr( (string) @$datafim, 3, 2 ) . "-" . substr( (string) @$datafim, 0, 2 );
                 $aWhere[] = " la31_d_data between '{$d1}' and '{$d2}'";
               }
 
@@ -109,7 +109,7 @@ $cllab_entrega->rotulo->label();
             $sql    = $cllab_entrega->sql_query_consulta( "", "distinct {$campos}", "", $sWhere );
 
             if( isset( $consultar ) ) {
-              $repassa = array( "chave_la02_i_codigo" => @$chave_la02_i_codigo );
+              $repassa = [ "chave_la02_i_codigo" => @$chave_la02_i_codigo ];
             }
 
             db_lovrot( $sql, 25, "", "", "", "", "NoMe", $repassa );

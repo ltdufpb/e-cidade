@@ -62,21 +62,21 @@ include(modification("fpdf151/assinatura.php"));
 $classinatura = new cl_assinatura;
 
 //db_postmemory($HTTP_POST_VARS,2);exit;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 
 $head1 = "DEMONSTRATIVO DA DESPESA/SUBELEMENTO";
 $head3 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev; 
        $flag_abrev  = true;
   }else{
@@ -97,8 +97,8 @@ $head5 = "INSTITUIÇÕES : ".$descr_inst;
 
 //echo $orgaos."<br>";
 // 'nivel :'.substr($nivel,1,1)."<br>";
-if (substr($nivel,1,1) == 'A'){
-  $nivela = substr($nivel,0,1);
+if (substr((string) $nivel,1,1) == 'A'){
+  $nivela = substr((string) $nivel,0,1);
   $sele_work = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
   if ($nivela >= 1) {
     $sele_work .= " and exists (select 1 from t where t.o58_orgao = w.o58_orgao) ";
@@ -128,12 +128,12 @@ if (substr($nivel,1,1) == 'A'){
   db_query("begin");
   db_query("create temp table t(o58_orgao int8,o58_unidade int8,o58_funcao int8,o58_subfuncao int8,o58_programa int8,o58_projativ int8,o58_elemento int8,o58_codigo int8)");
     
-  $xcampos = split("-",$orgaos);
+  $xcampos = preg_split("#\\-#m",$orgaos);
   
   for($i=0;$i < sizeof($xcampos);$i++){
      $where = '';
      $virgula = ''; 
-     $xxcampos = split("_",$xcampos[$i]);
+     $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
      for($ii=0;$ii<sizeof($xxcampos);$ii++){
         if($ii > 0){
           $where .= $virgula.$xxcampos[$ii];
@@ -215,7 +215,7 @@ $totunidareser = 0;
 
 $pagina        = 1;
 $dotini = 0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
 
   db_fieldsmemory($result,$i);
   $dotini = $dot_ini;
@@ -494,9 +494,9 @@ for($i=0;$i<pg_numrows($result);$i++){
   if($o58_codigo > 0){
     $descr = $o56_descr;
     $pdf->cell(20,$alt,$o58_elemento,1,0,"L",0);
-    $pdf->cell(60,$alt,substr($descr,0,37),1,0,"L",0);
+    $pdf->cell(60,$alt,substr((string) $descr,0,37),1,0,"L",0);
     $pdf->cell(10,$alt,db_formatar($o58_codigo,'s','0',4,'e'),1,0,"L",0);
-    $pdf->cell(30,$alt,substr($o15_descr,0,20),1,0,"L",0);
+    $pdf->cell(30,$alt,substr((string) $o15_descr,0,20),1,0,"L",0);
     $pdf->cell(15,$alt,$o58_coddot."-".db_CalculaDV($o58_coddot),1,0,"R",0);
     $pdf->cell(20,$alt,db_formatar($dotini,'f'),1,0,"R",0);
     $pdf->cell(20,$alt,db_formatar($empenhado - $anulado,'f'),1,0,"R",0);
@@ -562,10 +562,10 @@ for($i=0;$i<pg_numrows($result);$i++){
 */
       $res = db_query($sql);
 //      db_criatabela($res);
-      for($ne=0;$ne<pg_numrows($res);$ne++){
+      for($ne=0;$ne<pg_num_rows($res);$ne++){
 	db_fieldsmemory($res,$ne);
         $pdf->cell(20,4,$o56_elemento,0,0,"L",0);
-        $pdf->cell(60,4,substr($o56_descr,0,37),0,0,"L",0);
+        $pdf->cell(60,4,substr((string) $o56_descr,0,37),0,0,"L",0);
 //        $pdf->cell(105,$alt,$o56_finali,0,1,"L",0);
        $pdf->cell(30,4,'',0,0,"L",0);
        $pdf->cell(25,4,'',0,0,"R",0);
@@ -608,13 +608,13 @@ $pdf->cell(20,$alt,db_formatar($totorgaoatual,'f'),0,1,"R",0);
 
 
 }else{
-  $nivela = substr($nivel,0,1);
+  $nivela = substr((string) $nivel,0,1);
   $xcampos = str_replace('-',',',str_replace('pai_','',$orgaos));
   $where = '';
   if($nivela == 1){
     $where .= " w.o58_orgao in ($xcampos)";
   }elseif($nivela == 2){
-    $xunid = split(",",$xcampos);
+    $xunid = preg_split("#,#m",$xcampos);
     $virgula = "";
     for($xu=0;$xu < sizeof($xunid);$xu++){
       @$xxcampos .= $virgula."'".$xunid[$xu]."'"; 
@@ -677,7 +677,7 @@ $totunidareser  = 0;
 $totunidaatual  = 0;
 $pagina = 1;
 
-for($k=0;$k<pg_numrows($result);$k++){
+for($k=0;$k<pg_num_rows($result);$k++){
 
   db_fieldsmemory($result,$k);
   $dotini = $dot_ini;

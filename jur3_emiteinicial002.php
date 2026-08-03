@@ -45,8 +45,8 @@ include(modification("classes/db_inicialmov_classe.php"));
 
 db_app::import('exceptions.*');
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 
@@ -243,7 +243,7 @@ if(isset($v13_certid) && $v13_certid!="" && $veinclu==false){
   			<td nowrap title="Tipo">Tipo</td>
   			<td> 
   				<?php
-  					$aTipo = array(""=>"TODOS", "1" => "ATIVA", "2" => "ANULADA");
+  					$aTipo = [""=>"TODOS", "1" => "ATIVA", "2" => "ANULADA"];
   					db_select('v50_situacao',$aTipo, true, $db_opcao);
   				?>
   			</td>

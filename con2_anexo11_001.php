@@ -35,7 +35,7 @@ include(modification("libs/db_liborcamento.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -136,7 +136,7 @@ function js_limpa(){
               <td align="right" ><strong>Filtro :</strong></td>
               <td align="left">
 	        <?php 
-	         $xy = array('1A'=>'Órgão','2A'=>'Unidade');
+	         $xy = ['1A'=>'Órgão','2A'=>'Unidade'];
 	         db_select('nivel',$xy,true,2,"");
 	        ?>
               </td> 
@@ -148,7 +148,7 @@ function js_limpa(){
             <td align="right" ><strong>Agrupar Por :</strong></td>
 	     <td align="left">
              <?php 
-               $z = array("0"=>"Geral","1"=>"Órgão","2"=>"Unidade");
+               $z = ["0"=>"Geral","1"=>"Órgão","2"=>"Unidade"];
                db_select('tipo_agrupa',$z,true,2,"");
              ?>
             </td>
@@ -162,7 +162,7 @@ function js_limpa(){
             <td align="right" ><strong>Tipo :</strong> </td>
             <td align="left" >
              <?php 
-               $zz = array("E"=>"Empenhado","L"=>"Liquidado","P"=>"Pago");
+               $zz = ["E"=>"Empenhado","L"=>"Liquidado","P"=>"Pago"];
                db_select('tipo_emp',$zz,true,2,"");
              ?>
 	    </td>
@@ -175,7 +175,7 @@ function js_limpa(){
             <td align="right" ><strong>Mês :</strong> </td>
             <td align="left" >
    	     <?php 
- 	       $result1=array("1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+ 	       $result1=["1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
                db_select("mes",$result1,true,2);
              ?>
             </td>

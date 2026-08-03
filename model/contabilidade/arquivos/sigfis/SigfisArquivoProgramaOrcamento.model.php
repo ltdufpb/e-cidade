@@ -74,11 +74,11 @@ class SigfisArquivoProgramaOrcamento extends SigfisArquivoBase implements iPadAr
         $oDados      = new stdClass();
         
         $oDados->dt_Ano          = $oDadosQuery->o54_anousu;
-        $oDados->cd_SubPrograma  = str_pad($oDadosQuery->o54_programa,   4, " ", STR_PAD_LEFT);
-        $oDados->cd_Unidade      = str_pad($this->sCodigoTribunal,       4, ' ', STR_PAD_LEFT);
+        $oDados->cd_SubPrograma  = str_pad((string) $oDadosQuery->o54_programa,   4, " ", STR_PAD_LEFT);
+        $oDados->cd_Unidade      = str_pad((string) $this->sCodigoTribunal,       4, ' ', STR_PAD_LEFT);
         $oDados->vl_SubPrograma  = str_pad(number_format($oDadosQuery->total_dotacao, 2, "", "") , 16, '0', STR_PAD_LEFT);
-        $oDados->de_SubPrograma  = str_pad(substr($oDadosQuery->o54_descr,  0,  50),  50, ' ', STR_PAD_RIGHT);
-        $oDados->de_Objetivo     = str_pad(substr($oDadosQuery->o54_finali, 0, 120), 120, ' ', STR_PAD_RIGHT);
+        $oDados->de_SubPrograma  = str_pad(substr((string) $oDadosQuery->o54_descr,  0,  50),  50, ' ', STR_PAD_RIGHT);
+        $oDados->de_Objetivo     = str_pad(substr((string) $oDadosQuery->o54_finali, 0, 120), 120, ' ', STR_PAD_RIGHT);
         $oDados->Reservado_TCE2  = '0';
         $oDados->Reservado_TCE1  = '0';
         

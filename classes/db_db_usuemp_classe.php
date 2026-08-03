@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE db_usuemp
 class cl_db_usuemp { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $z97_anousu = 0; 
-   var $z97_usuario = 0; 
-   var $z97_orgao = null; 
-   var $z97_unida = null; 
-   var $z97_funcao = null; 
-   var $z97_subfuncao = null; 
-   var $z97_progra = null; 
-   var $z97_proati = null; 
-   var $z97_despes = null; 
+   public $z97_anousu = 0; 
+   public $z97_usuario = 0; 
+   public $z97_orgao = null; 
+   public $z97_unida = null; 
+   public $z97_funcao = null; 
+   public $z97_subfuncao = null; 
+   public $z97_progra = null; 
+   public $z97_proati = null; 
+   public $z97_despes = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  z97_anousu = int4 = Exercício 
                  z97_usuario = int4 = Código 
                  z97_orgao = char(2) = Órgão 
@@ -64,10 +64,10 @@ class cl_db_usuemp {
                  z97_despes = char(12) = Elementos 
                  ";
    //funcao construtor da classe 
-   function cl_db_usuemp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_usuemp"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -202,7 +202,7 @@ class cl_db_usuemp {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Permissão para Empenho  () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Permissão para Empenho  já Cadastrado";
@@ -229,10 +229,10 @@ class cl_db_usuemp {
       $this->atualizacampos();
      $sql = " update db_usuemp set ";
      $virgula = "";
-     if(trim($this->z97_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_anousu"])){ 
+     if(trim((string) $this->z97_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_anousu"])){ 
        $sql  .= $virgula." z97_anousu = $this->z97_anousu ";
        $virgula = ",";
-       if(trim($this->z97_anousu) == null ){ 
+       if(trim((string) $this->z97_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "z97_anousu";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_db_usuemp {
          return false;
        }
      }
-     if(trim($this->z97_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_usuario"])){ 
+     if(trim((string) $this->z97_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_usuario"])){ 
        $sql  .= $virgula." z97_usuario = $this->z97_usuario ";
        $virgula = ",";
-       if(trim($this->z97_usuario) == null ){ 
+       if(trim((string) $this->z97_usuario) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "z97_usuario";
          $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_db_usuemp {
          return false;
        }
      }
-     if(trim($this->z97_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_orgao"])){ 
+     if(trim((string) $this->z97_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_orgao"])){ 
        $sql  .= $virgula." z97_orgao = '$this->z97_orgao' ";
        $virgula = ",";
-       if(trim($this->z97_orgao) == null ){ 
+       if(trim((string) $this->z97_orgao) == null ){ 
          $this->erro_sql = " Campo Órgão nao Informado.";
          $this->erro_campo = "z97_orgao";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_db_usuemp {
          return false;
        }
      }
-     if(trim($this->z97_unida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_unida"])){ 
+     if(trim((string) $this->z97_unida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_unida"])){ 
        $sql  .= $virgula." z97_unida = '$this->z97_unida' ";
        $virgula = ",";
-       if(trim($this->z97_unida) == null ){ 
+       if(trim((string) $this->z97_unida) == null ){ 
          $this->erro_sql = " Campo Unidade nao Informado.";
          $this->erro_campo = "z97_unida";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_db_usuemp {
          return false;
        }
      }
-     if(trim($this->z97_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_funcao"])){ 
+     if(trim((string) $this->z97_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_funcao"])){ 
        $sql  .= $virgula." z97_funcao = '$this->z97_funcao' ";
        $virgula = ",";
-       if(trim($this->z97_funcao) == null ){ 
+       if(trim((string) $this->z97_funcao) == null ){ 
          $this->erro_sql = " Campo Função nao Informado.";
          $this->erro_campo = "z97_funcao";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_db_usuemp {
          return false;
        }
      }
-     if(trim($this->z97_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_subfuncao"])){ 
+     if(trim((string) $this->z97_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_subfuncao"])){ 
        $sql  .= $virgula." z97_subfuncao = '$this->z97_subfuncao' ";
        $virgula = ",";
-       if(trim($this->z97_subfuncao) == null ){ 
+       if(trim((string) $this->z97_subfuncao) == null ){ 
          $this->erro_sql = " Campo Subfunção nao Informado.";
          $this->erro_campo = "z97_subfuncao";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_db_usuemp {
          return false;
        }
      }
-     if(trim($this->z97_progra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_progra"])){ 
+     if(trim((string) $this->z97_progra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_progra"])){ 
        $sql  .= $virgula." z97_progra = '$this->z97_progra' ";
        $virgula = ",";
-       if(trim($this->z97_progra) == null ){ 
+       if(trim((string) $this->z97_progra) == null ){ 
          $this->erro_sql = " Campo Programa nao Informado.";
          $this->erro_campo = "z97_progra";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_db_usuemp {
          return false;
        }
      }
-     if(trim($this->z97_proati)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_proati"])){ 
+     if(trim((string) $this->z97_proati)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_proati"])){ 
        $sql  .= $virgula." z97_proati = '$this->z97_proati' ";
        $virgula = ",";
-       if(trim($this->z97_proati) == null ){ 
+       if(trim((string) $this->z97_proati) == null ){ 
          $this->erro_sql = " Campo Projeto/atividade nao Informado.";
          $this->erro_campo = "z97_proati";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_db_usuemp {
          return false;
        }
      }
-     if(trim($this->z97_despes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_despes"])){ 
+     if(trim((string) $this->z97_despes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z97_despes"])){ 
        $sql  .= $virgula." z97_despes = '$this->z97_despes' ";
        $virgula = ",";
-       if(trim($this->z97_despes) == null ){ 
+       if(trim((string) $this->z97_despes) == null ){ 
          $this->erro_sql = " Campo Elementos nao Informado.";
          $this->erro_campo = "z97_despes";
          $this->erro_banco = "";
@@ -427,7 +427,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_usuemp";

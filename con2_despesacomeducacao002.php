@@ -36,8 +36,8 @@ require_once(modification("classes/db_empempenho_classe.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("model/relatorioContabil.model.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clempempenho = new cl_empempenho;
 $clrotulo     = new rotulocampo;
 $cllote       = new cl_lote;
@@ -82,18 +82,18 @@ $oRelatorio = new relatorioContabil(122);
 			          <?php 			
 			           if ($iAnoUsu < 2010 ) {
               
-                   $aListaPeriodos = array(
+                   $aListaPeriodos = [
                                     "1B" => "1 º Bimestre",
                                     "2B" => "2 º Bimestre",
                                     "3B" => "3 º Bimestre",
                                     "4B" => "4 º Bimestre",
                                     "5B" => "5 º Bimestre",
                                     "6B" => "6 º Bimestre",
-                                    );
+                                    ];
                   } else {            
 
                      $aPeriodos = $oRelatorio->getPeriodos();
-                     $aListaPeriodos = array();
+                     $aListaPeriodos = [];
                      $aListaPeriodos[0] = "Selecione";
                      foreach ($aPeriodos as $oPeriodo) {
                        $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;

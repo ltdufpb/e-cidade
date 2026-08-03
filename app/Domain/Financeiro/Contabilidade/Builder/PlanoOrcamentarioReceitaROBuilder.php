@@ -9,6 +9,7 @@ use Exception;
 
 class PlanoOrcamentarioReceitaROBuilder extends PlanoOrcamentarioReceitaBuilder
 {
+    #[\Override]
     public function build()
     {
         $dados = [];

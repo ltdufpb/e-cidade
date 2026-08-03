@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_numpref_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clnumpref = new cl_numpref;
 $clnumpref->rotulo->label("k03_anousu");
 $clnumpref->rotulo->label("k03_instit");
@@ -99,9 +99,9 @@ $clnumpref->rotulo->label("k03_anousu");
         }else{
            $sql = $clnumpref->sql_query(db_getsession('DB_anousu'),"",$campos,"k03_anousu#k03_instit","k03_anousu = ".db_getsession('DB_anousu')."and  k03_instit = ".db_getsession('DB_instit'));
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k03_anousu)){
-          $repassa = array("chave_k03_anousu"=>$chave_k03_anousu,"chave_k03_anousu"=>$chave_k03_anousu);
+          $repassa = ["chave_k03_anousu"=>$chave_k03_anousu,"chave_k03_anousu"=>$chave_k03_anousu];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

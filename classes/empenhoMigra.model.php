@@ -31,7 +31,6 @@ class empenhoMigra extends empenho {
   private $lMigrar = false;
   function __construct($iNumEmp) {
 
-    parent::__construct($iNumEmp);
     $this->numemp = $iNumEmp;
 
   }
@@ -100,7 +99,7 @@ class empenhoMigra extends empenho {
       return false;
 
     }  
-    $iAnoUsu           = explode("/", $dtOrdem);
+    $iAnoUsu           = explode("/", (string) $dtOrdem);
     $oDaoPagOrdem      = db_utils::getDao("pagordem"); 
     $sSqlOrdemComNota  = "select e69_numero,";
     $sSqlOrdemComNota .= "       to_char(e69_dtnota,'dd/mm/YYY') as datanota ";
@@ -118,7 +117,7 @@ class empenhoMigra extends empenho {
     } else {
       
       //Incluimos a nota fiscal na tabela empnota
-      $this->gerarOrdemCompra("m{$iOrdem}", $nValortotal, $aItens,false,trim($dtOrdem));
+      $this->gerarOrdemCompra("m{$iOrdem}", $nValortotal, $aItens,false,trim((string) $dtOrdem));
       if ($this->lSqlErro) {
         throw new exception ($this->sMsgErro);
       } else {
@@ -165,7 +164,7 @@ class empenhoMigra extends empenho {
 
   }  
 
-  function gerarItensNota($iCodNota, $sTipo='', $aItens, $dtOrdem) {
+  function gerarItensNota($iCodNota, $sTipo='', $aItens = null, $dtOrdem = null) {
     
     if (!db_utils::inTransaction()) {
 
@@ -227,7 +226,7 @@ class empenhoMigra extends empenho {
             }  
          }
          //Incluimos a informação da ordem de compra
-         $dtDataOrdem  = implode("-",array_reverse(explode("/",trim($dtOrdem)))); 
+         $dtDataOrdem  = implode("-",array_reverse(explode("/",trim((string) $dtOrdem)))); 
          $oDaoMatOrdem = db_utils::getDao("matordem");
          $oDaoMatOrdem->m51_data       = $dtDataOrdem;
          $oDaoMatOrdem->m51_depto      = db_getsession("DB_coddepto");

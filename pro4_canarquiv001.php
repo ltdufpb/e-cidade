@@ -155,7 +155,7 @@ $rotulo->label("p58_codproc");
     $rs = db_query($sql);
     // die($sql);
    // db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_self", $campos_layer = "", $NomeForm = "NoMe", $variaveis_repassa = array (), $automatico = true, $totalizacao = array()) {
-    db_lovrot($sql,20,"()","","js_processo|p67_codproc|dl_requerente",'',"NoMe",array(),false);
+    db_lovrot($sql,20,"()","","js_processo|p67_codproc|dl_requerente",'',"NoMe",[],false);
    
   ?>
  </center>

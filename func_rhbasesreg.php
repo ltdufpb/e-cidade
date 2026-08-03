@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhbasesreg_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhbasesreg = new cl_rhbasesreg;
 $clrhbasesreg->rotulo->label("rh54_seq");
 $clrhbasesreg->rotulo->label("rh54_regist");
@@ -98,9 +98,9 @@ $clrhbasesreg->rotulo->label("rh54_regist");
         }else{
            $sql = $clrhbasesreg->sql_query("",$campos,"rh54_seq","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh54_regist)){
-          $repassa = array("chave_rh54_seq"=>$chave_rh54_seq,"chave_rh54_regist"=>$chave_rh54_regist);
+          $repassa = ["chave_rh54_seq"=>$chave_rh54_seq,"chave_rh54_regist"=>$chave_rh54_regist];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

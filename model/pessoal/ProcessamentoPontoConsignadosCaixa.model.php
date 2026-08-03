@@ -34,7 +34,7 @@ class ProcessamentoPontoConsignadosCaixa extends ProcessamentoPontoConsignados{
    * Controle de saldos do salario do servidor
    * @var array
    */
-  private $aSaldoSalarioServidor = array();
+  private $aSaldoSalarioServidor = [];
 
   /**
    * @var Instituicao
@@ -46,7 +46,7 @@ class ProcessamentoPontoConsignadosCaixa extends ProcessamentoPontoConsignados{
    * @param \ConfiguracaoConsignado $oConfiguracaoConsignado
    * @throws \DBException
    */
-  public function importarDadosPreponto(ConfiguracaoConsignado $oConfiguracaoConsignado) {
+  public function importarDadosPreponto(?ConfiguracaoConsignado $oConfiguracaoConsignado = null) {
 
     $this->oInstituicao = InstituicaoRepository::getInstituicaoSessao();
     $oCompetencia       = new DBCompetencia(DBPessoal::getAnoFolha(), DBPessoal::getMesFolha());

@@ -103,7 +103,7 @@ echo "
   </tr>
   <tr><td nowrap title="<?=@$Tc46_valor?>"><b>Obrigatório:</b></td>
     <td><?php 
-          $xy = array("f"=>"NÃO","t"=>"SIM");
+          $xy = ["f"=>"NÃO","t"=>"SIM"];
           db_select('c46_obrigatorio',$xy,true,$db_opcao);
         ?>
     </td>
@@ -228,7 +228,7 @@ function js_preenchepesquisa(chave){
   <?php 
 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

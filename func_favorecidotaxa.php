@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_favorecidotaxa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfavorecidotaxa = new cl_favorecidotaxa;
 $clfavorecidotaxa->rotulo->label("v87_sequencial");
 $clfavorecidotaxa->rotulo->label("v87_favorecido");
@@ -98,9 +98,9 @@ $clfavorecidotaxa->rotulo->label("v87_favorecido");
         }else{
            $sql = $clfavorecidotaxa->sql_query("",$campos,"v87_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v87_favorecido)){
-          $repassa = array("chave_v87_sequencial"=>$chave_v87_sequencial,"chave_v87_favorecido"=>$chave_v87_favorecido);
+          $repassa = ["chave_v87_sequencial"=>$chave_v87_sequencial,"chave_v87_favorecido"=>$chave_v87_favorecido];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -34,7 +34,7 @@ require_once(modification("classes/db_rhtipoperda_classe.php"));
 require_once(modification("classes/db_rhtipoperdatipoassentamento_classe.php"));
 require_once(modification("classes/db_rhtipoperda_classe.php"));
 $clrhtipoperda = new cl_rhtipoperda;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 $clrhtipoperda                 = new cl_rhtipoperda;

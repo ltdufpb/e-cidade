@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_rhrubricas_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_sql.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clrhrubricas = new cl_rhrubricas;
 $clrotulo = new rotulocampo;
 $clrotulo->label('rh27_rubric');
@@ -197,7 +197,7 @@ if(isset($pesquisar) || isset($rubric)) {
                 $opcaosel = "";
               }
 
-              $arr_folha  = Array(
+              $arr_folha  = [
                                   "r10"=>"temsalario", 
                                   "r29"=>"temferias", 
                                   "r19"=>"temrescisao",
@@ -205,8 +205,8 @@ if(isset($pesquisar) || isset($rubric)) {
                                   "r34"=>"tem13salario", 
                                   "r47"=>"temcomplementar",
                                   "r90"=>"tempontofixo"
-                                 );
-              $arr_dfolha = Array(
+                                 ];
+              $arr_dfolha = [
                                   "temsalario"=>"SALÁRIO", 
                                   "temferias"=>"FÉRIAS",
                                   "temrescisao"=>"RESCISÃO",
@@ -214,7 +214,7 @@ if(isset($pesquisar) || isset($rubric)) {
                                   "tem13salario"=>"13o. SALÁRIO",
                                   "temcomplementar"=>"COMPLEMENTAR",
                                   "tempontofixo"=>"PONTO FIXO"
-                                 );
+                                 ];
               $cont = 0;
               foreach($arr_folha as $sigla => $folha){
                 $sql_dados = $clgerasql->gerador_sql($sigla,$ano,$mes,null,$rh27_rubric,"distinct #s#_rubric","","",db_getsession("DB_instit"));                

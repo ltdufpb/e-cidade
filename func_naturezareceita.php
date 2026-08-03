@@ -125,9 +125,9 @@ if (!isset($pesquisa_chave)) {
     }
 
     $sql .= " order by o57_fonte ";
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_o57_fonte)) {
-        $repassa = array("chave_o57_fonte" => $chave_o57_fonte);
+        $repassa = ["chave_o57_fonte" => $chave_o57_fonte];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

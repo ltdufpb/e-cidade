@@ -94,7 +94,7 @@
         <td>Valor Atualizado:</td>
         <td>
           <?php 
-  			    $x = array("s"=>"Sim","n"=>"Não");
+  			    $x = ["s"=>"Sim","n"=>"Não"];
   			    db_select('atualiza',$x,true,4,"");
           ?>
         </td>
@@ -112,7 +112,7 @@
         <td>Imprime Número da Pagina:</td>
         <td>
           <?php 
-					  $y = array("s"=>"Sim","n"=>"Não");
+					  $y = ["s"=>"Sim","n"=>"Não"];
 					  db_select('numeropg',$y,true,4,"");
           ?>
         </td>

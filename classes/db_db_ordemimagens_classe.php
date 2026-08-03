@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_ordemimagens
 class cl_db_ordemimagens { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codordem = null; 
-   var $codimg = 0; 
-   var $arquivo = null; 
-   var $descrimg = null; 
+   public $codordem = null; 
+   public $codimg = 0; 
+   public $arquivo = null; 
+   public $descrimg = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codordem = varchar(15) = Código 
                  codimg = int4 = Código 
                  arquivo = text = Arquivo 
                  descrimg = varchar(40) = Descrição da imagem 
                  ";
    //funcao construtor da classe 
-   function cl_db_ordemimagens() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_ordemimagens"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_db_ordemimagens {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ordem imagens ($this->codordem."-".$this->codimg) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ordem imagens já Cadastrado";
@@ -158,14 +158,14 @@ class cl_db_ordemimagens {
      $resaco = $this->sql_record($this->sql_query_file($this->codordem,$this->codimg));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1003,'$this->codordem','I')");
        $resac = db_query("insert into db_acountkey values($acount,1017,'$this->codimg','I')");
-       $resac = db_query("insert into db_acount values($acount,172,1003,'','".AddSlashes(pg_result($resaco,0,'codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,172,1017,'','".AddSlashes(pg_result($resaco,0,'codimg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,172,990,'','".AddSlashes(pg_result($resaco,0,'arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,172,5186,'','".AddSlashes(pg_result($resaco,0,'descrimg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,172,1003,'','".AddSlashes(pg_fetch_result($resaco,0,'codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,172,1017,'','".AddSlashes(pg_fetch_result($resaco,0,'codimg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,172,990,'','".AddSlashes(pg_fetch_result($resaco,0,'arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,172,5186,'','".AddSlashes(pg_fetch_result($resaco,0,'descrimg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -174,10 +174,10 @@ class cl_db_ordemimagens {
       $this->atualizacampos();
      $sql = " update db_ordemimagens set ";
      $virgula = "";
-     if(trim($this->codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codordem"])){ 
+     if(trim((string) $this->codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codordem"])){ 
        $sql  .= $virgula." codordem = '$this->codordem' ";
        $virgula = ",";
-       if(trim($this->codordem) == null ){ 
+       if(trim((string) $this->codordem) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codordem";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_db_ordemimagens {
          return false;
        }
      }
-     if(trim($this->codimg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codimg"])){ 
+     if(trim((string) $this->codimg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codimg"])){ 
        $sql  .= $virgula." codimg = $this->codimg ";
        $virgula = ",";
-       if(trim($this->codimg) == null ){ 
+       if(trim((string) $this->codimg) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codimg";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_db_ordemimagens {
          return false;
        }
      }
-     if(trim($this->arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["arquivo"])){ 
+     if(trim((string) $this->arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["arquivo"])){ 
        $sql  .= $virgula." arquivo = '$this->arquivo' ";
        $virgula = ",";
-       if(trim($this->arquivo) == null ){ 
+       if(trim((string) $this->arquivo) == null ){ 
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "arquivo";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_db_ordemimagens {
          return false;
        }
      }
-     if(trim($this->descrimg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrimg"])){ 
+     if(trim((string) $this->descrimg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrimg"])){ 
        $sql  .= $virgula." descrimg = '$this->descrimg' ";
        $virgula = ",";
-       if(trim($this->descrimg) == null ){ 
+       if(trim((string) $this->descrimg) == null ){ 
          $this->erro_sql = " Campo Descrição da imagem nao Informado.";
          $this->erro_campo = "descrimg";
          $this->erro_banco = "";
@@ -237,18 +237,18 @@ class cl_db_ordemimagens {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1003,'$this->codordem','A')");
          $resac = db_query("insert into db_acountkey values($acount,1017,'$this->codimg','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codordem"]))
-           $resac = db_query("insert into db_acount values($acount,172,1003,'".AddSlashes(pg_result($resaco,$conresaco,'codordem'))."','$this->codordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,172,1003,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codordem'))."','$this->codordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codimg"]))
-           $resac = db_query("insert into db_acount values($acount,172,1017,'".AddSlashes(pg_result($resaco,$conresaco,'codimg'))."','$this->codimg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,172,1017,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codimg'))."','$this->codimg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["arquivo"]))
-           $resac = db_query("insert into db_acount values($acount,172,990,'".AddSlashes(pg_result($resaco,$conresaco,'arquivo'))."','$this->arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,172,990,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'arquivo'))."','$this->arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["descrimg"]))
-           $resac = db_query("insert into db_acount values($acount,172,5186,'".AddSlashes(pg_result($resaco,$conresaco,'descrimg'))."','$this->descrimg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,172,5186,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'descrimg'))."','$this->descrimg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -293,14 +293,14 @@ class cl_db_ordemimagens {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1003,'$codordem','E')");
          $resac = db_query("insert into db_acountkey values($acount,1017,'$codimg','E')");
-         $resac = db_query("insert into db_acount values($acount,172,1003,'','".AddSlashes(pg_result($resaco,$iresaco,'codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,172,1017,'','".AddSlashes(pg_result($resaco,$iresaco,'codimg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,172,990,'','".AddSlashes(pg_result($resaco,$iresaco,'arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,172,5186,'','".AddSlashes(pg_result($resaco,$iresaco,'descrimg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,172,1003,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,172,1017,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codimg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,172,990,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,172,5186,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'descrimg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_ordemimagens
@@ -366,7 +366,7 @@ class cl_db_ordemimagens {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_ordemimagens";
@@ -380,7 +380,7 @@ class cl_db_ordemimagens {
    function sql_query ( $codordem=null,$codimg=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -410,7 +410,7 @@ class cl_db_ordemimagens {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,7 +422,7 @@ class cl_db_ordemimagens {
    function sql_query_file ( $codordem=null,$codimg=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_db_ordemimagens {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

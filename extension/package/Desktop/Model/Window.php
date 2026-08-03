@@ -30,7 +30,7 @@ class Window extends Model {
     $rsDepartamentos = $this->db->execute($sSql);
 
     if (pg_num_rows($rsDepartamentos) == 0) {
-      return array();
+      return [];
     }
 
     return $this->db->getCollectionByRecord($rsDepartamentos);
@@ -133,7 +133,7 @@ class Window extends Model {
       throw new Exception("Você não tem permissão de acesso para exercício.");
     }
 
-    $exercicios = array();
+    $exercicios = [];
     foreach ($this->db->getCollectionByRecord($result) as $data) {
       $exercicios[] = $data['anousu'];
     }

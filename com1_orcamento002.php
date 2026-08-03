@@ -55,11 +55,11 @@ $db_opcao   = 1;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("orcam"=>"Orçamento","fornec"=>"Fornecedores");//nome do iframe e o label    
-       $clcriaabas->src = array("orcam"=>"com1_orcamento005.php");
-       $clcriaabas->title      = array("orcam"=>"Orçamento","fornec"=>"Fornecedores");//nome do iframe e o label    
-       $clcriaabas->sizecampo  = array("orcam"=>"20","fornec"=>"20");       
-       $clcriaabas->disabled = array("fornec"=>"true");
+       $clcriaabas->identifica = ["orcam"=>"Orçamento","fornec"=>"Fornecedores"];//nome do iframe e o label    
+       $clcriaabas->src = ["orcam"=>"com1_orcamento005.php"];
+       $clcriaabas->title      = ["orcam"=>"Orçamento","fornec"=>"Fornecedores"];//nome do iframe e o label    
+       $clcriaabas->sizecampo  = ["orcam"=>"20","fornec"=>"20"];       
+       $clcriaabas->disabled = ["fornec"=>"true"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

@@ -32,7 +32,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $instit = db_getsession("DB_instit");
 
@@ -71,16 +71,16 @@ $oValoresPatronais->data[3]->valor= 0;
 
 foreach ($aValoresPatronais as $oRow){
 	if($oRow->r33_codtab == 3){
-		$oValoresPatronais->data[0]->nome   = substr($oRow->r33_nome,0,15);
+		$oValoresPatronais->data[0]->nome   = substr((string) $oRow->r33_nome,0,15);
 		$oValoresPatronais->data[0]->valor  = $oRow->r33_ppatro;
 	}else if($oRow->r33_codtab == 4){
-    $oValoresPatronais->data[1]->nome   = substr($oRow->r33_nome,0,15);
+    $oValoresPatronais->data[1]->nome   = substr((string) $oRow->r33_nome,0,15);
     $oValoresPatronais->data[1]->valor  = $oRow->r33_ppatro;
   }else if($oRow->r33_codtab == 5){
-    $oValoresPatronais->data[2]->nome   = substr($oRow->r33_nome,0,15);
+    $oValoresPatronais->data[2]->nome   = substr((string) $oRow->r33_nome,0,15);
     $oValoresPatronais->data[2]->valor  = $oRow->r33_ppatro;
   }if($oRow->r33_codtab == 6){
-    $oValoresPatronais->data[3]->nome   = substr($oRow->r33_nome,0,15);
+    $oValoresPatronais->data[3]->nome   = substr((string) $oRow->r33_nome,0,15);
     $oValoresPatronais->data[3]->valor  = $oRow->r33_ppatro;
   }
 }
@@ -172,7 +172,7 @@ if($regime != 0){
 $erroajuda = "";
 if($sel != 0){
   $result_sel = db_query("select r44_where , r44_descr from selecao where r44_selec = ".$sel." and r44_instit = ".$instit);
-  if(pg_numrows($result_sel) > 0){
+  if(pg_num_rows($result_sel) > 0){
     db_fieldsmemory($result_sel, 0, 1);
     $wherepes .= " and ".$r44_where;
     $head5     = " SELEÇÃO : " . $r44_descr;
@@ -190,7 +190,7 @@ if(isset($previdencia) && $previdencia != 0 ){
     $wherepes .= " and rh02_tbprev = ".$previdencia;
     $result_prev = db_query("select distinct r33_nome from inssirf where r33_anousu = $ano and r33_mesusu = $mes and r33_codtab = $previdencia + 2 ");
     db_fieldsmemory($result_prev, 0 );
-    $head8 = "PREVIDÊNCIA : ".strtoupper($r33_nome);
+    $head8 = "PREVIDÊNCIA : ".strtoupper((string) $r33_nome);
   }else{
     $wherepes .= " and rh02_tbprev = 0 " ;
     $head8 = "PREVIDÊNCIA : FUNCIONÁRIOS SEM PREVIDÊNCIA";
@@ -600,7 +600,7 @@ if ($tipo == "l"){
 //echo $sql ;exit;
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos no período de '.$mes.' / '.$ano.$erroajuda.".");
 
@@ -647,9 +647,9 @@ if ($tipo == "l" || $tipo == "o" || $tipo == "s" || $tipo == "t"){
        $quebra = 0;
      }
    }
-   $pdf->cell(145,5,$r70_estrut." - ".$lota." - ".strtoupper($r70_descr),1,1,"L",1);
+   $pdf->cell(145,5,$r70_estrut." - ".$lota." - ".strtoupper((string) $r70_descr),1,1,"L",1);
 }
-for($x = 0;$x < pg_numrows($result);$x++){
+for($x = 0;$x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if (($tipo == "l" || $tipo == "o" || $tipo == "s" || $tipo == "t") && $quebra != $lota){
       $pdf->cell(15,$alt,'',"T",0,"C",0);
@@ -830,7 +830,7 @@ for($x = 0;$x < pg_numrows($result);$x++){
       $pdf->cell(20,$alt,'PROVENTOS',1,0,"C",1);
       $pdf->cell(20,$alt,'DESCONTOS',1,1,"C",1);
       if($tipo == "l" || $tipo == "o" || $tipo == "s" || $tipo == "t" ){
-        $pdf->cell(145,5,$r70_estrut." - ".$lota." - ".strtoupper($r70_descr),1,1,"L",1);
+        $pdf->cell(145,5,$r70_estrut." - ".$lota." - ".strtoupper((string) $r70_descr),1,1,"L",1);
       }
    }
    $pdf->setfont('arial','',8);
@@ -931,11 +931,11 @@ if ($tipo == "l" || $tipo == "o" || $tipo == "s" || $tipo == "t"){
 		                                 and rh56_princ = 't'
                    left join rhlocaltrab on rh55_codigo = rh56_localtrab ";
         $dbwherelta = " 1=1 ";
-	if($lotaini != "" && $lotafin != ""){
+	if($lotaini != 0 && $lotafin != 0){
 	$dbwherelta = " rh55_estrut >= '$lotaini' and rh55_estrut <= '$lotafin' ";
-	 }else if($lotaini != ""){
+	 }else if($lotaini != 0){
 	$dbwherelta = " rh55_estrut >= '$lotaini' ";
-	 }else if($lotafin != ""){
+	 }else if($lotafin != 0){
 	$dbwherelta = " rh55_estrut >= '$lotafin' ";
 	 }
       }

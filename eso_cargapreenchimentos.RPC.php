@@ -46,12 +46,12 @@ function removeHtmlContent($text, $tags = '', $invert = false)
 
     if (is_array($tags) && count($tags) > 0) {
         if (!$invert) {
-            return preg_replace('@<(?!(?:'. implode('|', $tags) .')\b)(\w+)\b.*?>.*?</\1>@si', '', $text);
+            return preg_replace('@<(?!(?:'. implode('|', $tags) .')\b)(\w+)\b.*?>.*?</\1>@si', '', (string) $text);
         } else {
-            return preg_replace('@<('. implode('|', $tags) .')\b.*?>.*?</\1>@si', '', $text);
+            return preg_replace('@<('. implode('|', $tags) .')\b.*?>.*?</\1>@si', '', (string) $text);
         }
     } elseif (!$invert) {
-        return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
+        return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', (string) $text);
     }
     return $text;
 }

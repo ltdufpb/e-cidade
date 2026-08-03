@@ -184,18 +184,18 @@ try {
      */
     case 'buscaModulos':
 
-      $oRetorno->aModulos = array();
+      $oRetorno->aModulos = [];
       $aModulos           = ModuloSistemaCollection::buscaModulos();
 
       foreach ( $aModulos as $oModuloSistema ) {
 
         $oDadosModulo                   = new stdClass();
         $oDadosModulo->iCodigo          = $oModuloSistema->getCodigo();
-        $oDadosModulo->sNome            = urlencode( $oModuloSistema->getNome() );
-        $oDadosModulo->mDescricao       = urlencode( $oModuloSistema->getDescricao() );
-        $oDadosModulo->sImagem          = urlencode( $oModuloSistema->getImagem() );
+        $oDadosModulo->sNome            = urlencode( (string) $oModuloSistema->getNome() );
+        $oDadosModulo->mDescricao       = urlencode( (string) $oModuloSistema->getDescricao() );
+        $oDadosModulo->sImagem          = urlencode( (string) $oModuloSistema->getImagem() );
         $oDadosModulo->lTemExercicio    = $oModuloSistema->temExercicio();
-        $oDadosModulo->sNomeManual      = urlencode( $oModuloSistema->getNomeManual() );
+        $oDadosModulo->sNomeManual      = urlencode( (string) $oModuloSistema->getNomeManual() );
 
         $oRetorno->aModulos[] = $oDadosModulo;
       }
@@ -244,8 +244,8 @@ try {
         throw new ParameterException( _M( CAMINHO_MENSAGENS_RPC . "informar_id_modulo" ) );
       }
 
-      $oRetorno->aMenus = array();
-      $aMenusPrincipais = array();
+      $oRetorno->aMenus = [];
+      $aMenusPrincipais = [];
       $oModuloSistema   = new ModuloSistema( $oParam->iModulo );
 
       /**
@@ -331,7 +331,7 @@ function getDadosMenu( $iCodigoItemMenu, $oModuloSistema ) {
   $oRetorno             = new stdClass();
   $oRetorno->iCodigo    = $oItemMenu->getCodigo();
   $oRetorno->sDescricao = urlencode( $oItemMenu->getDescricao() );
-  $oRetorno->aFilhos    = array();
+  $oRetorno->aFilhos    = [];
 
   foreach( $oItemMenu->getItensFilho( $oModuloSistema ) as $oItemFilho ) {
     $oRetorno->aFilhos[] = getDadosMenu( $oItemFilho->getCodigo(), $oModuloSistema );

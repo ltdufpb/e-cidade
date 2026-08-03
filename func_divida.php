@@ -34,11 +34,11 @@ include(modification("libs/db_utils.php"));
 include(modification("classes/db_divida_classe.php"));
 include(modification("classes/db_iptubase_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $get = db_utils::postMemory($_GET);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldivida = new cl_divida;
 $cIptubase = new cl_iptubase;
 $clrotulo = new rotulocampo;
@@ -166,8 +166,8 @@ $clrotulo->label("j01_matric");
                     $sql = $cldivida->sql_query("","$campos","","v01_instit = ".db_getsession('DB_instit')." $dbwhere");
                     $z01_nome = empty($z01_nome) ? '' : $z01_nome;
                     $v01_coddiv = empty($v01_coddiv) ? '' : $v01_coddiv;
-                    $repassa = array();
-                    $repassa = array("z01_nome"=>$z01_nome,"v01_coddiv"=>$v01_coddiv);
+                    $repassa = [];
+                    $repassa = ["z01_nome"=>$z01_nome,"v01_coddiv"=>$v01_coddiv];
 
                     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
                 }else{
@@ -213,9 +213,9 @@ $clrotulo->label("j01_matric");
                 $sql = $cldivida->sql_query("","$campos",""," v01_instit = ".db_getsession('DB_instit')." $dbwhere ");
                 //echo $sql;
 
-                $repassa = array();
+                $repassa = [];
                 //  if(isset($z01_nome)){
-                $repassa = array("z01_nome"=>$z01_nome,"v01_coddiv"=>$v01_coddiv);
+                $repassa = ["z01_nome"=>$z01_nome,"v01_coddiv"=>$v01_coddiv];
                 // }
 
                 db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

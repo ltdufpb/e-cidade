@@ -47,7 +47,7 @@ class cl_pccampanhapublicitaria
     public function __construct()
     {
         $this->rotulo = new rotulo("pccampanhapublicitaria");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -146,10 +146,10 @@ class cl_pccampanhapublicitaria
          $this->erro_status = "0";
          return false;
        }
-       $this->pc94_codigo = pg_result($result,0,0);
+       $this->pc94_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from pccampanhapublicitaria_pc94_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc94_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc94_codigo)){
          $this->erro_sql = " Campo pc94_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -193,7 +193,7 @@ class cl_pccampanhapublicitaria
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dados relacionados a campanha publicitaria ($this->pc94_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dados relacionados a campanha publicitaria já Cadastrado";
@@ -222,18 +222,18 @@ class cl_pccampanhapublicitaria
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014090,'$this->pc94_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010918,1014090,'','".AddSlashes(pg_result($resaco,0,'pc94_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010918,1014094,'','".AddSlashes(pg_result($resaco,0,'pc94_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010918,1014095,'','".AddSlashes(pg_result($resaco,0,'pc94_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010918,1014100,'','".AddSlashes(pg_result($resaco,0,'pc94_pctipocampanhapublicitaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010918,1014093,'','".AddSlashes(pg_result($resaco,0,'pc94_comissaoveiculacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010918,1014092,'','".AddSlashes(pg_result($resaco,0,'pc94_comissaoproducao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010918,1014101,'','".AddSlashes(pg_result($resaco,0,'pc94_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010918,1014132,'','".AddSlashes(pg_result($resaco,0,'pc94_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010918,1014133,'','".AddSlashes(pg_result($resaco,0,'pc94_valorcampanha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010918,1014090,'','".AddSlashes(pg_fetch_result($resaco,0,'pc94_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010918,1014094,'','".AddSlashes(pg_fetch_result($resaco,0,'pc94_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010918,1014095,'','".AddSlashes(pg_fetch_result($resaco,0,'pc94_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010918,1014100,'','".AddSlashes(pg_fetch_result($resaco,0,'pc94_pctipocampanhapublicitaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010918,1014093,'','".AddSlashes(pg_fetch_result($resaco,0,'pc94_comissaoveiculacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010918,1014092,'','".AddSlashes(pg_fetch_result($resaco,0,'pc94_comissaoproducao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010918,1014101,'','".AddSlashes(pg_fetch_result($resaco,0,'pc94_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010918,1014132,'','".AddSlashes(pg_fetch_result($resaco,0,'pc94_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010918,1014133,'','".AddSlashes(pg_fetch_result($resaco,0,'pc94_valorcampanha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -244,10 +244,10 @@ class cl_pccampanhapublicitaria
       $this->atualizacampos();
      $sql = " update pccampanhapublicitaria set ";
      $virgula = "";
-     if(trim($this->pc94_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_codigo"])){
+     if(trim((string) $this->pc94_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_codigo"])){
        $sql  .= $virgula." pc94_codigo = $this->pc94_codigo ";
        $virgula = ",";
-       if(trim($this->pc94_codigo) == null ){
+       if(trim((string) $this->pc94_codigo) == null ){
          $this->erro_sql = " Campo sequencial das campanhas publicatarias não informado.";
          $this->erro_campo = "pc94_codigo";
          $this->erro_banco = "";
@@ -257,7 +257,7 @@ class cl_pccampanhapublicitaria
          return false;
        }
      }
-     if(trim($this->pc94_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc94_datainicio_dia"] !="") ){
+     if(trim((string) $this->pc94_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc94_datainicio_dia"] !="") ){
        $sql  .= $virgula." pc94_datainicio = '$this->pc94_datainicio' ";
        $virgula = ",";
      }     else{
@@ -266,7 +266,7 @@ class cl_pccampanhapublicitaria
          $virgula = ",";
        }
      }
-     if(trim($this->pc94_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc94_datafim_dia"] !="") ){
+     if(trim((string) $this->pc94_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc94_datafim_dia"] !="") ){
        $sql  .= $virgula." pc94_datafim = '$this->pc94_datafim' ";
        $virgula = ",";
      }     else{
@@ -275,10 +275,10 @@ class cl_pccampanhapublicitaria
          $virgula = ",";
        }
      }
-     if(trim($this->pc94_pctipocampanhapublicitaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_pctipocampanhapublicitaria"])){
+     if(trim((string) $this->pc94_pctipocampanhapublicitaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_pctipocampanhapublicitaria"])){
        $sql  .= $virgula." pc94_pctipocampanhapublicitaria = $this->pc94_pctipocampanhapublicitaria ";
        $virgula = ",";
-       if(trim($this->pc94_pctipocampanhapublicitaria) == null ){
+       if(trim((string) $this->pc94_pctipocampanhapublicitaria) == null ){
          $this->erro_sql = " Campo codigo do tipo de campanha publicitaria não informado.";
          $this->erro_campo = "pc94_pctipocampanhapublicitaria";
          $this->erro_banco = "";
@@ -288,24 +288,24 @@ class cl_pccampanhapublicitaria
          return false;
        }
      }
-     if(trim($this->pc94_comissaoveiculacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_comissaoveiculacao"])){
-        if(trim($this->pc94_comissaoveiculacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc94_comissaoveiculacao"])){
+     if(trim((string) $this->pc94_comissaoveiculacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_comissaoveiculacao"])){
+        if(trim((string) $this->pc94_comissaoveiculacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc94_comissaoveiculacao"])){
            $this->pc94_comissaoveiculacao = "0" ;
         }
        $sql  .= $virgula." pc94_comissaoveiculacao = $this->pc94_comissaoveiculacao ";
        $virgula = ",";
      }
-     if(trim($this->pc94_comissaoproducao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_comissaoproducao"])){
-        if(trim($this->pc94_comissaoproducao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc94_comissaoproducao"])){
+     if(trim((string) $this->pc94_comissaoproducao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_comissaoproducao"])){
+        if(trim((string) $this->pc94_comissaoproducao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc94_comissaoproducao"])){
            $this->pc94_comissaoproducao = "0" ;
         }
        $sql  .= $virgula." pc94_comissaoproducao = $this->pc94_comissaoproducao ";
        $virgula = ",";
      }
-     if(trim($this->pc94_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_pcmater"])){
+     if(trim((string) $this->pc94_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_pcmater"])){
        $sql  .= $virgula." pc94_pcmater = $this->pc94_pcmater ";
        $virgula = ",";
-       if(trim($this->pc94_pcmater) == null ){
+       if(trim((string) $this->pc94_pcmater) == null ){
          $this->erro_sql = " Campo Sequencial da pcmater não informado.";
          $this->erro_campo = "pc94_pcmater";
          $this->erro_banco = "";
@@ -315,17 +315,17 @@ class cl_pccampanhapublicitaria
          return false;
        }
      }
-     if(trim($this->pc94_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_cgm"])){
-        if(trim($this->pc94_cgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc94_cgm"])){
+     if(trim((string) $this->pc94_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_cgm"])){
+        if(trim((string) $this->pc94_cgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc94_cgm"])){
            $this->pc94_cgm = "0" ;
         }
        $sql  .= $virgula." pc94_cgm = $this->pc94_cgm ";
        $virgula = ",";
      }
-     if(trim($this->pc94_valorcampanha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_valorcampanha"])){
+     if(trim((string) $this->pc94_valorcampanha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc94_valorcampanha"])){
        $sql  .= $virgula." pc94_valorcampanha = $this->pc94_valorcampanha ";
        $virgula = ",";
-       if(trim($this->pc94_valorcampanha) == null ){
+       if(trim((string) $this->pc94_valorcampanha) == null ){
          $this->erro_sql = " Campo Valor total da campanhaa não informado.";
          $this->erro_campo = "pc94_valorcampanha";
          $this->erro_banco = "";
@@ -349,27 +349,27 @@ class cl_pccampanhapublicitaria
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014090,'$this->pc94_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc94_codigo"]) || $this->pc94_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010918,1014090,'".AddSlashes(pg_result($resaco,$conresaco,'pc94_codigo'))."','$this->pc94_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010918,1014090,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc94_codigo'))."','$this->pc94_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc94_datainicio"]) || $this->pc94_datainicio != "")
-             $resac = db_query("insert into db_acount values($acount,1010918,1014094,'".AddSlashes(pg_result($resaco,$conresaco,'pc94_datainicio'))."','$this->pc94_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010918,1014094,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc94_datainicio'))."','$this->pc94_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc94_datafim"]) || $this->pc94_datafim != "")
-             $resac = db_query("insert into db_acount values($acount,1010918,1014095,'".AddSlashes(pg_result($resaco,$conresaco,'pc94_datafim'))."','$this->pc94_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010918,1014095,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc94_datafim'))."','$this->pc94_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc94_pctipocampanhapublicitaria"]) || $this->pc94_pctipocampanhapublicitaria != "")
-             $resac = db_query("insert into db_acount values($acount,1010918,1014100,'".AddSlashes(pg_result($resaco,$conresaco,'pc94_pctipocampanhapublicitaria'))."','$this->pc94_pctipocampanhapublicitaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010918,1014100,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc94_pctipocampanhapublicitaria'))."','$this->pc94_pctipocampanhapublicitaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc94_comissaoveiculacao"]) || $this->pc94_comissaoveiculacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010918,1014093,'".AddSlashes(pg_result($resaco,$conresaco,'pc94_comissaoveiculacao'))."','$this->pc94_comissaoveiculacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010918,1014093,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc94_comissaoveiculacao'))."','$this->pc94_comissaoveiculacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc94_comissaoproducao"]) || $this->pc94_comissaoproducao != "")
-             $resac = db_query("insert into db_acount values($acount,1010918,1014092,'".AddSlashes(pg_result($resaco,$conresaco,'pc94_comissaoproducao'))."','$this->pc94_comissaoproducao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010918,1014092,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc94_comissaoproducao'))."','$this->pc94_comissaoproducao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc94_pcmater"]) || $this->pc94_pcmater != "")
-             $resac = db_query("insert into db_acount values($acount,1010918,1014101,'".AddSlashes(pg_result($resaco,$conresaco,'pc94_pcmater'))."','$this->pc94_pcmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010918,1014101,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc94_pcmater'))."','$this->pc94_pcmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc94_cgm"]) || $this->pc94_cgm != "")
-             $resac = db_query("insert into db_acount values($acount,1010918,1014132,'".AddSlashes(pg_result($resaco,$conresaco,'pc94_cgm'))."','$this->pc94_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010918,1014132,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc94_cgm'))."','$this->pc94_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc94_valorcampanha"]) || $this->pc94_valorcampanha != "")
-             $resac = db_query("insert into db_acount values($acount,1010918,1014133,'".AddSlashes(pg_result($resaco,$conresaco,'pc94_valorcampanha'))."','$this->pc94_valorcampanha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010918,1014133,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc94_valorcampanha'))."','$this->pc94_valorcampanha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -423,18 +423,18 @@ class cl_pccampanhapublicitaria
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014090,'$pc94_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010918,1014090,'','".AddSlashes(pg_result($resaco,$iresaco,'pc94_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010918,1014094,'','".AddSlashes(pg_result($resaco,$iresaco,'pc94_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010918,1014095,'','".AddSlashes(pg_result($resaco,$iresaco,'pc94_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010918,1014100,'','".AddSlashes(pg_result($resaco,$iresaco,'pc94_pctipocampanhapublicitaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010918,1014093,'','".AddSlashes(pg_result($resaco,$iresaco,'pc94_comissaoveiculacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010918,1014092,'','".AddSlashes(pg_result($resaco,$iresaco,'pc94_comissaoproducao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010918,1014101,'','".AddSlashes(pg_result($resaco,$iresaco,'pc94_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010918,1014132,'','".AddSlashes(pg_result($resaco,$iresaco,'pc94_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010918,1014133,'','".AddSlashes(pg_result($resaco,$iresaco,'pc94_valorcampanha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010918,1014090,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc94_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010918,1014094,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc94_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010918,1014095,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc94_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010918,1014100,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc94_pctipocampanhapublicitaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010918,1014093,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc94_comissaoveiculacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010918,1014092,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc94_comissaoproducao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010918,1014101,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc94_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010918,1014132,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc94_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010918,1014133,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc94_valorcampanha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

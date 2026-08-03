@@ -16,23 +16,18 @@ use Exception;
 class BuscarDados
 {
     /**
-     * @var Censo
-     */
-    private $oCenso;
-    /**
      * @var Escola
      */
     private $oEscola;
-    private $aCodigoAlunoAntes = array();
+    private $aCodigoAlunoAntes = [];
 
     /**
      * BuscarDados constructor.
      * @param Censo $oCenso
      * @param Escola $oEscola
      */
-    public function __construct(Censo $oCenso, Escola $oEscola)
+    public function __construct(private readonly Censo $oCenso, Escola $oEscola)
     {
-        $this->oCenso = $oCenso;
         $this->oEscola = $oEscola;
     }
 
@@ -75,7 +70,7 @@ class BuscarDados
                 $oDados = new Dados\BuscaDadosAlunosAntes2016($this->oCenso, $this->oEscola);
                 $aDados = $oDados->getDados();
 
-                $aDadosAlunosAntes = array();
+                $aDadosAlunosAntes = [];
                 foreach ($aDados as $oDadosAluno) {
                     $oValidacaoAluno = new Dados\DadosAlunoAntes2016();
                     $oValidacaoAluno->popular($oDadosAluno);
@@ -111,7 +106,7 @@ class BuscarDados
                 $oDados = new Dados\BuscaDadosAlunosApos2016($this->oCenso, $this->oEscola, $this->aCodigoAlunoAntes);
                 $aDados = $oDados->getDados();
 
-                $aDadosAluno = array();
+                $aDadosAluno = [];
                 foreach ($aDados as $oDadosAluno) {
                     $oValidacaoAluno = new Dados\DadosAlunosApos2016();
                     $oValidacaoAluno->popular($oDadosAluno);

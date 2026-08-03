@@ -39,7 +39,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('v76_tipolancamento');
 $clrotulo->label('v76_valorpartilha');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $db_opcao = 1;
 ?>
@@ -117,7 +117,7 @@ $db_opcao = 1;
                         <td class="bold" nowrap="nowrap">Tipo de Lançamento :</td>
                         <td>
                             <?php
-                            $aTipoLancamento = array("0" => "Selecione...", "2" => "Pagamento", "3" => "Isenção");
+                            $aTipoLancamento = ["0" => "Selecione...", "2" => "Pagamento", "3" => "Isenção"];
                             db_select("v76_tipolancamento", $aTipoLancamento, true, $db_opcao,
                                 "onchange='js_lancamento(this.value);'", "v76_tipolancamento");
                             ?>

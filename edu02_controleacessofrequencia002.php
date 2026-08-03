@@ -34,7 +34,7 @@ require_once(modification("std/DBLargeObject.php"));
 
 $oDaoRegenciaHorario = db_utils::getDao("regenciahorario");
 $oGet     = db_utils::postMemory($_GET);
-$sDataDia = implode("-", array_reverse(explode("/", $oGet->data)));
+$sDataDia = implode("-", array_reverse(explode("/", (string) $oGet->data)));
 
 $iEscola  = db_getsession("DB_coddepto");
 $iAno     = db_getsession("DB_anousu");
@@ -74,7 +74,7 @@ $sSqlAlunos  = $oDaoRegenciaHorario->sql_query_diario_classe_matricula (null,
                                                                         $sWhere.$sGroupBy
                                                                         );
 
-$aAlunos            = array();                                                                                     
+$aAlunos            = [];                                                                                     
 $rsAlunosNoDia      = $oDaoRegenciaHorario->sql_record($sSqlAlunos);
 $iTotalLinhas       = $oDaoRegenciaHorario->numrows;
 $oDaoControleAcesso = db_utils::getDao("controleacessoalunoregistrovalido");
@@ -84,7 +84,7 @@ for ($iAluno = 0; $iAluno < $iTotalLinhas; $iAluno++) {
   $oAluno->comLeiuturaFalta    = "0";
   $oAluno->semLeiuturaPresente = "0";
   $oAluno->chamadafechada      = false;
-  $oAluno->horarios            = urldecode($oAluno->horarios);
+  $oAluno->horarios            = urldecode((string) $oAluno->horarios);
   $sWhereFaltas  =  "     ed101_dataleitura = cast('{$sDataDia}' as date) ";
   $sWhereFaltas .=  " and ed60_i_turma = {$oAluno->ed57_i_codigo} "; 
   $sWhereFaltas .= "  and ed60_i_aluno = {$oAluno->ed47_i_codigo} ";      
@@ -188,7 +188,7 @@ $iTotalAlunosImpressos  = 0;
 $iAlturaAluno           = 40;
 $iSalto                 = 2;
 $iLinhasImpressas       = 0;
-$aListaImagens          = array(); 
+$aListaImagens          = []; 
 foreach ($aAlunos as $iTipoAluno => $aListaAluno) {
    
   /**
@@ -270,7 +270,7 @@ foreach ($aAlunos as $iTipoAluno => $aListaAluno) {
       $oPdf->MultiCell($iTamanhoCelulaNomes, $iAlturaCelula, "Resp.: {$oAluno->resplegal}", 0, 1);
       $oPdf->setXY($iProximoAluno + 32, $oPdf->getY());
       $sFones = $oAluno->celular;
-      if (trim($oAluno->telefoneresidencial)  != "" && trim($oAluno->celular) != "") {
+      if (trim((string) $oAluno->telefoneresidencial)  != "" && trim((string) $oAluno->celular) != "") {
         $sFones .= " / ";
       }
       $sFones .= $oAluno->telefoneresidencial;

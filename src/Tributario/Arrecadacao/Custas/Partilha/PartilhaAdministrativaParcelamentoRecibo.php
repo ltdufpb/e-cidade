@@ -58,6 +58,7 @@ final class PartilhaAdministrativaParcelamentoRecibo extends Simulacao implement
     /**
      * @param ReciboModel $recibo
      */
+    #[\Override]
     public function processar()
     {
         $inicialPartilha = parent::processar();
@@ -173,7 +174,7 @@ final class PartilhaAdministrativaParcelamentoRecibo extends Simulacao implement
             $numpar = $this->getParcelaTaxa($inicialPartilhaCusta->getTaxa()->getCodigoTaxa());
 
             if ($inicialPartilhaCusta->getTaxa()->isAplicaHonorario() && $this->inicial->getParcelasHonorarios() > 1) {
-                $numpar = array();
+                $numpar = [];
                 $debitos = $this->recibo->getDebitosRecibo();
 
                 foreach ($debitos as $debito) {
@@ -183,7 +184,7 @@ final class PartilhaAdministrativaParcelamentoRecibo extends Simulacao implement
                     }
                 }
             } else {
-                $numpar = array($numpar);
+                $numpar = [$numpar];
             }
 
             $calculoParcelamentoHonorario = new CalculaParcelamentoHonorarioRepository(

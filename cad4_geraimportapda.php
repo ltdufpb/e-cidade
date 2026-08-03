@@ -42,7 +42,7 @@ $clmoblevantamentolog = new cl_moblevantamentolog;
 $clmoblevantamentoedi = new cl_moblevantamentoedi;
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
  
 if( isset($importa) ) {
@@ -85,7 +85,7 @@ if( isset($importa) ) {
     $arq_matriculas = file($matriculas["tmp_name"]);
     ///
     for($i=0;$i<count($arq_matriculas);$i++){
-      $conteudo = split(";" ,$arq_matriculas[$i]);
+      $conteudo = preg_split("#;#m" ,$arq_matriculas[$i]);
  
  
  
@@ -138,7 +138,7 @@ if( isset($importa) ) {
       $arq_testadas   = file($testadas["tmp_name"]);
       ///
       for($i=0;$i<count($arq_testadas);$i++){
-        $conteudo = split(";",$arq_testadas[$i]);
+        $conteudo = preg_split("#;#m",$arq_testadas[$i]);
         /*
         $sql = "insert into mobavalogradouro values (
             ".$conteudo[0].",
@@ -169,7 +169,7 @@ if( isset($importa) ) {
        $clmoblevantamentolog->j98_meiofio    = $conteudo[7];
        $clmoblevantamentolog->j98_iluminacao = $conteudo[8];
        $clmoblevantamentolog->j98_telefonia  = $conteudo[9];
-       $clmoblevantamentolog->j98_lixo       = trim($conteudo[10]);
+       $clmoblevantamentolog->j98_lixo       = trim((string) $conteudo[10]);
  
        $clmoblevantamentolog->incluir(0);
 
@@ -190,7 +190,7 @@ if( isset($importa) ) {
 
 
     for($i=0;$i<count($arq_edificacoes);$i++){
-      $conteudo = split(";",$arq_edificacoes[$i]);
+      $conteudo = preg_split("#;#m",$arq_edificacoes[$i]);
      
      
       /*$sql = "insert into mobavaedificacao values (
@@ -293,7 +293,7 @@ $clmobimportacao->rotulo->label();
     </td>
     <td> 
     <?php 
-    $x = array('1'=>'Pda 1','2'=>'Pda 2','3'=>'Pda 3','4'=>'Pda 4','5'=>'Pda 5','6'=>'Pda 6','7'=>'Pda 7','8'=>'Pda 8','9'=>'Pda 9','10'=>'pda 10','11'=>'Pda 11','12'=>'Pda 12','13'=>'Pda 13','14'=>'Pda 14','15'=>'Pda 15');
+    $x = ['1'=>'Pda 1','2'=>'Pda 2','3'=>'Pda 3','4'=>'Pda 4','5'=>'Pda 5','6'=>'Pda 6','7'=>'Pda 7','8'=>'Pda 8','9'=>'Pda 9','10'=>'pda 10','11'=>'Pda 11','12'=>'Pda 12','13'=>'Pda 13','14'=>'Pda 14','15'=>'Pda 15'];
     db_select('j95_pda',$x,true,$db_opcao,"");
     ?>
     </td>

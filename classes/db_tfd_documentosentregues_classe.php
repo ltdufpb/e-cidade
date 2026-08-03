@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE tfd_documentosentregues
 class cl_tfd_documentosentregues { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tf22_i_codigo = 0; 
-   var $tf22_i_pedidotfd = 0; 
-   var $tf22_i_documento = 0; 
-   var $tf22_d_dataentrega_dia = null; 
-   var $tf22_d_dataentrega_mes = null; 
-   var $tf22_d_dataentrega_ano = null; 
-   var $tf22_d_dataentrega = null; 
-   var $tf22_c_horaentrega = null; 
-   var $tf22_c_numdoc = null; 
+   public $tf22_i_codigo = 0; 
+   public $tf22_i_pedidotfd = 0; 
+   public $tf22_i_documento = 0; 
+   public $tf22_d_dataentrega_dia = null; 
+   public $tf22_d_dataentrega_mes = null; 
+   public $tf22_d_dataentrega_ano = null; 
+   public $tf22_d_dataentrega = null; 
+   public $tf22_c_horaentrega = null; 
+   public $tf22_c_numdoc = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tf22_i_codigo = int4 = Código 
                  tf22_i_pedidotfd = int4 = Pedido 
                  tf22_i_documento = int4 = Documento 
@@ -61,10 +61,10 @@ class cl_tfd_documentosentregues {
                  tf22_c_numdoc = varchar(20) = N° Documento 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_documentosentregues() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_documentosentregues"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_tfd_documentosentregues {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tf22_i_codigo = pg_result($result,0,0); 
+       $this->tf22_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tfd_documentosentregues_tf22_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf22_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf22_i_codigo)){
          $this->erro_sql = " Campo tf22_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_tfd_documentosentregues {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tfd_documentosentregues ($this->tf22_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tfd_documentosentregues já Cadastrado";
@@ -218,15 +218,15 @@ class cl_tfd_documentosentregues {
      $resaco = $this->sql_record($this->sql_query_file($this->tf22_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16432,'$this->tf22_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2878,16432,'','".AddSlashes(pg_result($resaco,0,'tf22_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2878,16433,'','".AddSlashes(pg_result($resaco,0,'tf22_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2878,16434,'','".AddSlashes(pg_result($resaco,0,'tf22_i_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2878,16435,'','".AddSlashes(pg_result($resaco,0,'tf22_d_dataentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2878,16436,'','".AddSlashes(pg_result($resaco,0,'tf22_c_horaentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2878,16437,'','".AddSlashes(pg_result($resaco,0,'tf22_c_numdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2878,16432,'','".AddSlashes(pg_fetch_result($resaco,0,'tf22_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2878,16433,'','".AddSlashes(pg_fetch_result($resaco,0,'tf22_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2878,16434,'','".AddSlashes(pg_fetch_result($resaco,0,'tf22_i_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2878,16435,'','".AddSlashes(pg_fetch_result($resaco,0,'tf22_d_dataentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2878,16436,'','".AddSlashes(pg_fetch_result($resaco,0,'tf22_c_horaentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2878,16437,'','".AddSlashes(pg_fetch_result($resaco,0,'tf22_c_numdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_tfd_documentosentregues {
       $this->atualizacampos();
      $sql = " update tfd_documentosentregues set ";
      $virgula = "";
-     if(trim($this->tf22_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_i_codigo"])){ 
+     if(trim((string) $this->tf22_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_i_codigo"])){ 
        $sql  .= $virgula." tf22_i_codigo = $this->tf22_i_codigo ";
        $virgula = ",";
-       if(trim($this->tf22_i_codigo) == null ){ 
+       if(trim((string) $this->tf22_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "tf22_i_codigo";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_tfd_documentosentregues {
          return false;
        }
      }
-     if(trim($this->tf22_i_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_i_pedidotfd"])){ 
+     if(trim((string) $this->tf22_i_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_i_pedidotfd"])){ 
        $sql  .= $virgula." tf22_i_pedidotfd = $this->tf22_i_pedidotfd ";
        $virgula = ",";
-       if(trim($this->tf22_i_pedidotfd) == null ){ 
+       if(trim((string) $this->tf22_i_pedidotfd) == null ){ 
          $this->erro_sql = " Campo Pedido nao Informado.";
          $this->erro_campo = "tf22_i_pedidotfd";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_tfd_documentosentregues {
          return false;
        }
      }
-     if(trim($this->tf22_i_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_i_documento"])){ 
+     if(trim((string) $this->tf22_i_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_i_documento"])){ 
        $sql  .= $virgula." tf22_i_documento = $this->tf22_i_documento ";
        $virgula = ",";
-       if(trim($this->tf22_i_documento) == null ){ 
+       if(trim((string) $this->tf22_i_documento) == null ){ 
          $this->erro_sql = " Campo Documento nao Informado.";
          $this->erro_campo = "tf22_i_documento";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_tfd_documentosentregues {
          return false;
        }
      }
-     if(trim($this->tf22_d_dataentrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_d_dataentrega_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf22_d_dataentrega_dia"] !="") ){ 
+     if(trim((string) $this->tf22_d_dataentrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_d_dataentrega_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf22_d_dataentrega_dia"] !="") ){ 
        $sql  .= $virgula." tf22_d_dataentrega = '$this->tf22_d_dataentrega' ";
        $virgula = ",";
-       if(trim($this->tf22_d_dataentrega) == null ){ 
+       if(trim((string) $this->tf22_d_dataentrega) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "tf22_d_dataentrega_dia";
          $this->erro_banco = "";
@@ -290,7 +290,7 @@ class cl_tfd_documentosentregues {
        if(isset($GLOBALS["HTTP_POST_VARS"]["tf22_d_dataentrega_dia"])){ 
          $sql  .= $virgula." tf22_d_dataentrega = null ";
          $virgula = ",";
-         if(trim($this->tf22_d_dataentrega) == null ){ 
+         if(trim((string) $this->tf22_d_dataentrega) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "tf22_d_dataentrega_dia";
            $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_tfd_documentosentregues {
          }
        }
      }
-     if(trim($this->tf22_c_horaentrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_c_horaentrega"])){ 
+     if(trim((string) $this->tf22_c_horaentrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_c_horaentrega"])){ 
        $sql  .= $virgula." tf22_c_horaentrega = '$this->tf22_c_horaentrega' ";
        $virgula = ",";
-       if(trim($this->tf22_c_horaentrega) == null ){ 
+       if(trim((string) $this->tf22_c_horaentrega) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "tf22_c_horaentrega";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_tfd_documentosentregues {
          return false;
        }
      }
-     if(trim($this->tf22_c_numdoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_c_numdoc"])){ 
+     if(trim((string) $this->tf22_c_numdoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf22_c_numdoc"])){ 
        $sql  .= $virgula." tf22_c_numdoc = '$this->tf22_c_numdoc' ";
        $virgula = ",";
-       if(trim($this->tf22_c_numdoc) == null ){ 
+       if(trim((string) $this->tf22_c_numdoc) == null ){ 
          $this->erro_sql = " Campo N° Documento nao Informado.";
          $this->erro_campo = "tf22_c_numdoc";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_tfd_documentosentregues {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16432,'$this->tf22_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf22_i_codigo"]) || $this->tf22_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2878,16432,'".AddSlashes(pg_result($resaco,$conresaco,'tf22_i_codigo'))."','$this->tf22_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2878,16432,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf22_i_codigo'))."','$this->tf22_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf22_i_pedidotfd"]) || $this->tf22_i_pedidotfd != "")
-           $resac = db_query("insert into db_acount values($acount,2878,16433,'".AddSlashes(pg_result($resaco,$conresaco,'tf22_i_pedidotfd'))."','$this->tf22_i_pedidotfd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2878,16433,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf22_i_pedidotfd'))."','$this->tf22_i_pedidotfd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf22_i_documento"]) || $this->tf22_i_documento != "")
-           $resac = db_query("insert into db_acount values($acount,2878,16434,'".AddSlashes(pg_result($resaco,$conresaco,'tf22_i_documento'))."','$this->tf22_i_documento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2878,16434,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf22_i_documento'))."','$this->tf22_i_documento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf22_d_dataentrega"]) || $this->tf22_d_dataentrega != "")
-           $resac = db_query("insert into db_acount values($acount,2878,16435,'".AddSlashes(pg_result($resaco,$conresaco,'tf22_d_dataentrega'))."','$this->tf22_d_dataentrega',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2878,16435,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf22_d_dataentrega'))."','$this->tf22_d_dataentrega',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf22_c_horaentrega"]) || $this->tf22_c_horaentrega != "")
-           $resac = db_query("insert into db_acount values($acount,2878,16436,'".AddSlashes(pg_result($resaco,$conresaco,'tf22_c_horaentrega'))."','$this->tf22_c_horaentrega',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2878,16436,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf22_c_horaentrega'))."','$this->tf22_c_horaentrega',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf22_c_numdoc"]) || $this->tf22_c_numdoc != "")
-           $resac = db_query("insert into db_acount values($acount,2878,16437,'".AddSlashes(pg_result($resaco,$conresaco,'tf22_c_numdoc'))."','$this->tf22_c_numdoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2878,16437,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf22_c_numdoc'))."','$this->tf22_c_numdoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_tfd_documentosentregues {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16432,'$tf22_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2878,16432,'','".AddSlashes(pg_result($resaco,$iresaco,'tf22_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2878,16433,'','".AddSlashes(pg_result($resaco,$iresaco,'tf22_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2878,16434,'','".AddSlashes(pg_result($resaco,$iresaco,'tf22_i_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2878,16435,'','".AddSlashes(pg_result($resaco,$iresaco,'tf22_d_dataentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2878,16436,'','".AddSlashes(pg_result($resaco,$iresaco,'tf22_c_horaentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2878,16437,'','".AddSlashes(pg_result($resaco,$iresaco,'tf22_c_numdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2878,16432,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf22_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2878,16433,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf22_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2878,16434,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf22_i_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2878,16435,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf22_d_dataentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2878,16436,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf22_c_horaentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2878,16437,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf22_c_numdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tfd_documentosentregues
@@ -462,7 +462,7 @@ class cl_tfd_documentosentregues {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tfd_documentosentregues";
@@ -477,7 +477,7 @@ class cl_tfd_documentosentregues {
    function sql_query ( $tf22_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -507,7 +507,7 @@ class cl_tfd_documentosentregues {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -520,7 +520,7 @@ class cl_tfd_documentosentregues {
    function sql_query_file ( $tf22_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -541,7 +541,7 @@ class cl_tfd_documentosentregues {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

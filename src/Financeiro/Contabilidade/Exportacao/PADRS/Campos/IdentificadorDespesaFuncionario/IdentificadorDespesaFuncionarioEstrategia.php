@@ -4,11 +4,8 @@ namespace ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Campos\Identificador
 
 class IdentificadorDespesaFuncionarioEstrategia
 {
-    protected $empenho;
-
-    public function __construct($empenho)
+    public function __construct(protected $empenho)
     {
-        $this->empenho = $empenho;
     }
 
     public function getValor()

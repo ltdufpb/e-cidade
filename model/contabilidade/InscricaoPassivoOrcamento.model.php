@@ -33,13 +33,6 @@
 class InscricaoPassivoOrcamento {
 
   /**
-   * Código da Inscrição
-   *
-   * @var integer
-   */
-  private $iSequencial;
-
-  /**
    * Conjunto de itens da Inscricao
    *
    * @var array
@@ -138,13 +131,15 @@ class InscricaoPassivoOrcamento {
    * @param  integer $iSequencial
    * @return boolean
    */
-  function __construct($iSequencial = null) {
+  function __construct(/**
+   * Código da Inscrição
+   */
+  private $iSequencial = null) {
 
-  	$this->iSequencial = $iSequencial;
-    if($iSequencial != null) {
+  	if($this->iSequencial != null) {
 
       $oDAOInscricaoPassivoOrcamento = db_utils::getDao("inscricaopassivo");
-      $sSqlInscricaoPassivoOrcamento = $oDAOInscricaoPassivoOrcamento->sql_query_informacoes_inscricao($iSequencial);
+      $sSqlInscricaoPassivoOrcamento = $oDAOInscricaoPassivoOrcamento->sql_query_informacoes_inscricao($this->iSequencial);
       $rsInscricaoPassivoOrcamento   =  $oDAOInscricaoPassivoOrcamento->sql_record($sSqlInscricaoPassivoOrcamento);
       if ($oDAOInscricaoPassivoOrcamento->numrows > 0) {
 
@@ -161,7 +156,7 @@ class InscricaoPassivoOrcamento {
         $this->sObservacaoAnulacao     = $oDAOInscricaoPassivoOrcamento->c39_observacao;
         $this->dtDataAnulacao          = $oDAOInscricaoPassivoOrcamento->c39_data;
         $this->sDescricaoElemento      = $oDAOInscricaoPassivoOrcamento->o56_descr;
-        $this->iElemento               = substr($oDAOInscricaoPassivoOrcamento->o56_elemento,0,7);
+        $this->iElemento               = substr((string) $oDAOInscricaoPassivoOrcamento->o56_elemento,0,7);
 
         if (!empty($oDAOInscricaoPassivoOrcamento->c39_data)) {
           $this->oUsuarioInscricaoAnulacao = new UsuarioSistema($oDAOInscricaoPassivoOrcamento->c39_db_usuarios);

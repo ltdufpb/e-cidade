@@ -87,12 +87,12 @@ a:active {
 <?php 
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sd02_i_codigo = db_getsession("DB_coddepto");
-$ano           = substr( $sd23_d_consulta, 6, 4 );
-$mes           = substr( $sd23_d_consulta, 3, 2 );
-$dia           = substr( $sd23_d_consulta, 0, 2 );
+$ano           = substr( (string) $sd23_d_consulta, 6, 4 );
+$mes           = substr( (string) $sd23_d_consulta, 3, 2 );
+$dia           = substr( (string) $sd23_d_consulta, 0, 2 );
 
 $clagendamentos  = new cl_agendamentos_ext;
 $clundmedhorario = new cl_undmedhorario_ext;
@@ -137,7 +137,7 @@ if( $clundmedhorario->numrows == 0  ){
 				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$obj_undmedhorario->sd30_i_fichas ?></td>
 				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$obj_undmedhorario->sd30_i_reservas ?></td>
 				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$obj_undmedhorario->sd30_i_fichas - $obj_undmedhorario->sd30_i_reservas - $obj_undmedhorario->total_agendado ?></td>
-				<td style="border:1px solid #AACCCC;"   class='corpo'><?=$obj_undmedhorario->sd02_i_codigo." - ".substr($obj_undmedhorario->descrdepto,0,32) ?></td>
+				<td style="border:1px solid #AACCCC;"   class='corpo'><?=$obj_undmedhorario->sd02_i_codigo." - ".substr((string) $obj_undmedhorario->descrdepto,0,32) ?></td>
 
 			</tr>
 		<?php 

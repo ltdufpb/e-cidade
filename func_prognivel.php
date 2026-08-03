@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_prognivel_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprognivel = new cl_prognivel;
 $clprognivel->rotulo->label("ed124_i_codigo");
 $clprognivel->rotulo->label("ed124_c_descr");
@@ -94,9 +94,9 @@ $clprognivel->rotulo->label("ed124_c_descr");
     }else{
      $sql = $clprognivel->sql_query("",$campos,"ed124_c_descr","");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed124_i_codigo)){
-     $repassa = array("chave_ed124_i_codigo"=>$chave_ed124_i_codigo,"chave_ed124_c_descr"=>$chave_ed124_c_descr);
+     $repassa = ["chave_ed124_i_codigo"=>$chave_ed124_i_codigo,"chave_ed124_c_descr"=>$chave_ed124_c_descr];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

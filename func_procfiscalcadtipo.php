@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procfiscalcadtipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocfiscalcadtipo = new cl_procfiscalcadtipo;
 $clprocfiscalcadtipo->rotulo->label("y33_sequencial");
 $clprocfiscalcadtipo->rotulo->label("y33_descricao");
@@ -98,9 +98,9 @@ $clprocfiscalcadtipo->rotulo->label("y33_descricao");
         }else{
            $sql = $clprocfiscalcadtipo->sql_query("",$campos,"y33_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_y33_descricao)){
-          $repassa = array("chave_y33_sequencial"=>$chave_y33_sequencial,"chave_y33_descricao"=>$chave_y33_descricao);
+          $repassa = ["chave_y33_sequencial"=>$chave_y33_sequencial,"chave_y33_descricao"=>$chave_y33_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

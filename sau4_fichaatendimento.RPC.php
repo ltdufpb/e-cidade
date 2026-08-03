@@ -97,7 +97,7 @@ try {
       if ( pg_num_rows($rsMovimentacao) > 0 ) {
 
         $oDadosRetorno                = db_utils::fieldsMemory( $rsMovimentacao, 0 );
-        $oRetorno->sObservacao        = urlencode($oDadosRetorno->sd102_observacao);
+        $oRetorno->sObservacao        = urlencode((string) $oDadosRetorno->sd102_observacao);
         $oRetorno->iMovimentacao      = $oDadosRetorno->sd102_codigo;
         $oRetorno->iSituacao          = $oDadosRetorno->sd102_situacao;
         $oRetorno->iSetorAmbulatorial = $oDadosRetorno->setor;
@@ -113,7 +113,7 @@ try {
 
     case 'buscaSetoresUnidade':
 
-      $aWhere = array();
+      $aWhere = [];
       if ($oParam->lFiltrarUnidadeLogada) {
         $aWhere[] = " sd91_unidades = " . db_getsession('DB_coddepto');
       }
@@ -137,7 +137,7 @@ try {
       $aLocais[3] = "CONSULTA MÉDICA";
       $aLocais[4] = "EXTERNO";
 
-      $oRetorno->aSetores = array();
+      $oRetorno->aSetores = [];
       if ( pg_num_rows($rsSetores) > 0 ) {
 
         $iLinhas = pg_num_rows($rsSetores);
@@ -147,9 +147,9 @@ try {
           $oSetor             = new stdClass();
           $oSetor->iCodigo    = $oDados->sd91_codigo;
           $oSetor->iUnidade   =  $oDados->sd91_unidades;
-          $oSetor->sDescricao = urlencode($oDados->sd91_descricao);
+          $oSetor->sDescricao = urlencode((string) $oDados->sd91_descricao);
           $oSetor->iLocal     = $oDados->sd91_local;
-          $oSetor->sLocal     = urlencode($aLocais[$oDados->sd91_local]);
+          $oSetor->sLocal     = urlencode((string) $aLocais[$oDados->sd91_local]);
 
           $oRetorno->aSetores[] = $oSetor;
         }
@@ -254,19 +254,19 @@ try {
 
       $oRetorno->oDadosPaciente                 = new stdClass();
       $oRetorno->oDadosPaciente->iCgs           = $oPaciente->getCodigo();
-      $oRetorno->oDadosPaciente->sNome          = urlencode( $oPaciente->getNome() );
-      $oRetorno->oDadosPaciente->sSexo          = urlencode( $oPaciente->getSexo() );
+      $oRetorno->oDadosPaciente->sNome          = urlencode( (string) $oPaciente->getNome() );
+      $oRetorno->oDadosPaciente->sSexo          = urlencode( (string) $oPaciente->getSexo() );
       $oRetorno->oDadosPaciente->dtNascimento   = $oPaciente->getDataNascimento()->convertTo(DBDate::DATA_PTBR);
       $oRetorno->oDadosPaciente->sIdadeCompleta = urlencode( DBDate::getIdadeCompleta($iQuantidadeDias) );
-      $oRetorno->oDadosPaciente->sNomeMae       = urlencode( $oPaciente->getNomeMae() );
-      $oRetorno->oDadosPaciente->sEndereco      = urlencode( $oPaciente->getEndereco() );
+      $oRetorno->oDadosPaciente->sNomeMae       = urlencode( (string) $oPaciente->getNomeMae() );
+      $oRetorno->oDadosPaciente->sEndereco      = urlencode( (string) $oPaciente->getEndereco() );
       $oRetorno->oDadosPaciente->iNumero        = $oPaciente->getNumero();
-      $oRetorno->oDadosPaciente->sComplemento   = urlencode( $oPaciente->getComplemento() );
-      $oRetorno->oDadosPaciente->sBairro        = urlencode( $oPaciente->getBairro() );
-      $oRetorno->oDadosPaciente->sCep           = urlencode( $oPaciente->getCep() );
-      $oRetorno->oDadosPaciente->sMunicipio     = urlencode( $oPaciente->getMunicipio() );
-      $oRetorno->oDadosPaciente->sUF            = urlencode( $oPaciente->getUF() );
-      $oRetorno->oDadosPaciente->sEstadoCivil   = urlencode( $oPaciente->getEstadoCivil() );
+      $oRetorno->oDadosPaciente->sComplemento   = urlencode( (string) $oPaciente->getComplemento() );
+      $oRetorno->oDadosPaciente->sBairro        = urlencode( (string) $oPaciente->getBairro() );
+      $oRetorno->oDadosPaciente->sCep           = urlencode( (string) $oPaciente->getCep() );
+      $oRetorno->oDadosPaciente->sMunicipio     = urlencode( (string) $oPaciente->getMunicipio() );
+      $oRetorno->oDadosPaciente->sUF            = urlencode( (string) $oPaciente->getUF() );
+      $oRetorno->oDadosPaciente->sEstadoCivil   = urlencode( (string) $oPaciente->getEstadoCivil() );
 
     break;
 
@@ -280,17 +280,17 @@ try {
       }
 
       $aMovimentacoes = MovimentacaoFichaAtendimentoRepository::getMovimentacoesPorProntuario( $oParam->iProntuario );
-      $oRetorno->aMovimentacoes = array();
+      $oRetorno->aMovimentacoes = [];
 
       foreach ( $aMovimentacoes as $oMovimentacao ) {
 
         $oDadosMovimentacao = new stdClass();
-        $oDadosMovimentacao->sUsuario           = urlencode( $oMovimentacao->getUsuarioSistema()->getNome() );
-        $oDadosMovimentacao->sSetorAmbulatorial = urlencode( $oMovimentacao->getSetorAmbulatorial()->getDescricao() );
+        $oDadosMovimentacao->sUsuario           = urlencode( (string) $oMovimentacao->getUsuarioSistema()->getNome() );
+        $oDadosMovimentacao->sSetorAmbulatorial = urlencode( (string) $oMovimentacao->getSetorAmbulatorial()->getDescricao() );
         $oDadosMovimentacao->dtMovimentacao     = $oMovimentacao->getData()->convertTo(DBDate::DATA_PTBR);
-        $oDadosMovimentacao->sHoraMovimentacao  = urlencode( $oMovimentacao->getHora() );
-        $oDadosMovimentacao->sObservacao        = urlencode( $oMovimentacao->getObservacao() );
-        $oDadosMovimentacao->sSituacao          = urlencode( $oMovimentacao->getDescricaoSituacao() );
+        $oDadosMovimentacao->sHoraMovimentacao  = urlencode( (string) $oMovimentacao->getHora() );
+        $oDadosMovimentacao->sObservacao        = urlencode( (string) $oMovimentacao->getObservacao() );
+        $oDadosMovimentacao->sSituacao          = urlencode( (string) $oMovimentacao->getDescricaoSituacao() );
         $oDadosMovimentacao->iCodigo            = $oMovimentacao->getCodigo();
 
         $oRetorno->aMovimentacoes[] = $oDadosMovimentacao;
@@ -312,8 +312,8 @@ try {
 
       for ( $iContador = 0; $iContador < count($aCartaoesSus); $iContador++ ) {
 
-        $aCartaoesSus[$iContador]->sCartaoSus     = urlencode( $aCartaoesSus[$iContador]->sCartaoSus );
-        $aCartaoesSus[$iContador]->sTipoCartaoSus = urlencode( $aCartaoesSus[$iContador]->sTipoCartaoSus );
+        $aCartaoesSus[$iContador]->sCartaoSus     = urlencode( (string) $aCartaoesSus[$iContador]->sCartaoSus );
+        $aCartaoesSus[$iContador]->sTipoCartaoSus = urlencode( (string) $aCartaoesSus[$iContador]->sTipoCartaoSus );
       }
 
       $oRetorno->aCartoesSus = $aCartaoesSus;
@@ -354,7 +354,7 @@ try {
         throw new Exception( _M(MENSAGENS_FICHAATENDIMENTORPC . "erro_buscar_procedimentos", $oErro) );
       }
 
-      $oRetorno->aProcedimentos = array();
+      $oRetorno->aProcedimentos = [];
 
       $iLinhas  = pg_num_rows( $rsProcedimento );
       for ( $i = 0; $i < $iLinhas; $i++) {
@@ -396,19 +396,19 @@ try {
         $oProcedimento->sHora                = $oDados->sd29_c_hora;
         $oProcedimento->iProcedimento        = $oDados->sd29_i_procedimento;
         $oProcedimento->sProcedimento        = $oDados->sd63_c_procedimento;
-        $oProcedimento->sNomeProcedimento    = urlencode($oDados->sd63_c_nome);
-        $oProcedimento->sProfissional        = urlencode($oDados->z01_nome);
+        $oProcedimento->sNomeProcedimento    = urlencode((string) $oDados->sd63_c_nome);
+        $oProcedimento->sProfissional        = urlencode((string) $oDados->z01_nome);
         $oProcedimento->lPermiteManutencao   = $lMesmoUsuario;
         $oProcedimento->iCid                 = $oDados->sd70_i_codigo;
-        $oProcedimento->sCid                 = urlencode($oDados->sd70_c_cid);
-        $oProcedimento->sNomeCid             = urlencode($oDados->sd70_c_nome);
-        $oProcedimento->sTratamento          = urlencode($sTratamento);
-        $oProcedimento->sAchado          = urlencode($sAchado);
+        $oProcedimento->sCid                 = urlencode((string) $oDados->sd70_c_cid);
+        $oProcedimento->sNomeCid             = urlencode((string) $oDados->sd70_c_nome);
+        $oProcedimento->sTratamento          = urlencode((string) $sTratamento);
+        $oProcedimento->sAchado          = urlencode((string) $sAchado);
         $oProcedimento->lSigilosa            = $lSigilosa;
 
         $oProcedimento->iCodigoEspecialidade       = $oDados->rh70_sequencial;
         $oProcedimento->iEstruturalEspecialidade   = $oDados->rh70_estrutural;
-        $oProcedimento->sEspecialidade             = urlencode($oDados->rh70_descr);
+        $oProcedimento->sEspecialidade             = urlencode((string) $oDados->rh70_descr);
         $oProcedimento->iProfissionalEspecialidade = $oDados->sd29_i_profissional;
 
         $oRetorno->aProcedimentos[] = $oProcedimento;
@@ -450,10 +450,10 @@ try {
         throw new Exception( _M(MENSAGENS_FICHAATENDIMENTORPC . "prontuario_nao_informado") );
       }
 
-      $aTriagens = array();
+      $aTriagens = [];
 
       $oProntuario   = new Prontuario($oParam->iProntuario);
-      $aProfissional = array();
+      $aProfissional = [];
       foreach ( $oProntuario->getTriagens() as $oTriagem ) {
 
         $oTriagemFaa = new stdClass();
@@ -479,7 +479,7 @@ try {
           }
         }
 
-        $sProfissional = isset( $aProfissional[$oTriagem->getCboProfissional()] ) ? $aProfissional[ $oTriagem->getCboProfissional() ] : '';
+        $sProfissional = $aProfissional[ $oTriagem->getCboProfissional() ] ?? '';
         $oTriagemFaa->sProfissional = urlencode( $sProfissional );
         $oRetorno->aTriagem[]       = $oTriagemFaa;
 

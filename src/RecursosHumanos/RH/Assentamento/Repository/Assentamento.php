@@ -104,7 +104,7 @@ class Assentamento extends \BaseClassRepository
 
         $empregador->inscricaoEmpregador = \db_utils::fieldsMemory($rsCnpjEmpregador, 0)->z01_cgccpf;
         $empregador->idEvento = "S-2230";
-        $empregador->eventojson = json_encode(array('matricula' => $matriculaServidor));
+        $empregador->eventojson = json_encode(['matricula' => $matriculaServidor]);
 
         $serviceApi = $this->getServiceApiEsocialByRecurso(Recurso::CONSULTA_RECIBO);
         $serviceApi->setDados($empregador);
@@ -112,18 +112,18 @@ class Assentamento extends \BaseClassRepository
         $responseAfastamento = $serviceApi->request('GET');
 
         foreach ($responseAfastamento as $key => $afastamento) {
-            $evento = json_decode($afastamento->evento);
+            $evento = json_decode((string) $afastamento->evento);
 
             if (empty($evento->fimafastamento->dttermafast)) {
                 return false;
             }
 
             if (empty($codigoAssentamento)) {
-                if (strtotime($evento->fimafastamento->dttermafast) >= strtotime($dataAfastamento)) {
+                if (strtotime((string) $evento->fimafastamento->dttermafast) >= strtotime((string) $dataAfastamento)) {
                     return false;
                 }
             } else {
-                if (strtotime($evento->fimafastamento->dttermafast) >= strtotime($dataAfastamento)) {
+                if (strtotime((string) $evento->fimafastamento->dttermafast) >= strtotime((string) $dataAfastamento)) {
                     if ($afastamento->referencia != $codigoAssentamento) {
                         return false;
                     }

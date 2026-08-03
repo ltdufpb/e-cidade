@@ -41,7 +41,7 @@ include(modification("libs/db_libdocumento.php"));
 $oGet = db_utils::postMemory($_GET);
 try {
   $oLivroCda = new cdaLivro(db_getsession("DB_instit"), $oGet->livro);
-} catch (Exception $eErro) {
+} catch (Exception) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Livro {$oLivroCda->getNumeroLivro()} nao encontrado");
   exit;
 }

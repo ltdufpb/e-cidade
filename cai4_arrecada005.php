@@ -98,7 +98,7 @@ $sql_conta = "
 /* [Extensão] Filtro da Despesa */
 
 $result_conta = db_query($sql_conta);
-if(pg_numrows($result_conta) == 0){
+if(pg_num_rows($result_conta) == 0){
   echo "<script>parent.alert('Sem Contas Cadastradas.');</script>";
   exit;
 }
@@ -126,14 +126,14 @@ $sqlDataCredito = "
     order by 1 ;
 ";
 $rsDtCredito = db_query($sqlDataCredito);
-$aDtCredito = array();
+$aDtCredito = [];
 $dataCredito = date("Y-m-d",db_getsession("DB_datausu"));
 
-if (pg_numrows($rsDtCredito) > 0) {
+if (pg_num_rows($rsDtCredito) > 0) {
 
     $dataCredito = db_utils::fieldsMemory($rsDtCredito, 0)->data_cred;
 
-    for( $i = 0; $i < pg_numrows($rsDtCredito); $i++ ){
+    for( $i = 0; $i < pg_num_rows($rsDtCredito); $i++ ){
 
         $dados = db_utils::fieldsMemory($rsDtCredito, $i);
 
@@ -188,7 +188,7 @@ if ( !$lValidaDataCredito ) {
 
 $result = db_query($sSqlBuscaClassificacao);
 
-if(pg_numrows($result) == 0){
+if(pg_num_rows($result) == 0){
   echo "<script>parent.alert('Não Existe Classificacao para ser Autenticada.');js_baixacaixa();</script>";
   exit;
 }
@@ -206,7 +206,7 @@ if(pg_numrows($result) == 0){
       <td>
       <select  onChange="js_calculacodcla(this.value);" name="codcla">
       <?php
-		for($i=0;$i<pg_numrows($result);$i++){
+		for($i=0;$i<pg_num_rows($result);$i++){
 		  db_fieldsmemory($result,$i);
 		  echo '<option value="'.$codcla.'">'.$codcla.'-'.$k15_codbco.'-'.$k15_codage.'-'.$k00_conta.'-'.$k13_descr.'</option>';
 		}

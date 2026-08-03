@@ -61,7 +61,7 @@ $sSql .= " where arrematric.k00_numpre = {$numpre}                              
 
 $rsResult = db_query($sSql);
 
-if (pg_numrows($rsResult) == 0) {
+if (pg_num_rows($rsResult) == 0) {
   
   echo "Código de Arrecadação não cadastrado no arrematric ou Constribuição ou Matrícula não cadastrada em proprietario.";
   exit;
@@ -102,19 +102,19 @@ if (pg_numrows($rsResult) == 0) {
     </tr>
     <tr>
       <td>Propriet&aacute;rio/Promitente:</td>
-      <td><?php echo substr($z01_nome,0,35); ?></td>
+      <td><?php echo substr((string) $z01_nome,0,35); ?></td>
     </tr>
     <tr>
       <td>Endere&ccedil;o:</td>
-      <td><?php echo substr($z01_ender,0,35); ?></td>
+      <td><?php echo substr((string) $z01_ender,0,35); ?></td>
     </tr>
     <tr>
       <td>Munic&iacute;pio:</td>
-      <td><?php echo substr($z01_munic,0,35); ?></td>
+      <td><?php echo substr((string) $z01_munic,0,35); ?></td>
     </tr>
     <tr>
       <td>Propriet&aacute;rio:</td>
-      <td><?php echo substr($proprietario,0,35); ?></td>
+      <td><?php echo substr((string) $proprietario,0,35); ?></td>
     </tr>
     <tr>
       <td>Setor/Quadra/Lote:</td>
@@ -122,7 +122,7 @@ if (pg_numrows($rsResult) == 0) {
     </tr>
     <tr>
       <td>Logradouro:</td>
-      <td><?php echo substr($nomepri,0,35); ?></td>
+      <td><?php echo substr((string) $nomepri,0,35); ?></td>
     </tr>
     <tr>
       <td>N&uacute;mero:</td>
@@ -142,7 +142,7 @@ if (pg_numrows($rsResult) == 0) {
     </tr>
     <tr>
       <td>Rua/Avenida:</td>
-      <td><?php echo substr($j14_nome,0,35); ?></td>
+      <td><?php echo substr((string) $j14_nome,0,35); ?></td>
     </tr>
     <tr>
       <td>Data Lan&ccedil;amento:</td>

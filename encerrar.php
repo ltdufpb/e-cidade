@@ -29,7 +29,7 @@ include(modification("libs/db_stdlib.php"));
 include(modification("libs/db_conecta.php"));
 $sql = "delete from db_usuariosonline
                where uol_id = ".db_getsession("DB_id_usuario")."
-			   and uol_ip = '".(isset($_SERVER["HTTP_X_FORWARDED_FOR"])?$_SERVER["HTTP_X_FORWARDED_FOR"]:$HTTP_SERVER_VARS['REMOTE_ADDR'])."'
+			   and uol_ip = '".($_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER['REMOTE_ADDR'])."'
 			   and uol_hora = ".db_getsession("DB_uol_hora", false);
 db_query($sql) or die("Erro(8) deletando db_usuariosonline");
 

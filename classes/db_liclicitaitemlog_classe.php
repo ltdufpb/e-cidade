@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE liclicitaitemlog
 class cl_liclicitaitemlog { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l14_liclicita = 0; 
-   var $l14_xml = null; 
+   public $l14_liclicita = 0; 
+   public $l14_xml = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l14_liclicita = int4 = Código da Licitação 
                  l14_xml = text = XML com os itens 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitaitemlog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitaitemlog"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_liclicitaitemlog {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "logs dos itens da licitação ($this->l14_liclicita) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "logs dos itens da licitação já Cadastrado";
@@ -129,11 +129,11 @@ class cl_liclicitaitemlog {
      $resaco = $this->sql_record($this->sql_query_file($this->l14_liclicita));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13865,'$this->l14_liclicita','I')");
-       $resac = db_query("insert into db_acount values($acount,2425,13865,'','".AddSlashes(pg_result($resaco,0,'l14_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2425,13866,'','".AddSlashes(pg_result($resaco,0,'l14_xml'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2425,13865,'','".AddSlashes(pg_fetch_result($resaco,0,'l14_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2425,13866,'','".AddSlashes(pg_fetch_result($resaco,0,'l14_xml'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_liclicitaitemlog {
       $this->atualizacampos();
      $sql = " update liclicitaitemlog set ";
      $virgula = "";
-     if(trim($this->l14_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l14_liclicita"])){ 
+     if(trim((string) $this->l14_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l14_liclicita"])){ 
        $sql  .= $virgula." l14_liclicita = $this->l14_liclicita ";
        $virgula = ",";
-       if(trim($this->l14_liclicita) == null ){ 
+       if(trim((string) $this->l14_liclicita) == null ){ 
          $this->erro_sql = " Campo Código da Licitação nao Informado.";
          $this->erro_campo = "l14_liclicita";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_liclicitaitemlog {
          return false;
        }
      }
-     if(trim($this->l14_xml)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l14_xml"])){ 
+     if(trim((string) $this->l14_xml)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l14_xml"])){ 
        $sql  .= $virgula." l14_xml = '$this->l14_xml' ";
        $virgula = ",";
-       if(trim($this->l14_xml) == null ){ 
+       if(trim((string) $this->l14_xml) == null ){ 
          $this->erro_sql = " Campo XML com os itens nao Informado.";
          $this->erro_campo = "l14_xml";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_liclicitaitemlog {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13865,'$this->l14_liclicita','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l14_liclicita"]))
-           $resac = db_query("insert into db_acount values($acount,2425,13865,'".AddSlashes(pg_result($resaco,$conresaco,'l14_liclicita'))."','$this->l14_liclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2425,13865,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l14_liclicita'))."','$this->l14_liclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l14_xml"]))
-           $resac = db_query("insert into db_acount values($acount,2425,13866,'".AddSlashes(pg_result($resaco,$conresaco,'l14_xml'))."','$this->l14_xml',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2425,13866,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l14_xml'))."','$this->l14_xml',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_liclicitaitemlog {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13865,'$l14_liclicita','E')");
-         $resac = db_query("insert into db_acount values($acount,2425,13865,'','".AddSlashes(pg_result($resaco,$iresaco,'l14_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2425,13866,'','".AddSlashes(pg_result($resaco,$iresaco,'l14_xml'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2425,13865,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l14_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2425,13866,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l14_xml'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from liclicitaitemlog
@@ -291,7 +291,7 @@ class cl_liclicitaitemlog {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:liclicitaitemlog";
@@ -306,7 +306,7 @@ class cl_liclicitaitemlog {
    function sql_query ( $l14_liclicita=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -334,7 +334,7 @@ class cl_liclicitaitemlog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -347,7 +347,7 @@ class cl_liclicitaitemlog {
    function sql_query_file ( $l14_liclicita=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -368,7 +368,7 @@ class cl_liclicitaitemlog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

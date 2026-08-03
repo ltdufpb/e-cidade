@@ -68,7 +68,7 @@ class ProcessamentoAssentamentoRepository
         $parametrosPontoRepository = ParametrosPontoRepository::create();
         $assentamentoNaoPerdeDSR = $parametrosPontoRepository->getConfiguracoesAssentamentosNaoPerdeDSR($iInstituicao);
 
-        $tiposAssentamentosNaoDescontaDSR = array();
+        $tiposAssentamentosNaoDescontaDSR = [];
         if (!empty($assentamentoNaoPerdeDSR)) {
             if (is_array($assentamentoNaoPerdeDSR->getCodigosTiposAssentamento())
                 && count($assentamentoNaoPerdeDSR->getCodigosTiposAssentamento()) > 0) {
@@ -79,21 +79,21 @@ class ProcessamentoAssentamentoRepository
         $i = 0;
 
         foreach ($aServidores as $oServidor) {
-            $dadosPonto = array(
-                'nTotalHorasExt50diurnas' => array('0:00'),
-                'nTotalHorasExt75diurnas' => array('0:00'),
-                'nTotalHorasExt100diurnas' => array('0:00'),
-                'nTotalHorasExt50noturnas' => array('0:00'),
-                'nTotalHorasExt75noturnas' => array('0:00'),
-                'nTotalHorasExt100noturnas' => array('0:00'),
-                'nTotalHorasAdicional' => array('0:00'),
-                'nTotalHorasFaltas' => array('0:00'),
-                'nTotalHorasAtrasos' => array('0:00'),
-            );
+            $dadosPonto = [
+                'nTotalHorasExt50diurnas' => ['0:00'],
+                'nTotalHorasExt75diurnas' => ['0:00'],
+                'nTotalHorasExt100diurnas' => ['0:00'],
+                'nTotalHorasExt50noturnas' => ['0:00'],
+                'nTotalHorasExt75noturnas' => ['0:00'],
+                'nTotalHorasExt100noturnas' => ['0:00'],
+                'nTotalHorasAdicional' => ['0:00'],
+                'nTotalHorasFaltas' => ['0:00'],
+                'nTotalHorasAtrasos' => ['0:00'],
+            ];
 
-            $dsrPerdido = array();
-            $dsrNoMes = array();
-            $jornadasDSR = JornadaRepository::getJornadasPorPeriodo($oServidor, $oPeriodo, array('D'));
+            $dsrPerdido = [];
+            $dsrNoMes = [];
+            $jornadasDSR = JornadaRepository::getJornadasPorPeriodo($oServidor, $oPeriodo, ['D']);
             krsort($jornadasDSR);
 
             if (!empty($jornadasDSR)) {
@@ -155,7 +155,7 @@ class ProcessamentoAssentamentoRepository
                                 $oServidor,
                                 'S',
                                 $oDiaTrabalho->getData(),
-                                array(Assentamento::NATUREZA_JUSTIFICATIVA, Assentamento::NATUREZA_ABONO_FALTA)
+                                [Assentamento::NATUREZA_JUSTIFICATIVA, Assentamento::NATUREZA_ABONO_FALTA]
                             );
 
                             if (!empty($assentamentosNaData) && is_array($assentamentosNaData)) {

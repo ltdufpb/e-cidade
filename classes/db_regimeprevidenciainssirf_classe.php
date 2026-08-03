@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE regimeprevidenciainssirf
 class cl_regimeprevidenciainssirf {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $rh129_sequencial = 0;
-   var $rh129_regimeprevidencia = 0;
-   var $rh129_codigo = 0;
-   var $rh129_instit = 0;
+   public $rh129_sequencial = 0;
+   public $rh129_regimeprevidencia = 0;
+   public $rh129_codigo = 0;
+   public $rh129_instit = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  rh129_sequencial = int4 = Código 
                  rh129_regimeprevidencia = int4 = Código Regime Previdência 
                  rh129_codigo = int8 = Código INSSIRF 
                  rh129_instit = int4 = Código Instituição 
                  ";
    //funcao construtor da classe
-   function cl_regimeprevidenciainssirf() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regimeprevidenciainssirf");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -119,10 +119,10 @@ class cl_regimeprevidenciainssirf {
          $this->erro_status = "0";
          return false;
        }
-       $this->rh129_sequencial = pg_result($result,0,0);
+       $this->rh129_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from regimeprevidenciainssirf_rh129_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh129_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh129_sequencial)){
          $this->erro_sql = " Campo rh129_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_regimeprevidenciainssirf {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Regime Previdência INSSIRF ($this->rh129_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Regime Previdência INSSIRF já Cadastrado";
@@ -185,13 +185,13 @@ class cl_regimeprevidenciainssirf {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20373,'$this->rh129_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3660,20373,'','".AddSlashes(pg_result($resaco,0,'rh129_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3660,20374,'','".AddSlashes(pg_result($resaco,0,'rh129_regimeprevidencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3660,20375,'','".AddSlashes(pg_result($resaco,0,'rh129_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3660,20376,'','".AddSlashes(pg_result($resaco,0,'rh129_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3660,20373,'','".AddSlashes(pg_fetch_result($resaco,0,'rh129_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3660,20374,'','".AddSlashes(pg_fetch_result($resaco,0,'rh129_regimeprevidencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3660,20375,'','".AddSlashes(pg_fetch_result($resaco,0,'rh129_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3660,20376,'','".AddSlashes(pg_fetch_result($resaco,0,'rh129_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -201,10 +201,10 @@ class cl_regimeprevidenciainssirf {
       $this->atualizacampos();
      $sql = " update regimeprevidenciainssirf set ";
      $virgula = "";
-     if(trim($this->rh129_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh129_sequencial"])){
+     if(trim((string) $this->rh129_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh129_sequencial"])){
        $sql  .= $virgula." rh129_sequencial = $this->rh129_sequencial ";
        $virgula = ",";
-       if(trim($this->rh129_sequencial) == null ){
+       if(trim((string) $this->rh129_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "rh129_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_regimeprevidenciainssirf {
          return false;
        }
      }
-     if(trim($this->rh129_regimeprevidencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh129_regimeprevidencia"])){
+     if(trim((string) $this->rh129_regimeprevidencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh129_regimeprevidencia"])){
        $sql  .= $virgula." rh129_regimeprevidencia = $this->rh129_regimeprevidencia ";
        $virgula = ",";
-       if(trim($this->rh129_regimeprevidencia) == null ){
+       if(trim((string) $this->rh129_regimeprevidencia) == null ){
          $this->erro_sql = " Campo Código Regime Previdência não informado.";
          $this->erro_campo = "rh129_regimeprevidencia";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_regimeprevidenciainssirf {
          return false;
        }
      }
-     if(trim($this->rh129_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh129_codigo"])){
+     if(trim((string) $this->rh129_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh129_codigo"])){
        $sql  .= $virgula." rh129_codigo = $this->rh129_codigo ";
        $virgula = ",";
-       if(trim($this->rh129_codigo) == null ){
+       if(trim((string) $this->rh129_codigo) == null ){
          $this->erro_sql = " Campo Código INSSIRF não informado.";
          $this->erro_campo = "rh129_codigo";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_regimeprevidenciainssirf {
          return false;
        }
      }
-     if(trim($this->rh129_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh129_instit"])){
+     if(trim((string) $this->rh129_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh129_instit"])){
        $sql  .= $virgula." rh129_instit = $this->rh129_instit ";
        $virgula = ",";
-       if(trim($this->rh129_instit) == null ){
+       if(trim((string) $this->rh129_instit) == null ){
          $this->erro_sql = " Campo Código Instituição não informado.";
          $this->erro_campo = "rh129_instit";
          $this->erro_banco = "";
@@ -267,17 +267,17 @@ class cl_regimeprevidenciainssirf {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20373,'$this->rh129_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh129_sequencial"]) || $this->rh129_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3660,20373,'".AddSlashes(pg_result($resaco,$conresaco,'rh129_sequencial'))."','$this->rh129_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3660,20373,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh129_sequencial'))."','$this->rh129_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh129_regimeprevidencia"]) || $this->rh129_regimeprevidencia != "")
-             $resac = db_query("insert into db_acount values($acount,3660,20374,'".AddSlashes(pg_result($resaco,$conresaco,'rh129_regimeprevidencia'))."','$this->rh129_regimeprevidencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3660,20374,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh129_regimeprevidencia'))."','$this->rh129_regimeprevidencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh129_codigo"]) || $this->rh129_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3660,20375,'".AddSlashes(pg_result($resaco,$conresaco,'rh129_codigo'))."','$this->rh129_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3660,20375,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh129_codigo'))."','$this->rh129_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh129_instit"]) || $this->rh129_instit != "")
-             $resac = db_query("insert into db_acount values($acount,3660,20376,'".AddSlashes(pg_result($resaco,$conresaco,'rh129_instit'))."','$this->rh129_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3660,20376,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh129_instit'))."','$this->rh129_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -331,13 +331,13 @@ class cl_regimeprevidenciainssirf {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20373,'$rh129_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3660,20373,'','".AddSlashes(pg_result($resaco,$iresaco,'rh129_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3660,20374,'','".AddSlashes(pg_result($resaco,$iresaco,'rh129_regimeprevidencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3660,20375,'','".AddSlashes(pg_result($resaco,$iresaco,'rh129_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3660,20376,'','".AddSlashes(pg_result($resaco,$iresaco,'rh129_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3660,20373,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh129_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3660,20374,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh129_regimeprevidencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3660,20375,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh129_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3660,20376,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh129_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -398,7 +398,7 @@ class cl_regimeprevidenciainssirf {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:regimeprevidenciainssirf";
@@ -438,7 +438,7 @@ class cl_regimeprevidenciainssirf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_regimeprevidenciainssirf {
    function sql_query_file ( $rh129_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,7 +472,7 @@ class cl_regimeprevidenciainssirf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

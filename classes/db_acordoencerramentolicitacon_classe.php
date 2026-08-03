@@ -3,36 +3,36 @@
 //CLASSE DA ENTIDADE acordoencerramentolicitacon
 class cl_acordoencerramentolicitacon {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ac58_sequencial = 0;
-   var $ac58_acordo = 0;
-   var $ac58_data_dia = null;
-   var $ac58_data_mes = null;
-   var $ac58_data_ano = null;
-   var $ac58_data = null;
+   public $ac58_sequencial = 0;
+   public $ac58_acordo = 0;
+   public $ac58_data_dia = null;
+   public $ac58_data_mes = null;
+   public $ac58_data_ano = null;
+   public $ac58_data = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ac58_sequencial = int4 = Código
                  ac58_acordo = int4 = Acordo
                  ac58_data = date = Data
                  ";
    //funcao construtor da classe
-   function cl_acordoencerramentolicitacon() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordoencerramentolicitacon");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -46,18 +46,18 @@ class cl_acordoencerramentolicitacon {
    // funcao para atualizar campos
    function atualizacampos($exclusao=false) {
      if($exclusao==false){
-       $this->ac58_sequencial = ($this->ac58_sequencial == ""?(isset($GLOBALS["HTTP_POST_VARS"]["ac58_sequencial"]) ? $GLOBALS["HTTP_POST_VARS"]["ac58_sequencial"] : null):$this->ac58_sequencial);
-       $this->ac58_acordo = ($this->ac58_acordo == ""?(isset($GLOBALS["HTTP_POST_VARS"]["ac58_acordo"]) ? $GLOBALS["HTTP_POST_VARS"]["ac58_acordo"] : null):$this->ac58_acordo);
+       $this->ac58_sequencial = ($this->ac58_sequencial == ""?($GLOBALS["HTTP_POST_VARS"]["ac58_sequencial"] ?? null):$this->ac58_sequencial);
+       $this->ac58_acordo = ($this->ac58_acordo == ""?($GLOBALS["HTTP_POST_VARS"]["ac58_acordo"] ?? null):$this->ac58_acordo);
        if($this->ac58_data == ""){
-         $this->ac58_data_dia = ($this->ac58_data_dia == ""?(isset($GLOBALS["HTTP_POST_VARS"]["ac58_data_dia"]) ? $GLOBALS["HTTP_POST_VARS"]["ac58_data_dia"] : null):$this->ac58_data_dia);
-         $this->ac58_data_mes = ($this->ac58_data_mes == ""?(isset($GLOBALS["HTTP_POST_VARS"]["ac58_data_mes"]) ? $GLOBALS["HTTP_POST_VARS"]["ac58_data_mes"] : null):$this->ac58_data_mes);
-         $this->ac58_data_ano = ($this->ac58_data_ano == ""?(isset($GLOBALS["HTTP_POST_VARS"]["ac58_data_ano"]) ? $GLOBALS["HTTP_POST_VARS"]["ac58_data_ano"] : null):$this->ac58_data_ano);
+         $this->ac58_data_dia = ($this->ac58_data_dia == ""?($GLOBALS["HTTP_POST_VARS"]["ac58_data_dia"] ?? null):$this->ac58_data_dia);
+         $this->ac58_data_mes = ($this->ac58_data_mes == ""?($GLOBALS["HTTP_POST_VARS"]["ac58_data_mes"] ?? null):$this->ac58_data_mes);
+         $this->ac58_data_ano = ($this->ac58_data_ano == ""?($GLOBALS["HTTP_POST_VARS"]["ac58_data_ano"] ?? null):$this->ac58_data_ano);
          if($this->ac58_data_dia != ""){
             $this->ac58_data = $this->ac58_data_ano."-".$this->ac58_data_mes."-".$this->ac58_data_dia;
          }
        }
      }else{
-       $this->ac58_sequencial = ($this->ac58_sequencial == ""?(isset($GLOBALS["HTTP_POST_VARS"]["ac58_sequencial"]) ? $GLOBALS["HTTP_POST_VARS"]["ac58_sequencial"] : null):$this->ac58_sequencial);
+       $this->ac58_sequencial = ($this->ac58_sequencial == ""?($GLOBALS["HTTP_POST_VARS"]["ac58_sequencial"] ?? null):$this->ac58_sequencial);
      }
    }
    // funcao para Inclusão
@@ -91,10 +91,10 @@ class cl_acordoencerramentolicitacon {
          $this->erro_status = "0";
          return false;
        }
-       $this->ac58_sequencial = pg_result($result,0,0);
+       $this->ac58_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from acordoencerramentolicitacon_ac58_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ac58_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ac58_sequencial)){
          $this->erro_sql = " Campo ac58_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -126,7 +126,7 @@ class cl_acordoencerramentolicitacon {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Encerramento de Contratos ($this->ac58_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Encerramento de Contratos já Cadastrado";
@@ -155,12 +155,12 @@ class cl_acordoencerramentolicitacon {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21845,'$this->ac58_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3933,21845,'','".AddSlashes(pg_result($resaco,0,'ac58_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3933,21846,'','".AddSlashes(pg_result($resaco,0,'ac58_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3933,21847,'','".AddSlashes(pg_result($resaco,0,'ac58_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3933,21845,'','".AddSlashes(pg_fetch_result($resaco,0,'ac58_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3933,21846,'','".AddSlashes(pg_fetch_result($resaco,0,'ac58_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3933,21847,'','".AddSlashes(pg_fetch_result($resaco,0,'ac58_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -170,10 +170,10 @@ class cl_acordoencerramentolicitacon {
       $this->atualizacampos();
      $sql = " update acordoencerramentolicitacon set ";
      $virgula = "";
-     if(trim($this->ac58_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac58_sequencial"])){
+     if(trim((string) $this->ac58_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac58_sequencial"])){
        $sql  .= $virgula." ac58_sequencial = $this->ac58_sequencial ";
        $virgula = ",";
-       if(trim($this->ac58_sequencial) == null ){
+       if(trim((string) $this->ac58_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ac58_sequencial";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_acordoencerramentolicitacon {
          return false;
        }
      }
-     if(trim($this->ac58_acordo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac58_acordo"])){
+     if(trim((string) $this->ac58_acordo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac58_acordo"])){
        $sql  .= $virgula." ac58_acordo = $this->ac58_acordo ";
        $virgula = ",";
-       if(trim($this->ac58_acordo) == null ){
+       if(trim((string) $this->ac58_acordo) == null ){
          $this->erro_sql = " Campo Acordo não informado.";
          $this->erro_campo = "ac58_acordo";
          $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_acordoencerramentolicitacon {
          return false;
        }
      }
-     if(trim($this->ac58_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac58_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac58_data_dia"] !="") ){
+     if(trim((string) $this->ac58_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac58_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac58_data_dia"] !="") ){
        $sql  .= $virgula." ac58_data = '$this->ac58_data' ";
        $virgula = ",";
-       if(trim($this->ac58_data) == null ){
+       if(trim((string) $this->ac58_data) == null ){
          $this->erro_sql = " Campo Data não informado.";
          $this->erro_campo = "ac58_data_dia";
          $this->erro_banco = "";
@@ -212,7 +212,7 @@ class cl_acordoencerramentolicitacon {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ac58_data_dia"])){
          $sql  .= $virgula." ac58_data = null ";
          $virgula = ",";
-         if(trim($this->ac58_data) == null ){
+         if(trim((string) $this->ac58_data) == null ){
            $this->erro_sql = " Campo Data não informado.";
            $this->erro_campo = "ac58_data_dia";
            $this->erro_banco = "";
@@ -237,15 +237,15 @@ class cl_acordoencerramentolicitacon {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21845,'$this->ac58_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac58_sequencial"]) || $this->ac58_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3933,21845,'".AddSlashes(pg_result($resaco,$conresaco,'ac58_sequencial'))."','$this->ac58_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3933,21845,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac58_sequencial'))."','$this->ac58_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac58_acordo"]) || $this->ac58_acordo != "")
-             $resac = db_query("insert into db_acount values($acount,3933,21846,'".AddSlashes(pg_result($resaco,$conresaco,'ac58_acordo'))."','$this->ac58_acordo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3933,21846,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac58_acordo'))."','$this->ac58_acordo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac58_data"]) || $this->ac58_data != "")
-             $resac = db_query("insert into db_acount values($acount,3933,21847,'".AddSlashes(pg_result($resaco,$conresaco,'ac58_data'))."','$this->ac58_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3933,21847,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac58_data'))."','$this->ac58_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -299,12 +299,12 @@ class cl_acordoencerramentolicitacon {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21845,'$ac58_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3933,21845,'','".AddSlashes(pg_result($resaco,$iresaco,'ac58_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3933,21846,'','".AddSlashes(pg_result($resaco,$iresaco,'ac58_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3933,21847,'','".AddSlashes(pg_result($resaco,$iresaco,'ac58_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3933,21845,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac58_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3933,21846,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac58_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3933,21847,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac58_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

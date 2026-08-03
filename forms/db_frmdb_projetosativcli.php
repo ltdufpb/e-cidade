@@ -158,7 +158,7 @@ db_textarea('at64_descricao',5,60,$Iat64_descricao,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at64_sequencial"=>@$at64_sequencial,"at64_codproj"=>@$at64_codproj);
+	 $chavepri= ["at64_sequencial"=>@$at64_sequencial,"at64_codproj"=>@$at64_codproj];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_projetosativcli->sql_query_file(null,"*",null," at64_codproj = $at64_codproj");
 	 $cliframe_alterar_excluir->campos  ="at64_sequencial,at64_codproj,at64_codativ,at64_dtini,at64_dtfim,at64_situacao";

@@ -107,7 +107,7 @@ class RetencaoRepository
      * @param  Retencao|null $retencao
      * @throws BusinessException
      */
-    public function delete(Retencao $retencao = null)
+    public function delete(?Retencao $retencao = null)
     {
         $id = $retencao instanceof Retencao ? $retencao->getSequencial() : null;
 
@@ -126,7 +126,7 @@ class RetencaoRepository
      * @return bool| Retencao
      * @throws BusinessException
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessoretencao;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

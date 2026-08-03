@@ -16,7 +16,7 @@ class M11471FeedbackLoa extends PostgresMigration
 
     private function adicionarNullableColunas()
     {
-        $this->table('teto_orcamentario', array('schema' => 'contabilidade'))
+        $this->table('teto_orcamentario', ['schema' => 'contabilidade'])
             ->removeColumn('c40_funcao')
             ->removeColumn('c40_subfuncao')
             ->removeColumn('c40_programa')
@@ -32,10 +32,10 @@ class M11471FeedbackLoa extends PostgresMigration
 
     private function removerNullableColunas()
     {
-        $this->table('teto_orcamentario', array('schema' => 'contabilidade'))
-            ->addColumn('c40_funcao', "integer", array("null" => true))
-            ->addColumn('c40_subfuncao', "integer", array('null' => true))
-            ->addColumn('c40_programa', "integer", array('null' => true))
+        $this->table('teto_orcamentario', ['schema' => 'contabilidade'])
+            ->addColumn('c40_funcao', "integer", ["null" => true])
+            ->addColumn('c40_subfuncao', "integer", ['null' => true])
+            ->addColumn('c40_programa', "integer", ['null' => true])
             ->save();
 
         $sql = "

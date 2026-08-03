@@ -30,9 +30,10 @@
  */
 final class BalancoPatrimonialDcasp extends RelatoriosLegaisBase {
 
-  const CODIGO_RELATORIO = 131;
+  const int CODIGO_RELATORIO = 131;
 
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $sWhereBalanceteVerificacao = " c61_instit in ({$this->getInstituicoes()}) ";
 
@@ -70,8 +71,8 @@ final class BalancoPatrimonialDcasp extends RelatoriosLegaisBase {
     $oVariacoesPatrimoniais->setInstituicoes($this->getInstituicoes());
     $aDadosVariacoesPatrimoniais = $oVariacoesPatrimoniais->getDados();
 
-    $aContasVerificarFinanceiro = array();
-    $aContasVerificarPatrimonio = array();
+    $aContasVerificarFinanceiro = [];
+    $aContasVerificarPatrimonio = [];
 
     /**
      * Buscamos todas as contas quem tenham superavit financeiro e patrimonial
@@ -113,12 +114,12 @@ final class BalancoPatrimonialDcasp extends RelatoriosLegaisBase {
       $sFormulas  = "(substr(#estrutural, 0, 1) == 1 && #sinal_final == 'C') || (substr(#estrutural, 0, 1) == 2 && #sinal_final == 'D') ? #saldo_final *= -1 : #saldo_final";
       $sFormulaCalculo  = $sFormulas;
       $oColuna          = new stdClass();
-      if (in_array($iLinha, array(72, 74))) {
+      if (in_array($iLinha, [72, 74])) {
 
         $oColuna->dados  = $aContasVerificarFinanceiro;
         $sFormulaCalculo = 'in_array(#estrutural, $oDados->coluna->dados) ? #saldo_final : 0';
       }
-      if (in_array($iLinha, array(73, 75))) {
+      if (in_array($iLinha, [73, 75])) {
 
         $oColuna->dados  = $aContasVerificarPatrimonio;
         $sFormulaCalculo = 'in_array(#estrutural, $oDados->coluna->dados) ? #saldo_final : 0';
@@ -128,7 +129,7 @@ final class BalancoPatrimonialDcasp extends RelatoriosLegaisBase {
       $oColuna->formula = $sFormulaCalculo;
       RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteVerificacaoAnterior,
                                                   $oLinha,
-                                                  array($oColuna),
+                                                  [$oColuna],
                                                   RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO
                                                 );
 
@@ -136,7 +137,7 @@ final class BalancoPatrimonialDcasp extends RelatoriosLegaisBase {
       $oColuna->formula = $sFormulaCalculo;
       RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteVerificacaoAtual,
                                                  $oLinha,
-                                                  array($oColuna),
+                                                  [$oColuna],
                                                   RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO
                                                 );
 

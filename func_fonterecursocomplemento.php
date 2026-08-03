@@ -39,7 +39,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clconplanoexe = new cl_conplanoexe;
 $clorctiporec = new cl_orctiporec;
@@ -112,7 +112,7 @@ $campos = implode(', ', $campos);
                         </td>
                         <td>
                             <?php
-                            $identificadorUso = array("" => 'Selecione');
+                            $identificadorUso = ["" => 'Selecione'];
                             foreach (IdentificadorUso::getAll() as $indice => $valor) {
                                 $identificadorUso[$indice] = $valor;
                             }
@@ -133,7 +133,7 @@ $campos = implode(', ', $campos);
                         </td>
                         <td>
                             <?php
-                            $tipoDetalhamento = array("" => 'Selecione');
+                            $tipoDetalhamento = ["" => 'Selecione'];
                             foreach (TipoDetalhamento::getAll() as $indice => $valor) {
                                 $tipoDetalhamento[$indice] = $valor;
                             }
@@ -156,7 +156,7 @@ $campos = implode(', ', $campos);
                         <td>
 
                             <?php
-                            $grupoFonteRecurso = array("" => 'Selecione');
+                            $grupoFonteRecurso = ["" => 'Selecione'];
                             foreach (Grupo::getAll() as $indice => $valor) {
                                 $grupoFonteRecurso[$indice] = $valor;
                             }
@@ -179,7 +179,7 @@ $campos = implode(', ', $campos);
                     </td>
                     <td>
                         <?php
-                        $especificacaoFonte = array("" => 'Selecione');
+                        $especificacaoFonte = ["" => 'Selecione'];
                         foreach (Especificacao::getAll() as $indice => $valor) {
                             $especificacaoFonte[$indice] = $valor;
                         }
@@ -201,7 +201,7 @@ $campos = implode(', ', $campos);
                     </td>
                     <td>
                         <?php
-                        $complementoRecurso = array("" => 'Selecione');
+                        $complementoRecurso = ["" => 'Selecione'];
                         foreach (\ECidade\Financeiro\Orcamento\Recurso\Complemento::getAll() as $indice => $valor) {
                             $complementoRecurso[$indice] = $valor;
                         }

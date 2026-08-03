@@ -18,26 +18,15 @@ use \endereco;
 
 class ContribuinteRepository extends DataBaseRepository
 {
-    private $arrematricRepository;
-    private $arreinscrRepository;
-    private $arrenumcgmRepository;
-    private $iptubaseRepository;
-    private $issbaseRepository;
-
     public function __construct(
         Database $database, 
-        ArrematricRepository $arrematricRepository, 
-        ArreinscrRepository $arreinscrRepository,
-        ArrenumcgmRepository $arrenumcgmRepository,
-        IptubaseRepository $iptubaseRepository,
-        IssbaseRepository $issbaseRepository
+        private readonly ArrematricRepository $arrematricRepository, 
+        private readonly ArreinscrRepository $arreinscrRepository,
+        private readonly ArrenumcgmRepository $arrenumcgmRepository,
+        private readonly IptubaseRepository $iptubaseRepository,
+        private readonly IssbaseRepository $issbaseRepository
     ) {
         $this->database = $database;
-        $this->arrematricRepository = $arrematricRepository;
-        $this->arreinscrRepository = $arreinscrRepository;
-        $this->arrenumcgmRepository = $arrenumcgmRepository;
-        $this->iptubaseRepository = $iptubaseRepository;
-        $this->issbaseRepository = $issbaseRepository;
     }
 
     public function findByDebito(Debito $debito)

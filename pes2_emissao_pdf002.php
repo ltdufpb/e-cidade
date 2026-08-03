@@ -38,7 +38,7 @@ define("COR_PREENCHIMENTO", 235);
 /**
  * Configuração do cabeçalho
  */
-$sNomeFolha = (count($oParametros->aNomeTipoFolha) == 1) ? utf8_decode(urldecode($oParametros->aNomeTipoFolha[0])) : 'Vários';
+$sNomeFolha = (count($oParametros->aNomeTipoFolha) == 1) ? mb_convert_encoding(urldecode((string) $oParametros->aNomeTipoFolha[0]), 'ISO-8859-1') : 'Vários';
 $head2      = "$oDadosRubricasRelatorio->rh45_descr ({$oParametros->iMesCompetencia} / {$oParametros->iAnoCompetencia})";
 $head4      = "Tipo de Folha: " . $sNomeFolha;
 $head5      = "Tipo de Resumo: {$sLabelTipoRelatorio}";
@@ -318,7 +318,7 @@ foreach ( $aServidores as $sGrupo => $aDadosServidores ) {
 				}
 
 				if ( isset($oCampo->rh120_limite)) {
-					$sValorCampo = substr($sValorCampo, 0, $oCampo->rh120_limite);
+					$sValorCampo = substr((string) $sValorCampo, 0, $oCampo->rh120_limite);
 				} else {
 					$sValorCampo = $sValorCampo;
 				}

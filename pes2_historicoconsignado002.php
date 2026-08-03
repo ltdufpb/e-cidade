@@ -10,26 +10,26 @@ $oCompetencia  = DBPessoal::getCompetenciaFolha();
 /**
  * @var ArquivoConsignadoManual
  */
-$aListaConsignados = array($oConsignado);
+$aListaConsignados = [$oConsignado];
 while ($oConsignado->getConsignadoOrigem() != '') {
 
   try {
 
     $oConsignado = $oConsignado->getConsignadoOrigem();
     array_unshift($aListaConsignados, $oConsignado);
-  } catch (\Exception $e) {
+  } catch (\Exception) {
     break;
   }
 }
-$aSituacao = array(
+$aSituacao = [
   "N" => 'Contratado',
   "P" => "Portabilidade",
   "R" => "Refinanciado",
   "C" => "Cancelado",
   "I" => "Inativo",
-);
+];
 
-$aMotivos = array(
+$aMotivos = [
   '' => 'DESCONTADO EM FOLHA',
   1 => 'NÃO DESCONTADO - FALECIMENTO',
   2 => 'SERVIDOR NÃO IDENTIFICADO',
@@ -40,13 +40,13 @@ $aMotivos = array(
   7 => "SERVIDOR AFASTADO EM LICENÇA SAÚDE",
   8 => "EXCLUÍDO",
   9 => "NÃO DESCONTADO - SALDO INSUFICIENTE"
-);
-$aListaParcelas = array();
+];
+$aListaParcelas = [];
 foreach ($aListaConsignados as $oConsignado) {
 
   $oDadosConsignado              = new \stdClass();
   $oDadosConsignado->banco       = $oConsignado->getBanco()->getCodigo()."- ".$oConsignado->getBanco()->getNome();
-  $oDadosConsignado->parcelas    = array();
+  $oDadosConsignado->parcelas    = [];
   $oDadosConsignado->situacao    = $aSituacao[$oConsignado->getSituacao()];
   $oDadosConsignado->rubrica     = "{$oConsignado->getRubrica()->getCodigo()} - {$oConsignado->getRubrica()->getDescricao()}";
   $oDadosConsignado->competencia = $oConsignado->getCompetencia()->getCompetencia();

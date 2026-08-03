@@ -232,7 +232,7 @@ switch ($oParam->sExec) {
 
             if(!$rsDAOProcdiver){
 
-                $oMensagem = (object)array('sErro'=>pg_last_error());
+                $oMensagem = (object)['sErro'=>pg_last_error()];
                 throw new DBException(_M('tributario.diversos.dvr3_importacaoiptu.erro_buscar_dados_procedencia',$oMensagem));
             }
 
@@ -244,7 +244,7 @@ switch ($oParam->sExec) {
 
             if(!$rsDAOArrecad){
 
-                $oMensagem = (object)array('sErro'=>pg_last_error());
+                $oMensagem = (object)['sErro'=>pg_last_error()];
                 throw new DBException(_M('tributario.diversos.dvr3_importacaoiptu.erro_buscar_dados_receitas',$oMensagem));
             }
 
@@ -286,7 +286,7 @@ switch ($oParam->sExec) {
 
             if(!$rsDAODiverimporta){
 
-                $oMensagem = (object)array('sErro'=>pg_last_error());
+                $oMensagem = (object)['sErro'=>pg_last_error()];
                 throw new DBException(_M('tributario.diversos.dvr3_importacaoiptu.erro_buscar_importacoes',$oMensagem));
             }
 

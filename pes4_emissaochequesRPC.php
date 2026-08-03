@@ -223,7 +223,7 @@ if ( isset($oPost->method) && $oPost->method == "gerarCheques")  {
   if ( $iLinhasReg > 0 ) {
   	
   	$clrhemissaocheque->r15_idusuario = db_getsession('DB_id_usuario');
-  	$clrhemissaocheque->r15_descricao = utf8_decode($oPost->descrGera);
+  	$clrhemissaocheque->r15_descricao = mb_convert_encoding($oPost->descrGera, 'ISO-8859-1');
   	$clrhemissaocheque->r15_dtgeracao = date('Y-m-d',db_getsession('DB_datausu')); 
   	$clrhemissaocheque->r15_hora      = db_hora();
   	$clrhemissaocheque->incluir(null);
@@ -270,14 +270,14 @@ if ( isset($oPost->method) && $oPost->method == "gerarCheques")  {
   
   if ( $lSqlErro ) {
   	
-    $aRetorno = array( "msg" =>urlencode($sMsgErro),
-                       "erro"=>true);
+    $aRetorno = [ "msg" =>urlencode($sMsgErro),
+                       "erro"=>true];
   } else {
   	
-    $aRetorno = array( "matriculas"=>$oPost->fregis,
+    $aRetorno = [ "matriculas"=>$oPost->fregis,
                        "codgeracao"=>$clrhemissaocheque->r15_sequencial,
                        "msg"       =>urlencode($sMsgErro),
-                       "erro"      =>false);
+                       "erro"      =>false];
   }
 
   db_fim_transacao($lSqlErro);
@@ -375,7 +375,7 @@ if ( isset($oPost->method) && $oPost->method == "gerarCheques")  {
     $clrhemissaocheque->r15_sequencial = $oPost->iCodGeracao;
     $clrhemissaocheque->r15_dtgeracao  = date('Y-m-d',db_getsession('DB_datausu'));
     $clrhemissaocheque->r15_hora       = db_hora();
-    $clrhemissaocheque->r15_descricao  = utf8_decode($oPost->descrGera);
+    $clrhemissaocheque->r15_descricao  = mb_convert_encoding($oPost->descrGera, 'ISO-8859-1');
     $clrhemissaocheque->r15_idusuario  = db_getsession('DB_id_usuario');
     $clrhemissaocheque->alterar($oPost->iCodGeracao);
       
@@ -433,12 +433,12 @@ if ( isset($oPost->method) && $oPost->method == "gerarCheques")  {
   db_fim_transacao($lSqlErro);
   
   if ( $lSqlErro ) {
-    $aRetorno = array( "msg" =>urlencode($sMsgErro),
-                       "erro"=>true);
+    $aRetorno = [ "msg" =>urlencode($sMsgErro),
+                       "erro"=>true];
   } else {
-    $aRetorno = array( "codgeracao"=>$oPost->iCodGeracao,
+    $aRetorno = [ "codgeracao"=>$oPost->iCodGeracao,
                        "msg"       =>urlencode($sMsgErro),
-                       "erro"      =>false);
+                       "erro"      =>false];
   }
 
   
@@ -557,11 +557,11 @@ if ( isset($oPost->method) && $oPost->method == "gerarCheques")  {
 	}
 	
   if ( $lErro ) {
-    $aRetorno = array( "msg" =>urlencode($sMsgErro),
-                       "erro"=>true);
+    $aRetorno = [ "msg" =>urlencode($sMsgErro),
+                       "erro"=>true];
   } else {
-    $aRetorno = array( "msg" =>urlencode($sMsgErro),
-                       "erro"=>false);
+    $aRetorno = [ "msg" =>urlencode($sMsgErro),
+                       "erro"=>false];
   }
 
   echo $oJson->encode($aRetorno);

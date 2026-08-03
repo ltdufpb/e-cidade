@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 $clrotulo = new rotulocampo;
@@ -78,8 +78,8 @@ function js_emite(){
          <td align="center">
            <b>Opções :&nbsp;&nbsp;&nbsp;</b>
             <?php 
-               $aVer = array("com"=>"Com as Ruas selecionadas",
-                             "sem"=>"Sem as Ruas selecionados");
+               $aVer = ["com"=>"Com as Ruas selecionadas",
+                             "sem"=>"Sem as Ruas selecionados"];
                db_select("ver",$aVer,true,2); 
             ?>           
           </td>
@@ -119,9 +119,9 @@ function js_emite(){
 				        </td>
 				        <td>
 				          <?php 
-				            $aTipoInscr = array("t"=>"Todos",
+				            $aTipoInscr = ["t"=>"Todos",
 				                                "c"=>"Não Baixados",
-				                                "b"=>"Baixados");
+				                                "b"=>"Baixados"];
 				            db_select("baix",$aTipoInscr,true,2,"style='width:150px;'"); 
 				          ?>
 				        </td>
@@ -132,9 +132,9 @@ function js_emite(){
 				        </td>
 				        <td>
 				          <?php  
-				            $aTipoAtividade = array("a"=>"Ativas",
+				            $aTipoAtividade = ["a"=>"Ativas",
 				                                    "b"=>"Baixadas",
-				                                    "0"=>"Todas");
+				                                    "0"=>"Todas"];
 				            db_select("tipoatividade",$aTipoAtividade,true,2,"style='width:150px;'"); 
 				          ?>
 				        </td>
@@ -145,9 +145,9 @@ function js_emite(){
 				        </td>
 				        <td>
 				          <?php  
-				            $aTipo = array( "0"=>"Todos",
+				            $aTipo = [ "0"=>"Todos",
 				                            "t"=>"Permanente",
-				                            "f"=>"Provisório");
+				                            "f"=>"Provisório"];
 				            db_select("tipo",$aTipo,true,2,"style='width:150px;'"); 
 				          ?>
 				        </td>

@@ -13,11 +13,9 @@ class BalancoFinanceiroFactory
     private $codigoRelatorio;
     private $balancoOrcamentario;
     private $ano;
-    private $periodo;
 
-    public function __construct($periodo = null)
+    public function __construct(private $periodo = null)
     {
-        $this->periodo = $periodo;
         $this->ano = db_getsession('DB_anousu');
         $this->processador = 'con2_relatorio_dcasp_balanco_financeiro.php';
         $this->configurar();

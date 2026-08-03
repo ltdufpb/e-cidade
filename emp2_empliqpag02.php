@@ -102,7 +102,7 @@ $pdf->addTitulo($xxtipo);
 
 $filtro = " 1 = 1 ";
 if (isset($o50_estrutdespesa) && $o50_estrutdespesa != "") {
-    $matriz = explode('.', $o50_estrutdespesa);
+    $matriz = explode('.', (string) $o50_estrutdespesa);
     $totalLinhas = count($matriz);
     for ($i = 0; $i < $totalLinhas; $i++) {
         switch ($i) {
@@ -372,10 +372,10 @@ for ($x = 0; $x < $rows; $x++) {
             $preenche = ($item % 2 == 0 ? 0 : 1);
 //        $pdf->Cell(40,$tam,"",0,0,"R",$preenche);
             $pdf->Cell(10, $tam, "$e62_item", 0, 0, "R", $preenche);
-            $pdf->Cell(75, $tam, substr($pc01_descrmater, 0, 45), 0, 0, "L", $preenche);
+            $pdf->Cell(75, $tam, substr((string) $pc01_descrmater, 0, 45), 0, 0, "L", $preenche);
             $pdf->Cell(10, $tam, db_formatar($e62_quant, 'f'), 0, 0, "R", $preenche);
 //        $pdf->Cell(20,$tam,db_formatar($e62_vltot,'f'),0,0,"R",$preenche);
-            $pdf->multicell(0, $tam, substr($e62_descr, 0, 70), 0, "L", $preenche);
+            $pdf->multicell(0, $tam, substr((string) $e62_descr, 0, 70), 0, "L", $preenche);
         }
     }
     $pdf->cell(0, 1, '', "B", 1, "C", 0);

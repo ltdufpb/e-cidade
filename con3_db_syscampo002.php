@@ -50,7 +50,7 @@ $db_opcao = 1;
 $db_botao = true;
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 function gera($codigo,$tipo,$ni=1){
         global $codcam,$codcampai,$cldb_syscampodep,$cldb_syscampo,$rotulorel,$rotulo,$nomecam,$cldb_sysarqcamp,$nomearq;
         //rotina que pega os dados do campo  
@@ -84,10 +84,10 @@ function gera($codigo,$tipo,$ni=1){
 
   static $passou=null;
   static $g=0;
-  $arr_pai = array();
-  $arr_filho = array();
-  $arv=array();
-  $pai =array();
+  $arr_pai = [];
+  $arr_filho = [];
+  $arv=[];
+  $pai =[];
 function verifica($campo,$anterior=null){
   global $pai,$arv,$arr_filho,$g,$principal,$codcam,$codcampai,$cldb_syscampodep,$cldb_syscampo,$rotulorel,$rotulo,$nomecam,$cldb_sysarqcamp,$nomearq,$passou;
     //rotina que procura pai
@@ -100,7 +100,7 @@ function verifica($campo,$anterior=null){
       db_fieldsmemory($result,$x);
       if($codcampai != $anterior){
         if(empty($pai[$codcampai])){
-	  $pai[$codcampai]=array();
+	  $pai[$codcampai]=[];
 	}
         $pai[$codcampai][ count($pai[$codcampai]) ]=$campo;
         verifica($codcampai,$campo);
@@ -114,14 +114,14 @@ function verifica($campo,$anterior=null){
       db_fieldsmemory($result02,$i);
       if($codcam != $anterior){
         if(empty($pai[$campo])){
-	  $pai[$campo]=array();
+	  $pai[$campo]=[];
 	}
         $pai[$campo][ count($pai[$campo]) ]=$codcam;
 	verifica($codcam,$campo);
       }
     }
 }
-  $arr_n=array();
+  $arr_n=[];
   $nivel=0;
 
   

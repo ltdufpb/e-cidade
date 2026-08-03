@@ -33,8 +33,8 @@ include(modification("libs/db_utils.php"));
 include(modification("libs/db_app.utils.php"));
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 
 $iAno     = $_GET['ano'];
@@ -134,7 +134,7 @@ $sSql = " SELECT z01_numcgm,
 
 $rsDados      = db_query($sSql); 
 $aListaDados  = db_utils::getCollectionByRecord($rsDados);
-$aDados       = array();
+$aDados       = [];
 
 foreach ($aListaDados as $oIndiceDados => $oValorDados) {
 	
@@ -144,7 +144,7 @@ foreach ($aListaDados as $oIndiceDados => $oValorDados) {
 		$oCgm->cgm         = $oValorDados->z01_numcgm;
 		$oCgm->nome        = $oValorDados->z01_nome;
 		$oCgm->cpf         = $oValorDados->z01_cgccpf;
-		$oCgm->ordens      = array();
+		$oCgm->ordens      = [];
 		
 		if (!isset($aDados[$oValorDados->z01_numcgm])) {
 		  $aDados[$oValorDados->z01_numcgm] = $oCgm;
@@ -222,7 +222,7 @@ foreach ($aDados as  $oDados) {
     $iEstornado      = $iEstornado + $oValorDados->estornado;
     $iTotalEstornado = $iEstornado;
     $iTotalPago      = $iPago;
-    imprimirCabecalho($oPdf, $iAlturalinha, false,$oDados->cgm,$oDados->nome,$oDados->cpf,$sCpfCnpj);
+    imprimirCabecalho($oPdf, $iAlturalinha, false);
 	}	
   
 	//  EXIBE TOTALIZADORES
@@ -245,17 +245,17 @@ $oPdf->Output();
 function imprimirCabecalho($oPdf, $iAlturalinha, $lImprime,$cgm,$nome,$cpf,$formato) {
   
   if ( $oPdf->GetY() > $oPdf->h - 25 || $lImprime ) {
-    
+
     $oPdf->SetFont('arial', 'b', 6);
     if ( !$lImprime ) {
-      
+
       $oPdf->AddPage("P");
       //imprimeInfoProxPagina($oPdf, $iAlturalinha, true);
     }
 		/*
 		 * Cabeçalho a ser Repetido nas paginas
 		 */  
-    
+
   $oPdf->setfont('arial','b',7);
   $oPdf->cell(160, $iAlturalinha, "CREDOR  - ".$cgm." - ".$nome." - ".db_formatar($cpf,$formato),  "TB",  1, "L", 0);
 
@@ -287,7 +287,7 @@ function imprimeInfoProxPagina($oPdf, $iAlturalinha, $lImprime) {
     } else {
     	
       $oPdf->Cell(280, ($iAlturalinha*3), 'Continua na página '.($oPdf->PageNo()+1)."/{nb}", 'T', 1, "R", 0);
-      imprimirCabecalho($oPdf, $iAlturalinha, false,'');
+      imprimirCabecalho($oPdf, $iAlturalinha, false);
     }
   }
 } 

@@ -36,7 +36,7 @@ $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 $clrotulo->label('r08_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -206,7 +206,7 @@ function js_emite(){
 	 </td>
 	 <td  align="left">
                <?php 
-                 $x = array("c"=>"Com Diferença","t"=>"Todos");
+                 $x = ["c"=>"Com Diferença","t"=>"Todos"];
                  db_select('filtro',$x,true,4,"");
                ?>
 	 

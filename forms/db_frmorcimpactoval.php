@@ -96,17 +96,17 @@ db_fieldsmemory($result,0);
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
     
      $x  = "o91_codseqimp_$i";
-     $$x  = "";
+     ${$x}  = "";
     
      $x = "o91_valor_$i";
-     $$x  = "";
+     ${$x}  = "";
       
      $x = "o56_elemento_$i";
-     $$x = "";
+     ${$x} = "";
      
      
      $x = "o93_codigo_$i";
-     $$x = "";
+     ${$x} = "";
 
       
    if(isset($o91_proces) && $o91_proces!='' && empty($novo) && empty($incluir) && empty($alterar)){
@@ -116,10 +116,10 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
        db_fieldsmemory($result,0);
    
        $x  = "o91_codseqimp_$i";
-       $$x  = $o91_codseqimp;
+       ${$x}  = $o91_codseqimp;
 	  
        $x = "o91_valor_$i";
-       $$x = $o91_valor;
+       ${$x} = $o91_valor;
        
    
        //retorna os dados do orcimpactotiporec 
@@ -127,7 +127,7 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
        if($clorcimpactotiporec->numrows>0){
          db_fieldsmemory($result,0);
          $x = "o93_codigo_$i";
-         $$x = $o93_codigo;
+         ${$x} = $o93_codigo;
        }  	 
        
        //retorna os dados do orcimpactovaele 
@@ -135,7 +135,7 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
        if($clorcimpactovalele->numrows>0){
          db_fieldsmemory($result,0);
          $x = "o56_elemento_$i";
-         $$x = $o56_elemento;
+         ${$x} = $o56_elemento;
        }  	 
        
      }
@@ -158,8 +158,8 @@ db_input("o91_codseqimp_$i",8,$Io91_codseqimp,true,'hidden',1);
     <td> 
 <?php 
 $x = "o91_exercicio_$i";
-if(empty($$x)){
-  $$x = $i;
+if(empty(${$x})){
+  ${$x} = $i;
 }
 db_input("o91_exercicio_$i",4,$Io91_exercicio,true,'text',3)
 ?>
@@ -181,7 +181,7 @@ db_input("o91_valor_$i",8,$Io91_valor,true,'text',$db_opcao,($i == $o96_anoini?"
     <?php 
        $x = "o56_elemento_$i";
     ?>
-    <input type="text"  value="<?=@$$x?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o56_elemento_<?=$i?>" size="9" maxlength='7'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_elemento_<?=$i?>(false);'>
+    <input type="text"  value="<?=@${$x}?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o56_elemento_<?=$i?>" size="9" maxlength='7'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_elemento_<?=$i?>(false);'>
     
     </td>
     <td nowrap title="<?=@$To93_codigo?>">
@@ -192,8 +192,8 @@ db_input("o91_valor_$i",8,$Io91_valor,true,'text',$db_opcao,($i == $o96_anoini?"
     <td> 
 <?php 
 $x = "o93_codigo_$i";
-if(empty($$x)){
-  $$x = 1;
+if(empty(${$x})){
+  ${$x} = 1;
 }  
 db_input("o93_codigo_$i",4,$Io93_codigo,true,'text',$db_opcao," onchange='js_codigo_$i(false);'")
 ?>
@@ -218,7 +218,7 @@ db_input("o93_codigo_$i",4,$Io93_codigo,true,'text',$db_opcao," onchange='js_cod
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("o91_codseqimp"=>@$o91_codseqimp,"o91_proces"=>@$o91_proces);
+	 $chavepri= ["o91_codseqimp"=>@$o91_codseqimp,"o91_proces"=>@$o91_proces];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clorcimpactoval->sql_query_dad(null,"o91_codseqimp,o91_codimp,o91_exercicio,o91_valor,o91_proces,o56_elemento,o15_codigo","","o91_codimp =$o91_codimp");
 	 $cliframe_alterar_excluir->campos  ="o91_codseqimp,o91_codimp,o91_exercicio,o91_valor,o91_proces,o56_elemento,o15_codigo";

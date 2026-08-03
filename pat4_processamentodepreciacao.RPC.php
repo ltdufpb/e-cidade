@@ -83,7 +83,7 @@ switch ($oParam->exec) {
       $oPlanilhaCalculo->setMes($oParam->iMesProcessar);
       $oPlanilhaCalculo->setAno(db_getsession("DB_anousu"));
       $aBens        = $oPlanilhaCalculo->getBensPorTipoDeProcessamento();
-      $aRetornoBens = array();
+      $aRetornoBens = [];
       foreach ($aBens as $oBem) {
 
         $oDadoBem                    = new stdClass();
@@ -224,7 +224,7 @@ switch ($oParam->exec) {
         $iMesDisponivel -= 1;
       }
 
-      list($iAno, $iMes, $iDia) = explode("-", $aDataInicioDepreciacao);
+      [$iAno, $iMes, $iDia] = explode("-", $aDataInicioDepreciacao);
       $oRetorno->iMesDisponivel = $iMesDisponivel;
 
     } catch (Exception $eErro) {

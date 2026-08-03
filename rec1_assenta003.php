@@ -36,13 +36,13 @@ require_once modification('dbforms/db_funcoes.php');
 use ECidade\RecursosHumanos\RH\Assentamento\Repository\LoteLancamentoRepository;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $classenta  = new cl_assenta;
 $cltipoasse = new cl_tipoasse;

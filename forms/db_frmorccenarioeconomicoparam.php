@@ -111,7 +111,7 @@ db_input('o03_descricao',40,$Io03_descricao,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Percentual','2'=>'Quantidade');
+$x = ['1'=>'Percentual','2'=>'Quantidade'];
 db_select('o03_tipovalor',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -177,7 +177,7 @@ function js_preenchepesquisa(chave){
   db_iframe_orccenarioeconomicoparam.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

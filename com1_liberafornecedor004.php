@@ -38,7 +38,7 @@ $clliberafornecedor = new cl_liberafornecedor;
 $clliberafornecedorsol = new cl_liberafornecedorsol;
 $clliberafornecedorpcproc = new cl_liberafornecedorpcproc;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
@@ -53,9 +53,9 @@ if(isset($incluir)){
   isset($pc82_liberaaut)  ? $clliberafornecedor->pc82_liberaaut  = "true" : $clliberafornecedor->pc82_liberaaut  = "false"; 
   isset($pc82_liberaproc) ? $clliberafornecedor->pc82_liberaproc = "true" : $clliberafornecedor->pc82_liberaproc = "false"; 
   
-  if(trim($pc82_dataini) != "" && trim($pc82_datafim) != ""){
-	  $dtIni = implode("-",array_reverse(explode("/",$pc82_dataini)));
-	  $dtFim = implode("-",array_reverse(explode("/",$pc82_datafim)));
+  if(trim((string) $pc82_dataini) != "" && trim((string) $pc82_datafim) != ""){
+	  $dtIni = implode("-",array_reverse(explode("/",(string) $pc82_dataini)));
+	  $dtFim = implode("-",array_reverse(explode("/",(string) $pc82_datafim)));
 	  
 	  $sWhere = "pc82_dataini = '$dtIni' and pc82_datafim = '$dtFim' and pc82_numcgm = $pc82_numcgm";
 	  //die($clliberafornecedor->sql_query_file(null,"*",null,$sWhere)); 

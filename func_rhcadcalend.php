@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhcadcalend_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhcadcalend = new cl_rhcadcalend;
 $clrhcadcalend->rotulo->label("rh53_calend");
 $clrhcadcalend->rotulo->label("rh53_descr");
@@ -99,9 +99,9 @@ $clrhcadcalend->rotulo->label("rh53_descr");
         }else{
            $sql = $clrhcadcalend->sql_query("",$campos,"rh53_calend",$where);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh53_descr)){
-          $repassa = array("chave_rh53_calend"=>$chave_rh53_calend,"chave_rh53_descr"=>$chave_rh53_descr);
+          $repassa = ["chave_rh53_calend"=>$chave_rh53_calend,"chave_rh53_descr"=>$chave_rh53_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

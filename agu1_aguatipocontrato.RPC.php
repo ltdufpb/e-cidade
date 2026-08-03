@@ -32,10 +32,10 @@ require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 
 $oParam   = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
-$oRetorno = (object) array(
+$oRetorno = (object) [
   "mensagem" => '',
   "erro" => false
-);
+];
 
 try {
   db_inicio_transacao();
@@ -56,10 +56,10 @@ try {
 
       $oTipoContrato->salvar();
 
-      $oRetorno->oTipoContrato = (object) array(
+      $oRetorno->oTipoContrato = (object) [
         'iCodigo' => $oTipoContrato->getCodigo(),
         'sDescricao' => $oTipoContrato->getDescricao()
-      );
+      ];
 
       $oRetorno->mensagem = 'Tipo de Contrato salvo com sucesso.';
       break;
@@ -75,10 +75,10 @@ try {
 
       $oTipoContrato = new AguaTipoContrato((integer) $oParam->iCodigo);
 
-      $oRetorno->oTipoContrato = (object) array(
+      $oRetorno->oTipoContrato = (object) [
         'iCodigo' => $oTipoContrato->getCodigo(),
         'sDescricao' => $oTipoContrato->getDescricao()
-      );
+      ];
       break;
 
     /**

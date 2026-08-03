@@ -60,7 +60,7 @@ $clrotulo->label("p67_historico");
 $clrotulo->label("p67_dtarq");
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 function notificar(processoProtocolo $processo){
 
@@ -103,18 +103,18 @@ function notificar(processoProtocolo $processo){
 if (isset($incluir)){
   db_inicio_transacao();
   $sqlerro=false;
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave);
+    if(str_starts_with((string) $chave, "CHECK")){
+      $dados=preg_split("#_#m",(string) $chave);
       $p67_codproc=$dados[1];
       $clprocarquiv->p67_id_usuario = db_getsession("DB_id_usuario");
       $clprocarquiv->p67_coddepto = db_getsession("DB_coddepto");
       $clprocarquiv->p67_codproc= $p67_codproc;
-      $clprocarquiv->p67_dtarq  = implode("-", array_reverse(explode("/", $p67_dtarq)));
+      $clprocarquiv->p67_dtarq  = implode("-", array_reverse(explode("/", (string) $p67_dtarq)));
       $clprocarquiv->incluir("");
       if ($clprocarquiv->erro_status==0){
 	$sqlerro=true;
@@ -159,7 +159,7 @@ if (isset($incluir)){
       //inclusão do andamento
       $clprocandam->p61_despacho = $clprocarquiv->p67_historico;
       //$clprocandam->p61_dtandam = $hoje;
-      $clprocandam->p61_dtandam = implode("-", array_reverse(explode("/", $p67_dtarq)));
+      $clprocandam->p61_dtandam = implode("-", array_reverse(explode("/", (string) $p67_dtarq)));
       $clprocandam->p61_hora = db_hora();
       $clprocandam->p61_codproc = $p67_codproc;
       $clprocandam->p61_id_usuario = db_getsession("DB_id_usuario");
@@ -200,7 +200,7 @@ if (isset($incluir)){
       if ($sqlerro !== true and $processo->isEletronico()) {
           try {
               notificar($processo);
-          }catch(\Exception $e){
+          }catch(\Exception){
 
           }
 

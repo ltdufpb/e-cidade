@@ -40,8 +40,8 @@ include(modification("classes/db_orcparamsubfunc_classe.php"));
 include(modification("classes/db_orcparamfunc_classe.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clorcparamseq = new cl_orcparamseq;
 $clorcparamelemento = new cl_orcparamelemento;
@@ -135,7 +135,7 @@ if (isset($processar) && $processar=='processar'){
 	             and o69_codseq = $o69_codseq 
               ";
 	$r = db_query($s);
-	if (pg_numrows($r)>0){
+	if (pg_num_rows($r)>0){
             db_fieldsmemory($r,0);
 	    echo  "<b>Parametro: $o69_descr </b>";	
 	}  

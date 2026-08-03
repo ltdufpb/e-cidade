@@ -62,7 +62,7 @@ if($db_opcao==1||$db_opcao==11){
   <tr>
     <td nowrap title="<?=@$Tk91_tipo?>"><?=@$Lk91_tipo?></td>
     <td><?php    
-           $matriz = array('I'=>'Interferência', 'R'=>'Repasse');
+           $matriz = ['I'=>'Interferência', 'R'=>'Repasse'];
            db_select('k91_tipo',$matriz,true,1);    
          ?> 
     </td>
@@ -95,9 +95,9 @@ if($db_opcao==1||$db_opcao==11){
     <td><?php  
          // seleciona as instituições, exceto a instituição atual
          $res = db_query("select codigo,nomeinst from db_config where codigo <> ".db_getsession("DB_instit"));
-	 $db_matriz = array();
-	 if (pg_numrows($res)>0){
-            for ($x=0;$x<pg_numrows($res);$x++){
+	 $db_matriz = [];
+	 if (pg_num_rows($res)>0){
+            for ($x=0;$x<pg_num_rows($res);$x++){
                  db_fieldsmemory($res,$x);
 		 $db_matriz[$codigo]=$nomeinst;
 	    }  
@@ -188,7 +188,7 @@ function js_preenchepesquisa(chave){
   db_iframe_caitransf.hide();
   <?php  
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     };
   ?>
 

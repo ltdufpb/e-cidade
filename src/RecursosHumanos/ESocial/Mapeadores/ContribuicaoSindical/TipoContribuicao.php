@@ -36,12 +36,12 @@ class TipoContribuicao
     /**
      * @var array
      */
-    private static $tiposContribuicao = array(
+    private static $tiposContribuicao = [
         1 => 'Contribuição Sindical Compulsória',
         2 => 'Contribuição Associativa',
         3 => 'Contribuição Assistencial',
         4 => 'Contribuição Confederativa',
-    );
+    ];
 
     /**
      * @param $id

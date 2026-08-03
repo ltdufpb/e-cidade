@@ -44,7 +44,7 @@ $oRetorno->mensagem          = '';
 
 set_time_limit(0);
 
-$aInstituicoes = array();
+$aInstituicoes = [];
 foreach ($oParametros->aInstituicoes as $oInstituicao) {
   $aInstituicoes[] = $oInstituicao->codigo;
 }
@@ -78,7 +78,7 @@ try {
       break;
 
     default:
-      throw new Exception(_M(CAMINHO_MENSAGENS . "opcao_indefinida", (object) array('exec' => $oParam->exec)));
+      throw new Exception(_M(CAMINHO_MENSAGENS . "opcao_indefinida", (object) ['exec' => $oParam->exec]));
   }
 
   db_fim_transacao(false);

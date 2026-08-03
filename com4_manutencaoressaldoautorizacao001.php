@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("classes/db_empautoriza_classe.php"));
 
 $clempautoriza = new cl_empautoriza;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clempautoriza->rotulo->label();
 

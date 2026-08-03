@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_workflow_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clworkflow = new cl_workflow;
 $clworkflow->rotulo->label("db112_sequencial");
@@ -90,9 +90,9 @@ $sequencial = $where = "";
           $where = "db173_modulo = $chave_db173_modulo";
         } 
         $sql = $clworkflow->sql_query_modulo($sequencial,$campos,"db112_sequencial",$where);
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db112_sequencial)){
-          $repassa = array("chave_db112_sequencial"=>$chave_db112_sequencial);
+          $repassa = ["chave_db112_sequencial"=>$chave_db112_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

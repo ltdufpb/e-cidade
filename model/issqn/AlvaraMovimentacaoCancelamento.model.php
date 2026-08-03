@@ -41,19 +41,20 @@ class AlvaraCancelamento extends AlvaraMovimentacao {
 		parent::__construct($iCodigoAlvara);
 	}
 	
-	function getUltimaMovimentacao() {
+	#[\Override]
+    function getUltimaMovimentacao() {
 		
 		try {
 			
 			$aMovimentacoes       = parent::getUltimaMovimentacao();
-			$aGuardaMovimentacoes = array("0");
+			$aGuardaMovimentacoes = ["0"];
 			foreach ($aMovimentacoes as $oMovimentacao) {
-			  $aGuardaMovimentacoes [$oMovimentacao->q120_sequencial] = array(
+			  $aGuardaMovimentacoes [$oMovimentacao->q120_sequencial] = [
 			                                                              "q121_descr"           =>$oMovimentacao->q121_descr, 
 			                                                              "q120_dtmov"           =>$oMovimentacao->q120_dtmov,
 			                                                              "q120_sequencial"      =>$oMovimentacao->q120_sequencial,
 			                                                              "q120_isstipomovalvara"=>$oMovimentacao->q120_isstipomovalvara
-			                                                            );   
+			                                                            ];   
 			}
 			
 			

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,9 +55,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Credor","g2"=>"Histórico","g3"=>"Dotação","g4"=>"Recurso");
-       $clcriaabas->title = array("g1"=>"Selecionar credores","g2"=>"Selecionar histórico","g3"=>"Selecionar dotação","g4"=>"Selecionar recurso");
-       $clcriaabas->src = array("g1"=>"con2_emprelcredor001.php","g2"=>"con2_reldocs001.php","g3"=>"emp2_relempdot001.php","g4"=>"emp2_relemprec001.php");
+       $clcriaabas->identifica = ["g1"=>"Credor","g2"=>"Histórico","g3"=>"Dotação","g4"=>"Recurso"];
+       $clcriaabas->title = ["g1"=>"Selecionar credores","g2"=>"Selecionar histórico","g3"=>"Selecionar dotação","g4"=>"Selecionar recurso"];
+       $clcriaabas->src = ["g1"=>"con2_emprelcredor001.php","g2"=>"con2_reldocs001.php","g3"=>"emp2_relempdot001.php","g4"=>"emp2_relemprec001.php"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

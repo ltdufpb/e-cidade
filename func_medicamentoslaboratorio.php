@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_medicamentoslaboratorio_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmedicamentoslaboratorio = new cl_medicamentoslaboratorio;
 $clmedicamentoslaboratorio->rotulo->label("la43_abreviatura");
 $clmedicamentoslaboratorio->rotulo->label("la43_nome");
@@ -73,7 +73,7 @@ $clmedicamentoslaboratorio->rotulo->label("la43_nome");
       }
       if (!isset($pesquisa_chave)) {
 
-        $aWhere = array();
+        $aWhere = [];
         if ( isset($chave_la43_abreviatura) && (trim($chave_la43_abreviatura)!="") ) {
 	        $aWhere[] = " la43_abreviatura = '{$chave_la43_abreviatura}' ";
         }
@@ -82,9 +82,9 @@ $clmedicamentoslaboratorio->rotulo->label("la43_nome");
         }
         $sWhere  = implode(' and ', $aWhere);
         $sSql    = $clmedicamentoslaboratorio->sql_query("",$campos, "la43_nome", $sWhere);
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_la43_nome)) {
-          $repassa = array("chave_la43_abreviatura"=>$chave_la43_abreviatura, "chave_la43_nome"=>$chave_la43_nome);
+          $repassa = ["chave_la43_abreviatura"=>$chave_la43_abreviatura, "chave_la43_nome"=>$chave_la43_nome];
         }
 
         echo '<div class="container">';

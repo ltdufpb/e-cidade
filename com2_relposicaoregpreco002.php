@@ -66,20 +66,20 @@ $sHeaderItens          = "";
 /**
  * Verifica as datas de criação do registro informadas no formulario.
  */
-$dtIniCrg = implode("-", array_reverse(explode("/", $oGet->dtinicrg)));
-$dtFimCrg = implode("-", array_reverse(explode("/", $oGet->dtfimcrg)));
+$dtIniCrg = implode("-", array_reverse(explode("/", (string) $oGet->dtinicrg)));
+$dtFimCrg = implode("-", array_reverse(explode("/", (string) $oGet->dtfimcrg)));
 
 if ((trim($dtIniCrg) != "") && (trim($dtFimCrg) != "")) {
 
     $sHeaderDtCriacao = "Criação do Registro: ".$oGet->dtinicrg." até ".$oGet->dtfimcrg;
     $sWhere          .= "{$sAnd} solicita.pc10_data  between '{$oGet->dtinicrg}' and '{$oGet->dtfimcrg}' ";
     $sAnd             = " and ";
-} else if (trim($oGet->dtinicrg) != "") {
+} else if (trim((string) $oGet->dtinicrg) != "") {
 
     $sHeaderDtCriacao = "Criação do Registro: ".$oGet->dtinicrg;
     $sWhere .= "{$sAnd} ( solicita.pc10_data >= '{$oGet->dtinicrg}' ) ";
     $sAnd    = " and ";
-} else if (trim($oGet->dtfimcrg) != "") {
+} else if (trim((string) $oGet->dtfimcrg) != "") {
 
     $sHeaderDtCriacao = "Criação do Registro: ".$oGet->dtfimcrg;
     $sWhere .= "{$sAnd} ( solicita.pc10_data <= '{$oGet->dtfimcrg}' ) ";
@@ -89,8 +89,8 @@ if ((trim($dtIniCrg) != "") && (trim($dtFimCrg) != "")) {
 /**
  * Verifica as datas de validade do registro informadas no formulario.
  */
-$dtIniVlrg = implode("-", array_reverse(explode("/", $oGet->dtinivlrg)));
-$dtFimVlrg = implode("-", array_reverse(explode("/", $oGet->dtfimvlrg)));
+$dtIniVlrg = implode("-", array_reverse(explode("/", (string) $oGet->dtinivlrg)));
+$dtFimVlrg = implode("-", array_reverse(explode("/", (string) $oGet->dtfimvlrg)));
 
 if ((trim($dtIniVlrg) != "") && (trim($dtFimVlrg) != "")) {
 
@@ -112,17 +112,17 @@ if ((trim($dtIniVlrg) != "") && (trim($dtFimVlrg) != "")) {
 /**
  * Verifica os numeros da solicitação informados no formulario.
  */
-if ((trim($oGet->numini) != "") && (trim($oGet->numfim) != "")) {
+if ((trim((string) $oGet->numini) != "") && (trim((string) $oGet->numfim) != "")) {
 
     $sHeaderNum = "Compilação: ".$oGet->numini." á ".$oGet->numfim;
     $sWhere    .= "{$sAnd} solicita.pc10_numero between '{$oGet->numini}' and '{$oGet->numfim}' ";
     $sAnd       = " and ";
-} else if (trim($oGet->numini) != "") {
+} else if (trim((string) $oGet->numini) != "") {
 
     $sHeaderNum = "Compilação: ".$oGet->numini;
     $sWhere .= "{$sAnd} ( solicita.pc10_numero >= '{$oGet->numini}' ) ";
     $sAnd    = " and ";
-} else if (trim($oGet->numfim) != "") {
+} else if (trim((string) $oGet->numfim) != "") {
 
     $sHeaderNum = "Compilação: ".$oGet->numfim;
     $sWhere .= "{$sAnd} ( solicita.pc10_numero <= '{$oGet->numfim}' ) ";
@@ -132,7 +132,7 @@ if ((trim($oGet->numini) != "") && (trim($oGet->numfim) != "")) {
 /**
  * Verifica os itens selecionados no formulario.
  */
-if(trim($oGet->itens) != "") {
+if(trim((string) $oGet->itens) != "") {
 
     $sHeaderItens = "Itens: ( ".$oGet->itens." )";
     $sWhere      .= "{$sAnd} pc01_codmater in ($oGet->itens) ";
@@ -238,8 +238,8 @@ $oPdf->setfont('arial', 'b', 8);
 $lPreenchimento      = 0;
 $iAlt                = 4;
 
-$oDadosPosRegPreco = array();
-$aDadosSolicita    = array();
+$oDadosPosRegPreco = [];
+$aDadosSolicita    = [];
 $oResumoFinal      = new stdClass();
 
 $oDadosPosRegPreco              = new stdClass();
@@ -342,7 +342,7 @@ for ( $iInd = 0; $iInd  < $iRsSql; $iInd++ ) {
         $oStdDetalhesCompilacao                           = new stdClass();
         $oStdDetalhesCompilacao->iAbertura                = $oCompilacao->getCodigoAbertura();
         $oStdDetalhesCompilacao->iCompilacao              = $oCompilacao->getCodigo();
-        $oStdDetalhesCompilacao->aInstituicoesEstimativas = array();
+        $oStdDetalhesCompilacao->aInstituicoesEstimativas = [];
 
         $oStdDetalhesCompilacao->iSolicitada              = 0;
         $oStdDetalhesCompilacao->iReservada               = 0;
@@ -380,7 +380,7 @@ for ( $iInd = 0; $iInd  < $iRsSql; $iInd++ ) {
         $oStdInstituicao->iLiquidada     = 0;
         $oStdInstituicao->iSolicitar     = 0;
         $oStdInstituicao->iEmpenhar      = 0;
-        $oStdInstituicao->aDepartamentos = array();
+        $oStdInstituicao->aDepartamentos = [];
         $oDadosPosRegPreco->aSolicitacoes[$iCodigoCompilacao]->aInstituicoesEstimativas[$iInstituicaoEstimativa] = $oStdInstituicao;
         unset($oInstituicao);
     }
@@ -415,7 +415,7 @@ for ( $iInd = 0; $iInd  < $iRsSql; $iInd++ ) {
         $oStdDepartamento->iLiquidada   = 0;
         $oStdDepartamento->iSolicitar   = 0;
         $oStdDepartamento->iEmpenhar    = 0;
-        $oStdDepartamento->aEstimativas = array();
+        $oStdDepartamento->aEstimativas = [];
         $oDadosPosRegPreco->aSolicitacoes[$iCodigoCompilacao]->aInstituicoesEstimativas[$iInstituicaoEstimativa]->aDepartamentos[$iDepartamentoEstimativa] = $oStdDepartamento;
         unset($oDepartamento);
     }
@@ -448,7 +448,7 @@ for ( $iInd = 0; $iInd  < $iRsSql; $iInd++ ) {
         $oStdEstimativa->iLiquidada  = 0;
         $oStdEstimativa->iSolicitar  = 0;
         $oStdEstimativa->iEmpenhar   = 0;
-        $oStdEstimativa->aItens      = array();
+        $oStdEstimativa->aItens      = [];
         $oDadosPosRegPreco->aSolicitacoes[$iCodigoCompilacao]->aInstituicoesEstimativas[$iInstituicaoEstimativa]->aDepartamentos[$iDepartamentoEstimativa]->aEstimativas[$iCodigoEstimativa] = $oStdEstimativa;
     }
 
@@ -477,7 +477,7 @@ $lPrimeiraPagina = true;
 
 foreach ($oDadosPosRegPreco->aSolicitacoes as $iCodigoCompilacao => $oCompilacao ) {
 
-    imprimeCabecalho($oPdf, $iAlt, $oCompilacao->iAbertura, $oCompilacao->iCompilacao, $lPrimeiraPagina, $oCompilacao->lControlaValor);
+    imprimeCabecalho($oPdf, $iAlt);
 
     $lPrimeiraPagina = false;
 
@@ -540,11 +540,11 @@ foreach ($oDadosPosRegPreco->aSolicitacoes as $iCodigoCompilacao => $oCompilacao
                     $lPreenchimento = $lPreenchimento == 0 ? 1 : 0;
                     $oPdf->cell(15, $iAlt, $oItemEstimativa->iSeq        , 0, 0, "C", $lPreenchimento);
                     $oPdf->cell(15, $iAlt, $oItemEstimativa->iCodItem    , 0, 0, "C", $lPreenchimento);
-                    $oPdf->cell(28, $iAlt, substr($oItemEstimativa->sDescrItem, 0, 20), 0, 0, "L", $lPreenchimento);
-                    $oPdf->cell(28, $iAlt, str_replace("\\n", "\n",substr(trim($oItemEstimativa->sCompl), 0, 20)) , 0, 0, "L", $lPreenchimento);
+                    $oPdf->cell(28, $iAlt, substr((string) $oItemEstimativa->sDescrItem, 0, 20), 0, 0, "L", $lPreenchimento);
+                    $oPdf->cell(28, $iAlt, str_replace("\\n", "\n",substr(trim((string) $oItemEstimativa->sCompl), 0, 20)) , 0, 0, "L", $lPreenchimento);
                     $oPdf->cell(13, $iAlt, $oItemEstimativa->sUnidade    , 0, 0, "C", $lPreenchimento);
                     $oPdf->cell(16, $iAlt, db_formatar($oItemEstimativa->nVlrUnitario, 'v', " ", $casadec), 0, 0, "R", $lPreenchimento);
-                    $oPdf->cell(($oCompilacao->lControlaValor ? 50 : 25), $iAlt, substr($oItemEstimativa->sFornecedor, 0, ($oCompilacao->lControlaValor ? 35 : 20)), 0, 0, "L", $lPreenchimento);
+                    $oPdf->cell(($oCompilacao->lControlaValor ? 50 : 25), $iAlt, substr((string) $oItemEstimativa->sFornecedor, 0, ($oCompilacao->lControlaValor ? 35 : 20)), 0, 0, "L", $lPreenchimento);
 
                     if (!$oCompilacao->lControlaValor) {
                         $oPdf->cell(22, $iAlt, $oItemEstimativa->nQuantMax   , 0, 0, "R", $lPreenchimento);
@@ -555,7 +555,7 @@ foreach ($oDadosPosRegPreco->aSolicitacoes as $iCodigoCompilacao => $oCompilacao
                     $oPdf->cell(11, $iAlt, $oItemEstimativa->cedidas, 0,0, "C", $lPreenchimento);
                     $oPdf->cell(23, $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oItemEstimativa->iEmpenhada, 'v', " ", $casadec) : $oItemEstimativa->iEmpenhada), 0,0, "R", $lPreenchimento);
                     $oPdf->cell(22, $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oItemEstimativa->iSolicitar, 'v', " ", $casadec) : $oItemEstimativa->iSolicitar), 0,0, "R", $lPreenchimento);
-                    $oPdf->cell(19, $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oItemEstimativa->iEmpenhar, 'v', " ", $casadec) : ($oItemEstimativa->iEmpenhar ? $oItemEstimativa->iEmpenhar : '0')), 0, 1, "R", $lPreenchimento);
+                    $oPdf->cell(19, $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oItemEstimativa->iEmpenhar, 'v', " ", $casadec) : ($oItemEstimativa->iEmpenhar ?: '0')), 0, 1, "R", $lPreenchimento);
                 }
             }
 
@@ -573,7 +573,7 @@ foreach ($oDadosPosRegPreco->aSolicitacoes as $iCodigoCompilacao => $oCompilacao
             $oPdf->cell(3,  $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oDepartamento->iSolicitada, 'v', " ", $casadec) : $oDepartamento->iSolicitada)  ,   0, 0, "R", 0);
             $oPdf->cell(47,  $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oDepartamento->iEmpenhada, 'v', " ", $casadec) : $oDepartamento->iEmpenhada)  ,   0, 0, "R", 0);
             $oPdf->cell(25,  $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oDepartamento->iSolicitar, 'v', " ", $casadec) : $oDepartamento->iSolicitar)  ,   0, 0, "R", 0);
-            $oPdf->cell(25,  $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oDepartamento->iEmpenhar, 'v', " ", $casadec) : ($oDepartamento->iEmpenhar ? $oDepartamento->iEmpenhar : '0'))   ,   0, 1, "R", 0);
+            $oPdf->cell(25,  $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oDepartamento->iEmpenhar, 'v', " ", $casadec) : ($oDepartamento->iEmpenhar ?: '0'))   ,   0, 1, "R", 0);
             $oPdf->ln(2);
 
         }
@@ -592,7 +592,7 @@ foreach ($oDadosPosRegPreco->aSolicitacoes as $iCodigoCompilacao => $oCompilacao
         $oPdf->cell(3,  $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oInstituicao->iSolicitada, 'v', " ", $casadec) : $oInstituicao->iSolicitada)  ,   0, 0, "R", 0);
         $oPdf->cell(47,  $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oInstituicao->iEmpenhada, 'v', " ", $casadec) : $oInstituicao->iEmpenhada)   ,   0, 0, "R", 0);
         $oPdf->cell(25,  $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oInstituicao->iSolicitar, 'v', " ", $casadec) : $oInstituicao->iSolicitar)   ,   0, 0, "R", 0);
-        $oPdf->cell(25,  $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oInstituicao->iEmpenhar, 'v', " ", $casadec) : ($oInstituicao->iEmpenhar ? $oInstituicao->iEmpenhar : '0'))    ,   0, 1, "R", 0);
+        $oPdf->cell(25,  $iAlt, ($oCompilacao->lControlaValor ? db_formatar($oInstituicao->iEmpenhar, 'v', " ", $casadec) : ($oInstituicao->iEmpenhar ?: '0'))    ,   0, 1, "R", 0);
         $oPdf->ln(5);
 
     }
@@ -701,7 +701,7 @@ function verificaQuebraPagina($oPdf) {
 function verificaQuebraCabecalho($oPdf, $iAbertura, $iCompilacao, $iAlt, $lControlaValor) {
 
     if (verificaQuebraPagina($oPdf)) {
-        imprimeCabecalho($oPdf, $iAlt, $iAbertura, $iCompilacao, false, $lControlaValor);
+        imprimeCabecalho($oPdf, $iAlt);
     }
 }
 
@@ -730,7 +730,7 @@ function buscaSolicitacoesVinculadas ($iEstimativa) {
         db_redireciona('db_erros.php?fechar=true&db_erro=Erro ao executar a query.');
     }
 
-    $aSolicitacoesVinculadas = array();
+    $aSolicitacoesVinculadas = [];
 
     for ($iSolicitacao = 0; $iSolicitacao < $iRsSql; $iSolicitacao++) {
 
@@ -744,7 +744,7 @@ function buscaSolicitacoesVinculadas ($iEstimativa) {
 /**
  * Imprime cabeçalho do relatorio
  **/
-function imprimeCabecalho(&$oPdf, $iAlt, $iAbertura, $iCompilacao, $lQuebraPagina = false, $lControlaValor) {
+function imprimeCabecalho(&$oPdf, $iAlt, $iAbertura, $iCompilacao, $lQuebraPagina = false, $lControlaValor = null) {
 
 
     if ($lQuebraPagina) {

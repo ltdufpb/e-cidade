@@ -34,9 +34,9 @@ class ProcessamentoConcessaoController extends Controller
         $matricula = $data['matricula'];
         $inst = $data['DB_instit'];
         $rh500_sequencial = $data['rh500_sequencial'];
-        $data_processamento = substr($data['dataprocessamento'], 6, 4) .
-            '-' . substr($data['dataprocessamento'], 3, 2) .
-            "-" . substr($data['dataprocessamento'], 0, 2);
+        $data_processamento = substr((string) $data['dataprocessamento'], 6, 4) .
+            '-' . substr((string) $data['dataprocessamento'], 3, 2) .
+            "-" . substr((string) $data['dataprocessamento'], 0, 2);
         try {
             $assentconfig = AssentConfig::where('rh500_sequencial', $rh500_sequencial)
                 ->leftJoin('pessoal.selecao', 'r44_selec', '=', 'rh500_selecao')
@@ -46,7 +46,7 @@ class ProcessamentoConcessaoController extends Controller
                 if (!ProvidersRhpessoal::verificarMatriculaSelecao($assentconfig->r44_where, $matricula)) {
                     return new DBJsonResponse('', 'Funcionário sem configuração para esta Concessão', 400);
                 }
-                $this->processamento($matricula, $inst, $rh500_sequencial, $data_processamento, $data['DB_datausu']);
+                $this->processamento($matricula, $inst, $rh500_sequencial, $data_processamento);
                 $result = ConcessaoCalculoProviders::buscarconcessaocaluclo($matricula, $rh500_sequencial);
                 return new DBJsonResponse($result, 'Processado com Sucesso!', 200);
             } else {
@@ -62,7 +62,7 @@ class ProcessamentoConcessaoController extends Controller
                 }
             }
             return new DBJsonResponse('', 'Processado com Sucesso!', 200);
-        } catch (\Throwable $th) {
+        } catch (\Throwable) {
             return new DBJsonResponse('', 'Erro!', 400);
         }
     }
@@ -71,7 +71,7 @@ class ProcessamentoConcessaoController extends Controller
     {
         $assentconfig = AssentConfig::where('rh500_sequencial', $rh500_sequencial)->first();
 
-        if (strtotime($data_processamento) > strtotime($assentconfig->rh500_datalimite)) {
+        if (strtotime((string) $data_processamento) > strtotime((string) $assentconfig->rh500_datalimite)) {
             $data_processamento = $assentconfig->rh500_datalimite;
         }
 
@@ -95,11 +95,11 @@ class ProcessamentoConcessaoController extends Controller
         }
 
         $assents = Concessao::todosAssentamntosEnvolvidos($rh500_sequencial);
-        $assent_inicio = array();
-        $assent_antesdoinicio = array();
-        $assent_meio = array();
-        $assent_final = array();
-        $assent_interrompe = array();
+        $assent_inicio = [];
+        $assent_antesdoinicio = [];
+        $assent_meio = [];
+        $assent_final = [];
+        $assent_interrompe = [];
 
         foreach ($assents as $key => $assent) {
             switch ($assent->rh502_condicao) {
@@ -201,11 +201,11 @@ class ProcessamentoConcessaoController extends Controller
                     reset($dias_processamento);
                     $data = '';
                     for ($a = 0; $a < count($dias_processamento); $a++) {
-                        if (strtotime($dias_processamento[key($dias_processamento)]) >= strtotime($h16_dtconc)) {
+                        if (strtotime((string) $dias_processamento[key($dias_processamento)]) >= strtotime((string) $h16_dtconc)) {
                             $dias = ($operacao == '+' ? $soma_dias : $soma_dias * -1);
                             $novadata =  date('Y-m-d', strtotime(
                                 '+' . $dias . ' days',
-                                strtotime($dias_processamento[key($dias_processamento)])
+                                strtotime((string) $dias_processamento[key($dias_processamento)])
                             ));
                             if ($data == '') {
                                 $data = $novadata;
@@ -279,12 +279,12 @@ class ProcessamentoConcessaoController extends Controller
                     // primeiro processamento de assentamento de meio
                     reset($dias_processamento);
                     for ($a = 0; $a < count($dias_processamento); $a++) {
-                        if (strtotime($dias_processamento[key($dias_processamento)]) >= strtotime($h16_dtconc)) {
+                        if (strtotime((string) $dias_processamento[key($dias_processamento)]) >= strtotime((string) $h16_dtconc)) {
                             // aqui protela ou antecipa assentamento de meio
                             $dias = ($operacao == '+' ? $soma_dias : $soma_dias * -1);
                             $novadata =  date('Y-m-d', strtotime(
                                 '+' . $dias . ' days',
-                                strtotime($dias_processamento[key($dias_processamento)])
+                                strtotime((string) $dias_processamento[key($dias_processamento)])
                             ));
                             if ($data == '') {
                                 $data = $novadata;
@@ -337,7 +337,7 @@ class ProcessamentoConcessaoController extends Controller
                     $soma_dias;
                     $data = '';
                     for ($a = 0; $a < count($dias_processamento); $a++) {
-                        if (strtotime($dias_processamento[key($dias_processamento)]) >= strtotime($h16_dtconc)) {
+                        if (strtotime((string) $dias_processamento[key($dias_processamento)]) >= strtotime((string) $h16_dtconc)) {
                             if ($n == 0) {
                                 prev($dias_processamento);
                                 $ultimaconessao = new DateTime($dias_processamento[key($dias_processamento)]);
@@ -350,7 +350,7 @@ class ProcessamentoConcessaoController extends Controller
                             $dias = ($operacao == '+' ? $soma_dias : $soma_dias * -1);
                             $novadata =  date('Y-m-d', strtotime(
                                 '+' . $dias . ' days',
-                                strtotime($dias_processamento[key($dias_processamento)])
+                                strtotime((string) $dias_processamento[key($dias_processamento)])
                             ));
                             if ($data == '') {
                                 $data = $novadata;
@@ -382,12 +382,12 @@ class ProcessamentoConcessaoController extends Controller
         $qual_consessao = 1;
         // numero de concessoes apos data atual
         $quantos_apos = 1;
-        $datas_concessoes = array();
+        $datas_concessoes = [];
 
         reset($dias_processamento);
         for ($x = 0; $x < count($dias_processamento); $x++) {
-            if (strtotime($dias_processamento[key($dias_processamento)]) <= strtotime($data_final) ||
-                strtotime($dias_processamento[key($dias_processamento)]) <= strtotime($data_processamento)
+            if (strtotime((string) $dias_processamento[key($dias_processamento)]) <= strtotime((string) $data_final) ||
+                strtotime((string) $dias_processamento[key($dias_processamento)]) <= strtotime((string) $data_processamento)
             ) {
                 $datas_concessoes[$qual_consessao] = $dias_processamento[key($dias_processamento)];
                 $qual_consessao++;
@@ -424,7 +424,7 @@ class ProcessamentoConcessaoController extends Controller
                 foreach ($concessaosCalculo as $key => $concessaoCalculo) {
                     if ($concessaoCalculo->rh505_sequencial != null) {
                         $data = $concessaoCalculo->rh504_data;
-                        if (strtotime($data) != strtotime($datas_concessoes[$i])) {
+                        if (strtotime((string) $data) != strtotime((string) $datas_concessoes[$i])) {
                             ConcessaoCalculoNovaDataLog::where(
                                 'rh508_concessaocalculo',
                                 $concessaoCalculo->rh504_sequencial
@@ -439,7 +439,7 @@ class ProcessamentoConcessaoController extends Controller
                             ]);
 
                             foreach ($array as $key => $value) {
-                                if (strtotime($value[1]) <= strtotime($datas_concessoes[$i])) {
+                                if (strtotime((string) $value[1]) <= strtotime((string) $datas_concessoes[$i])) {
                                     ConcessaoCalculoNovaDataLog::create([
                                         'rh508_concessaocalculo' => $concessaoCalculo->rh504_sequencial,
                                         'rh508_codigo' => $value[0],
@@ -477,7 +477,7 @@ class ProcessamentoConcessaoController extends Controller
                     'rh504_data' => $datas_concessoes[$i + 1],
                 ]);
                 foreach ($array as $key => $value) {
-                    if (strtotime($value[1]) <= strtotime($datas_concessoes[$i + 1])) {
+                    if (strtotime((string) $value[1]) <= strtotime((string) $datas_concessoes[$i + 1])) {
                         ConcessaoCalculoLog::create([
                             'rh507_concessaocalculo' => $data->rh504_sequencial,
                             'rh507_assent' => $value[0],

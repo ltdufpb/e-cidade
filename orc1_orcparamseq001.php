@@ -55,14 +55,14 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array(
+	 $clcriaabas->identifica = [
 	 																	"orcparamseq"                  => "Linhas",
 	 																	"orcparamseqorcparamseqcoluna" => "Colunas",
 	                                  "configuracao"                 => "Configuração Padrão",
-																	);
-	 $clcriaabas->src = array("orcparamseq"=>"orc1_orcparamseq004.php");
-	 $clcriaabas->disabled   =  array("orcparamseqorcparamseqcoluna"=>"true","configuracao" => "true");
-	 $clcriaabas->sizecampo  =  array("configuracao" => 30); 
+																	];
+	 $clcriaabas->src = ["orcparamseq"=>"orc1_orcparamseq004.php"];
+	 $clcriaabas->disabled   =  ["orcparamseqorcparamseqcoluna"=>"true","configuracao" => "true"];
+	 $clcriaabas->sizecampo  =  ["configuracao" => 30]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

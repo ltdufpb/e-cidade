@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pctipocertifdepartamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpctipocertifdepartamento = new cl_pctipocertifdepartamento;
 $clpctipocertifdepartamento->rotulo->label("pc34_sequencial");
 $clpctipocertifdepartamento->rotulo->label("pc34_sequencial");
@@ -98,9 +98,9 @@ $clpctipocertifdepartamento->rotulo->label("pc34_sequencial");
         }else{
            $sql = $clpctipocertifdepartamento->sql_query("",$campos,"pc34_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_pc34_sequencial)){
-          $repassa = array("chave_pc34_sequencial"=>$chave_pc34_sequencial,"chave_pc34_sequencial"=>$chave_pc34_sequencial);
+          $repassa = ["chave_pc34_sequencial"=>$chave_pc34_sequencial,"chave_pc34_sequencial"=>$chave_pc34_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

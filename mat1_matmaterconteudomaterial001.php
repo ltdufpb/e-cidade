@@ -83,7 +83,7 @@ if (isset($incluir)) {
        $sPosScripts .= "document.form1.{$oDaoConteudoMaterial->erro_campo}.focus();\n";
     }
   } else {
-    $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+    $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
   }
 }
 

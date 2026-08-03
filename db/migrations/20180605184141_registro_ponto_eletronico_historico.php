@@ -82,27 +82,27 @@ SQL_DOWN
 
     private function upDDL()
     {
-        $dadosTabela = array(
+        $dadosTabela = [
           'id' => false,
           'schema' => 'pessoal',
           'primary_key' => 'rh215_sequencial',
           'constraint' => 'registrapontoeletronicohistorico_sequ_pk'
-        );
+        ];
 
         $this->execute('CREATE SEQUENCE registrapontoeletronicohistorico_rh215_sequencial_seq');
         $this->table('registrapontoeletronicohistorico', $dadosTabela)
-             ->addColumn('rh215_sequencial',               'integer', array('null' => false))
-             ->addColumn('rh215_matricula',                'integer', array('null' => false))
-             ->addColumn('rh215_registrapontoeletronico',  'boolean', array('null' => false))
-             ->addColumn('rh215_data',                     'date',    array('null' => false))
-             ->addForeignKey('rh215_matricula', 'pessoal.rhpessoal', 'rh01_regist', array('constraint' => 'registrapontoeletronicohistorico_matricula_fk'))
-             ->addIndex('rh215_matricula', array('name' => 'registrapontoeletronicohistorico_matricula_in'))
+             ->addColumn('rh215_sequencial',               'integer', ['null' => false])
+             ->addColumn('rh215_matricula',                'integer', ['null' => false])
+             ->addColumn('rh215_registrapontoeletronico',  'boolean', ['null' => false])
+             ->addColumn('rh215_data',                     'date',    ['null' => false])
+             ->addForeignKey('rh215_matricula', 'pessoal.rhpessoal', 'rh01_regist', ['constraint' => 'registrapontoeletronicohistorico_matricula_fk'])
+             ->addIndex('rh215_matricula', ['name' => 'registrapontoeletronicohistorico_matricula_in'])
         ->save();
     }
 
     private function downDDL()
     {
-        $this->table('registrapontoeletronicohistorico', array('schema' => 'pessoal'))->drop();
+        $this->table('registrapontoeletronicohistorico', ['schema' => 'pessoal'])->drop();
         $this->execute('DROP SEQUENCE IF EXISTS registrapontoeletronicohistorico_rh215_sequencial_seq');
     }
 }

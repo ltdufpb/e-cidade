@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -130,22 +130,22 @@ function js_emite(){
                          $arr_colunas[$r16_codigo]= $r16_descr;
                     }
                   }
-                  $arr_colunas_final   = Array();
-                  $arr_colunas_inicial = Array();
+                  $arr_colunas_final   = [];
+                  $arr_colunas_inicial = [];
                   if(isset($colunas_sselecionados) && $colunas_sselecionados != ""){
-                     $colunas_sselecionados = split(",",$colunas_sselecionados);
+                     $colunas_sselecionados = preg_split("#,#m",$colunas_sselecionados);
                      for($Ic=0;$Ic < count($colunas_sselecionados);$Ic++){
                         $arr_colunas_final[$colunas_sselecionados[$Ic]] = $arr_colunas[$colunas_sselecionados[$Ic]]; 
                      }
                   }
                   if(isset($colunas_nselecionados) && $colunas_nselecionados != ""){
-                     $colunas_nselecionados = split(",",$colunas_nselecionados);
+                     $colunas_nselecionados = preg_split("#,#m",$colunas_nselecionados);
                      for($Ic=0;$Ic < count($colunas_nselecionados);$Ic++){
                         $arr_colunas_inicial[$colunas_nselecionados[$Ic]] = $arr_colunas[$colunas_nselecionados[$Ic]]; 
                      }
                   }
                   if(!isset($colunas_sselecionados) || !isset($colunas_sselecionados) || $colunas_sselecionados == ""){
-                     $arr_colunas_final  = Array();
+                     $arr_colunas_final  = [];
                      $arr_colunas_inicial = $arr_colunas;
                   }
                  db_multiploselect("r16_codigo","r16_descr", "nselecionados", "sselecionados", $arr_colunas_inicial, $arr_colunas_final, 6, 250, "", "", true);
@@ -158,7 +158,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-            $arr_imprime_serv = array("t"=>"Sim","f"=>"Não");
+            $arr_imprime_serv = ["t"=>"Sim","f"=>"Não"];
             db_select('imprime_serv',$arr_imprime_serv,true,4,"");
 	        ?>
 	      </td>

@@ -34,7 +34,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 $clrotulo->label("y30_codnoti");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

@@ -11,13 +11,13 @@ class QuadroGeralHorarioRepository {
      * Collection de Escolas do Quadro Geral de Horário
      * @var array
      */
-    public $arrEscolas = array();
+    public $arrEscolas = [];
 
     /**
      * Collection do Quadro Geral de Horário
      * @var array
      */
-    public $arrQuadroGeral = array();
+    public $arrQuadroGeral = [];
 
     /**
      * Instancia da classe
@@ -293,7 +293,7 @@ class QuadroGeralHorarioRepository {
             )
         );
 
-        $pCorQuadro = pg_result($rsParamQuadro, 0);
+        $pCorQuadro = pg_fetch_result($rsParamQuadro, 0);
 
         return $pCorQuadro;
     }

@@ -85,13 +85,13 @@ function formataData($dData, $iTipo = 1) {
 
   if ($iTipo == 1) {
 
-    $dData = explode('/', $dData);
+    $dData = explode('/', (string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-', $dData);
+ $dData = explode('-', (string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
 
  return $dData;

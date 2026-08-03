@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,9 +55,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Proprietário","g2"=>"Responsável","g3"=>"Técnico","g4"=>"Tipo Responsável");
-       $clcriaabas->title = array("g1"=>"Selecionar proprietário ","g2"=>"Selecionar responsável ","g3"=>"Selecionar técnico ","g4"=>"Selecionar tipo de responsável ");
-       $clcriaabas->src = array("g1"=>"pro2_obrasrelpropri001.php","g2"=>"pro2_obrasrelres001.php","g3"=>"pro2_obrasreltec001.php","g4"=>"pro2_obrasreltipores001.php");
+       $clcriaabas->identifica = ["g1"=>"Proprietário","g2"=>"Responsável","g3"=>"Técnico","g4"=>"Tipo Responsável"];
+       $clcriaabas->title = ["g1"=>"Selecionar proprietário ","g2"=>"Selecionar responsável ","g3"=>"Selecionar técnico ","g4"=>"Selecionar tipo de responsável "];
+       $clcriaabas->src = ["g1"=>"pro2_obrasrelpropri001.php","g2"=>"pro2_obrasrelres001.php","g3"=>"pro2_obrasreltec001.php","g4"=>"pro2_obrasreltipores001.php"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

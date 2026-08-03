@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_turmaacativ_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clturmaacativ = new cl_turmaacativ;
 $clturmaacativ->rotulo->label("ed267_i_codigo");
 $clturmaacativ->rotulo->label("ed267_i_codigo");
@@ -98,9 +98,9 @@ $clturmaacativ->rotulo->label("ed267_i_codigo");
         }else{
            $sql = $clturmaacativ->sql_query("",$campos,"ed267_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed267_i_codigo)){
-          $repassa = array("chave_ed267_i_codigo"=>$chave_ed267_i_codigo,"chave_ed267_i_codigo"=>$chave_ed267_i_codigo);
+          $repassa = ["chave_ed267_i_codigo"=>$chave_ed267_i_codigo,"chave_ed267_i_codigo"=>$chave_ed267_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 $clrotulo->label('o116_periodo');
 $oRelatorio = new relatorioContabil($oGet->codrel);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $anousu = db_getsession("DB_anousu");
 
@@ -109,7 +109,7 @@ $sLabelMsg = "Anexo XIII - Demonstrativo das Parcerias Público-Privadas";
                                             <label for="o116_periodo"><?php echo @$Lo116_periodo; ?></label>
                                             <?php
                                              $aPeriodos = $oRelatorio->getPeriodos();
-                                             $aListaPeriodos = array();
+                                             $aListaPeriodos = [];
                                             $aListaPeriodos[0] = 'Selecione';
                                              foreach ($aPeriodos as $oPeriodo) {
                                                $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;

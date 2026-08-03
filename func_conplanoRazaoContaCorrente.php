@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplano_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconplano = new cl_conplano;
 $clconplano->rotulo->label("c60_codcon");
 $clconplano->rotulo->label("c60_descr");
@@ -45,7 +45,7 @@ $clrotulo->label("c61_reduz");
 function sql_query_contacorrente ( $c60_codcon=null,$c60_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
   $sql = "select ";
   if($campos != "*" ){
-    $campos_sql = split("#",$campos);
+    $campos_sql = preg_split("#\\##m",$campos);
     $virgula = "";
     for($i=0;$i<sizeof($campos_sql);$i++){
       $sql .= $virgula.$campos_sql[$i];
@@ -80,7 +80,7 @@ function sql_query_contacorrente ( $c60_codcon=null,$c60_anousu=null,$campos="*"
   $sql .= $sql2;
   if($ordem != null ){
     $sql .= " order by ";
-    $campos_sql = split("#",$ordem);
+    $campos_sql = preg_split("#\\##m",(string) $ordem);
     $virgula = "";
     for($i=0;$i<sizeof($campos_sql);$i++){
       $sql .= $virgula.$campos_sql[$i];
@@ -191,7 +191,7 @@ if (isset($iConta)) {
         
         echo @$chave_c60_codcon;
         
-        if(isset($chave_c60_codcon) && (trim($chave_c61_reduz)!="") ){
+        if(isset($chave_c60_codcon) && (trim((string) $chave_c61_reduz)!="") ){
 	         $sql = sql_query_contacorrente(null,null,$campos,"c60_codcon","c61_reduz=$chave_c61_reduz $sWhereContaCorrente");
         }elseif(isset($chave_c60_codcon) && (trim($chave_c60_codcon)!="") ){
 	         $sql = sql_query_contacorrente($chave_c60_codcon,null,$campos,"c60_codcon","c60_codcon = $chave_c60_codcon $sWhereContaCorrente");

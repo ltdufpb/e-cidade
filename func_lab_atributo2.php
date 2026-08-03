@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_atributo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_atributo = new cl_lab_atributo;
 $cllab_atributo->rotulo->label("la25_i_codigo");
 $cllab_atributo->rotulo->label("la25_c_descr");
@@ -100,9 +100,9 @@ $cllab_atributo->rotulo->label("la25_c_descr");
         }else{
            $sql = $cllab_atributo->sql_query("",$campos,"la25_i_codigo",$where);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la25_i_codigo)){
-          $repassa = array("chave_la25_i_codigo"=>$chave_la25_i_codigo,"chave_la25_c_descr"=>$chave_la25_c_descr);
+          $repassa = ["chave_la25_i_codigo"=>$chave_la25_i_codigo,"chave_la25_c_descr"=>$chave_la25_c_descr];
         }        
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

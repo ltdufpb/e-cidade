@@ -69,7 +69,7 @@ class DBQueryLog {
     $sArquivo .=" ({$aFunction['function']})";
 
     $tempoDecorrido = $time;
-    $query          = str_replace(array("\n", "\r", "\r\n"), " ", $query);
+    $query          = str_replace(["\n", "\r", "\r\n"], " ", $query);
     pg_query("insert into analise_tempo (duracao, sql, linha, arquivo) values ($tempoDecorrido, '".pg_escape_string($query)."', $iLinha, '$sArquivo')");
   }
 

@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt11');
 $clrotulo->label('k02_codigo');
 $clrotulo->label('k02_drecei');
 //$clrotulo->label('o08_reduz');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -132,7 +132,7 @@ function js_emite(){
       <tr align="rigth">
         <td><strong>Status:</strong></td>
         <td><?php 
-              $xx = array("t"=>"Todos","p"=>"Processados","n"=>"Não processados");
+              $xx = ["t"=>"Todos","p"=>"Processados","n"=>"Não processados"];
               db_select('status',$xx,true,4,"");
             ?>
         </td>
@@ -141,7 +141,7 @@ function js_emite(){
       <tr align="rigth">
         <td><strong>Demonstrar registros sem movimento:</strong></td>
         <td><?php 
-              $yy = array("n"=>"Nao","s"=>"Sim");
+              $yy = ["n"=>"Nao","s"=>"Sim"];
               db_select('registrossemmov',$yy,true,4,"");
             ?>
         </td>

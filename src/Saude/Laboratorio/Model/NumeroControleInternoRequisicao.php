@@ -140,12 +140,12 @@ class NumeroControleInternoRequisicao
      */
     public function toArray()
     {
-        return array(
+        return [
           'la65_sequencial' => $this->getSequencial(),
           'la65_numero'     => $this->getNumero(),
           'la65_ano'        => $this->getAno(),
           'la65_requisicao' => $this->getCodigoRequisicao()
-        );
+        ];
     }
 
     /**

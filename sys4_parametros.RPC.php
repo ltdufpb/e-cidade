@@ -39,13 +39,13 @@ $oParam            = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno          = new stdClass();
 $oRetorno->status  = 1;
 $oRetorno->message = '';
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 switch ($oParam->exec) {
   
   case "getParametros" :
     
     if (count($oParam->aParametros) > 0) {
-      $aParametrosRetornados = array();
+      $aParametrosRetornados = [];
       $i = 0;
       foreach ($oParam->aParametros as $oParametros) {
         

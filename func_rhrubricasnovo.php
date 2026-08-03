@@ -34,8 +34,8 @@ require_once modification('libs/db_usuariosonline.php');
 require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_rhrubricas_classe.php');
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clrhrubricas = new cl_rhrubricas();
 $clrhrubricas->rotulo->label('rh27_rubric');
@@ -87,7 +87,7 @@ $clrhrubricas->rotulo->label('rh27_descr');
                         $opcao_bloq = 1;
                     }
 
-                    $arr_opcao = array('i' => 'Todos', 't' => 'Ativos', 'f' => 'Inativos');
+                    $arr_opcao = ['i' => 'Todos', 't' => 'Ativos', 'f' => 'Inativos'];
                     db_select('opcao', $arr_opcao, true, $opcao_bloq);
 
                     ?>
@@ -105,22 +105,22 @@ $dao = new cl_rhrubricas();
 $service = new RubricasUsuarioService();
 $instituicao = InstituicaoRepository::getInstituicaoSessao();
 $usuario = UsuarioSistemaRepository::getPorCodigo(db_getsession('DB_id_usuario'));
-$where = array();
-$ordem = array();
+$where = [];
+$ordem = [];
 
 if ($service->possuiConfiguracao($usuario, $instituicao)) {
     $dao = new cl_rubricasusuario();
-    $where = array(
+    $where = [
         "rh219_usuario = {$usuario->getCodigo()}",
         "rh219_instituicao = {$instituicao->getCodigo()}"
-    );
+    ];
 }
 
 $naoFiltraUsuario = filter_input(INPUT_GET, 'naoFiltraUsuario', FILTER_VALIDATE_BOOLEAN);
 
 if ($naoFiltraUsuario !== null && $naoFiltraUsuario === true) {
     $dao = new cl_rhrubricas();
-    $where = array();
+    $where = [];
 }
 
 $where[] = "rh27_instit = {$instituicao->getCodigo()}";

@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_orcparamrecursoval_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clorcparamrecursoval = new cl_orcparamrecursoval;
@@ -174,7 +174,7 @@ function js_receita(){
     <br>
     <?php 
 	$db_opcao = 1;
-	$chavepri = array ("o48_seq" =>@$o48_seq);
+	$chavepri =  ["o48_seq" =>@$o48_seq];
 	$cliframe_alterar_excluir->chavepri = $chavepri;
 	$cliframe_alterar_excluir->sql = $clorcparamrecursoval->sql_query(null,"*","o48_codrec", "o48_grupo=2 and o48_anousu=".db_getsession("DB_anousu"));
 	$cliframe_alterar_excluir->campos = "o48_anousu,o48_codrec,o15_descr,o48_valor";

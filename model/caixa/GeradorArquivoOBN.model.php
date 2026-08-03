@@ -237,7 +237,7 @@ class GeradorArquivoOBN {
     $this->salvarGeracaoArquivo();
     $this->salvarGeracaoArquivo();
     $this->vincularMovimentosNaGeracao($aMovimentosAgenda);
-    $this->geraArquivoEnvio($aMovimentosAgenda);
+    $this->geraArquivoEnvio();
     $this->vincularRemessaNumeracao();
     $this->setCodigoSequencialArquivo();
   }
@@ -296,7 +296,7 @@ class GeradorArquivoOBN {
 
     $iContaPagadora             = 0;
 
-    $aCodigoSequenciais = array();
+    $aCodigoSequenciais = [];
 
     $oLayoutTXT = new db_layouttxt(211, $this->sLocalizacaoArquivo);
     $oHeader    = $this->constroiDadosHeader($iCodigoConvenio);
@@ -397,15 +397,15 @@ class GeradorArquivoOBN {
    */
   private function constroiLinhaTipoDois(MovimentoArquivoTransmissao $oDadosLinha) {
 
-    list($iAno, $iMes, $iDia) = explode("-", $this->dtGeracaoArquivo);
-    $iTipoFavorecido          = ConfiguracaoArquivoObn::verificaTipoFavorecido(strlen($oDadosLinha->getCnpj()));
+    [$iAno, $iMes, $iDia] = explode("-", $this->dtGeracaoArquivo);
+    $iTipoFavorecido          = ConfiguracaoArquivoObn::verificaTipoFavorecido(strlen((string) $oDadosLinha->getCnpj()));
     $iTipoOperacao            = ConfiguracaoArquivoObn::verificarTipoOperacao($oDadosLinha);
     $iTipoPagamento           = ConfiguracaoArquivoObn::verificaTipoPagamento($iTipoOperacao);
 
     $sCPFCNPJ = $oDadosLinha->getCnpj();
     if ($iTipoFavorecido == ConfiguracaoArquivoObn::TIPO_CPF) {
       /* [Inicio plugin GeracaoArquivoOBN  - Geracao Arquivo OBN - parte7] */
-      $sCPFCNPJ = str_pad($sCPFCNPJ, 14, " ", STR_PAD_RIGHT);
+      $sCPFCNPJ = str_pad((string) $sCPFCNPJ, 14, " ", STR_PAD_RIGHT);
       /* [Fim plugin GeracaoArquivoOBN  - Geracao Arquivo OBN - parte7] */
     }
 
@@ -453,7 +453,7 @@ class GeradorArquivoOBN {
 
     $sDigitoVerificadorAgenciaFavorecido = $oDadosLinha->getDigitoVerificadorAgenciaFavorecida();
     /* [Inicio plugin GeracaoArquivoOBN  - Geracao Arquivo OBN - parte21] */
-    $sCodigoAgenciaFavorecido            = str_pad(trim($oDadosLinha->getCodigoAgenciaFavorecida()), 04, "0", STR_PAD_LEFT);
+    $sCodigoAgenciaFavorecido            = str_pad(trim((string) $oDadosLinha->getCodigoAgenciaFavorecida()), 04, "0", STR_PAD_LEFT);
     /* [Fim plugin GeracaoArquivoOBN  - Geracao Arquivo OBN - parte21] */
     $sCodigoBancoFavorecido              = $oDadosLinha->getCodigoBancoFavorecido();
     $sContaDigitoFavorecido              = str_pad($oDadosLinha->getContaFavorecida() . $oDadosLinha->getDigitoVerificadorContaFavorecida(), 10, "0", STR_PAD_LEFT);
@@ -477,7 +477,7 @@ class GeradorArquivoOBN {
     $oStdLinhaTipoDois->campo_branco_3 = str_repeat(" ", 4);
 
     /* [Inicio plugin GeracaoArquivoOBN  - Geracao Arquivo OBN - parte9] */
-    $oStdLinhaTipoDois->finalidade_pagamento   = str_pad($sCodigoFinalidadePagamento, 3, "0", STR_PAD_LEFT);
+    $oStdLinhaTipoDois->finalidade_pagamento   = str_pad((string) $sCodigoFinalidadePagamento, 3, "0", STR_PAD_LEFT);
     $oStdLinhaTipoDois->prefixo_conta_convenio = str_pad($sContaDigitoPagadora, 10, "0", STR_PAD_LEFT);
     /* [Fim plugin GeracaoArquivoOBN  - Geracao Arquivo OBN - parte9] */
 
@@ -500,7 +500,7 @@ class GeradorArquivoOBN {
     $oStdLinhaTipoDois->digito_agencia_favorecido   = $sDigitoVerificadorAgenciaFavorecido;
     $oStdLinhaTipoDois->codigo_agencia_favorecido   = $sCodigoAgenciaFavorecido;
     $oStdLinhaTipoDois->codigo_banco_favorecido     = $sCodigoBancoFavorecido;
-    $oStdLinhaTipoDois->valor_liquido               = str_pad(str_replace(".", "", trim($oDadosLinha->getValor())), 17, "0", STR_PAD_LEFT);
+    $oStdLinhaTipoDois->valor_liquido               = str_pad(str_replace(".", "", trim((string) $oDadosLinha->getValor())), 17, "0", STR_PAD_LEFT);
     $oStdLinhaTipoDois->campo_zero_1                = str_repeat("0", 9);
     $oStdLinhaTipoDois->tipo_pagamento              = "0";
     $oStdLinhaTipoDois->codigo_operacao             = $iTipoOperacao;
@@ -537,14 +537,14 @@ class GeradorArquivoOBN {
    */
   private function constroiLinhaTipoTres(MovimentoArquivoTransmissao $oDadosLinha) {
 
-    list($iAno, $iMes, $iDia) = explode("-", $this->dtGeracaoArquivo);
-    $iTipoFavorecido          = ConfiguracaoArquivoObn::verificaTipoFavorecido(strlen($oDadosLinha->getCnpj()));
+    [$iAno, $iMes, $iDia] = explode("-", $this->dtGeracaoArquivo);
+    $iTipoFavorecido          = ConfiguracaoArquivoObn::verificaTipoFavorecido(strlen((string) $oDadosLinha->getCnpj()));
     $iTipoOperacao            = ConfiguracaoArquivoObn::verificarTipoOperacao($oDadosLinha);
     $iTipoPagamento           = ConfiguracaoArquivoObn::verificaTipoPagamento($iTipoOperacao);
 
     $sCPFCNPJ = $oDadosLinha->getCnpj();
     if ($iTipoFavorecido == ConfiguracaoArquivoObn::TIPO_CPF) {
-      $sCPFCNPJ = str_pad($sCPFCNPJ, 14, "0", STR_PAD_RIGHT);
+      $sCPFCNPJ = str_pad((string) $sCPFCNPJ, 14, "0", STR_PAD_RIGHT);
     }
 
     $oStdLinhaTipoTres = new stdClass();
@@ -595,16 +595,16 @@ class GeradorArquivoOBN {
   private function constroiLinhaTipoQuatro(MovimentoArquivoTransmissao $oDadosLinha) {
 
     $oStdLinhaTipoQuatro = new stdClass();
-    $iTipoFavorecido     = ConfiguracaoArquivoObn::verificaTipoFavorecido(strlen($oDadosLinha->getCnpj()));
+    $iTipoFavorecido     = ConfiguracaoArquivoObn::verificaTipoFavorecido(strlen((string) $oDadosLinha->getCnpj()));
     $iTipoOperacao       = ConfiguracaoArquivoObn::verificarTipoOperacao($oDadosLinha);
-    list($iAno, $iMes, $iDia) = explode("-", $this->dtGeracaoArquivo);
-    list($iAnoCodigoBarra, $iMesCodigoBarra, $iDiaCodigoBarra) = explode("-", $oDadosLinha->getDataVencimento());
+    [$iAno, $iMes, $iDia] = explode("-", $this->dtGeracaoArquivo);
+    [$iAnoCodigoBarra, $iMesCodigoBarra, $iDiaCodigoBarra] = explode("-", (string) $oDadosLinha->getDataVencimento());
 
     $sCPFCNPJ = $oDadosLinha->getCnpj();
 
     if ($iTipoFavorecido == ConfiguracaoArquivoObn::TIPO_CPF) {
       /* [Inicio plugin GeracaoArquivoOBN  - Geracao Arquivo OBN - parte7] */
-      $sCPFCNPJ = str_pad($sCPFCNPJ, 14, " ", STR_PAD_RIGHT);
+      $sCPFCNPJ = str_pad((string) $sCPFCNPJ, 14, " ", STR_PAD_RIGHT);
       /* [Fim plugin GeracaoArquivoOBN  - Geracao Arquivo OBN - parte7] */
     }
 
@@ -783,12 +783,12 @@ class GeradorArquivoOBN {
       $this->iSequencialArquivo = $this->getCodigoSequencialArquivo()->o150_proximonumero;
     }
 
-    list($iAno, $iMes, $iDia) = explode("-", $this->dtGeracaoArquivo);
+    [$iAno, $iMes, $iDia] = explode("-", $this->dtGeracaoArquivo);
     $oStdDadosHeader                                = new stdClass();
     $oStdDadosHeader->campo_zero                    = str_repeat("0", 35);
     $oStdDadosHeader->data_geracao_arquivo          = "{$iDia}{$iMes}{$iAno}";
     $oStdDadosHeader->hora_geracao_arquivo          = str_replace(":", "", $this->dtHoraGeracaoArquivo);
-    $oStdDadosHeader->numero_remessa                = str_pad($this->iSequencialArquivo, 5, "0", STR_PAD_LEFT);
+    $oStdDadosHeader->numero_remessa                = str_pad((string) $this->iSequencialArquivo, 5, "0", STR_PAD_LEFT);
     $oStdDadosHeader->campo_exclusivo_header        = "10B001";
     $oStdDadosHeader->numero_contrato_banco_cliente = str_pad($iCodigoConvenio, 9, "0", STR_PAD_LEFT);
     $oStdDadosHeader->campo_branco                  = str_repeat(" ", 276);
@@ -877,6 +877,6 @@ class GeradorArquivoOBN {
 
     private function getCodigoMovimentacaoFormatado($sCodigoMovimento, $iTamanhoFormat = 11)
     {
-        return str_pad(trim($sCodigoMovimento), $iTamanhoFormat, '0', STR_PAD_LEFT);
+        return str_pad(trim((string) $sCodigoMovimento), $iTamanhoFormat, '0', STR_PAD_LEFT);
     }
 }

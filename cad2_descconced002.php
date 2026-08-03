@@ -62,8 +62,8 @@ if ($iNumRownsSql == 0) {
    db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.');
 }
 
-$aDadosDesconto  = array();
-$aResumoDesconto = array();
+$aDadosDesconto  = [];
+$aResumoDesconto = [];
 
 for ($iInd = 0; $iInd < $iNumRownsSql; $iInd++) {
 
@@ -128,12 +128,12 @@ if ($oGet->seltipo == "s") {
   ///////////////
 
 	$lRel = 'P';
-	$iTamCellRes = array();
+	$iTamCellRes = [];
 	$iTamCellRes[0] = 19;
 	$iTamCellRes[1] = 62;
 	$iTamCellRes[2] = 46;
 
-  $iTam = array();
+  $iTam = [];
   $iTam[0] = 110;
   $iTam[1] = 17;
   $iTam[2] = 35;
@@ -206,12 +206,12 @@ if ($oGet->seltipo == "s") {
   ///////////////
 
 	$lRel = 'L';
-	$iTamCellRes = array();
+	$iTamCellRes = [];
   $iTamCellRes[0] = 60;
   $iTamCellRes[1] = 67;
   $iTamCellRes[2] = 46;
 
-  $iTam = array();
+  $iTam = [];
   $iTam[0] = 195;
   $iTam[1] = 24;
   $iTam[2] = 30;

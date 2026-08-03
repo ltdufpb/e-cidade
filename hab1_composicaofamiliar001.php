@@ -132,12 +132,12 @@ $db_opcao   = 1;
                    </td>
                    <td nowrap title="<?=$Tz01_estciv?>"> 
                      <?php 
-                     $x = array(
+                     $x = [
                                 "1" => "Solteiro",
                                 "2" => "Casado",
                                 "3" => "Viúvo",
                                 "4" => "Divorciado"
-                               );
+                               ];
                      db_select('z01_estciv', $x, true, $db_opcao, 'style="width:100%;text-align:left;"' );
                      ?>
                    </td>   
@@ -146,9 +146,9 @@ $db_opcao   = 1;
                    </td>
                    <td nowrap title="<?=$Tz01_dtfalecimento?>"> 
                      <?php 
-                     $aSex = array( 0  => "Selecione",
+                     $aSex = [ 0  => "Selecione",
                                    "M" => "Masculino",
-                                   "F" => "Feminino");
+                                   "F" => "Feminino"];
                      db_select('z01_sexo', $aSex, true, $db_opcao, 'style="width:100%;text-align:left;"');
                      ?>
                    </td>

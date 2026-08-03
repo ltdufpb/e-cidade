@@ -81,7 +81,7 @@ class CredorFornecedorDevedorRepository extends ContaCorrenteRepositoryBase {
    */ 
   private function agrupar() {
 
-    $aContas = array();
+    $aContas = [];
 
     foreach ($this->aContaCorrenteDetalhe as $oConta) {
 
@@ -137,7 +137,7 @@ class CredorFornecedorDevedorRepository extends ContaCorrenteRepositoryBase {
       $oStdCodigoCgm->sIdentificador = "Código no CGM";
       $oStdCodigoCgm->sValor         = $iCodigoCgm;
       
-      $aContas[$sAgrupamento]->aCabecalho   = array();
+      $aContas[$sAgrupamento]->aCabecalho   = [];
       $aContas[$sAgrupamento]->aCabecalho[] = $oStdInstituicao;
       $aContas[$sAgrupamento]->aCabecalho[] = $oStdNomeCredor;
       $aContas[$sAgrupamento]->aCabecalho[] = $oStdCpfCnpj;

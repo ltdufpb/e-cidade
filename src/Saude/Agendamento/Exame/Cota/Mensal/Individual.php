@@ -52,7 +52,7 @@ class Individual extends Mensal implements CotaMensalInterface {
    * @return integer
    */
   public function getPrestadorExameArray() {
-    return array($this->iPrestadorExame);
+    return [$this->iPrestadorExame];
   }
 
   /**

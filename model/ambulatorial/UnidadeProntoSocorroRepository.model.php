@@ -37,7 +37,7 @@
      * Collection de UnidadeProntoSocorro 
      * @var array
      */    
-    private $aUnidadeProntoSocorro = array();
+    private $aUnidadeProntoSocorro = [];
     
     /**
      * Instancia da classe 

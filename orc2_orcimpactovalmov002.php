@@ -48,7 +48,7 @@ $clorctiporec          = new cl_orctiporec;
 $clorcimpactovalmovmes->rotulo->label();
 $clrotulo = new rotulocampo;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if(isset($recurso) && $recurso !='' && $recurso !=0){
   $result = $clorctiporec->sql_record($clorctiporec->sql_query_file($recurso));
@@ -98,9 +98,9 @@ if($numrows==0){
 }
 //---------------------------------------------------------------------------------
 
-$arr_dadosimprime = Array();
+$arr_dadosimprime = [];
 for($i=$o96_anoini;$i<=$o96_anofim;$i++){
-  $arr_data = split("/",db_formatar($o62_data,"d"));
+  $arr_data = preg_split("#\\/#m",db_formatar($o62_data,"d"));
   $dataorcimpactoger = $arr_data[2];
   if($i==$dataorcimpactoger){
     $arr_dadosimprime["A"][$i] = $o62_ativo;
@@ -138,7 +138,7 @@ for($i=$o96_anoini;$i<=$o96_anofim;$i++){
 
   //-------------------------------------------------------------------------------
   //Pega os valores de despesas orcimpactovalmov
-  $arr_cods =  array();
+  $arr_cods =  [];
   $sql02= $clorcimpactovalmov->sql_query_soma(null,"sum(o64_valor) as o64_valor,o64_exercicio","o64_exercicio","$dbwhere group by o64_exercicio");
   $result02  = $clorcimpactovalmov->sql_record($sql02);
   $numrows02 = $clorcimpactovalmov->numrows;

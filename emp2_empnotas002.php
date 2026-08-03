@@ -43,7 +43,7 @@ $clrotulo->label('e69_dtrecebe');
 $clrotulo->label('z01_nome');
 $clrotulo->label('z01_numcgm');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 // db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -51,7 +51,7 @@ $where = "";
 if ($codigos!=""){
     $where = " where e60_numcgm  in ($codigos)";
 }
-if (strlen($data_ini) > 5 && strlen($data_fin)>5){
+if (strlen((string) $data_ini) > 5 && strlen((string) $data_fin)>5){
    if ($where !="")
       $where .=" and e60_emiss between '$data_ini' and '$data_fin'";
    else
@@ -124,7 +124,7 @@ $tpag_anu  =  0;
 $tpag_pag  =  0;
 
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x,true);
 
    // codigo não repete o cgm

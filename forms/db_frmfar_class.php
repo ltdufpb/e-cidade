@@ -92,7 +92,7 @@ db_input('fa05_i_codigo',10,$Ifa05_i_codigo,true,'text',3,"")
     </td>
     <td>
           <?php 
-          $sex = array("S"=>"Sintético","A"=>"Analítico");
+          $sex = ["S"=>"Sintético","A"=>"Analítico"];
           db_select('fa05_c_tipo',$sex,true,$db_opcao);
           ?>
           </td>
@@ -142,7 +142,7 @@ function js_preenchepesquisa(chave){
   db_iframe_far_class.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

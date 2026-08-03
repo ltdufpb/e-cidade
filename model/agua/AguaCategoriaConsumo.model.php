@@ -154,7 +154,7 @@ class AguaCategoriaConsumo {
   public function adicionarEstrutura(AguaEstruturaTarifaria $oEstrutura) {
 
     if ($this->aEstruturasTarifarias === null) {
-      $this->aEstruturasTarifarias = array();
+      $this->aEstruturasTarifarias = [];
     }
     /**
      * @todo persistir ordenação e remover essa lógica
@@ -227,7 +227,7 @@ class AguaCategoriaConsumo {
    */
   public function getEstruturasPorTipo($iTipo) {
 
-    $aEstruturas = array();
+    $aEstruturas = [];
     foreach ($this->getEstruturas() as $oEstrutura) {
 
       if ($oEstrutura->getCodigoTipoEstrutura() == $iTipo) {

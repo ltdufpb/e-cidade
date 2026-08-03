@@ -38,7 +38,7 @@ $clorcsuplem->rotulo->label();
 
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao=1;
 ?>
 

@@ -18,122 +18,122 @@ class M8305RegimeCompetencia extends PostgresMigration
       /**
        * inserção dos dados na tabela db_syscampo
        */
-      $aColunas   = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-      $aValores   = array();
+      $aColunas   = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+      $aValores   = [];
       // programacaofinanceira
-      $aValores[] = array(22410,'k117_despesaantecipada','bool','Informa se o contrato é uma despesa antecipada ou nõ','f', 'Despesa Antecipada',1,'f','f','f',5,'text','Despesa Antecipada');
-      $aValores[] = array(22411,'k117_conta','int4','Conta contábil onde será debitado o valor','0', 'Conta',10,'f','f','f',1,'text','Conta');
+      $aValores[] = [22410,'k117_despesaantecipada','bool','Informa se o contrato é uma despesa antecipada ou nõ','f', 'Despesa Antecipada',1,'f','f','f',5,'text','Despesa Antecipada'];
+      $aValores[] = [22411,'k117_conta','int4','Conta contábil onde será debitado o valor','0', 'Conta',10,'f','f','f',1,'text','Conta'];
 
       // programacaofinanceiraitem
-      $aValores[] = array(22412,'k175_sequencial','int4','Código sequencial da tabela programacaofinanceiraitem','0', 'Código',10,'f','f','f',1,'text','Código');
-      $aValores[] = array(22413,'k175_item','int4','Código de relação com o item de contrato','0', 'Item',10,'f','f','f',1,'text','Item');
-      $aValores[] = array(22414,'k175_programaacaofinanceira','int4','Código da programação financeira. Tabela: programacaofinanceira','0', 'Programação Financeira',10,'f','f','f',1,'text','Programação Financeira');
-      $aValores[] = array(22415,'k175_valortotal','float8','Valor total do item do contrato','0', 'Valor Total',10,'f','f','f',4,'text','Valor Total');
+      $aValores[] = [22412,'k175_sequencial','int4','Código sequencial da tabela programacaofinanceiraitem','0', 'Código',10,'f','f','f',1,'text','Código'];
+      $aValores[] = [22413,'k175_item','int4','Código de relação com o item de contrato','0', 'Item',10,'f','f','f',1,'text','Item'];
+      $aValores[] = [22414,'k175_programaacaofinanceira','int4','Código da programação financeira. Tabela: programacaofinanceira','0', 'Programação Financeira',10,'f','f','f',1,'text','Programação Financeira'];
+      $aValores[] = [22415,'k175_valortotal','float8','Valor total do item do contrato','0', 'Valor Total',10,'f','f','f',4,'text','Valor Total'];
 
       //conlancamprogramacaofinanceiraparcela
-      $aValores[] = array(22417,'c118_conlancam','int4','Código do lançamento contabil','0', 'Lançamento Contabil',10,'f','f','f',1,'text','Lançamento Contabil');
-      $aValores[] = array(22418,'c118_programacaofinanceiraparcela','int4','Vinculo com a tabela programacaofinanceiraparcela','0', 'Programação Financeira Parcela',10,'f','f','f',1,'text','Programação Financeira Parcela');
-      $aValores[] = array(22420 ,'k118_ano' ,'int4' ,'Ano' ,'' ,'Ano' ,4 ,'false' ,'false' ,'false' ,1 ,'text' ,'Ano' );
-      $aValores[] = array(22421 ,'k118_mes' ,'int4' ,'Mês' ,'' ,'Mês' ,2 ,'false' ,'false' ,'false' ,1 ,'text' ,'Mês');
-      $aValores[] = array(22422 ,'k118_reconhecido' ,'bool' ,'Parcela já reconhecida' ,'false' ,'Reconhecido' ,1 ,'true' ,'false' ,'false' ,5 ,'text' ,'Reconhecido');
+      $aValores[] = [22417,'c118_conlancam','int4','Código do lançamento contabil','0', 'Lançamento Contabil',10,'f','f','f',1,'text','Lançamento Contabil'];
+      $aValores[] = [22418,'c118_programacaofinanceiraparcela','int4','Vinculo com a tabela programacaofinanceiraparcela','0', 'Programação Financeira Parcela',10,'f','f','f',1,'text','Programação Financeira Parcela'];
+      $aValores[] = [22420 ,'k118_ano' ,'int4' ,'Ano' ,'' ,'Ano' ,4 ,'false' ,'false' ,'false' ,1 ,'text' ,'Ano' ];
+      $aValores[] = [22421 ,'k118_mes' ,'int4' ,'Mês' ,'' ,'Mês' ,2 ,'false' ,'false' ,'false' ,1 ,'text' ,'Mês'];
+      $aValores[] = [22422 ,'k118_reconhecido' ,'bool' ,'Parcela já reconhecida' ,'false' ,'Reconhecido' ,1 ,'true' ,'false' ,'false' ,5 ,'text' ,'Reconhecido'];
 
-      $oSysCampo = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+      $oSysCampo = $this->table('db_syscampo', ['schema' => 'configuracoes']);
       $oSysCampo->insert($aColunas, $aValores);
       $oSysCampo->saveData();
 
-      $aColunas = array('codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform');
-      $aValores = array();
+      $aColunas = ['codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform'];
+      $aValores = [];
       // tabela programacaofinanceiraitem
-      $aValores[]  = array(4034, 'programacaofinanceiraitem', 'vinculo do item de contrato com a programação financeira', 'k175', '2017-03-21', 'Programação Financeira Item', 0, 'f', 'f', 'f', 'f' );
+      $aValores[]  = [4034, 'programacaofinanceiraitem', 'vinculo do item de contrato com a programação financeira', 'k175', '2017-03-21', 'Programação Financeira Item', 0, 'f', 'f', 'f', 'f' ];
       // tabela conlancamprogramacaofinanceiraparcela
-      $aValores[]  = array(4035, 'conlancamprogramacaofinanceiraparcela', 'Tabela de vinculo entra a conlancam e programacaofinanceiraparcela', 'c118', '2017-03-22', 'conlancam_programacaofinanceiraparcela', 0, 'f', 'f', 'f', 'f' );
-      $oSysArquivo = $this->table('db_sysarquivo', array('schema' => 'configuracoes'));
+      $aValores[]  = [4035, 'conlancamprogramacaofinanceiraparcela', 'Tabela de vinculo entra a conlancam e programacaofinanceiraparcela', 'c118', '2017-03-22', 'conlancam_programacaofinanceiraparcela', 0, 'f', 'f', 'f', 'f' ];
+      $oSysArquivo = $this->table('db_sysarquivo', ['schema' => 'configuracoes']);
       $oSysArquivo->insert($aColunas, $aValores);
       $oSysArquivo->saveData();
 
-      $oSysArquivo = $this->table('db_sysarqmod', array('schema' => 'configuracoes'));
-      $aValores = array();
+      $oSysArquivo = $this->table('db_sysarqmod', ['schema' => 'configuracoes']);
+      $aValores = [];
       //Vinculando a tabela programacaofinanceiraitem ao modulo
-      $aValores[] = array(5,4034);
+      $aValores[] = [5,4034];
       //Vinculando a tabela conlancamprogramacaofinanceiraparcela ao modulo
-      $aValores[] = array(32,4035);
-      $oSysArquivo->insert(array('codmod', 'codarq'), $aValores);
+      $aValores[] = [32,4035];
+      $oSysArquivo->insert(['codmod', 'codarq'], $aValores);
       $oSysArquivo->saveData();
 
       $this->execute('delete from db_sysarqcamp where codarq = 3025 and codcam in (17128, 17129, 17130)');
 
       // inserindo colunas db_sysarqcamp
-      $aColunas   = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-      $aValores   = array();
+      $aColunas   = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+      $aValores   = [];
       // programacaofinanceira
-      $aValores[] = array(3025,22410,4,0);
-      $aValores[] = array(3025,22411,5,0);
+      $aValores[] = [3025,22410,4,0];
+      $aValores[] = [3025,22411,5,0];
       // programacaofinanceiraitem
-      $aValores[] = array(4034,22412,1,1000658);
-      $aValores[] = array(4034,22413,2,0);
-      $aValores[] = array(4034,22414,3,0);
-      $aValores[] = array(4034,22415,4,0);
+      $aValores[] = [4034,22412,1,1000658];
+      $aValores[] = [4034,22413,2,0];
+      $aValores[] = [4034,22414,3,0];
+      $aValores[] = [4034,22415,4,0];
       //programacaofinanceiraparcela
 //      $aValores[] = array(3026,22416,2,0);
       //conlancamprogramacaofinanceiraparcela
-      $aValores[] = array(4035,22417,1,0);
-      $aValores[] = array(4035,22418,2,0);
-      $aValores[] = array(3026 ,22420 ,5 ,0 );
-      $aValores[] = array(3026 ,22421 ,5 ,0);
-      $aValores[] = array(3026 ,22422 ,5 ,0);
+      $aValores[] = [4035,22417,1,0];
+      $aValores[] = [4035,22418,2,0];
+      $aValores[] = [3026 ,22420 ,5 ,0 ];
+      $aValores[] = [3026 ,22421 ,5 ,0];
+      $aValores[] = [3026 ,22422 ,5 ,0];
 
-      $oSysArqCamp = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+      $oSysArqCamp = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
       $oSysArqCamp->insert($aColunas, $aValores);
       $oSysArqCamp->saveData();
 
       // sequencia tabela programacaofinanceiraitem
-      $aColunas   = array('codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq');
-      $aValores   = array(array(1000658, 'programacaofinanceiraitem_k175_sequencial_seq', 1, 1, 9223372036854775807, 1, 1));
+      $aColunas   = ['codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq'];
+      $aValores   = [[1000658, 'programacaofinanceiraitem_k175_sequencial_seq', 1, 1, 9223372036854775807, 1, 1]];
 
-      $oSysSequencia = $this->table('db_syssequencia', array('schema' => 'configuracoes'));
+      $oSysSequencia = $this->table('db_syssequencia', ['schema' => 'configuracoes']);
       $oSysSequencia->insert($aColunas, $aValores);
       $oSysSequencia->saveData();
 
-      $aColunas   = array('codarq','codcam','sequen','camiden');
-      $aValores   = array();
+      $aColunas   = ['codarq','codcam','sequen','camiden'];
+      $aValores   = [];
 
       // primary tabela programacaofinanceiraitem
-      $aValores[] = array(4034,22412,1,22412);
+      $aValores[] = [4034,22412,1,22412];
       // primary tabela conlancamprogramacaofinanceiraparcela
-      $aValores[] = array(4035,22417,1,22417);
-      $aValores[] = array(4035,22418,2,22417);
+      $aValores[] = [4035,22417,1,22417];
+      $aValores[] = [4035,22418,2,22417];
 
-      $oSysPriKey = $this->table('db_sysprikey', array('schema' => 'configuracoes'));
+      $oSysPriKey = $this->table('db_sysprikey', ['schema' => 'configuracoes']);
       $oSysPriKey->insert($aColunas, $aValores);
       $oSysPriKey->saveData();
 
       // Chaves estrangeiras
-      $aColunas   = array('codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel');
-      $aValores   = array();
+      $aColunas   = ['codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel'];
+      $aValores   = [];
       // chave estrangeira da tabela programacaofinanceira
-      $aValores[] = array(3025,22411,1,774,0);
+      $aValores[] = [3025,22411,1,774,0];
       // chave estrangeira da tabela programacaofinanceiraitem
-      $aValores[] = array(4034,22414,1,3025,0);
-      $aValores[] = array(4034,22413,1,2837,0);
+      $aValores[] = [4034,22414,1,3025,0];
+      $aValores[] = [4034,22413,1,2837,0];
       //chave estrangeira da tabela programacaofinanceiraparcela
 //      $aValores[] = array(3026,22416,1,4034,0);
       //chave estrangeira da tabela conlancamprogramacaofinanceiraparcela
-      $aValores[] = array(4035,22417,1,760,0);
-      $aValores[] = array(4035,22418,1,3026,0);
+      $aValores[] = [4035,22417,1,760,0];
+      $aValores[] = [4035,22418,1,3026,0];
 
-      $oSysForKey = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
+      $oSysForKey = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
       $oSysForKey->insert($aColunas, $aValores);
       $oSysForKey->saveData();
 
      /**
       * Indices
       */
-     $aColumns = array('codind', 'nomeind', 'codarq', 'campounico');
-     $aValues  = array(
-       array(4432,'programacaofinanceiraparcela_ano_in',3026,'0'),
-       array(4433,'programacaofinanceiraparcela_mes_in',3026,'0'),
-     );
-     $table    = $this->table('db_sysindices', array('schema' => 'configuracoes'));
+     $aColumns = ['codind', 'nomeind', 'codarq', 'campounico'];
+     $aValues  = [
+       [4432,'programacaofinanceiraparcela_ano_in',3026,'0'],
+       [4433,'programacaofinanceiraparcela_mes_in',3026,'0'],
+     ];
+     $table    = $this->table('db_sysindices', ['schema' => 'configuracoes']);
      $table->insert($aColumns, $aValues);
      $table->saveData();
       //Alterando a coluna da tabela k118_competencia de k18_datapagamento para k118_competencia
@@ -163,7 +163,7 @@ STRING
       /**
        * Criando a tabela programacaofinanceiraitem.
        */
-      $oProgramacaofinanceiraitem = $this->table('programacaofinanceiraitem', array('schema' => 'caixa', 'id' => false, 'primary_key' => 'k175_sequencial'));
+      $oProgramacaofinanceiraitem = $this->table('programacaofinanceiraitem', ['schema' => 'caixa', 'id' => false, 'primary_key' => 'k175_sequencial']);
       $oProgramacaofinanceiraitem->addColumn('k175_sequencial', 'integer')
                                  ->addColumn('k175_item', 'integer')
                                  ->addColumn('k175_programaacaofinanceira', 'integer')
@@ -176,27 +176,27 @@ STRING
       $this->execute("ALTER TABLE caixa.programacaofinanceiraitem ALTER COLUMN k175_sequencial SET DEFAULT nextval('caixa.programacaofinanceiraitem_k175_sequencial_seq')");
 
       // realizando alteracoes necessarias na tabela programacaofinanceira
-      $oProgramacaofinanceira = $this->table('programacaofinanceira', array('schema' => 'caixa'));
+      $oProgramacaofinanceira = $this->table('programacaofinanceira', ['schema' => 'caixa']);
       $oProgramacaofinanceira->removeColumn('k117_periodicidade')
                              ->removeColumn('k117_valortotal')
                              ->removeColumn('k117_diapagamento')
-                             ->addColumn('k117_despesaantecipada','boolean', array('default' => 'f'))
-                             ->addColumn('k117_conta', 'integer', array('null' => true))
+                             ->addColumn('k117_despesaantecipada','boolean', ['default' => 'f'])
+                             ->addColumn('k117_conta', 'integer', ['null' => true])
                              ->save();
 
       // realizando alteracoes necessarias na tabela programacaofinanceiraparcela
-      $oProgramacaofinanceiraParcela = $this->table('programacaofinanceiraparcela', array('schema' => 'caixa'));
+      $oProgramacaofinanceiraParcela = $this->table('programacaofinanceiraparcela', ['schema' => 'caixa']);
       $oProgramacaofinanceiraParcela->removeColumn('k118_datapagamento')
-                                    ->addColumn('k118_ano', 'integer', array('null' => true))
-                                    ->addColumn('k118_mes', 'integer', array('null' => true))
-                                    ->addColumn('k118_reconhecido', 'boolean', array('default'=>false, 'null'=>true))
-                                    ->addIndex(array('k118_ano'), array('name' => 'programacaofinanceiraparcela_ano_in'))
-                                    ->addIndex(array('k118_mes'), array('name' => 'programacaofinanceiraparcela_mes_in'))
+                                    ->addColumn('k118_ano', 'integer', ['null' => true])
+                                    ->addColumn('k118_mes', 'integer', ['null' => true])
+                                    ->addColumn('k118_reconhecido', 'boolean', ['default'=>false, 'null'=>true])
+                                    ->addIndex(['k118_ano'], ['name' => 'programacaofinanceiraparcela_ano_in'])
+                                    ->addIndex(['k118_mes'], ['name' => 'programacaofinanceiraparcela_mes_in'])
                                     ->save();
 
       $this->execute('alter table programacaofinanceiraparcela alter column k118_valor type numeric;');
 
-      $oConlanParcela = $this->table('conlancamprogramacaofinanceiraparcela', array('schema' => 'contabilidade', 'id' => false, 'primary_key' => array('c118_conlancam', 'c118_programacaofinanceiraparcela')));
+      $oConlanParcela = $this->table('conlancamprogramacaofinanceiraparcela', ['schema' => 'contabilidade', 'id' => false, 'primary_key' => ['c118_conlancam', 'c118_programacaofinanceiraparcela']]);
       $oConlanParcela->addColumn('c118_conlancam', 'integer')
                      ->addColumn('c118_programacaofinanceiraparcela', 'integer')
                      ->addForeignKey('c118_conlancam', 'contabilidade.conlancam', 'c70_codlan')
@@ -209,35 +209,35 @@ STRING
       //Atualização do nome do menu de Programação Financeira para Programação de Regime de COmpetência.
       $this->execute("update db_itensmenu set descricao='Programação do Regime de Competência' , help='Programação de Regime de Competência', funcao='con4_programacaoregimecompetencia001.php' where id_item=8580");
 
-      $oDBItensMenu = $this->table('db_itensmenu', array('schema' => 'configuracoes'));
-      $oDBMenu      = $this->table('db_menu', array('schema' => 'configuracoes'));
+      $oDBItensMenu = $this->table('db_itensmenu', ['schema' => 'configuracoes']);
+      $oDBMenu      = $this->table('db_menu', ['schema' => 'configuracoes']);
 
-      $aColunas   = array('id_item','descricao','help','funcao','itemativo','manutencao','desctec','libcliente');
-      $aValores   = array();
+      $aColunas   = ['id_item','descricao','help','funcao','itemativo','manutencao','desctec','libcliente'];
+      $aValores   = [];
 
       // Menu procedimentos > Regime de Competência.
-      $aValores[] = array(10414, 'Regime de competência', 'Regime de competência', 'cai4_regimecompetencia001.php', '1', '1', 'rotina para realização do reconhecimento de divida', 'true');
+      $aValores[] = [10414, 'Regime de competência', 'Regime de competência', 'cai4_regimecompetencia001.php', '1', '1', 'rotina para realização do reconhecimento de divida', 'true'];
 
       // Menu relatório > Regime de Competência.
-      $aValores[] = array(10415 ,' Regime de competência' ,' Regime de competência' ,'cai2_regimecompetencia001.php' ,'1' ,'1' ,'Relatório para o Regime de competência.' ,'true');
+      $aValores[] = [10415 ,' Regime de competência' ,' Regime de competência' ,'cai2_regimecompetencia001.php' ,'1' ,'1' ,'Relatório para o Regime de competência.' ,'true'];
 
       $oDBItensMenu->insert($aColunas, $aValores);
       $oDBItensMenu->saveData();
 
 
-      $aDbMenu = array(
+      $aDbMenu = [
         'id_item' =>  9828,
         'id_item_filho' =>  10414,
         'menusequencia' =>  7,
         'modulo' => 209
-      );
+      ];
 
-      $aColunas   = array('id_item' ,'id_item_filho' ,'menusequencia' ,'modulo');
-      $aValores   = array();
+      $aColunas   = ['id_item' ,'id_item_filho' ,'menusequencia' ,'modulo'];
+      $aValores   = [];
       // Menu procedimentos > Regime de Competência.
-      $aValores[] = array(9828, 10414, 7, 209);
+      $aValores[] = [9828, 10414, 7, 209];
       // Menu relatório > Regime de Competência.
-      $aValores[] = array(3331 ,10415 ,50 ,209);
+      $aValores[] = [3331 ,10415 ,50 ,209];
 
       $oDBMenu->insert($aColunas, $aValores);
       $oDBMenu->saveData();
@@ -291,16 +291,16 @@ STRING
       $this->execute('delete from db_sysarquivo where codarq in(4034, 4035)');
 
 
-      $oProgramacaofinanceira = $this->table('programacaofinanceira', array('schema' => 'caixa'));
-      $oProgramacaofinanceira->addColumn('k117_periodicidade', 'integer', array('null' => true))
-                             ->addColumn('k117_valortotal', 'float', array('null' => true))
-                             ->addColumn('k117_diapagamento', 'integer', array('null' => true))
+      $oProgramacaofinanceira = $this->table('programacaofinanceira', ['schema' => 'caixa']);
+      $oProgramacaofinanceira->addColumn('k117_periodicidade', 'integer', ['null' => true])
+                             ->addColumn('k117_valortotal', 'float', ['null' => true])
+                             ->addColumn('k117_diapagamento', 'integer', ['null' => true])
                              ->removeColumn('k117_despesaantecipada')
                              ->removeColumn('k117_conta')
                              ->save();
 
-      $oProgramacaofinanceiraParcela = $this->table('programacaofinanceiraparcela', array('schema' => 'caixa'));
-      $oProgramacaofinanceiraParcela->addColumn('k118_datapagamento', 'date', array('null' => true))
+      $oProgramacaofinanceiraParcela = $this->table('programacaofinanceiraparcela', ['schema' => 'caixa']);
+      $oProgramacaofinanceiraParcela->addColumn('k118_datapagamento', 'date', ['null' => true])
                                     ->removeColumn('k118_ano')
                                     ->removeColumn('k118_mes')
                                     ->removeColumn('k118_reconhecido')

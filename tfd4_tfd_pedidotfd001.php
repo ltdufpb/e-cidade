@@ -56,9 +56,9 @@ $rsParametros = $oDaoTfdParametros->sql_record($oDaoTfdParametros->sql_query_fil
 if ($oDaoTfdParametros->numrows > 0) {
   $oParametros = db_utils::fieldsmemory($rsParametros, 0);
 }
-$z01_d_nasc_dia  = isset($z01_d_nasc_dia) ? $z01_d_nasc_dia : "";
-$z01_d_nasc_mes  = isset($z01_d_nasc_mes) ? $z01_d_nasc_mes : "";
-$z01_d_nasc_ano  = isset($z01_d_nasc_ano) ? $z01_d_nasc_ano : "";
+$z01_d_nasc_dia ??= "";
+$z01_d_nasc_mes ??= "";
+$z01_d_nasc_ano ??= "";
 $z01_i_cgsund2   = '';
 ?>
 <html>
@@ -87,23 +87,13 @@ $z01_i_cgsund2   = '';
      */
     <?php
     
-    switch ($oParametros->tf11_i_campofoco) {
-    
-      case 1:
-        $sCampoFoco = 'tf01_i_cgsund';
-        break;
-      case 2:
-        $sCampoFoco = 's115_c_cartaosus2';
-        break;
-      case 3:
-        $sCampoFoco = 'tf30_i_encaminhamento';
-        break;
-      case 4:
-        $sCampoFoco = 'tf29_i_prontuario';
-        break;
-       default:
-         $sCampoFoco = 'tf01_i_cgsund';
-    }
+    $sCampoFoco = match ($oParametros->tf11_i_campofoco) {
+        1 => 'tf01_i_cgsund',
+        2 => 's115_c_cartaosus2',
+        3 => 'tf30_i_encaminhamento',
+        4 => 'tf29_i_prontuario',
+        default => 'tf01_i_cgsund',
+    };
     ?>
     js_tabulacaoforms('form1', '<?=$sCampoFoco?>', true, 1, '<?=$sCampoFoco?>', true);
   </script>

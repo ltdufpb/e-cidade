@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_clientes_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clclientes = new cl_clientes;
 $clclientes->rotulo->label("at01_codcli");
 $clclientes->rotulo->label("at01_nomecli");
@@ -98,9 +98,9 @@ $clclientes->rotulo->label("at01_nomecli");
         }else{
            $sql = $clclientes->sql_query("",$campos,"at01_codcli","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at01_nomecli)){
-          $repassa = array("chave_at01_codcli"=>$chave_at01_codcli,"chave_at01_nomecli"=>$chave_at01_nomecli);
+          $repassa = ["chave_at01_codcli"=>$chave_at01_codcli,"chave_at01_nomecli"=>$chave_at01_nomecli];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

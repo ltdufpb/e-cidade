@@ -90,7 +90,7 @@ $oRotulo->label('ed112_justificativa');
               </td>
               <td>
                 <?php
-                  $aHabilita = array('false' => 'Não', 'true' => 'Sim');
+                  $aHabilita = ['false' => 'Não', 'true' => 'Sim'];
                   db_select('ed112_habilitado', $aHabilita, true, 1, 'onchange = "js_liberaCampos();"');
                 ?>
               </td>
@@ -123,7 +123,7 @@ $oRotulo->label('ed112_justificativa');
               </td>
               <td>
                 <?php
-                  $aControlaFrequencia = array('false' => 'Não', 'true' => 'Sim');
+                  $aControlaFrequencia = ['false' => 'Não', 'true' => 'Sim'];
                   db_select('ed112_controlefrequencia', $aControlaFrequencia, true, 1);
                 ?>
               </td>
@@ -134,7 +134,7 @@ $oRotulo->label('ed112_justificativa');
               </td>
               <td>
                 <?php
-                  $aEliminaDependencia = array('false' => 'Não', 'true' => 'Sim');
+                  $aEliminaDependencia = ['false' => 'Não', 'true' => 'Sim'];
                   db_select('ed112_disciplinaeliminadependencia', $aEliminaDependencia, true, 1,
                             'onchange = "js_liberaJustificativa();"');
                 ?>

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE atendimentoorigem
 class cl_atendimentoorigem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at11_sequencial = 0; 
-   var $at11_novoatend = 0; 
-   var $at11_origematend = 0; 
+   public $at11_sequencial = 0; 
+   public $at11_novoatend = 0; 
+   public $at11_origematend = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at11_sequencial = int4 = Sequencia 
                  at11_novoatend = int4 = Codigo novo de atendimento 
                  at11_origematend = int4 = Codigo original de atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_atendimentoorigem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendimentoorigem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,10 +106,10 @@ class cl_atendimentoorigem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->at11_sequencial = pg_result($result,0,0); 
+       $this->at11_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from atendimentoorigem_at11_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $at11_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $at11_sequencial)){
          $this->erro_sql = " Campo at11_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -133,7 +133,7 @@ class cl_atendimentoorigem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Registro de Atendimentos () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Registro de Atendimentos já Cadastrado";
@@ -160,14 +160,14 @@ class cl_atendimentoorigem {
       $this->atualizacampos();
      $sql = " update atendimentoorigem set ";
      $virgula = "";
-     if(trim($this->at11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at11_sequencial"])){ 
+     if(trim((string) $this->at11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at11_sequencial"])){ 
        $sql  .= $virgula." at11_sequencial = $this->at11_sequencial ";
        $virgula = ",";
      }
-     if(trim($this->at11_novoatend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at11_novoatend"])){ 
+     if(trim((string) $this->at11_novoatend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at11_novoatend"])){ 
        $sql  .= $virgula." at11_novoatend = $this->at11_novoatend ";
        $virgula = ",";
-       if(trim($this->at11_novoatend) == null ){ 
+       if(trim((string) $this->at11_novoatend) == null ){ 
          $this->erro_sql = " Campo Codigo novo de atendimento nao Informado.";
          $this->erro_campo = "at11_novoatend";
          $this->erro_banco = "";
@@ -177,10 +177,10 @@ class cl_atendimentoorigem {
          return false;
        }
      }
-     if(trim($this->at11_origematend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at11_origematend"])){ 
+     if(trim((string) $this->at11_origematend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at11_origematend"])){ 
        $sql  .= $virgula." at11_origematend = $this->at11_origematend ";
        $virgula = ",";
-       if(trim($this->at11_origematend) == null ){ 
+       if(trim((string) $this->at11_origematend) == null ){ 
          $this->erro_sql = " Campo Codigo original de atendimento nao Informado.";
          $this->erro_campo = "at11_origematend";
          $this->erro_banco = "";
@@ -271,7 +271,7 @@ $sql .= "at11_sequencial = '$at11_sequencial'";     $result = @db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:atendimentoorigem";
@@ -285,7 +285,7 @@ $sql .= "at11_sequencial = '$at11_sequencial'";     $result = @db_query($sql);
    function sql_query ( $at11_sequencial = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -306,7 +306,7 @@ $sql .= "at11_sequencial = '$at11_sequencial'";     $result = @db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -318,7 +318,7 @@ $sql .= "at11_sequencial = '$at11_sequencial'";     $result = @db_query($sql);
    function sql_query_file ( $at11_sequencial = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -336,7 +336,7 @@ $sql .= "at11_sequencial = '$at11_sequencial'";     $result = @db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

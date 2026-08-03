@@ -153,7 +153,7 @@ class ManutencaoRetencaoService
          */
         if ($filters) {
             if ($filters->nota) {
-                $nota = trim($filters->nota);
+                $nota = trim((string) $filters->nota);
                 $query->whereRaw('trim(empnota.e69_numero) = ?', [$nota]);
             }
 

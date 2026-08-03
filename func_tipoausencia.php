@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoausencia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipoausencia = new cl_tipoausencia;
 $cltipoausencia->rotulo->label("ed320_sequencial");
 $cltipoausencia->rotulo->label("ed320_descricao");
@@ -98,9 +98,9 @@ $cltipoausencia->rotulo->label("ed320_descricao");
         }else{
            $sql = $cltipoausencia->sql_query("",$campos,"ed320_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed320_descricao)){
-          $repassa = array("chave_ed320_sequencial"=>$chave_ed320_sequencial,"chave_ed320_descricao"=>$chave_ed320_descricao);
+          $repassa = ["chave_ed320_sequencial"=>$chave_ed320_sequencial,"chave_ed320_descricao"=>$chave_ed320_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

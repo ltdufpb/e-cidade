@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE arretipodesconto
 class cl_arretipodesconto { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k19_tipo = 0; 
-   var $k19_dtini_dia = null; 
-   var $k19_dtini_mes = null; 
-   var $k19_dtini_ano = null; 
-   var $k19_dtini = null; 
-   var $k19_dtfim_dia = null; 
-   var $k19_dtfim_mes = null; 
-   var $k19_dtfim_ano = null; 
-   var $k19_dtfim = null; 
-   var $k19_percjuros = 0; 
-   var $k19_percmulta = 0; 
+   public $k19_tipo = 0; 
+   public $k19_dtini_dia = null; 
+   public $k19_dtini_mes = null; 
+   public $k19_dtini_ano = null; 
+   public $k19_dtini = null; 
+   public $k19_dtfim_dia = null; 
+   public $k19_dtfim_mes = null; 
+   public $k19_dtfim_ano = null; 
+   public $k19_dtfim = null; 
+   public $k19_percjuros = 0; 
+   public $k19_percmulta = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k19_tipo = int4 = tipo de debito 
                  k19_dtini = date = Data Inicial 
                  k19_dtfim = date = Data Final 
@@ -62,10 +62,10 @@ class cl_arretipodesconto {
                  k19_percmulta = float8 = Percentual de desconto na multa 
                  ";
    //funcao construtor da classe 
-   function cl_arretipodesconto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arretipodesconto"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -167,7 +167,7 @@ class cl_arretipodesconto {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Descontos por arretipo ($this->k19_tipo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Descontos por arretipo já Cadastrado";
@@ -191,14 +191,14 @@ class cl_arretipodesconto {
      $resaco = $this->sql_record($this->sql_query_file($this->k19_tipo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7321,'$this->k19_tipo','I')");
-       $resac = db_query("insert into db_acount values($acount,1216,7321,'','".AddSlashes(pg_result($resaco,0,'k19_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1216,7322,'','".AddSlashes(pg_result($resaco,0,'k19_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1216,7323,'','".AddSlashes(pg_result($resaco,0,'k19_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1216,7324,'','".AddSlashes(pg_result($resaco,0,'k19_percjuros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1216,7325,'','".AddSlashes(pg_result($resaco,0,'k19_percmulta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1216,7321,'','".AddSlashes(pg_fetch_result($resaco,0,'k19_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1216,7322,'','".AddSlashes(pg_fetch_result($resaco,0,'k19_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1216,7323,'','".AddSlashes(pg_fetch_result($resaco,0,'k19_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1216,7324,'','".AddSlashes(pg_fetch_result($resaco,0,'k19_percjuros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1216,7325,'','".AddSlashes(pg_fetch_result($resaco,0,'k19_percmulta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -207,10 +207,10 @@ class cl_arretipodesconto {
       $this->atualizacampos();
      $sql = " update arretipodesconto set ";
      $virgula = "";
-     if(trim($this->k19_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k19_tipo"])){ 
+     if(trim((string) $this->k19_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k19_tipo"])){ 
        $sql  .= $virgula." k19_tipo = $this->k19_tipo ";
        $virgula = ",";
-       if(trim($this->k19_tipo) == null ){ 
+       if(trim((string) $this->k19_tipo) == null ){ 
          $this->erro_sql = " Campo tipo de debito nao Informado.";
          $this->erro_campo = "k19_tipo";
          $this->erro_banco = "";
@@ -220,10 +220,10 @@ class cl_arretipodesconto {
          return false;
        }
      }
-     if(trim($this->k19_dtini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k19_dtini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k19_dtini_dia"] !="") ){ 
+     if(trim((string) $this->k19_dtini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k19_dtini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k19_dtini_dia"] !="") ){ 
        $sql  .= $virgula." k19_dtini = '$this->k19_dtini' ";
        $virgula = ",";
-       if(trim($this->k19_dtini) == null ){ 
+       if(trim((string) $this->k19_dtini) == null ){ 
          $this->erro_sql = " Campo Data Inicial nao Informado.";
          $this->erro_campo = "k19_dtini_dia";
          $this->erro_banco = "";
@@ -236,7 +236,7 @@ class cl_arretipodesconto {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k19_dtini_dia"])){ 
          $sql  .= $virgula." k19_dtini = null ";
          $virgula = ",";
-         if(trim($this->k19_dtini) == null ){ 
+         if(trim((string) $this->k19_dtini) == null ){ 
            $this->erro_sql = " Campo Data Inicial nao Informado.";
            $this->erro_campo = "k19_dtini_dia";
            $this->erro_banco = "";
@@ -247,10 +247,10 @@ class cl_arretipodesconto {
          }
        }
      }
-     if(trim($this->k19_dtfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k19_dtfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k19_dtfim_dia"] !="") ){ 
+     if(trim((string) $this->k19_dtfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k19_dtfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k19_dtfim_dia"] !="") ){ 
        $sql  .= $virgula." k19_dtfim = '$this->k19_dtfim' ";
        $virgula = ",";
-       if(trim($this->k19_dtfim) == null ){ 
+       if(trim((string) $this->k19_dtfim) == null ){ 
          $this->erro_sql = " Campo Data Final nao Informado.";
          $this->erro_campo = "k19_dtfim_dia";
          $this->erro_banco = "";
@@ -263,7 +263,7 @@ class cl_arretipodesconto {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k19_dtfim_dia"])){ 
          $sql  .= $virgula." k19_dtfim = null ";
          $virgula = ",";
-         if(trim($this->k19_dtfim) == null ){ 
+         if(trim((string) $this->k19_dtfim) == null ){ 
            $this->erro_sql = " Campo Data Final nao Informado.";
            $this->erro_campo = "k19_dtfim_dia";
            $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_arretipodesconto {
          }
        }
      }
-     if(trim($this->k19_percjuros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k19_percjuros"])){ 
+     if(trim((string) $this->k19_percjuros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k19_percjuros"])){ 
        $sql  .= $virgula." k19_percjuros = $this->k19_percjuros ";
        $virgula = ",";
-       if(trim($this->k19_percjuros) == null ){ 
+       if(trim((string) $this->k19_percjuros) == null ){ 
          $this->erro_sql = " Campo Percentual de desconto nos juros nao Informado.";
          $this->erro_campo = "k19_percjuros";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_arretipodesconto {
          return false;
        }
      }
-     if(trim($this->k19_percmulta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k19_percmulta"])){ 
+     if(trim((string) $this->k19_percmulta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k19_percmulta"])){ 
        $sql  .= $virgula." k19_percmulta = $this->k19_percmulta ";
        $virgula = ",";
-       if(trim($this->k19_percmulta) == null ){ 
+       if(trim((string) $this->k19_percmulta) == null ){ 
          $this->erro_sql = " Campo Percentual de desconto na multa nao Informado.";
          $this->erro_campo = "k19_percmulta";
          $this->erro_banco = "";
@@ -308,19 +308,19 @@ class cl_arretipodesconto {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7321,'$this->k19_tipo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k19_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1216,7321,'".AddSlashes(pg_result($resaco,$conresaco,'k19_tipo'))."','$this->k19_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1216,7321,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k19_tipo'))."','$this->k19_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k19_dtini"]))
-           $resac = db_query("insert into db_acount values($acount,1216,7322,'".AddSlashes(pg_result($resaco,$conresaco,'k19_dtini'))."','$this->k19_dtini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1216,7322,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k19_dtini'))."','$this->k19_dtini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k19_dtfim"]))
-           $resac = db_query("insert into db_acount values($acount,1216,7323,'".AddSlashes(pg_result($resaco,$conresaco,'k19_dtfim'))."','$this->k19_dtfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1216,7323,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k19_dtfim'))."','$this->k19_dtfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k19_percjuros"]))
-           $resac = db_query("insert into db_acount values($acount,1216,7324,'".AddSlashes(pg_result($resaco,$conresaco,'k19_percjuros'))."','$this->k19_percjuros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1216,7324,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k19_percjuros'))."','$this->k19_percjuros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k19_percmulta"]))
-           $resac = db_query("insert into db_acount values($acount,1216,7325,'".AddSlashes(pg_result($resaco,$conresaco,'k19_percmulta'))."','$this->k19_percmulta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1216,7325,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k19_percmulta'))."','$this->k19_percmulta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -365,14 +365,14 @@ class cl_arretipodesconto {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7321,'$k19_tipo','E')");
-         $resac = db_query("insert into db_acount values($acount,1216,7321,'','".AddSlashes(pg_result($resaco,$iresaco,'k19_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1216,7322,'','".AddSlashes(pg_result($resaco,$iresaco,'k19_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1216,7323,'','".AddSlashes(pg_result($resaco,$iresaco,'k19_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1216,7324,'','".AddSlashes(pg_result($resaco,$iresaco,'k19_percjuros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1216,7325,'','".AddSlashes(pg_result($resaco,$iresaco,'k19_percmulta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1216,7321,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k19_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1216,7322,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k19_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1216,7323,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k19_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1216,7324,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k19_percjuros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1216,7325,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k19_percmulta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from arretipodesconto
@@ -432,7 +432,7 @@ class cl_arretipodesconto {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:arretipodesconto";

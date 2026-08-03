@@ -55,7 +55,7 @@ switch ( $db_opcao ) {
   break;
 }
 
-$aOpcoes = array("false"=>"Não", "true"=>"Sim");
+$aOpcoes = ["false"=>"Não", "true"=>"Sim"];
 ?>
 <form name="formCondicionantes" id="formCondicionantes" method="post" action="">
 

@@ -29,41 +29,41 @@
 //CLASSE DA ENTIDADE parecertecnico
 class cl_parecertecnico {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $am08_sequencial = 0;
-   var $am08_empreendimento = 0;
-   var $am08_protprocesso = 0;
-   var $am08_pareceranterior = 0;
-   var $am08_dataemissao_dia = null;
-   var $am08_dataemissao_mes = null;
-   var $am08_dataemissao_ano = null;
-   var $am08_dataemissao = null;
-   var $am08_datavencimento_dia = null;
-   var $am08_datavencimento_mes = null;
-   var $am08_datavencimento_ano = null;
-   var $am08_datavencimento = null;
-   var $am08_tipolicenca = 0;
-   var $am08_datageracao_dia = null;
-   var $am08_datageracao_mes = null;
-   var $am08_datageracao_ano = null;
-   var $am08_datageracao = null;
-   var $am08_favoravel = 'f';
-   var $am08_observacao = null;
-   var $am08_arquivo = 0;
+   public $am08_sequencial = 0;
+   public $am08_empreendimento = 0;
+   public $am08_protprocesso = 0;
+   public $am08_pareceranterior = 0;
+   public $am08_dataemissao_dia = null;
+   public $am08_dataemissao_mes = null;
+   public $am08_dataemissao_ano = null;
+   public $am08_dataemissao = null;
+   public $am08_datavencimento_dia = null;
+   public $am08_datavencimento_mes = null;
+   public $am08_datavencimento_ano = null;
+   public $am08_datavencimento = null;
+   public $am08_tipolicenca = 0;
+   public $am08_datageracao_dia = null;
+   public $am08_datageracao_mes = null;
+   public $am08_datageracao_ano = null;
+   public $am08_datageracao = null;
+   public $am08_favoravel = 'f';
+   public $am08_observacao = null;
+   public $am08_arquivo = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  am08_sequencial = int4 = Cod. Licença
                  am08_empreendimento = int4 = Empreendimento
                  am08_protprocesso = int4 = Protocolo
@@ -77,10 +77,10 @@ class cl_parecertecnico {
                  am08_arquivo = oid = Arquivo Parecer Técnico
                  ";
    //funcao construtor da classe
-   function cl_parecertecnico() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parecertecnico");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -198,10 +198,10 @@ class cl_parecertecnico {
          $this->erro_status = "0";
          return false;
        }
-       $this->am08_sequencial = pg_result($result,0,0);
+       $this->am08_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from licencaempreendimento_am08_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $am08_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $am08_sequencial)){
          $this->erro_sql = " Campo am08_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -249,7 +249,7 @@ class cl_parecertecnico {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Emissao de Pareceres Técnicos ($this->am08_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Emissao de Pareceres Técnicos já Cadastrado";
@@ -278,20 +278,20 @@ class cl_parecertecnico {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20805,'$this->am08_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3744,20805,'','".AddSlashes(pg_result($resaco,0,'am08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3744,20806,'','".AddSlashes(pg_result($resaco,0,'am08_empreendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3744,20807,'','".AddSlashes(pg_result($resaco,0,'am08_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3744,20808,'','".AddSlashes(pg_result($resaco,0,'am08_pareceranterior'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3744,20809,'','".AddSlashes(pg_result($resaco,0,'am08_dataemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3744,20810,'','".AddSlashes(pg_result($resaco,0,'am08_datavencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3744,20811,'','".AddSlashes(pg_result($resaco,0,'am08_tipolicenca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3744,20856,'','".AddSlashes(pg_result($resaco,0,'am08_datageracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3744,20857,'','".AddSlashes(pg_result($resaco,0,'am08_favoravel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3744,20858,'','".AddSlashes(pg_result($resaco,0,'am08_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3744,20872,'','".AddSlashes(pg_result($resaco,0,'am08_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20805,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20806,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_empreendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20807,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20808,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_pareceranterior'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20809,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_dataemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20810,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_datavencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20811,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_tipolicenca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20856,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_datageracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20857,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_favoravel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20858,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3744,20872,'','".AddSlashes(pg_fetch_result($resaco,0,'am08_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -301,10 +301,10 @@ class cl_parecertecnico {
       $this->atualizacampos();
      $sql = " update parecertecnico set ";
      $virgula = "";
-     if(trim($this->am08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_sequencial"])){
+     if(trim((string) $this->am08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_sequencial"])){
        $sql  .= $virgula." am08_sequencial = $this->am08_sequencial ";
        $virgula = ",";
-       if(trim($this->am08_sequencial) == null ){
+       if(trim((string) $this->am08_sequencial) == null ){
          $this->erro_sql = " Campo Cod. Licença não informado.";
          $this->erro_campo = "am08_sequencial";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_parecertecnico {
          return false;
        }
      }
-     if(trim($this->am08_empreendimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_empreendimento"])){
+     if(trim((string) $this->am08_empreendimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_empreendimento"])){
        $sql  .= $virgula." am08_empreendimento = $this->am08_empreendimento ";
        $virgula = ",";
-       if(trim($this->am08_empreendimento) == null ){
+       if(trim((string) $this->am08_empreendimento) == null ){
          $this->erro_sql = " Campo Empreendimento não informado.";
          $this->erro_campo = "am08_empreendimento";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_parecertecnico {
          return false;
        }
      }
-     if(trim($this->am08_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_protprocesso"])){
+     if(trim((string) $this->am08_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_protprocesso"])){
        $sql  .= $virgula." am08_protprocesso = $this->am08_protprocesso ";
        $virgula = ",";
-       if(trim($this->am08_protprocesso) == null ){
+       if(trim((string) $this->am08_protprocesso) == null ){
          $this->erro_sql = " Campo Protocolo não informado.";
          $this->erro_campo = "am08_protprocesso";
          $this->erro_banco = "";
@@ -340,14 +340,14 @@ class cl_parecertecnico {
          return false;
        }
      }
-     if(trim($this->am08_pareceranterior)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_pareceranterior"])){
-        if(trim($this->am08_pareceranterior)=="" && isset($GLOBALS["HTTP_POST_VARS"]["am08_pareceranterior"])){
+     if(trim((string) $this->am08_pareceranterior)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_pareceranterior"])){
+        if(trim((string) $this->am08_pareceranterior)=="" && isset($GLOBALS["HTTP_POST_VARS"]["am08_pareceranterior"])){
            $this->am08_pareceranterior = "0" ;
         }
        $sql  .= $virgula." am08_pareceranterior = $this->am08_pareceranterior ";
        $virgula = ",";
      }
-     if(trim($this->am08_dataemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_dataemissao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["am08_dataemissao_dia"] !="") ){
+     if(trim((string) $this->am08_dataemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_dataemissao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["am08_dataemissao_dia"] !="") ){
        $sql  .= $virgula." am08_dataemissao = '$this->am08_dataemissao' ";
        $virgula = ",";
      }     else{
@@ -356,7 +356,7 @@ class cl_parecertecnico {
          $virgula = ",";
        }
      }
-     if(trim($this->am08_datavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_datavencimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["am08_datavencimento_dia"] !="") ){
+     if(trim((string) $this->am08_datavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_datavencimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["am08_datavencimento_dia"] !="") ){
        $sql  .= $virgula." am08_datavencimento = '$this->am08_datavencimento' ";
        $virgula = ",";
      }     else{
@@ -365,10 +365,10 @@ class cl_parecertecnico {
          $virgula = ",";
        }
      }
-     if(trim($this->am08_tipolicenca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_tipolicenca"])){
+     if(trim((string) $this->am08_tipolicenca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_tipolicenca"])){
        $sql  .= $virgula." am08_tipolicenca = $this->am08_tipolicenca ";
        $virgula = ",";
-       if(trim($this->am08_tipolicenca) == null ){
+       if(trim((string) $this->am08_tipolicenca) == null ){
          $this->erro_sql = " Campo Tipo de Licença não informado.";
          $this->erro_campo = "am08_tipolicenca";
          $this->erro_banco = "";
@@ -378,17 +378,17 @@ class cl_parecertecnico {
          return false;
        }
      }
-     if(trim($this->am08_datageracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_datageracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["am08_datageracao_dia"] !="") ){
+     if(trim((string) $this->am08_datageracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_datageracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["am08_datageracao_dia"] !="") ){
        $sql  .= $virgula." am08_datageracao = '$this->am08_datageracao' ";
        $virgula = ",";
-       if(trim($this->am08_datageracao) == null ){
+       if(trim((string) $this->am08_datageracao) == null ){
          $this->am08_datageracao = date('Y-m-d');
        }
      }     else{
        if(isset($GLOBALS["HTTP_POST_VARS"]["am08_datageracao_dia"])){
          $sql  .= $virgula." am08_datageracao = null ";
          $virgula = ",";
-         if(trim($this->am08_datageracao) == null ){
+         if(trim((string) $this->am08_datageracao) == null ){
            $this->erro_sql = " Campo Data de Geração não informado.";
            $this->erro_campo = "am08_datageracao_dia";
            $this->erro_banco = "";
@@ -399,10 +399,10 @@ class cl_parecertecnico {
          }
        }
      }
-     if(trim($this->am08_favoravel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_favoravel"])){
+     if(trim((string) $this->am08_favoravel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_favoravel"])){
        $sql  .= $virgula." am08_favoravel = '$this->am08_favoravel' ";
        $virgula = ",";
-       if(trim($this->am08_favoravel) == null ){
+       if(trim((string) $this->am08_favoravel) == null ){
          $this->erro_sql = " Campo Favorável não informado.";
          $this->erro_campo = "am08_favoravel";
          $this->erro_banco = "";
@@ -412,10 +412,10 @@ class cl_parecertecnico {
          return false;
        }
      }
-     if(trim($this->am08_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_observacao"])){
+     if(trim((string) $this->am08_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_observacao"])){
        $sql  .= $virgula." am08_observacao = '$this->am08_observacao' ";
        $virgula = ",";
-       if(trim($this->am08_observacao) == null ){
+       if(trim((string) $this->am08_observacao) == null ){
          $this->erro_sql = " Campo Observações não informado.";
          $this->erro_campo = "am08_observacao";
          $this->erro_banco = "";
@@ -425,10 +425,10 @@ class cl_parecertecnico {
          return false;
        }
      }
-     if(trim($this->am08_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_arquivo"])){
+     if(trim((string) $this->am08_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am08_arquivo"])){
        $sql  .= $virgula." am08_arquivo = $this->am08_arquivo ";
        $virgula = ",";
-       if(trim($this->am08_arquivo) == null ){
+       if(trim((string) $this->am08_arquivo) == null ){
          $this->am08_arquivo = 'null';
        }
      }
@@ -446,31 +446,31 @@ class cl_parecertecnico {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20805,'$this->am08_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_sequencial"]) || $this->am08_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20805,'".AddSlashes(pg_result($resaco,$conresaco,'am08_sequencial'))."','$this->am08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20805,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_sequencial'))."','$this->am08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_empreendimento"]) || $this->am08_empreendimento != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20806,'".AddSlashes(pg_result($resaco,$conresaco,'am08_empreendimento'))."','$this->am08_empreendimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20806,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_empreendimento'))."','$this->am08_empreendimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_protprocesso"]) || $this->am08_protprocesso != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20807,'".AddSlashes(pg_result($resaco,$conresaco,'am08_protprocesso'))."','$this->am08_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20807,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_protprocesso'))."','$this->am08_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_pareceranterior"]) || $this->am08_pareceranterior != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20808,'".AddSlashes(pg_result($resaco,$conresaco,'am08_pareceranterior'))."','$this->am08_pareceranterior',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20808,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_pareceranterior'))."','$this->am08_pareceranterior',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_dataemissao"]) || $this->am08_dataemissao != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20809,'".AddSlashes(pg_result($resaco,$conresaco,'am08_dataemissao'))."','$this->am08_dataemissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20809,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_dataemissao'))."','$this->am08_dataemissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_datavencimento"]) || $this->am08_datavencimento != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20810,'".AddSlashes(pg_result($resaco,$conresaco,'am08_datavencimento'))."','$this->am08_datavencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20810,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_datavencimento'))."','$this->am08_datavencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_tipolicenca"]) || $this->am08_tipolicenca != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20811,'".AddSlashes(pg_result($resaco,$conresaco,'am08_tipolicenca'))."','$this->am08_tipolicenca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20811,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_tipolicenca'))."','$this->am08_tipolicenca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_datageracao"]) || $this->am08_datageracao != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20856,'".AddSlashes(pg_result($resaco,$conresaco,'am08_datageracao'))."','$this->am08_datageracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20856,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_datageracao'))."','$this->am08_datageracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_favoravel"]) || $this->am08_favoravel != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20857,'".AddSlashes(pg_result($resaco,$conresaco,'am08_favoravel'))."','$this->am08_favoravel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20857,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_favoravel'))."','$this->am08_favoravel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_observacao"]) || $this->am08_observacao != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20858,'".AddSlashes(pg_result($resaco,$conresaco,'am08_observacao'))."','$this->am08_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20858,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_observacao'))."','$this->am08_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am08_arquivo"]) || $this->am08_arquivo != "")
-             $resac = db_query("insert into db_acount values($acount,3744,20872,'".AddSlashes(pg_result($resaco,$conresaco,'am08_arquivo'))."','$this->am08_arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3744,20872,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am08_arquivo'))."','$this->am08_arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -524,20 +524,20 @@ class cl_parecertecnico {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20805,'$am08_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3744,20805,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3744,20806,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_empreendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3744,20807,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3744,20808,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_pareceranterior'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3744,20809,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_dataemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3744,20810,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_datavencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3744,20811,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_tipolicenca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3744,20856,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_datageracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3744,20857,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_favoravel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3744,20858,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3744,20872,'','".AddSlashes(pg_result($resaco,$iresaco,'am08_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20805,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20806,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_empreendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20807,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20808,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_pareceranterior'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20809,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_dataemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20810,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_datavencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20811,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_tipolicenca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20856,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_datageracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20857,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_favoravel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20858,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3744,20872,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am08_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

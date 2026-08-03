@@ -33,7 +33,7 @@ include(modification("classes/db_issbase_classe.php"));
 include(modification("classes/db_isscalc_classe.php"));
 include(modification("classes/db_arrecad_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $erro = false;
 $descricao_erro = false;
 if(isset($geracarnes)){
@@ -49,7 +49,7 @@ if(isset($geracarnes)){
       $descricao_erro =  "Não existe cálculo efetuado.";
     }else{
       $quantos = 0;
-      for($i=0;$i<pg_numrows($result);$i++){
+      for($i=0;$i<pg_num_rows($result);$i++){
         db_fieldsmemory($result,$i);
         $resultiss = $clissbase->empresa_record($clissbase->empresa_query($q01_inscr));
 	db_fieldsmemory($resultiss,0);
@@ -57,30 +57,30 @@ if(isset($geracarnes)){
         $resultarr = $clarrecad->sql_record($clarrecad->sql_query("","arrecad.*","arrecad.k00_numpre,k00_numpar"," arrecad.k00_numpre = $q01_numpre and k00_instit = ".db_getsession('DB_instit') ));
 	if($clarrecad->numrows>0){
 	  $quantos ++;
-	  if(pg_result($resultarr,0,'k00_tipo')==2)
+	  if(pg_fetch_result($resultarr,0,'k00_tipo')==2)
 	    fputs($clabre_arquivo->arquivo,'ISSQN FIXO    ');
           else
 //           fputs($clabre_arquivo->arquivo,'ISSQN VARIAVEL');
             continue;
-	    
+
 	  fputs($clabre_arquivo->arquivo,str_pad($quantos,10));
-	  fputs($clabre_arquivo->arquivo,str_pad($q02_inscr,10));
+	  fputs($clabre_arquivo->arquivo,str_pad((string) $q02_inscr,10));
 	  fputs($clabre_arquivo->arquivo,db_formatar($q01_valor,'f'));
           // endereco de entrega
-          fputs($clabre_arquivo->arquivo,str_pad($z01_ender,40));
-          fputs($clabre_arquivo->arquivo,str_pad($z01_nome,40));
-	  fputs($clabre_arquivo->arquivo,str_pad($z01_numero,10));
-	  fputs($clabre_arquivo->arquivo,str_pad($z01_compl,20));
-	  fputs($clabre_arquivo->arquivo,str_pad($z01_munic,20));
-	  fputs($clabre_arquivo->arquivo,str_pad($z01_cep,8));
-	  fputs($clabre_arquivo->arquivo,str_pad($z01_uf,2));
+          fputs($clabre_arquivo->arquivo,str_pad((string) $z01_ender,40));
+          fputs($clabre_arquivo->arquivo,str_pad((string) $z01_nome,40));
+	  fputs($clabre_arquivo->arquivo,str_pad((string) $z01_numero,10));
+	  fputs($clabre_arquivo->arquivo,str_pad((string) $z01_compl,20));
+	  fputs($clabre_arquivo->arquivo,str_pad((string) $z01_munic,20));
+	  fputs($clabre_arquivo->arquivo,str_pad((string) $z01_cep,8));
+	  fputs($clabre_arquivo->arquivo,str_pad((string) $z01_uf,2));
           // endereco da inscricao
 //	  fputs($clabre_arquivo->arquivo,str_pad($j14_codigo,2));
 //	  fputs($clabre_arquivo->arquivo,str_pad($j14_nome,4));
 //	  fputs($clabre_arquivo->arquivo,str_pad($q02_numero,4));
 //	  fputs($clabre_arquivo->arquivo,str_pad($q02_compl,4));
 //	  fputs($clabre_arquivo->arquivo,str_pad($q02_cep,4));
-	
+
   	  $resultfin = db_query(
 	        "select *,
                   substr(fc_calcula,2,13)::float8 as uvlrhis,
@@ -98,12 +98,12 @@ if(isset($geracarnes)){
                   from recibounica r
 		 where r.k00_numpre = $q01_numpre and r.k00_dtvenc >= ".db_getsession("DB_datausu")."
 		 ) as unica");
-	  
+
            if($resultfin!=false){
 
-	      if(pg_numrows($resultfin) > 0) {
-		    
-		 for($unicont=0;$unicont<pg_numrows($resultfin);$unicont++){
+	      if(pg_num_rows($resultfin) > 0) {
+
+		 for($unicont=0;$unicont<pg_num_rows($resultfin);$unicont++){
 		   db_fieldsmemory($resultfin,$unicont);
 		   fputs($clabre_arquivo->arquivo,db_formatar($dtvencunic,'d'));
 		   fputs($clabre_arquivo->arquivo,str_pad($k00_percdes,6));
@@ -116,20 +116,20 @@ if(isset($geracarnes)){
 		   $vlrbar = str_replace('.','',str_pad(number_format($utotal,2,"",""),11,"0",STR_PAD_LEFT));
 //		   $numbanco = "4268" ;// deve ser tirado do db_config
 		   $resultnumbco = db_query("select numbanco from db_config where codigo = " . db_getsession("DB_instit"));
-		   $numbanco = pg_result($resultnumbco,0) ;// deve ser tirado do db_config
-		   
+		   $numbanco = pg_fetch_result($resultnumbco,0) ;// deve ser tirado do db_config
+
 		   $numpre = db_numpre($k00_numpre).'000'; //db_formatar(0,'s',3,'e');
 		   $dtvenc = str_replace("-","",$dtvencunic);
 		   $resultcod = db_query("select fc_febraban('816'||'$vlrbar'||'".$numbanco."'||$dtvenc||'000000'||'$numpre')");
 		   db_fieldsmemory($resultcod,0);
-		   fputs($clabre_arquivo->arquivo,$fc_febraban);
+		   fputs($clabre_arquivo->arquivo,(string) $fc_febraban);
 		 }
-		 
+
               } else {
-	         fputs($clabre_arquivo->arquivo,str_pad(' ',10).str_pad($q01_valor,2).str_pad(' ',157));
+	         fputs($clabre_arquivo->arquivo,str_pad(' ',10).str_pad((string) $q01_valor,2).str_pad(' ',157));
               }
 	   }
-	   
+
 	   $resultfin = db_query("select a.k00_numpre,k00_numpar,k00_numtot,k00_numdig,k00_dtvenc,sum(k00_valor)::float8 as k00_valor 
 	                         from arreinscr m 
 	 		              inner join arrecad a on m.k00_numpre = a.k00_numpre 
@@ -138,9 +138,9 @@ if(isset($geracarnes)){
 								 ");
 	   if($resultfin!=false){
 
-	     if(pg_numrows($resultfin) > 0) {
-		    
-		for($unicont=0;$unicont<pg_numrows($resultfin);$unicont++){
+	     if(pg_num_rows($resultfin) > 0) {
+
+		for($unicont=0;$unicont<pg_num_rows($resultfin);$unicont++){
 		  db_fieldsmemory($resultfin,$unicont);
 		  fputs($clabre_arquivo->arquivo,db_formatar($k00_dtvenc,'d'));
 		  fputs($clabre_arquivo->arquivo,db_formatar($k00_valor,'f'));
@@ -151,19 +151,19 @@ if(isset($geracarnes)){
 		  $vlrbar = str_replace('.','',str_pad(number_format($k00_valor,2,"",""),11,"0",STR_PAD_LEFT));
 //		  $numbanco = "4268" ;// deve ser tirado do db_config
 		  $resultnumbco = db_query("select numbanco from db_config where codigo = " . db_getsession("DB_instit"));
-		  $numbanco = pg_result($resultnumbco,0) ;// deve ser tirado do db_config
+		  $numbanco = pg_fetch_result($resultnumbco,0) ;// deve ser tirado do db_config
 
 		  $dtvenc = str_replace("-","",$k00_dtvenc);
 		  $resultcod = db_query("select fc_febraban('816'||'$vlrbar'||'".$numbanco."'||$dtvenc||'000000'||'$numpre')");
 		  db_fieldsmemory($resultcod,0);
-		  fputs($clabre_arquivo->arquivo,$fc_febraban);
+		  fputs($clabre_arquivo->arquivo,(string) $fc_febraban);
 		}
 	      }
 	   }
 
-	   fputs($clabre_arquivo->arquivo,str_pad($q03_descr,40));
+	   fputs($clabre_arquivo->arquivo,str_pad((string) $q03_descr,40));
            fputs($clabre_arquivo->arquivo,"\n");
-	   
+
 	 }
 //       if($i > 100)
 //          break;

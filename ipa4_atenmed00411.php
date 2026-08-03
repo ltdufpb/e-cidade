@@ -28,7 +28,7 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 ?>
 <html>
 <head>
@@ -71,7 +71,7 @@ input {
   <tr>
     <td height="330" align="center" valign="middle" bgcolor="#FFFF64"> <br>
       <?php 
-        $tam = strlen($codigo);
+        $tam = strlen((string) $codigo);
 	$x = ""; 
 	for($i=0;$i < $tam;$i++){
 	  $x .= "X";
@@ -85,7 +85,7 @@ input {
 			order by ag40_data desc
 			limit 10";
 	$result = db_query($sql);
-	$numrows = pg_numrows($result);
+	$numrows = pg_num_rows($result);
 	if($numrows == 0) {
 	  echo "<h3>Sem Consultas Anteriores</h3>\n";
 	} else {

@@ -112,8 +112,8 @@ $cltranslan = new cl_translan;
 $ip = db_getsession("DB_ip");
 $porta = 5001;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $db_opcao       = 22;
 $db_botao       = false;
@@ -218,7 +218,7 @@ if (isset($pag_emp) && empty($confirmar) ) {
   $db_botao = true;
   //rotina que traz os dados de empempenho
   if (isset($e60_codemp) && $e60_codemp != '') {
-    $arr = split("/", $e60_codemp);
+    $arr = preg_split("#\\/#m", (string) $e60_codemp);
     if (count($arr) == 2 && isset($arr[1]) && $arr[1] != '') {
       $dbwhere_ano = " and e60_anousu = ".$arr[1];
     } else {
@@ -248,7 +248,7 @@ if (isset($pag_emp) && empty($confirmar) ) {
     $existe_ordem = true;
     // db_fieldsmemory($result01,0);
     // if($saldo!=0){
-    php_erro("Empenho possui ordens de pagamento, acesse pelo numero da OP !",'true');
+    php_erro("Empenho possui ordens de pagamento, acesse pelo numero da OP !");
     exit;
     // }
 

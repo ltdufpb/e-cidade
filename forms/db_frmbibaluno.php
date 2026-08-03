@@ -57,7 +57,7 @@ if($ed47_i_nacion==3){
       </td>
       <td>
        <?php 
-       $x = array(''=>'','N'=>'NASCIMENTO','C'=>'CASAMENTO');
+       $x = [''=>'','N'=>'NASCIMENTO','C'=>'CASAMENTO'];
        db_select('ed47_c_certidaotipo',$x,true,$db_opcao,"");
        ?>
        <?=@$Led47_c_certidaonum?>
@@ -98,13 +98,13 @@ if($ed47_i_nacion==3){
        if(isset($ed47_i_censoufcert) && $ed47_i_censoufcert!=""){
         $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $ed47_i_censoufcert"));
         if($clcensomunic->numrows==0){
-         $x = array(' '=>'Selecione o Estado');
+         $x = [' '=>'Selecione o Estado'];
          db_select('ed47_i_censomuniccert',$x,true,$db_opcao,"");
         }else{
          db_selectrecord("ed47_i_censomuniccert",$result_munic,"",$db_opcao,"","","","  ","",1);
         }
        }else{
-        $x = array(' '=>'Selecione o Estado');
+        $x = [' '=>'Selecione o Estado'];
         db_select('ed47_i_censomuniccert',$x,true,$db_opcao,"");
        }
        ?>
@@ -163,7 +163,7 @@ if($ed47_i_nacion==3){
        <?php db_input('ed47_v_cnh',15,$Ied47_v_cnh,true,'text',$db_opcao1,"");?>
        <?=@$Led47_v_categoria?>
        <?php 
-       $y = array(""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E");
+       $y = [""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E"];
        db_select('ed47_v_categoria',$y,true,$db_opcao1);
        ?>
        <?=@$Led47_d_dtemissao?>

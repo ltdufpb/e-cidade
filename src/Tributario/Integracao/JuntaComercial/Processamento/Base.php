@@ -49,8 +49,8 @@ abstract class Base
    */
   public function __construct(Dicionario $dicionario)
   {
-    $this->registro = array();
-    $this->grupo = array();
+    $this->registro = [];
+    $this->grupo = [];
     $this->dicionario = $dicionario;
   }
 
@@ -68,8 +68,8 @@ abstract class Base
    */
   public function reset()
   {
-    $this->grupo = array();
-    $this->registro = array();
+    $this->grupo = [];
+    $this->registro = [];
   }
 
   /**
@@ -81,9 +81,9 @@ abstract class Base
   protected function getValor($indice, $campo)
   {
     if ( isset($this->registro[$indice]->$campo) && !empty($this->registro[$indice]->$campo) ) {
-      return trim($this->registro[$indice]->$campo);
+      return trim((string) $this->registro[$indice]->$campo);
     }
 
-    return trim($this->dicionario->getCampo($campo));
+    return trim((string) $this->dicionario->getCampo($campo));
   }
 }

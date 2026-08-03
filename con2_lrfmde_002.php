@@ -35,8 +35,8 @@ include(modification("libs/db_libtxt.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conrelinfo_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $classinatura = new cl_assinatura;
 $orcparamrel = new cl_orcparamrel;
@@ -101,7 +101,7 @@ $RP_FUNDEF_APURADA = 0;
 $RP_FUNDEF_INSCRITO= 0; 
 $res = $clconrelinfo->sql_record(
        $clconrelinfo->sql_query_valores(12,str_replace('-',',',$db_selinstit)));
-       
+
 if ($clconrelinfo->numrows > 0 ){
   for ($x=0;$x < $clconrelinfo->numrows;$x++){
      db_fieldsmemory($res,$x);
@@ -184,10 +184,10 @@ $sql = " select
 	    inner join conplano on c60_anousu = $anousu and substr(conplano.c60_estrut,1,13)=x.o58_elemento
 	";
  $result_desp = db_query($sql);
- 
+
  $result_subfunc = db_dotacaosaldo(4,3,2,true,"o58_codigo=20 and o58_instit in (".str_replace('-',', ',$db_selinstit)." ) ",$anousu,$dt_ini,$dt_fin);
 
- 
+
  $result_bal = db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fin,false,' c61_instit in ('.str_replace('-',', ',$db_selinstit)   .' ) ');
  //db_criatabela($result_bal);
  //exit;
@@ -216,7 +216,7 @@ $INTERFERENCIA_FUNDEF= 0;
 $INTERFERENCIA_FUNDEF_DEMAIS = 0;
 @db_query("drop table work_pl");
 $result_bal_mde = db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fin,false,' c61_instit in ('.str_replace('-',', ',$db_selinstit)   .' ) ');
-for($i=0;$i<pg_numrows($result_bal_mde);$i++){
+for($i=0;$i<pg_num_rows($result_bal_mde);$i++){
   db_fieldsmemory($result_bal_mde,$i);  
   if (in_array($estrutural,$desp_ef)){     
      $INTERFERENCIA_MDE += $saldo_final ;
@@ -234,7 +234,7 @@ $result_bal_acumulado = db_planocontassaldo_matriz($anousu,$data_inicial,$dt_fin
 $INTERFERENCIA_MDE_AC = 0;
 $INTERFERENCIA_FUNDEF_AC= 0;
 $INTERFERENCIA_FUNDEF_DEMAIS_AC =0;
-for($i=0;$i<pg_numrows($result_bal_acumulado);$i++){
+for($i=0;$i<pg_num_rows($result_bal_acumulado);$i++){
   db_fieldsmemory($result_bal_acumulado,$i);  
   if (in_array($estrutural,$desp_ef)){     
      $INTERFERENCIA_MDE_AC += $saldo_final ;
@@ -261,14 +261,14 @@ $total_saldo_arrecadado          =0;
 $total_saldo_arrecadado_acumulado=0;
 $total_saldo_a_arrecadar        = 0;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     }else{
@@ -289,11 +289,11 @@ $head2 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
 $head3 = "DEMONSTRATIVO DE RECEITAS E DESPESAS COM DESENVOLVIMENTO E MANUTENÇÃO DO ENSINO -MDE";
 $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 $txt = strtoupper(db_mes('01'));
-$dt  = split("-",$dt_fin);
+$dt  = preg_split("#\\-#m",(string) $dt_fin);
 $txt.= " À ".strtoupper(db_mes($dt[1]))." $anousu/BIMESTRE ";;
-$dt  = split("-",$dt_ini);
+$dt  = preg_split("#\\-#m",(string) $dt_ini);
 $txt.= strtoupper(db_mes($dt[1]))."-";
-$dt  = split("-",$dt_fin);
+$dt  = preg_split("#\\-#m",(string) $dt_fin);
 $txt.= strtoupper(db_mes($dt[1]));
 $head5 = "$txt";
 
@@ -355,7 +355,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_impostos)){ // despesas com ensino fundamental
@@ -382,7 +382,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_ativa)){ // despesas com ensino fundamental
@@ -410,7 +410,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_multas)){ // despesas com ensino fundamental
@@ -462,7 +462,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_cota_fpm)){ // despesas com ensino fundamental
@@ -489,13 +489,13 @@ $pdf->Ln();
   $v_I_nobimestre  = $tot_rec_bim*.85;
   $v_I_atebimestre = $tot_rec_atebim*.85;
 
- 
+
 //--------------------
 $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_cota_icms)){ // despesas com ensino fundamental
@@ -528,7 +528,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_parte_icms)){ // despesas com ensino fundamental
@@ -561,7 +561,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_parte_ipi)){ // despesas com ensino fundamental
@@ -594,7 +594,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_parcela)){ 
@@ -633,7 +633,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_itr)){ // despesas com ensino fundamental
@@ -667,7 +667,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_ouro)){ 
@@ -689,7 +689,7 @@ $pdf->Ln();
   $somador_I_atualizada  += $tot_rec_atual;
   $somador_I_nobimestre  += $tot_rec_bim;
   $somador_I_atebimestre += $tot_rec_atebim;
-  
+
   $v_I_inicial     += $tot_rec_inicial;
   $v_I_atualizada  += $tot_rec_atual;
   $v_I_nobimestre  += $tot_rec_bim;
@@ -700,7 +700,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_ipva)){ // despesas com ensino fundamental
@@ -770,7 +770,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_transf_recurso)){ // despesas com ensino fundamental
@@ -809,7 +809,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_complementacao)){ // despesas com ensino fundamental
@@ -856,7 +856,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_salario)){ // despesas com ensino fundamental
@@ -884,7 +884,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_fnde)){ // despesas com ensino fundamental
@@ -912,7 +912,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_programa_educacao)){ // despesas com ensino fundamental
@@ -940,7 +940,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_credito)){ // despesas com ensino fundamental
@@ -968,7 +968,7 @@ $tot_rec_inicial=0;
 $tot_rec_atual=0;
 $tot_rec_bim =0;
 $tot_rec_atebim =0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$rec_outras)){ // despesas com ensino fundamental
@@ -1081,7 +1081,7 @@ $RESERVA_MDE=0;
 $RESERVA_FUNDEF=0;
 
 $result_free = db_dotacaosaldo(4,3,2,true," o58_codigo=20 and o58_instit in (".str_replace('-',', ',$db_selinstit)." ) ",$anousu,$dt_ini,$dt_fin);
-for($i=0;$i<pg_numrows($result_free);$i++){
+for($i=0;$i<pg_num_rows($result_free);$i++){
   db_fieldsmemory($result_free,$i);
   if ($o58_subfuncao==999) {
   	 $RESERVA_MDE= $dot_ini;
@@ -1089,7 +1089,7 @@ for($i=0;$i<pg_numrows($result_free);$i++){
 }
 
 $result_free = db_dotacaosaldo(4,3,2,true," o58_codigo=30 and o58_instit in (".str_replace('-',', ',$db_selinstit)." ) ",$anousu,$dt_ini,$dt_fin);
-for($i=0;$i<pg_numrows($result_free);$i++){
+for($i=0;$i<pg_num_rows($result_free);$i++){
   db_fieldsmemory($result_free,$i);
   if ($o58_subfuncao==999){
   	 $RESERVA_FUNDEF= $dot_ini;
@@ -1101,7 +1101,7 @@ $tot_ini=0;
 $tot_atu =0;
 $tot_bim =0;
 $tot_atebim =0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   if ($o58_subfuncao == 361 && $o58_codigo ==20){
      $tot_ini    += $dot_ini;
@@ -1136,7 +1136,7 @@ $tot_ini=0;
 $tot_atu =0;
 $tot_bim =0;
 $tot_atebim =0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   if ($o58_subfuncao == 365 && $o58_codigo ==20){
      $tot_ini    += $dot_ini;
@@ -1168,7 +1168,7 @@ $tot_ini=0;
 $tot_atu =0;
 $tot_bim =0;
 $tot_atebim =0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   if ( $o58_funcao ==12
        && $o58_subfuncao != 361  
@@ -1227,12 +1227,12 @@ $tot_ini=0;
 $tot_atu =0;
 $tot_bim =0;
 $tot_atebim =0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
    db_fieldsmemory($result_desp,$i);
    if ( $o58_funcao   ==12
         && $o58_subfuncao == 361 
         && $o58_codigo == 30
-        && substr($o58_elemento,0,6)=='331901'   
+        && str_starts_with((string) $o58_elemento, '331901')   
       ) {        
      $tot_ini    += $dot_ini;
      $tot_atu    += $dot_ini + ($suplementado_acumulado-$reduzido_acumulado);
@@ -1262,12 +1262,12 @@ $tot_ini=0;
 $tot_atu =0;
 $tot_bim =0;
 $tot_atebim =0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
    if ( $o58_funcao   ==12
         && $o58_subfuncao == 361 
         && $o58_codigo == 30
-        && substr($o58_elemento,0,6)!='331901'   
+        && !str_starts_with((string) $o58_elemento, '331901')   
       ) {        
      $tot_ini    += $dot_ini;
      $tot_atu    += $dot_ini + ($suplementado_acumulado-$reduzido_acumulado);
@@ -1311,7 +1311,7 @@ $tot_ini=0;
 $tot_atu =0;
 $tot_bim =0;
 $tot_atebim =0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   if ($o58_codigo== 1002 && $o58_subfuncao == 361){  // subfunc- ensino funcamental
      $tot_ini    += $dot_ini;
@@ -1370,7 +1370,7 @@ $tot_bim =0;
 $tot_atebim =0;
 
 
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
    db_fieldsmemory($result_desp,$i);
    if ( 
 	$o58_funcao== 12
@@ -1504,7 +1504,7 @@ $pdf->cell(20,$alt,"Cancelados em $anousu",'TB',0,"C",0);
 $pdf->ln();
 // 
 $tot_cancelado=0;
-for($i=0;$i<pg_numrows($result_rp_mde);$i++){
+for($i=0;$i<pg_num_rows($result_rp_mde);$i++){
   db_fieldsmemory($result_rp_mde,$i);
   $tot_cancelado += $vlranu;
 } 
@@ -1515,7 +1515,7 @@ $pdf->cell(40,$alt,db_formatar($RP_MDE_INSCRITO,'f'),'RL',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($tot_cancelado,'f'),'L',1,"R",0);
 // --
 $tot_cancelado=0;
-for($i=0;$i<pg_numrows($result_rp_fundef);$i++){
+for($i=0;$i<pg_num_rows($result_rp_fundef);$i++){
   db_fieldsmemory($result_rp_fundef,$i);
   $tot_cancelado += $vlranu;
 } 
@@ -1592,7 +1592,7 @@ $pdf->Ln(3);
 $tot_valor = 0;
 $tot_ant   = 0;
 
-for($i=0;$i<pg_numrows($result_bal);$i++){
+for($i=0;$i<pg_num_rows($result_bal);$i++){
   db_fieldsmemory($result_bal,$i);  
   if (in_array($estrutural,$saldo_fundef)){ 
      $tot_valor  += $saldo_final ;
@@ -1635,11 +1635,11 @@ $tot_dot_atual=0;
 $tot_dot_liquidado=0;
 $tot_dot_liquidado_acumulado=0;
 
-for($i=0;$i< pg_numrows($result_subfunc);$i++) {
+for($i=0;$i< pg_num_rows($result_subfunc);$i++) {
     db_fieldsmemory($result_subfunc,$i);
     $vatual = $dot_ini + ($suplementado_acumulado-$reduzido_acumulado);
     if ($o58_subfuncao==361){   
-    
+
       $atual = $dot_ini + ($suplementado_acumulado-$reduzido_acumulado);
       $pdf->cell(90,$alt,"$o53_descr",'R',0,"L",0);
       $pdf->cell(20,$alt,db_formatar($dot_ini + $RESERVA_MDE,'f'),'R',0,"R",0);

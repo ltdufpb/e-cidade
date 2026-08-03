@@ -132,7 +132,7 @@ $oRotulo->label('tf17_tiposaida');
               <?php
               $sScript = "style='display:none; width: 60px;' onchange='js_atualizaHoraSaida();'";
               db_input('horaSaida', 5, '', true, 'text', 1);
-              db_select('selectHoraSaida', array(), true, 1, $sScript );
+              db_select('selectHoraSaida', [], true, 1, $sScript );
               ?>
             </td>
           </tr>

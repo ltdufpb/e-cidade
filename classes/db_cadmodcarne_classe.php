@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE cadmodcarne
 class cl_cadmodcarne { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k47_sequencial = 0; 
-   var $k47_descr = null; 
-   var $k47_obs = null; 
-   var $k47_altura = 0; 
-   var $k47_largura = 0; 
-   var $k47_orientacao = null; 
-   var $k47_tipoconvenio = 0; 
+   public $k47_sequencial = 0; 
+   public $k47_descr = null; 
+   public $k47_obs = null; 
+   public $k47_altura = 0; 
+   public $k47_largura = 0; 
+   public $k47_orientacao = null; 
+   public $k47_tipoconvenio = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k47_sequencial = int4 = Codigo do modelo 
                  k47_descr = varchar(40) = Descrição do modelo 
                  k47_obs = text = Obs 
@@ -60,10 +60,10 @@ class cl_cadmodcarne {
                  k47_tipoconvenio = int4 = Tipo de convenio 
                  ";
    //funcao construtor da classe 
-   function cl_cadmodcarne() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadmodcarne"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -125,10 +125,10 @@ class cl_cadmodcarne {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k47_sequencial = pg_result($result,0,0); 
+       $this->k47_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cadmodcarne_k47_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k47_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k47_sequencial)){
          $this->erro_sql = " Campo k47_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -168,7 +168,7 @@ class cl_cadmodcarne {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastros de modelos de carnes/recibos ($this->k47_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastros de modelos de carnes/recibos já Cadastrado";
@@ -192,16 +192,16 @@ class cl_cadmodcarne {
      $resaco = $this->sql_record($this->sql_query_file($this->k47_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8878,'$this->k47_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1515,8878,'','".AddSlashes(pg_result($resaco,0,'k47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1515,8879,'','".AddSlashes(pg_result($resaco,0,'k47_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1515,8880,'','".AddSlashes(pg_result($resaco,0,'k47_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1515,8946,'','".AddSlashes(pg_result($resaco,0,'k47_altura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1515,8947,'','".AddSlashes(pg_result($resaco,0,'k47_largura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1515,8948,'','".AddSlashes(pg_result($resaco,0,'k47_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1515,9359,'','".AddSlashes(pg_result($resaco,0,'k47_tipoconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1515,8878,'','".AddSlashes(pg_fetch_result($resaco,0,'k47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1515,8879,'','".AddSlashes(pg_fetch_result($resaco,0,'k47_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1515,8880,'','".AddSlashes(pg_fetch_result($resaco,0,'k47_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1515,8946,'','".AddSlashes(pg_fetch_result($resaco,0,'k47_altura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1515,8947,'','".AddSlashes(pg_fetch_result($resaco,0,'k47_largura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1515,8948,'','".AddSlashes(pg_fetch_result($resaco,0,'k47_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1515,9359,'','".AddSlashes(pg_fetch_result($resaco,0,'k47_tipoconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_cadmodcarne {
       $this->atualizacampos();
      $sql = " update cadmodcarne set ";
      $virgula = "";
-     if(trim($this->k47_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_sequencial"])){ 
+     if(trim((string) $this->k47_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_sequencial"])){ 
        $sql  .= $virgula." k47_sequencial = $this->k47_sequencial ";
        $virgula = ",";
-       if(trim($this->k47_sequencial) == null ){ 
+       if(trim((string) $this->k47_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo do modelo nao Informado.";
          $this->erro_campo = "k47_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_cadmodcarne {
          return false;
        }
      }
-     if(trim($this->k47_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_descr"])){ 
+     if(trim((string) $this->k47_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_descr"])){ 
        $sql  .= $virgula." k47_descr = '$this->k47_descr' ";
        $virgula = ",";
-       if(trim($this->k47_descr) == null ){ 
+       if(trim((string) $this->k47_descr) == null ){ 
          $this->erro_sql = " Campo Descrição do modelo nao Informado.";
          $this->erro_campo = "k47_descr";
          $this->erro_banco = "";
@@ -236,32 +236,32 @@ class cl_cadmodcarne {
          return false;
        }
      }
-     if(trim($this->k47_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_obs"])){ 
+     if(trim((string) $this->k47_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_obs"])){ 
        $sql  .= $virgula." k47_obs = '$this->k47_obs' ";
        $virgula = ",";
      }
-     if(trim($this->k47_altura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_altura"])){ 
-        if(trim($this->k47_altura)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k47_altura"])){ 
+     if(trim((string) $this->k47_altura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_altura"])){ 
+        if(trim((string) $this->k47_altura)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k47_altura"])){ 
            $this->k47_altura = "0" ; 
         } 
        $sql  .= $virgula." k47_altura = $this->k47_altura ";
        $virgula = ",";
      }
-     if(trim($this->k47_largura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_largura"])){ 
-        if(trim($this->k47_largura)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k47_largura"])){ 
+     if(trim((string) $this->k47_largura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_largura"])){ 
+        if(trim((string) $this->k47_largura)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k47_largura"])){ 
            $this->k47_largura = "0" ; 
         } 
        $sql  .= $virgula." k47_largura = $this->k47_largura ";
        $virgula = ",";
      }
-     if(trim($this->k47_orientacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_orientacao"])){ 
+     if(trim((string) $this->k47_orientacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_orientacao"])){ 
        $sql  .= $virgula." k47_orientacao = '$this->k47_orientacao' ";
        $virgula = ",";
      }
-     if(trim($this->k47_tipoconvenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_tipoconvenio"])){ 
+     if(trim((string) $this->k47_tipoconvenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k47_tipoconvenio"])){ 
        $sql  .= $virgula." k47_tipoconvenio = $this->k47_tipoconvenio ";
        $virgula = ",";
-       if(trim($this->k47_tipoconvenio) == null ){ 
+       if(trim((string) $this->k47_tipoconvenio) == null ){ 
          $this->erro_sql = " Campo Tipo de convenio nao Informado.";
          $this->erro_campo = "k47_tipoconvenio";
          $this->erro_banco = "";
@@ -279,23 +279,23 @@ class cl_cadmodcarne {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8878,'$this->k47_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k47_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1515,8878,'".AddSlashes(pg_result($resaco,$conresaco,'k47_sequencial'))."','$this->k47_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1515,8878,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k47_sequencial'))."','$this->k47_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k47_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1515,8879,'".AddSlashes(pg_result($resaco,$conresaco,'k47_descr'))."','$this->k47_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1515,8879,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k47_descr'))."','$this->k47_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k47_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1515,8880,'".AddSlashes(pg_result($resaco,$conresaco,'k47_obs'))."','$this->k47_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1515,8880,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k47_obs'))."','$this->k47_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k47_altura"]))
-           $resac = db_query("insert into db_acount values($acount,1515,8946,'".AddSlashes(pg_result($resaco,$conresaco,'k47_altura'))."','$this->k47_altura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1515,8946,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k47_altura'))."','$this->k47_altura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k47_largura"]))
-           $resac = db_query("insert into db_acount values($acount,1515,8947,'".AddSlashes(pg_result($resaco,$conresaco,'k47_largura'))."','$this->k47_largura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1515,8947,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k47_largura'))."','$this->k47_largura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k47_orientacao"]))
-           $resac = db_query("insert into db_acount values($acount,1515,8948,'".AddSlashes(pg_result($resaco,$conresaco,'k47_orientacao'))."','$this->k47_orientacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1515,8948,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k47_orientacao'))."','$this->k47_orientacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k47_tipoconvenio"]))
-           $resac = db_query("insert into db_acount values($acount,1515,9359,'".AddSlashes(pg_result($resaco,$conresaco,'k47_tipoconvenio'))."','$this->k47_tipoconvenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1515,9359,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k47_tipoconvenio'))."','$this->k47_tipoconvenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,16 +340,16 @@ class cl_cadmodcarne {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8878,'$k47_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1515,8878,'','".AddSlashes(pg_result($resaco,$iresaco,'k47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1515,8879,'','".AddSlashes(pg_result($resaco,$iresaco,'k47_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1515,8880,'','".AddSlashes(pg_result($resaco,$iresaco,'k47_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1515,8946,'','".AddSlashes(pg_result($resaco,$iresaco,'k47_altura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1515,8947,'','".AddSlashes(pg_result($resaco,$iresaco,'k47_largura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1515,8948,'','".AddSlashes(pg_result($resaco,$iresaco,'k47_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1515,9359,'','".AddSlashes(pg_result($resaco,$iresaco,'k47_tipoconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1515,8878,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1515,8879,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k47_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1515,8880,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k47_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1515,8946,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k47_altura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1515,8947,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k47_largura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1515,8948,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k47_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1515,9359,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k47_tipoconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cadmodcarne
@@ -409,7 +409,7 @@ class cl_cadmodcarne {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cadmodcarne";
@@ -423,7 +423,7 @@ class cl_cadmodcarne {
    function sql_query ( $k47_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,7 +444,7 @@ class cl_cadmodcarne {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,7 +456,7 @@ class cl_cadmodcarne {
    function sql_query_file ( $k47_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,7 +477,7 @@ class cl_cadmodcarne {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

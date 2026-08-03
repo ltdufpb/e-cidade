@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE conplanoorcamentocontabancaria
 class cl_conplanoorcamentocontabancaria {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $c56_sequencial = 0;
-   var $c56_codcon = 0;
-   var $c56_contabancaria = 0;
-   var $c56_anousu = 0;
+   public $c56_sequencial = 0;
+   public $c56_codcon = 0;
+   public $c56_contabancaria = 0;
+   public $c56_anousu = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  c56_sequencial = int4 = Sequencial
                  c56_codcon = int4 = Código da Conta
                  c56_contabancaria = int4 = Codigo sequencial da conta bancaria
                  c56_anousu = int4 = Exercício
                  ";
    //funcao construtor da classe
-   function cl_conplanoorcamentocontabancaria() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoorcamentocontabancaria");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -119,10 +119,10 @@ class cl_conplanoorcamentocontabancaria {
          $this->erro_status = "0";
          return false;
        }
-       $this->c56_sequencial = pg_result($result,0,0);
+       $this->c56_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from conplanoorcamentocontabancaria_c56_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c56_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c56_sequencial)){
          $this->erro_sql = " Campo c56_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_conplanoorcamentocontabancaria {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "conplanoorcamentocontabancaria ($this->c56_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "conplanoorcamentocontabancaria já Cadastrado";
@@ -185,10 +185,10 @@ class cl_conplanoorcamentocontabancaria {
       $this->atualizacampos();
      $sql = " update conplanoorcamentocontabancaria set ";
      $virgula = "";
-     if(trim($this->c56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_sequencial"])){
+     if(trim((string) $this->c56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_sequencial"])){
        $sql  .= $virgula." c56_sequencial = $this->c56_sequencial ";
        $virgula = ",";
-       if(trim($this->c56_sequencial) == null ){
+       if(trim((string) $this->c56_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "c56_sequencial";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_conplanoorcamentocontabancaria {
          return false;
        }
      }
-     if(trim($this->c56_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_codcon"])){
+     if(trim((string) $this->c56_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_codcon"])){
        $sql  .= $virgula." c56_codcon = $this->c56_codcon ";
        $virgula = ",";
-       if(trim($this->c56_codcon) == null ){
+       if(trim((string) $this->c56_codcon) == null ){
          $this->erro_sql = " Campo Código da Conta nao Informado.";
          $this->erro_campo = "c56_codcon";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_conplanoorcamentocontabancaria {
          return false;
        }
      }
-     if(trim($this->c56_contabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_contabancaria"])){
+     if(trim((string) $this->c56_contabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_contabancaria"])){
        $sql  .= $virgula." c56_contabancaria = $this->c56_contabancaria ";
        $virgula = ",";
-       if(trim($this->c56_contabancaria) == null ){
+       if(trim((string) $this->c56_contabancaria) == null ){
          $this->erro_sql = " Campo Codigo sequencial da conta bancaria nao Informado.";
          $this->erro_campo = "c56_contabancaria";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_conplanoorcamentocontabancaria {
          return false;
        }
      }
-     if(trim($this->c56_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_anousu"])){
+     if(trim((string) $this->c56_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_anousu"])){
        $sql  .= $virgula." c56_anousu = $this->c56_anousu ";
        $virgula = ",";
-       if(trim($this->c56_anousu) == null ){
+       if(trim((string) $this->c56_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "c56_anousu";
          $this->erro_banco = "";
@@ -338,7 +338,7 @@ class cl_conplanoorcamentocontabancaria {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conplanoorcamentocontabancaria";
@@ -353,7 +353,7 @@ class cl_conplanoorcamentocontabancaria {
    function sql_query ( $c56_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -378,7 +378,7 @@ class cl_conplanoorcamentocontabancaria {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ class cl_conplanoorcamentocontabancaria {
    function sql_query_file ( $c56_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -412,7 +412,7 @@ class cl_conplanoorcamentocontabancaria {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

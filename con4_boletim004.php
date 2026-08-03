@@ -37,7 +37,7 @@ $processa_lancamentos = false;
 //db_criatabela($resultorcamentaria);exit;
 if (!USE_PCASP) {
 
-  for ($rec = 0; $rec < pg_numrows($resultorcamentaria); $rec ++) {
+  for ($rec = 0; $rec < pg_num_rows($resultorcamentaria); $rec ++) {
     db_fieldsmemory($resultorcamentaria, $rec);
 
   //	echo "k02_codrec: $k02_codrec - $o70_codigo<br>";
@@ -70,7 +70,7 @@ if (!USE_PCASP) {
       }
       if ($resultrec != false) {
         //db_criatabela($resultrec);exit;
-        if (pg_numrows($resultrec) > 0 and $o70_codigo == 1) {
+        if (pg_num_rows($resultrec) > 0 and $o70_codigo == 1) {
           db_fieldsmemory($resultrec, 0);
           // pesquisa a conta mae para buscar os desdobramentos da receita
           $contamae = db_le_mae_rec_sin($o57_fonte, false);
@@ -84,7 +84,7 @@ if (!USE_PCASP) {
           if ($debug==true){
             db_criatabela($resultm);
           }
-          if (pg_numrows($resultm) != 0) {
+          if (pg_num_rows($resultm) != 0) {
             $vlrsoma = 0;
             $multiplica = false;
             if ($arrecada < 0) {
@@ -92,7 +92,7 @@ if (!USE_PCASP) {
               $arrecada = round($arrecada * -1, 2);
             }
             $primeiro_codrec = 0;
-            for ($recc = 0; $recc < pg_numrows($resultm); $recc ++) {
+            for ($recc = 0; $recc < pg_num_rows($resultm); $recc ++) {
               db_fieldsmemory($resultm, $recc);
               if($primeiro_codrec == 0 ){
                 $primeiro_codrec = $o70_codrec;
@@ -235,7 +235,7 @@ if (!USE_PCASP) {
           fc_conplano_grupo(".db_getsession("DB_anousu").",substr(c60_estrut,1,2)||'%',9000) is true";
 
           $resultded = db_query(analiseQueryPlanoOrcamento($sql));
-          if (pg_numrows($resultded) > 0) {
+          if (pg_num_rows($resultded) > 0) {
             $receita_deducao = true; // sempre que for 49xx e for negativo deduz, se for positivo estorna
             if($valor>0){
               $lancar = false;
@@ -510,8 +510,8 @@ if (!USE_PCASP) {
     if ($debug==true){
       db_criatabela($resultdesp);
     }
-    if (pg_numrows($resultdesp) > 0) {
-      for ($xdesp = 0; $xdesp < pg_numrows($resultdesp); $xdesp ++) {
+    if (pg_num_rows($resultdesp) > 0) {
+      for ($xdesp = 0; $xdesp < pg_num_rows($resultdesp); $xdesp ++) {
         db_fieldsmemory($resultdesp, $xdesp);
         //
         if ($estorno != 0) {
@@ -657,8 +657,8 @@ if (!USE_PCASP) {
     if ($debug==true){
       db_criatabela($resultdesp);
     }
-    if (pg_numrows($resultdesp) > 0) {
-      for ($xdesp = 0; $xdesp < pg_numrows($resultdesp); $xdesp ++) {
+    if (pg_num_rows($resultdesp) > 0) {
+      for ($xdesp = 0; $xdesp < pg_num_rows($resultdesp); $xdesp ++) {
         db_fieldsmemory($resultdesp, $xdesp);
         //
         if ($estorno != 0) {
@@ -819,8 +819,8 @@ if (!USE_PCASP) {
     if ($debug==true){
       db_criatabela($resultextra);
     }
-    if (pg_numrows($resultextra) > 0) {
-      for ($xdesp = 0; $xdesp < pg_numrows($resultextra); $xdesp ++) {
+    if (pg_num_rows($resultextra) > 0) {
+      for ($xdesp = 0; $xdesp < pg_num_rows($resultextra); $xdesp ++) {
         db_fieldsmemory($resultextra, $xdesp);
         //
         if ($erro == false){

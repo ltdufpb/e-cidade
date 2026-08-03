@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_linhaspacto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllinhaspacto = new cl_linhaspacto;
 $cllinhaspacto->rotulo->label("c07_sequencial");
 $cllinhaspacto->rotulo->label("c07_sequencial");
@@ -48,9 +48,9 @@ if (!isset($pesquisa_chave)) {
     } else {
         $sql = $cllinhaspacto->sql_query("", $campos, "c07_sequencial", "");
     }
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_c07_sequencial)) {
-        $repassa = array("chave_c07_sequencial" => $chave_c07_sequencial, "chave_c07_sequencial" => $chave_c07_sequencial);
+        $repassa = ["chave_c07_sequencial" => $chave_c07_sequencial, "chave_c07_sequencial" => $chave_c07_sequencial];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

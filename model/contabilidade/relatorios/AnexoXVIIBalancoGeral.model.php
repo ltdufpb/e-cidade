@@ -59,9 +59,10 @@ class AnexoXVIIBalancoGeral extends RelatoriosLegaisBase
    *
    * @return array - Colecao de stdClass
    */
-  public function getDados()
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true)
   {
-     $aLinhas = array();
+     $aLinhas = [];
 
      /**
       * montamos as datas, e processamos o balancete de verificação
@@ -95,7 +96,7 @@ class AnexoXVIIBalancoGeral extends RelatoriosLegaisBase
 
        $aLinhasRelatorio[$iLinha]->setPeriodo($this->iCodigoPeriodo);
        $aColunasRelatorio  = $aLinhasRelatorio[$iLinha]->getCols($this->iCodigoPeriodo);
-       $aColunaslinha      = array();
+       $aColunaslinha      = [];
        $oLinha             = new stdClass();
        $oLinha->totalizar  = $aLinhasRelatorio[$iLinha]->isTotalizador();
        $oLinha->descricao  = $aLinhasRelatorio[$iLinha]->getDescricaoLinha();
@@ -169,7 +170,7 @@ class AnexoXVIIBalancoGeral extends RelatoriosLegaisBase
 
          foreach ($oLinha->colunas as $iColuna => $oColuna) {
 
-           if (trim($oColuna->o116_formula) != "") {
+           if (trim((string) $oColuna->o116_formula) != "") {
 
              $sFormulaOriginal = ($oColuna->o116_formula);
              $sFormula         = $this->oRelatorioLegal->parseFormula('aLinhas', $sFormulaOriginal, $iColuna, $aLinhas);
@@ -178,7 +179,7 @@ class AnexoXVIIBalancoGeral extends RelatoriosLegaisBase
              eval($evaluate);
              $sRetorno = ob_get_contents();
              ob_clean();
-             if (strpos(strtolower($sRetorno), "parse error") > 0 || strpos(strtolower($sRetorno), "undefined" > 0)) {
+             if (strpos(strtolower($sRetorno), "parse error") > 0 || strpos(strtolower($sRetorno), (string) (0 > 0))) {
                $sMsg =  "Linha {$iLinha} com erro no cadastro da formula<br>{$oColuna->o116_formula}";
                throw new Exception($sMsg);
 
@@ -258,10 +259,10 @@ class AnexoXVIIBalancoGeral extends RelatoriosLegaisBase
   private function documentosCalculoDividasAPagar()
   {
     $documentos = new stdClass;
-    $documentos->somaInscricao = array( TipoDocumento::LIQUIDACAO );
-    $documentos->subtracaoInscricao = array( TipoDocumento::ESTORNO_LIQUIDACAO );
-    $documentos->somaBaixa = array( TipoDocumento::PAGAMENTO );
-    $documentos->subtracaoBaixa = array( TipoDocumento::ESTORNO );
+    $documentos->somaInscricao = [ TipoDocumento::LIQUIDACAO ];
+    $documentos->subtracaoInscricao = [ TipoDocumento::ESTORNO_LIQUIDACAO ];
+    $documentos->somaBaixa = [ TipoDocumento::PAGAMENTO ];
+    $documentos->subtracaoBaixa = [ TipoDocumento::ESTORNO ];
 
     return $documentos;
   }
@@ -274,22 +275,22 @@ class AnexoXVIIBalancoGeral extends RelatoriosLegaisBase
   private function documentosCalculoDepositos()
   {
     $documentos = new stdClass;
-    $documentos->somaInscricao = array(
+    $documentos->somaInscricao = [
       TipoDocumento::RECEBIMENTO_CAUCAO,
       TipoDocumento::DEPOSITOS_DIVERSOS_RECEBIMENTO
-    );
-    $documentos->subtracaoInscricao = array(
+    ];
+    $documentos->subtracaoInscricao = [
       TipoDocumento::RECEBIMENTO_CAUCAO_ESTORNO,
       TipoDocumento::DEPOSITOS_DIVERSOS_ESTORNO_RECEBIMENTO
-    );
-    $documentos->somaBaixa = array(
+    ];
+    $documentos->somaBaixa = [
       TipoDocumento::DEVOLUCAO_CAUCAO,
       TipoDocumento::DEPOSITOS_DIVERSOS_PAGAMENTO
-    );
-    $documentos->subtracaoBaixa = array(
+    ];
+    $documentos->subtracaoBaixa = [
       TipoDocumento::DEVOLUCAO_CAUCAO_ESTORNO,
       TipoDocumento::DEPOSITOS_DIVERSOS_ESTORNO_PAGAMENTO
-    );
+    ];
 
     return $documentos;
   }
@@ -300,7 +301,7 @@ class AnexoXVIIBalancoGeral extends RelatoriosLegaisBase
    * @param  array  $subtracao Documentos referentes a subtração
    * @return string            Query contendo o case
    */
-  private function campos( $soma = array(), $subtracao = array() )
+  private function campos( $soma = [], $subtracao = [] )
   {
     $campos  = 'round(';
     $campos .= '  sum(';

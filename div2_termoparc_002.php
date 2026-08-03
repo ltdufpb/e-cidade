@@ -47,7 +47,7 @@ use ECidade\Tributario\Juridico\InicialPartilha\Repository\InicialPartilha as In
 use ECidade\Tributario\Juridico\ProcessoForo\ProcessoForo;
 use ECidade\Tributario\Juridico\Inicial\Inicial;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if (!isset($parcel) || $parcel == '') {
     db_redireciona('db_erros.php?fechar=true&db_erro=Parcelamento não encontrado!');
     exit;
@@ -126,7 +126,7 @@ $sql .= "  where v07_parcel = $parcel and v07_instit = " . db_getsession('DB_ins
 
 //pdf
 $result = db_query($sql);
-if (pg_numrows($result) == 0) {
+if (pg_num_rows($result) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Parcelamento no. ' . $parcel . ' não encontrado!');
     exit;
 }
@@ -148,7 +148,7 @@ WHERE db03_tipodoc = 1017 AND db03_instit = " . db_getsession("DB_instit") . " O
 
 $resparag = db_query($sqlparag);
 
-if (pg_numrows($resparag) == 0) {
+if (pg_num_rows($resparag) == 0) {
     //     $head1 = 'Departamento de Fazenda';
     $head1 = 'SECRETARIA DE FINANÇAS';
 } else {
@@ -156,7 +156,7 @@ if (pg_numrows($resparag) == 0) {
     $head1 = $db02_texto;
 }
 
-$iFormaCorrecao = pg_result(db_query("SELECT k03_separajurmulparc
+$iFormaCorrecao = pg_fetch_result(db_query("SELECT k03_separajurmulparc
 		FROM numpref
 		WHERE k03_instit = " . db_getsession("DB_instit") . "
 		AND k03_anousu = " . db_getsession("DB_anousu")), 0, 0);
@@ -191,9 +191,9 @@ $sDadosLocalizacao .= " where v07_parcel = $parcel";
 $sDadosLocalizacao = " select * from ( $sDadosLocalizacao ) as x order by tipo ";
 $rsDadosLocalizacao = db_query($sDadosLocalizacao) or die($sDadosLocalizacao);
 $dadoslocalizacao = "";
-if (pg_numrows($rsDadosLocalizacao) == 1) {
-    if (pg_result($rsDadosLocalizacao, 0, "tipo") == 1) {
-        $sBusca = "SELECT loteloc.*, setorloc.* FROM cadastro.loteloc INNER JOIN cadastro.setorloc ON j06_setorloc = j05_codigo INNER JOIN cadastro.iptubase ON j01_idbql = j06_idbql WHERE j01_matric = " . pg_result($rsDadosLocalizacao,
+if (pg_num_rows($rsDadosLocalizacao) == 1) {
+    if (pg_fetch_result($rsDadosLocalizacao, 0, "tipo") == 1) {
+        $sBusca = "SELECT loteloc.*, setorloc.* FROM cadastro.loteloc INNER JOIN cadastro.setorloc ON j06_setorloc = j05_codigo INNER JOIN cadastro.iptubase ON j01_idbql = j06_idbql WHERE j01_matric = " . pg_fetch_result($rsDadosLocalizacao,
                 0, "k00_origem");
         $rsBusca = db_query($sBusca) or die($sBusca);
         if ($rsBusca and pg_num_rows($rsBusca) > 0) {
@@ -223,7 +223,7 @@ $result = db_query($sqlrepar);
 $sql = "select * from termoreparc where v08_parcel = $parcel limit 1";
 $result_reparc = db_query($sql) or die($sql);
 
-if (pg_numrows($result_reparc) > 0) {
+if (pg_num_rows($result_reparc) > 0) {
     $reparcelamento = true;
 
     // select que tras os reparcelamentos corrigindo os valores com fc_calculaold
@@ -506,18 +506,18 @@ if (pg_numrows($result_reparc) > 0) {
     $sql = $sql2;
 } else {
 
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
         // se for reparcelamento ou diversos...
-        if (pg_result($result, 0, 'matric') > 0) {
-            $numero = 'Matr. : ' . pg_result($result, 0, 'matric');
+        if (pg_fetch_result($result, 0, 'matric') > 0) {
+            $numero = 'Matr. : ' . pg_fetch_result($result, 0, 'matric');
         } else {
-            if (pg_result($result, 0, 'inscr') > 0) {
-                $numero = 'Inscr.: ' . pg_result($result, 0, 'inscr');
+            if (pg_fetch_result($result, 0, 'inscr') > 0) {
+                $numero = 'Inscr.: ' . pg_fetch_result($result, 0, 'inscr');
             } else {
-                $numero = 'Cgm : ' . pg_result($result, 0, 'v07_numcgm');
+                $numero = 'Cgm : ' . pg_fetch_result($result, 0, 'v07_numcgm');
             }
         }
-        $xnumpre = pg_result($result, 0, 'v07_numpre');
+        $xnumpre = pg_fetch_result($result, 0, 'v07_numpre');
 
         $sql = "select a.*, ";
         $sql .= "       a.k00_dtvenc as v01_dtvenc, ";
@@ -538,9 +538,9 @@ if (pg_numrows($result_reparc) > 0) {
         $sql .= "      left outer join arrematric b  on b.k00_numpre = a.k00_numpre ";
         $sql .= "      left outer join arreinscr  c   on c.k00_numpre = a.k00_numpre ";
         $sql .= " where a.k00_numpre = $xnumpre ";
-        $k00_descr = pg_result(db_query($sql), 0, "k00_descr");
-        $xtipo = pg_result(db_query($sql), 0, "k00_tipo");
-        $k03_tipo = pg_result(db_query($sql), 0, "k03_tipo");
+        $k00_descr = pg_fetch_result(db_query($sql), 0, "k00_descr");
+        $xtipo = pg_fetch_result(db_query($sql), 0, "k00_tipo");
+        $k03_tipo = pg_fetch_result(db_query($sql), 0, "k03_tipo");
 
         if ($k03_tipo == 4) {
             $sql1 = " select b.* ";
@@ -553,12 +553,12 @@ if (pg_numrows($result_reparc) > 0) {
         } else {
             if ($k03_tipo == 7) {
                 $tipo = 28;
-                $sql1 = "SELECT z01_nome FROM cgm WHERE z01_numcgm = " . pg_result(db_query($sql), 0, 'k00_numcgm');
-                $z01_nome = pg_result(db_query($sql1), 0, "z01_nome");
+                $sql1 = "SELECT z01_nome FROM cgm WHERE z01_numcgm = " . pg_fetch_result(db_query($sql), 0, 'k00_numcgm');
+                $z01_nome = pg_fetch_result(db_query($sql1), 0, "z01_nome");
             } else {
                 $tipo = 21;
-                $sql1 = "SELECT z01_nome FROM cgm WHERE z01_numcgm = " . pg_result(db_query($sql), 0, 'k00_numcgm');
-                $z01_nome = pg_result(db_query($sql1), 0, "z01_nome");
+                $sql1 = "SELECT z01_nome FROM cgm WHERE z01_numcgm = " . pg_fetch_result(db_query($sql), 0, 'k00_numcgm');
+                $z01_nome = pg_fetch_result(db_query($sql1), 0, "z01_nome");
             }
         }
     } else {
@@ -594,9 +594,9 @@ if (pg_numrows($result_reparc) > 0) {
         $sql .= "  	  where v07_parcel = $parcel and v07_instit = " . db_getsession('DB_instit');
         $sql .= " ) as x order by ordem limit 1  ";
         $resarrecad = db_query($sql);
-        if (pg_numrows($resarrecad) > 0) {
-            $tipo = pg_result($resarrecad, 0, 'k00_tipo');
-            $k03_tipo = pg_result($resarrecad, 0, 'k03_tipo');
+        if (pg_num_rows($resarrecad) > 0) {
+            $tipo = pg_fetch_result($resarrecad, 0, 'k00_tipo');
+            $k03_tipo = pg_fetch_result($resarrecad, 0, 'k03_tipo');
         } else {
             db_redireciona('db_erros.php?fechar=true&db_erro=Parcelas em aberto e/ou pagas não encontradas.');
             exit;
@@ -773,12 +773,12 @@ if (pg_numrows($result_reparc) > 0) {
 
 
             $tipo = 0;
-            if ( pg_result(db_query($sql),0,'matric') > 0 ) {
-                $numero = 'Matr. : '.pg_result(db_query($sql),0,'matric');
-            }elseif ( pg_result(db_query($sql),0,'inscr') > 0 ) {
-                $numero = 'Inscr. : '.pg_result(db_query($sql),0,'inscr');
+            if ( pg_fetch_result(db_query($sql),0,'matric') > 0 ) {
+                $numero = 'Matr. : '.pg_fetch_result(db_query($sql),0,'matric');
+            }elseif ( pg_fetch_result(db_query($sql),0,'inscr') > 0 ) {
+                $numero = 'Inscr. : '.pg_fetch_result(db_query($sql),0,'inscr');
             }else {
-                $numero = 'Cgm : '.pg_result(db_query($sql),0,'v01_numcgm');
+                $numero = 'Cgm : '.pg_fetch_result(db_query($sql),0,'v01_numcgm');
             }
         }
     }
@@ -816,9 +816,7 @@ if (isset($processoforo)) {
 
     $processoforo = "Processo Judicial - ";
 
-    $aProcessos = array_map(function ($oProcesso) {
-        return $oProcesso->v70_codforo;
-    }, $aProcessosForo);
+    $aProcessos = array_map(fn($oProcesso) => $oProcesso->v70_codforo, $aProcessosForo);
 
     $processoforo .= implode("; ", array_unique($aProcessos));
 }
@@ -904,89 +902,89 @@ if ($matric > 0) {
 }
 
 $resultnomedeb = db_query($sqlnomedeb);
-if (pg_numrows($resultnomedeb) == 0) {
+if (pg_num_rows($resultnomedeb) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Numpre não encontrado.');
     exit;
 }
-if (pg_numrows($result) == 0) {
+if (pg_num_rows($result) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Parcelamento no. ' . $parcel . ' não Encontrado na Dívida.');
     exit;
 }
-if (pg_result($resultnomedeb, 0, "leng") == '14') {
-    $xcpf = db_formatar(pg_result($resultnomedeb, 0, "z01_cgccpf"), 'cnpj');
+if (pg_fetch_result($resultnomedeb, 0, "leng") == '14') {
+    $xcpf = db_formatar(pg_fetch_result($resultnomedeb, 0, "z01_cgccpf"), 'cnpj');
 } else {
-    $xcpf = db_formatar(pg_result($resultnomedeb, 0, "z01_cgccpf"), 'cpf');
+    $xcpf = db_formatar(pg_fetch_result($resultnomedeb, 0, "z01_cgccpf"), 'cpf');
 }
 
 $cpfcnpj_contrib = $xcpf;
-$rg_contrib = pg_result($resultnomedeb, 0, "z01_ident");
-$numcgm_contrib = @pg_result($resultnomedeb, 0, "z01_numcgm");
-$nome_contrib = pg_result($resultnomedeb, 0, "z01_nome");
-$endereco_contrib = pg_result($resultnomedeb, 0, "z01_ender") . "," . pg_result($resultnomedeb, 0,
-        "z01_numero") . "/" . pg_result($resultnomedeb, 0, "z01_compl") . " - " . pg_result($resultnomedeb, 0,
+$rg_contrib = pg_fetch_result($resultnomedeb, 0, "z01_ident");
+$numcgm_contrib = @pg_fetch_result($resultnomedeb, 0, "z01_numcgm");
+$nome_contrib = pg_fetch_result($resultnomedeb, 0, "z01_nome");
+$endereco_contrib = pg_fetch_result($resultnomedeb, 0, "z01_ender") . "," . pg_fetch_result($resultnomedeb, 0,
+        "z01_numero") . "/" . pg_fetch_result($resultnomedeb, 0, "z01_compl") . " - " . pg_fetch_result($resultnomedeb, 0,
         "z01_bairro");
-$cidade_contrib = pg_result($resultnomedeb, 0, "z01_munic") . "-" . pg_result($resultnomedeb, 0, "z01_uf");
+$cidade_contrib = pg_fetch_result($resultnomedeb, 0, "z01_munic") . "-" . pg_fetch_result($resultnomedeb, 0, "z01_uf");
 
 if ($tipo == 21) {
-    $nomedeb = 'Reparcelamento de Dívida Ativa em débitos de ' . trim(pg_result($resultnomedeb, 0,
+    $nomedeb = 'Reparcelamento de Dívida Ativa em débitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
             "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
     $exerc = "PARCELA";
 } else {
     if ($tipo == 4) {
-        $nomedeb = 'Contribuição de Melhorias em débitos de ' . trim(pg_result($resultnomedeb, 0,
+        $nomedeb = 'Contribuição de Melhorias em débitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
                 "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
         $exerc = "PARCELA";
     } else {
         if ($tipo == 28) {
-            $nomedeb = 'Parcelamento de diversos em débitos de ' . trim(pg_result($resultnomedeb, 0,
+            $nomedeb = 'Parcelamento de diversos em débitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
                     "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
             $exerc = "PARCELA";
         } else {
             if ($k03_tipo == 13) {
-                if (pg_result($result, 0, "matric") > 0) {
-                    $nomedeb = 'Parcelamento do Foro em débitos de ' . trim(pg_result($resultnomedeb, 0,
+                if (pg_fetch_result($result, 0, "matric") > 0) {
+                    $nomedeb = 'Parcelamento do Foro em débitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
                             "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                 } else {
-                    if (pg_result($result, 0, "inscr") > 0) {
-                        $nomedeb = 'Parcelamento do Foro em débitos de ' . trim(pg_result($resultnomedeb, 0,
+                    if (pg_fetch_result($result, 0, "inscr") > 0) {
+                        $nomedeb = 'Parcelamento do Foro em débitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
                                 "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                     } else {
-                        $nomedeb = 'Parcelamento do Foro em débitos de ' . trim(pg_result($resultnomedeb, 0,
+                        $nomedeb = 'Parcelamento do Foro em débitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
                                 "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                     }
                 }
             } else {
                 if ($k03_tipo == 6) {
-                    if (pg_result($result, 0, "matric") > 0) {
-                        $nomedeb = 'Divida Ativa por matricula em debitos de ' . trim(pg_result($resultnomedeb, 0,
+                    if (pg_fetch_result($result, 0, "matric") > 0) {
+                        $nomedeb = 'Divida Ativa por matricula em debitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
                                 "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                     } else {
-                        if (pg_result($result, 0, "inscr") > 0) {
-                            $nomedeb = 'Dívida Ativa por inscrição em débitos de ' . trim(pg_result($resultnomedeb, 0,
+                        if (pg_fetch_result($result, 0, "inscr") > 0) {
+                            $nomedeb = 'Dívida Ativa por inscrição em débitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
                                     "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                         } else {
-                            if (pg_result($result, 0, "contr") > 0) {
-                                $nomedeb = 'Contribuição de Melhorias em débitos de ' . trim(pg_result($resultnomedeb,
+                            if (pg_fetch_result($result, 0, "contr") > 0) {
+                                $nomedeb = 'Contribuição de Melhorias em débitos de ' . trim(pg_fetch_result($resultnomedeb,
                                         0, "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                             } else {
-                                $nomedeb = 'Divida Ativa por nome em débitos de ' . trim(pg_result($resultnomedeb, 0,
+                                $nomedeb = 'Divida Ativa por nome em débitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
                                         "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                             }
                         }
                     }
                 } else {
-                    if (pg_result($result, 0, "matric") > 0) {
-                        $nomedeb = ' ' . trim(pg_result($resultnomedeb, 0, "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
+                    if (pg_fetch_result($result, 0, "matric") > 0) {
+                        $nomedeb = ' ' . trim(pg_fetch_result($resultnomedeb, 0, "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                     } else {
-                        if (pg_result($result, 0, "inscr") > 0) {
-                            $nomedeb = 'Dívida Ativa em débitos de ' . trim(pg_result($resultnomedeb, 0,
+                        if (pg_fetch_result($result, 0, "inscr") > 0) {
+                            $nomedeb = 'Dívida Ativa em débitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
                                     "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                         } else {
-                            if (pg_result($result, 0, "contr") > 0) {
-                                $nomedeb = 'Contribuição de Melhorias em débitos de ' . trim(pg_result($resultnomedeb,
+                            if (pg_fetch_result($result, 0, "contr") > 0) {
+                                $nomedeb = 'Contribuição de Melhorias em débitos de ' . trim(pg_fetch_result($resultnomedeb,
                                         0, "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                             } else {
-                                $nomedeb = 'debitos por nome em débitos de ' . trim(pg_result($resultnomedeb, 0,
+                                $nomedeb = 'debitos por nome em débitos de ' . trim(pg_fetch_result($resultnomedeb, 0,
                                         "z01_nome")) . ' CPF/CNPJ ' . $xcpf;
                             }
                         }
@@ -1044,11 +1042,11 @@ foreach ($parag as $chave) {
         $alinhamento = "J";
     }
 
-    if (strtoupper($chave->db02_descr) == "TITULO_PARCELAMENTO") {
+    if (strtoupper((string) $chave->db02_descr) == "TITULO_PARCELAMENTO") {
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->MultiCell(180, 6, "        " . $objteste->geratexto($chave->db02_texto), 0, $alinhamento);
         $pdf->cell(180, $alt, "", 0, 1, "C", 0);
-    } elseif (strtoupper($chave->db02_descr) == "TABELA_VALORES") {
+    } elseif (strtoupper((string) $chave->db02_descr) == "TABELA_VALORES") {
 
         $linha = 20;
         $Tv01_vlrhis = 0;
@@ -1076,7 +1074,7 @@ foreach ($parag as $chave) {
 
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->MultiCell(0, 8, $nomedeb, 0, 1, 0, 0);
-        $num = pg_numrows($result);
+        $num = pg_num_rows($result);
         //######################## começa a tabela ##########################
         $pdf->SetFont('Arial', 'B', 7);
         $pdf->Cell(15, 4, 'MAT/INSC', 1, 0, "C", 1);
@@ -1092,7 +1090,7 @@ foreach ($parag as $chave) {
         $np = 0;
         $npa = 0;
         $primeiro = true;
-        $arrTipo = Array();
+        $arrTipo = [];
         $V = '';
         $arrTotHis = 0;
         $arrTotVar = 0;
@@ -1119,8 +1117,8 @@ foreach ($parag as $chave) {
             db_fieldsmemory($result, $i);
             if (($xnumpre > 0 or $k03_tipo == 13 or $k03_tipo == 16 or $k03_tipo == 17) && $reparcelamento == false) {
                 $desconto = 0;
-                $dtlanc = mktime(0, 0, 0, substr($v07_dtlanc, 5, 2), substr($v07_dtlanc, 8, 2),
-                    substr($v07_dtlanc, 0, 4));
+                $dtlanc = mktime(0, 0, 0, substr((string) $v07_dtlanc, 5, 2), substr((string) $v07_dtlanc, 8, 2),
+                    substr((string) $v07_dtlanc, 0, 4));
 
                 $sqlArreoldCalc = "select min(k00_dtvenc) as k00_dtvenc, ";
                 $sqlArreoldCalc .= "       sum(k00_valor)  as vlrhis, ";
@@ -1173,7 +1171,7 @@ foreach ($parag as $chave) {
                     $rsTotalInicial = db_query($sqlTotal);
 
                     if ($rsTotalInicial != false) {
-                        $intNumrows = pg_numrows($rsTotalInicial);
+                        $intNumrows = pg_num_rows($rsTotalInicial);
                         if ($rsTotalInicial != false && $intNumrows > 0) {
                             db_fieldsmemory($rsTotalInicial, 0);
                             $vlrdesccor = (float)(@$vlrcor * @$percdesccor);
@@ -1210,7 +1208,7 @@ foreach ($parag as $chave) {
             $pdf->Cell(15, 4, @$v01_exerc, 1, 0, "C", 0);
             $pdf->cell(15, 4, db_formatar($v01_dtvenc, 'd'), 1, 0, "C", 0);
             $pdf->Cell(53, 4,
-                (@$v03_descr == '' ? "Parcelamento: " . (pg_numrows($result_reparc) > 0 ? $v08_parcelorigem : $parcel) : $v03_descr),
+                (@$v03_descr == '' ? "Parcelamento: " . (pg_num_rows($result_reparc) > 0 ? $v08_parcelorigem : $parcel) : $v03_descr),
                 1, 0, "L", 0);
             $total = $vlrcor + $multa + $juros;
             if ($total > 999999) {
@@ -1270,7 +1268,7 @@ foreach ($parag as $chave) {
         if ($pdf->GetY() > ($pdf->h - 40)) {
             $pdf->AddPage();
         }
-    } elseif (strtoupper($chave->db02_descr) == "TABELA_TOTAL") {
+    } elseif (strtoupper((string) $chave->db02_descr) == "TABELA_TOTAL") {
 
 
         $pdf->SetFont('Arial', 'B', 9);
@@ -1285,7 +1283,7 @@ foreach ($parag as $chave) {
         $sqlRegra .= " where v07_parcel = $parcel and v07_instit = " . db_getsession('DB_instit') . " limit 1 ";
         $rsRegra = db_query($sqlRegra);
 
-        if (pg_numrows($rsRegra) > 0) {
+        if (pg_num_rows($rsRegra) > 0) {
             db_fieldsmemory($rsRegra, 0);
         } else {
             $regra = "Sem Regra Definida...";
@@ -1328,7 +1326,7 @@ foreach ($parag as $chave) {
         if ($pdf->GetY() > ($pdf->h - 40)) {
             $pdf->AddPage();
         }
-    } elseif (strtoupper($chave->db02_descr) == "TABELA_PARCELA") {
+    } elseif (strtoupper((string) $chave->db02_descr) == "TABELA_PARCELA") {
         // terceira tabela
         $pdf->SetFont('Arial', 'B', 7);
         $pdf->Cell(190, 6, "DADOS GERAIS", 1, 1, "C", 1);
@@ -1465,7 +1463,7 @@ foreach ($parag as $chave) {
         } else {
             db_msgbox("numpre sem tipo encontrado.");
         }
-    } elseif (strtoupper($chave->db02_descr) == "TABELA_CUSTAS") {
+    } elseif (strtoupper((string) $chave->db02_descr) == "TABELA_CUSTAS") {
         // Este paragrafo só pode ser executado para parcelamentos com o k03_tipo = 13
         if($k03_tipo != 13) {
            continue;
@@ -1476,7 +1474,7 @@ foreach ($parag as $chave) {
         $termo = $termoRepository->getByCode($parcel);
 
         if (empty($termo)) {
-            return array();
+            return [];
         }
 
         $ultimaParcela = $termo->getTotalParcelas();
@@ -1484,7 +1482,7 @@ foreach ($parag as $chave) {
         $service = new Service\Documento($termo);
         $inicialPartilhas = $service->processar();
 
-        $custas = array();
+        $custas = [];
 
         $termoTaxasParcela = TermoTaxaParcelaRepository::getInstance()->getByInstituicao();
 
@@ -1559,21 +1557,21 @@ foreach ($parag as $chave) {
                                 $valorzinho = $custas[$parcela . $codigoTaxa]['fValor'];
                             }
 
-                            $custas[$parcela . $codigoTaxa] = array(
+                            $custas[$parcela . $codigoTaxa] = [
                                 "iParcela"   => (string) $parcela,
                                 "sDescricao" => $sDescricao,
                                 "fValor"     => $valorzinho + $fValor,
                                 "bHonorario" => $bHonorario
-                            );
+                            ];
                         }
                     }
                 } else {
-                    $custas[$parcela . $codigoTaxa] = array(
+                    $custas[$parcela . $codigoTaxa] = [
                         "iParcela"   => $parcela,
                         "sDescricao" => $sDescricao,
                         "fValor"     => $fValor,
                         "bHonorario" => $bHonorario
-                    );
+                    ];
                 }
 
                 #################################################################################
@@ -1581,7 +1579,7 @@ foreach ($parag as $chave) {
         }
 
         if (!empty($custas)) {
-            $aCustasSomadas = array();
+            $aCustasSomadas = [];
 
             #################################################################################
 
@@ -1590,34 +1588,34 @@ foreach ($parag as $chave) {
                     $aCustasSomadas[$oCustas['sDescricao']]['fValor'] += $oCustas['fValor'];
                 } else {
                     if (!$oCustas["bHonorario"]) {
-                        $aCustasSomadas[$oCustas['sDescricao']] = array(
+                        $aCustasSomadas[$oCustas['sDescricao']] = [
                             "iParcela"   => $oCustas['iParcela'],
                             "sDescricao" => $oCustas['sDescricao'],
                             "fValor"     => $oCustas['fValor'],
                             "bHonorario" => $oCustas["bHonorario"]
-                        );
+                        ];
                     } else {
-                        $aCustasSomadas[$oCustas['sDescricao']][] = array(
+                        $aCustasSomadas[$oCustas['sDescricao']][] = [
                             "iParcela"   => $oCustas['iParcela'],
                             "sDescricao" => $oCustas['sDescricao'],
                             "fValor"     => $oCustas['fValor'],
                             "bHonorario" => $oCustas["bHonorario"]
-                        );
+                        ];
                     }
                 }
             }
 
 
             foreach ($aCustasSomadas as $key => $aCusta) {
-                if(intval(array_sum(array_map('is_array', $aCusta))) > 0) {
+                if(intval(array_sum(array_map(is_array(...), $aCusta))) > 0) {
                     unset($aCustasSomadas[$key]);
 
                     foreach ($aCusta as $honorarios) {
-                        $aCustasSomadas[$honorarios['sDescricao']." - ".$honorarios['iParcela']] = array(
+                        $aCustasSomadas[$honorarios['sDescricao']." - ".$honorarios['iParcela']] = [
                             "iParcela"   => $honorarios['iParcela'],
                             "sDescricao" => $honorarios['sDescricao'],
                             "fValor"     => $honorarios['fValor'],
-                        );
+                        ];
                     }
                 }
             }
@@ -1645,7 +1643,7 @@ foreach ($parag as $chave) {
 
             $pdf->ln(10);
         }
-    } else if (strtoupper($chave->db02_descr) == "MULTA_PROCESSO") {
+    } else if (strtoupper((string) $chave->db02_descr) == "MULTA_PROCESSO") {
 
         $sqlMultas  = "select * ";
         $sqlMultas .= "  from termoini ";
@@ -1681,10 +1679,10 @@ foreach ($parag as $chave) {
 
 
         //tabela_valores
-        $diaTermo = substr($v07_dtlanc, 8, 2);
-        $mesTermo = db_mes(substr($v07_dtlanc, 5, 2));
-        $anoTermo = substr($v07_dtlanc, 0, 4);
-        $responsavel = trim($responsavel);
+        $diaTermo = substr((string) $v07_dtlanc, 8, 2);
+        $mesTermo = db_mes(substr((string) $v07_dtlanc, 5, 2));
+        $anoTermo = substr((string) $v07_dtlanc, 0, 4);
+        $responsavel = trim((string) $responsavel);
         $pdf->SetFont('Arial', '', 10);
         $pdf->MultiCell(180, 6, "        " . $objteste->geratexto($chave->db02_texto), 0, $alinhamento);
         $pdf->cell(180, $alt, "", 0, 1, "C", 0);

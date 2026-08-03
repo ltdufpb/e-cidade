@@ -71,9 +71,7 @@ try {
         case 'buscaMatriculasConfiguradas':
             $matriculasConfiguradas = $service->buscaMatriculasConfiguradas($instituicao, $ano, $mes);
 
-            $retorno->matriculas = array_map(function (ControleRubricasMatriculas $controleHorasExtrasMatriculas) {
-                return $controleHorasExtrasMatriculas->toArray();
-            }, $matriculasConfiguradas);
+            $retorno->matriculas = array_map(fn(ControleRubricasMatriculas $controleHorasExtrasMatriculas) => $controleHorasExtrasMatriculas->toArray(), $matriculasConfiguradas);
 
             break;
         case 'salvarMatriculas':

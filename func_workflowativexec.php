@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_workflowativexec_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clworkflowativexec = new cl_workflowativexec;
 $clworkflowativexec->rotulo->label("db113_sequencial");
 $clworkflowativexec->rotulo->label("db113_sequencial");
@@ -98,9 +98,9 @@ $clworkflowativexec->rotulo->label("db113_sequencial");
         }else{
            $sql = $clworkflowativexec->sql_query("",$campos,"db113_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db113_sequencial)){
-          $repassa = array("chave_db113_sequencial"=>$chave_db113_sequencial,"chave_db113_sequencial"=>$chave_db113_sequencial);
+          $repassa = ["chave_db113_sequencial"=>$chave_db113_sequencial,"chave_db113_sequencial"=>$chave_db113_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

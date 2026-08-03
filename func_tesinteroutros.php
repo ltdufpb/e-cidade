@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tesinteroutros_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltesinteroutros = new cl_tesinteroutros;
 ?>
 <html>
@@ -70,7 +70,7 @@ $cltesinteroutros = new cl_tesinteroutros;
            }
         }
 	         $sql = $cltesinteroutros->sql_query();
-        $repassa = array();
+        $repassa = [];
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_processoforomovsituacao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_libdicionario.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprocessoforomovsituacao = new cl_processoforomovsituacao;
 $db_opcao = 1;
 $db_botao = true;

@@ -54,8 +54,8 @@ include(modification("libs/db_sql.php"));
 include(modification("fpdf151/assinatura.php"));
 
 $classinatura = new cl_assinatura();
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 if ($orgaos == "") {
   db_redireciona('db_erros.php?fechar=true&db_erro=Selecione orgao/unidade!');
@@ -70,22 +70,22 @@ if($origem == "O"){
   if ($opcao == 3) {
     $head6 = "PERÍODO : " . db_formatar($perini, 'd') . " A " . db_formatar($perfin, 'd');
   } else {
-    $head6 = "PERÍODO : " . strtoupper(db_mes(substr($perini, 5, 2))) . " A " . strtoupper(db_mes(substr($perfin, 5, 2)));
+    $head6 = "PERÍODO : " . strtoupper(db_mes(substr((string) $perini, 5, 2))) . " A " . strtoupper(db_mes(substr((string) $perfin, 5, 2)));
   }
 }
 $head1 = "DEMONSTRATIVO DA DESPESA";
 $head3 = "EXERCÍCIO: " . db_getsession("DB_anousu");
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (" . str_replace('-', ', ', $db_selinstit) . ") ");
 $descr_inst = '';
 $xvirg      = '';
 $flag_abrev = false;
 
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
 
   db_fieldsmemory($resultinst, $xins);
-  if (strlen(trim($nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $nomeinstabrev)) > 0) {
 
     $descr_inst .= $xvirg . $nomeinstabrev;
     $flag_abrev  = true;
@@ -103,7 +103,7 @@ if ($flag_abrev == false) {
 }
 
 $head5     = "INSTITUIÇÕES : " . $descr_inst;
-$nivela    = substr($vernivel, 0, 1);
+$nivela    = substr((string) $vernivel, 0, 1);
 $sele_work = ' w.o58_instit in (' . str_replace('-', ', ', $db_selinstit) . ') ';
 if ($nivela >= 1) {
   $sele_work .= " and exists (select 1 from t where t.o58_orgao = w.o58_orgao)";
@@ -114,20 +114,20 @@ if ($nivela >= 2) {
 if ($recurso != 0) {
 
   $resrec     = db_query("select o15_descr from orctiporec where o15_codigo = {$recurso} ");
-  $head2      = "Recurso: " . $recurso . "-" . substr(pg_result($resrec, 0, 0), 0, 30);
+  $head2      = "Recurso: " . $recurso . "-" . substr(pg_fetch_result($resrec, 0, 0), 0, 30);
   $sele_work .= " and o58_codigo = {$recurso} ";
 }
 
 db_query("begin");
 db_query("create temp table t(o58_orgao int8,o58_unidade int8,o58_funcao int8,o58_subfuncao int8,o58_programa int8,o58_projativ int8,o58_elemento int8,o58_codigo int8)");
 
-$xcampos = split("-", $orgaos);
+$xcampos = preg_split("#\\-#m", $orgaos);
 
 for ($i = 0; $i < sizeof($xcampos); $i++) {
 
   $where    = '';
   $virgula  = '';
-  $xxcampos = split("_", $xcampos[$i]);
+  $xxcampos = preg_split("#_#m", (string) $xcampos[$i]);
   for ($ii = 0; $ii < sizeof($xxcampos); $ii++) {
 
     if ($ii > 0) {

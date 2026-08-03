@@ -164,7 +164,7 @@ if (isset($opcao) && $opcao == "alterar") {
                     </td>
                     <td>
                         <?php
-                        $arr_vinculo = array();
+                        $arr_vinculo = [];
                         $arr_vinculo["A"] = "Ativo";
                         $arr_vinculo["I"] = "Inativo";
                         $arr_vinculo["P"] = "Pensionista";
@@ -213,7 +213,7 @@ if (isset($opcao) && $opcao == "alterar") {
         if (isset($rh25_codlotavinc) && trim($rh25_codlotavinc) != "") {
             $where .= " and rh25_codlotavinc <> $rh25_codlotavinc ";
         }
-        $chavepri = array("rh25_codigo" => @$rh25_codigo, "rh25_codlotavinc" => @$rh25_codlotavinc);
+        $chavepri = ["rh25_codigo" => @$rh25_codigo, "rh25_codlotavinc" => @$rh25_codlotavinc];
         $cliframe_alterar_excluir->chavepri = $chavepri;
 
         $campos = [

@@ -49,8 +49,8 @@ $oDaoRHAvaliacao = new cl_rhavaliacao;
 $oDaoRHPromocao->rotulo->label();
 $oDaoRHPromocao->rotulo->tlabel();
 
-$oPost  = db_utils::postmemory($HTTP_POST_VARS);
-$oGet	  = db_utils::postmemory($HTTP_GET_VARS);
+$oPost  = db_utils::postmemory($_POST);
+$oGet	  = db_utils::postmemory($_GET);
 
 if( isset($oGet->iSequencial) ) {
 
@@ -64,9 +64,9 @@ if( isset($oGet->iSequencial) ) {
 	
 	$dDataInicial = $oCadastroPromocao->h72_dtinicial;
 	
-	$h72_dtinicial_dia = date('d', strtotime($dDataInicial));
-	$h72_dtinicial_mes = date('m', strtotime($dDataInicial));
-	$h72_dtinicial_ano = date('Y', strtotime($dDataInicial));
+	$h72_dtinicial_dia = date('d', strtotime((string) $dDataInicial));
+	$h72_dtinicial_mes = date('m', strtotime((string) $dDataInicial));
+	$h72_dtinicial_ano = date('Y', strtotime((string) $dDataInicial));
 	
 	$db_opcao = 3;
 }
@@ -199,7 +199,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave) {
   db_iframe_rhpromocao.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?iSequencial='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?iSequencial='+chave";
   ?>
 }
 </script>

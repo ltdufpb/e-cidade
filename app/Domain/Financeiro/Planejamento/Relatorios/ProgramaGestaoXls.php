@@ -195,7 +195,7 @@ class ProgramaGestaoXls
                 $valores [] = $valorFormatado;
             }
 
-            $colunas = array_merge(["" . $programa['formatado'], utf8_encode($programa['o54_descr'])], $valores);
+            $colunas = array_merge(["" . $programa['formatado'], mb_convert_encoding($programa['o54_descr'], 'UTF-8', 'ISO-8859-1')], $valores);
 
             foreach ($colunas as $key => $coluna) {
                 $columnIndex = $key + 1;
@@ -290,9 +290,9 @@ class ProgramaGestaoXls
 
             $colunas = [
                 ''.$iniciativa['acao'],
-                utf8_encode($iniciativa['descricao_acao']),
-                utf8_encode($regionalizacao),
-                utf8_encode($produto),
+                mb_convert_encoding($iniciativa['descricao_acao'], 'UTF-8', 'ISO-8859-1'),
+                mb_convert_encoding($regionalizacao, 'UTF-8', 'ISO-8859-1'),
+                mb_convert_encoding($produto, 'UTF-8', 'ISO-8859-1'),
             ];
 
             if (count($iniciativa['metas'])) {
@@ -317,7 +317,7 @@ class ProgramaGestaoXls
         $this->cabecalhOrgao();
 
         foreach ($orgaos as $orgao) {
-            $colunas = array_merge(["" . $orgao['formatado'], utf8_encode($orgao['descricao'])]);
+            $colunas = array_merge(["" . $orgao['formatado'], mb_convert_encoding($orgao['descricao'], 'UTF-8', 'ISO-8859-1')]);
 
             foreach ($colunas as $key => $coluna) {
                 $columnIndex = $key + 1;

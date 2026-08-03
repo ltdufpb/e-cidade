@@ -35,8 +35,8 @@ include(modification("classes/db_protprocesso_classe.php"));
 include(modification("classes/db_proctransand_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 $db_opcao = 1;
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clprocandam = new cl_procandam;
 $clproctransfer = new cl_proctransfer;
 $clprotprocesso = new cl_protprocesso;
@@ -150,7 +150,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 function js_pesquisap58_numcgm(mostra){
   if(mostra==true){
@@ -175,7 +175,7 @@ onLoad=document.form1.p58_codproc.select();
 onLoad=document.form1.p58_codproc.focus();
 </script>
 <?php 
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consultar"){
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Consultar"){
  $sql = "select p58_codproc, 
                 z01_nome,
                 p51_descr,
@@ -210,8 +210,8 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consul
 $sql = $sql.$where;
 $res = db_query($sql);
 
-if(pg_numrows($res) > 0){
-  if(pg_numrows($res) > 1){
+if(pg_num_rows($res) > 0){
+  if(pg_num_rows($res) > 1){
     echo"<script>
     js_OpenJanelaIframe('','db_iframe_cgm','func_protprocesso.php?&chave_p58_numcgm=$p58_numcgm&funcao_js=parent.js_mostraproc|p58_codproc','Pesquisa',true);
     function js_mostraproc(chave){

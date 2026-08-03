@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -80,7 +80,7 @@ function js_emite(){
         <?php 
           $sqlAno  = " select distinct q01_anousu from isscalc order by q01_anousu desc";
           $rsAno   = db_query($sqlAno);
-          $intAno  = pg_numrows($rsAno);
+          $intAno  = pg_num_rows($rsAno);
           for($i=0;$i<$intAno;$i++){
             db_fieldsmemory($rsAno,$i);
             $arrayAno[$q01_anousu] = $q01_anousu;

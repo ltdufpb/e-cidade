@@ -71,8 +71,8 @@ $operacoes    = false;
 $restosapagar = false;
 $rcl          = false;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $anousu     = db_getsession("DB_anousu");
 $anousu_ant = (db_getsession("DB_anousu")-1);
@@ -85,14 +85,14 @@ $temcamara  = false;
 $temadmind  = false;
 $flag_abrev = false;
 
-$xinstit         = split("-",$db_selinstit);
+$xinstit         = preg_split("#\\-#m",(string) $db_selinstit);
 $aListaSelInstit = $xinstit;
 
 $sWhere         = "where codigo in (".str_replace('-',', ',$db_selinstit).")";
 $sSqlResultInst = "select munic, db21_tipoinstit from db_config {$sWhere}";
 $rsResultInst   = db_query($sSqlResultInst);
 
-for ($xins = 0; $xins < pg_numrows($rsResultInst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($rsResultInst); $xins++) {
 
   db_fieldsmemory($rsResultInst,$xins);
 
@@ -111,8 +111,8 @@ $sSqlPeriodo    = $oDaoPeriodo->sql_query($periodo);
 $sSiglaPeriodo  = db_utils::fieldsMemory($oDaoPeriodo->sql_record($sSqlPeriodo),0)->o114_sigla;
 $dt             = data_periodo($anousu,$sSiglaPeriodo);
 
-$dt_ini = split("-",$dt[0]);
-$dt_fin = split("-",$dt[1]);
+$dt_ini = preg_split("#\\-#m",(string) $dt[0]);
+$dt_fin = preg_split("#\\-#m",(string) $dt[1]);
 
 $descr_periodo = "PERIODO: ".$dt["texto"];
 $arqinclude = true;
@@ -180,8 +180,8 @@ function validaarquivo($sArquivo,$ano){
 /////////////////////////////////////////////////////////////////////////
 
 // data apresentada na tela
-$dtd1    = split('-',$dt_ini);
-$dtd2    = split('-',$dt_fin);
+$dtd1    = preg_split('#\-#m',$dt_ini);
+$dtd2    = preg_split('#\-#m',$dt_fin);
 
 $textodt = strtoupper(db_mes($dtd1[1]))." A ".strtoupper(db_mes($dtd2[1]))." DE ";
 
@@ -200,7 +200,7 @@ for ($x = 0; $x < $numrowsinstit; $x ++) {
 }
 
 duplicaReceitaaCorrenteLiquida(2010, 81);
-$aMesesRCLAnterior = array();
+$aMesesRCLAnterior = [];
 if ($dt_ini_ant != '') {
   $aMesesRCLAnterior = calcula_rcl2($anousu_ant, $dt_ini_ant, "{$anousu_ant}-12-31", $sTodasInstit, true, 81);
 }
@@ -230,8 +230,8 @@ if ($pessoal == 'true') {
 
   if ($iAnoUsu >= 2017) {
 
-    $aInstituicoes = array();
-    foreach (explode('-', $db_selinstit) as $iCodigoInstituicao) {
+    $aInstituicoes = [];
+    foreach (explode('-', (string) $db_selinstit) as $iCodigoInstituicao) {
       $aInstituicoes[] = InstituicaoRepository::getInstituicaoByCodigo($iCodigoInstituicao);
     }
 

@@ -38,15 +38,12 @@ use Exception;
  */
 class LaboratorioDepartamentoService
 {
-    private $repositorio;
-
     /**
      * LaboratorioDepartamentoRepository constructor.
      * @param LaboratorioDepartamentoRepository $repositorio
      */
-    public function __construct(LaboratorioDepartamentoRepository $repositorio)
+    public function __construct(private readonly LaboratorioDepartamentoRepository $repositorio)
     {
-        $this->repositorio = $repositorio;
     }
 
     /**

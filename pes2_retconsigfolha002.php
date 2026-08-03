@@ -38,7 +38,7 @@ $clgerasql = new cl_gera_sql_folha;
 $clgerasql->inicio_rh = false;
 
 $get = db_utils::postMemory($_GET);
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $ponts = $get->pontos;
 
 $get->rubricas = json_decode(str_replace('\"', '"', $get->rubricas));
@@ -57,7 +57,7 @@ if (!empty($get->rubricas)) {
     $dbwhererubs = " and #s#_rubric in ('{$rubricas}')";
 }
 
-$arr_pontos = split(",",$ponts);
+$arr_pontos = preg_split("#,#m",$ponts);
 $varSQL = "";
 
 $headPontos = "";
@@ -66,7 +66,7 @@ for($i=0; $i<6; $i++){
   $valor = "";
   if( isset($arr_pontos[$i]) && trim($arr_pontos[$i]) != "" ){
     $valor = $arr_pontos[$i];
-  }else if( count($arr_pontos) == 1 && trim($arr_pontos[0]) == "" ){
+  }else if( count($arr_pontos) == 1 && trim((string) $arr_pontos[0]) == "" ){
     $valor = "$i";
   }
   switch ( $valor ) {
@@ -78,7 +78,7 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd <> 3 " . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r14");
+               $sigla ??= "r14";
                break;
     case "1" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Adiantamento";
@@ -88,7 +88,7 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd <> 3" . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r22");
+               $sigla ??= "r22";
                break;
     case "2" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Férias";
@@ -98,7 +98,7 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd <> 3 " . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r31");
+               $sigla ??= "r31";
                break;
     case "3" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Rescisão";
@@ -108,7 +108,7 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd <> 3 " . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r20");
+               $sigla ??= "r20";
                break;
     case "4" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Saldo do 13o.";
@@ -118,7 +118,7 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd <> 3 " . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r35");
+               $sigla ??= "r35";
                break;
     case "5" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Complementar";
@@ -128,12 +128,12 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd <> 3 " . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r48");
+               $sigla ??= "r48";
                break;
   }
 }
 
-if(count($arr_pontos) == 1 && trim($arr_pontos[0]) == ""){
+if(count($arr_pontos) == 1 && trim((string) $arr_pontos[0]) == ""){
   $headPontos = "Todos os pontos";
 }
 
@@ -183,7 +183,7 @@ function getReduzidoPorRubrica($rubrica, $instit, $anousu)
 
   $rsReduz = db_query($sql);
 
-  if (pg_numrows($rsReduz) > 0) {
+  if (pg_num_rows($rsReduz) > 0) {
     $iReduzido = db_utils::fieldsMemory($rsReduz ,0)->c61_reduz;
   }
   return  $iReduzido;
@@ -257,7 +257,7 @@ $total_ger = 0;
 $cor = 1;
 $proxpag = true;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
   db_fieldsmemory($result,$x);
 
   if($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
@@ -336,7 +336,7 @@ if($totaliza == 's') {
   }
   $pdf->cell(0,$alt,'Total dos Recursos ',0,1,"L",0);
   $pdf->setfont('arial','',9);
-  for($x = 0; $x < pg_numrows($result);$x++){
+  for($x = 0; $x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
 
     if($pdf->gety() > $pdf->h - 30 || $troca != 0 ){

@@ -44,7 +44,7 @@ require_once(modification("classes/db_conrelvalor_classe.php"));
 require_once(modification("model/relatorioContabil.model.php"));
 require_once(modification("model/linhaRelatorioContabil.model.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 db_app::import("linhaRelatorioContabil");
 db_app::import("relatorioContabil");
@@ -70,7 +70,7 @@ if ($emite_rec_desp==1||$emite_proj==1){
   $sql         = "select codigo  from db_config where db21_tipoinstit in (5,6) ";
   $resultinst  = db_query($sql);
   $xvirg       = '';
-  for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+  for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
     $instit_rpps .= $xvirg.$codigo; // salva insituio
     $xvirg        = ', ';
@@ -93,7 +93,7 @@ $periodo         = $oPeriodo->o114_sigla;
 $periodo_selecao = $dados["periodo"];
 
 $anousu_ant = $anousu-1;
-$xinstit    = split("-",$db_selinstit);
+$xinstit    = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 db_fieldsmemory($resultinst,0);
 $lUltimoBimestre = false;
@@ -120,16 +120,16 @@ if (!isset($arqinclude)){
   $txt2  = "DEMONSTRATIVO SIMPLIFICADO DO RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
   $txt3  = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
-  $mes     = split("-",$dt_ini);
+  $mes     = preg_split("#\\-#m",(string) $dt_ini);
   $mesini  = strtoupper(db_mes($mes[1]));
   $txt4    = "JANEIRO";
-  $mes     = split("-",$dt_fin);
+  $mes     = preg_split("#\\-#m",(string) $dt_fin);
   $mesfin  = strtoupper(db_mes($mes[1]));
   $txt4   .= " A $mesfin/$anousu";
 
   if ($sSiglaPeriodo != "1S" && $sSiglaPeriodo != "2S") {
 
-    $txt4 .= " - ".strtoupper($periodo_selecao)." $mesini - $mesfin";
+    $txt4 .= " - ".strtoupper((string) $periodo_selecao)." $mesini - $mesfin";
 
   }
 
@@ -359,7 +359,7 @@ if (@$emite_balorc==1 || $emite_desp_funcsub==1) {
 // RECEITA CORRENTE LIQUIDA - RCL
 if ($emite_rcl==1 || $emite_ppp==1) {
 
-  $dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+  $dt = preg_split('#\-#m',(string) $dt_fin);  // mktime -- (mes,dia,ano)
   $dt_ini_ant = "{$anousu_ant}-01-01";
   $dt_fin_ant = "{$anousu_ant}-12-31";
 
@@ -643,7 +643,7 @@ if ($emite_oper==1){
       $result_desp    = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
       @db_query("drop table work_dotacao");
 
-      for($i = 0; $i < pg_numrows($result_oper); $i++){
+      for($i = 0; $i < pg_num_rows($result_oper); $i++){
       db_fieldsmemory($result_oper, $i);
       $estrutural = $o57_fonte;
       if (in_array($estrutural, $m_operacoes)){
@@ -652,10 +652,10 @@ if ($emite_oper==1){
       }
       }
 
-      for($i = 0; $i < pg_numrows($result_desp); $i++){
+      for($i = 0; $i < pg_num_rows($result_desp); $i++){
       db_fieldsmemory($result_desp,$i);
       $estrutural = $o58_elemento;
-      if (substr($estrutural,0,3)=='334'){
+      if (str_starts_with((string) $estrutural, '334')){
         $total_despesa += $liquidado_acumulado;
         $saldo_despesa += $liquidado_acumulado - $dot_ini;
       }
@@ -713,7 +713,7 @@ if ($emite_proj==1){
       $result_despesa = db_dotacaosaldo(8,2,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin);
       @db_query("drop table work_dotacao");
 
-      for ($i=0; $i < pg_numrows($result_rec); $i++){
+      for ($i=0; $i < pg_num_rows($result_rec); $i++){
       db_fieldsmemory($result_rec,$i);
       $estrutural = $o57_fonte;
 
@@ -721,28 +721,28 @@ if ($emite_proj==1){
       if (in_array($estrutural,$m_receita[$linha]['estrut'])){
       $total_rec += $saldo_arrecadado;
       }
-      if (substr($estrutural,0,7)=="6121701"){
+      if (str_starts_with((string) $estrutural, "6121701")){
         $total_rec_patronal += $saldo_arrecadado;
       }
       }
       }
 
-      for ($i=0; $i < pg_numrows($result_res_rep); $i++) {
+      for ($i=0; $i < pg_num_rows($result_res_rep); $i++) {
         db_fieldsmemory($result_res_rep,$i);
 
         for ($linha=15;$linha<=28;$linha++){
-          if (substr($estrutural,0,1)=="6"){ // RESULTADOS(6)
+          if (str_starts_with((string) $estrutural, "6")){ // RESULTADOS(6)
             if (in_array($estrutural,$m_receita[$linha]['estrut'])){
               $total_rec += $saldo_final;
             }
-            if (substr($estrutural,0,6)=="612117"){
+            if (str_starts_with((string) $estrutural, "612117")){
               $total_rep_rpps += $saldo_final;
             }
           }
         }
       }
 
-      for ($i = 0; $i < pg_numrows($result_despesa); $i ++) {
+      for ($i = 0; $i < pg_num_rows($result_despesa); $i ++) {
         db_fieldsmemory($result_despesa, $i);
 
         for ($linha=29;$linha<=39;$linha++){
@@ -787,14 +787,14 @@ if ($emite_alienacao==1){
       $result_rec    = db_receitasaldo(11,1,3,true,$sele_work,$anousu,$dt_ini,$dt_fin,false);
       @db_query("drop table work_receita");
 
-      for($i = 0; $i < pg_numrows($result_rec); $i++){
+      for($i = 0; $i < pg_num_rows($result_rec); $i++){
       db_fieldsmemory($result_rec, $i);
       $estrutural = $o57_fonte;
-      if (substr($estrutural,0,3)=="422"){
+      if (str_starts_with((string) $estrutural, "422")){
       $total_alien += $saldo_arrecadado_acumulado;
       $saldo_alien += $saldo_arrecadado_acumulado - $saldo_prevadic_acum;
       }
-      if (substr($estrutural,0,3)=="413"){
+      if (str_starts_with((string) $estrutural, "413")){
       $total_recurso += $saldo_arrecadado_acumulado;
       $saldo_recurso += $saldo_arrecadado_acumulado - $saldo_prevadic_acum;
       }
@@ -1489,11 +1489,11 @@ if ($emite_ppp==1){
 $pdf->cell(190,$alt,"","T",1,"L",0);
 
 $oRelatorioContabil = new relatorioContabil(98);
-$oRelatorioContabil->getNotaExplicativa(&$pdf,$iCodigoPeriodo);
+$oRelatorioContabil->getNotaExplicativa($pdf,$iCodigoPeriodo);
 
 $pdf->ln(10);
 
-assinaturas(&$pdf,&$classinatura,'LRF');
+assinaturas($pdf,$classinatura,'LRF');
 
 $pdf->Output();
 ?>

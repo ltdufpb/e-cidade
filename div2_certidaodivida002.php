@@ -40,7 +40,7 @@ require_once(modification("fpdf151/pdf3.php"));
 require_once(modification("model/cda.model.php"));
 require_once(modification("libs/db_conecta.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if( empty($ordenarpor) ){
   $ordenarpor = '';
@@ -193,7 +193,7 @@ class pdfcertidao extends pdf3 {
     global $lImpFolha;
 
     db_fieldsmemory($result,0);
-    $db12_extenso = pg_result($result,0,"db12_extenso");
+    $db12_extenso = pg_fetch_result($result,0,"db12_extenso");
 
     /// seta a margem esquerda que veio do relatorio
     $S      = $this->lMargin;
@@ -293,7 +293,7 @@ for ($numcertid = 0; $numcertid < $numero; $numcertid++) {
 
   $resparag = db_query($sqlparag);
 
-  if (pg_numrows($resparag) == 0) {
+  if (pg_num_rows($resparag) == 0) {
 
     $head1 = 'SECRETARIA DE FINANÇAS';
   } else {
@@ -310,7 +310,7 @@ for ($numcertid = 0; $numcertid < $numero; $numcertid++) {
   $sSqlDadosInicial .= "  where inicialcert.v51_certidao = {$oCertid->v14_certid}";
   $rsDadosInicial = db_query($sSqlDadosInicial);
 
-  if (pg_numrows($rsDadosInicial) > 0) {
+  if (pg_num_rows($rsDadosInicial) > 0) {
 
     $oDadosInicial = db_utils::fieldsMemory($rsDadosInicial, 0);
     $oDocumento->processoforo  = $oDadosInicial->processoforo;
@@ -326,7 +326,7 @@ for ($numcertid = 0; $numcertid < $numero; $numcertid++) {
 
     foreach ($oDocumentoAgrupador->aParagrafos as $oParagrafo) {
 
-      switch (trim(strtolower($oParagrafo->db02_descr))) {
+      switch (trim(strtolower((string) $oParagrafo->db02_descr))) {
 
         case "dados_devedor" :
 
@@ -491,7 +491,7 @@ function drawDevedores($pdf, cda $oCertidao, $lTipoOrdem, $dadosCertidao) {
 
    $pdf->setfont('arial','',10);
 
-   $aCgcCpf       = array();
+   $aCgcCpf       = [];
    $aDadosDevedor = $oCertidao->getDevedoresEnvolvidos($lTipoOrdem);
 
    foreach ($aDadosDevedor->aDevedores as $oDevedor) {
@@ -499,7 +499,7 @@ function drawDevedores($pdf, cda $oCertidao, $lTipoOrdem, $dadosCertidao) {
      $aCgcCpf[] = $oDevedor->cgcCpf;
 
      $pdf->setfont('arial','',8);
-     $pdf->cell(30 ,3,substr($oDevedor->tipo,0,15),0,0,"L",0);
+     $pdf->cell(30 ,3,substr((string) $oDevedor->tipo,0,15),0,0,"L",0);
      $pdf->Cell(110,3,$oDevedor->nome             ,0,0,"L",0);
      $pdf->Cell(20 ,3,$oDevedor->numcgm           ,0,0,"L",0);
      $pdf->Cell(30 ,3,$oDevedor->cgcCpf           ,0,1,"L",0);
@@ -727,7 +727,7 @@ function drawMetodologia($pdf, cda $oCertidao, $aProcedencias) {
  * @param cda $oCertidao
  */
 
-function drawDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao) {
+function drawDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao = null) {
 
   global $tipo, $lImpFolha;
   $aDebitos         = $oCertidao->getDebitos($lReemissao);
@@ -802,9 +802,9 @@ function drawDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lRe
 
   } else if ($tipo == 2) {
 
-    $aDebitosOrdenado = array();
-    $aTotaisAno       = array();
-    $oTotalGeral      = array();
+    $aDebitosOrdenado = [];
+    $aTotaisAno       = [];
+    $oTotalGeral      = [];
 
     foreach ($aDebitos as $oDebito) {
 
@@ -943,7 +943,7 @@ function drawDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lRe
         $pdf->Cell(10,5,$oDebito->exercicio,1,0,"C",0);
         $pdf->Cell(10,5,$oDebito->numpar,1,0,"C",0);
         $pdf->Cell(10,5,$oDebito->livro."/".$oDebito->folha,1,0,"C",0);
-        $pdf->Cell(15,5,ucfirst($oDebito->origem)."/{$oDebito->codigoorigem}",1,0,"C",0);
+        $pdf->Cell(15,5,ucfirst((string) $oDebito->origem)."/{$oDebito->codigoorigem}",1,0,"C",0);
         $pdf->Cell(30,5,$oDebito->procedencia,1,0,"L",0);
         $pdf->Cell(18,5,$oDebito->origemdebito,1,0,"C",0);
         $pdf->Cell(18,5,db_formatar($oDebito->datainscricao,'d'),1,0,"C",0);
@@ -968,9 +968,9 @@ function drawDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lRe
           $pdf->SetFont('','I',5);
           $pdf->setX(10);
 
-          $pdf->SetAligns(array('J'));
-          $pdf->SetWidths(array(194));
-          $pdf->Row_multicell(array("Observação: {$oDebito->observacao}"),4,true,4,0,true,true,3,3);
+          $pdf->SetAligns(['J']);
+          $pdf->SetWidths([194]);
+          $pdf->Row_multicell(["Observação: {$oDebito->observacao}"],4,true,4,0,true,true,3,3);
 
           $pdf->SetFont('','',6);
 
@@ -1010,7 +1010,7 @@ function drawDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lRe
   }
 }
 
-function drawTotalizacaoDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao,$lComposicao=false,$lCorrigido=false) {
+function drawTotalizacaoDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao = null,$lComposicao=false,$lCorrigido=false) {
 
   global $tipo, $lImpFolha;
 
@@ -1083,7 +1083,7 @@ function drawTotalizacaoDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=
  * @param cda $oCertidao
  */
 
-function drawDebitosOrigemCorrigido(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao, $lCorrigido) {
+function drawDebitosOrigemCorrigido(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao = null, $lCorrigido = null) {
 
   global $tipo, $lImpFolha;
 
@@ -1097,9 +1097,9 @@ function drawDebitosOrigemCorrigido(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotal
 	  $aDebitos = $oCertidao->getDebitos($lReemissao);
   }
 
-    $aDebitosOrdenado = array();
-    $aTotaisAno       = array();
-    $oTotalGeral      = array();
+    $aDebitosOrdenado = [];
+    $aTotaisAno       = [];
+    $oTotalGeral      = [];
 
     foreach ($aDebitos as $oDebito) {
 
@@ -1247,7 +1247,7 @@ function drawDebitosOrigemCorrigido(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotal
         $pdf->Cell( 9,5,$oDebito->exercicio                      ,1,0,"C",0);
         $pdf->Cell( 6,5,$oDebito->numpar                         ,1,0,"C",0);
         $pdf->Cell(10,5,$oDebito->livro."/".$oDebito->folha      ,1,0,"C",0);
-        $pdf->Cell(12,5,ucfirst($oDebito->origem)."/{$oDebito->codigoorigem}",1,0,"C",0);
+        $pdf->Cell(12,5,ucfirst((string) $oDebito->origem)."/{$oDebito->codigoorigem}",1,0,"C",0);
         $pdf->Cell(27,5,$oDebito->procedencia                    ,1,0,"L",0);
         $pdf->Cell(17,5,$oDebito->origemdebito                   ,1,0,"C",0);
         $pdf->Cell(12,5,db_formatar($oDebito->datainscricao,'d') ,1,0,"C",0);
@@ -1272,9 +1272,9 @@ function drawDebitosOrigemCorrigido(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotal
           $pdf->SetFont('','I',5);
           $pdf->setX(10);
 
-          $pdf->SetAligns(array('J'));
-          $pdf->SetWidths(array(194));
-          $pdf->Row_multicell(array("Observação: {$oDebito->observacao}"),4,true,4,0,true,true,3,3);
+          $pdf->SetAligns(['J']);
+          $pdf->SetWidths([194]);
+          $pdf->Row_multicell(["Observação: {$oDebito->observacao}"],4,true,4,0,true,true,3,3);
 
           $pdf->SetFont('','',6);
         }
@@ -1319,7 +1319,7 @@ function drawDebitosOrigemCorrigido(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotal
  * @param cda $oCertidao
  */
 
-function drawDebitosOrigemCorrigidoData(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao, $lCorrigido) {
+function drawDebitosOrigemCorrigidoData(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao = null, $lCorrigido = null) {
 
 	global $tipo, $lImpFolha;
 
@@ -1333,9 +1333,9 @@ function drawDebitosOrigemCorrigidoData(pdf3 $pdf, cda $oCertidao, $oPardiv, $lT
 		$aDebitos = $oCertidao->getDebitos($lReemissao);
 	}
 
-	$aDebitosOrdenado = array();
-	$aTotaisAno       = array();
-	$oTotalGeral      = array();
+	$aDebitosOrdenado = [];
+	$aTotaisAno       = [];
+	$oTotalGeral      = [];
 
 	foreach ($aDebitos as $oDebito) {
 
@@ -1515,9 +1515,9 @@ function drawDebitosOrigemCorrigidoData(pdf3 $pdf, cda $oCertidao, $oPardiv, $lT
 				$pdf->SetFont('','I',5);
 				$pdf->setX(10);
 
-				$pdf->SetAligns(array('J'));
-				$pdf->SetWidths(array(194));
-				$pdf->Row_multicell(array("Observação: {$oDebito->observacao}"),4,true,4,0,true,true,3,3);
+				$pdf->SetAligns(['J']);
+				$pdf->SetWidths([194]);
+				$pdf->Row_multicell(["Observação: {$oDebito->observacao}"],4,true,4,0,true,true,3,3);
 
 				$pdf->SetFont('','',6);
 			}
@@ -1562,7 +1562,7 @@ function drawDebitosOrigemCorrigidoData(pdf3 $pdf, cda $oCertidao, $oPardiv, $lT
  * @param cda $oCertidao
  */
 
-function drawDebitosComposicao(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao,$lCorrigido) {
+function drawDebitosComposicao(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao = null,$lCorrigido = null) {
 
   global $tipo, $lImpFolha;
 
@@ -1577,9 +1577,9 @@ function drawDebitosComposicao(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=f
 	  //$oCertidao->setComposicao(false);
   }
 
-    $aDebitosOrdenado = array();
-    $aTotaisAno       = array();
-    $oTotalGeral      = array();
+    $aDebitosOrdenado = [];
+    $aTotaisAno       = [];
+    $oTotalGeral      = [];
 
     foreach ($aDebitos as $oDebito) {
 
@@ -1727,7 +1727,7 @@ function drawDebitosComposicao(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=f
         $pdf->Cell( 9,5,$oDebito->exercicio                      ,1,0,"C",0);
         $pdf->Cell( 6,5,$oDebito->numpar                         ,1,0,"C",0);
         $pdf->Cell(10,5,$oDebito->livro."/".$oDebito->folha      ,1,0,"C",0);
-        $pdf->Cell(12,5,ucfirst($oDebito->origem)."/{$oDebito->codigoorigem}",1,0,"C",0);
+        $pdf->Cell(12,5,ucfirst((string) $oDebito->origem)."/{$oDebito->codigoorigem}",1,0,"C",0);
         $pdf->Cell(27,5,$oDebito->procedencia                    ,1,0,"L",0);
         $pdf->Cell(17,5,$oDebito->origemdebito                   ,1,0,"C",0);
         $pdf->Cell(12,5,db_formatar($oDebito->datainscricao,'d') ,1,0,"C",0);
@@ -1752,9 +1752,9 @@ function drawDebitosComposicao(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=f
           $pdf->SetFont('','I',5);
           $pdf->setX(10);
 
-          $pdf->SetAligns(array('J'));
-          $pdf->SetWidths(array(194));
-          $pdf->Row_multicell(array("Observação: {$oDebito->observacao}"),4,true,4,0,true,true,3,3);
+          $pdf->SetAligns(['J']);
+          $pdf->SetWidths([194]);
+          $pdf->Row_multicell(["Observação: {$oDebito->observacao}"],4,true,4,0,true,true,3,3);
 
           $pdf->SetFont('','',6);
         }
@@ -1793,11 +1793,11 @@ function drawDebitosComposicao(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=f
 }
 
 
-function drawTotalizacaoDemonstrativos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao,$oDadosCertidao,$lCorrigido, $sPosicao="vertical",$sData) {
+function drawTotalizacaoDemonstrativos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza=false, $lReemissao = null,$oDadosCertidao = null,$lCorrigido = null, $sPosicao="vertical",$sData = null) {
 
   global $tipo, $lImpFolha;
 
-  $oTotalGeral                  = array();
+  $oTotalGeral                  = [];
   $oTotalGeral['nVlrHistorico'] = 0;
   $oTotalGeral['nVlrCorrecao']  = 0;
   $oTotalGeral['nVlrMulta']     = 0;
@@ -1843,10 +1843,10 @@ function drawTotalizacaoDemonstrativos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTo
 	                                   from arreold
 	                                  where k00_numpre = {$oNumpre->v07_numpre}");
 
-	      if (pg_numrows($result_arreold) > 0)  {
+	      if (pg_num_rows($result_arreold) > 0)  {
 
 	        $rsDebitos = debitos_numpre_old($oDadosCertidao->v07_numpre,0,0,$dataemis,$anoemis,0);
-	        $iTotalDebitos = pg_numrows($rsDebitos);
+	        $iTotalDebitos = pg_num_rows($rsDebitos);
 
 	      } else {
 
@@ -1928,14 +1928,14 @@ function drawTotalizacaoDemonstrativos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTo
 
   if ($lReemissao) {
 
-    $dataemis = mktime(0,0,0,substr($sData,5,2),
-                             substr($sData,8,2),
-                             substr($sData,0,4)
+    $dataemis = mktime(0,0,0,substr((string) $sData,5,2),
+                             substr((string) $sData,8,2),
+                             substr((string) $sData,0,4)
                              );
-    $anoemis  = substr($sData,0,4);
-    $xmes     = substr($sData,5,2);
-    $xdia     = substr($sData,8,2);
-    $xano     = substr($sData,0,4);
+    $anoemis  = substr((string) $sData,0,4);
+    $xmes     = substr((string) $sData,5,2);
+    $xdia     = substr((string) $sData,8,2);
+    $xano     = substr((string) $sData,0,4);
 
   } else {
 
@@ -2056,10 +2056,10 @@ function drawParcelamentos(pdf3 $pdf, cda $oCertidao, $oPardiv, $oDadosCertidao,
     }else{
 
       $result_arreold=db_query("select * from arreold where k00_numpre={$oNumpre->v07_numpre}");
-      if(pg_numrows($result_arreold)>0) {
+      if(pg_num_rows($result_arreold)>0) {
 
         $rsDebitos = debitos_numpre_old($oNumpre->v07_numpre, 0, 0, $dataemis,$anoemis, 0);
-        $iTotalDebitos = pg_numrows($rsDebitos);
+        $iTotalDebitos = pg_num_rows($rsDebitos);
 
       } else {
         $sqlprocuraarreforo    = " select k00_numpre,
@@ -2150,7 +2150,7 @@ function drawParcelamentos(pdf3 $pdf, cda $oCertidao, $oPardiv, $oDadosCertidao,
       $pdf->SetFont('','',7);
 
       $pdf->Cell(15,5,$oDebito->k00_numpre                           ,1,0,"C",0);
-      $pdf->Cell(50,5,substr($oDebito->k02_drecei,0,34)              ,1,0,"L",0);
+      $pdf->Cell(50,5,substr((string) $oDebito->k02_drecei,0,34)              ,1,0,"L",0);
       $pdf->Cell( 8,5,db_formatar($oDebito->k00_numpar,'s','0',2,'e'),1,0,"C",0);
       $pdf->Cell(15,5,db_formatar($oDebito->k00_dtvenc,'d')          ,1,0,"C",0);
       $pdf->Cell(20,5,db_formatar($oDebito->vlrhis,'f')              ,1,0,"R",0);
@@ -2443,14 +2443,14 @@ function drawData ($pdf, $oCertidao, $sData, $lCorrigir) {
   $sMunic = db_stdClass::getDadosInstit()->munic;
   if ($lCorrigir) {
 
-    $dataemis = mktime(0,0,0,substr($sData,5,2),
-                             substr($sData,8,2),
-                             substr($sData,0,4)
+    $dataemis = mktime(0,0,0,substr((string) $sData,5,2),
+                             substr((string) $sData,8,2),
+                             substr((string) $sData,0,4)
                              );
-    $anoemis  = substr($sData,0,4);
-    $xmes     = substr($sData,5,2);
-    $xdia     = substr($sData,8,2);
-    $xano     = substr($sData,0,4);
+    $anoemis  = substr((string) $sData,0,4);
+    $xmes     = substr((string) $sData,5,2);
+    $xdia     = substr((string) $sData,8,2);
+    $xano     = substr((string) $sData,0,4);
 
   } else {
 
@@ -2479,7 +2479,7 @@ function drawAssinaturas($pdf, $oCertidao, $aAssinaturas) {
   foreach ($aAssinaturas as $oAssinaturas) {
 
     if ($oAssinaturas->db02_descr == "ASSINATURAS_CODIGOPHP") {
-      $assinaturas_php = trim($oAssinaturas->db02_texto);
+      $assinaturas_php = trim((string) $oAssinaturas->db02_texto);
     }
     if ($oAssinaturas->db04_ordem == '4'){
       $asssec = $oAssinaturas->db02_texto;
@@ -2575,10 +2575,10 @@ function drawParcelamentosPago(pdf3 $pdf, cda $oCertidao, $oPardiv, $oDadosCerti
 
       $result_arreold=db_query("select * from arreold where k00_numpre={$oNumpre->v07_numpre}");
 
-      if ( pg_numrows($result_arreold) > 0 ) {
+      if ( pg_num_rows($result_arreold) > 0 ) {
 
         $rsDebitos = debitos_numpre_old($oDadosCertidao->v07_numpre,0,0,$dataemis,$anoemis,0);
-        $iTotalDebitos = pg_numrows($rsDebitos);
+        $iTotalDebitos = pg_num_rows($rsDebitos);
 
       } else {
 
@@ -2613,7 +2613,7 @@ function drawParcelamentosPago(pdf3 $pdf, cda $oCertidao, $oPardiv, $oDadosCerti
     }
 
     $aDebitosNumpre = db_utils::getCollectionByRecord($rsDebitos);
-    $aListaDebitos  = array();
+    $aListaDebitos  = [];
 
     foreach ( $aDebitosNumpre as $iInd => $oDebitosNumpre ) {
       if ( !isset($aListaDebitos[$oDebitosNumpre->k00_numpre][$oDebitosNumpre->k00_numpar][$oDebitosNumpre->k00_receit]) ) {
@@ -2735,7 +2735,7 @@ function drawParcelamentosPago(pdf3 $pdf, cda $oCertidao, $oPardiv, $oDadosCerti
           $pdf->SetFont('','',7);
 
           $pdf->Cell(15,5,$oDebito->k00_numpre                           ,1,0,"C",0);
-          $pdf->Cell(30,5,substr($oDebito->k02_drecei,0,18)              ,1,0,"L",0);//de 50 para 30 a largura da linha
+          $pdf->Cell(30,5,substr((string) $oDebito->k02_drecei,0,18)              ,1,0,"L",0);//de 50 para 30 a largura da linha
           $pdf->Cell( 8,5,db_formatar($oDebito->k00_numpar,'s','0',2,'e'),1,0,"C",0);
           $pdf->Cell(15,5,db_formatar($oDebito->k00_dtvenc,'d')          ,1,0,"C",0);
           $pdf->Cell(20,5,db_formatar($oDebito->vlrhis,'f')              ,1,0,"R",0);
@@ -2903,9 +2903,9 @@ function drawDebitosInflator($pdf, cda $oCertidao, $oPardiv, $sInflator, $lTotal
 
   } else if ($tipo == 2) {
 
-    $aDebitosOrdenado = array();
-    $aTotaisAno       = array();
-    $oTotalGeral      = array();
+    $aDebitosOrdenado = [];
+    $aTotaisAno       = [];
+    $oTotalGeral      = [];
 
     foreach ($aDebitos as $oDebito) {
 
@@ -2990,7 +2990,7 @@ function drawDebitosInflator($pdf, cda $oCertidao, $oPardiv, $sInflator, $lTotal
       $iY = 0;
       foreach ($aTipo as $oDebito) {
 
-        $sSqlVlrInfla = "select fc_vlinf from fc_vlinf('".strtoupper($sInflator)."','{$oDebito->datainscricao}');";
+        $sSqlVlrInfla = "select fc_vlinf from fc_vlinf('".strtoupper((string) $sInflator)."','{$oDebito->datainscricao}');";
         $rsVlrInfla   = db_query($sSqlVlrInfla);
         $nVlrInfla    = db_utils::fieldsMemory($rsVlrInfla,0)->fc_vlinf;
 

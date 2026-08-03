@@ -32,7 +32,7 @@ require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 require_once modification("fpdf151/PDFDocument.php");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $where = "";
 if ($zona != 0 || $zona != "") {
@@ -57,9 +57,9 @@ $sSqlReceitas .= "union ";
 $sSqlReceitas .= "select distinct j23_recorg as j18_receit, j23_recdst as oneracao from iptucalcconfrec where j23_anousu = $anousu and j23_tipo = 1";
 
 $rsReceitas = db_query($sSqlReceitas);
-$iLinhasRec = pg_numrows($rsReceitas);
-$aRecIptu   = array();
-$aRecOnera  = array();
+$iLinhasRec = pg_num_rows($rsReceitas);
+$aRecIptu   = [];
+$aRecOnera  = [];
 $sRecIptu   = "";
 $vir        = "";
 for ($i = 0; $i < $iLinhasRec; $i++) {
@@ -601,7 +601,7 @@ for ($x = 0; $x < $linhasemdia; $x++) {
 
 }
 
-$array_parcs = array();
+$array_parcs = [];
 
 for ($reg = 0; $reg < pg_num_rows($resultporparcela); $reg++) {
   db_fieldsmemory($resultporparcela, $reg);
@@ -644,7 +644,7 @@ $pdf->ln();
 $pdf->Cell(10, $alt, "REC", "T", 0, "L", 0);
 $pdf->Cell(40, $alt, "DESCRICAO DA RECEITA", "T", 0, "L", 0);
 
-$totais = array();
+$totais = [];
 
 $preenche = 1;
 $x        = 0;
@@ -689,15 +689,15 @@ foreach ($array_parcs as $a => $b) {
   for ($parc = 1; $parc <= $maxparc; $parc++) {
 
     $aa = $parc;
-    $pdf->Cell(9, $alt, db_formatar((isset($array_parcs[$a][$aa][0]) ? $array_parcs[$a][$aa][0] : 0), 's'), "L", 0, "R", $preenche);
-    $pdf->Cell(9, $alt, db_formatar((isset($array_parcs[$a][$aa][1]) ? $array_parcs[$a][$aa][1] : 0), 's'), 0, 0, "R", $preenche);
+    $pdf->Cell(9, $alt, db_formatar(($array_parcs[$a][$aa][0] ?? 0), 's'), "L", 0, "R", $preenche);
+    $pdf->Cell(9, $alt, db_formatar(($array_parcs[$a][$aa][1] ?? 0), 's'), 0, 0, "R", $preenche);
     $pdf->Cell(1, $alt, "", "R", 0, "L", $preenche);
 
-    $totais[0][$aa] += (isset($array_parcs[$a][$aa][0]) ? $array_parcs[$a][$aa][0] : 0);
-    $totais[1][$aa] += (isset($array_parcs[$a][$aa][1]) ? $array_parcs[$a][$aa][1] : 0);
+    $totais[0][$aa] += ($array_parcs[$a][$aa][0] ?? 0);
+    $totais[1][$aa] += ($array_parcs[$a][$aa][1] ?? 0);
 
-    $total_dia += (isset($array_parcs[$a][$aa][0]) ? $array_parcs[$a][$aa][0] : 0);
-    $total_div += (isset($array_parcs[$a][$aa][1]) ? $array_parcs[$a][$aa][1] : 0);
+    $total_dia += ($array_parcs[$a][$aa][0] ?? 0);
+    $total_div += ($array_parcs[$a][$aa][1] ?? 0);
 
     $preenche = ($x++ % 2 == 0 ? 0 : 1);
 

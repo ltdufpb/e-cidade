@@ -79,7 +79,7 @@ $dtAnousu    = db_getsession("DB_anousu");
                                     </td>
                                     <td>
                                         <?php
-                                            $aPeriodo = array("Bimestral"=>"Bimestral","Mensal"=>"Mensal");
+                                            $aPeriodo = ["Bimestral"=>"Bimestral","Mensal"=>"Mensal"];
                                             db_select("periodo", $aPeriodo, true, 4);
                                         ?>
                                     </td>
@@ -94,7 +94,7 @@ $dtAnousu    = db_getsession("DB_anousu");
                                             $sSqlPeriodo    = $oDaoPeriodo->sql_query( null,"*","o114_sequencial","o114_qdtporano = 1 and o114_ordem > 10");
                                             $rsPeriodo      = $oDaoPeriodo->sql_record($sSqlPeriodo);
                                             $aResultadoPeriodo  = db_utils::getCollectionByRecord($rsPeriodo);
-                                            $aPeriodo = array();
+                                            $aPeriodo = [];
                                             foreach ($aResultadoPeriodo as $oPeriodo) {
                                                 $aPeriodo[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;
                                             }
@@ -112,7 +112,7 @@ $dtAnousu    = db_getsession("DB_anousu");
                                             $sSqlPeriodo    = $oDaoPeriodo->sql_query( null,"*","o114_sequencial","o114_qdtporano = 6");
                                             $rsPeriodo      = $oDaoPeriodo->sql_record($sSqlPeriodo);
                                             $aResultadoPeriodo  = db_utils::getCollectionByRecord($rsPeriodo);
-                                            $aBimestre = array();
+                                            $aBimestre = [];
                                             foreach ($aResultadoPeriodo as $oPeriodo) {
                                               $aBimestre[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;
                                             }

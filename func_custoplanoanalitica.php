@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_custoplanoanalitica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcustoplanoanalitica = new cl_custoplanoanalitica;
 $clcustoplanoanalitica->rotulo->label("cc04_sequencial");
 $clcustoplanoanalitica->rotulo->label("cc04_custoplano");
@@ -99,9 +99,9 @@ $clcustoplanoanalitica->rotulo->label("cc04_custoplano");
         }else{
            $sql = $clcustoplanoanalitica->sql_query("",$campos,"cc04_sequencial","{$sWhere}");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cc04_custoplano)){
-          $repassa = array("chave_cc04_sequencial"=>$chave_cc04_sequencial,"chave_cc04_custoplano"=>$chave_cc04_custoplano);
+          $repassa = ["chave_cc04_sequencial"=>$chave_cc04_sequencial,"chave_cc04_custoplano"=>$chave_cc04_custoplano];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

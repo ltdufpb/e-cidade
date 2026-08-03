@@ -243,7 +243,7 @@ $config = db_utils::fieldsmemory($rs, 0);
             $oDaoFarMedicamentoHiperdia = new cl_far_medicamentohiperdia;
             $sSql                       = $oDaoFarMedicamentoHiperdia->sql_query_file(null, 'fa43_i_codigo, fa43_c_descr', 'fa43_i_codigo');
             $rs                         = $oDaoFarMedicamentoHiperdia->sql_record($sSql);
-            $aX                         = array();
+            $aX                         = [];
             for ($iCont = 0; $iCont < $oDaoFarMedicamentoHiperdia->numrows; $iCont ++) {
               $oDados                     = db_utils::fieldsmemory($rs, $iCont);
               $aX[$oDados->fa43_i_codigo] = $oDados->fa43_c_descr;
@@ -555,7 +555,7 @@ function js_preenchepesquisa(chave){
   db_iframe_far_matersaude.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

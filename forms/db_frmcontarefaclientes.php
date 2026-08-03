@@ -97,7 +97,7 @@ db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at70_sequencial"=>@$at70_sequencial,"at70_tarefa"=>@$at70_tarefa);
+	 $chavepri= ["at70_sequencial"=>@$at70_sequencial,"at70_tarefa"=>@$at70_tarefa];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cltarefaclientes->sql_query(null,"at70_sequencial,at70_tarefa,at01_nomecli",null,"at70_tarefa=$at70_tarefa");
 	 $cliframe_alterar_excluir->campos  ="at70_sequencial,at01_nomecli";

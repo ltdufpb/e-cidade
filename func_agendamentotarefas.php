@@ -34,8 +34,8 @@ include(modification("classes/db_tarefa_agenda_classe.php"));
 include(modification("classes/db_tarefaparam_classe.php"));
 include(modification("classes/db_tarefa_classe.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltarefa = new cl_tarefa;
 $cldb_usuarios = new cl_db_usuarios;
 //set_time_limit(30);
@@ -82,13 +82,13 @@ function js_enviar() {
     <td align="center" valign="top"> 
       <?php 
       if(isset($data_ini)&&$data_ini!="") {
-      	  $vet_data = explode("-",$data_ini);
+      	  $vet_data = explode("-",(string) $data_ini);
 		  $ano      = $vet_data[0];
 	      $mes      = $vet_data[1];
 	      $dia      = $vet_data[2];
-      	  
+
 		  $data_ini = retorna_data($ano, $mes, $dia, "inc");
-		        	  
+
       	  $dbwhere  = "at45_usuario=$at40_responsavel and at40_diaini>='$data_ini' ";
       	  db_input("data_ini",10,"",true,"hidden",3,"");
 //      	  db_input("at40_responsavel",10,"",true,"hidden",3,"");
@@ -108,12 +108,12 @@ function js_enviar() {
 
 	  for($i = 0; $i < $cltarefa->numrows; $i++) {
 		  db_fieldsmemory($result,$i);
-		  $vet_dataini = explode("-", $at40_diaini);
+		  $vet_dataini = explode("-", (string) $at40_diaini);
 		  if(empty($at40_diafim)) {
   		    $vet_datafim = explode("-", '2006-12-31');
 		  }
 		  else {
-  		    $vet_datafim = explode("-", $at40_diafim);
+  		    $vet_datafim = explode("-", (string) $at40_diafim);
 		  }
 		    
 		  $dia_ini           = $vet_dataini[2];  
@@ -139,10 +139,10 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 
 
 	$result       = db_query($sql);
-	$NumRows      = pg_numrows($result);
-	$NumFields    = pg_numfields($result);
+	$NumRows      = pg_num_rows($result);
+	$NumFields    = pg_num_fields($result);
 
-	$vet_data     = explode("-",$data);
+	$vet_data     = explode("-",(string) $data);
 
 	$ano_ant      = $vet_data[0];
 	$mes_ant      = $vet_data[1];
@@ -168,8 +168,8 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	$rs_tarefa    = $cltarefa->sql_record($cltarefa->sql_query_envol(null,"at40_sequencial,at40_diaini,at40_diafim,at40_horainidia,at40_horafim,at40_previsao,at40_tipoprevisao,at40_descr","at40_horainidia#at40_horafim",
                                                                      "at45_usuario=$id_usuario and at40_diaini>='$data_inicial'"));
 	if($cltarefa->numrows > 0) {
-		$NumRegs   = pg_numrows($rs_tarefa);
-		$NumCampos = pg_numfields($rs_tarefa);
+		$NumRegs   = pg_num_rows($rs_tarefa);
+		$NumCampos = pg_num_fields($rs_tarefa);
 	}
 	else {
 		$NumRegs   = 0;
@@ -179,8 +179,8 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	$rs_horafim    = $cltarefa->sql_record($cltarefa->sql_query_envol(null,"at40_diaini,at40_horafim","at40_horainidia#at40_horafim",
                                                                       "at45_usuario=$id_usuario and at40_diaini>='$data_inicial'"));
 	if($cltarefa->numrows > 0) {
-		$NumRegHfim   = pg_numrows($rs_horafim);
-		$NumCampoHfim = pg_numfields($rs_horafim);
+		$NumRegHfim   = pg_num_rows($rs_horafim);
+		$NumCampoHfim = pg_num_fields($rs_horafim);
 	}
 	else {
 		$NumRegHfim   = 0;
@@ -193,21 +193,21 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 		db_fieldsmemory($rs_param,0);
 	}
 
-	$vet_h_manha           = array();
-	$vet_h_tarde           = array();
-	$vet_horarios          = array();
-	$vet_dbhorarios_ini    = array();
-	$vet_dbhorarios_fim    = array();
-	$vet_horarios_livres   = array();
+	$vet_h_manha           = [];
+	$vet_h_tarde           = [];
+	$vet_horarios          = [];
+	$vet_dbhorarios_ini    = [];
+	$vet_dbhorarios_fim    = [];
+	$vet_horarios_livres   = [];
 
-	$vet_horarios_ocupados = array();
+	$vet_horarios_ocupados = [];
 	$ind_horarios_ocupados = 0;
 
 	$hora = 0;
-	$min  = substr($at53_horaini_manha,3,2);
-	while($hora < substr($at53_horafim_manha,0,2)) {
+	$min  = substr((string) $at53_horaini_manha,3,2);
+	while($hora < substr((string) $at53_horafim_manha,0,2)) {
 		if($hora == 0) {
-			$hora = substr($at53_horaini_manha,0,2);
+			$hora = substr((string) $at53_horaini_manha,0,2);
 		}
 
 		$horario = $hora . ":" . $min;
@@ -220,7 +220,7 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 			$min  += 30;
 		}
 
-		if($hora > substr($at53_horafim_manha,0,2)) {
+		if($hora > substr((string) $at53_horafim_manha,0,2)) {
 			break;
 		}
 
@@ -230,10 +230,10 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	$vet_h_manha[] = $at53_horafim_manha;
 
 	$hora = 0;
-	$min  = substr($at53_horaini_tarde,3,2);
-	while($hora < substr($at53_horafim_tarde,0,2)) {
+	$min  = substr((string) $at53_horaini_tarde,3,2);
+	while($hora < substr((string) $at53_horafim_tarde,0,2)) {
 		if($hora == 0) {
-			$hora = substr($at53_horaini_tarde,0,2);
+			$hora = substr((string) $at53_horaini_tarde,0,2);
 		}
 
 		$horario = $hora . ":" . $min;
@@ -241,12 +241,12 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 			$min   = "30";			
 		}
 		else {
-			$min   = substr($at53_horaini_tarde,3,2);
+			$min   = substr((string) $at53_horaini_tarde,3,2);
 			$hora += 1;
 			$hora  = db_formatar($hora,'s','0',2,'e',0);
 		}
 
-		if($hora > substr($at53_horafim_tarde,0,2)) {
+		if($hora > substr((string) $at53_horafim_tarde,0,2)) {
 			break;
 		}
 
@@ -305,7 +305,7 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	echo "<tr>\n";
 	$clrotulocab = new rotulolov();
 	for($i = 0; $i < $NumFields; $i++) {
-		$clrotulocab->label(pg_fieldname($result, $i));
+		$clrotulocab->label(pg_field_name($result, $i));
 		echo "<td nowrap bgcolor=\"#6e77e8\" title=\"".$clrotulocab->title."\" align=\"center\">".ucfirst($clrotulocab->titulo)."</td>\n";
 	}		
 	echo "</tr>\n";
@@ -313,12 +313,12 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	if($NumRows > 0) {
 		for($i = 0; $i < $NumRows; $i++) {
 			for($j = 0; $j < $NumFields; $j++) {
-				if($data != pg_result($result, $i, 0)) {
+				if($data != pg_fetch_result($result, $i, 0)) {
 					break;
 				}
 
-				if(pg_fieldname($result,$j) == "at40_horainidia") {
-					$vet_dbhorarios_ini[] = pg_result($result, $i, $j);
+				if(pg_field_name($result,$j) == "at40_horainidia") {
+					$vet_dbhorarios_ini[] = pg_fetch_result($result, $i, $j);
 				}
 			}
 			$contar_reg++;
@@ -328,12 +328,12 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	if($NumRegHfim > 0) {
 		for($i = 0; $i < $NumRegHfim; $i++) {
 			for($j = 0; $j < $NumCampoHfim; $j++) {
-				if($data != pg_result($rs_horafim, $i, 0)) {
+				if($data != pg_fetch_result($rs_horafim, $i, 0)) {
 					break;
 				}
 
-				if(pg_fieldname($rs_horafim,$j) == "at40_horafim") {
-					$vet_dbhorarios_fim[] = pg_result($rs_horafim, $i, $j);
+				if(pg_field_name($rs_horafim,$j) == "at40_horafim") {
+					$vet_dbhorarios_fim[] = pg_fetch_result($rs_horafim, $i, $j);
 				}
 			}
 		}
@@ -474,17 +474,17 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 					for($k = 0; $k < $NumRows; $k++) {
 						$achou = false;
 						for($j = 0; $j < $NumFields; $j++) {
-							if($data != pg_result($result, $k, 0)) {
+							if($data != pg_fetch_result($result, $k, 0)) {
 								break;
 							}
 							
-							if(pg_result($result, $k, 1) == $vet_horarios_livres[$i]) {
+							if(pg_fetch_result($result, $k, 1) == $vet_horarios_livres[$i]) {
 								$achou = true;
 							}
 							if($achou) {
-								if(pg_fieldtype($result, $j) == "date") {
-									if(pg_result($result, $k, $j) != "") {
-										$matriz_data = split("-", pg_result($result, $k, $j));
+								if(pg_field_type($result, $j) == "date") {
+									if(pg_fetch_result($result, $k, $j) != "") {
+										$matriz_data = preg_split("#\\-#m", pg_fetch_result($result, $k, $j));
 										$var_data = $matriz_data[2]."/".$matriz_data[1]."/".$matriz_data[0];
 									} else {
 										$var_data = "//";
@@ -509,29 +509,29 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 					    print_r($vet_horarios_ocupados);
 					}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-									echo "<td align=\"center\" id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_result($result, $k, 2).")\">".trim($var_data)."</a>&nbsp;</td>\n";
+									echo "<td align=\"center\" id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($result, $k, 2).")\">".trim($var_data)."</a>&nbsp;</td>\n";
 								}
 								else { 
-									if(pg_fieldtype($result, $j) == "float8") {
-								        $var_data = db_formatar(pg_result($result, $k, $j), 'f', ' ');
+									if(pg_field_type($result, $j) == "float8") {
+								        $var_data = db_formatar(pg_fetch_result($result, $k, $j), 'f', ' ');
 				
-										echo "<td align=\"right\" id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_result($result, $k, 2).")\">".trim($var_data)."</a>&nbsp;</td>\n";
+										echo "<td align=\"right\" id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($result, $k, 2).")\">".trim($var_data)."</a>&nbsp;</td>\n";
 									}
 									else {
-									    if(pg_fieldtype($result, $j) == "bool") {
-									        $var_data = (pg_result($result, $k, $j) == 'f' || pg_result($result, $k, $j) == '' ? 'Não' : 'Sim');
+									    if(pg_field_type($result, $j) == "bool") {
+									        $var_data = (pg_fetch_result($result, $k, $j) == 'f' || pg_fetch_result($result, $k, $j) == '' ? 'Não' : 'Sim');
 				
-											echo "<td align=\"center\" id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_result($result, $k, 2).")\">".trim($var_data)."</a>&nbsp;</td>\n";
+											echo "<td align=\"center\" id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($result, $k, 2).")\">".trim($var_data)."</a>&nbsp;</td>\n";
 								        }
 								        else {
-											if(pg_fieldtype($result, $j) == "text") {
-												$tam_data = strlen(pg_result($result, $k, $j));
+											if(pg_field_type($result, $j) == "text") {
+												$tam_data = strlen(pg_fetch_result($result, $k, $j));
 												if($tam_data > 40) {
 													$var_data = "";
 													$qtd      = round($tam_data/40);
 													$start    = 0;
 													for($kk = 0; $kk < $qtd; $kk++) {
-														$var_data .= substr(pg_result($result, $k, $j),$start,40) . "<br>";
+														$var_data .= substr(pg_fetch_result($result, $k, $j),$start,40) . "<br>";
 														if($kk == 0) {
 															$start++;
 														} 
@@ -540,17 +540,17 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 													$var_data = substr($var_data,0,strlen($var_data)-4);
 												}
 												else {
-										   			$var_data = pg_result($result, $k, $j);
+										   			$var_data = pg_fetch_result($result, $k, $j);
 												}
 				
-												echo "<td id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_result($result, $k, 2).")\">".trim($var_data)."</a>&nbsp;</td>\n";
+												echo "<td id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($result, $k, 2).")\">".trim($var_data)."</a>&nbsp;</td>\n";
 											}
 											else {
-												if(pg_fieldname($result, $j) == "at40_sequencial") {
-													echo "<td id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_result($result, $k, 2).")\">".trim(pg_result($result, $k, $j))."$ini</a>&nbsp;</td>\n";
+												if(pg_field_name($result, $j) == "at40_sequencial") {
+													echo "<td id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($result, $k, 2).")\">".trim(pg_fetch_result($result, $k, $j))."$ini</a>&nbsp;</td>\n";
 												}
 												else {
-													echo "<td id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_result($result, $k, 2).")\">".trim(pg_result($result, $k, $j))."</a>&nbsp;</td>\n";
+													echo "<td id=\"I".$k.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($result, $k, 2).")\">".trim(pg_fetch_result($result, $k, $j))."</a>&nbsp;</td>\n";
 												}
 											}				        	
 								        }
@@ -583,20 +583,20 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	}
 	
 	for($i = 0; $i < $NumCampos; $i++) {
-		if(pg_fieldname($rs_tarefa, $i) == "at40_tipoprevisao") {
+		if(pg_field_name($rs_tarefa, $i) == "at40_tipoprevisao") {
 			$clrotulocab->title  = "Prev. em";
 			$clrotulocab->titulo = "Prev. em";
 		}
-		else if(pg_fieldname($rs_tarefa, $i) == "at40_sequencial") {
+		else if(pg_field_name($rs_tarefa, $i) == "at40_sequencial") {
 				 $clrotulocab->title  = "Tarefa";
 			     $clrotulocab->titulo = "Tarefa";
 		}
 		else {
-			if(pg_fieldname($rs_tarefa, $i) != "at40_descr") {
-				$clrotulocab->label(pg_fieldname($rs_tarefa, $i));
+			if(pg_field_name($rs_tarefa, $i) != "at40_descr") {
+				$clrotulocab->label(pg_field_name($rs_tarefa, $i));
 			}
 		}
-		if(pg_fieldname($rs_tarefa, $i) != "at40_descr") {
+		if(pg_field_name($rs_tarefa, $i) != "at40_descr") {
 			echo "<td nowrap bgcolor=\"$cor_fora\" title=\"".$clrotulocab->title."\" align=\"center\">".ucfirst($clrotulocab->titulo)."</td>\n";
 		}
 	}		
@@ -604,37 +604,37 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	for($i = 0; $i < $NumRegs; $i++) {
 		echo "<tr bgcolor=\"$cor_ocupado\">\n";
 		for($j = 0; $j < $NumCampos; $j++) {
-			if($data != pg_result($rs_tarefa, $i, 1)) {
+			if($data != pg_fetch_result($rs_tarefa, $i, 1)) {
 				break;
 			}
-			if(pg_fieldtype($rs_tarefa, $j) == "date") {
-				if(pg_result($rs_tarefa, $i, $j) != "") {
-					$matriz_data = split("-", pg_result($rs_tarefa, $i, $j));
+			if(pg_field_type($rs_tarefa, $j) == "date") {
+				if(pg_fetch_result($rs_tarefa, $i, $j) != "") {
+					$matriz_data = preg_split("#\\-#m", pg_fetch_result($rs_tarefa, $i, $j));
 					$var_data = $matriz_data[2]."/".$matriz_data[1]."/".$matriz_data[0];
 				} else {
 					$var_data = "//";
 				}
 				
-				echo "<td onMouseOver=\"js_mostra_text(true,'div_text_".pg_result($rs_tarefa, $i, 0)."',event);\" onMouseOut=\"js_mostra_text(false,'div_text_".pg_result($rs_tarefa, $i, 0)."',event);\" align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_result($rs_tarefa, $i, 0).")\">".trim($var_data)."</a>&nbsp;</td>\n";
+				echo "<td onMouseOver=\"js_mostra_text(true,'div_text_".pg_fetch_result($rs_tarefa, $i, 0)."',event);\" onMouseOut=\"js_mostra_text(false,'div_text_".pg_fetch_result($rs_tarefa, $i, 0)."',event);\" align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($rs_tarefa, $i, 0).")\">".trim($var_data)."</a>&nbsp;</td>\n";
 			}
 			else { 
-				if(pg_fieldtype($rs_tarefa, $j) == "float8") {
-			        $var_data = db_formatar(pg_result($rs_tarefa, $i, $j), 'f', ' ');
-						echo "<td align=\"right\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_result($rs_tarefa, $i, 0).")\">".trim($var_data)."</a>&nbsp;</td>\n";
+				if(pg_field_type($rs_tarefa, $j) == "float8") {
+			        $var_data = db_formatar(pg_fetch_result($rs_tarefa, $i, $j), 'f', ' ');
+						echo "<td align=\"right\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($rs_tarefa, $i, 0).")\">".trim($var_data)."</a>&nbsp;</td>\n";
 				}
 				else {
-				    if(pg_fieldtype($rs_tarefa, $j) == "bool") {
-				        $var_data = (pg_result($rs_tarefa, $i, $j) == 'f' || pg_result($rs_tarefa, $i, $j) == '' ? 'Não' : 'Sim');
-							echo "<td align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_result($rs_tarefa, $i, 0).")\">".trim($var_data)."</a>&nbsp;</td>\n";
+				    if(pg_field_type($rs_tarefa, $j) == "bool") {
+				        $var_data = (pg_fetch_result($rs_tarefa, $i, $j) == 'f' || pg_fetch_result($rs_tarefa, $i, $j) == '' ? 'Não' : 'Sim');
+							echo "<td align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($rs_tarefa, $i, 0).")\">".trim($var_data)."</a>&nbsp;</td>\n";
 			        }
 			        else {
-			        	if(pg_fieldname($rs_tarefa, $j) != "at40_descr") {
-							if(pg_fieldtype($rs_tarefa, $j) == "text") {
-								$var_data = pg_result($rs_tarefa, $i, $j);
-								echo "<td valign=\"top\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"\" onClick=\"parent.js_mostratarefas(".pg_result($rs_tarefa, $i, 0).")\">".trim($var_data)."</a>&nbsp;</td>\n";
+			        	if(pg_field_name($rs_tarefa, $j) != "at40_descr") {
+							if(pg_field_type($rs_tarefa, $j) == "text") {
+								$var_data = pg_fetch_result($rs_tarefa, $i, $j);
+								echo "<td valign=\"top\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($rs_tarefa, $i, 0).")\">".trim($var_data)."</a>&nbsp;</td>\n";
 							}
 							else {
-								echo "<td onMouseOver=\"js_mostra_text(true,'div_text_".pg_result($rs_tarefa, $i, 0)."',event);\" onMouseOut=\"js_mostra_text(false,'div_text_".pg_result($rs_tarefa, $i, 0)."',event);\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_result($rs_tarefa, $i, 0).")\">".trim(pg_result($rs_tarefa, $i, $j))."</a>&nbsp;</td>\n";
+								echo "<td onMouseOver=\"js_mostra_text(true,'div_text_".pg_fetch_result($rs_tarefa, $i, 0)."',event);\" onMouseOut=\"js_mostra_text(false,'div_text_".pg_fetch_result($rs_tarefa, $i, 0)."',event);\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"parent.js_mostratarefas(".pg_fetch_result($rs_tarefa, $i, 0).")\">".trim(pg_fetch_result($rs_tarefa, $i, $j))."</a>&nbsp;</td>\n";
 							}
 			        	}				        	
 			        }
@@ -648,15 +648,15 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	echo "</table>\n";
 	for ($i = 0; $i < $NumRegs; $i ++) {
 		for ($j = 0; $j < $NumCampos; $j ++) {
-			if(pg_fieldname($rs_tarefa, $j) == "at40_descr") {
-				if (pg_fieldtype($rs_tarefa, $j) == "text") {
-					$clrotulocab->label(pg_fieldname($rs_tarefa, $j));
-					echo "<div id='div_text_".pg_result($rs_tarefa, $i, 0)."' style='position:absolute;left:10px; top:10px; visibility:hidden ; background-color:#6699CC ; border:2px outset #cccccc; align:left'>
+			if(pg_field_name($rs_tarefa, $j) == "at40_descr") {
+				if (pg_field_type($rs_tarefa, $j) == "text") {
+					$clrotulocab->label(pg_field_name($rs_tarefa, $j));
+					echo "<div id='div_text_".pg_fetch_result($rs_tarefa, $i, 0)."' style='position:absolute;left:10px; top:10px; visibility:hidden ; background-color:#6699CC ; border:2px outset #cccccc; align:left'>
 					       <table>
 						       <tr>
  					    	     <td align='left'>
 						           <font color='black' face='arial' size='2'><strong>".$clrotulocab->titulo."</strong>:</font><br>
-						           <font color='black' face='arial' size='1'>".str_replace("\n", "<br>", pg_result($rs_tarefa, $i, $j))."</font>
+						           <font color='black' face='arial' size='1'>".str_replace("\n", "<br>", pg_fetch_result($rs_tarefa, $i, $j))."</font>
 							     </td>
 							   </tr>
 						   </table>
@@ -738,7 +738,7 @@ function retorna_data($ano, $mes, $dia, $executar) {
 
 //		echo $sql."<br>";
 		
-		for($i = 0; $i < pg_numrows($rs_calend); $i++) {
+		for($i = 0; $i < pg_num_rows($rs_calend); $i++) {
 			db_fieldsmemory($rs_calend, $i);
 			
 			if($data == $k13_data) {

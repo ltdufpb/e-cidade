@@ -57,7 +57,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
     </td>
     <td>
     <?php 
-      $x = array("N"=>"NAO","S"=>"SIM");
+      $x = ["N"=>"NAO","S"=>"SIM"];
       db_select('fa03_c_profissional',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -68,7 +68,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
     </td>
     <td>
 <?php 
-      $x = array("N"=>"NAO","S"=>"SIM");
+      $x = ["N"=>"NAO","S"=>"SIM"];
       db_select('fa03_c_posologia',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -79,7 +79,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
     </td>
     <td>
 <?php 
-      $x = array("N"=>"NAO","S"=>"SIM");
+      $x = ["N"=>"NAO","S"=>"SIM"];
       db_select('fa03_c_requisitante',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -90,7 +90,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
     </td>
     <td>
 <?php 
-      $x = array("N"=>"NAO","S"=>"SIM");
+      $x = ["N"=>"NAO","S"=>"SIM"];
       db_select('fa03_c_numeroreceita',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -101,7 +101,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
     </td>
     <td>
       <?php 
-      $x = array("N"=>"NAO","S"=>"SIM");
+      $x = ["N"=>"NAO","S"=>"SIM"];
       db_select('fa03_c_quant',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -112,7 +112,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
     </td>
     <td style="display: flex; column-gap: 20px;">
       <?php 
-      $aX = array('f'=>"NÃO", 't'=>'SIM');
+      $aX = ['f'=>"NÃO", 't'=>'SIM'];
       db_select('fa03_data_prescricao', $aX, true, $db_opcao, "onchange='js_verificaprescricao();'");
       ?>
       <div id="diasPrescricaoDiv" style="display: none;">
@@ -129,7 +129,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
     </td>
     <td style="display: flex; column-gap: 20px;">
       <?php 
-      $aX = array('f'=>"NÃO", 't'=>'SIM');
+      $aX = ['f'=>"NÃO", 't'=>'SIM'];
       db_select('fa03_numero_notificacao', $aX, true, $db_opcao, "onchange='js_verificaprescricao();'");
       ?>
     </td>
@@ -140,7 +140,7 @@ db_input('fa03_c_descr',40,$Ifa03_c_descr,true,'text',$db_opcao,"")
     </td>
     <td>
       <?php 
-      $aX = array('1'=>"SIM", '2'=>'NÃO');
+      $aX = ['1'=>"SIM", '2'=>'NÃO'];
       db_select('fa03_i_ativa', $aX, true, $db_opcao, '');
       ?>
     </td>
@@ -204,7 +204,7 @@ function js_preenchepesquisa(chave){
   db_iframe_far_tiporeceita.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

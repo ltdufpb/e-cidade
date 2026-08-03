@@ -45,7 +45,7 @@ $clobras->rotulo->label();
 		    <td nowrap title="<?=@$Tob01_regular?>">
 		    	<?php 
 		    	echo $Lob01_regular;
-				  db_select('ob01_regular',array('t'=>'SIM','f'=>'NÃO'),true,$db_opcao,"");
+				  db_select('ob01_regular',['t'=>'SIM','f'=>'NÃO'],true,$db_opcao,"");
 				?>
 		    </td>
 		  </tr>

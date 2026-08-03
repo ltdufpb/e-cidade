@@ -37,8 +37,8 @@ include(modification("classes/db_matestoqueinill_classe.php"));
 include(modification("classes/db_matestoqueinimei_classe.php"));
 include(modification("classes/db_db_depart_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clmatestoque = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;
 $clmatestoque2 = new cl_matestoque;
@@ -61,12 +61,12 @@ $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   db_inicio_transacao();
-  $arr_valores = split(",",$valores);
+  $arr_valores = preg_split("#,#m",$valores);
   $sqlerro     = false;
   $codigoanterior = "";
   for($i=0;$i<count($arr_valores);$i++){
     $nomecampo    = $arr_valores[$i];
-    $separacampo  = split("_",$arr_valores[$i]);
+    $separacampo  = preg_split("#_#m",(string) $arr_valores[$i]);
     $m80_codigo   = $separacampo[2];
     $m82_codigo   = $separacampo[1];
 //    echo($clmatestoqueini->sql_query_mater(null,"m71_codlanc,m71_quant,m71_valor,(m71_valor/m71_quant) as valorunitario,m82_quant,matestoqueini.m80_codigo,m70_quant,m70_valor,m70_codigo","","m82_codigo=$m82_codigo and  matestoqueini.m80_codtipo=5 and m86_codigo is null"));
@@ -263,7 +263,7 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
 	    <td nowrap class='bordas' align='center'>
 	  ";
 	  $matitem = "TXT_".$matitem;
-          $$matitem=$m82_quant;
+          ${$matitem}=$m82_quant;
 	  db_input($matitem,10,$Im82_quant,true,"text",3);
 	  echo "
 	    </td>

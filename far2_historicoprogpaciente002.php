@@ -199,7 +199,7 @@ try {
 
     $pdf->addTitulo("Histórico de retiradas por Programa / Paciente");
     $pdf->addTitulo('');
-    $pdf->addTitulo(utf8_decode($nomes_programas));
+    $pdf->addTitulo(mb_convert_encoding($nomes_programas, 'ISO-8859-1'));
     $pdf->addTitulo('');
     $pdf->addTitulo('Ordem:');
     $pdf->addTitulo('  1 - Nome do usuario');

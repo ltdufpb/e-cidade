@@ -28,11 +28,6 @@
 class AguaHidrometro
 {
   /**
-   * @var integer Código do Hidrômetro
-   */
-  private $iCodigo;
-
-  /**
    * @var integer Código da Marca
    */
   private $iCodigoMarca;
@@ -82,9 +77,8 @@ class AguaHidrometro
    * @param integer|null $iCodigo
    * @throws DBException
    */
-  public function __construct($iCodigo = null) {
+  public function __construct(private $iCodigo = null) {
 
-    $this->iCodigo = $iCodigo;
     if (!$this->iCodigo) {
       return;
     }
@@ -182,12 +176,12 @@ class AguaHidrometro
 
     $sCampos = 'coalesce(sum(x21_consumo) + sum(case when x21_excesso > 0 then x21_excesso else 0 end), 0) as consumo';
     $sJoin   = 'inner join aguahidromatric on x21_codhidrometro = x04_codhidrometro';
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       "x21_codhidrometro = {$this->getCodigo()}",
       "x21_exerc = {$iAno}",
       "x21_mes  = {$iMes}",
       "x21_status = " . AguaLeitura::STATUS_ATIVA
-    ));
+    ]);
 
     $sSqlConsumo = "select {$sCampos} from agualeitura {$sJoin} where {$sWhere}";
     $rsConsumo = db_query($sSqlConsumo);

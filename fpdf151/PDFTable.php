@@ -33,16 +33,10 @@
 class PDFTable {
 
   /**
-   * Define se o relatório vai ser emitido como retrato ou paisagem
-   * @type integer
-   */
-  private $iPrintModel;
-
-  /**
    * Guarda os IDs das colunas que serão totalizadoras
    * @type array
    */
-  private $aTotalizingColumns = array();
+  private $aTotalizingColumns = [];
 
   /**
    * @type PDFDocument
@@ -53,37 +47,37 @@ class PDFTable {
    * Headers do relatório
    * @type array
    */
-  private $aHeaders = array();
+  private $aHeaders = [];
 
   /**
    * Tamanho de cada coluna
    * @type array
    */
-  private $aColumnsWidth = array();
+  private $aColumnsWidth = [];
 
   /**
    * Alinhamento do conteúdo dentro da coluna
    * @type array
    */
-  private $aColumnsAlign = array();
+  private $aColumnsAlign = [];
 
   /**
    * Descrição do relatório. É apresentado no canto superior direito.
    * @type array
    */
-  private $aHeaderDescription = array();
+  private $aHeaderDescription = [];
 
   /**
    * Formatação específica de cada coluna
    * @type array
    */
-  private $aColumnsFormatting = array();
+  private $aColumnsFormatting = [];
 
   /**
    * Informações de cada coluna do relatório
    * @type array
    */
-  private $aLineInformation = array();
+  private $aLineInformation = [];
 
   /**
    * Tamanho disponível no final da página
@@ -113,7 +107,7 @@ class PDFTable {
    * As colunas que serão multicell
    * @var array
    */
-  private $aMulticellColumns = array();
+  private $aMulticellColumns = [];
 
   /**
    * Controla se as colunas terão a largura em porcentagem
@@ -132,8 +126,8 @@ class PDFTable {
   /**
    * @param string $iPrintModel
    */
-  public function __construct($iPrintModel = PDFDocument::PRINT_PORTRAIT) {
-    $this->iPrintModel = $iPrintModel;
+  public function __construct(private $iPrintModel = PDFDocument::PRINT_PORTRAIT)
+  {
   }
 
   /**
@@ -239,7 +233,7 @@ class PDFTable {
    */
   public function addFormatting($iColumn, $sType) {
 
-    if (!in_array($sType, array(self::FORMAT_DATE, self::FORMAT_NUMERIC))) {
+    if (!in_array($sType, [self::FORMAT_DATE, self::FORMAT_NUMERIC])) {
       throw new ParameterException("Formatação {$sType} para a célula {$iColumn} não disponível.");
     }
 
@@ -284,7 +278,7 @@ class PDFTable {
    * @param Boolean $lShowPDF / Se irá exibir o pdf
    * @throws ParameterException
    */
-  public function printOut(PDFDocument $oPdf = null, $lShowPDF = true) {
+  public function printOut(?PDFDocument $oPdf = null, $lShowPDF = true) {
 
     $this->oPdf = $oPdf;
     if (empty($this->oPdf)) {
@@ -343,7 +337,7 @@ class PDFTable {
    * @param  integer $mBorder
    * @param  boolean $lNewLine
    */
-  private function printMultiCell($iWidth, $iHeight, $sValue, $sAlign, $mBorder = 1, $iFill, $lNewLine = false) {
+  private function printMultiCell($iWidth, $iHeight, $sValue, $sAlign, $mBorder = 1, $iFill = null, $lNewLine = false) {
 
     $this->oPdf->setAutoNewLineMulticell($lNewLine);
     $this->oPdf->multiCell($iWidth, $iHeight, $sValue, $mBorder, $sAlign, $iFill);

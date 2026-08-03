@@ -47,25 +47,25 @@ class M8809CampoHoraPontoEletronico extends PostgresMigration
     /**
      * Cria campos
      */
-    $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-    $aValues  = array(
-      array(1009327 ,'h16_hora' ,'varchar(5)' ,'Horas' ,'' ,'Horas' ,5 ,'true' ,'true' ,'false' ,0 ,'text' ,'Horas'),     
+    $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+    $aValues  = [
+      [1009327 ,'h16_hora' ,'varchar(5)' ,'Horas' ,'' ,'Horas' ,5 ,'true' ,'true' ,'false' ,0 ,'text' ,'Horas'],     
            
 
-    );
-    $table    = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+    ];
+    $table    = $this->table('db_syscampo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     /**
      * db_sysarqcamp
      */
-    $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-    $aValues  = array(
-      array( 528 ,1009327 ,16 ,0 ),      
+    $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+    $aValues  = [
+      [ 528 ,1009327 ,16 ,0 ],      
      
-    );
-    $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+    ];
+    $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues); 
     $table->saveData();
     

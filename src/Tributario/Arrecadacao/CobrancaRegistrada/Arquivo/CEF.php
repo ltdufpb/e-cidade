@@ -35,14 +35,15 @@ final class CEF extends BaseAbstract
   /**
    * Constante do codigo do banco
    */
-  const CODIGO_BANCO          = '104';
+  const string CODIGO_BANCO          = '104';
   const VERSAO_LAYOUT_ARQUIVO = '050';
-  const VERSAO_LAYOUT_LOTE    = '030';
+  const string VERSAO_LAYOUT_LOTE    = '030';
 
   /**
    * Função que cria o Header com os dados despecíficos do banco CEF
    * @return \stdClass
    */
+  #[\Override]
   protected function gerarHeader()
   {
     $oHeader   = new \stdClass();
@@ -54,7 +55,7 @@ final class CEF extends BaseAbstract
     $oHeader->codigo_banco          = self::CODIGO_BANCO;
     $oHeader->versao_layout         = self::VERSAO_LAYOUT_ARQUIVO;
     $oHeader->codigo_convenio_banco = str_pad("", 20, "0");
-    $oHeader->exclusivo_banco_1     = str_pad($this->oHeader->getConvenio()->cedente, 6, "0", STR_PAD_LEFT);
+    $oHeader->exclusivo_banco_1     = str_pad((string) $this->oHeader->getConvenio()->cedente, 6, "0", STR_PAD_LEFT);
     $oHeader->exclusivo_banco_1    .= str_pad("", 8, "0");
     $oHeader->uso_reservado_empresa = "REMESSA-PRODUCAO";
 
@@ -65,6 +66,7 @@ final class CEF extends BaseAbstract
    * Função que cria o Header do Lote com os dados despecíficos do banco CEF
    * @return \stdClass
    */
+  #[\Override]
   protected function gerarHeaderLote()
   {
     $oHeaderLote = parent::gerarHeaderLote();
@@ -75,9 +77,9 @@ final class CEF extends BaseAbstract
     $oHeaderLote->codigo_banco           = self::CODIGO_BANCO;
     $oHeaderLote->versao_layout          = self::VERSAO_LAYOUT_LOTE;
     $oHeaderLote->exclusivo_febraban_1   = str_pad("", 2, "0");
-    $oHeaderLote->codigo_convenio_banco  = str_pad($this->oHeader->getConvenio()->cedente, 6, "0", STR_PAD_LEFT);
+    $oHeaderLote->codigo_convenio_banco  = str_pad((string) $this->oHeader->getConvenio()->cedente, 6, "0", STR_PAD_LEFT);
     $oHeaderLote->codigo_convenio_banco .= str_pad("", 14, "0");
-    $oHeaderLote->exclusivo_banco_1      = str_pad($this->oHeader->getConvenio()->cedente, 6, "0", STR_PAD_LEFT);
+    $oHeaderLote->exclusivo_banco_1      = str_pad((string) $this->oHeader->getConvenio()->cedente, 6, "0", STR_PAD_LEFT);
 
     /**
      * Código do Modelo Personalizado
@@ -94,6 +96,7 @@ final class CEF extends BaseAbstract
    * @param  Registro $oRegistro
    * @return \stdClass
    */
+  #[\Override]
   protected function gerarSegmentoP(Registro $oRegistro)
   {
     $oSegmento = parent::gerarSegmentoP($oRegistro);
@@ -108,7 +111,7 @@ final class CEF extends BaseAbstract
     /**
      * Código de Convênio
      */
-    $oSegmento->exclusivo_banco_1     = str_pad($this->oHeader->getConvenio()->cedente, 6, "0", STR_PAD_LEFT);
+    $oSegmento->exclusivo_banco_1     = str_pad((string) $this->oHeader->getConvenio()->cedente, 6, "0", STR_PAD_LEFT);
     $oSegmento->exclusivo_banco_1    .= str_pad("", 8, "0");
 
     /**
@@ -133,6 +136,7 @@ final class CEF extends BaseAbstract
    * @param  Registro  $oRegistro
    * @return \stdClass
    */
+  #[\Override]
   protected function gerarSegmentoQ(Registro $oRegistro)
   {
     $oSegmento               = parent::gerarSegmentoQ($oRegistro);
@@ -145,6 +149,7 @@ final class CEF extends BaseAbstract
    * Função que cria o Trailer do Lote com os dados despecíficos do banco CEF
    * @return \stdClass
    */
+  #[\Override]
   protected function gerarTrailerLote()
   {
     $oTrailerLote                        = parent::gerarTrailerLote();
@@ -158,6 +163,7 @@ final class CEF extends BaseAbstract
    * Função que cria o Trailer do Arquivo com os dados despecíficos do banco CEF
    * @return \stdClass
    */
+  #[\Override]
   protected function gerarTrailer()
   {
     $oTrailer               = parent::gerarTrailer();

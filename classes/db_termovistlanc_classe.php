@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE termovistlanc
 class cl_termovistlanc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y92_termovist = 0; 
-   var $y92_codvist = 0; 
+   public $y92_termovist = 0; 
+   public $y92_codvist = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y92_termovist = int8 = Código do termo 
                  y92_codvist = int4 = Código da Vistoria 
                  ";
    //funcao construtor da classe 
-   function cl_termovistlanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termovistlanc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_termovistlanc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Termo de Vistorias lancadas () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Termo de Vistorias lancadas já Cadastrado";
@@ -131,10 +131,10 @@ class cl_termovistlanc {
       $this->atualizacampos();
      $sql = " update termovistlanc set ";
      $virgula = "";
-     if(trim($this->y92_termovist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y92_termovist"])){ 
+     if(trim((string) $this->y92_termovist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y92_termovist"])){ 
        $sql  .= $virgula." y92_termovist = $this->y92_termovist ";
        $virgula = ",";
-       if(trim($this->y92_termovist) == null ){ 
+       if(trim((string) $this->y92_termovist) == null ){ 
          $this->erro_sql = " Campo Código do termo nao Informado.";
          $this->erro_campo = "y92_termovist";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_termovistlanc {
          return false;
        }
      }
-     if(trim($this->y92_codvist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y92_codvist"])){ 
+     if(trim((string) $this->y92_codvist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y92_codvist"])){ 
        $sql  .= $virgula." y92_codvist = $this->y92_codvist ";
        $virgula = ",";
-       if(trim($this->y92_codvist) == null ){ 
+       if(trim((string) $this->y92_codvist) == null ){ 
          $this->erro_sql = " Campo Código da Vistoria nao Informado.";
          $this->erro_campo = "y92_codvist";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:termovistlanc";
@@ -252,7 +252,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="termovistlanc.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -280,7 +280,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -292,7 +292,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -310,7 +310,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

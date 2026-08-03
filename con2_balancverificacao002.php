@@ -32,12 +32,12 @@ require_once(modification("libs/db_libcontabilidade.php"));
 
 $classinatura = new cl_assinatura;
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $agrupa_estrutural=($agrupa_estrutural=='1'?false:true);
 $anousu = db_getsession("DB_anousu");
 
-$xinstit = explode(",", $db_selinstit);
+$xinstit = explode(",", (string) $db_selinstit);
 $resultinst = db_query("
   select codigo, nomeinst, nomeinstabrev, (select count(*) from db_config) as total_instituicao
     from db_config where codigo in ({$db_selinstit})
@@ -45,7 +45,7 @@ $resultinst = db_query("
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-$numero_instit = pg_numrows($resultinst);
+$numero_instit = pg_num_rows($resultinst);
 
 $totalInstituicao = 0;
 if ($numero_instit > 0) {
@@ -54,9 +54,9 @@ if ($numero_instit > 0) {
 if ($totalInstituicao == $numero_instit) {
     $descr_inst = "CONSOLIDAÇÃO GERAL";
 } else {
-    for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+    for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
       db_fieldsmemory($resultinst,$xins);
-      if (strlen(trim($nomeinstabrev)) > 0){
+      if (strlen(trim((string) $nomeinstabrev)) > 0){
         $descr_inst .= $xvirg."($codigo)".$nomeinstabrev;
         $flag_abrev  = true;
       } else {
@@ -98,7 +98,7 @@ $where = " c61_instit in ({$db_selinstit})" ;
 
 if (!empty($recurso)) {
     $idRecursos = [];
-    $recurso = preg_replace("/[^0-9\,]/", '', $recurso);
+    $recurso = preg_replace("/[^0-9\,]/", '', (string) $recurso);
     $codigosRecursos = explode(',', $recurso);
     foreach ($codigosRecursos as $codigoRecurso) {
         $repository = RecursoRepository::getInstance();
@@ -133,7 +133,7 @@ if ($estrut_inicial != '') {
 
   $estrut_inicial = str_replace('.', '', $estrut_inicial);
   $aEstrutural      = explode(",", $estrut_inicial);
-  $aWhereEstrutural = array();
+  $aWhereEstrutural = [];
   foreach ($aEstrutural as $sEstrutural) {
     $sEstrutural = trim($sEstrutural);
     if (empty($sEstrutural)) {
@@ -175,7 +175,7 @@ if (USE_PCASP) {
 }
 
 $ultimoEstrutural = '';
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
   db_fieldsmemory($result,$x);
   if( ( $tipo == "S" ) && ( $c61_reduz != 0 ) ) {
     continue;
@@ -183,12 +183,12 @@ for($x = 0; $x < pg_numrows($result);$x++){
 
   if (USE_PCASP) {
   } else {
-    if(substr($estrutural,0,1) == '3' ) {
-      if(substr($estrutural,2)+0 > 0 )
+    if(str_starts_with((string) $estrutural, '3') ) {
+      if(substr((string) $estrutural,2)+0 > 0 )
         continue;
     }
-    if(substr($estrutural,0,1) == '4' ) {
-      if(substr($estrutural,2)+0 > 0 )
+    if(str_starts_with((string) $estrutural, '4') ) {
+      if(substr((string) $estrutural,2)+0 > 0 )
         continue;
     }
   }
@@ -223,7 +223,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
   }
   $espaco = '';
   $maislinha = 0;
-  if(substr($estrutural,1,14)      == '00000000000000'){
+  if(substr((string) $estrutural,1,14)      == '00000000000000'){
     $espaco="";
     $maislinha=1;
     if($sinal_anterior == "C")
@@ -238,21 +238,21 @@ for($x = 0; $x < pg_numrows($result);$x++){
 
     $total_debitos  += $saldo_anterior_debito;
     $total_creditos += $saldo_anterior_credito;
-  }elseif(substr($estrutural,2,13) == '0000000000000'){
+  }elseif(substr((string) $estrutural,2,13) == '0000000000000'){
     $espaco="  ";
     $maislinha=1;
-  }elseif(substr($estrutural,3,12) == '000000000000'){
+  }elseif(substr((string) $estrutural,3,12) == '000000000000'){
     $espaco="    ";
     $maislinha=1;
-  }elseif(substr($estrutural,4,11) == '00000000000'){
+  }elseif(substr((string) $estrutural,4,11) == '00000000000'){
     $espaco="      ";
-  }elseif(substr($estrutural,5,10) == '0000000000'){
+  }elseif(substr((string) $estrutural,5,10) == '0000000000'){
     $espaco="        ";
-  }elseif(substr($estrutural,7,8)  == '00000000'){
+  }elseif(substr((string) $estrutural,7,8)  == '00000000'){
     $espaco="          ";
-  }elseif(substr($estrutural,9,6)  == '000000'){
+  }elseif(substr((string) $estrutural,9,6)  == '000000'){
     $espaco="            ";
-  }elseif(substr($estrutural,11,4) == '0000'){
+  }elseif(substr((string) $estrutural,11,4) == '0000'){
     $espaco="              ";
   }
   if($maislinha == 1){
@@ -265,7 +265,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
                            and c63_reduz = {$c61_reduz}
                            and c63_anousu = {$anousu} ");
 
-  if(pg_numrows($resconta) > 0)
+  if(pg_num_rows($resconta) > 0)
     db_fieldsmemory($resconta,0);
   if($c61_reduz != 0){
     $pdf->setfont('arial','',7);
@@ -286,7 +286,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
     $pdf->cell(10,$alt,($c61_reduz == 0?'':$c61_instit),0,0,"C",0,0);
   }
   if ($conta == 'S') {
-    $pdf->cell((125 - $iAjustePcasp), $alt, (pg_numrows($resconta) == 0?$espaco.$c60_descr:$espaco.$c60_descr.'   ( Bco: '.$c63_banco.'  Ag: '.$c63_agencia.'  Cta: '.$c63_conta.')'),0,0,"L",0,0,'.');
+    $pdf->cell((125 - $iAjustePcasp), $alt, (pg_num_rows($resconta) == 0?$espaco.$c60_descr:$espaco.$c60_descr.'   ( Bco: '.$c63_banco.'  Ag: '.$c63_agencia.'  Cta: '.$c63_conta.')'),0,0,"L",0,0,'.');
   }else{
     $pdf->cell((125 - $iAjustePcasp), $alt, $espaco . $c60_descr, 0, 0, "L", 0, 0, '.');
   }

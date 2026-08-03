@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE empregpont
 class cl_empregpont { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q27_sequencia = 0; 
-   var $q27_quantini = 0; 
-   var $q27_quantfim = 0; 
-   var $q27_pontuacao = 0; 
+   public $q27_sequencia = 0; 
+   public $q27_quantini = 0; 
+   public $q27_quantfim = 0; 
+   public $q27_pontuacao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q27_sequencia = int4 = Sequencia 
                  q27_quantini = float8 = Quantidade inicial 
                  q27_quantfim = float8 = Quantidade final 
                  q27_pontuacao = float8 = Pontuação 
                  ";
    //funcao construtor da classe 
-   function cl_empregpont() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empregpont"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_empregpont {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q27_sequencia = pg_result($result,0,0); 
+       $this->q27_sequencia = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from empregpont_q27_sequencia_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q27_sequencia)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q27_sequencia)){
          $this->erro_sql = " Campo q27_sequencia maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_empregpont {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Pontuação por número de empregados ($this->q27_sequencia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Pontuação por número de empregados já Cadastrado";
@@ -180,13 +180,13 @@ class cl_empregpont {
      $resaco = $this->sql_record($this->sql_query_file($this->q27_sequencia));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8746,'$this->q27_sequencia','I')");
-       $resac = db_query("insert into db_acount values($acount,1492,8746,'','".AddSlashes(pg_result($resaco,0,'q27_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1492,8747,'','".AddSlashes(pg_result($resaco,0,'q27_quantini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1492,8748,'','".AddSlashes(pg_result($resaco,0,'q27_quantfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1492,8749,'','".AddSlashes(pg_result($resaco,0,'q27_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1492,8746,'','".AddSlashes(pg_fetch_result($resaco,0,'q27_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1492,8747,'','".AddSlashes(pg_fetch_result($resaco,0,'q27_quantini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1492,8748,'','".AddSlashes(pg_fetch_result($resaco,0,'q27_quantfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1492,8749,'','".AddSlashes(pg_fetch_result($resaco,0,'q27_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_empregpont {
       $this->atualizacampos();
      $sql = " update empregpont set ";
      $virgula = "";
-     if(trim($this->q27_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q27_sequencia"])){ 
+     if(trim((string) $this->q27_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q27_sequencia"])){ 
        $sql  .= $virgula." q27_sequencia = $this->q27_sequencia ";
        $virgula = ",";
-       if(trim($this->q27_sequencia) == null ){ 
+       if(trim((string) $this->q27_sequencia) == null ){ 
          $this->erro_sql = " Campo Sequencia nao Informado.";
          $this->erro_campo = "q27_sequencia";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_empregpont {
          return false;
        }
      }
-     if(trim($this->q27_quantini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q27_quantini"])){ 
+     if(trim((string) $this->q27_quantini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q27_quantini"])){ 
        $sql  .= $virgula." q27_quantini = $this->q27_quantini ";
        $virgula = ",";
-       if(trim($this->q27_quantini) == null ){ 
+       if(trim((string) $this->q27_quantini) == null ){ 
          $this->erro_sql = " Campo Quantidade inicial nao Informado.";
          $this->erro_campo = "q27_quantini";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_empregpont {
          return false;
        }
      }
-     if(trim($this->q27_quantfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q27_quantfim"])){ 
+     if(trim((string) $this->q27_quantfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q27_quantfim"])){ 
        $sql  .= $virgula." q27_quantfim = $this->q27_quantfim ";
        $virgula = ",";
-       if(trim($this->q27_quantfim) == null ){ 
+       if(trim((string) $this->q27_quantfim) == null ){ 
          $this->erro_sql = " Campo Quantidade final nao Informado.";
          $this->erro_campo = "q27_quantfim";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_empregpont {
          return false;
        }
      }
-     if(trim($this->q27_pontuacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q27_pontuacao"])){ 
+     if(trim((string) $this->q27_pontuacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q27_pontuacao"])){ 
        $sql  .= $virgula." q27_pontuacao = $this->q27_pontuacao ";
        $virgula = ",";
-       if(trim($this->q27_pontuacao) == null ){ 
+       if(trim((string) $this->q27_pontuacao) == null ){ 
          $this->erro_sql = " Campo Pontuação nao Informado.";
          $this->erro_campo = "q27_pontuacao";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_empregpont {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8746,'$this->q27_sequencia','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q27_sequencia"]) || $this->q27_sequencia != "")
-           $resac = db_query("insert into db_acount values($acount,1492,8746,'".AddSlashes(pg_result($resaco,$conresaco,'q27_sequencia'))."','$this->q27_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1492,8746,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q27_sequencia'))."','$this->q27_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q27_quantini"]) || $this->q27_quantini != "")
-           $resac = db_query("insert into db_acount values($acount,1492,8747,'".AddSlashes(pg_result($resaco,$conresaco,'q27_quantini'))."','$this->q27_quantini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1492,8747,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q27_quantini'))."','$this->q27_quantini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q27_quantfim"]) || $this->q27_quantfim != "")
-           $resac = db_query("insert into db_acount values($acount,1492,8748,'".AddSlashes(pg_result($resaco,$conresaco,'q27_quantfim'))."','$this->q27_quantfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1492,8748,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q27_quantfim'))."','$this->q27_quantfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q27_pontuacao"]) || $this->q27_pontuacao != "")
-           $resac = db_query("insert into db_acount values($acount,1492,8749,'".AddSlashes(pg_result($resaco,$conresaco,'q27_pontuacao'))."','$this->q27_pontuacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1492,8749,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q27_pontuacao'))."','$this->q27_pontuacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_empregpont {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8746,'$q27_sequencia','E')");
-         $resac = db_query("insert into db_acount values($acount,1492,8746,'','".AddSlashes(pg_result($resaco,$iresaco,'q27_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1492,8747,'','".AddSlashes(pg_result($resaco,$iresaco,'q27_quantini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1492,8748,'','".AddSlashes(pg_result($resaco,$iresaco,'q27_quantfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1492,8749,'','".AddSlashes(pg_result($resaco,$iresaco,'q27_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1492,8746,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q27_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1492,8747,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q27_quantini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1492,8748,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q27_quantfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1492,8749,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q27_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from empregpont
@@ -376,7 +376,7 @@ class cl_empregpont {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empregpont";
@@ -391,7 +391,7 @@ class cl_empregpont {
    function sql_query ( $q27_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -412,7 +412,7 @@ class cl_empregpont {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_empregpont {
    function sql_query_file ( $q27_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_empregpont {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,7 +456,7 @@ class cl_empregpont {
      return $sql;
   }
   
-  function sql_query_valida_qtde($q27_sequencia = null, $q27_quantini, $q27_quantfim) {
+  function sql_query_valida_qtde($q27_sequencia = null, $q27_quantini = null, $q27_quantfim = null) {
   	
   	$sql = "select count(*) as quantidade
   	          from empregpont

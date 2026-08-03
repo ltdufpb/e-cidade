@@ -67,7 +67,7 @@
           $iAnoCompetencia = DBPessoal::getAnoFolha();
           $iMesCompetencia = DBPessoal::getMesFolha();
           $iInstituicao    = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
-          $aChavePri       = array("rh167_sequencial" => @$rh167_sequencial);
+          $aChavePri       = ["rh167_sequencial" => @$rh167_sequencial];
 
           $sCampos  = " rh167_sequencial,";
           $sCampos .= " rh167_anousu,";

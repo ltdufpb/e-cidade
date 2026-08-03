@@ -38,7 +38,7 @@ include(modification("classes/db_mer_tprefeicao_classe.php"));
 include(modification("classes/db_mer_tipocardapio_classe.php"));
 include(modification("classes/db_diasemana_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcalendario       = new cl_calendario;
 $clmer_cardapiodia  = new cl_mer_cardapiodia;
 $clmer_cardapiodata = new cl_mer_cardapiodata;

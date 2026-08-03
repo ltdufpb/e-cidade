@@ -110,7 +110,7 @@ $clrotulo->label ( "s108_c_exame" );
 						</td>
 						<td>
 								<?php 
-								$x = array ('C' => 'Consulta', 'E' => 'Exame' );
+								$x =  ['C' => 'Consulta', 'E' => 'Exame' ];
 								db_select ( 's118_c_tipoagenda', $x, true, $db_opcao, "onChange='js_tipo( this.value )';" );
 								?>
 						</td>
@@ -216,7 +216,7 @@ $clrotulo->label ( "s108_c_exame" );
 			<tr>
 				<td colspan="2">
 						<?php 
-						$chavepri = array ("s118_i_codigo" => @$s118_i_codigo );
+						$chavepri =  ["s118_i_codigo" => @$s118_i_codigo ];
 						
 						$cliframe_alterar_excluir->chavepri = $chavepri;
 						@$cliframe_alterar_excluir->sql = $clsau_agendaexterna->sql_query_ext ( "", "s118_i_codigo,
@@ -294,7 +294,7 @@ function js_pesquisas118_i_numcgs(mostra){
 function js_mostracgs1(chave1,chave2,chave3,chave4){
 	if( chave1 != "" ){
 		db_iframe_cgs_und.hide();
-		strParam  = '<?=basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] )?>';
+		strParam  = '<?=basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] )?>';
 		strParam += '?chavepesquisacgs='+chave1;
 		strParam += '&s118_i_numcgs='+chave1;
 		strParam += '&z01_v_nome='+chave2;

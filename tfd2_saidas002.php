@@ -53,7 +53,7 @@ function buscaAcompanhantes($iPedido)
     $oDaoCgsUnd = new cl_cgs_und();
     $sSqlAcompanhante = $oDaoCgsUnd->sql_query_cgs_beneficiadosajudacusto(null, $sCampos, null, $sWhere);
     $rsAcompanhante = db_query($sSqlAcompanhante);
-    $aAcompanhante = array();
+    $aAcompanhante = [];
 
     if ($rsAcompanhante && pg_num_rows($rsAcompanhante) > 0) {
         $iLinhas = pg_num_rows($rsAcompanhante);
@@ -112,7 +112,7 @@ function imprimeCabecalhoAjudaCusto($oPdf)
 
 function imprimeModeloAjudaCusto($aPedidos, $oPdf, $oGet)
 {
-    $aAjudaDestino = array();
+    $aAjudaDestino = [];
     $lPrimeiro = true;
 
     foreach ($aPedidos as $oPrestadora) {
@@ -142,7 +142,7 @@ function imprimeModeloAjudaCusto($aPedidos, $oPdf, $oGet)
             $oPdf->Cell(20, 4, $oData->convertTo(DBDate::DATA_PTBR), 1, 0, "C");
             $oPdf->Cell(23, 4, $oPaciente->cartaosus, 1, 0, "C");
             $oPdf->Cell(57, 4, "", 1, 0, "L");
-            $oPdf->Cell(54, 4, substr($oPaciente->destino, 0, 35), 1, 0, "L");
+            $oPdf->Cell(54, 4, substr((string) $oPaciente->destino, 0, 35), 1, 0, "L");
             $oPdf->Cell(20, 4, $nValor, 1, 1, "R");
 
             $aAjudaDestino[$oPrestadora->iDestino]->nValor += $oPaciente->valor_ajuda;
@@ -172,7 +172,7 @@ function imprimeModeloAjudaCusto($aPedidos, $oPdf, $oGet)
         $nValor = number_format($oAjudaDestino->nValor, 2, ',', '');
 
         $oPdf->setX(215);
-        $oPdf->Cell(54, 4, substr($oAjudaDestino->sDestino, 0, 35), 1, 0, "L");
+        $oPdf->Cell(54, 4, substr((string) $oAjudaDestino->sDestino, 0, 35), 1, 0, "L");
         $oPdf->Cell(20, 4, $nValor, 1, 1, "R");
         $nTotalGasto += $oAjudaDestino->nValor;
     }
@@ -198,7 +198,7 @@ function imprimeModeloViagem($aPedidos, $oPdf)
         $oPdf->setFont("arial", "B", 8);
         $oPdf->Cell(20, 4, "DESTINO: ");
         $oPdf->setFont("arial", "", 8);
-        $oPdf->Cell(80, 4, substr($oPrestadora->sDestino, 0, 53), 0, 1);
+        $oPdf->Cell(80, 4, substr((string) $oPrestadora->sDestino, 0, 53), 0, 1);
 
         $lPrimeiro = true;
 
@@ -213,7 +213,7 @@ function imprimeModeloViagem($aPedidos, $oPdf)
                 $lPrimeiro = false;
             }
 
-            $aContato = array();
+            $aContato = [];
             if (!empty($oPaciente->telefone)) {
                 $aContato[] = $oPaciente->telefone;
             }
@@ -224,11 +224,11 @@ function imprimeModeloViagem($aPedidos, $oPdf)
             $oData = new DBDate($oPaciente->data_saida);
 
             $oPdf->cell(15, 4, $oPaciente->cgs, 1, 0, "C");
-            $oPdf->cell(95, 4, substr($oPaciente->paciente, 0, 57), 1, 0, "L");
+            $oPdf->cell(95, 4, substr((string) $oPaciente->paciente, 0, 57), 1, 0, "L");
             $oPdf->cell(25, 4, $oData->convertTo(DBDate::DATA_PTBR) . " - " . $oPaciente->hora_saida, 1, 0, "C");
-            $oPdf->cell(60, 4, substr($oPaciente->local_saida, 0, 34), 1, 0, "L");
+            $oPdf->cell(60, 4, substr((string) $oPaciente->local_saida, 0, 34), 1, 0, "L");
             $oPdf->cell(35, 4, implode(" / ", $aContato), 1, 0, "L");
-            $oPdf->cell(20, 4, substr($oPaciente->identidade, 0, 13), 1, 0, "L");
+            $oPdf->cell(20, 4, substr((string) $oPaciente->identidade, 0, 13), 1, 0, "L");
             $oPdf->cell(28, 4, "", 1, 1, "C");
 
             if (count($oPaciente->aAcompanhante) > 0) {
@@ -247,11 +247,11 @@ function imprimeModeloViagem($aPedidos, $oPdf)
                     }
 
                     $oPdf->cell(15, 4, $oAcompanhante->cgs, 1, 0, "C");
-                    $oPdf->cell(95, 4, substr($oAcompanhante->paciente, 0, 57), 1, 0, "L");
+                    $oPdf->cell(95, 4, substr((string) $oAcompanhante->paciente, 0, 57), 1, 0, "L");
                     $oPdf->cell(25, 4, "", 1, 0);
                     $oPdf->cell(60, 4, "", 1, 0);
                     $oPdf->cell(35, 4, implode(" / ", $aContato), 1, 0, "L");
-                    $oPdf->cell(20, 4, substr($oAcompanhante->identidade, 0, 13), 1, 0, "L");
+                    $oPdf->cell(20, 4, substr((string) $oAcompanhante->identidade, 0, 13), 1, 0, "L");
                     $oPdf->cell(28, 4, "", 1, 1);
                 }
             }
@@ -321,7 +321,7 @@ $sSqlPedidos = $oDaoTfdPedidoTfd->sql_query_pedido('', $sCampos, $sOrdem, $sWher
 $rsPedidos = $oDaoTfdPedidoTfd->sql_record($sSqlPedidos);
 $iLinhas = $oDaoTfdPedidoTfd->numrows;
 
-$aPedidos = array();
+$aPedidos = [];
 $lRetornouRegistro = false;
 
 for ($i = 0; $i < $iLinhas; $i++) {
@@ -336,7 +336,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
         $oPrestadora->iDestino = $oDadosPedido->codigo_destino;
         $oPrestadora->sDestino = $oDadosPedido->destino;
         $oPrestadora->iPassageiros = 0;
-        $oPrestadora->aPacientes = array();
+        $oPrestadora->aPacientes = [];
 
         $aPedidos[$sHash] = $oPrestadora;
     }

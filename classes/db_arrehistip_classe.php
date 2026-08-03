@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE arrehistip
 class cl_arrehistip { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k45_idhist = 0; 
-   var $k45_ip = null; 
-   var $k45_obs = null; 
+   public $k45_idhist = 0; 
+   public $k45_ip = null; 
+   public $k45_obs = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k45_idhist = int4 = Sequência da arrehist 
                  k45_ip = varchar(50) = Número do IP 
                  k45_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_arrehistip() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrehistip"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,7 +119,7 @@ class cl_arrehistip {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "arrehistip ($this->k45_idhist) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "arrehistip já Cadastrado";
@@ -143,12 +143,12 @@ class cl_arrehistip {
      $resaco = $this->sql_record($this->sql_query_file($this->k45_idhist));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8793,'$this->k45_idhist','I')");
-       $resac = db_query("insert into db_acount values($acount,1502,8793,'','".AddSlashes(pg_result($resaco,0,'k45_idhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1502,8794,'','".AddSlashes(pg_result($resaco,0,'k45_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1502,8798,'','".AddSlashes(pg_result($resaco,0,'k45_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1502,8793,'','".AddSlashes(pg_fetch_result($resaco,0,'k45_idhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1502,8794,'','".AddSlashes(pg_fetch_result($resaco,0,'k45_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1502,8798,'','".AddSlashes(pg_fetch_result($resaco,0,'k45_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -157,10 +157,10 @@ class cl_arrehistip {
       $this->atualizacampos();
      $sql = " update arrehistip set ";
      $virgula = "";
-     if(trim($this->k45_idhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k45_idhist"])){ 
+     if(trim((string) $this->k45_idhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k45_idhist"])){ 
        $sql  .= $virgula." k45_idhist = $this->k45_idhist ";
        $virgula = ",";
-       if(trim($this->k45_idhist) == null ){ 
+       if(trim((string) $this->k45_idhist) == null ){ 
          $this->erro_sql = " Campo Sequência da arrehist nao Informado.";
          $this->erro_campo = "k45_idhist";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_arrehistip {
          return false;
        }
      }
-     if(trim($this->k45_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k45_ip"])){ 
+     if(trim((string) $this->k45_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k45_ip"])){ 
        $sql  .= $virgula." k45_ip = '$this->k45_ip' ";
        $virgula = ",";
-       if(trim($this->k45_ip) == null ){ 
+       if(trim((string) $this->k45_ip) == null ){ 
          $this->erro_sql = " Campo Número do IP nao Informado.";
          $this->erro_campo = "k45_ip";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_arrehistip {
          return false;
        }
      }
-     if(trim($this->k45_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k45_obs"])){ 
+     if(trim((string) $this->k45_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k45_obs"])){ 
        $sql  .= $virgula." k45_obs = '$this->k45_obs' ";
        $virgula = ",";
-       if(trim($this->k45_obs) == null ){ 
+       if(trim((string) $this->k45_obs) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "k45_obs";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_arrehistip {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8793,'$this->k45_idhist','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k45_idhist"]))
-           $resac = db_query("insert into db_acount values($acount,1502,8793,'".AddSlashes(pg_result($resaco,$conresaco,'k45_idhist'))."','$this->k45_idhist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1502,8793,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k45_idhist'))."','$this->k45_idhist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k45_ip"]))
-           $resac = db_query("insert into db_acount values($acount,1502,8794,'".AddSlashes(pg_result($resaco,$conresaco,'k45_ip'))."','$this->k45_ip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1502,8794,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k45_ip'))."','$this->k45_ip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k45_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1502,8798,'".AddSlashes(pg_result($resaco,$conresaco,'k45_obs'))."','$this->k45_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1502,8798,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k45_obs'))."','$this->k45_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -257,12 +257,12 @@ class cl_arrehistip {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8793,'$k45_idhist','E')");
-         $resac = db_query("insert into db_acount values($acount,1502,8793,'','".AddSlashes(pg_result($resaco,$iresaco,'k45_idhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1502,8794,'','".AddSlashes(pg_result($resaco,$iresaco,'k45_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1502,8798,'','".AddSlashes(pg_result($resaco,$iresaco,'k45_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1502,8793,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k45_idhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1502,8794,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k45_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1502,8798,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k45_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from arrehistip
@@ -322,7 +322,7 @@ class cl_arrehistip {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:arrehistip";

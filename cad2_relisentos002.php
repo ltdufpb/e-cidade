@@ -34,7 +34,7 @@ $clrotulo->label('j21_valor');
 $clrotulo->label('j46_perc');
 $clrotulo->label('j46_hist');
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $head1 = "RELATÓRIO DE ISENÇÕES";
 $head2 = ($isencoes == "cad"?"SOMENTE CADASTRADAS":"SOMENTE CALCULADAS");
@@ -256,8 +256,8 @@ $sql = "
     ORDER BY iptuisen.j46_dtini DESC;
 ";
 
-$taxasMatricula = array();
-$isencoes = array();
+$taxasMatricula = [];
+$isencoes = [];
 
 foreach(getRows($sql) as $taxa) {
     $taxasMatricula[$taxa['j46_matric']][$taxa['j46_codigo']][] = $taxa;
@@ -283,7 +283,7 @@ $pdf->SetFont('Arial','',11);
 $total     = 0;
 $totvalor  = 0;
 $matricula = 0;
-$totalportipo = array();
+$totalportipo = [];
 
 $pdf->SetFont('Arial','B',7);
 
@@ -316,7 +316,7 @@ $pdf->Ln(5);
 
 $codigoIsencaoAnterior = 0;
  $semIsencoes = true;
- $matriculasPercorridas = array();
+ $matriculasPercorridas = [];
  foreach(getRows($sqlMain) as $row) {
    $semIsencoes = false;
    $matricula = $row['j46_matric'];
@@ -337,25 +337,25 @@ $codigoIsencaoAnterior = 0;
 
    $pdf->SetFont('Arial','B',7);
    $pdf->cell(15,6,$matricula,"T",0,"L",0);
-   $pdf->cell(92,6,substr($nome, 0, 45),"T",0,"L",0);
+   $pdf->cell(92,6,substr((string) $nome, 0, 45),"T",0,"L",0);
    $pdf->cell(85,6,substr(($nomepri!=""? $nomepri:"").($numero!=""?" - ".$numero:"").($complemento!=""?"/".$complemento:""),0,45),"T",1,"L",0);
 
    if ($codigoIsencaoAnterior != $codigoIsencao) {
        foreach ($taxasMatricula[$matricula] as $keyCodigoIsencao => $isencao) {
-           $dataInclusao = date("d/m/Y", strtotime($isencoes[$keyCodigoIsencao]['dataInclusao']));
+           $dataInclusao = date("d/m/Y", strtotime((string) $isencoes[$keyCodigoIsencao]['dataInclusao']));
            $processo = $isencoes[$keyCodigoIsencao]['processo'];
 
            $pdf->SetFont('Arial', '', 7);
 
-           $pdf->cell(15, 6, date("Y", strtotime($isencoes[$keyCodigoIsencao]['dataInicio'])) . ' - ' . date("Y", strtotime($isencoes[$keyCodigoIsencao]['dataFinal'])), "T", 0, "C", 0);
-           $pdf->cell(68, 6, date("d/m/Y", strtotime($isencoes[$keyCodigoIsencao]['dataInicio'])) . ' - ' . date("d/m/Y", strtotime($isencoes[$keyCodigoIsencao]['dataFinal'])), "T", 0, "C", 0);
-           $pdf->cell(42, 6, substr($descricao, 0, 20), "T", 0, "L", 0);
+           $pdf->cell(15, 6, date("Y", strtotime((string) $isencoes[$keyCodigoIsencao]['dataInicio'])) . ' - ' . date("Y", strtotime((string) $isencoes[$keyCodigoIsencao]['dataFinal'])), "T", 0, "C", 0);
+           $pdf->cell(68, 6, date("d/m/Y", strtotime((string) $isencoes[$keyCodigoIsencao]['dataInicio'])) . ' - ' . date("d/m/Y", strtotime((string) $isencoes[$keyCodigoIsencao]['dataFinal'])), "T", 0, "C", 0);
+           $pdf->cell(42, 6, substr((string) $descricao, 0, 20), "T", 0, "L", 0);
            $pdf->cell(20, 6, $keyCodigoIsencao, "T", 0, "C", 0);
            $pdf->cell(27,6,$dataInclusao,"T",0,"C",0);
            $pdf->cell(20,6,$processo,"T",1,"C",0);
 
            $pdf->cell(50.4, 6, "IPTU", "T", 0, "L", 0);
-           $pdf->cell(63, 6, trim($isencoes[$keyCodigoIsencao]['porcentagem']), "T", 0, "L", 0);
+           $pdf->cell(63, 6, trim((string) $isencoes[$keyCodigoIsencao]['porcentagem']), "T", 0, "L", 0);
            $pdf->cell(55, 6, "", "T", 0, "L", 0);
            $pdf->cell(24, 6, "", "T", 1, "C", 0);
 
@@ -368,7 +368,7 @@ $codigoIsencaoAnterior = 0;
                    $descricao = $t['j07_descr'];
                }
 
-               $pdf->cell(50.4, 6, substr($descricao, 0 , 31), "T", 0, "L", 0);
+               $pdf->cell(50.4, 6, substr((string) $descricao, 0 , 31), "T", 0, "L", 0);
                $pdf->cell(63, 6, $t['j56_perc'], "T", 0, "L", 0);
                $pdf->cell(55, 6, "", "T", 0, "L", 0);
                $pdf->cell(24, 6, "", "T", 1, "C", 0);

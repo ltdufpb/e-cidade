@@ -97,7 +97,7 @@ class AssentamentoAtributoDinamico extends \BaseClassRepository
      */
     public static function getByAssentamento($codigoAssentamento)
     {
-        $retorno = array();
+        $retorno = [];
 
         $sql = "select * from assentadb_cadattdinamicovalorgrupo where h80_assenta = $codigoAssentamento";
         $rs = db_query($sql);

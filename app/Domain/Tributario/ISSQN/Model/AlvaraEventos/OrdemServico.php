@@ -30,7 +30,7 @@ class OrdemServico extends Model
     public $timestamps = false;
 
     protected $fiscais = [];
-    protected $appends = array('fiscais');
+    protected $appends = ['fiscais'];
 
     /**
      * setter Cidadao

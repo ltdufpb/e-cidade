@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contcearquivoresp_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcontcearquivoresp = new cl_contcearquivoresp;
 $clcontcearquivoresp->rotulo->label("c12_sequencial");
 $clcontcearquivoresp->rotulo->label("c12_nome");
@@ -98,9 +98,9 @@ $clcontcearquivoresp->rotulo->label("c12_nome");
         }else{
            $sql = $clcontcearquivoresp->sql_query("",$campos,"c12_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c12_nome)){
-          $repassa = array("chave_c12_sequencial"=>$chave_c12_sequencial,"chave_c12_nome"=>$chave_c12_nome);
+          $repassa = ["chave_c12_sequencial"=>$chave_c12_sequencial,"chave_c12_nome"=>$chave_c12_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

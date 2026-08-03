@@ -30,16 +30,16 @@ set_time_limit(0);
 // corrige formato da data para "AAAA-MM-DD"
 function montaDataDaeb($string_data){
 
-	$ano = (int)substr($string_data,1,4);
-	$mes = (int)substr($string_data,5,2);
-	$dia = (int)substr($string_data,7,2);
+	$ano = (int)substr((string) $string_data,1,4);
+	$mes = (int)substr((string) $string_data,5,2);
+	$dia = (int)substr((string) $string_data,7,2);
 
 	if($ano==20) {
 		$ano = 2000;
 	} else if($ano>=9700) {
-		$ano = 1900 + (int)substr($string_data,1,2);
-		$dia = (int)substr($string_data,5,2);
-		$mes = (int)substr($string_data,7,2);
+		$ano = 1900 + (int)substr((string) $string_data,1,2);
+		$dia = (int)substr((string) $string_data,5,2);
+		$mes = (int)substr((string) $string_data,7,2);
 	}	else if($ano<1900) {
 		$ano += 1900;
 	}
@@ -80,7 +80,7 @@ echo "\nInicializando arquivos...\n";
 db_query("BEGIN;");
 
 // Inicializa tabelas
-$queries = array();
+$queries = [];
 
 $queries[] = "select setval('debcontapedidotipo_d66_sequencial_seq', 1, false)";
 
@@ -136,8 +136,8 @@ for($w=0; $w<3; $w++) {
     	continue;
     }
 
-    $colunas     = split (';', $linha);
-    $matricula   = substr($colunas[0],0,6); // pega matricula sem digito
+    $colunas     = preg_split ('#;#m', $linha);
+    $matricula   = substr((string) $colunas[0],0,6); // pega matricula sem digito
 		$debcontapedido = $colunas[0]; // pega matricula com digito
     $nome        = $colunas[1];
     $ident_banco = $colunas[2];//ignorar
@@ -186,7 +186,7 @@ for($w=0; $w<3; $w++) {
 
     $result_arrecad = db_query($sql_arrecad) or die("Linha: ".__LINE__."\nSQL: $sql\n");
 			
-    if(pg_numrows($result_arrecad)>0){    	    	
+    if(pg_num_rows($result_arrecad)>0){    	    	
     	//$d63_codigo_seq = db_query("select nextval('debcontapedido_d63_codigo_seq')");
     	//$d63_codigo = pg_result($d63_codigo_seq,0,0);  
 			$d63_codigo = $debcontapedido;
@@ -197,7 +197,7 @@ for($w=0; $w<3; $w++) {
 			$sql = "insert into debcontapedidomatric values ($d63_codigo,$matricula)";
 			$inclui_debcontapedidomatric = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");
 			
-			$cgm = pg_result($result_arrecad, 0, 'x01_numcgm');
+			$cgm = pg_fetch_result($result_arrecad, 0, 'x01_numcgm');
 
 			$sql = "insert into debcontapedidocgm    values ($d63_codigo,$cgm)";
 			$inclui_debcontapedidocgm = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");
@@ -205,19 +205,19 @@ for($w=0; $w<3; $w++) {
 			$sql = "select nextval('debcontapedidotipo_d66_sequencial_seq')";
     	$d66_sequencial_seq = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");
 			
-    	$d66_sequencial = pg_result($d66_sequencial_seq,0,0);  
+    	$d66_sequencial = pg_fetch_result($d66_sequencial_seq,0,0);  
 
 			$sql = "insert into debcontapedidotipo values ($d66_sequencial,$d63_codigo,37)";
     	$inclui_debcontapedidotipo = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");
 			
-			for($x=0;$x<pg_numrows($result_arrecad);$x++){
-    		$k00_numpre = pg_result($result_arrecad,$x,'k00_numpre');
-    		$k00_numpar = pg_result($result_arrecad,$x,'k00_numpar');
+			for($x=0;$x<pg_num_rows($result_arrecad);$x++){
+    		$k00_numpre = pg_fetch_result($result_arrecad,$x,'k00_numpre');
+    		$k00_numpar = pg_fetch_result($result_arrecad,$x,'k00_numpar');
 				
 				$sql = "select nextval('debcontapedidotiponumpre_d67_sequencial_seq')";
     		$d67_sequencial_seq = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");
     		
-				$d67_sequencial = pg_result($d67_sequencial_seq,0,0);  
+				$d67_sequencial = pg_fetch_result($d67_sequencial_seq,0,0);  
 
 				$sql = "insert into debcontapedidotiponumpre values ($d67_sequencial,$d63_codigo,$k00_numpre,$k00_numpar)";
     		$inclui_debcontapedidotiponumpre = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");

@@ -40,8 +40,8 @@ $cliframe_seleciona_itens = new cl_iframe_seleciona;
 
 $clliclicitemanu->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $action   = "lic1_liclicitemanu002.php";
 $db_botao = false;
@@ -52,13 +52,13 @@ if (isset($l07_motivo) && trim(@$l07_motivo) != ""){
 
      db_inicio_transacao();
 
-     $vetor_itens = split(",",$coditens);
+     $vetor_itens = preg_split("#,#m",$coditens);
      for($i = 0; $i < count($vetor_itens); $i++){
           $clliclicitemanu->l07_usuario    = db_getsession("DB_id_usuario");
           $clliclicitemanu->l07_data       = date("Y-m-d",db_getsession("DB_datausu"));
           $clliclicitemanu->l07_hora       = db_hora();
           $clliclicitemanu->l07_motivo     = strtoupper($l07_motivo);
-          $clliclicitemanu->l07_liclicitem = trim($vetor_itens[$i]);
+          $clliclicitemanu->l07_liclicitem = trim((string) $vetor_itens[$i]);
           $clliclicitemanu->incluir(null);
 
           if ($clliclicitemanu->erro_status == 0){
@@ -68,10 +68,10 @@ if (isset($l07_motivo) && trim(@$l07_motivo) != ""){
           }
 
           if ($sqlerro == false){
-               $clliclicitem->l21_codigo   = trim($vetor_itens[$i]); 
+               $clliclicitem->l21_codigo   = trim((string) $vetor_itens[$i]); 
                $clliclicitem->l21_situacao = 1;
                
-               $clliclicitem->alterar(trim($vetor_itens[$i]));
+               $clliclicitem->alterar(trim((string) $vetor_itens[$i]));
                if ($clliclicitem->erro_status == 0){
                     $sqlerro  = true;
                     $erro_msg = $clliclicitem->erro_msg;
@@ -167,15 +167,15 @@ if (isset($confirmar) && trim(@$confirmar) != ""){
       $tam = strlen(trim($coditens));
       db_input("coditens",$tam,"",true,"hidden",3);
 
-      $vetor_itens = split(",",$coditens);
+      $vetor_itens = preg_split("#,#m",$coditens);
       for($i = 0; $i < count($vetor_itens); $i++){
-           $res_itens = $clliclicitem->sql_record($clliclicitem->sql_query_sol(trim($vetor_itens[$i]),"l21_codigo,pc01_descrmater","l21_codigo"));
+           $res_itens = $clliclicitem->sql_record($clliclicitem->sql_query_sol(trim((string) $vetor_itens[$i]),"l21_codigo,pc01_descrmater","l21_codigo"));
            if ($clliclicitem->numrows > 0){
                 db_fieldsmemory($res_itens,0);
                 $codmostra     = "l21_codigo_".$i;
-                $$codmostra    = $l21_codigo;
+                ${$codmostra}    = $l21_codigo;
                 $descr_mostra  = "pc01_descrmater_".$i;
-                $$descr_mostra = $pc01_descrmater;
+                ${$descr_mostra} = $pc01_descrmater;
 
                 echo "<tr>\n<td>\n";
                 db_input("l21_codigo_$i",10,"",true,"text",3);
@@ -197,7 +197,7 @@ if (isset($confirmar) && trim(@$confirmar) != ""){
 }
 
 if (isset($l20_codigo) && trim($l20_codigo) != "" &&
-    !isset($confirmar) && trim(@$confirmar) == ""){
+    !isset($confirmar) && trim((string) @$confirmar) == ""){
 ?>
     <td colspan="2">
 <?php 
@@ -236,12 +236,12 @@ if (isset($l20_codigo) && trim($l20_codigo) != "" &&
 <?php 
 db_input("coditens",500,"",true,"hidden",3);
 if (isset($l20_codigo) && trim($l20_codigo) != "" &&
-    !isset($confirmar) && trim(@$confirmar) == ""){
+    !isset($confirmar) && trim((string) @$confirmar) == ""){
 ?>
       <input name="confirmar" type="submit" onClick="return js_confirmar();" value="Confirmar" <?=($db_botao == true?"disabled":"")?>>
       <input name="voltar"    type="button" onClick="location.href='lic1_liclicitemanu001.php';" value="Voltar">
 <?php 
-     if (trim(@$erro_msg) != ""){
+     if (trim((string) @$erro_msg) != ""){
           db_msgbox($erro_msg);
      }
 }

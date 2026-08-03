@@ -30,40 +30,40 @@
 class cl_veicabast
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $ve70_codigo = 0;
-    var $ve70_veiculos = 0;
-    var $ve70_veiculoscomb = 0;
-    var $ve70_dtabast_dia = null;
-    var $ve70_dtabast_mes = null;
-    var $ve70_dtabast_ano = null;
-    var $ve70_dtabast = null;
-    var $ve70_litros = 0;
-    var $ve70_valor = 0;
-    var $ve70_vlrun = 0;
-    var $ve70_medida = 0;
-    var $ve70_ativo = 0;
-    var $ve70_usuario = 0;
-    var $ve70_data_dia = null;
-    var $ve70_data_mes = null;
-    var $ve70_data_ano = null;
-    var $ve70_data = null;
-    var $ve70_hora = null;
-    var $ve70_observacao = null;
+    public $ve70_codigo = 0;
+    public $ve70_veiculos = 0;
+    public $ve70_veiculoscomb = 0;
+    public $ve70_dtabast_dia = null;
+    public $ve70_dtabast_mes = null;
+    public $ve70_dtabast_ano = null;
+    public $ve70_dtabast = null;
+    public $ve70_litros = 0;
+    public $ve70_valor = 0;
+    public $ve70_vlrun = 0;
+    public $ve70_medida = 0;
+    public $ve70_ativo = 0;
+    public $ve70_usuario = 0;
+    public $ve70_data_dia = null;
+    public $ve70_data_mes = null;
+    public $ve70_data_ano = null;
+    public $ve70_data = null;
+    public $ve70_hora = null;
+    public $ve70_observacao = null;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  ve70_codigo = int4 = Código do Abastecimento
                  ve70_veiculos = int4 = Veiculo
                  ve70_veiculoscomb = int4 = Combustível
@@ -80,11 +80,11 @@ class cl_veicabast
                  ";
 
     //funcao construtor da classe
-    function cl_veicabast()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veicabast");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -255,10 +255,10 @@ class cl_veicabast
 
                 return false;
             }
-            $this->ve70_codigo = pg_result($result, 0, 0);
+            $this->ve70_codigo = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from veicabast_ve70_codigo_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $ve70_codigo)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $ve70_codigo)) {
                 $this->erro_sql = " Campo ve70_codigo maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -314,7 +314,7 @@ class cl_veicabast
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Cadastro de Abastecimento dos Veículos ($this->ve70_codigo) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Cadastro de Abastecimento dos Veículos já Cadastrado";
@@ -342,34 +342,34 @@ class cl_veicabast
         $resaco = $this->sql_record($this->sql_query_file($this->ve70_codigo));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,9365,'$this->ve70_codigo','I')");
-            $resac = db_query("insert into db_acount values($acount,1610,9365,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9365,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9366,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9366,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_veiculos')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9367,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9367,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_veiculoscomb')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9368,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9368,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_dtabast')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9369,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9369,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_litros')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9370,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9370,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9371,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9371,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_vlrun')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9372,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9372,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_medida')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9373,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9373,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9374,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9374,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_usuario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9375,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9375,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,9376,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,9376,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_hora')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1610,18842,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1610,18842,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've70_observacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -382,10 +382,10 @@ class cl_veicabast
         $this->atualizacampos();
         $sql = " update veicabast set ";
         $virgula = "";
-        if (trim($this->ve70_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_codigo"])) {
+        if (trim((string) $this->ve70_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_codigo"])) {
             $sql .= $virgula . " ve70_codigo = $this->ve70_codigo ";
             $virgula = ",";
-            if (trim($this->ve70_codigo) == null) {
+            if (trim((string) $this->ve70_codigo) == null) {
                 $this->erro_sql = " Campo Código do Abastecimento nao Informado.";
                 $this->erro_campo = "ve70_codigo";
                 $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_veicabast
                 return false;
             }
         }
-        if (trim($this->ve70_veiculos) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_veiculos"])) {
+        if (trim((string) $this->ve70_veiculos) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_veiculos"])) {
             $sql .= $virgula . " ve70_veiculos = $this->ve70_veiculos ";
             $virgula = ",";
-            if (trim($this->ve70_veiculos) == null) {
+            if (trim((string) $this->ve70_veiculos) == null) {
                 $this->erro_sql = " Campo Veiculo nao Informado.";
                 $this->erro_campo = "ve70_veiculos";
                 $this->erro_banco = "";
@@ -412,10 +412,10 @@ class cl_veicabast
                 return false;
             }
         }
-        if (trim($this->ve70_veiculoscomb) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_veiculoscomb"])) {
+        if (trim((string) $this->ve70_veiculoscomb) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_veiculoscomb"])) {
             $sql .= $virgula . " ve70_veiculoscomb = $this->ve70_veiculoscomb ";
             $virgula = ",";
-            if (trim($this->ve70_veiculoscomb) == null) {
+            if (trim((string) $this->ve70_veiculoscomb) == null) {
                 $this->erro_sql = " Campo Combustível nao Informado.";
                 $this->erro_campo = "ve70_veiculoscomb";
                 $this->erro_banco = "";
@@ -427,10 +427,10 @@ class cl_veicabast
                 return false;
             }
         }
-        if (trim($this->ve70_dtabast) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_dtabast_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["ve70_dtabast_dia"] != "")) {
+        if (trim((string) $this->ve70_dtabast) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_dtabast_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["ve70_dtabast_dia"] != "")) {
             $sql .= $virgula . " ve70_dtabast = '$this->ve70_dtabast' ";
             $virgula = ",";
-            if (trim($this->ve70_dtabast) == null) {
+            if (trim((string) $this->ve70_dtabast) == null) {
                 $this->erro_sql = " Campo Data do Abastecimento nao Informado.";
                 $this->erro_campo = "ve70_dtabast_dia";
                 $this->erro_banco = "";
@@ -445,7 +445,7 @@ class cl_veicabast
             if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_dtabast_dia"])) {
                 $sql .= $virgula . " ve70_dtabast = null ";
                 $virgula = ",";
-                if (trim($this->ve70_dtabast) == null) {
+                if (trim((string) $this->ve70_dtabast) == null) {
                     $this->erro_sql = " Campo Data do Abastecimento nao Informado.";
                     $this->erro_campo = "ve70_dtabast_dia";
                     $this->erro_banco = "";
@@ -458,10 +458,10 @@ class cl_veicabast
                 }
             }
         }
-        if (trim($this->ve70_litros) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_litros"])) {
+        if (trim((string) $this->ve70_litros) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_litros"])) {
             $sql .= $virgula . " ve70_litros = $this->ve70_litros ";
             $virgula = ",";
-            if (trim($this->ve70_litros) == null) {
+            if (trim((string) $this->ve70_litros) == null) {
                 $this->erro_sql = " Campo Litros nao Informado.";
                 $this->erro_campo = "ve70_litros";
                 $this->erro_banco = "";
@@ -473,24 +473,24 @@ class cl_veicabast
                 return false;
             }
         }
-        if (trim($this->ve70_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_valor"])) {
-            if (trim($this->ve70_valor) == "" && isset($GLOBALS["HTTP_POST_VARS"]["ve70_valor"])) {
+        if (trim((string) $this->ve70_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_valor"])) {
+            if (trim((string) $this->ve70_valor) == "" && isset($GLOBALS["HTTP_POST_VARS"]["ve70_valor"])) {
                 $this->ve70_valor = "0";
             }
             $sql .= $virgula . " ve70_valor = $this->ve70_valor ";
             $virgula = ",";
         }
-        if (trim($this->ve70_vlrun) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_vlrun"])) {
-            if (trim($this->ve70_vlrun) == "" && isset($GLOBALS["HTTP_POST_VARS"]["ve70_vlrun"])) {
+        if (trim((string) $this->ve70_vlrun) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_vlrun"])) {
+            if (trim((string) $this->ve70_vlrun) == "" && isset($GLOBALS["HTTP_POST_VARS"]["ve70_vlrun"])) {
                 $this->ve70_vlrun = "0";
             }
             $sql .= $virgula . " ve70_vlrun = $this->ve70_vlrun ";
             $virgula = ",";
         }
-        if (trim($this->ve70_medida) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_medida"])) {
+        if (trim((string) $this->ve70_medida) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_medida"])) {
             $sql .= $virgula . " ve70_medida = $this->ve70_medida ";
             $virgula = ",";
-            if (trim($this->ve70_medida) == null) {
+            if (trim((string) $this->ve70_medida) == null) {
                 $this->erro_sql = " Campo Medida de consumo nao Informado.";
                 $this->erro_campo = "ve70_medida";
                 $this->erro_banco = "";
@@ -502,10 +502,10 @@ class cl_veicabast
                 return false;
             }
         }
-        if (trim($this->ve70_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_ativo"])) {
+        if (trim((string) $this->ve70_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_ativo"])) {
             $sql .= $virgula . " ve70_ativo = $this->ve70_ativo ";
             $virgula = ",";
-            if (trim($this->ve70_ativo) == null) {
+            if (trim((string) $this->ve70_ativo) == null) {
                 $this->erro_sql = " Campo Ativo nao Informado.";
                 $this->erro_campo = "ve70_ativo";
                 $this->erro_banco = "";
@@ -517,10 +517,10 @@ class cl_veicabast
                 return false;
             }
         }
-        if (trim($this->ve70_usuario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_usuario"])) {
+        if (trim((string) $this->ve70_usuario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_usuario"])) {
             $sql .= $virgula . " ve70_usuario = $this->ve70_usuario ";
             $virgula = ",";
-            if (trim($this->ve70_usuario) == null) {
+            if (trim((string) $this->ve70_usuario) == null) {
                 $this->erro_sql = " Campo Usuário nao Informado.";
                 $this->erro_campo = "ve70_usuario";
                 $this->erro_banco = "";
@@ -532,10 +532,10 @@ class cl_veicabast
                 return false;
             }
         }
-        if (trim($this->ve70_data) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_data_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["ve70_data_dia"] != "")) {
+        if (trim((string) $this->ve70_data) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_data_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["ve70_data_dia"] != "")) {
             $sql .= $virgula . " ve70_data = '$this->ve70_data' ";
             $virgula = ",";
-            if (trim($this->ve70_data) == null) {
+            if (trim((string) $this->ve70_data) == null) {
                 $this->erro_sql = " Campo Data da inclusão do registro nao Informado.";
                 $this->erro_campo = "ve70_data_dia";
                 $this->erro_banco = "";
@@ -550,7 +550,7 @@ class cl_veicabast
             if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_data_dia"])) {
                 $sql .= $virgula . " ve70_data = null ";
                 $virgula = ",";
-                if (trim($this->ve70_data) == null) {
+                if (trim((string) $this->ve70_data) == null) {
                     $this->erro_sql = " Campo Data da inclusão do registro nao Informado.";
                     $this->erro_campo = "ve70_data_dia";
                     $this->erro_banco = "";
@@ -563,10 +563,10 @@ class cl_veicabast
                 }
             }
         }
-        if (trim($this->ve70_hora) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_hora"])) {
+        if (trim((string) $this->ve70_hora) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_hora"])) {
             $sql .= $virgula . " ve70_hora = '$this->ve70_hora' ";
             $virgula = ",";
-            if (trim($this->ve70_hora) == null) {
+            if (trim((string) $this->ve70_hora) == null) {
                 $this->erro_sql = " Campo Hora da Inclusão do registro nao Informado.";
                 $this->erro_campo = "ve70_hora";
                 $this->erro_banco = "";
@@ -578,7 +578,7 @@ class cl_veicabast
                 return false;
             }
         }
-        if (trim($this->ve70_observacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_observacao"])) {
+        if (trim((string) $this->ve70_observacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve70_observacao"])) {
             $sql .= $virgula . " ve70_observacao = '$this->ve70_observacao' ";
             $virgula = ",";
         }
@@ -590,71 +590,71 @@ class cl_veicabast
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,9365,'$this->ve70_codigo','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_codigo"]) || $this->ve70_codigo != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9365,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9365,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_codigo')) . "','$this->ve70_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_veiculos"]) || $this->ve70_veiculos != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9366,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9366,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_veiculos')) . "','$this->ve70_veiculos'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_veiculoscomb"]) || $this->ve70_veiculoscomb != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9367,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9367,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_veiculoscomb')) . "','$this->ve70_veiculoscomb'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_dtabast"]) || $this->ve70_dtabast != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9368,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9368,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_dtabast')) . "','$this->ve70_dtabast'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_litros"]) || $this->ve70_litros != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9369,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9369,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_litros')) . "','$this->ve70_litros'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_valor"]) || $this->ve70_valor != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9370,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9370,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_valor')) . "','$this->ve70_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_vlrun"]) || $this->ve70_vlrun != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9371,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9371,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_vlrun')) . "','$this->ve70_vlrun'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_medida"]) || $this->ve70_medida != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9372,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9372,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_medida')) . "','$this->ve70_medida'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_ativo"]) || $this->ve70_ativo != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9373,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9373,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_ativo')) . "','$this->ve70_ativo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_usuario"]) || $this->ve70_usuario != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9374,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9374,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_usuario')) . "','$this->ve70_usuario'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_data"]) || $this->ve70_data != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9375,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9375,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_data')) . "','$this->ve70_data'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_hora"]) || $this->ve70_hora != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,9376,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,9376,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_hora')) . "','$this->ve70_hora'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve70_observacao"]) || $this->ve70_observacao != "") {
-                    $resac = db_query("insert into db_acount values($acount,1610,18842,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1610,18842,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've70_observacao')) . "','$this->ve70_observacao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -710,46 +710,46 @@ class cl_veicabast
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,9365,'$ve70_codigo','E')");
-                $resac = db_query("insert into db_acount values($acount,1610,9365,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9365,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9366,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9366,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_veiculos')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9367,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9367,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_veiculoscomb')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9368,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9368,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_dtabast')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9369,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9369,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_litros')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9370,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9370,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9371,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9371,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_vlrun')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9372,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9372,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_medida')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9373,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9373,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9374,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9374,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_usuario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9375,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9375,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,9376,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,9376,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_hora')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1610,18842,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1610,18842,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've70_observacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -821,7 +821,7 @@ class cl_veicabast
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:veicabast";
@@ -878,7 +878,7 @@ class cl_veicabast
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -917,7 +917,7 @@ class cl_veicabast
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -972,7 +972,7 @@ class cl_veicabast
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1019,7 +1019,7 @@ class cl_veicabast
                 $sql2 .= " where veicabast.ve70_codigo = $ve70_codigo ";
             }
         } else {
-            if (isset($dbwhere) && trim($dbwhere) != "") {
+            if (isset($dbwhere) && trim((string) $dbwhere) != "") {
                 $sql2 = " where $dbwhere";
             }
         }
@@ -1031,7 +1031,7 @@ class cl_veicabast
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1090,7 +1090,7 @@ class cl_veicabast
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1131,7 +1131,7 @@ class cl_veicabast
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1170,7 +1170,7 @@ class cl_veicabast
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1314,7 +1314,7 @@ class cl_veicabast
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

@@ -71,9 +71,9 @@ db_app::import("exceptions.*");
 $clautenticar = new cl_autenticar();
 $clcfautent = new cl_cfautent();
 
-parse_str($HTTP_SERVER_VARS ["QUERY_STRING"]);
-$oGet  = db_utils::postMemory($HTTP_GET_VARS);
-$oPost = db_utils::postMemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER ["QUERY_STRING"], $result);
+$oGet  = db_utils::postMemory($_GET);
+$oPost = db_utils::postMemory($_POST);
 
 $iInstit           = db_getsession("DB_instit");
 $AnoUsu            = db_getsession("DB_anousu");
@@ -318,18 +318,18 @@ if (!isset($oPost->reautentica) && $clautenticar->erro == false) {
 
   if (isset($oPost->codautent)) {
 
-    $aut1 = split(",", $oDadosAutenticadora->k11_aut1);
-    $aut2 = split(",", $oDadosAutenticadora->k11_aut2);
+    $aut1 = preg_split("#,#m", (string) $oDadosAutenticadora->k11_aut1);
+    $aut2 = preg_split("#,#m", (string) $oDadosAutenticadora->k11_aut2);
 
     $str_aut1 = "";
-    if (trim($oDadosAutenticadora->k11_aut1) != "") {
+    if (trim((string) $oDadosAutenticadora->k11_aut1) != "") {
       for($i = 0; $i < sizeof($aut1); $i ++) {
         $str_aut1 .= chr($aut1 [$i]);
       }
     }
 
     $str_aut2 = "";
-    if (trim($oDadosAutenticadora->k11_aut2) != "") {
+    if (trim((string) $oDadosAutenticadora->k11_aut2) != "") {
       for($i = 0; $i < sizeof($aut2); $i ++) {
         $str_aut2 .= chr($aut2 [$i]);
       }

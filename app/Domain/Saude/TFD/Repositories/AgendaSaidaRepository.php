@@ -22,17 +22,11 @@ class AgendaSaidaRepository extends BaseRepository
      */
     public function getViagens($where = null, $ordem = '')
     {
-        switch ($ordem) {
-            case 1:
-                $ordem = 'tf18_d_datasaida';
-                break;
-            case 2:
-                $ordem = 've22_descr';
-                break;
-            default:
-                $ordem = 'tf03_c_descr';
-                break;
-        }
+        $ordem = match ($ordem) {
+            1 => 'tf18_d_datasaida',
+            2 => 've22_descr',
+            default => 'tf03_c_descr',
+        };
 
         $query = $this->newQuery()
             ->select('tfd_agendasaida.*')

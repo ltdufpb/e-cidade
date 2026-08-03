@@ -34,8 +34,8 @@ include(modification("classes/db_pcmaterele_classe.php"));
 include(modification("classes/db_pcgrupo_classe.php"));
 include(modification("classes/db_pcsubgrupo_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clpcmater = new cl_pcmater;
 $clpcmaterele = new cl_pcmaterele;
 $clpcgrupo = new cl_pcgrupo;
@@ -94,12 +94,12 @@ if(isset($pc01_codmater)){
     					<td nowrap title="<?=@$Tpc01_libaut?>"><?=@$Lpc01_libaut?></td>
     					<td>
     					<?php 
-    					$arrlibaut_truefalse = array('t'=>'Sim','f'=>'Não');
+    					$arrlibaut_truefalse = ['t'=>'Sim','f'=>'Não'];
     					db_select("pc01_libaut",$arrlibaut_truefalse,true,$db_opcao);
     					?>
     					<?=$Lpc01_ativo?> 
     					<?php 
-    					$arr_truefalse = array('f'=>'Não','t'=>'Sim');
+    					$arr_truefalse = ['f'=>'Não','t'=>'Sim'];
     					db_select("pc01_ativo",$arr_truefalse,true,$db_opcao);
     					?>  
 					   	</td>

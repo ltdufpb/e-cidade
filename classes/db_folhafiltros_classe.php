@@ -32,7 +32,7 @@ class cl_folhafiltros
     public function __construct()
     {
         $this->rotulo = new rotulo("folhafiltros"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -97,7 +97,7 @@ class cl_folhafiltros
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Filtros do processamento da folha de pagamento ($this->r39_instituicao) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Filtros do processamento da folha de pagamento já Cadastrado";
@@ -126,12 +126,12 @@ class cl_folhafiltros
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014228,'$this->r39_instituicao','I')");
-         $resac = db_query("insert into db_acount values($acount,1010947,1014228,'','".AddSlashes(pg_result($resaco,0,'r39_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010947,1014229,'','".AddSlashes(pg_result($resaco,0,'r39_filtros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010947,1014230,'','".AddSlashes(pg_result($resaco,0,'r39_processamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010947,1014228,'','".AddSlashes(pg_fetch_result($resaco,0,'r39_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010947,1014229,'','".AddSlashes(pg_fetch_result($resaco,0,'r39_filtros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010947,1014230,'','".AddSlashes(pg_fetch_result($resaco,0,'r39_processamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -142,10 +142,10 @@ class cl_folhafiltros
       $this->atualizacampos();
      $sql = " update folhafiltros set ";
      $virgula = "";
-     if(trim($this->r39_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r39_instituicao"])){ 
+     if(trim((string) $this->r39_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r39_instituicao"])){ 
        $sql  .= $virgula." r39_instituicao = $this->r39_instituicao ";
        $virgula = ",";
-       if(trim($this->r39_instituicao) == null ){ 
+       if(trim((string) $this->r39_instituicao) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "r39_instituicao";
          $this->erro_banco = "";
@@ -155,14 +155,14 @@ class cl_folhafiltros
          return false;
        }
      }
-     if(trim($this->r39_filtros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r39_filtros"])){ 
+     if(trim((string) $this->r39_filtros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r39_filtros"])){ 
        $sql  .= $virgula." r39_filtros = '$this->r39_filtros' ";
        $virgula = ",";
      }
-     if(trim($this->r39_processamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r39_processamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r39_processamento_dia"] !="") ){ 
+     if(trim((string) $this->r39_processamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r39_processamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r39_processamento_dia"] !="") ){ 
        $sql  .= $virgula." r39_processamento = '$this->r39_processamento' ";
        $virgula = ",";
-       if(trim($this->r39_processamento) == null ){ 
+       if(trim((string) $this->r39_processamento) == null ){ 
          $this->erro_sql = " Campo Dt. Processamento não informado.";
          $this->erro_campo = "r39_processamento_dia";
          $this->erro_banco = "";
@@ -175,7 +175,7 @@ class cl_folhafiltros
        if(isset($GLOBALS["HTTP_POST_VARS"]["r39_processamento_dia"])){ 
          $sql  .= $virgula." r39_processamento = null ";
          $virgula = ",";
-         if(trim($this->r39_processamento) == null ){ 
+         if(trim((string) $this->r39_processamento) == null ){ 
            $this->erro_sql = " Campo Dt. Processamento não informado.";
            $this->erro_campo = "r39_processamento_dia";
            $this->erro_banco = "";
@@ -200,15 +200,15 @@ class cl_folhafiltros
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014228,'$this->r39_instituicao','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["r39_instituicao"]) || $this->r39_instituicao != "")
-             $resac = db_query("insert into db_acount values($acount,1010947,1014228,'".AddSlashes(pg_result($resaco,$conresaco,'r39_instituicao'))."','$this->r39_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010947,1014228,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r39_instituicao'))."','$this->r39_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["r39_filtros"]) || $this->r39_filtros != "")
-             $resac = db_query("insert into db_acount values($acount,1010947,1014229,'".AddSlashes(pg_result($resaco,$conresaco,'r39_filtros'))."','$this->r39_filtros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010947,1014229,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r39_filtros'))."','$this->r39_filtros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["r39_processamento"]) || $this->r39_processamento != "")
-             $resac = db_query("insert into db_acount values($acount,1010947,1014230,'".AddSlashes(pg_result($resaco,$conresaco,'r39_processamento'))."','$this->r39_processamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010947,1014230,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r39_processamento'))."','$this->r39_processamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -262,12 +262,12 @@ class cl_folhafiltros
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014228,'$r39_instituicao','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010947,1014228,'','".AddSlashes(pg_result($resaco,$iresaco,'r39_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010947,1014229,'','".AddSlashes(pg_result($resaco,$iresaco,'r39_filtros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010947,1014230,'','".AddSlashes(pg_result($resaco,$iresaco,'r39_processamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010947,1014228,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r39_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010947,1014229,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r39_filtros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010947,1014230,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r39_processamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

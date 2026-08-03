@@ -36,25 +36,19 @@ use DOMDocument;
 class ConsultarDocumento implements RequisicaoInterface
 {
     private $oXml;
-    private $documento;
-    private $numeroDocumento;
     private $sOperacao;
-    private $ano;
 
   /**
    * Criamos o objeto da classe com as informações necessárias para a sua exitência
    *
    * @param stdClass $oConsultarDocumento
    */
-    public function __construct($documento, $numeroDocumento, $ano)
+    public function __construct(private $documento, private $numeroDocumento, private $ano)
     {
         $this->oXml                     = new DOMDocument("1.0", "utf-8");
         $this->oXml->preserveWhiteSpace = false;
         $this->oXml->formatOutput       = true;
-        $this->documento                = $documento;
-        $this->numeroDocumento          = $numeroDocumento;
         $this->sOperacao                = "consultarDocumento";
-        $this->ano                      = $ano;
     }
 
     public function gerar()

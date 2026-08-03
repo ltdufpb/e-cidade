@@ -18,7 +18,7 @@ class ComponenteCurricularResource
      */
     public static function toArray(array $disciplinas)
     {
-        $data = array();
+        $data = [];
 
         foreach ($disciplinas as $disciplina) {
             $std = (object)[
@@ -40,12 +40,10 @@ class ComponenteCurricularResource
 
             $censoDisciplinas = $disciplina->getCensoDisciplina();
             if (!!count($censoDisciplinas)) {
-                $std->censo_disciplinas = array_map(function (CensoDisciplina $censoDisciplina) {
-                    return (object)[
-                        'codigo' => $censoDisciplina->getCodigo(),
-                        'descricao' => $censoDisciplina->getDescricao(),
-                    ];
-                }, $censoDisciplinas);
+                $std->censo_disciplinas = array_map(fn(CensoDisciplina $censoDisciplina) => (object)[
+                    'codigo' => $censoDisciplina->getCodigo(),
+                    'descricao' => $censoDisciplina->getDescricao(),
+                ], $censoDisciplinas);
             }
 
             $data[] = $std;

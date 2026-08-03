@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
@@ -38,11 +38,11 @@ if(!isset($abas)){
   echo "<script>location.href='fis1_tipovistorias005.php'</script>";
   exit;
 }
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltipovistorias = new cl_tipovistorias;
 $db_opcao = 1;
 $db_botao = true;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
 	$cltipovistorias->y77_instit = db_getsession('DB_instit');
   $cltipovistorias->incluir($y77_codtipo);
@@ -72,7 +72,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($cltipovistorias->erro_status=="0"){
     $cltipovistorias->erro(true,false);
     $db_botao=true;

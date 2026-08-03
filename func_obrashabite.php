@@ -32,9 +32,9 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_obrashabite_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clobrashabite = new cl_obrashabite;
 $clobrashabite->rotulo->label("ob09_codhab");
@@ -131,7 +131,7 @@ $clRotulo->label("ob06_lote");
 		<?php 
 	    if(!isset($pesquisa_chave)  && !isset($constr)){                                                                                                   
 	
-	    	$aWherePesquisa = array();
+	    	$aWherePesquisa = [];
 	    	
 	    	$campos = "ob09_codhab,
 					         ob09_habite,

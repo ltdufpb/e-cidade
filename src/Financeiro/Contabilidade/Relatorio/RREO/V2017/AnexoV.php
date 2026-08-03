@@ -94,7 +94,7 @@ class AnexoV extends \RelatoriosLegaisBase {
     foreach ($this->aLinhasProcessarReceita as $iLinha ) {
 
       $oLinha            = $this->aLinhasConsistencia[$iLinha];
-      $aColunasProcessar = $this->getColunasPorLinha($oLinha, array($iColuna));
+      $aColunasProcessar = $this->getColunasPorLinha($oLinha, [$iColuna]);
       $sNomeColunaLimpar = $aColunasProcessar[0]->nome;
       $oLinha->{$sNomeColunaLimpar} = 0;
 

@@ -121,8 +121,8 @@ if ($oDaoDBConfig->numrows > 0) {
     $sInstituicoes = '';
     $sVirgula = "";
     for ($i = 0; $i < $oDaoDBConfig->numrows; $i++) {
-        $instituicoes[pg_result($rsInstituicoes, $i, 'codigo')] = pg_result($rsInstituicoes, $i, 'codtrib');
-        $sInstituicoes .= $sVirgula . pg_result($rsInstituicoes, $i, 'codigo');
+        $instituicoes[pg_fetch_result($rsInstituicoes, $i, 'codigo')] = pg_fetch_result($rsInstituicoes, $i, 'codtrib');
+        $sInstituicoes .= $sVirgula . pg_fetch_result($rsInstituicoes, $i, 'codigo');
         $sVirgula = ",";
     }
 
@@ -142,12 +142,12 @@ $rsDadosFiltro = $oContcearquivoDAO->sql_record($sSqlDadosFiltro);
 if ($oContcearquivoDAO->numrows > 0) {
     $oDadosFiltro = db_utils::fieldsMemory($rsDadosFiltro, 0);
 } else {
-    fechaJanela("Dados da geração não encontrados !");
+    fechaJanela();
 }
 
 $nomearquivos = "";
 $iInstit = $oDadosFiltro->c11_instit;
-$arr_AnoUsu = explode('-', $oDadosFiltro->c11_datageracao);
+$arr_AnoUsu = explode('-', (string) $oDadosFiltro->c11_datageracao);
 $iAnoUsu = $arr_AnoUsu[0];
 $sDataInicial = $oDadosFiltro->c11_dataini;
 $sDataFinal = $oDadosFiltro->c11_datafim;
@@ -161,8 +161,8 @@ $sNomeArquivo = getNomeArquivo($iInstit, $sDataInicial, $sDataFinal, $sCodRemess
  * as classes de negocio responsaveis por gera-los
  *
  */
-$aArquivosGerados = array();
-$aClasseArquivos = array(
+$aArquivosGerados = [];
+$aClasseArquivos = [
     "301" => "tceFolhaPagamento",
     "34" => "tceFolhaPagamento",
     "35" => "tceCadastroFuncionarios",
@@ -173,7 +173,7 @@ $aClasseArquivos = array(
     "308" => "tceFolhaPagamentoPosterior",
     "309" => "tceCadastroDependentes",
     "310" => "tceCadastroPensionistas",
-);
+];
 
 try {
     db_inicio_transacao();
@@ -191,7 +191,7 @@ try {
         $oArquivoTCE->setAnoAtual($iAnoAtual);
         $aArquivosGerados[] = $oArquivoTCE->getNomeArquivo();
 
-        $nomearquivos .= "tmp/" . strtoupper($oArquivoTCE->getNomeArquivo()) . "#Dowload do Arquivo gerado " . strtoupper($oArquivoTCE->getNomeArquivo()) . "|";
+        $nomearquivos .= "tmp/" . strtoupper((string) $oArquivoTCE->getNomeArquivo()) . "#Dowload do Arquivo gerado " . strtoupper((string) $oArquivoTCE->getNomeArquivo()) . "|";
         $oArquivoTCE->geraArquivo();
 
         unset($oArquivoTCE);
@@ -216,7 +216,7 @@ try {
         $subelemento = 'sim'; // true
     }
 
-    $aClassesArquivosPAD = array(
+    $aClassesArquivosPAD = [
         "41" => "bal_rec",
         "42" => "receita",
         "43" => "padEmpenho",
@@ -244,7 +244,7 @@ try {
         "66" => "credor",
         "95" => "bvmovant",
         "302" => "bver_enc",
-    );
+    ];
 
     $sHeaderPAD = headerPad($iInstit, $sDataInicial, $sDataFinal, $sDataGeracao, $sCodRemessa);
     /**
@@ -325,7 +325,7 @@ try {
     echo "  parent.js_montarlista(listagem,'form1');";
     echo "</script>";
 
-    fechaJanela("Arquivos gerados com sucesso !");
+    fechaJanela();
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
@@ -349,37 +349,18 @@ function getNomeArquivo($iInstit, $sDataini, $sDatafim, $sRemessa)
         return false;
     }
     $oInstit = db_utils::fieldsMemory($rsInstit, 0);
-    switch ($oInstit->db21_tipoinstit) {
-        case '1' :
-            $sTipoGoverno = 'P';
-            break;
-        case '2' :
-            $sTipoGoverno = 'C';
-            break;
-        case '6' :
-            $sTipoGoverno = 'A';
-            break;
-        case '7' :
-            $sTipoGoverno = 'A';
-            break;
-        case '8' :
-            $sTipoGoverno = 'F';
-            break;
-        case '9' :
-            $sTipoGoverno = 'E';
-            break;
-        case '10' :
-            $sTipoGoverno = 'E';
-            break;
-        case '11' :
-            $sTipoGoverno = 'E';
-            break;
-        case '12' :
-            $sTipoGoverno = 'E';
-            break;
-        default :
-            $sTipoGoverno = 'O';
-    }
+    $sTipoGoverno = match ($oInstit->db21_tipoinstit) {
+        '1' => 'P',
+        '2' => 'C',
+        '6' => 'A',
+        '7' => 'A',
+        '8' => 'F',
+        '9' => 'E',
+        '10' => 'E',
+        '11' => 'E',
+        '12' => 'E',
+        default => 'O',
+    };
 
     $cnpj = $oInstit->cgc;
     $sDataInicial = implode("", array_reverse(explode("-", $sDataini)));
@@ -413,14 +394,14 @@ function headerPad($iInstit = 1, $sDataInicial = '', $sDataFinal = '', $sDataGer
     $rs = db_query("SELECT nomeinst,cgc FROM db_config WHERE codigo= " . $iInstit);
     $oInstit = db_utils::fieldsMemory($rs, 0);
 
-    $ini = split("-", $sDataInicial);
+    $ini = preg_split("#\\-#m", (string) $sDataInicial);
     $ini = "$ini[2]$ini[1]$ini[0]";
-    $fim = split("-", $sDataFinal);
+    $fim = preg_split("#\\-#m", (string) $sDataFinal);
     $fim = "$fim[2]$fim[1]$fim[0]";
-    $dt = split("-", $sDataGeracao);
+    $dt = preg_split("#\\-#m", (string) $sDataGeracao);
     $dt = "$dt[2]$dt[1]$dt[0]";
-    $iCodigoRemessa = str_pad($iCodigoRemessa, 12, "0", STR_PAD_LEFT);
-    return formatar($oInstit->cgc, 14, 'n') . $ini . $fim . $dt . formatar($oInstit->nomeinst, 80, 'c') . $iCodigoRemessa;
+    $iCodigoRemessa = str_pad((string) $iCodigoRemessa, 12, "0", STR_PAD_LEFT);
+    return formatar($oInstit->cgc, 14) . $ini . $fim . $dt . formatar($oInstit->nomeinst, 80) . $iCodigoRemessa;
 }
 
 ?>

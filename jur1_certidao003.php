@@ -30,15 +30,15 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["excluir"])) {
-  $result = db_query("select v56_codigo from cerjur where v56_codigo = ".$HTTP_POST_VARS["codigo"]);
-  if(pg_numrows($result)) {
+if(isset($_POST["excluir"])) {
+  $result = db_query("select v56_codigo from cerjur where v56_codigo = ".$_POST["codigo"]);
+  if(pg_num_rows($result)) {
     db_query("BEGIN");
-    $result = db_query("delete from cerjur where v56_codigo = ".$HTTP_POST_VARS["codigo"]) or die("Erro(43) excluindo cerjur");
+    $result = db_query("delete from cerjur where v56_codigo = ".$_POST["codigo"]) or die("Erro(43) excluindo cerjur");
     db_query("commit");
    db_redireciona();
   } else
-    $DB_ERRO = "Código ".$HTTP_POST_VARS["codigo"]." não encontrado!";
+    $DB_ERRO = "Código ".$_POST["codigo"]." não encontrado!";
 }
 ?>
 <html>

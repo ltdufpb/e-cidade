@@ -72,7 +72,7 @@ $clrotulo = new rotulocampo;
   <tr>
     <td><b>Tipo Financiamnto:</b></td>
     <td colspan="3">
-      <?php $x = array();
+      <?php $x = [];
         $sWhere = "sd65_i_anocomp=(select max(sd65_i_anocomp) from sau_financiamento) and sd65_i_mescomp=( 
                    select max(sd65_i_mescomp) from sau_financiamento where sd65_i_anocomp=(
                    select max(sd65_i_anocomp) from sau_financiamento))";
@@ -120,7 +120,7 @@ $clrotulo = new rotulocampo;
  <tr>
   <td valign="top">
   <?php 
-        $chavepri= array("la54_i_codigo"=>@$la54_i_codigo);
+        $chavepri= ["la54_i_codigo"=>@$la54_i_codigo];
         $sCampos = "la54_i_codigo,la54_i_compmes||'/'||la54_i_compano as la54_i_compmes,la54_d_ini,".
         $sCampos = "la54_d_fim,la54_i_financiamento,sd65_c_nome,la54_c_descr,la54_d_data,la54_c_hora,nome as la54_i_login "; 
         $cliframe_alterar_excluir->chavepri=$chavepri;
@@ -160,7 +160,7 @@ function js_preenchepesquisa(chave){
   db_iframe_sau_fechamento.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

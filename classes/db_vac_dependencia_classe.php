@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE vac_dependencia
 class cl_vac_dependencia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $vc09_i_codigo = 0; 
-   var $vc09_i_dependente = 0; 
-   var $vc09_i_dependencia = 0; 
-   var $vc09_i_situacao = 0; 
+   public $vc09_i_codigo = 0; 
+   public $vc09_i_dependente = 0; 
+   public $vc09_i_dependencia = 0; 
+   public $vc09_i_situacao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  vc09_i_codigo = int4 = Código 
                  vc09_i_dependente = int4 = Dependente 
                  vc09_i_dependencia = int4 = Dependencia 
                  vc09_i_situacao = int4 = vc09_i_situacao 
                  ";
    //funcao construtor da classe 
-   function cl_vac_dependencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vac_dependencia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_vac_dependencia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->vc09_i_codigo = pg_result($result,0,0); 
+       $this->vc09_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from vac_dependencia_vc09_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $vc09_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $vc09_i_codigo)){
          $this->erro_sql = " Campo vc09_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_vac_dependencia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dependencia ($this->vc09_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dependencia já Cadastrado";
@@ -180,13 +180,13 @@ class cl_vac_dependencia {
      $resaco = $this->sql_record($this->sql_query_file($this->vc09_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16837,'$this->vc09_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2963,16837,'','".AddSlashes(pg_result($resaco,0,'vc09_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2963,16838,'','".AddSlashes(pg_result($resaco,0,'vc09_i_dependente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2963,16839,'','".AddSlashes(pg_result($resaco,0,'vc09_i_dependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2963,16840,'','".AddSlashes(pg_result($resaco,0,'vc09_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2963,16837,'','".AddSlashes(pg_fetch_result($resaco,0,'vc09_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2963,16838,'','".AddSlashes(pg_fetch_result($resaco,0,'vc09_i_dependente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2963,16839,'','".AddSlashes(pg_fetch_result($resaco,0,'vc09_i_dependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2963,16840,'','".AddSlashes(pg_fetch_result($resaco,0,'vc09_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_vac_dependencia {
       $this->atualizacampos();
      $sql = " update vac_dependencia set ";
      $virgula = "";
-     if(trim($this->vc09_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_codigo"])){ 
+     if(trim((string) $this->vc09_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_codigo"])){ 
        $sql  .= $virgula." vc09_i_codigo = $this->vc09_i_codigo ";
        $virgula = ",";
-       if(trim($this->vc09_i_codigo) == null ){ 
+       if(trim((string) $this->vc09_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "vc09_i_codigo";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_vac_dependencia {
          return false;
        }
      }
-     if(trim($this->vc09_i_dependente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_dependente"])){ 
+     if(trim((string) $this->vc09_i_dependente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_dependente"])){ 
        $sql  .= $virgula." vc09_i_dependente = $this->vc09_i_dependente ";
        $virgula = ",";
-       if(trim($this->vc09_i_dependente) == null ){ 
+       if(trim((string) $this->vc09_i_dependente) == null ){ 
          $this->erro_sql = " Campo Dependente nao Informado.";
          $this->erro_campo = "vc09_i_dependente";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_vac_dependencia {
          return false;
        }
      }
-     if(trim($this->vc09_i_dependencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_dependencia"])){ 
+     if(trim((string) $this->vc09_i_dependencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_dependencia"])){ 
        $sql  .= $virgula." vc09_i_dependencia = $this->vc09_i_dependencia ";
        $virgula = ",";
-       if(trim($this->vc09_i_dependencia) == null ){ 
+       if(trim((string) $this->vc09_i_dependencia) == null ){ 
          $this->erro_sql = " Campo Dependencia nao Informado.";
          $this->erro_campo = "vc09_i_dependencia";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_vac_dependencia {
          return false;
        }
      }
-     if(trim($this->vc09_i_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_situacao"])){ 
+     if(trim((string) $this->vc09_i_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_situacao"])){ 
        $sql  .= $virgula." vc09_i_situacao = $this->vc09_i_situacao ";
        $virgula = ",";
-       if(trim($this->vc09_i_situacao) == null ){ 
+       if(trim((string) $this->vc09_i_situacao) == null ){ 
          $this->erro_sql = " Campo vc09_i_situacao nao Informado.";
          $this->erro_campo = "vc09_i_situacao";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_vac_dependencia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16837,'$this->vc09_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_codigo"]) || $this->vc09_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2963,16837,'".AddSlashes(pg_result($resaco,$conresaco,'vc09_i_codigo'))."','$this->vc09_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2963,16837,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc09_i_codigo'))."','$this->vc09_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_dependente"]) || $this->vc09_i_dependente != "")
-           $resac = db_query("insert into db_acount values($acount,2963,16838,'".AddSlashes(pg_result($resaco,$conresaco,'vc09_i_dependente'))."','$this->vc09_i_dependente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2963,16838,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc09_i_dependente'))."','$this->vc09_i_dependente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_dependencia"]) || $this->vc09_i_dependencia != "")
-           $resac = db_query("insert into db_acount values($acount,2963,16839,'".AddSlashes(pg_result($resaco,$conresaco,'vc09_i_dependencia'))."','$this->vc09_i_dependencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2963,16839,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc09_i_dependencia'))."','$this->vc09_i_dependencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc09_i_situacao"]) || $this->vc09_i_situacao != "")
-           $resac = db_query("insert into db_acount values($acount,2963,16840,'".AddSlashes(pg_result($resaco,$conresaco,'vc09_i_situacao'))."','$this->vc09_i_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2963,16840,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc09_i_situacao'))."','$this->vc09_i_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_vac_dependencia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16837,'$vc09_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2963,16837,'','".AddSlashes(pg_result($resaco,$iresaco,'vc09_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2963,16838,'','".AddSlashes(pg_result($resaco,$iresaco,'vc09_i_dependente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2963,16839,'','".AddSlashes(pg_result($resaco,$iresaco,'vc09_i_dependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2963,16840,'','".AddSlashes(pg_result($resaco,$iresaco,'vc09_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2963,16837,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc09_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2963,16838,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc09_i_dependente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2963,16839,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc09_i_dependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2963,16840,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc09_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from vac_dependencia
@@ -376,7 +376,7 @@ class cl_vac_dependencia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vac_dependencia";
@@ -391,7 +391,7 @@ class cl_vac_dependencia {
    function sql_query ( $vc09_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_vac_dependencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,7 +431,7 @@ class cl_vac_dependencia {
    function sql_query_alt ( $vc09_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -454,7 +454,7 @@ class cl_vac_dependencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_vac_dependencia {
    function sql_query_file ( $vc09_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_vac_dependencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -29,7 +29,7 @@ $cldb_depusu->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("nome");
 $clrotulo->label("descrdepto");
-$nome = stripslashes($nome);
+$nome = stripslashes((string) $nome);
 ?>
 <table border="0">
   <tr colspan="4">

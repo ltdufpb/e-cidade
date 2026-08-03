@@ -35,10 +35,10 @@ require_once(modification("classes/db_issbase_classe.php"));
 require_once(modification("classes/db_iptubase_classe.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcancdebitos = new cl_cancdebitos;
 $cliptubase    = new cl_iptubase;
@@ -191,11 +191,11 @@ if (count($_POST ) > 0) {
 			  $sql .= "			inner join db_usuarios        on db_usuarios.id_usuario                = cancdebitos.k20_usuario         ";
 			  $sql .= "			                                                                                                         ";
         if (isset($chave_k00_matric) && (trim($chave_k00_matric) != "")) {
-			    
+
           $sql .= "			inner join arrematric on arrematric.k00_numpre = arrecant.k00_numpre                                   ";
 			    $sql .= "			inner join iptubase on iptubase.j01_matric  = arrematric.k00_matric                                    ";
         } else if (isset($chave_k00_inscr) && (trim($chave_k00_inscr) != "")) {
-			    
+
           $sql .= "			inner join arreinscr  on arreinscr.k00_numpre  = arrecant.k00_numpre                                   ";
 			    $sql .= "			inner join issbase  on issbase.q02_inscr    = arreinscr.k00_inscr                                      ";
         }

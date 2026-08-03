@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benstipoaquisicao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbenstipoaquisicao = new cl_benstipoaquisicao;
 $clbenstipoaquisicao->rotulo->label("t45_sequencial");
 $clbenstipoaquisicao->rotulo->label("t45_descricao");
@@ -100,9 +100,9 @@ $clbenstipoaquisicao->rotulo->label("t45_descricao");
         }else{
            $sql = $clbenstipoaquisicao->sql_query("",$campos,"t45_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t45_descricao)){
-          $repassa = array("chave_t45_sequencial"=>$chave_t45_sequencial,"chave_t45_descricao"=>$chave_t45_descricao);
+          $repassa = ["chave_t45_sequencial"=>$chave_t45_sequencial,"chave_t45_descricao"=>$chave_t45_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

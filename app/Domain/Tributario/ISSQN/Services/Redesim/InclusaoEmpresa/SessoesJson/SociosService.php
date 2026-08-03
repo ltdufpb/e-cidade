@@ -276,7 +276,7 @@ class SociosService
         foreach ($this->oDados->dadosRedesim["socios"]["socio"] as $key => $aSocio) {
             $sDataNascimento = AtendimentoInclusaoInscricaoJsonService::data($aSocio["dataNascimento"], true);
             $pais = Pais::query()->where("db70_codigoreceita", $aSocio["enderecoSocio"]["codPais"])->first();
-            $municipio = Municipio::sistemaExterno(20, $aSocio["enderecoSocio"]["codMunicipio"])->first();
+            $municipio = (new Municipio())->sistemaExterno(20, $aSocio["enderecoSocio"]["codMunicipio"])->first();
 
             $iQualificacao = null;
             if (isset($aSocio["codQualificacaoSocio"]) && !empty($aSocio["codQualificacaoSocio"])) {

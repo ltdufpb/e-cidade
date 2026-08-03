@@ -134,7 +134,7 @@ function validarCGM($iNumeroCGM) {
 
   try {
     CgmFactory::getInstanceByCgm($iNumeroCGM);
-  } catch(\Exception $e) {
+  } catch(\Exception) {
     throw new \BusinessException("O CGM informado {$iNumeroCGM} não é um CGM cadastrado.");
   }
 }
@@ -170,7 +170,7 @@ function validarTaxaDiversos($iCodigoTaxa) {
  */
 function validarUnidade($oPost, $oDadosTaxa) {
 
-  if (!trim($oPost->unidade)) {
+  if (!trim((string) $oPost->unidade)) {
 
     if ($oDadosTaxa->y119_unidade != 0) {
       throw new \BusinessException("Unidade de medida não pode ser vazia.");

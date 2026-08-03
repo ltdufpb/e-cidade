@@ -34,50 +34,40 @@ use ECidade\Patrimonial\Licitacao\Licitacon\Situacao;
 class Licitacon {
 
   /**
-   * @var licitacao
-   */
-  private $oLicitacao;
-
-  /**
    * Licitacon constructor.
    *
    * @param licitacao $oLicitacao
    */
-  public function __construct(licitacao $oLicitacao) {
-    $this->oLicitacao = $oLicitacao;
+  public function __construct(private readonly licitacao $oLicitacao)
+  {
   }
 
   /**
-	 * @deprecated Usar ECidade\Patrimonial\Licitacao\Licitacon\Resultado
-   * Retorna o resultado da licitação de acordo com o seu tipo de julgamento.
    * @param integer $iNumeroCgm
    * @param integer $iCodigoOrcamentoItem
    * @return null|string
    */
-  public function getResultadoLicitacao($iNumeroCgm = null, $iCodigoOrcamentoItem = null) {
-
-    switch ($this->oLicitacao->getTipoJulgamento()) {
-
-      case licitacao::TIPO_JULGAMENTO_GLOBAL:
-        return $this->getResultadoGlobal();
-        break;
-
-      case licitacao::TIPO_JULGAMENTO_POR_ITEM:
-        return $this->getTipoResultadoItem($iNumeroCgm, $iCodigoOrcamentoItem);
-        break;
-
-      case licitacao::TIPO_JULGAMENTO_POR_LOTE:
-        return $this->getResultadoLote();
-        break;
-    }
-    return null;
+  #[\Deprecated(message: <<<'TXT'
+  Usar ECidade\Patrimonial\Licitacao\Licitacon\Resultado
+   Retorna o resultado da licitação de acordo com o seu tipo de julgamento.
+  TXT)]
+  public function getResultadoLicitacao($iNumeroCgm = null, $iCodigoOrcamentoItem = null)
+  {
+      return match ($this->oLicitacao->getTipoJulgamento()) {
+          licitacao::TIPO_JULGAMENTO_GLOBAL => $this->getResultadoGlobal(),
+          licitacao::TIPO_JULGAMENTO_POR_ITEM => $this->getTipoResultadoItem($iNumeroCgm, $iCodigoOrcamentoItem),
+          licitacao::TIPO_JULGAMENTO_POR_LOTE => $this->getResultadoLote(),
+          default => null,
+      };
   }
 
   /**
-	 * @deprecated Usar ECidade\Patrimonial\Licitacao\Licitacon\Resultado
-   * Retorna o resultado global da licitação.
    * @return null|string
    */
+  #[\Deprecated(message: <<<'TXT'
+  Usar ECidade\Patrimonial\Licitacao\Licitacon\Resultado
+   Retorna o resultado global da licitação.
+  TXT)]
   public function getResultadoGlobal() {
 
     $iTipoJulgamento = $this->oLicitacao->getTipoJulgamento();
@@ -92,13 +82,15 @@ class Licitacon {
   }
 
   /**
-	 * @deprecated Usar ECidade\Patrimonial\Licitacao\Licitacon\Resultado
-   * Retorna o resultado do item da licitação.
    * @param int $iNumeroCgm
    * @param int $iCodigoOrcamentoItem
    * @return string
    *
    */
+  #[\Deprecated(message: <<<'TXT'
+  Usar ECidade\Patrimonial\Licitacao\Licitacon\Resultado
+   Retorna o resultado do item da licitação.
+  TXT)]
   public function getTipoResultadoItem($iNumeroCgm = null, $iCodigoOrcamentoItem = null) {
 
     $iFase              = $this->oLicitacao->getFase();
@@ -117,7 +109,7 @@ class Licitacon {
       return null;
     }
 
-    $aModalidadesIgnorar = array('CPC', 'MAI', 'RPO', 'PRD', 'PRI');
+    $aModalidadesIgnorar = ['CPC', 'MAI', 'RPO', 'PRD', 'PRI'];
     if (in_array($iModalidade, $aModalidadesIgnorar)) {
       return null;
     }
@@ -147,10 +139,12 @@ class Licitacon {
   }
 
   /**
-	 * @deprecated Usar ECidade\Patrimonial\Licitacao\Licitacon\Resultado
-   * Retorna o resultado para o lote da licitação.
    * @return string
    */
+  #[\Deprecated(message: <<<'TXT'
+  Usar ECidade\Patrimonial\Licitacao\Licitacon\Resultado
+   Retorna o resultado para o lote da licitação.
+  TXT)]
   public function getResultadoLote() {
 
     $iTipoJulgamento = $this->oLicitacao->getTipoJulgamento();
@@ -162,7 +156,7 @@ class Licitacon {
     /**
      * Conforme documentação o campo NÃO deve ser preenchido nesses casos
      */
-    if (in_array(strtoupper($iTipoModalidade), array('CPC', 'MAI', 'RPO', 'PRD', 'PRI'))) {
+    if (in_array(strtoupper($iTipoModalidade), ['CPC', 'MAI', 'RPO', 'PRD', 'PRI'])) {
       return null;
     }
 

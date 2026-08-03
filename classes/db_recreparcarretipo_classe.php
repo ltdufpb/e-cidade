@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE recreparcarretipo
 class cl_recreparcarretipo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k72_sequencial = 0; 
-   var $k72_arretipo = 0; 
-   var $k72_codigo = 0; 
+   public $k72_sequencial = 0; 
+   public $k72_arretipo = 0; 
+   public $k72_codigo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k72_sequencial = int4 = Código 
                  k72_arretipo = int4 = Tipo de Débito 
                  k72_codigo = int4 = Receita 
                  ";
    //funcao construtor da classe 
-   function cl_recreparcarretipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recreparcarretipo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_recreparcarretipo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k72_sequencial = pg_result($result,0,0); 
+       $this->k72_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from recreparcarretipo_k72_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k72_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k72_sequencial)){
          $this->erro_sql = " Campo k72_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_recreparcarretipo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "recreparcarretipo ($this->k72_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "recreparcarretipo já Cadastrado";
@@ -166,12 +166,12 @@ class cl_recreparcarretipo {
      $resaco = $this->sql_record($this->sql_query_file($this->k72_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11743,'$this->k72_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3063,11743,'','".AddSlashes(pg_result($resaco,0,'k72_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3063,17298,'','".AddSlashes(pg_result($resaco,0,'k72_arretipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3063,17297,'','".AddSlashes(pg_result($resaco,0,'k72_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3063,11743,'','".AddSlashes(pg_fetch_result($resaco,0,'k72_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3063,17298,'','".AddSlashes(pg_fetch_result($resaco,0,'k72_arretipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3063,17297,'','".AddSlashes(pg_fetch_result($resaco,0,'k72_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_recreparcarretipo {
       $this->atualizacampos();
      $sql = " update recreparcarretipo set ";
      $virgula = "";
-     if(trim($this->k72_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k72_sequencial"])){ 
+     if(trim((string) $this->k72_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k72_sequencial"])){ 
        $sql  .= $virgula." k72_sequencial = $this->k72_sequencial ";
        $virgula = ",";
-       if(trim($this->k72_sequencial) == null ){ 
+       if(trim((string) $this->k72_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "k72_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_recreparcarretipo {
          return false;
        }
      }
-     if(trim($this->k72_arretipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k72_arretipo"])){ 
+     if(trim((string) $this->k72_arretipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k72_arretipo"])){ 
        $sql  .= $virgula." k72_arretipo = $this->k72_arretipo ";
        $virgula = ",";
-       if(trim($this->k72_arretipo) == null ){ 
+       if(trim((string) $this->k72_arretipo) == null ){ 
          $this->erro_sql = " Campo Tipo de Débito nao Informado.";
          $this->erro_campo = "k72_arretipo";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_recreparcarretipo {
          return false;
        }
      }
-     if(trim($this->k72_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k72_codigo"])){ 
+     if(trim((string) $this->k72_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k72_codigo"])){ 
        $sql  .= $virgula." k72_codigo = $this->k72_codigo ";
        $virgula = ",";
-       if(trim($this->k72_codigo) == null ){ 
+       if(trim((string) $this->k72_codigo) == null ){ 
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "k72_codigo";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_recreparcarretipo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11743,'$this->k72_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k72_sequencial"]) || $this->k72_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3063,11743,'".AddSlashes(pg_result($resaco,$conresaco,'k72_sequencial'))."','$this->k72_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3063,11743,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k72_sequencial'))."','$this->k72_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k72_arretipo"]) || $this->k72_arretipo != "")
-           $resac = db_query("insert into db_acount values($acount,3063,17298,'".AddSlashes(pg_result($resaco,$conresaco,'k72_arretipo'))."','$this->k72_arretipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3063,17298,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k72_arretipo'))."','$this->k72_arretipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k72_codigo"]) || $this->k72_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3063,17297,'".AddSlashes(pg_result($resaco,$conresaco,'k72_codigo'))."','$this->k72_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3063,17297,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k72_codigo'))."','$this->k72_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_recreparcarretipo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11743,'$k72_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3063,11743,'','".AddSlashes(pg_result($resaco,$iresaco,'k72_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3063,17298,'','".AddSlashes(pg_result($resaco,$iresaco,'k72_arretipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3063,17297,'','".AddSlashes(pg_result($resaco,$iresaco,'k72_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3063,11743,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k72_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3063,17298,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k72_arretipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3063,17297,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k72_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from recreparcarretipo
@@ -345,7 +345,7 @@ class cl_recreparcarretipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:recreparcarretipo";
@@ -360,7 +360,7 @@ class cl_recreparcarretipo {
    function sql_query ( $k72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -386,7 +386,7 @@ class cl_recreparcarretipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -399,7 +399,7 @@ class cl_recreparcarretipo {
    function sql_query_recreparcori ( $k72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_recreparcarretipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_recreparcarretipo {
    function sql_query_file ( $k72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_recreparcarretipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

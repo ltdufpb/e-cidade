@@ -36,7 +36,7 @@ include(modification("classes/db_arreold_classe.php"));
 include(modification("classes/db_termodiv_classe.php"));
 include(modification("classes/db_divida_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cltermo = new cl_termo;
 $clarrecant = new cl_arrecant;
@@ -57,16 +57,16 @@ $clrotulo = new rotulocampo;
 $erro = false;
 
 if(isset($anularparcelamento)){
- 
+
   db_query("begin");
   $sql = "select fc_excluiparcelamento($v07_parcel,".db_getsession("DB_id_usuario").") as retorno";
   $result = db_query($sql);
-  if (substr(pg_result($result,0),0,1) == "1") {
+  if (str_starts_with(pg_fetch_result($result,0), "1")) {
     db_query("commit");
     db_msgbox("Parcelamento anulado!");
   } else {
     db_query("rollback");
-    db_msgbox("Erro durante a exclusao do parcelamento! " . pg_result($result,0));
+    db_msgbox("Erro durante a exclusao do parcelamento! " . pg_fetch_result($result,0));
   }
 
 /*

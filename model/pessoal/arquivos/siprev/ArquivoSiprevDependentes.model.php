@@ -30,7 +30,7 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
   protected $sRegistro    = "dependentes";
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["02"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["02"] = [];
   }
 
   public function getDados() {
@@ -65,7 +65,7 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
     $sSqlDados   .= "order by rh01_instit, z01_nome, rh31_nome;                                                 \n";
 
     $rsDados      = db_query($sSqlDados);
-    $aErros       = array();
+    $aErros       = [];
 
     $oArquivo    = $this;
     $aListaDados = db_utils::makeCollectionFromRecord($rsDados, function($oDados) use(&$aErros, $oArquivo) {
@@ -84,11 +84,11 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
       return;
     });
 
-    $aDados = array();
+    $aDados = [];
 
     foreach ( $aListaDados as $oIndiceDados => $oValorDados ) {
 
-      $aLinhas                  = array();
+      $aLinhas                  = [];
       $aLinhas["dependencias"]  = $this->preencheDependecias($oValorDados);
       $aLinhas["dadosPessoais"] = $this->preencheDadosPessoais($oValorDados);
       $aDados[]                 = (object) $aLinhas;
@@ -103,7 +103,7 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
    */
   public function getElementos() {
 
-    $aDados   = array();
+    $aDados   = [];
     $aDados[] = $this->atributosDependencias();
     $aDados[] = $this->atributosDadosPessoais();
 
@@ -116,18 +116,18 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
    */
   private function atributosDependencias() {
 
-    $aDadosDependenciaServidor                 = array();
+    $aDadosDependenciaServidor                 = [];
     $aDadosDependenciaServidor["nome"]         = "servidor";
-    $aDadosDependenciaServidor["propriedades"] = array( "nome", "numeroCPF", "numeroNIT" );
+    $aDadosDependenciaServidor["propriedades"] = [ "nome", "numeroCPF", "numeroNIT" ];
 
-    $aDadosDependencia                 = array();
+    $aDadosDependencia                 = [];
     $aDadosDependencia["nome"]         = "dependencias";
-    $aDadosDependencia["propriedades"] = array(
+    $aDadosDependencia["propriedades"] = [
       "tipoDependencia",
       "finsPrevidenciarios",
       "dataInicioDependencia",
       $aDadosDependenciaServidor
-    );
+    ];
 
     return $aDadosDependencia;
   }
@@ -138,9 +138,9 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
    */
   private function atributosDadosPessoais() {
 
-    $aDadosPessoais                 = array();
+    $aDadosPessoais                 = [];
     $aDadosPessoais["nome"]         = "dadosPessoais";
-    $aDadosPessoais["propriedades"] = array("nome", "dataNascimento", "nomeMae");
+    $aDadosPessoais["propriedades"] = ["nome", "dataNascimento", "nomeMae"];
 
     return $aDadosPessoais;
   }
@@ -152,11 +152,11 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
    */
   private function preencheDependecias($oValorDados) {
 
-    $aDependencias = array();
+    $aDependencias = [];
 
     if(!empty($oValorDados->rh31_irf)) {
 
-      $aTipoDependencia      = array();
+      $aTipoDependencia      = [];
       $aTipoDependencia['1'] = 1;
       $aTipoDependencia['2'] = 3;
       $aTipoDependencia['4'] = 8;
@@ -193,11 +193,11 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
 
     $aDadosServidor["nome"] = DBString::removerCaracteresEspeciais($oValorDados->z01_nome);
 
-    if(trim($oValorDados->z01_cgccpf) != '') {
+    if(trim((string) $oValorDados->z01_cgccpf) != '') {
       $aDadosServidor["numeroCPF"] = $oValorDados->z01_cgccpf;
     }
 
-    if(trim($oValorDados->rh16_pis) != '' && $oValorDados->rh16_pis != '00000000000') {
+    if(trim((string) $oValorDados->rh16_pis) != '' && $oValorDados->rh16_pis != '00000000000') {
       $aDadosServidor["numeroNIT"] = $oValorDados->rh16_pis;
     }
 
@@ -211,7 +211,7 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
    */
   private function preencheDadosPessoais($oValorDados) {
 
-    $aDadosPessoais                   = array();
+    $aDadosPessoais                   = [];
     $aDadosPessoais["nome"]           = DBString::removerCaracteresEspeciais($oValorDados->rh31_nome);
     $aDadosPessoais["dataNascimento"] = $oValorDados->rh31_dtnasc;
     $aDadosPessoais["nomeMae"]        = DBString::removerCaracteresEspeciais($oValorDados->rh31_nome);
@@ -226,7 +226,7 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
    */
   public function validarDadosDependente($oDados) {
 
-    $aErrosRegistro = array();
+    $aErrosRegistro = [];
     $lPisValido     = DBString::isPIS($oDados->rh16_pis);
     $lCpfValido     = DBString::isCPF($oDados->z01_cgccpf);
 
@@ -259,10 +259,10 @@ class ArquivoSiprevDependentes extends  ArquivoSiprevBase {
    */
   private function getErro($oDados, $sErro) {
 
-    return array(
+    return [
 			InstituicaoRepository::getInstituicaoByCodigo($oDados->rh01_instit)->getDescricao(),
       $oDados->z01_numcgm . " - " . $oDados->z01_nome,
 			$sErro,
-    );
+    ];
   }
 }

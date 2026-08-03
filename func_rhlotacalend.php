@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhlotacalend_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhlotacalend = new cl_rhlotacalend;
 $clrhlotacalend->rotulo->label("rh64_lota");
 $clrhlotacalend->rotulo->label("rh64_calend");
@@ -98,9 +98,9 @@ $clrhlotacalend->rotulo->label("rh64_calend");
         }else{
            $sql = $clrhlotacalend->sql_query("",$campos,"rh64_lota","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh64_calend)){
-          $repassa = array("chave_rh64_lota"=>$chave_rh64_lota,"chave_rh64_calend"=>$chave_rh64_calend);
+          $repassa = ["chave_rh64_lota"=>$chave_rh64_lota,"chave_rh64_calend"=>$chave_rh64_calend];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

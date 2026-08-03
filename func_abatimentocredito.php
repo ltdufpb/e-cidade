@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clabatimento = new cl_abatimento;
 $clabatimento->rotulo->label("k125_sequencial");
@@ -90,11 +90,11 @@ $clabatimento->rotulo->label("k125_sequencial");
       $sDataUsuario = date("Y-m-d", db_getsession("DB_datausu"));
       $iAnoUsuario = (integer) date("Y", db_getsession("DB_datausu"));
 
-      $sCampos = isset($campos) ? $campos : "abatimento.*";
-      $aWhere  = array(
+      $sCampos = $campos ?? "abatimento.*";
+      $aWhere  = [
         "k125_valordisponivel > 0",
         "k125_instit = {$iDBInstit}"
-      );
+      ];
 
       if (!empty($z01_numcgm)) {
         $aWhere[] = "arrenumcgm.k00_numcgm = " . (integer) $z01_numcgm;
@@ -123,9 +123,9 @@ $clabatimento->rotulo->label("k125_sequencial");
            );
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_k125_sequencial)) {
-          $repassa = array("chave_k125_sequencial" => $chave_k125_sequencial, "chave_k125_sequencial" => $chave_k125_sequencial);
+          $repassa = ["chave_k125_sequencial" => $chave_k125_sequencial, "chave_k125_sequencial" => $chave_k125_sequencial];
         }
 
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

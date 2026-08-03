@@ -137,12 +137,12 @@ function db_numrows_table($pConexao, $sTabela, $sArquivoLog="") {
 
   $sSql = " select count(*) as total_linhas from {$sTabela} ";
 
-  return pg_result(db_query($pConexao, $sSql, $sArquivoLog), 0, "total_linhas");
+  return pg_fetch_result(db_query($pConexao, $sSql, $sArquivoLog), 0, "total_linhas");
 
 }
 
 function db_sqlformat($variavel=null) {
-  if ((is_string($variavel) && $variavel <> 'null') || trim($variavel) == '') {
+  if ((is_string($variavel) && $variavel <> 'null') || trim((string) $variavel) == '') {
     return "'".$variavel."'";
   } else if (is_bool($variavel)) {
     if ($variavel == true ) {
@@ -156,10 +156,10 @@ function db_sqlformat($variavel=null) {
 }
 
 function db_empty($sValor) {
-  return (trim($sValor)=="" or $sValor==null);
+  return (trim((string) $sValor)=="" or $sValor==null);
 }
 
-function db_existe_relacao($pConexao, $sEsquema="public", $sRelacao, $sTipo="tabela") {
+function db_existe_relacao($pConexao, $sEsquema="public", $sRelacao = null, $sTipo="tabela") {
 
   // Mapeamento dos tipos de relações do PostgreSQL
   $aTiposRelacao["tabela"]    = "r"; // relkind r = ordinary table
@@ -225,12 +225,12 @@ function db_ddl_tabela($pConexao, $sTabela, $sEsquema="public",$pConexaoPesquisa
       // Campos caracter
       case "char":
       case "varchar":
-        $sTipo = strtoupper($oCampos->udt_name) . "({$oCampos->character_maximum_length})";
+        $sTipo = strtoupper((string) $oCampos->udt_name) . "({$oCampos->character_maximum_length})";
         break;
 
       // Default
       default:
-        $sTipo = strtoupper($oCampos->udt_name);
+        $sTipo = strtoupper((string) $oCampos->udt_name);
         break;
     }
 

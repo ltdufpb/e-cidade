@@ -36,7 +36,7 @@ $clpcorcam = new cl_pcorcam;
 $clpcproc = new cl_pcproc;
 $clpcorcam->rotulo->label();
 $clpcproc->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

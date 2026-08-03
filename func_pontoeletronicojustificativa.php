@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clpontoeletronicojustificativa = new cl_pontoeletronicojustificativa;
 $clpontoeletronicojustificativa->rotulo->label("rh194_sequencial");
@@ -73,7 +73,7 @@ $clpontoeletronicojustificativa->rotulo->label("rh194_sigla");
       <?php
 
       $oInstituicao = InstituicaoRepository::getInstituicaoSessao();
-      $aWhere       = array("rh194_instituicao = {$oInstituicao->getCodigo()}");
+      $aWhere       = ["rh194_instituicao = {$oInstituicao->getCodigo()}"];
       $sCampos      = "rh194_sequencial, rh194_descricao, rh194_sigla";
 
       if(!isset($pesquisa_chave)) {
@@ -91,10 +91,10 @@ $clpontoeletronicojustificativa->rotulo->label("rh194_sigla");
         }
 
         $sSql    = $clpontoeletronicojustificativa->sql_query(null, $sCampos, "rh194_sequencial", implode(' AND ', $aWhere));
-        $repassa = array();
+        $repassa = [];
 
         if(isset($chave_rh194_sequencial)) {
-          $repassa = array("chave_rh194_sequencial" => $chave_rh194_sequencial);
+          $repassa = ["chave_rh194_sequencial" => $chave_rh194_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

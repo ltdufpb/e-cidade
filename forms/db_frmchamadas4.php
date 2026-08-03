@@ -34,7 +34,7 @@ $clrotulo = new rotulocampo;
 <table width="700" border="1" cellpadding="0" cellspacing="0">
   <tr bgcolor="#f3f3f3">
    <td colspan="4">
-    <b>Data:</b> <?=substr($data,8,2)?>/<?=substr($data,5,2)?>/<?=substr($data,0,4)?>
+    <b>Data:</b> <?=substr((string) $data,8,2)?>/<?=substr((string) $data,5,2)?>/<?=substr((string) $data,0,4)?>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <b>Turma:</b> <?=$nometurma?>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -75,7 +75,7 @@ $clrotulo = new rotulocampo;
   db_fieldsmemory($result,$x);
   ?>
   <tr>
-   <td align="center" bgcolor="#eaeaea"><?=str_pad($ed09_i_codigo,7,0,str_pad_left)?></td>
+   <td align="center" bgcolor="#eaeaea"><?=str_pad((string) $ed09_i_codigo,7,0,\STR_PAD_LEFT)?></td>
    <td>&nbsp;<?=$z01_nome?></td>
    <td align="center" bgcolor="#eaeaea"><?php if($ed22_c_presenca=="S"){echo "SIM";}else{echo "NÃO";}?></td>
    <td align="center">&nbsp;<?=$ed22_c_descr?></td>

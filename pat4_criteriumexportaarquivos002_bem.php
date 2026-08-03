@@ -101,13 +101,13 @@ $sSqlBem .= "		left join departdiv	on t33_divisao = t30_codigo 		";
 $sSqlBem .= "		left join db_depart 	on t52_depart = coddepto     	";
 $sSqlBem .= "		left join bensbaix 	on t52_bem = t55_codbem		     	";
 $sSqlBem .= "   left join clabens classificacao on classificacao.t64_codcla = bens.t52_codcla";
-		
+
 $sSqlBem .= "	where t52_instit = $iIdDaEmpresa ";
 
 if($iCodigoDepto!="" && $iCodigoDepto != 0){
 	$sSqlBem .= "	and bens.t52_depart = $iCodigoDepto ";
 }
- 
+
 //echo $sSqlBem;
 //
 //$sSqlEmpresa  = "select '$iTipo'    as tipo_de_registro, ";

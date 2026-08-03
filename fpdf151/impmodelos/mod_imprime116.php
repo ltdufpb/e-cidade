@@ -120,18 +120,18 @@ $this->objpdf->AliasNbPages();
 		$this->objpdf->Setfont('Arial','',7);
 		for($ii = 0;$ii < $this->linhasenvelope ;$ii++) {
 		  
-           	   if ( pg_result($this->recordenvelope,$ii,$this->tipo)  == 'P'){
-	   	            $this->objpdf->cell(5,3,trim(pg_result($this->recordenvelope,$ii,$this->rubrica)),0,0,"R",0);
+           	   if ( pg_fetch_result($this->recordenvelope,$ii,$this->tipo)  == 'P'){
+	   	            $this->objpdf->cell(5,3,trim(pg_fetch_result($this->recordenvelope,$ii,$this->rubrica)),0,0,"R",0);
 	   	            $this->objpdf->cell(5,3,"",0,0,"L",0);
-	   	            $this->objpdf->cell(93,3,pg_result($this->recordenvelope,$ii,$this->descr_rub),0,0,"L",0);
-     		          $this->objpdf->cell(20,3,db_formatar(pg_result($this->recordenvelope,$ii,$this->quantidade),'f'),0,0,"R",0);
-     		          $this->objpdf->cell(22,3,db_formatar(pg_result($this->recordenvelope,$ii,$this->valor),'f'),0,0,"R",0);
+	   	            $this->objpdf->cell(93,3,pg_fetch_result($this->recordenvelope,$ii,$this->descr_rub),0,0,"L",0);
+     		          $this->objpdf->cell(20,3,db_formatar(pg_fetch_result($this->recordenvelope,$ii,$this->quantidade),'f'),0,0,"R",0);
+     		          $this->objpdf->cell(22,3,db_formatar(pg_fetch_result($this->recordenvelope,$ii,$this->valor),'f'),0,0,"R",0);
      		          $this->objpdf->cell(22,3,'',0,1,"R",0);
-		              $provento += pg_result($this->recordenvelope,$ii,$this->valor);
-                  $rubrica = trim(pg_result($this->recordenvelope,$ii,$this->rubrica));
+		              $provento += pg_fetch_result($this->recordenvelope,$ii,$this->valor);
+                  $rubrica = trim(pg_fetch_result($this->recordenvelope,$ii,$this->rubrica));
                   if(db_getsession("DB_instit") == 1 && strtoupper($this->municpref == 'GUAIBA') && ($rubrica == '0102' || $rubrica == '0109' || $rubrica == '0111' || $rubrica == '0195'  || $rubrica == '0196' || $rubrica == '0197' || $rubrica == '0198' )){
-                    $margem_consignada += pg_result($this->recordenvelope,$ii,$this->valor);
-                  }elseif(db_getsession("DB_instit") == 1 && strtoupper($this->municpref) == 'ARAPIRACA' && 
+                    $margem_consignada += pg_fetch_result($this->recordenvelope,$ii,$this->valor);
+                  }elseif(db_getsession("DB_instit") == 1 && strtoupper((string) $this->municpref) == 'ARAPIRACA' && 
                           ($rubrica == '0005' || $rubrica == '0006' || $rubrica == '0007' || $rubrica == '0008' || 
                            $rubrica == '0011' || $rubrica == '0014' || $rubrica == '0017' || $rubrica == '0018' || 
                            $rubrica == '0020' || $rubrica == '0021' || $rubrica == '0023' || $rubrica == '0055' || 
@@ -145,20 +145,20 @@ $this->objpdf->AliasNbPages();
                            $rubrica == '0138' || $rubrica == '0150' || $rubrica == '0151' || $rubrica == '0160' || 
                            $rubrica == '0170' || $rubrica == '0190' 
                            )){
-                    $margem_consignada += pg_result($this->recordenvelope,$ii,$this->valor);
+                    $margem_consignada += pg_fetch_result($this->recordenvelope,$ii,$this->valor);
                   }
-           	   }elseif( pg_result($this->recordenvelope,$ii,$this->tipo ) == 'D'){ 
-	   	           $this->objpdf->cell(5,3,trim(pg_result($this->recordenvelope,$ii,$this->rubrica)),0,0,"R",0);
+           	   }elseif( pg_fetch_result($this->recordenvelope,$ii,$this->tipo ) == 'D'){ 
+	   	           $this->objpdf->cell(5,3,trim(pg_fetch_result($this->recordenvelope,$ii,$this->rubrica)),0,0,"R",0);
 	   	           $this->objpdf->cell(5,3,"",0,0,"L",0);
-	   	           $this->objpdf->cell(93,3,pg_result($this->recordenvelope,$ii,$this->descr_rub),0,0,"L",0);
-     		         $this->objpdf->cell(20,3,db_formatar(pg_result($this->recordenvelope,$ii,$this->quantidade),'f'),0,0,"R",0);
+	   	           $this->objpdf->cell(93,3,pg_fetch_result($this->recordenvelope,$ii,$this->descr_rub),0,0,"L",0);
+     		         $this->objpdf->cell(20,3,db_formatar(pg_fetch_result($this->recordenvelope,$ii,$this->quantidade),'f'),0,0,"R",0);
      		         $this->objpdf->cell(22,3,'',0,0,"R",0);
-     		         $this->objpdf->cell(22,3,db_formatar(pg_result($this->recordenvelope,$ii,$this->valor),'f'),0,1,"R",0);
-		             $desconto += pg_result($this->recordenvelope,$ii,$this->valor);
-                 $rubrica = trim(pg_result($this->recordenvelope,$ii,$this->rubrica));
-                 if(db_getsession("DB_instit") == 1 && strtoupper($this->municpref) == 'ARAPIRACA' ){
+     		         $this->objpdf->cell(22,3,db_formatar(pg_fetch_result($this->recordenvelope,$ii,$this->valor),'f'),0,1,"R",0);
+		             $desconto += pg_fetch_result($this->recordenvelope,$ii,$this->valor);
+                 $rubrica = trim(pg_fetch_result($this->recordenvelope,$ii,$this->rubrica));
+                 if(db_getsession("DB_instit") == 1 && strtoupper((string) $this->municpref) == 'ARAPIRACA' ){
                    if($rubrica == 'R901' || $rubrica == 'R904' || $rubrica == 'R913' || $rubrica == '0333' ){
-                     $margem_consignada -= pg_result($this->recordenvelope,$ii,$this->valor);
+                     $margem_consignada -= pg_fetch_result($this->recordenvelope,$ii,$this->valor);
                    }elseif($rubrica == '0330' || 
                            $rubrica == '0334' || 
                            $rubrica == '0335' || 
@@ -172,19 +172,19 @@ $this->objpdf->AliasNbPages();
                            $rubrica == '0344' || 
                            $rubrica == '0345' 
                           ){
-                     $margem_deduz += pg_result($this->recordenvelope,$ii,$this->valor);
+                     $margem_deduz += pg_fetch_result($this->recordenvelope,$ii,$this->valor);
                    }
                  }
         	   }else{
-		     if(pg_result($this->recordenvelope,$ii,$this->rubrica) == 'R981' ||
-		        pg_result($this->recordenvelope,$ii,$this->rubrica) == 'R982' ){
-		        $baseirrf += pg_result($this->recordenvelope,$ii,$this->valor);
-		     }elseif(pg_result($this->recordenvelope,$ii,$this->rubrica) == 'R992'){
- 		        $baseprev += pg_result($this->recordenvelope,$ii,$this->valor);
-		     }elseif(pg_result($this->recordenvelope,$ii,$this->rubrica) == 'R991'){
- 		        $basefgts += pg_result($this->recordenvelope,$ii,$this->valor);
-		     }elseif(pg_result($this->recordenvelope,$ii,$this->rubrica) == 'R803'){
- 		        $valor_margem += pg_result($this->recordenvelope,$ii,$this->valor);
+		     if(pg_fetch_result($this->recordenvelope,$ii,$this->rubrica) == 'R981' ||
+		        pg_fetch_result($this->recordenvelope,$ii,$this->rubrica) == 'R982' ){
+		        $baseirrf += pg_fetch_result($this->recordenvelope,$ii,$this->valor);
+		     }elseif(pg_fetch_result($this->recordenvelope,$ii,$this->rubrica) == 'R992'){
+ 		        $baseprev += pg_fetch_result($this->recordenvelope,$ii,$this->valor);
+		     }elseif(pg_fetch_result($this->recordenvelope,$ii,$this->rubrica) == 'R991'){
+ 		        $basefgts += pg_fetch_result($this->recordenvelope,$ii,$this->valor);
+		     }elseif(pg_fetch_result($this->recordenvelope,$ii,$this->rubrica) == 'R803'){
+ 		        $valor_margem += pg_fetch_result($this->recordenvelope,$ii,$this->valor);
 	       }
 		      continue;
 		   }
@@ -196,7 +196,7 @@ $this->objpdf->AliasNbPages();
 		$this->objpdf->text($xcol+157,$xlin+111,db_formatar(( $provento - $desconto ),'f'));
 		$this->objpdf->Setfont('Arial','',8);
 
-		if(strtoupper($this->municpref == 'GUAIBA') || strtoupper($this->municpref) == 'ARAPIRACA' ){
+		if(strtoupper($this->municpref == 'GUAIBA') || strtoupper((string) $this->municpref) == 'ARAPIRACA' ){
       if(db_getsession("DB_instit") == 1){
    		  $this->objpdf->text($xcol+5,$xlin+121,db_formatar((  (( $margem_consignada*30/100 ) - $margem_deduz ) < 0?0:(($margem_consignada*30/100 ) - $margem_deduz) )   ,'f'));
       }else{  

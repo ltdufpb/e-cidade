@@ -124,7 +124,7 @@ if( db_selectmax("afasta", "select * from afasta ".bb_condicaosubpes("r45_").$co
     //echo "<BR> 18.1 $dias_mes = $dias_mes - ( ".db_day($afasta[$Iafasta]["r45_dtafas"])." - 1 )";
             $dias_mes = $dias_mes - ( db_day($afasta[$Iafasta]["r45_dtafas"]) - 1 );
     //echo "<BR> 19 dias_mes --> $dias_mes";
-            
+
     //echo "<BR> 19.1 if( $diasmes - $dias_mes >= $metade_trabalhado){";
             if( $diasmes - $dias_mes >= $metade_trabalhado){
                $retorno--;
@@ -230,12 +230,12 @@ function gera_13_salario($datafim,$sigla="r19" )
     $imax   = 0;
     $sal13 = 0;
       
-    $m_rubric = array();
-    $m_quant  = array();
-    $m_valor  = array();
-    $m_cont   = array();
-    $qten     = array();
-    $vlrn     = array();
+    $m_rubric = [];
+    $m_quant  = [];
+    $m_valor  = [];
+    $m_cont   = [];
+    $qten     = [];
+    $vlrn     = [];
     
     
     $pensao_alim_13 = 0;
@@ -254,11 +254,11 @@ function gera_13_salario($datafim,$sigla="r19" )
       $tem_no_mes_tipo_9 = false;
       $maxmes   = 0;
       
-      $mes_rubric = array();
-      $mes_quant  = array();
-      $mes_valor  = array();
-      $qten_mes   = array();
-      $vlrn_mes   = array();
+      $mes_rubric = [];
+      $mes_quant  = [];
+      $mes_valor  = [];
+      $qten_mes   = [];
+      $vlrn_mes   = [];
       
       $indmes = 0;
       $tem_no_mes_tipo9 = false;
@@ -776,7 +776,7 @@ function ferias_para_rescisao ($datainicio, $datafim, $tpp, $sigla="r19") {
   global $m_rubr, $m_tipo, $m_media , $m_valor , $m_quant, $qten , $vlrn, $r01_taviso,$subpes_original;
   global $datainicio, $datafim, $max, $gerfsal, $gerffer, $gerfcom, $pontofx, $rescisao, $pessoal,$qmeses, $db_debug;
   
-  $qmeses = bcdiv(db_datedif($datafim ,$datainicio),30,0);
+  $qmeses = bcdiv((string) db_datedif($datafim ,$datainicio),30,0);
   $anofim = db_year($datainicio);
   $mesfim = db_month($datainicio)+$qmeses;
   if( $mesfim > 12 ){
@@ -798,13 +798,13 @@ function ferias_para_rescisao ($datainicio, $datafim, $tpp, $sigla="r19") {
     $qmeses++;
   }
   
-  $m_rubr = array();
-  $m_quant= array();
-  $m_valor= array();
-  $m_media= array();
-  $m_tipo = array();
-  $qten   = array();
-  $vlrn   = array();
+  $m_rubr = [];
+  $m_quant= [];
+  $m_valor= [];
+  $m_media= [];
+  $m_tipo = [];
+  $qten   = [];
+  $vlrn   = [];
   
 //echo "<BR> qmeses --> $qmeses";	
   $max = 0;
@@ -1297,7 +1297,7 @@ function acrescentapontofx () {
            if ( db_empty($ind)) {
            	
               if ( db_at( $tiporubrica,"1-3-7")>0 ) {
-              	
+
                 $max += 1;
                 $ind = $max;
                 $m_rubr[$ind] = $pontofx[$Ipontofx]["r90_rubric"];
@@ -1310,7 +1310,7 @@ function acrescentapontofx () {
                 $m_media[$ind] += 0;
                 $m_valor[$ind] += $pontofx[$Ipontofx]["r90_valor"];
                 $m_quant[$ind] += $pontofx[$Ipontofx]["r90_quant"];
-	       
+
                 $qten[$ind] = $pontofx[$Ipontofx]["r90_quant"];
                 $vlrn[$ind] = $pontofx[$Ipontofx]["r90_valor"];
 //echo "<BR> rubrica 1.3.21 --> ".$rubricas[0]["rh27_rubric"];
@@ -1858,7 +1858,7 @@ function avalia_ponto_ferias_rescisao($qmeses,$tpp,$sigla){
 		$matriz2[3] = round($valors,2);
 		$matriz2[4] = round($quants,2);
 		$matriz2[5] = $lotacaoatual;
-		$matriz2[6] = strtoupper($tpp);
+		$matriz2[6] = strtoupper((string) $tpp);
 		$matriz2[7] = db_val( db_substr( $subpes,1,4 ) );
 		$matriz2[8] = db_val( db_substr( $subpes, -2 ) );
 	    $matriz2[9] = db_getsession("DB_instit");
@@ -1875,10 +1875,10 @@ function avalia_ponto_ferias_rescisao($qmeses,$tpp,$sigla){
           $matriz1[7] = "r91_anousu";
           $matriz1[8] = "r91_mesusu";
           $matriz1[9] = "r91_instit";
-		  if (strtolower($tpp) == "v") {
+		  if (strtolower((string) $tpp) == "v") {
 			$condicaoaux  = " and r91_regist = ".db_sqlformat( $matric );
 			$condicaoaux .= " and r91_rubric = ".db_sqlformat( $matriz2[2] );
-			$condicaoaux .= " and upper(r91_tpp) = ".db_sqlformat( strtoupper($tpp) );
+			$condicaoaux .= " and upper(r91_tpp) = ".db_sqlformat( strtoupper((string) $tpp) );
 			global $transacao;
 			if( db_selectmax("transacao", "select * from pontoprovfe ".bb_condicaosubpes("r91_").$condicaoaux)){
 			   $acao = "altera";
@@ -1926,10 +1926,10 @@ function avalia_ponto_ferias_rescisao($qmeses,$tpp,$sigla){
           $matriz1[7] = "r19_anousu";
           $matriz1[8] = "r19_mesusu";
           $matriz1[9] = "r19_instit";
-		  if ( strtolower($tpp) == "v") {
+		  if ( strtolower((string) $tpp) == "v") {
 			$condicaoaux  = " and r19_regist = ".db_sqlformat( $matric );
 			$condicaoaux .= " and r19_rubric = ".db_sqlformat( $matriz2[2] );
-			$condicaoaux .= " and upper(r19_tpp) = ".db_sqlformat( strtoupper($tpp) );
+			$condicaoaux .= " and upper(r19_tpp) = ".db_sqlformat( strtoupper((string) $tpp) );
 			global $transacao;
 			if( db_selectmax("transacao", "select * from pontofr ".bb_condicaosubpes("r19_").$condicaoaux)){
 			   $acao = "altera";

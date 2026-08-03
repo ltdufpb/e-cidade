@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_retencaopagordem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clretencaopagordem = new cl_retencaopagordem;
 $clretencaopagordem->rotulo->label("e20_sequencial");
 $clretencaopagordem->rotulo->label("e20_data");
@@ -98,9 +98,9 @@ $clretencaopagordem->rotulo->label("e20_data");
         }else{
            $sql = $clretencaopagordem->sql_query("",$campos,"e20_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e20_data)){
-          $repassa = array("chave_e20_sequencial"=>$chave_e20_sequencial,"chave_e20_data"=>$chave_e20_data);
+          $repassa = ["chave_e20_sequencial"=>$chave_e20_sequencial,"chave_e20_data"=>$chave_e20_data];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

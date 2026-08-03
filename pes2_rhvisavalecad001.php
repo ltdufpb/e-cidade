@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -114,12 +114,12 @@ function js_emite(){
                 $geraform->trenome = "resumo";
                 $geraform->qbrnome = "quebra";
                 $geraform->tipresumo = "Tipo de Quebra";
-                $geraform->arr_tipores = Array(
+                $geraform->arr_tipores = [
                                                "g"=>"Geral",
                                                "o"=>"Órgão",
                                                "l"=>"Unidade",
                                                "lc"=>"Unidade Completa"
-                                              );
+                                              ];
                 $geraform->gera_form(null,null);
                 ?>
       <tr>

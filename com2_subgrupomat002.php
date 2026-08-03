@@ -34,7 +34,7 @@ $clpcmater->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label('');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $head3 = "";
 $head5 = "";

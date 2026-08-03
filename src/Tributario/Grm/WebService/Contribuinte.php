@@ -39,7 +39,7 @@ class Contribuinte
         if (in_array($this->tipoOrigem, ["M", "T"])) {
             $iptubaseRepository = $oContainer->get('IptubaseRepository');
             $aMatriculas = $iptubaseRepository->findAll(" j01_numcgm = {$oContribuinte->cgm} AND j01_baixa IS NULL");
-            $aMatriculasContrib = array();
+            $aMatriculasContrib = [];
 
             foreach ($aMatriculas as $oMatricula) {
                 $aMatriculasContrib[] = $oMatricula->getMatric();
@@ -47,13 +47,13 @@ class Contribuinte
 
             $oContribuinte->aMatriculas = $aMatriculasContrib;
         } else {
-            $oContribuinte->aMatriculas = array();
+            $oContribuinte->aMatriculas = [];
         }
 
         if (in_array($this->tipoOrigem, ["I", "T"])) {
             $issbaseRepository = $oContainer->get('IssbaseRepository');
             $aInscricoes = $issbaseRepository->findAll(" q02_numcgm = {$oContribuinte->cgm} AND q02_dtbaix IS NULL");
-            $aInscricoesContrib = array();
+            $aInscricoesContrib = [];
 
             foreach ($aInscricoes as $oInscricoes) {
                 $aInscricoesContrib[] = $oInscricoes->getInscr();
@@ -61,7 +61,7 @@ class Contribuinte
             
             $oContribuinte->aInscricoes = $aInscricoesContrib;
         } else {
-            $oContribuinte->aInscricoes = array();
+            $oContribuinte->aInscricoes = [];
         }
 
         return utf8_encode_all($oContribuinte);

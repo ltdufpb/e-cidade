@@ -26,11 +26,9 @@ class AnexoDoisRgfFactory extends AnexosFactory implements AnexosFactoryInterfac
      */
     public static function getCodigoRelatorio($exercicio)
     {
-        switch ($exercicio) {
-            case 2022:
-            default:
-                return 265;
-        }
+        return match ($exercicio) {
+            default => 265,
+        };
     }
 
     /**
@@ -38,6 +36,7 @@ class AnexoDoisRgfFactory extends AnexosFactory implements AnexosFactoryInterfac
      * @param $exercicio
      * @return string
      */
+    #[\Override]
     public static function getProgramaRelatorio($exercicio)
     {
         return 'pla2_anexos_rreo001.php';
@@ -51,11 +50,9 @@ class AnexoDoisRgfFactory extends AnexosFactory implements AnexosFactoryInterfac
      */
     public static function getService($exercicio, $filtros)
     {
-        switch ($exercicio) {
-            case 2022:
-            default:
-                return new AnexoDoisService($filtros);
-        }
+        return match ($exercicio) {
+            default => new AnexoDoisService($filtros),
+        };
     }
 
     /**

@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE retiradas
 class cl_retiradas {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $cm08_i_codigo = 0;
-   var $cm08_i_sepultamento = 0;
-   var $cm08_i_retirante = 0;
-   var $cm08_c_parentesco = null;
-   var $cm08_c_causa = null;
-   var $cm08_c_destino = null;
-   var $cm08_d_retirada_dia = null;
-   var $cm08_d_retirada_mes = null;
-   var $cm08_d_retirada_ano = null;
-   var $cm08_d_retirada = null;
-   var $cm08_t_obs = null;
+   public $cm08_i_codigo = 0;
+   public $cm08_i_sepultamento = 0;
+   public $cm08_i_retirante = 0;
+   public $cm08_c_parentesco = null;
+   public $cm08_c_causa = null;
+   public $cm08_c_destino = null;
+   public $cm08_d_retirada_dia = null;
+   public $cm08_d_retirada_mes = null;
+   public $cm08_d_retirada_ano = null;
+   public $cm08_d_retirada = null;
+   public $cm08_t_obs = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  cm08_i_codigo = int4 = Código
                  cm08_i_sepultamento = int4 = Sepultamento
                  cm08_i_retirante = int4 = Retirante
@@ -65,10 +65,10 @@ class cl_retiradas {
                  cm08_t_obs = text = Observações
                  ";
    //funcao construtor da classe
-   function cl_retiradas() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("retiradas");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -168,10 +168,10 @@ class cl_retiradas {
          $this->erro_status = "0";
          return false;
        }
-       $this->cm08_i_codigo = pg_result($result,0,0);
+       $this->cm08_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from retiradas_cm08_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cm08_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cm08_i_codigo)){
          $this->erro_sql = " Campo cm08_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -213,7 +213,7 @@ class cl_retiradas {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Retiradas ($this->cm08_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Retiradas já Cadastrado";
@@ -237,17 +237,17 @@ class cl_retiradas {
      $resaco = $this->sql_record($this->sql_query_file($this->cm08_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10420,'$this->cm08_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1801,10420,'','".AddSlashes(pg_result($resaco,0,'cm08_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1801,10421,'','".AddSlashes(pg_result($resaco,0,'cm08_i_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1801,10422,'','".AddSlashes(pg_result($resaco,0,'cm08_i_retirante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1801,10423,'','".AddSlashes(pg_result($resaco,0,'cm08_c_parentesco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1801,10424,'','".AddSlashes(pg_result($resaco,0,'cm08_c_causa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1801,10425,'','".AddSlashes(pg_result($resaco,0,'cm08_c_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1801,10426,'','".AddSlashes(pg_result($resaco,0,'cm08_d_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1801,10427,'','".AddSlashes(pg_result($resaco,0,'cm08_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1801,10420,'','".AddSlashes(pg_fetch_result($resaco,0,'cm08_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1801,10421,'','".AddSlashes(pg_fetch_result($resaco,0,'cm08_i_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1801,10422,'','".AddSlashes(pg_fetch_result($resaco,0,'cm08_i_retirante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1801,10423,'','".AddSlashes(pg_fetch_result($resaco,0,'cm08_c_parentesco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1801,10424,'','".AddSlashes(pg_fetch_result($resaco,0,'cm08_c_causa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1801,10425,'','".AddSlashes(pg_fetch_result($resaco,0,'cm08_c_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1801,10426,'','".AddSlashes(pg_fetch_result($resaco,0,'cm08_d_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1801,10427,'','".AddSlashes(pg_fetch_result($resaco,0,'cm08_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -256,10 +256,10 @@ class cl_retiradas {
       $this->atualizacampos();
      $sql = " update retiradas set ";
      $virgula = "";
-     if(trim($this->cm08_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_i_codigo"])){
+     if(trim((string) $this->cm08_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_i_codigo"])){
        $sql  .= $virgula." cm08_i_codigo = $this->cm08_i_codigo ";
        $virgula = ",";
-       if(trim($this->cm08_i_codigo) == null ){
+       if(trim((string) $this->cm08_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "cm08_i_codigo";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_retiradas {
          return false;
        }
      }
-     if(trim($this->cm08_i_sepultamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_i_sepultamento"])){
+     if(trim((string) $this->cm08_i_sepultamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_i_sepultamento"])){
        $sql  .= $virgula." cm08_i_sepultamento = $this->cm08_i_sepultamento ";
        $virgula = ",";
-       if(trim($this->cm08_i_sepultamento) == null ){
+       if(trim((string) $this->cm08_i_sepultamento) == null ){
          $this->erro_sql = " Campo Sepultamento nao Informado.";
          $this->erro_campo = "cm08_i_sepultamento";
          $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_retiradas {
          return false;
        }
      }
-     if(trim($this->cm08_i_retirante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_i_retirante"])){
+     if(trim((string) $this->cm08_i_retirante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_i_retirante"])){
        $sql  .= $virgula." cm08_i_retirante = $this->cm08_i_retirante ";
        $virgula = ",";
-       if(trim($this->cm08_i_retirante) == null ){
+       if(trim((string) $this->cm08_i_retirante) == null ){
          $this->erro_sql = " Campo Retirante nao Informado.";
          $this->erro_campo = "cm08_i_retirante";
          $this->erro_banco = "";
@@ -295,10 +295,10 @@ class cl_retiradas {
          return false;
        }
      }
-     if(trim($this->cm08_c_parentesco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_c_parentesco"])){
+     if(trim((string) $this->cm08_c_parentesco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_c_parentesco"])){
        $sql  .= $virgula." cm08_c_parentesco = '$this->cm08_c_parentesco' ";
        $virgula = ",";
-       if(trim($this->cm08_c_parentesco) == null ){
+       if(trim((string) $this->cm08_c_parentesco) == null ){
          $this->erro_sql = " Campo Parentesco nao Informado.";
          $this->erro_campo = "cm08_c_parentesco";
          $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_retiradas {
          return false;
        }
      }
-     if(trim($this->cm08_c_causa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_c_causa"])){
+     if(trim((string) $this->cm08_c_causa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_c_causa"])){
        $sql  .= $virgula." cm08_c_causa = '$this->cm08_c_causa' ";
        $virgula = ",";
-       if(trim($this->cm08_c_causa) == null ){
+       if(trim((string) $this->cm08_c_causa) == null ){
          $this->erro_sql = " Campo Causa nao Informado.";
          $this->erro_campo = "cm08_c_causa";
          $this->erro_banco = "";
@@ -321,10 +321,10 @@ class cl_retiradas {
          return false;
        }
      }
-     if(trim($this->cm08_c_destino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_c_destino"])){
+     if(trim((string) $this->cm08_c_destino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_c_destino"])){
        $sql  .= $virgula." cm08_c_destino = '$this->cm08_c_destino' ";
        $virgula = ",";
-       if(trim($this->cm08_c_destino) == null ){
+       if(trim((string) $this->cm08_c_destino) == null ){
          $this->erro_sql = " Campo Destino nao Informado.";
          $this->erro_campo = "cm08_c_destino";
          $this->erro_banco = "";
@@ -334,10 +334,10 @@ class cl_retiradas {
          return false;
        }
      }
-     if(trim($this->cm08_d_retirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_d_retirada_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm08_d_retirada_dia"] !="") ){
+     if(trim((string) $this->cm08_d_retirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_d_retirada_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm08_d_retirada_dia"] !="") ){
        $sql  .= $virgula." cm08_d_retirada = '$this->cm08_d_retirada' ";
        $virgula = ",";
-       if(trim($this->cm08_d_retirada) == null ){
+       if(trim((string) $this->cm08_d_retirada) == null ){
          $this->erro_sql = " Campo Retirada nao Informado.";
          $this->erro_campo = "cm08_d_retirada_dia";
          $this->erro_banco = "";
@@ -350,7 +350,7 @@ class cl_retiradas {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm08_d_retirada_dia"])){
          $sql  .= $virgula." cm08_d_retirada = null ";
          $virgula = ",";
-         if(trim($this->cm08_d_retirada) == null ){
+         if(trim((string) $this->cm08_d_retirada) == null ){
            $this->erro_sql = " Campo Retirada nao Informado.";
            $this->erro_campo = "cm08_d_retirada_dia";
            $this->erro_banco = "";
@@ -361,7 +361,7 @@ class cl_retiradas {
          }
        }
      }
-     if(trim($this->cm08_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_t_obs"])){
+     if(trim((string) $this->cm08_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm08_t_obs"])){
        $sql  .= $virgula." cm08_t_obs = '$this->cm08_t_obs' ";
        $virgula = ",";
      }
@@ -373,25 +373,25 @@ class cl_retiradas {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10420,'$this->cm08_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm08_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1801,10420,'".AddSlashes(pg_result($resaco,$conresaco,'cm08_i_codigo'))."','$this->cm08_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1801,10420,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm08_i_codigo'))."','$this->cm08_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm08_i_sepultamento"]))
-           $resac = db_query("insert into db_acount values($acount,1801,10421,'".AddSlashes(pg_result($resaco,$conresaco,'cm08_i_sepultamento'))."','$this->cm08_i_sepultamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1801,10421,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm08_i_sepultamento'))."','$this->cm08_i_sepultamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm08_i_retirante"]))
-           $resac = db_query("insert into db_acount values($acount,1801,10422,'".AddSlashes(pg_result($resaco,$conresaco,'cm08_i_retirante'))."','$this->cm08_i_retirante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1801,10422,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm08_i_retirante'))."','$this->cm08_i_retirante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm08_c_parentesco"]))
-           $resac = db_query("insert into db_acount values($acount,1801,10423,'".AddSlashes(pg_result($resaco,$conresaco,'cm08_c_parentesco'))."','$this->cm08_c_parentesco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1801,10423,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm08_c_parentesco'))."','$this->cm08_c_parentesco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm08_c_causa"]))
-           $resac = db_query("insert into db_acount values($acount,1801,10424,'".AddSlashes(pg_result($resaco,$conresaco,'cm08_c_causa'))."','$this->cm08_c_causa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1801,10424,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm08_c_causa'))."','$this->cm08_c_causa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm08_c_destino"]))
-           $resac = db_query("insert into db_acount values($acount,1801,10425,'".AddSlashes(pg_result($resaco,$conresaco,'cm08_c_destino'))."','$this->cm08_c_destino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1801,10425,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm08_c_destino'))."','$this->cm08_c_destino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm08_d_retirada"]))
-           $resac = db_query("insert into db_acount values($acount,1801,10426,'".AddSlashes(pg_result($resaco,$conresaco,'cm08_d_retirada'))."','$this->cm08_d_retirada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1801,10426,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm08_d_retirada'))."','$this->cm08_d_retirada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm08_t_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1801,10427,'".AddSlashes(pg_result($resaco,$conresaco,'cm08_t_obs'))."','$this->cm08_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1801,10427,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm08_t_obs'))."','$this->cm08_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -436,17 +436,17 @@ class cl_retiradas {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10420,'$cm08_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1801,10420,'','".AddSlashes(pg_result($resaco,$iresaco,'cm08_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1801,10421,'','".AddSlashes(pg_result($resaco,$iresaco,'cm08_i_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1801,10422,'','".AddSlashes(pg_result($resaco,$iresaco,'cm08_i_retirante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1801,10423,'','".AddSlashes(pg_result($resaco,$iresaco,'cm08_c_parentesco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1801,10424,'','".AddSlashes(pg_result($resaco,$iresaco,'cm08_c_causa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1801,10425,'','".AddSlashes(pg_result($resaco,$iresaco,'cm08_c_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1801,10426,'','".AddSlashes(pg_result($resaco,$iresaco,'cm08_d_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1801,10427,'','".AddSlashes(pg_result($resaco,$iresaco,'cm08_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1801,10420,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm08_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1801,10421,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm08_i_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1801,10422,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm08_i_retirante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1801,10423,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm08_c_parentesco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1801,10424,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm08_c_causa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1801,10425,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm08_c_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1801,10426,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm08_d_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1801,10427,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm08_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from retiradas
@@ -506,7 +506,7 @@ class cl_retiradas {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:retiradas";
@@ -520,7 +520,7 @@ class cl_retiradas {
    function sql_query ( $cm08_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -550,7 +550,7 @@ class cl_retiradas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -562,7 +562,7 @@ class cl_retiradas {
    function sql_query_file ( $cm08_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -583,7 +583,7 @@ class cl_retiradas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

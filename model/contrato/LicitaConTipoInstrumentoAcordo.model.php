@@ -27,7 +27,7 @@
 
 class LicitaConTipoInstrumentoAcordo {  
 
-  public static $aSiglas = array(    
+  public static $aSiglas = [    
     \Acordo::TIPO_INSTRUMENTO_TERMO_ADESAO => 'A',
     \Acordo::TIPO_INSTRUMENTO_CONTRATO => 'C',
     \Acordo::TIPO_INSTRUMENTO_TERMO_FOMENTO => 'F',
@@ -37,7 +37,7 @@ class LicitaConTipoInstrumentoAcordo {
     \Acordo::TIPO_INSTRUMENTO_CONTRATO_GESTAO => 'G',
     \Acordo::TIPO_INSTRUMENTO_ACORDO_COOPERACAO => 'O',
     \Acordo::TIPO_INSTRUMENTO_TERMO_PERMISSAO_USO => 'U',
-  );
+  ];
 
   public static function getTipos() {
     return \Acordo::getTiposInstrumento();

@@ -55,27 +55,27 @@ $db_opcao = 1;
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	  $clcriaabas->identifica = array(
+	  $clcriaabas->identifica = [
                                      "rhpessoal"      => "Dados Pessoais",
                                      "rhpesdoc"       => "Documentos",
                                      "rhpessoalmov"   => "Movimentações",
 					                           "rhpeslocaltrab" => "Locais de trabalho",
 	                                   "rhsuspensaopag" => "Suspensões de Pagamento"
-                                   ); 
-	 $clcriaabas->sizecampo  = array(
+                                   ]; 
+	 $clcriaabas->sizecampo  = [
                                      "rhpessoal"      => "20",
                                      "rhpesdoc"       => "15",
                                      "rhpessoalmov"   => "20",
                                      "rhdepend"       => "15",
                 					 					 "rhpeslocaltrab" => "20",
                 					 					 "rhsuspensaopag" => "25"
-	                                );
-	 $clcriaabas->src = array("rhpessoal"=>"pes1_rhpessoal006.php");
-	 $clcriaabas->disabled   =  array( 
+	                                ];
+	 $clcriaabas->src = ["rhpessoal"=>"pes1_rhpessoal006.php"];
+	 $clcriaabas->disabled   =  [ 
 	 																	 "rhpesdoc"        => "true",
 	                                   "rhpessoalmov"    => "true",
 	                                   "rhpeslocaltrab"  => "true"
-	                                 ); 
+	                                 ]; 
 	/**
 	 * Verifica se o usuarioi tem acesso a susupensão de pagamento
 	 */                              

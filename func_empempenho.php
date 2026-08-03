@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_empempenho_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clempempenho = new cl_empempenho;
 $clempempenho->rotulo->label("e60_numemp");
@@ -183,7 +183,7 @@ $rotulo->label("z01_cgccpf");
                 $where = "{$dbwhere} and e60_numemp = {$chave_e60_numemp}";
                 $sql = $clempempenho->sql_query($chave_e60_numemp, $campos, "e60_numemp", $where);
             } elseif (isset($chave_e60_codemp) && !empty($chave_e60_codemp)) {
-                $arr = split("/", $chave_e60_codemp);
+                $arr = preg_split("#\\/#m", (string) $chave_e60_codemp);
 
                 if (count($arr) == 2 && isset($arr[1]) && $arr[1] != '') {
                     $dbwhere_ano = " and e60_anousu = " . $arr[1];
@@ -209,9 +209,9 @@ $rotulo->label("z01_cgccpf");
                 $sql = $clempempenho->sql_query("", $campos, "e60_numemp", "{$dbwhere}");
             }
 
-            $repassa = array(
+            $repassa = [
               "chave_z01_nome" => @$chave_z01_nome
-            );
+            ];
 
             ?>
           <fieldset>
@@ -222,7 +222,7 @@ $rotulo->label("z01_cgccpf");
             <?php
         } else {
             if ($pesquisa_chave != null && $pesquisa_chave != "") {
-                $where = array(" e60_numemp = {$pesquisa_chave}", "e60_instit = " . db_getsession("DB_instit"));
+                $where = [" e60_numemp = {$pesquisa_chave}", "e60_instit = " . db_getsession("DB_instit")];
 
                 if (isset($lPesquisaPorCodigoEmpenho)) {
                     $where[] = " e60_anousu = " . db_getsession("DB_anousu");

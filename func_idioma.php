@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_idioma_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clidioma = new cl_idioma;
 $clidioma->rotulo->label("bi22_sequencial");
 $clidioma->rotulo->label("bi22_sequencial");
@@ -52,9 +52,9 @@ $clidioma->rotulo->label("bi22_sequencial");
         }else{
            $sql = $clidioma->sql_query("",$campos,"bi22_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_bi22_sequencial)){
-          $repassa = array("chave_bi22_sequencial"=>$chave_bi22_sequencial,"chave_bi22_sequencial"=>$chave_bi22_sequencial);
+          $repassa = ["chave_bi22_sequencial"=>$chave_bi22_sequencial,"chave_bi22_sequencial"=>$chave_bi22_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

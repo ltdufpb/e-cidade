@@ -51,11 +51,6 @@ class RelatorioDisponibilidadeFinanceira
     private $oPdf;
 
     /**
-     * @var Instituicao
-     */
-    private $oInstituicao;
-
-    /**
      * @var DBDate
      */
     private $oDataInicial;
@@ -78,11 +73,6 @@ class RelatorioDisponibilidadeFinanceira
     /**
      * @var integer
      */
-    private $iAgrupamento;
-
-    /**
-     * @var integer
-     */
     private $iMostrarLancamentos;
 
     /**
@@ -99,46 +89,44 @@ class RelatorioDisponibilidadeFinanceira
      * Códigos das conta correntes para busca de valores.
      * @var integer[]
      */
-    private $aContasCorrenteBuscar = array();
+    private $aContasCorrenteBuscar = [];
 
     /**
      * Códigos das instituições para busca de valores.
      * @var integer[]
      */
-    private $aInstituicoesBuscar = array();
+    private $aInstituicoesBuscar = [];
 
     /**
      * Códigos dos reduzidos para busca de valores.
      * @var integer[]
      */
-    private $aReduzidosBuscar = array();
+    private $aReduzidosBuscar = [];
 
     /**
      * Códigos dos recursos para busca de valores.
      * @var integer[]
      */
-    private $aRecursosBuscar = array();
+    private $aRecursosBuscar = [];
 
     /**
      * Códigos das características peculiares para busca de valores.
      * @var string[]
      */
-    private $aCaracteristicaPeculiarBuscar = array();
+    private $aCaracteristicaPeculiarBuscar = [];
 
     /**
      * RelatorioDisponibilidadeFinanceira constructor.
      * @param Instituicao $oInstituicao
      * @param DBDate $oDataInicial
      * @param DBDate $oDataFinal
-     * @param integer $iAGrupamento
+     * @param integer $iAgrupamento
      */
-    public function __construct(Instituicao $oInstituicao, DBDate $oDataInicial, DBDate $oDataFinal, $iAGrupamento)
+    public function __construct(private readonly Instituicao $oInstituicao, DBDate $oDataInicial, DBDate $oDataFinal, private $iAgrupamento)
     {
 
-        $this->oInstituicao = $oInstituicao;
         $this->oDataInicial = $oDataInicial;
         $this->oDataFinal = $oDataFinal;
-        $this->iAgrupamento = $iAGrupamento;
         $this->oPdf = new PDFDocument(PDFDocument::PRINT_PORTRAIT);
         $this->iMostrarLancamentos = self::MOSTRAR_LANCAMENTOS_SIM;
     }
@@ -210,7 +198,7 @@ class RelatorioDisponibilidadeFinanceira
             throw new DBException("Houve uma falha ao buscar as informações detalhadas para a conta corrente informada.");
         }
 
-        $aContaCorrenteDetalhe = array();
+        $aContaCorrenteDetalhe = [];
         $iTotalContaCorrenteDetalhe = pg_num_rows($rsContaCorrenteDetalhe);
         for ($iIndice = 0; $iIndice < $iTotalContaCorrenteDetalhe; $iIndice++) {
 
@@ -348,7 +336,7 @@ class RelatorioDisponibilidadeFinanceira
             throw new DBException("Houve um erro ao buscar os lançamentos da conta corrente detalhada.");
         }
 
-        $aLancamentos = array();
+        $aLancamentos = [];
         $iTotalLancamentos = pg_num_rows($rsLancamentos);
         for ($iIndice = 0; $iIndice < $iTotalLancamentos; $iIndice++) {
             $aLancamentos[] = db_utils::fieldsMemory($rsLancamentos, $iIndice);
@@ -493,7 +481,7 @@ class RelatorioDisponibilidadeFinanceira
         }
 
         if ($this->iAgrupamento == self::AGRUPAMENTO_RECURSO) {
-            $this->aCaracteristicaPeculiarBuscar = array();
+            $this->aCaracteristicaPeculiarBuscar = [];
         }
 
         $sDataInicial = $this->oDataInicial->getDate(DBDate::DATA_EN);
@@ -542,12 +530,12 @@ class RelatorioDisponibilidadeFinanceira
         }
 
         $iTotalLancamentos = pg_num_rows($rsLancamentos);
-        $aTotalLancamentos = array();
+        $aTotalLancamentos = [];
         for ($iIndice = 0; $iIndice < $iTotalLancamentos; $iIndice++) {
 
             $oTotalLancamentos = db_utils::fieldsMemory($rsLancamentos, $iIndice);
             if (!empty($sCaracPeculiar)) {
-                $aTotalLancamentos[$oTotalLancamentos->c19_contacorrente][$oTotalLancamentos->c19_reduz][$oTotalLancamentos->c19_instit][$oTotalLancamentos->c19_orctiporec][trim($oTotalLancamentos->c19_concarpeculiar)] = $oTotalLancamentos;
+                $aTotalLancamentos[$oTotalLancamentos->c19_contacorrente][$oTotalLancamentos->c19_reduz][$oTotalLancamentos->c19_instit][$oTotalLancamentos->c19_orctiporec][trim((string) $oTotalLancamentos->c19_concarpeculiar)] = $oTotalLancamentos;
             } else {
                 $aTotalLancamentos[$oTotalLancamentos->c19_contacorrente][$oTotalLancamentos->c19_reduz][$oTotalLancamentos->c19_instit][$oTotalLancamentos->c19_orctiporec] = $oTotalLancamentos;
             }
@@ -586,9 +574,9 @@ class RelatorioDisponibilidadeFinanceira
             $oContaCorrenteDetalhe->sSaldoFinalRecursoDebito = "";
             $oContaCorrenteDetalhe->sSaldoFinalRecursoCredito = "";
 
-            $iCaracteristicaPeculiar = isset($oContaCorrenteDetalhe->c19_concarpeculiar) ? $oContaCorrenteDetalhe->c19_concarpeculiar : null;
+            $iCaracteristicaPeculiar = $oContaCorrenteDetalhe->c19_concarpeculiar ?? null;
             $oSaldosIniciais = $this->getSaldosIniciais($oContaCorrenteDetalhe->c19_contacorrente,
-                array($oContaCorrenteDetalhe->c19_reduz), array($oContaCorrenteDetalhe->c19_orctiporec),
+                [$oContaCorrenteDetalhe->c19_reduz], [$oContaCorrenteDetalhe->c19_orctiporec],
                 $iCaracteristicaPeculiar);
 
             $oContaCorrenteDetalhe->nTotalInicialRecursoDebito = $oSaldosIniciais->nTotalDebito;
@@ -607,7 +595,7 @@ class RelatorioDisponibilidadeFinanceira
             }
 
 
-            $oContaCorrenteDetalhe->aLancamentos = array();
+            $oContaCorrenteDetalhe->aLancamentos = [];
             if ($this->iMostrarLancamentos == self::MOSTRAR_LANCAMENTOS_SIM) {
 
                 $oContaCorrenteDetalhe->aLancamentos = $this->getLancamentosContaCorrenteDetalhe($oContaCorrenteDetalhe->c19_contacorrente,
@@ -917,7 +905,7 @@ class RelatorioDisponibilidadeFinanceira
         $iReduzido = $oContaCorrenteDetalhe->c19_reduz;
         $iInstituicao = $oContaCorrenteDetalhe->c19_instit;
         $iRecurso = $oContaCorrenteDetalhe->c19_orctiporec;
-        $iCaracPeculiar = isset($oContaCorrenteDetalhe->c19_concarpeculiar) ? $oContaCorrenteDetalhe->c19_concarpeculiar : -1;
+        $iCaracPeculiar = $oContaCorrenteDetalhe->c19_concarpeculiar ?? -1;
 
         $oTotalLancamentoContaCorrenteDetalhe = new stdClass();
         $oTotalLancamentoContaCorrenteDetalhe->total_credito = 0;
@@ -954,11 +942,11 @@ class RelatorioDisponibilidadeFinanceira
         }
         $saldoInicial = $nSaldoInicialContaCredito - $nSaldoInicialContaDebito;
 
-        $dadosRetorno = (object)array(
-            'totalMovimentacaoDebito' => trim($dados->nTotalMovimentacaoDebito),
-            'totalMovimentacaoCredito' => trim($dados->nTotalMovimentacaoCredito),
+        $dadosRetorno = (object)[
+            'totalMovimentacaoDebito' => trim((string) $dados->nTotalMovimentacaoDebito),
+            'totalMovimentacaoCredito' => trim((string) $dados->nTotalMovimentacaoCredito),
             'totalDebitoMenosCredito' => ($saldoInicial + $dados->nTotalMovimentacaoCredito) - $dados->nTotalMovimentacaoDebito
-        );
+        ];
         return $dadosRetorno;
     }
 

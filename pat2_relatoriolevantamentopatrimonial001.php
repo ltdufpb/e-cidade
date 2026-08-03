@@ -75,12 +75,12 @@ $clrotulo->label("p13_departamento");
                     <td><label class="bold" for="situacao">Situação:</label></td>
                     <td>
                       <?php
-                      $aSituacoes = array(0                                                             => "Todos",
+                      $aSituacoes = [0                                                             => "Todos",
                                           RelatorioLevantamentoPatrimonial::SITUACAO_NAO_ENCONTRADO_TXT => "Não encontrado no txt",
                                           RelatorioLevantamentoPatrimonial::SITUACAO_NAO_CADASTRADO     => "Não cadastrado",
                                           RelatorioLevantamentoPatrimonial::SITUACAO_INCONSISTENTE      => "Inconsistente",
                                           RelatorioLevantamentoPatrimonial::SITUACAO_CONSISTENTE        => "Consistente",
-                                          RelatorioLevantamentoPatrimonial::SITUACAO_BAIXADO_NO_TXT     => "Bem Baixado");
+                                          RelatorioLevantamentoPatrimonial::SITUACAO_BAIXADO_NO_TXT     => "Bem Baixado"];
                       db_select("situacao", $aSituacoes, true, 1);
                       ?>
                     </td>

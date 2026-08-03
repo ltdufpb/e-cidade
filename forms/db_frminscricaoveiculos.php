@@ -26,7 +26,7 @@
  */
 
 // Busca dados dos tipos de veículos
-$tiposVeiculos = array();
+$tiposVeiculos = [];
 $daoVeiccadtipo = new cl_veiccadtipo();
 $sqlTiposVeiculos = $daoVeiccadtipo->sql_query_file(
     null,
@@ -42,7 +42,7 @@ if ($rsTiposVeiculos && pg_num_rows($rsTiposVeiculos) > 0) {
 }
 
 // Busca dados das marcas
-$marcas = array();
+$marcas = [];
 $daoVeiccadmarca = new cl_veiccadmarca();
 $sqlMarcas = $daoVeiccadmarca->sql_query_file(
     null,
@@ -58,7 +58,7 @@ if ($rsMarcas && pg_num_rows($rsMarcas) > 0) {
 }
 
 //Busca as cores
-$cores = array();
+$cores = [];
 $daoVeiccadcor = new cl_veiccadcor();
 $sqlCores = $daoVeiccadcor->sql_query_file(
     null,
@@ -74,7 +74,7 @@ if ($rsCores && pg_num_rows($rsCores) > 0) {
 }
 
 //Busca as procedências
-$procedencias = array();
+$procedencias = [];
 $daoVeiccadproced = new cl_veiccadproced();
 $sqlProcedencias = $daoVeiccadproced->sql_query_file(
     null,
@@ -90,7 +90,7 @@ if ($rsProcedencias && pg_num_rows($rsProcedencias) > 0) {
 }
 
 //Busca as categorias
-$categorias = array();
+$categorias = [];
 $daoVeiccadcateg = new cl_veiccadcateg();
 $sqlCategorias = $daoVeiccadcateg->sql_query_file(
     null,

@@ -96,7 +96,7 @@ require_once(modification("std/DBDate.php"));
 
     $this->setArquivo($iArquivoSimplesImportacao);
 
-    $aCnaes                        = array();
+    $aCnaes                        = [];
     $oDaoArquivoSimplesImportacao  = new cl_arquivosimplesimportacao();
 
     $sSql                          = $oDaoArquivoSimplesImportacao->getCnaes( $iArquivoSimplesImportacao );
@@ -325,7 +325,7 @@ require_once(modification("std/DBDate.php"));
     for ($i = 0; $i < pg_num_rows($rsEmpresas); $i++) {
 
       $oEmpresa = db_utils::fieldsMemory($rsEmpresas, $i);
-      fwrite($rsFile, str_pad($oEmpresa->q142_cnpj, 11, "0", STR_PAD_LEFT) . "\n");
+      fwrite($rsFile, str_pad((string) $oEmpresa->q142_cnpj, 11, "0", STR_PAD_LEFT) . "\n");
     }
 
     /**
@@ -402,7 +402,7 @@ require_once(modification("std/DBDate.php"));
       /**
        * Trata o CNPJ colocando a máscara
        */
-      $oRegistro->q142_cnpj = str_pad($oRegistro->q142_cnpj, 14, '0', STR_PAD_LEFT);
+      $oRegistro->q142_cnpj = str_pad((string) $oRegistro->q142_cnpj, 14, '0', STR_PAD_LEFT);
       $oRegistro->q142_cnpj = preg_replace('/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/', "$1.$2.$3/$4-$5", $oRegistro->q142_cnpj);
 
       /**
@@ -414,7 +414,7 @@ require_once(modification("std/DBDate.php"));
        * Faz um Substr caso a string seja maior que o tamanho da célula
        */
       while ($oPdf->GetStringWidth($oRegistro->q142_observacao) > 60) {
-        $oRegistro->q142_observacao = substr($oRegistro->q142_observacao, 0, strlen($oRegistro->q142_observacao)-2);
+        $oRegistro->q142_observacao = substr((string) $oRegistro->q142_observacao, 0, strlen((string) $oRegistro->q142_observacao)-2);
       }
 
       /**
@@ -559,7 +559,7 @@ require_once(modification("std/DBDate.php"));
       $oDomDocument->loadHTML( $oEmpresa->sObservacao);
       $sMensagem    = $oDomDocument->getElementsByTagName("input")->item(0)->getAttribute("value");
 
-      $oDaoArquivoSimplesImportacaoDetalhe->q142_observacao = utf8_decode($sMensagem);
+      $oDaoArquivoSimplesImportacaoDetalhe->q142_observacao = mb_convert_encoding($sMensagem, 'ISO-8859-1');
 
       if ($lApto !== null){
 
@@ -640,7 +640,7 @@ require_once(modification("std/DBDate.php"));
     for ($i = 0; $i < pg_num_rows($rsEmpresas); $i++) {
 
       $oEmpresa = db_utils::fieldsMemory($rsEmpresas, $i);
-      fwrite($rsFile, str_pad($oEmpresa->q142_cnpj, 11, "0", STR_PAD_LEFT) . "\n");
+      fwrite($rsFile, str_pad((string) $oEmpresa->q142_cnpj, 11, "0", STR_PAD_LEFT) . "\n");
     }
 
     /**
@@ -698,7 +698,7 @@ require_once(modification("std/DBDate.php"));
     for ($i = 0; $i < pg_num_rows($rsEmpresas); $i++) {
 
       $oEmpresa = db_utils::fieldsMemory($rsEmpresas, $i);
-      fwrite($rsFile, str_pad($oEmpresa->q142_cnpj, 11, "0", STR_PAD_LEFT) . "\n");
+      fwrite($rsFile, str_pad((string) $oEmpresa->q142_cnpj, 11, "0", STR_PAD_LEFT) . "\n");
     }
 
     /**

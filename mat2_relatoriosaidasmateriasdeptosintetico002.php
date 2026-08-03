@@ -136,18 +136,18 @@ $sInnerJoinGrupos = "
                                     = materialestoquegrupo.m65_sequencial
 	";
 
-$sDataIni = implode('-', array_reverse(explode('/', $oParametros->dataini)));
-$sDataFin = implode('-', array_reverse(explode('/', $oParametros->datafin)));
+$sDataIni = implode('-', array_reverse(explode('/', (string) $oParametros->dataini)));
+$sDataFin = implode('-', array_reverse(explode('/', (string) $oParametros->datafin)));
 
-if ((trim($oParametros->dataini) != "--") && (trim($oParametros->datafin) != "--")) {
+if ((trim((string) $oParametros->dataini) != "--") && (trim((string) $oParametros->datafin) != "--")) {
     $sWhere .= " and m80_data between '{$sDataIni}' and '{$sDataFin}' ";
     $info = "De " . $oParametros->dataini . " até " . $oParametros->datafin;
 } else {
-    if (trim($oParametros->dataini) != "--") {
+    if (trim((string) $oParametros->dataini) != "--") {
         $sWhere .= " and m80_data >= '{$sDataIni}' ";
         $info = "Apartir de " . $oParametros->dataini;
     } else {
-        if (trim($oParametros->datafin) != "--") {
+        if (trim((string) $oParametros->datafin) != "--") {
             $sWhere .= " and m80_data <= '{$sDataFin}' ";
             $info = "Até " . $oParametros->datafin;
         }
@@ -289,7 +289,7 @@ if ($iNumRows <= 0 || !$rsSaidas) {
     exit;
 }
 
-$aLinhas = array();
+$aLinhas = [];
 
 for ($i = 0; $i < $iNumRows; $i++) {
     $oItem = db_utils::fieldsMemory($rsSaidas, $i);
@@ -318,7 +318,7 @@ $nTotalGeralValor = 0;
 $oParametros->colunaEmBranco = $oParametros->iTipoRelatorio == '1' ? 35 : 50;
 
 if (isset($oParametros->listadepart) && $oParametros->listadepart != "") {
-    $aDepartamentosOrigem = explode(",", $oParametros->listadepart);
+    $aDepartamentosOrigem = explode(",", (string) $oParametros->listadepart);
 
     if (count($aDepartamentosOrigem) > 0) {
         $oPdf->cell(70, $iAlturalinha, "Departamento(s) de Origem:", "", 1, "L", 0);
@@ -350,7 +350,7 @@ foreach ($aLinhas as $sDestino => $aDestinos) {
             $oPdf->cell(20, $iAlturalinha, "", "", 0, "L", 0);
             $oPdf->cell(50, $iAlturalinha, "Sub Grupo: $sSupgrupo", "", 1, "L", 0);
 
-            imprimirCabecalho($oPdf, $iAlturalinha, true, $oParametros);
+            imprimirCabecalho($oPdf, $iAlturalinha, true);
             $oPdf->SetFont('arial', '', $iTamFonte);
 
             $nTotalQuant = 0;
@@ -375,7 +375,7 @@ foreach ($aLinhas as $sDestino => $aDestinos) {
                     $oPdf->cell(20, $iAlturalinha, db_formatar($nTotal, "f"), "", 1, "R", 0);
                 }
 
-                imprimirCabecalho($oPdf, $iAlturalinha, false, $oParametros);
+                imprimirCabecalho($oPdf, $iAlturalinha, false);
             }
 
             $oPdf->SetFont('arial', 'b', $iTamFonte);

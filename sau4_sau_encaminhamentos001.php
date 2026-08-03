@@ -44,7 +44,7 @@ db_app::load("estilos.css, grid.style.css");
 
 define("URL_MENSAGEM_EMCAMINHAMENTOS001", "saude.ambulatorial.sau4_sau_encaminhamentos001.");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oClprontuarios            = new cl_prontuarios;
 $oClsau_encaminhamentos    = new cl_sau_encaminhamentos;

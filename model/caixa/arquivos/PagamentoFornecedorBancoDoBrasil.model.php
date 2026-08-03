@@ -51,7 +51,7 @@ class PagamentoFornecedorBancoDoBrasil extends PagamentoFornecedorTXTBase implem
     $oLayoutReader->processarArquivo(0, false, true);
     $oDadosRetorno            = new stdClass();
     $oDadosRetorno->header    = new stdClass();
-    $oDadosRetorno->registros = array();
+    $oDadosRetorno->registros = [];
 
     /**
      * processa cada linha do arquivo, conforme o tipo de linha.
@@ -99,7 +99,7 @@ class PagamentoFornecedorBancoDoBrasil extends PagamentoFornecedorTXTBase implem
             }
             $oRegistro = new stdClass();
             $oRegistro->codigo_movimento = trim($oArquivo->documento_empresa);
-            $oRegistro->numero_lote      = trim($sNumeroLote);
+            $oRegistro->numero_lote      = trim((string) $sNumeroLote);
             $oRegistro->mov_lote         = trim($oArquivo->sequencial_reg_lote);
             $oRegistro->numero_banco     = trim($oArquivo->num_documento_banco);
             $oRegistro->valor_efetivado  = (float)$sValorEfetivado;

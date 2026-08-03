@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_parametros_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_parametros = new cl_far_parametros;
 $clfar_parametros->rotulo->label("fa02_i_codigo");
 $clfar_parametros->rotulo->label("fa02_i_codigo");
@@ -98,9 +98,9 @@ $clfar_parametros->rotulo->label("fa02_i_codigo");
         }else{
            $sql = $clfar_parametros->sql_query("",$campos,"fa02_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa02_i_codigo)){
-          $repassa = array("chave_fa02_i_codigo"=>$chave_fa02_i_codigo,"chave_fa02_i_codigo"=>$chave_fa02_i_codigo);
+          $repassa = ["chave_fa02_i_codigo"=>$chave_fa02_i_codigo,"chave_fa02_i_codigo"=>$chave_fa02_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

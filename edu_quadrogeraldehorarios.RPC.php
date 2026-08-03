@@ -44,7 +44,7 @@ $iModuloEscola = 1100747;
 try {
     switch ($parametros->acao) {
         case 'pesquisaEscola':
-            $aFiltros = array();
+            $aFiltros = [];
 
             if (isset($parametros->iEscola) && !empty($parametros->iEscola)) {
                 $aFiltros[] = "ed18_i_codigo in ($iEscola) ";
@@ -70,7 +70,7 @@ try {
                 $oTurma = TurmaRepository::getTurmasByAnoAtual();
             }
 
-            $aDisciplinas = array();
+            $aDisciplinas = [];
 
             foreach ($oTurma as $turma) {
                 $regenciasTurma = $turma->getDisciplinas();
@@ -87,9 +87,7 @@ try {
             }
 
             /* Ordena Disciplinas por ordem alfabética */
-            usort($aDisciplinas, function ($a, $b) {
-                return strcmp($a->sDescricaoDisciplina, $b->sDescricaoDisciplina);
-            });
+            usort($aDisciplinas, fn($a, $b) => strcmp((string) $a->sDescricaoDisciplina, (string) $b->sDescricaoDisciplina));
 
             $retorno->aDisciplinas = $aDisciplinas;
 

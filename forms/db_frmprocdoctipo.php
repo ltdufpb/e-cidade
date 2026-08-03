@@ -91,7 +91,7 @@ if (isset($opcao) && $opcao == "excluir") {
             </td>
             <td class="field-size2">
                 <?php
-                $opcoes = array('f' => 'Não', 't' => 'Sim');
+                $opcoes = ['f' => 'Não', 't' => 'Sim'];
                 db_select('p57_ouvidoriaobrigatorio', $opcoes, true, 1);
                 ?>
             </td>
@@ -108,7 +108,7 @@ if (isset($opcao) && $opcao == "excluir") {
         <tr>
           <td align="top" colspan="2">
               <?php
-              $chavepri = array("p57_codigo" => @$p57_codigo, "p57_coddoc" => @$p57_coddoc);
+              $chavepri = ["p57_codigo" => @$p57_codigo, "p57_coddoc" => @$p57_coddoc];
               $cliframe_alterar_excluir->chavepri = $chavepri;
 
               $campos = "p57_codigo, p51_descr, p57_coddoc, p56_descr, p57_ouvidoriaobrigatorio";
@@ -154,14 +154,14 @@ if (isset($opcao) && $opcao == "excluir") {
         document.form1.p57_codigo.focus();
         document.form1.p57_codigo.value = '';
       } else {
-        location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?p57_codigo=" + document.form1.p57_codigo.value + "&p51_descr=" + chave + "&grupo=" + document.form1.grupo.value;
+        location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?p57_codigo=" + document.form1.p57_codigo.value + "&p51_descr=" + chave + "&grupo=" + document.form1.grupo.value;
       }
     }
 
     function js_mostratipoproc1(chave1, chave2) {
       document.form1.p57_codigo.value = chave1;
       document.form1.p51_descr.value = chave2;
-      location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?p57_codigo=" + chave1 + "&p51_descr=" + chave2 + "&grupo=" + document.form1.grupo.value;
+      location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?p57_codigo=" + chave1 + "&p51_descr=" + chave2 + "&grupo=" + document.form1.grupo.value;
       db_iframe.hide();
     }
 
@@ -199,7 +199,7 @@ if (isset($opcao) && $opcao == "excluir") {
 
     function js_preenchepesquisa(chave, chave1) {
       db_iframe.hide();
-      location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?chavepesquisa=" + chave + "&chavepesquisa1=" + chave1;
+      location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?chavepesquisa=" + chave + "&chavepesquisa1=" + chave1;
     }
   </script>
 <?php

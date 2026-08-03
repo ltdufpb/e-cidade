@@ -52,7 +52,7 @@ if ( !isset($oPost->pesquisar) && empty($oPost->sd24_d_cadastro_fim) ) {
   $sd24_d_cadastro_fim_ano    = $oData->getAno();
 }
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $oDaoProntuarios = new cl_prontuarios;
 $oDaoProntuarios->rotulo->label();
 
@@ -75,7 +75,7 @@ if ( !empty($oPost->iUnidade) ) {
   $iUnidade = $oPost->iUnidade;
 }
 
-$aEspecialidadesMedico = array();
+$aEspecialidadesMedico = [];
 
 if(!empty($oPost->rh70_sequencial)) {
   $aEspecialidadesMedico[] = $oPost->rh70_sequencial;
@@ -93,18 +93,18 @@ function buscaEspecialidadeMedico($iUnidade, $iProfissional) {
   $sSqlEspecMedico = $oDaoEspecMedico->sql_query_especmedico(null, " sd27_i_rhcbo ", null, $sWhereEspecMedico);
   $rsEspecMedico   = db_query( $sSqlEspecMedico );
   if ( !$rsEspecMedico || pg_num_rows($rsEspecMedico) == 0 ) {
-    return array();
+    return [];
   }
   $iLinhas = pg_num_rows($rsEspecMedico);
 
-  $aEspecialidades = array();
+  $aEspecialidades = [];
   for ( $i = 0; $i < $iLinhas; $i++) {
     $aEspecialidades[] = db_utils::fieldsMemory($rsEspecMedico, $i)->sd27_i_rhcbo;
   }
   return $aEspecialidades;
 }
 
-$aWhere   = array();
+$aWhere   = [];
 $aWhere[] = " sd24_c_digitada = 'N'"; // somente FAA abertas
 $aWhere[] = " sd24_i_unidade  = {$iUnidade} ";
 
@@ -196,7 +196,7 @@ $sCampos .= " cast('{$antes}' || sd78_cor || '{$depois}' || sd78_descricao || '<
               <td><label for='filtro_agenda' class="bold"><label for="filtro_agenda">Agenda:</label></label> </td>
               <td>
                 <?php
-                  $aFiltro = array(1 => "Pacientes", 2 => "Urgência");
+                  $aFiltro = [1 => "Pacientes", 2 => "Urgência"];
                   db_select("filtro_agenda", $aFiltro, true, 1, "onchange='js_validaFiltroAgenda();'");
                 ?>
               </td>
@@ -262,7 +262,7 @@ $sCampos .= " cast('{$antes}' || sd78_cor || '{$depois}' || sd78_descricao || '<
         $aWhere[] = "sd91_local in (3, 4)";
       }
 
-      $aRepassa = array();
+      $aRepassa = [];
       $aRepassa["filtro_agenda"]              = !empty($oPost->filtro_agenda) ? $oPost->filtro_agenda : 1;
       $aRepassa["sd24_d_cadastro_inicio"]     = $sd24_d_cadastro_inicio;
       $aRepassa["sd24_d_cadastro_inicio_dia"] = $sd24_d_cadastro_inicio_dia;

@@ -99,16 +99,16 @@ try {
                 }
             }
 
-            $where = array(
+            $where = [
                 "c40_ano = {$parametros->ano}",
-                'c40_orgao = ' . substr($parametros->unidadeOrcamentaria, 0, 2),
-                'c40_unidade = ' . substr($parametros->unidadeOrcamentaria, 2, 2),
+                'c40_orgao = ' . substr((string) $parametros->unidadeOrcamentaria, 0, 2),
+                'c40_unidade = ' . substr((string) $parametros->unidadeOrcamentaria, 2, 2),
                 "c40_identificador_uso = {$parametros->identificadorUso}",
                 "c40_tipo_detalhamento = '{$parametros->tipoDetalhamento}'",
                 "c40_grupo_fonte_recursos = '{$parametros->grupoFonteRecurso}'",
                 "c40_especificacao_fonte = '{$parametros->especificacaoFonte}'",
-                'c40_grupo_natureza_despesa = ' . substr($parametros->estrutural, 2, 1)
-            );
+                'c40_grupo_natureza_despesa = ' . substr((string) $parametros->estrutural, 2, 1)
+            ];
 
             $daoTetoOrcamentario = new cl_teto_orcamentario();
             $sql = $daoTetoOrcamentario->sql_query_file(null, '*', null, implode(' AND ', $where));
@@ -157,8 +157,8 @@ try {
 
             $dao->c333_ano = $parametros->ano;
             $dao->c333_esferaorcamentaria = $parametros->esferaOrcamentaria;
-            $dao->c333_orcorgao = substr($parametros->unidadeOrcamentaria, 0, 2);
-            $dao->c333_orcunidade = substr($parametros->unidadeOrcamentaria, 2, 2);
+            $dao->c333_orcorgao = substr((string) $parametros->unidadeOrcamentaria, 0, 2);
+            $dao->c333_orcunidade = substr((string) $parametros->unidadeOrcamentaria, 2, 2);
             $dao->c333_orcfuncao = $parametros->funcao;
             $dao->c333_orcsubfuncao = $parametros->subfuncao;
             $dao->c333_orcprograma = $parametros->programa;
@@ -171,7 +171,7 @@ try {
             $dao->c333_especificacaofonte = $parametros->especificacaoFonte;
             $dao->c333_identificadorresultadoprimario = $parametros->identificadorResultadoPrimario;
             $dao->c333_previsao = $parametros->previsao2019;
-            $dao->c333_planoorcamentario = JSON::create()->stringify(array('campo' => 'desativado'));
+            $dao->c333_planoorcamentario = JSON::create()->stringify(['campo' => 'desativado']);
 
             if (isset($parametros->codigo)) {
 
@@ -264,8 +264,8 @@ try {
             }
 
             $retorno->previsao = db_utils::fieldsMemory($rs, 0);
-            $retorno->previsao->c333_planoorcamentario = JSON::create()->stringify(array('campo' => 'desativado'));
-            $retorno->previsao->planos = array();
+            $retorno->previsao->c333_planoorcamentario = JSON::create()->stringify(['campo' => 'desativado']);
+            $retorno->previsao->planos = [];
 
             $daoPrevisaoPlanos = new cl_previsaodespesaplano();
             $camposPlanos = " c55_sequencial , c55_codigo as codigo, c55_titulo as descricao, c55_valor as valor";
@@ -294,7 +294,7 @@ try {
 
                 $aLinhaPactos = pg_fetch_all($rsLinhasPac);
 
-                $item->linhaPacto = (!empty($aLinhaPactos) ? $aLinhaPactos : array());
+                $item->linhaPacto = (!empty($aLinhaPactos) ? $aLinhaPactos : []);
                 $item->sId = $item->c55_sequencial;
                 return $item;
             });
@@ -323,7 +323,7 @@ try {
                 throw new DBException("Não foi encontrado nenhuma previsão de despesa para os filtros informados.");
             }
 
-            $cabecalho = array(
+            $cabecalho = [
                     'Código da Dotação',
                     'Esfera Orçamentária',
                     'Unidade Orçamentária',
@@ -344,7 +344,7 @@ try {
                     'Valor plano',
                     'Linhas Pacto',
                     'Valor Pacto'
-            );
+            ];
 
 
             $arquivo = 'tmp/previsao_despesa' . time() . '.csv';
@@ -376,46 +376,46 @@ try {
                     return;
                 }
 
-                $linhaspacots = array();
+                $linhaspacots = [];
 
                 foreach ($array as $value) {
 
-                    $json =  stripcslashes( str_replace(array('"{', '}"'), array('{', '}'), $value['jsonteste']));
-                    $linhaspacots[$value['c55_titulo']]['linhas'] = json_decode(utf8_encode($json));
+                    $json =  stripcslashes( str_replace(['"{', '}"'], ['{', '}'], $value['jsonteste']));
+                    $linhaspacots[$value['c55_titulo']]['linhas'] = json_decode(mb_convert_encoding($json, 'UTF-8', 'ISO-8859-1'));
                     $linhaspacots[$value['c55_titulo']]['valor']  = $value['c55_valor'];
                 }
 
-                $dado = array(
+                $dado = [
                     $registro->c333_sequencial,
                     esferaOrcamentaria($registro->c333_esferaorcamentaria),
-                    str_pad($registro->c333_orcorgao, 2, '0') . str_pad($registro->c333_orcunidade, 2, '0') . ' - ' . $registro->unidade_orcamentaria,
-                    str_pad($registro->c333_orcfuncao, 2, '0', STR_PAD_LEFT) . " - {$registro->o52_descr}",
-                    str_pad($registro->c333_orcsubfuncao, 3, '0', STR_PAD_LEFT) . " - {$registro->o53_descr}",
-                    str_pad($registro->c333_orcprograma, 4, '0', STR_PAD_LEFT) . " - {$registro->o54_descr}",
-                    str_pad($registro->c333_orcprojativ, 4, '0', STR_PAD_LEFT) . " - {$registro->o55_descr}",
-                    str_pad($registro->c333_ppasubtitulolocalizadorgasto, 4, '0', STR_PAD_LEFT) . " - {$registro->o11_descricao}",
-                    substr($registro->c60_estrut, 0, 13) . " - {$registro->c60_descr}",
+                    str_pad((string) $registro->c333_orcorgao, 2, '0') . str_pad((string) $registro->c333_orcunidade, 2, '0') . ' - ' . $registro->unidade_orcamentaria,
+                    str_pad((string) $registro->c333_orcfuncao, 2, '0', STR_PAD_LEFT) . " - {$registro->o52_descr}",
+                    str_pad((string) $registro->c333_orcsubfuncao, 3, '0', STR_PAD_LEFT) . " - {$registro->o53_descr}",
+                    str_pad((string) $registro->c333_orcprograma, 4, '0', STR_PAD_LEFT) . " - {$registro->o54_descr}",
+                    str_pad((string) $registro->c333_orcprojativ, 4, '0', STR_PAD_LEFT) . " - {$registro->o55_descr}",
+                    str_pad((string) $registro->c333_ppasubtitulolocalizadorgasto, 4, '0', STR_PAD_LEFT) . " - {$registro->o11_descricao}",
+                    substr((string) $registro->c60_estrut, 0, 13) . " - {$registro->c60_descr}",
                     identificadorUso($registro->c333_identificadoruso),
                     tipoDetalhamento($registro->c333_tipodetalhamento),
                     grupoFonteRecursos($registro->c333_grupofonterecursos),
                     especificacaoFonte($registro->c333_especificacaofonte),
                     identificadorResultadoPrimario($registro->c333_identificadorresultadoprimario),
                     db_formatar($registro->c333_previsao, 'f')
-                );
+                ];
 
                 $count = 0;
 
-                $tmp = array();
+                $tmp = [];
                 foreach ($linhaspacots as $nomeplano =>  $linhaspa) {
 
                     if ($count == 0) {
-                        $dado[] = utf8_decode($nomeplano);
+                        $dado[] = mb_convert_encoding($nomeplano, 'ISO-8859-1');
                         $dado[] = db_formatar($linhaspa['valor'], 'f');
                     } else {
 
                         $tmp = array_fill(0, 15, ' ');
 
-                        $tmp[] = utf8_decode($nomeplano);
+                        $tmp[] = mb_convert_encoding($nomeplano, 'ISO-8859-1');
                         $tmp[] = $linhaspa['valor'];
                         $linep = implode(';', $tmp);
                         fputs($arquivosalvar, $linep."\n");
@@ -423,16 +423,16 @@ try {
 
                     foreach ($linhaspa['linhas'] as $linhas) {
 
-                        $tmp2 = array();
+                        $tmp2 = [];
                         if ($count == 0) {
 
-                            $dado[] = utf8_decode($linhas->linhaspacto);
+                            $dado[] = mb_convert_encoding($linhas->linhaspacto, 'ISO-8859-1');
                             $dado[] = db_formatar($linhas->valor, 'f');
                             $line = implode(';', $dado);
                             fputs($arquivosalvar, $line."\n");
                         } else {
                             $tmp2[] = array_fill(0, 17, ' ');
-                            $tmp2[0][] = utf8_decode($linhas->linhaspacto);
+                            $tmp2[0][] = mb_convert_encoding($linhas->linhaspacto, 'ISO-8859-1');
                             $tmp2[0][] = db_formatar($linhas->valor, 'f');
                             $line2 = implode(';', $tmp2[0]);
                             fputs($arquivosalvar, $line2."\n");
@@ -463,20 +463,20 @@ try {
                 throw new DBException("Não foi encontrado nenhum plano orçamentário para os filtros informados.");
             }
 
-            $conteudo = array(
-                array(
+            $conteudo = [
+                [
                     'Código da Dotação',
                     'Ação',
                     'Código',
                     'Plano Orçamentário',
                     'Valor'
-                ),
-            );
+                ],
+            ];
 
             db_utils::makeCollectionFromRecord($rs, function ($registro) use (&$conteudo) {
 
-                $acao = str_pad($registro->c333_orcprojativ, 4, '0', STR_PAD_LEFT) . " - {$registro->o55_descr}";
-                $planosOrcamentarios = JSON::create()->stringify(array('campo' => 'desativado'));
+                $acao = str_pad((string) $registro->c333_orcprojativ, 4, '0', STR_PAD_LEFT) . " - {$registro->o55_descr}";
+                $planosOrcamentarios = JSON::create()->stringify(['campo' => 'desativado']);
             });
 
             $arquivo = 'tmp/plano_orcamentario' . time() . '.csv';
@@ -715,7 +715,7 @@ function deletaPlanoOrcamentario($previsaodespesa)
 
 function montarFiltrosEmissao($parametros)
 {
-    $where = array();
+    $where = [];
 
     if ($parametros->codigoDotacao !== '') {
         $where[] = "c333_sequencial = {$parametros->codigoDotacao}";
@@ -724,8 +724,8 @@ function montarFiltrosEmissao($parametros)
         $where[] = "c333_esferaorcamentaria = {$parametros->esferaOrcamentaria}";
     }
     if ($parametros->unidadeOrcamentaria !== '') {
-        $where[] = " c333_orcorgao = " . substr($parametros->unidadeOrcamentaria, 0, 2);
-        $where[] = " c333_orcunidade = " . substr($parametros->unidadeOrcamentaria, 2, 2);
+        $where[] = " c333_orcorgao = " . substr((string) $parametros->unidadeOrcamentaria, 0, 2);
+        $where[] = " c333_orcunidade = " . substr((string) $parametros->unidadeOrcamentaria, 2, 2);
     }
 
     if ($parametros->funcao !== '') {
@@ -767,18 +767,18 @@ function montarFiltrosEmissao($parametros)
 
 function esferaOrcamentaria($codigo)
 {
-    $esferas = array(
+    $esferas = [
         10 => '10 - F - Orçamento Fiscal',
         20 => '20 - S - Orçamento da Seguridade Social',
         30 => '30 - I - Orçamento de Investimento',
-    );
+    ];
 
     return $esferas[$codigo];
 }
 
 function identificadorUso($codigo)
 {
-    $identificadorUso = array(
+    $identificadorUso = [
         0 => '0 - Recursos não destinados à contrapartida ou à identificação de despesas destinadas ao mínimo da Saúde ou ao mínimo da Educação',
         1 => '1 - Contrapartida de empréstimos do BIRD',
         2 => '2 - Contrapartida de empréstimos do BID',
@@ -788,36 +788,36 @@ function identificadorUso($codigo)
         6 => '6 - Recursos não destinados à contrapartida, para identificação das despesas destinadas ao mínimo da Saúde',
         7 => '7 - Recursos de Contrapartida de Convênio',
         8 => '8 - Recursos não destinados à contrapartida, para identificação das despesas destinadas ao mínimo da Educação',
-    );
+    ];
 
     return $identificadorUso[$codigo];
 }
 
 function tipoDetalhamento($codigo)
 {
-    $tipoDetalhamento = array(
+    $tipoDetalhamento = [
         0 => '0 - Sem Detalhamento',
         1 => '1 - Cadastro',
         2 => '2 - Operação de Crédito',
         3 => '3 - Convênio',
-    );
+    ];
 
     return $tipoDetalhamento[$codigo];
 }
 
 function grupoFonteRecursos($codigo)
 {
-    $grupoFonteRecursos = array(
+    $grupoFonteRecursos = [
         1 => '1 - Recursos do Tesouro - Exercício Corrente',
         2 => '2 - Recursos de Outras Fontes - Exercício Corrente',
-    );
+    ];
 
     return $grupoFonteRecursos[$codigo];
 }
 
 function especificacaoFonte($codigo)
 {
-    $especificacaoFonte = array(
+    $especificacaoFonte = [
         '00' => '00 - Ordinários Não Provenientes de Impostos',
         '01' => '01 - Operações de Crédito',
         '02' => '02 - Recursos de Convênios',
@@ -842,18 +842,18 @@ function especificacaoFonte($codigo)
         '83' => '83 - Recursos de Alienação de Bens e Direitos do Patrimônio Público',
         '90' => '90 - Recursos do Tesouro - a Definir',
         '99' => '99 - Recursos Extraorçamentários',
-    );
+    ];
 
     return $especificacaoFonte[$codigo];
 }
 
 function identificadorResultadoPrimario($codigo)
 {
-    $identificadorResultadoPrimario = array(
+    $identificadorResultadoPrimario = [
         0 => '0 - Financeira',
         1 => '1 - Primária Obrigatória',
         2 => '2 - Primária Discricionária'
-    );
+    ];
 
     return $identificadorResultadoPrimario[$codigo];
 }
@@ -906,7 +906,7 @@ function cadastraPlanoPadrao($parametros, $previsaodespesa)
 
         $aLinhaPactos = pg_fetch_all($rsLinhasPac);
 
-        $item->linhaPacto = (!empty($aLinhaPactos) ? $aLinhaPactos : array());
+        $item->linhaPacto = (!empty($aLinhaPactos) ? $aLinhaPactos : []);
 
         return $item;
     });

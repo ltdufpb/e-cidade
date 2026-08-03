@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_movrel_classe.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clmovrel = new cl_movrel;
 $clrotulo = new rotulocampo;
 $clrotulo->label("r54_regist");
@@ -159,7 +159,7 @@ $queryst = "";
         db_input('r54_codrel',8,$Ir54_codrel,true,'hidden',3);
         db_input('r54_codeve',8,$Ir54_codeve,true,'hidden',3);
         db_input('r54_regist',8,$Ir54_regist,true,'hidden',3);
-        $repassa = array("r54_codrel"=>$r54_codrel,"r54_codeve"=>$r54_codeve,"r54_regist"=>$r54_regist);
+        $repassa = ["r54_codrel"=>$r54_codrel,"r54_codeve"=>$r54_codeve,"r54_regist"=>$r54_regist];
  
         $sql = $clmovrel->sql_query_dados(null,"r54_codrel,r54_codeve,r54_regist,z01_nome,r54_quant1,r54_quant2,r54_quant3,r54_lancad,rh05_recis","r54_lancad,z01_nome","r54_anomes = '".$ano.$mes."' $dbwhere",$ano,$mes);
 //	echo $sql;

@@ -46,33 +46,33 @@ class M8799Esocial extends PostgresMigration
     /**
      * Cria campos
      */
-    $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-    $aValues  = array(
-      array(1009305,'db103_perguntaidentificadora','bool','Define se a perguntaé uma chave primaria dos metadados','f', 'Pergunta Identificadora',1,'t','f','f',5,'text','Pergunta Identificadora'),
-      array(1009304,'db103_camposql','varchar(40)','Campo que salva o SQL para carga das avaliações','', 'Campo Carga',40,'t','f','f',0,'text','Campo Carga'),
-      array(1009306,'db101_cargadados','text','Campo com a query que será utilizada para a carga de dados','', ' Query Dados',1,'t','t','f',0,'text',' Query Dados'),
-      array(1009307,'db103_dblayoutcampo','int4','Coluna que vincula a coluna de um layout com a avaliação','0', 'Coluna Layout',10,'t','f','f',1,'text','Coluna Layout'),
-      array(1009308,'db104_valorresposta','varchar(50)','Campo para valor de resposta para opções ','', 'Valor Resposta',50,'t','t','f',0,'text','Valor Resposta'),
-      array(1009309,'db101_permiteedicao','bool','Determina se é permitido ou não a edição dos dados do formulário na rotina de manutenção.','f', 'Permite Edição',1,'t','f','f',5,'text','Permite Edição')
-    );
+    $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+    $aValues  = [
+      [1009305,'db103_perguntaidentificadora','bool','Define se a perguntaé uma chave primaria dos metadados','f', 'Pergunta Identificadora',1,'t','f','f',5,'text','Pergunta Identificadora'],
+      [1009304,'db103_camposql','varchar(40)','Campo que salva o SQL para carga das avaliações','', 'Campo Carga',40,'t','f','f',0,'text','Campo Carga'],
+      [1009306,'db101_cargadados','text','Campo com a query que será utilizada para a carga de dados','', ' Query Dados',1,'t','t','f',0,'text',' Query Dados'],
+      [1009307,'db103_dblayoutcampo','int4','Coluna que vincula a coluna de um layout com a avaliação','0', 'Coluna Layout',10,'t','f','f',1,'text','Coluna Layout'],
+      [1009308,'db104_valorresposta','varchar(50)','Campo para valor de resposta para opções ','', 'Valor Resposta',50,'t','t','f',0,'text','Valor Resposta'],
+      [1009309,'db101_permiteedicao','bool','Determina se é permitido ou não a edição dos dados do formulário na rotina de manutenção.','f', 'Permite Edição',1,'t','f','f',5,'text','Permite Edição']
+    ];
 
-    $table    = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+    $table    = $this->table('db_syscampo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     /**
      * db_sysarqcamp
      */
-    $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-    $aValues  = array(
-      array(2983,1009305,6,0),
-      array(2983,1009304,7,0),
-      array(2983,1009307,5,0),
-      array(2980,1009306,7,0),
-      array(2985,1009308,7,0),
-      array(2980,1009309,8,0)
-    );
-    $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+    $aValues  = [
+      [2983,1009305,6,0],
+      [2983,1009304,7,0],
+      [2983,1009307,5,0],
+      [2980,1009306,7,0],
+      [2985,1009308,7,0],
+      [2980,1009309,8,0]
+    ];
+    $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
@@ -97,19 +97,19 @@ class M8799Esocial extends PostgresMigration
   public function criarTabelas() {
 
 
-    $avaliacao = $this->table('avaliacao',  array('schema'=>'habitacao'));
-    $avaliacao->addColumn('db101_cargadados', 'text', array('null' => true))
-              ->addColumn('db101_permiteedicao', 'boolean', array('null' => false, 'default' => false))
+    $avaliacao = $this->table('avaliacao',  ['schema'=>'habitacao']);
+    $avaliacao->addColumn('db101_cargadados', 'text', ['null' => true])
+              ->addColumn('db101_permiteedicao', 'boolean', ['null' => false, 'default' => false])
               ->save();
 
-    $avaliacaoPergunta = $this->table('avaliacaopergunta',  array('schema'=>'habitacao'));
-    $avaliacaoPergunta->addColumn('db103_dblayoutcampo', 'integer', array('null' => true))
-                      ->addColumn('db103_perguntaidentificadora', 'boolean', array('null' => true, 'default' => false))
-                      ->addColumn('db103_camposql', 'string', array('null' => true))
+    $avaliacaoPergunta = $this->table('avaliacaopergunta',  ['schema'=>'habitacao']);
+    $avaliacaoPergunta->addColumn('db103_dblayoutcampo', 'integer', ['null' => true])
+                      ->addColumn('db103_perguntaidentificadora', 'boolean', ['null' => true, 'default' => false])
+                      ->addColumn('db103_camposql', 'string', ['null' => true])
                       ->save();
 
-    $avaliacaoPergunta = $this->table('avaliacaoperguntaopcao',  array('schema'=>'habitacao'));
-    $avaliacaoPergunta->addColumn('db104_valorresposta', 'string', array('null' => true))
+    $avaliacaoPergunta = $this->table('avaliacaoperguntaopcao',  ['schema'=>'habitacao']);
+    $avaliacaoPergunta->addColumn('db104_valorresposta', 'string', ['null' => true])
                       ->save();
   }
 

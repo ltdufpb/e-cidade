@@ -28,20 +28,20 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
-if(isset($HTTP_POST_VARS["procurar"])) {
+if(isset($_POST["procurar"])) {
   $campo = "descrnome";
   $campoaux = "nome";
 }
 
 if(!isset($arg)) {
-  $str = split("\?",$HTTP_SERVER_VARS['QUERY_STRING']);
-  $str1 = base64_decode($str[0]);
-  $str2 = base64_decode($str[1]);
+  $str = preg_split("#\\?#m",(string) $_SERVER['QUERY_STRING']);
+  $str1 = base64_decode((string) $str[0]);
+  $str2 = base64_decode((string) $str[1]);
 //  echo "$str1<br>$str2";
-  parse_str($str1);
+  parse_str($str1, $result);
   parse_str($str2);  
 }
 
@@ -71,10 +71,10 @@ if(isset($retorno)) {
 }
 //$arg = explode("==",$arg);
 //$argaux = explode("==",$argaux);
-if(empty($HTTP_POST_VARS["filtro"]))
-  $HTTP_POST_VARS["filtro"] = $arg;
+if(empty($_POST["filtro"]))
+  $_POST["filtro"] = $arg;
 else
-  $arg = $HTTP_POST_VARS["filtro"];
+  $arg = $_POST["filtro"];
   
   if( $argaux !=""){
      $chave = $campoaux;
@@ -91,8 +91,8 @@ else
 			  where z01_numcgm = ".$chave_valor."
 		      order by z01_numcgm";
         $result = db_query($sql);
-	    if(pg_numrows($result)==1){
-          $ret = explode("##",pg_result($result,0,0));
+	    if(pg_num_rows($result)==1){
+          $ret = explode("##",pg_fetch_result($result,0,0));
           echo "
           <script>
           window.blur();
@@ -136,8 +136,8 @@ else
 <td align="center" nowrap>
 
 <form name="form5" method="post">
-  <input type="text" name="filtro" value="<?=@$HTTP_POST_VARS['filtro']?>" onBlur="window.focus();">
-  <input type="hidden" name="arg" value="<?=@$HTTP_POST_VARS['arg']?>">
+  <input type="text" name="filtro" value="<?=@$_POST['filtro']?>" onBlur="window.focus();">
+  <input type="hidden" name="arg" value="<?=@$_POST['arg']?>">
   <input type="submit" name="procurar" value="Procurar">
 </form>
 </td>
@@ -145,7 +145,7 @@ else
 <tr>
 <td align="center">
 <?php 
-db_lov($sql,15,"db_numcgm.php?".base64_encode("campo=$campo&campoaux=$campoaux"),$HTTP_POST_VARS["filtro"]);
+db_lov($sql,15,"db_numcgm.php?".base64_encode("campo=$campo&campoaux=$campoaux"),$_POST["filtro"]);
 ?>
 </td>
 </tr>

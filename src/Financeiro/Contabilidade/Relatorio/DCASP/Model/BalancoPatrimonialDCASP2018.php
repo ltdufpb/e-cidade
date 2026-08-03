@@ -52,7 +52,7 @@ class BalancoPatrimonialDCASP2018 extends BalancoPatrimonialDCASP2017
 
         $recursosExercicioAtual = $this->getValoresRecursos($this->iAnoUsu, $mes);
 
-        $recursosExercicioAnterior = $this->lExibirExercicioAnterior ? $this->getValoresRecursos($this->iAnoUsu - 1, 12) : array();
+        $recursosExercicioAnterior = $this->lExibirExercicioAnterior ? $this->getValoresRecursos($this->iAnoUsu - 1, 12) : [];
 
         return $this->processaSuperavitDeficit($recursosExercicioAtual, $recursosExercicioAnterior);
     }

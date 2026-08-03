@@ -43,7 +43,7 @@ $resultedu                = eduparametros(db_getsession("DB_coddepto"));
 
 if ($diretor != "") {
 
-  $arr_assinatura = explode("|",$diretor);
+  $arr_assinatura = explode("|",(string) $diretor);
   $nome           = $arr_assinatura[1];
   $atividade      = $arr_assinatura[0]." desta escola,";
   $funcao         = $arr_assinatura[0].(trim($arr_assinatura[2])!=""?" ($arr_assinatura[2])":"");
@@ -131,12 +131,12 @@ for ($x=0;$x<$linhas;$x++) {
                                                                  );
     db_fieldsmemory($result_matr,0);
   }
-  $dia_nasc             = substr($ed47_d_nasc,8,2);
-  $mes_nasc             = substr($ed47_d_nasc,5,2);
-  $ano_nasc             = substr($ed47_d_nasc,0,4);
-  $dia_transf           = substr($data_transf,8,2);
-  $mes_transf           = substr($data_transf,5,2);
-  $ano_transf           = substr($data_transf,0,4);
+  $dia_nasc             = substr((string) $ed47_d_nasc,8,2);
+  $mes_nasc             = substr((string) $ed47_d_nasc,5,2);
+  $ano_nasc             = substr((string) $ed47_d_nasc,0,4);
+  $dia_transf           = substr((string) $data_transf,8,2);
+  $mes_transf           = substr((string) $data_transf,5,2);
+  $ano_transf           = substr((string) $data_transf,0,4);
 
   $ed47_i_censomunicnat = $ed47_i_censomunicnat!=""?$ed47_i_censomunicnat:".........................................
                                                                            ........................";
@@ -150,7 +150,7 @@ for ($x=0;$x<$linhas;$x++) {
   $pdf->multicell(192, 8,  "",                      "LR", "C", 0, 0);
   $pdf->setfont('arial', '', 9);
 
-  $aFiliacao = array();
+  $aFiliacao = [];
 
   if ($ed47_v_mae != '') {
     $aFiliacao[] = $ed47_v_mae;
@@ -225,14 +225,14 @@ for ($x=0;$x<$linhas;$x++) {
    for ($v = 0; $v < $cldiarioavaliacao->numrows; $v++) {
 
      db_fieldsmemory($result_diarioavaliacao,$v);
-     if (trim($ed37_c_tipo) == "NOTA") {
+     if (trim((string) $ed37_c_tipo) == "NOTA") {
 
        if ($resultedu == 'S'){
          $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 2, ",", ".") : "";
        } else {
          $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 0) : "";
        }
-     } else if (trim($ed37_c_tipo) == "NIVEL") {
+     } else if (trim((string) $ed37_c_tipo) == "NIVEL") {
        $aproveitamento = $ed72_c_valorconceito;
      } else {
        $aproveitamento = $ed72_t_parecer != "" ? "Parecer" : "";
@@ -251,7 +251,7 @@ for ($x=0;$x<$linhas;$x++) {
 
  if ($tipo == "TR") {
 
-   $sDescricaoEnsino = explode(" - ", $descr_ensino_anterior);
+   $sDescricaoEnsino = explode(" - ", (string) $descr_ensino_anterior);
    $pdf->cell(192, 4, "Aproveitamento na Turma {$descr_turma} - {$sDescricaoEnsino[0]}", 1, 1, "C", 1);
  } else {
    $pdf->cell(192, 4, "Aproveitamento na Turma {$descr_turma} - {$descr_serie}", 1, 1, "C", 1);
@@ -302,7 +302,7 @@ for ($x=0;$x<$linhas;$x++) {
 
   $rsProgressaoParcialAluno = $clprogressaoparcialaluno->sql_record($sSqlProgressaoParcialAluno);
 
-  $aDisciplinas = array();
+  $aDisciplinas = [];
   for ($iContProgressaoAluno = 0; $iContProgressaoAluno < $clprogressaoparcialaluno->numrows; $iContProgressaoAluno++) {
 
     $oProgressaoParcialAluno = db_utils::fieldsMemory($rsProgressaoParcialAluno, $iContProgressaoAluno);
@@ -350,13 +350,13 @@ for ($x=0;$x<$linhas;$x++) {
  if (empty($obs) && empty($sObsProgressaoParcialAluno) && empty($obs_transf) && empty($bolsa)) {
   $sObservacao = ".......................................................................";
  } else {
-    $sObservacao = "OBS: ".(trim($obs_transf) != '' ? $obs_transf."\n" : '').
+    $sObservacao = "OBS: ".(trim((string) $obs_transf) != '' ? $obs_transf."\n" : '').
                            (trim($sObsProgressaoParcialAluno) != '' ? $sObsProgressaoParcialAluno."\n" : '').
-                           (trim($obs) != '' ? $obs."\n" : '').
+                           (trim((string) $obs) != '' ? $obs."\n" : '').
                            (trim($bolsa) != '' ? $bolsa."\n" : '');
 
      if(mb_detect_encoding($sObservacao.'x', 'UTF-8','ISO-8859-1') == 'UTF-8' ){
-         $sObservacao = utf8_decode($sObservacao)  ;// Wallace 2018-06-18 Convertendo para ISO
+         $sObservacao = mb_convert_encoding($sObservacao, 'ISO-8859-1')  ;// Wallace 2018-06-18 Convertendo para ISO
      }
 
 

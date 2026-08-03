@@ -101,7 +101,7 @@ db_input("anexoarq",30,0,true,"file",1);
     <td valign="top"  align="center">  
     <?php 
 	 $sql = "select * from procfiscalfasesdoc where y107_procfiscalfases = $y107_procfiscalfases";
-	 $chavepri= array("y107_sequencial"=>@$y107_sequencial);
+	 $chavepri= ["y107_sequencial"=>@$y107_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $sql;
 	 $cliframe_alterar_excluir->campos  ="y107_sequencial,y107_procfiscalfases,y107_dtinc,y107_nomedoc";

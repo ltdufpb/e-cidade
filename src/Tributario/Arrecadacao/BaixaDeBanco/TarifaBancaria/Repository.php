@@ -98,7 +98,7 @@ class Repository
    */
   public function getDadosRelatorio(\Banco $banco, \DBDate $dataInicial, \DBDate $dataFinal)
   {
-    $campos = array(
+    $campos = [
       'disarq.codret as codigo_arquivo',
       'disarq.arqret as nome_arquivo',
       'formaarrecadacao.k178_descricao as forma_arrecadacao',
@@ -106,7 +106,7 @@ class Repository
       'sum(disbancotarifa.k179_valor) as total_tarifa',
       'sum(disbanco.vlrtot) as total_arrecadado',
       'count(*) as quantidade'
-    );
+    ];
 
         $where  = " disbanco.dtcredito between '{$dataInicial->getDate()}' and '{$dataFinal->getDate()}' ";
         $where .= " and cast(lpad(disarq.k15_codbco, 3, '0') as text) = '{$banco->getCodigo()}' ";

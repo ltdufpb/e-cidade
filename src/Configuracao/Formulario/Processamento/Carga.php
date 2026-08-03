@@ -122,11 +122,11 @@ class Carga
         $aPerguntasChaves = $this->formulario->getPerguntasIdentificadoras();
 
         if (!empty($aPerguntasChaves)) {
-            $aCampos = array();
+            $aCampos = [];
 
             foreach ($aPerguntasChaves as $pergunta) {
                 if ($pergunta->getCampoCarga() != '' && isset($dados->{$pergunta->getCampoCarga()})) {
-                    $aCampos[] = array("pergunta" => $pergunta, "resposta" => $dados->{$pergunta->getCampoCarga()});
+                    $aCampos[] = ["pergunta" => $pergunta, "resposta" => $dados->{$pergunta->getCampoCarga()}];
                 }
             }
             if (count($aCampos) == 0) {

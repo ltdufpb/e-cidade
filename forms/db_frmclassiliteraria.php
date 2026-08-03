@@ -71,7 +71,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("bi03_codigo"=>@$bi03_codigo,"bi03_classificacao"=>@$bi03_classificacao);
+   $chavepri= ["bi03_codigo"=>@$bi03_codigo,"bi03_classificacao"=>@$bi03_classificacao];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clclassiliteraria->sql_query("","*","bi03_classificacao");
    $cliframe_alterar_excluir->campos  ="bi03_codigo,bi03_classificacao";

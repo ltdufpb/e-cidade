@@ -58,7 +58,7 @@ db_app::import("exceptions.*");
  * 3 - Ambas
  */
 $oGet        = db_utils::postMemory($_GET);
-$aZonas      = array();
+$aZonas      = [];
 switch ($oGet->iZona) {
   
   case 1: 
@@ -80,7 +80,7 @@ $aAvaliacoes      = $oFiltroAvaliacao->daAvaliacao('AvaliacaoFamiliaCadastroUnic
                                      ->retornarAvaliacoes();
 
 
-$aFamilia  = array();
+$aFamilia  = [];
 
 
 /**
@@ -136,12 +136,12 @@ $iTotalRegistrosZona = 0;
 
 foreach ($aFamilia as $sZona => $aFamilia) {
   
-  uasort($aFamilia, "ordernarFamilias");
+  uasort($aFamilia, ordernarFamilias(...));
   foreach ($aFamilia as $oFamilia) {
     
     if ($lPrimeiroLaco || $oPdf->gety() > $oPdf->h - 15) {
       
-      setHeader($oPdf, $iHeigth, $sZona);
+      setHeader($oPdf, $iHeigth);
       $lPrimeiroLaco = false;
     }
     $nRenda = is_numeric($oFamilia->nRendaPerCapita) ? $oFamilia->nRendaPerCapita : 0; 
@@ -151,7 +151,7 @@ foreach ($aFamilia as $sZona => $aFamilia) {
     $oPdf->Cell(25,  $iHeigth, "{$oFamilia->iNis}",                 "TBR",  0);
     $oPdf->Cell(25,  $iHeigth, "{$oFamilia->iCodigoFamilia}",       "TBRL", 0);
     $oPdf->Cell(105, $iHeigth, "{$oFamilia->sResponsavel}",         "TBRL", 0);
-    $oPdf->Cell(100, $iHeigth, substr($oFamilia->sEndereco, 0, 90), "TBRL", 0);
+    $oPdf->Cell(100, $iHeigth, substr((string) $oFamilia->sEndereco, 0, 90), "TBRL", 0);
     $oPdf->Cell(25,  $iHeigth, $nRenda,                             "LTB",  1, "R");
     $iTotalRegistros ++;
     $iTotalRegistrosZona ++;
@@ -172,7 +172,7 @@ $oPdf->Cell(40,  $iHeigth, $iTotalRegistros,      "LTB",  1);
  */
 function ordernarFamilias($aArrayAtual, $aProximoArray){
 
-  return strcasecmp($aArrayAtual->sResponsavel, $aProximoArray->sResponsavel);
+  return strcasecmp((string) $aArrayAtual->sResponsavel, (string) $aProximoArray->sResponsavel);
 }
 
 /**

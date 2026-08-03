@@ -112,8 +112,8 @@ switch($oParam->exec) {
 
       $oExportacao->setAno((integer) $oParam->iAno);
       $oExportacao->setMes((integer) $oParam->iMes);
-      $oExportacao->setRotas(explode(',', $oParam->sRotas));
-      $oExportacao->setRuas(explode(',', $oParam->sRuas));
+      $oExportacao->setRotas(explode(',', (string) $oParam->sRotas));
+      $oExportacao->setRuas(explode(',', (string) $oParam->sRuas));
       $oExportacao->setHoraAtual($oDataAtual->format('H:i'));
       $oExportacao->setDataAtual(new DBDate($oDataAtual->format('Y-m-d')));
 
@@ -125,15 +125,15 @@ switch($oParam->exec) {
 
       $aArquivos = processarExportacao($oExportacao->getCodigo());
 
-      $oRetorno->aArquivos         = array();
+      $oRetorno->aArquivos         = [];
       $oRetorno->iCodigoExportacao = $oExportacao->getCodigo();
 
       foreach ($aArquivos as $oArquivo) {
 
-        $oRetorno->aArquivos[] = (object) array(
-          'nome' => urlencode($oArquivo->getBaseName()),
-          'link' => urlencode($oArquivo->getFilePath())
-        );
+        $oRetorno->aArquivos[] = (object) [
+          'nome' => urlencode((string) $oArquivo->getBaseName()),
+          'link' => urlencode((string) $oArquivo->getFilePath())
+        ];
       }
 
       $oRetorno->message = urlencode('Exportação Concluída.');
@@ -161,13 +161,13 @@ switch($oParam->exec) {
 
 	    	$iCodigoExportacao = (integer) $oParam->iCodigoExportacao;
 	      $aArquivos         = processarExportacao($iCodigoExportacao);
-	      $aArquivosRetorno  = array();
+	      $aArquivosRetorno  = [];
 
 	      foreach ($aArquivos as $oArquivo) {
 
 	      	$oStdArquivo = new stdClass;
-	      	$oStdArquivo->sNome = urlencode($oArquivo->getFileName());
-	      	$oStdArquivo->sCaminho = urlencode($oArquivo->getFilePath());
+	      	$oStdArquivo->sNome = urlencode((string) $oArquivo->getFileName());
+	      	$oStdArquivo->sCaminho = urlencode((string) $oArquivo->getFilePath());
 	      	$aArquivosRetorno[] = $oStdArquivo;
 	      }
 

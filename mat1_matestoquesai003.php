@@ -48,7 +48,7 @@ db_app::import("contabilidade.lancamento.*");
 db_app::import("Dotacao");
 db_app::import("contabilidade.planoconta.*");
 db_app::import("contabilidade.contacorrente.*");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatestoque = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;
 $clmatestoqueini = new cl_matestoqueini;

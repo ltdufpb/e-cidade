@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE db_leis
 class cl_db_leis { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $id_lei = 0; 
-   var $numerolei = null; 
-   var $datalei_dia = null; 
-   var $datalei_mes = null; 
-   var $datalei_ano = null; 
-   var $datalei = null; 
-   var $ementa = null; 
-   var $texto = null; 
-   var $documento = null; 
+   public $id_lei = 0; 
+   public $numerolei = null; 
+   public $datalei_dia = null; 
+   public $datalei_mes = null; 
+   public $datalei_ano = null; 
+   public $datalei = null; 
+   public $ementa = null; 
+   public $texto = null; 
+   public $documento = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  id_lei = int4 = Lei 
                  numerolei = varchar(20) = Número 
                  datalei = date = Data 
@@ -61,10 +61,10 @@ class cl_db_leis {
                  documento = text = Documento 
                  ";
    //funcao construtor da classe 
-   function cl_db_leis() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_leis"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -170,7 +170,7 @@ class cl_db_leis {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Leis () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Leis já Cadastrado";
@@ -197,10 +197,10 @@ class cl_db_leis {
       $this->atualizacampos();
      $sql = " update db_leis set ";
      $virgula = "";
-     if(trim($this->id_lei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_lei"])){ 
+     if(trim((string) $this->id_lei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_lei"])){ 
        $sql  .= $virgula." id_lei = $this->id_lei ";
        $virgula = ",";
-       if(trim($this->id_lei) == null ){ 
+       if(trim((string) $this->id_lei) == null ){ 
          $this->erro_sql = " Campo Lei nao Informado.";
          $this->erro_campo = "id_lei";
          $this->erro_banco = "";
@@ -210,10 +210,10 @@ class cl_db_leis {
          return false;
        }
      }
-     if(trim($this->numerolei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numerolei"])){ 
+     if(trim((string) $this->numerolei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numerolei"])){ 
        $sql  .= $virgula." numerolei = '$this->numerolei' ";
        $virgula = ",";
-       if(trim($this->numerolei) == null ){ 
+       if(trim((string) $this->numerolei) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "numerolei";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_db_leis {
          return false;
        }
      }
-     if(trim($this->datalei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["datalei_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["datalei_dia"] !="") ){ 
+     if(trim((string) $this->datalei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["datalei_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["datalei_dia"] !="") ){ 
        $sql  .= $virgula." datalei = '$this->datalei' ";
        $virgula = ",";
-       if(trim($this->datalei) == null ){ 
+       if(trim((string) $this->datalei) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "datalei_dia";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_db_leis {
        if(isset($GLOBALS["HTTP_POST_VARS"]["datalei_dia"])){ 
          $sql  .= $virgula." datalei = null ";
          $virgula = ",";
-         if(trim($this->datalei) == null ){ 
+         if(trim((string) $this->datalei) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "datalei_dia";
            $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_db_leis {
          }
        }
      }
-     if(trim($this->ementa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ementa"])){ 
+     if(trim((string) $this->ementa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ementa"])){ 
        $sql  .= $virgula." ementa = '$this->ementa' ";
        $virgula = ",";
-       if(trim($this->ementa) == null ){ 
+       if(trim((string) $this->ementa) == null ){ 
          $this->erro_sql = " Campo Ementa nao Informado.";
          $this->erro_campo = "ementa";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_db_leis {
          return false;
        }
      }
-     if(trim($this->texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["texto"])){ 
+     if(trim((string) $this->texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["texto"])){ 
        $sql  .= $virgula." texto = '$this->texto' ";
        $virgula = ",";
-       if(trim($this->texto) == null ){ 
+       if(trim((string) $this->texto) == null ){ 
          $this->erro_sql = " Campo texto nao Informado.";
          $this->erro_campo = "texto";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_db_leis {
          return false;
        }
      }
-     if(trim($this->documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["documento"])){ 
+     if(trim((string) $this->documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["documento"])){ 
        $sql  .= $virgula." documento = '$this->documento' ";
        $virgula = ",";
-       if(trim($this->documento) == null ){ 
+       if(trim((string) $this->documento) == null ){ 
          $this->erro_sql = " Campo Documento nao Informado.";
          $this->erro_campo = "documento";
          $this->erro_banco = "";
@@ -370,7 +370,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_leis";

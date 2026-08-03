@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoconcedente_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipoconcedente = new cl_tipoconcedente;
 $cltipoconcedente->rotulo->label("o37_sequencial");
 $cltipoconcedente->rotulo->label("o37_descricao");
@@ -98,9 +98,9 @@ $cltipoconcedente->rotulo->label("o37_descricao");
         }else{
            $sql = $cltipoconcedente->sql_query("",$campos,"o37_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o37_descricao)){
-          $repassa = array("chave_o37_sequencial"=>$chave_o37_sequencial,"chave_o37_descricao"=>$chave_o37_descricao);
+          $repassa = ["chave_o37_sequencial"=>$chave_o37_sequencial,"chave_o37_descricao"=>$chave_o37_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

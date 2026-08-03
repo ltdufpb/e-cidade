@@ -33,8 +33,8 @@ require_once(modification("classes/db_autousu_classe.php"));
 require_once(modification("classes/db_fandamusu_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clfandamusu = new cl_fandamusu;
 $clautousu   = new cl_autousu;
@@ -45,7 +45,7 @@ $db_opcao = 33;
 global $y39_codandam;
 global $y59_codauto;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 
   db_inicio_transacao();
   $db_opcao = 3;
@@ -79,7 +79,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 js_tabulacaoforms("form1","db_opcao",true,1,"db_opcao",true);
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clautousu->erro_status=="0"){
     $clautousu->erro(true,false);
     echo "<script>parent.iframe_fiscais.location.href='fis1_autousu001.php?y59_codauto=$y59_codauto&y39_codandam=$y39_codandam';</script>";

@@ -36,7 +36,7 @@ include(modification("classes/db_empresto_classe.php"));
 
 $clempresto     = new cl_empresto;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(isset($processar)){
   db_inicio_transacao();

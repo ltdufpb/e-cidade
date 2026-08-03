@@ -7,15 +7,15 @@ use ECidade\Tributario\Library\Entity;
 
 final class ParcelaRecibo extends Entity
 {
-    const VENCIMENTO_PARCELA    = 'VENCIMENTOPARCELA';
-    const VALOR_PARCELA         = 'VALORPARCELA';
-    const VALORJURO_PARCELA     = 'VALORJUROPARCELA';
-    const VALORMULTA_PARCELA    = 'VALORMULTAPARCELA';
-    const NUMPRE_PARCELA        = 'NUMPREPARCELA';
-    const CODIGOBARRAS_PARCELA  = 'CODIGOBARRASPARCELA';
-    const PARCELA               = 'PARCELA';
+    const string VENCIMENTO_PARCELA    = 'VENCIMENTOPARCELA';
+    const string VALOR_PARCELA         = 'VALORPARCELA';
+    const string VALORJURO_PARCELA     = 'VALORJUROPARCELA';
+    const string VALORMULTA_PARCELA    = 'VALORMULTAPARCELA';
+    const string NUMPRE_PARCELA        = 'NUMPREPARCELA';
+    const string CODIGOBARRAS_PARCELA  = 'CODIGOBARRASPARCELA';
+    const string PARCELA               = 'PARCELA';
 
-    const MAXIMO_PARCELAS       = 12;
+    const int MAXIMO_PARCELAS       = 12;
 
     private $vencimento;
 

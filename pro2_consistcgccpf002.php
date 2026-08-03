@@ -32,7 +32,7 @@ include(modification("classes/db_cgm_classe.php"));
 $clcgm = new cl_cgm;
 $clcgm->rotulo->label();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 
@@ -44,8 +44,8 @@ function CalculaCPF($CampoNumero){
   $RecebeCPF=$CampoNumero;
   //Retirar todos os caracteres que nao sejam 0-9
   $s="";
-  for ($x=1; $x<=strlen($RecebeCPF); $x=$x+1){
-    $ch=substr($RecebeCPF,$x-1,1);
+  for ($x=1; $x<=strlen((string) $RecebeCPF); $x=$x+1){
+    $ch=substr((string) $RecebeCPF,$x-1,1);
     if (ord($ch)>=48 && ord($ch)<=57){
       $s=$s.$ch;
     }
@@ -110,8 +110,8 @@ function CalculaCNPJ($CampoNumero){
   global $zerados;
   $RecebeCNPJ=${"CampoNumero"};
   $s="";
-  for ($x=1; $x<=strlen($RecebeCNPJ); $x=$x+1){
-    $ch=substr($RecebeCNPJ,$x-1,1);
+  for ($x=1; $x<=strlen((string) $RecebeCNPJ); $x=$x+1){
+    $ch=substr((string) $RecebeCNPJ,$x-1,1);
     if (ord($ch)>=48 && ord($ch)<=57){
       $s=$s.$ch;
     }
@@ -211,7 +211,7 @@ for($x = 0; $x < $clcgm->numrows;$x++){
    if ($z01_cgccpf==""&&$branco=='n'){
      continue;
    }else{
-     $tam_cgccpf=strlen($z01_cgccpf);
+     $tam_cgccpf=strlen((string) $z01_cgccpf);
      if ($tam_cgccpf==14){
        $imprime = CalculaCNPJ($z01_cgccpf);
      }else{

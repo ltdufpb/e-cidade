@@ -34,8 +34,8 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 
 
@@ -200,9 +200,9 @@ function js_emite(){
                     </td>
                     <td colspan='3'>
                       <?php 
-                        $aQuebra = array( 'n'=>'Não',
+                        $aQuebra = [ 'n'=>'Não',
                                           's'=>'Sim'
-                                        );
+                                        ];
                         db_select('quebraPagina',$aQuebra,true,2," style='width:275px;'"); 
                       ?>          
                     </td>
@@ -214,9 +214,9 @@ function js_emite(){
                     </td>
                     <td colspan='3'>
                       <?php 
-                        $aOrdem = array( 'm'=>'Matrícula',
+                        $aOrdem = [ 'm'=>'Matrícula',
                                          'n'=>'Nome'
-                                        );
+                                        ];
                         db_select('ordem',$aOrdem,true,2," style='width:275px;'"); 
                       ?>          
                     </td>
@@ -227,9 +227,9 @@ function js_emite(){
                     </td>
                     <td colspan='3'>
                       <?php 
-                        $aTipo  = array( 'a'=>'Arquivo',
+                        $aTipo  = [ 'a'=>'Arquivo',
                                          'r'=>'Relatório'
-                                        );
+                                        ];
                         db_select('tipo',$aTipo,true,2," style='width:275px;'"); 
                       ?>          
                     </td>

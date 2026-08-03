@@ -9,11 +9,8 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
 class TrabalhoIntermitente extends ProcessamentoAbstract implements ProcessamentoInterface
 {
-    private $cgm;
-
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
-        $this->cgm = $cgm;
     }
 
     public function processar()

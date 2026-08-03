@@ -42,7 +42,7 @@ class DataPagamentoFolhaRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param array|int $ids
@@ -68,7 +68,7 @@ class DataPagamentoFolhaRepository
      * @param DataPagamentoFolha|null $dataPagamentoFolha
      * @throws Exception
      */
-    public function delete(DataPagamentoFolha $dataPagamentoFolha = null)
+    public function delete(?DataPagamentoFolha $dataPagamentoFolha = null)
     {
         $id = $dataPagamentoFolha instanceof DataPagamentoFolha ? $dataPagamentoFolha->getSequencial() : null;
 
@@ -86,7 +86,7 @@ class DataPagamentoFolhaRepository
      * @return bool|DataPagamentoFolha
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_rhdatapagamentofolha();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -110,13 +110,13 @@ class DataPagamentoFolhaRepository
      * @return DataPagamentoFolha[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_rhdatapagamentofolha();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $datasPagamentoFolha = array();
+        $datasPagamentoFolha = [];
 
         if (pg_num_rows($rs) === 0) {
             return $datasPagamentoFolha;
@@ -143,7 +143,7 @@ class DataPagamentoFolhaRepository
             throw new Exception("Não foi possível buscar a(s) data(s) de pagamento(s).\nContate o suporte.");
         }
 
-        $datasPagamentoFolha = array();
+        $datasPagamentoFolha = [];
 
         if (pg_num_rows($rs) === 0) {
             return $datasPagamentoFolha;
@@ -254,7 +254,7 @@ class DataPagamentoFolhaRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
         return $this;
     }
 

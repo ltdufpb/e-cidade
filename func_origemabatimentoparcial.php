@@ -80,7 +80,7 @@ if ( $clAbatimento->numrows == 0 ) {
           <tr>
             <td align="center">
               <b style="font-size:13px">
-                <?php echo" DADOS DO ".strtoupper($oAbatimento->k126_descricao); ?>
+                <?php echo" DADOS DO ".strtoupper((string) $oAbatimento->k126_descricao); ?>
               </b>
             </td>
           </tr>

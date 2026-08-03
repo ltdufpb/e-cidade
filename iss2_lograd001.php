@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 $clrotulo = new rotulocampo;
@@ -114,7 +114,7 @@ function js_emite(){
         </td>
         <td>
 	  <?php 
-	  $tipo_ordem = array("t"=>"Todos","c"=>"Não Baixados" ,"b"=>"Baixados");
+	  $tipo_ordem = ["t"=>"Todos","c"=>"Não Baixados" ,"b"=>"Baixados"];
 	  db_select("baix",$tipo_ordem,true,2); ?>
         </td>
       </tr>

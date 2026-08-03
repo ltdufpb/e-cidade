@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_codmovsefip_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcodmovsefip = new cl_codmovsefip;
 $clcodmovsefip->rotulo->label("r66_anousu");
 $clcodmovsefip->rotulo->label("r66_mesusu");
@@ -124,9 +124,9 @@ $clcodmovsefip->rotulo->label("r66_descr");
         }else{
            $sql = $clcodmovsefip->sql_query(DBPessoal::getAnoFolha(), DBPessoal::getMesFolha(),"",$campos,"r66_anousu desc#r66_mesusu desc#r66_codigo",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_r66_descr)){
-          $repassa = array("chave_r66_anousu"=>db_getsession('DB_anousu'),"chave_r66_descr"=>$chave_r66_descr);
+          $repassa = ["chave_r66_anousu"=>db_getsession('DB_anousu'),"chave_r66_descr"=>$chave_r66_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

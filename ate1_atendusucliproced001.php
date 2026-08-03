@@ -38,8 +38,8 @@ $clatendusucliproced = new cl_atendusucliproced;
 $cldb_modulos = new cl_db_modulos;
 $cldb_menu = new cl_db_menu;
 $cldb_itensmenu = new cl_db_itensmenu;
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 if(isset($incluir)){
   db_inicio_transacao();
   $clatendusucliproced->excluir(null,"at82_usucliitem = ".$at82_usucliitem);
@@ -48,7 +48,7 @@ if(isset($incluir)){
     $sqlerro = false;
     if(isset($CHECK)){
       for($i=0; $i<count($CHECK); $i++) {
-        $aux = explode("#",$CHECK[$i]);
+        $aux = explode("#",(string) $CHECK[$i]);
         $clatendusucliproced->at82_usucliitem = $at82_usucliitem;
         $clatendusucliproced->at82_id_item = $aux[0];
         $clatendusucliproced->at82_id_item_filho = $aux[1];

@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -140,8 +140,8 @@ $aux = new cl_arquivo_auxiliar;
 				 echo "            <select name=\"".$nomeobjeto."[]\" id=\"".$nomeobjeto."\" size=\"".$linhas."\" style=\"width:".$vwidth."px\" multiple onDblClick=\"js_excluir_item".$nomeobjeto."()\">\n";
                  if (!empty($sql_exec)){
                           $result = db_query($sql_exec);
-                   for($i=0;$i<pg_numrows($result);$i++){
-                      echo "              <option value='".pg_result($result,$i,$codigo)."'>".pg_result($result,$i,$descr)."</option>\n";
+                   for($i=0;$i<pg_num_rows($result);$i++){
+                      echo "              <option value='".pg_fetch_result($result,$i,$codigo)."'>".pg_fetch_result($result,$i,$descr)."</option>\n";
                    }
                  }
                  echo "            </select> \n";
@@ -169,7 +169,7 @@ $aux = new cl_arquivo_auxiliar;
             <table border="0">
               <tr>
 			        <td><b> Distribuição Zerada</b></td>
-                    <td><?php  $tipo_que = array("S"=>"Sim","N"=>"Não");
+                    <td><?php  $tipo_que = ["S"=>"Sim","N"=>"Não"];
 	                db_select("distribu",$tipo_que,true,2,""); ?></td>
               </tr>
 			  <tr>
@@ -178,7 +178,7 @@ $aux = new cl_arquivo_auxiliar;
 	             </td>
 				 <td>
 					<?php 
-			            $tipo_que = array("n"=>"Nenhuma","d"=>"Deposito");
+			            $tipo_que = ["n"=>"Nenhuma","d"=>"Deposito"];
 	                db_select("quebra",$tipo_que,true,2,"onchange='js_testord(this.value);'"); ?>
                  </td>
 	           </tr>
@@ -188,16 +188,16 @@ $aux = new cl_arquivo_auxiliar;
 	             </td>
 				 <td>
 					 <?php 
-	                 $tipo_ordem = array("a"=>"Alfabética","n"=>"Numerica");
+	                 $tipo_ordem = ["a"=>"Alfabética","n"=>"Numerica"];
 	                 db_select("ordem",$tipo_ordem,true,2); ?>
                   </td>
 	           </tr>
 	           <td><b> Materiais</b></td>
 	           <td><?php 
 	           if(isset($lmater)){
-	             $tipo_que = array("2"=>"Geral");
+	             $tipo_que = ["2"=>"Geral"];
 	           } else {
-	             $tipo_que = array("1"=>"Somente Medicamentos", "2"=>"Geral");
+	             $tipo_que = ["1"=>"Somente Medicamentos", "2"=>"Geral"];
 	           }
 	           db_select("materiais",$tipo_que,true,2,""); ?></td>
 	           </tr>

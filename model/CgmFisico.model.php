@@ -216,7 +216,7 @@ class CgmFisico extends CgmBase
     /**
      * familiares do Cgm
      */
-    protected $aFamiliares = array();
+    protected $aFamiliares = [];
 
     /**
      * @type string
@@ -660,23 +660,13 @@ class CgmFisico extends CgmBase
      */
     public function getDescrEstadoCivil()
     {
-        switch ($this->iEstadoCivil) {
-            case '1':
-                $sEstadoCivil = 'Solteiro';
-                break;
-            case '2':
-                $sEstadoCivil = 'Casado';
-                break;
-            case '3':
-                $sEstadoCivil = 'Viúvo';
-                break;
-            case '4':
-                $sEstadoCivil = 'Divorciado';
-                break;
-            default:
-                $sEstadoCivil='';
-                break;
-        }
+        $sEstadoCivil = match ($this->iEstadoCivil) {
+            '1' => 'Solteiro',
+            '2' => 'Casado',
+            '3' => 'Viúvo',
+            '4' => 'Divorciado',
+            default => '',
+        };
         return $sEstadoCivil;
     }
 
@@ -701,17 +691,11 @@ class CgmFisico extends CgmBase
      */
     public function getDescrNacionalidade()
     {
-        switch ($this->iNacionalidade) {
-            case 1:
-                return "Brasileira";
-                break;
-            case 2:
-                return "Estrangeira";
-                break;
-            default:
-                return "";
-                break;
-        }
+        return match ($this->iNacionalidade) {
+            1 => "Brasileira",
+            2 => "Estrangeira",
+            default => "",
+        };
     }
 
     /**
@@ -773,6 +757,7 @@ class CgmFisico extends CgmBase
     /**
      * @return string
      */
+    #[\Override]
     public function getNomeMae()
     {
         return $this->sNomeMae;
@@ -781,6 +766,7 @@ class CgmFisico extends CgmBase
     /**
      * @param $sNomeMae
      */
+    #[\Override]
     public function setNomeMae($sNomeMae)
     {
         $this->sNomeMae = $sNomeMae;
@@ -1080,6 +1066,7 @@ class CgmFisico extends CgmBase
      * é alterado o registro apartir do código (numcgm) informado
      * @throws Exception
      */
+    #[\Override]
     public function save()
     {
         $sMsgErro = 'Falha ao salvar CGM Fisico';
@@ -1392,7 +1379,7 @@ class CgmFisico extends CgmBase
     }
     function removerFamiliares()
     {
-        $this->aFamiliares = array();
+        $this->aFamiliares = [];
     }
 
     /**
@@ -1637,12 +1624,13 @@ class CgmFisico extends CgmBase
     /**
      * @return array
      */
+    #[\Override]
     public function toArray()
     {
-        return array(
+        return [
             'numero' => $this->getNumero(),
             'nome' => $this->getNome()
-        );
+        ];
     }
 
     /**

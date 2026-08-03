@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE slipcorrente
 class cl_slipcorrente { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k112_sequencial = 0; 
-   var $k112_id = 0; 
-   var $k112_data_dia = null; 
-   var $k112_data_mes = null; 
-   var $k112_data_ano = null; 
-   var $k112_data = null; 
-   var $k112_autent = 0; 
-   var $k112_slip = 0; 
-   var $k112_ativo = 'f'; 
+   public $k112_sequencial = 0; 
+   public $k112_id = 0; 
+   public $k112_data_dia = null; 
+   public $k112_data_mes = null; 
+   public $k112_data_ano = null; 
+   public $k112_data = null; 
+   public $k112_autent = 0; 
+   public $k112_slip = 0; 
+   public $k112_ativo = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k112_sequencial = int4 = Código Sequencial 
                  k112_id = int4 = Caixa 
                  k112_data = date = Data Autenticacao 
@@ -61,10 +61,10 @@ class cl_slipcorrente {
                  k112_ativo = bool = Vinculação Ativa 
                  ";
    //funcao construtor da classe 
-   function cl_slipcorrente() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("slipcorrente"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_slipcorrente {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k112_sequencial = pg_result($result,0,0); 
+       $this->k112_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from slipcorrente_k112_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k112_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k112_sequencial)){
          $this->erro_sql = " Campo k112_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_slipcorrente {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "LIgacao do slip com as arrecadocoes realizadas ($this->k112_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "LIgacao do slip com as arrecadocoes realizadas já Cadastrado";
@@ -218,15 +218,15 @@ class cl_slipcorrente {
      $resaco = $this->sql_record($this->sql_query_file($this->k112_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14533,'$this->k112_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2560,14533,'','".AddSlashes(pg_result($resaco,0,'k112_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2560,14534,'','".AddSlashes(pg_result($resaco,0,'k112_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2560,14535,'','".AddSlashes(pg_result($resaco,0,'k112_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2560,14537,'','".AddSlashes(pg_result($resaco,0,'k112_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2560,14538,'','".AddSlashes(pg_result($resaco,0,'k112_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2560,14539,'','".AddSlashes(pg_result($resaco,0,'k112_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2560,14533,'','".AddSlashes(pg_fetch_result($resaco,0,'k112_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2560,14534,'','".AddSlashes(pg_fetch_result($resaco,0,'k112_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2560,14535,'','".AddSlashes(pg_fetch_result($resaco,0,'k112_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2560,14537,'','".AddSlashes(pg_fetch_result($resaco,0,'k112_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2560,14538,'','".AddSlashes(pg_fetch_result($resaco,0,'k112_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2560,14539,'','".AddSlashes(pg_fetch_result($resaco,0,'k112_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_slipcorrente {
       $this->atualizacampos();
      $sql = " update slipcorrente set ";
      $virgula = "";
-     if(trim($this->k112_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_sequencial"])){ 
+     if(trim((string) $this->k112_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_sequencial"])){ 
        $sql  .= $virgula." k112_sequencial = $this->k112_sequencial ";
        $virgula = ",";
-       if(trim($this->k112_sequencial) == null ){ 
+       if(trim((string) $this->k112_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "k112_sequencial";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_slipcorrente {
          return false;
        }
      }
-     if(trim($this->k112_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_id"])){ 
+     if(trim((string) $this->k112_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_id"])){ 
        $sql  .= $virgula." k112_id = $this->k112_id ";
        $virgula = ",";
-       if(trim($this->k112_id) == null ){ 
+       if(trim((string) $this->k112_id) == null ){ 
          $this->erro_sql = " Campo Caixa nao Informado.";
          $this->erro_campo = "k112_id";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_slipcorrente {
          return false;
        }
      }
-     if(trim($this->k112_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k112_data_dia"] !="") ){ 
+     if(trim((string) $this->k112_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k112_data_dia"] !="") ){ 
        $sql  .= $virgula." k112_data = '$this->k112_data' ";
        $virgula = ",";
-       if(trim($this->k112_data) == null ){ 
+       if(trim((string) $this->k112_data) == null ){ 
          $this->erro_sql = " Campo Data Autenticacao nao Informado.";
          $this->erro_campo = "k112_data_dia";
          $this->erro_banco = "";
@@ -277,7 +277,7 @@ class cl_slipcorrente {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k112_data_dia"])){ 
          $sql  .= $virgula." k112_data = null ";
          $virgula = ",";
-         if(trim($this->k112_data) == null ){ 
+         if(trim((string) $this->k112_data) == null ){ 
            $this->erro_sql = " Campo Data Autenticacao nao Informado.";
            $this->erro_campo = "k112_data_dia";
            $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_slipcorrente {
          }
        }
      }
-     if(trim($this->k112_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_autent"])){ 
+     if(trim((string) $this->k112_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_autent"])){ 
        $sql  .= $virgula." k112_autent = $this->k112_autent ";
        $virgula = ",";
-       if(trim($this->k112_autent) == null ){ 
+       if(trim((string) $this->k112_autent) == null ){ 
          $this->erro_sql = " Campo Seq. Autenticação nao Informado.";
          $this->erro_campo = "k112_autent";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_slipcorrente {
          return false;
        }
      }
-     if(trim($this->k112_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_slip"])){ 
+     if(trim((string) $this->k112_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_slip"])){ 
        $sql  .= $virgula." k112_slip = $this->k112_slip ";
        $virgula = ",";
-       if(trim($this->k112_slip) == null ){ 
+       if(trim((string) $this->k112_slip) == null ){ 
          $this->erro_sql = " Campo Slip nao Informado.";
          $this->erro_campo = "k112_slip";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_slipcorrente {
          return false;
        }
      }
-     if(trim($this->k112_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_ativo"])){ 
+     if(trim((string) $this->k112_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k112_ativo"])){ 
        $sql  .= $virgula." k112_ativo = '$this->k112_ativo' ";
        $virgula = ",";
-       if(trim($this->k112_ativo) == null ){ 
+       if(trim((string) $this->k112_ativo) == null ){ 
          $this->erro_sql = " Campo Vinculação Ativa nao Informado.";
          $this->erro_campo = "k112_ativo";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_slipcorrente {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14533,'$this->k112_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k112_sequencial"]) || $this->k112_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2560,14533,'".AddSlashes(pg_result($resaco,$conresaco,'k112_sequencial'))."','$this->k112_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2560,14533,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k112_sequencial'))."','$this->k112_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k112_id"]) || $this->k112_id != "")
-           $resac = db_query("insert into db_acount values($acount,2560,14534,'".AddSlashes(pg_result($resaco,$conresaco,'k112_id'))."','$this->k112_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2560,14534,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k112_id'))."','$this->k112_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k112_data"]) || $this->k112_data != "")
-           $resac = db_query("insert into db_acount values($acount,2560,14535,'".AddSlashes(pg_result($resaco,$conresaco,'k112_data'))."','$this->k112_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2560,14535,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k112_data'))."','$this->k112_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k112_autent"]) || $this->k112_autent != "")
-           $resac = db_query("insert into db_acount values($acount,2560,14537,'".AddSlashes(pg_result($resaco,$conresaco,'k112_autent'))."','$this->k112_autent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2560,14537,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k112_autent'))."','$this->k112_autent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k112_slip"]) || $this->k112_slip != "")
-           $resac = db_query("insert into db_acount values($acount,2560,14538,'".AddSlashes(pg_result($resaco,$conresaco,'k112_slip'))."','$this->k112_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2560,14538,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k112_slip'))."','$this->k112_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k112_ativo"]) || $this->k112_ativo != "")
-           $resac = db_query("insert into db_acount values($acount,2560,14539,'".AddSlashes(pg_result($resaco,$conresaco,'k112_ativo'))."','$this->k112_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2560,14539,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k112_ativo'))."','$this->k112_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_slipcorrente {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14533,'$k112_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2560,14533,'','".AddSlashes(pg_result($resaco,$iresaco,'k112_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2560,14534,'','".AddSlashes(pg_result($resaco,$iresaco,'k112_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2560,14535,'','".AddSlashes(pg_result($resaco,$iresaco,'k112_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2560,14537,'','".AddSlashes(pg_result($resaco,$iresaco,'k112_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2560,14538,'','".AddSlashes(pg_result($resaco,$iresaco,'k112_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2560,14539,'','".AddSlashes(pg_result($resaco,$iresaco,'k112_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2560,14533,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k112_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2560,14534,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k112_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2560,14535,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k112_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2560,14537,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k112_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2560,14538,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k112_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2560,14539,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k112_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from slipcorrente
@@ -462,7 +462,7 @@ class cl_slipcorrente {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:slipcorrente";
@@ -477,7 +477,7 @@ class cl_slipcorrente {
    function sql_query ( $k112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_slipcorrente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_slipcorrente {
    function sql_query_file ( $k112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_slipcorrente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

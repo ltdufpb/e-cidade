@@ -33,18 +33,18 @@ require_once(modification("classes/db_undmedhorario_ext_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']); // ta com o globals desativado no php -- Crestani
+parse_str((string) $_SERVER['QUERY_STRING'], $result); // ta com o globals desativado no php -- Crestani
 
 
 class calendario{
-  var $sem;//Array com os dias da semana como índice
-  var $mes;//Array com os meses do ano
-  var $nome_objeto_data;
-  var $shutdown_function = "";
-  var $centralagenda="N";
+  public $sem;//Array com os dias da semana como índice
+  public $mes;//Array com os meses do ano
+  public $nome_objeto_data;
+  public $shutdown_function = "";
+  public $centralagenda="N";
   function inicializa(){//Atribui valores para $sem e $mes.
-    $this->sem=array('Sun'=>1,'Mon'=>2,'Tue'=>3,'Wed'=>4,'Thu'=>5,'Fri'=>6,'Sat'=>7);
-    $this->mes=array('1'=>'JANEIRO',
+    $this->sem=['Sun'=>1,'Mon'=>2,'Tue'=>3,'Wed'=>4,'Thu'=>5,'Fri'=>6,'Sat'=>7];
+    $this->mes=['1'=>'JANEIRO',
                      '2'=>'FEVEREIRO',
                      '3'=>'MARÇO',
                      '4'=>'ABRIL',
@@ -56,7 +56,7 @@ class calendario{
                      '10'=>'OUTUBRO',
                      '11'=>'NOVEMBRO',
                      '12'=>'DEZEMBRO'
-                    );
+                    ];
   }
 
   function aux($i){//Complementa a tabela com espaços em branco
@@ -76,7 +76,7 @@ class calendario{
     return false;
   }
 
-  function cria($dia, $mes, $ano, $marca=0, $str_where, $result_unidademedico ,$fechar=false ) {
+  function cria($dia, $mes, $ano, $marca=0, $str_where = null, $result_unidademedico = null ,$fechar=false ) {
 
     $this->inicializa();
     $last  = date("d", mktime (0,0,0,$mes+1,0,$ano));
@@ -194,7 +194,7 @@ class calendario{
           if ($iTam > 0) {
 
             $sMotivosAusencias      = "";
-            $sMotivosAusenciasHoras = array();
+            $sMotivosAusenciasHoras = [];
             $sSep                   = "";
             $iDisponivel            = 0;
             for ($iY = 0; $iY < $iTam; $iY++) {
@@ -508,10 +508,7 @@ if( ( isset($sd27_i_rhcbo) && (int)@$sd27_i_rhcbo != 0 ) ||( isset($sd27_i_codig
     $clcalendario->cria(date("d",db_getsession("DB_datausu")),
                         date("$mes_solicitado"),
                         date("$ano_solicitado"),
-                        1,
-                        $str_where,
-                        $result,
-                        $fechar );
+                        1 );
   } else {
     echo "Nehuma informação encontrada";
   }

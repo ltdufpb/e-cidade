@@ -48,7 +48,7 @@ abstract class PadBuilder
 
     protected function formatar($input, $length, $padString, $type)
     {
-        return str_pad($input, $length, $padString, $type);
+        return str_pad((string) $input, $length, $padString, $type);
     }
 
     /**
@@ -63,7 +63,7 @@ abstract class PadBuilder
 
     protected function formataNumerico($valor, $length)
     {
-        $numero = preg_replace("/[^\d]/s", '', $valor);
+        $numero = preg_replace("/[^\d]/s", '', (string) $valor);
         return $this->formatar($numero, $length, '0', STR_PAD_LEFT);
     }
 
@@ -92,7 +92,7 @@ abstract class PadBuilder
 
     public function formataData($data)
     {
-        $data = implode(array_reverse(explode('-', $data)));
+        $data = implode('', array_reverse(explode('-', (string) $data)));
         return $data;
     }
 }

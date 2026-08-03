@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_lab_grupo_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -62,9 +62,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $cllab_grupo->sql_query("",$campos,"la66_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la66_codigo)){
-          $repassa = array("chave_la66_codigo"=>$chave_la66_codigo,"chave_la66_descricao"=>$chave_la66_descricao);
+          $repassa = ["chave_la66_codigo"=>$chave_la66_codigo,"chave_la66_descricao"=>$chave_la66_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

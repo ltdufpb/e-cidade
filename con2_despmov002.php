@@ -41,7 +41,7 @@ require_once(modification("classes/db_conlancamemp_classe.php"));
 require_once(modification("classes/db_conlancamdot_classe.php"));
 require_once(modification("classes/db_conlancamdig_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clconlancamval = new cl_conlancamval;
@@ -63,12 +63,12 @@ $clrotulo->label("c60_descr");
 $clrotulo->label("c53_descr");
 $clrotulo->label("c53_coddoc");
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-$numero_instit = pg_numrows($resultinst);
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+$numero_instit = pg_num_rows($resultinst);
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $descr_inst .= $xvirg.$nomeinst ;
   $xvirg = ', ';
@@ -154,7 +154,7 @@ $yordem
 $result = db_query($sql);
 
 //db_criatabela($result);exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Movimentações para esses dados.');
 
@@ -183,7 +183,7 @@ $total_anupago = 0;
 $cor = 0;
 $emp = 0;
 $cgm = 0;
-   for($x=0;$x<pg_numrows($result);$x++){
+   for($x=0;$x<pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
 
    if($cgm != $e60_numcgm && $troca != 1 && $credor == 's'){

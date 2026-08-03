@@ -133,7 +133,7 @@ $oGet  = db_utils::postMemory($_GET);
 
   $rsCreditosDisponiveis    = db_query($sSqlCreditosDisponiveis);
   $iLinhasCreditos          = pg_num_rows($rsCreditosDisponiveis);
-  $aDadosSaida = array();
+  $aDadosSaida = [];
 
   /**
    * BUSCA OS DESCONTOS CONCEDIDOS
@@ -141,7 +141,7 @@ $oGet  = db_utils::postMemory($_GET);
    */
   // TODO: Verificar se deve aparecer no relatório das compensações utilizadas
   $aDescontos = !isset($sChavePesquisa) ?
-                array() :
+                [] :
                 Desconto::getDescontosPorOrigem($sTipoPesquisa, $sChavePesquisa);
 
   foreach ( $aDescontos as $oDescontos) {
@@ -277,7 +277,7 @@ $oGet  = db_utils::postMemory($_GET);
 
   $rsTransferencia      = db_query($sqlTransferenciaOrigemDestino);
 
-  $origemAbatimento = array();
+  $origemAbatimento = [];
   $idsAbatimentoDevolucao = '';
   while ($row = pg_fetch_assoc($rsTransferencia)) {
     $idsAbatimentoDevolucao .= $idsAbatimentoDevolucao ? ", {$row['k158_abatimentodestino']}" : $row['k158_abatimentodestino'];
@@ -442,10 +442,10 @@ $oGet  = db_utils::postMemory($_GET);
         <td align="center" nowrap ><?=$oCredito->k125_sequencial ?>&nbsp;</td>
         <td align="center" nowrap ><?=$oCredito->k170_numpre ?>&nbsp;</td>
         <td align="center" nowrap ><?=$oCredito->k01_descr ?>&nbsp;</td>
-        <td align="center" nowrap ><?= (isset($oCredito->k00_receit) ? $oCredito->k00_receit : ' - ') ?></td>
+        <td align="center" nowrap ><?= ($oCredito->k00_receit ?? ' - ') ?></td>
         <td align="right"  nowrap ><?=db_formatar($oCredito->k00_valor,'f')   ?>&nbsp;</td>
         <td align="center" nowrap ><?=db_formatar($oCredito->k125_datalanc, 'd') ?>&nbsp;</td>
-        <td align="left" nowrap ><?= (isset($oCredito->k157_observacao) ? $oCredito->k157_observacao  : '') ?>&nbsp;</td>
+        <td align="left" nowrap ><?= ($oCredito->k157_observacao ?? '') ?>&nbsp;</td>
       </tr>
     <?php 
     }

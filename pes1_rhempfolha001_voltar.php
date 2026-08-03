@@ -53,7 +53,7 @@ $clorcdotacao = new cl_orcdotacao;
 $clorcelemento = new cl_orcelemento;
 $clorcparametro = new cl_orcparametro;
 $cldb_config = new cl_db_config;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $passa = false;
 if(isset($confirma) || isset($gera)){
@@ -124,7 +124,7 @@ if(isset($confirma) || isset($gera)){
 //	     echo $sql;exit;
       $result  = db_query($sql);
   //    db_criatabela($result);
-      $numrows = pg_numrows($result);
+      $numrows = pg_num_rows($result);
       $sqlerro = false;
       db_inicio_transacao();
       for($i=0;$i<$numrows;$i++){
@@ -235,8 +235,8 @@ if(isset($confirma) || isset($gera)){
 
 
 	  //// específica para Sapiranga ver depois como acertar via sistema 03/10/2005
-	  
-          if(trim(strtoupper($munic)) == "SAPIRANGA" ){
+
+          if(trim(strtoupper((string) $munic)) == "SAPIRANGA" ){
    	     if($rubric == '0039' || $rubric == '2039'){
 	        if($anousu == 2005){
                   $orgao = 7;
@@ -250,7 +250,7 @@ if(isset($confirma) || isset($gera)){
 	          $recurso  = 30;
 		}
 	     }
-	  
+
 	     if($rubric == '0054' || $rubric == '0150' ||$rubric == '2054' || $rubric == '2150'){
 	        if($anousu == 2005){
                   $orgao    = 8;
@@ -279,10 +279,10 @@ if(isset($confirma) || isset($gera)){
 	     }
           }
           //}
-	  
+
 	  ////////////////////////////////////////////////////////
 
-	  
+
 	  // Buscar dotacao
 	  $result_dotacao = $clorcdotacao->sql_record($clorcdotacao->sql_query_ele(null,null,"o58_coddot as dotacao","","o58_anousu=$anousu and o58_orgao=$orgao and o58_unidade=$unidade and o58_projativ=$projativ $where_param and o58_codigo=$recurso"));
 	  //echo "<BR><BR>".($clorcdotacao->sql_query_ele(null,null,"o58_coddot as dotacao","","o58_anousu=$anousu and o58_orgao=$orgao and o58_unidade=$unidade and o58_projativ=$projativ $where_param and o58_codigo=$recurso"));
@@ -325,7 +325,7 @@ if(isset($confirma) || isset($gera)){
 	    }
 	    $clrhempfolha->rh40_provento = "$provento";
 	    $clrhempfolha->rh40_desconto = "$desconto";
-	    $clrhempfolha->rh40_tipo     = strtolower($rh40_tipo); 
+	    $clrhempfolha->rh40_tipo     = strtolower((string) $rh40_tipo); 
 	    $clrhempfolha->rh40_tabprev  = "0";
 	    $clrhempfolha->rh40_coddot   = "$dotacao"; 
 	    $clrhempfolha->incluir(@$anousu,@$mesusu,$orgao,$unidade,$projativ,$recurso,$elemento,$rubric,$siglaarq);	    
@@ -345,7 +345,7 @@ if(isset($confirma) || isset($gera)){
 	    $clrhempfolha->rh40_provento = "$provento";
 	    $clrhempfolha->rh40_desconto = "$desconto";
 	    $clrhempfolha->rh40_siglaarq = $siglaarq;
-	    $clrhempfolha->rh40_tipo     = strtolower($rh40_tipo); 
+	    $clrhempfolha->rh40_tipo     = strtolower((string) $rh40_tipo); 
 	    $clrhempfolha->rh40_tabprev  = "0";
 	    $clrhempfolha->rh40_coddot   = "$dotacao"; 
 	    $clrhempfolha->rh40_anousu   = $anousu;

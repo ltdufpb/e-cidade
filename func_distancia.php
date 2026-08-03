@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_distancia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldistancia = new cl_distancia;
 $clrotulo = new rotulocampo;
 $clrotulo->label("j13_descr");
@@ -96,9 +96,9 @@ $clrotulo->label("ed223_i_bairrodestino");
     }else{
      $sql = $cldistancia->sql_query("",$campos,"bairroorigem.j13_descr","");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed223_i_codigo)){
-     $repassa = array("chave_ed223_i_codigo"=>$chave_ed223_i_codigo,"chave_ed223_i_codigo"=>$chave_ed223_i_codigo);
+     $repassa = ["chave_ed223_i_codigo"=>$chave_ed223_i_codigo,"chave_ed223_i_codigo"=>$chave_ed223_i_codigo];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

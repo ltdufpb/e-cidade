@@ -121,7 +121,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
 	      if(!isset($r02_tipo)){
 		          $r02_tipo = "M";
               }
-              $arr_tipo = array("H"=>"Horas","M"=>"Mês");
+              $arr_tipo = ["H"=>"Horas","M"=>"Mês"];
               db_select('r02_tipo',$arr_tipo,true,$db_opcao,"onchange='js_trancaform(this.value,true);'");
               ?>
             </td>
@@ -309,7 +309,7 @@ function js_preenchepesquisa(chave,chave1,chave2,chave3){
   db_iframe_padroes.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3";
   }
   ?>
 }

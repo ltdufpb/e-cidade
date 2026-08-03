@@ -119,7 +119,7 @@ try {
                     break;
             }
 
-            $retorno->atributos = array();
+            $retorno->atributos = [];
             foreach ($atributos as $atributo) {
                 $dadosAtributo = new stdClass();
                 $dadosAtributo->codigo = $atributo->getCodigo();

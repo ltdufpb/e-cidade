@@ -40,13 +40,13 @@
   $oGet         = db_utils::postMemory($_GET);
   
   
-  $sZonaFiscal  = isset($oGet->zonafiscal)  ? $oGet->zonafiscal  : '';
-  $sZonaEntrega = isset($oGet->zonaentrega) ? $oGet->zonaentrega : '';
-  $sLogradouro  = isset($oGet->logradouro)  ? $oGet->logradouro  : '';
-  $sBairro      = isset($oGet->bairro)      ? $oGet->bairro      : '';
+  $sZonaFiscal  = $oGet->zonafiscal ?? '';
+  $sZonaEntrega = $oGet->zonaentrega ?? '';
+  $sLogradouro  = $oGet->logradouro ?? '';
+  $sBairro      = $oGet->bairro ?? '';
   
-  $iAgua        = isset($oGet->agua)        ? $oGet->agua        : '';
-  $iEsgoto      = isset($oGet->esgoto)      ? $oGet->esgoto      : '';
+  $iAgua        = $oGet->agua ?? '';
+  $iEsgoto      = $oGet->esgoto ?? '';
   
   $sSql = "
            SELECT DISTINCT
@@ -158,7 +158,7 @@
 
   $result = db_query($sSql);
   
-  if (pg_numrows($result) == 0) {
+  if (pg_num_rows($result) == 0) {
   
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
     exit;
@@ -169,9 +169,9 @@
   
   if ($sZonaFiscal != '') {
     
-    if (strlen($sZonaFiscal) >= 30) {
+    if (strlen((string) $sZonaFiscal) >= 30) {
       
-      $head3 = substr($sZonaFiscal, 0, 30).'...';
+      $head3 = substr((string) $sZonaFiscal, 0, 30).'...';
     } else {
       
       $head3 = $sZonaFiscal;
@@ -182,9 +182,9 @@
   }
   
   if ($sZonaEntrega != '') {
-    if (strlen($sZonaEntrega) >= 30) {
+    if (strlen((string) $sZonaEntrega) >= 30) {
       
-      $head4 = substr($sZonaEntrega, 0, 30).'...';
+      $head4 = substr((string) $sZonaEntrega, 0, 30).'...';
     } else {
       
       $head4 = $sZonaEntrega;
@@ -196,9 +196,9 @@
   
   if ($sLogradouro != '') {
     
-    if (strlen($sLogradouro) >= 30) {
+    if (strlen((string) $sLogradouro) >= 30) {
       
-      $head5 = substr($sLogradouro, 0, 30).'...';
+      $head5 = substr((string) $sLogradouro, 0, 30).'...';
     } else {
       
       $head5 = $sLogradouro;
@@ -210,9 +210,9 @@
   
   if ($sBairro != '') {
     
-    if (strlen($sBairro) >= 30) {
+    if (strlen((string) $sBairro) >= 30) {
       
-      $head6 = substr($sBairro, 0, 30).'...';
+      $head6 = substr((string) $sBairro, 0, 30).'...';
     } else {
       
       $head6 = $sBairro;
@@ -239,7 +239,7 @@
   $codbairro = "";
   $p = 0;
   
-  for($i = 0; $i < pg_numrows($result); $i++) {
+  for($i = 0; $i < pg_num_rows($result); $i++) {
     
     $oSql = db_utils::fieldsMemory($result, $i, true);
     

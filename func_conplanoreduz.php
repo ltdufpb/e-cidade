@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplanoreduz_classe.php"));
 include(modification("classes/db_conplano_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconplano = new cl_conplano;
 $clconplanoreduz = new cl_conplanoreduz;
 $clconplanoreduz->rotulo->label("c61_codcon");
@@ -123,11 +123,11 @@ $clconplano->rotulo->label("c60_estrut");
 
 	  if (!empty($pesquisa_chave) && !empty($pesquisaEstrutural)) {
 
-	      $where = implode(' and ', array(
+	      $where = implode(' and ', [
               "c61_anousu = ".db_getsession("DB_anousu"),
               "c61_instit = ".db_getsession("DB_instit"),
               "c60_estrut ilike '{$pesquisa_chave}%'",
-          ));
+          ]);
 	      $pesquisaEstrutural = $clconplanoreduz->sql_query(null,null,"*",null, $where);
           $result = $clconplanoreduz->sql_record($pesquisaEstrutural);
       }

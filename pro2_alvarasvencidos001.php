@@ -75,7 +75,7 @@ $clArquivoAuxiliar->obrigarselecao          = false;
   			<td title="Data de lançamento da situação da obra">Habite-se:</td>
   			<td>
   				<?php
-  					$aHabite = array('' => 'Todos...', '1' => 'Com Habite-se', '2' => 'Sem Habite-se');
+  					$aHabite = ['' => 'Todos...', '1' => 'Com Habite-se', '2' => 'Sem Habite-se'];
   					db_select('lHabite', $aHabite, true, 1);
   				?>
   			</td>

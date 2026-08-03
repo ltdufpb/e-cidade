@@ -51,7 +51,7 @@ try {
 
     case "getReciboPago":
 
-      $aReciboPago = array();
+      $aReciboPago = [];
       $aReciboPago = getReciboPago($oParametros);
       $oDados      = new stdClass();
 
@@ -63,7 +63,7 @@ try {
 
     case "getReciboPagoCodigoArrecadacao":
 
-      $aReciboPago = array();
+      $aReciboPago = [];
       $aReciboPago = getReciboPagoCodigoArrecadacao( $oParametros->iCodigo );
 
       $oDados = new stdClass();
@@ -76,7 +76,7 @@ try {
 
     case "imprimirDados":
 
-      $aReciboPago = array();
+      $aReciboPago = [];
 
       if ( $oParametros->iNivel == RelatorioPagamentoRecibo::NIVEL_UM ) {
         $aReciboPago = getReciboPago($oParametros);
@@ -144,7 +144,7 @@ function getReciboPago( $oParametros ) {
   $oReciboPago->setCodigoArrecadacao($oParametros->iCodigoArrecadacao);
   $oReciboPago->setTipoDebito($oParametros->iTipoDebito);
 
-  $aReciboPago = array();
+  $aReciboPago = [];
 
   if(!empty($oParametros->iCgm)){
     $aReciboPago = $oReciboPago->getReciboPagoCgm($oParametros->iCgm);

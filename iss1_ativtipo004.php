@@ -52,7 +52,7 @@ $clrotulo->label('q12_classe');
 $clrotulo->label('q12_descr');
 $clrotulo->label('q41_codtipcalc');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if ((isset($q81_codigo) && $q81_codigo!="") && (isset($atualizar))){
   db_inicio_transacao();
@@ -74,13 +74,13 @@ if ((isset($q81_codigo) && $q81_codigo!="") && (isset($atualizar))){
     }
   }  
   
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+    if(str_starts_with((string) $chave, "CHECK")){
+      $dados=preg_split("#_#m",(string) $chave); 
       $clativtipo->q80_ativ=$dados[1];
       $clativtipo->q80_tipcal=$q81_codigo;
       $clativtipo->incluir($dados[1],$q81_codigo);

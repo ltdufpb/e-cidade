@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_movrel_classe.php"));
 include(modification("classes/db_convenio_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmovrel = new cl_movrel();
 $clconvenio = new cl_convenio();
 $db_opcao = 1;
@@ -55,7 +55,7 @@ if (isset($gerar)) {
   if ($clconvenio->numrows > 0) {
     db_fieldsmemory($result_dados, 0);
     
-    if (trim($r55_rubr01) != "") {
+    if (trim((string) $r55_rubr01) != "") {
       
       include(modification("dbforms/db_layouttxt.php"));
       
@@ -80,7 +80,7 @@ if (isset($gerar)) {
       $somavalmovrel = 0;
       while ( ! feof($ponteiro) ) {
         $poslinha = fgets($ponteiro, 4096);
-        if ($poslinha == "" || substr($poslinha, 0, 6) == "999999") {
+        if ($poslinha == "" || str_starts_with($poslinha, "999999")) {
           continue;
         }
         $linhacorrente ++;

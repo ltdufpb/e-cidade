@@ -44,7 +44,7 @@ $oRotulo->label("z01_i_cgsund");
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
   <?php
-  $assets = array(
+  $assets = [
     "estilos.css",
     "grid.style.css",
     "scripts.js",
@@ -56,7 +56,7 @@ $oRotulo->label("z01_i_cgsund");
     "Collection.widget.js",
     "DatagridCollection.widget.js",
     "FormCollection.widget.js"
-  );
+  ];
   db_app::load($assets);
   db_menu();
 

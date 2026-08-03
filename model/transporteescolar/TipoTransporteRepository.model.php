@@ -36,7 +36,7 @@ class TipoTransporteRepository {
    * Collection de TipoTransporte
    * @var array
    */
-  private $aTipoTransporte = array();
+  private $aTipoTransporte = [];
 
   /**
    * Instancia da classe

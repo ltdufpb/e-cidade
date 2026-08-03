@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE bensetiquetaimpressa
 class cl_bensetiquetaimpressa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t74_sequencial = 0; 
-   var $t74_usuario = 0; 
-   var $t74_data_dia = null; 
-   var $t74_data_mes = null; 
-   var $t74_data_ano = null; 
-   var $t74_data = null; 
-   var $t74_hora = null; 
+   public $t74_sequencial = 0; 
+   public $t74_usuario = 0; 
+   public $t74_data_dia = null; 
+   public $t74_data_mes = null; 
+   public $t74_data_ano = null; 
+   public $t74_data = null; 
+   public $t74_hora = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t74_sequencial = int4 = Código 
                  t74_usuario = int4 = Usuário 
                  t74_data = date = Data 
                  t74_hora = char(5) = Hora 
                  ";
    //funcao construtor da classe 
-   function cl_bensetiquetaimpressa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bensetiquetaimpressa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -129,10 +129,10 @@ class cl_bensetiquetaimpressa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->t74_sequencial = pg_result($result,0,0); 
+       $this->t74_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from bensetiquetaimpressa_t74_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $t74_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $t74_sequencial)){
          $this->erro_sql = " Campo t74_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_bensetiquetaimpressa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Bens etiquetas impressa ($this->t74_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Bens etiquetas impressa já Cadastrado";
@@ -190,13 +190,13 @@ class cl_bensetiquetaimpressa {
      $resaco = $this->sql_record($this->sql_query_file($this->t74_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15607,'$this->t74_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2736,15607,'','".AddSlashes(pg_result($resaco,0,'t74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2736,15608,'','".AddSlashes(pg_result($resaco,0,'t74_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2736,15609,'','".AddSlashes(pg_result($resaco,0,'t74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2736,15610,'','".AddSlashes(pg_result($resaco,0,'t74_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2736,15607,'','".AddSlashes(pg_fetch_result($resaco,0,'t74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2736,15608,'','".AddSlashes(pg_fetch_result($resaco,0,'t74_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2736,15609,'','".AddSlashes(pg_fetch_result($resaco,0,'t74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2736,15610,'','".AddSlashes(pg_fetch_result($resaco,0,'t74_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -205,10 +205,10 @@ class cl_bensetiquetaimpressa {
       $this->atualizacampos();
      $sql = " update bensetiquetaimpressa set ";
      $virgula = "";
-     if(trim($this->t74_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t74_sequencial"])){ 
+     if(trim((string) $this->t74_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t74_sequencial"])){ 
        $sql  .= $virgula." t74_sequencial = $this->t74_sequencial ";
        $virgula = ",";
-       if(trim($this->t74_sequencial) == null ){ 
+       if(trim((string) $this->t74_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "t74_sequencial";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_bensetiquetaimpressa {
          return false;
        }
      }
-     if(trim($this->t74_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t74_usuario"])){ 
+     if(trim((string) $this->t74_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t74_usuario"])){ 
        $sql  .= $virgula." t74_usuario = $this->t74_usuario ";
        $virgula = ",";
-       if(trim($this->t74_usuario) == null ){ 
+       if(trim((string) $this->t74_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "t74_usuario";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_bensetiquetaimpressa {
          return false;
        }
      }
-     if(trim($this->t74_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t74_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t74_data_dia"] !="") ){ 
+     if(trim((string) $this->t74_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t74_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t74_data_dia"] !="") ){ 
        $sql  .= $virgula." t74_data = '$this->t74_data' ";
        $virgula = ",";
-       if(trim($this->t74_data) == null ){ 
+       if(trim((string) $this->t74_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "t74_data_dia";
          $this->erro_banco = "";
@@ -247,7 +247,7 @@ class cl_bensetiquetaimpressa {
        if(isset($GLOBALS["HTTP_POST_VARS"]["t74_data_dia"])){ 
          $sql  .= $virgula." t74_data = null ";
          $virgula = ",";
-         if(trim($this->t74_data) == null ){ 
+         if(trim((string) $this->t74_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "t74_data_dia";
            $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_bensetiquetaimpressa {
          }
        }
      }
-     if(trim($this->t74_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t74_hora"])){ 
+     if(trim((string) $this->t74_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t74_hora"])){ 
        $sql  .= $virgula." t74_hora = '$this->t74_hora' ";
        $virgula = ",";
-       if(trim($this->t74_hora) == null ){ 
+       if(trim((string) $this->t74_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "t74_hora";
          $this->erro_banco = "";
@@ -279,17 +279,17 @@ class cl_bensetiquetaimpressa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15607,'$this->t74_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t74_sequencial"]) || $this->t74_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2736,15607,'".AddSlashes(pg_result($resaco,$conresaco,'t74_sequencial'))."','$this->t74_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2736,15607,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t74_sequencial'))."','$this->t74_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t74_usuario"]) || $this->t74_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,2736,15608,'".AddSlashes(pg_result($resaco,$conresaco,'t74_usuario'))."','$this->t74_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2736,15608,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t74_usuario'))."','$this->t74_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t74_data"]) || $this->t74_data != "")
-           $resac = db_query("insert into db_acount values($acount,2736,15609,'".AddSlashes(pg_result($resaco,$conresaco,'t74_data'))."','$this->t74_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2736,15609,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t74_data'))."','$this->t74_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t74_hora"]) || $this->t74_hora != "")
-           $resac = db_query("insert into db_acount values($acount,2736,15610,'".AddSlashes(pg_result($resaco,$conresaco,'t74_hora'))."','$this->t74_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2736,15610,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t74_hora'))."','$this->t74_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -334,13 +334,13 @@ class cl_bensetiquetaimpressa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15607,'$t74_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2736,15607,'','".AddSlashes(pg_result($resaco,$iresaco,'t74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2736,15608,'','".AddSlashes(pg_result($resaco,$iresaco,'t74_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2736,15609,'','".AddSlashes(pg_result($resaco,$iresaco,'t74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2736,15610,'','".AddSlashes(pg_result($resaco,$iresaco,'t74_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2736,15607,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2736,15608,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t74_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2736,15609,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2736,15610,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t74_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from bensetiquetaimpressa
@@ -400,7 +400,7 @@ class cl_bensetiquetaimpressa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bensetiquetaimpressa";
@@ -415,7 +415,7 @@ class cl_bensetiquetaimpressa {
    function sql_query ( $t74_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +437,7 @@ class cl_bensetiquetaimpressa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_bensetiquetaimpressa {
    function sql_query_file ( $t74_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_bensetiquetaimpressa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

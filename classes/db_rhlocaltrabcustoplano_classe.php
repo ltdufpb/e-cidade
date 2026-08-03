@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE rhlocaltrabcustoplano
 class cl_rhlocaltrabcustoplano { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh86_sequencial = 0; 
-   var $rh86_criteriorateio = 0; 
-   var $rh86_rhlocaltrab = 0; 
-   var $rh86_instit = 0; 
+   public $rh86_sequencial = 0; 
+   public $rh86_criteriorateio = 0; 
+   public $rh86_rhlocaltrab = 0; 
+   public $rh86_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh86_sequencial = int4 = Código Sequencial 
                  rh86_criteriorateio = int4 = Criterio Rateio 
                  rh86_rhlocaltrab = int4 = Local de Trabalho 
                  rh86_instit = int4 = Instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_rhlocaltrabcustoplano() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlocaltrabcustoplano"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_rhlocaltrabcustoplano {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh86_sequencial = pg_result($result,0,0); 
+       $this->rh86_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhlocaltrabcustoplano_rh86_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh86_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh86_sequencial)){
          $this->erro_sql = " Campo rh86_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_rhlocaltrabcustoplano {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Centro de Custo dos Locais de Trabalho  ($this->rh86_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Centro de Custo dos Locais de Trabalho  já Cadastrado";
@@ -180,13 +180,13 @@ class cl_rhlocaltrabcustoplano {
      $resaco = $this->sql_record($this->sql_query_file($this->rh86_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15043,'$this->rh86_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2646,15043,'','".AddSlashes(pg_result($resaco,0,'rh86_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2646,15045,'','".AddSlashes(pg_result($resaco,0,'rh86_criteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2646,15044,'','".AddSlashes(pg_result($resaco,0,'rh86_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2646,15052,'','".AddSlashes(pg_result($resaco,0,'rh86_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2646,15043,'','".AddSlashes(pg_fetch_result($resaco,0,'rh86_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2646,15045,'','".AddSlashes(pg_fetch_result($resaco,0,'rh86_criteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2646,15044,'','".AddSlashes(pg_fetch_result($resaco,0,'rh86_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2646,15052,'','".AddSlashes(pg_fetch_result($resaco,0,'rh86_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_rhlocaltrabcustoplano {
       $this->atualizacampos();
      $sql = " update rhlocaltrabcustoplano set ";
      $virgula = "";
-     if(trim($this->rh86_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh86_sequencial"])){ 
+     if(trim((string) $this->rh86_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh86_sequencial"])){ 
        $sql  .= $virgula." rh86_sequencial = $this->rh86_sequencial ";
        $virgula = ",";
-       if(trim($this->rh86_sequencial) == null ){ 
+       if(trim((string) $this->rh86_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "rh86_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_rhlocaltrabcustoplano {
          return false;
        }
      }
-     if(trim($this->rh86_criteriorateio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh86_criteriorateio"])){ 
+     if(trim((string) $this->rh86_criteriorateio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh86_criteriorateio"])){ 
        $sql  .= $virgula." rh86_criteriorateio = $this->rh86_criteriorateio ";
        $virgula = ",";
-       if(trim($this->rh86_criteriorateio) == null ){ 
+       if(trim((string) $this->rh86_criteriorateio) == null ){ 
          $this->erro_sql = " Campo Criterio Rateio nao Informado.";
          $this->erro_campo = "rh86_criteriorateio";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_rhlocaltrabcustoplano {
          return false;
        }
      }
-     if(trim($this->rh86_rhlocaltrab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh86_rhlocaltrab"])){ 
+     if(trim((string) $this->rh86_rhlocaltrab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh86_rhlocaltrab"])){ 
        $sql  .= $virgula." rh86_rhlocaltrab = $this->rh86_rhlocaltrab ";
        $virgula = ",";
-       if(trim($this->rh86_rhlocaltrab) == null ){ 
+       if(trim((string) $this->rh86_rhlocaltrab) == null ){ 
          $this->erro_sql = " Campo Local de Trabalho nao Informado.";
          $this->erro_campo = "rh86_rhlocaltrab";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_rhlocaltrabcustoplano {
          return false;
        }
      }
-     if(trim($this->rh86_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh86_instit"])){ 
+     if(trim((string) $this->rh86_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh86_instit"])){ 
        $sql  .= $virgula." rh86_instit = $this->rh86_instit ";
        $virgula = ",";
-       if(trim($this->rh86_instit) == null ){ 
+       if(trim((string) $this->rh86_instit) == null ){ 
          $this->erro_sql = " Campo Instituicao nao Informado.";
          $this->erro_campo = "rh86_instit";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_rhlocaltrabcustoplano {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15043,'$this->rh86_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh86_sequencial"]) || $this->rh86_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2646,15043,'".AddSlashes(pg_result($resaco,$conresaco,'rh86_sequencial'))."','$this->rh86_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2646,15043,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh86_sequencial'))."','$this->rh86_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh86_criteriorateio"]) || $this->rh86_criteriorateio != "")
-           $resac = db_query("insert into db_acount values($acount,2646,15045,'".AddSlashes(pg_result($resaco,$conresaco,'rh86_criteriorateio'))."','$this->rh86_criteriorateio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2646,15045,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh86_criteriorateio'))."','$this->rh86_criteriorateio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh86_rhlocaltrab"]) || $this->rh86_rhlocaltrab != "")
-           $resac = db_query("insert into db_acount values($acount,2646,15044,'".AddSlashes(pg_result($resaco,$conresaco,'rh86_rhlocaltrab'))."','$this->rh86_rhlocaltrab',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2646,15044,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh86_rhlocaltrab'))."','$this->rh86_rhlocaltrab',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh86_instit"]) || $this->rh86_instit != "")
-           $resac = db_query("insert into db_acount values($acount,2646,15052,'".AddSlashes(pg_result($resaco,$conresaco,'rh86_instit'))."','$this->rh86_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2646,15052,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh86_instit'))."','$this->rh86_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_rhlocaltrabcustoplano {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15043,'$rh86_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2646,15043,'','".AddSlashes(pg_result($resaco,$iresaco,'rh86_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2646,15045,'','".AddSlashes(pg_result($resaco,$iresaco,'rh86_criteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2646,15044,'','".AddSlashes(pg_result($resaco,$iresaco,'rh86_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2646,15052,'','".AddSlashes(pg_result($resaco,$iresaco,'rh86_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2646,15043,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh86_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2646,15045,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh86_criteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2646,15044,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh86_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2646,15052,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh86_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhlocaltrabcustoplano
@@ -376,7 +376,7 @@ class cl_rhlocaltrabcustoplano {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhlocaltrabcustoplano";
@@ -391,7 +391,7 @@ class cl_rhlocaltrabcustoplano {
    function sql_query ( $rh86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_rhlocaltrabcustoplano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,7 +431,7 @@ class cl_rhlocaltrabcustoplano {
    function sql_query_file ( $rh86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,7 +452,7 @@ class cl_rhlocaltrabcustoplano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

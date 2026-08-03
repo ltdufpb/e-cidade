@@ -55,12 +55,12 @@ try {
     if (isset($confirmar)) {
         db_inicio_transacao();
 
-        $aHoraVet = explode(' ## ', $tf18_c_horasaida);
-        $tf18_d_dataretorno = substr($tf18_d_dataretorno, 6, 4) . '-' . substr($tf18_d_dataretorno, 3, 2) .
-            '-' . substr($tf18_d_dataretorno, 0, 2);
+        $aHoraVet = explode(' ## ', (string) $tf18_c_horasaida);
+        $tf18_d_dataretorno = substr((string) $tf18_d_dataretorno, 6, 4) . '-' . substr((string) $tf18_d_dataretorno, 3, 2) .
+            '-' . substr((string) $tf18_d_dataretorno, 0, 2);
         $tf18_c_horasaida = $aHoraVet[0];
         $aPassageirosSelecionados = explode('#', $sPassageirosSelecionados);
-        $aPassageirosCGS = explode('#', $sPassageirosCGS);
+        $aPassageirosCGS = explode('#', (string) $sPassageirosCGS);
 
         $service = new IndiqueVeiculosService();
         $service->salvarHoraSaida((object)[
@@ -112,7 +112,7 @@ try {
         }
 
         $aPassageirosSelecionados = explode('#', $sPassageirosSelecionados);
-        $aPassageirosCGS = explode('#', $sPassageirosCGS);
+        $aPassageirosCGS = explode('#', (string) $sPassageirosCGS);
 
         $service = new IndiqueVeiculosService();
         $passageiros = $service->salvarHoraSaida((object)[
@@ -127,9 +127,9 @@ try {
         $passageirosVeiculo = $passageiros->cgs;
         $idsPassageirosVeiculo = $passageiros->ids;
 
-        $aHoraVet = explode(' ## ', $tf18_c_horasaida);
-        $tf18_d_dataretorno = substr($tf18_d_dataretorno, 6, 4) . '-' . substr($tf18_d_dataretorno, 3, 2) .
-            '-' . substr($tf18_d_dataretorno, 0, 2);
+        $aHoraVet = explode(' ## ', (string) $tf18_c_horasaida);
+        $tf18_d_dataretorno = substr((string) $tf18_d_dataretorno, 6, 4) . '-' . substr((string) $tf18_d_dataretorno, 3, 2) .
+            '-' . substr((string) $tf18_d_dataretorno, 0, 2);
         $tf18_c_horasaida = $aHoraVet[0];
         $oDaoTfdVeiculoDestino->tf18_d_dataretorno = $tf18_d_dataretorno;
         $oDaoTfdVeiculoDestino->tf18_c_horasaida = $tf18_c_horasaida;
@@ -149,8 +149,8 @@ try {
             " tf19_i_veiculodestino = $tf18_i_codigo and tf19_i_valido = 1"
         );
         $rsPassag = $oDaoTfdPassageiroVeiculo->sql_record($sSql);
-        $aListaCgs = isset($passageirosVeiculo) ? $passageirosVeiculo : [];
-        $aListaCodigo = isset($idsPassageirosVeiculo) ? $idsPassageirosVeiculo : [];
+        $aListaCgs = $passageirosVeiculo ?? [];
+        $aListaCodigo = $idsPassageirosVeiculo ?? [];
         for ($iCont = 0; $iCont < $oDaoTfdPassageiroVeiculo->numrows; $iCont++) {
             $oDadosPassag = db_utils::fieldsmemory($rsPassag, $iCont);
             $aListaCgs[] = $oDadosPassag->tf19_i_cgsund;
@@ -232,7 +232,7 @@ if ((isset($tf18_i_codigo)) && ($tf18_i_codigo != '')) {
 
         $oDadosGrade = db_utils::fieldsmemory($rsResult, 0);
 
-        $aData = explode('-', $oDadosGrade->tf18_d_datasaida);
+        $aData = explode('-', (string) $oDadosGrade->tf18_d_datasaida);
 
         // somo 1 pq na tabela diasemana domingo é 1
         $iDiasemana = date('w', mktime(0, 0, 0, $aData[1], $aData[2], $aData[0])) + 1;

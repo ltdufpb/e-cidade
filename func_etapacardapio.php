@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 require(modification("libs/db_utils.php"));
 include(modification("classes/db_matricula_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatricula  = new cl_matricula;
 $db_opcao     = 1;
 $db_botao     = true;

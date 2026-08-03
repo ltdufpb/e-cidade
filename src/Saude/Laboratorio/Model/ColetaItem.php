@@ -309,7 +309,7 @@ class ColetaItem
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'la32_i_codigo' => $this->getCodigo(),
             'la32_i_usuario' => $this->getUsuario(),
             'la32_i_requiitem' => $this->getItem(),
@@ -318,7 +318,7 @@ class ColetaItem
             'la32_i_avisapaciente' => $this->getAvisaPaciente(),
             'la32_c_horaentrega' => $this->getHoraEntrega(),
             'la32_d_entrega' => $this->getDataEntrega()
-        );
+        ];
 
         return $retorno;
     }

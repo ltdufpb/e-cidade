@@ -29,32 +29,32 @@
 class cl_db_relatorio
 {
   // cria variaveis de erro
-  var $rotulo     = null;
-  var $query_sql  = null;
-  var $numrows    = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status = null;
-  var $erro_sql   = null;
-  var $erro_banco = null;
-  var $erro_msg   = null;
-  var $erro_campo = null;
-  var $pagina_retorno = null;
+  public $rotulo     = null;
+  public $query_sql  = null;
+  public $numrows    = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status = null;
+  public $erro_sql   = null;
+  public $erro_banco = null;
+  public $erro_msg   = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
   // cria variaveis do arquivo 
-  var $db63_sequencial = 0;
-  var $db63_db_gruporelatorio = 0;
-  var $db63_db_tiporelatorio = 0;
-  var $db63_nomerelatorio = null;
-  var $db63_versao_xml = null;
-  var $db63_data_dia = null;
-  var $db63_data_mes = null;
-  var $db63_data_ano = null;
-  var $db63_data = null;
-  var $db63_xmlestruturarel = null;
-  var $db63_db_relatorioorigem = 0;
+  public $db63_sequencial = 0;
+  public $db63_db_gruporelatorio = 0;
+  public $db63_db_tiporelatorio = 0;
+  public $db63_nomerelatorio = null;
+  public $db63_versao_xml = null;
+  public $db63_data_dia = null;
+  public $db63_data_mes = null;
+  public $db63_data_ano = null;
+  public $db63_data = null;
+  public $db63_xmlestruturarel = null;
+  public $db63_db_relatorioorigem = 0;
   // cria propriedade com as variaveis do arquivo 
-  var $campos = "
+  public $campos = "
                  db63_sequencial = int4 = Sequencial 
                  db63_db_gruporelatorio = int4 = Grupo do relatório 
                  db63_db_tiporelatorio = int4 = Tipo de relatório 
@@ -65,11 +65,11 @@ class cl_db_relatorio
                  db63_db_relatorioorigem = int4 = Origem Relatório 
                  ";
   //funcao construtor da classe 
-  function cl_db_relatorio()
+  function __construct()
   {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("db_relatorio");
-    $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+    $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro 
   function erro($mostra, $retorna)
@@ -181,10 +181,10 @@ class cl_db_relatorio
         $this->erro_status = "0";
         return false;
       }
-      $this->db63_sequencial = pg_result($result, 0, 0);
+      $this->db63_sequencial = pg_fetch_result($result, 0, 0);
     } else {
       $result = db_query("select last_value from db_relatorio_db63_sequencial_seq");
-      if (($result != false) && (pg_result($result, 0, 0) < $db63_sequencial)) {
+      if (($result != false) && (pg_fetch_result($result, 0, 0) < $db63_sequencial)) {
         $this->erro_sql = " Campo db63_sequencial maior que último número da sequencia.";
         $this->erro_banco = "Sequencia menor que este número.";
         $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -226,7 +226,7 @@ class cl_db_relatorio
     $result = db_query($sql);
     if ($result == false) {
       $this->erro_banco = str_replace("\n", "", @pg_last_error());
-      if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+      if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
         $this->erro_sql   = "Relatório ($this->db63_sequencial) nao Incluído. Inclusao Abortada.";
         $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
         $this->erro_banco = "Relatório já Cadastrado";
@@ -250,17 +250,17 @@ class cl_db_relatorio
     $resaco = $this->sql_record($this->sql_query_file($this->db63_sequencial));
     if (($resaco != false) || ($this->numrows != 0)) {
       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-      $acount = pg_result($resac, 0, 0);
+      $acount = pg_fetch_result($resac, 0, 0);
       $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
       $resac = db_query("insert into db_acountkey values($acount,12277,'$this->db63_sequencial','I')");
-      $resac = db_query("insert into db_acount values($acount,2134,12277,'','" . AddSlashes(pg_result($resaco, 0, 'db63_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12281,'','" . AddSlashes(pg_result($resaco, 0, 'db63_db_gruporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12282,'','" . AddSlashes(pg_result($resaco, 0, 'db63_db_tiporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12267,'','" . AddSlashes(pg_result($resaco, 0, 'db63_nomerelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12268,'','" . AddSlashes(pg_result($resaco, 0, 'db63_versao_xml')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12269,'','" . AddSlashes(pg_result($resaco, 0, 'db63_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12270,'','" . AddSlashes(pg_result($resaco, 0, 'db63_xmlestruturarel')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,14175,'','" . AddSlashes(pg_result($resaco, 0, 'db63_db_relatorioorigem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+      $resac = db_query("insert into db_acount values($acount,2134,12277,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'db63_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+      $resac = db_query("insert into db_acount values($acount,2134,12281,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'db63_db_gruporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+      $resac = db_query("insert into db_acount values($acount,2134,12282,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'db63_db_tiporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+      $resac = db_query("insert into db_acount values($acount,2134,12267,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'db63_nomerelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+      $resac = db_query("insert into db_acount values($acount,2134,12268,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'db63_versao_xml')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+      $resac = db_query("insert into db_acount values($acount,2134,12269,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'db63_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+      $resac = db_query("insert into db_acount values($acount,2134,12270,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'db63_xmlestruturarel')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+      $resac = db_query("insert into db_acount values($acount,2134,14175,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'db63_db_relatorioorigem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
     }
     return true;
   }
@@ -270,10 +270,10 @@ class cl_db_relatorio
     $this->atualizacampos();
     $sql = " update db_relatorio set ";
     $virgula = "";
-    if (trim($this->db63_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_sequencial"])) {
+    if (trim((string) $this->db63_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_sequencial"])) {
       $sql  .= $virgula . " db63_sequencial = $this->db63_sequencial ";
       $virgula = ",";
-      if (trim($this->db63_sequencial) == null) {
+      if (trim((string) $this->db63_sequencial) == null) {
         $this->erro_sql = " Campo Sequencial nao Informado.";
         $this->erro_campo = "db63_sequencial";
         $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_db_relatorio
         return false;
       }
     }
-    if (trim($this->db63_db_gruporelatorio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_db_gruporelatorio"])) {
+    if (trim((string) $this->db63_db_gruporelatorio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_db_gruporelatorio"])) {
       $sql  .= $virgula . " db63_db_gruporelatorio = $this->db63_db_gruporelatorio ";
       $virgula = ",";
-      if (trim($this->db63_db_gruporelatorio) == null) {
+      if (trim((string) $this->db63_db_gruporelatorio) == null) {
         $this->erro_sql = " Campo Grupo do relatório nao Informado.";
         $this->erro_campo = "db63_db_gruporelatorio";
         $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_db_relatorio
         return false;
       }
     }
-    if (trim($this->db63_db_tiporelatorio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_db_tiporelatorio"])) {
+    if (trim((string) $this->db63_db_tiporelatorio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_db_tiporelatorio"])) {
       $sql  .= $virgula . " db63_db_tiporelatorio = $this->db63_db_tiporelatorio ";
       $virgula = ",";
-      if (trim($this->db63_db_tiporelatorio) == null) {
+      if (trim((string) $this->db63_db_tiporelatorio) == null) {
         $this->erro_sql = " Campo Tipo de relatório nao Informado.";
         $this->erro_campo = "db63_db_tiporelatorio";
         $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_db_relatorio
         return false;
       }
     }
-    if (trim($this->db63_nomerelatorio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_nomerelatorio"])) {
+    if (trim((string) $this->db63_nomerelatorio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_nomerelatorio"])) {
       $sql  .= $virgula . " db63_nomerelatorio = '$this->db63_nomerelatorio' ";
       $virgula = ",";
-      if (trim($this->db63_nomerelatorio) == null) {
+      if (trim((string) $this->db63_nomerelatorio) == null) {
         $this->erro_sql = " Campo Nome relatório nao Informado.";
         $this->erro_campo = "db63_nomerelatorio";
         $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_db_relatorio
         return false;
       }
     }
-    if (trim($this->db63_versao_xml) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_versao_xml"])) {
+    if (trim((string) $this->db63_versao_xml) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_versao_xml"])) {
       $sql  .= $virgula . " db63_versao_xml = '$this->db63_versao_xml' ";
       $virgula = ",";
-      if (trim($this->db63_versao_xml) == null) {
+      if (trim((string) $this->db63_versao_xml) == null) {
         $this->erro_sql = " Campo Versão XML nao Informado.";
         $this->erro_campo = "db63_versao_xml";
         $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_db_relatorio
         return false;
       }
     }
-    if (trim($this->db63_data) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db63_data_dia"] != "")) {
+    if (trim((string) $this->db63_data) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db63_data_dia"] != "")) {
       $sql  .= $virgula . " db63_data = '$this->db63_data' ";
       $virgula = ",";
-      if (trim($this->db63_data) == null) {
+      if (trim((string) $this->db63_data) == null) {
         $this->erro_sql = " Campo Data do relatório nao Informado.";
         $this->erro_campo = "db63_data_dia";
         $this->erro_banco = "";
@@ -351,7 +351,7 @@ class cl_db_relatorio
       if (isset($GLOBALS["HTTP_POST_VARS"]["db63_data_dia"])) {
         $sql  .= $virgula . " db63_data = null ";
         $virgula = ",";
-        if (trim($this->db63_data) == null) {
+        if (trim((string) $this->db63_data) == null) {
           $this->erro_sql = " Campo Data do relatório nao Informado.";
           $this->erro_campo = "db63_data_dia";
           $this->erro_banco = "";
@@ -362,10 +362,10 @@ class cl_db_relatorio
         }
       }
     }
-    if (trim($this->db63_xmlestruturarel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_xmlestruturarel"])) {
+    if (trim((string) $this->db63_xmlestruturarel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_xmlestruturarel"])) {
       $sql  .= $virgula . " db63_xmlestruturarel = '$this->db63_xmlestruturarel' ";
       $virgula = ",";
-      if (trim($this->db63_xmlestruturarel) == null) {
+      if (trim((string) $this->db63_xmlestruturarel) == null) {
         $this->erro_sql = " Campo Estrutuda do XML nao Informado.";
         $this->erro_campo = "db63_xmlestruturarel";
         $this->erro_banco = "";
@@ -375,10 +375,10 @@ class cl_db_relatorio
         return false;
       }
     }
-    if (trim($this->db63_db_relatorioorigem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_db_relatorioorigem"])) {
+    if (trim((string) $this->db63_db_relatorioorigem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db63_db_relatorioorigem"])) {
       $sql  .= $virgula . " db63_db_relatorioorigem = $this->db63_db_relatorioorigem ";
       $virgula = ",";
-      if (trim($this->db63_db_relatorioorigem) == null) {
+      if (trim((string) $this->db63_db_relatorioorigem) == null) {
         $this->erro_sql = " Campo Origem Relatório nao Informado.";
         $this->erro_campo = "db63_db_relatorioorigem";
         $this->erro_banco = "";
@@ -396,25 +396,25 @@ class cl_db_relatorio
     if ($this->numrows > 0) {
       for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac, 0, 0);
+        $acount = pg_fetch_result($resac, 0, 0);
         $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
         $resac = db_query("insert into db_acountkey values($acount,12277,'$this->db63_sequencial','A')");
         if (isset($GLOBALS["HTTP_POST_VARS"]["db63_sequencial"]) || $this->db63_sequencial != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12277,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_sequencial')) . "','$this->db63_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac = db_query("insert into db_acount values($acount,2134,12277,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'db63_sequencial')) . "','$this->db63_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         if (isset($GLOBALS["HTTP_POST_VARS"]["db63_db_gruporelatorio"]) || $this->db63_db_gruporelatorio != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12281,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_db_gruporelatorio')) . "','$this->db63_db_gruporelatorio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac = db_query("insert into db_acount values($acount,2134,12281,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'db63_db_gruporelatorio')) . "','$this->db63_db_gruporelatorio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         if (isset($GLOBALS["HTTP_POST_VARS"]["db63_db_tiporelatorio"]) || $this->db63_db_tiporelatorio != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12282,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_db_tiporelatorio')) . "','$this->db63_db_tiporelatorio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac = db_query("insert into db_acount values($acount,2134,12282,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'db63_db_tiporelatorio')) . "','$this->db63_db_tiporelatorio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         if (isset($GLOBALS["HTTP_POST_VARS"]["db63_nomerelatorio"]) || $this->db63_nomerelatorio != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12267,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_nomerelatorio')) . "','$this->db63_nomerelatorio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac = db_query("insert into db_acount values($acount,2134,12267,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'db63_nomerelatorio')) . "','$this->db63_nomerelatorio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         if (isset($GLOBALS["HTTP_POST_VARS"]["db63_versao_xml"]) || $this->db63_versao_xml != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12268,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_versao_xml')) . "','$this->db63_versao_xml'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac = db_query("insert into db_acount values($acount,2134,12268,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'db63_versao_xml')) . "','$this->db63_versao_xml'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         if (isset($GLOBALS["HTTP_POST_VARS"]["db63_data"]) || $this->db63_data != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12269,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_data')) . "','$this->db63_data'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac = db_query("insert into db_acount values($acount,2134,12269,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'db63_data')) . "','$this->db63_data'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         if (isset($GLOBALS["HTTP_POST_VARS"]["db63_xmlestruturarel"]) || $this->db63_xmlestruturarel != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12270,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_xmlestruturarel')) . "','$this->db63_xmlestruturarel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac = db_query("insert into db_acount values($acount,2134,12270,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'db63_xmlestruturarel')) . "','$this->db63_xmlestruturarel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         if (isset($GLOBALS["HTTP_POST_VARS"]["db63_db_relatorioorigem"]) || $this->db63_db_relatorioorigem != "")
-          $resac = db_query("insert into db_acount values($acount,2134,14175,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_db_relatorioorigem')) . "','$this->db63_db_relatorioorigem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac = db_query("insert into db_acount values($acount,2134,14175,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'db63_db_relatorioorigem')) . "','$this->db63_db_relatorioorigem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
       }
     }
     $result = db_query($sql);
@@ -460,17 +460,17 @@ class cl_db_relatorio
     if (($resaco != false) || ($this->numrows != 0)) {
       for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac, 0, 0);
+        $acount = pg_fetch_result($resac, 0, 0);
         $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
         $resac = db_query("insert into db_acountkey values($acount,12277,'$db63_sequencial','E')");
-        $resac = db_query("insert into db_acount values($acount,2134,12277,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12281,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_db_gruporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12282,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_db_tiporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12267,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_nomerelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12268,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_versao_xml')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12269,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12270,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_xmlestruturarel')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,14175,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_db_relatorioorigem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2134,12277,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'db63_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2134,12281,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'db63_db_gruporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2134,12282,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'db63_db_tiporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2134,12267,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'db63_nomerelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2134,12268,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'db63_versao_xml')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2134,12269,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'db63_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2134,12270,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'db63_xmlestruturarel')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2134,14175,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'db63_db_relatorioorigem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
       }
     }
     $sql = " delete from db_relatorio
@@ -531,7 +531,7 @@ class cl_db_relatorio
       $this->erro_status = "0";
       return false;
     }
-    $this->numrows = pg_numrows($result);
+    $this->numrows = pg_num_rows($result);
     if ($this->numrows == 0) {
       $this->erro_banco = "";
       $this->erro_sql   = "Record Vazio na Tabela:db_relatorio";
@@ -571,7 +571,7 @@ class cl_db_relatorio
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = explode("#", $ordem);
+      $campos_sql = explode("#", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -606,7 +606,7 @@ class cl_db_relatorio
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = explode("#", $ordem);
+      $campos_sql = explode("#", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];

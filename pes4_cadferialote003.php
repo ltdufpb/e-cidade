@@ -34,7 +34,7 @@ include(modification("classes/db_cadferia_classe.php"));
 include(modification("classes/db_selecao_classe.php"));
 include(modification("classes/db_cfpess_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcadferia = new cl_cadferia;
 $clselecao = new cl_selecao;
 $clcfpess = new cl_cfpess;
@@ -95,8 +95,8 @@ if(isset($excluir)){
       if($cadferia[0]["r30_proc2"] >= $subpes){
 
         $subpes = $cadferia[0]["r30_proc2"];
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1] = "r30_per2i";
         $matriz1[2] = "r30_per2f";
         $matriz1[3] = "r30_proc2";
@@ -133,7 +133,7 @@ if(isset($excluir)){
       $erro_msg = "Usuário, alguns procedimentos não podem ser feitos automaticamente \\n
                    pelo sistema, portanto proceda da seguinte maneira:\\n\\n
                    - Reinicialize o ponto de salário para funcionários desta seleção.";
-      if(strtolower($cadferia[0]["r30_ponto"]) == "c"){
+      if(strtolower((string) $cadferia[0]["r30_ponto"]) == "c"){
         $condicaoaux = " and r47_regist = ".db_sqlformat($r30_regist);
         db_delete("pontocom", bb_condicaosubpes("r47_").$condicaoaux);
 
@@ -215,7 +215,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <?php 
 if(isset($excluir)){
   db_msgbox("Processamento concluído.");
-  if(trim($erro_msg) != ""){
+  if(trim((string) $erro_msg) != ""){
     db_msgbox($erro_msg);
   }
   echo "<script>location.href = 'pes4_cadferialote003.php';</script>";

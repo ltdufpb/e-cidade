@@ -69,9 +69,9 @@ $oDaoAusencia = new cl_rechumanoausente();
 
       $sWhere   = " ed348_escola = " . db_getsession("DB_coddepto");
       $sql      = $oDaoAusencia->sql_query_profissional_cgm("", $sCampos, "ed348_sequencial", $sWhere);
-      $repassa  = array();
+      $repassa  = [];
       if(isset($chave_ed348_sequencial)){
-        $repassa = array("chave_ed348_sequencial"=>$chave_ed348_sequencial,"chave_ed348_sequencial"=>$chave_ed348_sequencial);
+        $repassa = ["chave_ed348_sequencial"=>$chave_ed348_sequencial,"chave_ed348_sequencial"=>$chave_ed348_sequencial];
       }
 
       db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

@@ -57,7 +57,7 @@ if (!isset($xmes) || (isset($xmes) && trim($xmes) == "" || $xmes == 0)) {
 }
 $Sxmes = "Mês";
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sErroMsg     = '';
 $oCompetencia = null;
@@ -72,9 +72,9 @@ try {
   }
 }
 
-$aSalarioFechada      = array();
-$aSuplementarFechada  = array();
-$aComplementarFechada = array();
+$aSalarioFechada      = [];
+$aSuplementarFechada  = [];
+$aComplementarFechada = [];
 
 if($oCompetencia instanceof DBCompetencia) {
   $aSalarioFechada      = FolhaPagamentoSalario::getFolhasFechadasCompetencia($oCompetencia);
@@ -272,7 +272,7 @@ function js_filtra(){
 	  <td align="right" ><strong>Ordem:</strong></td>
 	  <td>
 	  <?php 
-	  $arr=array("L"=>"Estrutural das lotações","N"=>"Nome dos funcionários","M"=>"Matrícula dos funcionários");
+	  $arr=["L"=>"Estrutural das lotações","N"=>"Nome dos funcionários","M"=>"Matrícula dos funcionários"];
 	  db_select("ordem",$arr,true,2);
 	  ?>
 	  </td>
@@ -281,7 +281,7 @@ function js_filtra(){
 	  <td  align="right" ><strong>Número de Vias:</strong></td>
 	  <td>
 	  <?php 
-	  $arr_vias=array("1"=>"1","2"=>"2","3"=>"3");
+	  $arr_vias=["1"=>"1","2"=>"2","3"=>"3"];
 	  db_select("num_vias",$arr_vias,true,2);
 	  ?>
 	  </td>
@@ -293,7 +293,7 @@ function js_filtra(){
     if(!isset($filtro)){
       $filtro = 'M';
     }
-	  $arr=array("N"=>"Nenhum","M"=>"Matrícula","L"=>"Lotação");
+	  $arr=["N"=>"Nenhum","M"=>"Matrícula","L"=>"Lotação"];
 	  db_select("filtro",$arr,true,2,"onchange='js_filtra();'");
 	  ?>
 	  </td>
@@ -308,7 +308,7 @@ function js_filtra(){
     if(!isset($filtrar)){
       $filtrar = 'S';
     }
-	  $arr1=array("."=>"------------","I"=>"Intervalo","S"=>"Selecionados");
+	  $arr1=["."=>"------------","I"=>"Intervalo","S"=>"Selecionados"];
 	  db_select("filtrar",$arr1,true,2,"onchange='js_filtra();'");
 	  ?>
 	  </td>
@@ -421,7 +421,7 @@ function js_filtra(){
     </td>
     <td>
 	   <?php 
-	    $arr_local=array("s"=>"Somente o Local","e"=>"Exceto o Local");
+	    $arr_local=["s"=>"Somente o Local","e"=>"Exceto o Local"];
 	    db_select("tipo_local",$arr_local,true,2);
 	   ?>
 	  </td>

@@ -8,14 +8,8 @@ use ECidade\Tributario\Caixa\Cast\ListaCast;
 
 final class ListaRepository extends DataBaseRepository 
 {
-    private $listaRepository;
-
-    private $listaCast;
-
-    public function __construct(ListaModelRepository $listaRepository, ListaCast $listaCast)
+    public function __construct(private readonly ListaModelRepository $listaRepository, private readonly ListaCast $listaCast)
     {
-        $this->listaRepository = $listaRepository;
-        $this->listaCast = $listaCast;
     }
 
     public function find($codigo)

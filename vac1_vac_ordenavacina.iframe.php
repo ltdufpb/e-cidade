@@ -33,8 +33,8 @@ include(modification("classes/db_vac_vacina_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
 require(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clvac_vacina = new cl_vac_vacina;
 $db_opcao     = 22;
 $db_botao     = false;
@@ -43,7 +43,7 @@ if (isset($alterar)) {
 
   db_inicio_transacao();
   $db_opcao = 2;
-  $aLista=explode(",",$sLista);
+  $aLista=explode(",",(string) $sLista);
   for ($iX=0;$iX<count($aLista);$iX++) {
 
     $clvac_vacina->vc06_i_codigo = $aLista[$iX];

@@ -68,10 +68,10 @@ include(modification("classes/db_atendtecnicoocupado_classe.php"));
 include(modification("classes/db_atendtipoausencia_classe.php"));
 include(modification("classes/db_tarefaprojetoativcli_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $clatendimento = new cl_atendimento;
 $cltecnico = new cl_tecnico;
@@ -162,8 +162,8 @@ if (isset ($incluir) && $incluir != "") {
       // se percentual for = 100 e execução estiver preenchido
       if ($at05_feito != "") {
         $clatenditem->at05_codatend   = $codatend;
-        $clatenditem->at05_solicitado = addslashes($at05_solicitado);
-        $clatenditem->at05_feito      = addslashes($at05_feito);
+        $clatenditem->at05_solicitado = addslashes((string) $at05_solicitado);
+        $clatenditem->at05_feito      = addslashes((string) $at05_feito);
         $clatenditem->at05_tipo       = 1;
         $clatenditem->at05_horaini    = $hora_inicial;
         $clatenditem->at05_horafim    = $hora_final;
@@ -191,8 +191,8 @@ if (isset ($incluir) && $incluir != "") {
       }
     
       $clatenditem->at05_codatend = $codatend;
-      $clatenditem->at05_solicitado = addslashes($at05_solicitado);
-      $clatenditem->at05_feito      = addslashes($at05_feito);
+      $clatenditem->at05_solicitado = addslashes((string) $at05_solicitado);
+      $clatenditem->at05_feito      = addslashes((string) $at05_feito);
       $clatenditem->at05_tipo = 1;
       $clatenditem->at05_horaini = $hora_inicial;
       $clatenditem->at05_horafim = $hora_final;
@@ -254,7 +254,7 @@ if (isset ($incluir) && $incluir != "") {
         $sqlerro = true;
         $erro_msg = $clatenditemmod->erro_msg;
       }
-      
+
       /*if($sqlerro==false) {
         $clatendimentomod->at08_atend=$codatend; 			
         $clatendimentomod->at08_modulo=$modulo;
@@ -402,8 +402,8 @@ if (isset ($alterar) && $alterar != "") {
         //db_fieldsmemory($rs_atenditem,0);
         $clatenditem->at05_seq        = $at05_seq;
         $clatenditem->at05_codatend   = $codatend;
-        $clatenditem->at05_solicitado = addslashes($at05_solicitado);
-        $clatenditem->at05_feito      = addslashes($at05_feito);
+        $clatenditem->at05_solicitado = addslashes((string) $at05_solicitado);
+        $clatenditem->at05_feito      = addslashes((string) $at05_feito);
         $clatenditem->at05_perc       = $at05_perc;
         $clatenditem->at05_tipo       = 1;
         if (isset ($at05_data_dia) && $at05_data_dia != "") {
@@ -591,10 +591,10 @@ if (isset ($alterar) && $alterar != "") {
           
           // ########## SE TIVER TAREFA RELACIONADA AO ATENDIMENTO ############
           if ($at18_tarefa != "") {
-            
+
             $cltarefalog->at43_tarefa = $at18_tarefa;
-            $cltarefalog->at43_descr = addslashes($at05_solicitado);
-            $cltarefalog->at43_obs = addslashes($at05_feito);
+            $cltarefalog->at43_descr = addslashes((string) $at05_solicitado);
+            $cltarefalog->at43_obs = addslashes((string) $at05_feito);
             $cltarefalog->at43_problema = "false";
             $cltarefalog->at43_avisar = "0";
             $cltarefalog->at43_progresso = $at05_perc;
@@ -608,7 +608,7 @@ if (isset ($alterar) && $alterar != "") {
             if ($cltarefalog->erro_status == 0) {
               $sqlerro = true;
               $erro_msg = $cltarefalog->erro_msg;
-              
+
             }
             if($sqlerro == false){
             	 $sqlsit = "
@@ -632,12 +632,12 @@ if (isset ($alterar) && $alterar != "") {
                 $erro_msg = $cltarefalogsituacao->erro_msg;
               }
             }
-            
-            
+
+
             if ($sqlerro == false) {
               db_msgbox("Foi lançado um registro na tarefa $at18_tarefa automaticamente.");
             }
-           
+
 
 
 
@@ -673,7 +673,7 @@ if (isset ($alterar) && $alterar != "") {
             
             if ($sqlerro == false) {
               $cltarefa->at40_responsavel = db_getsession("DB_id_usuario");
-              $cltarefa->at40_descr = addslashes($at05_solicitado);
+              $cltarefa->at40_descr = addslashes((string) $at05_solicitado);
               if ($at05_data == "") {
                 $cltarefa->at40_diaini = date("Y-m-d", db_getsession("DB_datausu"));
                 $cltarefa->at40_diafim = date("Y-m-d", db_getsession("DB_datausu"));
@@ -687,7 +687,7 @@ if (isset ($alterar) && $alterar != "") {
               $cltarefa->at40_horafim = $at05_horafim;
               $cltarefa->at40_progresso = $at05_perc;
               $cltarefa->at40_prioridade = $at05_prioridade;
-              $cltarefa->at40_obs = addslashes($at05_feito);
+              $cltarefa->at40_obs = addslashes((string) $at05_feito);
               $cltarefa->at40_tipo = 1;
               if (($at05_perc == 100) || ($at34_tarefacadmotivo == 13 || $at34_tarefacadmotivo == 16)) {
                 if ($at29_syscadproced == 278 or $at29_syscadproced == 328) {
@@ -850,10 +850,10 @@ if (isset ($alterar) && $alterar != "") {
             
             if ($sqlerro == false) {
               //if ($at05_perc == 100) {
-                
+
                 $cltarefalog->at43_tarefa = $cltarefa->at40_sequencial;
-                $cltarefalog->at43_descr = addslashes($at05_solicitado);
-                $cltarefalog->at43_obs = addslashes($at05_feito);
+                $cltarefalog->at43_descr = addslashes((string) $at05_solicitado);
+                $cltarefalog->at43_obs = addslashes((string) $at05_feito);
                 $cltarefalog->at43_problema = "false";
                 $cltarefalog->at43_avisar = "0";
                 $cltarefalog->at43_progresso = $at05_perc;
@@ -877,11 +877,11 @@ if (isset ($alterar) && $alterar != "") {
                     $sqlerro = true;
                     //db_msgbox("tarefalogsituacao");
                     $erro_msg = $cltarefalogsituacao->erro_msg;
-                  
+
                   }
                 }                 
               //}
-              
+
               /*
               if($sqlerro==false) {
                 $cltarefalogsituacao->at48_tarefalog = $cltarefalog->at43_sequencial;
@@ -891,7 +891,7 @@ if (isset ($alterar) && $alterar != "") {
                 }else{
                   $cltarefalogsituacao->at48_situacao  = 2;
                 }
-                
+
                 if($cltarefalogsituacao->erro_status==0) {
                   $sqlerro = true;
                   $erro_msg = $cltarefalogsituacao->erro_msg;

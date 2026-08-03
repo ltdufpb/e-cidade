@@ -188,7 +188,7 @@ db_textarea('d01_descr',5,52,$Id01_descr,true,'text',$db_opcao,"");
    <tr>
    <td>
       <?php 
-      if(isset($chavepesquisa) || isset($HTTP_POST_VARS["db_opcao"]) || $db_opcao=="1"){
+      if(isset($chavepesquisa) || isset($_POST["db_opcao"]) || $db_opcao=="1"){
       ?>  
       <fieldset><Legend><b>Selecione as listas</b></legend>
        <iframe id="listas"  frameborder="0" name="listas" src="forms/db_frmeditaliframe.php?db_opcao=<?=$db_opcao?><?=(isset($d01_codedi)?"&d01_codedi=$d01_codedi":"")?>" height="200" width="850" scrolling="auto" >
@@ -292,7 +292,7 @@ function js_preenchepesquisa(chave){
   <?php 
     if($db_opcao!=1){
   ?>  
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
   <?php 
     }
   ?>

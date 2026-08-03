@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_sql.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clsolicita        = new cl_solicita;
 $clsolicitem       = new cl_solicitem;
@@ -72,14 +72,14 @@ if(isset($incluir) || isset($juntar)){
 	      $sqlerro=true;
      	}
     }
-    $arr_valores = split(",",$valores);
+    $arr_valores = preg_split("#,#m",$valores);
     if(isset($juntar)){
       $pc80_codproc = $juntar;
     }
-    $arr_numero = Array();
-    $arr_solici = Array();
+    $arr_numero = [];
+    $arr_solici = [];
     for($i=0;$i<sizeof($arr_valores);$i++){
-      $arr_item  = split("_",$arr_valores[$i]);
+      $arr_item  = preg_split("#_#m",(string) $arr_valores[$i]);
       if(in_array($arr_item[1],$arr_numero)==false){
 	   array_push($arr_numero,$arr_item[1]);
       }
@@ -116,8 +116,8 @@ if ($pc30_contrandsol=='t'){
 				 left join arqproc 	on p68_codproc = x.p63_codproc
 			where p64_codtran is null and p68_codproc is null and x.pc11_codigo = $pc11_codigo";
 			$result_tran=db_query($sqltran);
-			if(pg_numrows($result_tran)!=0){
-				for($w=0;$w<pg_numrows($result_tran);$w++){
+			if(pg_num_rows($result_tran)!=0){
+				for($w=0;$w<pg_num_rows($result_tran);$w++){
 					db_fieldsmemory($result_tran,$w);
 					$recebetransf=recprocandsol($p62_codtran);
 					if ($recebetransf==true){
@@ -142,15 +142,15 @@ if ($pc30_contrandsol=='t'){
 	break;
       }
     }
-    $arr_importar = split(",",$importa);
-    $arr_orcam = Array();
+    $arr_importar = preg_split("#,#m",(string) $importa);
+    $arr_orcam = [];
     $rowssizeof = sizeof($arr_importar);
-    $arr_orcamfornexist  = Array();
+    $arr_orcamfornexist  = [];
 
 
     for($i=0;$i<$rowssizeof;$i++){
-      if(trim($arr_importar[$i])!=""){
-	$arr_importaritem = split("_",$arr_importar[$i]);
+      if(trim((string) $arr_importar[$i])!=""){
+	$arr_importaritem = preg_split("#_#m",(string) $arr_importar[$i]);
 	$orcamento = $arr_importaritem[1];
 	$item      = $arr_importaritem[2];
 	$orcamitem = $arr_importaritem[3];
@@ -259,15 +259,15 @@ if ($pc30_contrandsol=='t'){
 		  for($ii=0;$ii<$numrows_itemtroca;$ii++){
 		    db_fieldsmemory($result_itemtroca,$ii);
 		    $clpcorcamtroca->pc25_orcamitem = $pc22_orcamitem;
-		    $clpcorcamtroca->pc25_motivo    = addslashes(stripslashes(chop($pc25_motivo)));
+		    $clpcorcamtroca->pc25_motivo    = addslashes(stripslashes(chop((string) $pc25_motivo)));
 
-        if (trim(@$pc25_forneant)==""){
+        if (trim((string) @$pc25_forneant)==""){
              $clpcorcamtroca->pc25_forneant = $clpcorcamforne->pc21_orcamforne;
         } else {
              $clpcorcamtroca->pc25_forneant = $pc25_forneant;
         }
 
-        if (trim(@$pc25_forneatu)==""){
+        if (trim((string) @$pc25_forneatu)==""){
              $clpcorcamtroca->pc25_forneatu = $clpcorcamforne->pc21_orcamforne;
         } else {
              $clpcorcamtroca->pc25_forneatu = $pc25_forneatu;

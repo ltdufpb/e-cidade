@@ -31,7 +31,7 @@ require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_utils.php');
 require_once modification('dbforms/db_funcoes.php');
 db_app::load("prototype.js");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $datainicio_dia = ""; $datafim_dia = "";
 $datainicio_mes = ""; $datafim_mes = "";
@@ -119,7 +119,7 @@ $clSagresOrdenadorDespesa->rotulo->label();
                                         </td>
                                         <td>
                                             <?php
-                                            $aPrincipal = array("t" => "SIM", "f" => "NÃO");
+                                            $aPrincipal = ["t" => "SIM", "f" => "NÃO"];
                                             db_select("c139_principal", $aPrincipal, true, 1);
                                             ?>
                                         </td>
@@ -177,7 +177,7 @@ $clSagresOrdenadorDespesa->rotulo->label();
                                         </td>
                                         <td>
                                             <?php
-                                            $aSub = array("f" => "NÃO", "t" => "SIM");
+                                            $aSub = ["f" => "NÃO", "t" => "SIM"];
                                             db_select("c139_substituto", $aSub, true, 1, 'onChange="toogleSub()"');
                                             ?>
                                         </td>
@@ -240,7 +240,7 @@ $clSagresOrdenadorDespesa->rotulo->label();
                                         </td>
                                         <td>
                                             <?php
-                                            $aTipoAto = array("1" => "Lei","2" => "Decreto","3" => "Portaria","4" => "Outros");
+                                            $aTipoAto = ["1" => "Lei","2" => "Decreto","3" => "Portaria","4" => "Outros"];
                                             db_select("c139_tipoatojuridico", $aTipoAto, true, 1);
                                             ?>
                                         </td>

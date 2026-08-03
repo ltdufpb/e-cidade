@@ -40,8 +40,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///  verifica se foi dado o submit com o botão incluir para incluir os dados cadastrados
-  if (isset($HTTP_POST_VARS["incluir"])) {
-    db_postmemory($HTTP_POST_VARS); 
+  if (isset($_POST["incluir"])) {
+    db_postmemory($_POST); 
     // Verifica se a data digitada é válida e corrigem formato para ser adicionada ao postgres
 	if (!checkdate($dataordem_mes,$dataordem_dia,$dataordem_ano)) db_erro("Erro (11). Data inválida.");
     $dataordem = $dataordem_ano."-".$dataordem_mes."-".$dataordem_dia;  // prepara a data no formato a ser gravado no postgres
@@ -50,7 +50,7 @@
 	$prevmail = $dataprev_dia."/".$dataprev_mes."/".$dataprev_ano;  // $prevmail é a data a ser exibida no email que será enviado.
     // acha o valor do codigo do novo registro a ser acrescentado
 	$result = db_query("select max(codordem) + 1 from db_ordem");
-    $codigo = pg_result($result,0,0);
+    $codigo = pg_fetch_result($result,0,0);
     $codigo = $codigo == ""?"1":$codigo;
     // Verifica se foi preenchido o campo de destinatário da ordem de serviço, caso tenha sido deixado em branco preenche no postgres com o valor null
     if($usuarioreceb == "")  $usuarioreceb = "null";
@@ -74,13 +74,13 @@
 	  $existeAnexos = true; // usado para informar no mail se existem anexos nesta ordem 
 	  // localiza valor do maior codigo que sera inserido na tabela imagens
 	  $pesquisaMaiorCod = db_query("select max(codimg) + 1 from db_ordemimagens");
-      $maiorCod = pg_result($pesquisaMaiorCod,0,0);
+      $maiorCod = pg_fetch_result($pesquisaMaiorCod,0,0);
       $maiorCod = $maiorCod==""?"1":$maiorCod;
       // loop para insercao dos arquivos anexados na tabela db_ordemimagens
       $numarq = sizeof($arquivos);
       for ($i=0;$i<$numarq;$i++) {
 	    $nomeArquivo = $arquivos[$i].".dbordem";
-        $oid = pg_loimport($nomeArquivo) or die($nomeArquivo." Erro(39). Gravando imagem na tabela.");
+        $oid = pg_lo_import($nomeArquivo) or die($nomeArquivo." Erro(39). Gravando imagem na tabela.");
         db_query("insert into db_ordemimagens values($maiorCod,$oid,$codigo)") or die("Erro inserindo imagem");
 		//system("rm ".$tmp_name." -f ");
 		$maiorCod++;
@@ -100,7 +100,7 @@
 									 left outer join db_depart p on p.coddepto = du.coddepto 
 			    					 where u.id_usuario =  $DB_id_usuario limit 1
 								     ");
-    $destinatario = pg_result($identificaCamposEmail,0,"nomedestinatario")." <".pg_result($identificaCamposEmail,0,"emailDestinatario").">";
+    $destinatario = pg_fetch_result($identificaCamposEmail,0,"nomedestinatario")." <".pg_fetch_result($identificaCamposEmail,0,"emailDestinatario").">";
 	$sufixo = "você";
   } else {
     $identificaCamposEmail = db_query("Select u.email as emailRemetente, u.nome as nomeremetente, u.id_usuario, du.coddepto, 
@@ -115,15 +115,15 @@
 											inner join db_usuarios u on u.id_usuario = d.id_usuario
 	                                        where d.coddepto = $depto
 	                                       ");
-	$numRetornaListaDeDestinatarios = pg_numrows($retornaListaDeDestinatarios);
+	$numRetornaListaDeDestinatarios = pg_num_rows($retornaListaDeDestinatarios);
 	$destinatario = "";
 	for ($i=0;$i<$numRetornaListaDeDestinatarios;$i++) {
-	  $destinatario = $destinatario.", ".pg_result($retornaListaDeDestinatarios,$i,"nome")." <".pg_result($retornaListaDeDestinatarios,$i,"email").">";
+	  $destinatario = $destinatario.", ".pg_fetch_result($retornaListaDeDestinatarios,$i,"nome")." <".pg_fetch_result($retornaListaDeDestinatarios,$i,"email").">";
 	}
 	$sufixo = "seu grupo";
   }
   if ($existeAnexos) {$fraseAnexo = "Existem anexos";} else {$fraseAnexo = "Não existem anexos";};
-  $remetente = pg_result($identificaCamposEmail,0,"nomeremetente")." <".pg_result($identificaCamposEmail,0,"emailRemetente")." >";
+  $remetente = pg_fetch_result($identificaCamposEmail,0,"nomeremetente")." <".pg_fetch_result($identificaCamposEmail,0,"emailRemetente")." >";
   $assunto = "DBSeller - Uma nova ordem de serviço foi cadastrada para ".$sufixo.".";
   $mensagem = "
 <html>
@@ -149,7 +149,7 @@
               <tr> 
                 <td><ul>
                     <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">O usuário 
-                      <strong>".pg_result($identificaCamposEmail,0,"nomeremetente")."</strong> incluiu uma nova ordem de servi&ccedil;o 
+                      <strong>".pg_fetch_result($identificaCamposEmail,0,"nomeremetente")."</strong> incluiu uma nova ordem de servi&ccedil;o 
                       para <strong>".$sufixo."</strong>, com a seguinte descrição:</font></li>
                   </ul></td>
               </tr>
@@ -199,8 +199,8 @@
 </html>
   ";
 /////////////////////////////////////////////////////////////////////////////////////////
-  $destinatarioResponsavelDepartamento = pg_result($identificaCamposEmail,0,"nomeresponsavel")." <".pg_result($identificaCamposEmail,0,"emailresponsavel").">";
-  $assuntoResponsavelDepartamento = "DBSeller - Aviso ao responsável pelo grupo ".pg_result($identificaCamposEmail,0,"descrdepto");
+  $destinatarioResponsavelDepartamento = pg_fetch_result($identificaCamposEmail,0,"nomeresponsavel")." <".pg_fetch_result($identificaCamposEmail,0,"emailresponsavel").">";
+  $assuntoResponsavelDepartamento = "DBSeller - Aviso ao responsável pelo grupo ".pg_fetch_result($identificaCamposEmail,0,"descrdepto");
   $mensagemResponsavelDepartamento = "
 <html>
 <head>
@@ -225,8 +225,8 @@
               <tr> 
                 <td><ul>
                     <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">O usuário 
-                      <strong>".pg_result($identificaCamposEmail,0,"nomeremetente")."</strong> incluiu uma nova ordem de servi&ccedil;o 
-                       de código: <strong>".$codigo."</strong> para seu departamento (".pg_result($identificaCamposEmail,0,"descrdepto")."), com a seguinte descrição:</font></li>
+                      <strong>".pg_fetch_result($identificaCamposEmail,0,"nomeremetente")."</strong> incluiu uma nova ordem de servi&ccedil;o 
+                       de código: <strong>".$codigo."</strong> para seu departamento (".pg_fetch_result($identificaCamposEmail,0,"descrdepto")."), com a seguinte descrição:</font></li>
                   </ul></td>
               </tr>
               <tr> 

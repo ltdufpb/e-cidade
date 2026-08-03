@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	     $clcriaabas->identifica = array("aguacalc"=>"aguacalc","aguacalcval"=>"aguacalcval"); 
-	     $clcriaabas->src = array("aguacalc"=>"agu1_aguacalc006.php");
-	     $clcriaabas->disabled   =  array("aguacalcval"=>"true"); 
+	     $clcriaabas->identifica = ["aguacalc"=>"aguacalc","aguacalcval"=>"aguacalcval"]; 
+	     $clcriaabas->src = ["aguacalc"=>"agu1_aguacalc006.php"];
+	     $clcriaabas->disabled   =  ["aguacalcval"=>"true"]; 
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

@@ -76,7 +76,7 @@ class TaxasitbitaxaRepository extends \BaseClassRepository
 
         $sWhere = $this->getCondicao($entity);
 
-        (trim($sWhere) != "" ? $sWhere .= " AND " : "");
+        (trim((string) $sWhere) != "" ? $sWhere .= " AND " : "");
 
         $sWhere = $sWhere." (ar44_datavigencia >= to_char(now(), 'YYYY-MM-DD')::date OR ar44_datavigencia IS NULL)";
 

@@ -96,7 +96,7 @@ db_input('x01_numcgm',40,$Ix01_numcgm,true,'text',3,'')
 db_input('x41_codcorte',10,$Ix41_codcorte,true,'text',3," onchange='js_pesquisax41_codcorte(false);'")
 ?>
        <?php 
-$data = strtotime($x40_dtinc);
+$data = strtotime((string) $x40_dtinc);
 $x40_dtinc_dia = date("d", $data);
 $x40_dtinc_mes = date("m", $data);
 $x40_dtinc_ano = date("Y", $data);
@@ -126,7 +126,7 @@ db_inputdata('x41_dtprazo',@$x41_dtprazo_dia,@$x41_dtprazo_mes,@$x41_dtprazo_ano
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("x41_codcortemat"=>@$x41_codcortemat);
+	 $chavepri= ["x41_codcortemat"=>@$x41_codcortemat];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 //$cliframe_alterar_excluir->sql     = $claguacortemat->sql_query_file($x41_codcortemat);
 	 $cliframe_alterar_excluir->sql     = $claguacortemat->sql_query(null, "*", "a.j14_nome, x01_numero", "x41_codcorte=$x41_codcorte");

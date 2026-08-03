@@ -62,14 +62,14 @@ if($db_opcao==1){
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array('a1'=>'Tipo',
+   $clcriaabas->identifica = ['a1'=>'Tipo',
                                    'a2'=>'Procedimentos',
-                                   'a3'=>'Doc. Necessários');
-   $clcriaabas->src = array('a1'=>$sArquivo,
+                                   'a3'=>'Doc. Necessários'];
+   $clcriaabas->src = ['a1'=>$sArquivo,
                             'a2'=>'',
-                            'a3'=>'');
-   $clcriaabas->sizecampo  = array('a1'=>20,'a2'=>20,'a3'=>20);
-   $clcriaabas->disabled   =  array('a1'=>'false','a2'=>'true','a3'=>'true');
+                            'a3'=>''];
+   $clcriaabas->sizecampo  = ['a1'=>20,'a2'=>20,'a3'=>20];
+   $clcriaabas->disabled   =  ['a1'=>'false','a2'=>'true','a3'=>'true'];
    $clcriaabas->scrolling  = 'no';
    $clcriaabas->iframe_height= '600';
    $clcriaabas->iframe_width= '100%';

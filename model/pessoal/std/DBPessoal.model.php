@@ -146,7 +146,7 @@ abstract class DBPessoal
      * @return float|int
      * @throws ParameterException
      */
-    static public function getQuantidadeAvos(DBDate $oDataInicial, DBDate $oDataFinal, DBDate $oHoje = null)
+    static public function getQuantidadeAvos(DBDate $oDataInicial, DBDate $oDataFinal, ?DBDate $oHoje = null)
     {
         require_once(modification("libs/db_libpessoal.php"));
 
@@ -224,7 +224,7 @@ abstract class DBPessoal
             throw new Exception('Data inicial não pode ser maior que a final');
         }
 
-        $aRetorno = array();
+        $aRetorno = [];
 
         $iAnoCalculado = $iAnoInicio;
         $iMesCalculado = $iMesInicio;
@@ -421,8 +421,8 @@ abstract class DBPessoal
      * @param Instituicao $oInstituicao
      * @param DBCompetencia $oCompetencia
      * @return bool
-     * @deprecated  Não necessária a utilização
      */
+    #[\Deprecated(message: 'Não necessária a utilização')]
     public static function declararEstruturaFolhaPagamento(Instituicao $oInstituicao, DBCompetencia $oCompetencia)
     {
         return true;
@@ -508,14 +508,14 @@ abstract class DBPessoal
           $iMes           = DBPessoal::getMesFolha();
         }
 
-        $aEstruturais         = array();
-        $aLotacoes            = array();
+        $aEstruturais         = [];
+        $aLotacoes            = [];
 
         $oRetorno = new stdClass();
         $oRetorno->lErro = false;
         $oRetorno->sMsg  = "";
-        $oRetorno->aEstruturais = array();
-        $oRetorno->aLotacoes = array();
+        $oRetorno->aEstruturais = [];
+        $oRetorno->aLotacoes = [];
 
         $sSqlMascaraLotacao = $Cfpess->sql_query($iAno, $iMes, $iInstit, "db77_estrut");
         $rsMascaraLotacao   = db_query($sSqlMascaraLotacao);
@@ -577,11 +577,11 @@ abstract class DBPessoal
 
         if ($lRetornaMatriculas) {
 
-            $oRetorno->aMatriculas = array();
+            $oRetorno->aMatriculas = [];
 
             $oRHPessoalMov = new cl_rhpessoalmov();
 
-            $aWhereRHPessoalMov = array();
+            $aWhereRHPessoalMov = [];
             $aWhereRHPessoalMov[] = " rh02_anousu = {$iAno} ";
             $aWhereRHPessoalMov[] = " rh02_mesusu = {$iMes} ";
             $aWhereRHPessoalMov[] = " rh02_instit = {$iInstit} ";

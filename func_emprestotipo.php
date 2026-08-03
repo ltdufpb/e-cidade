@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_emprestotipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clemprestotipo = new cl_emprestotipo;
 $clemprestotipo->rotulo->label("e90_codigo");
 $clemprestotipo->rotulo->label("e90_descr");
@@ -98,9 +98,9 @@ $clemprestotipo->rotulo->label("e90_descr");
         }else{
            $sql = $clemprestotipo->sql_query("",$campos,"e90_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e90_descr)){
-          $repassa = array("chave_e90_codigo"=>$chave_e90_codigo,"chave_e90_descr"=>$chave_e90_descr);
+          $repassa = ["chave_e90_codigo"=>$chave_e90_codigo,"chave_e90_descr"=>$chave_e90_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

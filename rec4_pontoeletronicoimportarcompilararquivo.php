@@ -55,20 +55,20 @@ $oAbasImportacaoCompilacao = new cl_criaabas;
   <tr>
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
      <?php
-      $oAbasImportacaoCompilacao->identifica = array(
+      $oAbasImportacaoCompilacao->identifica = [
         'importacao'        => 'Importação',
         'compilacao'        => 'Compilação',
-      );
+      ];
 
-      $oAbasImportacaoCompilacao->sizecampo  = array(
+      $oAbasImportacaoCompilacao->sizecampo  = [
         'importacao'        => '20',
         'compilacao'        => '20',
-      );
+      ];
 
-      $oAbasImportacaoCompilacao->src        = array(
+      $oAbasImportacaoCompilacao->src        = [
         'importacao'        => 'rec4_pontoeletronicoimportacaoarquivo001.php',
         'compilacao'        => 'rec4_pontoeletronicocompilacaoarquivo.php',
-      );
+      ];
 
       $oAbasImportacaoCompilacao->cria_abas();
      ?>

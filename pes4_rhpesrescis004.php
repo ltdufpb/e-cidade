@@ -35,8 +35,8 @@ include(modification("classes/db_rhpessoal_classe.php"));
 include(modification("classes/db_rhpesrescisao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_libpessoal.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clselecao = new cl_selecao;
 $clcfpess = new cl_cfpess;
 $clrhpessoal = new cl_rhpessoal;
@@ -78,7 +78,7 @@ if(!isset($_SESSION['campomatriculas'])){
   if($selecao != 0){
     $sSql       = "select r44_where from selecao where r44_instit = $iInstituicao and r44_selec = ".$selecao;
     $result_sel = db_query($sSql);
-    if(pg_numrows($result_sel) > 0){
+    if(pg_num_rows($result_sel) > 0){
       db_fieldsmemory($result_sel, 0, 1);
       $whereestrut .= " and ".$r44_where;
     }else{
@@ -143,7 +143,7 @@ if(!isset($_SESSION['campomatriculas'])){
     echo "<script>location.href = 'pes4_rhpesrescislote001.php';</script>";
   }
 }else{
-  $arr_matriculas = split(",", $_SESSION['campomatriculas']);
+  $arr_matriculas = preg_split("#,#m", (string) $_SESSION['campomatriculas']);
   $r30_regist = array_shift($arr_matriculas);
   $campomatriculas = implode(",", $arr_matriculas);
   unset($_SESSION['campomatriculas']);

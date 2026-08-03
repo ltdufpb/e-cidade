@@ -47,7 +47,7 @@ class FolhaPagamentoSalario extends FolhaPagamento {
    * @example  FolhaPagamentoSalario::getFolhaAberta()
    * @return  FolhaPagamentoSalario Instância com todos os dados setados
    */
-  public static function getFolhaAberta(DBCompetencia $oCompetencia = null) {
+  public static function getFolhaAberta(?DBCompetencia $oCompetencia = null) {
 
     $iCodigoFolha = FolhaPagamento::getCodigoFolha(FolhaPagamento::TIPO_FOLHA_SALARIO, true, $oCompetencia);
 
@@ -68,7 +68,8 @@ class FolhaPagamentoSalario extends FolhaPagamento {
    * @example FolhaPagamentoSalario::hasFolhaAberta()
    * @return  boolean
    */
-  public static function hasFolhaAberta(DBCompetencia $oCompetencia = null) {
+  #[\Override]
+  public static function hasFolhaAberta(?DBCompetencia $oCompetencia = null) {
     return FolhaPagamento::hasFolhaAberta(FolhaPagamento::TIPO_FOLHA_SALARIO, $oCompetencia);
   }
 
@@ -80,7 +81,7 @@ class FolhaPagamentoSalario extends FolhaPagamento {
    * @param DBCompetencia $oCompetencia Opcional
    * @return Boolean
    */
-  public static function hasFolha(DBCompetencia $oCompetencia = null) {
+  public static function hasFolha(?DBCompetencia $oCompetencia = null) {
 
     if ($oCompetencia) {
       return FolhaPagamento::hasFolhaTipo(FolhaPagamento::TIPO_FOLHA_SALARIO, $oCompetencia);
@@ -97,7 +98,8 @@ class FolhaPagamentoSalario extends FolhaPagamento {
    * @example  FolhaPagamento:getProximoNumero(FolhaPagamento::TIPO_FOLHA_SALARIO)
    * @return   Integer  Próximo número da folha salário
    */
-  public static function getProximoNumero() {
+  #[\Override]
+  public static function getProximoNumero($iTipoFolha) {
     return FolhaPagamento::getProximoNumero(FolhaPagamento::TIPO_FOLHA_SALARIO);
   }
 
@@ -167,6 +169,7 @@ class FolhaPagamentoSalario extends FolhaPagamento {
    * - A folha informada não pode estar empenhada
    * @return boolean
    */
+  #[\Override]
   public function cancelarFechamento() {
   
     if (FolhaPagamentoSuplementar::hasFolha()) {
@@ -182,7 +185,8 @@ class FolhaPagamentoSalario extends FolhaPagamento {
    * @param  DBCompetencia $oCompetencia Competencia da Folha
    * @return array folhas de pagamentos de salários 
    */
-  public static function getFolhasFechadasCompetencia( DBCompetencia $oCompetencia ) {
+  #[\Override]
+  public static function getFolhasFechadasCompetencia( DBCompetencia $oCompetencia, $iTipoFolha = \null ) {
     return FolhaPagamento::getFolhasFechadasCompetencia($oCompetencia, FolhaPagamento::TIPO_FOLHA_SALARIO);
   }
 }

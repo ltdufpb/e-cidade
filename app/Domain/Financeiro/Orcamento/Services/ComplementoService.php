@@ -11,14 +11,8 @@ use Exception;
 class ComplementoService
 {
 
-    /**
-     * @var ComplementoRepository
-     */
-    private $repository;
-
-    public function __construct(ComplementoRepository $repository)
+    public function __construct(private readonly ComplementoRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function getAll()

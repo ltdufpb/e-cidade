@@ -59,7 +59,7 @@ switch ($oGet->iOpcao) {
 }
 
 
-$aOpcoes = array('in'=>'Contendo','not in'=>'Não Contendo');
+$aOpcoes = ['in'=>'Contendo','not in'=>'Não Contendo'];
 ?>
 <html>
   <head>

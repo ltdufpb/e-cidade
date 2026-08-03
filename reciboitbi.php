@@ -40,7 +40,7 @@ use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
 use ECidade\Tributario\Arrecadacao\Repository\TaxaEspecifica as TaxaEspecificaRepository;
 use ECidade\Tributario\Arrecadacao\Service\TaxaEspecifica as TaxaEspecificaService;
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 try {
 
@@ -343,17 +343,17 @@ $result = $clitbinome->sql_record($clitbinome->sql_query(""," it03_nome as nomec
 if($clitbinome->numrows  > 0){
   $traco = '';
   $proprietarios .= "-".'ADQUIRENTES : ';
-  $num = pg_numrows($result);
+  $num = pg_num_rows($result);
   for ($p = 0;$p < $num;$p++){
     db_fieldsmemory($result,$p);
     // acumula o numero compradores homens e mulheres para colocar na observação da guia
-    if(strtoupper($sexocomprador) == 'M'){
+    if(strtoupper((string) $sexocomprador) == 'M'){
       $compradoresm++;
-    }elseif(strtoupper($sexocomprador) == 'F'){
+    }elseif(strtoupper((string) $sexocomprador) == 'F'){
       $compradoresf++;
     }
 
-    $proprietarios .= $traco.trim($nomecomp);
+    $proprietarios .= $traco.trim((string) $nomecomp);
     $traco = ' - ';
   }
 
@@ -373,7 +373,7 @@ $resultcons = $clitbiconstr->sql_record( $clitbiconstr->sql_query(null,"*",null,
 $linhasresultcons = $clitbiconstr->numrows;
 
 if($clitbiconstr->numrows  > 0){
-  $num = pg_numrows($resultcons);
+  $num = pg_num_rows($resultcons);
   $linhasresultcons = $num;
   $areatotal = 0;
   $areatrans = 0;
@@ -396,7 +396,7 @@ $resultItbiIntermediador = $oItbiIntermediador->sql_record($sSqlItbiIntermediado
 if($oItbiIntermediador->numrows > 0){
 
   db_fieldsmemory($resultItbiIntermediador, 0);
-  $pdf1->intermediadorNome  = utf8_decode($it35_nome);
+  $pdf1->intermediadorNome  = mb_convert_encoding($it35_nome, 'ISO-8859-1');
   $pdf1->intermediadorCpf   = $it35_cnpj_cpf;
   $pdf1->intermediadorCreci = $it35_creci;
 }
@@ -426,17 +426,17 @@ $transmitentesf = 0;
 if($clitbinome->numrows  > 0){
   $traco = '';
   $propri .= "-".'OUTRO(S) TRANSMITENTE(S) : ';
-  $num = pg_numrows($result);
+  $num = pg_num_rows($result);
 
   // acumula o numero compradores homens e mulheres para colocar na observação da guia
   for ($p = 0;$p < $num;$p++){
     db_fieldsmemory($result,$p);
-    if(strtoupper($it03_sexo)== 'M'){
+    if(strtoupper((string) $it03_sexo)== 'M'){
       $transmitentesm++;
-    }elseif(strtoupper($it03_sexo) == 'F'){
+    }elseif(strtoupper((string) $it03_sexo) == 'F'){
       $transmitentesf++;
     }
-    $propri .= $traco.trim($nomeoutro);
+    $propri .= $traco.trim((string) $nomeoutro);
     $traco = ' - ';
   }
 
@@ -512,7 +512,7 @@ if ($lLiberado and $tipoguia != "q") {
   $rsDadosFormaPgto = $clitbiavalia->sql_record($sSqlFormaPagto);
 
   $iLinhasFormaPgto = $clitbiavalia->numrows;
-  $aDadosFormasPgto = array();
+  $aDadosFormasPgto = [];
 
   $iForma = 0;
 
@@ -582,16 +582,16 @@ if ($lLiberado and $tipoguia != "q") {
   $clitbinumpre->incluir(null);
 
   $numpre = $clitbinumpre->it15_numpre;
-  
-  $aInserirRecibos = array();
+
+  $aInserirRecibos = [];
   $oInserirRecibos = new \stdClass();
   $oInserirRecibos->receita = $it17_codigo;
   $oInserirRecibos->descricao = "ITBI";
   $oInserirRecibos->valor = $it14_valorpaga;
 
   $aInserirRecibos[] = $oInserirRecibos;
-    
-    
+
+
     $itbitaxasavaliaRepository = ItbitaxasavaliaRepository::getInstance();
     $itbitaxasavalia           = new Itbitaxasavalia();
     $itbitaxasavalia->setGuia($itbi);
@@ -630,15 +630,15 @@ if ($lLiberado and $tipoguia != "q") {
 
         $it14_valorpaga += $oTaxas->it39_valor;
     }
-    
+
     $it14_valorpaga -= $pdf1->desconto_abatimento;
-    
+
     if (!empty($taxaEspecifica) && $it14_valorpaga > 0 ) {
-      
+
       $taxaService = new TaxaEspecificaService(TaxaEspecificaRepository::getInstance());
       $taxaModel = $taxaService->getByCodigoSubReceita($taxaEspecifica);
       $taxaExpediente = $taxaService->calculaInflator($taxaModel);
-       
+
       $oInserirRecibosTaxaExpediente = new \stdClass();
       $oInserirRecibosTaxaExpediente->receita = $taxaModel->getCodigoReceita();
       $oInserirRecibosTaxaExpediente->descricao = "TAXA DE EXPEDIENTE";
@@ -659,7 +659,7 @@ if ($lLiberado and $tipoguia != "q") {
     }
 
     $pdf1->aTaxas2 = $aInserirRecibos;
-    
+
     foreach ($aInserirRecibos as $oDados) {
         $codHist = 707;
 
@@ -787,7 +787,7 @@ if ( $tipoguia == "q" ) {
 
       if ( $oItbiNumpre->datapagamento != "" ) {
 
-        $iAnoPagamento = date( 'Y', strtotime($oItbiNumpre->it01_data) );
+        $iAnoPagamento = date( 'Y', strtotime((string) $oItbiNumpre->it01_data) );
         $rsTxParItbi   = db_query($clparitbi->sql_query($iAnoPagamento, 'it24_taxabancaria '));
         $oParItbi      = db_utils::fieldsMemory($rsTxParItbi, 0);
 
@@ -816,7 +816,7 @@ $vlrbar = db_formatar(str_replace('.','',str_pad(number_format($valorpagamento,2
 
 if($oRegraEmissao->isCobranca()){
 
-  if (substr($datavencimento, 0, 4) > db_getsession('DB_anousu') && $k00_valor > 0) {
+  if (substr((string) $datavencimento, 0, 4) > db_getsession('DB_anousu') && $k00_valor > 0) {
     $k00_valor = 0;
     $especie   = $ninfla;
     $histinf   = "\n Atenção : entre em contato com o municipio para saber o valor da $ninfla.";
@@ -855,8 +855,8 @@ if ($lLiberado) {
   /// Fim código barras
 }
 
-$areaterrenomat   = explode('\.',$areatran);
-$areaedificadamat = explode('\.',@$areatotal);
+$areaterrenomat   = explode('\.',(string) $areatran);
+$areaedificadamat = explode('\.',(string) @$areatotal);
 
 $result = $clitbiruralcaract->sql_record($clitbiruralcaract->sql_query($itbi,"","*","j31_codigo"));
 $linhasitbiruralcaract = $clitbiruralcaract->numrows;
@@ -954,7 +954,7 @@ if($oRegraEmissao->isCobranca()){
 
   $rsBuscaCaractDistr = $clitbiruralcaract->sql_record($clitbiruralcaract->sql_query(null,null,"j31_descr,it19_tipocaract,it19_valor",null,$sWhere));
   $iLinhasCaractDistr = $clitbiruralcaract->numrows;
-  $aDadosCaractDistr  = array();
+  $aDadosCaractDistr  = [];
 
   if ( $iLinhasCaractDistr > 0 ) {
 
@@ -971,7 +971,7 @@ if($oRegraEmissao->isCobranca()){
   $rsBuscaCaractUtil = $clitbiruralcaract->sql_record($clitbiruralcaract->sql_query(null,null,"j31_descr,it19_tipocaract,it19_valor",null,$sWhere));
 
   $iLinhasCaractUtil = $clitbiruralcaract->numrows;
-  $aDadosCaractUtil  = array();
+  $aDadosCaractUtil  = [];
 
   if ( $iLinhasCaractUtil > 0 ) {
     for ( $iInd=0; $iInd < $iLinhasCaractUtil; $iInd++){
@@ -1016,18 +1016,10 @@ if($oRegraEmissao->isCobranca()){
             db_fieldsmemory($rsTipoCertidao,0);
           }
 
-          switch ($tipocertidao) {
-
-            case 'positiva':
-
-              $sMsgSituacao = 'IMÓVEL COM DÉBITOS PENDENTES NESTA DATA';
-              break;
-
-            default:
-
-              $sMsgSituacao = 'IMÓVEL EM DIA NESTA DATA';
-
-          }
+          $sMsgSituacao = match ($tipocertidao) {
+              'positiva' => 'IMÓVEL COM DÉBITOS PENDENTES NESTA DATA',
+              default => 'IMÓVEL EM DIA NESTA DATA',
+          };
 
         }
       }
@@ -1043,7 +1035,7 @@ if($oRegraEmissao->isCobranca()){
 
     // Repassa a qual guia a atual é retificativa
     $pdf1->sOrigemRetificacaoNumero = $oItbiRetificada->it32_itbiretif;
-    $pdf1->sOrigemRetificacaoAno    = date('Y', strtotime($oItbiRetificativa->it01_data));
+    $pdf1->sOrigemRetificacaoAno    = date('Y', strtotime((string) $oItbiRetificativa->it01_data));
 
     // Se for de Araruama, não escreve esta observação, pois é escrita em outra parte do relatório
     if ($db21_codcli != 74) {
@@ -1064,7 +1056,7 @@ if($oRegraEmissao->isCobranca()){
   $sUsuarioAtual .= " left join pessoal.rhpesrescisao on rhpesrescisao.rh05_seqpes = rhpessoalmov.rh02_seqpes ";
   $sUsuarioAtual .= " where db_usuarios.id_usuario = " . db_getsession("DB_id_usuario") . " and rhpesrescisao.rh05_seqpes is null ";
   $rsUsuarioAtual = db_query($sUsuarioAtual) or die($sUsuarioAtual);
-  if ( pg_numrows($rsUsuarioAtual) > 0 ) {
+  if ( pg_num_rows($rsUsuarioAtual) > 0 ) {
      $oUsuarioAtual = db_utils::fieldsMemory($rsUsuarioAtual,0);
   } else {
 
@@ -1167,7 +1159,7 @@ $pdf1->linha_digitavel           =@$linha_digitavel;
 $pdf1->codigo_barras             =@$codigo_barras;
 $pdf1->outrostransmitentes       =@$outrostransmitentes;
 $pdf1->linhasitbiruralcaract     =@$linhasitbiruralcaract;
-$pdf1->it01_obs                  =mb_strtoupper(@$sMsgObs);
+$pdf1->it01_obs                  =mb_strtoupper((string) @$sMsgObs);
 $pdf1->arrayj13_descr            =@$arrayj13_descr;
 $pdf1->arrayit19_valor           =@$arrayit19_valor;
 $pdf1->aDadosRuralCaractDist     =$aDadosCaractDistr;

@@ -31,7 +31,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clsau_prestadorvinculos = new cl_sau_prestadorvinculos;
 $clsau_prestadorvinculos->rotulo->label();
@@ -82,7 +82,7 @@ $oRotulo->label( "sd63_c_procedimento" );
   </form>
   <?php
   $where    = "";
-  $aWhere   = array();
+  $aWhere   = [];
   $aWhere[] = "s111_c_situacao = 'A'";
 
 
@@ -116,9 +116,9 @@ $oRotulo->label( "sd63_c_procedimento" );
     $sWhere = implode( " AND ", $aWhere );
     $sql    = $clsau_prestadorvinculos->sql_query( "", $campos, "s111_i_codigo", $sWhere );
 
-    $repassa = array();
+    $repassa = [];
     if( isset( $chave_s111_i_codigo ) ) {
-      $repassa = array( "chave_s111_i_codigo" => $chave_s111_i_codigo );
+      $repassa = [ "chave_s111_i_codigo" => $chave_s111_i_codigo ];
     }
 
     echo '<div class="container">';

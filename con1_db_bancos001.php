@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_bancos_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_bancos = new cl_db_bancos;
 $db_opcao = 1;
 $db_botao = true;
@@ -68,7 +68,7 @@ if(isset($incluir)){
   
   if (!$erro) {
 
-    $db90_codban = str_pad($db90_codban, 3, "0", STR_PAD_LEFT);
+    $db90_codban = str_pad((string) $db90_codban, 3, "0", STR_PAD_LEFT);
     $cldb_bancos->db90_codban = $db90_codban;
     $cldb_bancos->db90_descr  = $db90_descr;
     $cldb_bancos->db90_digban = $db90_digban;

@@ -40,7 +40,7 @@ $clrotulo = new rotulocampo;
    }
    ?>
    <fieldset style="padding:0px;height:370px;"><legend><?=$Led255_c_dependencias?></legend>
-    <input <?=substr(@$ed255_c_dependencias,0,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_dependencias" name="ed255_c_dependencias[]" type="checkbox" value="1" onclick="js_dependencias();"> Diretoria<br>
+    <input <?=str_starts_with(@$ed255_c_dependencias, "1")?"checked":""?> style="height:13px;" id="ed255_c_dependencias" name="ed255_c_dependencias[]" type="checkbox" value="1" onclick="js_dependencias();"> Diretoria<br>
     <input <?=substr(@$ed255_c_dependencias,1,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_dependencias" name="ed255_c_dependencias[]" type="checkbox" value="2" onclick="js_dependencias();"> Sala de Professores<br>
     <input <?=substr(@$ed255_c_dependencias,2,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_dependencias" name="ed255_c_dependencias[]" type="checkbox" value="3" onclick="js_dependencias();"> Laboratório de Informática<br>
     <input <?=substr(@$ed255_c_dependencias,3,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_dependencias" name="ed255_c_dependencias[]" type="checkbox" value="4" onclick="js_dependencias();"> Laboratório de Ciências<br>
@@ -67,7 +67,7 @@ $clrotulo = new rotulocampo;
    }
    ?>
    <fieldset style="padding:0px;"><legend><?=$Led255_c_localizacao?></legend>
-    <input <?=substr(@$ed255_c_localizacao,0,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_localizacao" name="ed255_c_localizacao[]" type="checkbox" value="1"> Prédio Escolar<br>
+    <input <?=str_starts_with(@$ed255_c_localizacao, "1")?"checked":""?> style="height:13px;" id="ed255_c_localizacao" name="ed255_c_localizacao[]" type="checkbox" value="1"> Prédio Escolar<br>
     <input <?=substr(@$ed255_c_localizacao,1,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_localizacao" name="ed255_c_localizacao[]" type="checkbox" value="2"> Templo / Igreja<br>
     <input <?=substr(@$ed255_c_localizacao,2,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_localizacao" name="ed255_c_localizacao[]" type="checkbox" value="3"> Salas de Empresa<br>
     <input <?=substr(@$ed255_c_localizacao,3,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_localizacao" name="ed255_c_localizacao[]" type="checkbox" value="4"> Casa do Professor<br>
@@ -95,7 +95,7 @@ $clrotulo = new rotulocampo;
    ?>
    
    <fieldset style="padding:0px;"><legend><?=$Led255_c_esgotosanitario?></legend>
-    <input <?=substr(@$ed255_c_esgotosanitario,0,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_esgotosanitario" name="ed255_c_esgotosanitario[]" type="checkbox" value="1" onclick="js_esgoto();"> Rede Pública<br>
+    <input <?=str_starts_with(@$ed255_c_esgotosanitario, "1")?"checked":""?> style="height:13px;" id="ed255_c_esgotosanitario" name="ed255_c_esgotosanitario[]" type="checkbox" value="1" onclick="js_esgoto();"> Rede Pública<br>
     <input <?=substr(@$ed255_c_esgotosanitario,1,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_esgotosanitario" name="ed255_c_esgotosanitario[]" type="checkbox" value="2" onclick="js_esgoto();"> Fossa<br>
     <input <?=substr(@$ed255_c_esgotosanitario,2,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_esgotosanitario" name="ed255_c_esgotosanitario[]" type="checkbox" value="3" onclick="js_esgoto();"> Inexistente<br>
    </fieldset>
@@ -106,7 +106,7 @@ $clrotulo = new rotulocampo;
    }
    ?>
    <fieldset style="padding:0px;"><legend><?=$Led255_c_materdidatico?></legend>
-    <input <?=substr(@$ed255_c_materdidatico,0,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_materdidatico" name="ed255_c_materdidatico[]" type="checkbox" value="1" onclick="js_mater()"> Não Utiliza<br>
+    <input <?=str_starts_with(@$ed255_c_materdidatico, "1")?"checked":""?> style="height:13px;" id="ed255_c_materdidatico" name="ed255_c_materdidatico[]" type="checkbox" value="1" onclick="js_mater()"> Não Utiliza<br>
     <input <?=substr(@$ed255_c_materdidatico,1,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_materdidatico" name="ed255_c_materdidatico[]" type="checkbox" value="2" onclick="js_mater()" > Quilombola<br>
     <input <?=substr(@$ed255_c_materdidatico,2,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_materdidatico" name="ed255_c_materdidatico[]" type="checkbox" value="3" onclick="js_mater()"> Indígena<br>
    </fieldset>
@@ -118,7 +118,7 @@ $clrotulo = new rotulocampo;
    }
    ?>
    <fieldset style="padding:0px;"><legend><?=$Led255_c_equipamentos?></legend>
-    <input <?=substr(@$ed255_c_equipamentos,0,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_equipamentos" name="ed255_c_equipamentos[]" type="checkbox" value="1"> Aparelho de Televisão<br>
+    <input <?=str_starts_with(@$ed255_c_equipamentos, "1")?"checked":""?> style="height:13px;" id="ed255_c_equipamentos" name="ed255_c_equipamentos[]" type="checkbox" value="1"> Aparelho de Televisão<br>
     <input <?=substr(@$ed255_c_equipamentos,1,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_equipamentos" name="ed255_c_equipamentos[]" type="checkbox" value="2"> Videocassete<br>
     <input <?=substr(@$ed255_c_equipamentos,2,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_equipamentos" name="ed255_c_equipamentos[]" type="checkbox" value="3"> DVD<br>
     <input <?=substr(@$ed255_c_equipamentos,3,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_equipamentos" name="ed255_c_equipamentos[]" type="checkbox" value="4"> Antena Parabólica<br>
@@ -133,7 +133,7 @@ $clrotulo = new rotulocampo;
    }
    ?>
    <fieldset style="padding:0px;height:174px;"><legend><?=$Led255_c_destinolixo?></legend>
-    <input <?=substr(@$ed255_c_destinolixo,0,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_destinolixo" name="ed255_c_destinolixo[]" type="checkbox" value="1"> Coleta Periódica<br>
+    <input <?=str_starts_with(@$ed255_c_destinolixo, "1")?"checked":""?> style="height:13px;" id="ed255_c_destinolixo" name="ed255_c_destinolixo[]" type="checkbox" value="1"> Coleta Periódica<br>
     <input <?=substr(@$ed255_c_destinolixo,1,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_destinolixo" name="ed255_c_destinolixo[]" type="checkbox" value="2"> Queima<br>
     <input <?=substr(@$ed255_c_destinolixo,2,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_destinolixo" name="ed255_c_destinolixo[]" type="checkbox" value="3"> Joga em outra área<br>
     <input <?=substr(@$ed255_c_destinolixo,3,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_destinolixo" name="ed255_c_destinolixo[]" type="checkbox" value="1"> Recicla<br>
@@ -148,7 +148,7 @@ $clrotulo = new rotulocampo;
    }
    ?>
    <fieldset style="padding:0px;"><legend><?=$Led255_c_abastagua?></legend>
-    <input <?=substr(@$ed255_c_abastagua,0,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_abastagua" name="ed255_c_abastagua[]" type="checkbox" value="1" onclick="js_agua();"> Rede Pública<br>
+    <input <?=str_starts_with(@$ed255_c_abastagua, "1")?"checked":""?> style="height:13px;" id="ed255_c_abastagua" name="ed255_c_abastagua[]" type="checkbox" value="1" onclick="js_agua();"> Rede Pública<br>
     <input <?=substr(@$ed255_c_abastagua,1,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_abastagua" name="ed255_c_abastagua[]" type="checkbox" value="2" onclick="js_agua();"> Poço Artesiano<br>
     <input <?=substr(@$ed255_c_abastagua,2,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_abastagua" name="ed255_c_abastagua[]" type="checkbox" value="3" onclick="js_agua();"> Cacimba / Cisterna / Poço<br>
     <input <?=substr(@$ed255_c_abastagua,3,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_abastagua" name="ed255_c_abastagua[]" type="checkbox" value="4" onclick="js_agua();"> Fonte / Rio / Igarapé / Riacho<br>
@@ -161,7 +161,7 @@ $clrotulo = new rotulocampo;
    }
    ?>   
    <fieldset style="padding:0px;height:96px;"><legend><?=$Led255_c_abastenergia?></legend>
-    <input <?=substr(@$ed255_c_abastenergia,0,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_abastenergia" name="ed255_c_abastenergia[]" type="checkbox" value="1" onclick="js_energia();"> Rede Pública<br>
+    <input <?=str_starts_with(@$ed255_c_abastenergia, "1")?"checked":""?> style="height:13px;" id="ed255_c_abastenergia" name="ed255_c_abastenergia[]" type="checkbox" value="1" onclick="js_energia();"> Rede Pública<br>
     <input <?=substr(@$ed255_c_abastenergia,1,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_abastenergia" name="ed255_c_abastenergia[]" type="checkbox" value="2" onclick="js_energia();"> Gerador<br>
     <input <?=substr(@$ed255_c_abastenergia,2,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_abastenergia" name="ed255_c_abastenergia[]" type="checkbox" value="3" onclick="js_energia();"> Outros (Energia Alternativa)<br>
     <input <?=substr(@$ed255_c_abastenergia,3,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_abastenergia" name="ed255_c_abastenergia[]" type="checkbox" value="4" onclick="js_energia();"> Inexistente<br>
@@ -169,7 +169,7 @@ $clrotulo = new rotulocampo;
    <br>
    <fieldset style="height:85px;"><legend><?=$Led255_i_compartilhado?></legend>
    <?php 
-   $x = array('0'=>'NÃO','1'=>'SIM');
+   $x = ['0'=>'NÃO','1'=>'SIM'];
    db_select('ed255_i_compartilhado',$x,true,$db_opcao," onchange='js_outraescola(this.value);' style='height:15px;font-size:10px;'");
    if(isset($ed255_i_compartilhado) && $ed255_i_compartilhado==1){
     $visible = "visible";
@@ -193,7 +193,7 @@ $clrotulo = new rotulocampo;
       <td>
        <?=$Led255_i_computadores?>
        <?php 
-       $x = array('0'=>'NÃO POSSUI','1'=>'POSSUI');
+       $x = ['0'=>'NÃO POSSUI','1'=>'POSSUI'];
        db_select('ed255_i_computadores',$x,true,$db_opcao," onchange='js_computadores(this.value);' style='height:15px;font-size:10px;'");
        if(isset($ed255_i_computadores) && $ed255_i_computadores==1){
         $visible1 = "visible";
@@ -243,7 +243,7 @@ $clrotulo = new rotulocampo;
       <td><?=$Led255_i_aguafiltrada?></td>
       <td>
        <?php 
-       $x = array('1'=>'NÃO FILTRADA','2'=>'FILTRADA');
+       $x = ['1'=>'NÃO FILTRADA','2'=>'FILTRADA'];
        db_select('ed255_i_aguafiltrada',$x,true,$db_opcao," style='height:15px;font-size:10px;'");
        ?>
       </td>
@@ -252,7 +252,7 @@ $clrotulo = new rotulocampo;
       <td><?=$Led255_i_alimentacao?></td>
       <td>
        <?php 
-       $x = array('1'=>'OFERECE','0'=>'NÃO OFERECE');
+       $x = ['1'=>'OFERECE','0'=>'NÃO OFERECE'];
        db_select('ed255_i_alimentacao',$x,true,$db_opcao," style='height:15px;font-size:10px;'");
        ?>
       </td>
@@ -273,7 +273,7 @@ $clrotulo = new rotulocampo;
       <td><?=$Led255_i_ativcomplementar?></td>
       <td>
        <?php 
-       $x = array('0'=>'NÃO OFERECE','1'=>'NÃO EXCLUSIVAMENTE','2'=>'EXCLUSIVAMENTE');
+       $x = ['0'=>'NÃO OFERECE','1'=>'NÃO EXCLUSIVAMENTE','2'=>'EXCLUSIVAMENTE'];
        db_select('ed255_i_ativcomplementar',$x,true,$db_opcao," onchange='js_ativcomp(this.value)'; style='height:15px;font-size:10px;'");
        ?>
       </td>
@@ -282,7 +282,7 @@ $clrotulo = new rotulocampo;
       <td><?=$Led255_i_aee?></td>
       <td>
        <?php 
-       $x = array('0'=>'NÃO OFERECE','1'=>'NÃO EXCLUSIVAMENTE','2'=>'EXCLUSIVAMENTE');
+       $x = ['0'=>'NÃO OFERECE','1'=>'NÃO EXCLUSIVAMENTE','2'=>'EXCLUSIVAMENTE'];
        db_select('ed255_i_aee',$x,true,$db_opcao," onchange='js_aee(this.value)'; style='height:15px;font-size:10px;'");
        ?>
       </td>
@@ -291,7 +291,7 @@ $clrotulo = new rotulocampo;
       <td><?=$Led255_i_efciclos?></td>
       <td>
        <?php 
-       $x = array('0'=>'NÃO','1'=>'SIM');
+       $x = ['0'=>'NÃO','1'=>'SIM'];
        db_select('ed255_i_efciclos',$x,true,$db_opcao," style='height:15px;font-size:10px;'");
        ?>
       </td>

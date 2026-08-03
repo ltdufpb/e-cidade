@@ -44,13 +44,13 @@ if( $pdf->gety() > ( $pdf->h - 35 ) )
 $largura = ( $pdf->w ) / 3;
 
 $pos = $pdf->gety();
-$pdf->multicell($largura*1,3,ucwords($ass_pref),0,"C",0,0);
+$pdf->multicell($largura*1,3,ucwords((string) $ass_pref),0,"C",0,0);
 
 $pdf->setxy($largura,$pos);
-$pdf->multicell($largura,3,ucwords($ass_sec),0,"C",0,0);
+$pdf->multicell($largura,3,ucwords((string) $ass_sec),0,"C",0,0);
 
 $pdf->setxy($largura*2,$pos);
-$pdf->multicell($largura,3,ucwords($ass_cont),0,"C",0,0);
+$pdf->multicell($largura,3,ucwords((string) $ass_cont),0,"C",0,0);
 
 // $pdf->Ln(10);
 // $pdf->setxy($largura,$pos);

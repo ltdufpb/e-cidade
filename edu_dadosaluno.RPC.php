@@ -96,11 +96,7 @@ switch ($oParam->exec) {
       $oGradeAproveitamento->setUrlEncode(true);
 
       $oRetorno->aGradeAproveitamento = $oGradeAproveitamento->getGradeAproveitamento();
-    } catch (ParameterException $eErro) {
-
-      $oRetorno->status  = 2;
-      $oRetorno->message = urlencode($eErro->getMessage());
-    } catch (BusinessException $eErro) {
+    } catch (ParameterException|BusinessException $eErro) {
 
       $oRetorno->status  = 2;
       $oRetorno->message = urlencode($eErro->getMessage());

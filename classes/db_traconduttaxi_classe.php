@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE traconduttaxi
 class cl_traconduttaxi { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tr22_id = 0; 
-   var $tr22_numcgm = 0; 
-   var $tr22_idveicperm = 0; 
-   var $tr22_cnh = null; 
-   var $tr22_categoria = null; 
-   var $tr22_dtvalidcnh_dia = null; 
-   var $tr22_dtvalidcnh_mes = null; 
-   var $tr22_dtvalidcnh_ano = null; 
-   var $tr22_dtvalidcnh = null; 
-   var $tr22_ruaid = 0; 
-   var $tr22_nro = null; 
-   var $tr22_bairroid = 0; 
-   var $tr22_complem = null; 
+   public $tr22_id = 0; 
+   public $tr22_numcgm = 0; 
+   public $tr22_idveicperm = 0; 
+   public $tr22_cnh = null; 
+   public $tr22_categoria = null; 
+   public $tr22_dtvalidcnh_dia = null; 
+   public $tr22_dtvalidcnh_mes = null; 
+   public $tr22_dtvalidcnh_ano = null; 
+   public $tr22_dtvalidcnh = null; 
+   public $tr22_ruaid = 0; 
+   public $tr22_nro = null; 
+   public $tr22_bairroid = 0; 
+   public $tr22_complem = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tr22_id = int4 = Código 
                  tr22_numcgm = int4 = CGM 
                  tr22_idveicperm = int4 = permissionário 
@@ -69,10 +69,10 @@ class cl_traconduttaxi {
                  tr22_complem = varchar(255) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_traconduttaxi() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("traconduttaxi"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -215,7 +215,7 @@ class cl_traconduttaxi {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Condutores ($this->tr22_id) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Condutores já Cadastrado";
@@ -239,19 +239,19 @@ class cl_traconduttaxi {
      $resaco = $this->sql_record($this->sql_query_file($this->tr22_id));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11843,'$this->tr22_id','I')");
-       $resac = db_query("insert into db_acount values($acount,2047,11843,'','".AddSlashes(pg_result($resaco,0,'tr22_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2047,11844,'','".AddSlashes(pg_result($resaco,0,'tr22_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2047,11845,'','".AddSlashes(pg_result($resaco,0,'tr22_idveicperm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2047,11846,'','".AddSlashes(pg_result($resaco,0,'tr22_cnh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2047,11847,'','".AddSlashes(pg_result($resaco,0,'tr22_categoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2047,11848,'','".AddSlashes(pg_result($resaco,0,'tr22_dtvalidcnh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2047,11849,'','".AddSlashes(pg_result($resaco,0,'tr22_ruaid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2047,11850,'','".AddSlashes(pg_result($resaco,0,'tr22_nro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2047,11851,'','".AddSlashes(pg_result($resaco,0,'tr22_bairroid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2047,11852,'','".AddSlashes(pg_result($resaco,0,'tr22_complem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2047,11843,'','".AddSlashes(pg_fetch_result($resaco,0,'tr22_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2047,11844,'','".AddSlashes(pg_fetch_result($resaco,0,'tr22_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2047,11845,'','".AddSlashes(pg_fetch_result($resaco,0,'tr22_idveicperm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2047,11846,'','".AddSlashes(pg_fetch_result($resaco,0,'tr22_cnh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2047,11847,'','".AddSlashes(pg_fetch_result($resaco,0,'tr22_categoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2047,11848,'','".AddSlashes(pg_fetch_result($resaco,0,'tr22_dtvalidcnh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2047,11849,'','".AddSlashes(pg_fetch_result($resaco,0,'tr22_ruaid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2047,11850,'','".AddSlashes(pg_fetch_result($resaco,0,'tr22_nro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2047,11851,'','".AddSlashes(pg_fetch_result($resaco,0,'tr22_bairroid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2047,11852,'','".AddSlashes(pg_fetch_result($resaco,0,'tr22_complem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -260,10 +260,10 @@ class cl_traconduttaxi {
       $this->atualizacampos();
      $sql = " update traconduttaxi set ";
      $virgula = "";
-     if(trim($this->tr22_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_id"])){ 
+     if(trim((string) $this->tr22_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_id"])){ 
        $sql  .= $virgula." tr22_id = $this->tr22_id ";
        $virgula = ",";
-       if(trim($this->tr22_id) == null ){ 
+       if(trim((string) $this->tr22_id) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "tr22_id";
          $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_traconduttaxi {
          return false;
        }
      }
-     if(trim($this->tr22_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_numcgm"])){ 
+     if(trim((string) $this->tr22_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_numcgm"])){ 
        $sql  .= $virgula." tr22_numcgm = $this->tr22_numcgm ";
        $virgula = ",";
-       if(trim($this->tr22_numcgm) == null ){ 
+       if(trim((string) $this->tr22_numcgm) == null ){ 
          $this->erro_sql = " Campo CGM nao Informado.";
          $this->erro_campo = "tr22_numcgm";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_traconduttaxi {
          return false;
        }
      }
-     if(trim($this->tr22_idveicperm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_idveicperm"])){ 
+     if(trim((string) $this->tr22_idveicperm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_idveicperm"])){ 
        $sql  .= $virgula." tr22_idveicperm = $this->tr22_idveicperm ";
        $virgula = ",";
-       if(trim($this->tr22_idveicperm) == null ){ 
+       if(trim((string) $this->tr22_idveicperm) == null ){ 
          $this->erro_sql = " Campo permissionário nao Informado.";
          $this->erro_campo = "tr22_idveicperm";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_traconduttaxi {
          return false;
        }
      }
-     if(trim($this->tr22_cnh)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_cnh"])){ 
+     if(trim((string) $this->tr22_cnh)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_cnh"])){ 
        $sql  .= $virgula." tr22_cnh = '$this->tr22_cnh' ";
        $virgula = ",";
-       if(trim($this->tr22_cnh) == null ){ 
+       if(trim((string) $this->tr22_cnh) == null ){ 
          $this->erro_sql = " Campo CNH nao Informado.";
          $this->erro_campo = "tr22_cnh";
          $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_traconduttaxi {
          return false;
        }
      }
-     if(trim($this->tr22_categoria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_categoria"])){ 
+     if(trim((string) $this->tr22_categoria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_categoria"])){ 
        $sql  .= $virgula." tr22_categoria = '$this->tr22_categoria' ";
        $virgula = ",";
-       if(trim($this->tr22_categoria) == null ){ 
+       if(trim((string) $this->tr22_categoria) == null ){ 
          $this->erro_sql = " Campo Categoria nao Informado.";
          $this->erro_campo = "tr22_categoria";
          $this->erro_banco = "";
@@ -325,7 +325,7 @@ class cl_traconduttaxi {
          return false;
        }
      }
-     if(trim($this->tr22_dtvalidcnh)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_dtvalidcnh_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tr22_dtvalidcnh_dia"] !="") ){ 
+     if(trim((string) $this->tr22_dtvalidcnh)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_dtvalidcnh_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tr22_dtvalidcnh_dia"] !="") ){ 
        $sql  .= $virgula." tr22_dtvalidcnh = '$this->tr22_dtvalidcnh' ";
        $virgula = ",";
      }     else{ 
@@ -334,17 +334,17 @@ class cl_traconduttaxi {
          $virgula = ",";
        }
      }
-     if(trim($this->tr22_ruaid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_ruaid"])){ 
-        if(trim($this->tr22_ruaid)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tr22_ruaid"])){ 
+     if(trim((string) $this->tr22_ruaid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_ruaid"])){ 
+        if(trim((string) $this->tr22_ruaid)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tr22_ruaid"])){ 
            $this->tr22_ruaid = "0" ; 
         } 
        $sql  .= $virgula." tr22_ruaid = $this->tr22_ruaid ";
        $virgula = ",";
      }
-     if(trim($this->tr22_nro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_nro"])){ 
+     if(trim((string) $this->tr22_nro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_nro"])){ 
        $sql  .= $virgula." tr22_nro = '$this->tr22_nro' ";
        $virgula = ",";
-       if(trim($this->tr22_nro) == null ){ 
+       if(trim((string) $this->tr22_nro) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "tr22_nro";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_traconduttaxi {
          return false;
        }
      }
-     if(trim($this->tr22_bairroid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_bairroid"])){ 
+     if(trim((string) $this->tr22_bairroid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_bairroid"])){ 
        $sql  .= $virgula." tr22_bairroid = $this->tr22_bairroid ";
        $virgula = ",";
-       if(trim($this->tr22_bairroid) == null ){ 
+       if(trim((string) $this->tr22_bairroid) == null ){ 
          $this->erro_sql = " Campo Bairro nao Informado.";
          $this->erro_campo = "tr22_bairroid";
          $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_traconduttaxi {
          return false;
        }
      }
-     if(trim($this->tr22_complem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_complem"])){ 
+     if(trim((string) $this->tr22_complem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr22_complem"])){ 
        $sql  .= $virgula." tr22_complem = '$this->tr22_complem' ";
        $virgula = ",";
-       if(trim($this->tr22_complem) == null ){ 
+       if(trim((string) $this->tr22_complem) == null ){ 
          $this->erro_sql = " Campo Complemento nao Informado.";
          $this->erro_campo = "tr22_complem";
          $this->erro_banco = "";
@@ -388,29 +388,29 @@ class cl_traconduttaxi {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11843,'$this->tr22_id','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr22_id"]))
-           $resac = db_query("insert into db_acount values($acount,2047,11843,'".AddSlashes(pg_result($resaco,$conresaco,'tr22_id'))."','$this->tr22_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2047,11843,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr22_id'))."','$this->tr22_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr22_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,2047,11844,'".AddSlashes(pg_result($resaco,$conresaco,'tr22_numcgm'))."','$this->tr22_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2047,11844,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr22_numcgm'))."','$this->tr22_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr22_idveicperm"]))
-           $resac = db_query("insert into db_acount values($acount,2047,11845,'".AddSlashes(pg_result($resaco,$conresaco,'tr22_idveicperm'))."','$this->tr22_idveicperm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2047,11845,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr22_idveicperm'))."','$this->tr22_idveicperm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr22_cnh"]))
-           $resac = db_query("insert into db_acount values($acount,2047,11846,'".AddSlashes(pg_result($resaco,$conresaco,'tr22_cnh'))."','$this->tr22_cnh',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2047,11846,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr22_cnh'))."','$this->tr22_cnh',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr22_categoria"]))
-           $resac = db_query("insert into db_acount values($acount,2047,11847,'".AddSlashes(pg_result($resaco,$conresaco,'tr22_categoria'))."','$this->tr22_categoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2047,11847,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr22_categoria'))."','$this->tr22_categoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr22_dtvalidcnh"]))
-           $resac = db_query("insert into db_acount values($acount,2047,11848,'".AddSlashes(pg_result($resaco,$conresaco,'tr22_dtvalidcnh'))."','$this->tr22_dtvalidcnh',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2047,11848,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr22_dtvalidcnh'))."','$this->tr22_dtvalidcnh',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr22_ruaid"]))
-           $resac = db_query("insert into db_acount values($acount,2047,11849,'".AddSlashes(pg_result($resaco,$conresaco,'tr22_ruaid'))."','$this->tr22_ruaid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2047,11849,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr22_ruaid'))."','$this->tr22_ruaid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr22_nro"]))
-           $resac = db_query("insert into db_acount values($acount,2047,11850,'".AddSlashes(pg_result($resaco,$conresaco,'tr22_nro'))."','$this->tr22_nro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2047,11850,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr22_nro'))."','$this->tr22_nro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr22_bairroid"]))
-           $resac = db_query("insert into db_acount values($acount,2047,11851,'".AddSlashes(pg_result($resaco,$conresaco,'tr22_bairroid'))."','$this->tr22_bairroid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2047,11851,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr22_bairroid'))."','$this->tr22_bairroid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr22_complem"]))
-           $resac = db_query("insert into db_acount values($acount,2047,11852,'".AddSlashes(pg_result($resaco,$conresaco,'tr22_complem'))."','$this->tr22_complem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2047,11852,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr22_complem'))."','$this->tr22_complem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -455,19 +455,19 @@ class cl_traconduttaxi {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11843,'$tr22_id','E')");
-         $resac = db_query("insert into db_acount values($acount,2047,11843,'','".AddSlashes(pg_result($resaco,$iresaco,'tr22_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2047,11844,'','".AddSlashes(pg_result($resaco,$iresaco,'tr22_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2047,11845,'','".AddSlashes(pg_result($resaco,$iresaco,'tr22_idveicperm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2047,11846,'','".AddSlashes(pg_result($resaco,$iresaco,'tr22_cnh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2047,11847,'','".AddSlashes(pg_result($resaco,$iresaco,'tr22_categoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2047,11848,'','".AddSlashes(pg_result($resaco,$iresaco,'tr22_dtvalidcnh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2047,11849,'','".AddSlashes(pg_result($resaco,$iresaco,'tr22_ruaid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2047,11850,'','".AddSlashes(pg_result($resaco,$iresaco,'tr22_nro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2047,11851,'','".AddSlashes(pg_result($resaco,$iresaco,'tr22_bairroid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2047,11852,'','".AddSlashes(pg_result($resaco,$iresaco,'tr22_complem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2047,11843,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr22_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2047,11844,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr22_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2047,11845,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr22_idveicperm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2047,11846,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr22_cnh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2047,11847,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr22_categoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2047,11848,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr22_dtvalidcnh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2047,11849,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr22_ruaid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2047,11850,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr22_nro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2047,11851,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr22_bairroid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2047,11852,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr22_complem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from traconduttaxi
@@ -527,7 +527,7 @@ class cl_traconduttaxi {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:traconduttaxi";

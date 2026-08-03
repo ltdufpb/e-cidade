@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -93,7 +93,7 @@ $clrotulo->label('r44_descr');
         </td>
         <td>
           <?php 
-          $aTipoArquivo = array(""=>"Selecione...", "A"=>"Ativos", "I"=>"Inativos", "P"=>"Pensionistas");          
+          $aTipoArquivo = [""=>"Selecione...", "A"=>"Ativos", "I"=>"Inativos", "P"=>"Pensionistas"];          
           db_select("tipo_arquivo", $aTipoArquivo, true, 1, "");
           ?>
         </td>

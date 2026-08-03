@@ -45,7 +45,7 @@ final class PRI implements DeparaInterface
      */
     public function __construct()
     {
-        $this->aFundamentacoes = array(
+        $this->aFundamentacoes = [
           'A25CAPT',
           'A25I',
           'A25II',
@@ -74,7 +74,7 @@ final class PRI implements DeparaInterface
           'A74IV',
           'A74V',
           'OUTI'
-        );
+        ];
     }
 
     /**

@@ -77,7 +77,7 @@ if(!($conn = @pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=
 if ($oParametros->lUtilizaArquivo) {
   
   $aLinhas  = file($oParametros->sNomeArquivo);
-  $iCodItem = str_replace(array("\n", "\r", "\t",), "", implode(",", $aLinhas));
+  $iCodItem = str_replace(["\n", "\r", "\t",], "", implode(",", $aLinhas));
 
 } else {
 
@@ -346,10 +346,10 @@ if ($oParametros->lApagarLancamentosContabeis) {
 
 if ($oParametros->lApagarLancamentosMateriais) {
 
-  $aArrayComandos = array();
+  $aArrayComandos = [];
   echo "\n\nAPAGANDO LANÇAMENTOS DOS MATERIAIS\n\n\n";
   db_log($pArquivoAberto, "Apagando lancamento dos materiais");
-  $aListaDocumentos = array(400,401,402,402,403,404);
+  $aListaDocumentos = [400,401,402,402,403,404];
 
   $sSql  = "create temp table w_lista_lancamentos_apagar as  ";
   $sSql .= "select c70_codlan from conlancam inner join conlancamdoc on c71_codlan = c70_codlan where c71_coddoc in(".implode(",", $aListaDocumentos).")";
@@ -448,10 +448,10 @@ function validarParametros($aArgumentos) {
     $oStdParametros->lApagarLancamentosContabeis = true;
   }
 
-  if (!empty($aArgumentos[3]) && substr(trim($aArgumentos[3]), -3) === "txt") {
+  if (!empty($aArgumentos[3]) && str_ends_with(trim((string) $aArgumentos[3]), "txt")) {
     
     $oStdParametros->lUtilizaArquivo = true;
-    $oStdParametros->sNomeArquivo    = trim($aArgumentos[3]);
+    $oStdParametros->sNomeArquivo    = trim((string) $aArgumentos[3]);
   }
 
   if (!empty($aArgumentos[4]) && $aArgumentos[4] === "true") {

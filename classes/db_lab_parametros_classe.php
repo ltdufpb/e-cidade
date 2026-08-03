@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE lab_parametros
 class cl_lab_parametros {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $la49_i_codigo = 0;
-   var $la49_c_estrutural = null;
-   var $la49_i_exameduplo = 0;
-   var $la49_modelocoletaamostra = null;
-   var $la49_integracao = null;
-   var $la49_habilitarabsurdo = null;
-   var $la49_modelocomprovanterequisicao = null;
-   var $la49_autorizarexamesaoconfirmar = null;
-   var $la49_numerocontroleinterno = null;
-   var $la49_habilitargrupo = null;
+   public $la49_i_codigo = 0;
+   public $la49_c_estrutural = null;
+   public $la49_i_exameduplo = 0;
+   public $la49_modelocoletaamostra = null;
+   public $la49_integracao = null;
+   public $la49_habilitarabsurdo = null;
+   public $la49_modelocomprovanterequisicao = null;
+   public $la49_autorizarexamesaoconfirmar = null;
+   public $la49_numerocontroleinterno = null;
+   public $la49_habilitargrupo = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  la49_i_codigo = int4 = Código 
                  la49_c_estrutural = char(50) = Estrutural 
                  la49_i_exameduplo = int4 = Liberar Exames Duplos 
@@ -66,10 +66,10 @@ class cl_lab_parametros {
                  la49_habilitargrupo = boolean = Flag que quando True habilita uso de grupos de exames.
                  ";
    //funcao construtor da classe
-   function cl_lab_parametros() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_parametros");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -128,10 +128,10 @@ class cl_lab_parametros {
          $this->erro_status = "0";
          return false;
        }
-       $this->la49_i_codigo = pg_result($result,0,0);
+       $this->la49_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from Lab_parametros_la49_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $la49_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $la49_i_codigo)){
          $this->erro_sql = " Campo la49_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -177,7 +177,7 @@ class cl_lab_parametros {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parâmetros ($this->la49_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parâmetros já Cadastrado";
@@ -201,19 +201,19 @@ class cl_lab_parametros {
      $resaco = $this->sql_record($this->sql_query_file($this->la49_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16575,'$this->la49_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2909,16575,'','".AddSlashes(pg_result($resaco,0,'la49_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2909,16576,'','".AddSlashes(pg_result($resaco,0,'la49_c_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2909,17925,'','".AddSlashes(pg_result($resaco,0,'la49_i_exameduplo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2909,1010672,'','".AddSlashes(pg_result($resaco,0,'la49_modelocoletaamostra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2909,1010694,'','".AddSlashes(pg_result($resaco,0,'la49_integracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2909,1011076,'','".AddSlashes(pg_result($resaco,0,'la49_habilitarabsurdo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2909,1011142,'','".AddSlashes(pg_result($resaco,0,'la49_modelocomprovanterequisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2909,1011188,'','".AddSlashes(pg_result($resaco,0,'la49_autorizarexamesaoconfirmar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2909,1011257,'','".AddSlashes(pg_result($resaco,0,'la49_numerocontroleinterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2909,1012585,'','".AddSlashes(pg_result($resaco,0,'la49_habilitargrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2909,16575,'','".AddSlashes(pg_fetch_result($resaco,0,'la49_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2909,16576,'','".AddSlashes(pg_fetch_result($resaco,0,'la49_c_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2909,17925,'','".AddSlashes(pg_fetch_result($resaco,0,'la49_i_exameduplo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2909,1010672,'','".AddSlashes(pg_fetch_result($resaco,0,'la49_modelocoletaamostra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2909,1010694,'','".AddSlashes(pg_fetch_result($resaco,0,'la49_integracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2909,1011076,'','".AddSlashes(pg_fetch_result($resaco,0,'la49_habilitarabsurdo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2909,1011142,'','".AddSlashes(pg_fetch_result($resaco,0,'la49_modelocomprovanterequisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2909,1011188,'','".AddSlashes(pg_fetch_result($resaco,0,'la49_autorizarexamesaoconfirmar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2909,1011257,'','".AddSlashes(pg_fetch_result($resaco,0,'la49_numerocontroleinterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2909,1012585,'','".AddSlashes(pg_fetch_result($resaco,0,'la49_habilitargrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -222,10 +222,10 @@ class cl_lab_parametros {
       $this->atualizacampos();
      $sql = " update lab_parametros set ";
      $virgula = "";
-     if(trim($this->la49_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_i_codigo"])){
+     if(trim((string) $this->la49_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_i_codigo"])){
        $sql  .= $virgula." la49_i_codigo = $this->la49_i_codigo ";
        $virgula = ",";
-       if(trim($this->la49_i_codigo) == null ){
+       if(trim((string) $this->la49_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "la49_i_codigo";
          $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_lab_parametros {
          return false;
        }
      }
-     if(trim($this->la49_c_estrutural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_c_estrutural"])){
+     if(trim((string) $this->la49_c_estrutural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_c_estrutural"])){
        $sql  .= $virgula." la49_c_estrutural = '$this->la49_c_estrutural' ";
        $virgula = ",";
-       if(trim($this->la49_c_estrutural) == null ){
+       if(trim((string) $this->la49_c_estrutural) == null ){
          $this->erro_sql = " Campo Estrutural nao Informado.";
          $this->erro_campo = "la49_c_estrutural";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_lab_parametros {
          return false;
        }
      }
-     if(trim($this->la49_i_exameduplo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_i_exameduplo"])){
+     if(trim((string) $this->la49_i_exameduplo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_i_exameduplo"])){
        $sql  .= $virgula." la49_i_exameduplo = $this->la49_i_exameduplo ";
        $virgula = ",";
-       if(trim($this->la49_i_exameduplo) == null ){
+       if(trim((string) $this->la49_i_exameduplo) == null ){
          $this->erro_sql = " Campo Liberar Exames Duplos nao Informado.";
          $this->erro_campo = "la49_i_exameduplo";
          $this->erro_banco = "";
@@ -262,37 +262,37 @@ class cl_lab_parametros {
        }
      }
 
-     if(trim($this->la49_modelocoletaamostra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_modelocoletaamostra"])){
+     if(trim((string) $this->la49_modelocoletaamostra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_modelocoletaamostra"])){
          $sql  .= $virgula." la49_modelocoletaamostra = $this->la49_modelocoletaamostra ";
          $virgula = ",";
      }
 
-     if(trim($this->la49_integracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_integracao"])){
+     if(trim((string) $this->la49_integracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_integracao"])){
       $sql  .= $virgula." la49_integracao = $this->la49_integracao ";
       $virgula = ",";
     }
 
-    if(trim($this->la49_habilitarabsurdo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_habilitarabsurdo"])){
+    if(trim((string) $this->la49_habilitarabsurdo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_habilitarabsurdo"])){
        $sql  .= $virgula." la49_habilitarabsurdo = '$this->la49_habilitarabsurdo' ";
        $virgula = ",";
     }
 
-    if(trim($this->la49_modelocomprovanterequisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_modelocomprovanterequisicao"])){
+    if(trim((string) $this->la49_modelocomprovanterequisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_modelocomprovanterequisicao"])){
        $sql  .= $virgula." la49_modelocomprovanterequisicao = '$this->la49_modelocomprovanterequisicao' ";
        $virgula = ",";
     }
 
-    if(trim($this->la49_autorizarexamesaoconfirmar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_autorizarexamesaoconfirmar"])){
+    if(trim((string) $this->la49_autorizarexamesaoconfirmar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_autorizarexamesaoconfirmar"])){
       $sql  .= $virgula." la49_autorizarexamesaoconfirmar = '$this->la49_autorizarexamesaoconfirmar' ";
       $virgula = ",";
     }
 
-    if(trim($this->la49_numerocontroleinterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_numerocontroleinterno"])){
+    if(trim((string) $this->la49_numerocontroleinterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_numerocontroleinterno"])){
       $sql  .= $virgula." la49_numerocontroleinterno = '$this->la49_numerocontroleinterno' ";
       $virgula = ",";
     }
 
-    if(trim($this->la49_habilitargrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_habilitargrupo"])){
+    if(trim((string) $this->la49_habilitargrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la49_habilitargrupo"])){
       $sql  .= $virgula." la49_habilitargrupo = '$this->la49_habilitargrupo' ";
       $virgula = ",";
     }
@@ -305,29 +305,29 @@ class cl_lab_parametros {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16575,'$this->la49_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la49_i_codigo"]) || $this->la49_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2909,16575,'".AddSlashes(pg_result($resaco,$conresaco,'la49_i_codigo'))."','$this->la49_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2909,16575,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la49_i_codigo'))."','$this->la49_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la49_c_estrutural"]) || $this->la49_c_estrutural != "")
-           $resac = db_query("insert into db_acount values($acount,2909,16576,'".AddSlashes(pg_result($resaco,$conresaco,'la49_c_estrutural'))."','$this->la49_c_estrutural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2909,16576,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la49_c_estrutural'))."','$this->la49_c_estrutural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la49_i_exameduplo"]) || $this->la49_i_exameduplo != "")
-           $resac = db_query("insert into db_acount values($acount,2909,17925,'".AddSlashes(pg_result($resaco,$conresaco,'la49_i_exameduplo'))."','$this->la49_i_exameduplo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2909,17925,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la49_i_exameduplo'))."','$this->la49_i_exameduplo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la49_modelocoletaamostra"]) || $this->la49_modelocoletaamostra != "")
-             $resac = db_query("insert into db_acount values($acount,2909,1010672,'".AddSlashes(pg_result($resaco,$conresaco,'la49_modelocoletaamostra'))."','$this->la49_modelocoletaamostra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2909,1010672,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la49_modelocoletaamostra'))."','$this->la49_modelocoletaamostra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["la49_integracao"]) || $this->la49_integracao != "")
-             $resac = db_query("insert into db_acount values($acount,2909,1010694,'".AddSlashes(pg_result($resaco,$conresaco,'la49_integracao'))."','$this->la49_integracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2909,1010694,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la49_integracao'))."','$this->la49_integracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["la49_habilitarabsurdo"]) || $this->la49_habilitarabsurdo != "")
-             $resac = db_query("insert into db_acount values($acount,2909,1011076,'".AddSlashes(pg_result($resaco,$conresaco,'la49_habilitarabsurdo'))."','$this->la49_habilitarabsurdo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2909,1011076,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la49_habilitarabsurdo'))."','$this->la49_habilitarabsurdo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["la49_modelocomprovanterequisicao"]) || $this->la49_modelocomprovanterequisicao != "")
-          $resac = db_query("insert into db_acount values($acount,2909,1011142,'".AddSlashes(pg_result($resaco,$conresaco,'la49_modelocomprovanterequisicao'))."','$this->la49_modelocomprovanterequisicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,2909,1011142,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la49_modelocomprovanterequisicao'))."','$this->la49_modelocomprovanterequisicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["la49_autorizarexamesaoconfirmar"]) || $this->la49_autorizarexamesaoconfirmar != "")
-             $resac = db_query("insert into db_acount values($acount,2909,1011188,'".AddSlashes(pg_result($resaco,$conresaco,'la49_autorizarexamesaoconfirmar'))."','$this->la49_autorizarexamesaoconfirmar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2909,1011188,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la49_autorizarexamesaoconfirmar'))."','$this->la49_autorizarexamesaoconfirmar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["la49_numerocontroleinterno"]) || $this->la49_numerocontroleinterno != "")
-             $resac = db_query("insert into db_acount values($acount,2909,1011257,'".AddSlashes(pg_result($resaco,$conresaco,'la49_numerocontroleinterno'))."','$this->la49_numerocontroleinterno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2909,1011257,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la49_numerocontroleinterno'))."','$this->la49_numerocontroleinterno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["la49_habilitargrupo"]) || $this->la49_habilitargrupo != "")
-             $resac = db_query("insert into db_acount values($acount,2909,1012585,'".AddSlashes(pg_result($resaco,$conresaco,'la49_habilitargrupo'))."','$this->la49_habilitargrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2909,1012585,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la49_habilitargrupo'))."','$this->la49_habilitargrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -372,19 +372,19 @@ class cl_lab_parametros {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16575,'$la49_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2909,16575,'','".AddSlashes(pg_result($resaco,$iresaco,'la49_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2909,16576,'','".AddSlashes(pg_result($resaco,$iresaco,'la49_c_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2909,17925,'','".AddSlashes(pg_result($resaco,$iresaco,'la49_i_exameduplo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2909,1010672,'','".AddSlashes(pg_result($resaco,$iresaco,'la49_modelocoletaamostra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2909,1010694,'','".AddSlashes(pg_result($resaco,$iresaco,'la49_integracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2909,1011076,'','".AddSlashes(pg_result($resaco,$iresaco,'la49_habilitarabsurdo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2909,1011142,'','".AddSlashes(pg_result($resaco,$iresaco,'la49_modelocomprovanterequisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2909,1011188,'','".AddSlashes(pg_result($resaco,$iresaco,'la49_autorizarexamesaoconfirmar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2909,1011257,'','".AddSlashes(pg_result($resaco,$iresaco,'la49_numerocontroleinterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")"); 
-         $resac = db_query("insert into db_acount values($acount,2909,1012585,'','".AddSlashes(pg_result($resaco,$iresaco,'la49_habilitargrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")"); 
+         $resac = db_query("insert into db_acount values($acount,2909,16575,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la49_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2909,16576,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la49_c_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2909,17925,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la49_i_exameduplo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2909,1010672,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la49_modelocoletaamostra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2909,1010694,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la49_integracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2909,1011076,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la49_habilitarabsurdo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2909,1011142,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la49_modelocomprovanterequisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2909,1011188,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la49_autorizarexamesaoconfirmar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2909,1011257,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la49_numerocontroleinterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")"); 
+         $resac = db_query("insert into db_acount values($acount,2909,1012585,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la49_habilitargrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")"); 
         }
      }
      $sql = " delete from lab_parametros
@@ -444,7 +444,7 @@ class cl_lab_parametros {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:lab_parametros";
@@ -459,7 +459,7 @@ class cl_lab_parametros {
    function sql_query ( $la49_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -480,7 +480,7 @@ class cl_lab_parametros {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,7 +493,7 @@ class cl_lab_parametros {
    function sql_query_file ( $la49_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -514,7 +514,7 @@ class cl_lab_parametros {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -28,7 +28,7 @@
 //MODULO: issqn
 $clnotasiss->rotulo->label();
 
-$aGrupos = array('' => 'Selecione');
+$aGrupos = ['' => 'Selecione'];
 
 $oDaoGrupoNotaIss = db_utils::getDao('gruponotaiss');
 $sSqlGrupos = $oDaoGrupoNotaIss->sql_query_file(null, '*', 'q139_sequencial');
@@ -128,7 +128,7 @@ function js_preenchepesquisa(chave){
   db_iframe_notasiss.hide();
   <?php
   if($db_opcao !=1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }

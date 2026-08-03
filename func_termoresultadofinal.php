@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_termoresultadofinal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltermoresultadofinal = new cl_termoresultadofinal;
 $cltermoresultadofinal->rotulo->label("ed110_sequencial");
 $cltermoresultadofinal->rotulo->label("ed110_descricao");
@@ -98,9 +98,9 @@ $cltermoresultadofinal->rotulo->label("ed110_descricao");
         }else{
            $sql = $cltermoresultadofinal->sql_query("",$campos,"ed110_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed110_descricao)){
-          $repassa = array("chave_ed110_sequencial"=>$chave_ed110_sequencial,"chave_ed110_descricao"=>$chave_ed110_descricao);
+          $repassa = ["chave_ed110_sequencial"=>$chave_ed110_sequencial,"chave_ed110_descricao"=>$chave_ed110_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

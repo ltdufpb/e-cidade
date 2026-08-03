@@ -48,7 +48,7 @@ $clobraslotei    = new cl_obraslotei;
 $clobras         = new cl_obras;
 $clobrasiptubase = new cl_obrasiptubase;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("ob01_codobra");

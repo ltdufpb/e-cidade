@@ -47,18 +47,18 @@ $sWhere = " e60_anousu = ".db_getsession("DB_anousu")." and e60_instit = ".db_ge
 $sOrder = "e60_emiss desc";$sOrder = "e60_emiss desc";$sOrder = "e60_emiss desc";$sOrder = "e60_emiss desc";
 if (isset($oPost->data) && $oPost->data != '' && isset($oPost->data1) && $oPost->data1 != '') {
 
-   $dDataIni  = implode("-", array_reverse(explode("/", $oPost->data)));
-   $dDataFim  = implode("-", array_reverse(explode("/", $oPost->data1)));
+   $dDataIni  = implode("-", array_reverse(explode("/", (string) $oPost->data)));
+   $dDataFim  = implode("-", array_reverse(explode("/", (string) $oPost->data1)));
    $sWhere   .= " and e60_emiss between '{$dDataIni}' and '{$dDataFim}'";
 
 } else if (isset($oPost->data) && $oPost->data != '') {
 
-  $dDataIni = implode("-", array_reverse(explode("/", $oPost->data)));
+  $dDataIni = implode("-", array_reverse(explode("/", (string) $oPost->data)));
   $sWhere   = " and e60_dtemiss >= '{$dDataIni}'";
 
 } else if (isset($oPost->data1) && $oPost->data1 != '') {
 
-  $dDataFim = implode("-", array_reverse(explode("/", $oPost->data1)));
+  $dDataFim = implode("-", array_reverse(explode("/", (string) $oPost->data1)));
   $sWhere   = " and e60_dtemiss <= '{$dDataFim}'";
 
 }
@@ -124,7 +124,7 @@ $rsEmpenho    = $oDaoEmpenho->sql_record($sSqlEmpenhos);
              <td  align="center" nowrap title="Ordem Alfabética/Numérica" >
                <strong>Emitir por:&nbsp;&nbsp;</strong>               
 	             <?php  
-	               $tipo_ordem = array("E"=>"Empenho","F"=>"Fornecedor");
+	               $tipo_ordem = ["E"=>"Empenho","F"=>"Fornecedor"];
 	               db_select("emitir",$tipo_ordem,true,2);
                ?>
              </td>

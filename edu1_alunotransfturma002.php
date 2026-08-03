@@ -34,7 +34,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 define( 'MENSAGEM_ALUNOTRANSF002', 'educacao.escola.edu1_alunotransfturma002.' );
 
 $oGet                  = db_utils::postMemory($_GET);
@@ -135,7 +135,7 @@ if( !isset( $incluir ) && !isset( $incluir2 ) ) {
         /**
          * Variáveis para controle das etapas das progressões de um aluno
          */
-        $aEtapasProgressao = array();
+        $aEtapasProgressao = [];
         $sEtapasProgressao = "";
         $oAluno            = AlunoRepository::getAlunoByMatricula( $matricula );
 
@@ -167,7 +167,7 @@ if( !isset( $incluir ) && !isset( $incluir2 ) ) {
         $sSqlSerieEquiv   = $clserieequiv->sql_query( "", $sCamposSerieEquiv, "", $sWhereSerieEquiv );
         $result_equivorig = $clserieequiv->sql_record( $sSqlSerieEquiv );
 
-        $aSerieEquivalente = array($etapaorigem);
+        $aSerieEquivalente = [$etapaorigem];
         for ( $ww = 0; $ww < $clserieequiv->numrows; $ww++ ) {
 
           db_fieldsmemory( $result_equivorig, $ww );
@@ -184,7 +184,7 @@ if( !isset( $incluir ) && !isset( $incluir2 ) ) {
 
         $procorigem = "";
         if ( $result && pg_num_rows( $result ) > 0 ) {
-          $procorigem = pg_result( $result, 0, 'procorigem' );
+          $procorigem = pg_fetch_result( $result, 0, 'procorigem' );
         }
 
         $linhas = $clregencia->numrows;
@@ -197,7 +197,7 @@ if( !isset( $incluir ) && !isset( $incluir2 ) ) {
 
         $procdestino = "";
         if ( $result1 && pg_num_rows( $result1 ) > 0 ) {
-          $procdestino = pg_result( $result1, 0, 'procdestino' );
+          $procdestino = pg_fetch_result( $result1, 0, 'procdestino' );
         }
 
         $linhas1     = $clregencia->numrows;
@@ -310,14 +310,14 @@ if( !isset( $incluir ) && !isset( $incluir2 ) ) {
 
                    db_fieldsmemory( $result_diario, $v );
 
-                   if( trim( $ed37_c_tipo ) == "NOTA" ) {
+                   if( trim( (string) $ed37_c_tipo ) == "NOTA" ) {
 
                      if( $resultedu == 'S' ) {
                        $aproveitamento = $ed72_i_valornota != "" ? number_format( $ed72_i_valornota, 2, ",", "." ) : "";
                      } else {
                        $aproveitamento = $ed72_i_valornota != "" ? number_format( $ed72_i_valornota, 0 ) : "";
                      }
-                   } else if( trim( $ed37_c_tipo ) == "NIVEL" ) {
+                   } else if( trim( (string) $ed37_c_tipo ) == "NIVEL" ) {
                      $aproveitamento = $ed72_c_valorconceito;
                    } else {
                      $aproveitamento = $ed72_t_parecer != "" ? "<font size='1'>Parecer</font>" : "";
@@ -470,9 +470,9 @@ if( !isset( $incluir ) && !isset( $incluir2 ) ) {
           <td nowrap title="<?=$Ted69_d_datatransf?>" colspan="3">
             <?=$Led69_d_datatransf?>
             <?php
-            $ed69_d_datatransf_dia = isset( $ed69_d_datatransf_dia ) ? $ed69_d_datatransf_dia : "";
-            $ed69_d_datatransf_mes = isset( $ed69_d_datatransf_mes ) ? $ed69_d_datatransf_mes : "";
-            $ed69_d_datatransf_ano = isset( $ed69_d_datatransf_ano ) ? $ed69_d_datatransf_ano : "";
+            $ed69_d_datatransf_dia ??= "";
+            $ed69_d_datatransf_mes ??= "";
+            $ed69_d_datatransf_ano ??= "";
             db_inputdata(
                           'ed69_d_datatransf',
                           $ed69_d_datatransf_dia,
@@ -1077,12 +1077,12 @@ function js_processar2( inicio, fim ) {
 if (isset($incluir) ) {
   $lErroTransacao                    = false;
   $lPossuiMesmoProcedimentoAvaliacao = true;
-  $aRegencias                        = explode("X", $regequiv);
+  $aRegencias                        = explode("X", (string) $regequiv);
 
   if (isset($import) && $import == 'N') {
 
-    $aRegencias = array();
-    $periodos   = array();
+    $aRegencias = [];
+    $periodos   = [];
   }
 
   foreach ($aRegencias as $sRegencia) {
@@ -1120,7 +1120,7 @@ if (isset($incluir) ) {
 
   db_inicio_transacao();
 
-  $sDataBanco     = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+  $sDataBanco     = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
   $sCampos        = "ed60_i_aluno,ed60_c_rfanterior as rfanterior, ed60_i_numaluno";
   $sSqlMatricula  = $clmatricula->sql_query( "", $sCampos, "", " ed60_i_codigo = $matricula" );
   $result         = $clmatricula->sql_record($sSqlMatricula);
@@ -1155,10 +1155,10 @@ if (isset($incluir) ) {
 
   db_fieldsmemory( $result, 0 );
 
-  $periodos            = explode("X",$perequiv);
+  $periodos            = explode("X",(string) $perequiv);
   $msg_conversao       = "";
   $sep_conversao       = "";
-  $aRegenciasConverter = array();
+  $aRegenciasConverter = [];
 
   foreach ( $aRegencias as $sRegencia ) {
 
@@ -1217,7 +1217,7 @@ if (isset($incluir) ) {
     $periodoorigem  = $divideperiodos[0];
     $periododestino = $divideperiodos[1];
 
-    $regencias = explode("X", $regequiv);
+    $regencias = explode("X", (string) $regequiv);
     for ($r = 0; $r < count($regencias); $r++) {
 
       $divideregencias  = explode("|",$regencias[$r]);
@@ -1385,8 +1385,8 @@ if (isset($incluir) ) {
       }
 
       $ed72_c_convertido = "N";
-      if (    trim($tipoorigem) != trim($tipodestino)
-           || ( trim($tipoorigem) == trim($tipodestino) && $mvorigem != $mvdestino) ) {
+      if (    trim((string) $tipoorigem) != trim((string) $tipodestino)
+           || ( trim((string) $tipoorigem) == trim((string) $tipodestino) && $mvorigem != $mvdestino) ) {
 
         $ed72_c_convertido = "S";
         if ( $ed72_i_valornota == "" && $ed72_c_valorconceito == "" && $ed72_t_parecer == "") {
@@ -1567,7 +1567,7 @@ if (isset($incluir) ) {
 
   $max = $max == "" ? "null" : ( $max + 1 );
 
-  $ed60_d_datamodif = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+  $ed60_d_datamodif = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
 
   $sSqlTurmaSerieRegimeMat = $clturmaserieregimemat->sql_query(
                                                                 "",
@@ -1713,15 +1713,15 @@ if (isset($incluir) ) {
 
   if ($ensinorigem == $ensinodestino) {
 
-    $sDescricao  = "ALUNO TROCOU DE TURMA, PASSANDO DA TURMA ".trim($ed57_c_descrorig)." PARA A TURMA ";
-    $sDescricao .= trim($ed57_c_descrdest);
+    $sDescricao  = "ALUNO TROCOU DE TURMA, PASSANDO DA TURMA ".trim((string) $ed57_c_descrorig)." PARA A TURMA ";
+    $sDescricao .= trim((string) $ed57_c_descrdest);
 
     $clmatriculamov->ed229_c_procedimento = "TROCAR ALUNO DE TURMA";
     $clmatriculamov->ed229_t_descr        = $sDescricao;
   } else {
 
-    $sDescricao  = "ALUNO TROCOU DE MODALIDADE, PASSANDO DA TURMA ".trim($ed57_c_descrorig)." PARA A TURMA ";
-    $sDescricao .= trim($ed57_c_descrdest);
+    $sDescricao  = "ALUNO TROCOU DE MODALIDADE, PASSANDO DA TURMA ".trim((string) $ed57_c_descrorig)." PARA A TURMA ";
+    $sDescricao .= trim((string) $ed57_c_descrdest);
 
     $clmatriculamov->ed229_c_procedimento = "TROCAR ALUNO DE MODALIDADE";
     $clmatriculamov->ed229_t_descr        = $sDescricao;
@@ -1791,7 +1791,7 @@ if( isset( $incluir2 ) ) {
 
   db_inicio_transacao();
 
-  $sDataBanco = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+  $sDataBanco = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
 
   $sCamposMatricula = "ed60_i_aluno, ed60_c_rfanterior as rfanterior";
   $sSqlMatricula    = $clmatricula->sql_query( "", $sCamposMatricula, "", "ed60_i_codigo = {$matricula}" );
@@ -1857,7 +1857,7 @@ if( isset( $incluir2 ) ) {
   db_fieldsmemory( $result1, 0 );
 
   $max              = $max == "" ? "null" : ( $max + 1 );
-  $ed60_d_datamodif = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+  $ed60_d_datamodif = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
 
   $sSqlTurmaSerieRegimeMat = $clturmaserieregimemat->sql_query(
                                                                 "",
@@ -2014,15 +2014,15 @@ if( isset( $incluir2 ) ) {
 
   if( $ensinorigem == $ensinodestino ) {
 
-    $sDescricao  = "ALUNO TROCOU DE TURMA, PASSANDO DA TURMA " . trim( $ed57_c_descrorig ) . " PARA A TURMA ";
-    $sDescricao .= trim( $ed57_c_descrdest );
+    $sDescricao  = "ALUNO TROCOU DE TURMA, PASSANDO DA TURMA " . trim( (string) $ed57_c_descrorig ) . " PARA A TURMA ";
+    $sDescricao .= trim( (string) $ed57_c_descrdest );
 
     $clmatriculamov->ed229_c_procedimento = "TROCAR ALUNO DE TURMA";
     $clmatriculamov->ed229_t_descr        = $sDescricao;
   } else {
 
-    $sDescricao  = "ALUNO TROCOU DE MODALIDADE, PASSANDO DA TURMA " . trim( $ed57_c_descrorig ) . " PARA A TURMA ";
-    $sDescricao .= trim( $ed57_c_descrdest );
+    $sDescricao  = "ALUNO TROCOU DE MODALIDADE, PASSANDO DA TURMA " . trim( (string) $ed57_c_descrorig ) . " PARA A TURMA ";
+    $sDescricao .= trim( (string) $ed57_c_descrdest );
 
     $clmatriculamov->ed229_c_procedimento = "TROCAR ALUNO DE MODALIDADE";
     $clmatriculamov->ed229_t_descr        = $sDescricao;

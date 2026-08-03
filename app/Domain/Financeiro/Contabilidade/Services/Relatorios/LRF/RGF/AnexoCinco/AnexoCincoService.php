@@ -221,6 +221,7 @@ class AnexoCincoService extends AnexosService
         $this->getDadosRestosPagar();
     }
 
+    #[\Override]
     protected function processaLinhas(&$linhas)
     {
         foreach ($linhas as $linha) {
@@ -407,7 +408,7 @@ class AnexoCincoService extends AnexosService
         foreach ($this->colunasBalancete['verificacao'] as $coluna) {
             $padroes = $this->mapeamentoColunas[$coluna]['padrao'];
             foreach ($padroes as $padrao) {
-                if (strpos($estrutural, $padrao) === 0) {
+                if (str_starts_with($estrutural, (string) $padrao)) {
                     return true;
                 }
             }
@@ -480,9 +481,9 @@ class AnexoCincoService extends AnexosService
         $this->processar();
 
         $linha = $this->linhas[$this->linhaSimplificado];
-        return (object) array (
+        return (object)  [
             'rp_nao_processado' => $linha->a_liquidar,
             'disponibilidade_caixa_liquida' => $linha->disp_caixa
-        );
+        ];
     }
 }

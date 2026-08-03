@@ -64,7 +64,7 @@ try {
   			throw new Exception('Grupo das rubricas de rescisão não encontrado.');
   		}
   		
-  		$aRubricas           = array();
+  		$aRubricas           = [];
   		$iAgrupamentoRubrica = $oDaoAgrupamentoRubrica->numrows;
   		
   		for ($iIndice = 0; $iIndice < $iAgrupamentoRubrica; $iIndice++ ) {
@@ -103,7 +103,7 @@ try {
         throw new Exception('Grupo das rubricas de rescisão não encontrado.');
       }
 
-      $aRubricas           = array();
+      $aRubricas           = [];
       $iAgrupamentoRubrica = $oDaoAgrupamentoRubrica->numrows; 
 
       for ($iIndice = 0; $iIndice < $iAgrupamentoRubrica; $iIndice++ ) {
@@ -163,7 +163,7 @@ try {
 	      $sWhereVinculosCadastrados = "rh114_agrupamentorubrica = {$iAgrupamentoRubrica} and rh114_instituicao = {$iInstituicao} ";
 	      $sSqlVinculosCadastrados   = $oDaoAgrupamentoRubricaRubrica->sql_query_file(null, "rh114_rubrica", null, $sWhereVinculosCadastrados);
 	      $rsVinculosCadastrados     = $oDaoAgrupamentoRubricaRubrica->sql_record($sSqlVinculosCadastrados);
-	      $aVinculosCadastrados      = array();
+	      $aVinculosCadastrados      = [];
 	
 	      if ( $oDaoAgrupamentoRubricaRubrica->numrows > 0 ) {
 	
@@ -258,7 +258,7 @@ function validacaoRubricas($aRubricas, $iInstituicao, $iAgrupamentoRubrica = nul
     $aDadosRubricas = db_utils::getCollectionByRecord($rsAgrupamentoRubricaRubrica);
 
     $sMensagemErro   = '';
-    $aCodigoRubricas = array();
+    $aCodigoRubricas = [];
 
     
     foreach ($aDadosRubricas as $oRubrica){

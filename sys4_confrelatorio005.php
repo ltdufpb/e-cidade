@@ -78,7 +78,7 @@ $margDir = 20;
 						<td><b>Formato de saída:</b></td>
 						<td>
 							<?php 
-								$aTiposSaida = array('pdf' => 'PDF', 'csv' => 'CSV', 'txt' => 'TXT');
+								$aTiposSaida = ['pdf' => 'PDF', 'csv' => 'CSV', 'txt' => 'TXT'];
 								db_select('tipoSaida', $aTiposSaida, true, 1, "style='width:150px;'"); 
 							?>
 						</td>
@@ -100,7 +100,7 @@ $margDir = 20;
 			  		</td>
 			  		<td>
 			  		  <?php
-								$aFormato = array("A4"=>"A4");
+								$aFormato = ["A4"=>"A4"];
 			  		    db_select("formato",$aFormato,true,1,"style='width:150px;' onChange='js_incluirPropriedades();'");
 			  		  ?>
 			  		</td>	
@@ -111,7 +111,7 @@ $margDir = 20;
 			  		</td>
 			  		<td>
 			  		  <?php
-								$aOrientacao = array("portrait"=>"Retrato","landscape"=>"Paisagem");				
+								$aOrientacao = ["portrait"=>"Retrato","landscape"=>"Paisagem"];				
 			  		    db_select("orientacao",$aOrientacao,true,1,"style='width:150px;'onChange='js_incluirPropriedades();'");	  		  
 			  		  ?>
 			  		</td>

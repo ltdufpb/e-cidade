@@ -75,9 +75,9 @@ try {
                $sSqlAgrupamentoPagamento .= "where " . implode(" and ", $aWhere);
             }
             $sSqlAgrupamentoPagamento .= " order by e60_codemp;";
-            $empenhos = array();
+            $empenhos = [];
             $rsBuscaAgrupamentoPagamento = db_query($sSqlAgrupamentoPagamento);
-            $numRowsAgrupamentoPagamento = pg_numrows($rsBuscaAgrupamentoPagamento);
+            $numRowsAgrupamentoPagamento = pg_num_rows($rsBuscaAgrupamentoPagamento);
             if ($numRowsAgrupamentoPagamento > 0) {
                 for ($iRow = 0; $iRow < $numRowsAgrupamentoPagamento; $iRow++) {
                     $empenhos[] = db_utils::fieldsMemory($rsBuscaAgrupamentoPagamento, $iRow);

@@ -72,7 +72,7 @@ try {
       }
 
       $oRetorno->iCodigoJornada = $oDaoJornada->rh188_sequencial;
-      $oRetorno->message        = utf8_encode("Salvo com sucesso.\n Código:" . $oDaoJornada->rh188_sequencial);
+      $oRetorno->message        = mb_convert_encoding("Salvo com sucesso.\n Código:" . $oDaoJornada->rh188_sequencial, 'UTF-8', 'ISO-8859-1');
 
       db_fim_transacao();
 
@@ -119,7 +119,7 @@ try {
       $rsJornadasHoras  = db_query($sSqlJornadaHoras);
       $aJornadaHoras    = db_utils::getCollectionByRecord($rsJornadasHoras);
 
-      $aRetornoJornadas = array();
+      $aRetornoJornadas = [];
 
       foreach ($aJornadaHoras as $oJornadaHora) {
 
@@ -158,9 +158,9 @@ try {
       }
 
       if (sizeof($oParametros->aDados) > 1) {
-        $oRetorno->message = utf8_encode("Horários salvos com sucesso para a jornada: " . $oParametros->iCodigoJornada . ".");
+        $oRetorno->message = mb_convert_encoding("Horários salvos com sucesso para a jornada: " . $oParametros->iCodigoJornada . ".", 'UTF-8', 'ISO-8859-1');
       } else {
-        $oRetorno->message = utf8_encode("Horário salvo com sucesso para a jornada: " . $oParametros->iCodigoJornada . ".");
+        $oRetorno->message = mb_convert_encoding("Horário salvo com sucesso para a jornada: " . $oParametros->iCodigoJornada . ".", 'UTF-8', 'ISO-8859-1');
       }
 
       break;

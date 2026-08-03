@@ -32,10 +32,10 @@ include(modification("libs/db_usuariosonline.php"));
 $erro = false;
 if(@$consul==true){
   $resu=db_query("select * from db_gerador where codger = $codigo");
-  $sql=pg_result($resu,0,"sqlger");
+  $sql=pg_fetch_result($resu,0,"sqlger");
 }
-if(isset($HTTP_POST_VARS["excluir"])){
-  $codigo =  $HTTP_POST_VARS["codigo"];
+if(isset($_POST["excluir"])){
+  $codigo =  $_POST["codigo"];
   db_query("delete from db_gerador where codger='$codigo'");
   db_query("delete from db_gerpref where codger='$codigo'");
  $anome=$nome;
@@ -49,7 +49,7 @@ if(isset($HTTP_POST_VARS["excluir"])){
  echo "location.href=\"con2_gerelatorio001.php\";";
  echo "</script>";    
 }
-if(@$HTTP_POST_VARS["seta2"]==true){    
+if(@$_POST["seta2"]==true){    
   $fsql = @db_query(str_replace('\\','',$sql));
   if($fsql==false){
      $erro=true;             
@@ -59,29 +59,29 @@ if(@$HTTP_POST_VARS["seta2"]==true){
     $seta="";   
 	
 	//usado para evitar erros de codificação
-	$sql = urlencode($sql);
+	$sql = urlencode((string) $sql);
      echo "<script>";    
   	 echo "window.open('con2_gerelatorio002.php?sql=".base64_encode($sql)."&nome=".$nome."&titulo=".$titulo."&finalidade=".$finalidade."' ,'Relatório','toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no,status=no');";
      echo "</script>";    
   }
 }
 
-if(@$HTTP_POST_VARS["seta"]==true){    
+if(@$_POST["seta"]==true){    
 
-  $codigo =  $HTTP_POST_VARS["codigo"];
-  $nome =  $HTTP_POST_VARS["nome"];
-  $sql =  $HTTP_POST_VARS["sql"];
-  $titulo = $HTTP_POST_VARS["titulo"];
-  $finalidade = $HTTP_POST_VARS["finalidade"];
+  $codigo =  $_POST["codigo"];
+  $nome =  $_POST["nome"];
+  $sql =  $_POST["sql"];
+  $titulo = $_POST["titulo"];
+  $finalidade = $_POST["finalidade"];
   $fsql = @db_query(str_replace('\\','',$sql." limit 1"));
   if($codigo!=""){
     $conf=db_query("select * from db_gerador where codger !=$codigo");
   }else{
      $conf=db_query("select * from db_gerador ");
   }
-  $num=pg_numrows($conf);
+  $num=pg_num_rows($conf);
   for($i=0;$i < $num; $i++ ){
-    $result=pg_result($conf,$i,1);
+    $result=pg_fetch_result($conf,$i,1);
     if($result==$nome){
       $repete=true;
     } 
@@ -91,14 +91,14 @@ if(@$HTTP_POST_VARS["seta"]==true){
       $erro=true;
     }else{
       echo "<script>";    
-      echo "location.href=\"con2_gerelatorio003.php?libera=".$libera."&codigo=".$codigo."&sql=".base64_encode($sql)."&nome=".$nome."&titulo=".$titulo."&finalidade=".$finalidade."\";";
+      echo "location.href=\"con2_gerelatorio003.php?libera=".$libera."&codigo=".$codigo."&sql=".base64_encode((string) $sql)."&nome=".$nome."&titulo=".$titulo."&finalidade=".$finalidade."\";";
       echo "</script>";    
       $seta="";   
       $seta2="";   
     }
   } 
 }
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>  
 
 

@@ -39,15 +39,13 @@ $head1 = 'INFRAÇÃO DE TRANSITO';
 $head2 = 'RELATÓRIO DE MULTAS NÃO IMPORTADAS';
 
 $arquivo = $_GET['arquivo'];
-if (strpos($arquivo, 'tmp') === false || strpos($arquivo, 'json') === false) {
+if (!str_contains((string) $arquivo, 'tmp') || !str_contains((string) $arquivo, 'json')) {
     throw new Exception('Arquivo de Multas não é válido');
 }
-$nomeArquivo = str_replace(array("tmp/multas_nao_cadastradas_", ".json"), '', $arquivo);
+$nomeArquivo = str_replace(["tmp/multas_nao_cadastradas_", ".json"], '', $arquivo);
 $data = json_decode(file_get_contents($_GET['arquivo']));
 
-uasort($data, function ($corrente, $anterior) {
-    return $corrente->codigo_infracao > $anterior->codigo_infracao;
-});
+uasort($data, fn($corrente, $anterior) => $corrente->codigo_infracao > $anterior->codigo_infracao);
 $head3 = $nomeArquivo;
 $pdf = new PDF;
 $pdf->Open();

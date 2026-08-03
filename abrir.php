@@ -38,7 +38,7 @@ Modification::find();
 
 $stdClass = new db_stdClass();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -61,14 +61,14 @@ if (isset($servidor) &&
     $DB_SERVIDOR = $servidor;
     $DB_BASE     = $base;
     $DB_PORTA    = $port;
-    $DB_USUARIO  = base64_decode($user);
+    $DB_USUARIO  = base64_decode((string) $user);
     $DB_SENHA    = base64_decode($stdClass->db_stripTagsJson($senha));
 }
 
 $oParametrosMsg         = new stdClass();
 $oParametrosMsg->sCampo = $DB_login;
 
-if (strlen($DB_login)==0) {
+if (strlen((string) $DB_login)==0) {
     $sMsg = _M(MENSAGEM . "login_invalido");
     $sMsgLogs = _M(MENSAGEM . "logs_login_invalido", $oParametrosMsg);
     echo "<script>window.opener.document.getElementById('testaLogin').innerHTML = '<div class=\"error\">{$sMsg}</div>';window.opener.document.form1.usu_login.focus();window.close();</script>\n";
@@ -137,7 +137,7 @@ if (isset($lVeriricaIpPrivado) && $lVeriricaIpPrivado && $lUtilizaCaptcha){
        $lIpPrivado = verifica_ip_privado($_SERVER["HTTP_X_FORWARDED_FOR"]);
    
    } else {
-       $lIpPrivado = verifica_ip_privado($HTTP_SERVER_VARS["REMOTE_ADDR"]);
+       $lIpPrivado = verifica_ip_privado($_SERVER["REMOTE_ADDR"]);
    
    }
 
@@ -224,10 +224,10 @@ $sSql .= "   and usuext not in (1,2)   \n";
 $sSql .= "   and login = '{$DB_login}' \n";
 $result = db_query($conn, $sSql);
 
-if ($DB_login != 'dbseller' && pg_num_rows($result) > 0 && pg_result($result, 0, "administrador") != 1) {
+if ($DB_login != 'dbseller' && pg_num_rows($result) > 0 && pg_fetch_result($result, 0, "administrador") != 1) {
     $result1 = db_query($conn,
         "SELECT db21_ativo FROM db_config WHERE prefeitura = TRUE") or die("Erro ao verificar se sistema está liberado! Contate suporte!");
-    $ativo = pg_result($result1, 0, 0);
+    $ativo = pg_fetch_result($result1, 0, 0);
 
     if ($ativo == 3) {
         $sMsg = _M(MENSAGEM . "sistema_desativado");
@@ -246,13 +246,13 @@ if ($DB_login != 'dbseller' && pg_num_rows($result) > 0 && pg_result($result, 0,
 $sSql    = "select * from db_depusu";
 $result1 = db_query($conn, $sSql) or die($sSql);
 
-if (pg_numrows($result) == 0 or pg_numrows($result1) == 0) {
-    if ($DB_login == 'dbseller' && pg_numrows($result) == 0) {
+if (pg_num_rows($result) == 0 or pg_num_rows($result1) == 0) {
+    if ($DB_login == 'dbseller' && pg_num_rows($result) == 0) {
         db_logsmanual_demais(_M(MENSAGEM . "logs_registro_sistema", $oParametrosMsg));
         include(modification('con4_registrasistema.php'));
         exit;
     } else {
-        if (pg_numrows($result1) == 0) {
+        if (pg_num_rows($result1) == 0) {
             $sMsg = _M(MENSAGEM . "login_sem_departamento");
             $sMsgLogs = _M(MENSAGEM . "logs_login_sem_departamento", $oParametrosMsg);
             db_logsmanual_demais($sMsgLogs);
@@ -269,7 +269,7 @@ if (pg_numrows($result) == 0 or pg_numrows($result1) == 0) {
     $oUsuario = db_utils::fieldsMemory($result, 0);
 
     // valida data limite para login
-    if (!empty($oUsuario->dataexpira) && strtotime($oUsuario->dataexpira) < strtotime(date('Y-m-d'))) {
+    if (!empty($oUsuario->dataexpira) && strtotime((string) $oUsuario->dataexpira) < strtotime(date('Y-m-d'))) {
         db_logsmanual_demais(_M(MENSAGEM . 'logs_data_expira', $oParametrosMsg), $oUsuario->id_usuario);
         $sMsg = _M(MENSAGEM . 'data_expira'); ?>
       <script type="text/javascript">
@@ -335,14 +335,14 @@ if (pg_numrows($result) == 0 or pg_numrows($result1) == 0) {
     session_register("DB_preferencias_usuario");
 
     db_putsession("DB_login", $DB_login);
-    db_putsession("DB_id_usuario", pg_result($result, 0, "id_usuario"));
-    db_putsession("DB_administrador", pg_result($result, 0, "administrador"));
+    db_putsession("DB_id_usuario", pg_fetch_result($result, 0, "id_usuario"));
+    db_putsession("DB_administrador", pg_fetch_result($result, 0, "administrador"));
     db_putsession("DB_desativar_account", false);
 
     /**
      * Realiza a busca das preferências do usuário.
      */
-    $oUsuarioSistema = new UsuarioSistema(pg_result($result, 0, "id_usuario"));
+    $oUsuarioSistema = new UsuarioSistema(pg_fetch_result($result, 0, "id_usuario"));
     $sPreferencias = serialize($oPreferenciaUsuario = $oUsuarioSistema->getPreferenciasUsuario());
     db_putsession("DB_preferencias_usuario", base64_encode($sPreferencias));
 
@@ -352,7 +352,7 @@ if (pg_numrows($result) == 0 or pg_numrows($result1) == 0) {
     /** [Extensao] Tratamento IP */
         db_putsession("DB_ip", $_SERVER["HTTP_X_FORWARDED_FOR"]);
     } else {
-        db_putsession("DB_ip", $HTTP_SERVER_VARS["REMOTE_ADDR"]);
+        db_putsession("DB_ip", $_SERVER["REMOTE_ADDR"]);
     }
 
     session_register("DB_base");
@@ -372,14 +372,14 @@ if (pg_numrows($result) == 0 or pg_numrows($result1) == 0) {
     if (db_verifica_ip_banco() != '1') {
         $sMsg = _M(MENSAGEM . 'ip_nao_autorizado');
         db_logsmanual_demais(_M(MENSAGEM . 'logs_ip_nao_autorizado', $oParametrosMsg),
-        pg_result($result, 0, "id_usuario"));
+        pg_fetch_result($result, 0, "id_usuario"));
         echo "<script>window.opener.document.getElementById('testaLogin').innerHTML = '{$sMsg}';window.opener.document.form1.usu_login.focus();window.close();</script>\n";
         exit;
     }
 
     include(modification("classes/db_db_versao_classe.php"));
 
-    parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+    parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
     foreach ($queryString as $key => $value) {
         ${$key} = $value;
@@ -402,7 +402,7 @@ if (pg_numrows($result) == 0 or pg_numrows($result1) == 0) {
         $oParametrosMsg->sVersaoFonte = $db_fonte_codversao . $db_fonte_codrelease;
         $oParametrosMsg->sVersaoBanco = $db30_codversao . $db30_codrelease;
         $sMsg = _M(MENSAGEM . 'versao_banco', $oParametrosMsg);
-        db_logsmanual_demais(_M(MENSAGEM . 'logs_versao_banco', $oParametrosMsg), pg_result($result, 0, "id_usuario"));
+        db_logsmanual_demais(_M(MENSAGEM . 'logs_versao_banco', $oParametrosMsg), pg_fetch_result($result, 0, "id_usuario"));
         echo "<script>window.opener.document.getElementById('testaLogin').innerHTML = '{$sMsg}';window.opener.document.form1.usu_login.focus();window.close();</script>\n";
         exit;
     }

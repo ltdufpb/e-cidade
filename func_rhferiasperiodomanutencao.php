@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhferiasperiodo_classe.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhferiasperiodo = new cl_rhferiasperiodo;
 $clrhferiasperiodo->rotulo->label("rh110_sequencial");
 $clrhferiasperiodo->rotulo->label("rh110_sequencial");
@@ -64,9 +64,9 @@ $clrhferiasperiodo->rotulo->label("rh110_sequencial");
 
         $campos  = "rh109_sequencial, rh110_sequencial, rh01_regist, z01_nome, rh109_periodoaquisitivoinicial, rh109_periodoaquisitivofinal, rh110_datainicial, rh110_datafinal, rh110_dias";
         $sql     = $clrhferiasperiodo->sql_query_dados("", $campos, "rh110_sequencial desc", $sWhere);
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh110_sequencial)){
-          $repassa = array("chave_rh110_sequencial"=>$chave_rh110_sequencial,"chave_rh110_sequencial"=>$chave_rh110_sequencial);
+          $repassa = ["chave_rh110_sequencial"=>$chave_rh110_sequencial,"chave_rh110_sequencial"=>$chave_rh110_sequencial];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

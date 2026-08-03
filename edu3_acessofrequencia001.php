@@ -77,7 +77,7 @@ $oRotulo->label('ed57_c_descr');
                     </td>
                     <td>
                       <?php 
-                        $aSituacao = array("0" => "Todas", "1" => "Vermelho", "2" => "Amarelo");
+                        $aSituacao = ["0" => "Todas", "1" => "Vermelho", "2" => "Amarelo"];
                         db_select('situacao', $aSituacao, true, 1);
                       ?>
                     </td>

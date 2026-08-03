@@ -335,9 +335,7 @@ class GerarOrcamentoService
         if ($valores->isEmpty()) {
             return null;
         }
-        $valor = $valores->filter(function (Valor $valor) {
-            return $valor->pl10_ano == $this->exercicio;
-        })->shift();
+        $valor = $valores->filter(fn(Valor $valor) => $valor->pl10_ano == $this->exercicio)->shift();
 
         return $valor->pl10_valor;
     }

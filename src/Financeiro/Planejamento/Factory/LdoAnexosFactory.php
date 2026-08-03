@@ -38,7 +38,7 @@ class LdoAnexosFactory
 {
     public static function programa(array $parametros)
     {
-        if (empty($parametros['tipo']) || mb_strtoupper($parametros['tipo']) !== TipoEnum::LDO) {
+        if (empty($parametros['tipo']) || mb_strtoupper((string) $parametros['tipo']) !== TipoEnum::LDO) {
             throw new Exception("Tipo não informado ou não é LDO.", 403);
         }
 

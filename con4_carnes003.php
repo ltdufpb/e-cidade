@@ -29,29 +29,29 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-if(isset($HTTP_POST_VARS["codigo"])) {	
-  $codigo = $HTTP_POST_VARS["codigo"];	
+if(isset($_POST["codigo"])) {	
+  $codigo = $_POST["codigo"];	
   db_query("begin");
   db_query("delete from db_carnescampos where codmodelo = $codigo") or die("Erro excluindo db_carnescampos");
-  $tam_vetor = sizeof($HTTP_POST_VARS);
-  reset($HTTP_POST_VARS);
-  next($HTTP_POST_VARS);
+  $tam_vetor = sizeof($_POST);
+  reset($_POST);
+  next($_POST);
   //$aux[0] posx
   //$aux[1] posy
   //$aux[2] nomcam
   for($i = 1;$i < $tam_vetor;$i++) {
-    $aux = split(";",$HTTP_POST_VARS[key($HTTP_POST_VARS)]);
-	$result = db_query("select 0 from db_syscampo where nomecam = '".trim($aux[2])."'");
-	if(pg_numrows($result)==0) 
+    $aux = preg_split("#;#m",(string) $_POST[key($_POST)]);
+	$result = db_query("select 0 from db_syscampo where nomecam = '".trim((string) $aux[2])."'");
+	if(pg_num_rows($result)==0) 
 	   $var = 'f';
 	else
 	   $var = 't';
 	 
 echo    $sql = "insert into db_carnescampos values(".$codigo.",".$aux[0].",".$aux[1].",'".$aux[2]."','".$var."')";
 	$result = db_query($sql) or die("Erro inserindo em db_carnescampos");
-    next($HTTP_POST_VARS);
+    next($_POST);
   }
   db_query("commit");
 }
@@ -156,17 +156,17 @@ function removeElem(cod) {
 
 		if(isset($codigo)) {//var vem do parse_str
           $result = db_query("select nomemodelo,imgmodelo from db_carnesimg where codmodelo = $codigo");
-		  if(pg_numrows($result) > 0) {
+		  if(pg_num_rows($result) > 0) {
 		  //escreve a imagem
-	        $arquivo = "tmp/".str_replace(" ","_",pg_result($result,0,"nomemodelo")).".jpg";
+	        $arquivo = "tmp/".str_replace(" ","_",pg_fetch_result($result,0,"nomemodelo")).".jpg";
    		    db_query("begin");
-            $oid = pg_result($result,0,"imgmodelo");
-            pg_loexport($oid,$arquivo);
+            $oid = pg_fetch_result($result,0,"imgmodelo");
+            pg_lo_export($oid,$arquivo);
             db_query("end");
             echo "<img style=\"position:absolute;left:0px; top:0px\" src=\"".$arquivo."\" border=\"0\" onclick=\"js_posicao()\">\n";			  
 		    ///escreve os campos///
 			$reccampos = db_query("select nomecam,posxmodelo,posymodelo from db_carnescampos where codmodelo = $codigo");
-			$numcampos = pg_numrows($reccampos);
+			$numcampos = pg_num_rows($reccampos);
 //			if($numcampos > 0) {			  
 			  //escreve as div
 			  for($i = 0;$i < $numcampos;$i++) {
@@ -174,18 +174,18 @@ function removeElem(cod) {
 				$comprimento = db_query("select tamanho
 		                                from db_syscampo							            
 							            where nomecam = '".$nomecam."'");
-				if(pg_numrows($comprimento) == 0){
-				   $xx = split("->",$nomecam);
+				if(pg_num_rows($comprimento) == 0){
+				   $xx = preg_split("#\\->#m",(string) $nomecam);
 				   $comprimento = db_query("select length(txcampo),txcampo
 		                                   from db_carnesdados							            
-							               where idtx = '".trim($xx[0])."'::integer");
-				   if(pg_numrows($comprimento) == 0){
+							               where idtx = '".trim((string) $xx[0])."'::integer");
+				   if(pg_num_rows($comprimento) == 0){
 				     db_msgbox("Erro: campo $nomecam não encontrado em db_syscampo ou db_carnesdados.");
 				   }   
-				   $comp = pg_result($comprimento,0,1);
-			       $comprimento = pg_result($comprimento,0,0);
+				   $comp = pg_fetch_result($comprimento,0,1);
+			       $comprimento = pg_fetch_result($comprimento,0,0);
 				}else{
-			       $comprimento = pg_result($comprimento,0,0);
+			       $comprimento = pg_fetch_result($comprimento,0,0);
 			   	   $comp = "";
 				   for($j = 0;$j < $comprimento;$j++)
 				     $comp .= "X";

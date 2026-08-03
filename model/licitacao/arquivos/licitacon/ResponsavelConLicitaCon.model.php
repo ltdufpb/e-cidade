@@ -40,12 +40,12 @@ class ResponsavelConLicitaCon extends ArquivoLicitaCon
     /**
      * @var array
      */
-    public static $aTiposResponsavel = array(
+    public static $aTiposResponsavel = [
         AcordoComissaoMembro::TIPO_GESTOR => 'G',
         AcordoComissaoMembro::TIPO_SECUNDARIO => 'G',
         AcordoComissaoMembro::TIPO_SUPLENTE => 'S',
         AcordoComissaoMembro::TIPO_FISCAL => 'F',
-    );
+    ];
 
     /**
      * ResponsavelConLicitaCon constructor.
@@ -65,7 +65,7 @@ class ResponsavelConLicitaCon extends ArquivoLicitaCon
     private function getResponsavel()
     {
         $oDaoAcordoComissaoMembros = new cl_acordocomissaomembro;
-        $sCampos = ' DISTINCT ' . implode(',', array(
+        $sCampos = ' DISTINCT ' . implode(',', [
                 'ac16_numero',
                 'ac16_anousu',
                 'ac16_tipoinstrumento',
@@ -78,13 +78,13 @@ class ResponsavelConLicitaCon extends ArquivoLicitaCon
                 'ac07_anoatodesignacao',
                 'ac07_nomearquivo',
                 'ac07_arquivo'
-            ));
+            ]);
         $sDataAtual = $this->oCabecalho->getDataGeracao()->getDate();
-        $sWhere = implode(' AND ', array(
+        $sWhere = implode(' AND ', [
             "(ac58_sequencial IS NULL OR ac58_data >= '{$sDataAtual}')",
             "ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()}",
             'EXISTS(SELECT 1 FROM acordoposicao INNER JOIN acordoitem ON ac20_acordoposicao = ac26_sequencial AND ac26_acordo = ac16_sequencial)'
-        ));
+        ]);
         $sSqlResponsaveis = $oDaoAcordoComissaoMembros->sql_query_acordo($sCampos, $sWhere,
             'ac16_numero, ac07_datatermino ASC');
         $rsResponsaveis = db_query($sSqlResponsaveis);
@@ -105,7 +105,7 @@ class ResponsavelConLicitaCon extends ArquivoLicitaCon
         $rsResponsaveis = $this->getResponsavel();
         $iTotalResponsaveis = pg_num_rows($rsResponsaveis);
         $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
-        $aResponsaveis = array();
+        $aResponsaveis = [];
 
         for ($iIndice = 0; $iIndice < $iTotalResponsaveis; $iIndice++) {
             $oResponsavel = db_utils::fieldsMemory($rsResponsaveis, $iIndice);

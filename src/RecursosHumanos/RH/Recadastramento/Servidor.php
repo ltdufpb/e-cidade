@@ -33,7 +33,6 @@ use ECidade\RecursosHumanos\RH\Recadastramento\conversorJson\Formatter;
 abstract class Servidor
 {
     protected $form;
-    protected $matricula;
     protected $servidor;
     protected $cgm;
     protected $atendimentoOvidoria;
@@ -41,9 +40,8 @@ abstract class Servidor
     /**
      * @throws \Exception
      */
-    public function __construct($matricula, Formatter $form, AtendimentoOuvidoria $atendimento, $instituicaoMatricula)
+    public function __construct(protected $matricula, Formatter $form, AtendimentoOuvidoria $atendimento, $instituicaoMatricula)
     {
-        $this->matricula = $matricula;
         $this->form = $form;
         $this->servidor = new \Servidor($this->matricula, null, null, $instituicaoMatricula);
         $this->cgm = $this->servidor->getCgm();
@@ -52,7 +50,7 @@ abstract class Servidor
         try {
             $this->run();
         } catch (\Exception $ex) {
-            throw  new \Exception("Ocorreu um erro ao processar matricula {$matricula}  : {$ex->getMessage()}");
+            throw  new \Exception("Ocorreu um erro ao processar matricula {$this->matricula}  : {$ex->getMessage()}");
         }
     }
 
@@ -62,33 +60,22 @@ abstract class Servidor
     {
 
         $raca = null;
-        switch ((int)$codigoRecadastramento) :
-            case 1:
-                $raca = 2; //Branca
-                break;
-            case 2:
-                $raca = 4;//PRETA
-                break;
-            case 3:
-                $raca = 8;//PARDA
-                break;
-            case 4:
-                $raca = 6;//AMARELA
-                break;
-            case 5:
-                $raca = 1;//Indígena
-                break;
-            case 6:
-                $raca = 9;//Não Informado
-                break;
-        endswitch;
+        $raca = match ((int)$codigoRecadastramento) {
+            1 => 2,
+            2 => 4,
+            3 => 8,
+            4 => 6,
+            5 => 1,
+            6 => 9,
+            default => $raca,
+        };
 
         return $raca;
     }
 
     protected function apenasNumero($valor)
     {
-        return preg_replace('/[^0-9]/', '', trim($valor));
+        return preg_replace('/[^0-9]/', '', trim((string) $valor));
     }
 
     /**
@@ -201,23 +188,19 @@ abstract class Servidor
     {
 
         $estadoCivil = 0;
-        switch ((int)$codigo) {
-            case 1: //Solteiro
-                $estadoCivil = 1;
-                break;
-            case 2: //Casado
-                $estadoCivil = 2;
-                break;
-            case 3: //Divorciado
-                $estadoCivil = 4;
-                break;
-            case 4: //Separado
-                $estadoCivil = 5;
-                break;
-            case 5: //Viúvo
-                $estadoCivil = 3;
-                break;
-        }
+        $estadoCivil = match ((int)$codigo) {
+            //Solteiro
+            1 => 1,
+            //Casado
+            2 => 2,
+            //Divorciado
+            3 => 4,
+            //Separado
+            4 => 5,
+            //Viúvo
+            5 => 3,
+            default => $estadoCivil,
+        };
 
         return $estadoCivil;
     }
@@ -226,23 +209,19 @@ abstract class Servidor
     {
 
         $estadoCivil = 8;
-        switch ((int)$codigo) {
-            case 1: //Solteiro
-                $estadoCivil = 1;
-                break;
-            case 2: //Casado
-                $estadoCivil = 2;
-                break;
-            case 3: //Divorciado
-                $estadoCivil = 5;
-                break;
-            case 4: //Separado
-                $estadoCivil = 4;
-                break;
-            case 5: //Viúvo
-                $estadoCivil = 3;
-                break;
-        }
+        $estadoCivil = match ((int)$codigo) {
+            //Solteiro
+            1 => 1,
+            //Casado
+            2 => 2,
+            //Divorciado
+            3 => 5,
+            //Separado
+            4 => 4,
+            //Viúvo
+            5 => 3,
+            default => $estadoCivil,
+        };
 
         return $estadoCivil;
     }
@@ -251,14 +230,11 @@ abstract class Servidor
     {
 
         $tipo = 0;
-        switch ((int)$codigo) {
-            case 1:
-                $tipo = 2;
-                break;
-            case 2:
-                $tipo = 3;
-                break;
-        }
+        $tipo = match ((int)$codigo) {
+            1 => 2,
+            2 => 3,
+            default => $tipo,
+        };
 
         return $tipo;
     }

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE vacinas
 class cl_vacinas { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd07_c_codigo = null; 
-   var $sd07_c_nome = null; 
-   var $sd07_i_doses = 0; 
+   public $sd07_c_codigo = null; 
+   public $sd07_c_nome = null; 
+   public $sd07_i_doses = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd07_c_codigo = char(10) = Código 
                  sd07_c_nome = char(60) = Nome 
                  sd07_i_doses = int4 = Doses 
                  ";
    //funcao construtor da classe 
-   function cl_vacinas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vacinas"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,7 +119,7 @@ class cl_vacinas {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Vacinas ($this->sd07_c_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Vacinas já Cadastrado";
@@ -143,12 +143,12 @@ class cl_vacinas {
      $resaco = $this->sql_record($this->sql_query_file($this->sd07_c_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,100102,'$this->sd07_c_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,100018,100102,'','".AddSlashes(pg_result($resaco,0,'sd07_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100018,100103,'','".AddSlashes(pg_result($resaco,0,'sd07_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100018,100104,'','".AddSlashes(pg_result($resaco,0,'sd07_i_doses'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100018,100102,'','".AddSlashes(pg_fetch_result($resaco,0,'sd07_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100018,100103,'','".AddSlashes(pg_fetch_result($resaco,0,'sd07_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100018,100104,'','".AddSlashes(pg_fetch_result($resaco,0,'sd07_i_doses'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -157,10 +157,10 @@ class cl_vacinas {
       $this->atualizacampos();
      $sql = " update vacinas set ";
      $virgula = "";
-     if(trim($this->sd07_c_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd07_c_codigo"])){ 
+     if(trim((string) $this->sd07_c_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd07_c_codigo"])){ 
        $sql  .= $virgula." sd07_c_codigo = '$this->sd07_c_codigo' ";
        $virgula = ",";
-       if(trim($this->sd07_c_codigo) == null ){ 
+       if(trim((string) $this->sd07_c_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sd07_c_codigo";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_vacinas {
          return false;
        }
      }
-     if(trim($this->sd07_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd07_c_nome"])){ 
+     if(trim((string) $this->sd07_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd07_c_nome"])){ 
        $sql  .= $virgula." sd07_c_nome = '$this->sd07_c_nome' ";
        $virgula = ",";
-       if(trim($this->sd07_c_nome) == null ){ 
+       if(trim((string) $this->sd07_c_nome) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "sd07_c_nome";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_vacinas {
          return false;
        }
      }
-     if(trim($this->sd07_i_doses)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd07_i_doses"])){ 
+     if(trim((string) $this->sd07_i_doses)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd07_i_doses"])){ 
        $sql  .= $virgula." sd07_i_doses = $this->sd07_i_doses ";
        $virgula = ",";
-       if(trim($this->sd07_i_doses) == null ){ 
+       if(trim((string) $this->sd07_i_doses) == null ){ 
          $this->erro_sql = " Campo Doses nao Informado.";
          $this->erro_campo = "sd07_i_doses";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_vacinas {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,100102,'$this->sd07_c_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd07_c_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,100018,100102,'".AddSlashes(pg_result($resaco,$conresaco,'sd07_c_codigo'))."','$this->sd07_c_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100018,100102,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd07_c_codigo'))."','$this->sd07_c_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd07_c_nome"]))
-           $resac = db_query("insert into db_acount values($acount,100018,100103,'".AddSlashes(pg_result($resaco,$conresaco,'sd07_c_nome'))."','$this->sd07_c_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100018,100103,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd07_c_nome'))."','$this->sd07_c_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd07_i_doses"]))
-           $resac = db_query("insert into db_acount values($acount,100018,100104,'".AddSlashes(pg_result($resaco,$conresaco,'sd07_i_doses'))."','$this->sd07_i_doses',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100018,100104,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd07_i_doses'))."','$this->sd07_i_doses',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -257,12 +257,12 @@ class cl_vacinas {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,100102,'$sd07_c_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,100018,100102,'','".AddSlashes(pg_result($resaco,$iresaco,'sd07_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100018,100103,'','".AddSlashes(pg_result($resaco,$iresaco,'sd07_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100018,100104,'','".AddSlashes(pg_result($resaco,$iresaco,'sd07_i_doses'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100018,100102,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd07_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100018,100103,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd07_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100018,100104,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd07_i_doses'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from vacinas
@@ -322,7 +322,7 @@ class cl_vacinas {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vacinas";
@@ -336,7 +336,7 @@ class cl_vacinas {
    function sql_query ( $sd07_c_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,7 +357,7 @@ class cl_vacinas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -369,7 +369,7 @@ class cl_vacinas {
    function sql_query_file ( $sd07_c_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_vacinas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

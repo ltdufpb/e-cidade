@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issnotaavulsa_classe.php"));
 include(modification("classes/db_issnotaavulsaservico_classe.php"));
 $clissnotaavulsa = new cl_issnotaavulsa;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

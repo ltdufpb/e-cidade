@@ -47,21 +47,11 @@ class AnexoV
      */
     public static function getInstance($ano, Periodo $periodo)
     {
-        switch ($ano) {
-            case 2017:
-                return new AnexoV2017($ano, $periodo->getCodigo());
-                break;
-            case 2018:
-                return new AnexoV2018($ano, $periodo->getCodigo());
-                break;
-            case 2019:
-            case 2020:
-            case 2021:
-            case 2022:
-                return new AnexoV2019($ano, $periodo->getCodigo());
-                break;
-            default:
-                return new AnexoV2018($ano, $periodo->getCodigo());
-        }
+        return match ($ano) {
+            2017 => new AnexoV2017($ano, $periodo->getCodigo()),
+            2018 => new AnexoV2018($ano, $periodo->getCodigo()),
+            2019, 2020, 2021, 2022 => new AnexoV2019($ano, $periodo->getCodigo()),
+            default => new AnexoV2018($ano, $periodo->getCodigo()),
+        };
     }
 }

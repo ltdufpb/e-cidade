@@ -40,7 +40,7 @@ $clsaniatividade = new cl_saniatividade;
 $clsaniatividade->rotulo->label();
 $clsanitario->rotulo->label();
 //db_postmemory($HTTP_SERVER_VARS,2);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(isset($dataini) && $dataini != "--" && $datafim == "--"){
   $data = " y83_dtfim >= '$dataini' ";
 }elseif(isset($dataini) && $dataini != "--" && isset($datafim) && $datafim != "--"){
@@ -90,7 +90,7 @@ for($r=0;$r<$linhas;$r++){
   $pdf->Cell($multiplicador*50,6,$RLz01_cep.': '.@$z01_cep,1,0,"J",1);
   $pdf->Ln(6);
   $pdf->Cell($multiplicador*70,6,$RLy80_data.': '.db_formatar(@$y80_data,'d'),1,0,"J",1);
-  $pdf->Cell($multiplicador*70,6,$RLy80_obs.': '.substr(@$y80_obs,0,20)."...",1,0,"J",1);
+  $pdf->Cell($multiplicador*70,6,$RLy80_obs.': '.substr((string) @$y80_obs,0,20)."...",1,0,"J",1);
   $pdf->Cell($multiplicador*50,6,$RLy80_area.': '.@$y80_area,1,0,"J",1);
   $pdf->Ln(6);
   $pdf->SetFillColor(200);

@@ -12,7 +12,7 @@ class EtiquetaService
         $builder->setCodigo($bem->t52_bem);
         $builder->setInstituicao($bem->instituicao->nomeinst);
         $builder->setPlaca($bem->t52_ident);
-        $builder->setDescricao(utf8_encode($bem->t52_descr));
+        $builder->setDescricao(mb_convert_encoding($bem->t52_descr, 'UTF-8', 'ISO-8859-1'));
         $builder->setBarcode($bem->t52_ident);
 
         $builder->create();

@@ -56,10 +56,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-      $clcriaabas->identifica = array("a1"=>"Dados Pessoais","a2"=>"Endereço Residêncial","a3"=>"Endereço Comercial","a4"=>"Especialidades");
-      $clcriaabas->src = array("a1"=>"sau1_medicos001.php","a2"=>"sau1_medicos002.php","a3"=>"sau1_medicos003.php","a4"=>"sau1_especmedico002.php");
-      $clcriaabas->disabled   =  array("a4"=>"true");
-     $clcriaabas->sizecampo  = array("a1"=>20,"a2"=>20,"a3"=>30,"a4"=>25);
+      $clcriaabas->identifica = ["a1"=>"Dados Pessoais","a2"=>"Endereço Residêncial","a3"=>"Endereço Comercial","a4"=>"Especialidades"];
+      $clcriaabas->src = ["a1"=>"sau1_medicos001.php","a2"=>"sau1_medicos002.php","a3"=>"sau1_medicos003.php","a4"=>"sau1_especmedico002.php"];
+      $clcriaabas->disabled   =  ["a4"=>"true"];
+     $clcriaabas->sizecampo  = ["a1"=>20,"a2"=>20,"a3"=>30,"a4"=>25];
       $clcriaabas->cria_abas();
        ?> 
        </td>

@@ -35,8 +35,8 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
 
-parse_str($_SERVER["QUERY_STRING"]);
-$debug = isset($debug) ? $debug : null;
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+$debug ??= null;
 
 
 $subpes = db_anofolha()."/".db_mesfolha();
@@ -353,7 +353,7 @@ if($opcao == "avos"){
   $result_dadosrescis = $clrhpesrescisao->sql_record($clrhpesrescisao->sql_query_rescisao($seqpes));
   if($clrhpesrescisao->numrows > 0){
     db_fieldsmemory($result_dadosrescis,0);
-    $x = array("1"=>"Trabalhado","2"=>"Aviso indenizado","3"=>"Sem aviso");
+    $x = ["1"=>"Trabalhado","2"=>"Aviso indenizado","3"=>"Sem aviso"];
     echo "
           <script>
             parent.document.form1.rh05_recis_dia.value = '".$rh05_recis_dia."';
@@ -379,7 +379,7 @@ if($opcao == "avos"){
 }else if($opcao == "dadosdiversos"){
   require_once(modification("classes/db_pesdiver_classe.php"));
   $clpesdiver = new cl_pesdiver;
-  $arr_diversos = explode(",",$div);
+  $arr_diversos = explode(",",(string) $div);
   $erro = false;
   echo "
         <script>

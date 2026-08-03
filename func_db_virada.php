@@ -31,9 +31,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_virada_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_virada = new cl_db_virada;
 $cldb_virada->rotulo->label("c30_sequencial");
 $cldb_virada->rotulo->label("c30_anoorigem");
@@ -113,9 +113,9 @@ $cldb_virada->rotulo->label("c30_data");
         }else{
            $sql = $cldb_virada->sql_query("",$campos,"c30_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c30_anoorigem)){
-          $repassa = array("chave_c30_sequencial"=>$chave_c30_sequencial,"chave_c30_anoorigem"=>$chave_c30_anoorigem);
+          $repassa = ["chave_c30_sequencial"=>$chave_c30_sequencial,"chave_c30_anoorigem"=>$chave_c30_anoorigem];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

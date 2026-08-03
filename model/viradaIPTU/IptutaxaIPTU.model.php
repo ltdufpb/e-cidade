@@ -61,13 +61,13 @@ class IptutaxaIPTU implements iViradaIPTU {
    * Campos chave configurados na tabela iptutabelasconfigcampochave
    * @var array
    */
-  private $aCampoChave    = array();
+  private $aCampoChave    = [];
   
   /**
    * Campos correcao configurados na tabela iptutabelasconfigcampocorrecao
    * @var array
    */
-  private $aCampoCorrecao = array();
+  private $aCampoCorrecao = [];
   
   /**
    * @return $this->iAnoAtual
@@ -295,11 +295,11 @@ class IptutaxaIPTU implements iViradaIPTU {
             $oDaoIptuTaxa->$sNomeCampoIptuTaxa = "{$nSomaPercentual}";
           } else {
           	
-          	if (trim($sNomeCampoIptuTaxa) == 'j19_anousu') {
+          	if (trim((string) $sNomeCampoIptuTaxa) == 'j19_anousu') {
           		$iAnoUso = $this->getAnoNovo();
           	}
 
-            if (trim($sNomeCampoIptuTaxa) == 'j19_receit') {
+            if (trim((string) $sNomeCampoIptuTaxa) == 'j19_receit') {
               $iReceit = $oDadosIptuTaxa->$sNomeCampoIptuTaxa;
             }
             

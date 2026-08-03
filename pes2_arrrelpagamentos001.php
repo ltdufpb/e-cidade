@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -75,7 +75,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-          $v = array("s"=>"Sim", "n"=>"Nao");
+          $v = ["s"=>"Sim", "n"=>"Nao"];
           db_select('lotacao',$v,true,4,"");
           ?>
         </td>

@@ -38,8 +38,8 @@ include(modification("classes/db_orcimpacto_classe.php"));
 include(modification("classes/db_orcelemento_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcimpactoval     = new cl_orcimpactoval;
 $clorcimpactovalmes  = new cl_orcimpactovalmes;
@@ -63,10 +63,10 @@ if(isset($atualizar)){
     
 
     //rotina que exclui os registros
-      $clorcimpactovalmes->sql_record($clorcimpactovalmes->sql_query_file($$str)); 
+      $clorcimpactovalmes->sql_record($clorcimpactovalmes->sql_query_file(${$str})); 
       if($clorcimpactovalmes->numrows>0){ 
-	$clorcimpactovalmes->o92_codseqimp = $$str;
-	$clorcimpactovalmes->excluir($$str);
+	$clorcimpactovalmes->o92_codseqimp = ${$str};
+	$clorcimpactovalmes->excluir(${$str});
 	$erro_msg = $clorcimpactovalmes->erro_msg;  
 	if($clorcimpactovalmes->erro_status==0){
 	  $sqlerro  = true;
@@ -79,10 +79,10 @@ if(isset($atualizar)){
     
     for($r=1; $r<13; $r++){
       $c = "o91_valor_".$i."_".$r;  
-      $clorcimpactovalmes->o92_codseqimp = $$str; 
+      $clorcimpactovalmes->o92_codseqimp = ${$str}; 
       $clorcimpactovalmes->o92_mes       = $r;
-      $clorcimpactovalmes->o92_valor     = $$c;
-      $clorcimpactovalmes->incluir($$str,$r);
+      $clorcimpactovalmes->o92_valor     = ${$c};
+      $clorcimpactovalmes->incluir(${$str},$r);
       $erro_msg = $clorcimpactovalmes->erro_msg;  
       if($clorcimpactovalmes->erro_status==0){
 	$sqlerro  = true;

@@ -43,11 +43,6 @@ class RelatorioRelacaoRestosPagar {
   /**
    * @var integer
    */
-  private $iExercicio;
-
-  /**
-   * @var integer
-   */
   private $iTipo;
 
   /**
@@ -59,14 +54,13 @@ class RelatorioRelacaoRestosPagar {
    * @param integer $iTipo
    * @param integer $iExercicio
    */
-  public function __construct($iTipo, $iExercicio) {
+  public function __construct($iTipo, private $iExercicio) {
 
     if ($iTipo != self::RESTOS_PROCESSADOS && $iTipo != self::RESTOS_NAO_PROCESSADOS) {
       throw new Exception("O Tipo informado é invalido.");
     }
 
     $this->iTipo      = $iTipo;
-    $this->iExercicio = $iExercicio;
   }
 
   /**
@@ -306,10 +300,10 @@ class RelatorioRelacaoRestosPagar {
 
     $nWidth = $this->oPdf->getAvailWidth();
 
-    $sPrograma  = str_pad($oItem->o58_funcao, 2, '0', STR_PAD_LEFT);
-    $sPrograma .= '.' . str_pad($oItem->o58_subfuncao, 3, '0', STR_PAD_LEFT);
-    $sPrograma .= '.' . str_pad($oItem->o58_programa, 4, '0', STR_PAD_LEFT);
-    $sPrograma .= '.' . str_pad($oItem->o58_projativ, 4, '0', STR_PAD_LEFT);
+    $sPrograma  = str_pad((string) $oItem->o58_funcao, 2, '0', STR_PAD_LEFT);
+    $sPrograma .= '.' . str_pad((string) $oItem->o58_subfuncao, 3, '0', STR_PAD_LEFT);
+    $sPrograma .= '.' . str_pad((string) $oItem->o58_programa, 4, '0', STR_PAD_LEFT);
+    $sPrograma .= '.' . str_pad((string) $oItem->o58_projativ, 4, '0', STR_PAD_LEFT);
 
     if ($this->iTipo == self::RESTOS_PROCESSADOS) {
       $nValor = $oItem->liquidado;
@@ -321,7 +315,7 @@ class RelatorioRelacaoRestosPagar {
     $this->oPdf->cell($nWidth*0.10, 4, $oItem->e150_numeroprocesso, 'L:R', 0, 'C');
     $this->oPdf->cell($nWidth*0.45, 4, $oItem->z01_nome, 'L:R', 0, 'L');
     $this->oPdf->cell($nWidth*0.11, 4, $sPrograma, 'L:R', 0, 'C');
-    $this->oPdf->cell($nWidth*0.08, 4, substr($oItem->o56_elemento, 1, 7), 'L:R', 0, 'C');
+    $this->oPdf->cell($nWidth*0.08, 4, substr((string) $oItem->o56_elemento, 1, 7), 'L:R', 0, 'C');
     $this->oPdf->cell($nWidth*0.04, 4, $oItem->o58_codigo, 'L:R', 0, 'C');
     $this->oPdf->cell($nWidth*0.07, 4, "{$oItem->e60_codemp}/{$oItem->e60_anousu}", 'L:R', 0, 'R');
     $this->oPdf->cell($nWidth*0.10, 4, number_format($nValor, 2, ',', '.'), 'L:R', 1, 'R');

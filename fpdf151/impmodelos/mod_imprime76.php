@@ -15,7 +15,7 @@ $this->objpdf->Setfont('Arial','B',11);
 $this->objpdf->text(160, $xlin-13,'RECIBO DO SACADO ');
 // die($this->dtparapag);
 // 2007-01-01
-if (substr($this->dtparapag,4,1)=='-' || substr($this->dtparapag,7,1)=='/') {
+if (substr((string) $this->dtparapag,4,1)=='-' || substr((string) $this->dtparapag,7,1)=='/') {
 	$this->dtparapag =  db_formatar($this->dtparapag,'d');	
 }
 //die($this->dtparapag);
@@ -60,7 +60,7 @@ $this->objpdf->text($xcol+83, $xlin+15, $this->cep);
 
 
 $this->objpdf->text($xcol+75, $xlin+19, 'CNPJ/CPF:');
-$this->objpdf->text($xcol+90, $xlin+19, db_formatar(@$this->cgccpf,(strlen(@$this->cgccpf)<12?'cpf':'cnpj')));
+$this->objpdf->text($xcol+90, $xlin+19, db_formatar(@$this->cgccpf,(strlen((string) @$this->cgccpf)<12?'cpf':'cnpj')));
 $this->objpdf->Setfont('Arial','',6);
 
 $this->objpdf->Roundedrect(@$xcol+126,@$xlin+2,76,20,2,'DF','1234');
@@ -114,7 +114,7 @@ for($x=0;$x<$intnumrows;$x++){
    //$this->objpdf->Text($reccol + 82, $bklin,db_formatar($this->arrayvalreceitas[$x],'f'));
    $this->objpdf->cell($reccol + 82,3,db_formatar($this->arrayvalreceitas[$x],'f'),0,1,"R",0);
 
-   $iFormaCorrecao = pg_result(db_query("select k03_separajurmulparc
+   $iFormaCorrecao = pg_fetch_result(db_query("select k03_separajurmulparc
                                            from numpref
                                           where k03_instit = ".db_getsession("DB_instit")."
                                             and k03_anousu = ".db_getsession("DB_anousu")),0,0); 

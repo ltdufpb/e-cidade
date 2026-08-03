@@ -189,12 +189,12 @@ try {
   $oLog->escreverLog("Fim do processamento");
   $oBarraProgresso->setMessageLog('Processamento Concluído.');
 
-  $aArquivos = array(
-    array(
+  $aArquivos = [
+    [
       'path' => $sArquivoLog . '.txt',
       'name' => 'Log_Processamento_Medias'
-    )
-  );
+    ]
+  ];
 
   showDownloader($aArquivos);
   showAlert("Processamento Concluído.");

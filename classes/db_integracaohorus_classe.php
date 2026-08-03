@@ -3,28 +3,28 @@
 //CLASSE DA ENTIDADE integracaohorus
 class cl_integracaohorus { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $fa59_codigo = 0; 
-   var $fa59_usuario = 0; 
-   var $fa59_mesreferente = 0; 
-   var $fa59_anoreferente = 0; 
-   var $fa59_tipoarquivo = 0; 
-   var $fa59_situacaohorus = 0; 
-   var $fa59_db_depart = 0; 
+   public $fa59_codigo = 0; 
+   public $fa59_usuario = 0; 
+   public $fa59_mesreferente = 0; 
+   public $fa59_anoreferente = 0; 
+   public $fa59_tipoarquivo = 0; 
+   public $fa59_situacaohorus = 0; 
+   public $fa59_db_depart = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  fa59_codigo = int4 = Código 
                  fa59_usuario = int4 = Usuário 
                  fa59_mesreferente = int4 = Mês 
@@ -34,10 +34,10 @@ class cl_integracaohorus {
                  fa59_db_depart = int4 = Departamento 
                  ";
    //funcao construtor da classe 
-   function cl_integracaohorus() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("integracaohorus"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -129,10 +129,10 @@ class cl_integracaohorus {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa59_codigo = pg_result($result,0,0); 
+       $this->fa59_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from integracaohorus_fa59_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa59_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa59_codigo)){
          $this->erro_sql = " Campo fa59_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -172,7 +172,7 @@ class cl_integracaohorus {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "integracaohorus ($this->fa59_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "integracaohorus já Cadastrado";
@@ -201,16 +201,16 @@ class cl_integracaohorus {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21293,'$this->fa59_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3837,21293,'','".AddSlashes(pg_result($resaco,0,'fa59_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3837,21294,'','".AddSlashes(pg_result($resaco,0,'fa59_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3837,21296,'','".AddSlashes(pg_result($resaco,0,'fa59_mesreferente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3837,21299,'','".AddSlashes(pg_result($resaco,0,'fa59_anoreferente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3837,21297,'','".AddSlashes(pg_result($resaco,0,'fa59_tipoarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3837,21519,'','".AddSlashes(pg_result($resaco,0,'fa59_situacaohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3837,21579,'','".AddSlashes(pg_result($resaco,0,'fa59_db_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3837,21293,'','".AddSlashes(pg_fetch_result($resaco,0,'fa59_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3837,21294,'','".AddSlashes(pg_fetch_result($resaco,0,'fa59_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3837,21296,'','".AddSlashes(pg_fetch_result($resaco,0,'fa59_mesreferente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3837,21299,'','".AddSlashes(pg_fetch_result($resaco,0,'fa59_anoreferente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3837,21297,'','".AddSlashes(pg_fetch_result($resaco,0,'fa59_tipoarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3837,21519,'','".AddSlashes(pg_fetch_result($resaco,0,'fa59_situacaohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3837,21579,'','".AddSlashes(pg_fetch_result($resaco,0,'fa59_db_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -220,10 +220,10 @@ class cl_integracaohorus {
       $this->atualizacampos();
      $sql = " update integracaohorus set ";
      $virgula = "";
-     if(trim($this->fa59_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_codigo"])){ 
+     if(trim((string) $this->fa59_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_codigo"])){ 
        $sql  .= $virgula." fa59_codigo = $this->fa59_codigo ";
        $virgula = ",";
-       if(trim($this->fa59_codigo) == null ){ 
+       if(trim((string) $this->fa59_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "fa59_codigo";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_integracaohorus {
          return false;
        }
      }
-     if(trim($this->fa59_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_usuario"])){ 
+     if(trim((string) $this->fa59_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_usuario"])){ 
        $sql  .= $virgula." fa59_usuario = $this->fa59_usuario ";
        $virgula = ",";
-       if(trim($this->fa59_usuario) == null ){ 
+       if(trim((string) $this->fa59_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "fa59_usuario";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_integracaohorus {
          return false;
        }
      }
-     if(trim($this->fa59_mesreferente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_mesreferente"])){ 
+     if(trim((string) $this->fa59_mesreferente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_mesreferente"])){ 
        $sql  .= $virgula." fa59_mesreferente = $this->fa59_mesreferente ";
        $virgula = ",";
-       if(trim($this->fa59_mesreferente) == null ){ 
+       if(trim((string) $this->fa59_mesreferente) == null ){ 
          $this->erro_sql = " Campo Mês não informado.";
          $this->erro_campo = "fa59_mesreferente";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_integracaohorus {
          return false;
        }
      }
-     if(trim($this->fa59_anoreferente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_anoreferente"])){ 
+     if(trim((string) $this->fa59_anoreferente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_anoreferente"])){ 
        $sql  .= $virgula." fa59_anoreferente = $this->fa59_anoreferente ";
        $virgula = ",";
-       if(trim($this->fa59_anoreferente) == null ){ 
+       if(trim((string) $this->fa59_anoreferente) == null ){ 
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "fa59_anoreferente";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_integracaohorus {
          return false;
        }
      }
-     if(trim($this->fa59_tipoarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_tipoarquivo"])){ 
+     if(trim((string) $this->fa59_tipoarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_tipoarquivo"])){ 
        $sql  .= $virgula." fa59_tipoarquivo = $this->fa59_tipoarquivo ";
        $virgula = ",";
-       if(trim($this->fa59_tipoarquivo) == null ){ 
+       if(trim((string) $this->fa59_tipoarquivo) == null ){ 
          $this->erro_sql = " Campo Arquivo não informado.";
          $this->erro_campo = "fa59_tipoarquivo";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_integracaohorus {
          return false;
        }
      }
-     if(trim($this->fa59_situacaohorus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_situacaohorus"])){ 
+     if(trim((string) $this->fa59_situacaohorus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_situacaohorus"])){ 
        $sql  .= $virgula." fa59_situacaohorus = $this->fa59_situacaohorus ";
        $virgula = ",";
-       if(trim($this->fa59_situacaohorus) == null ){ 
+       if(trim((string) $this->fa59_situacaohorus) == null ){ 
          $this->erro_sql = " Campo Situação Hórus não informado.";
          $this->erro_campo = "fa59_situacaohorus";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_integracaohorus {
          return false;
        }
      }
-     if(trim($this->fa59_db_depart)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_db_depart"])){ 
+     if(trim((string) $this->fa59_db_depart)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa59_db_depart"])){ 
        $sql  .= $virgula." fa59_db_depart = $this->fa59_db_depart ";
        $virgula = ",";
-       if(trim($this->fa59_db_depart) == null ){ 
+       if(trim((string) $this->fa59_db_depart) == null ){ 
          $this->erro_sql = " Campo Departamento não informado.";
          $this->erro_campo = "fa59_db_depart";
          $this->erro_banco = "";
@@ -325,23 +325,23 @@ class cl_integracaohorus {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21293,'$this->fa59_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa59_codigo"]) || $this->fa59_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3837,21293,'".AddSlashes(pg_result($resaco,$conresaco,'fa59_codigo'))."','$this->fa59_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3837,21293,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa59_codigo'))."','$this->fa59_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa59_usuario"]) || $this->fa59_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,3837,21294,'".AddSlashes(pg_result($resaco,$conresaco,'fa59_usuario'))."','$this->fa59_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3837,21294,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa59_usuario'))."','$this->fa59_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa59_mesreferente"]) || $this->fa59_mesreferente != "")
-             $resac = db_query("insert into db_acount values($acount,3837,21296,'".AddSlashes(pg_result($resaco,$conresaco,'fa59_mesreferente'))."','$this->fa59_mesreferente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3837,21296,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa59_mesreferente'))."','$this->fa59_mesreferente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa59_anoreferente"]) || $this->fa59_anoreferente != "")
-             $resac = db_query("insert into db_acount values($acount,3837,21299,'".AddSlashes(pg_result($resaco,$conresaco,'fa59_anoreferente'))."','$this->fa59_anoreferente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3837,21299,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa59_anoreferente'))."','$this->fa59_anoreferente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa59_tipoarquivo"]) || $this->fa59_tipoarquivo != "")
-             $resac = db_query("insert into db_acount values($acount,3837,21297,'".AddSlashes(pg_result($resaco,$conresaco,'fa59_tipoarquivo'))."','$this->fa59_tipoarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3837,21297,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa59_tipoarquivo'))."','$this->fa59_tipoarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa59_situacaohorus"]) || $this->fa59_situacaohorus != "")
-             $resac = db_query("insert into db_acount values($acount,3837,21519,'".AddSlashes(pg_result($resaco,$conresaco,'fa59_situacaohorus'))."','$this->fa59_situacaohorus',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3837,21519,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa59_situacaohorus'))."','$this->fa59_situacaohorus',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa59_db_depart"]) || $this->fa59_db_depart != "")
-             $resac = db_query("insert into db_acount values($acount,3837,21579,'".AddSlashes(pg_result($resaco,$conresaco,'fa59_db_depart'))."','$this->fa59_db_depart',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3837,21579,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa59_db_depart'))."','$this->fa59_db_depart',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -395,16 +395,16 @@ class cl_integracaohorus {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21293,'$fa59_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3837,21293,'','".AddSlashes(pg_result($resaco,$iresaco,'fa59_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3837,21294,'','".AddSlashes(pg_result($resaco,$iresaco,'fa59_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3837,21296,'','".AddSlashes(pg_result($resaco,$iresaco,'fa59_mesreferente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3837,21299,'','".AddSlashes(pg_result($resaco,$iresaco,'fa59_anoreferente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3837,21297,'','".AddSlashes(pg_result($resaco,$iresaco,'fa59_tipoarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3837,21519,'','".AddSlashes(pg_result($resaco,$iresaco,'fa59_situacaohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3837,21579,'','".AddSlashes(pg_result($resaco,$iresaco,'fa59_db_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3837,21293,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa59_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3837,21294,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa59_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3837,21296,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa59_mesreferente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3837,21299,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa59_anoreferente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3837,21297,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa59_tipoarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3837,21519,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa59_situacaohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3837,21579,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa59_db_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

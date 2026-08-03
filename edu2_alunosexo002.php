@@ -59,7 +59,7 @@ $oParametros->sFonte  = 'Arial';
 $iTotalMasculinoEscola = 0;
 $iTotalFemininoEscola  = 0;
 
-$aFiltros    = array();
+$aFiltros    = [];
 $sNomeEscola = "TODAS";
 $sNomeEnsino ="TODAS";
 $sNomeEtapa  = "TODAS";
@@ -129,7 +129,7 @@ if ($iLinhas == 0) {
 /**
  * Realizamos o agrupamento dos dados
  */
-$aAlunos = array();
+$aAlunos = [];
 for ($i = 0; $i < $iLinhas; $i++) {
 
   $oDados = db_utils::fieldsMemory($rsMatricula, $i);
@@ -146,7 +146,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
     $oEscola->iTotal     = 0;
     $oEscola->iMasculino = 0;
     $oEscola->iFeminino  = 0;
-    $oEscola->aEtapas    = array();
+    $oEscola->aEtapas    = [];
 
     $aAlunos[$iIndexEscola] = $oEscola;
   }
@@ -158,7 +158,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
     $oEtapa->iTotal     = 0;
     $oEtapa->iMasculino = 0;
     $oEtapa->iFeminino  = 0;
-    $oEtapa->aDados     = array();
+    $oEtapa->aDados     = [];
 
     $aAlunos[$iIndexEscola]->aEtapas[$iIndexEtapa] = $oEtapa;
   }
@@ -210,7 +210,7 @@ foreach ($aAlunos as $oEscola) {
   foreach ($oEscola->aEtapas as $oEtapa) {
 
     if (!$oParametros->lEscreverCabecalho && ($oPdf->GetY() + $oParametros->iAlturaLinha) <= ($oPdf->h -20)) {
-      setHeader($oPdf, $oParametros, $oEscola->sEscola, $oEtapa->sEtapa, false);
+      setHeader($oPdf, $oParametros);
     }
 
     foreach ($oEtapa->aDados as $oTurma) {
@@ -218,7 +218,7 @@ foreach ($aAlunos as $oEscola) {
       if ($oParametros->lEscreverCabecalho || ($oPdf->GetY() + $oParametros->iAlturaLinha) >= ($oPdf->h - 20) ) {
 
         $lNovaPagina = $oParametros->lEscreverCabecalho || ($oPdf->GetY() + $oParametros->iAlturaLinha) >= $oPdf->h - 20;
-        setHeader($oPdf, $oParametros, $oEscola->sEscola, $oEtapa->sEtapa, $lNovaPagina);
+        setHeader($oPdf, $oParametros);
         $oParametros->lEscreverCabecalho = false;
       }
 
@@ -235,7 +235,7 @@ foreach ($aAlunos as $oEscola) {
     $oPdf->ln(0.3);
 
     if (($oPdf->GetY() + ($oParametros->iAlturaLinha * 2)) > ($oPdf->h - 25)) {
-      setHeader($oPdf, $oParametros, $oEscola->sEscola, $oEtapa->sEtapa, true);
+      setHeader($oPdf, $oParametros);
     }
 
     $oPdf->SetFont($oParametros->sFonte, 'B', '8');
@@ -255,7 +255,7 @@ foreach ($aAlunos as $oEscola) {
   $oPdf->ln(0.3);
 
   if (($oPdf->GetY() + ($oParametros->iAlturaLinha * 2)) > ($oPdf->h - 15)) {
-    setHeader($oPdf, $oParametros, $oEscola->sEscola, $oEtapa->sEtapa, true);
+    setHeader($oPdf, $oParametros);
   }
   $oPdf->SetFont($oParametros->sFonte, 'B', '8');
   $oPdf->SetFillColor(240);

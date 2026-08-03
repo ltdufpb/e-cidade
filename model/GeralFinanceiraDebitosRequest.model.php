@@ -54,7 +54,7 @@ final class GeralFinanceiraDebitosRequest {
 
   public function getDebitos(){
 
-    $aDebitos = array();
+    $aDebitos = [];
 
     if(array_key_exists($this->sIndex, $_SESSION) and !empty($_SESSION[$this->sIndex])){
       $aDebitos = db_getsession($this->sIndex);
@@ -133,7 +133,7 @@ final class GeralFinanceiraDebitosRequest {
 
         $sConteudoParcelar .= $sAux.$oDebito->sNumpres;
 
-        $aNumpres = explode("N", $oDebito->sNumpres);
+        $aNumpres = explode("N", (string) $oDebito->sNumpres);
 
         foreach($aNumpres as $j => $sNumpre){
 

@@ -37,7 +37,7 @@ $clbensguarda = new cl_bensguarda;
 /*
 $clbensguardaitem = new cl_bensguardaitem;
  */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 if (isset($incluir)) {

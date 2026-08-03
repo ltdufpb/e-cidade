@@ -87,25 +87,25 @@ class ListaClassificacaoCredor {
   /**
    * @var ClassificacaoCredorConta[]
    */
-  private $aContas = array();
+  private $aContas = [];
 
   /**
    * Coleção de Recurso do Orçamento
    * @var Recurso[]
    */
-  private $aRecurso = array();
+  private $aRecurso = [];
 
   /**
    * Tipos de compras do empenho
    * @var TipoCompra[]
    */
-  private $aTipoCompra = array();
+  private $aTipoCompra = [];
 
   /**
    * Tipos de Eventos do empenho
    * @var TipoPrestacaoConta[]
    */
-  private $aEvento = array();
+  private $aEvento = [];
 
   /**
    * @return int
@@ -376,7 +376,7 @@ class ListaClassificacaoCredor {
 
     if (empty($oDaoClassificacaoCredor->cc30_codigo)) {
 
-      $oDaoClassificacaoCredor->cc30_ordem = $this->getProximaOrdem();
+      $oDaoClassificacaoCredor->cc30_ordem = self::getProximaOrdem();
       $oDaoClassificacaoCredor->incluir($oDaoClassificacaoCredor->cc30_codigo);
       $this->iCodigo = $oDaoClassificacaoCredor->cc30_codigo;
     } else {
@@ -539,28 +539,28 @@ class ListaClassificacaoCredor {
    * Limpa a propriedade aEvento
    */
   public function limparEvento() {
-    $this->aEvento = array();
+    $this->aEvento = [];
   }
 
   /**
    * Limpa a propriedade aTipoCompra
    */
   public function limparTipoCompra() {
-    $this->aTipoCompra = array();
+    $this->aTipoCompra = [];
   }
 
   /**
    * Limpa a propriedade aConta
    */
   public function limparElemento() {
-    $this->aContas = array();
+    $this->aContas = [];
   }
 
   /**
    * Limpa a propriedade aRecurso
    */
   public function limparRecurso() {
-    $this->aRecurso = array();
+    $this->aRecurso = [];
   }
 
   /**
@@ -613,11 +613,11 @@ class ListaClassificacaoCredor {
     if ($lTemDatas && $lDataInvalida) {
 
       $sContagemDias = $this->iContagemDias == 1 ? 'úteis' : 'corridos'; 
-      $aParametrosMensagem = array(
+      $aParametrosMensagem = [
         'sClassificacao'  => $this->sDescricao,
         'iQuantidadeDias' => $this->iDiasVencimento,
         'sContagemDias'   => $sContagemDias
-      );
+      ];
       if ($sMensagem === null) {
         $sMensagem = 'data_vencimento_invalida';
       }
@@ -721,7 +721,7 @@ class ListaClassificacaoCredor {
    */
   private function verificaObrigaDispensa() {
 
-    $aListasObrigaDispensa = array(self::DISPENSA_MANUAL);
+    $aListasObrigaDispensa = [self::DISPENSA_MANUAL];
     if (!$this->dispensa() && in_array($this->getCodigo(), $aListasObrigaDispensa)) {
 
       $sMensagemErro  = "A Lista de Classificação de Credores " .  $this->getCodigo() ." - ". $this->getDescricao();

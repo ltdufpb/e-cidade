@@ -38,18 +38,11 @@ abstract class RelatorioProfessorEscola {
   protected $iTipoTotalizador;
   protected $lMostrarDisciplinas  = false;
   protected $somenteServidoresAtivos  = true;
-  protected $aTotalizadorRegime   = array();
-  protected $aTotalizadorTipoHora = array();
+  protected $aTotalizadorRegime   = [];
+  protected $aTotalizadorTipoHora = [];
 
   protected $iMargimTopBottom = 10;
   protected $iAlturaLinha     = 4;
-
-  /**
-   * Escola que esta imprimindo o relatorio
-   * valor = 0 siginifica impressão de todas escolas
-   * @var integer
-   */
-  protected $iEscola   = 0;
 
   /**
    * instancia de FPDF
@@ -58,22 +51,28 @@ abstract class RelatorioProfessorEscola {
   protected $oPdf;
 
 
-  protected $aDados  = array();
-  static    $aTurnos = array(1 => "Manhã", 2 => "Tarde", 3 => "Noite");
+  protected $aDados  = [];
+  static    $aTurnos = [1 => "Manhã", 2 => "Tarde", 3 => "Noite"];
 
-  public function __construct( FPDF $oPdf, $iEscola, $somenteServidoresAtivos, $iAreaTrabalho = 0, $iTipoHora = 0 ) {
+  /**
+   * @param int $iEscola
+   */
+  public function __construct( FPDF $oPdf, /**
+   * Escola que esta imprimindo o relatorio
+   * valor = 0 siginifica impressão de todas escolas
+   */
+  protected $iEscola, $somenteServidoresAtivos, $iAreaTrabalho = 0, $iTipoHora = 0 ) {
 
-    $this->iEscola = $iEscola;
     $this->oPdf    = $oPdf;
 
-    $aWhere   = array();
+    $aWhere   = [];
     if ($somenteServidoresAtivos) {
         $aWhere[] = " ed75_i_saidaescola is null ";
     }
     $aWhere[] = " ed01_c_docencia = 'S' ";
 
-    if (!empty($iEscola)) {
-      $aWhere[] = " ed75_i_escola = $iEscola ";
+    if (!empty($this->iEscola)) {
+      $aWhere[] = " ed75_i_escola = {$this->iEscola} ";
     }
 
     if (!empty($iAreaTrabalho)) {
@@ -155,20 +154,20 @@ abstract class RelatorioProfessorEscola {
 
       $oDados = db_utils::fieldsMemory($rs, $i);
 
-      $iEscola = $oDados->ed75_i_escola;
-      if ( !array_key_exists($iEscola, $this->aDados) ) {
+      $this->iEscola = $oDados->ed75_i_escola;
+      if ( !array_key_exists($this->iEscola, $this->aDados) ) {
 
         $oEscola               = new stdClass();
         $oEscola->iCodigo      = $oDados->ed75_i_escola;
         $oEscola->sNome        = $oDados->escola;
         $oEscola->sNomeAbrev   = $oDados->escola_abrev;
-        $oEscola->aProfessores = array();
+        $oEscola->aProfessores = [];
 
-        $this->aDados[$iEscola] = $oEscola;
+        $this->aDados[$this->iEscola] = $oEscola;
       }
 
       $iProfEscola  = $oDados->codigo_professor_escola;
-      $aProfessores = $this->aDados[$iEscola]->aProfessores;
+      $aProfessores = $this->aDados[$this->iEscola]->aProfessores;
 
       if ( !array_key_exists($iProfEscola, $aProfessores) ) {
 
@@ -179,12 +178,12 @@ abstract class RelatorioProfessorEscola {
         if (!empty($oDados->ed75_i_saidaescola)) {
             $oProfessor->dtSaida     = new DBDate( $oDados->ed75_i_saidaescola );
         }
-        $oProfessor->aAreaTrabalho  = array();
+        $oProfessor->aAreaTrabalho  = [];
 
-        $this->aDados[$iEscola]->aProfessores[$iProfEscola] = $oProfessor;
+        $this->aDados[$this->iEscola]->aProfessores[$iProfEscola] = $oProfessor;
       }
 
-      $aAreaRegime     = $this->aDados[$iEscola]->aProfessores[$iProfEscola]->aAreaTrabalho;
+      $aAreaRegime     = $this->aDados[$this->iEscola]->aProfessores[$iProfEscola]->aAreaTrabalho;
       $sHashAreaRegime = "{$oDados->ed23_i_areatrabalho}#{$oDados->ed23_i_regimetrabalho}" ;
 
       if ( !array_key_exists($sHashAreaRegime, $aAreaRegime) ) {
@@ -194,17 +193,17 @@ abstract class RelatorioProfessorEscola {
         $oAreaTrabalhoRegime->sAreaTrabalho = $oDados->area_trabalho;
         $oAreaTrabalhoRegime->iRegime       = $oDados->ed23_i_regimetrabalho;
         $oAreaTrabalhoRegime->sRegime       = $oDados->regime_trabalho;
-        $oAreaTrabalhoRegime->aDisciplinas  = explode(", ", $oDados->disciplinas);
-        $oAreaTrabalhoRegime->aTipoHora     = array();
+        $oAreaTrabalhoRegime->aDisciplinas  = explode(", ", (string) $oDados->disciplinas);
+        $oAreaTrabalhoRegime->aTipoHora     = [];
 
-        $this->aDados[$iEscola]->aProfessores[$iProfEscola]->aAreaTrabalho[$sHashAreaRegime] = $oAreaTrabalhoRegime;
+        $this->aDados[$this->iEscola]->aProfessores[$iProfEscola]->aAreaTrabalho[$sHashAreaRegime] = $oAreaTrabalhoRegime;
       }
 
       /**
        * Atenção, logo a baixo eu peguei a referencia do array.
        * qualquer coisa que afetar $aTipoHora irá afetar $this->aDados
        */
-      $aTipoHora = &$this->aDados[$iEscola]->aProfessores[$iProfEscola]->aAreaTrabalho[$sHashAreaRegime]->aTipoHora;
+      $aTipoHora = &$this->aDados[$this->iEscola]->aProfessores[$iProfEscola]->aAreaTrabalho[$sHashAreaRegime]->aTipoHora;
       $iTipoHora = $oDados->ed129_tipohoratrabalho . "#" . $oDados->ed129_turno;
 
       if ( !array_key_exists($iTipoHora, $aTipoHora) ) {
@@ -215,7 +214,7 @@ abstract class RelatorioProfessorEscola {
         $oTipoHora->iTurno       = $oDados->ed129_turno;
         $oTipoHora->sTurno       = Turno::getDescricaoTurno($oDados->ed129_turno);
         $oTipoHora->lRegente     = $this->isRegente($oDados->codigo_professor_escola, $oDados->ed129_turno, $oDados->ed129_tipohoratrabalho);
-        $oTipoHora->aHoraDia     = array();
+        $oTipoHora->aHoraDia     = [];
         $aTipoHora[$iTipoHora]   = $oTipoHora;
 
       }
@@ -228,8 +227,8 @@ abstract class RelatorioProfessorEscola {
         $oHoraDia              = new stdClass();
         $oHoraDia->sHoraInicio = $oDados->ed129_horainicio;
         $oHoraDia->sHoraFim    = $oDados->ed129_horafim;
-        $oHoraDia->aDias       = array();
-        foreach (explode(", ", $oDados->dias_semana) as $iDia) {
+        $oHoraDia->aDias       = [];
+        foreach (explode(", ", (string) $oDados->dias_semana) as $iDia) {
           $oHoraDia->aDias[] = DBDate::getLabelDiaSemana($iDia - 1);
         }
 
@@ -272,7 +271,7 @@ abstract class RelatorioProfessorEscola {
 
       foreach ($this->aDados as $oEscola) {
 
-        $this->aTotalizadorRegime[$oEscola->iCodigo] = array();
+        $this->aTotalizadorRegime[$oEscola->iCodigo] = [];
 
         foreach ($oEscola->aProfessores as $oProfessor) {
 
@@ -306,7 +305,7 @@ abstract class RelatorioProfessorEscola {
 
       foreach ($this->aDados as $oEscola) {
 
-        $this->aTotalizadorTipoHora[$oEscola->iCodigo] = array();
+        $this->aTotalizadorTipoHora[$oEscola->iCodigo] = [];
 
         foreach ($oEscola->aProfessores as $oProfessor) {
 
@@ -360,7 +359,7 @@ abstract class RelatorioProfessorEscola {
       }
     } else {
 
-      $aSomatorio = array();
+      $aSomatorio = [];
 
       foreach ($this->aTotalizadorRegime as $iCodigoEscola => $aRegime) {
 
@@ -414,12 +413,12 @@ abstract class RelatorioProfessorEscola {
       }
     } else {
 
-      $aSomatorio = array();
+      $aSomatorio = [];
       foreach ($this->aTotalizadorTipoHora as $iCodigoEscola => $aTipoHora) {
 
         foreach ($aTipoHora as $oTotalTipoHora) {
 
-          $sKey = trim($oTotalTipoHora->sDescricao);
+          $sKey = trim((string) $oTotalTipoHora->sDescricao);
           if ( !array_key_exists($sKey, $aSomatorio) ) {
 
             $oSomatorio             = new stdClass();
@@ -479,20 +478,11 @@ abstract class RelatorioProfessorEscola {
    */
   public function setTipoTotalizador($iTipo) {
 
-    switch ($iTipo) {
-      case RelatorioProfessorEscola::POR_REGIME_TRABALHO :
-
-        $this->iTipoTotalizador = RelatorioProfessorEscola::POR_REGIME_TRABALHO;
-        break;
-
-      case RelatorioProfessorEscola::POR_TIPO_HORA :
-
-        $this->iTipoTotalizador = RelatorioProfessorEscola::POR_TIPO_HORA;
-        break;
-      default:
-        throw new Exception( _M(MSG_RELATORIOPROFESSORESCOLA . "tipo_totalizado_invalido" ) );
-        break;
-    }
+    $this->iTipoTotalizador = match ($iTipo) {
+        RelatorioProfessorEscola::POR_REGIME_TRABALHO => RelatorioProfessorEscola::POR_REGIME_TRABALHO,
+        RelatorioProfessorEscola::POR_TIPO_HORA => RelatorioProfessorEscola::POR_TIPO_HORA,
+        default => throw new Exception( _M(MSG_RELATORIOPROFESSORESCOLA . "tipo_totalizado_invalido" ) ),
+    };
   }
 
   /**

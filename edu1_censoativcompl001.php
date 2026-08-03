@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_censoativcompl_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcensoativcompl = new cl_censoativcompl;
 ?>
 <html>
@@ -115,9 +115,9 @@ $clcensoativcompl = new cl_censoativcompl;
               ed133_i_tipo
              ";
    $sql = $clcensoativcompl->sql_query("",$campos,"ed133_i_tipo,ed133_i_codigo","");
-   $repassa = array();
+   $repassa = [];
    if(isset($chave_ed133_i_codigo)){
-    $repassa = array("chave_ed133_i_codigo"=>@$chave_ed133_i_codigo);
+    $repassa = ["chave_ed133_i_codigo"=>@$chave_ed133_i_codigo];
    }
    db_lovrot($sql,25,"","","","","NoMe",$repassa);
    ?>

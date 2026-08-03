@@ -29,7 +29,7 @@ class ArquivoSiprevAliquotas extends ArquivoSiprevBase {
   protected $sNomeArquivo = "04-Aliquotas";
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["04"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["04"] = [];
   }
   
   public function getDados() {
@@ -39,7 +39,7 @@ class ArquivoSiprevAliquotas extends ArquivoSiprevBase {
     $this->iMesInicial  = str_pad($this->iMesInicial, 2, "0", STR_PAD_LEFT);
     $this->iMesFinal    = str_pad($this->iMesFinal,   2, "0", STR_PAD_LEFT);
 
-    $aDadosAliquotas     = array();
+    $aDadosAliquotas     = [];
 
     $sCamposRhRegime     = "distinct rh02_tbprev,                                ";
     $sCamposRhRegime    .= "case                                                 ";
@@ -95,7 +95,7 @@ class ArquivoSiprevAliquotas extends ArquivoSiprevBase {
     $aRetornoAliquotas = db_utils::getCollectionByRecord($rsDadosAliquotas);
     foreach($aRetornoAliquotas as $dia => $oAliquotas) {
 
-      $aLinhas           = array("aliquotaEnte" => $this->preencheAliquotaEnte($oAliquotas, str_pad($dia+1, 2 , "0", STR_PAD_LEFT)));
+      $aLinhas           = ["aliquotaEnte" => $this->preencheAliquotaEnte($oAliquotas, str_pad($dia+1, 2 , "0", STR_PAD_LEFT))];
       $aDadosAliquotas[] = (object) $aLinhas;
     }
     return $aDadosAliquotas;
@@ -106,7 +106,7 @@ class ArquivoSiprevAliquotas extends ArquivoSiprevBase {
    * @return array
    */
   public function getElementos() {
-    return array($this->atributosAliquotaEnte());
+    return [$this->atributosAliquotaEnte()];
   }
 
   /**
@@ -115,16 +115,16 @@ class ArquivoSiprevAliquotas extends ArquivoSiprevBase {
    */
   private function atributosAliquotaEnte() {
 
-    $aAliquotaEnte                 = array();
+    $aAliquotaEnte                 = [];
     $aAliquotaEnte["nome"]         = "aliquotaEnte";
-    $aAliquotaEnte["propriedades"] = array(
+    $aAliquotaEnte["propriedades"] = [
       "operacao",
       "publicoAlvo",
       "aliquotaBeneficiario",
       "aliquotaEnte",
       "dataInicioAliquota",
       $this->atributosAtoLegal()
-    );
+    ];
 
     return $aAliquotaEnte;
   }
@@ -135,9 +135,9 @@ class ArquivoSiprevAliquotas extends ArquivoSiprevBase {
    */
   private function atributosAtoLegal() {
 
-    $aAtoLegal                 = array();
+    $aAtoLegal                 = [];
     $aAtoLegal["nome"]         = "atoLegal";
-    $aAtoLegal["propriedades"] = array("tipoAto", "numero", "ano", "dataPublicacao", "dataInicioVigencia");
+    $aAtoLegal["propriedades"] = ["tipoAto", "numero", "ano", "dataPublicacao", "dataInicioVigencia"];
 
     return $aAtoLegal;
   }
@@ -149,7 +149,7 @@ class ArquivoSiprevAliquotas extends ArquivoSiprevBase {
    */
   private function preencheAliquotaEnte($oAliquotas, $dia) {
 
-    $aAliquotas                         = array();
+    $aAliquotas                         = [];
     $aAliquotas["operacao"]             = "I";
     $aAliquotas["publicoAlvo"]          = $oAliquotas->publico_alvo;
     $aAliquotas["aliquotaBeneficiario"] = number_format($oAliquotas->aliquota_beneficiario, 2, '.', '');
@@ -170,7 +170,7 @@ class ArquivoSiprevAliquotas extends ArquivoSiprevBase {
    */
   private function preencheAtoLegal($oAliquota) {
 
-    $aAtoLegal                       = array();
+    $aAtoLegal                       = [];
     $aAtoLegal["tipoAto"]            = $oAliquota->ato_tipo;
     $aAtoLegal["numero"]             = $oAliquota->ato_numero;
     $aAtoLegal["ano"]                = $oAliquota->ato_ano;

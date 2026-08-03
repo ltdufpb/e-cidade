@@ -56,7 +56,7 @@
 
                             <?php
 
-                            $planosOrcamentarios = array("" => "Selecione");
+                            $planosOrcamentarios = ["" => "Selecione"];
                             if (!empty($o47_coddot)) {
                                 $daoOrcDotacaPlanoOrcamento = new cl_orcdotacaoplanoorcamentario();
                                 $where = "o155_coddot = {$o47_coddot} and o155_anousu = " . db_getsession("DB_anousu");
@@ -179,7 +179,7 @@
            */
             ////////////////
             $clorcsuplemval = new cl_orcsuplemval;
-            $chavepri= array("o47_anousu"=>$anousu,"o47_coddot"=>@$o47_coddot);
+            $chavepri= ["o47_anousu"=>$anousu,"o47_coddot"=>@$o47_coddot];
             $cliframe_alterar_excluir->chavepri=$chavepri;
             $cliframe_alterar_excluir->sql   =  $clorcsuplemval->sql_query_file("","" ,"" ,"fc_estruturaldotacao(o47_anousu,o47_coddot) as o50_estrutdespesa,*" ,"" ,"o47_codsup=$o46_codsup and o47_valor < 0");
             $cliframe_alterar_excluir->campos  ="o47_anousu,o50_estrutdespesa,o47_coddot,o47_valor";

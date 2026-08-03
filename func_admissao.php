@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_admissao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cladmissao = new cl_admissao;
 $cladmissao->rotulo->label("h07_regist");
 $cladmissao->rotulo->label("h07_tipadm");
@@ -98,9 +98,9 @@ $cladmissao->rotulo->label("h07_tipadm");
         }else{
            $sql = $cladmissao->sql_query("",$campos,"h07_regist","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h07_tipadm)){
-          $repassa = array("chave_h07_regist"=>$chave_h07_regist,"chave_h07_tipadm"=>$chave_h07_tipadm);
+          $repassa = ["chave_h07_regist"=>$chave_h07_regist,"chave_h07_tipadm"=>$chave_h07_tipadm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -103,7 +103,7 @@ $oPost = db_utils::postMemory($_POST);
               <td><b>Regime :&nbsp;&nbsp;</b></td>
               <td>
                <?php 
-                 $x = array("t"=>"Todos","1"=>"Estatutários","2"=>"CLT","3"=>"Extra Quadro");
+                 $x = ["t"=>"Todos","1"=>"Estatutários","2"=>"CLT","3"=>"Extra Quadro"];
                  db_select('regime',$x,true,4,"");
                ?>
               </td>
@@ -113,7 +113,7 @@ $oPost = db_utils::postMemory($_POST);
               <td><b>Ordem :&nbsp;&nbsp;</b></td>
               <td>
                <?php 
-                 $x = array("p"=>"Padrão","r"=>"Regime");
+                 $x = ["p"=>"Padrão","r"=>"Regime"];
                  db_select('ordem',$x,true,4,"");
                ?>
               </td>

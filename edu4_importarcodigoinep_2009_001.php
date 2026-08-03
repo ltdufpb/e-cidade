@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $escola = db_getsession("DB_coddepto");
 function db_criatermometro_edu($dbnametermo='termometro',$dbtexto='Concluído',$dbcor='blue',$dbborda=1,$dbacao='Aguarde Processando...'){
  //#00#//db_criatermometro
@@ -124,7 +124,7 @@ if(isset($ano_opcao)){
    <fieldset style="width:95%"><legend><b>Importação de informações do CENSO ESCOLAR <?=$titulofieldset?></b></legend>
     <?php 
     $result = db_query("SELECT ed18_c_codigoinep FROM escola WHERE ed18_i_codigo = $escola");
-    $codigoinep_banco = pg_result($result,0,0);
+    $codigoinep_banco = pg_fetch_result($result,0,0);
     ?>
     <table border="0" align="left">
      <tr>
@@ -301,7 +301,7 @@ if(isset($processar)){
   $contador_geral = 0;
   while(!feof($ponteiro3)){
    $linhaponteiro = fgets($ponteiro3,500);
-   if($contador_geral==0 && substr($linhaponteiro,0,2)!="00"){
+   if($contador_geral==0 && !str_starts_with($linhaponteiro, "00")){
     $valida_arquivo1 = true;
     break;
    }
@@ -313,16 +313,16 @@ if(isset($processar)){
     $valida_arquivo3 = true;
     break;
    }
-   if(substr($linhaponteiro,0,2)=="00"){
+   if(str_starts_with($linhaponteiro, "00")){
     $contador_escola++;
    }
-   if(substr($linhaponteiro,0,2)=="20"){
+   if(str_starts_with($linhaponteiro, "20")){
     $contador_turma++;
    }
-   if(substr($linhaponteiro,0,2)=="30"){
+   if(str_starts_with($linhaponteiro, "30")){
     $contador_docente++;
    }
-   if(substr($linhaponteiro,0,2)=="60"){
+   if(str_starts_with($linhaponteiro, "60")){
     $contador_aluno++;
    }
    if(substr($linhaponteiro,0,2)!=""){
@@ -360,7 +360,7 @@ if(isset($processar)){
    $cont_aluno_while = 0;
    $primeiro_turma = false;
    $primeiro_docente = false;
-   $array_docente = array();
+   $array_docente = [];
    while(!feof($ponteiro4)){
     $linha = str_replace(chr(39)," ",fgets($ponteiro4,500));
     if(trim($linha)==""){
@@ -384,11 +384,11 @@ if(isset($processar)){
        die("ERRO ESCOLA: ".$sql44."<br><br>");
       }
       $linhas44 = pg_num_rows($result44);
-      $codigoescola = pg_result($result44,0,'ed18_i_codigo');
+      $codigoescola = pg_fetch_result($result44,0,'ed18_i_codigo');
 
       $sqlupdateescola = " UPDATE escola SET ed18_i_codigo = $codigoescola ";
 
-      if($codigoinep_escola!="" && $codigoinep_escola!=trim(pg_result($result44,0,'ed18_c_codigoinep'))){
+      if($codigoinep_escola!="" && $codigoinep_escola!=trim(pg_fetch_result($result44,0,'ed18_c_codigoinep'))){
        $sqlupdateescola  .= " ,ed18_c_codigoinep = $codigoinep_escola ";
       }
       $sqlupdateescola .= " WHERE ed18_i_codigo = $codigoescola";
@@ -438,7 +438,7 @@ if(isset($processar)){
         fwrite($ponteiro_log,"TURMA: $nome_turmacenso\n");
         $erro_naoencontrado = true;
        }else{
-        $codigoturma = pg_result($resultturma33,0,0);
+        $codigoturma = pg_fetch_result($resultturma33,0,0);
         $sqlupdate_turma = "UPDATE turma SET
                              ed57_i_codigoinep = $codigoinep_turmacenso
                             WHERE ed57_i_codigo = $codigoturma ";
@@ -470,14 +470,14 @@ if(isset($processar)){
         fwrite($ponteiro_log,"TURMA: $nome_turmacenso\n");
         $erro_naoencontrado = true;
        }else{
-        $codigoturma = pg_result($resultturma33,0,'ed268_i_codigo');
+        $codigoturma = pg_fetch_result($resultturma33,0,'ed268_i_codigo');
         $sqlupdate_turma = "UPDATE turmaac SET ed268_i_codigoinep = $codigoinep_turmacenso";
         $ativqtd_turma = trim(substr($linha,414,1));
-        if($ativqtd_turma!="" && $ativqtd_turma!=trim(pg_result($resultturma33,0,'ed268_i_ativqtd'))){
+        if($ativqtd_turma!="" && $ativqtd_turma!=trim(pg_fetch_result($resultturma33,0,'ed268_i_ativqtd'))){
          $sqlupdate_turma .= " ,ed268_i_ativqtd = $ativqtd_turma ";
         }
         $aee_turma = trim(substr($linha,170,11));
-        if($aee_turma!="" && $aee_turma!=trim(pg_result($resultturma33,0,'ed268_c_aee'))){
+        if($aee_turma!="" && $aee_turma!=trim(pg_fetch_result($resultturma33,0,'ed268_c_aee'))){
          $sqlupdate_turma .= " ,ed268_c_aee = '$aee_turma' ";
         }
         $sqlupdate_turma .= " WHERE ed268_i_codigo = $codigoturma ";
@@ -538,12 +538,12 @@ if(isset($processar)){
        $erro_naoencontrado = true;
       }else{
        for($tt=0;$tt<$linhas22;$tt++){
-        $codigodocente = pg_result($result22,$tt,0);
+        $codigodocente = pg_fetch_result($result22,$tt,0);
 
         $sqlupdatedocente = " update rechumano set ed20_i_codigo = $codigodocente ";
 
         $ed20_i_codigoinep = trim(substr($linha,20,12));
-        if($ed20_i_codigoinep!="" && $ed20_i_codigoinep!=trim(pg_result($result22,0,'ed20_i_codigoinep'))){
+        if($ed20_i_codigoinep!="" && $ed20_i_codigoinep!=trim(pg_fetch_result($result22,0,'ed20_i_codigoinep'))){
          $sqlupdatedocente .= " ,ed20_i_codigoinep = $ed20_i_codigoinep ";
         }
         $sqlupdatedocente .= " WHERE ed20_i_codigo = $codigodocente ";        
@@ -578,9 +578,9 @@ if(isset($processar)){
       }else{
        $tem_vinculo = false;
        for($rr=0;$rr<$linhas11;$rr++){
-        if(pg_result($result11,$rr,'vinculo_escola')==trim($codigoinep_banco)){
+        if(pg_fetch_result($result11,$rr,'vinculo_escola')==trim($codigoinep_banco)){
          $tem_vinculo = true;
-         $vinculo_escola = pg_result($result11,$rr,'vinculo_escola');
+         $vinculo_escola = pg_fetch_result($result11,$rr,'vinculo_escola');
          break;  
         }
        }
@@ -588,12 +588,12 @@ if(isset($processar)){
         fwrite($ponteiro_log,"\nAluno $nome_censo2: aluno não está mais vinculado a esta escola.");
         $erro_naoencontrado = true;
        }else{
-        $codigoaluno = pg_result($result11,0,'ed47_i_codigo');
+        $codigoaluno = pg_fetch_result($result11,0,'ed47_i_codigo');
 
         $sqlupdate11 = " UPDATE aluno SET ed47_i_codigo = $codigoaluno ";
 
         $ed47_c_codigoinep = trim(substr($linha,20,12));
-        if($ed47_c_codigoinep!="" && $ed47_c_codigoinep!=trim(pg_result($result11,0,'ed47_c_codigoinep'))){
+        if($ed47_c_codigoinep!="" && $ed47_c_codigoinep!=trim(pg_fetch_result($result11,0,'ed47_c_codigoinep'))){
          $sqlupdate11 .= " ,ed47_c_codigoinep = '$ed47_c_codigoinep' ";
         }
         $sqlupdate11 .= " WHERE ed47_i_codigo = $codigoaluno";

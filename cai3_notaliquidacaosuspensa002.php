@@ -42,7 +42,7 @@ try {
   $oRelatorio->setSituacao($oGet->situacao);
   if (!empty($oGet->numero_empenho)) {
 
-    $aEmpenho = explode('/', $oGet->numero_empenho);
+    $aEmpenho = explode('/', (string) $oGet->numero_empenho);
     $iCodigoEmpenho = $aEmpenho[0];
     $iAnoEmpenho = count($aEmpenho) == 2 ? $aEmpenho[1] : $iAnoSessao;
     $oEmpenho = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorCodigoAno($iCodigoEmpenho, $iAnoEmpenho, InstituicaoRepository::getInstituicaoByCodigo($iInstituicaoSessao));
@@ -63,7 +63,7 @@ try {
 
   if (!empty($oGet->lista_classificacao)) {
 
-    $aCodigosListaClassificacao = explode(',', $oGet->lista_classificacao);
+    $aCodigosListaClassificacao = explode(',', (string) $oGet->lista_classificacao);
     foreach ($aCodigosListaClassificacao as $iCodigo) {
       $oRelatorio->adicionarListaClassificacao(ListaClassificacaoCredorRepository::getPorCodigo($iCodigo));
     }

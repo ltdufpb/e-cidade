@@ -35,10 +35,10 @@ require_once(modification("libs/db_sessoes.php"));
 $oGet           = db_utils::postMemory($_GET);
 $sWhereProcesso = '';
 if (!empty($oGet->dtInicial)) {
-  $oGet->dtInicial = implode("-", array_reverse(explode("/", $oGet->dtInicial)));
+  $oGet->dtInicial = implode("-", array_reverse(explode("/", (string) $oGet->dtInicial)));
 }
 if (!empty($oGet->dtFinal)) {
-  $oGet->dtFinal = implode("-", array_reverse(explode("/", $oGet->dtFinal)));
+  $oGet->dtFinal = implode("-", array_reverse(explode("/", (string) $oGet->dtFinal)));
 }
 $sWhereProcesso = "pc10_instit = ".db_getsession("DB_instit");
 if ($oGet->dtInicial != '' && $oGet->dtFinal == '') {

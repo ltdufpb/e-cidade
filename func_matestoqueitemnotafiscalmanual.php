@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matestoqueitemnotafiscalmanual_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatestoqueitemnotafiscalmanual = new cl_matestoqueitemnotafiscalmanual;
 $clmatestoqueitemnotafiscalmanual->rotulo->label("m79_sequencial");
 $clmatestoqueitemnotafiscalmanual->rotulo->label("m79_notafiscal");
@@ -98,9 +98,9 @@ $clmatestoqueitemnotafiscalmanual->rotulo->label("m79_notafiscal");
         }else{
            $sql = $clmatestoqueitemnotafiscalmanual->sql_query("",$campos,"m79_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m79_notafiscal)){
-          $repassa = array("chave_m79_sequencial"=>$chave_m79_sequencial,"chave_m79_notafiscal"=>$chave_m79_notafiscal);
+          $repassa = ["chave_m79_sequencial"=>$chave_m79_sequencial,"chave_m79_notafiscal"=>$chave_m79_notafiscal];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

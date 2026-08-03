@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_db_almox_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cliframe_selalmox = new cl_iframe_seleciona;
 $cldb_almox        = new cl_db_almox;
@@ -88,7 +88,7 @@ $cldb_almox        = new cl_db_almox;
     </td>
     <td align="left">
       <?php 
-        $arr_ordem = array("a"=>"Alfabetica","n"=>"Numerica");
+        $arr_ordem = ["a"=>"Alfabetica","n"=>"Numerica"];
         db_select('ordem',$arr_ordem,true,4,"");
 	    ?>
 	  </td>
@@ -101,7 +101,7 @@ $cldb_almox        = new cl_db_almox;
     </td>
     <td align="left">
       <?php 
-        $arr_ponto = array("t"=>"Todos","p"=>"Ponto de Pedido");
+        $arr_ponto = ["t"=>"Todos","p"=>"Ponto de Pedido"];
         db_select('ponto',$arr_ponto,true,4,"");
 	    ?>
 	  </td>

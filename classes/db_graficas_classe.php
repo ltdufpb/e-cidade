@@ -29,41 +29,41 @@
 //CLASSE DA ENTIDADE graficas
 class cl_graficas { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y20_grafica = 0; 
-   var $y20_id_usuario = 0; 
-   var $y20_data_dia = null; 
-   var $y20_data_mes = null; 
-   var $y20_data_ano = null; 
-   var $y20_data = null; 
-   var $y20_datalimiteimpressao_dia = null; 
-   var $y20_datalimiteimpressao_mes = null; 
-   var $y20_datalimiteimpressao_ano = null; 
-   var $y20_datalimiteimpressao = null; 
+   public $y20_grafica = 0; 
+   public $y20_id_usuario = 0; 
+   public $y20_data_dia = null; 
+   public $y20_data_mes = null; 
+   public $y20_data_ano = null; 
+   public $y20_data = null; 
+   public $y20_datalimiteimpressao_dia = null; 
+   public $y20_datalimiteimpressao_mes = null; 
+   public $y20_datalimiteimpressao_ano = null; 
+   public $y20_datalimiteimpressao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y20_grafica = int4 = Código Gráfica 
                  y20_id_usuario = int4 = Usuário 
                  y20_data = date = Data Inclusão 
                  y20_datalimiteimpressao = date = Data limite de impressão fiscal 
                  ";
    //funcao construtor da classe 
-   function cl_graficas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("graficas"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -147,7 +147,7 @@ class cl_graficas {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Gráficas Cadastradas no Sistema ($this->y20_grafica) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Gráficas Cadastradas no Sistema já Cadastrado";
@@ -176,13 +176,13 @@ class cl_graficas {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4668,'$this->y20_grafica','I')");
-         $resac = db_query("insert into db_acount values($acount,613,4668,'','".AddSlashes(pg_result($resaco,0,'y20_grafica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,613,4670,'','".AddSlashes(pg_result($resaco,0,'y20_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,613,4669,'','".AddSlashes(pg_result($resaco,0,'y20_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,613,19929,'','".AddSlashes(pg_result($resaco,0,'y20_datalimiteimpressao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,613,4668,'','".AddSlashes(pg_fetch_result($resaco,0,'y20_grafica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,613,4670,'','".AddSlashes(pg_fetch_result($resaco,0,'y20_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,613,4669,'','".AddSlashes(pg_fetch_result($resaco,0,'y20_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,613,19929,'','".AddSlashes(pg_fetch_result($resaco,0,'y20_datalimiteimpressao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -192,10 +192,10 @@ class cl_graficas {
       $this->atualizacampos();
      $sql = " update graficas set ";
      $virgula = "";
-     if(trim($this->y20_grafica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y20_grafica"])){ 
+     if(trim((string) $this->y20_grafica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y20_grafica"])){ 
        $sql  .= $virgula." y20_grafica = $this->y20_grafica ";
        $virgula = ",";
-       if(trim($this->y20_grafica) == null ){ 
+       if(trim((string) $this->y20_grafica) == null ){ 
          $this->erro_sql = " Campo Código Gráfica nao Informado.";
          $this->erro_campo = "y20_grafica";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_graficas {
          return false;
        }
      }
-     if(trim($this->y20_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y20_id_usuario"])){ 
+     if(trim((string) $this->y20_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y20_id_usuario"])){ 
        $sql  .= $virgula." y20_id_usuario = $this->y20_id_usuario ";
        $virgula = ",";
-       if(trim($this->y20_id_usuario) == null ){ 
+       if(trim((string) $this->y20_id_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "y20_id_usuario";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_graficas {
          return false;
        }
      }
-     if(trim($this->y20_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y20_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y20_data_dia"] !="") ){ 
+     if(trim((string) $this->y20_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y20_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y20_data_dia"] !="") ){ 
        $sql  .= $virgula." y20_data = '$this->y20_data' ";
        $virgula = ",";
-       if(trim($this->y20_data) == null ){ 
+       if(trim((string) $this->y20_data) == null ){ 
          $this->erro_sql = " Campo Data Inclusão nao Informado.";
          $this->erro_campo = "y20_data_dia";
          $this->erro_banco = "";
@@ -234,7 +234,7 @@ class cl_graficas {
        if(isset($GLOBALS["HTTP_POST_VARS"]["y20_data_dia"])){ 
          $sql  .= $virgula." y20_data = null ";
          $virgula = ",";
-         if(trim($this->y20_data) == null ){ 
+         if(trim((string) $this->y20_data) == null ){ 
            $this->erro_sql = " Campo Data Inclusão nao Informado.";
            $this->erro_campo = "y20_data_dia";
            $this->erro_banco = "";
@@ -245,7 +245,7 @@ class cl_graficas {
          }
        }
      }
-     if(trim($this->y20_datalimiteimpressao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y20_datalimiteimpressao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y20_datalimiteimpressao_dia"] !="") ){ 
+     if(trim((string) $this->y20_datalimiteimpressao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y20_datalimiteimpressao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y20_datalimiteimpressao_dia"] !="") ){ 
        $sql  .= $virgula." y20_datalimiteimpressao = '$this->y20_datalimiteimpressao' ";
        $virgula = ",";
      }     else{ 
@@ -268,17 +268,17 @@ class cl_graficas {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,4668,'$this->y20_grafica','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["y20_grafica"]) || $this->y20_grafica != "")
-             $resac = db_query("insert into db_acount values($acount,613,4668,'".AddSlashes(pg_result($resaco,$conresaco,'y20_grafica'))."','$this->y20_grafica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,613,4668,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y20_grafica'))."','$this->y20_grafica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["y20_id_usuario"]) || $this->y20_id_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,613,4670,'".AddSlashes(pg_result($resaco,$conresaco,'y20_id_usuario'))."','$this->y20_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,613,4670,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y20_id_usuario'))."','$this->y20_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["y20_data"]) || $this->y20_data != "")
-             $resac = db_query("insert into db_acount values($acount,613,4669,'".AddSlashes(pg_result($resaco,$conresaco,'y20_data'))."','$this->y20_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,613,4669,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y20_data'))."','$this->y20_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["y20_datalimiteimpressao"]) || $this->y20_datalimiteimpressao != "")
-             $resac = db_query("insert into db_acount values($acount,613,19929,'".AddSlashes(pg_result($resaco,$conresaco,'y20_datalimiteimpressao'))."','$this->y20_datalimiteimpressao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,613,19929,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y20_datalimiteimpressao'))."','$this->y20_datalimiteimpressao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -332,13 +332,13 @@ class cl_graficas {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,4668,'$y20_grafica','E')");
-           $resac  = db_query("insert into db_acount values($acount,613,4668,'','".AddSlashes(pg_result($resaco,$iresaco,'y20_grafica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,613,4670,'','".AddSlashes(pg_result($resaco,$iresaco,'y20_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,613,4669,'','".AddSlashes(pg_result($resaco,$iresaco,'y20_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,613,19929,'','".AddSlashes(pg_result($resaco,$iresaco,'y20_datalimiteimpressao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,613,4668,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y20_grafica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,613,4670,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y20_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,613,4669,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y20_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,613,19929,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y20_datalimiteimpressao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -399,7 +399,7 @@ class cl_graficas {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:graficas";
@@ -414,7 +414,7 @@ class cl_graficas {
    function sql_query ( $y20_grafica=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +437,7 @@ class cl_graficas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_graficas {
    function sql_query_file ( $y20_grafica=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_graficas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

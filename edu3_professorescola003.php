@@ -25,8 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
-$aCamposComuns = array('ed20_i_tiposervidor', 'ed20_i_codigo', 'ed18_i_codigo',
-                       'ed75_d_ingresso', 'ed75_i_saidaescola', 'ed24_c_descr', 'ed25_c_descr');
+$aCamposComuns = ['ed20_i_tiposervidor', 'ed20_i_codigo', 'ed18_i_codigo',
+                       'ed75_d_ingresso', 'ed75_i_saidaescola', 'ed24_c_descr', 'ed25_c_descr'];
 $sCampos  = "  CASE                                                             ";
 $sCampos .= "    WHEN ed20_i_tiposervidor = 1                                   ";
 $sCampos .= "      THEN rechumanopessoal.ed284_i_rhpessoal                      ";

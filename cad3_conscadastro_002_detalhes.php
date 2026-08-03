@@ -197,7 +197,7 @@ table.form-container tr td {
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <?php
-  db_postmemory($HTTP_GET_VARS,0);
+  db_postmemory($_GET,0);
   $btnmatric = @$parametro;
 
   /**
@@ -288,7 +288,7 @@ table.form-container tr td {
 		  order by j31_grupo";
 
   $result = db_query($sql);
-	for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+	for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	  db_fieldsmemory($result,$contador);
   ?>
   <tr align="center">
@@ -296,13 +296,13 @@ table.form-container tr td {
       <?=$j35_caract;?>
       </font> &nbsp;</td>
     <td width="40" align="left" nowrap bgcolor="#CCCCCC">
-      <?=substr($j31_descr, 0, 40);?>
+      <?=substr((string) $j31_descr, 0, 40);?>
       &nbsp;</td>
     <td width="20" align="center" nowrap bgcolor="#666666"> <font color="#FFFFFF">
       <?=$j31_grupo;?>
     </td>
     <td width="215" align="left" nowrap bgcolor="#CCCCCC">
-      <?=substr($j32_descr, 0, 30);?>
+      <?=substr((string) $j32_descr, 0, 30);?>
     </td>
     <td width="40" align="center" nowrap bgcolor="#CCCCCC">
       <?=$j31_pontos;?>
@@ -332,9 +332,9 @@ table.form-container tr td {
     <td colspan="2" nowrap>&nbsp;</td>
   </tr>
   <?php
-  if( pg_numrows($result) != 0 ) {
+  if( pg_num_rows($result) != 0 ) {
 
-    for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+    for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 
 	  db_fieldsmemory($result,$contador);
 
@@ -343,7 +343,7 @@ table.form-container tr td {
 		                         where j47_codigo = $j46_codigo
                           order by j47_anousu ");
 
-	  $numrows = pg_numrows($result_lim);
+	  $numrows = pg_num_rows($result_lim);
 
 	  if ($numrows > 0) {
   ?>
@@ -383,7 +383,7 @@ table.form-container tr td {
   <tr>
     <td width="20%" nowrap bgcolor="#CCCCCC">&nbsp;Tipo</td>
     <td nowrap bgcolor="#FFFFFF"> &nbsp;
-      <?=substr($j45_descr, 0, 30);?>
+      <?=substr((string) $j45_descr, 0, 30);?>
       &nbsp; </td>
   </tr>
   <tr>
@@ -494,9 +494,9 @@ table.form-container tr td {
       </tr>
     </table>
     <?php
-    if( pg_numrows($result) != 0 ) {
+    if( pg_num_rows($result) != 0 ) {
 
-      for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+      for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 
         db_fieldsmemory($result,$contador);
           if( $id_numero != $idcons ){
@@ -604,7 +604,7 @@ table.form-container tr td {
             <?php
             $sqldemo = "select iptuconstrdemo.*, db_usuarios.login from iptuconstrdemo inner join db_usuarios on j60_usuario = id_usuario where j60_matric = $parametro and j60_idcons = $idcons";
             $resultdemo = db_query($sqldemo);
-            if (pg_numrows($resultdemo) > 0) {
+            if (pg_num_rows($resultdemo) > 0) {
             ?>
               <br>
               <table width="95%" border="0" align="center"  cellpadding="0" cellspacing="2">
@@ -623,7 +623,7 @@ table.form-container tr td {
                 <td width="20%" nowrap bgcolor="#CCCCCC">Usuario</td>
               </tr>
             <?php
-              for ($contadordemo=0;$contadordemo < pg_numrows($resultdemo);$contadordemo++) {
+              for ($contadordemo=0;$contadordemo < pg_num_rows($resultdemo);$contadordemo++) {
                 db_fieldsmemory($resultdemo,$contadordemo);
             ?>
                 <tr>
@@ -631,7 +631,7 @@ table.form-container tr td {
                     <?=$j60_seq;?>
                     &nbsp;</font></td>
                   <td width="20%" nowrap bgcolor="#CCCCCC"><font color="#000000"> &nbsp;
-                    <?=substr($j60_codproc, 0, 20);?>
+                    <?=substr((string) $j60_codproc, 0, 20);?>
                     &nbsp; </font></td>
                   <td width="15%" nowrap bgcolor="#CCCCCC"><font color="#000000">
                     <?=$j60_area;?>
@@ -688,7 +688,7 @@ table.form-container tr td {
                     <td width="20%" nowrap bgcolor="#CCCCCC">Usuario</td>
                   </tr>
             <?php
-                  for ($iIndHabite=0;$iIndHabite < pg_numrows($rsHabite);$iIndHabite++){
+                  for ($iIndHabite=0;$iIndHabite < pg_num_rows($rsHabite);$iIndHabite++){
                     $oDadosHabite = db_utils::fieldsmemory($rsHabite,$iIndHabite, true);
             ?>
                     <tr>
@@ -696,7 +696,7 @@ table.form-container tr td {
                         <?=$oDadosHabite->j131_sequencial;?>
                         &nbsp;</font></td>
                       <td width="20%" nowrap bgcolor="#CCCCCC"><font color="#000000"> &nbsp;
-                        <?=substr($oDadosHabite->j131_codprot, 0, 20);?>
+                        <?=substr((string) $oDadosHabite->j131_codprot, 0, 20);?>
                         &nbsp; </font></td>
                       <td width="15%" nowrap bgcolor="#CCCCCC"><font color="#000000">
                         <?=$oDadosHabite->j131_cadhab;?>
@@ -747,7 +747,7 @@ table.form-container tr td {
                 <font color="#FFFFFF"> &nbsp; <?=$j48_caract;?> &nbsp;</font>
               </td>
               <td nowrap bgcolor="#CCCCCC">
-                <font color="#000000"> &nbsp; <?=substr($j31_descr, 0, 20);?> &nbsp; </font>
+                <font color="#000000"> &nbsp; <?=substr((string) $j31_descr, 0, 20);?> &nbsp; </font>
               </td>
               <td nowrap bgcolor="#CCCCCC">
                 <font color="#000000"> <?=$j32_descr;?> </font>
@@ -843,8 +843,8 @@ table.form-container tr td {
     <td colspan="4">&nbsp; </td>
   </tr>
   <?php
-  if( pg_numrows($result) != 0 ) {
-	 for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+  if( pg_num_rows($result) != 0 ) {
+	 for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	   db_fieldsmemory($result,$contador);
   	   if( $id_numero != $idcons ){
 		  $impcar = 0;
@@ -956,7 +956,7 @@ table.form-container tr td {
 
 $sqldemo    = "select iptuconstrdemo.*, db_usuarios.login from iptuconstrdemo inner join db_usuarios on j60_usuario = id_usuario where j60_matric = $parametro and j60_idcons = $idcons";
 $resultdemo = db_query($sqldemo);
-if (pg_numrows($resultdemo) > 0) {
+if (pg_num_rows($resultdemo) > 0) {
 ?>
 
  <br>
@@ -978,7 +978,7 @@ if (pg_numrows($resultdemo) > 0) {
   </tr>
 
 <?php
-  for ($contadordemo=0;$contadordemo < pg_numrows($resultdemo);$contadordemo++){
+  for ($contadordemo=0;$contadordemo < pg_num_rows($resultdemo);$contadordemo++){
     db_fieldsmemory($resultdemo,$contadordemo);
 ?>
 
@@ -987,7 +987,7 @@ if (pg_numrows($resultdemo) > 0) {
       <?=$j60_seq;?>
       &nbsp;</font></td>
     <td width="20%" nowrap bgcolor="#CCCCCC"><font color="#000000"> &nbsp;
-      <?=substr($j60_codproc, 0, 20);?>
+      <?=substr((string) $j60_codproc, 0, 20);?>
       &nbsp; </font></td>
     <td width="15%" nowrap bgcolor="#CCCCCC"><font color="#000000">
       <?=$j60_area;?>
@@ -1051,7 +1051,7 @@ if ( $cliptuconstrhabite->numrows > 0) {
       <?=$oDadosHabite->j131_sequencial;?>
       &nbsp;</font></td>
     <td width="20%" nowrap bgcolor="#CCCCCC"><font color="#000000"> &nbsp;
-      <?=substr($oDadosHabite->j131_codprot, 0, 20);?>
+      <?=substr((string) $oDadosHabite->j131_codprot, 0, 20);?>
       &nbsp; </font></td>
     <td width="15%" nowrap bgcolor="#CCCCCC"><font color="#000000">
       <?=$oDadosHabite->j131_cadhab;?>
@@ -1093,7 +1093,7 @@ if ( $cliptuconstrhabite->numrows > 0) {
       <?=$j48_caract;?>
       &nbsp;</font></td>
     <td nowrap bgcolor="#CCCCCC"><font color="#000000"> &nbsp;
-      <?=substr($j31_descr, 0, 20);?>
+      <?=substr((string) $j31_descr, 0, 20);?>
       &nbsp; </font></td>
     <td nowrap bgcolor="#CCCCCC"><font color="#000000">
       <?=$j32_descr;?>
@@ -1160,8 +1160,8 @@ if ( $cliptuconstrhabite->numrows > 0) {
     <td colspan="4">&nbsp; </td>
   </tr>
 <?php
-  if( pg_numrows($result) != 0 ) {
-	 for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+  if( pg_num_rows($result) != 0 ) {
+	 for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	   db_fieldsmemory($result,$contador);
   	   if( $id_numero != $idcons ){
 		  $confere = 0;
@@ -1213,7 +1213,7 @@ $sCampos = "j131_sequencial,
               else cast(p58_codproc as varchar)
             end as j131_codprot";
 $rsHabite = $cliptuconstrhabite->sql_record($cliptuconstrhabite->sql_query_dados(null, $sCampos, null, "j131_matric = {$parametro} and j131_idcons = {$idcons}"));
-if (@pg_numrows($rsHabite) > 0) {
+if (@pg_num_rows($rsHabite) > 0) {
 ?>
 <br>
   <table width="95%" border="0" align="center"  cellpadding="0" cellspacing="2">
@@ -1229,7 +1229,7 @@ if (@pg_numrows($rsHabite) > 0) {
     <td width="20%" nowrap bgcolor="#CCCCCC">Usuario</td>
   </tr>
 <?php
-  for ($iIndHabite=0;$iIndHabite < pg_numrows($rsHabite);$iIndHabite++){
+  for ($iIndHabite=0;$iIndHabite < pg_num_rows($rsHabite);$iIndHabite++){
    $oDadosHabite = db_utils::fieldsmemory($rsHabite,$iIndHabite);
 ?>
   <tr>
@@ -1237,7 +1237,7 @@ if (@pg_numrows($rsHabite) > 0) {
       <?=$oDadosHabite->j131_sequencial;?>
       &nbsp;</font></td>
     <td width="20%" nowrap bgcolor="#CCCCCC"><font color="#000000"> &nbsp;
-      <?=substr($oDadosHabite->j131_codprot, 0, 20);?>
+      <?=substr((string) $oDadosHabite->j131_codprot, 0, 20);?>
       &nbsp; </font></td>
     <td width="15%" nowrap bgcolor="#CCCCCC"><font color="#000000">
       <?=$oDadosHabite->j131_cadhab;?>
@@ -1289,7 +1289,7 @@ if (@pg_numrows($rsHabite) > 0) {
       <?=$j53_caract;?>
       &nbsp;</font></td>
     <td nowrap bgcolor="#CCCCCC"><font color="#000000"> &nbsp;
-      <?=substr($j31_descr, 0, 20);?>
+      <?=substr((string) $j31_descr, 0, 20);?>
       &nbsp; </font></td>
     <td nowrap bgcolor="#CCCCCC"><font color="#000000">
       <?=$j31_grupo;?>
@@ -1358,15 +1358,15 @@ if (@pg_numrows($rsHabite) > 0) {
 		   ";
       
     $result1 = db_query($sql);
-    if( pg_numrows($result1) != 0 ) {
-      for ($contador1=0;$contador1 < pg_numrows($result1);$contador1 ++ ){
+    if( pg_num_rows($result1) != 0 ) {
+      for ($contador1=0;$contador1 < pg_num_rows($result1);$contador1 ++ ){
 	    db_fieldsmemory($result1,$contador1);
 ?>
   <tr>
     <td nowrap bgcolor="#CCCCCC">&nbsp;Logradouro:</td>
     <?php if(isset($j49_idbql)):
       ?>
-      <td bgcolor="#FFFFFF" align="left" nowrap>&nbsp;&nbsp;<?php echo $j36_codigo . " - " . $j88_sigla . " " . str_pad($j14_nome, 20); ?></td>
+      <td bgcolor="#FFFFFF" align="left" nowrap>&nbsp;&nbsp;<?php echo $j36_codigo . " - " . $j88_sigla . " " . str_pad((string) $j14_nome, 20); ?></td>
       <?php endif; ?>
     <td nowrap bgcolor="#CCCCCC">Tipo: </td>
     <td bgcolor ="FFFFFF" nowrap>
@@ -1455,8 +1455,8 @@ if (@pg_numrows($rsHabite) > 0) {
 	            where j38_face  = $j37_face
 				";
        $result = db_query($sql);
-       if( pg_numrows($result) != 0 ) {
-         for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+       if( pg_num_rows($result) != 0 ) {
+         for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	       db_fieldsmemory($result,$contador);
 		?>
         <tr>
@@ -1465,14 +1465,14 @@ if (@pg_numrows($rsHabite) > 0) {
             <?=$j38_caract;?>
             &nbsp;</font></td>
           <td nowrap bgcolor="#CCCCCC"><font color="#000000"> &nbsp;
-            <?=substr($j31_descr, 0, 20);?>
+            <?=substr((string) $j31_descr, 0, 20);?>
             &nbsp; </font></td>
           <td width="3%" align="center" nowrap bgcolor="#666666"><font color="#FFFFFF">
 	    &nbsp;
             <?=$j31_grupo;?>
             &nbsp;</font></td>
           <td nowrap bgcolor="#CCCCCC"><font color="#000000"> &nbsp;
-            <?=substr($j32_descr, 0, 20);?>
+            <?=substr((string) $j32_descr, 0, 20);?>
             </font></td>
           <td align="center" nowrap bgcolor="#CCCCCC"><font color="#000000">
             <?=$j31_pontos;?>
@@ -1525,8 +1525,8 @@ if (@pg_numrows($rsHabite) > 0) {
                    left  join lote as interno on interno.j34_idbql = j69_idbql
              where j39_idbql = $parametro ";
     $result = db_query($sql);
-    if( pg_numrows($result) != 0 ) {
-      for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+    if( pg_num_rows($result) != 0 ) {
+      for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	    db_fieldsmemory($result,$contador); ?>
 
         <tr>
@@ -1568,7 +1568,7 @@ if (@pg_numrows($rsHabite) > 0) {
   </tr>
 <?php
 
-  if( pg_numrows($result) != 0 ) {
+  if( pg_num_rows($result) != 0 ) {
 ?>
   <tr align="center" bgcolor="#CCCCCC">
     <td nowrap>Endere&ccedil;o</td>
@@ -1580,11 +1580,11 @@ if (@pg_numrows($rsHabite) > 0) {
   </tr>
 <?php
 
-    for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+    for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	  db_fieldsmemory($result,$contador);
 ?>
   <tr align="center">
-    <td nowrap bgcolor="#FFFFFF"><?=trim($j43_ender) . "," . $j43_numimo . ($j43_comple != "" ? "/" : "") . $j43_comple;?>&nbsp;</td>
+    <td nowrap bgcolor="#FFFFFF"><?=trim((string) $j43_ender) . "," . $j43_numimo . ($j43_comple != "" ? "/" : "") . $j43_comple;?>&nbsp;</td>
     <td nowrap bgcolor="#FFFFFF"><?=$j43_cxpost;?>&nbsp;</td>
     <td nowrap bgcolor="#FFFFFF"><?=$j43_bairro;?>&nbsp;</td>
     <td nowrap bgcolor="#FFFFFF"><?=$j43_munic;?>&nbsp;</td>
@@ -1622,7 +1622,7 @@ if (@pg_numrows($rsHabite) > 0) {
 		 where j42_matric = $parametro and
 		 j42_numcgm = z01_numcgm";
  $result = db_query($sql);
-   if( pg_numrows($result) != 0 ) {
+   if( pg_num_rows($result) != 0 ) {
  ?>
   <tr >
     <td width="45%" bgcolor="#CCCCCC">&nbsp;
@@ -1635,7 +1635,7 @@ if (@pg_numrows($rsHabite) > 0) {
   </tr>
   <?php
 
-     for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+     for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	   db_fieldsmemory($result,$contador);
 ?>
   <tr  onclick="js_JanelaAutomatica('cgm','<?=$z01_numcgm;?>')" >
@@ -1674,7 +1674,7 @@ if (@pg_numrows($rsHabite) > 0) {
 		 where j41_matric = $parametro and
 		 j41_numcgm = z01_numcgm";
  $result = db_query($sql);
-   if( pg_numrows($result) != 0 ) {
+   if( pg_num_rows($result) != 0 ) {
  ?>
   <tr >
     <td width="45%" bgcolor="#CCCCCC">&nbsp;
@@ -1686,7 +1686,7 @@ if (@pg_numrows($rsHabite) > 0) {
     <td bgcolor="#CCCCCC"></td>
   </tr>
   <?php
-     for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+     for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	   db_fieldsmemory($result,$contador);
 ?>
   <tr  onclick="js_JanelaAutomatica('cgm','<?=$z01_numcgm?>')" >
@@ -1728,7 +1728,7 @@ if (@pg_numrows($rsHabite) > 0) {
                 inner join cgm        on z01_numcgm = j01_numcgm
 	       where  j75_matric = $parametro ";
    $result = db_query($sql);
-     if( pg_numrows($result) != 0 ) {
+     if( pg_num_rows($result) != 0 ) {
 ?>
   <tr align="center">
     <td bgcolor="#CCCCCC">Matr&iacute;cula</td>
@@ -1740,7 +1740,7 @@ if (@pg_numrows($rsHabite) > 0) {
     <td bgcolor="#CCCCCC">Situação</td>
   </tr>
 <?php
-       for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+       for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	     db_fieldsmemory($result,$contador);
 ?>
   <tr align="center">
@@ -1797,8 +1797,8 @@ if (@pg_numrows($rsHabite) > 0) {
 
   } else if ($solicitacao == "Calculo") {
     $resano = db_query("select distinct j23_anousu from iptucalc where j23_matric = $parametro order by j23_anousu desc");
-if(pg_numrows ($resano) > 0){
-  for($xx=0;$xx<pg_numrows($resano);$xx++){
+if(pg_num_rows ($resano) > 0){
+  for($xx=0;$xx<pg_num_rows($resano);$xx++){
     db_fieldsmemory($resano,$xx);
 ?>
 <table width="95%" border="0" align="center" cellpadding="0" cellspacing="2">
@@ -1833,7 +1833,7 @@ if(pg_numrows ($resano) > 0){
 order by iptucalc.j23_anousu desc
 		 ";
       $result = db_query($sql);
-   if( pg_numrows($result) != 0 ) {
+   if( pg_num_rows($result) != 0 ) {
 
                  $matricula = \db_utils::fieldsmemory($result, 0)->j23_matric;
 		 $sql2 = "select k02_codigo,                                                             ";
@@ -1899,7 +1899,7 @@ order by iptucalc.j23_anousu desc
 
      $result2 = db_query($sql2);
 
-     for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+     for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	     db_fieldsmemory($result,$contador);
 ?>
   <tr align="center">
@@ -1988,7 +1988,7 @@ order by iptucalc.j23_anousu desc
       	$soma     = 0;
     		$somacalc = 0;
     		$somaisen = 0;
-        for ($contador2=0;$contador2 < pg_numrows($result2);$contador2 ++ ){
+        for ($contador2=0;$contador2 < pg_num_rows($result2);$contador2 ++ ){
 
     	    db_fieldsmemory($result2,$contador2);
 
@@ -2004,13 +2004,13 @@ order by iptucalc.j23_anousu desc
             <?=$k02_codigo;?>
           </td>
           <td width="21%" nowrap bgcolor="#FFFFFF">
-            <?=substr($k02_descr, 0, 20);?>
+            <?=substr((string) $k02_descr, 0, 20);?>
           </td>
           <td width="5%" nowrap align="center">
             <?=$j17_codhis;?>
           </td>
           <td width="30%" nowrap bgcolor="#FFFFFF">
-              <?=substr($j17_descr, 0, 30);?>
+              <?=substr((string) $j17_descr, 0, 30);?>
           </td>
           <td width="6%"  align="right" nowrap bgcolor="#FFFFFF">
             <?=db_formatar($j21_valor, 'f');?>
@@ -2062,7 +2062,7 @@ order by iptucalc.j23_anousu desc
 		              where j22_matric = $j23_matric and j22_anousu = $j23_anousu";
 
 	 $resultSqlIptucale = db_query($sqlIptucale);
-     if( pg_numrows($resultSqlIptucale) != 0 ) {
+     if( pg_num_rows($resultSqlIptucale) != 0 ) {
 ?>
   <tr align="center">
     <td>&nbsp; </td>
@@ -2081,7 +2081,7 @@ order by iptucalc.j23_anousu desc
           <td width="34%" align="right">Valor Venal</td>
         </tr>
         <?php 
-	    for ($i=0;$i<pg_numrows($resultSqlIptucale);$i++) {
+	    for ($i=0;$i<pg_num_rows($resultSqlIptucale);$i++) {
             db_fieldsmemory($resultSqlIptucale,$i);
             $sqlIptuconstrareahistorico = "";
 
@@ -2094,7 +2094,7 @@ order by iptucalc.j23_anousu desc
              * respectiva salva na tabela de historico que é adicionada pelo mesmo.
              */
 
-            if(pg_numrows($resultValidaPluginAtivo) != 0)
+            if(pg_num_rows($resultValidaPluginAtivo) != 0)
             {
                 $sqlIptuconstrareahistorico =
                     "select sum(area) as area from plugins.iptuconstrareahistorico
@@ -2105,7 +2105,7 @@ order by iptucalc.j23_anousu desc
 
                 $resultIptuconstrareahistorico = db_query($sqlIptuconstrareahistorico);
                 $area = pg_fetch_object($resultIptuconstrareahistorico)->area;
-                $areaExibida = $area ? $area : $areaExibida;
+                $areaExibida = $area ?: $areaExibida;
             }
 
 
@@ -2151,7 +2151,7 @@ order by iptucalc.j23_anousu desc
 
     echo "</table> <table> <tr>";
 
-    for ($calclog=0; $calclog < pg_numrows($resultcalclog); $calclog++) {
+    for ($calclog=0; $calclog < pg_num_rows($resultcalclog); $calclog++) {
       db_fieldsmemory($resultcalclog, $calclog);
 
       echo "<tr>";
@@ -2227,7 +2227,7 @@ order by iptucalc.j23_anousu desc
   </tr>
 <?php
 
-  if( pg_numrows($result) != 0 ) {
+  if( pg_num_rows($result) != 0 ) {
     db_fieldsmemory($result,0);
 ?>
   <tr align="center" bgcolor="#CCCCCC">
@@ -2300,7 +2300,7 @@ order by iptucalc.j23_anousu desc
 
 	db_query("begin");
    $result = db_query("select distinct j23_anousu from iptucalc where j23_matric = $parametro");
-   if(pg_numrows($result) > 1 && !isset($j23_anousu)) {
+   if(pg_num_rows($result) > 1 && !isset($j23_anousu)) {
   ?>
 	<table width="100%" border="0" cellpadding="0" cellspacing="0">
 	  <tr>
@@ -2308,7 +2308,7 @@ order by iptucalc.j23_anousu desc
 	  </tr>
 <?php
 
-     for($tt=0;$tt<pg_numrows($result);$tt++){
+     for($tt=0;$tt<pg_num_rows($result);$tt++){
        db_fieldsmemory($result,$tt);
 ?>
 	  <tr align="center">
@@ -2324,7 +2324,7 @@ order by iptucalc.j23_anousu desc
 
 <?php
 
-   }elseif(pg_numrows($result) == 1 || isset($j23_anousu)){
+   }elseif(pg_num_rows($result) == 1 || isset($j23_anousu)){
 
      if(!isset($j23_anousu)){
        db_fieldsmemory($result,0);

@@ -104,7 +104,7 @@ function js_pesquisao39_codproj(mostra){
 }
 function js_mostraprojeto(chave,erro){
    <?php
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave; ";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave; ";
    ?>
    db_iframe_orcprojeto.hide();
 }

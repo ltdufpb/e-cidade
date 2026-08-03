@@ -67,7 +67,7 @@ class cl_orcparamseqorcparamseqcoluna
     public function __construct()
     {
         $this->rotulo = new rotulo('orcparamseqorcparamseqcoluna');
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     //funcao erro
@@ -170,7 +170,7 @@ class cl_orcparamseqorcparamseqcoluna
                 $this->erro_status = "0";
                 return false;
             }
-            $this->o116_sequencial = pg_result($result, 0, 0);
+            $this->o116_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $this->o116_sequencial = $o116_sequencial;
         }
@@ -207,7 +207,7 @@ class cl_orcparamseqorcparamseqcoluna
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Colunas do relatório ($this->o116_sequencial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Colunas do relatório já Cadastrado";
@@ -243,40 +243,40 @@ class cl_orcparamseqorcparamseqcoluna
         $resaco = $this->sql_record($this->sql_query_file($this->o116_sequencial));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,14123,'$this->o116_sequencial','I')");
-            $resac = db_query("insert into db_acount values($acount,2484,14123,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2484,14123,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o116_sequencial'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2484,14124,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2484,14124,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o116_codseq'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2484,14125,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2484,14125,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o116_codparamrel'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2484,14127,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2484,14127,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o116_orcparamseqcoluna'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2484,14128,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2484,14128,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o116_ordem'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2484,14126,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2484,14126,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o116_periodo'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2484,17724,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2484,17724,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o116_formula'
@@ -295,10 +295,10 @@ class cl_orcparamseqorcparamseqcoluna
         $this->atualizacampos();
         $sql = " UPDATE orcparamseqorcparamseqcoluna SET ";
         $virgula = "";
-        if (trim($this->o116_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_sequencial"])) {
+        if (trim((string) $this->o116_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_sequencial"])) {
             $sql .= $virgula . " o116_sequencial = $this->o116_sequencial ";
             $virgula = ",";
-            if (trim($this->o116_sequencial) == null) {
+            if (trim((string) $this->o116_sequencial) == null) {
                 $this->erro_sql = " Campo Código da coluna do relatório nao Informado.";
                 $this->erro_campo = "o116_sequencial";
                 $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_orcparamseqorcparamseqcoluna
                 return false;
             }
         }
-        if (trim($this->o116_codseq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_codseq"])) {
+        if (trim((string) $this->o116_codseq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_codseq"])) {
             $sql .= $virgula . " o116_codseq = $this->o116_codseq ";
             $virgula = ",";
-            if (trim($this->o116_codseq) == null) {
+            if (trim((string) $this->o116_codseq) == null) {
                 $this->erro_sql = " Campo sequencia da tabela nao Informado.";
                 $this->erro_campo = "o116_codseq";
                 $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_orcparamseqorcparamseqcoluna
                 return false;
             }
         }
-        if (trim($this->o116_codparamrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_codparamrel"])) {
+        if (trim((string) $this->o116_codparamrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_codparamrel"])) {
             $sql .= $virgula . " o116_codparamrel = $this->o116_codparamrel ";
             $virgula = ",";
-            if (trim($this->o116_codparamrel) == null) {
+            if (trim((string) $this->o116_codparamrel) == null) {
                 $this->erro_sql = " Campo codigo do relatorio nao Informado.";
                 $this->erro_campo = "o116_codparamrel";
                 $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_orcparamseqorcparamseqcoluna
                 return false;
             }
         }
-        if (trim($this->o116_orcparamseqcoluna) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_orcparamseqcoluna"])) {
+        if (trim((string) $this->o116_orcparamseqcoluna) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_orcparamseqcoluna"])) {
             $sql .= $virgula . " o116_orcparamseqcoluna = $this->o116_orcparamseqcoluna ";
             $virgula = ",";
-            if (trim($this->o116_orcparamseqcoluna) == null) {
+            if (trim((string) $this->o116_orcparamseqcoluna) == null) {
                 $this->erro_sql = " Campo Código Sequencial nao Informado.";
                 $this->erro_campo = "o116_orcparamseqcoluna";
                 $this->erro_banco = "";
@@ -363,10 +363,10 @@ class cl_orcparamseqorcparamseqcoluna
                 return false;
             }
         }
-        if (trim($this->o116_ordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_ordem"])) {
+        if (trim((string) $this->o116_ordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_ordem"])) {
             $sql .= $virgula . " o116_ordem = $this->o116_ordem ";
             $virgula = ",";
-            if (trim($this->o116_ordem) == null) {
+            if (trim((string) $this->o116_ordem) == null) {
                 $this->erro_sql = " Campo Ordem da coluna nao Informado.";
                 $this->erro_campo = "o116_ordem";
                 $this->erro_banco = "";
@@ -380,14 +380,14 @@ class cl_orcparamseqorcparamseqcoluna
                 return false;
             }
         }
-        if (trim($this->o116_periodo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_periodo"])) {
-            if (trim($this->o116_periodo) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o116_periodo"])) {
+        if (trim((string) $this->o116_periodo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_periodo"])) {
+            if (trim((string) $this->o116_periodo) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o116_periodo"])) {
                 $this->o116_periodo = "0";
             }
             $sql .= $virgula . " o116_periodo = $this->o116_periodo ";
             $virgula = ",";
         }
-        if (trim($this->o116_formula) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_formula"])) {
+        if (trim((string) $this->o116_formula) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_formula"])) {
             $sql .= $virgula . " o116_formula = '$this->o116_formula' ";
             $virgula = ",";
         }
@@ -399,53 +399,53 @@ class cl_orcparamseqorcparamseqcoluna
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,14123,'$this->o116_sequencial','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_sequencial"]) || $this->o116_sequencial != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14123,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14123,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_sequencial'
                         )) . "','$this->o116_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_codseq"]) || $this->o116_codseq != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14124,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14124,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_codseq'
                         )) . "','$this->o116_codseq'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_codparamrel"]) || $this->o116_codparamrel != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14125,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14125,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_codparamrel'
                         )) . "','$this->o116_codparamrel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_orcparamseqcoluna"]) || $this->o116_orcparamseqcoluna != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14127,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14127,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_orcparamseqcoluna'
                         )) . "','$this->o116_orcparamseqcoluna'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_ordem"]) || $this->o116_ordem != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14128,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14128,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_ordem'
                         )) . "','$this->o116_ordem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_periodo"]) || $this->o116_periodo != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14126,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14126,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_periodo'
                         )) . "','$this->o116_periodo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_formula"]) || $this->o116_formula != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,17724,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,17724,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_formula'
@@ -509,40 +509,40 @@ class cl_orcparamseqorcparamseqcoluna
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,14123,'$o116_sequencial','E')");
-                $resac = db_query("insert into db_acount values($acount,2484,14123,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2484,14123,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o116_sequencial'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2484,14124,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2484,14124,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o116_codseq'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2484,14125,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2484,14125,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o116_codparamrel'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2484,14127,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2484,14127,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o116_orcparamseqcoluna'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2484,14128,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2484,14128,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o116_ordem'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2484,14126,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2484,14126,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o116_periodo'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2484,17724,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2484,17724,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o116_formula'
@@ -624,7 +624,7 @@ class cl_orcparamseqorcparamseqcoluna
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:orcparamseqorcparamseqcoluna";
@@ -672,7 +672,7 @@ class cl_orcparamseqorcparamseqcoluna
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -718,7 +718,7 @@ class cl_orcparamseqorcparamseqcoluna
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -756,7 +756,7 @@ class cl_orcparamseqorcparamseqcoluna
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -780,10 +780,10 @@ class cl_orcparamseqorcparamseqcoluna
         $sql = " UPDATE orcparamseqorcparamseqcoluna SET ";
         $virgula = "";
 
-        if (trim($this->o116_codparamrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_codparamrel"])) {
+        if (trim((string) $this->o116_codparamrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_codparamrel"])) {
             $sql .= $virgula . " o116_codparamrel = $this->o116_codparamrel ";
             $virgula = ",";
-            if (trim($this->o116_codparamrel) == null) {
+            if (trim((string) $this->o116_codparamrel) == null) {
                 $this->erro_sql = " Campo codigo do relatorio nao Informado.";
                 $this->erro_campo = "o116_codparamrel";
                 $this->erro_banco = "";
@@ -797,10 +797,10 @@ class cl_orcparamseqorcparamseqcoluna
                 return false;
             }
         }
-        if (trim($this->o116_orcparamseqcoluna) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_orcparamseqcoluna"])) {
+        if (trim((string) $this->o116_orcparamseqcoluna) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_orcparamseqcoluna"])) {
             $sql .= $virgula . " o116_orcparamseqcoluna = $this->o116_orcparamseqcoluna ";
             $virgula = ",";
-            if (trim($this->o116_orcparamseqcoluna) == null) {
+            if (trim((string) $this->o116_orcparamseqcoluna) == null) {
                 $this->erro_sql = " Campo Código Sequencial nao Informado.";
                 $this->erro_campo = "o116_orcparamseqcoluna";
                 $this->erro_banco = "";
@@ -814,10 +814,10 @@ class cl_orcparamseqorcparamseqcoluna
                 return false;
             }
         }
-        if (trim($this->o116_ordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_ordem"])) {
+        if (trim((string) $this->o116_ordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_ordem"])) {
             $sql .= $virgula . " o116_ordem = $this->o116_ordem ";
             $virgula = ",";
-            if (trim($this->o116_ordem) == null) {
+            if (trim((string) $this->o116_ordem) == null) {
                 $this->erro_sql = " Campo Ordem da coluna nao Informado.";
                 $this->erro_campo = "o116_ordem";
                 $this->erro_banco = "";
@@ -831,14 +831,14 @@ class cl_orcparamseqorcparamseqcoluna
                 return false;
             }
         }
-        if (trim($this->o116_periodo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_periodo"])) {
-            if (trim($this->o116_periodo) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o116_periodo"])) {
+        if (trim((string) $this->o116_periodo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_periodo"])) {
+            if (trim((string) $this->o116_periodo) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o116_periodo"])) {
                 $this->o116_periodo = "0";
             }
             $sql .= $virgula . " o116_periodo = $this->o116_periodo ";
             $virgula = ",";
         }
-        if (trim($this->o116_formula) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_formula"])) {
+        if (trim((string) $this->o116_formula) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o116_formula"])) {
             if ($this->o116_formula === 'null') {
                 $this->o116_formula = '';
             }
@@ -863,53 +863,53 @@ class cl_orcparamseqorcparamseqcoluna
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,14123,'$this->o116_sequencial','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_sequencial"]) || $this->o116_sequencial != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14123,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14123,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_sequencial'
                         )) . "','$this->o116_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_codseq"]) || $this->o116_codseq != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14124,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14124,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_codseq'
                         )) . "','$this->o116_codseq'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_codparamrel"]) || $this->o116_codparamrel != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14125,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14125,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_codparamrel'
                         )) . "','$this->o116_codparamrel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_orcparamseqcoluna"]) || $this->o116_orcparamseqcoluna != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14127,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14127,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_orcparamseqcoluna'
                         )) . "','$this->o116_orcparamseqcoluna'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_ordem"]) || $this->o116_ordem != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14128,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14128,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_ordem'
                         )) . "','$this->o116_ordem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_periodo"]) || $this->o116_periodo != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,14126,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,14126,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_periodo'
                         )) . "','$this->o116_periodo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o116_formula"]) || $this->o116_formula != "") {
-                    $resac = db_query("insert into db_acount values($acount,2484,17724,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2484,17724,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o116_formula'

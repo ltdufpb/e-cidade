@@ -41,7 +41,7 @@ require_once(modification("classes/db_agendaconsultadesanula_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 /*Require plugin SMSAgendamento - SMSAgendamentoConsulta - NÃO APAGAR*/
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sd02_i_codigo   = db_getsession("DB_coddepto");
 
@@ -60,7 +60,7 @@ if(isset($confirmar)) {
 
   $cod_undmedhorario = $lado_de;
  
-  $aDataConsulta = explode('/', $sd23_d_consulta);
+  $aDataConsulta = explode('/', (string) $sd23_d_consulta);
 	$rsTotalAgendado = $oDaoundmedhorario->sql_record( "select fc_totalagendado('$sd23_d_consulta_ano/$sd23_d_consulta_mes/$sd23_d_consulta_dia', $cod_undmedhorario);" );
 	$oDadosTotalAgendado = db_utils::fieldsMemory($rsTotalAgendado, 0);
 
@@ -70,23 +70,23 @@ if(isset($confirmar)) {
 
     if($oDadosTotalAgendado->fc_totalagendado != '') {
 
-			$aDadosTotalAgendado = explode(',', $oDadosTotalAgendado->fc_totalagendado);
-			
+			$aDadosTotalAgendado = explode(',', (string) $oDadosTotalAgendado->fc_totalagendado);
+
       $iNumAgendamentosDesanular = count($select_agendamento);
 
 			//Verifica fichas disponiveis
 			if($aDadosTotalAgendado[6] >= $iNumAgendamentosDesanular) {
 
         if($iNumAgendamentosDesanular > 0) {
-   
+
           $iCont = 0;
-          
+
           /* bloco que seta os campos de inclusao na tabela agendaconsultadesanulamento que sao estaticos na rotina */
           $oDaoagendaconsultadesanula->s151_i_logindesanulamento = $iUsuario;
           $oDaoagendaconsultadesanula->s151_c_horadesanulamento = date('H:i');
           $oDaoagendaconsultadesanula->s151_d_datadesanulamento = date('Y-m-d');
           $oDaoagendaconsultadesanula->s151_c_motivodesanulamento = $s151_c_motivodesanulamento;
-            
+
           db_inicio_transacao();
           for($iCont = 0; $iCont < $iNumAgendamentosDesanular; $iCont++) {
 
@@ -103,10 +103,10 @@ if(isset($confirmar)) {
             $oDaoagendaconsultadesanula->s151_i_loginanulamento = $oDadosAnulacao->s114_i_login;
             $oDaoagendaconsultadesanula->s151_c_horaanulamento = $oDadosAnulacao->s114_c_hora;
             $oDaoagendaconsultadesanula->s151_i_agendamento = $select_agendamento[$iCont];
-            
+
             $oDaoagendaconsultadesanula->incluir(null); // insere na tabela agendaconsultadesanula
             $oDaoagendaconsultaanula->excluir(null, ' s114_i_agendaconsulta = '.$select_agendamento[$iCont]);  // remove o anulamento da tabela agendaconsultaanula
-    
+
             if($oDaoagendaconsultadesanula->erro_status == '0') {
 
               $oDaoagendaconsultadesanula->erro(true,false);
@@ -123,7 +123,7 @@ if(isset($confirmar)) {
               break;
 
             }
-            
+
             /*Inclusão código Plugin SMS Agendamento de Consulta - NÃO APAGAR*/
 
           }

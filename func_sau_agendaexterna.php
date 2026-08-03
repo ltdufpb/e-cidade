@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_agendaexterna_ext_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsau_agendaexterna = new cl_sau_agendaexterna_ext;
 $clrotulo            = new rotulocampo;
@@ -117,9 +117,9 @@ $clsau_agendaexterna->rotulo->label("s118_d_marcada");
         }else{
            //$sql = $clsau_agendaexterna->sql_query_ext("",$campos,"s118_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s118_i_codigo)){
-          $repassa = array("chave_s118_i_codigo"=>$chave_s118_i_codigo,"chave_s118_i_codigo"=>$chave_s118_i_codigo);
+          $repassa = ["chave_s118_i_codigo"=>$chave_s118_i_codigo,"chave_s118_i_codigo"=>$chave_s118_i_codigo];
         }
         if( isset($sql) ){
            db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

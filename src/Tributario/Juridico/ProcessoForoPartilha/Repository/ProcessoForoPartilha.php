@@ -147,11 +147,11 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
      */
     private function makeCollection($rsResult)
     {
-        $aCollection = array();
+        $aCollection = [];
         $aResult = pg_fetch_all($rsResult);
 
         if (empty($aResult)) {
-            return array();
+            return [];
         }
 
         foreach ($aResult as $oResult) {
@@ -281,7 +281,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
         }
 
         if (!pg_num_rows($result)) {
-            return array();
+            return [];
         }
 
         return db_utils::getCollectionByRecord($result);
@@ -335,7 +335,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
         }
 
         if (pg_num_rows($rs) == 0) {
-            return array();
+            return [];
         }
 
         $partilhas = $this->makeCollection($rs);
@@ -378,9 +378,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
             throw new DBException("Erro ao buscar as parcelas pagas dos honorários.");
         }
 
-        return \db_utils::makeCollectionFromRecord($result, function ($parcela) {
-            return $parcela->k00_numpar;
-        });
+        return \db_utils::makeCollectionFromRecord($result, fn($parcela) => $parcela->k00_numpar);
     }
 
     /**
@@ -425,7 +423,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
      * @return mixed
      * @throws DBException
      */
-    public function getValorPago(\Taxa $taxa, ProcessoForo $processoForo, \DateTime $data = null)
+    public function getValorPago(\Taxa $taxa, ProcessoForo $processoForo, ?\DateTime $data = null)
     {
         $sql  = "select v77_valor ";
         $sql .= "  from processoforopartilha ";
@@ -449,9 +447,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
             return 0;
         }
 
-        $resultado = \db_utils::makeCollectionFromRecord($rs, function ($taxa) {
-            return round($taxa->v77_valor, 2);
-        });
+        $resultado = \db_utils::makeCollectionFromRecord($rs, fn($taxa) => round($taxa->v77_valor, 2));
 
         return array_sum($resultado);
     }

@@ -104,7 +104,7 @@ db_input('x23_valor',15,$Ix23_valor,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("x23_codcalc"=>@$x23_codcalc,"x23_codconsumotipo"=>@$x23_codconsumotipo);
+	 $chavepri= ["x23_codcalc"=>@$x23_codcalc,"x23_codconsumotipo"=>@$x23_codconsumotipo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $claguacalcval->sql_query_file($x23_codcalc);
 	 $cliframe_alterar_excluir->campos  ="x23_codcalc,x23_codconsumotipo,x23_valor";

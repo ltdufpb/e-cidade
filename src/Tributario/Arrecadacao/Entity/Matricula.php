@@ -8,6 +8,7 @@ class Matricula extends Contribuinte
         return parent::getIdentificador();
     }
 
+    #[\Override]
     public function getTipo()
     {
         return self::MATRICULA;

@@ -38,12 +38,12 @@ $clrhpescargo = new cl_rhpescargo;
 $clrhrubricas = new cl_rhrubricas;
 $clrotulo = new rotulocampo;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
-$mesi = str_pad($mesi, 2, "0", STR_PAD_LEFT);
-$arr_verifica_ano_mes_regist = Array();
-$arr_mostrar = Array();
+$mesi = str_pad((string) $mesi, 2, "0", STR_PAD_LEFT);
+$arr_verifica_ano_mes_regist = [];
+$arr_mostrar = [];
 
 if($orde == "a"){
   $orderby  = " z01_nome ";
@@ -56,9 +56,9 @@ if($orde == "a"){
 $db_where_rubricas = "";
 $virg_das_rubricas = "";
 $impressao_rubricas = false;
-if(trim($rubricas_selecionadas_text) != ""){
+if(trim((string) $rubricas_selecionadas_text) != ""){
   $impressao_rubricas = true;
-  $arr_das_rubricas = split(",",$rubricas_selecionadas_text);
+  $arr_das_rubricas = preg_split("#,#m",(string) $rubricas_selecionadas_text);
   for($i=0; $i<count($arr_das_rubricas); $i++){
     $db_where_rubricas.= $virg_das_rubricas."'".$arr_das_rubricas[$i]."'";
     $virg_das_rubricas = ",";
@@ -85,8 +85,8 @@ $db_where_matriculas = "
 
 $sp_where_matriculas = "";
 $virg_das_matriculas = "";
-if(trim($matriculas_selecionadas_text) != ""){
-  $arr_das_matriculas = split(",",$matriculas_selecionadas_text);
+if(trim((string) $matriculas_selecionadas_text) != ""){
+  $arr_das_matriculas = preg_split("#,#m",(string) $matriculas_selecionadas_text);
   for($i=0; $i<count($arr_das_matriculas); $i++){
     $sp_where_matriculas.= $virg_das_matriculas.$arr_das_matriculas[$i];
     $virg_das_matriculas = ",";
@@ -283,7 +283,7 @@ for($i=0; $i < $clrhpessoal->numrows; $i++){
 //echo "<BR> $sql_dados_gerfs";
 //exit;
   $result_dados_gerfs = db_query($sql_dados_gerfs);
-  $numrows_dados_gerfs = pg_numrows($result_dados_gerfs);
+  $numrows_dados_gerfs = pg_num_rows($result_dados_gerfs);
   $mes_anterior = "";
   $ano_anterior = "";
   $contaIarray  = 1;
@@ -299,14 +299,14 @@ for($i=0; $i < $clrhpessoal->numrows; $i++){
       $contamesano ++;
 
       if($contamesano == 1){
-        $arr_mostrar[$regist][$contaIarray] = $anousu.str_pad($mesusu, 2, "0", STR_PAD_LEFT);
-        $arr_mes_ano[$regist][$contaIarray] = "  where anousu||lpad(mesusu,2,0) = '".$anousu.str_pad($mesusu, 2, "0", STR_PAD_LEFT)."' ";
+        $arr_mostrar[$regist][$contaIarray] = $anousu.str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT);
+        $arr_mes_ano[$regist][$contaIarray] = "  where anousu||lpad(mesusu,2,0) = '".$anousu.str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT)."' ";
       }else if($contamesano == 2){
-        $arr_mostrar[$regist][$contaIarray].= "_".$anousu.str_pad($mesusu, 2, "0", STR_PAD_LEFT);
-        $arr_mes_ano[$regist][$contaIarray].= "_ where anousu||lpad(mesusu,2,0) = '".$anousu.str_pad($mesusu, 2, "0", STR_PAD_LEFT)."' ";
+        $arr_mostrar[$regist][$contaIarray].= "_".$anousu.str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT);
+        $arr_mes_ano[$regist][$contaIarray].= "_ where anousu||lpad(mesusu,2,0) = '".$anousu.str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT)."' ";
       }else if($contamesano == 3){
-        $arr_mostrar[$regist][$contaIarray].= "_".$anousu.str_pad($mesusu, 2, "0", STR_PAD_LEFT);
-        $arr_mes_ano[$regist][$contaIarray].= "_ where anousu||lpad(mesusu,2,0) = '".$anousu.str_pad($mesusu, 2, "0", STR_PAD_LEFT)."' ";
+        $arr_mostrar[$regist][$contaIarray].= "_".$anousu.str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT);
+        $arr_mes_ano[$regist][$contaIarray].= "_ where anousu||lpad(mesusu,2,0) = '".$anousu.str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT)."' ";
         $contamesano = 0;
         $contaIarray ++;
       }
@@ -364,7 +364,7 @@ for($i=0; $i < $clrhpessoal->numrows; $i++){
 
 if($testa == false){
   db_redireciona("db_erros.php?fechar=true&db_erro=Sem dados para gerar relatório.");
-  break;
+  return;
 }
 
 $arq = 'tmp/rel_ficha_financ_'.time().'.txt';
@@ -372,14 +372,14 @@ $arquivo = fopen($arq,'w');
 
 $sql_rubr = "select distinct rubric as rubric1,drubri as drubri1 from work_ficha_financ order by rubric";
 $result_rubr = db_query($sql_rubr);
-$numrows_rubr = pg_numrows($result_rubr);
+$numrows_rubr = pg_num_rows($result_rubr);
 //db_criatabela($result_rubr);exit;
 $sql_work = "select * from work_ficha_financ order by $orderby2";
 $result_work = db_query($sql_work);
-$numrows_work = pg_numrows($result_work);
+$numrows_work = pg_num_rows($result_work);
 //db_criatabela($result_work);exit;
 $primatric = "";
-$aRubrica = array();
+$aRubrica = [];
 for($x=0;$x<$numrows_work;$x++){
  db_fieldsmemory($result_work,$x);
  if($primatric!=$regist){
@@ -396,14 +396,14 @@ for($x=0;$x<$numrows_work;$x++){
     }
     $sep1 = "|";
    }
-   $aRubrica = array();
+   $aRubrica = [];
   }
   fputs($arquivo,"\r\n\r\n".$regist." - ".$nomefc."\r\n");
   fputs($arquivo,"Rubrica| ");
   $sep2 = "";
   for($y=0;$y<$numrows_rubr;$y++){
    db_fieldsmemory($result_rubr,$y);
-   fputs($arquivo,$sep2.str_pad($rubric1,10," ",STR_PAD_LEFT));
+   fputs($arquivo,$sep2.str_pad((string) $rubric1,10," ",STR_PAD_LEFT));
    $sep2 = "|";
   }
   fputs($arquivo,"\r\n");
@@ -420,9 +420,9 @@ for($x=0;$x<$numrows_work;$x++){
     }
     $sep3 = "|";
    }
-   $aRubrica = array();
+   $aRubrica = [];
   }
-  fputs($arquivo,"\r\n".str_pad($mesusu,2,"0",STR_PAD_LEFT)."/".$anousu."| ");
+  fputs($arquivo,"\r\n".str_pad((string) $mesusu,2,"0",STR_PAD_LEFT)."/".$anousu."| ");
   $prianomes = $anousu.$mesusu;
  }
  for($y=0;$y<$numrows_rubr;$y++){

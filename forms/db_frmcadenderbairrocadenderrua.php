@@ -116,7 +116,7 @@ db_input('db73_descricao',40,$Idb73_descricao,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("db87_sequencial"=>@$db87_sequencial);
+	 $chavepri= ["db87_sequencial"=>@$db87_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcadenderbairrocadenderrua->sql_query(null,"*","","db87_cadenderrua={$db87_cadenderrua}");
 	 $cliframe_alterar_excluir->campos  ="db87_sequencial, db74_descricao, db73_descricao";

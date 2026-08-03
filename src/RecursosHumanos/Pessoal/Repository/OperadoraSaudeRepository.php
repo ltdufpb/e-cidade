@@ -41,7 +41,7 @@ class OperadoraSaudeRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param array|int $ids
@@ -67,7 +67,7 @@ class OperadoraSaudeRepository
      * @param OperadoraSaude|null $operadoraSaude
      * @throws Exception
      */
-    public function delete(OperadoraSaude $operadoraSaude = null)
+    public function delete(?OperadoraSaude $operadoraSaude = null)
     {
         $sequencial = $operadoraSaude instanceof OperadoraSaude ? $operadoraSaude->getSequencial() : null;
 
@@ -85,7 +85,7 @@ class OperadoraSaudeRepository
      * @return bool|OperadoraSaude
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_operadorasaude();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -109,13 +109,13 @@ class OperadoraSaudeRepository
      * @return OperadoraSaude[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_operadorasaude();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $operadorasSaude = array();
+        $operadorasSaude = [];
 
         if (pg_num_rows($rs) === 0) {
             return $operadorasSaude;
@@ -197,7 +197,7 @@ class OperadoraSaudeRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
         return $this;
     }
 
@@ -215,7 +215,7 @@ class OperadoraSaudeRepository
             throw new Exception("Não foi possível buscar as operadoras de saúde.\nContate o suporte.");
         }
 
-        $operadorasSaude = array();
+        $operadorasSaude = [];
 
         if (pg_num_rows($rs) === 0) {
             return $operadorasSaude;

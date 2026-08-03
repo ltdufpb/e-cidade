@@ -11,13 +11,8 @@ namespace ECidade\Tributario\Arrecadacao\Arquivo\Autoatendimento\RCB800\Converte
 use ECidade\Tributario\Library\Entity;
 abstract class Converter
 {
-    protected $layout;
-    protected $format;
-
-    public function __construct($layout, $format = null)
+    public function __construct(protected $layout, protected $format = null)
     {
-        $this->layout = $layout;
-        $this->format = $format;
     }
 
     abstract public function build(Entity $entity);

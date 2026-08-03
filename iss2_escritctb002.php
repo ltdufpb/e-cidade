@@ -55,7 +55,7 @@ $sql = " select q86_numcgm
     $pdf->SetLeftMargin(10);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier','B',8);
     $linha = 60;
     $TotPag = 0;
@@ -77,12 +77,12 @@ $sql = " select q86_numcgm
          $pdf->SetTextColor(0,0,0);
       }
 
-      $pdf->Cell(12,4,pg_result($result,$i,"q86_numcgm"),0,0,"C",$p);
-      $pdf->Cell(80,4,pg_result($result,$i,"z01_nome"),0,0,"L",$p);
-      $pdf->Cell(90,4,pg_result($result,$i,"z01_ender"),0,0,"L",$p);
-      $pdf->Cell(20,4,pg_result($result,$i,"z01_numero"),0,0,"L",$p);
-      $pdf->Cell(45,4,pg_result($result,$i,"z01_bairro"),0,0,"L",$p);
-      $pdf->Cell(30,4,pg_result($result,$i,"z01_munic"),0,1,"L",$p);
+      $pdf->Cell(12,4,pg_fetch_result($result,$i,"q86_numcgm"),0,0,"C",$p);
+      $pdf->Cell(80,4,pg_fetch_result($result,$i,"z01_nome"),0,0,"L",$p);
+      $pdf->Cell(90,4,pg_fetch_result($result,$i,"z01_ender"),0,0,"L",$p);
+      $pdf->Cell(20,4,pg_fetch_result($result,$i,"z01_numero"),0,0,"L",$p);
+      $pdf->Cell(45,4,pg_fetch_result($result,$i,"z01_bairro"),0,0,"L",$p);
+      $pdf->Cell(30,4,pg_fetch_result($result,$i,"z01_munic"),0,1,"L",$p);
       $TotPag += 1;
 
       if($p == 0){

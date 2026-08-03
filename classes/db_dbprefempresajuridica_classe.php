@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE dbprefempresajuridica
 class cl_dbprefempresajuridica { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q56_sequencial = 0; 
-   var $q56_dbprefempresa = 0; 
-   var $q56_rejuc = null; 
+   public $q56_sequencial = 0; 
+   public $q56_dbprefempresa = 0; 
+   public $q56_rejuc = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q56_sequencial = int4 = Código sequencial 
                  q56_dbprefempresa = int4 = Código empresa 
                  q56_rejuc = varchar(14) = Registro 
                  ";
    //funcao construtor da classe 
-   function cl_dbprefempresajuridica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("dbprefempresajuridica"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_dbprefempresajuridica {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q56_sequencial = pg_result($result,0,0); 
+       $this->q56_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from dbprefempresajuridica_q56_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q56_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q56_sequencial)){
          $this->erro_sql = " Campo q56_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_dbprefempresajuridica {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "dbprefempresajuridica ($this->q56_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "dbprefempresajuridica já Cadastrado";
@@ -166,12 +166,12 @@ class cl_dbprefempresajuridica {
      $resaco = $this->sql_record($this->sql_query_file($this->q56_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10215,'$this->q56_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1764,10215,'','".AddSlashes(pg_result($resaco,0,'q56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1764,10216,'','".AddSlashes(pg_result($resaco,0,'q56_dbprefempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1764,10219,'','".AddSlashes(pg_result($resaco,0,'q56_rejuc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1764,10215,'','".AddSlashes(pg_fetch_result($resaco,0,'q56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1764,10216,'','".AddSlashes(pg_fetch_result($resaco,0,'q56_dbprefempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1764,10219,'','".AddSlashes(pg_fetch_result($resaco,0,'q56_rejuc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_dbprefempresajuridica {
       $this->atualizacampos();
      $sql = " update dbprefempresajuridica set ";
      $virgula = "";
-     if(trim($this->q56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q56_sequencial"])){ 
+     if(trim((string) $this->q56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q56_sequencial"])){ 
        $sql  .= $virgula." q56_sequencial = $this->q56_sequencial ";
        $virgula = ",";
-       if(trim($this->q56_sequencial) == null ){ 
+       if(trim((string) $this->q56_sequencial) == null ){ 
          $this->erro_sql = " Campo Código sequencial nao Informado.";
          $this->erro_campo = "q56_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_dbprefempresajuridica {
          return false;
        }
      }
-     if(trim($this->q56_dbprefempresa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q56_dbprefempresa"])){ 
+     if(trim((string) $this->q56_dbprefempresa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q56_dbprefempresa"])){ 
        $sql  .= $virgula." q56_dbprefempresa = $this->q56_dbprefempresa ";
        $virgula = ",";
-       if(trim($this->q56_dbprefempresa) == null ){ 
+       if(trim((string) $this->q56_dbprefempresa) == null ){ 
          $this->erro_sql = " Campo Código empresa nao Informado.";
          $this->erro_campo = "q56_dbprefempresa";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_dbprefempresajuridica {
          return false;
        }
      }
-     if(trim($this->q56_rejuc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q56_rejuc"])){ 
+     if(trim((string) $this->q56_rejuc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q56_rejuc"])){ 
        $sql  .= $virgula." q56_rejuc = '$this->q56_rejuc' ";
        $virgula = ",";
-       if(trim($this->q56_rejuc) == null ){ 
+       if(trim((string) $this->q56_rejuc) == null ){ 
          $this->erro_sql = " Campo Registro nao Informado.";
          $this->erro_campo = "q56_rejuc";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_dbprefempresajuridica {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10215,'$this->q56_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q56_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1764,10215,'".AddSlashes(pg_result($resaco,$conresaco,'q56_sequencial'))."','$this->q56_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1764,10215,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q56_sequencial'))."','$this->q56_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q56_dbprefempresa"]))
-           $resac = db_query("insert into db_acount values($acount,1764,10216,'".AddSlashes(pg_result($resaco,$conresaco,'q56_dbprefempresa'))."','$this->q56_dbprefempresa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1764,10216,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q56_dbprefempresa'))."','$this->q56_dbprefempresa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q56_rejuc"]))
-           $resac = db_query("insert into db_acount values($acount,1764,10219,'".AddSlashes(pg_result($resaco,$conresaco,'q56_rejuc'))."','$this->q56_rejuc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1764,10219,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q56_rejuc'))."','$this->q56_rejuc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_dbprefempresajuridica {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10215,'$q56_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1764,10215,'','".AddSlashes(pg_result($resaco,$iresaco,'q56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1764,10216,'','".AddSlashes(pg_result($resaco,$iresaco,'q56_dbprefempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1764,10219,'','".AddSlashes(pg_result($resaco,$iresaco,'q56_rejuc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1764,10215,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1764,10216,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q56_dbprefempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1764,10219,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q56_rejuc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from dbprefempresajuridica
@@ -345,7 +345,7 @@ class cl_dbprefempresajuridica {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:dbprefempresajuridica";
@@ -359,7 +359,7 @@ class cl_dbprefempresajuridica {
    function sql_query ( $q56_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_dbprefempresajuridica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_dbprefempresajuridica {
    function sql_query_file ( $q56_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_dbprefempresajuridica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

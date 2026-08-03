@@ -27,7 +27,7 @@
 
 require_once(modification("fpdf151/pdf.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $head3 = "Relatorio de Saldo da Tesouraria";
 $head5 = "DATA: $datai_dia/$datai_mes/$datai_ano ";
@@ -161,10 +161,10 @@ if ($tipo == "conta") {
 
 
             $rsDomicilio = db_query($sql);
-            if (pg_numrows($rsDomicilio) > 0) {
+            if (pg_num_rows($rsDomicilio) > 0) {
 
-                $aContas = array();
-                for ($i = 0; $i < pg_numrows($rsDomicilio); $i++) {
+                $aContas = [];
+                for ($i = 0; $i < pg_num_rows($rsDomicilio); $i++) {
 
                     $oDados = db_utils::fieldsMemory($rsDomicilio, $i);
                     $oDadosContas = new stdClass();
@@ -184,7 +184,7 @@ if ($tipo == "conta") {
                     $aContas[$oDados->bancoagencia][] = $oDadosContas;
                 }
 
-                $aRegistros = array();
+                $aRegistros = [];
                 $oConta = null;
                 foreach ($aContas as $conta => $aConta) {
 
@@ -250,7 +250,7 @@ if (empty ($datai_dia)) {
 }
 
 
-for ($i = 0; $i < pg_numrows($result); $i ++) {
+for ($i = 0; $i < pg_num_rows($result); $i ++) {
 
 
 	db_fieldsmemory($result, $i);
@@ -258,7 +258,7 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 	if ($tipo == "conta") {
 
 		$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-		$valor = pg_result($result1, 0, 0);
+		$valor = pg_fetch_result($result1, 0, 0);
 		$valor = preg_split("/\s+/", $valor);
 
 		$pdf->Cell(20, $alt, "$k13_conta", "LRTB", 0, "C", 0);
@@ -298,11 +298,11 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 									                 		and c60_codsis in (5,6)
 											 order by k13_conta";
 			$result_contas = db_query($sql);
-			$nrows = pg_numrows($result_contas);
+			$nrows = pg_num_rows($result_contas);
 			for ($h = 0; $h < $nrows; $h ++) {
 				db_fieldsmemory($result_contas, $h);
 				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null, ".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
+				$valor = pg_fetch_result($result1, 0, 0);
 				$valor = preg_split("/\s+/", $valor);
 				if ($valor[0] != "2" || $valor[0] != "3") {
 					$tval1 += (float) str_replace(",", "", $valor[1]);
@@ -353,7 +353,7 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 							  order by k13_descr
 								              ";
 				$result_contas = db_query($sql);
-				$nrows = pg_numrows($result_contas);
+				$nrows = pg_num_rows($result_contas);
 
 				// db_criatabela($result_contas); exit;
 
@@ -367,7 +367,7 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 				$tot_vinculado_final = 0;
 				for ($h = 0; $h < $nrows; $h ++) {
 					db_fieldsmemory($result_contas, $h);
-					$valor = preg_split("/\s+/", $valor);
+					$valor = preg_split("/\s+/", (string) $valor);
 					if ($c61_codigo == 1) { // totalizamos o recurso livre
 						if ($valor[0] != "2" || $valor[0] != "3") {
 							$tot_livre_ant += (float) str_replace(",", "", $valor[1]);
@@ -421,7 +421,7 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
                 // listar contas
                 for ($h = 0; $h < $nrows; $h ++) {
 					db_fieldsmemory($result_contas, $h);
-					$valor = preg_split("/\s+/", $valor);
+					$valor = preg_split("/\s+/", (string) $valor);
 				    if ($valor[0] != "2" || $valor[0] != "3") {
 					   $tval1 = (float) str_replace(",", "", $valor[1]);
 					   $tval2 = (float) str_replace(",", "", $valor[2]);
@@ -504,11 +504,11 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 											                    and c60_codsis in (5,6)
 												  	         order by k13_descr";
 				$result_contas = db_query($sql);
-				$nrows = pg_numrows($result_contas);
+				$nrows = pg_num_rows($result_contas);
 				for ($h = 0; $h < $nrows; $h ++) {
 					db_fieldsmemory($result_contas, $h);
 					$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null, ".db_getsession("DB_instit").")");
-					$valor = pg_result($result1, 0, 0);
+					$valor = pg_fetch_result($result1, 0, 0);
 					$valor = preg_split("/\s+/", $valor);
 					if ($valor[0] != "2" || $valor[0] != "3") {
 						$tval1 += (float) str_replace(",", "", $valor[1]);
@@ -537,7 +537,7 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 				for ($h = 0; $h < $nrows; $h ++) {
 					db_fieldsmemory($result_contas, $h);
 					$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-					$valor = pg_result($result1, 0, 0);
+					$valor = pg_fetch_result($result1, 0, 0);
 					$valor = preg_split("/\s+/", $valor);
 
 					$pdf->Cell(20, $alt, " ", "", 0, "C", 0);

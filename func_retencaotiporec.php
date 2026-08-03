@@ -33,8 +33,8 @@ include(modification("libs/db_utils.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_retencaotiporec_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clretencaotiporec = new cl_retencaotiporec;
 $clretencaotiporec->rotulo->label("e21_sequencial");
@@ -114,10 +114,10 @@ $oGet = db_utils::postMemory($_GET);
         }else{
            $sql = $clretencaotiporec->sql_query(null, $campos, "e21_sequencial", $sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e21_sequencial)){
-          $repassa = array("chave_e21_sequencial" => $chave_e21_sequencial,
-                           "chave_e21_descricao"  => $chave_e21_descricao);
+          $repassa = ["chave_e21_sequencial" => $chave_e21_sequencial,
+                           "chave_e21_descricao"  => $chave_e21_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -55,14 +55,14 @@ class MarcacaoPonto
     /**
      * @var array $tiposMarcacao
      */
-    private static $tiposMarcacao = array(
+    private static $tiposMarcacao = [
         MarcacaoPonto::ENTRADA_1 => 'ENTRADA 1',
         MarcacaoPonto::SAIDA_1 => 'SAIDA 1',
         MarcacaoPonto::ENTRADA_2 => 'ENTRADA 2',
         MarcacaoPonto::SAIDA_2 => 'SAIDA 2',
         MarcacaoPonto::ENTRADA_3 => 'ENTRADA 3',
         MarcacaoPonto::SAIDA_3 => 'SAIDA 3'
-    );
+    ];
     /**
      * @var DateTime $oMarcacao
      */
@@ -132,7 +132,7 @@ class MarcacaoPonto
      */
     public static function getDescricaoTipoMarcacao($tipo)
     {
-        return isset(self::$tiposMarcacao[$tipo]) ? self::$tiposMarcacao[$tipo] : '';
+        return self::$tiposMarcacao[$tipo] ?? '';
     }
 
     /**
@@ -329,7 +329,7 @@ class MarcacaoPonto
      */
     public function estaNaTolerancia(DiaTrabalho $diaTrabalho, $tipoMarcacaoComparar = null)
     {
-        $tipoMarcacaoComparar = $tipoMarcacaoComparar !== null ? $tipoMarcacaoComparar : $this->getTipo();
+        $tipoMarcacaoComparar ??= $this->getTipo();
         $horasDaJornada = $diaTrabalho->getJornada()->getHoras();
         $horaJornada = !empty($horasDaJornada[$tipoMarcacaoComparar - 1])
             ? $horasDaJornada[$tipoMarcacaoComparar - 1]

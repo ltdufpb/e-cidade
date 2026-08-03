@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 ?>
 <html>
@@ -107,7 +107,7 @@ input {
 
 	$result = db_query($sql_mod);
 	$nomemod = db_query("select nomemod from db_sysmodulo where codmod = $codmod");
-	$nomemod = pg_result($nomemod,0,0);
+	$nomemod = pg_fetch_result($nomemod,0,0);
      ?>
 	<br>
 	<h3>Módulo: <?=$nomemod?></h3><Br>
@@ -128,14 +128,14 @@ input {
 	$cor1 = "#CAF59A";
 	$cor2 = "#B0FDD2";
 	$cor = "";
-	$numrows = pg_numrows($result);
+	$numrows = pg_num_rows($result);
 	for($i = 0;$i < $numrows;$i++) {
 	  db_fieldsmemory($result,$i);
 	  echo "<tr bgcolor=\"".($cor = $cor==$cor1?$cor2:$cor1)."\" style=\"cursor: hand\" onClick=\"location.href='sys3_campos001.php?".base64_encode("tabela=$codarq")."'\">\n";
-      echo "<td style=\"cursor: hand\" onClick=\"location.href='sys3_tabelas001.php?".base64_encode("codmod=$codarq")."'\" title='".$nomearq."'>".substr($nomearq,0,20)."&nbsp;</td>\n";
+      echo "<td style=\"cursor: hand\" onClick=\"location.href='sys3_tabelas001.php?".base64_encode("codmod=$codarq")."'\" title='".$nomearq."'>".substr((string) $nomearq,0,20)."&nbsp;</td>\n";
       echo "<td><input name=\"relatorio\" type=\"button\" id=\"exibir_relatorio\" value=\"P\" onClick=\"js_Relatorio('$codarq')\">&nbsp;</td>\n";
-      echo "<td style=\"cursor: hand\" title='".$rotulo."'>".substr($rotulo,0,20)."&nbsp;</td>\n";
-      echo "<td style=\"cursor: hand\" onClick=\"location.href='sys3_tabelas001.php?".base64_encode("codmod=$codarq")."'\" title='".$descricao."'>".substr($descricao,0,60)."&nbsp;</td>\n";
+      echo "<td style=\"cursor: hand\" title='".$rotulo."'>".substr((string) $rotulo,0,20)."&nbsp;</td>\n";
+      echo "<td style=\"cursor: hand\" onClick=\"location.href='sys3_tabelas001.php?".base64_encode("codmod=$codarq")."'\" title='".$descricao."'>".substr((string) $descricao,0,60)."&nbsp;</td>\n";
       echo "<td>".$sigla."&nbsp;</td>\n";
       echo "<td>".($tipotabela=='0'?'Manutenção':($tipotabela=='1'?'Parâmetro':'Dependente'))."&nbsp;</td>\n";
       echo "<td>".$arqpai."&nbsp;</td>\n";

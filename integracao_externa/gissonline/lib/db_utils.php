@@ -33,7 +33,7 @@ class _db_fields {
 class db_utils {
   
   
-  function db_utils()
+  function __construct()
   {
     
   }
@@ -46,14 +46,14 @@ class db_utils {
       
       $sFieldName     = @pg_field_name($rs, $i);
       $sFieldType     = @pg_field_type($rs, $i);
-      $sValor         = @pg_result($rs, $idx, $sFieldName);
+      $sValor         = @pg_fetch_result($rs, $idx, $sFieldName);
       if ($formata) {
         
         switch ($sFieldType) {
           
         case "date" :
           if ($sValor != null) {
-            $sValor = implode(array_reverse(explode("-",$sValor)));
+            $sValor = implode('', array_reverse(explode("-",$sValor)));
           }
           break;
           default :

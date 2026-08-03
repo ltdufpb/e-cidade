@@ -84,7 +84,7 @@ db_textarea('ed25_t_atividades',15,80,$Ied25_t_atividades,true,'text',$db_opcao,
     </td>
     <td> 
 <?php 
-$x = array('t'=>'Sim','f'=>'Não');
+$x = ['t'=>'Sim','f'=>'Não'];
 db_select('ed25_l_apto',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -125,7 +125,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pareceres.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

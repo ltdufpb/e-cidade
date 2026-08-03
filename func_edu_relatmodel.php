@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_edu_relatmodel_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cledu_relatmodel = new cl_edu_relatmodel;
 $cledu_relatmodel->rotulo->label("ed217_i_codigo");
 $cledu_relatmodel->rotulo->label("ed217_i_relatorio");
@@ -65,7 +65,7 @@ $cledu_relatmodel->rotulo->label("ed217_i_relatorio");
             </td>
             <td width="96%" align="left" nowrap> 
             <?php 
-            $x = array(""=>"","1"=>"HISTÓRICO ESCOLAR","2"=>"CERTIFICADO DE CONCLUSÃO");
+            $x = [""=>"","1"=>"HISTÓRICO ESCOLAR","2"=>"CERTIFICADO DE CONCLUSÃO"];
             db_select('ed217_i_relatorio',$x,true,1,"");
             ?>
             </td>
@@ -99,9 +99,9 @@ $cledu_relatmodel->rotulo->label("ed217_i_relatorio");
         }else{
            $sql = $cledu_relatmodel->sql_query("",$campos,"ed217_c_nome","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed217_i_codigo)){
-          $repassa = array("chave_ed217_i_codigo"=>$chave_ed217_i_codigo,"ed217_i_relatorio"=>$ed217_i_relatorio);
+          $repassa = ["chave_ed217_i_codigo"=>$chave_ed217_i_codigo,"ed217_i_relatorio"=>$ed217_i_relatorio];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

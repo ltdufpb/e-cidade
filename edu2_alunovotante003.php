@@ -48,7 +48,7 @@ $sPresid = $sPresidente;
 
 function maiusculo(&$string) {
 	
-  $string = strtoupper($string);
+  $string = strtoupper((string) $string);
   $string = str_replace("Ã¡","Ã",$string);
   $string = str_replace("Ã©","Ã",$string);
   $string = str_replace("Ã­","Ã",$string);
@@ -67,7 +67,7 @@ function maiusculo(&$string) {
   return $string;
   
 }
-$sDataVotacao       = substr($iData,6,4)."-".substr($iData,3,2)."-".substr($iData,0,2);
+$sDataVotacao       = substr((string) $iData,6,4)."-".substr((string) $iData,3,2)."-".substr((string) $iData,0,2);
 
  $sSqlDadosTelEscola = $clTelefoneEscola->sql_query("",
                                                    "ed26_i_ddd,ed26_i_numero,ed26_i_ramal",
@@ -161,7 +161,7 @@ $fpdf->Addpage('L');
 
 $data         = date($sDataVotacao);
 $sDataExtenso        = db_dataextenso(db_strtotime($sDataVotacao));
-$mes_extenso  = array("01"=>"janeiro",
+$mes_extenso  = ["01"=>"janeiro",
                       "02"=>"fevereiro",
                       "03"=>"março",
                       "04"=>"abril",
@@ -173,13 +173,13 @@ $mes_extenso  = array("01"=>"janeiro",
                       "10"=>"outubro",
                       "11"=>"novembro",
                       "12"=>"dezembro"
-                     );
-$cidade = strtolower($mun_escola);     
+                     ];
+$cidade = strtolower((string) $mun_escola);     
 $cidadeescola =   ucfirst($cidade);       
 $sDataFinal = $cidadeescola.", ".$sDataExtenso;
 db_fieldsmemory($sResult,0);
 
-if ( trim($iCodigoReferencia) != null ) {
+if ( trim((string) $iCodigoReferencia) != null ) {
   $sNomeEscola = "{$iCodigoReferencia} - {$sNomeEscola}";
 }
 
@@ -295,8 +295,8 @@ for ($x = 0; $x < $clMatricula->numrows; $x++) {
   if ($idadealuno < $ed233_i_idadevotacao) {
    	    	   	
    	$fpdf->setfont('times','',6);
-    $fpdf->SetWidths(array(10,80,90,90));  
-    $fpdf->SetAligns(array("L", "L","L","L"));     
+    $fpdf->SetWidths([10,80,90,90]);  
+    $fpdf->SetAligns(["L", "L","L","L"]);     
           
     if ($ed47_c_nomeresp != $ed47_v_mae && $ed47_c_nomeresp != $ed47_v_pai) {
       $nomeresp = $ed47_c_nomeresp;       

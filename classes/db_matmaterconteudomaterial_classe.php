@@ -3,35 +3,35 @@
 //CLASSE DA ENTIDADE matmaterconteudomaterial
 class cl_matmaterconteudomaterial { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m08_codigo = 0; 
-   var $m08_matmater = 0; 
-   var $m08_unidade = 0; 
-   var $m08_quantidade = 0; 
+   public $m08_codigo = 0; 
+   public $m08_matmater = 0; 
+   public $m08_unidade = 0; 
+   public $m08_quantidade = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m08_codigo = int4 = Código 
                  m08_matmater = int4 = Material 
                  m08_unidade = int4 = Unidade 
                  m08_quantidade = float8 = Quantidade 
                  ";
    //funcao construtor da classe 
-   function cl_matmaterconteudomaterial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matmaterconteudomaterial"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -93,10 +93,10 @@ class cl_matmaterconteudomaterial {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m08_codigo = pg_result($result,0,0); 
+       $this->m08_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matmaterconteudomaterial_m08_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m08_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m08_codigo)){
          $this->erro_sql = " Campo m08_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,7 +130,7 @@ class cl_matmaterconteudomaterial {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Controle Fracionamento ($this->m08_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Controle Fracionamento já Cadastrado";
@@ -159,13 +159,13 @@ class cl_matmaterconteudomaterial {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21324,'$this->m08_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3840,21324,'','".AddSlashes(pg_result($resaco,0,'m08_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3840,21325,'','".AddSlashes(pg_result($resaco,0,'m08_matmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3840,21326,'','".AddSlashes(pg_result($resaco,0,'m08_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3840,21327,'','".AddSlashes(pg_result($resaco,0,'m08_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3840,21324,'','".AddSlashes(pg_fetch_result($resaco,0,'m08_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3840,21325,'','".AddSlashes(pg_fetch_result($resaco,0,'m08_matmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3840,21326,'','".AddSlashes(pg_fetch_result($resaco,0,'m08_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3840,21327,'','".AddSlashes(pg_fetch_result($resaco,0,'m08_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -175,10 +175,10 @@ class cl_matmaterconteudomaterial {
       $this->atualizacampos();
      $sql = " update matmaterconteudomaterial set ";
      $virgula = "";
-     if(trim($this->m08_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_codigo"])){ 
+     if(trim((string) $this->m08_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_codigo"])){ 
        $sql  .= $virgula." m08_codigo = $this->m08_codigo ";
        $virgula = ",";
-       if(trim($this->m08_codigo) == null ){ 
+       if(trim((string) $this->m08_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "m08_codigo";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_matmaterconteudomaterial {
          return false;
        }
      }
-     if(trim($this->m08_matmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_matmater"])){ 
+     if(trim((string) $this->m08_matmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_matmater"])){ 
        $sql  .= $virgula." m08_matmater = $this->m08_matmater ";
        $virgula = ",";
-       if(trim($this->m08_matmater) == null ){ 
+       if(trim((string) $this->m08_matmater) == null ){ 
          $this->erro_sql = " Campo Material não informado.";
          $this->erro_campo = "m08_matmater";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_matmaterconteudomaterial {
          return false;
        }
      }
-     if(trim($this->m08_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_unidade"])){ 
+     if(trim((string) $this->m08_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_unidade"])){ 
        $sql  .= $virgula." m08_unidade = $this->m08_unidade ";
        $virgula = ",";
-       if(trim($this->m08_unidade) == null ){ 
+       if(trim((string) $this->m08_unidade) == null ){ 
          $this->erro_sql = " Campo Unidade não informado.";
          $this->erro_campo = "m08_unidade";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_matmaterconteudomaterial {
          return false;
        }
      }
-     if(trim($this->m08_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_quantidade"])){ 
+     if(trim((string) $this->m08_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_quantidade"])){ 
        $sql  .= $virgula." m08_quantidade = $this->m08_quantidade ";
        $virgula = ",";
-       if(trim($this->m08_quantidade) == null ){ 
+       if(trim((string) $this->m08_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade não informado.";
          $this->erro_campo = "m08_quantidade";
          $this->erro_banco = "";
@@ -241,17 +241,17 @@ class cl_matmaterconteudomaterial {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21324,'$this->m08_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m08_codigo"]) || $this->m08_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3840,21324,'".AddSlashes(pg_result($resaco,$conresaco,'m08_codigo'))."','$this->m08_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3840,21324,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m08_codigo'))."','$this->m08_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m08_matmater"]) || $this->m08_matmater != "")
-             $resac = db_query("insert into db_acount values($acount,3840,21325,'".AddSlashes(pg_result($resaco,$conresaco,'m08_matmater'))."','$this->m08_matmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3840,21325,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m08_matmater'))."','$this->m08_matmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m08_unidade"]) || $this->m08_unidade != "")
-             $resac = db_query("insert into db_acount values($acount,3840,21326,'".AddSlashes(pg_result($resaco,$conresaco,'m08_unidade'))."','$this->m08_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3840,21326,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m08_unidade'))."','$this->m08_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m08_quantidade"]) || $this->m08_quantidade != "")
-             $resac = db_query("insert into db_acount values($acount,3840,21327,'".AddSlashes(pg_result($resaco,$conresaco,'m08_quantidade'))."','$this->m08_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3840,21327,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m08_quantidade'))."','$this->m08_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -305,13 +305,13 @@ class cl_matmaterconteudomaterial {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21324,'$m08_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3840,21324,'','".AddSlashes(pg_result($resaco,$iresaco,'m08_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3840,21325,'','".AddSlashes(pg_result($resaco,$iresaco,'m08_matmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3840,21326,'','".AddSlashes(pg_result($resaco,$iresaco,'m08_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3840,21327,'','".AddSlashes(pg_result($resaco,$iresaco,'m08_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3840,21324,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m08_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3840,21325,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m08_matmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3840,21326,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m08_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3840,21327,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m08_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

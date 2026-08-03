@@ -53,7 +53,7 @@ try {
 		case 'getProcesso' :
 
 		$iProcesso = $oParam->iProcesso;			
-		$numero = explode("/",$iProcesso);
+		$numero = explode("/",(string) $iProcesso);
 
 		$p58_numero = $numero[0];
 
@@ -73,7 +73,7 @@ try {
 			$oRetorno->iStatus   = 1;
 			$oRetorno->iProcesso = $p58_numero."/".$p58_ano;
 			$oRetorno->iCodProc  = $p58_codproc;
-			$oRetorno->descr     = urlencode($p58_requer);
+			$oRetorno->descr     = urlencode((string) $p58_requer);
 		  }	else {
 		  	$oRetorno->status  = 2;
 		  }	

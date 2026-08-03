@@ -10,13 +10,11 @@ namespace ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Servicies;
 class GerarArquivoService
 {
     private $filePath;
-    private $header;
     private $handle;
 
-    public function __construct($fileName, $header)
+    public function __construct($fileName, private $header)
     {
         $this->filePath = "tmp/{$fileName}";
-        $this->header = $header;
 
         if (file_exists($this->filePath)) {
             unlink($this->filePath);

@@ -47,11 +47,11 @@ db_app::import("social.cadastrounico.*");
 db_app::import("exceptions.*");
 
 $oGet               = db_utils::postMemory($_GET);
-$aEscolaridades     = explode(",", $oGet->sEscolaridades);
-$aAvaliacoes        = array();
-$aRespostaAvaliacao = array();
-$aFamilias          = array();
-$aCidadaos          = array();
+$aEscolaridades     = explode(",", (string) $oGet->sEscolaridades);
+$aAvaliacoes        = [];
+$aRespostaAvaliacao = [];
+$aFamilias          = [];
+$aCidadaos          = [];
 
 /**
  * Buscamos as avalicoes referentes aos filtros selecionados
@@ -116,7 +116,7 @@ $iTotalRegistros      = 0;
 /**
  * Ordenamos as familias em ordem alfabetica
  */
-uasort($aFamilias, "ordernarFamilias");
+uasort($aFamilias, ordernarFamilias(...));
 
 /**
  * Percorremos as Familias imprimindo os valores solicitados no relatorio
@@ -141,9 +141,9 @@ foreach ($aFamilias as $oFamilia) {
   $oPdf->SetFont('arial', '', 6);
   $oPdf->Cell(20,  $iHeigth, "{$oFamilia->sNIS}",                     "TBRL", 0);
   $oPdf->Cell(20,  $iHeigth, "{$oFamilia->iCodigoFamilia}",           "TBRL", 0);
-  $oPdf->Cell(100, $iHeigth, substr($oFamilia->sResponsavel, 0, 100), "TBRL", 0);
-  $oPdf->Cell(100, $iHeigth, substr($oFamilia->sEndereco, 0, 100),    "LTB",  0);
-  $oPdf->Cell(40,  $iHeigth, substr($oFamilia->sBairro, 0, 40),       "TBRL", 1);
+  $oPdf->Cell(100, $iHeigth, substr((string) $oFamilia->sResponsavel, 0, 100), "TBRL", 0);
+  $oPdf->Cell(100, $iHeigth, substr((string) $oFamilia->sEndereco, 0, 100),    "LTB",  0);
+  $oPdf->Cell(40,  $iHeigth, substr((string) $oFamilia->sBairro, 0, 40),       "TBRL", 1);
   
   $oPdf->SetFont('arial', 'b', 8);
   $oPdf->Cell(200, $iHeigth, "Pessoa Cursando", 1, 0, "C", 1);
@@ -152,7 +152,7 @@ foreach ($aFamilias as $oFamilia) {
   $oPdf->SetFont('arial', '', 6);
   $oPdf->Cell(200,  $iHeigth, "{$oFamilia->sPessoaCursando}", "TBRL", 0);
   foreach ($aRespostaAvaliacao[$oFamilia->iSequencial] as $sResposta) {
-    $oPdf->Cell(80, $iHeigth, substr(urldecode($sResposta->descricaoresposta), 4), "TBRL", 1);
+    $oPdf->Cell(80, $iHeigth, substr(urldecode((string) $sResposta->descricaoresposta), 4), "TBRL", 1);
   }
   $oPdf->ln();
   $oPdf->SetY($oPdf->GetY());
@@ -168,7 +168,7 @@ $oPdf->Cell(40,  $iHeigth, $iTotalRegistros,      "LTB",  1);
  * Funcao para ordenacao das familias
  */
 function ordernarFamilias($aArrayAtual, $aProximoArray){
-  return strcasecmp($aArrayAtual->sResponsavel, $aProximoArray->sResponsavel);
+  return strcasecmp((string) $aArrayAtual->sResponsavel, (string) $aProximoArray->sResponsavel);
 }
 
 $oPdf->Output();

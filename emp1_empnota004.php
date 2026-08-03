@@ -40,8 +40,8 @@ $clempnota = new cl_empnota;
 $clempnotaele = new cl_empnotaele;
 $clempelemento = new cl_empelemento;
 $clempempenho = new cl_empempenho;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if(isset($e69_numemp)){
   $result = $clempempenho->sql_record($clempempenho->sql_query_empnome($e69_numemp,"z01_nome,z01_numcgm")); 
@@ -120,10 +120,10 @@ if(isset($incluir)){
   }
 
   if($sqlerro==false){
-    $arr_dados = split("#",$dados);
+    $arr_dados = preg_split("#\\##m",$dados);
     $tam = count($arr_dados);
     for($i=0; $i<$tam; $i++){
-          $arr_ele = split("-",$arr_dados[$i]);
+          $arr_ele = preg_split("#\\-#m",(string) $arr_dados[$i]);
           $valor = number_format($arr_ele[1],"2",".","");
 	  $elemento = $arr_ele[0];
 

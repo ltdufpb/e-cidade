@@ -34,12 +34,6 @@ define('URL_MENSAGEM_POSICAOESTOQUE', 'patrimonial.material.PosicaoEstoque.');
 class PosicaoEstoque {
 
   /**
-  * Código sequencial da posição
-  * @var integer
-  */
-  private $iCodigo;
-
-  /**
   * Código sequencial do processamento
   * @var integer
   */
@@ -73,7 +67,7 @@ class PosicaoEstoque {
   * Movimentações relacionadas ao item
   * @var array
   */
-  private $aMovimentacoes = array();
+  private $aMovimentacoes = [];
 
   /**
    * Data do processamento
@@ -86,9 +80,11 @@ class PosicaoEstoque {
    * @param integer $iCodigo
    * @throws BusinessException
    */
-  public function __construct($iCodigo = null) {
+  public function __construct(/**
+   * Código sequencial da posição
+   */
+  private $iCodigo = null) {
 
-    $this->iCodigo = $iCodigo;
     if (! empty($this->iCodigo)) {
 
       $oDaoPosicaoEstoque = db_utils::getDao('posicaoestoque');

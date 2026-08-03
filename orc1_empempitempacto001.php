@@ -59,7 +59,7 @@ if ( isset($oPost->incluir) ) {
 
 	$aObjItens = $oJson->decode(str_replace("\\","",$oPost->listaitensemp));
 
-	$aListaEmp = array();
+	$aListaEmp = [];
 
 	$rsConsultaItemEmp = $clpactovalormovempempitem->sql_record($clpactovalormovempempitem->sql_query(null,"*",null," o88_pactovalor = {$oPost->codpacto} "));
         $iLinhasItemEmp    = $clpactovalormovempempitem->numrows;
@@ -217,7 +217,7 @@ if ( isset($oPost->incluir) ) {
 	      			$rsConsultaConv = $clpactovalor->sql_record($clpactovalor->sql_query($oPost->codpacto,"o16_saltes"));
 	      			$oConvenio      = db_utils::fieldsMemory($rsConsultaConv,0);
 
-	        		$aDataPag = explode("-",$oLanc->c70_data);
+	        		$aDataPag = explode("-",(string) $oLanc->c70_data);
 
               if ($aDataPag[0] == 2013){
                 $iContaBird = 21443;
@@ -282,7 +282,7 @@ if ( isset($oPost->incluir) ) {
 
    $rsConsultaItens = $clpactovalormovempempitem->sql_record($clpactovalormovempempitem->sql_query(null,$sCampos,"e62_numemp",$sWhere));
    $iLinhasItens    = $clpactovalormovempempitem->numrows;
-   $aLinhasItens    = array();
+   $aLinhasItens    = [];
 
    if ( $iLinhasItens > 0 ) {
 

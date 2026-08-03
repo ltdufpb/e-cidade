@@ -61,7 +61,7 @@ for ($i = 0;$i < 2;$i++){
   $this->objpdf->text($xcol+128,  $xlin, 'Data :'. date("d-m-Y",db_getsession("DB_datausu")). 'Hora: '.date("H:i:s"));
 
   $this->objpdf->text($xcol+75,$xlin+19,'CNPJ/CPF:');
-  $this->objpdf->text($xcol+90,$xlin+19,db_formatar($this->cgccpf,(strlen($this->cgccpf)<12?'cpf':'cnpj')));
+  $this->objpdf->text($xcol+90,$xlin+19,db_formatar($this->cgccpf,(strlen((string) $this->cgccpf)<12?'cpf':'cnpj')));
 
   $this->objpdf->Setfont('Arial','',6);
 
@@ -100,28 +100,28 @@ for ($i = 0;$i < 2;$i++){
       $this->objpdf->cell(15,3,"Valor",0,1,"R",0);
 
     }
-    if (pg_result($this->recorddadospagto,$ii,"k00_hist") == 918){
+    if (pg_fetch_result($this->recorddadospagto,$ii,"k00_hist") == 918){
 
         $this->obsdescr = "(desconto)";
     }
-    $codtipo = pg_result($this->recorddadospagto,$ii,"codtipo");
-    $valor   = pg_result($this->recorddadospagto,$ii,$this->valor);
+    $codtipo = pg_fetch_result($this->recorddadospagto,$ii,"codtipo");
+    $valor   = pg_fetch_result($this->recorddadospagto,$ii,$this->valor);
     $this->objpdf->setx($xcol+3+$maiscol);
-    $this->objpdf->cell(5,3,trim(pg_result($this->recorddadospagto,$ii,$this->receita)),0,0,"R",0);
-    $this->objpdf->cell(7,3,"(".trim(pg_result($this->recorddadospagto,$ii,$this->receitared)).")",0,0,"R",0);
-    if ( trim(pg_result($this->recorddadospagto,$ii,$this->ddreceita) ) == ''){
-      $this->objpdf->cell(63,3,trim(pg_result($this->recorddadospagto,$ii,$this->dreceita)." ".$this->obsdescr ),0,0,"L",0);
+    $this->objpdf->cell(5,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->receita)),0,0,"R",0);
+    $this->objpdf->cell(7,3,"(".trim(pg_fetch_result($this->recorddadospagto,$ii,$this->receitared)).")",0,0,"R",0);
+    if ( trim(pg_fetch_result($this->recorddadospagto,$ii,$this->ddreceita) ) == ''){
+      $this->objpdf->cell(63,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->dreceita)." ".$this->obsdescr ),0,0,"L",0);
     }else{
-      $this->objpdf->cell(63,3,trim(pg_result($this->recorddadospagto,$ii,$this->ddreceita)." ".$this->obsdescr),0,0,"L",0);
+      $this->objpdf->cell(63,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->ddreceita)." ".$this->obsdescr),0,0,"L",0);
     }
 
-    $this->objpdf->cell(15,3,db_formatar(pg_result($this->recorddadospagto,$ii,$this->valor),'f'),0,1,"R",0);
+    $this->objpdf->cell(15,3,db_formatar(pg_fetch_result($this->recorddadospagto,$ii,$this->valor),'f'),0,1,"R",0);
     if ($valor < 0){
-         $this->totaldesc += pg_result($this->recorddadospagto,$ii,$this->valor);
+         $this->totaldesc += pg_fetch_result($this->recorddadospagto,$ii,$this->valor);
     }else if ($codtipo == 't' and $valor > 0){
-         $this->totalacres  += pg_result($this->recorddadospagto,$ii,$this->valor);
+         $this->totalacres  += pg_fetch_result($this->recorddadospagto,$ii,$this->valor);
     }else{
-       $this->totalrec  += pg_result($this->recorddadospagto,$ii,$this->valor);
+       $this->totalrec  += pg_fetch_result($this->recorddadospagto,$ii,$this->valor);
     }
   }
   $this->objpdf->Roundedrect($xcol,$xlin+71,176,30,2,'DF','1234');
@@ -286,7 +286,7 @@ if ($this->loteamento == true) {
   extract (year from arrecad.k00_dtoper) as k00_ano
   from db_reciboweb
   inner join arrecad on db_reciboweb.k99_numpre = arrecad.k00_numpre and db_reciboweb.k99_numpar = arrecad.k00_numpar
-  where db_reciboweb.k99_numpre_n = " . substr($this->numpre,0,8) . "
+  where db_reciboweb.k99_numpre_n = " . substr((string) $this->numpre,0,8) . "
   ) as x
   ) as y
   ) as z
@@ -320,7 +320,7 @@ if ($this->loteamento == true) {
   $totvlrdesconto = 0;
   $totapagar			= 0;
 
-  for ($reg=0; $reg < pg_numrows($resultrecibo); $reg++) {
+  for ($reg=0; $reg < pg_num_rows($resultrecibo); $reg++) {
     db_fieldsmemory($resultrecibo, $reg);
 
     if(($this->objpdf->gety() > $this->objpdf->h-40) or $reg == 0) {
@@ -332,7 +332,7 @@ if ($this->loteamento == true) {
 
       $nome = $this->prefeitura;
 
-      if(strlen($nome) > 42) {
+      if(strlen((string) $nome) > 42) {
         $TamFonteNome = 8;
       } else {
         $TamFonteNome = 9;
@@ -408,7 +408,7 @@ if ($this->loteamento == true) {
 
   }
 
-  $this->objpdf->cell(88, 5, "TOTAL DE MATRICULAS: " . pg_numrows($resultrecibo) , 0, 0, 'L');
+  $this->objpdf->cell(88, 5, "TOTAL DE MATRICULAS: " . pg_num_rows($resultrecibo) , 0, 0, 'L');
   $this->objpdf->cell(22, 5, db_formatar($totvlrcor, "f", ' ', 20) , 0, 0, 'R');
   $this->objpdf->cell(18, 5, db_formatar($totvlrmul, "f", ' ', 20) , 0, 0, 'R');
   $this->objpdf->cell(18, 5, db_formatar($totvlrjur, "f", ' ', 20) , 0, 0, 'R');

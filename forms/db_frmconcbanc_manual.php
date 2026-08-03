@@ -109,7 +109,7 @@ $sSqlReduz .= "  where contabancaria.db83_sequencial = {$conta} ";
 $rsReduz    = db_query($sSqlReduz);
 
 $sReduzidos = "Não encontrado";
-$aReduzidos = array();
+$aReduzidos = [];
 
 if( $rsReduz && pg_num_rows($rsReduz) > 0 ) {
 
@@ -308,7 +308,7 @@ if (count($aReduzidos) > 0) {
 
         <table border=<?=$borda?> width='100%' >
           <tr>
-	        <td nowrap width='25%' title="<?=@$descricao?>"> <b><?=substr(@$descricao,0,40)?></b> </td>
+	        <td nowrap width='25%' title="<?=@$descricao?>"> <b><?=substr((string) @$descricao,0,40)?></b> </td>
             <td nowrap width='25%' title='Reduzidos: <?=$quais_reduzidos?>'><b>Seq. Conta:</b> <?=@$reduzido?> </td>
           </tr>
         </table>
@@ -322,7 +322,7 @@ if (count($aReduzidos) > 0) {
 
         <table border=<?=$borda?> width='100%' >
           <tr>
-             <td nowrap width='25%' title="<?=@$descricao?>"> <b><?=substr(@$descricao,40,40)?></b> </td>
+             <td nowrap width='25%' title="<?=@$descricao?>"> <b><?=substr((string) @$descricao,40,40)?></b> </td>
             <td nowrap align='right' width='25%'>
 	          <input name="novaconta" type="button" id="novaconta" value="Sair da Conta"        onClick="location.href = 'cai4_alteraconciliacao_manual.php'">
               <input name="esconderaut" type="button" id="esconderaut" value="Esconder"          onClick="js_hideFrame(document.getElementById('mostraraut'),this,'autenticacoes',true);">

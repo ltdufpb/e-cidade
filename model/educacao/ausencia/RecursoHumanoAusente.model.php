@@ -230,7 +230,7 @@ class RecursoHumanoAusente {
   public function getTotalFaltas( DBDate $oDataInicioEfetividade, DBDate $oDataTerminoEfetividade ) {
 
     $aDatasEfetividade          = DBDate::getDatasNoIntervalo( $oDataInicioEfetividade, $oDataTerminoEfetividade );
-    $aDatasEfetividadeFormatada = array();
+    $aDatasEfetividadeFormatada = [];
 
     foreach( $aDatasEfetividade as $oDataEfetividade ) {
       $aDatasEfetividadeFormatada[] = $oDataEfetividade->getDate( DBDate::DATA_PTBR );
@@ -240,7 +240,7 @@ class RecursoHumanoAusente {
     $oDataFimAusencia = $this->getDataFim() != null ? $this->getDataFim() : new DBDate($aDatasEfetividadeFormatada[ $iTotalDatas - 1 ]);
 
     $aDatasAusencia          = DBDate::getDatasNoIntervalo( $this->getDataInicio(), $oDataFimAusencia );
-    $aDatasAusenciaFormatada = array();
+    $aDatasAusenciaFormatada = [];
 
     foreach( $aDatasAusencia as $oDataAusencia ) {
       $aDatasAusenciaFormatada[] = $oDataAusencia->getDate( DBDate::DATA_PTBR );

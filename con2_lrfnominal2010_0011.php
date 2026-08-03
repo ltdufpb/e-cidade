@@ -94,7 +94,7 @@ $sLabelMsg = "Anexo V - Demonstrativo do  Resultado Nominal";
               <td colspan=2 nowrap><b>Período :</b>
                 <?php 
                 $aPeriodos = $oRelatorio->getPeriodos();
-                $aListaPeriodos = array();
+                $aListaPeriodos = [];
                 $aListaPeriodos[0] = "Selecione";
                 foreach ($aPeriodos as $oPeriodo) {
                   $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;

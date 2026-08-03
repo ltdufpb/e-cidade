@@ -104,7 +104,7 @@ if( $db_opcao!=1){
   <tr>
     <td>
       <?php 
-      $chavepri = array ("s126_i_codigo" => @$s126_i_codigo );
+      $chavepri =  ["s126_i_codigo" => @$s126_i_codigo ];
       $cliframe_alterar_excluir->chavepri = $chavepri;
       @$cliframe_alterar_excluir->sql = $clunidadeservicos->sql_query ( "", "*", "s126_i_codigo", "s126_i_unidade = " . ( int )$chavepesquisa );
 
@@ -160,7 +160,7 @@ function js_preenchepesquisa(chave){
   db_iframe_unidadeservicos.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

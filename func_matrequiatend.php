@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matrequi_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatrequi = new cl_matrequi;
 $clmatrequi->rotulo->label("m40_codigo");
 $clmatrequi->rotulo->label("m40_codigo");
@@ -63,7 +63,7 @@ $clmatrequi->rotulo->label("m40_codigo");
               <b>Trazer Requisições de Exercícios Anteriores:</b>
             </td>
             <td>
-              <?php db_select("trazoutrozexercicios", array('n'=>'Não','s'=>'Sim'), true,1); ?>
+              <?php db_select("trazoutrozexercicios", ['n'=>'Não','s'=>'Sim'], true,1); ?>
             </td>
             </td>
           </tr>
@@ -155,7 +155,7 @@ $clmatrequi->rotulo->label("m40_codigo");
             "{$where} {$groupBy} {$having}"
           );
 		    	
-		    	$aRepassa = array();
+		    	$aRepassa = [];
           db_lovrot($sql, 15, "()", "", $funcao_js, null, 'NoMe', $aRepassa, false);
 
         } else {

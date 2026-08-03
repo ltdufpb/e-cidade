@@ -110,7 +110,7 @@ $oRotulo->label("ac16_resumoobjeto");
               <td>
                 <?php
 
-                  $aTiposPublicacao = array(
+                  $aTiposPublicacao = [
                     "" => "Selecione",
                     AcordoEvento::PUBLICACAO_DIARIO_ESTADO             => 'Diário Oficial do Estado',
                     AcordoEvento::PUBLICACAO_INTERNET                  => 'Internet',
@@ -122,7 +122,7 @@ $oRotulo->label("ac16_resumoobjeto");
                     AcordoEvento::PUBLICACAO_NAO_PUBLICADO             => 'Não publicado',
                     EventoLicitacao::PUBLICACAO_SITE_OFICIAL           => 'Site Oficial',
                     EventoLicitacao::PUBLICACAO_CONTRATACOES_PUBLICAS  => 'Portal Nacional de Contratações Públicas'
-                  );
+                  ];
 
                   db_select("publicacao_tipo", $aTiposPublicacao, true,null);
                 ?>

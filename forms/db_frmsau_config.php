@@ -58,7 +58,7 @@ $oRotulo->label("s103_validamicroarea");
           </td>
           <td>
             <?php
-            $x = array( '1' => 'Trazer todos departamentos', '2' => 'Trazer apenas departamento do usuário' );
+            $x = [ '1' => 'Trazer todos departamentos', '2' => 'Trazer apenas departamento do usuário' ];
             db_select( 's103_i_departamentos', $x, true, $db_opcao );
             ?>
           </td>
@@ -69,7 +69,7 @@ $oRotulo->label("s103_validamicroarea");
           </td>
           <td>
             <?php
-            $x = array( 'S' => 'SIM', 'N' => 'NÃO' );
+            $x = [ 'S' => 'SIM', 'N' => 'NÃO' ];
             db_select( 's103_c_emitirfaa', $x, true, $db_opcao );
             ?>
           </td>
@@ -80,7 +80,7 @@ $oRotulo->label("s103_validamicroarea");
           </td>
           <td>
             <?php
-            $x = array( 'S' => 'SIM', 'N' => 'NÃO' );
+            $x = [ 'S' => 'SIM', 'N' => 'NÃO' ];
             db_select( 's103_c_cancelafa', $x, true, $db_opcao );
             ?>
           </td>
@@ -122,7 +122,7 @@ $oRotulo->label("s103_validamicroarea");
           </td>
           <td nowrap >
             <?php
-            $x = array( 'S' => 'SIM', 'N' => 'NÃO' );
+            $x = [ 'S' => 'SIM', 'N' => 'NÃO' ];
             db_select( 's103_c_apareceragenda', $x, true, $db_opcao );
             ?>
           </td>
@@ -133,7 +133,7 @@ $oRotulo->label("s103_validamicroarea");
           </td>
           <td>
             <?php
-            $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+            $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
             db_select( 's103_c_idadeproc', $x, true, $db_opcao );
             ?>
           </td>
@@ -144,7 +144,7 @@ $oRotulo->label("s103_validamicroarea");
           </td>
           <td nowrap >
             <?php
-            $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+            $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
             db_select( 's103_c_servicoproc', $x, true, $db_opcao );
             ?>
           </td>
@@ -165,7 +165,7 @@ $oRotulo->label("s103_validamicroarea");
           </td>
           <td>
             <?php
-            $aX = array( '1' => 'Atendimento', '2' => 'Emissão' );
+            $aX = [ '1' => 'Atendimento', '2' => 'Emissão' ];
             db_select( 's103_i_datahorafaa', $aX, true, 1 );
             ?>
           </td>
@@ -190,7 +190,7 @@ $oRotulo->label("s103_validamicroarea");
           </td>
           <td>
             <?php
-            $x = array( '2' => 'NÃO', '1' => 'SIM' );
+            $x = [ '2' => 'NÃO', '1' => 'SIM' ];
             db_select( 's103_i_todacomp', $x, true, $db_opcao );
             ?>
           </td>
@@ -201,7 +201,7 @@ $oRotulo->label("s103_validamicroarea");
           </td>
           <td>
             <?php
-            $aOpcoes = array( 'f' => 'NÃO', 't' => 'SIM' );
+            $aOpcoes = [ 'f' => 'NÃO', 't' => 'SIM' ];
             db_select( 's103_obrigarcns', $aOpcoes, true, $db_opcao );
             ?>
           </td>
@@ -390,7 +390,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_sau_config.hide();
   <?php
   if( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

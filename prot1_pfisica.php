@@ -42,9 +42,9 @@
 
 		 if(isset($z01_cgccpf) && $z01_cgccpf != ""){
 
-			 if(strlen($z01_cgccpf) == 14){
+			 if(strlen((string) $z01_cgccpf) == 14){
 				 $cpf = "";
-			 }elseif(strlen($z01_cgccpf) == 11){
+			 }elseif(strlen((string) $z01_cgccpf) == 11){
 				 $cpf = $z01_cgccpf;
 			 }else{
 				 $cpf = "";
@@ -69,7 +69,7 @@
 				<?=$LDBtxt29?>
 			</strong>
 			<?php 
-				$x = array("t"=>"SIM","f"=>"NÃO");
+				$x = ["t"=>"SIM","f"=>"NÃO"];
 				//db_select('municipio',$x,true,$db_opcao,'onChange="document.form1.submit()"');
 				db_select('municipio',$x,true,$db_opcao,'onChange="js_zerac();"');
 			?>
@@ -166,12 +166,12 @@
           </td>
           <td nowrap title="<?=$Tz01_estciv?>">
             <?php 
-							$x = array("1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado");
+							$x = ["1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado"];
 							db_select('z01_estciv',$x,true,$db_opcao);
 						?>
             <?=$Lz01_sexo?>
             <?php 
-							$sex = array("M"=>"Masculino","F"=>"Feminino");
+							$sex = ["M"=>"Masculino","F"=>"Feminino"];
 							db_select('z01_sexo',$sex,true,$db_opcao);
 						?>
           </td>
@@ -222,7 +222,7 @@
 					</td>
 					<td nowrap title="<?=$Tz01_estciv?>">
 					  <?php 
-						  $x = array("1"=>"Brasileira","2"=>"Estrangeira");
+						  $x = ["1"=>"Brasileira","2"=>"Estrangeira"];
 						  db_select('z01_nacion',$x,true,$db_opcao);
 					  ?>
 				  </td>
@@ -252,7 +252,7 @@
 					  ?>
 						<?=@$Lz01_categoria?>
 					  <?php 
-						  $y = array(""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","AB"=>"AB","AC"=>"AC","AD"=>"AD","AE"=>"AE");
+						  $y = [""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","AB"=>"AB","AC"=>"AC","AD"=>"AD","AE"=>"AE"];
 						  db_select('z01_categoria',$y,true,$db_opcao);
 					  ?>
 					</td>

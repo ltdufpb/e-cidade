@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("cadtipo"=>"Grupo de débito","cadtipoorigem"=>"Origens","cadtipoitem"=>"Itens relacionados"); 
-	 $clcriaabas->sizecampo = array("cadtipo"=>"30","cadtipoorigem"=>"30","cadtipoitem"=>"30"); 
-	 $clcriaabas->src = array("cadtipo"=>"cai1_cadtipo006.php");
-	 $clcriaabas->disabled   =  array("cadtipoorigem"=>"true","cadtipoitem"=>"true"); 
+	 $clcriaabas->identifica = ["cadtipo"=>"Grupo de débito","cadtipoorigem"=>"Origens","cadtipoitem"=>"Itens relacionados"]; 
+	 $clcriaabas->sizecampo = ["cadtipo"=>"30","cadtipoorigem"=>"30","cadtipoitem"=>"30"]; 
+	 $clcriaabas->src = ["cadtipo"=>"cai1_cadtipo006.php"];
+	 $clcriaabas->disabled   =  ["cadtipoorigem"=>"true","cadtipoitem"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

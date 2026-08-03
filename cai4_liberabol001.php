@@ -39,8 +39,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("k11_data");
 $db_opcao = 1;
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if(isset($liberar) || isset($deslibera)){
   db_inicio_transacao();

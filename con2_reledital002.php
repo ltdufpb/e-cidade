@@ -40,10 +40,10 @@ $clcontricalc = new cl_contricalc;
 $clcontlotv = new cl_contlotv;
 $cleditalserv = new cl_editalserv;
 $cleditalrua = new cl_editalrua;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 //db_postmemory($HTTP_GET_VARS,2);exit;
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 $result= $cleditalrua->sql_record($cleditalrua->sql_query("","d01_numero,d02_contri,j14_nome,d01_data,d01_perc,d02_valorizacao","j14_nome","d02_codedi=$edital"));
 
@@ -119,13 +119,13 @@ for($i=0;$i<$num;$i++) {
     inner join projmelhoriasmatric on d41_codigo = d11_codproj and d41_matric = j01_matric 
     where d05_contri = $d02_contri";
     $resultsoma = db_query($sqlsoma) or die($sqlsoma);
-    if (pg_numrows($resultsoma) == 0) {
+    if (pg_num_rows($resultsoma) == 0) {
       $total_testada = 0;
     } else {
       db_fieldsmemory($resultsoma, 0);
     }
     
-    $numrows01=pg_numrows($result01);
+    $numrows01=pg_num_rows($result01);
     $linha = 60;
     if($pri01=="false"){// testa quando e uma nova contribucao
       
@@ -348,7 +348,7 @@ for($i=0;$i<$num;$i++) {
         }
         
         $pdf->SetFont('Times','',6);
-        $pdf->Cell(60,4,substr($z01_nome,0,35),1,0,"L",0);
+        $pdf->Cell(60,4,substr((string) $z01_nome,0,35),1,0,"L",0);
         $pdf->Cell(16,4,$j01_matric,1,0,"C",0);
         $pdf->Cell(10,4,$j34_setor,1,0,"C",0);
         $pdf->Cell(12,4,$j34_quadra,1,0,"C",0);

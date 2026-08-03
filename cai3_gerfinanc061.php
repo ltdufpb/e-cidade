@@ -37,7 +37,7 @@ $clnotificacao = new cl_notificacao;
 $clrotulo = new rotulocampo;
 $clrotulo->label("k50_notifica");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if(isset($db_datausu)){
   if(!checkdate(substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4))){
@@ -131,9 +131,9 @@ if(!isset($notifica)){
 	 ";
   $result = db_query($sql);
 
-  if(pg_numrows($result)>0){
+  if(pg_num_rows($result)>0){
     ?>
-    <form name="form1" method="post" action="cai3_gerfinanc061.php?<?=$HTTP_SERVER_VARS['QUERY_STRING']?>">
+    <form name="form1" method="post" action="cai3_gerfinanc061.php?<?=$_SERVER['QUERY_STRING']?>">
    <table>
     <tr>
        <td nowrap title="<?=@$Tk50_notifica?>"><?=$Lk50_notifica?></td>
@@ -149,7 +149,7 @@ if(!isset($notifica)){
 
  </form>
     <?php 
-    $repassa = array("notifica"=>$notifica);
+    $repassa = ["notifica"=>$notifica];
     db_lovrot($sql,50,"()","","","","NoMe",$repassa);
   }
 }

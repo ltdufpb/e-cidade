@@ -11,11 +11,8 @@ use stdClass;
 class ImplantacaoConciliacaoBancariaController extends Controller
 {
 
-    private $service;
-
-    public function __construct(ImplantacaoConciliacaoBancariaService $service)
+    public function __construct(private readonly ImplantacaoConciliacaoBancariaService $service)
     {
-        $this->service = $service;
     }
 
     public function contasPendentes(Request $request)

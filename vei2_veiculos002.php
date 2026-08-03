@@ -40,7 +40,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("ve06_veiccadcomb");
 $clrotulo->label("ve40_veiccadcentral");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $where=" ve36_coddepto = " . db_getsession("DB_coddepto");
 if ($tipo!=""){
@@ -146,7 +146,7 @@ for($x = 0; $x < $clveiculos->numrows;$x++){
    $result_combustiveis = $clveiculoscomb->sql_record($clveiculoscomb->sql_query(null,"ve06_padrao,ve26_descr",null,"ve06_veiculos = $ve01_codigo"));
    if ($clveiculoscomb->numrows > 0){
      $virgula   = "";
-     $vet_comb  = array(array("descr","padrao"));
+     $vet_comb  = [["descr","padrao"]];
      $cont_comb = 0;
      for($xx = 0; $xx < $clveiculoscomb->numrows; $xx++){
         db_fieldsmemory($result_combustiveis,$xx);
@@ -179,8 +179,8 @@ for($x = 0; $x < $clveiculos->numrows;$x++){
 
         $virgula = ", ";
      }
-     if (strlen(trim($valor)) > 20){
-       $valor = substr(trim($valor),0,20)."...";
+     if (strlen(trim((string) $valor)) > 20){
+       $valor = substr(trim((string) $valor),0,20)."...";
      }
    } else {
     $valor = "Nenhum combústivel cadastrado.";
@@ -191,7 +191,7 @@ for($x = 0; $x < $clveiculos->numrows;$x++){
    $pdf->cell(10,$alt,$ve01_anofab,0,0,"C",$p);
    $pdf->cell(10,$alt,$ve01_anomod,0,0,"C",$p);
    $pdf->cell(35,$alt,substr($cp05_localidades,0,26),0,0,"L",$p);
-   $pdf->cell(35,$alt,substr($descrdepto,0,26),0,0,"L",$p);
+   $pdf->cell(35,$alt,substr((string) $descrdepto,0,26),0,0,"L",$p);
    if ($ve01_ativo=="f"){
    	$ativo="Não";
    }else{

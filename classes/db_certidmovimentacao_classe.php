@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE certidmovimentacao
 class cl_certidmovimentacao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $v32_sequencial = 0;
-   var $v32_certidcartorio = 0;
-   var $v32_datamovimentacao_dia = null;
-   var $v32_datamovimentacao_mes = null;
-   var $v32_datamovimentacao_ano = null;
-   var $v32_datamovimentacao = null;
-   var $v32_tipo = 0;
+   public $v32_sequencial = 0;
+   public $v32_certidcartorio = 0;
+   public $v32_datamovimentacao_dia = null;
+   public $v32_datamovimentacao_mes = null;
+   public $v32_datamovimentacao_ano = null;
+   public $v32_datamovimentacao = null;
+   public $v32_tipo = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  v32_sequencial = int4 = Código da Movimentação
                  v32_certidcartorio = int4 = Código Certidão Cartório
                  v32_datamovimentacao = date = Data Movimentação
                  v32_tipo = int4 = Tipo Movimentação
                  ";
    //funcao construtor da classe
-   function cl_certidmovimentacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidmovimentacao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -129,10 +129,10 @@ class cl_certidmovimentacao {
          $this->erro_status = "0";
          return false;
        }
-       $this->v32_sequencial = pg_result($result,0,0);
+       $this->v32_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from certidmovimentacao_v32_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v32_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v32_sequencial)){
          $this->erro_sql = " Campo v32_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_certidmovimentacao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Movimentação de Certidões ($this->v32_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Movimentação de Certidões já Cadastrado";
@@ -195,13 +195,13 @@ class cl_certidmovimentacao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21232,'$this->v32_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3824,21232,'','".AddSlashes(pg_result($resaco,0,'v32_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3824,21233,'','".AddSlashes(pg_result($resaco,0,'v32_certidcartorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3824,21234,'','".AddSlashes(pg_result($resaco,0,'v32_datamovimentacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3824,21235,'','".AddSlashes(pg_result($resaco,0,'v32_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3824,21232,'','".AddSlashes(pg_fetch_result($resaco,0,'v32_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3824,21233,'','".AddSlashes(pg_fetch_result($resaco,0,'v32_certidcartorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3824,21234,'','".AddSlashes(pg_fetch_result($resaco,0,'v32_datamovimentacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3824,21235,'','".AddSlashes(pg_fetch_result($resaco,0,'v32_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -211,10 +211,10 @@ class cl_certidmovimentacao {
       $this->atualizacampos();
      $sql = " update certidmovimentacao set ";
      $virgula = "";
-     if(trim($this->v32_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v32_sequencial"])){
+     if(trim((string) $this->v32_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v32_sequencial"])){
        $sql  .= $virgula." v32_sequencial = $this->v32_sequencial ";
        $virgula = ",";
-       if(trim($this->v32_sequencial) == null ){
+       if(trim((string) $this->v32_sequencial) == null ){
          $this->erro_sql = " Campo Código da Movimentação não informado.";
          $this->erro_campo = "v32_sequencial";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_certidmovimentacao {
          return false;
        }
      }
-     if(trim($this->v32_certidcartorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v32_certidcartorio"])){
+     if(trim((string) $this->v32_certidcartorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v32_certidcartorio"])){
        $sql  .= $virgula." v32_certidcartorio = $this->v32_certidcartorio ";
        $virgula = ",";
-       if(trim($this->v32_certidcartorio) == null ){
+       if(trim((string) $this->v32_certidcartorio) == null ){
          $this->erro_sql = " Campo Código Certidão Cartório não informado.";
          $this->erro_campo = "v32_certidcartorio";
          $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_certidmovimentacao {
          return false;
        }
      }
-     if(trim($this->v32_datamovimentacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v32_datamovimentacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v32_datamovimentacao_dia"] !="") ){
+     if(trim((string) $this->v32_datamovimentacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v32_datamovimentacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v32_datamovimentacao_dia"] !="") ){
        $sql  .= $virgula." v32_datamovimentacao = '$this->v32_datamovimentacao' ";
        $virgula = ",";
-       if(trim($this->v32_datamovimentacao) == null ){
+       if(trim((string) $this->v32_datamovimentacao) == null ){
          $this->erro_sql = " Campo Data Movimentação não informado.";
          $this->erro_campo = "v32_datamovimentacao_dia";
          $this->erro_banco = "";
@@ -253,7 +253,7 @@ class cl_certidmovimentacao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v32_datamovimentacao_dia"])){
          $sql  .= $virgula." v32_datamovimentacao = null ";
          $virgula = ",";
-         if(trim($this->v32_datamovimentacao) == null ){
+         if(trim((string) $this->v32_datamovimentacao) == null ){
            $this->erro_sql = " Campo Data Movimentação não informado.";
            $this->erro_campo = "v32_datamovimentacao_dia";
            $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_certidmovimentacao {
          }
        }
      }
-     if(trim($this->v32_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v32_tipo"])){
+     if(trim((string) $this->v32_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v32_tipo"])){
        $sql  .= $virgula." v32_tipo = $this->v32_tipo ";
        $virgula = ",";
-       if(trim($this->v32_tipo) == null ){
+       if(trim((string) $this->v32_tipo) == null ){
          $this->erro_sql = " Campo Tipo Movimentação não informado.";
          $this->erro_campo = "v32_tipo";
          $this->erro_banco = "";
@@ -291,17 +291,17 @@ class cl_certidmovimentacao {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21232,'$this->v32_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v32_sequencial"]) || $this->v32_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3824,21232,'".AddSlashes(pg_result($resaco,$conresaco,'v32_sequencial'))."','$this->v32_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3824,21232,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v32_sequencial'))."','$this->v32_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v32_certidcartorio"]) || $this->v32_certidcartorio != "")
-             $resac = db_query("insert into db_acount values($acount,3824,21233,'".AddSlashes(pg_result($resaco,$conresaco,'v32_certidcartorio'))."','$this->v32_certidcartorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3824,21233,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v32_certidcartorio'))."','$this->v32_certidcartorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v32_datamovimentacao"]) || $this->v32_datamovimentacao != "")
-             $resac = db_query("insert into db_acount values($acount,3824,21234,'".AddSlashes(pg_result($resaco,$conresaco,'v32_datamovimentacao'))."','$this->v32_datamovimentacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3824,21234,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v32_datamovimentacao'))."','$this->v32_datamovimentacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v32_tipo"]) || $this->v32_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,3824,21235,'".AddSlashes(pg_result($resaco,$conresaco,'v32_tipo'))."','$this->v32_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3824,21235,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v32_tipo'))."','$this->v32_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -355,13 +355,13 @@ class cl_certidmovimentacao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21232,'$v32_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3824,21232,'','".AddSlashes(pg_result($resaco,$iresaco,'v32_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3824,21233,'','".AddSlashes(pg_result($resaco,$iresaco,'v32_certidcartorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3824,21234,'','".AddSlashes(pg_result($resaco,$iresaco,'v32_datamovimentacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3824,21235,'','".AddSlashes(pg_result($resaco,$iresaco,'v32_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3824,21232,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v32_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3824,21233,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v32_certidcartorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3824,21234,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v32_datamovimentacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3824,21235,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v32_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

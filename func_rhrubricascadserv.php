@@ -33,8 +33,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhrubricas_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhrubricas = new cl_rhrubricas;
 $clrhrubricas->rotulo->label("rh27_rubric");
 $clrhrubricas->rotulo->label("rh27_descr");
@@ -45,20 +45,20 @@ $usuario = UsuarioSistemaRepository::getPorCodigo(db_getsession('DB_id_usuario')
 $instituicao = InstituicaoRepository::getInstituicaoSessao();
 
 $dao = new cl_rhrubricas();
-$where = array();
+$where = [];
 // agora por default devemos validar as rubricas configuradas por usuário se houver.
 // Se não devemos buscar todas as rubricas
 if ($service->possuiConfiguracao($usuario, $instituicao)) {
     $dao = new cl_rubricasusuario();
-    $where = array(
+    $where = [
         "rh219_usuario = {$usuario->getCodigo()}",
         "rh219_instituicao = {$instituicao->getCodigo()}"
-    );
+    ];
 }
 
 if (isset($_GET['naoFiltraUsuario']) && $_GET['naoFiltraUsuario '] == 'true') {
     $dao = new cl_rhrubricas();
-    $where = array();
+    $where = [];
 }
 
 $where[] = "rh27_instit = {$instituicao->getCodigo()}";
@@ -107,7 +107,7 @@ $where[] = "rh27_instit = {$instituicao->getCodigo()}";
              if(!isset($opcao_bloq)){
              	$opcao_bloq = 1;
              }
-             $arr_opcao = array("i"=>"Todos","t"=>"Ativos","f"=>"Inativos");
+             $arr_opcao = ["i"=>"Todos","t"=>"Ativos","f"=>"Inativos"];
              db_select('opcao',$arr_opcao,true,$opcao_bloq); 
              ?>
              </td>
@@ -125,7 +125,7 @@ $where[] = "rh27_instit = {$instituicao->getCodigo()}";
           $where[] = " rh27_ativo='$opcao' ";
       }
 
-      $chave_rh27_descr = addslashes($chave_rh27_descr);
+      $chave_rh27_descr = addslashes((string) $chave_rh27_descr);
 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -142,7 +142,7 @@ $where[] = "rh27_instit = {$instituicao->getCodigo()}";
               $where[] = " rh27_descr like '{$chave_rh27_descr}%' ";
         }
 
-          $sql = $dao->sqlRubricas($campos, $where, array('rh27_rubric'));
+          $sql = $dao->sqlRubricas($campos, $where, ['rh27_rubric']);
         if( isset($chave_rh27_descr) ){
           $chave_rh27_descr = str_replace("\\", "", $chave_rh27_descr);
         }

@@ -28,7 +28,7 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 ?>
 <html>
 <head>
@@ -62,9 +62,9 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 	                     from disrec
 						      inner join tabrec on k00_receit = k02_codigo
 				    	 where codcla = $codcla");
-	  if(pg_numrows($result)!=0){
+	  if(pg_num_rows($result)!=0){
         $totalvlr = 0;
-	    for($i=0;$i<pg_numrows($result);$i++){
+	    for($i=0;$i<pg_num_rows($result);$i++){
 		  db_fieldsmemory($result,$i);
 		  $totalvlr += $vlrrec;
 		  ?>

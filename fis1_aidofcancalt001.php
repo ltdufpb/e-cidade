@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_aidofcanc_classe.php"));
 include(modification("classes/db_aidof_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $claidofcanc = new cl_aidofcanc;
 $claidof = new cl_aidof;
 $db_opcao = 1;

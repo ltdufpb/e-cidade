@@ -29,15 +29,15 @@ class Formulario extends GenericController implements ResourceInterface {
         }
 
         $dados = new \stdClass();
-        $dados->fields = array();
-        $dados->respostas =array();
+        $dados->fields = [];
+        $dados->respostas =[];
         $campoId  = new \stdClass();
         $campoId->identificador = "id_grupo_resposta";
         $campoId->descricao = "Resposta";
         $campoId->tipo = 1;
         $dados->fields[] = $campoId;
         $iColunas = 1;
-        $listaColunas = array();
+        $listaColunas = [];
         $filtrarPorInstituicao = false;
 
         foreach ($formulario->getPerguntasIdentificadoras() as $perguntaIdentificadora) {
@@ -62,7 +62,7 @@ class Formulario extends GenericController implements ResourceInterface {
 
         $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
 
-        $aWhere   = array("db101_sequencial = {$formulario->getCodigo()}");
+        $aWhere   = ["db101_sequencial = {$formulario->getCodigo()}"];
         if ($this->filters->has("filtro")) {
             $filtro = $this->filters->get("filtro");
 
@@ -120,7 +120,7 @@ class Formulario extends GenericController implements ResourceInterface {
 
                 $valor = $valorResposta->getValor();
                 $pergunta = $valorResposta->getPergunta();
-                if (in_array($pergunta->getTipoResposta(), array(1,3))) {
+                if (in_array($pergunta->getTipoResposta(), [1,3])) {
                     $valor = $valorResposta->getOpcao()->getDescricao();
                 }
                 if ($valorResposta->getPergunta()->getIdentificador() == '') {
@@ -148,7 +148,7 @@ class Formulario extends GenericController implements ResourceInterface {
 
                 $identificador = $perguntasIdentificadoras[0]->getIdentificador();
                 if (isset($atual->{$identificador})) {
-                    return strcasecmp($atual->{$identificador}, $anterior->{$identificador});
+                    return strcasecmp((string) $atual->{$identificador}, (string) $anterior->{$identificador});
                 }
                 return 1;
             });
@@ -170,12 +170,12 @@ class Formulario extends GenericController implements ResourceInterface {
 
         if (is_array($tags) && count($tags) > 0) {
             if (!$invert) {
-                return preg_replace('@<(?!(?:'. implode('|', $tags) .')\b)(\w+)\b.*?>.*?</\1>@si', '', $text);
+                return preg_replace('@<(?!(?:'. implode('|', $tags) .')\b)(\w+)\b.*?>.*?</\1>@si', '', (string) $text);
             } else {
-                return preg_replace('@<('. implode('|', $tags) .')\b.*?>.*?</\1>@si', '', $text);
+                return preg_replace('@<('. implode('|', $tags) .')\b.*?>.*?</\1>@si', '', (string) $text);
             }
         } elseif (!$invert) {
-            return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
+            return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', (string) $text);
         }
 
         return $text;

@@ -179,11 +179,11 @@ if(isset($db_opcaoal)){
           </td>
           <td>
             <?php
-              $aTipos = array(
+              $aTipos = [
                   VeiculoManutencaoItem::TIPO_SERVICO_PECA => "Peça",
                   VeiculoManutencaoItem::TIPO_SERVICO_MAO_DE_OBRA => "Mão de Obra",
                   VeiculoManutencaoItem::TIPO_SERVICO_LAVAGEM => "Lavagem"
-                );
+                ];
 
               db_select("ve63_tipoitem", $aTipos, true, $db_opcao);
             ?>
@@ -220,7 +220,7 @@ if(isset($db_opcaoal)){
     <div style="margin-top: 15px;">
       <?php
 
-        $chavepri = array("ve63_codigo" => (!empty($ve63_codigo) ? $ve63_codigo : ''));
+        $chavepri = ["ve63_codigo" => (!empty($ve63_codigo) ? $ve63_codigo : '')];
 
         $cliframe_alterar_excluir->chavepri      = $chavepri;
         $cliframe_alterar_excluir->sql           = $clveicmanutitem->sql_query( null,

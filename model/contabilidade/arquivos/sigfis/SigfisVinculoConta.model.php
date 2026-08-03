@@ -36,7 +36,7 @@ class SigfisVinculoConta {
 
   static $oInstance;
    
-  protected $aListaContas = array();
+  protected $aListaContas = [];
   
   /**
    * método construtor

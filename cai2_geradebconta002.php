@@ -49,7 +49,7 @@ $cldb_config = new cl_db_config;
 $clrotulo = new rotulocampo;
 $clrotulo->label("d72_data");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //echo "formatoArq = $formatoArq .... linhasBranco= $linhasBranco"; exit;
 $instit = db_getsession("DB_instit");
 
@@ -85,14 +85,14 @@ $jaexiste = 0;
 //$resultverifica = pg_exec($sqlverifica);
 //if (pg_numrows($resultverifica) > 0) {
 if (1==0) {
-  $d72_conteudo = pg_result($resultverifica, 0, "d72_conteudo");
+  $d72_conteudo = pg_fetch_result($resultverifica, 0, "d72_conteudo");
   
   die("x: $d72_conteudo\nx");
   exit;
   
   db_fieldsmemory($resultverifica, 0);
   
-  $processados = pg_numrows($resultverifica);
+  $processados = pg_num_rows($resultverifica);
   
   $jaexiste = 1;
   
@@ -116,7 +116,7 @@ if (1==0) {
 
   $resultarretipo = pg_query($sqlarretipo);
 
-  if(pg_numrows($resultarretipo) > 0) {
+  if(pg_num_rows($resultarretipo) > 0) {
     db_fieldsmemory($resultarretipo, 0);
   } else {
     $k00_tipoagrup = 0;
@@ -249,7 +249,7 @@ if (1==0) {
   $resultprinc = pg_exec($sqlprinc) or die($sqlprinc);
   //db_criatabela($resultprinc);
   //die();
-  if ($resultprinc == false or pg_numrows($resultprinc) == 0) {
+  if ($resultprinc == false or pg_num_rows($resultprinc) == 0) {
     $erro = true;
     $descricao_erro = "Não existem registros a processar!";
   } else {
@@ -258,8 +258,8 @@ if (1==0) {
     $resultini = pg_exec($sqlini) or die($sqlini);
     
     $resultmunic = pg_exec("select nomeinst, nomedebconta from db_config where codigo = " . db_getsession("DB_instit"));
-    $nomeinst = pg_result($resultmunic,0);
-    $munic    = pg_result($resultmunic,1);
+    $nomeinst = pg_fetch_result($resultmunic,0);
+    $munic    = pg_fetch_result($resultmunic,1);
     
     $data =  "$d72_data_ano-$d72_data_mes-$d72_data_dia";
     
@@ -272,7 +272,7 @@ if (1==0) {
 
     $resultparam = pg_exec($sqlparam) or die($sqlparam);
 
-    if (pg_numrows($resultparam) > 0) {
+    if (pg_num_rows($resultparam) > 0) {
       db_fieldsmemory($resultparam, 0);
       
       $nextdebcontaarquivo = "select nextval('debcontaarquivo_d72_codigo_seq') as debcontaarquivo";
@@ -281,7 +281,7 @@ if (1==0) {
       
       $ext = ($banco == 237) ? '.DA' : '.REM';
       //$arqgerado = "tmp/debconta_" . str_pad($banco, 3, "0", STR_PAD_LEFT) . "_nsa_" . str_pad($d62_ultimonsa, 10, "0", STR_PAD_LEFT) . "_" . date("Y-m-d_His",db_getsession("DB_datausu")) . ".txt";
-      $arqgerado = "tmp/" . str_pad($banco, 3, "0", STR_PAD_LEFT) . str_pad($d62_ultimonsa, 5, "0", STR_PAD_LEFT) . $ext;
+      $arqgerado = "tmp/" . str_pad((string) $banco, 3, "0", STR_PAD_LEFT) . str_pad((string) $d62_ultimonsa, 5, "0", STR_PAD_LEFT) . $ext;
 
       $fd = fopen($arqgerado,'w+');
       $linhas = "";
@@ -326,12 +326,12 @@ if (1==0) {
       
       $linhas .= "A";
       $linhas .= "1";
-      $linhas .= str_pad(substr($d62_convenio,0,20), 20, " ", STR_PAD_RIGHT);
+      $linhas .= str_pad(substr((string) $d62_convenio,0,20), 20, " ", STR_PAD_RIGHT);
       $linhas .= str_pad(substr($nomeinst,0,20), 20, " ", STR_PAD_RIGHT);
-      $linhas .= str_pad($banco, 3, "0", STR_PAD_LEFT);
-      $linhas .= str_pad(substr($db90_descr,0,20), 20);
+      $linhas .= str_pad((string) $banco, 3, "0", STR_PAD_LEFT);
+      $linhas .= str_pad(substr((string) $db90_descr,0,20), 20);
       $linhas .= date("Ymd",db_getsession("DB_datausu"));
-      $linhas .= str_pad($d62_ultimonsa, 6, "0", STR_PAD_LEFT);
+      $linhas .= str_pad((string) $d62_ultimonsa, 6, "0", STR_PAD_LEFT);
       $linhas .= "04";
       $linhas .= "DEBITO AUTOMATICO";
       $linhas .= str_repeat(" ",52);
@@ -344,7 +344,7 @@ if (1==0) {
       
       $valortotal = 0;
       
-      $numrowsprinc = pg_numrows($resultprinc);
+      $numrowsprinc = pg_num_rows($resultprinc);
       for ($i = 0; $i < $numrowsprinc; $i++) {
         db_fieldsmemory($resultprinc, $i);
         
@@ -369,8 +369,8 @@ if (1==0) {
         
         $linhas .= str_pad(trim($d63_idempresa), 25, " ", STR_PAD_RIGHT);
         
-        $linhas .= str_pad(trim($d63_agencia), 4, "0", STR_PAD_LEFT);
-        $linhas .= str_pad(trim($d63_conta),  14, " ", STR_PAD_RIGHT);
+        $linhas .= str_pad(trim((string) $d63_agencia), 4, "0", STR_PAD_LEFT);
+        $linhas .= str_pad(trim((string) $d63_conta),  14, " ", STR_PAD_RIGHT);
         
         if ($k00_dtvenc < $data) {
           $data_debito = $data;
@@ -416,7 +416,7 @@ if (1==0) {
         $linhas .= "03";
         
         // VERSAO - NUMPRE - NUMPAR - MATRIC - CODIGO_PEDIDO
-        $linhas .= str_pad("001-" . str_pad($k00_numpre, 8, "0", STR_PAD_LEFT) . "-" . str_pad($k00_numpar, 3, "0", STR_PAD_LEFT) . "-" . str_pad($d68_matric, 10, "0", STR_PAD_LEFT) . "-" . str_pad($d68_codigo, 10, "0", STR_PAD_LEFT), 60, " ", STR_PAD_RIGHT);
+        $linhas .= str_pad("001-" . str_pad((string) $k00_numpre, 8, "0", STR_PAD_LEFT) . "-" . str_pad((string) $k00_numpar, 3, "0", STR_PAD_LEFT) . "-" . str_pad((string) $d68_matric, 10, "0", STR_PAD_LEFT) . "-" . str_pad((string) $d68_codigo, 10, "0", STR_PAD_LEFT), 60, " ", STR_PAD_RIGHT);
         
         $linhas .= str_repeat(" ", 20);
         $linhas .= substr($tipomov,0,1);
@@ -462,7 +462,7 @@ if (1==0) {
       }
       
       $linhas .= "Z";
-      $linhas .= str_pad(pg_numrows($resultprinc) + 2, 6, "0", STR_PAD_LEFT);
+      $linhas .= str_pad((string) (pg_num_rows($resultprinc) + 2), 6, "0", STR_PAD_LEFT);
       $linhas .= str_pad(trim(db_formatar($valortotal, 'valsemform', '0', 17)), 17, "0", STR_PAD_LEFT);
       $linhas .= str_repeat(" ", 126);
      
@@ -494,7 +494,7 @@ if (1==0) {
       $sqlfim = "commit;";
       $resultfim = pg_exec($sqlfim) or die($sqlfim);
       
-      $processados = pg_numrows($resultprinc);
+      $processados = pg_num_rows($resultprinc);
       
     }
     
@@ -537,7 +537,7 @@ function busca_Valores_Recibo ( $iNumNov ) {
     $sSqlValores = "select sum(k00_valor) as valores from recibopaga where k00_numnov = $iNumNov";
 
     $rsValores   = db_query($sSqlValores) or die( $sSqlBuscaNumNov);
-    $iRetorno = pg_result($rsValores,0,'valores');
+    $iRetorno = pg_fetch_result($rsValores,0,'valores');
     return  $iRetorno;
 
 

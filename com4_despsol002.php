@@ -38,7 +38,7 @@ include(modification("classes/db_protparam_classe.php"));
 include(modification("classes/db_solicita_classe.php"));
 include(modification("classes/db_solicitemprot_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprocandamint = new cl_procandamint;
 $clprocandamintusu = new cl_procandamintusu;
 $clprotprocesso = new cl_protprocesso;
@@ -52,7 +52,7 @@ $db_botao = true;
 $sqlerro=false;
 if(isset($incluir)){
   db_inicio_transacao();  
-  $dados=split("#",$chaves);
+  $dados=preg_split("#\\##m",$chaves);
   for($w=0;$w<count($dados);$w++){
   	  $result_proc=$clsolicitemprot->sql_record($clsolicitemprot->sql_query_file(null,"*",null," pc49_solicitem =".$dados[$w]));
   	  db_fieldsmemory($result_proc,0);

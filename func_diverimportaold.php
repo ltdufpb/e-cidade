@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_diverimportaold_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldiverimportaold = new cl_diverimportaold;
 $cldiverimportaold->rotulo->label("dv13_sequencial");
 $cldiverimportaold->rotulo->label("dv13_sequencial");
@@ -98,9 +98,9 @@ $cldiverimportaold->rotulo->label("dv13_sequencial");
         }else{
            $sql = $cldiverimportaold->sql_query("",$campos,"dv13_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_dv13_sequencial)){
-          $repassa = array("chave_dv13_sequencial"=>$chave_dv13_sequencial,"chave_dv13_sequencial"=>$chave_dv13_sequencial);
+          $repassa = ["chave_dv13_sequencial"=>$chave_dv13_sequencial,"chave_dv13_sequencial"=>$chave_dv13_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

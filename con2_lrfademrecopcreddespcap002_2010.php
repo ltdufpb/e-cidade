@@ -343,9 +343,9 @@ if (!isset($lNaoGeraPDF)) {
   
   if ($iNroLinhaNota > 0) {
     $oNota = db_utils::fieldsMemory($rsNotas,0);
-    notasExplicativas(&$pdf,25,$oNota->o42_periodo,190);
+    notasExplicativas($pdf,25,$oNota->o42_periodo,190);
   } else {
-    notasExplicativas(&$pdf,25,'1B',190);  
+    notasExplicativas($pdf,25,'1B',190);  
   }
   
   
@@ -354,7 +354,7 @@ if (!isset($lNaoGeraPDF)) {
   
   $pdf->Ln($iAlt);
   
-  assinaturas(&$pdf,&$classinatura,'LRF');
+  assinaturas($pdf,$classinatura,'LRF');
   
   $pdf->Output();
 }

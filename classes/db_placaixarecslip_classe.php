@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE placaixarecslip
 class cl_placaixarecslip { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k110_sequencial = 0; 
-   var $k110_placaixarec = 0; 
-   var $k110_slip = 0; 
+   public $k110_sequencial = 0; 
+   public $k110_placaixarec = 0; 
+   public $k110_slip = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k110_sequencial = int4 = Sequencial 
                  k110_placaixarec = int4 = Planhilha 
                  k110_slip = int4 = SLIP 
                  ";
    //funcao construtor da classe 
-   function cl_placaixarecslip() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("placaixarecslip"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_placaixarecslip {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k110_sequencial = pg_result($result,0,0); 
+       $this->k110_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from placaixarecslip_k110_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k110_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k110_sequencial)){
          $this->erro_sql = " Campo k110_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_placaixarecslip {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "placaixarecslip ($this->k110_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "placaixarecslip já Cadastrado";
@@ -166,12 +166,12 @@ class cl_placaixarecslip {
      $resaco = $this->sql_record($this->sql_query_file($this->k110_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14443,'$this->k110_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2547,14443,'','".AddSlashes(pg_result($resaco,0,'k110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2547,14444,'','".AddSlashes(pg_result($resaco,0,'k110_placaixarec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2547,14445,'','".AddSlashes(pg_result($resaco,0,'k110_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2547,14443,'','".AddSlashes(pg_fetch_result($resaco,0,'k110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2547,14444,'','".AddSlashes(pg_fetch_result($resaco,0,'k110_placaixarec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2547,14445,'','".AddSlashes(pg_fetch_result($resaco,0,'k110_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_placaixarecslip {
       $this->atualizacampos();
      $sql = " update placaixarecslip set ";
      $virgula = "";
-     if(trim($this->k110_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k110_sequencial"])){ 
+     if(trim((string) $this->k110_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k110_sequencial"])){ 
        $sql  .= $virgula." k110_sequencial = $this->k110_sequencial ";
        $virgula = ",";
-       if(trim($this->k110_sequencial) == null ){ 
+       if(trim((string) $this->k110_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k110_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_placaixarecslip {
          return false;
        }
      }
-     if(trim($this->k110_placaixarec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k110_placaixarec"])){ 
+     if(trim((string) $this->k110_placaixarec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k110_placaixarec"])){ 
        $sql  .= $virgula." k110_placaixarec = $this->k110_placaixarec ";
        $virgula = ",";
-       if(trim($this->k110_placaixarec) == null ){ 
+       if(trim((string) $this->k110_placaixarec) == null ){ 
          $this->erro_sql = " Campo Planhilha nao Informado.";
          $this->erro_campo = "k110_placaixarec";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_placaixarecslip {
          return false;
        }
      }
-     if(trim($this->k110_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k110_slip"])){ 
+     if(trim((string) $this->k110_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k110_slip"])){ 
        $sql  .= $virgula." k110_slip = $this->k110_slip ";
        $virgula = ",";
-       if(trim($this->k110_slip) == null ){ 
+       if(trim((string) $this->k110_slip) == null ){ 
          $this->erro_sql = " Campo SLIP nao Informado.";
          $this->erro_campo = "k110_slip";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_placaixarecslip {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14443,'$this->k110_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k110_sequencial"]) || $this->k110_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2547,14443,'".AddSlashes(pg_result($resaco,$conresaco,'k110_sequencial'))."','$this->k110_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2547,14443,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k110_sequencial'))."','$this->k110_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k110_placaixarec"]) || $this->k110_placaixarec != "")
-           $resac = db_query("insert into db_acount values($acount,2547,14444,'".AddSlashes(pg_result($resaco,$conresaco,'k110_placaixarec'))."','$this->k110_placaixarec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2547,14444,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k110_placaixarec'))."','$this->k110_placaixarec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k110_slip"]) || $this->k110_slip != "")
-           $resac = db_query("insert into db_acount values($acount,2547,14445,'".AddSlashes(pg_result($resaco,$conresaco,'k110_slip'))."','$this->k110_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2547,14445,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k110_slip'))."','$this->k110_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_placaixarecslip {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14443,'$k110_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2547,14443,'','".AddSlashes(pg_result($resaco,$iresaco,'k110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2547,14444,'','".AddSlashes(pg_result($resaco,$iresaco,'k110_placaixarec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2547,14445,'','".AddSlashes(pg_result($resaco,$iresaco,'k110_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2547,14443,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2547,14444,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k110_placaixarec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2547,14445,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k110_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from placaixarecslip
@@ -345,7 +345,7 @@ class cl_placaixarecslip {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:placaixarecslip";
@@ -360,7 +360,7 @@ class cl_placaixarecslip {
    function sql_query ( $k110_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,7 +389,7 @@ class cl_placaixarecslip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_placaixarecslip {
    function sql_query_file ( $k110_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,7 +423,7 @@ class cl_placaixarecslip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

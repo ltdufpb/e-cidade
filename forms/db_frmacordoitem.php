@@ -36,7 +36,7 @@ $clrotulo->label("pc01_descrmater");
 $clrotulo->label("ac20_acordo");
 
 $db_opcao = 1;
-$aParam = db_stdClass::getParametro("empparametro", array(db_getsession("DB_anousu")));
+$aParam = db_stdClass::getParametro("empparametro", [db_getsession("DB_anousu")]);
 $iCasasDecimais = 2;
 if (count($aParam) > 0) {
     $iCasasDecimais = $aParam[0]->e30_numdec;
@@ -169,7 +169,7 @@ db_app::load("estilos.css, grid.style.css");
                         "m61_descr");
                       $rsUnidades = $oDaoMatUnid->sql_record($sSqlUnidades);
                       $iNumRowsUnidade = $oDaoMatUnid->numrows;
-                      $aUnidades = array(0 => "Selecione");
+                      $aUnidades = [0 => "Selecione"];
                       for ($i = 0; $i < $iNumRowsUnidade; $i++) {
 
                           $oUnidade = db_utils::fieldsMemory($rsUnidades, $i);
@@ -196,7 +196,7 @@ db_app::load("estilos.css, grid.style.css");
                   </td>
                   <td colspan="3">
                       <?php
-                      $aDesdobramento = array("0" => "Selecione");
+                      $aDesdobramento = ["0" => "Selecione"];
                       db_select("ac20_elemento", $aDesdobramento, true, $db_opcao,
                         "onchange='js_desabilitaItemSelecionar();' style='width:100%'");
                       ?>
@@ -220,9 +220,9 @@ db_app::load("estilos.css, grid.style.css");
                               <?php
 
                               //Define valores para a data inicial, deixando vazio caso não existam valores.
-                              $sDiaDataInicial = isset($ac41_datainicial_dia) ? $ac41_datainicial_dia : '';
-                              $sMesDataInicial = isset($ac41_datainicial_mes) ? $ac41_datainicial_mes : '';
-                              $sAnoDataInicial = isset($ac41_datainicial_ano) ? $ac41_datainicial_ano : '';
+                              $sDiaDataInicial = $ac41_datainicial_dia ?? '';
+                              $sMesDataInicial = $ac41_datainicial_mes ?? '';
+                              $sAnoDataInicial = $ac41_datainicial_ano ?? '';
 
                               db_inputdata('ac41_datainicial',
                                 $sDiaDataInicial,
@@ -240,9 +240,9 @@ db_app::load("estilos.css, grid.style.css");
                               <?php
 
                               //Define valores para a data final, deixando vazio caso não existam valores.
-                              $sDiaDataFinal = isset($ac41_datafinal_dia) ? $ac41_datafinal_dia : '';
-                              $sMesDataFinal = isset($ac41_datafinal_mes) ? $ac41_datafinal_mes : '';
-                              $sAnoDataFinal = isset($ac41_datafinal_ano) ? $ac41_datafinal_ano : '';
+                              $sDiaDataFinal = $ac41_datafinal_dia ?? '';
+                              $sMesDataFinal = $ac41_datafinal_mes ?? '';
+                              $sAnoDataFinal = $ac41_datafinal_ano ?? '';
 
                               db_inputdata('ac41_datafinal',
                                 $sDiaDataFinal,

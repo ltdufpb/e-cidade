@@ -43,7 +43,7 @@ $clempempenho->rotulo->label();
 $clrotulo->label("z01_nome");
 $clrotulo->label("m51_codordem");
 $clrotulo->label("e69_codnota");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 

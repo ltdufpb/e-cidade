@@ -45,17 +45,17 @@ abstract class AbstractQuery
     /**
      * @var array
      */
-    private $where = array();
+    private $where = [];
 
     /**
      * @var array
      */
-    private $orWhere = array();
+    private $orWhere = [];
 
     /**
      * @var array
      */
-    private $join = array();
+    private $join = [];
 
     /**
      * @var string
@@ -150,7 +150,7 @@ abstract class AbstractQuery
      */
     final public function update(array $fields)
     {
-        $sets = array();
+        $sets = [];
 
         foreach ($fields as $field => $value) {
             $sets[] = "{$field} = {$value}";
@@ -327,15 +327,13 @@ abstract class AbstractQuery
         }
 
         $affectedRows = pg_fetch_all($affectedRows);
-        $affectedRows = array_filter($affectedRows, function ($affectedRow) use ($field) {
-            return array_key_exists($field, $affectedRow);
-        });
+        $affectedRows = array_filter($affectedRows, fn($affectedRow) => array_key_exists($field, $affectedRow));
 
         $year = db_getsession('DB_datausu');
         $user = db_getsession('DB_id_usuario');
 
         foreach ($affectedRows as $affectedRow) {
-            $field = AddSlashes($affectedRow[$field]);
+            $field = AddSlashes((string) $affectedRow[$field]);
             $acount = db_query("INSERT INTO db_acount VALUES ({$acountNextval->acount}, {$affectedTable->tabela}, {$affectedTable->coluna}, '{$field}', '{$value}', {$year}, {$user})");
 
             if (!$acount) {

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplanoorcamentoanalitica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconplanoorcamentoanalitica = new cl_conplanoorcamentoanalitica;
 $clconplanoorcamentoanalitica->rotulo->label("c61_reduz");
 $clconplanoorcamentoanalitica->rotulo->label("c61_reduz");
@@ -98,9 +98,9 @@ $clconplanoorcamentoanalitica->rotulo->label("c61_reduz");
         }else{
            $sql = $clconplanoorcamentoanalitica->sql_query("",$campos,"c61_reduz","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c61_reduz)){
-          $repassa = array("chave_c61_reduz"=>$chave_c61_reduz,"chave_c61_reduz"=>$chave_c61_reduz);
+          $repassa = ["chave_c61_reduz"=>$chave_c61_reduz,"chave_c61_reduz"=>$chave_c61_reduz];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

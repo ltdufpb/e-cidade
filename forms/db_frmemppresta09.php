@@ -183,7 +183,7 @@ function js_preenchepesquisa(iNumeroEmpenho, iCodigoMovimento){
 
   <?php
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])
            . "?chavepesquisa=' + iNumeroEmpenho + '&chavemovimento=' + iCodigoMovimento";
     }
   ?>

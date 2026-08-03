@@ -27,7 +27,7 @@
 
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //$unidade = @$unidade;
 $descrdepto = db_getsession("DB_coddepto");
 //Monta SQL
@@ -45,7 +45,7 @@ $sql_pront = "select *
                  and ( sd24_v_motivo is null or sd24_v_motivo = '' )
                order by sd24_i_unidade, sd24_i_codigo";
 
-$query_pront = @db_query($sql_pront) or die(pg_errormessage());
+$query_pront = @db_query($sql_pront) or die(pg_last_error());
 $linhas = @pg_num_rows($query_pront);
 if($linhas == 0){
  echo "<table width='100%'>
@@ -62,7 +62,7 @@ $pdf->AliasNbPages();
 
 $head1 = "Relatório de Triagem";
 if( !empty($unidade) ){
- $head3 = "Unidade: $unidade - ".pg_result($query_pront,0,'descrdepto');
+ $head3 = "Unidade: $unidade - ".pg_fetch_result($query_pront,0,'descrdepto');
 }
 $pri=true;
 

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhrubretencao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhrubretencao = new cl_rhrubretencao;
 $clrhrubretencao->rotulo->label("rh75_sequencial");
 $clrhrubretencao->rotulo->label("rh75_retencaotiporec");
@@ -98,9 +98,9 @@ $clrhrubretencao->rotulo->label("rh75_retencaotiporec");
         }else{
            $sql = $clrhrubretencao->sql_query("",$campos,"rh75_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh75_retencaotiporec)){
-          $repassa = array("chave_rh75_sequencial"=>$chave_rh75_sequencial,"chave_rh75_retencaotiporec"=>$chave_rh75_retencaotiporec);
+          $repassa = ["chave_rh75_sequencial"=>$chave_rh75_sequencial,"chave_rh75_retencaotiporec"=>$chave_rh75_retencaotiporec];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

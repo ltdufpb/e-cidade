@@ -31,15 +31,15 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_syscampo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_GET_VARS,2);exit;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_syscampo = new cl_db_syscampo;
 $clrotulo = new rotulocampo;
 if(isset($selecionados)){
   if(isset($quebras) && $quebras != ""){
-    $arr1 = split(",",$selecionados);
-    $arr2 = split(",",$quebras);
+    $arr1 = preg_split("#,#m",$selecionados);
+    $arr2 = preg_split("#,#m",$quebras);
     for($i=0; $i<count($arr1); $i++){
       if(in_array($arr1[$i],$arr2)){
         array_splice($arr1,$i,1);
@@ -54,7 +54,7 @@ if(isset($quebras) && $quebras != ""){
   $result_quebras = $cldb_syscampo->sql_record($cldb_syscampo->sql_query(null,"codcam, nomecam, conteudo, rotulo, descricao",""," codcam in (".$quebras.")"));
 }
 if(isset($totaliz) && $totaliz != ""){
-  $arr_totalizacao = split(",",$totaliz);
+  $arr_totalizacao = preg_split("#,#m",(string) $totaliz);
 }
 ?>
 <html>

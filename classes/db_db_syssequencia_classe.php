@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE db_syssequencia
 class cl_db_syssequencia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codsequencia = 0; 
-   var $nomesequencia = null; 
-   var $incrseq = 0; 
-   var $minvalueseq = 0; 
-   var $maxvalueseq = 0; 
-   var $startseq = 0; 
-   var $cacheseq = 0; 
+   public $codsequencia = 0; 
+   public $nomesequencia = null; 
+   public $incrseq = 0; 
+   public $minvalueseq = 0; 
+   public $maxvalueseq = 0; 
+   public $startseq = 0; 
+   public $cacheseq = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codsequencia = int4 = Código 
                  nomesequencia = varchar(100) = Nome 
                  incrseq = int4 = Incrementa 
@@ -60,10 +60,10 @@ class cl_db_syssequencia {
                  cacheseq = int4 = Cache 
                  ";
    //funcao construtor da classe 
-   function cl_db_syssequencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_syssequencia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -175,7 +175,7 @@ class cl_db_syssequencia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Sequencias para campos ($this->codsequencia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Sequencias para campos já Cadastrado";
@@ -199,16 +199,16 @@ class cl_db_syssequencia {
      $resaco = $this->sql_record($this->sql_query_file($this->codsequencia));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,766,'$this->codsequencia','I')");
-       $resac = db_query("insert into db_acount values($acount,150,766,'','".AddSlashes(pg_result($resaco,0,'codsequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,150,767,'','".AddSlashes(pg_result($resaco,0,'nomesequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,150,768,'','".AddSlashes(pg_result($resaco,0,'incrseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,150,769,'','".AddSlashes(pg_result($resaco,0,'minvalueseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,150,770,'','".AddSlashes(pg_result($resaco,0,'maxvalueseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,150,771,'','".AddSlashes(pg_result($resaco,0,'startseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,150,772,'','".AddSlashes(pg_result($resaco,0,'cacheseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,150,766,'','".AddSlashes(pg_fetch_result($resaco,0,'codsequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,150,767,'','".AddSlashes(pg_fetch_result($resaco,0,'nomesequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,150,768,'','".AddSlashes(pg_fetch_result($resaco,0,'incrseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,150,769,'','".AddSlashes(pg_fetch_result($resaco,0,'minvalueseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,150,770,'','".AddSlashes(pg_fetch_result($resaco,0,'maxvalueseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,150,771,'','".AddSlashes(pg_fetch_result($resaco,0,'startseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,150,772,'','".AddSlashes(pg_fetch_result($resaco,0,'cacheseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -217,10 +217,10 @@ class cl_db_syssequencia {
       $this->atualizacampos();
      $sql = " update db_syssequencia set ";
      $virgula = "";
-     if(trim($this->codsequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codsequencia"])){ 
+     if(trim((string) $this->codsequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codsequencia"])){ 
        $sql  .= $virgula." codsequencia = $this->codsequencia ";
        $virgula = ",";
-       if(trim($this->codsequencia) == null ){ 
+       if(trim((string) $this->codsequencia) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codsequencia";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_db_syssequencia {
          return false;
        }
      }
-     if(trim($this->nomesequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomesequencia"])){ 
+     if(trim((string) $this->nomesequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomesequencia"])){ 
        $sql  .= $virgula." nomesequencia = '$this->nomesequencia' ";
        $virgula = ",";
-       if(trim($this->nomesequencia) == null ){ 
+       if(trim((string) $this->nomesequencia) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "nomesequencia";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_db_syssequencia {
          return false;
        }
      }
-     if(trim($this->incrseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["incrseq"])){ 
+     if(trim((string) $this->incrseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["incrseq"])){ 
        $sql  .= $virgula." incrseq = $this->incrseq ";
        $virgula = ",";
-       if(trim($this->incrseq) == null ){ 
+       if(trim((string) $this->incrseq) == null ){ 
          $this->erro_sql = " Campo Incrementa nao Informado.";
          $this->erro_campo = "incrseq";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_db_syssequencia {
          return false;
        }
      }
-     if(trim($this->minvalueseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["minvalueseq"])){ 
+     if(trim((string) $this->minvalueseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["minvalueseq"])){ 
        $sql  .= $virgula." minvalueseq = $this->minvalueseq ";
        $virgula = ",";
-       if(trim($this->minvalueseq) == null ){ 
+       if(trim((string) $this->minvalueseq) == null ){ 
          $this->erro_sql = " Campo Valor Mínimo nao Informado.";
          $this->erro_campo = "minvalueseq";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_db_syssequencia {
          return false;
        }
      }
-     if(trim($this->maxvalueseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["maxvalueseq"])){ 
+     if(trim((string) $this->maxvalueseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["maxvalueseq"])){ 
        $sql  .= $virgula." maxvalueseq = $this->maxvalueseq ";
        $virgula = ",";
-       if(trim($this->maxvalueseq) == null ){ 
+       if(trim((string) $this->maxvalueseq) == null ){ 
          $this->erro_sql = " Campo Valor Máximo nao Informado.";
          $this->erro_campo = "maxvalueseq";
          $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_db_syssequencia {
          return false;
        }
      }
-     if(trim($this->startseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["startseq"])){ 
+     if(trim((string) $this->startseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["startseq"])){ 
        $sql  .= $virgula." startseq = $this->startseq ";
        $virgula = ",";
-       if(trim($this->startseq) == null ){ 
+       if(trim((string) $this->startseq) == null ){ 
          $this->erro_sql = " Campo Numero para Inicial nao Informado.";
          $this->erro_campo = "startseq";
          $this->erro_banco = "";
@@ -295,10 +295,10 @@ class cl_db_syssequencia {
          return false;
        }
      }
-     if(trim($this->cacheseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cacheseq"])){ 
+     if(trim((string) $this->cacheseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cacheseq"])){ 
        $sql  .= $virgula." cacheseq = $this->cacheseq ";
        $virgula = ",";
-       if(trim($this->cacheseq) == null ){ 
+       if(trim((string) $this->cacheseq) == null ){ 
          $this->erro_sql = " Campo Cache nao Informado.";
          $this->erro_campo = "cacheseq";
          $this->erro_banco = "";
@@ -316,23 +316,23 @@ class cl_db_syssequencia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,766,'$this->codsequencia','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codsequencia"]))
-           $resac = db_query("insert into db_acount values($acount,150,766,'".AddSlashes(pg_result($resaco,$conresaco,'codsequencia'))."','$this->codsequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,150,766,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codsequencia'))."','$this->codsequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["nomesequencia"]))
-           $resac = db_query("insert into db_acount values($acount,150,767,'".AddSlashes(pg_result($resaco,$conresaco,'nomesequencia'))."','$this->nomesequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,150,767,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'nomesequencia'))."','$this->nomesequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["incrseq"]))
-           $resac = db_query("insert into db_acount values($acount,150,768,'".AddSlashes(pg_result($resaco,$conresaco,'incrseq'))."','$this->incrseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,150,768,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'incrseq'))."','$this->incrseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["minvalueseq"]))
-           $resac = db_query("insert into db_acount values($acount,150,769,'".AddSlashes(pg_result($resaco,$conresaco,'minvalueseq'))."','$this->minvalueseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,150,769,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'minvalueseq'))."','$this->minvalueseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["maxvalueseq"]))
-           $resac = db_query("insert into db_acount values($acount,150,770,'".AddSlashes(pg_result($resaco,$conresaco,'maxvalueseq'))."','$this->maxvalueseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,150,770,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'maxvalueseq'))."','$this->maxvalueseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["startseq"]))
-           $resac = db_query("insert into db_acount values($acount,150,771,'".AddSlashes(pg_result($resaco,$conresaco,'startseq'))."','$this->startseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,150,771,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'startseq'))."','$this->startseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cacheseq"]))
-           $resac = db_query("insert into db_acount values($acount,150,772,'".AddSlashes(pg_result($resaco,$conresaco,'cacheseq'))."','$this->cacheseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,150,772,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cacheseq'))."','$this->cacheseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -377,16 +377,16 @@ class cl_db_syssequencia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,766,'$codsequencia','E')");
-         $resac = db_query("insert into db_acount values($acount,150,766,'','".AddSlashes(pg_result($resaco,$iresaco,'codsequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,150,767,'','".AddSlashes(pg_result($resaco,$iresaco,'nomesequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,150,768,'','".AddSlashes(pg_result($resaco,$iresaco,'incrseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,150,769,'','".AddSlashes(pg_result($resaco,$iresaco,'minvalueseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,150,770,'','".AddSlashes(pg_result($resaco,$iresaco,'maxvalueseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,150,771,'','".AddSlashes(pg_result($resaco,$iresaco,'startseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,150,772,'','".AddSlashes(pg_result($resaco,$iresaco,'cacheseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,150,766,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codsequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,150,767,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'nomesequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,150,768,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'incrseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,150,769,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'minvalueseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,150,770,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'maxvalueseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,150,771,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'startseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,150,772,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cacheseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_syssequencia
@@ -446,7 +446,7 @@ class cl_db_syssequencia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_syssequencia";

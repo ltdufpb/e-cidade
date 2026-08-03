@@ -37,7 +37,7 @@ include(modification("classes/db_pcorcamval_classe.php"));
 include(modification("classes/db_pcorcamjulg_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clpcorcam 		   = new cl_pcorcam;
 $clpcorcamitem 	   = new cl_pcorcamitem;
@@ -54,34 +54,34 @@ if(isset($alterar) || isset($incluir)){
   $sqlerro=false;
   
   if(isset($valores) && trim($valores)!=""){
-    $arrval = split("valor_",$valores);
+    $arrval = preg_split("#valor_#m",$valores);
   }else{
     $sqlerro=true;
     $erro_msg = "Usuário: \\n\\nValores do orçamento não informados. \\nAltere antes de continuar. \\n\\nAdministrador: ";
   }
   if(isset($qtdades) && trim($qtdades)!=""){
-    $arrqtd = split("qtde_",$qtdades);
+    $arrqtd = preg_split("#qtde_#m",$qtdades);
   }else{
     $sqlerro=true;
     $erro_msg = "Usuário: \\n\\nQuantidades do orçamento não informadas. \\nAltere antes de continuar. \\n\\nAdministrador: ";
   }
   if(isset($obss) && trim($obss)!=""){
-    $arrmrk = split("obs_",$obss);
+    $arrmrk = preg_split("#obs_#m",$obss);
   }
   if(isset($valoresun) && trim($valoresun)!=""){
-    $arrvalun = split("vlrun_",$valoresun);
+    $arrvalun = preg_split("#vlrun_#m",$valoresun);
   }
   if(isset($dataval) && trim($dataval)!=""){
-    $arrdat = split("#",$dataval);
+    $arrdat = preg_split("#\\##m",$dataval);
   }
   if(isset($valoresbdi) && trim($valoresbdi)!=""){
-    $arrbdi = split("bdi_",$valoresbdi);
+    $arrbdi = preg_split("#bdi_#m",$valoresbdi);
   }
   if(isset($valoresencargos) && trim($valoresencargos)!=""){
-    $arrencargos = split("encargossociais_",$valoresencargos);
+    $arrencargos = preg_split("#encargossociais_#m",$valoresencargos);
   }
   if (isset($taxasestimadas) && trim($taxasestimadas)!="") {
-    $arrtaxasestimadas = split("taxaestimada_", $taxasestimadas);
+    $arrtaxasestimadas = preg_split("#taxaestimada_#m", $taxasestimadas);
   }
 
 
@@ -115,21 +115,21 @@ if(isset($alterar) || isset($incluir)){
     
     for($i=1;$i<sizeof($arrval);$i++){
 
-      $codvalun     = split("_", $arrvalun[$i]);
-      $codval       = split("_", $arrval[$i]);
-      $codqtd       = split("_", $arrqtd[$i]);
-      $desmrk       = split("_", $arrmrk[$i]);
-      $bdi          = split("_", $arrbdi[$i]);
-      $encargos     = split("_", $arrencargos[$i]);
-      $taxaestimada = split("_", $arrtaxasestimadas[$i]);
+      $codvalun     = preg_split("#_#m", (string) $arrvalun[$i]);
+      $codval       = preg_split("#_#m", (string) $arrval[$i]);
+      $codqtd       = preg_split("#_#m", (string) $arrqtd[$i]);
+      $desmrk       = preg_split("#_#m", (string) $arrmrk[$i]);
+      $bdi          = preg_split("#_#m", (string) $arrbdi[$i]);
+      $encargos     = preg_split("#_#m", (string) $arrencargos[$i]);
+      $taxaestimada = preg_split("#_#m", (string) $arrtaxasestimadas[$i]);
 
-      if (trim(@$arrdat[$i])!=""){
+      if (trim((string) @$arrdat[$i])!=""){
         $validmin = $arrdat[$i];
       } else {
         $validmin = null;
       }
 
-      if (trim(@$arrdat[$i])=="--"){
+      if (trim((string) @$arrdat[$i])=="--"){
         $validmin = null;
       }
 
@@ -167,12 +167,12 @@ if(isset($alterar) || isset($incluir)){
         $clpcorcamval->pc23_valor             = $orcamval;
         $clpcorcamval->pc23_quant             = $orcamqtd;
         $clpcorcamval->pc23_obs               = $orcammrk;
-        $clpcorcamval->pc23_bdi               = isset($bdi[1]) ? $bdi[1] : null;
-        $clpcorcamval->pc23_encargossociais   = isset($encargos[1]) ? $encargos[1] : null;
-        $clpcorcamval->pc23_taxaestimada      = isset($taxaestimada[1]) ? $taxaestimada[1] : null;
+        $clpcorcamval->pc23_bdi               = $bdi[1] ?? null;
+        $clpcorcamval->pc23_encargossociais   = $encargos[1] ?? null;
+        $clpcorcamval->pc23_taxaestimada      = $taxaestimada[1] ?? null;
 
         if (isset($validmin) && trim(@$validmin)!="" && $validmin != null){
-          $arr_d	= split("-",$validmin);		
+          $arr_d	= preg_split("#\\-#m",(string) $validmin);		
           $validmin = $arr_d[2]."-".$arr_d[1]."-".$arr_d[0];
         } else {
           $validmin = "null";

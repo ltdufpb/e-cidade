@@ -33,7 +33,7 @@ $clrotulo->label("me14_i_codigo");
 $clrotulo->label("ed18_i_codigo");
 $escola     = db_getsession("DB_coddepto");
 $sql        = "select descrdepto from db_depart where coddepto=$escola";
-$escolanome = pg_result(db_query($sql),0,0);
+$escolanome = pg_fetch_result(db_query($sql),0,0);
 ?>
 <form name="form1" method="post" action="">
 <center>
@@ -229,7 +229,7 @@ function js_preenchepesquisa(chave) {
   <?php 
    if ($db_opcao!=1) {
    	
-     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
    }
  ?>
 }

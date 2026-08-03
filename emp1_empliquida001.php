@@ -78,8 +78,8 @@ $clconlancamdot	  = new cl_conlancamdot;
 $clconlancamdoc	  = new cl_conlancamdoc;
 $clconlancamnota  = new cl_conlancamnota;
 $oDaoEmpenhoNl    = new cl_empempenhonl;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
   $db_opcao = 22;
   $db_botao = false;
 

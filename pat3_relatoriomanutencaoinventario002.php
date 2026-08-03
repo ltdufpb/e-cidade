@@ -106,20 +106,12 @@ if ($iTotalRegistros == 0) {
 }
 
 $oInventario = new Inventario($oGet->iCodigoInventario);
-switch ($oInventario->getSituacao()) {
-
-  case 1:
-    $sSituacao = "Ativo";
-    break;
-  case 2:
-    $sSituacao = "Anulado";
-    break;
-  case 3:
-  	$sSituacao = "Processado";
-  	break;
-  default:
-    $sSituacao = "";
-}
+$sSituacao = match ($oInventario->getSituacao()) {
+    1 => "Ativo",
+    2 => "Anulado",
+    3 => "Processado",
+    default => "",
+};
 $iExercicio = $oInventario->getExercicio();
 $head2 = "MANUTENÇÃO DE INVENTÁRIO";
 $head3 = "Inventário: {$oGet->iCodigoInventario}";
@@ -215,8 +207,8 @@ for ($iRowBem = 0; $iRowBem < $iTotalRegistros; $iRowBem++) {
 
     if ($iCodigoOrgaoAnterior != $iCodigoOrgao) {
 
-      imprimirRodape($oPdf, $iAltura, $nTotalRelatorioLaco, $iTotalRegistrosPagina);
-      imprimeCabecalho($oPdf, $iAltura, $oGet->lParametro, $lMovFinanceira);
+      imprimirRodape($oPdf, $iAltura, $nTotalRelatorioLaco);
+      imprimeCabecalho($oPdf, $iAltura);
       $lAdicionaPagina = false;
       $iTotalRegistrosPagina = 0;
     }
@@ -226,14 +218,14 @@ for ($iRowBem = 0; $iRowBem < $iTotalRegistros; $iRowBem++) {
 
     if ($iCodigoDepartamentoAnterior != $iCodigoDepartamento) {
 
-      imprimirRodape($oPdf, $iAltura, $nTotalRelatorioLaco, $iTotalRegistrosPagina);
-      imprimeCabecalho($oPdf, $iAltura, $oGet->lParametro, $lMovFinanceira);
+      imprimirRodape($oPdf, $iAltura, $nTotalRelatorioLaco);
+      imprimeCabecalho($oPdf, $iAltura);
       $lAdicionaPagina = false;
       $iTotalRegistrosPagina = 0;
     }
   }
   
-  $sDescricaoBem = substr($oStdBem->descricao_bem , 0, $iSubstr);
+  $sDescricaoBem = substr((string) $oStdBem->descricao_bem , 0, $iSubstr);
   //$iMovFinanceira
   $oPdf->cell(20, $iAltura, $oStdBem->placa_bem, 0, 0, "C", 0);
   $oPdf->cell(20, $iAltura, $oStdBem->codigo_bem, 0, 0, "C", 0);
@@ -244,8 +236,8 @@ for ($iRowBem = 0; $iRowBem < $iTotalRegistros; $iRowBem++) {
     $oPdf->cell(80, $iAltura, substr("{$oStdBem->descricao_orgao} - {$oStdBem->descricao_unidade}", 0, 40), 0, 0, "L", 0);
   } else {
 
-    $oPdf->cell($iTamanhoValor, $iAltura, substr($sDivisaoOrigem  ,  0, 33), 0, 0, $sPosicaoOrigem, 0);
-    $oPdf->cell($iTamanhoValor, $iAltura, substr($sDivisaoDestino ,  0, 33), 0, 0, $sPosicaoDestino, 0);
+    $oPdf->cell($iTamanhoValor, $iAltura, substr((string) $sDivisaoOrigem  ,  0, 33), 0, 0, $sPosicaoOrigem, 0);
+    $oPdf->cell($iTamanhoValor, $iAltura, substr((string) $sDivisaoDestino ,  0, 33), 0, 0, $sPosicaoDestino, 0);
   }
   $oPdf->cell($iWidthValores, $iAltura, db_formatar($nValorAtual, "f"), 0, 0, "R", 0);
   $oPdf->cell($iWidthValores, $iAltura, $oStdBem->situacao,  0, 0, "L", 0);
@@ -253,8 +245,8 @@ for ($iRowBem = 0; $iRowBem < $iTotalRegistros; $iRowBem++) {
 
   if ($oGet->lParametro) {
 
-    $oPdf->cell(140, $iAltura, substr($sDivisaoOrigem,  0, 33),  0, 0, $sPosicaoOrigem, 0);
-    $oPdf->cell(140, $iAltura, substr($sDivisaoDestino, 0, 33), 0, 1, $sPosicaoDestino, 0);
+    $oPdf->cell(140, $iAltura, substr((string) $sDivisaoOrigem,  0, 33),  0, 0, $sPosicaoOrigem, 0);
+    $oPdf->cell(140, $iAltura, substr((string) $sDivisaoDestino, 0, 33), 0, 1, $sPosicaoDestino, 0);
   }
 
   /* Variaveis de Controle */
@@ -268,7 +260,7 @@ for ($iRowBem = 0; $iRowBem < $iTotalRegistros; $iRowBem++) {
 	$iCodigoOrgaoAnterior        = $iCodigoOrgao;
 
   if ($iTotalRegistrosGeral == $iTotalRegistros) {
-    imprimirRodape($oPdf, $iAltura, $nTotalRelatorioLaco, $iTotalRegistrosPagina);
+    imprimirRodape($oPdf, $iAltura, $nTotalRelatorioLaco);
   }
 }
 

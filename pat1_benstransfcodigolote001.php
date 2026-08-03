@@ -94,7 +94,7 @@ if (isset($oPost->transf)) {
                 $iCodBem = $aBem[0];
                 $iSitucao = $aBem[1];
 
-                if (trim($oTransfDes->t94_divisao) != "" && $oTransfDes->t94_divisao != 0) {
+                if (trim((string) $oTransfDes->t94_divisao) != "" && $oTransfDes->t94_divisao != 0) {
                     $clbenstransfdiv->t31_codtran = $oPost->t95_codtran;
                     $clbenstransfdiv->t31_bem = $iCodBem;
                     $clbenstransfdiv->t31_divisao = $oTransfDes->t94_divisao;

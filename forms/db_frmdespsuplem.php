@@ -79,7 +79,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
                                      from orcsuplemretif 
                                      where o48_projeto = $o39_codproj";
         $result = db_query($sql_retificador);                 
-  	    if (pg_numrows($result)>0){
+  	    if (pg_num_rows($result)>0){
   	    	  $db_opcao=3;              
               $sql_marca = "  select o46_codsup,
 					                               o48_descr,
@@ -126,7 +126,7 @@ function js_pesquisao39_codproj(mostra){
 }
 function js_mostraprojeto(chave,erro){
    <?php 
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave; ";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave; ";
    ?>
    db_iframe_orcprojeto.hide();
 }

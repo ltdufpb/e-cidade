@@ -51,7 +51,7 @@ $clrotulo->label("rh136_nome");
                     </td>
                     <td>
                         <?php 
-                        $aTipoPortaria = array("l" => "Lote", "c" => "Coletiva");
+                        $aTipoPortaria = ["l" => "Lote", "c" => "Coletiva"];
                         db_select("selTipoPortaria", $aTipoPortaria, true, 1, "");
                         db_input('h31_sequencial', 10, $Ih31_sequencial, true, 'hidden', 3);
 
@@ -77,7 +77,7 @@ $clrotulo->label("rh136_nome");
                 </tr>
 
                 <?php 
-                if (!isset($h31_usuario) && trim(@$h31_usuario) == "") {
+                if (!isset($h31_usuario) && trim((string) @$h31_usuario) == "") {
                     $h31_usuario = db_getsession('DB_id_usuario');
                 }
                 db_input('h31_usuario', 10, $Ih31_usuario, true, 'hidden', 3);
@@ -97,7 +97,7 @@ $clrotulo->label("rh136_nome");
 
                         <?php 
 
-                        if (!isset($h31_anousu) && trim(@$h31_anousu) == "") {
+                        if (!isset($h31_anousu) && trim((string) @$h31_anousu) == "") {
                             $h31_anousu = db_getsession('DB_anousu');
                         }
 
@@ -359,7 +359,7 @@ $clrotulo->label("rh136_nome");
         db_iframe_portaria.hide();
         <?php 
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($_SERVER["REQUEST_URI"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $_SERVER["REQUEST_URI"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

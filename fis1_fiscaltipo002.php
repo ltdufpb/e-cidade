@@ -33,13 +33,13 @@ include(modification("classes/db_fiscaltipo_classe.php"));
 include(modification("classes/db_fiscalandam_classe.php"));
 include(modification("classes/db_fandam_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clfiscaltipo = new cl_fiscaltipo;
 $db_opcao = 22;
 $db_botao = false;
 global $y39_codandam;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $clfiscaltipo->excluir($y31_codnoti,$y31_codtipo_old);
@@ -78,7 +78,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 js_setatabulacao();
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clfiscaltipo->erro_status=="0"){
     $clfiscaltipo->erro(true,false);
     $db_botao=true;

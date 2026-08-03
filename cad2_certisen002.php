@@ -42,7 +42,7 @@ require_once(modification("model/cadastro/CertidaoIsencaoPdf.php"));
 $dotenv = new \Dotenv\Dotenv('./');
 $dotenv->load();
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $oGet           = db_utils::postMemory($_GET);
 $iMatricula     = $oGet->matric;
@@ -61,7 +61,7 @@ if ($j18_templatecertidaoisencao != "") {
 
 	$sAgt = "cadastro/certidao_isencao.agt";
 
-	$aParam                  = array();
+	$aParam                  = [];
   $aParam['$matricula']     = $iMatricula;
 	$aParam['$codigoisencao'] = $iCodigoIsencao;
 
@@ -93,7 +93,7 @@ $sqlparag = "select db02_texto
 $resparag = db_query($sqlparag);
 
 $head1 = 'SECRETARIA DE FINANÇAS';
-  if ( pg_numrows($resparag) > 0 ) {
+  if ( pg_num_rows($resparag) > 0 ) {
 
 	  db_fieldsmemory( $resparag, 0 );
  	  $head1 = $db02_texto;
@@ -107,7 +107,7 @@ $oPdf->objpdf->SetTextColor(0, 0, 0);
 
 $sqlMunic     = "select nomeinst, logo, munic from db_config where codigo = ". db_getsession("DB_instit");
 $rsMunic      = db_query($sqlMunic);
-$numrowsmunic = pg_numrows($rsMunic);
+$numrowsmunic = pg_num_rows($rsMunic);
 if ($numrowsmunic == 0){
 
   db_redireciona('db_erros.php?fechar=true&db_erro=Nome da instituição não encontrado!');
@@ -127,7 +127,7 @@ $sqlparag = "select *
 	            where db03_tipodoc = 1019
                 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
 $resparag = db_query($sqlparag);
-$numrows  = pg_numrows($resparag);
+$numrows  = pg_num_rows($resparag);
 if ( $numrows == 0 ) {
 
  db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento da certidão de isenção!');

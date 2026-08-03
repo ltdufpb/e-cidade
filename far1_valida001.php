@@ -43,7 +43,7 @@ $clfar_parametros = new cl_far_parametros;
 $hoje= date("Y-m-d",db_getsession("DB_datausu"));
 
 function subtrairmargem($fa10_d_dataini,$fa10_i_margem){
-     $fa10_d_dataini  = explode("-",$fa10_d_dataini );
+     $fa10_d_dataini  = explode("-",(string) $fa10_d_dataini );
      $dia = (int)$fa10_d_dataini [2];
       $mes = (int)$fa10_d_dataini [1];
       $ano = (int)$fa10_d_dataini [0];
@@ -51,7 +51,7 @@ function subtrairmargem($fa10_d_dataini,$fa10_i_margem){
        return $fa10_d_dataini ;
 }
 function somarDias($fa10_d_dataini ,$fa10_i_prazo){
-     $fa10_d_dataini  = explode("-",$fa10_d_dataini);
+     $fa10_d_dataini  = explode("-",(string) $fa10_d_dataini);
      $dia = (int)$fa10_d_dataini [2];
       $mes = (int)$fa10_d_dataini [1];
       $ano = (int)$fa10_d_dataini [0];
@@ -61,7 +61,7 @@ function somarDias($fa10_d_dataini ,$fa10_i_prazo){
 
 function db_datedif($pmktime=null,$smktime=null, $tipo='d'){
   if($tipo == 'd'){
-    return pg_result(db_query("select '$pmktime'::date - '$smktime'::date as d"),0,'d');
+    return pg_fetch_result(db_query("select '$pmktime'::date - '$smktime'::date as d"),0,'d');
 //    return ceil((( mktime(0,0,0,substr($pmktime,5,2),substr($pmktime,8,2),substr($pmktime,0,4)) -
   //                  mktime(0,0,0,substr($smktime,5,2),substr($smktime,8,2),substr($smktime,0,4)))/86400));
   }else if($tipo == 'm'){
@@ -69,8 +69,8 @@ function db_datedif($pmktime=null,$smktime=null, $tipo='d'){
   }else if($tipo == 'y'){
     return 0;
   }else{
-    return ceil((( mktime(0,0,0,substr($pmktime,5,2),substr($pmktime,8,2),substr($pmktime,0,4)) -
-                    mktime(0,0,0,substr($smktime,5,2),substr($smktime,8,2),substr($smktime,0,4)))/86400));
+    return ceil((( mktime(0,0,0,substr((string) $pmktime,5,2),substr((string) $pmktime,8,2),substr((string) $pmktime,0,4)) -
+                    mktime(0,0,0,substr((string) $smktime,5,2),substr((string) $smktime,8,2),substr((string) $smktime,0,4)))/86400));
   }
 
 }
@@ -131,7 +131,7 @@ if($clfar_controlemed->numrows>0){
         $fa06_f_quant=0;  
       }
       $calculo = $fa10_i_quantidade - ($fa06_f_quant + $calculo_margem) ;
-      
+
 //      db_msgbox("periodo --> $data_ e calculo -->  $calculo = $fa10_i_quantidade - ($fa06_f_quant + $calculo_margem) ; ");
 
 //	    db_msgbox(" if($hoje>=$datamargem && $hoje<=$data_ ){	");

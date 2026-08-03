@@ -33,8 +33,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoVeiculos             = db_utils::getdao('veiculos');
 $oDaoVeicCadCentralDepart = db_utils::getdao('veiccadcentraldepart');
@@ -152,13 +152,13 @@ $oDaoVeicCadCentralDepart->rotulo->label("ve37_veiccadcentral");
                 $sSql = $oDaoVeiculos->sql_query_central("", $sCampos, "ve01_codigo", $sWhere);
               }
 
-              $repassa = array();
+              $repassa = [];
 
               if (isset($chave_ve01_codigo)) {
-                $repassa = array(
+                $repassa = [
                                   "chave_ve01_codigo" => $chave_ve01_codigo,
                                   "chave_ve01_codigo" => $chave_ve01_codigo
-                                );
+                                ];
               }
 
               db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa,false);

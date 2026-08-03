@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptucadtaxaexe_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptucadtaxaexe = new cl_iptucadtaxaexe;
 $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxaexe");
 $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
@@ -98,9 +98,9 @@ $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
         }else{
            $sql = $cliptucadtaxaexe->sql_query("",$campos,"j08_iptucadtaxaexe","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j08_iptucadtaxa)){
-          $repassa = array("chave_j08_iptucadtaxaexe"=>$chave_j08_iptucadtaxaexe,"chave_j08_iptucadtaxa"=>$chave_j08_iptucadtaxa);
+          $repassa = ["chave_j08_iptucadtaxaexe"=>$chave_j08_iptucadtaxaexe,"chave_j08_iptucadtaxa"=>$chave_j08_iptucadtaxa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

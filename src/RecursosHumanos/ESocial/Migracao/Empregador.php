@@ -67,6 +67,7 @@ class Empregador extends Migracao implements MigracaoInterface
      * @throws \Exception
      * @return integer
      */
+    #[\Override]
     protected function criarNovoPreenchimento($preenchimento)
     {
         $novoPreenchimento = parent::criarNovoPreenchimento($preenchimento);

@@ -51,8 +51,8 @@ $clrotulo->label("j01_matric");
 $clrotulo->label("z01_nome");
 $db_opcao = 1;
 $db_botao = true;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 //echo "<br><br><br><br><br>";
 if(isset($confirmar)){
@@ -65,10 +65,10 @@ if(isset($confirmar)){
     for($i=0; $i<$numr; $i++){
       db_fieldsmemory($resu,$i);
       $result=$clcontricalc->sql_record($clcontricalc->sql_query(null,"d09_sequencial,d09_contri",null,"d09_contri = $d02_contri and d09_matric = $j01_matric"));
-      if (pg_numrows($result) > 0) {
+      if (pg_num_rows($result) > 0) {
         db_fieldsmemory($result,0); 
         $result = db_query("select k00_numpre from arrecant where arrecant.k00_numpre=$d09_numpre");
-        if(pg_numrows($result)>0){
+        if(pg_num_rows($result)>0){
           die("Cotribuição em processo de pagamento!");
         }else{
           $clcontricalc->excluir_arrecad($d09_numpre);

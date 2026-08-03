@@ -47,7 +47,7 @@ if (!empty($_GET['modelo'])) {
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
-$sProgramaRelatorio = isset($oGet->sProgramaRelatorio) ? $oGet->sProgramaRelatorio : null;
+$sProgramaRelatorio = $oGet->sProgramaRelatorio ?? null;
 $codigoRelatorio = $oGet->codRelatorio;
 $iAnoSessao = db_getsession('DB_anousu');
 $oBalancoOrcamentarioRepo = BalancoOrcamentarioRepository::getInstance();
@@ -101,29 +101,29 @@ if ($codigoRelatorio == BalancoOrcamentarioDCASP2015::CODIGO_RELATORIO) {
     <body class="body-default abas">
         <?php
 
-        $clcriaabas->identifica = array(
+        $clcriaabas->identifica = [
             'relatorio' => 'Relatório',
             'parametro' => 'Parâmetros',
             'notas' => 'Fonte/Notas Explicativas'
-        );
+        ];
 
-        $clcriaabas->title = array(
+        $clcriaabas->title = [
             'relatorio' => 'Relatório',
             'parametro' => 'Parâmetros',
             'notas' => 'Fonte/Notas Explicativas'
-        );
+        ];
 
-        $clcriaabas->src = array(
+        $clcriaabas->src = [
             'relatorio' => $sPathFiltrosRelatorio,
             'parametro' => "con4_parametrosrelatorioslegais001.php?c83_codrel={$codigoRelatorio}",
             'notas' => "con2_conrelnotas.php?c83_codrel={$codigoRelatorio}"
-        );
+        ];
 
-        $clcriaabas->sizecampo  = array(
+        $clcriaabas->sizecampo  = [
             'relatorio' => '23',
             'parametro' => '23',
             'notas' => '23'
-        );
+        ];
 
         $clcriaabas->cria_abas();
 

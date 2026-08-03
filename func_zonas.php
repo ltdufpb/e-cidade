@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clzonas = new cl_zonas;
 $clzonas->rotulo->label("j50_zona");
 $clzonas->rotulo->label("j50_descr");
@@ -78,9 +78,9 @@ $clzonas->rotulo->label("j50_descr");
         }else{
            $sql = $clzonas->sql_query("",$campos,"j50_zona","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j50_descr)){
-          $repassa = array("chave_j50_zona"=>$chave_j50_zona,"chave_j50_descr"=>$chave_j50_descr);
+          $repassa = ["chave_j50_zona"=>$chave_j50_zona,"chave_j50_descr"=>$chave_j50_descr];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

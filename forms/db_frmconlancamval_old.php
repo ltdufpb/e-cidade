@@ -86,13 +86,13 @@ if (isset($c70_codlan)  && $c70_codlan!="" ){
 $sql1="select c71_codlan from conlancamdoc where c71_codlan=$c70_codlan";
 
 $result1 = db_query($sql1);
-$linhas1 = pg_numrows($result1);
+$linhas1 = pg_num_rows($result1);
 
 if ($linhas1 > 0){
 
      $sql2="select * from conlancamdoc inner join conhistdoc on c71_coddoc=c53_coddoc where c71_codlan=$c70_codlan";
      $result2=db_query($sql2);
-     $linhas2=pg_numrows($result2);
+     $linhas2=pg_num_rows($result2);
 
      if ($linhas2>0){
 
@@ -163,7 +163,7 @@ db_app::load("dbcomboBox.widget.js");
             $c70_data_mes = date("m",db_getsession("DB_datausu"));
             $c70_data_ano = db_getsession('DB_anousu');
 	}
-        if (isset($HTTP_SESSION_VARS["ldia"]) && $db_opcao==1){
+        if (isset($_SESSION["ldia"]) && $db_opcao==1){
            $c70_data_dia = db_getsession("ldia");
            $c70_data_mes = db_getsession("lmes");
            $c70_data_ano = db_getsession("DB_anousu");
@@ -176,7 +176,7 @@ db_app::load("dbcomboBox.widget.js");
   <tr>
    <td nowrap title="<?=$Tc78_chave?>" ><strong> <?=$Lc78_chave?> </strong> </td>
    <td><?php 
-         if (isset($HTTP_SESSION_VARS["llote"]) && $db_opcao==1){
+         if (isset($_SESSION["llote"]) && $db_opcao==1){
             $c78_chave  = db_getsession("llote");
          }
          db_input("c78_chave",30,"",true,'text',$db_opcao,"");
@@ -257,7 +257,7 @@ db_app::load("dbcomboBox.widget.js");
    <strong>Tipo de Lançamento:</strong> </td>
    <td>
     <?php 
-    $matarr = array('0'=>'Execução','2000'=>'Abertura','1000'=>'Fechamento');
+    $matarr = ['0'=>'Execução','2000'=>'Abertura','1000'=>'Fechamento'];
     db_select('c71_coddoc',$matarr,true,2);
     ?>
     </td>
@@ -530,7 +530,7 @@ function js_preenchepesquisa(chave){
 
   if($db_opcao!=1 ){
 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

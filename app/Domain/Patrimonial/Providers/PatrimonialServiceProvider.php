@@ -15,9 +15,7 @@ class PatrimonialServiceProvider extends BaseDeferredProvider
     {
         $this->app->singleton(
             'AtendimentoRepository',
-            function () {
-                return new AtendimentoRepository();
-            }
+            fn() => new AtendimentoRepository()
         );
     }
 
@@ -25,10 +23,11 @@ class PatrimonialServiceProvider extends BaseDeferredProvider
      * Retorna os Services registrados no provider.
      * @return array
      */
+    #[\Override]
     public function provides()
     {
-        return array(
+        return [
             'AtendimentoRepository',
-        );
+        ];
     }
 }

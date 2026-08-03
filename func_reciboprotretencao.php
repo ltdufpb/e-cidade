@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_utils.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_arretipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clarretipo = new cl_arretipo;
 $clarretipo->rotulo->label("k00_tipo");
 $clarretipo->rotulo->label("k00_descr");
@@ -108,9 +108,9 @@ if(isset($oGet->k03_tipo)){
         }else{
            $sql = $clarretipo->sql_query("",$campos,"k00_tipo"," arretipo.k00_instit = ".db_getsession('DB_instit') . $wheretipo);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k00_descr)){
-          $repassa = array("chave_k00_tipo"=>$chave_k00_tipo,"chave_k00_descr"=>$chave_k00_descr);
+          $repassa = ["chave_k00_tipo"=>$chave_k00_tipo,"chave_k00_descr"=>$chave_k00_descr];
         }
 				//die( $sql);
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

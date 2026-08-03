@@ -105,7 +105,7 @@ if(isset($oPost->alterar)){
  		$sMsgErro = $clHabitProgramaConcedente->erro_msg;
  	}
   		
-  if ( !in_array($oPost->ht01_habitgrupoprograma,array(1,2,3))) {
+  if ( !in_array($oPost->ht01_habitgrupoprograma,[1,2,3])) {
   	
   	$clHabitProgramaLote->excluir(null," ht05_habitprograma = {$clHabitPrograma->ht01_sequencial}");
   	

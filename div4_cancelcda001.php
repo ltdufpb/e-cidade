@@ -32,7 +32,7 @@ require_once(modification('libs/db_usuariosonline.php'));
 require_once(modification('dbforms/db_funcoes.php'));
 require_once(modification('dbforms/db_classesgenericas.php'));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clcertid           = new cl_certid;
@@ -71,7 +71,7 @@ if (isset($cancelar)&&$cancelar!=""){
 
   $sqlerro=false;
   $certidao=$v13_certid;
-  $info=split('#',$chaves);
+  $info=preg_split('#\##m',$chaves);
   $inclui=true;
 
   if ($numreg!=0&&$numreg==count($info)){
@@ -113,7 +113,7 @@ if (isset($cancelar)&&$cancelar!=""){
 
       $sqlerro=false;
       for($w=0;$w<count($info);$w++){
-        $dados=split('-',$info[$w]);
+        $dados=preg_split('#\-#m',(string) $info[$w]);
         $coddiv = $dados[0];
         $numpre = $dados[1];
         $numpar = $dados[2];
@@ -213,7 +213,7 @@ if (isset($cancelar)&&$cancelar!=""){
 
       $sqlerro=false;
       for($w=0;$w<count($info);$w++){
-        $dados=split('-',$info[$w]);
+        $dados=preg_split('#\-#m',(string) $info[$w]);
         $parcel = $dados[0];
         $numpre = $dados[1];
         $result_ter=$clcertter->sql_record($clcertter->sql_query_deb($certidao,null,"distinct v07_numpre,v07_parcel","","v14_certid=$certidao and v14_parcel=$parcel and v07_numpre=$numpre"));
@@ -300,7 +300,7 @@ if (isset($cancelar)&&$cancelar!=""){
 
     /*********************************** SE O NUMPRE ESTIVER NA INICIALNUMPRE DELETA *******************************************/
     for($w=0;$w<count($info);$w++){
-      $dados=split('-',$info[$w]);
+      $dados=preg_split('#\-#m',(string) $info[$w]);
       $numpre = $dados[1];
       $result_ininumpre = $clinicialnumpre->sql_record($clinicialnumpre->sql_query_file(null,"*",null," v59_numpre = $numpre "));
       if ($clinicialnumpre->numrows > 0){
@@ -422,7 +422,7 @@ document.form1.submit();
 				  $cliframe_seleciona->campos  = "";
 				}
 				$result_num=db_query($sql);
-				$numreg=pg_numrows($result_num);
+				$numreg=pg_num_rows($result_num);
 				db_input("numreg",6,'',true,"hidden",3);
 				$cliframe_seleciona->legenda="Débitos a Cancelar";
 				$cliframe_seleciona->alignlegenda="left";

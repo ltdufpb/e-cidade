@@ -32,7 +32,7 @@ class IntegracaoPortalTransparencia {
    * Itens para Integracao do Ecidade
    * @var  IItemIntegracao[]
    */
-  private $oItensParaIntegracao = array();
+  private $oItensParaIntegracao = [];
 
   /**
    * Ano de Inicio da Integracao
@@ -123,7 +123,7 @@ class IntegracaoPortalTransparencia {
   public function adicionarIntegracao(IItemIntegracao $oItemIntegracao) {
 
     foreach ($this->oItensParaIntegracao as $oItemIntegracaoAdicionado) {
-      if (get_class($oItemIntegracaoAdicionado) == get_class($oItemIntegracao)) {
+      if ($oItemIntegracaoAdicionado::class == $oItemIntegracao::class) {
         return false;
       }
     }

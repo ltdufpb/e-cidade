@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issgrupotipoalvara_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissgrupotipoalvara = new cl_issgrupotipoalvara;
 $clissgrupotipoalvara->rotulo->label("q97_sequencial");
 $clissgrupotipoalvara->rotulo->label("q97_descricao");
@@ -98,9 +98,9 @@ $clissgrupotipoalvara->rotulo->label("q97_descricao");
         }else{
            $sql = $clissgrupotipoalvara->sql_query("",$campos,"q97_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q97_descricao)){
-          $repassa = array("chave_q97_sequencial"=>$chave_q97_sequencial,"chave_q97_descricao"=>$chave_q97_descricao);
+          $repassa = ["chave_q97_sequencial"=>$chave_q97_sequencial,"chave_q97_descricao"=>$chave_q97_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

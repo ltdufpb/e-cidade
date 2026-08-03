@@ -12,36 +12,6 @@ class NotificacaoMovimentacaoProcesso
      * @var
      */
     private $sequencial;
-    /**
-     * @var int
-     */
-    private $notificarReceberProcesso;
-    /**
-     * @var int
-     */
-    private $notificarDataVencimento;
-    /**
-     * @var string
-     */
-    private $assunto;
-    /**
-     * @var string
-     */
-    private $mensagem;
-    /**
-     * @var int
-     */
-    private $diasPrazoMovimentacao;
-
-    /**
-     * @var int
-     */
-    private $tipoPrazo;
-
-    /**
-     * @var int
-     */
-    private $usuarioRemetente;
 
     /**
      * @var int
@@ -55,23 +25,11 @@ class NotificacaoMovimentacaoProcesso
      * @param string $assunto
      * @param string $mensagem
      * @param int $diasPrazoMovimentacao
+     * @param int $tipoPrazo
+     * @param int $usuarioRemetente
      */
-    public function __construct(
-        $notificarReceberProcesso = 0,
-        $notificarDataVencimento = 0,
-        $assunto = '',
-        $mensagem = 'O prazo para movimentar o processo [numero] / [ano] venceu dia [data_final] e deve ter andamento.',
-        $diasPrazoMovimentacao = 0,
-        $tipoPrazo = 1,
-        $usuarioRemetente
-    ) {
-        $this->notificarReceberProcesso = $notificarReceberProcesso;
-        $this->notificarDataVencimento = $notificarDataVencimento;
-        $this->assunto = $assunto;
-        $this->mensagem = $mensagem;
-        $this->diasPrazoMovimentacao = $diasPrazoMovimentacao;
-        $this->tipoPrazo = $tipoPrazo;
-        $this->usuarioRemetente = $usuarioRemetente;
+    public function __construct(private $notificarReceberProcesso = 0, private $notificarDataVencimento = 0, private $assunto = '', private $mensagem = 'O prazo para movimentar o processo [numero] / [ano] venceu dia [data_final] e deve ter andamento.', private $diasPrazoMovimentacao = 0, private $tipoPrazo = 1, private $usuarioRemetente = null)
+    {
     }
 
     /**

@@ -38,8 +38,8 @@
   include(modification("classes/db_db_cgmcpf_classe.php"));
   include(modification("classes/db_db_cepmunic_classe.php"));
   include(modification("classes/db_ruascep_classe.php"));
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-  db_postmemory($HTTP_POST_VARS);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
+  db_postmemory($_POST);
   $db_opcao = 2;
   $clcgm = new cl_cgm;
   $clcgmalt = new cl_cgmalt;
@@ -48,7 +48,7 @@
   $cldb_cgmcpf = new cl_db_cgmcpf;
   $cldb_cgmcgc = new cl_db_cgmcgc;
   $db_botao = false;
-  if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+  if (isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
   $cgm_alt=$z01_numcgm;  
   $result_cgm=$clcgm->sql_record($clcgm->sql_query_file($cgm_alt));  
   $numrows=$clcgm->numrows;
@@ -113,7 +113,7 @@
       $cgccpf = $z01_cpf;
     }
     if(db_permissaomenu(db_getsession("DB_anousu"),604,3775) == "false"){
-      if(trim($cgccpf) == '00000000000'){
+      if(trim((string) $cgccpf) == '00000000000'){
        echo "
        <script>
 	 alert('Você não tem permissão para incluir CPF zerado, contate o administrador para obter esta permissão!');
@@ -136,11 +136,11 @@
 	   alert('CNPJ/CPF já existe no cadastro do CGM \\n CGM número: $z01_numcgm \\n Nome: $z01_nome');
 	 </script>";
          if(isset($testanome)){
-	   $camp = split("\|",$valores);
+	   $camp = preg_split("#\\|#m",$valores);
 	   $vals = "";
 	   $vir = "";
 	   for($f=1;$f<count($camp);$f++){
-	     $vals .= $vir.$$camp[$f];
+	     $vals .= $vir.${$camp}[$f];
 	     $vir = ",";
 	   }
 	   db_redireciona("func_nome.php?z01_numcgm=$z01_numcgm_old&funcao_js=$funcao_js&testanome=true");
@@ -151,13 +151,13 @@
     }
   }
      $cgccpf = (@$z01_cgc==""?@$z01_cpf:@$z01_cgc);
-     $HTTP_POST_VARS["z01_cgccpf"] = (@$z01_cgc==""?@$z01_cpf:@$z01_cgc);
+     $_POST["z01_cgccpf"] = (@$z01_cgc==""?@$z01_cpf:@$z01_cgc);
      db_inicio_transacao();
  	 $clcgm->alterar($z01_numcgm);
  	 $clcgm->z01_numcgm = $z01_numcgm;
 	 if($j14_codigo!=""){
            $result = $cldb_cgmruas->sql_record($cldb_cgmruas->sql_query($cldb_cgmruas->z01_numcgm,"*",""," db_cgmruas.z01_numcgm = ".$clcgm->z01_numcgm.""));
-	   $HTTP_POST_VARS['j14_codigo'] = $j14_codigo;
+	   $_POST['j14_codigo'] = $j14_codigo;
 	   if($cldb_cgmruas->numrows > 0){
              $cldb_cgmruas->alterar($clcgm->z01_numcgm); 
 	   }else{
@@ -165,13 +165,13 @@
 	   }
 	 }else{
            $result = $cldb_cgmruas->sql_record($cldb_cgmruas->sql_query($cldb_cgmruas->z01_numcgm,"*",""," db_cgmruas.z01_numcgm = ".$clcgm->z01_numcgm.""));
-	   $HTTP_POST_VARS['j14_codigo'] = $j14_codigo;
+	   $_POST['j14_codigo'] = $j14_codigo;
 	   if($cldb_cgmruas->numrows > 0){
              $cldb_cgmruas->excluir($clcgm->z01_numcgm); 
 	   }
 	 }
 	 if($j13_codi!=""){
-	   $HTTP_POST_VARS['j13_codi'] = $j13_codi;
+	   $_POST['j13_codi'] = $j13_codi;
            $result = $cldb_cgmbairro->sql_record($cldb_cgmbairro->sql_query($cldb_cgmbairro->z01_numcgm,"*",""," db_cgmbairro.z01_numcgm = ".$clcgm->z01_numcgm.""));
 	   if($cldb_cgmbairro->numrows > 0){
 	     $cldb_cgmbairro->alterar($clcgm->z01_numcgm); 
@@ -179,7 +179,7 @@
              $cldb_cgmbairro->incluir($clcgm->z01_numcgm); 
 	   }
 	 }else{
-	   $HTTP_POST_VARS['j13_codi'] = $j13_codi;
+	   $_POST['j13_codi'] = $j13_codi;
            $result = $cldb_cgmbairro->sql_record($cldb_cgmbairro->sql_query($cldb_cgmbairro->z01_numcgm,"*",""," db_cgmbairro.z01_numcgm = ".$clcgm->z01_numcgm.""));
 	   if($cldb_cgmbairro->numrows > 0){
 	     $cldb_cgmbairro->excluir($clcgm->z01_numcgm); 
@@ -210,11 +210,11 @@
        }
      }
      if(isset($testanome)){
-       $camp = split("\|",@$valores);
+       $camp = preg_split("#\\|#m",(string) @$valores);
        $vals = "";
        $vir = "";
        for($f=1;$f<count($camp);$f++){
-         $vals .= $vir.$$camp[$f];
+         $vals .= $vir.${$camp}[$f];
 	 $vir = ",";
        }
        $clcgm->erro(true,false);

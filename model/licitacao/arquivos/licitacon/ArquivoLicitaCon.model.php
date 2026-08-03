@@ -53,12 +53,12 @@ abstract class ArquivoLicitaCon {
   /**
    * @var array
    */
-  protected $aAnexos = array();
+  protected $aAnexos = [];
 
   /**
    * @var array
    */
-  protected $aRemoveQuebraLinhas = array();
+  protected $aRemoveQuebraLinhas = [];
 
 	/**
 	 * Regra do licitacon para o arquivo.
@@ -81,7 +81,7 @@ abstract class ArquivoLicitaCon {
    * @param CabecalhoLicitaCon $oCabecalho
 	 * @param Regra
    */
-  public function __construct(CabecalhoLicitaCon $oCabecalho, Regra $oRegraEmissaoLicitacon = null) {
+  public function __construct(CabecalhoLicitaCon $oCabecalho, ?Regra $oRegraEmissaoLicitacon = null) {
 
     $this->oCabecalho = $oCabecalho;
 		$this->oRegra     = $oRegraEmissaoLicitacon;
@@ -159,7 +159,7 @@ abstract class ArquivoLicitaCon {
 
     $oLayoutTXT->fechaArquivo();
 
-    $sConteudoArquivo = utf8_encode(file_get_contents($sNomeArquivo));
+    $sConteudoArquivo = mb_convert_encoding(file_get_contents($sNomeArquivo), 'UTF-8', 'ISO-8859-1');
     file_put_contents($sNomeArquivo, $sConteudoArquivo);
     chmod ($sNomeArquivo , 777 );
     return new File($sNomeArquivo);
@@ -173,7 +173,7 @@ abstract class ArquivoLicitaCon {
    */
   protected function removeQuebrasDeLinha($aStrings) {
 
-    $aQuebrasDeLinha = array("\n", "\r\n", "\r");
+    $aQuebrasDeLinha = ["\n", "\r\n", "\r"];
     return str_replace($aQuebrasDeLinha, "", $aStrings);
   }
 
@@ -185,7 +185,7 @@ abstract class ArquivoLicitaCon {
 
     if (!empty($this->aRemoveQuebraLinhas)) {
 
-      $aCamposLimpar = array();
+      $aCamposLimpar = [];
       foreach ($this->aRemoveQuebraLinhas as $sNomeCampo) {
         $aCamposLimpar[$sNomeCampo] = $oDado->{$sNomeCampo};
       }

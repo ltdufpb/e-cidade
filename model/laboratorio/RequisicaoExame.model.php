@@ -104,7 +104,7 @@ class RequisicaoExame
 
     const FALTA_MATERIAL = 'f - falta material';
 
-    private static $aSituacoes = array(self::NAO_DIGITADO   => "Não Digitado",
+    private static $aSituacoes = [self::NAO_DIGITADO   => "Não Digitado",
                                      self::AUTORIZADO       => "Autorizado",
                                      self::COLETADO         => "Coletado",
                                      self::NOVA_COLETA      => "Nova coleta",
@@ -112,7 +112,7 @@ class RequisicaoExame
                                      self::CONFERIDO        => "Conferido",
                                      self::ENTREGUE         => "Entregue",
                                      self::FALTA_MATERIAL   => "Falta de Material"
-                                    );
+                                    ];
 
   /**
    * Observação lançada para o exâme
@@ -131,7 +131,7 @@ class RequisicaoExame
    * Medicamentos utilizados para realizar o resultado
    * @var MedicamentoLaboratorio[]
    */
-    private $aMedicamentos = array();
+    private $aMedicamentos = [];
 
     private $oCID = null;
 
@@ -170,7 +170,7 @@ class RequisicaoExame
     /**
      * @var array
      */
-    private static $situacoesValidas = array(
+    private static $situacoesValidas = [
       self::NAO_DIGITADO,
       self::AUTORIZADO,
       self::COLETADO,
@@ -179,7 +179,7 @@ class RequisicaoExame
       self::CONFERIDO,
       self::ENTREGUE,
       self::FALTA_MATERIAL
-    );
+    ];
 
     /**
    * Instancia o Exame
@@ -197,9 +197,9 @@ class RequisicaoExame
                 $this->oSolicitante      = CgsRepository::getByCodigo($oDadosRequisicao->la22_i_cgs);
                 $this->iCodigo           = $oDadosRequisicao->la21_i_codigo;
                 $this->iCodigoExame      = $oDadosRequisicao->la08_i_codigo;
-                $this->sSituacao         = trim($oDadosRequisicao->la21_c_situacao);
-                $this->sObservacao       = trim($oDadosRequisicao->la21_observacao);
-                $this->sMotivoNovaColeta = trim($oDadosRequisicao->la21_motivonovacoleta);
+                $this->sSituacao         = trim((string) $oDadosRequisicao->la21_c_situacao);
+                $this->sObservacao       = trim((string) $oDadosRequisicao->la21_observacao);
+                $this->sMotivoNovaColeta = trim((string) $oDadosRequisicao->la21_motivonovacoleta);
                 $this->oData             = DBDate::create($oDadosRequisicao->la21_d_data);
                 $this->dataEntrega       = DBDate::create($oDadosRequisicao->la21_d_entrega);
                 $this->horaColeta        = $oDadosRequisicao->la21_c_hora;
@@ -610,9 +610,9 @@ class RequisicaoExame
      */
     public function getNumeroCodigoBarras($codigoMaterialColeta, $setor)
     {
-        $codigoBarrasMaterialColeta = str_pad($codigoMaterialColeta, 3, '0', STR_PAD_LEFT);
+        $codigoBarrasMaterialColeta = str_pad((string) $codigoMaterialColeta, 3, '0', STR_PAD_LEFT);
         $codigoBarrasRequisicao = str_pad($this->iCodigoRequisicao, 9, '0', STR_PAD_LEFT);
-        $codigoBarrasSetor = str_pad($setor, 2, '0', STR_PAD_LEFT);
+        $codigoBarrasSetor = str_pad((string) $setor, 2, '0', STR_PAD_LEFT);
 
         return $codigoBarrasMaterialColeta . $codigoBarrasRequisicao . $codigoBarrasSetor;
     }
@@ -627,11 +627,11 @@ class RequisicaoExame
         $codigoRequisicao = (int) substr($codigoBarras, 3, 9);
         $codigoSetor = (int) substr($codigoBarras, 12, 2);
 
-        return array(
+        return [
             'codigoMaterial' => $codigoMaterial,
             'codigoRequisicao' => $codigoRequisicao,
             'codigoSetor' => $codigoSetor
-        );
+        ];
     }
 
 
@@ -702,7 +702,7 @@ class RequisicaoExame
      */
     public function toArray()
     {
-        return array(
+        return [
             'la21_i_codigo' => $this->getCodigoRequisicao(),
             'lab_exame' => !is_null($this->getExameRequisicao()) ? $this->getExameRequisicao()->toArray() : null,
             'la21_c_situacao' => $this->getSituacao(),
@@ -711,7 +711,7 @@ class RequisicaoExame
             'la21_d_data' => $this->getData(),
             'la21_d_entrega' => $this->getDataEntrega(),
             'la21_i_quantidade' => $this->getQuantidade()
-        );
+        ];
     }
 
     /**

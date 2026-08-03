@@ -28,9 +28,9 @@
 
 $fArquivo = fopen($sArquivo, "w");
 
-$aHeaderCSV      = array();
+$aHeaderCSV      = [];
 $aHeaderCSV[]    = $sAgrupador;
-$lEscritaArquivo = fputcsv($fArquivo, $aHeaderCSV, ";");
+$lEscritaArquivo = fputcsv($fArquivo, $aHeaderCSV, ";", escape: '\\');
 
 if ( !$lEscritaArquivo ) {
 
@@ -40,38 +40,38 @@ if ( !$lEscritaArquivo ) {
 
 foreach ( $aDadosRelatorio as $oDadosRelatorio ) {
 
-  $aDadosCSV   = array();
+  $aDadosCSV   = [];
 	$aDadosCSV[] = $oDadosRelatorio->iCodigoAgrupador . ' - ' . $oDadosRelatorio->sDescricaoAgrupador;
 
-	$aDadosTotalGeral   = array();
+	$aDadosTotalGeral   = [];
 	$aDadosTotalGeral[] = "Total {$oDadosRelatorio->sDescricaoAgrupador}";
 	$aDadosTotalGeral[] = "";
 	$aDadosTotalGeral[] = number_format($oDadosRelatorio->nTotal, 2, ',', '');
 	$aDadosTotalGeral[] = "100%";
 	$aDadosTotalGeral[] = $oDadosRelatorio->iTotalFuncionarios;
 
-	$lEscritaArquivo = fputcsv($fArquivo, $aDadosCSV, ";");
+	$lEscritaArquivo = fputcsv($fArquivo, $aDadosCSV, ";", escape: '\\');
 
   for ( $iFaixa = 0; $iFaixa < $iQuantidadeFaixas; $iFaixa++ ) {
   
   	$iCodigoFaixa = $iFaixa + 1;
   
-  	$aHeaderFaixaCSV   = array();
+  	$aHeaderFaixaCSV   = [];
   	$aHeaderFaixaCSV[] = 'Faixa';
   	$aHeaderFaixaCSV[] = 'Valor';
   	$aHeaderFaixaCSV[] = 'Percentual' ;
   	$aHeaderFaixaCSV[] = 'Funcionarios';
   	
-  	$lEscritaArquivo = fputcsv($fArquivo, $aHeaderFaixaCSV, ";");
+  	$lEscritaArquivo = fputcsv($fArquivo, $aHeaderFaixaCSV, ";", escape: '\\');
   	
-  	$aDadosRodapeCSV   = array();
+  	$aDadosRodapeCSV   = [];
   	$aDadosRodapeCSV[] = 'Faixa ' . $iCodigoFaixa;
   	$aDadosRodapeCSV[] = $aFaixas[$iFaixa]['sDescricaoFaixa'];
   	$aDadosRodapeCSV[] = $oDadosRelatorio->aFaixas[$iFaixa]['nValorFaixa'];
   	$aDadosRodapeCSV[] = $oDadosRelatorio->aFaixas[$iFaixa]['nPercentual'];
   	$aDadosRodapeCSV[] = $oDadosRelatorio->aFaixas[$iFaixa]['iTotalFuncionarios'];
   	
-  	$lEscritaArquivo = fputcsv($fArquivo, $aDadosRodapeCSV, ";");
+  	$lEscritaArquivo = fputcsv($fArquivo, $aDadosRodapeCSV, ";", escape: '\\');
   	
   	/**
   	 * Verificamos se opcao de listar servidores esta como 'Sim'
@@ -83,28 +83,28 @@ foreach ( $aDadosRelatorio as $oDadosRelatorio ) {
   	   */
   	  if ($oDadosRelatorio->aFaixas[$iFaixa]['iTotalFuncionarios'] > 0) {
   	
-  	    $aHeaderServidoresCSV   = array();
+  	    $aHeaderServidoresCSV   = [];
   	    $aHeaderServidoresCSV[] = 'Matrícula';
   	    $aHeaderServidoresCSV[] = 'Nome do Servidor';
   	    $aHeaderServidoresCSV[] = 'Valor';
   	    
-  	    $lEscritaArquivo       = fputcsv($fArquivo, $aHeaderServidoresCSV, ";");
+  	    $lEscritaArquivo       = fputcsv($fArquivo, $aHeaderServidoresCSV, ";", escape: '\\');
   	
   	    foreach($oDadosRelatorio->aFaixas[$iFaixa]['aServidores'] as $oDadosServidor) {
   	
   	      $oServidor          = new Servidor($oDadosServidor->iMatricula);
-  	      $aDadosServidores   = array();
+  	      $aDadosServidores   = [];
   	      $aDadosServidores[] = $oServidor->getMatricula();
   	      $aDadosServidores[] = $oServidor->getCgm()->getNome();
   	      $aDadosServidores[] = db_formatar($oDadosServidor->nValor, 'f');
   	      unset($oServidor);
-  	      $lEscritaArquivo = fputcsv($fArquivo, $aDadosServidores, ";");
+  	      $lEscritaArquivo = fputcsv($fArquivo, $aDadosServidores, ";", escape: '\\');
   	    }
   	  }
   	}
   }
   
-  $lEscritaArquivo = fputcsv($fArquivo, $aDadosTotalGeral, ";");
+  $lEscritaArquivo = fputcsv($fArquivo, $aDadosTotalGeral, ";", escape: '\\');
 }
 
 fclose($fArquivo);

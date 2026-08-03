@@ -44,7 +44,7 @@ $rsInstituicao          = db_query("select munic from db_config where codigo = {
 $oInstituicao           = db_utils::fieldsmemory($rsInstituicao,0);
 $sDescricaoInstituicao  = "MUNICÍPIO DE " . $oInstituicao->munic;
 
-$aWhere = array();
+$aWhere = [];
 $aWhere [] = "t64_instit = {$iInstituicao}";
 
 /**
@@ -76,7 +76,7 @@ if ($oDaoBens->numrows == 0) {
  *  Cria um array separando por objetos Conta (StdClass)
  *  Cada objeto conta terá assosciada um valor total e um array de Bens
  */
-$aContas = array();
+$aContas = [];
 
 for($iBem = 0; $iBem < $oDaoBens->numrows; $iBem++) {
 	
@@ -192,8 +192,8 @@ function imprimeBens($aBens, $oPdf, $iAlturaLinha) {
 		
 		$oPdf->cell(65,  $iAlturaLinha, $oBem->sEstruturalClassificacao ."-". $oBem->sDescricaoClassificacao, "TBR", 0, "L", 0); //@todo substrdescr
 		$oPdf->cell(20,  $iAlturaLinha, $oBem->iCodigoBem, "TBR", 0, "C", 0);
-		$oPdf->cell(105, $iAlturaLinha, substr($oBem->sDescricaoBem, 0 , 30), "TBR", 0, "L", 0);
-		$oPdf->cell(50,  $iAlturaLinha, substr($oBem->sDepartamento, 0 , 30), "TBR", 0, "L", 0);
+		$oPdf->cell(105, $iAlturaLinha, substr((string) $oBem->sDescricaoBem, 0 , 30), "TBR", 0, "L", 0);
+		$oPdf->cell(50,  $iAlturaLinha, substr((string) $oBem->sDepartamento, 0 , 30), "TBR", 0, "L", 0);
 		$oPdf->cell(20,  $iAlturaLinha, db_formatar($oBem->nValorBem, 'f'), "TBR", 0, "R", 0);
 		$oPdf->cell(20,  $iAlturaLinha, db_formatar($oBem->nValorResidual, 'f'), "TBL", 1, "R", 0);
 	}

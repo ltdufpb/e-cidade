@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE termovist
 class cl_termovist { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y91_termovist = 0; 
-   var $y91_inscr = 0; 
-   var $y91_datatermo_dia = null; 
-   var $y91_datatermo_mes = null; 
-   var $y91_datatermo_ano = null; 
-   var $y91_datatermo = null; 
-   var $y91_exerc = 0; 
-   var $y91_codigo = 0; 
-   var $y91_tipo = null; 
+   public $y91_termovist = 0; 
+   public $y91_inscr = 0; 
+   public $y91_datatermo_dia = null; 
+   public $y91_datatermo_mes = null; 
+   public $y91_datatermo_ano = null; 
+   public $y91_datatermo = null; 
+   public $y91_exerc = 0; 
+   public $y91_codigo = 0; 
+   public $y91_tipo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y91_termovist = int4 = Código do termo 
                  y91_inscr = int4 = Inscrição no ISSQN 
                  y91_datatermo = date = Data do termo 
@@ -61,10 +61,10 @@ class cl_termovist {
                  y91_tipo = varchar(3) = Origem do termo 
                  ";
    //funcao construtor da classe 
-   function cl_termovist() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termovist"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_termovist {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y91_termovist = pg_result($result,0,0); 
+       $this->y91_termovist = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from termovist_y91_termovist_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y91_termovist)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y91_termovist)){
          $this->erro_sql = " Campo y91_termovist maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_termovist {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Termo de vistorias ($this->y91_termovist) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Termo de vistorias já Cadastrado";
@@ -218,15 +218,15 @@ class cl_termovist {
      $resaco = $this->sql_record($this->sql_query_file($this->y91_termovist));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8001,'$this->y91_termovist','I')");
-       $resac = db_query("insert into db_acount values($acount,1348,8001,'','".AddSlashes(pg_result($resaco,0,'y91_termovist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1348,8002,'','".AddSlashes(pg_result($resaco,0,'y91_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1348,8003,'','".AddSlashes(pg_result($resaco,0,'y91_datatermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1348,8004,'','".AddSlashes(pg_result($resaco,0,'y91_exerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1348,8012,'','".AddSlashes(pg_result($resaco,0,'y91_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1348,8013,'','".AddSlashes(pg_result($resaco,0,'y91_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1348,8001,'','".AddSlashes(pg_fetch_result($resaco,0,'y91_termovist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1348,8002,'','".AddSlashes(pg_fetch_result($resaco,0,'y91_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1348,8003,'','".AddSlashes(pg_fetch_result($resaco,0,'y91_datatermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1348,8004,'','".AddSlashes(pg_fetch_result($resaco,0,'y91_exerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1348,8012,'','".AddSlashes(pg_fetch_result($resaco,0,'y91_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1348,8013,'','".AddSlashes(pg_fetch_result($resaco,0,'y91_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_termovist {
       $this->atualizacampos();
      $sql = " update termovist set ";
      $virgula = "";
-     if(trim($this->y91_termovist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_termovist"])){ 
+     if(trim((string) $this->y91_termovist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_termovist"])){ 
        $sql  .= $virgula." y91_termovist = $this->y91_termovist ";
        $virgula = ",";
-       if(trim($this->y91_termovist) == null ){ 
+       if(trim((string) $this->y91_termovist) == null ){ 
          $this->erro_sql = " Campo Código do termo nao Informado.";
          $this->erro_campo = "y91_termovist";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_termovist {
          return false;
        }
      }
-     if(trim($this->y91_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_inscr"])){ 
+     if(trim((string) $this->y91_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_inscr"])){ 
        $sql  .= $virgula." y91_inscr = $this->y91_inscr ";
        $virgula = ",";
-       if(trim($this->y91_inscr) == null ){ 
+       if(trim((string) $this->y91_inscr) == null ){ 
          $this->erro_sql = " Campo Inscrição no ISSQN nao Informado.";
          $this->erro_campo = "y91_inscr";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_termovist {
          return false;
        }
      }
-     if(trim($this->y91_datatermo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_datatermo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y91_datatermo_dia"] !="") ){ 
+     if(trim((string) $this->y91_datatermo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_datatermo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y91_datatermo_dia"] !="") ){ 
        $sql  .= $virgula." y91_datatermo = '$this->y91_datatermo' ";
        $virgula = ",";
-       if(trim($this->y91_datatermo) == null ){ 
+       if(trim((string) $this->y91_datatermo) == null ){ 
          $this->erro_sql = " Campo Data do termo nao Informado.";
          $this->erro_campo = "y91_datatermo_dia";
          $this->erro_banco = "";
@@ -277,7 +277,7 @@ class cl_termovist {
        if(isset($GLOBALS["HTTP_POST_VARS"]["y91_datatermo_dia"])){ 
          $sql  .= $virgula." y91_datatermo = null ";
          $virgula = ",";
-         if(trim($this->y91_datatermo) == null ){ 
+         if(trim((string) $this->y91_datatermo) == null ){ 
            $this->erro_sql = " Campo Data do termo nao Informado.";
            $this->erro_campo = "y91_datatermo_dia";
            $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_termovist {
          }
        }
      }
-     if(trim($this->y91_exerc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_exerc"])){ 
+     if(trim((string) $this->y91_exerc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_exerc"])){ 
        $sql  .= $virgula." y91_exerc = $this->y91_exerc ";
        $virgula = ",";
-       if(trim($this->y91_exerc) == null ){ 
+       if(trim((string) $this->y91_exerc) == null ){ 
          $this->erro_sql = " Campo Exercicio nao Informado.";
          $this->erro_campo = "y91_exerc";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_termovist {
          return false;
        }
      }
-     if(trim($this->y91_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_codigo"])){ 
+     if(trim((string) $this->y91_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_codigo"])){ 
        $sql  .= $virgula." y91_codigo = $this->y91_codigo ";
        $virgula = ",";
-       if(trim($this->y91_codigo) == null ){ 
+       if(trim((string) $this->y91_codigo) == null ){ 
          $this->erro_sql = " Campo cód. Logradouro nao Informado.";
          $this->erro_campo = "y91_codigo";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_termovist {
          return false;
        }
      }
-     if(trim($this->y91_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_tipo"])){ 
+     if(trim((string) $this->y91_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y91_tipo"])){ 
        $sql  .= $virgula." y91_tipo = '$this->y91_tipo' ";
        $virgula = ",";
-       if(trim($this->y91_tipo) == null ){ 
+       if(trim((string) $this->y91_tipo) == null ){ 
          $this->erro_sql = " Campo Origem do termo nao Informado.";
          $this->erro_campo = "y91_tipo";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_termovist {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8001,'$this->y91_termovist','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y91_termovist"]))
-           $resac = db_query("insert into db_acount values($acount,1348,8001,'".AddSlashes(pg_result($resaco,$conresaco,'y91_termovist'))."','$this->y91_termovist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1348,8001,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y91_termovist'))."','$this->y91_termovist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y91_inscr"]))
-           $resac = db_query("insert into db_acount values($acount,1348,8002,'".AddSlashes(pg_result($resaco,$conresaco,'y91_inscr'))."','$this->y91_inscr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1348,8002,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y91_inscr'))."','$this->y91_inscr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y91_datatermo"]))
-           $resac = db_query("insert into db_acount values($acount,1348,8003,'".AddSlashes(pg_result($resaco,$conresaco,'y91_datatermo'))."','$this->y91_datatermo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1348,8003,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y91_datatermo'))."','$this->y91_datatermo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y91_exerc"]))
-           $resac = db_query("insert into db_acount values($acount,1348,8004,'".AddSlashes(pg_result($resaco,$conresaco,'y91_exerc'))."','$this->y91_exerc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1348,8004,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y91_exerc'))."','$this->y91_exerc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y91_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1348,8012,'".AddSlashes(pg_result($resaco,$conresaco,'y91_codigo'))."','$this->y91_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1348,8012,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y91_codigo'))."','$this->y91_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y91_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1348,8013,'".AddSlashes(pg_result($resaco,$conresaco,'y91_tipo'))."','$this->y91_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1348,8013,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y91_tipo'))."','$this->y91_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_termovist {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8001,'$y91_termovist','E')");
-         $resac = db_query("insert into db_acount values($acount,1348,8001,'','".AddSlashes(pg_result($resaco,$iresaco,'y91_termovist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1348,8002,'','".AddSlashes(pg_result($resaco,$iresaco,'y91_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1348,8003,'','".AddSlashes(pg_result($resaco,$iresaco,'y91_datatermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1348,8004,'','".AddSlashes(pg_result($resaco,$iresaco,'y91_exerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1348,8012,'','".AddSlashes(pg_result($resaco,$iresaco,'y91_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1348,8013,'','".AddSlashes(pg_result($resaco,$iresaco,'y91_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1348,8001,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y91_termovist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1348,8002,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y91_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1348,8003,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y91_datatermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1348,8004,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y91_exerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1348,8012,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y91_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1348,8013,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y91_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from termovist
@@ -462,7 +462,7 @@ class cl_termovist {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:termovist";
@@ -476,7 +476,7 @@ class cl_termovist {
    function sql_query ( $y91_termovist=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,7 +499,7 @@ class cl_termovist {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_termovist {
    function sql_query_file ( $y91_termovist=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_termovist {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

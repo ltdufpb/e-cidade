@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("rhestagioagenda"=>"Agendamento","rhestagioagendadata"=>"Datas"); 
-	 $clcriaabas->src = array("rhestagioagenda"=>"rec1_rhestagioagenda005.php");
-	 $clcriaabas->disabled   =  array("rhestagioagendadata"=>"true"); 
+	 $clcriaabas->identifica = ["rhestagioagenda"=>"Agendamento","rhestagioagendadata"=>"Datas"]; 
+	 $clcriaabas->src = ["rhestagioagenda"=>"rec1_rhestagioagenda005.php"];
+	 $clcriaabas->disabled   =  ["rhestagioagendadata"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

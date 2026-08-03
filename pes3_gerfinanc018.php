@@ -40,7 +40,7 @@ require_once modification("classes/db_promitente_classe.php");
 
 require_once modification("dbforms/db_funcoes.php");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 db_postmemory($_POST);
 
 $xtipo = "'x'";
@@ -318,10 +318,10 @@ if ($opcao != 'previden' && $opcao != 'irf'){
    </tr>
 
 <?php 
-  $tam_form = strlen(@$rub_formula);
+  $tam_form = strlen((string) @$rub_formula);
   $cor      = "";
 
-  for ($x=0; $x < pg_numrows($result); $x++) {
+  for ($x=0; $x < pg_num_rows($result); $x++) {
     
     db_fieldsmemory($result,$x,true);
    
@@ -418,7 +418,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
       <?php }
       
       }?> 
-          <td align="left"  style="font-size:12px" nowrap >&nbsp;<?=strtoupper($rh27_descr)?></td>
+          <td align="left"  style="font-size:12px" nowrap >&nbsp;<?=strtoupper((string) $rh27_descr)?></td>
           <td align="right" style="font-size:12px" nowrap >&nbsp;<?=db_formatar($quant,'f')?></td>
           <td align="right" style="font-size:12px" nowrap >&nbsp;<?=db_formatar($provento,'f')?></td>
           <td align="right" style="font-size:12px" nowrap >&nbsp;<?=db_formatar($desconto,'f')?></td>
@@ -451,7 +451,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
   $tot_base_fer = 0;
   $tot_desc_fer = 0;
   
-  for($x=0;$x<pg_numrows($result);$x++){
+  for($x=0;$x<pg_num_rows($result);$x++){
     
     db_fieldsmemory($result,$x,true);
     
@@ -474,7 +474,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
 ?>
     <tr>
       <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$rh27_rubric?></td>
-      <td align="left"   style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=strtoupper($rh27_descr)?></td>
+      <td align="left"   style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=strtoupper((string) $rh27_descr)?></td>
       <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$r60_regist?></td>
       <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$r60_folha?></td>
       <td align="right"  style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r60_base,'f')?></td>
@@ -525,7 +525,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
   $tot_base_fer = 0;
   $tot_desc_fer = 0;
   
-  for ($x=0; $x < pg_numrows($result); $x++) {
+  for ($x=0; $x < pg_num_rows($result); $x++) {
     
     db_fieldsmemory($result,$x,true);
     
@@ -548,7 +548,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
 ?>
     <tr>
       <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$rh27_rubric?></td>
-      <td align="left"   style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=strtoupper($rh27_descr)?></td>
+      <td align="left"   style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=strtoupper((string) $rh27_descr)?></td>
       <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$r61_regist?></td>
       <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$r61_folha?></td>
       <td align="right"  style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r61_base,'f')?></td>

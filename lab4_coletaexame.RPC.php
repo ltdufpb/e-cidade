@@ -155,7 +155,7 @@ try {
           $dados_hemato = $dados;
           $dados_hemato["Exames"] = [];
           foreach($dados["Exames"] as $exame){
-            if(substr($exame["Amostra"], -2) == "06"){
+            if(str_ends_with((string) $exame["Amostra"], "06")){
               $dados_hemato["Exames"][] = $exame;
             }else{
               $dados_outros["Exames"][] = $exame;

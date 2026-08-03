@@ -140,11 +140,11 @@ $estiloDBSelect = "style=width:100px;";
                                 <b>Agrupamento das receitas:</b>
                             </td>
                             <td align="left" ><?php
-                                $x = array(
+                                $x = [
                                     1=>"Analítico",
                                     2=>"Pela conta de receita",
                                     3=>"Pelos códigos de empenho e receita"
-                                );
+                                ];
                                 db_select("agrupapor", $x, true, 1);
                                 ?>
                             </td>
@@ -155,10 +155,10 @@ $estiloDBSelect = "style=width:100px;";
                             </td>
                             <td align="left" nowrap>
                                <?php
-                                    $x = array(
+                                    $x = [
                                         1=>"Não agrupar pela classificação",
                                         2=>"Agrupar pela classificação"
-                                    );
+                                    ];
                                     db_select("receitaspor", $x, true, 1);
                                     ?>
                             </td>
@@ -169,7 +169,7 @@ $estiloDBSelect = "style=width:100px;";
                             </td>
                             <td align="left" nowrap>
                                 <?php
-                                    $x = array(1=>"Detalhar",2=>"Agrupar");
+                                    $x = [1=>"Detalhar",2=>"Agrupar"];
                                     db_select("pagempenhos", $x, true, 1, $estiloDBSelect);
                                 ?>
                             </td>
@@ -177,7 +177,7 @@ $estiloDBSelect = "style=width:100px;";
                         <tr>
                             <td nowrap align=right><b>Somente contas com movimento:</b></td>
                             <td>
-                                <?php $matriz = array("n"=>"Não","s"=>"Sim");
+                                <?php $matriz = ["n"=>"Não","s"=>"Sim"];
                                     $somente_contas_com_movimento = "s";
                                     db_select("somente_contas_com_movimento", $matriz, true, 1, $estiloDBSelect);
                                 ?>
@@ -187,7 +187,7 @@ $estiloDBSelect = "style=width:100px;";
                             <td nowrap align=right><b>Totalizador diário:</b></td>
                             <td>
                                 <?php
-                                    $matriz = array("s"=>"Sim","n"=>"Não");
+                                    $matriz = ["s"=>"Sim","n"=>"Não"];
                                     db_select("totalizador_diario", $matriz, true, 1, $estiloDBSelect);
                                 ?>
                             </td>
@@ -196,7 +196,7 @@ $estiloDBSelect = "style=width:100px;";
                             <td nowrap align=right><b>Imprime histórico:</b></td>
                             <td>
                                 <?php
-                                    $matriz = array("s"=>"Sim","n"=>"Não");
+                                    $matriz = ["s"=>"Sim","n"=>"Não"];
                                     db_select("imprime_historico", $matriz, true, 1, $estiloDBSelect);
                                 ?>
                             </td>
@@ -205,7 +205,7 @@ $estiloDBSelect = "style=width:100px;";
                             <td nowrap align=right><b>Tipo Impressão:</b></td>
                             <td>
                                 <?php
-                                    $matriz = array("a"=>"Analítico","s"=>"Sintético");
+                                    $matriz = ["a"=>"Analítico","s"=>"Sintético"];
                                     db_select("imprime_analitico", $matriz, true, 1, $estiloDBSelect);
                                 ?>
                             </td>
@@ -214,7 +214,7 @@ $estiloDBSelect = "style=width:100px;";
                             <td nowrap align="right"><b>Somente contas bancárias:</b></td>
                             <td>
                                 <?php
-                                    $matriz = array("s"=>"Sim","n"=>"Não");
+                                    $matriz = ["s"=>"Sim","n"=>"Não"];
                                     db_select("somente_contas_bancarias", $matriz, true, 1, $estiloDBSelect);
                                 ?>
                             </td>
@@ -222,7 +222,7 @@ $estiloDBSelect = "style=width:100px;";
                         <tr>
                             <td nowrap align="right"><b>Formato do relatório:</b></td>
                             <td><?php
-                                $matriz = array("p"=>"PDF","t"=>"CSV");
+                                $matriz = ["p"=>"PDF","t"=>"CSV"];
                                 db_select("imprime_pdf", $matriz, true, 1, $estiloDBSelect);
                             ?></td>
                         </tr>

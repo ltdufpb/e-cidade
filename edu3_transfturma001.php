@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_alunotransfturma_classe.php"));
 include(modification("classes/db_calendario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clalunotransfturma = new cl_alunotransfturma;
 $clcalendario = new cl_calendario;
 $db_opcao = 1;

@@ -246,9 +246,7 @@ abstract class AnexosService
     protected function constructInstituicoes(\Illuminate\Database\Eloquent\Collection $instituicoes)
     {
         $this->instituicoes = $instituicoes;
-        $this->listaInstituicoes = $instituicoes->map(function (DBConfig $instituicao) {
-            return $instituicao->codigo;
-        });
+        $this->listaInstituicoes = $instituicoes->map(fn(DBConfig $instituicao) => $instituicao->codigo);
     }
 
     protected function constructAssinaturas($idInstituicao)
@@ -843,7 +841,7 @@ abstract class AnexosService
      */
     protected function ajustaSaldosBalanceteVerificacao($verificacao)
     {
-        $digito = substr($verificacao->estrutural, 0, 1);
+        $digito = substr((string) $verificacao->estrutural, 0, 1);
         if (in_array($digito, [1, 3, 5, 7])) {
             if ($verificacao->sinal_anterior_acumulado === 'C') {
                 $verificacao->saldo_anterior_acumulado *= -1;
@@ -1110,10 +1108,10 @@ abstract class AnexosService
         $sDepartamento = $oDepartamento->getNomeDepartamento();
         $dtEmissao = date("d/m/Y", db_getsession("DB_datausu"));
         $hEmissao = date("H:i:s");
-        $aParseVariaveis = array('[nome_departamento]' => $sDepartamento,
+        $aParseVariaveis = ['[nome_departamento]' => $sDepartamento,
             '[data_emissao]' => $dtEmissao,
             '[hora_emissao]' => $hEmissao
-        );
+        ];
 
         if (isset($oNotaPadrao->o42_notapadrao) && trim($oNotaPadrao->o42_notapadrao) != "") {
             $sNotaPadrao = $oNotaPadrao->o42_notapadrao;
@@ -1149,10 +1147,10 @@ abstract class AnexosService
             $sDepartamento = $oDepartamento->getNomeDepartamento();
             $dtEmissao = date("d/m/Y", db_getsession("DB_datausu"));
             $hEmissao = date("H:i:s");
-            $aParseVariaveis = array('[nome_departamento]' => $sDepartamento,
+            $aParseVariaveis = ['[nome_departamento]' => $sDepartamento,
                 '[data_emissao]' => $dtEmissao,
                 '[hora_emissao]' => $hEmissao
-            );
+            ];
             foreach ($aParseVariaveis as $sIndiceValores => $oParseVariaveis) {
                 if (str_replace($sIndiceValores, $oParseVariaveis, $sFonte)) {
                     $sFonte = str_replace($sIndiceValores, $oParseVariaveis, $sFonte);

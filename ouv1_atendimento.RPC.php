@@ -127,8 +127,8 @@ $oProcessoOuvidoria = new processoOuvidoria();
 
 if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
 
-	$aListaDocumentos      = array();
-	$aListaFormaReclamacao = array();
+	$aListaDocumentos      = [];
+	$aListaFormaReclamacao = [];
 	$lIdentificado         = false;
 	
 	// Verifica se o tipo de processo exige identificação
@@ -163,9 +163,9 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
   }	
 	
   
-  $aRetorno = array("lIdentificado"         =>$lIdentificado,
+  $aRetorno = ["lIdentificado"         =>$lIdentificado,
 	                  "aListaDocumentos"      =>$aListaDocumentos,
-                    "aListaFormaReclamacao" =>$aListaFormaReclamacao);
+                    "aListaFormaReclamacao" =>$aListaFormaReclamacao];
 
   echo $oJson->encode($aRetorno);
   
@@ -180,7 +180,7 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
   	$rsDataProc  = $clProcessoOuvidoria->sql_record($clProcessoOuvidoria->sql_query(null,"p58_dtproc",null,$sWhereAtend));
   	if ( $clProcessoOuvidoria->numrows > 0 ) {
   		$oDataProc = db_utils::fieldsMemory($rsDataProc,0);
-      $aDataProc = explode('-',$oDataProc->p58_dtproc);
+      $aDataProc = explode('-',(string) $oDataProc->p58_dtproc);
       $dtDataIni = mktime(0,0,0,$aDataProc[1],$aDataProc[2],$aDataProc[0]); 
   	}
   }
@@ -189,7 +189,7 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
     $rsDataProc  = $clProtProcesso->sql_record($clProtProcesso->sql_query_file($oPost->iCodProc,"p58_dtproc"));
     if ( $clProtProcesso->numrows > 0 ) {
       $oDataProc = db_utils::fieldsMemory($rsDataProc,0);
-      $aDataProc = explode('-',$oDataProc->p58_dtproc);
+      $aDataProc = explode('-',(string) $oDataProc->p58_dtproc);
       $dtDataIni = mktime(0,0,0,$aDataProc[1],$aDataProc[2],$aDataProc[0]); 
     }
   }   
@@ -201,17 +201,17 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
   	$sDataPrevista = date('d/m/Y',$oStdClass->getIntervaloDiasUteis($dtDataIni,$oAndPadrao->totaldias));
   }
 	
-  $aRetorno = array("sDataPrevista"=>$sDataPrevista);	
+  $aRetorno = ["sDataPrevista"=>$sDataPrevista];	
 	
 	echo $oJson->encode($aRetorno);
 	
 } else if ( $oPost->sMethod == 'consultaDadosRequerente') {
 
   
-	$aListaEmail       = array();
-  $aListaEnder       = array();
-  $aListaTelefone    = array();  
-  $aListaTipoRetorno = array();
+	$aListaEmail       = [];
+  $aListaEnder       = [];
+  $aListaTelefone    = [];  
+  $aListaTipoRetorno = [];
   $lTemProcessos     = false;
   
   
@@ -248,7 +248,7 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
 			$aListaEnder[] = $oEnderereco;
 			
       // Cria a lista de Telefones para retorno
-      if ( trim($oDadosCgm->z01_telef) != '' ) {
+      if ( trim((string) $oDadosCgm->z01_telef) != '' ) {
         $oTeleFoneRes = new stdClass();
         $oTeleFoneRes->ov14_numero       = $oDadosCgm->z01_telef;     
         $oTeleFoneRes->ov14_tipotelefone = 1;
@@ -259,7 +259,7 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
         $aListaTelefone[] = $oTeleFoneRes;
       } 			
 			
-			if ( trim($oDadosCgm->z01_telcel) != '' ) {
+			if ( trim((string) $oDadosCgm->z01_telcel) != '' ) {
 				$oTeleFoneCel = new stdClass();
 				$oTeleFoneCel->ov14_numero       = $oDadosCgm->z01_telcel;     
 				$oTeleFoneCel->ov14_tipotelefone = 2;
@@ -270,7 +270,7 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
         $aListaTelefone[] = $oTeleFoneCel;				
 			} 
 			
-      if ( trim($oDadosCgm->z01_telcon) != '' ) {
+      if ( trim((string) $oDadosCgm->z01_telcon) != '' ) {
         $oTeleFoneCom = new stdClass();
         $oTeleFoneCom->ov14_numero       = $oDadosCgm->z01_telcon;     
         $oTeleFoneCom->ov14_tipotelefone = 3;
@@ -281,7 +281,7 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
         $aListaTelefone[] = $oTeleFoneCom;        
       }
 
-      if ( trim($oDadosCgm->z01_celcon) != '' ) {
+      if ( trim((string) $oDadosCgm->z01_celcon) != '' ) {
         $oTeleFoneCelCom = new stdClass();
         $oTeleFoneCelCom->ov14_numero       = $oDadosCgm->z01_celcon;     
         $oTeleFoneCelCom->ov14_tipotelefone = 3;
@@ -292,7 +292,7 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
         $aListaTelefone[] = $oTeleFoneCelCom;
       }
 
-      if ( trim($oDadosCgm->z01_fax) != '' ) {
+      if ( trim((string) $oDadosCgm->z01_fax) != '' ) {
         $oTeleFoneFax = new stdClass();
         $oTeleFoneFax->ov14_numero       = $oDadosCgm->z01_fax;     
         $oTeleFoneFax->ov14_tipotelefone = 4;
@@ -305,13 +305,13 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
       
       
       // Cria a lista de Emails para retorno
-      if ( trim($oDadosCgm->z01_email) != '' ) {
+      if ( trim((string) $oDadosCgm->z01_email) != '' ) {
         $oEmail  = new stdClass();
         $oEmail->ov13_email = $oDadosCgm->z01_email;
         $aListaEmail[]      = $oEmail;  
       }
       
-		  if ( trim($oDadosCgm->z01_emailc) != '' ) {
+		  if ( trim((string) $oDadosCgm->z01_emailc) != '' ) {
         $oEmailCom  = new stdClass();
         $oEmailCom->ov13_email = $oDadosCgm->z01_emailc;
         $aListaEmail[]      = $oEmailCom; 
@@ -438,19 +438,19 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
 	}
 	
   
-  $aRetorno = array("aListaTipoRetorno"=>$aListaTipoRetorno,
+  $aRetorno = ["aListaTipoRetorno"=>$aListaTipoRetorno,
                     "aListaEnder"      =>$aListaEnder,
                     "aListaEmail"      =>$aListaEmail,
                     "aListaTelefone"   =>$aListaTelefone,
-                    "lTemProcessos"    =>$lTemProcessos);
+                    "lTemProcessos"    =>$lTemProcessos];
 
   echo $oJson->encode($aRetorno);
   
 } else if ( $oPost->sMethod == 'consultaDadosTela') {
 
   
-  $aListaFormaReclamacao = array();
-  $aListaTipoRetorno     = array();
+  $aListaFormaReclamacao = [];
+  $aListaTipoRetorno     = [];
   
   
   $rsFormaReclamacao = $clFormaReclamacao->sql_record($clFormaReclamacao->sql_query_file());
@@ -467,8 +467,8 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
   }
   
   
-  $aRetorno = array("aListaTipoRetorno"     =>$aListaTipoRetorno,
-                    "aListaFormaReclamacao" =>$aListaFormaReclamacao);
+  $aRetorno = ["aListaTipoRetorno"     =>$aListaTipoRetorno,
+                    "aListaFormaReclamacao" =>$aListaFormaReclamacao];
 
   echo $oJson->encode($aRetorno);
   
@@ -524,8 +524,8 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
            */
           $oDaoOuvidoriaLocalEndereco = db_utils::getDao("ouvidoriacadlocalender");
           $sWhere  = "ov26_ruas = {$oEnderecoCgm->j14_codigo} "; 
-          $sWhere .= " and trim(ov26_numero)      =  '".trim($oEnderecoCgm->z01_numero)."'"; 
-          $sWhere .= " and trim(ov26_complemento) =  '".trim($oEnderecoCgm->z01_compl)."'";
+          $sWhere .= " and trim(ov26_numero)      =  '".trim((string) $oEnderecoCgm->z01_numero)."'"; 
+          $sWhere .= " and trim(ov26_complemento) =  '".trim((string) $oEnderecoCgm->z01_compl)."'";
           $sSqlEnderecoLocal = $oDaoOuvidoriaLocalEndereco->sql_query_file(null, 
                                                                            "ov26_ouvidoriacadlocal", 
                                                                            null, 
@@ -539,10 +539,10 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
             
             $oDaoOuvidoriaCadEnderLocal = db_utils::getDao("ouvidoriacadlocal");
             $sDescricaoLocal            = "{$oEnderecoCgm->j14_nome}";
-            if (trim($oEnderecoCgm->z01_numero) != "") {
+            if (trim((string) $oEnderecoCgm->z01_numero) != "") {
               $sDescricaoLocal     .= ", {$oEnderecoCgm->z01_numero}";
             }
-            if (trim($oEnderecoCgm->z01_compl) != "") {
+            if (trim((string) $oEnderecoCgm->z01_compl) != "") {
               $sDescricaoLocal     .= ", {$oEnderecoCgm->z01_compl}";
             }
             $oDaoOuvidoriaCadEnderLocal->ov25_descricao = $sDescricaoLocal;
@@ -586,11 +586,11 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
   	$clOuvidoriaAtendimento->ov01_depart            = $oAtendimento->ov01_depart;
   	$clOuvidoriaAtendimento->ov01_instit            = db_getsession('DB_instit');
   	$clOuvidoriaAtendimento->ov01_anousu            = db_getsession('DB_anousu');
-  	$clOuvidoriaAtendimento->ov01_dataatend         = implode('-',array_reverse(explode('/',$oAtendimento->ov01_dataatend)));  
+  	$clOuvidoriaAtendimento->ov01_dataatend         = implode('-',array_reverse(explode('/',(string) $oAtendimento->ov01_dataatend)));  
   	$clOuvidoriaAtendimento->ov01_horaatend         = $oAtendimento->ov01_horaatend; 
-  	$clOuvidoriaAtendimento->ov01_requerente        = utf8_decode($oAtendimento->ov01_requerente); 
-  	$clOuvidoriaAtendimento->ov01_solicitacao       = utf8_decode(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_solicitacao)));
-  	$clOuvidoriaAtendimento->ov01_executado         = utf8_decode(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_executado))); 
+  	$clOuvidoriaAtendimento->ov01_requerente        = mb_convert_encoding($oAtendimento->ov01_requerente, 'ISO-8859-1'); 
+  	$clOuvidoriaAtendimento->ov01_solicitacao       = mb_convert_encoding(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_solicitacao)), 'ISO-8859-1');
+  	$clOuvidoriaAtendimento->ov01_executado         = mb_convert_encoding(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_executado)), 'ISO-8859-1'); 
   	$clOuvidoriaAtendimento->ov01_situacaoouvidoriaatendimento = $iSituacao;
   	$clOuvidoriaAtendimento->ov01_sequencial        = $oAtendimento->ov01_sequencial;
   	
@@ -704,7 +704,7 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
     }
   }
   
- if( !$lErro  && trim($oAtendimento->ov24_ouvidoriacadlocal) != '' ) {
+ if( !$lErro  && trim((string) $oAtendimento->ov24_ouvidoriacadlocal) != '' ) {
  	
     $clOuvidoriaAtendimentoLocal->ov24_ouvidoriaatendimento = $clOuvidoriaAtendimento->ov01_sequencial;
     $clOuvidoriaAtendimentoLocal->ov24_ouvidoriacadlocal    = $oAtendimento->ov24_ouvidoriacadlocal;
@@ -885,14 +885,14 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
 		 
     if ( !$lErro ) {
       $clProtProcesso->p58_codigo     = $oAtendimento->ov01_tipoprocesso;
-      $clProtProcesso->p58_dtproc     = implode('-',array_reverse(explode('/',$oAtendimento->ov01_dataatend)));
+      $clProtProcesso->p58_dtproc     = implode('-',array_reverse(explode('/',(string) $oAtendimento->ov01_dataatend)));
       $clProtProcesso->p58_id_usuario = $oAtendimento->ov01_usuario;
       $clProtProcesso->p58_numcgm     = $iCgm;
       $clProtProcesso->p58_numero     = $iNumeroProcesso;
-      $clProtProcesso->p58_requer     = utf8_decode($oAtendimento->ov01_requerente);
+      $clProtProcesso->p58_requer     = mb_convert_encoding($oAtendimento->ov01_requerente, 'ISO-8859-1');
       $clProtProcesso->p58_coddepto   = $oAtendimento->ov01_depart;
-      $clProtProcesso->p58_obs        = utf8_decode(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_solicitacao)));
-      $clProtProcesso->p58_despacho   = utf8_decode(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_executado)));
+      $clProtProcesso->p58_obs        = mb_convert_encoding(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_solicitacao)), 'ISO-8859-1');
+      $clProtProcesso->p58_despacho   = mb_convert_encoding(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_executado)), 'ISO-8859-1');
       $clProtProcesso->p58_hora       = db_hora();
       $clProtProcesso->p58_interno    = 'false';
       $clProtProcesso->p58_publico    = 'false';
@@ -953,10 +953,10 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
   
   db_fim_transacao($lErro);
 
-  $aRetorno = array("lErro"=>$lErro,
-                    "sMsg" =>urlencode($sMsgErro),
+  $aRetorno = ["lErro"=>$lErro,
+                    "sMsg" =>urlencode((string) $sMsgErro),
                     "iAtendimento"=>$clOuvidoriaAtendimento->ov01_numero,
-                    "iAno"=>db_getsession('DB_anousu'));		
+                    "iAno"=>db_getsession('DB_anousu')];		
 
   echo $oJson->encode($aRetorno);
   
@@ -965,11 +965,11 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
 
 	
 	
-	$aListaDoc         = array();
-	$aListaEnder       = array();
-	$aListaEmail       = array();
-	$aListaTelefone    = array();
-  $aListaTipoRetorno = array();
+	$aListaDoc         = [];
+	$aListaEnder       = [];
+	$aListaEmail       = [];
+	$aListaTelefone    = [];
+  $aListaTipoRetorno = [];
 	
 	$rsDadosAtendimento = $clOuvidoriaAtendimento->sql_record($clOuvidoriaAtendimento->sql_query_titular($oPost->iCodAtendimento));
 	
@@ -1021,14 +1021,14 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
 		$sMsgErro = "Nenhum registro encontrado!";
 	}
   
-  $aRetorno = array("lErro"            =>$lErro,
+  $aRetorno = ["lErro"            =>$lErro,
                     "sMsg"             =>urlencode($sMsgErro),
                     "oAtendimento"     =>$oAtendimento,
                     "aListaDoc"        =>$aListaDoc, 
                     "aListaTipoRetorno"=>$aListaTipoRetorno,  
 									  "aListaEnder"      =>$aListaEnder,
 									  "aListaEmail"      =>$aListaEmail,
-									  "aListaTelefone"   =>$aListaTelefone);   
+									  "aListaTelefone"   =>$aListaTelefone];   
 
   echo $oJson->encode($aRetorno);
   
@@ -1043,8 +1043,8 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
   db_inicio_transacao();
 
   $clOuvidoriaAtendimento->ov01_sequencial        = $oPost->iCodAtendimento;
-  $clOuvidoriaAtendimento->ov01_solicitacao       = utf8_decode(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_solicitacao))); 
-  $clOuvidoriaAtendimento->ov01_executado         = utf8_decode(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_executado))); 
+  $clOuvidoriaAtendimento->ov01_solicitacao       = mb_convert_encoding(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_solicitacao)), 'ISO-8859-1'); 
+  $clOuvidoriaAtendimento->ov01_executado         = mb_convert_encoding(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_executado)), 'ISO-8859-1'); 
   $clOuvidoriaAtendimento->alterar($oPost->iCodAtendimento);
 
   if ( $clOuvidoriaAtendimento->erro_status == 0 ) {
@@ -1064,8 +1064,8 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
 	  	$oDadosProcesso  = db_utils::fieldsMemory($rsDadosProcesso,0);
 	  	
 	  	$clProtProcesso->p58_codproc  = $oDadosProcesso->ov09_protprocesso; 
-	  	$clProtProcesso->p58_obs      = utf8_decode(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_solicitacao)));
-	  	$clProtProcesso->p58_despacho = utf8_decode(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_executado)));
+	  	$clProtProcesso->p58_obs      = mb_convert_encoding(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_solicitacao)), 'ISO-8859-1');
+	  	$clProtProcesso->p58_despacho = mb_convert_encoding(pg_escape_string(db_stdClass::db_stripTagsJson($oAtendimento->ov01_executado)), 'ISO-8859-1');
 	
 	  	$clProtProcesso->alterar($oDadosProcesso->ov09_protprocesso);
 	  	
@@ -1200,8 +1200,8 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
   
   db_fim_transacao($lErro);
   
-  $aRetorno = array("lErro"=>$lErro,
-                    "sMsg" =>urlencode($sMsgErro));   
+  $aRetorno = ["lErro"=>$lErro,
+                    "sMsg" =>urlencode($sMsgErro)];   
 
   echo $oJson->encode($aRetorno);
   

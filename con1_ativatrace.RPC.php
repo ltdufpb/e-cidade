@@ -116,7 +116,7 @@ try {
         throw new FileException("Erro ao abrir arquivo");
       }
 
-      $aDadosRetorno  = array();
+      $aDadosRetorno  = [];
   
       /**
        * Definição das variáveis de controle

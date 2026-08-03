@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_requisicaocivitas_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrequisicaocivitas = new cl_requisicaocivitas;
 $clrequisicaocivitas->rotulo->label("rq01_sequencial");
 $clrequisicaocivitas->rotulo->label("rq01_sequencial");
@@ -52,9 +52,9 @@ $clrequisicaocivitas->rotulo->label("rq01_sequencial");
         }else{
            $sql = $clrequisicaocivitas->sql_query("",$campos,"rq01_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rq01_sequencial)){
-          $repassa = array("chave_rq01_sequencial"=>$chave_rq01_sequencial,"chave_rq01_sequencial"=>$chave_rq01_sequencial);
+          $repassa = ["chave_rq01_sequencial"=>$chave_rq01_sequencial,"chave_rq01_sequencial"=>$chave_rq01_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

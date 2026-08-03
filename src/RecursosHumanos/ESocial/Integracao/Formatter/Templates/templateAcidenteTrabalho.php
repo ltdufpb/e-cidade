@@ -1,292 +1,292 @@
 <?php
-return array(
-    'ideVinculo' => array(
+return [
+    'ideVinculo' => [
         'required' => true,
-        'properties' => array(
-            'cpfTrab' => array(
+        'properties' => [
+            'cpfTrab' => [
                 'required' => true,
                 'label' => 'Código pessoa física do trabalhador',
                 'type' => 'string',
-            ),
-            'matricula' => array(
+            ],
+            'matricula' => [
                 'required' => false,
                 'label' => 'Matrícula atribuída ao trabalhador',
                 'type' => 'string',
-            ),
-            'codCateg' => array(
+            ],
+            'codCateg' => [
                 'required' => false,
                 'label' => 'Categoria do trabalhador',
                 'type' => 'int'
-            ),
-        )
-    ),
-    'cat' => array(
+            ],
+        ]
+    ],
+    'cat' => [
         'required' => true,
         'label' => 'Comunicação de Acidente de Trabalho - CAT.',
-        'properties' => array(
-            'dtAcid' => array(
+        'properties' => [
+            'dtAcid' => [
                 'required' => true,
                 'label' => 'Data do acidente.',
                 'type' => 'string',
-            ),
-            'tpAcid' => array(
+            ],
+            'tpAcid' => [
                 'required' => true,
                 'label' => 'Tipo de acidente de trabalho.',
                 'type' => 'int',
-            ),
-            'hrAcid' => array(
+            ],
+            'hrAcid' => [
                 'required' => false,
                 'label' => 'Hora do acidente, no formato HHMM.',
                 'type' => 'string'
-            ),
-            'hrsTrabAntesAcid' => array(
+            ],
+            'hrsTrabAntesAcid' => [
                 'required' => false,
                 'label' => 'Horas trabalhadas antes da ocorrência do acidente, no formato HHMM.',
                 'type' => 'string'
-            ),
-            'tpCat' => array(
+            ],
+            'tpCat' => [
                 'required' => true,
                 'label' => 'Tipo de CAT',
                 'type' => 'int'
-            ),
-            'indCatObito' => array(
+            ],
+            'indCatObito' => [
                 'required' => true,
                 'label' => 'Houve óbito?',
                 'type' => 'string'
-            ),
-            'dtObito' => array(
+            ],
+            'dtObito' => [
                 'required' => false,
                 'label' => 'Data do óbito.',
                 'type' => 'string'
-            ),
-            'indComunPolicia' => array(
+            ],
+            'indComunPolicia' => [
                 'required' => true,
                 'label' => 'Houve comunicação à autoridade policial?',
                 'type' => 'string'
-            ),
-            'codSitGeradora' => array(
+            ],
+            'codSitGeradora' => [
                 'required' => true,
                 'label' => 'Código da situação geradora do acidente ou da doença profissional.',
                 'type' => 'int'
-            ),
-            'iniciatCAT' => array(
+            ],
+            'iniciatCAT' => [
                 'required' => true,
                 'label' => 'Iniciativa da CAT.',
                 'type' => 'int'
-            ),
-            'obsCAT' => array(
+            ],
+            'obsCAT' => [
                 'required' => false,
                 'label' => 'Observação.',
                 'type' => 'string'
-            )
-        ),
-        'groups' => array(
-            'localAcidente' => array(
+            ]
+        ],
+        'groups' => [
+            'localAcidente' => [
                 'required' => true,
                 'label' => 'Local do acidente.',
-                'properties' => array(
-                    'tpLocal' => array(
+                'properties' => [
+                    'tpLocal' => [
                         'required' => true,
                         'label' => 'Tipo de local do acidente.',
                         'type' => 'int'
-                    ),
-                    'dscLocal' => array(
+                    ],
+                    'dscLocal' => [
                         'required' => false,
                         'label' => 'Especificação do local do acidente (pátio, rampa de acesso, etc.).',
                         'type' => 'string'
-                    ),
-                    'tpLograd' => array(
+                    ],
+                    'tpLograd' => [
                         'required' => false,
                         'label' => 'Tipo de logradouro.',
                         'type' => 'string'
-                    ),
-                    'dscLograd' => array(
+                    ],
+                    'dscLograd' => [
                         'required' => true,
                         'label' => 'Descrição do logradouro.',
                         'type' => 'string'
-                    ),
-                    'nrLograd' => array(
+                    ],
+                    'nrLograd' => [
                         'required' => true,
                         'label' => 'Número do logradouro.',
                         'type' => 'string'
-                    ),
-                    'complemento' => array(
+                    ],
+                    'complemento' => [
                         'required' => false,
                         'label' => 'Complemento do logradouro.',
                         'type' => 'string'
-                    ),
-                    'bairro' => array(
+                    ],
+                    'bairro' => [
                         'required' => false,
                         'label' => 'Nome do bairro/distrito.',
                         'type' => 'string'
-                    ),
-                    'cep' => array(
+                    ],
+                    'cep' => [
                         'required' => false,
                         'label' => 'Código de Endereçamento Postal - CEP.',
                         'type' => 'string'
-                    ),
-                    'codMunic' => array(
+                    ],
+                    'codMunic' => [
                         'required' => false,
                         'label' => 'código do município, conforme tabela do IBGE.',
                         'type' => 'int'
-                    ),
-                    'uf' => array(
+                    ],
+                    'uf' => [
                         'required' => false,
                         'label' => 'Sigla da Unidade da Federação - UF.',
                         'type' => 'string'
-                    ),
-                    'pais' => array(
+                    ],
+                    'pais' => [
                         'required' => false,
                         'label' => 'Preencher com o código do país.',
                         'type' => 'string'
-                    ),
-                    'codPostal' => array(
+                    ],
+                    'codPostal' => [
                         'required' => false,
                         'label' => 'Código de Endereçamento Postal.',
                         'type' => 'string'
-                    )
-                ),
-                'groups' => array(
-                    'ideLocalAcid' => array(
+                    ]
+                ],
+                'groups' => [
+                    'ideLocalAcid' => [
                         'required' => false,
                         'label' => 'Identificação do local onde ocorreu o acidente.',
-                        'properties' => array(
-                            'tpInsc' => array(
+                        'properties' => [
+                            'tpInsc' => [
                                 'required' => true,
                                 'label' => 'Código correspondente ao tipo de inscrição do local.',
                                 'type' => 'int'
-                            ),
-                            'nrInsc' => array(
+                            ],
+                            'nrInsc' => [
                                 'required' => true,
                                 'label' => 'Informar o número de inscrição do estabelecimento.',
                                 'type' => 'string'
-                            )
-                        )
-                    )
-                )
-            ),
-            'parteAtingida' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'parteAtingida' => [
                 'required' => true,
                 'label' => 'Detalhamento da parte atingida pelo acidente de trabalho.',
-                'properties' => array(
-                    'codParteAting' => array(
+                'properties' => [
+                    'codParteAting' => [
                         'required' => true,
                         'label' => 'Preencher com o código correspondente à parte atingida.',
                         'type' => 'int'
-                    ),
-                    'lateralidade' => array(
+                    ],
+                    'lateralidade' => [
                         'required' => true,
                         'label' => 'PLateralidade da(s) parte(s) atingida(s).',
                         'type' => 'int'
-                    )
-                )
-            ),
-            'agenteCausador' => array(
+                    ]
+                ]
+            ],
+            'agenteCausador' => [
                 'required' => true,
                 'label' => 'Detalhamento do agente causador do acidente de trabalho.',
-                'properties' => array(
-                    'codAgntCausador' => array(
+                'properties' => [
+                    'codAgntCausador' => [
                         'required' => true,
                         'label' => 'Preencher com o código correspondente ao agente causador do acidente.',
                         'type' => 'int'
-                    )
-                )
-            ),
-            'atestado' => array(
+                    ]
+                ]
+            ],
+            'atestado' => [
                 'required' => true,
                 'label' => 'Atestado médico.',
-                'properties' => array(
-                    'dtAtendimento' => array(
+                'properties' => [
+                    'dtAtendimento' => [
                         'required' => true,
                         'label' => 'Data do atendimento.',
                         'type' => 'string'
-                    ),
-                    'hrAtendimento' => array(
+                    ],
+                    'hrAtendimento' => [
                         'required' => true,
                         'label' => 'Hora do atendimento, no formato HHMM.',
                         'type' => 'string'
-                    ),
-                    'indInternacao' => array(
+                    ],
+                    'indInternacao' => [
                         'required' => true,
                         'label' => 'Indicativo de internação.',
                         'type' => 'string'
-                    ),
-                    'durTrat' => array(
+                    ],
+                    'durTrat' => [
                         'required' => true,
                         'label' => 'Duração estimada do tratamento, em dias.',
                         'type' => 'int'
-                    ),
-                    'indAfast' => array(
+                    ],
+                    'indAfast' => [
                         'required' => true,
                         'label' => 'Indicativo de afastamento do trabalho durante o tratamento.',
                         'type' => 'string'
-                    ),
-                    'dscLesao' => array(
+                    ],
+                    'dscLesao' => [
                         'required' => true,
                         'label' => 'Preencher com a descrição da natureza da lesão.',
                         'type' => 'int'
-                    ),
-                    'dscCompLesao' => array(
+                    ],
+                    'dscCompLesao' => [
                         'required' => false,
                         'label' => 'Descrição complementar da lesão.',
                         'type' => 'string'
-                    ),
-                    'diagProvavel' => array(
+                    ],
+                    'diagProvavel' => [
                         'required' => false,
                         'label' => 'Diagnóstico provável.',
                         'type' => 'string'
-                    ),
-                    'codCID' => array(
+                    ],
+                    'codCID' => [
                         'required' => true,
                         'label' => 'Classificação Internacional de Doenças - CID.',
                         'type' => 'string'
-                    ),
-                    'observacao' => array(
+                    ],
+                    'observacao' => [
                         'required' => false,
                         'label' => 'Observação.',
                         'type' => 'string'
-                    )
-                ),
-                'groups' => array(
-                    'emitente' => array(
+                    ]
+                ],
+                'groups' => [
+                    'emitente' => [
                         'required' => true,
                         'label' => 'Médico/Dentista que emitiu o atestado.',
-                        'properties' => array(
-                            'nmEmit' => array(
+                        'properties' => [
+                            'nmEmit' => [
                                 'required' => true,
                                 'label' => 'Nome do médico/dentista que emitiu o atestado.',
                                 'type' => 'string'
-                            ),
-                            'ideOC' => array(
+                            ],
+                            'ideOC' => [
                                 'required' => true,
                                 'label' => 'Órgão de classe.',
                                 'type' => 'int'
-                            ),
-                            'nrOC' => array(
+                            ],
+                            'nrOC' => [
                                 'required' => true,
                                 'label' => 'Número de inscrição no órgão de classe.',
                                 'type' => 'string'
-                            ),
-                            'ufOC' => array(
+                            ],
+                            'ufOC' => [
                                 'required' => true,
                                 'label' => 'Sigla da UF do órgão de classe.',
                                 'type' => 'string'
-                            )
-                        )
-                    )
-                )
-            ),
-            'catOrigem' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'catOrigem' => [
                 'required' => false,
                 'label' => 'Grupo que indica a CAT anterior, caso de CAT de reabertura ou de comunicação de óbito.',
-                'properties' => array(
-                    'nrRecCatOrig' => array(
+                'properties' => [
+                    'nrRecCatOrig' => [
                         'required' => true,
                         'label' => 'Informar o número do recibo da última CAT',
                         'type' => 'string'
-                    )
-                )
-            )
-        )
-    )
-);
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

@@ -33,14 +33,14 @@ require_once(modification("classes/db_fiscal_classe.php"));
 require_once(modification("classes/db_fiscallocal_classe.php"));
 require_once(modification("classes/db_fiscalexec_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clfiscal      = new cl_fiscal;
 $clfiscallocal = new cl_fiscallocal;
 $clfiscalexec  = new cl_fiscalexec;
 $sql    = " ";
 $result = $clfiscal->sql_record($clfiscal->sql_query($codfiscal));
-$num    = pg_numrows($result);
+$num    = pg_num_rows($result);
 
 ?>
 

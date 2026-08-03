@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_libsys.php"));
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 # Include AgataAPI class
 
 
@@ -77,7 +77,7 @@ $oPdfTable->setColumnsAlign([
 /**
  * Seta as colunas que terão Multicell
  */
-$aMulticell = array(1,2, 3, 4, 5);
+$aMulticell = [1,2, 3, 4, 5];
 $oPdfTable->setMulticellColumns($aMulticell);
 
 

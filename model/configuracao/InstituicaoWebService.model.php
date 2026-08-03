@@ -107,22 +107,22 @@ class InstituicaoWebservice {
     
     $oRetorno = new stdClass();
     
-    $oRetorno->sDescricao           = utf8_encode($this->oInstituicao->getDescricao());
-    $oRetorno->sDescricaoAbreviada  = utf8_encode($this->oInstituicao->getDescricaoAbreviada());
-    $oRetorno->sCnpj                = utf8_encode($this->oInstituicao->getCNPJ());
-    $oRetorno->sLogradouro          = utf8_encode($this->oInstituicao->getLogradouro());
-    $oRetorno->sMunicipio           = utf8_encode($this->oInstituicao->getMunicipio());
-    $oRetorno->sBairro              = utf8_encode($this->oInstituicao->getBairro());
-    $oRetorno->sTelefone            = utf8_encode($this->oInstituicao->getTelefone());
-    $oRetorno->sSite                = utf8_encode($this->oInstituicao->getSite());
-    $oRetorno->sEmail               = utf8_encode($this->oInstituicao->getEmail());
-    $oRetorno->sIbge                = utf8_encode($this->oInstituicao->getCodigoIbge());
-    $oRetorno->iNumeroCgm           = utf8_encode($this->oInstituicao->getNumeroCgm());
-    $oRetorno->sNumero              = utf8_encode($this->oInstituicao->getNumero());
-    $oRetorno->sComplemento         = utf8_encode($this->oInstituicao->getComplemento());
-    $oRetorno->sUf                  = utf8_encode($this->oInstituicao->getUf());
-    $oRetorno->sCep                 = utf8_encode($this->oInstituicao->getCep());
-    $oRetorno->sFax                 = utf8_encode($this->oInstituicao->getFax());
+    $oRetorno->sDescricao           = mb_convert_encoding($this->oInstituicao->getDescricao(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sDescricaoAbreviada  = mb_convert_encoding($this->oInstituicao->getDescricaoAbreviada(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sCnpj                = mb_convert_encoding($this->oInstituicao->getCNPJ(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sLogradouro          = mb_convert_encoding($this->oInstituicao->getLogradouro(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sMunicipio           = mb_convert_encoding($this->oInstituicao->getMunicipio(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sBairro              = mb_convert_encoding($this->oInstituicao->getBairro(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sTelefone            = mb_convert_encoding($this->oInstituicao->getTelefone(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sSite                = mb_convert_encoding($this->oInstituicao->getSite(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sEmail               = mb_convert_encoding($this->oInstituicao->getEmail(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sIbge                = mb_convert_encoding($this->oInstituicao->getCodigoIbge(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->iNumeroCgm           = mb_convert_encoding($this->oInstituicao->getNumeroCgm(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sNumero              = mb_convert_encoding($this->oInstituicao->getNumero(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sComplemento         = mb_convert_encoding($this->oInstituicao->getComplemento(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sUf                  = mb_convert_encoding($this->oInstituicao->getUf(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sCep                 = mb_convert_encoding($this->oInstituicao->getCep(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sFax                 = mb_convert_encoding($this->oInstituicao->getFax(), 'UTF-8', 'ISO-8859-1');
    
     $oRetorno->sLogoPrefeituraBaseEncode = NULL;
     

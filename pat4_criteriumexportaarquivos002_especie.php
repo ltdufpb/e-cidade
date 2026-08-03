@@ -42,7 +42,7 @@ $rsEspecie 		 =	db_query($sSqlEspecie);
 $iNumeroLinhas =	pg_num_rows($rsEspecie);
 
 for ($i=0;$i<$iNumeroLinhas;$i++)	{
-	
+
 	$oEspecie    = db_utils::fieldsMemory($rsEspecie,$i);
 	$oLayoutTxt->setByLineOfDBUtils($oEspecie,3,"04");
 	db_atutermometro($i, $iNumeroLinhas, 'termometroitem', 1, "Processando Arquivo $arquivo");

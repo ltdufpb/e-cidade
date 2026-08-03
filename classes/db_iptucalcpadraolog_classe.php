@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE iptucalcpadraolog
 class cl_iptucalcpadraolog { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j19_sequencial = 0; 
-   var $j19_iptucalcpadrao = 0; 
-   var $j19_usuario = 0; 
-   var $j19_data_dia = null; 
-   var $j19_data_mes = null; 
-   var $j19_data_ano = null; 
-   var $j19_data = null; 
-   var $j19_hora = null; 
+   public $j19_sequencial = 0; 
+   public $j19_iptucalcpadrao = 0; 
+   public $j19_usuario = 0; 
+   public $j19_data_dia = null; 
+   public $j19_data_mes = null; 
+   public $j19_data_ano = null; 
+   public $j19_data = null; 
+   public $j19_hora = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j19_sequencial = int8 = Código 
                  j19_iptucalcpadrao = int8 = Código do calculo padrão 
                  j19_usuario = int8 = Usuário 
@@ -59,10 +59,10 @@ class cl_iptucalcpadraolog {
                  j19_hora = char(5) = Hora 
                  ";
    //funcao construtor da classe 
-   function cl_iptucalcpadraolog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucalcpadraolog"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_iptucalcpadraolog {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j19_sequencial = pg_result($result,0,0); 
+       $this->j19_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptucalcpadraolog_j19_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j19_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j19_sequencial)){
          $this->erro_sql = " Campo j19_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_iptucalcpadraolog {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Log do calculo padrão ($this->j19_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Log do calculo padrão já Cadastrado";
@@ -204,14 +204,14 @@ class cl_iptucalcpadraolog {
      $resaco = $this->sql_record($this->sql_query_file($this->j19_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11014,'$this->j19_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1898,11014,'','".AddSlashes(pg_result($resaco,0,'j19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1898,11015,'','".AddSlashes(pg_result($resaco,0,'j19_iptucalcpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1898,11016,'','".AddSlashes(pg_result($resaco,0,'j19_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1898,11017,'','".AddSlashes(pg_result($resaco,0,'j19_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1898,11018,'','".AddSlashes(pg_result($resaco,0,'j19_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1898,11014,'','".AddSlashes(pg_fetch_result($resaco,0,'j19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1898,11015,'','".AddSlashes(pg_fetch_result($resaco,0,'j19_iptucalcpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1898,11016,'','".AddSlashes(pg_fetch_result($resaco,0,'j19_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1898,11017,'','".AddSlashes(pg_fetch_result($resaco,0,'j19_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1898,11018,'','".AddSlashes(pg_fetch_result($resaco,0,'j19_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_iptucalcpadraolog {
       $this->atualizacampos();
      $sql = " update iptucalcpadraolog set ";
      $virgula = "";
-     if(trim($this->j19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_sequencial"])){ 
+     if(trim((string) $this->j19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_sequencial"])){ 
        $sql  .= $virgula." j19_sequencial = $this->j19_sequencial ";
        $virgula = ",";
-       if(trim($this->j19_sequencial) == null ){ 
+       if(trim((string) $this->j19_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "j19_sequencial";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_iptucalcpadraolog {
          return false;
        }
      }
-     if(trim($this->j19_iptucalcpadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_iptucalcpadrao"])){ 
+     if(trim((string) $this->j19_iptucalcpadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_iptucalcpadrao"])){ 
        $sql  .= $virgula." j19_iptucalcpadrao = $this->j19_iptucalcpadrao ";
        $virgula = ",";
-       if(trim($this->j19_iptucalcpadrao) == null ){ 
+       if(trim((string) $this->j19_iptucalcpadrao) == null ){ 
          $this->erro_sql = " Campo Código do calculo padrão nao Informado.";
          $this->erro_campo = "j19_iptucalcpadrao";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_iptucalcpadraolog {
          return false;
        }
      }
-     if(trim($this->j19_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_usuario"])){ 
+     if(trim((string) $this->j19_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_usuario"])){ 
        $sql  .= $virgula." j19_usuario = $this->j19_usuario ";
        $virgula = ",";
-       if(trim($this->j19_usuario) == null ){ 
+       if(trim((string) $this->j19_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "j19_usuario";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_iptucalcpadraolog {
          return false;
        }
      }
-     if(trim($this->j19_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j19_data_dia"] !="") ){ 
+     if(trim((string) $this->j19_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j19_data_dia"] !="") ){ 
        $sql  .= $virgula." j19_data = '$this->j19_data' ";
        $virgula = ",";
-       if(trim($this->j19_data) == null ){ 
+       if(trim((string) $this->j19_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "j19_data_dia";
          $this->erro_banco = "";
@@ -275,7 +275,7 @@ class cl_iptucalcpadraolog {
        if(isset($GLOBALS["HTTP_POST_VARS"]["j19_data_dia"])){ 
          $sql  .= $virgula." j19_data = null ";
          $virgula = ",";
-         if(trim($this->j19_data) == null ){ 
+         if(trim((string) $this->j19_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "j19_data_dia";
            $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_iptucalcpadraolog {
          }
        }
      }
-     if(trim($this->j19_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_hora"])){ 
+     if(trim((string) $this->j19_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j19_hora"])){ 
        $sql  .= $virgula." j19_hora = '$this->j19_hora' ";
        $virgula = ",";
-       if(trim($this->j19_hora) == null ){ 
+       if(trim((string) $this->j19_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "j19_hora";
          $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_iptucalcpadraolog {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11014,'$this->j19_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j19_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1898,11014,'".AddSlashes(pg_result($resaco,$conresaco,'j19_sequencial'))."','$this->j19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1898,11014,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j19_sequencial'))."','$this->j19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j19_iptucalcpadrao"]))
-           $resac = db_query("insert into db_acount values($acount,1898,11015,'".AddSlashes(pg_result($resaco,$conresaco,'j19_iptucalcpadrao'))."','$this->j19_iptucalcpadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1898,11015,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j19_iptucalcpadrao'))."','$this->j19_iptucalcpadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j19_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1898,11016,'".AddSlashes(pg_result($resaco,$conresaco,'j19_usuario'))."','$this->j19_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1898,11016,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j19_usuario'))."','$this->j19_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j19_data"]))
-           $resac = db_query("insert into db_acount values($acount,1898,11017,'".AddSlashes(pg_result($resaco,$conresaco,'j19_data'))."','$this->j19_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1898,11017,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j19_data'))."','$this->j19_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j19_hora"]))
-           $resac = db_query("insert into db_acount values($acount,1898,11018,'".AddSlashes(pg_result($resaco,$conresaco,'j19_hora'))."','$this->j19_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1898,11018,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j19_hora'))."','$this->j19_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_iptucalcpadraolog {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11014,'$j19_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1898,11014,'','".AddSlashes(pg_result($resaco,$iresaco,'j19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1898,11015,'','".AddSlashes(pg_result($resaco,$iresaco,'j19_iptucalcpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1898,11016,'','".AddSlashes(pg_result($resaco,$iresaco,'j19_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1898,11017,'','".AddSlashes(pg_result($resaco,$iresaco,'j19_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1898,11018,'','".AddSlashes(pg_result($resaco,$iresaco,'j19_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1898,11014,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1898,11015,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j19_iptucalcpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1898,11016,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j19_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1898,11017,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j19_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1898,11018,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j19_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptucalcpadraolog
@@ -431,7 +431,7 @@ class cl_iptucalcpadraolog {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptucalcpadraolog";
@@ -445,7 +445,7 @@ class cl_iptucalcpadraolog {
    function sql_query ( $j19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,7 +469,7 @@ class cl_iptucalcpadraolog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_iptucalcpadraolog {
    function sql_query_file ( $j19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_iptucalcpadraolog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

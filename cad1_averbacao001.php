@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas     = new cl_criaabas;
 $db_opcao = 1;
 ?>
@@ -56,9 +56,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("averbacao"=>"Averbação","averbacgm"=>"Cgm"); 
-	 $clcriaabas->src = array("averbacao"=>"cad1_averbacao004.php?j75_matric=$j01_matric&z01_nome=$z01_nome");
-	 $clcriaabas->disabled   =  array("averbacgm"=>"true"); 
+	 $clcriaabas->identifica = ["averbacao"=>"Averbação","averbacgm"=>"Cgm"]; 
+	 $clcriaabas->src = ["averbacao"=>"cad1_averbacao004.php?j75_matric=$j01_matric&z01_nome=$z01_nome"];
+	 $clcriaabas->disabled   =  ["averbacgm"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

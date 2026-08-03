@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconplanoorcamento = new cl_conplanoorcamento;
 $clconplanoorcamento->rotulo->label("c60_codcon");
 $clconplanoorcamento->rotulo->label("c60_anousu");
@@ -40,8 +40,8 @@ $clconplanoorcamento->rotulo->label("c60_descr");
 
 $oGet  = db_utils::postMemory($_GET);
 $oPOST = db_utils::postMemory($_POST);
-$sDescricaoConta  = isset($chave_c60_descr)  ? $chave_c60_descr : null;
-$chave_c60_codcon = isset($chave_c60_codcon) ? $chave_c60_codcon : null;
+$sDescricaoConta  = $chave_c60_descr ?? null;
+$chave_c60_codcon ??= null;
 
 $get = (object)filter_input_array(INPUT_GET);
 $instituicao = db_getsession('DB_instit');
@@ -158,9 +158,9 @@ $filtrosEstruturalSintetico = !empty($get->filtrosEstruturalSintetico);
     <td align="center" valign="top">
         <?php
 
-        $aWherePadrao = array(
+        $aWherePadrao = [
             "conplanoorcamento.c60_anousu = {$ano}"
-        );
+        ];
 
         if (isset($get->previsao)) {
             $aWherePadrao[] = "c61_instit = {$instituicao}";
@@ -175,7 +175,7 @@ $filtrosEstruturalSintetico = !empty($get->filtrosEstruturalSintetico);
             $aWherePadrao[] = "c60_estrut like '3%'";
         }
 
-        $chave_c60_descr = pg_escape_string(stripcslashes($sDescricaoConta));
+        $chave_c60_descr = pg_escape_string(stripcslashes((string) $sDescricaoConta));
 
         if (!empty($oGet->sSomenteEstrutural)) {
             $aWherePadrao[] = "c60_estrut ILIKE '{$oGet->sSomenteEstrutural}%'";
@@ -232,10 +232,10 @@ $filtrosEstruturalSintetico = !empty($get->filtrosEstruturalSintetico);
                 }
             }
 
-            $repassa = array();
+            $repassa = [];
 
             if (isset($chave_c60_descr)) {
-                $repassa = array('chave_c60_codcon' => $chave_c60_codcon, 'chave_c60_descr' => $chave_c60_descr);
+                $repassa = ['chave_c60_codcon' => $chave_c60_codcon, 'chave_c60_descr' => $chave_c60_descr];
             }
 
             if (!empty($filtrosEstruturalSintetico)) {

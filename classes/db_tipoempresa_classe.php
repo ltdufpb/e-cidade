@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE tipoempresa
 class cl_tipoempresa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db98_sequencial = 0; 
-   var $db98_descricao = null; 
-   var $db98_estrutural = null; 
-   var $db98_dataini_dia = null; 
-   var $db98_dataini_mes = null; 
-   var $db98_dataini_ano = null; 
-   var $db98_dataini = null; 
-   var $db98_datafin_dia = null; 
-   var $db98_datafin_mes = null; 
-   var $db98_datafin_ano = null; 
-   var $db98_datafin = null; 
+   public $db98_sequencial = 0; 
+   public $db98_descricao = null; 
+   public $db98_estrutural = null; 
+   public $db98_dataini_dia = null; 
+   public $db98_dataini_mes = null; 
+   public $db98_dataini_ano = null; 
+   public $db98_dataini = null; 
+   public $db98_datafin_dia = null; 
+   public $db98_datafin_mes = null; 
+   public $db98_datafin_ano = null; 
+   public $db98_datafin = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db98_sequencial = int4 = Código 
                  db98_descricao = varchar(100) = Descrição 
                  db98_estrutural = varchar(50) = Estrutural 
@@ -62,10 +62,10 @@ class cl_tipoempresa {
                  db98_datafin = date = Data Final 
                  ";
    //funcao construtor da classe 
-   function cl_tipoempresa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoempresa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -139,10 +139,10 @@ class cl_tipoempresa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db98_sequencial = pg_result($result,0,0); 
+       $this->db98_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tipoempresa_db98_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db98_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db98_sequencial)){
          $this->erro_sql = " Campo db98_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -178,7 +178,7 @@ class cl_tipoempresa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "TIpo de Empresa ($this->db98_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "TIpo de Empresa já Cadastrado";
@@ -202,14 +202,14 @@ class cl_tipoempresa {
      $resaco = $this->sql_record($this->sql_query_file($this->db98_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16202,'$this->db98_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2844,16202,'','".AddSlashes(pg_result($resaco,0,'db98_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2844,16203,'','".AddSlashes(pg_result($resaco,0,'db98_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2844,16204,'','".AddSlashes(pg_result($resaco,0,'db98_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2844,16205,'','".AddSlashes(pg_result($resaco,0,'db98_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2844,16206,'','".AddSlashes(pg_result($resaco,0,'db98_datafin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2844,16202,'','".AddSlashes(pg_fetch_result($resaco,0,'db98_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2844,16203,'','".AddSlashes(pg_fetch_result($resaco,0,'db98_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2844,16204,'','".AddSlashes(pg_fetch_result($resaco,0,'db98_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2844,16205,'','".AddSlashes(pg_fetch_result($resaco,0,'db98_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2844,16206,'','".AddSlashes(pg_fetch_result($resaco,0,'db98_datafin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -218,10 +218,10 @@ class cl_tipoempresa {
       $this->atualizacampos();
      $sql = " update tipoempresa set ";
      $virgula = "";
-     if(trim($this->db98_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db98_sequencial"])){ 
+     if(trim((string) $this->db98_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db98_sequencial"])){ 
        $sql  .= $virgula." db98_sequencial = $this->db98_sequencial ";
        $virgula = ",";
-       if(trim($this->db98_sequencial) == null ){ 
+       if(trim((string) $this->db98_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "db98_sequencial";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_tipoempresa {
          return false;
        }
      }
-     if(trim($this->db98_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db98_descricao"])){ 
+     if(trim((string) $this->db98_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db98_descricao"])){ 
        $sql  .= $virgula." db98_descricao = '$this->db98_descricao' ";
        $virgula = ",";
-       if(trim($this->db98_descricao) == null ){ 
+       if(trim((string) $this->db98_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "db98_descricao";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_tipoempresa {
          return false;
        }
      }
-     if(trim($this->db98_estrutural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db98_estrutural"])){ 
+     if(trim((string) $this->db98_estrutural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db98_estrutural"])){ 
        $sql  .= $virgula." db98_estrutural = '$this->db98_estrutural' ";
        $virgula = ",";
-       if(trim($this->db98_estrutural) == null ){ 
+       if(trim((string) $this->db98_estrutural) == null ){ 
          $this->erro_sql = " Campo Estrutural nao Informado.";
          $this->erro_campo = "db98_estrutural";
          $this->erro_banco = "";
@@ -257,7 +257,7 @@ class cl_tipoempresa {
          return false;
        }
      }
-     if(trim($this->db98_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db98_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db98_dataini_dia"] !="") ){ 
+     if(trim((string) $this->db98_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db98_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db98_dataini_dia"] !="") ){ 
        $sql  .= $virgula." db98_dataini = '$this->db98_dataini' ";
        $virgula = ",";
      }     else{ 
@@ -266,7 +266,7 @@ class cl_tipoempresa {
          $virgula = ",";
        }
      }
-     if(trim($this->db98_datafin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db98_datafin_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db98_datafin_dia"] !="") ){ 
+     if(trim((string) $this->db98_datafin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db98_datafin_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db98_datafin_dia"] !="") ){ 
        $sql  .= $virgula." db98_datafin = '$this->db98_datafin' ";
        $virgula = ",";
      }     else{ 
@@ -283,19 +283,19 @@ class cl_tipoempresa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16202,'$this->db98_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db98_sequencial"]) || $this->db98_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2844,16202,'".AddSlashes(pg_result($resaco,$conresaco,'db98_sequencial'))."','$this->db98_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2844,16202,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db98_sequencial'))."','$this->db98_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db98_descricao"]) || $this->db98_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,2844,16203,'".AddSlashes(pg_result($resaco,$conresaco,'db98_descricao'))."','$this->db98_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2844,16203,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db98_descricao'))."','$this->db98_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db98_estrutural"]) || $this->db98_estrutural != "")
-           $resac = db_query("insert into db_acount values($acount,2844,16204,'".AddSlashes(pg_result($resaco,$conresaco,'db98_estrutural'))."','$this->db98_estrutural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2844,16204,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db98_estrutural'))."','$this->db98_estrutural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db98_dataini"]) || $this->db98_dataini != "")
-           $resac = db_query("insert into db_acount values($acount,2844,16205,'".AddSlashes(pg_result($resaco,$conresaco,'db98_dataini'))."','$this->db98_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2844,16205,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db98_dataini'))."','$this->db98_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db98_datafin"]) || $this->db98_datafin != "")
-           $resac = db_query("insert into db_acount values($acount,2844,16206,'".AddSlashes(pg_result($resaco,$conresaco,'db98_datafin'))."','$this->db98_datafin',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2844,16206,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db98_datafin'))."','$this->db98_datafin',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_tipoempresa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16202,'$db98_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2844,16202,'','".AddSlashes(pg_result($resaco,$iresaco,'db98_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2844,16203,'','".AddSlashes(pg_result($resaco,$iresaco,'db98_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2844,16204,'','".AddSlashes(pg_result($resaco,$iresaco,'db98_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2844,16205,'','".AddSlashes(pg_result($resaco,$iresaco,'db98_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2844,16206,'','".AddSlashes(pg_result($resaco,$iresaco,'db98_datafin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2844,16202,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db98_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2844,16203,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db98_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2844,16204,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db98_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2844,16205,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db98_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2844,16206,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db98_datafin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tipoempresa
@@ -407,7 +407,7 @@ class cl_tipoempresa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tipoempresa";
@@ -443,7 +443,7 @@ class cl_tipoempresa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,7 +477,7 @@ class cl_tipoempresa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

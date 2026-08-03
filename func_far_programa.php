@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_programa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_programa = new cl_far_programa;
 $clfar_programa->rotulo->label("fa12_i_codigo");
 $clfar_programa->rotulo->label("fa12_c_descricao");
@@ -98,9 +98,9 @@ $clfar_programa->rotulo->label("fa12_c_descricao");
         }else{
            $sql = $clfar_programa->sql_query("",$campos,"fa12_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa12_i_codigo)){
-          $repassa = array("chave_fa12_i_codigo"=>$chave_fa12_i_codigo,"chave_fa12_i_codigo"=>$chave_fa12_i_codigo);
+          $repassa = ["chave_fa12_i_codigo"=>$chave_fa12_i_codigo,"chave_fa12_i_codigo"=>$chave_fa12_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -17,7 +17,7 @@ class ImportacaoRequisicaoInconsistenciaRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * ImportacaoRequisicaoInconsistenciaRepository constructor.
@@ -34,7 +34,7 @@ class ImportacaoRequisicaoInconsistenciaRepository
      * @return ImportacaoRequisicaoInconsistencia
      * @throws Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query_file($id, implode(', ', $columns));
         $postgresObject = db_query($sql);
@@ -79,7 +79,7 @@ class ImportacaoRequisicaoInconsistenciaRepository
      * @return bool
      * @throws Exception
      */
-    public function delete(ImportacaoRequisicaoInconsistencia $inconsistenciaRequisicao = null)
+    public function delete(?ImportacaoRequisicaoInconsistencia $inconsistenciaRequisicao = null)
     {
         $id = $inconsistenciaRequisicao instanceof ImportacaoRequisicaoInconsistencia ?
             $inconsistenciaRequisicao->getId() :
@@ -118,7 +118,7 @@ class ImportacaoRequisicaoInconsistenciaRepository
             throw new Exception('Não foi possível buscar as Inconsistências.');
         }
 
-        $inconsistencias = array();
+        $inconsistencias = [];
         while ($inconsistencia = pg_fetch_assoc($postgresObject)) {
             $inconsistencias[] = $inconsistencia;
         }
@@ -149,7 +149,7 @@ class ImportacaoRequisicaoInconsistenciaRepository
             );
         }
 
-        $inconsistencias = array();
+        $inconsistencias = [];
         while ($inconsistencia = pg_fetch_assoc($postgresObject)) {
             $inconsistencias[] = $inconsistencia;
         }

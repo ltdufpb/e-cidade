@@ -45,7 +45,7 @@ class AssinaturaPortaria
         $oidDcoumento = $this->salvarArquivoBanco();
         $oAssinaturaDocumento->assinatura_documento  = $oidDcoumento;
         $oAssinaturaDocumento->assinatura_status     = 'false';
-        $oAssinaturaDocumento->assinatura_hash       = md5($this->paramsSigner['content']);
+        $oAssinaturaDocumento->assinatura_hash       = md5((string) $this->paramsSigner['content']);
         $oAssinaturaDocumento->assinatura_versao     = 0;
         $oAssinaturaDocumento->assinatura_data       = date('Y-m-d');
 

@@ -32,8 +32,6 @@ class ResultadoExameAtributo {
 
   protected $oAtributo;
 
-  protected $iCodigo;
-
   protected $sValor;
 
   protected $nValorPercentual;
@@ -54,8 +52,8 @@ class ResultadoExameAtributo {
    * instancia o valor do Resultado
    * @param null $iCodigo
    */
-  public function __construct($iCodigo = null) {
-    $this->iCodigo  = $iCodigo;
+  public function __construct(protected $iCodigo = null)
+  {
   }
 
   /**

@@ -12,10 +12,8 @@ use stdClass;
 
 class Detalhe extends DataBaseRepository {
 
-    private $database;
-
-    public function __construct(Database $database) {
-        $this->database = $database;
+    public function __construct(private readonly Database $database)
+    {
     }
 
     public function findByNumnov($numnov)

@@ -63,6 +63,7 @@ class CotasDespesaService extends BaseRelatoriosCronograma
         $this->totalizar();
     }
 
+    #[\Override]
     protected function processaFiltros(array $filtros)
     {
         parent::processaFiltros($filtros);

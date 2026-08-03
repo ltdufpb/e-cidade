@@ -30,26 +30,26 @@
 class cl_cgs_cartaosus
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $s115_i_codigo = 0;
-    var $s115_i_cgs = 0;
-    var $s115_c_cartaosus = null;
-    var $s115_c_tipo = null;
-    var $s115_i_entrada = 0;
+    public $s115_i_codigo = 0;
+    public $s115_i_cgs = 0;
+    public $s115_c_cartaosus = null;
+    public $s115_c_tipo = null;
+    public $s115_i_entrada = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  s115_i_codigo = int4 = Código
                  s115_i_cgs = int4 = CGS
                  s115_c_cartaosus = char(15) = Cartão SUS
@@ -58,11 +58,11 @@ class cl_cgs_cartaosus
                  ";
 
     //funcao construtor da classe
-    function cl_cgs_cartaosus()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("cgs_cartaosus");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -133,10 +133,10 @@ class cl_cgs_cartaosus
 
                 return false;
             }
-            $this->s115_i_codigo = pg_result($result, 0, 0);
+            $this->s115_i_codigo = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from cgs_cartaosus_codigo_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $s115_i_codigo)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $s115_i_codigo)) {
                 $this->erro_sql = " Campo s115_i_codigo maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -176,7 +176,7 @@ class cl_cgs_cartaosus
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Cartão SUS ($this->s115_i_codigo) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Cartão SUS já Cadastrado";
@@ -204,18 +204,18 @@ class cl_cgs_cartaosus
         $resaco = $this->sql_record($this->sql_query_file($this->s115_i_codigo));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,13998,'$this->s115_i_codigo','I')");
-            $resac = db_query("insert into db_acount values($acount,2460,13998,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,2460,13998,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 's115_i_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2460,13999,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,2460,13999,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 's115_i_cgs')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2460,14000,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,2460,14000,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 's115_c_cartaosus')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2460,14001,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,2460,14001,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 's115_c_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2460,15304,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,2460,15304,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 's115_i_entrada')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -228,10 +228,10 @@ class cl_cgs_cartaosus
         $this->atualizacampos();
         $sql = " update cgs_cartaosus set ";
         $virgula = "";
-        if (trim($this->s115_i_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["s115_i_codigo"])) {
+        if (trim((string) $this->s115_i_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["s115_i_codigo"])) {
             $sql .= $virgula . " s115_i_codigo = $this->s115_i_codigo ";
             $virgula = ",";
-            if (trim($this->s115_i_codigo) == null) {
+            if (trim((string) $this->s115_i_codigo) == null) {
                 $this->erro_sql = " Campo Código nao Informado.";
                 $this->erro_campo = "s115_i_codigo";
                 $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_cgs_cartaosus
                 return false;
             }
         }
-        if (trim($this->s115_i_cgs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["s115_i_cgs"])) {
+        if (trim((string) $this->s115_i_cgs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["s115_i_cgs"])) {
             $sql .= $virgula . " s115_i_cgs = $this->s115_i_cgs ";
             $virgula = ",";
-            if (trim($this->s115_i_cgs) == null) {
+            if (trim((string) $this->s115_i_cgs) == null) {
                 $this->erro_sql = " Campo CGS nao Informado.";
                 $this->erro_campo = "s115_i_cgs";
                 $this->erro_banco = "";
@@ -258,14 +258,14 @@ class cl_cgs_cartaosus
                 return false;
             }
         }
-        if (trim($this->s115_c_cartaosus) != "" || isset($GLOBALS["HTTP_POST_VARS"]["s115_c_cartaosus"])) {
+        if (trim((string) $this->s115_c_cartaosus) != "" || isset($GLOBALS["HTTP_POST_VARS"]["s115_c_cartaosus"])) {
             $sql .= $virgula . " s115_c_cartaosus = '$this->s115_c_cartaosus' ";
             $virgula = ",";
         }
-        if (trim($this->s115_c_tipo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["s115_c_tipo"])) {
+        if (trim((string) $this->s115_c_tipo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["s115_c_tipo"])) {
             $sql .= $virgula . " s115_c_tipo = '$this->s115_c_tipo' ";
             $virgula = ",";
-            if (trim($this->s115_c_tipo) == null) {
+            if (trim((string) $this->s115_c_tipo) == null) {
                 $this->erro_sql = " Campo Tipo nao Informado.";
                 $this->erro_campo = "s115_c_tipo";
                 $this->erro_banco = "";
@@ -299,31 +299,31 @@ class cl_cgs_cartaosus
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,13998,'$this->s115_i_codigo','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["s115_i_codigo"]) || $this->s115_i_codigo != "") {
-                    $resac = db_query("insert into db_acount values($acount,2460,13998,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2460,13998,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         's115_i_codigo')) . "','$this->s115_i_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["s115_i_cgs"]) || $this->s115_i_cgs != "") {
-                    $resac = db_query("insert into db_acount values($acount,2460,13999,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2460,13999,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         's115_i_cgs')) . "','$this->s115_i_cgs'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["s115_c_cartaosus"]) || $this->s115_c_cartaosus != "") {
-                    $resac = db_query("insert into db_acount values($acount,2460,14000,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2460,14000,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         's115_c_cartaosus')) . "','$this->s115_c_cartaosus'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["s115_c_tipo"]) || $this->s115_c_tipo != "") {
-                    $resac = db_query("insert into db_acount values($acount,2460,14001,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2460,14001,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         's115_c_tipo')) . "','$this->s115_c_tipo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["s115_i_entrada"]) || $this->s115_i_entrada != "") {
-                    $resac = db_query("insert into db_acount values($acount,2460,15304,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2460,15304,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         's115_i_entrada')) . "','$this->s115_i_entrada'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -379,22 +379,22 @@ class cl_cgs_cartaosus
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,13998,'$s115_i_codigo','E')");
-                $resac = db_query("insert into db_acount values($acount,2460,13998,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2460,13998,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     's115_i_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2460,13999,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2460,13999,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     's115_i_cgs')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2460,14000,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2460,14000,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     's115_c_cartaosus')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2460,14001,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2460,14001,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     's115_c_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2460,15304,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2460,15304,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     's115_i_entrada')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -466,7 +466,7 @@ class cl_cgs_cartaosus
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:cgs_cartaosus";
@@ -511,7 +511,7 @@ class cl_cgs_cartaosus
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -550,7 +550,7 @@ class cl_cgs_cartaosus
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

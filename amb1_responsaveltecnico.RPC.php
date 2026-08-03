@@ -65,16 +65,16 @@ try {
 
         $sTitulacao = "NÃO INFORMADO";
 
-        if (empty($oDados->rh70_descr) || trim($oDados->rh70_descr) == $sTitulacao) {
+        if (empty($oDados->rh70_descr) || trim((string) $oDados->rh70_descr) == $sTitulacao) {
 
           if (!empty($oDados->z01_profis)) {
-            $sTitulacao = trim($oDados->z01_profis);
+            $sTitulacao = trim((string) $oDados->z01_profis);
           }
         } else {
-          $sTitulacao = trim($oDados->rh70_descr);
+          $sTitulacao = trim((string) $oDados->rh70_descr);
         }
 
-        $oDados->titulacao = utf8_encode($sTitulacao);
+        $oDados->titulacao = mb_convert_encoding($sTitulacao, 'UTF-8', 'ISO-8859-1');
 
         unset($oDados->z01_profis);
         unset($oDados->rh70_descr);

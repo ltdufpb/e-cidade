@@ -10,6 +10,7 @@ class Sequencial extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -38,6 +39,7 @@ class Sequencial extends BaseFormRequest
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [

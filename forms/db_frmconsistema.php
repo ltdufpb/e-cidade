@@ -57,7 +57,7 @@ db_input('c52_descr',50,$Ic52_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('F'=>'Financeiro','P'=>'Patrimonial','O'=>'Orçamentário','C'=>'Compensado');
+$x = ['F'=>'Financeiro','P'=>'Patrimonial','O'=>'Orçamentário','C'=>'Compensado'];
 db_select('c52_descrred',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -75,7 +75,7 @@ function js_preenchepesquisa(chave){
   db_iframe_consistema.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

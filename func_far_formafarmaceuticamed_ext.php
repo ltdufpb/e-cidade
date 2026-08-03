@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_formafarmaceuticamed_classe.php"));
 include(modification("classes/db_far_formafarmaceutica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_formafarmaceuticamed = new cl_far_formafarmaceuticamed;
 $clfar_formafarmaceutica = new cl_far_formafarmaceutica;
 $clfar_formafarmaceuticamed->rotulo->label("fa33_i_codigo");
@@ -100,9 +100,9 @@ $clfar_formafarmaceutica->rotulo->label("fa29_c_forma");
         }else{
            $sql = $clfar_formafarmaceuticamed->sql_query("",$campos,"fa33_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa33_i_codigo)){
-          $repassa = array("chave_fa33_i_codigo"=>$chave_fa33_i_codigo,"chave_fa33_i_codigo"=>$chave_fa33_i_codigo);
+          $repassa = ["chave_fa33_i_codigo"=>$chave_fa33_i_codigo,"chave_fa33_i_codigo"=>$chave_fa33_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

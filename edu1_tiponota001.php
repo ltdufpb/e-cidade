@@ -40,7 +40,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 db_app::import("educacao.ArredondamentoNota");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $resultedu= eduparametros(db_getsession("DB_coddepto"));
 
 $sMascaraInstituicacao = str_replace("0", "9", ArredondamentoNota::getMascara(db_getsession("DB_anousu")));
@@ -97,7 +97,7 @@ if(isset($converter)){
  }elseif(isset($tpdestino) && trim($tpdestino)=="NIVEL"){
   $update .= " ,ed72_c_valorconceito = '$aprovperiodo' ";
  }elseif(isset($tpdestino) && trim($tpdestino)=="PARECER"){
-  $update .= " ,ed72_t_parecer = '".strtoupper($aprovperiodo)."' ";
+  $update .= " ,ed72_t_parecer = '".strtoupper((string) $aprovperiodo)."' ";
  }
  $sql = "UPDATE diarioavaliacao SET $update WHERE ed72_i_codigo = $diarioavaliacao";
  $result = db_query($sql);
@@ -125,10 +125,10 @@ $sql1 = "SELECT ed53_d_inicio,ed53_d_fim,ed95_i_aluno,ed95_i_regencia,ed72_i_esc
         ";
 $result1 = db_query($sql1);
 db_fieldsmemory($result1,0);
-if(trim($tpdestino)=="NOTA"){
+if(trim((string) $tpdestino)=="NOTA"){
  $campoaprov = "ed72_i_valornota";
  $ed72_i_valornota = $aprovperiodo;
-}elseif(trim($tpdestino)=="NIVEL"){
+}elseif(trim((string) $tpdestino)=="NIVEL"){
  $campoaprov = "ed72_c_valorconceito";
  $ed72_c_valorconceito = $aprovperiodo;
 }else{
@@ -161,7 +161,7 @@ if(($cltransfescolarede->numrows>0) || ($clalunotransfturma->numrows>0&&$cltrans
           WHERE ed251_i_diariodestino = $diarioavaliacao
          ";
  $result1 = db_query($sql1);
- if(pg_numrows($result1)>0){
+ if(pg_num_rows($result1)>0){
   db_fieldsmemory($result1,0);
  }else{
   if($clalunotransfturma->numrows>0){
@@ -317,10 +317,10 @@ if ($ed72_c_tipo == 'M') {
      </td>
      <td>
      <?php 
-     if(trim(@$tporigem)=="NOTA"){
+     if(trim((string) @$tporigem)=="NOTA"){
       $aprovorigem = @$ntorigem;
       echo db_input("aprovorigem",10,@$aprovorigem,true,'text',3,"");
-     }elseif(trim(@$tporigem)=="NIVEL"){
+     }elseif(trim((string) @$tporigem)=="NIVEL"){
       $aprovorigem = @$ctorigem;
       $result3 = $clconceito->sql_record($clconceito->sql_query("","ed39_c_conceito","ed39_i_sequencia","ed39_i_formaavaliacao = $ed41_i_formaavaliacao"));
       ?>
@@ -328,7 +328,7 @@ if ($ed72_c_tipo == 'M') {
        <option value=""></option>
        <?php for($z=0;$z<$clconceito->numrows;$z++){
         db_fieldsmemory($result3,$z);?>
-        <option value="<?=trim($ed39_c_conceito)?>" <?=trim($ed39_c_conceito)==trim($aprovorigem)?"selected":""?>><?=trim($ed39_c_conceito)?></option>
+        <option value="<?=trim((string) $ed39_c_conceito)?>" <?=trim((string) $ed39_c_conceito)==trim((string) $aprovorigem)?"selected":""?>><?=trim((string) $ed39_c_conceito)?></option>
        <?php }?>
       </select>
       <?php 
@@ -401,17 +401,17 @@ if ($ed72_c_tipo == 'M') {
      $disabled = $aprovperiodo==""?"":"disabled";
      $habilitar = (@$tporigem==$tpdestino && $maiordestino!=@$maiororigem)||($lMigrarMascarar)
                    ||@$tporigem!=$tpdestino || $aprovperiodo==""|| isset($ed69_i_codigo)?1:3;
-     if(trim($tpdestino) == "NOTA") {
+     if(trim((string) $tpdestino) == "NOTA") {
       $aprovperiodo = (@$tporigem==$tpdestino && $maiordestino!=@$maiororigem)||@$tporigem!=$tpdestino||$aprovperiodo==""||isset($ed69_i_codigo)?"":$aprovperiodo;
       echo db_input("aprovperiodo",10,@$aprovperiodo,true,'text',$habilitar,"onchange='js_formatanota(this,$variadestino,$menordestino,$maiordestino)'");
-     }elseif(trim($tpdestino)=="NIVEL"){
+     }elseif(trim((string) $tpdestino)=="NIVEL"){
       $result3 = $clconceito->sql_record($clconceito->sql_query("","ed39_c_conceito","ed39_i_sequencia","ed39_i_formaavaliacao = $ed41_i_formaavaliacao"));
       ?>
       <select name="aprovperiodo" style="background:#DEB887;width:50px;height:17px;font-size:10px;text-align:center;padding:0px;" <?=$disabled?>>
        <option value=""></option>
        <?php for($z=0;$z<$clconceito->numrows;$z++){
         db_fieldsmemory($result3,$z);?>
-        <option value="<?=trim($ed39_c_conceito)?>" <?=trim($ed39_c_conceito)==trim($aprovperiodo)?"selected":""?>><?=trim($ed39_c_conceito)?></option>
+        <option value="<?=trim((string) $ed39_c_conceito)?>" <?=trim((string) $ed39_c_conceito)==trim((string) $aprovperiodo)?"selected":""?>><?=trim((string) $ed39_c_conceito)?></option>
        <?php }?>
       </select>
       <?php 

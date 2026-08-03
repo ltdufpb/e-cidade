@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -92,13 +92,13 @@ function js_emite(){
         </td>
         <td>
           <?php
-            $aTipoFolha = array(''    => 'Todos',
+            $aTipoFolha = [''    => 'Todos',
                                 'r14' => 'Salário',
                                 'r48' => 'Complementar',
                                 'r20' => 'Rescisão',
                                 'r35' => '13o. Salário'
                                 //'r22' => 'Adiantamento'
-                                );
+                                ];
             db_select('sTipoFolha', $aTipoFolha, false, 1);
           ?>
         </td>

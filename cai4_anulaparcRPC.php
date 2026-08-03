@@ -37,16 +37,16 @@ include(modification("dbforms/db_funcoes.php"));
 
 $post = JSON::requestParameters();
 $parametros = JSON::create()->parse($post->json);
-$retorno = (object)array(
+$retorno = (object)[
     'erro' => false,
     'mensagem' => ''
-);
+];
 
 try {
     db_inicio_transacao();
     switch ($parametros->exec) {
         case "getDadosParcelamento":
-            $aSimulacao = array();
+            $aSimulacao = [];
 
             $oTotal = new stdClass();
             $oTotal->valor_total_historico_origem = 0;
@@ -107,8 +107,8 @@ try {
             }
 
             $oSimulacaoAnula = db_utils::fieldsMemory($rsGeraSimulacao,0);
-            if( substr(trim($oSimulacaoAnula->simulaanula),0,1) != '1') {
-                throw new Exception(substr(trim($oSimulacaoAnula->simulaanula),0));
+            if( !str_starts_with(trim((string) $oSimulacaoAnula->simulaanula), '1')) {
+                throw new Exception(substr(trim((string) $oSimulacaoAnula->simulaanula),0));
             }
 
             $sFormulaCalculoSaldo      = " 0 ";
@@ -258,7 +258,7 @@ try {
              */
             $tipoParcelamento = pg_fetch_assoc(db_query("SELECT fc_parc_gettipoparcelamento({$parcel}) AS tipo"));
 
-            if (trim($tipoParcelamento["tipo"]) == "termoini") {
+            if (trim((string) $tipoParcelamento["tipo"]) == "termoini") {
                 $sSql .= "and arreold.k00_tipo IN (SELECT a.k00_tipo
                                                      FROM arretipo a 
                                                     INNER JOIN cadtipo b  
@@ -452,7 +452,7 @@ try {
         }
 
             $fetchAnulacao = pg_fetch_result($rsAnulacao, 0);
-            if (substr($fetchAnulacao, 0, 1) != '1') {
+            if (!str_starts_with($fetchAnulacao, '1')) {
                 throw new Exception('Ocorreu uma falha ao anular Parcelamento !');
             }
 

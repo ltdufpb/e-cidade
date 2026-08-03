@@ -33,8 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_vac_vacinamaterial_classe.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoVacVaccinaMaterial = new cl_vac_vacinamaterial;
 $oRotulo            = new rotulocampo;
@@ -158,9 +158,9 @@ $oRotulo->label('m77_sequencial');
    
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_m77_sequencial)) {
-          $repassa = array("chave_m77_sequencial"=>$chave_m77_sequencial,"chave_m77_sequencial"=>$chave_m77_sequencial);
+          $repassa = ["chave_m77_sequencial"=>$chave_m77_sequencial,"chave_m77_sequencial"=>$chave_m77_sequencial];
         }
 
         db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa);

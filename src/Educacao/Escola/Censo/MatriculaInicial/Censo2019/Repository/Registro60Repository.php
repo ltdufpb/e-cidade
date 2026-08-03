@@ -59,14 +59,14 @@ class Registro60Repository extends Repository
         ";
 
         $dao = new \cl_matricula();
-        $sql = $dao->sql_query_excportacao_alunos_censo($this->scopes, array('codigo_turma_escola'));
+        $sql = $dao->sql_query_excportacao_alunos_censo($this->scopes, ['codigo_turma_escola']);
         $rs = db_query($sql);
 
         if (!$rs) {
             throw new Exception("Erro ao buscar alunos matrículados na turma: {$turma->getCodigoTurma()}");
         }
 
-        $matriculas = array();
+        $matriculas = [];
         while ($state = pg_fetch_array($rs)) {
             $matricula = MatriculaCensoVo::fromState($state);
             $matricula->setTurma($turma);
@@ -84,12 +84,12 @@ class Registro60Repository extends Repository
      */
     public function getMatriculaTurmaEspecial(TurmaCensoVo $turma, Censo $censo)
     {
-        $where = array(
+        $where = [
             "ed268_i_codigo = {$turma->getCodigoTurma()}",
             "ed269_d_data <= '{$censo->getDataCenso()->getDate()}'",
             "ed52_i_ano = {$censo->getDataCenso()->getAno()}",
             "ed268_i_tipoatend in (4, 5)"
-        );
+        ];
 
         $campos = "
         distinct ed269_aluno as codigo_aluno_escola, ed269_i_codigo as  codigo_matricula, ed268_c_aee as atendimento
@@ -103,7 +103,7 @@ class Registro60Repository extends Repository
             throw new Exception("Erro ao buscar alunos matrículados na turma ac: {$turma->getCodigoTurma()}");
         }
 
-        $matriculas = array();
+        $matriculas = [];
         while ($state = pg_fetch_array($rs)) {
             $matricula = MatriculaCensoVo::fromState($state);
             $matricula->setTurma($turma);

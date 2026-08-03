@@ -108,7 +108,7 @@ try {
         case "carregarAtividades":
 
             $cltabativ = new cl_tabativ;
-            $dados = array();
+            $dados = [];
             $inscricao = $parametros->q02_inscr;
             $campos  = "q07_seq,q07_val_ativ_int,q88_inscr,q03_ativ,q03_descr,q07_datain,q07_horaini,q07_horafim,";
             $campos .= "q07_datafi,q07_databx,q07_perman,q07_quant, q81_descr,q11_tipcalc";
@@ -243,7 +243,7 @@ try {
             /**
              * Veridica se ja tem atividade permanente cadastrada ou caso nao seja permantente, verifica se a data fim cadastrada é maior que a data de inicio passada
              */
-            $aWhereValidacaoData = array("q07_inscr = {$q07_inscr}", "q07_databx is null", "q07_ativ = {$q07_ativ}");
+            $aWhereValidacaoData = ["q07_inscr = {$q07_inscr}", "q07_databx is null", "q07_ativ = {$q07_ativ}"];
 
             if ($q07_perman == 'f') {
                 $aWhereValidacaoData[] = "q07_datafi >= '{$q07_datain}'::date";
@@ -378,7 +378,7 @@ try {
 
                 $rsAlvaraAuto      = db_query($sSqlAlvaraAuto);
                 $iLinhasAlvaraAuto = pg_num_rows($rsAlvaraAuto);
-                $aAlvaraAuto       = array();
+                $aAlvaraAuto       = [];
                 $lGeraAutomatico   = 'true';
                 $iTipoalvara       = "";
 
@@ -413,7 +413,7 @@ try {
                 }
 
                 if ($lInserirAlvara == 'true') {
-                    $sDtInclusao     = implode("-", array_reverse(explode("/", $q07_datain)));
+                    $sDtInclusao     = implode("-", array_reverse(explode("/", (string) $q07_datain)));
                     $clIssAlvara->q123_isstipoalvara = $iTipoalvara;  // valor a partir da parissqn
                     $clIssAlvara->q123_inscr         = $q07_inscr;
                     $clIssAlvara->q123_dtinclusao    = $sDtInclusao;
@@ -491,7 +491,7 @@ try {
             }
 
             //Busca os dados para atualizar a tela
-            $dados = array();
+            $dados = [];
             $campos  = "q07_seq,q07_val_ativ_int,q88_inscr,q03_ativ,q03_descr,q07_datain,q07_horaini,q07_horafim,";
             $campos .= "q07_datafi,q07_databx,q07_perman,q07_quant, q81_descr,q11_tipcalc";
 
@@ -746,8 +746,8 @@ function validarVinculoAlvara($inscricao)
 
 // func para retornar os dias entre datas
 function quantDias($data1, $data2) {
-  $aVet1=explode("/",$data1);
-  $aVet2=explode("/",$data2);
+  $aVet1=explode("/",(string) $data1);
+  $aVet2=explode("/",(string) $data2);
   round((mktime(0, 0, 0, 1,10,2020) -  mktime(0, 0, 0, 1, 10, 2020)) / (24 * 60 * 60), 0);
 
   return round((mktime(0,0,0,$aVet2[1],$aVet2[0],$aVet2[2])-

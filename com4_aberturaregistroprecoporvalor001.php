@@ -104,7 +104,7 @@ $oGet = db_utils::postMemory($_GET);
               <td class="bold">Disponibilizar para Utilização:</td>
               <td>
                 <?php
-                $aLiberado = array('f' => 'Não', 't' => 'Sim');
+                $aLiberado = ['f' => 'Não', 't' => 'Sim'];
                 db_select('liberado', $aLiberado, true, 1);
                 ?>
               </td>

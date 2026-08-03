@@ -32,7 +32,7 @@ use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
 
 class padEmpenho
 {
-    var $arq = null;
+    public $arq = null;
 
     /**
      * empenho constructor.
@@ -42,7 +42,7 @@ class padEmpenho
     {
         umask(74);
         $this->arq = fopen("tmp/EMPENHO.TXT", 'w+');
-        fputs($this->arq, $header);
+        fputs($this->arq, (string) $header);
         fputs($this->arq, "\r\n");
     }
 
@@ -179,7 +179,7 @@ class padEmpenho
 
         if ($iNumRowsEmpAut) {
             $oEmpAutItem = db_utils::fieldsMemory($rsSqlEmpAut, 0);
-            $ano = substr($oEmpAutItem->e60_numerol, -4);
+            $ano = substr((string) $oEmpAutItem->e60_numerol, -4);
             if (strlen($ano) != 4) {
                 return null;
             }
@@ -216,14 +216,14 @@ class padEmpenho
 
         $rsTesta = db_query($sSqlTesta) or die($sSqlTesta);
 
-        if (pg_numrows($rsTesta) > 0) {
+        if (pg_num_rows($rsTesta) > 0) {
             echo "<br><b>PROVAVEIS ERROS NOS REGISTROS - SEM DESDOBRAMENTO VINCULADO:</b><br>";
-            for ($x = 0; $x < pg_numrows($rsTesta); $x++) {
+            for ($x = 0; $x < pg_num_rows($rsTesta); $x++) {
 
-                $anousu_erro = pg_result($rsTesta, $x, "e60_anousu");
-                $numemp_erro = pg_result($rsTesta, $x, "e60_numemp");
-                $instit_erro = pg_result($rsTesta, $x, "e60_instit");
-                $codele_erro = pg_result($rsTesta, $x, "e64_codele");
+                $anousu_erro = pg_fetch_result($rsTesta, $x, "e60_anousu");
+                $numemp_erro = pg_fetch_result($rsTesta, $x, "e60_numemp");
+                $instit_erro = pg_fetch_result($rsTesta, $x, "e60_instit");
+                $codele_erro = pg_fetch_result($rsTesta, $x, "e64_codele");
 
                 echo "ano: $anousu_erro - numemp: $numemp_erro - instit: $instit_erro - codele: $codele_erro <br>";
 
@@ -235,20 +235,20 @@ class padEmpenho
         $sql = $this->getSqlEmpenho($data_ini, $data_fim, $sele, $exercicio);
 
         $res = db_query($sql) or die($sql);
-        $rows = pg_numrows($res);
+        $rows = pg_num_rows($res);
 
         for ($x = 0; $x < $rows; $x++) {
             $dados = db_utils::fieldsMemory($res, $x);
             db_fieldsmemory($res, $x);
-            $ano = pg_result($res, $x, "e60_anousu");;
-            $orgao = formatar(pg_result($res, $x, "o58_orgao"), 2, 'n');
-            $instituicao = pg_result($res, $x, "e60_instit");
-            $empenho = pg_result($res, $x, 'e60_numemp');
+            $ano = pg_fetch_result($res, $x, "e60_anousu");;
+            $orgao = formatar(pg_fetch_result($res, $x, "o58_orgao"), 2);
+            $instituicao = pg_fetch_result($res, $x, "e60_instit");
+            $empenho = pg_fetch_result($res, $x, 'e60_numemp');
             $cnpj = str_repeat('0', 14);
             $licitacaoCompartilhada = 'X';
 
             if (!empty($dados->outros_dados)) {
-                $outrosDados = json_decode($dados->outros_dados);
+                $outrosDados = json_decode((string) $dados->outros_dados);
                 if (isset($outrosDados->licitacao_compartilhada)) {
                     $licitacaoCompartilhada = $outrosDados->licitacao_compartilhada;
                 }
@@ -268,7 +268,7 @@ class padEmpenho
 		        and o73_coddot=$o58_coddot
                  ";
                 $rr = db_query($sql);
-                if (pg_numrows($rr) > 0) {
+                if (pg_num_rows($rr) > 0) {
                     db_fieldsmemory($rr, 0);
                 }
 
@@ -277,7 +277,7 @@ class padEmpenho
 		                 where o32_anousu=$ano
                     ";
                 $rr = db_query($sql);
-                if (pg_numrows($rr) > 0) {
+                if (pg_num_rows($rr) > 0) {
                     db_fieldsmemory($rr, 0);
                 }
 
@@ -285,12 +285,12 @@ class padEmpenho
 
 
             $o58_subprograma = 000;
-            $unidade = formatar($o58_unidade, 2, 'n');
-            $funcao = formatar($o58_funcao, 2, 'n');
-            $subfuncao = formatar($o58_subfuncao, 3, 'n');
-            $programa = formatar($o58_programa, 4, 'n');
-            $subprograma = formatar($o58_subprograma, 3, 'n');
-            $proj_ativ = formatar(pg_result($res, $x, "o58_projativ"), 5, 'n');
+            $unidade = formatar($o58_unidade, 2);
+            $funcao = formatar($o58_funcao, 2);
+            $subfuncao = formatar($o58_subfuncao, 3);
+            $programa = formatar($o58_programa, 4);
+            $subprograma = formatar($o58_subprograma, 3);
+            $proj_ativ = formatar(pg_fetch_result($res, $x, "o58_projativ"), 5);
 
 
             $iModalidadeLicitacao = '';
@@ -381,7 +381,7 @@ class padEmpenho
                 $sRegistroPreco = 'S';
             }
 
-            $rubrica_despesa = formatar(pg_result($res, $x, "rubrica"), 15, 'c'); // pendente
+            $rubrica_despesa = formatar(pg_fetch_result($res, $x, "rubrica"), 15); // pendente
 
             if ($e60_anousu >= 2005) {
                 $sqlele = "select o56_elemento
@@ -391,27 +391,27 @@ class padEmpenho
                   where e60_numemp = $e60_numemp limit 1";
 
                 $resrub = db_query($sqlele);
-                if ($resrub == false || pg_numrows($resrub) == 0) {
+                if ($resrub == false || pg_num_rows($resrub) == 0) {
                     echo "Verifique empenho (numemp: $e60_numemp) sem elemento cadastrado";
                     exit;
                 }
 
-                $rubrica_despesa = formatar(substr(pg_result($resrub, 0, "o56_elemento"), 1, 12) . "000", 15, 'c'); // pendente
+                $rubrica_despesa = formatar(substr(pg_fetch_result($resrub, 0, "o56_elemento"), 1, 12) . "000", 15); // pendente
             }
 
-            $recurso = formatar(pg_result($res, $x, "recurso"), 4, 'n');
-            $contrapartida_recurso = espaco(4, '0'); // pendente
-            $numero_empenho = $ano . str_pad($instituicao, 2, "0", STR_PAD_LEFT) . "0" . formatar(pg_result($res, $x, "e60_codemp"), 6, 'n');
-            $data_empenho = formatar(pg_result($res, $x, "e60_emiss"), 8, 'd');
-            $valor_empenho = formatar(pg_result($res, $x, "valor_empenho"), 13, 'v');
-            $sinal_valor = pg_result($res, $x, "sinal");
+            $recurso = formatar(pg_fetch_result($res, $x, "recurso"), 4);
+            $contrapartida_recurso = espaco(4); // pendente
+            $numero_empenho = $ano . str_pad($instituicao, 2, "0", STR_PAD_LEFT) . "0" . formatar(pg_fetch_result($res, $x, "e60_codemp"), 6);
+            $data_empenho = formatar(pg_fetch_result($res, $x, "e60_emiss"), 8);
+            $valor_empenho = formatar(pg_fetch_result($res, $x, "valor_empenho"), 13);
+            $sinal_valor = pg_fetch_result($res, $x, "sinal");
 
-            $codigo_credor = formatar(pg_result($res, $x, "e60_numcgm"), 10, 'n');
+            $codigo_credor = formatar(pg_fetch_result($res, $x, "e60_numcgm"), 10);
 
-            $hist = pg_result($res, $x, "e60_resumo");
+            $hist = pg_fetch_result($res, $x, "e60_resumo");
 
-            $e60_numerol = pg_result($res, $x, "e60_numerol");
-            $concarpeculiar = formatar((int)pg_result($res, $x, "e60_concarpeculiar"), 3, 'n');
+            $e60_numerol = pg_fetch_result($res, $x, "e60_numerol");
+            $concarpeculiar = formatar((int)pg_fetch_result($res, $x, "e60_concarpeculiar"), 3);
 
             if (trim($e60_numerol) != '' && trim($e60_numerol) != '0') {
                 if ($sNumeroLicitacao == '') {
@@ -428,9 +428,9 @@ class padEmpenho
 
             $hist = str_replace("\n", " ", $hist);
             $hist = str_replace("\r", "", $hist);
-            $historico_empenho = formatar(" ", 165, 'c');
+            $historico_empenho = formatar(" ", 165);
 
-            $sNovoHistorico = formatar($hist, 400, 'c');
+            $sNovoHistorico = formatar($hist, 400);
 
 
             // A partir de 2008, vigora o uso de CARACTERISTICA PECULIAR
@@ -461,11 +461,11 @@ class padEmpenho
                         $sNumeroLicitacaoPAD = '0';
                     }
 
-                    $iModalidadeLicitacao = str_pad($iModalidadeLicitacao, 2, ' ', STR_PAD_LEFT);
+                    $iModalidadeLicitacao = str_pad((string) $iModalidadeLicitacao, 2, ' ', STR_PAD_LEFT);
                     $sRegistroPreco = str_pad($sRegistroPreco, 1, ' ', STR_PAD_LEFT);
                     $sOutrasModalidades = substr(str_pad($sOutrasModalidades, 20, ' ', STR_PAD_LEFT), 0, 20);
-                    $sNumeroLicitacao = str_pad($sNumeroLicitacao, 20, $sNumeroLicitacaoPAD, STR_PAD_LEFT);
-                    $iAnoLicitacao = str_pad($iAnoLicitacao, 4, '0', STR_PAD_LEFT);
+                    $sNumeroLicitacao = str_pad((string) $sNumeroLicitacao, 20, $sNumeroLicitacaoPAD, STR_PAD_LEFT);
+                    $iAnoLicitacao = str_pad((string) $iAnoLicitacao, 4, '0', STR_PAD_LEFT);
 
                     if ($exercicio >= 2014) {
                         $sigla = $sigla ?: 'NSA';
@@ -518,7 +518,7 @@ class padEmpenho
              * campo CF
              */
             if ($exercicio >= 2020) {
-                $complementoFonteRecurso = str_pad($complemento, 4, '0', STR_PAD_LEFT);
+                $complementoFonteRecurso = str_pad((string) $complemento, 4, '0', STR_PAD_LEFT);
                 $line .= $complementoFonteRecurso;
             }
 
@@ -535,9 +535,9 @@ class padEmpenho
         $sql_testa_rp = "SELECT * FROM empresto WHERE e91_anousu = {$exercicio} AND round(e91_vlrpag, 2) > round(e91_vlrliq, 2)";
         $result_testa_rp = db_query($sql_testa_rp) or die($sql_testa_rp);
 
-        if (pg_numrows($result_testa_rp) > 0) {
+        if (pg_num_rows($result_testa_rp) > 0) {
             echo "<br><b>RESTOS A PAGAR COM REGISTROS DE PAGAMENTOS MAIORES QUE LIQUIDAÇÕES:</b><br>";
-            for ($x = 0; $x < pg_numrows($result_testa_rp); $x++) {
+            for ($x = 0; $x < pg_num_rows($result_testa_rp); $x++) {
                 db_fieldsmemory($result_testa_rp, $x);
                 echo "NUMEMP: $e91_numemp - VALOR LIQUIDADO: $e91_vlrliq - VALOR PAGO: $e91_vlrpag<br>";
             }
@@ -545,7 +545,7 @@ class padEmpenho
 
 
         //  trailer
-        $contador = espaco(10 - (strlen($contador)), '0') . $contador;
+        $contador = espaco(10 - (strlen($contador))) . $contador;
         $line = "FINALIZADOR" . $contador;
         fputs($this->arq, $line);
         fputs($this->arq, "\r\n");

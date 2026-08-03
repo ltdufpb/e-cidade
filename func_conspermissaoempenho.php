@@ -171,7 +171,7 @@ if (isset($oGet->relpermempenho) && $oGet->relpermempenho = 't') {
 			                $rsAnoExercicio    = db_query($sSqlAnoExercicio);
 			                $iNumRows          = pg_num_rows($rsAnoExercicio);
 			                
-			                $aAnoExercicio = array();
+			                $aAnoExercicio = [];
 			                if ($iNumRows > 0) {
 			                  
 			                  for ($iInd = 0; $iInd < $iNumRows; $iInd++) {

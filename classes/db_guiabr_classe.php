@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE guiabr
 class cl_guiabr { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $anousu = 0; 
-   var $tr = null; 
-   var $cgcter = null; 
-   var $cgcte = null; 
-   var $texto = null; 
+   public $anousu = 0; 
+   public $tr = null; 
+   public $cgcter = null; 
+   public $cgcte = null; 
+   public $texto = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  anousu = int4 = Exercício 
                  tr = char(2) = Tipo de Registro 
                  cgcter = char(3) = Codigo do Município 
@@ -56,10 +56,10 @@ class cl_guiabr {
                  texto = text = texto 
                  ";
    //funcao construtor da classe 
-   function cl_guiabr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("guiabr"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -146,7 +146,7 @@ class cl_guiabr {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Guiabr () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Guiabr já Cadastrado";
@@ -173,10 +173,10 @@ class cl_guiabr {
       $this->atualizacampos();
      $sql = " update guiabr set ";
      $virgula = "";
-     if(trim($this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
+     if(trim((string) $this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
        $sql  .= $virgula." anousu = $this->anousu ";
        $virgula = ",";
-       if(trim($this->anousu) == null ){ 
+       if(trim((string) $this->anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "anousu";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_guiabr {
          return false;
        }
      }
-     if(trim($this->tr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr"])){ 
+     if(trim((string) $this->tr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr"])){ 
        $sql  .= $virgula." tr = '$this->tr' ";
        $virgula = ",";
-       if(trim($this->tr) == null ){ 
+       if(trim((string) $this->tr) == null ){ 
          $this->erro_sql = " Campo Tipo de Registro nao Informado.";
          $this->erro_campo = "tr";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_guiabr {
          return false;
        }
      }
-     if(trim($this->cgcter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcter"])){ 
+     if(trim((string) $this->cgcter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcter"])){ 
        $sql  .= $virgula." cgcter = '$this->cgcter' ";
        $virgula = ",";
-       if(trim($this->cgcter) == null ){ 
+       if(trim((string) $this->cgcter) == null ){ 
          $this->erro_sql = " Campo Codigo do Município nao Informado.";
          $this->erro_campo = "cgcter";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_guiabr {
          return false;
        }
      }
-     if(trim($this->cgcte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcte"])){ 
+     if(trim((string) $this->cgcte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcte"])){ 
        $sql  .= $virgula." cgcte = '$this->cgcte' ";
        $virgula = ",";
-       if(trim($this->cgcte) == null ){ 
+       if(trim((string) $this->cgcte) == null ){ 
          $this->erro_sql = " Campo Cadastro no Tesouro do Estado nao Informado.";
          $this->erro_campo = "cgcte";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_guiabr {
          return false;
        }
      }
-     if(trim($this->texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["texto"])){ 
+     if(trim((string) $this->texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["texto"])){ 
        $sql  .= $virgula." texto = '$this->texto' ";
        $virgula = ",";
-       if(trim($this->texto) == null ){ 
+       if(trim((string) $this->texto) == null ){ 
          $this->erro_sql = " Campo texto nao Informado.";
          $this->erro_campo = "texto";
          $this->erro_banco = "";
@@ -319,7 +319,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:guiabr";

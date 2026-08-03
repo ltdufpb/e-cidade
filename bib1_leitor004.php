@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_leitor_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clleitor = new cl_leitor;
 $clleitor->rotulo->label();
@@ -186,12 +186,12 @@ $db_opcao = 3;
                 </td>
                 <td nowrap title="<?=$estado_civil?>">
                   <?php 
-                    $x = array("" => "", "1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado");
+                    $x = ["" => "", "1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado"];
                     db_select('estado_civil', $x, true, $db_opcao);
                   ?>
                   <?="<b>Sexo: </b>"?>
                   <?php 
-                    $sex = array("" => "", "M"=>"Masculino","F"=>"Feminino");
+                    $sex = ["" => "", "M"=>"Masculino","F"=>"Feminino"];
                     db_select('sexo', $sex, true, $db_opcao);
                   ?>
                 </td>

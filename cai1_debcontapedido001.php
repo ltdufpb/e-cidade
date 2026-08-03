@@ -34,7 +34,7 @@ include(modification("classes/db_debcontapedidocgm_classe.php"));
 include(modification("classes/db_debcontapedidomatric_classe.php"));
 include(modification("classes/db_debcontapedidoinscr_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldebcontapedido = new cl_debcontapedido;
 $cldebcontapedidocgm = new cl_debcontapedidocgm;
 $cldebcontapedidomatric = new cl_debcontapedidomatric;

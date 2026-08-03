@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 if ($folha == 'r14'){
      $xarquivo = 'DE SALÁRIO';
@@ -168,7 +168,7 @@ if ($tipo == "L"){
 
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos no período de '.$mes.' / '.$ano);
 
@@ -190,7 +190,7 @@ db_fieldsmemory($result,0);
 //echo substr($r14_rubric,1,4) ;exit;
 if ($tipo == "L"){
    $quebra = $lota;
-   $pdf->cell(15,5,$r70_estrut." - ".$lota." - ".strtoupper($r13_descr),0,1,"L",0);
+   $pdf->cell(15,5,$r70_estrut." - ".$lota." - ".strtoupper((string) $r13_descr),0,1,"L",0);
 }
 
 $pdf->cell(15,$alt,'RUBRICA',1,0,"C",1);
@@ -200,7 +200,7 @@ $pdf->cell(60,$alt,'DESCRIÇÃO',1,0,"C",1);
 $pdf->cell(20,$alt,'PROVENTOS',1,0,"C",1);
 $pdf->cell(20,$alt,'DESCONTOS',1,1,"C",1);
 
-for($x = 0;$x < pg_numrows($result);$x++){
+for($x = 0;$x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($tipo == "L" && $quebra != $lota){
       $pdf->cell(15,$alt,'',"T",0,"C",0);
@@ -298,7 +298,7 @@ for($x = 0;$x < pg_numrows($result);$x++){
       $pdf->addpage();
       $pdf->setfont('arial','b',8);
       if ($tipo == "L")
-         $pdf->cell(15,5,$r70_estrut." - ".$lota." - ".strtoupper($r13_descr),0,1,"L",0);
+         $pdf->cell(15,5,$r70_estrut." - ".$lota." - ".strtoupper((string) $r13_descr),0,1,"L",0);
       $pdf->cell(15,$alt,'RUBRICA',1,0,"C",1);
       $pdf->cell(15,$alt,'N.FUNC.',1,0,"C",1);
       $pdf->cell(15,$alt,'QUANT.',1,0,"C",1);

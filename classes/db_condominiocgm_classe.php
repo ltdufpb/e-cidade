@@ -52,10 +52,10 @@ class cl_condominiocgm {
                  j106_numcgm = int4 = Cód. CGM
                  ";
    //funcao construtor da classe
-   public function cl_condominiocgm() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("condominiocgm");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    public function erro($mostra,$retorna) {
@@ -107,10 +107,10 @@ class cl_condominiocgm {
          $this->erro_status = "0";
          return false;
        }
-       $this->j106_sequencial = pg_result($result,0,0);
+       $this->j106_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from condominiocgm_j106_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j106_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j106_sequencial)){
          $this->erro_sql = " Campo j106_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_condominiocgm {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "CGM do Condomínio ($this->j106_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "CGM do Condomínio já Cadastrado";
@@ -166,12 +166,12 @@ class cl_condominiocgm {
      $resaco = $this->sql_record($this->sql_query_file($this->j106_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14375,'$this->j106_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2532,14375,'','".AddSlashes(pg_result($resaco,0,'j106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2532,14376,'','".AddSlashes(pg_result($resaco,0,'j106_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2532,14377,'','".AddSlashes(pg_result($resaco,0,'j106_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2532,14375,'','".AddSlashes(pg_fetch_result($resaco,0,'j106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2532,14376,'','".AddSlashes(pg_fetch_result($resaco,0,'j106_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2532,14377,'','".AddSlashes(pg_fetch_result($resaco,0,'j106_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -180,10 +180,10 @@ class cl_condominiocgm {
       $this->atualizacampos();
      $sql = " update condominiocgm set ";
      $virgula = "";
-     if(trim($this->j106_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j106_sequencial"])){
+     if(trim((string) $this->j106_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j106_sequencial"])){
        $sql  .= $virgula." j106_sequencial = $this->j106_sequencial ";
        $virgula = ",";
-       if(trim($this->j106_sequencial) == null ){
+       if(trim((string) $this->j106_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "j106_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_condominiocgm {
          return false;
        }
      }
-     if(trim($this->j106_condominio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j106_condominio"])){
+     if(trim((string) $this->j106_condominio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j106_condominio"])){
        $sql  .= $virgula." j106_condominio = $this->j106_condominio ";
        $virgula = ",";
-       if(trim($this->j106_condominio) == null ){
+       if(trim((string) $this->j106_condominio) == null ){
          $this->erro_sql = " Campo Cód. Condomínio nao Informado.";
          $this->erro_campo = "j106_condominio";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_condominiocgm {
          return false;
        }
      }
-     if(trim($this->j106_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j106_numcgm"])){
+     if(trim((string) $this->j106_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j106_numcgm"])){
        $sql  .= $virgula." j106_numcgm = $this->j106_numcgm ";
        $virgula = ",";
-       if(trim($this->j106_numcgm) == null ){
+       if(trim((string) $this->j106_numcgm) == null ){
          $this->erro_sql = " Campo Cód. CGM nao Informado.";
          $this->erro_campo = "j106_numcgm";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_condominiocgm {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14375,'$this->j106_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j106_sequencial"]) || $this->j106_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2532,14375,'".AddSlashes(pg_result($resaco,$conresaco,'j106_sequencial'))."','$this->j106_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2532,14375,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j106_sequencial'))."','$this->j106_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j106_condominio"]) || $this->j106_condominio != "")
-           $resac = db_query("insert into db_acount values($acount,2532,14376,'".AddSlashes(pg_result($resaco,$conresaco,'j106_condominio'))."','$this->j106_condominio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2532,14376,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j106_condominio'))."','$this->j106_condominio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j106_numcgm"]) || $this->j106_numcgm != "")
-           $resac = db_query("insert into db_acount values($acount,2532,14377,'".AddSlashes(pg_result($resaco,$conresaco,'j106_numcgm'))."','$this->j106_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2532,14377,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j106_numcgm'))."','$this->j106_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_condominiocgm {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14375,'$j106_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2532,14375,'','".AddSlashes(pg_result($resaco,$iresaco,'j106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2532,14376,'','".AddSlashes(pg_result($resaco,$iresaco,'j106_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2532,14377,'','".AddSlashes(pg_result($resaco,$iresaco,'j106_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2532,14375,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2532,14376,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j106_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2532,14377,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j106_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from condominiocgm
@@ -345,7 +345,7 @@ class cl_condominiocgm {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:condominiocgm";
@@ -383,7 +383,7 @@ class cl_condominiocgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_condominiocgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

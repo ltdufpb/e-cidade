@@ -38,7 +38,7 @@ if (! isset($arqinclude)) { // se este arquivo não esta incluido por outro
   include(modification("classes/db_orcparamrel_classe.php"));
   include(modification("classes/db_empresto_classe.php"));
   
-  parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
+  parse_str((string) $_SERVER ['QUERY_STRING'], $result);
   db_postmemory($_GET);
   
   $classinatura  = new cl_assinatura();
@@ -285,11 +285,11 @@ $sqlperiodo = " select e91_recurso,o15_descr,e60_anousu,sum(vlranu) as vlranu, s
 	          		order by e91_recurso,e60_anousu";
 
 $result_restos_mde1 = @db_query($sqlperiodo);
-$numrows_restos_mde1 = @pg_numrows($result_restos_mde1);
+$numrows_restos_mde1 = @pg_num_rows($result_restos_mde1);
 
 $cancelado = 0;
 $saldo = 0;
-for($i = 0; $i < pg_numrows($result_restos_mde1); $i ++) {
+for($i = 0; $i < pg_num_rows($result_restos_mde1); $i ++) {
   db_fieldsmemory($result_restos_mde1, $i);
   
   $saldo += (($e91_vlremp - $e91_vlranu - $vlranu) - ($e91_vlrpag + $vlrpag));
@@ -301,7 +301,7 @@ $result_restos_mde2 = db_rpsaldo($anousu, $db_filtro, $dt_ini2, $dt_fin, " o58_c
                                    o58_subfuncao in (" . $v_subfunc . ") ", " and c53_coddoc = 32 ");
 
 //db_criatabela($result_restos_mde2);
-for($i = 0; $i < pg_numrows($result_restos_mde2); $i ++) {
+for($i = 0; $i < pg_num_rows($result_restos_mde2); $i ++) {
   db_fieldsmemory($result_restos_mde2, $i);
   $cancelado += $vlranu;
 }
@@ -354,7 +354,7 @@ for($i = 0; $i < 16; $i ++) {
 
 // RECEITA DE IMPOSTOS LIQUIDA [1...4] + TOTAL DAS RECEITAS[0]
 for($p = 1; $p <= 4; $p ++) {
-  for($i = 0; $i < pg_numrows($result_rec); $i ++) {
+  for($i = 0; $i < pg_num_rows($result_rec); $i ++) {
     db_fieldsmemory($result_rec, $i);
     $estrutural = $o57_fonte;
     if (in_array($estrutural, $rec [$p])) {
@@ -368,7 +368,7 @@ for($p = 1; $p <= 4; $p ++) {
 
 // TRANSFERENCIAS CONSTITUCIONAIS E LEGAIS [6...7]
 for($p = 6; $p <= 7; $p ++) {
-  for($i = 0; $i < pg_numrows($result_rec); $i ++) {
+  for($i = 0; $i < pg_num_rows($result_rec); $i ++) {
     db_fieldsmemory($result_rec, $i);
     $estrutural = $o57_fonte;
     if (in_array($estrutural, $rec [$p])) {
@@ -400,7 +400,7 @@ $receitas_nobimes [0] += $receitas_nobimes [5];
 
 // TRANSFERENCIA DE RECURSOS DO SISTEMA UNICO DE SAUDE-SUS (II)
 for($p = 9; $p <= 12; $p ++) {
-  for($i = 0; $i < pg_numrows($result_rec); $i ++) {
+  for($i = 0; $i < pg_num_rows($result_rec); $i ++) {
     db_fieldsmemory($result_rec, $i);
     $estrutural = $o57_fonte;
     if (in_array($estrutural, $rec [$p])) {
@@ -419,7 +419,7 @@ $receitas_atebime [8] = $receitas_atebime [9] + $receitas_atebime [10] + $receit
 $receitas_nobimes [8] = $receitas_nobimes [9] + $receitas_nobimes [10] + $receitas_nobimes [11] + $receitas_nobimes [12];
 
 for($p = 13; $p <= 15; $p ++) {
-  for($i = 0; $i < pg_numrows($result_rec); $i ++) {
+  for($i = 0; $i < pg_num_rows($result_rec); $i ++) {
     db_fieldsmemory($result_rec, $i);
     $estrutural = $o57_fonte;
     if (in_array($estrutural, $rec [$p])) {
@@ -439,7 +439,7 @@ for($x = 1; $x <= 6; $x ++) {
 }
 
 ///db_criatabela($result_despesa);exit;
-for($i = 0; $i < pg_numrows($result_despesa); $i ++) {
+for($i = 0; $i < pg_num_rows($result_despesa); $i ++) {
   db_fieldsmemory($result_despesa, $i);
   
   for($linha = 1; $linha <= 6; $linha ++) {
@@ -477,7 +477,7 @@ exit;
 // DESPESAS PROPRIAS COM AÇOES E SERV. PUBLICOS DE SAUDE
 
 //db_criatabela($result_despesa);exit;
-for($i = 0; $i < pg_numrows($result_despesa); $i ++) {
+for($i = 0; $i < pg_num_rows($result_despesa); $i ++) {
   db_fieldsmemory($result_despesa, $i);
   
   for($linha = 1; $linha <= 4; $linha ++) {
@@ -555,7 +555,7 @@ $subout_atuali = 0;
 $subout_rp     = 0;
 $subout_atebim = 0;
 
-for($i = 0; $i < pg_numrows($result_subfuncao); $i ++) {
+for($i = 0; $i < pg_num_rows($result_subfuncao); $i ++) {
   db_fieldsmemory($result_subfuncao, $i);
   
   $nivel        = $m_desp_subfunc [1] ['nivel'];
@@ -647,15 +647,15 @@ $n2 = 10;
 
 // end se incluido em outro arquivo
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select munic from db_config where codigo in (" . str_replace('-', ', ', $db_selinstit) . ") ");
 $descr_inst = '';
 db_fieldsmemory($resultinst, 0);
 $descr_inst = $munic;
 
-$vdt_fin = split("-", $dt_fin);
+$vdt_fin = preg_split("#\\-#m", (string) $dt_fin);
 
-$head1 = "MUNICÍPIO DE " . strtoupper($descr_inst);
+$head1 = "MUNICÍPIO DE " . strtoupper((string) $descr_inst);
 $head2 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
 $head3 = "DEMONSTRATIVO DA RECEITA DE IMPOSTOS LÍQUIDA E DAS DESPESAS PRÓPRIAS COM AÇÕES E SERVIÇOS PÚBLICOS DE SAÚDE";
 $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
@@ -1216,12 +1216,12 @@ $pdf->cell($iLarguraColunaValor, $alt, db_formatar($total_acum, 'f'), "TB", 0, "
 //------------------------------------------------
 
 if (! isset($arqinclude)) {
-  notasExplicativas(&$pdf, 24, "{$periodo}", 190);
+  notasExplicativas($pdf, 24, "{$periodo}", 190);
   
   //assinaturas
   $pdf->Ln(15);
   
-  assinaturas(&$pdf, &$classinatura, 'LRF');
+  assinaturas($pdf, $classinatura, 'LRF');
   
   $pdf->Output();
 }
@@ -1252,7 +1252,7 @@ function cabecalhoDespesa($pdf,$aDescricao,$iLarguraColunaDescr,$iLarguraColunaV
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["D3"],"L",0,"C",0); // D3
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["E3"],"L",0,"C",0); // E3
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["F3"],"L",1,"C",0); // F3
-    
+
     $pdf->cell($iLarguraColunaDescr,$alt,$aDescricao["A4"],"", 0,"C",0); // A4
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["B4"],"L",0,"C",0); // B4
     $pdf->cell($iLarguraColunaValor,$alt,$aDescricao["C4"],"L",0,"C",0); // C4

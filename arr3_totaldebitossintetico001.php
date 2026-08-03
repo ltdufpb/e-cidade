@@ -38,7 +38,7 @@ db_app::import("CgmFactory");
 try {
 
   $oGet                      = db_utils::postMemory($_GET);
-  $aTiposDebitosSelecionados = explode(",", $oGet->tipos);
+  $aTiposDebitosSelecionados = explode(",", (string) $oGet->tipos);
   $oData                     = new DBDate($db_datausu);
   $oDataSessao               = new DBDate(date('Y-m-d', db_getsession("DB_datausu")));
   $DB_DATACALC               = $oDataSessao->getTimeStamp();
@@ -61,7 +61,7 @@ try {
     $DB_DATACALC = $oData->getTimeStamp();
   }
 
-  $aTiposDebitoProcessoForo = array(12,13,18);
+  $aTiposDebitoProcessoForo = [12,13,18];
   $sDadosExercicio          = "";
   $sDadosPeriodo            = "";
   $sOutrosDados1            = "";
@@ -209,7 +209,7 @@ try {
 }
 
 $aTipoDebitos = DBTributario::getTiposDebitoByOrigem($sTipoBusca, $sChavePesquisa);
-$aWhere       = array();
+$aWhere       = [];
 $where        = "";
 $and          = " and ";
 
@@ -256,9 +256,9 @@ if ( !empty($oGet->exercini) && !empty($oGet->exercfim) ) {
  * para serem pre-processado para o relatorio
  */
 $oDadosRelatorio              = new stdClass();
-$oDadosRelatorio->aDebitos    = array();
-$aTiposDebitosDetalhe         = array();
-$oDadosRelatorio->aSuspensoes = array();
+$oDadosRelatorio->aDebitos    = [];
+$aTiposDebitosDetalhe         = [];
+$oDadosRelatorio->aSuspensoes = [];
 $aValoresTipoDebito           = $oDadosRelatorio->aDebitos;
 
 foreach ( $aTipoDebitos as $oTipoDebito ) {
@@ -269,7 +269,7 @@ foreach ( $aTipoDebitos as $oTipoDebito ) {
   /**
    * Parametros da Funcao
    */
-  $aParametros   = array();
+  $aParametros   = [];
   $aParametros[] = $sChavePesquisa;           // Valor do Tipo de Pesquisa Ex.: Numero do CGM, MATRICULA...
   $aParametros[] = 0;                         // Limite de Registros
   $aParametros[] = $oTipoDebito->k00_tipo;    // Tipo de Debito
@@ -291,7 +291,7 @@ foreach ( $aTipoDebitos as $oTipoDebito ) {
   if ( !is_resource($rsDebitos) ) {
     throw new DBException( "Erro ao Buscar debitos({$oTipoDebito->k00_descr}) da Origem Selecionada.".pg_last_error() );
   }
-  $aNumpreDebito    = array();
+  $aNumpreDebito    = [];
   
   for ( $iIndiceDebitos = 0; $iIndiceDebitos < pg_num_rows($rsDebitos); $iIndiceDebitos++ ) {
 
@@ -327,7 +327,7 @@ foreach ( $aTipoDebitos as $oTipoDebito ) {
 
   if ( in_array($oTipoDebito->k03_tipo, $aTiposDebitoProcessoForo) ) {
     
-    $aValorProcesso = array();
+    $aValorProcesso = [];
 
     foreach ( $aNumpreDebito as $iNumpre  ) {
 
@@ -417,7 +417,7 @@ foreach ( $aTipoDebitos as $oTipoDebito ) {
     */
 
   $oDaoArresusp   = db_utils::getDao('arresusp');
-  $sSqlSuspensoes = $oDaoArresusp->sql_query_debitosSuspensos($sTipoBusca, $sChavePesquisa, explode(",", $parReceit), array($oTipoDebito->k00_tipo));
+  $sSqlSuspensoes = $oDaoArresusp->sql_query_debitosSuspensos($sTipoBusca, $sChavePesquisa, explode(",", (string) $parReceit), [$oTipoDebito->k00_tipo]);
 
   $rsSuspensoes   = db_query($sSqlSuspensoes);
 
@@ -562,7 +562,7 @@ foreach ( $aTipoDebitos as $oTipoDebito ) {
     foreach ($oDadosRelatorio->aSuspensoes as $oValoresSuspencoes  ) {
 
       $oPDF->Cell(7 , $iAlturaLinha, $oValoresSuspencoes->k00_tipo                              , 1, 0, "C", 0);
-      $oPDF->Cell(60, $iAlturaLinha, substr($oValoresSuspencoes->k00_descr, 0, 35)	            , 1, 0, "L", 0);
+      $oPDF->Cell(60, $iAlturaLinha, substr((string) $oValoresSuspencoes->k00_descr, 0, 35)	            , 1, 0, "L", 0);
       $oPDF->Cell(21, $iAlturaLinha, db_formatar($oValoresSuspencoes->valor_historico  , 'f')   , 1, 0, "R", 0);
       $oPDF->Cell(21, $iAlturaLinha, db_formatar($oValoresSuspencoes->valor_corrigido  , 'f')   , 1, 0, "R", 0);
       $oPDF->Cell(21, $iAlturaLinha, db_formatar($oValoresSuspencoes->valor_juros      , 'f')   , 1, 0, "R", 0);

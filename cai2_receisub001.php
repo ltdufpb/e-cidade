@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -80,7 +80,7 @@ function js_emite(){
               </td>
                <td>
 	              <?php  
-	                $tipo_ordenado = array("r"=>"Receita","t"=>"Taxa");
+	                $tipo_ordenado = ["r"=>"Receita","t"=>"Taxa"];
 	                db_select("ordenado",$tipo_ordenado,true,2); 
 					      ?>
               </td>

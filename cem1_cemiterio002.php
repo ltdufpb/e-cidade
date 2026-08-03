@@ -34,7 +34,7 @@ require_once(modification("classes/db_cemiteriocgm_classe.php"));
 require_once(modification("classes/db_cemiteriorural_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcemiterio      = new cl_cemiterio;
 $clcemiteriocgm   = new cl_cemiteriocgm;
@@ -110,7 +110,7 @@ if(isset($alterar)){
        <tr>
         <td>
 		  <?php 
-			$x = array('0'=>'Selecione','1'=>'Urbano','2'=>'Rural');
+			$x = ['0'=>'Selecione','1'=>'Urbano','2'=>'Rural'];
 			db_select('tp',$x,true,$db_opcao,"onchange='submit()'");
 		  ?>
         </td>

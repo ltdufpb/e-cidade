@@ -120,24 +120,24 @@ try {
                 $pdf->setfillcolor(235);
                 $pdf->setfont('arial', 'B', 6);
                 $texto = $dado['ecidade']['codrubr'];
-                if (strlen($texto) > 35) {
-                    $texto = substr($texto, 0, 35) . "...";
+                if (strlen((string) $texto) > 35) {
+                    $texto = substr((string) $texto, 0, 35) . "...";
                 }
                 $pdf->cell($colunas['rubrica'], $altura, substr($dado['ecidade']['codrubr'] . ' - ' . $dado['ecidade']['dscrubr'], 0, 35), 1, 0,'L', $cor);
                 $pdf->setfont('arial', '', 6);
                 $texto = $dado['formulario']['codinccp'];
-                if (strlen($texto) > 45) {
-                    $texto = substr($texto, 0, 45) . "...";
+                if (strlen((string) $texto) > 45) {
+                    $texto = substr((string) $texto, 0, 45) . "...";
                 }
                 $pdf->cell($colunas['inss'], $altura, $texto, 1, 0,'L', $cor);
                 $texto = $dado['formulario']['codincirrf'];
-                if (strlen($texto) > 45) {
-                    $texto = substr($texto, 0, 45) . "...";
+                if (strlen((string) $texto) > 45) {
+                    $texto = substr((string) $texto, 0, 45) . "...";
                 }
                 $pdf->cell($colunas['irrf'], $altura, $texto, 1, 0,'L', $cor);
                 $texto = $dado['formulario']['codincfgts'];
-                if (strlen($texto) > 45) {
-                    $texto = substr($texto, 0, 45) . "...";
+                if (strlen((string) $texto) > 45) {
+                    $texto = substr((string) $texto, 0, 45) . "...";
                 }
                 $pdf->cell($colunas['fgts'], $altura, $texto, 1, 0,'L', $cor);
                 $pdf->ln();

@@ -56,10 +56,10 @@ try {
 
     $oDados->sHorarioComparecimento = _M( 
       MSG . "intervalo_comparecimento", 
-      (object)array(
+      (object)[
         "hora_inicial" => $oDados->sHoraInicial, 
         "hora_final"   => $oDados->sHoraFinal
-      ) 
+      ] 
     );
   }
 
@@ -147,7 +147,7 @@ try {
   $oLibDocumento->horario         = $oDados->sHorarioComparecimento;
 
   if( !empty( $oDados->sObservacao ) ) {
-    $oLibDocumento->observacao = utf8_decode("\n\nObs.: " . $oDados->sObservacao);
+    $oLibDocumento->observacao = mb_convert_encoding("\n\nObs.: " . $oDados->sObservacao, 'ISO-8859-1');
   }
 
   $oDados->aParagrafos = $oLibDocumento->getDocParagrafos();

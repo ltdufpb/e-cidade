@@ -36,15 +36,12 @@ use ECidade\Saude\Laboratorio\Repository\ExameProcedimentoRepository;
 class ExameProcedimentoService
 {
 
-    private $repositorio;
-
     /**
      * ExameProcedimentoService constructor.
      * @param ExameProcedimentoRepository $repositorio
      */
-    public function __construct(ExameProcedimentoRepository $repositorio)
+    public function __construct(private readonly ExameProcedimentoRepository $repositorio)
     {
-        $this->repositorio = $repositorio;
     }
 
     /**

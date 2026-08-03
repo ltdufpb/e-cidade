@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_docparagpadrao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_docparagpadrao = new cl_db_docparagpadrao;
 $cldb_docparagpadrao->rotulo->label("db62_coddoc");
 $cldb_docparagpadrao->rotulo->label("db62_codparag");
@@ -109,9 +109,9 @@ $cldb_docparagpadrao->rotulo->label("db62_coddoc");
         }else{
            $sql = $cldb_docparagpadrao->sql_query("","",$campos,"db62_coddoc#db62_codparag","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db62_coddoc)){
-          $repassa = array("chave_db62_coddoc"=>$chave_db62_coddoc,"chave_db62_coddoc"=>$chave_db62_coddoc);
+          $repassa = ["chave_db62_coddoc"=>$chave_db62_coddoc,"chave_db62_coddoc"=>$chave_db62_coddoc];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

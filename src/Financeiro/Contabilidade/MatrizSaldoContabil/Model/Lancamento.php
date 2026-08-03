@@ -42,11 +42,6 @@ class Lancamento
     const TIPO_ENDING_BALANCE = 3;
 
     /**
-     * @var integer $sequencial
-     */
-    private $sequencial;
-
-    /**
      * @var integer $codigoLancamento
      */
     private $codigoLancamento;
@@ -85,9 +80,8 @@ class Lancamento
     /**
      * @param integer|null $sequencial
      */
-    public function __construct($sequencial = null)
+    public function __construct(private $sequencial = null)
     {
-        $this->sequencial = $sequencial;
     }
 
     /**

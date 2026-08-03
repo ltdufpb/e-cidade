@@ -7,7 +7,7 @@ $pdf->cell(15,$alt,"Admiss.: ",0,0,"L",0);
 $pdf->cell(15,$alt,$admisrec,0,0,"L",0);
 $pdf->cell(10,$alt,"Pad.: ",0,0,"L",0);
 
-if(trim($clas1rec) != ""){
+if(trim((string) $clas1rec) != ""){
   $pdf->cell(15,$alt,$clas1rec,0,0,"L",0);
 }else{
   $pdf->cell(15,$alt,$descpadr,0,0,"L",0);

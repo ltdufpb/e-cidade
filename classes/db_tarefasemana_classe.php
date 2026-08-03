@@ -29,41 +29,41 @@
 //CLASSE DA ENTIDADE tarefasemana
 class cl_tarefasemana { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at19_sequencial = 0; 
-   var $at19_descr = null; 
-   var $at19_dtini_dia = null; 
-   var $at19_dtini_mes = null; 
-   var $at19_dtini_ano = null; 
-   var $at19_dtini = null; 
-   var $at19_dtfim_dia = null; 
-   var $at19_dtfim_mes = null; 
-   var $at19_dtfim_ano = null; 
-   var $at19_dtfim = null; 
+   public $at19_sequencial = 0; 
+   public $at19_descr = null; 
+   public $at19_dtini_dia = null; 
+   public $at19_dtini_mes = null; 
+   public $at19_dtini_ano = null; 
+   public $at19_dtini = null; 
+   public $at19_dtfim_dia = null; 
+   public $at19_dtfim_mes = null; 
+   public $at19_dtfim_ano = null; 
+   public $at19_dtfim = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at19_sequencial = int4 = Sequencial 
                  at19_descr = varchar(40) = Descrição 
                  at19_dtini = date = Data Inicial 
                  at19_dtfim = date = Data Final 
                  ";
    //funcao construtor da classe 
-   function cl_tarefasemana() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefasemana"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -139,10 +139,10 @@ class cl_tarefasemana {
          $this->erro_status = "0";
          return false; 
        }
-       $this->at19_sequencial = pg_result($result,0,0); 
+       $this->at19_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tarefasemana_at19_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $at19_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $at19_sequencial)){
          $this->erro_sql = " Campo at19_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,7 +176,7 @@ class cl_tarefasemana {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Semana de Execução ($this->at19_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Semana de Execução já Cadastrado";
@@ -200,13 +200,13 @@ class cl_tarefasemana {
      $resaco = $this->sql_record($this->sql_query_file($this->at19_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10243,'$this->at19_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1769,10243,'','".AddSlashes(pg_result($resaco,0,'at19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1769,10244,'','".AddSlashes(pg_result($resaco,0,'at19_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1769,10245,'','".AddSlashes(pg_result($resaco,0,'at19_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1769,10246,'','".AddSlashes(pg_result($resaco,0,'at19_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1769,10243,'','".AddSlashes(pg_fetch_result($resaco,0,'at19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1769,10244,'','".AddSlashes(pg_fetch_result($resaco,0,'at19_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1769,10245,'','".AddSlashes(pg_fetch_result($resaco,0,'at19_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1769,10246,'','".AddSlashes(pg_fetch_result($resaco,0,'at19_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -215,10 +215,10 @@ class cl_tarefasemana {
       $this->atualizacampos();
      $sql = " update tarefasemana set ";
      $virgula = "";
-     if(trim($this->at19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at19_sequencial"])){ 
+     if(trim((string) $this->at19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at19_sequencial"])){ 
        $sql  .= $virgula." at19_sequencial = $this->at19_sequencial ";
        $virgula = ",";
-       if(trim($this->at19_sequencial) == null ){ 
+       if(trim((string) $this->at19_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "at19_sequencial";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_tarefasemana {
          return false;
        }
      }
-     if(trim($this->at19_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at19_descr"])){ 
+     if(trim((string) $this->at19_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at19_descr"])){ 
        $sql  .= $virgula." at19_descr = '$this->at19_descr' ";
        $virgula = ",";
-       if(trim($this->at19_descr) == null ){ 
+       if(trim((string) $this->at19_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "at19_descr";
          $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_tarefasemana {
          return false;
        }
      }
-     if(trim($this->at19_dtini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at19_dtini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at19_dtini_dia"] !="") ){ 
+     if(trim((string) $this->at19_dtini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at19_dtini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at19_dtini_dia"] !="") ){ 
        $sql  .= $virgula." at19_dtini = '$this->at19_dtini' ";
        $virgula = ",";
-       if(trim($this->at19_dtini) == null ){ 
+       if(trim((string) $this->at19_dtini) == null ){ 
          $this->erro_sql = " Campo Data Inicial nao Informado.";
          $this->erro_campo = "at19_dtini_dia";
          $this->erro_banco = "";
@@ -257,7 +257,7 @@ class cl_tarefasemana {
        if(isset($GLOBALS["HTTP_POST_VARS"]["at19_dtini_dia"])){ 
          $sql  .= $virgula." at19_dtini = null ";
          $virgula = ",";
-         if(trim($this->at19_dtini) == null ){ 
+         if(trim((string) $this->at19_dtini) == null ){ 
            $this->erro_sql = " Campo Data Inicial nao Informado.";
            $this->erro_campo = "at19_dtini_dia";
            $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_tarefasemana {
          }
        }
      }
-     if(trim($this->at19_dtfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at19_dtfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at19_dtfim_dia"] !="") ){ 
+     if(trim((string) $this->at19_dtfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at19_dtfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at19_dtfim_dia"] !="") ){ 
        $sql  .= $virgula." at19_dtfim = '$this->at19_dtfim' ";
        $virgula = ",";
-       if(trim($this->at19_dtfim) == null ){ 
+       if(trim((string) $this->at19_dtfim) == null ){ 
          $this->erro_sql = " Campo Data Final nao Informado.";
          $this->erro_campo = "at19_dtfim_dia";
          $this->erro_banco = "";
@@ -284,7 +284,7 @@ class cl_tarefasemana {
        if(isset($GLOBALS["HTTP_POST_VARS"]["at19_dtfim_dia"])){ 
          $sql  .= $virgula." at19_dtfim = null ";
          $virgula = ",";
-         if(trim($this->at19_dtfim) == null ){ 
+         if(trim((string) $this->at19_dtfim) == null ){ 
            $this->erro_sql = " Campo Data Final nao Informado.";
            $this->erro_campo = "at19_dtfim_dia";
            $this->erro_banco = "";
@@ -303,17 +303,17 @@ class cl_tarefasemana {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10243,'$this->at19_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at19_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1769,10243,'".AddSlashes(pg_result($resaco,$conresaco,'at19_sequencial'))."','$this->at19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1769,10243,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at19_sequencial'))."','$this->at19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at19_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1769,10244,'".AddSlashes(pg_result($resaco,$conresaco,'at19_descr'))."','$this->at19_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1769,10244,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at19_descr'))."','$this->at19_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at19_dtini"]))
-           $resac = db_query("insert into db_acount values($acount,1769,10245,'".AddSlashes(pg_result($resaco,$conresaco,'at19_dtini'))."','$this->at19_dtini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1769,10245,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at19_dtini'))."','$this->at19_dtini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at19_dtfim"]))
-           $resac = db_query("insert into db_acount values($acount,1769,10246,'".AddSlashes(pg_result($resaco,$conresaco,'at19_dtfim'))."','$this->at19_dtfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1769,10246,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at19_dtfim'))."','$this->at19_dtfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -358,13 +358,13 @@ class cl_tarefasemana {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10243,'$at19_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1769,10243,'','".AddSlashes(pg_result($resaco,$iresaco,'at19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1769,10244,'','".AddSlashes(pg_result($resaco,$iresaco,'at19_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1769,10245,'','".AddSlashes(pg_result($resaco,$iresaco,'at19_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1769,10246,'','".AddSlashes(pg_result($resaco,$iresaco,'at19_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1769,10243,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1769,10244,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at19_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1769,10245,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at19_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1769,10246,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at19_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tarefasemana
@@ -424,7 +424,7 @@ class cl_tarefasemana {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tarefasemana";
@@ -438,7 +438,7 @@ class cl_tarefasemana {
    function sql_query ( $at19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_tarefasemana {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_tarefasemana {
    function sql_query_file ( $at19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -492,7 +492,7 @@ class cl_tarefasemana {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

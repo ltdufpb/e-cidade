@@ -33,7 +33,7 @@ include(modification("classes/db_veiccadposto_classe.php"));
 include(modification("classes/db_veiccadpostointerno_classe.php"));
 include(modification("classes/db_veiccadpostoexterno_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clveiccadposto = new cl_veiccadposto;
 $clveiccadpostointerno = new cl_veiccadpostointerno;
 $clveiccadpostoexterno = new cl_veiccadpostoexterno;

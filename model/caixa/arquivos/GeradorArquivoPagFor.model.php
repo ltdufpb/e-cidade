@@ -62,7 +62,7 @@ class GeradorArquivoPagFor extends ArquivoTransmissao {
    * Movimentos que serão emitidos no arquivo
    * @type stdClass[]
    */
-  protected $aMovimentosPagFor = array();
+  protected $aMovimentosPagFor = [];
 
   /**
    * @type db_layouttxt
@@ -97,7 +97,7 @@ class GeradorArquivoPagFor extends ArquivoTransmissao {
     $rsBuscaNumeracao   = db_query($sSqlBuscaNumeracao);
     if (!$rsBuscaNumeracao) {
 
-      $oDadoMensagem = (object)array('codigo_arquivo' => $this->iCodigoRemessa);
+      $oDadoMensagem = (object)['codigo_arquivo' => $this->iCodigoRemessa];
       throw new DBException(_M(self::CAMINHO_MENSAGEM . 'erro_consulta_numero', $oDadoMensagem));
     }
     $this->iNumeroArquivo = db_utils::fieldsMemory($rsBuscaNumeracao, 0)->o152_numero;
@@ -120,7 +120,7 @@ class GeradorArquivoPagFor extends ArquivoTransmissao {
    * @return string
    */
   private static function padZeroLeft($sString, $iTamanho) {
-    return str_pad($sString, $iTamanho, '0', STR_PAD_LEFT);
+    return str_pad((string) $sString, $iTamanho, '0', STR_PAD_LEFT);
   }
 
   /**
@@ -273,7 +273,7 @@ class GeradorArquivoPagFor extends ArquivoTransmissao {
       $sTipoDocumento = $oCgm->isFisico() ? '1' : '2';
 
       if ($oCgm->isFisico()) {
-        $sDocumentoFornecedor = substr($oCgm->getCpf(), 0, 9)."0000".substr($oCgm->getCpf(), 9, 2);
+        $sDocumentoFornecedor = substr((string) $oCgm->getCpf(), 0, 9)."0000".substr((string) $oCgm->getCpf(), 9, 2);
       } else {
         $sDocumentoFornecedor = $oCgm->getCnpj();
       }
@@ -281,7 +281,7 @@ class GeradorArquivoPagFor extends ArquivoTransmissao {
 
     if (empty($iCodigoCGM)) {
 
-      $aNumeroEmpenho = explode("/", $oMovimento->getNumeroEmpenho());
+      $aNumeroEmpenho = explode("/", (string) $oMovimento->getNumeroEmpenho());
       if (empty($aNumeroEmpenho) || count($aNumeroEmpenho) < 2) {
         throw new BusinessException(_M(self::CAMINHO_MENSAGEM . 'empenho_invalido'));
       }
@@ -302,14 +302,14 @@ class GeradorArquivoPagFor extends ArquivoTransmissao {
     $sInformacoesComplementares = str_repeat(' ', 40);
     if ($oMovimento->getCodigoBancoFavorecido() != self::CODIGO_BANCO_BRADESCO) {
 
-      $aComplementoTED = array(
+      $aComplementoTED = [
         'C',
         str_repeat('0', 6),
         '07', /* 07 - Pagamento de Fornec/Honor. */
         '01',
         str_repeat('0', 18),
         str_repeat(' ', 25),
-      );
+      ];
       $sInformacoesComplementares = implode('', $aComplementoTED);
       $sModalidadePagamento = '08';
     }
@@ -318,7 +318,7 @@ class GeradorArquivoPagFor extends ArquivoTransmissao {
     $sFatorVencimento = '0';
     $sCodigoBarra     = $oMovimento->getCodigoBarra();
     $sCarteira        = '0';
-    if (trim($sCodigoBarra) != '') {
+    if (trim((string) $sCodigoBarra) != '') {
 
       $oCodigoBarra = new CodigoBarra($sCodigoBarra);
 
@@ -341,12 +341,12 @@ class GeradorArquivoPagFor extends ArquivoTransmissao {
       $sFatorVencimento     = $oCodigoBarra->getFatorVencimento();
       $sModalidadePagamento = '31';
 
-      $aComplementoCodigoBarra = array(
+      $aComplementoCodigoBarra = [
         $oCodigoBarra->getCampoLivre(),
         $oCodigoBarra->getDigitoCodigoBarras(),
         $oCodigoBarra->getCodigoMoeda(),
         str_repeat(' ', 13)
-      );
+      ];
 
       $sInformacoesComplementares = implode('', $aComplementoCodigoBarra);
     }
@@ -362,9 +362,9 @@ class GeradorArquivoPagFor extends ArquivoTransmissao {
     $oStdMovimento->cep_fornecedor                   = $oMovimento->getCep();
     $oStdMovimento->codigo_banco_fornecedor          = self::padZeroLeft($iCodigoBancoFornecedor, 3);
     $oStdMovimento->codigo_agencia_fornecedor        = self::padZeroLeft($iAgenciaFornecedor, 5);
-    $oStdMovimento->digito_agencia_fornecedor        = str_pad($iDigitoAgenciaFornecedor, 1, ' ', STR_PAD_LEFT);
+    $oStdMovimento->digito_agencia_fornecedor        = str_pad((string) $iDigitoAgenciaFornecedor, 1, ' ', STR_PAD_LEFT);
     $oStdMovimento->conta_corrente_fornecedor        = self::padZeroLeft($sContaCorrenteFornecedor, 13);
-    $oStdMovimento->digito_conta_corrente_fornecedor = str_pad($iDigitoContaCorrenteFornecedor, 2, ' ', STR_PAD_RIGHT);
+    $oStdMovimento->digito_conta_corrente_fornecedor = str_pad((string) $iDigitoContaCorrenteFornecedor, 2, ' ', STR_PAD_RIGHT);
     $oStdMovimento->numero_pagamento                 = self::padZeroLeft($oMovimento->getCodigoMovimento(), 16);
     $oStdMovimento->carteira                         = self::padZeroLeft($sCarteira, 3);
     $oStdMovimento->nosso_numero                     = $sNossoNumero;
@@ -407,9 +407,9 @@ class GeradorArquivoPagFor extends ArquivoTransmissao {
     $oStdMovimento->reserva_cinco                    = str_repeat(' ', 5);
 
     $iTipoContaFornecedor = $oMovimento->getTipoContaFavorecido();
-    if (!empty($iTipoContaFornecedor) && !in_array($iTipoContaFornecedor, array(1, 2))) {
+    if (!empty($iTipoContaFornecedor) && !in_array($iTipoContaFornecedor, [1, 2])) {
 
-      $oDadosBancarios = (object)array('nome_fornecedor' => $oCgm->getNome());
+      $oDadosBancarios = (object)['nome_fornecedor' => $oCgm->getNome()];
       throw new Exception(_M(self::CAMINHO_MENSAGEM . 'tipo_conta_invalido', $oDadosBancarios));
     }
 

@@ -250,7 +250,7 @@ $oRotulo->label('sd04_i_cbo');
           <?php
           $sSql = $oDaoFarCbos->sql_query_file();
           $rs   = $oDaoFarCbos->sql_record($sSql);
-          $aX   = array();
+          $aX   = [];
           if ($oDaoFarCbos->numrows > 0) {
 
             for ($iCont = 0; $iCont < $oDaoFarCbos->numrows; $iCont++) {
@@ -376,16 +376,16 @@ const MENSAGENS_SAU4_FORMULARIO_TRIAGEMAVULSA = 'saude.ambulatorial.db_frmsau_tr
 
 function js_init() {
 
-  if (   '<?=isset($s152_i_glicemia) ? $s152_i_glicemia : '' ?>' != '0'
-      && '<?=isset($s152_i_glicemia) ? $s152_i_glicemia : '' ?>' != '') {
+  if (   '<?=$s152_i_glicemia ?? '' ?>' != '0'
+      && '<?=$s152_i_glicemia ?? '' ?>' != '') {
     
-    if ('<?=isset($opcao) ? $opcao : '' ?>' == 'alterar') {
+    if ('<?=$opcao ?? '' ?>' == 'alterar') {
 
       $('tipo1').disabled = false;
       $('tipo2').disabled = false;
     }
 
-    if ('<?=isset($s152_i_alimentacaoexameglicemia) ? $s152_i_alimentacaoexameglicemia : '' ?>' == '1') {
+    if ('<?=$s152_i_alimentacaoexameglicemia ?? '' ?>' == '1') {
       $('tipo1').checked = true;
     } else {
       $('tipo2').checked = true;
@@ -948,7 +948,7 @@ function js_preenchepesquisa(iChave) {
 
   db_iframe_triagem.hide();
   <?php
-    echo " location.href = '".basename($GLOBALS['HTTP_SERVER_VARS']['PHP_SELF']).
+    echo " location.href = '".basename((string) $GLOBALS['HTTP_SERVER_VARS']['PHP_SELF']).
          "?chavefaa='+iChave+'&lFormTriagem=true&lFiltroUnidade=true';";
   ?>
 }

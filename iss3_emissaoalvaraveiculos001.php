@@ -69,7 +69,7 @@ try {
 
     $variaveisSessao = getVariaveisSessao();
 
-    $aParam                  = array();
+    $aParam                  = [];
     $aParam['$codigoveiculo'] = $oGet->codigoVeiculo;
     $aParam['$instituicao']  = $variaveisSessao->instit;
     $aParam['$usuario']      = $variaveisSessao->id_usuario;
@@ -86,7 +86,7 @@ try {
 
 function getVariaveisSessao()
 {
-    return (object) array(
+    return (object) [
         "instit"     => db_getsession('DB_instit'),
         "anousu"     => db_getsession('DB_anousu'),
         "id_usuario" => db_getsession('DB_id_usuario'),
@@ -94,5 +94,5 @@ function getVariaveisSessao()
         "ip"         => db_getsession('DB_ip'),
         "base"       => db_getsession('DB_base'),
         "login"      => db_getsession('DB_login')
-    );
+    ];
 }

@@ -93,11 +93,11 @@ if ($clbenstransf->numrows > 0) {
 	$sWhere .= "			   end                                                                                         ";
 
 
-	if (trim($oTransf->t93_clabens) != "" && $oTransf->t93_clabens != 0) {
+	if (trim((string) $oTransf->t93_clabens) != "" && $oTransf->t93_clabens != 0) {
 		$sWhere .= " and t52_codcla  = {$oTransf->t93_clabens} ";
 	}
 
-	if (trim($oTransf->t93_divisao) != "" && $oTransf->t93_divisao != 0) {
+	if (trim((string) $oTransf->t93_divisao) != "" && $oTransf->t93_divisao != 0) {
 		$sWhere .= " and t33_divisao = {$oTransf->t93_divisao} ";
 	}
 
@@ -108,12 +108,12 @@ if ($clbenstransf->numrows > 0) {
 		$aRetornaBens = db_utils::getCollectionByRecord($rsConsultaBens, false, false, true);
 	} else {
 		$sMensagem    = "Nenhuma bem encontrado!";
-		$aRetornaBens = array("lErro" => true, "sMensagem" => urlencode($sMensagem));
+		$aRetornaBens = ["lErro" => true, "sMensagem" => urlencode($sMensagem)];
 	}
 
 } else {
 	$sMensagem    = "Nenhuma bem encontrado!";
-	$aRetornaBens = array("lErro" => true, "sMensagem" => urlencode($sMensagem));
+	$aRetornaBens = ["lErro" => true, "sMensagem" => urlencode($sMensagem)];
 }
 
 echo $oJson->encode($aRetornaBens);

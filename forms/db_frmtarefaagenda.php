@@ -130,7 +130,7 @@ db_input('at13_horafim',5, @$at13_horafim, true, 'text', $db_opcao,"onchange='js
     <td valign="top"  align="center">  
     
     <?php 
-	 $chavepri= array("at13_sequencial"=>@$at13_sequencial,"at13_tarefa"=>@$at13_tarefa);
+	 $chavepri= ["at13_sequencial"=>@$at13_sequencial,"at13_tarefa"=>@$at13_tarefa];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cltarefa_agenda->sql_query(null,"*"," at13_dia, at13_horaini, at13_horafim","at13_tarefa= {$at13_tarefa}");
    $cliframe_alterar_excluir->campos  ="at13_dia, at13_horaini, at13_horafim";
@@ -150,7 +150,7 @@ db_input('at13_horafim',5, @$at13_horafim, true, 'text', $db_opcao,"onchange='js
           where at77_tarefa = $at13_tarefa
           order by at77_dataagenda";
   $result = db_query($sql);
-  if ( pg_numrows($result) > 0 ){
+  if ( pg_num_rows($result) > 0 ){
     ?>
     <table border="1">
     <tr>
@@ -165,13 +165,13 @@ db_input('at13_horafim',5, @$at13_horafim, true, 'text', $db_opcao,"onchange='js
     <td ><strong> Validade  </strong></td>
     </tr>
     <?php 
-    for($i=0;$i< pg_numrows($result);$i++){
-      echo "<tr><td>".pg_result($result,$i,'at77_id_usuario')."</td>";
-      echo "<td>".pg_result($result,$i,'nome')."</td>";
-      echo "<td>".pg_result($result,$i,'at77_dataagenda')."</td>";
-      echo "<td>".pg_result($result,$i,'at77_hora')."</td>";
-      echo "<td>".pg_result($result,$i,'at77_observacao')." &nbsp</td>";
-      echo "<td>".pg_result($result,$i,'at77_datavalidade')." &nbsp</td><tr>";
+    for($i=0;$i< pg_num_rows($result);$i++){
+      echo "<tr><td>".pg_fetch_result($result,$i,'at77_id_usuario')."</td>";
+      echo "<td>".pg_fetch_result($result,$i,'nome')."</td>";
+      echo "<td>".pg_fetch_result($result,$i,'at77_dataagenda')."</td>";
+      echo "<td>".pg_fetch_result($result,$i,'at77_hora')."</td>";
+      echo "<td>".pg_fetch_result($result,$i,'at77_observacao')." &nbsp</td>";
+      echo "<td>".pg_fetch_result($result,$i,'at77_datavalidade')." &nbsp</td><tr>";
     }
     ?>
     </table>

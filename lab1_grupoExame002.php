@@ -32,8 +32,8 @@ require_once modification('libs/db_conecta.php');
 require_once modification("libs/db_sessoes.php");
 require_once modification("dbforms/db_funcoes.php");
 
-$codigo = isset($_GET['codigo']) ? $_GET['codigo'] : "";
-$descricao = isset($_GET['descricao']) ? $_GET['descricao'] : "";
+$codigo = $_GET['codigo'] ?? "";
+$descricao = $_GET['descricao'] ?? "";
 
 ?>
 <!doctype html>

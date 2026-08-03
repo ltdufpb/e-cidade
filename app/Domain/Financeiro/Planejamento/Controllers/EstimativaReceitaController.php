@@ -41,14 +41,8 @@ use Illuminate\Http\Request;
  */
 class EstimativaReceitaController extends Controller
 {
-    /**
-     * @var EstimativaReceitaService
-     */
-    private $service;
-
-    public function __construct(EstimativaReceitaService $service)
+    public function __construct(private readonly EstimativaReceitaService $service)
     {
-        $this->service = $service;
     }
 
     /**

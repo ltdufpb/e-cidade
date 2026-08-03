@@ -37,7 +37,7 @@ require_once(modification("model/AcordoComissao.model.php"));
 
 $clacordocomissao = new cl_acordocomissao;
 $clacordocomissaomembro = new cl_acordocomissaomembro;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -45,17 +45,11 @@ $db_botao = true;
 /**
  * Validamos o modulo que está sendo acessado
  */
-switch (db_getsession("DB_modulo")) {
-
-	case 439:
-		$lModuloPatrimonial = true;
-		break;
-	case 8251:
-		$lModuloPatrimonial = false;
-		break;
-	default:
-		$lModuloPatrimonial = false;
-}
+$lModuloPatrimonial = match (db_getsession("DB_modulo")) {
+    439 => true,
+    8251 => false,
+    default => false,
+};
 
 if(isset($incluir)){
 	

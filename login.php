@@ -52,20 +52,11 @@ $sClassAtiva           = $oPreferenciaTelaLogin->sClassAtiva;
 
 if (time() >= $iDataUltimaSemana) {
 
-  switch ($sClassAtiva) {
-
-    case 'imagem01':
-      $sClassAtiva = "imagem02";
-      break;
-
-    case 'imagem02':
-      $sClassAtiva = "imagem03";
-      break;
-
-    default:
-      $sClassAtiva = "imagem01";
-      break;
-  }
+  $sClassAtiva = match ($sClassAtiva) {
+      'imagem01' => "imagem02",
+      'imagem02' => "imagem03",
+      default => "imagem01",
+  };
 
   $oPreferenciaEcidade->setPreferenciaTelaLogin(time(), $sClassAtiva);
   $oPreferenciaEcidade->salvarPreferencias();
@@ -119,9 +110,9 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 if ( isset($serv) && $serv != "" ) {
 
   $servidor   = $DB_CONEXAO[$serv]["SERVIDOR"];
-  $user       = base64_encode($DB_CONEXAO[$serv]["USUARIO"]);
+  $user       = base64_encode((string) $DB_CONEXAO[$serv]["USUARIO"]);
   $port       = $DB_CONEXAO[$serv]["PORTA"];
-  $senh       = base64_encode($DB_CONEXAO[$serv]["SENHA"]);
+  $senh       = base64_encode((string) $DB_CONEXAO[$serv]["SENHA"]);
   $base_pesq  = $DB_CONEXAO[$serv]["BASE"];
 
   if (!($conn1 = pg_connect("host=$servidor dbname=template1 user=".$DB_CONEXAO[$serv]["USUARIO"]." port=$port password=".$DB_CONEXAO[$serv]["SENHA"])) ) {
@@ -132,7 +123,7 @@ if ( isset($serv) && $serv != "" ) {
 
   $sql_bases     = "select * from pg_database where datname ilike '$base_pesq%' order by datname;";
   $result_bases  = db_query($sql_bases);
-  $numrows_bases = pg_numrows($result_bases);
+  $numrows_bases = pg_num_rows($result_bases);
   pg_close($conn1);
 
 } else {
@@ -167,7 +158,7 @@ if (isset($lVeriricaIpPrivado) && $lVeriricaIpPrivado && $lCaptcha){
        $lIpPrivado = verifica_ip_privado($_SERVER["HTTP_X_FORWARDED_FOR"]);
    
    } else {
-       $lIpPrivado = verifica_ip_privado($HTTP_SERVER_VARS["REMOTE_ADDR"]);
+       $lIpPrivado = verifica_ip_privado($_SERVER["REMOTE_ADDR"]);
    
    }
 

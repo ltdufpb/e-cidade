@@ -31,7 +31,7 @@ $this->objpdf->Image('imagens/files/'.$sLogo,15,$xlin-17,12); //.$this->logo
 
 $this->objpdf->Setfont('Arial','b',7);
 
-$aObservacaoCabecalho = explode(chr(13), $this->orcobs);
+$aObservacaoCabecalho = explode(chr(13), (string) $this->orcobs);
 
 // $this->objpdf->text(130,$xlin-15, trim($aObservacaoCabecalho[0]), 0, 20);
 // $this->objpdf->text(130,$xlin-12, trim($aObservacaoCabecalho[1]), 0, 20);
@@ -93,7 +93,7 @@ $this->objpdf->Setfont('Arial','B',8);
 if($this->anexo2 == false ){
   $this->objpdf->text($xcol+109,$xlin+22,$this->labtipo);
   $texto = "A firma mencionada propõe fornecer a ".$oDaoDbConfig->getParametrosInstituicao()->nomeinst." pelos preços abaixo assinados obedecendo rigorosamente as condições estipuladas no edital de {$this->modalidade} Nº ".$this->pregao.".";
-  if(trim($this->labtipo)!=""){
+  if(trim((string) $this->labtipo)!=""){
     $this->objpdf->text($xcol+125,$xlin+22,':  '.$this->Stipcom);
   }
   $this->objpdf->Setfont('Arial','',9);
@@ -137,14 +137,14 @@ if(isset($this->anexo2) and $this->anexo2 == true) {
  
   $this->objpdf->text($xcol+72,$xlin+6,'PROPOSTA DETALHE '.$sLabel);
 }
-$Sresumo = trim($this->Sresumo);
-$vresumo = split("\n",$Sresumo);
+$Sresumo = trim((string) $this->Sresumo);
+$vresumo = preg_split("#\n#m",(string) $Sresumo);
 
 if (count($vresumo) > 1){
   $Sresumo   = "";
   $separador = "";
   for ($i = 0; $i < count($vresumo); $i++){
-    if (trim($vresumo[$i]) != ""){
+    if (trim((string) $vresumo[$i]) != ""){
       $separador = ". ";
       $Sresumo  .= $vresumo[$i].$separador;
     }
@@ -175,7 +175,7 @@ $xlin = ($this->objpdf->getY()-30);
 // $this->objpdf->text($xcol+122,$xlin+47,':  '.substr($this->compl,0,15));
 // $this->objpdf->text($xcol+ 18,$xlin+ 51,':  '.(trim($this->cnpj)!=""?($this->munic.'-'.$this->uf):""));
 // $this->objpdf->text($xcol+122,$xlin+51,':  '.$this->cep);
-if(trim($this->fax) != ""){
+if(trim((string) $this->fax) != ""){
   // $this->fax = " / ".$this->fax;
 }
 // $this->objpdf->text($xcol+163,$xlin+47,':  '.substr($this->contato,0,20));
@@ -205,26 +205,26 @@ if($this->linhasdosdepart>0){/*
   }
   $setaut = $xlin + $getdoy;
   $alturaini -= ($contadepart+15);
-  
+
   $this->objpdf->Setfont('Arial','B',8);
   // Caixa de texto para labels 
   $this->objpdf->rect($xcol    ,$setaut,202,6,2,'DF','12');
   $this->objpdf->text($xcol+  4,$setaut+4,'DEPARTAMENTOS DAS SOLICITAÇÕES');
-  
+
   $this->objpdf->rect($xcol    ,$setaut+6,30,6,2,'DF','12');
   $this->objpdf->rect($xcol+30 ,$setaut+6,30,6,2,'DF','12');
   $this->objpdf->rect($xcol+60 ,$setaut+6,142,6,2,'DF','12');
-  
+
   $this->objpdf->rect($xcol    ,$setaut+12,30,$contadepart+1,2,'DF','34');
   $this->objpdf->rect($xcol+30 ,$setaut+12,30,$contadepart+1,2,'DF','34');
   $this->objpdf->rect($xcol+60 ,$setaut+12,142,$contadepart+1,2,'DF','34');
   $this->objpdf->sety($xlin+66);
-  
+
   // Label das colunas
   $this->objpdf->text($xcol+   6,$setaut+11,'SOLICITAÇÃO');
   $this->objpdf->text($xcol+  39,$setaut+11,'CÓDIGO');
   $this->objpdf->text($xcol+ 125,$setaut+11,'DESCRIÇÃO');
-  
+
   // Seta altura nova para impressão dos dados
   $this->objpdf->sety($setaut+13);
   $this->objpdf->setx($xcol);
@@ -339,8 +339,8 @@ $this->objpdf->text($xcol+ 186,$xlin+$getdoy+4,'VLR TOT.');
 
 $maiscol = 0;
 // #modif: evandro em 21/07/2014 (jorginho) campo valor unitario estava deslocado
-$this->objpdf->SetWidths(array(12,15,19,69,29,21,18,19));
-$this->objpdf->SetAligns(array('C','C','C','J','J','J','R','R'));
+$this->objpdf->SetWidths([12,15,19,69,29,21,18,19]);
+$this->objpdf->SetAligns(['C','C','C','J','J','J','R','R']);
 
 $this->objpdf->setleftmargin(4);
 $this->objpdf->sety($xlin+$getdoy+7);
@@ -359,7 +359,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
          // verifica se é Paty 
     if (isset($this->casadec_medicamentos)) {
       // verifica se é medicamento
-      $codigo_material = pg_result($this->recorddositens, $ii, $this->sitem);
+      $codigo_material = pg_fetch_result($this->recorddositens, $ii, $this->sitem);
       $classe_pcmater = new cl_pcmater();
       $sSqlMedicamento = $classe_pcmater->sql_query_grupo($codigo_material);
       // dd(pg_fetch_assoc( @db_query($sSqlMedicamento) ));
@@ -371,31 +371,31 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
      $pgto   = "";
      $resumo = "";
 
-     $descricaoitem = trim(pg_result($this->recorddositens,$ii,$this->descricaoitem));
+     $descricaoitem = trim(pg_fetch_result($this->recorddositens,$ii,$this->descricaoitem));
   
-     if(trim(pg_result($this->recorddositens,$ii,$this->sprazo))!=""){
-         $prazo = pg_result($this->recorddositens,$ii,$this->sprazo);
-         $prazo = "PRAZO: ".trim(stripslashes($prazo));
+     if(trim(pg_fetch_result($this->recorddositens,$ii,$this->sprazo))!=""){
+         $prazo = pg_fetch_result($this->recorddositens,$ii,$this->sprazo);
+         $prazo = "PRAZO: ".trim(stripslashes((string) $prazo));
      }
      
-     if(trim(pg_result($this->recorddositens,$ii,$this->spgto))!=""){
-         $pgto = pg_result($this->recorddositens,$ii,$this->spgto);
-         $pgto = "CONDIÇÃO:  ".trim(stripslashes($pgto));
+     if(trim(pg_fetch_result($this->recorddositens,$ii,$this->spgto))!=""){
+         $pgto = pg_fetch_result($this->recorddositens,$ii,$this->spgto);
+         $pgto = "CONDIÇÃO:  ".trim(stripslashes((string) $pgto));
      }
      
-     if(trim(pg_result($this->recorddositens,$ii,$this->sresum)!="")){
-         $resumo = "RESUMO: ".pg_result($this->recorddositens,$ii,$this->sresum);
+     if(trim(pg_fetch_result($this->recorddositens,$ii,$this->sresum)!="")){
+         $resumo = "RESUMO: ".pg_fetch_result($this->recorddositens,$ii,$this->sresum);
          if($descricaoitem == "" || $descricaoitem == null){
-             $descricaoitem = trim(pg_result($this->recorddositens,$ii,$this->sresum));
+             $descricaoitem = trim(pg_fetch_result($this->recorddositens,$ii,$this->sresum));
              $resumo="";
          }
      }
   
-     $unid      = pg_result($this->recorddositens,$ii,$this->sunidade);
-     $codunid   = pg_result($this->recorddositens,$ii,$this->scodunid);
-     $servico   = pg_result($this->recorddositens,$ii,$this->sservico);
-     $quantunid = pg_result($this->recorddositens,$ii,$this->squantunid);   
-     $susaquant = pg_result($this->recorddositens,$ii,$this->susaquant);
+     $unid      = pg_fetch_result($this->recorddositens,$ii,$this->sunidade);
+     $codunid   = pg_fetch_result($this->recorddositens,$ii,$this->scodunid);
+     $servico   = pg_fetch_result($this->recorddositens,$ii,$this->sservico);
+     $quantunid = pg_fetch_result($this->recorddositens,$ii,$this->squantunid);   
+     $susaquant = pg_fetch_result($this->recorddositens,$ii,$this->susaquant);
     
 //     $dvalidademinima = pg_result($this->recorddositens,$ii,$this->Dvalidademinima);
  
@@ -423,7 +423,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
               $final = false;
          if ($pos >= $tot_itens){
               $final = true;
-              if (strlen(trim($this->declaracao)) > 0) {
+              if (strlen(trim((string) $this->declaracao)) > 0) {
                    $linha = (265);
               } else {
                    $linha = (258);
@@ -524,15 +524,15 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
 
        if(isset($this->anexo2) and $this->anexo2 == true) {
         if($codgrupo == 11 && isset($this->casadec_medicamentos)){
-          $nValorUnitario = db_formatar(pg_result($this->recorddositens,$ii,$this->vlrmedia), 'f', ' ', 0 , "e",4);
-          $nValorTotal    = db_formatar((round(pg_result($this->recorddositens,$ii,$this->vlrmedia),4)*pg_result($this->recorddositens,$ii,$this->quantitem)), 'f', ' ', 0 , "e",4);
-          $iTotaliza     += round(pg_result($this->recorddositens,$ii,$this->vlrmedia),4)*pg_result($this->recorddositens,$ii,$this->quantitem);
-          $nTotalGeral   += (round(pg_result($this->recorddositens,$ii,$this->vlrmedia),4)*pg_result($this->recorddositens,$ii ,$this->quantitem));
+          $nValorUnitario = db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->vlrmedia), 'f', ' ', 0 , "e",4);
+          $nValorTotal    = db_formatar((round(pg_fetch_result($this->recorddositens,$ii,$this->vlrmedia),4)*pg_fetch_result($this->recorddositens,$ii,$this->quantitem)), 'f', ' ', 0 , "e",4);
+          $iTotaliza     += round(pg_fetch_result($this->recorddositens,$ii,$this->vlrmedia),4)*pg_fetch_result($this->recorddositens,$ii,$this->quantitem);
+          $nTotalGeral   += (round(pg_fetch_result($this->recorddositens,$ii,$this->vlrmedia),4)*pg_fetch_result($this->recorddositens,$ii ,$this->quantitem));
            }  else  {
-          $nValorUnitario = db_formatar(pg_result($this->recorddositens,$ii,$this->vlrmedia), 'f', ' ', 0 , "e",2);
-          $nValorTotal    = db_formatar((round(pg_result($this->recorddositens,$ii,$this->vlrmedia),2)*pg_result($this->recorddositens,$ii,$this->quantitem)), 'f', ' ', 0 , "e",2);
-          $iTotaliza     += round(pg_result($this->recorddositens,$ii,$this->vlrmedia),2)*pg_result($this->recorddositens,$ii,$this->quantitem);
-          $nTotalGeral   += (round(pg_result($this->recorddositens,$ii,$this->vlrmedia),2)*pg_result($this->recorddositens,$ii ,$this->quantitem));
+          $nValorUnitario = db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->vlrmedia), 'f', ' ', 0 , "e",2);
+          $nValorTotal    = db_formatar((round(pg_fetch_result($this->recorddositens,$ii,$this->vlrmedia),2)*pg_fetch_result($this->recorddositens,$ii,$this->quantitem)), 'f', ' ', 0 , "e",2);
+          $iTotaliza     += round(pg_fetch_result($this->recorddositens,$ii,$this->vlrmedia),2)*pg_fetch_result($this->recorddositens,$ii,$this->quantitem);
+          $nTotalGeral   += (round(pg_fetch_result($this->recorddositens,$ii,$this->vlrmedia),2)*pg_fetch_result($this->recorddositens,$ii ,$this->quantitem));
            }
          $nTotalGeral    +=  $nValorTotal;
 
@@ -543,21 +543,21 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
        }else{
          // $nValorUnitario = db_formatar(pg_result($this->recorddositens,$ii,$this->vlrmedia), 'f');
          // $nValorTotal    = db_formatar((pg_result($this->recorddositens,$ii,$this->vlrmedia)*pg_result($this->recorddositens,$ii,$this->quantitem)), 'f');
-          $nTotalGeral   += (pg_result($this->recorddositens,$ii,$this->vlrmedia)*pg_result($this->recorddositens,$ii ,$this->quantitem));
+          $nTotalGeral   += (pg_fetch_result($this->recorddositens,$ii,$this->vlrmedia)*pg_fetch_result($this->recorddositens,$ii ,$this->quantitem));
         $nValorUnitario = '';
         $nValorTotal    = '';
         $nTotalGeral   += '';
         
         }
-         $this->objpdf->Row(array($ii+1,
-                                  pg_result($this->recorddositens,$ii,$this->quantitem),
+         $this->objpdf->Row([$ii+1,
+                                  pg_fetch_result($this->recorddositens,$ii,$this->quantitem),
                                   $unid,
-                                  stripslashes($descricaoitem)."\n\n",
+                                  stripslashes((string) $descricaoitem)."\n\n",
                                   '',
                                   '',
                                   $nValorUnitario,
                                   $nValorTotal,
-                                  ),5,false,3);
+                                  ],5,false,3);
          if(isset($this->anexo2) and $this->anexo2 == true) {
            // $nTotalGeral += pg_result($this->recorddositens,$ii,$this->valor_total); 
          }
@@ -598,19 +598,19 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
            $iLimitString = $iTotalCaract; 
            
            // Percorre o resumo do limite de caraceters até um ponto que haja espaço em branco para não quebre alguma palavra 
-           for ($iInd = $iTotalCaract; $iInd < strlen($resumo); $iInd++) {
-             if ( $resumo{$iInd} == ' ') {
+           for ($iInd = $iTotalCaract; $iInd < strlen((string) $resumo); $iInd++) {
+             if ( $resumo[$iInd] == ' ') {
                $iLimitString = $iInd;
                break;
              }
            }
            
            // Insere quebra no ponto informado 
-           $resumo = substr($resumo,0,$iLimitString)."\n".substr($resumo,$iLimitString,strlen($resumo));  
+           $resumo = substr((string) $resumo,0,$iLimitString)."\n".substr((string) $resumo,$iLimitString,strlen((string) $resumo));  
          }
          
          
-         $resumo = $this->objpdf->Row_multicell(array('','','',stripslashes($resumo),'',''),
+         $resumo = $this->objpdf->Row_multicell(['','','',stripslashes((string) $resumo),'',''],
                                                 $dist,false,5,0,true,true,3,($this->objpdf->h - 35));
          if($resumo != ""){
              $volta_impressao = 1;
@@ -621,7 +621,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
 
      if((isset($prazo) && $prazo!="" && $volta_impressao == 0) || $volta_impressao == 2){
          $volta_impressao = 0;
-         $prazo = $this->objpdf->Row_multicell(array('','','',stripslashes($prazo),'',''),
+         $prazo = $this->objpdf->Row_multicell(['','','',stripslashes((string) $prazo),'',''],
                                                $dist,false,5,0,true,true,3,($this->objpdf->h - 35));
          if($prazo != ""){
              $volta_impressao = 2;
@@ -632,7 +632,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
      
      if((isset($pgto) && $pgto!="" && $volta_impressao == 0) || $volta_impressao == 3){
          $volta_impressao = 0;
-         $pgto = $this->objpdf->Row_multicell(array('','','',stripslashes($pgto),'',''),
+         $pgto = $this->objpdf->Row_multicell(['','','',stripslashes((string) $pgto),'',''],
                                               $dist,false,5,0,true,true,3,($this->objpdf->h - 35));
          if($pgto != ""){
              $volta_impressao = 3;
@@ -642,7 +642,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
      }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // caixas para total e FIM do Relatorio
-if (strlen(trim($this->declaracao)) > 0) {
+if (strlen(trim((string) $this->declaracao)) > 0) {
      $linha = (295); 
 } else {
      $linha = (270);
@@ -671,7 +671,7 @@ if($final == false){
    }
 }
 
-$this->objpdf->Row(array('',
+$this->objpdf->Row(['',
                                   '',
                                   '',
                                   '',
@@ -681,7 +681,7 @@ $this->objpdf->Row(array('',
                                   ($codgrupo == 11 && isset($this->casadec_medicamentos))
                                   ? db_formatar($iTotaliza,'f', ' ', 0 , "e",4)
                                   : db_formatar($iTotaliza,'f', ' ', 0 , "e",2),
-                                  ),5,false,3);
+                                  ],5,false,3);
 if($final == true && $this->objpdf->gety() < ($this->objpdf->h - 80) ){
 $linha += 240;
     $mostra_rodape = false;
@@ -705,7 +705,7 @@ $linha += 240;
 
     $this->objpdf->rect($xcol+104,$linha-10, 98,32,2,'DF','34');
     $this->objpdf->text($xcol+107,($linha-5),'Prazo de Entrega : '.$this->prazo_entrega);
-    $this->objpdf->text($xcol+107,($linha),'Local de Entrega : '.substr($this->local_entrega, 0,40
+    $this->objpdf->text($xcol+107,($linha),'Local de Entrega : '.substr((string) $this->local_entrega, 0,40
 
       ));
     $this->objpdf->Setfont('Arial','',8);

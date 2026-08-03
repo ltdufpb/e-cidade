@@ -36,13 +36,13 @@ $anousu = db_getsession('DB_anousu');
 $clrotulo = new rotulocampo();
 $clrotulo->label('o45_descr');
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $db_selinstit = str_replace('-', ', ', $db_selinstit);
 $iAnoUsu = db_getsession('DB_anousu');
 $dt_ini = $dt_ini;
 $dt_fim = $dt_fim;
-if ((strlen($dt_ini) < 7) || (strlen($dt_fim) < 7)) {
+if ((strlen((string) $dt_ini) < 7) || (strlen((string) $dt_fim) < 7)) {
     $dt_ini = '';
     $dt_fim = '';
 }
@@ -118,8 +118,8 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
     $iTotalLinhas += $linhas;
 
     $head2 = 'RELATORIO DE SUPLEMENTAÇÔES POR RECURSO';
-    $perini = explode('-', $dt_ini);
-    $perfim = explode('-', $dt_fim);
+    $perini = explode('-', (string) $dt_ini);
+    $perfim = explode('-', (string) $dt_fim);
 
     $head3 = "PERIODO : $perini[2]/$perini[1]/$perini[0]  à  $perfim[2]/$perfim[1]$perfim[0]";
     $xinstit = explode('-', $db_selinstit);
@@ -127,7 +127,7 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
     $resultinst = db_query($sqlInstit);
     $descr_inst = '';
     $xvirg = '';
-    for ($xins = 0; $xins < pg_numrows($resultinst); ++$xins) {
+    for ($xins = 0; $xins < pg_num_rows($resultinst); ++$xins) {
         db_fieldsmemory($resultinst, $xins);
         $descr_inst .= $xvirg.$nomeinst;
         $xvirg = ', ';
@@ -196,8 +196,8 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
         ";
 
         $restipo = db_query($sql);
-        if (pg_numrows($restipo) > 0) {
-            for ($u = 0; $u < pg_numrows($restipo); ++$u) {
+        if (pg_num_rows($restipo) > 0) {
+            for ($u = 0; $u < pg_num_rows($restipo); ++$u) {
                 db_fieldsmemory($restipo, $u);
                 $pdf->setX(50);
                 $pdf->Cell(20, 4, ' ', 0, 0, 'L', '0');
@@ -246,8 +246,8 @@ if ($auxiliar->numrows == 0) {
 }
 
 $head4 = 'RELATORIO DE SUPLEMENTAÇÔES POR TIPO';
-$perini = explode('-', $dt_ini);
-$perfim = explode('-', $dt_fim);
+$perini = explode('-', (string) $dt_ini);
+$perfim = explode('-', (string) $dt_fim);
 
 $head5 = "PERIODO : $perini[2]/$perini[1]/$perini[0]  à  $perfim[2]/$perfim[1]$perfim[0]";
 

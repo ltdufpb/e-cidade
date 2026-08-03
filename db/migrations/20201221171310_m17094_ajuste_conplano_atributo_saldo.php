@@ -24,7 +24,7 @@ class M17094AjusteConplanoAtributoSaldo extends PostgresMigration
         $sthFonteRecurso = $dbh->prepare("select * from orctiporec where o15_recurso = :codigo");
 
         foreach ($dados as $dado) {
-            $hashAtributos = explode('|', $dado->c125_hashcontaatributos);
+            $hashAtributos = explode('|', (string) $dado->c125_hashcontaatributos);
 
             $hashAtributos = array_map(function ($atributo) use ($sthRecurso, $sthFonteRecurso) {
                 if (strpos($atributo, '#FR')) {

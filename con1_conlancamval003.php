@@ -39,8 +39,8 @@ require_once(modification("classes/db_conlancamdig_classe.php"));
 require_once(modification("classes/db_conlancamdoc_classe.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clconplano       = new cl_conplano;
 $clconlancamval   = new cl_conlancamval;
@@ -51,17 +51,17 @@ $clconlancam      = new cl_conlancam;
 
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 
     $sql1="select c71_codlan from conlancamdoc where c71_codlan=$c70_codlan";
     $result1=db_query($sql1);
-    $linhas1=pg_numrows($result1);
+    $linhas1=pg_num_rows($result1);
 
     if ($linhas1 > 0){
 
         $sql2="select * from conlancamdoc inner join conhistdoc on c71_coddoc=c53_coddoc where c71_codlan=$c70_codlan";
         $result2=db_query($sql2);
-        $linhas2=pg_numrows($result2);
+        $linhas2=pg_num_rows($result2);
         if ($linhas2>0){
 
             $oResultado  = db_utils::fieldsMemory($result2, 0);
@@ -240,7 +240,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
     </body>
     </html>
 <?PHP
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
     if($erro==true){
         db_msgbox($msg_erro);
     }else{

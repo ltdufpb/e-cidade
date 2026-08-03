@@ -61,8 +61,8 @@ $clcemiterioisencao->rotulo->label();
 	    </td>
 	    <td> 
 				<?php 
-					$x = array('1'=>'Imune',
-					           '2'=>'Isento');
+					$x = ['1'=>'Imune',
+					           '2'=>'Isento'];
 					db_select('cm34_tipo',$x,true,$db_opcao,"style='width:125px;'");
 				?>
 	    </td>
@@ -103,7 +103,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cemiterioisencao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

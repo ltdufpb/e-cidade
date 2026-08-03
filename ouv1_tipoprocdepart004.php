@@ -57,7 +57,7 @@
           <td align="center">
             <b>Opções;</b>
             <?php 
-              $aOpcaoTipoProcesso = array(0 => "Com tipos de processo selecionados", 1 => "Sem tipos de processo selecionados");
+              $aOpcaoTipoProcesso = [0 => "Com tipos de processo selecionados", 1 => "Sem tipos de processo selecionados"];
               db_select("iTiposProcesso", $aOpcaoTipoProcesso, true, 1);
             ?>
           </td>

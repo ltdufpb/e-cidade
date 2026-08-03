@@ -35,7 +35,7 @@ define("URL_MENSAGEM_HISTORICOALUNOREPOSITORY", "educacao.escola.HistoricoAlunoR
 
 class HistoricoAlunoRepository {
 
-  private $aHistoricoAluno = array();
+  private $aHistoricoAluno = [];
   private static $oInstance;
 
   private function __construct() {
@@ -147,7 +147,7 @@ class HistoricoAlunoRepository {
     $rsHistorico     = $oDaoHistorico->sql_record($sSqlHistorico);
     $iTotalHistorico = $oDaoHistorico->numrows;
 
-    $aCodigoHistorico = array();
+    $aCodigoHistorico = [];
     if ($iTotalHistorico > 0) {
 
       for ($iCont = 0; $iCont < $iTotalHistorico; $iCont++) {
@@ -157,7 +157,7 @@ class HistoricoAlunoRepository {
       }
     }
 
-    $aHistoricos = array();
+    $aHistoricos = [];
     foreach ($aCodigoHistorico as $iHistorico) {
       $aHistoricos[] = HistoricoAlunoRepository::getHistoricoAlunoByCodigo($iHistorico);
     }

@@ -39,7 +39,7 @@ $oJson    = new Services_JSON();
 $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno = new stdClass();
 
-$oRetorno->dados   = array();
+$oRetorno->dados   = [];
 $oRetorno->erro    = false;
 $oRetorno->message = '';
 
@@ -54,14 +54,14 @@ try {
 
     case 'getContasPorEstrutural':
 
-      $oRetorno->contas = array();
+      $oRetorno->contas = [];
       $aContas          = ContaPlanoPCASPRepository::getContasPorEstrutural($oParam->estrutural, $oInstituicao, $iAnoUsu);
       foreach ($aContas as $oConta) {
 
         $oDadosConta             = new stdClass();
         $oDadosConta->codigo     = $oConta->getCodigoConta();
         $oDadosConta->estrutural = urlencode(db_formatar($oConta->getEstrutural(), 'receita'));
-        $oDadosConta->descricao  = urlencode($oConta->getDescricao());
+        $oDadosConta->descricao  = urlencode((string) $oConta->getDescricao());
         $oDadosConta->reduzido   = $oConta->getReduzido();
         $oRetorno->contas[]      = $oDadosConta;
       }
@@ -161,7 +161,7 @@ try {
       $oInstituicao = InstituicaoRepository::getInstituicaoSessao();
       $iAnoSessao   = db_getsession('DB_anousu');
       $iTotalContasSelecionadas = count($oParam->aContas);
-      $aContasRetorno = array();
+      $aContasRetorno = [];
       foreach ($oParam->aContas as $oStdDadosConta) {
 
         $sEstruturalNovo = str_replace('.', '', $oStdDadosConta->estrutural);
@@ -221,10 +221,10 @@ echo $oJson->encode($oRetorno);
 function alterarEstrutural ($sEstrutural, $iNivel, $sNovoValor) {
 
   if ($iNivel >= 6) {
-    $sNovoValor = str_pad($sNovoValor, 2, '0', STR_PAD_LEFT);
+    $sNovoValor = str_pad((string) $sNovoValor, 2, '0', STR_PAD_LEFT);
   }
 
-  $aEstruturalFilho = explode(".", $sEstrutural);
+  $aEstruturalFilho = explode(".", (string) $sEstrutural);
   $aEstruturalFilho[($iNivel-1)] = $sNovoValor;
   return implode('.', $aEstruturalFilho);
 }

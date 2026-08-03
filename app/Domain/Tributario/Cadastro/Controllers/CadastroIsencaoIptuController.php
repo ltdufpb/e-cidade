@@ -8,11 +8,8 @@ use App\Http\Controllers\Controller;
 
 class CadastroIsencaoIptuController extends Controller
 {
-    private $CadastroIsencaoIptuService;
-
-    public function __construct(CadastroIsencaoIptuService $CadastroIsencaoIptuService)
+    public function __construct(private readonly CadastroIsencaoIptuService $CadastroIsencaoIptuService)
     {
-        $this->CadastroIsencaoIptuService = $CadastroIsencaoIptuService;
     }
 
     public function getDadosIsencao($request)

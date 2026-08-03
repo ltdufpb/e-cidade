@@ -33,8 +33,8 @@ require_once(modification("classes/db_protparamglobal_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_libdicionario.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clprotparamglobal = new cl_protparamglobal;
 $clprotprocessonumeracao = new cl_protprocessonumeracao;
 

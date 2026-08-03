@@ -122,7 +122,7 @@ switch ($oParam->exec){
     
   case 'buscaDados': 
     
-    $oRetorno->aDados = array();  
+    $oRetorno->aDados = [];  
     $sSqlDados        = $clArrecad->sql_query_buscaDesconto($oParam->k00_numpre);
     $rsDados          = $clArrecad->sql_record($sSqlDados);
 

@@ -157,7 +157,7 @@ class AtendimentoOuvidoriaWebService
             $oDaoAtendimentoOuvidoriaProcessoEletronico = new cl_ouvidoriaatendimentoprocessoeletronico();
             $json = json_encode($json);
             $oDaoAtendimentoOuvidoriaProcessoEletronico->ov33_ouvidoriaatendimento = $oDaoAtendimento->ov01_sequencial;
-            $oDaoAtendimentoOuvidoriaProcessoEletronico->ov33_informacoesprocesso = pg_escape_string(utf8_decode(json_decode($json)));
+            $oDaoAtendimentoOuvidoriaProcessoEletronico->ov33_informacoesprocesso = pg_escape_string(mb_convert_encoding(json_decode($json), 'ISO-8859-1'));
             $oDaoAtendimentoOuvidoriaProcessoEletronico->incluir();
             if ($oDaoAtendimentoOuvidoriaProcessoEletronico->erro_status == "0") {
                 $msg = "Ocorreu algo inexperado ao salvar dados do atendimento, tente mais tarde, se o problema persistir, contate o administrador do sistema \n";
@@ -180,13 +180,13 @@ class AtendimentoOuvidoriaWebService
             $oRetorno->numero_atendimento = $oDaoAtendimento->ov01_numero;
             $oRetorno->ano_atendimento = $oDaoAtendimento->ov01_anousu;
             $oRetorno->status = "Atendimento registrado com sucesso. O número do seu atendimento é {$oDaoAtendimento->ov01_sequencial} \n";
-            $oRetorno->status = utf8_encode(urldecode($oRetorno->status));
+            $oRetorno->status = mb_convert_encoding(urldecode($oRetorno->status), 'UTF-8', 'ISO-8859-1');
             return $oRetorno;
 
         } catch (Exception $oException) {
             db_fim_transacao(true);
             $oRetorno->sucesso = false;
-            $oRetorno->status = utf8_encode(urldecode($oException->getMessage()));
+            $oRetorno->status = mb_convert_encoding(urldecode($oException->getMessage()), 'UTF-8', 'ISO-8859-1');
             return $oRetorno;
         }
     }

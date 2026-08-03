@@ -28,11 +28,11 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 $clrotulo = new rotulocampo;
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
-$sql=base64_decode($sql);
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
+$sql=base64_decode((string) $sql);
 $campos=base64_decode($campos);
-$msg_vazio=base64_decode($msg_vazio);
-$quais_chaves = split("#",$quais_chaves);
+$msg_vazio=base64_decode((string) $msg_vazio);
+$quais_chaves = preg_split("#\\##m",$quais_chaves);
 ?>
 <html>
 <head>
@@ -104,8 +104,8 @@ function js_retorna(qtipo,<?php  $virgula = "";
       <table border='1' width="100%" bgcolor="#cccccc">
 <?php 
        $result=db_query($sql);
-        $numrows=pg_numrows($result);
-       $numcols=pg_numfields($result);
+        $numrows=pg_num_rows($result);
+       $numcols=pg_num_fields($result);
        if($db_opcao=="Incluir"){
           $db_opcao=1;
        }else if($db_opcao=="Alterar"){
@@ -114,7 +114,7 @@ function js_retorna(qtipo,<?php  $virgula = "";
           $db_opcao=3;
        }
        if((($db_opcao==33  || $db_opcao==1) && $numrows>0) || (($db_opcao==33 || $db_opcao==3 || $db_opcao==2) && $numrows>1)){ 
-	  $matriz_campos=split(",",$campos); 
+	  $matriz_campos=preg_split("#,#m",$campos); 
           $numcolunas=sizeof($matriz_campos);
           echo "   <tr class='cabec'>";
 	  for($w=0; $w<$numcolunas; $w++){
@@ -122,7 +122,7 @@ function js_retorna(qtipo,<?php  $virgula = "";
             $clrotulo->label($campo);
 	    $Tlabel="T$campo";
 	    $Llabel="L$campo";
-	    echo "   <td class='cabec' ".($cabecnowrap=="true"?"nowrap":"")." title='".$$Tlabel."'>".str_replace(":","",$$Llabel)."</td>\n";
+	    echo "   <td class='cabec' ".($cabecnowrap=="true"?"nowrap":"")." title='".${$Tlabel}."'>".str_replace(":","",${$Llabel})."</td>\n";
 	  }  
           echo  "    <td class='cabec' title='Alterar ou Excluir'><b>Opções</b></td>";
           echo "   </tr>"; 	   
@@ -137,13 +137,13 @@ function js_retorna(qtipo,<?php  $virgula = "";
            echo "   <tr>";
 	   $naomostra = false;
 	   for($w=0; $w<$numcolunas; $w++){
-	     $campo = trim(pg_fieldname($result,$w));
+	     $campo = trim(pg_field_name($result,$w));
 	     for($ww=1;$ww<sizeof($quais_chaves);$ww++){
 	       $valorchave = "x_".$quais_chaves[$ww];
 	       $nomechave = $quais_chaves[$ww];
-	       $valorchave = $$valorchave;
+	       $valorchave = ${$valorchave};
 	       if($valorchave!=null && $valorchave!=""){
-		 if($valorchave == $$campo && $nomechave==$campo && ($db_opcao==2 || $db_opcao==22 || $db_opcao==3 || $db_opcao==33)){
+		 if($valorchave == ${$campo} && $nomechave==$campo && ($db_opcao==2 || $db_opcao==22 || $db_opcao==3 || $db_opcao==33)){
 		   $naomostra = true;
 		 }
 	       }
@@ -153,8 +153,8 @@ function js_retorna(qtipo,<?php  $virgula = "";
 	     continue;
 	   }
 	   for($w=0; $w<$numcolunas; $w++){
- 	     $campo=strtolower(trim($matriz_campos[$w]));
-	     echo "   <td ".($corponowrap=="true"?"nowrap":"")." class='corpo'>".$$campo."&nbsp;</td>";
+ 	     $campo=strtolower(trim((string) $matriz_campos[$w]));
+	     echo "   <td ".($corponowrap=="true"?"nowrap":"")." class='corpo'>".${$campo}."&nbsp;</td>";
 	     if($w+1==$numcolunas){
 	       if($db_opcao==33){
   	         echo "<td class='corpo'><span >&nbsp;A&nbsp;</span>&nbsp;&nbsp;&nbsp;<span class='x'>&nbsp;E&nbsp;</span></td>\n";
@@ -163,14 +163,14 @@ function js_retorna(qtipo,<?php  $virgula = "";
        	         $coluna.= "<a title='ALTERAR CONTEÚDO DA LINHA' href='#' onclick='js_retorna(\"alterar\"";
 	         $virgula = ",";
 	         for($ww=0;$ww<sizeof($quais_chaves);$ww++){
-	           $coluna .= $virgula."\"".$$quais_chaves[$ww]."\"";
+	           $coluna .= $virgula."\"".${$quais_chaves}[$ww]."\"";
                  }
 	         $coluna.= ");return false;'>&nbsp;A&nbsp;</a>\n";
 	         $coluna.="&nbsp;&nbsp;&nbsp;"; 
      	         $coluna.="<a title='EXCLUIR CONTEÚDO DA LINHA' href='#' onclick='js_retorna(\"excluir\"";
 	         $virgula = ",";
 	         for($ww=0;$ww<sizeof($quais_chaves);$ww++){
-	           $coluna .= $virgula."\"".$$quais_chaves[$ww]."\"";
+	           $coluna .= $virgula."\"".${$quais_chaves}[$ww]."\"";
 	         }
 	         $coluna .= ");return false;'>&nbsp;E&nbsp;</a>";
 	         echo $coluna."\n";

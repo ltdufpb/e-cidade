@@ -37,7 +37,7 @@ $clrotulo->label('rh30_descr');
 $clrotulo->label('r70_descr');
 $clrotulo->label('h13_descr');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 //$mes = 4;
@@ -85,7 +85,7 @@ $xordem
 //die($sql);
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários cadastrados no período de '.$mes.' / '.$ano);
 
@@ -100,7 +100,7 @@ $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 4;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage('L');
@@ -123,12 +123,12 @@ for($x = 0; $x < pg_numrows($result);$x++){
 
    $pdf->setfont('arial','',7);
    $pdf->cell(20,$alt,$rh01_regist,0,0,"C",$pre);
-   $pdf->cell(55,$alt,substr($z01_nome,0,30),0,0,"L",$pre);
-   $pdf->cell(55,$alt,substr($rh37_descr,0,30),0,0,"L",$pre);
-   $pdf->cell(40,$alt,substr($rh30_descr,0,20),0,0,"L",$pre);
-   $pdf->cell(55,$alt,substr($r70_descr,0,30),0,0,"L",$pre);
+   $pdf->cell(55,$alt,substr((string) $z01_nome,0,30),0,0,"L",$pre);
+   $pdf->cell(55,$alt,substr((string) $rh37_descr,0,30),0,0,"L",$pre);
+   $pdf->cell(40,$alt,substr((string) $rh30_descr,0,20),0,0,"L",$pre);
+   $pdf->cell(55,$alt,substr((string) $r70_descr,0,30),0,0,"L",$pre);
    $pdf->cell(15,$alt,db_formatar($rh01_admiss,"d"),0,0,"L",$pre);
-   $pdf->cell(40,$alt,substr($h13_descr,0,20),0,1,"L",$pre);
+   $pdf->cell(40,$alt,substr((string) $h13_descr,0,20),0,1,"L",$pre);
    
    $total += 1;
    

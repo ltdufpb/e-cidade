@@ -188,7 +188,7 @@ if(isset($c47_instit) && $c47_instit==''){
   </td>
   <td>
 <?php 
-  $xy = array("0"=>"Não","1"=>"Débito","2"=>"Crédito","3"=>"Elemento");
+  $xy = ["0"=>"Não","1"=>"Débito","2"=>"Crédito","3"=>"Elemento"];
   db_select('c47_compara',$xy,true,$db_o,"onchange='js_troca(this.value);'");
 ?>
     </td>
@@ -266,7 +266,7 @@ db_textarea('c47_obs',1,60,$Ic47_obs,true,'text',$db_opcao,"")
   <tr>
     <td colspan=2 align="center" height="80%">  
     <?php 
-	 $chavepri= array("c47_seqtranslan"=>@$c47_seqtranslan,"c47_seqtranslr"=>@$c47_seqtranslr);
+	 $chavepri= ["c47_seqtranslan"=>@$c47_seqtranslan,"c47_seqtranslr"=>@$c47_seqtranslr];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcontranslr->sql_query_file(null,'*','c47_seqtranslr',"c47_seqtranslan=$c47_seqtranslan");
 	 $cliframe_alterar_excluir->campos  ="c47_seqtranslan,c47_seqtranslr,c47_debito,c47_credito,c47_anousu,c47_obs,c47_ref,c47_instit,c47_compara,c47_tiporesto";

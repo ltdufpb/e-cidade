@@ -51,10 +51,10 @@ abstract class EventoAbstract
         $campos = null
     ) {
         if ($codigoGrupoResposta) {
-            $where = array(
+            $where = [
                 "db103_sequencial = {$avaliacaoPergunta->getCodigo()}",
                 "db107_sequencial = {$codigoGrupoResposta}"
-            );
+            ];
 
             $where = implode(' AND ', $where);
 
@@ -87,7 +87,7 @@ abstract class EventoAbstract
             }
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -105,8 +105,8 @@ abstract class EventoAbstract
      */
     public final function salvar(
         Avaliacao $avaliacao,
-        array $parametros = array(),
-        $codigosPerguntasRespostas = array(),
+        array $parametros = [],
+        $codigosPerguntasRespostas = [],
         $preenchimento = null
     ) {
         $this->excluirRespostasAnteriores($codigosPerguntasRespostas, $preenchimento);
@@ -118,7 +118,7 @@ abstract class EventoAbstract
      * @param array $parametros
      * @return int
      */
-    public abstract function persistir(Avaliacao $avaliacao, array $parametros = array());
+    public abstract function persistir(Avaliacao $avaliacao, array $parametros = []);
 
     /**
      * @param AvaliacaoPergunta $avaliacaoPergunta
@@ -127,7 +127,7 @@ abstract class EventoAbstract
      */
     public function getSugestaoRespostaDaPergunta(AvaliacaoPergunta $avaliacaoPergunta)
     {
-        $respostas = array();
+        $respostas = [];
 
         $sqlFormulaPergunta = $avaliacaoPergunta->getFormulaVinculada();
 
@@ -212,7 +212,7 @@ abstract class EventoAbstract
      * @return bool
      * @throws Exception
      */
-    private final function excluirRespostasAnteriores(array $codigosPerguntas = array(), $preenchimento = null)
+    private function excluirRespostasAnteriores(array $codigosPerguntas = [], $preenchimento = null)
     {
         if ($preenchimento && $codigosPerguntas) {
             $codigosPerguntas = implode(', ', $codigosPerguntas);
@@ -238,7 +238,7 @@ abstract class EventoAbstract
                 throw new Exception('Não foi possível buscar as respostas anteriores do formulário.');
             }
 
-            $codigos = array();
+            $codigos = [];
 
             while ($row = pg_fetch_object($rs)) {
                 $codigos[] = $row->db106_sequencial;

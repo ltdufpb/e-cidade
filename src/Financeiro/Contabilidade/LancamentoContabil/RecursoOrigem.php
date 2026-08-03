@@ -44,7 +44,7 @@ class RecursoOrigem extends RecursoAbstract
      * @param ILancamentoAuxiliar|null $lancamentoAuxiliar
      * @throws \ReflectionException
      */
-    public function processar($codigoLancamnento, ILancamentoAuxiliar $lancamentoAuxiliar = null)
+    public function processar($codigoLancamnento, ?ILancamentoAuxiliar $lancamentoAuxiliar = null)
     {
 
         $daoConlancam = new \cl_conlancam();
@@ -94,10 +94,10 @@ class RecursoOrigem extends RecursoAbstract
                 return;
             }
             $dadosRecurso = \db_utils::fieldsMemory($rsRecursos, 0);
-            $recursoConta = array(
+            $recursoConta = [
                 $dadosRecurso->conta_credito => $dadosRecurso->recurso_credito,
                 $dadosRecurso->conta_debito  => $dadosRecurso->recurso_debito
-            );
+            ];
             $this->recursosTransferenciasBancarias(
                 $dadosLancamento,
                 $recursoConta,
@@ -138,7 +138,7 @@ class RecursoOrigem extends RecursoAbstract
          * Tratamento para o recurso extra extra orcamentario
          */
         if (!empty($dadosLancamento->recurso_extraorcamentario) &&
-            in_array($dadosLancamento->documento, array(160, 162))) {
+            in_array($dadosLancamento->documento, [160, 162])) {
             $this->salvarRecurso($codigoLancamnento, $dadosLancamento->recurso_extraorcamentario);
             return;
         }
@@ -179,7 +179,7 @@ class RecursoOrigem extends RecursoAbstract
         $rsLancamentos = db_query($sqlLancamentos);
         $lancamentos = \db_utils::getCollectionByRecord($rsLancamentos);
         foreach ($lancamentos as $i => $lancamento) {
-            $contas = array("D" => $lancamento->c69_debito, "C" => $lancamento->c69_credito);
+            $contas = ["D" => $lancamento->c69_debito, "C" => $lancamento->c69_credito];
             foreach ($contas as $sinal => $conta) {
                 $recursoConta = $recursoDebito;
                 /**

@@ -51,7 +51,7 @@ $oDtFim = new DBDate($oGet->dtFim);
 $oNomeCal = str_replace(",", "','", $oGet->nomeCal);
 
 if (mb_detect_encoding($oNomeCal . 'x', 'UTF-8', 'ISO-8859-1') == 'UTF-8') {
-    $oNomeCal = utf8_decode($oGet->nomeCal);
+    $oNomeCal = mb_convert_encoding($oGet->nomeCal, 'ISO-8859-1');
     $oNomeCal = str_replace(",", "','", $oNomeCal); //wallace 2018-06-15
 
 } else {
@@ -98,7 +98,7 @@ $iTotalAlunos = 0;
 $head1 = "Relatório de Escolas Ativas por Calendário";
 $head2 = "Período: {$oGet->dtInicio} até {$oGet->dtFim}";
 $nomecalhead = str_replace(",", ", ", $oGet->nomeCal);
-$nomecalhead = utf8_decode($nomecalhead);
+$nomecalhead = mb_convert_encoding($nomecalhead, 'ISO-8859-1');
 $head3 = "Calendário(s): {$nomecalhead}";
 $oPdf = new PDF();
 $oPdf->Open();

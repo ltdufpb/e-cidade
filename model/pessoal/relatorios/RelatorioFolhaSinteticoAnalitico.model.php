@@ -39,8 +39,8 @@ require_once(modification("model/pessoal/relatorios/RelatorioFolhaPagamento.mode
  */
 class RelatorioFolhaSinteticoAnalitico extends RelatorioFolhaPagamento  {
   
-  protected $aRetorno   = array();
-  protected $aDadosBase = array();
+  protected $aRetorno   = [];
+  protected $aDadosBase = [];
   protected $lAfastados = true;
 
   public function __construct(){
@@ -55,9 +55,9 @@ class RelatorioFolhaSinteticoAnalitico extends RelatorioFolhaPagamento  {
   public function getDadosBase(){
     
     $oDadosRetorno    = new stdClass();
-    $oDadosRetorno->aDadosServidor   = array();
-    $oDadosRetorno->aDadosRubricas   = array();
-    $oDadosRetorno->aRubricas        = array();
+    $oDadosRetorno->aDadosServidor   = [];
+    $oDadosRetorno->aDadosRubricas   = [];
+    $oDadosRetorno->aRubricas        = [];
     $sWhere           = "";
     $oDaoAfasta       = new cl_afasta();
 
@@ -112,7 +112,7 @@ class RelatorioFolhaSinteticoAnalitico extends RelatorioFolhaPagamento  {
                                                            "{$sWhereAfastamentos} and r45_regist = $oDados->matricula_servidor" );
           $rsAfastamentos   = $oDaoAfasta->sql_record( $sSqlAfastamentos );
 
-          $aAfastamentos = array();
+          $aAfastamentos = [];
           if ($oDaoAfasta->numrows > 0) {
             $aAfastamentos  = db_utils::getCollectionByRecord($rsAfastamentos, true);
           }

@@ -118,7 +118,7 @@ $dao->rotulo->label("o15_descr");
                     </td>
                     <td>
                         <?php
-                        $complementoRecurso = array("" => 'Selecione');
+                        $complementoRecurso = ["" => 'Selecione'];
                         foreach (\ECidade\Financeiro\Orcamento\Recurso\Complemento::getAll() as $indice => $valor) {
                             $complementoRecurso[$indice] = $valor;
                         }
@@ -141,7 +141,7 @@ $dao->rotulo->label("o15_descr");
 
 <?php
 
-$chave_o15_descr = addslashes($chave_o15_descr);
+$chave_o15_descr = addslashes((string) $chave_o15_descr);
 
 $where = ["exercicio = {$exercicio}"];
 

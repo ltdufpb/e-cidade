@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $iUnidade = db_getsession( "DB_coddepto" );
 
@@ -85,7 +85,7 @@ $oRotulo->label( "rh70_descr" );
     <?php
     $sCampos    = "distinct rh70_estrutural, rh70_descr, rh70_sequencial";
     $sOrdenacao = "rh70_descr, rh70_estrutural";
-    $aWhere     = array( "sd27_c_situacao = 'A'", "sd04_i_unidade = {$iUnidade}" );
+    $aWhere     = [ "sd27_c_situacao = 'A'", "sd04_i_unidade = {$iUnidade}" ];
 
     if( isset( $chave_sd04_i_medico )  && !empty( $chave_sd04_i_medico ) ) {
 
@@ -103,7 +103,7 @@ $oRotulo->label( "rh70_descr" );
         $aWhere[] = "rh70_descr ilike '{$chave_rh70_descr}%'";
       }
 
-      $repassa = array();
+      $repassa = [];
 
       $sWhere = implode( ' AND ', $aWhere );
       $sSql   = $oDaoEspecMedico->sql_query( "", $sCampos, $sOrdenacao, $sWhere );

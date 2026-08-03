@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habittipogrupoprogramaformaavaliacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabittipogrupoprogramaformaavaliacao = new cl_habittipogrupoprogramaformaavaliacao;
 $clhabittipogrupoprogramaformaavaliacao->rotulo->label("ht06_sequencial");
 $clhabittipogrupoprogramaformaavaliacao->rotulo->label("ht06_habittipogrupoprograma");
@@ -98,9 +98,9 @@ $clhabittipogrupoprogramaformaavaliacao->rotulo->label("ht06_habittipogrupoprogr
         }else{
            $sql = $clhabittipogrupoprogramaformaavaliacao->sql_query("",$campos,"ht06_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht06_habittipogrupoprograma)){
-          $repassa = array("chave_ht06_sequencial"=>$chave_ht06_sequencial,"chave_ht06_habittipogrupoprograma"=>$chave_ht06_habittipogrupoprograma);
+          $repassa = ["chave_ht06_sequencial"=>$chave_ht06_sequencial,"chave_ht06_habittipogrupoprograma"=>$chave_ht06_habittipogrupoprograma];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

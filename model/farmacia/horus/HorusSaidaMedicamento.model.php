@@ -42,7 +42,7 @@ class HorusSaidaMedicamento extends HorusArquivoBase implements iArquivosHorus {
 
   protected $iCodigoTipo = 2;
 
-  protected $aMedicamentos = array();
+  protected $aMedicamentos = [];
 
   /**
    * Tipos de saidas esperada do medicamento pelo webservice Hórus
@@ -54,7 +54,7 @@ class HorusSaidaMedicamento extends HorusArquivoBase implements iArquivosHorus {
    * Lista de campos do arquivo xml
    * @var array
    */
-  static $aCampos = array( "nuproduto"      => "nuProduto",
+  static $aCampos = [ "nuproduto"      => "nuProduto",
                            "vlitem"         => "vlItem",
                            "dtvalidade"     => "dtValidade",
                            "nulote"         => "nuLote",
@@ -62,7 +62,7 @@ class HorusSaidaMedicamento extends HorusArquivoBase implements iArquivosHorus {
                            "dtsaida"        => "dtSaida",
                            "tpmovimentacao" => "tpMovimentacao",
                            "tpproduto"      => "tpProduto"
-                         );
+                         ];
 
   /**
    * Busca todas saída/baixa de medicamentos no estoque
@@ -126,10 +126,11 @@ class HorusSaidaMedicamento extends HorusArquivoBase implements iArquivosHorus {
     return $this->fecharArquivo(self::NOME);
   }
 
+  #[\Override]
   public function preProcessar() {
 
     parent::preProcessar();
-    $this->getCodigoIntegracaoCompetencia(self::ARQUIVO_SAIDA);
+    $this->getCodigoIntegracaoCompetencia();
     $this->consistirDadosCompetencia();
   }
 
@@ -238,7 +239,7 @@ class HorusSaidaMedicamento extends HorusArquivoBase implements iArquivosHorus {
    * @return boolean
    * @throws DBException
    */
-  private function salvarDadosCompetencia($iCodigoDadosCompetencia = null, $oDadosMedicamento, $lEnviar ) {
+  private function salvarDadosCompetencia($iCodigoDadosCompetencia = null, $oDadosMedicamento = null, $lEnviar = null ) {
 
     $oDaoDadosCompetencia                        = new cl_dadoscompetenciasaida();
     $oDaoDadosCompetencia->fa63_sequencial       = $iCodigoDadosCompetencia;

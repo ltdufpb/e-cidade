@@ -14,11 +14,6 @@ class ImportacaoArquivoConsignadoCaixa extends ImportacaoArquivoConsignado {
   private $oLayoutArquivo;
 
   /**
-   * @var string
-   */
-  private $sCaminhoArquivo = '';
-
-  /**
    * @var ArquivoConsignado
    */
   private $oArquivoConsignado;
@@ -29,12 +24,12 @@ class ImportacaoArquivoConsignadoCaixa extends ImportacaoArquivoConsignado {
    * @param                $sArquivo
    * @param \DBCompetencia $oCompetencia
    * @param \Instituicao   $oInstituicao
+   * @param string $sArquivo
    */
-  public function __construct($sArquivo, \DBCompetencia $oCompetencia, \Instituicao $oInstituicao) {
+  public function __construct(private $sCaminhoArquivo, \DBCompetencia $oCompetencia, \Instituicao $oInstituicao) {
 
     $this->oCompetencia    = $oCompetencia;
     $this->oInstituicao    = $oInstituicao;
-    $this->sCaminhoArquivo =  $sArquivo;
 
   }
 
@@ -133,7 +128,7 @@ class ImportacaoArquivoConsignadoCaixa extends ImportacaoArquivoConsignado {
 
       $oMatricula = ServidorRepository::getInstanciaByCodigo(trim((int)$oLinha->n_matricula));
       $oRegistro->setServidor($oMatricula);
-    } catch (Exception $e) {
+    } catch (Exception) {
       $oRegistro->setMotivo(RegistroConsignado::MOTIVO_SERVIDOR_INVALIDO);
     }
     $this->consistirDadosRegistro($oRegistro);

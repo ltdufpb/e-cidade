@@ -40,12 +40,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $anousu  = db_getsession("DB_anousu");
 
@@ -78,26 +78,26 @@ if ($anousu <= 2007){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-      $clcriaabas->identifica = array("relatorio"       => "Relatorio",
+      $clcriaabas->identifica = ["relatorio"       => "Relatorio",
                                       "orgao"           => "Orgãos",
                                       "unidade"         => "Unidades",
                                       "departamento"    => "Departamentos",
                                       "divisao"         => "Divisões", 
-                                      "contascontabeis" => "Contas Cont&aacute;beis");
+                                      "contascontabeis" => "Contas Cont&aacute;beis"];
                                      
-      $clcriaabas->title      = array("relatorio"       => "Relatorio",
+      $clcriaabas->title      = ["relatorio"       => "Relatorio",
                                       "orgao"           => "Orgãos",
                                       "unidade"         => "Unidades",
                                       "departamento"    => "Departamentos",
                                       "divisao"         => "Divisões", 
-                                      "contascontabeis" => "Lan&ccedil;ar Contas Cont&aacute;beis");
+                                      "contascontabeis" => "Lan&ccedil;ar Contas Cont&aacute;beis"];
                                     
-      $clcriaabas->src        = array("relatorio"       => "pat2_bensfinanc011.php",
+      $clcriaabas->src        = ["relatorio"       => "pat2_bensfinanc011.php",
                                       "orgao"           => "pat2_bensfinancorgaos.php",
                                       "unidade"         => "pat2_bensfinancunidades.php",
                                       "departamento"    => "pat2_bensfinancdepart.php",
                                       "divisao"         => "pat2_bensfinandivisao.php", 
-                                      "contascontabeis" => "pat2_bensfinancontas.php");
+                                      "contascontabeis" => "pat2_bensfinancontas.php"];
 
       $clcriaabas->cria_abas();    
     ?>

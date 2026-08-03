@@ -36,8 +36,8 @@ require_once(modification("classes/db_empempenho_classe.php"));
 require_once(modification("classes/db_pagordem_classe.php"));
 require_once(modification("classes/db_empparametro_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempempenho = new cl_empempenho;
 $clpagordem   = new cl_pagordem;
 $clempparametro	  = new cl_empparametro;
@@ -126,7 +126,7 @@ if(isset($newsql) && $newsql=="true"){
       exit;
     }
     if (isset($e60_codemp) and $e60_codemp != "" ) {
-      $arr = split("/",$e60_codemp);
+      $arr = preg_split("#\\/#m",(string) $e60_codemp);
       if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
         $where_sql .= "e60_codemp =  '".$arr[0]."' and e60_anousu = ".$arr[1]." and ";
         $anousu = $arr[1];
@@ -205,7 +205,7 @@ if(isset($newsql) && $newsql=="true"){
     }
 
     if(isset($o50_estrutdespesa) && $o50_estrutdespesa!=""){
-      $matriz=split('\.',$o50_estrutdespesa);
+      $matriz=preg_split('#\.#m',(string) $o50_estrutdespesa);
       for($i=0; $i<count($matriz); $i++){
         switch($i){
           case 0://orgao
@@ -280,7 +280,7 @@ if(isset($newsql) && $newsql=="true"){
 
 
     if(isset($newsql) && $newsql=="true"){
-      db_lovrot($sql1,15,"()","","js_abre|o58_coddot","","NoMe", array(),false, $totalizacao);
+      db_lovrot($sql1,15,"()","","js_abre|o58_coddot","","NoMe", [],false, $totalizacao);
     }else{
 
 
@@ -294,7 +294,7 @@ if(isset($newsql) && $newsql=="true"){
       /* [Extensão] - Filtro da Despesa - Parte 1 */
 
 
-      db_lovrot($sql,15,"()","",$funcao_js,"","NoMe", array(),false, $totalizacao);
+      db_lovrot($sql,15,"()","",$funcao_js,"","NoMe", [],false, $totalizacao);
     }
     ?>
   </td>

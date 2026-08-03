@@ -87,14 +87,14 @@ try {
 
             $integracao = new \ECidade\Tributario\Juridico\ProcessoEletronico\Integracao($parametros->lista,
                 $configuracaoTJ);
-            $situacao = array($parametros->situacao);
+            $situacao = [$parametros->situacao];
             if ($parametros->situacao == 0) {
                 $situacao = null;
             }
             $iniciais  = $integracao->getIniciaisParaEnvio($situacao);
             foreach($iniciais as $inicial) {
 
-               $inicial->documentos = array();
+               $inicial->documentos = [];
                $documentos = Documento::getPorProcessoEletronico($inicial->codigo_processo_eletronico);
                foreach ($documentos as $documentoProcesso) {
 
@@ -121,7 +121,7 @@ try {
         case 'gravarDocumentoAssinado':
 
             require_once("phar://" . __DIR__ . '/pades.phar');
-            $retorno->files = array();
+            $retorno->files = [];
 
             $post = db_utils::postMemory($_POST);
 
@@ -131,7 +131,7 @@ try {
             foreach ($parametros->files as $file) {
 
                 $pades = new Pades();
-                $pades->buildFromMimeEnvelopment(base64_decode($file->content));
+                $pades->buildFromMimeEnvelopment(base64_decode((string) $file->content));
                 $data = $pades->render();
 
                 $sqlDadosArquivo = $daoIntegracaoProcessoArquivo->sql_query_file(null, "*", null,

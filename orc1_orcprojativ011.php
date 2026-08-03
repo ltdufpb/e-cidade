@@ -34,7 +34,7 @@ require_once(modification("classes/db_orcprojativ_classe.php"));
 require_once(modification("classes/db_orcprojativunidaderesp_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcprojativ 			  = new cl_orcprojativ();
 $clorcprojativunidaderesp = new cl_orcprojativunidaderesp();
@@ -43,7 +43,7 @@ $db_opcao = 1;
 $db_botao = true;
 $lSqlErro = false;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   db_inicio_transacao();
 
@@ -57,7 +57,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
   //Verificamos se o projativ já existe para outro ano.
   $sSqlProjAtiv = "select * from orcprojativ where o55_projativ = $o55_projativ and o55_anousu between {$iAnoUsu} and {$iUltimoAno}";
   $iProjAtiv = db_query($sSqlProjAtiv);
-  if (pg_numrows($iProjAtiv) > 0) {
+  if (pg_num_rows($iProjAtiv) > 0) {
   	db_msgbox("Inclusão não Efetuada.\\nProjeto/Atividade Já cadastrado com mesmo numero({$o55_projativ}) para outros anos.");
   	db_redireciona("orc1_orcprojativ011.php");
   	$lSqlErro = true;
@@ -111,7 +111,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clorcprojativ->erro_status=="0"){
     $clorcprojativ->erro(true,false);
     $db_botao=true;

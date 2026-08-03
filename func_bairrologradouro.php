@@ -56,7 +56,7 @@ $sSqlEstados       = $oDaoCadEnderEstado->sql_query_file(null, "*", "db71_descri
                                                          "db71_cadenderpais = {$iCodigoBrasil}"
                                                         );
 $rsEstados       = $oDaoCadEnderEstado->sql_record($sSqlEstados);
-$aEstados        = array();
+$aEstados        = [];
 $aDadosEstados   = db_utils::getCollectionByRecord($rsEstados);
 $iCodigoEstado   = '';
 
@@ -78,7 +78,7 @@ $rsItinerario   = db_query($sSqlItinerario);
 if ( !$rsItinerario ) {
   db_redireciona('db_erros.php?db_erro=Erro ao buscar Itinerário!');
 }
-$aLinhas = array('' => 'Selecione');
+$aLinhas = ['' => 'Selecione'];
 if ( pg_num_rows($rsItinerario) > 0 ) {
 
   $iLinhas = pg_num_rows($rsItinerario);
@@ -194,7 +194,7 @@ if ( !empty($oPost->tre06_sequencial) ) {
      */
     $sCamposBairroLogradouro  = "db87_sequencial, db73_descricao, db74_descricao, db87_cadenderrua, db71_descricao";
     $sCamposBairroLogradouro .= ", db72_descricao";
-    $aWhereBairroLogradouro   = array();
+    $aWhereBairroLogradouro   = [];
 
     /**
      * Caso tenha sido setado o codigo do municipio, buscamos apenas os logradouros e bairros vinculados ao
@@ -247,16 +247,16 @@ if ( !empty($oPost->tre06_sequencial) ) {
                                                                                      $sWhereBairroLogradouro
                                                                                    );
 
-      $repassa = array();
+      $repassa = [];
       if (isset($chave_db73_descricao)) {
 
-        $repassa = array(
+        $repassa = [
           'tre09_linhatransporte' => $tre09_linhatransporte,
           'db71_sequencial'       => $db71_sequencial,
           'chave_db72_descricao'  => $chave_db72_descricao,
           'chave_db73_descricao'  => $chave_db73_descricao,
           'chave_db74_descricao'  => $chave_db74_descricao
-        );
+        ];
       }
 
       echo '<div class="container">';

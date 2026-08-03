@@ -46,7 +46,7 @@ db_app::import("Dotacao");
 db_app::import("contabilidade.planoconta.*");
 db_app::import("contabilidade.contacorrente.*");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoVacFechamento    = db_utils::getdao('vac_fechamento');
 $oDaoVacSala          = db_utils::getdao('vac_sala');
 $db_opcao             = 1;
@@ -120,10 +120,10 @@ if(isset($confirma)){
       }
       $aCodlotes = explode(",",$codlotes);
       $iTam      = count($aCodlotes);
-      $aVacinas  = array();
-      $aLotesAdd = array();
-      $vc20_d_dataini = implode('-',array_reverse(explode("/",$vc20_d_dataini)));
-      $vc20_d_datafim = implode('-',array_reverse(explode("/",$vc20_d_datafim)));
+      $aVacinas  = [];
+      $aLotesAdd = [];
+      $vc20_d_dataini = implode('-',array_reverse(explode("/",(string) $vc20_d_dataini)));
+      $vc20_d_datafim = implode('-',array_reverse(explode("/",(string) $vc20_d_datafim)));
       for ($iX = 0; $iX < $iTam; $iX++) {
 
         $sWhere    = " vc16_d_data between '$vc20_d_dataini' and '$vc20_d_datafim' and m77_sequencial=".$aCodlotes[$iX];
@@ -216,7 +216,7 @@ if(isset($confirma)){
         }
       }
       $iCont     = 0;
-      $aSubItens = array();
+      $aSubItens = [];
       //Percorre todos os materiais captados na rotina acima
       foreach ($aVacinas as $iKey => $iValor) {
 

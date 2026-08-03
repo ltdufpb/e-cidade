@@ -107,12 +107,12 @@ function js_imprimeLista(sLista) {
         </td>
         <td>
           <?php 
-            $aOrdem = array('n'=>'Nome',
+            $aOrdem = ['n'=>'Nome',
                        	    'c'=>'CGM',
                          	'm'=>'Matrícula',
                         	'i'=>'Inscrição',
                         	'p'=>'Parcelamento',
-		                    'l'=>'Logradouro');				            
+		                    'l'=>'Logradouro'];				            
 	        db_select('ordem',$aOrdem,true,$db_opcao,"");
 	      ?>
         </td>
@@ -155,8 +155,8 @@ function js_imprimeLista(sLista) {
         </td>
         <td>
           <?php 
-        	$aUtilizacao = array('t'=>'Em todas as parcelas',
-                                 'v'=>'Apenas nas vencidas');				            
+        	$aUtilizacao = ['t'=>'Em todas as parcelas',
+                                 'v'=>'Apenas nas vencidas'];				            
 		    db_select('utilizacao',$aUtilizacao,true,$db_opcao," style='width: 100%'");
 		  ?>
         </td>

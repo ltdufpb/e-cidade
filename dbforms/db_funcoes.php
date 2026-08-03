@@ -139,9 +139,9 @@ if (!function_exists("db_contas")) {
 
 
                         $result_redu = db_query($sql_redu);
-                        $numrows = pg_numrows($result_redu);
+                        $numrows = pg_num_rows($result_redu);
                         for ($i = 0; $i < $numrows; $i++) {
-                            echo "<option value=\"" . pg_result($result_redu, $i, 0) . "\" >" . pg_result($result_redu, $i, 0) . "</option>\n";
+                            echo "<option value=\"" . pg_fetch_result($result_redu, $i, 0) . "\" >" . pg_fetch_result($result_redu, $i, 0) . "</option>\n";
                         }
                         ?>
                     </select>&nbsp;&nbsp;
@@ -151,7 +151,7 @@ if (!function_exists("db_contas")) {
 
                         $result_desc = db_query($sql_desc);
                         for ($i = 0; $i < $numrows; $i++) {
-                            echo "<option value=\"" . pg_result($result_desc, $i, 0) . "\">" . pg_result($result_desc, $i, 1) . "</option>\n";
+                            echo "<option value=\"" . pg_fetch_result($result_desc, $i, 0) . "\">" . pg_fetch_result($result_desc, $i, 1) . "</option>\n";
                         }
                         ?>
                     </select>
@@ -276,7 +276,7 @@ if (!function_exists("db_input")) {
  *
  */
 if (!function_exists("db_textarea")) {
-    function db_textarea($nome, $dbsizelinha = 1, $dbsizecoluna = 1, $dbvalidatipo, $dbcadastro = true, $dbhidden = 'text', $db_opcao = 3, $js_script = "", $nomevar = "", $bgcolor = "", $maxlength = "")
+    function db_textarea($nome, $dbsizelinha = 1, $dbsizecoluna = 1, $dbvalidatipo = null, $dbcadastro = true, $dbhidden = 'text', $db_opcao = 3, $js_script = "", $nomevar = "", $bgcolor = "", $maxlength = "")
     {
 
         $sOnInput = "";
@@ -321,7 +321,7 @@ if (!function_exists("db_textarea")) {
             $OnKeyUp .= $sOnInput;
         }
 
-        $sValue = (!isset($GLOBALS[$nome]) ? "" : stripslashes($GLOBALS[($nomevar == "" ? $nome : $nomevar)]));
+        $sValue = (!isset($GLOBALS[$nome]) ? "" : stripslashes((string) $GLOBALS[($nomevar == "" ? $nome : $nomevar)]));
         ?>
                         onblur="<?= $OnBlur ?>"
                   onKeyUp="<?= $OnKeyUp ?>"
@@ -356,13 +356,13 @@ if (!function_exists("db_ancora")) {
             if ($varnome != "") {
                 ?>
                 <a href='#' id="<?= $varnome ?>" class='dbancora'
-                   style='text-decoration:underline;<?= trim($style) != "" ? ";$style" : "" ?>'
+                   style='text-decoration:underline;<?= trim((string) $style) != "" ? ";$style" : "" ?>'
                    onclick="<?= $js_script ?>"><?= $nome ?></a>
                 <?php
             } else {
                 ?>
                 <a href='#' class='dbancora'
-                   style='text-decoration:underline;<?= trim($style) != "" ? ";$style" : "" ?>'
+                   style='text-decoration:underline;<?= trim((string) $style) != "" ? ";$style" : "" ?>'
                    onclick="<?= $js_script ?>"><?= $nome ?></a>
                 <?php
             }
@@ -374,7 +374,7 @@ if (!function_exists("db_ancora")) {
 /*************************************/
 
 if (!function_exists("db_multiploselect")) {
-    function db_multiploselect($valueobj, $descrobj, $objnsel = "", $objsel = "", $recordnsel, $recordsel, $nlinhas = 10, $width = 250, $descrnsel = "", $descrsel = "", $ordenarselect = true, $jsincluir = "")
+    function db_multiploselect($valueobj, $descrobj, $objnsel = "", $objsel = "", $recordnsel = null, $recordsel = null, $nlinhas = 10, $width = 250, $descrnsel = "", $descrsel = "", $ordenarselect = true, $jsincluir = "")
     {
         // Função para montar dois objetos select multiple na tela, recebendo dados de recordset distintos. Selects para seleção em que ficam passando as informações de um para o outro.
         // valueobj   : Campo que será o value dos objetos.
@@ -389,16 +389,16 @@ if (!function_exists("db_multiploselect")) {
         // descrnsel  : Descrição que aparecerá no FIELDSET dos itens já selecionados
         // ordenarselect : True se programador desejar ordenar os values dentro dos selects ao mudar os itens de lugar.
         // jsincluir  : Função JavaScript chamada ao passar campos de um select para o outro
-        if (trim($descrnsel) == "") {
+        if (trim((string) $descrnsel) == "") {
             $descrnsel = "A selecionar";
         }
-        if (trim($descrsel) == "") {
+        if (trim((string) $descrsel) == "") {
             $descrsel = "Selecionados";
         }
-        if (trim($objnsel) == "") {
+        if (trim((string) $objnsel) == "") {
             $objnsel = "objeto1";
         }
-        if (trim($objsel) == "") {
+        if (trim((string) $objsel) == "") {
             $objsel = "objeto2";
         }
         ?>
@@ -414,20 +414,20 @@ if (!function_exists("db_multiploselect")) {
                                 onDblClick="js_db_multiploselect_incluir_item(this,document.form1.<?= $objsel ?>);">
                             <?php
                             if (gettype($recordnsel) == "resource") {
-                                $numrows_recnsel = pg_numrows($recordnsel);
+                                $numrows_recnsel = pg_num_rows($recordnsel);
                                 for ($i = 0; $i < $numrows_recnsel; $i++) {
                                     db_fieldsmemory($recordnsel, $i);
-                                    global $$valueobj;
-                                    global $$descrobj;
-                                    echo "<option value='" . $$valueobj . "'>" . $$descrobj . "</option>\n";
+                                    global ${$valueobj};
+                                    global ${$descrobj};
+                                    echo "<option value='" . ${$valueobj} . "'>" . ${$descrobj} . "</option>\n";
                                 }
                             } elseif (gettype($recordnsel) == "array") {
                                 $numrows_recnsel = count($recordnsel);
                                 reset($recordnsel);
                                 for ($i = 0; $i < $numrows_recnsel; $i++) {
-                                    $$valueobj = key($recordnsel);
-                                    $$descrobj = $recordnsel[$$valueobj];
-                                    echo "<option value='" . $$valueobj . "'>" . $$descrobj . "</option>\n";
+                                    ${$valueobj} = key($recordnsel);
+                                    ${$descrobj} = $recordnsel[${$valueobj}];
+                                    echo "<option value='" . ${$valueobj} . "'>" . ${$descrobj} . "</option>\n";
                                     next($recordnsel);
                                 }
                             }
@@ -473,20 +473,20 @@ if (!function_exists("db_multiploselect")) {
                                 onDblClick="js_db_multiploselect_incluir_item(this,document.form1.<?= $objnsel ?>);">
                             <?php
                             if (gettype($recordsel) == "resource") {
-                                $numrows_recsel = pg_numrows($recordsel);
+                                $numrows_recsel = pg_num_rows($recordsel);
                                 for ($i = 0; $i < $numrows_recsel; $i++) {
                                     db_fieldsmemory($recordsel, $i);
-                                    global $$valueobj;
-                                    global $$descrobj;
-                                    echo "<option value='" . $$valueobj . "'>" . $$descrobj . "</option>\n";
+                                    global ${$valueobj};
+                                    global ${$descrobj};
+                                    echo "<option value='" . ${$valueobj} . "'>" . ${$descrobj} . "</option>\n";
                                 }
                             } elseif (gettype($recordsel) == "array") {
                                 $numrows_recsel = count($recordsel);
                                 reset($recordsel);
                                 for ($i = 0; $i < $numrows_recsel; $i++) {
-                                    $$valueobj = key($recordsel);
-                                    $$descrobj = $recordsel[$$valueobj];
-                                    echo "<option value='" . $$valueobj . "'>" . $$descrobj . "</option>\n";
+                                    ${$valueobj} = key($recordsel);
+                                    ${$descrobj} = $recordsel[${$valueobj}];
+                                    echo "<option value='" . ${$valueobj} . "'>" . ${$descrobj} . "</option>\n";
                                     next($recordsel);
                                 }
                             }
@@ -744,7 +744,7 @@ if (!function_exists("db_selectrecord")) {
                         if (strpos($todos, "-") > 0) {
                             $todos = explode("-", $todos);
                         } else {
-                            $todos = array("0" => $todos, "1" => "Todos ...");
+                            $todos = ["0" => $todos, "1" => "Todos ..."];
                         }
                         ?>
                         <option value="<?= $todos[0] ?>"><?= $todos[0] ?></option>
@@ -755,7 +755,7 @@ if (!function_exists("db_selectrecord")) {
                         $iTotalRegistros = pg_num_rows($record);
                     }
                     for ($sqli = 0; $sqli < $iTotalRegistros; $sqli++) {
-                        $sqlv = pg_result($record, $sqli, 0);
+                        $sqlv = pg_fetch_result($record, $sqli, 0);
                         ?>
                         <option
                             value="<?= $sqlv ?>" <?= (@$GLOBALS[$nome] == $sqlv ? "selected" : "") ?>><?= $sqlv ?></option>
@@ -767,7 +767,7 @@ if (!function_exists("db_selectrecord")) {
             } else {
                 $nomedescr = $nome;
             }
-            if ($record != false && pg_numrows($record) > 0 && pg_numfields($record) > 0) {
+            if ($record != false && pg_num_rows($record) > 0 && pg_num_fields($record) > 0) {
                 ?>
                 <select name="<?= $nomedescr ?>" id="<?= $nomedescr ?>"
                         onchange="js_ProcCod_<?= $nome ?>('<?= $nomedescr ?>','<?= $nome ?>');<?= $onchange ?>"
@@ -796,9 +796,9 @@ if (!function_exists("db_selectrecord")) {
                         <option value="<?= $todos[0] ?>"><?= $todos[1] ?></option>
                         <?php
                     }
-                    for ($sqli = 0; $sqli < pg_numrows($record); $sqli++) {
-                        $sqlv = pg_result($record, $sqli, 0);
-                        $sqlv1 = pg_result($record, $sqli, 1);
+                    for ($sqli = 0; $sqli < pg_num_rows($record); $sqli++) {
+                        $sqlv = pg_fetch_result($record, $sqli, 0);
+                        $sqlv1 = pg_fetch_result($record, $sqli, 1);
                         ?>
                         <option value="<?= $sqlv ?>"><?= $sqlv1 ?></option>
                         <?php
@@ -857,11 +857,11 @@ if (!function_exists("db_selectrecord")) {
             }
 
             if (is_resource($record)) {
-                for ($sqli = 0; $sqli < pg_numrows($record); $sqli++) {
-                    if (pg_result($record, $sqli, 0) == @ $GLOBALS[$nome]) {
-                        $nomec = pg_fieldname($record, 1);
-                        global $$nomec;
-                        $$nomec = pg_result($record, $sqli, 1);
+                for ($sqli = 0; $sqli < pg_num_rows($record); $sqli++) {
+                    if (pg_fetch_result($record, $sqli, 0) == @ $GLOBALS[$nome]) {
+                        $nomec = pg_field_name($record, 1);
+                        global ${$nomec};
+                        ${$nomec} = pg_fetch_result($record, $sqli, 1);
                         $clrot->label($nomec);
                         $tamm = "M" . trim($nomec);
                         break;
@@ -925,18 +925,18 @@ if (!function_exists("db_selectmultiple")) {
             >
                 <?php
                 if (gettype($record) == "resource") {
-                    for ($sqli = 0; $sqli < pg_numrows($record); $sqli++) {
+                    for ($sqli = 0; $sqli < pg_num_rows($record); $sqli++) {
                         if ($sqli % 2 == 0) {
                             $color = "#D7CC06";
                         } else {
                             $color = "#F8EC07";
                         }
-                        $sqlv = pg_result($record, $sqli, 0);
-                        $sqlv1 = pg_result($record, $sqli, 1);
+                        $sqlv = pg_fetch_result($record, $sqli, 0);
+                        $sqlv1 = pg_fetch_result($record, $sqli, 1);
                         $esta_selecionado = "";
                         if ($db_opcao != 1 && $db_opcao != 22 && is_resource($record_select)) {
                             for ($sqls = 0; $sqls < pg_num_rows($record_select); $sqls++) {
-                                $sqlsv = pg_result($record_select, $sqls, 0);
+                                $sqlsv = pg_fetch_result($record_select, $sqls, 0);
                                 if ($sqlsv == $sqlv) {
                                     $esta_selecionado = " selected ";
                                 }
@@ -982,7 +982,7 @@ if (!function_exists("db_selectmultiple")) {
         } else {
             if (!is_int($record_select) && $record_select != false) {
                 if (gettype($record) == "resource") {
-                    if (pg_numrows($record_select) > 0) {
+                    if (pg_num_rows($record_select) > 0) {
                         db_selectrecord($nome, $record_select, true, ($db_opcao == 3 ? 2 : $db_opcao), "", $nomevar = "", $bgcolor = "", $todos = "", $onchange = "");
                     }
                 } elseif (gettype($record) == "array") {
@@ -1063,29 +1063,29 @@ if (!function_exists("db_select")) {
             <?php
         } else {
             $nome_select_descr = $nome . "_select_descr";
-            global $$nome_select_descr, $$nome;
-            $$nome = $GLOBALS[$nome];
+            global ${$nome_select_descr}, ${$nome};
+            ${$nome} = $GLOBALS[$nome];
 
             reset($db_matriz);
             for ($matsel = 0; $matsel < sizeof($db_matriz); $matsel++) {
-                if (key($db_matriz) == $$nome) {
-                    $$nome_select_descr = $db_matriz[key($db_matriz)];
-                    $$nome = key($db_matriz);
+                if (key($db_matriz) == ${$nome}) {
+                    ${$nome_select_descr} = $db_matriz[key($db_matriz)];
+                    ${$nome} = key($db_matriz);
                 }
                 next($db_matriz);
             }
-            if (strlen($$nome_select_descr) > 8) {
-                if (strlen($$nome_select_descr) > 40) {
+            if (strlen((string) ${$nome_select_descr}) > 8) {
+                if (strlen((string) ${$nome_select_descr}) > 40) {
                     $tamanho = 60;
                 } else {
-                    $tamanho = strlen($$nome_select_descr);
+                    $tamanho = strlen((string) ${$nome_select_descr});
                 }
             } else {
-                $tamanho = strlen($$nome_select_descr);
+                $tamanho = strlen((string) ${$nome_select_descr});
             }
             $Mtam = "M$nome";
-            global $$Mtam;
-            $$Mtam = $tamanho;
+            global ${$Mtam};
+            ${$Mtam} = $tamanho;
             db_input($nome_select_descr, $tamanho + 4, '', $dbcadastro, 'text', 3, "", "", "");
             db_input($nome, $tamanho + 4, '', $dbcadastro, 'hidden', 3, "", "", "");
         }
@@ -1227,7 +1227,7 @@ if (!function_exists("db_label_blur")) {
             <label for="db_<?= $campo ?>">
                 <a href="" class="rotulos"
                    onClick="js_lista_blur('dbforms/db_<?= $tab ?>.php',document.form1.db_<?= $campo ?>.value,'<?= $campo ?>',100,50,600,420,document.form1.db_<?= $campoaux ?>.value,'<?= $campoaux ?>');return false">
-                    <?= ucwords($label) ?>:
+                    <?= ucwords((string) $label) ?>:
                 </a>
             </label>
         </strong>
@@ -1255,7 +1255,7 @@ if (!function_exists("db_label")) {
             <label for="db_<?= $campo ?>">
                 <a href="" class="rotulos"
                    onClick="js_lista('dbforms/db_<?= $tab ?>.php','db_<?= $campo ?>' + '==' + document.form1.db_<?= $campo ?>.value,'<?= $campo ?>',05,50,780);return false">
-                    <?= ucwords($label) ?>:
+                    <?= ucwords((string) $label) ?>:
                 </a>
             </label>
         </strong>
@@ -1339,7 +1339,7 @@ if (!function_exists("ultimo_dia_mes")) {
     function ultimo_dia_mes($mes = 1, $ano = "")
     {
         $res = db_query("select fc_ultimodiames($ano,$mes)"); //fc_ultimodiames(anousu,mes); // retorna ultimo da do mes
-        $ultimo_dia = pg_result($res, 0, 0);
+        $ultimo_dia = pg_fetch_result($res, 0, 0);
         return $ultimo_dia;
     }
 }

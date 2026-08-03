@@ -41,7 +41,7 @@
 // db_inputdata('data_fim',@$data2_dia,@$data2_mes,@$data2_ano,true,'text',1);  
   
 if ($iTipo == "pad") {
-  $periodo = array("1"=> " 1 - Janeiro          ",
+  $periodo = ["1"=> " 1 - Janeiro          ",
                    "2"=> " 2 - Fevereiro (1 Bim)",
 		   "3"=> " 3 - Março            ",
 		   "4"=> " 4 - Abril     (2 Bim)",
@@ -52,9 +52,9 @@ if ($iTipo == "pad") {
 		   "9"=> " 9 - Setembro         ",
 		   "10"=>"10 - Outubro   (5 Bim)",
 		   "11"=>"11 - Novembro         ",
-		   "12"=>"12 - Dezembro  (6 Bim)");
+		   "12"=>"12 - Dezembro  (6 Bim)"];
 } else if ($iTipo == "mgs") {
-  $periodo = array(
+  $periodo = [
                    "1"=> " 1 - Janeiro   ",
                    "2"=> " 2 - Fevereiro ",
             		   "3"=> " 3 - Março     ",
@@ -66,7 +66,7 @@ if ($iTipo == "pad") {
              		   "9"=> " 9 - Setembro  ",
             		   "10"=>"10 - Outubro   ",
             		   "11"=>"11 - Novembro  ",
-             		   "12"=>"12 - Dezembro  (3 Quadrimestre)");
+             		   "12"=>"12 - Dezembro  (3 Quadrimestre)"];
 }
   global $periodopad;
   $periodopad = date("m",db_getsession("DB_datausu"))-1;

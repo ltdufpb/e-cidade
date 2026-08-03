@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE profe
 class cl_profe { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h18_regist = 0; 
-   var $h18_local = null; 
-   var $h18_dtini_dia = null; 
-   var $h18_dtini_mes = null; 
-   var $h18_dtini_ano = null; 
-   var $h18_dtini = null; 
-   var $h18_dtfim_dia = null; 
-   var $h18_dtfim_mes = null; 
-   var $h18_dtfim_ano = null; 
-   var $h18_dtfim = null; 
-   var $h18_descat = null; 
+   public $h18_regist = 0; 
+   public $h18_local = null; 
+   public $h18_dtini_dia = null; 
+   public $h18_dtini_mes = null; 
+   public $h18_dtini_ano = null; 
+   public $h18_dtini = null; 
+   public $h18_dtfim_dia = null; 
+   public $h18_dtfim_mes = null; 
+   public $h18_dtfim_ano = null; 
+   public $h18_dtfim = null; 
+   public $h18_descat = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h18_regist = int4 = Codigo do Funcionario 
                  h18_local = varchar(40) = Local de Trabalho 
                  h18_dtini = date = Data inicio 
@@ -62,10 +62,10 @@ class cl_profe {
                  h18_descat = varchar(120) = Descrição da Atividade 
                  ";
    //funcao construtor da classe 
-   function cl_profe() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("profe"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -166,7 +166,7 @@ class cl_profe {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Local de Trabalho em Sala de Aula      () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Local de Trabalho em Sala de Aula      já Cadastrado";
@@ -193,10 +193,10 @@ class cl_profe {
       $this->atualizacampos();
      $sql = " update profe set ";
      $virgula = "";
-     if(trim($this->h18_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h18_regist"])){ 
+     if(trim((string) $this->h18_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h18_regist"])){ 
        $sql  .= $virgula." h18_regist = $this->h18_regist ";
        $virgula = ",";
-       if(trim($this->h18_regist) == null ){ 
+       if(trim((string) $this->h18_regist) == null ){ 
          $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
          $this->erro_campo = "h18_regist";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_profe {
          return false;
        }
      }
-     if(trim($this->h18_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h18_local"])){ 
+     if(trim((string) $this->h18_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h18_local"])){ 
        $sql  .= $virgula." h18_local = '$this->h18_local' ";
        $virgula = ",";
-       if(trim($this->h18_local) == null ){ 
+       if(trim((string) $this->h18_local) == null ){ 
          $this->erro_sql = " Campo Local de Trabalho nao Informado.";
          $this->erro_campo = "h18_local";
          $this->erro_banco = "";
@@ -219,10 +219,10 @@ class cl_profe {
          return false;
        }
      }
-     if(trim($this->h18_dtini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h18_dtini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h18_dtini_dia"] !="") ){ 
+     if(trim((string) $this->h18_dtini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h18_dtini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h18_dtini_dia"] !="") ){ 
        $sql  .= $virgula." h18_dtini = '$this->h18_dtini' ";
        $virgula = ",";
-       if(trim($this->h18_dtini) == null ){ 
+       if(trim((string) $this->h18_dtini) == null ){ 
          $this->erro_sql = " Campo Data inicio nao Informado.";
          $this->erro_campo = "h18_dtini_dia";
          $this->erro_banco = "";
@@ -235,7 +235,7 @@ class cl_profe {
        if(isset($GLOBALS["HTTP_POST_VARS"]["h18_dtini_dia"])){ 
          $sql  .= $virgula." h18_dtini = null ";
          $virgula = ",";
-         if(trim($this->h18_dtini) == null ){ 
+         if(trim((string) $this->h18_dtini) == null ){ 
            $this->erro_sql = " Campo Data inicio nao Informado.";
            $this->erro_campo = "h18_dtini_dia";
            $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_profe {
          }
        }
      }
-     if(trim($this->h18_dtfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h18_dtfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h18_dtfim_dia"] !="") ){ 
+     if(trim((string) $this->h18_dtfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h18_dtfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h18_dtfim_dia"] !="") ){ 
        $sql  .= $virgula." h18_dtfim = '$this->h18_dtfim' ";
        $virgula = ",";
-       if(trim($this->h18_dtfim) == null ){ 
+       if(trim((string) $this->h18_dtfim) == null ){ 
          $this->erro_sql = " Campo Data fim nao Informado.";
          $this->erro_campo = "h18_dtfim_dia";
          $this->erro_banco = "";
@@ -262,7 +262,7 @@ class cl_profe {
        if(isset($GLOBALS["HTTP_POST_VARS"]["h18_dtfim_dia"])){ 
          $sql  .= $virgula." h18_dtfim = null ";
          $virgula = ",";
-         if(trim($this->h18_dtfim) == null ){ 
+         if(trim((string) $this->h18_dtfim) == null ){ 
            $this->erro_sql = " Campo Data fim nao Informado.";
            $this->erro_campo = "h18_dtfim_dia";
            $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_profe {
          }
        }
      }
-     if(trim($this->h18_descat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h18_descat"])){ 
+     if(trim((string) $this->h18_descat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h18_descat"])){ 
        $sql  .= $virgula." h18_descat = '$this->h18_descat' ";
        $virgula = ",";
-       if(trim($this->h18_descat) == null ){ 
+       if(trim((string) $this->h18_descat) == null ){ 
          $this->erro_sql = " Campo Descrição da Atividade nao Informado.";
          $this->erro_campo = "h18_descat";
          $this->erro_banco = "";
@@ -367,7 +367,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:profe";

@@ -54,7 +54,7 @@ try {
   $oRelatorio = new AnexoVII($iAnoSessao, new Periodo($oGet->periodo));
   $oRelatorio->setAno($iAnoSessao);
   $oRelatorio->setPeriodo(new Periodo($oGet->periodo));
-  $aInstitucoes = explode('-', $oGet->instituicoes);
+  $aInstitucoes = explode('-', (string) $oGet->instituicoes);
   foreach ($aInstitucoes as $iCodigo) {
     $oRelatorio->adicionarInstituicao(InstituicaoRepository::getInstituicaoByCodigo($iCodigo));
   }

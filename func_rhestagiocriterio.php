@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhestagiocriterio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhestagiocriterio = new cl_rhestagiocriterio;
 $clrhestagiocriterio->rotulo->label("h52_sequencial");
 $clrhestagiocriterio->rotulo->label("h52_sequencial");
@@ -98,9 +98,9 @@ $clrhestagiocriterio->rotulo->label("h52_sequencial");
         }else{
            $sql = $clrhestagiocriterio->sql_query("",$campos,"h52_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h52_sequencial)){
-          $repassa = array("chave_h52_sequencial"=>$chave_h52_sequencial,"chave_h52_sequencial"=>$chave_h52_sequencial);
+          $repassa = ["chave_h52_sequencial"=>$chave_h52_sequencial,"chave_h52_sequencial"=>$chave_h52_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

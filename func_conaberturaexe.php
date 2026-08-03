@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conaberturaexe_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconaberturaexe = new cl_conaberturaexe;
 $clconaberturaexe->rotulo->label("c91_sequencial");
 $clconaberturaexe->rotulo->label("c91_anousudestino");
@@ -128,9 +128,9 @@ $clconaberturaexe->rotulo->label("c91_anousudestino");
 
            $sql = $clconaberturaexe->sql_query("",$campos,"c91_sequencial",$wh2);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c91_anousudestino)){
-          $repassa = array("chave_c91_sequencial"=>$chave_c91_sequencial,"chave_c91_anousudestino"=>$chave_c91_anousudestino);
+          $repassa = ["chave_c91_sequencial"=>$chave_c91_sequencial,"chave_c91_anousudestino"=>$chave_c91_anousudestino];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -8,17 +8,17 @@ $sxw->SetLanguage('en','US');
 //$sxw->SetLanguage('es','ES');
 
 $sxw->SetStdFont ("Times New Roman",10);
-$sxw->SetFont (array('family'=>'Univers','style'=>'BI','size'=>27));
+$sxw->SetFont (['family'=>'Univers','style'=>'BI','size'=>27]);
 $sxw->Write ('Podemos ');
-$sxw->SetFont (array('family'=>'Arial','style'=>'U','size'=>22));
+$sxw->SetFont (['family'=>'Arial','style'=>'U','size'=>22]);
 $sxw->Write ('aplicar ');
 $sxw->Ln();
-$sxw->SetFont (array('family'=>'Comic Sans MS','size'=>32));
+$sxw->SetFont (['family'=>'Comic Sans MS','size'=>32]);
 $sxw->Write ('DIFERENTES ');
 $sxw->Ln();
-$sxw->SetFont (array('family'=>'Verdana','style'=>'B','size'=>22));
+$sxw->SetFont (['family'=>'Verdana','style'=>'B','size'=>22]);
 $sxw->Write ('tipos de letra ');
-$sxw->SetFont (array('family'=>'Univers','style'=>'UI','size'=>24));
+$sxw->SetFont (['family'=>'Univers','style'=>'UI','size'=>24]);
 $sxw->Write ('al texto');
 
 #if (isset ($_REQUEST["format"]) && $_REQUEST["format"]!='') $sxw->SetExportFilter ($_REQUEST["format"]);

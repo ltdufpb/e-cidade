@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE averbaguiaitbi
 class cl_averbaguiaitbi { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j103_sequencial = 0; 
-   var $j103_itbi = 0; 
-   var $j103_averbaguia = 0; 
+   public $j103_sequencial = 0; 
+   public $j103_itbi = 0; 
+   public $j103_averbaguia = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j103_sequencial = int4 = Código 
                  j103_itbi = int4 = Itbi 
                  j103_averbaguia = int4 = Averba Guia 
                  ";
    //funcao construtor da classe 
-   function cl_averbaguiaitbi() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbaguiaitbi"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_averbaguiaitbi {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j103_sequencial = pg_result($result,0,0); 
+       $this->j103_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from averbaguiaitbi_j103_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j103_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j103_sequencial)){
          $this->erro_sql = " Campo j103_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_averbaguiaitbi {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Averba Guia Itbi ($this->j103_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Averba Guia Itbi já Cadastrado";
@@ -166,12 +166,12 @@ class cl_averbaguiaitbi {
      $resaco = $this->sql_record($this->sql_query_file($this->j103_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11687,'$this->j103_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2013,11687,'','".AddSlashes(pg_result($resaco,0,'j103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2013,11688,'','".AddSlashes(pg_result($resaco,0,'j103_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2013,11689,'','".AddSlashes(pg_result($resaco,0,'j103_averbaguia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2013,11687,'','".AddSlashes(pg_fetch_result($resaco,0,'j103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2013,11688,'','".AddSlashes(pg_fetch_result($resaco,0,'j103_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2013,11689,'','".AddSlashes(pg_fetch_result($resaco,0,'j103_averbaguia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_averbaguiaitbi {
       $this->atualizacampos();
      $sql = " update averbaguiaitbi set ";
      $virgula = "";
-     if(trim($this->j103_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j103_sequencial"])){ 
+     if(trim((string) $this->j103_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j103_sequencial"])){ 
        $sql  .= $virgula." j103_sequencial = $this->j103_sequencial ";
        $virgula = ",";
-       if(trim($this->j103_sequencial) == null ){ 
+       if(trim((string) $this->j103_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "j103_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_averbaguiaitbi {
          return false;
        }
      }
-     if(trim($this->j103_itbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j103_itbi"])){ 
+     if(trim((string) $this->j103_itbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j103_itbi"])){ 
        $sql  .= $virgula." j103_itbi = $this->j103_itbi ";
        $virgula = ",";
-       if(trim($this->j103_itbi) == null ){ 
+       if(trim((string) $this->j103_itbi) == null ){ 
          $this->erro_sql = " Campo Itbi nao Informado.";
          $this->erro_campo = "j103_itbi";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_averbaguiaitbi {
          return false;
        }
      }
-     if(trim($this->j103_averbaguia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j103_averbaguia"])){ 
+     if(trim((string) $this->j103_averbaguia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j103_averbaguia"])){ 
        $sql  .= $virgula." j103_averbaguia = $this->j103_averbaguia ";
        $virgula = ",";
-       if(trim($this->j103_averbaguia) == null ){ 
+       if(trim((string) $this->j103_averbaguia) == null ){ 
          $this->erro_sql = " Campo Averba Guia nao Informado.";
          $this->erro_campo = "j103_averbaguia";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_averbaguiaitbi {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11687,'$this->j103_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j103_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2013,11687,'".AddSlashes(pg_result($resaco,$conresaco,'j103_sequencial'))."','$this->j103_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2013,11687,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j103_sequencial'))."','$this->j103_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j103_itbi"]))
-           $resac = db_query("insert into db_acount values($acount,2013,11688,'".AddSlashes(pg_result($resaco,$conresaco,'j103_itbi'))."','$this->j103_itbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2013,11688,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j103_itbi'))."','$this->j103_itbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j103_averbaguia"]))
-           $resac = db_query("insert into db_acount values($acount,2013,11689,'".AddSlashes(pg_result($resaco,$conresaco,'j103_averbaguia'))."','$this->j103_averbaguia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2013,11689,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j103_averbaguia'))."','$this->j103_averbaguia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_averbaguiaitbi {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11687,'$j103_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2013,11687,'','".AddSlashes(pg_result($resaco,$iresaco,'j103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2013,11688,'','".AddSlashes(pg_result($resaco,$iresaco,'j103_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2013,11689,'','".AddSlashes(pg_result($resaco,$iresaco,'j103_averbaguia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2013,11687,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2013,11688,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j103_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2013,11689,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j103_averbaguia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from averbaguiaitbi
@@ -345,7 +345,7 @@ class cl_averbaguiaitbi {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:averbaguiaitbi";
@@ -359,7 +359,7 @@ class cl_averbaguiaitbi {
    function sql_query ( $j103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_averbaguiaitbi {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_averbaguiaitbi {
    function sql_query_file ( $j103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_averbaguiaitbi {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

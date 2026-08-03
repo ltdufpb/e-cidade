@@ -53,11 +53,6 @@ class PeriodoContabil
     private $usuario;
 
     /**
-     * @var integer
-     */
-    private $exercicio;
-
-    /**
      * @var Repository
      */
     private $repository;
@@ -68,13 +63,13 @@ class PeriodoContabil
      * @param DBDate $data
      * @param UsuarioSistema $usuario
      * @param $exercicio
+     * @param int $exercicio
      */
-    public function __construct(Instituicao $instituicao, DBDate $data, UsuarioSistema $usuario, $exercicio)
+    public function __construct(Instituicao $instituicao, DBDate $data, UsuarioSistema $usuario, private $exercicio)
     {
         $this->instituicao = $instituicao;
         $this->data = $data;
         $this->usuario = $usuario;
-        $this->exercicio = $exercicio;
 
         $this->repository = Repository::getInstance();
     }

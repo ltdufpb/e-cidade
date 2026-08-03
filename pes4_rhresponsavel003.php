@@ -56,20 +56,20 @@ $db_opcao   = 3;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array("rhresponsavel"       => "Responsável",
-                                       "rhresponsavelregist" => "Servidores");
+       $clcriaabas->identifica = ["rhresponsavel"       => "Responsável",
+                                       "rhresponsavelregist" => "Servidores"];
 
-       $clcriaabas->title      = array("rhresponsavel"       => "Responsável",
-                                       "rhresponsavelregist" => "Servidores");
+       $clcriaabas->title      = ["rhresponsavel"       => "Responsável",
+                                       "rhresponsavelregist" => "Servidores"];
        
-       $clcriaabas->src        = array("rhresponsavel"       => "pes4_rhresponsavel006.php",
-                                       "rhresponsavelregist" => "pes4_rhresponsavelregist001.php");
+       $clcriaabas->src        = ["rhresponsavel"       => "pes4_rhresponsavel006.php",
+                                       "rhresponsavelregist" => "pes4_rhresponsavelregist001.php"];
        
-       $clcriaabas->disabled   = array("rhresponsavel"       => "true",
-                                       "rhresponsavelregist" => "true"); 
+       $clcriaabas->disabled   = ["rhresponsavel"       => "true",
+                                       "rhresponsavelregist" => "true"]; 
        
-       $clcriaabas->sizecampo  = array("rhresponsavel"       => "23",
-                                       "rhresponsavelregist" => "23");
+       $clcriaabas->sizecampo  = ["rhresponsavel"       => "23",
+                                       "rhresponsavelregist" => "23"];
        $clcriaabas->cria_abas(); 
      ?> 
     </td>

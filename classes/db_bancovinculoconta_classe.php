@@ -18,7 +18,7 @@ class cl_bancovinculoconta extends DAOBasica {
         $sqlVerificarVinculoExistente = $this->sql_query_banco($campos, "db501_sequencial", "db502_db_bancos = '{$banco}'");
         $rsExisteVinculoTipo          = db_query($sqlVerificarVinculoExistente);
         if (!$rsExisteVinculoTipo  || pg_num_rows($rsExisteVinculoTipo) == 0) {
-            return array();
+            return [];
         }
         return db_utils::getCollectionByRecord($rsExisteVinculoTipo);
     }

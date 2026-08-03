@@ -81,7 +81,7 @@ $clrotulo->label("z01_nome");
               <?php 
               if(isset($tf10_d_validadeini) && !empty($tf10_d_validadeini)) {
 
-                $dTmp = explode('/', $tf10_d_validadeini);
+                $dTmp = explode('/', (string) $tf10_d_validadeini);
                 if(count($dTmp) == 3) {
                    
                   $tf10_d_validadeini_dia = $dTmp[0];
@@ -101,7 +101,7 @@ $clrotulo->label("z01_nome");
               <?php 
               if(isset($tf10_d_validadefim) && !empty($tf10_d_validadefim)) {
 
-                $dTmp = explode('/', $tf10_d_validadefim);
+                $dTmp = explode('/', (string) $tf10_d_validadefim);
                 if(count($dTmp) == 3) {
                    
                   $tf10_d_validadefim_dia = $dTmp[0];
@@ -132,14 +132,14 @@ $clrotulo->label("z01_nome");
 	  <tr>
 		  <td valign="top"><br>
         <?php 
-				$aChavepri = array ('tf10_i_codigo' => @$tf10_i_codigo,
+				$aChavepri =  ['tf10_i_codigo' => @$tf10_i_codigo,
                             'tf09_i_codigo' => @$tf09_i_codigo,
                             'tf10_i_prestadora' => @$tf10_i_prestadora,
                             'z01_nome' => @$z01_nome, 
                             'tf10_d_validadeini' => @$tf10_d_validadeini, 
                             'tf10_d_validadefim' => @$tf10_d_validadefim,
                             'tf10_i_centralagend' => @$tf10_i_centralagend,
-                            'z01_nome2' => @$z01_nome2);
+                            'z01_nome2' => @$z01_nome2];
 				$oIframeAE->chavepri = $aChavepri;
 
         $sCampos = 
@@ -185,7 +185,7 @@ function js_novo() {
 function js_cancelar() {
 
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tf10_i_centralagend=$tf10_i_centralagend&z01_nome2=$z01_nome2'";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tf10_i_centralagend=$tf10_i_centralagend&z01_nome2=$z01_nome2'";
   ?>
 
 }
@@ -292,7 +292,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tfd_prestadoracentralagend.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }*/

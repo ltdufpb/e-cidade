@@ -54,7 +54,7 @@ try {
                 $statusAdvertencia
             );
 
-            $dados = array();
+            $dados = [];
             foreach ($esocialSituacoes as $situacao) {
                 $dados[] = JSON::create()->parse($situacao->serialize());
             }
@@ -152,14 +152,14 @@ try {
                     }
                     $arquivo = fopen($caminhoPdf, 'w');
                     foreach ($retornos as $retorno) {
-                        fputcsv($arquivo, $retorno,  ";");
+                        fputcsv($arquivo, $retorno,  ";", escape: '\\');
                     }
 
                     fclose($arquivo);
                     break;
                 default:
-                    $head1 = "Data início: " . substr($filtros->dataInicio, 0, 10);
-                    $head1 .= "\nData final: " . substr($filtros->dataFinal, 0, 10);
+                    $head1 = "Data início: " . substr((string) $filtros->dataInicio, 0, 10);
+                    $head1 .= "\nData final: " . substr((string) $filtros->dataFinal, 0, 10);
                     $head1 .= "\nFiltrar envios com erro: " . ($filtros->statusErro == "true" ? "Sim" : "Não");
                     $head1 .= "\nFiltrar envios com sucesso: " . ($filtros->statusRecibo == "true" ? "Sim" : "Não");
                     $head1 .= "\nFiltrar envios com ocorrências: " . ($filtros->statusOcorrencia == "true" ? "Sim" : "Não");
@@ -186,7 +186,7 @@ try {
                         $pdf->setfont('arial', 'B', 8);
                         $pdf->cell(192, 5, "Erros / Status", 1, 1, "L");
                         $pdf->setfont('arial', '', 8);
-                        $pdf->MultiCell(192, 4, str_replace(array("<br />", "</b>", "<b>"), array("\n", "", ""), $dado->getSituacao()), 1);
+                        $pdf->MultiCell(192, 4, str_replace(["<br />", "</b>", "<b>"], ["\n", "", ""], $dado->getSituacao()), 1);
 
                         $ocorrencias = $dado->getOcorrencias();
                         if (!empty($ocorrencias)) {
@@ -283,7 +283,7 @@ try {
 
             $oESocial->setDados($oParam->aFiltros);
             $dados = $oESocial->request("GET");
-            $oRetorno->recibos = array();
+            $oRetorno->recibos = [];
             foreach ($dados as $dado) {
                 foreach ($dado->recibo as $recibo) {
                     $item = new stdClass();
@@ -345,13 +345,13 @@ try {
                         $oData = new DateTime($dado->updated_at);
                         $dataOcorrencia = $oData->format("d/m/Y");
                     }
-                    $item = (object)array(
+                    $item = (object)[
                         'codigo' => $dado->codigo,
                         'evento' => $dado->tipo,
                         'descricao' => $dado->descricao,
                         'data' => $dataOcorrencia,
                         'localizacao' => $localizacao,
-                    );
+                    ];
 
                     $oRetorno->ocorrencias[] = $item;
                 }
@@ -386,7 +386,7 @@ try {
                 throw new \Exception("Nenhum registro foi encontrado com os filtros informados.");
             }
             // Array de retorno
-            $oRetorno->dados = array();
+            $oRetorno->dados = [];
             // Se existir informacao
             $oDado =  new stdClass();
             if (pg_num_rows($rsSqlEsocialEnvio) > 0) {
@@ -473,7 +473,7 @@ try {
             }
 
             $dados = db_utils::fieldsMemory($rs, 0);
-            $dados->dadosJson = json_decode($dados->rh213_dados);
+            $dados->dadosJson = json_decode((string) $dados->rh213_dados);
 
             switch ($oParam->evento) {
                 case Tipo::S2230:

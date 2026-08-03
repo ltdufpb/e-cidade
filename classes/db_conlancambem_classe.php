@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE conlancambem
 class cl_conlancambem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c110_sequencial = 0; 
-   var $c110_codlan = 0; 
-   var $c110_bem = 0; 
+   public $c110_sequencial = 0; 
+   public $c110_codlan = 0; 
+   public $c110_bem = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c110_sequencial = int4 = Sequencial 
                  c110_codlan = int4 = Código Lançamento 
                  c110_bem = int4 = Código do Bem 
                  ";
    //funcao construtor da classe 
-   function cl_conlancambem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancambem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_conlancambem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c110_sequencial = pg_result($result,0,0); 
+       $this->c110_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from conlancambem_c110_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c110_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c110_sequencial)){
          $this->erro_sql = " Campo c110_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_conlancambem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->c110_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -171,12 +171,12 @@ class cl_conlancambem {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20129,'$this->c110_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3613,20129,'','".AddSlashes(pg_result($resaco,0,'c110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3613,20130,'','".AddSlashes(pg_result($resaco,0,'c110_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3613,20131,'','".AddSlashes(pg_result($resaco,0,'c110_bem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3613,20129,'','".AddSlashes(pg_fetch_result($resaco,0,'c110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3613,20130,'','".AddSlashes(pg_fetch_result($resaco,0,'c110_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3613,20131,'','".AddSlashes(pg_fetch_result($resaco,0,'c110_bem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_conlancambem {
       $this->atualizacampos();
      $sql = " update conlancambem set ";
      $virgula = "";
-     if(trim($this->c110_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c110_sequencial"])){ 
+     if(trim((string) $this->c110_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c110_sequencial"])){ 
        $sql  .= $virgula." c110_sequencial = $this->c110_sequencial ";
        $virgula = ",";
-       if(trim($this->c110_sequencial) == null ){ 
+       if(trim((string) $this->c110_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "c110_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_conlancambem {
          return false;
        }
      }
-     if(trim($this->c110_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c110_codlan"])){ 
+     if(trim((string) $this->c110_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c110_codlan"])){ 
        $sql  .= $virgula." c110_codlan = $this->c110_codlan ";
        $virgula = ",";
-       if(trim($this->c110_codlan) == null ){ 
+       if(trim((string) $this->c110_codlan) == null ){ 
          $this->erro_sql = " Campo Código Lançamento nao Informado.";
          $this->erro_campo = "c110_codlan";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_conlancambem {
          return false;
        }
      }
-     if(trim($this->c110_bem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c110_bem"])){ 
+     if(trim((string) $this->c110_bem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c110_bem"])){ 
        $sql  .= $virgula." c110_bem = $this->c110_bem ";
        $virgula = ",";
-       if(trim($this->c110_bem) == null ){ 
+       if(trim((string) $this->c110_bem) == null ){ 
          $this->erro_sql = " Campo Código do Bem nao Informado.";
          $this->erro_campo = "c110_bem";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_conlancambem {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20129,'$this->c110_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c110_sequencial"]) || $this->c110_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3613,20129,'".AddSlashes(pg_result($resaco,$conresaco,'c110_sequencial'))."','$this->c110_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3613,20129,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c110_sequencial'))."','$this->c110_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c110_codlan"]) || $this->c110_codlan != "")
-             $resac = db_query("insert into db_acount values($acount,3613,20130,'".AddSlashes(pg_result($resaco,$conresaco,'c110_codlan'))."','$this->c110_codlan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3613,20130,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c110_codlan'))."','$this->c110_codlan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c110_bem"]) || $this->c110_bem != "")
-             $resac = db_query("insert into db_acount values($acount,3613,20131,'".AddSlashes(pg_result($resaco,$conresaco,'c110_bem'))."','$this->c110_bem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3613,20131,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c110_bem'))."','$this->c110_bem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_conlancambem {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20129,'$c110_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3613,20129,'','".AddSlashes(pg_result($resaco,$iresaco,'c110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3613,20130,'','".AddSlashes(pg_result($resaco,$iresaco,'c110_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3613,20131,'','".AddSlashes(pg_result($resaco,$iresaco,'c110_bem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3613,20129,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3613,20130,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c110_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3613,20131,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c110_bem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -367,7 +367,7 @@ class cl_conlancambem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conlancambem";
@@ -382,7 +382,7 @@ class cl_conlancambem {
    function sql_query ( $c110_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -412,7 +412,7 @@ class cl_conlancambem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_conlancambem {
    function sql_query_file ( $c110_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_conlancambem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -458,7 +458,7 @@ class cl_conlancambem {
   function sql_query_dadoslancamento ( $c110_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = preg_split("#\\##m",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_conlancambem {
   		$sql .= $sql2;
   		if($ordem != null ){
   		$sql .= " order by ";
-  			$campos_sql = split("#",$ordem);
+  			$campos_sql = preg_split("#\\##m",(string) $ordem);
   			$virgula = "";
   			for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];

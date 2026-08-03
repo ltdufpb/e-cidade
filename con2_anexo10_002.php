@@ -46,17 +46,17 @@ $tipo_impressao = 1;
 
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     } else {
@@ -72,7 +72,7 @@ if($origem == "O"){
     if($opcao == 3)
       $head5 = "ANEXO 10 - PERÍODO : ".db_formatar($perini,'d')." A ".db_formatar($perfin,'d') ;
     else
-      $head5 = "ANEXO 10 - PERÍODO : ".strtoupper(db_mes(substr($perini,5,2)))." A ".strtoupper(db_mes(substr($perfin,5,2)));
+      $head5 = "ANEXO 10 - PERÍODO : ".strtoupper(db_mes(substr((string) $perini,5,2)))." A ".strtoupper(db_mes(substr((string) $perfin,5,2)));
 }
 
 $head2 = "COMPARATIVO DA RECEITA ORÇADA COM A ARRECADADA";
@@ -85,7 +85,7 @@ if ($flag_abrev == false){
 }
 
 $head4 = "INSTITUIÇÕES : ".$descr_inst;
-$head6 = "PREVISÃO DA RECEITA : ".strtoupper($previsaoreceita);
+$head6 = "PREVISÃO DA RECEITA : ".strtoupper((string) $previsaoreceita);
 
 $pdf = new PDF(); 
 $pdf->Open(); 
@@ -101,7 +101,7 @@ $alt = 4;
 $anousu  = db_getsession("DB_anousu");
 if($opcao == 2){
   $dataini = $perini;
-  $datafin = db_getsession("DB_anousu").'-'.date('m',mktime(0,0,0,substr($perfin,5,2),substr($perfin,8,2),substr($perfin,0,4))).'-'.date('t',mktime(0,0,0,substr($perfin,5,2),substr($perfin,8,2),substr($perfin,0,4)));
+  $datafin = db_getsession("DB_anousu").'-'.date('m',mktime(0,0,0,substr((string) $perfin,5,2),substr((string) $perfin,8,2),substr((string) $perfin,0,4))).'-'.date('t',mktime(0,0,0,substr((string) $perfin,5,2),substr((string) $perfin,8,2),substr((string) $perfin,0,4)));
 }else{
   $dataini = $perini;
   $datafin = $perfin;
@@ -110,7 +110,7 @@ if($opcao == 2){
 $result = db_receitasaldo(11,1,3,true,'o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')',$anousu,$dataini,$datafin);
 
 //db_criatabela($result); exit;
-if(pg_numrows($result) == 0)
+if(pg_num_rows($result) == 0)
 db_redireciona('db_erros.php?fechar=true&db_erro=Movimentação no período de '.db_formatar($dataini,'d').' a '.db_formatar($datafin,'d'));
 $pagina = 1;
 $tottotal = 0;
@@ -120,7 +120,7 @@ $total_para_menos  = 0;
 (float)$saldo_relatorio = 0;
 $total_saldo_inicial    = 0;
 $total_saldo_arrecadado = 0;
-for($i=0;$i < pg_numrows($result);$i++){
+for($i=0;$i < pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $saldo_relatorio = $previsaoreceita=="atualizada"?$saldo_inicial_prevadic:$saldo_inicial;
   $elemento = $o57_fonte;

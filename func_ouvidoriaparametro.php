@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ouvidoriaparametro_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clouvidoriaparametro = new cl_ouvidoriaparametro;
 $clouvidoriaparametro->rotulo->label("ov06_instit");
 $clouvidoriaparametro->rotulo->label("ov06_anousu");
@@ -99,9 +99,9 @@ $clouvidoriaparametro->rotulo->label("ov06_tiponumprocesso");
         }else{
            $sql = $clouvidoriaparametro->sql_query("","",$campos,"ov06_instit#ov06_anousu","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov06_tiponumprocesso)){
-          $repassa = array("chave_ov06_instit"=>$chave_ov06_instit,"chave_ov06_tiponumprocesso"=>$chave_ov06_tiponumprocesso);
+          $repassa = ["chave_ov06_instit"=>$chave_ov06_instit,"chave_ov06_tiponumprocesso"=>$chave_ov06_tiponumprocesso];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

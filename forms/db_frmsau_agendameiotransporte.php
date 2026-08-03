@@ -156,7 +156,7 @@ $clrotulo->label ( "s118_i_codigo" );
 			<tr>
 				<td colspan="3" >
 						<?php 
-						$chavepri = array ("s124_i_codigo" => @$s124_i_codigo );
+						$chavepri =  ["s124_i_codigo" => @$s124_i_codigo ];
 						
 						$cliframe_alterar_excluir->chavepri = $chavepri;
 						@$cliframe_alterar_excluir->sql = $clsau_agendatransporte->sql_query_ext ( "", "*", "s124_i_codigo", 

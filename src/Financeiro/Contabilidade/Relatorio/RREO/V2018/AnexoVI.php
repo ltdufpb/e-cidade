@@ -56,7 +56,7 @@ class AnexoVI extends \RelatoriosLegaisBase
 
         $this->processarTotalizadoresCalculoResultadoNominal();
 
-        foreach (array(56, 60, 74, 75) as $linha) {
+        foreach ([56, 60, 74, 75] as $linha) {
             $this->processarFormulaDaLinha($linha);
         }
 
@@ -71,8 +71,8 @@ class AnexoVI extends \RelatoriosLegaisBase
     protected function processarRestosAPagar()
     {
 
-        $linhasDeRestos = array(41, 42, 43, 46, 48, 49, 50, 51, 52);
-        $colunasParaProcessar = array(4 => '#vlrpag', 5 => '#vlrliq', 6 => '#vlrpagnproc');
+        $linhasDeRestos = [41, 42, 43, 46, 48, 49, 50, 51, 52];
+        $colunasParaProcessar = [4 => '#vlrpag', 5 => '#vlrliq', 6 => '#vlrpagnproc'];
         /*
          * configura a formula a ser utilizada para as linhas e colunas
          */
@@ -103,8 +103,8 @@ class AnexoVI extends \RelatoriosLegaisBase
     protected function processarLinhasComIndicadorDeSuperavit()
     {
 
-        $linhasComSuperavit = array(66, 67);
-        $where = array();
+        $linhasComSuperavit = [66, 67];
+        $where = [];
         foreach ($linhasComSuperavit as $linhas) {
             $contasLinha = $this->aLinhasConsistencia[$linhas]->parametros->contas;
             /*

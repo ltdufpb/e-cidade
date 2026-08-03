@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE iptutaxamatricexe
 class cl_iptutaxamatricexe { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j10_iptutaxamatricexe = 0; 
-   var $j10_iptutaxamatric = 0; 
-   var $j10_anousu = 0; 
+   public $j10_iptutaxamatricexe = 0; 
+   public $j10_iptutaxamatric = 0; 
+   public $j10_anousu = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j10_iptutaxamatricexe = int4 = Codigo 
                  j10_iptutaxamatric = int4 = Codigo 
                  j10_anousu = int4 = Anousu 
                  ";
    //funcao construtor da classe 
-   function cl_iptutaxamatricexe() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutaxamatricexe"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -99,10 +99,10 @@ class cl_iptutaxamatricexe {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j10_iptutaxamatricexe = pg_result($result,0,0); 
+       $this->j10_iptutaxamatricexe = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptutaxamatricexe_j10_iptutaxamatricexe_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j10_iptutaxamatricexe)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j10_iptutaxamatricexe)){
          $this->erro_sql = " Campo j10_iptutaxamatricexe maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -134,7 +134,7 @@ class cl_iptutaxamatricexe {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "iptutaxamatricexe ($this->j10_iptutaxamatricexe) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "iptutaxamatricexe já Cadastrado";
@@ -158,12 +158,12 @@ class cl_iptutaxamatricexe {
      $resaco = $this->sql_record($this->sql_query_file($this->j10_iptutaxamatricexe));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9497,'$this->j10_iptutaxamatricexe','I')");
-       $resac = db_query("insert into db_acount values($acount,1631,9497,'','".AddSlashes(pg_result($resaco,0,'j10_iptutaxamatricexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1631,9498,'','".AddSlashes(pg_result($resaco,0,'j10_iptutaxamatric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1631,9499,'','".AddSlashes(pg_result($resaco,0,'j10_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1631,9497,'','".AddSlashes(pg_fetch_result($resaco,0,'j10_iptutaxamatricexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1631,9498,'','".AddSlashes(pg_fetch_result($resaco,0,'j10_iptutaxamatric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1631,9499,'','".AddSlashes(pg_fetch_result($resaco,0,'j10_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -172,10 +172,10 @@ class cl_iptutaxamatricexe {
       $this->atualizacampos();
      $sql = " update iptutaxamatricexe set ";
      $virgula = "";
-     if(trim($this->j10_iptutaxamatricexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j10_iptutaxamatricexe"])){ 
+     if(trim((string) $this->j10_iptutaxamatricexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j10_iptutaxamatricexe"])){ 
        $sql  .= $virgula." j10_iptutaxamatricexe = $this->j10_iptutaxamatricexe ";
        $virgula = ",";
-       if(trim($this->j10_iptutaxamatricexe) == null ){ 
+       if(trim((string) $this->j10_iptutaxamatricexe) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "j10_iptutaxamatricexe";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_iptutaxamatricexe {
          return false;
        }
      }
-     if(trim($this->j10_iptutaxamatric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j10_iptutaxamatric"])){ 
+     if(trim((string) $this->j10_iptutaxamatric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j10_iptutaxamatric"])){ 
        $sql  .= $virgula." j10_iptutaxamatric = $this->j10_iptutaxamatric ";
        $virgula = ",";
-       if(trim($this->j10_iptutaxamatric) == null ){ 
+       if(trim((string) $this->j10_iptutaxamatric) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "j10_iptutaxamatric";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_iptutaxamatricexe {
          return false;
        }
      }
-     if(trim($this->j10_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j10_anousu"])){ 
+     if(trim((string) $this->j10_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j10_anousu"])){ 
        $sql  .= $virgula." j10_anousu = $this->j10_anousu ";
        $virgula = ",";
-       if(trim($this->j10_anousu) == null ){ 
+       if(trim((string) $this->j10_anousu) == null ){ 
          $this->erro_sql = " Campo Anousu nao Informado.";
          $this->erro_campo = "j10_anousu";
          $this->erro_banco = "";
@@ -219,15 +219,15 @@ class cl_iptutaxamatricexe {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9497,'$this->j10_iptutaxamatricexe','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j10_iptutaxamatricexe"]))
-           $resac = db_query("insert into db_acount values($acount,1631,9497,'".AddSlashes(pg_result($resaco,$conresaco,'j10_iptutaxamatricexe'))."','$this->j10_iptutaxamatricexe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1631,9497,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j10_iptutaxamatricexe'))."','$this->j10_iptutaxamatricexe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j10_iptutaxamatric"]))
-           $resac = db_query("insert into db_acount values($acount,1631,9498,'".AddSlashes(pg_result($resaco,$conresaco,'j10_iptutaxamatric'))."','$this->j10_iptutaxamatric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1631,9498,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j10_iptutaxamatric'))."','$this->j10_iptutaxamatric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j10_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,1631,9499,'".AddSlashes(pg_result($resaco,$conresaco,'j10_anousu'))."','$this->j10_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1631,9499,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j10_anousu'))."','$this->j10_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -272,12 +272,12 @@ class cl_iptutaxamatricexe {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9497,'$j10_iptutaxamatricexe','E')");
-         $resac = db_query("insert into db_acount values($acount,1631,9497,'','".AddSlashes(pg_result($resaco,$iresaco,'j10_iptutaxamatricexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1631,9498,'','".AddSlashes(pg_result($resaco,$iresaco,'j10_iptutaxamatric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1631,9499,'','".AddSlashes(pg_result($resaco,$iresaco,'j10_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1631,9497,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j10_iptutaxamatricexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1631,9498,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j10_iptutaxamatric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1631,9499,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j10_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptutaxamatricexe
@@ -337,7 +337,7 @@ class cl_iptutaxamatricexe {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptutaxamatricexe";

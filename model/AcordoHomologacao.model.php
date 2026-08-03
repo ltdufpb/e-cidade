@@ -63,6 +63,7 @@ class AcordoHomologacao extends AcordoMovimentacao {
    *
    * @return AcordoHomologacao
    */
+  #[\Override]
   public function save() {
   	
   	parent::save();
@@ -99,6 +100,7 @@ class AcordoHomologacao extends AcordoMovimentacao {
    * 
    * @param integer $iTipo
    */
+  #[\Override]
   public  function setTipo($iTipo) {
   	$this->iTipo = 11;
   }
@@ -108,6 +110,7 @@ class AcordoHomologacao extends AcordoMovimentacao {
    *
    * @return AcordoHomologacao
    */
+  #[\Override]
   public function cancelar() {
   	
   	parent::cancelar();

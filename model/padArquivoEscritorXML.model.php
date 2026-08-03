@@ -57,7 +57,7 @@ class padArquivoEscritorXML extends PadArquivoEscritor {
       foreach ($oArquivo->getNomeElementos() as $sElemento) {
          
         $oXmlWriter->startElement($sElemento);
-        $oXmlWriter->text(utf8_encode($oLinha->$sElemento));
+        $oXmlWriter->text(mb_convert_encoding($oLinha->$sElemento, 'UTF-8', 'ISO-8859-1'));
         $oXmlWriter->endElement();
       }
       $oXmlWriter->endElement();

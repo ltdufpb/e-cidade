@@ -10,6 +10,7 @@ class Sequencial extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -32,20 +33,21 @@ class Sequencial extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "id.required" => utf8_encode("Código da Permissão não informado."),
-            "id.filled" => utf8_encode("O código da Permissão informado está vazio."),
-            "id.integer" => utf8_encode("Código inválido da Permissão."),
-            "id.exists" => utf8_encode("Permissão não encontrada."),
+            "id.required" => mb_convert_encoding("Código da Permissão não informado.", 'UTF-8', 'ISO-8859-1'),
+            "id.filled" => mb_convert_encoding("O código da Permissão informado está vazio.", 'UTF-8', 'ISO-8859-1'),
+            "id.integer" => mb_convert_encoding("Código inválido da Permissão.", 'UTF-8', 'ISO-8859-1'),
+            "id.exists" => mb_convert_encoding("Permissão não encontrada.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

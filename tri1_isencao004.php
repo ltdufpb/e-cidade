@@ -45,7 +45,7 @@ $clisencaoproc = new cl_isencaoproc;
   /*
 $clisencaolanc = new cl_isencaolanc;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_GET_VARS,2);
 $db_opcao = 1;
 // db_msgbox($origem);

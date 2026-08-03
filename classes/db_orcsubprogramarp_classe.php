@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE orcsubprogramarp
 class cl_orcsubprogramarp { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o32_anousu = 0; 
-   var $o32_subprog = 0; 
-   var $o32_descr = null; 
-   var $o32_finali = null; 
+   public $o32_anousu = 0; 
+   public $o32_subprog = 0; 
+   public $o32_descr = null; 
+   public $o32_finali = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o32_anousu = int8 = Exercício 
                  o32_subprog = int8 = Subprograma 
                  o32_descr = varchar(40) = Descrição do Subprograma 
                  o32_finali = text = Descrição Completa do Subprograma 
                  ";
    //funcao construtor da classe 
-   function cl_orcsubprogramarp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcsubprogramarp"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_orcsubprogramarp {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Subprogramas dos anos anteriores a 2005 ($this->o32_anousu."-".$this->o32_subprog) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Subprogramas dos anos anteriores a 2005 já Cadastrado";
@@ -158,14 +158,14 @@ class cl_orcsubprogramarp {
      $resaco = $this->sql_record($this->sql_query_file($this->o32_anousu,$this->o32_subprog));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6419,'$this->o32_anousu','I')");
        $resac = db_query("insert into db_acountkey values($acount,6420,'$this->o32_subprog','I')");
-       $resac = db_query("insert into db_acount values($acount,1054,6419,'','".AddSlashes(pg_result($resaco,0,'o32_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1054,6420,'','".AddSlashes(pg_result($resaco,0,'o32_subprog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1054,6421,'','".AddSlashes(pg_result($resaco,0,'o32_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1054,6422,'','".AddSlashes(pg_result($resaco,0,'o32_finali'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1054,6419,'','".AddSlashes(pg_fetch_result($resaco,0,'o32_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1054,6420,'','".AddSlashes(pg_fetch_result($resaco,0,'o32_subprog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1054,6421,'','".AddSlashes(pg_fetch_result($resaco,0,'o32_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1054,6422,'','".AddSlashes(pg_fetch_result($resaco,0,'o32_finali'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -174,10 +174,10 @@ class cl_orcsubprogramarp {
       $this->atualizacampos();
      $sql = " update orcsubprogramarp set ";
      $virgula = "";
-     if(trim($this->o32_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o32_anousu"])){ 
+     if(trim((string) $this->o32_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o32_anousu"])){ 
        $sql  .= $virgula." o32_anousu = $this->o32_anousu ";
        $virgula = ",";
-       if(trim($this->o32_anousu) == null ){ 
+       if(trim((string) $this->o32_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "o32_anousu";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_orcsubprogramarp {
          return false;
        }
      }
-     if(trim($this->o32_subprog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o32_subprog"])){ 
+     if(trim((string) $this->o32_subprog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o32_subprog"])){ 
        $sql  .= $virgula." o32_subprog = $this->o32_subprog ";
        $virgula = ",";
-       if(trim($this->o32_subprog) == null ){ 
+       if(trim((string) $this->o32_subprog) == null ){ 
          $this->erro_sql = " Campo Subprograma nao Informado.";
          $this->erro_campo = "o32_subprog";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_orcsubprogramarp {
          return false;
        }
      }
-     if(trim($this->o32_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o32_descr"])){ 
+     if(trim((string) $this->o32_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o32_descr"])){ 
        $sql  .= $virgula." o32_descr = '$this->o32_descr' ";
        $virgula = ",";
-       if(trim($this->o32_descr) == null ){ 
+       if(trim((string) $this->o32_descr) == null ){ 
          $this->erro_sql = " Campo Descrição do Subprograma nao Informado.";
          $this->erro_campo = "o32_descr";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_orcsubprogramarp {
          return false;
        }
      }
-     if(trim($this->o32_finali)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o32_finali"])){ 
+     if(trim((string) $this->o32_finali)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o32_finali"])){ 
        $sql  .= $virgula." o32_finali = '$this->o32_finali' ";
        $virgula = ",";
-       if(trim($this->o32_finali) == null ){ 
+       if(trim((string) $this->o32_finali) == null ){ 
          $this->erro_sql = " Campo Descrição Completa do Subprograma nao Informado.";
          $this->erro_campo = "o32_finali";
          $this->erro_banco = "";
@@ -237,18 +237,18 @@ class cl_orcsubprogramarp {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6419,'$this->o32_anousu','A')");
          $resac = db_query("insert into db_acountkey values($acount,6420,'$this->o32_subprog','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o32_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,1054,6419,'".AddSlashes(pg_result($resaco,$conresaco,'o32_anousu'))."','$this->o32_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1054,6419,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o32_anousu'))."','$this->o32_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o32_subprog"]))
-           $resac = db_query("insert into db_acount values($acount,1054,6420,'".AddSlashes(pg_result($resaco,$conresaco,'o32_subprog'))."','$this->o32_subprog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1054,6420,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o32_subprog'))."','$this->o32_subprog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o32_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1054,6421,'".AddSlashes(pg_result($resaco,$conresaco,'o32_descr'))."','$this->o32_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1054,6421,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o32_descr'))."','$this->o32_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o32_finali"]))
-           $resac = db_query("insert into db_acount values($acount,1054,6422,'".AddSlashes(pg_result($resaco,$conresaco,'o32_finali'))."','$this->o32_finali',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1054,6422,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o32_finali'))."','$this->o32_finali',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -293,14 +293,14 @@ class cl_orcsubprogramarp {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6419,'$o32_anousu','E')");
          $resac = db_query("insert into db_acountkey values($acount,6420,'$o32_subprog','E')");
-         $resac = db_query("insert into db_acount values($acount,1054,6419,'','".AddSlashes(pg_result($resaco,$iresaco,'o32_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1054,6420,'','".AddSlashes(pg_result($resaco,$iresaco,'o32_subprog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1054,6421,'','".AddSlashes(pg_result($resaco,$iresaco,'o32_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1054,6422,'','".AddSlashes(pg_result($resaco,$iresaco,'o32_finali'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1054,6419,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o32_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1054,6420,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o32_subprog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1054,6421,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o32_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1054,6422,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o32_finali'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcsubprogramarp
@@ -366,7 +366,7 @@ class cl_orcsubprogramarp {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcsubprogramarp";

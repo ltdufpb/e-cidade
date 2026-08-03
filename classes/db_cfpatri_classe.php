@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE cfpatri
 class cl_cfpatri { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t06_codcla = 0; 
-   var $t06_pesqorgao = 'f'; 
-   var $t06_bensmodeloetiqueta = 0; 
-   var $t06_controlaplacainstituicao = 'f'; 
+   public $t06_codcla = 0; 
+   public $t06_pesqorgao = 'f'; 
+   public $t06_bensmodeloetiqueta = 0; 
+   public $t06_controlaplacainstituicao = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t06_codcla = int4 = Código 
                  t06_pesqorgao = bool = Utiliza Pesquisa por Órgão 
                  t06_bensmodeloetiqueta = int4 = Modelo da Etiqueta 
                  t06_controlaplacainstituicao = bool = Contolar placa por instituição 
                  ";
    //funcao construtor da classe 
-   function cl_cfpatri() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfpatri"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -127,7 +127,7 @@ class cl_cfpatri {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Configuracao de parametros ($this->t06_codcla) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Configuracao de parametros já Cadastrado";
@@ -156,13 +156,13 @@ class cl_cfpatri {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5822,'$this->t06_codcla','I')");
-         $resac = db_query("insert into db_acount values($acount,433,5822,'','".AddSlashes(pg_result($resaco,0,'t06_codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,433,14485,'','".AddSlashes(pg_result($resaco,0,'t06_pesqorgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,433,15560,'','".AddSlashes(pg_result($resaco,0,'t06_bensmodeloetiqueta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,433,20193,'','".AddSlashes(pg_result($resaco,0,'t06_controlaplacainstituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,433,5822,'','".AddSlashes(pg_fetch_result($resaco,0,'t06_codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,433,14485,'','".AddSlashes(pg_fetch_result($resaco,0,'t06_pesqorgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,433,15560,'','".AddSlashes(pg_fetch_result($resaco,0,'t06_bensmodeloetiqueta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,433,20193,'','".AddSlashes(pg_fetch_result($resaco,0,'t06_controlaplacainstituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -172,10 +172,10 @@ class cl_cfpatri {
       $this->atualizacampos();
      $sql = " update cfpatri set ";
      $virgula = "";
-     if(trim($this->t06_codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_codcla"])){ 
+     if(trim((string) $this->t06_codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_codcla"])){ 
        $sql  .= $virgula." t06_codcla = $this->t06_codcla ";
        $virgula = ",";
-       if(trim($this->t06_codcla) == null ){ 
+       if(trim((string) $this->t06_codcla) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "t06_codcla";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_cfpatri {
          return false;
        }
      }
-     if(trim($this->t06_pesqorgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_pesqorgao"])){ 
+     if(trim((string) $this->t06_pesqorgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_pesqorgao"])){ 
        $sql  .= $virgula." t06_pesqorgao = '$this->t06_pesqorgao' ";
        $virgula = ",";
-       if(trim($this->t06_pesqorgao) == null ){ 
+       if(trim((string) $this->t06_pesqorgao) == null ){ 
          $this->erro_sql = " Campo Utiliza Pesquisa por Órgão não informado.";
          $this->erro_campo = "t06_pesqorgao";
          $this->erro_banco = "";
@@ -198,17 +198,17 @@ class cl_cfpatri {
          return false;
        }
      }
-     if(trim($this->t06_bensmodeloetiqueta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_bensmodeloetiqueta"])){ 
-        if(trim($this->t06_bensmodeloetiqueta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["t06_bensmodeloetiqueta"])){ 
+     if(trim((string) $this->t06_bensmodeloetiqueta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_bensmodeloetiqueta"])){ 
+        if(trim((string) $this->t06_bensmodeloetiqueta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["t06_bensmodeloetiqueta"])){ 
            $this->t06_bensmodeloetiqueta = "0" ; 
         } 
        $sql  .= $virgula." t06_bensmodeloetiqueta = $this->t06_bensmodeloetiqueta ";
        $virgula = ",";
      }
-     if(trim($this->t06_controlaplacainstituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_controlaplacainstituicao"])){ 
+     if(trim((string) $this->t06_controlaplacainstituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_controlaplacainstituicao"])){ 
        $sql  .= $virgula." t06_controlaplacainstituicao = '$this->t06_controlaplacainstituicao' ";
        $virgula = ",";
-       if(trim($this->t06_controlaplacainstituicao) == null ){ 
+       if(trim((string) $this->t06_controlaplacainstituicao) == null ){ 
          $this->erro_sql = " Campo Contolar placa por instituição não informado.";
          $this->erro_campo = "t06_controlaplacainstituicao";
          $this->erro_banco = "";
@@ -232,17 +232,17 @@ class cl_cfpatri {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,5822,'$this->t06_codcla','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["t06_codcla"]) || $this->t06_codcla != "")
-             $resac = db_query("insert into db_acount values($acount,433,5822,'".AddSlashes(pg_result($resaco,$conresaco,'t06_codcla'))."','$this->t06_codcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,433,5822,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t06_codcla'))."','$this->t06_codcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["t06_pesqorgao"]) || $this->t06_pesqorgao != "")
-             $resac = db_query("insert into db_acount values($acount,433,14485,'".AddSlashes(pg_result($resaco,$conresaco,'t06_pesqorgao'))."','$this->t06_pesqorgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,433,14485,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t06_pesqorgao'))."','$this->t06_pesqorgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["t06_bensmodeloetiqueta"]) || $this->t06_bensmodeloetiqueta != "")
-             $resac = db_query("insert into db_acount values($acount,433,15560,'".AddSlashes(pg_result($resaco,$conresaco,'t06_bensmodeloetiqueta'))."','$this->t06_bensmodeloetiqueta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,433,15560,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t06_bensmodeloetiqueta'))."','$this->t06_bensmodeloetiqueta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["t06_controlaplacainstituicao"]) || $this->t06_controlaplacainstituicao != "")
-             $resac = db_query("insert into db_acount values($acount,433,20193,'".AddSlashes(pg_result($resaco,$conresaco,'t06_controlaplacainstituicao'))."','$this->t06_controlaplacainstituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,433,20193,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t06_controlaplacainstituicao'))."','$this->t06_controlaplacainstituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -296,13 +296,13 @@ class cl_cfpatri {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,5822,'$t06_codcla','E')");
-           $resac  = db_query("insert into db_acount values($acount,433,5822,'','".AddSlashes(pg_result($resaco,$iresaco,'t06_codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,433,14485,'','".AddSlashes(pg_result($resaco,$iresaco,'t06_pesqorgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,433,15560,'','".AddSlashes(pg_result($resaco,$iresaco,'t06_bensmodeloetiqueta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,433,20193,'','".AddSlashes(pg_result($resaco,$iresaco,'t06_controlaplacainstituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,433,5822,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t06_codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,433,14485,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t06_pesqorgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,433,15560,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t06_bensmodeloetiqueta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,433,20193,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t06_controlaplacainstituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -363,7 +363,7 @@ class cl_cfpatri {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cfpatri";
@@ -401,7 +401,7 @@ class cl_cfpatri {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -435,7 +435,7 @@ class cl_cfpatri {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,10 +449,10 @@ class cl_cfpatri {
     $this->atualizacampos();
     $sql = " update cfpatri set ";
     $virgula = "";
-    if(trim($this->t06_codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_codcla"])){
+    if(trim((string) $this->t06_codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_codcla"])){
       $sql  .= $virgula." t06_codcla = $this->t06_codcla ";
       $virgula = ",";
-      if(trim($this->t06_codcla) == null ){
+      if(trim((string) $this->t06_codcla) == null ){
         $this->erro_sql = " Campo Código nao Informado.";
         $this->erro_campo = "t06_codcla";
         $this->erro_banco = "";
@@ -470,11 +470,11 @@ class cl_cfpatri {
     if($this->numrows>0){
       for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac,0,0);
+        $acount = pg_fetch_result($resac,0,0);
         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
         $resac = db_query("insert into db_acountkey values($acount,5822,'$this->t06_codcla','A')");
         if(isset($GLOBALS["HTTP_POST_VARS"]["t06_codcla"]))
-          $resac = db_query("insert into db_acount values($acount,433,5822,'".AddSlashes(pg_result($resaco,$conresaco,'t06_codcla'))."','$this->t06_codcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,433,5822,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t06_codcla'))."','$this->t06_codcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
       }
     }
     $result = db_query($sql);
@@ -515,10 +515,10 @@ function alterarModeloEtiquetaNulo ($t06_codcla=null) {
       $this->atualizacampos();
      $sql = " update cfpatri set ";
      $virgula = "";
-     if(trim($this->t06_codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_codcla"])){ 
+     if(trim((string) $this->t06_codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_codcla"])){ 
        $sql  .= $virgula." t06_codcla = $this->t06_codcla ";
        $virgula = ",";
-       if(trim($this->t06_codcla) == null ){ 
+       if(trim((string) $this->t06_codcla) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "t06_codcla";
          $this->erro_banco = "";
@@ -528,10 +528,10 @@ function alterarModeloEtiquetaNulo ($t06_codcla=null) {
          return false;
        }
      }
-     if(trim($this->t06_pesqorgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_pesqorgao"])){ 
+     if(trim((string) $this->t06_pesqorgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_pesqorgao"])){ 
        $sql  .= $virgula." t06_pesqorgao = '$this->t06_pesqorgao' ";
        $virgula = ",";
-       if(trim($this->t06_pesqorgao) == null ){ 
+       if(trim((string) $this->t06_pesqorgao) == null ){ 
          $this->erro_sql = " Campo Utiliza Pesquisa por Órgão nao Informado.";
          $this->erro_campo = "t06_pesqorgao";
          $this->erro_banco = "";
@@ -541,8 +541,8 @@ function alterarModeloEtiquetaNulo ($t06_codcla=null) {
          return false;
        }
      }
-     if(trim($this->t06_bensmodeloetiqueta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_bensmodeloetiqueta"])){ 
-        if(trim($this->t06_bensmodeloetiqueta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["t06_bensmodeloetiqueta"])){ 
+     if(trim((string) $this->t06_bensmodeloetiqueta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_bensmodeloetiqueta"])){ 
+        if(trim((string) $this->t06_bensmodeloetiqueta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["t06_bensmodeloetiqueta"])){ 
            $this->t06_bensmodeloetiqueta = "NULL" ; 
         } 
 //     if($this->t06_bensmodeloetiqueta == null ){ 
@@ -552,10 +552,10 @@ function alterarModeloEtiquetaNulo ($t06_codcla=null) {
        $virgula = ",";
      }
      
-     if(trim($this->t06_controlaplacainstituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_controlaplacainstituicao"])){
+     if(trim((string) $this->t06_controlaplacainstituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t06_controlaplacainstituicao"])){
        $sql  .= $virgula." t06_controlaplacainstituicao = '$this->t06_controlaplacainstituicao' ";
        $virgula = ",";
-       if(trim($this->t06_controlaplacainstituicao) == null ){
+       if(trim((string) $this->t06_controlaplacainstituicao) == null ){
          $this->erro_sql = " Campo Contolar placa por instituição não informado.";
          $this->erro_campo = "t06_controlaplacainstituicao";
          $this->erro_banco = "";
@@ -574,15 +574,15 @@ function alterarModeloEtiquetaNulo ($t06_codcla=null) {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5822,'$this->t06_codcla','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t06_codcla"]) || $this->t06_codcla != "")
-           $resac = db_query("insert into db_acount values($acount,433,5822,'".AddSlashes(pg_result($resaco,$conresaco,'t06_codcla'))."','$this->t06_codcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,433,5822,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t06_codcla'))."','$this->t06_codcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t06_pesqorgao"]) || $this->t06_pesqorgao != "")
-           $resac = db_query("insert into db_acount values($acount,433,14485,'".AddSlashes(pg_result($resaco,$conresaco,'t06_pesqorgao'))."','$this->t06_pesqorgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,433,14485,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t06_pesqorgao'))."','$this->t06_pesqorgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t06_bensmodeloetiqueta"]) || $this->t06_bensmodeloetiqueta != "")
-           $resac = db_query("insert into db_acount values($acount,433,15560,'".AddSlashes(pg_result($resaco,$conresaco,'t06_bensmodeloetiqueta'))."','$this->t06_bensmodeloetiqueta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,433,15560,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t06_bensmodeloetiqueta'))."','$this->t06_bensmodeloetiqueta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);

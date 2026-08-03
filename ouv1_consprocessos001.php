@@ -36,7 +36,7 @@ include(modification("classes/db_db_depart_classe.php"));
 $clouvidor = new cl_ouvidor ( );
 $cldepartamento = new cl_db_depart ( );
 
-db_postmemory ( $HTTP_POST_VARS );
+db_postmemory ( $_POST );
 
 $db_opcao = 1;
 $db_botao = true;
@@ -349,7 +349,7 @@ function js_ImprimeProcesso(){
 						<td align="left"><b>Tipo:</b></td>
 						<td align="left">
 						<?php 
-						$x = array ('0' => 'Todos', '1' => 'Em Andamento', '2' => 'Em Atraso' );
+						$x =  ['0' => 'Todos', '1' => 'Em Andamento', '2' => 'Em Atraso' ];
 						db_select ( 'tipo', $x, true, 1 );
 						?>
 						</td>

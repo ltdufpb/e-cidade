@@ -284,7 +284,7 @@ $oGet = db_utils::postMemory($_GET);
 </script>
 <?php
 
-if (trim($oGet->iAnoFolha) != '' && trim($oGet->iMesFolha) != '' && trim($oGet->sSigla) != '') {
+if (trim((string) $oGet->iAnoFolha) != '' && trim((string) $oGet->iMesFolha) != '' && trim((string) $oGet->sSigla) != '') {
 
 
     if (isset($oGet->sSemestre)) {

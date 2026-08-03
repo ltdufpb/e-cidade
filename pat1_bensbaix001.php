@@ -33,8 +33,8 @@ include(modification("classes/db_bensbaix_classe.php"));
 include(modification("classes/db_bensmotbaixa_classe.php"));
 include(modification("classes/db_bens_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clbensbaix = new cl_bensbaix;
 $clbensmotbaixa = new cl_bensmotbaixa;
 $clbens = new cl_bens;
@@ -79,7 +79,7 @@ if(isset($excluir) || isset($incluir)){
 $result = $clbensbaix->sql_record($clbensbaix->sql_query_file($t55_codbem));
 if($clbensbaix->numrows > 0){
   db_fieldsmemory($result,0);
-  if(trim($t55_baixa)!=""){
+  if(trim((string) $t55_baixa)!=""){
     $resultmotbaixa = $clbensmotbaixa->sql_record($clbensmotbaixa->sql_query_file($t55_motivo));
     db_fieldsmemory($resultmotbaixa,0);
   }
@@ -92,7 +92,7 @@ if (isset($importar) && $importar == true){
      $result = $clbensbaix->sql_record($clbensbaix->sql_query_file($codbem,"t55_baixa,t55_motivo,t55_obs"));
      if ($clbensbaix->numrows > 0){
           db_fieldsmemory($result,0);
-          if(trim($t55_baixa)!=""){
+          if(trim((string) $t55_baixa)!=""){
               $resultmotbaixa = $clbensmotbaixa->sql_record($clbensmotbaixa->sql_query_file($t55_motivo));
 	      if ($clbensmotbaixa->numrows > 0){
                    db_fieldsmemory($resultmotbaixa,0);

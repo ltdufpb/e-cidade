@@ -58,11 +58,11 @@ $clcriaabas = new cl_criaabas;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("dados"=>"Portaria/Assentamento","funcionarios"=>"Funcionários");
-    $clcriaabas->title      = array("dados"=>"Portaria/Assentamento","funcionarios"=>"Funcionários");
-    $clcriaabas->src		= array("dados"=>"rec1_portlotecol003.php",
-    								"funcionarios"=>"rec1_portlotecol004.php");
-    $clcriaabas->sizecampo= array("dados"=>"30","funcionarios"=>"30");
+    $clcriaabas->identifica = ["dados"=>"Portaria/Assentamento","funcionarios"=>"Funcionários"];
+    $clcriaabas->title      = ["dados"=>"Portaria/Assentamento","funcionarios"=>"Funcionários"];
+    $clcriaabas->src		= ["dados"=>"rec1_portlotecol003.php",
+    								"funcionarios"=>"rec1_portlotecol004.php"];
+    $clcriaabas->sizecampo= ["dados"=>"30","funcionarios"=>"30"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

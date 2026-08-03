@@ -69,7 +69,7 @@ class MaterialAlmoxarifado {
   /**
    * @type array
    */
-  private $aPontosPedido = array();
+  private $aPontosPedido = [];
     /**
      * @var bool
      */

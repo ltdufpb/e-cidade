@@ -30,10 +30,10 @@ $conn=new conecta;
 $conn=$conn->con();
 
 function db_versao_integer($sVersao) {
-  $aVersao = explode(".", $sVersao);
+  $aVersao = explode(".", (string) $sVersao);
   $iVersao = 0;
   for($i=0; $i<count($aVersao); $i++) {
-    $iVersao += (int)$aVersao[$i] * pow(10 , (6 - ($i+1) * 2) );
+    $iVersao += (int)$aVersao[$i] * 10 ** (6 - ($i + 1) * 2);
   }
   return $iVersao;
 }
@@ -56,7 +56,7 @@ if (!$tarefa || $tarefa==0)
 
 $arquivo_lock = '/tmp/controleversao.lock';
 
-$tarefa = trim($tarefa);
+$tarefa = trim((string) $tarefa);
 
 if (file_exists($arquivo_lock)) {
 
@@ -72,7 +72,7 @@ if (file_exists($arquivo_lock)) {
 }
 
 $fp = fopen($arquivo_lock, 'w');
-fwrite($fp, $_SERVER['REMOTE_ADDR']);
+fwrite($fp, (string) $_SERVER['REMOTE_ADDR']);
 fclose($fp);
 
 //------------------------------------------
@@ -93,7 +93,7 @@ $sql = "select at40_descr,at40_obs,at43_diaini,at43_descr,at43_obs,at43_tipomov,
          where at40_sequencial = $tarefa order by at43_sequencial desc";
 $result = db_query($sql);
 
-if( $result == false || pg_numrows($result)==0){
+if( $result == false || pg_num_rows($result)==0){
   echo "Tarefa não existente $tarefa";
   exit;
 }
@@ -109,19 +109,19 @@ $texto_sql = "--sql a ser executado na base de dados\n";
 
 // gera texto da tarefa
 $texto  = "Tarefa : $tarefa \n";
-$texto .= "Resumo : ".pg_result($result,0,'at40_descr')."\n";
-$texto .= "Observ.: ".pg_result($result,0,'at40_obs')."\n";
-$tarefa_progresso= pg_result($result,0,'at40_progresso')."\n";
-$linhas = pg_numrows($result);
+$texto .= "Resumo : ".pg_fetch_result($result,0,'at40_descr')."\n";
+$texto .= "Observ.: ".pg_fetch_result($result,0,'at40_obs')."\n";
+$tarefa_progresso= pg_fetch_result($result,0,'at40_progresso')."\n";
+$linhas = pg_num_rows($result);
 
 
 // Monta TXT com andamentos
 for($lin=0;$lin < $linhas;$lin++){
   $texto .= "---------------------------------------------------------------------------\n";
-  $texto .= "Data : ".pg_result($result,$lin,'at43_diaini')."\n"; 
-  $texto .= pg_result($result,$lin,'at43_descr')."\n";
-  $texto .= pg_result($result,$lin,'at43_obs')."\n";
-  if(pg_result($result,$lin,'at43_tipomov') == 2){ // Movimento DUMP Menus
+  $texto .= "Data : ".pg_fetch_result($result,$lin,'at43_diaini')."\n"; 
+  $texto .= pg_fetch_result($result,$lin,'at43_descr')."\n";
+  $texto .= pg_fetch_result($result,$lin,'at43_obs')."\n";
+  if(pg_fetch_result($result,$lin,'at43_tipomov') == 2){ // Movimento DUMP Menus
     $baixa_menus = (true and isset($gerarmenus));
   }
 
@@ -129,7 +129,7 @@ for($lin=0;$lin < $linhas;$lin++){
 shell_exec( "umask 0000" );
 $erro=false;
 for($lin=($linhas-1); $lin>=0; $lin--){
-  if(pg_result($result,$lin,'at43_tipomov') == 1 && pg_result($result,$lin,'at43_obs') ==""){
+  if(pg_fetch_result($result,$lin,'at43_tipomov') == 1 && pg_fetch_result($result,$lin,'at43_obs') ==""){
     echo "Existe movimento SQL sem registro nas observações. Verifique a tarefa!";
     $erro=true;
   }
@@ -165,8 +165,8 @@ if (file_exists($arquivo_lock)) {
 }
 // Monta SQL dos andamentos
 for($lin=($linhas-1); $lin>=0; $lin--){
-  if(pg_result($result,$lin,'at43_tipomov') == 1){  // Movimento SQL
-    $texto_sql .= pg_result($result,$lin,'at43_obs')."\n";
+  if(pg_fetch_result($result,$lin,'at43_tipomov') == 1){  // Movimento SQL
+    $texto_sql .= pg_fetch_result($result,$lin,'at43_obs')."\n";
     $gera_sql = true;
   }
 }
@@ -190,7 +190,7 @@ shell_exec( "umask 0000; cd $diretorio_testes; cvs -d $CVSROOT -z6 checkout -r T
 
 global $diretorios, $arq_cvs;
 
-$arquivo = array();
+$arquivo = [];
 
 function verifica_diretorio($diretorio,$tarefa){
 
@@ -200,7 +200,7 @@ function verifica_diretorio($diretorio,$tarefa){
   if( file_exists($CVSEntries) ){
     $arquivos_cvs = file( $CVSEntries );
     for($arq=0;$arq<count($arquivos_cvs);$arq++){
-      $x = split("/",$arquivos_cvs[$arq]);
+      $x = preg_split("#\\/#m",$arquivos_cvs[$arq]);
       if(isset($x[1]) && $x[0] == null  ){
         $arq_cvs[ $diretorio.$x[1] ] = $diretorio.$arquivos_cvs[$arq];
       }
@@ -220,7 +220,7 @@ function verifica_diretorio($diretorio,$tarefa){
       if( file_exists($CVSEntries) ) {
         $arquivos_cvs = file( $CVSEntries );
         for($arq=0;$arq<count($arquivos_cvs);$arq++) {
-          $x = split("/",$arquivos_cvs[$arq]);
+          $x = preg_split("#\\/#m",$arquivos_cvs[$arq]);
           if(isset($x[1]) && $x[0] == null) {
             $arq_cvs[ $diretorio.$entry."/".$x[1] ] = $diretorio.$entry.$arquivos_cvs[$arq];
           }
@@ -233,7 +233,7 @@ function verifica_diretorio($diretorio,$tarefa){
           shell_exec("umask 0000;mkdir $diretorio_testes/$diretorio/$entry");
         }
 
-        verifica_diretorio($diretorio.$entry."/",$tarefa,false);  
+        verifica_diretorio($diretorio.$entry."/",$tarefa);  
       }else{
         $arquivo[count($arquivo)] = $diretorio.$entry;
         shell_exec("umask 0000;cp ".$diretorio.$entry." /home/versoes/".$diretorio.$entry."_".$tarefa);
@@ -251,29 +251,29 @@ function verifica_diretorio($diretorio,$tarefa){
 echo "<font size=2> Gerando Lista de Arquivos Baixados do CVS - dbportal_prj<br></font>";
 flush();
 $dir = "dbportal_prj/";
-$arquivo = array();
-$arquivos_dbportal = verifica_diretorio($dir,$tarefa,true);
+$arquivo = [];
+$arquivos_dbportal = verifica_diretorio($dir,$tarefa);
 //print_r($arquivos_dbportal);
 
 
 echo "<font size=2>Gerando Lista de Arquivos Baixados do CVS - funcoes8<br></font>";
 flush();
 $dir = "funcoes8/";
-$arquivo = array();
-$arquivos_funcoes = verifica_diretorio($dir,$tarefa,true);
+$arquivo = [];
+$arquivos_funcoes = verifica_diretorio($dir,$tarefa);
 //print_r($arquivos_funcoes);
 
 echo "<font size=2>Gerando Lista de Arquivos Baixados do CVS - dbpref<br></font>";
 flush();
 $dir = "dbpref/";
-$arquivo = array();
-$arquivos_dbpref = verifica_diretorio($dir,$tarefa,true);
+$arquivo = [];
+$arquivos_dbpref = verifica_diretorio($dir,$tarefa);
 
 //print_r($arquivos_dbpref);
 
 //print_r($arq_cvs);exit; 
 // gravar os dados dos arquivos do arquivo Entries do CVS
-$dados_arquivos = array();
+$dados_arquivos = [];
 
 if(!isset($arq_cvs)){
   echo "<font color=red> <br><b>Tarefa sem tag!Consultar a tarefa e verificar andamento.</b><br></font>";
@@ -285,15 +285,15 @@ if(!isset($arq_cvs)){
 
 for($ga=0;$ga<count($arq_cvs);$ga++){
 
-  $dados = split("/",$arq_cvs[key($arq_cvs)]);
+  $dados = preg_split("#\\/#m",(string) $arq_cvs[key($arq_cvs)]);
 
   $totsplit = count($dados);
 
   if( isset($dados[($totsplit-4)]) && $dados[($totsplit-4)] != null ) {
 
     $dados_arquivos[key($arq_cvs)][1] = $dados[($totsplit-4)];
-    $dados_arquivos[key($arq_cvs)][2] = substr($dados[($totsplit-3)],20,4)."-".substr($dados[($totsplit-3)],4,3)."-".trim(substr($dados[($totsplit-3)],8,2));
-    $dados_arquivos[key($arq_cvs)][3] = substr($dados[($totsplit-3)],11,8);
+    $dados_arquivos[key($arq_cvs)][2] = substr((string) $dados[($totsplit-3)],20,4)."-".substr((string) $dados[($totsplit-3)],4,3)."-".trim(substr((string) $dados[($totsplit-3)],8,2));
+    $dados_arquivos[key($arq_cvs)][3] = substr((string) $dados[($totsplit-3)],11,8);
 
 
   }
@@ -335,12 +335,12 @@ for($i=0;$i<count($arquivos_dbportal);$i++){
 
   $result = db_query($sql);
 
-  if( pg_numrows($result) > 0 ){
+  if( pg_num_rows($result) > 0 ){
 
-    $versao_anterior   = pg_result($result,0,'at80_versaocvs');
-    $versao_release    = pg_result($result,0,'db30_codversao');
-    $versao_subrelease = pg_result($result,0,'db30_codrelease');
-    $versao_tarefa     = pg_result($result,0,'db29_tarefa');
+    $versao_anterior   = pg_fetch_result($result,0,'at80_versaocvs');
+    $versao_release    = pg_fetch_result($result,0,'db30_codversao');
+    $versao_subrelease = pg_fetch_result($result,0,'db30_codrelease');
+    $versao_tarefa     = pg_fetch_result($result,0,'db29_tarefa');
 
 
     if( db_versao_integer($versao_anterior) > db_versao_integer($dados_arquivos[$arquivos_dbportal[$i]][1]) ) {
@@ -377,14 +377,14 @@ for($i=0;$i<count($arquivos_dbportal);$i++){
   $result = db_query($sql);
 
   $mensagem = false;
-  if( pg_numrows($result) > 0 ){
+  if( pg_num_rows($result) > 0 ){
 
 
-    for( $x = 0; $x < pg_numrows($result);$x++){
-      $versao_cvs        = pg_result($result,$x,'at80_versaocvs');
-      $tarefa_executa    = pg_result($result,$x,'at80_tarefa');
-      $tarefa_data       = pg_result($result,$x,'at80_data');
-      $tarefa_progresso  = pg_result($result,$x,'at40_progresso');
+    for( $x = 0; $x < pg_num_rows($result);$x++){
+      $versao_cvs        = pg_fetch_result($result,$x,'at80_versaocvs');
+      $tarefa_executa    = pg_fetch_result($result,$x,'at80_tarefa');
+      $tarefa_data       = pg_fetch_result($result,$x,'at80_data');
+      $tarefa_progresso  = pg_fetch_result($result,$x,'at40_progresso');
 
       if ($tarefa_progresso<>100)
       { 
@@ -399,7 +399,7 @@ for($i=0;$i<count($arquivos_dbportal);$i++){
       }
       $v1 = str_replace('.','',$dados_arquivos[$arquivos_dbportal[$i]][1]);
       $v2 = str_replace('.','',$versao_cvs);
-      if(  pg_result($result,$x,'db29_tarefa') != "" && (float)$v1 < (float)$v2 ){
+      if(  pg_fetch_result($result,$x,'db29_tarefa') != "" && (float)$v1 < (float)$v2 ){
         echo "<font  color='red'>ERRO ..... CVS Atual: ".$dados_arquivos[$arquivos_dbportal[$i]][1]."Tarefa : $tarefa_executa Data: $tarefa_data Versão do CVS: $versao_cvs Arquivo: ".$arquivos_dbportal[$i]." NAO PODE SER ATUALIZADA ESTA TAREFA.</strong> <br>"; 
         echo "Processamento Abortado.</font>";
         exit;
@@ -442,12 +442,12 @@ for($i=0;$i<count($arquivos_funcoes);$i++){
 
   $result = db_query($sql);
 
-  if( pg_numrows($result) > 0 ){
+  if( pg_num_rows($result) > 0 ){
 
-    $versao_anterior = pg_result($result,0,'at80_versaocvs');
-    $versao_release  = pg_result($result,0,'db30_codversao');
-    $versao_subrelease = pg_result($result,0,'db30_codrelease');
-    $versao_tarefa = pg_result($result,0,'at80_tarefa'); 
+    $versao_anterior = pg_fetch_result($result,0,'at80_versaocvs');
+    $versao_release  = pg_fetch_result($result,0,'db30_codversao');
+    $versao_subrelease = pg_fetch_result($result,0,'db30_codrelease');
+    $versao_tarefa = pg_fetch_result($result,0,'at80_tarefa'); 
     if( db_versao_integer($versao_anterior) > db_versao_integer($dados_arquivos[$arquivos_funcoes[$i]][1]) ) {
 
       echo "Já existe uma tarefa com sub-release cadastrada no sistema<strong> 
@@ -482,14 +482,14 @@ for($i=0;$i<count($arquivos_funcoes);$i++){
 
   $mensagem=false;
 
-  if( pg_numrows($result) > 0 ){
+  if( pg_num_rows($result) > 0 ){
 
-    for( $x = 0; $x < pg_numrows($result);$x++){
+    for( $x = 0; $x < pg_num_rows($result);$x++){
 
-      $versao_cvs       = pg_result($result,$x,'at80_versaocvs');
-      $tarefa_executa   = pg_result($result,$x,'at80_tarefa');
-      $tarefa_data      = pg_result($result,$x,'at80_data');
-      $tarefa_progresso = pg_result($result,$x,'at40_progresso');
+      $versao_cvs       = pg_fetch_result($result,$x,'at80_versaocvs');
+      $tarefa_executa   = pg_fetch_result($result,$x,'at80_tarefa');
+      $tarefa_data      = pg_fetch_result($result,$x,'at80_data');
+      $tarefa_progresso = pg_fetch_result($result,$x,'at40_progresso');
 
       if ($tarefa_progresso<>100)
       {
@@ -543,12 +543,12 @@ for($i=0;$i<count($arquivos_dbpref);$i++){
 
   $result = db_query($sql);
 
-  if( pg_numrows($result) > 0 ){
+  if( pg_num_rows($result) > 0 ){
 
-    $versao_anterior   = pg_result($result,0,'at80_versaocvs');
-    $versao_release    = pg_result($result,0,'db30_codversao');
-    $versao_subrelease = pg_result($result,0,'db30_codrelease');
-    $versao_tarefa     =pg_result($result,0,'at80_tarefa');
+    $versao_anterior   = pg_fetch_result($result,0,'at80_versaocvs');
+    $versao_release    = pg_fetch_result($result,0,'db30_codversao');
+    $versao_subrelease = pg_fetch_result($result,0,'db30_codrelease');
+    $versao_tarefa     =pg_fetch_result($result,0,'at80_tarefa');
 
     if( db_versao_integer($versao_anterior) > db_versao_integer($dados_arquivos[$arquivos_dbpref[$i]][1]) ) {
 
@@ -583,14 +583,14 @@ for($i=0;$i<count($arquivos_dbpref);$i++){
   $result = db_query($sql);
 
   $mensagem=false;
-  if( pg_numrows($result) > 0 ){
+  if( pg_num_rows($result) > 0 ){
 
-    for( $x = 0; $x < pg_numrows($result);$x++){
+    for( $x = 0; $x < pg_num_rows($result);$x++){
 
-      $versao_cvs      = pg_result($result,$x,'at80_versaocvs');
-      $tarefa_executa  = pg_result($result,$x,'at80_tarefa');
-      $tarefa_data     = pg_result($result,$x,'at80_data');
-      $tarefa_progresso = pg_result($result,$x,'at40_progresso');
+      $versao_cvs      = pg_fetch_result($result,$x,'at80_versaocvs');
+      $tarefa_executa  = pg_fetch_result($result,$x,'at80_tarefa');
+      $tarefa_data     = pg_fetch_result($result,$x,'at80_data');
+      $tarefa_progresso = pg_fetch_result($result,$x,'at40_progresso');
       //echo "<strong>CVS Atual: ".$dados_arquivos[$arquivos_dbpref[$i]][1]." Tarefa : $tarefa_executa Data: $tarefa_data Versão do CVS: $versao_cvs Arquivo: ".$arquivos_dbpref[$i]."</strong> <br>";   
 
       if ($tarefa_progresso<>100) {

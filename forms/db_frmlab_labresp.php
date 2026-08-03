@@ -116,7 +116,7 @@ db_input('la06_c_cns',10,$Ila06_c_cns,true,'text',$db_opcao,"");
                            <?=@$Lla06_d_inicio?>
                          <?php 
                           if(isset($la06_d_inicio)&&($la06_d_inicio!="")){
-                                       $vet=explode("/",$la06_d_inicio);
+                                       $vet=explode("/",(string) $la06_d_inicio);
                                        $la06_d_inicio_dia=$vet[0];
                                        $la06_d_inicio_mes=$vet[1];
                                        $la06_d_inicio_ano=$vet[2];
@@ -130,7 +130,7 @@ db_input('la06_c_cns',10,$Ila06_c_cns,true,'text',$db_opcao,"");
                        <?=@$Lla06_d_fim?>
                        <?php 
                          if(isset($la06_d_fim)&&($la06_d_fim!="")){
-                                       $vet=explode("/",$la06_d_fim);
+                                       $vet=explode("/",(string) $la06_d_fim);
                                        $la06_d_fim_dia=$vet[0];
                                        $la06_d_fim_mes=$vet[1];
                                        $la06_d_fim_ano=$vet[2];
@@ -177,7 +177,7 @@ db_input('db12_uf',2,$Idb12_uf,true,'text',3,'')
          <?=@$Lla06_i_tipo?>
       </td>
       <td>
-         <?php $y = array("0"=>"Selecione:::","1"=>"Técnico","2"=>"Legal");
+         <?php $y = ["0"=>"Selecione:::","1"=>"Técnico","2"=>"Legal"];
            db_select('la06_i_tipo',$y,true,$db_opcao," onchange='js_tipo(this.value);'");
          ?>
       </td>
@@ -190,7 +190,7 @@ db_input('db12_uf',2,$Idb12_uf,true,'text',3,'')
     </td>
     <td>
         <?php
-        $permitirConferencia = array('f' => 'Não', 't' => 'Sim');
+        $permitirConferencia = ['f' => 'Não', 't' => 'Sim'];
         db_select('la06_permitidoconferencia', $permitirConferencia, true, $db_opcao);
         ?>
     </td>
@@ -209,7 +209,7 @@ db_input('db12_uf',2,$Idb12_uf,true,'text',3,'')
   <tr>
     <td valign="top"><br>
       <?php 
-       $chavepri = array ("la06_i_codigo" => @$la06_i_codigo,
+       $chavepri =  ["la06_i_codigo" => @$la06_i_codigo,
                           "la02_c_descr" => @$la02_c_descr ,
                           "z01_nome"=> @$z01_nome,
                           "rh70_descr" => @$rh70_descr,
@@ -222,7 +222,7 @@ db_input('db12_uf',2,$Idb12_uf,true,'text',3,'')
                           "la06_i_tipo" => @$la06_i_tipo,
                           "la06_c_orgaoclasse" => @$la06_c_orgaoclasse,
                           "la06_c_cns" => @$la06_c_cns,
-                          "la06_permitidoconferencia" => @$la06_permitidoconferencia);
+                          "la06_permitidoconferencia" => @$la06_permitidoconferencia];
        $cliframe_alterar_excluir->chavepri = $chavepri;
       @$cliframe_alterar_excluir->sql = $cllab_labresp->sql_query ("","*",""," la06_i_laboratorio =  $la06_i_laboratorio");
        $cliframe_alterar_excluir->campos = "la06_i_codigo, la06_i_tipo, la06_d_inicio, la06_d_fim, z01_nome";
@@ -375,7 +375,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lab_labresp.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

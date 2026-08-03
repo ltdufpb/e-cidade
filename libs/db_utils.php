@@ -51,7 +51,7 @@ class db_utils
     /**
      * Construtor da Classe
      */
-    function db_utils()
+    function __construct()
     {
     }
 
@@ -75,7 +75,7 @@ class db_utils
             $sFieldType = @pg_field_type($rs, $i);
 
             if ($iTotalLinhas > 0) {
-                $sValor = trim(@pg_result($rs, $idx, $sFieldName));
+                $sValor = trim(@pg_fetch_result($rs, $idx, $sFieldName));
             }
             if ($formata) {
                 switch ($sFieldType) {
@@ -141,7 +141,7 @@ class db_utils
                 $mixed[$key] = self::utf8ize($value);
             }
         } else if (is_string ($mixed)) {
-            return utf8_encode($mixed);
+            return mb_convert_encoding($mixed, 'UTF-8', 'ISO-8859-1');
         }
         return $mixed;
     }
@@ -149,13 +149,13 @@ class db_utils
     /**
      * Metodo para carregar o arquivo de definição da classe requerida;
      *
-     * @deprecated não precisa mais usar...
      * @param string $sClasse - Nome da Classe na Pasta Classes.
      *                             Ex. db_arrecad_classe.php deve passar como parametro
      *                                 "arrecad"
      * @param boolean $rInstance - Testa se além de carregar arquivo deve também Instanciá-la
      * @return OBJECT|boolean - Objeto da Classe Instanciada ou Apenas confirmação do Carregamento
      */
+    #[\Deprecated(message: 'não precisa mais usar...')]
     static function getDao($sClasse, $lInstanciaClasse = true)
     {
         if (!class_exists("cl_{$sClasse}")) {
@@ -183,7 +183,7 @@ class db_utils
     static function getCollectionByRecord($rsRecordset, $lFormata = false, $lMostra = false, $lEncode = false)
     {
         $iINumRows = @pg_num_rows($rsRecordset);
-        $aDButils = array();
+        $aDButils = [];
 
         if ($iINumRows > 0) {
             for ($iIndice = 0; $iIndice < $iINumRows; $iIndice++) {
@@ -213,46 +213,27 @@ class db_utils
         $isIntransaction = false;
         $lStatus = pg_transaction_status($pConexao);
 
-        switch ($lStatus) {
-            // sem transacao em  (0)
-            case  PGSQL_TRANSACTION_IDLE:
-                $isIntransaction = false;
-                break;
-
-            //em Transacao Ativa, comando sendo executado  (1)
-            case PGSQL_TRANSACTION_ACTIVE:
-                $isIntransaction = true;
-                break;
-
-            //transacao em andamento  (2)
-            case PGSQL_TRANSACTION_INTRANS:
-                $isIntransaction = true;
-                break;
-
-            //transacao com erro  (3)
-            case  PGSQL_TRANSACTION_INERROR:
-                $isIntransaction = false;
-                break;
-
-            //falha na conexao; (4);
-            case PGSQL_TRANSACTION_UNKNOWN:
-                $isIntransaction = false;
-                break;
-        }
+        $isIntransaction = match ($lStatus) {
+            PGSQL_TRANSACTION_IDLE => false,
+            PGSQL_TRANSACTION_ACTIVE => true,
+            PGSQL_TRANSACTION_INTRANS => true,
+            PGSQL_TRANSACTION_INERROR => false,
+            PGSQL_TRANSACTION_UNKNOWN => false,
+            default => $isIntransaction,
+        };
         return $isIntransaction;
     }
 
 
     /**
      *
-     * @deprecated - metodo depreciado - getCollectionByRecord
      * @param resource $rsRecordset
      * @param bool $lFormata
      * @param bool $lMostra
      * @param bool $lEncode
-     *
      * @return \stdClass[]
      */
+    #[\Deprecated(message: '- metodo depreciado - getCollectionByRecord')]
     static function getColectionByRecord($rsRecordset, $lFormata = false, $lMostra = false, $lEncode = false)
     {
         return self::getCollectionByRecord($rsRecordset, $lFormata, $lMostra, $lEncode);
@@ -292,7 +273,7 @@ class db_utils
      */
     static function getRowFromDao($oDao, $aKeys)
     {
-        $sSqlRow = call_user_func_array(array($oDao, "sql_query_file"), $aKeys);
+        $sSqlRow = call_user_func_array([$oDao, "sql_query_file"], $aKeys);
 
         $rsRow = $oDao->sql_record($sSqlRow);
         if ($oDao->numrows == 0) {
@@ -326,7 +307,7 @@ class db_utils
      */
     public static function makeCollectionFromRecord($rsRecord, Closure $fRetorno)
     {
-        $aRetorno = array();
+        $aRetorno = [];
         $iTotalLinhas = pg_num_rows($rsRecord);
 
         // Vou deixar só para questão de conferência.
@@ -396,7 +377,7 @@ class db_utils
 
         if ($valor != '') {
             $letra = strtolower(
-                $valor[strlen($valor) - 1]
+                (string) $valor[strlen((string) $valor) - 1]
             );
         }
 
@@ -420,7 +401,7 @@ class db_utils
 
             //return $instalado ? MelhoriaService::usarMelhoria($issue) : null;
             return null;
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return null;
         }
     }

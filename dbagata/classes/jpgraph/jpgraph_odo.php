@@ -61,11 +61,11 @@ DEFINE("NEEDLE_ARROW_LL",9);
 // Description: Main class to handle odometer graphs
 //===================================================
 class OdoGraph extends Graph {
-    var $iObj=array();
-    var $iOdoColor = "lightblue";
-    var $caption;
+    public $iObj=[];
+    public $iOdoColor = "lightblue";
+    public $caption;
 
-    function OdoGraph($aWidth=-1,$aHeight=-1,$aCachedName="",$aTimeOut=0,$aInline=true) {
+    function __construct($aWidth=-1,$aHeight=-1,$aCachedName="",$aTimeOut=0,$aInline=true) {
 	Graph::Graph($aWidth,$aHeight,$aCachedName,$aTimeOut,$aInline);		
 	$this->SetColor($this->iOdoColor);
 	$this->img->SetMargin(5,5,5,5);
@@ -158,19 +158,19 @@ class OdoGraph extends Graph {
 //===================================================
 
 class OdoNeedle extends LineProperty {
-    var $iFillColor="lightblue";
-    var $iVal=0;
-    var $iLength = 0.6; // Fraction of radius
-    var $iStyleParameter1 = -1, $iStyleParameter2 = -1; 
-    var $iShow=false;
-    var $iLineWeight=1;
-    var $iShadowColor="gray:0.7",$iShadow=false, $idxShadow=4, $idyShadow=4;
+    public $iFillColor="lightblue";
+    public $iVal=0;
+    public $iLength = 0.6; // Fraction of radius
+    public $iStyleParameter1 = -1, $iStyleParameter2 = -1; 
+    public $iShow=false;
+    public $iLineWeight=1;
+    public $iShadowColor="gray:0.7",$iShadow=false, $idxShadow=4, $idyShadow=4;
 
-    function OdoNeedle() {
-	$this->iArrowSize = array(
+    function __construct() {
+	$this->iArrowSize = [
 	    3,5, 3,8, 3,15,    // SS, SM, SL
 	    4,7, 4,12, 5,20,    // MS, MM, ML
-	    8,7, 8,14, 8,24 ); // LS, LM, LL
+	    8,7, 8,14, 8,24 ]; // LS, LM, LL
 	$this->iWeight = 4;
 	$this->iColor = "navy";
 	$this->iStyle = NEEDLE_STYLE_ENDARROW;
@@ -193,7 +193,7 @@ class OdoNeedle extends LineProperty {
     function SetLength($aLen) {
 	$this->iLength = $aLen;
     }
-    
+
     function SetStyle($aStyle, $aStyleParameter1=-1, $aStyleParameter2=-1) {
 	$this->iStyle = $aStyle;
 	if( $aStyle==NEEDLE_STYLE_ENDARROW && $aStyleParameter1==-1 )
@@ -226,8 +226,8 @@ class OdoNeedle extends LineProperty {
 	switch( $this->iStyle ) {
 	    case NEEDLE_STYLE_SIMPLE: // Simple, just a rectangle
 		$yadj = $this->iWeight/2;
-	        $p = array($xc,$yc-$yadj,$xc+$r,$yc-$yadj,
-		           $xc+$r,$yc+$this->iWeight-$yadj,$xc,$yc+$this->iWeight-$yadj);
+	        $p = [$xc,$yc-$yadj,$xc+$r,$yc-$yadj,
+		           $xc+$r,$yc+$this->iWeight-$yadj,$xc,$yc+$this->iWeight-$yadj];
 		break;
 	    case NEEDLE_STYLE_STRAIGHT: // Straight - two widths
 		// Check if we should use default values?
@@ -238,13 +238,13 @@ class OdoNeedle extends LineProperty {
 
 		$yadj = $this->iWeight/2;
 	        $ind = floor($this->iWeight*$this->iStyleParameter2) ;
-		$p = array($xc,$yc-$yadj,
+		$p = [$xc,$yc-$yadj,
 		$xc+$r*$this->iStyleParameter1,$yc-$yadj,
 		$xc+$r*$this->iStyleParameter1,$yc+$ind-$yadj, $xc+$r,$yc+$ind-$yadj,
 		$xc+$r,$yc+$ind+($this->iWeight-2*$ind)-$yadj,
 		$xc+$r*$this->iStyleParameter1,$yc+$ind+($this->iWeight-2*$ind)-$yadj,
 		$xc+$r*$this->iStyleParameter1,$yc+$this->iWeight-$yadj,
-		$xc,$yc+$this->iWeight-$yadj);
+		$xc,$yc+$this->iWeight-$yadj];
 	        break;
 
 	    case NEEDLE_STYLE_ENDARROW: // With end arrow
@@ -253,40 +253,40 @@ class OdoNeedle extends LineProperty {
 		$yadj = $arrow_width + $this->iWeight/2;
 
 	    $r -= $arrow_length;
-		$p = array($xc,$yc+$arrow_width-$yadj,$xc+$r,$yc+$arrow_width-$yadj,
+		$p = [$xc,$yc+$arrow_width-$yadj,$xc+$r,$yc+$arrow_width-$yadj,
 		           $xc+$r,$yc-$yadj,
 		           $xc+$r+$arrow_length,$yc+$arrow_width+$this->iWeight/2-$yadj,
 		           $xc+$r,$yc+2*$arrow_width+$this->iWeight-$yadj,
 		           $xc+$r,$yc+$arrow_width+$this->iWeight-$yadj,
-		           $xc,$yc+$arrow_width+$this->iWeight-$yadj);
-	    
+		           $xc,$yc+$arrow_width+$this->iWeight-$yadj];
+
 		break;
 	    case NEEDLE_STYLE_SMALL_TRIANGLE: // Triangle small width base
 		$base_width = 8;
 	    case NEEDLE_STYLE_MEDIUM_TRIANGLE: // Triangle medium width base
-		$base_width = isset($base_width)  ? $base_width : 15 ;
+		$base_width ??= 15 ;
 	    case NEEDLE_STYLE_LARGE_TRIANGLE: // Triangle medium width base
-		$base_width = isset($base_width)  ? $base_width : 25 ;
+		$base_width ??= 25 ;
 	    case NEEDLE_STYLE_HUGE_TRIANGLE: // Triangle medium width base
-		$base_width = isset($base_width)  ? $base_width : 50 ;
+		$base_width ??= 50 ;
 		$yadj = $base_width/2;
-	        $p = array($xc,$yc-$yadj,$xc+$r,$yc+$base_width/2-$yadj,$xc,$yc+$base_width-$yadj);
+	        $p = [$xc,$yc-$yadj,$xc+$r,$yc+$base_width/2-$yadj,$xc,$yc+$base_width-$yadj];
 		break;
 
 	    default:
-		JpGraphError::Raise("<b>JpGraph Error:</b> Unknown needle style.");
+		(new JpGraphError())->Raise("<b>JpGraph Error:</b> Unknown needle style.");
 		break;
 	}
 
 	// Move the (0,0) point ti where we want the rotation point
-	
+
 	$old_origin = $img->SetCenter($xc,$yc);
 	$a = - $a * 180 / M_PI;
 	$old_a = $img->SetAngle($a);
 
 	if( $this->iShadow ) {
 	    $img->PushColor($this->iShadowColor);
-	    $oldt = array($img->transx,$img->transy);
+	    $oldt = [$img->transx,$img->transy];
 	    $img->SetTranslation($oldt[0]+$this->idxShadow, $oldt[1]+$this->idyShadow);
 	    $img->FilledPolygon($p);
 	    $img->PopColor();
@@ -312,18 +312,18 @@ class OdoNeedle extends LineProperty {
 //===================================================
 
 class OdoScale {
-    var $label=null;
-    var $iMin=0,$iMax=100;
-    var $iStartAngle,$iEndAngle;
-    var $iMinTick=25,$iLabelInterval=1;
-    var $iTickLength=0.05;  // Fraction of radius
-    var $iColor = "black"; // Tickmark color
-    var $iTickWeight=1;
-    var $iShow=true;
-    var $iFormatStr = "%d";
-    var $iLabelPosition=0.8; 
+    public $label=null;
+    public $iMin=0,$iMax=100;
+    public $iStartAngle,$iEndAngle;
+    public $iMinTick=25,$iLabelInterval=1;
+    public $iTickLength=0.05;  // Fraction of radius
+    public $iColor = "black"; // Tickmark color
+    public $iTickWeight=1;
+    public $iShow=true;
+    public $iFormatStr = "%d";
+    public $iLabelPosition=0.8; 
 
-    function OdoScale($aStartAngle,$aEndAngle) {
+    function __construct($aStartAngle,$aEndAngle) {
 	$this->label = new Text();
 	$this->iStartAngle = $aStartAngle * M_PI/180;
 	$this->iEndAngle = $aEndAngle * M_PI/180;
@@ -366,7 +366,7 @@ class OdoScale {
 
     function Translate($aVal) {
 	if( $aVal > $this->iMax || $aVal < $this->iMin )
-	    JpGraphError::Raise("<b>JpGraph Error:</b> Value for odometer is outside specified scale.");
+	    (new JpGraphError())->Raise("<b>JpGraph Error:</b> Value for odometer is outside specified scale.");
 	$a = $this->iStartAngle + 
 	    ($aVal-$this->iMin)/($this->iMax-$this->iMin)*($this->iEndAngle-$this->iStartAngle);
 	$a = 3/2*M_PI - $a ;
@@ -387,14 +387,14 @@ class OdoScale {
 	for($i=0; $i<=$n; ++$i) {
 	    $a = $this->Translate($tick);
 	    if( $i % $this->iLabelInterval == 0 ) {
-		$p = array($aOdometer->xc + round($r*cos($a)*0.99),
+		$p = [$aOdometer->xc + round($r*cos($a)*0.99),
 		    $aOdometer->yc - round($r*sin($a)),
 		    $aOdometer->xc + round($r*(1-$this->iTickLength*1.5)*cos($a)),
-		    $aOdometer->yc - round($r*(1-$this->iTickLength*1.5)*sin($a)));
-		
+		    $aOdometer->yc - round($r*(1-$this->iTickLength*1.5)*sin($a))];
+
 		$lx = $aOdometer->xc + round($r*$this->iLabelPosition*cos($a));
 		$ly = $aOdometer->yc - round($r*$this->iLabelPosition*sin($a));
-		
+
 		$s = sprintf($this->iFormatStr,$tick);
 		$this->label->Set($s);
 		if( ($i==0 || $i==$n) && $aOdometer->iStyle==ODO_HALF ) {
@@ -405,10 +405,10 @@ class OdoScale {
 		$this->label->Stroke($img);		    
 	    }
 	    else {
-		$p = array($aOdometer->xc + round($aOdometer->iRadius*cos($a)),
+		$p = [$aOdometer->xc + round($aOdometer->iRadius*cos($a)),
 		    $aOdometer->yc - round($r*sin($a)),
 		    $aOdometer->xc + round($r*(1-$this->iTickLength)*cos($a)),
-		    $aOdometer->yc - round($r*(1-$this->iTickLength)*sin($a)));
+		    $aOdometer->yc - round($r*(1-$this->iTickLength)*sin($a))];
 	    }
 	    $img->Line($p[0],$p[1],$p[2],$p[3]);
 	    $tick += $this->iMinTick;
@@ -423,7 +423,7 @@ class OdoScale {
 //===================================================
 
 class OdometerLabel extends Text {
-    var $iVPos=0.2;
+    public $iVPos=0.2;
     function SetVPos($aPos) {
 	$this->iVPos = $aPos;
     }
@@ -434,22 +434,22 @@ class OdometerLabel extends Text {
 // Description: Main class to draw a odometer
 //===================================================
 class Odometer {
-    var $scale;
-    var $needle,$needle2,$needle3,$needle4;
-    var $iStyle;
-    var $iRadius=0.3;
-    var $xc,$yc;
-    var $iFillColor = "lightgray:1.15", $iColor = "navy";
-    var $iBorderWidth=1;
-    var $iInd, $iIndIdx=0;
-    var $iCenterAreaWidth = 0;
-    var $label;
-    var $iBase = true, $iBaseWidth=0.12;
-    var $iBaseColor1="navy",$iBaseColor2="steelblue",$iBaseColor3="white";
-    var $iMargin=5;
-    var $caption,$iCaptionMargin=0;
+    public $scale;
+    public $needle,$needle2,$needle3,$needle4;
+    public $iStyle;
+    public $iRadius=0.3;
+    public $xc,$yc;
+    public $iFillColor = "lightgray:1.15", $iColor = "navy";
+    public $iBorderWidth=1;
+    public $iInd, $iIndIdx=0;
+    public $iCenterAreaWidth = 0;
+    public $label;
+    public $iBase = true, $iBaseWidth=0.12;
+    public $iBaseColor1="navy",$iBaseColor2="steelblue",$iBaseColor3="white";
+    public $iMargin=5;
+    public $caption,$iCaptionMargin=0;
 
-    function Odometer($aStyle=ODO_HALF) {
+    function __construct($aStyle=ODO_HALF) {
 	// Set default position
 	$this->xc = 0.5;
 	if( $aStyle == ODO_FULL ) {
@@ -513,7 +513,7 @@ class Odometer {
     }
 
     function AddIndication($aStart,$aEnd,$aColor) {
-	$this->iInd[$this->iIndIdx++] = array($aStart,$aEnd,$aColor);
+	$this->iInd[$this->iIndIdx++] = [$aStart,$aEnd,$aColor];
     }
 
     function SetColor($aColor) {
@@ -652,18 +652,18 @@ class Odometer {
 	}
     }
 }
-    
+
 //===================================================
 // CLASS LayoutVert
 // Description: Layout class which orders its objects
 // vertically
 //===================================================
 class LayoutVert {
-    var $iObj;
+    public $iObj;
 
-    function LayoutVert($aObjArr) {
+    function __construct($aObjArr) {
 	if( !is_array($aObjArr) )
-	    $aObjArr = array($aObjArr);
+	    $aObjArr = [$aObjArr];
 	$this->iObj = $aObjArr;
     }
 
@@ -703,11 +703,11 @@ class LayoutVert {
 // horizontally
 //===================================================
 class LayoutHor {
-    var $iObj;
+    public $iObj;
 
-    function LayoutHor($aObjArr) {
+    function __construct($aObjArr) {
 	if( !is_array($aObjArr) )
-	    $aObjArr = array($aObjArr);
+	    $aObjArr = [$aObjArr];
 	$this->iObj = $aObjArr;
     }
 

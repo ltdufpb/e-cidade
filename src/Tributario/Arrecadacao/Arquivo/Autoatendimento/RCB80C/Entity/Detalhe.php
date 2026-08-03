@@ -6,8 +6,8 @@ use ECidade\Tributario\Arrecadacao\Arquivo\Autoatendimento\Entity\Detalhe as Det
 
 final class Detalhe extends DetalhePadrao
 {
-    const RETORNO_REGISTRO = 'RETORNOREGISTRO';
-    const RCB80C           = 'RCB80C';
+    const string RETORNO_REGISTRO = 'RETORNOREGISTRO';
+    const string RCB80C           = 'RCB80C';
 
     private $retornoRegistro;
     private $numnov;
@@ -31,6 +31,7 @@ final class Detalhe extends DetalhePadrao
     /**
      * @return string
      */
+    #[\Override]
     public function getTipoArquivo()
     {
         return self::RCB80C;

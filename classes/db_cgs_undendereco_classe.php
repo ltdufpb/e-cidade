@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE cgs_undendereco
 class cl_cgs_undendereco { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd109_sequencial = 0; 
-   var $sd109_endereco = 0; 
-   var $sd109_cgs_und = 0; 
+   public $sd109_sequencial = 0; 
+   public $sd109_endereco = 0; 
+   public $sd109_cgs_und = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd109_sequencial = int4 = Código 
                  sd109_endereco = int4 = Código do Endereço 
                  sd109_cgs_und = int4 = CGS 
                  ";
    //funcao construtor da classe 
-   function cl_cgs_undendereco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgs_undendereco"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_cgs_undendereco {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sd109_sequencial = pg_result($result,0,0); 
+       $this->sd109_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cgs_undendereco_sd109_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sd109_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sd109_sequencial)){
          $this->erro_sql = " Campo sd109_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_cgs_undendereco {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Endereços do CGS ($this->sd109_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Endereços do CGS já Cadastrado";
@@ -145,12 +145,12 @@ class cl_cgs_undendereco {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21871,'$this->sd109_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3938,21871,'','".AddSlashes(pg_result($resaco,0,'sd109_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3938,21872,'','".AddSlashes(pg_result($resaco,0,'sd109_endereco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3938,21873,'','".AddSlashes(pg_result($resaco,0,'sd109_cgs_und'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3938,21871,'','".AddSlashes(pg_fetch_result($resaco,0,'sd109_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3938,21872,'','".AddSlashes(pg_fetch_result($resaco,0,'sd109_endereco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3938,21873,'','".AddSlashes(pg_fetch_result($resaco,0,'sd109_cgs_und'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_cgs_undendereco {
       $this->atualizacampos();
      $sql = " update cgs_undendereco set ";
      $virgula = "";
-     if(trim($this->sd109_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd109_sequencial"])){ 
+     if(trim((string) $this->sd109_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd109_sequencial"])){ 
        $sql  .= $virgula." sd109_sequencial = $this->sd109_sequencial ";
        $virgula = ",";
-       if(trim($this->sd109_sequencial) == null ){ 
+       if(trim((string) $this->sd109_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "sd109_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_cgs_undendereco {
          return false;
        }
      }
-     if(trim($this->sd109_endereco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd109_endereco"])){ 
+     if(trim((string) $this->sd109_endereco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd109_endereco"])){ 
        $sql  .= $virgula." sd109_endereco = $this->sd109_endereco ";
        $virgula = ",";
-       if(trim($this->sd109_endereco) == null ){ 
+       if(trim((string) $this->sd109_endereco) == null ){ 
          $this->erro_sql = " Campo Código do Endereço não informado.";
          $this->erro_campo = "sd109_endereco";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_cgs_undendereco {
          return false;
        }
      }
-     if(trim($this->sd109_cgs_und)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd109_cgs_und"])){ 
+     if(trim((string) $this->sd109_cgs_und)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd109_cgs_und"])){ 
        $sql  .= $virgula." sd109_cgs_und = $this->sd109_cgs_und ";
        $virgula = ",";
-       if(trim($this->sd109_cgs_und) == null ){ 
+       if(trim((string) $this->sd109_cgs_und) == null ){ 
          $this->erro_sql = " Campo CGS não informado.";
          $this->erro_campo = "sd109_cgs_und";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_cgs_undendereco {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21871,'$this->sd109_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd109_sequencial"]) || $this->sd109_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3938,21871,'".AddSlashes(pg_result($resaco,$conresaco,'sd109_sequencial'))."','$this->sd109_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3938,21871,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd109_sequencial'))."','$this->sd109_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd109_endereco"]) || $this->sd109_endereco != "")
-             $resac = db_query("insert into db_acount values($acount,3938,21872,'".AddSlashes(pg_result($resaco,$conresaco,'sd109_endereco'))."','$this->sd109_endereco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3938,21872,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd109_endereco'))."','$this->sd109_endereco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd109_cgs_und"]) || $this->sd109_cgs_und != "")
-             $resac = db_query("insert into db_acount values($acount,3938,21873,'".AddSlashes(pg_result($resaco,$conresaco,'sd109_cgs_und'))."','$this->sd109_cgs_und',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3938,21873,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd109_cgs_und'))."','$this->sd109_cgs_und',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_cgs_undendereco {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21871,'$sd109_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3938,21871,'','".AddSlashes(pg_result($resaco,$iresaco,'sd109_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3938,21872,'','".AddSlashes(pg_result($resaco,$iresaco,'sd109_endereco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3938,21873,'','".AddSlashes(pg_result($resaco,$iresaco,'sd109_cgs_und'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3938,21871,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd109_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3938,21872,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd109_endereco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3938,21873,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd109_cgs_und'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

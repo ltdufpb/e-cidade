@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,9 +55,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Autorizações de empenho","g2"=>"Credores","g3"=>"Usuarios","g4"=>"Tipos de compra","g5"=>"Instituições","g6"=>"Departamentos");
-       $clcriaabas->title = array("g1"=>"Selecionar autorizações de empenho","g2"=>"Selecionar credores","g3"=>"Selecionar usuarios","g4"=>"Selecionar tipos de compra","g5"=>"Selecionar instituições","g6"=>"Selecionar Departamentos");
-       $clcriaabas->src = array("g1"=>"emp2_empautoriza003.php","g2"=>"emp2_empautoriza004.php","g3"=>"emp2_empautoriza005.php","g4"=>"emp2_empautoriza006.php","g5"=>"emp2_empautoriza007.php","g6"=>"emp2_empautoriza008.php");
+       $clcriaabas->identifica = ["g1"=>"Autorizações de empenho","g2"=>"Credores","g3"=>"Usuarios","g4"=>"Tipos de compra","g5"=>"Instituições","g6"=>"Departamentos"];
+       $clcriaabas->title = ["g1"=>"Selecionar autorizações de empenho","g2"=>"Selecionar credores","g3"=>"Selecionar usuarios","g4"=>"Selecionar tipos de compra","g5"=>"Selecionar instituições","g6"=>"Selecionar Departamentos"];
+       $clcriaabas->src = ["g1"=>"emp2_empautoriza003.php","g2"=>"emp2_empautoriza004.php","g3"=>"emp2_empautoriza005.php","g4"=>"emp2_empautoriza006.php","g5"=>"emp2_empautoriza007.php","g6"=>"emp2_empautoriza008.php"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

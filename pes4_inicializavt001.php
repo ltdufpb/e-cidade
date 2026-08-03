@@ -33,7 +33,7 @@ include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vtffunc_classe.php"));
 $clvtffunc = new cl_vtffunc;
-db_postmemory($HTTP_POST_VARS); 
+db_postmemory($_POST); 
 if(isset($processar)){
 
   $ano = $anofolha;
@@ -58,7 +58,7 @@ if(isset($processar)){
   }else if($opcao_gml == "l"){
     if($opcao_filtro == "i"){
       $dbwhere.= " and r70_estrut between '".$r110_lotaci."' and '".$r110_lotacf."'";
-    }else if($opcao_filtro == "s" && trim($faixa_lotac) != ""){
+    }else if($opcao_filtro == "s" && trim((string) $faixa_lotac) != ""){
       $dbwhere.= " and r70_estrut in ('".str_replace(",","','",$faixa_lotac)."')";
     }
   }

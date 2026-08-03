@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_cadvenc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clcadvenc = new cl_cadvenc;
 if(isset($incluir)){
   $sqlerro=false;
@@ -106,9 +106,9 @@ if(isset($soma_ano)){
 		for($w=0;$w<$numrows;$w++){
 			db_fieldsmemory($result_data,$w);
 			if ($sqlerro==false){					
-				$ano=substr($q82_venc,0,4);
-				$mes=substr($q82_venc,5,2);
-				$dia=substr($q82_venc,8,2);
+				$ano=substr((string) $q82_venc,0,4);
+				$mes=substr((string) $q82_venc,5,2);
+				$dia=substr((string) $q82_venc,8,2);
 				$ano=$ano+1;
 				$data_new=$ano."-".$mes."-".$dia;								
 				$clcadvenc->q82_venc=$data_new;				            							

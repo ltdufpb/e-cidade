@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_gerfprovs13_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clgerfprovs13 = new cl_gerfprovs13;
 $clgerfprovs13->rotulo->label("r94_anousu");
 $clgerfprovs13->rotulo->label("r94_mesusu");
@@ -121,9 +121,9 @@ $clgerfprovs13->rotulo->label("r94_valor");
         }else{
            $sql = $clgerfprovs13->sql_query(db_getsession('DB_anousu'),"","","",$campos,"r94_anousu#r94_mesusu#r94_regist#r94_rubric","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_r94_valor)){
-          $repassa = array("chave_r94_anousu"=>$chave_r94_anousu,"chave_r94_valor"=>$chave_r94_valor);
+          $repassa = ["chave_r94_anousu"=>$chave_r94_anousu,"chave_r94_valor"=>$chave_r94_valor];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

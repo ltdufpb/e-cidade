@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clpontoparada = new cl_pontoparada;
 $clpontoparada->rotulo->label("tre04_sequencial");
@@ -83,7 +83,7 @@ $clpontoparada->rotulo->label("tre04_nome");
       <tr>
         <td>
           <?php
-          $aWhere = array();
+          $aWhere = [];
           $sQuery = "sql_query";
 
           if( !isset( $pesquisa_chave ) ) {
@@ -114,9 +114,9 @@ $clpontoparada->rotulo->label("tre04_nome");
               $aWhere[] = "tre04_nome like '{$chave_tre04_nome}%'";
             }
 
-            $repassa = array();
+            $repassa = [];
             if( isset( $chave_tre04_sequencial ) ) {
-              $repassa = array( "chave_tre04_sequencial" => $chave_tre04_sequencial, "tre11_sequencial" => $tre11_sequencial );
+              $repassa = [ "chave_tre04_sequencial" => $chave_tre04_sequencial, "tre11_sequencial" => $tre11_sequencial ];
             }
 
             $sWhere = implode( ' AND ', $aWhere );

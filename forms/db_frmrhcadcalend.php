@@ -80,7 +80,7 @@ db_inputdata('r62_data',@$r62_data_dia,@$r62_data_mes,@$r62_data_ano,true,'text'
         $dbwhere .= " and r62_data <> '".$r62_data."'";
       }
       $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
-      $chavepri= array("r62_calend"=>@$r62_calend,"r62_data"=>@$r62_data);
+      $chavepri= ["r62_calend"=>@$r62_calend,"r62_data"=>@$r62_data];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       $cliframe_alterar_excluir->opcoes  = 3;
       $cliframe_alterar_excluir->sql     = $clcalendf->sql_query_file(null,null,"r62_calend, r62_data","r62_data",$dbwhere);
@@ -120,7 +120,7 @@ function js_preenchepesquisa(chave){
   location.href='pes1_rhcadcalend002.php?chavepesquisa='+chave;
   <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
    }
   ?>
 }

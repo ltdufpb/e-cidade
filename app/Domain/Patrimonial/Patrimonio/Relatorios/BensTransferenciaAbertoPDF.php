@@ -10,17 +10,11 @@ use FpdfMultiCellBorder;
  */
 class BensTransferenciaAbertoPDF extends FpdfMultiCellBorder
 {
-    /**
-     * @var array $dados
-     */
-    private $dados;
-
     private $totalDestino;
 
-    public function __construct(array $dados)
+    public function __construct(private readonly array $dados)
     {
         parent::__construct();
-        $this->dados = $dados;
         $this->mostrarEmissor(true);
 
         global $head2;

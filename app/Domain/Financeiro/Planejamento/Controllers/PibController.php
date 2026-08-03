@@ -38,17 +38,11 @@ use App\Domain\Financeiro\Planejamento\Services\PibService;
 class PibController
 {
     /**
-     * @var PibService
-     */
-    private $service;
-
-    /**
      * PibController constructor.
      * @param PibService $service
      */
-    public function __construct(PibService $service)
+    public function __construct(private readonly PibService $service)
     {
-        $this->service = $service;
     }
 
     public function show($planejamento_id)

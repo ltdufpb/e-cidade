@@ -40,7 +40,7 @@ $this->objpdf->setfillcolor(255,255,255);
 $this->objpdf->Setfont('Arial','B',11);
 $this->objpdf->text(160, $xlin-13,'RECIBO DO SACADO ');
 
-if (substr($this->dtparapag,4,1)=='-' || substr($this->dtparapag,7,1)=='/') {
+if (substr((string) $this->dtparapag,4,1)=='-' || substr((string) $this->dtparapag,7,1)=='/') {
 	$this->dtparapag =  db_formatar($this->dtparapag,'d');
 }
 
@@ -80,7 +80,7 @@ $this->objpdf->text($xcol+17, $xlin+19, $this->munic);
 $this->objpdf->text($xcol+75, $xlin+15, 'CEP : ');
 $this->objpdf->text($xcol+83, $xlin+15, $this->cep);
 $this->objpdf->text($xcol+75, $xlin+19, 'CNPJ/CPF:');
-$this->objpdf->text($xcol+90, $xlin+19, db_formatar(@$this->cgccpf,(strlen(@$this->cgccpf)<12?'cpf':'cnpj')));
+$this->objpdf->text($xcol+90, $xlin+19, db_formatar(@$this->cgccpf,(strlen((string) @$this->cgccpf)<12?'cpf':'cnpj')));
 $this->objpdf->Setfont('Arial','',6);
 
 $this->objpdf->Roundedrect(@$xcol+126,@$xlin+2,76,20,2,'DF','1234');
@@ -139,7 +139,7 @@ for($x=0;$x<$intnumrows;$x++){
   }
   $this->objpdf->cell($reccol + 82, 2,db_formatar($this->arrayvalreceitas[$x],'f'),0,1,"R",0);
 
-  $iFormaCorrecao = pg_result(db_query("select k03_separajurmulparc
+  $iFormaCorrecao = pg_fetch_result(db_query("select k03_separajurmulparc
                                           from numpref
                                          where k03_instit = ".db_getsession("DB_instit")."
                                            and k03_anousu = ".db_getsession("DB_anousu")),0,0);
@@ -316,7 +316,7 @@ if ($this->loteamento == true) {
                                                        from db_reciboweb
                                                             inner join arrecad on db_reciboweb.k99_numpre = arrecad.k00_numpre
                                                                               and db_reciboweb.k99_numpar = arrecad.k00_numpar
-                                                      where db_reciboweb.k99_numpre_n = " . substr($this->numpre,0,8) . "
+                                                      where db_reciboweb.k99_numpre_n = " . substr((string) $this->numpre,0,8) . "
                                                    ) as x
                                           ) as y
                                  ) as z
@@ -349,7 +349,7 @@ if ($this->loteamento == true) {
   $totvlrdesconto = 0;
   $totapagar			= 0;
 
-  for ($reg=0; $reg < pg_numrows($resultrecibo); $reg++) {
+  for ($reg=0; $reg < pg_num_rows($resultrecibo); $reg++) {
 
     db_fieldsmemory($resultrecibo, $reg);
 
@@ -362,7 +362,7 @@ if ($this->loteamento == true) {
 
       $nome = $this->prefeitura;
 
-      if(strlen($nome) > 42) {
+      if(strlen((string) $nome) > 42) {
         $TamFonteNome = 8;
       } else {
         $TamFonteNome = 9;
@@ -436,7 +436,7 @@ if ($this->loteamento == true) {
 
   }
 
-  $this->objpdf->cell(88, 5, "TOTAL DE MATRICULAS: " . pg_numrows($resultrecibo) , 0, 0, 'L');
+  $this->objpdf->cell(88, 5, "TOTAL DE MATRICULAS: " . pg_num_rows($resultrecibo) , 0, 0, 'L');
   $this->objpdf->cell(22, 5, db_formatar($totvlrcor, "f", ' ', 20) , 0, 0, 'R');
   $this->objpdf->cell(18, 5, db_formatar($totvlrmul, "f", ' ', 20) , 0, 0, 'R');
   $this->objpdf->cell(18, 5, db_formatar($totvlrjur, "f", ' ', 20) , 0, 0, 'R');

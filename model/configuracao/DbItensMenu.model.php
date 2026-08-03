@@ -92,7 +92,7 @@ class DbItensMenu {
    * Array com com os menus filho
    * @var array
    */
-  private $aItensFilho = array();
+  private $aItensFilho = [];
   
   /**
    * Construtor da classe. Recebe o código como parâmetro, que pode ser null

@@ -36,7 +36,7 @@ class ComprasPublicasLicitacao
         $licitacaoPregao->getProcessoProtocolo();
         $atributosLicitacao = new LicitacaoAtributosDinamicos();
         $atributosLicitacao->setCodigoLicitacao($licitacaoPregao->getCodigo());
-        $this->dados->objeto                = utf8_encode($licitacaoPregao->getObjeto());
+        $this->dados->objeto                = mb_convert_encoding($licitacaoPregao->getObjeto(), 'UTF-8', 'ISO-8859-1');
         if ($licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE") {
             $this->dados->tipoRealizacao    = 1;
         }
@@ -50,23 +50,12 @@ class ComprasPublicasLicitacao
          * 1 = Menor Preço; 2 = Maior Preço; 3 = Maior Desconto -> se tipoJulgamento = 2,
          * então tipoRealizacao não pode ser 3 (Não há Pregão Presencial por Maior Preço)
          */
-        switch ($atributosLicitacao->getAtributo('tipolicitacao')) {
-            case 'MPR':
-                $tipoJulgamento = 1;
-                break;
-
-            case 'MOP':
-                $tipoJulgamento = 2;
-                break;
-
-            case 'MDE':
-                $tipoJulgamento = 3;
-                break;
-
-            default:
-                $tipoJulgamento = 1;
-                break;
-        }
+        $tipoJulgamento = match ($atributosLicitacao->getAtributo('tipolicitacao')) {
+            'MPR' => 1,
+            'MOP' => 2,
+            'MDE' => 3,
+            default => 1,
+        };
 
         $this->dados->tipoJulgamento        = $tipoJulgamento;
         $numeroProcesso                     = $licitacaoPregao->getProcesso();

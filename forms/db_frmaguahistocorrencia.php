@@ -163,7 +163,7 @@
       //$cliframe_alterar_excluir->opcoes        = 1;  
       $cliframe_alterar_excluir->iframe_height = "160";
       $cliframe_alterar_excluir->iframe_width  = "800";
-      $chavepri = array("ar23_sequencial"=>$ar23_sequencial);
+      $chavepri = ["ar23_sequencial"=>$ar23_sequencial];
       $cliframe_alterar_excluir->chavepri      = $chavepri;
       $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);
       

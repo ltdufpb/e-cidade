@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE cancdebitosissplan
 class cl_cancdebitosissplan { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q78_sequencial = 0; 
-   var $q78_cancdebitos = 0; 
-   var $q78_issplan = 0; 
+   public $q78_sequencial = 0; 
+   public $q78_cancdebitos = 0; 
+   public $q78_issplan = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q78_sequencial = int4 = Código 
                  q78_cancdebitos = int4 = Cancdebitos 
                  q78_issplan = int4 = Planilha 
                  ";
    //funcao construtor da classe 
-   function cl_cancdebitosissplan() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cancdebitosissplan"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_cancdebitosissplan {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q78_sequencial = pg_result($result,0,0); 
+       $this->q78_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cancdebitosissplan_q78_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q78_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q78_sequencial)){
          $this->erro_sql = " Campo q78_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_cancdebitosissplan {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cancdebitosissplan ($this->q78_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cancdebitosissplan já Cadastrado";
@@ -166,12 +166,12 @@ class cl_cancdebitosissplan {
      $resaco = $this->sql_record($this->sql_query_file($this->q78_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12002,'$this->q78_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2076,12002,'','".AddSlashes(pg_result($resaco,0,'q78_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2076,12003,'','".AddSlashes(pg_result($resaco,0,'q78_cancdebitos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2076,12004,'','".AddSlashes(pg_result($resaco,0,'q78_issplan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2076,12002,'','".AddSlashes(pg_fetch_result($resaco,0,'q78_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2076,12003,'','".AddSlashes(pg_fetch_result($resaco,0,'q78_cancdebitos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2076,12004,'','".AddSlashes(pg_fetch_result($resaco,0,'q78_issplan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_cancdebitosissplan {
       $this->atualizacampos();
      $sql = " update cancdebitosissplan set ";
      $virgula = "";
-     if(trim($this->q78_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q78_sequencial"])){ 
+     if(trim((string) $this->q78_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q78_sequencial"])){ 
        $sql  .= $virgula." q78_sequencial = $this->q78_sequencial ";
        $virgula = ",";
-       if(trim($this->q78_sequencial) == null ){ 
+       if(trim((string) $this->q78_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "q78_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_cancdebitosissplan {
          return false;
        }
      }
-     if(trim($this->q78_cancdebitos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q78_cancdebitos"])){ 
+     if(trim((string) $this->q78_cancdebitos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q78_cancdebitos"])){ 
        $sql  .= $virgula." q78_cancdebitos = $this->q78_cancdebitos ";
        $virgula = ",";
-       if(trim($this->q78_cancdebitos) == null ){ 
+       if(trim((string) $this->q78_cancdebitos) == null ){ 
          $this->erro_sql = " Campo Cancdebitos nao Informado.";
          $this->erro_campo = "q78_cancdebitos";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_cancdebitosissplan {
          return false;
        }
      }
-     if(trim($this->q78_issplan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q78_issplan"])){ 
+     if(trim((string) $this->q78_issplan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q78_issplan"])){ 
        $sql  .= $virgula." q78_issplan = $this->q78_issplan ";
        $virgula = ",";
-       if(trim($this->q78_issplan) == null ){ 
+       if(trim((string) $this->q78_issplan) == null ){ 
          $this->erro_sql = " Campo Planilha nao Informado.";
          $this->erro_campo = "q78_issplan";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_cancdebitosissplan {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12002,'$this->q78_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q78_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2076,12002,'".AddSlashes(pg_result($resaco,$conresaco,'q78_sequencial'))."','$this->q78_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2076,12002,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q78_sequencial'))."','$this->q78_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q78_cancdebitos"]))
-           $resac = db_query("insert into db_acount values($acount,2076,12003,'".AddSlashes(pg_result($resaco,$conresaco,'q78_cancdebitos'))."','$this->q78_cancdebitos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2076,12003,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q78_cancdebitos'))."','$this->q78_cancdebitos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q78_issplan"]))
-           $resac = db_query("insert into db_acount values($acount,2076,12004,'".AddSlashes(pg_result($resaco,$conresaco,'q78_issplan'))."','$this->q78_issplan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2076,12004,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q78_issplan'))."','$this->q78_issplan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_cancdebitosissplan {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12002,'$q78_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2076,12002,'','".AddSlashes(pg_result($resaco,$iresaco,'q78_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2076,12003,'','".AddSlashes(pg_result($resaco,$iresaco,'q78_cancdebitos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2076,12004,'','".AddSlashes(pg_result($resaco,$iresaco,'q78_issplan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2076,12002,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q78_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2076,12003,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q78_cancdebitos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2076,12004,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q78_issplan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cancdebitosissplan
@@ -345,7 +345,7 @@ class cl_cancdebitosissplan {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cancdebitosissplan";
@@ -359,7 +359,7 @@ class cl_cancdebitosissplan {
    function sql_query ( $q78_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -386,7 +386,7 @@ class cl_cancdebitosissplan {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_cancdebitosissplan {
    function sql_query_file ( $q78_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_cancdebitosissplan {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

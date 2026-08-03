@@ -70,27 +70,12 @@ final class ParametrosProcessoEletronicoBag extends ParameterBag
      */
     public function getAcaoByTipoProcesso($tipoProcesso)
     {
-        switch ($tipoProcesso) {
-            case $this->getAlvaraAutonomo():
-            case $this->getAlvaraAutonomoProcessoEletronico():
-                $acao = ProcessoEletronicoHelper::ACAO_ALVARA_AUTONOMO;
-                break;
-
-            case $this->getAlvaraEmpresa():
-            case $this->getAlvaraEmpresaProcessoEletronico():
-            case AtendimentoInclusaoInscricaoJsonService::getTipoProcesso():
-                $acao = ProcessoEletronicoHelper::ACAO_ALVARA_EMPRESA;
-                break;
-
-            case $this->getAlvaraMei():
-            case $this->getAlvaraMeiProcessoEletronico():
-                $acao = ProcessoEletronicoHelper::ACAO_ALVARA_MEI;
-                break;
-
-            default:
-                throw new \Exception('Tipo de processo inválido');
-                break;
-        }
+        $acao = match ($tipoProcesso) {
+            $this->getAlvaraAutonomo(), $this->getAlvaraAutonomoProcessoEletronico() => ProcessoEletronicoHelper::ACAO_ALVARA_AUTONOMO,
+            $this->getAlvaraEmpresa(), $this->getAlvaraEmpresaProcessoEletronico(), AtendimentoInclusaoInscricaoJsonService::getTipoProcesso() => ProcessoEletronicoHelper::ACAO_ALVARA_EMPRESA,
+            $this->getAlvaraMei(), $this->getAlvaraMeiProcessoEletronico() => ProcessoEletronicoHelper::ACAO_ALVARA_MEI,
+            default => throw new \Exception('Tipo de processo inválido'),
+        };
 
         return $acao;
     }

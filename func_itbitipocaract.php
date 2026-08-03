@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbitipocaract_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitbitipocaract = new cl_itbitipocaract;
 $clitbitipocaract->rotulo->label("it31_sequencial");
 $clitbitipocaract->rotulo->label("it31_descricao");
@@ -98,9 +98,9 @@ $clitbitipocaract->rotulo->label("it31_descricao");
         }else{
            $sql = $clitbitipocaract->sql_query("",$campos,"it31_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_it31_descricao)){
-          $repassa = array("chave_it31_sequencial"=>$chave_it31_sequencial,"chave_it31_descricao"=>$chave_it31_descricao);
+          $repassa = ["chave_it31_sequencial"=>$chave_it31_sequencial,"chave_it31_descricao"=>$chave_it31_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

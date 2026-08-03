@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE db_viradaitemlog
 class cl_db_viradaitemlog { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c35_sequencial = 0; 
-   var $c35_codarq = 0; 
-   var $c35_db_viradaitem = 0; 
-   var $c35_data_dia = null; 
-   var $c35_data_mes = null; 
-   var $c35_data_ano = null; 
-   var $c35_data = null; 
-   var $c35_hora = null; 
-   var $c35_log = null; 
+   public $c35_sequencial = 0; 
+   public $c35_codarq = 0; 
+   public $c35_db_viradaitem = 0; 
+   public $c35_data_dia = null; 
+   public $c35_data_mes = null; 
+   public $c35_data_ano = null; 
+   public $c35_data = null; 
+   public $c35_hora = null; 
+   public $c35_log = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c35_sequencial = int4 = Código 
                  c35_codarq = int4 = Código da tabela 
                  c35_db_viradaitem = int4 = Código da virada do item 
@@ -61,10 +61,10 @@ class cl_db_viradaitemlog {
                  c35_log = text = Log 
                  ";
    //funcao construtor da classe 
-   function cl_db_viradaitemlog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_viradaitemlog"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_db_viradaitemlog {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c35_sequencial = pg_result($result,0,0); 
+       $this->c35_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_viradaitemlog_c35_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c35_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c35_sequencial)){
          $this->erro_sql = " Campo c35_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_db_viradaitemlog {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "log da virada ($this->c35_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "log da virada já Cadastrado";
@@ -218,15 +218,15 @@ class cl_db_viradaitemlog {
      $resaco = $this->sql_record($this->sql_query_file($this->c35_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10825,'$this->c35_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1864,10825,'','".AddSlashes(pg_result($resaco,0,'c35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1864,10826,'','".AddSlashes(pg_result($resaco,0,'c35_codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1864,10827,'','".AddSlashes(pg_result($resaco,0,'c35_db_viradaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1864,10828,'','".AddSlashes(pg_result($resaco,0,'c35_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1864,10829,'','".AddSlashes(pg_result($resaco,0,'c35_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1864,10830,'','".AddSlashes(pg_result($resaco,0,'c35_log'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1864,10825,'','".AddSlashes(pg_fetch_result($resaco,0,'c35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1864,10826,'','".AddSlashes(pg_fetch_result($resaco,0,'c35_codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1864,10827,'','".AddSlashes(pg_fetch_result($resaco,0,'c35_db_viradaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1864,10828,'','".AddSlashes(pg_fetch_result($resaco,0,'c35_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1864,10829,'','".AddSlashes(pg_fetch_result($resaco,0,'c35_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1864,10830,'','".AddSlashes(pg_fetch_result($resaco,0,'c35_log'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_db_viradaitemlog {
       $this->atualizacampos();
      $sql = " update db_viradaitemlog set ";
      $virgula = "";
-     if(trim($this->c35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_sequencial"])){ 
+     if(trim((string) $this->c35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_sequencial"])){ 
        $sql  .= $virgula." c35_sequencial = $this->c35_sequencial ";
        $virgula = ",";
-       if(trim($this->c35_sequencial) == null ){ 
+       if(trim((string) $this->c35_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "c35_sequencial";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_db_viradaitemlog {
          return false;
        }
      }
-     if(trim($this->c35_codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_codarq"])){ 
+     if(trim((string) $this->c35_codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_codarq"])){ 
        $sql  .= $virgula." c35_codarq = $this->c35_codarq ";
        $virgula = ",";
-       if(trim($this->c35_codarq) == null ){ 
+       if(trim((string) $this->c35_codarq) == null ){ 
          $this->erro_sql = " Campo Código da tabela nao Informado.";
          $this->erro_campo = "c35_codarq";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_db_viradaitemlog {
          return false;
        }
      }
-     if(trim($this->c35_db_viradaitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_db_viradaitem"])){ 
+     if(trim((string) $this->c35_db_viradaitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_db_viradaitem"])){ 
        $sql  .= $virgula." c35_db_viradaitem = $this->c35_db_viradaitem ";
        $virgula = ",";
-       if(trim($this->c35_db_viradaitem) == null ){ 
+       if(trim((string) $this->c35_db_viradaitem) == null ){ 
          $this->erro_sql = " Campo Código da virada do item nao Informado.";
          $this->erro_campo = "c35_db_viradaitem";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_db_viradaitemlog {
          return false;
        }
      }
-     if(trim($this->c35_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c35_data_dia"] !="") ){ 
+     if(trim((string) $this->c35_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c35_data_dia"] !="") ){ 
        $sql  .= $virgula." c35_data = '$this->c35_data' ";
        $virgula = ",";
-       if(trim($this->c35_data) == null ){ 
+       if(trim((string) $this->c35_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "c35_data_dia";
          $this->erro_banco = "";
@@ -290,7 +290,7 @@ class cl_db_viradaitemlog {
        if(isset($GLOBALS["HTTP_POST_VARS"]["c35_data_dia"])){ 
          $sql  .= $virgula." c35_data = null ";
          $virgula = ",";
-         if(trim($this->c35_data) == null ){ 
+         if(trim((string) $this->c35_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "c35_data_dia";
            $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_db_viradaitemlog {
          }
        }
      }
-     if(trim($this->c35_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_hora"])){ 
+     if(trim((string) $this->c35_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_hora"])){ 
        $sql  .= $virgula." c35_hora = '$this->c35_hora' ";
        $virgula = ",";
-       if(trim($this->c35_hora) == null ){ 
+       if(trim((string) $this->c35_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "c35_hora";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_db_viradaitemlog {
          return false;
        }
      }
-     if(trim($this->c35_log)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_log"])){ 
+     if(trim((string) $this->c35_log)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c35_log"])){ 
        $sql  .= $virgula." c35_log = '$this->c35_log' ";
        $virgula = ",";
-       if(trim($this->c35_log) == null ){ 
+       if(trim((string) $this->c35_log) == null ){ 
          $this->erro_sql = " Campo Log nao Informado.";
          $this->erro_campo = "c35_log";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_db_viradaitemlog {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10825,'$this->c35_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c35_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1864,10825,'".AddSlashes(pg_result($resaco,$conresaco,'c35_sequencial'))."','$this->c35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1864,10825,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c35_sequencial'))."','$this->c35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c35_codarq"]))
-           $resac = db_query("insert into db_acount values($acount,1864,10826,'".AddSlashes(pg_result($resaco,$conresaco,'c35_codarq'))."','$this->c35_codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1864,10826,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c35_codarq'))."','$this->c35_codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c35_db_viradaitem"]))
-           $resac = db_query("insert into db_acount values($acount,1864,10827,'".AddSlashes(pg_result($resaco,$conresaco,'c35_db_viradaitem'))."','$this->c35_db_viradaitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1864,10827,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c35_db_viradaitem'))."','$this->c35_db_viradaitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c35_data"]))
-           $resac = db_query("insert into db_acount values($acount,1864,10828,'".AddSlashes(pg_result($resaco,$conresaco,'c35_data'))."','$this->c35_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1864,10828,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c35_data'))."','$this->c35_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c35_hora"]))
-           $resac = db_query("insert into db_acount values($acount,1864,10829,'".AddSlashes(pg_result($resaco,$conresaco,'c35_hora'))."','$this->c35_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1864,10829,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c35_hora'))."','$this->c35_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c35_log"]))
-           $resac = db_query("insert into db_acount values($acount,1864,10830,'".AddSlashes(pg_result($resaco,$conresaco,'c35_log'))."','$this->c35_log',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1864,10830,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c35_log'))."','$this->c35_log',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_db_viradaitemlog {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10825,'$c35_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1864,10825,'','".AddSlashes(pg_result($resaco,$iresaco,'c35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1864,10826,'','".AddSlashes(pg_result($resaco,$iresaco,'c35_codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1864,10827,'','".AddSlashes(pg_result($resaco,$iresaco,'c35_db_viradaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1864,10828,'','".AddSlashes(pg_result($resaco,$iresaco,'c35_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1864,10829,'','".AddSlashes(pg_result($resaco,$iresaco,'c35_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1864,10830,'','".AddSlashes(pg_result($resaco,$iresaco,'c35_log'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1864,10825,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1864,10826,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c35_codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1864,10827,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c35_db_viradaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1864,10828,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c35_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1864,10829,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c35_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1864,10830,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c35_log'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_viradaitemlog
@@ -462,7 +462,7 @@ class cl_db_viradaitemlog {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_viradaitemlog";
@@ -476,7 +476,7 @@ class cl_db_viradaitemlog {
    function sql_query ( $c35_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -501,7 +501,7 @@ class cl_db_viradaitemlog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -513,7 +513,7 @@ class cl_db_viradaitemlog {
    function sql_query_file ( $c35_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -534,7 +534,7 @@ class cl_db_viradaitemlog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

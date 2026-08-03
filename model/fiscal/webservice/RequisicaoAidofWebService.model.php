@@ -41,6 +41,7 @@ class RequisicaoAidofWebService extends RequisicaoAidof {
    * @access public
    * @return void
    */
+  #[\Override]
   public function setEmpresa($iInscricaoMunicipal) {
     parent::setEmpresa(new Empresa($iInscricaoMunicipal));
   }
@@ -52,6 +53,7 @@ class RequisicaoAidofWebService extends RequisicaoAidof {
    * @access public
    * @return void
    */
+  #[\Override]
   public function setGrafica($iGrafica) {
     $oGrafica =  new Grafica($iGrafica);
     $oGrafica->validarGrafica();
@@ -66,6 +68,7 @@ class RequisicaoAidofWebService extends RequisicaoAidof {
    * @access public
    * @return void
    */
+  #[\Override]
   public function setNota($iNota) {
     parent::setNota(new NotaFiscalISSQN($iNota));
   }
@@ -75,6 +78,7 @@ class RequisicaoAidofWebService extends RequisicaoAidof {
      * @param bool $bLiberar
      * @return RequisicaoAidofWebService|void
      */
+  #[\Override]
   public function setLiberar($bLiberar) {
       parent::setLiberar($bLiberar);
   }
@@ -163,6 +167,7 @@ class RequisicaoAidofWebService extends RequisicaoAidof {
    * @access public
    * @return bool
    */
+  #[\Override]
   public function salvar() {
 
     $oReturn = null;

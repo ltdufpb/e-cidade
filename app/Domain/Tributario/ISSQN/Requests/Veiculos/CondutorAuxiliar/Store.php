@@ -9,6 +9,7 @@ class Store extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -32,26 +33,27 @@ class Store extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
 
-            "q173_cgm.required"        => utf8_encode("Cgm não informado."),
-            "q173_cgm.filled"          => utf8_encode("Cgm informado está vazio."),
-            "q173_cgm.integer"         => utf8_encode("Cgm inválido."),
+            "q173_cgm.required"        => mb_convert_encoding("Cgm não informado.", 'UTF-8', 'ISO-8859-1'),
+            "q173_cgm.filled"          => mb_convert_encoding("Cgm informado está vazio.", 'UTF-8', 'ISO-8859-1'),
+            "q173_cgm.integer"         => mb_convert_encoding("Cgm inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "q173_datainicio.required" => utf8_encode("Data de início não informada."),
-            "q173_datainicio.filled"   => utf8_encode("Data de início vazia."),
-            "q173_datainicio.date"     => utf8_encode("Data de início inválida."),
+            "q173_datainicio.required" => mb_convert_encoding("Data de início não informada.", 'UTF-8', 'ISO-8859-1'),
+            "q173_datainicio.filled"   => mb_convert_encoding("Data de início vazia.", 'UTF-8', 'ISO-8859-1'),
+            "q173_datainicio.date"     => mb_convert_encoding("Data de início inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q173_datafim.date"        => utf8_encode("Data de fim inválida."),
+            "q173_datafim.date"        => mb_convert_encoding("Data de fim inválida.", 'UTF-8', 'ISO-8859-1'),
 
         ];
     }

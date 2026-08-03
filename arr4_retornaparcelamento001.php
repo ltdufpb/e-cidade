@@ -318,7 +318,7 @@ if (isset($oPost->processar)) {
          */
         if (!empty($oDados->abatimento)) {
 
-            $aAbatimentos = explode(",", $oDados->abatimento);
+            $aAbatimentos = explode(",", (string) $oDados->abatimento);
             foreach ($aAbatimentos as $iAbatimento) {
 
                 $sSqlNumpreRecibo = $oAbatimentoRecibo->sql_query_file(null, "k127_numprerecibo", null,

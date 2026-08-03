@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_tipovistorias_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $cltipovistorias = new cl_tipovistorias;
 $db_botao = false;
 $db_opcao = 33;
@@ -40,10 +40,10 @@ $db_opcao = 33;
 
 //echo ("select * from vistorias where y77_codtipo = $y77_codtipo limit 1");
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   $excluir = 'excluir';
   $rsVerificaTipo = db_query("select * from vistorias where y70_tipovist = $y77_codtipo limit 1");
-  if ( pg_numrows($rsVerificaTipo) > 0 ) {
+  if ( pg_num_rows($rsVerificaTipo) > 0 ) {
     db_msgbox("Existe vistorias lancada para este tipo, exclusão abortada ");
 	  db_redireciona("fis1_tipovistorias003.php");
 	  exit;

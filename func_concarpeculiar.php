@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_concarpeculiar_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $clconcarpeculiar = new cl_concarpeculiar;
 $clconcarpeculiar->rotulo->label("c58_sequencial");
@@ -77,14 +77,14 @@ $clconcarpeculiar->rotulo->label("c58_descr");
             </td>
             <td>
                 <?php
-                $listaDeClassificacoes = array(
+                $listaDeClassificacoes = [
                   0 => "Todas",
                   1 => "Despesa",
                   2 => "Receita",
                   4 => "Operações de Crédito",
                   5 => "Convênios",
                   3 => "Outros",
-                );
+                ];
 
                 db_select("c58_tipo", $listaDeClassificacoes, true, 1, "style='width:100%'");
 
@@ -136,13 +136,13 @@ $clconcarpeculiar->rotulo->label("c58_descr");
                 }
             }
 
-            $repassa = array();
+            $repassa = [];
 
             if (isset($chave_c58_sequencial)) {
-                $repassa = array(
+                $repassa = [
                   "chave_c58_sequencial" => $chave_c58_sequencial,
                   "chave_c58_descr"      => $chave_c58_descr
-                );
+                ];
             }
             db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
         } else {

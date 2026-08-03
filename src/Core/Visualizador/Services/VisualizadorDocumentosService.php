@@ -33,7 +33,7 @@ class VisualizadorDocumentosService
     {
         $imagens = [];
         foreach ($codigos as $key => $fileId) {
-            $fileId = trim($fileId);
+            $fileId = trim((string) $fileId);
             if (empty($fileId)) {
                 continue;
             }
@@ -46,7 +46,7 @@ class VisualizadorDocumentosService
             $directory = "tmp";
 
             $file = $this->fileEstorage->getPath($fileId);
-            $fileInfo = pathinfo($file);
+            $fileInfo = pathinfo((string) $file);
             $extensao = $this->verificaExtensao($fileInfo);
 
             if ($fileInfo['extension'] == "pdf") {
@@ -64,7 +64,7 @@ class VisualizadorDocumentosService
                         "download" => $path,
                         "original" => $image,
                         "thumbnail" => $image,
-                        "descricao" => utf8_decode($description),
+                        "descricao" => mb_convert_encoding($description, 'ISO-8859-1'),
                     ];
                 }
                 continue;
@@ -75,7 +75,7 @@ class VisualizadorDocumentosService
                 "download" => "{$directory}/{$fileInfo['basename']}",
                 "original" => $extensao->original,
                 "thumbnail" => $extensao->thumb,
-                "descricao" => utf8_decode($description),
+                "descricao" => mb_convert_encoding($description, 'ISO-8859-1'),
             ];
         }
 

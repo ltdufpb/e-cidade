@@ -20,7 +20,7 @@ class Turno extends Model
 
     public function getEd15CNomeAttribute()
     {
-        return trim($this->attributes['ed15_c_nome']);
+        return trim((string) $this->attributes['ed15_c_nome']);
     }
     /**
      * @return integer

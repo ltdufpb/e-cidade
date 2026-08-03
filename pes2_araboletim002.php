@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $head2 = "BOLETIM DE INFORMAÇÕES";
@@ -92,7 +92,7 @@ $sql = "
 //echo $sql ; exit;
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários cadastrados no período de '.$mes.' / '.$ano);
 
@@ -106,7 +106,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 6;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    $head6 = 'MATRÍCULA : '.$rh01_regist;
    $head8 = 'NOME : '.$z01_nome;
@@ -205,7 +205,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $pdf->setfont('arial','b',8);
    $pdf->cell(25,$alt,'ENDEREÇO',0,0,"L",0);
    $pdf->setfont('arial','',8);
-   $pdf->cell(75,$alt,':  '.$z01_ender.($z01_numero > 0?', '.$z01_numero:'').(trim($z01_compl) != ''?', '.$z01_compl:''),0,1,"L",0);
+   $pdf->cell(75,$alt,':  '.$z01_ender.($z01_numero > 0?', '.$z01_numero:'').(trim((string) $z01_compl) != ''?', '.$z01_compl:''),0,1,"L",0);
    
    $pdf->setfont('arial','b',8);
    $pdf->cell(25,$alt,'BAIRRO',0,0,"L",0);
@@ -238,7 +238,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $margem_consignada = 0;
    $margem_deduz = 0;
    $alt       = 5;
-   $num_calculo = pg_numrows($res_calculo);
+   $num_calculo = pg_num_rows($res_calculo);
 //echo ' <br><br>  num calculo '.$num_calculo;exit;
    if($num_calculo > 0){
      for($xy = 0; $xy < $num_calculo;$xy++){

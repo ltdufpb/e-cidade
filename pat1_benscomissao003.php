@@ -55,11 +55,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
- 	 $clcriaabas->identifica = array("benscomissao"=>"Cadastro da comissão","benscomissaousu"=>"Usuários da comissão");
- 	 $clcriaabas->sizecampo  = array("benscomissao"=>"20","benscomissaousu"=>"20");
- 	 $clcriaabas->title      =  array("benscomissao"=>"Cadastrar comissão","benscomissaousu"=>"Cadastrar usuários da comissão");
-	 $clcriaabas->src = array("benscomissao"=>"pat1_benscomissao006.php");
-	 $clcriaabas->disabled   =  array("benscomissaousu"=>"true"); 
+ 	 $clcriaabas->identifica = ["benscomissao"=>"Cadastro da comissão","benscomissaousu"=>"Usuários da comissão"];
+ 	 $clcriaabas->sizecampo  = ["benscomissao"=>"20","benscomissaousu"=>"20"];
+ 	 $clcriaabas->title      =  ["benscomissao"=>"Cadastrar comissão","benscomissaousu"=>"Cadastrar usuários da comissão"];
+	 $clcriaabas->src = ["benscomissao"=>"pat1_benscomissao006.php"];
+	 $clcriaabas->disabled   =  ["benscomissaousu"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

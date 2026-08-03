@@ -147,7 +147,7 @@ class DBMensagem {
 
       $oMensagensMenu = new stdClass();
       $oMensagensMenu->iMenu           = $iMenuAtual;
-      $oMensagensMenu->aArquivos       = array();
+      $oMensagensMenu->aArquivos       = [];
       $_SESSION['oMensagensMenu'] = $oMensagensMenu;
     }
 
@@ -171,7 +171,7 @@ class DBMensagem {
       foreach ($aPropriedades as $sPropriedade => $sValor) {
         $sMensagem = str_replace ("[$sPropriedade]", $sValor, $sMensagem);
       }
-      $sMensagem = str_replace(array("[", "]"), '', $sMensagem);
+      $sMensagem = str_replace(["[", "]"], '', $sMensagem);
     }
     return $sMensagem;
   }
@@ -215,7 +215,7 @@ class DBMensagem {
 
       $oStdAdicionar           = new stdClass();
       $oStdAdicionar->fonte    = $sArquivoProcurado;
-      $oStdAdicionar->menus    = array($iCodigoMenuProcurado);
+      $oStdAdicionar->menus    = [$iCodigoMenuProcurado];
       $oArquivo->associacoes[] = $oStdAdicionar;
     }
 
@@ -228,13 +228,13 @@ class DBMensagem {
       $iIdentacao = 0;
       foreach ($oArquivo->associacoes as $oStdLinhaArquivo) {
 
-        $iTamanhoCaracterPropriedade = strlen($oStdLinhaArquivo->fonte);
+        $iTamanhoCaracterPropriedade = strlen((string) $oStdLinhaArquivo->fonte);
         if ($iTamanhoCaracterPropriedade > $iIdentacao) {
           $iIdentacao = $iTamanhoCaracterPropriedade + 5;
         }
       }
 
-      $aArquivoSalvar = array();
+      $aArquivoSalvar = [];
       $aArquivoSalvar[] = "{\"associacoes\" : [";
       foreach ($oArquivo->associacoes as $iIndice => $oStdLinhaArquivo) {
 

@@ -35,7 +35,7 @@ $clconplanoconta = new cl_conplanoconta;
 $clorcfontes = new cl_orcfontes;
 $clorcelemento = new cl_orcelemento;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $debug = false;
 
 // colocar + script do paulo aqui .. virada anual
@@ -51,7 +51,7 @@ $erro = false;
 // inclusão do conplanoconta
 if (isset($Processa_bancos) && ($Processa_bancos == 'Processar')) {
     // obtem uma matriz de chaves
-    $chaves = split('#', $chaves);
+    $chaves = preg_split('#\##m', $chaves);
     if (count($chaves) > 0) {
         for ($i = 0; $i < count($chaves); $i ++) {
             db_inicio_transacao();
@@ -84,7 +84,7 @@ if (isset($Processa_bancos) && ($Processa_bancos == 'Processar')) {
 // processa contas sintéticas
 if (isset($Processa_sintetica) && ($Processa_sintetica == 'Processar')) {
     // obtem uma matriz de chaves
-    $chaves = split('#', $chaves);
+    $chaves = preg_split('#\##m', $chaves);
     if (count($chaves) > 0) {
 
         for ($i = 0; $i < count($chaves); $i ++) {
@@ -111,14 +111,14 @@ if (isset($Processa_sintetica) && ($Processa_sintetica == 'Processar')) {
 
                 //rotina que verifica quando é para incluir no orcelemento ou no orcfontes
                 $codigo = $c60_estrut;
-                $arr_tipo = array("orcelemento" => "3", "orcfontes" => "4");
-                if (substr($codigo, 0, 1) == $arr_tipo["orcelemento"] ) {
+                $arr_tipo = ["orcelemento" => "3", "orcfontes" => "4"];
+                if (substr((string) $codigo, 0, 1) == $arr_tipo["orcelemento"] ) {
 
                     $res = $clorcelemento->sql_record($clorcelemento->sql_query_file($c60_codcon,db_getsession("DB_anousu")));
                     if ($clorcelemento->numrows == 0 ) {
                         $clorcelemento->o56_codele = $c60_codcon;
                         $clorcelemento->o56_anousu = $anousu;
-                        $clorcelemento->o56_elemento = substr($codigo, 0, 13);
+                        $clorcelemento->o56_elemento = substr((string) $codigo, 0, 13);
                         $clorcelemento->o56_descr = $c60_descr;
                         $clorcelemento->o56_finali = $c60_finali;
                         $clorcelemento->o56_orcado = 'true';
@@ -129,7 +129,7 @@ if (isset($Processa_sintetica) && ($Processa_sintetica == 'Processar')) {
                             db_msgbox("Elementos da Despesa. ".$clorcelemento->erro_msg);
                         }
                     }
-                } else if (substr($codigo, 0, 1) == $arr_tipo["orcfontes"] ) {
+                } else if (substr((string) $codigo, 0, 1) == $arr_tipo["orcfontes"] ) {
 
                     $res = $clorcfontes->sql_record($clorcfontes->sql_query_file($c60_codcon,db_getsession("DB_anousu")));
                     if ($clorcfontes->numrows == 0 ) {
@@ -158,7 +158,7 @@ if (isset($Processa_sintetica) && ($Processa_sintetica == 'Processar')) {
 // processa contas analiticas
 if (isset($Processa_analitica) && ($Processa_analitica == 'Processar')) {
     // obtem uma matriz de chaves
-    $chaves = split('#', $chaves);
+    $chaves = preg_split('#\##m', $chaves);
     if (count($chaves) > 0) {
         for ($i = 0; $i < count($chaves); $i ++) {
             db_inicio_transacao();
@@ -210,7 +210,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
     $dtini = $ano.'-01-01';
     $dtfim = $ano.'-12-31';
 
-    $chaves = split('#', $chaves);
+    $chaves = preg_split('#\##m', $chaves);
     if (count($chaves) > 0) {
 
         for ($i = 0; $i < count($chaves); $i ++) {
@@ -236,8 +236,8 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
             $sql .= "	 ) as x      ";
             $res = @db_query($sql) or die("ERRO SQL: $sql");
 
-            if (pg_numrows($res) > 0) {
-                for ($x = 0; $x < pg_numrows($res); $x++) {
+            if (pg_num_rows($res) > 0) {
+                for ($x = 0; $x < pg_num_rows($res); $x++) {
 
                     db_inicio_transacao();
 

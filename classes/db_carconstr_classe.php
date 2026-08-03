@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE carconstr
 class cl_carconstr {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $j48_matric = 0;
-   var $j48_idcons = 0;
-   var $j48_caract = 0;
+   public $j48_matric = 0;
+   public $j48_idcons = 0;
+   public $j48_caract = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  j48_matric = int4 = Matricula
                  j48_idcons = int4 = Codigo Construcao
                  j48_caract = int4 = Caracteristica
                  ";
    //funcao construtor da classe
-   function cl_carconstr() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carconstr");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -121,7 +121,7 @@ class cl_carconstr {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->j48_matric."-".$this->j48_idcons."-".$this->j48_caract) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -145,14 +145,14 @@ class cl_carconstr {
      $resaco = $this->sql_record($this->sql_query_file($this->j48_matric,$this->j48_idcons,$this->j48_caract));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,159,'$this->j48_matric','I')");
        $resac = db_query("insert into db_acountkey values($acount,160,'$this->j48_idcons','I')");
        $resac = db_query("insert into db_acountkey values($acount,161,'$this->j48_caract','I')");
-       $resac = db_query("insert into db_acount values($acount,31,159,'','".AddSlashes(pg_result($resaco,0,'j48_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,31,160,'','".AddSlashes(pg_result($resaco,0,'j48_idcons'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,31,161,'','".AddSlashes(pg_result($resaco,0,'j48_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,31,159,'','".AddSlashes(pg_fetch_result($resaco,0,'j48_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,31,160,'','".AddSlashes(pg_fetch_result($resaco,0,'j48_idcons'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,31,161,'','".AddSlashes(pg_fetch_result($resaco,0,'j48_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -161,10 +161,10 @@ class cl_carconstr {
       $this->atualizacampos();
      $sql = " update carconstr set ";
      $virgula = "";
-     if(trim($this->j48_caract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j48_caract"])){
+     if(trim((string) $this->j48_caract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j48_caract"])){
        $sql  .= $virgula." j48_caract = $this->j48_caract ";
        $virgula = ",";
-       if(trim($this->j48_caract) == null ){
+       if(trim((string) $this->j48_caract) == null ){
          $this->erro_sql = " Campo Caracteristica nao Informado.";
          $this->erro_campo = "j48_caract";
          $this->erro_banco = "";
@@ -188,17 +188,17 @@ class cl_carconstr {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,159,'$this->j48_matric','A')");
          $resac = db_query("insert into db_acountkey values($acount,160,'$this->j48_idcons','A')");
          $resac = db_query("insert into db_acountkey values($acount,161,'$this->j48_caract','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j48_matric"]))
-           $resac = db_query("insert into db_acount values($acount,31,159,'".AddSlashes(pg_result($resaco,$conresaco,'j48_matric'))."','$this->j48_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,31,159,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j48_matric'))."','$this->j48_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j48_idcons"]))
-           $resac = db_query("insert into db_acount values($acount,31,160,'".AddSlashes(pg_result($resaco,$conresaco,'j48_idcons'))."','$this->j48_idcons',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,31,160,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j48_idcons'))."','$this->j48_idcons',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j48_caract"]))
-           $resac = db_query("insert into db_acount values($acount,31,161,'".AddSlashes(pg_result($resaco,$conresaco,'j48_caract'))."','$this->j48_caract',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,31,161,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j48_caract'))."','$this->j48_caract',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -243,14 +243,14 @@ class cl_carconstr {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,159,'$j48_matric','E')");
          $resac = db_query("insert into db_acountkey values($acount,160,'$j48_idcons','E')");
          $resac = db_query("insert into db_acountkey values($acount,161,'$j48_caract','E')");
-         $resac = db_query("insert into db_acount values($acount,31,159,'','".AddSlashes(pg_result($resaco,$iresaco,'j48_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,31,160,'','".AddSlashes(pg_result($resaco,$iresaco,'j48_idcons'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,31,161,'','".AddSlashes(pg_result($resaco,$iresaco,'j48_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,31,159,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j48_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,31,160,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j48_idcons'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,31,161,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j48_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from carconstr
@@ -322,7 +322,7 @@ class cl_carconstr {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:carconstr";
@@ -376,7 +376,7 @@ class cl_carconstr {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_carconstr {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

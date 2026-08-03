@@ -33,7 +33,7 @@ class Veiculo extends Model
     public $timestamps = false;
 
     protected $condutores = [];
-    protected $appends = array('condutores');
+    protected $appends = ['condutores'];
 
     /**
      * @param App\Domain\Tributario\ISSQN\Model\Veiculos\CondutorAuxiliar $condutores

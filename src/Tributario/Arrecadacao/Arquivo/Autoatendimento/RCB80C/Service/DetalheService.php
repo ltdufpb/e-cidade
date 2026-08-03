@@ -9,15 +9,8 @@ use ECidade\Tributario\Library\Service;
 
 final class DetalheService extends Service
 {
-    private $arquivoTxtService;
-    private $detalheRepository;
-
-    public function __construct(
-      ArquivoTxtService $arquivoTxtService,
-      DetalheRepository $detalheRepository
-    ) {
-        $this->arquivoTxtService            = $arquivoTxtService;
-        $this->detalheRepository      = $detalheRepository;
+    public function __construct(private readonly ArquivoTxtService $arquivoTxtService, private readonly DetalheRepository $detalheRepository)
+    {
     }
 
     public function execute($path)
@@ -26,7 +19,7 @@ final class DetalheService extends Service
         $detalheConverter = new DetalheConverter($detalheLayout);
         $linhasArquivo    = $this->arquivoTxtService->path($path)->toArray();
         $totalLinhas      = count($linhasArquivo) - 1;
-        $detalhes         = array();
+        $detalhes         = [];
 
         foreach ($linhasArquivo as $indice => $linha) {
             if ($indice === 0) {

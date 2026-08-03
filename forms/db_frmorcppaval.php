@@ -112,19 +112,19 @@ db_fieldsmemory($result,0);
 for($i=$o21_anoini; $i<= $o21_anofim; $i++){
     
      $x  = "o24_codseqppa_$i";
-     $$x  = "";
+     ${$x}  = "";
     
      $x = "o24_valor_$i";
-     $$x  = "";
+     ${$x}  = "";
       
      $x = "o56_elemento_$i";
-     $$x = "";
+     ${$x} = "";
      
      $x = "o24_quantmed_$i";
-     $$x = "";
+     ${$x} = "";
      
      $x = "o26_codigo_$i";
-     $$x = "";
+     ${$x} = "";
 
       
    if(isset($o24_proces) && $o24_proces!='' && empty($novo) && empty($incluir) && empty($alterar)){
@@ -134,20 +134,20 @@ for($i=$o21_anoini; $i<= $o21_anofim; $i++){
        db_fieldsmemory($result,0);
    
        $x  = "o24_codseqppa_$i";
-       $$x  = $o24_codseqppa;
+       ${$x}  = $o24_codseqppa;
 	  
        $x = "o24_valor_$i";
-       $$x = $o24_valor;
+       ${$x} = $o24_valor;
        
        $x = "o24_quantmed_$i";
-       $$x = $o24_quantmed;
+       ${$x} = $o24_quantmed;
    
        //retorna os dados do orcppatiporec 
        $result = $clorcppatiporec->sql_record($clorcppatiporec->sql_query_file($o24_codseqppa));
        if($clorcppatiporec->numrows>0){
          db_fieldsmemory($result,0);
          $x = "o26_codigo_$i";
-         $$x = $o26_codigo;
+         ${$x} = $o26_codigo;
        }  	 
        
        //retorna os dados do orcppavaele 
@@ -155,7 +155,7 @@ for($i=$o21_anoini; $i<= $o21_anofim; $i++){
        if($clorcppavalele->numrows>0){
          db_fieldsmemory($result,0);
          $x = "o56_elemento_$i";
-         $$x = $o56_elemento;
+         ${$x} = $o56_elemento;
        }  	 
        
      }
@@ -178,8 +178,8 @@ db_input("o24_codseqppa_$i",8,$Io24_codseqppa,true,'hidden',1);
     <td> 
 <?php 
 $x = "o24_exercicio_$i";
-if(empty($$x)){
-  $$x = $i;
+if(empty(${$x})){
+  ${$x} = $i;
 }
 db_input("o24_exercicio_$i",4,$Io24_exercicio,true,'text',3)
 ?>
@@ -209,7 +209,7 @@ db_input("o24_quantmed_$i",10,$Io24_quantmed,true,'text',$db_opcao,($i == $o21_a
     <?php 
        $x = "o56_elemento_$i";
     ?>
-    <input type="text"  value="<?=@$$x?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o56_elemento_<?=$i?>" size="9" maxlength='7'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_elemento_<?=$i?>(false);'>
+    <input type="text"  value="<?=@${$x}?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o56_elemento_<?=$i?>" size="9" maxlength='7'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_elemento_<?=$i?>(false);'>
     
     </td>
     <td nowrap title="<?=@$To26_codigo?>">
@@ -220,8 +220,8 @@ db_input("o24_quantmed_$i",10,$Io24_quantmed,true,'text',$db_opcao,($i == $o21_a
     <td> 
 <?php 
 $x = "o26_codigo_$i";
-if(empty($$x)){
-  $$x = 1;
+if(empty(${$x})){
+  ${$x} = 1;
 }  
 db_input("o26_codigo_$i",4,$Io26_codigo,true,'text',$db_opcao," onchange='js_codigo_$i(false);'")
 ?>
@@ -246,7 +246,7 @@ db_input("o26_codigo_$i",4,$Io26_codigo,true,'text',$db_opcao," onchange='js_cod
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("o24_codseqppa"=>@$o24_codseqppa,"o24_proces"=>@$o24_proces);
+	 $chavepri= ["o24_codseqppa"=>@$o24_codseqppa,"o24_proces"=>@$o24_proces];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clorcppaval->sql_query_dad(null,"o24_codseqppa,o24_codppa,o24_exercicio,o24_valor,o24_quantmed,o24_proces,o56_elemento,o15_codigo","o24_exercicio","o24_codppa =$o24_codppa");
 	 $cliframe_alterar_excluir->campos  ="o24_codseqppa,o24_codppa,o24_exercicio,o24_valor,o24_quantmed,o24_proces,o56_elemento,o15_codigo";

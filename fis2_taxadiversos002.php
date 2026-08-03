@@ -34,9 +34,9 @@ require_once modification("dbforms/db_funcoes.php");
 require_once modification("fpdf151/pdf.php");
 
 $oGet    = \db_utils::postMemory($_GET);
-$aStatus = array('0' => 'Calculado/Não Calculado', '1' => 'Calculado', '2' => 'Não Calculado');
-$aGrupos = $oGet->grupo == 'T' ? buscaTodosGrupos() : array(GrupoTaxaDiversosRepository::getInstanciaPorCodigo($oGet->grupo));
-$aGruposInvalidos = array();
+$aStatus = ['0' => 'Calculado/Não Calculado', '1' => 'Calculado', '2' => 'Não Calculado'];
+$aGrupos = $oGet->grupo == 'T' ? buscaTodosGrupos() : [GrupoTaxaDiversosRepository::getInstanciaPorCodigo($oGet->grupo)];
+$aGruposInvalidos = [];
 
 $oConfig                     = new stdClass();
 $oConfig->iAltura            = 4;
@@ -203,9 +203,7 @@ function buscaTodosGrupos() {
     throw new DBException('Erro ao buscar os grupos de taxas.');
   }
 
-  return \db_utils::makeCollectionFromRecord($rsGrupos, function($oRetorno) {
-    return GrupoTaxaDiversosRepository::getInstanciaPorCodigo($oRetorno->y118_sequencial);
-  });
+  return \db_utils::makeCollectionFromRecord($rsGrupos, fn($oRetorno) => GrupoTaxaDiversosRepository::getInstanciaPorCodigo($oRetorno->y118_sequencial));
 }
 
 /**
@@ -217,7 +215,7 @@ function buscaTodosGrupos() {
  */
 function organizaLancamentos($aLancamentos, $oConfig) {
 
-  $aDadosLancamentos = array();
+  $aDadosLancamentos = [];
 
   foreach($aLancamentos as $oLancamento) {
 
@@ -243,14 +241,14 @@ function organizaLancamentos($aLancamentos, $oConfig) {
       $aDadosLancamentos[$iCodigo]         = new stdClass();
       $aDadosLancamentos[$iCodigo]->sCgm   = $oLancamento->getCGM()->getNome();
       $aDadosLancamentos[$iCodigo]->lCgm   = $lCGM;
-      $aDadosLancamentos[$iCodigo]->aTaxas = array();
+      $aDadosLancamentos[$iCodigo]->aTaxas = [];
     }
 
     $sUnidade = LancamentoTaxaDiversos::getDescricaoUnidade($oLancamento->getNaturezaTaxa()->getUnidade());
-    $aPeriodo = array('D' => 'Dias', 'M' => 'Meses', 'A' => 'Meses');
+    $aPeriodo = ['D' => 'Dias', 'M' => 'Meses', 'A' => 'Meses'];
 
     if($oLancamento->getPeriodo() == 1) {
-      $aPeriodo = array('D' => 'Dia', 'M' => 'Mês', 'A' => 'Mês');
+      $aPeriodo = ['D' => 'Dia', 'M' => 'Mês', 'A' => 'Mês'];
     }
 
     $sPeriodo    = $aPeriodo[$oLancamento->getNaturezaTaxa()->getTipoPeriodo()];
@@ -262,7 +260,7 @@ function organizaLancamentos($aLancamentos, $oConfig) {
     $oTaxas->sPeriodo         = "Período: {$oLancamento->getPeriodo()} {$sPeriodo}";
     $oTaxas->sDataInicio      = "Data de Início: {$sDataInicio}";
     $oTaxas->sDataFim         = "Data de Fim: {$sDataFim}";
-    $oTaxas->aDebitosLancados = array();
+    $oTaxas->aDebitosLancados = [];
 
     /**
      * Organiza os débitos lançados para uma mesma taxa

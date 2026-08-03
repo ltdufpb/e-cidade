@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitcandidatointeresse_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabitcandidatointeresse = new cl_habitcandidatointeresse;
 $clhabitcandidatointeresse->rotulo->label("ht20_sequencial");
 $clhabitcandidatointeresse->rotulo->label("ht20_habitcandidato");
@@ -98,9 +98,9 @@ $clhabitcandidatointeresse->rotulo->label("ht20_habitcandidato");
         }else{
            $sql = $clhabitcandidatointeresse->sql_query("",$campos,"ht20_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht20_habitcandidato)){
-          $repassa = array("chave_ht20_sequencial"=>$chave_ht20_sequencial,"chave_ht20_habitcandidato"=>$chave_ht20_habitcandidato);
+          $repassa = ["chave_ht20_sequencial"=>$chave_ht20_sequencial,"chave_ht20_habitcandidato"=>$chave_ht20_habitcandidato];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

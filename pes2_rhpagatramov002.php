@@ -41,7 +41,7 @@ $clrotulo->label('rh01_regist');
 $clrotulo->label('z01_numcgm');
 $clrotulo->label('z01_nome');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $head3 = "RELATÓRIO DE PAGAMENTO DE ATRASADOS";
 $head5 = "DATA DE PAGAMENTO: ".db_formatar($datai,"d");
@@ -52,7 +52,7 @@ if($paga == 1){
 }
 
 $dbwheredatas = " and rh58_data = '".$datai."' ";
-if(trim($dataf) != "--"){
+if(trim((string) $dataf) != "--"){
 	$head5.= " a ".db_formatar($dataf,"d");
 	$dbwheredatas = " and rh58_data between '".$datai."' and '".$dataf."' ";
 }

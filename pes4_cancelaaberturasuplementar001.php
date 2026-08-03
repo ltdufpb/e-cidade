@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 define("MENSAGEM", 'recursoshumanos.pessoal.pes4_cancelaaberturasuplementar001.');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 // Sempre será readonly
 $db_opcao = 3;

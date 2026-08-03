@@ -34,8 +34,8 @@ include(modification("classes/db_db_depart_classe.php"));
 include(modification("classes/db_db_almoxdepto_classe.php"));
 include(modification("classes/db_db_config_classe.php"));
 include(modification("classes/db_orcorgao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_depart   = new cl_db_depart;
 $cldb_almoxdepto = new cl_db_almoxdepto;
 $cldb_config   = new cl_db_config;
@@ -165,7 +165,7 @@ if(!isset($pesquisa_chave)){
     $sql = $cldb_almoxdepto->sql_query_almox(null,null,$campos,"descrdepto"," descrdepto like '$chave_descrdepto%' and $where_instit");
   }
  // 	die($sql);
-  db_lovrot($sql,15,"()","",$funcao_js, "", "NoMe", array(), true);
+  db_lovrot($sql,15,"()","",$funcao_js, "", "NoMe", [], true);
 }else{
   if($pesquisa_chave!=null && $pesquisa_chave!=""){
     $result = $cldb_almoxdepto->sql_record($cldb_almoxdepto->sql_query_almox(null,null,"*",null,"coddepto = $pesquisa_chave and $where_instit"));

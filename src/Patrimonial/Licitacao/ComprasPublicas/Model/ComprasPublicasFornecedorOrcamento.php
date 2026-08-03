@@ -11,42 +11,18 @@ use Exception;
 
 class ComprasPublicasFornecedorOrcamento
 {
-    private $orcamforne;
-    private $orcamitem;
-    private $valor;
-    private $quant;
-    private $obs;
-    private $vlrun;
     private $vencedorCancelado  = false;
     private $validmin           = null;
-    private $percentualdesconto = 0.00;
     private $bdi                = 0.00;
     private $encargossociais    = 0.00;
-    private $data               = null;
     private $notatecnica        = 0.00;
     private $taxaestimada       = 0.00;
     private $taxahomologada     = 0.00;
     private $vencedor           = null;
     private $gerajulgamento     = true;
 
-    public function __construct(
-        $orcamforne,
-        $orcamitem,
-        $valor,
-        $quant,
-        $obs,
-        $vlrun,
-        $data = null,
-        $vlrdesc = 0.00
-    ) {
-        $this->orcamforne          = $orcamforne;
-        $this->orcamitem           = $orcamitem;
-        $this->valor               = $valor;
-        $this->quant               = $quant;
-        $this->obs                 = $obs;
-        $this->vlrun               = $vlrun;
-        $this->data                = $data;
-        $this->percentualdesconto  = $vlrdesc;
+    public function __construct(private $orcamforne, private $orcamitem, private $valor, private $quant, private $obs, private $vlrun, private $data = null, private $percentualdesconto = 0.00)
+    {
     }
 
     public function save($codigolog)

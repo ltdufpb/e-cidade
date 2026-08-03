@@ -38,12 +38,12 @@ include(modification("classes/db_promitente_classe.php"));
 include(modification("classes/db_lotedist_classe.php"));
 include(modification("classes/db_iptubase_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $cliptubase = new cl_iptubase;
 $db_opcao = 3;
 $db_botao = false;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $cliptubase->excluir($j01_matric);
   db_fim_transacao();

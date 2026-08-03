@@ -34,18 +34,18 @@
 	require_once(modification("dbforms/db_funcoes.php"));
 	
 	// Valores padrão do filtro
-	$aDataAdmissao = array ( ''           => 'SELECIONE', 
+	$aDataAdmissao =  [ ''           => 'SELECIONE', 
 													 '2012-12-20' => 'Até 20/12/2012', 
 													 '2012-12-21' => 'Após 20/12/2012' 
-												 );
+												 ];
 
-  $aVinculos = array(
+  $aVinculos = [
     '' => 'SELECIONE',
     'A,I,P' => 'Todos',
     'A' => 'Ativos',
     'I' => 'Inativos',
     'P' => 'Pensionistas'
-  );
+  ];
 ?>
 <html>
 	<head>

@@ -28,7 +28,7 @@
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 
-parse_str( $_SERVER['QUERY_STRING'] );
+parse_str( (string) $_SERVER['QUERY_STRING'], $result );
 
 $clprontproced = new cl_prontproced;
 $clprontproced->rotulo->label();
@@ -131,7 +131,7 @@ for( $i = 0; $i < $linhas; $i++ ) {
 
   $pdf->setfont( 'arial', 'b', 8 );
 
-  $sProcedimento = "Procedimento: {$sd63_c_procedimento} - " . substr( $sd63_c_nome, 0, 70 );
+  $sProcedimento = "Procedimento: {$sd63_c_procedimento} - " . substr( (string) $sd63_c_nome, 0, 70 );
 
   $pdf->cell(   5, 4, "",                         0, 0, "L", 0 );
   $pdf->cell( 160, 4, $sProcedimento,         "BTL", 0, "L", 0 );

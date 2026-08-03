@@ -35,7 +35,7 @@
 
   $cl_aguahidromatric = new cl_aguahidromatric();
 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   $db_opcao = 1;
   $db_botao = true;
   $sqlerro = false;

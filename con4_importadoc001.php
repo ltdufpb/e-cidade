@@ -35,8 +35,8 @@ include(modification("classes/db_db_paragrafo_classe.php"));
 include(modification("classes/db_db_docparag_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $cldb_documento = new cl_db_documento;
 $cldb_config    = new cl_db_config;
@@ -49,41 +49,41 @@ $sqlerro  = false;
 
 if (isset ($documento) && $documento != "") {
 	db_inicio_transacao();
-	
+
 	$result_doc = $cldb_documento->sql_record($cldb_documento->sql_query_file($documento));
-	
+
 	if ($cldb_documento->numrows > 0) {
 		db_fieldsmemory($result_doc,0);
-		
+
 		$cldb_documento->db03_instit  = $db03_instit;
 		$cldb_documento->db03_tipodoc = $db03_tipodoc;
-		$cldb_documento->db03_descr   = substr($db03_descr,0,28)." (IMPORTADO)";
+		$cldb_documento->db03_descr   = substr((string) $db03_descr,0,28)." (IMPORTADO)";
 		$cldb_documento->incluir(null);
-		
+
 		$erro_msg = $cldb_documento->erro_msg;
 		$coddoc   = $cldb_documento->db03_docum;
 		$descrdoc = $cldb_documento->db03_descr;
-		
+
 		if ($cldb_documento->erro_status == 0) {
 			$sqlerro = true;
 		}
-		
+
 	} else {
 		$sqlerro = true;
 	}
-	
+
 	if ($sqlerro == false) {
-		
+
 		$result_parag  = $cldb_docparag->sql_record($cldb_docparag->sql_query($documento, null, "*", "db04_ordem"));
 		$numrows_parag = $cldb_docparag->numrows;
-		
+
 		for ($w = 0; $w < $numrows_parag; $w ++) {
 			db_fieldsmemory($result_parag, $w);
 			$ordem = $db04_ordem;
-			
+
 			if ($sqlerro == false) {
-				
-				$cldb_paragrafo->db02_descr       = substr($db02_descr,0,40);
+
+				$cldb_paragrafo->db02_descr       = substr((string) $db02_descr,0,40);
 				$cldb_paragrafo->db02_texto       = @$db02_texto;
 				$cldb_paragrafo->db02_alinha      = $db02_alinha;
 				$cldb_paragrafo->db02_inicia      = $db02_inicia;
@@ -101,34 +101,34 @@ if (isset ($documento) && $documento != "") {
 					$erro_msg = $cldb_paragrafo->erro_msg;
 					break;
 				}
-				
+
 			}
-			
+
 			if ($sqlerro == false) {
 				$cldb_docparag->db04_docum   = $coddoc;
 				$cldb_docparag->db04_idparag = $codparag;
 				$cldb_docparag->db04_ordem   = $ordem;
 				$cldb_docparag->incluir($coddoc, $codparag);
-				
+
 				if ($cldb_docparag->erro_status == 0) {
 					$sqlerro = true;
 					$erro_msg = $cldb_docparag->erro_msg;
 					break;
 				}
-				
+
 			}
 		}
 	}
-	
+
 	$erro='false';
-	
+
 	if ($coddoc==""||$descrdoc==""||$sqlerro==true){
 		$coddoc    = 1;
 		$descrdoc  = "ops";
 		$erro      = "true";
 		$sqlerro   = true;
 	}
-	
+
 	db_fim_transacao($sqlerro);
 //	db_msgbox($erro_msg);
 	echo "<script>parent.js_retornaimport($coddoc,'$descrdoc','$erro');</script>";

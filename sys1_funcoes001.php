@@ -31,17 +31,17 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if(isset($retorno)) {
   $sql = "select * from db_sysfuncoes where codfuncao = $retorno";
   $result = db_query($sql);
   db_fieldsmemory($result,0);
 }
 //////////INCLUIR/////////////
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $result = db_query("select nextval('db_sysfuncoes_codfuncao_seq')");
-  $codfuncao = pg_result($result,0,0);
+  $codfuncao = pg_fetch_result($result,0,0);
   $codfuncao = $codfuncao==""?"1":$codfuncao;
   db_query("insert into db_sysfuncoes values($codfuncao,
                                             '$nomefuncao',
@@ -50,8 +50,8 @@ if(isset($HTTP_POST_VARS["incluir"])) {
                                             '$triggerfuncao')") or die("Erro(23) inserindo em db_sysfuncoes");
   db_redireciona('sys1_funcoes002.php?'.base64_encode("gerar=$nomefuncao"));											
 ////////////////ALTERAR////////////////  
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   db_query("update db_sysfuncoes set nomefuncao = '$nomefuncao',
                                     obsfuncao = '$obsfuncao',
                                     corpofuncao = '$corpofuncao',
@@ -59,8 +59,8 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 			where codfuncao = $codfuncao") or die("Erro(32) alterando db_sysfuncoes");
   db_redireciona('sys1_funcoes002.php?'.base64_encode("gerar=$nomefuncao"));
 ////////////////EXCLUIR//////////////
-} else if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from db_sysfuncoes where codfuncao = ".$HTTP_POST_VARS["codfuncao"]) or die("Erro(36) excluindo db_sysfuncao");			
+} else if(isset($_POST["excluir"])) {
+  db_query("delete from db_sysfuncoes where codfuncao = ".$_POST["codfuncao"]) or die("Erro(36) excluindo db_sysfuncao");			
   db_redireciona();
 }
 
@@ -125,10 +125,10 @@ input {
   <tr> 
     <td height="430" align="center" valign="middle" bgcolor="#CCCCCC"> 
 		<?php 
-      if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {	  
+      if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {	  
 		 $sql = "SELECT codfuncao as \"Código\",nomefuncao as \"Nome\",obsfuncao as observações
                  FROM db_sysfuncoes
-			     WHERE nomefuncao like '".$HTTP_POST_VARS["nomefuncao"]."%'
+			     WHERE nomefuncao like '".$_POST["nomefuncao"]."%'
                  ORDER BY nomefuncao";
 		db_lov($sql,15,"sys1_funcoes001.php"); 
 	  } else {

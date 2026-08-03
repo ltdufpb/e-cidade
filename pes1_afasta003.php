@@ -39,7 +39,7 @@ include(modification("classes/db_pontofs_classe.php"));
 include(modification("classes/db_cfpess_classe.php"));
 include(modification("classes/db_rhrubricas_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clafasta          = new cl_afasta;
 $clrhpessoal       = new cl_rhpessoal;
 $clcodmovsefip     = new cl_codmovsefip;
@@ -49,7 +49,7 @@ $clpontofs         = new cl_pontofs;
 $clcfpess          = new cl_cfpess;
 $clrhrubricas      = new cl_rhrubricas;
 $clafastaassenta   = new cl_afastaassenta;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $db_botao = false;
 $db_opcao = 33;
 

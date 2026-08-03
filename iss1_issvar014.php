@@ -42,8 +42,8 @@ include(modification("classes/db_db_confplan_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clissvar      = new cl_issvar;
 $clissvarnotas = new cl_issvarnotas;
 $clissbase     = new cl_issbase;
@@ -63,7 +63,7 @@ if(isset($incluir)){
   db_inicio_transacao();
 
 
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
 
   $q05_codigo="";
   $numpre=$clnumpref->sql_numpre();
@@ -99,16 +99,16 @@ if(isset($incluir)){
  $sqlerro=false;
  db_inicio_transacao();
   if($q05_histor==""){
-    $vt=$HTTP_POST_VARS;
+    $vt=$_POST;
     reset($vt);
     $ta=sizeof($vt);
     $vir="";
     $q05_histor="REFERENTE NOTAS FISCAIS No.:";
     for($i=0; $i<$ta; $i++){
       $chave=key($vt);
-      if(substr($chave,0,6)=="linha_"){
+      if(str_starts_with((string) $chave, "linha_")){
         $sqlerro=false;
-	$matri= split("#",$vt[$chave]);
+	$matri= preg_split("#\\##m",(string) $vt[$chave]);
         $q05_histor.=$vir.$matri[0];
 	$vir=",";
       }
@@ -129,14 +129,14 @@ if(isset($incluir)){
   }
   $codigo=$clissvar->q05_codigo;
   if(!$sqlerro){
-    $vt=$HTTP_POST_VARS;
+    $vt=$_POST;
     reset($vt);
     $ta=sizeof($vt);
     for($i=0; $i<$ta; $i++){
       $chave=key($vt);
-      if(substr($chave,0,6)=="linha_"){
+      if(str_starts_with((string) $chave, "linha_")){
         $sqlerro=false;
-	      $matri = split("#",$vt[$chave]);
+	      $matri = preg_split("#\\##m",(string) $vt[$chave]);
         $result55 = $clissvarnotas->sql_record($clissvarnotas->sql_query_file($codigo,"","max(q06_seq) +1 as seq"));
         db_fieldsmemory($result55,0);
         $q06_seq = $seq == ""?"1":$seq;

@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplano_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clconplano = new cl_conplano;
 $clconplano->rotulo->label("c60_codcon");
@@ -115,7 +115,7 @@ $anousu = db_getsession("DB_anousu");
            $campos = "conplano.*";
            }
         }
-        if(isset($chave_c60_codcon) && (trim($chave_c61_reduz)!="") ){
+        if(isset($chave_c60_codcon) && (trim((string) $chave_c61_reduz)!="") ){
 	         $sql = $clconplano->sql_query_geral(null,null,$campos,"c60_codcon"," c60_anousu=$anousu and c61_reduz=$chave_c61_reduz $dbwhere");
         }elseif(isset($chave_c60_codcon) && (trim($chave_c60_codcon)!="") ){
 	         $sql = $clconplano->sql_query_geral(null,null,$campos,"c60_codcon"," c60_codcon = $chave_c60_codcon $dbwhere");

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE modcarnepadraotipo
 class cl_modcarnepadraotipo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k49_sequencial = 0; 
-   var $k49_modcarnepadrao = 0; 
-   var $k49_tipo = 0; 
+   public $k49_sequencial = 0; 
+   public $k49_modcarnepadrao = 0; 
+   public $k49_tipo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k49_sequencial = int4 = Codigo do modelo padrão do tipo de debito 
                  k49_modcarnepadrao = int4 = Codigo do modelo padrão 
                  k49_tipo = int4 = tipo de debito 
                  ";
    //funcao construtor da classe 
-   function cl_modcarnepadraotipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("modcarnepadraotipo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_modcarnepadraotipo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k49_sequencial = pg_result($result,0,0); 
+       $this->k49_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from modcarnepadraotipo_k49_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k49_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k49_sequencial)){
          $this->erro_sql = " Campo k49_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_modcarnepadraotipo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Modelo padrão para o tipo de debito ($this->k49_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Modelo padrão para o tipo de debito já Cadastrado";
@@ -166,12 +166,12 @@ class cl_modcarnepadraotipo {
      $resaco = $this->sql_record($this->sql_query_file($this->k49_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8887,'$this->k49_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1517,8887,'','".AddSlashes(pg_result($resaco,0,'k49_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1517,8949,'','".AddSlashes(pg_result($resaco,0,'k49_modcarnepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1517,8889,'','".AddSlashes(pg_result($resaco,0,'k49_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1517,8887,'','".AddSlashes(pg_fetch_result($resaco,0,'k49_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1517,8949,'','".AddSlashes(pg_fetch_result($resaco,0,'k49_modcarnepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1517,8889,'','".AddSlashes(pg_fetch_result($resaco,0,'k49_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_modcarnepadraotipo {
       $this->atualizacampos();
      $sql = " update modcarnepadraotipo set ";
      $virgula = "";
-     if(trim($this->k49_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k49_sequencial"])){ 
+     if(trim((string) $this->k49_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k49_sequencial"])){ 
        $sql  .= $virgula." k49_sequencial = $this->k49_sequencial ";
        $virgula = ",";
-       if(trim($this->k49_sequencial) == null ){ 
+       if(trim((string) $this->k49_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo do modelo padrão do tipo de debito nao Informado.";
          $this->erro_campo = "k49_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_modcarnepadraotipo {
          return false;
        }
      }
-     if(trim($this->k49_modcarnepadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k49_modcarnepadrao"])){ 
+     if(trim((string) $this->k49_modcarnepadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k49_modcarnepadrao"])){ 
        $sql  .= $virgula." k49_modcarnepadrao = $this->k49_modcarnepadrao ";
        $virgula = ",";
-       if(trim($this->k49_modcarnepadrao) == null ){ 
+       if(trim((string) $this->k49_modcarnepadrao) == null ){ 
          $this->erro_sql = " Campo Codigo do modelo padrão nao Informado.";
          $this->erro_campo = "k49_modcarnepadrao";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_modcarnepadraotipo {
          return false;
        }
      }
-     if(trim($this->k49_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k49_tipo"])){ 
+     if(trim((string) $this->k49_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k49_tipo"])){ 
        $sql  .= $virgula." k49_tipo = $this->k49_tipo ";
        $virgula = ",";
-       if(trim($this->k49_tipo) == null ){ 
+       if(trim((string) $this->k49_tipo) == null ){ 
          $this->erro_sql = " Campo tipo de debito nao Informado.";
          $this->erro_campo = "k49_tipo";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_modcarnepadraotipo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8887,'$this->k49_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k49_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1517,8887,'".AddSlashes(pg_result($resaco,$conresaco,'k49_sequencial'))."','$this->k49_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1517,8887,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k49_sequencial'))."','$this->k49_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k49_modcarnepadrao"]))
-           $resac = db_query("insert into db_acount values($acount,1517,8949,'".AddSlashes(pg_result($resaco,$conresaco,'k49_modcarnepadrao'))."','$this->k49_modcarnepadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1517,8949,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k49_modcarnepadrao'))."','$this->k49_modcarnepadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k49_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1517,8889,'".AddSlashes(pg_result($resaco,$conresaco,'k49_tipo'))."','$this->k49_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1517,8889,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k49_tipo'))."','$this->k49_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_modcarnepadraotipo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8887,'$k49_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1517,8887,'','".AddSlashes(pg_result($resaco,$iresaco,'k49_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1517,8949,'','".AddSlashes(pg_result($resaco,$iresaco,'k49_modcarnepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1517,8889,'','".AddSlashes(pg_result($resaco,$iresaco,'k49_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1517,8887,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k49_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1517,8949,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k49_modcarnepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1517,8889,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k49_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from modcarnepadraotipo
@@ -345,7 +345,7 @@ class cl_modcarnepadraotipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:modcarnepadraotipo";
@@ -359,7 +359,7 @@ class cl_modcarnepadraotipo {
    function sql_query ( $k49_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -386,7 +386,7 @@ class cl_modcarnepadraotipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_modcarnepadraotipo {
    function sql_query_file ( $k49_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_modcarnepadraotipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -72,7 +72,7 @@ var lLiberaInput = false;
                 <td height="25">
                 <?php 
                   $rsAnosCalculo = $oDaoConfigIssqn->sql_record($oDaoConfigIssqn->sql_query_file(null,"q04_anousu","q04_anousu desc"," q04_anousu <= ".db_getsession('DB_anousu')));
-                  $aAnos = array();
+                  $aAnos = [];
                   for ($i=0; $i < $oDaoConfigIssqn->numrows; $i++) {
                     $oAnos = db_utils::fieldsMemory($rsAnosCalculo,$i);
                     $aAnos[$oAnos->q04_anousu] = $oAnos->q04_anousu;
@@ -89,11 +89,11 @@ var lLiberaInput = false;
                 <TD>
                  
                 <?php
-                $aTipos  = array(
+                $aTipos  = [
                                "0" => "Todos ",
                                "1" => "ISSQN ",
                                "2" => "Alvará"
-                );
+                ];
                 db_select("iTipoCalculo", $aTipos, false, 1);
                 ?></TD>
               </tr>

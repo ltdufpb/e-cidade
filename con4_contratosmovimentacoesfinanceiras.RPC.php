@@ -39,10 +39,10 @@ $oParam = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
 
 $oRetorno->status = 1;
 $oRetorno->message = '';
-$oRetorno->itens = array();
+$oRetorno->itens = [];
 
 if (isset($oParam->observacao)) {
-    $sObservacao = utf8_decode($oParam->observacao);
+    $sObservacao = mb_convert_encoding($oParam->observacao, 'ISO-8859-1');
 }
 
 switch ($oParam->exec) {
@@ -60,16 +60,16 @@ switch ($oParam->exec) {
             unset($_SESSION["oContrato"]);
         }
 
-        $aTiposPosicoesIgnorar = array(
+        $aTiposPosicoesIgnorar = [
           AcordoPosicao::TIPO_VIGENCIA,
           AcordoPosicao::TIPO_ALTERACAO_DOTACAO,
           AcordoPosicao::TIPO_SUPRESSAO,
           AcordoPosicao::TIPO_ALTERACAO_CESSAO_CONTRATADO,
-        );
+        ];
         $oContrato = new Acordo($oParam->iAcordo);
         $_SESSION["oContrato"] = $oContrato;
         $aPosicoes = $oContrato->getPosicoes();
-        $oRetorno->posicoes = array();
+        $oRetorno->posicoes = [];
         $oRetorno->tipocontrato = $oContrato->getOrigem();
 
         foreach ($aPosicoes as $oPosicaoContrato) {
@@ -97,8 +97,8 @@ switch ($oParam->exec) {
             $oPosicao->data = $oPosicaoContrato->getData();
             $oPosicao->tipo = $oPosicaoContrato->getTipo();
             $oPosicao->numerocontrato = $oContrato->getGrupo() . " - " . $oContrato->getNumero() . "/" . $oContrato->getAno();
-            $oPosicao->descricaotipo = urlencode($oPosicaoContrato->getDescricaoTipo());
-            $oPosicao->numero = (string)"" . str_pad($oPosicaoContrato->getNumero(), "0", 7) . "";
+            $oPosicao->descricaotipo = urlencode((string) $oPosicaoContrato->getDescricaoTipo());
+            $oPosicao->numero = (string)"" . str_pad((string) $oPosicaoContrato->getNumero(), "0", 7) . "";
             $oPosicao->emergencial = urlencode($oPosicaoContrato->isEmergencial() ? "Sim" : "Não");
             array_push($oRetorno->posicoes, $oPosicao);
         }
@@ -108,7 +108,7 @@ switch ($oParam->exec) {
     case "getPosicaoItens":
         if (isset ($_SESSION["oContrato"])) {
             $oContrato = $_SESSION["oContrato"];
-            $aItens = array();
+            $aItens = [];
 
             foreach ($oContrato->getPosicoes() as $oPosicaoContrato) {
                 if ($oPosicaoContrato->getCodigo() == $oParam->iPosicao) {
@@ -116,7 +116,7 @@ switch ($oParam->exec) {
                         $oItemRetorno = new stdClass();
                         $oItemRetorno->codigo = $oItem->getCodigo();
                         $oItemRetorno->material = $oItem->getMaterial()->getDescricao();
-                        $oItemRetorno->codigomaterial = urlencode($oItem->getMaterial()->getMaterial());
+                        $oItemRetorno->codigomaterial = urlencode((string) $oItem->getMaterial()->getMaterial());
                         $oItemRetorno->elemento = $oItem->getElemento();
                         $oItemRetorno->desdobramento = $oItem->getDesdobramento();
                         $oItemRetorno->valorunitario = $oItem->getValorUnitario();

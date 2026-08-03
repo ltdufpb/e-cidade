@@ -11,13 +11,14 @@ class ReferenceBag extends ParameterBag {
    *
    * @param array $data
    */
-  public function __construct(array & $data = array()) {
+  public function __construct(array & $data = []) {
     $this->data =& $data;
   }
 
   /**
    * @return array
    */
+  #[\Override]
   public function & all() {
     return $this->data;
   }
@@ -28,7 +29,8 @@ class ReferenceBag extends ParameterBag {
    * @param array
    * @return ParameterBag
    */
-  public function replace(array & $data = array()) {
+  #[\Override]
+  public function replace(array & $data = []) {
     $this->data =& $data;
     return $this;
   }

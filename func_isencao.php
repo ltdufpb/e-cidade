@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_isencao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clisencao = new cl_isencao;
 $clisencao->rotulo->label("v10_sequencial");
 $clisencao->rotulo->label("v10_isencaotipo");
@@ -98,9 +98,9 @@ $clisencao->rotulo->label("v10_isencaotipo");
         }else{
            $sql = $clisencao->sql_query("",$campos,"v10_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v10_isencaotipo)){
-          $repassa = array("chave_v10_sequencial"=>$chave_v10_sequencial,"chave_v10_isencaotipo"=>$chave_v10_isencaotipo);
+          $repassa = ["chave_v10_sequencial"=>$chave_v10_sequencial,"chave_v10_isencaotipo"=>$chave_v10_isencaotipo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

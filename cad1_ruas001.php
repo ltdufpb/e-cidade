@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_ruas_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clruas = new cl_ruas;
 $clcriaabas = new cl_criaabas;
 ?>
@@ -57,10 +57,10 @@ $clcriaabas = new cl_criaabas;
    <tr>
        <td>
         <?php 
-          $clcriaabas->identifica = array("g1"=>"Cadastro de Ruas","g3"=>"Bairro","g2"=>"Interligação com Cep´s");
-          $clcriaabas->title = array("g1"=>"Cadastrar Ruas","g3"=>"Cadastro de Bairros da Rua","g2"=>"Manutençaõ de Ruas/Correios");
-          $clcriaabas->src = array("g1"=>"cad1_aba1ruas001.php","g3"=>"cad1_ruasbairroalt001.php","g2"=>"cad1_aba2ruas001.php");
-          $clcriaabas->disabled   =  array("g3"=>"true","g2"=>"true");
+          $clcriaabas->identifica = ["g1"=>"Cadastro de Ruas","g3"=>"Bairro","g2"=>"Interligação com Cep´s"];
+          $clcriaabas->title = ["g1"=>"Cadastrar Ruas","g3"=>"Cadastro de Bairros da Rua","g2"=>"Manutençaõ de Ruas/Correios"];
+          $clcriaabas->src = ["g1"=>"cad1_aba1ruas001.php","g3"=>"cad1_ruasbairroalt001.php","g2"=>"cad1_aba2ruas001.php"];
+          $clcriaabas->disabled   =  ["g3"=>"true","g2"=>"true"];
 	  $clcriaabas->cria_abas();
         ?>
        </td>

@@ -46,7 +46,7 @@ $clClienteContato           = new cl_clientescontato();
 $clClienteAtributoValor     = new cl_clienteatributovalor();
 $clClienteProdutosComercial = new cl_clientesprodutoscomercial();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

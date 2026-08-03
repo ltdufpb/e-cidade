@@ -33,7 +33,7 @@ include(modification("classes/db_atendimento_classe.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 $cldb_usuarios = new cl_db_usuarios;

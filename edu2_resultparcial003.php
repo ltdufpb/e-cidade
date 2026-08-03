@@ -65,7 +65,7 @@ $oJson = new Services_JSON();
 
 $aTurmasSelecionadas = $oJson->decode(str_replace("\\", "", $oGet->oTurmas));
 
-$aFiltroParametro = array();
+$aFiltroParametro = [];
 $aFiltroParametro[] = null;
 $aFiltroParametro[] = "ed233_c_notabranca";
 $aFiltroParametro[] = null;
@@ -111,7 +111,7 @@ $oConfigRelatorio->iLarguraTotalDisciplinas  = 282 - $iSomaColunasDadosAluno;
 $oConfigRelatorio->iLarguraTotalDisciplinas -= (0.3 * $oConfigRelatorio->iMaximoDisciplinaPagina);
 $oConfigRelatorio->lCalculaMediaParcial      = $aParametroGlobal[0]->ed233_c_notabranca == 'S' ? true : false;
 
-$aTurmas = array();
+$aTurmas = [];
 /**
  * Cria a instancia de todas turmas selecionas no filtro
  * Organizamos os dados a serem impressos no relatório
@@ -126,8 +126,8 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
   }
 
   $oTurmaEtapa           = new stdClass();
-  $oTurmaEtapa->aAlunos  = array();
-  $oTurmaEtapa->aPaginas = array();
+  $oTurmaEtapa->aAlunos  = [];
+  $oTurmaEtapa->aPaginas = [];
   $iContDisciplinas      = 0;
 
   /**
@@ -201,12 +201,12 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
 
     $oDadosAluno                      = new stdClass();
     $oDadosAluno->iMatricula          = $oMatricula->getCodigo();
-    $oDadosAluno->sNome               = abreviar($oMatricula->getAluno()->getNome(), 22, true);
+    $oDadosAluno->sNome               = abreviar($oMatricula->getAluno()->getNome(), 22);
     $oDadosAluno->iCodigoAluno        = $oMatricula->getAluno()->getCodigoAluno();
     $oDadosAluno->sSituacao           = $oMatricula->getSituacao();
     $oDadosAluno->oDtMatricula        = $oMatricula->getDataMatricula();
     $oDadosAluno->iClassificacao      = $oMatricula->getNumeroOrdemAluno();
-    $oDadosAluno->aAvaliacao          = array();
+    $oDadosAluno->aAvaliacao          = [];
     $oDadosAluno->iTotalFaltas        = 0;
     $oDadosAluno->lAvaliadoPorParecer = $oMatricula->isAvaliadoPorParecer();
 
@@ -719,7 +719,7 @@ function getSituacoes() {
   /**
    * Array com as situaçõe da matricula do aluno indexado pela abreviatura
    */
-  $aSituacoes       = array();
+  $aSituacoes       = [];
   $aSituacoes['MT'] = 'MATRICULA TRANCADA';
   $aSituacoes['IN'] = 'MATRICULA INDEFERIDA';
   $aSituacoes['MI'] = 'MATRICULA INDEVIDA';

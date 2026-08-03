@@ -43,7 +43,7 @@ db_app::import("AvaliacaoPergunta");
 
 
 $oGet   = db_utils::postMemory($_GET);
-$aWhere = array();
+$aWhere = [];
 
 $sDataAtualizacao = "Atualizações :";
 $sDataVisita      = "Visitas: ";
@@ -93,7 +93,7 @@ if ($oDaoFamilia->numrows == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não foi encontrados registros.');
 }
 
-$aDadosVisita = array();
+$aDadosVisita = [];
 
 /**
  * Organizamos os dados indexando-os pelo alfabeto
@@ -117,7 +117,7 @@ for ($i = 0; $i < $oDaoFamilia->numrows; $i++) {
   $oDados->iNis            = $oResponsavel->getNis();
   $oDados->nRenda          = $oFamilia->getRendaPerCapita();
   $oDados->sTelefone       = $sTelefonePrincipal;
-  $sLetra                  = substr($oResponsavel->getNome(), 0, 1);
+  $sLetra                  = substr((string) $oResponsavel->getNome(), 0, 1);
   $aDadosVisita[$sLetra][] = $oDados;
   unset($oDados);
 }
@@ -167,7 +167,7 @@ foreach ($aDadosVisita as $iIndice => $aVisitas) {
     
     $oPdf->SetFont("arial", "", 7);
     $oPdf->Cell(25,  $iHeigth, "{$oDados->iCadastroUnico}",       "TB", 0, "C");
-    $oPdf->Cell(66,  $iHeigth, substr($oDados->iNome, 0,35),      "1",  0, "L");
+    $oPdf->Cell(66,  $iHeigth, substr((string) $oDados->iNome, 0,35),      "1",  0, "L");
     $oPdf->Cell(20,  $iHeigth, $oDados->dtEntrevista,             "1",  0, "C");
     $oPdf->Cell(20,  $iHeigth, $oDados->dtVisita,                 "1",  0, "C");
     $oPdf->Cell(20,  $iHeigth, $oDados->sTelefone,                "1",  0, "L");

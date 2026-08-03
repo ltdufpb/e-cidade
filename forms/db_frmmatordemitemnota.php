@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_matordem_classe.php"));
 include(modification("classes/db_matordemitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $errosomaquant=0;
 $passou=false;
@@ -150,7 +150,7 @@ function js_marca(obj){
    echo "</tr>";
 	 
    for($i=0; $i<$numrows; $i++){
-     
+
      $disabled = null;
      db_fieldsmemory($result,$i,true);
      if ($e62_vltot == 0  && $e62_quant == 0){
@@ -161,14 +161,14 @@ function js_marca(obj){
            <td class='linhagrid' align='center'><small>$e60_codemp </small></td>
    	       <td class='linhagrid' align='center'><small>$e60_numemp </small></td>
 	         <td class='linhagrid' align='center'><small>$e62_item  </small></td>		    
-	         <td class='linhagrid' nowrap align='left' title='$pc01_descrmater'><small>".substr($pc01_descrmater,0,20)."&nbsp;</small></td>
+	         <td class='linhagrid' nowrap align='left' title='$pc01_descrmater'><small>".substr((string) $pc01_descrmater,0,20)."&nbsp;</small></td>
 	         <td class='linhagrid' align='center'><small>$e62_sequen</small></td>
-           <td class='linhagrid' nowrap align='left' title='$e62_descr'><small>".substr($e62_descr,0,20)."&nbsp;</small></td>";
+           <td class='linhagrid' nowrap align='left' title='$e62_descr'><small>".substr((string) $e62_descr,0,20)."&nbsp;</small></td>";
      $valoruni = $e62_vlrun;	     
      $quant    = "quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
-     $$quant   = $e62_quant;
+     ${$quant}   = $e62_quant;
      $val      = "valor_$i"."_"."$e60_numemp"."_"."$e62_sequen";
-     $$val     = $e62_vltot;
+     ${$val}     = $e62_vltot;
      echo"<td class='linhagrid' align='center'>$e62_quant</td>
 		      <td class='linhagrid' align='center'>$e62_vltot</td>";
      if ($pc01_servico=='f'){
@@ -184,9 +184,9 @@ function js_marca(obj){
          echo "</td>";
          echo "</tr> ";
      } else {
-       
+
 	       $quan="quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
-         $$quan=$e62_quant;
+         ${$quan}=$e62_quant;
          echo"<td class='linhagrid' align='center'><small>";
          db_input("quant_$e60_numemp"."_"."$e62_sequen"."_"."$i",6,0,true,'text',3);
          echo "</small></td>
@@ -200,7 +200,7 @@ function js_marca(obj){
       $quant="quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
       $val="valor_$i"."_"."$e60_numemp"."_"."$e62_sequen";
   /*    if ($pc01_servico=="f"){
-  
+
          $$val=$valorresta;
          $$quant=$quantidade;
          echo "<td class='linhagrid' align='center'><small>$quantidade</small></td>

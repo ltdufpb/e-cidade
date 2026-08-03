@@ -72,7 +72,7 @@ db_app::import("contabilidade.contacorrente.*");
 
 $escola = db_getsession("DB_coddepto");
 $login = DB_getsession("DB_id_usuario");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_cardapiodata = new cl_mer_cardapiodata;
 $clmer_cardapiodia = new cl_mer_cardapiodia;
 $clmer_subitem = new cl_mer_subitem;
@@ -81,8 +81,8 @@ $clmer_subitem = new cl_mer_subitem;
 $clmatparam               = new cl_matparam;
 $cldb_departorg           = new  cl_db_departorg;
 $clmatparam               = new cl_matparam;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clmatrequiitem           = new cl_matrequiitem;
 $clmatrequi               = new cl_matrequi;
 $clatendrequiitem         = new cl_atendrequiitem;
@@ -135,7 +135,7 @@ if(isset($incluir)){
  if ($sqlerro == 'N') {
 
    $data=date("Y-m-d",db_getsession("DB_datausu"));
-   $vetcad=explode(",",$lista); // A variável $lista contém os códigos da mer_cardapiodia selecionados
+   $vetcad=explode(",",(string) $lista); // A variável $lista contém os códigos da mer_cardapiodia selecionados
    for ($x=0;$x<count($vetcad);$x++) {
 
      // Obtenho o código da mer_cardapiodiaescola referente à escola e ao cardápio dia informado
@@ -164,8 +164,8 @@ if(isset($incluir)){
      }
 
    }
-   $vetitem=explode(",",$item);
-   $vetquant=explode(",",$quant);
+   $vetitem=explode(",",(string) $item);
+   $vetquant=explode(",",(string) $quant);
 
  }
 
@@ -213,7 +213,7 @@ if(isset($incluir)){
    $tot_quant  = $clmatrequiitem->m41_quant;
    // Gera Array Com Itens do Atendimento
    //(iCodMater iCodItemReq, nQtde ,iCodAlmox)
-   $aItens = array();
+   $aItens = [];
    $aSubItens[$i]->iCodMater   = $codmater;
    $aSubItens[$i]->iCodItemReq = $codreqitem;
    $aSubItens[$i]->iCodalmox   = $coddepto;
@@ -425,7 +425,7 @@ $sql1="SELECT m60_codmater,
 //db_lovrot($sql1,15,"()","","","","NoMe");
 $result_dados = db_query($sql1);
 $result_dia = $clmer_cardapiodia->sql_record($clmer_cardapiodia->sql_query("","DISTINCT me12_d_data as data_cabecalho","me12_d_data"," me12_i_codigo in ($lista)"));
-$array_dias = array();
+$array_dias = [];
 for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
  db_fieldsmemory($result_dia,$x);
  $array_dias[] = $data_cabecalho;
@@ -466,7 +466,7 @@ for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
   db_fieldsmemory($result_dados,$y);
   if($primeiro!=$m60_codmater){
    if($y>0){
-    $estoque = pg_result($result_dados,$y-1,'m70_quant');
+    $estoque = pg_fetch_result($result_dados,$y-1,'m70_quant');
     $estoque = $estoque==""?0:$estoque;
     ?>
     <td align="center" width="5%">
@@ -488,11 +488,11 @@ for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
     </tr>
     <?php 
     if(($estoque <= 0 || $estoque < $sum_total) && $estoque!=$sum_total){
-     $msg_erro .= $sep1.pg_result($result_dados,$y-1,'m60_descr');
+     $msg_erro .= $sep1.pg_fetch_result($result_dados,$y-1,'m60_descr');
      $sep1 = " , ";
     }else{
      if($sum_total > 0){
-      $listaitem .= $sep2.pg_result($result_dados,$y-1,'m60_codmater');
+      $listaitem .= $sep2.pg_fetch_result($result_dados,$y-1,'m60_codmater');
       $listaquant .= $sep2.$sum_total;
       $sep2 = ",";
      }
@@ -543,14 +543,14 @@ for($x=0;$x<$clmer_cardapiodia->numrows;$x++){
             </table>';
   ?><script>document.getElementById("<?=$m60_codmater.$me12_d_data?>").innerHTML = <?=$texto?></script><?php 
  }
- $estoque = pg_result($result_dados,$y-1,'m70_quant');
+ $estoque = pg_fetch_result($result_dados,$y-1,'m70_quant');
  $estoque = $estoque==""?0:$estoque;
  if(($estoque <= 0 || $estoque < $sum_total) && $estoque!=$sum_total){
-  $msg_erro .= $sep1.pg_result($result_dados,$y-1,'m60_descr');
+  $msg_erro .= $sep1.pg_fetch_result($result_dados,$y-1,'m60_descr');
   $sep1 = " , ";
  }else{
   if($sum_total > 0){
-   $listaitem .= $sep2.pg_result($result_dados,$y-1,'m60_codmater');
+   $listaitem .= $sep2.pg_fetch_result($result_dados,$y-1,'m60_codmater');
    $listaquant .= $sep2.$sum_total;
    $sep2 = ",";
   }

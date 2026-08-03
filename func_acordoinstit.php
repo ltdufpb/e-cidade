@@ -36,8 +36,8 @@ require_once(modification("classes/db_acordo_classe.php"));
 
 $iTipoFiltro = 0;
 $lAtivo      = '';
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clacordo = new cl_acordo;
 $clacordo->rotulo->label("ac16_sequencial");
@@ -110,7 +110,7 @@ db_app::load("estilos.css, grid.style.css");
       <?php
 
 
-      $aWhereAdicional = array();
+      $aWhereAdicional = [];
       $aWhereAdicional[] = "ac16_instit = {$iInstituicaoSessao}";
       if (!empty($oGet->iCodigoCategoria)) {
         $aWhereAdicional[] = "ac16_acordocategoria = {$oGet->iCodigoCategoria}";
@@ -138,7 +138,7 @@ db_app::load("estilos.css, grid.style.css");
          */
         if (!empty($ac16_numeroacordo)) {
 
-          $aNumeroAcordo = explode('/', $ac16_numeroacordo);
+          $aNumeroAcordo = explode('/', (string) $ac16_numeroacordo);
           $iNumero = $aNumeroAcordo[0];
           $iAno = !empty($aNumeroAcordo[1]) ? $aNumeroAcordo[1] : db_getsession("DB_anousu");
 
@@ -148,9 +148,9 @@ db_app::load("estilos.css, grid.style.css");
 
         $sql = $clacordo->sql_query("",$campos,"ac16_sequencial", implode(" and ", $aWhereAdicional));
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_ac16_sequencial)) {
-          $repassa = array("chave_ac16_sequencial"=>$chave_ac16_sequencial,"chave_ac16_sequencial"=>$chave_ac16_sequencial);
+          $repassa = ["chave_ac16_sequencial"=>$chave_ac16_sequencial,"chave_ac16_sequencial"=>$chave_ac16_sequencial];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

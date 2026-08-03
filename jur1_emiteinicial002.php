@@ -111,7 +111,7 @@ if(isset($alterar)){
     $sqlerro = true;
     db_msgbox($erromsg);
     db_redireciona("jur1_emiteinicial002.php?chavepesquisa=$v50_inicial");
-    break;
+    return;
   }
 
   $sqlPardiv = "select v04_tipoinicial,v04_tipocertidao as tipocertidao from pardiv where v04_instit  = ".db_getsession('DB_instit') ;
@@ -130,12 +130,12 @@ if(isset($alterar)){
     $w = "veri_certid".$i;
     $wx = "certid".$i;
 
-    $buscaInicialCert = $clinicialcert->sql_query_file($v50_inicial,$$w);
+    $buscaInicialCert = $clinicialcert->sql_query_file($v50_inicial,${$w});
     $rsVerificaCert = $clinicialcert->sql_record($buscaInicialCert);
 
     if ( $clinicialcert->numrows > 0 ) {
 
-      if(empty($$wx)){
+      if(empty(${$wx})){
 
         // excluir inicial numpre pelos numpres das certidoes e dar update no arrecad k00_tipo = 19
 
@@ -147,7 +147,7 @@ if(isset($alterar)){
         $sql .= "                inner join certdiv on certdiv.v14_certid = certid.v13_certid ";
         $sql .= "                inner join divida  on divida.v01_coddiv  = certdiv.v14_coddiv ";
         $sql .= "         where v51_inicial  = $v50_inicial ";
-        $sql .= "           and v51_certidao = ".$$w;
+        $sql .= "           and v51_certidao = ".${$w};
         $sql .= "     union ";
         $sql .= "         select certid.v13_certid, ";
         $sql .= "               termo.v07_numpre ";
@@ -158,9 +158,9 @@ if(isset($alterar)){
 //        $sql .= "                inner join termodiv on termodiv.parcel    = termo.v07_parcel ";
 //        $sql .= "                inner join divida   on divida.v01_coddiv  = termodiv.coddiv ";
         $sql .= "         where v51_inicial  = $v50_inicial ";
-        $sql .= "           and v51_certidao = ".$$w." ) as x ";
+        $sql .= "           and v51_certidao = ".${$w}." ) as x ";
         $rsExcArrecad = db_query($sql);
-        $intNumrows   = pg_numrows($rsExcArrecad);
+        $intNumrows   = pg_num_rows($rsExcArrecad);
 
         // for excluindo da inicial numpre as certidoes desmarcadas e dando update no arrecad
         for($ii = 0;$ii < $intNumrows; $ii++){
@@ -186,8 +186,8 @@ if(isset($alterar)){
         }
 
         $clinicialcert->v51_inicial=$v50_inicial;
-        $clinicialcert->v51_certidao=$$w;
-        $clinicialcert->excluir($v50_inicial,$$w);
+        $clinicialcert->v51_certidao=${$w};
+        $clinicialcert->excluir($v50_inicial,${$w});
 
         if($clinicialcert->erro_status == 0){
           $erromsg = $clinicialcert->erro_msg;
@@ -198,14 +198,14 @@ if(isset($alterar)){
       }
     } else {
 
-      if(!empty($$wx)){
+      if(!empty(${$wx})){
 
 
         if ($sqlerro==false){
 
-          $clinicialcert->v51_certidao = $$wx;
+          $clinicialcert->v51_certidao = ${$wx};
           $clinicialcert->v51_inicial  = $v50_inicial;
-          $clinicialcert->incluir($v50_inicial,$$wx);
+          $clinicialcert->incluir($v50_inicial,${$wx});
 
           if ($clinicialcert->erro_status==0){
             $sqlerro = true;
@@ -336,7 +336,7 @@ if(isset($alterar)){
    */
     if($k00_numpre == "" || $parcel != ""){
       db_msgbox(_M('tributario.juridico.db_frmemiteinicial.alteracao_nao_permitida'));
-      db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]));
+      db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]));
     }
 
   }

@@ -102,7 +102,7 @@ $clrotulo->label("ar36_valormax");
         </td>
         <td>
           <?php
-            $aTipoCobranca = array('1'=>'Valor Fixado','2'=>'Percentual de Débito');
+            $aTipoCobranca = ['1'=>'Valor Fixado','2'=>'Percentual de Débito'];
             db_select('tipo_cobranca', $aTipoCobranca, true, $db_opcao, "onchange='js_tipoCobranca(this.value);' ");
           ?>
         </td>
@@ -111,7 +111,7 @@ $clrotulo->label("ar36_valormax");
         <td>Aplica Juros e Multa:</td>
         <td>
           <?php
-            $a = array('f'=>'Não', 't'=>'Sim');
+            $a = ['f'=>'Não', 't'=>'Sim'];
             db_select('ar36_aplicajurosmulta', $a, true, $db_opcao);
           ?>
         </td>
@@ -120,7 +120,7 @@ $clrotulo->label("ar36_valormax");
         <td>Honorário:</td>
         <td>
           <?php
-            $a = array('f'=>'Não', 't'=>'Sim');
+            $a = ['f'=>'Não', 't'=>'Sim'];
             db_select('ar36_honorario', $a, true, $db_opcao);
           ?>
         </td>
@@ -376,7 +376,7 @@ function js_preenchepesquisa(chave){
   db_iframe_taxa.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -79,17 +79,17 @@ try {
   		}
 
   		$aDadosEscrituracaoInventario = $oInventario->getDadosEscrituracaoContabil($lEstorno);
-  		$aRetorno 									  = array();
+  		$aRetorno 									  = [];
 
   		foreach ( $aDadosEscrituracaoInventario as $oDadosEscrituracao ) {
 
   			$oDadosRetorno									 = new stdClass();
-  			$oDadosRetorno->sClassificacao   = $oDadosEscrituracao->iCodigoConta." - ". urlencode($oDadosEscrituracao->sDescricao);
+  			$oDadosRetorno->sClassificacao   = $oDadosEscrituracao->iCodigoConta." - ". urlencode((string) $oDadosEscrituracao->sDescricao);
   			$oDadosRetorno->nSaldoContabil   = db_formatar($oDadosEscrituracao->nSaldoAnterior,    'f');
   			$oDadosRetorno->nReavaliacao     = db_formatar($oDadosEscrituracao->nValorReavaliacao, 'f');
   			$oDadosRetorno->nAjuste          = db_formatar($oDadosEscrituracao->nValorReajuste,    'f');
   			$oDadosRetorno->nValorLancamento = db_formatar($oDadosEscrituracao->nValorLancamento,  'f');
-  			$oDadosRetorno->sEvento          = $oDadosEscrituracao->iCodigoDocumento." - ".urlencode($oDadosEscrituracao->sDocumento);
+  			$oDadosRetorno->sEvento          = $oDadosEscrituracao->iCodigoDocumento." - ".urlencode((string) $oDadosEscrituracao->sDocumento);
 
   			$aRetorno[] = $oDadosRetorno;
   		}

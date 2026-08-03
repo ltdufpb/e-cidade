@@ -27,33 +27,33 @@
 
 class cl_aguacontratoligacao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $x55_sequencial = 0;
-   var $x55_aguahidromatric = 0;
-   var $x55_aguacontrato = 0;
+   public $x55_sequencial = 0;
+   public $x55_aguahidromatric = 0;
+   public $x55_aguacontrato = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  x55_sequencial = int4 = Código
                  x55_aguahidromatric = int4 = Hidrômetro
                  x55_aguacontrato = int4 = Contrato
                  ";
    //funcao construtor da classe
-   function cl_aguacontratoligacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacontratoligacao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -96,10 +96,10 @@ class cl_aguacontratoligacao {
          $this->erro_status = "0";
          return false;
        }
-       $this->x55_sequencial = pg_result($result,0,0);
+       $this->x55_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from aguacontratoligacao_x55_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $x55_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $x55_sequencial)){
          $this->erro_sql = " Campo x55_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -131,7 +131,7 @@ class cl_aguacontratoligacao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ligação de Água ($this->x55_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ligação de Água já Cadastrado";
@@ -160,12 +160,12 @@ class cl_aguacontratoligacao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22037,'$this->x55_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3968,22037,'','".AddSlashes(pg_result($resaco,0,'x55_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3968,22038,'','".AddSlashes(pg_result($resaco,0,'x55_aguahidromatric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3968,22039,'','".AddSlashes(pg_result($resaco,0,'x55_aguacontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3968,22037,'','".AddSlashes(pg_fetch_result($resaco,0,'x55_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3968,22038,'','".AddSlashes(pg_fetch_result($resaco,0,'x55_aguahidromatric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3968,22039,'','".AddSlashes(pg_fetch_result($resaco,0,'x55_aguacontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -175,10 +175,10 @@ class cl_aguacontratoligacao {
    public function alterar ($x55_sequencial=null) {
      $sql = " update aguacontratoligacao set ";
      $virgula = "";
-     if(trim($this->x55_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x55_sequencial"])){
+     if(trim((string) $this->x55_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x55_sequencial"])){
        $sql  .= $virgula." x55_sequencial = $this->x55_sequencial ";
        $virgula = ",";
-       if(trim($this->x55_sequencial) == null ){
+       if(trim((string) $this->x55_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "x55_sequencial";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_aguacontratoligacao {
          return false;
        }
      }
-     if(trim($this->x55_aguahidromatric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x55_aguahidromatric"])){
+     if(trim((string) $this->x55_aguahidromatric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x55_aguahidromatric"])){
        $sql  .= $virgula." x55_aguahidromatric = $this->x55_aguahidromatric ";
        $virgula = ",";
-       if(trim($this->x55_aguahidromatric) == null ){
+       if(trim((string) $this->x55_aguahidromatric) == null ){
          $this->erro_sql = " Campo Hidrômetro não informado.";
          $this->erro_campo = "x55_aguahidromatric";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_aguacontratoligacao {
          return false;
        }
      }
-     if(trim($this->x55_aguacontrato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x55_aguacontrato"])){
+     if(trim((string) $this->x55_aguacontrato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x55_aguacontrato"])){
        $sql  .= $virgula." x55_aguacontrato = $this->x55_aguacontrato ";
        $virgula = ",";
-       if(trim($this->x55_aguacontrato) == null ){
+       if(trim((string) $this->x55_aguacontrato) == null ){
          $this->erro_sql = " Campo Contrato não informado.";
          $this->erro_campo = "x55_aguacontrato";
          $this->erro_banco = "";
@@ -228,15 +228,15 @@ class cl_aguacontratoligacao {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22037,'$this->x55_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x55_sequencial"]) || $this->x55_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3968,22037,'".AddSlashes(pg_result($resaco,$conresaco,'x55_sequencial'))."','$this->x55_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3968,22037,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x55_sequencial'))."','$this->x55_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x55_aguahidromatric"]) || $this->x55_aguahidromatric != "")
-             $resac = db_query("insert into db_acount values($acount,3968,22038,'".AddSlashes(pg_result($resaco,$conresaco,'x55_aguahidromatric'))."','$this->x55_aguahidromatric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3968,22038,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x55_aguahidromatric'))."','$this->x55_aguahidromatric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x55_aguacontrato"]) || $this->x55_aguacontrato != "")
-             $resac = db_query("insert into db_acount values($acount,3968,22039,'".AddSlashes(pg_result($resaco,$conresaco,'x55_aguacontrato'))."','$this->x55_aguacontrato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3968,22039,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x55_aguacontrato'))."','$this->x55_aguacontrato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -290,12 +290,12 @@ class cl_aguacontratoligacao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22037,'$x55_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3968,22037,'','".AddSlashes(pg_result($resaco,$iresaco,'x55_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3968,22038,'','".AddSlashes(pg_result($resaco,$iresaco,'x55_aguahidromatric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3968,22039,'','".AddSlashes(pg_result($resaco,$iresaco,'x55_aguacontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3968,22037,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x55_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3968,22038,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x55_aguahidromatric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3968,22039,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x55_aguacontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

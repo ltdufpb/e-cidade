@@ -44,7 +44,7 @@ $clcgm->rotulo->label();
 $clempempenho->rotulo->label();
 $clmatordem->rotulo->label();
 $clrotulo->label("z01_nome");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 

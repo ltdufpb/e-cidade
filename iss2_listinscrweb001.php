@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -69,7 +69,7 @@ function js_emite(){
         </td>
         <td>
 	  <?php  
-	  $tipo_fechada = array("t"=>"Todas","s"=>"Sim","n"=>"Não");
+	  $tipo_fechada = ["t"=>"Todas","s"=>"Sim","n"=>"Não"];
 	  db_select("fechadas",$tipo_fechada,true,2); ?>
         </td>
       </tr>
@@ -77,7 +77,7 @@ function js_emite(){
         <td ><b>Processadas :&nbsp;</b></td>
         <td >
 	  <?php  
-	  $tipo_processadas = array("t"=>"Todas","s"=>"Sim","n"=>"Não");
+	  $tipo_processadas = ["t"=>"Todas","s"=>"Sim","n"=>"Não"];
 	  db_select("processadas",$tipo_processadas,true,2); ?>
 	</td>
       </tr>

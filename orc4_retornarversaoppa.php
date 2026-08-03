@@ -113,7 +113,7 @@ $db_opcao = 3;
                   </td>
                   <td> 
                    <?php 
-                    db_select('versaobase',array(), true, 1);
+                    db_select('versaobase',[], true, 1);
                    ?>
                   </td>
                 </tr>

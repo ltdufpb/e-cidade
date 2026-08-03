@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_prestadorprocessoefd_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clprestadorprocessoefd = new cl_prestadorprocessoefd();
 $clprestadorprocessoefd->rotulo->label('e287_sequencial');
 $clprestadorprocessoefd->rotulo->label('e287_sequencial');
@@ -58,9 +58,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clprestadorprocessoefd->sql_query("",$campos,"e287_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e287_sequencial)){
-          $repassa = array("chave_e287_sequencial"=>$chave_e287_sequencial,"chave_e287_sequencial"=>$chave_e287_sequencial);
+          $repassa = ["chave_e287_sequencial"=>$chave_e287_sequencial,"chave_e287_sequencial"=>$chave_e287_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

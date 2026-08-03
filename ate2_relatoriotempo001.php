@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptubase_classe.php"));
 include_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
 
@@ -80,7 +80,7 @@ $clcriaabas = new cl_criaabas;
 										</td>
 										<td>
 											<?php 
-												$aOrdenar = array('1'=>'Tarefa', '2'=>'Data Cria&ccedil;&atilde;o', '3'=>'Data Atualiza&ccedil;&atilde;o', '4'=>'Tempo Atualização');
+												$aOrdenar = ['1'=>'Tarefa', '2'=>'Data Cria&ccedil;&atilde;o', '3'=>'Data Atualiza&ccedil;&atilde;o', '4'=>'Tempo Atualização'];
 												db_select('ordenarPor', $aOrdenar, true, 1, 'style="width: 200px;"');
 												db_input('desc', '', '', '', 'checkbox', 1, 'onclick = "enviaVal(this.checked)"');
 											?>	
@@ -94,7 +94,7 @@ $clcriaabas = new cl_criaabas;
 										</td>
 										<td>
 											<?php 
-												$aTarefas = array('1'=>'Todas', '2'=>'Autorizadas', '3'=>'N&atilde;o Autorizadas');
+												$aTarefas = ['1'=>'Todas', '2'=>'Autorizadas', '3'=>'N&atilde;o Autorizadas'];
 												db_select('tarefasAutorizadas', $aTarefas, true, 1, 'style="width: 200px;"');
 											?>												
 										</td>
@@ -105,7 +105,7 @@ $clcriaabas = new cl_criaabas;
 										</td>
 										<td>
 											<?php 
-												$aConsiderTarefas = array('1'=>'Todas', '2'=>'Conclu&iacute;das', '3'=>'Em Andamento');
+												$aConsiderTarefas = ['1'=>'Todas', '2'=>'Conclu&iacute;das', '3'=>'Em Andamento'];
 												db_select('considerarTarefas', $aConsiderTarefas, true, 1, 'style="width: 200px;"');
 											?>
 										</td>

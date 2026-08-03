@@ -45,7 +45,7 @@ $oEscola = EscolaRepository::getEscolaByCodigo($oParametros->iEscola);
 $oCalendarioTurma = CalendarioRepository::getCalendarioByCodigo($oParametros->iCalendario);
 
 $oCalendario = new stdClass;
-$oCalendario->periodos_letivos = array();
+$oCalendario->periodos_letivos = [];
 $oCalendario->data_inicio = $oCalendarioTurma->getDataInicio()->convertTo(DBDate::DATA_EN);
 $oCalendario->data_fim = $oCalendarioTurma->getDataFinal()->convertTo(DBDate::DATA_EN);
 
@@ -67,10 +67,10 @@ foreach ($aIntervalosMeses as $key => $data) {
 
 $aMeses = array_values($aMeses);
 
-$oCalendario->meses = array();
+$oCalendario->meses = [];
 $aPeriodosAula = $oCalendarioTurma->getPeriodos();
 
-$aRecesso = array();
+$aRecesso = [];
 
 $oInicioPeriodo = null;
 $oFimPeriodo = null;
@@ -92,7 +92,7 @@ foreach ($aMeses as $mes) {
     $oMes = new stdClass();
     $sDataFinal = "{$sAno}-$sMes-" . cal_days_in_month(CAL_GREGORIAN, $sMes, $sAno);
     $oMes->nome = ucfirst(db_mes($sMes));
-    $oMes->dias = array();
+    $oMes->dias = [];
     $aDiasNoMes = DBDate::getDatasNoIntervalo(new DBDate("{$sAno}-$sMes-01"), new DBDate($sDataFinal));
 
     foreach ($aDiasNoMes as $oDiaNoMes) {
@@ -107,7 +107,7 @@ foreach ($aMeses as $mes) {
 
 function getEventosDia(Calendario $oCalendario, DBDate $oDia)
 {
-    $aEventos = array();
+    $aEventos = [];
     foreach ($oCalendario->getEventos() as $oEvento) {
         if ($oEvento->getDataEvento() == $oDia) {
             $oEventoRetorno = new stdClass();
@@ -141,7 +141,7 @@ function getDiaLetivo(Calendario $oCalendarioEscolar, DBDate $oData, $aEventos)
         }
     }
 
-    if (in_array($oData->getDiaSemana(), array(0, 6))) {
+    if (in_array($oData->getDiaSemana(), [0, 6])) {
         foreach ($aEventos as $oEvento) {
             if ($oEvento->letivo) {
                 $oDiaLetivo->dia_letivo = true;
@@ -159,14 +159,14 @@ function getDiaLetivo(Calendario $oCalendarioEscolar, DBDate $oData, $aEventos)
 /**
  * Array com as cores para cada período
  */
-$aCoresPeriodo = array();
+$aCoresPeriodo = [];
 $iCor = 255;
 foreach ($oCalendario->periodos_letivos as $iIndice => $oPeriodo) {
     $iCor = $iCor - 30;
     $aCoresPeriodo[$oPeriodo->nome] = $iCor;
 }
 
-$aEventos = array();
+$aEventos = [];
 
 /**
  * Agrupar eventos
@@ -267,7 +267,7 @@ function montaMiniatura(FPDF $oPdf, $oMes, $iPosicaoEixoY, $iPosicaoEixoX, $aCor
     $oPdf->SetX($iPosicaoEixoX);
 
     // Pega o dia da semana correspondente ao primeiro dia do mês e soma 1
-    $iPrimeiroDiaDaSemana = (date('N', strtotime($oMes->dias[0]->data)) + 1);
+    $iPrimeiroDiaDaSemana = (date('N', strtotime((string) $oMes->dias[0]->data)) + 1);
 
     $iNumeroCelulasVazias = ($iPrimeiroDiaDaSemana % 8);
 
@@ -308,7 +308,7 @@ function montaMiniatura(FPDF $oPdf, $oMes, $iPosicaoEixoY, $iPosicaoEixoX, $aCor
             $iQuebraPagina = 1;
         }
 
-        $oPdf->Cell($iTamanhoDia, 4, date('d', strtotime($oDia->data)), 1, $iQuebraPagina, "C", 1);
+        $oPdf->Cell($iTamanhoDia, 4, date('d', strtotime((string) $oDia->data)), 1, $iQuebraPagina, "C", 1);
 
         if ($iQuebraPagina == 1) {
             $oPdf->SetX($iPosicaoEixoX);
@@ -316,7 +316,7 @@ function montaMiniatura(FPDF $oPdf, $oMes, $iPosicaoEixoY, $iPosicaoEixoX, $aCor
     }
 
     // Pega o dia da semana correspondente ao último dia do mês
-    $iUltimoDiaMes = (date('N', strtotime($oMes->dias[$iIndexDia]->data)));
+    $iUltimoDiaMes = (date('N', strtotime((string) $oMes->dias[$iIndexDia]->data)));
 
     // Preenche com células vazias ao final do mês
     $iIteracoes = 7 - ($iUltimoDiaMes % 7);

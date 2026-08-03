@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE lab_resultado
 class cl_lab_resultado {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $la52_i_codigo = 0;
-   var $la52_i_requiitem = 0;
-   var $la52_i_usuario = 0;
-   var $la52_c_hora = null;
-   var $la52_d_data_dia = null;
-   var $la52_d_data_mes = null;
-   var $la52_d_data_ano = null;
-   var $la52_d_data = null;
-   var $la52_t_motivo = null;
-   var $la52_diagnostico = null;
+   public $la52_i_codigo = 0;
+   public $la52_i_requiitem = 0;
+   public $la52_i_usuario = 0;
+   public $la52_c_hora = null;
+   public $la52_d_data_dia = null;
+   public $la52_d_data_mes = null;
+   public $la52_d_data_ano = null;
+   public $la52_d_data = null;
+   public $la52_t_motivo = null;
+   public $la52_diagnostico = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  la52_i_codigo = int4 = Código
                  la52_i_requiitem = int4 = Exame
                  la52_i_usuario = int4 = Usuário
@@ -63,10 +63,10 @@ class cl_lab_resultado {
                  la52_diagnostico = text = Diagnóstico
                  ";
    //funcao construtor da classe
-   function cl_lab_resultado() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_resultado");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -147,10 +147,10 @@ class cl_lab_resultado {
          $this->erro_status = "0";
          return false;
        }
-       $this->la52_i_codigo = pg_result($result,0,0);
+       $this->la52_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from lab_resultado_la52_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $la52_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $la52_i_codigo)){
          $this->erro_sql = " Campo la52_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,7 +190,7 @@ class cl_lab_resultado {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Resultado do exame ($this->la52_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Resultado do exame já Cadastrado";
@@ -219,16 +219,16 @@ class cl_lab_resultado {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16620,'$this->la52_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,2921,16620,'','".AddSlashes(pg_result($resaco,0,'la52_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2921,16512,'','".AddSlashes(pg_result($resaco,0,'la52_i_requiitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2921,16510,'','".AddSlashes(pg_result($resaco,0,'la52_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2921,16514,'','".AddSlashes(pg_result($resaco,0,'la52_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2921,16513,'','".AddSlashes(pg_result($resaco,0,'la52_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2921,16515,'','".AddSlashes(pg_result($resaco,0,'la52_t_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2921,20498,'','".AddSlashes(pg_result($resaco,0,'la52_diagnostico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2921,16620,'','".AddSlashes(pg_fetch_result($resaco,0,'la52_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2921,16512,'','".AddSlashes(pg_fetch_result($resaco,0,'la52_i_requiitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2921,16510,'','".AddSlashes(pg_fetch_result($resaco,0,'la52_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2921,16514,'','".AddSlashes(pg_fetch_result($resaco,0,'la52_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2921,16513,'','".AddSlashes(pg_fetch_result($resaco,0,'la52_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2921,16515,'','".AddSlashes(pg_fetch_result($resaco,0,'la52_t_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2921,20498,'','".AddSlashes(pg_fetch_result($resaco,0,'la52_diagnostico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -238,10 +238,10 @@ class cl_lab_resultado {
       $this->atualizacampos();
      $sql = " update lab_resultado set ";
      $virgula = "";
-     if(trim($this->la52_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_i_codigo"])){
+     if(trim((string) $this->la52_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_i_codigo"])){
        $sql  .= $virgula." la52_i_codigo = $this->la52_i_codigo ";
        $virgula = ",";
-       if(trim($this->la52_i_codigo) == null ){
+       if(trim((string) $this->la52_i_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "la52_i_codigo";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_lab_resultado {
          return false;
        }
      }
-     if(trim($this->la52_i_requiitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_i_requiitem"])){
+     if(trim((string) $this->la52_i_requiitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_i_requiitem"])){
        $sql  .= $virgula." la52_i_requiitem = $this->la52_i_requiitem ";
        $virgula = ",";
-       if(trim($this->la52_i_requiitem) == null ){
+       if(trim((string) $this->la52_i_requiitem) == null ){
          $this->erro_sql = " Campo Exame não informado.";
          $this->erro_campo = "la52_i_requiitem";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_lab_resultado {
          return false;
        }
      }
-     if(trim($this->la52_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_i_usuario"])){
+     if(trim((string) $this->la52_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_i_usuario"])){
        $sql  .= $virgula." la52_i_usuario = $this->la52_i_usuario ";
        $virgula = ",";
-       if(trim($this->la52_i_usuario) == null ){
+       if(trim((string) $this->la52_i_usuario) == null ){
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "la52_i_usuario";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_lab_resultado {
          return false;
        }
      }
-     if(trim($this->la52_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_c_hora"])){
+     if(trim((string) $this->la52_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_c_hora"])){
        $sql  .= $virgula." la52_c_hora = '$this->la52_c_hora' ";
        $virgula = ",";
-       if(trim($this->la52_c_hora) == null ){
+       if(trim((string) $this->la52_c_hora) == null ){
          $this->erro_sql = " Campo Hora não informado.";
          $this->erro_campo = "la52_c_hora";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_lab_resultado {
          return false;
        }
      }
-     if(trim($this->la52_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la52_d_data_dia"] !="") ){
+     if(trim((string) $this->la52_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la52_d_data_dia"] !="") ){
        $sql  .= $virgula." la52_d_data = '$this->la52_d_data' ";
        $virgula = ",";
-       if(trim($this->la52_d_data) == null ){
+       if(trim((string) $this->la52_d_data) == null ){
          $this->erro_sql = " Campo Data não informado.";
          $this->erro_campo = "la52_d_data_dia";
          $this->erro_banco = "";
@@ -306,7 +306,7 @@ class cl_lab_resultado {
        if(isset($GLOBALS["HTTP_POST_VARS"]["la52_d_data_dia"])){
          $sql  .= $virgula." la52_d_data = null ";
          $virgula = ",";
-         if(trim($this->la52_d_data) == null ){
+         if(trim((string) $this->la52_d_data) == null ){
            $this->erro_sql = " Campo Data não informado.";
            $this->erro_campo = "la52_d_data_dia";
            $this->erro_banco = "";
@@ -317,11 +317,11 @@ class cl_lab_resultado {
          }
        }
      }
-     if(trim($this->la52_t_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_t_motivo"])){
+     if(trim((string) $this->la52_t_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_t_motivo"])){
        $sql  .= $virgula." la52_t_motivo = '$this->la52_t_motivo' ";
        $virgula = ",";
      }
-     if(trim($this->la52_diagnostico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_diagnostico"])){
+     if(trim((string) $this->la52_diagnostico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la52_diagnostico"])){
        $sql  .= $virgula." la52_diagnostico = '$this->la52_diagnostico' ";
        $virgula = ",";
      }
@@ -339,23 +339,23 @@ class cl_lab_resultado {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,16620,'$this->la52_i_codigo','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la52_i_codigo"]) || $this->la52_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,2921,16620,'".AddSlashes(pg_result($resaco,$conresaco,'la52_i_codigo'))."','$this->la52_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2921,16620,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la52_i_codigo'))."','$this->la52_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la52_i_requiitem"]) || $this->la52_i_requiitem != "")
-             $resac = db_query("insert into db_acount values($acount,2921,16512,'".AddSlashes(pg_result($resaco,$conresaco,'la52_i_requiitem'))."','$this->la52_i_requiitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2921,16512,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la52_i_requiitem'))."','$this->la52_i_requiitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la52_i_usuario"]) || $this->la52_i_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,2921,16510,'".AddSlashes(pg_result($resaco,$conresaco,'la52_i_usuario'))."','$this->la52_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2921,16510,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la52_i_usuario'))."','$this->la52_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la52_c_hora"]) || $this->la52_c_hora != "")
-             $resac = db_query("insert into db_acount values($acount,2921,16514,'".AddSlashes(pg_result($resaco,$conresaco,'la52_c_hora'))."','$this->la52_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2921,16514,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la52_c_hora'))."','$this->la52_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la52_d_data"]) || $this->la52_d_data != "")
-             $resac = db_query("insert into db_acount values($acount,2921,16513,'".AddSlashes(pg_result($resaco,$conresaco,'la52_d_data'))."','$this->la52_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2921,16513,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la52_d_data'))."','$this->la52_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la52_t_motivo"]) || $this->la52_t_motivo != "")
-             $resac = db_query("insert into db_acount values($acount,2921,16515,'".AddSlashes(pg_result($resaco,$conresaco,'la52_t_motivo'))."','$this->la52_t_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2921,16515,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la52_t_motivo'))."','$this->la52_t_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la52_diagnostico"]) || $this->la52_diagnostico != "")
-             $resac = db_query("insert into db_acount values($acount,2921,20498,'".AddSlashes(pg_result($resaco,$conresaco,'la52_diagnostico'))."','$this->la52_diagnostico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2921,20498,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la52_diagnostico'))."','$this->la52_diagnostico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -409,16 +409,16 @@ class cl_lab_resultado {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,16620,'$la52_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,2921,16620,'','".AddSlashes(pg_result($resaco,$iresaco,'la52_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2921,16512,'','".AddSlashes(pg_result($resaco,$iresaco,'la52_i_requiitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2921,16510,'','".AddSlashes(pg_result($resaco,$iresaco,'la52_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2921,16514,'','".AddSlashes(pg_result($resaco,$iresaco,'la52_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2921,16513,'','".AddSlashes(pg_result($resaco,$iresaco,'la52_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2921,16515,'','".AddSlashes(pg_result($resaco,$iresaco,'la52_t_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2921,20498,'','".AddSlashes(pg_result($resaco,$iresaco,'la52_diagnostico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2921,16620,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la52_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2921,16512,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la52_i_requiitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2921,16510,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la52_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2921,16514,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la52_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2921,16513,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la52_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2921,16515,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la52_t_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2921,20498,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la52_diagnostico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -479,7 +479,7 @@ class cl_lab_resultado {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:lab_resultado";
@@ -494,7 +494,7 @@ class cl_lab_resultado {
    function sql_query ( $la52_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -519,7 +519,7 @@ class cl_lab_resultado {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_lab_resultado {
    function sql_query_item ( $la52_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -560,7 +560,7 @@ class cl_lab_resultado {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -573,7 +573,7 @@ class cl_lab_resultado {
   function sql_query_file ( $la52_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -594,7 +594,7 @@ class cl_lab_resultado {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

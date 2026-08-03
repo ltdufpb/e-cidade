@@ -30,33 +30,33 @@
 class cl_empnotasuspensao {
 
   // cria variaveis de erro
-  var $rotulo          = null;
-  var $query_sql       = null;
-  var $numrows         = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status     = null;
-  var $erro_sql        = null;
-  var $erro_banco      = null;
-  var $erro_msg        = null;
-  var $erro_campo      = null;
-  var $pagina_retorno  = null;
+  public $rotulo          = null;
+  public $query_sql       = null;
+  public $numrows         = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status     = null;
+  public $erro_sql        = null;
+  public $erro_banco      = null;
+  public $erro_msg        = null;
+  public $erro_campo      = null;
+  public $pagina_retorno  = null;
   // cria variaveis do arquivo
-  var $cc36_sequencial             = 0;
-  var $cc36_empnota                = 0;
-  var $cc36_justificativasuspensao = null;
-  var $cc36_datasuspensao_dia      = null;
-  var $cc36_datasuspensao_mes      = null;
-  var $cc36_datasuspensao_ano      = null;
-  var $cc36_datasuspensao          = null;
-  var $cc36_justificativaretorno   = null;
-  var $cc36_dataretorno_dia        = null;
-  var $cc36_dataretorno_mes        = null;
-  var $cc36_dataretorno_ano        = null;
-  var $cc36_dataretorno            = null;
+  public $cc36_sequencial             = 0;
+  public $cc36_empnota                = 0;
+  public $cc36_justificativasuspensao = null;
+  public $cc36_datasuspensao_dia      = null;
+  public $cc36_datasuspensao_mes      = null;
+  public $cc36_datasuspensao_ano      = null;
+  public $cc36_datasuspensao          = null;
+  public $cc36_justificativaretorno   = null;
+  public $cc36_dataretorno_dia        = null;
+  public $cc36_dataretorno_mes        = null;
+  public $cc36_dataretorno_ano        = null;
+  public $cc36_dataretorno            = null;
   // cria propriedade com as variaveis do arquivo
-  var $campos = "
+  public $campos = "
                  cc36_sequencial = int4 = Codigo
                  cc36_empnota = int4 = Nota de Liquidação
                  cc36_justificativasuspensao = text = Justificativa de Suspensão
@@ -65,11 +65,11 @@ class cl_empnotasuspensao {
                  cc36_dataretorno = date = Data de Retorno
                  ";
   //funcao construtor da classe
-  function cl_empnotasuspensao() {
+  function __construct() {
 
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("empnotasuspensao");
-    $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+    $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
 
   // funcao para Inclusão
@@ -112,10 +112,10 @@ class cl_empnotasuspensao {
         $this->erro_status = "0";
         return false;
       }
-      $this->cc36_sequencial = pg_result($result,0,0);
+      $this->cc36_sequencial = pg_fetch_result($result,0,0);
     }else{
       $result = db_query("select last_value from empnotasuspensao_cc36_sequencial_seq");
-      if(($result != false) && (pg_result($result,0,0) < $cc36_sequencial)){
+      if(($result != false) && (pg_fetch_result($result,0,0) < $cc36_sequencial)){
         $this->erro_sql = " Campo cc36_sequencial maior que último número da sequencia.";
         $this->erro_banco = "Sequencia menor que este número.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -153,7 +153,7 @@ class cl_empnotasuspensao {
     $result = db_query($sql);
     if($result==false){
       $this->erro_banco = str_replace("\n","",@pg_last_error());
-      if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+      if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
         $this->erro_sql   = "Suspensão de Nota de Liquidação ($this->cc36_sequencial) não Incluído. Inclusão Abortada.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_banco = "Suspensão de Nota de Liquidação já Cadastrado";
@@ -182,15 +182,15 @@ class cl_empnotasuspensao {
       if(($resaco!=false)||($this->numrows!=0)){
 
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac,0,0);
+        $acount = pg_fetch_result($resac,0,0);
         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
         $resac = db_query("insert into db_acountkey values($acount,21966,'$this->cc36_sequencial','I')");
-        $resac = db_query("insert into db_acount values($acount,3954,21966,'','".AddSlashes(pg_result($resaco,0,'cc36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3954,21967,'','".AddSlashes(pg_result($resaco,0,'cc36_empnota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3954,21968,'','".AddSlashes(pg_result($resaco,0,'cc36_justificativasuspensao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3954,21969,'','".AddSlashes(pg_result($resaco,0,'cc36_datasuspensao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3954,21970,'','".AddSlashes(pg_result($resaco,0,'cc36_justificativaretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3954,21971,'','".AddSlashes(pg_result($resaco,0,'cc36_dataretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3954,21966,'','".AddSlashes(pg_fetch_result($resaco,0,'cc36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3954,21967,'','".AddSlashes(pg_fetch_result($resaco,0,'cc36_empnota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3954,21968,'','".AddSlashes(pg_fetch_result($resaco,0,'cc36_justificativasuspensao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3954,21969,'','".AddSlashes(pg_fetch_result($resaco,0,'cc36_datasuspensao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3954,21970,'','".AddSlashes(pg_fetch_result($resaco,0,'cc36_justificativaretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3954,21971,'','".AddSlashes(pg_fetch_result($resaco,0,'cc36_dataretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
       }
     }
     return true;
@@ -201,10 +201,10 @@ class cl_empnotasuspensao {
 
     $sql = " update empnotasuspensao set ";
     $virgula = "";
-    if(trim($this->cc36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_sequencial"])){
+    if(trim((string) $this->cc36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_sequencial"])){
       $sql  .= $virgula." cc36_sequencial = $this->cc36_sequencial ";
       $virgula = ",";
-      if(trim($this->cc36_sequencial) == null ){
+      if(trim((string) $this->cc36_sequencial) == null ){
         $this->erro_sql = " Campo Codigo não informado.";
         $this->erro_campo = "cc36_sequencial";
         $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_empnotasuspensao {
         return false;
       }
     }
-    if(trim($this->cc36_empnota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_empnota"])){
+    if(trim((string) $this->cc36_empnota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_empnota"])){
       $sql  .= $virgula." cc36_empnota = $this->cc36_empnota ";
       $virgula = ",";
-      if(trim($this->cc36_empnota) == null ){
+      if(trim((string) $this->cc36_empnota) == null ){
         $this->erro_sql = " Campo Nota de Liquidação não informado.";
         $this->erro_campo = "cc36_empnota";
         $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_empnotasuspensao {
         return false;
       }
     }
-    if(trim($this->cc36_justificativasuspensao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_justificativasuspensao"])){
+    if(trim((string) $this->cc36_justificativasuspensao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_justificativasuspensao"])){
       $sql  .= $virgula." cc36_justificativasuspensao = '$this->cc36_justificativasuspensao' ";
       $virgula = ",";
-      if(trim($this->cc36_justificativasuspensao) == null ){
+      if(trim((string) $this->cc36_justificativasuspensao) == null ){
         $this->erro_sql = " Campo Justificativa de Suspensão não informado.";
         $this->erro_campo = "cc36_justificativasuspensao";
         $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_empnotasuspensao {
         return false;
       }
     }
-    if(trim($this->cc36_datasuspensao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_datasuspensao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cc36_datasuspensao_dia"] !="") ){
+    if(trim((string) $this->cc36_datasuspensao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_datasuspensao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cc36_datasuspensao_dia"] !="") ){
       $sql  .= $virgula." cc36_datasuspensao = '$this->cc36_datasuspensao' ";
       $virgula = ",";
-      if(trim($this->cc36_datasuspensao) == null ){
+      if(trim((string) $this->cc36_datasuspensao) == null ){
         $this->erro_sql = " Campo Data de Suspensão não informado.";
         $this->erro_campo = "cc36_datasuspensao_dia";
         $this->erro_banco = "";
@@ -256,7 +256,7 @@ class cl_empnotasuspensao {
       if(isset($GLOBALS["HTTP_POST_VARS"]["cc36_datasuspensao_dia"])){
         $sql  .= $virgula." cc36_datasuspensao = null ";
         $virgula = ",";
-        if(trim($this->cc36_datasuspensao) == null ){
+        if(trim((string) $this->cc36_datasuspensao) == null ){
           $this->erro_sql = " Campo Data de Suspensão não informado.";
           $this->erro_campo = "cc36_datasuspensao_dia";
           $this->erro_banco = "";
@@ -267,11 +267,11 @@ class cl_empnotasuspensao {
         }
       }
     }
-    if(trim($this->cc36_justificativaretorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_justificativaretorno"])){
+    if(trim((string) $this->cc36_justificativaretorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_justificativaretorno"])){
       $sql  .= $virgula." cc36_justificativaretorno = '$this->cc36_justificativaretorno' ";
       $virgula = ",";
     }
-    if(trim($this->cc36_dataretorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_dataretorno_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cc36_dataretorno_dia"] !="") ){
+    if(trim((string) $this->cc36_dataretorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc36_dataretorno_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cc36_dataretorno_dia"] !="") ){
       $sql  .= $virgula." cc36_dataretorno = '$this->cc36_dataretorno' ";
       $virgula = ",";
     }     else{
@@ -294,21 +294,21 @@ class cl_empnotasuspensao {
         for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
           $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-          $acount = pg_result($resac,0,0);
+          $acount = pg_fetch_result($resac,0,0);
           $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
           $resac = db_query("insert into db_acountkey values($acount,21966,'$this->cc36_sequencial','A')");
           if (isset($GLOBALS["HTTP_POST_VARS"]["cc36_sequencial"]) || $this->cc36_sequencial != "")
-            $resac = db_query("insert into db_acount values($acount,3954,21966,'".AddSlashes(pg_result($resaco,$conresaco,'cc36_sequencial'))."','$this->cc36_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3954,21966,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc36_sequencial'))."','$this->cc36_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["cc36_empnota"]) || $this->cc36_empnota != "")
-            $resac = db_query("insert into db_acount values($acount,3954,21967,'".AddSlashes(pg_result($resaco,$conresaco,'cc36_empnota'))."','$this->cc36_empnota',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3954,21967,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc36_empnota'))."','$this->cc36_empnota',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["cc36_justificativasuspensao"]) || $this->cc36_justificativasuspensao != "")
-            $resac = db_query("insert into db_acount values($acount,3954,21968,'".AddSlashes(pg_result($resaco,$conresaco,'cc36_justificativasuspensao'))."','$this->cc36_justificativasuspensao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3954,21968,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc36_justificativasuspensao'))."','$this->cc36_justificativasuspensao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["cc36_datasuspensao"]) || $this->cc36_datasuspensao != "")
-            $resac = db_query("insert into db_acount values($acount,3954,21969,'".AddSlashes(pg_result($resaco,$conresaco,'cc36_datasuspensao'))."','$this->cc36_datasuspensao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3954,21969,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc36_datasuspensao'))."','$this->cc36_datasuspensao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["cc36_justificativaretorno"]) || $this->cc36_justificativaretorno != "")
-            $resac = db_query("insert into db_acount values($acount,3954,21970,'".AddSlashes(pg_result($resaco,$conresaco,'cc36_justificativaretorno'))."','$this->cc36_justificativaretorno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3954,21970,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc36_justificativaretorno'))."','$this->cc36_justificativaretorno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["cc36_dataretorno"]) || $this->cc36_dataretorno != "")
-            $resac = db_query("insert into db_acount values($acount,3954,21971,'".AddSlashes(pg_result($resaco,$conresaco,'cc36_dataretorno'))."','$this->cc36_dataretorno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3954,21971,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc36_dataretorno'))."','$this->cc36_dataretorno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         }
       }
     }
@@ -363,15 +363,15 @@ class cl_empnotasuspensao {
         for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
           $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-          $acount = pg_result($resac,0,0);
+          $acount = pg_fetch_result($resac,0,0);
           $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
           $resac  = db_query("insert into db_acountkey values($acount,21966,'$cc36_sequencial','E')");
-          $resac  = db_query("insert into db_acount values($acount,3954,21966,'','".AddSlashes(pg_result($resaco,$iresaco,'cc36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3954,21967,'','".AddSlashes(pg_result($resaco,$iresaco,'cc36_empnota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3954,21968,'','".AddSlashes(pg_result($resaco,$iresaco,'cc36_justificativasuspensao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3954,21969,'','".AddSlashes(pg_result($resaco,$iresaco,'cc36_datasuspensao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3954,21970,'','".AddSlashes(pg_result($resaco,$iresaco,'cc36_justificativaretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3954,21971,'','".AddSlashes(pg_result($resaco,$iresaco,'cc36_dataretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3954,21966,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3954,21967,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc36_empnota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3954,21968,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc36_justificativasuspensao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3954,21969,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc36_datasuspensao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3954,21970,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc36_justificativaretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3954,21971,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc36_dataretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         }
       }
     }

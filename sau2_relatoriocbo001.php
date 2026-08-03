@@ -58,7 +58,7 @@ require_once(modification("dbforms/db_funcoes.php"));
               </td>
               <td>
                 <?php 
-                $aX = array('1'=>'PAB', '2'=>'NÃO PAB', '3'=>'AMBOS');
+                $aX = ['1'=>'PAB', '2'=>'NÃO PAB', '3'=>'AMBOS'];
                 db_select('pab', $aX, true, 1, '');
                 ?>
               </td>
@@ -67,7 +67,7 @@ require_once(modification("dbforms/db_funcoes.php"));
               </td>
               <td>
                 <?php 
-                $aX = array('1'=>'SIM', '2'=>'NÃO');
+                $aX = ['1'=>'SIM', '2'=>'NÃO'];
                 db_select('mostrarProfissionais', $aX, true, 1, '');
                 ?>
               </td>

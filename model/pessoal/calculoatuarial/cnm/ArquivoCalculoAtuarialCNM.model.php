@@ -47,7 +47,7 @@ class ArquivoCalculoAtuarialCNM {
    * @var array
    * @access public
    */
-  public $aRegistros = array(); 
+  public $aRegistros = []; 
 
   /**
    * Tipo de Arquivo que pode ser gerado, definido pelas constantes
@@ -84,39 +84,18 @@ class ArquivoCalculoAtuarialCNM {
    */
   public function __construct( $iTipo ) {
 
-    switch ( $iTipo ) {
-
-      case ArquivoCalculoAtuarialCNM::ATIVOS:
-        $this->sNomeclatura = "ATIVOS";  
-      break;
-
-      case ArquivoCalculoAtuarialCNM::INATIVOS_INVALIDEZ:
-        $this->sNomeclatura = "INATIVOS_INVALIDEZ";  
-      break;
-
-      case ArquivoCalculoAtuarialCNM::INATIVOS_TEMPO_CONTRIBUICAO:
-        $this->sNomeclatura = "INATIVOS_TEMPO_CONTRIBUICAO";  
-      break;
-
-      case ArquivoCalculoAtuarialCNM::INATIVOS_IDADE:
-        $this->sNomeclatura = "INATIVOS_IDADE";  
-      break;
-
-      case ArquivoCalculoAtuarialCNM::INATIVOS_COMPULSORIA:
-        $this->sNomeclatura = "INATIVOS_COMPULSORIA";  
-      break;
-
-      case ArquivoCalculoAtuarialCNM::PENSIONISTAS:
-        $this->sNomeclatura = "PENSIONISTAS";  
-      break;
-
-      default:
-        throw new ParameterException("Arquivo de Cálculo Atuarial Inválido.");
-      break;
-    }
+    $this->sNomeclatura = match ($iTipo) {
+        ArquivoCalculoAtuarialCNM::ATIVOS => "ATIVOS",
+        ArquivoCalculoAtuarialCNM::INATIVOS_INVALIDEZ => "INATIVOS_INVALIDEZ",
+        ArquivoCalculoAtuarialCNM::INATIVOS_TEMPO_CONTRIBUICAO => "INATIVOS_TEMPO_CONTRIBUICAO",
+        ArquivoCalculoAtuarialCNM::INATIVOS_IDADE => "INATIVOS_IDADE",
+        ArquivoCalculoAtuarialCNM::INATIVOS_COMPULSORIA => "INATIVOS_COMPULSORIA",
+        ArquivoCalculoAtuarialCNM::PENSIONISTAS => "PENSIONISTAS",
+        default => throw new ParameterException("Arquivo de Cálculo Atuarial Inválido."),
+    };
 
     $this->iTipoArquivo = $iTipo;
-    $this->sCaminho = "tmp/_" . date("Ymdis"). rand() ."calculoAtuarialCNM_" . $this->sNomeclatura . ".csv";
+    $this->sCaminho = "tmp/_" . date("Ymdis"). random_int(0, mt_getrandmax()) ."calculoAtuarialCNM_" . $this->sNomeclatura . ".csv";
     $this->pArquivo = fopen($this->sCaminho,'w');
   }
 
@@ -158,14 +137,14 @@ class ArquivoCalculoAtuarialCNM {
 
     }
     
-    $aLinha = array();
+    $aLinha = [];
     foreach ($oRegistro->toArray() as $sConteudoColuna) {
     	
     	$aLinha[] = $sConteudoColuna != '' ? $sConteudoColuna : '0'; 
     	
     }
     
-    if ( !fputcsv($this->pArquivo, $aLinha, ',', '"' ) ) {
+    if ( !fputcsv($this->pArquivo, $aLinha, ',', '"', escape: '\\' ) ) {
     	throw new Exception("Erro Ao gravar o Registro no Arquivo");
     }
     $this->lAdicionouRegistros = true;

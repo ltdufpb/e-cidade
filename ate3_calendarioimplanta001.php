@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -77,7 +77,7 @@ echo "</td>";
 echo "<td><strong>Exercício:</strong></td>";
 echo "<td>";
 
-$exerc = array();
+$exerc = [];
 for($i=(db_getsession('DB_anousu')-2);$i<(db_getsession('DB_anousu')+5);$i++){
   $exerc[$i] = $i;
 }
@@ -163,4 +163,4 @@ echo "<tr><td><strong>*-Vencido &nbsp&nbsp 1-Autorizado &nbsp&nbsp 2-Nao Autoriz
 echo "</table>";
 
 $cale->monta_calendario_anual_semana($exercicio,$cliente,$exercicio."-01-01") ;//date("Y-m-d",db_getsession("DB_datausu")));
-$cale->monta_fim_pagina(false);
+$cale->monta_fim_pagina();

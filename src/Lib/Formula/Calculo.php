@@ -34,17 +34,11 @@ namespace ECidade\Lib\Formula;
 class Calculo
 {
     /**
-     * @var FormulaInterface
-     */
-    private $formula;
-
-    /**
      * Calculo constructor.
      * @param FormulaInterface $formula
      */
-    public function __construct(FormulaInterface $formula)
+    public function __construct(private readonly FormulaInterface $formula)
     {
-        $this->formula = $formula;
     }
 
     /**

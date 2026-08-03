@@ -27,12 +27,12 @@
 
 
 class pagament {
-  var $arq=null;
+  public $arq=null;
 
-  function pagament($header){
+  function __construct($header){
     umask(74);
     $this->arq = fopen("tmp/PAGAMENT.TXT",'w+');
-    fputs($this->arq,$header);
+    fputs($this->arq,(string) $header);
     fputs($this->arq,"\r\n");
   }
 
@@ -163,17 +163,17 @@ class pagament {
        ";
 
     $res  = db_query($sql);
-    $rows = pg_numrows($res);
+    $rows = pg_num_rows($res);
     for ($x = 0; $x < $rows; $x++) {
 
       $oStdPagamento = db_utils::fieldsMemory($res, $x);
 
       $ano         = $oStdPagamento->ano;
       $instituicao = $oStdPagamento->e60_instit;
-      $empenho     = $ano.str_pad($instituicao, 2, "0", STR_PAD_LEFT)."0".formatar($oStdPagamento->codemp, 6, 'n');
-      $lancamento  = formatar($oStdPagamento->c75_codlan, 20, 'n');
-      $data        = formatar($oStdPagamento->c75_data, 8, 'd');
-      $valor       = formatar($oStdPagamento->c70_valor, 13, 'v');
+      $empenho     = $ano.str_pad((string) $instituicao, 2, "0", STR_PAD_LEFT)."0".formatar($oStdPagamento->codemp, 6);
+      $lancamento  = formatar($oStdPagamento->c75_codlan, 20);
+      $data        = formatar($oStdPagamento->c75_data, 8);
+      $valor       = formatar($oStdPagamento->c70_valor, 13);
       $sinal       = $oStdPagamento->sinal;
       $sObsoleto   = str_pad(" ", 120, " ", STR_PAD_RIGHT);
       $historico   = $oStdPagamento->historico;
@@ -195,16 +195,16 @@ class pagament {
         $liquidacao = db_utils::fieldsMemory($rsBuscaCodigoLiquidacao, 0)->c80_codlan;
       }
 
-      $liquidacao = formatar($liquidacao, 20, 'n');;
+      $liquidacao = formatar($liquidacao, 20);;
 
-      $historico = trim($historico);
+      $historico = trim((string) $historico);
       if (empty($historico)) {
         $historico = "Lançamento de Pagamento Número: {$lancamento}";
       }
 
       $historico = addcslashes($historico,"\r\n");
-      $historico = formatar($historico, 400, 'c');
-      $operacao  = formatar($oStdPagamento->operacao, 30, 'c');
+      $historico = formatar($historico, 400);
+      $operacao  = formatar($oStdPagamento->operacao, 30);
 
       // estrutural da conta a debito
       $sql = "select c60_estrut
@@ -214,11 +214,11 @@ class pagament {
       $resdeb = db_query($sql);
 
       // caso nao exista coloque o reduzido
-      $conta_pagadora = formatar($oStdPagamento->conta_pagadora, 20, 'n');
+      $conta_pagadora = formatar($oStdPagamento->conta_pagadora, 20);
       if (pg_num_rows($resdeb) > 0) {
 
         $oStdConta = db_utils::fieldsMemory($resdeb, 0);
-        $conta_pagadora = formatar($oStdConta->c60_estrut, 20, 'n');
+        $conta_pagadora = formatar($oStdConta->c60_estrut, 20);
       }
 
       // estrutural da conta a credito
@@ -231,14 +231,14 @@ class pagament {
       $resdeb = db_query($sql);
 
       // caso nao exista coloque o reduzido
-      $contra_partida = formatar($oStdPagamento->contra_partida,20,'n');
+      $contra_partida = formatar($oStdPagamento->contra_partida,20);
       if (pg_num_rows($resdeb) > 0) {
 
         $oStdEstrutural = db_utils::fieldsMemory($resdeb, 0);
-        $contra_partida = formatar($oStdEstrutural->c60_estrut,20,'n');
+        $contra_partida = formatar($oStdEstrutural->c60_estrut,20);
       }
 
-      $orgao_unidade      = formatar($oStdPagamento->orgao_unidade,4,'n');
+      $orgao_unidade      = formatar($oStdPagamento->orgao_unidade,4);
 
       $conta_debito  = $conta_pagadora;
       $conta_credito = $contra_partida;
@@ -255,7 +255,7 @@ class pagament {
     }
 
     //  trailer
-    $contador = espaco(10-(strlen($contador)),'0').$contador;
+    $contador = espaco(10-(strlen($contador))).$contador;
     $line = "FINALIZADOR".$contador;
     fputs($this->arq,$line);
     fputs($this->arq,"\r\n");

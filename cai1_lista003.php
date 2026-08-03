@@ -42,7 +42,7 @@ $clrotulo->label('k00_tipo');
 $clrotulo->label('k00_descr');
 $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS);
 $cllista         = new cl_lista;
 $cllistadoc      = new cl_listadoc;
@@ -52,7 +52,7 @@ $cllistanotifica = new cl_listanotifica;
 $db_opcao = 1;
 $db_botao = true;
 $instit = db_getsession("DB_instit");
-if((isset($HTTP_POST_VARS["excluir"]) && $HTTP_POST_VARS["excluir"])=="Excluir"){
+if((isset($_POST["excluir"]) && $_POST["excluir"])=="Excluir"){
     db_inicio_transacao();
     $erro1 = false;
     $resultnotifica = $cllistanotifica->sql_record($cllistanotifica->sql_query("","","","*",""," k63_codigo = $k60_codigo and k50_instit = $instit and k60_instit = $instit"));

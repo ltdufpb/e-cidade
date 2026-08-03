@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_arreprescr_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clarreprescr = new cl_arreprescr;
 
 $debitos = str_replace("X",",",$lista);
@@ -73,7 +73,7 @@ $pdf = new PDF();
 $pdf->Open();
 $pdf->AliasNbPages();
 $head2 = "Relatório dos Débitos Prescritos";
-$head3 = "Periodo:".substr($dat1,8,2)."/".substr($dat1,5,2)."/".substr($dat1,0,4)." A ".substr($dat2,8,2)."/".substr($dat2,5,2)."/".substr($dat2,0,4);
+$head3 = "Periodo:".substr((string) $dat1,8,2)."/".substr((string) $dat1,5,2)."/".substr((string) $dat1,0,4)." A ".substr((string) $dat2,8,2)."/".substr((string) $dat2,5,2)."/".substr((string) $dat2,0,4);
 $pri = true;
 $p = 0;
 $flt_vlrcorr = 0;

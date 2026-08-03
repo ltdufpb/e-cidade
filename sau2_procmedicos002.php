@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_prontproced_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $unidade = @$unidade;
 $data1 = str_replace("X","-",$data1);
 $data2 = str_replace("X","-",$data2);
@@ -79,7 +79,7 @@ $pdf->AliasNbPages();
 $head1 = "Relatório dos Procedimentos Por Médico";
 $head2 = "Periodo: ".substr($data1,8,2)."/".substr($data1,5,2)."/".substr($data1,0,4)." A ".substr($data2,8,2)."/".substr($data2,5,2)."/".substr($data2,0,4);
 if($medico!=""){
- $h_med = $medico." - ".pg_result($result,0,'z01_nome');
+ $h_med = $medico." - ".pg_fetch_result($result,0,'z01_nome');
 }else{
  $h_med = "TODOS";
 }
@@ -88,7 +88,7 @@ if($procedimento!=""){
 }else{
  $h_proc = "TODOS";
 }
-$head3 = "Unidade: - ".pg_result($result,0,'descrdepto');;
+$head3 = "Unidade: - ".pg_fetch_result($result,0,'descrdepto');;
 $head4 = "Médico: $h_med";
 $head5 = "Procedimento: $h_proc";
 $pdf->addpage();

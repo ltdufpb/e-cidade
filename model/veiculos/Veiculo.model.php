@@ -172,7 +172,7 @@ class Veiculo {
    */
   public function getAbastecimentos() {
 
-    $aAbastecimentos        = array();
+    $aAbastecimentos        = [];
     $oDaoAbastecimento      = new cl_veicabast;
     $sWhere                 = "ve70_veiculos = {$this->iCodigo}";
     $sSqlQueryAbastecimento = $oDaoAbastecimento->sql_query_file(null, "ve70_codigo", "ve70_codigo desc", $sWhere);

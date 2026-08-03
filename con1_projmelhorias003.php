@@ -42,13 +42,13 @@ $db_opcao = 1;
 $db_botao = true;
 
 if (isset($confirma)) {
-    db_postmemory($HTTP_POST_VARS);
+    db_postmemory($_POST);
 
     db_inicio_transacao();
-    $HTTP_POST_VARS['d40_data_dia'] = date('d');
-    $HTTP_POST_VARS['d40_data_mes'] = date('m');
-    $HTTP_POST_VARS['d40_data_ano'] = date('Y');
-    $HTTP_POST_VARS['d40_login'] = db_getsession('DB_id_usuario');
+    $_POST['d40_data_dia'] = date('d');
+    $_POST['d40_data_mes'] = date('m');
+    $_POST['d40_data_ano'] = date('Y');
+    $_POST['d40_login'] = db_getsession('DB_id_usuario');
     $sqlerro = false;
     //perguntar pro paulo disso ae abaixo
     //if($j40_codigo==""){
@@ -70,18 +70,18 @@ if (isset($confirma)) {
             $sqlerro = true;
         }
     }
-    $tes = split("X",$testada);
-    $eixo = split("X",$eixo);
-    $obs = split("X",$obs);
+    $tes = preg_split("#X#m",(string) $testada);
+    $eixo = preg_split("#X#m",(string) $eixo);
+    $obs = preg_split("#X#m",(string) $obs);
     for ($ii=0; $ii < sizeof($tes); $ii++) {
-        $chave = split('-',$tes[$ii]);
+        $chave = preg_split('#\-#m',(string) $tes[$ii]);
         $clprojmelhoriasmatric->d41_codigo = $clprojmelhorias->d40_codigo;
         $clprojmelhoriasmatric->d41_matric = $chave[0];
         $clprojmelhoriasmatric->d41_testada = $chave[1]+0;
         $clprojmelhoriasmatric->d41_eixo = $eixo[$ii]+0;
         $clprojmelhoriasmatric->d41_obs = $obs[$ii];
         $clprojmelhoriasmatric->d41_pgtopref = "false";
-        $HTTP_POST_VARS['d41_auto'] = true;
+        $_POST['d41_auto'] = true;
 
         //$clprojmelhoriasmatric->erro(true,false);
         $clprojmelhoriasmatric->incluir($clprojmelhorias->d40_codigo,$chave[0]);
@@ -312,7 +312,7 @@ if (isset($confirma)) {
 
                             function js_preenchepesquisa(chave) {
                                 db_iframe.hide();
-                                location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+                                location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
                             }
 
                             function js_pesquisaimporta() {

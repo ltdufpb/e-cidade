@@ -36,10 +36,10 @@ if (!isset($arqinclude)){ // se este arquivo não esta incluido por outro
   include(modification("dbforms/db_funcoes.php"));
   include(modification("classes/db_conrelinfo_classe.php"));
   include(modification("classes/db_orcparamrel_classe.php"));
-  
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
-  
+
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
+
   $classinatura = new cl_assinatura;
   $orcparamrel  = new cl_orcparamrel;
   //$clconrelinfo = new cl_conrelinfo;
@@ -63,7 +63,7 @@ for ($linha=1;$linha<=19;$linha++){
 
 //parametros de despesa
 for ($linha=20; $linha<=30; $linha++){	
-	
+
 	$m_despesa[$linha]['estrut']     = $orcparamrel->sql_parametro('23',$linha,"f",$instituicao,db_getsession("DB_anousu"));
 	$m_despesa[$linha]['nivel']      = $orcparamrel->sql_nivel('23',$linha);
 
@@ -135,7 +135,7 @@ echo "</xmp>";
 */
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  Receitas
-$receita  = array();
+$receita  = [];
 $receita[0]['txt']  = " RECEITAs PREVIDENCIÁRIAS - RPPS (EXCETO INTRA-ORÇAMENTÁRIAS)(I)";
 $receita[1]['txt']  = " RECEITAS CORRENTES";
 $receita[2]['txt']  = "  Receita de Contribuições";
@@ -203,7 +203,7 @@ if (!isset($arqinclude)){ // se este arquivo não esta incluido por outro
 
   $anousu     = db_getsession("DB_anousu");
   $anousu_ant = $anousu-1;
-  
+
   $dt         = data_periodo($anousu,$periodo); // no dbforms/db_funcoes.php
   $dt_ini     = $dt[0]; // data inicial do período
   $dt_fin     = $dt[1]; // data final do período
@@ -214,13 +214,13 @@ if (!isset($arqinclude)){ // se este arquivo não esta incluido por outro
 // seta $ultimo_periodo como true, caso contrario false
 $ultimo_periodo = ($periodo=="6B") || ($periodo=="3Q") || ($periodo=="2S");
 
-$dt          = split("-",$dt_ini);
+$dt          = preg_split("#\\-#m",(string) $dt_ini);
 $periodo_mes = strtoupper(db_mes($dt[1]));
 
-$dt = split("-",$dt_ini);
+$dt = preg_split("#\\-#m",(string) $dt_ini);
 $dt_ini_ant = $anousu_ant."-".$dt[1]."-".$dt[2];
 
-$dt = split("-",$dt_fin);
+$dt = preg_split("#\\-#m",(string) $dt_fin);
 if ($dt[1] == 2){
    $dt[2]  = 28;
 }
@@ -233,14 +233,14 @@ $dt_fin_ant = $anousu_ant."-".$dt[1]."-".$dt[2];
 $instit ='';
 $sql    = "select codigo  from db_config where db21_tipoinstit in (5,6) ";
 $resultinst = db_query($sql);
-if  (pg_numrows($resultinst)>0){
+if  (pg_num_rows($resultinst)>0){
 $instit ='';
 }
 else{
 $instit=$instituicao;
 }
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $instit     .= $xvirg.$codigo; // salva insituição
   $xvirg       = ', ';		  
@@ -284,9 +284,9 @@ $linha = 17;
 while ($linha <= 19) {
   foreach($m_receita[$linha]["estrut"] as $estrut_inicial){
     
-    if (db_conplano_grupo($anousu,substr($estrut_inicial,0,1)."%",9004) == false) {
+    if (db_conplano_grupo($anousu,substr((string) $estrut_inicial,0,1)."%",9004) == false) {
       // NAO E RECEITA ORCAMENTARIA
-      for ($ii = 0; $ii < pg_numrows($result_balver); $ii++) {
+      for ($ii = 0; $ii < pg_num_rows($result_balver); $ii++) {
         db_fieldsmemory($result_balver,$ii);
         $estrut_balver = $estrutural;
         
@@ -295,7 +295,7 @@ while ($linha <= 19) {
         }
       }
     } else {
-      for ($i=0; $i < pg_numrows($result_rec); $i++) {
+      for ($i=0; $i < pg_num_rows($result_rec); $i++) {
         db_fieldsmemory($result_rec,$i);
         $estrut = $o57_fonte;
         
@@ -314,7 +314,7 @@ while ($linha <= 19) {
   $linha++;
 }
 
-for ($i=0; $i < pg_numrows($result_rec); $i++) {
+for ($i=0; $i < pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrut = $o57_fonte;
   
@@ -341,9 +341,9 @@ $linha = 17;
 while ($linha <= 19) {
   foreach($m_receita[$linha]["estrut"] as $estrut_inicial){
     
-    if (db_conplano_grupo($anousu_ant,substr($estrut_inicial,0,1)."%",9004) == false) {
+    if (db_conplano_grupo($anousu_ant,substr((string) $estrut_inicial,0,1)."%",9004) == false) {
       // NAO E RECEITA ORCAMENTARIA
-      for ($ii = 0; $ii < pg_numrows($result_balver_ant); $ii++) {
+      for ($ii = 0; $ii < pg_num_rows($result_balver_ant); $ii++) {
         db_fieldsmemory($result_balver_ant,$ii);
         $estrut_balver = $estrutural;
         
@@ -352,7 +352,7 @@ while ($linha <= 19) {
         }
       }
     } else {
-      for ($i=0; $i < pg_numrows($result_rec_ant); $i++) {
+      for ($i=0; $i < pg_num_rows($result_rec_ant); $i++) {
         db_fieldsmemory($result_rec_ant,$i);
         $estrut = $o57_fonte;
         
@@ -366,7 +366,7 @@ while ($linha <= 19) {
   $linha++;
 }
 
-for ($i=0; $i < pg_numrows($result_rec_ant); $i++) {
+for ($i=0; $i < pg_num_rows($result_rec_ant); $i++) {
   db_fieldsmemory($result_rec_ant,$i);
   $estrut = $o57_fonte;
   
@@ -384,11 +384,11 @@ for ($i=0; $i < pg_numrows($result_rec_ant); $i++) {
   
 }
 
-$pcol = array(1 => 'inicial',
+$pcol = [1 => 'inicial',
               2 => 'atualizada',
               3 => 'bimestre',
               4 => 'exercicio',
-              5 => 'anterior');
+              5 => 'anterior'];
 $ipcol = count($pcol);
 
 //calculamos os totais das receitas previdenciarias
@@ -473,11 +473,11 @@ for ($col = 1; $col <= $ipcol; $col++) {
   $receita[0][$pcol[$col]]  = ($receita[1][$pcol[$col]]+$receita[19][$pcol[$col]])-$receita[23][$pcol[$col]];
 }
 
-$pcol = array(1 => 'inicial',
+$pcol = [1 => 'inicial',
               2 => 'atualizada',
               3 => 'bimestre',
               4 => 'exercicio',
-              5 => 'anterior');
+              5 => 'anterior'];
 $ipcol = count($pcol);
 //receitas intraorcamentarias
 for ($col = 1; $col <= $ipcol; $col++) {
@@ -552,7 +552,7 @@ for ($col = 1; $col <= $ipcol; $col++) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Despesas
-$despesa  = array();
+$despesa  = [];
 $despesa[0]['txt']  = "DESPESAS PREVIDENCIÁRIAS - RPPS (EXCETO INTRA-ORÇAMENTÁRIAS) (VII)";
 $despesa[1]['txt']  = "ADMINISTRAÇÃO";
 $despesa[2]['txt']  = " Despesas Correntes";
@@ -598,9 +598,9 @@ $m_despesa[45]['rpnp_ant']   = 0; // RP Nao Processado Exercicio Anterior
 
 // Exercicio Atual
 $result_despesa = db_dotacaosaldo(8, 2, 3, true, $db_filtro, $anousu, $dt_ini, $dt_fin);
-for ($i = 0; $i < pg_numrows($result_despesa); $i ++) {
+for ($i = 0; $i < pg_num_rows($result_despesa); $i ++) {
   db_fieldsmemory($result_despesa, $i);
-  if(substr($o58_elemento,3,2) == '91'){
+  if(substr((string) $o58_elemento,3,2) == '91'){
 
     $m_despesa[45]['inicial']    += $dot_ini; 
 	  $m_despesa[45]['atualizada'] += $dot_ini + ($suplementado_acumulado - $reduzido_acumulado);
@@ -612,7 +612,7 @@ for ($i = 0; $i < pg_numrows($result_despesa); $i ++) {
 }  
 
 // RESERVA DO RPPS
-for ($i = 0; $i < pg_numrows($result_despesa); $i ++) {
+for ($i = 0; $i < pg_num_rows($result_despesa); $i ++) {
   db_fieldsmemory($result_despesa, $i);
 
   $nivel        = $m_despesa[30]['nivel'];
@@ -642,7 +642,7 @@ for ($linha = 20; $linha <= 29; $linha++){
    }
 
    $result_desp_funcao = db_dotacaosaldo(8,2, 3, true, $db_filtro.$v_funcao, $anousu, $dt_ini, $dt_fin);
-   for ($i = 0; $i < pg_numrows($result_desp_funcao); $i ++) {
+   for ($i = 0; $i < pg_num_rows($result_desp_funcao); $i ++) {
       db_fieldsmemory($result_desp_funcao, $i);
       
       $nivel        = $m_despesa[$linha]['nivel'];
@@ -650,7 +650,7 @@ for ($linha = 20; $linha <= 29; $linha++){
       $estrutural   = substr($estrutural,0,$nivel);
       $v_estrutural = str_pad($estrutural, 15, "0", STR_PAD_RIGHT);	
 
-      if (substr($o58_elemento,3,2) == "91"){
+      if (substr((string) $o58_elemento,3,2) == "91"){
         continue;
       }
 
@@ -674,9 +674,9 @@ exit;
 
 // Exercicio Anterior
 $result_despesa_ant = db_dotacaosaldo(8,2, 3, true, $db_filtro, $anousu_ant, $dt_ini_ant, $dt_fin_ant);
-for ($i = 0; $i < pg_numrows($result_despesa_ant); $i ++) {
+for ($i = 0; $i < pg_num_rows($result_despesa_ant); $i ++) {
   db_fieldsmemory($result_despesa_ant, $i);   	
-  if(substr($o58_elemento,3,2) == '91'){
+  if(substr((string) $o58_elemento,3,2) == '91'){
     $m_despesa[45]['anterior'] += $liquidado_acumulado;
     $m_despesa[45]['rpnp_ant'] += abs($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado);
   	continue;
@@ -684,7 +684,7 @@ for ($i = 0; $i < pg_numrows($result_despesa_ant); $i ++) {
 }
 
 // RESERVA DO RPPS
-for ($i = 0; $i < pg_numrows($result_despesa_ant); $i ++) {
+for ($i = 0; $i < pg_num_rows($result_despesa_ant); $i ++) {
   db_fieldsmemory($result_despesa_ant, $i);   	
 
   $nivel        = $m_despesa[30]['nivel'];
@@ -710,7 +710,7 @@ for ($linha = 20; $linha <= 29; $linha++){
    }
 
    $result_desp_funcao_ant = db_dotacaosaldo(8,2, 3, true, $db_filtro.$v_funcao, $anousu_ant, $dt_ini_ant, $dt_fin_ant);
-   for ($i = 0; $i < pg_numrows($result_desp_funcao_ant); $i ++) {
+   for ($i = 0; $i < pg_num_rows($result_desp_funcao_ant); $i ++) {
       db_fieldsmemory($result_desp_funcao_ant, $i);
       
       $nivel        = $m_despesa[$linha]['nivel'];
@@ -718,7 +718,7 @@ for ($linha = 20; $linha <= 29; $linha++){
       $estrutural   = substr($estrutural,0,$nivel);
       $v_estrutural = str_pad($estrutural, 15, "0", STR_PAD_RIGHT);	
 
-      if (substr($o58_elemento,3,2) == "91"){
+      if (substr((string) $o58_elemento,3,2) == "91"){
         continue;
       }
 
@@ -729,13 +729,13 @@ for ($linha = 20; $linha <= 29; $linha++){
    }
 }
 
-$pcol = array(1 => 'inicial',
+$pcol = [1 => 'inicial',
               2 => 'atualizada',
               3 => 'bimestre',
               4 => 'exercicio',
               5 => 'anterior',
               6 => 'rpnp_exe',
-              7 => 'rpnp_ant');
+              7 => 'rpnp_ant'];
 $ipcol = count($pcol);
 for ($col = 1; $col <= $ipcol; $col++){ 
   
@@ -809,7 +809,7 @@ $total_desp_rpnp_ant    = $despesa[44]['rpnp_ant']   + $despesa[45]['rpnp_ant'] 
 //$res_prev_anterior      = $total_rec_anterior   - $total_desp_anterior;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Disponibilidades e Investimentos Financeiros
-$disponivel  = array();
+$disponivel  = [];
 $disponivel[1]['txt'] = "Caixa";
 $disponivel[2]['txt'] = "Bancos Conta Movimento";
 $disponivel[3]['txt'] = "Investimentos";
@@ -824,11 +824,11 @@ $db_filtro_disponivel = "c61_instit in (".$instit.") ";
 // saldo inicial
 // demonstra o saldo do mes anterior ao periodo de referencia
 
-$dt_ini_per = split('-',$dt_fin);
+$dt_ini_per = preg_split('#\-#m',(string) $dt_fin);
 $dt_ini_per = $dt_ini_per[0].'-'.$dt_ini_per[1].'-01';
 // Exercicio Atual
 $result_disponivel = db_planocontassaldo_matriz($anousu,$dt_ini_per,$dt_fin,false,$db_filtro_disponivel);
-for ($i=0; $i < pg_numrows($result_disponivel); $i++){
+for ($i=0; $i < pg_num_rows($result_disponivel); $i++){
      db_fieldsmemory($result_disponivel,$i);
      
      for ($linha=31;$linha<=33;$linha++){
@@ -842,7 +842,7 @@ for ($i=0; $i < pg_numrows($result_disponivel); $i++){
 // Exercicio Anterior
 $result_disponivel_ant = db_planocontassaldo_matriz($anousu_ant,$dt_ini_ant,$dt_fin_ant,false,$db_filtro_disponivel);
 
-for ($i=0; $i < pg_numrows($result_disponivel_ant); $i++){
+for ($i=0; $i < pg_num_rows($result_disponivel_ant); $i++){
      db_fieldsmemory($result_disponivel_ant,$i);
      for ($linha=31;$linha<=33;$linha++){
     	  if (in_array($estrutural,$m_disponivel[$linha]['estrut'])){
@@ -852,7 +852,7 @@ for ($i=0; $i < pg_numrows($result_disponivel_ant); $i++){
 }
 
 for ($col=1;$col<=3;$col++){ 
-     $pcol = array(1=>'saldo_inicial','2'=>'saldo_periodo_atual',3=>'saldo_periodo_anterior');
+     $pcol = [1=>'saldo_inicial','2'=>'saldo_periodo_atual',3=>'saldo_periodo_anterior'];
 
      $disponivel[1][$pcol[$col]]  = $m_disponivel[31][$pcol[$col]];
      $disponivel[2][$pcol[$col]]  = $m_disponivel[32][$pcol[$col]];
@@ -909,7 +909,7 @@ for ($linha = 48; $linha <= 49; $linha++){
    }
    
    $result_desp_funcao = db_dotacaosaldo(8,2, 3, true, $db_filtro.$v_funcao, $anousu, $dt_ini, $dt_fin);
-   for ($i = 0; $i < pg_numrows($result_desp_funcao); $i ++) {
+   for ($i = 0; $i < pg_num_rows($result_desp_funcao); $i ++) {
       db_fieldsmemory($result_desp_funcao, $i);
       
       $nivel        = $m_despesa[$linha]['nivel'];
@@ -917,7 +917,7 @@ for ($linha = 48; $linha <= 49; $linha++){
       $estrutural   = substr($estrutural,0,$nivel);
       $v_estrutural = str_pad($estrutural, 15, "0", STR_PAD_RIGHT);	
 
-      if (substr($o58_elemento,3,2) != "91"){
+      if (substr((string) $o58_elemento,3,2) != "91"){
         continue;
       }
 
@@ -949,7 +949,7 @@ for ($linha = 48; $linha <= 49; $linha++){
    }
 
    $result_desp_funcao_ant = db_dotacaosaldo(8,2, 3, true, $db_filtro.$v_funcao, $anousu_ant, $dt_ini_ant, $dt_fin_ant);
-   for ($i = 0; $i < pg_numrows($result_desp_funcao_ant); $i ++) {
+   for ($i = 0; $i < pg_num_rows($result_desp_funcao_ant); $i ++) {
       db_fieldsmemory($result_desp_funcao_ant, $i);
       
       $nivel        = $m_despesa[$linha]['nivel'];
@@ -957,7 +957,7 @@ for ($linha = 48; $linha <= 49; $linha++){
       $estrutural   = substr($estrutural,0,$nivel);
       $v_estrutural = str_pad($estrutural, 15, "0", STR_PAD_RIGHT);	
 
-      if (substr($o58_elemento,3,2) != "91"){
+      if (substr((string) $o58_elemento,3,2) != "91"){
         continue;
       }
 
@@ -968,13 +968,13 @@ for ($linha = 48; $linha <= 49; $linha++){
    }
 }
 
-$pcol = array(1 => 'inicial',
+$pcol = [1 => 'inicial',
               2 => 'atualizada',
               3 => 'bimestre',
               4 => 'exercicio',
               5 => 'anterior',
               6 => 'rpnp_exe',
-              7 => 'rpnp_ant');
+              7 => 'rpnp_ant'];
 $ipcol = count($pcol);
 
 for($col = 1; $col <= $ipcol; $col++){ 
@@ -1000,15 +1000,15 @@ if (!isset($arqinclude)){ //
   // Imprimindo Relatorio
   $perini = $dt_ini;
   $perfin = $dt_fin;
- 
+
   $resultinst = db_query("select upper(munic) as munic, codigo,nomeinst,nomeinstabrev from db_config where db21_tipoinstit in (5,6)");
   $descr_inst = '';
   $xvirg = '';
   $flag_abrev = false;
 
-  for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+  for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
        db_fieldsmemory($resultinst,$xins);
-       if (strlen(trim($nomeinstabrev)) > 0){
+       if (strlen(trim((string) $nomeinstabrev)) > 0){
             $descr_inst .= $xvirg.$nomeinstabrev;
             $flag_abrev  = true;
 
@@ -1030,11 +1030,11 @@ if (!isset($arqinclude)){ //
   $head3 = "DEMONSTRATIVO DE RECEITAS E DESPESAS PREVIDENCIÁRIAS DO REGIME PRÓPRIO DOS SERVIDORES PÚBLICOS";
   $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
   $txt = strtoupper(db_mes('01'));
-  $dt  = split("-",$dt_fin);
+  $dt  = preg_split("#\\-#m",(string) $dt_fin);
   $txt.= " À ".strtoupper(db_mes($dt[1]))."$anousu/BIMESTRE ";;
-  $dt  = split("-",$dt_ini);
+  $dt  = preg_split("#\\-#m",(string) $dt_ini);
   $txt.= strtoupper(db_mes($dt[1]))."-";
-  $dt  = split("-",$dt_fin);
+  $dt  = preg_split("#\\-#m",(string) $dt_fin);
   $txt.= strtoupper(db_mes($dt[1]));
   $head5 = "$txt";
 
@@ -1045,18 +1045,18 @@ if (!isset($arqinclude)){ //
   $pdf->setfillcolor(235);
   $troca = 1;
   $alt = 4;
-  
+
   $pagina = 1;
   $tottotal = 0;
   $pagina = 0;
   $n1 =5;
   $n2=10;
-  
+
   $pdf->addpage();
   $pdf->setfont('arial','',6);
   $pdf->cell(90,$alt,"RREO - Anexo V (LRF, Art. 53, inciso II)",0,0,"L",0);
   $pdf->cell(100,$alt,"R$ 1,00",0,1,"R",0);
-  
+
   $pdf->setfont('arial','',6);
   $pdf->cell(90,($alt*2),"RECEITAS PREVIDENCIÁRIAS",'TBR',0,"C",0);
   $pdf->cell(20,$alt,"PREVISÃO","TR",0,"C",0);
@@ -1070,7 +1070,7 @@ if (!isset($arqinclude)){ //
   $pdf->cell(20,$alt,"Até o Bimestre/".$anousu,"TBR",0,"C",0);
   $pdf->cell(20,$alt,"Até o Bimestre/".$anousu_ant,'TB',0,"C",0);
   $pdf->ln();
-  
+
   // receita exceto intra
   /*$pdf->cell(90,$alt,$receita[42]['txt'],'R',0,"L",0);
   $pdf->cell(20,$alt,db_formatar($receita[42]['inicial'],'f'),'R',0,"R",0);
@@ -1093,7 +1093,7 @@ if (!isset($arqinclude)){ //
         $pdf->line(10,$pdf->getY(),200,$pdf->getY());
      }
        // receita exceto intra
-     	    
+
   }
 
   $pdf->cell(90,$alt,"TOTAL DAS RECEITAS PREVIDENCIÁRIAS(VI)=(I+II+III+IV+V)","TBR",0,"L",0);
@@ -1103,7 +1103,7 @@ if (!isset($arqinclude)){ //
   $pdf->cell(20,$alt,db_formatar($total_rec_exercicio,'f'),"TBR",0,"R",0);
   $pdf->cell(20,$alt,db_formatar($total_rec_anterior,'f'),"TB",0,"R",0);
   $pdf->ln();
- 
+
   //$pdf->addpage();
 
   //
@@ -1159,7 +1159,7 @@ if (!isset($arqinclude)){ //
 
     $pdf->cell($tam_col4, $alt,     "No Bimestre",    "BR", 0, "C", 0); //col4
     $pdf->cell($tam_col5, $alt,     "Até o Bimestre", "BR", 0, "C", 0); //col5
-    
+
     $pdf->setX($pdf->getX()+$tam_col7);
     $pdf->cell($tam_col6, $alt,     "Até o Bimestre", "BR",  0, "C", 0); //col6
   } else {
@@ -1178,7 +1178,7 @@ if (!isset($arqinclude)){ //
     $pdf->cell($tam_col6, $alt,     "Até o Bimestre/".$anousu_ant, "TB",  0, "C", 0); //col6
   }
   $pdf->ln();
- 
+
   // despesas exceto intra-orçamentaria
   $pdf->cell($tam_col1, $alt,             $despesa[44]['txt'],              'R', 0, "L", 0);
   $pdf->cell($tam_col2, $alt, db_formatar($despesa[44]['inicial'],    'f'), 'R', 0, "R", 0);
@@ -1209,7 +1209,7 @@ if (!isset($arqinclude)){ //
       $pdf->cell($tam_col6, $alt, db_formatar($despesa[$linha]['anterior'],   'f'), '0', 0, "R", 0);
     }
     $pdf->Ln();
-    
+
     if ($linha == 15) {
       // despesas exceto intra-orçamentaria
       $pdf->cell($tam_col1, $alt,             $despesa[45]['txt'],              'R', 0, "L", 0);
@@ -1227,9 +1227,9 @@ if (!isset($arqinclude)){ //
       $pdf->Ln();
       $pdf->line(10,$pdf->getY(),200,$pdf->getY());
     }
-    
+
   }
- 
+
   $pdf->cell($tam_col1, $alt, "TOTAL DAS DESPESAS PREVIDENCIÁRIAS(X)=(VII+VIII+IX)", "TBR", 0, "L", 0);
   $pdf->cell($tam_col2, $alt, db_formatar($total_desp_inicial,    'f'),              "TBR", 0, "R", 0);
   $pdf->cell($tam_col3, $alt, db_formatar($total_desp_atualizada, 'f'),              "TBR", 0, "R", 0);
@@ -1243,7 +1243,7 @@ if (!isset($arqinclude)){ //
     $pdf->cell($tam_col6, $alt, db_formatar($total_desp_anterior,   'f'), "TB",  0, "R", 0);
   }
   $pdf->ln();
- 
+
   $pdf->cell($tam_col1, $alt, "RESULTADO PREVIDENCIÁRIO(XI)=(VI-X)",                          "TBR", 0, "L", 0);
   $pdf->cell($tam_col2, $alt, db_formatar($total_rec_inicial    - $total_desp_inicial,    'f'), "TBR", 0, "R", 0);
   $pdf->cell($tam_col3, $alt, db_formatar($total_rec_atualizada - $total_desp_atualizada, 'f'), "TBR", 0, "R", 0);
@@ -1257,7 +1257,7 @@ if (!isset($arqinclude)){ //
     $pdf->cell($tam_col6, $alt, db_formatar($total_rec_anterior  - $total_desp_anterior,  'f'), "TB",  0, "R", 0);
   } 
   $pdf->ln();
- 
+
   $pdf->cell(190,$alt,"Continua(2/{nb})",'TB',1,"R",0);
   $pdf->addpage();
   $pdf->cell(190,$alt,"Continuação",'TB',1,"R",0);
@@ -1272,7 +1272,7 @@ if (!isset($arqinclude)){ //
   $pdf->cell(30,$alt,$anousu,"TBR",0,"C",0);
   $pdf->cell(30,$alt,$anousu_ant,'TB',0,"C",0);
   $pdf->ln();
- 
+
   for($linha=1;$linha<=3;$linha++){
     $pdf->cell(90,$alt,$disponivel[$linha]['txt'],'R',0,"L",0);
     $pdf->cell(40,$alt,db_formatar($disponivel[$linha]['saldo_inicial'],'f'),"R",0,"R",0);
@@ -1295,7 +1295,7 @@ if (!isset($arqinclude)){ //
   $pdf->cell(20,$alt,"Até o Bimestre/".$anousu,"TBR",0,"C",0);
   $pdf->cell(20,$alt,"Até o Bimestre/".$anousu_ant,'TB',0,"C",0);
   $pdf->ln();
-  
+
   for($linha=28;$linha <=46;$linha++){
      $pdf->cell(90,$alt,$receita[$linha]['txt'],'R',0,"L",0);
      $pdf->cell(20,$alt,db_formatar($receita[$linha]['inicial'],'f'),'R',0,"R",0);
@@ -1305,7 +1305,7 @@ if (!isset($arqinclude)){ //
      $pdf->cell(20,$alt,db_formatar($receita[$linha]['anterior'],'f'),0,0,"R",0);       
      $pdf->Ln();
   }
- 
+
   $pdf->cell(90,$alt,"TOTAL DAS RECEITAS PREVIDENCIÁRIAS INTRA-ORÇAMENTARIAS","TBR",0,"L",0);
   $pdf->cell(20,$alt,db_formatar($receita[48]['inicial'],'f'),'TBR',0,"R",0);
   $pdf->cell(20,$alt,db_formatar($receita[48]['atualizada'],'f'),'TBR',0,"R",0);    
@@ -1313,7 +1313,7 @@ if (!isset($arqinclude)){ //
   $pdf->cell(20,$alt,db_formatar($receita[48]['exercicio'],'f'),'TBR',0,"R",0);
   $pdf->cell(20,$alt,db_formatar($receita[48]['anterior'],'f'),'TB',0,"R",0);       
   $pdf->ln();
-  
+
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Despesas
 
@@ -1369,7 +1369,7 @@ if (!isset($arqinclude)){ //
 
     $pdf->cell($tam_col4, $alt,     "No Bimestre",    "BR", 0, "C", 0); //col4
     $pdf->cell($tam_col5, $alt,     "Até o Bimestre", "BR", 0, "C", 0); //col5
-    
+
     $pdf->setX($pdf->getX()+$tam_col7);
     $pdf->cell($tam_col6, $alt,     "Até o Bimestre", "BR",  0, "C", 0); //col6
   } else {
@@ -1407,7 +1407,7 @@ if (!isset($arqinclude)){ //
     $pdf->Ln();	    
   }
 
-    
+
   $pdf->cell($tam_col1, $alt, "TOTAL DAS DESPESAS PREVIDENCIÁRIAS INTRA-ORÇAMENTARIAS", "TBR", 0, "L", 0);
   $pdf->cell($tam_col2, $alt, db_formatar($despesa[51]['inicial'],    'f'),             "TBR", 0, "R", 0);
   $pdf->cell($tam_col3, $alt, db_formatar($despesa[51]['atualizada'], 'f'),             "TBR", 0, "R", 0);
@@ -1422,14 +1422,14 @@ if (!isset($arqinclude)){ //
   $pdf->ln();
   $pdf->cell($tam_desp, $alt, "({nb}/{nb})", 'TB', 1, "R", 0);
   //assinatura
-  notasExplicativas(&$pdf,23,$periodo,180);
+  notasExplicativas($pdf,23,$periodo,180);
   $pdf->ln(10);
   $pdf->setfont('arial','',6);
- 
-  assinaturas(&$pdf,&$classinatura,'LRF');
- 
+
+  assinaturas($pdf,$classinatura,'LRF');
+
   $pdf->Output();
- 
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 

@@ -40,8 +40,8 @@ include(modification("classes/db_orcparamelemento_classe.php"));
 include(modification("classes/db_orcparamrecurso_classe.php"));
 include(modification("classes/db_orcparamsubfunc_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS,2);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST,2);
 
 $clconrelinfo = new cl_conrelinfo;
 $clconrelvalor = new cl_conrelvalor;

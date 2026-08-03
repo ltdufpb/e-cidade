@@ -29,7 +29,7 @@ require_once modification('libs/db_conecta.php');
 require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_usuariosonline.php');
 require_once modification('dbforms/db_funcoes.php');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
 }
@@ -186,7 +186,7 @@ if (!$lExibirNumeracaoPortaria) {
                 ?>
             <label class='bold m-2'> Ano: </label>
             <?php
-            if (!isset($h31_anousu) && trim(@$h31_anousu) == "") {
+            if (!isset($h31_anousu) && trim((string) @$h31_anousu) == "") {
                 $h31_anousu = db_getsession('DB_anousu');
             }
               db_input(

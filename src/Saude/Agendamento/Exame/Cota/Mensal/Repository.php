@@ -96,23 +96,23 @@ abstract class Repository implements RepositoryInterface
 
   public function getCotaByIdGrupo($iGrupo)
   {
-    $sCampos = implode(', ', array(
+    $sCampos = implode(', ', [
       'age01_tipo',
       'age01_ano',
       'age01_mes',
       'age01_quantidade',
       'age01_sequencial',
       'age02_nome'
-    ));
+    ]);
 
-    $sGroupBy = implode(',', array(
+    $sGroupBy = implode(',', [
       'age01_tipo',
       'age01_ano',
       'age01_mes',
       'age01_quantidade',
       'age01_sequencial',
       'age02_nome'
-    ));
+    ]);
 
     $sSqlGrupo = $this->getQueryByGrupo($iGrupo, $sCampos, $sGroupBy);
     $rsGrupo   = db_query($sSqlGrupo);

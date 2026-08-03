@@ -172,7 +172,7 @@ $clrotulo->label("v51_certidao");
              $oCertidao = new Certidao($certidao);
 
              $sEcho = "<td rel='ignore-css'>
-                         <input class='chkcert' type='checkbox' name='certid$i'      value='$certidao' ".(isset($$x)||isset($chavepesquisa)?'checked':'checked')." ".($db_opcao==3?'disabled':'')."  >\n
+                         <input class='chkcert' type='checkbox' name='certid$i'      value='$certidao' ".(isset(${$x})||isset($chavepesquisa)?'checked':'checked')." ".($db_opcao==3?'disabled':'')."  >\n
                          <input type='hidden'   name='veri_certid$i' value='$certidao'> $certidao
                        </td>";
 
@@ -226,7 +226,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe.hide();
   <?php if($db_botao!=1){?>
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
   <?php }?>
 }
 function js_advog(mostra){

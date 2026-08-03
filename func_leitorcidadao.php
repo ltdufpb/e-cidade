@@ -35,8 +35,8 @@ include(modification("classes/db_leitor_classe.php"));
 include(modification("classes/db_cidadao_classe.php"));
 include(modification("classes/db_leitorcategoria_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clleitor          = new cl_leitor;
 $clleitorcategoria = new cl_leitorcategoria;
@@ -160,15 +160,15 @@ db_fieldsmemory($result_bib,  0);
          
             if (!isset($pesquisa_chave) && !isset($pesquisa_chave2)) {
             
-              $repassa = array();
+              $repassa = [];
               if (isset($chave_bi10_codigo)) {
             
-                $repassa = array("chave_bi10_codigo"     => $chave_bi10_codigo, 
+                $repassa = ["chave_bi10_codigo"     => $chave_bi10_codigo, 
                                  "chave_ov02_nome"       => $chave_ov02_nome,
                                  "chave_ov02_seq"        => $chave_ov02_seq,
                                  "chave_ov02_sequencial" => $chave_ov02_sequencial,
                                  "chave_bi07_biblioteca" => $chave_bi07_biblioteca
-                                );
+                                ];
               }
              
               if (isset($chave_bi10_codigo)) {

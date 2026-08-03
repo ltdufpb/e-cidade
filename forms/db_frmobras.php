@@ -273,7 +273,7 @@
                 </td>
                 <td>
                     <?php 
-                        db_select('ob01_processosistema', array('S'=>'SIM', 'N'=>'NÃO'), true, 1, "onchange='js_trocaProcesso(this.value)'")
+                        db_select('ob01_processosistema', ['S'=>'SIM', 'N'=>'NÃO'], true, 1, "onchange='js_trocaProcesso(this.value)'")
                     ?>
                 </td>
             </tr>

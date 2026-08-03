@@ -26,7 +26,7 @@
  */
 
 include(modification("fpdf151/pdf.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $head1 = "RELATÓRIO DAS MOVIMENTAÇÕES ";
 $head2 = "DIA: ".db_formatar($data,'d');
@@ -140,7 +140,7 @@ from
     $result2 = db_query($sql1);
     $result = db_query($sql2);
 //db_criatabela($result);
-$num = pg_numrows($result);
+$num = pg_num_rows($result);
 $linha = 60;
 $pre = 0;
 $total = 0;
@@ -194,7 +194,7 @@ $pdf->Cell(30,4,"Movimentações :","T",0,"R",0);
 $pdf->Cell(20,4,db_formatar($total,'f'),"T",0,"R",0);
 $pdf->Cell(140,4,'',"T",1,"R",0);
 $totalcontas = 0;
-for ($i = 0;$i < pg_numrows($result1);$i++){
+for ($i = 0;$i < pg_num_rows($result1);$i++){
     db_fieldsmemory($result1,$i);
     $pdf->SetFont('Arial','',7);
     $pdf->Cell(30,4,$k13_descr." : ",0,0,"R",0);
@@ -207,7 +207,7 @@ for ($i = 0;$i < pg_numrows($result1);$i++){
        $pdf->Cell(20,4,db_formatar($totalcontas+$total,'f'),"T",0,"R",0);
        $pdf->Cell(140,4,'',0,1,"R",0);
     }
-    
+
 //    $pdf->Cell(30,6,$k13_descr." : ","T",0,"R",0);
 //    $pdf->Cell(20,6,db_formatar($totcaixa,'f'),"T",0,"R",0);
 //    $pdf->Cell(140,6,'',"T",1,"R",0);
@@ -222,7 +222,7 @@ $pdf->Cell(10,4,"Hora",1,0,"C",1);
 $pdf->Cell(20,4,"Valor",1,0,"C",1);
 $pdf->Cell(140,4,"Credor",1,1,"C",1);
 $vlremp = 0;
-for($xx=0;$xx < pg_numrows($result2);$xx++){
+for($xx=0;$xx < pg_num_rows($result2);$xx++){
   db_fieldsmemory($result2,$xx);
    if($pdf->gety() > $pdf->h - 30 ){
       $pdf->AddPage();

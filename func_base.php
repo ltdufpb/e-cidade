@@ -34,8 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_base_classe.php"));
 include(modification("classes/db_escolabase_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $iModulo      = db_getsession('DB_modulo');
 $clbase       = new cl_base;
@@ -74,7 +74,7 @@ $clbase->rotulo->label("ed31_c_descr");
   <?php
   $escola       = db_getsession("DB_coddepto");
   $sWhereEscola = "ed77_i_escola = {$escola}";
-  $aWhereBase   = array();
+  $aWhereBase   = [];
 
   if ( !isset($lBuscarBasesSecretaria) || $lBuscarBasesSecretaria == 'false') {
     $aWhereBase[] = $sWhereEscola;

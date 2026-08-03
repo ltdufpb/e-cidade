@@ -90,7 +90,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
                            <?=@$Lla19_d_inicio?>
                          <?php 
                           if (! isset ( $la19_d_inicio )) {
-                           $vet = explode ( "-", @$la19_d_inicio );
+                           $vet = explode ( "-", (string) @$la19_d_inicio );
                            @$la19_d_inicio = $vet [2] . "/" . $vet [1] . "/" . $vet [0];
                            @$la19_d_inicio_dia = $vet [2];
                            @$la19_d_inicio_mes = $vet [1];
@@ -105,7 +105,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
                        <?=@$Lla19_d_fim?>
                        <?php 
                         if (! isset ( $la19_d_fim )) {
-                         $vet = explode ( "-", @$la19_d_fim );
+                         $vet = explode ( "-", (string) @$la19_d_fim );
                          @$la19_d_fim = $vet [2] . "/" . $vet [1] . "/" . $vet [0];
                          @$la19_d_fim_dia = $vet [2];
                          @$la19_d_fim_mes = $vet [1];
@@ -171,7 +171,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
 	<tr>
 		<td valign="top"><br>
   <?php 
-		$chavepri = array ("la19_i_codigo" => @$la19_i_codigo, "la19_i_materialcoleta" => @$la19_i_materialcoleta, "la19_i_metodo" => @$la19_i_metodo, "la15_c_descr" => @$la15_c_descr, "la11_c_descr" => @$la11_c_descr, "la19_i_exame" => @$la19_i_exame, "la08_c_descr" => @$la08_c_descr, "la19_c_amb" => @$la19_c_amb, "la19_d_inicio" => @$la19_d_inicio, "la19_d_fim" => @$la19_d_fim );
+		$chavepri =  ["la19_i_codigo" => @$la19_i_codigo, "la19_i_materialcoleta" => @$la19_i_materialcoleta, "la19_i_metodo" => @$la19_i_metodo, "la15_c_descr" => @$la15_c_descr, "la11_c_descr" => @$la11_c_descr, "la19_i_exame" => @$la19_i_exame, "la08_c_descr" => @$la08_c_descr, "la19_c_amb" => @$la19_c_amb, "la19_d_inicio" => @$la19_d_inicio, "la19_d_fim" => @$la19_d_fim ];
 		$cliframe_alterar_excluir->chavepri = $chavepri;
 		@$cliframe_alterar_excluir->sql = $cllab_examematerial->sql_query ("", "*", "la08_c_descr","la19_i_exame= $la19_i_exame" );		
 		$cliframe_alterar_excluir->campos = "la19_i_codigo,la19_i_materialcoleta,la15_c_descr,la19_i_metodo,la11_c_descr,la19_c_amb,la19_d_inicio,la19_d_fim";
@@ -283,7 +283,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lab_examematerial.hide();
   <?php 
 		if ($db_opcao != 1) {
-			echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave";
+			echo " location.href = '" . basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave";
 		}
 		?>
 }

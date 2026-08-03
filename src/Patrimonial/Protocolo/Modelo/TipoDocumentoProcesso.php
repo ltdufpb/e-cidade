@@ -116,10 +116,10 @@ class TipoDocumentoProcesso
      */
     public function toArray()
     {
-        return array(
+        return [
             'p91_sequencial' => $this->getSequencial(),
             'p91_descricao' => $this->getDescricao(),
             'p91_sigla' => $this->getSigla()
-        );
+        ];
     }
 }

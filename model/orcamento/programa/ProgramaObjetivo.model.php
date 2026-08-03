@@ -59,7 +59,7 @@ class ProgramaObjetivo {
    * Array com as metas do objetivo
    * @var ProgramaMeta[]
    */
-  private $aMetas = array();
+  private $aMetas = [];
 
   /**
    * Órgão do objetivo
@@ -247,7 +247,7 @@ class ProgramaObjetivo {
         throw new DBException($sMensagemErro);
       }
 
-      $this->aMetas     = array();
+      $this->aMetas     = [];
       $iQuantidadeMetas = pg_num_rows($rsBuscaMetas);
 
       for ($iMeta = 0; $iMeta < $iQuantidadeMetas; $iMeta++) {

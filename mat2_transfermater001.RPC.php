@@ -43,7 +43,7 @@ try {
     switch ($oParam->exec) {
         case 'verificaTransferenciasCanceladas':
             $oDaoMatEstoqueInil = new cl_matestoqueinil();
-            $aTransferenciasCanceladas = array();
+            $aTransferenciasCanceladas = [];
             $transferenciaInicio = $oParam->transferenciaInicio;
             $transferenciaFim = $oParam->transferenciaFim;
 
@@ -59,7 +59,7 @@ try {
             $rsVerificaCancelada = pg_query($sSqlVerificaCancelada);
             $aTransferenciasCanceladas = db_utils::getCollectionByRecord($rsVerificaCancelada);
 
-            $aErros = array();
+            $aErros = [];
             foreach ($aTransferenciasCanceladas as $aTransferenciasCancelada) {
                 $aErros[] = "A transferência {$aTransferenciasCancelada->transferencia} está cancelada.";
             }
@@ -72,7 +72,7 @@ try {
             $oRetorno->canceladas = $aTransferenciasCanceladas;
         break;
     }
-} catch (Exception $exception) {
+} catch (Exception) {
     db_fim_transacao(true);
     $oRetorno->error = true;
 }

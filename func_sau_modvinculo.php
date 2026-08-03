@@ -32,8 +32,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_modvinculo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_modvinculo = new cl_sau_modvinculo;
 $clsau_modvinculo->rotulo->label("sd52_i_vinculacao");
 $clsau_modvinculo->rotulo->label("sd52_v_descricao");
@@ -99,9 +99,9 @@ $clsau_modvinculo->rotulo->label("sd52_v_descricao");
         }else{
            $sql = $clsau_modvinculo->sql_query("",$campos,"sd52_i_vinculacao","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd52_i_vinculacao)){
-          $repassa = array("chave_sd52_i_vinculacao"=>$chave_sd52_i_vinculacao,"chave_sd52_i_vinculacao"=>$chave_sd52_i_vinculacao);
+          $repassa = ["chave_sd52_i_vinculacao"=>$chave_sd52_i_vinculacao,"chave_sd52_i_vinculacao"=>$chave_sd52_i_vinculacao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -95,7 +95,7 @@ if ($db_opcao == 1) {
                      $formatter->setAttribute(NumberFormatter::GROUPING_USED, true);
                      $formatter->setSymbol(NumberFormatter::CURRENCY_SYMBOL, 'R$');
                      $fm09_valor = $formatter->formatCurrency($fm09_valor, 'BRL');
-                     $fm09_valor = utf8_decode($fm09_valor);
+                     $fm09_valor = mb_convert_encoding($fm09_valor, 'ISO-8859-1');
                   }
 
                   if ( isset($fm09_copart_percentual) && $fm09_copart_percentual == 't' ) {
@@ -199,11 +199,11 @@ if ($db_opcao == 1) {
 
       <?php
         if ($db_opcao != 1) {
-          echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
+          echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
         }
       ?>
     }
 
-    <?php echo (isset($sPosScripts) ? $sPosScripts : ""); ?>
+    <?php echo ($sPosScripts ?? ""); ?>
   </script>
 </html>

@@ -38,7 +38,7 @@ include(modification("classes/db_portariaproced_classe.php"));
 include(modification("classes/db_portariatipodocindividual_classe.php"));
 include(modification("classes/db_portariatipodoccoletiva_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cltipoasse              = new cl_tipoasse;
 $clportariatipo          = new cl_portariatipo;
@@ -60,7 +60,7 @@ if(isset($incluir)){
   $cltipoasse->h12_relvan = "false";
   $cltipoasse->h12_relass = "true";
   $cltipoasse->h12_permiteduplicar = $h12_permiteduplicar === 't' ? true : false;
-  $cltipoasse->h12_assent = $h12_assent = trim($h12_assent);
+  $cltipoasse->h12_assent = $h12_assent = trim((string) $h12_assent);
 
   $cltipoasse->incluir($h12_codigo);
 

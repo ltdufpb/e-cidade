@@ -103,8 +103,8 @@ if ($objParam->exec == "getFAA") {
 	//Gera fc_numatend
 	if( (int)$objParam->sd24_i_codigo == 0 ){
 		$sql_fc      = "select fc_numatend()";
-		$query_fc    = db_query($sql_fc) or die(pg_errormessage().$sql_fc);
-		$fc_numatend = explode(",",pg_result($query_fc,0,0));
+		$query_fc    = db_query($sql_fc) or die(pg_last_error().$sql_fc);
+		$fc_numatend = explode(",",pg_fetch_result($query_fc,0,0));
 	}
 
 	//Lote/LotePront/Prontuarios/CGS_UND/
@@ -122,7 +122,7 @@ if ($objParam->exec == "getFAA") {
 		$objParam->sd58_i_codigo   = $clsau_lote->sd58_i_codigo;
 		if( $clsau_lote->numrows_incluir == 0 ){
 			$objRetorno->status  = 2;
-			$objRetorno->message = urlencode( $clsau_lote->erro_msg );
+			$objRetorno->message = urlencode( (string) $clsau_lote->erro_msg );
 		}
 	}
 	$objRetorno->sd58_i_codigo = $objParam->sd58_i_codigo;
@@ -199,7 +199,7 @@ if ($objParam->exec == "getFAA") {
 						if ( $clsau_lotepront->numrows_incluir == 0) {
 
 							$objRetorno->status  = 2;
-							$objRetorno->message = urlencode( $clsau_lotepront->erro_msg );
+							$objRetorno->message = urlencode( (string) $clsau_lotepront->erro_msg );
 						}
 					}
 				}
@@ -207,7 +207,7 @@ if ($objParam->exec == "getFAA") {
 			} else {
 
 				$objRetorno->status  = 2;
-				$objRetorno->message = urlencode( $clprontuarios->erro_msg );
+				$objRetorno->message = urlencode( (string) $clprontuarios->erro_msg );
 			}
 		}
 	}
@@ -238,7 +238,7 @@ if ($objParam->exec == "getFAA") {
     if ($oSauLoteFaa->numrows_excluir == 0) {
 
       $objRetorno->status  = 2;
-      $objRetorno->message = urlencode( $oSauLoteFaa->erro_msg );
+      $objRetorno->message = urlencode( (string) $oSauLoteFaa->erro_msg );
     }
     if ($iTotalLinhasFaa == 1) {
 

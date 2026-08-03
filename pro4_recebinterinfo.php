@@ -55,7 +55,7 @@ $clrotulo->label("p68_codproc");
 $clrotulo->label("p89_usuario");
 $clrotulo->label("nome");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -104,7 +104,7 @@ background-color:#ccddcc;
            where p87_codtransferint = $p88_codigo
 	   ";
        $result=db_query($sql);
-       $numrows=pg_numrows($result);
+       $numrows=pg_num_rows($result);
        if($numrows>0){ 
           echo "
 	  <br><br>

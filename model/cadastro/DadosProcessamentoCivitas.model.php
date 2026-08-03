@@ -10,11 +10,6 @@ class DadosProcessamentoCivitas
 {
 
     /**
-     * @var $sMatricula
-     */
-    private $sMatricula;
-
-    /**
      * @var null
      */
     private $sSchema;
@@ -29,9 +24,11 @@ class DadosProcessamentoCivitas
      * @param $sMatricula
      * @param null $sSchema
      */
-    public function __construct($sMatricula, $sSchema = null)
+    public function __construct(/**
+     * @var $sMatricula
+     */
+    private $sMatricula, $sSchema = null)
     {
-        $this->sMatricula = $sMatricula;
         $this->sSchema = $sSchema;
         $this->anoAtual = db_getsession('DB_anousu');
     }
@@ -102,7 +99,7 @@ class DadosProcessamentoCivitas
 
         $rsCaracteristica = db_query($sSqlCaractetiscasLote);
         $iTotalLinhas = pg_num_rows($rsCaracteristica);
-        $caracteristicas = array();
+        $caracteristicas = [];
 
         for ($contador = 0; $contador < $iTotalLinhas; $contador++) {
 
@@ -214,7 +211,7 @@ class DadosProcessamentoCivitas
 
         $rsCaracteristica = db_query($sSqlCaractetiscasLote);
         $iTotalLinhas = pg_num_rows($rsCaracteristica);
-        $caracteristicas = array();
+        $caracteristicas = [];
 
         for ($contador = 0; $contador < $iTotalLinhas; $contador++) {
 
@@ -223,7 +220,7 @@ class DadosProcessamentoCivitas
                 $dadosCaracteristica->j48_idcons = $idConstr;
             }
             if (empty($caracteristicas[$dadosCaracteristica->j48_idcons])) {
-                $caracteristicas[$dadosCaracteristica->j48_idcons] = array();
+                $caracteristicas[$dadosCaracteristica->j48_idcons] = [];
             }
             $caracteristicas[$dadosCaracteristica->j48_idcons][$dadosCaracteristica->j32_grupo] = $dadosCaracteristica;
         }

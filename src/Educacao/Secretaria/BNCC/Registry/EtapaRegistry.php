@@ -15,7 +15,7 @@ class EtapaRegistry
     /**
      * @var Etapa[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Etapa $etapa

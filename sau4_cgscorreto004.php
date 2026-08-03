@@ -60,10 +60,10 @@ $fArq = "sau4_cgscorreto003.php?abas=1";
   <tr>
     <td>
         <?php
-        $clcriaabas->identifica = array("cgscorreto" => "CGS Correto", "cgserrado" => "CGS Errado");
-        $clcriaabas->title = array("cgscorreto" => "CGS CORRETO", "cgserrado" => "CGS ERRADO");
-        $clcriaabas->src = array("cgscorreto" => "$fArq", "cgserrado" => "sau4_cgserrado001.php");
-        $clcriaabas->disabled = array("cgserrado" => "true");
+        $clcriaabas->identifica = ["cgscorreto" => "CGS Correto", "cgserrado" => "CGS Errado"];
+        $clcriaabas->title = ["cgscorreto" => "CGS CORRETO", "cgserrado" => "CGS ERRADO"];
+        $clcriaabas->src = ["cgscorreto" => "$fArq", "cgserrado" => "sau4_cgserrado001.php"];
+        $clcriaabas->disabled = ["cgserrado" => "true"];
         $clcriaabas->cria_abas();
         ?>
     </td>

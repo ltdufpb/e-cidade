@@ -36,8 +36,8 @@ include(modification("classes/db_db_textos_classe.php"));
 $cldbconfig = new cl_db_config;
 $cldbtextos = new cl_db_textos;
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 if (isset($alterar)){
 	if ((isset($instituicao))){
@@ -80,7 +80,7 @@ if (isset($db_opcao)) {
     and descrtexto = '$db_opcao'
 	";//
 	$result_db_opcao = db_query($sql_db_opcao);
-	$num_db_opcao = pg_numrows($result_db_opcao);
+	$num_db_opcao = pg_num_rows($result_db_opcao);
 	if ($num_db_opcao!=0){
 		$habilita_alteracao = true;
 	}else{
@@ -132,7 +132,7 @@ if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o tex
 	    <td colspan="2">
 	      <fieldset class="separator">
 	       	<legend>Texto</legend>    
-			<textarea name="conteudotexto" cols="140" rows="16" id="conteudotexto"><?=@$codigoclass?><?=@pg_result($result_db_opcao,0,"conteudotexto")?></textarea>
+			<textarea name="conteudotexto" cols="140" rows="16" id="conteudotexto"><?=@$codigoclass?><?=@pg_fetch_result($result_db_opcao,0,"conteudotexto")?></textarea>
 		  </fieldset>
 		</td>
 	  </tr>

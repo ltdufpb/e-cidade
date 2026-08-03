@@ -43,7 +43,7 @@ if(isset($opcao) && $opcao=="alterar"){
   $db_opcao = 1;
 } 
 ?>
-<form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" >
+<form name="form1" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>" >
       <table border="0" cellspacing="0" cellpadding="0">
 	
 	<tr>
@@ -88,7 +88,7 @@ if(isset($opcao) && $opcao=="alterar"){
   <tr>
     <td valign="top"> 
     <?php 
-     $chavepri= array("db61_codparag"=>@$db61_codparag,"db61_descr"=>@$db61_descr);
+     $chavepri= ["db61_codparag"=>@$db61_codparag,"db61_descr"=>@$db61_descr];
      $cliframe_alterar_excluir->chavepri=$chavepri;
      if (isset($db60_coddoc)&&@$db60_coddoc!=""){
         $cliframe_alterar_excluir->sql = $cldb_docparagpadrao->sql_query(null,null,'*',"db62_ordem","db62_coddoc=$db60_coddoc");

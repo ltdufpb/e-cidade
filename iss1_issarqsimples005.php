@@ -36,7 +36,7 @@ $clissarqsimples = new cl_issarqsimples;
   /*
 $clissarqsimplesreg = new cl_issarqsimplesreg;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

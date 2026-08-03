@@ -38,8 +38,8 @@ require_once(modification("classes/db_arretipopix_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clarretipo    = new cl_arretipo;
 $clarretipopix = new cl_arretipopix;
@@ -82,9 +82,7 @@ if (isset($excluir)) {
         $operacoesteftipodebitoRepository = new OperacoesteftipodebitoRepository();
         $aOperacoes = $operacoesteftipodebitoRepository->getByConfig($oConfiguracoesteftipodebito->k196_sequencial);
 
-        $aOperacoesSalvas = array_map(function ($oOperacao) {
-            return $oOperacao->k197_operacoestef;
-        }, $aOperacoes);
+        $aOperacoesSalvas = array_map(fn($oOperacao) => $oOperacao->k197_operacoestef, $aOperacoes);
     }
 }
 ?>

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE bosat
 class cl_bosat { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $bo03_codbo = 0; 
-   var $bo03_codsat = 0; 
+   public $bo03_codbo = 0; 
+   public $bo03_codsat = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  bo03_codbo = int4 = Número do BO 
                  bo03_codsat = int4 = Codigo 
                  ";
    //funcao construtor da classe 
-   function cl_bosat() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bosat"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_bosat {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Grau de Satisfação ($this->bo03_codbo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Grau de Satisfação já Cadastrado";
@@ -129,11 +129,11 @@ class cl_bosat {
      $resaco = $this->sql_record($this->sql_query_file($this->bo03_codbo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8587,'$this->bo03_codbo','I')");
-       $resac = db_query("insert into db_acount values($acount,1460,8587,'','".AddSlashes(pg_result($resaco,0,'bo03_codbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1460,8588,'','".AddSlashes(pg_result($resaco,0,'bo03_codsat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1460,8587,'','".AddSlashes(pg_fetch_result($resaco,0,'bo03_codbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1460,8588,'','".AddSlashes(pg_fetch_result($resaco,0,'bo03_codsat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_bosat {
       $this->atualizacampos();
      $sql = " update bosat set ";
      $virgula = "";
-     if(trim($this->bo03_codbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo03_codbo"])){ 
+     if(trim((string) $this->bo03_codbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo03_codbo"])){ 
        $sql  .= $virgula." bo03_codbo = $this->bo03_codbo ";
        $virgula = ",";
-       if(trim($this->bo03_codbo) == null ){ 
+       if(trim((string) $this->bo03_codbo) == null ){ 
          $this->erro_sql = " Campo Número do BO nao Informado.";
          $this->erro_campo = "bo03_codbo";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_bosat {
          return false;
        }
      }
-     if(trim($this->bo03_codsat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo03_codsat"])){ 
+     if(trim((string) $this->bo03_codsat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo03_codsat"])){ 
        $sql  .= $virgula." bo03_codsat = $this->bo03_codsat ";
        $virgula = ",";
-       if(trim($this->bo03_codsat) == null ){ 
+       if(trim((string) $this->bo03_codsat) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "bo03_codsat";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_bosat {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8587,'$this->bo03_codbo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bo03_codbo"]))
-           $resac = db_query("insert into db_acount values($acount,1460,8587,'".AddSlashes(pg_result($resaco,$conresaco,'bo03_codbo'))."','$this->bo03_codbo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1460,8587,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bo03_codbo'))."','$this->bo03_codbo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bo03_codsat"]))
-           $resac = db_query("insert into db_acount values($acount,1460,8588,'".AddSlashes(pg_result($resaco,$conresaco,'bo03_codsat'))."','$this->bo03_codsat',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1460,8588,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bo03_codsat'))."','$this->bo03_codsat',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_bosat {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8587,'$bo03_codbo','E')");
-         $resac = db_query("insert into db_acount values($acount,1460,8587,'','".AddSlashes(pg_result($resaco,$iresaco,'bo03_codbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1460,8588,'','".AddSlashes(pg_result($resaco,$iresaco,'bo03_codsat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1460,8587,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bo03_codbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1460,8588,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bo03_codsat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from bosat
@@ -291,7 +291,7 @@ class cl_bosat {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bosat";

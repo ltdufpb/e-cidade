@@ -28,7 +28,7 @@
 include(modification("libs/db_sql.php"));
 include(modification("libs/db_utils.php"));
 include(modification("fpdf151/scpdf.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $instit = db_getsession("DB_instit");
 $sqlinst = "select * from db_config where codigo = ".db_getsession("DB_instit");
@@ -191,7 +191,7 @@ $sql = "select $xxcodigo as notifica,$xcodigo1,z01_numcgm,z01_nome,z01_ender,z01
         ";
 
 $result = db_query($sql);
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
   
    $oParms = new stdClass();
    $oParms->sLista = $lista;
@@ -206,7 +206,7 @@ $preenc = 1;
 $pdf->SetFont('Arial','',8);
 $linha = 0;
 //for($x=0;$x < 8;$x++){
-for($x=0;$x < pg_numrows($result);$x++){
+for($x=0;$x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($x%4==0){
       $pdf->addpage();
@@ -218,7 +218,7 @@ for($x=0;$x < pg_numrows($result);$x++){
    $pdf->text(50,$linha+12,"Notificação : ".db_formatar($notifica,'s','0',5,'e'));
    $pdf->SetFont('Arial','',10);
    $pdf->text(10,$linha+25,"Destinatário : ".$z01_nome);
-   $pdf->text(10,$linha+30,"Matrícula N".chr(176)."  ".$$xcodigo1);
+   $pdf->text(10,$linha+30,"Matrícula N".chr(176)."  ".${$xcodigo1});
    $pdf->text(10,$linha+35,"Endereço : ".$z01_ender.", ".$z01_numero."  ".$z01_compl);
    $pdf->SetFont('Arial','B',10);
    $pdf->text(10,$linha+45,"NOME LEGÍVEL : ...................................................................................");

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_agualeiturista_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clagualeiturista = new cl_agualeiturista;
 $clagualeiturista->rotulo->label("x16_numcgm");
 $clagualeiturista->rotulo->label("x16_numcgm");
@@ -98,9 +98,9 @@ $clagualeiturista->rotulo->label("x16_numcgm");
         }else{
            $sql = $clagualeiturista->sql_query("",$campos,"x16_numcgm","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_x16_numcgm)){
-          $repassa = array("chave_x16_numcgm"=>$chave_x16_numcgm,"chave_x16_numcgm"=>$chave_x16_numcgm);
+          $repassa = ["chave_x16_numcgm"=>$chave_x16_numcgm,"chave_x16_numcgm"=>$chave_x16_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

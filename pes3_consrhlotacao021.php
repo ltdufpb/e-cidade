@@ -38,8 +38,8 @@ $clrhlota = new cl_rhlota();
 $cllotacao = new cl_lotacao();
 $clrhlota->rotulo->label();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 if(isset($lotacao) && trim($lotacao)!=""){
   $porlotacao = true;
   $result_funcionarios =	  	 
@@ -116,7 +116,7 @@ if($porlotacao == true){
   $totalvalor = 0;
   $totalquant = 0;
   $totalregis = 0;
-  for($x = 0; $x < pg_numrows($result_funcionarios); $x ++){
+  for($x = 0; $x < pg_num_rows($result_funcionarios); $x ++){
     db_fieldsmemory($result_funcionarios, $x);
     if($cor == "#EFE029"){
       $cor = "#E4F471";
@@ -149,7 +149,7 @@ if($porlotacao == true){
   $cor = "#EFE029";
   $orgaoantigo = "";
   $totalp = 0;
-  for($x = 0; $x < pg_numrows($result_lotacoes); $x++){
+  for($x = 0; $x < pg_num_rows($result_lotacoes); $x++){
     db_fieldsmemory($result_lotacoes, $x);
     if($cor == "#EFE029"){
       $cor = "#E4F471";

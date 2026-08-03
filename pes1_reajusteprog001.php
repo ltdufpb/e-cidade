@@ -48,7 +48,7 @@ $clprogress = new cl_progress;
 $clpesdiver = new cl_pesdiver;
 $aux = new cl_arquivo_auxiliar;
 $clrotulo = new rotulocampo;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if(isset($incluir)){
     db_inicio_transacao();
     $sqlerro = false;

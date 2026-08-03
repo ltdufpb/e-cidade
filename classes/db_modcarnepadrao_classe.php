@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE modcarnepadrao
 class cl_modcarnepadrao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k48_sequencial = 0; 
-   var $k48_cadconvenio = 0; 
-   var $k48_cadtipomod = 0; 
-   var $k48_instit = 0; 
-   var $k48_dataini_dia = null; 
-   var $k48_dataini_mes = null; 
-   var $k48_dataini_ano = null; 
-   var $k48_dataini = null; 
-   var $k48_datafim_dia = null; 
-   var $k48_datafim_mes = null; 
-   var $k48_datafim_ano = null; 
-   var $k48_datafim = null; 
-   var $k48_parcini = 0; 
-   var $k48_parcfim = 0; 
+   public $k48_sequencial = 0; 
+   public $k48_cadconvenio = 0; 
+   public $k48_cadtipomod = 0; 
+   public $k48_instit = 0; 
+   public $k48_dataini_dia = null; 
+   public $k48_dataini_mes = null; 
+   public $k48_dataini_ano = null; 
+   public $k48_dataini = null; 
+   public $k48_datafim_dia = null; 
+   public $k48_datafim_mes = null; 
+   public $k48_datafim_ano = null; 
+   public $k48_datafim = null; 
+   public $k48_parcini = 0; 
+   public $k48_parcfim = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k48_sequencial = int4 = Codigo do modelo padrão da instituição 
                  k48_cadconvenio = int4 = Convênio 
                  k48_cadtipomod = int4 = Codigo do tipo de modelo 
@@ -68,10 +68,10 @@ class cl_modcarnepadrao {
                  k48_parcfim = float4 = Parcela Final 
                  ";
    //funcao construtor da classe 
-   function cl_modcarnepadrao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("modcarnepadrao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -175,10 +175,10 @@ class cl_modcarnepadrao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k48_sequencial = pg_result($result,0,0); 
+       $this->k48_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from modcarnepadrao_k48_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k48_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k48_sequencial)){
          $this->erro_sql = " Campo k48_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -220,7 +220,7 @@ class cl_modcarnepadrao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Modelo padrão  ($this->k48_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Modelo padrão  já Cadastrado";
@@ -244,15 +244,15 @@ class cl_modcarnepadrao {
      $resaco = $this->sql_record($this->sql_query_file($this->k48_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8881,'$this->k48_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1516,8881,'','".AddSlashes(pg_result($resaco,0,'k48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1516,12549,'','".AddSlashes(pg_result($resaco,0,'k48_cadconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1516,8884,'','".AddSlashes(pg_result($resaco,0,'k48_cadtipomod'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1516,8882,'','".AddSlashes(pg_result($resaco,0,'k48_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1516,8885,'','".AddSlashes(pg_result($resaco,0,'k48_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1516,8886,'','".AddSlashes(pg_result($resaco,0,'k48_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1516,8881,'','".AddSlashes(pg_fetch_result($resaco,0,'k48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1516,12549,'','".AddSlashes(pg_fetch_result($resaco,0,'k48_cadconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1516,8884,'','".AddSlashes(pg_fetch_result($resaco,0,'k48_cadtipomod'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1516,8882,'','".AddSlashes(pg_fetch_result($resaco,0,'k48_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1516,8885,'','".AddSlashes(pg_fetch_result($resaco,0,'k48_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1516,8886,'','".AddSlashes(pg_fetch_result($resaco,0,'k48_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -261,10 +261,10 @@ class cl_modcarnepadrao {
       $this->atualizacampos();
      $sql = " update modcarnepadrao set ";
      $virgula = "";
-     if(trim($this->k48_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_sequencial"])){ 
+     if(trim((string) $this->k48_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_sequencial"])){ 
        $sql  .= $virgula." k48_sequencial = $this->k48_sequencial ";
        $virgula = ",";
-       if(trim($this->k48_sequencial) == null ){ 
+       if(trim((string) $this->k48_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo do modelo padrão da instituição nao Informado.";
          $this->erro_campo = "k48_sequencial";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_modcarnepadrao {
          return false;
        }
      }
-     if(trim($this->k48_cadconvenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_cadconvenio"])){ 
+     if(trim((string) $this->k48_cadconvenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_cadconvenio"])){ 
        $sql  .= $virgula." k48_cadconvenio = $this->k48_cadconvenio ";
        $virgula = ",";
-       if(trim($this->k48_cadconvenio) == null ){ 
+       if(trim((string) $this->k48_cadconvenio) == null ){ 
          $this->erro_sql = " Campo Convênio nao Informado.";
          $this->erro_campo = "k48_cadconvenio";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_modcarnepadrao {
          return false;
        }
      }
-     if(trim($this->k48_cadtipomod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_cadtipomod"])){ 
+     if(trim((string) $this->k48_cadtipomod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_cadtipomod"])){ 
        $sql  .= $virgula." k48_cadtipomod = $this->k48_cadtipomod ";
        $virgula = ",";
-       if(trim($this->k48_cadtipomod) == null ){ 
+       if(trim((string) $this->k48_cadtipomod) == null ){ 
          $this->erro_sql = " Campo Codigo do tipo de modelo nao Informado.";
          $this->erro_campo = "k48_cadtipomod";
          $this->erro_banco = "";
@@ -300,10 +300,10 @@ class cl_modcarnepadrao {
          return false;
        }
      }
-     if(trim($this->k48_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_instit"])){ 
+     if(trim((string) $this->k48_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_instit"])){ 
        $sql  .= $virgula." k48_instit = $this->k48_instit ";
        $virgula = ",";
-       if(trim($this->k48_instit) == null ){ 
+       if(trim((string) $this->k48_instit) == null ){ 
          $this->erro_sql = " Campo codigo da instituicao nao Informado.";
          $this->erro_campo = "k48_instit";
          $this->erro_banco = "";
@@ -313,10 +313,10 @@ class cl_modcarnepadrao {
          return false;
        }
      }
-     if(trim($this->k48_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"] !="") ){ 
+     if(trim((string) $this->k48_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"] !="") ){ 
        $sql  .= $virgula." k48_dataini = '$this->k48_dataini' ";
        $virgula = ",";
-       if(trim($this->k48_dataini) == null ){ 
+       if(trim((string) $this->k48_dataini) == null ){ 
          $this->erro_sql = " Campo Data inicial nao Informado.";
          $this->erro_campo = "k48_dataini_dia";
          $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_modcarnepadrao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k48_dataini_dia"])){ 
          $sql  .= $virgula." k48_dataini = null ";
          $virgula = ",";
-         if(trim($this->k48_dataini) == null ){ 
+         if(trim((string) $this->k48_dataini) == null ){ 
            $this->erro_sql = " Campo Data inicial nao Informado.";
            $this->erro_campo = "k48_dataini_dia";
            $this->erro_banco = "";
@@ -340,10 +340,10 @@ class cl_modcarnepadrao {
          }
        }
      }
-     if(trim($this->k48_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"] !="") ){ 
+     if(trim((string) $this->k48_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"] !="") ){ 
        $sql  .= $virgula." k48_datafim = '$this->k48_datafim' ";
        $virgula = ",";
-       if(trim($this->k48_datafim) == null ){ 
+       if(trim((string) $this->k48_datafim) == null ){ 
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "k48_datafim_dia";
          $this->erro_banco = "";
@@ -356,7 +356,7 @@ class cl_modcarnepadrao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k48_datafim_dia"])){ 
          $sql  .= $virgula." k48_datafim = null ";
          $virgula = ",";
-         if(trim($this->k48_datafim) == null ){ 
+         if(trim((string) $this->k48_datafim) == null ){ 
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "k48_datafim_dia";
            $this->erro_banco = "";
@@ -367,15 +367,15 @@ class cl_modcarnepadrao {
          }
        }
      }
-     if(trim($this->k48_parcini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_parcini"])){ 
-     if(trim($this->k48_parcini)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k48_parcini"])){ 
+     if(trim((string) $this->k48_parcini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_parcini"])){ 
+     if(trim((string) $this->k48_parcini)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k48_parcini"])){ 
            $this->k48_parcini = "0" ; 
         } 
        $sql  .= $virgula." k48_parcini = $this->k48_parcini ";
        $virgula = ",";
      }
-     if(trim($this->k48_parcfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_parcfim"])){ 
-        if(trim($this->k48_parcfim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k48_parcfim"])){ 
+     if(trim((string) $this->k48_parcfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k48_parcfim"])){ 
+        if(trim((string) $this->k48_parcfim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k48_parcfim"])){ 
            $this->k48_parcfim = "0" ; 
         } 
        $sql  .= $virgula." k48_parcfim = $this->k48_parcfim ";
@@ -389,25 +389,25 @@ class cl_modcarnepadrao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8881,'$this->k48_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k48_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1516,8881,'".AddSlashes(pg_result($resaco,$conresaco,'k48_sequencial'))."','$this->k48_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1516,8881,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k48_sequencial'))."','$this->k48_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k48_cadconvenio"]))
-           $resac = db_query("insert into db_acount values($acount,1516,12549,'".AddSlashes(pg_result($resaco,$conresaco,'k48_cadconvenio'))."','$this->k48_cadconvenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1516,12549,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k48_cadconvenio'))."','$this->k48_cadconvenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k48_cadtipomod"]))
-           $resac = db_query("insert into db_acount values($acount,1516,8884,'".AddSlashes(pg_result($resaco,$conresaco,'k48_cadtipomod'))."','$this->k48_cadtipomod',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1516,8884,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k48_cadtipomod'))."','$this->k48_cadtipomod',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k48_instit"]))
-           $resac = db_query("insert into db_acount values($acount,1516,8882,'".AddSlashes(pg_result($resaco,$conresaco,'k48_instit'))."','$this->k48_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1516,8882,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k48_instit'))."','$this->k48_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k48_dataini"]))
-           $resac = db_query("insert into db_acount values($acount,1516,8885,'".AddSlashes(pg_result($resaco,$conresaco,'k48_dataini'))."','$this->k48_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1516,8885,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k48_dataini'))."','$this->k48_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k48_datafim"]))
-           $resac = db_query("insert into db_acount values($acount,1516,8886,'".AddSlashes(pg_result($resaco,$conresaco,'k48_datafim'))."','$this->k48_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1516,8886,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k48_datafim'))."','$this->k48_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k48_parcini"]) || $this->k48_parcini != "")
-           $resac = db_query("insert into db_acount values($acount,1516,1009250,'".AddSlashes(pg_result($resaco,$conresaco,'k48_parcini'))."','$this->k48_parcini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1516,1009250,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k48_parcini'))."','$this->k48_parcini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k48_parcfim"]) || $this->k48_parcfim != "")
-           $resac = db_query("insert into db_acount values($acount,1516,1009251,'".AddSlashes(pg_result($resaco,$conresaco,'k48_parcfim'))."','$this->k48_parcfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");       
+           $resac = db_query("insert into db_acount values($acount,1516,1009251,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k48_parcfim'))."','$this->k48_parcfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");       
        }
      }
      $result = db_query($sql);
@@ -452,17 +452,17 @@ class cl_modcarnepadrao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8881,'$k48_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1516,8881,'','".AddSlashes(pg_result($resaco,$iresaco,'k48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1516,12549,'','".AddSlashes(pg_result($resaco,$iresaco,'k48_cadconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1516,8884,'','".AddSlashes(pg_result($resaco,$iresaco,'k48_cadtipomod'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1516,8882,'','".AddSlashes(pg_result($resaco,$iresaco,'k48_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1516,8885,'','".AddSlashes(pg_result($resaco,$iresaco,'k48_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1516,8886,'','".AddSlashes(pg_result($resaco,$iresaco,'k48_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1516,1009250,'','".AddSlashes(pg_result($resaco,$iresaco,'k48_parcini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1516,1009251,'','".AddSlashes(pg_result($resaco,$iresaco,'k48_parcfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1516,8881,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1516,12549,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k48_cadconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1516,8884,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k48_cadtipomod'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1516,8882,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k48_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1516,8885,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k48_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1516,8886,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k48_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1516,1009250,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k48_parcini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1516,1009251,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k48_parcfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from modcarnepadrao
@@ -522,7 +522,7 @@ class cl_modcarnepadrao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:modcarnepadrao";
@@ -537,7 +537,7 @@ class cl_modcarnepadrao {
    function sql_query ( $k48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -567,7 +567,7 @@ class cl_modcarnepadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -580,7 +580,7 @@ class cl_modcarnepadrao {
    function sql_query_file ( $k48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -601,7 +601,7 @@ class cl_modcarnepadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -614,7 +614,7 @@ class cl_modcarnepadrao {
    function sql_query_func ( $k48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -647,7 +647,7 @@ class cl_modcarnepadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -661,7 +661,7 @@ class cl_modcarnepadrao {
   function sql_query_convenio_por_modelo ( $k48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -684,7 +684,7 @@ class cl_modcarnepadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

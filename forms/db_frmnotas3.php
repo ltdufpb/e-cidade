@@ -69,7 +69,7 @@ db_fieldsmemory($result,0);
   db_fieldsmemory($result,$x);
   ?>
   <tr bgcolor="<?=$cor?>">
-   <td align="center"><?=str_pad($ed09_i_codigo,7,0,str_pad_left)?></td>
+   <td align="center"><?=str_pad((string) $ed09_i_codigo,7,0,\STR_PAD_LEFT)?></td>
    <td>&nbsp;<?=$z01_nome?></td>
    <td align="center">&nbsp;</td>
   </tr>
@@ -90,7 +90,7 @@ db_fieldsmemory($result,0);
      @db_fieldsmemory($result2,$y);
      ?>
      <td align="center" width="80" <?php if($ed11_c_fechado=="t"){echo "bgcolor='$vermelho'";}else{echo "bgcolor='$verde'";}?>>
-      <b><?=substr($ed11_d_data,8,2)?>/<?=substr($ed11_d_data,5,2)?>/<?=substr($ed11_d_data,0,4)?></b><br>
+      <b><?=substr((string) $ed11_d_data,8,2)?>/<?=substr((string) $ed11_d_data,5,2)?>/<?=substr((string) $ed11_d_data,0,4)?></b><br>
       <?=$ed11_f_media?>
      </td>
      <?php 

@@ -11,13 +11,13 @@ final class ImovelAnteriorRepository extends DataBaseRepository
     public function find($matricula, $ano)
     {
         $imovelAnterior = new ImovelAnterior();
-        $objetoRetorno  = (object)array(
+        $objetoRetorno  = (object)[
              'j36_testad'  => 0
             ,'j39_area'    => 0
             ,'j40_refant'  => 0
             ,'j23_arealo'  => 0
             ,'j23_m2terr'  => 0
-        );
+        ];
 
         $sSqlTestada  = " select j36_testad                                              ";
         $sSqlTestada .= "   from iptubase                                                ";

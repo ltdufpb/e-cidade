@@ -66,13 +66,13 @@ try {
 function geraCsv($dadosRelatorios)
 {
 
-    $headers = array(
+    $headers = [
         'Matricula',
         'Nome',
         'Lotação',
         'Cargo',
         'Escala'
-    );
+    ];
 
     $arquivo = 'tmp/relatorio_funcionarios_por_escalahoraria.csv';
     $rArquivo = fopen($arquivo, 'w');
@@ -82,13 +82,13 @@ function geraCsv($dadosRelatorios)
         foreach ($dadosRelatorio as $dadosJornada) {
             $jornada = "{$dadosJornada->codigoJornada} - {$dadosJornada->descricaoJornada}";
             foreach ($dadosJornada->matriculas as $matricula => $dadosServidor) {
-                $linha = array(
+                $linha = [
                     $matricula,
                     $dadosServidor->nome,
                     $dadosServidor->lotacao->getDescricaoLotacao(),
                     $dadosServidor->cargo->rh37_descr,
                     $jornada
-                );
+                ];
 
                 fputs($rArquivo, implode(",", $linha) . "\n");
             }
@@ -121,13 +121,13 @@ function geraCsv($dadosRelatorios)
  */
 function buscarServidores($parametros)
 {
-    $matriculas = array();
-    $dadosRelatorio = array();
+    $matriculas = [];
+    $dadosRelatorio = [];
 
     switch ($parametros->filtro) {
         case '1':
 
-            $selecaoSelecionadas = explode(',', $parametros->selecao);
+            $selecaoSelecionadas = explode(',', (string) $parametros->selecao);
 
             foreach ($selecaoSelecionadas as $selecao) {
                 $servidoresSelecionados = \ServidorRepository::getServidoresBySelecao(
@@ -145,7 +145,7 @@ function buscarServidores($parametros)
 
         case '2':
 
-            $matriculasSelecionadas = explode(',', $parametros->matriculas);
+            $matriculasSelecionadas = explode(',', (string) $parametros->matriculas);
 
             foreach ($matriculasSelecionadas as $matricula) {
                 $servidores[] = \ServidorRepository::getInstanciaByCodigo($matricula);
@@ -155,7 +155,7 @@ function buscarServidores($parametros)
 
         case '3':
 
-            $locaisSelecionadas = explode(',', $parametros->localTrabalho);
+            $locaisSelecionadas = explode(',', (string) $parametros->localTrabalho);
             foreach ($locaisSelecionadas as $local) {
                 $servidoresSelecionados = \ServidorRepository::getServidoresByLocalTrabalho(
                     \DBPessoal::getAnoFolha(),
@@ -174,7 +174,7 @@ function buscarServidores($parametros)
             break;
     }
 
-    $matriculasFiltro = array();
+    $matriculasFiltro = [];
 
     foreach ($servidores as $servidor) {
         $dadosServidor = new stdClass();
@@ -244,7 +244,7 @@ function buscarServidores($parametros)
                 $dadosJornada->codigoJornada = $retorno->rh190_sequencial;
 
                 $dadosJornada->descricaoJornada = $retorno->rh190_descricao;
-                $dadosJornada->matriculas = array();
+                $dadosJornada->matriculas = [];
 
                 $dadosRelatorio[$codigoAgrupamento][$retorno->rh190_sequencial] = $dadosJornada;
             }
@@ -258,7 +258,7 @@ function buscarServidores($parametros)
                 $dadosJornada->codigoJornada = $retorno->rh190_sequencial;
 
                 $dadosJornada->descricaoJornada = $retorno->rh190_descricao;
-                $dadosJornada->matriculas = array();
+                $dadosJornada->matriculas = [];
 
                 $dadosRelatorio[$retorno->rh190_sequencial] = $dadosJornada;
             }
@@ -273,7 +273,7 @@ function buscarServidores($parametros)
 
     if ($parametros->quebrarPagina != 1) {
 
-        return array($dadosRelatorio);
+        return [$dadosRelatorio];
     }
 
     return $dadosRelatorio;
@@ -294,7 +294,7 @@ function montaRelatorio(PDFDocument $pdf, $dadosRelatorio, $parametros)
     $pdf->addHeaderDescription('Funcionários Por Escala de Horário');
     $pdf->addHeaderDescription("Período: {$parametros->dataInicial->getDate(DBDate::DATA_PTBR)} à {$parametros->dataFinal->getDate(DBDate::DATA_PTBR)}");
 
-    foreach (explode(',', $parametros->selecaodesc) as $value) {
+    foreach (explode(',', (string) $parametros->selecaodesc) as $value) {
         $pdf->addHeaderDescription("Seleção: " .$value);
     }
 

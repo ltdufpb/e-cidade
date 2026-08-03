@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE rhdirfgeracaopessoalpensionistavalor
 class cl_rhdirfgeracaopessoalpensionistavalor { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh203_sequencial = 0; 
-   var $rh203_rhdirfgeracaopessoalpensionista = 0; 
-   var $rh203_rhdirfgeracaodadospessoalvalor = 0; 
+   public $rh203_sequencial = 0; 
+   public $rh203_rhdirfgeracaopessoalpensionista = 0; 
+   public $rh203_rhdirfgeracaodadospessoalvalor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh203_sequencial = int4 = Código Sequencial 
                  rh203_rhdirfgeracaopessoalpensionista = int4 = Pensionista 
                  rh203_rhdirfgeracaodadospessoalvalor = int4 = Valor processado 
                  ";
    //funcao construtor da classe 
-   function cl_rhdirfgeracaopessoalpensionistavalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhdirfgeracaopessoalpensionistavalor"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_rhdirfgeracaopessoalpensionistavalor {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh203_sequencial = pg_result($result,0,0); 
+       $this->rh203_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhdirfgeracaopessoalpensionistavalor_rh203_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh203_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh203_sequencial)){
          $this->erro_sql = " Campo rh203_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_rhdirfgeracaopessoalpensionistavalor {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "rhdirfgeracaopessoalpensionistavalor ($this->rh203_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "rhdirfgeracaopessoalpensionistavalor já Cadastrado";
@@ -145,12 +145,12 @@ class cl_rhdirfgeracaopessoalpensionistavalor {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22316,'$this->rh203_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,4020,22316,'','".AddSlashes(pg_result($resaco,0,'rh203_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,4020,22317,'','".AddSlashes(pg_result($resaco,0,'rh203_rhdirfgeracaopessoalpensionista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,4020,22318,'','".AddSlashes(pg_result($resaco,0,'rh203_rhdirfgeracaodadospessoalvalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4020,22316,'','".AddSlashes(pg_fetch_result($resaco,0,'rh203_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4020,22317,'','".AddSlashes(pg_fetch_result($resaco,0,'rh203_rhdirfgeracaopessoalpensionista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4020,22318,'','".AddSlashes(pg_fetch_result($resaco,0,'rh203_rhdirfgeracaodadospessoalvalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_rhdirfgeracaopessoalpensionistavalor {
       $this->atualizacampos();
      $sql = " update rhdirfgeracaopessoalpensionistavalor set ";
      $virgula = "";
-     if(trim($this->rh203_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh203_sequencial"])){ 
+     if(trim((string) $this->rh203_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh203_sequencial"])){ 
        $sql  .= $virgula." rh203_sequencial = $this->rh203_sequencial ";
        $virgula = ",";
-       if(trim($this->rh203_sequencial) == null ){ 
+       if(trim((string) $this->rh203_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "rh203_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_rhdirfgeracaopessoalpensionistavalor {
          return false;
        }
      }
-     if(trim($this->rh203_rhdirfgeracaopessoalpensionista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh203_rhdirfgeracaopessoalpensionista"])){ 
+     if(trim((string) $this->rh203_rhdirfgeracaopessoalpensionista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh203_rhdirfgeracaopessoalpensionista"])){ 
        $sql  .= $virgula." rh203_rhdirfgeracaopessoalpensionista = $this->rh203_rhdirfgeracaopessoalpensionista ";
        $virgula = ",";
-       if(trim($this->rh203_rhdirfgeracaopessoalpensionista) == null ){ 
+       if(trim((string) $this->rh203_rhdirfgeracaopessoalpensionista) == null ){ 
          $this->erro_sql = " Campo Pensionista não informado.";
          $this->erro_campo = "rh203_rhdirfgeracaopessoalpensionista";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_rhdirfgeracaopessoalpensionistavalor {
          return false;
        }
      }
-     if(trim($this->rh203_rhdirfgeracaodadospessoalvalor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh203_rhdirfgeracaodadospessoalvalor"])){ 
+     if(trim((string) $this->rh203_rhdirfgeracaodadospessoalvalor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh203_rhdirfgeracaodadospessoalvalor"])){ 
        $sql  .= $virgula." rh203_rhdirfgeracaodadospessoalvalor = $this->rh203_rhdirfgeracaodadospessoalvalor ";
        $virgula = ",";
-       if(trim($this->rh203_rhdirfgeracaodadospessoalvalor) == null ){ 
+       if(trim((string) $this->rh203_rhdirfgeracaodadospessoalvalor) == null ){ 
          $this->erro_sql = " Campo Valor processado não informado.";
          $this->erro_campo = "rh203_rhdirfgeracaodadospessoalvalor";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_rhdirfgeracaopessoalpensionistavalor {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22316,'$this->rh203_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh203_sequencial"]) || $this->rh203_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,4020,22316,'".AddSlashes(pg_result($resaco,$conresaco,'rh203_sequencial'))."','$this->rh203_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4020,22316,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh203_sequencial'))."','$this->rh203_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh203_rhdirfgeracaopessoalpensionista"]) || $this->rh203_rhdirfgeracaopessoalpensionista != "")
-             $resac = db_query("insert into db_acount values($acount,4020,22317,'".AddSlashes(pg_result($resaco,$conresaco,'rh203_rhdirfgeracaopessoalpensionista'))."','$this->rh203_rhdirfgeracaopessoalpensionista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4020,22317,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh203_rhdirfgeracaopessoalpensionista'))."','$this->rh203_rhdirfgeracaopessoalpensionista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh203_rhdirfgeracaodadospessoalvalor"]) || $this->rh203_rhdirfgeracaodadospessoalvalor != "")
-             $resac = db_query("insert into db_acount values($acount,4020,22318,'".AddSlashes(pg_result($resaco,$conresaco,'rh203_rhdirfgeracaodadospessoalvalor'))."','$this->rh203_rhdirfgeracaodadospessoalvalor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4020,22318,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh203_rhdirfgeracaodadospessoalvalor'))."','$this->rh203_rhdirfgeracaodadospessoalvalor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_rhdirfgeracaopessoalpensionistavalor {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22316,'$rh203_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,4020,22316,'','".AddSlashes(pg_result($resaco,$iresaco,'rh203_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,4020,22317,'','".AddSlashes(pg_result($resaco,$iresaco,'rh203_rhdirfgeracaopessoalpensionista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,4020,22318,'','".AddSlashes(pg_result($resaco,$iresaco,'rh203_rhdirfgeracaodadospessoalvalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4020,22316,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh203_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4020,22317,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh203_rhdirfgeracaopessoalpensionista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4020,22318,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh203_rhdirfgeracaodadospessoalvalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

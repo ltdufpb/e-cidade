@@ -31,7 +31,7 @@ include(modification("classes/db_parfiscal_classe.php"));
 include(modification("classes/db_termovist_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $clparfiscal     = new cl_parfiscal;
 $cltermovist     = new cl_termovist;
@@ -210,11 +210,11 @@ for($cont=0;$cont < $int_linhas;$cont++) {
   where db03_tipodoc = 1013 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
     //die($sqlparag);
     $resparag = db_query($sqlparag);
-    if ( pg_numrows($resparag) == 0 ) {
+    if ( pg_num_rows($resparag) == 0 ) {
       db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do Termo de Vistoria!');
       exit;
     }
-    $numrows = pg_numrows($resparag);
+    $numrows = pg_num_rows($resparag);
     //$pdf1->inicia     = $db02_inicia;
     $pdf->setx($col);
     $pdf->setfont('Arial','B',14);
@@ -235,25 +235,25 @@ for($cont=0;$cont < $int_linhas;$cont++) {
         /*
          * VARIÁVEIS DO PARAGRAFO 
          */
-        if ( trim($z01_telef) != '' ) {
+        if ( trim((string) $z01_telef) != '' ) {
           $telefone = $z01_telef;                
         } else {
           $telefone = "____________";   
         }
                 
-        if ( trim($q30_area) != '' ) {
+        if ( trim((string) $q30_area) != '' ) {
           $area = $q30_area;                
         } else {
           $area = "____________";   
         }        
         
-        if ( trim($q30_quant) != '' ) {
+        if ( trim((string) $q30_quant) != '' ) {
           $nfuncionarios = $q30_quant;                
         } else {
           $nfuncionarios = "____________";   
         }
 
-        if ( trim($q35_zona) != '' ) {
+        if ( trim((string) $q35_zona) != '' ) {
           $zona = $q35_zona.' - '.$j50_descr;                
         } else {
           $zona = "____________";   
@@ -495,7 +495,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
         $pdf->MultiCell(100,5,$str_issqn ,0,1,"J",0);
         $pdf->setx($col);
 
-        if( eregi("IRR",$str_issqn) ) {
+        if( preg_match("#IRR#mi",(string) $str_issqn) ) {
           $pdf->cell(160,2,"",0,1,"L",0);        	
         } else {
         	$pdf->cell(160,5,"",0,1,"L",0);
@@ -553,7 +553,7 @@ function func_issqn( $q01_numpre, $q01_cadcal ){
   $str_sql3 .= "    and arrecad.k00_dtvenc < '".date("Y/m/d",db_getsession('DB_datausu'))."' ) as zzz";
   //	die($str_sql3);
   $rsIsscalc  = db_query($str_sql3);
-  $intIsscalc = pg_numrows($rsIsscalc);
+  $intIsscalc = pg_num_rows($rsIsscalc);
   if( $intIsscalc > 0 ){
     $virgula = '';
     $vir   = '';
@@ -585,7 +585,7 @@ function func_issqn( $q01_numpre, $q01_cadcal ){
   //	die($str_sql1);
   $rsIssvar  = db_query($str_sql1);
   //db_criatabela($rsIssvar);exit;
-  $intIssvar = pg_numrows($rsIssvar);
+  $intIssvar = pg_num_rows($rsIssvar);
 
   if( $intIssvar > 0 ){
     $vir = '';

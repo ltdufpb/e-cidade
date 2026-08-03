@@ -40,17 +40,17 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $iAnousu = db_getsession("DB_anousu");
 if ($iAnousu < 2008 ) {
   $codrel = 13;  
 }else{
   $codrel = 33;
 }
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 ?>
 <html>
 <head>
@@ -74,30 +74,30 @@ $sizecp  = array();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array(
+    $clcriaabas->identifica = [
                                     "relatorio" => "Relatorio",
                                     "variaveis" => "Variáveis",
                                     "parametro" => "Parametros",
                                     "notas"     => "Notas Explicativas"
-                                   );
-    $clcriaabas->title      = array(
+                                   ];
+    $clcriaabas->title      = [
                                     "relatorio" => "Relatorio",
                                     "variaveis" => "Variáveis",
                                     "parametro" => "Parametros",
                                     "notas"     => "Notas Explicativas"
-                                   );
-    $clcriaabas->src        = array(
+                                   ];
+    $clcriaabas->src        = [
                                     "relatorio" => "con2_lrfdispcaixa011.php",
                                     "variaveis" => "con2_conrelinfo001.php?c83_codrel=$codrel",
 			                              "parametro" => "con2_conrelparametros.php?c83_codrel=$codrel",
                                     "notas"     => "con2_conrelnotas.php?c83_codrel=$codrel",
-                                   );
-    $clcriaabas->sizecampo  = array(
+                                   ];
+    $clcriaabas->sizecampo  = [
                                     "relatorio" => 23,
                                     "variaveis" => 23,
                                     "parametro" => 23,
                                     "notas"     => 23
-                                   );
+                                   ];
     $clcriaabas->cria_abas();    
     ?>
     </center>

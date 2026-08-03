@@ -32,22 +32,22 @@ DEFINE('POLAR_180',2);
 // class PolarPlot
 //--------------------------------------------------------------------------
 class PolarPlot {
-    var $numpoints=0;
-    var $iColor='navy',$iFillColor='';
-    var $iLineWeight=1;
-    var $coord=null;
-    var $legendcsimtarget='';
-    var $legendcsimalt='';
-    var $legend="";
-    var $csimtargets=array();	// Array of targets for CSIM
-    var $csimareas="";			// Resultant CSIM area tags	
-    var $csimalts=null;			// ALT:s for corresponding target
-    var $line_style='solid',$mark;
+    public $numpoints=0;
+    public $iColor='navy',$iFillColor='';
+    public $iLineWeight=1;
+    public $coord=null;
+    public $legendcsimtarget='';
+    public $legendcsimalt='';
+    public $legend="";
+    public $csimtargets=[];	// Array of targets for CSIM
+    public $csimareas="";			// Resultant CSIM area tags	
+    public $csimalts=null;			// ALT:s for corresponding target
+    public $line_style='solid',$mark;
 
-    function PolarPlot($aData) {
+    function __construct($aData) {
 	$n = count($aData);
 	if( $n & 1 ) {
-	    JpGraphError::Raise('Polar plots must have an even number of data point. Each data point is a tuple (angle,radius).');
+	    (new JpGraphError())->Raise('Polar plots must have an even number of data point. Each data point is a tuple (angle,radius).');
 	}
 	$this->numpoints = $n/2;
 	$this->coord = $aData;
@@ -112,10 +112,10 @@ class PolarPlot {
     function Stroke($img,$scale) {
 
 	$i=0;
-	$p=array();
+	$p=[];
 	$this->csimareas='';
 	while($i < $this->numpoints) {
-	    list($x1,$y1) = $scale->PTranslate($this->coord[2*$i],$this->coord[2*$i+1]);
+	    [$x1, $y1] = $scale->PTranslate($this->coord[2*$i],$this->coord[2*$i+1]);
 	    $p[2*$i] = $x1;
 	    $p[2*$i+1] = $y1;
 	
@@ -146,18 +146,18 @@ class PolarPlot {
 // class PolarAxis
 //--------------------------------------------------------------------------
 class PolarAxis extends Axis {
-    var $angle_step=15,$angle_color='lightgray',$angle_label_color='black';
-    var $angle_fontfam=FF_FONT1,$angle_fontstyle=FS_NORMAL,$angle_fontsize=10;
-    var $angle_fontcolor = 'navy';
-    var $gridminor_color='lightgray',$gridmajor_color='lightgray';
-    var $show_minor_grid = false, $show_major_grid = true ;
-    var $show_angle_mark=true, $show_angle_grid=true, $show_angle_label=true;
-    var $angle_tick_len=3, $angle_tick_len2=3, $angle_tick_color='black';
-    var $show_angle_tick=true;
-    var $radius_tick_color='black';
+    public $angle_step=15,$angle_color='lightgray',$angle_label_color='black';
+    public $angle_fontfam=FF_FONT1,$angle_fontstyle=FS_NORMAL,$angle_fontsize=10;
+    public $angle_fontcolor = 'navy';
+    public $gridminor_color='lightgray',$gridmajor_color='lightgray';
+    public $show_minor_grid = false, $show_major_grid = true ;
+    public $show_angle_mark=true, $show_angle_grid=true, $show_angle_label=true;
+    public $angle_tick_len=3, $angle_tick_len2=3, $angle_tick_color='black';
+    public $show_angle_tick=true;
+    public $radius_tick_color='black';
 
-    function PolarAxis(&$img,&$aScale) {
-	parent::Axis($img,$aScale);
+    function __construct(&$img, &$aScale)
+    {
     }
 
     function ShowAngleDegreeMark($aFlg=true) {
@@ -168,6 +168,7 @@ class PolarAxis extends Axis {
 	$this->angle_step=$aStep;
     }
 
+    #[\Override]
     function HideTicks($aFlg=true,$aAngleFlg=true) {
 	parent::HideTicks($aFlg,$aFlg);
 	$this->show_angle_tick = !$aAngleFlg;
@@ -189,6 +190,7 @@ class PolarAxis extends Axis {
 	$this->angle_fontsize = $aFontSize;
     }
 
+    #[\Override]
     function SetColor($aColor,$aRadColor='',$aAngleColor='') {
 	if( $aAngleColor == '' )
 	    $aAngleColor=$aColor;
@@ -218,7 +220,7 @@ class PolarAxis extends Axis {
 	$this->scale->ticks->Stroke($this->img,$this->scale,$pos);
 
 	// Stroke the minor arcs 
-	$pmin = array();
+	$pmin = [];
 	$p = $this->scale->ticks->ticks_pos;
 	$n = count($p);
 	$i = 0;
@@ -477,6 +479,7 @@ class PolarAxis extends Axis {
 	}
     }
 
+    #[\Override]
     function Stroke($pos) {
 
 	$this->img->SetLineWeight($this->weight);
@@ -495,7 +498,7 @@ class PolarAxis extends Axis {
 	elseif($this->title_adjust=="low")
 	    $this->title->Pos($this->img->left_margin,$y,"left","top");
 	else {	
-	    JpGraphError::Raise('Unknown alignment specified for X-axis title. ('.
+	    (new JpGraphError())->Raise('Unknown alignment specified for X-axis title. ('.
 				$this->title_adjust.')');
 	}
 
@@ -562,9 +565,8 @@ class PolarAxis extends Axis {
 }
 
 class PolarScale extends LinearScale {
-    var $graph;
-    function PolarScale($aMax=0,&$graph) {
-	parent::LinearScale(0,$aMax,'x');
+    public $graph;
+    function __construct($aMax=0,&$graph = null) {
 	$this->graph = &$graph;
     }
 
@@ -589,14 +591,13 @@ class PolarScale extends LinearScale {
 	else {
 	    $y = ($this->graph->img->top_margin + $this->graph->img->plotheight) - $y;
 	}
-	return array($x,$y);
+	return [$x,$y];
     }
 }
 
 class PolarLogScale extends LogScale {
-    var $graph;
-    function PolarLogScale($aMax=1,&$graph) {
-	parent::LogScale(0,$aMax,'x');
+    public $graph;
+    function __construct($aMax=1,&$graph = null) {
 	$this->graph = &$graph;
 	$this->ticks->SetLabelLogType(LOGLABELS_MAGNITUDE);
 
@@ -621,16 +622,16 @@ class PolarLogScale extends LogScale {
 	else {
 	    $y = ($this->graph->img->top_margin + $this->graph->img->plotheight) - $y;
 	}
-	return array($x,$y);
+	return [$x,$y];
     }
 }
 
 class PolarGraph extends Graph {
-    var $scale;
-    var $iType=POLAR_360;
-    var $axis;
+    public $scale;
+    public $iType=POLAR_360;
+    public $axis;
     
-    function PolarGraph($aWidth=300,$aHeight=200,$aCachedName="",$aTimeOut=0,$aInline=true) {
+    function __construct($aWidth=300,$aHeight=200,$aCachedName="",$aTimeOut=0,$aInline=true) {
 	parent::Graph($aWidth,$aHeight,$aCachedName,$aTimeOut,$aInline) ;
 	$this->SetDensity(TICKD_DENSE);
 	$this->SetBox();
@@ -657,7 +658,7 @@ class PolarGraph extends Graph {
 	    $this->scale = new PolarLogScale($rmax,$this);
 	}
 	else {
-	    JpGraphError::Raise('Unknown scale type for polar graph. Must be "lin" or "log"');
+	    (new JpGraphError())->Raise('Unknown scale type for polar graph. Must be "lin" or "log"');
 	}
 
 	$this->scale->Init($this->img);

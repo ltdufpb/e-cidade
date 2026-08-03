@@ -40,12 +40,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 /*
  * Definimos alguns paramentros para o relatório, conforme o ano.
@@ -76,26 +76,26 @@ $sTituloParametro = "Parametros";
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array(
+    $clcriaabas->identifica = [
                                     "relatorio" => "Relatorio",
                                     "parametro" => $sTituloParametro,
                                     "notas"     => "Notas Explicativas"
-                                   );
-    $clcriaabas->title      = array(
+                                   ];
+    $clcriaabas->title      = [
                                     "relatorio" => "Relatorio",
                                     "parametro" => $sTituloParametro,
                                     "notas"     => "Notas Explicativas"
-                                   );
-    $clcriaabas->src        = array(
+                                   ];
+    $clcriaabas->src        = [
                                     "relatorio" => "orc2_demRiscosFiscaisProvidencias011.php",
                          			"parametro" => "{$sFonteParametros}?c83_codrel=$iCodRel",
                                     "notas"     => "con2_conrelnotas.php?c83_codrel=$iCodRel",
-                                   );
-    $clcriaabas->sizecampo  = array(
+                                   ];
+    $clcriaabas->sizecampo  = [
                                     "relatorio" => "28",
                                     "parametro" => "28",
                                     "notas"     => "28"
-                                   );
+                                   ];
     $clcriaabas->cria_abas();    
     ?>
     </center>

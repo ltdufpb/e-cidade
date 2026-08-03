@@ -38,13 +38,13 @@ require_once(modification("dbforms/db_funcoes.php"));
 $instituicao = db_getsession("DB_instit");
 
 $campos = " distinct e60_numemp, e60_codemp ||'/'|| e60_anousu::varchar as dl_Empenho,  e60_vlremp ";
-$where = array();
+$where = [];
 $order = "e60_numemp desc";
 $dao = new cl_bempendenteincorporacao;
 
 db_postmemory($_POST);
 $get = db_utils::postMemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrotulo = new rotulocampo;
 $clrotulo->label('e60_numemp');
 $clrotulo->label('e60_codemp');
@@ -94,11 +94,11 @@ if (!empty($chave_e60_numemp)) {
     $where[] = "e60_numemp = {$chave_e60_numemp}";
 }
 if (!empty($chave_numeroEmpenho)) {
-    if (strpos($chave_numeroEmpenho, '/') === false) {
+    if (!str_contains((string) $chave_numeroEmpenho, '/')) {
         $chave_numeroEmpenho .= "/" . db_getsession("DB_anousu");
     }
 
-    $numeroEmpenho = explode('/', $chave_numeroEmpenho);
+    $numeroEmpenho = explode('/', (string) $chave_numeroEmpenho);
     $where[] = "e60_codemp = '{$numeroEmpenho[0]}'";
     $where[] = "e60_anousu = {$numeroEmpenho[1]}";
 }
@@ -109,14 +109,14 @@ if (!isset($pesquisa_chave)) {
     echo '<div class="container">';
     echo '  <fieldset>';
     echo '    <legend>Resultado da Pesquisa</legend>';
-    db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", array());
+    db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", []);
     echo '  </fieldset>';
     echo '</div>';
 } else if ($pesquisa_chave != null && $pesquisa_chave != "") {
-    if (strpos($pesquisa_chave, '/') === false) {
+    if (!str_contains((string) $pesquisa_chave, '/')) {
         $pesquisa_chave .= "/" . db_getsession("DB_anousu");
     }
-    $numeroEmpenho = explode('/', $pesquisa_chave);
+    $numeroEmpenho = explode('/', (string) $pesquisa_chave);
     $where[] = "e60_codemp = '{$numeroEmpenho[0]}'";
     $where[] = "e60_anousu = {$numeroEmpenho[1]}";
 

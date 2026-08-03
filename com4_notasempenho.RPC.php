@@ -59,7 +59,7 @@ try {
             $chave = '';
 
             if (!empty($dados->e69_outrosdados)) {
-                $outrosDados = json_decode($dados->e69_outrosdados);
+                $outrosDados = json_decode((string) $dados->e69_outrosdados);
                 $tipoNota = $outrosDados->tipo_nota;
                 $numeroSerie = $outrosDados->serie_nota;
                 $chave = $outrosDados->chave_nota;

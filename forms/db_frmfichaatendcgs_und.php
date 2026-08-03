@@ -67,12 +67,12 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
   $num        = pg_num_rows( $sql_result );
   $conta      = "";
 
-  $aArrayPai = array();
+  $aArrayPai = [];
   while( $row = pg_fetch_array( $sql_result ) ) {
 
     $conta     = $conta+1;
     $cod_micro = $row["sd34_i_codigo"];
-    $aArrayFilho = array();
+    $aArrayFilho = [];
 
     $sub_sql    = "SELECT sd35_i_codigo,sd33_v_descricao ";
     $sub_sql   .= "  FROM familiamicroarea ";
@@ -84,7 +84,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
 
     if($num_sub>=1){
 
-      $aArrayFilho[] = array('', '');
+      $aArrayFilho[] = ['', ''];
       $conta_sub = "";
 
       while( $rowx = pg_fetch_array( $sub_result ) ) {
@@ -95,14 +95,14 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
 
         if( $conta_sub == $num_sub ) {
 
-          $aArrayFilho[] = array(urlencode($nome_fam), $codigo_fam);
+          $aArrayFilho[] = [urlencode((string) $nome_fam), $codigo_fam];
           $conta_sub = "";
         } else {
-          $aArrayFilho[] = array(urlencode($nome_fam), $codigo_fam);
+          $aArrayFilho[] = [urlencode((string) $nome_fam), $codigo_fam];
         }
       }
     } else {
-      $aArrayFilho[] = array("Microarea sem familias cadastradas.", '');
+      $aArrayFilho[] = ["Microarea sem familias cadastradas.", ''];
     }
     $aArrayPai[] = $aArrayFilho ;
   }
@@ -145,7 +145,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
 
         <?php
         if( isset( $z01_i_familiamicroarea ) && $z01_i_familiamicroarea != "" ) {?>
-         if(<?=trim($z01_i_familiamicroarea)?>==itemArray[i][1]){
+         if(<?=trim((string) $z01_i_familiamicroarea)?>==itemArray[i][1]){
            indice = i;
          }
         <?php }?>
@@ -279,7 +279,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
           </td>
           <td>
             <?php
-            $xz01_c_municipio = array( 'S' => 'SIM', 'N' => 'NÃO' );
+            $xz01_c_municipio = [ 'S' => 'SIM', 'N' => 'NÃO' ];
             db_select( 'z01_c_municipio', $xz01_c_municipio, true, $db_opcao, "onchange=js_municipio()" );
             ?>
           </td>
@@ -414,7 +414,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
             db_input( 's115_i_codigo',    15, @$Is115_i_codigo,   true, 'hidden', $db_opcao );
             db_input( 's115_c_cartaosus', 21, $Is115_c_cartaosus, true, 'text',   $db_opcao );
 
-            $x = array( "D" => "D", "P" => "P" );
+            $x = [ "D" => "D", "P" => "P" ];
             db_select( 's115_c_tipo', $x, true, $db_opcao );
             ?>
           </td>
@@ -434,7 +434,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
           </td>
           <td>
             <?php
-            $x = array( 'M' => 'MASCULINO', 'F' => 'FEMININO' );
+            $x = [ 'M' => 'MASCULINO', 'F' => 'FEMININO' ];
             db_select( 'z01_v_sexo', $x, true, $db_opcao );
             ?>
           </td>
@@ -692,11 +692,11 @@ function js_mostraagendamento1( faa, agenda, cgs ) {
   parent.document.formaba.a2.disabled = true;
 
   if( faa != "" ) {
-    location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+faa+'&triagem='+'<?=@$triagem?>';
+    location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+faa+'&triagem='+'<?=@$triagem?>';
   } else if( agenda != "" ) {
-    location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaagenda='+agenda+'&triagem='+'<?=@$triagem?>';
+    location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaagenda='+agenda+'&triagem='+'<?=@$triagem?>';
   } else {
-    location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisacgs='+cgs+'&triagem='+'<?=@$triagem?>';
+    location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisacgs='+cgs+'&triagem='+'<?=@$triagem?>';
   }
 }
 
@@ -904,7 +904,7 @@ function js_preenchecgs( chave ) {
   parent.document.formaba.a3.disabled = true;
   parent.document.formaba.a2.disabled = true;
 
-  location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisacgs='+chave+'&triagem='+'<?=@$triagem?>';
+  location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisacgs='+chave+'&triagem='+'<?=@$triagem?>';
 }
 
 <?php
@@ -913,7 +913,7 @@ if( isset( $triagem ) && $triagem == "false" ) {
   function js_preenchepesquisa( chave ) {
 
     db_iframe_prontuarios002.hide();
-    location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave+'&triagem='+'<?=@$triagem?>';
+    location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave+'&triagem='+'<?=@$triagem?>';
   }
 <?php
 } else {
@@ -921,7 +921,7 @@ if( isset( $triagem ) && $triagem == "false" ) {
   function js_preenchepesquisa( chave ) {
 
     db_iframe_prontuarios.hide();
-    location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave+'&triagem='+'<?=@$triagem?>';
+    location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave+'&triagem='+'<?=@$triagem?>';
   }
 <?php }?>
 
@@ -932,7 +932,7 @@ function js_limpa() {
   parent.document.formaba.a2.disabled = true;
 
   <?php
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
   ?>
 }
 
@@ -1014,7 +1014,7 @@ function js_anular() {
 function js_municipio() {
 
   if( document.form1.z01_i_cgsund.value != "" ) {
-     location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisacgs='+document.form1.z01_i_cgsund.value
+     location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisacgs='+document.form1.z01_i_cgsund.value
                                                                           +'&chavepesquisaprontuario='+document.form1.sd24_i_codigo.value
                                                                           +'&chavepesquiamunicipio='+document.form1.z01_c_municipio.value;
   } else {
@@ -1023,7 +1023,7 @@ function js_municipio() {
     query += '&z01_v_nome='+document.form1.z01_v_nome.value;
     query += '&sd34_i_codigo='+document.form1.z01_v_micro.value;
     query += '&z01_v_cgccpf='+document.form1.z01_v_cgccpf.value;
-    location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+query;
+    location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+query;
   }
 }
 

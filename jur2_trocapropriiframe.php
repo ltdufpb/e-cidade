@@ -37,9 +37,9 @@ include(modification("classes/db_propri_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("classes/db_socios_classe.php"));
 include(modification("classes/db_inicialnomes_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $clpromitente = new cl_promitente;
 $clpropri = new cl_propri;
@@ -177,12 +177,12 @@ if(isset($j01_matric)){
   }  
   
   
-  $matriz1=split("X",$numini);
+  $matriz1=preg_split("#X#m",$numini);
   $igual="false";
   $m=0;
   for($u=0; $u<sizeof($matriz1); $u++){
     if($matriz1[$u]!=""){
-      $matriz2=split("X",$numcgms);
+      $matriz2=preg_split("#X#m",$numcgms);
       for($w=0; $w<sizeof($matriz2); $w++){
         if($matriz2[$w]!=""){
           if($matriz1[$u]==$matriz2[$w]){
@@ -225,12 +225,12 @@ if(isset($j01_matric)){
       $numcgms .= "X".$q95_numcgm;
     }
   } 
-  $matriz1=split("X",$numini);
+  $matriz1=preg_split("#X#m",$numini);
   $igual="false";
   $m=0;
   for($u=0; $u<sizeof($matriz1); $u++){
     if($matriz1[$u]!=""){
-      $matriz2=split("X",$numcgms);
+      $matriz2=preg_split("#X#m",$numcgms);
       for($w=0; $w<sizeof($matriz2); $w++){
         if($matriz2[$w]!=""){
           if($matriz1[$u]==$matriz2[$w]){

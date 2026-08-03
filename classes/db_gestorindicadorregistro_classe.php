@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE gestorindicadorregistro
 class cl_gestorindicadorregistro { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $g05_sequencial = 0; 
-   var $g05_gestorgrupoindicador = 0; 
-   var $g05_gestorindicador = 0; 
-   var $g05_instit = 0; 
-   var $g05_mes = 0; 
-   var $g05_ano = 0; 
-   var $g05_valor = 0; 
-   var $g05_meta = 0; 
-   var $g05_processado = 'f'; 
-   var $g05_datalimite_dia = null; 
-   var $g05_datalimite_mes = null; 
-   var $g05_datalimite_ano = null; 
-   var $g05_datalimite = null; 
+   public $g05_sequencial = 0; 
+   public $g05_gestorgrupoindicador = 0; 
+   public $g05_gestorindicador = 0; 
+   public $g05_instit = 0; 
+   public $g05_mes = 0; 
+   public $g05_ano = 0; 
+   public $g05_valor = 0; 
+   public $g05_meta = 0; 
+   public $g05_processado = 'f'; 
+   public $g05_datalimite_dia = null; 
+   public $g05_datalimite_mes = null; 
+   public $g05_datalimite_ano = null; 
+   public $g05_datalimite = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  g05_sequencial = int4 = Código Sequencial 
                  g05_gestorgrupoindicador = int4 = Grupo 
                  g05_gestorindicador = int4 = Indicador 
@@ -69,10 +69,10 @@ class cl_gestorindicadorregistro {
                  g05_datalimite = date = Data Limite 
                  ";
    //funcao construtor da classe 
-   function cl_gestorindicadorregistro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("gestorindicadorregistro"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -177,10 +177,10 @@ class cl_gestorindicadorregistro {
          $this->erro_status = "0";
          return false; 
        }
-       $this->g05_sequencial = pg_result($result,0,0); 
+       $this->g05_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from gestorindicadorregistro_g05_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $g05_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $g05_sequencial)){
          $this->erro_sql = " Campo g05_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -226,7 +226,7 @@ class cl_gestorindicadorregistro {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "gestorindicadorregistro ($this->g05_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "gestorindicadorregistro já Cadastrado";
@@ -250,19 +250,19 @@ class cl_gestorindicadorregistro {
      $resaco = $this->sql_record($this->sql_query_file($this->g05_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16069,'$this->g05_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2818,16069,'','".AddSlashes(pg_result($resaco,0,'g05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2818,16070,'','".AddSlashes(pg_result($resaco,0,'g05_gestorgrupoindicador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2818,16071,'','".AddSlashes(pg_result($resaco,0,'g05_gestorindicador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2818,16072,'','".AddSlashes(pg_result($resaco,0,'g05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2818,16073,'','".AddSlashes(pg_result($resaco,0,'g05_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2818,16074,'','".AddSlashes(pg_result($resaco,0,'g05_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2818,16075,'','".AddSlashes(pg_result($resaco,0,'g05_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2818,16076,'','".AddSlashes(pg_result($resaco,0,'g05_meta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2818,16077,'','".AddSlashes(pg_result($resaco,0,'g05_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2818,16078,'','".AddSlashes(pg_result($resaco,0,'g05_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2818,16069,'','".AddSlashes(pg_fetch_result($resaco,0,'g05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2818,16070,'','".AddSlashes(pg_fetch_result($resaco,0,'g05_gestorgrupoindicador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2818,16071,'','".AddSlashes(pg_fetch_result($resaco,0,'g05_gestorindicador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2818,16072,'','".AddSlashes(pg_fetch_result($resaco,0,'g05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2818,16073,'','".AddSlashes(pg_fetch_result($resaco,0,'g05_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2818,16074,'','".AddSlashes(pg_fetch_result($resaco,0,'g05_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2818,16075,'','".AddSlashes(pg_fetch_result($resaco,0,'g05_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2818,16076,'','".AddSlashes(pg_fetch_result($resaco,0,'g05_meta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2818,16077,'','".AddSlashes(pg_fetch_result($resaco,0,'g05_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2818,16078,'','".AddSlashes(pg_fetch_result($resaco,0,'g05_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -271,10 +271,10 @@ class cl_gestorindicadorregistro {
       $this->atualizacampos();
      $sql = " update gestorindicadorregistro set ";
      $virgula = "";
-     if(trim($this->g05_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_sequencial"])){ 
+     if(trim((string) $this->g05_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_sequencial"])){ 
        $sql  .= $virgula." g05_sequencial = $this->g05_sequencial ";
        $virgula = ",";
-       if(trim($this->g05_sequencial) == null ){ 
+       if(trim((string) $this->g05_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "g05_sequencial";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_gestorgrupoindicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_gestorgrupoindicador"])){ 
+     if(trim((string) $this->g05_gestorgrupoindicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_gestorgrupoindicador"])){ 
        $sql  .= $virgula." g05_gestorgrupoindicador = $this->g05_gestorgrupoindicador ";
        $virgula = ",";
-       if(trim($this->g05_gestorgrupoindicador) == null ){ 
+       if(trim((string) $this->g05_gestorgrupoindicador) == null ){ 
          $this->erro_sql = " Campo Grupo nao Informado.";
          $this->erro_campo = "g05_gestorgrupoindicador";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_gestorindicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_gestorindicador"])){ 
+     if(trim((string) $this->g05_gestorindicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_gestorindicador"])){ 
        $sql  .= $virgula." g05_gestorindicador = $this->g05_gestorindicador ";
        $virgula = ",";
-       if(trim($this->g05_gestorindicador) == null ){ 
+       if(trim((string) $this->g05_gestorindicador) == null ){ 
          $this->erro_sql = " Campo Indicador nao Informado.";
          $this->erro_campo = "g05_gestorindicador";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_instit"])){ 
+     if(trim((string) $this->g05_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_instit"])){ 
        $sql  .= $virgula." g05_instit = $this->g05_instit ";
        $virgula = ",";
-       if(trim($this->g05_instit) == null ){ 
+       if(trim((string) $this->g05_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "g05_instit";
          $this->erro_banco = "";
@@ -323,10 +323,10 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_mes"])){ 
+     if(trim((string) $this->g05_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_mes"])){ 
        $sql  .= $virgula." g05_mes = $this->g05_mes ";
        $virgula = ",";
-       if(trim($this->g05_mes) == null ){ 
+       if(trim((string) $this->g05_mes) == null ){ 
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "g05_mes";
          $this->erro_banco = "";
@@ -336,10 +336,10 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_ano"])){ 
+     if(trim((string) $this->g05_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_ano"])){ 
        $sql  .= $virgula." g05_ano = $this->g05_ano ";
        $virgula = ",";
-       if(trim($this->g05_ano) == null ){ 
+       if(trim((string) $this->g05_ano) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "g05_ano";
          $this->erro_banco = "";
@@ -349,25 +349,25 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_valor"])){ 
-        if(trim($this->g05_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["g05_valor"])){ 
+     if(trim((string) $this->g05_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_valor"])){ 
+        if(trim((string) $this->g05_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["g05_valor"])){ 
            $this->g05_valor = "0" ; 
         } 
        $sql  .= $virgula." g05_valor = $this->g05_valor ";
        $virgula = ",";
      }
-     if(trim($this->g05_meta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_meta"])){ 
-        if(trim($this->g05_meta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["g05_meta"])){ 
+     if(trim((string) $this->g05_meta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_meta"])){ 
+        if(trim((string) $this->g05_meta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["g05_meta"])){ 
            $this->g05_meta = "0" ; 
         } 
        $sql  .= $virgula." g05_meta = $this->g05_meta ";
        $virgula = ",";
      }
-     if(trim($this->g05_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_processado"])){ 
+     if(trim((string) $this->g05_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_processado"])){ 
        $sql  .= $virgula." g05_processado = '$this->g05_processado' ";
        $virgula = ",";
      }
-     if(trim($this->g05_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["g05_datalimite_dia"] !="") ){ 
+     if(trim((string) $this->g05_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["g05_datalimite_dia"] !="") ){ 
        $sql  .= $virgula." g05_datalimite = '$this->g05_datalimite' ";
        $virgula = ",";
      }     else{ 
@@ -384,29 +384,29 @@ class cl_gestorindicadorregistro {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16069,'$this->g05_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["g05_sequencial"]) || $this->g05_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2818,16069,'".AddSlashes(pg_result($resaco,$conresaco,'g05_sequencial'))."','$this->g05_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2818,16069,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'g05_sequencial'))."','$this->g05_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["g05_gestorgrupoindicador"]) || $this->g05_gestorgrupoindicador != "")
-           $resac = db_query("insert into db_acount values($acount,2818,16070,'".AddSlashes(pg_result($resaco,$conresaco,'g05_gestorgrupoindicador'))."','$this->g05_gestorgrupoindicador',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2818,16070,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'g05_gestorgrupoindicador'))."','$this->g05_gestorgrupoindicador',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["g05_gestorindicador"]) || $this->g05_gestorindicador != "")
-           $resac = db_query("insert into db_acount values($acount,2818,16071,'".AddSlashes(pg_result($resaco,$conresaco,'g05_gestorindicador'))."','$this->g05_gestorindicador',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2818,16071,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'g05_gestorindicador'))."','$this->g05_gestorindicador',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["g05_instit"]) || $this->g05_instit != "")
-           $resac = db_query("insert into db_acount values($acount,2818,16072,'".AddSlashes(pg_result($resaco,$conresaco,'g05_instit'))."','$this->g05_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2818,16072,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'g05_instit'))."','$this->g05_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["g05_mes"]) || $this->g05_mes != "")
-           $resac = db_query("insert into db_acount values($acount,2818,16073,'".AddSlashes(pg_result($resaco,$conresaco,'g05_mes'))."','$this->g05_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2818,16073,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'g05_mes'))."','$this->g05_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["g05_ano"]) || $this->g05_ano != "")
-           $resac = db_query("insert into db_acount values($acount,2818,16074,'".AddSlashes(pg_result($resaco,$conresaco,'g05_ano'))."','$this->g05_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2818,16074,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'g05_ano'))."','$this->g05_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["g05_valor"]) || $this->g05_valor != "")
-           $resac = db_query("insert into db_acount values($acount,2818,16075,'".AddSlashes(pg_result($resaco,$conresaco,'g05_valor'))."','$this->g05_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2818,16075,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'g05_valor'))."','$this->g05_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["g05_meta"]) || $this->g05_meta != "")
-           $resac = db_query("insert into db_acount values($acount,2818,16076,'".AddSlashes(pg_result($resaco,$conresaco,'g05_meta'))."','$this->g05_meta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2818,16076,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'g05_meta'))."','$this->g05_meta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["g05_processado"]) || $this->g05_processado != "")
-           $resac = db_query("insert into db_acount values($acount,2818,16077,'".AddSlashes(pg_result($resaco,$conresaco,'g05_processado'))."','$this->g05_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2818,16077,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'g05_processado'))."','$this->g05_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["g05_datalimite"]) || $this->g05_datalimite != "")
-           $resac = db_query("insert into db_acount values($acount,2818,16078,'".AddSlashes(pg_result($resaco,$conresaco,'g05_datalimite'))."','$this->g05_datalimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2818,16078,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'g05_datalimite'))."','$this->g05_datalimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -451,19 +451,19 @@ class cl_gestorindicadorregistro {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16069,'$g05_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2818,16069,'','".AddSlashes(pg_result($resaco,$iresaco,'g05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2818,16070,'','".AddSlashes(pg_result($resaco,$iresaco,'g05_gestorgrupoindicador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2818,16071,'','".AddSlashes(pg_result($resaco,$iresaco,'g05_gestorindicador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2818,16072,'','".AddSlashes(pg_result($resaco,$iresaco,'g05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2818,16073,'','".AddSlashes(pg_result($resaco,$iresaco,'g05_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2818,16074,'','".AddSlashes(pg_result($resaco,$iresaco,'g05_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2818,16075,'','".AddSlashes(pg_result($resaco,$iresaco,'g05_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2818,16076,'','".AddSlashes(pg_result($resaco,$iresaco,'g05_meta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2818,16077,'','".AddSlashes(pg_result($resaco,$iresaco,'g05_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2818,16078,'','".AddSlashes(pg_result($resaco,$iresaco,'g05_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2818,16069,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'g05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2818,16070,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'g05_gestorgrupoindicador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2818,16071,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'g05_gestorindicador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2818,16072,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'g05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2818,16073,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'g05_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2818,16074,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'g05_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2818,16075,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'g05_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2818,16076,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'g05_meta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2818,16077,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'g05_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2818,16078,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'g05_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from gestorindicadorregistro
@@ -523,7 +523,7 @@ class cl_gestorindicadorregistro {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:gestorindicadorregistro";
@@ -538,7 +538,7 @@ class cl_gestorindicadorregistro {
    function sql_query ( $g05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -565,7 +565,7 @@ class cl_gestorindicadorregistro {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -578,7 +578,7 @@ class cl_gestorindicadorregistro {
    function sql_query_file ( $g05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -599,7 +599,7 @@ class cl_gestorindicadorregistro {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

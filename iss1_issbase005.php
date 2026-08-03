@@ -30,7 +30,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $clrotulo = new rotulocampo;
 $clrotulo->label('q02_inscr');
 $clrotulo->label('z01_nome');

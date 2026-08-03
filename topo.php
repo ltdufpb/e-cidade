@@ -35,12 +35,12 @@ $hora = time();
   db_query($conn, "insert into db_usuariosonline 
                        values( ".db_getsession("DB_id_usuario").",
                                ".$hora.",
-                              '".(isset($_SERVER["HTTP_X_FORWARDED_FOR"])?$_SERVER["HTTP_X_FORWARDED_FOR"]:$HTTP_SERVER_VARS['REMOTE_ADDR'])."',
+                              '".($_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER['REMOTE_ADDR'])."',
                               '".db_getsession("DB_login")."',
                               'Entrou no sistema',            
                               '',
                               ".time().",
-                              ' ')") or die("Erro:(27) inserindo arquivo em db_usuariosonline: " . pg_errormessage());
+                              ' ')") or die("Erro:(27) inserindo arquivo em db_usuariosonline: " . pg_last_error());
 
   db_putsession("DB_uol_hora", $hora);
 $result = db_query("select nome,login,administrador from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario"));

@@ -47,13 +47,6 @@ class ComposicaoPontoFerias {
    * @var PeriodoGozoFerias[]
    */
   private $aPeriodosGozo;
-
-  /**
-   * Servidor da Composicao do Ponto
-   * 
-   * @var Servidor
-   */
-  private $oServidor;
   
   /**
    * Data inicial usada para calculo de media
@@ -76,8 +69,13 @@ class ComposicaoPontoFerias {
    * 
    * @param Servidor $oServidor
    */
-  public function __construct( Servidor $oServidor ) {
-    $this->oServidor = $oServidor;
+  public function __construct(
+      /**
+       * Servidor da Composicao do Ponto
+       */
+      private readonly Servidor $oServidor
+  )
+  {
   }
 
   /**
@@ -212,7 +210,7 @@ class ComposicaoPontoFerias {
            */
           if ( $oDaoRhferiasperiodopontofe->erro_status == "0" ) {
 
-            $oCamposErro   = (object) array('sErroBanco' => $oDaoRhferiasperiodopontofe->erro_banco);
+            $oCamposErro   = (object) ['sErroBanco' => $oDaoRhferiasperiodopontofe->erro_banco];
             $sMensagemErro = _M(self::MENSAGENS . 'erro_incluir_composicao', $oCamposErro);
             throw new DBException($sMensagemErro);
           }
@@ -269,7 +267,7 @@ class ComposicaoPontoFerias {
      */
     if ( !$rsComposicao ) {
 
-      $oCamposErro   = (object) array('sErroBanco' => pg_last_error());
+      $oCamposErro   = (object) ['sErroBanco' => pg_last_error()];
       $sMensagemErro = _M(self::MENSAGENS . 'erro_incluir_composicao', $oCamposErro);
 
       throw new DBException($sMensagemErro);
@@ -279,10 +277,10 @@ class ComposicaoPontoFerias {
      * Nenhum registro encontrado para competencia atual 
      */
     if ( pg_num_rows($rsComposicao) == 0 ) {
-      return array();
+      return [];
     }
 
-    $aRegistrosPonto = array();
+    $aRegistrosPonto = [];
     $aDadosRegistros = db_utils::getCollectionByRecord($rsComposicao, true);
 
     foreach( $aDadosRegistros as $oDadosRegistro ) {
@@ -322,7 +320,7 @@ class ComposicaoPontoFerias {
      */
     if ( $oDaoRhferiasperiodopontofe->erro_status == "0" ) {
 
-      $oCamposErro   = (object) array('sErroBanco' => $oDaoRhferiasperiodopontofe->erro_banco);
+      $oCamposErro   = (object) ['sErroBanco' => $oDaoRhferiasperiodopontofe->erro_banco];
       $sMensagemErro = _M(self::MENSAGENS . 'erro_incluir_composicao', $oCamposErro);
 
       throw new DBException($sMensagemErro);

@@ -37,7 +37,7 @@ require_once(modification("fpdf151/pdf.php"));
 try{
 
 	$oGet = new _db_fields();
-	$oGet = db_utils::postMemory($HTTP_GET_VARS);
+	$oGet = db_utils::postMemory($_GET);
 	
 	db_app::import('diversos.DiversosRelatorio');
 	db_app::import('exceptions.*');

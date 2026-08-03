@@ -48,18 +48,18 @@ try {
 
     case "getConfiguracoes":
 
-   	$oRetorno->configuracoes = array();
+   	$oRetorno->configuracoes = [];
      $oInstituicao            = InstituicaoRepository::getInstituicaoSessao();
 
      $aDados = array_map(function(ConfiguracaoConsignado $oConfiguracao) use ($oInstituicao) {
 
        $oDados                      = new stdClass();
        $oDados->codigo_banco        = $oConfiguracao->getBanco()->getCodigo();
-       $oDados->nome_banco          = urlencode($oConfiguracao->getBanco()->getNome());
+       $oDados->nome_banco          = urlencode((string) $oConfiguracao->getBanco()->getNome());
        $oDados->codigo_layout       = $oConfiguracao->getLayout()->getCodigo();
-       $oDados->nome_layout         = urlencode($oConfiguracao->getLayout()->getDescricao());
+       $oDados->nome_layout         = urlencode((string) $oConfiguracao->getLayout()->getDescricao());
        $oDados->codigo_rubrica      = $oConfiguracao->getRubrica()->getCodigo();
-       $oDados->nome_rubrica        = urlencode($oConfiguracao->getRubrica()->getDescricao());
+       $oDados->nome_rubrica        = urlencode((string) $oConfiguracao->getRubrica()->getDescricao());
        $oDados->iCodigoConfiguracao = $oConfiguracao->getCodigo();
       return $oDados;
      }, ConfiguracaoConsignadoRepository::getConfiguracaoInstituicao($oInstituicao));

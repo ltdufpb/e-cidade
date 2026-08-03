@@ -36,7 +36,7 @@ include(modification("classes/db_veicretirada_classe.php"));
 include(modification("classes/db_veicmanut_classe.php"));
 include(modification("classes/db_rotamov_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllinha = new cl_linha;
 $clveicmanut = new cl_veicmanut;
 $clrotamov = new cl_rotamov;
@@ -48,8 +48,8 @@ $clveicretirada->rotulo->label();
 $clveicmanut->rotulo->label();
 $db_opcao = 1;
 $db_botao = true;
-$datainicial=substr($datainicial,6,4)."-".substr($datainicial,3,2)."-".substr($datainicial,0,2);
-$datafim=substr($datafim,6,4)."-".substr($datafim,3,2)."-".substr($datafim,0,2);
+$datainicial=substr((string) $datainicial,6,4)."-".substr((string) $datainicial,3,2)."-".substr((string) $datainicial,0,2);
+$datafim=substr((string) $datafim,6,4)."-".substr((string) $datafim,3,2)."-".substr((string) $datafim,0,2);
 if(isset($chavepesquisa)){
  $result = $cllinha->sql_record($cllinha->sql_query("","*",""," ed217_i_codigo = $chavepesquisa"));
  db_fieldsmemory($result,0);
@@ -212,7 +212,7 @@ if(isset($chavepesquisa)){
               where ed220_i_rota=$chavepesquisa
               group by ve62_hora,ve62_vlrpecas,ve62_data,ve01_placa,ve60_medidasaida,ve60_hora,ve60_data";
       $result1 = db_query($sql1);
-      $linhas1= pg_numrows($result1);
+      $linhas1= pg_num_rows($result1);
       if($linhas1>0){
        ?>
         <tr>
@@ -304,7 +304,7 @@ if(isset($chavepesquisa)){
               where ed220_i_rota=$chavepesquisa
               group by ve70_litros,ve70_data,ve70_hora,ve70_medida,ve01_placa";
       $result1 = db_query($sql1);
-      $linhas1= pg_numrows($result1);
+      $linhas1= pg_num_rows($result1);
       if($linhas1>0){
        ?>
         <tr>

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_criterioatividadeimpacto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcriterioatividadeimpacto = new cl_criterioatividadeimpacto;
 $clcriterioatividadeimpacto->rotulo->label("am01_sequencial");
 $clcriterioatividadeimpacto->rotulo->label("am01_descricao");
@@ -78,9 +78,9 @@ $clcriterioatividadeimpacto->rotulo->label("am01_descricao");
         }else{
            $sql = $clcriterioatividadeimpacto->sql_query("",$campos,"am01_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_am01_descricao)){
-          $repassa = array("chave_am01_sequencial"=>$chave_am01_sequencial,"chave_am01_descricao"=>$chave_am01_descricao);
+          $repassa = ["chave_am01_sequencial"=>$chave_am01_sequencial,"chave_am01_descricao"=>$chave_am01_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

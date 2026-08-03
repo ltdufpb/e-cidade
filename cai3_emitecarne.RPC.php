@@ -82,7 +82,7 @@ $sql_cgc = "select cgc, db21_codcli from db_config where codigo = ".db_getsessio
 $rs_cgc = db_query($sql_cgc);
 
 $oConfig = new stdClass();
-$oConfig->db21_codcli = pg_result($rs_cgc,0,1);
+$oConfig->db21_codcli = pg_fetch_result($rs_cgc,0,1);
 
 /**
  * Busca parâmetros do tributario
@@ -137,7 +137,7 @@ if ( isset($oParam->oDadosForm) && ($oParam->oDadosForm->k03_tipo == 5 or $oPara
   $rsUltimoDiaMenos5 = db_query($sUltimoDiaMenos5);
   $oUltimoDiaMenos5  = db_utils::fieldsMemory($rsUltimoDiaMenos5,0);
   $db_datausu_dia = substr($db_datausu,8,2);
-  $oUltimoDiaMenos5->dia = substr( $oUltimoDiaMenos5->ultimo_dia_menos_5,8,2);
+  $oUltimoDiaMenos5->dia = substr( (string) $oUltimoDiaMenos5->ultimo_dia_menos_5,8,2);
   if ( $db_datausu_dia > $oUltimoDiaMenos5->dia ) {
     $iSomaDia = 2;
   } else {
@@ -149,9 +149,9 @@ if ( isset($oParam->oDadosForm) && ($oParam->oDadosForm->k03_tipo == 5 or $oPara
   $oUltimoDia  = db_utils::fieldsMemory($rsUltimoDia,0);
   $db_datausu  = $oUltimoDia->ultimo_dia;
 
-  $db_datausu_mes = substr($db_datausu,5,2);
-  $db_datausu_dia = substr($db_datausu,8,2);
-  $db_datausu_ano = substr($db_datausu,0,4);
+  $db_datausu_mes = substr((string) $db_datausu,5,2);
+  $db_datausu_dia = substr((string) $db_datausu,8,2);
+  $db_datausu_ano = substr((string) $db_datausu,0,4);
   $dtValidacao = $db_datausu;
   $DB_DATACALC = adodb_mktime(0,0,0,$db_datausu_mes,$db_datausu_dia,$db_datausu_ano);
 }
@@ -168,7 +168,7 @@ switch ($oParam->exec) {
   $oArretipo              = db_utils::fieldsMemory($rsSqlArretipo, 0);
 
   $oRetorno->iConfirm = 0;
-  $aStrBusca     = array();
+  $aStrBusca     = [];
 
 
   /**
@@ -192,8 +192,8 @@ switch ($oParam->exec) {
 
       $aStrBusca[] = "(recibopaga.k00_numpre = {$aDadosFormulario['Numpre']} and recibopaga.k00_numpar = {$aDadosFormulario['Numpar']})";
 
-      $sNumpreHash = str_pad($aDadosFormulario['Numpre'],10,"0",STR_PAD_LEFT);
-      $sNumparHash = str_pad($aDadosFormulario['Numpar'], 3,"0",STR_PAD_LEFT);
+      $sNumpreHash = str_pad((string) $aDadosFormulario['Numpre'],10,"0",STR_PAD_LEFT);
+      $sNumparHash = str_pad((string) $aDadosFormulario['Numpar'], 3,"0",STR_PAD_LEFT);
       $aStrHash[]  = $sNumpreHash.$sNumparHash;
       sort($aStrHash);
     }
@@ -285,7 +285,7 @@ switch ($oParam->exec) {
 
     try {
 
-      $aRecibosComCustasEmitidos = array();
+      $aRecibosComCustasEmitidos = [];
       /*
        * Caso atributo $oParam->oDadosForm->geracarne for != "" eh uma emissao de carne
        *   Caso contrario eh uma emissao de recibo
@@ -311,9 +311,9 @@ switch ($oParam->exec) {
       $aTipoInicial[2]               = 13;
 
       $iTipoModeloRecibo             = 2;       //Cadtipomod
-      $oRetorno->aSessoesRecibo      = array();
-      $oRetorno->aSessoesCarne       = array();
-      $oRetorno->recibos_emitidos    = array();
+      $oRetorno->aSessoesRecibo      = [];
+      $oRetorno->aSessoesCarne       = [];
+      $oRetorno->recibos_emitidos    = [];
 
       $lForcaVencimento              = $oParam->oDadosForm->forcarvencimento == "true" ? true : false;
 
@@ -321,13 +321,13 @@ switch ($oParam->exec) {
       $oDaoProcessoForoPartilha      = new cl_processoforopartilha();
       $oDaoProcessoForoPartilhaCusta = new cl_processoforopartilhacusta();
 
-      $oRetorno->aSessoes            = array();
+      $oRetorno->aSessoes            = [];
 
       $oDebitosFormulario            = retornaDebitosSelecionados($oParam, $oArretipo->k00_tipoagrup);
       $aChecks                       = $oDebitosFormulario->aDadosChecks;
       $aDadosForm                    = $oDebitosFormulario->aOutrosDados;
       $aIniciais                     = $oDebitosFormulario->aIniciais;
-      $aRecibopaga_numnov            = array();
+      $aRecibopaga_numnov            = [];
       $sGeraCarne                    = $oDebitosFormulario->sGeraCarne;
       $lCarne                        = empty($sGeraCarne) ? true : false;
 
@@ -338,7 +338,7 @@ switch ($oParam->exec) {
       $iTipoModeloCarne  = 1;
 
       if ($lConfReemissaoRecibo) {
-          $aNumpresOrigem = array();
+          $aNumpresOrigem = [];
       }
 
       $sDebitosFormularioTipo     = $oDebitosFormulario->aOutrosDados["k03_tipo"];
@@ -421,7 +421,7 @@ switch ($oParam->exec) {
       $sSqlRegraEmissao .= "         group by k49_tipo, k36_ip, k48_parcini, k48_parcfim, k48_cadconvenio, ar11_cadtipoconvenio, k03_tipo, k48_cadtipomod \n ";
       $sSqlRegraEmissao .= "       ) as x                                                                    \n ";
       $rsSqlRegraEmissao = db_query($sSqlRegraEmissao);
-      $iRowsRegraEmissao = pg_numrows($rsSqlRegraEmissao);
+      $iRowsRegraEmissao = pg_num_rows($rsSqlRegraEmissao);
 
       /**
        * Valida se existe alguma regra de emissao cadastrada no sistema
@@ -429,8 +429,8 @@ switch ($oParam->exec) {
       if ($iRowsRegraEmissao > 0) {
 
         $aRegrasEmissao           = db_utils::getCollectionByRecord($rsSqlRegraEmissao);
-        $aRegrasEmissaoEspecifica = array();
-        $aRegrasEmissaoGeral      = array();
+        $aRegrasEmissaoEspecifica = [];
+        $aRegrasEmissaoGeral      = [];
 
         /**
          * Separa as regras de emissao se são regras gerais e regras especificas para tipo de débito
@@ -451,7 +451,7 @@ switch ($oParam->exec) {
           /**
          * Percorre as regras selecionadas
          */
-        $aDadosCompletos = array();
+        $aDadosCompletos = [];
         $temVencido = false;
         foreach ($aRegrasEmissao as $iIndiceRegra => $oRegraEmissao) {
 
@@ -471,7 +471,7 @@ switch ($oParam->exec) {
           if (($lCobrancaRegistrada && $lEmissaoRecibo) || $sGeraCarne == "") {
              $oRecibo = new recibo(2, null, 1);
           }
-          $aRecibos[$oRegraEmissao->k48_sequencial] = array();
+          $aRecibos[$oRegraEmissao->k48_sequencial] = [];
 
           /**
            * Cria array com os debitos selecionados para serem comparados posteriormente
@@ -481,17 +481,17 @@ switch ($oParam->exec) {
             if ( ($aVal["Numpar"] >= $oRegraEmissao->k48_parcini) && ($aVal["Numpar"] <= $oRegraEmissao->k48_parcfim) ) {
 
               $aRecibos[$oRegraEmissao->k48_sequencial][]         =  "(k00_numpre in({$aVal['Numpre']}) and k00_numpar = {$aVal['Numpar']})";
-              $aCompara[$oRegraEmissao->k48_sequencial][]         = $aVal['Numpre'].str_pad($aVal['Numpar'], 3, 0, STR_PAD_LEFT);
+              $aCompara[$oRegraEmissao->k48_sequencial][]         = $aVal['Numpre'].str_pad((string) $aVal['Numpar'], 3, 0, STR_PAD_LEFT);
 
               $aNumparCompara[$oRegraEmissao->k48_sequencial][]   = $aVal['Numpar'];
               $aNumpreCompara[$oRegraEmissao->k48_sequencial][]   = $aVal['Numpre'];
-              $aNumpres_emissao[$oRegraEmissao->k48_sequencial][] = array($aVal['Numpre'], $aVal['Numpar']);
+              $aNumpres_emissao[$oRegraEmissao->k48_sequencial][] = [$aVal['Numpre'], $aVal['Numpar']];
 
             }
           }
 
-          $aNumpresRecibo  = array();
-          $aParcelasRecibo = array();
+          $aNumpresRecibo  = [];
+          $aParcelasRecibo = [];
 
           /**
            * Percorre os debitos selecionados
@@ -634,7 +634,7 @@ switch ($oParam->exec) {
                           $oRecibo->setDataRecibo($dtOperacao);
 
                           $oRecibo->setDataVencimentoRecibo($dVencimento);
-                          $oRecibo->setExercicioRecibo(substr($dVencimento, 0, 4));
+                          $oRecibo->setExercicioRecibo(substr((string) $dVencimento, 0, 4));
                           $oRecibo->emiteRecibo($lConvenioCobrancaValido, true, $oRegraEmissao->k48_cadconvenio);
 
                           $reciboCustasService->setRecibo($oRecibo);
@@ -693,7 +693,7 @@ switch ($oParam->exec) {
                 * Cria array de dados que serão gravados na sessao
                 * Tambem cria um array das parcelas para serem utilizadas valores maximos e minimos da regra de emissao
                 */
-               $aDadosCarne[$iIndiceRegra]["numpres_emissao"][] = array($aValores["Numpre"], $aValores["Numpar"], $k03_numnov);
+               $aDadosCarne[$iIndiceRegra]["numpres_emissao"][] = [$aValores["Numpre"], $aValores["Numpar"], $k03_numnov];
                $aDadosCarne[$iIndiceRegra]["convenio"]          = $oRegraEmissao->ar11_cadtipoconvenio;
                $aDadosCarne[$iIndiceRegra][$iIndice]            = $aValores["valor"];
                $aParcelasSeparadas[$iIndiceRegra][]             = $aValores["Numpar"];
@@ -705,7 +705,7 @@ switch ($oParam->exec) {
              $oRecibo->addNumpre($aDadosForm['numpre_unica'],0);
           }
 
-          $iDiferenca = array();
+          $iDiferenca = [];
           if ($lEmissaoRecibo) {
              /**
               * Valida os se existem recibos emitidos para o numpre e numpar selecionados
@@ -719,7 +719,7 @@ switch ($oParam->exec) {
              $rsSqlNumNov     = db_query($sSqlNumNov);
              $sNumNov         = db_utils::fieldsMemory($rsSqlNumNov, 0)->k00_numnov;
 
-             foreach(explode(",", $sNumNov) as $sNumNovEmitido) {
+             foreach(explode(",", (string) $sNumNov) as $sNumNovEmitido) {
                if ($sNumNovEmitido != ""  && $lConfReemissaoRecibo) {
                   $aRecibopaga_numnov[] = $sNumNovEmitido;
                }
@@ -740,7 +740,7 @@ switch ($oParam->exec) {
                    * Caso exista caso para comparação apenas faz reemissao do recibo
                    * Caso algum numpre ou numpar esteja faltanto ou sobrando emite um novo recibo.
                    */
-                  $aComparaBanco     = explode("|", $oNumpreNumpar->numpre_numpar);
+                  $aComparaBanco     = explode("|", (string) $oNumpreNumpar->numpre_numpar);
                   $iDiferenca[]      = count(array_diff($aCompara[$oRegraEmissao->k48_sequencial], $aComparaBanco) ) +
                                        count(array_diff($aComparaBanco, $aCompara[$oRegraEmissao->k48_sequencial]) );
 
@@ -801,7 +801,7 @@ switch ($oParam->exec) {
                     $oUltimoDiaMenos5  = db_utils::fieldsMemory($rsUltimoDiaMenos5,0);
 
                     $db_datausu_dia = substr($db_datausu,8,2);
-                    $oUltimoDiaMenos5->dia = substr( $oUltimoDiaMenos5->ultimo_dia_menos_5,8,2);
+                    $oUltimoDiaMenos5->dia = substr( (string) $oUltimoDiaMenos5->ultimo_dia_menos_5,8,2);
 
                     if ( $db_datausu_dia > $oUltimoDiaMenos5->dia ) {
                       $iSomaDia = 2;
@@ -815,9 +815,9 @@ switch ($oParam->exec) {
                     $oUltimoDia  = db_utils::fieldsMemory($rsUltimoDia,0);
                     $db_datausu  = $oUltimoDia->ultimo_dia;
 
-                    $db_datausu_mes = substr($db_datausu,5,2);
-                    $db_datausu_dia = substr($db_datausu,8,2);
-                    $db_datausu_ano = substr($db_datausu,0,4);
+                    $db_datausu_mes = substr((string) $db_datausu,5,2);
+                    $db_datausu_dia = substr((string) $db_datausu,8,2);
+                    $db_datausu_ano = substr((string) $db_datausu,0,4);
                     $dVencimento    = $db_datausu;
                   }
                 }
@@ -850,7 +850,7 @@ switch ($oParam->exec) {
                 $oRecibo->setDataRecibo($dtOperacao);
 
                 $oRecibo->setDataVencimentoRecibo($dVencimento);
-                $oRecibo->setExercicioRecibo(substr($dVencimento, 0, 4));
+                $oRecibo->setExercicioRecibo(substr((string) $dVencimento, 0, 4));
                 $oRecibo->emiteRecibo($lConvenioCobrancaValido, true, $oRegraEmissao->k48_cadconvenio);
 
                 $reciboCustasService->setRecibo($oRecibo);
@@ -983,7 +983,7 @@ switch ($oParam->exec) {
     /**
      * Percorre os Dados da Sessão indicada no POST
      */
-    $aSqlUnion  = array();
+    $aSqlUnion  = [];
     foreach ($oParam->aSessoesRecibo as $sSessao) {
       /**
        * Percorre os numpres e numpar gravados na sessão
@@ -991,7 +991,7 @@ switch ($oParam->exec) {
       $oRetorno->sSessao = $sSessao;
 
       $oDados = db_utils::postMemory($_SESSION[$sSessao]);
-      $sWhere = array();
+      $sWhere = [];
       foreach($oDados->numpres_emissao as $aNumpreRecibo) {
         $sWhere[] = " (k00_numpre = {$aNumpreRecibo[0]} and k00_numpar = {$aNumpreRecibo[1]}) ";
       }
@@ -1105,7 +1105,7 @@ switch ($oParam->exec) {
      $sSqlCarnes .= "                                 k00_receit,                                                     ";
      $sSqlCarnes .= "                                 '".date("Y-m-d", db_getsession('DB_datausu') )."',              ";
      $sSqlCarnes .= "                                 '$oParam->dtVencimento',                                        ";
-     $sSqlCarnes .= "                                 ".substr($oParam->dtVencimento, 0, 4)."                         ";
+     $sSqlCarnes .= "                                 ".substr((string) $oParam->dtVencimento, 0, 4)."                         ";
      $sSqlCarnes .= "                                )                                                                ";
      $sSqlCarnes .= "                 from arrecad                                                                    ";
      $sSqlCarnes .= "                where ".implode(" or ", $sWhere)."                                               ";
@@ -1190,14 +1190,14 @@ if (!isset($isRequestAjax)) {
  */
 function retornaDebitosSelecionados($oFormulario,$iTipoAgrupamento = null) {
 
-  $aChecks            = array();
-  $aParcelas          = array();
+  $aChecks            = [];
+  $aParcelas          = [];
   $sGeraCarne         = "";
   $iI                 = 0;
   $sRecibos           = '';
-  $aInicial           = array();
+  $aInicial           = [];
   $iTotalSelecionados = 0;
-  $aObjDebitos        = array();
+  $aObjDebitos        = [];
   /**
    * Valida se é uma inicial do Foro
    *
@@ -1223,7 +1223,7 @@ function retornaDebitosSelecionados($oFormulario,$iTipoAgrupamento = null) {
          foreach ($aIniciais as $oInicial) {
             $aParcelas[]          = $oInicial->k00_numpar;
             $sValores             = "N". $oInicial->k00_numpre."P".$oInicial->k00_numpar."R0";
-            $aChecks["CHECK".$iI] = array("Numpre"=>$oInicial->k00_numpre, "Numpar"=>$oInicial->k00_numpar, "Receita"=>"0", "valor"=>$sValores);
+            $aChecks["CHECK".$iI] = ["Numpre"=>$oInicial->k00_numpre, "Numpar"=>$oInicial->k00_numpar, "Receita"=>"0", "valor"=>$sValores];
 
             /**
             * Cria array com os numpres e numpar dos débitos
@@ -1261,7 +1261,7 @@ function retornaDebitosSelecionados($oFormulario,$iTipoAgrupamento = null) {
 
         if ( stripos(" ".$sChave, "CHECK") ) {
 
-          $aNumpre             = explode("N", $sValor);
+          $aNumpre             = explode("N", (string) $sValor);
           foreach ($aNumpre as $iIndiceNumpre => $sNumpres) {
 
             if ($sNumpres == "") {
@@ -1277,7 +1277,7 @@ function retornaDebitosSelecionados($oFormulario,$iTipoAgrupamento = null) {
             $iReceita               = (int)$aSliceParcela[1];
 
             $aParcelas[]            = $iNumpar;
-            $aChecks["CHECK".$iI]   = array("Numpre"=>$iNumpre, "Numpar"=>$iNumpar, "Receita"=>$iReceita, "valor"=>"N".$sNumpres);
+            $aChecks["CHECK".$iI]   = ["Numpre"=>$iNumpre, "Numpar"=>$iNumpar, "Receita"=>$iReceita, "valor"=>"N".$sNumpres];
 
             /**
              * Cria array com os numpres e numpar dos débitos
@@ -1304,7 +1304,7 @@ function retornaDebitosSelecionados($oFormulario,$iTipoAgrupamento = null) {
             if(!empty($oFormulario->oDadosForm->numpre_unica)){
 
               $aParcelas[]            = 0;
-              $aChecks["CHECKU".$iI]   = array("Numpre"=>$oFormulario->oDadosForm->numpre_unica, "Numpar"=>0, "Receita"=>0, "valor"=>"N0");
+              $aChecks["CHECKU".$iI]   = ["Numpre"=>$oFormulario->oDadosForm->numpre_unica, "Numpar"=>0, "Receita"=>0, "valor"=>"N0"];
 
               $oNumpreNumpar          = new stdClass();
               $oNumpreNumpar->iNumpre = $oFormulario->oDadosForm->numpre_unica;
@@ -1361,13 +1361,13 @@ function retornaDebitosSelecionados($oFormulario,$iTipoAgrupamento = null) {
       $iI++;
       $oDebitosAgrupados->iNumpre;
 
-      $aChecks["CHECK".$iI]   = array("Numpre" => $oDebitosAgrupados->iNumpre,
+      $aChecks["CHECK".$iI]   = ["Numpre" => $oDebitosAgrupados->iNumpre,
                                       "Numpar" => $oDebitosAgrupados->iNumpar,
                                       "Receita"=> $oDebitosAgrupados->iReceit,
                                       "valor"  => "N".$oDebitosAgrupados->iNumpre.
                                                   "P".$oDebitosAgrupados->iNumpar.
                                                   "R".$oDebitosAgrupados->iReceit
-      );
+      ];
 
       /**
        * Cria array com os numpres e numpar dos débitos
@@ -1399,7 +1399,7 @@ function retornaDebitosSelecionados($oFormulario,$iTipoAgrupamento = null) {
     $sSqlLoteador.= "   where j120_cgm = {$oFormulario->oDadosForm->ver_numcgm}                   ";
 
     $rsSqlLoteador = db_query($sSqlLoteador) or die($sSqlLoteador);
-    if (pg_numrows($rsSqlLoteador) > 0) {
+    if (pg_num_rows($rsSqlLoteador) > 0) {
       $lLoteador = true;
     }
 
@@ -1456,7 +1456,7 @@ function reciboDesconto2($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
                where k00_numpre = $numpre
                  and k00_numpar = $numpar";
   $resultvenc = db_query($sqlvenc) or die($sqlvenc);
-  if (pg_numrows($resultvenc) == 0) {
+  if (pg_num_rows($resultvenc) == 0) {
     return 0;
   }
   db_fieldsmemory($resultvenc, 0);
@@ -1478,7 +1478,7 @@ function reciboDesconto2($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
                      and '$k00_dtvenc' <= k41_vencfim ";
 
   $resulttipoparc = db_query($sqltipoparc) or die($sqltipoparc);
-  if (pg_numrows($resulttipoparc) > 0) {
+  if (pg_num_rows($resulttipoparc) > 0) {
     db_fieldsmemory($resulttipoparc, 0);
   } else {
 
@@ -1498,7 +1498,7 @@ function reciboDesconto2($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
 
     $resulttipoparc = db_query($sqltipoparc) or die($sqltipoparc);
 
-    if (pg_numrows($resulttipoparc) == 1) {
+    if (pg_num_rows($resulttipoparc) == 1) {
       db_fieldsmemory($resulttipoparc, 0);
     } else {
 
@@ -1510,7 +1510,7 @@ function reciboDesconto2($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
   $resulttipoparcdeb = db_query($sqltipoparcdeb) or die($sqltipoparcdeb);
   $passar = false;
 
-  if (pg_numrows($resulttipoparcdeb) == 0) {
+  if (pg_num_rows($resulttipoparcdeb) == 0) {
     $passar = true;
   } else {
 
@@ -1522,12 +1522,12 @@ function reciboDesconto2($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
                        '$k00_dtvenc' >= k41_vencini and
                        '$k00_dtvenc' <= k41_vencfim ";
     $resulttipoparcdeb = db_query($sqltipoparcdeb) or die($sqltipoparcdeb);
-    if (pg_numrows($resulttipoparcdeb) > 0) {
+    if (pg_num_rows($resulttipoparcdeb) > 0) {
       $passar = true;
     }
   }
 
-  if (pg_numrows($resulttipoparc) == 0 or ($k40_todasmarc == 't'?$totalregistrospassados <> $totregistros:false) or $passar == false) {
+  if (pg_num_rows($resulttipoparc) == 0 or ($k40_todasmarc == 't'?$totalregistrospassados <> $totregistros:false) or $passar == false) {
     $desconto = 0;
   } else {
     $desconto = $k40_codigo;
@@ -1548,8 +1548,8 @@ function recibodesconto1($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
 
   $oConfig = new stdClass();
 
-  $oConfig->cgc = pg_result($rs_cgc, 0, 0);
-  $oConfig->db21_codcli = pg_result($rs_cgc, 0, 1);
+  $oConfig->cgc = pg_fetch_result($rs_cgc, 0, 0);
+  $oConfig->db21_codcli = pg_fetch_result($rs_cgc, 0, 1);
 
   /* testa se está em dia com IPTU */
   $iTemDesconto = 1;
@@ -1594,9 +1594,9 @@ function recibodesconto1($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
 
     $rsIptuAberto = db_query($sIptuAberto) or die($sIptuAberto);
 
-    if (pg_numrows($rsIptuAberto) > 0) {
+    if (pg_num_rows($rsIptuAberto) > 0) {
 
-      $iQuantAberto = pg_result($rsIptuAberto, 0, 0);
+      $iQuantAberto = pg_fetch_result($rsIptuAberto, 0, 0);
 
       if ((int) @$ver_matric > 0) {
         $iParcTesta = 2;
@@ -1623,7 +1623,7 @@ function recibodesconto1($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
 
   $resultvenc = db_query($sqlvenc) or die($sqlvenc);
 
-  if (pg_numrows($resultvenc) == 0) {
+  if (pg_num_rows($resultvenc) == 0) {
     return 0;
   }
 
@@ -1655,7 +1655,7 @@ function recibodesconto1($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
 
   $resulttipoparc = db_query($sqltipoparc) or die($sqltipoparc);
 
-  if (pg_numrows($resulttipoparc) > 0) {
+  if (pg_num_rows($resulttipoparc) > 0) {
     db_fieldsmemory($resulttipoparc, 0);
   } else {
     $k40_todasmarc = false;
@@ -1669,7 +1669,7 @@ function recibodesconto1($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
 
   $passar = false;
 
-  if (pg_numrows($resulttipoparcdeb) == 0) {
+  if (pg_num_rows($resulttipoparcdeb) == 0) {
     $passar = true;
   } else {
 
@@ -1688,12 +1688,12 @@ function recibodesconto1($numpre, $numpar, $tipo, $tipo_debito, $whereloteador, 
 
     $resulttipoparcdeb = db_query($sqltipoparcdeb) or die($sqltipoparcdeb);
 
-    if (pg_numrows($resulttipoparcdeb) > 0) {
+    if (pg_num_rows($resulttipoparcdeb) > 0) {
       $passar = true;
     }
   }
 
-  if (pg_numrows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false) or $passar == false) {
+  if (pg_num_rows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false) or $passar == false) {
     $desconto = 0;
   } else {
     $desconto = $k40_codigo;
@@ -1711,9 +1711,9 @@ function retornaDebitosAgrupados($aNumpre_Numpar, $iTipoDebito, $sTabela, $sWher
 
   $sTabela        = $sTabela;
   $sCampoPesquisa = $sWhere;
-  $aRetorno       = array();
+  $aRetorno       = [];
 
-  $aWhere         = array();
+  $aWhere         = [];
 
   foreach ($aNumpre_Numpar as $oDebitosSelecionados) {
     $aWhere[]= "(k00_numpre = {$oDebitosSelecionados->iNumpre} and k00_numpar = {$oDebitosSelecionados->iNumpar}) \n";

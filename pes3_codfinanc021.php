@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_sql.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -113,7 +113,7 @@ th {
    	$totalvalor = 0;
    	$totalquant = 0;
    	$totalregis = 0;
-   	for ($iInd = 0; $iInd < pg_numrows($rsDadosPonto); $iInd ++) {
+   	for ($iInd = 0; $iInd < pg_num_rows($rsDadosPonto); $iInd ++) {
    		
    		$oDados = db_utils::fieldsMemory($rsDadosPonto, $iInd, true);
    		

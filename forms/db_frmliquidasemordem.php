@@ -61,10 +61,10 @@ if ($tela_estorno) {
     $metodo = "liquidarAjax";
 }
 $db_opcao_inf = 1;
-$aParamKeys = array(
+$aParamKeys = [
     "cc09_anousu" => db_getsession("DB_anousu"),
     "cc09_instit" => db_getsession("DB_instit"),
-);
+];
 $aParametrosCustos = db_stdClass::getParametro("parcustos", $aParamKeys);
 $iTipoControleCustos = 0;
 $iControlaPit = 0;
@@ -73,9 +73,9 @@ if (count($aParametrosCustos) > 0) {
     $iTipoControleCustos = $aParametrosCustos[0]->cc09_tipocontrole;
 }
 
-$aParamKeys = array(
+$aParamKeys = [
     db_getsession("DB_instit")
-);
+];
 $aParametrosPit = db_stdClass::getParametro("matparaminstit", $aParamKeys);
 if (count($aParametrosPit) > 0) {
     $iControlaPit = $aParametrosPit[0]->m10_controlapit;
@@ -86,15 +86,15 @@ if (USE_PCASP) {
     $lUsaPCASP = "true";
 }
 
-$e60_anousu = isset($e60_anousu) ? $e60_anousu : null;
-$Le60_vlremp = isset($Le60_vlremp) ? $Le60_vlremp : null;
-$Le60_vlranu = isset($Le60_vlranu) ? $Le60_vlranu : null;
-$Le60_vlrliq = isset($Le60_vlrliq) ? $Le60_vlrliq : null;
-$Le60_vlrpag = isset($Le60_vlrpag) ? $Le60_vlrpag : null;
-$Te11_cfop = isset($Te11_cfop) ? $Te11_cfop : null;
+$e60_anousu ??= null;
+$Le60_vlremp ??= null;
+$Le60_vlranu ??= null;
+$Le60_vlrliq ??= null;
+$Le60_vlrpag ??= null;
+$Te11_cfop ??= null;
 $isPB = isParaiba();
-$Ie11_basecalculoicms = isset($Ie11_basecalculoicms) ? $Ie11_basecalculoicms : null;
-$Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11_basecalculosubstitutotrib : null;
+$Ie11_basecalculoicms ??= null;
+$Ie11_basecalculosubstitutotrib ??= null;
 
 ?>
 

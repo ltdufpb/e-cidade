@@ -50,7 +50,7 @@ $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
 $oErro                  = new stdClass();
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 $sCaminhoMensagens = "patrimonial.contratos.ac4_acordoinclusao.";
 try {
 
@@ -58,7 +58,7 @@ try {
 
     case "getFormasControle" :
 
-      $aFormasControle = array();
+      $aFormasControle = [];
       $aFormasControle = getValoresPadroesCampo('ac20_tipocontrole');
 
       foreach ($aFormasControle as $iFormasControle => $oFormasControle) {
@@ -82,7 +82,7 @@ try {
       $iAcordo                = $oParam->iAcordo;
 
       $aEmpenhosVincular      = $oParam->sListaEmpenhos;//array();
-      $aEmpenhosVinculados    = array();
+      $aEmpenhosVinculados    = [];
 
       $oDaoAcordoEmpEmpitem     = db_utils::getDao("acordoempempitem");
       $oDaoAcordo               = db_utils::getDao("acordo");
@@ -254,7 +254,7 @@ try {
           $oDadosRetorno->e60_anousu = $oEmpenho->e60_anousu;
           $oDadosRetorno->e60_emiss  = db_formatar($oEmpenho->e60_emiss, "d") ;
           $oDadosRetorno->e60_vlremp = db_formatar($oEmpenho->e60_vlremp, "f");
-          $oDadosRetorno->e60_resumo = urlencode($oEmpenho->e60_resumo);
+          $oDadosRetorno->e60_resumo = urlencode((string) $oEmpenho->e60_resumo);
           $oDadosRetorno->lVinculado = $oEmpenho->lvinculado;
           $aDadosRetorno[] = $oDadosRetorno;
         }
@@ -282,7 +282,7 @@ try {
           $oDadosRetorno->e60_anousu = $oEmpenho->e60_anousu;
           $oDadosRetorno->e60_emiss  = db_formatar($oEmpenho->e60_emiss, "d") ;
           $oDadosRetorno->e60_vlremp = db_formatar($oEmpenho->e60_vlremp, "f");
-          $oDadosRetorno->e60_resumo = urlencode($oEmpenho->e60_resumo);
+          $oDadosRetorno->e60_resumo = urlencode((string) $oEmpenho->e60_resumo);
           $oDadosRetorno->lVinculado = $oEmpenho->lvinculado;
           $aDadosRetorno[] = $oDadosRetorno;
           }
@@ -300,8 +300,8 @@ try {
       $iNumCgm                 = $oParam->iNumCgm;
       $iCodigoEmpenho          = $oParam->iCodigoEmpenho;
       $iNumeroEmpenho          = $oParam->iNumeroEmpenho;
-      $dtInicial               = implode("-", array_reverse(explode("/",$oParam->dtInicial)));
-      $dtFinal                 = implode("-", array_reverse(explode("/",$oParam->dtFinal)))  ;
+      $dtInicial               = implode("-", array_reverse(explode("/",(string) $oParam->dtInicial)));
+      $dtFinal                 = implode("-", array_reverse(explode("/",(string) $oParam->dtFinal)))  ;
       $iAcordo                 = $oParam->iAcordo;
       $sListaEmpenhosVinculado = "";
 
@@ -334,7 +334,7 @@ try {
           $oDadosRetorno->e60_anousu = $oEmpenho->e60_anousu;
           $oDadosRetorno->e60_emiss  = db_formatar($oEmpenho->e60_emiss, "d") ;
           $oDadosRetorno->e60_vlremp = db_formatar($oEmpenho->e60_vlremp, "f");
-          $oDadosRetorno->e60_resumo = urlencode($oEmpenho->e60_resumo);
+          $oDadosRetorno->e60_resumo = urlencode((string) $oEmpenho->e60_resumo);
           $oDadosRetorno->lVinculado = $oEmpenho->lvinculado;
           $aDadosRetorno[] = $oDadosRetorno;
         }
@@ -360,7 +360,7 @@ try {
             $oDadosRetorno->e60_anousu = $oEmpenho->e60_anousu;
             $oDadosRetorno->e60_emiss  = db_formatar($oEmpenho->e60_emiss, "d") ;
             $oDadosRetorno->e60_vlremp = db_formatar($oEmpenho->e60_vlremp, "f");
-            $oDadosRetorno->e60_resumo = urlencode($oEmpenho->e60_resumo);
+            $oDadosRetorno->e60_resumo = urlencode((string) $oEmpenho->e60_resumo);
             $oDadosRetorno->lVinculado = $oEmpenho->lvinculado;
             $aDadosRetorno[] = $oDadosRetorno;
             }
@@ -424,13 +424,13 @@ try {
 
           $aVinculados   = db_utils::getCollectionByRecord($rsJaVinculados);
           $sVinculados   = "$iNumeroEmpenho::varchar";
-          $aJaVinculados = array($sVinculados);
+          $aJaVinculados = [$sVinculados];
 
           foreach ($aVinculados as $oVinculados) {
             $aJaVinculados[] = $oVinculados->e60_codemp. "::varchar";
           }
 
-          $sVinculados = implode($aJaVinculados, ",");
+          $sVinculados = implode(",", $aJaVinculados);
           $sWhere .= "and e60_codemp in ({$sVinculados}) ";
         } else {
 
@@ -483,7 +483,7 @@ try {
         $oDadosRetorno->e60_codemp = $oEmpenho->e60_codemp;
         $oDadosRetorno->e60_emiss  = db_formatar($oEmpenho->e60_emiss, "d") ;
         $oDadosRetorno->e60_vlremp = db_formatar($oEmpenho->e60_vlremp, "f");
-        $oDadosRetorno->e60_resumo = urlencode($oEmpenho->e60_resumo);
+        $oDadosRetorno->e60_resumo = urlencode((string) $oEmpenho->e60_resumo);
         $oDadosRetorno->lVinculado = $oEmpenho->lvinculado;
         $aDadosRetorno[] = $oDadosRetorno;
       }
@@ -510,7 +510,7 @@ try {
 
       if($oDaoEmpenhoContrato->numrows > 0) {
 
-        $aItem = array();
+        $aItem = [];
 
         for($iItem = 0; $iItem < $oDaoEmpenhoContrato->numrows; $iItem++) {
 
@@ -520,7 +520,7 @@ try {
           $oStdItem->iEmpenho        = $oItem->e60_codemp;
           $oStdItem->iEmpenhoItem    = $oItem->e62_sequencial;
           $oStdItem->iCodigoMaterial = $oItem->pc01_codmater;
-          $oStdItem->sDescricao      = urlencode(substr($oItem->pc01_descrmater, 0, 45));
+          $oStdItem->sDescricao      = urlencode(substr((string) $oItem->pc01_descrmater, 0, 45));
           $aItem[] = $oStdItem;
         }
       }
@@ -596,21 +596,7 @@ try {
   db_fim_transacao(true);
   echo $oJson->encode($oRetorno);
 
-}catch (DBException $eErro){
-
-  db_fim_transacao(true);
-  $oRetorno->iStatus  = 2;
-  $oRetorno->sMessage = urlencode($eErro->getMessage());
-  echo $oJson->encode($oRetorno);
-
-}catch (ParameterException $eErro){
-
-  db_fim_transacao(true);
-  $oRetorno->iStatus  = 2;
-  $oRetorno->sMessage = urlencode($eErro->getMessage());
-  echo $oJson->encode($oRetorno);
-
-}catch (BusinessException $eErro){
+}catch (DBException|ParameterException|BusinessException $eErro){
 
   db_fim_transacao(true);
   $oRetorno->iStatus  = 2;

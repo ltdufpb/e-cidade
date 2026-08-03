@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE cepestados
 class cl_cepestados { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cp03_sigla = null; 
-   var $cp03_estado = null; 
+   public $cp03_sigla = null; 
+   public $cp03_estado = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cp03_sigla = varchar(2) = Sigla Estado 
                  cp03_estado = varchar(72) = Estado 
                  ";
    //funcao construtor da classe 
-   function cl_cepestados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cepestados"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_cepestados {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Estados ($this->cp03_sigla) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Estados já Cadastrado";
@@ -129,11 +129,11 @@ class cl_cepestados {
      $resaco = $this->sql_record($this->sql_query_file($this->cp03_sigla));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7182,'$this->cp03_sigla','I')");
-       $resac = db_query("insert into db_acount values($acount,1194,7182,'','".AddSlashes(pg_result($resaco,0,'cp03_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1194,7183,'','".AddSlashes(pg_result($resaco,0,'cp03_estado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1194,7182,'','".AddSlashes(pg_fetch_result($resaco,0,'cp03_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1194,7183,'','".AddSlashes(pg_fetch_result($resaco,0,'cp03_estado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_cepestados {
       $this->atualizacampos();
      $sql = " update cepestados set ";
      $virgula = "";
-     if(trim($this->cp03_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp03_sigla"])){ 
+     if(trim((string) $this->cp03_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp03_sigla"])){ 
        $sql  .= $virgula." cp03_sigla = '$this->cp03_sigla' ";
        $virgula = ",";
-       if(trim($this->cp03_sigla) == null ){ 
+       if(trim((string) $this->cp03_sigla) == null ){ 
          $this->erro_sql = " Campo Sigla Estado nao Informado.";
          $this->erro_campo = "cp03_sigla";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_cepestados {
          return false;
        }
      }
-     if(trim($this->cp03_estado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp03_estado"])){ 
+     if(trim((string) $this->cp03_estado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp03_estado"])){ 
        $sql  .= $virgula." cp03_estado = '$this->cp03_estado' ";
        $virgula = ",";
-       if(trim($this->cp03_estado) == null ){ 
+       if(trim((string) $this->cp03_estado) == null ){ 
          $this->erro_sql = " Campo Estado nao Informado.";
          $this->erro_campo = "cp03_estado";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_cepestados {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7182,'$this->cp03_sigla','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp03_sigla"]))
-           $resac = db_query("insert into db_acount values($acount,1194,7182,'".AddSlashes(pg_result($resaco,$conresaco,'cp03_sigla'))."','$this->cp03_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1194,7182,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp03_sigla'))."','$this->cp03_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp03_estado"]))
-           $resac = db_query("insert into db_acount values($acount,1194,7183,'".AddSlashes(pg_result($resaco,$conresaco,'cp03_estado'))."','$this->cp03_estado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1194,7183,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp03_estado'))."','$this->cp03_estado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_cepestados {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7182,'$cp03_sigla','E')");
-         $resac = db_query("insert into db_acount values($acount,1194,7182,'','".AddSlashes(pg_result($resaco,$iresaco,'cp03_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1194,7183,'','".AddSlashes(pg_result($resaco,$iresaco,'cp03_estado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1194,7182,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp03_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1194,7183,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp03_estado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cepestados
@@ -291,7 +291,7 @@ class cl_cepestados {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cepestados";
@@ -305,7 +305,7 @@ class cl_cepestados {
    function sql_query ( $cp03_sigla=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -326,7 +326,7 @@ class cl_cepestados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -338,7 +338,7 @@ class cl_cepestados {
    function sql_query_file ( $cp03_sigla=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -359,7 +359,7 @@ class cl_cepestados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

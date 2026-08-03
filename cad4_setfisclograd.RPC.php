@@ -62,10 +62,10 @@ switch($oParam->exec) {
 
   case 'Face' :
   	
-  	$aDadosFace  = array();
-  	$aNovoSetor  = array();
-  	$aNovaZona   = array();
-  	$aBairros    = array();
+  	$aDadosFace  = [];
+  	$aNovoSetor  = [];
+  	$aNovaZona   = [];
+  	$aBairros    = [];
 
   	$sCampos     = " j37_face,                \n";
   	$sCampos    .= " j13_codi,               \n";
@@ -156,7 +156,7 @@ switch($oParam->exec) {
   case 'Atualizar' :
 
   	
-  	$aDadosAtualizar = array();
+  	$aDadosAtualizar = [];
     $aDadosAtualizar = $oParam->aValores;
     
     /*
@@ -241,11 +241,11 @@ switch($oParam->exec) {
     
       db_fim_transacao(false);
       
-    }catch (ErrorException $erro) {
+    }catch (ErrorException) {
     	
         db_fim_transacao(true);
         $oRetorno->status      = 0;
-        $oRetorno->message     = urlencode($eException->getMessage());    	
+        $oRetorno->message     = urlencode((string) $eException->getMessage());    	
     }
     
     

@@ -61,7 +61,7 @@ db_input('i01_descr',40,$Ii01_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
     <?php 
-      $x = array("1"=>"DIÁRIO","0"=>"MENSAL");
+      $x = ["1"=>"DIÁRIO","0"=>"MENSAL"];
       db_select('i01_dm',$x,true,4,"");
     ?>
     </td>
@@ -72,7 +72,7 @@ db_input('i01_descr',40,$Ii01_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-   $rec = array("1"=>"Divide valor pelo índice da data base e multiplica pelo índice da data atual","2"=>"Aplica índice mês a mês sobre o valor","3"=>"Aplica índice do mês do vencimento sobre o valor","9"=>"Sem correção ( Moeda Corrente Nacional )"); 
+   $rec = ["1"=>"Divide valor pelo índice da data base e multiplica pelo índice da data atual","2"=>"Aplica índice mês a mês sobre o valor","3"=>"Aplica índice do mês do vencimento sobre o valor","9"=>"Sem correção ( Moeda Corrente Nacional )"]; 
    db_select("i01_tipo",$rec,true,4,"");
 
 //db_input('i01_tipo',1,$Ii01_tipo,true,'text',$db_opcao,"")
@@ -93,7 +93,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

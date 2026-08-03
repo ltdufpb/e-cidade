@@ -90,10 +90,10 @@ include(modification("dbforms/db_funcoes.php"));
                     </td>
                     <td>
                         <?php 
-                          $aOpcoes = array(
+                          $aOpcoes = [
                                           "comunidade" => "Com as Unidades selecionados",
                                           "semunidade" => "sem as Unidades selecionados",
-                                          ); 
+                                          ]; 
                          db_select("opcoesunidade", $aOpcoes, true,1);                 
                         ?>
                     </td>

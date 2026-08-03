@@ -33,8 +33,8 @@ require_once(modification("classes/db_issbaseparalisacao_classe.php"));
 require_once(modification("classes/db_issmotivoparalisacao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clissbaseparalisacao   = new cl_issbaseparalisacao(); 
 $clissmotivoparalisacao = new cl_issmotivoparalisacao();

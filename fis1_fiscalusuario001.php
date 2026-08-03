@@ -32,16 +32,16 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_fiscalusuario_classe.php"));
 include(modification("classes/db_fandamusu_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS,2);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clfiscalusuario = new cl_fiscalusuario;
 $clfandamusu = new cl_fandamusu;
 $db_opcao = 1;
 $db_botao = true;
 global $y38_codnoti;
 global $y39_codandam;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
   $sqlerro=false;
   $clfandamusu->y40_obs="0";
@@ -82,7 +82,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 js_setatabulacao();
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clfiscalusuario->erro_status=="0"){
     $clfiscalusuario->erro(true,false);
     $db_botao=true;

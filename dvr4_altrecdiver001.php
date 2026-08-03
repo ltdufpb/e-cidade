@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_arrecad_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $db_botao=1;
 $db_opcao=1;
 $clarrecad = new cl_arrecad;
@@ -106,7 +106,7 @@ input {
           
         <td>
        		<?php 
-       		$tipos = array("t"=>"Todos","v"=>"Débitos Vencidos","n"=>"Débitos Não Vencidos");
+       		$tipos = ["t"=>"Todos","v"=>"Débitos Vencidos","n"=>"Débitos Não Vencidos"];
        		db_select("tipo",$tipos,true,"text",1);
        		?>
        </td>
@@ -379,7 +379,7 @@ if (isset($processar)){
            where $where and dv05_instit = ".db_getsession('DB_instit');   
            
    $result = db_query($sql);
-   $numrows = pg_numrows($result);   
+   $numrows = pg_num_rows($result);   
    if ($numrows==0){
    		db_msgbox(_M("tributario.diversos.dvr4_altrecdiver001.nao_exitem_registro"));
    		echo "<script>location.href='dvr4_altrecdiver001.php';</script>";

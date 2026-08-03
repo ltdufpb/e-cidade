@@ -39,7 +39,7 @@ include(modification("classes/db_agendamentos_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sd02_i_codigo = db_getsession("DB_coddepto");
 

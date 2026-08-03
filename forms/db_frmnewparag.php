@@ -63,7 +63,7 @@ db_input('db02_alinha',20,$Idb02_alinha,true,'hidden',3);
     </td>
     <td> 
     <?php 
-      $xw = array('J'=>"Justificado",'C'=>"Centralizado",'R'=>"Direita",'L'=>"Esquerda");
+      $xw = ['J'=>"Justificado",'C'=>"Centralizado",'R'=>"Direita",'L'=>"Esquerda"];
       db_select('db02_alinhamento',$xw,true,$db_opcao,"OnChange = js_alinha();")
     ?>
     </td>
@@ -96,7 +96,7 @@ db_input('db02_alinha',20,$Idb02_alinha,true,'hidden',3);
     </td>
     <td> 
 <?php 
-$xy = array('0'=>"0",'5'=>"5 cm",'10'=>"10 cm",'15'=>"15 cm",'20'=>"20 cm",'25'=>"25 cm",'30'=>"30 cm",'35'=>"35 cm",'40'=>"40 cm",'45'=>"45 cm",'50'=>"50 cm",'55'=>"55 cm",'60'=>"60 cm",'65'=>"65 cm",'70'=>"70 cm",'75'=>"75 cm",'80'=>"80 cm");
+$xy = ['0'=>"0",'5'=>"5 cm",'10'=>"10 cm",'15'=>"15 cm",'20'=>"20 cm",'25'=>"25 cm",'30'=>"30 cm",'35'=>"35 cm",'40'=>"40 cm",'45'=>"45 cm",'50'=>"50 cm",'55'=>"55 cm",'60'=>"60 cm",'65'=>"65 cm",'70'=>"70 cm",'75'=>"75 cm",'80'=>"80 cm"];
 db_select('db02_inicia',$xy,true,$db_opcao)
 ?>
     </td>
@@ -107,7 +107,7 @@ db_select('db02_inicia',$xy,true,$db_opcao)
     </td>
     <td> 
 <?php 
-$x = array('1'=>"1 cm",'2'=>"2 cm",'3'=>"3 cm",'4'=>"4 cm");
+$x = ['1'=>"1 cm",'2'=>"2 cm",'3'=>"3 cm",'4'=>"4 cm"];
 db_select('db02_espaca',$x,true,$db_opcao)
 ?>
     </td>
@@ -119,7 +119,7 @@ db_select('db02_espaca',$x,true,$db_opcao)
     </td>
     <td> 
     <?php 
-      $aTtipos = array('1'=>"Texto puro",'2'=>"Tabela Simples",'3'=>"Codigo PHP");
+      $aTtipos = ['1'=>"Texto puro",'2'=>"Tabela Simples",'3'=>"Codigo PHP"];
       db_select('db02_tipo',$aTtipos,true,$db_opcao,"")
     ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 function js_alinha(){

@@ -42,8 +42,8 @@ $clsolicitemele = new cl_solicitemele;
 $clpcdotac = new cl_pcdotac;
 $clorcelemento = new cl_orcelemento;
 $clorcparametro = new cl_orcparametro;
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 //db_postmemory($HTTP_POST_VARS,2);db_postmemory($HTTP_GET_VARS,2);
 
 $db_opcao = 1;

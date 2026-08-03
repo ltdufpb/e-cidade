@@ -45,11 +45,11 @@ if( $oPost->strAction == 'gravar' ) {
   db_fim_transacao();
 
   $booErro    = $clprontuarios->numrows_alterar==0;
-	$arrRetorno = array(
+	$arrRetorno = [
                        "mensagem" => urlencode( "Diagnóstico salvo com sucesso." ),
                        "erro"     => $booErro,
                        "action"   => $oPost->strAction
-                     );
+                     ];
 
 	$oJson = new services_json();
   echo $oJson->encode($arrRetorno);

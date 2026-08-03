@@ -8,7 +8,7 @@ final class Container extends ContainerAbstract
 {
     public function charge()
     {
-        $this->content = array(
+        $this->content = [
             'Iptu\Arquivo\LoteamentoBlock' => function ($container) {
                 
                 $layout = $container->get('Iptu\Arquivo\LoteamentoLayout');
@@ -16,13 +16,9 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Block\LoteamentoBlock($layout, $converter);
             },
-            'Iptu\Arquivo\LoteamentoConverter' => function ($container) {
-            return new
-            \ECidade\Tributario\Cadastro\Iptu\Arquivo\Converter\LoteamentoConverter($container->get('Format'));
-            },
-            'Iptu\Arquivo\LoteamentoLayout' => function ($container) {
-                return new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\Loteamento();
-            },
+            'Iptu\Arquivo\LoteamentoConverter' => fn($container) => new
+            \ECidade\Tributario\Cadastro\Iptu\Arquivo\Converter\LoteamentoConverter($container->get('Format')),
+            'Iptu\Arquivo\LoteamentoLayout' => fn($container) => new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\Loteamento(),
             'Iptu\Arquivo\ParcelaReciboCast' => function ($container) {
                 
                 $reciboValorTotal = $container->get('ReciboValorTotal');
@@ -74,7 +70,7 @@ final class Container extends ContainerAbstract
                 /**
                  * @todo um container não deve injetar configurações
                  */
-                $receitas = array(5, 33, 100);
+                $receitas = [5, 33, 100];
 
                 $layout = new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\Parcela(12, $receitas);
 
@@ -143,9 +139,7 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Converter\TaxaConverter($format, $layout);
             },
-            'Iptu\Arquivo\FiltroHydrator' => function ($container) {
-                return new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Hydrator\FiltroHydrator();
-            },
+            'Iptu\Arquivo\FiltroHydrator' => fn($container) => new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Hydrator\FiltroHydrator(),
             'Iptu\Arquivo\ContribuinteRepository' => function ($container) {
 
                 $dataBase = $container->get('DataBase');
@@ -226,7 +220,7 @@ final class Container extends ContainerAbstract
                 $percentualDescontoUnica = 15;
                 $vencimentoUnica         = new \DateTime();
                 $vencimentoUnica->setDate(11, 3, date('Y'));
-                $receitas = array(5, 33, 100);
+                $receitas = [5, 33, 100];
                 $path  = 'tmp/layout';
                 $path .= '_' . date('Ymd');
                 $path .= '.txt';
@@ -254,11 +248,11 @@ final class Container extends ContainerAbstract
                 $layoutParcelaRecibo           = new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\ParcelaRecibo(12);
                 $layoutTotalUnica              = new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\TotalUnica();
                 
-                $layoutsNossoNumeroUnica   = array();
+                $layoutsNossoNumeroUnica   = [];
                 $layoutsNossoNumeroUnica[] = new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\NossoNumeroUnica(1);
                 $layoutsNossoNumeroUnica[] = new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\NossoNumeroUnica(2);
                 
-                $layoutsUnica = array();
+                $layoutsUnica = [];
                 $layoutsUnica[] = new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\Unica(
                     $percentualDescontoUnica,
                     $vencimentoUnica
@@ -291,14 +285,14 @@ final class Container extends ContainerAbstract
                 /**
                  * @todo um container não deve injetar configurações
                  */
-                $layoutsTaxa = array();
+                $layoutsTaxa = [];
                 $layoutsTaxa[] = new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\Taxa(1, 'IPTU');
                 $layoutsTaxa[] = new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\Taxa(2, 'TAXA');
 
                 /**
                  * @todo um container não deve injetar configurações
                  */
-                $layoutsTaxaSegundoBloco = array();
+                $layoutsTaxaSegundoBloco = [];
                 $layoutsTaxaSegundoBloco[] = new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\Taxa(1, 'IPTU');
                 $layoutsTaxaSegundoBloco[] = new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Layout\Taxa(
                     5,
@@ -463,9 +457,7 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Service\ReciboCarneService($reciboService);
             },
-            'Iptu\Arquivo\ReciboParcelaService' => function ($container) {
-                return new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Service\ReciboParcelaService();
-            },
+            'Iptu\Arquivo\ReciboParcelaService' => fn($container) => new \ECidade\Tributario\Cadastro\Iptu\Arquivo\Service\ReciboParcelaService(),
             'CaracterRepository' => function ($container) {
                 
                 $dataBase = $container->get('DataBase');
@@ -603,6 +595,6 @@ final class Container extends ContainerAbstract
             // cargrup
             // iptutaxamatric
 
-        );
+        ];
     }
 }

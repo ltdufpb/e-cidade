@@ -39,7 +39,7 @@ $clrotulo = new rotulocampo;
 $cldbconfig = new cl_db_config;
 $clrotulo->label('');
 
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 db_postmemory($_SERVER);
 
 $oPDF = new PDF();
@@ -113,7 +113,7 @@ if ($result->db110_valor == "OUTD" || $result->db110_valor == "OUT" || $result->
 db_fieldsmemory($rsLicitacao, 0);
 
 $head3 = "HOMOLOGAÇÃO DO PROCESSO ";
-$head4 = "LICITAÇÃO : $l20_numero/" . substr($l20_datacria, 0, 4);
+$head4 = "LICITAÇÃO : $l20_numero/" . substr((string) $l20_datacria, 0, 4);
 $head5 = "SEQUENCIAL: $l20_codigo";
 $oPDF->addpage();
 $oPDF->setfont('arial', 'b', 14);
@@ -128,11 +128,11 @@ $olicitacao = db_utils::fieldsMemory($rsLicitacao, 0);
 
 $oLibDocumento->l20_numero = $olicitacao->l20_numero;
 $oLibDocumento->l03_descr = $olicitacao->l03_descr;
-$oLibDocumento->l20_procadmin = $olicitacao->l20_procadmin ? $olicitacao->l20_procadmin : $olicitacao->p58_numero;
-$oLibDocumento->l20_datacria = substr($olicitacao->l20_datacria, 0, 4);
+$oLibDocumento->l20_procadmin = $olicitacao->l20_procadmin ?: $olicitacao->p58_numero;
+$oLibDocumento->l20_datacria = substr((string) $olicitacao->l20_datacria, 0, 4);
 $oLibDocumento->l20_codigo = $olicitacao->l20_codigo;
 $oLibDocumento->l30_portaria = $olicitacao->l30_portaria;
-$oLibDocumento->l20_objeto = htmlspecialchars_decode($olicitacao->l20_objeto);
+$oLibDocumento->l20_objeto = htmlspecialchars_decode((string) $olicitacao->l20_objeto);
 
 $sSqlDbConfig = $cldbconfig->sql_query(null, "*", null, "codigo = {$dbinstit}");
 $result_munic = $cldbconfig->sql_record($sSqlDbConfig);

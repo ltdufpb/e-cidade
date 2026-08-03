@@ -30,7 +30,7 @@
   require_once(modification("libs/db_usuariosonline.php"));
   require_once(modification("classes/db_classecadastro.php"));
 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   db_postmemory($_SESSION);
 
   $indice_L = 0;
@@ -41,7 +41,7 @@
   $indice_C = 0;
 
   for ($i=0;$i<sizeof($lista);$i++){
-    $item = split("#",$lista[$i]);
+    $item = preg_split("#\\##m",(string) $lista[$i]);
 	$primeiraLetra = $item[0];
     if ($primeiraLetra == "L"){
       $codigos_L[$indice_L] = $item[1];
@@ -74,10 +74,10 @@
       $clsqlamatriculas = new cl_sqlmatriculas;
       $sql = $clsqlamatriculas->sqlmatriculas_ruas($codigos_L[$i]);
       $result = db_query($sql);
-	  for ($num=0;$num<pg_numrows($result);$num++){
+	  for ($num=0;$num<pg_num_rows($result);$num++){
 
-        if (in_array(pg_result($result,$num,"j01_matric"),$parametro) == false){
-		  $parametro[$indice_paramtero] = pg_result($result,$num,"j01_matric");
+        if (in_array(pg_fetch_result($result,$num,"j01_matric"),$parametro) == false){
+		  $parametro[$indice_paramtero] = pg_fetch_result($result,$num,"j01_matric");
 		  $indice_paramtero++;
 		}
 	  }
@@ -88,9 +88,9 @@
       $clsqlamatriculas = new cl_sqlmatriculas;
       $sql = $clsqlamatriculas->sqlmatriculas_bairros($codigos_B[$i]);
 	  $result = db_query($sql);
-	  for ($num=0;$num<pg_numrows($result);$num++){
-        if (in_array(pg_result($result,$num,"j01_matric"),$parametro) == false){
-		  $parametro[$indice_paramtero] = pg_result($result,$num,"j01_matric");
+	  for ($num=0;$num<pg_num_rows($result);$num++){
+        if (in_array(pg_fetch_result($result,$num,"j01_matric"),$parametro) == false){
+		  $parametro[$indice_paramtero] = pg_fetch_result($result,$num,"j01_matric");
 		  $indice_paramtero++;
 		}
 	  }
@@ -101,9 +101,9 @@
       $clsqlamatriculas = new cl_sqlmatriculas;
       $sql = $clsqlamatriculas->sqlmatriculas_imobiliaria($codigos_I[$i]);
 	  $result = db_query($sql);
-	  for ($num=0;$num<pg_numrows($result);$num++){
-        if (in_array(pg_result($result,$num,"j01_matric"),$parametro) == false){
-		  $parametro[$indice_paramtero] = pg_result($result,$num,"j01_matric");
+	  for ($num=0;$num<pg_num_rows($result);$num++){
+        if (in_array(pg_fetch_result($result,$num,"j01_matric"),$parametro) == false){
+		  $parametro[$indice_paramtero] = pg_fetch_result($result,$num,"j01_matric");
 		  $indice_paramtero++;
 		}
 	  }
@@ -114,9 +114,9 @@
       $clsqlamatriculas = new cl_sqlmatriculas;
       $sql = $clsqlamatriculas->sqlmatriculas_nome($codigos_C[$i]);
 	  $result = db_query($sql);
-	  for ($num=0;$num<pg_numrows($result);$num++){
-        if (in_array(pg_result($result,$num,"j01_matric"),$parametro) == false){
-		  $parametro[$indice_paramtero] = pg_result($result,$num,"j01_matric");
+	  for ($num=0;$num<pg_num_rows($result);$num++){
+        if (in_array(pg_fetch_result($result,$num,"j01_matric"),$parametro) == false){
+		  $parametro[$indice_paramtero] = pg_fetch_result($result,$num,"j01_matric");
 		  $indice_paramtero++;
 		}
 	  }
@@ -127,9 +127,9 @@
       $clsqlamatriculas = new cl_sqlmatriculas;
       $sql = $clsqlamatriculas->sqlmatriculas_setor($codigos_S[$i]);
 	  $result = db_query($sql);
-	  for ($num=0;$num<pg_numrows($result);$num++){
-        if (in_array(pg_result($result,$num,"j01_matric"),$parametro) == false){
-		  $parametro[$indice_paramtero] = pg_result($result,$num,"j01_matric");
+	  for ($num=0;$num<pg_num_rows($result);$num++){
+        if (in_array(pg_fetch_result($result,$num,"j01_matric"),$parametro) == false){
+		  $parametro[$indice_paramtero] = pg_fetch_result($result,$num,"j01_matric");
 		  $indice_paramtero++;
 		}
 	  }
@@ -140,9 +140,9 @@
       $clsqlamatriculas = new cl_sqlmatriculas;
 	  $sql = $clsqlamatriculas->sqlmatriculas_setorQuadra($codigos_SQS[$i],$codigos_SQQ[$i]);
 	  $result = db_query($sql);
-	  for ($num=0;$num<pg_numrows($result);$num++){
-        if (in_array(pg_result($result,$num,"j01_matric"),$parametro) == false){
-		  $parametro[$indice_paramtero] = pg_result($result,$num,"j01_matric");
+	  for ($num=0;$num<pg_num_rows($result);$num++){
+        if (in_array(pg_fetch_result($result,$num,"j01_matric"),$parametro) == false){
+		  $parametro[$indice_paramtero] = pg_fetch_result($result,$num,"j01_matric");
 		  $indice_paramtero++;
 		}
 	  }

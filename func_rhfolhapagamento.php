@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhfolhapagamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhfolhapagamento = new cl_rhfolhapagamento;
 $clrhfolhapagamento->rotulo->label("rh141_sequencial");
 $clrhfolhapagamento->rotulo->label("rh141_sequencial");
@@ -52,9 +52,9 @@ $clrhfolhapagamento->rotulo->label("rh141_sequencial");
         }else{
            $sql = $clrhfolhapagamento->sql_query("",$campos,"rh141_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh141_sequencial)){
-          $repassa = array("chave_rh141_sequencial"=>$chave_rh141_sequencial,"chave_rh141_sequencial"=>$chave_rh141_sequencial);
+          $repassa = ["chave_rh141_sequencial"=>$chave_rh141_sequencial,"chave_rh141_sequencial"=>$chave_rh141_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

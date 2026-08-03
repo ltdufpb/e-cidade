@@ -33,7 +33,7 @@ $oPedido = new PedidoTFD($oGet->iPedido);
 
 $oDaoPedidoTFD = new cl_tfd_pedidotfd();
 $sSqlAndamento = $oDaoPedidoTFD->sql_query_andamento_pedido($oGet->iPedido);
-$aAndamentos   = array();
+$aAndamentos   = [];
 $sMsgErro      = null;
 
 try {
@@ -53,8 +53,8 @@ try {
     }
 
     $oUsuario             = UsuarioSistemaRepository::getPorCodigo($oDados->usuario);
-    $oDados->sNomeUsuario = utf8_encode($oUsuario->getCGM()->getNome());
-    $oDados->observacao   = utf8_encode($oDados->observacao);
+    $oDados->sNomeUsuario = mb_convert_encoding($oUsuario->getCGM()->getNome(), 'UTF-8', 'ISO-8859-1');
+    $oDados->observacao   = mb_convert_encoding($oDados->observacao, 'UTF-8', 'ISO-8859-1');
     $aAndamentos[]        = $oDados;
   }
 
@@ -94,7 +94,7 @@ foreach ($aAndamentos as $oAndamento) {
 
   $oUsuario     = UsuarioSistemaRepository::getPorCodigo($oAndamento->usuario);
   $sNomeUsuario = $oUsuario->getCGM()->getNome();
-  $sNomeUsuario = substr($sNomeUsuario, 0, 48);
+  $sNomeUsuario = substr((string) $sNomeUsuario, 0, 48);
   $oData        = new DBDate($oAndamento->data);
 
   $oPdf->setfont('arial', '', 7);

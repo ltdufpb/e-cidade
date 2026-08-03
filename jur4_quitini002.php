@@ -33,14 +33,14 @@ include(modification("libs/db_sql.php"));
 
 $sql="select distinct v59_inicial from (select distinct v59_inicial,k00_numpre from inicialnumpre left join arrecad on arrecad.k00_numpre = inicialnumpre.v59_numpre where arrecad.k00_numpre is null) as x ";
 $result=db_query($sql);
-for ($i=0;$i<pg_numrows($result);$i++){
+for ($i=0;$i<pg_num_rows($result);$i++){
 	db_fieldsmemory($result,$i);
 	$sql_iniquit="select * from inicial inner join inicialmov on v50_inicial = v56_inicial where  v56_codsit = 8 and v50_incial=$v59_inicial";
 	$result_iniquit=db_query($sql_iniquit);
-	if (pg_numrows($result_iniquit)==0){
+	if (pg_num_rows($result_iniquit)==0){
 	      $sql_test="select * from inicialnumpre inner join arrecad on k00_numpre = v59_numpre where v59_inicial = $v59_inicial";
 	      $result_test=db_query($sql_test);
-	      if (pg_numrows($result_test)==0){
+	      if (pg_num_rows($result_test)==0){
 		      $sql_codmov="select nextval('inicialmov_v56_codmov_seq')";
 		      $result_codmov=db_query($sql_codmov);
 		      db_fieldsmemory($result_codmov,0);

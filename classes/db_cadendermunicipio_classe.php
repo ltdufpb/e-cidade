@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE cadendermunicipio
 class cl_cadendermunicipio { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db72_sequencial = 0; 
-   var $db72_cadenderestado = 0; 
-   var $db72_descricao = null; 
-   var $db72_sigla = null; 
-   var $db72_cepinicial = null; 
-   var $db72_cepfinal = null; 
+   public $db72_sequencial = 0; 
+   public $db72_cadenderestado = 0; 
+   public $db72_descricao = null; 
+   public $db72_sigla = null; 
+   public $db72_cepinicial = null; 
+   public $db72_cepfinal = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db72_sequencial = int4 = Código do Município 
                  db72_cadenderestado = int4 = Código do Estado 
                  db72_descricao = varchar(100) = Descrição do Município 
@@ -58,10 +58,10 @@ class cl_cadendermunicipio {
                  db72_cepfinal = varchar(8) = Cep Final 
                  ";
    //funcao construtor da classe 
-   function cl_cadendermunicipio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadendermunicipio"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -116,10 +116,10 @@ class cl_cadendermunicipio {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db72_sequencial = pg_result($result,0,0); 
+       $this->db72_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cadendermunicipio_db72_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db72_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db72_sequencial)){
          $this->erro_sql = " Campo db72_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -157,7 +157,7 @@ class cl_cadendermunicipio {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Municipio ($this->db72_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Municipio já Cadastrado";
@@ -181,15 +181,15 @@ class cl_cadendermunicipio {
      $resaco = $this->sql_record($this->sql_query_file($this->db72_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15847,'$this->db72_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2781,15847,'','".AddSlashes(pg_result($resaco,0,'db72_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2781,15848,'','".AddSlashes(pg_result($resaco,0,'db72_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2781,15849,'','".AddSlashes(pg_result($resaco,0,'db72_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2781,15850,'','".AddSlashes(pg_result($resaco,0,'db72_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2781,15851,'','".AddSlashes(pg_result($resaco,0,'db72_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2781,15852,'','".AddSlashes(pg_result($resaco,0,'db72_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2781,15847,'','".AddSlashes(pg_fetch_result($resaco,0,'db72_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2781,15848,'','".AddSlashes(pg_fetch_result($resaco,0,'db72_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2781,15849,'','".AddSlashes(pg_fetch_result($resaco,0,'db72_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2781,15850,'','".AddSlashes(pg_fetch_result($resaco,0,'db72_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2781,15851,'','".AddSlashes(pg_fetch_result($resaco,0,'db72_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2781,15852,'','".AddSlashes(pg_fetch_result($resaco,0,'db72_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -198,10 +198,10 @@ class cl_cadendermunicipio {
       $this->atualizacampos();
      $sql = " update cadendermunicipio set ";
      $virgula = "";
-     if(trim($this->db72_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_sequencial"])){ 
+     if(trim((string) $this->db72_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_sequencial"])){ 
        $sql  .= $virgula." db72_sequencial = $this->db72_sequencial ";
        $virgula = ",";
-       if(trim($this->db72_sequencial) == null ){ 
+       if(trim((string) $this->db72_sequencial) == null ){ 
          $this->erro_sql = " Campo Código do Município nao Informado.";
          $this->erro_campo = "db72_sequencial";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_cadendermunicipio {
          return false;
        }
      }
-     if(trim($this->db72_cadenderestado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_cadenderestado"])){ 
+     if(trim((string) $this->db72_cadenderestado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_cadenderestado"])){ 
        $sql  .= $virgula." db72_cadenderestado = $this->db72_cadenderestado ";
        $virgula = ",";
-       if(trim($this->db72_cadenderestado) == null ){ 
+       if(trim((string) $this->db72_cadenderestado) == null ){ 
          $this->erro_sql = " Campo Código do Estado nao Informado.";
          $this->erro_campo = "db72_cadenderestado";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_cadendermunicipio {
          return false;
        }
      }
-     if(trim($this->db72_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_descricao"])){ 
+     if(trim((string) $this->db72_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_descricao"])){ 
        $sql  .= $virgula." db72_descricao = '$this->db72_descricao' ";
        $virgula = ",";
-       if(trim($this->db72_descricao) == null ){ 
+       if(trim((string) $this->db72_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição do Município nao Informado.";
          $this->erro_campo = "db72_descricao";
          $this->erro_banco = "";
@@ -237,15 +237,15 @@ class cl_cadendermunicipio {
          return false;
        }
      }
-     if(trim($this->db72_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_sigla"])){ 
+     if(trim((string) $this->db72_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_sigla"])){ 
        $sql  .= $virgula." db72_sigla = '$this->db72_sigla' ";
        $virgula = ",";
      }
-     if(trim($this->db72_cepinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_cepinicial"])){ 
+     if(trim((string) $this->db72_cepinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_cepinicial"])){ 
        $sql  .= $virgula." db72_cepinicial = '$this->db72_cepinicial' ";
        $virgula = ",";
      }
-     if(trim($this->db72_cepfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_cepfinal"])){ 
+     if(trim((string) $this->db72_cepfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db72_cepfinal"])){ 
        $sql  .= $virgula." db72_cepfinal = '$this->db72_cepfinal' ";
        $virgula = ",";
      }
@@ -257,21 +257,21 @@ class cl_cadendermunicipio {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15847,'$this->db72_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db72_sequencial"]) || $this->db72_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2781,15847,'".AddSlashes(pg_result($resaco,$conresaco,'db72_sequencial'))."','$this->db72_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2781,15847,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db72_sequencial'))."','$this->db72_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db72_cadenderestado"]) || $this->db72_cadenderestado != "")
-           $resac = db_query("insert into db_acount values($acount,2781,15848,'".AddSlashes(pg_result($resaco,$conresaco,'db72_cadenderestado'))."','$this->db72_cadenderestado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2781,15848,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db72_cadenderestado'))."','$this->db72_cadenderestado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db72_descricao"]) || $this->db72_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,2781,15849,'".AddSlashes(pg_result($resaco,$conresaco,'db72_descricao'))."','$this->db72_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2781,15849,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db72_descricao'))."','$this->db72_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db72_sigla"]) || $this->db72_sigla != "")
-           $resac = db_query("insert into db_acount values($acount,2781,15850,'".AddSlashes(pg_result($resaco,$conresaco,'db72_sigla'))."','$this->db72_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2781,15850,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db72_sigla'))."','$this->db72_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db72_cepinicial"]) || $this->db72_cepinicial != "")
-           $resac = db_query("insert into db_acount values($acount,2781,15851,'".AddSlashes(pg_result($resaco,$conresaco,'db72_cepinicial'))."','$this->db72_cepinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2781,15851,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db72_cepinicial'))."','$this->db72_cepinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db72_cepfinal"]) || $this->db72_cepfinal != "")
-           $resac = db_query("insert into db_acount values($acount,2781,15852,'".AddSlashes(pg_result($resaco,$conresaco,'db72_cepfinal'))."','$this->db72_cepfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2781,15852,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db72_cepfinal'))."','$this->db72_cepfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -316,15 +316,15 @@ class cl_cadendermunicipio {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15847,'$db72_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2781,15847,'','".AddSlashes(pg_result($resaco,$iresaco,'db72_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2781,15848,'','".AddSlashes(pg_result($resaco,$iresaco,'db72_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2781,15849,'','".AddSlashes(pg_result($resaco,$iresaco,'db72_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2781,15850,'','".AddSlashes(pg_result($resaco,$iresaco,'db72_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2781,15851,'','".AddSlashes(pg_result($resaco,$iresaco,'db72_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2781,15852,'','".AddSlashes(pg_result($resaco,$iresaco,'db72_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2781,15847,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db72_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2781,15848,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db72_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2781,15849,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db72_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2781,15850,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db72_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2781,15851,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db72_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2781,15852,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db72_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cadendermunicipio
@@ -384,7 +384,7 @@ class cl_cadendermunicipio {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cadendermunicipio";
@@ -426,7 +426,7 @@ class cl_cadendermunicipio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,7 +464,7 @@ class cl_cadendermunicipio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -21,21 +21,13 @@ use ProgressaoParcialAluno;
  */
 class GuiaTransFerenciaService
 {
-    public $tipoTransferencia;
-    public $alunos;
-    public $obs;
-    public $bolsa;
     /**
      * GuiaTransFerenciaService constructor.
      * @param $tipoTransferencia
      * @param $alunos
      */
-    public function __construct($tipoTransferencia, $alunos, $obs, $bolsa)
+    public function __construct(public $tipoTransferencia, public $alunos, public $obs, public $bolsa)
     {
-        $this->tipoTransferencia = $tipoTransferencia;
-        $this->alunos = $alunos;
-        $this->obs = $obs;
-        $this->bolsa = $bolsa;
     }
 
     public function buscaDadosImpressao()
@@ -100,42 +92,42 @@ class GuiaTransFerenciaService
         foreach ($arrAlunos as $alunos) {
             foreach ($alunos as $aluno) {
                 $aluno->matricula = $this->buscaDadosMatricula($aluno->codigomatricula);
-                $aFiliacao = array();
+                $aFiliacao = [];
                 if ($aluno->ed47_v_mae != '') {
-                        $aFiliacao[] = trim($aluno->ed47_v_mae);
+                        $aFiliacao[] = trim((string) $aluno->ed47_v_mae);
                 }
                 if ($aluno->ed47_v_pai != '') {
-                        $aFiliacao[] = trim($aluno->ed47_v_pai);
+                        $aFiliacao[] = trim((string) $aluno->ed47_v_pai);
                 }
-                $dia_nasc = substr($aluno->ed47_d_nasc, 8, 2);
-                $mes_nasc = substr($aluno->ed47_d_nasc, 5, 2);
-                $ano_nasc = substr($aluno->ed47_d_nasc, 0, 4);
-                $dia_transf = substr($aluno->data_transf, 8, 2);
-                $mes_transf = substr($aluno->data_transf, 5, 2);
-                $ano_transf = substr($aluno->data_transf, 0, 4);
+                $dia_nasc = substr((string) $aluno->ed47_d_nasc, 8, 2);
+                $mes_nasc = substr((string) $aluno->ed47_d_nasc, 5, 2);
+                $ano_nasc = substr((string) $aluno->ed47_d_nasc, 0, 4);
+                $dia_transf = substr((string) $aluno->data_transf, 8, 2);
+                $mes_transf = substr((string) $aluno->data_transf, 5, 2);
+                $ano_transf = substr((string) $aluno->data_transf, 0, 4);
             
                 $oParagrafo = new libdocumento(5010);
-                $oParagrafo->nome_aluno = trim($aluno->ed47_v_nome);
-                $oParagrafo->municipio_naturalidade = trim($aluno->ed47_i_censomunicnat);
+                $oParagrafo->nome_aluno = trim((string) $aluno->ed47_v_nome);
+                $oParagrafo->municipio_naturalidade = trim((string) $aluno->ed47_i_censomunicnat);
                 $oParagrafo->estado_naturalidade = $aluno->ed47_i_censoufnat;
                 $oParagrafo->dia_nascimento = $dia_nasc;
                 $oParagrafo->mes_nascimento = db_mes($mes_nasc, 1);
                 $oParagrafo->ano_nascimento = $ano_nasc;
             
                 if ($this->tipoTransferencia == "TF") {
-                    $sEtapa =  trim($aluno->matricula[0]->descr_serie);
+                    $sEtapa =  trim((string) $aluno->matricula[0]->descr_serie);
                     $sEnsino = sprintf(
                         '%s - %s',
-                        trim($aluno->matricula[0]->descr_ensino),
-                        trim($aluno->matricula[0]->abrev_ensino)
+                        trim((string) $aluno->matricula[0]->descr_ensino),
+                        trim((string) $aluno->matricula[0]->abrev_ensino)
                     );
 
                     $oEscola        = new EscolaProcedencia($aluno->escola_destino);
                     $sEscolaDestino = $oEscola->getNome();
                     $aluno->descricaoEnsino = sprintf(
                         'Aproveitamento na Turma %s - %s',
-                        trim($aluno->matricula[0]->descr_turma),
-                        trim($aluno->matricula[0]->descr_serie)
+                        trim((string) $aluno->matricula[0]->descr_turma),
+                        trim((string) $aluno->matricula[0]->descr_serie)
                     );
                     $oCalendario = CalendarioRepository::getCalendarioByCodigo($aluno->matricula[0]->ed52_i_codigo);
                     $sDataInicio = $oCalendario->getDataInicio()->getDate('d/m/Y');
@@ -147,12 +139,12 @@ class GuiaTransFerenciaService
                         $sEscolaDestino
                     );
                 } else {
-                    $sEtapa  = trim($aluno->descr_serie);
-                    $sEnsino = sprintf('%s - %s', trim($aluno->descr_ensino), trim($aluno->abrev_ensino));
+                    $sEtapa  = trim((string) $aluno->descr_serie);
+                    $sEnsino = sprintf('%s - %s', trim((string) $aluno->descr_ensino), trim((string) $aluno->abrev_ensino));
                     $oCalendario = CalendarioRepository::getCalendarioByCodigo($aluno->ed52_i_codigo);
                     $sDataInicio = $oCalendario->getDataInicio()->getDate('d/m/Y');
                     $sDataFim    = $oCalendario->getDataFinal()->getDate('d/m/Y');
-                    $sDescricaoEnsino = explode(" - ", trim($aluno->descr_ensino_anterior));
+                    $sDescricaoEnsino = explode(" - ", trim((string) $aluno->descr_ensino_anterior));
                     $aluno->descricaoEnsino = sprintf(
                         'Aproveitamento na Turma %s - %s',
                         trim($sEnsino),
@@ -172,7 +164,7 @@ class GuiaTransFerenciaService
                 $oParagrafo->ano_transferencia = $ano_transf;
                 $oParagrafo->etapa = $sEtapa;
                 $oParagrafo->ensino = $sEnsino;
-                $oParagrafo->ano_matricula = isset($aluno->ed52_i_ano) ? $aluno->ed52_i_ano : "";
+                $oParagrafo->ano_matricula = $aluno->ed52_i_ano ?? "";
              
                 $paragrafo = $oParagrafo->getDocParagrafos();
                 $aluno->atestado = $paragrafo[1]->oParag->db02_texto;
@@ -195,9 +187,9 @@ class GuiaTransFerenciaService
                 ) {
                     $sObservacao = ".......................................................................";
                 } else {
-                    $obs = urldecode(utf8_decode($this->obs));
+                    $obs = urldecode(mb_convert_encoding($this->obs, 'ISO-8859-1'));
                     $sObservacao = "OBS: ".
-                        (trim($aluno->obs_transf) != '' ? $aluno->obs_transf."\n" : '').
+                        (trim((string) $aluno->obs_transf) != '' ? $aluno->obs_transf."\n" : '').
                         (trim($obs) != '' ? $obs."\n" : '').
                         (trim($bolsa) != '' ? $bolsa."\n" : '');
                 }
@@ -206,7 +198,7 @@ class GuiaTransFerenciaService
                 $aluno->obs = $sObservacao ;
                 $aluno->cidadeDataTransf = sprintf(
                     '%s, %s de %s de %s',
-                    trim($aluno->cidade),
+                    trim((string) $aluno->cidade),
                     trim($dia_transf),
                     db_mes($mes_transf, 1),
                     $ano_transf

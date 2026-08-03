@@ -104,10 +104,10 @@ if($linhas2==0){?>
 $pdf = new PDF();
 $pdf->Open();
 $pdf->AliasNbPages();
-$array_meses = array("JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ");
-$cabecalho_campos = explode("|",$cabecalho);
+$array_meses = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
+$cabecalho_campos = explode("|",(string) $cabecalho);
 $largura_campos = explode("|",$colunas);
-$alinhamento_campos = explode("|",$alinhamento);
+$alinhamento_campos = explode("|",(string) $alinhamento);
 $result5 = $clregenteconselho->sql_record($clregenteconselho->sql_query("","case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as regente",""," ed235_i_turma = $ed57_i_codigo"));
 if($clregenteconselho->numrows>0){
  db_fieldsmemory($result5,0);
@@ -146,7 +146,7 @@ for($y=0;$y<$linhas2;$y++){
   }else{
    $next = 0;
   }
-  $pdf->cell($largura_campos[$t],4,(pg_field_type($result2,$t)=="date"?db_formatar(pg_result($result2,$y,$t),'d'):pg_result($result2,$y,$t)),1,$next,$alinhamento_campos[$t],0);
+  $pdf->cell($largura_campos[$t],4,(pg_field_type($result2,$t)=="date"?db_formatar(pg_fetch_result($result2,$y,$t),'d'):pg_fetch_result($result2,$y,$t)),1,$next,$alinhamento_campos[$t],0);
  }
  if($limite==$cont){
   $pdf->line(10,44,$somacampos+10,44);

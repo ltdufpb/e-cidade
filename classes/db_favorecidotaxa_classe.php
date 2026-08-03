@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE favorecidotaxa
 class cl_favorecidotaxa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v87_sequencial = 0; 
-   var $v87_favorecido = 0; 
-   var $v87_taxa = 0; 
+   public $v87_sequencial = 0; 
+   public $v87_favorecido = 0; 
+   public $v87_taxa = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v87_sequencial = int8 = Sequencial da Tabela 
                  v87_favorecido = int8 = Cod Favorecido 
                  v87_taxa = int4 = Cod. Taxa 
                  ";
    //funcao construtor da classe 
-   function cl_favorecidotaxa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("favorecidotaxa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_favorecidotaxa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v87_sequencial = pg_result($result,0,0); 
+       $this->v87_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from favorecidotaxa_v87_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v87_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v87_sequencial)){
          $this->erro_sql = " Campo v87_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_favorecidotaxa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "favorecidotaxa ($this->v87_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "favorecidotaxa já Cadastrado";
@@ -166,12 +166,12 @@ class cl_favorecidotaxa {
      $resaco = $this->sql_record($this->sql_query_file($this->v87_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18240,'$this->v87_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3220,18240,'','".AddSlashes(pg_result($resaco,0,'v87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3220,18242,'','".AddSlashes(pg_result($resaco,0,'v87_favorecido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3220,18241,'','".AddSlashes(pg_result($resaco,0,'v87_taxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3220,18240,'','".AddSlashes(pg_fetch_result($resaco,0,'v87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3220,18242,'','".AddSlashes(pg_fetch_result($resaco,0,'v87_favorecido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3220,18241,'','".AddSlashes(pg_fetch_result($resaco,0,'v87_taxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_favorecidotaxa {
       $this->atualizacampos();
      $sql = " update favorecidotaxa set ";
      $virgula = "";
-     if(trim($this->v87_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v87_sequencial"])){ 
+     if(trim((string) $this->v87_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v87_sequencial"])){ 
        $sql  .= $virgula." v87_sequencial = $this->v87_sequencial ";
        $virgula = ",";
-       if(trim($this->v87_sequencial) == null ){ 
+       if(trim((string) $this->v87_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial da Tabela nao Informado.";
          $this->erro_campo = "v87_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_favorecidotaxa {
          return false;
        }
      }
-     if(trim($this->v87_favorecido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v87_favorecido"])){ 
+     if(trim((string) $this->v87_favorecido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v87_favorecido"])){ 
        $sql  .= $virgula." v87_favorecido = $this->v87_favorecido ";
        $virgula = ",";
-       if(trim($this->v87_favorecido) == null ){ 
+       if(trim((string) $this->v87_favorecido) == null ){ 
          $this->erro_sql = " Campo Cod Favorecido nao Informado.";
          $this->erro_campo = "v87_favorecido";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_favorecidotaxa {
          return false;
        }
      }
-     if(trim($this->v87_taxa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v87_taxa"])){ 
+     if(trim((string) $this->v87_taxa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v87_taxa"])){ 
        $sql  .= $virgula." v87_taxa = $this->v87_taxa ";
        $virgula = ",";
-       if(trim($this->v87_taxa) == null ){ 
+       if(trim((string) $this->v87_taxa) == null ){ 
          $this->erro_sql = " Campo Cod. Taxa nao Informado.";
          $this->erro_campo = "v87_taxa";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_favorecidotaxa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18240,'$this->v87_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v87_sequencial"]) || $this->v87_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3220,18240,'".AddSlashes(pg_result($resaco,$conresaco,'v87_sequencial'))."','$this->v87_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3220,18240,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v87_sequencial'))."','$this->v87_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v87_favorecido"]) || $this->v87_favorecido != "")
-           $resac = db_query("insert into db_acount values($acount,3220,18242,'".AddSlashes(pg_result($resaco,$conresaco,'v87_favorecido'))."','$this->v87_favorecido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3220,18242,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v87_favorecido'))."','$this->v87_favorecido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v87_taxa"]) || $this->v87_taxa != "")
-           $resac = db_query("insert into db_acount values($acount,3220,18241,'".AddSlashes(pg_result($resaco,$conresaco,'v87_taxa'))."','$this->v87_taxa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3220,18241,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v87_taxa'))."','$this->v87_taxa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_favorecidotaxa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18240,'$v87_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3220,18240,'','".AddSlashes(pg_result($resaco,$iresaco,'v87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3220,18242,'','".AddSlashes(pg_result($resaco,$iresaco,'v87_favorecido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3220,18241,'','".AddSlashes(pg_result($resaco,$iresaco,'v87_taxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3220,18240,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3220,18242,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v87_favorecido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3220,18241,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v87_taxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from favorecidotaxa
@@ -345,7 +345,7 @@ class cl_favorecidotaxa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:favorecidotaxa";
@@ -360,7 +360,7 @@ class cl_favorecidotaxa {
    function sql_query ( $v87_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -386,7 +386,7 @@ class cl_favorecidotaxa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -399,7 +399,7 @@ class cl_favorecidotaxa {
    function sql_query_file ( $v87_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -420,7 +420,7 @@ class cl_favorecidotaxa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

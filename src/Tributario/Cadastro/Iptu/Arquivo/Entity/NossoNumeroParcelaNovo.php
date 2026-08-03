@@ -6,7 +6,7 @@ use ECidade\Tributario\Library\Entity;
 
 final class NossoNumeroParcelaNovo extends Entity
 {
-    
+
 }
 
 // fputs($clabre_arquivo->arquivo, str_pad(str_replace("/", "", $oNossoNumero->sNumero),$iTamNossoNumeroVersao2," ",STR_PAD_LEFT),$iTamNossoNumeroVersao2);

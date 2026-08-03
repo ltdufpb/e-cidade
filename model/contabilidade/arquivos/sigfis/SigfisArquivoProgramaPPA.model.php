@@ -123,10 +123,10 @@ class SigfisArquivoProgramaPPA extends SigfisArquivoBase implements iPadArquivoT
 	         * pronta jogamos para o array de dados que foi herdado da 'SigfisArquivoBase'
 	         */
 	    		$oDadosLinha = new stdClass();
-	    		$oDadosLinha->cd_subprograma = str_pad($oPrograma->iCodigo,           4, ' ', STR_PAD_LEFT);
-	    		$oDadosLinha->de_subprograma = str_pad($oInfosPrograma->o54_descr,   50, ' ', STR_PAD_RIGHT);
-	    		$oDadosLinha->cd_unidade     = str_pad($iUnidadeGestora,              4, ' ', STR_PAD_LEFT);
-	    		$oDadosLinha->de_objetivo    = str_pad($oInfosPrograma->o54_finali, 120, ' ', STR_PAD_RIGHT);
+	    		$oDadosLinha->cd_subprograma = str_pad((string) $oPrograma->iCodigo,           4, ' ', STR_PAD_LEFT);
+	    		$oDadosLinha->de_subprograma = str_pad((string) $oInfosPrograma->o54_descr,   50, ' ', STR_PAD_RIGHT);
+	    		$oDadosLinha->cd_unidade     = str_pad((string) $iUnidadeGestora,              4, ' ', STR_PAD_LEFT);
+	    		$oDadosLinha->de_objetivo    = str_pad((string) $oInfosPrograma->o54_finali, 120, ' ', STR_PAD_RIGHT);
 	    		$oDadosLinha->vl_SubPrograma = str_pad($iValorSemSeparador,          16, ' ', STR_PAD_LEFT);
 	    		$oDadosLinha->Dt_AnoInicio   = $iAnoInicio;
 	    		$oDadosLinha->Dt_AnoFim      = $iAnoFim;

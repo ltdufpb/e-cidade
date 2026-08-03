@@ -37,7 +37,7 @@ include(modification("classes/db_matmater_classe.php"));
 include(modification("classes/db_matparamconsulta_classe.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clmatmater         = new cl_matmater;
 $clmatparamconsulta = new cl_matparamconsulta;
@@ -115,7 +115,7 @@ if ($clmatparam->numrows) {
               </td>
               <td>
                 <?php 
-                $x = array('1' => 'Não', '2' => 'Sim');
+                $x = ['1' => 'Não', '2' => 'Sim'];
                 db_select('m38_visualizacaoitens', $x, true, 2, "");
                 ?>
               </td>
@@ -133,7 +133,7 @@ if ($clmatparam->numrows) {
               </td>
               <td>
                 <?php 
-                $x = array('f' => 'Não', 't' => 'Sim');
+                $x = ['f' => 'Não', 't' => 'Sim'];
                 db_select('m38_visualizacaomatestoque', $x, true, 1);
                 ?>
               </td>

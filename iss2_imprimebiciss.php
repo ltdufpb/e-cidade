@@ -147,9 +147,9 @@ for ($i = 0;$i < $numrows;$i++){
      $pdf->Cell(60,1,"","",0,"L",0);
 
      //lado direito da tela
-     if ( strlen(trim($z01_cgccpf)) == 14 ){
+     if ( strlen(trim((string) $z01_cgccpf)) == 14 ){
         $cpfcnpj = db_formatar($z01_cgccpf,"cnpj");
-     }else if (strlen(trim($z01_cgccpf)) == 11){
+     }else if (strlen(trim((string) $z01_cgccpf)) == 11){
         $cpfcnpj = db_formatar($z01_cgccpf,"cpf");
      }else{
         $cpfcnpj = $z01_cgccpf;
@@ -191,10 +191,10 @@ for ($i = 0;$i < $numrows;$i++){
 
      //lado direito da tela
      $telefone = '';
-     if ( strlen(trim($z01_telef)) > 0 ){
+     if ( strlen(trim((string) $z01_telef)) > 0 ){
         $telefone = $z01_telef;
      }
-     if ( strlen(trim($z01_telcel)) > 0 ){
+     if ( strlen(trim((string) $z01_telcel)) > 0 ){
         $telefone = $telefone . ' / ' . $z01_telcel;
      }
 
@@ -326,7 +326,7 @@ for ($i = 0;$i < $numrows;$i++){
      $pdf->Cell(60,1,"","",0,"L",0);
 
      $complemento = $q02_numero;
-     if ( strlen(trim($q02_compl)) > 0 ){
+     if ( strlen(trim((string) $q02_compl)) > 0 ){
          $complemento .= ' / ' . $q02_compl;
      }
 
@@ -612,7 +612,7 @@ if($numrows <> 0){
       $pdf->cell(20,4,db_formatar($q07_databx,"d"),0,1,"C",0);
 
       // Quebra linhas para descrições com muitos caracteres
-      $iTotalCaracterDescricao = strlen($q03_descr);
+      $iTotalCaracterDescricao = strlen((string) $q03_descr);
       $iTotalCaracterLinha =  47;
       if($iTotalCaracterDescricao >= $iTotalCaracterLinha){
          for ($ii = 0;$ii < ($iTotalCaracterDescricao - $iTotalCaracterLinha);$ii+=$iTotalCaracterLinha){

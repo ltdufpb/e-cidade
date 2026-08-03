@@ -15,18 +15,18 @@ final class ParcelaPaga extends LayoutParcelas
             throw BusinessException('Informe o número de parcelas para o layout');
         }
         
-        $this->fields = array(
-            'DATAPAGAMENTOPARCELA'  => array(
+        $this->fields = [
+            'DATAPAGAMENTOPARCELA'  => [
                 'name'           => 'DTPGTOPARC{$nroParcela}'
                 ,'description'   => 'DATA DO PAGAMENTO DA PARCELA{$nroParcela}'
                 ,'size'          => 10
-            )
-            ,'VALORPAGAMENTOPARCELA'  => array(
+            ]
+            ,'VALORPAGAMENTOPARCELA'  => [
                 'name'           => 'VALORPGTOPARC{$nroParcela}'
                 ,'description'   => 'VALOR DO PAGAMENTO DA PARCELA{$nroParcela}'
                 ,'size'          => 15
-            )
-        );
+            ]
+        ];
 
         parent::__construct($parcelas);
     }

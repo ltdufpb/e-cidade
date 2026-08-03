@@ -41,7 +41,7 @@ $oJson    = new Services_JSON();
 $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno = new stdClass();
 
-$oRetorno->dados   = array();
+$oRetorno->dados   = [];
 $oRetorno->status  = true;
 $oRetorno->message = '';
 
@@ -204,14 +204,14 @@ try {
         $lRescisao = null;
       }
     
-      $aTiposFolhasAbertas = array (
+      $aTiposFolhasAbertas =  [
         "adiantamento" => $lAdiantamento,
         "salario"      => $lSalario,
         "suplementar"  => $lSuplementar,
         "complementar" => $lComplementar,
         "rescisao"     => $lRescisao,
         "13salario"    => $l13Salario
-      );
+      ];
       
       if(is_null($lAdiantamento) && is_null($l13Salario) && is_null($lRescisao)) {
         $oRetorno->message = urlencode('Não existe cadastro para as folhas adiantamento, 13º salário e rescisão para esta competência. Por este motivo as folhas estão indisponíveis para liberação no e-Cidade Online.');

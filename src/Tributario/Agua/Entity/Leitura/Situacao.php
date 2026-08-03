@@ -70,10 +70,10 @@ class Situacao {
 
   public function isMedia() {
 
-    return in_array($this->regra, array(
+    return in_array($this->regra, [
       self::REGRA_MEDIA_ULTIMOS_MESES,
       self::REGRA_MEDIA_PENALIDADE,
-    ));
+    ]);
   }
 
   public function isMediaUltimosMeses() {

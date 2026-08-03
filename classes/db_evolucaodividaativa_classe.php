@@ -29,37 +29,37 @@
 //CLASSE DA ENTIDADE evolucaodividaativa
 class cl_evolucaodividaativa {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $v30_sequencial = 0;
-   var $v30_receita = 0;
-   var $v30_datageracao_dia = null;
-   var $v30_datageracao_mes = null;
-   var $v30_datageracao_ano = null;
-   var $v30_datageracao = null;
-   var $v30_valorhistorico = 0;
-   var $v30_valorcorrecao = 0;
-   var $v30_valorpagoparcialhistorico = 0;
-   var $v30_valorpagoparcial = 0;
-   var $v30_valorpago = 0;
-   var $v30_valorcancelado = 0;
-   var $v30_valordesconto = 0;
-   var $v30_valorpagohistorico = 0;
-   var $v30_valorcanceladohistorico = 0;
-   var $v30_instituicao = 0;
+   public $v30_sequencial = 0;
+   public $v30_receita = 0;
+   public $v30_datageracao_dia = null;
+   public $v30_datageracao_mes = null;
+   public $v30_datageracao_ano = null;
+   public $v30_datageracao = null;
+   public $v30_valorhistorico = 0;
+   public $v30_valorcorrecao = 0;
+   public $v30_valorpagoparcialhistorico = 0;
+   public $v30_valorpagoparcial = 0;
+   public $v30_valorpago = 0;
+   public $v30_valorcancelado = 0;
+   public $v30_valordesconto = 0;
+   public $v30_valorpagohistorico = 0;
+   public $v30_valorcanceladohistorico = 0;
+   public $v30_instituicao = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  v30_sequencial = int4 = Código da Evolução da Dívida
                  v30_receita = int4 = Receita do Débito
                  v30_datageracao = date = Data Geração
@@ -75,10 +75,10 @@ class cl_evolucaodividaativa {
                  v30_instituicao = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_evolucaodividaativa() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("evolucaodividaativa");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -183,10 +183,10 @@ class cl_evolucaodividaativa {
          $this->erro_status = "0";
          return false;
        }
-       $this->v30_sequencial = pg_result($result,0,0);
+       $this->v30_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from evolucaodividaativa_v30_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v30_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v30_sequencial)){
          $this->erro_sql = " Campo v30_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -238,7 +238,7 @@ class cl_evolucaodividaativa {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Evolução Dívida Ativa ($this->v30_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Evolução Dívida Ativa já Cadastrado";
@@ -267,22 +267,22 @@ class cl_evolucaodividaativa {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21151,'$this->v30_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3808,21151,'','".AddSlashes(pg_result($resaco,0,'v30_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21147,'','".AddSlashes(pg_result($resaco,0,'v30_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21152,'','".AddSlashes(pg_result($resaco,0,'v30_datageracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21172,'','".AddSlashes(pg_result($resaco,0,'v30_valorhistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21148,'','".AddSlashes(pg_result($resaco,0,'v30_valorcorrecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21149,'','".AddSlashes(pg_result($resaco,0,'v30_valorpagoparcialhistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21150,'','".AddSlashes(pg_result($resaco,0,'v30_valorpagoparcial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21184,'','".AddSlashes(pg_result($resaco,0,'v30_valorpago'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21185,'','".AddSlashes(pg_result($resaco,0,'v30_valorcancelado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21186,'','".AddSlashes(pg_result($resaco,0,'v30_valordesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21187,'','".AddSlashes(pg_result($resaco,0,'v30_valorpagohistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21188,'','".AddSlashes(pg_result($resaco,0,'v30_valorcanceladohistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3808,21153,'','".AddSlashes(pg_result($resaco,0,'v30_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21151,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21147,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21152,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_datageracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21172,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_valorhistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21148,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_valorcorrecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21149,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_valorpagoparcialhistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21150,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_valorpagoparcial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21184,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_valorpago'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21185,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_valorcancelado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21186,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_valordesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21187,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_valorpagohistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21188,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_valorcanceladohistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3808,21153,'','".AddSlashes(pg_fetch_result($resaco,0,'v30_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -292,10 +292,10 @@ class cl_evolucaodividaativa {
       $this->atualizacampos();
      $sql = " update evolucaodividaativa set ";
      $virgula = "";
-     if(trim($this->v30_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_sequencial"])){
+     if(trim((string) $this->v30_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_sequencial"])){
        $sql  .= $virgula." v30_sequencial = $this->v30_sequencial ";
        $virgula = ",";
-       if(trim($this->v30_sequencial) == null ){
+       if(trim((string) $this->v30_sequencial) == null ){
          $this->erro_sql = " Campo Código da Evolução da Dívida não informado.";
          $this->erro_campo = "v30_sequencial";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_evolucaodividaativa {
          return false;
        }
      }
-     if(trim($this->v30_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_receita"])){
+     if(trim((string) $this->v30_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_receita"])){
        $sql  .= $virgula." v30_receita = $this->v30_receita ";
        $virgula = ",";
-       if(trim($this->v30_receita) == null ){
+       if(trim((string) $this->v30_receita) == null ){
          $this->erro_sql = " Campo Receita do Débito não informado.";
          $this->erro_campo = "v30_receita";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_evolucaodividaativa {
          return false;
        }
      }
-     if(trim($this->v30_datageracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_datageracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v30_datageracao_dia"] !="") ){
+     if(trim((string) $this->v30_datageracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_datageracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v30_datageracao_dia"] !="") ){
        $sql  .= $virgula." v30_datageracao = '$this->v30_datageracao' ";
        $virgula = ",";
-       if(trim($this->v30_datageracao) == null ){
+       if(trim((string) $this->v30_datageracao) == null ){
          $this->erro_sql = " Campo Data Geração não informado.";
          $this->erro_campo = "v30_datageracao_dia";
          $this->erro_banco = "";
@@ -334,7 +334,7 @@ class cl_evolucaodividaativa {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v30_datageracao_dia"])){
          $sql  .= $virgula." v30_datageracao = null ";
          $virgula = ",";
-         if(trim($this->v30_datageracao) == null ){
+         if(trim((string) $this->v30_datageracao) == null ){
            $this->erro_sql = " Campo Data Geração não informado.";
            $this->erro_campo = "v30_datageracao_dia";
            $this->erro_banco = "";
@@ -345,73 +345,73 @@ class cl_evolucaodividaativa {
          }
        }
      }
-     if(trim($this->v30_valorhistorico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorhistorico"])){
-        if(trim($this->v30_valorhistorico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorhistorico"])){
+     if(trim((string) $this->v30_valorhistorico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorhistorico"])){
+        if(trim((string) $this->v30_valorhistorico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorhistorico"])){
            $this->v30_valorhistorico = "0" ;
         }
        $sql  .= $virgula." v30_valorhistorico = $this->v30_valorhistorico ";
        $virgula = ",";
      }
-     if(trim($this->v30_valorcorrecao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcorrecao"])){
-        if(trim($this->v30_valorcorrecao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcorrecao"])){
+     if(trim((string) $this->v30_valorcorrecao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcorrecao"])){
+        if(trim((string) $this->v30_valorcorrecao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcorrecao"])){
            $this->v30_valorcorrecao = "0" ;
         }
        $sql  .= $virgula." v30_valorcorrecao = $this->v30_valorcorrecao ";
        $virgula = ",";
      }
-     if(trim($this->v30_valorpagoparcialhistorico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagoparcialhistorico"])){
-        if(trim($this->v30_valorpagoparcialhistorico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagoparcialhistorico"])){
+     if(trim((string) $this->v30_valorpagoparcialhistorico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagoparcialhistorico"])){
+        if(trim((string) $this->v30_valorpagoparcialhistorico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagoparcialhistorico"])){
            $this->v30_valorpagoparcialhistorico = "0" ;
         }
        $sql  .= $virgula." v30_valorpagoparcialhistorico = $this->v30_valorpagoparcialhistorico ";
        $virgula = ",";
      }
-     if(trim($this->v30_valorpagoparcial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagoparcial"])){
-        if(trim($this->v30_valorpagoparcial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagoparcial"])){
+     if(trim((string) $this->v30_valorpagoparcial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagoparcial"])){
+        if(trim((string) $this->v30_valorpagoparcial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagoparcial"])){
            $this->v30_valorpagoparcial = "0" ;
         }
        $sql  .= $virgula." v30_valorpagoparcial = $this->v30_valorpagoparcial ";
        $virgula = ",";
      }
-     if(trim($this->v30_valorpago)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpago"])){
-        if(trim($this->v30_valorpago)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpago"])){
+     if(trim((string) $this->v30_valorpago)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpago"])){
+        if(trim((string) $this->v30_valorpago)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpago"])){
            $this->v30_valorpago = "0" ;
         }
        $sql  .= $virgula." v30_valorpago = $this->v30_valorpago ";
        $virgula = ",";
      }
-     if(trim($this->v30_valorcancelado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcancelado"])){
-        if(trim($this->v30_valorcancelado)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcancelado"])){
+     if(trim((string) $this->v30_valorcancelado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcancelado"])){
+        if(trim((string) $this->v30_valorcancelado)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcancelado"])){
            $this->v30_valorcancelado = "0" ;
         }
        $sql  .= $virgula." v30_valorcancelado = $this->v30_valorcancelado ";
        $virgula = ",";
      }
-     if(trim($this->v30_valordesconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valordesconto"])){
-        if(trim($this->v30_valordesconto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valordesconto"])){
+     if(trim((string) $this->v30_valordesconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valordesconto"])){
+        if(trim((string) $this->v30_valordesconto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valordesconto"])){
            $this->v30_valordesconto = "0" ;
         }
        $sql  .= $virgula." v30_valordesconto = $this->v30_valordesconto ";
        $virgula = ",";
      }
-     if(trim($this->v30_valorpagohistorico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagohistorico"])){
-        if(trim($this->v30_valorpagohistorico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagohistorico"])){
+     if(trim((string) $this->v30_valorpagohistorico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagohistorico"])){
+        if(trim((string) $this->v30_valorpagohistorico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagohistorico"])){
            $this->v30_valorpagohistorico = "0" ;
         }
        $sql  .= $virgula." v30_valorpagohistorico = $this->v30_valorpagohistorico ";
        $virgula = ",";
      }
-     if(trim($this->v30_valorcanceladohistorico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcanceladohistorico"])){
-        if(trim($this->v30_valorcanceladohistorico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcanceladohistorico"])){
+     if(trim((string) $this->v30_valorcanceladohistorico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcanceladohistorico"])){
+        if(trim((string) $this->v30_valorcanceladohistorico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcanceladohistorico"])){
            $this->v30_valorcanceladohistorico = "0" ;
         }
        $sql  .= $virgula." v30_valorcanceladohistorico = $this->v30_valorcanceladohistorico ";
        $virgula = ",";
      }
-     if(trim($this->v30_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_instituicao"])){
+     if(trim((string) $this->v30_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v30_instituicao"])){
        $sql  .= $virgula." v30_instituicao = $this->v30_instituicao ";
        $virgula = ",";
-       if(trim($this->v30_instituicao) == null ){
+       if(trim((string) $this->v30_instituicao) == null ){
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "v30_instituicao";
          $this->erro_banco = "";
@@ -435,35 +435,35 @@ class cl_evolucaodividaativa {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21151,'$this->v30_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_sequencial"]) || $this->v30_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21151,'".AddSlashes(pg_result($resaco,$conresaco,'v30_sequencial'))."','$this->v30_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21151,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_sequencial'))."','$this->v30_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_receita"]) || $this->v30_receita != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21147,'".AddSlashes(pg_result($resaco,$conresaco,'v30_receita'))."','$this->v30_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21147,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_receita'))."','$this->v30_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_datageracao"]) || $this->v30_datageracao != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21152,'".AddSlashes(pg_result($resaco,$conresaco,'v30_datageracao'))."','$this->v30_datageracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21152,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_datageracao'))."','$this->v30_datageracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_valorhistorico"]) || $this->v30_valorhistorico != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21172,'".AddSlashes(pg_result($resaco,$conresaco,'v30_valorhistorico'))."','$this->v30_valorhistorico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21172,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_valorhistorico'))."','$this->v30_valorhistorico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcorrecao"]) || $this->v30_valorcorrecao != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21148,'".AddSlashes(pg_result($resaco,$conresaco,'v30_valorcorrecao'))."','$this->v30_valorcorrecao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21148,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_valorcorrecao'))."','$this->v30_valorcorrecao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagoparcialhistorico"]) || $this->v30_valorpagoparcialhistorico != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21149,'".AddSlashes(pg_result($resaco,$conresaco,'v30_valorpagoparcialhistorico'))."','$this->v30_valorpagoparcialhistorico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21149,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_valorpagoparcialhistorico'))."','$this->v30_valorpagoparcialhistorico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagoparcial"]) || $this->v30_valorpagoparcial != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21150,'".AddSlashes(pg_result($resaco,$conresaco,'v30_valorpagoparcial'))."','$this->v30_valorpagoparcial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21150,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_valorpagoparcial'))."','$this->v30_valorpagoparcial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpago"]) || $this->v30_valorpago != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21184,'".AddSlashes(pg_result($resaco,$conresaco,'v30_valorpago'))."','$this->v30_valorpago',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21184,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_valorpago'))."','$this->v30_valorpago',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcancelado"]) || $this->v30_valorcancelado != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21185,'".AddSlashes(pg_result($resaco,$conresaco,'v30_valorcancelado'))."','$this->v30_valorcancelado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21185,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_valorcancelado'))."','$this->v30_valorcancelado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_valordesconto"]) || $this->v30_valordesconto != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21186,'".AddSlashes(pg_result($resaco,$conresaco,'v30_valordesconto'))."','$this->v30_valordesconto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21186,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_valordesconto'))."','$this->v30_valordesconto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_valorpagohistorico"]) || $this->v30_valorpagohistorico != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21187,'".AddSlashes(pg_result($resaco,$conresaco,'v30_valorpagohistorico'))."','$this->v30_valorpagohistorico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21187,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_valorpagohistorico'))."','$this->v30_valorpagohistorico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_valorcanceladohistorico"]) || $this->v30_valorcanceladohistorico != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21188,'".AddSlashes(pg_result($resaco,$conresaco,'v30_valorcanceladohistorico'))."','$this->v30_valorcanceladohistorico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21188,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_valorcanceladohistorico'))."','$this->v30_valorcanceladohistorico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v30_instituicao"]) || $this->v30_instituicao != "")
-             $resac = db_query("insert into db_acount values($acount,3808,21153,'".AddSlashes(pg_result($resaco,$conresaco,'v30_instituicao'))."','$this->v30_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3808,21153,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v30_instituicao'))."','$this->v30_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -517,22 +517,22 @@ class cl_evolucaodividaativa {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21151,'$v30_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3808,21151,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21147,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21152,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_datageracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21172,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_valorhistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21148,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_valorcorrecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21149,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_valorpagoparcialhistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21150,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_valorpagoparcial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21184,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_valorpago'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21185,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_valorcancelado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21186,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_valordesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21187,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_valorpagohistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21188,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_valorcanceladohistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3808,21153,'','".AddSlashes(pg_result($resaco,$iresaco,'v30_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21151,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21147,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21152,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_datageracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21172,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_valorhistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21148,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_valorcorrecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21149,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_valorpagoparcialhistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21150,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_valorpagoparcial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21184,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_valorpago'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21185,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_valorcancelado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21186,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_valordesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21187,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_valorpagohistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21188,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_valorcanceladohistorico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3808,21153,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v30_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

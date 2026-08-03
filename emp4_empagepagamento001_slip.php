@@ -58,7 +58,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_seleciona = new cl_iframe_seleciona;
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 $db_opcao = 1;
@@ -104,7 +104,7 @@ if (isset($dtDataSlipInicial) && !isset($dtDataSlipFinal)) {
    $dbwhere      .= " and '{$dtSlipFinal}'";
   
 }
-$oParametro = db_stdClass::getParametro("empparametro",array(db_getsession("DB_anousu")));
+$oParametro = db_stdClass::getParametro("empparametro",[db_getsession("DB_anousu")]);
 ?>
 <html>
 <head>

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE empagemovconta
 class cl_empagemovconta { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e98_codmov = 0; 
-   var $e98_contabanco = 0; 
+   public $e98_codmov = 0; 
+   public $e98_contabanco = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e98_codmov = int4 = Movimento 
                  e98_contabanco = int4 = Código Conta 
                  ";
    //funcao construtor da classe 
-   function cl_empagemovconta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagemovconta"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_empagemovconta {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Contas em que os movimentos foram depositados ($this->e98_codmov) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Contas em que os movimentos foram depositados já Cadastrado";
@@ -129,11 +129,11 @@ class cl_empagemovconta {
      $resaco = $this->sql_record($this->sql_query_file($this->e98_codmov));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7100,'$this->e98_codmov','I')");
-       $resac = db_query("insert into db_acount values($acount,1175,7100,'','".AddSlashes(pg_result($resaco,0,'e98_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1175,7101,'','".AddSlashes(pg_result($resaco,0,'e98_contabanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1175,7100,'','".AddSlashes(pg_fetch_result($resaco,0,'e98_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1175,7101,'','".AddSlashes(pg_fetch_result($resaco,0,'e98_contabanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_empagemovconta {
       $this->atualizacampos();
      $sql = " update empagemovconta set ";
      $virgula = "";
-     if(trim($this->e98_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e98_codmov"])){ 
+     if(trim((string) $this->e98_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e98_codmov"])){ 
        $sql  .= $virgula." e98_codmov = $this->e98_codmov ";
        $virgula = ",";
-       if(trim($this->e98_codmov) == null ){ 
+       if(trim((string) $this->e98_codmov) == null ){ 
          $this->erro_sql = " Campo Movimento nao Informado.";
          $this->erro_campo = "e98_codmov";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_empagemovconta {
          return false;
        }
      }
-     if(trim($this->e98_contabanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e98_contabanco"])){ 
+     if(trim((string) $this->e98_contabanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e98_contabanco"])){ 
        $sql  .= $virgula." e98_contabanco = $this->e98_contabanco ";
        $virgula = ",";
-       if(trim($this->e98_contabanco) == null ){ 
+       if(trim((string) $this->e98_contabanco) == null ){ 
          $this->erro_sql = " Campo Código Conta nao Informado.";
          $this->erro_campo = "e98_contabanco";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_empagemovconta {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7100,'$this->e98_codmov','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e98_codmov"]))
-           $resac = db_query("insert into db_acount values($acount,1175,7100,'".AddSlashes(pg_result($resaco,$conresaco,'e98_codmov'))."','$this->e98_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1175,7100,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e98_codmov'))."','$this->e98_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e98_contabanco"]))
-           $resac = db_query("insert into db_acount values($acount,1175,7101,'".AddSlashes(pg_result($resaco,$conresaco,'e98_contabanco'))."','$this->e98_contabanco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1175,7101,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e98_contabanco'))."','$this->e98_contabanco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_empagemovconta {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7100,'$e98_codmov','E')");
-         $resac = db_query("insert into db_acount values($acount,1175,7100,'','".AddSlashes(pg_result($resaco,$iresaco,'e98_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1175,7101,'','".AddSlashes(pg_result($resaco,$iresaco,'e98_contabanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1175,7100,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e98_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1175,7101,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e98_contabanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from empagemovconta
@@ -291,7 +291,7 @@ class cl_empagemovconta {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empagemovconta";
@@ -305,7 +305,7 @@ class cl_empagemovconta {
    function sql_query ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -332,7 +332,7 @@ class cl_empagemovconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -344,7 +344,7 @@ class cl_empagemovconta {
    function sql_query_conta ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -367,7 +367,7 @@ class cl_empagemovconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -379,7 +379,7 @@ class cl_empagemovconta {
    function sql_query_contausada ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_empagemovconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_empagemovconta {
    function sql_query_file ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -435,7 +435,7 @@ class cl_empagemovconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

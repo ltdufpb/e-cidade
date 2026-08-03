@@ -37,7 +37,7 @@ include(modification("classes/db_isstipoalvara_classe.php"));
 $oPost = db_utils::postmemory($_POST);
 $oGET = db_utils::postmemory($_GET);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clisstipoalvara = new cl_isstipoalvara;
 $clisstipoalvara->rotulo->label("q98_sequencial");
 $clisstipoalvara->rotulo->label("q98_descricao");
@@ -115,9 +115,9 @@ $clisstipoalvara->rotulo->label("q98_descricao");
           $sql = $clisstipoalvara->sql_query("",$campos,"q98_sequencial"," q98_issgrupotipoalvara = {$oGET->grupo} {$sWere} ");
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_q98_descricao)) { 
-          $repassa = array("chave_q98_sequencial"=>$chave_q98_sequencial,"chave_q98_descricao"=>$chave_q98_descricao);
+          $repassa = ["chave_q98_sequencial"=>$chave_q98_sequencial,"chave_q98_descricao"=>$chave_q98_descricao];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

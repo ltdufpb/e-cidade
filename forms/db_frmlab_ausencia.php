@@ -122,7 +122,7 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
                                                             <td>
                                                                <?php 
                                                                if(isset($la36_d_ini)&&($la36_d_ini!="")){
-                                                                 $vet=explode("/",$la36_d_ini);
+                                                                 $vet=explode("/",(string) $la36_d_ini);
                                                                  $la36_d_ini_dia=$vet[0];
                                                                  $la36_d_ini_mes=$vet[1];
                                                                  $la36_d_ini_ano=$vet[2];
@@ -136,7 +136,7 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
                                                             <td>
                                                                <?php 
                                                                if(isset($la36_d_fim)&&($la36_d_fim!="")){
-                                                                 $vet=explode("/",$la36_d_fim);
+                                                                 $vet=explode("/",(string) $la36_d_fim);
                                                                  $la36_d_fim_dia=$vet[0];
                                                                  $la36_d_fim_mes=$vet[1];
                                                                  $la36_d_fim_ano=$vet[2];
@@ -185,7 +185,7 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
 	<tr>
 		<td valign="top"><br>
   <?php 
-		$chavepri = array ("la36_i_codigo" => @$la36_i_codigo, 
+		$chavepri =  ["la36_i_codigo" => @$la36_i_codigo, 
                        "la08_c_descr"=>@$la08_c_descr, 
                        "la02_i_codigo"=>@$la02_i_codigo, 
                        "la02_c_descr"=>@$la02_c_descr, 
@@ -195,7 +195,7 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
                        "la36_d_fim" => @$la36_d_fim, 
                        "la36_c_horaini" => @$la36_c_horaini, 
                        "la36_c_horafim" => @$la36_c_horafim,
-                       "la08_i_codigo" => @$la08_i_codigo);
+                       "la08_i_codigo" => @$la08_i_codigo];
 		$cliframe_alterar_excluir->chavepri = $chavepri;
 		$cliframe_alterar_excluir->sql = $cllab_ausencia->sql_query_laboratorio ("", "la36_i_codigo,
                                                                                        la08_c_descr,
@@ -369,7 +369,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lab_ausencia.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

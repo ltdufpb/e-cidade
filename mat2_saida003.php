@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -88,7 +88,7 @@ $aux = new cl_arquivo_auxiliar;
          <td title="Quebra por usuário"><b>Quebra por usuário:</b></td>
          <td align="left">
          <?php 
-           $matriz = array("N"=>"Não","S"=>"Sim");
+           $matriz = ["N"=>"Não","S"=>"Sim"];
            db_select("quebra_usu",$matriz,true,4);
          ?>
          </td>

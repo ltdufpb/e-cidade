@@ -106,7 +106,7 @@ db_selectrecord('at42_usuario',($cldb_usuarios->sql_record($cldb_usuarios->sql_q
     <td> 
 <?php 
 // db_input('at42_perc',15,$Iat42_perc,true,'text',$db_opcao,"")
-  $matriz = array("0"=>"0%",
+  $matriz = ["0"=>"0%",
                   "10"=>"10%", 
                   "20"=>"20%",
                   "30"=>"30%",
@@ -116,7 +116,7 @@ db_selectrecord('at42_usuario',($cldb_usuarios->sql_record($cldb_usuarios->sql_q
                   "70"=>"70%",
                   "80"=>"80%",
                   "90"=>"90%",
-                  "100"=>"100%");             
+                  "100"=>"100%"];             
   db_select("at42_perc", $matriz,true,$db_opcao); 
 ?>
     </td>
@@ -132,7 +132,7 @@ db_selectrecord('at42_usuario',($cldb_usuarios->sql_record($cldb_usuarios->sql_q
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at42_sequencial"=>@$at42_sequencial,"at42_tarefa"=>@$at42_tarefa);
+	 $chavepri= ["at42_sequencial"=>@$at42_sequencial,"at42_tarefa"=>@$at42_tarefa];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cltarefausu->sql_query(null,"at42_sequencial,at42_tarefa,db_usuarios.nome as nome,at42_perc",null,"at42_tarefa=$at42_tarefa");
 	 $cliframe_alterar_excluir->campos  ="nome,at42_perc";

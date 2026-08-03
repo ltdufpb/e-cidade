@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_impressora_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_impressora = new cl_db_impressora;
 $cldb_impressora->rotulo->label("db64_sequencial");
 $cldb_impressora->rotulo->label("db64_nome");
@@ -106,9 +106,9 @@ $cldb_impressora->rotulo->label("db64_nome");
         }else{
            $sql = $cldb_impressora->sql_query("",$campos,"db64_sequencial",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db64_nome)){
-          $repassa = array("chave_db64_sequencial"=>$chave_db64_sequencial,"chave_db64_nome"=>$chave_db64_nome);
+          $repassa = ["chave_db64_sequencial"=>$chave_db64_sequencial,"chave_db64_nome"=>$chave_db64_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

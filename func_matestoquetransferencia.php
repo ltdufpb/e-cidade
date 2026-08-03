@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matestoquetransferencia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatestoquetransferencia = new cl_matestoquetransferencia;
 $clmatestoquetransferencia->rotulo->label("m84_sequencial");
 $clmatestoquetransferencia->rotulo->label("m84_matestoqueitem");
@@ -98,9 +98,9 @@ $clmatestoquetransferencia->rotulo->label("m84_matestoqueitem");
         }else{
            $sql = $clmatestoquetransferencia->sql_query("",$campos,"m84_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m84_matestoqueitem)){
-          $repassa = array("chave_m84_sequencial"=>$chave_m84_sequencial,"chave_m84_matestoqueitem"=>$chave_m84_matestoqueitem);
+          $repassa = ["chave_m84_sequencial"=>$chave_m84_sequencial,"chave_m84_matestoqueitem"=>$chave_m84_matestoqueitem];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

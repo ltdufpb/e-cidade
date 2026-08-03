@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_transfescolafora_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltransfescolafora = new cl_transfescolafora;
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed47_i_codigo");
@@ -132,9 +132,9 @@ $clrotulo->label("ed52_i_ano");
             ";
 
 
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed47_i_codigo)){
-     $repassa = array("chave_ed47_i_codigo"=>$chave_ed47_i_codigo,"chave_ed47_v_nome"=>$chave_ed47_v_nome,"chave_ed52_i_ano"=>$chave_ed52_i_ano);
+     $repassa = ["chave_ed47_i_codigo"=>$chave_ed47_i_codigo,"chave_ed47_v_nome"=>$chave_ed47_v_nome,"chave_ed52_i_ano"=>$chave_ed52_i_ano];
     }
     if(isset($chave_ed47_i_codigo) && (trim($chave_ed47_i_codigo)!="") ){
      $sql .= " AND ed104_i_aluno = $chave_ed47_i_codigo ORDER BY ed47_v_nome,ed104_d_data desc";

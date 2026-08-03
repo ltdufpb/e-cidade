@@ -36,8 +36,8 @@ $oDaoVacSala       = db_utils::getdao('vac_sala');
 $dHoje             = date("Y-m-d", db_getsession("DB_datausu"));
 $aHoje             = explode("-", $dHoje);
 $iDepartamento     = db_getsession("DB_coddepto");
-$dIni              = substr($dDataini, 6, 4)."-".substr($dDataini, 3, 2)."-".substr($dDataini, 0, 2);
-$dFim              = substr($dDatafim, 6, 4)."-".substr($dDatafim, 3, 2)."-".substr($dDatafim, 0, 2);
+$dIni              = substr((string) $dDataini, 6, 4)."-".substr((string) $dDataini, 3, 2)."-".substr((string) $dDataini, 0, 2);
+$dFim              = substr((string) $dDatafim, 6, 4)."-".substr((string) $dDatafim, 3, 2)."-".substr((string) $dDatafim, 0, 2);
 $sWhere            = " vc16_d_data between '$dIni' and '$dFim' ";
 if ($iVacina != 0) {
   $sWhere .= " and vc06_i_codigo=$iVacina ";
@@ -104,7 +104,7 @@ $rsSala     = $oDaoVacSala->sql_record($sSql);
 $iTotalUnid = $oDaoVacSala->numrows;
 //For das unidades que tem salas cadastradas
 for ($iInUnid = 0; $iInUnid < $iTotalUnid; $iInUnid++) {
-  
+
   $oDadosDepto  = db_utils::fieldsmemory($rsSala, $iInUnid);
   $head3        = "Unidade: ".$oDadosDepto->descrdepto;
   $lFirst       = true;
@@ -112,11 +112,11 @@ for ($iInUnid = 0; $iInUnid < $iTotalUnid; $iInUnid++) {
   for ($iX = 0; $iX < $iTam; $iX++) {
 
     if ($oPdf->GetY() > ($oPdf->h - 25) || $lFirst == true) {
-      
+
       $oPdf->ln(5); 
       $oPdf->addpage('P');
       $lFirst = false;
-      
+
     }
     $oPdf->setfont('arial', 'b', 10);
     $oPdf->SetXY($oPdf->GetX(), $oPdf->GetY() + 2);
@@ -129,21 +129,21 @@ for ($iInUnid = 0; $iInUnid < $iTotalUnid; $iInUnid++) {
     $rsBoletim = $oDaoVacboletim->sql_record($sSql);
     //Monta o label dos boletins referentes a vacina
     for ($iY = 1; $iY <= 10; $iY++) {
-      
+
       $sIdade  = " 0 ";
       $iQuebra = 0;
       if ($iY == 10) {
         $iQuebra = 1;
       }
       if (($iY-1) < $oDaoVacboletim->numrows) {
-        
+
         $oBoletim = db_utils::fieldsMemory($rsBoletim, $iY-1);
         $sIdade   = $oBoletim->vc13_c_descr;
-      
+
       }
       $iTotalFaixa[$iY] = 0;
       $oPdf->cell(17.5, 4, $sIdade, 1, $iQuebra, "C", 1);
-      
+
     }
     //selecionas todas as doses da vacina corrente
     $sSql         = $oDaoVacVacinadose->sql_query(null,
@@ -156,11 +156,11 @@ for ($iInUnid = 0; $iInUnid < $iTotalUnid; $iInUnid++) {
     $oPdf->setfont('arial', '', 10);
     //for secundario percorre todas as doses da vacina corrente no for principal
     for ($iX2 = 0; $iX2 < $iVacinaDoseL; $iX2++) {
-      
+
       $oVacinadose = db_utils::fieldsMemory($rsVacinadose, $iX2);
       $oPdf->cell(17.5, 4, $oVacinadose->vc03_c_codpni, 1, 0, "C", 0);      
       for ($iY = 1; $iY <= 10; $iY++) {
-        
+
         $iQuebra = 0;
         if ($iY == 10) {
           $iQuebra = 1;
@@ -194,20 +194,20 @@ for ($iInUnid = 0; $iInUnid < $iTotalUnid; $iInUnid++) {
           $sSql        = " select coalesce(sum(b.vc16_n_quant),0) as quant"; 
           $sSql       .= " from vac_aplicalote as a $sInnerJoin where $sWhere";
           $rsAplicadas = $oDaoVacAplicalote->sql_record($sSql);
-           
+
           if ($oDaoVacAplicalote->numrows > 0) {
-              
+
             $oDadosVacinaAplicada = db_utils::fieldsmemory($rsAplicadas, 0);
             if ($oDadosVacinaAplicada->quant > 0) {
               $iQuant = $oDadosVacinaAplicada->quant;
             } else {
               $iQuant = "0";
             }
-            
+
           } else {
             $iQuant = "0";
           }
-            
+
         } else {
           $iQuant = "0";
         }
@@ -229,7 +229,7 @@ for ($iInUnid = 0; $iInUnid < $iTotalUnid; $iInUnid++) {
         $iTotalFaixa[$iY] = "0";
       }
       $oPdf->cell(17.5, 4, $iTotalFaixa[$iY], 1, $iQuebra, "C", 1);
-    
+
     }
 
   }//For das vacinas

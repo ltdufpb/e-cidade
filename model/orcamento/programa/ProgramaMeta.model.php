@@ -58,7 +58,7 @@ class ProgramaMeta {
    * Array com as iniciativas da meta
    * @var ProgramaIniciativa array
    */
-  private $aIniciativas = array();
+  private $aIniciativas = [];
 
   /**
    * Código do Objetivo
@@ -75,7 +75,7 @@ class ProgramaMeta {
   /**
    * @var ProgramaMetaIndice[]
    */
-  protected $indices = array();
+  protected $indices = [];
 
   /**
    * Recupera a propriedade do sequencial do Objetivo, presente na tabela orcmeta
@@ -259,7 +259,7 @@ class ProgramaMeta {
         throw new DBException($sMensagemErro);
       }
 
-      $this->aIniciativas = array();
+      $this->aIniciativas = [];
       $iTotalIniciativas  = pg_num_rows($rsBuscaIniciativas);
 
       /**

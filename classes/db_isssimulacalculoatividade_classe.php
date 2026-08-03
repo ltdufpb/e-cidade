@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE isssimulacalculoatividade
 class cl_isssimulacalculoatividade { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q131_sequencial = 0; 
-   var $q131_atividade = 0; 
-   var $q131_issimulacalculo = 0; 
-   var $q131_principal = 'f'; 
-   var $q131_quantidade = 0; 
-   var $q131_seq = 0; 
-   var $q131_permanente = 'f'; 
+   public $q131_sequencial = 0; 
+   public $q131_atividade = 0; 
+   public $q131_issimulacalculo = 0; 
+   public $q131_principal = 'f'; 
+   public $q131_quantidade = 0; 
+   public $q131_seq = 0; 
+   public $q131_permanente = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q131_sequencial = int4 = sequencial 
                  q131_atividade = int4 = Atividade 
                  q131_issimulacalculo = int4 = Simulação calculo ISSQN 
@@ -60,10 +60,10 @@ class cl_isssimulacalculoatividade {
                  q131_permanente = bool = Permanente 
                  ";
    //funcao construtor da classe 
-   function cl_isssimulacalculoatividade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isssimulacalculoatividade"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -147,10 +147,10 @@ class cl_isssimulacalculoatividade {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q131_sequencial = pg_result($result,0,0); 
+       $this->q131_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from isssimulacalculoatividade_q131_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q131_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q131_sequencial)){
          $this->erro_sql = " Campo q131_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,7 +190,7 @@ class cl_isssimulacalculoatividade {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Simulação calculo atividades ISSQN ($this->q131_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Simulação calculo atividades ISSQN já Cadastrado";
@@ -218,10 +218,10 @@ class cl_isssimulacalculoatividade {
       $this->atualizacampos();
      $sql = " update isssimulacalculoatividade set ";
      $virgula = "";
-     if(trim($this->q131_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_sequencial"])){ 
+     if(trim((string) $this->q131_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_sequencial"])){ 
        $sql  .= $virgula." q131_sequencial = $this->q131_sequencial ";
        $virgula = ",";
-       if(trim($this->q131_sequencial) == null ){ 
+       if(trim((string) $this->q131_sequencial) == null ){ 
          $this->erro_sql = " Campo sequencial nao Informado.";
          $this->erro_campo = "q131_sequencial";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_atividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_atividade"])){ 
+     if(trim((string) $this->q131_atividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_atividade"])){ 
        $sql  .= $virgula." q131_atividade = $this->q131_atividade ";
        $virgula = ",";
-       if(trim($this->q131_atividade) == null ){ 
+       if(trim((string) $this->q131_atividade) == null ){ 
          $this->erro_sql = " Campo Atividade nao Informado.";
          $this->erro_campo = "q131_atividade";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_issimulacalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_issimulacalculo"])){ 
+     if(trim((string) $this->q131_issimulacalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_issimulacalculo"])){ 
        $sql  .= $virgula." q131_issimulacalculo = $this->q131_issimulacalculo ";
        $virgula = ",";
-       if(trim($this->q131_issimulacalculo) == null ){ 
+       if(trim((string) $this->q131_issimulacalculo) == null ){ 
          $this->erro_sql = " Campo Simulação calculo ISSQN nao Informado.";
          $this->erro_campo = "q131_issimulacalculo";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_principal"])){ 
+     if(trim((string) $this->q131_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_principal"])){ 
        $sql  .= $virgula." q131_principal = '$this->q131_principal' ";
        $virgula = ",";
-       if(trim($this->q131_principal) == null ){ 
+       if(trim((string) $this->q131_principal) == null ){ 
          $this->erro_sql = " Campo Principal nao Informado.";
          $this->erro_campo = "q131_principal";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_quantidade"])){ 
+     if(trim((string) $this->q131_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_quantidade"])){ 
        $sql  .= $virgula." q131_quantidade = $this->q131_quantidade ";
        $virgula = ",";
-       if(trim($this->q131_quantidade) == null ){ 
+       if(trim((string) $this->q131_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "q131_quantidade";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_seq"])){ 
+     if(trim((string) $this->q131_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_seq"])){ 
        $sql  .= $virgula." q131_seq = $this->q131_seq ";
        $virgula = ",";
-       if(trim($this->q131_seq) == null ){ 
+       if(trim((string) $this->q131_seq) == null ){ 
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "q131_seq";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_isssimulacalculoatividade {
          return false;
        }
      }
-     if(trim($this->q131_permanente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_permanente"])){ 
+     if(trim((string) $this->q131_permanente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q131_permanente"])){ 
        $sql  .= $virgula." q131_permanente = '$this->q131_permanente' ";
        $virgula = ",";
-       if(trim($this->q131_permanente) == null ){ 
+       if(trim((string) $this->q131_permanente) == null ){ 
          $this->erro_sql = " Campo Permanente nao Informado.";
          $this->erro_campo = "q131_permanente";
          $this->erro_banco = "";
@@ -404,7 +404,7 @@ class cl_isssimulacalculoatividade {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:isssimulacalculoatividade";
@@ -419,7 +419,7 @@ class cl_isssimulacalculoatividade {
    function sql_query ( $q131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_isssimulacalculoatividade {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -460,7 +460,7 @@ class cl_isssimulacalculoatividade {
    function sql_query_file ( $q131_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_isssimulacalculoatividade {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

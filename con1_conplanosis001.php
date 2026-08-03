@@ -36,7 +36,7 @@ require(modification("libs/db_libcontabilidade.php"));
 $clestrutura_sistema = new cl_estrutura_sistema;
 $clconparametro = new cl_conparametro;
 $clconplanosis = new cl_conplanosis;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 

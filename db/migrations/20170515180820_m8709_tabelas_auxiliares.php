@@ -28,11 +28,11 @@ SQL
 
     private function alteraTabelas()
     {
-        $table = $this->table('censoinstsuperior', array('schema' => 'escola'));
+        $table = $this->table('censoinstsuperior', ['schema' => 'escola']);
         $table->changeColumn('ed257_c_nome', 'string')
-              ->changeColumn('ed257_c_situacao', 'string', array('limit' => 10, "null" => true))
+              ->changeColumn('ed257_c_situacao', 'string', ['limit' => 10, "null" => true])
               ->save();
-        $table = $this->table('censoativcompl', array('schema' => 'escola'));
+        $table = $this->table('censoativcompl', ['schema' => 'escola']);
         $table->changeColumn('ed133_c_descr', 'string')
               ->save();
 

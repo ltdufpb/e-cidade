@@ -34,7 +34,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_procedimento_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocedimento = new cl_procedimento;
 $clprocedimento->rotulo->label("ed40_i_codigo");
 $clprocedimento->rotulo->label("ed40_c_descr");
@@ -79,7 +79,7 @@ $clprocedimento->rotulo->label("ed40_c_descr");
 
   <?php
 
-    $aWhere   = array();
+    $aWhere   = [];
     // só deve filtrar escola quando acessado do módulo escola
 
     $iEscola       = db_getsession("DB_coddepto");
@@ -109,9 +109,9 @@ $clprocedimento->rotulo->label("ed40_c_descr");
       $sWhere = implode(' and ', $aWhere);
       $sql    = $clprocedimento->sql_query_origem_procedimento("",$campos,"ed40_c_descr", $sWhere);
 
-      $repassa = array();
+      $repassa = [];
       if(isset($chave_ed40_c_descr)){
-        $repassa = array("chave_ed40_i_codigo"=>$chave_ed40_i_codigo,"chave_ed40_c_descr"=>$chave_ed40_c_descr);
+        $repassa = ["chave_ed40_i_codigo"=>$chave_ed40_i_codigo,"chave_ed40_c_descr"=>$chave_ed40_c_descr];
       }
 
       echo '<div class="container">';

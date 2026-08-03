@@ -110,7 +110,7 @@ $rsCaracteristica    = $oDaoCaracteristica->sql_record($sSqlCaracteristicas);
 	
 $aCaracteristicas    = db_utils::getCollectionByRecord($rsCaracteristica);
 	
-$aGrupos             = array();
+$aGrupos             = [];
 	
 foreach ($aCaracteristicas as $oCaracteristicas) {
 
@@ -122,7 +122,7 @@ foreach ($aCaracteristicas as $oCaracteristicas) {
 	 
 }
 
-$oGrupo->aCaracteristicas = array();
+$oGrupo->aCaracteristicas = [];
 	
 foreach ($aCaracteristicas as $oCaracteristicas) {
 		
@@ -166,7 +166,7 @@ foreach ($aCaracteristicas as $oCaracteristicas) {
 						echo "    <strong>$oGrupo->sDescricao:</strong>";
 						echo "  </td>";
 
-						$aComboCaracteristicas = array();
+						$aComboCaracteristicas = [];
 						
 						
 						echo "<td>    ";

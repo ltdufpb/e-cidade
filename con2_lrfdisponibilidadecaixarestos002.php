@@ -37,7 +37,7 @@ $oGet = db_utils::postMemory($_GET);
 
 try {
 
-  $oGet->instituicoes = preg_replace('/[^\,0-9]/', '', $oGet->instituicoes);
+  $oGet->instituicoes = preg_replace('/[^\,0-9]/', '', (string) $oGet->instituicoes);
   $oGet->periodo      = intval($oGet->periodo);
 
   if (empty($oGet->periodo)) {

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_documentotemplate_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //exit();
 $cldb_documentotemplate = new cl_db_documentotemplate;
 $db_opcao = 1;
@@ -79,10 +79,10 @@ if (isset($incluir)) {
 
 	  } else if ( isset($db82_arquivo) && $db82_arquivo != "" ) {
 
-	    $ext = array_reverse( explode('.',$_FILES['db82_arquivo']['name'] ));
+	    $ext = array_reverse( explode('.',(string) $_FILES['db82_arquivo']['name'] ));
       $ext = trim($ext[0]);
 
-			$aExtensoesPermitidas = array('sxw', 'docx');
+			$aExtensoesPermitidas = ['sxw', 'docx'];
 			$sExtensao = strtolower($ext);
 		  if(!in_array($sExtensao, $aExtensoesPermitidas)) {
 		    $sqlerro = true;

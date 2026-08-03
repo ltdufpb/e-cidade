@@ -99,7 +99,7 @@ class AtendimentoInclusaoInscricaoJsonService
             return null;
         }
 
-        $sData = trim($iData);
+        $sData = trim((string) $iData);
 
         $iDia = substr($sData, 6, 2);
         $iMes = substr($sData, 4, 2);

@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_laboratorio_classe.php"));
 require_once(modification('libs/db_utils.php'));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_laboratorio = new cl_lab_laboratorio;
 $cllab_laboratorio->rotulo->label("la02_i_codigo");
 $cllab_laboratorio->rotulo->label("la02_c_descr");
@@ -140,9 +140,9 @@ $oLab_labdepart = db_utils::getdao('lab_labdepart');
 
         }
         //echo $sql;
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la02_i_codigo)){
-          $repassa = array("chave_la02_i_codigo"=>$chave_la02_i_codigo,"chave_la02_c_descr"=>$chave_la02_c_descr);
+          $repassa = ["chave_la02_i_codigo"=>$chave_la02_i_codigo,"chave_la02_c_descr"=>$chave_la02_c_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

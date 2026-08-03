@@ -54,7 +54,7 @@ try {
     switch ($parametros->acao) {
         case 'tiposAssentamentoPermitemDuplicata':
             $tipos = TipoAssentamentoRepository::tiposPermitemDuplicata();
-            $retorno->tipos = array();
+            $retorno->tipos = [];
             foreach ($tipos as $tipo) {
                 $retorno->tipos[] = $tipo->toArray();
             }
@@ -364,7 +364,7 @@ try {
             }
 
             if (!empty($parametros->exames)) {
-                $exames = json_decode(stripslashes($parametros->exames), true);
+                $exames = json_decode(stripslashes((string) $parametros->exames), true);
                 foreach ($exames as $ex) {
                     $exame = new ControleMedicoExame();
                     if (!empty($ex['codigoProcedimento'])) {
@@ -388,10 +388,10 @@ try {
 
             $assentamento->setCodigoInstituicao(db_getsession("DB_instit"));
             if (!empty($parametros->lote)) {
-                $inconsistencias = array();
-                $matriculas = array();
+                $inconsistencias = [];
+                $matriculas = [];
                 if (!empty($parametros->loteMatricula)) {
-                    $matriculas = explode(",", $parametros->loteMatricula);
+                    $matriculas = explode(",", (string) $parametros->loteMatricula);
                 }
                 /**
                  * Valida se existe seleção
@@ -412,7 +412,7 @@ try {
                             and rh02_instit = " . db_getsession("DB_instit") ."
                             and ";
 
-                    $where = trim(\db_utils::getDao("selecao")->getCondicaoSelecao($parametros->selecao));
+                    $where = trim((string) \db_utils::getDao("selecao")->getCondicaoSelecao($parametros->selecao));
                     $sql .= $where;
                     $rs = \db_query($sql);
                     if (!$rs) {
@@ -481,7 +481,7 @@ try {
                                 throw new DBException("Erro ao buscar infomações de retificação do assentamento.");
                             }
                             $sequencialRetificacao = null;
-                            if (pg_numrows($rs) > 0) {
+                            if (pg_num_rows($rs) > 0) {
                                 $sequencialRetificacao = db_utils::fieldsMemory($rs, 0)->rh220_sequencial;
                             }
                             $daoRetificacaoAfastamento = new \cl_retificacaoafastamento();

@@ -46,8 +46,8 @@ $clcontrib = new cl_contrib;
 global $desabilita;
 $GLOBALS["desabilita"]="false";
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 $clcontrib->sql_record($clcontrib->sql_query($contri,"","d07_contri" ));
 if($clcontrib->numrows>0){
   $GLOBALS["desabilita"]="true";
@@ -65,20 +65,20 @@ db_inicio_transacao();
      $sqlerro = true;
    }
   $sqlerro=false;
-  $vt=$HTTP_POST_VARS;
-  $vt2=$HTTP_POST_VARS;
+  $vt=$_POST;
+  $vt2=$_POST;
   $ta=sizeof($vt);
   reset($vt);
 
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+    if(str_starts_with((string) $chave, "CHECK")){
+      $dados=preg_split("#_#m",(string) $chave); 
       $idbql=$dados[1];
       $testada=$dados[2];
-      $length=strlen($idbql);
+      $length=strlen((string) $idbql);
       reset($vt2);
-      
+
       /*$clcontlot->d05_contri=$contri;
       $clcontlot->d05_idbql=$idbql;
       $clcontlot->d05_testad=$testada;
@@ -125,7 +125,7 @@ db_inicio_transacao();
 	if($numrows>0){
 	  static $pri=true;
 	  $re=db_query("select d03_tipos,d03_descr,d04_quant,d04_vlrcal,d04_vlrval from editalserv inner join editaltipo on d03_tipos=d04_tipos where d04_contri=$numcontri");  
-	  $numlinhas= pg_numrows($re);
+	  $numlinhas= pg_num_rows($re);
 	  if($pri){
 	    echo "
 	     <tr>
@@ -178,8 +178,8 @@ db_inicio_transacao();
 
 	      
 	      $x= "j36_testad_".$f;
-	      GLOBAL $$x;
-	      $$x=$d05_testad;
+	      GLOBAL ${$x};
+	      ${$x}=$d05_testad;
 	      echo "<td style='cursor:help' onMouseOut='parent.js_label(false);' onMouseOver='parent.js_label(true,event,\"$d03_descr\",$d04_quant,$d04_vlrcal,$d04_vlrval);'>";
 	      echo "<input ".($GLOBALS["desabilita"]=="true"?"readonly":"")."  type=\"text\" size=\"4\" id=\"j36testad_".$j34_idbql."\" value=\"$d06_fracao\" name=\"j36testad_".$j34_idbql."_".$d03_tipos."\" title=\"Testadas\"onKeyUp=\"js_ValidaCampos(this,4,'Constribuicao','f','f',event);\"  onKeyDown=\"return js_controla_tecla_enter(this,event);\">";
 	      echo "<input ".($GLOBALS["desabilita"]=="true"?"readonly":"")." type='hidden' name='quant_$d03_tipos' value='".$d04_quant."XX".$d04_vlrcal,$d04_vlrval."'>";
@@ -287,7 +287,7 @@ db_inicio_transacao();
      <td height="100%" align="center" valign="top" bgcolor="#CCCCCC"> 
   <form name="form1" method="post" action="con1_contlot007.php?numcontri=<?=@$contri?>">
   <input name="face" type="hidden">
-  <input name="contri" type="hidden" value="<?=(isset($contri)?$contri:$numcontri)?>">
+  <input name="contri" type="hidden" value="<?=($contri ?? $numcontri)?>">
   <input name="confirma" type="hidden">
   <table border="0">
 <?php 

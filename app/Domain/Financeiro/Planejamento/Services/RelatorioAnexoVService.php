@@ -37,12 +37,14 @@ class RelatorioAnexoVService extends AnexosLDOService
         ];
     }
 
+    #[\Override]
     protected function processaLinhas()
     {
         $this->getLinhas();
         $this->processaValorManual();
     }
 
+    #[\Override]
     protected function processar()
     {
         parent::processar();

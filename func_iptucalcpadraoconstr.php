@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptucalcpadraoconstr_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptucalcpadraoconstr = new cl_iptucalcpadraoconstr;
 $cliptucalcpadraoconstr->rotulo->label("j11_sequencial");
 $cliptucalcpadraoconstr->rotulo->label("j11_sequencial");
@@ -98,9 +98,9 @@ $cliptucalcpadraoconstr->rotulo->label("j11_sequencial");
         }else{
            $sql = $cliptucalcpadraoconstr->sql_query("",$campos,"j11_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j11_sequencial)){
-          $repassa = array("chave_j11_sequencial"=>$chave_j11_sequencial,"chave_j11_sequencial"=>$chave_j11_sequencial);
+          $repassa = ["chave_j11_sequencial"=>$chave_j11_sequencial,"chave_j11_sequencial"=>$chave_j11_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

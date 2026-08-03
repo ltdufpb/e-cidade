@@ -41,8 +41,8 @@ $clempautoriza = new cl_empautoriza;
 $clempautoriza->rotulo->label();
 $clpcorcam->rotulo->label();
 $clpcproc->rotulo->label();
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 
@@ -76,7 +76,7 @@ if(isset($pc80_codproc) && trim($pc80_codproc)!="" || isset($anul) || (isset($pc
  if (isset($pc10_numero) && trim($pc10_numero) != ""){
        $sql = "select pc80_codproc from pcproc inner join pcprocitem on pc81_codproc = pc80_codproc inner join solicitem on pc11_codigo = pc81_solicitem where pc11_numero = $pc10_numero limit 1";
        $res_pcproc = @db_query($sql);
-       if (@pg_numrows($res_pcproc) > 0) {
+       if (@pg_num_rows($res_pcproc) > 0) {
              db_fieldsmemory($res_pcproc,0);
        } 
   }

@@ -70,23 +70,23 @@ class AnexoIV extends ProcessamentoRelatorioLegal
     {
 
         if (empty($this->aLinhas)) {
-            $aPeriodosReferencia = array(
+            $aPeriodosReferencia = [
                 \Periodo::TERCEIRO_QUADRIMESTRE => \Periodo::SEGUNDO_QUADRIMESTRE,
                 \Periodo::SEGUNDO_QUADRIMESTRE => \Periodo::PRIMEIRO_QUADRIMESTRE,
                 \Periodo::SEGUNDO_SEMESTRE => \Periodo::PRIMEIRO_SEMESTRE,
-            );
+            ];
 
             $this->aLinhasConsistencia = $this->getDados();
 
-            $linhasReceita = array(2,3,6,7,8,9,10,12,13,14,15,16);
+            $linhasReceita = [2,3,6,7,8,9,10,12,13,14,15,16];
 
             foreach ($linhasReceita as $linha) {
-                $this->zerarValorLinhaColuna($linha, array(1));
+                $this->zerarValorLinhaColuna($linha, [1]);
             }
 
             $dataInicial = "{$this->getAno()}-{$this->oPeriodo->getMesInicial()}-01";
             $dataFinal   = "{$this->getAno()}-{$this->oPeriodo->getMesFinal()}-{$this->oPeriodo->getDiaFinal()}";
-            $this->executarBalanceteDaReceita($linhasReceita, array(0), $dataInicial, $dataFinal);
+            $this->executarBalanceteDaReceita($linhasReceita, [0], $dataInicial, $dataFinal);
 
 
             if ((int)$this->iAno === 2018) {
@@ -112,7 +112,7 @@ class AnexoIV extends ProcessamentoRelatorioLegal
              * Executamos novamente as fórmulas das linhas totalizadoras para atualizar os valores..
              */
             $this->aLinhasConsistencia = $this->getDados();
-            $aLinhasProcessarFormula = array(1,4,5,11,17,20,25);
+            $aLinhasProcessarFormula = [1,4,5,11,17,20,25];
             foreach ($aLinhasProcessarFormula as $iLinha) {
                 $this->processarFormulaDaLinha($iLinha);
             }
@@ -171,7 +171,7 @@ class AnexoIV extends ProcessamentoRelatorioLegal
      */
     public function cabecalhoQuadro1(\PDFDocument $oPdf, $sTitulo = 'OPERAÇÕES DE CRÉDITO', $lParagrafoOficial = true)
     {
-        $sPeriodo = substr(ucwords(strtolower($this->oPeriodo->getDescricao())), 3);
+        $sPeriodo = substr(ucwords(strtolower((string) $this->oPeriodo->getDescricao())), 3);
 
         $oPdf->setFont('Arial', null, 7);
         if ($lParagrafoOficial) {
@@ -234,7 +234,7 @@ class AnexoIV extends ProcessamentoRelatorioLegal
     {
         $oPdf->line($oPdf->getX(), $oPdf->getY(), 200, $oPdf->getY());
         $oPdf->ln(2);
-        $this->notaExplicativa($oPdf, array($oPdf, 'addPage'), 20);
+        $this->notaExplicativa($oPdf, [$oPdf, 'addPage'], 20);
 
         $oPdf->ln($oPdf->getAvailHeight() - 10);
         $oDaoAssinatura = new \cl_assinatura();

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("classes/db_matordem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatordem = new cl_matordem;
 //die($clmatordem->sql_query_infoemp(null,"*","m51_codordem limit 10"));
 $result=$clmatordem->sql_record($clmatordem->sql_query_infoemp(null,"*","m51_codordem"));
@@ -52,40 +52,40 @@ if ($clabre_arquivo->arquivo != false) {
 	for ($w = 0; $w < $clmatordem->numrows; $w ++) {
 		db_fieldsmemory($result, $w);
 		$cont = $w +1;
-        fputs($clabre_arquivo->arquivo, substr($m51_data,0,10).$vir);
-        fputs($clabre_arquivo->arquivo, substr($m51_codordem,0,8).$vir);
-        $arr_data=split("-",$m51_data);
-        fputs($clabre_arquivo->arquivo, substr($arr_data[0],0,4).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $m51_data,0,10).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $m51_codordem,0,8).$vir);
+        $arr_data=preg_split("#\\-#m",(string) $m51_data);
+        fputs($clabre_arquivo->arquivo, substr((string) $arr_data[0],0,4).$vir);
         fputs($clabre_arquivo->arquivo, substr("ORDINARIO",0,20).$vir);
-        fputs($clabre_arquivo->arquivo, substr($z01_nome,0,60).$vir);
-        fputs($clabre_arquivo->arquivo, substr($z01_numcgm,0,8).$vir);
-        fputs($clabre_arquivo->arquivo, substr($z01_munic,0,30).$vir);
-        fputs($clabre_arquivo->arquivo, substr($z01_uf,0,2).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $z01_nome,0,60).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $z01_numcgm,0,8).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $z01_munic,0,30).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $z01_uf,0,2).$vir);
         /*
         $info_dot=db_dotacaosaldo(8,2,2,true,"o58_coddot=$e60_coddot",db_getsession("DB_anousu"));
         db_fieldsmemory($info_dot,0);
         */
-        fputs($clabre_arquivo->arquivo, substr($o40_descr,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($o41_descr,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($o52_descr,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($o53_descr,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($o54_descr,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($o55_descr,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($o56_descr,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($o56_descr,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($o15_descr,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($e54_conpag,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $o40_descr,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $o41_descr,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $o52_descr,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $o53_descr,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $o54_descr,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $o55_descr,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $o56_descr,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $o56_descr,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $o15_descr,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $e54_conpag,0,40).$vir);
         fputs($clabre_arquivo->arquivo, substr($m51_obs,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($e54_praent,0,40).$vir);
-        fputs($clabre_arquivo->arquivo, substr($descrdepto,0,40).$vir);
-		fputs($clabre_arquivo->arquivo, substr($pc01_descrmater,0,60).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $e54_praent,0,40).$vir);
+        fputs($clabre_arquivo->arquivo, substr((string) $descrdepto,0,40).$vir);
+		fputs($clabre_arquivo->arquivo, substr((string) $pc01_descrmater,0,60).$vir);
 		fputs($clabre_arquivo->arquivo, substr("marca",0,5).$vir);//Unidade
 		fputs($clabre_arquivo->arquivo, substr("unidade",0,30).$vir);//Marca
-		fputs($clabre_arquivo->arquivo, substr($pc04_descrsubgrupo,0,40).$vir);
-		fputs($clabre_arquivo->arquivo, substr($pc03_descrgrupo,0,40).$vir);
-		fputs($clabre_arquivo->arquivo, substr($m52_numemp,0,20).$vir);
-		fputs($clabre_arquivo->arquivo, substr($m52_quant,0,8).$vir);
-		fputs($clabre_arquivo->arquivo, substr($m52_valor,0,15).$vir);
+		fputs($clabre_arquivo->arquivo, substr((string) $pc04_descrsubgrupo,0,40).$vir);
+		fputs($clabre_arquivo->arquivo, substr((string) $pc03_descrgrupo,0,40).$vir);
+		fputs($clabre_arquivo->arquivo, substr((string) $m52_numemp,0,20).$vir);
+		fputs($clabre_arquivo->arquivo, substr((string) $m52_quant,0,8).$vir);
+		fputs($clabre_arquivo->arquivo, substr((string) $m52_valor,0,15).$vir);
         fputs($clabre_arquivo->arquivo, "\n");
 	}
 	

@@ -10,6 +10,7 @@ class ProcessoOuvidoria extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -32,28 +33,29 @@ class ProcessoOuvidoria extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            DefaultSession::DB_INSTIT + ".required" => utf8_encode(
-                "Código da instituicao não informado."
-            ),DefaultSession::DB_INSTIT + ".filled" => utf8_encode(
-                "O código da instituicao informado está vazio."
-            ),DefaultSession::DB_INSTIT + ".integer" => utf8_encode(
-                "Código inválido da instituicao."
-            ),DefaultSession::DB_CODDEPTO + ".required" => utf8_encode(
-                "Código do departamento não informado."
-            ),DefaultSession::DB_CODDEPTO + ".filled" => utf8_encode(
-                "O código do departamento informado está vazio."
-            ),DefaultSession::DB_CODDEPTO + ".integer" => utf8_encode(
-                "Código inválido do departamento."
+            DefaultSession::DB_INSTIT + ".required" => mb_convert_encoding(
+                "Código da instituicao não informado.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_INSTIT + ".filled" => mb_convert_encoding(
+                "O código da instituicao informado está vazio.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_INSTIT + ".integer" => mb_convert_encoding(
+                "Código inválido da instituicao.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_CODDEPTO + ".required" => mb_convert_encoding(
+                "Código do departamento não informado.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_CODDEPTO + ".filled" => mb_convert_encoding(
+                "O código do departamento informado está vazio.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_CODDEPTO + ".integer" => mb_convert_encoding(
+                "Código inválido do departamento.", 'UTF-8', 'ISO-8859-1'
             ),
         ];
     }

@@ -52,7 +52,7 @@ $lAbrevia              = false;
 for ($iInstit = 0; $iInstit < pg_num_rows($rsInstituicoes); $iInstit++) {
   
   $oInstit = db_utils::fieldsmemory($rsInstituicoes, $iInstit);
-  if (strlen(trim($oInstit->nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $oInstit->nomeinstabrev)) > 0) {
     
     $sDescricaoInstitucoes .= $sVirg.$oInstit->nomeinstabrev;
     $lAbrevia               = true;

@@ -76,7 +76,7 @@ class Agenda
      */
     public  function getTarefas($iInstante)
     {
-        $aTrabalhos = array();
+        $aTrabalhos = [];
 
         $this->iInstante = $iInstante;
 
@@ -108,7 +108,7 @@ class Agenda
                         $lExisteExecucaoMomento = isset($aExecucoes[$iAnoAgenda][$iMesAgenda][$iDiaAgenda][$sHorario]);
                         $aExecucoesDiarias      = $lExisteExecucaoHoje
                             ? $aExecucoes[$iAnoAgenda][$iMesAgenda][$iDiaAgenda]
-                            : array();
+                            : [];
 
                         if ( ( !$lExisteExecucaoHoje && ((int)($iHoraAgenda.$iMinutoAgenda) >= (int)$sHorario) ) ||
                             ( $lExisteExecucaoHoje && ((int)($iHoraAgenda.$iMinutoAgenda) >= (int)$sHorario)  && !$lExisteExecucaoMomento ) )  {
@@ -129,7 +129,7 @@ class Agenda
                         $lExisteExecucaoHoje       = isset($aExecucoes[$iAnoAgenda][$iMesAgenda][$iDiaSemanaAgenda][$iDiaSemana]);
                         $aExecucoesSemanais        = $lExisteExecucaoDiaSemana
                             ? array_keys($aExecucoes[$iAnoAgenda][$iMesAgenda][$iDiaSemanaAgenda])
-                            : array();
+                            : [];
                         $lSemExecucao              = true;
                         foreach ($aExecucoesSemanais as $iDiaMesExecucao ) {
 
@@ -158,7 +158,7 @@ class Agenda
 
                         $lExisteExecucaoMes     = isset($aExecucoes[$iAnoAgenda][$iMesAgenda]);
                         $lExisteExecucaoMomento = isset($aExecucoes[$iAnoAgenda][$iMesAgenda][$iDiaMes]);
-                        $aExecucoesDiarias      = $lExisteExecucaoMes ? $aExecucoes[$iAnoAgenda][$iMesAgenda] : array();
+                        $aExecucoesDiarias      = $lExisteExecucaoMes ? $aExecucoes[$iAnoAgenda][$iMesAgenda] : [];
 
                         if ( ( !$lExisteExecucaoMes && ($iDiaAgenda >= $iDiaMes) ) ||
                             (  $lExisteExecucaoMes && ($iDiaAgenda >= $iDiaMes)  && !$lExisteExecucaoMomento ) )  {
@@ -187,7 +187,7 @@ class Agenda
      */
     public  function getExecucoes( Job $oJob, $iTipoPeriodicidade) {
 
-        $aRetorno        = array();
+        $aRetorno        = [];
         $sCaminho        = TaskManager::PATH_TAREFAS_EXECUTADAS . $oJob->getNome() . Job::SUFIXO_NOME_TAREFA;
 
         if ( file_exists($sCaminho) ) {
@@ -241,7 +241,7 @@ class Agenda
 
         db_app::import('configuracao.TaskManager');
 
-        $aJobs               = array();
+        $aJobs               = [];
         $sDiretorioTarefas   = TaskManager::PATH_FILA_TAREFAS;
         $sDiretorioConclusao = TaskManager::PATH_TAREFAS_EXECUTADAS;
 

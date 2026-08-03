@@ -37,7 +37,7 @@ require_once(modification("classes/db_rhdepend_classe.php"));
 require_once(modification("classes/db_cfpess_classe.php"));
 require_once(modification("classes/db_rhpessoalmov_classe.php"));
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 db_postmemory($_POST);
 
 $oDaoCfpess      = new cl_cfpess;
@@ -84,11 +84,11 @@ if($tipores == "m"){
     }
     $dbwhere = " and rh01_regist in (".$dbwhere.") ";
   }else if($tipofil == "i"){
-    if(trim($registro1) != "" && trim($registro2)){
+    if(trim((string) $registro1) != "" && trim((string) $registro2)){
       $dbwhere = " and rh01_regist between ".$registro1." and ".$registro2;
-    }else if(trim($registro1) != ""){
+    }else if(trim((string) $registro1) != ""){
       $dbwhere = " and rh01_regist >= ".$registro1;
-    }else if(trim($registro2) != ""){
+    }else if(trim((string) $registro2) != ""){
       $dbwhere = " and rh01_regist <= ".$registro2;
     }
   }
@@ -101,7 +101,7 @@ if (DBPessoal::utilizaFiltroLotacoesPorUsuario()) {
 $sql_cad = $cl_rhpessoalmov->sql_query_rescisao_afastamento($anofolha,$mesfolha,$dbwhere);
 $result_cad = db_query($sql_cad);
 
-$xxnum = pg_numrows($result_cad);
+$xxnum = pg_num_rows($result_cad);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existe rescisões para os funcionarios escolhidos no período de '.$mesfolha.' / '.$anofolha);
 }
@@ -160,7 +160,7 @@ for($ixx=0; $ixx<$xxnum; $ixx++){
   $pdf1->regime		= $rh30_regime;
   $pdf1->projativ	= $o55_projativ;
   $pdf1->descr_projativ = $o55_descr;
-  if(strtoupper($munic)=='SAPIRANGA'){
+  if(strtoupper((string) $munic)=='SAPIRANGA'){
     $pdf1->descr_recurso 	= $recurso;
   }else{
     $pdf1->descr_recurso 	= $o15_descr;
@@ -186,8 +186,8 @@ for($ixx=0; $ixx<$xxnum; $ixx++){
   $result_valPROV = db_query($sql_valPROV);
   $result_valDESC = db_query($sql_valDESC);
 
-  $pdf1->linhasproventos  = pg_numrows($result_valPROV);
-  $pdf1->linhasdescontos  = pg_numrows($result_valDESC);
+  $pdf1->linhasproventos  = pg_num_rows($result_valPROV);
+  $pdf1->linhasdescontos  = pg_num_rows($result_valDESC);
   $pdf1->resultproventos  = $result_valPROV;
   $pdf1->resultdescontos  = $result_valDESC;
 

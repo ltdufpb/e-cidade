@@ -46,11 +46,11 @@ $oGet        = db_utils::postMemory($_GET);
 $tamanhoFonte = 12;
 
 if(mb_detect_encoding($oGet->sDiretor.'x', 'UTF-8','ISO-8859-1') == 'UTF-8' ){
-    $oGet->sDiretor =  utf8_decode($oGet->sDiretor);
+    $oGet->sDiretor =  mb_convert_encoding($oGet->sDiretor, 'ISO-8859-1');
 }
 
 $oParametros->aMatriculas      = $oJson->decode(str_replace("\\", "", $oGet->aMatriculas));
-$aDiretor                      = explode('|', $oGet->sDiretor);
+$aDiretor                      = explode('|', (string) $oGet->sDiretor);
 $oParametros->sDiretor         = '';
 $oParametros->sCargo           = '';
 $oParametros->lTemDiretor      = false;
@@ -74,12 +74,12 @@ $oParametros->iAlturaLinha     = 6;
 
 $oParametros->sObservacao = "";
 
-if (trim($oGet->sObservacao) != '') {
+if (trim((string) $oGet->sObservacao) != '') {
 
     $oParametros->sObservacao = trim(db_stdClass::db_stripTagsJsonSemEscape($oGet->sObservacao));
 
     if(mb_detect_encoding($oGet->sObservacao.'x', 'UTF-8','ISO-8859-1') == 'UTF-8' ){
-        $oParametros->sObservacao = utf8_decode(trim(db_stdClass::db_stripTagsJsonSemEscape($oGet->sObservacao)))  ;// Wallace 2018-06-18 Convertendo para ISO
+        $oParametros->sObservacao = mb_convert_encoding(trim(db_stdClass::db_stripTagsJsonSemEscape($oGet->sObservacao)), 'ISO-8859-1')  ;// Wallace 2018-06-18 Convertendo para ISO
 
     }
 
@@ -88,7 +88,7 @@ if (trim($oGet->sObservacao) != '') {
 }
 
 $oTurma = TurmaRepository::getTurmaByCodigo($oGet->iTurma);
-$aTurno = array();
+$aTurno = [];
 
 $aTurno[] = $oTurma->getTurno()->getCodigoTurno();
 if ($oTurma->temTurnoAdicional() != "") {
@@ -107,7 +107,7 @@ if ($oDaoPeriodoEscola->numrows == 0) {
 $oDadosHorarioTurno = db_utils::fieldsMemory($rsHorarioTurno, 0);
 
 
-$aGradeHorario = array();
+$aGradeHorario = [];
 
 if ($oParametros->lExibeGradeAluno) {
 
@@ -141,8 +141,8 @@ if ($oParametros->lExibeGradeAluno) {
 }
 
 
-$aParagrafos  = array();
-$aDadosAlunos = array();
+$aParagrafos  = [];
+$aDadosAlunos = [];
 
 foreach ($oParametros->aMatriculas as $oMat) {
 
@@ -157,14 +157,14 @@ foreach ($oParametros->aMatriculas as $oMat) {
     $oParagrafo->mes_nascimento = strtolower(DBDate::getMesExtenso((int)$oDataNascimento->getMes()));
     $oParagrafo->mes_numeral_nascimento = $oDataNascimento->getMes();
     $oParagrafo->ano_nascimento         = $oDataNascimento->getAno();
-  } catch( Exception $oErro ) { 
+  } catch( Exception ) { 
    
     $oParagrafo->dia_nascimento         = "";
     $oParagrafo->mes_extenso_nascimento = "";
     $oParagrafo->mes_numeral_nascimento = "";
     $oParagrafo->ano_nascimento         = "";
   }
-  $aFiliacao                          = array();
+  $aFiliacao                          = [];
 
   if ($oMatricula->getAluno()->getNomeMae() != '') {
     $aFiliacao[] = $oMatricula->getAluno()->getNomeMae();
@@ -274,7 +274,7 @@ foreach ($aDadosAlunos as $oDadosAlunos) {
     $oDiaAtual  = new DBDate(date("Y-m-d"));
     $sMunicipio = $oTurma->getEscola()->getDepartamento()->getInstituicao()->getMunicipio();
 
-    $DiaExtenso = ucfirst(mb_strtolower($sMunicipio,'ISO-8859-1')).", " . $oDiaAtual->getDia() . " de " . strtolower(DBDate::getMesExtenso((int)$oDiaAtual->getMes()));
+    $DiaExtenso = ucfirst(mb_strtolower((string) $sMunicipio,'ISO-8859-1')).", " . $oDiaAtual->getDia() . " de " . strtolower(DBDate::getMesExtenso((int)$oDiaAtual->getMes()));
     $DiaExtenso .= " de " . $oDiaAtual->getAno().".";
 
     $oPdf->Cell("192", $oParametros->iAlturaLinha, $DiaExtenso, 0, 1, "C");

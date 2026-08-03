@@ -225,7 +225,7 @@ class TipoReconhecimentoContabil {
     }
     
     $iNumeroResultadosQuery = pg_num_rows($rsResultado);
-    $aTiposReconhecimentos  = array();
+    $aTiposReconhecimentos  = [];
     
     for ($iTipo = 0 ; $iTipo < $iNumeroResultadosQuery; $iTipo++ ) {
       
@@ -252,7 +252,7 @@ class TipoReconhecimentoContabil {
     }
     
     $iNumeroResultadosQuery = pg_num_rows($rsResultado);
-    $aTiposReconhecimentos  = array();
+    $aTiposReconhecimentos  = [];
     
     for ($iTipo = 0 ; $iTipo < $iNumeroResultadosQuery; $iTipo++ ) {
       

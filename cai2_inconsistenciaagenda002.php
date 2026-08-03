@@ -48,7 +48,7 @@ $clrotulo->label("z01_nome");
 $clrotulo->label("e82_codord");
 $clrotulo->label("e60_codemp");
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if (isset($iCodigoGeracao) && !empty($iCodigoGeracao)) {
 
@@ -197,12 +197,12 @@ for ($iFiltro = 0; $iFiltro < 2; $iFiltro++) {
   $alt = 4;
   $pagadora = "";
   $lAddPage = false;
-  $arr_valconta = Array();
-  $arr_valmovis = Array();
+  $arr_valconta = [];
+  $arr_valmovis = [];
   $arr_valtconta = 0;
   $arr_valtmovis = 0;
-  $aBaixasEfetuadas = array();
-  $aInconsistencias = array();
+  $aBaixasEfetuadas = [];
+  $aInconsistencias = [];
 
   for( $i = 0; $i < $numrows_retorno; $i++) {
 
@@ -305,14 +305,14 @@ for ($iFiltro = 0; $iFiltro < 2; $iFiltro++) {
     $pdf->cell(15,$alt, $e60_codemp,0,0,"C",0);
     $pdf->cell(15,$alt, $e82_codord,0,0,"C",0);
     $pdf->cell(20,$alt, $z01_numcgm,0,0,"C",0);
-    if ( strlen(trim($z01_cgccpf)) == 14 ) {
+    if ( strlen(trim((string) $z01_cgccpf)) == 14 ) {
       $pdf->cell(25,$alt, db_formatar($z01_cgccpf,"cnpj"),0,0,"L",0);
-	  } else if (strlen(trim($z01_cgccpf)) == 11){
+	  } else if (strlen(trim((string) $z01_cgccpf)) == 11){
       $pdf->cell(25,$alt, db_formatar($z01_cgccpf,"cpf"),0,0,"L",0);
 	  }
-    $pdf->cell(75,$alt, substr($z01_nome, 0, 65),0,0,"L",0);
+    $pdf->cell(75,$alt, substr((string) $z01_nome, 0, 65),0,0,"L",0);
     $pdf->cell(25,$alt, db_formatar($e76_valorefet,"f"),0,0,"R",0);
-    $pdf->cell(100,$alt, substr($e92_descrerro, 0, 100),0,1,"L",0);
+    $pdf->cell(100,$alt, substr((string) $e92_descrerro, 0, 100),0,1,"L",0);
     $total++;
 
   }

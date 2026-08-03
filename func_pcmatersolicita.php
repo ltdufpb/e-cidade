@@ -154,7 +154,7 @@ if(isset($o56_codele) and trim($o56_codele) != ''){
                  pcsubgrupo.pc04_descrsubgrupo as DB_pc04_descrsubgrupo,
                  pcmater.pc01_servico,
 								 pcmater.pc01_veiculo";
-                $repassa = array(
+                $repassa = [
                     "chave_pc01_codmater"    => @$chave_pc01_codmater,
                     "chave_pc01_descrmater"  => @$chave_pc01_descrmater,
                     "chave_pc07_codele"      => @$chave_pc07_codele,
@@ -163,7 +163,7 @@ if(isset($o56_codele) and trim($o56_codele) != ''){
                     "chave_pc03_codgrupo"    => @$chave_pc03_codgrupo,
                     "chave_pc04_codsubgrupo" => @$chave_pc04_codsubgrupo,
                     "chave_o58_coddot" => @$chave_o58_coddot
-                );
+                ];
                 if(isset($chave_pc01_codmater) && (trim($chave_pc01_codmater)!="") ){
                     $sql = $clpcmater->sql_query_desdobra(null,$campos,"pc01_codmater","pc01_codmater=$chave_pc01_codmater and $where_ativo");
                 }else if(isset($chave_pc01_descrmater) && (trim($chave_pc01_descrmater)!="") ){
@@ -197,7 +197,7 @@ if(isset($o56_codele) and trim($o56_codele) != ''){
                     $result = $clpcmater->sql_record($clpcmater->sql_query_desdobra(null,"pc01_descrmater,pc01_veiculo, pc01_complmater","","pc01_codmater=$pesquisa_chave and $where_ativo"));
                     if($clpcmater->numrows!=0){
                         db_fieldsmemory($result,0);
-                        echo "<script>".$funcao_js."('" . addslashes($pc01_descrmater) . "',false,'$pc01_veiculo', '" . urlencode($pc01_complmater) . "');</script>";
+                        echo "<script>".$funcao_js."('" . addslashes((string) $pc01_descrmater) . "',false,'$pc01_veiculo', '" . urlencode((string) $pc01_complmater) . "');</script>";
                     }else{
                         echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
                     }

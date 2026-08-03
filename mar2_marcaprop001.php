@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_marca_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $aux = new cl_arquivo_auxiliar;
 $clmarca = new cl_marca;
 $clmarca->rotulo->label();

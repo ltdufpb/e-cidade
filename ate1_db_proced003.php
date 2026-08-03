@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("db_proced"=>"Procedimento","db_procedgrupos"=>"Grupo","db_procedusu"=>"Usuário","db_procedcliente"=>"Cliente"); 
-	 $clcriaabas->src = array("db_proced"=>"ate1_db_proced006.php");
-	 $clcriaabas->disabled   =  array("db_procedgrupos"=>"true","db_procedusu"=>"true","db_procedcliente"=>"true"); 
+	 $clcriaabas->identifica = ["db_proced"=>"Procedimento","db_procedgrupos"=>"Grupo","db_procedusu"=>"Usuário","db_procedcliente"=>"Cliente"]; 
+	 $clcriaabas->src = ["db_proced"=>"ate1_db_proced006.php"];
+	 $clcriaabas->disabled   =  ["db_procedgrupos"=>"true","db_procedusu"=>"true","db_procedcliente"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

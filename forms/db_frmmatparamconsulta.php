@@ -50,7 +50,7 @@ $clrotulo->label("nomeinst");
     </td>
     <td> 
 		<?php 
-			$x = array('1'=>'Todas as instituições visualizam tudo na consulta de material','2'=>'Visualizar apenas itens com movimentação na própria instituição');
+			$x = ['1'=>'Todas as instituições visualizam tudo na consulta de material','2'=>'Visualizar apenas itens com movimentação na própria instituição'];
 			db_select('m38_visualizacaoitens',$x,true,$db_opcao,"");
 		?>
     </td>
@@ -62,7 +62,7 @@ $clrotulo->label("nomeinst");
     </td>
     <td> 
 		<?php 
-			$x = array('f'=>'Não','t'=>'Sim');
+			$x = ['f'=>'Não','t'=>'Sim'];
 			db_select('m38_visualizacaomatestoque',$x,true,$db_opcao,"");
 		?>
     </td>
@@ -105,7 +105,7 @@ function js_preenchepesquisa(chave){
   db_iframe_matparamconsulta.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

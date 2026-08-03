@@ -205,18 +205,18 @@ $aMatriculaNoLote      = $oRecadastramentoConsultaIptuHelper->getMatriculaNoLote
                         <tr align="center" class="<?= $estiloCaracteristica ?>">
                             <td width="220" align="left" nowrap>
 
-                                <?= substr($dadosCaracteristica->j32_descr, 0, 30) ?>
+                                <?= substr((string) $dadosCaracteristica->j32_descr, 0, 30) ?>
                             </td>
                             <td align="left" width="55">
 
-                                <?=  substr($dadosCaracteristica->j31_descr, 0, 20);  ?>
+                                <?=  substr((string) $dadosCaracteristica->j31_descr, 0, 20);  ?>
                             </td>
 
                             <td width="10" align="center" nowrap>
                                 <?= $dadosCaracteristica->j31_pontos ?>
                             </td>
                             <td align="left" width="55">
-                                <?=  substr($aCaracLoteSchema[$i]->j31_descr, 0, 20);  ?>
+                                <?=  substr((string) $aCaracLoteSchema[$i]->j31_descr, 0, 20);  ?>
                             </td>
 
                             <td width="10" align="center" nowrap>
@@ -309,7 +309,7 @@ $aMatriculaNoLote      = $oRecadastramentoConsultaIptuHelper->getMatriculaNoLote
                 <tr align="center">
                     <td align="left"  class="field-size3" nowrap><b>Endereço</b></td>
                     <td align="left" class="field-size9" nowrap> <?= !empty($dadosConstrucao->endereco_completo) ? $dadosConstrucao->endereco_completo : '' ?></td>
-                    <td align="left" class="field-size9" nowrap> <?= !empty($dadosConstrucaoDepois->endereco_completo) ? trim($dadosConstrucaoDepois->endereco_completo) : '' ?></td>
+                    <td align="left" class="field-size9" nowrap> <?= !empty($dadosConstrucaoDepois->endereco_completo) ? trim((string) $dadosConstrucaoDepois->endereco_completo) : '' ?></td>
                 </tr>
                 </tbody>
             </table>
@@ -354,11 +354,11 @@ $aMatriculaNoLote      = $oRecadastramentoConsultaIptuHelper->getMatriculaNoLote
 
                         <tr class="<?=$estiloCaracteristica;?>">
                             <td nowrap class="field-size7"><?=  $caracteristica->j32_descr  ?></td>
-                            <td nowrap align="left" class="field-size7"> <?=  substr($caracteristica->j31_descr, 0, 20) ?></td>
+                            <td nowrap align="left" class="field-size7"> <?=  substr((string) $caracteristica->j31_descr, 0, 20) ?></td>
                             <td nowrap align="center"><?= $caracteristica->j31_pontos ?></td>
 
 
-                            <td nowrap align="left" class="field-size7"><?= ( !empty($caracteristicaSchema->j31_descr) ? substr($caracteristicaSchema->j31_descr, 0, 20) : '' )?></td>
+                            <td nowrap align="left" class="field-size7"><?= ( !empty($caracteristicaSchema->j31_descr) ? substr((string) $caracteristicaSchema->j31_descr, 0, 20) : '' )?></td>
                             <td nowrap align="center"><?= (!empty($caracteristicaSchema->j31_descr) ? $caracteristicaSchema->j31_pontos : '' )?></td>
                         </tr>
                     <?php endforeach;  ?>
@@ -460,7 +460,7 @@ $aMatriculaNoLote      = $oRecadastramentoConsultaIptuHelper->getMatriculaNoLote
                                 $somaisen             = 0;
                                 $iPercentualIsencao   = 0;
 
-                                for ($contador2 = 0; $contador2 < pg_numrows($taxas); $contador2++) :
+                                for ($contador2 = 0; $contador2 < pg_num_rows($taxas); $contador2++) :
 
                                     db_fieldsmemory($taxas, $contador2);
 
@@ -475,7 +475,7 @@ $aMatriculaNoLote      = $oRecadastramentoConsultaIptuHelper->getMatriculaNoLote
                                             <?= $k02_codigo ?>
                                         </td>
                                         <td width="40%" nowrap>
-                                            <?= substr($j17_descr, 0, 20) ?>
+                                            <?= substr((string) $j17_descr, 0, 20) ?>
                                         </td>
                                         <td width="7%" align="right" nowrap>
                                             <?= db_formatar($j21_valor, 'f') ?>
@@ -533,7 +533,7 @@ $aMatriculaNoLote      = $oRecadastramentoConsultaIptuHelper->getMatriculaNoLote
                                 $somacalc             = 0;
                                 $somaisen             = 0;
                                 $iPercentualIsencao   = 0;
-                                for ($contador2 = 0; $contador2 < pg_numrows($taxasSchema); $contador2++) :
+                                for ($contador2 = 0; $contador2 < pg_num_rows($taxasSchema); $contador2++) :
 
                                     db_fieldsmemory($taxasSchema, $contador2);
 
@@ -548,7 +548,7 @@ $aMatriculaNoLote      = $oRecadastramentoConsultaIptuHelper->getMatriculaNoLote
                                             <?= $k02_codigo ?>
                                         </td>
                                         <td width="40%" nowrap>
-                                            <?= substr($j17_descr, 0, 20) ?>
+                                            <?= substr((string) $j17_descr, 0, 20) ?>
                                         </td>
                                         <td width="7%" align="right" nowrap>
                                             <?= db_formatar($j21_valor, 'f') ?>
@@ -595,7 +595,7 @@ $aMatriculaNoLote      = $oRecadastramentoConsultaIptuHelper->getMatriculaNoLote
     if (!empty($aMatriculasNoLote) ) {
 
         $temMatriculaAlterada = false;
-        $outrasMatriculas = array();
+        $outrasMatriculas = [];
         foreach ($aMatriculasNoLote as $oMatricula) {
 
             if ($oMatricula->situacao == \ECidade\Tributario\Cadastro\Iptu\Recadastramento\Processamento::MATRICULA_NOVA) {

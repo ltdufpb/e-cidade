@@ -38,7 +38,7 @@ require_once modification('std/DBDate.php');
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
 use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoHoraExtraManual;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -164,7 +164,7 @@ $db_botao = false;
               $std->observacao = $exame->getObservacao();
               $std->data = \DBDate::format($exame->getData());
               $std->codigoResultado = $exame->getResultado();
-              $std->descricaoProcedimento = utf8_encode($exame->getDescricaoProcedimento());
+              $std->descricaoProcedimento = mb_convert_encoding($exame->getDescricaoProcedimento(), 'UTF-8', 'ISO-8859-1');
               $aExames[] = $std;
           }
 

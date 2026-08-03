@@ -38,7 +38,7 @@ include(modification("classes/db_proctipoatend_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clprontuarios = new cl_prontuarios;
 $clprontproced = new cl_prontproced;
@@ -126,7 +126,7 @@ if(isset($incluir)){
   <td valign="top" align="center"><br>
   <?php 
    //$chavepri= array("sd29_i_codigo"=>@$sd29_i_codigo,"sd29_d_data"=>@$sd29_d_data,"sd29_c_hora"=>@$sd29_c_hora,"sd29_i_procedimento"=>@$sd29_i_procedimento,"sd09_c_descr"=>@$sd09_c_descr);
-   $chavepri= array("sd29_i_codigo"=>@$sd29_i_codigo,
+   $chavepri= ["sd29_i_codigo"=>@$sd29_i_codigo,
                     "sd29_i_procedimento"=>@$sd29_i_procedimento,
                     "sd14_i_codigo"=>@$sd14_i_codigo,
                     "sd14_c_descr"=>@$sd14_c_descr,
@@ -141,7 +141,7 @@ if(isset($incluir)){
                     "sd29_d_data"=>@$sd29_d_data,
                     "sd29_c_hora"=>@$sd29_c_hora,
                     "sd29_t_tratamento"=>@$sd29_t_tratamento
-                    );
+                    ];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    //echo $clausencias->sql_query("","*","","sd06_i_unidade = $sd06_i_unidade and sd06_i_medico = $sd06_i_medico");
    @$cliframe_alterar_excluir->sql = $clprontproced->sql_query("","*","sd29_i_codigo","sd29_i_prontuario = $chavepesquisaprontuario");

@@ -35,8 +35,8 @@ include(modification("classes/db_far_modelolivro_classe.php"));
 include(modification("classes/db_far_fechalivro_classe.php"));
 include(modification("classes/db_far_farmacia_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_modelolivro = new cl_far_modelolivro;
 $clfar_fechalivro = new cl_far_fechalivro;
 $clfar_farmacia = new cl_far_farmacia;
@@ -45,7 +45,7 @@ $clfar_fechalivro->rotulo->label();
 $fa26_i_login   = DB_getsession("DB_id_usuario");
 $ano=date("Y");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -87,7 +87,7 @@ db_postmemory($HTTP_POST_VARS);
               </td>
               <td nowrap>
 	            <?php 
-                  $p= array("0"=>"Escolha um Mês",
+                  $p= ["0"=>"Escolha um Mês",
                             "01"=>"JANEIRO","02"=>"FEVEREIRO",
                             "03"=>"MARÇO",
                             "04"=>"ABRIL",
@@ -99,7 +99,7 @@ db_postmemory($HTTP_POST_VARS);
                             "10"=>"OUTUBRO",
                             "11"=>"NOVEMBRO",
                             "12"=>"DEZEMBRO"
-                           );
+                           ];
                   db_select("mes", $p, "", "","Onchange='js_periodo(this.value)'", "", "");
 	            ?>
 		      </td>

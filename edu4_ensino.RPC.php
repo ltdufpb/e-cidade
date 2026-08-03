@@ -61,7 +61,7 @@ try {
      */
   	case 'buscaEnsinos':
 
-  	  $oRetorno->aEnsinos = array();
+  	  $oRetorno->aEnsinos = [];
   	  $aEnsino            = EnsinoRepository::getEnsinos();
 
   	  if ( count( $aEnsino ) == 0 ) {
@@ -72,14 +72,14 @@ try {
 
   	    $oDadosEnsino            = new stdClass();
   	    $oDadosEnsino->iEnsino   = $oEnsino->getCodigo();
-  	    $oDadosEnsino->sEnsino   = urlencode( $oEnsino->getNome() );
+  	    $oDadosEnsino->sEnsino   = urlencode( (string) $oEnsino->getNome() );
   	    $oDadosEnsino->lInfantil = $oEnsino->isInfantil();
   	    $oRetorno->aEnsinos[]    = $oDadosEnsino;
   	  }
 
       case 'pesquisaEnsinos':
 
-          $aFiltros = array();
+          $aFiltros = [];
 
           if (isset($oParam->iEscola) && !empty($oParam->iEscola) && $oParam->iEscola != 0) {
               $aFiltros[] = " ed18_i_codigo in ({$oParam->iEscola}) ";
@@ -119,8 +119,8 @@ try {
 
     case 'salvarVinculoEnsinosInfantil':
 
-      $aEnsinosVincular    = array();
-      $aEnsinosDesvincular = array();
+      $aEnsinosVincular    = [];
+      $aEnsinosDesvincular = [];
 
       $aEnsinosVinculados  = EnsinoRepository::getEnsinosInfantil();
 
@@ -128,7 +128,7 @@ try {
         $aEnsinosVincular = $oParam->aEnsinosInfantil;
       } else {
 
-        $aCodigosEnsinosVinculados = array();
+        $aCodigosEnsinosVinculados = [];
 
         // Cria um array com os codigos dos ensinos já vinculados
         foreach ($aEnsinosVinculados as $oEnsino) {
@@ -182,7 +182,7 @@ try {
 
     case 'getDisciplinas' :
 
-      $aWhere = array();
+      $aWhere = [];
 
       if ( isset($oParam->iEnsino) && !empty($oParam->iEnsino) ) {
         $aWhere[] = " ed12_i_ensino = {$oParam->iEnsino} ";
@@ -201,7 +201,7 @@ try {
       $sSqlDisciplinas = $oDaoDisciplinas->sql_query_disciplinas_na_escola(null, $sCampos, $sOrdem, $sWhere);
       $rsDisciplinas   = db_query($sSqlDisciplinas);
 
-      $aDisciplinas = array();
+      $aDisciplinas = [];
 
       if ( $rsDisciplinas && pg_num_rows($rsDisciplinas) > 0 ) {
 
@@ -211,11 +211,11 @@ try {
           $oDados                        = db_utils::fieldsMemory($rsDisciplinas, $i);
           $oDisciplina                   = new stdClass();
           $oDisciplina->iDisciplina      = $oDados->ed12_i_codigo;
-          $oDisciplina->sDisciplina      = utf8_encode($oDados->ed232_c_descr);
-          $oDisciplina->sDisciplinaAbrev = utf8_encode($oDados->ed232_c_abrev);
+          $oDisciplina->sDisciplina      = mb_convert_encoding($oDados->ed232_c_descr, 'UTF-8', 'ISO-8859-1');
+          $oDisciplina->sDisciplinaAbrev = mb_convert_encoding($oDados->ed232_c_abrev, 'UTF-8', 'ISO-8859-1');
           $oDisciplina->iEnsino          = $oDados->ed12_i_ensino;
-          $oDisciplina->sEnsino          = utf8_encode($oDados->ed10_c_descr);
-          $oDisciplina->sEnsinoAbrev     = utf8_encode($oDados->ed10_c_abrev);
+          $oDisciplina->sEnsino          = mb_convert_encoding($oDados->ed10_c_descr, 'UTF-8', 'ISO-8859-1');
+          $oDisciplina->sEnsinoAbrev     = mb_convert_encoding($oDados->ed10_c_abrev, 'UTF-8', 'ISO-8859-1');
           $aDisciplinas[]                = $oDisciplina;
         }
       }

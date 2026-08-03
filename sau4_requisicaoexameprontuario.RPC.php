@@ -88,7 +88,7 @@ try {
         if ( !isset($oParam->iProntuario) || empty($oParam->iProntuario) ) {
             throw new ParameterException( _M( MENSAGEM_REQUISICAO_EXAME . "prontuario_nao_informado") );
         }
-        $aWhere = array();
+        $aWhere = [];
         $aWhere[] = " sd103_prontuarios = {$oParam->iProntuario} ";
         if (isset($oParam->exame)) {
           $aWhere[] = "sd104_codigo = {$oParam->exame}";
@@ -118,14 +118,14 @@ try {
           $iLinhasRequisicaoExame = pg_num_rows( $rsExameRequisicao );
           $oRetorno->iRequisicao  = null;
           $oRetorno->sObservacao  = '';
-          $oRetorno->aListaExames      = array();
+          $oRetorno->aListaExames      = [];
 
 
           for ( $iContador = 0; $iContador < $iLinhasRequisicaoExame; $iContador++ ) {
 
             $oDadosRequisicaoExame = db_utils::fieldsMemory( $rsExameRequisicao, $iContador );
             $oRetorno->iRequisicao = $oDadosRequisicaoExame->sd103_codigo;
-            $oRetorno->sObservacao = urlencode($oDadosRequisicaoExame->sd103_observacao);
+            $oRetorno->sObservacao = urlencode((string) $oDadosRequisicaoExame->sd103_observacao);
 
             $sAvaliado = "Nao" ;//$oDadosRequisicaoExame->sd104_avaliado;
             $lAvaliado = 0;
@@ -143,7 +143,7 @@ try {
             $oExame                   = new stdClass();
             $oExame->iExameRequisicao = $oDadosRequisicaoExame->sd104_codigo;
             $oExame->iExame           = $oDadosRequisicaoExame->sd104_lab_exame;
-            $oExame->sExame           = urlencode($oDadosRequisicaoExame->la08_c_descr);
+            $oExame->sExame           = urlencode((string) $oDadosRequisicaoExame->la08_c_descr);
             $oExame->avaliado = urlencode($sAvaliado);
             $oExame->solicitado = urlencode($sSolicitado);
             $oExame->sigla = "$oDadosRequisicaoExame->la08_c_sigla";
@@ -251,9 +251,9 @@ try {
         throw new ParameterException( _M( MENSAGEM_REQUISICAO_EXAME . "medico_nao_informado") );
       }
 
-      $iCodigoRequisicaoExameProntuario = isset($oParam->iRequisicaoExameProntuario) ? $oParam->iRequisicaoExameProntuario : null;
-      $sObservacao                      = isset($oParam->sObservacao) ? $oParam->sObservacao : '';
-      $aExames                          = isset($oParam->aExames) ? $oParam->aExames : array();
+      $iCodigoRequisicaoExameProntuario = $oParam->iRequisicaoExameProntuario ?? null;
+      $sObservacao                      = $oParam->sObservacao ?? '';
+      $aExames                          = $oParam->aExames ?? [];
 
       $oRequisicaoExameProntuarioDao                    = new cl_requisicaoexameprontuario();
       $oRequisicaoExameProntuarioDao->sd103_prontuarios = $oParam->iProntuario;
@@ -291,7 +291,7 @@ try {
       }
 
       $iLinhasExameRequisicao = pg_num_rows($rsExameRequisicaoExame);
-      $aExamesCadastrados     = array();
+      $aExamesCadastrados     = [];
 
       for ( $iContadorExame = 0; $iContadorExame < $iLinhasExameRequisicao; $iContadorExame++ ) {
         $aExamesCadastrados[] = db_utils::fieldsMemory( $rsExameRequisicaoExame, $iContadorExame )->sd104_lab_exame;
@@ -363,19 +363,19 @@ try {
       $iLinhasRequisicaoExame = pg_num_rows( $rsExameRequisicao );
       $oRetorno->iRequisicao  = null;
       $oRetorno->sObservacao  = '';
-      $oRetorno->aExames      = array();
+      $oRetorno->aExames      = [];
 
 
       for ( $iContador = 0; $iContador < $iLinhasRequisicaoExame; $iContador++ ) {
 
         $oDadosRequisicaoExame = db_utils::fieldsMemory( $rsExameRequisicao, $iContador );
         $oRetorno->iRequisicao = $oDadosRequisicaoExame->sd103_codigo;
-        $oRetorno->sObservacao = urlencode($oDadosRequisicaoExame->sd103_observacao);
+        $oRetorno->sObservacao = urlencode((string) $oDadosRequisicaoExame->sd103_observacao);
 
         $oExame                   = new stdClass();
         $oExame->iExameRequisicao = $oDadosRequisicaoExame->sd104_codigo;
         $oExame->iExame           = $oDadosRequisicaoExame->sd104_lab_exame;
-        $oExame->sExame           = urlencode($oDadosRequisicaoExame->la08_c_descr);
+        $oExame->sExame           = urlencode((string) $oDadosRequisicaoExame->la08_c_descr);
 
         $oRetorno->aExames[] = $oExame;
       }

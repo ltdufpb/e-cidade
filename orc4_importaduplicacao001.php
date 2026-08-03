@@ -162,7 +162,7 @@ if (isset($p->processa)){
 
         $lSqlErro = true;
         $sErro    = $clconaberturaexe->erro_msg;
-        break;
+        return;
 
       }
     }
@@ -223,7 +223,7 @@ if (isset($p->processa)){
 
         $lSqlErro = true;
         $sErro    = $clconaberturaexe->erro_msg;
-        break;
+        return;
 
       }
     }
@@ -342,7 +342,7 @@ function js_preenchepesquisa(chave){
   db_iframe_duplicacao.hide();
   <?php 
     if($db_opcao!=1){
-      echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&tipo=$iTipo'";
+      echo "location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&tipo=$iTipo'";
     }
   ?>
 }

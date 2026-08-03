@@ -36,7 +36,7 @@ $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
 $clinssirf = new cl_inssirf;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if($prev == 's'){
 
@@ -169,7 +169,7 @@ $sSql .= ") as xxxx                                                             
 $sSql .= "order by rh26_orgao                                                                                                       ";
 
 $result = db_query($sSql);
-$xxnum  = pg_numrows($result);
+$xxnum  = pg_num_rows($result);
 
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem movimentos cadastrados no período de '.$mes.' / '.$ano);
@@ -198,7 +198,7 @@ $pat40        = 0;
 $pat          = 0;
 $teste        = 0;
 //Enviar uma mensagem
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
 
    db_fieldsmemory($result,$x);
 

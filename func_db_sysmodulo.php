@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_sysmodulo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_sysmodulo = new cl_db_sysmodulo;
 $cldb_sysmodulo->rotulo->label("codmod");
 $cldb_sysmodulo->rotulo->label("nomemod");
@@ -98,9 +98,9 @@ $cldb_sysmodulo->rotulo->label("nomemod");
         }else{
            $sql = $cldb_sysmodulo->sql_query("",$campos,"codmod","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_nomemod)){
-          $repassa = array("chave_codmod"=>$chave_codmod,"chave_nomemod"=>$chave_nomemod);
+          $repassa = ["chave_codmod"=>$chave_codmod,"chave_nomemod"=>$chave_nomemod];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

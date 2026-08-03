@@ -42,16 +42,6 @@ class ImportacaoInconsistencia
     private $pdf;
 
     /**
-     * @var null|string
-     */
-    private $caminhoArquivo;
-
-    /**
-     * @var bool
-     */
-    private $buscarRegistros;
-
-    /**
      * @var array
      */
     private $dadosJson;
@@ -59,7 +49,7 @@ class ImportacaoInconsistencia
     /**
      * @var array
      */
-    private $dadosImpressao = array();
+    private $dadosImpressao = [];
 
     /**
      * @var int
@@ -85,11 +75,9 @@ class ImportacaoInconsistencia
      * @param null $caminhoArquivo
      * @param bool $buscarRegistros
      */
-    public function __construct(PDFDocument $pdf, $caminhoArquivo = null, $buscarRegistros = true)
+    public function __construct(PDFDocument $pdf, private $caminhoArquivo = null, private $buscarRegistros = true)
     {
         $this->pdf = $pdf;
-        $this->caminhoArquivo = $caminhoArquivo;
-        $this->buscarRegistros = $buscarRegistros;
     }
 
     public function imprimir()
@@ -161,10 +149,10 @@ class ImportacaoInconsistencia
         $laboratorio = $dadosExame['codigoLaboratorio'];
 
         if (!array_key_exists($laboratorio, $this->dadosImpressao)) {
-            $dadosLaboratorio = array();
+            $dadosLaboratorio = [];
             $dadosLaboratorio['codigoLaboratorio'] = $laboratorio;
             $dadosLaboratorio['nomeLaboratorio'] = $dadosExame['nomeLaboratorio'];
-            $dadosLaboratorio['setores'] = array();
+            $dadosLaboratorio['setores'] = [];
 
             $this->dadosImpressao[$laboratorio] = $dadosLaboratorio;
         }
@@ -178,10 +166,10 @@ class ImportacaoInconsistencia
         $setores = $this->dadosImpressao[$laboratorio]['setores'];
 
         if (!array_key_exists($setor, $setores)) {
-            $dadosSetor = array();
+            $dadosSetor = [];
             $dadosSetor['codigoSetor'] = $setor;
             $dadosSetor['nomeSetor'] = $dadosExame['nomeSetor'];
-            $dadosSetor['requisicoes'] = array();
+            $dadosSetor['requisicoes'] = [];
 
             $this->dadosImpressao[$laboratorio]['setores'][$setor] = $dadosSetor;
         }
@@ -195,8 +183,8 @@ class ImportacaoInconsistencia
         $laboratorioSetor = $this->dadosImpressao[$laboratorio]['setores'][$setor];
 
         if (!array_key_exists($requisicao, $laboratorioSetor['requisicoes'])) {
-            $dadosRequisicao = array();
-            $dadosRequisicao['exames'] = array();
+            $dadosRequisicao = [];
+            $dadosRequisicao['exames'] = [];
 
             $laboratorioSetor['requisicoes'][$requisicao] = $dadosRequisicao;
 
@@ -213,10 +201,10 @@ class ImportacaoInconsistencia
         $dadosRequisicao = $this->dadosImpressao[$laboratorio]['setores'][$setor]['requisicoes'][$requisicao];
 
         if (!array_key_exists($exame, $dadosRequisicao['exames'])) {
-            $novosDadosExame = array();
+            $novosDadosExame = [];
             $novosDadosExame['codigoExame'] = $exame;
             $novosDadosExame['nomeExame'] = $dadosExame['nomeExame'];
-            $novosDadosExame['atributos'] = array();
+            $novosDadosExame['atributos'] = [];
 
             $dadosRequisicao['exames'][$exame] = $novosDadosExame;
 
@@ -266,7 +254,7 @@ class ImportacaoInconsistencia
                         $this->exameAtual = $exame;
                         $this->imprimirExame($exame);
 
-                        $arrayAtributos = array();
+                        $arrayAtributos = [];
 
                         foreach ($exame['atributos'] as $atributo) {
                             $arrayAtributos[] = $atributo['nome'];

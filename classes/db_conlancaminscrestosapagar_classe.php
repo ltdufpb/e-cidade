@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE conlancaminscrestosapagar
 class cl_conlancaminscrestosapagar {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $c108_sequencial = 0;
-   var $c108_codlan = 0;
-   var $c108_inscricaorestosapagar = 0;
+   public $c108_sequencial = 0;
+   public $c108_codlan = 0;
+   public $c108_inscricaorestosapagar = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  c108_sequencial = int4 = Sequencial
                  c108_codlan = int4 = Código Lançamento
                  c108_inscricaorestosapagar = int4 = Sequencial
                  ";
    //funcao construtor da classe
-   function cl_conlancaminscrestosapagar() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancaminscrestosapagar");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -81,11 +81,11 @@ class cl_conlancaminscrestosapagar {
          $this->erro_status = "0";
          return false;
        }
-       $this->c108_sequencial = pg_result($result,0,0);
+       $this->c108_sequencial = pg_fetch_result($result,0,0);
      }else{
 
        $result = db_query("select last_value from conlancaminscrestosapagar_c108_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c108_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c108_sequencial)){
          $this->erro_sql = " Campo c108_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -119,7 +119,7 @@ class cl_conlancaminscrestosapagar {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->c108_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -148,12 +148,12 @@ class cl_conlancaminscrestosapagar {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19505,'$this->c108_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3467,19505,'','".AddSlashes(pg_result($resaco,0,'c108_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3467,19506,'','".AddSlashes(pg_result($resaco,0,'c108_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3467,19507,'','".AddSlashes(pg_result($resaco,0,'c108_inscricaorestosapagar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3467,19505,'','".AddSlashes(pg_fetch_result($resaco,0,'c108_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3467,19506,'','".AddSlashes(pg_fetch_result($resaco,0,'c108_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3467,19507,'','".AddSlashes(pg_fetch_result($resaco,0,'c108_inscricaorestosapagar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -163,10 +163,10 @@ class cl_conlancaminscrestosapagar {
       $this->atualizacampos();
      $sql = " update conlancaminscrestosapagar set ";
      $virgula = "";
-     if(trim($this->c108_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c108_sequencial"])){
+     if(trim((string) $this->c108_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c108_sequencial"])){
        $sql  .= $virgula." c108_sequencial = $this->c108_sequencial ";
        $virgula = ",";
-       if(trim($this->c108_sequencial) == null ){
+       if(trim((string) $this->c108_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "c108_sequencial";
          $this->erro_banco = "";
@@ -176,10 +176,10 @@ class cl_conlancaminscrestosapagar {
          return false;
        }
      }
-     if(trim($this->c108_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c108_codlan"])){
+     if(trim((string) $this->c108_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c108_codlan"])){
        $sql  .= $virgula." c108_codlan = $this->c108_codlan ";
        $virgula = ",";
-       if(trim($this->c108_codlan) == null ){
+       if(trim((string) $this->c108_codlan) == null ){
          $this->erro_sql = " Campo Código Lançamento não informado.";
          $this->erro_campo = "c108_codlan";
          $this->erro_banco = "";
@@ -189,10 +189,10 @@ class cl_conlancaminscrestosapagar {
          return false;
        }
      }
-     if(trim($this->c108_inscricaorestosapagar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c108_inscricaorestosapagar"])){
+     if(trim((string) $this->c108_inscricaorestosapagar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c108_inscricaorestosapagar"])){
        $sql  .= $virgula." c108_inscricaorestosapagar = $this->c108_inscricaorestosapagar ";
        $virgula = ",";
-       if(trim($this->c108_inscricaorestosapagar) == null ){
+       if(trim((string) $this->c108_inscricaorestosapagar) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "c108_inscricaorestosapagar";
          $this->erro_banco = "";
@@ -216,15 +216,15 @@ class cl_conlancaminscrestosapagar {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19505,'$this->c108_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c108_sequencial"]) || $this->c108_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3467,19505,'".AddSlashes(pg_result($resaco,$conresaco,'c108_sequencial'))."','$this->c108_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3467,19505,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c108_sequencial'))."','$this->c108_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c108_codlan"]) || $this->c108_codlan != "")
-             $resac = db_query("insert into db_acount values($acount,3467,19506,'".AddSlashes(pg_result($resaco,$conresaco,'c108_codlan'))."','$this->c108_codlan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3467,19506,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c108_codlan'))."','$this->c108_codlan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c108_inscricaorestosapagar"]) || $this->c108_inscricaorestosapagar != "")
-             $resac = db_query("insert into db_acount values($acount,3467,19507,'".AddSlashes(pg_result($resaco,$conresaco,'c108_inscricaorestosapagar'))."','$this->c108_inscricaorestosapagar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3467,19507,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c108_inscricaorestosapagar'))."','$this->c108_inscricaorestosapagar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -278,12 +278,12 @@ class cl_conlancaminscrestosapagar {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19505,'$c108_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3467,19505,'','".AddSlashes(pg_result($resaco,$iresaco,'c108_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3467,19506,'','".AddSlashes(pg_result($resaco,$iresaco,'c108_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3467,19507,'','".AddSlashes(pg_result($resaco,$iresaco,'c108_inscricaorestosapagar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3467,19505,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c108_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3467,19506,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c108_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3467,19507,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c108_inscricaorestosapagar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

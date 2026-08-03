@@ -34,8 +34,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_proced_classe.php"));
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $aux      = new cl_arquivo_auxiliar;
 $clproced = new cl_proced;
@@ -183,7 +183,7 @@ $clrotulo->label('v01_proced');
   </fieldset>
   <input type="submit" name="botao"  value="Escolher Anos" onClick='js_seleciona();'>
   <input type="hidden" name="botao1"  value="<?=@$lista?>">
-  <?php  if ((isset($botao)) && (pg_numrows($result3)!=0)) {
+  <?php  if ((isset($botao)) && (pg_num_rows($result3)!=0)) {
   ?>
   <input type="button" value="Emitir Relatório" onclick='js_gera();' >
   <?php }else{?>

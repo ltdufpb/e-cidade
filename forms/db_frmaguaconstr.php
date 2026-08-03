@@ -146,7 +146,7 @@ if(isset($db_opcaoal)){
     	</td>
     	<td> 
 	  	  <?php 
-		    $aTipoConstr = array("P"=>"Principal","S"=>"Secundária");
+		    $aTipoConstr = ["P"=>"Principal","S"=>"Secundária"];
 		  	db_select("x11_tipo",$aTipoConstr,true,$db_opcao,"");
 //		  	db_select();
 		  ?>
@@ -190,7 +190,7 @@ if(isset($db_opcaoal)){
 	        $sCampos .= " x11_qtdfamilia,  ";
 	        $sCampos .= " x11_qtdpessoas   ";
 	        
-		 	$chavepri= array("x11_codconstr"=>@$x11_codconstr);
+		 	$chavepri= ["x11_codconstr"=>@$x11_codconstr];
 		 	$cliframe_alterar_excluir->chavepri=$chavepri;
 		 	$cliframe_alterar_excluir->sql     = $claguaconstr->sql_query(null,$sCampos,"x11_numero", "aguaconstr.x11_matric=".$x11_matric);
 		 	$cliframe_alterar_excluir->campos  = "x11_codconstr,x11_matric,x11_tipo,x11_numero,x11_complemento,x11_area,x11_pavimento,x11_qtdfamilia,x11_qtdpessoas";

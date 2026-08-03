@@ -28,7 +28,7 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 $instit = db_getsession("DB_instit");
 ?>
@@ -54,7 +54,7 @@ function js_retorna(codtaxa){
 
 <form name="form5" method="post">
 <!--
-  <input type="text" name="filtro" value="<?=@$HTTP_POST_VARS['filtro']?>" onBlur="window.focus();">
+  <input type="text" name="filtro" value="<?=@$_POST['filtro']?>" onBlur="window.focus();">
   <input type="hidden" name="arg" value="<?=@$arg?>">
   <input type="submit" name="procurar" value="Procurar">
   -->

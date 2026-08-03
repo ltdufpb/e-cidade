@@ -39,7 +39,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_fechamento_classe.php"));
 include(modification("classes/db_sau_atualiza_classe.php"));
 
-db_postmemory ( $HTTP_POST_VARS );
+db_postmemory ( $_POST );
 
 $clsau_atualiza = new cl_sau_atualiza ( );
 $clsau_atualiza->rotulo->label ();

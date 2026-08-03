@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_tarefasit_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_tarefasit = new cl_db_tarefasit;
 $db_opcao = 1;
 $db_botao = true;
@@ -62,9 +62,9 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <?php 
-       $clcriaabas->identifica = array("g1"=>"Emissão ISSQN","g2"=>"Escritórios");
-       $clcriaabas->title      = array("g1"=>"Dados para emissão","g2"=>"Selecionar escritórios");
-       $clcriaabas->src        = array("g1"=>"iss4_emiteissqnaba001.php","g2"=>"iss4_emiteissqnaba002.php");
+       $clcriaabas->identifica = ["g1"=>"Emissão ISSQN","g2"=>"Escritórios"];
+       $clcriaabas->title      = ["g1"=>"Dados para emissão","g2"=>"Selecionar escritórios"];
+       $clcriaabas->src        = ["g1"=>"iss4_emiteissqnaba001.php","g2"=>"iss4_emiteissqnaba002.php"];
        $clcriaabas->cria_abas();    
      ?> 
 	</td>

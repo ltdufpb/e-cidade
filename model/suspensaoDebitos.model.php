@@ -40,19 +40,19 @@ class suspensaoDebitos {
 
   function incluirSuspensao($iProcesso="",$iSituacao=1,$sObs="",$dtData="",$sHora="",$iInstit="",$iIdUsuario="") {
 
-  	if(trim($iProcesso) == ""){
+  	if(trim((string) $iProcesso) == ""){
   	  throw new Exception("Suspensão cancelada, processo não informado!");
   	}
-    if(trim($iInstit) == ""){
+    if(trim((string) $iInstit) == ""){
   	  $iInstit = db_getsession('DB_instit');
   	}
-    if(trim($iIdUsuario) == ""){
+    if(trim((string) $iIdUsuario) == ""){
   	  $iIdUsuario = db_getsession('DB_id_usuario');
   	}
-   	if(trim($dtData) == ""){
+   	if(trim((string) $dtData) == ""){
   	  $dtData = date("Y-m-d",db_getsession('DB_datausu'));
   	}
-    if(trim($sHora) == ""){
+    if(trim((string) $sHora) == ""){
       $sHora = db_hora();
   	}
 
@@ -78,7 +78,7 @@ class suspensaoDebitos {
 
   function reativarDebito($iCodSuspensao,$lGeraArrehist=true){
 
-  	if(trim($iCodSuspensao) == ""){
+  	if(trim((string) $iCodSuspensao) == ""){
   	  throw new Exception(" Operação cancelada, código da suspensão inválido!");
   	}
 
@@ -138,7 +138,7 @@ class suspensaoDebitos {
 
   function cancelarDebitoSuspensao($iCodSuspensao){
 
-  	if(trim($iCodSuspensao) == ""){
+  	if(trim((string) $iCodSuspensao) == ""){
   	  throw new Exception(" Operação cancelada, código da suspensão inválido!");
   	}
 
@@ -197,14 +197,14 @@ class suspensaoDebitos {
     /**
      * Processamento de verificaçao das CDAs que deverao ser canceladas de acordo com os numpres da suspensao
      */
-    $aNumpre = array();
+    $aNumpre = [];
 
     foreach ($aDebitos as $key => $aDebito) {
       $aNumpre[$key] = $aDebito['Numpre'];
     }
 
     $aNumpre   = array_unique($aNumpre);
-    $aCertidao = array();
+    $aCertidao = [];
 
     foreach ($aNumpre as $iNumpre) {
 
@@ -320,7 +320,7 @@ class suspensaoDebitos {
     $oDaoArrecad  = db_utils::getDao("arrecad");
     $sCamposWhere = "";
     $sOperador    = "";
-    $aDebitos     = array();
+    $aDebitos     = [];
 
     foreach ( $aDadosDebitos as $oDadosDebito ) {
       $aDebitos[$oDadosDebito->iNumpre][$oDadosDebito->iNumpar][] = $oDadosDebito->iReceit;
@@ -425,11 +425,11 @@ class suspensaoDebitos {
 
   function finalizaSuspensao($iCodSuspensao="",$sObs="",$sStatusDebito=""){
 
-    if(trim($iCodSuspensao) == "" || $iCodSuspensao == null ){
+    if(trim((string) $iCodSuspensao) == "" || $iCodSuspensao == null ){
   	  throw new Exception("Finalização de suspensão abortada, código de suspensão inválido");
   	}
 
-    if(trim($sStatusDebito) == "" || $sStatusDebito == null ){
+    if(trim((string) $sStatusDebito) == "" || $sStatusDebito == null ){
   	  throw new Exception("Finalização de suspensão abortada, status do débito inválido");
   	}
 
@@ -472,7 +472,7 @@ class suspensaoDebitos {
 
   function cancelaCertidao($iCertid){
 
-    if(trim($iCertid) == "" || $iCertid == null ){
+    if(trim((string) $iCertid) == "" || $iCertid == null ){
   	  throw new Exception("Cancelamento de certidão abortada, certidão não informada!");
   	}
 
@@ -534,7 +534,7 @@ class suspensaoDebitos {
       $rsInicialCert = $oDaoInicialCert->sql_record($oDaoInicialCert->sql_query_file(null, $iCertid, "v51_inicial"));
       $oInicialCert  = db_utils::fieldsMemory($rsInicialCert,0);
 
-      if ( trim($oInicialCert->v51_inicial) != "" ) {
+      if ( trim((string) $oInicialCert->v51_inicial) != "" ) {
         try {
           $oIncial->excluiCertidaoInicial($iCertid,$oInicialCert->v51_inicial);
         } catch (Exception $eException) {
@@ -547,7 +547,7 @@ class suspensaoDebitos {
         $oCertid = db_utils::fieldsMemory($rsTipoCertid,$iIndCert);
 
 
-  	  	if ( trim($oCertid->v14_coddiv) != "" || $oCertid->v14_coddiv != null) {
+  	  	if ( trim((string) $oCertid->v14_coddiv) != "" || $oCertid->v14_coddiv != null) {
 
           /**
            * Processo de cancelamento dos debitos da certidao gerada a partir de divida
@@ -580,7 +580,7 @@ class suspensaoDebitos {
               $oDaoArreforo->excluir(null,"k00_certidao=$iCertid and k00_numpre={$oDadosArreforo->k00_numpre} and k00_numpar={$oDadosArreforo->k00_numpar}");
 
   	          if ($oDaoArreforo->erro_status==0){
-  	            throw new Exception($oDaoArreforo>erro_msg);
+  	            throw new Exception($oDaoArreforo>\ERRO_MSG);
   	          }
 
   	          $rsDadosCertdiv = $oDaoCertdiv->sql_record($oDaoCertdiv->sql_query_file($iCertid,$oDadosDiv->v01_coddiv));
@@ -613,7 +613,7 @@ class suspensaoDebitos {
   	          }
   	        }
   	      }
-  	    } else if (trim($oCertid->v14_parcel) != "" || $oCertid->v14_parcel != null) {
+  	    } else if (trim((string) $oCertid->v14_parcel) != "" || $oCertid->v14_parcel != null) {
 
           /**
            * Processo de cancelamento dos debitos da certidao gerada a partir de parcelmento
@@ -645,7 +645,7 @@ class suspensaoDebitos {
 
                 $oDaoArreforo->excluir(null,"k00_certidao=$iCertid and k00_numpre = {$oDadosArreforo->k00_numpre}");
   	          if ($oDaoArreforo->erro_status==0){
-  	            throw new Exception($oDaoArreforo>erro_msg);
+  	            throw new Exception($oDaoArreforo>\ERRO_MSG);
   	          }
 
   	          $rsCertter = $oDaoCertter->sql_record($oDaoCertter->sql_query_file($iCertid,$oDadosTermo->v07_parcel));

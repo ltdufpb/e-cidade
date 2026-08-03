@@ -38,8 +38,8 @@ include(modification("classes/db_orcimpactomov_classe.php"));
 include(modification("classes/db_orcelemento_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcimpactovalmov     = new cl_orcimpactovalmov;
 $clorcimpactovalmovmes  = new cl_orcimpactovalmovmes;
@@ -73,10 +73,10 @@ if(isset($atualizar)){
 
 
     //rotina que exclui os registros
-      $clorcimpactovalmovmes->sql_record($clorcimpactovalmovmes->sql_query_file($$str)); 
+      $clorcimpactovalmovmes->sql_record($clorcimpactovalmovmes->sql_query_file(${$str})); 
       if($clorcimpactovalmovmes->numrows>0){ 
-	$clorcimpactovalmovmes->o65_codseqimpmov = $$str;
-	$clorcimpactovalmovmes->excluir($$str);
+	$clorcimpactovalmovmes->o65_codseqimpmov = ${$str};
+	$clorcimpactovalmovmes->excluir(${$str});
 	$erro_msg = $clorcimpactovalmovmes->erro_msg;  
 	if($clorcimpactovalmovmes->erro_status==0){
 	  $sqlerro  = true;
@@ -87,10 +87,10 @@ if(isset($atualizar)){
     
     for($r=1; $r<13; $r++){
       $c = "o64_valor_".$i."_".$r;  
-      $clorcimpactovalmovmes->o65_codseqimpmov = $$str; 
+      $clorcimpactovalmovmes->o65_codseqimpmov = ${$str}; 
       $clorcimpactovalmovmes->o65_mes       = $r;
-      $clorcimpactovalmovmes->o65_valor     = $$c;
-      $clorcimpactovalmovmes->incluir($$str,$r);
+      $clorcimpactovalmovmes->o65_valor     = ${$c};
+      $clorcimpactovalmovmes->incluir(${$str},$r);
       $erro_msg = $clorcimpactovalmovmes->erro_msg;  
       if($clorcimpactovalmovmes->erro_status==0){
 	$sqlerro  = true;

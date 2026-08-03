@@ -42,7 +42,7 @@ $clrotulo->label("j01_matric");
 $clrotulo->label("z01_nome");
 $clrotulo->label("d04_tipos");
 $clrotulo->label("d03_descr");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrotulo->label("d01_codedi");
 $db_opcao = 1;
    if(isset($d01_codedi) && $d01_codedi!=""){

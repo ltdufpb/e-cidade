@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_matordem_classe.php"));
 include(modification("classes/db_matordemitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $errosomaquant=0;
 $passou=false;
@@ -129,7 +129,7 @@ function js_marca(obj){
 	    where e60_numcgm = $e60_numcgm $where $where1
 	    order by e60_numemp");
    $result=db_query($sql);
-   $numrows = pg_numrows($result);
+   $numrows = pg_num_rows($result);
    
    if($numrows>0){
      echo "<tr class='bordas'>
@@ -188,9 +188,9 @@ function js_marca(obj){
              <td class='bordas_corp' align='center'><small>$e60_codemp </small></td>
    	     <td class='bordas_corp' align='center'><small>$e60_numemp </small></td>
 	     <td class='bordas_corp' align='center'><small>$e62_item  </small></td>		    
-	     <td class='bordas_corp' nowrap align='left' title='$pc01_descrmater'><small>".substr($pc01_descrmater,0,20)."&nbsp;</small></td>
+	     <td class='bordas_corp' nowrap align='left' title='$pc01_descrmater'><small>".substr((string) $pc01_descrmater,0,20)."&nbsp;</small></td>
 	     <td class='bordas_corp' align='center'><small>$e62_sequen</small></td>
-             <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr($e62_descr,0,20)."&nbsp;</small></td>";
+             <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr((string) $e62_descr,0,20)."&nbsp;</small></td>";
 	    
        $result1=$clmatordemitem->sql_record($clmatordemitem->sql_query(null,"sum(m52_quant) as m52_quant,sum(m52_valor) as m52_valor,e62_quant,e62_vltot","","m52_numemp=$e60_numemp and m52_sequen=$e62_sequen and m52_codordem not in (select m53_codordem from matordemanu)  group by m52_sequen,m52_numemp,e62_quant,e62_vltot"));
 //       die($clmatordemitem->sql_query(null,"sum(m52_quant) as m52_quant,sum(m52_valor) as m52_valor,e62_quant,e62_vltot","","m52_numemp=$e60_numemp and m52_sequen=$e62_sequen and m52_codordem not in (select m53_codordem from matordemanu)  group by m52_sequen,m52_numemp"));
@@ -199,9 +199,9 @@ function js_marca(obj){
       if ($clmatordemitem->numrows==0){
         $valoruni=$e62_vltot/$e62_quant;	     
         $quant="quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
-        $$quant=$e62_quant;
+        ${$quant}=$e62_quant;
         $val="valor_$i"."_"."$e60_numemp"."_"."$e62_sequen";
-        $$val=$e62_vltot;
+        ${$val}=$e62_vltot;
         if ($e62_quant>0){
           echo"  <td class='bordas_corp' align='center'><small>$e62_quant</small></td>
 		 <td class='bordas_corp' align='center'><small>$e62_vltot</small></td>";
@@ -216,7 +216,7 @@ function js_marca(obj){
 	  }else{
 	    
 	  $quan="quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
-	  $$quan=$e62_quant;
+	  ${$quan}=$e62_quant;
 	  echo"<td class='bordas_corp' align='center'><small>";
 	  db_input("quant_$e60_numemp"."_"."$e62_sequen"."_"."$i",6,0,true,'text',3);
 	  echo "</small></td>
@@ -233,8 +233,8 @@ function js_marca(obj){
       $quant="quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
       $val="valor_$i"."_"."$e60_numemp"."_"."$e62_sequen";
       if ($pc01_servico=="f"){
-      $$val=$valorresta;
-      $$quant=$quantidade;
+      ${$val}=$valorresta;
+      ${$quant}=$quantidade;
         echo "<td class='bordas_corp' align='center'><small>$quantidade</small></td>
     	      <td class='bordas_corp' align='center'><small>$valorresta</small></td>
               <td class='bordas_corp' align='center'><small>";
@@ -247,10 +247,10 @@ function js_marca(obj){
       }else{
         $quant="quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
         $val="valor_$i"."_"."$e60_numemp"."_"."$e62_sequen";
-        $$quant=$e62_quant;
+        ${$quant}=$e62_quant;
 	$valo=$e62_vltot-$m52_valor;
-	$$val=db_formatar($valo,'f');
-	$valorrestante=db_formatar($$val,'f');
+	${$val}=db_formatar($valo,'f');
+	$valorrestante=db_formatar(${$val},'f');
         echo "<td class='bordas_corp' align='center'><small>$e62_quant</small></td>
     	      <td class='bordas_corp' align='center'><small>$valorrestante</small></td>
               <td class='bordas_corp' align='center'><small>";

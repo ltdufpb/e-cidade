@@ -32,8 +32,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("it01_guia");
 $clrotulo->label("z01_nome");
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_old.location.href='itb1_itbipropriold002.php?chavepesquisa=$it20_guia&it20_numcgm=$it20_numcgm'</script>";
 }
@@ -79,7 +79,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('it20_pri',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -92,7 +92,7 @@ db_select('it20_pri',$x,true,$db_opcao,"");
   <tr>
     <td align="top" colspan="2">
    <?php 
-    $chavepri= array("it20_guia"=>@$it20_guia,"it20_numcgm"=>@$it20_numcgm);
+    $chavepri= ["it20_guia"=>@$it20_guia,"it20_numcgm"=>@$it20_numcgm];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="it20_guia,it20_numcgm,z01_nome,it20_pri";
     $cliframe_alterar_excluir->sql=$clitbipropriold->sql_query($it20_guia);
@@ -164,7 +164,7 @@ function js_preenchepesquisa(chave){
   db_iframe_itbipropriold.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

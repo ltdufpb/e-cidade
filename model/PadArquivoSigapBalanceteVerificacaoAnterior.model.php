@@ -42,7 +42,7 @@ final class PadArquivoSigapBalanceteVerificacaoAnterior extends PadArquivoSigap 
   public function __construct() {
     
     $this->sNomeArquivo = "BalanceteVerificacaoAnterior";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -60,7 +60,7 @@ final class PadArquivoSigapBalanceteVerificacaoAnterior extends PadArquivoSigap 
       throw new Exception("Data final não informada!");
     }
     
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);    
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);    
     
     /**
      * Separamos a data do em ano, mes, dia
@@ -88,9 +88,9 @@ final class PadArquivoSigapBalanceteVerificacaoAnterior extends PadArquivoSigap 
       $oBalanceteRetorno = new stdClass();
       $oBalanceteRetorno->bveCodigoEntidade  = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oBalanceteRetorno->bveMesAnoMovimento = $sDiaMesAno;
-      $oBalanceteRetorno->bveCodigoConta     = str_pad($oBalancete->estrutural, 20, 0,STR_PAD_RIGHT);
+      $oBalanceteRetorno->bveCodigoConta     = str_pad((string) $oBalancete->estrutural, 20, 0,STR_PAD_RIGHT);
       
-      $oBalanceteRetorno->bveCodigoOrgaoUnidadeOrcamentaria = str_pad($oInstituicao->codtrib, 4, 0,STR_PAD_RIGHT);
+      $oBalanceteRetorno->bveCodigoOrgaoUnidadeOrcamentaria = str_pad((string) $oInstituicao->codtrib, 4, 0,STR_PAD_RIGHT);
       if ($oBalancete->sinal_anterior == 'D') {
         
         $oBalanceteRetorno->bveSaldoAnteriorContaDevedora = $this->corrigeValor($oBalancete->saldo_anterior, 13);
@@ -147,7 +147,7 @@ final class PadArquivoSigapBalanceteVerificacaoAnterior extends PadArquivoSigap 
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "bveCodigoEntidade",
                         "bveMesAnoMovimento",
                         "bveCodigoConta",
@@ -162,7 +162,7 @@ final class PadArquivoSigapBalanceteVerificacaoAnterior extends PadArquivoSigap 
                         "bveTipoNivelConta",
                         "bveNumeroNivelConta",
                         "bveSistemaContabil",
-                       );
+                       ];
     return $aElementos;  
   }
   

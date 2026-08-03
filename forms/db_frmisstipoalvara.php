@@ -98,10 +98,10 @@ $q98_instit = db_getsession('DB_instit');
     </td>
     <td> 
 			<?php 
-				$x = array("" => "SELECIONE...",
+				$x = ["" => "SELECIONE...",
 				           "1" => "FIXO",
 				           "2" => "VARIÁVEL", 
-				           "3" => "INDETERMINADO");
+				           "3" => "INDETERMINADO"];
 				db_select('q98_tipovalidade',$x,true,$db_opcao,"onchange = 'js_mostraQuantvalidade(); js_mostraRenovacao();js_zerarenovacao(true);js_indeterminado();'");
 			?>
     </td>
@@ -138,9 +138,9 @@ $q98_instit = db_getsession('DB_instit');
 				    </td>
 				    <td align="left"> 
 							<?php 
-								$x = array(""  => "SELECIONE...",
+								$x = [""  => "SELECIONE...",
 								           "f" => "NAO",
-								           "t" => "SIM");
+								           "t" => "SIM"];
 								db_select('q98_permiterenovacao',$x,true,$db_opcao,"onchange='js_mostraQuantRenovacao();'");
 							?>
 				    </td>
@@ -177,9 +177,9 @@ $q98_instit = db_getsession('DB_instit');
     </td>
     <td> 
 			<?php 
-					$x = array(""  => "SELECIONE...",
+					$x = [""  => "SELECIONE...",
 					           "f" => "NAO",
-					           "t" => "SIM");
+					           "t" => "SIM"];
 					db_select('q98_permitetransformacao',$x,true,$db_opcao,"");
 			?>
     </td>
@@ -190,9 +190,9 @@ $q98_instit = db_getsession('DB_instit');
     </td>
     <td> 
 			<?php 
-				$x = array(""  => "SELECIONE...",
+				$x = [""  => "SELECIONE...",
 				           "f" => "NAO",
-				           "t" => "SIM");
+				           "t" => "SIM"];
 				db_select('q98_permiteimpressao',$x,true,$db_opcao,"");
 			?>
     </td>
@@ -203,7 +203,7 @@ $q98_instit = db_getsession('DB_instit');
     </td>
     <td> 
 			<?php 
-				$x = array(""  => "SELECIONE...","f"=>"NAO","t"=>"SIM");
+				$x = [""  => "SELECIONE...","f"=>"NAO","t"=>"SIM"];
 				db_select('q98_gerataxa',$x,true,$db_opcao,"");
 			?>
     </td>
@@ -409,7 +409,7 @@ function js_preenchepesquisa(chave){
   db_iframe_isstipoalvara.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

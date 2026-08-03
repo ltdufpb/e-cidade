@@ -106,13 +106,13 @@ $oPdf->SetFillColor(235);
 $iTamFonte = 8;
 $iAltCell  = 4;
 
-imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, true);
+imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
 
 foreach ($aDados as $iIndice => $oDadosRelatorio) {
   
 	imprimeLinhaDado($oPdf, $iAltCell, $iTamFonte, $oDadosRelatorio);
-  imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, false);
-  imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, false, false);
+  imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
+  imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte);
 }
 
 $oPdf->Ln();
@@ -147,7 +147,7 @@ function imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, $lImprime) {
     if ( !$lImprime ) {
       
       $oPdf->AddPage("L");
-      imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, true);
+      imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte);
     }
     
 		$oPdf->Cell(105, $iAltCell*2, "TITULOS", "TBR", 0, "C", 0);
@@ -181,7 +181,7 @@ function imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, $lImprime, $lCabeca
     } else {
       
       $oPdf->Cell(278, ($iAltCell*3), 'Continua na página '.($oPdf->PageNo()+1)."/{nb}",    'T', 1, "R", 0);
-      imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, false);
+      imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
     }
   }
 }
@@ -207,7 +207,7 @@ function imprimeLinhaDado($oPdf, $iAltCell, $iTamFonte, $oDadosRelatorio) {
   
   $sBordaDir = "R";
   $sBordaEsq = "L";
-  if (strtoupper(trim($oDadosRelatorio->descricao)) == 'TOTAL') {
+  if (strtoupper(trim((string) $oDadosRelatorio->descricao)) == 'TOTAL') {
     
     $sBordaDir = "TBR";
     $sBordaEsq = "TBL";

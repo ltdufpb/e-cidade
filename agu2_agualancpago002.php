@@ -27,7 +27,7 @@
 
 
 include(modification("fpdf151/pdf.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $head1 = "LANÇADO & ARRECADADO - ÁGUA";
 $head2 = "EXERCÍCIO: $anousu";
@@ -45,7 +45,7 @@ $alt = 5;
 $sqlconsumotipo = "SELECT * from aguaconsumotipo order by x25_codconsumotipo;";
 $resultconsumotipo = db_query($sqlconsumotipo) or die($sqlconsumotipo);
 
-$array_tipos = array();
+$array_tipos = [];
 $x23_valor_total=0;
 $k00_valor_total=0;
 $matric_calc_total=0;
@@ -57,7 +57,7 @@ $k00_valor_total_exer = 0;
 $mediatotal_exer      = 0;
 
 for ($mes=1; $mes <= $mesfinal; $mes++) {
-  
+
   $sql = "
     select x23_codconsumotipo, 
            x25_descr, 
@@ -166,15 +166,15 @@ for ($mes=1; $mes <= $mesfinal; $mes++) {
           ) as w
  group by x23_codconsumotipo, 
           x25_descr";
-  
+
   if($tipo=="s") $sql="select sum (x23_valor) as x23_valor,sum (k00_valor) as k00_valor from ($sql) as x";
-  
+
   $result = db_query($sql) or die($sql);
-  
+
   if($tipo=="a"){
     $pdf->Cell(49,$alt,"",0,0,"C",1);
     $pdf->Cell(1,$alt,"",0,0,"C",1);
-    
+
     $pdf->Cell(40,$alt,"V A L O R   C A L C U L A D O",0,0,"C",1);
     $pdf->Cell(1,$alt,"",0,0,"C",1);
     $pdf->Cell(40,$alt,"V A L O R   A R R E C A D A D O",0,0,"C",1);
@@ -182,44 +182,44 @@ for ($mes=1; $mes <= $mesfinal; $mes++) {
     $pdf->Cell(40,$alt,"I N A D I M P L Ê N C I A (%)",0,0,"C",1);
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
     $pdf->ln();
-    
+
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
     $pdf->Cell(17,$alt,"MÊS",0,0,"C",1);
-    
+
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
-    
+
     $pdf->Cell(30,$alt,"DESCRIÇÃO",0,0,"L",1);
-    
+
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
-    
-    
+
+
     $pdf->Cell(10,$alt,"QUANT",0,0,"R",1);
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
     $pdf->Cell(18,$alt,"VALOR",0,0,"R",1);
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
     $pdf->Cell(10,$alt,"%",0,0,"R",1);
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
-    
+
     $pdf->Cell(10,$alt,"QUANT",0,0,"R",1);
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
     $pdf->Cell(18,$alt,"VALOR",0,0,"R",1);
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
     $pdf->Cell(10,$alt,"%",0,0,"R",1);
-    
+
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
-    
+
     $pdf->Cell(20,$alt,"NO MÊS",0,0,"R",1);
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
     $pdf->Cell(19,$alt,"MÉDIA" ,0,0,"R",1);
     $pdf->Cell(1,$alt,"",0,0,"C",1);  
-    
+
     $pdf->ln();
-    
+
     $x23_valor_total=0;
     $k00_valor_total=0;
     $matric_calc_total=0;
     $matric_pago_total=0;
-    
+
     for ($x=0; $x < pg_num_rows($result); $x++) {
       db_fieldsmemory($result, $x);
       $x23_valor_total+=$x23_valor;
@@ -235,80 +235,80 @@ for ($mes=1; $mes <= $mesfinal; $mes++) {
       } else {
         $pdf->Cell(17,$alt,"",0,0,"C",0);
       }
-      
+
       $pdf->Cell(1,$alt,"",0,0,"C",1);
-      
+
       $pdf->Cell(30,$alt,$x25_descr,0,0,"L",1);
-      
-      
+
+
       $pdf->Cell(1,$alt,"",0,0,"C",1);    
-      
+
       $pdf->Cell(10,$alt,db_formatar($quant_matric_calc,"s"),0,0,"R",0);
       $pdf->Cell(1,$alt,"",0,0,"C",1);    
       $pdf->Cell(18,$alt,db_formatar($x23_valor,"f"),0,0,"R",0);
       $pdf->Cell(1,$alt,"",0,0,"C",1);    
       $pdf->Cell(10,$alt,db_formatar($x23_valor/$x23_valor_total*100,"f", " ", 4),0,0,"R",0);
       $pdf->Cell(1,$alt,"",0,0,"C",1);    
-      
+
       $pdf->Cell(10,$alt,db_formatar($quant_matric_pago,"s"),0,0,"R",0);
       $pdf->Cell(1,$alt,"",0,0,"C",1);    
       $pdf->Cell(18,$alt,db_formatar($k00_valor,"f"),0,0,"R",0);
       $pdf->Cell(1,$alt,"",0,0,"C",1);    
       $pdf->Cell(10,$alt,db_formatar($k00_valor/$k00_valor_total*100,"f"," ",4),0,0,"R",0);
-      
+
       $pdf->Cell(1,$alt,"",0,0,"C",1);    
-      
+
       $pdf->Cell(20,$alt,db_formatar(100-($k00_valor == 0?0:$k00_valor/$x23_valor*100),"f", " ", 4),0,0,"R",0);
       $pdf->Cell(1,$alt,"",0,0,"C",1);    
-      
+
       if (!isset($array_tipos[$x23_codconsumotipo])) {
         $array_tipos[$x23_codconsumotipo]=0;
       }
       $array_tipos[$x23_codconsumotipo] += 100-($k00_valor == 0?0:$k00_valor/$x23_valor*100);
-      
+
       $pdf->Cell(19,$alt,db_formatar($array_tipos[$x23_codconsumotipo]/$mes,"f", " ", 4),0,0,"R",0);
       $pdf->Cell(1,$alt,"",0,0,"C",1);
       $pdf->ln();
-      
+
     }//for
     $pdf->Cell(1,1,"",0,0,"C",1);
     $pdf->Cell(17,1,"",0,0,"C",0);
     $pdf->Cell(155,1,"",0,0,"C",1);
     $pdf->ln();
-    
+
     $pdf->Cell(1,$alt,"",0,0,"C",1);
-    
+
     $pdf->Cell(17,$alt,"",0,0,"C",0);
-    
+
     $pdf->Cell(1,$alt,"",0,0,"C",1);
-    
+
     $pdf->Cell(30,$alt,"TOTAL NO MÊS",0,0,"L",1);
-    
+
     $pdf->Cell(1,$alt,"",0,0,"C",1);
-    
+
     $pdf->Cell(10,$alt,db_formatar($matric_calc_total,"s"),0,0,"R",0);
     $pdf->Cell(1,$alt,"",0,0,"C",1);    
     $pdf->Cell(18,$alt,db_formatar($x23_valor_total,"f"),0,0,"R",0);
     $pdf->Cell(1,$alt,"",0,0,"C",1);    
     $pdf->Cell(10,$alt,"100",0,0,"R",0);
-    
+
     $pdf->Cell(1,$alt,"",0,0,"C",1);
-    
+
     $pdf->Cell(10,$alt,db_formatar($matric_pago_total,"s"),0,0,"R",0);
     $pdf->Cell(1,$alt,"",0,0,"C",1);    
     $pdf->Cell(18,$alt,db_formatar($k00_valor_total,"f"),0,0,"R",0);
     $pdf->Cell(1,$alt,"",0,0,"C",1);    
     $pdf->Cell(10,$alt,"100",0,0,"R",0);
-    
+
     $pdf->Cell(1,$alt,"",0,0,"C",1);
-    
+
     $pdf->Cell(20,$alt,db_formatar(100-($k00_valor_total == 0?0:$k00_valor_total/$x23_valor_total*100),"f", " ", 4),0,0,"R",0);
     $pdf->Cell(1,$alt,"",0,0,"C",1);    
-    
+
     $mediatotal += 100-($k00_valor_total == 0?0:$k00_valor_total/$x23_valor_total*100);
-    
+
     $pdf->Cell(19,$alt,db_formatar($mediatotal/$mes,"f", " ", 4),0,0,"R",0);
-    
+
     $pdf->Cell(1,$alt,"",0,0,"C",1);
     $pdf->ln();
     $pdf->Cell(1,1,"",0,0,"C",1);
@@ -344,50 +344,50 @@ for ($mes=1; $mes <= $mesfinal; $mes++) {
 
     $pdf->Cell(173,1,"",0,0,"C",1);
     $pdf->ln();
-    
+
   if (($mes % 7)==0) {$pdf->ln(20);}
   }//if "a"
   else { 
     $pdf->Cell(18,$alt,"",0,0,"L",1);
     $pdf->Cell(2,$alt,"",0,0,"L",1);
-    
+
     $pdf->Cell(70,$alt,"N O   M Ê S",0,0,"C",1);
     $pdf->Cell(3,$alt,"",0,0,"L",1);
     $pdf->Cell(70,$alt,"N O   E X E R C Í C I O",0,0,"C",1);
     //$pdf->Cell(40,$alt,"I N A D I M P L Ê N C I A",0,0,"C",1);
     $pdf->ln();
-    
+
     $pdf->Cell(18,$alt,"MÊS",0,0,"C",1);
     $pdf->Cell(2,$alt,"",0,0,"L",1);
-    
+
     $pdf->Cell(30,$alt,"LANÇADO",0,0,"C",1);
     $pdf->Cell(30,$alt,"ARRECADADO",0,0,"C",1);
     $pdf->Cell(10,$alt,"%",0,0,"C",1);
-    
+
     $pdf->Cell(3,$alt,"",0,0,"L",1);
-    
+
     $pdf->Cell(30,$alt,"LANÇADO",0,0,"C",1);
     $pdf->Cell(30,$alt,"ARRECADADO",0,0,"C",1);
     $pdf->Cell(10,$alt,"%",0,0,"C",1);
-    
+
     //$pdf->Cell(20,$alt,"",0,0,"C",0);
     //$pdf->Cell(20,$alt,"MÉDIA" ,0,0,"R",1);
-    
+
     $pdf->ln();
-    
+
     //$x23_valor_total=0;
     //$k00_valor_total=0;
-    
+
     //for ($x=0; $x < pg_num_rows($result); $x++) {
       //	db_fieldsmemory($result, $x);
       //	$x23_valor_total+=$x23_valor;
       //	$k00_valor_total+=$k00_valor;
-      
+
     //}
-    
+
     //$x23_valor_exerc = 0;
     //$k00_valor_exerc = 0;
-    
+
     for ($x=0; $x < pg_num_rows($result); $x++) {
       db_fieldsmemory($result, $x);
       $pdf->Cell(1,$alt,"",0,0,"C",1);
@@ -396,9 +396,9 @@ for ($mes=1; $mes <= $mesfinal; $mes++) {
       } else {
         $pdf->Cell(17,$alt,"",0,0,"R",0);
       }
-      
+
       $pdf->Cell(2,$alt,"",0,0,"L",1);
-      
+
       //$pdf->Cell(10,$alt,"                    ",0,0,"R",0);
       $pdf->Cell(29,$alt,db_formatar($x23_valor,"f"),0,0,"C",0);
       $pdf->Cell(1,$alt,"",0,0,"C",1);
@@ -408,7 +408,7 @@ for ($mes=1; $mes <= $mesfinal; $mes++) {
       $pdf->Cell(9,$alt,db_formatar($k00_valor*100/$x23_valor,"f", " ", 4),0,0,"C",0); 
       $pdf->Cell(3,$alt,"",0,0,"C",1);
       //$pdf->Cell(10,$alt,"",0,0,"L",0);
-      
+
       //$pdf->Cell(10,$alt,"                    ",0,0,"R",1);
       $pdf->Cell(29,$alt,db_formatar($x23_valor_exerc,"f", " ", 4),0,0,"C",0);  
       $pdf->Cell(1,$alt,"",0,0,"C",1);
@@ -417,20 +417,20 @@ for ($mes=1; $mes <= $mesfinal; $mes++) {
       $pdf->Cell(1,$alt,"",0,0,"C",1);
       $pdf->Cell(10,$alt,db_formatar($k00_valor_exerc*100/$x23_valor_exerc,"f", " ", 4),0,0,"C",0);
       $pdf->Cell(1,$alt,"",0,0,"C",1);
-      
+
       //if (!isset($array_tipos[$x23_codconsumotipo])) {
         //			$array_tipos[$x23_codconsumotipo]=0;
       //		}
       //	:	$array_tipos[$x23_codconsumotipo] += 100-($k00_valor == 0?0:$k00_valor/$k00_valor_total*100);
-      
+
       //    $pdf->Cell(20,$alt,db_formatar($array_tipos[$x23_codconsumotipo]/$mes,"f", " ", 4),0,0,"R",1);
-      
+
       $pdf->ln();
       $pdf->Cell(163,1,"",0,0,"C",1);
 
-      
+
     }
-    
+
     $pdf->ln();
     //$x23_valor_exerc=$x23_valor;
     //$k00_valor_exerc=$k00_valor;

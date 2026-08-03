@@ -176,7 +176,7 @@ db_input('e52_valor',15,$Ie52_valor,true,'text',$db_opcao,"")
     <tr>
       <td valign="top"  align='center'>  
        <?php 
-	$chavepri= array("e52_codord"=>$e52_codord,"e52_receit"=>@$e52_receit);
+	$chavepri= ["e52_codord"=>$e52_codord,"e52_receit"=>@$e52_receit];
 	$cliframe_alterar_excluir->chavepri=$chavepri;
 	$cliframe_alterar_excluir->sql     = $clpagordemrec->sql_query($e52_codord,null,"e52_codord,e52_receit,e52_valor,k02_descr");
 	$cliframe_alterar_excluir->campos  ="e52_receit,e52_valor,k02_descr";

@@ -142,7 +142,7 @@ $oPdf->Cell(50,$iAlt,"Valor Total"                                          ,1,0
 $oPdf->Cell(40,$iAlt,db_formatar($oTotal->valor_total_geral_origem,"f")     ,1,0,"R",0);
 //Coluna 2
 $oPdf->Cell(50,$iAlt,"Total de Parcelas Pagas (Qtd)"                        ,1,0,"L",1);
-$oPdf->Cell(40,$iAlt,str_pad($oTotal->qtd_parcelas_pagas,0,"0")       ,1,0,"R",0);
+$oPdf->Cell(40,$iAlt,str_pad((string) $oTotal->qtd_parcelas_pagas,0,"0")       ,1,0,"R",0);
 //Coluna 3
 $oPdf->Cell(50,$iAlt,"Valor Total"                                          ,1,0,"L",1);
 $oPdf->Cell(40,$iAlt,db_formatar($oTotal->valor_total_geral_retorno,"f")    ,1,1,"R",0);

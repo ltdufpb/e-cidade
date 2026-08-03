@@ -48,7 +48,7 @@ switch($oParam->exec) {
       $oUsuarioSistema = new UsuarioSistema(db_getsession("DB_id_usuario"));
       $aInstituicoes   = $oUsuarioSistema->getInstituicoes();
 
-      $oRetorno->aInstituicoes = array();
+      $oRetorno->aInstituicoes = [];
       foreach ($aInstituicoes as $oInstituicao) {
 
         $lSelecionaInstituicao = false;
@@ -58,8 +58,8 @@ switch($oParam->exec) {
 
         $oStdInstituicao = new stdClass();
         $oStdInstituicao->iCodigo        = $oInstituicao->getCodigo();
-        $oStdInstituicao->sNomeCompleto  = urlencode($oInstituicao->getDescricao());
-        $oStdInstituicao->sNomeAbreviado = urlencode($oInstituicao->getDescricaoAbreviada());
+        $oStdInstituicao->sNomeCompleto  = urlencode((string) $oInstituicao->getDescricao());
+        $oStdInstituicao->sNomeAbreviado = urlencode((string) $oInstituicao->getDescricaoAbreviada());
         $oStdInstituicao->lSelecionado   = $lSelecionaInstituicao;
         $oRetorno->aInstituicoes[]       = $oStdInstituicao;
       }

@@ -31,8 +31,8 @@ $clfiscalrec1 = new cl_fiscalrec;
 $clrotulo = new rotulocampo;
 $clrotulo->label("y30_data");
 $clrotulo->label("k02_descr");
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if(isset($receita) && $receita != "" && isset($valor) && $valor != ""){
   echo "<script>parent.iframe_receitas.location.href = 'fis1_fiscalrec002.php?y42_codnoti=$y42_codnoti&y42_receit=$receita&valor=$valor&y42_descr=$descr&abas=1&db_opcao=Alterar'</script>";

@@ -90,7 +90,7 @@ class SigfisArquivoRetencao extends SigfisArquivoBase implements iPadArquivoTXTB
     $sSqlBuscaRetencoes .= "        and corrente.k12_data between '{$this->dtDataInicial}'                     ";
     $sSqlBuscaRetencoes .= "                                       and '{$this->dtDataFinal}'                  ";
     $sSqlBuscaRetencoes .= "        and e23_recolhido is true                                                  ";
-    if(substr($this->dtDataInicial,5,2)+0 == 12 && substr($this->dtDataInicial,0,4)+0 == 2012){
+    if(substr((string) $this->dtDataInicial,5,2)+0 == 12 && substr((string) $this->dtDataInicial,0,4)+0 == 2012){
       $sSqlBuscaRetencoes .= "        and e60_codemp not in ('309','304','301','291','302')                                           ";
     }
     $sSqlBuscaRetencoes .= " group by k12_data, e60_codemp, e60_anousu, c61_codcon, c60_estrut,     ";
@@ -110,7 +110,7 @@ class SigfisArquivoRetencao extends SigfisArquivoBase implements iPadArquivoTXTB
       	/**
       	 * manipulamos a data de vencimento para o formato que o tribunal espera receber
       	 */
-      	$aData = explode('-', $oRetencao->k12_data);
+      	$aData = explode('-', (string) $oRetencao->k12_data);
       	$iAnoVencimento = $aData[0];
       	$iAnoMesVencimento = $aData[0].$aData[1];
       	$iDataVencimento = $aData[2].$aData[1].$aData[0];
@@ -129,19 +129,19 @@ class SigfisArquivoRetencao extends SigfisArquivoBase implements iPadArquivoTXTB
       	}
       	
       	$oDadosLinha = new stdClass();
-      	$oDadosLinha->cd_Unidade              = str_pad($this->sCodigoTribunal,   4, ' ', STR_PAD_LEFT);
+      	$oDadosLinha->cd_Unidade              = str_pad((string) $this->sCodigoTribunal,   4, ' ', STR_PAD_LEFT);
 //    	$oDadosLinha->cd_UnidadeOrcamentaria  = str_pad($oRetencao->o58_orgao,    2, '0', STR_PAD_LEFT);
-      	$oDadosLinha->cd_UnidadeOrcamentaria  = str_pad($oRetencao->o58_unidade,  4, ' ', STR_PAD_LEFT);
-      	$oDadosLinha->nu_Empenho              = str_pad($oRetencao->e60_codemp,  10, ' ', STR_PAD_RIGHT);
+      	$oDadosLinha->cd_UnidadeOrcamentaria  = str_pad((string) $oRetencao->o58_unidade,  4, ' ', STR_PAD_LEFT);
+      	$oDadosLinha->nu_Empenho              = str_pad((string) $oRetencao->e60_codemp,  10, ' ', STR_PAD_RIGHT);
       	$oDadosLinha->dt_Ano                  = $iAnoVencimento;
       	$oDadosLinha->dt_AnoCriacao           = $oRetencao->e60_anousu;
       	$oDadosLinha->dt_PagamentoEmpenho     = $iDataVencimento;
-      	$oDadosLinha->cd_ContaContabil        = str_pad($oRetencao->c60_estrut, 34, ' ', STR_PAD_RIGHT);
+      	$oDadosLinha->cd_ContaContabil        = str_pad((string) $oRetencao->c60_estrut, 34, ' ', STR_PAD_RIGHT);
       	$oDadosLinha->vl_Retencao             = str_pad($iValorSemSeparador,     16, ' ', STR_PAD_LEFT);
       	$oDadosLinha->dt_AnoMes               = $iAnoMesVencimento;
-      	$oDadosLinha->cd_Orgao                = str_pad($oRetencao->o58_orgao,    4, ' ', STR_PAD_LEFT);
+      	$oDadosLinha->cd_Orgao                = str_pad((string) $oRetencao->o58_orgao,    4, ' ', STR_PAD_LEFT);
     //	$oDadosLinha->nu_EmpenhoSup           = str_pad(str_repeat(' ', 10),  10, ' ', STR_PAD_LEFT);
-      	$oDadosLinha->nu_EmpenhoSup             = str_pad($oRetencao->e60_codemp,  10, ' ', STR_PAD_RIGHT);
+      	$oDadosLinha->nu_EmpenhoSup             = str_pad((string) $oRetencao->e60_codemp,  10, ' ', STR_PAD_RIGHT);
         $oDadosLinha->cd_ContaCorrente        = str_pad(str_repeat(' ', 30),  30, ' ', STR_PAD_LEFT);
         if(db_getsession('DB_anousu') < 2013 ){
           $oDadosLinha->codigolinha             = 417;

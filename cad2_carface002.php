@@ -33,7 +33,7 @@ $cliptubase    = new cl_iptubase;
 $oDaoCaracter  = new cl_caracter();
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 ///////////////////////////////////////////////////////////////////////
 $head4 = "RELATÓRIO DE FACE DE QUADRA";
@@ -57,14 +57,14 @@ if( isset( $relatorio1 ) ) {
 
   if (isset($chaves) && $chaves != "") {
 
-    $chaves = split( "#", $chaves );
+    $chaves = preg_split( "#\\##m", $chaves );
 
     for( $i = 0; $i < sizeof($chaves); $i++ ) {
 
       if ($codigo == "") {
-	      $codigo .= substr( $chaves[$i], 0, ( strpos( $chaves[$i], "-" ) ) );
+	      $codigo .= substr( (string) $chaves[$i], 0, ( strpos( (string) $chaves[$i], "-" ) ) );
       } else {
-	      $codigo .= "," . substr( $chaves[$i], 0, ( strpos( $chaves[$i], "-" ) ) );
+	      $codigo .= "," . substr( (string) $chaves[$i], 0, ( strpos( (string) $chaves[$i], "-" ) ) );
       }
     }
 
@@ -126,8 +126,8 @@ if (isset($setor) && $setor != "") {
 
     if (isset($setor) && $setor != "") {
 
-      $chaves  = split( ",", $setor );
-      $chaves1 = split( ",", $quadra );
+      $chaves  = preg_split( "#,#m", (string) $setor );
+      $chaves1 = preg_split( "#,#m", (string) $quadra );
       $or      = "";
       $setor   = "";
 
@@ -213,7 +213,7 @@ $sSql .= "               ) as ordem ";
 $sSql .= "       ) as distincao {$ordem} {$order}";
 
 $result    = db_query($sSql);
-$numrows   = pg_numrows($result);
+$numrows   = pg_num_rows($result);
 $matric    = "";
 $idcons    = "";
 $area      = "";
@@ -310,7 +310,7 @@ if (isset($ruas) && !empty($ruas) && $temruas == "t") {
   $rua     = "";
   $result1 = db_query("select j14_nome from ruas where j14_codigo in ($ruas)");
 
-  for ($x = 0; $x < pg_numrows($result1); $x++) {
+  for ($x = 0; $x < pg_num_rows($result1); $x++) {
 
 	  db_fieldsmemory($result1,$x);
 	  $cod .= $vir . $j14_nome;
@@ -326,7 +326,7 @@ if (isset($ruas) && $ruas != "" && $temruas == "f") {
   $rua     = "";
   $result1 = db_query("select j14_nome from ruas where j14_codigo in ($ruas)");
 
-  for ($x = 0; $x < pg_numrows($result1); $x++) {
+  for ($x = 0; $x < pg_num_rows($result1); $x++) {
 
 	  db_fieldsmemory($result1,$x);
 	  $cod .= $vir . $j14_nome;
@@ -350,9 +350,9 @@ if ($listadas != "" || $chaves_caract != '') {
   $sSqlCaracter = $oDaoCaracter->sql_query( null, "j31_codigo, j31_descr", null, $sWhere );
   $rsCaracter   = db_query( $sSqlCaracter );
 
-  if( pg_numrows( $rsCaracter ) > 0 ) {
+  if( pg_num_rows( $rsCaracter ) > 0 ) {
 
-    for($x = 0; $x < pg_numrows($rsCaracter); $x++) {
+    for($x = 0; $x < pg_num_rows($rsCaracter); $x++) {
 
       db_fieldsmemory( $rsCaracter, $x );
       $cod .= $vir . $j31_codigo . " - " . $j31_descr;
@@ -374,7 +374,7 @@ if (isset($chaves_caract) && $chaves_caract != "") {
   $sSqlCaracter = $oDaoCaracter->sql_query( null, "j31_codigo, j31_descr", null, "j31_codigo in ({$chaves_caract})" );
   $rsCaracter   = db_query( $sSqlCaracter );
 
-  for($x = 0; $x < pg_numrows($rsCaracter); $x++) {
+  for($x = 0; $x < pg_num_rows($rsCaracter); $x++) {
 
 	  db_fieldsmemory( $rsCaracter, $x );
 	  $cod .= $vir . $j31_codigo . " - " . $j31_descr;
@@ -390,8 +390,8 @@ if (isset($setores) && $setores != "") {
 
   if (isset($setor) && $setor != "") {
 
-    $chaves  = split( ",", $setores );
-    $chaves1 = split( ",", $quadra );
+    $chaves  = preg_split( "#,#m", $setores );
+    $chaves1 = preg_split( "#,#m", (string) $quadra );
     $and     = "";
     $setores = "";
 

@@ -34,8 +34,8 @@ require_once(modification("classes/db_arrevenclog_classe.php"));
 require_once(modification("classes/db_arreinstit_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $clarrevenc    = new cl_arrevenc;
 $clarrevenclog = new cl_arrevenclog;
@@ -300,8 +300,8 @@ if ( isset($k00_sequencial) && $k00_sequencial!="" ) {
 
 function db_verificaData($k00_dtini,$k00_dtfim,$k00_numpre,$k00_numpar){
 
-  $dataini    = implode("-",array_reverse(explode("/",$k00_dtini)));
-  $datafim    = implode("-",array_reverse(explode("/",$k00_dtfim)));
+  $dataini    = implode("-",array_reverse(explode("/",(string) $k00_dtini)));
+  $datafim    = implode("-",array_reverse(explode("/",(string) $k00_dtfim)));
   $sqlPeriodo = "select *
                    from arrevenc
 	                where k00_numpre = {$k00_numpre}

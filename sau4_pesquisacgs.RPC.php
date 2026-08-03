@@ -52,7 +52,7 @@ switch ($oGet->action) {
    */
   case "buscarDadosBasicosPorNome":
 
-    $sName    = db_stdClass::crossUrlDecode( html_entity_decode($oPost->string) );
+    $sName    = db_stdClass::crossUrlDecode( html_entity_decode((string) $oPost->string) );
     $sCampos .= " ,z01_v_nome as nome,      ";
     $sCampos .= " z01_v_sexo as sexo,       ";
     $sCampos .= " z01_d_nasc as nascimento, ";

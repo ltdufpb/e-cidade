@@ -31,7 +31,7 @@ include(modification("classes/db_db_modulos_classe.php"));
 $total2 = 0;
 $cl_db_modulos = new cl_db_modulos;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $pdf = new PDF(); // abre a classe
 $head1 = "RELATÓRIO DE ATENDIMENTOS NÃO LANÇADOS";

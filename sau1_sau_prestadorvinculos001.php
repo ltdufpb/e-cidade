@@ -86,7 +86,7 @@ function validaExame( $db_opcao, $oPost ) {
   $sWhereSauPrestadorVinculo  = "     sd63_c_procedimento = '{$oPost->sd63_c_procedimento}'";
   $sWhereSauPrestadorVinculo .= " AND s111_i_prestador = {$oPost->s111_i_prestador}";
   $sSqlSauPrestadorVinculo    = $oDaoSauPrestadorVinculo->sql_query( null, "1", null, $sWhereSauPrestadorVinculo );
-  $$rsSauPrestadorVinculo      = db_query( $sSqlSauPrestadorVinculo );
+  ${$rsSauPrestadorVinculo}      = db_query( $sSqlSauPrestadorVinculo );
 
   if( $rsSauPrestadorVinculo && pg_num_rows( $rsSauPrestadorVinculo ) > 0 ) {
 

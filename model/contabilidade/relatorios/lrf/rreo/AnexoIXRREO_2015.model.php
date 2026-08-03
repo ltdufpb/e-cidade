@@ -207,7 +207,7 @@ class AnexoIXRREO_2015 extends RelatoriosLegaisBase implements AnexoRREO {
     $this->oPdf->setAutoNewLineMulticell(true);
     $this->oPdf->setBold(false);
     $iAlturaAssinatura = 26;
-    $this->notaExplicativa($this->oPdf, array($this->oPdf, 'AddPage'), $iAlturaAssinatura);
+    $this->notaExplicativa($this->oPdf, [$this->oPdf, 'AddPage'], $iAlturaAssinatura);
     $this->oRelatorioLegal->assinatura($this->oPdf, 'LRF', false);
 
     $this->oPdf->showPDF("AnexoIXRREO_" . time());
@@ -232,7 +232,7 @@ class AnexoIXRREO_2015 extends RelatoriosLegaisBase implements AnexoRREO {
     $oDespesaCapitalLiquida->nSaldoNaoExecutado  = $aLinhas[self::LINHA_DESPESA_CAPITAL]->saldo;
     $oDespesaCapitalLiquida->sDescricao          = 'Despesa de Capital Líquida';
 
-    return array($oReceitaOperacoesCredito, $oDespesaCapitalLiquida);
+    return [$oReceitaOperacoesCredito, $oDespesaCapitalLiquida];
   }
 
 }

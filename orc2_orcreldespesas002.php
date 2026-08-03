@@ -60,7 +60,7 @@ $qunidade = 0;
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $anousu = db_getsession("DB_anousu");
 
@@ -85,7 +85,7 @@ $resultinst = db_query("select codigo,nomeinst from db_config where codigo in ($
 $descr_inst = '';
 $xvirg = '';
 
-for($xins = 0; $xins < pg_numrows($resultinst); $xins ++) {
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins ++) {
   db_fieldsmemory($resultinst, $xins);
   $descr_inst .= $xvirg . $nomeinst;
   $xvirg = ', ';
@@ -97,9 +97,9 @@ $head5 = "Período : " . $data_ini_exibida . "   à  " . $data_fin_exibida;
 // coloquei esta linha e comentei a linha abaixo somente para retirar este relatorio para o orcamento
 $sele_work = $clselorcdotacao->getDados();
 
-if (substr($nivel, 1, 1) == 'A') {
+if (substr((string) $nivel, 1, 1) == 'A') {
   $completo = false;
-  $nivela = substr($nivel, 0, 1);
+  $nivela = substr((string) $nivel, 0, 1);
   if ($nivela == "9") {
     $completo = true;
     $nivela = "8";
@@ -167,7 +167,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
   $pagina = 1;
 
-  for($i = 0; $i < pg_numrows($result); $i ++) {
+  for($i = 0; $i < pg_num_rows($result); $i ++) {
 
     db_fieldsmemory($result, $i);
 
@@ -562,11 +562,11 @@ if (substr($nivel, 1, 1) == 'A') {
 
         $sql = "select *
 		from orcelemento
-		where substr(o56_elemento,1,7) = '" . str_replace('.', '', substr($o58_elemento, 0, 7)) . "' and
+		where substr(o56_elemento,1,7) = '" . str_replace('.', '', substr((string) $o58_elemento, 0, 7)) . "' and
 		      substr(o56_elemento,8,5) != '00000' and o56_anousu = " . db_getsession("DB_anousu") . " and
 		      o56_orcado is true";
         $res = db_query($sql);
-        for($ne = 0; $ne < pg_numrows($res); $ne ++) {
+        for($ne = 0; $ne < pg_num_rows($res); $ne ++) {
           db_fieldsmemory($res, $ne);
           $pdf->cell(20, $alt, $o56_elemento, 0, 0, "L", 0);
           $pdf->cell(80, $alt, $o56_descr, 0, 0, "L", 0);
@@ -672,7 +672,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
 } else {
 
-  $nivela = substr($nivel, 0, 1);
+  $nivela = substr((string) $nivel, 0, 1);
 
   $anousu = db_getsession("DB_anousu");
   $dataini = db_getsession("DB_anousu") . "-01-01";
@@ -709,7 +709,7 @@ if (substr($nivel, 1, 1) == 'A') {
   $totunidaatual = 0;
   $pagina = 1;
 
-  for($k = 0; $k < pg_numrows($result); $k ++) {
+  for($k = 0; $k < pg_num_rows($result); $k ++) {
 
     db_fieldsmemory($result, $k);
     if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {

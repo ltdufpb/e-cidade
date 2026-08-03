@@ -41,7 +41,7 @@ $clmovrel->rotulo->label();
 $clrotulo->label('z01_nome');
 $clrotulo->label('rh05_recis');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 //echo "<br> ano -> $ano <br>";
@@ -88,13 +88,13 @@ if(isset($r54_codeve) && $r54_codeve != ""){
   if($clrelac->numrows > 0){
     db_fieldsmemory($result_codeve,0);
     $HEAD8 = "head".$mais;
-    $$HEAD8 = "RELACIONAMENTO: ".$r54_codeve." - ".$descrrelac;
+    ${$HEAD8} = "RELACIONAMENTO: ".$r54_codeve." - ".$descrrelac;
     $mais ++;
   }
 }
 if(isset($nao_lancados)){
   $HEAD9 = "head".$mais;
-  $$HEAD9 = "Não lançados na folha";
+  ${$HEAD9} = "Não lançados na folha";
   $dbwhere .= " and r54_lancad = 'f' ";
 }
 
@@ -137,7 +137,7 @@ $sSqlMovRelDados    = "select r54_codrel,
                                 r54_regist,
                                 r54_quant1";
 
-$xRubrica = pg_result($clmovrel->sql_record($sSqlMovRelDados),0,'r55_rubr01');
+$xRubrica = pg_fetch_result($clmovrel->sql_record($sSqlMovRelDados),0,'r55_rubr01');
 
 $sSqlInconsistencia = " select r14_regist, z01_nome, r70_descr, z01_cgccpf as cpf, r14_valor 
 		  from gerfsal
@@ -159,7 +159,7 @@ $sSqlInconsistencia = " select r14_regist, z01_nome, r70_descr, z01_cgccpf as cp
 $erro_msg = '';
 
 $result_inconsistencias = pg_query($sSqlInconsistencia);
-$numrows_inconsistencias = pg_numrows($result_inconsistencias);
+$numrows_inconsistencias = pg_num_rows($result_inconsistencias);
 
 $result_dados = $clmovrel->sql_record($sSqlMovRelDados);
 $numrows_dados = $clmovrel->numrows;
@@ -286,7 +286,7 @@ for($i = 0; $i < $numrows_dados;$i++){
             and r14_regist = $r54_regist
 	    and r14_rubric = '$r55_rubr01'";
    $result_valor = pg_query($sql_valor);
-  if(pg_numrows($result_valor) > 0){
+  if(pg_num_rows($result_valor) > 0){
     db_fieldsmemory($result_valor,0);
 //  }else{
 //     db_redireciona('db_erros.php?fechar=true&db_erro=Não encontrato valor para a rubrica '.$r55_rubr01.', para o servidor '.$r54_regist.'existem dados importados no período de '.$mes.' / '.$ano);
@@ -315,7 +315,7 @@ for($i = 0; $i < $numrows_dados;$i++){
   }
 
 
-  if( pg_result($result_dados,($i+1), 'r54_regist') != $r54_regist ){
+  if( pg_fetch_result($result_dados,($i+1), 'r54_regist') != $r54_regist ){
      $valor_descontado += $valor_abater;
      $valor_abater = 0;
   }

@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE reconhecimentocontabiltipo
 class cl_reconhecimentocontabiltipo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c111_sequencial = 0; 
-   var $c111_descricao = null; 
-   var $c111_conhistdoc = 0; 
-   var $c111_conhistdocestorno = 0; 
+   public $c111_sequencial = 0; 
+   public $c111_descricao = null; 
+   public $c111_conhistdoc = 0; 
+   public $c111_conhistdocestorno = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c111_sequencial = int4 = Sequencial de Tipos de Rec. Contábil 
                  c111_descricao = varchar(100) = Descrição 
                  c111_conhistdoc = int4 = Código do documento 
                  c111_conhistdocestorno = int4 = Código do documento 
                  ";
    //funcao construtor da classe 
-   function cl_reconhecimentocontabiltipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("reconhecimentocontabiltipo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_reconhecimentocontabiltipo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c111_sequencial = pg_result($result,0,0); 
+       $this->c111_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from reconhecimentocontabiltipo_c111_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c111_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c111_sequencial)){
          $this->erro_sql = " Campo c111_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_reconhecimentocontabiltipo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipos de Reconhecimento Contábil ($this->c111_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipos de Reconhecimento Contábil já Cadastrado";
@@ -185,13 +185,13 @@ class cl_reconhecimentocontabiltipo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20197,'$this->c111_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3626,20197,'','".AddSlashes(pg_result($resaco,0,'c111_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3626,20198,'','".AddSlashes(pg_result($resaco,0,'c111_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3626,20199,'','".AddSlashes(pg_result($resaco,0,'c111_conhistdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3626,20200,'','".AddSlashes(pg_result($resaco,0,'c111_conhistdocestorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3626,20197,'','".AddSlashes(pg_fetch_result($resaco,0,'c111_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3626,20198,'','".AddSlashes(pg_fetch_result($resaco,0,'c111_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3626,20199,'','".AddSlashes(pg_fetch_result($resaco,0,'c111_conhistdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3626,20200,'','".AddSlashes(pg_fetch_result($resaco,0,'c111_conhistdocestorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -201,10 +201,10 @@ class cl_reconhecimentocontabiltipo {
       $this->atualizacampos();
      $sql = " update reconhecimentocontabiltipo set ";
      $virgula = "";
-     if(trim($this->c111_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c111_sequencial"])){ 
+     if(trim((string) $this->c111_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c111_sequencial"])){ 
        $sql  .= $virgula." c111_sequencial = $this->c111_sequencial ";
        $virgula = ",";
-       if(trim($this->c111_sequencial) == null ){ 
+       if(trim((string) $this->c111_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial de Tipos de Rec. Contábil não informado.";
          $this->erro_campo = "c111_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_reconhecimentocontabiltipo {
          return false;
        }
      }
-     if(trim($this->c111_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c111_descricao"])){ 
+     if(trim((string) $this->c111_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c111_descricao"])){ 
        $sql  .= $virgula." c111_descricao = '$this->c111_descricao' ";
        $virgula = ",";
-       if(trim($this->c111_descricao) == null ){ 
+       if(trim((string) $this->c111_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "c111_descricao";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_reconhecimentocontabiltipo {
          return false;
        }
      }
-     if(trim($this->c111_conhistdoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c111_conhistdoc"])){ 
+     if(trim((string) $this->c111_conhistdoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c111_conhistdoc"])){ 
        $sql  .= $virgula." c111_conhistdoc = $this->c111_conhistdoc ";
        $virgula = ",";
-       if(trim($this->c111_conhistdoc) == null ){ 
+       if(trim((string) $this->c111_conhistdoc) == null ){ 
          $this->erro_sql = " Campo Código do documento não informado.";
          $this->erro_campo = "c111_conhistdoc";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_reconhecimentocontabiltipo {
          return false;
        }
      }
-     if(trim($this->c111_conhistdocestorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c111_conhistdocestorno"])){ 
+     if(trim((string) $this->c111_conhistdocestorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c111_conhistdocestorno"])){ 
        $sql  .= $virgula." c111_conhistdocestorno = $this->c111_conhistdocestorno ";
        $virgula = ",";
-       if(trim($this->c111_conhistdocestorno) == null ){ 
+       if(trim((string) $this->c111_conhistdocestorno) == null ){ 
          $this->erro_sql = " Campo Código do documento não informado.";
          $this->erro_campo = "c111_conhistdocestorno";
          $this->erro_banco = "";
@@ -267,17 +267,17 @@ class cl_reconhecimentocontabiltipo {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20197,'$this->c111_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c111_sequencial"]) || $this->c111_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3626,20197,'".AddSlashes(pg_result($resaco,$conresaco,'c111_sequencial'))."','$this->c111_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3626,20197,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c111_sequencial'))."','$this->c111_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c111_descricao"]) || $this->c111_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3626,20198,'".AddSlashes(pg_result($resaco,$conresaco,'c111_descricao'))."','$this->c111_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3626,20198,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c111_descricao'))."','$this->c111_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c111_conhistdoc"]) || $this->c111_conhistdoc != "")
-             $resac = db_query("insert into db_acount values($acount,3626,20199,'".AddSlashes(pg_result($resaco,$conresaco,'c111_conhistdoc'))."','$this->c111_conhistdoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3626,20199,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c111_conhistdoc'))."','$this->c111_conhistdoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c111_conhistdocestorno"]) || $this->c111_conhistdocestorno != "")
-             $resac = db_query("insert into db_acount values($acount,3626,20200,'".AddSlashes(pg_result($resaco,$conresaco,'c111_conhistdocestorno'))."','$this->c111_conhistdocestorno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3626,20200,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c111_conhistdocestorno'))."','$this->c111_conhistdocestorno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -331,13 +331,13 @@ class cl_reconhecimentocontabiltipo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20197,'$c111_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3626,20197,'','".AddSlashes(pg_result($resaco,$iresaco,'c111_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3626,20198,'','".AddSlashes(pg_result($resaco,$iresaco,'c111_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3626,20199,'','".AddSlashes(pg_result($resaco,$iresaco,'c111_conhistdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3626,20200,'','".AddSlashes(pg_result($resaco,$iresaco,'c111_conhistdocestorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3626,20197,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c111_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3626,20198,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c111_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3626,20199,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c111_conhistdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3626,20200,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c111_conhistdocestorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -398,7 +398,7 @@ class cl_reconhecimentocontabiltipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:reconhecimentocontabiltipo";
@@ -413,7 +413,7 @@ class cl_reconhecimentocontabiltipo {
    function sql_query ( $c111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -436,7 +436,7 @@ class cl_reconhecimentocontabiltipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_reconhecimentocontabiltipo {
    function sql_query_file ( $c111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -470,7 +470,7 @@ class cl_reconhecimentocontabiltipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,7 +484,7 @@ class cl_reconhecimentocontabiltipo {
   function sql_queryReconhecimento ( $c111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = preg_split("#\\##m",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_reconhecimentocontabiltipo {
   	$sql .= $sql2;
   	if($ordem != null ){
   		$sql .= " order by ";
-  		$campos_sql = split("#",$ordem);
+  		$campos_sql = preg_split("#\\##m",(string) $ordem);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   	  	$sql .= $virgula.$campos_sql[$i];

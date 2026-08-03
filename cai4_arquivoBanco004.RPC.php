@@ -72,7 +72,7 @@ try {
 
   	case "getMovimentosVinculados" :
 
-  		$aDados   = array();
+  		$aDados   = [];
   		$oArquivo = ArquivoTransmissao::getInstance($oParam->iArquivo);
 
   		foreach ($oArquivo->getMovimentos() as $oMovimento) {
@@ -108,8 +108,8 @@ try {
 
     case "gerarArquivoTXT":
 
-      $dtGeracaoArquivo       = implode("-", array_reverse(explode("/", $oParam->dtGeracaoArquivo)));
-      $dtAutorizacaoPagamento = implode("-", array_reverse(explode("/", $oParam->dtAutorizacaoPagamento)));
+      $dtGeracaoArquivo       = implode("-", array_reverse(explode("/", (string) $oParam->dtGeracaoArquivo)));
+      $dtAutorizacaoPagamento = implode("-", array_reverse(explode("/", (string) $oParam->dtAutorizacaoPagamento)));
       $oGeradorArquivoOBN = new GeradorArquivoOBN();
       $oGeradorArquivoOBN->setDescricao($oParam->sDescricaoArquivo);
       $oGeradorArquivoOBN->setDataGeracao($dtGeracaoArquivo);
@@ -118,7 +118,7 @@ try {
       $oGeradorArquivoOBN->setInstituicao(new Instituicao(db_getsession("DB_instit")));
       $oGeradorArquivoOBN->setAno(db_getsession("DB_anousu"));
       $oGeradorArquivoOBN->setCodigoRemessa(null);
-      $oGeradorArquivoOBN->construirRemessa(explode(",", $oParam->sMovimentos));
+      $oGeradorArquivoOBN->construirRemessa(explode(",", (string) $oParam->sMovimentos));
       $oRetorno->sArquivo = $oGeradorArquivoOBN->getLocalizacao();
 
       db_fim_transacao(false);

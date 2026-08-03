@@ -35,8 +35,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("l20_codigo");
 $clrotulo->label("l28_cnpj");
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 ?>
 <html>

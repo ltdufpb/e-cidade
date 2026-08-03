@@ -1,49 +1,49 @@
 <?php
-return array(
-    'ideVinculo' => array(
-        'properties' => array(
+return [
+    'ideVinculo' => [
+        'properties' => [
             'cpfTrab',
             'nisTrab',
             'matricula'
-        )
-    ),
-    'infoConvInterm' => array(
-        'properties' => array(
+        ]
+    ],
+    'infoConvInterm' => [
+        'properties' => [
             'codConv',
             'dtInicio',
             'dtFim',
             'dtPrevPgto'
-        ),
-        'groups' => array(
-            'jornada' => array(
-                'properties' => array(
+        ],
+        'groups' => [
+            'jornada' => [
+                'properties' => [
                     'codHorContrat',
                     'dscJornada'
-                )
-            ),
-            'localTrab' => array(
-                'properties' => array(
-                    'indLocal' => array(
+                ]
+            ],
+            'localTrab' => [
+                'properties' => [
+                    'indLocal' => [
                         'type' => 'int'
-                    )
-                ),
-                'groups' => array(
-                    'localTrabInterm' => array(
-                        'properties' => array(
+                    ]
+                ],
+                'groups' => [
+                    'localTrabInterm' => [
+                        'properties' => [
                             'tpLograd',
                             'dscLograd',
                             'nrLograd',
                             'complem',
                             'bairro',
                             'cep',
-                            'codMunic' => array(
+                            'codMunic' => [
                                 'type' => 'int'
-                            ),
+                            ],
                             'uf'
-                        )
-                    )
-                )
-            )
-        )
-    )
-);
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

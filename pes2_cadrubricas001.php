@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -101,7 +101,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-            $arr_ativos = array("t"=>"Ativos","f"=>"Inativos","i"=>"Todos");
+            $arr_ativos = ["t"=>"Ativos","f"=>"Inativos","i"=>"Todos"];
             db_select('ativos',$arr_ativos,true,4,"");
 	        ?>
 	      </td>

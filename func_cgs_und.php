@@ -37,7 +37,7 @@ db_postmemory($_POST);
 
 if (!isset($pesquisar) && isset($alterar_cgs)) {
 
-    parse_str($_SERVER["QUERY_STRING"], $queryString);
+    parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
     ?>
   <script>
     location.href = "sau1_cgs_und002.php?chavepesquisa=<?=$chave_z01_i_cgsund?>";
@@ -81,12 +81,12 @@ unset($aFuncaoParent[0]);
     $sql_result = db_query($sql1);
     $num = pg_num_rows($sql_result);
     $conta = 0;
-    $aArrayPai = array();
+    $aArrayPai = [];
 
     while ($row = pg_fetch_array($sql_result)) {
         $conta = $conta + 1;
         $cod_micro = $row["sd34_i_codigo"];
-        $aArrayFilho = array();
+        $aArrayFilho = [];
 
         $sub_sql = "SELECT sd35_i_codigo,sd33_v_descricao ";
         $sub_sql .= "  FROM familiamicroarea ";
@@ -98,7 +98,7 @@ unset($aFuncaoParent[0]);
         $num_sub = pg_num_rows($sub_result);
 
         if ($num_sub >= 1) {
-            $aArrayFilho[] = array('', '');
+            $aArrayFilho[] = ['', ''];
             $conta_sub = 0;
 
             while ($rowx = pg_fetch_array($sub_result)) {
@@ -107,14 +107,14 @@ unset($aFuncaoParent[0]);
                 $conta_sub = $conta_sub + 1;
 
                 if ($conta_sub == $num_sub) {
-                    $aArrayFilho[] = array(urlencode($nome_fam), $codigo_fam);
+                    $aArrayFilho[] = [urlencode((string) $nome_fam), $codigo_fam];
                     $conta_sub = "";
                 } else {
-                    $aArrayFilho[] = array(urlencode($nome_fam), $codigo_fam);
+                    $aArrayFilho[] = [urlencode((string) $nome_fam), $codigo_fam];
                 }
             }
         } else {
-            $aArrayFilho[] = array("Microarea sem famílias cadastradas.", '');
+            $aArrayFilho[] = ["Microarea sem famílias cadastradas.", ''];
         }
         $aArrayPai[] = $aArrayFilho;
     }
@@ -480,8 +480,8 @@ if (!isset($pesquisa_chave)) {
         }
     }
 
-    $repassa = array(
-      "chave_z01_i_cgsund"           => isset($chave_z01_i_cgsund) ? $chave_z01_i_cgsund : '',
+    $repassa = [
+      "chave_z01_i_cgsund"           => $chave_z01_i_cgsund ?? '',
       "chave_z01_v_nome"             => !empty($chave_z01_v_nome) ? $chave_z01_v_nome : '',
       "chave_z01_v_cgccpf"           => !empty($chave_z01_v_cgccpf) ? $chave_z01_v_cgccpf : '',
       "chave_z01_d_nasc"             => !empty($chave_z01_d_nasc) ? $chave_z01_d_nasc : '',
@@ -491,9 +491,9 @@ if (!isset($pesquisa_chave)) {
       "chave_s115_c_cartaosus"       => !empty($chave_s115_c_cartaosus) ? $chave_s115_c_cartaosus : '',
       "chave_z01_i_familiamicroarea" => !empty($chave_z01_i_familiamicroarea) ? $chave_z01_i_familiamicroarea : '',
       "chave_z01_v_micro"            => !empty($chave_z01_v_micro) ? $chave_z01_v_micro : '',
-      "chave_z01_b_inativo"          => isset($chave_z01_b_inativo) ? $chave_z01_b_inativo : '',
-      "chave_z01_b_faleceu"          => isset($chave_z01_b_faleceu) ? $chave_z01_b_faleceu : ''
-    );
+      "chave_z01_b_inativo"          => $chave_z01_b_inativo ?? '',
+      "chave_z01_b_faleceu"          => $chave_z01_b_faleceu ?? ''
+    ];
 
     if (isset($sql)) {
         echo '<div class="container">';

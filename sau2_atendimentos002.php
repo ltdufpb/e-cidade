@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_cancdebitos_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clcancdebitos = new cl_cancdebitos;
 $clcancdebitos->rotulo->label();
 $unidade = str_replace("X",",",$unidades);
@@ -87,7 +87,7 @@ $pdf->AliasNbPages();
 $head1 = "Relatório do Atendimentos";
 $head2 = "Período:".substr($data1,8,2)."/".substr($data1,5,2)."/".substr($data1,0,4)." A ".substr($data2,8,2)."/".substr($data2,5,2)."/".substr($data2,0,4);
 if($medico!=""){
- $h_med = $medico." - ".pg_result($result,0,'nomemed');
+ $h_med = $medico." - ".pg_fetch_result($result,0,'nomemed');
 }else{
  $h_med = "TODOS";
 }
@@ -142,7 +142,7 @@ for ($i = 0;$i < pg_num_rows($result);$i++){
  }
  $pdf->setfont('arial','',7);
  $pdf->cell(5,4,"",0,0,"C",0);
- $pdf->cell(30,4,$sd24_i_ano."-".str_pad($sd24_i_mes,2,0,"str_pad_left")."-".str_pad($sd24_i_seq,6,0,"str_pad_left"),0,0,"L",$cor);
+ $pdf->cell(30,4,$sd24_i_ano."-".str_pad($sd24_i_mes,2,0,"str_pad_left")."-".str_pad((string) $sd24_i_seq,6,0,"str_pad_left"),0,0,"L",$cor);
  $pdf->cell(70,4,$z01_nome,0,0,"L",$cor);
  $pdf->cell(80,4,substr($sd63_c_procedimento." - ".$sd63_c_nome,0,50),0,0,"L",$cor);
  $pdf->cell(5,4,"",0,1,"L",0);

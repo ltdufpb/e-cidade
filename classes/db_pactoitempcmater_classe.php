@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE pactoitempcmater
 class cl_pactoitempcmater { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o89_sequencial = 0; 
-   var $o89_pactoitem = 0; 
-   var $o89_pcmater = 0; 
+   public $o89_sequencial = 0; 
+   public $o89_pactoitem = 0; 
+   public $o89_pcmater = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o89_sequencial = int4 = Sequencial 
                  o89_pactoitem = int4 = Item 
                  o89_pcmater = int4 = Material 
                  ";
    //funcao construtor da classe 
-   function cl_pactoitempcmater() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pactoitempcmater"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_pactoitempcmater {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o89_sequencial = pg_result($result,0,0); 
+       $this->o89_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pactoacoesitempcmater_o89_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o89_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o89_sequencial)){
          $this->erro_sql = " Campo o89_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_pactoitempcmater {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "pactoitempcmater ($this->o89_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "pactoitempcmater já Cadastrado";
@@ -166,12 +166,12 @@ class cl_pactoitempcmater {
      $resaco = $this->sql_record($this->sql_query_file($this->o89_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13897,'$this->o89_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2442,13897,'','".AddSlashes(pg_result($resaco,0,'o89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2442,13900,'','".AddSlashes(pg_result($resaco,0,'o89_pactoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2442,13903,'','".AddSlashes(pg_result($resaco,0,'o89_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2442,13897,'','".AddSlashes(pg_fetch_result($resaco,0,'o89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2442,13900,'','".AddSlashes(pg_fetch_result($resaco,0,'o89_pactoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2442,13903,'','".AddSlashes(pg_fetch_result($resaco,0,'o89_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_pactoitempcmater {
       $this->atualizacampos();
      $sql = " update pactoitempcmater set ";
      $virgula = "";
-     if(trim($this->o89_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o89_sequencial"])){ 
+     if(trim((string) $this->o89_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o89_sequencial"])){ 
        $sql  .= $virgula." o89_sequencial = $this->o89_sequencial ";
        $virgula = ",";
-       if(trim($this->o89_sequencial) == null ){ 
+       if(trim((string) $this->o89_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "o89_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_pactoitempcmater {
          return false;
        }
      }
-     if(trim($this->o89_pactoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o89_pactoitem"])){ 
+     if(trim((string) $this->o89_pactoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o89_pactoitem"])){ 
        $sql  .= $virgula." o89_pactoitem = $this->o89_pactoitem ";
        $virgula = ",";
-       if(trim($this->o89_pactoitem) == null ){ 
+       if(trim((string) $this->o89_pactoitem) == null ){ 
          $this->erro_sql = " Campo Item nao Informado.";
          $this->erro_campo = "o89_pactoitem";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_pactoitempcmater {
          return false;
        }
      }
-     if(trim($this->o89_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o89_pcmater"])){ 
+     if(trim((string) $this->o89_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o89_pcmater"])){ 
        $sql  .= $virgula." o89_pcmater = $this->o89_pcmater ";
        $virgula = ",";
-       if(trim($this->o89_pcmater) == null ){ 
+       if(trim((string) $this->o89_pcmater) == null ){ 
          $this->erro_sql = " Campo Material nao Informado.";
          $this->erro_campo = "o89_pcmater";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_pactoitempcmater {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13897,'$this->o89_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o89_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2442,13897,'".AddSlashes(pg_result($resaco,$conresaco,'o89_sequencial'))."','$this->o89_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2442,13897,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o89_sequencial'))."','$this->o89_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o89_pactoitem"]))
-           $resac = db_query("insert into db_acount values($acount,2442,13900,'".AddSlashes(pg_result($resaco,$conresaco,'o89_pactoitem'))."','$this->o89_pactoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2442,13900,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o89_pactoitem'))."','$this->o89_pactoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o89_pcmater"]))
-           $resac = db_query("insert into db_acount values($acount,2442,13903,'".AddSlashes(pg_result($resaco,$conresaco,'o89_pcmater'))."','$this->o89_pcmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2442,13903,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o89_pcmater'))."','$this->o89_pcmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_pactoitempcmater {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13897,'$o89_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2442,13897,'','".AddSlashes(pg_result($resaco,$iresaco,'o89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2442,13900,'','".AddSlashes(pg_result($resaco,$iresaco,'o89_pactoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2442,13903,'','".AddSlashes(pg_result($resaco,$iresaco,'o89_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2442,13897,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2442,13900,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o89_pactoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2442,13903,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o89_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pactoitempcmater
@@ -345,7 +345,7 @@ class cl_pactoitempcmater {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pactoitempcmater";
@@ -360,7 +360,7 @@ class cl_pactoitempcmater {
    function sql_query ( $o89_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -386,7 +386,7 @@ class cl_pactoitempcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -399,7 +399,7 @@ class cl_pactoitempcmater {
    function sql_query_file ( $o89_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -420,7 +420,7 @@ class cl_pactoitempcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

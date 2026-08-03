@@ -53,7 +53,7 @@ class HistoricoCalculoAnualRepository extends \BaseClassRepository
         $oCalculosIptucalc = $this->getDadosCalculo();
         $oCalculosIptucale = $this->getDadosIptucale();
 
-        $aIptucalclog = array();
+        $aIptucalclog = [];
 
         foreach ($oCalculos as $oCalculo) {
             if (!in_array($oCalculo->iptucalclog, $aIptucalclog)) {
@@ -61,7 +61,7 @@ class HistoricoCalculoAnualRepository extends \BaseClassRepository
             }
         }
 
-        $oCalculosAgrupados = array();
+        $oCalculosAgrupados = [];
 
         foreach ($aIptucalclog as $iIptucalclog) {
             foreach ($oCalculosIptucalc as $oCalculoIptucalc) {

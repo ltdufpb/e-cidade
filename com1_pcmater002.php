@@ -34,8 +34,8 @@ include(modification("classes/db_pcmaterele_classe.php"));
 include(modification("classes/db_pcgrupo_classe.php"));
 include(modification("classes/db_pcsubgrupo_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clpcmater = new cl_pcmater;
 $clpcmaterele = new cl_pcmaterele;
 $clpcgrupo = new cl_pcgrupo;
@@ -43,16 +43,16 @@ $clpcsubgrupo = new cl_pcsubgrupo;
 $db_opcao = 22;
 $db_botao = false;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $sqlerro=false;
   $db_opcao = 2;
-  $clpcmater->pc01_descrmater = trim(preg_replace('/\s+/', ' ',@$pc01_descrmater));
+  $clpcmater->pc01_descrmater = trim((string) preg_replace('/\s+/', ' ',(string) @$pc01_descrmater));
   if ($pc01_ativo == 't') {
     $daoSolicitaRegistroPreco = new cl_solicitaregistropreco();
     $sqlSolicita = $daoSolicitaRegistroPreco->sql_query_registro_compilacao(null, '1', null, "pc16_codmater = {$pc01_codmater} and pc52_sequencial = 6 and pc67_solicita is null and current_date between pc54_datainicio and pc54_datatermino");
     $rs = db_query($sqlSolicita);
-    if (pg_numrows($rs) > 0) {
+    if (pg_num_rows($rs) > 0) {
       db_msgbox("Não é possível inativar o item, pois o mesmo encontra-se em uma ou mais ata(s) vigente(s) de registro de preço!");
       $sqlerro = true;
     }
@@ -77,10 +77,10 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   }
 
   if($sqlerro==false){  	
-    $arr =  split("XX",$codeles);
+    $arr =  preg_split("#XX#m",$codeles);
     for($i=0; $i<count($arr); $i++ ){
        $elemento = $arr[$i];  
-       if(trim($elemento)!=""){
+       if(trim((string) $elemento)!=""){
 	 $result_matele = $clpcmaterele->sql_record($clpcmaterele->sql_query_file($codmater,$elemento));
 	 if($clpcmaterele->numrows==0){
 	   $clpcmaterele->pc07_codmater = $codmater;
@@ -152,7 +152,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clpcmater->erro_status=="0"){
     $clpcmater->erro(true,false);
     $db_botao=true;

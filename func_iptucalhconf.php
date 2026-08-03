@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptucalhconf_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptucalhconf = new cl_iptucalhconf;
 $cliptucalhconf->rotulo->label("j89_sequencial");
 $cliptucalhconf->rotulo->label("j89_codhis");
@@ -98,9 +98,9 @@ $cliptucalhconf->rotulo->label("j89_codhis");
         }else{
            $sql = $cliptucalhconf->sql_query_file("",$campos,"j89_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j89_codhis)){
-          $repassa = array("chave_j89_sequencial"=>$chave_j89_sequencial,"chave_j89_codhis"=>$chave_j89_codhis);
+          $repassa = ["chave_j89_sequencial"=>$chave_j89_sequencial,"chave_j89_codhis"=>$chave_j89_codhis];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

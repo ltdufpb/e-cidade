@@ -120,8 +120,8 @@
         </td>
         <td>
           <?php 
-            $aTipoConta = array( 0 => 'Conta Corrente',
-                                 1 => 'Conta Poupança' );
+            $aTipoConta = [ 0 => 'Conta Corrente',
+                                 1 => 'Conta Poupança' ];
             db_select('c63_tipoconta',$aTipoConta,true,1);
           ?>
         </td>                  

@@ -366,7 +366,7 @@ $clrotulo->label("am06_principal");
               </td>
               <td colspan="2">
                 <?php
-                  $aOpcoes = array('' =>'Selecione');
+                  $aOpcoes = ['' =>'Selecione'];
                   db_select('am04_sequencial', $aOpcoes, true, $db_opcao);
                 ?>
               </td>
@@ -378,7 +378,7 @@ $clrotulo->label("am06_principal");
               </td>
               <td colspan="2">
                 <?php
-                  $aOpcoesAtividadePrincipal = array('1' => 'Sim', '0' => 'Não');
+                  $aOpcoesAtividadePrincipal = ['1' => 'Sim', '0' => 'Não'];
                   db_select('am06_principal', $aOpcoesAtividadePrincipal, true, $db_opcao);
                 ?>
               </td>

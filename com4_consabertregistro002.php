@@ -39,22 +39,22 @@ $sWhere = "";
 
 $and = $sWhere != "" ? " and " : "";
 
-if (trim($oGet->pc10_numero) != "") {
+if (trim((string) $oGet->pc10_numero) != "") {
 	
 	$sWhere .= $and." pc10_numero = ".$oGet->pc10_numero;
 }
 
 $and = $sWhere != "" ? " and " : "";
  
-if (trim($oGet->dtini) != "" && trim($oGet->dtfim) != "") {
+if (trim((string) $oGet->dtini) != "" && trim((string) $oGet->dtfim) != "") {
   
   $sWhere .= $and." pc10_data between '".$oGet->dtini."' and '".$oGet->dtfim."'";
   
-} else if (trim($oGet->dtini) != "") {
+} else if (trim((string) $oGet->dtini) != "") {
 	
 	$sWhere .= $and." pc10_data >= '".$oGet->dtini."'";
 	
-} else if (trim($oGet->dtfim) != "") {
+} else if (trim((string) $oGet->dtfim) != "") {
   
   $sWhere .= $and." pc10_data =< '".$oGet->dtfim."'";
   
@@ -62,7 +62,7 @@ if (trim($oGet->dtini) != "" && trim($oGet->dtfim) != "") {
 
 $and = $sWhere != "" ? " and " : "";
 
-if (trim($oGet->pc10_depto) != "") {
+if (trim((string) $oGet->pc10_depto) != "") {
   
   $sWhere .= $and." pc10_depto = ".$oGet->pc10_depto;
 }
@@ -120,8 +120,8 @@ $sSql = $oDaoSolicitaRegistroPreco->sql_query(null, $sCampos, null, $sWhere);
   <tr> 
     <td align="center" valign="top"> 
       <?php 
-       $totalizacao = array();
-       db_lovrot($sSql,15,"()","",$oGet->funcao_js,"","NoMe", array(),false, $totalizacao);
+       $totalizacao = [];
+       db_lovrot($sSql,15,"()","",$oGet->funcao_js,"","NoMe", [],false, $totalizacao);
        /*      
        if(isset($newsql) && $newsql=="true"){
          db_lovrot($sql1,15,"()","","js_abre|o58_coddot","","NoMe", array(),false, $totalizacao);

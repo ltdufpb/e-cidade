@@ -63,7 +63,7 @@ try {
       $oCabecalho->setDataGeracao($oDataAtual);
       $oCabecalho->setDataInicial($oDataInicial);
 
-      $oRetorno->aArquivos = array();
+      $oRetorno->aArquivos = [];
 
       $oArquivoCompactado = new ZipArchive();
 
@@ -77,10 +77,10 @@ try {
         $oArquivoGeracao = ArquivoLicitaConFactory::getArquivo($sArquivo, $oCabecalho);
         $oArquivoGerado  = $oArquivoGeracao->gerar();
 
-        $oRetorno->aArquivos[] = (object) array(
+        $oRetorno->aArquivos[] = (object) [
             'name' => $oArquivoGerado->getBaseName(),
             'path' => $oArquivoGerado->getFilePath()
-          );
+          ];
 
         if (!$oArquivoCompactado->addFile($oArquivoGerado->getFilePath(), $oArquivoGerado->getBaseName())) {
           throw new Exception("Erro ao compactar arquivo {$sArquivo}.");
@@ -106,10 +106,10 @@ try {
       }
 
       $oArquivoCompactado->close();
-      $oRetorno->oArquivoCompactado = (object) array(
+      $oRetorno->oArquivoCompactado = (object) [
           'name' => "LicitaCon.zip",
           'path' => "tmp/LicitaCon.zip"
-        );
+        ];
 
     break;
   }

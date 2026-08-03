@@ -35,7 +35,7 @@ include(modification("classes/db_aguaconsumorec_classe.php"));
 $claguaconsumo = new cl_aguaconsumo;
 $claguaconsumorec = new cl_aguaconsumorec;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 33;
 $db_botao = false;

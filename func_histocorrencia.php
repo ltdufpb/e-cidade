@@ -36,9 +36,9 @@ require_once(modification("classes/db_histocorrenciamatric_classe.php"));
 require_once(modification("classes/db_histocorrenciainscr_classe.php"));
 require_once(modification("classes/db_numpref_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clnumpref  = new cl_numpref();
 $resnumpref = $clnumpref->sql_record( $clnumpref->sql_query_file( db_getsession("DB_anousu"), db_getsession('DB_instit'), "k03_certissvar") );
@@ -184,13 +184,13 @@ if(isset($chave_ar26_inscr)) {
       $campos .= "db_usuarios.login,                                                                    ";
       $campos .= "db_modulos.nome_modulo                                                                ";
 
-      $repassa = array();
+      $repassa = [];
       if(isset($z01_numcgm) && (trim($z01_numcgm) != '')) {
 
         $campos    = "histocorrenciacgm.ar24_numcgm, ".$campos;
         $clhistocorrenciacgm = new cl_histocorrenciacgm;
         $sql       = $clhistocorrenciacgm->sql_query("", "$campos", "histocorrencia.ar23_data", "histocorrenciacgm.ar24_numcgm = $z01_numcgm and ar23_instit =" . db_getsession("DB_instit"));
-        $repassa   = array("chave_ar24_numcgm"=>$z01_numcgm,"chave_ar24_nome"=>$z01_nome);
+        $repassa   = ["chave_ar24_numcgm"=>$z01_numcgm,"chave_ar24_nome"=>$z01_nome];
         $funcao_js = 'parent.js_preenchepesquisaCGM|ar23_sequencial|ar24_numcgm';
 
       }elseif(isset($j01_matric) && (trim($j01_matric) != '')) {
@@ -198,7 +198,7 @@ if(isset($chave_ar26_inscr)) {
         $campos    = "histocorrenciamatric.ar25_matric, ".$campos;
         $clhistocorrenciamatric = new cl_histocorrenciamatric;
         $sql       = $clhistocorrenciamatric->sql_query("", "$campos", "histocorrencia.ar23_data", "histocorrenciamatric.ar25_matric = $j01_matric and ar23_instit = ". db_getsession("DB_instit"));
-        $repassa   = array("chave_ar25_matric"=>$j01_matric);
+        $repassa   = ["chave_ar25_matric"=>$j01_matric];
         $funcao_js = 'parent.js_preenchepesquisaMatric|ar23_sequencial|ar25_matric';
 
       }elseif(isset($q02_inscr) && (trim($q02_inscr) != '')) {
@@ -206,7 +206,7 @@ if(isset($chave_ar26_inscr)) {
         $campos    = "histocorrenciainscr.ar26_inscr, ".$campos;
         $clhistocorrenciainscr = new cl_histocorrenciainscr;
         $sql       = $clhistocorrenciainscr->sql_query("", "$campos", "histocorrencia.ar23_data", "histocorrenciainscr.ar26_inscr = $q02_inscr and ar23_instit =". db_getsession("DB_instit"));
-        $repassa   = array("chave_ar26_inscr"=>$q02_inscr);
+        $repassa   = ["chave_ar26_inscr"=>$q02_inscr];
         $funcao_js = 'parent.js_preenchepesquisaInscr|ar23_sequencial|ar26_inscr';
       }
 

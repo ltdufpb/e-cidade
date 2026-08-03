@@ -67,6 +67,7 @@ abstract class AnexoI extends AnexoI2018
      * @return Linha[]
      * @throws \Exception
      */
+    #[\Override]
     public function getDadosProcessados()
     {
         $this->getDados();
@@ -102,7 +103,7 @@ abstract class AnexoI extends AnexoI2018
                     $oLinhaRelatorio->descricao,
                     $oLinhaRelatorio->valor,
                     $oLinhaRelatorio->percentual,
-                    array('TBR', 1, 'TBL'),
+                    ['TBR', 1, 'TBL'],
                     $iFill
                 );
             }
@@ -181,10 +182,11 @@ abstract class AnexoI extends AnexoI2018
      *
      * @throws \ParameterException
      */
+    #[\Override]
     protected function inicializaValoresDespesaPorLinhaMes()
     {
         foreach ($this->getMesesAbrangente() as $iMes => $sCompetencia) {
-            list($sMesAbreviado, $iAno) = explode('/', $sCompetencia);
+            [$sMesAbreviado, $iAno] = explode('/', (string) $sCompetencia);
             for ($linha = 1; $linha <= $this->linhaFinalQuadroDespesa; $linha++) {
                 $this->aValoresDespesaPorLinhaMes[$linha]["{$iMes}/{$iAno}"] = 0;
             }
@@ -195,6 +197,7 @@ abstract class AnexoI extends AnexoI2018
      * Adiciona os valores digitados manualmente
      * @throws \ParameterException
      */
+    #[\Override]
     protected function calculaValorManual()
     {
         foreach ($this->aLinhasProcessarDespesa as $iLinha) {
@@ -205,7 +208,7 @@ abstract class AnexoI extends AnexoI2018
                 $this->iAnoUsu
             );
             foreach ($this->getMesesAbrangente() as $iMes => $sCompetencia) {
-                list($sMesAbreviado, $iAno) = explode('/', $sCompetencia);
+                [$sMesAbreviado, $iAno] = explode('/', (string) $sCompetencia);
                 foreach ($aLinhasManuais as $oLinhaManual) {
                     if ($oLinhaManual->colunas[0]->o117_valor == $sCompetencia) {
                         $this->aValoresDespesaPorLinhaMes[$iLinha]["{$iMes}/{$iAno}"] +=

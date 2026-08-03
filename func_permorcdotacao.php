@@ -36,7 +36,7 @@ require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("classes/db_orcdotacao_classe.php"));
 require_once(modification("classes/db_orcparametro_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 $oGet = db_utils::postMemory($_GET);
 
@@ -62,7 +62,7 @@ if (isset($pactoplano) && $pactoplano != "") {
   pois o zero normalmente é considerado TODOS (sem Filtro) agora se selecionar o programa ZERO - Encargos especiais
   sistema vai filtra o58_programa = 0 cuidado que ainda ele filtra o elemento do item
 */
-$programa = trim($programa);
+$programa = trim((string) $programa);
 if ( $programa != null  ) {
     $sWhere .= " o58_programa = {$programa}";
 }
@@ -99,8 +99,8 @@ if(!isset($filtroquery)){
     if(isset($chave_o58_coddot) && $chave_o58_coddot != ""){
       $result = db_query($clpermusuario_dotacao->sql);
       $tem_perm = 0;
-      for($i=0;$i<pg_numrows($result);$i++){
-        if($chave_o58_coddot == pg_result($result,$i,"o58_coddot")){
+      for($i=0;$i<pg_num_rows($result);$i++){
+        if($chave_o58_coddot == pg_fetch_result($result,$i,"o58_coddot")){
           $tem_perm = 1;
         }
       }
@@ -115,7 +115,7 @@ if(!isset($filtroquery)){
         }
         if($passar){
 
-          $executa = explode("|",$executar);
+          $executa = explode("|",(string) $executar);
           // variável retornadepart usada na solicitação de compras para retornar departamento quando o
           //reduzido é digitado
 
@@ -128,7 +128,7 @@ if(!isset($filtroquery)){
             }
             exit;
           } else {
-            $sEstrutural = pg_result($result,0,"o50_estrutdespesa");
+            $sEstrutural = pg_fetch_result($result,0,"o50_estrutdespesa");
             echo "<script>".$executa[0]."('$chave_o58_coddot','$sEstrutural');</script>";
             exit;
           }
@@ -222,9 +222,9 @@ db_app::load("prototype.js");
 //            echo "<br>";
 //            echo $clpermusuario_dotacao->orgaos;
                     $result = db_query($clpermusuario_dotacao->orgaos);
-                    if($result!=false && pg_numrows($result)>0){
+                    if($result!=false && pg_num_rows($result)>0){
                       db_selectrecord("secretaria",$result,true,2,"","","","0","js_secretaria()");
-                      if(pg_numrows($result)==1){
+                      if(pg_num_rows($result)==1){
                         echo "<script>
 		      document.form1.secretaria[1].selected = true;
 		      document.form1.secretariadescr[1].selected = true;
@@ -245,9 +245,9 @@ db_app::load("prototype.js");
                     //echo "<br>";
                     //echo $clpermusuario_dotacao->depart;
                     $result = db_query($clpermusuario_dotacao->depart);
-                    if($result!=false && pg_numrows($result)>0){
+                    if($result!=false && pg_num_rows($result)>0){
                       db_selectrecord("departamento",$result,true,2,"","","","0","js_departamento()");
-                      if(pg_numrows($result)==1){
+                      if(pg_num_rows($result)==1){
 //	 	 echo "<script>
 //		      document.form1.departamento[1].selected = true;
 //		      document.form1.departamentodescr[1].selected = true;
@@ -290,8 +290,8 @@ db_app::load("prototype.js");
               $funcao_js = "js_verifica_depto|o58_coddot";
             }
 
-            $variaveis["secretaria"] =  (isset($secretaria)?$secretaria:0);
-            $variaveis["departamento"] =(isset($departamento)?$departamento:0);
+            $variaveis["secretaria"] =  ($secretaria ?? 0);
+            $variaveis["departamento"] =($departamento ?? 0);
 
             db_lovrot($clpermusuario_dotacao->sql,15,"()","",$funcao_js,"","NoMe",$variaveis,false);
 

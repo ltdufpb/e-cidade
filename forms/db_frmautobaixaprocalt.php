@@ -81,7 +81,7 @@ $clrotulo->label("p58_requer");
     
 <?php 
 if (isset($y87_dtbaixa)&&$y87_dtbaixa!=""){
-    $data=split('-',$y87_dtbaixa);
+    $data=preg_split('#\-#m',(string) $y87_dtbaixa);
     $q07_databx_ano=$data[0];
     $q07_databx_mes=$data[1];
     $q07_databx_dia=$data[2];

@@ -42,8 +42,8 @@ $classinatura = new cl_assinatura;
 $orcparamrel = new cl_orcparamrel;
 //$cldb_config  = new cl_db_config;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $v_despesa_pessoal = "s";
 $v_receita_rcl     = "s";
@@ -62,10 +62,10 @@ $temcamara  = false;
 $temadmind  = false;
 $flag_abrev = false;
 
-$xinstit    = split("-",$db_selinstit);
+$xinstit    = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select munic,db21_tipoinstit from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   
   if ($db21_tipoinstit == 1) {
@@ -78,13 +78,13 @@ for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
 }
 
 $dt     = data_periodo($anousu,$periodo);
-$dt_ini = split("-",$dt[0]);
-$dt_fin = split("-",$dt[1]);
+$dt_ini = preg_split("#\\-#m",(string) $dt[0]);
+$dt_fin = preg_split("#\\-#m",(string) $dt[1]);
 
 $descr_periodo = "PERIODO: ".$dt["texto"];
 
 $arqinclude = true;
-$quadrimestre = substr($periodo,0,1);
+$quadrimestre = substr((string) $periodo,0,1);
 $bimestre     = $quadrimestre;
 $dtini = "";
 $dtfin = "";
@@ -129,8 +129,8 @@ function validaarquivo($sArquivo,$ano){
 /////////////////////////////////////////////////////////////////////////
 
 // data apresentada na tela 
-$dtd1    = split('-',$dt_ini);
-$dtd2    = split('-',$dt_fin);
+$dtd1    = preg_split('#\-#m',$dt_ini);
+$dtd2    = preg_split('#\-#m',$dt_fin);
 $textodt = strtoupper(db_mes($dtd1[1]))." A ".strtoupper(db_mes($dtd2[1]))." DE ";
 
 if ($v_receita_rcl=="s") {
@@ -205,15 +205,15 @@ if ($v_restos == "s"){
   
 }
 if ($temcamara == true && ($temprefa == true || $temadmind == true)){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODERES EXECUTIVO E LEGISLATIVO";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODERES EXECUTIVO E LEGISLATIVO";
 }
 
 if ($temcamara == true && $temprefa == false && $temadmind == false){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODER LEGISLATIVO";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODER LEGISLATIVO";
 }
 
 if ($temprefa == true && $temcamara == false && $temadmind == false){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODER EXECUTIVO/ADM. INDIRETA";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODER EXECUTIVO/ADM. INDIRETA";
 }
 
 if ($temcamara == true && $temprefa == false && $temadmind == false){
@@ -374,14 +374,14 @@ if ($v_restos =="s"){
 }
 
 $pdf->Ln();
-notasExplicativas(&$pdf, 99999, "{$periodo}",110);
+notasExplicativas($pdf, 99999, "{$periodo}",110);
 $pdf->Ln(15);
 
 $pdf->setfont('arial','',6);
 
 // assinaturas
 
-assinaturas(&$pdf,&$classinatura,'GF');
+assinaturas($pdf,$classinatura,'GF');
 
 $pdf->Output();
 

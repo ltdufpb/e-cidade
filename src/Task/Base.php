@@ -8,7 +8,7 @@ abstract class Base implements TaskInterface
     private $elapsed;
     private $result;
     private $errorHandler;
-    private $errors = array();
+    private $errors = [];
 
     public function state($state = null)
     {

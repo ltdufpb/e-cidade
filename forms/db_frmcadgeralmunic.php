@@ -161,7 +161,7 @@ $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
                                 if ($db_opcao == 1) {
                                     $z01_cadast = date ( 'd/m/Y', db_getsession ( "DB_datausu" ) );
                                 } else if ($db_opcao == 2 || $db_opcao == 22 && isset($oCgm)) {
-                                    $z01_cadast     = implode("/", array_reverse(explode("-", $oCgm->z01_cadast)));
+                                    $z01_cadast     = implode("/", array_reverse(explode("-", (string) $oCgm->z01_cadast)));
                                 }
 
                                 db_input ( 'z01_cadast', 10, @$Iz01_cadast, true, 'text', 3, "", '', '', '', 11 );
@@ -376,14 +376,14 @@ $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
                             </td>
                             <td nowrap title="<?=$Tz01_estciv?>">
                                 <?php
-                                $x = array ("1" => "Solteiro",
+                                $x =  ["1" => "Solteiro",
                                     "2" => "Casado",
                                     "3" => "Viúvo",
                                     "4" => "Divorciado",
                                     "5" => "Separado Consensual",
                                     "6" => "Separado Judicial",
                                     "7" => "União Estavel"
-                                );
+                                ];
 
                                 db_select ( 'z01_estciv', $x, true, $db_opcao, 'style="width:125px;"' );
                                 ?>
@@ -393,7 +393,7 @@ $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
                             </td>
                             <td nowrap title="<?=$Tz01_sexo?>" align="right">
                                 <?php
-                                $sex = array ("M" => "Masculino", "F" => "Feminino" );
+                                $sex =  ["M" => "Masculino", "F" => "Feminino" ];
                                 db_select ( 'z01_sexo', $sex, true, $db_opcao, 'style="width:125px;"' );
                                 ?>
                             </td>
@@ -404,7 +404,7 @@ $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
                             </td>
                             <td nowrap title="<?=$Tz01_nacion?>">
                                 <?php
-                                $x = array ("1" => "Brasileira", "2" => "Estrangeira" );
+                                $x =  ["1" => "Brasileira", "2" => "Estrangeira" ];
                                 db_select ( 'z01_nacion', $x, true, $db_opcao, 'style="width:125px;"' );
                                 ?>
                             </td>
@@ -413,7 +413,7 @@ $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
                             </td>
                             <td nowrap title="Cgm do Município" align="right">
                                 <?php
-                                $x = array ("t" => "Sim", "f" => "Não" );
+                                $x =  ["t" => "Sim", "f" => "Não" ];
                                 db_select ( 'municipio', $x, true, $db_opcao, 'onChange="js_alteraMunicipio();" " style="width:125;"' );
                                 ?>
                             </td>
@@ -457,7 +457,7 @@ $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
                             </td>
                             <td nowrap title="<?=@$Tz01_escolaridade?>" colspan="3">
                                 <?php
-                                $aEscolaridade = array (
+                                $aEscolaridade =  [
                                     '0' => 'SEM DEFINIÇÃO',
                                     '1' => 'ANALFABETO',
                                     '2' => 'FUNDAMENTAL INCOMPLETO',
@@ -468,7 +468,7 @@ $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
                                     '7' => 'ENSINO SUPERIOR COMPLETO',
                                     '8' => 'MESTRADO',
                                     '9' => 'DOUTORADO'
-                                );
+                                ];
                                 db_select ( 'z01_escolaridade', $aEscolaridade, true, 1, 'style="width:100%;"');
                                 ?>
                             </td>
@@ -655,7 +655,7 @@ $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
                             </td>
                             <td nowrap title="<?=$Tz01_trabalha?>">
                                 <?php
-                                $x = array ("t" => "Sim", "f" => "Não" );
+                                $x =  ["t" => "Sim", "f" => "Não" ];
                                 db_select ( 'z01_trabalha', $x, true, $db_opcao, 'style="width:80%;text-align:left;"' );
                                 ?>
                             </td>
@@ -763,7 +763,7 @@ $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
                                 </td>
                                 <td nowrap title="<?=$Tz01_dtfalecimento?>" align="right">
                                     <?php
-                                    $x = array ("t" => "Sim", "f" => "Não" );
+                                    $x =  ["t" => "Sim", "f" => "Não" ];
                                     db_select ( 'municipio', $x, true, $db_opcao, 'onChange="js_alteraMunicipio();"  " style="width:95%;text-align:left;"' );
                                     ?>
                                 </td>
@@ -1481,7 +1481,7 @@ $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
         if (cpfCnpj.length != 11 && cpfCnpj.length != 14) {
           window.parent.location.href = `prot1_selecionatipopessoacgm.php?numeroCgm=${chave}&nome=${nome}`;
         } else {
-          <?php echo " location.href = '" . basename ( $_SERVER["PHP_SELF"] ) . "?chavepesquisa='+chave"; ?>
+          <?php echo " location.href = '" . basename ( (string) $_SERVER["PHP_SELF"] ) . "?chavepesquisa='+chave"; ?>
         }
     <?php
       } ?>

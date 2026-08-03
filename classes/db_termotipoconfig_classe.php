@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE termotipoconfig
 class cl_termotipoconfig { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k42_sequencial = 0; 
-   var $k42_cadtipo = 0; 
-   var $k42_tiponovo = 0; 
-   var $k42_instit = 0; 
+   public $k42_sequencial = 0; 
+   public $k42_cadtipo = 0; 
+   public $k42_tiponovo = 0; 
+   public $k42_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k42_sequencial = int4 = Codigo 
                  k42_cadtipo = int4 = Grupo de Debito da Origem 
                  k42_tiponovo = int4 = Tipo de Debito do Parcelamento 
                  k42_instit = int4 = Cod. Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_termotipoconfig() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termotipoconfig"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_termotipoconfig {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k42_sequencial = pg_result($result,0,0); 
+       $this->k42_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from termotipoconfig_k42_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k42_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k42_sequencial)){
          $this->erro_sql = " Campo k42_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_termotipoconfig {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo de debito a apos parcelamento ($this->k42_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo de debito a apos parcelamento já Cadastrado";
@@ -180,13 +180,13 @@ class cl_termotipoconfig {
      $resaco = $this->sql_record($this->sql_query_file($this->k42_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10228,'$this->k42_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1766,10228,'','".AddSlashes(pg_result($resaco,0,'k42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1766,10230,'','".AddSlashes(pg_result($resaco,0,'k42_cadtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1766,10229,'','".AddSlashes(pg_result($resaco,0,'k42_tiponovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1766,10649,'','".AddSlashes(pg_result($resaco,0,'k42_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1766,10228,'','".AddSlashes(pg_fetch_result($resaco,0,'k42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1766,10230,'','".AddSlashes(pg_fetch_result($resaco,0,'k42_cadtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1766,10229,'','".AddSlashes(pg_fetch_result($resaco,0,'k42_tiponovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1766,10649,'','".AddSlashes(pg_fetch_result($resaco,0,'k42_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_termotipoconfig {
       $this->atualizacampos();
      $sql = " update termotipoconfig set ";
      $virgula = "";
-     if(trim($this->k42_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_sequencial"])){ 
+     if(trim((string) $this->k42_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_sequencial"])){ 
        $sql  .= $virgula." k42_sequencial = $this->k42_sequencial ";
        $virgula = ",";
-       if(trim($this->k42_sequencial) == null ){ 
+       if(trim((string) $this->k42_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "k42_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_termotipoconfig {
          return false;
        }
      }
-     if(trim($this->k42_cadtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_cadtipo"])){ 
+     if(trim((string) $this->k42_cadtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_cadtipo"])){ 
        $sql  .= $virgula." k42_cadtipo = $this->k42_cadtipo ";
        $virgula = ",";
-       if(trim($this->k42_cadtipo) == null ){ 
+       if(trim((string) $this->k42_cadtipo) == null ){ 
          $this->erro_sql = " Campo Grupo de Debito da Origem nao Informado.";
          $this->erro_campo = "k42_cadtipo";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_termotipoconfig {
          return false;
        }
      }
-     if(trim($this->k42_tiponovo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_tiponovo"])){ 
+     if(trim((string) $this->k42_tiponovo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_tiponovo"])){ 
        $sql  .= $virgula." k42_tiponovo = $this->k42_tiponovo ";
        $virgula = ",";
-       if(trim($this->k42_tiponovo) == null ){ 
+       if(trim((string) $this->k42_tiponovo) == null ){ 
          $this->erro_sql = " Campo Tipo de Debito do Parcelamento nao Informado.";
          $this->erro_campo = "k42_tiponovo";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_termotipoconfig {
          return false;
        }
      }
-     if(trim($this->k42_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_instit"])){ 
+     if(trim((string) $this->k42_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_instit"])){ 
        $sql  .= $virgula." k42_instit = $this->k42_instit ";
        $virgula = ",";
-       if(trim($this->k42_instit) == null ){ 
+       if(trim((string) $this->k42_instit) == null ){ 
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "k42_instit";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_termotipoconfig {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10228,'$this->k42_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k42_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1766,10228,'".AddSlashes(pg_result($resaco,$conresaco,'k42_sequencial'))."','$this->k42_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1766,10228,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k42_sequencial'))."','$this->k42_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k42_cadtipo"]))
-           $resac = db_query("insert into db_acount values($acount,1766,10230,'".AddSlashes(pg_result($resaco,$conresaco,'k42_cadtipo'))."','$this->k42_cadtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1766,10230,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k42_cadtipo'))."','$this->k42_cadtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k42_tiponovo"]))
-           $resac = db_query("insert into db_acount values($acount,1766,10229,'".AddSlashes(pg_result($resaco,$conresaco,'k42_tiponovo'))."','$this->k42_tiponovo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1766,10229,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k42_tiponovo'))."','$this->k42_tiponovo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k42_instit"]))
-           $resac = db_query("insert into db_acount values($acount,1766,10649,'".AddSlashes(pg_result($resaco,$conresaco,'k42_instit'))."','$this->k42_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1766,10649,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k42_instit'))."','$this->k42_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_termotipoconfig {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10228,'$k42_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1766,10228,'','".AddSlashes(pg_result($resaco,$iresaco,'k42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1766,10230,'','".AddSlashes(pg_result($resaco,$iresaco,'k42_cadtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1766,10229,'','".AddSlashes(pg_result($resaco,$iresaco,'k42_tiponovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1766,10649,'','".AddSlashes(pg_result($resaco,$iresaco,'k42_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1766,10228,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1766,10230,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k42_cadtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1766,10229,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k42_tiponovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1766,10649,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k42_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from termotipoconfig
@@ -376,7 +376,7 @@ class cl_termotipoconfig {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:termotipoconfig";
@@ -390,7 +390,7 @@ class cl_termotipoconfig {
    function sql_query ( $k42_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_termotipoconfig {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_termotipoconfig {
    function sql_query_file ( $k42_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_termotipoconfig {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

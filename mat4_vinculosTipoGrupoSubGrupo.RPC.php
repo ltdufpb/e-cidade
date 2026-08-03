@@ -92,7 +92,7 @@ switch ($oParam->exec) {
 
       if ($aFilhos == false && $iNivelOrigem <= $iTotal) {
 
-        $iTotalCasas       = strlen($aMascara[$iNivelDestino-1]);
+        $iTotalCasas       = strlen((string) $aMascara[$iNivelDestino-1]);
         $sEstruturalFinal .= ".".str_pad(0, $iTotalCasas, "0", STR_PAD_LEFT);
         $iNivelDestino ++;
         $iNivelOrigem  ++;
@@ -111,7 +111,7 @@ switch ($oParam->exec) {
          *  2 - realizar update também nos seus próprios filhos
          */
         $iContadorFilhos = 1;
-        $iTotalCasas     = strlen($aMascara[$iNivelDestino-1]);
+        $iTotalCasas     = strlen((string) $aMascara[$iNivelDestino-1]);
 
 
         foreach ($aFilhos as $oFilho) {
@@ -175,7 +175,7 @@ switch ($oParam->exec) {
         //$iNivelDestino         = $oEstruturalValorFilho->db121_nivel;
         //$iCodigoDestino        = $oEstruturalValorFilho->db121_sequencial;
         $sEstruturalDestino    = $oEstruturalValorFilho->db121_estrutural;
-        $aEstrutural           = explode(".",$oEstruturalValorFilho->db121_estrutural);
+        $aEstrutural           = explode(".",(string) $oEstruturalValorFilho->db121_estrutural);
         $iSequencia            = $aEstrutural[$iNivelDestino-1] +1;
       }
 
@@ -200,7 +200,7 @@ switch ($oParam->exec) {
       $sMascara               = db_utils::fieldsMemory($rsParametroEstrutura, 0)->db77_estrut;
 
       $iNivelAtual  = $iNivelDestino;
-      $aMascara     = explode(".", $sMascara);
+      $aMascara     = explode(".", (string) $sMascara);
       $iMaxNivel    = count($aMascara);
 
       $iTotalCasa         = strlen($aMascara[$iNivelDestino-1]);
@@ -284,11 +284,11 @@ switch ($oParam->exec) {
       $sSqlBuscaGrupos = $oDaoTipoGrupoVinculo->sql_query(null, 'm65_sequencial as codigo, db121_descricao as descricao', 'm65_sequencial', $sWhere);
       $rsBuscaGrupos = $oDaoTipoGrupoVinculo->sql_record($sSqlBuscaGrupos);
 
-      $aGruposRetorno = array();
+      $aGruposRetorno = [];
       for ($iRowGrupo = 0; $iRowGrupo < $oDaoTipoGrupoVinculo->numrows; $iRowGrupo++) {
 
         $oStdDadosGrupo = db_utils::fieldsMemory($rsBuscaGrupos, $iRowGrupo);
-        $oStdDadosGrupo->descricao = urlencode($oStdDadosGrupo->descricao);
+        $oStdDadosGrupo->descricao = urlencode((string) $oStdDadosGrupo->descricao);
         $aGruposRetorno[] = $oStdDadosGrupo;
       }
 

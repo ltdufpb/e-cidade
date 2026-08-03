@@ -41,7 +41,7 @@ include(modification("classes/db_vistoriaandam_classe.php"));
 include(modification("classes/db_fandam_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procfiscalvistorias_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(isset($cgm)){
     $junto = "cgm=1";
 }elseif(isset($matric)){
@@ -56,7 +56,7 @@ if(!isset($abas)){
     exit;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clvistorias     = new cl_vistorias;
 $cltipovistorias = new cl_tipovistorias;
 $clvistinscr     = new cl_vistinscr;
@@ -71,7 +71,7 @@ $clprocfiscalvistorias = new cl_procfiscalvistorias;
 $db_opcao = 1;
 $db_botao = true;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
     db_inicio_transacao();
 
@@ -218,7 +218,7 @@ if(!isset($pri)){
     js_setatabulacao();
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
     if($clvistorias->erro_status=="0"){
         $clvistorias->erro(true,false);
         $db_botao=true;

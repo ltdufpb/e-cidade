@@ -44,7 +44,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 2;
 $oRotulo = new rotulocampo;
@@ -112,7 +112,7 @@ $oRotulo->label("descrdepto");
                         <b>Estoque zerado:</b>
                       </td> 
                       <td>
-                        <?php db_select("estoqueZerado", array("S"=>"SIM","N"=>"NÃO"), true, 2, "");?>
+                        <?php db_select("estoqueZerado", ["S"=>"SIM","N"=>"NÃO"], true, 2, "");?>
 	                  <td>
 	                </tr>
 	                <tr>   
@@ -120,7 +120,7 @@ $oRotulo->label("descrdepto");
 			            <b>Tipo:</b>
 			          </td>
 				      <td>
-				        <?php db_select("tipo", array("S"=>"SINTÉTICO"), true, 2);?>
+				        <?php db_select("tipo", ["S"=>"SINTÉTICO"], true, 2);?>
 	                  </td>
 	                </tr>
 	              </table>
@@ -135,7 +135,7 @@ $oRotulo->label("descrdepto");
                         <b>Quebra:</b>
 	                  </td>
 			          <td>  
-			            <?php db_select("quebra", array("N"=>"NENHUMA","D"=>"DEPÓSITO"), true, 2);?>
+			            <?php db_select("quebra", ["N"=>"NENHUMA","D"=>"DEPÓSITO"], true, 2);?>
                       </td>
 	                </tr>
 	                <tr>  
@@ -143,7 +143,7 @@ $oRotulo->label("descrdepto");
                         <b>Ordem:</b>
 	                  </td>
 	                  <td>	
-			            <?php db_select("ordem", array("A"=>"ALFABÉTICA","N"=>"NUMERICA"), true, 2);?>
+			            <?php db_select("ordem", ["A"=>"ALFABÉTICA","N"=>"NUMERICA"], true, 2);?>
                       </td>
 			        </tr>
 	              </table>

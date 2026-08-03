@@ -142,7 +142,7 @@ db_app::load("prototype.js");
                             if (isset($ve61_datadevol) && strpos($ve61_datadevol, "-") > 0) {
                                 $dData = $ve61_datadevol;
                             } else {
-                                $dData = substr($ve61_datadevol, 6, 4) . '-' . substr($ve61_datadevol, 3, 2) . '-' . substr(@$ve61_datadevol, 0, 2);
+                                $dData = substr((string) $ve61_datadevol, 6, 4) . '-' . substr((string) $ve61_datadevol, 3, 2) . '-' . substr((string) @$ve61_datadevol, 0, 2);
                             }
                             $proximamedida = 0;
 
@@ -165,7 +165,7 @@ db_app::load("prototype.js");
                             if (isset($ve61_datadevol) && strpos($ve61_datadevol, "-") > 0) {
                                 $dData = $ve61_datadevol;
                             } else {
-                                $dData = substr(@$ve61_datadevol, 6, 4) . '-' . substr(@$ve61_datadevol, 3, 2) . '-' . substr(@$ve61_datadevol, 0, 2);
+                                $dData = substr((string) @$ve61_datadevol, 6, 4) . '-' . substr((string) @$ve61_datadevol, 3, 2) . '-' . substr((string) @$ve61_datadevol, 0, 2);
                             }
 
                             if (isset($ve60_veiculo) && $ve60_veiculo != "") {
@@ -383,7 +383,7 @@ db_app::load("prototype.js");
         db_iframe_veicdevolucao.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($_SERVER["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $_SERVER["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }
@@ -395,7 +395,7 @@ db_app::load("prototype.js");
     function js_preencheretirada(chave) {
         db_iframe_veicretirada.hide();
         <?php
-        echo " location.href = '" . basename($_SERVER["PHP_SELF"]) . "?retirada='+chave";
+        echo " location.href = '" . basename((string) $_SERVER["PHP_SELF"]) . "?retirada='+chave";
         ?>
     }
 

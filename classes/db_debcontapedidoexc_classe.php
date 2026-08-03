@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE debcontapedidoexc
 class cl_debcontapedidoexc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $d77_sequencial = 0; 
-   var $d77_dtexc_dia = null; 
-   var $d77_dtexc_mes = null; 
-   var $d77_dtexc_ano = null; 
-   var $d77_dtexc = null; 
-   var $d77_arqexc = null; 
-   var $d77_debcontapedido = 0; 
+   public $d77_sequencial = 0; 
+   public $d77_dtexc_dia = null; 
+   public $d77_dtexc_mes = null; 
+   public $d77_dtexc_ano = null; 
+   public $d77_dtexc = null; 
+   public $d77_arqexc = null; 
+   public $d77_debcontapedido = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  d77_sequencial = int4 = Sequencial 
                  d77_dtexc = date = Data da exclusao 
                  d77_arqexc = varchar(100) = Descricao do arquivo de exclusao 
                  d77_debcontapedido = int4 = Codigo sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_debcontapedidoexc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontapedidoexc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -129,10 +129,10 @@ class cl_debcontapedidoexc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->d77_sequencial = pg_result($result,0,0); 
+       $this->d77_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from debcontapedidoexc_d77_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $d77_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $d77_sequencial)){
          $this->erro_sql = " Campo d77_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_debcontapedidoexc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Exclusao do pedido de debito em conta ($this->d77_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Exclusao do pedido de debito em conta já Cadastrado";
@@ -190,13 +190,13 @@ class cl_debcontapedidoexc {
      $resaco = $this->sql_record($this->sql_query_file($this->d77_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8260,'$this->d77_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1391,8260,'','".AddSlashes(pg_result($resaco,0,'d77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1391,8258,'','".AddSlashes(pg_result($resaco,0,'d77_dtexc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1391,8261,'','".AddSlashes(pg_result($resaco,0,'d77_arqexc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1391,8262,'','".AddSlashes(pg_result($resaco,0,'d77_debcontapedido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1391,8260,'','".AddSlashes(pg_fetch_result($resaco,0,'d77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1391,8258,'','".AddSlashes(pg_fetch_result($resaco,0,'d77_dtexc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1391,8261,'','".AddSlashes(pg_fetch_result($resaco,0,'d77_arqexc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1391,8262,'','".AddSlashes(pg_fetch_result($resaco,0,'d77_debcontapedido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -205,10 +205,10 @@ class cl_debcontapedidoexc {
       $this->atualizacampos();
      $sql = " update debcontapedidoexc set ";
      $virgula = "";
-     if(trim($this->d77_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d77_sequencial"])){ 
+     if(trim((string) $this->d77_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d77_sequencial"])){ 
        $sql  .= $virgula." d77_sequencial = $this->d77_sequencial ";
        $virgula = ",";
-       if(trim($this->d77_sequencial) == null ){ 
+       if(trim((string) $this->d77_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "d77_sequencial";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_debcontapedidoexc {
          return false;
        }
      }
-     if(trim($this->d77_dtexc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d77_dtexc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["d77_dtexc_dia"] !="") ){ 
+     if(trim((string) $this->d77_dtexc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d77_dtexc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["d77_dtexc_dia"] !="") ){ 
        $sql  .= $virgula." d77_dtexc = '$this->d77_dtexc' ";
        $virgula = ",";
-       if(trim($this->d77_dtexc) == null ){ 
+       if(trim((string) $this->d77_dtexc) == null ){ 
          $this->erro_sql = " Campo Data da exclusao nao Informado.";
          $this->erro_campo = "d77_dtexc_dia";
          $this->erro_banco = "";
@@ -234,7 +234,7 @@ class cl_debcontapedidoexc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["d77_dtexc_dia"])){ 
          $sql  .= $virgula." d77_dtexc = null ";
          $virgula = ",";
-         if(trim($this->d77_dtexc) == null ){ 
+         if(trim((string) $this->d77_dtexc) == null ){ 
            $this->erro_sql = " Campo Data da exclusao nao Informado.";
            $this->erro_campo = "d77_dtexc_dia";
            $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_debcontapedidoexc {
          }
        }
      }
-     if(trim($this->d77_arqexc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d77_arqexc"])){ 
+     if(trim((string) $this->d77_arqexc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d77_arqexc"])){ 
        $sql  .= $virgula." d77_arqexc = '$this->d77_arqexc' ";
        $virgula = ",";
-       if(trim($this->d77_arqexc) == null ){ 
+       if(trim((string) $this->d77_arqexc) == null ){ 
          $this->erro_sql = " Campo Descricao do arquivo de exclusao nao Informado.";
          $this->erro_campo = "d77_arqexc";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_debcontapedidoexc {
          return false;
        }
      }
-     if(trim($this->d77_debcontapedido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d77_debcontapedido"])){ 
+     if(trim((string) $this->d77_debcontapedido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d77_debcontapedido"])){ 
        $sql  .= $virgula." d77_debcontapedido = $this->d77_debcontapedido ";
        $virgula = ",";
-       if(trim($this->d77_debcontapedido) == null ){ 
+       if(trim((string) $this->d77_debcontapedido) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "d77_debcontapedido";
          $this->erro_banco = "";
@@ -279,17 +279,17 @@ class cl_debcontapedidoexc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8260,'$this->d77_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d77_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1391,8260,'".AddSlashes(pg_result($resaco,$conresaco,'d77_sequencial'))."','$this->d77_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1391,8260,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d77_sequencial'))."','$this->d77_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d77_dtexc"]))
-           $resac = db_query("insert into db_acount values($acount,1391,8258,'".AddSlashes(pg_result($resaco,$conresaco,'d77_dtexc'))."','$this->d77_dtexc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1391,8258,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d77_dtexc'))."','$this->d77_dtexc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d77_arqexc"]))
-           $resac = db_query("insert into db_acount values($acount,1391,8261,'".AddSlashes(pg_result($resaco,$conresaco,'d77_arqexc'))."','$this->d77_arqexc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1391,8261,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d77_arqexc'))."','$this->d77_arqexc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d77_debcontapedido"]))
-           $resac = db_query("insert into db_acount values($acount,1391,8262,'".AddSlashes(pg_result($resaco,$conresaco,'d77_debcontapedido'))."','$this->d77_debcontapedido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1391,8262,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d77_debcontapedido'))."','$this->d77_debcontapedido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -334,13 +334,13 @@ class cl_debcontapedidoexc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8260,'$d77_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1391,8260,'','".AddSlashes(pg_result($resaco,$iresaco,'d77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1391,8258,'','".AddSlashes(pg_result($resaco,$iresaco,'d77_dtexc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1391,8261,'','".AddSlashes(pg_result($resaco,$iresaco,'d77_arqexc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1391,8262,'','".AddSlashes(pg_result($resaco,$iresaco,'d77_debcontapedido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1391,8260,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1391,8258,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d77_dtexc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1391,8261,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d77_arqexc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1391,8262,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d77_debcontapedido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from debcontapedidoexc
@@ -400,7 +400,7 @@ class cl_debcontapedidoexc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:debcontapedidoexc";

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE placaixarecmatric
 class cl_placaixarecmatric { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k77_sequencial = 0; 
-   var $k77_placaixarec = 0; 
-   var $k77_matric = 0; 
+   public $k77_sequencial = 0; 
+   public $k77_placaixarec = 0; 
+   public $k77_matric = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k77_sequencial = int4 = Código Sequencial 
                  k77_placaixarec = int4 = Código da Receita 
                  k77_matric = int4 = Mátricula 
                  ";
    //funcao construtor da classe 
-   function cl_placaixarecmatric() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("placaixarecmatric"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_placaixarecmatric {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k77_sequencial = pg_result($result,0,0); 
+       $this->k77_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from placaixarecmatric_k77_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k77_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k77_sequencial)){
          $this->erro_sql = " Campo k77_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_placaixarecmatric {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Matricula da planilha ($this->k77_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Matricula da planilha já Cadastrado";
@@ -166,12 +166,12 @@ class cl_placaixarecmatric {
      $resaco = $this->sql_record($this->sql_query_file($this->k77_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11829,'$this->k77_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2045,11829,'','".AddSlashes(pg_result($resaco,0,'k77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2045,11830,'','".AddSlashes(pg_result($resaco,0,'k77_placaixarec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2045,11831,'','".AddSlashes(pg_result($resaco,0,'k77_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2045,11829,'','".AddSlashes(pg_fetch_result($resaco,0,'k77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2045,11830,'','".AddSlashes(pg_fetch_result($resaco,0,'k77_placaixarec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2045,11831,'','".AddSlashes(pg_fetch_result($resaco,0,'k77_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_placaixarecmatric {
       $this->atualizacampos();
      $sql = " update placaixarecmatric set ";
      $virgula = "";
-     if(trim($this->k77_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k77_sequencial"])){ 
+     if(trim((string) $this->k77_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k77_sequencial"])){ 
        $sql  .= $virgula." k77_sequencial = $this->k77_sequencial ";
        $virgula = ",";
-       if(trim($this->k77_sequencial) == null ){ 
+       if(trim((string) $this->k77_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "k77_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_placaixarecmatric {
          return false;
        }
      }
-     if(trim($this->k77_placaixarec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k77_placaixarec"])){ 
+     if(trim((string) $this->k77_placaixarec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k77_placaixarec"])){ 
        $sql  .= $virgula." k77_placaixarec = $this->k77_placaixarec ";
        $virgula = ",";
-       if(trim($this->k77_placaixarec) == null ){ 
+       if(trim((string) $this->k77_placaixarec) == null ){ 
          $this->erro_sql = " Campo Código da Receita nao Informado.";
          $this->erro_campo = "k77_placaixarec";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_placaixarecmatric {
          return false;
        }
      }
-     if(trim($this->k77_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k77_matric"])){ 
+     if(trim((string) $this->k77_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k77_matric"])){ 
        $sql  .= $virgula." k77_matric = $this->k77_matric ";
        $virgula = ",";
-       if(trim($this->k77_matric) == null ){ 
+       if(trim((string) $this->k77_matric) == null ){ 
          $this->erro_sql = " Campo Mátricula nao Informado.";
          $this->erro_campo = "k77_matric";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_placaixarecmatric {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11829,'$this->k77_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k77_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2045,11829,'".AddSlashes(pg_result($resaco,$conresaco,'k77_sequencial'))."','$this->k77_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2045,11829,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k77_sequencial'))."','$this->k77_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k77_placaixarec"]))
-           $resac = db_query("insert into db_acount values($acount,2045,11830,'".AddSlashes(pg_result($resaco,$conresaco,'k77_placaixarec'))."','$this->k77_placaixarec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2045,11830,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k77_placaixarec'))."','$this->k77_placaixarec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k77_matric"]))
-           $resac = db_query("insert into db_acount values($acount,2045,11831,'".AddSlashes(pg_result($resaco,$conresaco,'k77_matric'))."','$this->k77_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2045,11831,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k77_matric'))."','$this->k77_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_placaixarecmatric {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11829,'$k77_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2045,11829,'','".AddSlashes(pg_result($resaco,$iresaco,'k77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2045,11830,'','".AddSlashes(pg_result($resaco,$iresaco,'k77_placaixarec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2045,11831,'','".AddSlashes(pg_result($resaco,$iresaco,'k77_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2045,11829,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2045,11830,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k77_placaixarec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2045,11831,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k77_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from placaixarecmatric
@@ -345,7 +345,7 @@ class cl_placaixarecmatric {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:placaixarecmatric";
@@ -359,7 +359,7 @@ class cl_placaixarecmatric {
    function sql_query ( $k77_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,7 +389,7 @@ class cl_placaixarecmatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -401,7 +401,7 @@ class cl_placaixarecmatric {
    function sql_query_file ( $k77_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,7 +422,7 @@ class cl_placaixarecmatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

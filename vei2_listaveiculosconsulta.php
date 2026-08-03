@@ -95,7 +95,7 @@ $sSqlVeiculos  = $oDaoVeiculos->sql_query(null, $slistaCampos, 've01_codigo', $s
       <td>
 
         <?php 
-          db_lovrot($sSqlVeiculos, 15, "()", "%", $funcao_js, "", "NoMe", array(), true);
+          db_lovrot($sSqlVeiculos, 15, "()", "%", $funcao_js, "", "NoMe", [], true);
         ?>
   
       </td>

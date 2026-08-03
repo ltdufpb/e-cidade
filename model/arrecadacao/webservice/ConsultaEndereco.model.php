@@ -123,12 +123,12 @@ class LocalizaEndereco {
   }
 
   public function buscaEnderecoByLogradouro() {    
-    $aRetorno = array();
+    $aRetorno = [];
   
     $aMunicipios = false;
 
     $oDaoMunicipio  = db_utils::getDao('cadendermunicipio');
-    $sWhere         = " db72_descricao ilike '%".utf8_decode(trim($this->sMunicipio))."%' ";
+    $sWhere         = " db72_descricao ilike '%".mb_convert_encoding(trim((string) $this->sMunicipio), 'ISO-8859-1')."%' ";
     $sCampos        = "db72_sequencial, db72_descricao, db72_cadenderestado";
    
     $sQueryMunicipio  = $oDaoMunicipio->sql_query(null, '*', "db72_descricao", $sWhere);
@@ -141,7 +141,7 @@ class LocalizaEndereco {
     }
     foreach ($aMunicipios as $oMunicipio) {
       $oDaoRua  = db_utils::getDao('cadenderrua');
-      $sWhere         = " to_ascii(db74_descricao) ilike to_ascii('%".utf8_decode(str_replace(' ', '%', trim($this->sLogradouro)))."%') ";
+      $sWhere         = " to_ascii(db74_descricao) ilike to_ascii('%".mb_convert_encoding(str_replace(' ', '%', trim((string) $this->sLogradouro)), 'ISO-8859-1')."%') ";
       $sWhere        .= " and db74_cadendermunicipio = ".$oMunicipio->db72_sequencial;
       
       $sOrder         = null;
@@ -164,7 +164,7 @@ class LocalizaEndereco {
   }
 
   public function buscaDadosMunicipio() {     
-    $municipio = $this->findMunicipioByName(utf8_decode($this->sMunicipio), $this->iCodUf);  
+    $municipio = $this->findMunicipioByName(mb_convert_encoding($this->sMunicipio, 'ISO-8859-1'), $this->iCodUf);  
    
     $oDaoMunicipio = db_utils::getDao('cadendermunicipiosistema');
     

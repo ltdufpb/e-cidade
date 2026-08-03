@@ -28,7 +28,7 @@ SQL_UP
 );
 
         $todosRegistros = $this->fetchAll("select todos_sequenciais from bkp_cgmtipoempresa_excluir;");
-        $listaExcluir = array();
+        $listaExcluir = [];
         foreach ($todosRegistros as $dadosConsulta) {
 
             unset($dadosConsulta[0]);

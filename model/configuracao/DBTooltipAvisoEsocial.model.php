@@ -15,6 +15,7 @@ class DBTooltipAvisoEsocial extends DBTooltipAviso
     /**
      * @return string
      */
+    #[\Override]
     public function render($disable = false)
     {
         $configuracaoRepository = new ConfiguracaoRepository();
@@ -99,6 +100,7 @@ class DBTooltipAvisoEsocial extends DBTooltipAviso
      * @param $sAction
      * @return DBTooltipAviso|DBTooltipAvisoEsocial
      */
+    #[\Override]
     public static function getInstance($sLabel, $sAction)
     {
         if (self::$oInstance == null) {

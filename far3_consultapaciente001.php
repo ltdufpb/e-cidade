@@ -34,19 +34,19 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_retirada_classe.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_retirada = new cl_far_retirada;
 $clfar_retirada->rotulo->label();
 
 
 
-@$dia1 = substr($data1,0,2);
-@$mes1 = substr($data1,3,2);
-@$ano1 = substr($data1,6,4);
-@$dia2 = substr($data2,0,2);
-@$mes2 = substr($data2,3,2);
-@$ano2 = substr($data2,6,4);
+@$dia1 = substr((string) $data1,0,2);
+@$mes1 = substr((string) $data1,3,2);
+@$ano1 = substr((string) $data1,6,4);
+@$dia2 = substr((string) $data2,0,2);
+@$mes2 = substr((string) $data2,3,2);
+@$ano2 = substr((string) $data2,6,4);
 
 
 ?>
@@ -83,7 +83,7 @@ $clfar_retirada->rotulo->label();
     </td>
     <td> 
        <?php 
-           $sex = array("R"=>"RECEITA","D"=>"DEVOLUÇÃO");
+           $sex = ["R"=>"RECEITA","D"=>"DEVOLUÇÃO"];
           db_select('',$sex,true,"");
                   
           // $result_tprec = $clfar_tiporeceita->sql_record($clfar_tiporeceita->sql_query_file("","fa03_i_codigo,fa03_c_descr","fa03_c_descr"));

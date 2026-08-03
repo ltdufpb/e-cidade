@@ -53,11 +53,11 @@ class TipoGrupo {
    */
   public static function getDescricao($iTipo) {
 
-    $aTiposGrupos = array(
+    $aTiposGrupos = [
       self::BEM_PERMANENTE => 'Bens Permanente',
       self::BEM_CONSUMO => 'Bens de Consumo',
       self::MATERIAL_CONSUMO => 'Material de Consumo'
-    );
+    ];
     return $aTiposGrupos[$iTipo];
   }
 }

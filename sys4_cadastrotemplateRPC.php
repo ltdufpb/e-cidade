@@ -62,7 +62,7 @@ $cldb_geradorrelatoriotemplate = new cl_db_geradorrelatoriotemplate();
 	   $aRetornaDocumento = "";
    }
 
-   $aRetorno = array("templates"=>$aRetornaDocumento);
+   $aRetorno = ["templates"=>$aRetornaDocumento];
 
    echo  $oJson->encode($aRetorno);
 
@@ -74,7 +74,7 @@ $cldb_geradorrelatoriotemplate = new cl_db_geradorrelatoriotemplate();
 	$oGeradorRelatorio = new dbGeradorRelatorio($oPost->iCodRelatorio);
 
   	$aObjVariaveis = $oGeradorRelatorio->getVariaveis();
-	$aVariaveis    = array();
+	$aVariaveis    = [];
 
 	foreach ($aObjVariaveis as $sNome => $oVariavel){
 

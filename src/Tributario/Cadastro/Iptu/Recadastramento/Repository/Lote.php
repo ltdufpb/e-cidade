@@ -13,7 +13,7 @@ class Lote
   /**
    * @var LoteModel[]
    */
-  protected $lotes = array();
+  protected $lotes = [];
 
 
   private function __construct() {
@@ -68,9 +68,7 @@ class Lote
     if (!$rsDadosLote || pg_num_rows($rsDadosLote) == 0) {
         throw new \Exception("Erro ao buscar as características do lote da matrícula {$iMatricula}.");
     }
-    $aCaracteristicasLote = \db_utils::makeCollectionFromRecord($rsDadosLote, function ($oDados){
-      return $oDados->j35_caract;
-    });
+    $aCaracteristicasLote = \db_utils::makeCollectionFromRecord($rsDadosLote, fn($oDados) => $oDados->j35_caract);
 
     $oLote->setCaracteristicasLote($aCaracteristicasLote);
 

@@ -48,9 +48,9 @@ $oParam = $oJson->decode((str_replace("\\","",$_POST["json"])));
 
 $oRetorno          = new stdClass();
 $oRetorno->status  = 1;
-$oRetorno->message = utf8_encode('Configurações salvas com sucesso!');
+$oRetorno->message = mb_convert_encoding('Configurações salvas com sucesso!', 'UTF-8', 'ISO-8859-1');
 $oRetorno->erro    = false;
-$oRetorno->aDados  = array();
+$oRetorno->aDados  = [];
 
 $oDaoConfVencISSQNRetido   = db_utils::getDao('db_confplan');
 $oDaoConfVencISSQNVariavel = db_utils::getDao('confvencissqnvariavel');
@@ -215,7 +215,7 @@ switch ($oParam->exec) {
         db_fim_transacao(false);
     } catch (Exception $oErro) {
 
-      $oRetorno->message = utf8_encode(str_replace("\\n", "\n", $oErro->getMessage()));
+      $oRetorno->message = mb_convert_encoding(str_replace("\\n", "\n", $oErro->getMessage()), 'UTF-8', 'ISO-8859-1');
       $oRetorno->status  = 0;
       $oRetorno->erro    = true;
 

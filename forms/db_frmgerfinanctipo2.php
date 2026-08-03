@@ -48,7 +48,7 @@ $sSql .= "   where                       arreinscr.k00_numpre   = $numpre  {$sSq
 
 $rsResult = db_query($sSql);
 
-if (pg_numrows($rsResult) == 0) {
+if (pg_num_rows($rsResult) == 0) {
 
   echo "Código de arrecadação não cadastrado ou empresa não cadastrada no issbase";
   exit;

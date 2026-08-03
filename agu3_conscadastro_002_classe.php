@@ -45,19 +45,19 @@ require_once(modification("classes/db_aguacondominiomat_classe.php"));
  *
  */
 class ConsultaAguaBase {
-	var $_Matric;
+	public $_Matric;
 	
 	// Propriedades para classes do DBPortal
-	var $_AguaBaseDAO;
-	var $_AguaIsencaoRecDAO;
-	var $_AguaConstrCarDAO;
-	var $_AguaLeituraDAO;
-	var $_AguaHidroTrocaDAO;
-	var $_AguaBaseCorrespDAO;
-	var $_AguaCorteMatMovDAO;
-	var $_AguaCondominioMatDAO;
+	public $_AguaBaseDAO;
+	public $_AguaIsencaoRecDAO;
+	public $_AguaConstrCarDAO;
+	public $_AguaLeituraDAO;
+	public $_AguaHidroTrocaDAO;
+	public $_AguaBaseCorrespDAO;
+	public $_AguaCorteMatMovDAO;
+	public $_AguaCondominioMatDAO;
 
-	function ConsultaAguaBase($Matric) {
+	function __construct($Matric) {
 		$this->SetMatric($Matric);
 	}
 

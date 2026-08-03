@@ -70,7 +70,7 @@ function montasemana($dData, $iSemana = null, $iAno = null) {
   */
   if ($iSemana == null) {
 
-    $dData      = explode('/', $dData);
+    $dData      = explode('/', (string) $dData);
     // Pego o número do dia da semana. (0 => Domingo, 6 => Sábado)
     $iDiaSemana = date('w', mktime(0, 0, 0, $dData[1], $dData[0], $dData[2]));
     for ($iCont = 0; $iCont < 7; $iCont++) {
@@ -159,7 +159,7 @@ function semanasigla($data,$comp = 0,$num = 7) {
 
   if ($num==7) {
 
-    $data  = explode("/", $data);
+    $data  = explode("/", (string) $data);
     $fator = date("w", mktime(0,0,0,$data[1],$data[0],$data[2]));
 
   } else {
@@ -239,7 +239,7 @@ function numerosemana($data,$ano = "0") {
 
   if ($ano=="0") {
 
-    $data      = explode("/",$data);
+    $data      = explode("/",(string) $data);
     $timestamp = mktime(0, 0, 0, $data[1], $data[0], $data[2]);
 
   } else {
@@ -278,7 +278,7 @@ function quantsemana($mes,$ano = "0") {
 
 function somardata($data, $dias= 0, $meses = 0, $ano = 0) {
 
-  $data     = explode("/", $data);
+  $data     = explode("/", (string) $data);
   $novadata = date("d/m/Y", mktime(0, 0, 0, $data[1] + $meses,   $data[0] + $dias, $data[2] + $ano) );
   return $novadata;
 
@@ -330,7 +330,7 @@ if ($oPost->sAction == 'VerificaRefeicao') {
   $linhas3 = pg_num_rows($result_3);
   $retorno2 = $linhas2+$linhas3;
   $oJson = new services_json();
-  echo $oJson->encode(array($retorno1,$retorno2,$oPost->quadro));
+  echo $oJson->encode([$retorno1,$retorno2,$oPost->quadro]);
 
 }
 if ($oPost->sAction == 'MontaGrid') {
@@ -345,8 +345,8 @@ if ($oPost->sAction == 'MontaGrid') {
     $semana = montasemana('', $oPost->semana, $ed52_i_ano);
 
     //print_r($semana);
-    $pri_dia = substr($semana[0],6,4)."-".substr($semana[0],3,2)."-".substr($semana[0],0,2);
-    $ult_dia = substr($semana[6],6,4)."-".substr($semana[6],3,2)."-".substr($semana[6],0,2);
+    $pri_dia = substr((string) $semana[0],6,4)."-".substr((string) $semana[0],3,2)."-".substr((string) $semana[0],0,2);
+    $ult_dia = substr((string) $semana[6],6,4)."-".substr((string) $semana[6],3,2)."-".substr((string) $semana[6],0,2);
     if ($oPost->diasemana=='8') {
 
       $sWhere     = " ed04_i_escola = $escola ";
@@ -370,8 +370,8 @@ if ($oPost->sAction == 'MontaGrid') {
                                                                         $sWhere
                                                                        )
                                             );
-      $calibra  = @(pg_result($resultdias,0,0)-1);
-      $calibra2 = @pg_result($resultdias,(pg_num_rows($resultdias)-1),0);
+      $calibra  = @(pg_fetch_result($resultdias,0,0)-1);
+      $calibra2 = @pg_fetch_result($resultdias,(pg_num_rows($resultdias)-1),0);
 
     } else {
 
@@ -382,7 +382,7 @@ if ($oPost->sAction == 'MontaGrid') {
     for ($dia=$calibra;$dia<$calibra2;$dia++) {
 
       $sigla = semanasigla("",1,$dia);
-      $d1 = substr($semana[$dia],0,5);
+      $d1 = substr((string) $semana[$dia],0,5);
       $sHtml .= '  <td><b><center>'.$sigla.'<br>'.$d1.'</b></center></td>';
 
     }
@@ -403,7 +403,7 @@ if ($oPost->sAction == 'MontaGrid') {
       db_fieldsmemory($result_cardapiotipo,$y);
       $sHtml .= ' <tr>';
       $sHtml .= '  <td width="13%" height="50" style="background:#f3f3f3">';
-      $sHtml .= '   <b><center>'.trim($me03_c_tipo).'<br>'.trim($me03_c_inicio).' - '.trim($me03_c_fim).'</center></b>';
+      $sHtml .= '   <b><center>'.trim((string) $me03_c_tipo).'<br>'.trim((string) $me03_c_inicio).' - '.trim((string) $me03_c_fim).'</center></b>';
       $sHtml .= '  </td>';
       $d1=$semana[$calibra];
       for($dia=$calibra;$dia<$calibra2;$dia++) {
@@ -411,7 +411,7 @@ if ($oPost->sAction == 'MontaGrid') {
         $cont++;
         $me12_i_codigo = "";
         $me01_i_codigo = "";
-        $d2            = substr($d1,6,4)."-".substr($d1,3,2)."-".substr($d1,0,2);
+        $d2            = substr((string) $d1,6,4)."-".substr((string) $d1,3,2)."-".substr((string) $d1,0,2);
         $campos        = " me12_i_codigo,me01_i_codigo,me01_c_nome,me01_f_versao,me03_c_fim ";
         $sWhere        = "me12_d_data = '$d2' AND me12_i_tprefeicao = $me03_i_codigo ";
         $sWhere       .= "AND me01_i_tipocardapio = {$oPost->cardapio}";
@@ -431,7 +431,7 @@ if ($oPost->sAction == 'MontaGrid') {
         $block = "";
         $dataatual = date("Ymd",db_getsession("DB_datausu"));
         $horaatual = date("H:i");
-        $diagrig   = substr($d1,6,4).substr($d1,3,2).substr($d1,0,2);
+        $diagrig   = substr((string) $d1,6,4).substr((string) $d1,3,2).substr((string) $d1,0,2);
         if ($clmer_cardapiodia->numrows==0) {
 
           if ($diagrig > $dataatual) {
@@ -458,7 +458,7 @@ if ($oPost->sAction == 'MontaGrid') {
                                                  );
           if ($clferiado->numrows==0) {
 
-            if (substr($d1,3,2)==$oPost->mes) {
+            if (substr((string) $d1,3,2)==$oPost->mes) {
 
               $nome ="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
@@ -474,7 +474,7 @@ if ($oPost->sAction == 'MontaGrid') {
           } else {
 
             db_fieldsmemory($resultferiado,0);
-            $nome = substr($ed96_c_descr,0,20)."<br>".substr($ed54_c_descr,0,20);
+            $nome = substr((string) $ed96_c_descr,0,20)."<br>".substr((string) $ed54_c_descr,0,20);
             $blokeado = " disabled ";
             $block = "yes";
             $estilo = "border:2px inset #999999;";
@@ -521,13 +521,13 @@ if ($oPost->sAction == 'MontaGrid') {
                                                          );
             if ($clmer_cardapiodata->numrows!=0) {
 
-              $nome = substr(trim($me01_c_nome),0,20)." - Versão: ".trim($me01_f_versao)."<br><font color=red>BAIXADO</font>";
+              $nome = substr(trim((string) $me01_c_nome),0,20)." - Versão: ".trim((string) $me01_f_versao)."<br><font color=red>BAIXADO</font>";
               $blokeado = " disabled ";
               $block = "yes";
 
             } else {
 
-              $nome = substr(trim($me01_c_nome),0,20)." - Versão: ".trim($me01_f_versao);
+              $nome = substr(trim((string) $me01_c_nome),0,20)." - Versão: ".trim((string) $me01_f_versao);
 
             }
             if ($g<$clmer_cardapiodia->numrows-1) {
@@ -558,7 +558,7 @@ if ($oPost->sAction == 'MontaGrid') {
 
   }
   $oJson = new services_json();
-  echo $oJson->encode(urlencode($sHtml));
+  echo $oJson->encode(urlencode((string) $sHtml));
 
 }
 

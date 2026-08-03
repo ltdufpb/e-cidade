@@ -81,7 +81,7 @@ class ReconhecimentoContabil {
    * @param integer - sequencial da tabela reconhecimentocontabil
    * @param DBDate  - data do reconhecimento contabil
    */
-  function __construct($iSequencial = null, DBDate $oDate = null) {
+  function __construct($iSequencial = null, ?DBDate $oDate = null) {
 
   	$this->setSequencial($iSequencial);
     if($iSequencial != null) {

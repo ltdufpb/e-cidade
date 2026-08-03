@@ -33,8 +33,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_atividaderh_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatividaderh = new cl_atividaderh;
 $clatividaderh->rotulo->label("ed01_i_codigo");
 $clatividaderh->rotulo->label("ed01_c_descr");
@@ -82,7 +82,7 @@ $clatividaderh->rotulo->label("ed01_c_descr");
   <td align="center" valign="top">
   <?php
 
-    $aWhere = array();
+    $aWhere = [];
     if (isset($atividades)) {
       $aWhere[] = " ed01_i_codigo not in ({$atividades}) " ;
     }
@@ -106,9 +106,9 @@ $clatividaderh->rotulo->label("ed01_c_descr");
 
       $sWhere = implode(" and ", $aWhere);
       $sql    = $clatividaderh->sql_query("",$campos,"ed01_c_descr",$sWhere);
-      $repassa = array();
+      $repassa = [];
       if (isset($chave_ed01_i_codigo)) {
-        $repassa = array("chave_ed01_i_codigo"=>$chave_ed01_i_codigo,"chave_ed01_c_descr"=>$chave_ed01_c_descr);
+        $repassa = ["chave_ed01_i_codigo"=>$chave_ed01_i_codigo,"chave_ed01_c_descr"=>$chave_ed01_c_descr];
       }
       db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
     } else {

@@ -71,7 +71,7 @@ $subpes = DBPessoal::getAnoFolha().'/'.DBPessoal::getMesFolha();
 
 db_selectmax("cfpess"," select * from cfpess ".bb_condicaosubpes("r11_"));
 db_selectmax("db_config","select lower(trim(munic)) as d08_carnes , cgc, db21_codcli from db_config where codigo = ".db_getsession("DB_instit"));
-if(trim($db_config[0]["cgc"]) == "90940172000138"){
+if(trim((string) $db_config[0]["cgc"]) == "90940172000138"){
   $d08_carnes = "daeb";
 }else{
   $d08_carnes = $db_config[0]["d08_carnes"];
@@ -541,7 +541,7 @@ function init_130($opcao) {
           $proporcionalizar_salario = true;
           if( ( $F019>0 || $F020>0 || $F023>0 )){
 
-            if( db_boolean( $cadferia[0]["r30_paga13"] ) && strtolower($cfpess[0]["r11_fersal"]) == "s"){
+            if( db_boolean( $cadferia[0]["r30_paga13"] ) && strtolower((string) $cfpess[0]["r11_fersal"]) == "s"){
               $proporcionalizar_salario = false;
             }
           }
@@ -551,11 +551,11 @@ function init_130($opcao) {
           $situacao_130          = situacao_funcionario($arquivo_rubricas[$Iind]["r90_regist"]);
           $oServidor             = ServidorRepository::getInstanciaByCodigo($arquivo_rubricas[$Iind]["r90_regist"]);
           $aAfastamentosServidor = $oServidor->getAfastamentosNoPeriodo();
-          $aSituacoesFuncionario  = array(1);
+          $aSituacoesFuncionario  = [1];
           if (count($aAfastamentosServidor) > 0) {
 
             $dias_pagamento = 30;
-            $aSituacoesFuncionario = array();
+            $aSituacoesFuncionario = [];
             foreach ($aAfastamentosServidor as $oAfastamento) {
 
               $aSituacoesFuncionario[] = $oAfastamento->r45_situac;
@@ -572,7 +572,7 @@ function init_130($opcao) {
             $valor_descontar = $arquivo_rubricas[$Iind]["r90_valor"];
 
 
-            if( strtolower($cfpess[0]["r11_fersal"]) == "f" && $F019 >= 30 && $arquivo_rubricas[$Iind]["rh27_tipo"] == "1") {
+            if( strtolower((string) $cfpess[0]["r11_fersal"]) == "f" && $F019 >= 30 && $arquivo_rubricas[$Iind]["rh27_tipo"] == "1") {
               continue;
             }
 
@@ -615,8 +615,8 @@ function init_130($opcao) {
               }
               $condicaoaux  = " and r90_regist = ".db_sqlformat( $arquivo_rubricas[$Iind]["r90_regist"] );
               $condicaoaux .= " and r90_rubric = ".db_sqlformat( $arquivo_rubricas[$Iind]["rh27_rubric"] );
-              $matriz1 = array();
-              $matriz2 = array();
+              $matriz1 = [];
+              $matriz2 = [];
               $matriz1[1] = "r90_quant";
               $matriz2[1] = $quantidade;
               db_update("pontofx",$matriz1,$matriz2,bb_condicaosubpes("r90_").$condicaoaux );
@@ -634,15 +634,15 @@ function init_130($opcao) {
 
 
             if( db_selectmax("ponto", "select * from pontofx".bb_condicaosubpes( "r90_").$condicaoaux)  &&
-              (count(array_intersect($aSituacoesFuncionario, array(1, 3, 4))) > 0 ||
-              (count(array_intersect($aSituacoesFuncionario,array(2, 5, 6, 7, 8, 9))) > 0 && !db_empty($dias_pagamento)) ||
-              (count(array_intersect($aSituacoesFuncionario, array(8, 6))) > 0 && !db_empty($rubrica_licenca_saude)) ||
+              (count(array_intersect($aSituacoesFuncionario, [1, 3, 4])) > 0 ||
+              (count(array_intersect($aSituacoesFuncionario,[2, 5, 6, 7, 8, 9])) > 0 && !db_empty($dias_pagamento)) ||
+              (count(array_intersect($aSituacoesFuncionario, [8, 6])) > 0 && !db_empty($rubrica_licenca_saude)) ||
               (in_array(9, $aSituacoesFuncionario) > 0 && !db_empty($rubrica_licenca_maternidade)) ||
               (in_array(5, $aSituacoesFuncionario) > 0 && !db_empty($rubrica_licenca_maternidade))))
             {
 
-              $matriz1 = array();
-              $matriz2 = array();
+              $matriz1 = [];
+              $matriz2 = [];
               $matriz1[1] = "r10_regist";
               $matriz1[2] = "r10_rubric";
               $matriz1[3] = "r10_lotac";
@@ -665,8 +665,8 @@ function init_130($opcao) {
               db_insert( "pontofs", $matriz1, $matriz2 );
 
               if( $quantidade != $arquivo_rubricas[$Iind]["r90_quant"]){
-                $matriz1 = array();
-                $matriz2 = array();
+                $matriz1 = [];
+                $matriz2 = [];
                 $matriz1[1] = "r90_quant";
                 $matriz2[1] = $quantidade;
                 $condicaoaux  = " and r90_regist = ".db_sqlformat( $arquivo_rubricas[$Iind]["r90_regist"] );
@@ -690,8 +690,8 @@ function init_130($opcao) {
               ){
 
                 if( !db_empty( $valor_descontar )){
-                  $matriz1 = array();
-                  $matriz2 = array();
+                  $matriz1 = [];
+                  $matriz2 = [];
                   $matriz1[1] = "r10_valor";
                   $condicaoaux  = " and r10_regist = ".db_sqlformat( $arquivo_rubricas[$Iind]["r90_regist"] );
                   $condicaoaux .= " and r10_rubric = ".db_sqlformat( $arquivo_rubricas[$Iind]["rh27_rubric"] );
@@ -706,8 +706,8 @@ function init_130($opcao) {
                   db_update( "pontofs", $matriz1, $matriz2, bb_condicaosubpes("r10_").$condicaoaux );
                 }
                 if( !db_empty( $quantidade )){
-                  $matriz1 = array();
-                  $matriz2 = array();
+                  $matriz1 = [];
+                  $matriz2 = [];
                   $matriz1[1] = "r10_quant";
 
                   $condicaoaux  = " and r10_regist = ".db_sqlformat( $arquivo_rubricas[$Iind]["r90_regist"] );
@@ -747,7 +747,7 @@ function init_130($opcao) {
               $oCompetenciaAtual        = DBPessoal::getCompetenciaFolha();
 
               $sCompetenciaFimContrato  = $oDataFimContrato->getAno()  . str_pad($oDataFimContrato->getMes(),  2, '0', STR_PAD_LEFT);
-              $sCompetenciaAtual        = $oCompetenciaAtual->getAno() . str_pad($oCompetenciaAtual->getMes(), 2, '0', STR_PAD_LEFT);
+              $sCompetenciaAtual        = $oCompetenciaAtual->getAno() . str_pad((string) $oCompetenciaAtual->getMes(), 2, '0', STR_PAD_LEFT);
 
               $sWhereContrato           = " and r10_regist =  {$arquivo_rubricas[$Iind]["r90_regist"]}";
               $sWhereContrato          .= " and r10_rubric = '{$arquivo_rubricas[$Iind]["rh27_rubric"]}'";
@@ -784,8 +784,8 @@ function init_130($opcao) {
 
                     db_update(
                       "pontofs",
-                      array(1=>'r10_valor'),
-                      array(1=>$nValorProporcional),
+                      [1=>'r10_valor'],
+                      [1=>$nValorProporcional],
                       bb_condicaosubpes("r10_").$sWhereContrato
                     );
                   }
@@ -800,8 +800,8 @@ function init_130($opcao) {
 
                     db_update(
                       "pontofs",
-                      array(1=>'r10_quant'),
-                      array(1=>$nQuantidadeProporcional),
+                      [1=>'r10_quant'],
+                      [1=>$nQuantidadeProporcional],
                       bb_condicaosubpes("r10_").$sWhereContrato
                     );
                   }
@@ -818,8 +818,8 @@ function init_130($opcao) {
               $condicaoaux  = " and r10_regist = ".db_sqlformat( $arquivo_rubricas[$Iind]["r90_regist"] );
               $condicaoaux .= " and r10_rubric = ".db_sqlformat( $arquivo_rubricas[$Iind]["rh27_rubric"] );
               if( !db_empty( $valor_descontar )){
-                $matriz1 = array();
-                $matriz2 = array();
+                $matriz1 = [];
+                $matriz2 = [];
                 $matriz1[1] = "r10_valor";
                 if( db_boolean( $arquivo_rubricas[$Iind]["rh27_calcp"])){
                   $valor_descontar = bb_round( ( $valor_descontar / 30 ) * (30-$F019),2 );
@@ -829,8 +829,8 @@ function init_130($opcao) {
               }
 
               if( !db_empty( $quantidade )){
-                $matriz1 = array();
-                $matriz2 = array();
+                $matriz1 = [];
+                $matriz2 = [];
                 $matriz1[1] = "r10_quant";
                 if( db_boolean( $arquivo_rubricas[$Iind]["rh27_calcp"])){
                   if( db_boolean( $arquivo_rubricas[$Iind]["rh27_propq"]) ){
@@ -885,7 +885,7 @@ function init_130($opcao) {
     /**
      * Inclusao dos Eventos Automaticos
      */
-    $aListaMatriculas = array();
+    $aListaMatriculas = [];
     $iTotalLista      = count($arquivo_rubricas);
     for ($Iind = 0; $Iind < $iTotalLista; $Iind++) {
         if($opcao == 1) {
@@ -934,7 +934,7 @@ function init_130($opcao) {
         }
 
         $oPontoSalario = $oServidor->getPonto(Ponto::SALARIO);
-        $oPontoSalario->carregarRegistros(array($oEvento->getRubrica()->getCodigo()));
+        $oPontoSalario->carregarRegistros([$oEvento->getRubrica()->getCodigo()]);
         $oPontoSalario->limpar($oEvento->getRubrica()->getCodigo());
         $oRegistroPonto = new RegistroPonto();
         $oRegistroPonto->setQuantidade(1);

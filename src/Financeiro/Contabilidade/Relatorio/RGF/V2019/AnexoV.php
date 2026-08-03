@@ -12,8 +12,9 @@ use ECidade\Financeiro\Contabilidade\Relatorio\RGF\V2018\AnexoV as AnexoV2018;
 class AnexoV extends AnexoV2018
 {
 
-    private $linhas = array();
+    private $linhas = [];
 
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         parent::getDados($trazerConfiguracaoPadrao);
@@ -21,14 +22,15 @@ class AnexoV extends AnexoV2018
         return $this->aLinhasConsistencia;
     }
 
+    #[\Override]
     public function getDadosSimplificado()
     {
         $this->getDados();
 
-        return (object) array (
+        return (object)  [
            'rp_nao_processado' => $this->aLinhasConsistencia[16]->rp_empenhado_nao_processado,
            'disponibilidade_caixa_liquida' => $this->aLinhasConsistencia[16]->disp_caixa_liquida
-        );
+        ];
     }
 
     /**
@@ -37,7 +39,7 @@ class AnexoV extends AnexoV2018
      */
     private function organizaLinhas()
     {
-        $ordemDePara = array(
+        $ordemDePara = [
             14 => 1,
             15 => 2,
             16 => 3,
@@ -55,9 +57,9 @@ class AnexoV extends AnexoV2018
             12 => 14,
             13 => 15,
             17 => 16,
-        );
+        ];
 
-        $deParaDescricao = array(
+        $deParaDescricao = [
             '1' => 'TOTAL DOS RECURSOS NÃO VINCULADOS (I)',
             '2' => 'Recursos Ordinários',
             '3' => 'Outros Recursos não Vinculados',
@@ -74,9 +76,9 @@ class AnexoV extends AnexoV2018
             '14' => 'Recursos de Alienação de Bens/Ativos',
             '15' => 'Outras Recursos Vinculados',
             '16' => 'TOTAL (III) = (I + II)',
-        );
+        ];
 
-        $linhasOrganizadas = array();
+        $linhasOrganizadas = [];
         foreach ($ordemDePara as $ordemAntiga => $ordemNova) {
             if (empty($linhasOrganizadas[$ordemNova])) {
                 $linhasOrganizadas[$ordemNova] = $this->aLinhasConsistencia[$ordemAntiga];

@@ -32,15 +32,15 @@ class LogradouroRequest extends FormRequest
 
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     public function messages()
     {
         return [
-            "cep.integer"        => utf8_encode("CEP inválido."),
-            "bairro.integer"         => utf8_encode("Bairro inválido")
+            "cep.integer"        => mb_convert_encoding("CEP inválido.", 'UTF-8', 'ISO-8859-1'),
+            "bairro.integer"         => mb_convert_encoding("Bairro inválido", 'UTF-8', 'ISO-8859-1')
         ];
     }
 }

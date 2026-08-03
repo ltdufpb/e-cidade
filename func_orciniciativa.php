@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_orciniciativa_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clorciniciativa = new cl_orciniciativa;
 $clorciniciativa->rotulo->label("o147_sequencial");
@@ -103,9 +103,9 @@ $clorciniciativa->rotulo->label("o147_descricao");
         }else{
            $sql = $clorciniciativa->sql_query("",$campos,"o147_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o147_descricao)){
-          $repassa = array("chave_o147_sequencial"=>$chave_o147_sequencial,"chave_o147_descricao"=>$chave_o147_descricao);
+          $repassa = ["chave_o147_sequencial"=>$chave_o147_sequencial,"chave_o147_descricao"=>$chave_o147_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

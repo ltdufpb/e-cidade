@@ -34,8 +34,8 @@ require_once(modification('libs/db_stdlibwebseller.php'));
 require_once(modification('libs/db_stdlib.php'));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oDaoMatreQuiItem      = new cl_matrequiitem();      //$clmatrequiitem = new cl_matrequiitem;
 $oDaoAtendRequi        = new cl_atendrequi();        //$clatendrequi  = new cl_atendrequi;
@@ -232,9 +232,9 @@ if (    isset( $fa22_i_cgsund ) && !empty( $fa22_i_cgsund )
     echo "<td   class='linhagrid' align='center'><small>";
   
     if ($oVariaveis->fa04_tiporetirada == 1) {
-      $aX = array('2' => 'Devolução', '1' => 'Cancelamento');
+      $aX = ['2' => 'Devolução', '1' => 'Cancelamento'];
     } else{
-      $aX = array('0'=>'Selecione::','1' => 'Cancelamento');
+      $aX = ['0'=>'Selecione::','1' => 'Cancelamento'];
     }
     
     db_select('cancelamento_'.$oVariaveis->m43_codigo, $aX, true, $iOp,

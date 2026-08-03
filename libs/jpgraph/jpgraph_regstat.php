@@ -19,12 +19,12 @@
 class Spline {
     // 3:rd degree polynom approximation
 
-    var $xdata,$ydata;   // Data vectors
-    var $y2;		 // 2:nd derivate of ydata	
-    var $n=0;
+    public $xdata,$ydata;   // Data vectors
+    public $y2;		 // 2:nd derivate of ydata	
+    public $n=0;
 
-    function Spline($xdata,$ydata) {
-	$this->y2 = array();
+    function __construct($xdata,$ydata) {
+	$this->y2 = [];
 	$this->xdata = $xdata;
 	$this->ydata = $ydata;
 
@@ -40,7 +40,7 @@ class Spline {
 	for($i=1; $i < $n-1; ++$i) {
 	    $d = ($xdata[$i+1]-$xdata[$i-1]);
 	    if( $d == 0  ) {
-		JpGraphError::Raise('Invalid input data for spline. Two or more consecutive input X-values are equal. Each input X-value must differ since from a mathematical point of view it must be a one-to-one mapping, i.e. each X-value must correspond to exactly one Y-value.');
+		(new JpGraphError())->Raise('Invalid input data for spline. Two or more consecutive input X-values are equal. Each input X-value must differ since from a mathematical point of view it must be a one-to-one mapping, i.e. each X-value must correspond to exactly one Y-value.');
 	    }
 	    $s = ($xdata[$i]-$xdata[$i-1])/$d;
 	    $p = $s*$this->y2[$i-1]+2.0;
@@ -60,15 +60,15 @@ class Spline {
     function Get($num=50) {
 	$n = $this->n ;
 	$step = ($this->xdata[$n-1]-$this->xdata[0]) / ($num-1);
-	$xnew=array();
-	$ynew=array();
+	$xnew=[];
+	$ynew=[];
 	$xnew[0] = $this->xdata[0];
 	$ynew[0] = $this->ydata[0];
 	for( $j=1; $j < $num; ++$j ) {
 	    $xnew[$j] = $xnew[0]+$j*$step;
 	    $ynew[$j] = $this->Interpolate($xnew[$j]);
 	}
-	return array($xnew,$ynew);
+	return [$xnew,$ynew];
     }
 
     // Return a single interpolated Y-value from an x value
@@ -90,7 +90,7 @@ class Spline {
 	$h = $this->xdata[$max]-$this->xdata[$min];
 
 	if( $h == 0  ) {
-	    JpGraphError::Raise('Invalid input data for spline. Two or more consecutive input X-values are equal. Each input X-value must differ since from a mathematical point of view it must be a one-to-one mapping, i.e. each X-value must correspond to exactly one Y-value.');
+	    (new JpGraphError())->Raise('Invalid input data for spline. Two or more consecutive input X-values are equal. Each input X-value must differ since from a mathematical point of view it must be a one-to-one mapping, i.e. each X-value must correspond to exactly one Y-value.');
 	}
 
 

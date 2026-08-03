@@ -40,16 +40,16 @@ class Registro20Builder
      * Modalidade/Tipo da turma na escola e como deve ir para o censo
      * @var array
      */
-    private static $deParaModalidadeTurma = array(
+    private static $deParaModalidadeTurma = [
         1 => 1,
         2 => 3,
         3 => 1,
         6 => 1,
         7 => 1,
-    );
+    ];
 
-    private static $etapasCursoProfissional = array(30, 31, 32, 33, 34, 39, 40, 64, 74);
-    private static $etapasInfantil = array(1, 2, 3);
+    private static $etapasCursoProfissional = [30, 31, 32, 33, 34, 39, 40, 64, 74];
+    private static $etapasInfantil = [1, 2, 3];
 
     /**
      * @var Registro20
@@ -60,7 +60,7 @@ class Registro20Builder
      * @var TurmaCensoVo
      */
     private $dadosTurma;
-    private $diasLetivo = array();
+    private $diasLetivo = [];
 
     /**
      * @param TurmaCensoVo $turma
@@ -159,7 +159,7 @@ class Registro20Builder
             $this->registro->setDomingo(0);
 
             foreach ($this->diasLetivo as $diaSemana) {
-                switch (mb_strtoupper($diaSemana)) {
+                switch (mb_strtoupper((string) $diaSemana)) {
                     case "SEGUNDA":
                         $this->registro->setSegundaFeira(1);
                         break;
@@ -550,7 +550,7 @@ class Registro20Builder
     private function removerAcentuacao($sString)
     {
 
-        $sString = preg_replace("/[¡¿¬√]/", "A", $sString);
+        $sString = preg_replace("/[¡¿¬√]/", "A", (string) $sString);
         $sString = preg_replace("/[·‡‚„]/", "a", $sString);
 
         $sString = preg_replace("/[…» ]/", "E", $sString);

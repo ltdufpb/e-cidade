@@ -31,7 +31,7 @@ class ProcessoEletronico
     /**
      * @var array
      */
-    protected $movimentacoes = array();
+    protected $movimentacoes = [];
 
     /**
      * @var integer

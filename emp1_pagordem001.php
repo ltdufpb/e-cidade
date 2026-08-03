@@ -34,7 +34,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 $clcriaabas     = new cl_criaabas;
 $clrotulo = new rotulocampo;
 $db_opcao = 1;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 ?>
 <html>
 <head>
@@ -57,11 +57,11 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array("pagordem"=>"Ordem de pagamento","pagordemrec"=>"Receitas"); 
-       $clcriaabas->sizecampo  = array("pagordem"=>"20"); 
-       $clcriaabas->title      =  array("pagordem"=>"Ordem de pagemento de empenho","pagordemrec"=>"Receitas"); 
-       $clcriaabas->src = array("pagordem"=>"emp1_pagordem004.php?emite_automatico=".@$emite_automatico);
-       $clcriaabas->disabled   =  array("pagordemrec"=>"true"); 
+       $clcriaabas->identifica = ["pagordem"=>"Ordem de pagamento","pagordemrec"=>"Receitas"]; 
+       $clcriaabas->sizecampo  = ["pagordem"=>"20"]; 
+       $clcriaabas->title      =  ["pagordem"=>"Ordem de pagemento de empenho","pagordemrec"=>"Receitas"]; 
+       $clcriaabas->src = ["pagordem"=>"emp1_pagordem004.php?emite_automatico=".@$emite_automatico];
+       $clcriaabas->disabled   =  ["pagordemrec"=>"true"]; 
        $clcriaabas->cria_abas();    
      ?> 
      </td>

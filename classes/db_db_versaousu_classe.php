@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE db_versaousu
 class cl_db_versaousu { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db32_codusu = 0; 
-   var $db32_codver = 0; 
-   var $db32_id_item = 0; 
-   var $db32_obs = null; 
-   var $db32_obsdb = null; 
-   var $db32_data_dia = null; 
-   var $db32_data_mes = null; 
-   var $db32_data_ano = null; 
-   var $db32_data = null; 
+   public $db32_codusu = 0; 
+   public $db32_codver = 0; 
+   public $db32_id_item = 0; 
+   public $db32_obs = null; 
+   public $db32_obsdb = null; 
+   public $db32_data_dia = null; 
+   public $db32_data_mes = null; 
+   public $db32_data_ano = null; 
+   public $db32_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db32_codusu = int4 = Código da Observação 
                  db32_codver = int4 = Código da Versão 
                  db32_id_item = int4 = Item de Menu 
@@ -61,10 +61,10 @@ class cl_db_versaousu {
                  db32_data = date = Data da inclusão 
                  ";
    //funcao construtor da classe 
-   function cl_db_versaousu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_versaousu"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_db_versaousu {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db32_codusu = pg_result($result,0,0); 
+       $this->db32_codusu = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_versaousu_db32_codusu_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db32_codusu)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db32_codusu)){
          $this->erro_sql = " Campo db32_codusu maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_db_versaousu {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Versão Para o Usuário ($this->db32_codusu) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Versão Para o Usuário já Cadastrado";
@@ -218,15 +218,15 @@ class cl_db_versaousu {
      $resaco = $this->sql_record($this->sql_query_file($this->db32_codusu));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5878,'$this->db32_codusu','I')");
-       $resac = db_query("insert into db_acount values($acount,940,5878,'','".AddSlashes(pg_result($resaco,0,'db32_codusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,940,5874,'','".AddSlashes(pg_result($resaco,0,'db32_codver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,940,5875,'','".AddSlashes(pg_result($resaco,0,'db32_id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,940,5876,'','".AddSlashes(pg_result($resaco,0,'db32_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,940,7403,'','".AddSlashes(pg_result($resaco,0,'db32_obsdb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,940,5877,'','".AddSlashes(pg_result($resaco,0,'db32_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,940,5878,'','".AddSlashes(pg_fetch_result($resaco,0,'db32_codusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,940,5874,'','".AddSlashes(pg_fetch_result($resaco,0,'db32_codver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,940,5875,'','".AddSlashes(pg_fetch_result($resaco,0,'db32_id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,940,5876,'','".AddSlashes(pg_fetch_result($resaco,0,'db32_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,940,7403,'','".AddSlashes(pg_fetch_result($resaco,0,'db32_obsdb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,940,5877,'','".AddSlashes(pg_fetch_result($resaco,0,'db32_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_db_versaousu {
       $this->atualizacampos();
      $sql = " update db_versaousu set ";
      $virgula = "";
-     if(trim($this->db32_codusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_codusu"])){ 
+     if(trim((string) $this->db32_codusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_codusu"])){ 
        $sql  .= $virgula." db32_codusu = $this->db32_codusu ";
        $virgula = ",";
-       if(trim($this->db32_codusu) == null ){ 
+       if(trim((string) $this->db32_codusu) == null ){ 
          $this->erro_sql = " Campo Código da Observação nao Informado.";
          $this->erro_campo = "db32_codusu";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_db_versaousu {
          return false;
        }
      }
-     if(trim($this->db32_codver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_codver"])){ 
+     if(trim((string) $this->db32_codver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_codver"])){ 
        $sql  .= $virgula." db32_codver = $this->db32_codver ";
        $virgula = ",";
-       if(trim($this->db32_codver) == null ){ 
+       if(trim((string) $this->db32_codver) == null ){ 
          $this->erro_sql = " Campo Código da Versão nao Informado.";
          $this->erro_campo = "db32_codver";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_db_versaousu {
          return false;
        }
      }
-     if(trim($this->db32_id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_id_item"])){ 
+     if(trim((string) $this->db32_id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_id_item"])){ 
        $sql  .= $virgula." db32_id_item = $this->db32_id_item ";
        $virgula = ",";
-       if(trim($this->db32_id_item) == null ){ 
+       if(trim((string) $this->db32_id_item) == null ){ 
          $this->erro_sql = " Campo Item de Menu nao Informado.";
          $this->erro_campo = "db32_id_item";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_db_versaousu {
          return false;
        }
      }
-     if(trim($this->db32_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_obs"])){ 
+     if(trim((string) $this->db32_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_obs"])){ 
        $sql  .= $virgula." db32_obs = '$this->db32_obs' ";
        $virgula = ",";
-       if(trim($this->db32_obs) == null ){ 
+       if(trim((string) $this->db32_obs) == null ){ 
          $this->erro_sql = " Campo Observações para o usuário nao Informado.";
          $this->erro_campo = "db32_obs";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_db_versaousu {
          return false;
        }
      }
-     if(trim($this->db32_obsdb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_obsdb"])){ 
+     if(trim((string) $this->db32_obsdb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_obsdb"])){ 
        $sql  .= $virgula." db32_obsdb = '$this->db32_obsdb' ";
        $virgula = ",";
-       if(trim($this->db32_obsdb) == null ){ 
+       if(trim((string) $this->db32_obsdb) == null ){ 
          $this->erro_sql = " Campo Observação DBSeller nao Informado.";
          $this->erro_campo = "db32_obsdb";
          $this->erro_banco = "";
@@ -300,10 +300,10 @@ class cl_db_versaousu {
          return false;
        }
      }
-     if(trim($this->db32_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db32_data_dia"] !="") ){ 
+     if(trim((string) $this->db32_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db32_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db32_data_dia"] !="") ){ 
        $sql  .= $virgula." db32_data = '$this->db32_data' ";
        $virgula = ",";
-       if(trim($this->db32_data) == null ){ 
+       if(trim((string) $this->db32_data) == null ){ 
          $this->erro_sql = " Campo Data da inclusão nao Informado.";
          $this->erro_campo = "db32_data_dia";
          $this->erro_banco = "";
@@ -316,7 +316,7 @@ class cl_db_versaousu {
        if(isset($GLOBALS["HTTP_POST_VARS"]["db32_data_dia"])){ 
          $sql  .= $virgula." db32_data = null ";
          $virgula = ",";
-         if(trim($this->db32_data) == null ){ 
+         if(trim((string) $this->db32_data) == null ){ 
            $this->erro_sql = " Campo Data da inclusão nao Informado.";
            $this->erro_campo = "db32_data_dia";
            $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_db_versaousu {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5878,'$this->db32_codusu','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db32_codusu"]))
-           $resac = db_query("insert into db_acount values($acount,940,5878,'".AddSlashes(pg_result($resaco,$conresaco,'db32_codusu'))."','$this->db32_codusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,940,5878,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db32_codusu'))."','$this->db32_codusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db32_codver"]))
-           $resac = db_query("insert into db_acount values($acount,940,5874,'".AddSlashes(pg_result($resaco,$conresaco,'db32_codver'))."','$this->db32_codver',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,940,5874,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db32_codver'))."','$this->db32_codver',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db32_id_item"]))
-           $resac = db_query("insert into db_acount values($acount,940,5875,'".AddSlashes(pg_result($resaco,$conresaco,'db32_id_item'))."','$this->db32_id_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,940,5875,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db32_id_item'))."','$this->db32_id_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db32_obs"]))
-           $resac = db_query("insert into db_acount values($acount,940,5876,'".AddSlashes(pg_result($resaco,$conresaco,'db32_obs'))."','$this->db32_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,940,5876,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db32_obs'))."','$this->db32_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db32_obsdb"]))
-           $resac = db_query("insert into db_acount values($acount,940,7403,'".AddSlashes(pg_result($resaco,$conresaco,'db32_obsdb'))."','$this->db32_obsdb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,940,7403,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db32_obsdb'))."','$this->db32_obsdb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db32_data"]))
-           $resac = db_query("insert into db_acount values($acount,940,5877,'".AddSlashes(pg_result($resaco,$conresaco,'db32_data'))."','$this->db32_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,940,5877,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db32_data'))."','$this->db32_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_db_versaousu {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5878,'$db32_codusu','E')");
-         $resac = db_query("insert into db_acount values($acount,940,5878,'','".AddSlashes(pg_result($resaco,$iresaco,'db32_codusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,940,5874,'','".AddSlashes(pg_result($resaco,$iresaco,'db32_codver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,940,5875,'','".AddSlashes(pg_result($resaco,$iresaco,'db32_id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,940,5876,'','".AddSlashes(pg_result($resaco,$iresaco,'db32_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,940,7403,'','".AddSlashes(pg_result($resaco,$iresaco,'db32_obsdb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,940,5877,'','".AddSlashes(pg_result($resaco,$iresaco,'db32_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,940,5878,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db32_codusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,940,5874,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db32_codver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,940,5875,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db32_id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,940,5876,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db32_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,940,7403,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db32_obsdb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,940,5877,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db32_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_versaousu
@@ -462,7 +462,7 @@ class cl_db_versaousu {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_versaousu";
@@ -476,7 +476,7 @@ class cl_db_versaousu {
    function sql_query ( $db32_codusu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,7 +499,7 @@ class cl_db_versaousu {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_db_versaousu {
    function sql_query_file ( $db32_codusu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_db_versaousu {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

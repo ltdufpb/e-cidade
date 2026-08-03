@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE matpedidotransf
 class cl_matpedidotransf { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m100_sequencial = 0; 
-   var $m100_matpedidoitem = 0; 
-   var $m100_matestoqueini = 0; 
+   public $m100_sequencial = 0; 
+   public $m100_matpedidoitem = 0; 
+   public $m100_matestoqueini = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m100_sequencial = int8 = Sequencial 
                  m100_matpedidoitem = int8 = Ítem 
                  m100_matestoqueini = int8 = Estoque 
                  ";
    //funcao construtor da classe 
-   function cl_matpedidotransf() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matpedidotransf"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_matpedidotransf {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m100_sequencial = pg_result($result,0,0); 
+       $this->m100_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matpedidotransf_m100_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m100_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m100_sequencial)){
          $this->erro_sql = " Campo m100_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -143,7 +143,7 @@ class cl_matpedidotransf {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "matpedidotransf ($this->m100_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "matpedidotransf já Cadastrado";
@@ -167,12 +167,12 @@ class cl_matpedidotransf {
      $resaco = $this->sql_record($this->sql_query_file($this->m100_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15248,'$this->m100_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2687,15248,'','".AddSlashes(pg_result($resaco,0,'m100_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2687,15249,'','".AddSlashes(pg_result($resaco,0,'m100_matpedidoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2687,15250,'','".AddSlashes(pg_result($resaco,0,'m100_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2687,15248,'','".AddSlashes(pg_fetch_result($resaco,0,'m100_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2687,15249,'','".AddSlashes(pg_fetch_result($resaco,0,'m100_matpedidoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2687,15250,'','".AddSlashes(pg_fetch_result($resaco,0,'m100_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -181,10 +181,10 @@ class cl_matpedidotransf {
       $this->atualizacampos();
      $sql = " update matpedidotransf set ";
      $virgula = "";
-     if(trim($this->m100_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m100_sequencial"])){ 
+     if(trim((string) $this->m100_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m100_sequencial"])){ 
        $sql  .= $virgula." m100_sequencial = $this->m100_sequencial ";
        $virgula = ",";
-       if(trim($this->m100_sequencial) == null ){ 
+       if(trim((string) $this->m100_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "m100_sequencial";
          $this->erro_banco = "";
@@ -194,10 +194,10 @@ class cl_matpedidotransf {
          return false;
        }
      }
-     if(trim($this->m100_matpedidoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m100_matpedidoitem"])){ 
+     if(trim((string) $this->m100_matpedidoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m100_matpedidoitem"])){ 
        $sql  .= $virgula." m100_matpedidoitem = $this->m100_matpedidoitem ";
        $virgula = ",";
-       if(trim($this->m100_matpedidoitem) == null ){ 
+       if(trim((string) $this->m100_matpedidoitem) == null ){ 
          $this->erro_sql = " Campo Ítem nao Informado.";
          $this->erro_campo = "m100_matpedidoitem";
          $this->erro_banco = "";
@@ -207,10 +207,10 @@ class cl_matpedidotransf {
          return false;
        }
      }
-     if(trim($this->m100_matestoqueini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m100_matestoqueini"])){ 
+     if(trim((string) $this->m100_matestoqueini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m100_matestoqueini"])){ 
        $sql  .= $virgula." m100_matestoqueini = $this->m100_matestoqueini ";
        $virgula = ",";
-       if(trim($this->m100_matestoqueini) == null ){ 
+       if(trim((string) $this->m100_matestoqueini) == null ){ 
          $this->erro_sql = " Campo Estoque nao Informado.";
          $this->erro_campo = "m100_matestoqueini";
          $this->erro_banco = "";
@@ -228,15 +228,15 @@ class cl_matpedidotransf {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15248,'$this->m100_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m100_sequencial"]) || $this->m100_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2687,15248,'".AddSlashes(pg_result($resaco,$conresaco,'m100_sequencial'))."','$this->m100_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2687,15248,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m100_sequencial'))."','$this->m100_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m100_matpedidoitem"]) || $this->m100_matpedidoitem != "")
-           $resac = db_query("insert into db_acount values($acount,2687,15249,'".AddSlashes(pg_result($resaco,$conresaco,'m100_matpedidoitem'))."','$this->m100_matpedidoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2687,15249,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m100_matpedidoitem'))."','$this->m100_matpedidoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m100_matestoqueini"]) || $this->m100_matestoqueini != "")
-           $resac = db_query("insert into db_acount values($acount,2687,15250,'".AddSlashes(pg_result($resaco,$conresaco,'m100_matestoqueini'))."','$this->m100_matestoqueini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2687,15250,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m100_matestoqueini'))."','$this->m100_matestoqueini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -281,12 +281,12 @@ class cl_matpedidotransf {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15248,'$m100_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2687,15248,'','".AddSlashes(pg_result($resaco,$iresaco,'m100_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2687,15249,'','".AddSlashes(pg_result($resaco,$iresaco,'m100_matpedidoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2687,15250,'','".AddSlashes(pg_result($resaco,$iresaco,'m100_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2687,15248,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m100_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2687,15249,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m100_matpedidoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2687,15250,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m100_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matpedidotransf
@@ -346,7 +346,7 @@ class cl_matpedidotransf {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matpedidotransf";
@@ -361,7 +361,7 @@ class cl_matpedidotransf {
    function sql_query ( $m100_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_matpedidotransf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_matpedidotransf {
  function sql_query_inill ( $m100_matestoqueini=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,7 +439,7 @@ class cl_matpedidotransf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,7 +452,7 @@ class cl_matpedidotransf {
    function sql_query_file ( $m100_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,7 +473,7 @@ class cl_matpedidotransf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

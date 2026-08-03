@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiculoscomb_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveiculoscomb = new cl_veiculoscomb;
 
@@ -115,9 +115,9 @@ $clveiculoscomb->rotulo->label("ve06_veiccadcomb");
            $sql = $clveiculoscomb->sql_query("","distinct $campos","ve06_sequencial","$dbwhere");
 
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve06_sequencial)||isset($chave_ve06_veiccadcomb)){
-          $repassa = array("chave_ve06_sequencial"=>$chave_ve06_sequencial,"chave_ve06_veiccadcomb"=>$chave_ve06_veiccadcomb);
+          $repassa = ["chave_ve06_sequencial"=>$chave_ve06_sequencial,"chave_ve06_veiccadcomb"=>$chave_ve06_veiccadcomb];
 
         }
 

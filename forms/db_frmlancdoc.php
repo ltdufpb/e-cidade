@@ -81,7 +81,7 @@ $clrotulo->label("db44_descricao");
                $sSqlDocumento = $oDocumento->sql_query_buscaDocTipo(null, "*", "", $where);
                $rsDocumento   = $oDocumento->sql_record($sSqlDocumento);
                $aDocumento    = db_utils::getCollectionByRecord($rsDocumento);
-               $aDoc          = array(""=>"Selecione...");  
+               $aDoc          = [""=>"Selecione..."];  
                
                foreach ($aDocumento as $doc) {         
                  $aDoc[$doc->db44_sequencial] = $doc->db44_descricao;

@@ -32,18 +32,18 @@ require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification('model/configuracao/SkinService.service.php'));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 if( !session_is_registered("DB_instit")) {
 
   session_register("DB_instit");
 
-  if(isset($HTTP_POST_VARS["instit"])){
+  if(isset($_POST["instit"])){
 
-    db_putsession("DB_instit",$HTTP_POST_VARS["instit"]);
+    db_putsession("DB_instit",$_POST["instit"]);
   } else {
 
-    parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+    parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
     if(isset($instit)){
        db_putsession("DB_instit",$instit);
@@ -61,7 +61,7 @@ db_query("update db_usuariosonline
    uol_modulo = 'Selecionando Área' ,
    uol_inativo = ".time()."
    where uol_id = ".db_getsession("DB_id_usuario")."
-   and uol_ip = '".(isset($_SERVER["HTTP_X_FORWARDED_FOR"])?$_SERVER["HTTP_X_FORWARDED_FOR"]:$HTTP_SERVER_VARS['REMOTE_ADDR'])."' 
+   and uol_ip = '".($_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER['REMOTE_ADDR'])."' 
    and uol_hora = ".db_getsession("DB_uol_hora")) or die("Erro(26) atualizando db_usuariosonline"); 
 
 $rsInstituicao = db_query("select nomeinst as nome,ender,telef,cep,email,url from db_config where codigo = ".db_getsession("DB_instit"));
@@ -89,7 +89,7 @@ if(db_getsession("DB_id_usuario") == "1" || db_getsession("DB_administrador") ==
                                    where i.itemativo = 1
                                      and p.id_usuario = ".db_getsession("DB_id_usuario")."
                                      and p.id_instit = ".db_getsession("DB_instit")." 
-                                     and p.anousu = ".(isset($HTTP_SESSION_VARS["DB_datausu"])?date("Y",db_getsession("DB_datausu")):date("Y"))." 
+                                     and p.anousu = ".(isset($_SESSION["DB_datausu"])?date("Y",db_getsession("DB_datausu")):date("Y"))." 
                                  ) as i           
                                  inner join db_modulos m on m.id_item = i.id_modulo
                                  inner join db_itensmenu it on it.id_item = i.id_modulo
@@ -111,7 +111,7 @@ if(db_getsession("DB_id_usuario") == "1" || db_getsession("DB_administrador") ==
         where i.itemativo = 1
         and h.id_usuario = ".db_getsession("DB_id_usuario")."
         and p.id_instit = ".db_getsession("DB_instit")." 
-        and p.anousu = ".(isset($HTTP_SESSION_VARS["DB_datausu"])?date("Y",db_getsession("DB_datausu")):date("Y"))." 
+        and p.anousu = ".(isset($_SESSION["DB_datausu"])?date("Y",db_getsession("DB_datausu")):date("Y"))." 
       ) as i            
                   inner join db_modulos m
                   on m.id_item = i.id_modulo

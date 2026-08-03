@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_grupomotivoafastamentoesocial_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clgrupomotivoafastamentoesocial = new cl_grupomotivoafastamentoesocial;
 $clgrupomotivoafastamentoesocial->rotulo->label("eso10_sequencial");
 $clgrupomotivoafastamentoesocial->rotulo->label("eso10_descricao");
@@ -55,7 +55,7 @@ $clgrupomotivoafastamentoesocial->rotulo->label("eso10_descricao");
         $sql = "select eso10_sequencial as db_eso10_sequencial,concat(eso10_descricao, ' - código(s) eSocial:', string_agg(db18_opcao,', 'order by db18_opcao::integer))::varchar as eso10_descricao from grupomotivoafastamentoesocial inner join db_cadattdinamico on eso10_db_cadattdinamico = db118_sequencial inner join db_cadattdinamicoatributos on db109_db_cadattdinamico = db118_sequencial inner join db_cadattdinamicoatributosopcoes on
                 db18_cadattdinamicoatributos = db109_sequencial where db109_nome = 'motivo_esocial' {$sWhere} group by eso10_sequencial, eso10_descricao, eso10_db_cadattdinamico";
 
-        $repassa = array();
+        $repassa = [];
 
         echo '<div class="container">';
         echo '  <fieldset>';

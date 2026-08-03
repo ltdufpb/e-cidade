@@ -270,7 +270,7 @@ db_input('convenio',100,$Iconvenio,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("idret"=>@$idret);
+	 $chavepri= ["idret"=>@$idret];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldisbanco->sql_query_txtreg(null,"*",null,"k35_disbancotxt=$k35_disbancotxt");
      $cliframe_alterar_excluir->sql_disabled     = $cldisbanco->sql_query_txtreg(null,"*",null,"k35_disbancotxt=$k35_disbancotxt and classi='t'");

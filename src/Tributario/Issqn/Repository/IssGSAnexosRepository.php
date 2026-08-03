@@ -63,7 +63,7 @@ class IssGSAnexosRepository extends BaseClassRepository
 
     public function makeColletion($collection)
     {
-        $dados = array();
+        $dados = [];
 
         foreach ($collection as $item) {
             $dados[] = $this->make($item);

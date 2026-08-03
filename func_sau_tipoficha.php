@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsau_tipoficha = new cl_sau_tipoficha;
 $clsau_tipoficha->rotulo->label("sd101_i_codigo");
@@ -86,7 +86,7 @@ $clsau_tipoficha->rotulo->label("sd101_c_descr");
         <td align="center" valign="top">
           <?php
 
-          $aWhere = array();
+          $aWhere = [];
 
           if(!isset($pesquisa_chave)) {
 
@@ -108,10 +108,10 @@ $clsau_tipoficha->rotulo->label("sd101_c_descr");
             }
 
             $sql     = $clsau_tipoficha->sql_query( "", $campos, "sd101_i_codigo", implode(' AND ', $aWhere));
-            $repassa = array();
+            $repassa = [];
 
             if(isset($chave_sd101_i_codigo)) {
-              $repassa = array("chave_sd101_i_codigo" => $chave_sd101_i_codigo);
+              $repassa = ["chave_sd101_i_codigo" => $chave_sd101_i_codigo];
             }
 
             db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

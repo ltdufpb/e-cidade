@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE custoapropria
 class cl_custoapropria { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cc12_sequencial = 0; 
-   var $cc12_custocriteriorateio = 0; 
-   var $cc12_matestoqueinimei = 0; 
-   var $cc12_qtd = 0; 
-   var $cc12_valor = 0; 
+   public $cc12_sequencial = 0; 
+   public $cc12_custocriteriorateio = 0; 
+   public $cc12_matestoqueinimei = 0; 
+   public $cc12_qtd = 0; 
+   public $cc12_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cc12_sequencial = int4 = Código Sequencial 
                  cc12_custocriteriorateio = int4 = Código do Critério 
                  cc12_matestoqueinimei = int4 = Código da movimentacao 
@@ -56,10 +56,10 @@ class cl_custoapropria {
                  cc12_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_custoapropria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("custoapropria"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_custoapropria {
          $this->erro_status = "0";
          return false; 
        }
-       $this->cc12_sequencial = pg_result($result,0,0); 
+       $this->cc12_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from custoapropria_cc12_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cc12_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cc12_sequencial)){
          $this->erro_sql = " Campo cc12_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_custoapropria {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Apropriacao dos custos ($this->cc12_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Apropriacao dos custos já Cadastrado";
@@ -194,14 +194,14 @@ class cl_custoapropria {
      $resaco = $this->sql_record($this->sql_query_file($this->cc12_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13473,'$this->cc12_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2358,13473,'','".AddSlashes(pg_result($resaco,0,'cc12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2358,13474,'','".AddSlashes(pg_result($resaco,0,'cc12_custocriteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2358,13475,'','".AddSlashes(pg_result($resaco,0,'cc12_matestoqueinimei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2358,13476,'','".AddSlashes(pg_result($resaco,0,'cc12_qtd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2358,13477,'','".AddSlashes(pg_result($resaco,0,'cc12_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2358,13473,'','".AddSlashes(pg_fetch_result($resaco,0,'cc12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2358,13474,'','".AddSlashes(pg_fetch_result($resaco,0,'cc12_custocriteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2358,13475,'','".AddSlashes(pg_fetch_result($resaco,0,'cc12_matestoqueinimei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2358,13476,'','".AddSlashes(pg_fetch_result($resaco,0,'cc12_qtd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2358,13477,'','".AddSlashes(pg_fetch_result($resaco,0,'cc12_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_custoapropria {
       $this->atualizacampos();
      $sql = " update custoapropria set ";
      $virgula = "";
-     if(trim($this->cc12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc12_sequencial"])){ 
+     if(trim((string) $this->cc12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc12_sequencial"])){ 
        $sql  .= $virgula." cc12_sequencial = $this->cc12_sequencial ";
        $virgula = ",";
-       if(trim($this->cc12_sequencial) == null ){ 
+       if(trim((string) $this->cc12_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "cc12_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_custoapropria {
          return false;
        }
      }
-     if(trim($this->cc12_custocriteriorateio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc12_custocriteriorateio"])){ 
+     if(trim((string) $this->cc12_custocriteriorateio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc12_custocriteriorateio"])){ 
        $sql  .= $virgula." cc12_custocriteriorateio = $this->cc12_custocriteriorateio ";
        $virgula = ",";
-       if(trim($this->cc12_custocriteriorateio) == null ){ 
+       if(trim((string) $this->cc12_custocriteriorateio) == null ){ 
          $this->erro_sql = " Campo Código do Critério nao Informado.";
          $this->erro_campo = "cc12_custocriteriorateio";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_custoapropria {
          return false;
        }
      }
-     if(trim($this->cc12_matestoqueinimei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc12_matestoqueinimei"])){ 
+     if(trim((string) $this->cc12_matestoqueinimei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc12_matestoqueinimei"])){ 
        $sql  .= $virgula." cc12_matestoqueinimei = $this->cc12_matestoqueinimei ";
        $virgula = ",";
-       if(trim($this->cc12_matestoqueinimei) == null ){ 
+       if(trim((string) $this->cc12_matestoqueinimei) == null ){ 
          $this->erro_sql = " Campo Código da movimentacao nao Informado.";
          $this->erro_campo = "cc12_matestoqueinimei";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_custoapropria {
          return false;
        }
      }
-     if(trim($this->cc12_qtd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc12_qtd"])){ 
+     if(trim((string) $this->cc12_qtd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc12_qtd"])){ 
        $sql  .= $virgula." cc12_qtd = $this->cc12_qtd ";
        $virgula = ",";
-       if(trim($this->cc12_qtd) == null ){ 
+       if(trim((string) $this->cc12_qtd) == null ){ 
          $this->erro_sql = " Campo Quantidade de Itens nao Informado.";
          $this->erro_campo = "cc12_qtd";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_custoapropria {
          return false;
        }
      }
-     if(trim($this->cc12_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc12_valor"])){ 
+     if(trim((string) $this->cc12_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc12_valor"])){ 
        $sql  .= $virgula." cc12_valor = $this->cc12_valor ";
        $virgula = ",";
-       if(trim($this->cc12_valor) == null ){ 
+       if(trim((string) $this->cc12_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "cc12_valor";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_custoapropria {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13473,'$this->cc12_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cc12_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2358,13473,'".AddSlashes(pg_result($resaco,$conresaco,'cc12_sequencial'))."','$this->cc12_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2358,13473,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc12_sequencial'))."','$this->cc12_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cc12_custocriteriorateio"]))
-           $resac = db_query("insert into db_acount values($acount,2358,13474,'".AddSlashes(pg_result($resaco,$conresaco,'cc12_custocriteriorateio'))."','$this->cc12_custocriteriorateio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2358,13474,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc12_custocriteriorateio'))."','$this->cc12_custocriteriorateio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cc12_matestoqueinimei"]))
-           $resac = db_query("insert into db_acount values($acount,2358,13475,'".AddSlashes(pg_result($resaco,$conresaco,'cc12_matestoqueinimei'))."','$this->cc12_matestoqueinimei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2358,13475,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc12_matestoqueinimei'))."','$this->cc12_matestoqueinimei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cc12_qtd"]))
-           $resac = db_query("insert into db_acount values($acount,2358,13476,'".AddSlashes(pg_result($resaco,$conresaco,'cc12_qtd'))."','$this->cc12_qtd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2358,13476,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc12_qtd'))."','$this->cc12_qtd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cc12_valor"]))
-           $resac = db_query("insert into db_acount values($acount,2358,13477,'".AddSlashes(pg_result($resaco,$conresaco,'cc12_valor'))."','$this->cc12_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2358,13477,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc12_valor'))."','$this->cc12_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_custoapropria {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13473,'$cc12_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2358,13473,'','".AddSlashes(pg_result($resaco,$iresaco,'cc12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2358,13474,'','".AddSlashes(pg_result($resaco,$iresaco,'cc12_custocriteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2358,13475,'','".AddSlashes(pg_result($resaco,$iresaco,'cc12_matestoqueinimei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2358,13476,'','".AddSlashes(pg_result($resaco,$iresaco,'cc12_qtd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2358,13477,'','".AddSlashes(pg_result($resaco,$iresaco,'cc12_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2358,13473,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2358,13474,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc12_custocriteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2358,13475,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc12_matestoqueinimei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2358,13476,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc12_qtd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2358,13477,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc12_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from custoapropria
@@ -407,7 +407,7 @@ class cl_custoapropria {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:custoapropria";
@@ -422,7 +422,7 @@ class cl_custoapropria {
    function sql_query ( $cc12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_custoapropria {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -463,7 +463,7 @@ class cl_custoapropria {
    function sql_query_file ( $cc12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,7 +484,7 @@ class cl_custoapropria {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -498,7 +498,7 @@ class cl_custoapropria {
     
     $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_custoapropria {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

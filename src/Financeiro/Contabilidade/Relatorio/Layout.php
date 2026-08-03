@@ -74,7 +74,7 @@ abstract class Layout
     /**
      *
      */
-    private final function inicializarPdf($orientacao)
+    private function inicializarPdf($orientacao)
     {
         $pdf = new PDFDocument($orientacao);
         $pdf->Open();
@@ -105,7 +105,7 @@ abstract class Layout
     /**
      * @return $this
      */
-    private final function montarDescricao()
+    private function montarDescricao()
     {
         $this->pdf->addHeaderDescription(static::HEADER_1);
         $this->pdf->addHeaderDescription(static::HEADER_2);
@@ -122,10 +122,10 @@ abstract class Layout
     /**
      * @return $this
      */
-    private final function montarEnteFederativo()
+    private function montarEnteFederativo()
     {
         $instituicoes = $this->relatorio->getInstituicoes();
-        $instituicoes = is_array($instituicoes) ?: explode(',', $instituicoes);
+        $instituicoes = is_array($instituicoes) ?: explode(',', (string) $instituicoes);
 
         if (count($instituicoes) == 1) {
             $instituicao = array_shift($instituicoes);
@@ -154,7 +154,7 @@ abstract class Layout
     /**
      *
      */
-    private final function montarRodape()
+    private function montarRodape()
     {
         $this->pdf->Ln(5);
 

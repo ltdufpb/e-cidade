@@ -77,7 +77,7 @@ try {
         $oRetorno->sJustificativa = db_utils::fieldsMemory($rsJustificativa, 0)->cc31_justificativa;
       }
 
-      $oRetorno->aNotasLiquidacao = array();
+      $oRetorno->aNotasLiquidacao = [];
       foreach ($oEmpenho->getNotasDeLiquidacao() as $oNota) {
 
         if ($oNota->getValorAnulado() == $oNota->getValorNota()) {
@@ -96,7 +96,7 @@ try {
 
     case "salvarClassificacaoCredor":
 
-      $aClassificacaoObrigatoriaData = array();
+      $aClassificacaoObrigatoriaData = [];
       $oEmpenho = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($oParam->iNumeroEmpenho);
       $oParam->sJustificativa = db_stdClass::db_stripTagsJsonSemEscape($oParam->sJustificativa);
       $oClassificacaoCredor = ListaClassificacaoCredorRepository::getPorCodigo($oParam->iClassificacao);
@@ -130,7 +130,7 @@ try {
 
     case "pesquisar":
 
-      $aWhere = array();
+      $aWhere = [];
       $aWhere[] = "e60_instit = {$iInstituicaoSessao}";
       if (!empty($oParam->filtros->sequencial_empenho)) {
         $aWhere[] = "e60_numemp >= {$oParam->filtros->sequencial_empenho}";
@@ -157,12 +157,12 @@ try {
         $aWhere[] = " (e60_vlremp - e60_vlranu) = e60_vlrpag ";
       }
 
-      $aCampos = array(
+      $aCampos = [
         'e60_numemp as sequencial',
         "e60_codemp||'/'||e60_anousu as numero",
         'z01_nome as credor',
         'cc30_descricao as classificacao'
-      );
+      ];
       $oDaoEmpenho       = new cl_empempenho();
       $sSqlClassificacao = $oDaoEmpenho->sql_query_classificacao_credor(implode(',',$aCampos), implode(' and ', $aWhere) . " order by sequencial");
       $rsBuscaEmpenhos   = $oDaoEmpenho->sql_record($sSqlClassificacao);
@@ -171,13 +171,13 @@ try {
         throw new Exception("Nenhum empenho encontrado para os filtros informados.");
       }
 
-      $aEmpenhosRetorno = array();
+      $aEmpenhosRetorno = [];
       for ($iRow = 0; $iRow < $oDaoEmpenho->numrows; $iRow++) {
 
         $oStdEmpenho = db_utils::fieldsMemory($rsBuscaEmpenhos, $iRow);
-        $oStdEmpenho->numero = urlencode($oStdEmpenho->numero);
-        $oStdEmpenho->credor = urlencode($oStdEmpenho->credor);
-        $oStdEmpenho->classificacao = urlencode($oStdEmpenho->classificacao);
+        $oStdEmpenho->numero = urlencode((string) $oStdEmpenho->numero);
+        $oStdEmpenho->credor = urlencode((string) $oStdEmpenho->credor);
+        $oStdEmpenho->classificacao = urlencode((string) $oStdEmpenho->classificacao);
         $aEmpenhosRetorno[] = $oStdEmpenho;
       }
       $oRetorno->empenhos = $aEmpenhosRetorno;

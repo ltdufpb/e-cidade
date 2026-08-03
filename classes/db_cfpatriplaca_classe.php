@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE cfpatriplaca
 class cl_cfpatriplaca { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null; 
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null; 
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t07_instit = 0; 
-   var $t07_confplaca = 0; 
-   var $t07_digseqplaca = 0; 
-   var $t07_sequencial = 0; 
-   var $t07_obrigplaca = 'f'; 
+   public $t07_instit = 0; 
+   public $t07_confplaca = 0; 
+   public $t07_digseqplaca = 0; 
+   public $t07_sequencial = 0; 
+   public $t07_obrigplaca = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t07_instit = int4 = Instituição 
                  t07_confplaca = int4 = Tipo de configuração da placa 
                  t07_digseqplaca = int4 = Quant. digitos da seq. da placa 
@@ -56,10 +56,10 @@ class cl_cfpatriplaca {
                  t07_obrigplaca = bool = Obrigar informar placa 
                  ";
    //funcao construtor da classe 
-   function cl_cfpatriplaca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfpatriplaca"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,7 +141,7 @@ class cl_cfpatriplaca {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parâmetro de placas ($this->t07_instit) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parâmetro de placas já Cadastrado";
@@ -165,14 +165,14 @@ class cl_cfpatriplaca {
      $resaco = $this->sql_record($this->sql_query_file($this->t07_instit));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9794,'$this->t07_instit','I')");
-       $resac = db_query("insert into db_acount values($acount,1681,9794,'','".AddSlashes(pg_result($resaco,0,'t07_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1681,9795,'','".AddSlashes(pg_result($resaco,0,'t07_confplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1681,9796,'','".AddSlashes(pg_result($resaco,0,'t07_digseqplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1681,9797,'','".AddSlashes(pg_result($resaco,0,'t07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1681,10154,'','".AddSlashes(pg_result($resaco,0,'t07_obrigplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1681,9794,'','".AddSlashes(pg_fetch_result($resaco,0,'t07_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1681,9795,'','".AddSlashes(pg_fetch_result($resaco,0,'t07_confplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1681,9796,'','".AddSlashes(pg_fetch_result($resaco,0,'t07_digseqplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1681,9797,'','".AddSlashes(pg_fetch_result($resaco,0,'t07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1681,10154,'','".AddSlashes(pg_fetch_result($resaco,0,'t07_obrigplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -181,10 +181,10 @@ class cl_cfpatriplaca {
       $this->atualizacampos();
      $sql = " update cfpatriplaca set ";
      $virgula = "";
-     if(trim($this->t07_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t07_instit"])){ 
+     if(trim((string) $this->t07_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t07_instit"])){ 
        $sql  .= $virgula." t07_instit = $this->t07_instit ";
        $virgula = ",";
-       if(trim($this->t07_instit) == null ){ 
+       if(trim((string) $this->t07_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "t07_instit";
          $this->erro_banco = "";
@@ -194,10 +194,10 @@ class cl_cfpatriplaca {
          return false;
        }
      }
-     if(trim($this->t07_confplaca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t07_confplaca"])){ 
+     if(trim((string) $this->t07_confplaca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t07_confplaca"])){ 
        $sql  .= $virgula." t07_confplaca = $this->t07_confplaca ";
        $virgula = ",";
-       if(trim($this->t07_confplaca) == null ){ 
+       if(trim((string) $this->t07_confplaca) == null ){ 
          $this->erro_sql = " Campo Tipo de configuração da placa nao Informado.";
          $this->erro_campo = "t07_confplaca";
          $this->erro_banco = "";
@@ -207,10 +207,10 @@ class cl_cfpatriplaca {
          return false;
        }
      }
-     if(trim($this->t07_digseqplaca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t07_digseqplaca"])){ 
+     if(trim((string) $this->t07_digseqplaca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t07_digseqplaca"])){ 
        $sql  .= $virgula." t07_digseqplaca = $this->t07_digseqplaca ";
        $virgula = ",";
-       if(trim($this->t07_digseqplaca) == null ){ 
+       if(trim((string) $this->t07_digseqplaca) == null ){ 
          $this->erro_sql = " Campo Quant. digitos da seq. da placa nao Informado.";
          $this->erro_campo = "t07_digseqplaca";
          $this->erro_banco = "";
@@ -220,10 +220,10 @@ class cl_cfpatriplaca {
          return false;
        }
      }
-     if(trim($this->t07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t07_sequencial"])){ 
+     if(trim((string) $this->t07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t07_sequencial"])){ 
        $sql  .= $virgula." t07_sequencial = $this->t07_sequencial ";
        $virgula = ",";
-       if(trim($this->t07_sequencial) == null ){ 
+       if(trim((string) $this->t07_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial da placa nao Informado.";
          $this->erro_campo = "t07_sequencial";
          $this->erro_banco = "";
@@ -233,7 +233,7 @@ class cl_cfpatriplaca {
          return false;
        }
      }
-     if(trim($this->t07_obrigplaca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t07_obrigplaca"])){ 
+     if(trim((string) $this->t07_obrigplaca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t07_obrigplaca"])){ 
        $sql  .= $virgula." t07_obrigplaca = '$this->t07_obrigplaca' ";
        $virgula = ",";
      }
@@ -245,19 +245,19 @@ class cl_cfpatriplaca {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9794,'$this->t07_instit','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t07_instit"]))
-           $resac = db_query("insert into db_acount values($acount,1681,9794,'".AddSlashes(pg_result($resaco,$conresaco,'t07_instit'))."','$this->t07_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1681,9794,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t07_instit'))."','$this->t07_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t07_confplaca"]))
-           $resac = db_query("insert into db_acount values($acount,1681,9795,'".AddSlashes(pg_result($resaco,$conresaco,'t07_confplaca'))."','$this->t07_confplaca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1681,9795,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t07_confplaca'))."','$this->t07_confplaca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t07_digseqplaca"]))
-           $resac = db_query("insert into db_acount values($acount,1681,9796,'".AddSlashes(pg_result($resaco,$conresaco,'t07_digseqplaca'))."','$this->t07_digseqplaca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1681,9796,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t07_digseqplaca'))."','$this->t07_digseqplaca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t07_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1681,9797,'".AddSlashes(pg_result($resaco,$conresaco,'t07_sequencial'))."','$this->t07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1681,9797,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t07_sequencial'))."','$this->t07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t07_obrigplaca"]))
-           $resac = db_query("insert into db_acount values($acount,1681,10154,'".AddSlashes(pg_result($resaco,$conresaco,'t07_obrigplaca'))."','$this->t07_obrigplaca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1681,10154,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t07_obrigplaca'))."','$this->t07_obrigplaca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -302,14 +302,14 @@ class cl_cfpatriplaca {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9794,'$t07_instit','E')");
-         $resac = db_query("insert into db_acount values($acount,1681,9794,'','".AddSlashes(pg_result($resaco,$iresaco,'t07_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1681,9795,'','".AddSlashes(pg_result($resaco,$iresaco,'t07_confplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1681,9796,'','".AddSlashes(pg_result($resaco,$iresaco,'t07_digseqplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1681,9797,'','".AddSlashes(pg_result($resaco,$iresaco,'t07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1681,10154,'','".AddSlashes(pg_result($resaco,$iresaco,'t07_obrigplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1681,9794,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t07_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1681,9795,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t07_confplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1681,9796,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t07_digseqplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1681,9797,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1681,10154,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t07_obrigplaca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cfpatriplaca
@@ -369,7 +369,7 @@ class cl_cfpatriplaca {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cfpatriplaca";
@@ -405,7 +405,7 @@ class cl_cfpatriplaca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_cfpatriplaca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -478,7 +478,7 @@ class cl_cfpatriplaca {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++) {
         

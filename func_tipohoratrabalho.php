@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipohoratrabalho_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipohoratrabalho = new cl_tipohoratrabalho;
 $cltipohoratrabalho->rotulo->label("ed128_codigo");
 $cltipohoratrabalho->rotulo->label("ed128_descricao");
@@ -52,9 +52,9 @@ $cltipohoratrabalho->rotulo->label("ed128_descricao");
         }else{
            $sql = $cltipohoratrabalho->sql_query("",$campos,"ed128_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed128_descricao)){
-          $repassa = array("chave_ed128_codigo"=>$chave_ed128_codigo,"chave_ed128_descricao"=>$chave_ed128_descricao);
+          $repassa = ["chave_ed128_codigo"=>$chave_ed128_codigo,"chave_ed128_descricao"=>$chave_ed128_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

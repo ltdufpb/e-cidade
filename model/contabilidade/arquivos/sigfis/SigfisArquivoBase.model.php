@@ -41,7 +41,7 @@ abstract class SigfisArquivoBase {
   protected $sNomeArquivo;
   protected $iCodigoLayout;
   protected $sCodigoTribunal;
-  protected $aDados = array();
+  protected $aDados = [];
   
   protected $rsLogger;
   function __construct() {

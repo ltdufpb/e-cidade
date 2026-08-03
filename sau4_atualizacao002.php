@@ -49,7 +49,7 @@ function funcSubgrupo($sOrigem, $sCompetencia) {
     $sCampo2    = strtoupper(TiraAcento(trim(str_replace("'", '', substr($aFile[$iCont], 4, 100))))); // nome
     $sCampo3    = trim(substr($aFile[$iCont], 104, 4)); // ano
     $sCampo4    = trim(substr($aFile[$iCont], 108, 2)); // mês
-    
+
     /* Bloco para obter o grupo */
     $sSql       = $oDaoSauGrupo->sql_query_file(null, 'sd60_i_codigo', null, "sd60_c_grupo = '".
                                                 trim(substr($aFile[$iCont], 0, 2))."'".
@@ -114,7 +114,7 @@ function funcFormaOrganizacao($sOrigem, $sCompetencia) {
     $sCampo2    = strtoupper(TiraAcento(trim(str_replace("'", '', substr($aFile[$iCont], 6, 100))))); // nome
     $sCampo3    = trim(substr($aFile[$iCont], 106, 4)); // ano
     $sCampo4    = trim(substr($aFile[$iCont], 110, 2)); // mês
-    
+
     /* Bloco para obter o grupo */
     $sSql       = $oDaoSauGrupo->sql_query_file(null, 'sd60_i_codigo', null, "sd60_c_grupo = '".
                                                 trim(substr($aFile[$iCont], 0, 2))."'".
@@ -236,7 +236,7 @@ function funcCid($sOrigem, $sCompetencia) {
     $sCampo2 = strtoupper(TiraAcento(trim(str_replace("'", '', substr($aFile[$iCont], 4, 100)))));
     $sCampo3 = trim(substr($aFile[$iCont], 104, 1));
     $sCampo4 = trim(substr($aFile[$iCont], 105, 1));
-    
+
     // verifico se o CID ainda não foi incluído
     $sSql    = $oDaoSauCid->sql_query_file(null, 'sd70_i_codigo', null, " sd70_c_cid = '$sCampo1'");
     $oDaoSauCid->sql_record($sSql);
@@ -275,8 +275,8 @@ function funcGrupoHabilitacao($sOrigem, $sCompetencia) {
   $oDaoSauHabilitacao      = db_utils::getdao('sau_habilitacao');
   $oDaoSauGrupoHabilitacao = db_utils::getdao('sau_grupohabilitacao');
 
-  $iAno                    = substr($sCompetencia, 0, 4);
-  $iMes                    = substr($sCompetencia, 4, 2);
+  $iAno                    = substr((string) $sCompetencia, 0, 4);
+  $iMes                    = substr((string) $sCompetencia, 4, 2);
   
   $aFile                   = file($sOrigem);
   $iLinhas                 = count($aFile);
@@ -431,14 +431,14 @@ function funcProcedimento($sOrigem, $sCompetencia) {
                                                            " and sd65_i_anocomp = $sCampo14 ".
                                                            " and sd65_i_mescomp = $sCampo15 "
                                                           );
-                                                           
+
     $rsSauFinanc   = $oDaoSauFinanciamento->sql_record($sSql);
     if ($oDaoSauFinanciamento->erro_status == '0') {
       return false;
     }
 
     $iFinanciamento = db_utils::fieldsmemory($rsSauFinanc, 0)->sd65_i_codigo;
-    
+
 
     /* Bloco para obter o tipo de rúbrica */
     if (trim(substr($aFile[$iCont], 314, 6)) == "") {
@@ -460,7 +460,7 @@ function funcProcedimento($sOrigem, $sCompetencia) {
       $iRubrica                                = db_utils::fieldsmemory($rsSauRubrica, 0)->sd64_i_codigo;
 
     }
-    
+
     /* Verifico se o registro já foi incluído. */
     $sSql = $oDaoSauProcedimento->sql_query_file(null, 'sd63_i_codigo', '', "sd63_c_procedimento = '$sCampo1' ".
                                                  " and sd63_i_anocomp = $sCampo14 and sd63_i_mescomp = $sCampo15"
@@ -480,14 +480,14 @@ function funcProcedimento($sOrigem, $sCompetencia) {
     $oDaoSauProcedimento->sd63_i_pontos        = $sCampo6;
     $oDaoSauProcedimento->sd63_i_idademin      = $sCampo7;
     $oDaoSauProcedimento->sd63_i_idademax      = $sCampo8;
-    
+
     $fValor                                    = $sCampo9/100;  
     $oDaoSauProcedimento->sd63_f_sh            = '0';  
     $fValor                                    = $sCampo10/100;
     $oDaoSauProcedimento->sd63_f_sa            = number_format($fValor,2,'.','');  
     $fValor                                    = $sCampo11/100;
     $oDaoSauProcedimento->sd63_f_sp            = number_format($fValor,2,'.','');
-      
+
     $oDaoSauProcedimento->sd63_i_financiamento = $iFinanciamento;  
     $oDaoSauProcedimento->sd63_i_rubrica       = $iRubrica;  
     $oDaoSauProcedimento->sd63_i_anocomp       = $sCampo14;  
@@ -525,7 +525,7 @@ function funcProcCid($sOrigem, $sCompetencia) {
     $sCampo1   = trim(substr($aFile[$iCont], 14, 1)); //principal
     $sCampo2   = trim(substr($aFile[$iCont], 15, 4)); //ano comp
     $sCampo3   = trim(substr($aFile[$iCont], 19, 2)); //mes comp
-   
+
     /* Bloco para obter o procedimento */
     $sSql      = $oDaoSauProcedimento->sql_query_file(null, 'sd63_i_codigo', null, "sd63_c_procedimento = '".
                                                       trim(substr($aFile[$iCont], 0, 10))."'".
@@ -600,7 +600,7 @@ function funcProcDetalhe($sOrigem, $sCompetencia) {
 
     $sCampo2   = trim(substr($aFile[$iCont], 13, 4)); //ano comp
     $sCampo3   = trim(substr($aFile[$iCont], 17, 2)); //mes comp
- 
+
     /* Bloco para obter o procedimento */
     $sSql      = $oDaoSauProcedimento->sql_query_file(null, 'sd63_i_codigo', null, "sd63_c_procedimento = '".
                                                       trim(substr($aFile[$iCont], 0, 10))."'".
@@ -638,7 +638,7 @@ function funcProcDetalhe($sOrigem, $sCompetencia) {
     if ($oDaoSauProcDetalhe->numrows > 0) { // Se já foi incluído, vou para o próximo registro
       continue;
     }
-   
+
     $oDaoSauProcDetalhe->sd74_i_procedimento = $iProcedimento;
     $oDaoSauProcDetalhe->sd74_i_detalhe      = $iDetalhe;
     $oDaoSauProcDetalhe->sd74_i_anocomp      = $sCampo2;
@@ -679,7 +679,7 @@ function funcProcIncremento($sOrigem, $sCompetencia) {
     $sCampo3   = trim(substr($aFile[$iCont], 28, 7));
     $sCampo4   = trim(substr($aFile[$iCont], 35, 4)); //ano comp
     $sCampo5   = trim(substr($aFile[$iCont], 39, 2)); //mes comp
- 
+
     /* Bloco para obter o procedimento */
     $sSql      = $oDaoSauProcedimento->sql_query_file(null, 'sd63_i_codigo', null, "sd63_c_procedimento = '".
                                                       trim(substr($aFile[$iCont], 0, 10))."'".
@@ -717,7 +717,7 @@ function funcProcIncremento($sOrigem, $sCompetencia) {
     if ($oDaoSauProcIncremento->numrows > 0) { // Se já foi incluído, vou para o próximo registro
       continue;
     }
-    
+
     $oDaoSauProcIncremento->sd79_i_procedimento = $iProcedimento;
     $oDaoSauProcIncremento->sd79_i_habilitacao  = $iHabilitacao;
     $oDaoSauProcIncremento->sd79_f_sh           = $sCampo1;
@@ -874,7 +874,7 @@ function funcProcModalidade($sOrigem, $sCompetencia) {
     if ($oDaoSauProcModalidade->numrows > 0) { // Se já foi incluído, vou para o próximo registro
       continue;
     }
- 
+
     $oDaoSauProcModalidade->sd83_i_procedimento = $iProcedimento;
     $oDaoSauProcModalidade->sd83_i_modalidade   = $iModalidade;
     $oDaoSauProcModalidade->sd83_i_anocomp      = $sCampo1;
@@ -949,7 +949,7 @@ function funcProcOrigem($sOrigem, $sCompetencia) {
     if ($oDaoSauProcOrigem->numrows > 0) { // Se já foi incluído, vou para o próximo registro
       continue;
     }
-    
+
     $oDaoSauProcOrigem->sd95_i_procedimento = $iProcedimento;
     $oDaoSauProcOrigem->sd95_i_origem       = $iOrigem;
     $oDaoSauProcOrigem->sd95_i_anocomp      = $sCampo1;
@@ -1064,7 +1064,7 @@ function funcServClassificacao($sOrigem, $sCompetencia) {
      $sCampo2 = strtoupper(TiraAcento(trim(str_replace("'", '', substr($aFile[$iCont], 6, 150)))));
      $sCampo3 = trim(substr($aFile[$iCont], 156, 4));
      $sCampo4 = trim(substr($aFile[$iCont], 160, 2));
- 
+
     /* Bloco para obter o servico */
     $sSql     = $oDaoSauServico->sql_query_file(null, 'sd86_i_codigo', null, "sd86_c_servico = '".
                                                 trim(substr($aFile[$iCont], 0, 3))."'".
@@ -1128,7 +1128,7 @@ function funcProcServico($sOrigem, $sCompetencia) {
 
     $sCampo1   = trim(substr($aFile[$iCont], 16, 4));
     $sCampo2   = trim(substr($aFile[$iCont], 20, 2));
-     
+
     /* Bloco para obter o procedimento */
     $sSql      = $oDaoSauProcedimento->sql_query_file(null, 'sd63_i_codigo', null, "sd63_c_procedimento = '".
                                                       trim(substr($aFile[$iCont], 0, 10))."'".
@@ -1270,7 +1270,7 @@ function funcSiasihTipoproc($sOrigem, $sCompetencia) {
     if ($oDaoSauSiaSih->numrows > 0) { // Se já foi incluído, vou para o próximo registro
       continue;
     }
- 
+
     $oDaoSauSiaSih->sd92_c_siasih   = $sCampo1;
     $oDaoSauSiaSih->sd92_c_nome     = $sCampo2;
     $oDaoSauSiaSih->sd92_i_tipoproc = $iTipoProc;
@@ -1386,15 +1386,15 @@ function funcProcCbo($sOrigem, $sCompetencia ) {
   $oDaoRhcbo           = db_utils::getdao('rhcbo');
   $oDaoSauProcCbo      = db_utils::getdao('sau_proccbo');
 
-  $aFile               = file(dirname($sOrigem).'/rl_procedimento_ocupacao.txt');
-  $aFile2              = file(dirname($sOrigem).'/tb_ocupacao.txt');
+  $aFile               = file(dirname((string) $sOrigem).'/rl_procedimento_ocupacao.txt');
+  $aFile2              = file(dirname((string) $sOrigem).'/tb_ocupacao.txt');
   $iLinhas             = count($aFile);
   
   for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
 
     $sCampo1   = trim(substr($aFile[$iCont], 16, 4));
     $sCampo2   = trim(substr($aFile[$iCont], 20, 2));
- 
+
     /* Bloco para obter o procedimento */
     $sSql      = $oDaoSauProcedimento->sql_query_file(null, 'sd63_i_codigo', null, "sd63_c_procedimento = '".
                                                       trim(substr($aFile[$iCont], 0, 10))."'".
@@ -1418,7 +1418,7 @@ function funcProcCbo($sOrigem, $sCompetencia ) {
 
     $rsRhcbo       = $oDaoRhcbo->sql_record($sSql);
     if ($oDaoRhcbo->numrows == 0) {
-      
+
       $iLinhas2 = count($aFile2);
       for ($iCont2 = 0; $iCont2 < $iLinhas2; $iCont2++) {
 
@@ -1703,7 +1703,7 @@ function funcProcRestricao($sOrigem, $sCompetencia) {
 
     $iProcCompativel = db_utils::fieldsmemory($rsSauProc, 0)->sd63_i_codigo;
 
- 
+
     /* Bloco para obter o registro principal */
     $sSql            = $oDaoSauRegistro->sql_query_file(null, 'sd84_i_codigo', null, " sd84_c_registro = '".
                                                         trim(substr($aFile[$iCont], 20, 2))."'".
@@ -1781,7 +1781,7 @@ function funcProcHabilitacao($sOrigem, $sCompetencia) {
   $oDaoSauProcHabilitacao  = db_utils::getdao('sau_prochabilitacao');
   
   // Insere na tabela sau_grupohabilitacao antes
-  $aCaminho                = explode('/', $sOrigem);
+  $aCaminho                = explode('/', (string) $sOrigem);
   if (!funcGrupoHabilitacao($aCaminho[0].'/'.$aCaminho[1].'/tb_grupo_habilitacao.txt', $sCompetencia)) {
     return false;
   }
@@ -1834,12 +1834,12 @@ function funcProcHabilitacao($sOrigem, $sCompetencia) {
                                                                 trim(substr($aFile[$iCont], 14, 4))."'".
                                                                 " and sd76_i_habilitacao = ".$iHabilitacao
                                                                );
-     
+
       $rsSauGrupoHab = $oDaoSauGrupoHabilitacao->sql_record($sSql);
       if ($oDaoSauGrupoHabilitacao->erro_status == '0') {
         return false;
       }
-     
+
       $iGrupo = db_utils::fieldsmemory($rsSauGrupoHab, 0)->sd76_i_codigo;
 
     }

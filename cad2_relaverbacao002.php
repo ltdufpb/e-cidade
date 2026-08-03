@@ -174,9 +174,9 @@ $iTotalMatriculas = 0;
 
 $pdf->setX(10);
 
-$aAverbacoesProcessadas   = array();
-$aAdquirentes             = array();
-$aTransmitentes           = array();
+$aAverbacoesProcessadas   = [];
+$aAdquirentes             = [];
+$aTransmitentes           = [];
 
 $pdf->SetFont('Arial', 'B', $iTamamanhoFonte);
 $pdf->Cell(30, 4, "Matrícula",          "LRBT", 0, "C", 0);

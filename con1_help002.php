@@ -43,16 +43,16 @@ if($result==false || $cldb_modulos->numrows ==0){
 }
 db_fieldsmemory($result,0,0);
 
-if( file_exists("manuais/".strtolower($nome_manual)."/index.php") ){
+if( file_exists("manuais/".strtolower((string) $nome_manual)."/index.php") ){
 
-  include(modification("manuais/".strtolower($nome_manual))."/index.php");
+  include(modification("manuais/".strtolower((string) $nome_manual))."/index.php");
 
   echo '<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>';
 
   echo '<script>
   
   function js_alerta(){
-    js_OpenJanelaIframe("parent.parent","db_iframe_imagem","manuais/index.php?imagem="+this.src+"&modulo='.strtolower($nome_manual).'","Pesquisa",true);
+    js_OpenJanelaIframe("parent.parent","db_iframe_imagem","manuais/index.php?imagem="+this.src+"&modulo='.strtolower((string) $nome_manual).'","Pesquisa",true);
   }
         numero = document.images.length;
         for( i=0; i<numero;i++){

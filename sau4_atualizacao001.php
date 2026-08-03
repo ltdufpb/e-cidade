@@ -37,7 +37,7 @@ require_once(modification("libs/db_stdlibwebseller.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("sau4_atualizacao002.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoSauAtualiza   = db_utils::getdao('sau_atualiza');
 $oDaoSauFechamento = db_utils::getdao('sau_fechamento');
@@ -443,7 +443,7 @@ function iniciabarra(linhas) {
 
 function delTree($dir) {
 
-    $files = array_diff(scandir($dir), array('.','..'));
+    $files = array_diff(scandir($dir), ['.','..']);
 
     foreach ($files as $file) {
         (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
@@ -455,7 +455,7 @@ function delTree($dir) {
 //Valida botão UPLOAD
 if (isset($upload)) {
   
-  $sDestino = "tmp/".substr($_FILES['origem']['name'], 0, 22);
+  $sDestino = "tmp/".substr((string) $_FILES['origem']['name'], 0, 22);
   delTree($sDestino);
   @mkdir($sDestino);
 
@@ -564,7 +564,7 @@ if (isset($processar)) {
     $oDaoSauAtualiza->s100_i_mescomp = $sd97_i_compmes;
     $oDaoSauAtualiza->s100_i_anocomp = $sd97_i_compano;
     $oDaoSauAtualiza->incluir(null);
-    
+
     if ($oDaoSauAtualiza->erro_status == '0') {
 
       $oDaoSauAtualiza->erro(true, false);
@@ -573,208 +573,208 @@ if (isset($processar)) {
     } else {
 
       $pArqConf = fopen("tmp/conferencia_$sd97_i_compmes$sd97_i_compano", 'w');
-  
+
       //Tabelas sem competencia, podem gerar erro ja q esta cadastrado    
-      $aVet     = explode('|', $str);
-      $aTabela  = array();
+      $aVet     = explode('|', (string) $str);
+      $aTabela  = [];
 
       if ($aVet[0] == '1') {
 
-        $aTabela[] = array("funcao" => "", "arquivo" => "tb_detalhe", "tabela" => "sau_detalhe", 
+        $aTabela[] = ["funcao" => "", "arquivo" => "tb_detalhe", "tabela" => "sau_detalhe", 
                            "nextval" => "nextval('sau_detalhe_sd73_i_codigo_seq')", 
                            "campos" => "sd73_i_codigo, sd73_c_detalhe, sd73_c_nome, sd73_i_anocomp, sd73_i_mescomp"
-                          );
+                          ];
       }
       if ($aVet[1] == '1') {;
 
-        $aTabela[] = array("funcao" => "", "arquivo" => "tb_financiamento", "tabela" => "sau_financiamento", 
+        $aTabela[] = ["funcao" => "", "arquivo" => "tb_financiamento", "tabela" => "sau_financiamento", 
                            "nextval" => "nextval('sau_financiamento_sd65_i_codigo_seq')", 
                            "campos" => "sd65_i_codigo, sd65_c_financiamento, sd65_c_nome,".
                            " sd65_i_anocomp, sd65_i_mescomp"
-                          );
+                          ];
 
       }
       if ($aVet[2] == '1') {
 
-        $aTabela[] = array("funcao" => "", "arquivo" => "tb_grupo", "tabela" => "sau_grupo", 
+        $aTabela[] = ["funcao" => "", "arquivo" => "tb_grupo", "tabela" => "sau_grupo", 
                            "nextval" => "nextval('sau_grupo_sd60_i_codigo_seq')", 
                            "campos" => "sd60_i_codigo, sd60_c_grupo, sd60_c_nome, sd60_i_anocomp, sd60_i_mescomp"
-                          );
+                          ];
 
       }
       if ($aVet[3] == '1') {
 
-        $aTabela[] = array("funcao" => "", "arquivo" => "tb_habilitacao", "tabela" => "sau_habilitacao", 
+        $aTabela[] = ["funcao" => "", "arquivo" => "tb_habilitacao", "tabela" => "sau_habilitacao", 
                            "nextval" => "nextval('sau_habilitacao_sd75_i_codigo_seq')", 
                            "campos" => "sd75_i_codigo, sd75_c_habilitacao, sd75_c_nome, sd75_i_anocomp, sd75_i_mescomp"
-                          );
+                          ];
 
       }
       if ($aVet[4] == '1') {
 
-        $aTabela[] = array("funcao" => "", "arquivo" => "tb_modalidade", "tabela" => "sau_modalidade", 
+        $aTabela[] = ["funcao" => "", "arquivo" => "tb_modalidade", "tabela" => "sau_modalidade", 
                            "nextval" => "nextval('sau_modalidade_sd82_i_codigo_seq')", 
                            "campos" => "sd82_i_codigo, sd82_c_modalidade, sd82_c_nome, sd82_i_anocomp, sd82_i_mescomp"
-                          );
+                          ];
 
       }
       if ($aVet[5] == '1') {
 
-        $aTabela[] = array("funcao" => "", "arquivo" => "tb_registro", "tabela" => "sau_registro", 
+        $aTabela[] = ["funcao" => "", "arquivo" => "tb_registro", "tabela" => "sau_registro", 
                            "nextval" => "nextval('sau_registro_sd84_i_codigo_seq')", 
                            "campos" => "sd84_i_codigo, sd84_c_registro, sd84_c_nome, sd84_i_anocomp, sd84_i_mescomp"
-                          );
+                          ];
 
       }
       if ($aVet[6] == '1') {
 
-        $aTabela[] = array("funcao" => "", "arquivo" => "tb_rubrica", "tabela" => "sau_rubrica", 
+        $aTabela[] = ["funcao" => "", "arquivo" => "tb_rubrica", "tabela" => "sau_rubrica", 
                            "nextval" => "nextval('sau_rubrica_sd64_i_codigo_seq')", 
                            "campos" => "sd64_i_codigo, sd64_c_rubrica, sd64_c_nome, sd64_i_anocomp, sd64_i_mescomp"
-                          );
+                          ];
 
       }
       if ($aVet[7] == '1') {
 
-        $aTabela[] = array("funcao" => "", "arquivo" => "tb_servico", "tabela" => "sau_servico", 
+        $aTabela[] = ["funcao" => "", "arquivo" => "tb_servico", "tabela" => "sau_servico", 
                            "nextval" => "nextval('sau_servico_sd86_i_codigo_seq')", 
                            "campos" => "sd86_i_codigo, sd86_c_servico, sd86_c_nome, sd86_i_anocomp, sd86_i_mescomp"
-                          );
+                          ];
 
       }
       if ($aVet[8] == '1') {
 
-        $aTabela[] = array("funcao" => "", "arquivo" => "tb_tipo_leito", "tabela" => "sau_tipoleito", 
+        $aTabela[] = ["funcao" => "", "arquivo" => "tb_tipo_leito", "tabela" => "sau_tipoleito", 
                            "nextval" => "nextval('sau_tipoleito_sd80_i_codigo_seq')", 
                            "campos" => "sd80_i_codigo, sd80_c_leito, sd80_c_nome, sd80_i_anocomp, sd80_i_mescomp"
-                          );
+                          ];
 
       }
       if ($aVet[9] == '1') {
-        $aTabela[] = array("funcao" => "funcSubgrupo", "arquivo" => "tb_sub_grupo", "tabela" => "sau_subgrupo");
+        $aTabela[] = ["funcao" => "funcSubgrupo", "arquivo" => "tb_sub_grupo", "tabela" => "sau_subgrupo"];
       }
       if ($aVet[10] == '1') {
 
-        $aTabela[] = array("funcao" => "funcFormaOrganizacao", "arquivo" => "tb_forma_organizacao", 
+        $aTabela[] = ["funcao" => "funcFormaOrganizacao", "arquivo" => "tb_forma_organizacao", 
                            "tabela" => "sau_formaorganizacao", 
-                          );
+                          ];
 
       }
       if ($aVet[11] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcedimento", "arquivo" => "tb_procedimento", 
+        $aTabela[] = ["funcao" => "funcProcedimento", "arquivo" => "tb_procedimento", 
                            "tabela" => "sau_procedimento"
-                          );
+                          ];
 
       }         
       if ($aVet[27] == '1') {
-        $aTabela[] = array("funcao" => "funcCid", "arquivo" => "tb_cid", "tabela" => "sau_cid");
+        $aTabela[] = ["funcao" => "funcCid", "arquivo" => "tb_cid", "tabela" => "sau_cid"];
       }
       if ($aVet[21] == '1') {
-        $aTabela[] = array("funcao" => "funcSiasihTipoproc", "arquivo" => "tb_sia_sih", "tabela" => "sau_siasih");
+        $aTabela[] = ["funcao" => "funcSiasihTipoproc", "arquivo" => "tb_sia_sih", "tabela" => "sau_siasih"];
       }
       if ($aVet[19] == '1') {
 
-        $aTabela[] = array("funcao" => "funcServClassificacao", "arquivo" => "tb_servico_classificacao", 
+        $aTabela[] = ["funcao" => "funcServClassificacao", "arquivo" => "tb_servico_classificacao", 
                            "tabela" => "sau_servclassificacao"
-                          );
+                          ];
 
       }
 
       if ($aVet[12] == '1') {
-        $aTabela[] = array("funcao" => "funcProcCid", "arquivo" => "rl_procedimento_cid", "tabela" => "sau_proccid");
+        $aTabela[] = ["funcao" => "funcProcCid", "arquivo" => "rl_procedimento_cid", "tabela" => "sau_proccid"];
       }
       if ($aVet[13] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcDetalhe", "arquivo" => "rl_procedimento_detalhe", 
-                           "tabela" => "sau_procdetalhe");
+        $aTabela[] = ["funcao" => "funcProcDetalhe", "arquivo" => "rl_procedimento_detalhe", 
+                           "tabela" => "sau_procdetalhe"];
 
       }
       if ($aVet[14] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcIncremento", "arquivo" => "rl_procedimento_incremento", 
+        $aTabela[] = ["funcao" => "funcProcIncremento", "arquivo" => "rl_procedimento_incremento", 
                            "tabela" => "sau_procincremento"
-                          );
+                          ];
 
       }
       if ($aVet[15] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcLeito", "arquivo" => "rl_procedimento_leito", 
+        $aTabela[] = ["funcao" => "funcProcLeito", "arquivo" => "rl_procedimento_leito", 
                            "tabela" => "sau_procleito"
-                          );
+                          ];
 
       }
       if ($aVet[16] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcModalidade", "arquivo" => "rl_procedimento_modalidade", 
+        $aTabela[] = ["funcao" => "funcProcModalidade", "arquivo" => "rl_procedimento_modalidade", 
                            "tabela" => "sau_procmodalidade"
-                          );
+                          ];
 
       }
       if ($aVet[17] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcOrigem", "arquivo" => "rl_procedimento_origem", 
+        $aTabela[] = ["funcao" => "funcProcOrigem", "arquivo" => "rl_procedimento_origem", 
                            "tabela" => "sau_procorigem"
-                          );
+                          ];
 
       }
       if ($aVet[18] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcRegistro", "arquivo" => "rl_procedimento_registro", 
+        $aTabela[] = ["funcao" => "funcProcRegistro", "arquivo" => "rl_procedimento_registro", 
                            "tabela" => "sau_procregistro"
-                          );
+                          ];
       }
       if ($aVet[20] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcServico", "arquivo" => "rl_procedimento_servico", 
+        $aTabela[] = ["funcao" => "funcProcServico", "arquivo" => "rl_procedimento_servico", 
                            "tabela" => "sau_procservico"
-                          );
+                          ];
 
       }
       if ($aVet[22] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcSiasih", "arquivo" => "rl_procedimento_sia_sih", 
+        $aTabela[] = ["funcao" => "funcProcSiasih", "arquivo" => "rl_procedimento_sia_sih", 
                            "tabela" => "sau_procsiasih"
-                          );
+                          ];
       }
       if ($aVet[23] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcCbo", "arquivo" => "rl_procedimento_ocupacao", 
+        $aTabela[] = ["funcao" => "funcProcCbo", "arquivo" => "rl_procedimento_ocupacao", 
                            "tabela" => "sau_proccbo"
-                          );
+                          ];
 
       }
       if ($aVet[24] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcCompativel", "arquivo" => "rl_procedimento_compativel", 
+        $aTabela[] = ["funcao" => "funcProcCompativel", "arquivo" => "rl_procedimento_compativel", 
                            "tabela" => "sau_proccompativel"
-                          );
+                          ];
 
       }
       if ($aVet[25] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcRestricao", "arquivo" => "rl_excecao_compatibilidade", 
+        $aTabela[] = ["funcao" => "funcProcRestricao", "arquivo" => "rl_excecao_compatibilidade", 
                            "tabela" => "sau_execaocompatibilidade"
-                          );
+                          ];
 
       }
       if ($aVet[26] == '1') {
 
-        $aTabela[] = array("funcao" => "funcProcHabilitacao", "arquivo" => "rl_procedimento_habilitacao", 
+        $aTabela[] = ["funcao" => "funcProcHabilitacao", "arquivo" => "rl_procedimento_habilitacao", 
                            "tabela" => "sau_prochabilitacao"
-                          );
+                          ];
 
       }
 
       $sPasta            = $AArquivo;
-                         
+
       $lSucesso          = true;
       $iTamTabelas       = count($aTabela);
       $iContRegInseridos = 0; // Número de registros que foram inseridos em cada tabela
       for ($iContArq = 0; $iContArq < $iTamTabelas; $iContArq++) {
 
         $iContRegInseridos = 0; // Zero o número de registros para comecar a contar para cada tabela
-        
+
         flush(); // descarga do processamento PHP para o HTML
         if (!$lSucesso) {
           break;
@@ -783,7 +783,7 @@ if (isset($processar)) {
         //Arquivos
         $sArqTb     = $sPasta."/".$aTabela[$iContArq]["arquivo"].".txt";
         $sArqLayout = $sPasta."/".$aTabela[$iContArq]["arquivo"]."_layout.txt";
-        
+
         //Chama função definida
         if (!empty($aTabela[$iContArq]["funcao"])) {
 
@@ -825,7 +825,7 @@ if (isset($processar)) {
             $sStrValues = "";
             $sStrSep    = "";
             $sStrComp   = "";
-            
+
             //Pega tamanho dos campo no layout
             $iTamLayout = count($aVetLayout);
             for ($iContLayout = 0; $iContLayout < $iTamLayout; $iContLayout++) {
@@ -843,7 +843,7 @@ if (isset($processar)) {
                                    );
 
               } else {
-                
+
                 // nome (campo de descricao)
                 if ($iContLayout == 1) {
 
@@ -901,7 +901,7 @@ if (isset($processar)) {
               $lRetornoIns = @db_query($sStrInsert); 
               if ($lRetornoIns == false) {
 
-                db_msgbox("Arquivo: $sArqTb \\nTabela: ".$aTabela[$iContArq]["tabela"]." \\n\\n".pg_errormessage());
+                db_msgbox("Arquivo: $sArqTb \\nTabela: ".$aTabela[$iContArq]["tabela"]." \\n\\n".pg_last_error());
                 fwrite($pArqConf, "$sArqTb|Cancelado|$iContRegInseridos\n");
                 $iContArq--; // decremento para anular o incremento do fim do for
                 $lSucesso = false;
@@ -909,7 +909,7 @@ if (isset($processar)) {
 
               }
               $iContRegInseridos++; // Incremento o número de registros importados
-              
+
             }
 
           } // for

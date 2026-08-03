@@ -34,8 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sanitario_classe.php"));
 require_once(modification("classes/db_saniatividade_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsanitario     = new cl_sanitario;
 $clsaniatividade = new cl_saniatividade;

@@ -85,7 +85,7 @@ $oDaoOrcTipoRec = new cl_orctiporec();
       <td align="center" valign="top">
         <?php
         $iAnoUsu = db_getsession("DB_anousu");
-        $aWhere = array();
+        $aWhere = [];
         if (isset($oGet->iReduzido)) {
           $aWhere[] = " c19_reduz = {$oGet->iReduzido} ";
         }

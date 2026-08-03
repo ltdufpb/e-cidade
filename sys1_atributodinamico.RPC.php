@@ -64,12 +64,12 @@ try {
 
             $oRetorno->iGrupoAtt = $oDBAttDinamico->getCodigo();
             $oRetorno->sTitulo = urlencode($oDBAttDinamico->getDescricao());
-            $oRetorno->aAtributos = array();
+            $oRetorno->aAtributos = [];
 
             foreach ($oDBAttDinamico->getAtributos() as $oAtributo) {
 
                 $oStdAtributo = new stdClass;
-                $oStdAtributo->oOpcoes = array();
+                $oStdAtributo->oOpcoes = [];
 
                 if ($oAtributo->getCampo()) {
 
@@ -95,12 +95,10 @@ try {
                 $aOpcoes = $oAtributo->getOpcoes();
                 if ($oAtributo->getNome() == 'codigofundamentacao') {
                     usort($aOpcoes,
-                      function (DBAttDinamicoAtributoOpcao $oOpcao1, DBAttDinamicoAtributoOpcao $oOpcao2) {
-                          return strnatcmp($oOpcao1->getOpcao(), $oOpcao2->getOpcao());
-                      });
+                      fn(DBAttDinamicoAtributoOpcao $oOpcao1, DBAttDinamicoAtributoOpcao $oOpcao2) => strnatcmp($oOpcao1->getOpcao(), $oOpcao2->getOpcao()));
                 }
                 foreach ($aOpcoes as $oOpcao) {
-                    $oStdAtributo->oOpcoes[$oOpcao->getOpcao()] = urlencode($oOpcao->getValor());
+                    $oStdAtributo->oOpcoes[$oOpcao->getOpcao()] = urlencode((string) $oOpcao->getValor());
                 }
 
                 $oRetorno->aAtributos[] = $oStdAtributo;
@@ -167,7 +165,7 @@ try {
                 $oDBAttDinamico->adicionarAtributo($oDBAttDinamicoAtributo);
             }
 
-            $oRetorno->aAtributos = array();
+            $oRetorno->aAtributos = [];
 
             foreach ($oDBAttDinamico->getAtributos() as $oAtributo) {
 
@@ -175,7 +173,7 @@ try {
 
                 if ($oAtributo->getCampo()) {
                     $oStdAtributo->iCodCampo = $oAtributo->getCampo()->iCodigo;
-                    $oStdAtributo->sDescrCampo = urlencode($oAtributo->getCampo()->sDescricao);
+                    $oStdAtributo->sDescrCampo = urlencode((string) $oAtributo->getCampo()->sDescricao);
                 } else {
                     $oStdAtributo->iCodCampo = '';
                     $oStdAtributo->sDescrCampo = '';
@@ -184,11 +182,11 @@ try {
                 $oStdAtributo->iCodigo = $oAtributo->getCodigo();
                 $oStdAtributo->iTipo = $oAtributo->getTipo();
                 $oStdAtributo->sNome = $oAtributo->getNome();
-                $oStdAtributo->sDescricao = urlencode($oAtributo->getDescricao());
+                $oStdAtributo->sDescricao = urlencode((string) $oAtributo->getDescricao());
                 $oStdAtributo->oCampoReferencia = $oAtributo->getCampo();
                 $oStdAtributo->lObrigatorio = $oAtributo->isObrigatorio();
                 $oStdAtributo->lAtivo = $oAtributo->ativo();
-                $oStdAtributo->sValorDefault = urlencode($oAtributo->getValorDefault());
+                $oStdAtributo->sValorDefault = urlencode((string) $oAtributo->getValorDefault());
                 $oStdAtributo->lFixo = $oAtributo->isFixo();
                 $oRetorno->aAtributos[] = $oStdAtributo;
             }
@@ -208,7 +206,7 @@ try {
 
             try {
 
-                $oRetorno->aAtributos = array();
+                $oRetorno->aAtributos = [];
 
                 foreach ($oDBAttDinamico->getAtributos() as $oAtributo) {
 
@@ -223,7 +221,7 @@ try {
                         if ($oAtributo->getCampo()) {
 
                             $oStdAtributo->iCodCampo = $oAtributo->getCampo()->iCodigo;
-                            $oStdAtributo->sDescrCampo = urlencode($oAtributo->getCampo()->sDescricao);
+                            $oStdAtributo->sDescrCampo = urlencode((string) $oAtributo->getCampo()->sDescricao);
                         } else {
 
                             $oStdAtributo->iCodCampo = '';
@@ -233,11 +231,11 @@ try {
                         $oStdAtributo->iCodigo = $oAtributo->getCodigo();
                         $oStdAtributo->iTipo = $oAtributo->getTipo();
                         $oStdAtributo->sNome = $oAtributo->getNome();
-                        $oStdAtributo->sDescricao = urlencode($oAtributo->getDescricao());
+                        $oStdAtributo->sDescricao = urlencode((string) $oAtributo->getDescricao());
                         $oStdAtributo->oCampoReferencia = $oAtributo->getCampo();
                         $oStdAtributo->lObrigatorio = $oAtributo->isObrigatorio();
                         $oStdAtributo->lAtivo = $oAtributo->ativo();
-                        $oStdAtributo->sValorDefault = urlencode($oAtributo->getValorDefault());
+                        $oStdAtributo->sValorDefault = urlencode((string) $oAtributo->getValorDefault());
                         $oStdAtributo->lFixo = $oAtributo->isFixo();
 
                         $oRetorno->aAtributos[] = $oStdAtributo;
@@ -324,8 +322,8 @@ try {
                 throw new ParameterException('O grupo de valores não foi informado.');
             }
 
-            $oRetorno->aValoresAtributos = array();
-            $oRetorno->aAtributos = array();
+            $oRetorno->aValoresAtributos = [];
+            $oRetorno->aAtributos = [];
 
             $clCadAttValorGrupo = new cl_db_cadattdinamicovalorgrupo();
 
@@ -347,20 +345,18 @@ try {
                     $oStdAtributo->iCodigo = $oAtributo->getCodigo();
                     $oStdAtributo->iTipo = $oAtributo->getTipo();
                     $oStdAtributo->sNome = $oAtributo->getNome();
-                    $oStdAtributo->sDescricao = urlencode($oAtributo->getDescricao());
+                    $oStdAtributo->sDescricao = urlencode((string) $oAtributo->getDescricao());
                     $oStdAtributo->oCampoReferencia = $oAtributo->getCampo();
                     $oStdAtributo->lObrigatorio = $oAtributo->isObrigatorio();
-                    $oStdAtributo->sValorDefault = urlencode($oAtributo->getValorDefault());
+                    $oStdAtributo->sValorDefault = urlencode((string) $oAtributo->getValorDefault());
 
                     $aOpcoes = $oAtributo->getOpcoes();
                     if ($oAtributo->getNome() == 'codigofundamentacao') {
                         usort($aOpcoes,
-                          function (DBAttDinamicoAtributoOpcao $oOpcao1, DBAttDinamicoAtributoOpcao $oOpcao2) {
-                              return strnatcmp($oOpcao1->getOpcao(), $oOpcao2->getOpcao());
-                          });
+                          fn(DBAttDinamicoAtributoOpcao $oOpcao1, DBAttDinamicoAtributoOpcao $oOpcao2) => strnatcmp($oOpcao1->getOpcao(), $oOpcao2->getOpcao()));
                     }
                     foreach ($aOpcoes as $oOpcao) {
-                        $oStdAtributo->oOpcoes[$oOpcao->getOpcao()] = urlencode($oOpcao->getValor());
+                        $oStdAtributo->oOpcoes[$oOpcao->getOpcao()] = urlencode((string) $oOpcao->getValor());
                     }
 
                     $oRetorno->aAtributos[] = $oStdAtributo;
@@ -374,17 +370,17 @@ try {
 
         case "getTiposAtributos":
 
-            $tiposAtributos = array(
-              (object)array('codigo' => 1, 'nome' => 'Texto'),
-              (object)array('codigo' => 2, 'nome' => 'Número sem casas decimais'),
-              (object)array('codigo' => 3, 'nome' => 'Data'),
-              (object)array('codigo' => 4, 'nome' => 'Número com casas decimais'),
-              (object)array('codigo' => 5, 'nome' => 'Verdadeiro / Falso'),
-              (object)array('codigo' => 6, 'nome' => 'Combo')
-            );
+            $tiposAtributos = [
+              (object)['codigo' => 1, 'nome' => 'Texto'],
+              (object)['codigo' => 2, 'nome' => 'Número sem casas decimais'],
+              (object)['codigo' => 3, 'nome' => 'Data'],
+              (object)['codigo' => 4, 'nome' => 'Número com casas decimais'],
+              (object)['codigo' => 5, 'nome' => 'Verdadeiro / Falso'],
+              (object)['codigo' => 6, 'nome' => 'Combo']
+            ];
             $usuarioSistema = UsuarioSistemaRepository::getPorCodigo(db_getsession('DB_id_usuario'));
             if ($usuarioSistema->isAdministrador()) {
-                $tiposAtributos[] = (object)array('codigo' => 7, 'nome' => 'Hidden');
+                $tiposAtributos[] = (object)['codigo' => 7, 'nome' => 'Hidden'];
             }
             $oRetorno->tipoAtributos = $tiposAtributos;
 
@@ -430,7 +426,7 @@ try {
             }
 
             $resultado = db_utils::fieldsMemory($rsFormula, 0);
-            $resultado->mensagem = urlencode($resultado->mensagem);
+            $resultado->mensagem = urlencode((string) $resultado->mensagem);
             $oRetorno->resultado = $resultado;
 
             break;

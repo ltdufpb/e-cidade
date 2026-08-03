@@ -175,13 +175,13 @@ $iPosInicialX = $oPdf->GetX();
 $iPosInicialY = $oPdf->GetY();
 
 $oPdf->SetAutoPageBreak(false);
-$aGrupoLinhas    = array();
-$aGrupoLinhas[1] = array(22, 42);
-$aGrupoLinhas[2] = array(23, 43);
-$aGrupoLinhas[3] = array(24, 44);
-$aGrupoLinhas[4] = array(25, 45);
-$aGrupoLinhas[5] = array(26, 46);
-$aGrupoLinhas[6] = array(27, 47);
+$aGrupoLinhas    = [];
+$aGrupoLinhas[1] = [22, 42];
+$aGrupoLinhas[2] = [23, 43];
+$aGrupoLinhas[3] = [24, 44];
+$aGrupoLinhas[4] = [25, 45];
+$aGrupoLinhas[5] = [26, 46];
+$aGrupoLinhas[6] = [27, 47];
 foreach ($aGrupoLinhas as $aLinha) {
 	
 	foreach ($aLinha as $iIndice) {

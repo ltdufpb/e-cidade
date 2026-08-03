@@ -64,7 +64,7 @@ try {
      */
   	case 'getContasPlanoAnterior':
 
-  	  if ( trim($oParam->sEstrutural)!= '' && !is_numeric( trim( $oParam->sEstrutural ) ) ) {
+  	  if ( trim((string) $oParam->sEstrutural)!= '' && !is_numeric( trim( (string) $oParam->sEstrutural ) ) ) {
   	    throw new ParameterException( _M( $sCaminhoMensagem.'estrutural_invalido' ) );
   	  }
 
@@ -72,10 +72,10 @@ try {
   	  $sEstrutural                = '';
   	  $iTamanhoEstruturalDigitado = 0;
 
-  	  if ((trim($oParam->sEstrutural)) != '') {
+  	  if ((trim((string) $oParam->sEstrutural)) != '') {
 
   	    $sEstrutural                = $oParam->sEstrutural;
-    	  $iTamanhoEstruturalDigitado = strlen($sEstrutural);
+    	  $iTamanhoEstruturalDigitado = strlen((string) $sEstrutural);
   	  }
 
   	  $sWhereContasPlanoAnterior = " c61_instit = {$iInstituicao} ";
@@ -91,14 +91,14 @@ try {
   	    throw new BusinessException( _M( "{$sCaminhoMensagem}contas_anteriores_nao_encontradas" ) );
   	  }
 
-  	  $oRetorno->aContasAnterior = array();
-  	  $iTotalContas              = pg_numrows( $rsContasPlanoAnterior );
+  	  $oRetorno->aContasAnterior = [];
+  	  $iTotalContas              = pg_num_rows( $rsContasPlanoAnterior );
 
   	  for ( $iContador = 0; $iContador < $iTotalContas; $iContador++ ) {
 
     	  $oConta = db_utils::fieldsMemory( $rsContasPlanoAnterior, $iContador, false, false, true );
 
-    	  if ( $iTamanhoEstruturalDigitado > 0 && substr($oConta->estrutural, 0, $iTamanhoEstruturalDigitado) != $sEstrutural ) {
+    	  if ( $iTamanhoEstruturalDigitado > 0 && substr((string) $oConta->estrutural, 0, $iTamanhoEstruturalDigitado) != $sEstrutural ) {
     	    continue;
     	  }
 
@@ -151,16 +151,16 @@ try {
   	 */
   	case 'getContasPCASP':
 
-  	  if ( trim($oParam->sEstrutural)!= '' && !is_numeric( trim( $oParam->sEstrutural ) ) ) {
+  	  if ( trim((string) $oParam->sEstrutural)!= '' && !is_numeric( trim( (string) $oParam->sEstrutural ) ) ) {
   	    throw new ParameterException( _M( $sCaminhoMensagem.'estrutural_invalido' ) );
   	  }
 
-  	  $oRetorno->aContasPcasp = array();
+  	  $oRetorno->aContasPcasp = [];
   	  $oDaoConPlano           = new cl_conplano();
   	  $sCamposConPlano        = "c60_codcon, c60_estrut, c60_descr, c60_anousu";
   	  $sWhereConPlano         = "c61_codcon is null and c60_anousu = {$iAno}";
 
-  	  if ( trim($oParam->sEstrutural) != '' ) {
+  	  if ( trim((string) $oParam->sEstrutural) != '' ) {
   	    $sWhereConPlano .= " and c60_estrut ilike '{$oParam->sEstrutural}%' ";
   	  }
 
@@ -183,8 +183,8 @@ try {
     case 'vincularContas':
 
 
-      $aNaturezaDebito  = array('1' => 1, '3' => 1, '5' => 1, '7' => 1);
-      $aNaturezaCredito = array('2' => 2, '4' => 2, '6' => 2, '8' => 2);
+      $aNaturezaDebito  = ['1' => 1, '3' => 1, '5' => 1, '7' => 1];
+      $aNaturezaCredito = ['2' => 2, '4' => 2, '6' => 2, '8' => 2];
 
       db_inicio_transacao();
       $oContaPcasp = ContaPlanoPCASPRepository::getContaByCodigo($oParam->oContaPcasp->iCodigoConta,
@@ -200,7 +200,7 @@ try {
       }
 
       $oDaoConplano             = new cl_conplano();
-      $aContasSinteticasCriadas = array();
+      $aContasSinteticasCriadas = [];
       foreach ($oParam->aContasOrcamento as $oConta) {
 
         $sSqlConta = $oDaoConplano->sql_query_dados_banco($oConta->iCodigoConta, $oConta->iAnoConta);
@@ -228,7 +228,7 @@ try {
          */
         $iConsistemaConta    = '0';
         $sIndicadorSuperAvit = 'N';
-        switch (trim($oDadosConta->c52_descrred)) {
+        switch (trim((string) $oDadosConta->c52_descrred)) {
 
           case 'O':
 
@@ -344,17 +344,7 @@ try {
       $oRetorno->sMensagem = urlencode( _M( $sCaminhoMensagem."contas_vinculadas" ) );
       break;
   }
-} catch (ParameterException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode($oErro->getMessage());
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode($oErro->getMessage());
-} catch (DBException $oErro) {
+} catch (ParameterException|BusinessException|DBException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->iStatus   = 2;

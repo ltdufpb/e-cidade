@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("contcearquivo"=>"contcearquivo","contcearquivoresp"=>"contcearquivoresp"); 
-	 $clcriaabas->src = array("contcearquivo"=>"con1_contcearquivo006.php");
-	 $clcriaabas->disabled   =  array("contcearquivoresp"=>"true"); 
+	 $clcriaabas->identifica = ["contcearquivo"=>"contcearquivo","contcearquivoresp"=>"contcearquivoresp"]; 
+	 $clcriaabas->src = ["contcearquivo"=>"con1_contcearquivo006.php"];
+	 $clcriaabas->disabled   =  ["contcearquivoresp"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

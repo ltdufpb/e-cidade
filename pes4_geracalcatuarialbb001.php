@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -94,7 +94,7 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
           <td><strong>Vínculo:</strong></td>
           <td>
             <?php 
-              $aVinculos = array (
+              $aVinculos =  [
                                   ''  => 'Selecione',
                                   'A' => 'Ativo',
                                   'B' => 'Beneficiarios',
@@ -105,7 +105,7 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
                                   'TA' => 'Tab.Carreira',
                                   'TC' => 'Tab.Cargos',
                                   'TP' => 'Tab.Parentesco'
-                                  );
+                                  ];
               db_select("vinculo",$aVinculos,true,1);
             ?>
           </td>        
@@ -114,7 +114,7 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
           <td><strong>Usa Separdor de Campo:</strong></td>
           <td>
             <?php 
-              $aSeparadorCampo = array('S' => 'Sim', 'N' => 'Não');
+              $aSeparadorCampo = ['S' => 'Sim', 'N' => 'Não'];
               db_select("separador",$aSeparadorCampo,true,1);
             ?>
           </td>
@@ -126,7 +126,7 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
             echo '<tr>';
             echo '  <td><strong>Versão:</strong></td>';
             echo '  <td>';
-            $aAno = array (1 => 'Até 2010', 2 => '2011');
+            $aAno =  [1 => 'Até 2010', 2 => '2011'];
             db_select('versao', $aAno, true, 1);
             echo '  </td>';
             echo '</tr>';

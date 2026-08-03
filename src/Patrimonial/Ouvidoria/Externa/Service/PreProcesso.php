@@ -40,17 +40,11 @@ use ECidade\Patrimonial\Ouvidoria\Externa\TipoDado\Model\Arquivo as ArquivoModel
 class PreProcesso
 {
     /**
-     * @var PreProcessoModel
-     */
-    private $preProcessoModel;
-
-    /**
      * PreProcesso constructor.
      * @param PreProcessoModel $preProcessoModel
      */
-    public function __construct(PreProcessoModel $preProcessoModel)
+    public function __construct(private readonly PreProcessoModel $preProcessoModel)
     {
-        $this->preProcessoModel = $preProcessoModel;
     }
 
     /**

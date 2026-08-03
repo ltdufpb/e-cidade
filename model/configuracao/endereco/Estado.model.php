@@ -61,7 +61,7 @@ class Estado {
    * Municipios vinculados ao estado
    * @var array
    */
-  private $aMunicipios = array();
+  private $aMunicipios = [];
   
   /**
    * Construtor da classe. Recebe como parametro o sequencial da tabela cadenderestado

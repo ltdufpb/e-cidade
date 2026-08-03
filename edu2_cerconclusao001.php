@@ -431,8 +431,8 @@ $eta_turma = $arr_turma[1];
               <fieldset style="align:center">
                 Para selecionar mais de um aluno<br>mantenha pressionada a tecla CTRL <br>e clique sobre o nome dos alunos.
               </fieldset>
-              <input type="hidden" name="base"  value="<?=isset( $base ) ? $base : ""?>">
-              <input type="hidden" name="curso" value="<?=isset( $curso ) ? $curso : ""?>">
+              <input type="hidden" name="base"  value="<?=$base ?? ""?>">
+              <input type="hidden" name="curso" value="<?=$curso ?? ""?>">
             </td>
           </tr>
           <?php

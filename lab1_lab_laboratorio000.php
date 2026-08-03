@@ -65,7 +65,7 @@ db_fieldsmemory($rResultado,0);
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array("a1"=>converteCodificacao("Laboratório"),
+   $clcriaabas->identifica = ["a1"=>converteCodificacao("Laboratório"),
                                    "a2"=>"Profissionais",
                                    "a3"=>"Usuarios externos",
                                    "a4"=>"Setores",
@@ -73,11 +73,11 @@ db_fieldsmemory($rResultado,0);
                                    "a6"=>converteCodificacao("Horários"),
                                    "a7"=>converteCodificacao("Ausências"),
                                    "a8"=>converteCodificacao("Paralisação"),
-                                   "a9"=>"Grupos");
+                                   "a9"=>"Grupos"];
     if($la49_habilitargrupo === "f"){
       unset($clcriaabas->identifica['a9']);
     }
-   $clcriaabas->src = array("a1"=>"$arquivo",
+   $clcriaabas->src = ["a1"=>"$arquivo",
                             "a2"=>"",
                             "a3"=>"",
                             "a4"=>"",
@@ -85,15 +85,15 @@ db_fieldsmemory($rResultado,0);
                             "a6"=>"",
                             "a7"=>"",
                             "a8"=>"",
-                            "a9"=>"");
+                            "a9"=>""];
     if($la49_habilitargrupo === "f"){
       unset($clcriaabas->src['a9']);
     }
-   $clcriaabas->sizecampo  = array("a1"=>15,"a2"=>15,"a3"=>15,"a4"=>"15","a5"=>15,"a6"=>15,"a7"=>15,"a8"=>15, "a9"=>15);
+   $clcriaabas->sizecampo  = ["a1"=>15,"a2"=>15,"a3"=>15,"a4"=>"15","a5"=>15,"a6"=>15,"a7"=>15,"a8"=>15, "a9"=>15];
   if($la49_habilitargrupo === "f"){
     unset($clcriaabas->sizecampo['a9']);
   }
-   $clcriaabas->disabled   =  array("a1"=>"false","a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true","a6"=>"true","a7"=>"true","a8"=>"true", "a9"=>"true");
+   $clcriaabas->disabled   =  ["a1"=>"false","a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true","a6"=>"true","a7"=>"true","a8"=>"true", "a9"=>"true"];
   if($la49_habilitargrupo === "f"){
     unset($clcriaabas->disabled['a9']);
   }

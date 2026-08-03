@@ -36,7 +36,7 @@ $clrotulo->label('c53_coddoc');
 $clrotulo->label('c53_descr');
 $clrotulo->label('c53_tipo');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($ordem == "a") {

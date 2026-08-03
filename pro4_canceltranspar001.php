@@ -35,13 +35,13 @@ include(modification("dbforms/db_funcoes.php"));
 use ECidade\Patrimonial\Protocolo\Repositorio\ProcessoRepositorio;
 use ECidade\Patrimonial\Protocolo\Procedimentos\Parametros\Modelo\MensageriaProcesso;
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clproctransfer     = new cl_proctransfer;
 $clproctransferproc = new cl_proctransferproc;
 
 if (isset($cancel)) {
-    $codigoProcessos = split(',', $listaproc);
+    $codigoProcessos = preg_split('#,#m', (string) $listaproc);
 
     foreach ($codigoProcessos as $codigoProcesso) {
         $processo = ProcessoRepositorio::encontrar($codigoProcesso);

@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE isencaolanc
 class cl_isencaolanc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v18_sequencial = 0; 
-   var $v18_cadtipoitem = 0; 
-   var $v18_isencao = 0; 
-   var $v18_dtini_dia = null; 
-   var $v18_dtini_mes = null; 
-   var $v18_dtini_ano = null; 
-   var $v18_dtini = null; 
-   var $v18_dtfim_dia = null; 
-   var $v18_dtfim_mes = null; 
-   var $v18_dtfim_ano = null; 
-   var $v18_dtfim = null; 
-   var $v18_tipovalor = 0; 
-   var $v18_valor = 0; 
+   public $v18_sequencial = 0; 
+   public $v18_cadtipoitem = 0; 
+   public $v18_isencao = 0; 
+   public $v18_dtini_dia = null; 
+   public $v18_dtini_mes = null; 
+   public $v18_dtini_ano = null; 
+   public $v18_dtini = null; 
+   public $v18_dtfim_dia = null; 
+   public $v18_dtfim_mes = null; 
+   public $v18_dtfim_ano = null; 
+   public $v18_dtfim = null; 
+   public $v18_tipovalor = 0; 
+   public $v18_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v18_sequencial = int4 = Codigo do lançamento 
                  v18_cadtipoitem = int4 = Codigo 
                  v18_isencao = int4 = Codigo da isenção 
@@ -66,10 +66,10 @@ class cl_isencaolanc {
                  v18_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_isencaolanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isencaolanc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -175,10 +175,10 @@ class cl_isencaolanc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v18_sequencial = pg_result($result,0,0); 
+       $this->v18_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from isencaolanc_v18_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v18_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v18_sequencial)){
          $this->erro_sql = " Campo v18_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -218,7 +218,7 @@ class cl_isencaolanc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Lancamentos das isenções ($this->v18_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Lancamentos das isenções já Cadastrado";
@@ -242,16 +242,16 @@ class cl_isencaolanc {
      $resaco = $this->sql_record($this->sql_query_file($this->v18_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9938,'$this->v18_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1708,9938,'','".AddSlashes(pg_result($resaco,0,'v18_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1708,9958,'','".AddSlashes(pg_result($resaco,0,'v18_cadtipoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1708,9959,'','".AddSlashes(pg_result($resaco,0,'v18_isencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1708,9960,'','".AddSlashes(pg_result($resaco,0,'v18_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1708,9961,'','".AddSlashes(pg_result($resaco,0,'v18_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1708,9962,'','".AddSlashes(pg_result($resaco,0,'v18_tipovalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1708,9963,'','".AddSlashes(pg_result($resaco,0,'v18_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1708,9938,'','".AddSlashes(pg_fetch_result($resaco,0,'v18_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1708,9958,'','".AddSlashes(pg_fetch_result($resaco,0,'v18_cadtipoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1708,9959,'','".AddSlashes(pg_fetch_result($resaco,0,'v18_isencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1708,9960,'','".AddSlashes(pg_fetch_result($resaco,0,'v18_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1708,9961,'','".AddSlashes(pg_fetch_result($resaco,0,'v18_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1708,9962,'','".AddSlashes(pg_fetch_result($resaco,0,'v18_tipovalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1708,9963,'','".AddSlashes(pg_fetch_result($resaco,0,'v18_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -260,10 +260,10 @@ class cl_isencaolanc {
       $this->atualizacampos();
      $sql = " update isencaolanc set ";
      $virgula = "";
-     if(trim($this->v18_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_sequencial"])){ 
+     if(trim((string) $this->v18_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_sequencial"])){ 
        $sql  .= $virgula." v18_sequencial = $this->v18_sequencial ";
        $virgula = ",";
-       if(trim($this->v18_sequencial) == null ){ 
+       if(trim((string) $this->v18_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo do lançamento nao Informado.";
          $this->erro_campo = "v18_sequencial";
          $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_isencaolanc {
          return false;
        }
      }
-     if(trim($this->v18_cadtipoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_cadtipoitem"])){ 
+     if(trim((string) $this->v18_cadtipoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_cadtipoitem"])){ 
        $sql  .= $virgula." v18_cadtipoitem = $this->v18_cadtipoitem ";
        $virgula = ",";
-       if(trim($this->v18_cadtipoitem) == null ){ 
+       if(trim((string) $this->v18_cadtipoitem) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "v18_cadtipoitem";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_isencaolanc {
          return false;
        }
      }
-     if(trim($this->v18_isencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_isencao"])){ 
+     if(trim((string) $this->v18_isencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_isencao"])){ 
        $sql  .= $virgula." v18_isencao = $this->v18_isencao ";
        $virgula = ",";
-       if(trim($this->v18_isencao) == null ){ 
+       if(trim((string) $this->v18_isencao) == null ){ 
          $this->erro_sql = " Campo Codigo da isenção nao Informado.";
          $this->erro_campo = "v18_isencao";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_isencaolanc {
          return false;
        }
      }
-     if(trim($this->v18_dtini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_dtini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v18_dtini_dia"] !="") ){ 
+     if(trim((string) $this->v18_dtini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_dtini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v18_dtini_dia"] !="") ){ 
        $sql  .= $virgula." v18_dtini = '$this->v18_dtini' ";
        $virgula = ",";
-       if(trim($this->v18_dtini) == null ){ 
+       if(trim((string) $this->v18_dtini) == null ){ 
          $this->erro_sql = " Campo Data de inicio nao Informado.";
          $this->erro_campo = "v18_dtini_dia";
          $this->erro_banco = "";
@@ -315,7 +315,7 @@ class cl_isencaolanc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v18_dtini_dia"])){ 
          $sql  .= $virgula." v18_dtini = null ";
          $virgula = ",";
-         if(trim($this->v18_dtini) == null ){ 
+         if(trim((string) $this->v18_dtini) == null ){ 
            $this->erro_sql = " Campo Data de inicio nao Informado.";
            $this->erro_campo = "v18_dtini_dia";
            $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_isencaolanc {
          }
        }
      }
-     if(trim($this->v18_dtfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_dtfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v18_dtfim_dia"] !="") ){ 
+     if(trim((string) $this->v18_dtfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_dtfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v18_dtfim_dia"] !="") ){ 
        $sql  .= $virgula." v18_dtfim = '$this->v18_dtfim' ";
        $virgula = ",";
-       if(trim($this->v18_dtfim) == null ){ 
+       if(trim((string) $this->v18_dtfim) == null ){ 
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "v18_dtfim_dia";
          $this->erro_banco = "";
@@ -342,7 +342,7 @@ class cl_isencaolanc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v18_dtfim_dia"])){ 
          $sql  .= $virgula." v18_dtfim = null ";
          $virgula = ",";
-         if(trim($this->v18_dtfim) == null ){ 
+         if(trim((string) $this->v18_dtfim) == null ){ 
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "v18_dtfim_dia";
            $this->erro_banco = "";
@@ -353,10 +353,10 @@ class cl_isencaolanc {
          }
        }
      }
-     if(trim($this->v18_tipovalor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_tipovalor"])){ 
+     if(trim((string) $this->v18_tipovalor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_tipovalor"])){ 
        $sql  .= $virgula." v18_tipovalor = $this->v18_tipovalor ";
        $virgula = ",";
-       if(trim($this->v18_tipovalor) == null ){ 
+       if(trim((string) $this->v18_tipovalor) == null ){ 
          $this->erro_sql = " Campo Tipo de valor nao Informado.";
          $this->erro_campo = "v18_tipovalor";
          $this->erro_banco = "";
@@ -366,10 +366,10 @@ class cl_isencaolanc {
          return false;
        }
      }
-     if(trim($this->v18_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_valor"])){ 
+     if(trim((string) $this->v18_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v18_valor"])){ 
        $sql  .= $virgula." v18_valor = $this->v18_valor ";
        $virgula = ",";
-       if(trim($this->v18_valor) == null ){ 
+       if(trim((string) $this->v18_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "v18_valor";
          $this->erro_banco = "";
@@ -387,23 +387,23 @@ class cl_isencaolanc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9938,'$this->v18_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v18_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1708,9938,'".AddSlashes(pg_result($resaco,$conresaco,'v18_sequencial'))."','$this->v18_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1708,9938,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v18_sequencial'))."','$this->v18_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v18_cadtipoitem"]))
-           $resac = db_query("insert into db_acount values($acount,1708,9958,'".AddSlashes(pg_result($resaco,$conresaco,'v18_cadtipoitem'))."','$this->v18_cadtipoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1708,9958,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v18_cadtipoitem'))."','$this->v18_cadtipoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v18_isencao"]))
-           $resac = db_query("insert into db_acount values($acount,1708,9959,'".AddSlashes(pg_result($resaco,$conresaco,'v18_isencao'))."','$this->v18_isencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1708,9959,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v18_isencao'))."','$this->v18_isencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v18_dtini"]))
-           $resac = db_query("insert into db_acount values($acount,1708,9960,'".AddSlashes(pg_result($resaco,$conresaco,'v18_dtini'))."','$this->v18_dtini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1708,9960,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v18_dtini'))."','$this->v18_dtini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v18_dtfim"]))
-           $resac = db_query("insert into db_acount values($acount,1708,9961,'".AddSlashes(pg_result($resaco,$conresaco,'v18_dtfim'))."','$this->v18_dtfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1708,9961,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v18_dtfim'))."','$this->v18_dtfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v18_tipovalor"]))
-           $resac = db_query("insert into db_acount values($acount,1708,9962,'".AddSlashes(pg_result($resaco,$conresaco,'v18_tipovalor'))."','$this->v18_tipovalor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1708,9962,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v18_tipovalor'))."','$this->v18_tipovalor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v18_valor"]))
-           $resac = db_query("insert into db_acount values($acount,1708,9963,'".AddSlashes(pg_result($resaco,$conresaco,'v18_valor'))."','$this->v18_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1708,9963,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v18_valor'))."','$this->v18_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -448,16 +448,16 @@ class cl_isencaolanc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9938,'$v18_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1708,9938,'','".AddSlashes(pg_result($resaco,$iresaco,'v18_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1708,9958,'','".AddSlashes(pg_result($resaco,$iresaco,'v18_cadtipoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1708,9959,'','".AddSlashes(pg_result($resaco,$iresaco,'v18_isencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1708,9960,'','".AddSlashes(pg_result($resaco,$iresaco,'v18_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1708,9961,'','".AddSlashes(pg_result($resaco,$iresaco,'v18_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1708,9962,'','".AddSlashes(pg_result($resaco,$iresaco,'v18_tipovalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1708,9963,'','".AddSlashes(pg_result($resaco,$iresaco,'v18_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1708,9938,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v18_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1708,9958,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v18_cadtipoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1708,9959,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v18_isencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1708,9960,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v18_dtini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1708,9961,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v18_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1708,9962,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v18_tipovalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1708,9963,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v18_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from isencaolanc
@@ -517,7 +517,7 @@ class cl_isencaolanc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:isencaolanc";
@@ -531,7 +531,7 @@ class cl_isencaolanc {
    function sql_query ( $v18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -558,7 +558,7 @@ class cl_isencaolanc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -570,7 +570,7 @@ class cl_isencaolanc {
    function sql_query_file ( $v18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -591,7 +591,7 @@ class cl_isencaolanc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -14,26 +14,23 @@ use ECidade\Tributario\Caixa\Entity\Collection\ReciboCollection;
 
 final class ReciboCarneService extends Service
 {
-    private $reciboService;
-
-    public function __construct(ReciboService $reciboService)
+    public function __construct(private readonly ReciboService $reciboService)
     {
-        $this->reciboService = $reciboService;
     }
 
     public function execute(Filtro $filtro, DebitoCollection $debitoCollection)
     {
-        $carnes = array();
+        $carnes = [];
         $recibos = new ReciboCollection();
 
         foreach ($debitoCollection as $debito) {
             foreach ($debito->getParcelas() as $parcela) {
                 
-                $carnes[$parcela->getNumero()][] = array(
+                $carnes[$parcela->getNumero()][] = [
                     'numpre' => $debito->getNumpre(),
                     'tipo' => $debito->getTipo(),
                     'parcela' => $parcela
-                );
+                ];
             }
         }
         

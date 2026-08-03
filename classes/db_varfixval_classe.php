@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE varfixval
 class cl_varfixval {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $q34_codigo = 0;
-   var $q34_numpar = 0;
-   var $q34_mes = 0;
-   var $q34_ano = 0;
-   var $q34_valor = 0;
-   var $q34_inflat = null;
-   var $q34_dtval_dia = null;
-   var $q34_dtval_mes = null;
-   var $q34_dtval_ano = null;
-   var $q34_dtval = null;
+   public $q34_codigo = 0;
+   public $q34_numpar = 0;
+   public $q34_mes = 0;
+   public $q34_ano = 0;
+   public $q34_valor = 0;
+   public $q34_inflat = null;
+   public $q34_dtval_dia = null;
+   public $q34_dtval_mes = null;
+   public $q34_dtval_ano = null;
+   public $q34_dtval = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  q34_codigo = int4 = Código
                  q34_numpar = int4 = Parcela
                  q34_mes = int4 = Mês
@@ -63,10 +63,10 @@ class cl_varfixval {
                  q34_dtval = date = data do valor
                  ";
    //funcao construtor da classe
-   function cl_varfixval() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("varfixval");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -184,7 +184,7 @@ class cl_varfixval {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Valores () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Valores já Cadastrado";
@@ -211,10 +211,10 @@ class cl_varfixval {
       $this->atualizacampos();
      $sql = " update varfixval set ";
      $virgula = "";
-     if(trim($this->q34_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_codigo"])){
+     if(trim((string) $this->q34_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_codigo"])){
        $sql  .= $virgula." q34_codigo = $this->q34_codigo ";
        $virgula = ",";
-       if(trim($this->q34_codigo) == null ){
+       if(trim((string) $this->q34_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "q34_codigo";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_varfixval {
          return false;
        }
      }
-     if(trim($this->q34_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_numpar"])){
+     if(trim((string) $this->q34_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_numpar"])){
        $sql  .= $virgula." q34_numpar = $this->q34_numpar ";
        $virgula = ",";
-       if(trim($this->q34_numpar) == null ){
+       if(trim((string) $this->q34_numpar) == null ){
          $this->erro_sql = " Campo Parcela nao Informado.";
          $this->erro_campo = "q34_numpar";
          $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_varfixval {
          return false;
        }
      }
-     if(trim($this->q34_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_mes"])){
+     if(trim((string) $this->q34_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_mes"])){
        $sql  .= $virgula." q34_mes = $this->q34_mes ";
        $virgula = ",";
-       if(trim($this->q34_mes) == null ){
+       if(trim((string) $this->q34_mes) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "q34_mes";
          $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_varfixval {
          return false;
        }
      }
-     if(trim($this->q34_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_ano"])){
+     if(trim((string) $this->q34_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_ano"])){
        $sql  .= $virgula." q34_ano = $this->q34_ano ";
        $virgula = ",";
-       if(trim($this->q34_ano) == null ){
+       if(trim((string) $this->q34_ano) == null ){
          $this->erro_sql = " Campo ano nao Informado.";
          $this->erro_campo = "q34_ano";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_varfixval {
          return false;
        }
      }
-     if(trim($this->q34_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_valor"])){
+     if(trim((string) $this->q34_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_valor"])){
        $sql  .= $virgula." q34_valor = $this->q34_valor ";
        $virgula = ",";
-       if(trim($this->q34_valor) == null ){
+       if(trim((string) $this->q34_valor) == null ){
          $this->erro_sql = " Campo valor nao Informado.";
          $this->erro_campo = "q34_valor";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_varfixval {
          return false;
        }
      }
-     if(trim($this->q34_inflat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_inflat"])){
+     if(trim((string) $this->q34_inflat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_inflat"])){
        $sql  .= $virgula." q34_inflat = '$this->q34_inflat' ";
        $virgula = ",";
-       if(trim($this->q34_inflat) == null ){
+       if(trim((string) $this->q34_inflat) == null ){
          $this->erro_sql = " Campo inflator nao Informado.";
          $this->erro_campo = "q34_inflat";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_varfixval {
          return false;
        }
      }
-     if(trim($this->q34_dtval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_dtval_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q34_dtval_dia"] !="") ){
+     if(trim((string) $this->q34_dtval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q34_dtval_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q34_dtval_dia"] !="") ){
        $sql  .= $virgula." q34_dtval = '$this->q34_dtval' ";
        $virgula = ",";
-       if(trim($this->q34_dtval) == null ){
+       if(trim((string) $this->q34_dtval) == null ){
          $this->erro_sql = " Campo data do valor nao Informado.";
          $this->erro_campo = "q34_dtval_dia";
          $this->erro_banco = "";
@@ -305,7 +305,7 @@ class cl_varfixval {
        if(isset($GLOBALS["HTTP_POST_VARS"]["q34_dtval_dia"])){
          $sql  .= $virgula." q34_dtval = null ";
          $virgula = ",";
-         if(trim($this->q34_dtval) == null ){
+         if(trim((string) $this->q34_dtval) == null ){
            $this->erro_sql = " Campo data do valor nao Informado.";
            $this->erro_campo = "q34_dtval_dia";
            $this->erro_banco = "";
@@ -405,7 +405,7 @@ class cl_varfixval {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:varfixval";
@@ -419,7 +419,7 @@ class cl_varfixval {
    function sql_query ( $oid = null,$campos="varfixval.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,7 +444,7 @@ class cl_varfixval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,7 +456,7 @@ class cl_varfixval {
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_varfixval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

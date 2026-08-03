@@ -176,12 +176,12 @@ for ($i = 0; $i < $iVias; $i++) {
   for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
 
     $this->objpdf->setx($xcol + 3);
-    $this->objpdf->cell(16, 5, trim(pg_result($this->recorddositens, $ii, $this->rcodrequisicao)), 0, 0, "L", 0);
-    $this->objpdf->cell(50, 5, substr(trim(pg_result($this->recorddositens, $ii, $this->rsetor)), 0, 40), 0, 0, "L", 0);
-    $this->objpdf->cell(80, 5, substr(pg_result($this->recorddositens, $ii, $this->rexame), 0, 40), 0, 0, "L", 0);
-    $this->objpdf->cell(17, 5, (db_formatar(pg_result($this->recorddositens, $ii, $this->rdata), 'd')), 0, 0, "L", 0);
-    $this->objpdf->cell(15, 5, trim(pg_result($this->recorddositens, $ii, $this->rhora)), 0, 0, "C", 0);
-    $this->objpdf->cell(15, 5, (db_formatar(pg_result($this->recorddositens, $ii, $this->rentrega), 'd')), 0, 1, "C", 0);
+    $this->objpdf->cell(16, 5, trim(pg_fetch_result($this->recorddositens, $ii, $this->rcodrequisicao)), 0, 0, "L", 0);
+    $this->objpdf->cell(50, 5, substr(trim(pg_fetch_result($this->recorddositens, $ii, $this->rsetor)), 0, 40), 0, 0, "L", 0);
+    $this->objpdf->cell(80, 5, substr(pg_fetch_result($this->recorddositens, $ii, $this->rexame), 0, 40), 0, 0, "L", 0);
+    $this->objpdf->cell(17, 5, (db_formatar(pg_fetch_result($this->recorddositens, $ii, $this->rdata), 'd')), 0, 0, "L", 0);
+    $this->objpdf->cell(15, 5, trim(pg_fetch_result($this->recorddositens, $ii, $this->rhora)), 0, 0, "C", 0);
+    $this->objpdf->cell(15, 5, (db_formatar(pg_fetch_result($this->recorddositens, $ii, $this->rentrega), 'd')), 0, 1, "C", 0);
 
     $this->objpdf->Roundedrect($xcol, $xlin + 28, 202, 73, 2, 'DF', '1234');
     $this->objpdf->Roundedrect($xcol, $xlin + 28, 202, 73, 2, 'DF', '1234');
@@ -200,12 +200,12 @@ for ($i = 0; $i < $iVias; $i++) {
     for ($iContadorItens = 0; $iContadorItens < $this->linhasdositens; $iContadorItens++) {
 
       $this->objpdf->setx($xcol + 3);
-      $this->objpdf->cell(16, 4, trim(pg_result($this->recorddositens, $iContadorItens, $this->rcodrequisicao)), 0, 0, "L", 0);
-      $this->objpdf->cell(50, 4, substr(trim(pg_result($this->recorddositens, $iContadorItens, $this->rsetor)), 0, 40), 0, 0, "L", 0);
-      $this->objpdf->cell(80, 4, substr(pg_result($this->recorddositens, $iContadorItens, $this->rexame), 0, 40), 0, 0, "L", 0);
-      $this->objpdf->cell(17, 4, (db_formatar(pg_result($this->recorddositens, $iContadorItens, $this->rdata), 'd')), 0, 0, "L", 0);
-      $this->objpdf->cell(15, 4, trim(pg_result($this->recorddositens, $iContadorItens, $this->rhora)), 0, 0, "C", 0);
-      $this->objpdf->cell(15, 4, (db_formatar(pg_result($this->recorddositens, $iContadorItens, $this->rentrega), 'd')), 0, 1, "C", 0);
+      $this->objpdf->cell(16, 4, trim(pg_fetch_result($this->recorddositens, $iContadorItens, $this->rcodrequisicao)), 0, 0, "L", 0);
+      $this->objpdf->cell(50, 4, substr(trim(pg_fetch_result($this->recorddositens, $iContadorItens, $this->rsetor)), 0, 40), 0, 0, "L", 0);
+      $this->objpdf->cell(80, 4, substr(pg_fetch_result($this->recorddositens, $iContadorItens, $this->rexame), 0, 40), 0, 0, "L", 0);
+      $this->objpdf->cell(17, 4, (db_formatar(pg_fetch_result($this->recorddositens, $iContadorItens, $this->rdata), 'd')), 0, 0, "L", 0);
+      $this->objpdf->cell(15, 4, trim(pg_fetch_result($this->recorddositens, $iContadorItens, $this->rhora)), 0, 0, "C", 0);
+      $this->objpdf->cell(15, 4, (db_formatar(pg_fetch_result($this->recorddositens, $iContadorItens, $this->rentrega), 'd')), 0, 1, "C", 0);
 
       if (($iContadorItens + 1) == $quant_itens) {
         break;
@@ -213,9 +213,9 @@ for ($i = 0; $i < $iVias; $i++) {
     }
   }
 
-  if (trim($this->Rrequisito) != '') {
+  if (trim((string) $this->Rrequisito) != '') {
 
-    $Rrequisito = substr(trim($this->Rrequisito), 0, 110);
+    $Rrequisito = substr(trim((string) $this->Rrequisito), 0, 110);
     $this->objpdf->multicell(200, 4, str_replace("\n", '', ($Rrequisito)));
   }
 
@@ -223,13 +223,13 @@ for ($i = 0; $i < $iVias; $i++) {
   $this->objpdf->Setfont('Arial', 'b', 8);
   $this->objpdf->text($xcol + 2, $xlin + 110, 'Obs:');
   $this->objpdf->Setfont('Arial', 'b', 8);
-  $this->objpdf->text($xcol + 134, $xlin + 120, strtoupper($this->municpref) . ', ' . substr($this->emissao, 8, 2) . ' DE ' . strtoupper(db_mes(substr($this->emissao, 5, 2))) . ' DE ' . substr($this->emissao, 0, 4) . '.');
+  $this->objpdf->text($xcol + 134, $xlin + 120, strtoupper((string) $this->municpref) . ', ' . substr((string) $this->emissao, 8, 2) . ' DE ' . strtoupper(db_mes(substr((string) $this->emissao, 5, 2))) . ' DE ' . substr((string) $this->emissao, 0, 4) . '.');
   $this->objpdf->line($xcol + 130, $xlin + 110, $xcol + 195, $xlin + 110);
   $this->objpdf->text($xcol + 152, $xlin + 114, 'RECEBEDOR');
   $this->objpdf->Setfont('Arial', '', 8);
   $this->objpdf->sety($xlin + 110);
   $this->objpdf->setx($xcol + 1);
-  $this->objpdf->multicell(115, 3, substr($this->Rresumo, 0, 450), 0, "L");
+  $this->objpdf->multicell(115, 3, substr((string) $this->Rresumo, 0, 450), 0, "L");
 
   $xlin = 20;
 

@@ -44,7 +44,7 @@ require_once(modification("classes/db_db_depart_classe.php"));
 $clouvidor 			= new cl_ouvidor();
 $cldepartamento 	= new cl_db_depart();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -71,13 +71,13 @@ $rsSituacaoAtendimento   = $oDaoSituacaoAtendimento->sql_record($sSqlSituacaoAte
 if ($oDaoSituacaoAtendimento->numrows > 0) {
 	
   //monta o array para o select
-	$aSituacaoAtendimento = array();
+	$aSituacaoAtendimento = [];
   //qualquer tipo de Situação, sem filtros na pesquisa
   $aSituacaoAtendimento[0] = "Qualquer";
   for ( $i = 0 ; $i < $oDaoSituacaoAtendimento->numrows;$i++) {
   	
   	$oDadoSituacaoAtendimento = db_utils::fieldsMemory($rsSituacaoAtendimento, $i);
-    $aSituacaoAtendimento[$oDadoSituacaoAtendimento->ov18_sequencial] = urldecode($oDadoSituacaoAtendimento->ov18_descricao);
+    $aSituacaoAtendimento[$oDadoSituacaoAtendimento->ov18_sequencial] = urldecode((string) $oDadoSituacaoAtendimento->ov18_descricao);
   }
 }
 ?>
@@ -166,7 +166,7 @@ function js_ImprimeProcesso(){
 						<td align="left"><b>Ouvidoria:</b></td>
 						<td align="left">
 						<?php  
-							$x = array(0=>"Atual",1=>"Todos");
+							$x = [0=>"Atual",1=>"Todos"];
 							db_select('ouvidoria',$x,true,1);
 						?>
 						</td>
@@ -175,7 +175,7 @@ function js_ImprimeProcesso(){
 						<td align="left"><b>Quebras:</b></td>
 						<td align="left">
 						<?php  
-							$x = array(0=>"Tipo de Processo",1=>"Ouvidor",2=>"Destino");
+							$x = [0=>"Tipo de Processo",1=>"Ouvidor",2=>"Destino"];
 							db_select('quebra',$x,true,1);
 						?>
 						</td>
@@ -185,7 +185,7 @@ function js_ImprimeProcesso(){
 						<td align="left"><b>Ordenação:</b></td>
 						<td align="left">
 						<?php  
-							$x = array(0=>"Código do Atendimento",1=>"Situação");
+							$x = [0=>"Código do Atendimento",1=>"Situação"];
 							db_select('ordenacao',$x,true,1);
 						?>
 						</td>

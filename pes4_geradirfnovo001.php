@@ -54,20 +54,20 @@ $db_opcao   = 1;
   <tr> 
     <td height="430" align="left" valign="top"> 
      <?php
-       $clcriaabas->identifica = array("geradirf"     => "Gera DIRF",
-                                       "selecionados" => "Selecionados");
+       $clcriaabas->identifica = ["geradirf"     => "Gera DIRF",
+                                       "selecionados" => "Selecionados"];
 
-       $clcriaabas->title      = array("geradirf"     => "Gera DIRF",
-                                       "selecionados" => "Servidores");
+       $clcriaabas->title      = ["geradirf"     => "Gera DIRF",
+                                       "selecionados" => "Servidores"];
        
-       $clcriaabas->src        = array("geradirf"     => "pes4_geradirfnovo004.php",
-                                       "selecionados" => "pes1_geradirfnovoselecionados001.php");
+       $clcriaabas->src        = ["geradirf"     => "pes4_geradirfnovo004.php",
+                                       "selecionados" => "pes1_geradirfnovoselecionados001.php"];
        
-       $clcriaabas->disabled   = array("geradirf"     => "true",
-                                       "selecionados" => "true");
+       $clcriaabas->disabled   = ["geradirf"     => "true",
+                                       "selecionados" => "true"];
        
-       $clcriaabas->sizecampo  = array("geradirf"     => "23",
-                                       "selecionados" => "23");
+       $clcriaabas->sizecampo  = ["geradirf"     => "23",
+                                       "selecionados" => "23"];
        $clcriaabas->cria_abas();
      ?> 
     </td>

@@ -14,12 +14,12 @@ class IdentificadorDespeaFuncionarioEnum extends Enum
 
     public function name()
     {
-        $data = array(
+        $data = [
             self::NAO_APLICA => "NSA (Não se aplica)",
             self::FOLHA_PAGAMENTO => "Folha de pagamento",
             self::INDENIZACOES => "Indenizações não inclusas na folha depagamento",
             self::OBRIGACAO_PATRONAL => "Obrigações Patronais",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Identificador de despesa com funcionário inválido.');

@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE db_relatfiltros
 class cl_db_relatfiltros { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db94_codigo = 0; 
-   var $db94_codrel = 0; 
-   var $db94_codcam = 0; 
-   var $db94_valini = null; 
-   var $db94_valfim = null; 
+   public $db94_codigo = 0; 
+   public $db94_codrel = 0; 
+   public $db94_codcam = 0; 
+   public $db94_valini = null; 
+   public $db94_valfim = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db94_codigo = int8 = Código do filtro 
                  db94_codrel = int8 = Código do relatório 
                  db94_codcam = int4 = Código 
@@ -56,10 +56,10 @@ class cl_db_relatfiltros {
                  db94_valfim = varchar(40) = Valor final 
                  ";
    //funcao construtor da classe 
-   function cl_db_relatfiltros() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_relatfiltros"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -113,10 +113,10 @@ class cl_db_relatfiltros {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db94_codigo = pg_result($result,0,0); 
+       $this->db94_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_relatfiltros_db94_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db94_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db94_codigo)){
          $this->erro_sql = " Campo db94_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -152,7 +152,7 @@ class cl_db_relatfiltros {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Filtros para o relatório ($this->db94_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Filtros para o relatório já Cadastrado";
@@ -176,14 +176,14 @@ class cl_db_relatfiltros {
      $resaco = $this->sql_record($this->sql_query_file($this->db94_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8287,'$this->db94_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1398,8287,'','".AddSlashes(pg_result($resaco,0,'db94_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1398,8288,'','".AddSlashes(pg_result($resaco,0,'db94_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1398,8289,'','".AddSlashes(pg_result($resaco,0,'db94_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1398,8290,'','".AddSlashes(pg_result($resaco,0,'db94_valini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1398,8291,'','".AddSlashes(pg_result($resaco,0,'db94_valfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1398,8287,'','".AddSlashes(pg_fetch_result($resaco,0,'db94_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1398,8288,'','".AddSlashes(pg_fetch_result($resaco,0,'db94_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1398,8289,'','".AddSlashes(pg_fetch_result($resaco,0,'db94_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1398,8290,'','".AddSlashes(pg_fetch_result($resaco,0,'db94_valini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1398,8291,'','".AddSlashes(pg_fetch_result($resaco,0,'db94_valfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -192,10 +192,10 @@ class cl_db_relatfiltros {
       $this->atualizacampos();
      $sql = " update db_relatfiltros set ";
      $virgula = "";
-     if(trim($this->db94_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db94_codigo"])){ 
+     if(trim((string) $this->db94_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db94_codigo"])){ 
        $sql  .= $virgula." db94_codigo = $this->db94_codigo ";
        $virgula = ",";
-       if(trim($this->db94_codigo) == null ){ 
+       if(trim((string) $this->db94_codigo) == null ){ 
          $this->erro_sql = " Campo Código do filtro nao Informado.";
          $this->erro_campo = "db94_codigo";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_db_relatfiltros {
          return false;
        }
      }
-     if(trim($this->db94_codrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db94_codrel"])){ 
+     if(trim((string) $this->db94_codrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db94_codrel"])){ 
        $sql  .= $virgula." db94_codrel = $this->db94_codrel ";
        $virgula = ",";
-       if(trim($this->db94_codrel) == null ){ 
+       if(trim((string) $this->db94_codrel) == null ){ 
          $this->erro_sql = " Campo Código do relatório nao Informado.";
          $this->erro_campo = "db94_codrel";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_db_relatfiltros {
          return false;
        }
      }
-     if(trim($this->db94_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db94_codcam"])){ 
+     if(trim((string) $this->db94_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db94_codcam"])){ 
        $sql  .= $virgula." db94_codcam = $this->db94_codcam ";
        $virgula = ",";
-       if(trim($this->db94_codcam) == null ){ 
+       if(trim((string) $this->db94_codcam) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "db94_codcam";
          $this->erro_banco = "";
@@ -231,11 +231,11 @@ class cl_db_relatfiltros {
          return false;
        }
      }
-     if(trim($this->db94_valini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db94_valini"])){ 
+     if(trim((string) $this->db94_valini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db94_valini"])){ 
        $sql  .= $virgula." db94_valini = '$this->db94_valini' ";
        $virgula = ",";
      }
-     if(trim($this->db94_valfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db94_valfim"])){ 
+     if(trim((string) $this->db94_valfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db94_valfim"])){ 
        $sql  .= $virgula." db94_valfim = '$this->db94_valfim' ";
        $virgula = ",";
      }
@@ -247,19 +247,19 @@ class cl_db_relatfiltros {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8287,'$this->db94_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db94_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1398,8287,'".AddSlashes(pg_result($resaco,$conresaco,'db94_codigo'))."','$this->db94_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1398,8287,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db94_codigo'))."','$this->db94_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db94_codrel"]))
-           $resac = db_query("insert into db_acount values($acount,1398,8288,'".AddSlashes(pg_result($resaco,$conresaco,'db94_codrel'))."','$this->db94_codrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1398,8288,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db94_codrel'))."','$this->db94_codrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db94_codcam"]))
-           $resac = db_query("insert into db_acount values($acount,1398,8289,'".AddSlashes(pg_result($resaco,$conresaco,'db94_codcam'))."','$this->db94_codcam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1398,8289,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db94_codcam'))."','$this->db94_codcam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db94_valini"]))
-           $resac = db_query("insert into db_acount values($acount,1398,8290,'".AddSlashes(pg_result($resaco,$conresaco,'db94_valini'))."','$this->db94_valini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1398,8290,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db94_valini'))."','$this->db94_valini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db94_valfim"]))
-           $resac = db_query("insert into db_acount values($acount,1398,8291,'".AddSlashes(pg_result($resaco,$conresaco,'db94_valfim'))."','$this->db94_valfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1398,8291,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db94_valfim'))."','$this->db94_valfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -304,14 +304,14 @@ class cl_db_relatfiltros {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8287,'$db94_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1398,8287,'','".AddSlashes(pg_result($resaco,$iresaco,'db94_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1398,8288,'','".AddSlashes(pg_result($resaco,$iresaco,'db94_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1398,8289,'','".AddSlashes(pg_result($resaco,$iresaco,'db94_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1398,8290,'','".AddSlashes(pg_result($resaco,$iresaco,'db94_valini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1398,8291,'','".AddSlashes(pg_result($resaco,$iresaco,'db94_valfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1398,8287,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db94_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1398,8288,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db94_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1398,8289,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db94_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1398,8290,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db94_valini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1398,8291,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db94_valfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_relatfiltros
@@ -371,7 +371,7 @@ class cl_db_relatfiltros {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_relatfiltros";
@@ -385,7 +385,7 @@ class cl_db_relatfiltros {
    function sql_query ( $db94_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,7 +408,7 @@ class cl_db_relatfiltros {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -420,7 +420,7 @@ class cl_db_relatfiltros {
    function sql_query_file ( $db94_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -441,7 +441,7 @@ class cl_db_relatfiltros {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

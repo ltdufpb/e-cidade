@@ -56,10 +56,10 @@
       <tr> 
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
           <?php 
-            $clcriaabas->identifica = array("aguacondominio"    => "Condominio",
-                                            "aguacondominiomat" => "Matrículas"); 
-            $clcriaabas->src        = array("aguacondominio"    => "agu1_aguacondominio005.php");
-            $clcriaabas->disabled   = array("aguacondominiomat" => "true");
+            $clcriaabas->identifica = ["aguacondominio"    => "Condominio",
+                                            "aguacondominiomat" => "Matrículas"]; 
+            $clcriaabas->src        = ["aguacondominio"    => "agu1_aguacondominio005.php"];
+            $clcriaabas->disabled   = ["aguacondominiomat" => "true"];
             
             $clcriaabas->cria_abas();
           ?>

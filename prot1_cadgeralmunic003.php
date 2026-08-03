@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php        
-       $clcriaabas->identifica = array("cgm"=>"Dados CGM","documentos"=>"Documentos"); 
-       $clcriaabas->src = array("cgm"=>"prot1_cadgeralmunic006.php");
-       $clcriaabas->disabled   =  array("documentos"=>"true"); 
+       $clcriaabas->identifica = ["cgm"=>"Dados CGM","documentos"=>"Documentos"]; 
+       $clcriaabas->src = ["cgm"=>"prot1_cadgeralmunic006.php"];
+       $clcriaabas->disabled   =  ["documentos"=>"true"]; 
        
 //	     $clcriaabas->identifica = array("cadenderrua"=>"RUA","cadenderbairrocadenderrua"=>"Bairros"); 
 //	     $clcriaabas->src = array("cadenderrua"=>"con1_cadenderrua006.php");

@@ -31,23 +31,23 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $classinatura = new cl_assinatura;
 
-if(substr($nivel,0,1) == '7')
+if(str_starts_with((string) $nivel, '7'))
   $tipo_agrupa = 1;
-elseif(substr($nivel,0,1) == '1')
+elseif(str_starts_with((string) $nivel, '1'))
   $tipo_agrupa = 2;
-elseif(substr($nivel,0,1) == '2')
+elseif(str_starts_with((string) $nivel, '2'))
   $tipo_agrupa = 3;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
       $descr_inst .= $xvirg.$nomeinstabrev ;
         $xvirg = ', ';
@@ -70,7 +70,7 @@ if($origem == "O"){
   if($opcao == 3)
     $head6 = "PERÍODO : ".db_formatar($perini,'d')." A ".db_formatar($perfin,'d') ;
   else
-    $head6 = "PERÍODO : ".strtoupper(db_mes(substr($perini,5,2)))." A ".strtoupper(db_mes(substr($perfin,5,2)));
+    $head6 = "PERÍODO : ".strtoupper(db_mes(substr((string) $perini,5,2)))." A ".strtoupper(db_mes(substr((string) $perfin,5,2)));
 }
 
 $head3 = "RESUMO DA DESPESA - CONSOLIDAÇÃO GERAL";
@@ -100,14 +100,14 @@ if($tipo_agrupa==1){
 
 $result = db_query($sql);
 
-$xcampos = split("-",$orgaos);
+$xcampos = preg_split("#\\-#m",$orgaos);
 
 $virgula = '';
 $tem_orgao = 0;
 $where_orgao = " o58_orgao in (";
-if (substr($nivel,0,1)!=7)
+if (substr((string) $nivel,0,1)!=7)
 for($i=0;$i < sizeof($xcampos);$i++){
-   $xxcampos = split("_",$xcampos[$i]);
+   $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
    if (!isset($xxcampos["1"])) continue;
    $where_orgao .= $virgula.$xxcampos["1"];
    $virgula = ', ';
@@ -118,9 +118,9 @@ $where_orgao .= ")";
 $virgula = '';
 $tem_unidade = 0;
 $where_unidade = " o58_unidade in (";
-if (substr($nivel,0,1)!=7)
+if (substr((string) $nivel,0,1)!=7)
 for($i=0;$i < sizeof($xcampos);$i++){
-   $xxcampos = split("_",$xcampos[$i]);
+   $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
    if (!isset($xxcampos["2"])) continue;
    $where_unidade .= $virgula.$xxcampos["2"];
    $virgula = ', ';
@@ -131,9 +131,9 @@ $where_unidade .= ")";
 $virgula = '';
 $tem_elemento =0;
 $where_elemento = " cast(o56_elemento as bigint) in (";
-if (substr($nivel,0,1)=="7")
+if (str_starts_with((string) $nivel, "7"))
 for($i=0;$i < sizeof($xcampos);$i++){
-   $xxcampos = split("_",$xcampos[$i]);
+   $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
    if (!isset($xxcampos["1"])) continue;
    $where_elemento .= $virgula.$xxcampos["1"];
    $virgula = ', ';
@@ -159,7 +159,7 @@ $result_rec = db_dotacaosaldo(7,2,3,true,$where,$anousu,$dataini,$datafin,null,n
 
 $valor = 0;
 
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
 
   if($tipo_balanco == 2){
@@ -223,14 +223,14 @@ $result = db_query($sql);
 $pagina = 1;
 $valorx = 0;
 $totalvalorx = 0;
-$qorgao = pg_result($result,0,'orgao');
-$qunidade = pg_result($result,0,'unidade');
+$qorgao = pg_fetch_result($result,0,'orgao');
+$qunidade = pg_fetch_result($result,0,'unidade');
 $qualou = $qorgao.$qunidade;
 $totproj  = 0;
 $totativ  = 0;
 $totoper  = 0;
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   if($valor == 0)
     continue;
@@ -291,7 +291,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     }
     $pdf->setfont('arial','',6);
     $pdf->cell(25,$alt,db_formatar($elemento,'elemento'),0,0,"L",0);
-    if(substr($elemento,2,3) == "000"){
+    if(substr((string) $elemento,2,3) == "000"){
        $xx = 1;
        $pdf->cell($xx,$alt,"",0,0,"R",0);
        $pdf->cell(55+11,$alt,$descr,0,0,"L",0);
@@ -299,7 +299,7 @@ for($i=0;$i<pg_numrows($result);$i++){
        $pdf->cell(20,$alt,"",0,0,"R",0);
        $pdf->cell(20,$alt,db_formatar($valor,'f'),0,1,"R",0);
        $totproj  += $valor;
-    }elseif(substr($elemento,3,2) == "00"){
+    }elseif(substr((string) $elemento,3,2) == "00"){
        $xx = 3;
        $pdf->cell($xx,$alt,"",0,0,"R",0);
        $pdf->cell(55+9,$alt,$descr,0,0,"L",0);
@@ -318,9 +318,9 @@ for($i=0;$i<pg_numrows($result);$i++){
        $totoper  += $valor;
     }
 
-  if(pg_numrows($result)>($i+1) && $i > 0){
-    $auxorgao   = pg_result($result,$i+1,'orgao');
-    $auxunidade = pg_result($result,$i+1,'unidade');
+  if(pg_num_rows($result)>($i+1) && $i > 0){
+    $auxorgao   = pg_fetch_result($result,$i+1,'orgao');
+    $auxunidade = pg_fetch_result($result,$i+1,'unidade');
     if($orgao != $auxorgao && $unidade != $auxunidade ){
       if($tipo_agrupa!=1){
         $pdf->cell(110,$alt,"",0,0,"L",0);
@@ -378,10 +378,10 @@ $desp_cor = 0;
 $desp_cap = 0;
 $res_con = 0;
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $pdf->setfont('arial','',7);
-  if(substr($elemento,1,1) == "3" ){
+  if(substr((string) $elemento,1,1) == "3" ){
     $pdf->cell(45,$alt,'',0,0,"L",0);
     $pdf->cell(50,$alt,$descr,0,0,"L",0);
     $pdf->cell(30,$alt,db_formatar($sum,'f'),0,1,"R",0);
@@ -394,10 +394,10 @@ $pdf->cell(50,$alt,"Total das Despesas Correntes",0,0,"L",0);
 $pdf->cell(30,$alt,db_formatar($desp_cor,'f'),"T",1,"R",0);
 $pdf->ln(3);
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $pdf->setfont('arial','',7);
-  if(substr($elemento,1,1) == "4" ){
+  if(substr((string) $elemento,1,1) == "4" ){
     $pdf->cell(45,$alt,'',0,0,"L",0);
     $pdf->cell(50,$alt,$descr,0,0,"L",0);
     $pdf->cell(30,$alt,db_formatar($sum,'f'),0,1,"R",0);
@@ -410,10 +410,10 @@ $pdf->cell(50,$alt,"Total das Despesas de Capital",0,0,"L",0);
 $pdf->cell(30,$alt,db_formatar($desp_cap,'f'),"T",1,"R",0);
 $pdf->ln(3);
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $pdf->setfont('arial','',7);
-  if(substr($elemento,1,1) == "9" ||substr($elemento,1,1) == "7" ){
+  if(substr((string) $elemento,1,1) == "9" ||substr((string) $elemento,1,1) == "7" ){
     $pdf->cell(45,$alt,'',0,0,"L",0);
     $pdf->cell(50,$alt,$descr,0,0,"L",0);
     $pdf->cell(30,$alt,db_formatar($sum,'f'),0,1,"R",0);

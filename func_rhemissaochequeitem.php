@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhemissaochequeitem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhemissaochequeitem = new cl_rhemissaochequeitem;
 $clrhemissaochequeitem->rotulo->label("r18_sequencial");
 $clrhemissaochequeitem->rotulo->label("r18_emissaocheque");
@@ -99,7 +99,7 @@ $clrhemissaochequeitem->rotulo->label("r18_emissaocheque");
            $sql = $clrhemissaochequeitem->sql_query("",$campos,"r18_sequencial","");
         }
         
-        $repassa = array();
+        $repassa = [];
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

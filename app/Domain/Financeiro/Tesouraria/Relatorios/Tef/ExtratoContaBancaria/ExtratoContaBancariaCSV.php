@@ -147,7 +147,7 @@ class ExtratoContaBancariaCSV extends Dumper
                 "Autenticação mecânica:",
                 '',
                 '',
-                trim($oMovimento->k12_codautent),
+                trim((string) $oMovimento->k12_codautent),
                 '',
                 '',
                 '',

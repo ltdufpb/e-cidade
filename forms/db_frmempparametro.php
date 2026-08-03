@@ -91,7 +91,7 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
       <?=@$Le30_liberaempenho ?> 
     </td>
     <td><?php 
-           $matriz = array("f"=>"nao","t"=>"sim");             
+           $matriz = ["f"=>"nao","t"=>"sim"];             
            db_select("e30_liberaempenho",$matriz,true,1); 
         ?>     
     </td>
@@ -100,7 +100,7 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
   <tr>
     <td nowrap title="<?=@$Te30_autimportahist ?>"><?=@$Le30_autimportahist ?> </td>
     <td><?php 
-           $matriz = array("f"=>"nao","t"=>"sim");             
+           $matriz = ["f"=>"nao","t"=>"sim"];             
            db_select("e30_autimportahist",$matriz,true,1); 
         ?>     
     </td>
@@ -108,7 +108,7 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
 
   <tr>
     <td nowrap title="<?=@$Te30_trazobsultop?>">       <?=@$Le30_trazobsultop ?>    </td>
-    <td><?php  $matriz = array("1"=>"Não Trazer","2"=>"Trazer Geral","3"=>"Trazer por usuário");             
+    <td><?php  $matriz = ["1"=>"Não Trazer","2"=>"Trazer Geral","3"=>"Trazer por usuário"];             
            db_select("e30_trazobsultop", $matriz,true,1); 
         ?> 
     </td>
@@ -116,7 +116,7 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
 
   <tr>
     <td nowrap title="<?=@$Te30_opimportaresumo?>">       <?=@$Le30_opimportaresumo ?>    </td>
-    <td><?php  $matriz = array("f"=>"nao","t"=>"sim");             
+    <td><?php  $matriz = ["f"=>"nao","t"=>"sim"];             
            db_select("e30_opimportaresumo", $matriz,true,1); 
         ?> 
     </td>
@@ -125,7 +125,7 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
   
   <tr>
     <td nowrap title="<?=@$Te30_empdataserv?>"><?=@$Le30_empdataserv ?></td>
-    <td><?php  $matriz = array("f"=>"nao","t"=>"sim");             
+    <td><?php  $matriz = ["f"=>"nao","t"=>"sim"];             
            db_select("e30_empdataserv", $matriz,true,1); 
         ?> 
     </td>
@@ -133,14 +133,14 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
   
   <tr>
     <td nowrap title="<?=@$Te30_empdataemp?>"><?=@$Le30_empdataemp ?></td>
-    <td><?php  $matriz = array("f"=>"nao","t"=>"sim");             
+    <td><?php  $matriz = ["f"=>"nao","t"=>"sim"];             
            db_select("e30_empdataemp", $matriz,true,1); 
         ?> 
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te30_formvisuitemaut?>"><?=@$Le30_formvisuitemaut?></td>
-    <td><?php  $matriz = array("1"=>"Por elemento","2"=>"Por Desdobramento","3"=>"Nenhum");             
+    <td><?php  $matriz = ["1"=>"Por elemento","2"=>"Por Desdobramento","3"=>"Nenhum"];             
            db_select("e30_formvisuitemaut", $matriz,true,1); 
         ?> 
     </td>
@@ -148,7 +148,7 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
 
   <tr>
     <td nowrap title="<?=@$Te30_verificarmatordem?>"><?=@$Le30_verificarmatordem?></td>
-    <td><?php  $matriz = array("0"=>"sim","1"=>"nao");             
+    <td><?php  $matriz = ["0"=>"sim","1"=>"nao"];             
            db_select("e30_verificarmatordem", $matriz,true,1); 
         ?> 
     </td>
@@ -158,7 +158,7 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
     <td>
       <?php 
          if (isset($e30_notaliquidacao) && $e30_notaliquidacao != '') {
-           $dtnota = explode("-",$e30_notaliquidacao);
+           $dtnota = explode("-",(string) $e30_notaliquidacao);
            $e30_notaliquidacao_dia 	= $dtnota[2];
            $e30_notaliquidacao_mes 	= $dtnota[1];
            $e30_notaliquidacao_ano 	= $dtnota[0];
@@ -176,7 +176,7 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$Te30_usadataagenda?>">       <?=@$Le30_usadataagenda?>    </td>
-    <td><?php  $matriz = array("f"=>"nao","t"=>"sim");             	
+    <td><?php  $matriz = ["f"=>"nao","t"=>"sim"];             	
            db_select("e30_usadataagenda", $matriz,true,1); 
         ?> 
     </td>
@@ -184,7 +184,7 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
   <tr>
     <td nowrap title="<?=@$Te30_impobslicempenho?>">       <?=@$Le30_impobslicempenho?>    </td>
     <td>
-    	<?php  $matriz = array("t"=>"sim", "f"=>"nao");             	
+    	<?php  $matriz = ["t"=>"sim", "f"=>"nao"];             	
            db_select("e30_impobslicempenho", $matriz,true,1); 
         ?> 
     </td>
@@ -193,7 +193,7 @@ db_input('e30_nroviaaut',15,$Ie30_nroviaaut,true,'text',$db_opcao,"")
     <td nowrap title="<?=@$Te30_dadosbancoempenho?>">       <?=@$Le30_dadosbancoempenho?>    </td>
     <td>
       <?php  
-        $aDadosBancoEmpenho = array("f"=>"não", "t"=>"sim");               
+        $aDadosBancoEmpenho = ["f"=>"não", "t"=>"sim"];               
         db_select("e30_dadosbancoempenho", $aDadosBancoEmpenho, true, 1); 
       ?> 
     </td>
@@ -222,7 +222,7 @@ function js_preenchepesquisa(chave){
   db_iframe_empparametro.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

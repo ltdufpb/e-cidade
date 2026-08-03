@@ -526,7 +526,7 @@ try {
                 throw new Exception($daoPermissaoAtividade->erro_msg);
             }
             if (!empty($parametros->atividadesSelecionadas)) {
-                $codigosAtividades = explode(',', $parametros->atividadesSelecionadas);
+                $codigosAtividades = explode(',', (string) $parametros->atividadesSelecionadas);
                 foreach ($codigosAtividades as $codigoAtividade) {
                     $daoPermissaoAtividade->db69_codperm = $parametros->codigoPermissao;
                     $daoPermissaoAtividade->db69_atividadesexecucao = $codigoAtividade;

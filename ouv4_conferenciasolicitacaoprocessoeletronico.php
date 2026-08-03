@@ -37,7 +37,7 @@ $tipoProcesso = $oGet->tipoProcesso;
 $processo = $oGet->processo;
 $ano = $oGet->ano;
 $escondeBotoes = $oGet->escondeBotoes;
-$codigoProcessoProtocolo = isset($oGet->codigoProcessoProtocolo) ? $oGet->codigoProcessoProtocolo : null;
+$codigoProcessoProtocolo = $oGet->codigoProcessoProtocolo ?? null;
 ?>
 <html>
 <head>

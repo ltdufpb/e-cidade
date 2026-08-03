@@ -76,7 +76,7 @@ class DiaTrabalho
    * Marcações do servidor no dia
    * @var array
    */
-    private $aMarcacoes = array();
+    private $aMarcacoes = [];
 
   /**
    * Horas normais de trabalho
@@ -208,7 +208,7 @@ class DiaTrabalho
   /**
    * @var \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoHoraExtraManual []
    */
-    private $assentamentosHoraExtraManual = array();
+    private $assentamentosHoraExtraManual = [];
 
     private $oAssentamentosAbonofalta = null;
 
@@ -275,7 +275,7 @@ class DiaTrabalho
     private $sHorasExtraNaoAutorizadasNoturna;
 
     /** @var \Assentamento[] */
-    private $assentamentosJustificativaServidor = array();
+    private $assentamentosJustificativaServidor = [];
 
     /**
    * Construtor da classe
@@ -917,7 +917,7 @@ class DiaTrabalho
                     $horasTrabalhoAjustadas = $this->ajustarHorasTrabalhoNoturna($oHoraAdicionalNoturno);
 
                     if (preg_match('/\d+:\d+/', $horasTrabalhoAjustadas)) {
-                        list($horaTrabalhadaAjustada, $minutoTrabalhadoAjustado) = explode(
+                        [$horaTrabalhadaAjustada, $minutoTrabalhadoAjustado] = explode(
                             ':',
                             $horasTrabalhoAjustadas
                         );
@@ -957,11 +957,11 @@ class DiaTrabalho
 
                 $periodoEvento = '';
                 if ($this->evento->getDataInicial() instanceof \DBDate) {
-                    $periodoEvento  = $this->evento->getDataInicial(\DBDate::DATA_PTBR);
+                    $periodoEvento  = $this->evento->getDataInicial();
 
                     if ($this->evento->getDataFinal() instanceof \DBDate) {
                         $periodoEvento .= ' a ';
-                        $periodoEvento .= $this->evento->getDataFinal(\DBDate::DATA_PTBR);
+                        $periodoEvento .= $this->evento->getDataFinal();
                     }
                 }
                 $this->logger->debug("-- Periodo........: ". (!empty($periodoEvento) ? $periodoEvento : ''));
@@ -1146,7 +1146,7 @@ class DiaTrabalho
   /**
    * @param \Assentamento|null $assentamento
    */
-    public function setAfastamento(\Assentamento $assentamento = null)
+    public function setAfastamento(?\Assentamento $assentamento = null)
     {
 
         $this->afastamento = $assentamento;
@@ -1253,8 +1253,8 @@ class DiaTrabalho
 
         $horasTrabalho = explode(":", $this->getHorasTrabalho());
 
-        $horasNoturnasComPropoporcao = explode(":", $horasNoturnas->getHorasCalculadasComProporcao());
-        $horasNoturnasSemPropoporcao = explode(":", $horasNoturnas->getHorasCalculadasSemProporcao());
+        $horasNoturnasComPropoporcao = explode(":", (string) $horasNoturnas->getHorasCalculadasComProporcao());
+        $horasNoturnasSemPropoporcao = explode(":", (string) $horasNoturnas->getHorasCalculadasSemProporcao());
 
         $intervaloHorasNoturnasComProporcao = new
             \DateInterval("PT{$horasNoturnasComPropoporcao[0]}H{$horasNoturnasComPropoporcao[1]}M");
@@ -1605,7 +1605,7 @@ class DiaTrabalho
         if ($this->getHorasExtra100() !== null && $this->getHorasExtra100() != '00:00'
             && $this->getHorasExtra100() != '') {
             $horas = $this->getHorasTotaisDeTrabalho();
-            $extra = $this->getHorasExtra100('00:00');
+            $extra = $this->getHorasExtra100();
             /**
              * Valida se a quantidade de horas trabalhada é inferior a quamtidade de horas extras,
              *  e manter a maior quantidade
@@ -1613,7 +1613,7 @@ class DiaTrabalho
             if (strtotime($horas) > strtotime($extra)) {
                 $this->setHorasExtra100('00:00');
             } else {
-                $horas = $this->getHorasExtra100('00:00');
+                $horas = $this->getHorasExtra100();
             }
         }
 

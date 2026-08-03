@@ -82,9 +82,9 @@ $clcgm->rotulo->label();
           <td valign="top"  align="center">  
             <?php 
             
-              $aChavePri = array( "j120_sequencial" => @$j120_sequencial,
+              $aChavePri = [ "j120_sequencial" => @$j120_sequencial,
                                   "j120_loteam"     => @$j120_cgm,
-                                  "j120_cgm"        => @$j120_cgm);
+                                  "j120_cgm"        => @$j120_cgm];
         
               $sCampo    = "j120_sequencial,j120_loteam,j120_cgm";
               

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_municipiosiafi_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmunicipiosiafi = new cl_municipiosiafi;
 $clmunicipiosiafi->rotulo->label("q110_sequencial");
 $clmunicipiosiafi->rotulo->label("q110_codigo");
@@ -98,9 +98,9 @@ $clmunicipiosiafi->rotulo->label("q110_codigo");
         }else{
            $sql = $clmunicipiosiafi->sql_query("",$campos,"q110_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q110_codigo)){
-          $repassa = array("chave_q110_sequencial"=>$chave_q110_sequencial,"chave_q110_codigo"=>$chave_q110_codigo);
+          $repassa = ["chave_q110_sequencial"=>$chave_q110_sequencial,"chave_q110_codigo"=>$chave_q110_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

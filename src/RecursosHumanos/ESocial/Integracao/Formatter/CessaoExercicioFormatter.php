@@ -48,6 +48,7 @@ class CessaoExercicioFormatter extends Formatter
      * @throws \BusinessException
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosServidor = [];
@@ -195,6 +196,7 @@ class CessaoExercicioFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
+    #[\Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -207,6 +209,7 @@ class CessaoExercicioFormatter extends Formatter
      *
      * @return  self
      */
+    #[\Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

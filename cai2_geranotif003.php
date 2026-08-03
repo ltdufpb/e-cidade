@@ -31,9 +31,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_arretipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $instit = db_getsession("DB_instit");
 $clarretipo = new cl_arretipo;
 $clarretipo->rotulo->label("k00_tipo");
@@ -199,7 +199,7 @@ $clarretipo->rotulo->label("k00_descr");
                    group by $xcodigo1,z01_numcgm,z01_nome";
           $result = db_query($sql);
 
-          if(pg_numrows($result) !=0 ){
+          if(pg_num_rows($result) !=0 ){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$z01_nome',false);</script>";
           }else{

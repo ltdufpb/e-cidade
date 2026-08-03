@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE fiscexec
 class cl_fiscexec { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y13_codnoti = 0; 
-   var $y13_codigo = 0; 
-   var $y13_codi = 0; 
-   var $y13_numero = 0; 
-   var $y13_compl = null; 
+   public $y13_codnoti = 0; 
+   public $y13_codigo = 0; 
+   public $y13_codi = 0; 
+   public $y13_numero = 0; 
+   public $y13_compl = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y13_codnoti = int8 = Código da Notificação 
                  y13_codigo = int4 = Rua/Avenida 
                  y13_codi = int4 = Bairro 
@@ -56,10 +56,10 @@ class cl_fiscexec {
                  y13_compl = varchar(10) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_fiscexec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscexec"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -138,7 +138,7 @@ class cl_fiscexec {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "local da execução da notificação ($this->y13_codnoti) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "local da execução da notificação já Cadastrado";
@@ -162,14 +162,14 @@ class cl_fiscexec {
      $resaco = $this->sql_record($this->sql_query_file($this->y13_codnoti));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5121,'$this->y13_codnoti','I')");
-       $resac = db_query("insert into db_acount values($acount,730,5121,'','".AddSlashes(pg_result($resaco,0,'y13_codnoti'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,730,5116,'','".AddSlashes(pg_result($resaco,0,'y13_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,730,5119,'','".AddSlashes(pg_result($resaco,0,'y13_codi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,730,5117,'','".AddSlashes(pg_result($resaco,0,'y13_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,730,5118,'','".AddSlashes(pg_result($resaco,0,'y13_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,730,5121,'','".AddSlashes(pg_fetch_result($resaco,0,'y13_codnoti'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,730,5116,'','".AddSlashes(pg_fetch_result($resaco,0,'y13_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,730,5119,'','".AddSlashes(pg_fetch_result($resaco,0,'y13_codi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,730,5117,'','".AddSlashes(pg_fetch_result($resaco,0,'y13_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,730,5118,'','".AddSlashes(pg_fetch_result($resaco,0,'y13_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -178,10 +178,10 @@ class cl_fiscexec {
       $this->atualizacampos();
      $sql = " update fiscexec set ";
      $virgula = "";
-     if(trim($this->y13_codnoti)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y13_codnoti"])){ 
+     if(trim((string) $this->y13_codnoti)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y13_codnoti"])){ 
        $sql  .= $virgula." y13_codnoti = $this->y13_codnoti ";
        $virgula = ",";
-       if(trim($this->y13_codnoti) == null ){ 
+       if(trim((string) $this->y13_codnoti) == null ){ 
          $this->erro_sql = " Campo Código da Notificação nao Informado.";
          $this->erro_campo = "y13_codnoti";
          $this->erro_banco = "";
@@ -191,10 +191,10 @@ class cl_fiscexec {
          return false;
        }
      }
-     if(trim($this->y13_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y13_codigo"])){ 
+     if(trim((string) $this->y13_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y13_codigo"])){ 
        $sql  .= $virgula." y13_codigo = $this->y13_codigo ";
        $virgula = ",";
-       if(trim($this->y13_codigo) == null ){ 
+       if(trim((string) $this->y13_codigo) == null ){ 
          $this->erro_sql = " Campo Rua/Avenida nao Informado.";
          $this->erro_campo = "y13_codigo";
          $this->erro_banco = "";
@@ -204,10 +204,10 @@ class cl_fiscexec {
          return false;
        }
      }
-     if(trim($this->y13_codi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y13_codi"])){ 
+     if(trim((string) $this->y13_codi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y13_codi"])){ 
        $sql  .= $virgula." y13_codi = $this->y13_codi ";
        $virgula = ",";
-       if(trim($this->y13_codi) == null ){ 
+       if(trim((string) $this->y13_codi) == null ){ 
          $this->erro_sql = " Campo Bairro nao Informado.";
          $this->erro_campo = "y13_codi";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_fiscexec {
          return false;
        }
      }
-     if(trim($this->y13_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y13_numero"])){ 
+     if(trim((string) $this->y13_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y13_numero"])){ 
        $sql  .= $virgula." y13_numero = $this->y13_numero ";
        $virgula = ",";
-       if(trim($this->y13_numero) == null ){ 
+       if(trim((string) $this->y13_numero) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "y13_numero";
          $this->erro_banco = "";
@@ -230,7 +230,7 @@ class cl_fiscexec {
          return false;
        }
      }
-     if(trim($this->y13_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y13_compl"])){ 
+     if(trim((string) $this->y13_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y13_compl"])){ 
        $sql  .= $virgula." y13_compl = '$this->y13_compl' ";
        $virgula = ",";
      }
@@ -242,19 +242,19 @@ class cl_fiscexec {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5121,'$this->y13_codnoti','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y13_codnoti"]))
-           $resac = db_query("insert into db_acount values($acount,730,5121,'".AddSlashes(pg_result($resaco,$conresaco,'y13_codnoti'))."','$this->y13_codnoti',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,730,5121,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y13_codnoti'))."','$this->y13_codnoti',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y13_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,730,5116,'".AddSlashes(pg_result($resaco,$conresaco,'y13_codigo'))."','$this->y13_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,730,5116,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y13_codigo'))."','$this->y13_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y13_codi"]))
-           $resac = db_query("insert into db_acount values($acount,730,5119,'".AddSlashes(pg_result($resaco,$conresaco,'y13_codi'))."','$this->y13_codi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,730,5119,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y13_codi'))."','$this->y13_codi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y13_numero"]))
-           $resac = db_query("insert into db_acount values($acount,730,5117,'".AddSlashes(pg_result($resaco,$conresaco,'y13_numero'))."','$this->y13_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,730,5117,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y13_numero'))."','$this->y13_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y13_compl"]))
-           $resac = db_query("insert into db_acount values($acount,730,5118,'".AddSlashes(pg_result($resaco,$conresaco,'y13_compl'))."','$this->y13_compl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,730,5118,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y13_compl'))."','$this->y13_compl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -299,14 +299,14 @@ class cl_fiscexec {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5121,'$y13_codnoti','E')");
-         $resac = db_query("insert into db_acount values($acount,730,5121,'','".AddSlashes(pg_result($resaco,$iresaco,'y13_codnoti'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,730,5116,'','".AddSlashes(pg_result($resaco,$iresaco,'y13_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,730,5119,'','".AddSlashes(pg_result($resaco,$iresaco,'y13_codi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,730,5117,'','".AddSlashes(pg_result($resaco,$iresaco,'y13_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,730,5118,'','".AddSlashes(pg_result($resaco,$iresaco,'y13_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,730,5121,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y13_codnoti'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,730,5116,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y13_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,730,5119,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y13_codi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,730,5117,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y13_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,730,5118,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y13_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from fiscexec
@@ -366,7 +366,7 @@ class cl_fiscexec {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:fiscexec";
@@ -380,7 +380,7 @@ class cl_fiscexec {
    function sql_query ( $y13_codnoti=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_fiscexec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_fiscexec {
    function sql_query_file ( $y13_codnoti=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_fiscexec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

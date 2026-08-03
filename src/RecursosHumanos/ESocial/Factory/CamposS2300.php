@@ -52,7 +52,7 @@ class CamposS2300
      */
     public static function getCampo($campo) {
 
-        switch (mb_strtolower($campo)) {
+        switch (mb_strtolower((string) $campo)) {
             case 'paisnac':
             case 'paisnascto':
                 return new Paises();

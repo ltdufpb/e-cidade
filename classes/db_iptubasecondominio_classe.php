@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE iptubasecondominio
 class cl_iptubasecondominio { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j108_sequencial = 0; 
-   var $j108_matric = 0; 
-   var $j108_condominio = 0; 
+   public $j108_sequencial = 0; 
+   public $j108_matric = 0; 
+   public $j108_condominio = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j108_sequencial = int4 = Código Sequencial 
                  j108_matric = int4 = Matrícula 
                  j108_condominio = int4 = Cód. Condomínio 
                  ";
    //funcao construtor da classe 
-   function cl_iptubasecondominio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptubasecondominio"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_iptubasecondominio {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j108_sequencial = pg_result($result,0,0); 
+       $this->j108_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptubasecondominio_j108_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j108_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j108_sequencial)){
          $this->erro_sql = " Campo j108_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_iptubasecondominio {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "IPTU Base do Condomínio ($this->j108_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "IPTU Base do Condomínio já Cadastrado";
@@ -166,12 +166,12 @@ class cl_iptubasecondominio {
      $resaco = $this->sql_record($this->sql_query_file($this->j108_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14381,'$this->j108_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2534,14381,'','".AddSlashes(pg_result($resaco,0,'j108_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2534,14382,'','".AddSlashes(pg_result($resaco,0,'j108_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2534,14383,'','".AddSlashes(pg_result($resaco,0,'j108_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2534,14381,'','".AddSlashes(pg_fetch_result($resaco,0,'j108_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2534,14382,'','".AddSlashes(pg_fetch_result($resaco,0,'j108_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2534,14383,'','".AddSlashes(pg_fetch_result($resaco,0,'j108_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_iptubasecondominio {
       $this->atualizacampos();
      $sql = " update iptubasecondominio set ";
      $virgula = "";
-     if(trim($this->j108_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j108_sequencial"])){ 
+     if(trim((string) $this->j108_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j108_sequencial"])){ 
        $sql  .= $virgula." j108_sequencial = $this->j108_sequencial ";
        $virgula = ",";
-       if(trim($this->j108_sequencial) == null ){ 
+       if(trim((string) $this->j108_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "j108_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_iptubasecondominio {
          return false;
        }
      }
-     if(trim($this->j108_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j108_matric"])){ 
+     if(trim((string) $this->j108_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j108_matric"])){ 
        $sql  .= $virgula." j108_matric = $this->j108_matric ";
        $virgula = ",";
-       if(trim($this->j108_matric) == null ){ 
+       if(trim((string) $this->j108_matric) == null ){ 
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "j108_matric";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_iptubasecondominio {
          return false;
        }
      }
-     if(trim($this->j108_condominio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j108_condominio"])){ 
+     if(trim((string) $this->j108_condominio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j108_condominio"])){ 
        $sql  .= $virgula." j108_condominio = $this->j108_condominio ";
        $virgula = ",";
-       if(trim($this->j108_condominio) == null ){ 
+       if(trim((string) $this->j108_condominio) == null ){ 
          $this->erro_sql = " Campo Cód. Condomínio nao Informado.";
          $this->erro_campo = "j108_condominio";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_iptubasecondominio {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14381,'$this->j108_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j108_sequencial"]) || $this->j108_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2534,14381,'".AddSlashes(pg_result($resaco,$conresaco,'j108_sequencial'))."','$this->j108_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2534,14381,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j108_sequencial'))."','$this->j108_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j108_matric"]) || $this->j108_matric != "")
-           $resac = db_query("insert into db_acount values($acount,2534,14382,'".AddSlashes(pg_result($resaco,$conresaco,'j108_matric'))."','$this->j108_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2534,14382,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j108_matric'))."','$this->j108_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j108_condominio"]) || $this->j108_condominio != "")
-           $resac = db_query("insert into db_acount values($acount,2534,14383,'".AddSlashes(pg_result($resaco,$conresaco,'j108_condominio'))."','$this->j108_condominio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2534,14383,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j108_condominio'))."','$this->j108_condominio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_iptubasecondominio {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14381,'$j108_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2534,14381,'','".AddSlashes(pg_result($resaco,$iresaco,'j108_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2534,14382,'','".AddSlashes(pg_result($resaco,$iresaco,'j108_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2534,14383,'','".AddSlashes(pg_result($resaco,$iresaco,'j108_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2534,14381,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j108_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2534,14382,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j108_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2534,14383,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j108_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptubasecondominio
@@ -345,7 +345,7 @@ class cl_iptubasecondominio {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptubasecondominio";
@@ -385,7 +385,7 @@ class cl_iptubasecondominio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_iptubasecondominio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

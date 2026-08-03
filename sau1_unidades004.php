@@ -53,7 +53,7 @@ if(isset($chavepesquisa) && $chavepesquisa!="null"){
    <td nowrap title="<?=@$Tz01_cgccpf?>">
     <?=@$Lz01_cgccpf?>
     <?php db_input('z01_cgccpf',15,@$Iz01_cgccpf,true,'text',3,"");?>
-    <?php if(strlen($z01_cgccpf)==11 || $z01_cgccpf==""){?>
+    <?php if(strlen((string) $z01_cgccpf)==11 || $z01_cgccpf==""){?>
      <?=@$Lz01_ident?>
      <?php db_input('z01_ident',15,$Iz01_ident,true,'text',3);?>
     <?php }?>
@@ -63,7 +63,7 @@ if(isset($chavepesquisa) && $chavepesquisa!="null"){
    </td>
   </tr>
   <tr align="left" valign="top">
-   <?php if(strlen($z01_cgccpf)==11 || $z01_cgccpf==""){?>
+   <?php if(strlen((string) $z01_cgccpf)==11 || $z01_cgccpf==""){?>
    <td>
     <table width="50%" border="0" cellspacing="0" cellpadding="0">
      <tr>
@@ -112,12 +112,12 @@ if(isset($chavepesquisa) && $chavepesquisa!="null"){
       </td>
       <td nowrap title="<?=$Tz01_estciv?>">
        <?php 
-       $x = array("1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado");
+       $x = ["1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado"];
        db_select('z01_estciv',$x,true,3);
        ?>
        <?=$Lz01_sexo?>
        <?php 
-       $sex = array("M"=>"Masculino","F"=>"Feminino");
+       $sex = ["M"=>"Masculino","F"=>"Feminino"];
        db_select('z01_sexo',$sex,true,3);
        ?>
       </td>
@@ -140,7 +140,7 @@ if(isset($chavepesquisa) && $chavepesquisa!="null"){
       </td>
       <td nowrap title="<?=$Tz01_nacion?>">
        <?php 
-       $x = array("1"=>"Brasileira","2"=>"Estrangeira");
+       $x = ["1"=>"Brasileira","2"=>"Estrangeira"];
        db_select('z01_nacion',$x,true,3);
        ?>
       </td>
@@ -153,7 +153,7 @@ if(isset($chavepesquisa) && $chavepesquisa!="null"){
        <?php db_input('z01_cnh',15,$Iz01_cnh,true,'text',3,"");?>
        <?=@$Lz01_categoria?>
        <?php 
-       $y = array(""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","AB"=>"AB","AC"=>"AC","AD"=>"AD","AE"=>"AE");
+       $y = [""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","AB"=>"AB","AC"=>"AC","AD"=>"AD","AE"=>"AE"];
        db_select('z01_categoria',$y,true,3);
        ?>
       </td>
@@ -216,7 +216,7 @@ if(isset($chavepesquisa) && $chavepesquisa!="null"){
       </td>
       <td nowrap>
        <?php 
-       $x = array("2"=>"Empresa Privada","1"=>"Empresa Pública");
+       $x = ["2"=>"Empresa Privada","1"=>"Empresa Pública"];
        db_select('z01_tipcre',$x,true,$db_opcao);
        ?>
       </td>
@@ -436,7 +436,7 @@ if(isset($chavepesquisa) && $chavepesquisa!="null"){
   </tr>
  <table>
  <script>
-  <?php if(strlen($z01_cgccpf)==11 || $z01_cgccpf==""){?>
+  <?php if(strlen((string) $z01_cgccpf)==11 || $z01_cgccpf==""){?>
    parent.document.form1.pessoa.value = "FÍSICA";
   <?php }else{?>
    parent.document.form1.pessoa.value = "JURÍDICA";

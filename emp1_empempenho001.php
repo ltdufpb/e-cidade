@@ -70,20 +70,20 @@ if ($oDaoParam->numrows > 0) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
        // $clcriaabas->identifica = array("empempenho"=>"Empenho","empempitem"=>"Itens","empempdot"=>"Dotação","empprazos"=>"Prazos","empempret"=>"Retenções"); 
-       $clcriaabas->identifica = array("empempenho"=>"Empenho","empempitem"=>"Itens","empempdot"=>"Dotação","empprazos"=>"Prazos"); 
+       $clcriaabas->identifica = ["empempenho"=>"Empenho","empempitem"=>"Itens","empempdot"=>"Dotação","empprazos"=>"Prazos"]; 
 
        // $clcriaabas->title      =  array("empempenho"=>"Empenho","empempitem"=>"Itens","empempdot"=>"Dotação","empprazos"=>"Prazos","empempret"=>"Retenções");
-       $clcriaabas->title      =  array("empempenho"=>"Empenho","empempitem"=>"Itens","empempdot"=>"Dotação","empprazos"=>"Prazos");
+       $clcriaabas->title      =  ["empempenho"=>"Empenho","empempitem"=>"Itens","empempdot"=>"Dotação","empprazos"=>"Prazos"];
 
        if (isset($chavepesquisa)){       	
          // $clcriaabas->src = array("empempenho"=>"emp1_empempenho004.php?chavepesquisa=".$chavepesquisa."&lanc_emp=".@$lanc_emp,"empempitem"=>"","empempdot"=>"","empprazos"=>"","empempret"=>"");
-         $clcriaabas->src = array("empempenho"=>"{$sFonte}?chavepesquisa=".$chavepesquisa."&lanc_emp=".@$lanc_emp,"empempitem"=>"","empempdot"=>"","empprazos"=>"");
+         $clcriaabas->src = ["empempenho"=>"{$sFonte}?chavepesquisa=".$chavepesquisa."&lanc_emp=".@$lanc_emp,"empempitem"=>"","empempdot"=>"","empprazos"=>""];
        }else {
          // $clcriaabas->src = array("empempenho"=>"emp1_empempenho004.php?lanc_emp=".@$lanc_emp,"empempitem"=>"","empempdot"=>"","empprazos"=>"","empempret"=>"");
-         $clcriaabas->src = array("empempenho"=>"{$sFonte}?lanc_emp=".@$lanc_emp,"empempitem"=>"","empempdot"=>"","empprazos"=>"");
+         $clcriaabas->src = ["empempenho"=>"{$sFonte}?lanc_emp=".@$lanc_emp,"empempitem"=>"","empempdot"=>"","empprazos"=>""];
        }	 
        // $clcriaabas->disabled   =  array("empempitem"=>true,"empempdot"=>"true","empempret"=>"true","empprazos"=>"true");
-       $clcriaabas->disabled   =  array("empempitem"=>true,"empempdot"=>"true","empprazos"=>"true");
+       $clcriaabas->disabled   =  ["empempitem"=>true,"empempdot"=>"true","empprazos"=>"true"];
 
        $clcriaabas->cria_abas();
            

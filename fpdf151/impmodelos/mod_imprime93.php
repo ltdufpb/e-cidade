@@ -60,7 +60,7 @@ for ($i = 0;$i < 2;$i++) {
   $this->objpdf->text($xcol+128,  $xlin, 'Data :'. date("d/m/Y",db_getsession("DB_datausu")). ' Hora: '.date("H:i:s"));
     
   $this->objpdf->text($xcol+75,$xlin+19,'CNPJ/CPF:');
-  $this->objpdf->text($xcol+90,$xlin+19, db_formatar ($this->cgccpf, (strlen ($this->cgccpf) == 11 ? 'cpf' : 'cnpj')));  
+  $this->objpdf->text($xcol+90,$xlin+19, db_formatar ($this->cgccpf, (strlen ((string) $this->cgccpf) == 11 ? 'cpf' : 'cnpj')));  
   
   $this->objpdf->Setfont('Arial','',6);
   
@@ -99,21 +99,21 @@ for ($i = 0;$i < 2;$i++) {
       $this->objpdf->cell(15,3,"Valor",0,1,"R",0);
       
     }
-    if (pg_result($this->recorddadospagto,$ii,"k00_hist") == 918){
+    if (pg_fetch_result($this->recorddadospagto,$ii,"k00_hist") == 918){
       
         $this->obsdescr = "(desconto)";
     }
-    $codtipo = pg_result($this->recorddadospagto,$ii,"codtipo");
-    $valor   = pg_result($this->recorddadospagto,$ii,$this->valor);
+    $codtipo = pg_fetch_result($this->recorddadospagto,$ii,"codtipo");
+    $valor   = pg_fetch_result($this->recorddadospagto,$ii,$this->valor);
     $this->objpdf->setx($xcol+3+$maiscol);
-    $this->objpdf->cell(5,3,trim(pg_result($this->recorddadospagto,$ii,$this->receita)),0,0,"R",0);
-    $this->objpdf->cell(7,3,"(".trim(pg_result($this->recorddadospagto,$ii,$this->receitared)).")",0,0,"R",0);
-    if ( trim(pg_result($this->recorddadospagto,$ii,$this->ddreceita) ) == ''){
-      $this->objpdf->cell(63,3,trim(pg_result($this->recorddadospagto,$ii,$this->dreceita)." ".$this->obsdescr ),0,0,"L",0);
+    $this->objpdf->cell(5,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->receita)),0,0,"R",0);
+    $this->objpdf->cell(7,3,"(".trim(pg_fetch_result($this->recorddadospagto,$ii,$this->receitared)).")",0,0,"R",0);
+    if ( trim(pg_fetch_result($this->recorddadospagto,$ii,$this->ddreceita) ) == ''){
+      $this->objpdf->cell(63,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->dreceita)." ".$this->obsdescr ),0,0,"L",0);
     }else{ 
-      $this->objpdf->cell(63,3,trim(pg_result($this->recorddadospagto,$ii,$this->ddreceita)." ".$this->obsdescr),0,0,"L",0);
+      $this->objpdf->cell(63,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->ddreceita)." ".$this->obsdescr),0,0,"L",0);
     }
-    $this->objpdf->cell(15,3,db_formatar(pg_result($this->recorddadospagto,$ii,$this->valor),'f'),0,1,"R",0);    
+    $this->objpdf->cell(15,3,db_formatar(pg_fetch_result($this->recorddadospagto,$ii,$this->valor),'f'),0,1,"R",0);    
   }
   $this->objpdf->Roundedrect($xcol,$xlin+71, 148, 30, 2,'DF','1234');
   $this->objpdf->SetY($xlin+72);

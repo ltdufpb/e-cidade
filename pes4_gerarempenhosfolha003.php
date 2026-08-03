@@ -307,7 +307,7 @@ db_app::load("estilos.css");
               </td>
               <td>
                 <?php 
-                  db_select("rh72_unidade",array(),true,1,"onchange='js_getDotacoes();'");
+                  db_select("rh72_unidade",[],true,1,"onchange='js_getDotacoes();'");
                 ?>
               </td>
             </tr>
@@ -404,7 +404,7 @@ db_app::load("estilos.css");
               </td>
               <td>
               <?php 
-                db_select("rh72_coddot",array(),true,1);
+                db_select("rh72_coddot",[],true,1);
                ?>
               </td>
             </tr>

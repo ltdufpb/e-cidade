@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 $oGet = db_utils::postMemory($_GET);
 
-$db_opcao = (isset($oGet->acao) ? $oGet->acao : 1);
+$db_opcao = ($oGet->acao ?? 1);
 ?>
 <html>
   <head>

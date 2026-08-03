@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE db_logs
 class cl_db_logs { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ip = null; 
-   var $data_dia = null; 
-   var $data_mes = null; 
-   var $data_ano = null; 
-   var $data = null; 
-   var $hora = null; 
-   var $arquivo = null; 
-   var $matricula = 0; 
-   var $inscricao = 0; 
-   var $numcgm = 0; 
-   var $obs = null; 
-   var $id_usuario = 0; 
-   var $sistema = 0; 
+   public $ip = null; 
+   public $data_dia = null; 
+   public $data_mes = null; 
+   public $data_ano = null; 
+   public $data = null; 
+   public $hora = null; 
+   public $arquivo = null; 
+   public $matricula = 0; 
+   public $inscricao = 0; 
+   public $numcgm = 0; 
+   public $obs = null; 
+   public $id_usuario = 0; 
+   public $sistema = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ip = varchar(50) = IP 
                  data = date = Data 
                  hora = varchar(10) = Hora 
@@ -69,10 +69,10 @@ class cl_db_logs {
                  sistema = int4 = Sistema 
                  ";
    //funcao construtor da classe 
-   function cl_db_logs() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_logs"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -226,7 +226,7 @@ class cl_db_logs {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Logs () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Logs já Cadastrado";
@@ -253,10 +253,10 @@ class cl_db_logs {
       $this->atualizacampos();
      $sql = " update db_logs set ";
      $virgula = "";
-     if(trim($this->ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ip"])){ 
+     if(trim((string) $this->ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ip"])){ 
        $sql  .= $virgula." ip = '$this->ip' ";
        $virgula = ",";
-       if(trim($this->ip) == null ){ 
+       if(trim((string) $this->ip) == null ){ 
          $this->erro_sql = " Campo IP nao Informado.";
          $this->erro_campo = "ip";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_db_logs {
          return false;
        }
      }
-     if(trim($this->data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["data_dia"] !="") ){ 
+     if(trim((string) $this->data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["data_dia"] !="") ){ 
        $sql  .= $virgula." data = '$this->data' ";
        $virgula = ",";
-       if(trim($this->data) == null ){ 
+       if(trim((string) $this->data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "data_dia";
          $this->erro_banco = "";
@@ -282,7 +282,7 @@ class cl_db_logs {
        if(isset($GLOBALS["HTTP_POST_VARS"]["data_dia"])){ 
          $sql  .= $virgula." data = null ";
          $virgula = ",";
-         if(trim($this->data) == null ){ 
+         if(trim((string) $this->data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "data_dia";
            $this->erro_banco = "";
@@ -293,10 +293,10 @@ class cl_db_logs {
          }
        }
      }
-     if(trim($this->hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["hora"])){ 
+     if(trim((string) $this->hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["hora"])){ 
        $sql  .= $virgula." hora = '$this->hora' ";
        $virgula = ",";
-       if(trim($this->hora) == null ){ 
+       if(trim((string) $this->hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "hora";
          $this->erro_banco = "";
@@ -306,10 +306,10 @@ class cl_db_logs {
          return false;
        }
      }
-     if(trim($this->arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["arquivo"])){ 
+     if(trim((string) $this->arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["arquivo"])){ 
        $sql  .= $virgula." arquivo = '$this->arquivo' ";
        $virgula = ",";
-       if(trim($this->arquivo) == null ){ 
+       if(trim((string) $this->arquivo) == null ){ 
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "arquivo";
          $this->erro_banco = "";
@@ -319,10 +319,10 @@ class cl_db_logs {
          return false;
        }
      }
-     if(trim($this->matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["matricula"])){ 
+     if(trim((string) $this->matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["matricula"])){ 
        $sql  .= $virgula." matricula = $this->matricula ";
        $virgula = ",";
-       if(trim($this->matricula) == null ){ 
+       if(trim((string) $this->matricula) == null ){ 
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "matricula";
          $this->erro_banco = "";
@@ -332,10 +332,10 @@ class cl_db_logs {
          return false;
        }
      }
-     if(trim($this->inscricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["inscricao"])){ 
+     if(trim((string) $this->inscricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["inscricao"])){ 
        $sql  .= $virgula." inscricao = $this->inscricao ";
        $virgula = ",";
-       if(trim($this->inscricao) == null ){ 
+       if(trim((string) $this->inscricao) == null ){ 
          $this->erro_sql = " Campo Inscrição nao Informado.";
          $this->erro_campo = "inscricao";
          $this->erro_banco = "";
@@ -345,10 +345,10 @@ class cl_db_logs {
          return false;
        }
      }
-     if(trim($this->numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numcgm"])){ 
+     if(trim((string) $this->numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numcgm"])){ 
        $sql  .= $virgula." numcgm = $this->numcgm ";
        $virgula = ",";
-       if(trim($this->numcgm) == null ){ 
+       if(trim((string) $this->numcgm) == null ){ 
          $this->erro_sql = " Campo numero do cgm nao Informado.";
          $this->erro_campo = "numcgm";
          $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_db_logs {
          return false;
        }
      }
-     if(trim($this->obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["obs"])){ 
+     if(trim((string) $this->obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["obs"])){ 
        $sql  .= $virgula." obs = '$this->obs' ";
        $virgula = ",";
-       if(trim($this->obs) == null ){ 
+       if(trim((string) $this->obs) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "obs";
          $this->erro_banco = "";
@@ -371,10 +371,10 @@ class cl_db_logs {
          return false;
        }
      }
-     if(trim($this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
+     if(trim((string) $this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
        $sql  .= $virgula." id_usuario = $this->id_usuario ";
        $virgula = ",";
-       if(trim($this->id_usuario) == null ){ 
+       if(trim((string) $this->id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "id_usuario";
          $this->erro_banco = "";
@@ -384,10 +384,10 @@ class cl_db_logs {
          return false;
        }
      }
-     if(trim($this->sistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sistema"])){ 
+     if(trim((string) $this->sistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sistema"])){ 
        $sql  .= $virgula." sistema = $this->sistema ";
        $virgula = ",";
-       if(trim($this->sistema) == null ){ 
+       if(trim((string) $this->sistema) == null ){ 
          $this->erro_sql = " Campo Sistema nao Informado.";
          $this->erro_campo = "sistema";
          $this->erro_banco = "";
@@ -478,7 +478,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_logs";

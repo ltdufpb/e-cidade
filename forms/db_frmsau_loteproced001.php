@@ -382,7 +382,7 @@ function js_retornoGridProcedimentos( objAjax ){
  * Função Opções Procedimento
  */
 function js_opcoesProcedimento( sd29_i_codigo, intIterator, opcao ){
-	var strURL = '<?=basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] )?>';
+	var strURL = '<?=basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] )?>';
 	strURL += '?opcao='+opcao;
 	strURL += '&sd29_i_codigo='+sd29_i_codigo;
 	strURL += '&sd58_i_codigo='+$F('sd58_i_codigo');
@@ -1000,7 +1000,7 @@ function js_preenchepesquisa(chave){
 db_iframe_prontproced.hide();
 <?php 
 if ($db_opcao != 1) {
-	echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave+'&idarq=" . $idarq . "'";
+	echo " location.href = '" . basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave+'&idarq=" . $idarq . "'";
 }
 ?>
 }
@@ -1028,12 +1028,12 @@ js_OpenJanelaIframe('','db_iframe_prontuarios','func_prontuarios002.php?funcao_j
 function js_preenchecgs(chave){
 db_iframe_cgs_und.hide();
 
-location.href ='<?=basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] )?>?chavepesquisacgs='+chave+'&triagem=<?=@$triagem?>&idarq=<?=$idarq?>';
+location.href ='<?=basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] )?>?chavepesquisacgs='+chave+'&triagem=<?=@$triagem?>&idarq=<?=$idarq?>';
 }
 
 function js_preenchepesquisa(chave1,chave2,chave3){
 db_iframe_prontuarios.hide();
-location.href ='<?=basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] )?>?chavepesquisaprontuario='+chave1+'&z01_v_nome='+chave2+'&z01_i_cgsund='+chave3+'&idarq=<?=$idarq?>';
+location.href ='<?=basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] )?>?chavepesquisaprontuario='+chave1+'&z01_v_nome='+chave2+'&z01_i_cgsund='+chave3+'&idarq=<?=$idarq?>';
 }
 
 function js_fatoresderisco(){

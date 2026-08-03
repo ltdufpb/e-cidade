@@ -47,8 +47,8 @@ if (! isset($arqinclude)) {
   $cldb_config        = new cl_db_config();
   $clorcparamelemento = new cl_orcparamelemento();
 
-  parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER ['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
 }
 $sTodasInstit = null;
@@ -82,14 +82,14 @@ if ($instit_rpps != "") {
   $sTodasInstit .= ",".$instit_rpps;
 }
 
-$head2 = "MUNICÍPIO DE " . strtoupper($munic);
+$head2 = "MUNICÍPIO DE " . strtoupper((string) $munic);
 $head3 = "RELATÓRIO DE GESTÃO FISCAL";
 $head4 = "DEMONSTRATIVO DA DIVIDA CONSOLIDADA LIQUIDA";
 $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
 // verifica se foi informada datas iniciais e finais
 $usa_datas = false;
-if (strlen($dtini) > 5 && strlen($dtfin) > 5) {
+if (strlen((string) $dtini) > 5 && strlen((string) $dtfin) > 5) {
   $usa_datas = true;
 }
 $anousu         = db_getsession("DB_anousu");
@@ -101,8 +101,8 @@ $dt             = data_periodo($anousu, $sSiglaPeriodo);
 $periodo        = $sSiglaPeriodo;
 
 $dt = data_periodo($anousu, $sSiglaPeriodo);
-$dt_ini = split("-", $dt [0]);
-$dt_fin = split("-", $dt [1]);
+$dt_ini = preg_split("#\\-#m", (string) $dt [0]);
+$dt_fin = preg_split("#\\-#m", (string) $dt [1]);
 
 $period = strtoupper(db_mes("01")) . " A " . strtoupper(db_mes($dt_fin [1])) . " DE " . $anousu;
 
@@ -124,14 +124,14 @@ if ($sSiglaPeriodo == "1S") {
   $dtini_02 = $anousu . '-07-01';
   $dtfin_02 = $anousu . '-12-31';
 
-  $aRCL = array();
-  $aRCL["primeiroperiodo"]["anterior"] = array("julho","agosto","setembro","outubro","novembro", "dezembro");
-  $aRCL["primeiroperiodo"]["atual"]    = array("janeiro","fevereiro","marco","abril", "maio","junho");
-  $aRCL["segundoperiodo"]["anterior"]   = array();
-  $aRCL["segundoperiodo"]["atual"]      = array();
+  $aRCL = [];
+  $aRCL["primeiroperiodo"]["anterior"] = ["julho","agosto","setembro","outubro","novembro", "dezembro"];
+  $aRCL["primeiroperiodo"]["atual"]    = ["janeiro","fevereiro","marco","abril", "maio","junho"];
+  $aRCL["segundoperiodo"]["anterior"]   = [];
+  $aRCL["segundoperiodo"]["atual"]      = [];
 
-  $aRCL["terceiroperiodo"]["anterior"]  = array();
-  $aRCL["terceiroperiodo"]["atual"]      = array();
+  $aRCL["terceiroperiodo"]["anterior"]  = [];
+  $aRCL["terceiroperiodo"]["atual"]      = [];
 
 } else if ($sSiglaPeriodo == "2S") {
 
@@ -140,15 +140,15 @@ if ($sSiglaPeriodo == "1S") {
   $dtini_02 = $anousu . '-07-01';
   $dtfin_02 = $anousu . '-12-31';
 
-  $aRCL["primeiroperiodo"]["anterior"] = array("julho", "agosto","setembro","outubro", "novembro","dezembro");
-  $aRCL["primeiroperiodo"]["atual"]    = array("janeiro","fevereiro","marco","abril", "maio","junho");
+  $aRCL["primeiroperiodo"]["anterior"] = ["julho", "agosto","setembro","outubro", "novembro","dezembro"];
+  $aRCL["primeiroperiodo"]["atual"]    = ["janeiro","fevereiro","marco","abril", "maio","junho"];
 
-  $aRCL["segundoperiodo"]["anterior"] = array();
-  $aRCL["segundoperiodo"]["atual"] = array("janeiro","fevereiro","marco","abril",
+  $aRCL["segundoperiodo"]["anterior"] = [];
+  $aRCL["segundoperiodo"]["atual"] = ["janeiro","fevereiro","marco","abril",
                                             "maio","junho","julho","agosto","setembro","novembro","outubro", "dezembro"
-                                              );
-  $aRCL["terceiroperiodo"]["anterior"]  = array();
-  $aRCL["terceiroperiodo"]["atual"]      = array();
+                                              ];
+  $aRCL["terceiroperiodo"]["anterior"]  = [];
+  $aRCL["terceiroperiodo"]["atual"]      = [];
 
 } else {
 
@@ -161,41 +161,41 @@ if ($sSiglaPeriodo == "1S") {
 
 if ($sSiglaPeriodo == '1Q') {
 
-  $aRCL["primeiroperiodo"]["anterior"] = array("maio","junho","julho","agosto","setembro","outubro","novembro", "dezembro");
-  $aRCL["primeiroperiodo"]["atual"]    = array("janeiro","fevereiro","marco","abril" );
+  $aRCL["primeiroperiodo"]["anterior"] = ["maio","junho","julho","agosto","setembro","outubro","novembro", "dezembro"];
+  $aRCL["primeiroperiodo"]["atual"]    = ["janeiro","fevereiro","marco","abril" ];
 
-  $aRCL["segundoperiodo"]["anterior"]   = array();
-  $aRCL["segundoperiodo"]["atual"]      = array();
+  $aRCL["segundoperiodo"]["anterior"]   = [];
+  $aRCL["segundoperiodo"]["atual"]      = [];
 
-  $aRCL["terceiroperiodo"]["anterior"]  = array();
-  $aRCL["terceiroperiodo"]["atual"]      = array();
+  $aRCL["terceiroperiodo"]["anterior"]  = [];
+  $aRCL["terceiroperiodo"]["atual"]      = [];
 
 } else if ($sSiglaPeriodo == '2Q') {
 
-  $aRCL["primeiroperiodo"]["anterior"] = array("maio","junho","julho","agosto","setembro","novembro","outubro", "dezembro");
-  $aRCL["primeiroperiodo"]["atual"]    = array("janeiro","fevereiro","marco","abril" );
+  $aRCL["primeiroperiodo"]["anterior"] = ["maio","junho","julho","agosto","setembro","novembro","outubro", "dezembro"];
+  $aRCL["primeiroperiodo"]["atual"]    = ["janeiro","fevereiro","marco","abril" ];
 
-  $aRCL["segundoperiodo"]["anterior"] = array("setembro","novembro","outubro", "dezembro");
-  $aRCL["segundoperiodo"]["atual"]    = array("janeiro","fevereiro","marco","abril","maio","junho","julho","agosto");
+  $aRCL["segundoperiodo"]["anterior"] = ["setembro","novembro","outubro", "dezembro"];
+  $aRCL["segundoperiodo"]["atual"]    = ["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto"];
 
-  $aRCL["terceiroperiodo"]["anterior"]  = array();
-  $aRCL["terceiroperiodo"]["atual"]      = array();
+  $aRCL["terceiroperiodo"]["anterior"]  = [];
+  $aRCL["terceiroperiodo"]["atual"]      = [];
 } else if ($sSiglaPeriodo == '3Q') {
 
-  $aRCL["primeiroperiodo"]["anterior"] = array("maio","junho","julho","agosto","setembro","novembro","outubro", "dezembro");
-  $aRCL["primeiroperiodo"]["atual"]    = array("janeiro","fevereiro","marco","abril" );
+  $aRCL["primeiroperiodo"]["anterior"] = ["maio","junho","julho","agosto","setembro","novembro","outubro", "dezembro"];
+  $aRCL["primeiroperiodo"]["atual"]    = ["janeiro","fevereiro","marco","abril" ];
 
-  $aRCL["segundoperiodo"]["anterior"] = array("setembro","novembro","outubro", "dezembro");
-  $aRCL["segundoperiodo"]["atual"]    = array("janeiro","fevereiro","marco","abril","maio","junho","julho","agosto");
-  $aRCL["terceiroperiodo"]["anterior"] = array();
-  $aRCL["terceiroperiodo"]["atual"]    = array("janeiro","fevereiro","marco","abril","maio","junho","julho","agosto",
-                                               "setembro","novembro","outubro", "dezembro");
+  $aRCL["segundoperiodo"]["anterior"] = ["setembro","novembro","outubro", "dezembro"];
+  $aRCL["segundoperiodo"]["atual"]    = ["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto"];
+  $aRCL["terceiroperiodo"]["anterior"] = [];
+  $aRCL["terceiroperiodo"]["atual"]    = ["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto",
+                                               "setembro","novembro","outubro", "dezembro"];
 }
 
 /**
  * Criamos os totalizadores
  */
-$aTotalizadores = array();
+$aTotalizadores = [];
 
 $aTotalizadores[0]["label"]           = "DÍVIDA CONSOLIDADA - DC (I)";
 $aTotalizadores[0]["nivel"]           = 0;
@@ -204,10 +204,10 @@ $aTotalizadores[0]["primeiroperiodo"] = 0;
 $aTotalizadores[0]["bordas"]          = "";
 $aTotalizadores[0]["segundoperiodo"]  = 0;
 $aTotalizadores[0]["terceiroperiodo"] = 0;
-$aTotalizadores[0]["imprime"]         = array(
+$aTotalizadores[0]["imprime"]         = [
                                               1 => 2
-                                              );
-$aTotalizadores[0]["soma"]            = array(1,2,3,4,5);
+                                              ];
+$aTotalizadores[0]["soma"]            = [1,2,3,4,5];
 
 $aTotalizadores[1]["label"]           = "Dívida Contratual";
 $aTotalizadores[1]["nivel"]           = 2;
@@ -216,12 +216,12 @@ $aTotalizadores[1]["primeiroperiodo"] = 0;
 $aTotalizadores[1]["bordas"]          = "";
 $aTotalizadores[1]["segundoperiodo"]  = 0;
 $aTotalizadores[1]["terceiroperiodo"] = 0;
-$aTotalizadores[1]["imprime"]         = array(2 => 4,
+$aTotalizadores[1]["imprime"]         = [2 => 4,
                                               3 => 4,
                                               4 => 2,
                                               5 => 2
-                                              );
-$aTotalizadores[1]["soma"]            = array(2,3);
+                                              ];
+$aTotalizadores[1]["soma"]            = [2,3];
 
 $aTotalizadores[2]["label"]           = "DEDUÇÕES(II)¹";
 $aTotalizadores[2]["nivel"]           = 0;
@@ -230,11 +230,11 @@ $aTotalizadores[2]["primeiroperiodo"] = 0;
 $aTotalizadores[2]["segundoperiodo"]  = 0;
 $aTotalizadores[2]["bordas"]          = "";
 $aTotalizadores[2]["terceiroperiodo"] = 0;
-$aTotalizadores[2]["imprime"]         = array(6 => 2,
+$aTotalizadores[2]["imprime"]         = [6 => 2,
                                               7 => 2,
                                               8 => 2,
-                                              );
-$aTotalizadores[2]["soma"]            = array(6,7,8);
+                                              ];
+$aTotalizadores[2]["soma"]            = [6,7,8];
 
 $aTotalizadores[3]["label"]           = "DÍVIDA CONSOLIDADA LÍQUIDA - DCL(III) = (I - II)";
 $aTotalizadores[3]["nivel"]           = 0;
@@ -243,8 +243,8 @@ $aTotalizadores[3]["bordas"]          = "TB";
 $aTotalizadores[3]["primeiroperiodo"] = 0;
 $aTotalizadores[3]["segundoperiodo"]  = 0;
 $aTotalizadores[3]["terceiroperiodo"] = 0;
-$aTotalizadores[3]["imprime"]         = array();
-$aTotalizadores[3]["soma"]            = array();
+$aTotalizadores[3]["imprime"]         = [];
+$aTotalizadores[3]["soma"]            = [];
 
 $aTotalizadores[4]["label"]           = "RECEITA CORRENTE LÍQUIDA - RCL";
 $aTotalizadores[4]["nivel"]           = 0;
@@ -253,8 +253,8 @@ $aTotalizadores[4]["bordas"]          = "TB";
 $aTotalizadores[4]["primeiroperiodo"] = 0;
 $aTotalizadores[4]["segundoperiodo"]  = 0;
 $aTotalizadores[4]["terceiroperiodo"] = 0;
-$aTotalizadores[4]["imprime"]         = array();
-$aTotalizadores[4]["soma"]            = array();
+$aTotalizadores[4]["imprime"]         = [];
+$aTotalizadores[4]["soma"]            = [];
 
 $aTotalizadores[5]["label"]           = "% DA DC SOBRE A RCL (I/RCL)";
 $aTotalizadores[5]["nivel"]           = 0;
@@ -263,8 +263,8 @@ $aTotalizadores[5]["primeiroperiodo"] = 0;
 $aTotalizadores[5]["segundoperiodo"]  = 0;
 $aTotalizadores[5]["bordas"]          = "TB";
 $aTotalizadores[5]["terceiroperiodo"] = 0;
-$aTotalizadores[5]["imprime"]         = array();
-$aTotalizadores[5]["soma"]            = array();
+$aTotalizadores[5]["imprime"]         = [];
+$aTotalizadores[5]["soma"]            = [];
 
 $aTotalizadores[6]["label"]           = "% DA DCL SOBRE A RCL (III/RCL)";
 $aTotalizadores[6]["nivel"]           = 0;
@@ -273,8 +273,8 @@ $aTotalizadores[6]["primeiroperiodo"] = 0;
 $aTotalizadores[6]["segundoperiodo"]  = 0;
 $aTotalizadores[6]["bordas"]          = "TB";
 $aTotalizadores[6]["terceiroperiodo"] = 0;
-$aTotalizadores[6]["imprime"]         = array();
-$aTotalizadores[6]["soma"]            = array();
+$aTotalizadores[6]["imprime"]         = [];
+$aTotalizadores[6]["soma"]            = [];
 
 $aTotalizadores[7]["label"]           = "PARCELAMENTO DE DÍVIDAS (VI) ";
 $aTotalizadores[7]["nivel"]           = 0;
@@ -283,8 +283,8 @@ $aTotalizadores[7]["primeiroperiodo"] = 0;
 $aTotalizadores[7]["segundoperiodo"]  = 0;
 $aTotalizadores[7]["bordas"]          = "";
 $aTotalizadores[7]["terceiroperiodo"] = 0;
-$aTotalizadores[7]["imprime"]         = array(10 => 2);
-$aTotalizadores[7]["soma"]            = array(10,11,12,13,26);
+$aTotalizadores[7]["imprime"]         = [10 => 2];
+$aTotalizadores[7]["soma"]            = [10,11,12,13,26];
 
 $aTotalizadores[8]["label"]           = "De Contribuições Sociais";
 $aTotalizadores[8]["nivel"]           = 2;
@@ -293,12 +293,12 @@ $aTotalizadores[8]["primeiroperiodo"] = 0;
 $aTotalizadores[8]["segundoperiodo"]  = 0;
 $aTotalizadores[8]["bordas"]          = "";
 $aTotalizadores[8]["terceiroperiodo"] = 0;
-$aTotalizadores[8]["imprime"]         = array(11 => 4,
+$aTotalizadores[8]["imprime"]         = [11 => 4,
                                               12 => 4,
                                               13 => 2,
                                               26 => 2
-                                             );
-$aTotalizadores[8]["soma"]            = array(11,12);
+                                             ];
+$aTotalizadores[8]["soma"]            = [11,12];
 
 
 
@@ -309,11 +309,11 @@ $aTotalizadores[9]["primeiroperiodo"] = 0;
 $aTotalizadores[9]["bordas"]          = "";
 $aTotalizadores[9]["segundoperiodo"]  = 0;
 $aTotalizadores[9]["terceiroperiodo"] = 0;
-$aTotalizadores[9]["imprime"]         = array(
+$aTotalizadores[9]["imprime"]         = [
                                               19 => 2,
                                               20 => 2
-                                              );
-$aTotalizadores[9]["soma"]            = array(19, 20);
+                                              ];
+$aTotalizadores[9]["soma"]            = [19, 20];
 
 $aTotalizadores[10]["label"]           = "DEDUÇÕES(V)¹";
 $aTotalizadores[10]["nivel"]           = 0;
@@ -322,13 +322,13 @@ $aTotalizadores[10]["primeiroperiodo"] = 0;
 $aTotalizadores[10]["segundoperiodo"]  = 0;
 $aTotalizadores[10]["bordas"]          = "";
 $aTotalizadores[10]["terceiroperiodo"] = 0;
-$aTotalizadores[10]["imprime"]         = array(21 => 2,
+$aTotalizadores[10]["imprime"]         = [21 => 2,
                                                22 => 2,
                                                23 => 2,
                                                24 => 2,
                                                25 => 0,
-                                              );
-$aTotalizadores[10]["soma"]            = array(21, 22, 23, 24);
+                                              ];
+$aTotalizadores[10]["soma"]            = [21, 22, 23, 24];
 
 $aTotalizadores[11]["label"]           = "DÍVIDA CONSOLIDADA LÍQUIDA PREVDENCIÁRIA(VI) = (IV - V)";
 $aTotalizadores[11]["nivel"]           = 0;
@@ -337,8 +337,8 @@ $aTotalizadores[11]["bordas"]          = "TB";
 $aTotalizadores[11]["primeiroperiodo"] = 0;
 $aTotalizadores[11]["segundoperiodo"]  = 0;
 $aTotalizadores[11]["terceiroperiodo"] = 0;
-$aTotalizadores[11]["imprime"]         = array();
-$aTotalizadores[11]["soma"]            = array();
+$aTotalizadores[11]["imprime"]         = [];
+$aTotalizadores[11]["soma"]            = [];
 
 $aTotalizadores[12]["label"]           = "DIVIDA CONTRATUAL (IV = V + VI + VII + VIII)";
 $aTotalizadores[12]["nivel"]           = 0;
@@ -347,8 +347,8 @@ $aTotalizadores[12]["bordas"]          = "TB";
 $aTotalizadores[12]["primeiroperiodo"] = 0;
 $aTotalizadores[12]["segundoperiodo"]  = 0;
 $aTotalizadores[12]["terceiroperiodo"] = 0;
-$aTotalizadores[12]["imprime"]         = array();
-$aTotalizadores[12]["soma"]            = array(9,10,11,12,13,14,26,27,28);
+$aTotalizadores[12]["imprime"]         = [];
+$aTotalizadores[12]["soma"]            = [9,10,11,12,13,14,26,27,28];
 
 $aTotalizadores[13]["label"]           = "DIVIDA COM INSTITUIÇÃO FINANCEIRA (VII)";
 $aTotalizadores[13]["nivel"]           = 0;
@@ -357,12 +357,12 @@ $aTotalizadores[13]["bordas"]          = "TB";
 $aTotalizadores[13]["primeiroperiodo"] = 0;
 $aTotalizadores[13]["segundoperiodo"]  = 0;
 $aTotalizadores[13]["terceiroperiodo"] = 0;
-$aTotalizadores[13]["imprime"]         = array(27=>2,
+$aTotalizadores[13]["imprime"]         = [27=>2,
                                                28=>2,
-                                               14=>0);
-$aTotalizadores[13]["soma"]            = array(27,28);
+                                               14=>0];
+$aTotalizadores[13]["soma"]            = [27,28];
 
-$aLinhasRelatorio = array();
+$aLinhasRelatorio = [];
 
 for ($iLinha = 1; $iLinha <= 28; $iLinha++) {
 
@@ -923,7 +923,7 @@ if (! isset($arqinclude)) {
   }
   $iTamanhoCelula  = 28;
   $iAumentarCelula = 56;
-  if (substr($sSiglaPeriodo,1,1) == 'S') {
+  if (substr((string) $sSiglaPeriodo,1,1) == 'S') {
 
     $iTamanhoCelula  = 42;
     $iAumentarCelula = 42;

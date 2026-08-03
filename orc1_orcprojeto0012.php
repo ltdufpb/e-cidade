@@ -35,7 +35,7 @@ include(modification("dbforms/db_classesgenericas.php"));            // iframe
 include(modification("classes/db_orcsuplem_classe.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir; // iframe
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clorcprojeto = new cl_orcprojeto;
 $clorcsuplem  = new cl_orcsuplem;
 

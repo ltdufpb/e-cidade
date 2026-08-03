@@ -54,19 +54,19 @@ $db_opcao   = 1;
  <tr>
   <td height="460" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica    = array("a1"=>"Dados dos Itens",
+   $clcriaabas->identifica    = ["a1"=>"Dados dos Itens",
                                       "a2"=>"Informação Nutricional",
                                       "a3"=>"Item do Material"
-                                     );
-   $clcriaabas->sizecampo     = array("a1"=>"20",
+                                     ];
+   $clcriaabas->sizecampo     = ["a1"=>"20",
                                       "a2"=>"20",
                                       "a3"=>"20"
-                                     );
-   $clcriaabas->src           = array("a1"=>"mer1_mer_alimento001.php",
+                                     ];
+   $clcriaabas->src           = ["a1"=>"mer1_mer_alimento001.php",
                                       "a2"=>"mer1_mer_infnutricional001.php",
                                       "a3"=>"mer1_mer_alimentomatmater001.php"
-                                     );
-   $clcriaabas->disabled      = array("a2"=>"true","a3"=>"true");
+                                     ];
+   $clcriaabas->disabled      = ["a2"=>"true","a3"=>"true"];
    $clcriaabas->cordisabled   = "#9b9b9b";
    $clcriaabas->scrolling     = "no";
    $clcriaabas->iframe_height = "1200";

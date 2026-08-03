@@ -42,7 +42,7 @@ require_once modification("dbforms/db_funcoes.php");
       /**
        * Default
        */
-      $aLibs   = array("scripts.js");
+      $aLibs   = ["scripts.js"];
       $aLibs[] = "prototype.js";
       $aLibs[] = "AjaxRequest.js";
       $aLibs[] = "strings.js";

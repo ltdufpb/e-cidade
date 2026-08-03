@@ -61,28 +61,28 @@ $clrotulo->label('pc11_vlrun');
 $clrotulo->label('pc11_quant');
 $clrotulo->label('pc11_resum');
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 
-$arr_vlnomesitens = array();
-$arr_valoresitens = array();
-$arr_quantitens = array();
-$arr_vtnomesitens = array();
+$arr_vlnomesitens = [];
+$arr_valoresitens = [];
+$arr_quantitens = [];
+$arr_vtnomesitens = [];
 
-$aListaBdiValores = array();
-$aListaEncargoSociaisValores = array();
-$aListaNotasValores = array();
-$aListaTaxaHomologada = array();
-$aListaValorEstimado = array();
-$aListaItemProcesso = array();
-$aCodigosItensPorLote = array();
+$aListaBdiValores = [];
+$aListaEncargoSociaisValores = [];
+$aListaNotasValores = [];
+$aListaTaxaHomologada = [];
+$aListaValorEstimado = [];
+$aListaItemProcesso = [];
+$aCodigosItensPorLote = [];
 
 $res_empparametro = $clempparametro->sql_record($clempparametro->sql_query(db_getsession("DB_anousu"), "e30_numdec"));
 if ($clempparametro->numrows > 0) {
     db_fieldsmemory($res_empparametro, 0);
-    if (trim($e30_numdec) == "" || $e30_numdec == 0) {
+    if (trim((string) $e30_numdec) == "" || $e30_numdec == 0) {
         $numdec = 2;
     } else {
         $numdec = $e30_numdec;
@@ -398,7 +398,7 @@ if ($clempparametro->numrows > 0) {
 
 
                             // Mostra descricao do lote - TODOS
-                            if (((!isset($descricao) && trim(@$descricao) == "") || !empty($possuiLote)) && isset($l20_codigo) && trim($l20_codigo) != "") {
+                            if (((!isset($descricao) && trim((string) @$descricao) == "") || !empty($possuiLote)) && isset($l20_codigo) && trim($l20_codigo) != "") {
                                 $sSqlLote = $clliclicitemlote->sql_query_licitacao(
                                     null,
                                     "l04_liclicitem, l04_descricao",
@@ -468,7 +468,7 @@ if ($clempparametro->numrows > 0) {
                                     $lLicitacaoTipoObrasServicos = true;
                                 }
 
-                                $aTiposLicitacaoPossuiNotaTecnica = array(
+                                $aTiposLicitacaoPossuiNotaTecnica = [
                                     'MCA',
                                     'MOQ',
                                     'MOT',
@@ -477,7 +477,7 @@ if ($clempparametro->numrows > 0) {
                                     'MTO',
                                     'MTT',
                                     'TPR'
-                                );
+                                ];
                                 $lPossuiNotaTecnica = in_array(
                                     $oLicitacaoAtributosDinamicos->getAtributo('tipolicitacao'),
                                     $aTiposLicitacaoPossuiNotaTecnica
@@ -517,10 +517,10 @@ if ($clempparametro->numrows > 0) {
                                     db_fieldsmemory($result_itens, $i);
                                     $str_lote = "";
 
-                                    if (substr($descr_lote, 0, 9) == "AUTO_LOTE") {
+                                    if (str_starts_with((string) $descr_lote, "AUTO_LOTE")) {
                                         $str_lote = str_replace("_", "", $descr_lote);
                                     } else {
-                                        if (substr($descr_lote, 0, 13) == "LOTE_AUTOITEM") {
+                                        if (str_starts_with((string) $descr_lote, "LOTE_AUTOITEM")) {
                                             $str_lote = str_replace("_", "", $descr_lote);
                                         }
                                     }
@@ -584,7 +584,7 @@ if ($clempparametro->numrows > 0) {
                                     }
 
                                     if ($ok == true) {
-                                        $camposItem = implode(', ', array(
+                                        $camposItem = implode(', ', [
                                             "pc23_valor as valor_$pc22_orcamitem",
                                             "pc23_vlrun as vlrun_$pc22_orcamitem",
                                             "pc23_obs as obs_$pc22_orcamitem",
@@ -594,7 +594,7 @@ if ($clempparametro->numrows > 0) {
                                             "pc23_encargossociais as encargossociais_$pc22_orcamitem",
                                             "pc23_notatecnica as notatecnica_$pc22_orcamitem",
                                             "pc23_taxahomologada as txhomologada_$pc22_orcamitem",
-                                            ));
+                                            ]);
                                         $result_lancados = $clpcorcamval->sql_record($clpcorcamval->sql_query_file(
                                             @$pc21_orcamforne,
                                             @$pc22_orcamitem,
@@ -607,7 +607,7 @@ if ($clempparametro->numrows > 0) {
                                         }
                                     }
 
-                                    if (trim($pc01_descrmater) == "") {
+                                    if (trim((string) $pc01_descrmater) == "") {
                                         $pc01_descrmater = $pc11_resum;
                                     }
 
@@ -688,9 +688,9 @@ if ($clempparametro->numrows > 0) {
                                             $ano = "pc23_validmin_" . $pc22_orcamitem . "_ano";
                                             db_inputdata(
                                                 "pc23_validmin_$pc22_orcamitem",
-                                                @$$dia,
-                                                @$$mes,
-                                                @$$ano,
+                                                @${$dia},
+                                                @${$mes},
+                                                @${$ano},
                                                 true,
                                                 "text",
                                                 $db_opcao,
@@ -755,13 +755,13 @@ if ($clempparametro->numrows > 0) {
                                             $aListaItemProcesso[] = "{$pc81_codprocitem}|vlrestimado_{$pc22_orcamitem}";
 
                                             if ($clpcorcamval->numrows > 0) {
-                                                if (strpos($$valor, ".") == "") {
-                                                    $$valor .= ".00";
+                                                if (strpos((string) ${$valor}, ".") == "") {
+                                                    ${$valor} .= ".00";
                                                 }
                                             }
 
-                                            if (!isset($$qtd) || (isset($$qtd) && $$qtd == '')) {
-                                                $$qtd = $pc11_quant;
+                                            if (!isset(${$qtd}) || (isset(${$qtd}) && ${$qtd} == '')) {
+                                                ${$qtd} = $pc11_quant;
                                             }
 
                                             $db_opcaoquant = 1;
@@ -885,8 +885,8 @@ if ($clempparametro->numrows > 0) {
                                     </tr>
 
                                     <?php
-                                    if (isset($$qtd) && $$qtd != "") {
-                                        echo "<script>js_verquant('" . $qtd . "','" . $$qtd . "','" . $pc11_quant . "','" . $pc22_orcamitem . "');</script>";
+                                    if (isset(${$qtd}) && ${$qtd} != "") {
+                                        echo "<script>js_verquant('" . $qtd . "','" . ${$qtd} . "','" . $pc11_quant . "','" . $pc22_orcamitem . "');</script>";
                                     }
                                 }
                             } else {

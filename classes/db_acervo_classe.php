@@ -91,7 +91,7 @@ class cl_acervo
     public function __construct()
     {
         $this->rotulo = new rotulo("acervo");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -229,10 +229,10 @@ class cl_acervo
          $this->erro_status = "0";
          return false;
        }
-       $this->bi06_seq = pg_result($result,0,0);
+       $this->bi06_seq = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from acervo_bi06_seq_seq");
-       if(($result != false) && (pg_result($result,0,0) < $bi06_seq)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $bi06_seq)){
          $this->erro_sql = " Campo bi06_seq maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -300,7 +300,7 @@ class cl_acervo
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Acervo ($this->bi06_seq) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Acervo já Cadastrado";
@@ -329,29 +329,29 @@ class cl_acervo
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008163,'$this->bi06_seq','I')");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008163,'','".AddSlashes(pg_result($resaco,0,'bi06_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008161,'','".AddSlashes(pg_result($resaco,0,'bi06_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008111,'','".AddSlashes(pg_result($resaco,0,'bi06_dataregistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008113,'','".AddSlashes(pg_result($resaco,0,'bi06_edicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008114,'','".AddSlashes(pg_result($resaco,0,'bi06_titulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008115,'','".AddSlashes(pg_result($resaco,0,'bi06_classcdd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008116,'','".AddSlashes(pg_result($resaco,0,'bi06_isbn'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008118,'','".AddSlashes(pg_result($resaco,0,'bi06_volume'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008122,'','".AddSlashes(pg_result($resaco,0,'bi06_tipoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008123,'','".AddSlashes(pg_result($resaco,0,'bi06_editora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1008124,'','".AddSlashes(pg_result($resaco,0,'bi06_classiliteraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,19583,'','".AddSlashes(pg_result($resaco,0,'bi06_anoedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,19994,'','".AddSlashes(pg_result($resaco,0,'bi06_colecaoacervo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,21639,'','".AddSlashes(pg_result($resaco,0,'bi06_cutter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,21927,'','".AddSlashes(pg_result($resaco,0,'bi06_idioma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,22346,'','".AddSlashes(pg_result($resaco,0,'bi06_subtitulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,22345,'','".AddSlashes(pg_result($resaco,0,'bi06_titulooriginal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1010587,'','".AddSlashes(pg_result($resaco,0,'bi06_paginacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1010588,'','".AddSlashes(pg_result($resaco,0,'bi06_tomo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008014,1010590,'','".AddSlashes(pg_result($resaco,0,'bi06_numeroitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008163,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008161,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008111,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_dataregistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008113,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_edicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008114,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_titulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008115,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_classcdd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008116,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_isbn'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008118,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_volume'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008122,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_tipoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008123,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_editora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1008124,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_classiliteraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,19583,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_anoedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,19994,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_colecaoacervo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,21639,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_cutter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,21927,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_idioma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,22346,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_subtitulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,22345,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_titulooriginal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1010587,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_paginacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1010588,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_tomo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008014,1010590,'','".AddSlashes(pg_fetch_result($resaco,0,'bi06_numeroitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -362,10 +362,10 @@ class cl_acervo
       $this->atualizacampos();
      $sql = " update acervo set ";
      $virgula = "";
-     if(trim($this->bi06_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_seq"])){
+     if(trim((string) $this->bi06_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_seq"])){
        $sql  .= $virgula." bi06_seq = $this->bi06_seq ";
        $virgula = ",";
-       if(trim($this->bi06_seq) == null ){
+       if(trim((string) $this->bi06_seq) == null ){
          $this->erro_sql = " Campo Código do Acervo não informado.";
          $this->erro_campo = "bi06_seq";
          $this->erro_banco = "";
@@ -375,10 +375,10 @@ class cl_acervo
          return false;
        }
      }
-     if(trim($this->bi06_biblioteca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_biblioteca"])){
+     if(trim((string) $this->bi06_biblioteca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_biblioteca"])){
        $sql  .= $virgula." bi06_biblioteca = $this->bi06_biblioteca ";
        $virgula = ",";
-       if(trim($this->bi06_biblioteca) == null ){
+       if(trim((string) $this->bi06_biblioteca) == null ){
          $this->erro_sql = " Campo Biblioteca não informado.";
          $this->erro_campo = "bi06_biblioteca";
          $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_acervo
          return false;
        }
      }
-     if(trim($this->bi06_dataregistro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_dataregistro_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi06_dataregistro_dia"] !="") ){
+     if(trim((string) $this->bi06_dataregistro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_dataregistro_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi06_dataregistro_dia"] !="") ){
        $sql  .= $virgula." bi06_dataregistro = '$this->bi06_dataregistro' ";
        $virgula = ",";
-       if(trim($this->bi06_dataregistro) == null ){
+       if(trim((string) $this->bi06_dataregistro) == null ){
          $this->erro_sql = " Campo Data de Registro não informado.";
          $this->erro_campo = "bi06_dataregistro_dia";
          $this->erro_banco = "";
@@ -404,7 +404,7 @@ class cl_acervo
        if(isset($GLOBALS["HTTP_POST_VARS"]["bi06_dataregistro_dia"])){
          $sql  .= $virgula." bi06_dataregistro = null ";
          $virgula = ",";
-         if(trim($this->bi06_dataregistro) == null ){
+         if(trim((string) $this->bi06_dataregistro) == null ){
            $this->erro_sql = " Campo Data de Registro não informado.";
            $this->erro_campo = "bi06_dataregistro_dia";
            $this->erro_banco = "";
@@ -415,14 +415,14 @@ class cl_acervo
          }
        }
      }
-     if (trim($this->bi06_edicao) !="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_edicao"])){
+     if (trim((string) $this->bi06_edicao) !="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_edicao"])){
        $sql  .= $virgula." bi06_edicao = '$this->bi06_edicao' ";
        $virgula = ",";
      }
-     if(trim($this->bi06_titulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_titulo"])){
+     if(trim((string) $this->bi06_titulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_titulo"])){
        $sql  .= $virgula." bi06_titulo = '$this->bi06_titulo' ";
        $virgula = ",";
-       if(trim($this->bi06_titulo) == null ){
+       if(trim((string) $this->bi06_titulo) == null ){
          $this->erro_sql = " Campo Título não informado.";
          $this->erro_campo = "bi06_titulo";
          $this->erro_banco = "";
@@ -432,24 +432,24 @@ class cl_acervo
          return false;
        }
      }
-     if(trim($this->bi06_classcdd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_classcdd"])){
+     if(trim((string) $this->bi06_classcdd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_classcdd"])){
        $sql  .= $virgula." bi06_classcdd = '$this->bi06_classcdd' ";
        $virgula = ",";
      }
-     if(trim($this->bi06_isbn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_isbn"])){
+     if(trim((string) $this->bi06_isbn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_isbn"])){
        $sql  .= $virgula." bi06_isbn = '$this->bi06_isbn' ";
        $virgula = ",";
      }
 
-     if(trim($this->bi06_volume)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_volume"])){
+     if(trim((string) $this->bi06_volume)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_volume"])){
          $sql  .= $virgula." bi06_volume = '$this->bi06_volume' ";
          $virgula = ",";
      }
 
-     if(trim($this->bi06_tipoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_tipoitem"])){
+     if(trim((string) $this->bi06_tipoitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_tipoitem"])){
        $sql  .= $virgula." bi06_tipoitem = $this->bi06_tipoitem ";
        $virgula = ",";
-       if(trim($this->bi06_tipoitem) == null ){
+       if(trim((string) $this->bi06_tipoitem) == null ){
          $this->erro_sql = " Campo Tipo do Item não informado.";
          $this->erro_campo = "bi06_tipoitem";
          $this->erro_banco = "";
@@ -459,10 +459,10 @@ class cl_acervo
          return false;
        }
      }
-     if(trim($this->bi06_editora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_editora"])){
+     if(trim((string) $this->bi06_editora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_editora"])){
        $sql  .= $virgula." bi06_editora = $this->bi06_editora ";
        $virgula = ",";
-       if(trim($this->bi06_editora) == null ){
+       if(trim((string) $this->bi06_editora) == null ){
          $this->erro_sql = " Campo Editora não informado.";
          $this->erro_campo = "bi06_editora";
          $this->erro_banco = "";
@@ -472,10 +472,10 @@ class cl_acervo
          return false;
        }
      }
-     if(trim($this->bi06_classiliteraria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_classiliteraria"])){
+     if(trim((string) $this->bi06_classiliteraria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_classiliteraria"])){
        $sql  .= $virgula." bi06_classiliteraria = $this->bi06_classiliteraria ";
        $virgula = ",";
-       if(trim($this->bi06_classiliteraria) == null ){
+       if(trim((string) $this->bi06_classiliteraria) == null ){
          $this->erro_sql = " Campo Classificação Literária não informado.";
          $this->erro_campo = "bi06_classiliteraria";
          $this->erro_banco = "";
@@ -485,29 +485,29 @@ class cl_acervo
          return false;
        }
      }
-     if(trim($this->bi06_anoedicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_anoedicao"])){
-        if(trim($this->bi06_anoedicao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["bi06_anoedicao"])){
+     if(trim((string) $this->bi06_anoedicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_anoedicao"])){
+        if(trim((string) $this->bi06_anoedicao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["bi06_anoedicao"])){
            $this->bi06_anoedicao = "0" ;
         }
        $sql  .= $virgula." bi06_anoedicao = $this->bi06_anoedicao ";
        $virgula = ",";
      }
 
-     if(trim($this->bi06_colecaoacervo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_colecaoacervo"])){
-        if(trim($this->bi06_colecaoacervo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["bi06_colecaoacervo"])){
+     if(trim((string) $this->bi06_colecaoacervo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_colecaoacervo"])){
+        if(trim((string) $this->bi06_colecaoacervo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["bi06_colecaoacervo"])){
            $this->bi06_colecaoacervo = "null" ;
         }
        $sql  .= $virgula." bi06_colecaoacervo = $this->bi06_colecaoacervo ";
        $virgula = ",";
      }
-     if(trim($this->bi06_cutter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_cutter"])){
+     if(trim((string) $this->bi06_cutter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_cutter"])){
        $sql  .= $virgula." bi06_cutter = '$this->bi06_cutter' ";
        $virgula = ",";
      }
-     if(trim($this->bi06_idioma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_idioma"])){
+     if(trim((string) $this->bi06_idioma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_idioma"])){
        $sql  .= $virgula." bi06_idioma = $this->bi06_idioma ";
        $virgula = ",";
-       if(trim($this->bi06_idioma) == null ){
+       if(trim((string) $this->bi06_idioma) == null ){
          $this->erro_sql = " Campo Idioma não informado.";
          $this->erro_campo = "bi06_idioma";
          $this->erro_banco = "";
@@ -517,21 +517,21 @@ class cl_acervo
          return false;
        }
      }
-     if(trim($this->bi06_subtitulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_subtitulo"])){
+     if(trim((string) $this->bi06_subtitulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_subtitulo"])){
        $sql  .= $virgula." bi06_subtitulo = '$this->bi06_subtitulo' ";
        $virgula = ",";
      }
-     if(trim($this->bi06_titulooriginal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_titulooriginal"])){
+     if(trim((string) $this->bi06_titulooriginal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_titulooriginal"])){
        $sql  .= $virgula." bi06_titulooriginal = '$this->bi06_titulooriginal' ";
        $virgula = ",";
      }
 
-     if(trim($this->bi06_paginacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_paginacao"])){
+     if(trim((string) $this->bi06_paginacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_paginacao"])){
          $sql  .= $virgula." bi06_paginacao = '$this->bi06_paginacao' ";
          $virgula = ",";
      }
 
-     if(trim($this->bi06_tomo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_tomo"])){
+     if(trim((string) $this->bi06_tomo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi06_tomo"])){
          $sql  .= $virgula." bi06_tomo = '$this->bi06_tomo' ";
          $virgula = ",";
      }
@@ -555,49 +555,49 @@ class cl_acervo
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1008163,'$this->bi06_seq','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_seq"]) || $this->bi06_seq != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008163,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_seq'))."','$this->bi06_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008163,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_seq'))."','$this->bi06_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_biblioteca"]) || $this->bi06_biblioteca != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008161,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_biblioteca'))."','$this->bi06_biblioteca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008161,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_biblioteca'))."','$this->bi06_biblioteca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_dataregistro"]) || $this->bi06_dataregistro != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008111,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_dataregistro'))."','$this->bi06_dataregistro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008111,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_dataregistro'))."','$this->bi06_dataregistro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_edicao"]) || $this->bi06_edicao != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008113,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_edicao'))."','$this->bi06_edicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008113,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_edicao'))."','$this->bi06_edicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_titulo"]) || $this->bi06_titulo != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008114,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_titulo'))."','$this->bi06_titulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008114,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_titulo'))."','$this->bi06_titulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_classcdd"]) || $this->bi06_classcdd != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008115,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_classcdd'))."','$this->bi06_classcdd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008115,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_classcdd'))."','$this->bi06_classcdd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_isbn"]) || $this->bi06_isbn != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008116,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_isbn'))."','$this->bi06_isbn',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008116,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_isbn'))."','$this->bi06_isbn',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_volume"]) || $this->bi06_volume != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008118,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_volume'))."','$this->bi06_volume',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008118,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_volume'))."','$this->bi06_volume',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_tipoitem"]) || $this->bi06_tipoitem != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008122,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_tipoitem'))."','$this->bi06_tipoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008122,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_tipoitem'))."','$this->bi06_tipoitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_editora"]) || $this->bi06_editora != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008123,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_editora'))."','$this->bi06_editora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008123,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_editora'))."','$this->bi06_editora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_classiliteraria"]) || $this->bi06_classiliteraria != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,1008124,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_classiliteraria'))."','$this->bi06_classiliteraria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,1008124,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_classiliteraria'))."','$this->bi06_classiliteraria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_anoedicao"]) || $this->bi06_anoedicao != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,19583,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_anoedicao'))."','$this->bi06_anoedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,19583,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_anoedicao'))."','$this->bi06_anoedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_colecaoacervo"]) || $this->bi06_colecaoacervo != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,19994,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_colecaoacervo'))."','$this->bi06_colecaoacervo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,19994,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_colecaoacervo'))."','$this->bi06_colecaoacervo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_cutter"]) || $this->bi06_cutter != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,21639,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_cutter'))."','$this->bi06_cutter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,21639,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_cutter'))."','$this->bi06_cutter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_idioma"]) || $this->bi06_idioma != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,21927,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_idioma'))."','$this->bi06_idioma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,21927,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_idioma'))."','$this->bi06_idioma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_subtitulo"]) || $this->bi06_subtitulo != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,22346,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_subtitulo'))."','$this->bi06_subtitulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,22346,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_subtitulo'))."','$this->bi06_subtitulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_titulooriginal"]) || $this->bi06_titulooriginal != "")
-             $resac = db_query("insert into db_acount values($acount,1008014,22345,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_titulooriginal'))."','$this->bi06_titulooriginal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008014,22345,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_titulooriginal'))."','$this->bi06_titulooriginal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_paginacao"]) || $this->bi06_paginacao != "")
-               $resac = db_query("insert into db_acount values($acount,1008014,1010587,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_paginacao'))."','$this->bi06_paginacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+               $resac = db_query("insert into db_acount values($acount,1008014,1010587,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_paginacao'))."','$this->bi06_paginacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_tomo"]) || $this->bi06_tomo != "")
-               $resac = db_query("insert into db_acount values($acount,1008014,1010588,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_tomo'))."','$this->bi06_tomo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+               $resac = db_query("insert into db_acount values($acount,1008014,1010588,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_tomo'))."','$this->bi06_tomo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi06_numeroitem"]) || $this->bi06_numeroitem != "")
-               $resac = db_query("insert into db_acount values($acount,1008014,1010590,'".AddSlashes(pg_result($resaco,$conresaco,'bi06_numeroitem'))."','$this->bi06_numeroitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+               $resac = db_query("insert into db_acount values($acount,1008014,1010590,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi06_numeroitem'))."','$this->bi06_numeroitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -651,29 +651,29 @@ class cl_acervo
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1008163,'$bi06_seq','E')");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008163,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008161,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008111,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_dataregistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008113,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_edicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008114,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_titulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008115,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_classcdd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008116,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_isbn'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008118,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_volume'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008122,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_tipoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008123,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_editora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1008124,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_classiliteraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,19583,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_anoedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,19994,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_colecaoacervo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,21639,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_cutter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,21927,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_idioma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,22346,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_subtitulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,22345,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_titulooriginal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1010587,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_paginacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1010588,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_tomo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008014,1010590,'','".AddSlashes(pg_result($resaco,$iresaco,'bi06_numeroitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008163,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008161,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008111,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_dataregistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008113,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_edicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008114,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_titulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008115,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_classcdd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008116,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_isbn'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008118,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_volume'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008122,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_tipoitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008123,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_editora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1008124,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_classiliteraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,19583,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_anoedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,19994,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_colecaoacervo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,21639,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_cutter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,21927,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_idioma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,22346,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_subtitulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,22345,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_titulooriginal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1010587,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_paginacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1010588,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_tomo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008014,1010590,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi06_numeroitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -797,7 +797,7 @@ class cl_acervo
    function sql_query_autores ( $bi06_seq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -827,7 +827,7 @@ class cl_acervo
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

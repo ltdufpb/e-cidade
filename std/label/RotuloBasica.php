@@ -3,18 +3,18 @@ abstract class RotuloBasica {
 
   public function makePropertiesDDField ($oCampo) {
 
-    $aMapVariavelCampo = array( "I"  => utf8_decode($oCampo->aceitatipo),
-                                "A"  => utf8_decode($oCampo->autocompl), // verificar
-                                "U"  => utf8_decode($oCampo->null),
-                                "G"  => utf8_decode($oCampo->uppercase),
-                                "S"  => utf8_decode($oCampo->label),
-                                "L"  => utf8_decode($oCampo->label),     // verificar
-                                "LS" => utf8_decode($oCampo->label),
-                                "T"  => utf8_decode($oCampo->description),
-                                "M"  => utf8_decode($oCampo->size),
-                                "N"  => utf8_decode($oCampo->null),      // verificar
-                                "RL" => utf8_decode($oCampo->labelrel),
-                                "TC" => utf8_decode($oCampo->datatype) );
+    $aMapVariavelCampo = [ "I"  => mb_convert_encoding($oCampo->aceitatipo, 'ISO-8859-1'),
+                                "A"  => mb_convert_encoding($oCampo->autocompl, 'ISO-8859-1'), // verificar
+                                "U"  => mb_convert_encoding($oCampo->null, 'ISO-8859-1'),
+                                "G"  => mb_convert_encoding($oCampo->uppercase, 'ISO-8859-1'),
+                                "S"  => mb_convert_encoding($oCampo->label, 'ISO-8859-1'),
+                                "L"  => mb_convert_encoding($oCampo->label, 'ISO-8859-1'),     // verificar
+                                "LS" => mb_convert_encoding($oCampo->label, 'ISO-8859-1'),
+                                "T"  => mb_convert_encoding($oCampo->description, 'ISO-8859-1'),
+                                "M"  => mb_convert_encoding($oCampo->size, 'ISO-8859-1'),
+                                "N"  => mb_convert_encoding($oCampo->null, 'ISO-8859-1'),      // verificar
+                                "RL" => mb_convert_encoding($oCampo->labelrel, 'ISO-8859-1'),
+                                "TC" => mb_convert_encoding($oCampo->datatype, 'ISO-8859-1') ];
 
     foreach ( $aMapVariavelCampo as $sPrefixvar => $sValor ) {
       

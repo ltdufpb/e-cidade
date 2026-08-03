@@ -34,7 +34,7 @@ require_once(modification("classes/db_levanta_classe.php"));
 require_once(modification("classes/db_autolevanta_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 $clautolevanta = db_utils::getDao("autolevanta");
@@ -51,7 +51,7 @@ $sSql   = $clauto->sql_query_cgm_inscricao($y50_codauto);
 $rsAuto = $clauto->sql_record($sSql);
 db_fieldsmemory($rsAuto,0);
 
-if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir" ) {
+if ( (isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir" ) {
 
   try {
 
@@ -103,7 +103,7 @@ if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Inc
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   if($clautolevanta->erro_status=="0"){
 

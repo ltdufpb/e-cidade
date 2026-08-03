@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("isencao"=>"Dados da Isenção","isencaolanc"=>"Lançamentos"); 
-	 $clcriaabas->sizecampo = array("isencao"=>"30","isencaolanc"=>"30");
-	 $clcriaabas->src = array("isencao"=>"tri1_isencao005.php");
-	 $clcriaabas->disabled   =  array("isencaolanc"=>"true"); 
+	 $clcriaabas->identifica = ["isencao"=>"Dados da Isenção","isencaolanc"=>"Lançamentos"]; 
+	 $clcriaabas->sizecampo = ["isencao"=>"30","isencaolanc"=>"30"];
+	 $clcriaabas->src = ["isencao"=>"tri1_isencao005.php"];
+	 $clcriaabas->disabled   =  ["isencaolanc"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

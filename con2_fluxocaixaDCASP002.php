@@ -47,7 +47,7 @@ try {
     $oGet = db_utils::postMemory($_GET);
     $fluxoCaixaFactory = new FluxoCaixaFactory($oGet->periodo);
     $fluxoCaixa = $fluxoCaixaFactory->obterFluxoCaixa();
-    $aQuadros = array();
+    $aQuadros = [];
 
     if (empty($oGet->periodo)) {
         throw new Exception('Período não informado.');

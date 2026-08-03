@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -98,7 +98,7 @@ function js_emite(){
       </td>
       <td align="left">
         <?php 
-        $xx = array("n"=>"Numérica","a"=>"Alfabética");
+        $xx = ["n"=>"Numérica","a"=>"Alfabética"];
         db_select('ordem',$xx,true,4,"");
         ?>
       </td>
@@ -108,7 +108,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-          $xx = array(
+          $xx = [
 	              "00"=>"TODAS",
 		      "01"=>"GABINETE", 
 	              "02"=>"ADMINISTRAÇÃO",
@@ -122,7 +122,7 @@ function js_emite(){
 		      "10"=>"INDÚSTRIA E COMÉRCIO",
 		      "11"=>"AGRICULTURA",
 		      "12"=>"CULTURA E TURISMO"
-		     );
+		     ];
   	  db_select('secretaria',$xx,true,4,"");
 	  ?>
 	</td>
@@ -131,7 +131,7 @@ function js_emite(){
       <td align="center" colspan="2">
         <?php 
         $result_regime = $clrhregime->sql_record($clrhregime->sql_query_file(null, "rh30_codreg, rh30_descr", "rh30_descr"));
-        db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
+        db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, [], 5, 250);
         ?>
       </td>
     </tr>

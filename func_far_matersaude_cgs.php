@@ -34,7 +34,7 @@ include(modification("classes/db_far_matersaude_classe.php"));
 include(modification("classes/db_far_matersaude_classe_cgs_ext.php"));
 include(modification("classes/db_matmater_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_matersaude     = new cl_far_matersaude;
 $clfar_matersaude_ext = new cl_far_matersaude_ext;
 $clmatmater           = new cl_matmater;
@@ -116,9 +116,9 @@ $clmatmater->rotulo->label("m60_descr");
         }else{
           $sql = $clfar_matersaude_ext->sql_query("",$campos,"fa01_i_codmater"," fa04_i_cgsund=$cgs $sep$ativo");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa01_i_codigo)){
-          $repassa = array("chave_fa01_i_codigo"=>$chave_fa01_i_codigo,"chave_m60_descr"=>$chave_m60_descr);
+          $repassa = ["chave_fa01_i_codigo"=>$chave_fa01_i_codigo,"chave_m60_descr"=>$chave_m60_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {
@@ -127,7 +127,7 @@ $clmatmater->rotulo->label("m60_descr");
 
       	  $sql    = $clfar_matersaude_ext->sql_query($pesquisa_chave,"*","fa01_i_codmater"," fa01_i_codigo=$pesquisa_chave and fa04_i_cgsund=$cgs $sep$ativo");
       	  $result = db_query($sql);
-          $linhas = pg_numrows($result);
+          $linhas = pg_num_rows($result);
           if ($linhas!=0) {
 
           	db_fieldsmemory($result,0);

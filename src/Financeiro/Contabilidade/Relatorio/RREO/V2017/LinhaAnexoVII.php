@@ -105,7 +105,7 @@ class LinhaAnexoVII {
   /**
    * @var LinhaAnexoVII[]
    */
-  private $aLinhas = array();
+  private $aLinhas = [];
 
   /**
    * Tipo do poder

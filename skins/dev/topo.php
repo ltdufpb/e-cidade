@@ -24,7 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-$iInstit = @$HTTP_SESSION_VARS["DB_instit"];
+$iInstit = @$_SESSION["DB_instit"];
 if(!isset($iInstit)){
   $iInstit = 1;
 }
@@ -76,15 +76,15 @@ function js_criaDIV() {
   var inner  = '<table border="0" cellspacing="1" width="100%" cellpadding="1" style="font-size:10px; border-collapse:collapse;" bgcolor="#5786B2">             ';
       inner += '   <tr>                                                                                                                                         ';
       inner += '     <td><strong>DB Versão:</strong></td>                                                                                                       ';
-      inner += '     <td style="color:#FFF;"><?=@pg_result($result,0,3)?></td>                                                                                  ';
+      inner += '     <td style="color:#FFF;"><?=@pg_fetch_result($result,0,3)?></td>                                                                                  ';
       inner += '     <td><strong>Cliente/CodCli:</strong></td>                                                                                                  ';
-      inner += '     <td style="color:#FFF;"><?=@pg_result($result,0,5)?></td>                                                                                  ';
+      inner += '     <td style="color:#FFF;"><?=@pg_fetch_result($result,0,5)?></td>                                                                                  ';
       inner += '   </tr>                                                                                                                                        ';
       inner += '   <tr>                                                                                                                                         ';
       inner += '     <td><strong>Base de Dados:</strong></td>                                                                                                   ';
       inner += '     <td style="color:#FFF;">' + document.getElementById('auxAcesso').value + '</td>                                                            ';
       inner += '     <td><strong>Servidor:</strong></td>                                                                                                        ';
-      inner += '     <td style="color:#FFF;"><?=$DB_SERVIDOR?> <?=(isset($_SERVER["HTTP_X_FORWARDED_FOR"])?$_SERVER["HTTP_X_FORWARDED_FOR"]:$HTTP_SERVER_VARS['REMOTE_ADDR'])?></td>';
+      inner += '     <td style="color:#FFF;"><?=$DB_SERVIDOR?> <?=($_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER['REMOTE_ADDR'])?></td>';
       inner += '   </tr>                                                                                                                                        ';
       inner += '   <tr>                                                                                                                                         ';
       inner += '     <td><strong>Competência Folha:</strong></td>                                                                                               ';
@@ -140,7 +140,7 @@ function js_remDIV() {
     </td>
   </tr>
 </table>
-<!--input type="hidden" name="Hporta" id="Hporta" value="<?=$HTTP_SERVER_VARS['REMOTE_PORT']?>"-->
+<!--input type="hidden" name="Hporta" id="Hporta" value="<?=$_SERVER['REMOTE_PORT']?>"-->
 <input type="hidden" id="Hid_usuario">
 <input type="hidden" id="Husuario">
   <input type="hidden" id="Hhora">

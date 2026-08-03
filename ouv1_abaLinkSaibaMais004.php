@@ -77,7 +77,7 @@ if (!empty($oPost) && $oPost->actionLinkSaiba == 'salvar') {
 
 try {
     $tipoProcesso = getTipoProcesso($iCod);
-} catch (\Exception $ex) {
+} catch (\Exception) {
 }
 
 

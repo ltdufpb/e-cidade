@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("classes/db_infla_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clinfla = new cl_infla;
 $db_opcao = 22;
 $db_botao = false;
@@ -64,11 +64,11 @@ if(isset($incluir)){
         continue;
       }
       $poslinha = substr($poslinha,1,strlen($poslinha));
-      $arr_poslinha = split($separador,$poslinha);
+      $arr_poslinha = preg_split('#' . preg_quote((string) $separador, '#') . '#m',$poslinha);
       $datas = $arr_poslinha[0];
       $valor = $arr_poslinha[1];
 
-      $arr_datas = split("/",$datas);
+      $arr_datas = preg_split("#\\/#m",$datas);
       $datas = $arr_datas[2]."-".$arr_datas[1]."-".$arr_datas[0];
       $valor = str_replace(",",".",$valor);
 

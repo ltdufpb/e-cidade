@@ -63,14 +63,11 @@ class Item extends BaseAbstract
     public function getCodigoLayout()
     {
         $iCodigoLayout = self::CODIGO_LAYOUT_V12;
-        switch ($this->oConfiguracao->getVersao()) {
-            case '1.3':
-                $iCodigoLayout = self::CODIGO_LAYOUT_V13;
-                break;
-            case '1.4':
-                $iCodigoLayout = self::CODIGO_LAYOUT_V14;
-                break;
-        }
+        $iCodigoLayout = match ($this->oConfiguracao->getVersao()) {
+            '1.3' => self::CODIGO_LAYOUT_V13,
+            '1.4' => self::CODIGO_LAYOUT_V14,
+            default => $iCodigoLayout,
+        };
 
         return $iCodigoLayout;
     }
@@ -156,7 +153,7 @@ class Item extends BaseAbstract
          */
         $lModalidadesDispensa = in_array(
             $this->oLicitacao->getModalidade()->getSiglaTipoCompraTribunal(),
-            array('PRD', 'PRI', 'RPO')
+            ['PRD', 'PRI', 'RPO']
         );
         if (!$lModalidadesDispensa && $iFase == \EventoLicitacao::FASE_ADJUDICACAO_HOMOLOGACAO) {
             $oVencedor->tipo = \LicitanteLicitaCon::getTipoDocumentoPorCGM($iCgm);
@@ -227,7 +224,7 @@ class Item extends BaseAbstract
 
         if ($this->oConfiguracao->getVersao() != '1.2' && in_array(
             $this->oLicitacao->getModalidade()->getSiglaTipoCompraTribunal(),
-            array('PRD', 'PRI', 'RPO', 'CPC', 'MAI')
+            ['PRD', 'PRI', 'RPO', 'CPC', 'MAI']
         )) {
             return $oStdValorHomologado;
         }
@@ -284,20 +281,20 @@ class Item extends BaseAbstract
             return $oStdDadosOSE;
         }
 
-        $aCampos = array(
+        $aCampos = [
           "(case when pcorcamitemproc.pc31_pcprocitem is not null " .
           "           then pcproc.pc80_data    else solicita.pc10_data  end) as data",
           "(case when pcorcamitemproc.pc31_pcprocitem is not null " .
           "           then pcproc.pc80_codproc else solicita.pc10_numero end) as codigo",
           "(case when pcorcamjulg.pc24_orcamitem is null then 0 else pc23_bdi end) as bdi",
           "(case when pcorcamjulg.pc24_orcamitem is null then 0 else pc23_encargossociais end) as encargossociais"
-        );
+        ];
 
-        $aWhere = array(
+        $aWhere = [
           "liclicitem.l21_codigo = {$iCodigoItemLicitacao}",
           "liclicitem.l21_codliclicita = {$iCodigoLicitacao}",
           "(pcorcamitemproc.pc31_orcamitem is null or pcorcamjulg.pc24_pontuacao = 1)"
-        );
+        ];
 
         $oDaoLicLicitem = new \cl_liclicitem();
         $sSqlBuscaDadosOSE = $oDaoLicLicitem->sql_query_valor_estimado(
@@ -426,7 +423,7 @@ class Item extends BaseAbstract
 
         if ($nivelJulgamento == 'I' && in_array(
             $siglaModalidade,
-            array('RIN', 'CNC', 'CNV', 'PRE', 'PRP', 'TMP', 'RDC', 'RDE', 'CHP', 'EST', 'ESE')
+            ['RIN', 'CNC', 'CNV', 'PRE', 'PRP', 'TMP', 'RDC', 'RDE', 'CHP', 'EST', 'ESE']
         )) {
             return $oLicitacao->obterTipoBeneficioMicroempresaEmpresaPequenoPorte();
         }

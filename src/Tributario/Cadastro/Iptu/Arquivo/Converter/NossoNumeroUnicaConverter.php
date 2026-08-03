@@ -14,10 +14,10 @@ final class NossoNumeroUnicaConverter extends Converter
         foreach($nossoNumeroCollection as $nossoNumero) {
 
             $size = $this->layout->getSize(NossoNumeroUnica::NOSSO_NUMERO_UNICA);
-            $l .= str_pad(substr($nossoNumero->getNossoNumeroUnica(),             0, $size), $size, ' ', STR_PAD_LEFT);
+            $l .= str_pad(substr((string) $nossoNumero->getNossoNumeroUnica(),             0, $size), $size, ' ', STR_PAD_LEFT);
 
             $size = $this->layout->getSize(NossoNumeroUnica::DIGITO_NOSSO_NUMERO_UNICA);
-            $l .= str_pad(substr($nossoNumero->getDigitoNossoNumeroUnica(),       0, $size), $size, ' ', STR_PAD_LEFT);
+            $l .= str_pad(substr((string) $nossoNumero->getDigitoNossoNumeroUnica(),       0, $size), $size, ' ', STR_PAD_LEFT);
         }
 
         return $l;

@@ -33,8 +33,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory( $HTTP_POST_VARS );
-parse_str( $HTTP_SERVER_VARS["QUERY_STRING"] );
+db_postmemory( $_POST );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clperiodoavaliacao  = new cl_periodoavaliacao;
 $clperiodocalendario = new cl_periodocalendario;
@@ -73,7 +73,7 @@ $clperiodoavaliacao->rotulo->label("ed09_c_descr");
               </tr>
               <tr>
                 <td colspan="2" align="center">
-                  <input name="calendario" type="hidden" value="<?=isset( $calendario ) ? $calendario : ""?>">
+                  <input name="calendario" type="hidden" value="<?=$calendario ?? ""?>">
                   <input name="pesquisar"  type="submit" id="pesquisar2" value="Pesquisar">
                   <input name="limpar"     type="reset"  id="limpar" value="Limpar" >
                   <input name="Fechar"     type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_periodoavaliacao.hide();">

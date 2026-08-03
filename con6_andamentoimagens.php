@@ -44,12 +44,12 @@
 <?php 
   db_query("begin");
   $result = db_query("select * from db_ordemimagens where codordem = $ordem");
-  $num = pg_numrows($result);
+  $num = pg_num_rows($result);
   for ($i=0;$i<$num;$i++) {
     $nomeTemporario = tempnam("../tmp/","");
-    $oid = pg_result($result,$i,"arquivo");
+    $oid = pg_fetch_result($result,$i,"arquivo");
     chmod($nomeTemporario,0664);
-    pg_loexport($oid,$nomeTemporario) or die("Erro (21). Carregando a imagem.");
+    pg_lo_export($oid,$nomeTemporario) or die("Erro (21). Carregando a imagem.");
     echo "
     <tr> 
       <td align=\"center\" valign=\"middle\">

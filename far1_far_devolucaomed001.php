@@ -33,7 +33,7 @@ require_once(modification("far1_far_devolucaomed001_func.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification('libs/db_utils.php'));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoclFarDevolucaomed = db_utils::getdao('far_devolucaomed');
 $oDaoclFarDevolucao    = db_utils::getdao('far_devolucao');

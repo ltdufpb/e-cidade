@@ -44,7 +44,7 @@ include(modification("classes/db_cgs_und_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clsau_lote        = new cl_sau_lote;
 $clsau_lotepront   = new cl_sau_lotepront_ext;
@@ -60,7 +60,7 @@ $clrotulo->label("z01_i_cgsund");
 $db_opcao     = 1;
 $db_botao     = true;
 $db_botao1    = false;
-$db_processar = isset($db_processar)?$db_processar:false;
+$db_processar ??= false;
 
 //$sd29_d_data_dia = date("d",db_getsession("DB_datausu"));
 //$sd29_d_data_mes = date("m",db_getsession("DB_datausu"));

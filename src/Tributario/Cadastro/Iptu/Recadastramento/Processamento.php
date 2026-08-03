@@ -40,12 +40,6 @@ class Processamento
 {
 
     /**
-     * Nome da Importacao dos dados para recadastramento
-     * @var [type]
-     */
-    private $nomeImportacao;
-
-    /**
      * Data do Arquivo
      * @var null
      */
@@ -56,7 +50,7 @@ class Processamento
      *
      * @var null
      */
-    private $aArquivosImportados = array();
+    private $aArquivosImportados = [];
 
     /**
      * Codigo do Schema
@@ -70,7 +64,7 @@ class Processamento
      *
      * @var null
      */
-    private $aMatriculasImportadas = array();
+    private $aMatriculasImportadas = [];
 
     /**
      * Flag de verificacao se manual
@@ -127,9 +121,12 @@ class Processamento
      * @param [type] $nomeImportacao [description]
      * @param bool $importacaoManual
      */
-    function __construct($nomeImportacao, $importacaoManual = true)
+    function __construct(/**
+     * Nome da Importacao dos dados para recadastramento
+     * @var [type]
+     */
+    private $nomeImportacao, $importacaoManual = true)
     {
-        $this->nomeImportacao = $nomeImportacao;
         $this->importacaoManual = $importacaoManual;
     }
 
@@ -410,7 +407,7 @@ class Processamento
                 Situacao::lancarExcecao($excecao, $this->importacaoManual);
             }
 
-            $retornoCalculo = pg_result($rsCalculo,0,0);
+            $retornoCalculo = pg_fetch_result($rsCalculo,0,0);
             preg_match('/[0-9]*/', trim($retornoCalculo), $aTipoLogCalc);
             $retorno        = $aTipoLogCalc[0];
 

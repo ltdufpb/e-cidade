@@ -146,7 +146,7 @@ final class AutenticacaoService extends Autenticacao
             $oPagamento = $aPagamentos[0];
 
 
-            $dataPagamento = isset($oPagamento->dtpago) ? $oPagamento->dtpago : $oPagamento->k00_dtpaga;
+            $dataPagamento = $oPagamento->dtpago ?? $oPagamento->k00_dtpaga;
             $this->setDataPagamento($dataPagamento);
             $this->setNumeroDam("{$oPagamento->it15_numpre}/{$oPagamento->k00_numpar}");
         }

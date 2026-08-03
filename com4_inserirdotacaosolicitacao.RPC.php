@@ -68,12 +68,12 @@ switch($oParam->exec) {
     if ((isset($oParam->filtros->dtDataSolicitacaoInicial) && !empty($oParam->filtros->dtDataSolicitacaoInicial)) && 
         (isset($oParam->filtros->dtDataSolicitacaoFinal) && !empty($oParam->filtros->dtDataSolicitacaoFinal))) {
       
-      $sDataInicial = implode("-", array_reverse(explode("/", $oParam->filtros->dtDataSolicitacaoInicial)));
-      $sDataFinal   = implode("-", array_reverse(explode("/", $oParam->filtros->dtDataSolicitacaoFinal)));
+      $sDataInicial = implode("-", array_reverse(explode("/", (string) $oParam->filtros->dtDataSolicitacaoInicial)));
+      $sDataFinal   = implode("-", array_reverse(explode("/", (string) $oParam->filtros->dtDataSolicitacaoFinal)));
       $sWhere  .= " and pc10_data between '{$sDataInicial}' and '{$sDataFinal}'";
     } else if (isset($oParam->filtros->dtDataSolicitacaoInicial) && !empty($oParam->filtros->dtDataSolicitacaoInicial)) {
       
-      $sDataInicial = implode("-", array_reverse(explode("/", $oParam->filtros->dtDataSolicitacaoInicial)));
+      $sDataInicial = implode("-", array_reverse(explode("/", (string) $oParam->filtros->dtDataSolicitacaoInicial)));
       $sWhere  .= " and pc10_data =  '{$sDataInicial}'";
     }
     if (isset($oParam->filtros->aSolicitacoes) && count($oParam->filtros->aSolicitacoes) > 0) {
@@ -95,7 +95,7 @@ switch($oParam->exec) {
     $rsDadosSolicitacao   = $oDaoSolicita->sql_record($sSqlDadosSolicitacao);
     
     $aSolicitacoes        =  db_utils::getColectionByRecord($rsDadosSolicitacao, false, false, false);
-    $aDadosSolicitacao    = array();
+    $aDadosSolicitacao    = [];
     $lIemSemDotacao       = 0;
     
     foreach ($aSolicitacoes as $iIndSolicitacoes => $oValorSolicitacoes){
@@ -111,7 +111,7 @@ switch($oParam->exec) {
       $oDados->solicitacao    = $oValorSolicitacoes->pc10_numero;
       $oDados->dtEmis         = db_formatar($oValorSolicitacoes->pc10_data, "d");
       $oDados->dotacoes       = $oValorSolicitacoes->pc13_coddot;  
-      $oDados->resumo         = urlencode(substr($oValorSolicitacoes->pc10_resumo, 0, 100));
+      $oDados->resumo         = urlencode(substr((string) $oValorSolicitacoes->pc10_resumo, 0, 100));
       $oDados->lIemSemDotacao = $lIemSemDotacao;
       $aDadosSolicitacao[] = $oDados;  
     }
@@ -122,7 +122,7 @@ switch($oParam->exec) {
     
   case "getDotacoes": 
 
-    $aDotacoesItens       = array();
+    $aDotacoesItens       = [];
     $oDadosSolicitacao    = db_utils::getDao("solicitem");
     $whereItensDotacao    = "pc10_numero = {$oParam->iCodigoSolicitacao}";
     $sCamposItensDotacao  = "pc13_anousu,     ";
@@ -188,8 +188,8 @@ switch($oParam->exec) {
           $oDotacao->iDotacao    = $oItensElemento->o56_elemento;
           $oDotacao->iAnoDotacao = db_getsession("DB_anousu");
           $oDotacao->sElemento   = $oItensElemento->o56_elemento;  
-          $oDotacao->aItens      = array();
-          $oDotacao->aElementos  = array();
+          $oDotacao->aItens      = [];
+          $oDotacao->aElementos  = [];
           $oDotacao->lAutorizado = "false";
           
           if (AutorizacaoEmpenho::verificaItemAutorizado($oItensDotacao->pc11_codigo,

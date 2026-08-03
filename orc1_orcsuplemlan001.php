@@ -63,7 +63,7 @@ $clconlancamdoc = new cl_conlancamdoc;
 $clconlancamrec = new cl_conlancamrec;
 $cltranslan = new cl_translan;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 // parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
 $db_opcao = 1;
@@ -91,7 +91,7 @@ if (isset ($Processar) && $Processar =="Processar") {
 			           ";
 		$res = $clorcsuplem->sql_record($sql);
 		if (($clorcsuplem->numrows) > 0) {
-			for ($i = 0; $i < pg_numrows($res); $i ++) {
+			for ($i = 0; $i < pg_num_rows($res); $i ++) {
 				db_fieldsmemory($res, $i);
 				$matriz[$i] = $chave;
 			}
@@ -110,12 +110,12 @@ if (isset ($Processar) && $Processar =="Processar") {
 	//--
 	if ($matriz[0] == "") {
 		unset ($matriz);
-		$matriz = array ();
+		$matriz =  [];
 	}
 	
 	for ($i = 0; $i < sizeof($matriz); $i ++) {
 		$o46_codsup = $matriz[$i];
-	
+
 	    // aqui começa o novo código 
 		$teste = processa_suplementacao($o46_codsup,$data,$usuario);
 		if ($teste!=false){

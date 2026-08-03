@@ -249,10 +249,10 @@ db_app::load ( "scripts.js, strings.js, prototype.js, estilos.css" );
         <td> <b>Ponto: </b> </td>
         <td>
           <?php
-          $aPontos = array("pontofx" =>"Ponto Fixo",
+          $aPontos = ["pontofx" =>"Ponto Fixo",
                            "pontofs" =>"Ponto de Salario",
                            "pontofr" =>"Ponto de Rescisao",
-                           "pontocom"=>"Ponto complementar");
+                           "pontocom"=>"Ponto complementar"];
           db_select("tabela", $aPontos, true, 1);
               
           ?>

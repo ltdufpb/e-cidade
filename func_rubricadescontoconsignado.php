@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rubricadescontoconsignado_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrubricadescontoconsignado = new cl_rubricadescontoconsignado;
 $clrubricadescontoconsignado->rotulo->label("rh140_sequencial");
 $clrubricadescontoconsignado->rotulo->label("rh140_sequencial");
@@ -52,9 +52,9 @@ $clrubricadescontoconsignado->rotulo->label("rh140_sequencial");
         }else{
            $sql = $clrubricadescontoconsignado->sql_query("",$campos,"rh140_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh140_sequencial)){
-          $repassa = array("chave_rh140_sequencial"=>$chave_rh140_sequencial,"chave_rh140_sequencial"=>$chave_rh140_sequencial);
+          $repassa = ["chave_rh140_sequencial"=>$chave_rh140_sequencial,"chave_rh140_sequencial"=>$chave_rh140_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

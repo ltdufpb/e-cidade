@@ -603,9 +603,9 @@ class CertidaoExistencia
         $oDaoCertidaoExistecia->j133_data = $this->getDataEmissao();
         $oDaoCertidaoExistecia->j133_hora = $this->getHoraEmissao();
         $oDaoCertidaoExistecia->j133_arquivo = $iOIDArquivo;
-        $oDaoCertidaoExistecia->j133_observacao = utf8_decode($this->getObservacao());
+        $oDaoCertidaoExistecia->j133_observacao = mb_convert_encoding($this->getObservacao(), 'ISO-8859-1');
         $oDaoCertidaoExistecia->j133_processo = $oDadosProcesso->sCodigoProcesso;
-        $oDaoCertidaoExistecia->j133_titulaprocesso = utf8_decode($oDadosProcesso->sTitularProcesso);
+        $oDaoCertidaoExistecia->j133_titulaprocesso = mb_convert_encoding($oDadosProcesso->sTitularProcesso, 'ISO-8859-1');
         $oDaoCertidaoExistecia->j133_dtprocesso = $oDadosProcesso->sDataProcesso;
         $oDaoCertidaoExistecia->j133_arealote = $this->getAreaLote();
         $oDaoCertidaoExistecia->j133_areareallote = $this->getAreaRealLote();

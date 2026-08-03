@@ -67,10 +67,10 @@
           <td><b>Tipo de Local:</b></td>
           <td>
             <?php 
-              $aTipoLocal = array("t"=>"Todos",
+              $aTipoLocal = ["t"=>"Todos",
                                   "g"=>"Geral",
                                   "e"=>"Endereço",
-                                  "d"=>"Departamento");
+                                  "d"=>"Departamento"];
               db_select("sTipoLocal", $aTipoLocal, true, 1);
             ?>
           </td>

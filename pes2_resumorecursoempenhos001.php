@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_gerfcom_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clgerfcom = new cl_gerfcom;
 $clrotulo  = new rotulocampo;
@@ -126,7 +126,7 @@ function js_emite() {
                   <td  align="left" ><b>Ponto:</b</td>
                   <td >
                    <?php 
-                     $x = array("s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento");
+                     $x = ["s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento"];
                      db_select('ponto',$x,true,4,"onchange='document.form1.submit();'");
                    ?>
                   </td>

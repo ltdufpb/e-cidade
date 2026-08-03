@@ -38,7 +38,7 @@ $clliberafornecedor = new cl_liberafornecedor;
 $clliberafornecedorsol = new cl_liberafornecedorsol;
 $clliberafornecedorpcproc = new cl_liberafornecedorpcproc;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

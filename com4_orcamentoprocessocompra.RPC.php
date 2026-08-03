@@ -67,7 +67,7 @@ try {
                                                           "pc80_codproc= {$oParam->iCodigoProcesso} and pc22_codorc={$oParam->iCodigoOrcamento}" );
       $rsOrcamentoItens  = $oDaoOrcamentoItem->sql_record( $sSqlOrcamentoItem );
 
-      $aItensSelecionados = array();
+      $aItensSelecionados = [];
       if ($rsOrcamentoItens && $oDaoOrcamentoItem->numrows > 0) {
 
         for ($iRow = 0; $iRow < $oDaoOrcamentoItem->numrows; $iRow++) {
@@ -87,24 +87,24 @@ try {
                                                                 " pc80_codproc={$oParam->iCodigoProcesso} and (e54_autori is null or (e54_autori is not null and e54_anulad is not null)) ");
       $rsProcessoItem   = $oDaoProcessoItem->sql_record( $sSqlProcessoItem );
 
-      $aItens = array();
+      $aItens = [];
       if ($rsProcessoItem && $oDaoProcessoItem->numrows > 0) {
 
         for ($iRow = 0; $iRow < $oDaoProcessoItem->numrows; $iRow++ ) {
           $oItem = db_utils::fieldsMemory($rsProcessoItem, $iRow);
 
-          $aItens[] = array(
+          $aItens[] = [
               'codigo_item'        => $oItem->pc81_codprocitem,
               'sequencial'         => $oItem->pc11_seq,
               'codigo_material'    => $oItem->pc01_codmater,
-              'descricao_material' => urlencode($oItem->pc01_descrmater),
-              'unidade'            => urlencode($oItem->m61_descr),
+              'descricao_material' => urlencode((string) $oItem->pc01_descrmater),
+              'unidade'            => urlencode((string) $oItem->m61_descr),
               'quantidade'         => $oItem->pc11_quant,
-              'resumo'             => urlencode($oItem->pc11_resum),
-              'lote'               => urlencode($oItem->pc68_nome),
+              'resumo'             => urlencode((string) $oItem->pc11_resum),
+              'lote'               => urlencode((string) $oItem->pc68_nome),
               'selecionado'        => in_array($oItem->pc81_codprocitem, $aItensSelecionados),
               'bloqueado'          => ($oItem->bloqueado == 't')
-            );
+            ];
         }
       }
 

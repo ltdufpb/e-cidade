@@ -329,15 +329,15 @@ FROM
 
 $rs = db_query($sSql);
 
-if ( pg_numrows($rs) <= 0 and !isParaiba()) {
+if ( pg_num_rows($rs) <= 0 and !isParaiba()) {
 
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum Registro Encontrado.");
   exit;
 }
 
-$aDados = array();
+$aDados = [];
 
-for (  $i = 0; $i <  pg_numrows($rs); $i++ ) {
+for (  $i = 0; $i <  pg_num_rows($rs); $i++ ) {
 
   $oDados = db_utils::fieldsMemory($rs, $i);
   $oValores = new stdClass();
@@ -398,7 +398,7 @@ foreach ( $aDados as $iIndice => $aValores  ) {
   }
 
 if(isParaiba()) {
-    if(pg_numrows($rs) == 0)
+    if(pg_num_rows($rs) == 0)
     {
         $pdf->setfont('arial','',10);
         $pdf->cell($pdf->w-15,$pdf->h/2,"NADA A REGISTRAR",0,0,"C",0);

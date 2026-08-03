@@ -65,7 +65,7 @@ abstract class ConexaoSoap
     $sXml = str_replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "", $sXml);
 
     $oSoapVar           = new SoapVar($sXml, XSD_ANYXML);
-    $oRetornoSoap       = $this->oSoapClient->__soapCall($this->oRequisicao->getOperacao(), array($oSoapVar) );
+    $oRetornoSoap       = $this->oSoapClient->__soapCall($this->oRequisicao->getOperacao(), [$oSoapVar] );
     $this->oRetornoSoap = $oRetornoSoap;
   }
 

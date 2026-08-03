@@ -159,7 +159,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
              </td>
              <td style="padding-bottom: 8px;">
                <?php 
-               $aX                   = array();
+               $aX                   = [];
                $sSql                 = $oDaoTfdTipoTratamento->sql_query_file(null, '* ');
                $rsTfd_tipotratamento = $oDaoTfdTipoTratamento->sql_record($sSql);
 
@@ -259,7 +259,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
               <?php 
               if (isset($tf01_d_datapreferencia) && !empty($tf01_d_datapreferencia)) {
 
-                $dTmp = explode('/', $tf01_d_datapreferencia);
+                $dTmp = explode('/', (string) $tf01_d_datapreferencia);
                 if (count($dTmp) == 3) {
 
                   $tf01_d_datapreferencia_dia = $dTmp[0];
@@ -290,7 +290,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
             <td nowrap title="<?=@$Ttf01_i_emergencia?>" colspan="2" align="left">
               <label style="margin-right: 33px;"><?=@$Ltf01_i_emergencia?></label>
               <?php 
-              $aX = array('2'=>'NÃO', '1'=>'SIM');
+              $aX = ['2'=>'NÃO', '1'=>'SIM'];
               db_select('tf01_i_emergencia', $aX, true, $db_opcao);
               ?>
             </td>
@@ -305,7 +305,7 @@ $iCboSolicitanteSelecionado = !empty($tf01_rhcbosolicitante) ? $tf01_rhcbosolici
             </td>
             <td>
               <?php 
-              $aX = array();
+              $aX = [];
               $sSql = $oDaoTfdTipoTransporte->sql_query_file(null, '* ');
               $rsTfd_tipotransporte = $oDaoTfdTipoTransporte->sql_record($sSql);
               for ($iCont = 0; $iCont < $oDaoTfdTipoTransporte->numrows; $iCont++) {

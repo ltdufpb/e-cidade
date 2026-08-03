@@ -43,7 +43,7 @@ $data_final_ano = db_getsession("DB_anousu");
 $clrotulo = new rotulocampo;
 $clrotulo->label('z01_numcgm');
 $clrotulo->label('z01_nome');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

@@ -47,6 +47,7 @@ class Soma extends FormulaAvaliacao
      * @return AvaliacaoPorAreaConhecimento
      * @throws Exception
      */
+    #[\Override]
     public function calcularAvaliacoes(AreaProcedimentoAvaliacao $areaProcedimentoAvaliacao)
     {
         $avaliacaoPorArea = new AvaliacaoPorAreaConhecimento();
@@ -104,6 +105,7 @@ class Soma extends FormulaAvaliacao
      * @return ResultadoPorAreaConhecimento
      * @throws Exception
      */
+    #[\Override]
     public function calcularResultado(AreaProcedimentoResultado $areaProcedimentoResultado)
     {
         $diarioAvaliacaoDisciplina = $this->diarioAvaliacaoDisciplina[0]; // pega a primeira disciplina

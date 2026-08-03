@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaofar_tiporeceitapadrao = db_utils::getdao('far_tiporeceitapadrao');
 $oDaofar_tiporeceita = db_utils::getdao('far_tiporeceita');
 $oIframeAE = new cl_iframe_alterar_excluir();

@@ -43,7 +43,7 @@ if(isset($incluir)){
  $oid_imagem = "";
  if (!empty($name)) {
    $nameoid = "tmp/".@$GLOBALS["HTTP_POST_VARS"]["ma01_o_imagem"];
-   $oid_imagem = pg_loimport($nameoid) or die("Erro(15) importando imagem");
+   $oid_imagem = pg_lo_import($nameoid) or die("Erro(15) importando imagem");
  }  
  $clmarca->ma01_c_nomeimagem = $name;
  $clmarca->ma01_o_imagem = $oid_imagem;

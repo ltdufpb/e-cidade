@@ -37,7 +37,7 @@ use Exception;
  */
 class RuasTipoRegistry
 {
-    private static $storage = array();
+    private static $storage = [];
 
     public static function set(RuasTipo $ruasTipo)
     {

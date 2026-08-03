@@ -160,6 +160,7 @@ class EstimativaReceitaCronogramaMapper extends EstimativaReceitaMapper
      * Obs.: Esse metodo troca o id da estimativa pela propriedade estimativa_id e o id do cronograma pelo id
      * @return object
      */
+    #[\Override]
     public function toArray()
     {
         $data = parent::toArray();

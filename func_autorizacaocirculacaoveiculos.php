@@ -32,7 +32,7 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $oRotulo = new rotulocampo();
@@ -97,7 +97,7 @@ $oDaoAutorizacao = new cl_autorizacaocirculacaoveiculo();
         $iCodigoDepartamento = db_getsession('DB_coddepto');
 
         $sOrdem   = "ve13_sequencial";
-        $aWhere   = array();
+        $aWhere   = [];
         $aWhere[] = " ve13_instituicao  = {$iCodigoInstituicao}  ";
         $aWhere[] = " ve13_departamento = {$iCodigoDepartamento} ";
 

@@ -35,7 +35,7 @@ require_once(modification("std/db_stdClass.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('j40_refant');
 $clrotulo->label('q02_inscmu');
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $oInstit = db_stdClass::getDadosInstit();
 $head1     = "";
 $head2     = "";
@@ -49,7 +49,7 @@ $sqlparag .= "   and db03_instit = ".db_getsession("DB_instit")." ";
 $sqlparag .= " order by db04_ordem ";
 $resparag = db_query($sqlparag);
 
-if (pg_numrows($resparag) == 0) {
+if (pg_num_rows($resparag) == 0) {
   $head3 = "SECRETARIA DA FAZENDA";
 } else {
   db_fieldsmemory($resparag, 0);
@@ -58,7 +58,7 @@ if (pg_numrows($resparag) == 0) {
 
 $head4 = "Relatrio dos Pagamentos Efetuados";
 
-$aWherePagamento    = array();
+$aWherePagamento    = [];
 $sWhereNumpreNormal = "";
 $sWhereNumprePgto   = "";
 $sInnerPagamento = "";
@@ -103,7 +103,7 @@ if (isset($numcgm)) {
            .'  QUADRA : ' . $oEnderMatric->j34_quadra
            .'  LOTE : '   . $oEnderMatric->j34_lote
            .'  PQL : '.$oEnderMatric->pql_localizacao;
-  $labelrefant  = mb_strtoupper($GLOBALS['RLj40_refant']);
+  $labelrefant  = mb_strtoupper((string) $GLOBALS['RLj40_refant']);
   $refant       = $oEnderMatric->j40_refant;
   $aWherePagamento[] = " arrematric.k00_matric = ".$matric;
 
@@ -124,8 +124,8 @@ if (isset($numcgm)) {
 
   $nome = "Inscrição : {$inscr} - {$oEnvolvidos->rvnome}";
 
-  if (trim($oEnderInscr->z01_nomefanta) != "") {
-    $nome .= " - Nome fantasia: ".trim($oEnderInscr->z01_nomefanta);
+  if (trim((string) $oEnderInscr->z01_nomefanta) != "") {
+    $nome .= " - Nome fantasia: ".trim((string) $oEnderInscr->z01_nomefanta);
   }
 
   $ender = $oEnderInscr->j14_tipo   . ' '
@@ -134,7 +134,7 @@ if (isset($numcgm)) {
           .$oEnderInscr->z01_compl. ' '
           . ' - '.$oEnderInscr->j13_descr
           .$oEnderInscr->z01_cep;
-  $labelrefant  = mb_strtoupper($GLOBALS['RLq02_inscmu']);
+  $labelrefant  = mb_strtoupper((string) $GLOBALS['RLq02_inscmu']);
   $refant       = $oEnderInscr->q02_inscmu;
   $aWherePagamento[] = " arreinscr.k00_inscr   = ".$inscr;
 
@@ -453,8 +453,8 @@ $pdf->SetFont('arial','',6);
 
 $tottotal = 0;
 
-$aParcelamentos = array();
-$aTotal         = array();
+$aParcelamentos = [];
+$aTotal         = [];
 
 foreach ($aPagamentos as $oPagamento) {
 
@@ -503,7 +503,7 @@ foreach ($aPagamentos as $oPagamento) {
 
     $sBuscaParcelamentos = "select v07_parcel from divida.termo where v07_numpre = " . $oPagamento->k00_numpre;
     $rsBuscaParcelamentos = db_query($sBuscaParcelamentos);
-    if ( pg_numrows($rsBuscaParcelamentos) > 0 ) {
+    if ( pg_num_rows($rsBuscaParcelamentos) > 0 ) {
       $oBuscaPagamentos = db_utils::getCollectionByRecord($rsBuscaParcelamentos);
       $aParcelamentos[] = $oPagamento->k00_numpre;
     }
@@ -518,7 +518,7 @@ foreach ($aPagamentos as $oPagamento) {
 
   $pdf->Cell(15,04,@$oPagamento->k00_matric,0,0,"C",0);
   $pdf->Cell(15,04,@$oPagamento->k00_inscr ,0,0,"C",0);
-  $pdf->Cell(15,04,(@$oPagamento->v01_exerc == ""?substr($oPagamento->k00_dtoper,0,4):$oPagamento->v01_exerc),0,0,"C",0);
+  $pdf->Cell(15,04,(@$oPagamento->v01_exerc == ""?substr((string) $oPagamento->k00_dtoper,0,4):$oPagamento->v01_exerc),0,0,"C",0);
   $pdf->Cell(15,04,db_formatar($oPagamento->k00_dtvenc,'d'),0,0,"C",0);
   $pdf->Cell(12,04,db_formatar($oPagamento->k00_dtoper,'d'),0,0,"C",0);
   $pdf->Cell( 8,04,$oPagamento->k00_hist   ,0,0,"C",0);
@@ -534,8 +534,8 @@ foreach ($aPagamentos as $oPagamento) {
     (float)$perc = (float)100;
   }
 
-  $iCountMatric = @pg_result(db_query("select coalesce(count(*),0) from arrematric where k00_numpre = $oPagamento->k00_numpre"),0,0);
-  $iCountInscr  = @pg_result(db_query("select coalesce(count(*),0) from arreinscr  where k00_numpre = $oPagamento->k00_numpre"),0,0);
+  $iCountMatric = @pg_fetch_result(db_query("select coalesce(count(*),0) from arrematric where k00_numpre = $oPagamento->k00_numpre"),0,0);
+  $iCountInscr  = @pg_fetch_result(db_query("select coalesce(count(*),0) from arreinscr  where k00_numpre = $oPagamento->k00_numpre"),0,0);
 
   $oPagamento->k00_valor = $oPagamento->k00_valor *-1;
 
@@ -679,7 +679,7 @@ if ( sizeof($aParcelamentos) > 0 ) {
     $sAnos  = " select * from ( $sAnos ) as x where trim(exerc) <> '' order by exerc asc";
     $rsAnos = db_query($sAnos);
     
-    if ( pg_numrows( $rsAnos ) > 0 ) {
+    if ( pg_num_rows( $rsAnos ) > 0 ) {
 
       for ($i = 0; $i < pg_num_rows($rsAnos); $i++) {
 

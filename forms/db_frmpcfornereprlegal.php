@@ -145,7 +145,7 @@ if ((isset($incluir) || isset($alterar) || isset($excluir)) && $clpcfornereprleg
             if (isset($pc81_sequencia) && trim($pc81_sequencia) != "") {
               $dbwhere .= " and pc81_sequencia <> " . $pc81_sequencia;
             }
-            $chavepri = array("pc81_sequencia" => @$pc81_sequencia);
+            $chavepri = ["pc81_sequencia" => @$pc81_sequencia];
             $cliframe_alterar_excluir->chavepri = $chavepri;
             $cliframe_alterar_excluir->sql     = $clpcfornereprlegal->sql_query(null, "pc81_sequencia, pc81_datini, pc81_datfin, pc81_obs, b.z01_nome as pc81_cgmresp", "b.z01_nome", $dbwhere);
             $cliframe_alterar_excluir->campos  = "pc81_sequencia, pc81_cgmresp, pc81_datini, pc81_datfin, pc81_obs";
@@ -198,7 +198,7 @@ if ((isset($incluir) || isset($alterar) || isset($excluir)) && $clpcfornereprleg
     db_iframe_pcfornereprlegal.hide();
     <?php
     if ($db_opcao != 1) {
-      echo " location.href = '" . basename($_SERVER["PHP_SELF"]) . "?chavepesquisa='+chave";
+      echo " location.href = '" . basename((string) $_SERVER["PHP_SELF"]) . "?chavepesquisa='+chave";
     }
     ?>
   }

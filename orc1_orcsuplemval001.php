@@ -41,8 +41,8 @@ require_once(modification("classes/db_orcdotacao_classe.php"));   // instancia d
 require_once(modification("classes/db_orcreceita_classe.php")); // receita
 require_once(modification("classes/db_orcorgao_classe.php")); // receita
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clorcsuplemval           = new cl_orcsuplemval;

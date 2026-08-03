@@ -34,7 +34,7 @@ require_once(modification("classes/db_sau_medicosforarede_classe.php"));
 require_once(modification("classes/db_medicos_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoSauMedicosForaRede = new cl_sau_medicosforarede;
 $oDaoMedicos            = new cl_medicos;

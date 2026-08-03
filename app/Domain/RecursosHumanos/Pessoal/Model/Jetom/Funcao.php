@@ -58,7 +58,7 @@ class Funcao extends Model
      * @param array|null $options
      * @return bool
      */
-    public function save(array $options = null)
+    public function save(?array $options = null)
     {
         $next_id = \DB::select("select nextval('pessoal.jetomfuncao_rh241_sequencial_seq')");
         //Seta o sequencial

@@ -152,7 +152,7 @@ try {
             <td nowrap title="<?=$Ted41_c_boletim?>" valign="top">
               <?=$Led41_c_boletim?>
               <?php
-              $x = array( 'S' => 'SIM', 'N' => 'NÃO' );
+              $x = [ 'S' => 'SIM', 'N' => 'NÃO' ];
               db_select( 'ed41_c_boletim', $x, true, $db_opcao );
               ?>
               <br>
@@ -224,8 +224,8 @@ try {
                   $ed41_i_sequencia = "";
                 }
 
-                $avalvinc   = isset( $ed41_i_procavalvinc ) ? $ed41_i_procavalvinc : "";
-                $resultvinc = isset( $ed41_i_procresultvinc ) ? $ed41_i_procresultvinc : "";
+                $avalvinc   = $ed41_i_procavalvinc ?? "";
+                $resultvinc = $ed41_i_procresultvinc ?? "";
                 AvalResultList( "vinculado", $ed41_i_procedimento, $desabilitar, $ed41_i_sequencia, $avalvinc, $resultvinc );
                 ?>
               </td>
@@ -244,14 +244,14 @@ try {
                   if (isset($ed41_numerodisciplinasrecuperacao)) {
                     $sQuantidadeSelecionada = $ed41_numerodisciplinasrecuperacao;
                   }
-                  $aQuantidades = array(
+                  $aQuantidades = [
                                         '' => "Todas",
                                         1  => "Uma",
                                         2  => 'Duas',
                                         3  => 'Três',
                                         4  => 'Quatro',
                                         5  => 'Cinco'
-                  );
+                  ];
                   foreach ($aQuantidades as $iQuantidade  => $sLabel) {
 
                     $sSelecionado = '';
@@ -268,7 +268,7 @@ try {
               <td>
                 <label>Julgar Menor Avaliação:</label>
                 <?php
-                $aOpcoesJulgamento = array('f' => 'NÃO', 't' => 'SIM');
+                $aOpcoesJulgamento = ['f' => 'NÃO', 't' => 'SIM'];
                 if (empty($ed41_julgamenoravaliacao)) {
                   $ed41_julgamenoravaliacao = 'f';
                 }

@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE parametrodependencia
 class cl_parametrodependencia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed295_sequencial = 0; 
-   var $ed295_habilitaprogressao = 0; 
-   var $ed295_qtddiscdependente = 0; 
-   var $ed295_controledependencia = 0; 
-   var $ed295_controlefreq = 0; 
-   var $ed295_disceliminadep = 0; 
-   var $ed295_escola = 0; 
+   public $ed295_sequencial = 0; 
+   public $ed295_habilitaprogressao = 0; 
+   public $ed295_qtddiscdependente = 0; 
+   public $ed295_controledependencia = 0; 
+   public $ed295_controlefreq = 0; 
+   public $ed295_disceliminadep = 0; 
+   public $ed295_escola = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed295_sequencial = int4 = Sequencial 
                  ed295_habilitaprogressao = int4 = Habilitar Progressão Parcial/Dependência 
                  ed295_qtddiscdependente = int4 = Quantidade de Disciplinas Dependentes 
@@ -60,10 +60,10 @@ class cl_parametrodependencia {
                  ed295_escola = int4 = Escola 
                  ";
    //funcao construtor da classe 
-   function cl_parametrodependencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parametrodependencia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -155,10 +155,10 @@ class cl_parametrodependencia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed295_sequencial = pg_result($result,0,0); 
+       $this->ed295_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from parametrodependencia_ed295_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed295_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed295_sequencial)){
          $this->erro_sql = " Campo ed295_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -198,7 +198,7 @@ class cl_parametrodependencia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "parametro dependencia ($this->ed295_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "parametro dependencia já Cadastrado";
@@ -222,16 +222,16 @@ class cl_parametrodependencia {
      $resaco = $this->sql_record($this->sql_query_file($this->ed295_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18514,'$this->ed295_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3275,18514,'','".AddSlashes(pg_result($resaco,0,'ed295_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3275,18515,'','".AddSlashes(pg_result($resaco,0,'ed295_habilitaprogressao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3275,18516,'','".AddSlashes(pg_result($resaco,0,'ed295_qtddiscdependente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3275,18517,'','".AddSlashes(pg_result($resaco,0,'ed295_controledependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3275,18519,'','".AddSlashes(pg_result($resaco,0,'ed295_controlefreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3275,18520,'','".AddSlashes(pg_result($resaco,0,'ed295_disceliminadep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3275,18521,'','".AddSlashes(pg_result($resaco,0,'ed295_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3275,18514,'','".AddSlashes(pg_fetch_result($resaco,0,'ed295_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3275,18515,'','".AddSlashes(pg_fetch_result($resaco,0,'ed295_habilitaprogressao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3275,18516,'','".AddSlashes(pg_fetch_result($resaco,0,'ed295_qtddiscdependente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3275,18517,'','".AddSlashes(pg_fetch_result($resaco,0,'ed295_controledependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3275,18519,'','".AddSlashes(pg_fetch_result($resaco,0,'ed295_controlefreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3275,18520,'','".AddSlashes(pg_fetch_result($resaco,0,'ed295_disceliminadep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3275,18521,'','".AddSlashes(pg_fetch_result($resaco,0,'ed295_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -240,10 +240,10 @@ class cl_parametrodependencia {
       $this->atualizacampos();
      $sql = " update parametrodependencia set ";
      $virgula = "";
-     if(trim($this->ed295_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_sequencial"])){ 
+     if(trim((string) $this->ed295_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_sequencial"])){ 
        $sql  .= $virgula." ed295_sequencial = $this->ed295_sequencial ";
        $virgula = ",";
-       if(trim($this->ed295_sequencial) == null ){ 
+       if(trim((string) $this->ed295_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ed295_sequencial";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_habilitaprogressao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_habilitaprogressao"])){ 
+     if(trim((string) $this->ed295_habilitaprogressao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_habilitaprogressao"])){ 
        $sql  .= $virgula." ed295_habilitaprogressao = $this->ed295_habilitaprogressao ";
        $virgula = ",";
-       if(trim($this->ed295_habilitaprogressao) == null ){ 
+       if(trim((string) $this->ed295_habilitaprogressao) == null ){ 
          $this->erro_sql = " Campo Habilitar Progressão Parcial/Dependência nao Informado.";
          $this->erro_campo = "ed295_habilitaprogressao";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_qtddiscdependente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_qtddiscdependente"])){ 
+     if(trim((string) $this->ed295_qtddiscdependente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_qtddiscdependente"])){ 
        $sql  .= $virgula." ed295_qtddiscdependente = $this->ed295_qtddiscdependente ";
        $virgula = ",";
-       if(trim($this->ed295_qtddiscdependente) == null ){ 
+       if(trim((string) $this->ed295_qtddiscdependente) == null ){ 
          $this->erro_sql = " Campo Quantidade de Disciplinas Dependentes nao Informado.";
          $this->erro_campo = "ed295_qtddiscdependente";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_controledependencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_controledependencia"])){ 
+     if(trim((string) $this->ed295_controledependencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_controledependencia"])){ 
        $sql  .= $virgula." ed295_controledependencia = $this->ed295_controledependencia ";
        $virgula = ",";
-       if(trim($this->ed295_controledependencia) == null ){ 
+       if(trim((string) $this->ed295_controledependencia) == null ){ 
          $this->erro_sql = " Campo Controle da Dependência nao Informado.";
          $this->erro_campo = "ed295_controledependencia";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_controlefreq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_controlefreq"])){ 
+     if(trim((string) $this->ed295_controlefreq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_controlefreq"])){ 
        $sql  .= $virgula." ed295_controlefreq = $this->ed295_controlefreq ";
        $virgula = ",";
-       if(trim($this->ed295_controlefreq) == null ){ 
+       if(trim((string) $this->ed295_controlefreq) == null ){ 
          $this->erro_sql = " Campo Controle da Frequência nao Informado.";
          $this->erro_campo = "ed295_controlefreq";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_disceliminadep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_disceliminadep"])){ 
+     if(trim((string) $this->ed295_disceliminadep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_disceliminadep"])){ 
        $sql  .= $virgula." ed295_disceliminadep = $this->ed295_disceliminadep ";
        $virgula = ",";
-       if(trim($this->ed295_disceliminadep) == null ){ 
+       if(trim((string) $this->ed295_disceliminadep) == null ){ 
          $this->erro_sql = " Campo Disciplina Aprovada Elimina Dependência nao Informado.";
          $this->erro_campo = "ed295_disceliminadep";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_escola"])){ 
+     if(trim((string) $this->ed295_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_escola"])){ 
        $sql  .= $virgula." ed295_escola = $this->ed295_escola ";
        $virgula = ",";
-       if(trim($this->ed295_escola) == null ){ 
+       if(trim((string) $this->ed295_escola) == null ){ 
          $this->erro_sql = " Campo Escola nao Informado.";
          $this->erro_campo = "ed295_escola";
          $this->erro_banco = "";
@@ -339,23 +339,23 @@ class cl_parametrodependencia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18514,'$this->ed295_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed295_sequencial"]) || $this->ed295_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3275,18514,'".AddSlashes(pg_result($resaco,$conresaco,'ed295_sequencial'))."','$this->ed295_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3275,18514,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed295_sequencial'))."','$this->ed295_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed295_habilitaprogressao"]) || $this->ed295_habilitaprogressao != "")
-           $resac = db_query("insert into db_acount values($acount,3275,18515,'".AddSlashes(pg_result($resaco,$conresaco,'ed295_habilitaprogressao'))."','$this->ed295_habilitaprogressao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3275,18515,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed295_habilitaprogressao'))."','$this->ed295_habilitaprogressao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed295_qtddiscdependente"]) || $this->ed295_qtddiscdependente != "")
-           $resac = db_query("insert into db_acount values($acount,3275,18516,'".AddSlashes(pg_result($resaco,$conresaco,'ed295_qtddiscdependente'))."','$this->ed295_qtddiscdependente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3275,18516,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed295_qtddiscdependente'))."','$this->ed295_qtddiscdependente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed295_controledependencia"]) || $this->ed295_controledependencia != "")
-           $resac = db_query("insert into db_acount values($acount,3275,18517,'".AddSlashes(pg_result($resaco,$conresaco,'ed295_controledependencia'))."','$this->ed295_controledependencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3275,18517,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed295_controledependencia'))."','$this->ed295_controledependencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed295_controlefreq"]) || $this->ed295_controlefreq != "")
-           $resac = db_query("insert into db_acount values($acount,3275,18519,'".AddSlashes(pg_result($resaco,$conresaco,'ed295_controlefreq'))."','$this->ed295_controlefreq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3275,18519,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed295_controlefreq'))."','$this->ed295_controlefreq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed295_disceliminadep"]) || $this->ed295_disceliminadep != "")
-           $resac = db_query("insert into db_acount values($acount,3275,18520,'".AddSlashes(pg_result($resaco,$conresaco,'ed295_disceliminadep'))."','$this->ed295_disceliminadep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3275,18520,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed295_disceliminadep'))."','$this->ed295_disceliminadep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed295_escola"]) || $this->ed295_escola != "")
-           $resac = db_query("insert into db_acount values($acount,3275,18521,'".AddSlashes(pg_result($resaco,$conresaco,'ed295_escola'))."','$this->ed295_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3275,18521,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed295_escola'))."','$this->ed295_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -400,16 +400,16 @@ class cl_parametrodependencia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18514,'$ed295_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3275,18514,'','".AddSlashes(pg_result($resaco,$iresaco,'ed295_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3275,18515,'','".AddSlashes(pg_result($resaco,$iresaco,'ed295_habilitaprogressao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3275,18516,'','".AddSlashes(pg_result($resaco,$iresaco,'ed295_qtddiscdependente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3275,18517,'','".AddSlashes(pg_result($resaco,$iresaco,'ed295_controledependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3275,18519,'','".AddSlashes(pg_result($resaco,$iresaco,'ed295_controlefreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3275,18520,'','".AddSlashes(pg_result($resaco,$iresaco,'ed295_disceliminadep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3275,18521,'','".AddSlashes(pg_result($resaco,$iresaco,'ed295_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3275,18514,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed295_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3275,18515,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed295_habilitaprogressao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3275,18516,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed295_qtddiscdependente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3275,18517,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed295_controledependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3275,18519,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed295_controlefreq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3275,18520,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed295_disceliminadep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3275,18521,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed295_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from parametrodependencia
@@ -469,7 +469,7 @@ class cl_parametrodependencia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:parametrodependencia";
@@ -484,7 +484,7 @@ class cl_parametrodependencia {
    function sql_query ( $ed295_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -514,7 +514,7 @@ class cl_parametrodependencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,7 +527,7 @@ class cl_parametrodependencia {
    function sql_query_file ( $ed295_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -548,7 +548,7 @@ class cl_parametrodependencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

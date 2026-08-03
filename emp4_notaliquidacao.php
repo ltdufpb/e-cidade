@@ -79,7 +79,7 @@ switch ($oParam->exec) {
 
         $lDesconto = $oNotaLiquidacao->desconto($oParam->aNotas[$i],
 																								$oParam->aNotas[$i]->nValorDesconto,
-																								db_stdClass::db_stripTagsJson(utf8_decode($oParam->sMotivo)));
+																								db_stdClass::db_stripTagsJson(mb_convert_encoding($oParam->sMotivo, 'ISO-8859-1')));
 
 				if ( !$lDesconto ) {
 					throw new Exception('Erro ao gerar desconto');

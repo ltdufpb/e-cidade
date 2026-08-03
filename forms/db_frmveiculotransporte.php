@@ -51,7 +51,7 @@ $oRotulo->label("tre01_sequencial");
         <td><label class="bold">Veículo da Prefeitura: </label></td>
         <td>
           <?php
-            $aOpcoes = array(0 => "NÃO", 1 => "SIM");
+            $aOpcoes = [0 => "NÃO", 1 => "SIM"];
             db_select("veiculoPrefeitura", $aOpcoes, "", 1, "onChange='js_tipoVeiculo();'");
           ?>
         </td>
@@ -94,7 +94,7 @@ $oRotulo->label("tre01_sequencial");
         <td><label class="bold">Tipo de Veículo:</label></td>
         <td colspan="2">
           <?php
-            $aTiposTransporteMunicipal   = array("" => "Selecione");
+            $aTiposTransporteMunicipal   = ["" => "Selecione"];
             $oDaoTipoTransporteMunicipal = new cl_tipotransportemunicipal();
             $sSqlTipoTransporteMunicipal = $oDaoTipoTransporteMunicipal->sql_query_file();
             $rsTipoTransporteMunicipal   = $oDaoTipoTransporteMunicipal->sql_record($sSqlTipoTransporteMunicipal);

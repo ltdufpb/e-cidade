@@ -161,18 +161,12 @@ abstract class FormulaAvaliacao implements Formula
             $formaAvaliacao->getTipo() != "NOTA") {
             $tipo = "PARECER";
         }
-
-        switch ($tipo) {
-            case 'NOTA':
-                return $avaliacao >= $formaAvaliacao->getAproveitamentoMinino();
-            case 'NIVEL':
-                return $avaliacao->getOrdem() >= $formaAvaliacao->getConceitoMinimo()->iOrdem;
-            case 'PARECER':
-                return true;
-            break;
-        }
-
-        throw new Exception("Forma de avaliação desconhecida. @todo ainda falta implementar NIVEL e PARECER");
+        return match ($tipo) {
+            'NOTA' => $avaliacao >= $formaAvaliacao->getAproveitamentoMinino(),
+            'NIVEL' => $avaliacao->getOrdem() >= $formaAvaliacao->getConceitoMinimo()->iOrdem,
+            'PARECER' => true,
+            default => throw new Exception("Forma de avaliação desconhecida. @todo ainda falta implementar NIVEL e PARECER"),
+        };
     }
 
     /**

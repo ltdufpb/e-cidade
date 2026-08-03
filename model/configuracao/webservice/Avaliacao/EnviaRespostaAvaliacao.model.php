@@ -108,12 +108,12 @@ class EnviaRespostaAvaliacao {
     $rsResult = db_query($sSql);
     if(!$rsResult){
 
-      return array('erro' => 'Erro ao buscar informações de usuários');
+      return ['erro' => 'Erro ao buscar informações de usuários'];
     }              
 
     $aQuestionariosRespondidos = db_utils::getCollectionByRecord($rsResult, false, false, false);
 
-    $aUsuarios = array();
+    $aUsuarios = [];
 
     if(!empty($aQuestionariosRespondidos)){
 
@@ -146,7 +146,7 @@ class EnviaRespostaAvaliacao {
 
         if(!$rsUsuario){
 
-          return array('erro' => 'Erro ao buscar informações da matricula');
+          return ['erro' => 'Erro ao buscar informações da matricula'];
         }        
 
         $sSqlDataResposta = "
@@ -176,7 +176,7 @@ class EnviaRespostaAvaliacao {
         
         if(!$rsDataResposta){
 
-          return array('erro' => 'Data do preenchimento do questionário, não encontrada');
+          return ['erro' => 'Data do preenchimento do questionário, não encontrada'];
         }      
         $aDataResposta = db_utils::getCollectionByRecord($rsDataResposta, false, false, false); 
         $aUsuarioTmp   = db_utils::getCollectionByRecord($rsUsuario, false, false, false);
@@ -195,15 +195,15 @@ class EnviaRespostaAvaliacao {
           $aUsuarios[] = $oUsuario;          
         } else {
 
-          return array('erro' => 'nenhum usuario localizado');
+          return ['erro' => 'nenhum usuario localizado'];
         }
       }
     } else {
 
-      return array('erro' => 'nenhuma resposta encontrada');
+      return ['erro' => 'nenhuma resposta encontrada'];
     }
 
-    $aResult = array();
+    $aResult = [];
     
     if(!empty($aUsuarios)){
 
@@ -217,15 +217,15 @@ class EnviaRespostaAvaliacao {
 
         $oQuestionario         = $oAvaliacao->getObject();
         $oRetorno              = new stdClass();
-        $oUsuario->nome        = utf8_encode($oUsuario->nome);
-        $oRetorno->login       = utf8_encode($oUsuario->login);
-        $oRetorno->nome        = utf8_encode($oUsuario->nome);
+        $oUsuario->nome        = mb_convert_encoding($oUsuario->nome, 'UTF-8', 'ISO-8859-1');
+        $oRetorno->login       = mb_convert_encoding($oUsuario->login, 'UTF-8', 'ISO-8859-1');
+        $oRetorno->nome        = mb_convert_encoding($oUsuario->nome, 'UTF-8', 'ISO-8859-1');
         $oRetorno->matricula   = $oUsuario->matricula;
-        $oRetorno->email       = utf8_encode($oUsuario->email);
-        $oRetorno->prefeitura  = utf8_encode($oUsuario->munic . ' -> ' . $oUsuario->nomeinst);
-        $oRetorno->municipio   = utf8_encode($oUsuario->munic);
-        $oRetorno->instituicao = utf8_encode($oUsuario->nomeinst);
-        $oRetorno->aResposta   = array();
+        $oRetorno->email       = mb_convert_encoding($oUsuario->email, 'UTF-8', 'ISO-8859-1');
+        $oRetorno->prefeitura  = mb_convert_encoding($oUsuario->munic . ' -> ' . $oUsuario->nomeinst, 'UTF-8', 'ISO-8859-1');
+        $oRetorno->municipio   = mb_convert_encoding($oUsuario->munic, 'UTF-8', 'ISO-8859-1');
+        $oRetorno->instituicao = mb_convert_encoding($oUsuario->nomeinst, 'UTF-8', 'ISO-8859-1');
+        $oRetorno->aResposta   = [];
 
         foreach ($oQuestionario->grupos as $oGrupo) {
 
@@ -240,10 +240,10 @@ class EnviaRespostaAvaliacao {
               // Resposta tipo data
               if($oPergunta->tipo == 5){ 
               
-                $oResposta->valor = date("d/m/Y",strtotime($oResposta->valor));
+                $oResposta->valor = date("d/m/Y",strtotime((string) $oResposta->valor));
               }
-              $oRespostaTmp->resposta = utf8_encode($oResposta->valor);
-              $oRespostaTmp->label    = utf8_encode($oResposta->label);
+              $oRespostaTmp->resposta = mb_convert_encoding($oResposta->valor, 'UTF-8', 'ISO-8859-1');
+              $oRespostaTmp->label    = mb_convert_encoding($oResposta->label, 'UTF-8', 'ISO-8859-1');
               $oRetorno->aResposta[]  = $oRespostaTmp;
             }
           }
@@ -252,7 +252,7 @@ class EnviaRespostaAvaliacao {
       }
     } else {
 
-      return array('erro' => utf8_encode('nenhum usuário encontrado!'));
+      return ['erro' => mb_convert_encoding('nenhum usuário encontrado!', 'UTF-8', 'ISO-8859-1')];
     }
 
     return $aResult;

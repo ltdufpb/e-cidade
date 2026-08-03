@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_planilhadistribuicaodepart_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clplanilhadistribuicaodepart = new cl_planilhadistribuicaodepart;
 $clplanilhadistribuicaodepart->rotulo->label("pd02_sequencial");
 $clplanilhadistribuicaodepart->rotulo->label("pd02_sequencial");
@@ -52,9 +52,9 @@ $clplanilhadistribuicaodepart->rotulo->label("pd02_sequencial");
         }else{
            $sql = $clplanilhadistribuicaodepart->sql_query("",$campos,"pd02_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_pd02_sequencial)){
-          $repassa = array("chave_pd02_sequencial"=>$chave_pd02_sequencial,"chave_pd02_sequencial"=>$chave_pd02_sequencial);
+          $repassa = ["chave_pd02_sequencial"=>$chave_pd02_sequencial,"chave_pd02_sequencial"=>$chave_pd02_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

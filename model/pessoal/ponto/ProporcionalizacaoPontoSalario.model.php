@@ -3,14 +3,7 @@
 class ProporcionalizacaoPontoSalario
 {
 
-  /**
-   * Ponto do Funcionário que será proporcionalizado.
-   *
-   * @var PontoSalario
-   */
-    private $oPonto;
-
-    private $aSituacoesAfastamento = array(
+  private $aSituacoesAfastamento = [
     Afastamento::AFASTADO_SEM_REMUNERACAO,
     Afastamento::AFASTADO_ACIDENTE_TRABALHO_MAIS_15_DIAS,
     Afastamento::AFASTADO_SERVICO_MILITAR,
@@ -18,19 +11,21 @@ class ProporcionalizacaoPontoSalario
     Afastamento::AFASTADO_DOENCA_MAIS_15_DIAS,
     Afastamento::AFASTADO_DOENCA_MAIS_30_DIAS,
     Afastamento::LICENCA_SEM_VENCIMENTO
-    );
+    ];
 
     /**
      * ProporcionalizacaoPontoSalario constructor.
-     * @param PontoSalario|Ponto $oPontoSalario
+     * @param PontoSalario|Ponto $oPonto
      * @param $iSituacaoFuncionario
      * @param DBDate|null $oDataRetorno
      */
-    public function __construct(PontoSalario $oPontoSalario, $iSituacaoFuncionario, DBDate $oDataRetorno = null)
+    public function __construct(/**
+     * Ponto do Funcionário que será proporcionalizado.
+     */
+    private readonly PontoSalario $oPonto, $iSituacaoFuncionario, ?DBDate $oDataRetorno = null)
     {
 
-        $this->oPonto               = $oPontoSalario;
-        $this->oServidor            = $oPontoSalario->getServidor();
+        $this->oServidor            = $this->oPonto->getServidor();
         $this->iSituacaoFuncionario = $iSituacaoFuncionario;
         $this->oDataRetorno         = $oDataRetorno;
     }
@@ -76,7 +71,7 @@ class ProporcionalizacaoPontoSalario
 
         $dias_pagamento        = $this->getDiasTrabalhados();
         $oDiasAfastado         = $this->verificarRubricasAfastamento();
-        $aAfastamentosDoenca   = array(Afastamento::AFASTADO_DOENCA_MAIS_15_DIAS, Afastamento::AFASTADO_DOENCA_MAIS_30_DIAS);
+        $aAfastamentosDoenca   = [Afastamento::AFASTADO_DOENCA_MAIS_15_DIAS, Afastamento::AFASTADO_DOENCA_MAIS_30_DIAS];
 
         $lAfastadoPorDoenca    = !(in_array($this->iSituacaoFuncionario, $aAfastamentosDoenca) && $oDiasAfastado->saude == 0);
         $lAfastadoMaternidade  = !($this->iSituacaoFuncionario == Afastamento::AFASTADO_LICENCA_GESTANTE && $oDiasAfastado->maternidade == 0);
@@ -84,12 +79,12 @@ class ProporcionalizacaoPontoSalario
         $lAfastadoSemRemuneracao = $this->iSituacaoFuncionario == Afastamento::AFASTADO_SEM_REMUNERACAO;
         $lLicencaSemVencimento   = $this->iSituacaoFuncionario == Afastamento::LICENCA_SEM_VENCIMENTO;
 
-        $aSituacoesDescartadas = array(
+        $aSituacoesDescartadas = [
         Afastamento::AFASTADO_DOENCA_MAIS_15_DIAS,
         Afastamento::AFASTADO_LICENCA_GESTANTE,
         Afastamento::AFASTADO_ACIDENTE_TRABALHO_MAIS_15_DIAS,
         Afastamento::AFASTADO_DOENCA_MAIS_30_DIAS
-        );
+        ];
 
       /**
        * @FIXME - Lógica do IF para estar igual  AQUI (!$lAfastadoPorDoenca  || !$lAfastadoMaternidade || !$lAfastadoAcidente ) e

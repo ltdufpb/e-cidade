@@ -104,7 +104,7 @@ db_input('nomearq',40,$Inomearq,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("db92_codigo"=>@$db92_codigo);
+	 $chavepri= ["db92_codigo"=>@$db92_codigo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_relattabelas->sql_query_file($db92_codigo);
 	 $cliframe_alterar_excluir->campos  ="db92_codigo,db92_codrel,db92_codarq";

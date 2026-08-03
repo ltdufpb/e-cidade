@@ -192,7 +192,7 @@ $iInstituicao = db_getsession("DB_instit");
                     $totValorUtilizado  = 0;
                     $totValorDisponivel = 0;
 
-                    $abatimentos = array();
+                    $abatimentos = [];
                     for ( $iInd=0; $iInd < $iLinhasCreditos; $iInd++ ) {
                         $oCredito = db_utils::fieldsMemory($rsCreditosDisponiveis,$iInd);
                         
@@ -234,7 +234,7 @@ $iInstituicao = db_getsession("DB_instit");
                         $rsSqlOrigemCredito = db_query($sqlOrigemCredito);
                         if($rsSqlOrigemCredito) {
                             $iLinhasOrigemCredito = pg_num_rows($rsSqlOrigemCredito);
-                            $aCreditos = array();
+                            $aCreditos = [];
                             for ( $xInd=0; $xInd < $iLinhasOrigemCredito; $xInd++ ) {
                                 $oOrigemCredito = db_utils::fieldsMemory($rsSqlOrigemCredito,$xInd);
                                 if(!empty($oOrigemCredito->k00_matric)) {

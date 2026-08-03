@@ -7,15 +7,15 @@ class Apropriacao
 {
 
     /**
-     * Codigo do Slip
-     * @var integer
+     * @param int $slip
      */
-    private $slip;
-
-    public function __construct($slip)
+    public function __construct(
+        /**
+         * Codigo do Slip
+         */
+        private $slip
+    )
     {
-
-        $this->slip = $slip;
     }
 
 

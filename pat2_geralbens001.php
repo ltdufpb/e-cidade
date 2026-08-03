@@ -51,7 +51,7 @@ $clrotulo->label("t04_sequencial");
 $clbens->rotulo->label();
 $cldb_depart->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 //Verifica se utiliza pesquisa por orgo sim ou no
 $t06_pesqorgao = "f";
@@ -225,11 +225,11 @@ if($clcfpatric->numrows > 0) {
                 <td nowrap>
                     <?php 
                     if($t06_pesqorgao == 't'){
-                        $matriz = array("depart"=>"Departamento","placa"=>"Placa","bem"=>"Cd. Bem","classi"=>"Classificao",
-                            "dtAqui"=>"Data de aquisio","dtInc" =>"Data da Incluso","orgao"=>"rgo","unidade"=>"Unidade","descricao"=>"Descrio do Bem");
+                        $matriz = ["depart"=>"Departamento","placa"=>"Placa","bem"=>"Cd. Bem","classi"=>"Classificao",
+                            "dtAqui"=>"Data de aquisio","dtInc" =>"Data da Incluso","orgao"=>"rgo","unidade"=>"Unidade","descricao"=>"Descrio do Bem"];
                     }else{
-                        $matriz = array("depart"=>"Departamento","placa"=>"Placa","bem"=>"Cd. Bem","classi"=>"Classificao",
-                            "dtAqui"=>"Data de aquisio","dtInc" =>"Data da Incluso","descricao"=>"Descrio do Bem");
+                        $matriz = ["depart"=>"Departamento","placa"=>"Placa","bem"=>"Cd. Bem","classi"=>"Classificao",
+                            "dtAqui"=>"Data de aquisio","dtInc" =>"Data da Incluso","descricao"=>"Descrio do Bem"];
                     }
 
                     db_select("ordenar",$matriz,true,1,"onChange='js_filtro_ordem(this.value);'");
@@ -240,7 +240,7 @@ if($clcfpatric->numrows > 0) {
                 <td nowrap><b>Imprimir Fornecedor/Observaes:</b></td>
                 <td nowrap>
                     <?php 
-                    $imp_forn = array("N"=>"No","S"=>"Sim");
+                    $imp_forn = ["N"=>"No","S"=>"Sim"];
                     db_select("imp_forn",$imp_forn,true,1);
                     ?>
                 </td>
@@ -249,7 +249,7 @@ if($clcfpatric->numrows > 0) {
                 <td nowrap align="right"><b>Imprimir Classificao:</b></td>
                 <td nowrap>
                     <?php 
-                    $imp_classi = array("N"=>"No","S"=>"Sim");
+                    $imp_classi = ["N"=>"No","S"=>"Sim"];
                     db_select("imp_classi",$imp_classi,true,1,'onchange=js_display_quebra_por(this.value)');
                     ?>
                 </td>
@@ -258,7 +258,7 @@ if($clcfpatric->numrows > 0) {
                 <td nowrap align="right"><b>Quebrar por:</b></td>
                 <td nowrap>
                     <?php 
-                    $quebra_por = array("1"=>"Nenhum","2"=>"Departamento/Diviso","3"=>"Classificao");
+                    $quebra_por = ["1"=>"Nenhum","2"=>"Departamento/Diviso","3"=>"Classificao"];
                     db_select("quebra_por",$quebra_por,true,1);
                     ?>
                 </td>
@@ -269,9 +269,9 @@ if($clcfpatric->numrows > 0) {
                 <td nowrap>
                     <?php 
                     if($t06_pesqorgao == 't'){
-                        $q_pagina = array("N"=>"No","orgao"=>"rgo","unidade"=>"Unidade","departamento"=>"Departamento");
+                        $q_pagina = ["N"=>"No","orgao"=>"rgo","unidade"=>"Unidade","departamento"=>"Departamento"];
                     }else{
-                        $q_pagina = array("N"=>"No","S"=>"Sim");
+                        $q_pagina = ["N"=>"No","S"=>"Sim"];
                     }
                     db_select("q_pagina",$q_pagina,true,1);
                     ?>
@@ -315,7 +315,7 @@ if($clcfpatric->numrows > 0) {
                 <td nowrap align="right"><b>Bens de Convnio:</b></td>
                 <td nowrap>
                     <?php 
-                    $x = array("T"=>"Todos","N"=>"Nenhum Convnio","S"=>"Com Convnio");
+                    $x = ["T"=>"Todos","N"=>"Nenhum Convnio","S"=>"Com Convnio"];
                     db_select("bens_convenio",$x,true,1,"onchange='js_selecionaConvenio()'");
                     ?>
                 </td>

@@ -125,7 +125,7 @@ class AtendimentoProcessoService
 
         $ordem = 3;
         foreach ($dados->secoes as $sessao) {
-            if (strtoupper($sessao->tipo) != "ANEXO") {
+            if (strtoupper((string) $sessao->tipo) != "ANEXO") {
                 continue;
             }
 
@@ -187,16 +187,16 @@ class AtendimentoProcessoService
             and $solicitacao->formareclamacao == 9
             and !empty($solicitacao->metadados)
         ) {
-            $metados = json_decode(utf8_decode($solicitacao->metadados));
+            $metados = json_decode(mb_convert_encoding($solicitacao->metadados, 'ISO-8859-1'));
             if (!empty($metados->secoes[0])) {
                 if (!empty($metados->secoes[0]->campos[0])) {
                     if (!empty($metados->secoes[0]->campos[0]->nome)
                         and in_array(
                             $metados->secoes[0]->campos[0]->nome,
-                            array("cpf", "cnpj")
+                            ["cpf", "cnpj"]
                         )
                     ) {
-                        $cpfcnpj = str_replace(array(".", "-", "/"), "", $metados->secoes[0]->campos[0]->resposta);
+                        $cpfcnpj = str_replace([".", "-", "/"], "", $metados->secoes[0]->campos[0]->resposta);
                         $cgm = Cgm::where("z01_cgccpf", "=", $cpfcnpj)->with('enderecoPrimario.endereco')->first();
                         $solicitacao->setCgm($cgm);
                     }
@@ -393,8 +393,8 @@ class AtendimentoProcessoService
 
     public function extrairInformacoesMetadadosEauth($metadados)
     {
-        $dadosRequerente = array();
-        $dadosApiEauth = array();
+        $dadosRequerente = [];
+        $dadosApiEauth = [];
 
         foreach ($metadados->secoes as $secao) {
             if ($secao->nome == "requerente") {
@@ -407,9 +407,9 @@ class AtendimentoProcessoService
         }
 
         foreach ($dadosRequerente->campos as $campo) {
-            $dadosApiEauth[strtolower($campo->nome)] = $campo->resposta;
+            $dadosApiEauth[strtolower((string) $campo->nome)] = $campo->resposta;
             if (is_object($campo->resposta)) {
-                $dadosApiEauth[strtolower($campo->nome)] = $campo->resposta->descricao;
+                $dadosApiEauth[strtolower((string) $campo->nome)] = $campo->resposta->descricao;
             }
         }
 
@@ -424,11 +424,11 @@ class AtendimentoProcessoService
         }
 
         if (!empty($dadosApiEauth["cpf"])) {
-            $dadosApiEauth["cgccpf"] = trim(str_replace(array(".", "-", "/"), "", $dadosApiEauth["cpf"]));
+            $dadosApiEauth["cgccpf"] = trim(str_replace([".", "-", "/"], "", $dadosApiEauth["cpf"]));
         }
 
         if (!empty($dadosApiEauth["cnpj"])) {
-            $dadosApiEauth["cgccpf"] = trim(str_replace(array(".", "-", "/"), "", $dadosApiEauth["cnpj"]));
+            $dadosApiEauth["cgccpf"] = trim(str_replace([".", "-", "/"], "", $dadosApiEauth["cnpj"]));
         }
 
         if (!empty($dadosApiEauth["cep"])) {
@@ -460,19 +460,19 @@ class AtendimentoProcessoService
         $oCgm = \CgmFactory::getInstanceByCnpjCpf($sCpfCnpj);
 
         if (!$oCgm) {
-            if (strlen(trim($sCpfCnpj)) == '11') {
+            if (strlen(trim((string) $sCpfCnpj)) == '11') {
                 $oCgm = \CgmFactory::getInstanceByType(\CgmFactory::FISICO);
                 $oCgm->setCpf($sCpfCnpj);
             } else {
-                if (strlen(trim($sCpfCnpj)) == '14') {
+                if (strlen(trim((string) $sCpfCnpj)) == '14') {
                     $oCgm = \CgmFactory::getInstanceByType(\CgmFactory::JURIDICO);
                     $oCgm->setCnpj($sCpfCnpj);
                 }
             }
-            $oCgm->setNome(mb_strtoupper(\DBString::upperCaseCaracteresComAcentos(substr($sNome, 0, 40))));
+            $oCgm->setNome(mb_strtoupper(\DBString::upperCaseCaracteresComAcentos(substr((string) $sNome, 0, 40))));
             $oCgm->setNomeCompleto(
                 mb_strtoupper(\DBString::upperCaseCaracteresComAcentos(
-                    substr($sNome, 0, 100)
+                    substr((string) $sNome, 0, 100)
                 ))
             );
 
@@ -533,8 +533,8 @@ class AtendimentoProcessoService
     {
         $oInstituicao = (object)ProcessoEletronicoHelper::getDadosMunicipio("munic, uf");
 
-        $oCgm->setUf(mb_strtoupper($oInstituicao->uf));
-        $oCgm->setMunicipio(mb_strtoupper($oInstituicao->munic));
+        $oCgm->setUf(mb_strtoupper((string) $oInstituicao->uf));
+        $oCgm->setMunicipio(mb_strtoupper((string) $oInstituicao->munic));
 
         foreach ($oEndereco->campos as $oCampo) {
             switch ($oCampo->nome) {
@@ -543,24 +543,24 @@ class AtendimentoProcessoService
                     $oCgm->setCep(mb_strtoupper(trim(str_replace("-", "", $oCampo->resposta))));
                     break;
                 case "bairro":
-                    $oCgm->setBairro(mb_strtoupper($oCampo->resposta->descricao));
+                    $oCgm->setBairro(mb_strtoupper((string) $oCampo->resposta->descricao));
                     break;
                 case "numero":
                 case "responsavel_numero":
-                    $oCgm->setNumero(mb_strtoupper($oCampo->resposta));
+                    $oCgm->setNumero(mb_strtoupper((string) $oCampo->resposta));
                     break;
                 case "responsavel_logradouro":
-                    $oCgm->setLogradouro(mb_strtoupper($oCampo->resposta));
+                    $oCgm->setLogradouro(mb_strtoupper((string) $oCampo->resposta));
                     break;
                 case "logradouro":
-                    $oCgm->setLogradouro(mb_strtoupper($oCampo->resposta->descricao));
+                    $oCgm->setLogradouro(mb_strtoupper((string) $oCampo->resposta->descricao));
                     break;
                 case "complemento":
                 case "responsavel_complemento":
-                    $oCgm->setComplemento(mb_strtoupper($oCampo->resposta));
+                    $oCgm->setComplemento(mb_strtoupper((string) $oCampo->resposta));
                     break;
                 case "responsavel_bairro":
-                    $oCgm->setBairro(mb_strtoupper($oCampo->resposta));
+                    $oCgm->setBairro(mb_strtoupper((string) $oCampo->resposta));
                     break;
             }
         }

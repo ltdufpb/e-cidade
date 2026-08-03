@@ -33,7 +33,7 @@ define( 'MENSAGENS_PEDIDOTFD_REPOSITORY', 'saude.tfd.PedidoTFDRepository.' );
  */
 class PedidoTFDRepository {
 	
-  private $aPedidoTFD = array();
+  private $aPedidoTFD = [];
   private static $oInstance;
   
   private function __construct() {}
@@ -102,7 +102,7 @@ class PedidoTFDRepository {
     }
 
     $oDaoPedidoTFD = new cl_tfd_pedidotfd();
-    $aWherePedido  = array();
+    $aWherePedido  = [];
 
     if( !empty( $oFiltros->oDataInicio ) && !empty( $oFiltros->oDataFim ) ) {
 
@@ -128,7 +128,7 @@ class PedidoTFDRepository {
     }
 
     $iTotalPedidos = pg_num_rows( $rsPedido );
-    $aPedidosTFD   = array();
+    $aPedidosTFD   = [];
 
     for( $iContador = 0; $iContador < $iTotalPedidos; $iContador++ ) {
       $aPedidosTFD[] = self::getPedidoTFDByCodigo( db_utils::fieldsMemory( $rsPedido, $iContador )->tf01_i_codigo );

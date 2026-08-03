@@ -36,8 +36,8 @@ $chave_o69_codseq = '';
 if (isset($_GET['codigo_relatorio'])) {
     $chave_o69_codparamrel = $_GET['codigo_relatorio'];
 }
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $queryString);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -133,12 +133,12 @@ $clorcparamseq->rotulo->label("o69_codparamrel");
                 } else {
                     $sql = $clorcparamseq->sql_query("", "", $campos, "o69_codparamrel,o69_ordem", "");
                 }
-                $repassa = array();
+                $repassa = [];
                 if (isset($chave_o69_codparamrel)) {
-                    $repassa = array(
+                    $repassa = [
                         "chave_o69_codparamrel" => $chave_o69_codparamrel,
                         "chave_o69_codparamrel" => $chave_o69_codparamrel
-                    );
+                    ];
                 }
 
                 db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

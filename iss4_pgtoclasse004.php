@@ -32,15 +32,15 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $sql = "select q12_classe,q12_descr from clasativ inner join classe on q82_classe=q12_classe group by q12_classe,q12_descr";
 $result = db_query($sql);
-if(pg_numrows($result) == 0 ){
+if(pg_num_rows($result) == 0 ){
   db_redireciona("db_erros.php?fechar=true&db_erro=Não Existe Atividade Para o Intervalo Digitado.&pagina_retorno=iss4_contativ001.php");
   exit;
 }
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 ?>
 
 <html>
@@ -140,9 +140,9 @@ td {
 	$dataf_dia = date('d');
 	db_inputdata('dataf',$dataf_dia,$dataf_mes,$dataf_ano,true,'text',4);
 	?>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<?php 
-         $x = array("c"=>"Competência","p"=>"Pagamento");
+         $x = ["c"=>"Competência","p"=>"Pagamento"];
          db_select('tipo',$x,'text',2);
-         $y = array("m"=>"Valores por mes","t"=>"Somente totais");
+         $y = ["m"=>"Valores por mes","t"=>"Somente totais"];
          db_select('totais',$y,'text',2) 
 	?>
 	&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<input name="analitico" id="emite2" type="button" value="Imprimir" onClick="js_relatorio()">&nbsp;&nbsp;

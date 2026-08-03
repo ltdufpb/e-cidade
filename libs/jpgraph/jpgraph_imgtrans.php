@@ -21,11 +21,8 @@ DEFINE('SKEW3D_RIGHT',3);
 // Perform some simple image transformations. 
 //------------------------------------------------------------------------
 class ImgTrans {
-    var $gdImg=null;
-
-    function ImgTrans($aGdImg) {
-	// Constructor
-	$this->gdImg = $aGdImg;
+    function __construct(public $gdImg)
+    {
     }
 
     // --------------------------------------------------------------------

@@ -72,7 +72,7 @@ if (isset($oPost->notificacao)) {
     $guia = $oPost->it14_guia;
 
     unset($oPost);
-    $_POST = array();
+    $_POST = [];
 
     db_inicio_transacao();
 
@@ -135,7 +135,7 @@ if( isset($oPost->liberar) ){
 
     foreach ( $aListaFormaPag as $aChave){
 
-  	  $aListaValorFormaPag = split("X",$aChave);
+  	  $aListaValorFormaPag = preg_split("#X#m",$aChave);
 
   	  // $aListaValorFormaPag[0]  -- Código da Forma de Pagamento da Transação
   	  // $aListaValorFormaPag[1]  -- Valor  da Forma de Pagamento da Transação
@@ -193,7 +193,7 @@ if( isset($oPost->liberar) ){
 
        $rItbiMatric = db_query($clitbimatric->sql_query_file($it05_guia, null, "it06_matric AS j01_matric"));
 
-       if ($rItbiMatric AND pg_numrows($rItbiMatric) > 0) {
+       if ($rItbiMatric AND pg_num_rows($rItbiMatric) > 0) {
            db_fieldsmemory($rItbiMatric,0);
 
            $rIptuant  = db_query($cliptuant->sql_query_file($j01_matric));

@@ -142,10 +142,10 @@ try {
   		  foreach ($oFeriasMatricula as $iInd => $oDadosFerias) {
   		    
   		 	   $oDadosRetorno->iCodigoFerias                   = $oDadosFerias->getCodigoFerias();
-  		 	   $oDadosRetorno->dPeriodoAquisitivoInicial       = implode("/", array_reverse(explode("-",$oDadosFerias->getPeriodoAquisitivoInicial() )));
-  		 	   $oDadosRetorno->dPeriodoAquisitivoFinal         = implode("/", array_reverse(explode("-",$oDadosFerias->getPeriodoAquisitivoFinal()   )));
-  		 	   $oDadosRetorno->dPeriodoEspecificoInicial       = implode("/", array_reverse(explode("-",$oDadosFerias->getPeriodoEspecificoInicial() )));
-  		 	   $oDadosRetorno->dPeriodoEspecificoFinal         = implode("/", array_reverse(explode("-",$oDadosFerias->getPeriodoEspecificoFinal()   )));  		 	   
+  		 	   $oDadosRetorno->dPeriodoAquisitivoInicial       = implode("/", array_reverse(explode("-",(string) $oDadosFerias->getPeriodoAquisitivoInicial() )));
+  		 	   $oDadosRetorno->dPeriodoAquisitivoFinal         = implode("/", array_reverse(explode("-",(string) $oDadosFerias->getPeriodoAquisitivoFinal()   )));
+  		 	   $oDadosRetorno->dPeriodoEspecificoInicial       = implode("/", array_reverse(explode("-",(string) $oDadosFerias->getPeriodoEspecificoInicial() )));
+  		 	   $oDadosRetorno->dPeriodoEspecificoFinal         = implode("/", array_reverse(explode("-",(string) $oDadosFerias->getPeriodoEspecificoFinal()   )));  		 	   
   		     $oDadosRetorno->nDias                           = $oDadosFerias->getDiasDireito();
   		     $oDadosRetorno->nFaltasPeriodoAquisitivo        = $oDadosFerias->getFaltasPeriodoAquisitivo();
   		     $aPeriodos                                      = $oDadosFerias->getPeriodoGozo(null, date("Y",db_getsession("DB_datausu")), date("m",db_getsession("DB_datausu")));
@@ -153,7 +153,7 @@ try {
   		       
   		       
   		       $oPeriodos = new stdClass();
-  		       $oPeriodos->sObservacao         = urlencode($oPeriodoGozo->sObservacao);
+  		       $oPeriodos->sObservacao         = urlencode((string) $oPeriodoGozo->sObservacao);
   		       $oPeriodos->iAnoPagamento       = $oPeriodoGozo->iAnoPagamento;
   		       $oPeriodos->iMesPagamento       = $oPeriodoGozo->iMesPagamento;
   		       $oPeriodos->dPeriodoInicial     = $oPeriodoGozo->dPeriodoInicial; 
@@ -296,10 +296,10 @@ try {
         
       } else {
         
-         $oFerias->setPeriodoAquisitivoInicial(implode("-", array_reverse(explode("/", $oParam->dPeriodoAquisitivoInicial) )));
-         $oFerias->setPeriodoAquisitivoFinal  (implode("-", array_reverse(explode("/", $oParam->dPeriodoAquisitivoFinal) )));
-         $oFerias->setPeriodoEspecificoInicial(implode("-", array_reverse(explode("/", $oParam->dPeriodoEspecificoInicial) )));
-         $oFerias->setPeriodoEspecificoFinal  (implode("-", array_reverse(explode("/", $oParam->dPeriodoEspecificoFinal) )));      
+         $oFerias->setPeriodoAquisitivoInicial(implode("-", array_reverse(explode("/", (string) $oParam->dPeriodoAquisitivoInicial) )));
+         $oFerias->setPeriodoAquisitivoFinal  (implode("-", array_reverse(explode("/", (string) $oParam->dPeriodoAquisitivoFinal) )));
+         $oFerias->setPeriodoEspecificoInicial(implode("-", array_reverse(explode("/", (string) $oParam->dPeriodoEspecificoInicial) )));
+         $oFerias->setPeriodoEspecificoFinal  (implode("-", array_reverse(explode("/", (string) $oParam->dPeriodoEspecificoFinal) )));      
          $oFerias->setDiasDireito             ($oParam->iDiasDireito);
          $oFerias->setFaltasPeriodoAquisitivo ($oParam->iFaltasPeriodo);
        
@@ -364,7 +364,7 @@ try {
      		if ($oParam->sPeriodosAquisitivosVencidosAte != '') {
      		  
      			$aMatriculas            = funcionarioferiasvencidas($oParam->sPeriodosAquisitivosVencidosAte);
-     			$aListaMatriculas       = array();
+     			$aListaMatriculas       = [];
      			foreach ($aMatriculas as $oMatricula) {
      			  $aListaMatriculas[] = $oMatricula->matricula;
      			}
@@ -392,14 +392,14 @@ try {
      	   * Em caso positivo definimos o comportamento adequado. 
      	   */
      	  if ($oParam->iTipoProcessamento == '1') {
-     	  	
+
      	  	if (count($oMatriculasSelecao) > 0) {
-	       		
-     	  		$_SESSION['aListaMatriculasProcessamentoEmLote'] = array();
+
+     	  		$_SESSION['aListaMatriculasProcessamentoEmLote'] = [];
      	  		foreach ($oMatriculasSelecao as $oMatricula) {
 	       			$_SESSION['aListaMatriculasProcessamentoEmLote'][] = $oMatricula->rh01_regist;
 	       	  }
-	       	  
+
 	       	  /**
 	       	   * O status 3 indica que o processo foi efetuado corretamente e que o array das matriculas
 	       	   * está armazenado na sessão.
@@ -408,7 +408,7 @@ try {
 	       	  $oRetorno->sMessage  = "A lista de matrículas está na variável de ";
 	       	  $oRetorno->sMessage .= "sessão 'aListaMatriculasProcessamentoEmLote'.";
      	    } else {
-     	    	
+
      	    	$oRetorno->iStatus = 2;
      	    	$oRetorno->sMessage = "A seleção solicitada não possui matrículas. Favor verificar.";
      	    }
@@ -418,7 +418,7 @@ try {
      	   */
      	  } else if ($oParam->iTipoProcessamento == '2') {
      	  	
-     	  	$_SESSION['inconsistencias_cadastroferiaslote'] = array();
+     	  	$_SESSION['inconsistencias_cadastroferiaslote'] = [];
      	  	if (count($oMatriculasSelecao) > 0) {
      	  	
      	  		db_inicio_transacao();
@@ -461,8 +461,8 @@ try {
      	  			
      	  			$oFerias->setPeriodoAquisitivoInicial(implode("-", array_reverse(explode("/", $dDataPeriodoAquisitivoInicial))));
      	  			$oFerias->setPeriodoAquisitivoFinal  (implode("-", array_reverse(explode("/", $dDataPeriodoAquisitivoFinal))));
-     	  			$oFerias->setPeriodoEspecificoInicial(implode("-", array_reverse(explode("/", $oParam->sPeriodoEspecificoInicial))));
-     	  			$oFerias->setPeriodoEspecificoFinal  (implode("-", array_reverse(explode("/", $oParam->sPeriodoEspecificoFinal))));
+     	  			$oFerias->setPeriodoEspecificoInicial(implode("-", array_reverse(explode("/", (string) $oParam->sPeriodoEspecificoInicial))));
+     	  			$oFerias->setPeriodoEspecificoFinal  (implode("-", array_reverse(explode("/", (string) $oParam->sPeriodoEspecificoFinal))));
      	  			$oFerias->setDiasDireito             ($iDiasDireito);
      	  			$oFerias->setFaltasPeriodoAquisitivo  = 0;
      	  			 
@@ -563,7 +563,7 @@ try {
       
       $oFerias->setMatricula($oParam->iMatricula);
       
-      $oRetorno->aFerias        = array();
+      $oRetorno->aFerias        = [];
       
       if ($aFerias = $oFerias->verificaFeriasMatricula()) {
 
@@ -577,7 +577,7 @@ try {
           $oFerias->dPeriodoEspecificoFinal   = "{$oRhFerias->getPeriodoEspecificoFinal()}";
           $oFerias->iDiasDireito              = "{$oRhFerias->getDiasDireito()}";
           $oFerias->iFaltas                   = "{$oRhFerias->getFaltasPeriodoAquisitivo()}";
-          $oFerias->aPeriodos = array();
+          $oFerias->aPeriodos = [];
           
           foreach($oRhFerias->getPeriodoGozo() as $oRhFeriasPeriodo)  {
             

@@ -48,13 +48,13 @@ if (!isset($db_opcao)) {
   </head>
   <body class="body-default abas">
     <?php
-      $clcriaabas->identifica = array("liclicita"=>"Licitação", "infocomplementar"=>"Informações Complementares", "liclicitem"=>"Itens","liclicitemlote"=>"Lotes");
-      $clcriaabas->sizecampo  = array("liclicita"=>"20", "infocomplementar" => "25", "liclicitem"=>"20","liclicitemlote"=>"20");
-      $clcriaabas->title      = array("liclicita"=>"Licitação", "infocomplementar" => "Outras Informações", "liclicitem"=>"Itens da Licitação","liclicitemlote"=>"Lote de itens");
-      $clcriaabas->src        = array("liclicita"=>"lic1_liclicita001.php", "infocomplementar" => "lic1_liclicitainfocomplementar001.php", "liclicitem"=>"lic1_liclicitemalt001.php","liclicitemlote"=>"lic1_liclicitemlote001.php");
+      $clcriaabas->identifica = ["liclicita"=>"Licitação", "infocomplementar"=>"Informações Complementares", "liclicitem"=>"Itens","liclicitemlote"=>"Lotes"];
+      $clcriaabas->sizecampo  = ["liclicita"=>"20", "infocomplementar" => "25", "liclicitem"=>"20","liclicitemlote"=>"20"];
+      $clcriaabas->title      = ["liclicita"=>"Licitação", "infocomplementar" => "Outras Informações", "liclicitem"=>"Itens da Licitação","liclicitemlote"=>"Lote de itens"];
+      $clcriaabas->src        = ["liclicita"=>"lic1_liclicita001.php", "infocomplementar" => "lic1_liclicitainfocomplementar001.php", "liclicitem"=>"lic1_liclicitemalt001.php","liclicitemlote"=>"lic1_liclicitemlote001.php"];
 
       if ($db_opcao == 1) {
-        $clcriaabas->disabled   =  array("liclicitem"=>"true","liclicitemlote"=>"true", "infocomplementar" => "true");
+        $clcriaabas->disabled   =  ["liclicitem"=>"true","liclicitemlote"=>"true", "infocomplementar" => "true"];
       }
 
       $clcriaabas->cria_abas();

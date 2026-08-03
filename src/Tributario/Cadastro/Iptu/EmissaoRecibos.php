@@ -371,32 +371,16 @@ class EmissaoRecibos
 
         $sOrder = null;
 
-        switch ($ordem) {
-            case "endereco":
-                $sOrder = "j23_munic, j23_uf, j23_ender, j23_numero, j23_compl";
-                break;
-            case "bairroender":
-                $sOrder = "j23_bairro, j23_munic, j23_uf, j23_ender, j23_numero, j23_compl";
-                break;
-            case "alfabetica":
-                $sOrder = "z01_nome";
-                break;
-            case "zonaentrega":
-                $sOrder = "j86_iptucadzonaentrega";
-                break;
-            case "refant":
-                $sOrder = "j40_refant";
-                break;
-            case "setorquadralote":
-                $sOrder = "j34_setor, j34_quadra, j34_lote";
-                break;
-            case "bairroalfa":
-                $sOrder = " j23_bairro ";
-                break;
-            default:
-                $sOrder = "z01_nome";
-                break;
-        }
+        $sOrder = match ($ordem) {
+            "endereco" => "j23_munic, j23_uf, j23_ender, j23_numero, j23_compl",
+            "bairroender" => "j23_bairro, j23_munic, j23_uf, j23_ender, j23_numero, j23_compl",
+            "alfabetica" => "z01_nome",
+            "zonaentrega" => "j86_iptucadzonaentrega",
+            "refant" => "j40_refant",
+            "setorquadralote" => "j34_setor, j34_quadra, j34_lote",
+            "bairroalfa" => " j23_bairro ",
+            default => "z01_nome",
+        };
 
         $sqlprinc = "";
         $sqlprinc .= "select * from ( ";
@@ -524,7 +508,7 @@ class EmissaoRecibos
         /**
          * Cria uma nova emissao geral para essa gera\E7\E3o
          */
-        $oParametros = (object)array(
+        $oParametros = (object)[
           "processa_massa_falida"       => $lProcessaMassaFalida,
           "somente_com_endereco_valido" => $lSomenteEnderecoEntregaValido,
           "gerar_com_cidade_branco"     => $lGerarComCidadeEmBranco,
@@ -548,7 +532,7 @@ class EmissaoRecibos
           "valor_minimo"                => $vlrmin,
           "valor_maximo"                => $vlrmax,
           "expressao_isento"            => $expressaoIsento
-        );
+        ];
         if (empty($codigoEmissao)) {
             $oEmissaoGeral = EmissaoGeral::create(
                 EmissaoGeral::TIPO_IPTU,
@@ -564,7 +548,7 @@ class EmissaoRecibos
         /**
          * Verifica se deve gerar as parcelas unicas
          */
-        $aParcelasUnicas = array();
+        $aParcelasUnicas = [];
 
         if (!empty($sParcelaUnica)) {
             $oRepositoryUnica = new ParcelaUnicaRepository();
@@ -589,9 +573,9 @@ class EmissaoRecibos
 
         $oRegistroRepository = new RegistroRepository();
         $cliptubase = new \cl_iptubase();
-        $aInconsistencias = array();
+        $aInconsistencias = [];
 
-        $aRegistrosGerados = array();
+        $aRegistrosGerados = [];
 
         /**
          * Percorre os registros para gerar os recibos
@@ -670,11 +654,11 @@ class EmissaoRecibos
                  * Verifica se o CPF ou CNPJ \E9 valido caso seja um convenio de cobran\E7a valido
                  */
                 if (!\DBString::isCNPJ($z01_cgccpf) && !\DBString::isCPF($z01_cgccpf)) {
-                    $aInconsistencias[$z01_cgmpri] = array(
+                    $aInconsistencias[$z01_cgmpri] = [
                       $z01_cgmpri,
                       $z01_nome,
                       "CPF ou CNPJ do contribuinte \E9 inv\E1lido."
-                    );
+                    ];
                     continue;
                 }
             }
@@ -781,7 +765,7 @@ class EmissaoRecibos
                     die($sSqlFinPriPagaComPgtoExec);
 
                 if (pg_num_rows($resultfinpripaga) > 0) {
-                    continue;
+                    break;
                 }
                     break;
 
@@ -791,7 +775,7 @@ class EmissaoRecibos
                     die($sSqlFinPriPagaSemPgtoExec);
 
                 if (pg_num_rows($resultfinpripaga) == 1) {
-                    continue;
+                    break;
                 }
                     break;
             }
@@ -886,11 +870,11 @@ class EmissaoRecibos
                         for ($unicont = 0; $unicont < pg_num_rows($resultfin); $unicont++) {
                             extract((array)\db_utils::fieldsMemory($resultfin, $unicont));
 
-                            $uvlrhis = substr($fc_calcula, 1, 13);
-                            $uvlrcor = substr($fc_calcula, 14, 13);
-                            $uvlrjuros = substr($fc_calcula, 27, 13);
-                            $uvlrmulta = substr($fc_calcula, 40, 13);
-                            $uvlrdesconto = substr($fc_calcula, 53, 13);
+                            $uvlrhis = substr((string) $fc_calcula, 1, 13);
+                            $uvlrcor = substr((string) $fc_calcula, 14, 13);
+                            $uvlrjuros = substr((string) $fc_calcula, 27, 13);
+                            $uvlrmulta = substr((string) $fc_calcula, 40, 13);
+                            $uvlrdesconto = substr((string) $fc_calcula, 53, 13);
 
                             $utotal = $uvlrcor + $uvlrjuros + $uvlrmulta - $uvlrdesconto + $nTaxaBancaria;
 
@@ -908,10 +892,10 @@ class EmissaoRecibos
                                 $k03_numpreunica = $oRecibo->getNumpreRecibo();
 
                                 $repository = new RecibopagaRepository(DataBase::getInstance(), new \cl_recibopaga());
-                                $where = array(
+                                $where = [
                                   "k00_numnov = {$oRecibo->getNumpreRecibo()}",
                                   "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO
-                                );
+                                ];
                                 $reciboPaga = $repository->findAll(implode(' AND ', $where))->get(0);
 
                                 $valorExpediente = !empty($reciboPaga->getValor()) ? $reciboPaga->getValor() : 0;
@@ -1004,10 +988,10 @@ class EmissaoRecibos
                 }
 
                 $oCalculo = \db_utils::fieldsMemory($rsCalcula, 0);
-                $nValorParcelaCorrigido = (float)substr($oCalculo->fc_calcula, 14, 13) +
-                  (float)substr($oCalculo->fc_calcula, 27, 13) +
-                  (float)substr($oCalculo->fc_calcula, 40, 13) -
-                  (float)substr($oCalculo->fc_calcula, 53, 13);
+                $nValorParcelaCorrigido = (float)substr((string) $oCalculo->fc_calcula, 14, 13) +
+                  (float)substr((string) $oCalculo->fc_calcula, 27, 13) +
+                  (float)substr((string) $oCalculo->fc_calcula, 40, 13) -
+                  (float)substr((string) $oCalculo->fc_calcula, 53, 13);
 
                 $nValorParcelaCorrigido += $nTaxaBancaria;
 
@@ -1020,10 +1004,10 @@ class EmissaoRecibos
                     $oRecibo->emiteRecibo($lConvenioCobrancaValido, false);
 
                     $repository = new RecibopagaRepository(DataBase::getInstance(), new \cl_recibopaga());
-                    $where = array(
+                    $where = [
                       "k00_numnov = {$oRecibo->getNumpreRecibo()}",
                       "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO
-                    );
+                    ];
                     $reciboPaga = $repository->findAll(implode(' AND ', $where))->get(0);
 
                     $valorExpediente = !empty($reciboPaga->getValor()) ? $reciboPaga->getValor() : 0;
@@ -1114,7 +1098,7 @@ class EmissaoRecibos
             throw new \BusinessException("Nenhum registro encontrado para os filtros selecionados.");
         }
 
-        $aArquivosRetorno = array();
+        $aArquivosRetorno = [];
 
         /**
          * Caso existam inconsistencias, deve ser gerado o relat\F3rio
@@ -1139,24 +1123,24 @@ class EmissaoRecibos
         $oRelatorio->setPercentWidth(true);
         $oRelatorio->setLineHeigth(5);
 
-        $aCabecalho = array(
+        $aCabecalho = [
           "CGM",
           "Nome / Raz\E3o Social",
           "Inconsist\EAncia"
-        );
+        ];
 
-        $aLargura = array(10, 50, 40);
-        $aAlinhamento = array(
+        $aLargura = [10, 50, 40];
+        $aAlinhamento = [
           \PDFDocument::ALIGN_CENTER,
           \PDFDocument::ALIGN_LEFT,
           \PDFDocument::ALIGN_LEFT
-        );
+        ];
 
         $oRelatorio->setHeaders($aCabecalho);
         $oRelatorio->setColumnsWidth($aLargura);
         $oRelatorio->setColumnsAlign($aAlinhamento);
 
-        $aRazaoSocial = array();
+        $aRazaoSocial = [];
 
         foreach ($aInconsistencias as $iIndice => $aInconsistencia) {
             $aRazaoSocial[$iIndice] = $aInconsistencia[1];

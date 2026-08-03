@@ -61,7 +61,7 @@ if ($_POST) {
   $ano          = $oPost->ano;
   $mes          = $oPost->mes;
   $tipo_arquivo = $oPost->tipo_arquivo;
-  $data_mudanca = implode("-", array_reverse(explode("/",$oPost->data_mudanca)));
+  $data_mudanca = implode("-", array_reverse(explode("/",(string) $oPost->data_mudanca)));
 
   if(isset($oPost->rubricas) && count($oPost->rubricas)>0) {
     $sRubricas    = "'".implode("','", $oPost->rubricas)."'";
@@ -233,7 +233,7 @@ if ($_POST) {
 		  	$sSqlRhDepend = $oRhDepend->sql_query_file(null, $sCampoIdade, "rh31_dtnasc ASC LIMIT 4", $sWhereIdade);
 		  	$rsRhDepend   = $oRhDepend->sql_record($sSqlRhDepend);
 
-		  	$aIdadeFilhos = array(";",";",";",";");
+		  	$aIdadeFilhos = [";",";",";",";"];
 		  	if ($oRhDepend->numrows > 0) {
 
 		  		$aDepend = db_utils::getCollectionByRecord($rsRhDepend);
@@ -241,9 +241,9 @@ if ($_POST) {
 		  			$aIdadeFilhos[$k] = "{$oDep->idade};";
 		  		}
 		  	}
-		  	$sIdadeFilhos = implode($aIdadeFilhos);
+		  	$sIdadeFilhos = implode('', $aIdadeFilhos);
 
-		  	$iTempoServico = $oLinhaCalculo->temposervico?$oLinhaCalculo->temposervico:"0";
+		  	$iTempoServico = $oLinhaCalculo->temposervico ?: "0";
 
   		  $sLinhaCalculo  = "";
         $sLinhaCalculo .= "{$oLinhaCalculo->matricula};";
@@ -251,7 +251,7 @@ if ($_POST) {
         $sLinhaCalculo .= "{$oLinhaCalculo->admissao};";
         $sLinhaCalculo .= "{$oLinhaCalculo->sexo};";
         $sLinhaCalculo .= ($oLinhaCalculo->insalubre=='t'?"1":"2").";";
-        $sLinhaCalculo .= ($oLinhaCalculo->tempocontrib?$oLinhaCalculo->tempocontrib:"0").";";
+        $sLinhaCalculo .= ($oLinhaCalculo->tempocontrib ?: "0").";";
         $sLinhaCalculo .= ($oLinhaCalculo->tempocargoatual).";";
         $sLinhaCalculo .= "{$iTempoServico};";
         $sLinhaCalculo .= "{$iTempoServico};";
@@ -265,7 +265,7 @@ if ($_POST) {
         $sLinhaCalculo .= "{$oLinhaCalculo->categoria_servidor}";
         $sLinhaCalculo .= "\n";
 
-        if (strtotime($oLinhaCalculo->admissao) < strtotime($data_mudanca)) {
+        if (strtotime((string) $oLinhaCalculo->admissao) < strtotime($data_mudanca)) {
           fputs($arquivo2, $sLinhaCalculo);
 		  	} else {
 		  	  fputs($arquivo, $sLinhaCalculo);
@@ -300,7 +300,7 @@ if ($_POST) {
         $sSqlRhDepend = $oRhDepend->sql_query_file(null, $sCampoIdade, "rh31_dtnasc ASC LIMIT 4", $sWhereIdade);
         $rsRhDepend   = $oRhDepend->sql_record($sSqlRhDepend);
 
-        $aIdadeFilhos = array(";",";",";",";");
+        $aIdadeFilhos = [";",";",";",";"];
         if ($oRhDepend->numrows > 0) {
 
           $aDepend = db_utils::getCollectionByRecord($rsRhDepend);
@@ -308,7 +308,7 @@ if ($_POST) {
             $aIdadeFilhos[$k] = "{$oDep->idade};";
           }
         }
-        $sIdadeFilhos = implode($aIdadeFilhos);
+        $sIdadeFilhos = implode('', $aIdadeFilhos);
 
         $sLinhaCalculo  = "";
         $sLinhaCalculo .= "{$oLinhaCalculo->matricula};";

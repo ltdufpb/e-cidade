@@ -41,7 +41,7 @@ abstract class DiarioDisciplina implements iDiarioDisciplina {
    * Colecao de periodos que utilizando proporcionalidade
    * @var array
    */
-  protected $aPeriodosCalcularProporcionalidade = array();
+  protected $aPeriodosCalcularProporcionalidade = [];
 
     /**
    * Guarda o total de faltas abonadas
@@ -120,7 +120,7 @@ abstract class DiarioDisciplina implements iDiarioDisciplina {
    */
   public function getResultados() {
 
-    $aResultados = array();
+    $aResultados = [];
     foreach ($this->getAvaliacoes() as $oAvaliacao) {
 
       if ($oAvaliacao->getElementoAvaliacao()->isResultado()) {
@@ -158,7 +158,7 @@ abstract class DiarioDisciplina implements iDiarioDisciplina {
    */
   protected function getElementosGeramResultadoFinal() {
 
-    $aResultados = array();
+    $aResultados = [];
 
     foreach ( $this->getResultados() as $oResultado ) {
 
@@ -413,7 +413,7 @@ abstract class DiarioDisciplina implements iDiarioDisciplina {
       $iTotalDeAulasDadas = $this->getRegencia()->getTotalDeAulas();
     }
 
-    $aPeriodosComAmparo = array();
+    $aPeriodosComAmparo = [];
 
     foreach ($aPeriodosAvaliacoes as $oAvaliacao) {
 

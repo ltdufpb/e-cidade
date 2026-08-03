@@ -24,11 +24,11 @@ try {
             $clRhLocalTrabAgentesNocivos         = new cl_rhlocaltrabagentesnocivos();
             $clRhLocalTrabRegistroAmbiental      = new cl_rhlocaltrabregistroambiental();
             
-            $aDadosAgentesNocivos = array();
-            $aDadosResponsaveisRegistrosAmbientais = array();
+            $aDadosAgentesNocivos = [];
+            $aDadosResponsaveisRegistrosAmbientais = [];
             
-            $arquivoEventoS2240Tabela24     = array();
-            $arquivoEventoS2240OpcoesUnMed  = array();
+            $arquivoEventoS2240Tabela24     = [];
+            $arquivoEventoS2240OpcoesUnMed  = [];
             
             $sCaminhoArquivoEventoS2240Tabela24 = "./arquivos/esocial/tabelas/eventoS2240_tabela24.json";
             if (file_exists($sCaminhoArquivoEventoS2240Tabela24)) {
@@ -54,7 +54,7 @@ try {
              * Percorremos os resultados montamos um array com os dados
              * Atribuimos o array ao objeto $oDadosRhLocalTrab
              */
-            $aDadosRhLocalTrabAgentesNocivos = array();
+            $aDadosRhLocalTrabAgentesNocivos = [];
             
             $sSqlRhLocalTrabAgentesNocivos = $clRhLocalTrabAgentesNocivos->sql_query_file(null,
                                                                                           "rh256_sequencial as id, 
@@ -86,7 +86,7 @@ try {
                 }
                 
                 $oAgenteNocivo->oDadosEquipamentosProtecao = new stdClass();
-                $oAgenteNocivo->oDadosEquipamentosProtecao->aDadosEPIs = array();
+                $oAgenteNocivo->oDadosEquipamentosProtecao->aDadosEPIs = [];
                 
                 /*
                  * Buscamos os dados dos equipamentos de protecao
@@ -137,8 +137,8 @@ try {
         break;
         case 'salvarLocalTrabalho':
             
-            $aDadosAgentesNocivos                  = json_decode(utf8_encode($parametros->JsonDadosAgentesNocivos));
-            $aDadosResponsaveisRegistrosAmbientais = json_decode(utf8_encode($parametros->JsonDadosResponsaveisRegistrosAmbientais));
+            $aDadosAgentesNocivos                  = json_decode(mb_convert_encoding($parametros->JsonDadosAgentesNocivos, 'UTF-8', 'ISO-8859-1'));
+            $aDadosResponsaveisRegistrosAmbientais = json_decode(mb_convert_encoding($parametros->JsonDadosResponsaveisRegistrosAmbientais, 'UTF-8', 'ISO-8859-1'));
             
             $clRhLocalTrab = new cl_rhlocaltrab;
             $clRhLocalTrab->rh55_instit                        = $iInstituicao;
@@ -239,10 +239,10 @@ try {
                 $clRhLocalTrabAgentesNocivos->rh256_instituicao             = $iInstituicao;             
                 $clRhLocalTrabAgentesNocivos->rh256_agentenocivo            = $oAgenteNocivo->rh256_agentenocivo;           
                 $clRhLocalTrabAgentesNocivos->rh256_tipoavaliacao           = $oAgenteNocivo->rh256_tipoavaliacao;           
-                $clRhLocalTrabAgentesNocivos->rh256_intensidadeconcentracao = utf8_decode($oAgenteNocivo->rh256_intensidadeconcentracao); 
-                $clRhLocalTrabAgentesNocivos->rh256_tolerancialimite        = utf8_decode($oAgenteNocivo->rh256_tolerancialimite);        
+                $clRhLocalTrabAgentesNocivos->rh256_intensidadeconcentracao = mb_convert_encoding($oAgenteNocivo->rh256_intensidadeconcentracao, 'ISO-8859-1'); 
+                $clRhLocalTrabAgentesNocivos->rh256_tolerancialimite        = mb_convert_encoding($oAgenteNocivo->rh256_tolerancialimite, 'ISO-8859-1');        
                 $clRhLocalTrabAgentesNocivos->rh256_medida                  = $oAgenteNocivo->rh256_medida;                  
-                $clRhLocalTrabAgentesNocivos->rh256_tecnicamedicao          = utf8_decode($oAgenteNocivo->rh256_tecnicamedicao);
+                $clRhLocalTrabAgentesNocivos->rh256_tecnicamedicao          = mb_convert_encoding($oAgenteNocivo->rh256_tecnicamedicao, 'ISO-8859-1');
                 $clRhLocalTrabAgentesNocivos->incluir(null);
                 if ($clRhLocalTrabAgentesNocivos->erro_status == 0) 
                 {
@@ -280,8 +280,8 @@ try {
                        $clRhLocalTrabEquipamentoProtecaoEPI = new cl_rhlocaltrabequipamentoprotecaoepi();
                        $clRhLocalTrabEquipamentoProtecaoEPI->rh259_sequencial                     = null;
                        $clRhLocalTrabEquipamentoProtecaoEPI->rh259_rhlocaltrabequipamentoprotecao = $clRhLocalTrabEquipamentoProtecao->rh257_sequencial;
-                       $clRhLocalTrabEquipamentoProtecaoEPI->rh259_documentoavaliacao             = utf8_decode($oEPI->rh259_documentoavaliacao);
-                       $clRhLocalTrabEquipamentoProtecaoEPI->rh259_descricao                      = utf8_decode($oEPI->rh259_descricao);
+                       $clRhLocalTrabEquipamentoProtecaoEPI->rh259_documentoavaliacao             = mb_convert_encoding($oEPI->rh259_documentoavaliacao, 'ISO-8859-1');
+                       $clRhLocalTrabEquipamentoProtecaoEPI->rh259_descricao                      = mb_convert_encoding($oEPI->rh259_descricao, 'ISO-8859-1');
                        $clRhLocalTrabEquipamentoProtecaoEPI->incluir(null);
                        if ($clRhLocalTrabEquipamentoProtecaoEPI->erro_status == 0)
                        {
@@ -315,7 +315,7 @@ try {
                 $clRhLocalTrabRegistroAmbiental->rh258_cpfresponsavel       = $oResponsavelRegistroAmbiental->rh258_cpfresponsavel;      
                 $clRhLocalTrabRegistroAmbiental->rh258_identificacaoorgao   = $oResponsavelRegistroAmbiental->rh258_identificacaoorgao;  
                 $clRhLocalTrabRegistroAmbiental->rh258_numeroinscricaoorgao = $oResponsavelRegistroAmbiental->rh258_numeroinscricaoorgao; 
-                $clRhLocalTrabRegistroAmbiental->rh258_descricaoorgao       = utf8_decode($oResponsavelRegistroAmbiental->rh258_descricaoorgao);      
+                $clRhLocalTrabRegistroAmbiental->rh258_descricaoorgao       = mb_convert_encoding($oResponsavelRegistroAmbiental->rh258_descricaoorgao, 'ISO-8859-1');      
                 $clRhLocalTrabRegistroAmbiental->rh258_uforgao              = $oResponsavelRegistroAmbiental->rh258_uforgao;             
                 $clRhLocalTrabRegistroAmbiental->rh258_periodoinicial       = $oResponsavelRegistroAmbiental->rh258_periodoinicial;      
                 $clRhLocalTrabRegistroAmbiental->rh258_periodofinal         = $oResponsavelRegistroAmbiental->rh258_periodofinal;        

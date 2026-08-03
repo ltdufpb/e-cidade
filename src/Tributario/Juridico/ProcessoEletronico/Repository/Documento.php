@@ -39,9 +39,7 @@ class Documento extends \BaseClassRepository
             throw new \DBException("Erro ao pesquisar documentos do processo eletronico {$codigoProcesso}");
         }
         $instancia = self::getInstance();
-        $documentos = \db_utils::makeCollectionFromRecord($rsDocumentos, function ($dados) use ($instancia) {
-            return  $instancia->make($dados);
-        });
+        $documentos = \db_utils::makeCollectionFromRecord($rsDocumentos, fn($dados) => $instancia->make($dados));
         return $documentos;
     }
 

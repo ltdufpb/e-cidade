@@ -42,7 +42,7 @@ $rsFatoresAmbulatorial = $oDaoSauFatorDeRisco->sql_record($sSql);
 
 
 /* Fatores de risco cadastrados no módulo ambulatorial */
-$aFatoresAmb = array('-1' => 'Selecione...');
+$aFatoresAmb = ['-1' => 'Selecione...'];
 for ($iContAmb = 0; $iContAmb < $oDaoSauFatorDeRisco->numrows; $iContAmb++) {
 
   $oDados                              = db_utils::fieldsmemory($rsFatoresAmbulatorial, $iContAmb);

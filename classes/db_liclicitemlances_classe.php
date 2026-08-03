@@ -48,7 +48,7 @@ class cl_liclicitemlances
   public function __construct()
   {
     $this->rotulo = new rotulo("liclicitemlances");
-    $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+    $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
   }
 
   public function erro($mostra, $retorna)
@@ -184,10 +184,10 @@ class cl_liclicitemlances
         $this->erro_status = "0";
         return false;
       }
-      $this->l49_sequencial = pg_result($result, 0, 0);
+      $this->l49_sequencial = pg_fetch_result($result, 0, 0);
     } else {
       $result = db_query("select last_value from liclicitemlances_l49_sequencial_seq");
-      if (($result != false) && (pg_result($result, 0, 0) < $l49_sequencial)) {
+      if (($result != false) && (pg_fetch_result($result, 0, 0) < $l49_sequencial)) {
         $this->erro_sql = " Campo l49_sequencial maior que último número da sequencia.";
         $this->erro_banco = "Sequencia menor que este número.";
         $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -235,7 +235,7 @@ class cl_liclicitemlances
     $result = db_query($sql);
     if ($result == false) {
       $this->erro_banco = str_replace("\n", "", @pg_last_error());
-      if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+      if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
         $this->erro_sql   = "liclicitemlances ($this->l49_sequencial) não Incluído. Inclusão Abortada.";
         $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
         $this->erro_banco = "liclicitemlances já Cadastrado";
@@ -264,20 +264,20 @@ class cl_liclicitemlances
       if (($resaco != false) || ($this->numrows != 0)) {
 
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac, 0, 0);
+        $acount = pg_fetch_result($resac, 0, 0);
         $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
         $resac = db_query("insert into db_acountkey values($acount,1013435,'$this->l49_sequencial','I')");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013435,'','" . AddSlashes(pg_result($resaco, 0, 'l49_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013436,'','" . AddSlashes(pg_result($resaco, 0, 'l49_liclicitem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013438,'','" . AddSlashes(pg_result($resaco, 0, 'l49_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013439,'','" . AddSlashes(pg_result($resaco, 0, 'l49_hora')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013440,'','" . AddSlashes(pg_result($resaco, 0, 'l49_fornecedor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013441,'','" . AddSlashes(pg_result($resaco, 0, 'l49_valido')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013442,'','" . AddSlashes(pg_result($resaco, 0, 'l49_cancelado')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013443,'','" . AddSlashes(pg_result($resaco, 0, 'l49_justificativa')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013444,'','" . AddSlashes(pg_result($resaco, 0, 'l49_vlrun')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013445,'','" . AddSlashes(pg_result($resaco, 0, 'l49_vlrtot')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,1010829,1013446,'','" . AddSlashes(pg_result($resaco, 0, 'l49_vlrdesc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013435,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013436,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_liclicitem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013438,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013439,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_hora')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013440,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_fornecedor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013441,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_valido')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013442,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_cancelado')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013443,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_justificativa')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013444,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_vlrun')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013445,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_vlrtot')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1010829,1013446,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l49_vlrdesc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
       }
     }
     return true;
@@ -288,10 +288,10 @@ class cl_liclicitemlances
     $this->atualizacampos();
     $sql = " update liclicitemlances set ";
     $virgula = "";
-    if (trim($this->l49_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_sequencial"])) {
+    if (trim((string) $this->l49_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_sequencial"])) {
       $sql  .= $virgula . " l49_sequencial = $this->l49_sequencial ";
       $virgula = ",";
-      if (trim($this->l49_sequencial) == null) {
+      if (trim((string) $this->l49_sequencial) == null) {
         $this->erro_sql = " Campo Sequencial não informado.";
         $this->erro_campo = "l49_sequencial";
         $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_liclicitemlances
         return false;
       }
     }
-    if (trim($this->l49_liclicitem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_liclicitem"])) {
+    if (trim((string) $this->l49_liclicitem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_liclicitem"])) {
       $sql  .= $virgula . " l49_liclicitem = $this->l49_liclicitem ";
       $virgula = ",";
-      if (trim($this->l49_liclicitem) == null) {
+      if (trim((string) $this->l49_liclicitem) == null) {
         $this->erro_sql = " Campo Item Licitação não informado.";
         $this->erro_campo = "l49_liclicitem";
         $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_liclicitemlances
         return false;
       }
     }
-    if (trim($this->l49_data) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l49_data_dia"] != "")) {
+    if (trim((string) $this->l49_data) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l49_data_dia"] != "")) {
       $sql  .= $virgula . " l49_data = '$this->l49_data' ";
       $virgula = ",";
-      if (trim($this->l49_data) == null) {
+      if (trim((string) $this->l49_data) == null) {
         $this->erro_sql = " Campo Data do Lance não informado.";
         $this->erro_campo = "l49_data_dia";
         $this->erro_banco = "";
@@ -330,7 +330,7 @@ class cl_liclicitemlances
       if (isset($GLOBALS["HTTP_POST_VARS"]["l49_data_dia"])) {
         $sql  .= $virgula . " l49_data = null ";
         $virgula = ",";
-        if (trim($this->l49_data) == null) {
+        if (trim((string) $this->l49_data) == null) {
           $this->erro_sql = " Campo Data do Lance não informado.";
           $this->erro_campo = "l49_data_dia";
           $this->erro_banco = "";
@@ -341,10 +341,10 @@ class cl_liclicitemlances
         }
       }
     }
-    if (trim($this->l49_hora) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_hora"])) {
+    if (trim((string) $this->l49_hora) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_hora"])) {
       $sql  .= $virgula . " l49_hora = '$this->l49_hora' ";
       $virgula = ",";
-      if (trim($this->l49_hora) == null) {
+      if (trim((string) $this->l49_hora) == null) {
         $this->erro_sql = " Campo Hora do lance não informado.";
         $this->erro_campo = "l49_hora";
         $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_liclicitemlances
         return false;
       }
     }
-    if (trim($this->l49_fornecedor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_fornecedor"])) {
+    if (trim((string) $this->l49_fornecedor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_fornecedor"])) {
       $sql  .= $virgula . " l49_fornecedor = $this->l49_fornecedor ";
       $virgula = ",";
-      if (trim($this->l49_fornecedor) == null) {
+      if (trim((string) $this->l49_fornecedor) == null) {
         $this->erro_sql = " Campo Fornecedor não informado.";
         $this->erro_campo = "l49_fornecedor";
         $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_liclicitemlances
         return false;
       }
     }
-    if (trim($this->l49_valido) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_valido"])) {
+    if (trim((string) $this->l49_valido) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_valido"])) {
       $sql  .= $virgula . " l49_valido = '$this->l49_valido' ";
       $virgula = ",";
-      if (trim($this->l49_valido) == null) {
+      if (trim((string) $this->l49_valido) == null) {
         $this->erro_sql = " Campo Válido não informado.";
         $this->erro_campo = "l49_valido";
         $this->erro_banco = "";
@@ -380,10 +380,10 @@ class cl_liclicitemlances
         return false;
       }
     }
-    if (trim($this->l49_cancelado) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_cancelado"])) {
+    if (trim((string) $this->l49_cancelado) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_cancelado"])) {
       $sql  .= $virgula . " l49_cancelado = '$this->l49_cancelado' ";
       $virgula = ",";
-      if (trim($this->l49_cancelado) == null) {
+      if (trim((string) $this->l49_cancelado) == null) {
         $this->erro_sql = " Campo Cancelado não informado.";
         $this->erro_campo = "l49_cancelado";
         $this->erro_banco = "";
@@ -393,10 +393,10 @@ class cl_liclicitemlances
         return false;
       }
     }
-    if (trim($this->l49_justificativa) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_justificativa"])) {
+    if (trim((string) $this->l49_justificativa) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_justificativa"])) {
       $sql  .= $virgula . " l49_justificativa = '$this->l49_justificativa' ";
       $virgula = ",";
-      if (trim($this->l49_justificativa) == null) {
+      if (trim((string) $this->l49_justificativa) == null) {
         $this->erro_sql = " Campo Justificativa não informado.";
         $this->erro_campo = "l49_justificativa";
         $this->erro_banco = "";
@@ -406,10 +406,10 @@ class cl_liclicitemlances
         return false;
       }
     }
-    if (trim($this->l49_vlrun) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_vlrun"])) {
+    if (trim((string) $this->l49_vlrun) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_vlrun"])) {
       $sql  .= $virgula . " l49_vlrun = $this->l49_vlrun ";
       $virgula = ",";
-      if (trim($this->l49_vlrun) == null) {
+      if (trim((string) $this->l49_vlrun) == null) {
         $this->erro_sql = " Campo Valor unitário não informado.";
         $this->erro_campo = "l49_vlrun";
         $this->erro_banco = "";
@@ -419,10 +419,10 @@ class cl_liclicitemlances
         return false;
       }
     }
-    if (trim($this->l49_vlrtot) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_vlrtot"])) {
+    if (trim((string) $this->l49_vlrtot) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_vlrtot"])) {
       $sql  .= $virgula . " l49_vlrtot = $this->l49_vlrtot ";
       $virgula = ",";
-      if (trim($this->l49_vlrtot) == null) {
+      if (trim((string) $this->l49_vlrtot) == null) {
         $this->erro_sql = " Campo Valor total não informado.";
         $this->erro_campo = "l49_vlrtot";
         $this->erro_banco = "";
@@ -432,10 +432,10 @@ class cl_liclicitemlances
         return false;
       }
     }
-    if (trim($this->l49_vlrdesc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_vlrdesc"])) {
+    if (trim((string) $this->l49_vlrdesc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l49_vlrdesc"])) {
       $sql  .= $virgula . " l49_vlrdesc = $this->l49_vlrdesc ";
       $virgula = ",";
-      if (trim($this->l49_vlrdesc) == null) {
+      if (trim((string) $this->l49_vlrdesc) == null) {
         $this->erro_sql = " Campo Valor Desconto não informado.";
         $this->erro_campo = "l49_vlrdesc";
         $this->erro_banco = "";
@@ -459,31 +459,31 @@ class cl_liclicitemlances
         for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
           $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-          $acount = pg_result($resac, 0, 0);
+          $acount = pg_fetch_result($resac, 0, 0);
           $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
           $resac = db_query("insert into db_acountkey values($acount,1013435,'$this->l49_sequencial','A')");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_sequencial"]) || $this->l49_sequencial != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013435,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_sequencial')) . "','$this->l49_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013435,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_sequencial')) . "','$this->l49_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_liclicitem"]) || $this->l49_liclicitem != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013436,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_liclicitem')) . "','$this->l49_liclicitem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013436,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_liclicitem')) . "','$this->l49_liclicitem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_data"]) || $this->l49_data != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013438,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_data')) . "','$this->l49_data'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013438,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_data')) . "','$this->l49_data'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_hora"]) || $this->l49_hora != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013439,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_hora')) . "','$this->l49_hora'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013439,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_hora')) . "','$this->l49_hora'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_fornecedor"]) || $this->l49_fornecedor != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013440,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_fornecedor')) . "','$this->l49_fornecedor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013440,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_fornecedor')) . "','$this->l49_fornecedor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_valido"]) || $this->l49_valido != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013441,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_valido')) . "','$this->l49_valido'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013441,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_valido')) . "','$this->l49_valido'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_cancelado"]) || $this->l49_cancelado != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013442,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_cancelado')) . "','$this->l49_cancelado'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013442,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_cancelado')) . "','$this->l49_cancelado'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_justificativa"]) || $this->l49_justificativa != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013443,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_justificativa')) . "','$this->l49_justificativa'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013443,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_justificativa')) . "','$this->l49_justificativa'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_vlrun"]) || $this->l49_vlrun != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013444,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_vlrun')) . "','$this->l49_vlrun'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013444,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_vlrun')) . "','$this->l49_vlrun'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_vlrtot"]) || $this->l49_vlrtot != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013445,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_vlrtot')) . "','$this->l49_vlrtot'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013445,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_vlrtot')) . "','$this->l49_vlrtot'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l49_vlrdesc"]) || $this->l49_vlrdesc != "")
-            $resac = db_query("insert into db_acount values($acount,1010829,1013446,'" . AddSlashes(pg_result($resaco, $conresaco, 'l49_vlrdesc')) . "','$this->l49_vlrdesc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,1010829,1013446,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l49_vlrdesc')) . "','$this->l49_vlrdesc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
       }
     }
@@ -537,20 +537,20 @@ class cl_liclicitemlances
         for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
           $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-          $acount = pg_result($resac, 0, 0);
+          $acount = pg_fetch_result($resac, 0, 0);
           $resac  = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
           $resac  = db_query("insert into db_acountkey values($acount,1013435,'$l49_sequencial','E')");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013435,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013436,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_liclicitem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013438,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013439,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_hora')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013440,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_fornecedor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013441,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_valido')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013442,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_cancelado')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013443,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_justificativa')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013444,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_vlrun')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013445,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_vlrtot')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,1010829,1013446,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l49_vlrdesc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013435,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013436,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_liclicitem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013438,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013439,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_hora')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013440,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_fornecedor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013441,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_valido')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013442,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_cancelado')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013443,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_justificativa')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013444,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_vlrun')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013445,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_vlrtot')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1010829,1013446,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l49_vlrdesc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
       }
     }

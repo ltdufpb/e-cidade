@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE db_layoutformat
 class cl_db_layoutformat { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db53_codigo = 0; 
-   var $db53_descr = null; 
-   var $db53_mascara = null; 
-   var $db53_tipo = 0; 
-   var $db53_tamanho = 0; 
-   var $db53_decimais = 0; 
-   var $db53_caracdec = null; 
-   var $db53_alinha = null; 
+   public $db53_codigo = 0; 
+   public $db53_descr = null; 
+   public $db53_mascara = null; 
+   public $db53_tipo = 0; 
+   public $db53_tamanho = 0; 
+   public $db53_decimais = 0; 
+   public $db53_caracdec = null; 
+   public $db53_alinha = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db53_codigo = int4 = Código da formatação 
                  db53_descr = varchar(40) = Descrição 
                  db53_mascara = varchar(40) = Máscara do campo 
@@ -62,10 +62,10 @@ class cl_db_layoutformat {
                  db53_alinha = varchar(1) = Alinhamento 
                  ";
    //funcao construtor da classe 
-   function cl_db_layoutformat() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_layoutformat"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -137,10 +137,10 @@ class cl_db_layoutformat {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db53_codigo = pg_result($result,0,0); 
+       $this->db53_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_layoutformat_db53_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db53_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db53_codigo)){
          $this->erro_sql = " Campo db53_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -182,7 +182,7 @@ class cl_db_layoutformat {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro da formatação dos campos ($this->db53_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro da formatação dos campos já Cadastrado";
@@ -206,17 +206,17 @@ class cl_db_layoutformat {
      $resaco = $this->sql_record($this->sql_query_file($this->db53_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9078,'$this->db53_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1556,9078,'','".AddSlashes(pg_result($resaco,0,'db53_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1556,9081,'','".AddSlashes(pg_result($resaco,0,'db53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1556,9082,'','".AddSlashes(pg_result($resaco,0,'db53_mascara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1556,9083,'','".AddSlashes(pg_result($resaco,0,'db53_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1556,9084,'','".AddSlashes(pg_result($resaco,0,'db53_tamanho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1556,9085,'','".AddSlashes(pg_result($resaco,0,'db53_decimais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1556,9086,'','".AddSlashes(pg_result($resaco,0,'db53_caracdec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1556,9103,'','".AddSlashes(pg_result($resaco,0,'db53_alinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1556,9078,'','".AddSlashes(pg_fetch_result($resaco,0,'db53_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1556,9081,'','".AddSlashes(pg_fetch_result($resaco,0,'db53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1556,9082,'','".AddSlashes(pg_fetch_result($resaco,0,'db53_mascara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1556,9083,'','".AddSlashes(pg_fetch_result($resaco,0,'db53_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1556,9084,'','".AddSlashes(pg_fetch_result($resaco,0,'db53_tamanho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1556,9085,'','".AddSlashes(pg_fetch_result($resaco,0,'db53_decimais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1556,9086,'','".AddSlashes(pg_fetch_result($resaco,0,'db53_caracdec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1556,9103,'','".AddSlashes(pg_fetch_result($resaco,0,'db53_alinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,10 +225,10 @@ class cl_db_layoutformat {
       $this->atualizacampos();
      $sql = " update db_layoutformat set ";
      $virgula = "";
-     if(trim($this->db53_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_codigo"])){ 
+     if(trim((string) $this->db53_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_codigo"])){ 
        $sql  .= $virgula." db53_codigo = $this->db53_codigo ";
        $virgula = ",";
-       if(trim($this->db53_codigo) == null ){ 
+       if(trim((string) $this->db53_codigo) == null ){ 
          $this->erro_sql = " Campo Código da formatação nao Informado.";
          $this->erro_campo = "db53_codigo";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_db_layoutformat {
          return false;
        }
      }
-     if(trim($this->db53_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_descr"])){ 
+     if(trim((string) $this->db53_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_descr"])){ 
        $sql  .= $virgula." db53_descr = '$this->db53_descr' ";
        $virgula = ",";
-       if(trim($this->db53_descr) == null ){ 
+       if(trim((string) $this->db53_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "db53_descr";
          $this->erro_banco = "";
@@ -251,14 +251,14 @@ class cl_db_layoutformat {
          return false;
        }
      }
-     if(trim($this->db53_mascara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_mascara"])){ 
+     if(trim((string) $this->db53_mascara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_mascara"])){ 
        $sql  .= $virgula." db53_mascara = '$this->db53_mascara' ";
        $virgula = ",";
      }
-     if(trim($this->db53_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_tipo"])){ 
+     if(trim((string) $this->db53_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_tipo"])){ 
        $sql  .= $virgula." db53_tipo = $this->db53_tipo ";
        $virgula = ",";
-       if(trim($this->db53_tipo) == null ){ 
+       if(trim((string) $this->db53_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo do campo nao Informado.";
          $this->erro_campo = "db53_tipo";
          $this->erro_banco = "";
@@ -268,28 +268,28 @@ class cl_db_layoutformat {
          return false;
        }
      }
-     if(trim($this->db53_tamanho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_tamanho"])){ 
-        if(trim($this->db53_tamanho)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db53_tamanho"])){ 
+     if(trim((string) $this->db53_tamanho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_tamanho"])){ 
+        if(trim((string) $this->db53_tamanho)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db53_tamanho"])){ 
            $this->db53_tamanho = "0" ; 
         } 
        $sql  .= $virgula." db53_tamanho = $this->db53_tamanho ";
        $virgula = ",";
      }
-     if(trim($this->db53_decimais)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_decimais"])){ 
-        if(trim($this->db53_decimais)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db53_decimais"])){ 
+     if(trim((string) $this->db53_decimais)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_decimais"])){ 
+        if(trim((string) $this->db53_decimais)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db53_decimais"])){ 
            $this->db53_decimais = "0" ; 
         } 
        $sql  .= $virgula." db53_decimais = $this->db53_decimais ";
        $virgula = ",";
      }
-     if(trim($this->db53_caracdec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_caracdec"])){ 
+     if(trim((string) $this->db53_caracdec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_caracdec"])){ 
        $sql  .= $virgula." db53_caracdec = '$this->db53_caracdec' ";
        $virgula = ",";
      }
-     if(trim($this->db53_alinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_alinha"])){ 
+     if(trim((string) $this->db53_alinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db53_alinha"])){ 
        $sql  .= $virgula." db53_alinha = '$this->db53_alinha' ";
        $virgula = ",";
-       if(trim($this->db53_alinha) == null ){ 
+       if(trim((string) $this->db53_alinha) == null ){ 
          $this->erro_sql = " Campo Alinhamento nao Informado.";
          $this->erro_campo = "db53_alinha";
          $this->erro_banco = "";
@@ -307,25 +307,25 @@ class cl_db_layoutformat {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9078,'$this->db53_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db53_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1556,9078,'".AddSlashes(pg_result($resaco,$conresaco,'db53_codigo'))."','$this->db53_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1556,9078,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db53_codigo'))."','$this->db53_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db53_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1556,9081,'".AddSlashes(pg_result($resaco,$conresaco,'db53_descr'))."','$this->db53_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1556,9081,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db53_descr'))."','$this->db53_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db53_mascara"]))
-           $resac = db_query("insert into db_acount values($acount,1556,9082,'".AddSlashes(pg_result($resaco,$conresaco,'db53_mascara'))."','$this->db53_mascara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1556,9082,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db53_mascara'))."','$this->db53_mascara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db53_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1556,9083,'".AddSlashes(pg_result($resaco,$conresaco,'db53_tipo'))."','$this->db53_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1556,9083,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db53_tipo'))."','$this->db53_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db53_tamanho"]))
-           $resac = db_query("insert into db_acount values($acount,1556,9084,'".AddSlashes(pg_result($resaco,$conresaco,'db53_tamanho'))."','$this->db53_tamanho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1556,9084,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db53_tamanho'))."','$this->db53_tamanho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db53_decimais"]))
-           $resac = db_query("insert into db_acount values($acount,1556,9085,'".AddSlashes(pg_result($resaco,$conresaco,'db53_decimais'))."','$this->db53_decimais',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1556,9085,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db53_decimais'))."','$this->db53_decimais',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db53_caracdec"]))
-           $resac = db_query("insert into db_acount values($acount,1556,9086,'".AddSlashes(pg_result($resaco,$conresaco,'db53_caracdec'))."','$this->db53_caracdec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1556,9086,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db53_caracdec'))."','$this->db53_caracdec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db53_alinha"]))
-           $resac = db_query("insert into db_acount values($acount,1556,9103,'".AddSlashes(pg_result($resaco,$conresaco,'db53_alinha'))."','$this->db53_alinha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1556,9103,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db53_alinha'))."','$this->db53_alinha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -370,17 +370,17 @@ class cl_db_layoutformat {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9078,'$db53_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1556,9078,'','".AddSlashes(pg_result($resaco,$iresaco,'db53_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1556,9081,'','".AddSlashes(pg_result($resaco,$iresaco,'db53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1556,9082,'','".AddSlashes(pg_result($resaco,$iresaco,'db53_mascara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1556,9083,'','".AddSlashes(pg_result($resaco,$iresaco,'db53_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1556,9084,'','".AddSlashes(pg_result($resaco,$iresaco,'db53_tamanho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1556,9085,'','".AddSlashes(pg_result($resaco,$iresaco,'db53_decimais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1556,9086,'','".AddSlashes(pg_result($resaco,$iresaco,'db53_caracdec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1556,9103,'','".AddSlashes(pg_result($resaco,$iresaco,'db53_alinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1556,9078,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db53_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1556,9081,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1556,9082,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db53_mascara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1556,9083,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db53_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1556,9084,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db53_tamanho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1556,9085,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db53_decimais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1556,9086,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db53_caracdec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1556,9103,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db53_alinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_layoutformat
@@ -440,7 +440,7 @@ class cl_db_layoutformat {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_layoutformat";
@@ -454,7 +454,7 @@ class cl_db_layoutformat {
    function sql_query ( $db53_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -475,7 +475,7 @@ class cl_db_layoutformat {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -487,7 +487,7 @@ class cl_db_layoutformat {
    function sql_query_file ( $db53_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -508,7 +508,7 @@ class cl_db_layoutformat {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -38,7 +38,7 @@ $claguacorte = new cl_aguacorte;
 $claguacortemat = new cl_aguacortemat;
 $claguacortetipodebito = new cl_aguacortetipodebito;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){

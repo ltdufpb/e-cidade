@@ -8,7 +8,7 @@ class Secao
     private $nome;
     private $label;
     private $tipo;
-    private $resposta = array();
+    private $resposta = [];
     private $campos = [];
 
     /**

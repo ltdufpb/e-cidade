@@ -156,7 +156,7 @@ if (isset ($opcao) && $opcao == "incluir") {
     <td align="top" colspan="2">
    <?php 
 
- $chavepri = array ("pc45_codigo" => @ $pc45_codigo, "pc45_ordem" => @ $pc45_ordem,"pc46_depart"=>@$pc46_depart);
+ $chavepri =  ["pc45_codigo" => @ $pc45_codigo, "pc45_ordem" => @ $pc45_ordem,"pc46_depart"=>@$pc46_depart];
 		$cliframe_alterar_excluir->chavepri = $chavepri;
 		$cliframe_alterar_excluir->campos = "pc45_codigo,pc46_depart,descrdepto,pc45_dias,pc45_ordem,pc45_pctipoandam,pc44_descr";
 		$cliframe_alterar_excluir->sql = $clpcandpadrao->sql_query_depto("",  "*", "pc45_ordem", "pc45_instit = $pc45_instit");

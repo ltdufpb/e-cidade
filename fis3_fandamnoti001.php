@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if (!isset($abas)) {
     echo "<script>location.href='fis3_fandamnoti005.php'</script>";
@@ -57,7 +57,7 @@ $clrotulo->label("y30_codnoti");
 $db_opcao = 1;
 $db_botao = true;
 
-if (isset($y30_codnoti) && !isset($HTTP_POST_VARS["db_opcao"])) {
+if (isset($y30_codnoti) && !isset($_POST["db_opcao"])) {
     $db_opcao = 3;
     $whereFiscal = " y30_instit = " . db_getsession('DB_instit') . " AND y30_codnoti = {$y30_codnoti}";
     $result = $clfiscal->sql_record($clfiscal->sql_query($y30_codnoti, "*", null, $whereFiscal));
@@ -91,7 +91,7 @@ if (isset($y30_codnoti) && !isset($HTTP_POST_VARS["db_opcao"])) {
     }
 }
 
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     db_inicio_transacao();
     $sqlerro = false;
     $clfandam->incluir($y39_codandam);
@@ -160,7 +160,7 @@ if (!isset($pri)) {
 </body>
 </html>
 <?php
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     if ($clfandam->erro_status == "0") {
         $clfandam->erro(true, false);
         $db_botao = true;

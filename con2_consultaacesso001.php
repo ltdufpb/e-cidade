@@ -150,7 +150,7 @@ $sDBHintMetadata  = "db-action='hint' db-hint-text='O filtro de período deve est
             <td colspan="2">
              <?php
 
-               $aTipoAcesso = array( 0 => "Todas", 1 => "Apenas Acesso a Rotina", 2 => "Acesso a Rotina com Modificações no Sistema" );
+               $aTipoAcesso = [ 0 => "Todas", 1 => "Apenas Acesso a Rotina", 2 => "Acesso a Rotina com Modificações no Sistema" ];
                db_select("tipo_acesso", $aTipoAcesso, true,1, "onChange='js_validaTipo();'");
              ?>
             </td>

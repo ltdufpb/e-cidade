@@ -11,8 +11,8 @@ use stdClass;
 
 class Migracao
 {
-    private $aFormulariosNovos = array();
-    private $aFormulariosAtuais = array();
+    private $aFormulariosNovos = [];
+    private $aFormulariosAtuais = [];
 
     /**
      * Código do usuário

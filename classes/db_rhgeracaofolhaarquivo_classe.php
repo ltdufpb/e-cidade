@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE rhgeracaofolhaarquivo
 class cl_rhgeracaofolhaarquivo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $rh105_sequencial = 0;
-   var $rh105_dtgeracao_dia = null;
-   var $rh105_dtgeracao_mes = null;
-   var $rh105_dtgeracao_ano = null;
-   var $rh105_dtgeracao = null;
-   var $rh105_dtdeposito_dia = null;
-   var $rh105_dtdeposito_mes = null;
-   var $rh105_dtdeposito_ano = null;
-   var $rh105_dtdeposito = null;
-   var $rh105_codarq = 0;
-   var $rh105_codbcofebraban = null;
-   var $rh105_tipoarq = 0;
-   var $rh105_folha = 0;
-   var $rh105_arquivotxt = null;
-   var $rh105_instit = 0;
+   public $rh105_sequencial = 0;
+   public $rh105_dtgeracao_dia = null;
+   public $rh105_dtgeracao_mes = null;
+   public $rh105_dtgeracao_ano = null;
+   public $rh105_dtgeracao = null;
+   public $rh105_dtdeposito_dia = null;
+   public $rh105_dtdeposito_mes = null;
+   public $rh105_dtdeposito_ano = null;
+   public $rh105_dtdeposito = null;
+   public $rh105_codarq = 0;
+   public $rh105_codbcofebraban = null;
+   public $rh105_tipoarq = 0;
+   public $rh105_folha = 0;
+   public $rh105_arquivotxt = null;
+   public $rh105_instit = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  rh105_sequencial = int4 = Sequencial
                  rh105_dtgeracao = date = Data da Geração
                  rh105_dtdeposito = date = Data do Depósito
@@ -67,10 +67,10 @@ class cl_rhgeracaofolhaarquivo {
                  rh105_instit = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_rhgeracaofolhaarquivo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhgeracaofolhaarquivo");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -187,10 +187,10 @@ class cl_rhgeracaofolhaarquivo {
          $this->erro_status = "0";
          return false;
        }
-       $this->rh105_sequencial = pg_result($result,0,0);
+       $this->rh105_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = @db_query("select last_value from rhgeracaofolhaarquivo_rh105_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh105_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh105_sequencial)){
          $this->erro_sql = " Campo rh105_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -233,7 +233,7 @@ class cl_rhgeracaofolhaarquivo {
                       )");
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "rhgeracaofolhaarquivo ($this->rh105_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "rhgeracaofolhaarquivo já Cadastrado";
@@ -255,17 +255,17 @@ class cl_rhgeracaofolhaarquivo {
      $resaco = $this->sql_record($this->sql_query_file($this->rh105_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,18135,'$this->rh105_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3199,18135,'','".pg_result($resaco,0,'rh105_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18136,'','".pg_result($resaco,0,'rh105_dtgeracao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18137,'','".pg_result($resaco,0,'rh105_dtdeposito')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18138,'','".pg_result($resaco,0,'rh105_codarq')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18139,'','".pg_result($resaco,0,'rh105_codbcofebraban')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18140,'','".pg_result($resaco,0,'rh105_tipoarq')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18141,'','".pg_result($resaco,0,'rh105_folha')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18142,'','".pg_result($resaco,0,'rh105_arquivotxt')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18146,'','".pg_result($resaco,0,'rh105_instit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18135,'','".pg_fetch_result($resaco,0,'rh105_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18136,'','".pg_fetch_result($resaco,0,'rh105_dtgeracao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18137,'','".pg_fetch_result($resaco,0,'rh105_dtdeposito')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18138,'','".pg_fetch_result($resaco,0,'rh105_codarq')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18139,'','".pg_fetch_result($resaco,0,'rh105_codbcofebraban')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18140,'','".pg_fetch_result($resaco,0,'rh105_tipoarq')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18141,'','".pg_fetch_result($resaco,0,'rh105_folha')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18142,'','".pg_fetch_result($resaco,0,'rh105_arquivotxt')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18146,'','".pg_fetch_result($resaco,0,'rh105_instit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -274,13 +274,13 @@ class cl_rhgeracaofolhaarquivo {
       $this->atualizacampos();
      $sql = " update rhgeracaofolhaarquivo set ";
      $virgula = "";
-     if(trim($this->rh105_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_sequencial"])){
-        if(trim($this->rh105_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh105_sequencial"])){
+     if(trim((string) $this->rh105_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_sequencial"])){
+        if(trim((string) $this->rh105_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh105_sequencial"])){
            $this->rh105_sequencial = "0" ;
         }
        $sql  .= $virgula." rh105_sequencial = $this->rh105_sequencial ";
        $virgula = ",";
-       if(trim($this->rh105_sequencial) == null ){
+       if(trim((string) $this->rh105_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "rh105_sequencial";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_rhgeracaofolhaarquivo {
          return false;
        }
      }
-     if(trim($this->rh105_dtgeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_dtgeracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh105_dtgeracao_dia"] !="") ){
+     if(trim((string) $this->rh105_dtgeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_dtgeracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh105_dtgeracao_dia"] !="") ){
        $sql  .= $virgula." rh105_dtgeracao = '$this->rh105_dtgeracao' ";
        $virgula = ",";
-       if(trim($this->rh105_dtgeracao) == null ){
+       if(trim((string) $this->rh105_dtgeracao) == null ){
          $this->erro_sql = " Campo Data da Geração nao Informado.";
          $this->erro_campo = "rh105_dtgeracao_dia";
          $this->erro_banco = "";
@@ -306,7 +306,7 @@ class cl_rhgeracaofolhaarquivo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_dtgeracao_dia"])){
          $sql  .= $virgula." rh105_dtgeracao = null ";
          $virgula = ",";
-         if(trim($this->rh105_dtgeracao) == null ){
+         if(trim((string) $this->rh105_dtgeracao) == null ){
            $this->erro_sql = " Campo Data da Geração nao Informado.";
            $this->erro_campo = "rh105_dtgeracao_dia";
            $this->erro_banco = "";
@@ -317,10 +317,10 @@ class cl_rhgeracaofolhaarquivo {
          }
        }
      }
-     if(trim($this->rh105_dtdeposito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_dtdeposito_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh105_dtdeposito_dia"] !="") ){
+     if(trim((string) $this->rh105_dtdeposito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_dtdeposito_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh105_dtdeposito_dia"] !="") ){
        $sql  .= $virgula." rh105_dtdeposito = '$this->rh105_dtdeposito' ";
        $virgula = ",";
-       if(trim($this->rh105_dtdeposito) == null ){
+       if(trim((string) $this->rh105_dtdeposito) == null ){
          $this->erro_sql = " Campo Data do Depósito nao Informado.";
          $this->erro_campo = "rh105_dtdeposito_dia";
          $this->erro_banco = "";
@@ -333,7 +333,7 @@ class cl_rhgeracaofolhaarquivo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_dtdeposito_dia"])){
          $sql  .= $virgula." rh105_dtdeposito = null ";
          $virgula = ",";
-         if(trim($this->rh105_dtdeposito) == null ){
+         if(trim((string) $this->rh105_dtdeposito) == null ){
            $this->erro_sql = " Campo Data do Depósito nao Informado.";
            $this->erro_campo = "rh105_dtdeposito_dia";
            $this->erro_banco = "";
@@ -344,13 +344,13 @@ class cl_rhgeracaofolhaarquivo {
          }
        }
      }
-     if(trim($this->rh105_codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_codarq"])){
-        if(trim($this->rh105_codarq)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh105_codarq"])){
+     if(trim((string) $this->rh105_codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_codarq"])){
+        if(trim((string) $this->rh105_codarq)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh105_codarq"])){
            $this->rh105_codarq = "0" ;
         }
        $sql  .= $virgula." rh105_codarq = $this->rh105_codarq ";
        $virgula = ",";
-       if(trim($this->rh105_codarq) == null ){
+       if(trim((string) $this->rh105_codarq) == null ){
          $this->erro_sql = " Campo Código do Arquivo nao Informado.";
          $this->erro_campo = "rh105_codarq";
          $this->erro_banco = "";
@@ -360,17 +360,17 @@ class cl_rhgeracaofolhaarquivo {
          return false;
        }
      }
-     if(trim($this->rh105_codbcofebraban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_codbcofebraban"])){
+     if(trim((string) $this->rh105_codbcofebraban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_codbcofebraban"])){
        $sql  .= $virgula." rh105_codbcofebraban = '$this->rh105_codbcofebraban' ";
        $virgula = ",";
      }
-     if(trim($this->rh105_tipoarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_tipoarq"])){
-        if(trim($this->rh105_tipoarq)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh105_tipoarq"])){
+     if(trim((string) $this->rh105_tipoarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_tipoarq"])){
+        if(trim((string) $this->rh105_tipoarq)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh105_tipoarq"])){
            $this->rh105_tipoarq = "0" ;
         }
        $sql  .= $virgula." rh105_tipoarq = $this->rh105_tipoarq ";
        $virgula = ",";
-       if(trim($this->rh105_tipoarq) == null ){
+       if(trim((string) $this->rh105_tipoarq) == null ){
          $this->erro_sql = " Campo Tipo de Arquivo nao Informado.";
          $this->erro_campo = "rh105_tipoarq";
          $this->erro_banco = "";
@@ -380,13 +380,13 @@ class cl_rhgeracaofolhaarquivo {
          return false;
        }
      }
-     if(trim($this->rh105_folha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_folha"])){
-        if(trim($this->rh105_folha)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh105_folha"])){
+     if(trim((string) $this->rh105_folha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_folha"])){
+        if(trim((string) $this->rh105_folha)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh105_folha"])){
            $this->rh105_folha = "0" ;
         }
        $sql  .= $virgula." rh105_folha = $this->rh105_folha ";
        $virgula = ",";
-       if(trim($this->rh105_folha) == null ){
+       if(trim((string) $this->rh105_folha) == null ){
          $this->erro_sql = " Campo Folha nao Informado.";
          $this->erro_campo = "rh105_folha";
          $this->erro_banco = "";
@@ -396,10 +396,10 @@ class cl_rhgeracaofolhaarquivo {
          return false;
        }
      }
-     if(trim($this->rh105_arquivotxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_arquivotxt"])){
+     if(trim((string) $this->rh105_arquivotxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_arquivotxt"])){
        $sql  .= $virgula." rh105_arquivotxt = '$this->rh105_arquivotxt' ";
        $virgula = ",";
-       if(trim($this->rh105_arquivotxt) == null ){
+       if(trim((string) $this->rh105_arquivotxt) == null ){
          $this->erro_sql = " Campo Arquivo Gerado nao Informado.";
          $this->erro_campo = "rh105_arquivotxt";
          $this->erro_banco = "";
@@ -409,13 +409,13 @@ class cl_rhgeracaofolhaarquivo {
          return false;
        }
      }
-     if(trim($this->rh105_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_instit"])){
-        if(trim($this->rh105_instit)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh105_instit"])){
+     if(trim((string) $this->rh105_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh105_instit"])){
+        if(trim((string) $this->rh105_instit)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh105_instit"])){
            $this->rh105_instit = "0" ;
         }
        $sql  .= $virgula." rh105_instit = $this->rh105_instit ";
        $virgula = ",";
-       if(trim($this->rh105_instit) == null ){
+       if(trim((string) $this->rh105_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "rh105_instit";
          $this->erro_banco = "";
@@ -429,26 +429,26 @@ class cl_rhgeracaofolhaarquivo {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->rh105_sequencial));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,18135,'$this->rh105_sequencial','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_sequencial"]))
-         $resac = db_query("insert into db_acount values($acount,3199,18135,'".pg_result($resaco,0,'rh105_sequencial')."','$this->rh105_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3199,18135,'".pg_fetch_result($resaco,0,'rh105_sequencial')."','$this->rh105_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_dtgeracao"]))
-         $resac = db_query("insert into db_acount values($acount,3199,18136,'".pg_result($resaco,0,'rh105_dtgeracao')."','$this->rh105_dtgeracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3199,18136,'".pg_fetch_result($resaco,0,'rh105_dtgeracao')."','$this->rh105_dtgeracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_dtdeposito"]))
-         $resac = db_query("insert into db_acount values($acount,3199,18137,'".pg_result($resaco,0,'rh105_dtdeposito')."','$this->rh105_dtdeposito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3199,18137,'".pg_fetch_result($resaco,0,'rh105_dtdeposito')."','$this->rh105_dtdeposito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_codarq"]))
-         $resac = db_query("insert into db_acount values($acount,3199,18138,'".pg_result($resaco,0,'rh105_codarq')."','$this->rh105_codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3199,18138,'".pg_fetch_result($resaco,0,'rh105_codarq')."','$this->rh105_codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_codbcofebraban"]))
-         $resac = db_query("insert into db_acount values($acount,3199,18139,'".pg_result($resaco,0,'rh105_codbcofebraban')."','$this->rh105_codbcofebraban',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3199,18139,'".pg_fetch_result($resaco,0,'rh105_codbcofebraban')."','$this->rh105_codbcofebraban',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_tipoarq"]))
-         $resac = db_query("insert into db_acount values($acount,3199,18140,'".pg_result($resaco,0,'rh105_tipoarq')."','$this->rh105_tipoarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3199,18140,'".pg_fetch_result($resaco,0,'rh105_tipoarq')."','$this->rh105_tipoarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_folha"]))
-         $resac = db_query("insert into db_acount values($acount,3199,18141,'".pg_result($resaco,0,'rh105_folha')."','$this->rh105_folha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3199,18141,'".pg_fetch_result($resaco,0,'rh105_folha')."','$this->rh105_folha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_arquivotxt"]))
-         $resac = db_query("insert into db_acount values($acount,3199,18142,'".pg_result($resaco,0,'rh105_arquivotxt')."','$this->rh105_arquivotxt',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3199,18142,'".pg_fetch_result($resaco,0,'rh105_arquivotxt')."','$this->rh105_arquivotxt',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh105_instit"]))
-         $resac = db_query("insert into db_acount values($acount,3199,18146,'".pg_result($resaco,0,'rh105_instit')."','$this->rh105_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3199,18146,'".pg_fetch_result($resaco,0,'rh105_instit')."','$this->rh105_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
      if($result==false){
@@ -485,17 +485,17 @@ class cl_rhgeracaofolhaarquivo {
      $resaco = $this->sql_record($this->sql_query_file($this->rh105_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,18135,'$this->rh105_sequencial','E')");
-       $resac = db_query("insert into db_acount values($acount,3199,18135,'','".pg_result($resaco,0,'rh105_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18136,'','".pg_result($resaco,0,'rh105_dtgeracao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18137,'','".pg_result($resaco,0,'rh105_dtdeposito')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18138,'','".pg_result($resaco,0,'rh105_codarq')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18139,'','".pg_result($resaco,0,'rh105_codbcofebraban')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18140,'','".pg_result($resaco,0,'rh105_tipoarq')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18141,'','".pg_result($resaco,0,'rh105_folha')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18142,'','".pg_result($resaco,0,'rh105_arquivotxt')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3199,18146,'','".pg_result($resaco,0,'rh105_instit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18135,'','".pg_fetch_result($resaco,0,'rh105_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18136,'','".pg_fetch_result($resaco,0,'rh105_dtgeracao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18137,'','".pg_fetch_result($resaco,0,'rh105_dtdeposito')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18138,'','".pg_fetch_result($resaco,0,'rh105_codarq')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18139,'','".pg_fetch_result($resaco,0,'rh105_codbcofebraban')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18140,'','".pg_fetch_result($resaco,0,'rh105_tipoarq')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18141,'','".pg_fetch_result($resaco,0,'rh105_folha')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18142,'','".pg_fetch_result($resaco,0,'rh105_arquivotxt')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3199,18146,'','".pg_fetch_result($resaco,0,'rh105_instit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $sql = " delete from rhgeracaofolhaarquivo
                     where ";
@@ -547,7 +547,7 @@ class cl_rhgeracaofolhaarquivo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -562,7 +562,7 @@ class cl_rhgeracaofolhaarquivo {
    function sql_query ( $rh105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -589,7 +589,7 @@ class cl_rhgeracaofolhaarquivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -602,7 +602,7 @@ class cl_rhgeracaofolhaarquivo {
    function sql_query_file ( $rh105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -623,7 +623,7 @@ class cl_rhgeracaofolhaarquivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrotulo = new rotulocampo;
 $clrotulo->label('rh01_regist');
 $clrotulo->label('z01_nome');
@@ -181,7 +181,7 @@ $clrotulo->label('r08_descr');
             </td>
             <td colspan="3" nowrap>
               <?php 
-	      $arr_descart = array('t'=>'Valor corrigido','f'=>'Valor histórico');
+	      $arr_descart = ['t'=>'Valor corrigido','f'=>'Valor histórico'];
               db_select("descart", $arr_descart, true, 1);
               ?>
             </td>

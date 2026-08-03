@@ -99,7 +99,7 @@ $clrotulo->label("rh59_descr");
       $sql = $clrhpagatra->sql_query_tipoatras(null," distinct rh57_seq, rh57_ano, rh57_mes, rh57_regist, rh57_valorini, rh57_saldo, rh58_tipoocor","rh57_seq limit 1","");
 
      // $result_rhpagatra = $clrhpagatra->sql_record($clrhpagatra->sql_query_file(null,"",""," rh57_seq = ".$seq." and rh57_ano = ".$ano." and rh57_mes = ".$mes));
-      $chavepri= array("rh57_seq"=>@$rh57_seq,"rh57_regist"=>@$rh57_regist,"rh57_ano"=>@$rh57_ano,"rh57_mes"=>@$rh57_mes);
+      $chavepri= ["rh57_seq"=>@$rh57_seq,"rh57_regist"=>@$rh57_regist,"rh57_ano"=>@$rh57_ano,"rh57_mes"=>@$rh57_mes];
       $cliframe_alterar_excluir->chavepri = $chavepri;
       $cliframe_alterar_excluir->sql    = $sql;
       $cliframe_alterar_excluir->campos = "rh57_ano, rh57_mes, rh57_regist, rh57_valorini, rh57_saldo";

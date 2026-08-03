@@ -20,9 +20,7 @@ try {
     );
 
 
-    $instituicoes = array_map(function ($codigo) {
-        return InstituicaoRepository::getInstituicaoByCodigo($codigo);
-    }, explode('-', $parametros->db_selinstit));
+    $instituicoes = array_map(fn($codigo) => InstituicaoRepository::getInstituicaoByCodigo($codigo), explode('-', (string) $parametros->db_selinstit));
 
     $ano = db_getsession('DB_anousu');
     $relatorio = AnexoVIFactory::factory($ano);

@@ -44,7 +44,7 @@ class ControleRubricasMatriculasRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @var cl_controlehorasextrasmatriculas
@@ -54,7 +54,7 @@ class ControleRubricasMatriculasRepository
     /**
      * @var array
      */
-    private $order = array();
+    private $order = [];
 
     /**
      * ControleHorasExtrasMatriculasRepository
@@ -144,12 +144,12 @@ class ControleRubricasMatriculasRepository
 
     public function clearScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
     }
 
     public function clearOrder()
     {
-        $this->order = array();
+        $this->order = [];
     }
 
     public function reset()
@@ -178,10 +178,10 @@ class ControleRubricasMatriculasRepository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $registros = array();
+        $registros = [];
         while ($state = pg_fetch_array($rs)) {
             $registros[] = ControleRubricasMatriculas::fromState($state);
         }
@@ -197,7 +197,7 @@ class ControleRubricasMatriculasRepository
      * @return bool|ControleRubricasMatriculas
      * @throws Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query($id, implode(', ', $columns));
         $rs = db_query($sql);
@@ -291,10 +291,10 @@ class ControleRubricasMatriculasRepository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $registros = array();
+        $registros = [];
         while ($state = pg_fetch_array($rs)) {
             $registros[] = ControleRubricasMatriculas::fromState($state);
         }

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_cardapiodata_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_cardapiodata = new cl_mer_cardapiodata;
 $clmer_cardapiodata->rotulo->label("me13_i_codigo");
 $clmer_cardapiodata->rotulo->label("me13_d_data");
@@ -101,9 +101,9 @@ $clmer_cardapiodata->rotulo->label("me13_d_data");
         } else {
           $sql = $clmer_cardapiodata->sql_query("",$campos,"me13_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_me13_i_codigo)) {
-          $repassa = array("chave_me13_i_codigo"=>$chave_me13_i_codigo,"chave_me13_d_data"=>$chave_me13_d_data);
+          $repassa = ["chave_me13_i_codigo"=>$chave_me13_i_codigo,"chave_me13_d_data"=>$chave_me13_d_data];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
         

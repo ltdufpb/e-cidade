@@ -3,47 +3,47 @@
  * Template para o arquivo S-2306
  * Alteração de Contrato de Trabalhador Sem Vinculo Empregaticio
  */
-return array(
+return [
 
-    'ideTrabSemVinculo' => array(
-        'properties' => array(
+    'ideTrabSemVinculo' => [
+        'properties' => [
             'cpfTrab',
             'nisTrab',
             'codCateg'
-        )
-    ),
-    'infoTSVAlteracao' => array(
-        'properties' => array(
+        ]
+    ],
+    'infoTSVAlteracao' => [
+        'properties' => [
             'dtAlteracao',
             'natAtividade'
-        ),
-        'groups' => array(
-            'infoComplementares' => array(
-                'groups' => array(
-                    'cargoFuncao' => array(
-                        'properties' => array(
+        ],
+        'groups' => [
+            'infoComplementares' => [
+                'groups' => [
+                    'cargoFuncao' => [
+                        'properties' => [
                             'codCargo',
                             'codFuncao'
-                        )
-                    ),
-                    'remuneracao' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'remuneracao' => [
+                        'properties' => [
                             'vrSalFx',
                             'undSalFixo',
                             'dscSalVar'
-                        )
-                    ),
-                    'infoEstagiario' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'infoEstagiario' => [
+                        'properties' => [
                             'natEstagio',
                             'nivEstagio',
                             'areaAtuacao',
                             'nrApol',
                             'vlrBolsa',
                             'dtPrevTerm'
-                        ),
-                        'groups' => array(
-                            'instEnsino' => array(
+                        ],
+                        'groups' => [
+                            'instEnsino' => [
                                 'instEnsino_cnpjInstEnsino' => 'cnpjInstEnsino',
                                 'instEnsino_nmRazao' => 'nmRazao',
                                 'instEnsino_dscLograd' => 'dscLograd',
@@ -52,8 +52,8 @@ return array(
                                 'instEnsino_cep' => 'cep',
                                 'instEnsino_codMunic' => 'codMunic',
                                 'instEnsino_uf' => 'uf'
-                            ),
-                            'ageIntegracao' => array(
+                            ],
+                            'ageIntegracao' => [
                                 'ageIntegracao_cnpjAgntInteg' => 'cnpjAgntInteg',
                                 'ageIntegracao_nmRazao' => 'nmRazao',
                                 'ageIntegracao_dscLograd' => 'dscLograd',
@@ -62,15 +62,15 @@ return array(
                                 'ageIntegracao_cep' => 'cep',
                                 'ageIntegracao_codMunic' => 'codMunic',
                                 'ageIntegracao_uf' => 'uf'
-                            ),
-                            'supervisorEstagio' => array(
+                            ],
+                            'supervisorEstagio' => [
                                 'cpfSupervisor',
                                 'nmSuperv'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
-);
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

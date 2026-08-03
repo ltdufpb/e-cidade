@@ -38,8 +38,8 @@ if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
   include(modification("dbforms/db_funcoes.php"));
   include(modification("classes/db_orcparamrelnota_classe.php"));
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_POST_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_POST);
   
   $classinatura = new cl_assinatura;
   $clempresto   = new cl_empresto;
@@ -49,7 +49,7 @@ if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
 
 if (!isset($arqinclude)) { // se este arquivo no esta incluido por outro
   
-  $xinstit    = split("-",$db_selinstit);
+  $xinstit    = preg_split("#\\-#m",(string) $db_selinstit);
   $rsMunic    = db_query("select munic,codigo,nomeinst,nomeinstabrev from db_config where prefeitura is true");
   $oMunic     = db_utils::fieldsMemory($rsMunic,0);
   $descr_inst = '';
@@ -74,14 +74,14 @@ if (!isset($arqinclude)) { // se este arquivo no esta incluido por outro
       $descr_inst = substr($descr_inst,0,100);
     }
   }
-  $bimestre = substr($periodo,0,1); // bimestre do exercicio atual
+  $bimestre = substr((string) $periodo,0,1); // bimestre do exercicio atual
   
   $head2  = "MUNICÍPIO DE {$oMunic->munic}";
   $head3  = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
   $head4  = "DEMONSTRATIVO DOS RESTOS A PAGAR POR PODER E ORGÂO";
   $head5  = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
   $txt    = strtoupper(db_mes('01'));
-  $dt     = split("-",$dt_fin);
+  $dt     = preg_split("#\\-#m",(string) $dt_fin);
   $txt   .= " A ".strtoupper(db_mes($dt[1]));
   $txt   .= "  / ".$anousu;
   switch($bimestre){
@@ -124,7 +124,7 @@ $head6 = "$txt";
   
 }
 
-$Param_NotaLiquidacao = pg_result(db_query("select e30_notaliquidacao from empparametro where e39_anousu = ".db_getsession("DB_anousu")),0,0);
+$Param_NotaLiquidacao = pg_fetch_result(db_query("select e30_notaliquidacao from empparametro where e39_anousu = ".db_getsession("DB_anousu")),0,0);
 
 $sqlperiodo = $clempresto->sql_rp2(db_getsession("DB_anousu"), $instit, $perini, $perfin, $where,$order);
 //die($sqlperiodo);
@@ -381,7 +381,7 @@ for ($iInd = 0; $iInd < pg_num_rows($result_intra); $iInd++){
   $pdf->addpage();
   $pdf->cell(01,$alt,'RREO - ANEXO IX (LRF, art. 53, inciso V)',"B",0,"L",0);
   $pdf->cell(279,$alt,'R$ 1,00',"B",1,"R",0);
-  writeHeader(&$pdf, $alt);
+  writeHeader($pdf, $alt);
   $pdf->setfont('arial','',4);
   
   
@@ -458,7 +458,7 @@ $pdf->cell(20,$alt,db_formatar(abs($nTotNintraNPPagos),'f'),"LR",0,"R",0);
 $pdf->cell(20,$alt,db_formatar(abs($nTotNintraNPAPAgar),'f'),"L",1,"R",0);
 $pdf->setfont('arial','',6);
 //db_criatabela($result);exit;
-for ($x=0;$x<pg_numrows($result);$x++){
+for ($x=0;$x<pg_num_rows($result);$x++){
 
   if ($pdf->getY() > $pdf->h - 20){
 
@@ -466,7 +466,7 @@ for ($x=0;$x<pg_numrows($result);$x++){
       $pdf->setfont('arial','b',7);
       $alt = 4;
       $pdf->addpage();
-      writeHeader(&$pdf, $alt);
+      writeHeader($pdf, $alt);
       $pdf->cell(280,$alt,"Continuação","B",0,"R");
       $pdf->setfont('arial','',4);
 
@@ -475,7 +475,7 @@ for ($x=0;$x<pg_numrows($result);$x++){
 
   if ($instit != $e60_instit) {
     $instit = $e60_instit;
-    
+
     if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
       $pdf->setfont('arial','b',6);
       if ($db21_tipoinstit == 1){
@@ -498,10 +498,10 @@ for ($x=0;$x<pg_numrows($result);$x++){
       $pdf->cell(20,$alt,db_formatar(abs($aTotInstit[$instit][8]),'f'),"LR",0,"R",0);
       $pdf->cell(20,$alt,db_formatar(abs($aTotInstit[$instit][9]),'f'),"L",1,"R",0);
       $pdf->setfont('arial','',6);
-      
-      
+
+
     }
-    
+
 // Usado no simplificado dos RESTOS A PAGAR /////////////////////////////////////////////////////////////////////////////////
   if ($db21_tipoinstit == 1 || $db21_tipoinstit != 2) {    // Totais do PODER EXECUTIVO e RPPS
     $tot_restos_pc_insc_ant_exec      += abs($aTotInstit[$instit][0]);
@@ -523,7 +523,7 @@ for ($x=0;$x<pg_numrows($result);$x++){
     $tot_restos_pc_cancelados_legal    += abs($aTotInstit[$instit][2]);
     $tot_restos_pc_pagos_legal         += abs($aTotInstit[$instit][3]);
     $tot_restos_pc_saldo_legal         += abs($aTotInstit[$instit][4]);
-    
+
     $tot_restos_naopc_insc_ant_legal   += abs($aTotInstit[$instit][5]);
     $tot_restos_naopc_inscritos_legal  += abs($aTotInstit[$instit][6]);
     $tot_restos_naopc_cancelados_legal += abs($aTotInstit[$instit][7]);
@@ -534,18 +534,18 @@ for ($x=0;$x<pg_numrows($result);$x++){
   }
   $a_pagar_processado     = ($valor_processado+$inscricao_ant) - $canc_proc - $vlrpag;
   $a_pagar_nao_processado = $vlrpagnproc; #$valor_nao_processado - $canc_nproc;
-  
+
   // ----------------------------------------------------- 
   if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
-    
-    $pdf->cell(80,$alt,'     '.$o58_orgao .'-'.substr($o40_descr,0,42), "R", 0, "L", 0);
+
+    $pdf->cell(80,$alt,'     '.$o58_orgao .'-'.substr((string) $o40_descr,0,42), "R", 0, "L", 0);
     // anterior ao exercicio de inscrio
     $pdf->cell(20,$alt,db_formatar($inscricao_ant,'f'),"LR",0,"R",0);      // processados
     $pdf->cell(20,$alt,db_formatar($valor_processado,'f'),"R",0,"R",0);    // o cancelamento sempre ocorre com os no liquidados, porque sempre ocorre o estorno de liquidao para depois o estorno de rp
   }
-  
+
   $pago_nao_processado = 0;
-  
+
   if($a_pagar_processado < 0 && $Param_NotaLiquidacao == ""){
     $a_pagar_processado *= -1;
     $pago_nao_processado = $a_pagar_processado ;
@@ -554,25 +554,25 @@ for ($x=0;$x<pg_numrows($result);$x++){
   }
 
   $pago_nao_processado = $vlrpagnproc;
-  
+
   $valor_novo =  ($valor_nao_processado_ant+$valor_nao_processado)-$canc_nproc-$pago_nao_processado;
   //echo $valor_novo."<br>";
   if( ($valor_novo) < 0 ){
 
     $canc_proc = $canc_proc + (($valor_novo) * -1 );
     $a_pagar_processado = ($a_pagar_processado - (($valor_novo) * -1 ));
-    
+
     $canc_nproc = ( $canc_nproc - (($valor_novo) * -1 ));
     $valor_novo = 0;
   }
-  
+
   if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
-    
+
     $pdf->cell(20,$alt,db_formatar(abs($canc_proc),'f'),"R",0,"R",0);
-    
+
     $pdf->cell(20,$alt,db_formatar(abs($vlrpag),'f'),"R",0,"R",0);
     $pdf->cell(20,$alt,db_formatar(abs($a_pagar_processado),'f'),"R",0,"R",0);     // no processados
-    
+
     $pdf->cell(20,$alt,db_formatar(abs($valor_nao_processado_ant),'f'),"R",0,"R",0);
     $pdf->cell(20,$alt,db_formatar(abs($valor_nao_processado),'f'),"R",0,"R",0);
     $pdf->cell(20,$alt,db_formatar(abs($canc_nproc),'f'),"R",0,"R",0);
@@ -580,11 +580,11 @@ for ($x=0;$x<pg_numrows($result);$x++){
     $pdf->cell(20,$alt,db_formatar($vlrpagnproc, 'f'),"R",0,"R",0);
     $pdf->cell(20,$alt,db_formatar(abs($valor_novo),'f'),"0",1,"R",0);
     $pdf->setfont('arial','',6);
-    
+
   }
   $i++; 
 //  if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
-    
+
     $tot_01 += $inscricao_ant; 
     $tot_02 += $valor_processado ;
     $tot_03 += $canc_proc ;
@@ -596,7 +596,7 @@ for ($x=0;$x<pg_numrows($result);$x++){
     $tot_08 += $vlrpagnproc;
     $tot_09 += ($valor_nao_processado_ant+$valor_nao_processado)-$canc_nproc-$vlrpagnproc;
     $tot_10 += $valor_nao_processado_ant; //Valores nao processados dos anos anteriores
-    
+
 //  }
   
 }
@@ -628,7 +628,7 @@ $pdf->cell(20,$alt,db_formatar(abs($nTotintraNPCancelados),'f'),"LR",0,"R",0);
 $pdf->cell(20,$alt,db_formatar(abs($nTotintraNPPagos),'f'),"LR",0,"R",0);
 $pdf->cell(20,$alt,db_formatar(abs($nTotintraNPAPAgar),'f'),"L",1,"R",0);
 $pdf->setfont('arial','',6);
-for ($x=0;$x<pg_numrows($result_intra);$x++) {
+for ($x=0;$x<pg_num_rows($result_intra);$x++) {
   db_fieldsmemory($result_intra,$x);
   
   if ($pdf->getY() > $pdf->h - 30){
@@ -638,15 +638,15 @@ for ($x=0;$x<pg_numrows($result_intra);$x++) {
       $alt = 4;
       $pdf->addpage();
       $pdf->cell(280,$alt,"Continuação","B",0,"R");
-      writeHeader(&$pdf, $alt);
+      writeHeader($pdf, $alt);
       $pdf->setfont('arial','',4);
   }
   
   if ($instit != $e60_instit){
     $instit = $e60_instit;
-    
+
     if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
-      
+
       if ($db21_tipoinstit == 1){
           $sPoder = '  PODER EXECUTIVO';
       }else if ($db21_tipoinstit == 2){
@@ -669,9 +669,9 @@ for ($x=0;$x<pg_numrows($result_intra);$x++) {
       $pdf->cell(20,$alt,db_formatar(abs($aTotInstitIntra[$instit][9]),'f'),"L",1,"R",0);
       $pdf->setfont('arial','',6);
       $posicao_exceto_intra = $pdf->getY();
-      
+
     }
-    
+
 // Usado no simplificado dos RESTOS A PAGAR /////////////////////////////////////////////////////////////////////////////////
   if ($db21_tipoinstit == 1 || $db21_tipoinstit != 2) {    // Totais do PODER EXECUTIVO e RPPS
     $tot_restos_pc_insc_ant_exec      += abs($aTotInstitIntra[$instit][0]);
@@ -693,7 +693,7 @@ for ($x=0;$x<pg_numrows($result_intra);$x++) {
     $tot_restos_pc_cancelados_legal    += abs($aTotInstitIntra[$instit][2]);
     $tot_restos_pc_pagos_legal         += abs($aTotInstitIntra[$instit][3]);
     $tot_restos_pc_saldo_legal         += abs($aTotInstitIntra[$instit][4]);
-    
+
     $tot_restos_naopc_insc_ant_legal   += abs($aTotInstitIntra[$instit][5]);
     $tot_restos_naopc_inscritos_legal  += abs($aTotInstitIntra[$instit][6]);
     $tot_restos_naopc_cancelados_legal += abs($aTotInstitIntra[$instit][7]);
@@ -733,12 +733,12 @@ for ($x=0;$x<pg_numrows($result_intra);$x++) {
   }
   
   if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
-    
+
     $pdf->setfont('arial','',6);
-    
+
    // $pdf->setY($posicao);
-    
-    $pdf->cell(80,$alt,'  '.$o58_orgao .'-'.substr($o40_descr,0,42), "R", 0, "L", 0);
+
+    $pdf->cell(80,$alt,'  '.$o58_orgao .'-'.substr((string) $o40_descr,0,42), "R", 0, "L", 0);
     $pdf->cell(20,$alt,db_formatar($inscricao_ant,'f'),"LR",0,"R",0);      // processados
     
   }
@@ -813,9 +813,9 @@ if (!isset($arqinclude)) { // se este arquivo no esta incluido por outro
   if ($pdf->pageNo() > 1){
      $pdf->cell(280,$alt,"(".$pdf->pageNo()."/{nb})",0,1,"R");
   }
-  notasExplicativas(&$pdf,28,"{$bimestre}B",280);  
+  notasExplicativas($pdf,28,"{$bimestre}B",280);  
   $pdf->ln(17);
-  assinaturas(&$pdf,&$classinatura,'LRF');
+  assinaturas($pdf,$classinatura,'LRF');
   
   $pdf->Output();
   

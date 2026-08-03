@@ -41,7 +41,7 @@ $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
 $oRetorno = new stdClass();	
 $oRetorno->status  = 1;
-$oRetorno->aItens  = array();
+$oRetorno->aItens  = [];
 
 switch ($oParam->exec) {
 
@@ -73,7 +73,7 @@ switch ($oParam->exec) {
 		$sSql = $clEmpEmpenho->sql_query_liberarempenho(null, 'e60_numemp, e22_sequencial', '', "e60_numemp in ({$sIdsEmpenho})");
 		$oPostgresResource = db_query($sSql);
 
-		$mapEmpenhoLiberacao = array();
+		$mapEmpenhoLiberacao = [];
 		while ($row = pg_fetch_assoc($oPostgresResource)) {
 			$mapEmpenhoLiberacao[$row['e60_numemp']] = $row['e22_sequencial'] ? true : false;			
 		}

@@ -35,7 +35,7 @@ require_once(modification("classes/db_levanta_classe.php"));
 require_once(modification("classes/db_levvalorpgtos_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cllevvalor      = new cl_levvalor;
 $cllevantanotas  = new cl_levantanotas;
@@ -55,16 +55,16 @@ if(isset($incluir)){
   }
 
   if(!$sqlerro && $valores!=''){
-    $matriz01=split('HHH',$valores);
+    $matriz01=preg_split('#HHH#m',$valores);
     for($i=0; $i<count($matriz01); $i++){
-      $matriz=split('-',$matriz01[$i]);
+      $matriz=preg_split('#\-#m',(string) $matriz01[$i]);
       $result55 = $cllevvalorpgtos->sql_record($cllevvalorpgtos->sql_query_file($y63_sequencia,""," max(y68_seq) +1 as seq"));
       db_fieldsmemory($result55,0);
       $y68_seq = $seq == ""?"1":$seq;
       $cllevvalorpgtos->y68_sequencia=$y63_sequencia;
       $cllevvalorpgtos->y68_seq=$y68_seq;
       $cllevvalorpgtos->y68_valor=$matriz[0];
-      $cllevvalorpgtos->y68_pgto = substr($matriz[1],6,4)."-".substr($matriz[1],3,2)."-".substr($matriz[1],0,2);
+      $cllevvalorpgtos->y68_pgto = substr((string) $matriz[1],6,4)."-".substr((string) $matriz[1],3,2)."-".substr((string) $matriz[1],0,2);
       $cllevvalorpgtos->incluir($y63_sequencia,$y68_seq);
       $erro_msg=$cllevvalorpgtos->erro_msg;
       if($cllevvalorpgtos->erro_status==0){
@@ -76,11 +76,11 @@ if(isset($incluir)){
   //rotina para incluir na tabela levantanotas
   if(!$sqlerro && $notas!=''){
 
-    $matriz01=split('HHH',$notas);
+    $matriz01=preg_split('#HHH#m',$notas);
     for($i=0; $i<count($matriz01); $i++){
 
-      $matriz=split('_sep_',$matriz01[$i]);
-      $data1 = explode("/",$matriz[2]);
+      $matriz=preg_split('#_sep_#m',(string) $matriz01[$i]);
+      $data1 = explode("/",(string) $matriz[2]);
 			$data  = $data1[2].str_pad($data1[1],2,"0",STR_PAD_LEFT).str_pad($data1[0],2,"0",STR_PAD_LEFT);
       $cllevantanotas->y79_documento = $matriz[0];
       $cllevantanotas->y79_valor     = $matriz[1];
@@ -125,17 +125,17 @@ if(isset($incluir)){
   //rotina para incluir na tabela levvalorpgtos
   if(!$sqlerro && $valores!=''){
 
-    $matriz01=split('HHH',$valores);
+    $matriz01=preg_split('#HHH#m',$valores);
     for($i=0; $i<count($matriz01); $i++){
 
-      $matriz=split('-',$matriz01[$i]);
+      $matriz=preg_split('#\-#m',(string) $matriz01[$i]);
       $result55 = $cllevvalorpgtos->sql_record($cllevvalorpgtos->sql_query_file($y63_sequencia,""," max(y68_seq) +1 as seq"));
       db_fieldsmemory($result55,0);
       $y68_seq = $seq == ""?"1":$seq;
       $cllevvalorpgtos->y68_sequencia=$y63_sequencia;
       $cllevvalorpgtos->y68_seq=$y68_seq;
       $cllevvalorpgtos->y68_valor=$matriz[0];
-      $cllevvalorpgtos->y68_pgto=substr($matriz[1],6,4)."-".substr($matriz[1],3,2)."-".substr($matriz[1],0,2);
+      $cllevvalorpgtos->y68_pgto=substr((string) $matriz[1],6,4)."-".substr((string) $matriz[1],3,2)."-".substr((string) $matriz[1],0,2);
       $cllevvalorpgtos->incluir($y63_sequencia,$y68_seq);
       $erro_msg=$cllevvalorpgtos->erro_msg;
       if($cllevvalorpgtos->erro_status==0){
@@ -160,11 +160,11 @@ if(isset($incluir)){
   //rotina para incluir na tabela levantanotas
   if($sqlerro==false && $notas!=''){
 
-    $matriz01=split('HHH',$notas);
+    $matriz01=preg_split('#HHH#m',$notas);
     for($i=0; $i<count($matriz01); $i++){
 
-      $matriz=split('_sep_',$matriz01[$i]);
-      $data1 = explode("/",$matriz[2]);
+      $matriz=preg_split('#_sep_#m',(string) $matriz01[$i]);
+      $data1 = explode("/",(string) $matriz[2]);
 			$data  = $data1[2].str_pad($data1[1],2,"0",STR_PAD_LEFT).str_pad($data1[0],2,"0",STR_PAD_LEFT);
       $cllevantanotas->y79_documento = $matriz[0];
       $cllevantanotas->y79_documento = $matriz[0];

@@ -37,13 +37,13 @@ require_once (modification("classes/db_formaavaliacao_classe.php"));
 $lAcessadoEscola = isModuloEscola();
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clformaavaliacao = new cl_formaavaliacao;
 $clformaavaliacao->rotulo->label("ed37_i_codigo");
 $clformaavaliacao->rotulo->label("ed37_c_descr");
 
-$aWhere = array();
+$aWhere = [];
 if ( $lAcessadoEscola ) {
   $aWhere[] = " ed37_i_escola = ".db_getsession("DB_coddepto");
 } else {
@@ -115,9 +115,9 @@ if ( !empty($forma) ) {
     $sWhere = implode(" and ", $aWhere);
     $sql    = $clformaavaliacao->sql_formaavaliacao("", $campos, "ed37_c_descr", "{$sWhere} group by $group");
 
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed37_c_descr)){
-      $repassa = array("chave_ed37_i_codigo"=>$chave_ed37_i_codigo,"chave_ed37_c_descr"=>$chave_ed37_c_descr);
+      $repassa = ["chave_ed37_i_codigo"=>$chave_ed37_i_codigo,"chave_ed37_c_descr"=>$chave_ed37_c_descr];
     }
 
     echo '<div class="container">';

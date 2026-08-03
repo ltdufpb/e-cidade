@@ -50,8 +50,8 @@ if (!isset($arqinclude)){
   $cldb_config        = new cl_db_config;
   $clorcparamelemento = new cl_orcparamelemento();
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
   
   $anousu  = db_getsession("DB_anousu");
   
@@ -80,7 +80,7 @@ if ($periodo < 17) {
 // calcula periodo do exercicio anterior para fechar os 12 meses
 $anousu_ant  = db_getsession("DB_anousu")-1;
 // se o ano atual é bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-$dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+$dt = preg_split('#\-#m',(string) $dt_fin);  // mktime -- (mes,dia,ano)
 //$dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1],$dt[2]-365,$dt[0]));
 
 $dt_ini_ant = $anousu_ant."-01-01";
@@ -88,7 +88,7 @@ $dt_fin_ant = $anousu_ant."-12-31";
 
 ////////////////////////////////////////////////////////////////////
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select munic,nomeinst,nomeinstabrev,db21_tipoinstit from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -98,10 +98,10 @@ $temcamara  = false;
 $temadmind  = false;
 $flag_abrev = false;
 
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
 
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   } else {
@@ -126,15 +126,15 @@ if ($flag_abrev == false){
 }
 
 if ($temcamara == true && ($temprefa == true || $temadmind == true)){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODERES EXECUTIVO E LEGISLATIVO";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODERES EXECUTIVO E LEGISLATIVO";
 }
 
 if ($temcamara == true && $temprefa == false && $temadmind == false){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODER LEGISLATIVO";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODER LEGISLATIVO";
 }
 
 if ($temprefa == true && $temcamara == false && ($temadmind == false || $temadmind == true)){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODER EXECUTIVO/ADM. INDIRETA";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODER EXECUTIVO/ADM. INDIRETA";
 }
 
 if ($temcamara == true && $temprefa == false && $temadmind == false) {
@@ -152,13 +152,13 @@ if ($temcamara == true && $temprefa == false && $temadmind == false) {
   
 }
 
-$dt3 = split("-",$dt_fin);
+$dt3 = preg_split("#\\-#m",(string) $dt_fin);
 if ($dt3[1] == "12") {
   $dt3[1] = 11;
 }
 $dtInicialAnterior = $anousu_ant."-".($dt3[1]+1)."-01";
-$dt1 = split('-',$dtInicialAnterior);
-$dt2 = split('-',$dt_fin); 
+$dt1 = preg_split('#\-#m',$dtInicialAnterior);
+$dt2 = preg_split('#\-#m',(string) $dt_fin); 
 if ($tipo_emissao == 'periodo') {
 
   if ($sSiglaPeriodo == "3Q" || $sSiglaPeriodo == "2S"  || $sSiglaPeriodo == "DEZ") {
@@ -217,7 +217,7 @@ $instituicao = str_replace("-",",",$db_selinstit);
 $m_despesa[7]["exercicio"]     = 0;
 
 //print_r($m_despesa); exit;
-$aLinhasRelatorio = array();
+$aLinhasRelatorio = [];
 for ($iLinha = 1; $iLinha <= 7; $iLinha++) {
    
   $aLinhasRelatorio[$iLinha] = new linhaRelatorioContabil($iCodigoRelatorio, $iLinha);
@@ -236,15 +236,15 @@ $sele_work = 'o58_instit in ('.$instituicao.')';
 
 $rsDespesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
-$dt3 = split("-",$dt_fin);
+$dt3 = preg_split("#\\-#m",(string) $dt_fin);
 if ($dt3[1] == "12"){
   $dt3[1] = 11;
 }
 // Exercicio Atual
-$aContas[]         = array();
-$aContasAnterior[] = array();
+$aContas[]         = [];
+$aContasAnterior[] = [];
 $nTotal = 0;
-for ($x = 0; $x < pg_numrows($rsDespesa); $x++) {
+for ($x = 0; $x < pg_num_rows($rsDespesa); $x++) {
 
 
   $oDespesa = db_utils::fieldsmemory($rsDespesa, $x);
@@ -252,7 +252,7 @@ for ($x = 0; $x < pg_numrows($rsDespesa); $x++) {
   for ($iLinha = 1; $iLinha <= 7; $iLinha++) {
 
     if (!isset($aContas[$iLinha])) {
-      $aContas[$iLinha] = array();
+      $aContas[$iLinha] = [];
     }
     $oParametro  = $aLinhasRelatorio[$iLinha]->parametro;
     foreach ($oParametro->contas as $oConta) {
@@ -309,7 +309,7 @@ if ($sSiglaPeriodo != "3Q" && $sSiglaPeriodo != "2S" && $sSiglaPeriodo != "DEZ")
 
       if ($iLinha == 2) {
         if (!isset($aContasAnterior[$iLinha])) {
-          $aContasAnterior[$iLinha] = array();
+          $aContasAnterior[$iLinha] = [];
         }
       }
       $oParametro  = $aLinhasRelatorio[$iLinha]->parametro;
@@ -582,7 +582,7 @@ if (!isset($arqinclude)) {
   }
  
   $oRelatorio = new relatorioContabil($iCodigoRelatorio, false); 
-  $oRelatorio->getNotaExplicativa(&$pdf, $periodo, 195);
+  $oRelatorio->getNotaExplicativa($pdf, $periodo, 195);
 
   $pdf->Ln(5);
 
@@ -590,7 +590,7 @@ if (!isset($arqinclude)) {
   $pdf->setfont('arial','',5);
   $pdf->ln(20);
 
-  assinaturas(&$pdf,&$classinatura,'GF');
+  assinaturas($pdf,$classinatura,'GF');
 
   $pdf->Output();
 

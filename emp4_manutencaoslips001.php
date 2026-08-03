@@ -54,8 +54,8 @@ $clempageconfgera = new cl_empageconfgera;
 $clempagemod      = new cl_empagemod;
 $oDaoNotasOrdem   = new cl_empagenotasordem;
 $oDaoOrdemAgenda  = new cl_empageordem;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $db_opcao = 1;
 
 //Checa parametro e mostra alerta de confirmacao de data

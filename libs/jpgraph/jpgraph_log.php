@@ -24,8 +24,8 @@ class LogScale extends LinearScale {
 // CONSTRUCTOR
 
     // Log scale is specified using the log of min and max
-    function LogScale($min,$max,$type="y") {
-	$this->LinearScale($min,$max,$type);
+    function __construct($min,$max,$type="y") {
+	\LinearScale::__construct($min, $max, $type);
 	$this->ticks = new LogTicks();
 	$this->name = 'log';
     }
@@ -34,13 +34,14 @@ class LogScale extends LinearScale {
 // PUBLIC METHODS	
 
     // Translate between world and screen
+    #[\Override]
     function Translate($a) {
 	if( !is_numeric($a) ) {
 	    if( $a != '' && $a != '-' ) 
-		JpGraphError::Raise('Your data contains non-numeric values.');
+		(new JpGraphError())->Raise('Your data contains non-numeric values.');
 	}
 	if( $a < 0 ) {
-	    JpGraphError::Raise("Negative data values can not be used in a log scale.");
+	    (new JpGraphError())->Raise("Negative data values can not be used in a log scale.");
 	    exit(1);
 	}
 	if( $a==0 ) $a=1;
@@ -50,37 +51,41 @@ class LogScale extends LinearScale {
 
     // Relative translate (don't include offset) usefull when we just want
     // to know the relative position (in pixels) on the axis	
+    #[\Override]
     function RelTranslate($a) {
 	if( $a==0 ) $a=1;
 	$a=log10($a);
 	return round(($a*1.0 - $this->scale[0]) * $this->scale_factor); 
     }
-		
+
     // Use bcpow() for increased precision
+    #[\Override]
     function GetMinVal() {
 	if( function_exists("bcpow") )
-	    return round(bcpow(10,$this->scale[0],15),14);
+	    return round(bcpow(10,(string) $this->scale[0],15),14);
 	else
-	    return round(pow(10,$this->scale[0]));
+	    return round(10 ** $this->scale[0]);
     }
-	
+
+    #[\Override]
     function GetMaxVal() {
 	if( function_exists("bcpow") )
-	    return round(bcpow(10,$this->scale[1],15),14);
+	    return round(bcpow(10,(string) $this->scale[1],15),14);
 	else
-	    return round(pow(10,$this->scale[1]));
+	    return round(10 ** $this->scale[1]);
     }
-	
+
     // Logarithmic autoscaling is much simplier since we just
     // set the min and max to logs of the min and max values.
     // Note that for log autoscale the "maxstep" the fourth argument
     // isn't used. This is just included to give the method the same
     // signature as the linear counterpart.
-    function AutoScale(&$img,$min,$max,$dummy) {
+    #[\Override]
+    function AutoScale(&$img,$min,$max,$dummy, $majend = \true) {
 	if( $min==0 ) $min=1;
-	
+
 	if( $max <= 0 ) {
-	    JpGraphError::Raise('Scale error for logarithmic scale. You have a problem with your data values. The max value must be greater than 0. It is mathematically impossible to have 0 in a logarithmic scale.');
+	    (new JpGraphError())->Raise('Scale error for logarithmic scale. You have a problem with your data values. The max value must be greater than 0. It is mathematically impossible to have 0 in a logarithmic scale.');
 	}
 	$smin = floor(log10($min));
 	$smax = ceil(log10($max));
@@ -95,13 +100,14 @@ class LogScale extends LinearScale {
 // Description: 
 //===================================================
 class LogTicks extends Ticks{
-    var $label_logtype=LOGLABELS_MAGNITUDE;
+    public $label_logtype=LOGLABELS_MAGNITUDE;
 //---------------
 // CONSTRUCTOR
-    function LogTicks() {
+    function __construct() {
     }
 //---------------
 // PUBLIC METHODS	
+    #[\Override]
     function IsSpecified() {
 	return true;
     }
@@ -109,7 +115,7 @@ class LogTicks extends Ticks{
     function SetLabelLogType($aType) {
 	$this->label_logtype = $aType;
     }
-	
+
     // For log scale it's meaningless to speak about a major step
     // We just return -1 to make the framework happy (specifically
     // StrokeLabels() )
@@ -118,7 +124,7 @@ class LogTicks extends Ticks{
     }
 
     function SetTextLabelStart($aStart) {
-	JpGraphError::Raise('Specifying tick interval for a logarithmic scale is undefined. Remove any calls to SetTextLabelStart() or SetTextTickInterval() on the logarithmic scale.');
+	(new JpGraphError())->Raise('Specifying tick interval for a logarithmic scale is undefined. Remove any calls to SetTextLabelStart() or SetTextTickInterval() on the logarithmic scale.');
     }
 
     function SetXLabelOffset($dummy) {
@@ -134,16 +140,16 @@ class LogTicks extends Ticks{
 	$limit = $scale->GetMaxVal();
 	$nextMajor = 10*$start;
 	$step = $nextMajor / 10.0;
-		
-		
+
+
 	$img->SetLineWeight($this->weight);			
-		
+
 	if( $scale->type == "y" ) {
 	    // member direction specified if the ticks should be on
 	    // left or right side.
 	    $a=$pos + $this->direction*$this->GetMinTickAbsSize();
 	    $a2=$pos + $this->direction*$this->GetMajTickAbsSize();	
-			
+
 	    $count=1; 
 	    $this->maj_ticks_pos[0]=$scale->Translate($start);
 	    $this->maj_ticklabels_pos[0]=$scale->Translate($start);
@@ -175,7 +181,7 @@ class LogTicks extends Ticks{
 
 		    $this->maj_ticks_pos[$i]=$ys;
 		    $this->maj_ticklabels_pos[$i]=$ys;
-		    
+
 		    if( $this->label_formfunc != '' ) {
 			$f = $this->label_formfunc;
 			$this->maj_ticks_label[$i]=call_user_func($f,$nextMajor);	

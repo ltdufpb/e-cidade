@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE atenditem     
 class cl_atenditem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at05_seq = 0; 
-   var $at05_codatend = 0; 
-   var $at05_solicitado = null; 
-   var $at05_feito = null; 
-   var $at05_tipo = 0; 
-   var $at05_data_dia = null; 
-   var $at05_data_mes = null; 
-   var $at05_data_ano = null; 
-   var $at05_data = null; 
-   var $at05_perc = 0; 
-   var $at05_horafim = null; 
-   var $at05_horaini = null; 
+   public $at05_seq = 0; 
+   public $at05_codatend = 0; 
+   public $at05_solicitado = null; 
+   public $at05_feito = null; 
+   public $at05_tipo = 0; 
+   public $at05_data_dia = null; 
+   public $at05_data_mes = null; 
+   public $at05_data_ano = null; 
+   public $at05_data = null; 
+   public $at05_perc = 0; 
+   public $at05_horafim = null; 
+   public $at05_horaini = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at05_seq = int4 = Sequência 
                  at05_codatend = int4 = Código de atendimento 
                  at05_solicitado = text = Solicitação 
@@ -67,10 +67,10 @@ class cl_atenditem {
                  at05_horaini = char(5) = Hora inicial 
                  ";
    //funcao construtor da classe 
-   function cl_atenditem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atenditem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -166,10 +166,10 @@ class cl_atenditem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->at05_seq = pg_result($result,0,0); 
+       $this->at05_seq = pg_fetch_result($result,0,0); 
      }else{
        $result = @pg_query("select last_value from atenditem_at05_seq_seq");
-       if(($result != false) && (pg_result($result,0,0) < $at05_seq)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $at05_seq)){
          $this->erro_sql = " Campo at05_seq maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -221,7 +221,7 @@ class cl_atenditem {
      $result = @pg_exec($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela com os itens de cada atendimento ($this->at05_seq."-".$this->at05_codatend) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela com os itens de cada atendimento já Cadastrado";
@@ -245,18 +245,18 @@ class cl_atenditem {
      $resaco = $this->sql_record($this->sql_query_file($this->at05_seq,$this->at05_codatend));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = pg_query("insert into db_acountkey values($acount,5095,'$this->at05_seq','I')");
        $resac = pg_query("insert into db_acountkey values($acount,5092,'$this->at05_codatend','I')");
-       $resac = pg_query("insert into db_acount values($acount,724,5095,'','".AddSlashes(pg_result($resaco,0,'at05_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,724,5092,'','".AddSlashes(pg_result($resaco,0,'at05_codatend'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,724,5093,'','".AddSlashes(pg_result($resaco,0,'at05_solicitado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,724,5094,'','".AddSlashes(pg_result($resaco,0,'at05_feito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,724,5133,'','".AddSlashes(pg_result($resaco,0,'at05_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,724,5136,'','".AddSlashes(pg_result($resaco,0,'at05_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,724,8364,'','".AddSlashes(pg_result($resaco,0,'at05_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,724,9881,'','".AddSlashes(pg_result($resaco,0,'at05_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,724,9880,'','".AddSlashes(pg_result($resaco,0,'at05_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,724,5095,'','".AddSlashes(pg_fetch_result($resaco,0,'at05_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,724,5092,'','".AddSlashes(pg_fetch_result($resaco,0,'at05_codatend'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,724,5093,'','".AddSlashes(pg_fetch_result($resaco,0,'at05_solicitado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,724,5094,'','".AddSlashes(pg_fetch_result($resaco,0,'at05_feito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,724,5133,'','".AddSlashes(pg_fetch_result($resaco,0,'at05_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,724,5136,'','".AddSlashes(pg_fetch_result($resaco,0,'at05_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,724,8364,'','".AddSlashes(pg_fetch_result($resaco,0,'at05_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,724,9881,'','".AddSlashes(pg_fetch_result($resaco,0,'at05_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,724,9880,'','".AddSlashes(pg_fetch_result($resaco,0,'at05_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -265,10 +265,10 @@ class cl_atenditem {
       $this->atualizacampos();
      $sql = " update atenditem set ";
      $virgula = "";
-     if(trim($this->at05_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_seq"])){ 
+     if(trim((string) $this->at05_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_seq"])){ 
        $sql  .= $virgula." at05_seq = $this->at05_seq ";
        $virgula = ",";
-       if(trim($this->at05_seq) == null ){ 
+       if(trim((string) $this->at05_seq) == null ){ 
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "at05_seq";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_atenditem {
          return false;
        }
      }
-     if(trim($this->at05_codatend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_codatend"])){ 
+     if(trim((string) $this->at05_codatend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_codatend"])){ 
        $sql  .= $virgula." at05_codatend = $this->at05_codatend ";
        $virgula = ",";
-       if(trim($this->at05_codatend) == null ){ 
+       if(trim((string) $this->at05_codatend) == null ){ 
          $this->erro_sql = " Campo Código de atendimento nao Informado.";
          $this->erro_campo = "at05_codatend";
          $this->erro_banco = "";
@@ -291,10 +291,10 @@ class cl_atenditem {
          return false;
        }
      }
-     if(trim($this->at05_solicitado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_solicitado"])){ 
+     if(trim((string) $this->at05_solicitado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_solicitado"])){ 
        $sql  .= $virgula." at05_solicitado = '$this->at05_solicitado' ";
        $virgula = ",";
-       if(trim($this->at05_solicitado) == null ){ 
+       if(trim((string) $this->at05_solicitado) == null ){ 
          $this->erro_sql = " Campo Solicitação nao Informado.";
          $this->erro_campo = "at05_solicitado";
          $this->erro_banco = "";
@@ -304,14 +304,14 @@ class cl_atenditem {
          return false;
        }
      }
-     if(trim($this->at05_feito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_feito"])){ 
+     if(trim((string) $this->at05_feito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_feito"])){ 
        $sql  .= $virgula." at05_feito = '$this->at05_feito' ";
        $virgula = ",";
      }
-     if(trim($this->at05_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_tipo"])){ 
+     if(trim((string) $this->at05_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_tipo"])){ 
        $sql  .= $virgula." at05_tipo = $this->at05_tipo ";
        $virgula = ",";
-       if(trim($this->at05_tipo) == null ){ 
+       if(trim((string) $this->at05_tipo) == null ){ 
          $this->erro_sql = " Campo tipo do atendimento nao Informado.";
          $this->erro_campo = "at05_tipo";
          $this->erro_banco = "";
@@ -321,7 +321,7 @@ class cl_atenditem {
          return false;
        }
      }
-     if(trim($this->at05_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at05_data_dia"] !="") ){ 
+     if(trim((string) $this->at05_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at05_data_dia"] !="") ){ 
        $sql  .= $virgula." at05_data = '$this->at05_data' ";
        $virgula = ",";
      }     else{ 
@@ -330,10 +330,10 @@ class cl_atenditem {
          $virgula = ",";
        }
      }
-     if(trim($this->at05_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_perc"])){ 
+     if(trim((string) $this->at05_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_perc"])){ 
        $sql  .= $virgula." at05_perc = $this->at05_perc ";
        $virgula = ",";
-       if(trim($this->at05_perc) == null ){ 
+       if(trim((string) $this->at05_perc) == null ){ 
          $this->erro_sql = " Campo Percentual nao Informado.";
          $this->erro_campo = "at05_perc";
          $this->erro_banco = "";
@@ -343,10 +343,10 @@ class cl_atenditem {
          return false;
        }
      }
-     if(trim($this->at05_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_horafim"])){ 
+     if(trim((string) $this->at05_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_horafim"])){ 
        $sql  .= $virgula." at05_horafim = '$this->at05_horafim' ";
        $virgula = ",";
-       if(trim($this->at05_horafim) == null ){ 
+       if(trim((string) $this->at05_horafim) == null ){ 
          $this->erro_sql = " Campo Hora final nao Informado.";
          $this->erro_campo = "at05_horafim";
          $this->erro_banco = "";
@@ -356,10 +356,10 @@ class cl_atenditem {
          return false;
        }
      }
-     if(trim($this->at05_horaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_horaini"])){ 
+     if(trim((string) $this->at05_horaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at05_horaini"])){ 
        $sql  .= $virgula." at05_horaini = '$this->at05_horaini' ";
        $virgula = ",";
-       if(trim($this->at05_horaini) == null ){ 
+       if(trim((string) $this->at05_horaini) == null ){ 
          $this->erro_sql = " Campo Hora inicial nao Informado.";
          $this->erro_campo = "at05_horaini";
          $this->erro_banco = "";
@@ -380,27 +380,27 @@ class cl_atenditem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = pg_query("insert into db_acountkey values($acount,5095,'$this->at05_seq','A')");
          $resac = pg_query("insert into db_acountkey values($acount,5092,'$this->at05_codatend','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at05_seq"]))
-           $resac = pg_query("insert into db_acount values($acount,724,5095,'".AddSlashes(pg_result($resaco,$conresaco,'at05_seq'))."','$this->at05_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,724,5095,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at05_seq'))."','$this->at05_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at05_codatend"]))
-           $resac = pg_query("insert into db_acount values($acount,724,5092,'".AddSlashes(pg_result($resaco,$conresaco,'at05_codatend'))."','$this->at05_codatend',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,724,5092,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at05_codatend'))."','$this->at05_codatend',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at05_solicitado"]))
-           $resac = pg_query("insert into db_acount values($acount,724,5093,'".AddSlashes(pg_result($resaco,$conresaco,'at05_solicitado'))."','$this->at05_solicitado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,724,5093,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at05_solicitado'))."','$this->at05_solicitado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at05_feito"]))
-           $resac = pg_query("insert into db_acount values($acount,724,5094,'".AddSlashes(pg_result($resaco,$conresaco,'at05_feito'))."','$this->at05_feito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,724,5094,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at05_feito'))."','$this->at05_feito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at05_tipo"]))
-           $resac = pg_query("insert into db_acount values($acount,724,5133,'".AddSlashes(pg_result($resaco,$conresaco,'at05_tipo'))."','$this->at05_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,724,5133,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at05_tipo'))."','$this->at05_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at05_data"]))
-           $resac = pg_query("insert into db_acount values($acount,724,5136,'".AddSlashes(pg_result($resaco,$conresaco,'at05_data'))."','$this->at05_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,724,5136,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at05_data'))."','$this->at05_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at05_perc"]))
-           $resac = pg_query("insert into db_acount values($acount,724,8364,'".AddSlashes(pg_result($resaco,$conresaco,'at05_perc'))."','$this->at05_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,724,8364,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at05_perc'))."','$this->at05_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at05_horafim"]))
-           $resac = pg_query("insert into db_acount values($acount,724,9881,'".AddSlashes(pg_result($resaco,$conresaco,'at05_horafim'))."','$this->at05_horafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,724,9881,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at05_horafim'))."','$this->at05_horafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at05_horaini"]))
-           $resac = pg_query("insert into db_acount values($acount,724,9880,'".AddSlashes(pg_result($resaco,$conresaco,'at05_horaini'))."','$this->at05_horaini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,724,9880,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at05_horaini'))."','$this->at05_horaini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = @pg_exec($sql);
@@ -445,18 +445,18 @@ class cl_atenditem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = pg_query("insert into db_acountkey values($acount,5095,'$at05_seq','E')");
          $resac = pg_query("insert into db_acountkey values($acount,5092,'$at05_codatend','E')");
-         $resac = pg_query("insert into db_acount values($acount,724,5095,'','".AddSlashes(pg_result($resaco,$iresaco,'at05_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,724,5092,'','".AddSlashes(pg_result($resaco,$iresaco,'at05_codatend'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,724,5093,'','".AddSlashes(pg_result($resaco,$iresaco,'at05_solicitado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,724,5094,'','".AddSlashes(pg_result($resaco,$iresaco,'at05_feito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,724,5133,'','".AddSlashes(pg_result($resaco,$iresaco,'at05_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,724,5136,'','".AddSlashes(pg_result($resaco,$iresaco,'at05_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,724,8364,'','".AddSlashes(pg_result($resaco,$iresaco,'at05_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,724,9881,'','".AddSlashes(pg_result($resaco,$iresaco,'at05_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,724,9880,'','".AddSlashes(pg_result($resaco,$iresaco,'at05_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,724,5095,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at05_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,724,5092,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at05_codatend'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,724,5093,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at05_solicitado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,724,5094,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at05_feito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,724,5133,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at05_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,724,5136,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at05_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,724,8364,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at05_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,724,9881,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at05_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,724,9880,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at05_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from atenditem
@@ -522,7 +522,7 @@ class cl_atenditem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:atenditem";
@@ -537,7 +537,7 @@ class cl_atenditem {
    function sql_query ( $at05_seq=null,$at05_codatend=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,7 +569,7 @@ class cl_atenditem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -582,7 +582,7 @@ class cl_atenditem {
    function sql_query_file ( $at05_seq=null,$at05_codatend=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -611,7 +611,7 @@ class cl_atenditem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -625,7 +625,7 @@ class cl_atenditem {
   function sql_query_tarefa ( $at05_seq=null,$at05_codatend=null,$campos="*",$ordem=null,$dbwhere=""){ 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -659,7 +659,7 @@ class cl_atenditem {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -722,7 +722,7 @@ class cl_atenditem {
   function sql_query_mod ( $at05_seq=null,$at05_codatend=null,$campos="*",$ordem=null,$dbwhere=""){ 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -755,7 +755,7 @@ class cl_atenditem {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oGet = db_utils::postMemory($_GET);
 $iTipo = "pad";
 if (isset($oGet->tipo) && $oGet->tipo == "mgs") {

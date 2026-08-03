@@ -25,10 +25,10 @@ final class ImovelAnteriorConverter extends Converter
         $l .= str_pad(substr($imovelAnterior->getReferenciaAnterior(),       0, $size), $size);
         
         $size = $this->layout->getSize(ImovelAnterior::AREA_LOTE_CALCULO);
-        $l .= str_pad(substr($this->format->decimal($imovelAnterior->getAreaLoteCalculo(),  'f', ' ', $size),          0, $size), $size, ' ', STR_PAD_LEFT);
+        $l .= str_pad(substr((string) $this->format->decimal($imovelAnterior->getAreaLoteCalculo(),  'f', ' ', $size),          0, $size), $size, ' ', STR_PAD_LEFT);
         
         $size = $this->layout->getSize(ImovelAnterior::VALOR_M2_CALCULO);
-        $l .= str_pad(substr($this->format->decimal($imovelAnterior->getValorM2Calculo(),  'f', ' ', $size),           0, $size), $size, ' ', STR_PAD_LEFT);
+        $l .= str_pad(substr((string) $this->format->decimal($imovelAnterior->getValorM2Calculo(),  'f', ' ', $size),           0, $size), $size, ' ', STR_PAD_LEFT);
         
 
         return $l;

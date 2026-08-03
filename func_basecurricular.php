@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_basecurricular_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbasecurricular = new cl_basecurricular;
 $clbasecurricular->rotulo->label("ed141_sequencial");
 $clbasecurricular->rotulo->label("ed141_descricao");
@@ -52,9 +52,9 @@ $clbasecurricular->rotulo->label("ed141_descricao");
         }else{
            $sql = $clbasecurricular->sql_query("",$campos,"ed141_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed141_descricao)){
-          $repassa = array("chave_ed141_sequencial"=>$chave_ed141_sequencial,"chave_ed141_descricao"=>$chave_ed141_descricao);
+          $repassa = ["chave_ed141_sequencial"=>$chave_ed141_sequencial,"chave_ed141_descricao"=>$chave_ed141_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

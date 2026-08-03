@@ -62,7 +62,7 @@ $clgerfsal                = new cl_gerfsal;
 $clrhrubretencao          = new cl_rhrubretencao();
 $clrhrubricasadiantamento = new cl_rhrubricasadiantamento();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 33;
 $db_botao = false;

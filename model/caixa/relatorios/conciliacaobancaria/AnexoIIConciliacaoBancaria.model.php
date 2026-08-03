@@ -32,11 +32,6 @@ require_once(modification('model/caixa/relatorios/conciliacaobancaria/IAnexoConc
 class AnexoIIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
 
   /**
-   * @type ContaBancaria
-   */
-  private $oContabancaria;
-
-  /**
    * @type DBCompetencia
    */
   private $oCompetencia;
@@ -60,12 +55,11 @@ class AnexoIIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
   const ANEXO = 2;
 
   /**
-   * @param ContaBancaria $oContaBancaria
+   * @param ContaBancaria $oContabancaria
    * @param DBCompetencia $oCompetencia
    */
-  public function __construct(ContaBancaria $oContaBancaria, DBCompetencia $oCompetencia) {
+  public function __construct(private readonly ContaBancaria $oContabancaria, DBCompetencia $oCompetencia) {
 
-    $this->oContabancaria = $oContaBancaria;
     $this->oCompetencia   = $oCompetencia;
   }
 
@@ -75,7 +69,7 @@ class AnexoIIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
    */
   public function getDados() {
 
-    $aRegistros         = array();
+    $aRegistros         = [];
     $rsBuscaPendencias  = self::getRecord($this);
     if (!$rsBuscaPendencias) {
       throw new BusinessException(_M(self::CAMINHO_MENSAGEM."erro_busca_dados"));
@@ -110,23 +104,14 @@ class AnexoIIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
     $sSqlConciliacao .= "     and k68_contabancaria            = {$oAnexo->getContaBancaria()->getSequencialContaBancaria()})";
     $sCampos = "k86_data, k86_documento, k86_historico, k86_valor, k86_tipo";
 
-    $aWhere  = array(
+    $aWhere  = [
       "k88_concilia = {$sSqlConciliacao}"
-    );
-    switch ($oAnexo->getAnexo()) {
-
-      case AnexoIIConciliacaoBancaria::ANEXO:
-        $aWhere[] = "k86_tipo = 'D'";
-        break;
-
-      case AnexoIIIConciliacaoBancaria::ANEXO:
-        $aWhere[] = "k86_tipo = 'C'";
-        break;
-
-      default:
-        throw new BusinessException(_M(self::CAMINHO_MENSAGEM.'anexo_nao_encontrado'));
-
-    }
+    ];
+    $aWhere[] = match ($oAnexo->getAnexo()) {
+        AnexoIIConciliacaoBancaria::ANEXO => "k86_tipo = 'D'",
+        AnexoIIIConciliacaoBancaria::ANEXO => "k86_tipo = 'C'",
+        default => throw new BusinessException(_M(self::CAMINHO_MENSAGEM.'anexo_nao_encontrado')),
+    };
     $oDaoPentenciaExtrato = new cl_conciliapendextrato();
     $sSqlBuscaPendencia   = $oDaoPentenciaExtrato->sql_query_extrato_sigfis(null, $sCampos, "k86_data", implode(' and ', $aWhere));
     return db_query($sSqlBuscaPendencia);

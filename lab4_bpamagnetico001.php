@@ -36,7 +36,7 @@ include_once(modification("dbforms/db_funcoes.php"));
 include_once(modification("libs/JSON.php"));
 include_once(modification("classes/db_lab_fechamento_classe.php"));
 
-db_postmemory ($HTTP_POST_VARS);
+db_postmemory ($_POST);
 $clrotulo           = new rotulocampo ();
 $cllab_bpamagnetico = db_utils::getdao('lab_bpamagnetico');
 $cllab_laboratorio  = db_utils::getdao('lab_laboratorio');
@@ -97,7 +97,7 @@ if ($oSauConfig != false) {
                     <td><b>Tipo de BPA:</b></td>
                     <td>
                       <?php 
-                        $arr_tipo = array ("02" => "Individual", "01" => "Consolidado");
+                        $arr_tipo =  ["02" => "Individual", "01" => "Consolidado"];
                         db_select('sTipo', $arr_tipo, true, 4);
                       ?>
                     </td>  
@@ -162,7 +162,7 @@ if ($oSauConfig != false) {
                           $sSql           = $cllab_laboratorio->sql_query("", "la02_i_codigo,la02_c_descr");
                           $rsLaboratorios = $cllab_laboratorio->sql_record($sSql);
                           db_multiploselect("la02_i_codigo", "la02_c_descr", "nselecionados", "sselecionados",
-                                            $rsLaboratorios, array(), 5, 250
+                                            $rsLaboratorios, [], 5, 250
                                            );
                           db_input('listaLaboratorios', 100, "", true, 'hidden', 3, "" );
                         ?>
@@ -430,7 +430,7 @@ function js_nomeMes(iNumero, iTipo) {
     $oDados->sTipo         = $sTipo;
     $oDados->sSigla        = $sSigla;
     $oDados->sDestino      = $sDestino;
-    $oDados->sVersao       = pg_result($rsCodRelease, 0, "ultimarelease");
+    $oDados->sVersao       = pg_fetch_result($rsCodRelease, 0, "ultimarelease");
     $oDados->iFechamento   = $la54_i_codigo;
     $oDados->orgao         = $orgao;
     $oDados->sOrgResp      = $snomedepart;
@@ -448,13 +448,13 @@ function js_nomeMes(iNumero, iTipo) {
       $sErro                = "Erro ao selecionar o Cabeçalho. <p>Comunique o adminstrador.";
       $rsCabecalho          = db_query($sSql) or die ($sErro);
       $sAbrevMes            = data_farmacia($la54_i_compano, $la54_i_compmes."M");
-      $sAbrevMes            = strtoupper(substr($sAbrevMes['periodo'], 0, 3));
+      $sAbrevMes            = strtoupper(substr((string) $sAbrevMes['periodo'], 0, 3));
       $pont                 = "/tmp/PA".$sNomeArquivo.".".$sAbrevMes;
 
       /* Parte Generica */
       $oCabecalho  = db_utils::fieldsmemory($rsCabecalho, 0);
       $cbc_smt_vrf = $oCabecalho->cbc_smt_vrf;  
-      $iBpa        = geraArquivoBPA($oDados, $rsCabecalho, $rsProducao, true, $pont);
+      $iBpa        = geraArquivoBPA($oDados, $rsCabecalho, $rsProducao);
 
     }
     if ($iBpa != -1) {

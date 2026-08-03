@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE carteira
 class cl_carteira {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $bi16_codigo = 0;
-   var $bi16_leitor = 0;
-   var $bi16_leitorcategoria = 0;
-   var $bi16_usuario = 0;
-   var $bi16_inclusao_dia = null;
-   var $bi16_inclusao_mes = null;
-   var $bi16_inclusao_ano = null;
-   var $bi16_inclusao = null;
-   var $bi16_validade_dia = null;
-   var $bi16_validade_mes = null;
-   var $bi16_validade_ano = null;
-   var $bi16_validade = null;
-   var $bi16_valida = null;
+   public $bi16_codigo = 0;
+   public $bi16_leitor = 0;
+   public $bi16_leitorcategoria = 0;
+   public $bi16_usuario = 0;
+   public $bi16_inclusao_dia = null;
+   public $bi16_inclusao_mes = null;
+   public $bi16_inclusao_ano = null;
+   public $bi16_inclusao = null;
+   public $bi16_validade_dia = null;
+   public $bi16_validade_mes = null;
+   public $bi16_validade_ano = null;
+   public $bi16_validade = null;
+   public $bi16_valida = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  bi16_codigo = int8 = Código
                  bi16_leitor = int8 = Leitor
                  bi16_leitorcategoria = int8 = Categoria
@@ -66,10 +66,10 @@ class cl_carteira {
                  bi16_valida = char(1) = Válida
                  ";
    //funcao construtor da classe
-   function cl_carteira() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carteira");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -175,10 +175,10 @@ class cl_carteira {
          $this->erro_status = "0";
          return false;
        }
-       $this->bi16_codigo = pg_result($result,0,0);
+       $this->bi16_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from carteira_bi16_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $bi16_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $bi16_codigo)){
          $this->erro_sql = " Campo bi16_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -218,7 +218,7 @@ class cl_carteira {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Carteira ($this->bi16_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Carteira já Cadastrado";
@@ -242,16 +242,16 @@ class cl_carteira {
      $resaco = $this->sql_record($this->sql_query_file($this->bi16_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1008146,'$this->bi16_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1008021,1008146,'','".AddSlashes(pg_result($resaco,0,'bi16_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008021,1008149,'','".AddSlashes(pg_result($resaco,0,'bi16_leitor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008021,1008933,'','".AddSlashes(pg_result($resaco,0,'bi16_leitorcategoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008021,1008932,'','".AddSlashes(pg_result($resaco,0,'bi16_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008021,1008147,'','".AddSlashes(pg_result($resaco,0,'bi16_inclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008021,1008148,'','".AddSlashes(pg_result($resaco,0,'bi16_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008021,1008934,'','".AddSlashes(pg_result($resaco,0,'bi16_valida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008021,1008146,'','".AddSlashes(pg_fetch_result($resaco,0,'bi16_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008021,1008149,'','".AddSlashes(pg_fetch_result($resaco,0,'bi16_leitor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008021,1008933,'','".AddSlashes(pg_fetch_result($resaco,0,'bi16_leitorcategoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008021,1008932,'','".AddSlashes(pg_fetch_result($resaco,0,'bi16_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008021,1008147,'','".AddSlashes(pg_fetch_result($resaco,0,'bi16_inclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008021,1008148,'','".AddSlashes(pg_fetch_result($resaco,0,'bi16_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008021,1008934,'','".AddSlashes(pg_fetch_result($resaco,0,'bi16_valida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -260,10 +260,10 @@ class cl_carteira {
       $this->atualizacampos();
      $sql = " update carteira set ";
      $virgula = "";
-     if(trim($this->bi16_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_codigo"])){
+     if(trim((string) $this->bi16_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_codigo"])){
        $sql  .= $virgula." bi16_codigo = $this->bi16_codigo ";
        $virgula = ",";
-       if(trim($this->bi16_codigo) == null ){
+       if(trim((string) $this->bi16_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "bi16_codigo";
          $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_carteira {
          return false;
        }
      }
-     if(trim($this->bi16_leitor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_leitor"])){
+     if(trim((string) $this->bi16_leitor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_leitor"])){
        $sql  .= $virgula." bi16_leitor = $this->bi16_leitor ";
        $virgula = ",";
-       if(trim($this->bi16_leitor) == null ){
+       if(trim((string) $this->bi16_leitor) == null ){
          $this->erro_sql = " Campo Leitor nao Informado.";
          $this->erro_campo = "bi16_leitor";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_carteira {
          return false;
        }
      }
-     if(trim($this->bi16_leitorcategoria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_leitorcategoria"])){
+     if(trim((string) $this->bi16_leitorcategoria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_leitorcategoria"])){
        $sql  .= $virgula." bi16_leitorcategoria = $this->bi16_leitorcategoria ";
        $virgula = ",";
-       if(trim($this->bi16_leitorcategoria) == null ){
+       if(trim((string) $this->bi16_leitorcategoria) == null ){
          $this->erro_sql = " Campo Categoria nao Informado.";
          $this->erro_campo = "bi16_leitorcategoria";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_carteira {
          return false;
        }
      }
-     if(trim($this->bi16_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_usuario"])){
+     if(trim((string) $this->bi16_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_usuario"])){
        $sql  .= $virgula." bi16_usuario = $this->bi16_usuario ";
        $virgula = ",";
-       if(trim($this->bi16_usuario) == null ){
+       if(trim((string) $this->bi16_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "bi16_usuario";
          $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_carteira {
          return false;
        }
      }
-     if(trim($this->bi16_inclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_inclusao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi16_inclusao_dia"] !="") ){
+     if(trim((string) $this->bi16_inclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_inclusao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi16_inclusao_dia"] !="") ){
        $sql  .= $virgula." bi16_inclusao = '$this->bi16_inclusao' ";
        $virgula = ",";
-       if(trim($this->bi16_inclusao) == null ){
+       if(trim((string) $this->bi16_inclusao) == null ){
          $this->erro_sql = " Campo data de Inclusão nao Informado.";
          $this->erro_campo = "bi16_inclusao_dia";
          $this->erro_banco = "";
@@ -328,7 +328,7 @@ class cl_carteira {
        if(isset($GLOBALS["HTTP_POST_VARS"]["bi16_inclusao_dia"])){
          $sql  .= $virgula." bi16_inclusao = null ";
          $virgula = ",";
-         if(trim($this->bi16_inclusao) == null ){
+         if(trim((string) $this->bi16_inclusao) == null ){
            $this->erro_sql = " Campo data de Inclusão nao Informado.";
            $this->erro_campo = "bi16_inclusao_dia";
            $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_carteira {
          }
        }
      }
-     if(trim($this->bi16_validade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_validade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi16_validade_dia"] !="") ){
+     if(trim((string) $this->bi16_validade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_validade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi16_validade_dia"] !="") ){
        $sql  .= $virgula." bi16_validade = '$this->bi16_validade' ";
        $virgula = ",";
-       if(trim($this->bi16_validade) == null ){
+       if(trim((string) $this->bi16_validade) == null ){
          $this->erro_sql = " Campo Validade nao Informado.";
          $this->erro_campo = "bi16_validade_dia";
          $this->erro_banco = "";
@@ -355,7 +355,7 @@ class cl_carteira {
        if(isset($GLOBALS["HTTP_POST_VARS"]["bi16_validade_dia"])){
          $sql  .= $virgula." bi16_validade = null ";
          $virgula = ",";
-         if(trim($this->bi16_validade) == null ){
+         if(trim((string) $this->bi16_validade) == null ){
            $this->erro_sql = " Campo Validade nao Informado.";
            $this->erro_campo = "bi16_validade_dia";
            $this->erro_banco = "";
@@ -366,10 +366,10 @@ class cl_carteira {
          }
        }
      }
-     if(trim($this->bi16_valida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_valida"])){
+     if(trim((string) $this->bi16_valida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi16_valida"])){
        $sql  .= $virgula." bi16_valida = '$this->bi16_valida' ";
        $virgula = ",";
-       if(trim($this->bi16_valida) == null ){
+       if(trim((string) $this->bi16_valida) == null ){
          $this->erro_sql = " Campo Válida nao Informado.";
          $this->erro_campo = "bi16_valida";
          $this->erro_banco = "";
@@ -387,23 +387,23 @@ class cl_carteira {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008146,'$this->bi16_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi16_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1008021,1008146,'".AddSlashes(pg_result($resaco,$conresaco,'bi16_codigo'))."','$this->bi16_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008021,1008146,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi16_codigo'))."','$this->bi16_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi16_leitor"]))
-           $resac = db_query("insert into db_acount values($acount,1008021,1008149,'".AddSlashes(pg_result($resaco,$conresaco,'bi16_leitor'))."','$this->bi16_leitor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008021,1008149,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi16_leitor'))."','$this->bi16_leitor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi16_leitorcategoria"]))
-           $resac = db_query("insert into db_acount values($acount,1008021,1008933,'".AddSlashes(pg_result($resaco,$conresaco,'bi16_leitorcategoria'))."','$this->bi16_leitorcategoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008021,1008933,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi16_leitorcategoria'))."','$this->bi16_leitorcategoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi16_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1008021,1008932,'".AddSlashes(pg_result($resaco,$conresaco,'bi16_usuario'))."','$this->bi16_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008021,1008932,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi16_usuario'))."','$this->bi16_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi16_inclusao"]))
-           $resac = db_query("insert into db_acount values($acount,1008021,1008147,'".AddSlashes(pg_result($resaco,$conresaco,'bi16_inclusao'))."','$this->bi16_inclusao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008021,1008147,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi16_inclusao'))."','$this->bi16_inclusao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi16_validade"]))
-           $resac = db_query("insert into db_acount values($acount,1008021,1008148,'".AddSlashes(pg_result($resaco,$conresaco,'bi16_validade'))."','$this->bi16_validade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008021,1008148,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi16_validade'))."','$this->bi16_validade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi16_valida"]))
-           $resac = db_query("insert into db_acount values($acount,1008021,1008934,'".AddSlashes(pg_result($resaco,$conresaco,'bi16_valida'))."','$this->bi16_valida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008021,1008934,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi16_valida'))."','$this->bi16_valida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -448,16 +448,16 @@ class cl_carteira {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008146,'$bi16_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1008021,1008146,'','".AddSlashes(pg_result($resaco,$iresaco,'bi16_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008021,1008149,'','".AddSlashes(pg_result($resaco,$iresaco,'bi16_leitor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008021,1008933,'','".AddSlashes(pg_result($resaco,$iresaco,'bi16_leitorcategoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008021,1008932,'','".AddSlashes(pg_result($resaco,$iresaco,'bi16_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008021,1008147,'','".AddSlashes(pg_result($resaco,$iresaco,'bi16_inclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008021,1008148,'','".AddSlashes(pg_result($resaco,$iresaco,'bi16_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008021,1008934,'','".AddSlashes(pg_result($resaco,$iresaco,'bi16_valida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008021,1008146,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi16_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008021,1008149,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi16_leitor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008021,1008933,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi16_leitorcategoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008021,1008932,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi16_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008021,1008147,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi16_inclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008021,1008148,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi16_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008021,1008934,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi16_valida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from carteira
@@ -517,7 +517,7 @@ class cl_carteira {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:carteira";
@@ -531,7 +531,7 @@ class cl_carteira {
    function sql_query ( $bi16_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -571,7 +571,7 @@ class cl_carteira {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -583,7 +583,7 @@ class cl_carteira {
    function sql_query_file ( $bi16_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -604,7 +604,7 @@ class cl_carteira {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -620,7 +620,7 @@ class cl_carteira {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = preg_split('#\##m', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -664,7 +664,7 @@ class cl_carteira {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = preg_split('#\##m', (string) $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -684,7 +684,7 @@ class cl_carteira {
 
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -718,7 +718,7 @@ class cl_carteira {
     if ($ordem != null ) {
 
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = preg_split("#\\##m",(string) $ordem);
       $virgula     = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -730,7 +730,7 @@ class cl_carteira {
     return $sql;
   }
 
-  public function sql_query_ultima_carteira( $id = null, $campos = "*", $ordem = null, $dbwhere = "", $iDepartamento, $iCategoria = null ) {
+  public function sql_query_ultima_carteira( $id = null, $campos = "*", $ordem = null, $dbwhere = "", $iDepartamento = null, $iCategoria = null ) {
 
     $sql  = "select {$campos} ";
     $sql .= "  from ( ";

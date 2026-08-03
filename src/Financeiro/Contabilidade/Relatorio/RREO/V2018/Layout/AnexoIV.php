@@ -37,6 +37,7 @@ class AnexoIV extends Layout2017
      * Sobrescreve as legendas do relatório
      * @throws \BusinessException
      */
+    #[\Override]
     protected function legendas()
     {
         $this->notas();

@@ -28,15 +28,15 @@
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_utils.php"));
 
-global $HTTP_SESSION_VARS;
-if (!isset($HTTP_SESSION_VARS["DB_itemmenu_acessado"])) {
-  $HTTP_SESSION_VARS["DB_itemmenu_acessado"] = 7068;
+global $_SESSION;
+if (!isset($_SESSION["DB_itemmenu_acessado"])) {
+  $_SESSION["DB_itemmenu_acessado"] = 7068;
 }
 
 $oDaoMaterSaude       = db_utils::getDao('far_matersaude');
 $oDaoMatmater         = db_utils::getDao('matmater');
 $oDaoMatEstoqueIniMei = db_utils::getDao('matestoqueinimei');
-$deptno               = explode(",",$listadepart);
+$deptno               = explode(",",(string) $listadepart);
 $departamento         = "";
 
 if (($opcao == 'com') && ($deptno[0] != null)) {
@@ -55,7 +55,7 @@ if ($ordem == "a") {
   $order = " m60_codmater ";
 }
 
-$unidades_get   = explode(',',$listadepart);
+$unidades_get   = explode(',',(string) $listadepart);
 $where_unidades = ' where sd02_i_codigo = ';
 
 for ($c = 0; $c < count($unidades_get) - 1; $c++) {
@@ -293,9 +293,9 @@ for ($x = 0; $x < $veses; $x++) {
 
       $pdf->setfont('arial', '', 9);
       $pdf->cell(10, 5, $remedio, 1, 0, "L", $cor);
-      $nome = substr($m60_descr, 0 ,20);
+      $nome = substr((string) $m60_descr, 0 ,20);
       $pdf->cell(45, 5, $nome, 1, 0, "L", $cor);
-      $pdf->cell(19, 5, substr(str_pad(trim($m61_descr), 25), 0, 8), 1, 0, "L", $cor);
+      $pdf->cell(19, 5, substr(str_pad(trim((string) $m61_descr), 25), 0, 8), 1, 0, "L", $cor);
 
       $num_mes    = 0;
       $calc_media = 0;

@@ -52,11 +52,11 @@ if(isset($versao) && $versao == 'n'){
 //  echo $cldb_versao->sql_query_file('',"max(db30_codversao||'P'||db30_codrelease+1)");
    $result = $cldb_versao->sql_record($cldb_versao->sql_query_file('',"max(db30_codversao::text||'P'::text||(db30_codrelease+1)::text)"));
    db_fieldsmemory($result,0);
-   if(trim($max) == ''){
+   if(trim((string) $max) == ''){
     echo "<script>alert('Não existe versão para esta release! Cadastre primeiro uma versao')</script>";
     exit;
    }
-   $matriz= split("P",$max);
+   $matriz= preg_split("#P#m",(string) $max);
    $db30_codversao = $matriz[0]; 
 //   $db30_codrelease = $matriz[1];
 }
@@ -114,7 +114,7 @@ function js_preenchepesquisa(chave){
   db_iframe_db_versao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -432,7 +432,7 @@ class ItemRequisicao
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
         'la21_i_codigo' => $this->getCodigo(),
         'la21_i_requisicao' => $this->getRequisicao(),
         'la21_d_entrega' => $this->getDataEntrega(),
@@ -444,7 +444,7 @@ class ItemRequisicao
         'la21_i_quantidade' => $this->getQuantidade(),
         'la21_observacao' => $this->getQuantidade(),
         'la21_motivonovacoleta' => $this->getMotivo()
-        );
+        ];
 
         return $retorno;
     }

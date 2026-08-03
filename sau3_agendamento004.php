@@ -57,19 +57,19 @@ if (isset($datai)&&isset($dataf)) {
 			$sql .= " and ";
 		}
 		$rest = "";
-		$rest = substr($datai, 6);
+		$rest = substr((string) $datai, 6);
 		$rest .="-";
-		$rest .= substr($datai, 3, 2);
+		$rest .= substr((string) $datai, 3, 2);
 		$rest .="-";
-		$rest .= substr($datai, 0, 2);
+		$rest .= substr((string) $datai, 0, 2);
 		$sql .= "sd23_d_consulta  BETWEEN '".$rest."' and";
 
         $rest = "";
-		$rest = substr($dataf, 6);
+		$rest = substr((string) $dataf, 6);
 		$rest .="-";
-		$rest .= substr($dataf, 3, 2);
+		$rest .= substr((string) $dataf, 3, 2);
 		$rest .="-";
-		$rest .= substr($dataf, 0, 2);
+		$rest .= substr((string) $dataf, 0, 2);
 		$sql .= " '".$rest."'";
 	    $primeiro=true;
 	}
@@ -80,7 +80,7 @@ if($primeiro==false || $cgs==""){
     $sql="";
 }
 
-$result = db_query($sql) or die ( pg_errormessage()."<br> $sql");
+$result = db_query($sql) or die ( pg_last_error()."<br> $sql");
 $linhas = pg_num_rows($result);
 
 if($linhas==0){?>
@@ -134,12 +134,12 @@ for($i=0;$i<$linhas;$i++) {
     $pre = 1;
   }
 //	$pdf->setfont('arial','',9);
-	$pdf->cell(20,5,substr($sd23_d_consulta, 8,2)."/".substr($sd23_d_consulta, 5,2)."/".substr($sd23_d_consulta, 0,4),0,0,"C",$cor);
+	$pdf->cell(20,5,substr((string) $sd23_d_consulta, 8,2)."/".substr((string) $sd23_d_consulta, 5,2)."/".substr((string) $sd23_d_consulta, 0,4),0,0,"C",$cor);
 	$pdf->cell(10,5,$sd23_c_hora,0,0,"C",$cor);
 	$pdf->cell(20,5,$sd97_c_tipo,0,0,"C",$cor);
-	$pdf->cell(10,5,trim($sd23_i_ficha),0,0,"C",$cor);
-	$pdf->cell(94,5,substr($sd04_i_medico." - ".trim($z01_nome),0,60),0,0,"L",$cor);
-	$pdf->cell(65,5,substr(trim($rh70_estrutural)." - ".trim($rh70_descr),0,40),0,0,"L",$cor);
+	$pdf->cell(10,5,trim((string) $sd23_i_ficha),0,0,"C",$cor);
+	$pdf->cell(94,5,substr($sd04_i_medico." - ".trim((string) $z01_nome),0,60),0,0,"L",$cor);
+	$pdf->cell(65,5,substr(trim((string) $rh70_estrutural)." - ".trim((string) $rh70_descr),0,40),0,0,"L",$cor);
   $pdf->cell(35,5,$sd101_c_descr,0,0,"L",$cor);
   $pdf->cell(25,5,$login,0,1,"L",$cor);
 

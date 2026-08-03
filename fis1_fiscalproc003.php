@@ -33,22 +33,22 @@ require_once(modification("classes/db_fiscalproc_classe.php"));
 require_once(modification("classes/db_fiscalprocpa_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
 
   echo "<script>location.href='fis1_fiscalproc005.php?db_opcao=3'</script>";
   exit;
 }
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clfiscalproc   = new cl_fiscalproc;
 $clfiscalprocpa = new cl_fiscalprocpa;
 
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 
   db_inicio_transacao();
   $db_opcao = 3;
@@ -80,7 +80,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 
   if($clfiscalproc->erro_status=="0"){
     $clfiscalproc->erro(true,false);

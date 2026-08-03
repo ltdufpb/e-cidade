@@ -57,8 +57,8 @@ $oDaoPrescricaolista= new cl_prescricaolista;
 //arreprescr k30_anulado is false
 //prescricao and prescricao.k31_situacao = 1
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $instit = db_getsession("DB_instit");
 
@@ -124,9 +124,9 @@ if($prescrnoti=="n"){
 	if(isset($processar) && $processar != ''){
 	  
 	  if(isset($geral) && $geral == 't'){
-	    
+
 	    if(isset($lista) && $lista != ''){
-	      
+
 	      // verificar arretipo e lista
 	      $sqllista = "select * from listatipos
 					inner join arretipo on k00_tipo = k62_tipodeb 
@@ -221,12 +221,12 @@ if($prescrnoti=="n"){
 
 	              //
 	              if($k03_tipo <> 5) {
-	                db_msgbox("Existe(m) débito(s) inválido(s) para prescrição na lista selecionada, operação cancelada ! (Tipo: $k00_tipo-".trim($k00_descr).")");
+	                db_msgbox("Existe(m) débito(s) inválido(s) para prescrição na lista selecionada, operação cancelada ! (Tipo: $k00_tipo-".trim((string) $k00_descr).")");
 	                echo "<script> js_volta(); </script>";
 	                exit;
 
 	              }else if(isset($k53_numpre) && $k53_numpre != '' ){
-	                
+
 	                if (isset($prescrnoti)&&$prescrnoti=="n"){
 	                  $chaves1 .= $sustenido1.$k61_numpre.'-'.$k61_numpar;
 	                  $sustenido1 = 'XVX';
@@ -307,7 +307,7 @@ if($prescrnoti=="n"){
       }
 	  }
 	  
-	  $numpres = split('#',$chaves);
+	  $numpres = preg_split('#\##m',$chaves);
 	  $numrows = count($numpres);
 	  $i = 0;
 
@@ -319,17 +319,17 @@ if($prescrnoti=="n"){
 
 	      $i++;
 
-	      list ($k00_numpre,$k00_numpar) = split('-',$nv);
+	      [$k00_numpre, $k00_numpar] = preg_split('#\-#m',$nv);
 
 	      if ($sqlerro == false) {
 	        $result_deb = debitos_numpre($k00_numpre,0,null,db_getsession("DB_datausu"),db_getsession("DB_anousu"),$k00_numpar);
-					if (pg_numrows($result_deb) == 0) {
+					if (pg_num_rows($result_deb) == 0) {
 	          $sqlerro = true;
 	          $erromsg = "correcao nao processada - numpre: $k00_numpre - parcela: $k00_numpar";
 	          break;
 	        }
 
-	        for ($reg=0; $reg < pg_numrows($result_deb); $reg++) {
+	        for ($reg=0; $reg < pg_num_rows($result_deb); $reg++) {
 	          db_fieldsmemory($result_deb, $reg);
 
 	          if ($sqlerro == false) {

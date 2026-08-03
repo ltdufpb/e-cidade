@@ -12,9 +12,9 @@ final class ArrecadCollectionCast
 {
     public function toDebitoCollection(ArrecadCollection $arrecadCollection)
     {
-        $receitas = array();
-        $parcelas = array();
-        $debitos = array();
+        $receitas = [];
+        $parcelas = [];
+        $debitos = [];
 
         foreach ($arrecadCollection as $arrecad) {
             $receita = new Receita();

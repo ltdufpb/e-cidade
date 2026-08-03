@@ -187,7 +187,7 @@ class AnexoXII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
      * @param array $linhas
      * @param null $coluna
      */
-    protected function executarRestosPagarX(array $linhas = array(), $coluna = null)
+    protected function executarRestosPagarX(array $linhas = [], $coluna = null)
     {
         $anoLinhas = [
             58 => ' = 2020',
@@ -209,9 +209,9 @@ class AnexoXII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         db_query("create temp table w_anexoXII_restos as " . $sSqlRestosaPagar);
         foreach ($linhas as $iLinha) {
             if (empty($coluna) && $coluna !== "0") {
-                $coluna = array();
+                $coluna = [];
             } elseif (!is_array($coluna)) {
-                $coluna = array($coluna);
+                $coluna = [$coluna];
             }
 
             $rsRestosPagar = db_query("select * from w_anexoXII_restos where e60_anousu " . $anoLinhas[$iLinha]);

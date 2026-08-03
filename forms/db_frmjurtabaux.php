@@ -38,7 +38,7 @@
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
-      <td height="30"><input name="<?=$submit?>" type="submit" id="enviar" value="<?=ucfirst($submit)?>"></td>
+      <td height="30"><input name="<?=$submit?>" type="submit" id="enviar" value="<?=ucfirst((string) $submit)?>"></td>
     </tr>
   </table>
 </form>

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_convenio_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clconvenio = new cl_convenio;
 $db_opcao = 22;
 $db_botao = false;
@@ -65,20 +65,20 @@ if(isset($alterar)){
   $result = $clconvenio->sql_record($clconvenio->sql_query($chavepesquisa, db_getsession('DB_instit'))); 
   db_fieldsmemory($result,0);
   $db_botao = true;
-  $r56_posano1 = substr($r56_posano,0,3);
-  $r56_posano2 = substr($r56_posano,3,3);
+  $r56_posano1 = substr((string) $r56_posano,0,3);
+  $r56_posano2 = substr((string) $r56_posano,3,3);
   $r56_posmes1 = substr($r56_posmes,0,3);
   $r56_posmes2 = substr($r56_posmes,3,3);
-  $r56_posreg1 = substr($r56_posreg,0,3);
-  $r56_posreg2 = substr($r56_posreg,3,3);
-  $r56_poseve1 = substr($r56_poseve,0,3);
-  $r56_poseve2 = substr($r56_poseve,3,3);
-  $r56_posq011 = substr($r56_posq01,0,3);
-  $r56_posq012 = substr($r56_posq01,3,3);
-  $r56_posq021 = substr($r56_posq02,0,3);
-  $r56_posq022 = substr($r56_posq02,3,3);
-  $r56_posq031 = substr($r56_posq03,0,3);
-  $r56_posq032 = substr($r56_posq03,3,3);
+  $r56_posreg1 = substr((string) $r56_posreg,0,3);
+  $r56_posreg2 = substr((string) $r56_posreg,3,3);
+  $r56_poseve1 = substr((string) $r56_poseve,0,3);
+  $r56_poseve2 = substr((string) $r56_poseve,3,3);
+  $r56_posq011 = substr((string) $r56_posq01,0,3);
+  $r56_posq012 = substr((string) $r56_posq01,3,3);
+  $r56_posq021 = substr((string) $r56_posq02,0,3);
+  $r56_posq022 = substr((string) $r56_posq02,3,3);
+  $r56_posq031 = substr((string) $r56_posq03,0,3);
+  $r56_posq032 = substr((string) $r56_posq03,3,3);
 }
 ?>
 <html>

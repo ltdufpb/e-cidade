@@ -85,36 +85,22 @@ class TipoSessao extends Model
 
     public static function getDescricaoByTipo($tipo)
     {
-        switch ($tipo) {
-            case self::NORMAL:
-                return "normal";
-                break;
-            case self::EXTRAORDINARIA:
-                return "extraordinaria";
-                break;
-            case self::URGENTE:
-                return "urgente";
-                break;
-            default:
-                return "normal";
-        }
+        return match ($tipo) {
+            self::NORMAL => "normal",
+            self::EXTRAORDINARIA => "extraordinaria",
+            self::URGENTE => "urgente",
+            default => "normal",
+        };
     }
 
     public static function getTipoByDescricao($descricao)
     {
-        $descricao = strtolower($descricao);
-        switch ($descricao) {
-            case "normal":
-                return self::NORMAL;
-                break;
-            case "extraordinaria":
-                return self::EXTRAORDINARIA;
-                break;
-            case "urgente":
-                return self::URGENTE;
-                break;
-            default:
-                return self::NORMAL;
-        }
+        $descricao = strtolower((string) $descricao);
+        return match ($descricao) {
+            "normal" => self::NORMAL,
+            "extraordinaria" => self::EXTRAORDINARIA,
+            "urgente" => self::URGENTE,
+            default => self::NORMAL,
+        };
     }
 }

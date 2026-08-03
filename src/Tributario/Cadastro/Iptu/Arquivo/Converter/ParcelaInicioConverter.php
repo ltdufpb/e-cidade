@@ -24,10 +24,10 @@ final class ParcelaInicioConverter extends Converter
         $l   .= str_pad(substr($parcelaInicio->getExpresaoParcelados(), 0, $size), $size);
 
         $size = $this->layout->getSize(ParcelaInicio::PERCENTUAL_MES_JURO_ATRASO);
-        $l   .= str_pad(substr($this->format->decimal($parcelaInicio->getPercentualMesJuroAtraso()), 0, $size), $size, '', STR_PAD_LEFT);
+        $l   .= str_pad(substr((string) $this->format->decimal($parcelaInicio->getPercentualMesJuroAtraso()), 0, $size), $size, '', STR_PAD_LEFT);
 
         $size = $this->layout->getSize(ParcelaInicio::PERCENTUAL_GERAL_MULTA_ATRASO);
-        $l   .= str_pad(substr($this->format->decimal($parcelaInicio->getPercentualGeralMultaAtraso()), 0, $size), $size, '', STR_PAD_LEFT);
+        $l   .= str_pad(substr((string) $this->format->decimal($parcelaInicio->getPercentualGeralMultaAtraso()), 0, $size), $size, '', STR_PAD_LEFT);
 
         return $l;
     }

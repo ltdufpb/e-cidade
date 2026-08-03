@@ -29,8 +29,8 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_utils.php"));
 require_once(modification('fpdf151/PDF_Label.php'));
 
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $instit = db_getsession("DB_instit");
 $sqlinst = "select * from db_config where codigo = ".db_getsession("DB_instit");
 db_fieldsmemory(db_query($sqlinst),0,true);
@@ -121,10 +121,10 @@ $resultlistatipo = db_query($sqllistatipo);
 $virgula = '';
 $tipos = '';
 $descrtipo = '';
-for($yy = 0;$yy < pg_numrows($resultlistatipo);$yy++ ){
+for($yy = 0;$yy < pg_num_rows($resultlistatipo);$yy++ ){
    db_fieldsmemory($resultlistatipo,$yy);
    $tipos .= $virgula.$k62_tipodeb;
-   $descrtipo .= $virgula.trim($k03_descr);
+   $descrtipo .= $virgula.trim((string) $k03_descr);
    $virgula = ' , ';
 }
 
@@ -230,7 +230,7 @@ $sql = "select $xxcodigo as notifica,$xxcodigo1 as $xcodigo1,z01_numcgm,z01_nome
         ";
 //die($sql);
 $result = db_query($sql);
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
   
    $oParms = new stdClass();
    $oParms->sLista = $lista;
@@ -246,19 +246,19 @@ if($fim > 0 && $intervalo != 'n'){
   }else{
     $lim = 0;
   }
-  if($fim > pg_numrows($result)){
-    $lim2 = pg_numrows($result);
+  if($fim > pg_num_rows($result)){
+    $lim2 = pg_num_rows($result);
   }else{
     $lim2 = $fim;
   }
 }else{
   $lim1 = 0;
-  $lim2 = pg_numrows($result);
+  $lim2 = pg_num_rows($result);
 }
 
 }
 
-$pdf = new PDF_Label (array('name'=>'5161','paper-size'=>'A4','metric'=>'mm','marginLeft'=>9,'marginTop'=>1,'NX'=>1,'NY'=>8,'SpaceX'=>1,'SpaceY'=>3,'width'=>100,'height'=>36,'font-size'=>9),1,1);
+$pdf = new PDF_Label (['name'=>'5161','paper-size'=>'A4','metric'=>'mm','marginLeft'=>9,'marginTop'=>1,'NX'=>1,'NY'=>8,'SpaceX'=>1,'SpaceY'=>3,'width'=>100,'height'=>36,'font-size'=>9],1,1);
 $pdf->Open();
 
 
@@ -271,7 +271,7 @@ for($x=$lim1;$x < $lim2;$x++) {
 
     $sqlpropri = "select proprietario from proprietario where j01_matric = $j01_matric";
     $resultpropri = db_query($sqlpropri);
-    if (pg_numrows($resultpropri) > 0) {
+    if (pg_num_rows($resultpropri) > 0) {
       db_fieldsmemory($resultpropri,0);
       $z01_nome = $proprietario;
     }
@@ -280,7 +280,7 @@ for($x=$lim1;$x < $lim2;$x++) {
     $resultender = db_query($sqlender);
     db_fieldsmemory($resultender,0);
 
-    $endereco = split("#",$fc_iptuender);
+    $endereco = preg_split("#\\##m",(string) $fc_iptuender);
 
     $z01_ender    = @$endereco[0];
     $z01_numero   = @$endereco[1];
@@ -297,7 +297,7 @@ for($x=$lim1;$x < $lim2;$x++) {
 
     $sqlempresa = "select * from empresa where q02_inscr = $q02_inscr";
     $resultempresa = db_query($sqlempresa);
-    if (pg_numrows($resultempresa) > 0) {
+    if (pg_num_rows($resultempresa) > 0) {
       db_fieldsmemory($resultempresa,0);
     }
 

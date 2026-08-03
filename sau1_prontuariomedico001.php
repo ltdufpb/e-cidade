@@ -38,8 +38,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 require(modification("libs/db_stdlibwebseller.php"));
 require(modification("libs/db_jsplibwebseller.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clprontuariomedico = new cl_prontuariomedico;
 $clcgs_und          = new cl_cgs_und;
 $clfamiliamicroarea = new cl_familiamicroarea;
@@ -59,9 +59,9 @@ if(!isset($chavepesquisa)){
 $db_botao1 = false;
 
 if(isset($opcao)){
- $sd32_d_atendimento_dia = substr($sd32_d_atendimento,0,2);
- $sd32_d_atendimento_mes = substr($sd32_d_atendimento,3,2);
- $sd32_d_atendimento_ano = substr($sd32_d_atendimento,6,4);
+ $sd32_d_atendimento_dia = substr((string) $sd32_d_atendimento,0,2);
+ $sd32_d_atendimento_mes = substr((string) $sd32_d_atendimento,3,2);
+ $sd32_d_atendimento_ano = substr((string) $sd32_d_atendimento,6,4);
  $db_botao1 = true;
 
  if( $opcao=="alterar"  ){
@@ -181,7 +181,7 @@ if( (int)@$z01_i_familiamicroarea <> 0 ){
      <tr>
        <td valign="top" align="center"><br>
        <?php 
-        $chavepri= array("sd32_i_codigo"=>@$sd32_i_codigo);
+        $chavepri= ["sd32_i_codigo"=>@$sd32_i_codigo];
 
         $cliframe_alterar_excluir->chavepri=$chavepri;
         $chavepesquisaprontuario = '0'.@$chavepesquisaprontuario;

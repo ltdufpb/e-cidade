@@ -36,7 +36,7 @@ $cliptucalc->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("j23_anousu");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -90,7 +90,7 @@ db_postmemory($HTTP_POST_VARS);
   						<td><b>Considerar:</b></td>
   						<td>
   						 <?php 
-  								$x = array("a"=>"Ambos","p"=>"Predial","t"=>"Territorial");
+  								$x = ["a"=>"Ambos","p"=>"Predial","t"=>"Territorial"];
   								db_select("considerar",$x,false,2,"");
   							?>
   					  </td>
@@ -101,7 +101,7 @@ db_postmemory($HTTP_POST_VARS);
              	<?php 
     			  	$sqlzona    = "select * from zonas";
                     $resultzona = db_query($sqlzona);
-                    db_multiploselect("j50_zona", "j50_descr", "nsel1", "ssel1", $resultzona, array(), 4, 250);
+                    db_multiploselect("j50_zona", "j50_descr", "nsel1", "ssel1", $resultzona, [], 4, 250);
     	       ?>
           </fieldset>
         </fieldset>

@@ -37,7 +37,7 @@ require_once(modification("classes/db_conplanoorcamento_classe.php"));
 require_once(modification("classes/db_orcfontes_classe.php"));
 require_once(modification("classes/db_orcelemento_classe.php"));
 require_once(modification("libs/db_app.utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $anousu = db_getsession("DB_anousu");
 

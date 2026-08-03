@@ -32,12 +32,6 @@ class Evento
 {
 
   /**
-   * Código do evento
-   * @var integer $iCódigo
-   */
-  private $iCodigo;
-
-  /**
    * Descrição do evento
    * @var string $sEvento
    */
@@ -75,9 +69,14 @@ class Evento
     $this->sEvento = $sEvento;
   }
 
-  public function __construct($iCodigo, $sEvento){
+  /**
+   * @param int $iCodigo
+   */
+  public function __construct(/**
+   * Código do evento
+   */
+  private $iCodigo, $sEvento){
 
-    $this->iCodigo = $iCodigo;
-    $this->sEvento = utf8_decode($sEvento);
+    $this->sEvento = mb_convert_encoding($sEvento, 'ISO-8859-1');
   }
 }

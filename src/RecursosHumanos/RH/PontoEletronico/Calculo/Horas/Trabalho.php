@@ -66,7 +66,7 @@ class Trabalho extends BaseHora implements Horas {
         $horasDaJornada    = $jornada->getHoras();
 
         $aMarcacoesCalcular   = $this->marcacoes->getMarcacoes();
-        $marcacoesParaCalculo = array();
+        $marcacoesParaCalculo = [];
         $calculaIntervaloTrabalhado = true;
 
         if( $this->marcacoes->getQuantidadeMarcacoes() > count($jornada->getHoras())) {
@@ -636,7 +636,7 @@ class Trabalho extends BaseHora implements Horas {
         $regraCalculo               = new RegraHoraTrabalho($this->getDiaTrabalho());
         $marcacoesParaCalculoLinear = clone $this->getDiaTrabalho()->getMarcacoes();
         $entradaNoDia               = ($marcacoesParaCalculoLinear->getMarcacaoEntrada1()          ? $marcacoesParaCalculoLinear->getMarcacaoEntrada1()->getMarcacao() : null);
-        $ultimaMarcacao             = ($marcacoesParaCalculoLinear->getUltimaMarcacaoComRegistro() ? $marcacoesParaCalculoLinear->getUltimaMarcacaoComRegistro()       : null);
+        $ultimaMarcacao             = ($marcacoesParaCalculoLinear->getUltimaMarcacaoComRegistro() ?: null);
         $jornada                    = $this->getDiaTrabalho()->getJornada();
 
         if( $entradaNoDia && ($jornada->getHora(MarcacaoPonto::ENTRADA_1)->oHora->getTimestamp() > $entradaNoDia->getTimestamp()) ) {

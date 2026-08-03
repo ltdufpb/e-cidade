@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE carlote
 class cl_carlote { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j35_idbql = 0; 
-   var $j35_caract = 0; 
-   var $j35_dtlanc_dia = null; 
-   var $j35_dtlanc_mes = null; 
-   var $j35_dtlanc_ano = null; 
-   var $j35_dtlanc = null; 
+   public $j35_idbql = 0; 
+   public $j35_caract = 0; 
+   public $j35_dtlanc_dia = null; 
+   public $j35_dtlanc_mes = null; 
+   public $j35_dtlanc_ano = null; 
+   public $j35_dtlanc = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j35_idbql = int4 = Id lote 
                  j35_caract = int4 = Caracteristica 
                  j35_dtlanc = date = Data de lancamento 
                  ";
    //funcao construtor da classe 
-   function cl_carlote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carlote"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -121,7 +121,7 @@ class cl_carlote {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Caracteristicas ($this->j35_idbql."-".$this->j35_caract) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Caracteristicas já Cadastrado";
@@ -145,13 +145,13 @@ class cl_carlote {
      $resaco = $this->sql_record($this->sql_query_file($this->j35_idbql,$this->j35_caract));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,96,'$this->j35_idbql','I')");
        $resac = db_query("insert into db_acountkey values($acount,97,'$this->j35_caract','I')");
-       $resac = db_query("insert into db_acount values($acount,23,96,'','".AddSlashes(pg_result($resaco,0,'j35_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,23,97,'','".AddSlashes(pg_result($resaco,0,'j35_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,23,8069,'','".AddSlashes(pg_result($resaco,0,'j35_dtlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,23,96,'','".AddSlashes(pg_fetch_result($resaco,0,'j35_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,23,97,'','".AddSlashes(pg_fetch_result($resaco,0,'j35_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,23,8069,'','".AddSlashes(pg_fetch_result($resaco,0,'j35_dtlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -160,10 +160,10 @@ class cl_carlote {
       $this->atualizacampos();
      $sql = " update carlote set ";
      $virgula = "";
-     if(trim($this->j35_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j35_idbql"])){ 
+     if(trim((string) $this->j35_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j35_idbql"])){ 
        $sql  .= $virgula." j35_idbql = $this->j35_idbql ";
        $virgula = ",";
-       if(trim($this->j35_idbql) == null ){ 
+       if(trim((string) $this->j35_idbql) == null ){ 
          $this->erro_sql = " Campo Id lote nao Informado.";
          $this->erro_campo = "j35_idbql";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_carlote {
          return false;
        }
      }
-     if(trim($this->j35_caract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j35_caract"])){ 
+     if(trim((string) $this->j35_caract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j35_caract"])){ 
        $sql  .= $virgula." j35_caract = $this->j35_caract ";
        $virgula = ",";
-       if(trim($this->j35_caract) == null ){ 
+       if(trim((string) $this->j35_caract) == null ){ 
          $this->erro_sql = " Campo Caracteristica nao Informado.";
          $this->erro_campo = "j35_caract";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_carlote {
          return false;
        }
      }
-     if(trim($this->j35_dtlanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j35_dtlanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j35_dtlanc_dia"] !="") ){ 
+     if(trim((string) $this->j35_dtlanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j35_dtlanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j35_dtlanc_dia"] !="") ){ 
        $sql  .= $virgula." j35_dtlanc = '$this->j35_dtlanc' ";
        $virgula = ",";
-       if(trim($this->j35_dtlanc) == null ){ 
+       if(trim((string) $this->j35_dtlanc) == null ){ 
          $this->erro_sql = " Campo Data de lancamento nao Informado.";
          $this->erro_campo = "j35_dtlanc_dia";
          $this->erro_banco = "";
@@ -202,7 +202,7 @@ class cl_carlote {
        if(isset($GLOBALS["HTTP_POST_VARS"]["j35_dtlanc_dia"])){ 
          $sql  .= $virgula." j35_dtlanc = null ";
          $virgula = ",";
-         if(trim($this->j35_dtlanc) == null ){ 
+         if(trim((string) $this->j35_dtlanc) == null ){ 
            $this->erro_sql = " Campo Data de lancamento nao Informado.";
            $this->erro_campo = "j35_dtlanc_dia";
            $this->erro_banco = "";
@@ -224,16 +224,16 @@ class cl_carlote {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,96,'$this->j35_idbql','A')");
          $resac = db_query("insert into db_acountkey values($acount,97,'$this->j35_caract','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j35_idbql"]))
-           $resac = db_query("insert into db_acount values($acount,23,96,'".AddSlashes(pg_result($resaco,$conresaco,'j35_idbql'))."','$this->j35_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,23,96,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j35_idbql'))."','$this->j35_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j35_caract"]))
-           $resac = db_query("insert into db_acount values($acount,23,97,'".AddSlashes(pg_result($resaco,$conresaco,'j35_caract'))."','$this->j35_caract',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,23,97,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j35_caract'))."','$this->j35_caract',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j35_dtlanc"]))
-           $resac = db_query("insert into db_acount values($acount,23,8069,'".AddSlashes(pg_result($resaco,$conresaco,'j35_dtlanc'))."','$this->j35_dtlanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,23,8069,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j35_dtlanc'))."','$this->j35_dtlanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -278,13 +278,13 @@ class cl_carlote {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,96,'$j35_idbql','E')");
          $resac = db_query("insert into db_acountkey values($acount,97,'$j35_caract','E')");
-         $resac = db_query("insert into db_acount values($acount,23,96,'','".AddSlashes(pg_result($resaco,$iresaco,'j35_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,23,97,'','".AddSlashes(pg_result($resaco,$iresaco,'j35_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,23,8069,'','".AddSlashes(pg_result($resaco,$iresaco,'j35_dtlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,23,96,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j35_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,23,97,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j35_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,23,8069,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j35_dtlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from carlote
@@ -350,7 +350,7 @@ class cl_carlote {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:carlote";
@@ -364,7 +364,7 @@ class cl_carlote {
    function sql_query ( $j35_idbql=null,$j35_caract=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_carlote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -410,7 +410,7 @@ class cl_carlote {
    function sql_query_file ( $j35_idbql=null,$j35_caract=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,7 +439,7 @@ class cl_carlote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

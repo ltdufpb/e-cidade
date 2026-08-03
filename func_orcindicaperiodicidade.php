@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcindicaperiodicidade_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcindicaperiodicidade = new cl_orcindicaperiodicidade;
 $clorcindicaperiodicidade->rotulo->label("o09_sequencial");
 $clorcindicaperiodicidade->rotulo->label("o09_descricao");
@@ -98,9 +98,9 @@ $clorcindicaperiodicidade->rotulo->label("o09_descricao");
         }else{
            $sql = $clorcindicaperiodicidade->sql_query("",$campos,"o09_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o09_descricao)){
-          $repassa = array("chave_o09_sequencial"=>$chave_o09_sequencial,"chave_o09_descricao"=>$chave_o09_descricao);
+          $repassa = ["chave_o09_sequencial"=>$chave_o09_sequencial,"chave_o09_descricao"=>$chave_o09_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

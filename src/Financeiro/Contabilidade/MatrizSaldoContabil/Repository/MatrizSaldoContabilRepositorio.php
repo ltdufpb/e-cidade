@@ -11,7 +11,7 @@ class MatrizSaldoContabilRepositorio
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param int $sequencial
@@ -53,14 +53,14 @@ class MatrizSaldoContabilRepositorio
     public function get()
     {
         $dao = new cl_matriz_saldo_contabil();
-        $sql = $dao->sql(array('*'), $this->scopes);
+        $sql = $dao->sql(['*'], $this->scopes);
         $rs = db_query($sql);
 
         if (!$rs) {
             throw new Exception("Não foi possível buscar as matrizes saldos contábeis.\nContate o suporte.");
         }
 
-        $matrizes = array();
+        $matrizes = [];
 
         if (pg_num_rows($rs) === 0) {
             return $matrizes;
@@ -90,7 +90,7 @@ class MatrizSaldoContabilRepositorio
      * @param MatrizSaldoContabil|null $matrizSaldoContabil
      * @throws Exception
      */
-    public function delete(MatrizSaldoContabil $matrizSaldoContabil = null)
+    public function delete(?MatrizSaldoContabil $matrizSaldoContabil = null)
     {
         $sequencial = $matrizSaldoContabil instanceof MatrizSaldoContabil
             ? $matrizSaldoContabil->getSequencial()
@@ -135,7 +135,7 @@ class MatrizSaldoContabilRepositorio
      * @return MatrizSaldoContabil|null
      * @throws Exception
      */
-    public static function find($sequencial, array $columns = array('*'))
+    public static function find($sequencial, array $columns = ['*'])
     {
         $dao = new cl_matriz_saldo_contabil();
         $sql = $dao->sql_query($sequencial, implode(', ', $columns));

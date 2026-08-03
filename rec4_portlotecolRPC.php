@@ -81,7 +81,7 @@ $oJson       = new services_json();
     $rsConsultaFuncionarios = @db_query($sSqlConsultaFuncionarios);
     
     if ( $rsConsultaFuncionarios == false) {
-      echo $oJson->encode(array("iStatus"=>2, "sMensagem"=>urlencode("Funcionários não Encontrados")));
+      echo $oJson->encode(["iStatus"=>2, "sMensagem"=>urlencode("Funcionários não Encontrados")]);
       exit;
     } else {  
       $iNroLinhas = pg_num_rows($rsConsultaFuncionarios);
@@ -109,7 +109,7 @@ $oJson       = new services_json();
   	
     $sMensagem 	    = "Funcionários não Encontrados";
     $iStatus   	    = 2;
-    $aRetornaCampos = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+    $aRetornaCampos = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
     
   } 
     

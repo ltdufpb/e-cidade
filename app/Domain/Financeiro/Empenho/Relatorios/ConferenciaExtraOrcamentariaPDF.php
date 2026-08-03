@@ -7,20 +7,9 @@ use ECidade\Pdf\Pdf;
 
 class ConferenciaExtraOrcamentariaPDF extends Pdf
 {
-    private $datainicial;
-    private $datafinal;
-    private $tipo;
-    private $dados;
-
-
-    public function __construct($datainicial, $datafinal, $tipo, $dados)
+    public function __construct(private $datainicial, private $datafinal, private $tipo, private $dados)
     {
         parent::__construct();
-//        dd($dados);
-        $this->datainicial = $datainicial;
-        $this->datafinal = $datafinal;
-        $this->tipo = $tipo;
-        $this->dados = $dados;
     }
 
     public function emitir()

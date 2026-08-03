@@ -29,37 +29,37 @@
 //CLASSE DA ENTIDADE orcppa
 class cl_orcppa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o23_codppa = 0; 
-   var $o23_codleippa = 0; 
-   var $o23_anoexe = 0; 
-   var $o23_orgao = 0; 
-   var $o23_unidade = 0; 
-   var $o23_funcao = 0; 
-   var $o23_subfuncao = 0; 
-   var $o23_programa = 0; 
-   var $o23_programatxt = null; 
-   var $o23_acao = 0; 
-   var $o23_acaotxt = null; 
-   var $o23_produto = 0; 
-   var $o23_unimed = null; 
-   var $o23_indica = 0; 
-   var $o23_sitinicial = null; 
-   var $o23_sitfinal = null; 
+   public $o23_codppa = 0; 
+   public $o23_codleippa = 0; 
+   public $o23_anoexe = 0; 
+   public $o23_orgao = 0; 
+   public $o23_unidade = 0; 
+   public $o23_funcao = 0; 
+   public $o23_subfuncao = 0; 
+   public $o23_programa = 0; 
+   public $o23_programatxt = null; 
+   public $o23_acao = 0; 
+   public $o23_acaotxt = null; 
+   public $o23_produto = 0; 
+   public $o23_unimed = null; 
+   public $o23_indica = 0; 
+   public $o23_sitinicial = null; 
+   public $o23_sitfinal = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o23_codppa = int8 = Código 
                  o23_codleippa = int8 = Lei 
                  o23_anoexe = int4 = Exercicio 
@@ -78,10 +78,10 @@ class cl_orcppa {
                  o23_sitfinal = text = Sit. Final 
                  ";
    //funcao construtor da classe 
-   function cl_orcppa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcppa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -245,10 +245,10 @@ class cl_orcppa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o23_codppa = pg_result($result,0,0); 
+       $this->o23_codppa = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from orcppa_o23_codppa_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o23_codppa)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o23_codppa)){
          $this->erro_sql = " Campo o23_codppa maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -306,7 +306,7 @@ class cl_orcppa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "PPA ($this->o23_codppa) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "PPA já Cadastrado";
@@ -330,25 +330,25 @@ class cl_orcppa {
      $resaco = $this->sql_record($this->sql_query_file($this->o23_codppa));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6473,'$this->o23_codppa','I')");
-       $resac = db_query("insert into db_acount values($acount,1065,6473,'','".AddSlashes(pg_result($resaco,0,'o23_codppa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6507,'','".AddSlashes(pg_result($resaco,0,'o23_codleippa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6493,'','".AddSlashes(pg_result($resaco,0,'o23_anoexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6474,'','".AddSlashes(pg_result($resaco,0,'o23_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6475,'','".AddSlashes(pg_result($resaco,0,'o23_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6476,'','".AddSlashes(pg_result($resaco,0,'o23_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6477,'','".AddSlashes(pg_result($resaco,0,'o23_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6478,'','".AddSlashes(pg_result($resaco,0,'o23_programa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6479,'','".AddSlashes(pg_result($resaco,0,'o23_programatxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6480,'','".AddSlashes(pg_result($resaco,0,'o23_acao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6481,'','".AddSlashes(pg_result($resaco,0,'o23_acaotxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6482,'','".AddSlashes(pg_result($resaco,0,'o23_produto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6483,'','".AddSlashes(pg_result($resaco,0,'o23_unimed'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6862,'','".AddSlashes(pg_result($resaco,0,'o23_indica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6863,'','".AddSlashes(pg_result($resaco,0,'o23_sitinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1065,6864,'','".AddSlashes(pg_result($resaco,0,'o23_sitfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6473,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_codppa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6507,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_codleippa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6493,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_anoexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6474,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6475,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6476,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6477,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6478,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_programa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6479,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_programatxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6480,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_acao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6481,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_acaotxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6482,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_produto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6483,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_unimed'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6862,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_indica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6863,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_sitinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1065,6864,'','".AddSlashes(pg_fetch_result($resaco,0,'o23_sitfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -357,10 +357,10 @@ class cl_orcppa {
       $this->atualizacampos();
      $sql = " update orcppa set ";
      $virgula = "";
-     if(trim($this->o23_codppa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_codppa"])){ 
+     if(trim((string) $this->o23_codppa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_codppa"])){ 
        $sql  .= $virgula." o23_codppa = $this->o23_codppa ";
        $virgula = ",";
-       if(trim($this->o23_codppa) == null ){ 
+       if(trim((string) $this->o23_codppa) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "o23_codppa";
          $this->erro_banco = "";
@@ -370,10 +370,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_codleippa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_codleippa"])){ 
+     if(trim((string) $this->o23_codleippa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_codleippa"])){ 
        $sql  .= $virgula." o23_codleippa = $this->o23_codleippa ";
        $virgula = ",";
-       if(trim($this->o23_codleippa) == null ){ 
+       if(trim((string) $this->o23_codleippa) == null ){ 
          $this->erro_sql = " Campo Lei nao Informado.";
          $this->erro_campo = "o23_codleippa";
          $this->erro_banco = "";
@@ -383,10 +383,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_anoexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_anoexe"])){ 
+     if(trim((string) $this->o23_anoexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_anoexe"])){ 
        $sql  .= $virgula." o23_anoexe = $this->o23_anoexe ";
        $virgula = ",";
-       if(trim($this->o23_anoexe) == null ){ 
+       if(trim((string) $this->o23_anoexe) == null ){ 
          $this->erro_sql = " Campo Exercicio nao Informado.";
          $this->erro_campo = "o23_anoexe";
          $this->erro_banco = "";
@@ -396,10 +396,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_orgao"])){ 
+     if(trim((string) $this->o23_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_orgao"])){ 
        $sql  .= $virgula." o23_orgao = $this->o23_orgao ";
        $virgula = ",";
-       if(trim($this->o23_orgao) == null ){ 
+       if(trim((string) $this->o23_orgao) == null ){ 
          $this->erro_sql = " Campo Órgão nao Informado.";
          $this->erro_campo = "o23_orgao";
          $this->erro_banco = "";
@@ -409,10 +409,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_unidade"])){ 
+     if(trim((string) $this->o23_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_unidade"])){ 
        $sql  .= $virgula." o23_unidade = $this->o23_unidade ";
        $virgula = ",";
-       if(trim($this->o23_unidade) == null ){ 
+       if(trim((string) $this->o23_unidade) == null ){ 
          $this->erro_sql = " Campo Unidade nao Informado.";
          $this->erro_campo = "o23_unidade";
          $this->erro_banco = "";
@@ -422,10 +422,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_funcao"])){ 
+     if(trim((string) $this->o23_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_funcao"])){ 
        $sql  .= $virgula." o23_funcao = $this->o23_funcao ";
        $virgula = ",";
-       if(trim($this->o23_funcao) == null ){ 
+       if(trim((string) $this->o23_funcao) == null ){ 
          $this->erro_sql = " Campo Função nao Informado.";
          $this->erro_campo = "o23_funcao";
          $this->erro_banco = "";
@@ -435,10 +435,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_subfuncao"])){ 
+     if(trim((string) $this->o23_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_subfuncao"])){ 
        $sql  .= $virgula." o23_subfuncao = $this->o23_subfuncao ";
        $virgula = ",";
-       if(trim($this->o23_subfuncao) == null ){ 
+       if(trim((string) $this->o23_subfuncao) == null ){ 
          $this->erro_sql = " Campo Sub Função nao Informado.";
          $this->erro_campo = "o23_subfuncao";
          $this->erro_banco = "";
@@ -448,10 +448,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_programa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_programa"])){ 
+     if(trim((string) $this->o23_programa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_programa"])){ 
        $sql  .= $virgula." o23_programa = $this->o23_programa ";
        $virgula = ",";
-       if(trim($this->o23_programa) == null ){ 
+       if(trim((string) $this->o23_programa) == null ){ 
          $this->erro_sql = " Campo Programa nao Informado.";
          $this->erro_campo = "o23_programa";
          $this->erro_banco = "";
@@ -461,14 +461,14 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_programatxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_programatxt"])){ 
+     if(trim((string) $this->o23_programatxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_programatxt"])){ 
        $sql  .= $virgula." o23_programatxt = '$this->o23_programatxt' ";
        $virgula = ",";
      }
-     if(trim($this->o23_acao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_acao"])){ 
+     if(trim((string) $this->o23_acao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_acao"])){ 
        $sql  .= $virgula." o23_acao = $this->o23_acao ";
        $virgula = ",";
-       if(trim($this->o23_acao) == null ){ 
+       if(trim((string) $this->o23_acao) == null ){ 
          $this->erro_sql = " Campo Projetos / Atividades nao Informado.";
          $this->erro_campo = "o23_acao";
          $this->erro_banco = "";
@@ -478,14 +478,14 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_acaotxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_acaotxt"])){ 
+     if(trim((string) $this->o23_acaotxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_acaotxt"])){ 
        $sql  .= $virgula." o23_acaotxt = '$this->o23_acaotxt' ";
        $virgula = ",";
      }
-     if(trim($this->o23_produto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_produto"])){ 
+     if(trim((string) $this->o23_produto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_produto"])){ 
        $sql  .= $virgula." o23_produto = $this->o23_produto ";
        $virgula = ",";
-       if(trim($this->o23_produto) == null ){ 
+       if(trim((string) $this->o23_produto) == null ){ 
          $this->erro_sql = " Campo Produto nao Informado.";
          $this->erro_campo = "o23_produto";
          $this->erro_banco = "";
@@ -495,10 +495,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_unimed)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_unimed"])){ 
+     if(trim((string) $this->o23_unimed)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_unimed"])){ 
        $sql  .= $virgula." o23_unimed = '$this->o23_unimed' ";
        $virgula = ",";
-       if(trim($this->o23_unimed) == null ){ 
+       if(trim((string) $this->o23_unimed) == null ){ 
          $this->erro_sql = " Campo Unidade medida nao Informado.";
          $this->erro_campo = "o23_unimed";
          $this->erro_banco = "";
@@ -508,10 +508,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_indica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_indica"])){ 
+     if(trim((string) $this->o23_indica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_indica"])){ 
        $sql  .= $virgula." o23_indica = $this->o23_indica ";
        $virgula = ",";
-       if(trim($this->o23_indica) == null ){ 
+       if(trim((string) $this->o23_indica) == null ){ 
          $this->erro_sql = " Campo Indicador nao Informado.";
          $this->erro_campo = "o23_indica";
          $this->erro_banco = "";
@@ -521,10 +521,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_sitinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_sitinicial"])){ 
+     if(trim((string) $this->o23_sitinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_sitinicial"])){ 
        $sql  .= $virgula." o23_sitinicial = '$this->o23_sitinicial' ";
        $virgula = ",";
-       if(trim($this->o23_sitinicial) == null ){ 
+       if(trim((string) $this->o23_sitinicial) == null ){ 
          $this->erro_sql = " Campo Sit. Inicial nao Informado.";
          $this->erro_campo = "o23_sitinicial";
          $this->erro_banco = "";
@@ -534,10 +534,10 @@ class cl_orcppa {
          return false;
        }
      }
-     if(trim($this->o23_sitfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_sitfinal"])){ 
+     if(trim((string) $this->o23_sitfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o23_sitfinal"])){ 
        $sql  .= $virgula." o23_sitfinal = '$this->o23_sitfinal' ";
        $virgula = ",";
-       if(trim($this->o23_sitfinal) == null ){ 
+       if(trim((string) $this->o23_sitfinal) == null ){ 
          $this->erro_sql = " Campo Sit. Final nao Informado.";
          $this->erro_campo = "o23_sitfinal";
          $this->erro_banco = "";
@@ -555,41 +555,41 @@ class cl_orcppa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6473,'$this->o23_codppa','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_codppa"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6473,'".AddSlashes(pg_result($resaco,$conresaco,'o23_codppa'))."','$this->o23_codppa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6473,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_codppa'))."','$this->o23_codppa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_codleippa"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6507,'".AddSlashes(pg_result($resaco,$conresaco,'o23_codleippa'))."','$this->o23_codleippa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6507,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_codleippa'))."','$this->o23_codleippa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_anoexe"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6493,'".AddSlashes(pg_result($resaco,$conresaco,'o23_anoexe'))."','$this->o23_anoexe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6493,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_anoexe'))."','$this->o23_anoexe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_orgao"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6474,'".AddSlashes(pg_result($resaco,$conresaco,'o23_orgao'))."','$this->o23_orgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6474,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_orgao'))."','$this->o23_orgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_unidade"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6475,'".AddSlashes(pg_result($resaco,$conresaco,'o23_unidade'))."','$this->o23_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6475,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_unidade'))."','$this->o23_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_funcao"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6476,'".AddSlashes(pg_result($resaco,$conresaco,'o23_funcao'))."','$this->o23_funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6476,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_funcao'))."','$this->o23_funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_subfuncao"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6477,'".AddSlashes(pg_result($resaco,$conresaco,'o23_subfuncao'))."','$this->o23_subfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6477,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_subfuncao'))."','$this->o23_subfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_programa"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6478,'".AddSlashes(pg_result($resaco,$conresaco,'o23_programa'))."','$this->o23_programa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6478,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_programa'))."','$this->o23_programa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_programatxt"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6479,'".AddSlashes(pg_result($resaco,$conresaco,'o23_programatxt'))."','$this->o23_programatxt',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6479,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_programatxt'))."','$this->o23_programatxt',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_acao"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6480,'".AddSlashes(pg_result($resaco,$conresaco,'o23_acao'))."','$this->o23_acao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6480,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_acao'))."','$this->o23_acao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_acaotxt"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6481,'".AddSlashes(pg_result($resaco,$conresaco,'o23_acaotxt'))."','$this->o23_acaotxt',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6481,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_acaotxt'))."','$this->o23_acaotxt',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_produto"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6482,'".AddSlashes(pg_result($resaco,$conresaco,'o23_produto'))."','$this->o23_produto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6482,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_produto'))."','$this->o23_produto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_unimed"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6483,'".AddSlashes(pg_result($resaco,$conresaco,'o23_unimed'))."','$this->o23_unimed',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6483,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_unimed'))."','$this->o23_unimed',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_indica"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6862,'".AddSlashes(pg_result($resaco,$conresaco,'o23_indica'))."','$this->o23_indica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6862,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_indica'))."','$this->o23_indica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_sitinicial"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6863,'".AddSlashes(pg_result($resaco,$conresaco,'o23_sitinicial'))."','$this->o23_sitinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6863,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_sitinicial'))."','$this->o23_sitinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o23_sitfinal"]))
-           $resac = db_query("insert into db_acount values($acount,1065,6864,'".AddSlashes(pg_result($resaco,$conresaco,'o23_sitfinal'))."','$this->o23_sitfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1065,6864,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o23_sitfinal'))."','$this->o23_sitfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -634,25 +634,25 @@ class cl_orcppa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6473,'$o23_codppa','E')");
-         $resac = db_query("insert into db_acount values($acount,1065,6473,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_codppa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6507,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_codleippa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6493,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_anoexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6474,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6475,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6476,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6477,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6478,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_programa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6479,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_programatxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6480,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_acao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6481,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_acaotxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6482,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_produto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6483,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_unimed'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6862,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_indica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6863,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_sitinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1065,6864,'','".AddSlashes(pg_result($resaco,$iresaco,'o23_sitfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6473,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_codppa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6507,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_codleippa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6493,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_anoexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6474,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6475,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6476,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6477,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6478,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_programa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6479,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_programatxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6480,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_acao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6481,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_acaotxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6482,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_produto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6483,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_unimed'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6862,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_indica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6863,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_sitinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1065,6864,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o23_sitfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcppa
@@ -712,7 +712,7 @@ class cl_orcppa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcppa";
@@ -727,7 +727,7 @@ class cl_orcppa {
    function sql_query ( $o23_codppa=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -765,7 +765,7 @@ class cl_orcppa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -778,7 +778,7 @@ class cl_orcppa {
    function sql_query_file ( $o23_codppa=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -799,7 +799,7 @@ class cl_orcppa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -811,7 +811,7 @@ class cl_orcppa {
    function sql_query_compl ( $o23_codppa=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -842,7 +842,7 @@ class cl_orcppa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -859,7 +859,7 @@ class cl_orcppa {
    function sql_query_exporta ($exercicio="",$o23_codppa=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -897,7 +897,7 @@ class cl_orcppa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

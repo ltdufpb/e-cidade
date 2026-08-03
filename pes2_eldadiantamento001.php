@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -128,7 +128,7 @@ if(isset($confirma)){
   $res_cons = db_query("select * from pontofa where r21_anousu = $DBtxt23 and r21_mesusu = $DBtxt25 and r21_instit = ".db_getsession('DB_instit'));
   
   
-  if(pg_numrows($res_cons) > 0){
+  if(pg_num_rows($res_cons) > 0){
     db_query("delete from pontofa where  r21_anousu = $DBtxt23 and r21_mesusu = $DBtxt25 and r21_instit = ".db_getsession('DB_instit'));
   }
   
@@ -176,7 +176,7 @@ where ferias <= 10
 
   $msg_erro = 1;
 
-  for($x = 0; $x < pg_numrows($result);$x++){
+  for($x = 0; $x < pg_num_rows($result);$x++){
      db_fieldsmemory($result,$x);
      $sql_exec = "insert into pontofa values(
                                $rh02_anousu,

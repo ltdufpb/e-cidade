@@ -237,7 +237,7 @@ if (!empty($e56_autori) &&
             echo "</td>";
           }
 
-          $planosOrcamentarios = array("" => "Selecione");
+          $planosOrcamentarios = ["" => "Selecione"];
           if (!empty($o47_coddot)) {
               $daoOrcDotacaPlanoOrcamento = new cl_orcdotacaoplanoorcamentario();
               $where = "o155_coddot = {$o47_coddot} and o155_anousu = " . $anoSessao;
@@ -433,7 +433,7 @@ if(isset($tot) && $tot<0 && empty($cancelar) && isset($pesquisa_dot)){
       db_iframe_empautidot.hide();
       <?php
       if($db_opcao!=1){
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
       }
       ?>
     }

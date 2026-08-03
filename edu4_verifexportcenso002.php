@@ -40,7 +40,7 @@ function SerieTurma($turma,$tipo){
           WHERE ed57_i_codigo = $turma
          ";
   $result = db_query($sql);
-  return trim(pg_result($result,0,0));
+  return trim(pg_fetch_result($result,0,0));
  }else{
   if($tipo==4){
    return "Atividade Complementar";

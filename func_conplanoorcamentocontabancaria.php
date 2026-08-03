@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplanoorcamentocontabancaria_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconplanoorcamentocontabancaria = new cl_conplanoorcamentocontabancaria;
 $clconplanoorcamentocontabancaria->rotulo->label("c56_sequencial");
 $clconplanoorcamentocontabancaria->rotulo->label("c56_sequencial");
@@ -98,9 +98,9 @@ $clconplanoorcamentocontabancaria->rotulo->label("c56_sequencial");
         }else{
            $sql = $clconplanoorcamentocontabancaria->sql_query("",$campos,"c56_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c56_sequencial)){
-          $repassa = array("chave_c56_sequencial"=>$chave_c56_sequencial,"chave_c56_sequencial"=>$chave_c56_sequencial);
+          $repassa = ["chave_c56_sequencial"=>$chave_c56_sequencial,"chave_c56_sequencial"=>$chave_c56_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

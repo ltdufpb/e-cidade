@@ -241,7 +241,7 @@ function js_verifica() {
 					<td nowrap>
 						<?php 
 						  $lProcessoSistema = true;
-							db_select('lProcessoSistema', array(true=>'SIM', false=>'NÃO'), true, 1, "onchange='js_processoSistema()' style='width: 95px'")
+							db_select('lProcessoSistema', [true=>'SIM', false=>'NÃO'], true, 1, "onchange='js_processoSistema()' style='width: 95px'")
 						?>
 					</td>
 				</tr>

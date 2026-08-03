@@ -28,7 +28,7 @@ class RegraLicitaconAdesaoPrecoOutroOrgao extends RegraLicitacon {
 
   protected $sMensagem = "Os campos da Adesão à Ata de Registro de Preço são de preenchimento obrigatório.";
 
-  protected $aModalidades = array('RPO');
+  protected $aModalidades = ['RPO'];
 
   /**
    * @return array

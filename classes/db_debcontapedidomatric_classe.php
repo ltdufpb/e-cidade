@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE debcontapedidomatric
 class cl_debcontapedidomatric { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $d68_codigo = 0; 
-   var $d68_matric = 0; 
+   public $d68_codigo = 0; 
+   public $d68_matric = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  d68_codigo = int4 = Codigo sequencial 
                  d68_matric = int4 = Matrícula do Imóvel 
                  ";
    //funcao construtor da classe 
-   function cl_debcontapedidomatric() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontapedidomatric"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_debcontapedidomatric {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Matricula do debito em conta ($this->d68_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Matricula do debito em conta já Cadastrado";
@@ -129,11 +129,11 @@ class cl_debcontapedidomatric {
      $resaco = $this->sql_record($this->sql_query_file($this->d68_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7963,'$this->d68_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1335,7963,'','".AddSlashes(pg_result($resaco,0,'d68_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1335,7964,'','".AddSlashes(pg_result($resaco,0,'d68_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1335,7963,'','".AddSlashes(pg_fetch_result($resaco,0,'d68_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1335,7964,'','".AddSlashes(pg_fetch_result($resaco,0,'d68_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_debcontapedidomatric {
       $this->atualizacampos();
      $sql = " update debcontapedidomatric set ";
      $virgula = "";
-     if(trim($this->d68_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d68_codigo"])){ 
+     if(trim((string) $this->d68_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d68_codigo"])){ 
        $sql  .= $virgula." d68_codigo = $this->d68_codigo ";
        $virgula = ",";
-       if(trim($this->d68_codigo) == null ){ 
+       if(trim((string) $this->d68_codigo) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "d68_codigo";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_debcontapedidomatric {
          return false;
        }
      }
-     if(trim($this->d68_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d68_matric"])){ 
+     if(trim((string) $this->d68_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d68_matric"])){ 
        $sql  .= $virgula." d68_matric = $this->d68_matric ";
        $virgula = ",";
-       if(trim($this->d68_matric) == null ){ 
+       if(trim((string) $this->d68_matric) == null ){ 
          $this->erro_sql = " Campo Matrícula do Imóvel nao Informado.";
          $this->erro_campo = "d68_matric";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_debcontapedidomatric {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7963,'$this->d68_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d68_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1335,7963,'".AddSlashes(pg_result($resaco,$conresaco,'d68_codigo'))."','$this->d68_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1335,7963,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d68_codigo'))."','$this->d68_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d68_matric"]))
-           $resac = db_query("insert into db_acount values($acount,1335,7964,'".AddSlashes(pg_result($resaco,$conresaco,'d68_matric'))."','$this->d68_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1335,7964,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d68_matric'))."','$this->d68_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_debcontapedidomatric {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7963,'$d68_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1335,7963,'','".AddSlashes(pg_result($resaco,$iresaco,'d68_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1335,7964,'','".AddSlashes(pg_result($resaco,$iresaco,'d68_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1335,7963,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d68_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1335,7964,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d68_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from debcontapedidomatric
@@ -291,7 +291,7 @@ class cl_debcontapedidomatric {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:debcontapedidomatric";
@@ -305,7 +305,7 @@ class cl_debcontapedidomatric {
    function sql_query ( $d68_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -332,7 +332,7 @@ class cl_debcontapedidomatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -344,7 +344,7 @@ class cl_debcontapedidomatric {
    function sql_query_file ( $d68_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -365,7 +365,7 @@ class cl_debcontapedidomatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -45,7 +45,7 @@ $oRetorno               = new stdClass();
 $oRetorno->status       = 1;
 $oRetorno->message      = '';
 
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 try {
 	switch ($oParam->exec) {
 

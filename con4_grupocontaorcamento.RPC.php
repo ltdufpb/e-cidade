@@ -133,24 +133,24 @@ switch ($oParam->exec) {
     db_inicio_transacao();
     try {
 
-      if (trim($oParam->c60_estrut) == "") {
+      if (trim((string) $oParam->c60_estrut) == "") {
         throw new BusinessException("Estrutural da conta não informado.");
       }
 
-      $aClausulaWhereOrcamento = array();
+      $aClausulaWhereOrcamento = [];
       $aClausulaWhereOrcamento[] = "c60_anousu = {$iAnoSessao}";
       $aClausulaWhereOrcamento[] = "c60_estrut ilike '{$oParam->c60_estrut}%'";
       
-      $aClausulaWhereReceita   = array();
+      $aClausulaWhereReceita   = [];
       $aClausulaWhereReceita[] = "c60_anousu = {$iAnoSessao}";
       $aClausulaWhereReceita[] = "c60_estrut ilike '{$oParam->c60_estrut}%'";
       
       foreach ($oParam->aVinculosOrcamento as $iIndice => $oVinculo) {
-        if (trim($oVinculo->valor) != "") {
+        if (trim((string) $oVinculo->valor) != "") {
           $aClausulaWhereOrcamento[] = "{$oVinculo->nome_campo} {$oVinculo->regra_compara} ({$oVinculo->valor})";
         }
         
-        if (trim($oVinculo->valor) != "" && ($oVinculo->nome_campo == 'o58_codigo' || $oVinculo->nome_campo == 'o58_concarpeculiar') ) {
+        if (trim((string) $oVinculo->valor) != "" && ($oVinculo->nome_campo == 'o58_codigo' || $oVinculo->nome_campo == 'o58_concarpeculiar') ) {
           $aClausulaWhereReceita[] = "{$oVinculo->nome_campo} {$oVinculo->regra_compara} ({$oVinculo->valor})";
         }
       }
@@ -227,13 +227,13 @@ switch ($oParam->exec) {
       $oGrupoContaOrcamento = new GrupoContaOrcamento($oParam->c20_sequencial);
       $aContasPlano         = $oGrupoContaOrcamento->getContas();
       
-      $aContasRetorno = array();
+      $aContasRetorno = [];
       foreach ($aContasPlano as $iIndice => $oContaOrcamento) {
         
         $oStdConta               = new stdClass();
         $oStdConta->iCodigoConta = $oContaOrcamento->getCodigoConta();
         $oStdConta->estrutural   = $oContaOrcamento->getEstrutural();
-        $oStdConta->descricao    = urlencode($oContaOrcamento->getDescricao());
+        $oStdConta->descricao    = urlencode((string) $oContaOrcamento->getDescricao());
         $aContasRetorno[] = $oStdConta;
       }
       

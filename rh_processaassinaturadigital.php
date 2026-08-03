@@ -34,7 +34,7 @@ require_once modification("libs/db_app.utils.php");
 require_once modification("libs/db_utils.php");
 require_once modification("dbforms/db_funcoes.php");
 
-$aSituacaoPortarias = array(
+$aSituacaoPortarias = [
     'C' => 'Criada',
     'O' => 'Conferido',
     'D' => 'Devolvido para abertura',
@@ -42,7 +42,7 @@ $aSituacaoPortarias = array(
     'F' => 'Devolvido para conferência',
     'S' => 'Assinado',
     'I' => 'Impresso',
-);
+];
 
 $anousu = db_getsession("DB_anousu");
 

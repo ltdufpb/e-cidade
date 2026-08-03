@@ -33,7 +33,7 @@ include(modification("libs/db_libpessoal.php"));
 include(modification("classes/db_padroes_classe.php"));
 include(modification("classes/db_rhcadregime_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clpadroes = new cl_padroes;
 $clrhcadregime = new cl_rhcadregime;
 $db_opcao = 1;

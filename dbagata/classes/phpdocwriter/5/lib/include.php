@@ -28,7 +28,7 @@
 
 
 // define included package locations
-$GLOBALS["IORCA"]["BASE"]["PATH"] = dirname(__FILE__) . "/";
+$GLOBALS["IORCA"]["BASE"]["PATH"] = __DIR__ . "/";
 
 function import($classPath) {
 	$importFile = str_replace(".", "/", $classPath) . ".php";

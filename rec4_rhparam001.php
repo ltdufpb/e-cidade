@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 
 $clrhparam          = new cl_rhparam;
-$oPost              = db_utils::postmemory($HTTP_POST_VARS);
+$oPost              = db_utils::postmemory($_POST);
 $db_botao           = true;
 $lSqlErro           = false;
 $sMsgErro           = null;
@@ -187,12 +187,12 @@ if(isset($oPost->incluir)){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 <?php
-  db_app::load(array(
+  db_app::load([
     "prototype.js",
     "scripts.js",
     "estilos.css",
     "DBLookUp.widget.js",
-  ));
+  ]);
 ?>
 </head>
 <body class="body-default">

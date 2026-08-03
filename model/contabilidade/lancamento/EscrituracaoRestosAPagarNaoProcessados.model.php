@@ -35,20 +35,19 @@
 class EscrituracaoRestosAPagarNaoProcessados {
 
 	/**
-	 * Ano da Escrituracao
-	 * @var integer
-	 */
-	private $iAno;
-
-	/**
 	 * Instituicao em que esta sendo realizada a Escrituracao
 	 * @var Instituicao
 	 */
 	private $oInstituicao;
 
-	function __construct($iAno, $iInstituicao) {
+	/**
+     * @param int $iAno
+     */
+    function __construct(/**
+     * Ano da Escrituracao
+     */
+    private $iAno, $iInstituicao) {
 
-		$this->iAno         = $iAno;
 		$this->oInstituicao = new Instituicao($iInstituicao);
 	}
 

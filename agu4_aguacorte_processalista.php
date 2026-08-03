@@ -44,7 +44,7 @@
   $claguacortetipodebito = new cl_aguacortetipodebito;
   $claguabasecar = new cl_aguabasecar;
 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
 
 ?>
 <html>

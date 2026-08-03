@@ -142,7 +142,7 @@ class PensaoAlimenticia
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'ano' => $this->getAno(),
             'mes' => $this->getMes(),
@@ -151,7 +151,7 @@ class PensaoAlimenticia
             'valorRescisao' => $this->getValorRescisao(),
             'valor' => $this->getValor(),
             'valorDecimo' => $this->getValorDecimo()
-        );
+        ];
     }
 
     /**

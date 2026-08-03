@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("classes/db_marca_classe.php"));
 include(modification("classes/db_marcaloc_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clmarca = new cl_marca;
 $clmarcaloc = new cl_marcaloc;
 $clcgm = new cl_cgm;
@@ -123,7 +123,7 @@ for($x=0;$x<$clmarca->numrows;$x++){
   if($ma01_o_imagem){
         $arquivo = "tmp/".$ma01_c_nomeimagem;
    db_query("begin");
-   pg_loexport($ma01_o_imagem,$arquivo);
+   pg_lo_export($ma01_o_imagem,$arquivo);
    db_query("end");
   }else{
    $arquivo = "imagens/semmarca.jpg";

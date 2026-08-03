@@ -37,8 +37,8 @@ $clrotulo->label("y39_codandam");
 $clrotulo->label("y59_valor");
 $clrotulo->label("y59_fator");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 if(isset($opcao) && $opcao == "alterar"){
   $result = $clautotipo->sql_record($clautotipo->sql_query_baixa(null,"*",null,"y59_codauto=$y59_codauto and y59_codtipo=$y59_codtipo and y87_dtbaixa is null"));
@@ -138,7 +138,7 @@ db_input('y29_descr',40,$Iy29_descr,true,'text',3,'')
    </td>
    <td>
     <?php 
-      $x = array('0'=>'Nenhum','1'=>'Acrescimo','2'=>'Redução');
+      $x = ['0'=>'Nenhum','1'=>'Acrescimo','2'=>'Redução'];
       db_select('y59_tipo',$x,true,$db_opcao,"");
      ?>
     </td>
@@ -179,7 +179,7 @@ db_input('y29_descr',40,$Iy29_descr,true,'text',3,'')
   <tr>
     <td colspan="2" align="center">
     <?php 
-    $chavepri= array("y59_codauto"=>@$y59_codauto,"y59_codtipo"=>@$y59_codtipo);
+    $chavepri= ["y59_codauto"=>@$y59_codauto,"y59_codtipo"=>@$y59_codtipo];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y59_codtipo,y29_descr,y29_descr_obs,y59_valor,y87_dtbaixa,y114_processo";
     $cliframe_alterar_excluir->sql=$clautotipo->sql_query_baixa(""," * ",""," y59_codauto = $y59_codauto");

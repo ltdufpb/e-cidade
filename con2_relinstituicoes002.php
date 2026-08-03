@@ -32,7 +32,7 @@ include(modification("libs/db_utils.php"));
 
 $cldbconfig = new cl_db_config();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //echo "<pre>";
 //echo var_dump($_GET);
 //echo "</pre>";
@@ -114,36 +114,36 @@ $pdf->setfont('arial','b',8);
 $alt     = 4;
 
 foreach ($aRelatorio as $oInstituicao){
-	
+
 	$pdf->AddPage("P");
 	$pdf->setfont('arial','b',9);
   $pdf->cell(190,$alt,"Dados da Instituição",0,1,"C",1);
-  
+
 	$pdf->setfont('arial','b',9);
 	$pdf->cell(70,$alt,"Código",0,0,"L",0);
 	$pdf->setfont('arial','',8);
 	$pdf->cell(120,$alt,$oInstituicao->codigo,0,1,"L",0);
-	
+
 	$pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Nome da Instituição",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->nomeinst,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Nome abreviaado da Instituição",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->nomeinstabrev,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Endereço",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->ender,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Número",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->numero,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Endereço",0,0,"L",0);
   $pdf->setfont('arial','',8);
@@ -153,112 +153,109 @@ foreach ($aRelatorio as $oInstituicao){
   $pdf->cell(70,$alt,"Complemento Endereço",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->db21_compl,0,1,"L",1);
-  
+
 	$pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Bairro",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->bairro,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Município",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->munic,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Unidade Federativa",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->uf,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Cep",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->cep,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Telefone",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->telef,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Fax",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->fax,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Email",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->email,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"CGC",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->cgc,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"CGM",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->numcgm." - ".$oInstituicao->z01_nome,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Url",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->url,0,1,"L",1);
-    
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Logo",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->logo,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Figura",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->figura,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Prefeito",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->pref,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Vice-Prefeito",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->vicepref,0,1,"L",1);
-   
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Prefeitura",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $prefeitura = $oInstituicao->prefeitura == "t" ? "Sim" : "Não";
   $pdf->cell(120,$alt,$prefeitura,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Ativo",0,0,"L",1);
   $pdf->setfont('arial','',8);
-  switch ($oInstituicao->db21_ativo){
-  	case 1: $db21_ativo = "Ativo";
-  		break;
-    case 2: $db21_ativo = "Inativo";
-      break;
-    case 3: $db21_ativo = "Offline";
-      break;
-    default: $db21_ativo = "";
-  }
+  $db21_ativo = match ($oInstituicao->db21_ativo) {
+      1 => "Ativo",
+      2 => "Inativo",
+      3 => "Offline",
+      default => "",
+  };
   $pdf->cell(120,$alt,$db21_ativo,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Código do Cliente",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->db21_codcli,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Data de Criação da Instituição",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,db_formatar($oInstituicao->db21_criacao,"d"),0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Data limite que a instituição é válida",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,db_formatar($oInstituicao->db21_datalimite,"d"),0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Código do município no Estado",0,0,"L",1);
   $pdf->setfont('arial','',8);
@@ -266,27 +263,27 @@ foreach ($aRelatorio as $oInstituicao){
   $pdf->Ln(3);
   $pdf->setfont('arial','b',9);
   $pdf->cell(190,$alt,"Dados da Instituição Financeiro",0,1,"C",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Data da contabilidade",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,db_formatar($oInstituicao->dtcont,"d"),0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Orgão / Unidade da Instituição",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->codtrib,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Instituição SIAPC/PAD",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->tribinst,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Tipo de Instituição",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->db21_tipoinstit." - ".$oInstituicao->db21_nome,0,1,"L",1);
-  
+
   $pdf->Ln(3);
   $pdf->setfont('arial','b',9);
   $pdf->cell(190,$alt,"Dados da Instituição Tributário",0,1,"C",1);
@@ -300,7 +297,7 @@ foreach ($aRelatorio as $oInstituicao){
   $pdf->cell(70,$alt,"Número do Banco",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->numbanco,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Débitos Proprietários",0,0,"L",0);
   $pdf->setfont('arial','',8);
@@ -323,49 +320,49 @@ foreach ($aRelatorio as $oInstituicao){
   $pdf->cell(70,$alt,"Nome da Instituição no debito em conta",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->nomedebconta,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Regra cgm issbase",0,0,"L",0);
   $pdf->setfont('arial','',8);
-  $x = array('0'=>'Não vincular socios','1'=>'Vincular socios');
+  $x = ['0'=>'Não vincular socios','1'=>'Vincular socios'];
   $db21_regracgmiss = $x[$oInstituicao->db21_regracgmiss];
   $pdf->cell(120,$alt,$db21_regracgmiss,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Regra cgm iptu",0,0,"L",1);
   $pdf->setfont('arial','',8);
-  $x = array('0'=>'Considerar Proprietario e Promitente','1'=>'Considerar Somente Proprietario','2'=>'Considerar Somente Promitente');
+  $x = ['0'=>'Considerar Proprietario e Promitente','1'=>'Considerar Somente Proprietario','2'=>'Considerar Somente Promitente'];
   $db21_regracgmiptu = $x[$oInstituicao->db21_regracgmiptu];
   $pdf->cell(120,$alt,$db21_regracgmiptu,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Usa sistema de água",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->db21_usasisagua,0,1,"L",0);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Identidade",0,0,"L",1);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->ident,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Diário",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->diario,0,1,"L",0);
-       
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Segmento código de barras Febraban",0,0,"L",1);
   $pdf->setfont('arial','',8);
-  $x = array('1'=>'Prefeituras','2'=>'Saneamento','3'=>'Energia Elétrica e Gás','4'=>'Telecomunicações','5'=>'Órgãos Governamentais','6'=>'Carnes e Assemelhados ou demais Empresas / Órgãos que serão identificadas através do CNPJ','7'=>'Multas de trânsito','9'=>'Uso exclusivo do banco');
+  $x = ['1'=>'Prefeituras','2'=>'Saneamento','3'=>'Energia Elétrica e Gás','4'=>'Telecomunicações','5'=>'Órgãos Governamentais','6'=>'Carnes e Assemelhados ou demais Empresas / Órgãos que serão identificadas através do CNPJ','7'=>'Multas de trânsito','9'=>'Uso exclusivo do banco'];
   $segmento = $x[$oInstituicao->segmento];
   $pdf->cell(120,$alt,$segmento,0,1,"L",1);
-  
+
   $pdf->setfont('arial','b',9);
   $pdf->cell(70,$alt,"Forma do vencimento Febraban",0,0,"L",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(120,$alt,$oInstituicao->formvencfebraban,0,1,"L",0);
-  
-  
+
+
 }
 
 $pdf->setfont('arial','b',7);
@@ -402,11 +399,11 @@ exit();
 				  $p = 0;
 				 // $iUnidade = 0;
 	    	}else if($iUnidade != $o41_unidade){
-	    		
+
 	    		$pdf->setfont('arial','b',9);
 	    		$pdf->cell(20,$alt,"Unidade",0,0,"L",1);
 				  $pdf->cell(30,$alt,$o41_unidade." - ".$o41_descr,0,1,"L",1);
 				  $pdf->Ln(3);
-					
+
 		*/		  
 ?>

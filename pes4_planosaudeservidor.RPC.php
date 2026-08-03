@@ -70,9 +70,7 @@ try {
                 ->scopeMes($competencia->getMes())
                 ->get();
 
-            $retorno->servidorOperadoraSaude = array_map(function (ServidorOperadoraSaude $servidorOperadoraSaude) {
-                return $servidorOperadoraSaude->toArray();
-            }, $servidorOperadoraSaude);
+            $retorno->servidorOperadoraSaude = array_map(fn(ServidorOperadoraSaude $servidorOperadoraSaude) => $servidorOperadoraSaude->toArray(), $servidorOperadoraSaude);
             break;
         case 'buscarCompetencia':
             $competencia = DBPessoal::getCompetenciaFolha();
@@ -98,9 +96,7 @@ try {
             $servidorService = new ServidorOperadoraSaudeService();
             $dependentes = $servidorService->dependentes(ServidorOperadoraSaudeRepository::find($parametros->codigoPlanoSaudeServidor));
 
-            $retorno->dependentes = array_map(function (ServidorOperadoraSaudeDependente $dependente) {
-                return $dependente->toArray();
-            }, $dependentes);
+            $retorno->dependentes = array_map(fn(ServidorOperadoraSaudeDependente $dependente) => $dependente->toArray(), $dependentes);
             break;
     }
 } catch (Exception $exception) {

@@ -28,7 +28,7 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("/tmp/par_cria_tabela.php"));
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if(isset($sql)){
 $sql=base64_decode($sql);
 }
@@ -60,10 +60,10 @@ td{
   <table  border="1" cellpadding="3" cellspacing="0" id="tab">
     <tr bgcolor="#BDC6BD"> 
     <?php 
-      $colunas= split("#",$quais_colunas);
+      $colunas= preg_split("#\\##m",$quais_colunas);
       for($i=0; $i<sizeof($colunas); $i++){
         $coluna="x_".$colunas[$i];
-        echo "<th class='cabec' width=\"\" id='w' align=\"\" nowrap ><small>".str_replace(":","",$$coluna)."</small></th>";
+        echo "<th class='cabec' width=\"\" id='w' align=\"\" nowrap ><small>".str_replace(":","",${$coluna})."</small></th>";
       } 	
         echo "<th class='cabec'  title='Alterar ou Excluir'><b><small>Opções</small></b></td>";
       
@@ -73,14 +73,14 @@ td{
      if(isset($sql) && $sql!=""){ 
        $coluna="";
        $virgula="";
-       $colunas= split("#",$quais_colunas);
+       $colunas= preg_split("#\\##m",$quais_colunas);
        $totcol=sizeof($colunas);
        for($i=0; $i<$totcol; $i++){
          $coluna.=$virgula.$colunas[$i];
          $virgula=",";
        } 
        $result90= db_query($sql);
-       $numrows90= @pg_numrows($result90);  
+       $numrows90= @pg_num_rows($result90);  
          if($numrows90!=false && $numrows90>0){
             for($i=0; $i<$numrows90; $i++){
               db_fieldsmemory($result90,$i,true);

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE tfd_situacaopedidotfd
 class cl_tfd_situacaopedidotfd { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tf28_i_codigo = 0; 
-   var $tf28_i_situacao = 0; 
-   var $tf28_i_pedidotfd = 0; 
-   var $tf28_d_datasistema_dia = null; 
-   var $tf28_d_datasistema_mes = null; 
-   var $tf28_d_datasistema_ano = null; 
-   var $tf28_d_datasistema = null; 
-   var $tf28_c_horasistema = null; 
-   var $tf28_c_obs = null; 
-   var $tf28_i_login = 0; 
+   public $tf28_i_codigo = 0; 
+   public $tf28_i_situacao = 0; 
+   public $tf28_i_pedidotfd = 0; 
+   public $tf28_d_datasistema_dia = null; 
+   public $tf28_d_datasistema_mes = null; 
+   public $tf28_d_datasistema_ano = null; 
+   public $tf28_d_datasistema = null; 
+   public $tf28_c_horasistema = null; 
+   public $tf28_c_obs = null; 
+   public $tf28_i_login = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tf28_i_codigo = int4 = Código 
                  tf28_i_situacao = int4 = Situação 
                  tf28_i_pedidotfd = int4 = Pedido 
@@ -63,10 +63,10 @@ class cl_tfd_situacaopedidotfd {
                  tf28_i_login = int4 = Login 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_situacaopedidotfd() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_situacaopedidotfd"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -156,10 +156,10 @@ class cl_tfd_situacaopedidotfd {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tf28_i_codigo = pg_result($result,0,0); 
+       $this->tf28_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tfd_situacaopedidotfd_tf28_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf28_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf28_i_codigo)){
          $this->erro_sql = " Campo tf28_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -199,7 +199,7 @@ class cl_tfd_situacaopedidotfd {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tfd_situacaopedidotfd ($this->tf28_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tfd_situacaopedidotfd já Cadastrado";
@@ -223,16 +223,16 @@ class cl_tfd_situacaopedidotfd {
      $resaco = $this->sql_record($this->sql_query_file($this->tf28_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16452,'$this->tf28_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2884,16452,'','".AddSlashes(pg_result($resaco,0,'tf28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2884,16454,'','".AddSlashes(pg_result($resaco,0,'tf28_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2884,16453,'','".AddSlashes(pg_result($resaco,0,'tf28_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2884,16457,'','".AddSlashes(pg_result($resaco,0,'tf28_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2884,16458,'','".AddSlashes(pg_result($resaco,0,'tf28_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2884,16456,'','".AddSlashes(pg_result($resaco,0,'tf28_c_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2884,16455,'','".AddSlashes(pg_result($resaco,0,'tf28_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2884,16452,'','".AddSlashes(pg_fetch_result($resaco,0,'tf28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2884,16454,'','".AddSlashes(pg_fetch_result($resaco,0,'tf28_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2884,16453,'','".AddSlashes(pg_fetch_result($resaco,0,'tf28_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2884,16457,'','".AddSlashes(pg_fetch_result($resaco,0,'tf28_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2884,16458,'','".AddSlashes(pg_fetch_result($resaco,0,'tf28_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2884,16456,'','".AddSlashes(pg_fetch_result($resaco,0,'tf28_c_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2884,16455,'','".AddSlashes(pg_fetch_result($resaco,0,'tf28_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -241,10 +241,10 @@ class cl_tfd_situacaopedidotfd {
       $this->atualizacampos();
      $sql = " update tfd_situacaopedidotfd set ";
      $virgula = "";
-     if(trim($this->tf28_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_codigo"])){ 
+     if(trim((string) $this->tf28_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_codigo"])){ 
        $sql  .= $virgula." tf28_i_codigo = $this->tf28_i_codigo ";
        $virgula = ",";
-       if(trim($this->tf28_i_codigo) == null ){ 
+       if(trim((string) $this->tf28_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "tf28_i_codigo";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_tfd_situacaopedidotfd {
          return false;
        }
      }
-     if(trim($this->tf28_i_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_situacao"])){ 
+     if(trim((string) $this->tf28_i_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_situacao"])){ 
        $sql  .= $virgula." tf28_i_situacao = $this->tf28_i_situacao ";
        $virgula = ",";
-       if(trim($this->tf28_i_situacao) == null ){ 
+       if(trim((string) $this->tf28_i_situacao) == null ){ 
          $this->erro_sql = " Campo Situação nao Informado.";
          $this->erro_campo = "tf28_i_situacao";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_tfd_situacaopedidotfd {
          return false;
        }
      }
-     if(trim($this->tf28_i_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_pedidotfd"])){ 
+     if(trim((string) $this->tf28_i_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_pedidotfd"])){ 
        $sql  .= $virgula." tf28_i_pedidotfd = $this->tf28_i_pedidotfd ";
        $virgula = ",";
-       if(trim($this->tf28_i_pedidotfd) == null ){ 
+       if(trim((string) $this->tf28_i_pedidotfd) == null ){ 
          $this->erro_sql = " Campo Pedido nao Informado.";
          $this->erro_campo = "tf28_i_pedidotfd";
          $this->erro_banco = "";
@@ -280,10 +280,10 @@ class cl_tfd_situacaopedidotfd {
          return false;
        }
      }
-     if(trim($this->tf28_d_datasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_d_datasistema_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf28_d_datasistema_dia"] !="") ){ 
+     if(trim((string) $this->tf28_d_datasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_d_datasistema_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf28_d_datasistema_dia"] !="") ){ 
        $sql  .= $virgula." tf28_d_datasistema = '$this->tf28_d_datasistema' ";
        $virgula = ",";
-       if(trim($this->tf28_d_datasistema) == null ){ 
+       if(trim((string) $this->tf28_d_datasistema) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "tf28_d_datasistema_dia";
          $this->erro_banco = "";
@@ -296,7 +296,7 @@ class cl_tfd_situacaopedidotfd {
        if(isset($GLOBALS["HTTP_POST_VARS"]["tf28_d_datasistema_dia"])){ 
          $sql  .= $virgula." tf28_d_datasistema = null ";
          $virgula = ",";
-         if(trim($this->tf28_d_datasistema) == null ){ 
+         if(trim((string) $this->tf28_d_datasistema) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "tf28_d_datasistema_dia";
            $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_tfd_situacaopedidotfd {
          }
        }
      }
-     if(trim($this->tf28_c_horasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_c_horasistema"])){ 
+     if(trim((string) $this->tf28_c_horasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_c_horasistema"])){ 
        $sql  .= $virgula." tf28_c_horasistema = '$this->tf28_c_horasistema' ";
        $virgula = ",";
-       if(trim($this->tf28_c_horasistema) == null ){ 
+       if(trim((string) $this->tf28_c_horasistema) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "tf28_c_horasistema";
          $this->erro_banco = "";
@@ -320,14 +320,14 @@ class cl_tfd_situacaopedidotfd {
          return false;
        }
      }
-     if(trim($this->tf28_c_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_c_obs"])){ 
+     if(trim((string) $this->tf28_c_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_c_obs"])){ 
        $sql  .= $virgula." tf28_c_obs = '$this->tf28_c_obs' ";
        $virgula = ",";
      }
-     if(trim($this->tf28_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_login"])){ 
+     if(trim((string) $this->tf28_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_login"])){ 
        $sql  .= $virgula." tf28_i_login = $this->tf28_i_login ";
        $virgula = ",";
-       if(trim($this->tf28_i_login) == null ){ 
+       if(trim((string) $this->tf28_i_login) == null ){ 
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "tf28_i_login";
          $this->erro_banco = "";
@@ -345,23 +345,23 @@ class cl_tfd_situacaopedidotfd {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16452,'$this->tf28_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_codigo"]) || $this->tf28_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2884,16452,'".AddSlashes(pg_result($resaco,$conresaco,'tf28_i_codigo'))."','$this->tf28_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2884,16452,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf28_i_codigo'))."','$this->tf28_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_situacao"]) || $this->tf28_i_situacao != "")
-           $resac = db_query("insert into db_acount values($acount,2884,16454,'".AddSlashes(pg_result($resaco,$conresaco,'tf28_i_situacao'))."','$this->tf28_i_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2884,16454,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf28_i_situacao'))."','$this->tf28_i_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_pedidotfd"]) || $this->tf28_i_pedidotfd != "")
-           $resac = db_query("insert into db_acount values($acount,2884,16453,'".AddSlashes(pg_result($resaco,$conresaco,'tf28_i_pedidotfd'))."','$this->tf28_i_pedidotfd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2884,16453,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf28_i_pedidotfd'))."','$this->tf28_i_pedidotfd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf28_d_datasistema"]) || $this->tf28_d_datasistema != "")
-           $resac = db_query("insert into db_acount values($acount,2884,16457,'".AddSlashes(pg_result($resaco,$conresaco,'tf28_d_datasistema'))."','$this->tf28_d_datasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2884,16457,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf28_d_datasistema'))."','$this->tf28_d_datasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf28_c_horasistema"]) || $this->tf28_c_horasistema != "")
-           $resac = db_query("insert into db_acount values($acount,2884,16458,'".AddSlashes(pg_result($resaco,$conresaco,'tf28_c_horasistema'))."','$this->tf28_c_horasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2884,16458,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf28_c_horasistema'))."','$this->tf28_c_horasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf28_c_obs"]) || $this->tf28_c_obs != "")
-           $resac = db_query("insert into db_acount values($acount,2884,16456,'".AddSlashes(pg_result($resaco,$conresaco,'tf28_c_obs'))."','$this->tf28_c_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2884,16456,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf28_c_obs'))."','$this->tf28_c_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf28_i_login"]) || $this->tf28_i_login != "")
-           $resac = db_query("insert into db_acount values($acount,2884,16455,'".AddSlashes(pg_result($resaco,$conresaco,'tf28_i_login'))."','$this->tf28_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2884,16455,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf28_i_login'))."','$this->tf28_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -406,16 +406,16 @@ class cl_tfd_situacaopedidotfd {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16452,'$tf28_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2884,16452,'','".AddSlashes(pg_result($resaco,$iresaco,'tf28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2884,16454,'','".AddSlashes(pg_result($resaco,$iresaco,'tf28_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2884,16453,'','".AddSlashes(pg_result($resaco,$iresaco,'tf28_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2884,16457,'','".AddSlashes(pg_result($resaco,$iresaco,'tf28_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2884,16458,'','".AddSlashes(pg_result($resaco,$iresaco,'tf28_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2884,16456,'','".AddSlashes(pg_result($resaco,$iresaco,'tf28_c_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2884,16455,'','".AddSlashes(pg_result($resaco,$iresaco,'tf28_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2884,16452,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2884,16454,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf28_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2884,16453,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf28_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2884,16457,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf28_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2884,16458,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf28_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2884,16456,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf28_c_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2884,16455,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf28_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tfd_situacaopedidotfd
@@ -475,7 +475,7 @@ class cl_tfd_situacaopedidotfd {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tfd_situacaopedidotfd";
@@ -490,7 +490,7 @@ class cl_tfd_situacaopedidotfd {
    function sql_query ( $tf28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -521,7 +521,7 @@ class cl_tfd_situacaopedidotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -534,7 +534,7 @@ class cl_tfd_situacaopedidotfd {
    function sql_query_file ( $tf28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -555,7 +555,7 @@ class cl_tfd_situacaopedidotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -568,7 +568,7 @@ class cl_tfd_situacaopedidotfd {
    function sql_query2 ( $tf28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -597,7 +597,7 @@ class cl_tfd_situacaopedidotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

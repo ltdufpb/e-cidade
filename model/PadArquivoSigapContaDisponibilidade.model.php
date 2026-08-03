@@ -40,7 +40,7 @@ final class PadArquivoSigapContaDisponibilidade extends PadArquivoSigap {
   public function __construct() {
 
     $this->sNomeArquivo = "ContaDisponibilidade";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
 
   /**
@@ -63,7 +63,7 @@ final class PadArquivoSigapContaDisponibilidade extends PadArquivoSigap {
 
     $sWhereInstit = db_getsession("DB_instit");
     $sWhere       = " c61_instit in ($sWhereInstit)";
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $this->sDataInicial = "$iAno-$iMes-01";
     $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $rsBalancete  = @db_planocontassaldo_matriz(db_getsession("DB_anousu"),
@@ -113,38 +113,22 @@ final class PadArquivoSigapContaDisponibilidade extends PadArquivoSigap {
         }
         $iTipoTribunal  = db_utils::fieldsMemory($rsTipoTribunal, 0)->db21_idtribunal;
         $iClassificacao = 0;
-        switch ($iTipoTribunal) {
-
-          case 01 :
-
-            $iClassificacao = 1;
-            break;
-          case 02 :
-
-            $iClassificacao = 2;
-            break;
-          case 05 :
-
-            $iClassificacao = 3;
-            break;
-          case 06:
-
-            $iClassificacao = 3;
-            break;
-          default:
-
-            $iClassificacao = 9;
-            break;
-        }
+        $iClassificacao = match ($iTipoTribunal) {
+            01 => 1,
+            02 => 2,
+            05 => 3,
+            06 => 3,
+            default => 9,
+        };
         if ($oConta->c61_codigo == 50) {
           $iClassificacao = 3;
         }
         $oContaRetorno                     = new stdClass();
         $oContaRetorno->disCodigoEntidade  = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
         $oContaRetorno->disMesAnoMovimento = $sDiaMesAno;
-        $oContaRetorno->disCodigoContaBalanceteVerificacao = str_pad($oConta->c60_estrut, 20, "0", STR_PAD_RIGHT);
+        $oContaRetorno->disCodigoContaBalanceteVerificacao = str_pad((string) $oConta->c60_estrut, 20, "0", STR_PAD_RIGHT);
 
-        $iTamanhoCampo = strlen($oInstituicao->codtrib);
+        $iTamanhoCampo = strlen((string) $oInstituicao->codtrib);
         if ($iTamanhoCampo != 4) {
 
           $sMsg  = "Identificação do Orgão/Unidade da instituição ({$oInstituicao->codtrib}) está incorreto. \\n ";
@@ -154,30 +138,30 @@ final class PadArquivoSigapContaDisponibilidade extends PadArquivoSigap {
           throw new Exception($sMsg);
         }
 
-        $sOrgao                                            = substr($oInstituicao->codtrib, 0, 2);
-        $sUnidade                                          = substr($oInstituicao->codtrib, 2, 2);
+        $sOrgao                                            = substr((string) $oInstituicao->codtrib, 0, 2);
+        $sUnidade                                          = substr((string) $oInstituicao->codtrib, 2, 2);
         $oContaRetorno->disCodigoOrgao                     = str_pad($sOrgao, 2, "0", STR_PAD_LEFT);
         $oContaRetorno->disCodigoUnidadeOrcamentaria       = str_pad($sUnidade, 2, "0", STR_PAD_LEFT);
-        $oContaRetorno->disCodigoRecursoVinculado          = str_pad($oConta->c61_codigo, 8, "0", STR_PAD_LEFT);
-        $oContaRetorno->disCodigoBanco                     = str_pad(trim($oConta->c63_banco), 5, "0", STR_PAD_LEFT);
-        $oContaRetorno->disCodigoAgenciaBanco              = str_pad(trim($oConta->c63_agencia), 5, "0", STR_PAD_LEFT);
+        $oContaRetorno->disCodigoRecursoVinculado          = str_pad((string) $oConta->c61_codigo, 8, "0", STR_PAD_LEFT);
+        $oContaRetorno->disCodigoBanco                     = str_pad(trim((string) $oConta->c63_banco), 5, "0", STR_PAD_LEFT);
+        $oContaRetorno->disCodigoAgenciaBanco              = str_pad(trim((string) $oConta->c63_agencia), 5, "0", STR_PAD_LEFT);
         $oContaRetorno->disNumeroContaCorrente             = str_pad(trim(str_replace('-','',
-                                                                     str_replace('.','',trim($oConta->c63_conta)))),
+                                                                     str_replace('.','',trim((string) $oConta->c63_conta)))),
                                                                       5, "0", STR_PAD_LEFT
                                                                      );
-        if (substr($oConta->c60_estrut,0,5) == '11111') {
+        if (str_starts_with((string) $oConta->c60_estrut, '11111')) {
           $iTipoConta =  '1'; // caixa
-        } else if (substr($oConta->c60_estrut,0,5) == '11112') {
+        } else if (str_starts_with((string) $oConta->c60_estrut, '11112')) {
           $iTipoConta =  '2'; // banco conta movimento
-        } else if (substr($oConta->c60_estrut,0,5) == '11113') {
+        } else if (str_starts_with((string) $oConta->c60_estrut, '11113')) {
           $iTipoConta =  '3'; // banco conta aplicacao
-        } else if (substr($oConta->c60_estrut,0,11) == '11251020001' ||
-                  substr($oConta->c60_estrut,0,11) == '11251020002'  ||
-                  substr($oConta->c60_estrut,0,11) == '11251020003') {
+        } else if (str_starts_with((string) $oConta->c60_estrut, '11251020001') ||
+                  str_starts_with((string) $oConta->c60_estrut, '11251020002')  ||
+                  str_starts_with((string) $oConta->c60_estrut, '11251020003')) {
           $iTipoConta =  '4'; // deposito sentencas judiciais
-        } else if (substr($oConta->c60_estrut,0,11) == '11251020004' ||
-                   substr($oConta->c60_estrut,0,11) == '11251020005' ||
-                   substr($oConta->c60_estrut,0,11) == '11251020006') {
+        } else if (str_starts_with((string) $oConta->c60_estrut, '11251020004') ||
+                   str_starts_with((string) $oConta->c60_estrut, '11251020005') ||
+                   str_starts_with((string) $oConta->c60_estrut, '11251020006')) {
           $iTipoConta =  '5'; // depositos sentencas judiciais rp
         } else {
           $iTipoConta =  '2'; // depositos sentencas judiciais rp
@@ -200,7 +184,7 @@ final class PadArquivoSigapContaDisponibilidade extends PadArquivoSigap {
    */
   public function getNomeElementos() {
 
-    $aElementos = array(
+    $aElementos = [
                         "disCodigoEntidade",
                         "disMesAnoMovimento",
                         "disCodigoContaBalanceteVerificacao",
@@ -212,7 +196,7 @@ final class PadArquivoSigapContaDisponibilidade extends PadArquivoSigap {
                         "disNumeroContaCorrente",
                         "disTipoConta",
                         "disClassificacaoConta"
-                       );
+                       ];
 
     return $aElementos;
   }

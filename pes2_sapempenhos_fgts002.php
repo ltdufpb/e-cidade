@@ -34,7 +34,7 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 //$ano = 2006;
 //$mes = 3;
@@ -180,7 +180,7 @@ order by rh26_orgao,
 
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem movimentos no período de '.$mes.' / '.$ano);
 
@@ -211,7 +211,7 @@ $pat60              = 0;
 $pat40              = 0;
 $pat                   = 0;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();
@@ -277,7 +277,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
      $pdf->cell(20,$alt,db_formatar(($fund60/100*8),'f'),0,1,"R",0);
 //     $pdf->cell(20,$alt,db_formatar(($fund60/100*0.5),'f'),0,0,"R",0);
 //   $pdf->cell(20,$alt,db_formatar(($fund60/100*8),'f'),0,1,"R",0);
-     
+
      $pdf->cell(25,$alt,'',0,0,"C",0);
      $pat40 = $fund40 / 100 * 21;
      $pdf->cell(80,$alt,'FUNDEB 30%',0,0,"L",0);

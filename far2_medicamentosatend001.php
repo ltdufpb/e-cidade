@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 require(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo; 
 $clrotulo->label("fa04_i_unidadess");
@@ -101,7 +101,7 @@ $clrotulo->label("fa06_i_matersaude");
               <td>
                 <b>Tipo Retirada:</b>
                 <?php 
-                 $aRetirada = array("1"=>"NORMAL", "2"=>"NÃO PADRONIZADA"); 
+                 $aRetirada = ["1"=>"NORMAL", "2"=>"NÃO PADRONIZADA"]; 
                  db_select('aRetirada', $aRetirada, true, "");
                 ?>
               </td>

@@ -56,9 +56,7 @@ class AgendaSaidaService
             }
         }
         
-        usort($dados, function ($a, $b) {
-            return strcmp($a->nome, $b->nome);
-        });
+        usort($dados, fn($a, $b) => strcmp((string) $a->nome, (string) $b->nome));
 
         return ViagensPorMotoristaFactory::getRelatorio($tipo, $dados);
     }

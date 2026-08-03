@@ -220,9 +220,10 @@ class AvaliacaoEsocialAdapter extends AvaliacaoAdapter
         $this->previsaoReceita = $previsaoReceita;
     }
 
+    #[\Override]
     protected function getPerguntas(\AvaliacaoGrupo $avaliacaoGrupo)
     {
-        $aPerguntas = array();
+        $aPerguntas = [];
 
         foreach ($avaliacaoGrupo->getPerguntas() as $pergunta) {
             $pergunta->getRespostas();
@@ -257,7 +258,7 @@ class AvaliacaoEsocialAdapter extends AvaliacaoAdapter
     {
         $sSqlRespostas = $this->getConsultaParaAsRespostasDaPergunta($oPergunta);
 
-        $aResposta = array();
+        $aResposta = [];
         if (!empty($sSqlRespostas)) {
             $rsRespostas = db_query($sSqlRespostas);
 
@@ -289,7 +290,7 @@ class AvaliacaoEsocialAdapter extends AvaliacaoAdapter
      */
     private function getSugestaoRespostaDaPergunta(AvaliacaoPergunta $oPergunta)
     {
-        $aRespostas = array();
+        $aRespostas = [];
 
         $sSqlFormulaPergunta = $oPergunta->getFormulaVinculada();
         if (empty($sSqlFormulaPergunta)) {
@@ -795,11 +796,11 @@ class AvaliacaoEsocialAdapter extends AvaliacaoAdapter
         }
 
         $dao = new cl_avaliacaogruporespostaaltercontratual();
-        $where = array();
+        $where = [];
         $where[] = " db103_sequencial = {$oPergunta->getCodigo()} ";
         $where[] = " db107_sequencial = {$this->iCodigoGrupoResposta} ";
         $sql = $dao->buscarRespostasPreenchimento(
-            array($this->camposParaConsultaDasRespostas($oPergunta)),
+            [$this->camposParaConsultaDasRespostas($oPergunta)],
             $where
         );
 
@@ -813,11 +814,11 @@ class AvaliacaoEsocialAdapter extends AvaliacaoAdapter
         }
 
         $dao = new cl_avaliacaogruporespostatsvealteracao();
-        $where = array();
+        $where = [];
         $where[] = " db103_sequencial = {$oPergunta->getCodigo()} ";
         $where[] = " db107_sequencial = {$this->iCodigoGrupoResposta} ";
         $sql = $dao->buscarRespostasPreenchimento(
-          array($this->camposParaConsultaDasRespostas($oPergunta)),
+          [$this->camposParaConsultaDasRespostas($oPergunta)],
           $where
         );
 

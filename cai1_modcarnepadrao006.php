@@ -38,7 +38,7 @@ require_once(modification("classes/db_modcarnepadraotipopix_classe.php"));
 require_once(modification("classes/db_modcarnepadraolayouttxt_classe.php"));
 require_once(modification("classes/db_modcarnepadraocadmodcarne_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clmodcarnepadrao            = new cl_modcarnepadrao;
 $clmodcarneexcessao          = new cl_modcarneexcessao;

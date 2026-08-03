@@ -37,7 +37,7 @@ if (!isset($abas)) {
     exit;
 }
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clobras = new cl_obras;
@@ -119,15 +119,15 @@ if (isset($chavepesquisa)) {
         $ob01_processosistema = 'S';
     }
 
-    $campos = array(
+    $campos = [
       'ob01_responsavelprojeto',
       'tecnico_responsavel.ob15_crea as crea_responsavel',
       'cgm_responsavel.z01_nome as nome_responsavel',
       'ob01_arquitetoobra',
       'tecnico_arquiteto.ob15_crea as crea_arquiteto',
       'cgm_arquiteto.z01_nome as nome_arquiteto'
-    );
-    $sqlResponsavelArquiteto = $clobras->sqlResponsavelArquiteto($campos, array("ob01_codobra = {$chavepesquisa}"));
+    ];
+    $sqlResponsavelArquiteto = $clobras->sqlResponsavelArquiteto($campos, ["ob01_codobra = {$chavepesquisa}"]);
     $rsResponsavelArquiteto = db_query($sqlResponsavelArquiteto);
 
     if ($rsResponsavelArquiteto && pg_num_rows($rsResponsavelArquiteto) > 0) {
@@ -152,7 +152,7 @@ if (isset($chavepesquisa)) {
   </body>
   </html>
 <?php
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Excluir") {
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Excluir") {
     if ($clobras->erro_status == "0") {
         $clobras->erro(true, false);
     } else {

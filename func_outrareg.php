@@ -34,13 +34,13 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_regencia_classe.php"));
 include(modification("classes/db_regenciaperiodo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clregencia = new cl_regencia;
 $clregenciaperiodo = new cl_regenciaperiodo;
 $result = $clregencia->sql_record($clregencia->sql_query("","*","","ed59_i_codigo = $regencia"));
 db_fieldsmemory($result,0);
-if(trim($ed57_c_medfreq)=="PERÌODOS"){
+if(trim((string) $ed57_c_medfreq)=="PERÌODOS"){
  $tipofreq = "Aulas Dadas";
 }else{
  $tipofreq = "Dias Letivos";

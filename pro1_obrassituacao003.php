@@ -33,8 +33,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_obrassituacao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-$oPost = db_utils::postMemory($HTTP_POST_VARS);
-$oGet  = db_utils::postMemory($HTTP_GET_VARS);
+$oPost = db_utils::postMemory($_POST);
+$oGet  = db_utils::postMemory($_GET);
 
 $clobrassituacao = new cl_obrassituacao;
 $db_botao        = false;

@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhfuncao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhfuncao = new cl_rhfuncao();
 $clrhfuncao->rotulo->label("rh37_funcao"); 
@@ -109,7 +109,7 @@ $chave_rh37_descr = isset($chave_rh37_descr) ? stripslashes($chave_rh37_descr) :
               </td>
               <td width="96%" align="left" nowrap> 
               <?php 
-                $aOpcao = array("at"=>"Ativos","ds"=>"Desativados" ,"am"=>"Ambos");
+                $aOpcao = ["at"=>"Ativos","ds"=>"Desativados" ,"am"=>"Ambos"];
                 db_select('sOpcao',$aOpcao,true,4,"");
               ?>
               </td>

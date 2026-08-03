@@ -32,9 +32,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matmater_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+db_postmemory($_GET);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clmatmater = new cl_matmater;
 $clmatmater->rotulo->label();
 $clrotulo = new rotulocampo;
@@ -46,13 +46,13 @@ $clrotulo->label("");
 if (isset($incluir)){
   db_inicio_transacao();
   $sqlerro=false;
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave);
+    if(str_starts_with((string) $chave, "CHECK")){
+      $dados=preg_split("#_#m",(string) $chave);
       if ($dados[1]!=""){
       	  $clmatmater->m60_codmater =  $dados[1] ;	  
       	  $clmatmater->m60_ativo = '0';

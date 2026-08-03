@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE tiporeferenciaalnumericosexo
 class cl_tiporeferenciaalnumericosexo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $la60_sequencial = 0; 
-   var $la60_tiporeferencialnumerico = 0; 
-   var $la60_sexo = null; 
+   public $la60_sequencial = 0; 
+   public $la60_tiporeferencialnumerico = 0; 
+   public $la60_sexo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  la60_sequencial = int4 = Sequencial 
                  la60_tiporeferencialnumerico = int4 = Código da Referência 
                  la60_sexo = char(1) = Sexo 
                  ";
    //funcao construtor da classe 
-   function cl_tiporeferenciaalnumericosexo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tiporeferenciaalnumericosexo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_tiporeferenciaalnumericosexo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->la60_sequencial = pg_result($result,0,0); 
+       $this->la60_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tiporeferenciaalnumericosexo_la60_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $la60_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $la60_sequencial)){
          $this->erro_sql = " Campo la60_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_tiporeferenciaalnumericosexo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Referencia pelo sexo ($this->la60_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Referencia pelo sexo já Cadastrado";
@@ -145,12 +145,12 @@ class cl_tiporeferenciaalnumericosexo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20489,'$this->la60_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3685,20489,'','".AddSlashes(pg_result($resaco,0,'la60_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3685,20490,'','".AddSlashes(pg_result($resaco,0,'la60_tiporeferencialnumerico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3685,20491,'','".AddSlashes(pg_result($resaco,0,'la60_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3685,20489,'','".AddSlashes(pg_fetch_result($resaco,0,'la60_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3685,20490,'','".AddSlashes(pg_fetch_result($resaco,0,'la60_tiporeferencialnumerico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3685,20491,'','".AddSlashes(pg_fetch_result($resaco,0,'la60_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_tiporeferenciaalnumericosexo {
       $this->atualizacampos();
      $sql = " update tiporeferenciaalnumericosexo set ";
      $virgula = "";
-     if(trim($this->la60_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la60_sequencial"])){ 
+     if(trim((string) $this->la60_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la60_sequencial"])){ 
        $sql  .= $virgula." la60_sequencial = $this->la60_sequencial ";
        $virgula = ",";
-       if(trim($this->la60_sequencial) == null ){ 
+       if(trim((string) $this->la60_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "la60_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_tiporeferenciaalnumericosexo {
          return false;
        }
      }
-     if(trim($this->la60_tiporeferencialnumerico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la60_tiporeferencialnumerico"])){ 
+     if(trim((string) $this->la60_tiporeferencialnumerico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la60_tiporeferencialnumerico"])){ 
        $sql  .= $virgula." la60_tiporeferencialnumerico = $this->la60_tiporeferencialnumerico ";
        $virgula = ",";
-       if(trim($this->la60_tiporeferencialnumerico) == null ){ 
+       if(trim((string) $this->la60_tiporeferencialnumerico) == null ){ 
          $this->erro_sql = " Campo Código da Referência não informado.";
          $this->erro_campo = "la60_tiporeferencialnumerico";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_tiporeferenciaalnumericosexo {
          return false;
        }
      }
-     if(trim($this->la60_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la60_sexo"])){ 
+     if(trim((string) $this->la60_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la60_sexo"])){ 
        $sql  .= $virgula." la60_sexo = '$this->la60_sexo' ";
        $virgula = ",";
-       if(trim($this->la60_sexo) == null ){ 
+       if(trim((string) $this->la60_sexo) == null ){ 
          $this->erro_sql = " Campo Sexo não informado.";
          $this->erro_campo = "la60_sexo";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_tiporeferenciaalnumericosexo {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20489,'$this->la60_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la60_sequencial"]) || $this->la60_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3685,20489,'".AddSlashes(pg_result($resaco,$conresaco,'la60_sequencial'))."','$this->la60_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3685,20489,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la60_sequencial'))."','$this->la60_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la60_tiporeferencialnumerico"]) || $this->la60_tiporeferencialnumerico != "")
-             $resac = db_query("insert into db_acount values($acount,3685,20490,'".AddSlashes(pg_result($resaco,$conresaco,'la60_tiporeferencialnumerico'))."','$this->la60_tiporeferencialnumerico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3685,20490,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la60_tiporeferencialnumerico'))."','$this->la60_tiporeferencialnumerico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la60_sexo"]) || $this->la60_sexo != "")
-             $resac = db_query("insert into db_acount values($acount,3685,20491,'".AddSlashes(pg_result($resaco,$conresaco,'la60_sexo'))."','$this->la60_sexo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3685,20491,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la60_sexo'))."','$this->la60_sexo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_tiporeferenciaalnumericosexo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20489,'$la60_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3685,20489,'','".AddSlashes(pg_result($resaco,$iresaco,'la60_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3685,20490,'','".AddSlashes(pg_result($resaco,$iresaco,'la60_tiporeferencialnumerico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3685,20491,'','".AddSlashes(pg_result($resaco,$iresaco,'la60_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3685,20489,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la60_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3685,20490,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la60_tiporeferencialnumerico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3685,20491,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la60_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -341,7 +341,7 @@ class cl_tiporeferenciaalnumericosexo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tiporeferenciaalnumericosexo";
@@ -356,7 +356,7 @@ class cl_tiporeferenciaalnumericosexo {
    function sql_query ( $la60_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -379,7 +379,7 @@ class cl_tiporeferenciaalnumericosexo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_tiporeferenciaalnumericosexo {
    function sql_query_file ( $la60_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_tiporeferenciaalnumericosexo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

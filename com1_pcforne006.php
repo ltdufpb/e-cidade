@@ -47,7 +47,7 @@ $clpcfornecert = new cl_pcfornecert;
 $clpcfornesubgrupo = new cl_pcfornesubgrupo;
 $cltipoempresa = new cl_tipoempresa;
 $cl_cgmtipoempresa = new cl_cgmtipoempresa;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if (isset ($excluir)) {

@@ -90,16 +90,11 @@ class DemandaReprimidaRepository extends BaseRepository
             $query->where($where);
         }
 
-        switch ($ordem) {
-            case 1:
-                $query->orderBy('m60_descr')->orderBy('fa67_data_hora')->orderBy('z01_v_nome');
-                break;
-            case 2:
-                $query->orderBy('z01_v_nome')->orderBy('fa67_data_hora')->orderBy('m60_descr');
-                break;
-            default:
-                $query->orderBy('fa67_data_hora')->orderBy('m60_descr')->orderBy('z01_v_nome');
-        }
+        match ($ordem) {
+            1 => $query->orderBy('m60_descr')->orderBy('fa67_data_hora')->orderBy('z01_v_nome'),
+            2 => $query->orderBy('z01_v_nome')->orderBy('fa67_data_hora')->orderBy('m60_descr'),
+            default => $query->orderBy('fa67_data_hora')->orderBy('m60_descr')->orderBy('z01_v_nome'),
+        };
 
         return $query->get();
     }

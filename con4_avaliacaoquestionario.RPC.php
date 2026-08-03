@@ -86,7 +86,7 @@ switch ($oParam->exec) {
     ";
 
     // Array que vai armazenar os selecionados
-    $aSelecionados     = array();
+    $aSelecionados     = [];
     $rsSelecionados    = db_query($sSqlSelecionados);
     
     if(!$rsSelecionados){
@@ -118,7 +118,7 @@ switch ($oParam->exec) {
 
           if(empty($area->filhos)){
 
-            $area->filhos = array();
+            $area->filhos = [];
           }
 
           if(!empty($aSelecionados[$modulo->codmodulo])){
@@ -229,7 +229,7 @@ switch ($oParam->exec) {
           }       
           // Itens 
           $aItem = db_utils::getCollectionByRecord($rsResult, false, false, true);
-          
+
           foreach ($aItem as $oItem) {
 
             $oQuestionarioMenu = new AvaliacaoQuestionarioInternoMenu();

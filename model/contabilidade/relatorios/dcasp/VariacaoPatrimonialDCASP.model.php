@@ -42,7 +42,8 @@ class VariacaoPatrimonialDCASP extends RelatoriosLegaisBase {
    * Busca os dados que serão impressos no relatório
    * @return array stdClass - Retorna um array contendo stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $oDataInicialAnterior = clone $this->getDataInicial();
     $oDataInicialAnterior->modificarIntervalo('-1 year');
@@ -75,14 +76,14 @@ class VariacaoPatrimonialDCASP extends RelatoriosLegaisBase {
       $oColuna->formula = '#saldo_final';
       RelatoriosLegaisBase::calcularValorDaLinha($rsBalancete,
                                                  $oStdLinha,
-                                                 array($oColuna),
+                                                 [$oColuna],
                                                  RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO);
       $oColuna          = new stdClass();
       $oColuna->nome    = 'vlrexanter';
       $oColuna->formula = '#saldo_final';
       RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteAnterior,
                                                  $oStdLinha,
-                                                 array($oColuna),
+                                                 [$oColuna],
                                                  RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO);
 
     }

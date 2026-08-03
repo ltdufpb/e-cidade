@@ -45,7 +45,7 @@ $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
 
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 
 /**
  * Camada de Tentativas do RPC

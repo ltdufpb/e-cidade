@@ -47,7 +47,7 @@ class Modelo3
     /**
      * @var array
      */
-    private $codigosExames = array();
+    private $codigosExames = [];
 
     /**
      * @var scpdf
@@ -115,9 +115,9 @@ class Modelo3
     public function adicionarExame($codigoExame, $dataColetaExame)
     {
         if (!in_array($codigoExame, $this->codigosExames)) {
-            $this->codigosExames[$codigoExame] = array(
+            $this->codigosExames[$codigoExame] = [
                 "dataColetaExame" => $dataColetaExame
-            );
+            ];
         }
     }
 
@@ -156,7 +156,7 @@ class Modelo3
      */
     private function gerarCodigoBarras($primeiraEtiqueta = false, $codigoMaterialColeta = null, $setor = null)
     {
-        $numeroCodigoBarras = str_pad($this->requisicao->getCodigo(), 12, '0', STR_PAD_LEFT);
+        $numeroCodigoBarras = str_pad((string) $this->requisicao->getCodigo(), 12, '0', STR_PAD_LEFT);
 
         if (!$primeiraEtiqueta) {
             $requisicaoExame = $this->requisicaoExame;
@@ -204,7 +204,7 @@ class Modelo3
         $dadosPaciente = new stdClass();
         $dadosPaciente->nome = $cgs->getNome();
         $dadosPaciente->idade = str_pad($dataAtual->diff($dataNascimento)->y, 3, '0', STR_PAD_LEFT) . 'A';
-        $dadosPaciente->id = str_pad($cgs->getIdentidade(), 11, '0', STR_PAD_LEFT);
+        $dadosPaciente->id = str_pad((string) $cgs->getIdentidade(), 11, '0', STR_PAD_LEFT);
         return $dadosPaciente;
     }
 
@@ -218,7 +218,7 @@ class Modelo3
         foreach ($examesMaterial as $codigoMaterial => $exameMaterial) {
             $this->pdf->addpage('P');
 
-            $setores = explode('#', $codigoMaterial);
+            $setores = explode('#', (string) $codigoMaterial);
             $this->gerarCodigoBarras(false, $setores[0], $setores[1]);
 
             $dataColetaExame = $exameMaterial->dataColetaExame;
@@ -227,7 +227,7 @@ class Modelo3
                 $this->pdf->Cell(
                     $this->tamanhoLinha/2,
                     $this->alturaLinha,
-                    "Data Coleta: " . date("d/m/y", strtotime($dataColetaExame)),
+                    "Data Coleta: " . date("d/m/y", strtotime((string) $dataColetaExame)),
                     $this->borda,
                     1,
                     'L'
@@ -262,7 +262,7 @@ class Modelo3
      */
     private function organizarExamesMaterial()
     {
-        $examesMaterial = array();
+        $examesMaterial = [];
         
         $requisicoesExame = $this->requisicao->getRequisicoesDeExames();
 
@@ -292,7 +292,7 @@ class Modelo3
                 ($examesMaterial[$chaveCodigoColetaSetor]->dataColetaExame != $dataColetaExame &&
                 $examesMaterial[$chaveCodigoColetaSetor]->dataColetaExame != null)) {
                     $examesMaterial[$chaveCodigoColetaSetor] = new stdClass();
-                    $examesMaterial[$chaveCodigoColetaSetor]->siglasExames = array();
+                    $examesMaterial[$chaveCodigoColetaSetor]->siglasExames = [];
                 }
                 
                 $exameMaterial = $examesMaterial[$chaveCodigoColetaSetor];

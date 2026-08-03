@@ -52,7 +52,7 @@ class DotacaoLicLicitaCon extends ArquivoLicitaCon {
    */
   public function getDados() {
 
-    $aDotacoes = array();
+    $aDotacoes = [];
 
     $sCampos  = " distinct l20_codigo, o58_projativ, o58_codigo, o56_elemento ";
     $aWhere   = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(), $this->oCabecalho->getDataGeracao());
@@ -81,7 +81,7 @@ class DotacaoLicLicitaCon extends ArquivoLicitaCon {
       $oDados->CD_TIPO_MODALIDADE      = $oLicitacao->getModalidade()->getSiglaTipoCompraTribunal();
       $oDados->CD_PROJETO_ATIVIDADE    = $oDotacao->o58_projativ;
       $oDados->CD_RECURSO_ORCAMENTARIO = $oDotacao->o58_codigo;
-      $oDados->CD_NATUREZA_DESPESA     = substr($oDotacao->o56_elemento, 1, 6);
+      $oDados->CD_NATUREZA_DESPESA     = substr((string) $oDotacao->o56_elemento, 1, 6);
 
       $aDotacoes[] = $oDados;
     }

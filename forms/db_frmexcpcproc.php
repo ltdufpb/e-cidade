@@ -30,8 +30,8 @@ include(modification("classes/db_solicitemprot_classe.php"));
 include(modification("classes/db_pcparam_classe.php"));
 include(modification("classes/db_solandam_classe.php"));
 include(modification("classes/db_solandpadraodepto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clsolicitemprot = new cl_solicitemprot;
 $clpcparam = new cl_pcparam;
 $clsolandam = new cl_solandam;
@@ -173,7 +173,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pcproc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?pc80_codproc='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?pc80_codproc='+chave";
   }
   ?>
 }

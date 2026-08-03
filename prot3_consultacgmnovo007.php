@@ -79,7 +79,7 @@ $rsVerificaAlt = $clcgmalt->sql_record($clcgmalt->sql_query_file(null, "*", null
 			</td>
 			<td class="valores">
 				<?php 
-				  echo implode('/', array_reverse(explode('-', $oRegistroCgm->z01_cadast)));
+				  echo implode('/', array_reverse(explode('-', (string) $oRegistroCgm->z01_cadast)));
 				?>
 			</td>
 		</tr>
@@ -95,7 +95,7 @@ $rsVerificaAlt = $clcgmalt->sql_record($clcgmalt->sql_query_file(null, "*", null
 			</td>
 			<td class="valores">
 				<?php 
-				  echo implode('/', array_reverse(explode('-', $oRegistroCgm->z01_ultalt)));
+				  echo implode('/', array_reverse(explode('-', (string) $oRegistroCgm->z01_ultalt)));
 				?>
 			</td>
 		</tr>

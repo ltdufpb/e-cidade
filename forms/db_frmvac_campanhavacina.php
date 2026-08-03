@@ -80,7 +80,7 @@ $clrotulo->label("vc06_c_descr");
 </fieldset>
 
 <?php 
-  $chavepri= array("vc12_i_codigo"=>@$vc12_i_codigo);
+  $chavepri= ["vc12_i_codigo"=>@$vc12_i_codigo];
   $cliframe_alterar_excluir->chavepri=$chavepri;
   if (isset($vc12_i_campanha) && @$vc12_i_campanha!="") {
     $cliframe_alterar_excluir->sql = $clvac_campanhavacina->sql_query(null,
@@ -167,7 +167,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_vac_campanhavacina.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 

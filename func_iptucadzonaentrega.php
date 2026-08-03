@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptucadzonaentrega_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptucadzonaentrega = new cl_iptucadzonaentrega;
 $cliptucadzonaentrega->rotulo->label("j85_codigo");
 $cliptucadzonaentrega->rotulo->label("j85_descr");
@@ -98,9 +98,9 @@ $cliptucadzonaentrega->rotulo->label("j85_descr");
         }else{
            $sql = $cliptucadzonaentrega->sql_query("",$campos,"j85_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j85_descr)){
-          $repassa = array("chave_j85_codigo"=>$chave_j85_codigo,"chave_j85_descr"=>$chave_j85_descr);
+          $repassa = ["chave_j85_codigo"=>$chave_j85_codigo,"chave_j85_descr"=>$chave_j85_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

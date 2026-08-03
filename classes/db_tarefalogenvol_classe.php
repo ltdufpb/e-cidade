@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE tarefalogenvol
 class cl_tarefalogenvol { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at35_sequencia = 0; 
-   var $at35_tarefalog = 0; 
-   var $at35_usuario = 0; 
-   var $at35_perc = 0; 
+   public $at35_sequencia = 0; 
+   public $at35_tarefalog = 0; 
+   public $at35_usuario = 0; 
+   public $at35_perc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at35_sequencia = int4 = Sequência 
                  at35_tarefalog = int4 = Código de registro de tarefa 
                  at35_usuario = int4 = Código do usuário 
                  at35_perc = float8 = Percentual 
                  ";
    //funcao construtor da classe 
-   function cl_tarefalogenvol() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefalogenvol"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_tarefalogenvol {
          $this->erro_status = "0";
          return false; 
        }
-       $this->at35_sequencia = pg_result($result,0,0); 
+       $this->at35_sequencia = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tarefalogenvol_at35_sequencia_seq");
-       if(($result != false) && (pg_result($result,0,0) < $at35_sequencia)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $at35_sequencia)){
          $this->erro_sql = " Campo at35_sequencia maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_tarefalogenvol {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Registro de Tarefas envolvidas ($this->at35_sequencia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Registro de Tarefas envolvidas já Cadastrado";
@@ -180,13 +180,13 @@ class cl_tarefalogenvol {
      $resaco = $this->sql_record($this->sql_query_file($this->at35_sequencia));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8847,'$this->at35_sequencia','I')");
-       $resac = db_query("insert into db_acount values($acount,1509,8847,'','".AddSlashes(pg_result($resaco,0,'at35_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1509,8848,'','".AddSlashes(pg_result($resaco,0,'at35_tarefalog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1509,8849,'','".AddSlashes(pg_result($resaco,0,'at35_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1509,8850,'','".AddSlashes(pg_result($resaco,0,'at35_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1509,8847,'','".AddSlashes(pg_fetch_result($resaco,0,'at35_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1509,8848,'','".AddSlashes(pg_fetch_result($resaco,0,'at35_tarefalog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1509,8849,'','".AddSlashes(pg_fetch_result($resaco,0,'at35_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1509,8850,'','".AddSlashes(pg_fetch_result($resaco,0,'at35_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_tarefalogenvol {
       $this->atualizacampos();
      $sql = " update tarefalogenvol set ";
      $virgula = "";
-     if(trim($this->at35_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at35_sequencia"])){ 
+     if(trim((string) $this->at35_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at35_sequencia"])){ 
        $sql  .= $virgula." at35_sequencia = $this->at35_sequencia ";
        $virgula = ",";
-       if(trim($this->at35_sequencia) == null ){ 
+       if(trim((string) $this->at35_sequencia) == null ){ 
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "at35_sequencia";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_tarefalogenvol {
          return false;
        }
      }
-     if(trim($this->at35_tarefalog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at35_tarefalog"])){ 
+     if(trim((string) $this->at35_tarefalog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at35_tarefalog"])){ 
        $sql  .= $virgula." at35_tarefalog = $this->at35_tarefalog ";
        $virgula = ",";
-       if(trim($this->at35_tarefalog) == null ){ 
+       if(trim((string) $this->at35_tarefalog) == null ){ 
          $this->erro_sql = " Campo Código de registro de tarefa nao Informado.";
          $this->erro_campo = "at35_tarefalog";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_tarefalogenvol {
          return false;
        }
      }
-     if(trim($this->at35_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at35_usuario"])){ 
+     if(trim((string) $this->at35_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at35_usuario"])){ 
        $sql  .= $virgula." at35_usuario = $this->at35_usuario ";
        $virgula = ",";
-       if(trim($this->at35_usuario) == null ){ 
+       if(trim((string) $this->at35_usuario) == null ){ 
          $this->erro_sql = " Campo Código do usuário nao Informado.";
          $this->erro_campo = "at35_usuario";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_tarefalogenvol {
          return false;
        }
      }
-     if(trim($this->at35_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at35_perc"])){ 
+     if(trim((string) $this->at35_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at35_perc"])){ 
        $sql  .= $virgula." at35_perc = $this->at35_perc ";
        $virgula = ",";
-       if(trim($this->at35_perc) == null ){ 
+       if(trim((string) $this->at35_perc) == null ){ 
          $this->erro_sql = " Campo Percentual nao Informado.";
          $this->erro_campo = "at35_perc";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_tarefalogenvol {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8847,'$this->at35_sequencia','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at35_sequencia"]))
-           $resac = db_query("insert into db_acount values($acount,1509,8847,'".AddSlashes(pg_result($resaco,$conresaco,'at35_sequencia'))."','$this->at35_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1509,8847,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at35_sequencia'))."','$this->at35_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at35_tarefalog"]))
-           $resac = db_query("insert into db_acount values($acount,1509,8848,'".AddSlashes(pg_result($resaco,$conresaco,'at35_tarefalog'))."','$this->at35_tarefalog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1509,8848,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at35_tarefalog'))."','$this->at35_tarefalog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at35_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1509,8849,'".AddSlashes(pg_result($resaco,$conresaco,'at35_usuario'))."','$this->at35_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1509,8849,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at35_usuario'))."','$this->at35_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at35_perc"]))
-           $resac = db_query("insert into db_acount values($acount,1509,8850,'".AddSlashes(pg_result($resaco,$conresaco,'at35_perc'))."','$this->at35_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1509,8850,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at35_perc'))."','$this->at35_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_tarefalogenvol {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8847,'$at35_sequencia','E')");
-         $resac = db_query("insert into db_acount values($acount,1509,8847,'','".AddSlashes(pg_result($resaco,$iresaco,'at35_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1509,8848,'','".AddSlashes(pg_result($resaco,$iresaco,'at35_tarefalog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1509,8849,'','".AddSlashes(pg_result($resaco,$iresaco,'at35_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1509,8850,'','".AddSlashes(pg_result($resaco,$iresaco,'at35_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1509,8847,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at35_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1509,8848,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at35_tarefalog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1509,8849,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at35_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1509,8850,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at35_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tarefalogenvol
@@ -376,7 +376,7 @@ class cl_tarefalogenvol {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tarefalogenvol";
@@ -390,7 +390,7 @@ class cl_tarefalogenvol {
    function sql_query ( $at35_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_tarefalogenvol {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_tarefalogenvol {
    function sql_query_file ( $at35_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_tarefalogenvol {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

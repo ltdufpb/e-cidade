@@ -97,7 +97,7 @@ try {
       $oDaoBensDispensaTombamento->incluir(null);
       if ($oDaoBensDispensaTombamento->erro_status == "0") {
 
-        $oDadosErro = (object) array('sErroBanco' => $oDaoBensDispensaTombamento->erro_banco);
+        $oDadosErro = (object) ['sErroBanco' => $oDaoBensDispensaTombamento->erro_banco];
         throw new Exception (_M(MENSAGENS."dispensa_tombamento_nao_incluido", $oDadosErro));
       }
 
@@ -120,7 +120,7 @@ try {
 
       if (!$rsBensDispensaTombamento || pg_num_rows($rsBensDispensaTombamento) == 0 ){
 
-        $oDadosErro = (object) array('sErroBanco' => pg_last_error());
+        $oDadosErro = (object) ['sErroBanco' => pg_last_error()];
         throw new Exception (_M(MENSAGENS."dispensa_tombamento_nao_encontrado", $oDadosErro));
       }
 
@@ -129,7 +129,7 @@ try {
 
       if ($oDaoBensDispensaTombamento->erro_status == 0) {
 
-        $oDadosErro = (object) array('sErroBanco' => $oDaoBensDispensaTombamento->erro_banco);
+        $oDadosErro = (object) ['sErroBanco' => $oDaoBensDispensaTombamento->erro_banco];
         throw new Exception (_M(MENSAGENS."dispensa_tombamento_nao_excluido", $oDadosErro));
       }
 
@@ -139,7 +139,7 @@ try {
 
       if ( $oDaoEmpnotaitembenspendente->erro_status == "0" ) {
 
-        $oDadosErro = (object) array('sErroBanco' => pg_last_error());
+        $oDadosErro = (object) ['sErroBanco' => pg_last_error()];
         throw new Exception (_M(MENSAGENS . "nota_item_nao_incluido", $oDadosErro));
       }
 
@@ -223,7 +223,7 @@ function processarLancamento($iCodigoDocumento, $iCodigoItemEstoque, $iCodigoIte
 
   if ($oDaoMaterialEstoqueGrupo->erro_status == "0") {
 
-    $oDadosErro = (object) array('sErroBanco' => $oDaoMaterialEstoqueGrupo->erro_banco);
+    $oDadosErro = (object) ['sErroBanco' => $oDaoMaterialEstoqueGrupo->erro_banco];
     throw new Exception (_M(MENSAGENS . "grupo_material_nao_encontrado", $oDadosErro));
   }
 

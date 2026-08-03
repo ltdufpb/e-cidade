@@ -35,8 +35,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 use ECidade\Integracao\Sped\Common\Configuracao\ConfiguracaoFactory;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $dao = new cl_avaliacaogruporespostaefdr2020();
 
 $rotulo = new rotulocampo;
@@ -46,10 +46,10 @@ $cgm = InstituicaoRepository::getInstituicaoSessao()->getCgm()->getCodigo();
 $configuracao = ConfiguracaoFactory::getInstance(Tipo::EFD_REINF);
 $avaliacao = $configuracao->getFormulario(Tipo::EFD_SERVICOS_PRESTADOS);
 
-$where = array(
+$where = [
     "efd05_cgm = {$cgm}",
     "efd05_avaliacao = {$avaliacao}"
-);
+];
 ?>
 <html>
 <head>

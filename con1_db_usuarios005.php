@@ -41,7 +41,7 @@ $cldb_userinst = new cl_db_userinst;
 $cldb_depusu   = new cl_db_depusu;
 $cldb_auditoria = new cl_db_auditoria;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 22;
 $db_botao = false;
@@ -63,7 +63,7 @@ if (isset($alterar)) {
     if (!$oCgmFisico->getCodigo()) {
 
       $cldb_usuarios->erro_campo = "z01_numcgm";
-      throw new Exception(_M("{$sMensagens}.campo_obrigatorio", (Object) array("sCampo" => "CGM")));
+      throw new Exception(_M("{$sMensagens}.campo_obrigatorio", (Object) ["sCampo" => "CGM"]));
     }
 
     if(count($instit) == 0) {
@@ -110,7 +110,7 @@ if (isset($alterar)) {
       if (db_utils::fieldsMemory($rsUsuario, 0)->usuarioativo == 3 && empty($senha)) {
 
         $cldb_usuarios->erro_campo = "senha";
-        throw new Exception( _M("{$sMensagens}.campo_obrigatorio", (Object) array("sCampo" => "Senha")) );
+        throw new Exception( _M("{$sMensagens}.campo_obrigatorio", (Object) ["sCampo" => "Senha"]) );
       }
 
 
@@ -124,15 +124,15 @@ if (isset($alterar)) {
       }
 
       if (!$oCgmFisico->getCpf()) {
-        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) array("sCampo" => "CPF")) );
+        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) ["sCampo" => "CPF"]) );
       }
 
       if (!$oCgmFisico->getEmail()) {
-        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) array("sCampo" => "E-mail")) );
+        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) ["sCampo" => "E-mail"]) );
       }
 
       if (!$oCgmFisico->getDataNascimento()) {
-        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) array("sCampo" => "Data de Nascimento")) );
+        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) ["sCampo" => "Data de Nascimento"]) );
       }
 
       $senha = "";
@@ -204,7 +204,7 @@ if (isset($alterar)) {
 
       try {
         $oUsuarioSistema->enviarAtivacaoSenha();
-      } catch(Exception $e) { }
+      } catch(Exception) { }
     }
 
   } catch (Exception $e) {
@@ -280,10 +280,10 @@ if (isset($chavepesquisa)) {
         parent.document.formaba.permemp.disabled=false;
         parent.document.formaba.permmenu.disabled=false;
         parent.document.formaba.lotacoes.disabled=false;
-        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_db_depusu.location.href='con1_db_depusu001.php?id_usuario=".@$id_usuario."&nome=".@addslashes($z01_nome)."';
-        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_permemp.location.href='con1_aba_permissoesdadespesa.php?id_usuario=".@$id_usuario."&nome=".@addslashes($z01_nome)."&nao_retorna=1';
-        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_permmenu.location.href='con4_permitensusu.php?usuario=".@$id_usuario."&nome=".@addslashes($z01_nome)."';
-        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_lotacoes.location.href='con4_permissaolotacao001.php?iCodigoUsuario=".@$id_usuario."&nome=".@addslashes($z01_nome)."';
+        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_db_depusu.location.href='con1_db_depusu001.php?id_usuario=".@$id_usuario."&nome=".@addslashes((string) $z01_nome)."';
+        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_permemp.location.href='con1_aba_permissoesdadespesa.php?id_usuario=".@$id_usuario."&nome=".@addslashes((string) $z01_nome)."&nao_retorna=1';
+        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_permmenu.location.href='con4_permitensusu.php?usuario=".@$id_usuario."&nome=".@addslashes((string) $z01_nome)."';
+        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_lotacoes.location.href='con4_permissaolotacao001.php?iCodigoUsuario=".@$id_usuario."&nome=".@addslashes((string) $z01_nome)."';
      ";
          if(isset($liberaaba)){
            echo "  parent.mo_camada('db_depusu');";

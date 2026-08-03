@@ -39,7 +39,7 @@ class Construcao
     /**
      * @var \ECidade\Tributario\Projetos\Obras\Model\Construcao[]
      */
-    private $construcoes = array();
+    private $construcoes = [];
 
     /**
      * @param ConstrucaoModel $construcaoModel

@@ -34,8 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_orcdotacao_classe.php")); //classe da dotação
 require_once(modification("libs/db_liborcamento.php"));      // funções do orçamento
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcreserva = new cl_orcreserva;
 $clorcdotacao = new cl_orcdotacao;  //instancia dotação
@@ -44,17 +44,17 @@ $db_opcao = 22;
 $db_botao = false;
 $op       = 3;
 
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar") {
 
-  if (strpos($o80_valor, ',') > 0) {
+  if (strpos((string) $o80_valor, ',') > 0) {
     $o80_valor = str_replace(',', '.', str_replace('.', '', $o80_valor));
   }
 
-  if (strpos($original, ',') > 0) {
+  if (strpos((string) $original, ',') > 0) {
     $original = str_replace(',', '.', str_replace('.', '', $original));
   }
 
-  if (strpos($atual_menos_reservado, ',') > 0) {
+  if (strpos((string) $atual_menos_reservado, ',') > 0) {
     $atual_menos_reservado = str_replace(',', '.', str_replace('.', '', $atual_menos_reservado));
   }
 
@@ -155,7 +155,7 @@ $iDia = date("d",db_getsession("DB_datausu"));
   </body>
   </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clorcreserva->erro_status=="0"){
     $clorcreserva->erro(true,false);
     $db_botao=true;

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,10 +55,10 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Setor","g2"=>"Quadra","g3"=>"Ruas"); 
-       $clcriaabas->title = array("g1"=>"Setor","g2"=>"Quadra","g3"=>"Ruas");    
-       $clcriaabas->src = array("g1"=>"cad2_debset003.php","g2"=>"cad2_debset004.php","g3"=>"cad2_debset005.php");  
-       $clcriaabas->funcao_js = array("g1"=>"","g2"=>"iframe_g1.js_nome();","g3"=>"iframe_g2.js_nome();");  
+       $clcriaabas->identifica = ["g1"=>"Setor","g2"=>"Quadra","g3"=>"Ruas"]; 
+       $clcriaabas->title = ["g1"=>"Setor","g2"=>"Quadra","g3"=>"Ruas"];    
+       $clcriaabas->src = ["g1"=>"cad2_debset003.php","g2"=>"cad2_debset004.php","g3"=>"cad2_debset005.php"];  
+       $clcriaabas->funcao_js = ["g1"=>"","g2"=>"iframe_g1.js_nome();","g3"=>"iframe_g2.js_nome();"];  
        $clcriaabas->cria_abas();
      ?> 
      </td>

@@ -140,7 +140,7 @@ try {
             /**
              * Calculo dos valores desdobrados por mes
              */
-            $aValorNoMes                   = array();
+            $aValorNoMes                   = [];
             $aValorNoMes[$iIndiceCorrente] = $oParam->valor;
             foreach ($aMeses as $key => $oMes) {
 
@@ -152,7 +152,7 @@ try {
               $nTotalValorgrupo += $oMes->valor;
             }
 
-            $aPercentuais                                        = array();
+            $aPercentuais                                        = [];
             $oBaseCalculo->dados[$oParam->iIndiceMes - 1]->valor = $nValor;
             $nPercentualTotal                                    = 0;
             foreach ($aMeses as $iIndice => $oMes) {
@@ -270,7 +270,7 @@ try {
       break;
 
     default:
-      throw new Exception(_M(PATH_MENSAGEM_ACOMPANHAMENTO . "opcao_indefinida", (object)array('exec' => $oParam->exec)));
+      throw new Exception(_M(PATH_MENSAGEM_ACOMPANHAMENTO . "opcao_indefinida", (object)['exec' => $oParam->exec]));
   }
 
   db_fim_transacao(false);

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_arreprescr_classe.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $clarreprescr = new cl_arreprescr;
 ?>

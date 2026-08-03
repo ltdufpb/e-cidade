@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefaanexos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltarefaanexos = new cl_tarefaanexos;
 $cltarefaanexos->rotulo->label("at25_sequencial");
 $cltarefaanexos->rotulo->label("at25_tarefa");
@@ -98,9 +98,9 @@ $cltarefaanexos->rotulo->label("at25_tarefa");
         }else{
            $sql = $cltarefaanexos->sql_query("",$campos,"at25_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at25_tarefa)){
-          $repassa = array("chave_at25_sequencial"=>$chave_at25_sequencial,"chave_at25_tarefa"=>$chave_at25_tarefa);
+          $repassa = ["chave_at25_sequencial"=>$chave_at25_sequencial,"chave_at25_tarefa"=>$chave_at25_tarefa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

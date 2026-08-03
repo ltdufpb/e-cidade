@@ -65,10 +65,10 @@ include(modification("dbforms/db_funcoes.php"));
               <td><b>Tipo de gestão de créditos:</b></td>
               <td>
                 <?php 
-                  $aTiposGestaoCredito = array(
+                  $aTiposGestaoCredito = [
                                            "1" => "Total",
                                            "2" => "Parcial"
-                                         );
+                                         ];
                   db_select('tipogestaocreditos', $aTiposGestaoCredito, true, 1);
                 ?>
               </td>

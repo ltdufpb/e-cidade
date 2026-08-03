@@ -6,7 +6,7 @@ class M10183Menu extends PostgresMigration
 {
     public function up()
     {
-        $aSql = array();
+        $aSql = [];
 
         $aSql[] = " insert into db_itensmenu(id_item, descricao, help, funcao, itemativo, manutencao, desctec, libcliente) 
                      values (10580 ,'Término / Rescisão' ,'Término / Rescisão' ,'eso4_trabalhadorsemvinculotermino001.php' ,'1' ,'1' ,'Término do trabalhador sem vinculo' ,'true' );
@@ -21,7 +21,7 @@ class M10183Menu extends PostgresMigration
 
     public function down()
     {
-        $aSql = array();
+        $aSql = [];
 
         $aSql[] = "delete from db_menu  where   id_item_filho = 10580;";
         $aSql[] = "delete from db_itensmenu where  id_item = 10580;";

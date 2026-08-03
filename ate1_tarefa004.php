@@ -71,7 +71,7 @@ $clclientesenvol  = new cl_clientesenvol;
 $cl_tarefasyscadproced = new cl_tarefasyscadproced;
 //$cl_db_syscadproced = new cl_db_syscadproced;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_msgbox('004');
 $db_opcao = 11;
 $db_botao = true;
@@ -94,11 +94,11 @@ if(isset($incluir)) {
       $cltarefa->at40_diafim = null;
     }
     
-    if(strlen($at40_horainidia) == 2) {
+    if(strlen((string) $at40_horainidia) == 2) {
       $at40_horainidia .= ":00";
     }
     
-    if(strlen($at40_horafim) == 2) {
+    if(strlen((string) $at40_horafim) == 2) {
       $at40_horafim .= ":00";
     }
     
@@ -393,7 +393,7 @@ if(isset($db_opcao)&&$db_opcao==11&&$tipo=="A") {
 function testa_horarios($result, $cltarefa) {
   $retorno    = false;
   $NumRows    = $cltarefa->numrows;
-  $NumFields  = pg_numfields($result);
+  $NumFields  = pg_num_fields($result);
   $db_diaini  = "";
   $db_diafim  = "";
   $db_horaini = "";
@@ -401,23 +401,23 @@ function testa_horarios($result, $cltarefa) {
   
   for($i= 0; $i < $NumRows; $i++) {
     for($j = 0; $j < $NumFields; $j++) {
-      if(pg_fieldname($result, $j) == "at40_diaini") {
-        $db_diaini = db_formatar(pg_result($result, $i, $j),'d');
+      if(pg_field_name($result, $j) == "at40_diaini") {
+        $db_diaini = db_formatar(pg_fetch_result($result, $i, $j),'d');
       }
-      if(pg_fieldname($result, $j) == "at40_diafim") {
-        $db_diafim = db_formatar(pg_result($result, $i, $j),'d');
+      if(pg_field_name($result, $j) == "at40_diafim") {
+        $db_diafim = db_formatar(pg_fetch_result($result, $i, $j),'d');
       }
-      if(pg_fieldname($result, $j) == "at40_horainidia") {
-        $db_horaini = pg_result($result, $i, $j);
+      if(pg_field_name($result, $j) == "at40_horainidia") {
+        $db_horaini = pg_fetch_result($result, $i, $j);
         if(strlen(trim($db_horaini)) == 2) {
-          $db_horaini  = substr(pg_result($result, $i, $j),0,2);
+          $db_horaini  = substr(pg_fetch_result($result, $i, $j),0,2);
           $db_horaini .= ":00";
         }
       }
-      if(pg_fieldname($result, $j) == "at40_horafim") {
-        $db_horafim = pg_result($result, $i, $j);
+      if(pg_field_name($result, $j) == "at40_horafim") {
+        $db_horafim = pg_fetch_result($result, $i, $j);
         if(strlen(trim($db_horafim)) == 2) {
-          $db_horafim  = substr(pg_result($result, $i, $j),0,2);
+          $db_horafim  = substr(pg_fetch_result($result, $i, $j),0,2);
           $db_horafim .= ":00";
         }
       }

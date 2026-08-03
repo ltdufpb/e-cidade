@@ -54,7 +54,7 @@ class CadastroBeneficio extends \BaseClassRepository
         $selecao = null,
         $alteracao = false
     ) {
-        $retorno = array();
+        $retorno = [];
 
         $servidorMovimentacaoRepository = new ServidorMovimentacaoRepository();
         $codigoInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();

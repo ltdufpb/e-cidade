@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sec_parametros_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsec_parametros = new cl_sec_parametros;
 $clsec_parametros->rotulo->label("ed290_sequencial");
 ?>
@@ -85,9 +85,9 @@ $clsec_parametros->rotulo->label("ed290_sequencial");
         } else {
            $sql = $clsec_parametros->sql_query("",$campos,"ed290_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed290_sequencial)){
-          $repassa = array("chave_ed290_sequencial"=>$chave_ed290_sequencial,"chave_ed290_sequencial"=>$chave_ed290_sequencial);
+          $repassa = ["chave_ed290_sequencial"=>$chave_ed290_sequencial,"chave_ed290_sequencial"=>$chave_ed290_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

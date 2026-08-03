@@ -114,7 +114,7 @@ if(isset($db_opcaoal)){
   <tr>
     <td valign="top"  align="center">
     <?php
-  	 $chavepri = array("j81_codigo" => @$j81_codigo);
+  	 $chavepri = ["j81_codigo" => @$j81_codigo];
   	 $cliframe_alterar_excluir->chavepri      = $chavepri;
   	 $cliframe_alterar_excluir->sql           = $clfacevalor->sql_query_file(null,"*",null,"j81_face=$j81_face");
   	 $cliframe_alterar_excluir->campos        = "j81_codigo, j81_face, j81_anousu, j81_valorterreno, j81_valorconstr";

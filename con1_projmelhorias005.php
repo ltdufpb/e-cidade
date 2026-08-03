@@ -40,14 +40,14 @@ $clprojmelhoriasmatric = new cl_projmelhoriasmatric;
 $db_opcao = 22;
 $db_botao = true;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if(isset($confirma)){
   db_inicio_transacao();
-  $HTTP_POST_VARS['d40_data_dia'] = date('d');
-  $HTTP_POST_VARS['d40_data_mes'] = date('m');
-  $HTTP_POST_VARS['d40_data_ano'] = date('Y');
-  $HTTP_POST_VARS['d40_login'] = db_getsession('DB_id_usuario');
+  $_POST['d40_data_dia'] = date('d');
+  $_POST['d40_data_mes'] = date('m');
+  $_POST['d40_data_ano'] = date('Y');
+  $_POST['d40_login'] = db_getsession('DB_id_usuario');
   $sqlerro = false;
   $result = $clprojmelhorias->alterar($d40_codigo);
   if($clprojmelhorias->erro_status=='0'){
@@ -72,19 +72,19 @@ if(isset($confirma)){
       }
     }
   }
-  $tes = split("X",$testada);
-  $eixo = split("X",$eixo);
-  $obs = split("X",$obs);
-  $pgto = split("X",$pgto);
+  $tes = preg_split("#X#m",(string) $testada);
+  $eixo = preg_split("#X#m",(string) $eixo);
+  $obs = preg_split("#X#m",(string) $obs);
+  $pgto = preg_split("#X#m",(string) $pgto);
   for($ii=0;$ii<sizeof($tes);$ii++){
-    $chave = split('-',$tes[$ii]);
+    $chave = preg_split('#\-#m',(string) $tes[$ii]);
     $clprojmelhoriasmatric->d41_codigo = $clprojmelhorias->d40_codigo;
     $clprojmelhoriasmatric->d41_matric = $chave[0];
     $clprojmelhoriasmatric->d41_testada= $chave[1]+0;
     $clprojmelhoriasmatric->d41_eixo   = $eixo[$ii]+0;
     $clprojmelhoriasmatric->d41_obs    = $obs[$ii];
     $clprojmelhoriasmatric->d41_pgtopref = $pgto[$ii];
-    $HTTP_POST_VARS['d41_auto']   = true;
+    $_POST['d41_auto']   = true;
     
     $clprojmelhoriasmatric->incluir($clprojmelhorias->d40_codigo,$chave[0]);
     if($clprojmelhoriasmatric->erro_status=='0'){
@@ -396,7 +396,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

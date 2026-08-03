@@ -30,7 +30,7 @@ $codigos = array_keys(FinalidadePagamentoFundeb::$FINALIDADE_DESCRICAO_CNAB);
 
 $array = "ARRAY[". implode(',', $codigos)."]";
 
-$acampos = array();
+$acampos = [];
 $acampos[] = "finalidadepagamentofundeb.e151_sequencial";
 $acampos[] = "finalidadepagamentofundeb.e151_codigo";
 $acampos[] = "finalidadepagamentofundeb.e151_descricao";

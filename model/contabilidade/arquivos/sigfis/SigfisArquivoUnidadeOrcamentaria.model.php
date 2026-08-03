@@ -72,11 +72,11 @@ class SigfisArquivoUnidadeOrcamentaria extends SigfisArquivoBase implements iPad
         $oDados      = new stdClass();
         
         $oDados->dt_Ano                   = $oDadosQuery->o41_anousu;
-        $oDados->cd_Unidade               = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
-        $oDados->cd_UnidadeOrcamentaria   = str_pad($oDadosQuery->o41_unidade, 4, ' ', STR_PAD_LEFT);
-        $oDados->de_UnidadeOrcamentaria   = str_pad($oDadosQuery->o41_descr,  50, ' ', STR_PAD_RIGHT);
+        $oDados->cd_Unidade               = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
+        $oDados->cd_UnidadeOrcamentaria   = str_pad((string) $oDadosQuery->o41_unidade, 4, ' ', STR_PAD_LEFT);
+        $oDados->de_UnidadeOrcamentaria   = str_pad((string) $oDadosQuery->o41_descr,  50, ' ', STR_PAD_RIGHT);
         $oDados->Reservado_TCE            = str_pad('0',                       6, '0', STR_PAD_LEFT); 
-        $oDados->cd_Orgao                 = str_pad($oDadosQuery->o41_orgao,   4, ' ', STR_PAD_LEFT);
+        $oDados->cd_Orgao                 = str_pad((string) $oDadosQuery->o41_orgao,   4, ' ', STR_PAD_LEFT);
         $oDados->codigolinha              = 400;
         
         $this->aDados[] = $oDados;

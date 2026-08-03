@@ -80,14 +80,14 @@ class Leitura {
    */
   protected function getQuery(array $aCriteria) {
 
-    $aDefault = array(
+    $aDefault = [
       'aCampos' => null,
       'aWhere' => null,
       'sOrder' => null,
       'iLimit' => null,
       'iOffset' => null,
       'sGroupBy' => null,
-    );
+    ];
 
     $aCriteria = array_merge($aDefault, $aCriteria);
     $sWhere = $aCriteria['aWhere'] ? implode(' and ', $aCriteria['aWhere']) : null;
@@ -116,7 +116,7 @@ class Leitura {
       throw new DBException('Não foi possível fazer a consulta.');
     }
 
-    $aResultados = array();
+    $aResultados = [];
     $iQtdResultados = pg_num_rows($rsResultados);
     for ($iLinha = 0; $iLinha < $iQtdResultados; $iLinha++) {
       $aResultados[] = $this->hydrate($rsResultados, $iLinha);
@@ -160,9 +160,9 @@ class Leitura {
    */
   public function find($id) {
 
-    return $this->findOneBy(array(
-      'aWhere' => array("{$this->sPrimaryKey} = {$id}"),
-    ));
+    return $this->findOneBy([
+      'aWhere' => ["{$this->sPrimaryKey} = {$id}"],
+    ]);
   }
 
   /**
@@ -174,13 +174,13 @@ class Leitura {
    */
   public function findPrimeira($iContrato) {
 
-    $aCriteria = array(
+    $aCriteria = [
       'sOrder' => 'x21_exerc asc, x21_mes asc',
-      'aWhere' => array(
+      'aWhere' => [
         "x21_status = " . AguaLeitura::STATUS_ATIVA,
         "x55_aguacontrato = {$iContrato}",
-      ),
-    );
+      ],
+    ];
 
     return $this->findOneBy($aCriteria);
   }
@@ -202,10 +202,10 @@ class Leitura {
     $iContrato,
     $iMes,
     $iAno,
-    array $aLeituras = array(),
-    DateTime $oDataInicio = null,
-    DateTime $oDataFim = null,
-    DateTime $oDataStop = null
+    array $aLeituras = [],
+    ?DateTime $oDataInicio = null,
+    ?DateTime $oDataFim = null,
+    ?DateTime $oDataStop = null
   ) {
 
     if ($oDataInicio) {
@@ -225,7 +225,7 @@ class Leitura {
 
       $oPrimeiraLeitura = $this->findPrimeira($iContrato);
       if (!$oPrimeiraLeitura) {
-        return array();
+        return [];
       }
 
       $oDataStop = new DateTime("{$oPrimeiraLeitura->getAno()}-{$oPrimeiraLeitura->getMes()}-01");
@@ -235,7 +235,7 @@ class Leitura {
 
     $sDataFim = $oDataFim->format('Y-m-d');
 
-    $aWhere = array(
+    $aWhere = [
       /**
        * @todo Buscar diretamente por contrato quando todas as leituras estiverem vinculadas aos contratos.
        */
@@ -243,21 +243,19 @@ class Leitura {
       "x21_status = " . AguaLeitura::STATUS_ATIVA,
       "(x21_exerc || '-' || x21_mes || '-' || '01')::date > '{$sDataInicio}'",
       "(x21_exerc || '-' || x21_mes || '-' || '01')::date <= '{$sDataFim}'",
-    );
+    ];
 
-    $aCriteria = array(
+    $aCriteria = [
       'aWhere' => $aWhere,
       'sOrder' => 'x21_exerc desc, x21_mes desc',
-    );
+    ];
 
     if ($aLeituras) {
 
       /**
        * Excluí da busca as leituras já encontradas.
        */
-      $sCodigos = implode(', ', array_map(function (&$item) {
-        return $item->getCodigo();
-      }, $aLeituras));
+      $sCodigos = implode(', ', array_map(fn(&$item) => $item->getCodigo(), $aLeituras));
 
       $aCriteria['aWhere'][] = "x21_codleitura not in({$sCodigos})";
     }
@@ -297,7 +295,7 @@ class Leitura {
    */
   public function agruparPorMes(array $aLeituras) {
 
-    $aAgrupamento = array();
+    $aAgrupamento = [];
     foreach ($aLeituras as $oLeitura) {
 
       $sChave = (int) $oLeitura->getAno() . (int) $oLeitura->getMes();
@@ -324,14 +322,14 @@ class Leitura {
    */
   public function findByMesAno($iContrato, $iMes, $iAno) {
 
-    return $this->findBy(array(
-      'aWhere' => array(
+    return $this->findBy([
+      'aWhere' => [
         "x21_status = " . AguaLeitura::STATUS_ATIVA,
         "x21_exerc = {$iAno}",
         "x21_mes = {$iMes}",
         "x55_aguacontrato = {$iContrato}",
-      ),
-    ));
+      ],
+    ]);
   }
 
   /**
@@ -348,11 +346,11 @@ class Leitura {
    */
   public function findUltimaMesAno($iMatricula, $iMes, $iAno, $iContrato = null, $iLeituraIgnorada = null) {
 
-    $aWhere = array(
+    $aWhere = [
       "x21_status = " . AguaLeitura::STATUS_ATIVA,
       "(x21_exerc::varchar || '-' || x21_mes::varchar || '-01')::date <= '{$iAno}-{$iMes}-01'",
       "x04_matric = {$iMatricula}",
-    );
+    ];
 
     if ($iLeituraIgnorada) {
       $aWhere[] = "x21_codleitura <> {$iLeituraIgnorada}";
@@ -368,13 +366,13 @@ class Leitura {
       $aWhere[] = "x55_aguacontrato = {$iContrato}";
     }
 
-    $sOrder = implode(', ', array(
+    $sOrder = implode(', ', [
       'x21_exerc desc',
       'x21_mes desc',
       'x21_dtleitura desc',
       'x21_dtinc desc',
       'x21_codleitura desc',
-    ));
+    ]);
 
     $sWhere = implode(' and ', $aWhere);
 

@@ -56,7 +56,7 @@ switch($oParam->exec) {
 
   case 'Consulta' :
     
-    $oRetorno->dados = array(); 
+    $oRetorno->dados = []; 
 
     if ($oParam->sCgm != "") {
       $sInner = "inner join arrenumcgm on arrenumcgm.k00_numpre = divida.v01_numpre";

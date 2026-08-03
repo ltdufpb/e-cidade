@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE acordocategoria
 class cl_acordocategoria { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ac50_sequencial = 0; 
-   var $ac50_descricao = null; 
+   public $ac50_sequencial = 0; 
+   public $ac50_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ac50_sequencial = int4 = Código 
                  ac50_descricao = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_acordocategoria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordocategoria"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_acordocategoria {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ac50_sequencial = pg_result($result,0,0); 
+       $this->ac50_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from acordocategoria_ac50_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ac50_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ac50_sequencial)){
          $this->erro_sql = " Campo ac50_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_acordocategoria {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "acordocategoria ($this->ac50_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "acordocategoria já Cadastrado";
@@ -157,11 +157,11 @@ class cl_acordocategoria {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19924,'$this->ac50_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3570,19924,'','".AddSlashes(pg_result($resaco,0,'ac50_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3570,19925,'','".AddSlashes(pg_result($resaco,0,'ac50_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3570,19924,'','".AddSlashes(pg_fetch_result($resaco,0,'ac50_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3570,19925,'','".AddSlashes(pg_fetch_result($resaco,0,'ac50_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -171,10 +171,10 @@ class cl_acordocategoria {
       $this->atualizacampos();
      $sql = " update acordocategoria set ";
      $virgula = "";
-     if(trim($this->ac50_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac50_sequencial"])){ 
+     if(trim((string) $this->ac50_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac50_sequencial"])){ 
        $sql  .= $virgula." ac50_sequencial = $this->ac50_sequencial ";
        $virgula = ",";
-       if(trim($this->ac50_sequencial) == null ){ 
+       if(trim((string) $this->ac50_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ac50_sequencial";
          $this->erro_banco = "";
@@ -184,10 +184,10 @@ class cl_acordocategoria {
          return false;
        }
      }
-     if(trim($this->ac50_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac50_descricao"])){ 
+     if(trim((string) $this->ac50_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac50_descricao"])){ 
        $sql  .= $virgula." ac50_descricao = '$this->ac50_descricao' ";
        $virgula = ",";
-       if(trim($this->ac50_descricao) == null ){ 
+       if(trim((string) $this->ac50_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "ac50_descricao";
          $this->erro_banco = "";
@@ -211,13 +211,13 @@ class cl_acordocategoria {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19924,'$this->ac50_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ac50_sequencial"]) || $this->ac50_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3570,19924,'".AddSlashes(pg_result($resaco,$conresaco,'ac50_sequencial'))."','$this->ac50_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3570,19924,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac50_sequencial'))."','$this->ac50_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ac50_descricao"]) || $this->ac50_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3570,19925,'".AddSlashes(pg_result($resaco,$conresaco,'ac50_descricao'))."','$this->ac50_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3570,19925,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac50_descricao'))."','$this->ac50_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -271,11 +271,11 @@ class cl_acordocategoria {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19924,'$ac50_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3570,19924,'','".AddSlashes(pg_result($resaco,$iresaco,'ac50_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3570,19925,'','".AddSlashes(pg_result($resaco,$iresaco,'ac50_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3570,19924,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac50_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3570,19925,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac50_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -336,7 +336,7 @@ class cl_acordocategoria {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:acordocategoria";
@@ -351,7 +351,7 @@ class cl_acordocategoria {
    function sql_query ( $ac50_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -372,7 +372,7 @@ class cl_acordocategoria {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_acordocategoria {
    function sql_query_file ( $ac50_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,7 +406,7 @@ class cl_acordocategoria {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

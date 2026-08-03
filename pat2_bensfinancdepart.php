@@ -90,10 +90,10 @@ include(modification("dbforms/db_funcoes.php"));
                     </td>
                     <td>
                         <?php 
-                          $aOpcoes = array(
+                          $aOpcoes = [
                                           "comdepartamento" => "Com os departamentos selecionados",
                                           "semdepartamento" => "sem os departamentos selecionados",
-                                          ); 
+                                          ]; 
                          db_select("opcoesdepartamento", $aOpcoes, true,1);                 
                         ?>
                     </td>

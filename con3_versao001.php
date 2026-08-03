@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_versao_classe.php"));
 include(modification("classes/db_db_versaoant_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cldb_versao    = new cl_db_versao;
 $cldb_versaoant = new cl_db_versaoant;
@@ -82,9 +82,9 @@ if(isset($item) && $item != ""){
         ";
 
   $resitem = db_query($sql);
-  if( pg_numrows($resitem) > 0 ){
+  if( pg_num_rows($resitem) > 0 ){
     $lista = 'X';
-    for($mi=0;$mi<pg_numrows($resitem);$mi++){
+    for($mi=0;$mi<pg_num_rows($resitem);$mi++){
       db_fieldsmemory($resitem,$mi);
       if($lista != $help){
         echo "<br><strong>$help</strong><br>";

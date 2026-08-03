@@ -105,7 +105,7 @@ db_inputdata('k40_dtfim',@$k40_dtfim_dia,@$k40_dtfim_mes,@$k40_dtfim_ano,true,'t
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('k40_todasmarc',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -116,7 +116,7 @@ db_select('k40_todasmarc',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('k40_permvalparc',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -159,7 +159,7 @@ db_input('k40_diapulames',10,$Ik40_diapulames,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('k40_permvalcadparc',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -170,7 +170,7 @@ db_select('k40_permvalcadparc',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('k40_permdataparc',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -181,7 +181,7 @@ db_select('k40_permdataparc',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('k40_controlavencimento',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -225,7 +225,7 @@ db_select('k40_controlavencimento',$x,true,$db_opcao,"");
     </td>
     <td> 
 			<?php 
-			$x = array('1'=>'Sempre','2'=>'Nunca', '3'=>'Somente sem Pagamentos/Cancelamentos');
+			$x = ['1'=>'Sempre','2'=>'Nunca', '3'=>'Somente sem Pagamentos/Cancelamentos'];
 			db_select('k40_permanula',$x,true,$db_opcao,"");
 			?>
     </td>
@@ -247,7 +247,7 @@ db_select('k40_controlavencimento',$x,true,$db_opcao,"");
     </td>
     <td> 
 			<?php 
-			$x = array('1'=>'Normal','2'=>'Juros e Multa na ultima', '3'=>'Loteamento');
+			$x = ['1'=>'Normal','2'=>'Juros e Multa na ultima', '3'=>'Loteamento'];
 			db_select('k40_forma',$x,true,$db_opcao,"");
 			?>
     </td>
@@ -258,7 +258,7 @@ db_select('k40_controlavencimento',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$aplic = array('1'=>'Antes do Lançamento do Débito','2'=>'Após o Lançamento do Débito');
+$aplic = ['1'=>'Antes do Lançamento do Débito','2'=>'Após o Lançamento do Débito'];
 db_select('k40_aplicacao',$aplic,true,$db_opcao,"");
        ?>
     </td>
@@ -292,7 +292,7 @@ db_input('db03_descr',40,$Idb03_descr,true,'text',3,'')
 			    </td>
 			    <td> 
 						<?php 
-						$x = array('1'=>'Permite agrupar origens','2'=>'Permite apenas individual por origem');
+						$x = ['1'=>'Permite agrupar origens','2'=>'Permite apenas individual por origem'];
 						db_select('k40_regraunif',$x,true,$db_opcao,"onchange=js_ddl_regraunif()");
 						?>
 			    </td>
@@ -314,7 +314,7 @@ db_input('db03_descr',40,$Idb03_descr,true,'text',3,'')
 						  
        			<?php 
        			$k40_bloqueio = (isset($k40_bloqueio)&& $k40_bloqueio == 't') ? 'true' : 'false';
-						$x = array('false'=>'Não','true'=>'Sim');
+						$x = ['false'=>'Não','true'=>'Sim'];
 						db_select('k40_bloqueio',$x,true,$db_opcao,"");
 						?>
     			</td>
@@ -349,7 +349,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cadtipoparc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

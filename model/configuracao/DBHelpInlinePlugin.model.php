@@ -22,6 +22,7 @@ class DBHelpInlinePlugin extends DBHelpInline {
     return $oHelp;
   }
 
+  #[\Override]
   public function load() {
 
     $oHelp = $this->loadHelpFile();

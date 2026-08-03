@@ -171,7 +171,7 @@ if (isset($leitor)&&$leitor != "") {
     </script>
     <?php 
     exit;
-  } else if ($clcarteira->numrows > 0 && str_replace("-", "", pg_result($resultY, 0, 'bi16_validade')) - date("Ymd") < 0) {
+  } else if ($clcarteira->numrows > 0 && str_replace("-", "", pg_fetch_result($resultY, 0, 'bi16_validade')) - date("Ymd") < 0) {
 
     db_fieldsmemory($resultY, 0);
     ?>
@@ -185,7 +185,7 @@ if (isset($leitor)&&$leitor != "") {
     <?php 
     exit;
   }
-  $permitido = pg_result($resultY, 0, 'bi07_qtdlivros');
+  $permitido = pg_fetch_result($resultY, 0, 'bi07_qtdlivros');
   ?>
   <table border="0" width="90%" align="center">
     <tr>

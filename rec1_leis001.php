@@ -31,15 +31,15 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_leis_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clleis = new cl_leis;
 $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   db_inicio_transacao();
-  $arr_dados_iframe = split("\|", $anos_perc_inf);
+  $arr_dados_iframe = preg_split("#\\|#m", (string) $anos_perc_inf);
   for($i=0; $i<count($arr_dados_iframe); $i++){
-    $arr_valores = split("-", $arr_dados_iframe[$i]);
+    $arr_valores = preg_split("#\\-#m", (string) $arr_dados_iframe[$i]);
     $anos = $arr_valores[0];
     $perc = $arr_valores[1];
     $car  = $arr_valores[2];

@@ -36,7 +36,7 @@
      * Collection de TipoFamiliar
      * @var array
      */
-    private $aTipos = array();
+    private $aTipos = [];
 
     /**
      * Instancia da classe

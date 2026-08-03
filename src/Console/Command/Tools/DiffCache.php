@@ -73,13 +73,9 @@ class DiffCache extends Command
         }
 
         $pid = pcntl_fork();
-        switch ($pid) {
-        case 0 :
-            pcntl_exec('/usr/bin/vim', $args);
-            break;
-        default :
-            pcntl_waitpid($pid, $status);
-            break;
-        }
+        match ($pid) {
+            0 => pcntl_exec('/usr/bin/vim', $args),
+            default => pcntl_waitpid($pid, $status),
+        };
     }
 }

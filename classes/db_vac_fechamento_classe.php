@@ -29,41 +29,41 @@
 //CLASSE DA ENTIDADE vac_fechamento
 class cl_vac_fechamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $vc20_i_codigo = 0; 
-   var $vc20_d_dataini_dia = null; 
-   var $vc20_d_dataini_mes = null; 
-   var $vc20_d_dataini_ano = null; 
-   var $vc20_d_dataini = null; 
-   var $vc20_d_datafim_dia = null; 
-   var $vc20_d_datafim_mes = null; 
-   var $vc20_d_datafim_ano = null; 
-   var $vc20_d_datafim = null; 
-   var $vc20_i_usuario = 0; 
+   public $vc20_i_codigo = 0; 
+   public $vc20_d_dataini_dia = null; 
+   public $vc20_d_dataini_mes = null; 
+   public $vc20_d_dataini_ano = null; 
+   public $vc20_d_dataini = null; 
+   public $vc20_d_datafim_dia = null; 
+   public $vc20_d_datafim_mes = null; 
+   public $vc20_d_datafim_ano = null; 
+   public $vc20_d_datafim = null; 
+   public $vc20_i_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  vc20_i_codigo = int4 = Código 
                  vc20_d_dataini = date = Inicio 
                  vc20_d_datafim = date = Fim 
                  vc20_i_usuario = int4 = Usuario 
                  ";
    //funcao construtor da classe 
-   function cl_vac_fechamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vac_fechamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -139,10 +139,10 @@ class cl_vac_fechamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->vc20_i_codigo = pg_result($result,0,0); 
+       $this->vc20_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from vac_fechamento_vc20_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $vc20_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $vc20_i_codigo)){
          $this->erro_sql = " Campo vc20_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,7 +176,7 @@ class cl_vac_fechamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Fechamento ($this->vc20_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Fechamento já Cadastrado";
@@ -200,13 +200,13 @@ class cl_vac_fechamento {
      $resaco = $this->sql_record($this->sql_query_file($this->vc20_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17510,'$this->vc20_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,3093,17510,'','".AddSlashes(pg_result($resaco,0,'vc20_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3093,17511,'','".AddSlashes(pg_result($resaco,0,'vc20_d_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3093,17512,'','".AddSlashes(pg_result($resaco,0,'vc20_d_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3093,17513,'','".AddSlashes(pg_result($resaco,0,'vc20_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3093,17510,'','".AddSlashes(pg_fetch_result($resaco,0,'vc20_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3093,17511,'','".AddSlashes(pg_fetch_result($resaco,0,'vc20_d_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3093,17512,'','".AddSlashes(pg_fetch_result($resaco,0,'vc20_d_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3093,17513,'','".AddSlashes(pg_fetch_result($resaco,0,'vc20_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -215,10 +215,10 @@ class cl_vac_fechamento {
       $this->atualizacampos();
      $sql = " update vac_fechamento set ";
      $virgula = "";
-     if(trim($this->vc20_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_i_codigo"])){ 
+     if(trim((string) $this->vc20_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_i_codigo"])){ 
        $sql  .= $virgula." vc20_i_codigo = $this->vc20_i_codigo ";
        $virgula = ",";
-       if(trim($this->vc20_i_codigo) == null ){ 
+       if(trim((string) $this->vc20_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "vc20_i_codigo";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_vac_fechamento {
          return false;
        }
      }
-     if(trim($this->vc20_d_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"] !="") ){ 
+     if(trim((string) $this->vc20_d_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"] !="") ){ 
        $sql  .= $virgula." vc20_d_dataini = '$this->vc20_d_dataini' ";
        $virgula = ",";
-       if(trim($this->vc20_d_dataini) == null ){ 
+       if(trim((string) $this->vc20_d_dataini) == null ){ 
          $this->erro_sql = " Campo Inicio nao Informado.";
          $this->erro_campo = "vc20_d_dataini_dia";
          $this->erro_banco = "";
@@ -244,7 +244,7 @@ class cl_vac_fechamento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"])){ 
          $sql  .= $virgula." vc20_d_dataini = null ";
          $virgula = ",";
-         if(trim($this->vc20_d_dataini) == null ){ 
+         if(trim((string) $this->vc20_d_dataini) == null ){ 
            $this->erro_sql = " Campo Inicio nao Informado.";
            $this->erro_campo = "vc20_d_dataini_dia";
            $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_vac_fechamento {
          }
        }
      }
-     if(trim($this->vc20_d_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"] !="") ){ 
+     if(trim((string) $this->vc20_d_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"] !="") ){ 
        $sql  .= $virgula." vc20_d_datafim = '$this->vc20_d_datafim' ";
        $virgula = ",";
-       if(trim($this->vc20_d_datafim) == null ){ 
+       if(trim((string) $this->vc20_d_datafim) == null ){ 
          $this->erro_sql = " Campo Fim nao Informado.";
          $this->erro_campo = "vc20_d_datafim_dia";
          $this->erro_banco = "";
@@ -271,7 +271,7 @@ class cl_vac_fechamento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"])){ 
          $sql  .= $virgula." vc20_d_datafim = null ";
          $virgula = ",";
-         if(trim($this->vc20_d_datafim) == null ){ 
+         if(trim((string) $this->vc20_d_datafim) == null ){ 
            $this->erro_sql = " Campo Fim nao Informado.";
            $this->erro_campo = "vc20_d_datafim_dia";
            $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_vac_fechamento {
          }
        }
      }
-     if(trim($this->vc20_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_i_usuario"])){ 
+     if(trim((string) $this->vc20_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_i_usuario"])){ 
        $sql  .= $virgula." vc20_i_usuario = $this->vc20_i_usuario ";
        $virgula = ",";
-       if(trim($this->vc20_i_usuario) == null ){ 
+       if(trim((string) $this->vc20_i_usuario) == null ){ 
          $this->erro_sql = " Campo Usuario nao Informado.";
          $this->erro_campo = "vc20_i_usuario";
          $this->erro_banco = "";
@@ -303,17 +303,17 @@ class cl_vac_fechamento {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17510,'$this->vc20_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc20_i_codigo"]) || $this->vc20_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3093,17510,'".AddSlashes(pg_result($resaco,$conresaco,'vc20_i_codigo'))."','$this->vc20_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3093,17510,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc20_i_codigo'))."','$this->vc20_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini"]) || $this->vc20_d_dataini != "")
-           $resac = db_query("insert into db_acount values($acount,3093,17511,'".AddSlashes(pg_result($resaco,$conresaco,'vc20_d_dataini'))."','$this->vc20_d_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3093,17511,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc20_d_dataini'))."','$this->vc20_d_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim"]) || $this->vc20_d_datafim != "")
-           $resac = db_query("insert into db_acount values($acount,3093,17512,'".AddSlashes(pg_result($resaco,$conresaco,'vc20_d_datafim'))."','$this->vc20_d_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3093,17512,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc20_d_datafim'))."','$this->vc20_d_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc20_i_usuario"]) || $this->vc20_i_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3093,17513,'".AddSlashes(pg_result($resaco,$conresaco,'vc20_i_usuario'))."','$this->vc20_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3093,17513,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc20_i_usuario'))."','$this->vc20_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -358,13 +358,13 @@ class cl_vac_fechamento {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17510,'$vc20_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,3093,17510,'','".AddSlashes(pg_result($resaco,$iresaco,'vc20_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3093,17511,'','".AddSlashes(pg_result($resaco,$iresaco,'vc20_d_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3093,17512,'','".AddSlashes(pg_result($resaco,$iresaco,'vc20_d_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3093,17513,'','".AddSlashes(pg_result($resaco,$iresaco,'vc20_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3093,17510,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc20_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3093,17511,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc20_d_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3093,17512,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc20_d_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3093,17513,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc20_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from vac_fechamento
@@ -424,7 +424,7 @@ class cl_vac_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vac_fechamento";
@@ -439,7 +439,7 @@ class cl_vac_fechamento {
    function sql_query ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_vac_fechamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_vac_fechamento {
    function sql_query2 ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere="",$iLote = ""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -518,7 +518,7 @@ class cl_vac_fechamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_vac_fechamento {
    function sql_query_atendrequiitem ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -563,7 +563,7 @@ class cl_vac_fechamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -576,7 +576,7 @@ class cl_vac_fechamento {
    function sql_query_file ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -597,7 +597,7 @@ class cl_vac_fechamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

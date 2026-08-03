@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE cedulas
 class cl_cedulas { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r05_anousu = 0; 
-   var $r05_mesusu = 0; 
-   var $r05_cedu0 = 0; 
-   var $r05_cedu1 = 0; 
-   var $r05_cedu2 = 0; 
-   var $r05_cedu3 = 0; 
-   var $r05_cedu4 = 0; 
-   var $r05_cedu5 = 0; 
-   var $r05_cedu6 = 0; 
-   var $r05_cedu7 = 0; 
-   var $r05_cedu8 = 0; 
-   var $r05_cedu9 = 0; 
+   public $r05_anousu = 0; 
+   public $r05_mesusu = 0; 
+   public $r05_cedu0 = 0; 
+   public $r05_cedu1 = 0; 
+   public $r05_cedu2 = 0; 
+   public $r05_cedu3 = 0; 
+   public $r05_cedu4 = 0; 
+   public $r05_cedu5 = 0; 
+   public $r05_cedu6 = 0; 
+   public $r05_cedu7 = 0; 
+   public $r05_cedu8 = 0; 
+   public $r05_cedu9 = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r05_anousu = int4 = Ano do Exercicio 
                  r05_mesusu = int4 = Mes do Exercicio 
                  r05_cedu0 = float8 = PRIMEIRA CEDULA DA TABELA 
@@ -70,10 +70,10 @@ class cl_cedulas {
                  r05_cedu9 = float8 = DECIMA CEDULA DA TABELA 
                  ";
    //funcao construtor da classe 
-   function cl_cedulas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cedulas"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -244,7 +244,7 @@ class cl_cedulas {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cadastro das Cedulas(dinheiro) para finsdo Relator () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cadastro das Cedulas(dinheiro) para finsdo Relator já Cadastrado";
@@ -271,10 +271,10 @@ class cl_cedulas {
       $this->atualizacampos();
      $sql = " update cedulas set ";
      $virgula = "";
-     if(trim($this->r05_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_anousu"])){ 
+     if(trim((string) $this->r05_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_anousu"])){ 
        $sql  .= $virgula." r05_anousu = $this->r05_anousu ";
        $virgula = ",";
-       if(trim($this->r05_anousu) == null ){ 
+       if(trim((string) $this->r05_anousu) == null ){ 
          $this->erro_sql = " Campo Ano do Exercicio nao Informado.";
          $this->erro_campo = "r05_anousu";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_mesusu"])){ 
+     if(trim((string) $this->r05_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_mesusu"])){ 
        $sql  .= $virgula." r05_mesusu = $this->r05_mesusu ";
        $virgula = ",";
-       if(trim($this->r05_mesusu) == null ){ 
+       if(trim((string) $this->r05_mesusu) == null ){ 
          $this->erro_sql = " Campo Mes do Exercicio nao Informado.";
          $this->erro_campo = "r05_mesusu";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_cedu0)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu0"])){ 
+     if(trim((string) $this->r05_cedu0)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu0"])){ 
        $sql  .= $virgula." r05_cedu0 = $this->r05_cedu0 ";
        $virgula = ",";
-       if(trim($this->r05_cedu0) == null ){ 
+       if(trim((string) $this->r05_cedu0) == null ){ 
          $this->erro_sql = " Campo PRIMEIRA CEDULA DA TABELA nao Informado.";
          $this->erro_campo = "r05_cedu0";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_cedu1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu1"])){ 
+     if(trim((string) $this->r05_cedu1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu1"])){ 
        $sql  .= $virgula." r05_cedu1 = $this->r05_cedu1 ";
        $virgula = ",";
-       if(trim($this->r05_cedu1) == null ){ 
+       if(trim((string) $this->r05_cedu1) == null ){ 
          $this->erro_sql = " Campo SEGUNDA CEDULA DA TABELA nao Informado.";
          $this->erro_campo = "r05_cedu1";
          $this->erro_banco = "";
@@ -323,10 +323,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_cedu2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu2"])){ 
+     if(trim((string) $this->r05_cedu2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu2"])){ 
        $sql  .= $virgula." r05_cedu2 = $this->r05_cedu2 ";
        $virgula = ",";
-       if(trim($this->r05_cedu2) == null ){ 
+       if(trim((string) $this->r05_cedu2) == null ){ 
          $this->erro_sql = " Campo TERCEIRA CEDULA DA TABELA nao Informado.";
          $this->erro_campo = "r05_cedu2";
          $this->erro_banco = "";
@@ -336,10 +336,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_cedu3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu3"])){ 
+     if(trim((string) $this->r05_cedu3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu3"])){ 
        $sql  .= $virgula." r05_cedu3 = $this->r05_cedu3 ";
        $virgula = ",";
-       if(trim($this->r05_cedu3) == null ){ 
+       if(trim((string) $this->r05_cedu3) == null ){ 
          $this->erro_sql = " Campo QUARTA CEDULA DA TABELA nao Informado.";
          $this->erro_campo = "r05_cedu3";
          $this->erro_banco = "";
@@ -349,10 +349,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_cedu4)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu4"])){ 
+     if(trim((string) $this->r05_cedu4)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu4"])){ 
        $sql  .= $virgula." r05_cedu4 = $this->r05_cedu4 ";
        $virgula = ",";
-       if(trim($this->r05_cedu4) == null ){ 
+       if(trim((string) $this->r05_cedu4) == null ){ 
          $this->erro_sql = " Campo QUINTA CEDULA DA TABELA nao Informado.";
          $this->erro_campo = "r05_cedu4";
          $this->erro_banco = "";
@@ -362,10 +362,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_cedu5)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu5"])){ 
+     if(trim((string) $this->r05_cedu5)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu5"])){ 
        $sql  .= $virgula." r05_cedu5 = $this->r05_cedu5 ";
        $virgula = ",";
-       if(trim($this->r05_cedu5) == null ){ 
+       if(trim((string) $this->r05_cedu5) == null ){ 
          $this->erro_sql = " Campo SEXTA CEDULA DA TABELA nao Informado.";
          $this->erro_campo = "r05_cedu5";
          $this->erro_banco = "";
@@ -375,10 +375,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_cedu6)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu6"])){ 
+     if(trim((string) $this->r05_cedu6)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu6"])){ 
        $sql  .= $virgula." r05_cedu6 = $this->r05_cedu6 ";
        $virgula = ",";
-       if(trim($this->r05_cedu6) == null ){ 
+       if(trim((string) $this->r05_cedu6) == null ){ 
          $this->erro_sql = " Campo SETIMA CEDULA DA TABELA nao Informado.";
          $this->erro_campo = "r05_cedu6";
          $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_cedu7)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu7"])){ 
+     if(trim((string) $this->r05_cedu7)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu7"])){ 
        $sql  .= $virgula." r05_cedu7 = $this->r05_cedu7 ";
        $virgula = ",";
-       if(trim($this->r05_cedu7) == null ){ 
+       if(trim((string) $this->r05_cedu7) == null ){ 
          $this->erro_sql = " Campo OITAVA CEDULA DA TABELA nao Informado.";
          $this->erro_campo = "r05_cedu7";
          $this->erro_banco = "";
@@ -401,10 +401,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_cedu8)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu8"])){ 
+     if(trim((string) $this->r05_cedu8)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu8"])){ 
        $sql  .= $virgula." r05_cedu8 = $this->r05_cedu8 ";
        $virgula = ",";
-       if(trim($this->r05_cedu8) == null ){ 
+       if(trim((string) $this->r05_cedu8) == null ){ 
          $this->erro_sql = " Campo NONA CEDULA DA TABELA nao Informado.";
          $this->erro_campo = "r05_cedu8";
          $this->erro_banco = "";
@@ -414,10 +414,10 @@ class cl_cedulas {
          return false;
        }
      }
-     if(trim($this->r05_cedu9)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu9"])){ 
+     if(trim((string) $this->r05_cedu9)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r05_cedu9"])){ 
        $sql  .= $virgula." r05_cedu9 = $this->r05_cedu9 ";
        $virgula = ",";
-       if(trim($this->r05_cedu9) == null ){ 
+       if(trim((string) $this->r05_cedu9) == null ){ 
          $this->erro_sql = " Campo DECIMA CEDULA DA TABELA nao Informado.";
          $this->erro_campo = "r05_cedu9";
          $this->erro_banco = "";
@@ -508,7 +508,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cedulas";
@@ -525,7 +525,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="cedulas.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -546,7 +546,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -558,7 +558,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -576,7 +576,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

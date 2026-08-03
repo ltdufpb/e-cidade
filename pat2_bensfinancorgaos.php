@@ -89,10 +89,10 @@ include(modification("dbforms/db_funcoes.php"));
                     </td>
                     <td>
                         <?php 
-                          $aOpcoes = array(
+                          $aOpcoes = [
                                           "comorgao" => "Com os Orgãos selecionados",
                                           "semorgao" => "sem os Orgãos selecionados",
-                                          ); 
+                                          ]; 
                          db_select("opcoesorgaos", $aOpcoes, true,1);                 
                         ?>
                     </td>

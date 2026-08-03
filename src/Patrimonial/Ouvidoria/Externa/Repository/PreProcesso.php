@@ -163,10 +163,10 @@ class PreProcesso
     public function buscarPreProcessos(Instituicao $instituicao, $tipoProcessoGrupo = TipoProcesso::GRUPO_OUVIDORIA)
     {
         $dao = new cl_preprocesso();
-        $where = array(
+        $where = [
           "p106_instituicao = {$instituicao->getCodigo()}",
           "p51_tipoprocgrupo = {$tipoProcessoGrupo}"
-        );
+        ];
 
         $condicao = "not exists(select 1 ";
         $condicao .= "            from preprocessoprotprocesso";
@@ -174,7 +174,7 @@ class PreProcesso
 
         $where[] = $condicao;
 
-        $sql = $dao->sqlPreProcessoTipoProcesso(array(), $where);
+        $sql = $dao->sqlPreProcessoTipoProcesso([], $where);
         $rs = db_query($sql);
 
         if (!$rs) {

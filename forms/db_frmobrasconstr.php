@@ -145,14 +145,14 @@ if (!empty($oGet->ob08_codobra)) {
       $ob07_areadescoberta = $oObrasEnder->ob07_areadescoberta;
 
       if (!empty($ob07_inicio)) {
-          $aDataInicio = explode("-", $oObrasEnder->ob07_inicio);
+          $aDataInicio = explode("-", (string) $oObrasEnder->ob07_inicio);
           $ob07_inicio_dia = $aDataInicio[2];
           $ob07_inicio_mes = $aDataInicio[1];
           $ob07_inicio_ano = $aDataInicio[0];
       }
 
       if (!empty($ob07_fim)) {
-          $aDataFim = explode("-", $oObrasEnder->ob07_fim);
+          $aDataFim = explode("-", (string) $oObrasEnder->ob07_fim);
           $ob07_fim_dia = $aDataFim[2];
           $ob07_fim_mes = $aDataFim[1];
           $ob07_fim_ano = $aDataFim[0];
@@ -378,9 +378,9 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
           </td>
           <td>
               <?php 
-              $ob07_inicio_dia = isset($ob07_inicio_dia) ? $ob07_inicio_dia : '';
-              $ob07_inicio_mes = isset($ob07_inicio_mes) ? $ob07_inicio_mes : '';
-              $ob07_inicio_ano = isset($ob07_inicio_ano) ? $ob07_inicio_ano : '';
+              $ob07_inicio_dia ??= '';
+              $ob07_inicio_mes ??= '';
+              $ob07_inicio_ano ??= '';
 
               db_inputdata('ob07_inicio', $ob07_inicio_dia, $ob07_inicio_mes, $ob07_inicio_ano, true, 'text', $iDBOpcao,
                 "");
@@ -394,9 +394,9 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
           </td>
           <td>
               <?php
-              $ob07_fim_dia = isset($ob07_fim_dia) ? $ob07_fim_dia : '';
-              $ob07_fim_mes = isset($ob07_fim_mes) ? $ob07_fim_mes : '';
-              $ob07_fim_ano = isset($ob07_fim_ano) ? $ob07_fim_ano : '';
+              $ob07_fim_dia ??= '';
+              $ob07_fim_mes ??= '';
+              $ob07_fim_ano ??= '';
 
               db_inputdata('ob07_fim', $ob07_fim_dia, $ob07_fim_mes, $ob07_fim_ano, true, 'text', $iDBOpcao, "");
               ?>
@@ -537,7 +537,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
     db_iframe_obrasconstr.hide();
       <?php 
       if ($iDBOpcao != 1) {
-          echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+          echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }
       ?>
   }

@@ -106,7 +106,7 @@ $oRotuloSaltes->label();
             <td>
               <?php 
                 $aPeriodoDatas = explode('-', date('Y-m-d', db_getsession('DB_datausu')));
-                list($iAnoInicial, $iMesInicial, $iDiaInicial) = $aPeriodoDatas;
+                [$iAnoInicial, $iMesInicial, $iDiaInicial] = $aPeriodoDatas;
                 echo "<b>De: </b>";
                 db_inputdata("dtDataInicial", $iDiaInicial, $iMesInicial, $iAnoInicial, true, 'text', 1);
                 echo "<b> até </b>";
@@ -118,7 +118,7 @@ $oRotuloSaltes->label();
             <td><b>Ordem:</b></td>
             <td>
               <?php 
-                $aOrdem = array("empenho" => "Empenho", "autenticacao" => "Autenticação");
+                $aOrdem = ["empenho" => "Empenho", "autenticacao" => "Autenticação"];
                 db_select("sTipoOrdem", $aOrdem, true, 1);
               ?>
             </td>
@@ -127,7 +127,7 @@ $oRotuloSaltes->label();
             <td><b>Quebra por Conta:</b></td>
             <td>
               <?php 
-                $aQuebraConta = array("t" => "Sim", "f" => "Não");
+                $aQuebraConta = ["t" => "Sim", "f" => "Não"];
                 db_select("lQuebraConta", $aQuebraConta, true, 1);
               ?>
             </td>
@@ -136,7 +136,7 @@ $oRotuloSaltes->label();
             <td><b>Lista Empenho:</b></td>
             <td>
               <?php 
-                $aListaEmpenho = array(0 => "Geral", 1 => "Exercício", 2 => "Restos à Pagar");
+                $aListaEmpenho = [0 => "Geral", 1 => "Exercício", 2 => "Restos à Pagar"];
                 db_select("iListaEmpenho", $aListaEmpenho, true, 1);
               ?>
             </td>
@@ -145,7 +145,7 @@ $oRotuloSaltes->label();
             <td><b>Baixa:</b></td>
             <td>
               <?php 
-                $aTipoBaixa = array(1 => "Todas", 2 => "Valor Líquido Pago", 3 => "Valor Retido");
+                $aTipoBaixa = [1 => "Todas", 2 => "Valor Líquido Pago", 3 => "Valor Retido"];
                 db_select("iTipoBaixa", $aTipoBaixa, true, 1);
               ?>
             </td>

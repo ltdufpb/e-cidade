@@ -37,7 +37,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -63,22 +63,22 @@ db_postmemory($HTTP_POST_VARS);
 <?php
  $filtros = FONTE_RECURSO_UNIAO ? "unidade" : "unidade, recurso";
   $clCriaAbas = new cl_criaabas;
-  $clCriaAbas->identifica = array(
+  $clCriaAbas->identifica = [
                                   "relatorio" => "Relatorio",
                                   "filtro"    => "Filtro"   
-                                 );
+                                 ];
       
-      $clCriaAbas->title      = array("relatorio" => "Relatorio",
+      $clCriaAbas->title      = ["relatorio" => "Relatorio",
                                       "filtro"    =>  "Filtro"
-                                      );
+                                      ];
   
-      $clCriaAbas->src        = array("relatorio" => "con2_balancrece0011.php?iCodigoRelatorio=99",
+      $clCriaAbas->src        = ["relatorio" => "con2_balancrece0011.php?iCodigoRelatorio=99",
                                       "filtro"    => "con2_filtrosrelatorios.php?iCodigoRelatorio=99&filtros={$filtros}"
-                                      );
+                                      ];
       
-      $clCriaAbas->sizecampo  = array("relatorio" => "23",
+      $clCriaAbas->sizecampo  = ["relatorio" => "23",
                                       "filtro"    => "23"
-                                     );
+                                     ];
       $clCriaAbas->cria_abas();
  ?>
 </center>

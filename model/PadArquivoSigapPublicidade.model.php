@@ -41,7 +41,7 @@ final class PadArquivoSigapPublicidade extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "Publicidade";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapPublicidade extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $sListaInstit = db_getsession("DB_instit");
 
     $oDaoPublicidadeSigap  = db_utils::getDao("publicidadesigap");
@@ -84,12 +84,12 @@ final class PadArquivoSigapPublicidade extends PadArquivoSigap {
       $sDiaMesAno                                       = "{$iAno}-".str_pad($iMes, 2, "0", STR_PAD_LEFT).
                                                            '-'.str_pad($iDia, 2, "0", STR_PAD_LEFT);
       $oPublicidadeSigapRetorno->pubMesAnoMovimento     = $sDiaMesAno;
-      $oPublicidadeSigapRetorno->pubDescricao           = substr($oPublicidadeSigap->c49_descricao, 0, 255);
+      $oPublicidadeSigapRetorno->pubDescricao           = substr((string) $oPublicidadeSigap->c49_descricao, 0, 255);
       $oPublicidadeSigapRetorno->pubExercicio           = $iAno;
       $oPublicidadeSigapRetorno->pubDataPublicacao      = $oPublicidadeSigap->c48_datapublicacao;
-      $oPublicidadeSigapRetorno->pubTipoMeioComunicacao = str_pad($oPublicidadeSigap->c49_codigocomunicacao, 
+      $oPublicidadeSigapRetorno->pubTipoMeioComunicacao = str_pad((string) $oPublicidadeSigap->c49_codigocomunicacao, 
                                                                   4, "0", STR_PAD_LEFT);
-      $oPublicidadeSigapRetorno->pubTipoRelatorioFiscal = str_pad($oPublicidadeSigap->c48_tiporelatoriofiscal, 
+      $oPublicidadeSigapRetorno->pubTipoRelatorioFiscal = str_pad((string) $oPublicidadeSigap->c48_tiporelatoriofiscal, 
                                                                   4, "0", STR_PAD_LEFT);
       
       array_push($this->aDados, $oPublicidadeSigapRetorno);
@@ -106,7 +106,7 @@ final class PadArquivoSigapPublicidade extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                          "pubCodigoEntidade",
                          "pubMesAnoMovimento",
                          "pubDescricao",
@@ -114,7 +114,7 @@ final class PadArquivoSigapPublicidade extends PadArquivoSigap {
                          "pubDataPublicacao",
                          "pubTipoMeioComunicacao",
                          "pubTipoRelatorioFiscal"
-                       );
+                       ];
     return $aElementos;  
   }
 }

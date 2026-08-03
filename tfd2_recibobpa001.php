@@ -30,7 +30,7 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_tfd_bpamagnetico_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oDaoTfdBpaMagnetico = new cl_tfd_bpamagnetico;
 $iLinhas             = $linhas;
@@ -49,7 +49,7 @@ if ($oDaoTfdBpaMagnetico->numrows > 0) {
   $iLogin     = $oDados->tf33_i_login;
   $iCodigoBpa = $oDados->tf33_i_codigo;
   $sArquivo   = $oDados->tf33_c_nomearquivo;
-  $aData      = explode('-', $oDados->tf33_d_datasistema);
+  $aData      = explode('-', (string) $oDados->tf33_d_datasistema);
   $dData      = $aData[2].'/'.$aData[1].'/'.$aData[0];
 
 }	  

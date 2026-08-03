@@ -15,17 +15,11 @@ use stdClass;
 class NotificacaoMovimentacaoProcessoServico
 {
     /**
-     * @var NotificacaoMovimentacaoProcessoRepositorio
-     */
-    private $notificacaoMovimentacaoProcessoRepositorio;
-
-    /**
      * NotificacaoMovimentacaoProcessoServico constructor.
      * @param NotificacaoMovimentacaoProcessoRepositorio $notificacaoMovimentacaoProcessoRepositorio
      */
-    public function __construct(NotificacaoMovimentacaoProcessoRepositorio $notificacaoMovimentacaoProcessoRepositorio)
+    public function __construct(private readonly NotificacaoMovimentacaoProcessoRepositorio $notificacaoMovimentacaoProcessoRepositorio)
     {
-        $this->notificacaoMovimentacaoProcessoRepositorio = $notificacaoMovimentacaoProcessoRepositorio;
     }
 
     /**

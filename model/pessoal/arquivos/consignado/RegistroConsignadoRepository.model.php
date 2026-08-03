@@ -32,7 +32,7 @@ abstract class RegistroConsignadoRepository {
 
   const ORDEM_MAIOR_VALOR_SERVIDOR = '1';
 
-  public static $aRegistros = array();
+  public static $aRegistros = [];
 
   public static function add(RegistroConsignado $oRegistroConsignado) {
     self::$aRegistros[$oRegistroConsignado->getCodigo()] = $oRegistroConsignado;
@@ -54,7 +54,7 @@ abstract class RegistroConsignadoRepository {
     $oDaoConsignadoMovimentoServidor->rh152_consignadomovimento = $oRegistroConsignado->getArquivoConsignado()->getCodigo();
     $oDaoConsignadoMovimentoServidor->rh152_regist              = $oRegistroConsignado->getMatricula();
     $oDaoConsignadoMovimentoServidor->rh152_nome                = $oRegistroConsignado->getNome();
-    $oDaoConsignadoMovimentoServidor->rh152_consignadomotivo    = ($oRegistroConsignado->getMotivo() === null) ? 'null' : $oRegistroConsignado->getMotivo();
+    $oDaoConsignadoMovimentoServidor->rh152_consignadomotivo    = $oRegistroConsignado->getMotivo() ?? 'null';
 
     if ($oRegistroConsignado->getCodigo() === null) {
 
@@ -195,7 +195,7 @@ abstract class RegistroConsignadoRepository {
 
       $oServidor     = ServidorRepository::getInstanciaByCodigo($oDadosRegistroConsignado->rh152_regist);
       $oRegistroConsignado->setServidor($oServidor);
-    } catch (Exception $e) {
+    } catch (Exception) {
 
     }
     return $oRegistroConsignado;
@@ -210,14 +210,10 @@ abstract class RegistroConsignadoRepository {
    */
   public static function getRegistrosDoArquivo(ArquivoConsignado $oArquivo, $sOrdenacao = null) {
 
-    switch ($sOrdenacao) {
-      case RegistroConsignadoRepository::ORDEM_MAIOR_VALOR_SERVIDOR:
-        $sOrdem = 'rh152_regist , rh153_valordescontar::numeric desc';
-      break;
-      default:
-        $sOrdem = 'rh152_sequencial asc';
-      break;
-    }
+    $sOrdem = match ($sOrdenacao) {
+        RegistroConsignadoRepository::ORDEM_MAIOR_VALOR_SERVIDOR => 'rh152_regist , rh153_valordescontar::numeric desc',
+        default => 'rh152_sequencial asc',
+    };
     $oDaoConsignadoMovimentoServidor   = new cl_rhconsignadomovimentoservidor();
     $sWhereConsignadoMovimentoServidor = "rh152_consignadomovimento = ".$oArquivo->getCodigo();
     $sWhereConsignadoMovimentoServidor .= " and rh151_tipoconsignado = '".ArquivoConsignadoManual::TIPO_ARQUIVO."'";

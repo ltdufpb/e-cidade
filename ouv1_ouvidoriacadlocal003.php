@@ -53,9 +53,9 @@ if ( isset($oGet->chavepesquisa) && trim($oGet->chavepesquisa) != '' ) {
 	db_fieldsmemory($rsConsultaDadosLocal,0);
 	$db_opcao = 3;
 	
-	if ( trim($ov28_sequencial) != '' ) {
+	if ( trim((string) $ov28_sequencial) != '' ) {
 		$tipoLocal = 'g';
-	} else if ( trim($ov26_sequencial) != '' ) {
+	} else if ( trim((string) $ov26_sequencial) != '' ) {
 		$tipoLocal = 'e';
 	} else {
 		$tipoLocal = 'd';

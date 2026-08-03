@@ -74,13 +74,13 @@ $iOpcao = 3;
           <td nowrap><?=$Lac16_origem?></td>
           <td>
             <?php 
-             $aValores = array(
+             $aValores = [
                                 0 => 'Selecione',
                                 1 => 'Processo de Compras',
                                 2 => 'Licitação',
                                 3 => 'Manual' ,
                                 6 => 'Empenho'
-                              );
+                              ];
               db_input('ac16_origem', 10, $Iac16_origem, true, 'text', $iOpcao);
             ?>
           </td>
@@ -164,7 +164,7 @@ $iOpcao = 3;
           </td>
           <td>
             <?php 
-              $aEmergencial = array("f" => "Não", "t" => "Sim");
+              $aEmergencial = ["f" => "Não", "t" => "Sim"];
               db_select("ac26_emergencial", $aEmergencial, true, $iOpcao);
             ?>
           </td>
@@ -185,7 +185,7 @@ $iOpcao = 3;
         	</td>
         	<td>
         		<?php 
-        		  $aDivisaoPeriodos = array("false" => "NÃO", "true" => "SIM");
+        		  $aDivisaoPeriodos = ["false" => "NÃO", "true" => "SIM"];
         		  db_select("ac16_periodocomercial", $aDivisaoPeriodos, true, $iOpcao);
         		?>
         	</td>

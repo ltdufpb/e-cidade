@@ -108,10 +108,10 @@ try {
 
     db_inicio_transacao();
 
-    $aServidores = array();
+    $aServidores = [];
     foreach ($oParam->aDadosServidores as $aServidorTipoFolha => $iServidorTipoFolha ) {
 
-      list($iServidor) = explode('_',$iServidorTipoFolha);
+      [$iServidor] = explode('_',(string) $iServidorTipoFolha);
       array_push( $aServidores, $iServidor );
     }
 
@@ -222,7 +222,7 @@ try {
 
         $oPdf->setfont('arial','',8);
         $oPdf->cell(25 ,4,$oDados->regist                                                                ,1,0,"C",$lCor);
-        $oPdf->cell(105,4,urlDecode($oDados->z01_nome)                                                   ,1,0,"L",$lCor);
+        $oPdf->cell(105,4,urlDecode((string) $oDados->z01_nome)                                                   ,1,0,"L",$lCor);
         $oPdf->cell(30 ,4,db_formatar($oDados->valor_recebido,'f')                                       ,1,0,"R",$lCor);
         $oPdf->cell(30 ,4,db_formatar(($oDados->proven - $oDados->descon - $oDados->valor_recebido),'f') ,1,1,"R",$lCor);
 
@@ -339,8 +339,8 @@ try {
        */
     case "retornarFolhasAbertas":
 
-      $aFolhasDBPref = array();
-      $aTipoFolha    = array(
+      $aFolhasDBPref = [];
+      $aTipoFolha    = [
         1 => urlencode("Salário"),
         2 => urlencode("Adiantamento"),
         3 => urlencode("Férias"),
@@ -348,7 +348,7 @@ try {
         5 => urlencode("13o"),
         6 => urlencode("Complementar"),
         7 => urlencode("Fixo")
-      );
+      ];
 
       if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
 
@@ -420,13 +420,13 @@ try {
         
       }
 
-      if (isset($oDadosFormulario->opcao_geral) and array_search($oDadosFormulario->opcao_geral, array(1,3,4,5)) ) {
+      if (isset($oDadosFormulario->opcao_geral) and array_search($oDadosFormulario->opcao_geral, [1,3,4,5]) ) {
 
-        $aPrefix[1] = array("pontofs",  "r10");
-        $aPrefix[3] = array("pontofe",  "r29");
-        $aPrefix[4] = array("pontofr",  "r19");
-        $aPrefix[5] = array("pontof13", "r34");
-        $aPrefix[8] = array("pontocom", "r47");
+        $aPrefix[1] = ["pontofs",  "r10"];
+        $aPrefix[3] = ["pontofe",  "r29"];
+        $aPrefix[4] = ["pontofr",  "r19"];
+        $aPrefix[5] = ["pontof13", "r34"];
+        $aPrefix[8] = ["pontocom", "r47"];
 
         $sTable  = $aPrefix[$oDadosFormulario->opcao_geral][0];
         $sPrefix = $aPrefix[$oDadosFormulario->opcao_geral][1];
@@ -495,9 +495,7 @@ try {
         throw new DBException("Ocorreu um erro ao buscar as matrículas");
       }
 
-      $aMatriculasDuploVinculo = db_utils::makeCollectionFromRecord($rsServidoresDuploVinculo, function($oResultado) {
-        return $oResultado->rh01_regist;
-      });
+      $aMatriculasDuploVinculo = db_utils::makeCollectionFromRecord($rsServidoresDuploVinculo, fn($oResultado) => $oResultado->rh01_regist);
 
       rsort($aMatriculasDuploVinculo);
       $oRetorno->arquivo = "tmp/matriculasServidores" . "_" . date("Ymd_His") . ".txt" ;

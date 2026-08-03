@@ -9,14 +9,8 @@ use ECidade\Tributario\Caixa\Entity\Collection\DebitoCollection;
 
 final class ListaDebitoService extends Service
 {
-    private $listaRepository;
-
-    private $listaDebitoRepository;
-
-    public function __construct(ListaRepository $listaRepository, ListaDebitoRepository $listaDebitoRepository)
+    public function __construct(private readonly ListaRepository $listaRepository, private readonly ListaDebitoRepository $listaDebitoRepository)
     {
-        $this->listaRepository = $listaRepository;
-        $this->listaDebitoRepository = $listaDebitoRepository;
     }
 
     public function find($codigo)

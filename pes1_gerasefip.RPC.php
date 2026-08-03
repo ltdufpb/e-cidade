@@ -41,7 +41,7 @@ $oParam       = $oJson->decode((str_replace("\\","",$_POST["json"])));
 $oRetorno     = new stdClass();
 $oRetorno->status           = 1;
 $oRetorno->message          = '';
-$oRetorno->aListaMatriculas = array();
+$oRetorno->aListaMatriculas = [];
 
 $iInstit      = db_getsession('DB_instit');
 $iAnoFolha    = db_anofolha();

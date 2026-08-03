@@ -1,38 +1,38 @@
 <?php
-return array(
-    'infoRegPrelim' => array(
+return [
+    'infoRegPrelim' => [
         'nome_api' => 'infoRegPrelim',
-        'properties' => array(
+        'properties' => [
             'cpfTrab',
             'dtNascto',
             'dtAdm',
             'matricula',
-            'codCateg' => array(
+            'codCateg' => [
                 'type' => 'int'
-            ),
-            'natAtividade' => array(
+            ],
+            'natAtividade' => [
                 'type' => 'int'
-            )
-        ),
-        'groups' => array(
-            'infoRegCTPS' => array(
+            ]
+        ],
+        'groups' => [
+            'infoRegCTPS' => [
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'CBOCargo',
-                        'vrSalFx' => array(
+                        'vrSalFx' => [
                             'type' => 'float'
-                        ),
-                        'undSalFixo' => array(
+                        ],
+                        'undSalFixo' => [
                             'type' => 'int'
-                        ),
-                        'tpContr' => array(
+                        ],
+                        'tpContr' => [
                             'type' => 'int'
-                        ),
+                        ],
                         'dtTerm'
-                    )
-                )
-            )
-        )
-    )
-);
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

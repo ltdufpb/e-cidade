@@ -115,11 +115,11 @@ class cl_parissqn {
                  q60_portepadraomei = int8 = Porte Padrão MEI 
                  ";
    //funcao construtor da classe
-   public function cl_parissqn() 
+   public function __construct() 
    {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parissqn");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    public function erro($mostra,$retorna) 
@@ -493,7 +493,7 @@ class cl_parissqn {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Valores padrões do ISSQN () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Valores padrões do ISSQN já Cadastrado";
@@ -521,10 +521,10 @@ class cl_parissqn {
       $this->atualizacampos();
      $sql = " update parissqn set ";
      $virgula = "";
-     if(trim($this->q60_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_receit"])){
+     if(trim((string) $this->q60_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_receit"])){
        $sql  .= $virgula." q60_receit = $this->q60_receit ";
        $virgula = ",";
-       if(trim($this->q60_receit) == null ){
+       if(trim((string) $this->q60_receit) == null ){
          $this->erro_sql = " Campo Receita não informado.";
          $this->erro_campo = "q60_receit";
          $this->erro_banco = "";
@@ -534,10 +534,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tipo"])){
+     if(trim((string) $this->q60_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tipo"])){
        $sql  .= $virgula." q60_tipo = $this->q60_tipo ";
        $virgula = ",";
-       if(trim($this->q60_tipo) == null ){
+       if(trim((string) $this->q60_tipo) == null ){
          $this->erro_sql = " Campo tipo de débito não informado.";
          $this->erro_campo = "q60_tipo";
          $this->erro_banco = "";
@@ -547,10 +547,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_aliq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_aliq"])){
+     if(trim((string) $this->q60_aliq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_aliq"])){
        $sql  .= $virgula." q60_aliq = $this->q60_aliq ";
        $virgula = ",";
-       if(trim($this->q60_aliq) == null ){
+       if(trim((string) $this->q60_aliq) == null ){
          $this->erro_sql = " Campo Aliquota padrão não informado.";
          $this->erro_campo = "q60_aliq";
          $this->erro_banco = "";
@@ -560,10 +560,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_codvencvar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_codvencvar"])){
+     if(trim((string) $this->q60_codvencvar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_codvencvar"])){
        $sql  .= $virgula." q60_codvencvar = $this->q60_codvencvar ";
        $virgula = ",";
-       if(trim($this->q60_codvencvar) == null ){
+       if(trim((string) $this->q60_codvencvar) == null ){
          $this->erro_sql = " Campo Código do vencimento não informado.";
          $this->erro_campo = "q60_codvencvar";
          $this->erro_banco = "";
@@ -573,10 +573,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_histsemmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_histsemmov"])){
+     if(trim((string) $this->q60_histsemmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_histsemmov"])){
        $sql  .= $virgula." q60_histsemmov = $this->q60_histsemmov ";
        $virgula = ",";
-       if(trim($this->q60_histsemmov) == null ){
+       if(trim((string) $this->q60_histsemmov) == null ){
          $this->erro_sql = " Campo Hist.Calc. não informado.";
          $this->erro_campo = "q60_histsemmov";
          $this->erro_banco = "";
@@ -586,10 +586,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_impcodativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impcodativ"])){
+     if(trim((string) $this->q60_impcodativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impcodativ"])){
        $sql  .= $virgula." q60_impcodativ = '$this->q60_impcodativ' ";
        $virgula = ",";
-       if(trim($this->q60_impcodativ) == null ){
+       if(trim((string) $this->q60_impcodativ) == null ){
          $this->erro_sql = " Campo Imprime Código Atividade não informado.";
          $this->erro_campo = "q60_impcodativ";
          $this->erro_banco = "";
@@ -599,10 +599,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_impobsativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impobsativ"])){
+     if(trim((string) $this->q60_impobsativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impobsativ"])){
        $sql  .= $virgula." q60_impobsativ = '$this->q60_impobsativ' ";
        $virgula = ",";
-       if(trim($this->q60_impobsativ) == null ){
+       if(trim((string) $this->q60_impobsativ) == null ){
          $this->erro_sql = " Campo Imprime Observação Atividade não informado.";
          $this->erro_campo = "q60_impobsativ";
          $this->erro_banco = "";
@@ -612,10 +612,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_impdatas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impdatas"])){
+     if(trim((string) $this->q60_impdatas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impdatas"])){
        $sql  .= $virgula." q60_impdatas = '$this->q60_impdatas' ";
        $virgula = ",";
-       if(trim($this->q60_impdatas) == null ){
+       if(trim((string) $this->q60_impdatas) == null ){
          $this->erro_sql = " Campo Imprime Datas não informado.";
          $this->erro_campo = "q60_impdatas";
          $this->erro_banco = "";
@@ -625,10 +625,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_impobsissqn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impobsissqn"])){
+     if(trim((string) $this->q60_impobsissqn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impobsissqn"])){
        $sql  .= $virgula." q60_impobsissqn = '$this->q60_impobsissqn' ";
        $virgula = ",";
-       if(trim($this->q60_impobsissqn) == null ){
+       if(trim((string) $this->q60_impobsissqn) == null ){
          $this->erro_sql = " Campo Observação do ISSQN não informado.";
          $this->erro_campo = "q60_impobsissqn";
          $this->erro_banco = "";
@@ -638,10 +638,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_modalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_modalvara"])){
+     if(trim((string) $this->q60_modalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_modalvara"])){
        $sql  .= $virgula." q60_modalvara = $this->q60_modalvara ";
        $virgula = ",";
-       if(trim($this->q60_modalvara) == null ){
+       if(trim((string) $this->q60_modalvara) == null ){
          $this->erro_sql = " Campo Modelo Alvará não informado.";
          $this->erro_campo = "q60_modalvara";
          $this->erro_banco = "";
@@ -651,10 +651,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_integrasani)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_integrasani"])){
+     if(trim((string) $this->q60_integrasani)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_integrasani"])){
        $sql  .= $virgula." q60_integrasani = $this->q60_integrasani ";
        $virgula = ",";
-       if(trim($this->q60_integrasani) == null ){
+       if(trim((string) $this->q60_integrasani) == null ){
          $this->erro_sql = " Campo Integração com Sanitario não informado.";
          $this->erro_campo = "q60_integrasani";
          $this->erro_banco = "";
@@ -664,10 +664,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_campoutilcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_campoutilcalc"])){
+     if(trim((string) $this->q60_campoutilcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_campoutilcalc"])){
        $sql  .= $virgula." q60_campoutilcalc = $this->q60_campoutilcalc ";
        $virgula = ",";
-       if(trim($this->q60_campoutilcalc) == null ){
+       if(trim((string) $this->q60_campoutilcalc) == null ){
          $this->erro_sql = " Campo Variável para calculo não informado.";
          $this->erro_campo = "q60_campoutilcalc";
          $this->erro_banco = "";
@@ -677,10 +677,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_alvbaixadiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_alvbaixadiv"])){
+     if(trim((string) $this->q60_alvbaixadiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_alvbaixadiv"])){
        $sql  .= $virgula." q60_alvbaixadiv = $this->q60_alvbaixadiv ";
        $virgula = ",";
-       if(trim($this->q60_alvbaixadiv) == null ){
+       if(trim((string) $this->q60_alvbaixadiv) == null ){
          $this->erro_sql = " Campo Permite baixa de alvara com dívida não informado.";
          $this->erro_campo = "q60_alvbaixadiv";
          $this->erro_banco = "";
@@ -690,14 +690,14 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_notaavulsapesjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsapesjur"])){
+     if(trim((string) $this->q60_notaavulsapesjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsapesjur"])){
        $sql  .= $virgula." q60_notaavulsapesjur = '$this->q60_notaavulsapesjur' ";
        $virgula = ",";
      }
-     if(trim($this->q60_notaavulsavias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsavias"])){
+     if(trim((string) $this->q60_notaavulsavias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsavias"])){
        $sql  .= $virgula." q60_notaavulsavias = $this->q60_notaavulsavias ";
        $virgula = ",";
-       if(trim($this->q60_notaavulsavias) == null ){
+       if(trim((string) $this->q60_notaavulsavias) == null ){
          $this->erro_sql = " Campo Número de Vias da Nota não informado.";
          $this->erro_campo = "q60_notaavulsavias";
          $this->erro_banco = "";
@@ -707,10 +707,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_notaavulsavlrmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsavlrmin"])){
+     if(trim((string) $this->q60_notaavulsavlrmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsavlrmin"])){
        $sql  .= $virgula." q60_notaavulsavlrmin = $this->q60_notaavulsavlrmin ";
        $virgula = ",";
-       if(trim($this->q60_notaavulsavlrmin) == null ){
+       if(trim((string) $this->q60_notaavulsavlrmin) == null ){
          $this->erro_sql = " Campo Valor Mínimo a ser pago não informado.";
          $this->erro_campo = "q60_notaavulsavlrmin";
          $this->erro_banco = "";
@@ -720,17 +720,17 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_notaavulsamax)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsamax"])){
-        if(trim($this->q60_notaavulsamax)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsamax"])){
+     if(trim((string) $this->q60_notaavulsamax)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsamax"])){
+        if(trim((string) $this->q60_notaavulsamax)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsamax"])){
            $this->q60_notaavulsamax = "0" ;
         }
        $sql  .= $virgula." q60_notaavulsamax = $this->q60_notaavulsamax ";
        $virgula = ",";
      }
-     if(trim($this->q60_notaavulsaultimanota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsaultimanota"])){
+     if(trim((string) $this->q60_notaavulsaultimanota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsaultimanota"])){
        $sql  .= $virgula." q60_notaavulsaultimanota = $this->q60_notaavulsaultimanota ";
        $virgula = ",";
-       if(trim($this->q60_notaavulsaultimanota) == null ){
+       if(trim((string) $this->q60_notaavulsaultimanota) == null ){
          $this->erro_sql = " Campo Número da Última Nota Avulsa não informado.";
          $this->erro_campo = "q60_notaavulsaultimanota";
          $this->erro_banco = "";
@@ -740,17 +740,17 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_notaavulsadiasprazo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsadiasprazo"])){
-        if(trim($this->q60_notaavulsadiasprazo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsadiasprazo"])){
+     if(trim((string) $this->q60_notaavulsadiasprazo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsadiasprazo"])){
+        if(trim((string) $this->q60_notaavulsadiasprazo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsadiasprazo"])){
            $this->q60_notaavulsadiasprazo = "0" ;
         }
        $sql  .= $virgula." q60_notaavulsadiasprazo = $this->q60_notaavulsadiasprazo ";
        $virgula = ",";
      }
-     if(trim($this->q60_tipopermalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tipopermalvara"])){
+     if(trim((string) $this->q60_tipopermalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tipopermalvara"])){
        $sql  .= $virgula." q60_tipopermalvara = $this->q60_tipopermalvara ";
        $virgula = ",";
-       if(trim($this->q60_tipopermalvara) == null ){
+       if(trim((string) $this->q60_tipopermalvara) == null ){
          $this->erro_sql = " Campo Permissao para alterar alvará com CNPJ não informado.";
          $this->erro_campo = "q60_tipopermalvara";
          $this->erro_banco = "";
@@ -760,10 +760,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_tiponumcertbaixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tiponumcertbaixa"])){
+     if(trim((string) $this->q60_tiponumcertbaixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tiponumcertbaixa"])){
        $sql  .= $virgula." q60_tiponumcertbaixa = $this->q60_tiponumcertbaixa ";
        $virgula = ",";
-       if(trim($this->q60_tiponumcertbaixa) == null ){
+       if(trim((string) $this->q60_tiponumcertbaixa) == null ){
          $this->erro_sql = " Campo Num. da Certidão Baixa não informado.";
          $this->erro_campo = "q60_tiponumcertbaixa";
          $this->erro_banco = "";
@@ -773,14 +773,14 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_templatealvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatealvara"])){
-        if(trim($this->q60_templatealvara)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatealvara"])){
+     if(trim((string) $this->q60_templatealvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatealvara"])){
+        if(trim((string) $this->q60_templatealvara)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatealvara"])){
            $this->q60_templatealvara = "0" ;
         }
        $sql  .= $virgula." q60_templatealvara = $this->q60_templatealvara ";
        $virgula = ",";
      }
-     if(trim($this->q60_dataimpmei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_dataimpmei_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q60_dataimpmei_dia"] !="") ){
+     if(trim((string) $this->q60_dataimpmei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_dataimpmei_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q60_dataimpmei_dia"] !="") ){
        $sql  .= $virgula." q60_dataimpmei = '$this->q60_dataimpmei' ";
        $virgula = ",";
      }     else{
@@ -789,10 +789,10 @@ class cl_parissqn {
          $virgula = ",";
        }
      }
-     if(trim($this->q60_bloqemiscertbaixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_bloqemiscertbaixa"])){
+     if(trim((string) $this->q60_bloqemiscertbaixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_bloqemiscertbaixa"])){
        $sql  .= $virgula." q60_bloqemiscertbaixa = $this->q60_bloqemiscertbaixa ";
        $virgula = ",";
-       if(trim($this->q60_bloqemiscertbaixa) == null ){
+       if(trim((string) $this->q60_bloqemiscertbaixa) == null ){
          $this->erro_sql = " Campo Bloqueio emissão certidão de baixa não informado.";
          $this->erro_campo = "q60_bloqemiscertbaixa";
          $this->erro_banco = "";
@@ -802,10 +802,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_isstipoalvaraper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_isstipoalvaraper"])){
+     if(trim((string) $this->q60_isstipoalvaraper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_isstipoalvaraper"])){
        $sql  .= $virgula." q60_isstipoalvaraper = $this->q60_isstipoalvaraper ";
        $virgula = ",";
-       if(trim($this->q60_isstipoalvaraper) == null ){
+       if(trim((string) $this->q60_isstipoalvaraper) == null ){
          $this->erro_sql = " Campo Alvará Permanente não informado.";
          $this->erro_campo = "q60_isstipoalvaraper";
          $this->erro_banco = "";
@@ -815,10 +815,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_isstipoalvaraprov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_isstipoalvaraprov"])){
+     if(trim((string) $this->q60_isstipoalvaraprov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_isstipoalvaraprov"])){
        $sql  .= $virgula." q60_isstipoalvaraprov = $this->q60_isstipoalvaraprov ";
        $virgula = ",";
-       if(trim($this->q60_isstipoalvaraprov) == null ){
+       if(trim((string) $this->q60_isstipoalvaraprov) == null ){
          $this->erro_sql = " Campo Alvará Provisório não informado.";
          $this->erro_campo = "q60_isstipoalvaraprov";
          $this->erro_banco = "";
@@ -828,40 +828,40 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_parcelasalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_parcelasalvara"])){
+     if(trim((string) $this->q60_parcelasalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_parcelasalvara"])){
        $sql  .= $virgula." q60_parcelasalvara = '$this->q60_parcelasalvara' ";
        $virgula = ",";
      }
-     if(trim($this->q60_templatebaixaalvaranormal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaranormal"])){
-        if(trim($this->q60_templatebaixaalvaranormal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaranormal"])){
+     if(trim((string) $this->q60_templatebaixaalvaranormal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaranormal"])){
+        if(trim((string) $this->q60_templatebaixaalvaranormal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaranormal"])){
            $this->q60_templatebaixaalvaranormal = "null" ;
         }
        $sql  .= $virgula." q60_templatebaixaalvaranormal = $this->q60_templatebaixaalvaranormal ";
        $virgula = ",";
      }
-     if(trim($this->q60_templatebaixaalvaraoficial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaraoficial"])){
-        if(trim($this->q60_templatebaixaalvaraoficial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaraoficial"])){
+     if(trim((string) $this->q60_templatebaixaalvaraoficial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaraoficial"])){
+        if(trim((string) $this->q60_templatebaixaalvaraoficial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaraoficial"])){
            $this->q60_templatebaixaalvaraoficial = "null" ;
         }
        $sql  .= $virgula." q60_templatebaixaalvaraoficial = $this->q60_templatebaixaalvaraoficial ";
        $virgula = ",";
      }
-     if (trim($this->q60_parcelasissqn) !== '' && $this->q60_parcelasissqn !== null) {
+     if (trim((string) $this->q60_parcelasissqn) !== '' && $this->q60_parcelasissqn !== null) {
         $sql .= "{$virgula} q60_parcelasissqn = {$this->q60_parcelasissqn} ";
      } else {
         $sql .= "{$virgula} q60_parcelasissqn = NULL ";
      }
-     if(trim($this->q60_templatebicveiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebicveiculo"])){
-        if(trim($this->q60_templatebicveiculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebicveiculo"])){
+     if(trim((string) $this->q60_templatebicveiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebicveiculo"])){
+        if(trim((string) $this->q60_templatebicveiculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebicveiculo"])){
            $this->q60_templatebicveiculo = "null" ;
         }
        $sql  .= $virgula." q60_templatebicveiculo = $this->q60_templatebicveiculo ";
        $virgula = ",";
      }
-     if(trim($this->q60_portepadraomei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_portepadraomei"])){ 
+     if(trim((string) $this->q60_portepadraomei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_portepadraomei"])){ 
        $sql  .= $virgula." q60_portepadraomei = $this->q60_portepadraomei ";
        $virgula = ",";
-       if(trim($this->q60_portepadraomei) == null ){ 
+       if(trim((string) $this->q60_portepadraomei) == null ){ 
          $this->erro_sql = " Campo Porte Padrão MEI não informado.";
          $this->erro_campo = "q60_portepadraomei";
          $this->erro_banco = "";
@@ -957,7 +957,7 @@ class cl_parissqn {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:parissqn";
@@ -972,7 +972,7 @@ class cl_parissqn {
    public function sql_query ( $oid = null,$campos="parissqn.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1007,7 +1007,7 @@ class cl_parissqn {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1020,7 +1020,7 @@ class cl_parissqn {
   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1038,7 +1038,7 @@ class cl_parissqn {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1053,10 +1053,10 @@ class cl_parissqn {
      $this->atualizacampos();
      $sql = " update parissqn set ";
      $virgula = "";
-     if(trim($this->q60_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_receit"])){
+     if(trim((string) $this->q60_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_receit"])){
        $sql  .= $virgula." q60_receit = $this->q60_receit ";
        $virgula = ",";
-       if(trim($this->q60_receit) == null ){
+       if(trim((string) $this->q60_receit) == null ){
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "q60_receit";
          $this->erro_banco = "";
@@ -1066,10 +1066,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tipo"])){
+     if(trim((string) $this->q60_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tipo"])){
        $sql  .= $virgula." q60_tipo = $this->q60_tipo ";
        $virgula = ",";
-       if(trim($this->q60_tipo) == null ){
+       if(trim((string) $this->q60_tipo) == null ){
          $this->erro_sql = " Campo tipo de debito nao Informado.";
          $this->erro_campo = "q60_tipo";
          $this->erro_banco = "";
@@ -1079,10 +1079,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_aliq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_aliq"])){
+     if(trim((string) $this->q60_aliq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_aliq"])){
        $sql  .= $virgula." q60_aliq = $this->q60_aliq ";
        $virgula = ",";
-       if(trim($this->q60_aliq) == null ){
+       if(trim((string) $this->q60_aliq) == null ){
          $this->erro_sql = " Campo Aliquota padrão nao Informado.";
          $this->erro_campo = "q60_aliq";
          $this->erro_banco = "";
@@ -1092,10 +1092,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_codvencvar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_codvencvar"])){
+     if(trim((string) $this->q60_codvencvar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_codvencvar"])){
        $sql  .= $virgula." q60_codvencvar = $this->q60_codvencvar ";
        $virgula = ",";
-       if(trim($this->q60_codvencvar) == null ){
+       if(trim((string) $this->q60_codvencvar) == null ){
          $this->erro_sql = " Campo codigo do vencimento nao Informado.";
          $this->erro_campo = "q60_codvencvar";
          $this->erro_banco = "";
@@ -1105,10 +1105,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_histsemmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_histsemmov"])){
+     if(trim((string) $this->q60_histsemmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_histsemmov"])){
        $sql  .= $virgula." q60_histsemmov = $this->q60_histsemmov ";
        $virgula = ",";
-       if(trim($this->q60_histsemmov) == null ){
+       if(trim((string) $this->q60_histsemmov) == null ){
          $this->erro_sql = " Campo Hist.Calc. nao Informado.";
          $this->erro_campo = "q60_histsemmov";
          $this->erro_banco = "";
@@ -1118,10 +1118,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_impcodativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impcodativ"])){
+     if(trim((string) $this->q60_impcodativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impcodativ"])){
        $sql  .= $virgula." q60_impcodativ = '$this->q60_impcodativ' ";
        $virgula = ",";
-       if(trim($this->q60_impcodativ) == null ){
+       if(trim((string) $this->q60_impcodativ) == null ){
          $this->erro_sql = " Campo Imprime Código Atividade nao Informado.";
          $this->erro_campo = "q60_impcodativ";
          $this->erro_banco = "";
@@ -1131,10 +1131,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_impobsativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impobsativ"])){
+     if(trim((string) $this->q60_impobsativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impobsativ"])){
        $sql  .= $virgula." q60_impobsativ = '$this->q60_impobsativ' ";
        $virgula = ",";
-       if(trim($this->q60_impobsativ) == null ){
+       if(trim((string) $this->q60_impobsativ) == null ){
          $this->erro_sql = " Campo Imprime Observação Atividade nao Informado.";
          $this->erro_campo = "q60_impobsativ";
          $this->erro_banco = "";
@@ -1144,10 +1144,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_impdatas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impdatas"])){
+     if(trim((string) $this->q60_impdatas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impdatas"])){
        $sql  .= $virgula." q60_impdatas = '$this->q60_impdatas' ";
        $virgula = ",";
-       if(trim($this->q60_impdatas) == null ){
+       if(trim((string) $this->q60_impdatas) == null ){
          $this->erro_sql = " Campo Imprime Datas nao Informado.";
          $this->erro_campo = "q60_impdatas";
          $this->erro_banco = "";
@@ -1157,10 +1157,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_impobsissqn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impobsissqn"])){
+     if(trim((string) $this->q60_impobsissqn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_impobsissqn"])){
        $sql  .= $virgula." q60_impobsissqn = '$this->q60_impobsissqn' ";
        $virgula = ",";
-       if(trim($this->q60_impobsissqn) == null ){
+       if(trim((string) $this->q60_impobsissqn) == null ){
          $this->erro_sql = " Campo Observação do ISSQN nao Informado.";
          $this->erro_campo = "q60_impobsissqn";
          $this->erro_banco = "";
@@ -1170,10 +1170,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_modalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_modalvara"])){
+     if(trim((string) $this->q60_modalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_modalvara"])){
        $sql  .= $virgula." q60_modalvara = $this->q60_modalvara ";
        $virgula = ",";
-       if(trim($this->q60_modalvara) == null ){
+       if(trim((string) $this->q60_modalvara) == null ){
          $this->erro_sql = " Campo Modelo Alvara nao Informado.";
          $this->erro_campo = "q60_modalvara";
          $this->erro_banco = "";
@@ -1187,10 +1187,10 @@ class cl_parissqn {
         $sql  .= $virgula." q60_templatealvara = $this->q60_templatealvara ";
         $virgula = ",";
      }
-     if(trim($this->q60_integrasani)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_integrasani"])){
+     if(trim((string) $this->q60_integrasani)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_integrasani"])){
        $sql  .= $virgula." q60_integrasani = $this->q60_integrasani ";
        $virgula = ",";
-       if(trim($this->q60_integrasani) == null ){
+       if(trim((string) $this->q60_integrasani) == null ){
          $this->erro_sql = " Campo Integração com Sanitario nao Informado.";
          $this->erro_campo = "q60_integrasani";
          $this->erro_banco = "";
@@ -1200,10 +1200,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_campoutilcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_campoutilcalc"])){
+     if(trim((string) $this->q60_campoutilcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_campoutilcalc"])){
        $sql  .= $virgula." q60_campoutilcalc = $this->q60_campoutilcalc ";
        $virgula = ",";
-       if(trim($this->q60_campoutilcalc) == null ){
+       if(trim((string) $this->q60_campoutilcalc) == null ){
          $this->erro_sql = " Campo Variável para calculo nao Informado.";
          $this->erro_campo = "q60_campoutilcalc";
          $this->erro_banco = "";
@@ -1213,10 +1213,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_alvbaixadiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_alvbaixadiv"])){
+     if(trim((string) $this->q60_alvbaixadiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_alvbaixadiv"])){
        $sql  .= $virgula." q60_alvbaixadiv = $this->q60_alvbaixadiv ";
        $virgula = ",";
-       if(trim($this->q60_alvbaixadiv) == null ){
+       if(trim((string) $this->q60_alvbaixadiv) == null ){
          $this->erro_sql = " Campo Permite baixa de alvara com dívida nao Informado.";
          $this->erro_campo = "q60_alvbaixadiv";
          $this->erro_banco = "";
@@ -1226,14 +1226,14 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_notaavulsapesjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsapesjur"])){
+     if(trim((string) $this->q60_notaavulsapesjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsapesjur"])){
        $sql  .= $virgula." q60_notaavulsapesjur = '$this->q60_notaavulsapesjur' ";
        $virgula = ",";
      }
-     if(trim($this->q60_notaavulsavias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsavias"])){
+     if(trim((string) $this->q60_notaavulsavias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsavias"])){
        $sql  .= $virgula." q60_notaavulsavias = $this->q60_notaavulsavias ";
        $virgula = ",";
-       if(trim($this->q60_notaavulsavias) == null ){
+       if(trim((string) $this->q60_notaavulsavias) == null ){
          $this->erro_sql = " Campo Número de Vias da Nota nao Informado.";
          $this->erro_campo = "q60_notaavulsavias";
          $this->erro_banco = "";
@@ -1243,10 +1243,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_notaavulsavlrmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsavlrmin"])){
+     if(trim((string) $this->q60_notaavulsavlrmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsavlrmin"])){
        $sql  .= $virgula." q60_notaavulsavlrmin = $this->q60_notaavulsavlrmin ";
        $virgula = ",";
-       if(trim($this->q60_notaavulsavlrmin) == null ){
+       if(trim((string) $this->q60_notaavulsavlrmin) == null ){
          $this->erro_sql = " Campo Valor Minimo a ser pago nao Informado.";
          $this->erro_campo = "q60_notaavulsavlrmin";
          $this->erro_banco = "";
@@ -1256,17 +1256,17 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_notaavulsamax)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsamax"])){
-        if(trim($this->q60_notaavulsamax)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsamax"])){
+     if(trim((string) $this->q60_notaavulsamax)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsamax"])){
+        if(trim((string) $this->q60_notaavulsamax)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsamax"])){
            $this->q60_notaavulsamax = "0" ;
         }
        $sql  .= $virgula." q60_notaavulsamax = $this->q60_notaavulsamax ";
        $virgula = ",";
      }
-     if(trim($this->q60_notaavulsaultimanota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsaultimanota"])){
+     if(trim((string) $this->q60_notaavulsaultimanota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsaultimanota"])){
        $sql  .= $virgula." q60_notaavulsaultimanota = $this->q60_notaavulsaultimanota ";
        $virgula = ",";
-       if(trim($this->q60_notaavulsaultimanota) == null ){
+       if(trim((string) $this->q60_notaavulsaultimanota) == null ){
          $this->erro_sql = " Campo Número da Última Nota Avulsa nao Informado.";
          $this->erro_campo = "q60_notaavulsaultimanota";
          $this->erro_banco = "";
@@ -1276,17 +1276,17 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_notaavulsadiasprazo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsadiasprazo"])){
-        if(trim($this->q60_notaavulsadiasprazo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsadiasprazo"])){
+     if(trim((string) $this->q60_notaavulsadiasprazo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsadiasprazo"])){
+        if(trim((string) $this->q60_notaavulsadiasprazo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_notaavulsadiasprazo"])){
            $this->q60_notaavulsadiasprazo = "0" ;
         }
        $sql  .= $virgula." q60_notaavulsadiasprazo = $this->q60_notaavulsadiasprazo ";
        $virgula = ",";
      }
-     if(trim($this->q60_tipopermalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tipopermalvara"])){
+     if(trim((string) $this->q60_tipopermalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tipopermalvara"])){
        $sql  .= $virgula." q60_tipopermalvara = $this->q60_tipopermalvara ";
        $virgula = ",";
-       if(trim($this->q60_tipopermalvara) == null ){
+       if(trim((string) $this->q60_tipopermalvara) == null ){
          $this->erro_sql = " Campo Permissao para alterar alvara com CNPJ nao Informado.";
          $this->erro_campo = "q60_tipopermalvara";
          $this->erro_banco = "";
@@ -1296,10 +1296,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_tiponumcertbaixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tiponumcertbaixa"])){
+     if(trim((string) $this->q60_tiponumcertbaixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_tiponumcertbaixa"])){
        $sql  .= $virgula." q60_tiponumcertbaixa = $this->q60_tiponumcertbaixa ";
        $virgula = ",";
-       if(trim($this->q60_tiponumcertbaixa) == null ){
+       if(trim((string) $this->q60_tiponumcertbaixa) == null ){
          $this->erro_sql = " Campo Numeração a ser utilizada nao Informado.";
          $this->erro_campo = "q60_tiponumcertbaixa";
          $this->erro_banco = "";
@@ -1309,10 +1309,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_isstipoalvaraper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_isstipoalvaraper"])){
+     if(trim((string) $this->q60_isstipoalvaraper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_isstipoalvaraper"])){
        $sql  .= $virgula." q60_isstipoalvaraper = $this->q60_isstipoalvaraper ";
        $virgula = ",";
-       if(trim($this->q60_tiponumcertbaixa) == null ){
+       if(trim((string) $this->q60_tiponumcertbaixa) == null ){
          $this->erro_sql = " Campo Numeração a ser utilizada não Informado.";
          $this->erro_campo = "q60_isstipoalvaraper";
          $this->erro_banco = "";
@@ -1322,10 +1322,10 @@ class cl_parissqn {
          return false;
        }
      }
-     if(trim($this->q60_isstipoalvaraprov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_isstipoalvaraprov"])){
+     if(trim((string) $this->q60_isstipoalvaraprov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_isstipoalvaraprov"])){
        $sql  .= $virgula." q60_isstipoalvaraprov = $this->q60_isstipoalvaraprov ";
        $virgula = ",";
-       if(trim($this->q60_tiponumcertbaixa) == null ){
+       if(trim((string) $this->q60_tiponumcertbaixa) == null ){
          $this->erro_sql = " Campo Numeração a ser utilizada não Informado.";
          $this->erro_campo = "q60_isstipoalvaraprov";
          $this->erro_banco = "";
@@ -1335,20 +1335,20 @@ class cl_parissqn {
          return false;
        }
      }
-     if (strtolower(trim($this->q60_dataimpmei))!="null" && (trim($this->q60_dataimpmei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_dataimpmei"]))){
+     if (strtolower(trim((string) $this->q60_dataimpmei))!="null" && (trim((string) $this->q60_dataimpmei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_dataimpmei"]))){
 
-       $data = $dData = implode("-", array_reverse(explode("/",$this->q60_dataimpmei)));
+       $data = $dData = implode("-", array_reverse(explode("/",(string) $this->q60_dataimpmei)));
        $sql  .= $virgula." q60_dataimpmei =  '$dData'";
        $virgula = ",";
 
-     } else if (strtolower(trim($this->q60_dataimpmei))=="null"){
+     } else if (strtolower(trim((string) $this->q60_dataimpmei))=="null"){
        $sql .= $virgula." q60_dataimpmei = null";
      }
 
-     if(trim($this->q60_bloqemiscertbaixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_bloqemiscertbaixa"])){
+     if(trim((string) $this->q60_bloqemiscertbaixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_bloqemiscertbaixa"])){
        $sql  .= $virgula." q60_bloqemiscertbaixa = $this->q60_bloqemiscertbaixa ";
        $virgula = ",";
-       if(trim($this->q60_bloqemiscertbaixa) == null ){
+       if(trim((string) $this->q60_bloqemiscertbaixa) == null ){
          $this->erro_sql = " Campo Bloqueio emissão certidão de baixa nao Informado.";
          $this->erro_campo = "q60_bloqemiscertbaixa";
          $this->erro_banco = "";
@@ -1359,49 +1359,49 @@ class cl_parissqn {
        }
      }
 
-     if(trim($this->q60_parcelasalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_parcelasalvara"])){
+     if(trim((string) $this->q60_parcelasalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_parcelasalvara"])){
         $sql  .= $virgula." q60_parcelasalvara = '$this->q60_parcelasalvara' ";
         $virgula = ",";
     }
 
-    if(trim($this->q60_parcelasissqn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_parcelasissqn"])){
+    if(trim((string) $this->q60_parcelasissqn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_parcelasissqn"])){
         $sql  .= $virgula." q60_parcelasissqn = $this->q60_parcelasissqn ";
         $virgula = ",";
     }
 
-     if(trim($this->q60_templatebaixaalvaranormal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaranormal"])){
-        if(trim($this->q60_templatebaixaalvaranormal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaranormal"])){
+     if(trim((string) $this->q60_templatebaixaalvaranormal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaranormal"])){
+        if(trim((string) $this->q60_templatebaixaalvaranormal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaranormal"])){
            $this->q60_templatebaixaalvaranormal = "null" ;
         }
        $sql  .= $virgula." q60_templatebaixaalvaranormal = $this->q60_templatebaixaalvaranormal ";
        $virgula = ",";
      }
-     if(trim($this->q60_templatebaixaalvaraoficial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaraoficial"])){
-        if(trim($this->q60_templatebaixaalvaraoficial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaraoficial"])){
+     if(trim((string) $this->q60_templatebaixaalvaraoficial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaraoficial"])){
+        if(trim((string) $this->q60_templatebaixaalvaraoficial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebaixaalvaraoficial"])){
            $this->q60_templatebaixaalvaraoficial = "null" ;
         }
        $sql  .= $virgula." q60_templatebaixaalvaraoficial = $this->q60_templatebaixaalvaraoficial ";
        $virgula = ",";
      }
 
-     if(trim($this->q60_templatebicveiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebicveiculo"])){
-        if(trim($this->q60_templatebicveiculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebicveiculo"])){
+     if(trim((string) $this->q60_templatebicveiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebicveiculo"])){
+        if(trim((string) $this->q60_templatebicveiculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_templatebicveiculo"])){
            $this->q60_templatebicveiculo = "null" ;
         }
        $sql  .= $virgula." q60_templatebicveiculo = $this->q60_templatebicveiculo ";
        $virgula = ",";
      }
 
-     if(trim($this->q60_formaaliquotarbt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_formaaliquotarbt"])){
-        if(trim($this->q60_formaaliquotarbt)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_formaaliquotarbt"])){
+     if(trim((string) $this->q60_formaaliquotarbt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q60_formaaliquotarbt"])){
+        if(trim((string) $this->q60_formaaliquotarbt)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q60_formaaliquotarbt"])){
            $this->q60_formaaliquotarbt = "null" ;
         }
        $sql  .= $virgula." q60_formaaliquotarbt = $this->q60_formaaliquotarbt ";
        $virgula = ",";
      }
 
-    if (trim($this->q60_portepadraomei) != "" || isset($GLOBALS["HTTP_POST_VARS"]["q60_portepadraomei"])) {
-      if (trim($this->q60_portepadraomei) == "" && isset($GLOBALS["HTTP_POST_VARS"]["q60_portepadraomei"])) {
+    if (trim((string) $this->q60_portepadraomei) != "" || isset($GLOBALS["HTTP_POST_VARS"]["q60_portepadraomei"])) {
+      if (trim((string) $this->q60_portepadraomei) == "" && isset($GLOBALS["HTTP_POST_VARS"]["q60_portepadraomei"])) {
         $this->q60_portepadraomei = "null";
       }
       $sql  .= $virgula . " q60_portepadraomei = $this->q60_portepadraomei ";

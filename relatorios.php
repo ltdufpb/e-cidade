@@ -27,8 +27,8 @@
 
 include(modification("libs/db_conecta.php"));
 include(modification("libs/db_stdlib.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 if(!isset($munic)){
    echo "<script>alert('Municipio Inválido.');location.href=index.php;</script>";
    exit;
@@ -60,7 +60,7 @@ if(!isset($munic)){
           <td align="center"><font size="+1" face="Arial, Helvetica, sans-serif">
 		  <?php 
 		  $result = pg_exec("select * from municipio where substr(cgcte,1,3)= '$munic'");
-          if(pg_numrows($result) ==0){
+          if(pg_num_rows($result) ==0){
             echo "<script>alert('Municipio Inválido.');location.href=index.php;</script>";
             exit;
 		  } 

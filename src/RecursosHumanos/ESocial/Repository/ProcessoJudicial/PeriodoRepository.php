@@ -106,7 +106,7 @@ class PeriodoRepository
      * @param PeriodoProcessual|null $periodo
      * @throws Exception
      */
-    public function delete(PeriodoProcessual $periodo = null)
+    public function delete(?PeriodoProcessual $periodo = null)
     {
         $id = $periodo instanceof PeriodoProcessual ? $periodo->getSequencial() : null;
 
@@ -124,7 +124,7 @@ class PeriodoRepository
      * @return bool|PeriodoProcessual
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessoperiodo;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

@@ -32,7 +32,7 @@ include(modification("classes/db_rhpessoal_classe.php"));
 $clrhpessoal = new cl_rhpessoal;
 $clrotulo = new rotulocampo;
 $clrotulo->label('r06_pd');
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 $result_regist = $clrhpessoal->sql_record($clrhpessoal->sql_query_cgm($regis,"rh01_regist, rh01_numcgm, z01_nome, r70_estrut, r70_descr"));
 if($clrhpessoal->numrows == 0){
@@ -47,7 +47,7 @@ $sql_base = "select r09_rubric from basesr where r09_base   = '$base1'
 
 $result_base = db_query($sql_base);
 
-$numrows_base = pg_numrows($result_base);
+$numrows_base = pg_num_rows($result_base);
 $sel_base = "'";
 for($i=0; $i<$numrows_base; $i++){
    db_fieldsmemory($result_base, $i);
@@ -81,8 +81,8 @@ $campos = "
           ";
 if(isset($anoi) && isset($anof) && (trim($anoi) != "" || trim($anof) != "")){
 
-$mesi=str_pad($mesi,2,"0",STR_PAD_LEFT);
-$mesf=str_pad($mesf,2,"0",STR_PAD_LEFT);
+$mesi=str_pad((string) $mesi,2,"0",STR_PAD_LEFT);
+$mesf=str_pad((string) $mesf,2,"0",STR_PAD_LEFT);
 
 $wheres = 
    "(    
@@ -146,12 +146,12 @@ if($retorno == false || $numrows_work_aposentadoria == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado para a matrícula '.$regis.'.');
 }
 
-$arr_campo = Array(1=>"obs");
+$arr_campo = [1=>"obs"];
 
 $nRegLimite = (int) (($indi * $numrows_work_aposentadoria) / 100);
 for($i=$nRegLimite; $i<$numrows_work_aposentadoria; $i++){
 
-  $arr_valor = Array(1=>"DESCONSIDERADO");
+  $arr_valor = [1=>"DESCONSIDERADO"];
   $where  = " anousu = ".$result_work_aposentadoria[$i]["anousu"];
   $where .= " and mesusu = ".$result_work_aposentadoria[$i]["mesusu"];
   $where .= " and tipo = ".$result_work_aposentadoria[$i]["tipo"];
@@ -207,7 +207,7 @@ for($i=0; $i<$numrows_work_aposentadoria; $i++){
 
   $valor_total_hist += $valor;
   $valor_total_corr += $corrig;
-  if(trim($observ) == ""){
+  if(trim((string) $observ) == ""){
     $valor_total_hist80 += $valor;
     $valor_total_corr80 += $corrig;
   }

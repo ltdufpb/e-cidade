@@ -34,7 +34,7 @@ include(modification("classes/db_placaixa_classe.php"));
 include(modification("classes/db_placaixarec_classe.php"));
 $clplacaixa = new cl_placaixa;
 $clplacaixarec = new cl_placaixarec;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($autentica)){
@@ -47,8 +47,8 @@ if(isset($autentica)){
 
   if ($result == true) {
     
-    $retorno = pg_result($result,0,0);
-    if (substr($retorno,0,1) != '1') {
+    $retorno = pg_fetch_result($result,0,0);
+    if (!str_starts_with($retorno, '1')) {
       
       $lErroRetorno = true;
       $sqlerro      = true;

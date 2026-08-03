@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oGet = db_utils::postMemory($_GET, 0);
 
 $clcriaabas = new cl_criaabas;
@@ -43,10 +43,10 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-$abas = array();
-$titulos = array();
-$fontes = array();
-$sizecp = array();
+$abas = [];
+$titulos = [];
+$fontes = [];
+$sizecp = [];
 
 if (isset($oGet->dfiscal) && $oGet->dfiscal == true) {
     $codrel = 83;
@@ -95,23 +95,23 @@ if (!empty($oGet->codrel) && $anoSessao >= 2020) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <center>
                 <?php 
-                $clcriaabas->identifica = array("relatorio" => "Relatório",
+                $clcriaabas->identifica = ["relatorio" => "Relatório",
                     "notas" => "Fonte/Notas Explicativas",
                     "parametro" => "Parâmetros"
-                );
-                $clcriaabas->title = array("relatorio" => "Relatório",
+                ];
+                $clcriaabas->title = ["relatorio" => "Relatório",
                     "notas" => "Fonte/Notas Explicativas",
-                    "parametro" => "Parâmetros");
+                    "parametro" => "Parâmetros"];
 
-                $clcriaabas->src = array("relatorio" => "con2_lrfprimario0011.php?codrel={$codrel}",
+                $clcriaabas->src = ["relatorio" => "con2_lrfprimario0011.php?codrel={$codrel}",
                     "notas" => "con2_conrelnotas.php?c83_codrel=$codrel",
                     "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=$codrel"
-                );
+                ];
 
-                $clcriaabas->sizecampo = array("relatorio" => "23",
+                $clcriaabas->sizecampo = ["relatorio" => "23",
                     "notas" => "23",
                     "parametro" => "23"
-                );
+                ];
                 $clcriaabas->cria_abas();
                 ?>
             </center>

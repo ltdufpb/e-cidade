@@ -32,9 +32,9 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_empreendimento_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempreendimento = db_utils::getDao('empreendimento');
 
 $clrotulo = new rotulocampo;
@@ -84,9 +84,9 @@ $clrotulo->label("am05_nome");
         }else{
            $sql = $clempreendimento->sql_query_empreendimento_atividade("",$campos,"am05_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_am05_nome)){
-          $repassa = array("chave_am05_sequencial"=>$chave_am05_sequencial,"chave_am05_nome"=>$chave_am05_nome);
+          $repassa = ["chave_am05_sequencial"=>$chave_am05_sequencial,"chave_am05_nome"=>$chave_am05_nome];
         }
 
         echo '<div class="container">';

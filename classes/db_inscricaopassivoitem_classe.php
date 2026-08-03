@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE inscricaopassivoitem
 class cl_inscricaopassivoitem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c38_sequencial = 0; 
-   var $c38_inscricaopassivo = 0; 
-   var $c38_pcmater = 0; 
-   var $c38_quantidade = 0; 
-   var $c38_valorunitario = 0; 
-   var $c38_valortotal = 0; 
-   var $c38_observacao = null; 
+   public $c38_sequencial = 0; 
+   public $c38_inscricaopassivo = 0; 
+   public $c38_pcmater = 0; 
+   public $c38_quantidade = 0; 
+   public $c38_valorunitario = 0; 
+   public $c38_valortotal = 0; 
+   public $c38_observacao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c38_sequencial = int4 = Item Iscrição Passiva 
                  c38_inscricaopassivo = int4 = Inscrição Passiva 
                  c38_pcmater = int4 = Item 
@@ -60,10 +60,10 @@ class cl_inscricaopassivoitem {
                  c38_observacao = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_inscricaopassivoitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("inscricaopassivoitem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -146,10 +146,10 @@ class cl_inscricaopassivoitem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c38_sequencial = pg_result($result,0,0); 
+       $this->c38_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from inscricaopassivoitem_c38_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c38_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c38_sequencial)){
          $this->erro_sql = " Campo c38_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -189,7 +189,7 @@ class cl_inscricaopassivoitem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Itens da Inscrição Passiva ($this->c38_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Itens da Inscrição Passiva já Cadastrado";
@@ -213,16 +213,16 @@ class cl_inscricaopassivoitem {
      $resaco = $this->sql_record($this->sql_query_file($this->c38_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19000,'$this->c38_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3380,19000,'','".AddSlashes(pg_result($resaco,0,'c38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3380,19001,'','".AddSlashes(pg_result($resaco,0,'c38_inscricaopassivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3380,19003,'','".AddSlashes(pg_result($resaco,0,'c38_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3380,19004,'','".AddSlashes(pg_result($resaco,0,'c38_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3380,19005,'','".AddSlashes(pg_result($resaco,0,'c38_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3380,19006,'','".AddSlashes(pg_result($resaco,0,'c38_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3380,19007,'','".AddSlashes(pg_result($resaco,0,'c38_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3380,19000,'','".AddSlashes(pg_fetch_result($resaco,0,'c38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3380,19001,'','".AddSlashes(pg_fetch_result($resaco,0,'c38_inscricaopassivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3380,19003,'','".AddSlashes(pg_fetch_result($resaco,0,'c38_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3380,19004,'','".AddSlashes(pg_fetch_result($resaco,0,'c38_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3380,19005,'','".AddSlashes(pg_fetch_result($resaco,0,'c38_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3380,19006,'','".AddSlashes(pg_fetch_result($resaco,0,'c38_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3380,19007,'','".AddSlashes(pg_fetch_result($resaco,0,'c38_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -231,10 +231,10 @@ class cl_inscricaopassivoitem {
       $this->atualizacampos();
      $sql = " update inscricaopassivoitem set ";
      $virgula = "";
-     if(trim($this->c38_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_sequencial"])){ 
+     if(trim((string) $this->c38_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_sequencial"])){ 
        $sql  .= $virgula." c38_sequencial = $this->c38_sequencial ";
        $virgula = ",";
-       if(trim($this->c38_sequencial) == null ){ 
+       if(trim((string) $this->c38_sequencial) == null ){ 
          $this->erro_sql = " Campo Item Iscrição Passiva nao Informado.";
          $this->erro_campo = "c38_sequencial";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_inscricaopassivoitem {
          return false;
        }
      }
-     if(trim($this->c38_inscricaopassivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_inscricaopassivo"])){ 
+     if(trim((string) $this->c38_inscricaopassivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_inscricaopassivo"])){ 
        $sql  .= $virgula." c38_inscricaopassivo = $this->c38_inscricaopassivo ";
        $virgula = ",";
-       if(trim($this->c38_inscricaopassivo) == null ){ 
+       if(trim((string) $this->c38_inscricaopassivo) == null ){ 
          $this->erro_sql = " Campo Inscrição Passiva nao Informado.";
          $this->erro_campo = "c38_inscricaopassivo";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_inscricaopassivoitem {
          return false;
        }
      }
-     if(trim($this->c38_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_pcmater"])){ 
+     if(trim((string) $this->c38_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_pcmater"])){ 
        $sql  .= $virgula." c38_pcmater = $this->c38_pcmater ";
        $virgula = ",";
-       if(trim($this->c38_pcmater) == null ){ 
+       if(trim((string) $this->c38_pcmater) == null ){ 
          $this->erro_sql = " Campo Item nao Informado.";
          $this->erro_campo = "c38_pcmater";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_inscricaopassivoitem {
          return false;
        }
      }
-     if(trim($this->c38_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_quantidade"])){ 
+     if(trim((string) $this->c38_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_quantidade"])){ 
        $sql  .= $virgula." c38_quantidade = $this->c38_quantidade ";
        $virgula = ",";
-       if(trim($this->c38_quantidade) == null ){ 
+       if(trim((string) $this->c38_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "c38_quantidade";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_inscricaopassivoitem {
          return false;
        }
      }
-     if(trim($this->c38_valorunitario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_valorunitario"])){ 
+     if(trim((string) $this->c38_valorunitario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_valorunitario"])){ 
        $sql  .= $virgula." c38_valorunitario = $this->c38_valorunitario ";
        $virgula = ",";
-       if(trim($this->c38_valorunitario) == null ){ 
+       if(trim((string) $this->c38_valorunitario) == null ){ 
          $this->erro_sql = " Campo Valor unitário nao Informado.";
          $this->erro_campo = "c38_valorunitario";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_inscricaopassivoitem {
          return false;
        }
      }
-     if(trim($this->c38_valortotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_valortotal"])){ 
+     if(trim((string) $this->c38_valortotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_valortotal"])){ 
        $sql  .= $virgula." c38_valortotal = $this->c38_valortotal ";
        $virgula = ",";
-       if(trim($this->c38_valortotal) == null ){ 
+       if(trim((string) $this->c38_valortotal) == null ){ 
          $this->erro_sql = " Campo Valor total nao Informado.";
          $this->erro_campo = "c38_valortotal";
          $this->erro_banco = "";
@@ -309,7 +309,7 @@ class cl_inscricaopassivoitem {
          return false;
        }
      }
-     if(trim($this->c38_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_observacao"])){ 
+     if(trim((string) $this->c38_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c38_observacao"])){ 
        $sql  .= $virgula." c38_observacao = '$this->c38_observacao' ";
        $virgula = ",";
      }
@@ -321,23 +321,23 @@ class cl_inscricaopassivoitem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19000,'$this->c38_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c38_sequencial"]) || $this->c38_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3380,19000,'".AddSlashes(pg_result($resaco,$conresaco,'c38_sequencial'))."','$this->c38_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3380,19000,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c38_sequencial'))."','$this->c38_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c38_inscricaopassivo"]) || $this->c38_inscricaopassivo != "")
-           $resac = db_query("insert into db_acount values($acount,3380,19001,'".AddSlashes(pg_result($resaco,$conresaco,'c38_inscricaopassivo'))."','$this->c38_inscricaopassivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3380,19001,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c38_inscricaopassivo'))."','$this->c38_inscricaopassivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c38_pcmater"]) || $this->c38_pcmater != "")
-           $resac = db_query("insert into db_acount values($acount,3380,19003,'".AddSlashes(pg_result($resaco,$conresaco,'c38_pcmater'))."','$this->c38_pcmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3380,19003,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c38_pcmater'))."','$this->c38_pcmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c38_quantidade"]) || $this->c38_quantidade != "")
-           $resac = db_query("insert into db_acount values($acount,3380,19004,'".AddSlashes(pg_result($resaco,$conresaco,'c38_quantidade'))."','$this->c38_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3380,19004,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c38_quantidade'))."','$this->c38_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c38_valorunitario"]) || $this->c38_valorunitario != "")
-           $resac = db_query("insert into db_acount values($acount,3380,19005,'".AddSlashes(pg_result($resaco,$conresaco,'c38_valorunitario'))."','$this->c38_valorunitario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3380,19005,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c38_valorunitario'))."','$this->c38_valorunitario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c38_valortotal"]) || $this->c38_valortotal != "")
-           $resac = db_query("insert into db_acount values($acount,3380,19006,'".AddSlashes(pg_result($resaco,$conresaco,'c38_valortotal'))."','$this->c38_valortotal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3380,19006,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c38_valortotal'))."','$this->c38_valortotal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c38_observacao"]) || $this->c38_observacao != "")
-           $resac = db_query("insert into db_acount values($acount,3380,19007,'".AddSlashes(pg_result($resaco,$conresaco,'c38_observacao'))."','$this->c38_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3380,19007,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c38_observacao'))."','$this->c38_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -382,16 +382,16 @@ class cl_inscricaopassivoitem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19000,'$c38_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3380,19000,'','".AddSlashes(pg_result($resaco,$iresaco,'c38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3380,19001,'','".AddSlashes(pg_result($resaco,$iresaco,'c38_inscricaopassivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3380,19003,'','".AddSlashes(pg_result($resaco,$iresaco,'c38_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3380,19004,'','".AddSlashes(pg_result($resaco,$iresaco,'c38_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3380,19005,'','".AddSlashes(pg_result($resaco,$iresaco,'c38_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3380,19006,'','".AddSlashes(pg_result($resaco,$iresaco,'c38_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3380,19007,'','".AddSlashes(pg_result($resaco,$iresaco,'c38_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3380,19000,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3380,19001,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c38_inscricaopassivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3380,19003,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c38_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3380,19004,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c38_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3380,19005,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c38_valorunitario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3380,19006,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c38_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3380,19007,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c38_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from inscricaopassivoitem
@@ -451,7 +451,7 @@ class cl_inscricaopassivoitem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:inscricaopassivoitem";
@@ -466,7 +466,7 @@ class cl_inscricaopassivoitem {
    function sql_query ( $c38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -496,7 +496,7 @@ class cl_inscricaopassivoitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_inscricaopassivoitem {
    function sql_query_file ( $c38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,7 +530,7 @@ class cl_inscricaopassivoitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -81,7 +81,7 @@ $iAnoSessao = db_getsession("DB_anousu");
             <td><b>Mês de Competência:</b></td>
             <td>
               <?php
-                $aMesesDisponiveis = array("0"  => "Selecione",
+                $aMesesDisponiveis = ["0"  => "Selecione",
                                            "1"  => "Janeiro",
                                            "2"  => "Fevereiro",
                                            "3"  => "Março",
@@ -93,7 +93,7 @@ $iAnoSessao = db_getsession("DB_anousu");
                                            "9"  => "Setembro",
                                            "10" => "Outubro",
                                            "11" => "Novembro",
-                                           "12" => "Dezembro");
+                                           "12" => "Dezembro"];
                 db_select("iMesDisponivel", $aMesesDisponiveis, false, 1);
               ?>
             </td>

@@ -68,8 +68,8 @@ if (!$rsQuery) {
   db_redireciona("db_erros.php?fechar=true&db_erro=".urlencode("Erro ao criar estrutura para o relatório."));
 }
 
-$sDataInicial = mktime( 00, 00, 00, substr($dataini,5,2), substr($dataini,8,2), substr($dataini,0,4) );
-$sDataFinal   = mktime( 23, 59, 59, substr($datafin,5,2), substr($datafin,8,2), substr($datafin,0,4) );
+$sDataInicial = mktime( 00, 00, 00, substr((string) $dataini,5,2), substr((string) $dataini,8,2), substr((string) $dataini,0,4) );
+$sDataFinal   = mktime( 23, 59, 59, substr((string) $datafin,5,2), substr((string) $datafin,8,2), substr((string) $datafin,0,4) );
 
 $sql1         =" select distinct                                                           ".PHP_EOL;
 $sql1        .="        actipo,                                                            ".PHP_EOL;
@@ -113,8 +113,8 @@ for($xx = 0; $xx < pg_num_rows($result1);$xx++) {
                    substr('$rotulo',1,20),
                    '".date("Y-m-d",$datahr)."',
                    '".date("H:i",$datahr)."',
-                   substr('".addslashes($contant)."',1,20),
-                   substr('".addslashes($contatu)."',1,20),
+                   substr('".addslashes((string) $contant)."',1,20),
+                   substr('".addslashes((string) $contatu)."',1,20),
                    substr('$nome',1,40)
                   )";
   $res_ins1 = db_query($sql_ins1);
@@ -123,8 +123,8 @@ for($xx = 0; $xx < pg_num_rows($result1);$xx++) {
   }
 }
 
-$sDataInicial = mktime( 00, 00, 00, substr($dataini,5,2), substr($dataini,8,2), substr($dataini,0,4) );
-$sDataFinal   = mktime( 23, 59, 59, substr($datafin,5,2), substr($datafin,8,2), substr($datafin,0,4) );
+$sDataInicial = mktime( 00, 00, 00, substr((string) $dataini,5,2), substr((string) $dataini,8,2), substr((string) $dataini,0,4) );
+$sDataFinal   = mktime( 23, 59, 59, substr((string) $datafin,5,2), substr((string) $datafin,8,2), substr((string) $datafin,0,4) );
 
 $sql2         = " select distinct                                                             ".PHP_EOL;
 $sql2        .= "        actipo,                                                              ".PHP_EOL;
@@ -166,8 +166,8 @@ for($xx = 0; $xx < pg_num_rows($result2);$xx++){
                    substr('$rotulo',1,20),
                    '".date("Y-m-d",$datahr)."',
                    '".date("H:i",$datahr)."',
-                   substr('".addslashes($contant)."',1,20),
-                   substr('".addslashes($contatu)."',1,20),
+                   substr('".addslashes((string) $contant)."',1,20),
+                   substr('".addslashes((string) $contatu)."',1,20),
                    substr('$nome',1,40)
                   )";
    $res_ins2 = db_query($sql_ins2);

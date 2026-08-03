@@ -45,7 +45,7 @@ try {
 /* Se for apenas 1 arquivo, disponibiliza ele para download */
 if ($oImpDown->getNumArquivos() == 1 || isset($iIndex)) {
   
-  $iNumArquivo = isset($iIndex) ? $iIndex : '';
+  $iNumArquivo = $iIndex ?? '';
   if (!isset($iIndex)) {
     $iIndex = 0;
   }

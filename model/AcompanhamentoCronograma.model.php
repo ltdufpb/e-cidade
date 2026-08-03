@@ -84,7 +84,7 @@ class AcompanhamentoCronograma extends cronogramaFinanceiro {
       $this->iAno         = $oDadosCronograma->o124_ano;
       $this->iPpaVersao   = $oDadosCronograma->o124_ppaversao;
       $this->iMes         = $oDadosCronograma->o151_mes;
-      $this->setInstituicoes(array(db_getsession("DB_instit")));
+      $this->setInstituicoes([db_getsession("DB_instit")]);
 
     }
   }

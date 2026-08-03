@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -119,13 +119,13 @@ db_postmemory($HTTP_POST_VARS);
 
   $geraform->tipofol = false;                      // MOSTRAR DO CAMPO PARA TIPO DE FOLHA
 
-  $geraform->arr_tipofol = array(
+  $geraform->arr_tipofol = [
                                  "r14"=>"Salário",
                                  "r48"=>"Complementar",
                                  "r20"=>"Rescisão",
                                  "r35"=>"13o. Salário",
                                  "r22"=>"Adiantamento"
-                                );
+                                ];
   $geraform->complementar = "r48";                // VALUE DA COMPLEMENTAR PARA BUSCAR SEMEST 
 
   $geraform->campo_auxilio_regi = "faixa_regis";  // NOME DO DAS MATRÍCULAS SELECIONADAS

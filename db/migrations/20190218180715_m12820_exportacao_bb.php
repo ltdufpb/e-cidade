@@ -241,7 +241,7 @@ class M12820ExportacaoBb extends PostgresMigration
 
     public function insertsTableEmissao()
     {
-        $sqls = array();
+        $sqls = [];
 
         $sqls[] = "INSERT INTO arquivoautoatendimentotipo VALUES 
                        (1,  'IPVA')
@@ -313,7 +313,7 @@ class M12820ExportacaoBb extends PostgresMigration
 
     public function dropTables()
     {
-        $sqls = array(
+        $sqls = [
             "DROP TABLE IF EXISTS arrecadacao.arquivoautoatendimentoregistrosmatricula;",
             "DROP TABLE IF EXISTS arrecadacao.arquivoautoatendimentoregistrosinscricao;",
             "DROP TABLE IF EXISTS arrecadacao.arquivoautoatendimentoregistroscgm;",
@@ -325,7 +325,7 @@ class M12820ExportacaoBb extends PostgresMigration
             "DROP SEQUENCE IF EXISTS arrecadacao.arquivoautoatendimentoregistros_k183_codigo_seq;",
             "DROP SEQUENCE IF EXISTS arrecadacao.arquivoautoatendimento_k182_codigo_seq;",
             "DROP SEQUENCE IF EXISTS arrecadacao.arquivoautoatendimentotipocadtipo_k185_codigo_seq;",
-        );
+        ];
      
         foreach($sqls as $sql) {
             $this->execute($sql);

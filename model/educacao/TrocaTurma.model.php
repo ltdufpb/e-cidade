@@ -52,22 +52,18 @@ class TrocaTurma
     protected $oTurma;
 
     /**
-     * Turnos para vínculo da matrícula
-     * @var string
-     */
-    protected $sTurno;
-
-    /**
      * Construtor da classe. Recebe uma instancia da Matricula e da turma de destino
      * @param Matricula $oMatricula
      * @param Turma $oTurma
      * @param string $sTurno - Turnos a serem vinculadas a matrícula do aluno
      */
-    public function __construct(Matricula $oMatricula, Turma $oTurma, $sTurno = null)
+    public function __construct(Matricula $oMatricula, Turma $oTurma, /**
+     * Turnos para vínculo da matrícula
+     */
+    protected $sTurno = null)
     {
         $this->oMatricula = $oMatricula;
         $this->oTurma = $oTurma;
-        $this->sTurno = $sTurno;
     }
 
     /**
@@ -189,7 +185,7 @@ class TrocaTurma
      */
     public function getRegenciasTrocaTurmaSemConflito()
     {
-        $aListaRegenciasCompativeis = array();
+        $aListaRegenciasCompativeis = [];
         $oEtapaOrigem = $this->getMatricula()->getEtapaDeOrigem();
         $aRegenciasTurmaOrigem = $this->getMatricula()->getTurma()->getDisciplinasPorEtapa($oEtapaOrigem);
         $aRegenciasTurmaDestino = $this->getTurma()->getDisciplinasPorEtapa($oEtapaOrigem);
@@ -215,7 +211,7 @@ class TrocaTurma
      */
     public function getRegenciasTrocaTurmaInconsistentes()
     {
-        $aListaRegenciasInconsistente = array();
+        $aListaRegenciasInconsistente = [];
         $oEtapaOrigem = $this->getMatricula()->getEtapaDeOrigem();
         $aRegenciasTurmaOrigem = $this->getMatricula()->getTurma()->getDisciplinasPorEtapa($oEtapaOrigem);
         $aRegenciasTurmaDestino = $this->getTurma()->getDisciplinasPorEtapa($oEtapaOrigem);
@@ -245,7 +241,7 @@ class TrocaTurma
     public function getDisciplinasTurmaDestinoSemVinculo()
     {
 
-        $aRegenciasNaoVinculadas = array();
+        $aRegenciasNaoVinculadas = [];
         $oEtapaOrigem = $this->getMatricula()->getEtapaDeOrigem();
         $aRegenciasVinculadas = $this->getRegenciasTrocaTurmaSemConflito();
         $aRegenciasTurmaDestino = $this->getTurma()->getDisciplinasPorEtapa($oEtapaOrigem);
@@ -271,7 +267,7 @@ class TrocaTurma
      * mas equivalentes
      * @throws Exception
      */
-    public function trocarTurmaSemRegistro(array $aRegenciasVinculadas = null)
+    public function trocarTurmaSemRegistro(?array $aRegenciasVinculadas = null)
     {
         $this->validaTransacao();
         $this->validaRegencias($aRegenciasVinculadas);
@@ -307,12 +303,12 @@ class TrocaTurma
         $oTurmaOrigem->salvar();
         $this->getTurma()->salvar();
 
-        $aMovimentacoesAjustarNomeTurma = array("'MATRICULAR ALUNOS TRANSFERIDOS'",
+        $aMovimentacoesAjustarNomeTurma = ["'MATRICULAR ALUNOS TRANSFERIDOS'",
             "'TROCAR ALUNO DE TURMA'",
             "'TROCAR ALUNO DE MODALIDADE'",
             "'REMATRICULAR ALUNO'",
             "'MATRICULAR ALUNO'"
-        );
+        ];
 
         /**
          * Atualizamos os registros na tabela matriculamov para a turma atual do aluno.
@@ -361,7 +357,7 @@ class TrocaTurma
      * @throws BusinessException
      * @throws DBException
      */
-    public function atualizaMatriculaTurno(Matricula $matricula = null)
+    public function atualizaMatriculaTurno(?Matricula $matricula = null)
     {
         $daoMatriculaTurnoReferente = new cl_matriculaturnoreferente();
 
@@ -409,7 +405,7 @@ class TrocaTurma
         $dataAlteracao,
         Etapa $etapaDestino,
         $importarAvaliacoes,
-        array $aRegenciasVinculadas = null
+        ?array $aRegenciasVinculadas = null
     ) {
         $dataModificacao = new DBDate($dataAlteracao);
 

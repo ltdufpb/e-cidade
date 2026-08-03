@@ -112,9 +112,9 @@ switch ($oParam->exec) {
     if ($oParam->codemp != '') {
 
       $sWhere = "e60_instit = " . db_getsession("DB_instit");
-      if (strpos($oParam->codemp,"/")) {
+      if (strpos((string) $oParam->codemp,"/")) {
 
-        $aEmpenho = explode("/",$oParam->codemp);
+        $aEmpenho = explode("/",(string) $oParam->codemp);
         $sWhere .= " and e60_codemp = '{$aEmpenho[0]}' and e60_anousu={$aEmpenho[1]}";
 
       } else {
@@ -189,7 +189,7 @@ switch ($oParam->exec) {
     $_SESSION["oAcordo"] = $oPosicao;
     if ($_SESSION["oAcordo"] instanceof AcordoPosicao ) {
 
-      $aDadosCSV      = array();
+      $aDadosCSV      = [];
       $oPosicao       = $_SESSION["oAcordo"];
       $aItens         = $oPosicao->getItens();
       $csv_file       = fopen('/tmp/relatorioexecucao.csv', 'w');
@@ -198,29 +198,29 @@ switch ($oParam->exec) {
        * Montamos o cabeçalho do arquivo csv
        */
       $aQuadroPevisao = $oPosicao->getQuadroPrevisao();
-      $aPeriodos      = array("Ordem", "Descrição do item", "Unidade");
+      $aPeriodos      = ["Ordem", "Descrição do item", "Unidade"];
 
       foreach ($aQuadroPevisao->aPeriodos as $aPrevisao) {
 
       	for ($i = 0; $i < count($aPrevisao); $i++) {
 
-      	  $aPeriodos[] = urldecode($aPrevisao->descricao)." - Previsto";
-      	  $aPeriodos[] = urldecode($aPrevisao->descricao)." - Executado";
+      	  $aPeriodos[] = urldecode((string) $aPrevisao->descricao)." - Previsto";
+      	  $aPeriodos[] = urldecode((string) $aPrevisao->descricao)." - Executado";
       	}
       }
-      fputcsv($csv_file, $aPeriodos, ';');
+      fputcsv($csv_file, $aPeriodos, ';', escape: '\\');
 
       /**
        * montamos o CSV linha por linha
        */
       foreach ($aItens as $oItem) {
 
-        $aLinha     = array();
+        $aLinha     = [];
       	$iItem      = $oItem->getCodigo();
       	$oInfosItem = new AcordoItem($iItem);
       	$aPeriodos  = $oInfosItem->getPeriodos();
         $aLinha[]   = $oItem->getOrdem();
-      	$aLinha[]   = urldecode($oItem->getMaterial()->getDescricao());
+      	$aLinha[]   = urldecode((string) $oItem->getMaterial()->getDescricao());
       	$aLinha[]   = $oItem->getDescricaoUnidade();
 
       	for ($i = 0; $i < count($aPeriodos); $i++) {
@@ -228,7 +228,7 @@ switch ($oParam->exec) {
       		$aLinha[] = $aPeriodos[$i]->quantidadeprevista;
           $aLinha[] = $aPeriodos[$i]->executado;
         }
-      	fputcsv($csv_file, $aLinha, ';');
+      	fputcsv($csv_file, $aLinha, ';', escape: '\\');
       }
       fclose($csv_file);
       $oRetorno->patharquivo ='/tmp/relatorioexecucao.csv';
@@ -255,7 +255,7 @@ switch ($oParam->exec) {
     $oRetorno->iCodigoPeriodo    = $oParam->iCodigoPeriodo;
     $oRetorno->iCodigoItem       = $oParam->iCodigoItem;
     $oRetorno->sDescricaoPeriodo = $oPrevisao->ac36_descricao;
-    $oRetorno->sDescricaoItem    = urlencode($oPrevisao->pc01_descrmater);
+    $oRetorno->sDescricaoItem    = urlencode((string) $oPrevisao->pc01_descrmater);
     $oRetorno->sDataInicial      = db_formatar($oPrevisao->ac37_datainicial, 'd');
     $oRetorno->sDataFinal        = db_formatar($oPrevisao->ac37_datafinal, 'd');
     $oRetorno->nQuantidadeTotal  = round($oParam->nQuantidadeTotal, 2);
@@ -270,8 +270,8 @@ switch ($oParam->exec) {
       /**
        * Convertemos as datas passadas para o script
        */
-      $sDataInicial = implode('-', array_reverse(explode('/', $oParam->sDataInicial)));
-      $sDataFinal   = implode('-', array_reverse(explode('/', $oParam->sDataFinal)));
+      $sDataInicial = implode('-', array_reverse(explode('/', (string) $oParam->sDataInicial)));
+      $sDataFinal   = implode('-', array_reverse(explode('/', (string) $oParam->sDataFinal)));
 
       $oAcordoPosicao = new AcordoPosicao();
       $oAcordoPosicao->setCodigoAcordoPosicao($oParam->iCodigoAcordoPosicao);

@@ -119,19 +119,15 @@ class PcaspService
                 $query->addSelect(DB::raw($column));
             })
             ->get()
-            ->when(!empty($filtros['comPlanosGoverno']), function (Collection $contas) {
-                return $contas->map(function (Conplano $conplano) {
-                    $conplano->pcaspUniao;
-                    $conplano->pcaspEstadual;
-                    return $conplano;
-                });
-            })
-            ->when(!empty($filtros['comReduzidos']), function (Collection $contas) use ($contaBancaria) {
-                return $contas->map(function (Conplano $conplano) use ($contaBancaria) {
-                    $conplano->reduzidos = ReduzidosResource::manutencao($conplano->getReduzidos(), $contaBancaria);
-                    return $conplano;
-                });
-            });
+            ->when(!empty($filtros['comPlanosGoverno']), fn(Collection $contas) => $contas->map(function (Conplano $conplano) {
+                $conplano->pcaspUniao;
+                $conplano->pcaspEstadual;
+                return $conplano;
+            }))
+            ->when(!empty($filtros['comReduzidos']), fn(Collection $contas) => $contas->map(function (Conplano $conplano) use ($contaBancaria) {
+                $conplano->reduzidos = ReduzidosResource::manutencao($conplano->getReduzidos(), $contaBancaria);
+                return $conplano;
+            }));
     }
 
     public function getPlanoAnaliticaExercicio($exercicio)
@@ -212,7 +208,7 @@ class PcaspService
          * - C: Controle:** contas dos grupos 7 e 8;
          * - P: Patrimonial:** demais grupos de contas.
          */
-        $classe = substr($contaEstado->conta, 1, 1);
+        $classe = substr((string) $contaEstado->conta, 1, 1);
         switch ($classe) {
             case 5:
             case 6:
@@ -271,18 +267,11 @@ class PcaspService
             $conplano->c60_funcao = $dados['funcao'];
             $conplano->c60_saldocontinuo = $dados['transferenciaSaldo'] === 'S';
 
-            switch ($contaEstado->natureza) {
-                case 'D':
-                    $conplano->c60_naturezasaldo = 1;
-                    break;
-                case 'C':
-                    $conplano->c60_naturezasaldo = 2;
-                    break;
-                case 'C/D':
-                default:
-                    $conplano->c60_naturezasaldo = 3;
-                    break;
-            }
+            $conplano->c60_naturezasaldo = match ($contaEstado->natureza) {
+                'D' => 1,
+                'C' => 2,
+                default => 3,
+            };
 
             $conplano->c60_identificadorfinanceiro = $contaEstado->indicador;
             if ($contaEstado->indicador === 'F/P') {
@@ -544,7 +533,7 @@ class PcaspService
      */
     private function validaInclusaoContaSintetica(Conplano $conta)
     {
-        $estruturalPai = (new Estrutural($conta->c60_estrut))->getEstruturalPai();
+        $estruturalPai = new Estrutural($conta->c60_estrut)->getEstruturalPai();
         $contaPai = Conplano::where('c60_anousu', $conta->c60_anousu)
             ->where('c60_estrut', $estruturalPai->getEstrutural())
             ->first();
@@ -581,7 +570,7 @@ class PcaspService
      */
     public function removerReduzido($codigoReduzido, $exercicio)
     {
-        (new ConplanoReduzido())->podeExcluirReduzido($codigoReduzido, $exercicio);
+        new ConplanoReduzido()->podeExcluirReduzido($codigoReduzido, $exercicio);
 
         $reduzido = ConplanoReduzido::where('c61_reduz', $codigoReduzido)
             ->where('c61_anousu', $exercicio)

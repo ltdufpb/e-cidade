@@ -369,7 +369,7 @@ $e83_sequencia = '';
                     <?= db_input('total', 10, '', true, 'text', 3) ?>
                     <?= db_input('valor_dos_cheques', 10, '', true, 'hidden', 3) ?>
                     <?php
-                    $arr_c = array("1" => "1", "2" => "2", "3" => "3", "4" => "4", "5" => "5", "6" => "6");
+                    $arr_c = ["1" => "1", "2" => "2", "3" => "3", "4" => "4", "5" => "5", "6" => "6"];
                     db_select("cheques", $arr_c, true, 1);
                     ?>
                     <input name="valorescheques" id='valoresdoschques' type="button" value="Informar valores"

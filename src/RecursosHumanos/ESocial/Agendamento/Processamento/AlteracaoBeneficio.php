@@ -48,11 +48,6 @@ class AlteracaoBeneficio extends ProcessamentoAbstract implements ProcessamentoI
     /**
      * @var
      */
-    private $cgm;
-
-    /**
-     * @var
-     */
     private $ano;
 
     /**
@@ -65,9 +60,13 @@ class AlteracaoBeneficio extends ProcessamentoAbstract implements ProcessamentoI
      *
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $cgm
+    )
     {
-        $this->cgm = $cgm;
     }
 
     /**

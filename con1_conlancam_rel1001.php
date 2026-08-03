@@ -34,7 +34,7 @@
 
 
    //--
-   $sql=base64_decode($sql);
+   $sql=base64_decode((string) $sql);
    $resultsql = db_query(str_replace('\\','',$sql));
    if($resultsql==false){
        db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado para o gerar o relatório. Verifique');  
@@ -74,22 +74,22 @@
   $pdf->setX(5);
 
   $clrotulolov = new rotulolov; 
-  $fm_numfields = pg_numfields($resultsql); //campos de cada linha do resultser
+  $fm_numfields = pg_num_fields($resultsql); //campos de cada linha do resultser
    
   $linha = 0;
-  for ($xi=0;$xi<pg_numrows($resultsql);$xi++)
+  for ($xi=0;$xi<pg_num_rows($resultsql);$xi++)
   {     
        //-- cria label e tamanho para todos os campos da linha $xi   
        for ($i = 0;$i < $fm_numfields;$i++)
        {    /* $campo_titulo["nome do campo"] - label do campo 
                $tamanho["nome do campo "] - tamanho do campo
             */
-	    $clrotulolov->label(pg_fieldname($resultsql,$i));
-            $campo_titulo[pg_fieldname($resultsql,$i)] = $clrotulolov->titulo ;
+	    $clrotulolov->label(pg_field_name($resultsql,$i));
+            $campo_titulo[pg_field_name($resultsql,$i)] = $clrotulolov->titulo ;
             if($clrotulolov->tamanho==""){
-   	         $tamanho[pg_fieldname($resultsql,$i)] = 20;
+   	         $tamanho[pg_field_name($resultsql,$i)] = 20;
             }else{
-  	         $tamanho[pg_fieldname($resultsql,$i)] = (($clrotulolov->tamanho>strlen($clrotulolov->titulo)?$clrotulolov->tamanho:strlen($clrotulolov->titulo))*2)+2;
+  	         $tamanho[pg_field_name($resultsql,$i)] = (($clrotulolov->tamanho>strlen($clrotulolov->titulo)?$clrotulolov->tamanho:strlen($clrotulolov->titulo))*2)+2;
             }
         }	
       //--
@@ -106,16 +106,16 @@
       // conteúdo dos campos
        $pdf->setX(35);
       // $pdf->Cell($tamanho["c78_chave"],4,pg_result($resultsql,$xi,"c78_chave"),"LRBT",0,"L",1);
-       $pdf->Cell($tamanho["c69_codlan"],4,pg_result($resultsql,$xi,"c69_codlan"),"LRBT",0,"L",1);
-       $pdf->Cell($tamanho["c69_data"],4,pg_result($resultsql,$xi,"c69_data"),"LRBT",0,"L",1);
-       $pdf->Cell($tamanho["c69_credito"],4,pg_result($resultsql,$xi,"c69_credito"),"LRBT",0,"C",1);
-       $pdf->Cell($tamanho["c69_debito"],4,pg_result($resultsql,$xi,"c69_debito"),"LRBT",0,"C",1);
-       $pdf->Cell($tamanho["c69_valor"],4,pg_result($resultsql,$xi,"c69_valor"),"LRBT",1,"L",1);
+       $pdf->Cell($tamanho["c69_codlan"],4,pg_fetch_result($resultsql,$xi,"c69_codlan"),"LRBT",0,"L",1);
+       $pdf->Cell($tamanho["c69_data"],4,pg_fetch_result($resultsql,$xi,"c69_data"),"LRBT",0,"L",1);
+       $pdf->Cell($tamanho["c69_credito"],4,pg_fetch_result($resultsql,$xi,"c69_credito"),"LRBT",0,"C",1);
+       $pdf->Cell($tamanho["c69_debito"],4,pg_fetch_result($resultsql,$xi,"c69_debito"),"LRBT",0,"C",1);
+       $pdf->Cell($tamanho["c69_valor"],4,pg_fetch_result($resultsql,$xi,"c69_valor"),"LRBT",1,"L",1);
       // --
        $itens="S";
        if (isset($itens) and ($itens =="S")) { 
-	   $c_debito =pg_result($resultsql,$xi,"c69_debito");
-	   $c_credito=pg_result($resultsql,$xi,"c69_credito");
+	   $c_debito =pg_fetch_result($resultsql,$xi,"c69_debito");
+	   $c_credito=pg_fetch_result($resultsql,$xi,"c69_credito");
 	   $sql_c="select c60_descr as credito_descr
                      from conplano 
 	                     inner join conplanoreduz on conplanoreduz.c61_codcon=conplano.c60_codcon and 
@@ -132,10 +132,10 @@
 	   $res_credito=db_query($sql_c);
            $pdf->setX(35); // credito_descr
            $pdf->Cell( 40,4,'Credito  ',"LRBT",0,"L",0);
-              $pdf->Cell($tamanho["c50_descr"],4,pg_result($res_credito,0,"credito_descr"),"0",1,"L",0);
+              $pdf->Cell($tamanho["c50_descr"],4,pg_fetch_result($res_credito,0,"credito_descr"),"0",1,"L",0);
            $pdf->setX(35); // credito_descr
            $pdf->Cell( 40,4,'Debito  ',"LRBT",0,"L",0);
-              $pdf->Cell($tamanho["c50_descr"],4,pg_result($res_debito,0,"debito_descr"),"0",1,"L",0);
+              $pdf->Cell($tamanho["c50_descr"],4,pg_fetch_result($res_debito,0,"debito_descr"),"0",1,"L",0);
 
       // -- contagem linhas
         $linha += 4;

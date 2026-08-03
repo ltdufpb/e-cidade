@@ -34,8 +34,8 @@ include(modification("classes/db_pcorcamitem_classe.php"));
 include(modification("classes/db_pcorcamitemproc_classe.php"));
 include(modification("classes/db_solicitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clpcorcam = new cl_pcorcam;
 $clpcorcamitem = new cl_pcorcamitem;
 $clsolicitem = new cl_solicitem;
@@ -48,7 +48,7 @@ if(isset($incluir) || isset($alterar)){
   if($sqlerro==false){
     db_inicio_transacao();
     if(isset($alterar) && $valores!="" || isset($incluir)){
-      $arr_dad = split(",",$valores);
+      $arr_dad = preg_split("#,#m",$valores);
       for($i=0;$i<sizeof($arr_dad);$i++){
 	if(isset($alterar)){
 	  $result_exist = $clpcorcamitemproc->sql_record($clpcorcamitemproc->sql_query_solicitem(null,null,"pc22_codorc,pc22_orcamitem,pc31_solicitem",null," pc31_solicitem=".$arr_dad[$i]." and pc22_codorc=$pc22_codorc"));

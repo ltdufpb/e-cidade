@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orctiporecconveniosituacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorctiporecconveniosituacao = new cl_orctiporecconveniosituacao;
 $clorctiporecconveniosituacao->rotulo->label("o100_sequencial");
 $clorctiporecconveniosituacao->rotulo->label("o100_descricao");
@@ -98,9 +98,9 @@ $clorctiporecconveniosituacao->rotulo->label("o100_descricao");
         }else{
            $sql = $clorctiporecconveniosituacao->sql_query("",$campos,"o100_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o100_descricao)){
-          $repassa = array("chave_o100_sequencial"=>$chave_o100_sequencial,"chave_o100_descricao"=>$chave_o100_descricao);
+          $repassa = ["chave_o100_sequencial"=>$chave_o100_sequencial,"chave_o100_descricao"=>$chave_o100_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

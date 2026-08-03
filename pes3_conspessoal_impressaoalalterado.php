@@ -64,7 +64,7 @@ $clrotulo->label('r13_descr');
 $clrotulo->label('r37_descr');
 $clrotulo->label('rh02_lota');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $head3 = "CADASTRO DE CÓDIGOS";
 $head5 = "PERÍODO : ".$mes." / ".$ano;
@@ -107,7 +107,7 @@ $sql = $clrhpessoal->sql_query_pesquisa(
                                          $mes
                                        );
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0 || $xxnum==false){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mes.' / '.$ano);
 }
@@ -181,7 +181,7 @@ $pdf->ln();
 $pdf->setfont($fonte01,$b01,$tam01);
 $pdf->cell(35,$alt,$RLrh02_lota.":",0,0,"R",0);
 $pdf->setfont($fonte02,$b02,$tam02);
-$pdf->cell(60,$alt,$r70_estrut.'-'.substr($r70_descr,0,25),0,0,"L",0);
+$pdf->cell(60,$alt,$r70_estrut.'-'.substr((string) $r70_descr,0,25),0,0,"L",0);
 $pdf->cell(1,$alt,"  ",0,0,"C",0);
 $pdf->setfont($fonte01,$b01,$tam01);
 $pdf->cell(35,$alt,$RLrh30_regime.":",0,0,"R",0);
@@ -505,7 +505,7 @@ $pdf->cell(23,$alt,"Ponto",1,0,"C",1);
   $pdf->ln();
 $pdf->setfont($fonte02,$b02,$tam02);
 
-for ($i = 0;$i < pg_numrows($result);$i++){
+for ($i = 0;$i < pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
 
   if ($pdf->gety() > $pdf->h - 30 ){
@@ -585,7 +585,7 @@ $pdf->cell(39,$alt,$RLr03_irf,1,0,"C",1);
 $pdf->ln();
     $pdf->setfont($fonte02,$b02,$tam02);
 
-for ($i = 0;$i < pg_numrows($result);$i++){
+for ($i = 0;$i < pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   if ($pdf->gety() > $pdf->h - 30 ){
       $pdf->setfont($fonte01,$b01,$tam01);

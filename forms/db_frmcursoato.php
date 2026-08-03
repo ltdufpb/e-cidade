@@ -100,7 +100,7 @@ if(isset($opcao) && $opcao=="alterar"){
                                )
                   ) as ed216_i_serie
                  ";
-   $chavepri= array("ed215_i_codigo"=>@$ed215_i_codigo,"ed215_i_atolegal"=>@$ed215_i_atolegal,"ed05_c_finalidade"=>@$ed05_c_finalidade);
+   $chavepri= ["ed215_i_codigo"=>@$ed215_i_codigo,"ed215_i_atolegal"=>@$ed215_i_atolegal,"ed05_c_finalidade"=>@$ed05_c_finalidade];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clcursoato->sql_query("",$campos_sql,"ed216_i_serie"," ed215_i_cursoescola = $codcursoescola");
    $cliframe_alterar_excluir->campos  ="ed215_i_atolegal,ed05_c_numero,ed05_c_finalidade,ed216_i_serie";

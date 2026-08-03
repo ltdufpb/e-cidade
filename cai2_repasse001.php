@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt11');
 $clrotulo->label('k02_codigo');
 $clrotulo->label('k02_drecei');
 $clrotulo->label('o08_reduz');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>

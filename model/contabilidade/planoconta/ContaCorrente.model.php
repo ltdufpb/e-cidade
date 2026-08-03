@@ -208,7 +208,7 @@ class ContaCorrente {
 
     $iAnoSessao                = db_getsession("DB_anousu");
     $iInstituicaoSessao        = db_getsession("DB_instit");
-    $aContasContabeis          = array();
+    $aContasContabeis          = [];
     $sWhereContas              = "     c18_contacorrente = {$this->getCodigo()} ";
     $sWhereContas             .= " and c18_anousu        = {$iAnoSessao}";
     $sWhereContas             .= " and c60_anousu        = {$iAnoSessao}";
@@ -267,7 +267,7 @@ class ContaCorrente {
    */
   static function getAtributos($iContaCorrente) {
 
-    $aAtributos = array();
+    $aAtributos = [];
     /*
      * definição dos atributos
     */

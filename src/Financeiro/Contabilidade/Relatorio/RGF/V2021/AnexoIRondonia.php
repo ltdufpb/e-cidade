@@ -55,7 +55,8 @@ class AnexoIRondonia extends AnexoI
      * @return \stdClass[]
      * @throws \ParameterException
      */
-    public function getDados()
+    #[\Override]
+    public function getDados($trazerConfiguracaoPadrao = true)
     {
         parent::getDados();
         $this->inicializaValoresDespesaPorLinhaMes();
@@ -72,6 +73,7 @@ class AnexoIRondonia extends AnexoI
    * Dados preparados para serem emitidos no Anexo VI - Simplificado
    * @return \stdClass
    */
+    #[\Override]
     public function getDadosSimplificado()
     {
         $this->getDados();
@@ -106,7 +108,7 @@ class AnexoIRondonia extends AnexoI
         }
 
         foreach ($this->getMesesAbrangente() as $iMes => $sCompetencia) {
-            list($sMesAbreviado, $iAno) = explode('/', $sCompetencia);
+            [$sMesAbreviado, $iAno] = explode('/', (string) $sCompetencia);
             $iUltimoDiaMes = cal_days_in_month(CAL_GREGORIAN, $iMes, $iAno);
             $oDataInicialPeriodo = new \DBDate("01/{$iMes}/{$iAno}");
             $oDataFinalPeriodo = new \DBDate("{$iUltimoDiaMes}/{$iMes}/{$iAno}");
@@ -131,7 +133,7 @@ class AnexoIRondonia extends AnexoI
                 if (empty($oLinha->colunas[0]->o116_formula)) {
                     $oLinha->colunas[0]->o116_formula = '#saldo_arrecadado';
                 }
-                $aColunasProcessar = $this->getColunasPorLinha($oLinha, array(0));
+                $aColunasProcessar = $this->getColunasPorLinha($oLinha, [0]);
                 \RelatoriosLegaisBase::calcularValorDaLinha(
                     $rsReceitaSaldo,
                     $oLinha,

@@ -63,26 +63,26 @@ $iTipoAvaliacao = 6;
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-       $clcriaabas->identifica  = array("avaliacao"=>"Avaliação",
+       $clcriaabas->identifica  = ["avaliacao"=>"Avaliação",
                                         "avaliacaogrupopergunta"=>"Grupos",
                                         "avaliacaopergunta"=>"Perguntas",
-                                        "avaliacaolista"=>"Usuários Alvos");
+                                        "avaliacaolista"=>"Usuários Alvos"];
 
-       $clcriaabas->title       = array("avaliacao"=>"Avaliação",
+       $clcriaabas->title       = ["avaliacao"=>"Avaliação",
                                         "avaliacaogrupopergunta"=>"Grupos",
                                         "avaliacaopergunta"=>"Perguntas",
-                                        "avaliacaolista"=>"Usuários Alvos");
+                                        "avaliacaolista"=>"Usuários Alvos"];
 
-       $clcriaabas->src         = array("avaliacao"=>"hab1_avaliacao004.php?iTipoAvaliacao={$iTipoAvaliacao}");
+       $clcriaabas->src         = ["avaliacao"=>"hab1_avaliacao004.php?iTipoAvaliacao={$iTipoAvaliacao}"];
 
-       $clcriaabas->sizecampo   = array("avaliacao"=>"23",
+       $clcriaabas->sizecampo   = ["avaliacao"=>"23",
                                         "avaliacaogrupopergunta"=>"23",
                                         "avaliacaopergunta"=>"23",
-                                        "avaliacaolista"=>"23");
+                                        "avaliacaolista"=>"23"];
 
-       $clcriaabas->disabled    = array("avaliacaopergunta"=>"true",
+       $clcriaabas->disabled    = ["avaliacaopergunta"=>"true",
                                         "avaliacaogrupopergunta"=>"true",
-                                        "avaliacaolista"=>"true");
+                                        "avaliacaolista"=>"true"];
 
        $clcriaabas->cria_abas();
      ?>

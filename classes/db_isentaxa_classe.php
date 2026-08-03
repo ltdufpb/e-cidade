@@ -57,7 +57,7 @@ class cl_isentaxa {
     public function __construct()
     {
      $this->rotulo = new rotulo("isentaxa");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
    }
 
     public function erro($mostra, $retorna)
@@ -128,7 +128,7 @@ class cl_isentaxa {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->j56_codigo."-".$this->j56_receit) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -157,14 +157,14 @@ class cl_isentaxa {
      if(($resaco!=false)||($this->numrows!=0)){
 
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,577,'$this->j56_codigo','I')");
        $resac = db_query("insert into db_acountkey values($acount,578,'$this->j56_receit','I')");
-       $resac = db_query("insert into db_acount values($acount,113,577,'','".AddSlashes(pg_result($resaco,0,'j56_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,113,578,'','".AddSlashes(pg_result($resaco,0,'j56_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,113,579,'','".AddSlashes(pg_result($resaco,0,'j56_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,113,1010316,'','".AddSlashes(pg_result($resaco,0,'j56_iptucadtaxaexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,113,577,'','".AddSlashes(pg_fetch_result($resaco,0,'j56_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,113,578,'','".AddSlashes(pg_fetch_result($resaco,0,'j56_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,113,579,'','".AddSlashes(pg_fetch_result($resaco,0,'j56_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,113,1010316,'','".AddSlashes(pg_fetch_result($resaco,0,'j56_iptucadtaxaexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -175,10 +175,10 @@ class cl_isentaxa {
       $this->atualizacampos();
      $sql = " update isentaxa set ";
      $virgula = "";
-     if(trim($this->j56_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j56_codigo"])){
+     if(trim((string) $this->j56_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j56_codigo"])){
        $sql  .= $virgula." j56_codigo = $this->j56_codigo ";
        $virgula = ",";
-       if(trim($this->j56_codigo) == null ){
+       if(trim((string) $this->j56_codigo) == null ){
          $this->erro_sql = " Campo Codigo Isencao não informado.";
          $this->erro_campo = "j56_codigo";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_isentaxa {
          return false;
        }
      }
-     if(trim($this->j56_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j56_receit"])){
+     if(trim((string) $this->j56_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j56_receit"])){
        $sql  .= $virgula." j56_receit = $this->j56_receit ";
        $virgula = ",";
-       if(trim($this->j56_receit) == null ){
+       if(trim((string) $this->j56_receit) == null ){
          $this->erro_sql = " Campo Receita não informado.";
          $this->erro_campo = "j56_receit";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_isentaxa {
          return false;
        }
      }
-     if(trim($this->j56_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j56_perc"])){
+     if(trim((string) $this->j56_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j56_perc"])){
        $sql  .= $virgula." j56_perc = $this->j56_perc ";
        $virgula = ",";
-       if(trim($this->j56_perc) == null ){
+       if(trim((string) $this->j56_perc) == null ){
          $this->erro_sql = " Campo Percentual não informado.";
          $this->erro_campo = "j56_perc";
          $this->erro_banco = "";
@@ -214,7 +214,7 @@ class cl_isentaxa {
          return false;
        }
      }
-     if(trim($this->j56_iptucadtaxaexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j56_iptucadtaxaexe"])){
+     if(trim((string) $this->j56_iptucadtaxaexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j56_iptucadtaxaexe"])){
        $sql  .= $virgula." j56_iptucadtaxaexe = $this->j56_iptucadtaxaexe ";
        $virgula = ",";
      }
@@ -235,18 +235,18 @@ class cl_isentaxa {
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,577,'$this->j56_codigo','A')");
          $resac = db_query("insert into db_acountkey values($acount,578,'$this->j56_receit','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j56_codigo"]) || $this->j56_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,113,577,'".AddSlashes(pg_result($resaco,$conresaco,'j56_codigo'))."','$this->j56_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,113,577,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j56_codigo'))."','$this->j56_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j56_receit"]) || $this->j56_receit != "")
-           $resac = db_query("insert into db_acount values($acount,113,578,'".AddSlashes(pg_result($resaco,$conresaco,'j56_receit'))."','$this->j56_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,113,578,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j56_receit'))."','$this->j56_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j56_perc"]) || $this->j56_perc != "")
-           $resac = db_query("insert into db_acount values($acount,113,579,'".AddSlashes(pg_result($resaco,$conresaco,'j56_perc'))."','$this->j56_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,113,579,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j56_perc'))."','$this->j56_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j56_iptucadtaxaexe"]) || $this->j56_iptucadtaxaexe != "")
-             $resac = db_query("insert into db_acount values($acount,113,1010316,'".AddSlashes(pg_result($resaco,$conresaco,'j56_iptucadtaxaexe'))."','$this->j56_iptucadtaxaexe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,113,1010316,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j56_iptucadtaxaexe'))."','$this->j56_iptucadtaxaexe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -300,14 +300,14 @@ class cl_isentaxa {
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,577,'$j56_codigo','E')");
          $resac = db_query("insert into db_acountkey values($acount,578,'$j56_receit','E')");
-         $resac = db_query("insert into db_acount values($acount,113,577,'','".AddSlashes(pg_result($resaco,$iresaco,'j56_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,113,578,'','".AddSlashes(pg_result($resaco,$iresaco,'j56_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,113,579,'','".AddSlashes(pg_result($resaco,$iresaco,'j56_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,113,1010316,'','".AddSlashes(pg_result($resaco,$iresaco,'j56_iptucadtaxaexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,113,577,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j56_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,113,578,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j56_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,113,579,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j56_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,113,1010316,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j56_iptucadtaxaexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

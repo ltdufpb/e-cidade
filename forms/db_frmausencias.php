@@ -194,7 +194,7 @@ $clrotulo->label("sd27_i_codigo");
            <tr>
               <td valign="top"><br>
                 <?php 
-                  $chavepri= array("sd06_i_codigo"=>@$sd06_i_codigo );
+                  $chavepri= ["sd06_i_codigo"=>@$sd06_i_codigo ];
                   $cliframe_alterar_excluir->chavepri=$chavepri;
 		              @$cliframe_alterar_excluir->sql = $clausencias->sql_query_ext("","sd06_i_codigo, sd04_i_unidade, sd06_d_inicio, sd06_d_fim, sd06_i_especmed,sd06_c_horainicio,sd06_c_horafim, 
                                                                         sau_motivo_ausencia.s139_c_descr as sd06_i_tipo,(sd06_d_fim - sd06_d_inicio) + 1 as sd27_i_quantidade ",

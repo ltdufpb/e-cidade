@@ -39,7 +39,7 @@ require_once(modification("model/cancelamentoDebitos.model.php"));
 require_once(modification("libs/db_sql.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oCancelaDebito = new cancelamentoDebitos();
 $cliptubase     = new cl_iptubase;
 $cliptunump     = new cl_iptunump;
@@ -57,7 +57,7 @@ $descricaoerro = "";
 
 if (isset($excluircalculo)) {
 
-  if (isset($HTTP_POST_VARS['j01_matric'])) {
+  if (isset($_POST['j01_matric'])) {
 
     $result = $cliptunump->sql_record($cliptunump->sql_query($j18_anousu,$j01_matric));
 
@@ -100,17 +100,17 @@ if (isset($excluircalculo)) {
 
    		if ($k10_numpre != "") {
 
-   			$descricaoerro = pg_result(db_query("select fc_iptu_geterro(32,'')"),0,0);
+   			$descricaoerro = pg_fetch_result(db_query("select fc_iptu_geterro(32,'')"),0,0);
    			$erro          = true;
 
    		} else if ( $arrepaga > 0 ) {
 
-   			$descricaoerro = pg_result(db_query("select fc_iptu_geterro(33,'')"),0,0);
+   			$descricaoerro = pg_fetch_result(db_query("select fc_iptu_geterro(33,'')"),0,0);
         $erro          = true;
 
    		} else if ( $arrecant > 0){
 
-   			$descricaoerro = pg_result(db_query("select  fc_iptu_geterro(34,'')"),0,0);
+   			$descricaoerro = pg_fetch_result(db_query("select  fc_iptu_geterro(34,'')"),0,0);
         $erro          = true;
 
       } else if ( isset($abatimento) && trim($abatimento) != '' ){
@@ -133,11 +133,11 @@ if (isset($excluircalculo)) {
         $rsDadosDebito   = db_query($sSqlDadosDebito);
         $aDadosDebito    = db_utils::getCollectionByRecord($rsDadosDebito);
 
-        $aDebitos = array();
+        $aDebitos = [];
 
         foreach ($aDadosDebito as $oDadosDebito) {
 
-  		    $aDadosDebitos = array();
+  		    $aDadosDebitos = [];
   		    $aDadosDebitos['Numpre']  = $oDadosDebito->k00_numpre;
   		    $aDadosDebitos['Numpar']  = $oDadosDebito->k00_numpar;
   		    $aDadosDebitos['Receita'] = $oDadosDebito->k00_receit;
@@ -267,9 +267,9 @@ function  js_verificacalculo(){
             <td>
               <?php 
                 $result=db_query("select distinct j18_anousu from cfiptu order by j18_anousu asc");
-                if(pg_numrows($result) > 0){
-                  $opcoes = array();
-                  for($i=0;$i<pg_numrows($result);$i++){
+                if(pg_num_rows($result) > 0){
+                  $opcoes = [];
+                  for($i=0;$i<pg_num_rows($result);$i++){
                     db_fieldsmemory($result,$i);
                     $opcoes[$j18_anousu] = $j18_anousu;
                   }
@@ -328,7 +328,7 @@ if(isset($calcular)){
 
 ?>
 <script>
-  func_nome.jan.location.href = "cad3_conscadastro_002_detalhes.php?solicitacao=Calculo&parametro=<?=$HTTP_POST_VARS['j01_matric']?>";
+  func_nome.jan.location.href = "cad3_conscadastro_002_detalhes.php?solicitacao=Calculo&parametro=<?=$_POST['j01_matric']?>";
   func_nome.mostraMsg();
   func_nome.show();
   func_nome.focus();

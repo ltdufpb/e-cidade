@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clprontuarios = new cl_prontuarios;
 $clunidades    = new cl_unidades_ext;
@@ -68,7 +68,7 @@ $todos    = "";
            where sd02_i_codigo         = $unidade
              and db_usuacgm.id_usuario = $usuario ";
 
- $query1  = db_query($sql1) or die(pg_errormessage());
+ $query1  = db_query($sql1) or die(pg_last_error());
  $linhas1 = pg_num_rows($query1);
 if($linhas1>0){
   db_fieldsmemory($query1,0);
@@ -109,7 +109,7 @@ if($linhas1>0){
             </td>
             <td width="96%" align="left" nowrap colspan="2">
             	<?php 
-			       $x = array("S"=>"SIM","N"=>"NÃO");
+			       $x = ["S"=>"SIM","N"=>"NÃO"];
 			       db_select('chave_sd24_c_digitada',$x,true,1);
             	?>
             </td>
@@ -217,11 +217,11 @@ if($linhas1>0){
         }
 
         if( isset( $sql ) ){
-			$repassa = array(
+			$repassa = [
                        "chave_sd24_i_codigo"=>@$chave_sd24_i_codigo, 
                        "chave_z01_v_nome"=>@$chave_z01_v_nome,
                        "chave_sd24_c_digitada"=>@$chave_sd24_c_digitada
-                      );                 
+                      ];                 
     			db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",@$repassa);
     		}
 

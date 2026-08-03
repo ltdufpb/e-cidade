@@ -381,7 +381,7 @@ try {
            $rsDescontosCotaUnica = $oDaoReciboPaga->sql_record($sSqldescontoConcedUnica);
            $aDescontosCotaUnica  = db_utils::getCollectionByRecord($rsDescontosCotaUnica);
            
-           $aDadosDesconto = array();
+           $aDadosDesconto = [];
            
            foreach ( $aDescontosCotaUnica as $oDescontosCotaUnica ) {
              

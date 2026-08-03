@@ -175,7 +175,7 @@ db_input('r11_arredn',1,$Ir11_arredn,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_sald13',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -256,7 +256,7 @@ db_input('r11_tbprev',1,$Ir11_tbprev,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_confer',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -477,7 +477,7 @@ db_input('r11_fadiab',4,$Ir11_fadiab,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_recalc',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -488,7 +488,7 @@ db_select('r11_recalc',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_pagaab',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -509,7 +509,7 @@ db_input('r11_fersal',1,$Ir11_fersal,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_vtprop',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -530,7 +530,7 @@ db_input('r11_desliq',20,$Ir11_desliq,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_propae',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -541,7 +541,7 @@ db_select('r11_propae',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_propac',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -567,7 +567,7 @@ db_input('db77_descr',40,$Idb77_descr,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_geracontipe',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -578,7 +578,7 @@ db_select('r11_geracontipe',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_13ferias',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -589,7 +589,7 @@ db_select('r11_13ferias',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('S'=>'Salário','C'=>'Complementar');
+$x = ['S'=>'Salário','C'=>'Complementar'];
 db_select('r11_pagarferias',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -600,7 +600,7 @@ db_select('r11_pagarferias',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_vtfer',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -611,7 +611,7 @@ db_select('r11_vtfer',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_vtcons',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -622,7 +622,7 @@ db_select('r11_vtcons',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r11_vtmpro',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -683,7 +683,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_cfpess.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

@@ -37,7 +37,7 @@ require_once(modification("classes/db_lab_labdepart_classe.php"));
 require_once(modification("classes/db_lab_labcgm_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cllab_laboratorio = new cl_lab_laboratorio;
 $cllab_labresp     = new cl_lab_labresp;

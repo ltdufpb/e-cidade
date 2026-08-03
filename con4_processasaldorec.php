@@ -91,7 +91,7 @@ Encerramento de saldo receita/despesa
 (float)  $nValorLancar = 0;
 (integer)$iAnoUsu      = db_getsession("DB_anousu");
 (integer)$iInstit      = db_getsession("DB_instit");
-$data                  = explode("/",$get->datalanc);
+$data                  = explode("/",(string) $get->datalanc);
 $dataIni               = $iAnoUsu.'-01-01';
 $dataUsu               = $data[2]."-".$data[1]."-".$data[0];
 $debug                 = false;
@@ -103,10 +103,10 @@ $dt_ini = $anousu.'-01-01';
 $dt_fin = $dataUsu;
 $lSqlErro =false;
 $doc = "";
-$arr_debito  = array();
-$arr_credito = array();
-$arr_histori  = array();
-$arr_seqtranslr = array();
+$arr_debito  = [];
+$arr_credito = [];
+$arr_histori  = [];
+$arr_seqtranslr = [];
 
 
 db_inicio_transacao();
@@ -139,14 +139,14 @@ if ($debug==true){
 }
 //db_criatabela($result);
 //exit;
-for ($x=0;$x< pg_numrows($result);$x++) {
+for ($x=0;$x< pg_num_rows($result);$x++) {
 
 	$oConta = db_utils::fieldsmemory($result,$x);
 
-  $aLancamentos = array();
+  $aLancamentos = [];
   $lanca = true;
   if (!USE_PCASP) {
-    if ((substr($oConta->estrutural,0,2)=='41'  || substr($oConta->estrutural,0,2)=='47' ) && $oConta->c61_reduz !=0  ){
+    if ((str_starts_with((string) $oConta->estrutural, '41')  || str_starts_with((string) $oConta->estrutural, '47') ) && $oConta->c61_reduz !=0  ){
       // receitas correntes
        $doc ="1001";
        $cltranslan->db_trans_documento($doc, $oConta->c61_reduz);
@@ -155,7 +155,7 @@ for ($x=0;$x< pg_numrows($result);$x++) {
        $arr_histori  = $cltranslan->arr_histori;
        $arr_seqtranslr = $cltranslan->arr_seqtranslr;
 
-    } else if (substr($oConta->estrutural,0,2)=='42' && $oConta->c61_reduz !=0  ){
+    } else if (str_starts_with((string) $oConta->estrutural, '42') && $oConta->c61_reduz !=0  ){
         //  receitas de capital
        $doc ="1002";
        $cltranslan->db_trans_documento($doc, $oConta->c61_reduz);
@@ -163,7 +163,7 @@ for ($x=0;$x< pg_numrows($result);$x++) {
        $arr_credito = $cltranslan->arr_credito;
        $arr_histori  = $cltranslan->arr_histori;
        $arr_seqtranslr = $cltranslan->arr_seqtranslr;
-    }elseif (db_conplano_grupo($anousu,substr($oConta->estrutural,0,2)."%",9000) == true && $oConta->c61_reduz !=0  ){  // 49
+    }elseif (db_conplano_grupo($anousu,substr((string) $oConta->estrutural,0,2)."%",9000) == true && $oConta->c61_reduz !=0  ){  // 49
         //  deduções da receita corrente
        $doc ="1001";
        $cltranslan->db_trans_documento($doc, $oConta->c61_reduz);
@@ -172,7 +172,7 @@ for ($x=0;$x< pg_numrows($result);$x++) {
        $arr_histori  = $cltranslan->arr_histori;
        $arr_seqtranslr = $cltranslan->arr_seqtranslr;
 
-    }elseif (substr($oConta->estrutural,0,2)=='33' && $oConta->c61_reduz !=0  ){
+    }elseif (str_starts_with((string) $oConta->estrutural, '33') && $oConta->c61_reduz !=0  ){
         //  deduções da despesa corrente
        $doc ="1003";
        $cltranslan->db_trans_documento($doc,$oConta->c61_reduz);
@@ -180,7 +180,7 @@ for ($x=0;$x< pg_numrows($result);$x++) {
        $arr_credito = $cltranslan->arr_credito;
        $arr_histori  = $cltranslan->arr_histori;
        $arr_seqtranslr = $cltranslan->arr_seqtranslr;
-    }elseif (substr($oConta->estrutural,0,2)=='34' && $oConta->c61_reduz !=0  ){
+    }elseif (str_starts_with((string) $oConta->estrutural, '34') && $oConta->c61_reduz !=0  ){
         //  deduções da despesa de capital
        $doc ="1004";
        $cltranslan->db_trans_documento($doc, $oConta->c61_reduz);
@@ -193,13 +193,13 @@ for ($x=0;$x< pg_numrows($result);$x++) {
     }
   } else {
 
-    $iTipoConta = substr($oConta->estrutural, 0, 1);
-    if (!in_array($iTipoConta, array(3,4))) {
+    $iTipoConta = substr((string) $oConta->estrutural, 0, 1);
+    if (!in_array($iTipoConta, [3,4])) {
       continue;
     }
-    $aDocumentos = array(4 => 1001,
+    $aDocumentos = [4 => 1001,
                          3 => 1003
-                        );
+                        ];
     $iDocumento = $aDocumentos[$iTipoConta];
     $cltranslan->db_trans_documento($iDocumento, $oConta->c61_reduz);
 
@@ -215,21 +215,21 @@ for ($x=0;$x< pg_numrows($result);$x++) {
 
       case 4:
 
-        $arr_debito = array($oConta->c61_reduz);
+        $arr_debito = [$oConta->c61_reduz];
         /**
          * quando contas de receita possuir saldo Devedor(receitas sempre são de natureza credora),
          * invertemos o lancamento
          */
         if ($oConta->sinal_final == 'D') {
 
-          $arr_credito = array($oConta->c61_reduz);
+          $arr_credito = [$oConta->c61_reduz];
           $arr_debito     = $cltranslan->arr_credito;
         }
         break;
 
       case 3:
 
-        $arr_credito = array($oConta->c61_reduz);
+        $arr_credito = [$oConta->c61_reduz];
 
         /**
          * quando contas de despesa possuir saldo Credor(despesas sempre são de natureza devedora),
@@ -238,7 +238,7 @@ for ($x=0;$x< pg_numrows($result);$x++) {
         if ($oConta->sinal_final == 'C') {
 
           $arr_credito = $cltranslan->arr_debito;
-          $arr_debito  = array($oConta->c61_reduz);
+          $arr_debito  = [$oConta->c61_reduz];
         }
         break;
     }

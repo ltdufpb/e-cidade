@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("db_projetoscliente"=>"Projetos","db_projetosativcli"=>"Atividades"); 
-	 $clcriaabas->src = array("db_projetoscliente"=>"ate1_db_projetoscliente004.php");
-	 $clcriaabas->disabled   =  array("db_projetosativcli"=>"true"); 
+	 $clcriaabas->identifica = ["db_projetoscliente"=>"Projetos","db_projetosativcli"=>"Atividades"]; 
+	 $clcriaabas->src = ["db_projetoscliente"=>"ate1_db_projetoscliente004.php"];
+	 $clcriaabas->disabled   =  ["db_projetosativcli"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

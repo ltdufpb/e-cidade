@@ -10,7 +10,7 @@ namespace ECidade\RecursosHumanos\ESocial\Enum;
 class TipoRescisao
 {
 
-    private $tipos = array();
+    private $tipos = [];
 
     /**
      *
@@ -44,7 +44,7 @@ class TipoRescisao
         $cd41 = "41 Rescisão do contrato de aprendizagem por desempenho insuficiente ou inadaptação do aprendiz -[103]";
         $cd42 = "42 Rescisão do contrato de aprendizagem por ausência injustificada do aprendiz à escola que implique"
             . " perda do ano letivo -[103]";
-        $this->tipos = array(
+        $this->tipos = [
             1  => "01 Rescisão com justa causa, por iniciativa do empregador -Todos",
             2  => "02 Rescisão sem justa causa, por iniciativa do empregador -Todos",
             3  => "03 Rescisão antecipada do contrato a termo por iniciativa do empregador -Todos",
@@ -87,7 +87,7 @@ class TipoRescisao
             40 => "40 Término do exercício do mandato eletivo - [303]",
             41 => $cd41,
             42 => $cd42,
-        );
+        ];
     }
 
     /**

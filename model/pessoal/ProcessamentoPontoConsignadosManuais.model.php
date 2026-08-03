@@ -61,7 +61,7 @@ class ProcessamentoPontoConsignadosManuais extends ProcessamentoPontoConsignados
       /**
        * Retorna todas as parcelas a partir desta competência
        */
-      $aParcelas = array();
+      $aParcelas = [];
       $aParcelas = ArquivoConsignadoManualParcelaRepository::getParcelasDoFinanciamentoApartirDaCompetencia($oArquivo, $oCompetencia); 
 
       foreach ($aParcelas as $oParcela) {
@@ -110,13 +110,13 @@ class ProcessamentoPontoConsignadosManuais extends ProcessamentoPontoConsignados
     $oDaoPrePonto->rh149_instit     = $this->oInstituicao->getSequencial();
     $oDaoPrePonto->rh149_regist     = $oParcela->getServidor()->getMatricula();
     $oDaoPrePonto->rh149_rubric     = $oParcela->getRubrica()->getCodigo();
-    $oDaoPrePonto->rh149_valor      = preg_replace(array("/\,(\d{1,2})$/"), array(".$1"), $oParcela->getValorDescontado());
+    $oDaoPrePonto->rh149_valor      = preg_replace(["/\,(\d{1,2})$/"], [".$1"], $oParcela->getValorDescontado());
     
     if(preg_match("/(.*)(\.\d{2})$/", $oDaoPrePonto->rh149_valor, $padraoEncontrado)) {
-      $oDaoPrePonto->rh149_valor    = str_replace(array(",", "."), "", $padraoEncontrado[1]);
+      $oDaoPrePonto->rh149_valor    = str_replace([",", "."], "", $padraoEncontrado[1]);
       $oDaoPrePonto->rh149_valor   .= $padraoEncontrado[2];
     } else {
-      $oDaoPrePonto->rh149_valor    = str_replace(array(",", "."), "", $oDaoPrePonto->rh149_valor);
+      $oDaoPrePonto->rh149_valor    = str_replace([",", "."], "", $oDaoPrePonto->rh149_valor);
     }
 
     $oDaoPrePonto->rh149_quantidade = 1;

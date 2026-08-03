@@ -33,7 +33,7 @@ require_once(modification("classes/db_vac_descarte_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $iDepartamento    = db_getsession("DB_coddepto");
 ?>
 
@@ -63,13 +63,13 @@ $oIframeAE        = new cl_iframe_alterar_excluir;
 $oDaoVacDescarte  = new cl_vac_descarte;
 
 
-  $aChavepri               = array('vc19_i_codigo'            => @$vc19_i_codigo,
+  $aChavepri               = ['vc19_i_codigo'            => @$vc19_i_codigo,
                                    'vc19_i_vacina'            => @$vc19_i_vacina,
                                    'vc06_c_descr'             => @$vc06_c_descr,
                                    'vc19_i_matetoqueitemlote' => @$vc19_i_vacinalote,
                                    'vc19_n_quant'             => @$vc19_n_quant,
                                    'vc19_t_obs'               => @$vc19_t_obs
-                                  );
+                                  ];
 
   $oIframeAE->chavepri      = $aChavepri;
   $oIframeAE->sql           = '';

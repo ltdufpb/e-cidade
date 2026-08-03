@@ -278,7 +278,7 @@ class AssentamentoAbonoFalta extends Assentamento
             throw new BusinessException('Informe a hora final para verificar as horas justificadas.');
         }
 
-        list($diferenca, $mensagem) = static::getHorasDeAbono(
+        [$diferenca, $mensagem] = static::getHorasDeAbono(
             $this->getServidor(),
             $dataConcessao,
             $this->horaInicio,
@@ -376,7 +376,7 @@ class AssentamentoAbonoFalta extends Assentamento
      */
     public function calcularHorasDiurnasNoturnasNoDia(DiaTrabalho $diaTrabalho)
     {
-        $horasTotais = array();
+        $horasTotais = [];
         $baseHora = new AdicionalNoturno($diaTrabalho);
 
         $inicioJornada = $diaTrabalho->getJornada()->getInicioJornada();

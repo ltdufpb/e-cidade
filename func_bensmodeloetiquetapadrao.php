@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensmodeloetiquetapadrao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbensmodeloetiquetapadrao = new cl_bensmodeloetiquetapadrao;
 $clbensmodeloetiquetapadrao->rotulo->label("t72_sequencial");
 $clbensmodeloetiquetapadrao->rotulo->label("t72_descr");
@@ -98,9 +98,9 @@ $clbensmodeloetiquetapadrao->rotulo->label("t72_descr");
         }else{
            $sql = $clbensmodeloetiquetapadrao->sql_query("",$campos,"t72_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t72_descr)){
-          $repassa = array("chave_t72_sequencial"=>$chave_t72_sequencial,"chave_t72_descr"=>$chave_t72_descr);
+          $repassa = ["chave_t72_sequencial"=>$chave_t72_sequencial,"chave_t72_descr"=>$chave_t72_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

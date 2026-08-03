@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -99,7 +99,7 @@ $aux = new cl_arquivo_auxiliar;
              <td align="right"  title="Quebra por depósito" >
                <strong>Quebra por depósito :&nbsp;&nbsp;</strong>
 	       <?php  
-	       $tipo_que = array("N"=>"Não","S"=>"Sim");
+	       $tipo_que = ["N"=>"Não","S"=>"Sim"];
 	       db_select("quebra",$tipo_que,true,2,"onchange='js_testord(this.value);'"); ?>
             </td>
 	  </tr>
@@ -107,7 +107,7 @@ $aux = new cl_arquivo_auxiliar;
              <td align="right"  title="Ordem por  Codigo/Depósito/Medicamento" >
                <strong>Ordem :&nbsp;&nbsp;</strong>
 	       <?php  
-	       $tipo_ordem = array("c"=>"Alfabética","a"=>"Codigo","b"=>"Depósito");
+	       $tipo_ordem = ["c"=>"Alfabética","a"=>"Codigo","b"=>"Depósito"];
 	       db_select("ordem",$tipo_ordem,true,2); ?>
             </td>
 	  </tr>
@@ -115,7 +115,7 @@ $aux = new cl_arquivo_auxiliar;
              <td align="right"  title="Estoque Zerado" >
                <strong>Listar estoque zerado :&nbsp;&nbsp;</strong>
 	       <?php  
-	       $tipo_est = array("N"=>"Não", "S"=>"Sim");
+	       $tipo_est = ["N"=>"Não", "S"=>"Sim"];
 	       db_select("list_zera",$tipo_est,true,2); ?>
             </td>
 	  </tr>
@@ -123,7 +123,7 @@ $aux = new cl_arquivo_auxiliar;
              <td align="right"  title="Tipo" >
                <strong>Tipo:&nbsp;&nbsp;</strong>
 	       <?php  
-	       $tipo_rel = array("S"=>"Sintético","A"=>"Analítico","C"=>"Conferência");
+	       $tipo_rel = ["S"=>"Sintético","A"=>"Analítico","C"=>"Conferência"];
 	       db_select("tipo",$tipo_rel,true,2); ?>
             </td>
 	  </tr>

@@ -42,7 +42,7 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
   public function __construct() {
     
     $this->sNomeArquivo = "BalanceteVerificacaoMovimentacaoAnterior";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -62,7 +62,7 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $iAnoUsu      = db_getsession("DB_anousu");
     //$this->sDataInicial = "{$iAnoUsu}-01-01";
     //$this->sDataFinal   = "{$iAnoUsu}-12-31";
@@ -74,7 +74,7 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
       db_query("drop table work_pl");
     }
     $iTotalLinhas  = pg_num_rows($rsBalancete);
-    $aMeses = array( 1 => "janeiro",
+    $aMeses = [ 1 => "janeiro",
                      2 => "fevereiro", 
                      3 => "marco",
                      4 => "abril", 
@@ -86,16 +86,16 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
                     10 => "outubro", 
                     11 => "novembro", 
                     12 => "dezembro", 
-                   );
+                   ];
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oBalancete = db_utils::fieldsMemory($rsBalancete, $i);
-      $sDiaMesAno        =  "{$iAno}-".str_pad($iMes, 2, "0", STR_PAD_LEFT)."-".str_pad($iDia, 2, "0", STR_PAD_LEFT);
+      $sDiaMesAno        =  "{$iAno}-".str_pad((string) $iMes, 2, "0", STR_PAD_LEFT)."-".str_pad($iDia, 2, "0", STR_PAD_LEFT);
       $oBalanceteRetorno = new stdClass();
       $oBalanceteRetorno->bbaCodigoEntidade   = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oBalanceteRetorno->bbaMesAnoMovimento = $sDiaMesAno;
-      $oBalanceteRetorno->bbaCodigoConta     = str_pad($oBalancete->estrutural, 20, 0,STR_PAD_RIGHT);
-      $oBalanceteRetorno->bbaCodigoOrgaoUnidadeOrcamentaria = str_pad($oInstituicao->codtrib, 4, "0",STR_PAD_LEFT);
+      $oBalanceteRetorno->bbaCodigoConta     = str_pad((string) $oBalancete->estrutural, 20, 0,STR_PAD_RIGHT);
+      $oBalanceteRetorno->bbaCodigoOrgaoUnidadeOrcamentaria = str_pad((string) $oInstituicao->codtrib, 4, "0",STR_PAD_LEFT);
       foreach ($aMeses as $iMes => $descricao) {
         
         $oBalanceteRetorno->{"bbaDebito".ucfirst($descricao)} = $oBalancete->{"debito_{$descricao}"};
@@ -114,7 +114,7 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "bbaCodigoEntidade",
                         "bbaMesAnoMovimento",
                         "bbaCodigoConta",
@@ -143,7 +143,7 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
                         "bbaCreditoNovembro",
                         "bbaDebitoDezembro",
                         "bbaCreditoDezembro",                    
-                       );
+                       ];
     return $aElementos;  
   }
   private function corrigeValor ($valor, $quant) {
@@ -173,7 +173,7 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
     if (!empty($sEstruturalInicial)) {
       $sCondicao .= "  and p.c60_estrut like '{$sEstruturalInicial}%' ";    
     }
-    $aMeses = array( 1 => "janeiro",
+    $aMeses = [ 1 => "janeiro",
                      2 => "fevereiro", 
                      3 => "marco",
                      4 => "abril", 
@@ -185,7 +185,7 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
                     10 => "outubro", 
                     11 => "novembro", 
                     12 => "dezembro", 
-                   );
+                   ];
     $sSqlPrincipal = " select estrut_mae,"; 
     $sSqlPrincipal .= "        estrut, ";
     $sSqlPrincipal .= "        c61_reduz,";
@@ -279,9 +279,9 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
     $tot_credito_6bin = 0;
     
     $tot_saldo_final     = 0;
-    $work_planomae    = array();
-    $work_planoestrut = array();
-    $work_plano = array();
+    $work_planomae    = [];
+    $work_planoestrut = [];
+    $work_plano = [];
     $seq = 0;
     
     for ($i = 0; $i < pg_num_rows($rsDados); $i++) {
@@ -317,14 +317,14 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
         $work_planomae[$seq]    = $oLinha->estrut_mae;  
         $work_planoestrut[$seq] = $oLinha->estrut;
         
-        $work_plano[$seq] =  array( 0 => "$oLinha->c61_reduz",
+        $work_plano[$seq] =  [ 0 => "$oLinha->c61_reduz",
                                     1 => "$oLinha->c61_codcon",
                                     2 => "$oLinha->c61_codigo",
                                     3 => "$oLinha->c60_descr",
                                     4 => "$oLinha->c60_finali",
                                     5 => "$oLinha->c61_instit",
                                     6 => "$oLinha->saldo_anterior",
-                                    );
+                                    ];
                                     
         $iInicio = 7;
         foreach ($aMeses as $iMes => $descricao) {
@@ -373,7 +373,7 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
           
           $work_planomae[$seq]= $estrutural;  
           $work_planoestrut[$seq]= '';
-          $work_plano[$seq] = array(0  => 0,
+          $work_plano[$seq] = [0  => 0,
                                     1  => 0,
                                     2  => $oConta->c60_codcon, 
                                     3  => $oConta->c60_descr,
@@ -382,7 +382,7 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
                                     6  => $oLinha->saldo_anterior,
                                     30 => $oLinha->saldo_final,
                                     31 => $oLinha->sinal_anterior,
-                                    32 => $oLinha->sinal_final);
+                                    32 => $oLinha->sinal_final];
           $iInicio = 7;                           
           foreach ($aMeses as $iMes => $descricao) {
             

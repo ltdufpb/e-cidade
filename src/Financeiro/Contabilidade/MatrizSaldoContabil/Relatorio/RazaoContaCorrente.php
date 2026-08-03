@@ -45,17 +45,13 @@ class RazaoContaCorrente
     private $pdf;
 
     /**
-     * @var array
-     */
-    private $lancamentos;
-
-    /**
      * RazaoContaCorrente constructor.
      * @param $lancamentos
      * @param DBDate $dataInicio
      * @param DBDate $dataFim
+     * @param mixed[] $lancamentos
      */
-    public function __construct($lancamentos, DBDate $dataInicio, DBDate $dataFim)
+    public function __construct(private $lancamentos, DBDate $dataInicio, DBDate $dataFim)
     {
         $pdf = new PDFDocument(PDFDocument::PRINT_LANDSCAPE);
         $pdf->Open();
@@ -71,7 +67,6 @@ class RazaoContaCorrente
         $pdf->addHeaderDescription("Período: $header");
 
         $this->pdf = $pdf;
-        $this->lancamentos = $lancamentos;
     }
 
     /**
@@ -110,7 +105,7 @@ class RazaoContaCorrente
 
                 $this->imprimirLancamentos($lancamento, $fill,$hasAnterior);
                 $fill = $fill == 1 ? 0 : 1;
-                $hasAnterior = substr($lancamento->getHashAtributos(), 10);
+                $hasAnterior = substr((string) $lancamento->getHashAtributos(), 10);
             }
             $this->pdf->Line(10, $this->pdf->getY(), 287, $this->pdf->getY());
         }
@@ -179,10 +174,7 @@ class RazaoContaCorrente
 
         $usaDescricao = false;
         $tamanhoCompletaLinha = 260;
-        $stringAtributo = array_reduce(array_keys($atributos), function ($contaCorrente, $key) use ($atributos) {
-
-           return $contaCorrente .= "{$key}: ".$atributos[$key]." ";
-        });
+        $stringAtributo = array_reduce(array_keys($atributos), fn($contaCorrente, $key) => $contaCorrente .= "{$key}: ".$atributos[$key]." ");
 
         $this->pdf->Cell(260, self::ALTURA_LINHA, $stringAtributo, $border, 0, "L", $fill);
         $this->pdf->Ln();

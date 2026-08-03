@@ -76,15 +76,15 @@ try {
 
       $oIssArquivoretencao = new IssArquivoRetencao($oParametros->iCodigoArquivoRetencao);
 
-      $aHeaders = array( "Linha do Arquivo", "CPF/CNPJ", "Inconsistência" );
+      $aHeaders = [ "Linha do Arquivo", "CPF/CNPJ", "Inconsistência" ];
 
-      $aWidth = array( 15, 25, 60 );
+      $aWidth = [ 15, 25, 60 ];
 
-      $aAlign = array(
+      $aAlign = [
         PDFDocument::ALIGN_CENTER,
         PDFDocument::ALIGN_CENTER,
         PDFDocument::ALIGN_LEFT
-      );
+      ];
 
       $oPdfTable = new PDFTable(PDFDocument::PRINT_PORTRAIT);
       $oPdfTable->setTotalByPage(true);
@@ -97,11 +97,11 @@ try {
 
         $oPdfTable->addLineInformation(
 
-          array(
+          [
             $oRegistrosInconsistentes->sequencial_registro,
-            db_stdClass::normalizeStringJsonEscapeString(strip_tags($oRegistrosInconsistentes->registro)),
-            db_stdClass::normalizeStringJsonEscapeString(strip_tags($oRegistrosInconsistentes->mensagem))
-          )
+            db_stdClass::normalizeStringJsonEscapeString(strip_tags((string) $oRegistrosInconsistentes->registro)),
+            db_stdClass::normalizeStringJsonEscapeString(strip_tags((string) $oRegistrosInconsistentes->mensagem))
+          ]
         );
       }
 

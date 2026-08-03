@@ -38,11 +38,6 @@ use ParameterException;
 class Processamento {
 
   /**
-   * @var LeituraRepository
-   */
-  private $oRepository;
-
-  /**
    * @var \DBLog
    */
   private $oLogger;
@@ -56,8 +51,8 @@ class Processamento {
   /**
    * @param LeituraRepository $oRepository
    */
-  public function __construct(LeituraRepository $oRepository) {
-    $this->oRepository = $oRepository;
+  public function __construct(private readonly LeituraRepository $oRepository)
+  {
   }
 
   public function setLogger(\DBLog $oLogger) {

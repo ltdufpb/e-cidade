@@ -133,7 +133,7 @@ if (!empty($iMenuAcessado)) {
        <tr>
          <td>
            <?php
-           $sFuncaoRetornar = isset( $sFuncaoRetornar ) ? $sFuncaoRetornar : "";
+           $sFuncaoRetornar ??= "";
            ?>
           <input type="button" class="field-size-max" funcao="<?=$sFuncaoRetornar;?>" id="btnVoltarMenuAnterior" value="Voltar" <?php echo $sDisabled; ?>>
          </td>

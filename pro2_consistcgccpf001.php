@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -70,7 +70,7 @@ function js_emite(){
         </td>
         <td>
 	  <?php  
-	  $tipo_branco = array("n"=>"Não","s"=>"Sim");
+	  $tipo_branco = ["n"=>"Não","s"=>"Sim"];
 	  db_select("branco",$tipo_branco,true,2); ?>
         </td>
       </tr>
@@ -80,7 +80,7 @@ function js_emite(){
         </td>
         <td>
 	  <?php  
-	  $tipo_zerados = array("n"=>"Não","s"=>"Sim");
+	  $tipo_zerados = ["n"=>"Não","s"=>"Sim"];
 	  db_select("zerados",$tipo_zerados,true,2); ?>
         </td>
       </tr>

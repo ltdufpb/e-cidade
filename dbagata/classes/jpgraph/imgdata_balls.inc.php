@@ -9,45 +9,45 @@
 //========================================================================
 
 class ImgData_Balls extends ImgData {
-    var $name = 'Round Balls';
-    var $an = array(MARK_IMG_LBALL => 'imgdata_large',
+    public $name = 'Round Balls';
+    public $an = [MARK_IMG_LBALL => 'imgdata_large',
 		    MARK_IMG_MBALL => 'imgdata_small',
 		    MARK_IMG_SBALL => 'imgdata_xsmall',
-		    MARK_IMG_BALL => 'imgdata_xsmall');
-    var $colors_1 = array('blue','lightblue','brown','darkgreen',
-			      'green','purple','red','gray','yellow','silver','gray');
-    var $index_1  = array('blue'=>9,'lightblue'=>1,'brown'=>6,'darkgreen'=>7,
-			      'green'=>8,'purple'=>4,'red'=>0,'gray'=>5,'silver'=>3,'yellow'=>2);
-    var $maxidx_1 = 9 ;
+		    MARK_IMG_BALL => 'imgdata_xsmall'];
+    public $colors_1 = ['blue','lightblue','brown','darkgreen',
+			      'green','purple','red','gray','yellow','silver','gray'];
+    public $index_1  = ['blue'=>9,'lightblue'=>1,'brown'=>6,'darkgreen'=>7,
+			      'green'=>8,'purple'=>4,'red'=>0,'gray'=>5,'silver'=>3,'yellow'=>2];
+    public $maxidx_1 = 9 ;
 
-    var $colors_2 = array('blue','bluegreen','brown','cyan',
+    public $colors_2 = ['blue','bluegreen','brown','cyan',
 			  'darkgray','greengray','gray','green',
 			  'greenblue','lightblue','lightred',
-			  'purple','red','white','yellow');
+			  'purple','red','white','yellow'];
 			  
 	
-    var $index_2 =  array('blue'=>9,'bluegreen'=>13,'brown'=>8,'cyan'=>12,
+    public $index_2 =  ['blue'=>9,'bluegreen'=>13,'brown'=>8,'cyan'=>12,
 			  'darkgray'=>5,'greengray'=>6,'gray'=>2,'green'=>10,
 			  'greenblue'=>3,'lightblue'=>1,'lightred'=>14,
-			  'purple'=>7,'red'=>0,'white'=>11,'yellow'=>4);
+			  'purple'=>7,'red'=>0,'white'=>11,'yellow'=>4];
 			
-    var $maxidx_2 = 14 ;
+    public $maxidx_2 = 14 ;
 
 
-    var $colors_3 = array('bluegreen','cyan','darkgray','greengray',
+    public $colors_3 = ['bluegreen','cyan','darkgray','greengray',
 			  'gray','graypurple','green','greenblue','lightblue',
-			  'lightred','navy','orange','purple','red','yellow');
+			  'lightred','navy','orange','purple','red','yellow'];
 	
-    var $index_3 = array('bluegreen'=>1,'cyan'=>11,'darkgray'=>14,'greengray'=>10,
+    public $index_3 = ['bluegreen'=>1,'cyan'=>11,'darkgray'=>14,'greengray'=>10,
 			 'gray'=>3,'graypurple'=>4,'green'=>9,'greenblue'=>7,
 			 'lightblue'=>13,'lightred'=>0,'navy'=>2,'orange'=>12,
-			 'purple'=>8,'red'=>5,'yellow'=>6);
-    var $maxidx_3 = 14 ;
+			 'purple'=>8,'red'=>5,'yellow'=>6];
+    public $maxidx_3 = 14 ;
 
-    var $colors,$index,$maxidx;
-    var $imgdata_large ;
-    var $imgdata_small ;
-    var $imgdata_xsmall ;
+    public $colors,$index,$maxidx;
+    public $imgdata_large ;
+    public $imgdata_small ;
+    public $imgdata_xsmall ;
 
 
     function GetImg($aMark,$aIdx) {
@@ -72,7 +72,7 @@ class ImgData_Balls extends ImgData {
 	return parent::GetImg($aMark,$aIdx);
     }
 
-    function ImgData_Balls() {
+    function __construct() {
 
 //==========================================================
 // File: bl_red.png

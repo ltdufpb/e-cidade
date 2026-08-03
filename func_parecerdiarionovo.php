@@ -37,7 +37,7 @@ require_once(modification("classes/db_parecer_classe.php"));
 db_postmemory($_POST);
 $oGet = db_utils::postMemory($_GET);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clparecerturma = new cl_parecerturma;
 $oDaoParecer    = new cl_parecer;
 $oDaoParecer->rotulo->label("ed92_i_codigo");
@@ -90,7 +90,7 @@ $oDaoParecer->rotulo->label("ed92_c_descr");
     <td align="center" valign="top">
       <?php
 
-        $aWhere = array();
+        $aWhere = [];
 
         if (!empty( $oGet->iTurma )) {
           $aWhere[] = " ed105_i_turma = {$oGet->iTurma} ";
@@ -128,9 +128,9 @@ $oDaoParecer->rotulo->label("ed92_c_descr");
 
           $sWhere  = implode(" and ", $aWhere);
           $sSql    = $oDaoParecer->sql_query_turma_disciplina_periodo("", $campos, "ed92_i_sequencial", $sWhere);
-          $repassa = array();
+          $repassa = [];
           if(isset($chave_ed92_c_descr)){
-            $repassa = array("chave_ed92_i_codigo"=>$chave_ed92_i_codigo,"chave_ed92_c_descr"=>$chave_ed92_c_descr);
+            $repassa = ["chave_ed92_i_codigo"=>$chave_ed92_i_codigo,"chave_ed92_c_descr"=>$chave_ed92_c_descr];
           }
           db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
 

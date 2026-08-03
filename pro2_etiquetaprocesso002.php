@@ -90,7 +90,7 @@ for ($iRow = 0; $iRow < pg_num_rows($rsProcessos); $iRow++) {
    */
   $sDepartamento = $oProcesso->descrdepto;
   while ($oPdf->GetStringWidth($sDepartamento) > 97) {
-    $sDepartamento = substr($sDepartamento, 0, strlen($sDepartamento)-1);
+    $sDepartamento = substr((string) $sDepartamento, 0, strlen((string) $sDepartamento)-1);
   }
 
   $oPdf->cell(99.1, $nLineHeight, $sDepartamento);
@@ -99,9 +99,9 @@ for ($iRow = 0; $iRow < pg_num_rows($rsProcessos); $iRow++) {
 
   $oPdf->ln();
 
-  $oPdf->cell(99.1, $nLineHeight, date("d/m/Y", strtotime($oProcesso->p58_dtproc)) . "   {$oProcesso->p58_hora}");
+  $oPdf->cell(99.1, $nLineHeight, date("d/m/Y", strtotime((string) $oProcesso->p58_dtproc)) . "   {$oProcesso->p58_hora}");
   $oPdf->setX($oPdf->getX() + $nDistX);
-  $oPdf->cell(99.1, $nLineHeight, date("d/m/Y", strtotime($oProcesso->p58_dtproc)) . "   {$oProcesso->p58_hora}");
+  $oPdf->cell(99.1, $nLineHeight, date("d/m/Y", strtotime((string) $oProcesso->p58_dtproc)) . "   {$oProcesso->p58_hora}");
 
   $oPdf->ln();
 

@@ -145,7 +145,7 @@ $clrotulo->label("bi09_biblioteca");
                         $result = $cllocalexemplar->sql_record($cllocalexemplar->sql_query("", "bi09_capacidade as capacidade,bi06_seq,bi20_sequencia,bi27_letra,bi06_titulo,bi23_codbarras", "bi20_sequencia,bi27_letra", " bi20_localizacao=$chavepesquisa AND bi23_situacao = 'S'"));
                         $linhas = $cllocalexemplar->numrows;
                         if ($linhas > 0) {
-                            $capacidade = pg_result($result, 0, 'capacidade');
+                            $capacidade = pg_fetch_result($result, 0, 'capacidade');
                             if ($linhas >= $capacidade) {
                                 $db_botao = false;
                                 db_msgbox("Esta localização já está com a capacidade de exemplares esgotada.\\nCapacicade: ($capacidade) Exemplares: ($linhas)");
@@ -171,7 +171,7 @@ $clrotulo->label("bi09_biblioteca");
                                         if ($linhas > 0) {
                                             for ($i = 0; $i < $linhas; $i++) {
                                                 db_fieldsmemory($result, $i);
-                                                $sequencia = $bi20_sequencia . (trim($bi27_letra) == "" ? "" : "-$bi27_letra");
+                                                $sequencia = $bi20_sequencia . (trim((string) $bi27_letra) == "" ? "" : "-$bi27_letra");
                                                 echo "<option value='$bi06_seq' " . ($bi20_acervo == $bi06_seq ? "selected" : "") . ">$sequencia -> $bi06_titulo - $bi23_codbarras </option>\n";
                                             }
                                         } else {
@@ -216,7 +216,7 @@ $clrotulo->label("bi09_biblioteca");
             document.form1.bi20_localizacao.value = '';
         } else {
             <?php
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?bi20_acervo=$bi20_acervo&bi06_titulo=$bi06_titulo&chavepesquisa='+document.form1.bi20_localizacao.value";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?bi20_acervo=$bi20_acervo&bi06_titulo=$bi06_titulo&chavepesquisa='+document.form1.bi20_localizacao.value";
             ?>
         }
     }
@@ -228,7 +228,7 @@ $clrotulo->label("bi09_biblioteca");
     function js_preenchepesquisa(chave) {
         db_iframe_localizacao.hide();
         <?php
-        echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?bi20_acervo=$bi20_acervo&bi06_titulo=$bi06_titulo&chavepesquisa='+chave";
+        echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?bi20_acervo=$bi20_acervo&bi06_titulo=$bi06_titulo&chavepesquisa='+chave";
         ?>
     }
 

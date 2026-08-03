@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE configuracaoged
 class cl_configuracaoged {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $db141_sequencial = 0;
-   var $db141_ativo = 'f';
-   var $db141_webserviceuri = null;
-   var $db141_webservicelocation = null;
+   public $db141_sequencial = 0;
+   public $db141_ativo = 'f';
+   public $db141_webserviceuri = null;
+   public $db141_webservicelocation = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  db141_sequencial = int4 = Sequencial
                  db141_ativo = bool = GED Ativo
                  db141_webserviceuri = varchar(250) = Webservice URI
                  db141_webservicelocation = varchar(250) = Webservice Location
                  ";
    //funcao construtor da classe
-   function cl_configuracaoged() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("configuracaoged");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -101,10 +101,10 @@ class cl_configuracaoged {
          $this->erro_status = "0";
          return false;
        }
-       $this->db141_sequencial = pg_result($result,0,0);
+       $this->db141_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from configuracaoged_db141_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db141_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db141_sequencial)){
          $this->erro_sql = " Campo db141_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -138,7 +138,7 @@ class cl_configuracaoged {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "configuracaoged ($this->db141_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "configuracaoged já Cadastrado";
@@ -167,13 +167,13 @@ class cl_configuracaoged {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20141,'$this->db141_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3615,20141,'','".AddSlashes(pg_result($resaco,0,'db141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3615,20142,'','".AddSlashes(pg_result($resaco,0,'db141_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3615,20143,'','".AddSlashes(pg_result($resaco,0,'db141_webserviceuri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3615,20144,'','".AddSlashes(pg_result($resaco,0,'db141_webservicelocation'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3615,20141,'','".AddSlashes(pg_fetch_result($resaco,0,'db141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3615,20142,'','".AddSlashes(pg_fetch_result($resaco,0,'db141_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3615,20143,'','".AddSlashes(pg_fetch_result($resaco,0,'db141_webserviceuri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3615,20144,'','".AddSlashes(pg_fetch_result($resaco,0,'db141_webservicelocation'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -183,10 +183,10 @@ class cl_configuracaoged {
       $this->atualizacampos();
      $sql = " update configuracaoged set ";
      $virgula = "";
-     if(trim($this->db141_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db141_sequencial"])){
+     if(trim((string) $this->db141_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db141_sequencial"])){
        $sql  .= $virgula." db141_sequencial = $this->db141_sequencial ";
        $virgula = ",";
-       if(trim($this->db141_sequencial) == null ){
+       if(trim((string) $this->db141_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db141_sequencial";
          $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_configuracaoged {
          return false;
        }
      }
-     if(trim($this->db141_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db141_ativo"])){
+     if(trim((string) $this->db141_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db141_ativo"])){
        $sql  .= $virgula." db141_ativo = '$this->db141_ativo' ";
        $virgula = ",";
-       if(trim($this->db141_ativo) == null ){
+       if(trim((string) $this->db141_ativo) == null ){
          $this->erro_sql = " Campo GED Ativo nao Informado.";
          $this->erro_campo = "db141_ativo";
          $this->erro_banco = "";
@@ -209,11 +209,11 @@ class cl_configuracaoged {
          return false;
        }
      }
-     if(trim($this->db141_webserviceuri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db141_webserviceuri"])){
+     if(trim((string) $this->db141_webserviceuri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db141_webserviceuri"])){
        $sql  .= $virgula." db141_webserviceuri = '$this->db141_webserviceuri' ";
        $virgula = ",";
      }
-     if(trim($this->db141_webservicelocation)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db141_webservicelocation"])){
+     if(trim((string) $this->db141_webservicelocation)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db141_webservicelocation"])){
        $sql  .= $virgula." db141_webservicelocation = '$this->db141_webservicelocation' ";
        $virgula = ",";
      }
@@ -231,17 +231,17 @@ class cl_configuracaoged {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20141,'$this->db141_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db141_sequencial"]) || $this->db141_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3615,20141,'".AddSlashes(pg_result($resaco,$conresaco,'db141_sequencial'))."','$this->db141_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3615,20141,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db141_sequencial'))."','$this->db141_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db141_ativo"]) || $this->db141_ativo != "")
-             $resac = db_query("insert into db_acount values($acount,3615,20142,'".AddSlashes(pg_result($resaco,$conresaco,'db141_ativo'))."','$this->db141_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3615,20142,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db141_ativo'))."','$this->db141_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db141_webserviceuri"]) || $this->db141_webserviceuri != "")
-             $resac = db_query("insert into db_acount values($acount,3615,20143,'".AddSlashes(pg_result($resaco,$conresaco,'db141_webserviceuri'))."','$this->db141_webserviceuri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3615,20143,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db141_webserviceuri'))."','$this->db141_webserviceuri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db141_webservicelocation"]) || $this->db141_webservicelocation != "")
-             $resac = db_query("insert into db_acount values($acount,3615,20144,'".AddSlashes(pg_result($resaco,$conresaco,'db141_webservicelocation'))."','$this->db141_webservicelocation',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3615,20144,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db141_webservicelocation'))."','$this->db141_webservicelocation',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -295,13 +295,13 @@ class cl_configuracaoged {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20141,'$db141_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3615,20141,'','".AddSlashes(pg_result($resaco,$iresaco,'db141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3615,20142,'','".AddSlashes(pg_result($resaco,$iresaco,'db141_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3615,20143,'','".AddSlashes(pg_result($resaco,$iresaco,'db141_webserviceuri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3615,20144,'','".AddSlashes(pg_result($resaco,$iresaco,'db141_webservicelocation'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3615,20141,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3615,20142,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db141_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3615,20143,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db141_webserviceuri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3615,20144,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db141_webservicelocation'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -362,7 +362,7 @@ class cl_configuracaoged {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:configuracaoged";
@@ -377,7 +377,7 @@ class cl_configuracaoged {
    function sql_query ( $db141_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_configuracaoged {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -411,7 +411,7 @@ class cl_configuracaoged {
    function sql_query_file ( $db141_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -432,7 +432,7 @@ class cl_configuracaoged {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

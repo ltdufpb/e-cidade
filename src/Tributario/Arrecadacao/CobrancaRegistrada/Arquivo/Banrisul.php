@@ -37,22 +37,23 @@ final class Banrisul extends BaseAbstract
   /**
    * Constante do codigo do banco
    */
-    const CODIGO_BANCO          = '041';
+    const string CODIGO_BANCO          = '041';
     const VERSAO_LAYOUT_ARQUIVO = '040';
-    const VERSAO_LAYOUT_LOTE    = '020';
+    const string VERSAO_LAYOUT_LOTE    = '020';
 
     /**
      * Função que cria o Header com os dados despecíficos do banco Banrisul
      * @return \stdClass
      */
+    #[\Override]
     protected function gerarHeader()
     {
         $oHeader                         = parent::gerarHeader();
         $oHeader->codigo_banco           = self::CODIGO_BANCO;
         $oHeader->versao_layout          = self::VERSAO_LAYOUT_ARQUIVO;
 
-        $sBeneficiarioAgencia = str_pad($this->oHeader->getContaBancaria()->getNumeroAgencia(), 4, '0', STR_PAD_LEFT);
-        $sBeneficiarioConta   = str_pad($this->oHeader->getConvenio()->cedente, 7, '0');
+        $sBeneficiarioAgencia = str_pad((string) $this->oHeader->getContaBancaria()->getNumeroAgencia(), 4, '0', STR_PAD_LEFT);
+        $sBeneficiarioConta   = str_pad((string) $this->oHeader->getConvenio()->cedente, 7, '0');
 
         /**
          * Geramos o Código do Beneficiário
@@ -67,11 +68,11 @@ final class Banrisul extends BaseAbstract
 
         $oHeader->codigo_convenio_banco  = str_pad($sCodigoBeneficiario, 13, "0", STR_PAD_LEFT);
         $oHeader->codigo_convenio_banco .= str_pad("", 7, "0");
-        $oHeader->codigo_agencia         = str_pad($this->oHeader->getContaBancaria()->getNumeroAgencia(), 5, "0", STR_PAD_LEFT);
-        $oHeader->dv_agencia             = str_pad($this->oHeader->getContaBancaria()->getDVAgencia(), 1, "0", STR_PAD_LEFT);
+        $oHeader->codigo_agencia         = str_pad((string) $this->oHeader->getContaBancaria()->getNumeroAgencia(), 5, "0", STR_PAD_LEFT);
+        $oHeader->dv_agencia             = str_pad((string) $this->oHeader->getContaBancaria()->getDVAgencia(), 1, "0", STR_PAD_LEFT);
 
-        $oHeader->exclusivo_banco_1      = str_pad($this->oHeader->getContaBancaria()->getNumeroConta(), 12, "0", STR_PAD_LEFT);
-        $oHeader->exclusivo_banco_1     .= str_pad($this->oHeader->getContaBancaria()->getDVConta(), 1, "0", STR_PAD_LEFT);
+        $oHeader->exclusivo_banco_1      = str_pad((string) $this->oHeader->getContaBancaria()->getNumeroConta(), 12, "0", STR_PAD_LEFT);
+        $oHeader->exclusivo_banco_1     .= str_pad((string) $this->oHeader->getContaBancaria()->getDVConta(), 1, "0", STR_PAD_LEFT);
         $oHeader->exclusivo_banco_1     .= " ";
 
         return $oHeader;
@@ -81,6 +82,7 @@ final class Banrisul extends BaseAbstract
      * Função que cria o Header do Lote com os dados do banco Banrisul
      * @return \stdClass   Header do lote
      */
+    #[\Override]
     protected function gerarHeaderLote()
     {
         $oHeaderLote                         = parent::gerarHeaderLote();
@@ -88,8 +90,8 @@ final class Banrisul extends BaseAbstract
         $oHeaderLote->exclusivo_febraban_1   = '00';
         $oHeaderLote->versao_layout          = self::VERSAO_LAYOUT_LOTE;
 
-        $sBeneficiarioAgencia = str_pad($this->oHeader->getContaBancaria()->getNumeroAgencia(), 4, '0', STR_PAD_LEFT);
-        $sBeneficiarioConta   = str_pad($this->oHeader->getConvenio()->cedente, 7, '0');
+        $sBeneficiarioAgencia = str_pad((string) $this->oHeader->getContaBancaria()->getNumeroAgencia(), 4, '0', STR_PAD_LEFT);
+        $sBeneficiarioConta   = str_pad((string) $this->oHeader->getConvenio()->cedente, 7, '0');
 
         /**
          * Geramos o Código do Beneficiário
@@ -105,11 +107,11 @@ final class Banrisul extends BaseAbstract
         $oHeaderLote->codigo_convenio_banco  = str_pad($sCodigoBeneficiario, 13, "0", STR_PAD_LEFT);
         $oHeaderLote->codigo_convenio_banco .= str_pad("", 7, "0");
 
-        $oHeaderLote->codigo_agencia         = str_pad($this->oHeader->getContaBancaria()->getNumeroAgencia(), 5, "0", STR_PAD_LEFT);
-        $oHeaderLote->dv_agencia             = str_pad($this->oHeader->getContaBancaria()->getDVAgencia(), 1, "0", STR_PAD_LEFT);
+        $oHeaderLote->codigo_agencia         = str_pad((string) $this->oHeader->getContaBancaria()->getNumeroAgencia(), 5, "0", STR_PAD_LEFT);
+        $oHeaderLote->dv_agencia             = str_pad((string) $this->oHeader->getContaBancaria()->getDVAgencia(), 1, "0", STR_PAD_LEFT);
 
-        $oHeaderLote->exclusivo_banco_1      = str_pad($this->oHeader->getContaBancaria()->getNumeroConta(), 12, "0", STR_PAD_LEFT);
-        $oHeaderLote->exclusivo_banco_1     .= str_pad($this->oHeader->getContaBancaria()->getDVConta(), 1, "0", STR_PAD_LEFT);
+        $oHeaderLote->exclusivo_banco_1      = str_pad((string) $this->oHeader->getContaBancaria()->getNumeroConta(), 12, "0", STR_PAD_LEFT);
+        $oHeaderLote->exclusivo_banco_1     .= str_pad((string) $this->oHeader->getContaBancaria()->getDVConta(), 1, "0", STR_PAD_LEFT);
         $oHeaderLote->exclusivo_banco_1     .= " ";
 
         return $oHeaderLote;
@@ -121,6 +123,7 @@ final class Banrisul extends BaseAbstract
      * @param  Registro $oRegistro
      * @return \stdClass
      */
+    #[\Override]
     protected function gerarSegmentoP(Registro $oRegistro)
     {
         $oSegmento = parent::gerarSegmentoP($oRegistro);
@@ -130,9 +133,9 @@ final class Banrisul extends BaseAbstract
          */
         $oSegmento->codigo_banco          = self::CODIGO_BANCO;
 
-        $oSegmento->exclusivo_banco_1     = str_pad($this->oHeader->getContaBancaria()->getNumeroConta(), 12, "0", STR_PAD_LEFT);
-        $oSegmento->exclusivo_banco_1    .= str_pad($this->oHeader->getContaBancaria()->getDVConta(), 1, "0");
-        $oSegmento->exclusivo_banco_1    .= str_pad($this->oHeader->getContaBancaria()->getDVConta(), 1, "0");
+        $oSegmento->exclusivo_banco_1     = str_pad((string) $this->oHeader->getContaBancaria()->getNumeroConta(), 12, "0", STR_PAD_LEFT);
+        $oSegmento->exclusivo_banco_1    .= str_pad((string) $this->oHeader->getContaBancaria()->getDVConta(), 1, "0");
+        $oSegmento->exclusivo_banco_1    .= str_pad((string) $this->oHeader->getContaBancaria()->getDVConta(), 1, "0");
 
         $oSegmento->exclusivo_banco_2     = str_pad($oRegistro->getNossoNumero(), 10, "0", STR_PAD_LEFT);
         $oSegmento->exclusivo_banco_2    .= str_pad("", 10, "0");
@@ -153,6 +156,7 @@ final class Banrisul extends BaseAbstract
      * @param  Registro  $oRegistro
      * @return \stdClass
      */
+    #[\Override]
     protected function gerarSegmentoQ(Registro $oRegistro)
     {
         $oSegmento               = parent::gerarSegmentoQ($oRegistro);
@@ -166,6 +170,7 @@ final class Banrisul extends BaseAbstract
      * Função que cria o Trailer do Lote com os dados despecíficos do banco CEF
      * @return \stdClass
      */
+    #[\Override]
     protected function gerarTrailerLote()
     {
         $oTrailerLote                        = parent::gerarTrailerLote();
@@ -180,6 +185,7 @@ final class Banrisul extends BaseAbstract
      * Função que cria o Trailer do Arquivo com os dados despecíficos do banco Banrisul
      * @return \stdClass
      */
+    #[\Override]
     protected function gerarTrailer()
     {
         $oTrailer               = parent::gerarTrailer();

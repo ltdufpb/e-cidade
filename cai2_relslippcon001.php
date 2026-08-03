@@ -88,14 +88,14 @@ $clrotulo->label('c60_descr');
                     <td align="left" nowrap title="Contas Todas/Debito/Credito">Contas:</td>
                     <td>
                         <?php
-                        $tipo_ordem1 = array("c" => "Todas", "b" => "Debito", "a" => "Credito");
+                        $tipo_ordem1 = ["c" => "Todas", "b" => "Debito", "a" => "Credito"];
                         db_select("contas1", $tipo_ordem1, true, 2);
                         ?>
                     </td>
                     <td title="Tipo data">Tipo de data:</td>
                     <td>
                         <?php
-                        $tipo_data = array("a" => "Autenticacao", "b" => "Lancamento");
+                        $tipo_data = ["a" => "Autenticacao", "b" => "Lancamento"];
                         db_select("tipodata", $tipo_data, true, 2);
                         ?>
                     </td>
@@ -106,7 +106,7 @@ $clrotulo->label('c60_descr');
                     </td>
                     <td>
                         <?php
-                        $totalizador = array("n" => "Nenhum", "d" => "Debito", "c" => "Credito");
+                        $totalizador = ["n" => "Nenhum", "d" => "Debito", "c" => "Credito"];
                         db_select("totalizador", $totalizador, true, 2);
                         ?>
                     </td>
@@ -123,14 +123,14 @@ $clrotulo->label('c60_descr');
                     <td title="Ordem">Ordem:</td>
                     <td>
                         <?php
-                        $ordem = array("1" => "Autenticacao", "2" => "Slip");
+                        $ordem = ["1" => "Autenticacao", "2" => "Slip"];
                         db_select("ordem", $ordem, true, 2);
                         ?>
                     </td>
                     <td title="Ordem">Lista Movimento do Caixa:</td>
                     <td>
                         <?php
-                        $xy = array("n" => "Não", "s" => "Sim");
+                        $xy = ["n" => "Não", "s" => "Sim"];
                         db_select("movim", $xy, true, 2);
                         ?>
                     </td>

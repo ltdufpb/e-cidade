@@ -76,9 +76,9 @@ class MaterialColeta
      */
     public function toArray()
     {
-        return array(
+        return [
             'la15_i_codigo' => $this->getCodigo(),
             'la15_c_descr' => $this->getDescricao()
-        );
+        ];
     }
 }

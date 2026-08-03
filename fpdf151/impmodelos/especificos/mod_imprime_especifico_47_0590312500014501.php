@@ -78,7 +78,7 @@ if ($this->titularProcesso != null) {
 }
 
 if ($this->dataProcesso != null) {
-    $data = Date('d/m/Y', strtotime($this->dataProcesso));
+    $data = Date('d/m/Y', strtotime((string) $this->dataProcesso));
     $this->objpdf->SetFont('Arial','B',8);
     $this->objpdf->cell(30,$altura,'Data do Processo: ',0,0,"L",0);
     $this->objpdf->SetFont('Arial','',8);
@@ -119,7 +119,7 @@ $this->objpdf->cell(43,$altura,'Fone: '.$this->fonecomprador,1,1,"L",0);
 $this->objpdf->SetFont('Arial','B',8);
 $this->objpdf->cell(20,$altura,'Endereço : ',1,0,"L",0);
 $this->objpdf->SetFont('Arial','',8);
-$this->objpdf->cell(80,$altura,substr($this->z01_ender,0,46) ,1,0,"L",0);
+$this->objpdf->cell(80,$altura,substr((string) $this->z01_ender,0,46) ,1,0,"L",0);
 $this->objpdf->SetFont('Arial','B',8);
 $this->objpdf->cell(20,$altura,'Endereço : ',1,0,"L",0);
 $this->objpdf->SetFont('Arial','',8);
@@ -144,7 +144,7 @@ $this->objpdf->cell(78,$altura,$this->bairrocomprador,1,1,"L",0);
 
 $this->objpdf->setfillcolor(0);
 $this->objpdf->SetFont('Arial','',4);
-$this->objpdf->TextWithDirection(9.5,133,"Incluído por: ".substr($this->usuarioNomeIncluido,0,34),'U');
+$this->objpdf->TextWithDirection(9.5,133,"Incluído por: ".substr((string) $this->usuarioNomeIncluido,0,34),'U');
 if (isset($this->usuarioNomeLiberado) && $this->usuarioNomeLiberado != ""){
  $this->objpdf->TextWithDirection(9.5,93,"Liberado por: ".$this->usuarioNomeLiberado . ' Matricula: ' . $this->usuarioCodigoLiberado,'U');
 }
@@ -279,8 +279,8 @@ if($this->tipoitbi != "urbano") {
       for ($n = 0;$n < $this->linhasresultcons ; $n++){
 
         $this->objpdf->setx(10);
-        $this->objpdf->cell(24,$altura,( strlen($this->arrayit09_codigo[$n])>12? substr($this->arrayit09_codigo[$n],0,12)."...":$this->arrayit09_codigo[$n]),0,0,"L",0);
-        $this->objpdf->cell(35,$altura,substr($this->arrayit10_codigo[$n],0,20),0,0,"L",0);
+        $this->objpdf->cell(24,$altura,( strlen((string) $this->arrayit09_codigo[$n])>12? substr((string) $this->arrayit09_codigo[$n],0,12)."...":$this->arrayit09_codigo[$n]),0,0,"L",0);
+        $this->objpdf->cell(35,$altura,substr((string) $this->arrayit10_codigo[$n],0,20),0,0,"L",0);
         $this->objpdf->cell(20,$altura,db_formatar($this->arrayit08_area[$n],'f',' ',' ',' ',5),0,0,"R",0);
         $this->objpdf->cell(20,$altura,db_formatar($this->arrayit08_areatrans[$n],'f',' ',' ',' ',5),0,0,"R",0);
         $this->objpdf->cell(8,$altura,$this->arrayit08_ano[$n],0,1,"C",0);
@@ -300,15 +300,15 @@ if($this->tipoitbi != "urbano") {
   $this->objpdf->cell(24,$altura,'Terreno: '	   ,1,0,"L",$iPreencheFundo);
   $this->objpdf->SetFont('Arial','' ,8);
   $this->objpdf->cell(35,$altura,db_formatar($this->areaterreno+0,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha')		       ,1,0,"R",0);
-  $this->objpdf->cell(24,$altura,(count($this->areaterrenomat)==1?db_formatar($this->areatran,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha'):(strlen($this->areaterrenomat[1])>2?$this->areatran:db_formatar($this->areatran,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha'))),1,0,"R",0);
+  $this->objpdf->cell(24,$altura,(count($this->areaterrenomat)==1?db_formatar($this->areatran,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha'):(strlen((string) $this->areaterrenomat[1])>2?$this->areatran:db_formatar($this->areatran,'f',' ',' ',' ',6).($this->tipoitbi=="urbano"?'m2':'ha'))),1,0,"R",0);
   $this->objpdf->cell(37,$altura,""  							  ,1,1,"R");
   
   
   $this->objpdf->SetFont('Arial','B',8);
   $this->objpdf->cell(24,$altura,'Construções:',1,0,"L",$iPreencheFundo);
   $this->objpdf->SetFont('Arial','' ,8);
-  $this->objpdf->cell(35,$altura,(@$this->areatotal == 0?'':(count(@$this->areaedificadamat)==1?db_formatar(@$this->areatotal,'f',' ',' ',' ',6).'m2':(strlen(@$this->areaedificadamat[1])>2?db_formatar(@$this->areatotal,'f',' ',' ',' ',6).'m2':db_formatar(@$this->areatotal,'f',' ',' ',' ',6).'m2'))),1,0,"R",0);
-  $this->objpdf->cell(24,$altura,(@$this->areatotal == 0?'':(count(@$this->areaedificadamat)==1?db_formatar(@$this->areatrans,'f',' ',' ',' ',6).'m2':(strlen(@$this->areaedificadamat[1])>2?db_formatar(@$this->areatrans,'f',' ',' ',' ',6).'m2':db_formatar(@$this->areatrans,'f',' ',' ',' ',6).'m2'))),1,0,"R",0);
+  $this->objpdf->cell(35,$altura,(@$this->areatotal == 0?'':(count(@$this->areaedificadamat)==1?db_formatar(@$this->areatotal,'f',' ',' ',' ',6).'m2':(strlen((string) @$this->areaedificadamat[1])>2?db_formatar(@$this->areatotal,'f',' ',' ',' ',6).'m2':db_formatar(@$this->areatotal,'f',' ',' ',' ',6).'m2'))),1,0,"R",0);
+  $this->objpdf->cell(24,$altura,(@$this->areatotal == 0?'':(count(@$this->areaedificadamat)==1?db_formatar(@$this->areatrans,'f',' ',' ',' ',6).'m2':(strlen((string) @$this->areaedificadamat[1])>2?db_formatar(@$this->areatrans,'f',' ',' ',' ',6).'m2':db_formatar(@$this->areatrans,'f',' ',' ',' ',6).'m2'))),1,0,"R",0);
   $this->objpdf->cell(37,$altura,""  							  ,1,0,"R");
 
 }
@@ -483,7 +483,7 @@ if (!empty($this->aTaxas)) {
 $yy = $this->objpdf->gety();
 $this->objpdf->sety($y);
 $this->objpdf->multicell(197,$altura,substr(str_replace("\n","",$this->propri.$this->proprietarios.(strlen(trim($this->propri.$this->proprietarios)) > 0?"\n ":"").
-                                            (strlen(trim($this->it01_obs)) > 0?$this->it01_obs:"").". ".$this->sMsgSituacaoImovel),0,1128)."...",0,"L",0);
+                                            (strlen(trim((string) $this->it01_obs)) > 0?$this->it01_obs:"").". ".$this->sMsgSituacaoImovel),0,1128)."...",0,"L",0);
 
 $this->objpdf->sety($yy+5);
 

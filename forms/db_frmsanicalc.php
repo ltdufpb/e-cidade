@@ -110,7 +110,7 @@ function js_habilitacalculo(){
        <td height="25">
        <?php 
           $rsAnosCalculo = $clcissqn->sql_record($clcissqn->sql_query_file(null,"q04_anousu","q04_anousu desc"," q04_anousu <= ".db_getsession('DB_anousu')));
-          $aAnos = array();
+          $aAnos = [];
           for ($i=0; $i < $clcissqn->numrows; $i++) {
             $oAnos = db_utils::fieldsMemory($rsAnosCalculo,$i);
             $aAnos[$oAnos->q04_anousu] = $oAnos->q04_anousu;

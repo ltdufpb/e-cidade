@@ -38,33 +38,25 @@ use Exception;
 class Integra
 {
     /**
-     * @var ParametrosModel
-     */
-    private $parametros;
-
-    /**
-     * @var int
-     * 1 - ParametrosEnum::PEDIDOS
-     * 2 - ParametrosEnum::RESULTADOS
-     */
-    private $tipoArquivo;
-
-    /**
      * @var string
      */
     private $pastaDestino;
 
     /**
      * Integra constructor.
-     * @param ParametrosModel $parametrosModel
+     * @param ParametrosModel $parametros
      * @param $tipoArquivo
      * @param $arquivoMontagem
      * @throws Exception
+     * @param int $tipoArquivo
      */
-    public function __construct(ParametrosModel $parametrosModel, $tipoArquivo)
+    public function __construct(private readonly ParametrosModel $parametros, /**
+     * @var int
+     * 1 - ParametrosEnum::PEDIDOS
+     * 2 - ParametrosEnum::RESULTADOS
+     */
+    private $tipoArquivo)
     {
-        $this->parametros = $parametrosModel;
-        $this->tipoArquivo = $tipoArquivo;
         $this->pastaDestino = $this->getPastaArquivos();
     }
 
@@ -74,18 +66,11 @@ class Integra
      */
     private function getPastaArquivos()
     {
-        switch ($this->tipoArquivo) {
-            case ParametrosEnum::PEDIDOS:
-                $pasta = $this->parametros->getPastaPedidos();
-                break;
-
-            case ParametrosEnum::RESULTADOS:
-                $pasta = $this->parametros->getPastaResultados();
-                break;
-
-            default:
-                throw new Exception('Tipo de integração não encontrada.');
-        }
+        $pasta = match ($this->tipoArquivo) {
+            ParametrosEnum::PEDIDOS => $this->parametros->getPastaPedidos(),
+            ParametrosEnum::RESULTADOS => $this->parametros->getPastaResultados(),
+            default => throw new Exception('Tipo de integração não encontrada.'),
+        };
 
         return trim($pasta);
     }

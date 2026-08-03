@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE termodiver
 class cl_termodiver { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $dv10_parcel = 0; 
-   var $dv10_coddiver = 0; 
-   var $dv10_valor = 0; 
-   var $dv10_juros = 0; 
-   var $dv10_multa = 0; 
-   var $dv10_desconto = 0; 
-   var $dv10_total = 0; 
-   var $dv10_numpreant = 0; 
-   var $dv10_perc = 0; 
-   var $dv10_vlrcor = 0; 
-   var $dv10_vlrdescjur = 0; 
-   var $dv10_vlrdescmul = 0; 
+   public $dv10_parcel = 0; 
+   public $dv10_coddiver = 0; 
+   public $dv10_valor = 0; 
+   public $dv10_juros = 0; 
+   public $dv10_multa = 0; 
+   public $dv10_desconto = 0; 
+   public $dv10_total = 0; 
+   public $dv10_numpreant = 0; 
+   public $dv10_perc = 0; 
+   public $dv10_vlrcor = 0; 
+   public $dv10_vlrdescjur = 0; 
+   public $dv10_vlrdescmul = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  dv10_parcel = int4 = Código do Parcelamento 
                  dv10_coddiver = int4 = Código do diversos 
                  dv10_valor = float8 = Valor 
@@ -70,10 +70,10 @@ class cl_termodiver {
                  dv10_vlrdescmul = float8 = Valor Desconto Multa 
                  ";
    //funcao construtor da classe 
-   function cl_termodiver() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termodiver"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -246,7 +246,7 @@ class cl_termodiver {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Diversos do parcelamento ($this->dv10_parcel."-".$this->dv10_coddiver) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Diversos do parcelamento já Cadastrado";
@@ -275,22 +275,22 @@ class cl_termodiver {
      if(($resaco!=false)||($this->numrows!=0)){
 
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,3605,'$this->dv10_parcel','I')");
        $resac = db_query("insert into db_acountkey values($acount,3606,'$this->dv10_coddiver','I')");
-       $resac = db_query("insert into db_acount values($acount,523,3605,'','".AddSlashes(pg_result($resaco,0,'dv10_parcel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,3606,'','".AddSlashes(pg_result($resaco,0,'dv10_coddiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,3607,'','".AddSlashes(pg_result($resaco,0,'dv10_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,3608,'','".AddSlashes(pg_result($resaco,0,'dv10_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,3609,'','".AddSlashes(pg_result($resaco,0,'dv10_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,3610,'','".AddSlashes(pg_result($resaco,0,'dv10_desconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,3611,'','".AddSlashes(pg_result($resaco,0,'dv10_total'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,3612,'','".AddSlashes(pg_result($resaco,0,'dv10_numpreant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,3613,'','".AddSlashes(pg_result($resaco,0,'dv10_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,7218,'','".AddSlashes(pg_result($resaco,0,'dv10_vlrcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,9141,'','".AddSlashes(pg_result($resaco,0,'dv10_vlrdescjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,523,9142,'','".AddSlashes(pg_result($resaco,0,'dv10_vlrdescmul'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,3605,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_parcel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,3606,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_coddiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,3607,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,3608,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,3609,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,3610,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_desconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,3611,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_total'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,3612,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_numpreant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,3613,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,7218,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_vlrcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,9141,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_vlrdescjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,523,9142,'','".AddSlashes(pg_fetch_result($resaco,0,'dv10_vlrdescmul'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      }
      return true;
@@ -300,10 +300,10 @@ class cl_termodiver {
       $this->atualizacampos();
      $sql = " update termodiver set ";
      $virgula = "";
-     if(trim($this->dv10_parcel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_parcel"])){ 
+     if(trim((string) $this->dv10_parcel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_parcel"])){ 
        $sql  .= $virgula." dv10_parcel = $this->dv10_parcel ";
        $virgula = ",";
-       if(trim($this->dv10_parcel) == null ){ 
+       if(trim((string) $this->dv10_parcel) == null ){ 
          $this->erro_sql = " Campo Código do Parcelamento não informado.";
          $this->erro_campo = "dv10_parcel";
          $this->erro_banco = "";
@@ -313,10 +313,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_coddiver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_coddiver"])){ 
+     if(trim((string) $this->dv10_coddiver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_coddiver"])){ 
        $sql  .= $virgula." dv10_coddiver = $this->dv10_coddiver ";
        $virgula = ",";
-       if(trim($this->dv10_coddiver) == null ){ 
+       if(trim((string) $this->dv10_coddiver) == null ){ 
          $this->erro_sql = " Campo Código do diversos não informado.";
          $this->erro_campo = "dv10_coddiver";
          $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_valor"])){ 
+     if(trim((string) $this->dv10_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_valor"])){ 
        $sql  .= $virgula." dv10_valor = $this->dv10_valor ";
        $virgula = ",";
-       if(trim($this->dv10_valor) == null ){ 
+       if(trim((string) $this->dv10_valor) == null ){ 
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "dv10_valor";
          $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_juros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_juros"])){ 
+     if(trim((string) $this->dv10_juros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_juros"])){ 
        $sql  .= $virgula." dv10_juros = $this->dv10_juros ";
        $virgula = ",";
-       if(trim($this->dv10_juros) == null ){ 
+       if(trim((string) $this->dv10_juros) == null ){ 
          $this->erro_sql = " Campo Juros não informado.";
          $this->erro_campo = "dv10_juros";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_multa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_multa"])){ 
+     if(trim((string) $this->dv10_multa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_multa"])){ 
        $sql  .= $virgula." dv10_multa = $this->dv10_multa ";
        $virgula = ",";
-       if(trim($this->dv10_multa) == null ){ 
+       if(trim((string) $this->dv10_multa) == null ){ 
          $this->erro_sql = " Campo Multa não informado.";
          $this->erro_campo = "dv10_multa";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_desconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_desconto"])){ 
+     if(trim((string) $this->dv10_desconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_desconto"])){ 
        $sql  .= $virgula." dv10_desconto = $this->dv10_desconto ";
        $virgula = ",";
-       if(trim($this->dv10_desconto) == null ){ 
+       if(trim((string) $this->dv10_desconto) == null ){ 
          $this->erro_sql = " Campo Desconto não informado.";
          $this->erro_campo = "dv10_desconto";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_total)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_total"])){ 
+     if(trim((string) $this->dv10_total)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_total"])){ 
        $sql  .= $virgula." dv10_total = $this->dv10_total ";
        $virgula = ",";
-       if(trim($this->dv10_total) == null ){ 
+       if(trim((string) $this->dv10_total) == null ){ 
          $this->erro_sql = " Campo Total não informado.";
          $this->erro_campo = "dv10_total";
          $this->erro_banco = "";
@@ -391,10 +391,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_numpreant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_numpreant"])){ 
+     if(trim((string) $this->dv10_numpreant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_numpreant"])){ 
        $sql  .= $virgula." dv10_numpreant = $this->dv10_numpreant ";
        $virgula = ",";
-       if(trim($this->dv10_numpreant) == null ){ 
+       if(trim((string) $this->dv10_numpreant) == null ){ 
          $this->erro_sql = " Campo Numpre anterior não informado.";
          $this->erro_campo = "dv10_numpreant";
          $this->erro_banco = "";
@@ -404,10 +404,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_perc"])){ 
+     if(trim((string) $this->dv10_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_perc"])){ 
        $sql  .= $virgula." dv10_perc = $this->dv10_perc ";
        $virgula = ",";
-       if(trim($this->dv10_perc) == null ){ 
+       if(trim((string) $this->dv10_perc) == null ){ 
          $this->erro_sql = " Campo Percentual não informado.";
          $this->erro_campo = "dv10_perc";
          $this->erro_banco = "";
@@ -417,10 +417,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_vlrcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrcor"])){ 
+     if(trim((string) $this->dv10_vlrcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrcor"])){ 
        $sql  .= $virgula." dv10_vlrcor = $this->dv10_vlrcor ";
        $virgula = ",";
-       if(trim($this->dv10_vlrcor) == null ){ 
+       if(trim((string) $this->dv10_vlrcor) == null ){ 
          $this->erro_sql = " Campo Valor corrigido não informado.";
          $this->erro_campo = "dv10_vlrcor";
          $this->erro_banco = "";
@@ -430,10 +430,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_vlrdescjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrdescjur"])){ 
+     if(trim((string) $this->dv10_vlrdescjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrdescjur"])){ 
        $sql  .= $virgula." dv10_vlrdescjur = $this->dv10_vlrdescjur ";
        $virgula = ",";
-       if(trim($this->dv10_vlrdescjur) == null ){ 
+       if(trim((string) $this->dv10_vlrdescjur) == null ){ 
          $this->erro_sql = " Campo Valor Desconto Juros não informado.";
          $this->erro_campo = "dv10_vlrdescjur";
          $this->erro_banco = "";
@@ -443,10 +443,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_vlrdescmul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrdescmul"])){ 
+     if(trim((string) $this->dv10_vlrdescmul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrdescmul"])){ 
        $sql  .= $virgula." dv10_vlrdescmul = $this->dv10_vlrdescmul ";
        $virgula = ",";
-       if(trim($this->dv10_vlrdescmul) == null ){ 
+       if(trim((string) $this->dv10_vlrdescmul) == null ){ 
          $this->erro_sql = " Campo Valor Desconto Multa não informado.";
          $this->erro_campo = "dv10_vlrdescmul";
          $this->erro_banco = "";
@@ -473,34 +473,34 @@ class cl_termodiver {
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3605,'$this->dv10_parcel','A')");
          $resac = db_query("insert into db_acountkey values($acount,3606,'$this->dv10_coddiver','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_parcel"]) || $this->dv10_parcel != "")
-           $resac = db_query("insert into db_acount values($acount,523,3605,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_parcel'))."','$this->dv10_parcel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,3605,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_parcel'))."','$this->dv10_parcel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_coddiver"]) || $this->dv10_coddiver != "")
-           $resac = db_query("insert into db_acount values($acount,523,3606,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_coddiver'))."','$this->dv10_coddiver',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,3606,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_coddiver'))."','$this->dv10_coddiver',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_valor"]) || $this->dv10_valor != "")
-           $resac = db_query("insert into db_acount values($acount,523,3607,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_valor'))."','$this->dv10_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,3607,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_valor'))."','$this->dv10_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_juros"]) || $this->dv10_juros != "")
-           $resac = db_query("insert into db_acount values($acount,523,3608,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_juros'))."','$this->dv10_juros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,3608,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_juros'))."','$this->dv10_juros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_multa"]) || $this->dv10_multa != "")
-           $resac = db_query("insert into db_acount values($acount,523,3609,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_multa'))."','$this->dv10_multa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,3609,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_multa'))."','$this->dv10_multa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_desconto"]) || $this->dv10_desconto != "")
-           $resac = db_query("insert into db_acount values($acount,523,3610,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_desconto'))."','$this->dv10_desconto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,3610,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_desconto'))."','$this->dv10_desconto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_total"]) || $this->dv10_total != "")
-           $resac = db_query("insert into db_acount values($acount,523,3611,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_total'))."','$this->dv10_total',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,3611,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_total'))."','$this->dv10_total',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_numpreant"]) || $this->dv10_numpreant != "")
-           $resac = db_query("insert into db_acount values($acount,523,3612,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_numpreant'))."','$this->dv10_numpreant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,3612,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_numpreant'))."','$this->dv10_numpreant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_perc"]) || $this->dv10_perc != "")
-           $resac = db_query("insert into db_acount values($acount,523,3613,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_perc'))."','$this->dv10_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,3613,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_perc'))."','$this->dv10_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrcor"]) || $this->dv10_vlrcor != "")
-           $resac = db_query("insert into db_acount values($acount,523,7218,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_vlrcor'))."','$this->dv10_vlrcor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,7218,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_vlrcor'))."','$this->dv10_vlrcor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrdescjur"]) || $this->dv10_vlrdescjur != "")
-           $resac = db_query("insert into db_acount values($acount,523,9141,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_vlrdescjur'))."','$this->dv10_vlrdescjur',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,9141,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_vlrdescjur'))."','$this->dv10_vlrdescjur',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrdescmul"]) || $this->dv10_vlrdescmul != "")
-           $resac = db_query("insert into db_acount values($acount,523,9142,'".AddSlashes(pg_result($resaco,$conresaco,'dv10_vlrdescmul'))."','$this->dv10_vlrdescmul',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,523,9142,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv10_vlrdescmul'))."','$this->dv10_vlrdescmul',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -554,22 +554,22 @@ class cl_termodiver {
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3605,'$dv10_parcel','E')");
          $resac = db_query("insert into db_acountkey values($acount,3606,'$dv10_coddiver','E')");
-         $resac = db_query("insert into db_acount values($acount,523,3605,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_parcel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,3606,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_coddiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,3607,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,3608,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,3609,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,3610,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_desconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,3611,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_total'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,3612,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_numpreant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,3613,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,7218,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_vlrcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,9141,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_vlrdescjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,523,9142,'','".AddSlashes(pg_result($resaco,$iresaco,'dv10_vlrdescmul'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,3605,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_parcel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,3606,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_coddiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,3607,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,3608,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,3609,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,3610,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_desconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,3611,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_total'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,3612,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_numpreant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,3613,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,7218,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_vlrcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,9141,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_vlrdescjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,523,9142,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv10_vlrdescmul'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -636,7 +636,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:termodiver";
@@ -651,7 +651,7 @@ class cl_termodiver {
    function sql_query ( $dv10_parcel=null,$dv10_coddiver=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -689,7 +689,7 @@ class cl_termodiver {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -702,7 +702,7 @@ class cl_termodiver {
    function sql_query_file ( $dv10_parcel=null,$dv10_coddiver=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -731,7 +731,7 @@ class cl_termodiver {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

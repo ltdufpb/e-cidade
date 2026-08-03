@@ -13,12 +13,12 @@ class TipoDocumentoProcessoRepository
      * Não devem ser excluídos.
      * @var array
      */
-    const CODIGOS_TIPOS_DOCUMENTOS_DB = array(
+    const CODIGOS_TIPOS_DOCUMENTOS_DB = [
         '1' => 'Processo',
         '2' => 'Memorando',
         '3' => 'Ofício',
         '4' => 'Decreto'
-    );
+    ];
 
     /**
      * @var \cl_prottipodocumentoprocesso
@@ -28,7 +28,7 @@ class TipoDocumentoProcessoRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * TipoDocumentoProcessoRepository constructor.
@@ -44,7 +44,7 @@ class TipoDocumentoProcessoRepository
      * @param  array $columns
      * @return TipoDocumentoProcesso
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query_file($id, implode(', ', $columns));
         $postgresObject = db_query($sql);
@@ -70,7 +70,7 @@ class TipoDocumentoProcessoRepository
         $sql = $this->dao->sql_query_file(null, '*', 'p91_sequencial');
         $postgresObject = db_query($sql);
 
-        $tiposDocumentoProcesso = array();
+        $tiposDocumentoProcesso = [];
 
         while ($row = pg_fetch_assoc($postgresObject)) {
             $tiposDocumentoProcesso[] = TipoDocumentoProcesso::fromState($row);
@@ -92,7 +92,7 @@ class TipoDocumentoProcessoRepository
             throw new Exception('Não foi possível buscar os Tipos de Documento de Processo.');
         }
 
-        $tiposDocumentoProcesso = array();
+        $tiposDocumentoProcesso = [];
         while ($tipo = pg_fetch_assoc($postgresObject)) {
             $tiposDocumentoProcesso[] = $tipo;
         }
@@ -139,7 +139,7 @@ class TipoDocumentoProcessoRepository
      */
     public function remove($id)
     {
-        $tipoDocumentoProcesso = $this->find($id, array('p91_sequencial'));
+        $tipoDocumentoProcesso = $this->find($id, ['p91_sequencial']);
         if (array_key_exists($id, self::CODIGOS_TIPOS_DOCUMENTOS_DB)) {
             throw new Exception('Não pode deletar os tipos de documentos cujos códigos são: 1, 2, 3, 4');
         }
@@ -177,7 +177,7 @@ class TipoDocumentoProcessoRepository
         try {
             $this->scopeSigla($sigla);
             $this->get();
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->removeScope('sigla');
             return false;
         }

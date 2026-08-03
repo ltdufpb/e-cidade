@@ -18,9 +18,7 @@ class ProtocoloControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app["cgm.controller"] = function () use ($app) {
-            return new Cgm($app['request_stack']->getCurrentRequest());
-        };
+        $app["cgm.controller"] = (fn() => new Cgm($app['request_stack']->getCurrentRequest()));
 
         // creates a new controller based on the default route
         $controllers = $app['controllers_factory'];

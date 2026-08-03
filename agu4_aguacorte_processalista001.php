@@ -89,11 +89,11 @@ flush();
 		$sql = $claguacortetipodebito->sql_query(null,"*",null,"x40_codcorte=$x40_codcorte");
 
 		$res = db_query($sql); 
-		$qtd = pg_numrows($res);
+		$qtd = pg_num_rows($res);
 
 		$sql_proc = "select k22_matric, sum(k22_total) as k22_total from ( ";
 
-		$sql_matric = array();
+		$sql_matric = [];
 
 		// Monta SQL para buscar matriculas para corte
 		for ($i = 0; $i < $qtd; $i ++) {
@@ -194,9 +194,9 @@ flush();
 			} else if( !empty($x45_dtopini) && !empty($x45_dtopfim) ) {
 				$sql_proc   .= "and  k22_dtoper between '$x45_dtopini' and '$x45_dtopfim' ";
 				$sql_insere .= "and  k22_dtoper between '$x45_dtopini' and '$x45_dtopfim' ";
-				
+
 			}
-				
+
 			$sql_proc .= "
 				group by k22_matric, k22_tipo 
 				having count($sql_quant_numpar) >= $x45_parcelas 
@@ -206,9 +206,9 @@ flush();
 			if(!empty($val)) {
 				$sql_proc .= "and     sum(k22_vlrcor+k22_juros+k22_multa-k22_desconto) >= $valor_minimo ";
 			}
-			
+
 			$sql_matric[] = $sql_insere;
-						
+
 		}
 		$sql_proc .= " ) as lista_corte ";
 
@@ -221,11 +221,11 @@ flush();
 		if(!empty($_rua) or !empty($_zona) or !empty($_entrega)) {
 
 			$sql_proc .= "inner join aguabase  on x01_matric = k22_matric ";
-      
+
       if(!empty($_rua)) {
         $sql_proc .= "                    and x01_codrua = $x40_rua ";
       }
-      
+
       if(!empty($_zona)) {
         $sql_proc .= "                    and x01_zona = $x40_zona ";
       }
@@ -233,7 +233,7 @@ flush();
       if(!empty($_entrega)) {
         $sql_proc .= "                    and x01_entrega = $x40_entrega ";
       }
-      
+
       if ($x40_tipomatricula == 2){
       	$sql_proc .= " where fc_agua_tipoimovel(x01_matric) = 0 ";
       }else if ($x40_tipomatricula == 3){
@@ -241,17 +241,17 @@ flush();
       }
 
 		}else {
-			
+
 			$sql_proc .= "inner join aguabase  on x01_matric = k22_matric ";
-			
+
 			if ($x40_tipomatricula == 2){
 
 				$sql_proc .= " where fc_agua_tipoimovel(x01_matric) = 0 ";
-      
+
 			}else if ($x40_tipomatricula == 3){
 
 				$sql_proc .= " where fc_agua_tipoimovel(x01_matric) = 1 ";
-      
+
 			}
 
 		}
@@ -267,7 +267,7 @@ flush();
 		//}
 
 		$sql_proc .= "group by k22_matric ";
-		
+
 		$val = floatval($x40_vlrminimo);
 		if(!empty($val)) {
 			$sql_proc .= "having sum(k22_total) > $x40_vlrminimo and sum(k22_total) > 0 ";
@@ -282,7 +282,7 @@ flush();
 		//echo $sql_proc;exit;
 
 		$res_proc = db_query($sql_proc);
-		$qtd2 = pg_numrows($res_proc);
+		$qtd2 = pg_num_rows($res_proc);
 
 		if($qtd2==0) {
 		    $gerou = false;
@@ -302,7 +302,7 @@ flush();
 		//while($row1 = pg_fetch_row($res_proc)) {
     for($y=0; $y<$qtd2; $y++) {
       db_atutermometro($y, $qtd2, 'termometro');
-      
+
       // Carrega campos pra um array
       $row1 = pg_fetch_row($res_proc, $y);
 
@@ -321,7 +321,7 @@ flush();
 		  		continue;
 			  }
       }
-	
+
 			// Insere em AGUACORTEMAT
 			$claguacortemat->x41_matric = $row1[0];
 			$claguacortemat->x41_codcorte = $x45_codcorte;
@@ -339,26 +339,26 @@ flush();
 			$claguacortematmov->x42_usuario = db_getsession("DB_id_usuario");
 			$claguacortematmov->x42_historico = "Debito R$ " . db_formatar($row1[1], "f");
 			$insere1 = ($insere1 && $claguacortematmov->incluir(null));
-			
+
 			foreach($sql_matric as $sql_matric_insere) {
 
 				$sql_matric_insere .= "and  k22_matric = {$row1[0]}";
 
-				$sql_matric_insere = str_replace(array("%codcortemat%"), array($claguacortemat->x41_codcortemat), $sql_matric_insere);
+				$sql_matric_insere = str_replace(["%codcortemat%"], [$claguacortemat->x41_codcortemat], $sql_matric_insere);
 
 				//die($sql_matric_insere);
 
 				$res_matric_insere = db_query($sql_matric_insere);
 				$insere1 = ($insere1 && $res_matric_insere);
-				
+
 				//if(!$insere1) {
 				//  echo pg_last_error($res_matric_insere) . "<br>";
 				//  die($sql_matric_insere);
 				//}
 			}
-			
+
 		}
-	
+
 		db_fim_transacao(!$insere1);
 		if( @$gerou != false){
 			if($insere1 ) {

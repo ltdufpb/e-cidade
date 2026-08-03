@@ -6,7 +6,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_liclicitaencerramentolicitacon_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clliclicitaencerramentolicitacon = new cl_liclicitaencerramentolicitacon;
 $clliclicitaencerramentolicitacon->rotulo->label("l18_sequencial");
 $clliclicitaencerramentolicitacon->rotulo->label("l18_sequencial");
@@ -32,9 +32,9 @@ if(!isset($pesquisa_chave)){
   $campos = 'distinct l18_data';
 
   $sql = $clliclicitaencerramentolicitacon->sql_query(null,$campos, "l18_data desc",$whereliclicitaencerramentolicitacon);
-  $repassa = array();
+  $repassa = [];
   if(isset($chave_l18_sequencial)){
-    $repassa = array("chave_l18_sequencial"=>$chave_l18_sequencial,"chave_l18_sequencial"=>$chave_l18_sequencial);
+    $repassa = ["chave_l18_sequencial"=>$chave_l18_sequencial,"chave_l18_sequencial"=>$chave_l18_sequencial];
   }
   echo '<div class="container">';
   echo '  <fieldset>';

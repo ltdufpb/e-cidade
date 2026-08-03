@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE benstipodepreciacao
 class cl_benstipodepreciacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t46_sequencial = 0; 
-   var $t46_descricao = null; 
-   var $t46_quantidadeano = 0; 
-   var $t46_percentual = 0; 
-   var $t46_observacao = null; 
-   var $t46_depreciavel = 'f'; 
+   public $t46_sequencial = 0; 
+   public $t46_descricao = null; 
+   public $t46_quantidadeano = 0; 
+   public $t46_percentual = 0; 
+   public $t46_observacao = null; 
+   public $t46_depreciavel = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t46_sequencial = int4 = Código 
                  t46_descricao = varchar(150) = Descrição da Depreciação 
                  t46_quantidadeano = numeric(10) = Vida Útil 
@@ -58,10 +58,10 @@ class cl_benstipodepreciacao {
                  t46_depreciavel = bool = Bem Depreciavel 
                  ";
    //funcao construtor da classe 
-   function cl_benstipodepreciacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benstipodepreciacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,10 +143,10 @@ class cl_benstipodepreciacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->t46_sequencial = pg_result($result,0,0); 
+       $this->t46_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from benstipodepreciacao_t46_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $t46_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $t46_sequencial)){
          $this->erro_sql = " Campo t46_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_benstipodepreciacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo de Depreciação do Ben ($this->t46_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo de Depreciação do Ben já Cadastrado";
@@ -208,15 +208,15 @@ class cl_benstipodepreciacao {
      $resaco = $this->sql_record($this->sql_query_file($this->t46_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18460,'$this->t46_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3265,18460,'','".AddSlashes(pg_result($resaco,0,'t46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3265,18461,'','".AddSlashes(pg_result($resaco,0,'t46_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3265,18462,'','".AddSlashes(pg_result($resaco,0,'t46_quantidadeano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3265,18463,'','".AddSlashes(pg_result($resaco,0,'t46_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3265,18464,'','".AddSlashes(pg_result($resaco,0,'t46_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3265,19382,'','".AddSlashes(pg_result($resaco,0,'t46_depreciavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3265,18460,'','".AddSlashes(pg_fetch_result($resaco,0,'t46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3265,18461,'','".AddSlashes(pg_fetch_result($resaco,0,'t46_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3265,18462,'','".AddSlashes(pg_fetch_result($resaco,0,'t46_quantidadeano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3265,18463,'','".AddSlashes(pg_fetch_result($resaco,0,'t46_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3265,18464,'','".AddSlashes(pg_fetch_result($resaco,0,'t46_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3265,19382,'','".AddSlashes(pg_fetch_result($resaco,0,'t46_depreciavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,10 +225,10 @@ class cl_benstipodepreciacao {
       $this->atualizacampos();
      $sql = " update benstipodepreciacao set ";
      $virgula = "";
-     if(trim($this->t46_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_sequencial"])){ 
+     if(trim((string) $this->t46_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_sequencial"])){ 
        $sql  .= $virgula." t46_sequencial = $this->t46_sequencial ";
        $virgula = ",";
-       if(trim($this->t46_sequencial) == null ){ 
+       if(trim((string) $this->t46_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "t46_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_benstipodepreciacao {
          return false;
        }
      }
-     if(trim($this->t46_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_descricao"])){ 
+     if(trim((string) $this->t46_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_descricao"])){ 
        $sql  .= $virgula." t46_descricao = '$this->t46_descricao' ";
        $virgula = ",";
-       if(trim($this->t46_descricao) == null ){ 
+       if(trim((string) $this->t46_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição da Depreciação nao Informado.";
          $this->erro_campo = "t46_descricao";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_benstipodepreciacao {
          return false;
        }
      }
-     if(trim($this->t46_quantidadeano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_quantidadeano"])){ 
+     if(trim((string) $this->t46_quantidadeano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_quantidadeano"])){ 
        $sql  .= $virgula." t46_quantidadeano = $this->t46_quantidadeano ";
        $virgula = ",";
-       if(trim($this->t46_quantidadeano) == null ){ 
+       if(trim((string) $this->t46_quantidadeano) == null ){ 
          $this->erro_sql = " Campo Vida Útil nao Informado.";
          $this->erro_campo = "t46_quantidadeano";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_benstipodepreciacao {
          return false;
        }
      }
-     if(trim($this->t46_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_percentual"])){ 
+     if(trim((string) $this->t46_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_percentual"])){ 
        $sql  .= $virgula." t46_percentual = $this->t46_percentual ";
        $virgula = ",";
-       if(trim($this->t46_percentual) == null ){ 
+       if(trim((string) $this->t46_percentual) == null ){ 
          $this->erro_sql = " Campo Percentual Depreciado ao Ano nao Informado.";
          $this->erro_campo = "t46_percentual";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_benstipodepreciacao {
          return false;
        }
      }
-     if(trim($this->t46_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_observacao"])){ 
+     if(trim((string) $this->t46_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_observacao"])){ 
        $sql  .= $virgula." t46_observacao = '$this->t46_observacao' ";
        $virgula = ",";
-       if(trim($this->t46_observacao) == null ){ 
+       if(trim((string) $this->t46_observacao) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "t46_observacao";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_benstipodepreciacao {
          return false;
        }
      }
-     if(trim($this->t46_depreciavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_depreciavel"])){ 
+     if(trim((string) $this->t46_depreciavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t46_depreciavel"])){ 
        $sql  .= $virgula." t46_depreciavel = '$this->t46_depreciavel' ";
        $virgula = ",";
-       if(trim($this->t46_depreciavel) == null ){ 
+       if(trim((string) $this->t46_depreciavel) == null ){ 
          $this->erro_sql = " Campo Bem Depreciavel nao Informado.";
          $this->erro_campo = "t46_depreciavel";
          $this->erro_banco = "";
@@ -311,21 +311,21 @@ class cl_benstipodepreciacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18460,'$this->t46_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t46_sequencial"]) || $this->t46_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3265,18460,'".AddSlashes(pg_result($resaco,$conresaco,'t46_sequencial'))."','$this->t46_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3265,18460,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t46_sequencial'))."','$this->t46_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t46_descricao"]) || $this->t46_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,3265,18461,'".AddSlashes(pg_result($resaco,$conresaco,'t46_descricao'))."','$this->t46_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3265,18461,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t46_descricao'))."','$this->t46_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t46_quantidadeano"]) || $this->t46_quantidadeano != "")
-           $resac = db_query("insert into db_acount values($acount,3265,18462,'".AddSlashes(pg_result($resaco,$conresaco,'t46_quantidadeano'))."','$this->t46_quantidadeano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3265,18462,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t46_quantidadeano'))."','$this->t46_quantidadeano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t46_percentual"]) || $this->t46_percentual != "")
-           $resac = db_query("insert into db_acount values($acount,3265,18463,'".AddSlashes(pg_result($resaco,$conresaco,'t46_percentual'))."','$this->t46_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3265,18463,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t46_percentual'))."','$this->t46_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t46_observacao"]) || $this->t46_observacao != "")
-           $resac = db_query("insert into db_acount values($acount,3265,18464,'".AddSlashes(pg_result($resaco,$conresaco,'t46_observacao'))."','$this->t46_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3265,18464,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t46_observacao'))."','$this->t46_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t46_depreciavel"]) || $this->t46_depreciavel != "")
-           $resac = db_query("insert into db_acount values($acount,3265,19382,'".AddSlashes(pg_result($resaco,$conresaco,'t46_depreciavel'))."','$this->t46_depreciavel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3265,19382,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t46_depreciavel'))."','$this->t46_depreciavel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -370,15 +370,15 @@ class cl_benstipodepreciacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18460,'$t46_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3265,18460,'','".AddSlashes(pg_result($resaco,$iresaco,'t46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3265,18461,'','".AddSlashes(pg_result($resaco,$iresaco,'t46_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3265,18462,'','".AddSlashes(pg_result($resaco,$iresaco,'t46_quantidadeano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3265,18463,'','".AddSlashes(pg_result($resaco,$iresaco,'t46_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3265,18464,'','".AddSlashes(pg_result($resaco,$iresaco,'t46_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3265,19382,'','".AddSlashes(pg_result($resaco,$iresaco,'t46_depreciavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3265,18460,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3265,18461,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t46_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3265,18462,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t46_quantidadeano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3265,18463,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t46_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3265,18464,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t46_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3265,19382,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t46_depreciavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from benstipodepreciacao
@@ -438,7 +438,7 @@ class cl_benstipodepreciacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:benstipodepreciacao";
@@ -453,7 +453,7 @@ class cl_benstipodepreciacao {
    function sql_query ( $t46_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_benstipodepreciacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -487,7 +487,7 @@ class cl_benstipodepreciacao {
    function sql_query_file ( $t46_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -508,7 +508,7 @@ class cl_benstipodepreciacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

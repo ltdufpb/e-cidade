@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procfiscal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocfiscal = new cl_procfiscal;
 $clprocfiscal->rotulo->label("y100_sequencial");
 $clprocfiscal->rotulo->label("y100_coddepto");
@@ -65,7 +65,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
           	<td align="right" nowrap ><b>Trazer apenas registros ligados a origem:</b></td>
 					  <td>
 					  	<?php 
-					  	  $arr_origem = array("S"=>"Sim","N"=>"Não");
+					  	  $arr_origem = ["S"=>"Sim","N"=>"Não"];
 	              db_select("origem",$arr_origem,true,2); 
 							?>
 					  </td>
@@ -74,7 +74,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
 					 	<td align="right" ><b>Considerar:</b></td>
 					  <td>
 					  	<?php 
-					  	  $arr_cons = array("A"=>"Aberto","E"=>"Encerrado","T"=>"Todos");
+					  	  $arr_cons = ["A"=>"Aberto","E"=>"Encerrado","T"=>"Todos"];
 	              db_select("considerar",$arr_cons,true,2); 
 							?>
 					  </td>
@@ -157,9 +157,9 @@ select y100_sequencial,y100_dtinicial, y101_numcgm,z01_nome ,y103_inscr,y102_mat
 		           ";
 							
 //			echo "$sql";				
-				 $repassa = array();
+				 $repassa = [];
         if(isset($chave_y100_coddepto)){
-          $repassa = array("chave_y100_sequencial"=>$chave_y100_sequencial,"chave_y100_coddepto"=>$chave_y100_coddepto);
+          $repassa = ["chave_y100_sequencial"=>$chave_y100_sequencial,"chave_y100_coddepto"=>$chave_y100_coddepto];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa,false);
       }else{

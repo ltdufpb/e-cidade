@@ -613,7 +613,7 @@ function limpaCamposModulo() {
 function js_pesquisaitemcad( iCodigo ) {
   
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?iCodigo=" + iCodigo;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?iCodigo=" + iCodigo;
 }
 
 /**

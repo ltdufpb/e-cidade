@@ -32,8 +32,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 $clrotulo->label("y80_numcgm");
 $clrotulo->label("q03_descr");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_saniatividade.location.href='fis1_saniatividade002.php?chavepesquisa=$y83_codsani&chavepesquisa1=$y83_seq'</script>";
 }
@@ -112,7 +112,7 @@ db_input('q03_descr',40,$Iq03_descr,true,'text',3,'');
     </td>
     <td>
 <?php 
-$arr = array("t"=>"SIM","f"=>"NÃO");
+$arr = ["t"=>"SIM","f"=>"NÃO"];
 if($db_opcao == 1){
   $clsaniatividade2 = new cl_saniatividade;
   $clsaniatividade2->sql_record($clsaniatividade2->sql_query("","","  saniatividade.*,ativid.q03_descr ",""," y83_codsani = $y83_codsani"));
@@ -136,7 +136,7 @@ if($db_opcao == 1){
     </td>
     <td>
 <?php 
-$xe = array("t"=>"PERMANENTE","f"=>"PROVISÓRIO");
+$xe = ["t"=>"PERMANENTE","f"=>"PROVISÓRIO"];
 db_select('y83_perman',$xe,true,$db_opcao,"onchange='js_testadata(this.value);'");
 
 ?>
@@ -210,7 +210,7 @@ function  js_submet(opcao){
 //die($clsaniatividade->sql_query("","","  y83_codsani,y83_seq,case when y83_ativprinc is true then 'SIM' else 'NÃO' end as y83_ativprinc,y83_dtini,y83_dtfim,y83_area,y83_ativ,ativid.q03_descr",""," y83_codsani = $y83_codsani"));
 
 
-    $chavepri= array("y83_codsani"=>$y83_codsani,"y83_seq"=>@$y83_seq);
+    $chavepri= ["y83_codsani"=>$y83_codsani,"y83_seq"=>@$y83_seq];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y83_seq,y83_ativprinc,y83_dtini,y83_dtfim,y83_area,y83_ativ,q03_descr,y83_perman";
     $cliframe_alterar_excluir->sql=$clsaniatividade->sql_query("","","  y83_codsani,y83_seq,case when y83_perman is true then 'SIM' else 'NÃO' end as y83_perman,case when y83_ativprinc is true then 'SIM' else 'NÃO' end as y83_ativprinc,y83_dtini,y83_dtfim,y83_area,y83_ativ,ativid.q03_descr",""," y83_codsani = $y83_codsani");

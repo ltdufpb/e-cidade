@@ -49,15 +49,15 @@ $db_opcao    = 1;
     <td> 
      <?php
 
-	    $clcriaabas->identifica = array( "servico"        =>"Servico",
-	                                     "valorservico"   =>"Valor do Servico");
+	    $clcriaabas->identifica = [ "servico"        =>"Servico",
+	                                     "valorservico"   =>"Valor do Servico"];
 
-	    $clcriaabas->src        = array( "servico"        =>"fum4_associadoservicos004.php?db_opcao=1");
+	    $clcriaabas->src        = [ "servico"        =>"fum4_associadoservicos004.php?db_opcao=1"];
 
-      $clcriaabas->sizecampo  = array( "servico"        =>"23",
-                                       "valorservico"   =>"23");
+      $clcriaabas->sizecampo  = [ "servico"        =>"23",
+                                       "valorservico"   =>"23"];
 
-	    $clcriaabas->disabled   = array( "valorservico"   =>"true");
+	    $clcriaabas->disabled   = [ "valorservico"   =>"true"];
 
 	    $clcriaabas->cria_abas();
 

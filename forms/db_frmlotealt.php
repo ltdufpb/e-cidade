@@ -338,13 +338,13 @@ function js_checa() {
       </td>
       <td>
        <?php
-          $arrayPonto = array();
+          $arrayPonto = [];
 
           $sqlPonto   = " select 0 as j64_sequencial, 'Nenhum' as j64_descricao from orientacao ";
           $sqlPonto  .= "  union ";
           $sqlPonto  .= " select j64_sequencial, j64_descricao from orientacao ";
           $rsPonto    = db_query($sqlPonto);
-          $intPonto   = pg_numrows($rsPonto);
+          $intPonto   = pg_num_rows($rsPonto);
 
           for ($iPonto=0;$iPonto<$intPonto;$iPonto++) { 
               db_fieldsmemory($rsPonto,$iPonto);
@@ -392,9 +392,9 @@ function js_preenchepesquisa(chave){
   db_iframe.hide();
   idmatricu=document.form1.idmatricu.value;
   if(idmatricu!=""){
-    location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&idmatricu="+idmatricu;
+    location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&idmatricu="+idmatricu;
   }else{
-    location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+    location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
   }
 
 }

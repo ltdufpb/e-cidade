@@ -34,6 +34,7 @@
   */
 class TabelaValoresPrevidencia extends TabelaValores {
 
+  #[\Override]
   public function getFaixaPeloValor($nValor) {
 
 

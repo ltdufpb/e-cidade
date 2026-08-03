@@ -31,7 +31,7 @@ abstract class DBSoapServer
 {
   private $soapServer;
 
-  public function __construct($wsdl = null, $options = array())
+  public function __construct($wsdl = null, $options = [])
   {
     /**
      * Desabilita o cache do .wsdl

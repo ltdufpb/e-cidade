@@ -24,14 +24,8 @@ use Illuminate\Http\Request;
  */
 class PlanejamentoController extends Controller
 {
-    /**
-     * @var PlanejamentoService
-     */
-    private $service;
-
-    public function __construct(PlanejamentoService $service)
+    public function __construct(private readonly PlanejamentoService $service)
     {
-        $this->service = $service;
     }
 
     /**

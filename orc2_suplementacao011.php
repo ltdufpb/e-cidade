@@ -185,7 +185,7 @@ function js_inverte(){
       <td><b>Imprime Filtro: </b></td>
       <td>
         <?php 
-          $matriz = array();
+          $matriz = [];
           $matriz['n'] ='Não'; 
           $matriz['s'] ='Sim';          
           db_select('imprime_filtro',$matriz,"","");

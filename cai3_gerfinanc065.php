@@ -39,8 +39,8 @@ include(modification("classes/db_arrecad_classe.php"));
 require(modification("classes/db_cancdebitosconcarpeculiar_classe.php"));
 require_once(modification("classes/db_numpref_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -69,7 +69,7 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
   if (!isset($inicial)) {
 
-    $vt = $HTTP_POST_VARS;
+    $vt = $_POST;
 
     $virgula = "";
     $receit1 = "";
@@ -80,7 +80,7 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
       if (db_indexOf(key($vt), "CHECK") > 0) {
 
         $numpres = $vt[key($vt)];
-        $mat = split("N", $numpres);
+        $mat = preg_split("#N#m", $numpres);
         if (isset($oPost->marcarvencidas) && isset($oPost->marcartodas)) {
 
         	if ($oPost->marcarvencidas == 'true' && $oPost->marcartodas == 'false') {
@@ -91,9 +91,9 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 			          continue;
 			        }
 
-	            $numpre = split("P", $mat[$iInd]);
-	            $numpar = split("P", strstr($mat[$iInd], "P"));
-	            $numpar = split("R",$numpar[1]);
+	            $numpre = preg_split("#P#m", (string) $mat[$iInd]);
+	            $numpar = preg_split("#P#m", strstr((string) $mat[$iInd], "P"));
+	            $numpar = preg_split("#R#m",(string) $numpar[1]);
 	            $receit = @$numpar[1];
 	            $numpar = $numpar[0];
 	            $numpre = $numpre[0];
@@ -121,9 +121,9 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
 	            if ($mat[$j] == "") continue;
 
-	            $numpre = split("P", $mat[$j]);
-	            $numpar = split("P", strstr($mat[$j], "P"));
-	            $numpar = split("R",$numpar[1]);
+	            $numpre = preg_split("#P#m", (string) $mat[$j]);
+	            $numpar = preg_split("#P#m", strstr((string) $mat[$j], "P"));
+	            $numpar = preg_split("#R#m",(string) $numpar[1]);
 	            $receit = @$numpar[1];
 	            $numpar = $numpar[0];
 	            $numpre = $numpre[0];
@@ -141,9 +141,9 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
 	          if ($mat[$j] == "") continue;
 
-	          $numpre = split("P", $mat[$j]);
-	          $numpar = split("P", strstr($mat[$j], "P"));
-	          $numpar = split("R",$numpar[1]);
+	          $numpre = preg_split("#P#m", (string) $mat[$j]);
+	          $numpar = preg_split("#P#m", strstr((string) $mat[$j], "P"));
+	          $numpar = preg_split("#R#m",(string) $numpar[1]);
 	          $receit = @$numpar[1];
 	          $numpar = $numpar[0];
 	          $numpre = $numpre[0];
@@ -188,7 +188,7 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
   } else {
 
-    $vt = $HTTP_POST_VARS;
+    $vt = $_POST;
     $virgula = "";
     $numpar1 = "";
     $numpre1 = "";
@@ -202,16 +202,16 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
           if ($oPost->marcarvencidas == 'true' && $oPost->marcartodas == 'false') {
 
-          	$mat = split("N", $v50_inicial);
+          	$mat = preg_split("#N#m", (string) $v50_inicial);
             for ($iInd = 0; $iInd < count($mat); $iInd++) {
 
               if ($mat[$iInd] == "") {
                 continue;
               }
 
-              $numpre = split("P", $mat[$iInd]);
-              $numpar = split("P", strstr($mat[$iInd], "P"));
-              $numpar = split("R",$numpar[1]);
+              $numpre = preg_split("#P#m", (string) $mat[$iInd]);
+              $numpar = preg_split("#P#m", strstr((string) $mat[$iInd], "P"));
+              $numpar = preg_split("#R#m",(string) $numpar[1]);
               $receit = @$numpar[1];
               $numpar = $numpar[0];
               $numpre = $numpre[0];
@@ -237,13 +237,13 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 	          $sqlinicial = "select distinct v59_numpre from inicialnumpre where v59_inicial = $v50_inicial";
 	          $resultinicial = db_query($sqlinicial) or die($sqlinicial);
 
-	          for ($x=0; $x < pg_numrows($resultinicial); $x++) {
+	          for ($x=0; $x < pg_num_rows($resultinicial); $x++) {
 	            db_fieldsmemory($resultinicial,$x);
 
 	            $sqlarrecad = "select distinct k00_numpar from arrecad where k00_numpre = $v59_numpre";
 	            $resultarrecad = db_query($sqlarrecad) or die($sqlarrecad);
 
-	            for ($y=0; $y < pg_numrows($resultarrecad ); $y++) {
+	            for ($y=0; $y < pg_num_rows($resultarrecad ); $y++) {
 	              db_fieldsmemory($resultarrecad,$y);
 
 	              $numpar1 .= $virgula.$k00_numpar;
@@ -259,13 +259,13 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 	        $sqlinicial = "select distinct v59_numpre from inicialnumpre where v59_inicial = $v50_inicial";
 	        $resultinicial = db_query($sqlinicial) or die($sqlinicial);
 
-	        for ($x=0; $x < pg_numrows($resultinicial); $x++) {
+	        for ($x=0; $x < pg_num_rows($resultinicial); $x++) {
 	          db_fieldsmemory($resultinicial,$x);
 
 	          $sqlarrecad = "select distinct k00_numpar from arrecad where k00_numpre = $v59_numpre";
 	          $resultarrecad = db_query($sqlarrecad) or die($sqlarrecad);
 
-	          for ($y=0; $y < pg_numrows($resultarrecad ); $y++) {
+	          for ($y=0; $y < pg_num_rows($resultarrecad ); $y++) {
 	            db_fieldsmemory($resultarrecad,$y);
 
 	            $numpar1 .= $virgula.$k00_numpar;
@@ -342,9 +342,9 @@ if (isset ($envia) && (@$k20_codigo == 0 || @$k20_codigo == "")) {
   }
 
   if ($sqlerro == false) {
-    $mat = split(",", $numpre);
-    $mat1 = split(",", $numpar);
-    $mat2 = split(",", $receit);
+    $mat = preg_split("#,#m", (string) $numpre);
+    $mat1 = preg_split("#,#m", (string) $numpar);
+    $mat2 = preg_split("#,#m", (string) $receit);
     for ($i = 0; $i < count($mat); $i ++) {
       $numpre = $mat[$i];
       $numpar = $mat1[$i];
@@ -503,9 +503,9 @@ if (isset ($envia) && (@$k20_codigo == 0 || @$k20_codigo == "")) {
     }
   }
 
-  $mat = split(",", $numpre);
-  $mat1 = split(",", $numpar);
-  $mat2 = split(",", $receit);
+  $mat = preg_split("#,#m", (string) $numpre);
+  $mat1 = preg_split("#,#m", (string) $numpar);
+  $mat2 = preg_split("#,#m", (string) $receit);
 
   for ($i = 0; $i < count($mat); $i ++) {
     $numpre = $mat[$i];
@@ -639,7 +639,7 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 				    }
           }
 				} else {
-				  $tipo = array(2 =>"Renuncia");
+				  $tipo = [2 =>"Renuncia"];
         }
 
 				db_select("tipoDebito",$tipo,true,1,"onChange='js_mostraRenuncia(document.form1.tipoDebito.value);'","tipoDebito");

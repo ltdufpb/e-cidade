@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cargrup_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcargrup = new cl_cargrup;
 $clcargrup->rotulo->label("j32_grupo");
@@ -95,8 +95,8 @@ if (isset($chave_j32_descr)) {
       }
 
       if(isset($grupo) && $grupo != ""){
-			  $where = " and j32_tipo in ('". implode('\',\'', explode('|', $grupo)) ."')";
-				$where1 = " j32_tipo in ('". implode('\',\'', explode('|', $grupo)) ."')";
+			  $where = " and j32_tipo in ('". implode('\',\'', explode('|', (string) $grupo)) ."')";
+				$where1 = " j32_tipo in ('". implode('\',\'', explode('|', (string) $grupo)) ."')";
       }else{
 				$where = "";
 				$where1 = "";

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhlota_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhlota   = new cl_rhlota;
 $rotulocampo = new rotulocampo;
 $rotulocampo->label("rh01_regist");
@@ -94,8 +94,8 @@ $result_rhlota = $clrhlota->sql_record($clrhlota->sql_query_file(null, "r70_codi
   <tr>
     <td nowrap colspan="2">
     <?php 
-    $arr_rhlota_inicial = Array();
-    $arr_rhlota_final   = Array();
+    $arr_rhlota_inicial = [];
+    $arr_rhlota_final   = [];
     if(isset($clrhlota->numrows)){
       for($i=0; $i<$clrhlota->numrows; $i++){
         db_fieldsmemory($result_rhlota, $i);

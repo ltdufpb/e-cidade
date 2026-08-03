@@ -175,23 +175,23 @@ $instrucao = "Tipo/Exercício: " . @$this->tipo_exerc . $this->descr12_1 . " \n";
 
 
 if (!empty($this->valororigem)) {
-    $instrucao .= " Valor origem= " . trim($this->valororigem);
+    $instrucao .= " Valor origem= " . trim((string) $this->valororigem);
 }
 
 if (!empty($this->valtotal)) {
-    $instrucao .= " Valor corrigido = " . trim($this->valtotal);
+    $instrucao .= " Valor corrigido = " . trim((string) $this->valtotal);
 }
 
 if (!empty($this->desconto_abatimento)) {
-    $instrucao .= " Desconto/Abatimento = " . trim($this->desconto_abatimento);
+    $instrucao .= " Desconto/Abatimento = " . trim((string) $this->desconto_abatimento);
 }
 
 if (!empty($this->mora_multa)) {
-    $instrucao .= " Mora/Multa = " . trim($this->mora_multa);
+    $instrucao .= " Mora/Multa = " . trim((string) $this->mora_multa);
 }
 
 if (!empty($this->valor_cobrado)) {
-    $instrucao .= " Valor do documento = " . trim($this->valor_cobrado);
+    $instrucao .= " Valor do documento = " . trim((string) $this->valor_cobrado);
 }
 
 if (!empty($this->taxaExpediente)) {
@@ -213,9 +213,9 @@ $this->objpdf->cell(30, 6, @$this->outros_acrecimos, 0, 0, "R");//outros acresci
 $this->objpdf->setXY($x + 136, $y + 67);
 $this->objpdf->cell(30, 6, "", 0, 0, "R");//valor cobrado .... @$this->valor_cobrado
 $this->objpdf->SetFont('Arial', '', 8);
-$this->objpdf->Text($x + 19, $y + 77, substr($this->descr11_1, 0, 42));         // sacado 1
+$this->objpdf->Text($x + 19, $y + 77, substr((string) $this->descr11_1, 0, 42));         // sacado 1
 $this->objpdf->Text($x + 93, $y + 77,
-  "CPF/CNPJ: " . db_formatar(@$this->cgccpf, (strlen(@$this->cgccpf) < 12 ? 'cpf' : 'cnpj'))); // CPF/CNPJ
+  "CPF/CNPJ: " . db_formatar(@$this->cgccpf, (strlen((string) @$this->cgccpf) < 12 ? 'cpf' : 'cnpj'))); // CPF/CNPJ
 $this->objpdf->Text($x + 19, $y + 80, $this->descr11_2); // $this->ender);    // sacado 2
 if (!isset($this->ufcgm)) {
     $this->ufcgm = $this->uf_config;

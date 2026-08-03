@@ -52,14 +52,14 @@ $dtproc = db_formatar($p58_dtproc,'d');
  * Tipos de despachos
  * padrao: 1 - Despacho
  */
-$aTipos = array(1 => 'Despacho');
+$aTipos = [1 => 'Despacho'];
 $oDaoTipoDespacho = new cl_tipodespacho();
 $sSqlTIpos = $oDaoTipoDespacho->sql_query_file();
 $rsTipos = $oDaoTipoDespacho->sql_record($sSqlTIpos);
 
 if ($oDaoTipoDespacho->numrows > 1) {
 
-  $aTipos = array();
+  $aTipos = [];
 
   for ($iRow = 0; $iRow < $oDaoTipoDespacho->numrows; $iRow++) {
 
@@ -219,7 +219,7 @@ function js_submit(){
           </td>
           <td>
             <?php
-              $x = array("t"=>"Sim","f"=>"Não");
+              $x = ["t"=>"Sim","f"=>"Não"];
               db_select('p78_publico',$x,true,1,"");
             ?>
           </td>
@@ -248,7 +248,7 @@ function js_submit(){
                 $despachoob = true;
               }
 
-              if (isset($p90_minchardesp) && $p90_minchardesp != "") {			
+              if (isset($p90_minchardesp) && $p90_minchardesp != 0) {			
                 echo "<br><b>*Mínimo de {$p90_minchardesp} caracteres para o despacho.</b>";
               } 
             }
@@ -313,7 +313,7 @@ document.form1.p78_despacho.style.width='100%';
 
 function js_imprime() {
 
-  var iCodigoAndamentoInterno = '<?php echo (isset($codprocandamint) ? $codprocandamint : null); ?>';
+  var iCodigoAndamentoInterno = '<?php echo ($codprocandamint ?? null); ?>';
   var iCodigoProcesso = document.form1.p58_codproc.value;
   var sUrl = 'pro2_despachointer002.php?codproc=' + iCodigoProcesso + '&codprocandamint=' + iCodigoAndamentoInterno;
 

@@ -35,7 +35,7 @@ $clpcorcam = new cl_pcorcam;
 $clpcorcam->rotulo->label();
 $clrotulo=new rotulocampo;
 $clrotulo->label("l20_codigo");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_botao = true;
 $action = 'lic1_orcamlancval001.php';
 ?>

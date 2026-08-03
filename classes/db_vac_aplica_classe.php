@@ -29,37 +29,37 @@
 //CLASSE DA ENTIDADE vac_aplica
 class cl_vac_aplica { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $vc16_i_codigo = 0; 
-   var $vc16_i_dosevacina = 0; 
-   var $vc16_n_quant = 0; 
-   var $vc16_d_dataaplicada_dia = null; 
-   var $vc16_d_dataaplicada_mes = null; 
-   var $vc16_d_dataaplicada_ano = null; 
-   var $vc16_d_dataaplicada = null; 
-   var $vc16_t_obs = null; 
-   var $vc16_i_usuario = 0; 
-   var $vc16_i_departamento = 0; 
-   var $vc16_c_hora = null; 
-   var $vc16_d_data_dia = null; 
-   var $vc16_d_data_mes = null; 
-   var $vc16_d_data_ano = null; 
-   var $vc16_d_data = null; 
-   var $vc16_i_cgs = 0; 
+   public $vc16_i_codigo = 0; 
+   public $vc16_i_dosevacina = 0; 
+   public $vc16_n_quant = 0; 
+   public $vc16_d_dataaplicada_dia = null; 
+   public $vc16_d_dataaplicada_mes = null; 
+   public $vc16_d_dataaplicada_ano = null; 
+   public $vc16_d_dataaplicada = null; 
+   public $vc16_t_obs = null; 
+   public $vc16_i_usuario = 0; 
+   public $vc16_i_departamento = 0; 
+   public $vc16_c_hora = null; 
+   public $vc16_d_data_dia = null; 
+   public $vc16_d_data_mes = null; 
+   public $vc16_d_data_ano = null; 
+   public $vc16_d_data = null; 
+   public $vc16_i_cgs = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  vc16_i_codigo = int4 = Código 
                  vc16_i_dosevacina = int4 = Vacina Dose 
                  vc16_n_quant = float4 = Quantidade 
@@ -72,10 +72,10 @@ class cl_vac_aplica {
                  vc16_i_cgs = int4 = CGS 
                  ";
    //funcao construtor da classe 
-   function cl_vac_aplica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vac_aplica"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -202,10 +202,10 @@ class cl_vac_aplica {
          $this->erro_status = "0";
          return false; 
        }
-       $this->vc16_i_codigo = pg_result($result,0,0); 
+       $this->vc16_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from vac_aplica_vc16_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $vc16_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $vc16_i_codigo)){
          $this->erro_sql = " Campo vc16_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -251,7 +251,7 @@ class cl_vac_aplica {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Aplicar Vacina ($this->vc16_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Aplicar Vacina já Cadastrado";
@@ -275,19 +275,19 @@ class cl_vac_aplica {
      $resaco = $this->sql_record($this->sql_query_file($this->vc16_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16874,'$this->vc16_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2970,16874,'','".AddSlashes(pg_result($resaco,0,'vc16_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2970,16875,'','".AddSlashes(pg_result($resaco,0,'vc16_i_dosevacina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2970,16877,'','".AddSlashes(pg_result($resaco,0,'vc16_n_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2970,16879,'','".AddSlashes(pg_result($resaco,0,'vc16_d_dataaplicada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2970,16878,'','".AddSlashes(pg_result($resaco,0,'vc16_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2970,16881,'','".AddSlashes(pg_result($resaco,0,'vc16_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2970,16882,'','".AddSlashes(pg_result($resaco,0,'vc16_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2970,16880,'','".AddSlashes(pg_result($resaco,0,'vc16_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2970,16876,'','".AddSlashes(pg_result($resaco,0,'vc16_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2970,17083,'','".AddSlashes(pg_result($resaco,0,'vc16_i_cgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2970,16874,'','".AddSlashes(pg_fetch_result($resaco,0,'vc16_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2970,16875,'','".AddSlashes(pg_fetch_result($resaco,0,'vc16_i_dosevacina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2970,16877,'','".AddSlashes(pg_fetch_result($resaco,0,'vc16_n_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2970,16879,'','".AddSlashes(pg_fetch_result($resaco,0,'vc16_d_dataaplicada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2970,16878,'','".AddSlashes(pg_fetch_result($resaco,0,'vc16_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2970,16881,'','".AddSlashes(pg_fetch_result($resaco,0,'vc16_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2970,16882,'','".AddSlashes(pg_fetch_result($resaco,0,'vc16_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2970,16880,'','".AddSlashes(pg_fetch_result($resaco,0,'vc16_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2970,16876,'','".AddSlashes(pg_fetch_result($resaco,0,'vc16_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2970,17083,'','".AddSlashes(pg_fetch_result($resaco,0,'vc16_i_cgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -296,10 +296,10 @@ class cl_vac_aplica {
       $this->atualizacampos();
      $sql = " update vac_aplica set ";
      $virgula = "";
-     if(trim($this->vc16_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_codigo"])){ 
+     if(trim((string) $this->vc16_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_codigo"])){ 
        $sql  .= $virgula." vc16_i_codigo = $this->vc16_i_codigo ";
        $virgula = ",";
-       if(trim($this->vc16_i_codigo) == null ){ 
+       if(trim((string) $this->vc16_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "vc16_i_codigo";
          $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_vac_aplica {
          return false;
        }
      }
-     if(trim($this->vc16_i_dosevacina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_dosevacina"])){ 
+     if(trim((string) $this->vc16_i_dosevacina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_dosevacina"])){ 
        $sql  .= $virgula." vc16_i_dosevacina = $this->vc16_i_dosevacina ";
        $virgula = ",";
-       if(trim($this->vc16_i_dosevacina) == null ){ 
+       if(trim((string) $this->vc16_i_dosevacina) == null ){ 
          $this->erro_sql = " Campo Vacina Dose nao Informado.";
          $this->erro_campo = "vc16_i_dosevacina";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_vac_aplica {
          return false;
        }
      }
-     if(trim($this->vc16_n_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_n_quant"])){ 
+     if(trim((string) $this->vc16_n_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_n_quant"])){ 
        $sql  .= $virgula." vc16_n_quant = $this->vc16_n_quant ";
        $virgula = ",";
-       if(trim($this->vc16_n_quant) == null ){ 
+       if(trim((string) $this->vc16_n_quant) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "vc16_n_quant";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_vac_aplica {
          return false;
        }
      }
-     if(trim($this->vc16_d_dataaplicada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_d_dataaplicada_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc16_d_dataaplicada_dia"] !="") ){ 
+     if(trim((string) $this->vc16_d_dataaplicada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_d_dataaplicada_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc16_d_dataaplicada_dia"] !="") ){ 
        $sql  .= $virgula." vc16_d_dataaplicada = '$this->vc16_d_dataaplicada' ";
        $virgula = ",";
-       if(trim($this->vc16_d_dataaplicada) == null ){ 
+       if(trim((string) $this->vc16_d_dataaplicada) == null ){ 
          $this->erro_sql = " Campo Data aplicação nao Informado.";
          $this->erro_campo = "vc16_d_dataaplicada_dia";
          $this->erro_banco = "";
@@ -351,7 +351,7 @@ class cl_vac_aplica {
        if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_d_dataaplicada_dia"])){ 
          $sql  .= $virgula." vc16_d_dataaplicada = null ";
          $virgula = ",";
-         if(trim($this->vc16_d_dataaplicada) == null ){ 
+         if(trim((string) $this->vc16_d_dataaplicada) == null ){ 
            $this->erro_sql = " Campo Data aplicação nao Informado.";
            $this->erro_campo = "vc16_d_dataaplicada_dia";
            $this->erro_banco = "";
@@ -362,14 +362,14 @@ class cl_vac_aplica {
          }
        }
      }
-     if(trim($this->vc16_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_t_obs"])){ 
+     if(trim((string) $this->vc16_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_t_obs"])){ 
        $sql  .= $virgula." vc16_t_obs = '$this->vc16_t_obs' ";
        $virgula = ",";
      }
-     if(trim($this->vc16_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_usuario"])){ 
+     if(trim((string) $this->vc16_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_usuario"])){ 
        $sql  .= $virgula." vc16_i_usuario = $this->vc16_i_usuario ";
        $virgula = ",";
-       if(trim($this->vc16_i_usuario) == null ){ 
+       if(trim((string) $this->vc16_i_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "vc16_i_usuario";
          $this->erro_banco = "";
@@ -379,10 +379,10 @@ class cl_vac_aplica {
          return false;
        }
      }
-     if(trim($this->vc16_i_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_departamento"])){ 
+     if(trim((string) $this->vc16_i_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_departamento"])){ 
        $sql  .= $virgula." vc16_i_departamento = $this->vc16_i_departamento ";
        $virgula = ",";
-       if(trim($this->vc16_i_departamento) == null ){ 
+       if(trim((string) $this->vc16_i_departamento) == null ){ 
          $this->erro_sql = " Campo Departamento nao Informado.";
          $this->erro_campo = "vc16_i_departamento";
          $this->erro_banco = "";
@@ -392,10 +392,10 @@ class cl_vac_aplica {
          return false;
        }
      }
-     if(trim($this->vc16_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_c_hora"])){ 
+     if(trim((string) $this->vc16_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_c_hora"])){ 
        $sql  .= $virgula." vc16_c_hora = '$this->vc16_c_hora' ";
        $virgula = ",";
-       if(trim($this->vc16_c_hora) == null ){ 
+       if(trim((string) $this->vc16_c_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "vc16_c_hora";
          $this->erro_banco = "";
@@ -405,10 +405,10 @@ class cl_vac_aplica {
          return false;
        }
      }
-     if(trim($this->vc16_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc16_d_data_dia"] !="") ){ 
+     if(trim((string) $this->vc16_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc16_d_data_dia"] !="") ){ 
        $sql  .= $virgula." vc16_d_data = '$this->vc16_d_data' ";
        $virgula = ",";
-       if(trim($this->vc16_d_data) == null ){ 
+       if(trim((string) $this->vc16_d_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "vc16_d_data_dia";
          $this->erro_banco = "";
@@ -421,7 +421,7 @@ class cl_vac_aplica {
        if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_d_data_dia"])){ 
          $sql  .= $virgula." vc16_d_data = null ";
          $virgula = ",";
-         if(trim($this->vc16_d_data) == null ){ 
+         if(trim((string) $this->vc16_d_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "vc16_d_data_dia";
            $this->erro_banco = "";
@@ -432,10 +432,10 @@ class cl_vac_aplica {
          }
        }
      }
-     if(trim($this->vc16_i_cgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_cgs"])){ 
+     if(trim((string) $this->vc16_i_cgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_cgs"])){ 
        $sql  .= $virgula." vc16_i_cgs = $this->vc16_i_cgs ";
        $virgula = ",";
-       if(trim($this->vc16_i_cgs) == null ){ 
+       if(trim((string) $this->vc16_i_cgs) == null ){ 
          $this->erro_sql = " Campo CGS nao Informado.";
          $this->erro_campo = "vc16_i_cgs";
          $this->erro_banco = "";
@@ -453,29 +453,29 @@ class cl_vac_aplica {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16874,'$this->vc16_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_codigo"]) || $this->vc16_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2970,16874,'".AddSlashes(pg_result($resaco,$conresaco,'vc16_i_codigo'))."','$this->vc16_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2970,16874,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc16_i_codigo'))."','$this->vc16_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_dosevacina"]) || $this->vc16_i_dosevacina != "")
-           $resac = db_query("insert into db_acount values($acount,2970,16875,'".AddSlashes(pg_result($resaco,$conresaco,'vc16_i_dosevacina'))."','$this->vc16_i_dosevacina',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2970,16875,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc16_i_dosevacina'))."','$this->vc16_i_dosevacina',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_n_quant"]) || $this->vc16_n_quant != "")
-           $resac = db_query("insert into db_acount values($acount,2970,16877,'".AddSlashes(pg_result($resaco,$conresaco,'vc16_n_quant'))."','$this->vc16_n_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2970,16877,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc16_n_quant'))."','$this->vc16_n_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_d_dataaplicada"]) || $this->vc16_d_dataaplicada != "")
-           $resac = db_query("insert into db_acount values($acount,2970,16879,'".AddSlashes(pg_result($resaco,$conresaco,'vc16_d_dataaplicada'))."','$this->vc16_d_dataaplicada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2970,16879,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc16_d_dataaplicada'))."','$this->vc16_d_dataaplicada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_t_obs"]) || $this->vc16_t_obs != "")
-           $resac = db_query("insert into db_acount values($acount,2970,16878,'".AddSlashes(pg_result($resaco,$conresaco,'vc16_t_obs'))."','$this->vc16_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2970,16878,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc16_t_obs'))."','$this->vc16_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_usuario"]) || $this->vc16_i_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,2970,16881,'".AddSlashes(pg_result($resaco,$conresaco,'vc16_i_usuario'))."','$this->vc16_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2970,16881,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc16_i_usuario'))."','$this->vc16_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_departamento"]) || $this->vc16_i_departamento != "")
-           $resac = db_query("insert into db_acount values($acount,2970,16882,'".AddSlashes(pg_result($resaco,$conresaco,'vc16_i_departamento'))."','$this->vc16_i_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2970,16882,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc16_i_departamento'))."','$this->vc16_i_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_c_hora"]) || $this->vc16_c_hora != "")
-           $resac = db_query("insert into db_acount values($acount,2970,16880,'".AddSlashes(pg_result($resaco,$conresaco,'vc16_c_hora'))."','$this->vc16_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2970,16880,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc16_c_hora'))."','$this->vc16_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_d_data"]) || $this->vc16_d_data != "")
-           $resac = db_query("insert into db_acount values($acount,2970,16876,'".AddSlashes(pg_result($resaco,$conresaco,'vc16_d_data'))."','$this->vc16_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2970,16876,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc16_d_data'))."','$this->vc16_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["vc16_i_cgs"]) || $this->vc16_i_cgs != "")
-           $resac = db_query("insert into db_acount values($acount,2970,17083,'".AddSlashes(pg_result($resaco,$conresaco,'vc16_i_cgs'))."','$this->vc16_i_cgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2970,17083,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'vc16_i_cgs'))."','$this->vc16_i_cgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -520,19 +520,19 @@ class cl_vac_aplica {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16874,'$vc16_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2970,16874,'','".AddSlashes(pg_result($resaco,$iresaco,'vc16_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2970,16875,'','".AddSlashes(pg_result($resaco,$iresaco,'vc16_i_dosevacina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2970,16877,'','".AddSlashes(pg_result($resaco,$iresaco,'vc16_n_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2970,16879,'','".AddSlashes(pg_result($resaco,$iresaco,'vc16_d_dataaplicada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2970,16878,'','".AddSlashes(pg_result($resaco,$iresaco,'vc16_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2970,16881,'','".AddSlashes(pg_result($resaco,$iresaco,'vc16_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2970,16882,'','".AddSlashes(pg_result($resaco,$iresaco,'vc16_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2970,16880,'','".AddSlashes(pg_result($resaco,$iresaco,'vc16_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2970,16876,'','".AddSlashes(pg_result($resaco,$iresaco,'vc16_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2970,17083,'','".AddSlashes(pg_result($resaco,$iresaco,'vc16_i_cgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2970,16874,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc16_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2970,16875,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc16_i_dosevacina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2970,16877,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc16_n_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2970,16879,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc16_d_dataaplicada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2970,16878,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc16_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2970,16881,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc16_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2970,16882,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc16_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2970,16880,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc16_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2970,16876,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc16_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2970,17083,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'vc16_i_cgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from vac_aplica
@@ -592,7 +592,7 @@ class cl_vac_aplica {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vac_aplica";
@@ -607,7 +607,7 @@ class cl_vac_aplica {
    function sql_query ( $vc16_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -637,7 +637,7 @@ class cl_vac_aplica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -650,7 +650,7 @@ class cl_vac_aplica {
    function sql_query_file ( $vc16_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -671,7 +671,7 @@ class cl_vac_aplica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -683,7 +683,7 @@ class cl_vac_aplica {
    function sql_query2 ( $vc16_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -720,7 +720,7 @@ class cl_vac_aplica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -730,12 +730,12 @@ class cl_vac_aplica {
      return $sql;
   }
    function sql_query_vacinasnaoaplicadas($sCampos = '*', $sOrdem = null, $sGroup = '', 
-                                         $dDataInicial, $dDataFinal, $sVacinas, $dFaixaIni, $dFaixaFim) { 
+                                         $dDataInicial = null, $dDataFinal = null, $sVacinas = null, $dFaixaIni = null, $dFaixaFim = null) { 
 
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = preg_split('#\##m', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -930,7 +930,7 @@ class cl_vac_aplica {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = preg_split('#\##m', (string) $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 

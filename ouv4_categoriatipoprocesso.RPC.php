@@ -91,7 +91,7 @@ try {
             $categoriaTipoProcessoRepository = CategoriaTipoProcessoRepository::getInstancia();
             $tipoProcessoCollection = $categoriaTipoProcessoRepository->buscarTiposProcessoVinculados($categoriaTipoProcessoModel);
 
-            $retorno->tiposProcesso = array();
+            $retorno->tiposProcesso = [];
 
             foreach ($tipoProcessoCollection->getAll() as $tipoProcesso) {
                 $dadosTipoProcesso = new stdClass();

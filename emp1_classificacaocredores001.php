@@ -109,10 +109,10 @@ $oRotuloLista->label();
         </td>
         <td>
           <?php
-          $aDispensas = array(
+          $aDispensas = [
             "0" => "Não",
             "1" => "Sim"
-          );
+          ];
           db_select("cc30_dispensa", $aDispensas, true, 1, "style='width: 54px;'");
           ?>
         </td>
@@ -140,11 +140,11 @@ $oRotuloLista->label();
           </td>
           <td>
             <?php
-            $aContagemDias = array(
+            $aContagemDias = [
               "0" => "Selecione",
               "1" => "Úteis",
               "2" => "Corridos"
-            );
+            ];
             db_select("cc30_contagemdias", $aContagemDias, true, 1, "style='width: 78px;'");
             ?>
           </td>
@@ -206,9 +206,9 @@ $oRotuloLista->label();
 </div>
 
 <p style="text-align: center;">
-  <?php $sVisibilidadeSalvar    = in_array($iOpcao, array(INCLUSAO, ALTERACAO)) ?: 'display: none' ?>
+  <?php $sVisibilidadeSalvar    = in_array($iOpcao, [INCLUSAO, ALTERACAO]) ?: 'display: none' ?>
   <?php $sVisibilidadeExcluir   = $iOpcao === EXCLUSAO ?: 'display: none' ?>
-  <?php $sVisibilidadePesquisar = in_array($iOpcao, array(ALTERACAO, EXCLUSAO)) ?: 'display: none' ?>
+  <?php $sVisibilidadePesquisar = in_array($iOpcao, [ALTERACAO, EXCLUSAO]) ?: 'display: none' ?>
   <?php $sDesabilitarSalvar     = $iOpcao !== ALTERACAO ?: 'disabled="disabled"' ?>
   <?php $sVisibilidadeImportar  = $iOpcao === INCLUSAO ?: 'display: none' ?>
 

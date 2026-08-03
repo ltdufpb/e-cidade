@@ -31,20 +31,20 @@ include(modification("classes/db_cgm_classe.php"));
 $clcgm = new cl_cgm;
 $clcgm->rotulo->label();
 $clrotulo = new rotulocampo;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $campos = "";
 $camposgroup = "";
 $count  = "count(z01_numcgm)"; 
 $vir    = "";
-$campos_where  = array();
-$Ncampos_where = array();
+$campos_where  = [];
+$Ncampos_where = [];
 $index  = 0;
 $index1 = 0;
-$campos_head   = array();
-$Ncampos_head  = array();
-$Ntam_campos   = array();
+$campos_head   = [];
+$Ncampos_head  = [];
+$Ntam_campos   = [];
 if(isset($Cz01_nome)){
   $campos .= $vir."z01_nome";
 	$camposgroup .= $vir."z01_nome";
@@ -148,10 +148,10 @@ for($i=0;$i<$numrows_cgm;$i++){
   $where = "";
   $and   = "      ";
   for($ii=0;$ii<sizeof($campos_where);$ii++){
-    if(!isset($$campos_where[$ii]) || $$campos_where[$ii]==""){
-      $where .= $and.($campos_where[$ii] != "z01_numero"? "(trim(". $campos_where[$ii].")='".$$campos_where[$ii]."' or ".$campos_where[$ii]." is null)":$campos_where[$ii]."=".$$campos_where[$ii]);
+    if(!isset(${$campos_where}[$ii]) || ${$campos_where}[$ii]==""){
+      $where .= $and.($campos_where[$ii] != "z01_numero"? "(trim(". $campos_where[$ii].")='".${$campos_where}[$ii]."' or ".$campos_where[$ii]." is null)":$campos_where[$ii]."=".${$campos_where}[$ii]);
     }else{
-      $where .= $and.($campos_where[$ii] != "z01_numero"? "trim(". $campos_where[$ii].")='".$$campos_where[$ii]."'":$campos_where[$ii]."=".$$campos_where[$ii]);
+      $where .= $and.($campos_where[$ii] != "z01_numero"? "trim(". $campos_where[$ii].")='".${$campos_where}[$ii]."'":$campos_where[$ii]."=".${$campos_where}[$ii]);
     }
     $and    = "      and      ";
   }
@@ -204,20 +204,20 @@ for($i=0;$i<$numrows_cgm;$i++){
     }
     if($iii == 0 || $muda_pag==true){
       $pdf->setfont('arial','b',7);
-      $pdf->cell(75,$alt,@$$campos_where[0],"LT",0,"L",1);
-      $pdf->cell(25,$alt,@$$campos_where[1],"T",0,"L",1);
-      $pdf->cell(75,$alt,@$$campos_where[2],"T",0,"L",1);
-      $pdf->cell(20,$alt,@$$campos_where[3],"T",0,"L",1);
-      $pdf->cell(40,$alt,@$$campos_where[4],"T",0,"L",1);
+      $pdf->cell(75,$alt,@${$campos_where}[0],"LT",0,"L",1);
+      $pdf->cell(25,$alt,@${$campos_where}[1],"T",0,"L",1);
+      $pdf->cell(75,$alt,@${$campos_where}[2],"T",0,"L",1);
+      $pdf->cell(20,$alt,@${$campos_where}[3],"T",0,"L",1);
+      $pdf->cell(40,$alt,@${$campos_where}[4],"T",0,"L",1);
       if($index>=5){
-	$pdf->cell(40,$alt,@$$campos_where[5],"TR",1,"L",1);
+	$pdf->cell(40,$alt,@${$campos_where}[5],"TR",1,"L",1);
       }else{
 	$pdf->cell(10,$alt,"","T",0,"R",1);
 	$pdf->cell(15,$alt,"Registros:","LT",0,"L",1);
 	$pdf->cell(15,$alt,@$count,"TR",1,"R",1);
       }
       if($index>5){
-	$pdf->cell(75,$alt,@$$campos_where[6],"L",0,"L",1);
+	$pdf->cell(75,$alt,@${$campos_where}[6],"L",0,"L",1);
 	$pdf->cell(170,$alt,"",0,0,"R",1);
 	$pdf->cell(15,$alt,"Registros:","LT",0,"L",1);
 	$pdf->cell(15,$alt,@$count,"TR",1,"R",1);
@@ -225,14 +225,14 @@ for($i=0;$i<$numrows_cgm;$i++){
     }
     $pdf->setfont('arial','',7);
     $pdf->cell(15,$alt,$z01_numcgm,1,0,"C",0);
-    $pdf->cell(50,$alt,substr($z01_nome,0,31),1,0,"L",0);
+    $pdf->cell(50,$alt,substr((string) $z01_nome,0,31),1,0,"L",0);
     $pdf->cell(25,$alt,$z01_cgccpf,1,0,"R",0);
-    $pdf->cell(60,$alt,substr($z01_ender,0,35).", ".$z01_numero,1,0,"L",0);
+    $pdf->cell(60,$alt,substr((string) $z01_ender,0,35).", ".$z01_numero,1,0,"L",0);
     $pdf->cell(15,$alt,$z01_cep1."-".$z01_cep2,1,0,"C",0);
     $pdf->cell(25,$alt,$z01_compl,1,0,"L",0);
     $pdf->cell(25,$alt,$z01_cxpostal,1,0,"R",0);
-    $pdf->cell(30,$alt,substr($z01_bairro,0,19),1,0,"L",0);
-    $pdf->cell(30,$alt,substr($z01_munic,0,16)."/".$z01_uf,1,1,"L",0);
+    $pdf->cell(30,$alt,substr((string) $z01_bairro,0,19),1,0,"L",0);
+    $pdf->cell(30,$alt,substr((string) $z01_munic,0,16)."/".$z01_uf,1,1,"L",0);
     $total++;
   }
   if($i+1!=$numrows_cgm){

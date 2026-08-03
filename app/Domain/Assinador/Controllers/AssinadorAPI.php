@@ -224,7 +224,7 @@ class AssinadorAPI extends Controller
     private function convertBase64FileToLaravelFile($base64EncondedFile, $filename = null)
     {
 
-        $data = base64_decode($base64EncondedFile);
+        $data = base64_decode((string) $base64EncondedFile);
 
         if ($filename === null) {
             $filename = uniqid() . time() . ".pdf";
@@ -388,7 +388,7 @@ class AssinadorAPI extends Controller
                 break;
 
             case 'text\/plain':
-            case (preg_match('/text\/plain.*/', $mime_type, $searched) && $searched):
+            case (preg_match('/text\/plain.*/', (string) $mime_type, $searched) && $searched):
                 $extension = 'txt';
                 break;
 
@@ -397,7 +397,7 @@ class AssinadorAPI extends Controller
                 break;
 
             default:
-                $extension = preg_replace('/^.*\/(.*)$/', "$1", $mime_type);
+                $extension = preg_replace('/^.*\/(.*)$/', "$1", (string) $mime_type);
                 break;
         }
 
@@ -420,13 +420,11 @@ class AssinadorAPI extends Controller
 
         $data = json_decode($response, true)["data"];
 
-        $filtered = array_filter($data, function ($key) use ($fileOldId) {
-            return $key['id'] == $fileOldId;
-        });
+        $filtered = array_filter($data, fn($key) => $key['id'] == $fileOldId);
         $filtered = array_shift($filtered);
 
         foreach ($filtered['metadata'] as $key => $val) {
-            $filtered['metadata'][$key]['data'] = json_decode($val['data'], true);
+            $filtered['metadata'][$key]['data'] = json_decode((string) $val['data'], true);
         }
 
         return Response::make($filtered);
@@ -478,8 +476,8 @@ class AssinadorAPI extends Controller
             $constraint->aspectRatio();
         });
         $logoBase64 = $logoPrefeitura->encode('data-url')->getEncoded();
-        $pos = strpos($logoBase64, ',');
-        $logoBase64 = substr($logoBase64, $pos + 1);
+        $pos = strpos((string) $logoBase64, ',');
+        $logoBase64 = substr((string) $logoBase64, $pos + 1);
 
         $config = (object)[
             'fileID' => null,

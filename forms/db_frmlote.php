@@ -347,7 +347,7 @@ db_input('j54_distan',5,$Ij54_distan,true,'text',$db_opcao,"")
     </td>
     <td>
        <?php 
-$matriz = array('0'=>"...",'leste'=>"Leste",'oeste'=>"Oeste",'norte'=>"Norte",'sul'=>"Sul",'nordeste'=>"Nordeste",'Sudoeste'=>"Sudoeste",'noroeste'=>"Noroeste",'sudeste'=>"Sudeste");
+$matriz = ['0'=>"...",'leste'=>"Leste",'oeste'=>"Oeste",'norte'=>"Norte",'sul'=>"Sul",'nordeste'=>"Nordeste",'Sudoeste'=>"Sudoeste",'noroeste'=>"Noroeste",'sudeste'=>"Sudeste"];
 db_select('j54_ponto',$matriz,true,$db_opcao);
 
 ?>
@@ -533,7 +533,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 function js_pesquisaj91_codigo(mostra){

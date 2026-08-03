@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE db_imgsitbi
 class cl_db_imgsitbi { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $matricula = 0; 
-   var $data_dia = null; 
-   var $data_mes = null; 
-   var $data_ano = null; 
-   var $data = null; 
-   var $arq = 0; 
+   public $matricula = 0; 
+   public $data_dia = null; 
+   public $data_mes = null; 
+   public $data_ano = null; 
+   public $data = null; 
+   public $arq = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  matricula = int4 = Matrícula 
                  data = date = Data 
                  arq = oid = Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_db_imgsitbi() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_imgsitbi"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -128,7 +128,7 @@ class cl_db_imgsitbi {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Imagens ITBI () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Imagens ITBI já Cadastrado";
@@ -155,10 +155,10 @@ class cl_db_imgsitbi {
       $this->atualizacampos();
      $sql = " update db_imgsitbi set ";
      $virgula = "";
-     if(trim($this->matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["matricula"])){ 
+     if(trim((string) $this->matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["matricula"])){ 
        $sql  .= $virgula." matricula = $this->matricula ";
        $virgula = ",";
-       if(trim($this->matricula) == null ){ 
+       if(trim((string) $this->matricula) == null ){ 
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "matricula";
          $this->erro_banco = "";
@@ -168,10 +168,10 @@ class cl_db_imgsitbi {
          return false;
        }
      }
-     if(trim($this->data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["data_dia"] !="") ){ 
+     if(trim((string) $this->data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["data_dia"] !="") ){ 
        $sql  .= $virgula." data = '$this->data' ";
        $virgula = ",";
-       if(trim($this->data) == null ){ 
+       if(trim((string) $this->data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "data_dia";
          $this->erro_banco = "";
@@ -184,7 +184,7 @@ class cl_db_imgsitbi {
        if(isset($GLOBALS["HTTP_POST_VARS"]["data_dia"])){ 
          $sql  .= $virgula." data = null ";
          $virgula = ",";
-         if(trim($this->data) == null ){ 
+         if(trim((string) $this->data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "data_dia";
            $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_db_imgsitbi {
          }
        }
      }
-     if(trim($this->arq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["arq"])){ 
+     if(trim((string) $this->arq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["arq"])){ 
        $sql  .= $virgula." arq = $this->arq ";
        $virgula = ",";
-       if(trim($this->arq) == null ){ 
+       if(trim((string) $this->arq) == null ){ 
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "arq";
          $this->erro_banco = "";
@@ -289,7 +289,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_imgsitbi";

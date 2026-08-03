@@ -51,7 +51,7 @@ switch ($oParam->exec) {
   case "getCodigoEstrutural":
 
     $oRetorno->iCodigoEstrutura = '';
-    $aParametro = db_stdClass::getParametro("matparam",array());
+    $aParametro = db_stdClass::getParametro("matparam",[]);
     if (count($aParametro) > 0) {
       $oRetorno->iCodigoEstrutura = $aParametro[0]->m90_db_estrutura;
     }
@@ -68,10 +68,10 @@ switch ($oParam->exec) {
 
       $oMaterialGrupo = new MaterialGrupo($oParam->iCodigoGrupo);
 
-      $oMaterialGrupo->setDescricao(db_stdClass::db_stripTagsJson(utf8_decode($oParam->oGrupo->sDescricao)))
+      $oMaterialGrupo->setDescricao(db_stdClass::db_stripTagsJson(mb_convert_encoding($oParam->oGrupo->sDescricao, 'ISO-8859-1')))
                      ->setEstrutura((int)$oParam->oGrupo->iCodigoEstrutura)
                      ->setTipoConta($oParam->oGrupo->iTipo)
-                     ->setEstrutural(db_stdClass::db_stripTagsJson(utf8_decode($oParam->oGrupo->sEstrutural)))
+                     ->setEstrutural(db_stdClass::db_stripTagsJson(mb_convert_encoding($oParam->oGrupo->sEstrutural, 'ISO-8859-1')))
                      ->setAtivo($oParam->oGrupo->lAtivo == 1?true:false)
                      ->setConta($oParam->oGrupo->iConta)
                      ->setCodigoContaVPD($oParam->oGrupo->iContaVPD)
@@ -98,11 +98,11 @@ switch ($oParam->exec) {
     $oRetorno->codigoconta       = $oMaterialGrupo->getConta();
     $oRetorno->codigocontaVPD    = $oMaterialGrupo->getCodigoContaVPD();
     $oRetorno->codigogrupo       = $oMaterialGrupo->getCodigo();
-    $oRetorno->descricaoconta    = urlencode($oMaterialGrupo->getContaAtivo()->getDescricao());
+    $oRetorno->descricaoconta    = urlencode((string) $oMaterialGrupo->getContaAtivo()->getDescricao());
     $oRetorno->estruturalConta   = $oMaterialGrupo->getContaAtivo()->getEstrutural();
     $oRetorno->descricaocontaVPD = "";
     if ($oMaterialGrupo->getContaVPD() != "") {
-      $oRetorno->descricaocontaVPD = urlencode($oMaterialGrupo->getContaVPD()->getDescricao());
+      $oRetorno->descricaocontaVPD = urlencode((string) $oMaterialGrupo->getContaVPD()->getDescricao());
       $oRetorno->estruturalContaVPD = $oMaterialGrupo->getContaVPD()->getEstrutural();
     }
     break;

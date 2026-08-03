@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE rhpromocaofechamento
 class cl_rhpromocaofechamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h77_sequencial = 0; 
-   var $h77_rhpromocao = 0; 
-   var $h77_pontosavaliacao = 0; 
+   public $h77_sequencial = 0; 
+   public $h77_rhpromocao = 0; 
+   public $h77_pontosavaliacao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h77_sequencial = int4 = Sequencial 
                  h77_rhpromocao = int4 = Promoção 
                  h77_pontosavaliacao = int4 = Pontos da avaliação 
                  ";
    //funcao construtor da classe 
-   function cl_rhpromocaofechamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpromocaofechamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_rhpromocaofechamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->h77_sequencial = pg_result($result,0,0); 
+       $this->h77_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhpromocaofechamento_h77_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $h77_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $h77_sequencial)){
          $this->erro_sql = " Campo h77_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_rhpromocaofechamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Fechamento da promoção ($this->h77_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Fechamento da promoção já Cadastrado";
@@ -166,12 +166,12 @@ class cl_rhpromocaofechamento {
      $resaco = $this->sql_record($this->sql_query_file($this->h77_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18731,'$this->h77_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3320,18731,'','".AddSlashes(pg_result($resaco,0,'h77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3320,18732,'','".AddSlashes(pg_result($resaco,0,'h77_rhpromocao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3320,18733,'','".AddSlashes(pg_result($resaco,0,'h77_pontosavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3320,18731,'','".AddSlashes(pg_fetch_result($resaco,0,'h77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3320,18732,'','".AddSlashes(pg_fetch_result($resaco,0,'h77_rhpromocao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3320,18733,'','".AddSlashes(pg_fetch_result($resaco,0,'h77_pontosavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_rhpromocaofechamento {
       $this->atualizacampos();
      $sql = " update rhpromocaofechamento set ";
      $virgula = "";
-     if(trim($this->h77_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h77_sequencial"])){ 
+     if(trim((string) $this->h77_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h77_sequencial"])){ 
        $sql  .= $virgula." h77_sequencial = $this->h77_sequencial ";
        $virgula = ",";
-       if(trim($this->h77_sequencial) == null ){ 
+       if(trim((string) $this->h77_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "h77_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_rhpromocaofechamento {
          return false;
        }
      }
-     if(trim($this->h77_rhpromocao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h77_rhpromocao"])){ 
+     if(trim((string) $this->h77_rhpromocao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h77_rhpromocao"])){ 
        $sql  .= $virgula." h77_rhpromocao = $this->h77_rhpromocao ";
        $virgula = ",";
-       if(trim($this->h77_rhpromocao) == null ){ 
+       if(trim((string) $this->h77_rhpromocao) == null ){ 
          $this->erro_sql = " Campo Promoção nao Informado.";
          $this->erro_campo = "h77_rhpromocao";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_rhpromocaofechamento {
          return false;
        }
      }
-     if(trim($this->h77_pontosavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h77_pontosavaliacao"])){ 
+     if(trim((string) $this->h77_pontosavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h77_pontosavaliacao"])){ 
        $sql  .= $virgula." h77_pontosavaliacao = $this->h77_pontosavaliacao ";
        $virgula = ",";
-       if(trim($this->h77_pontosavaliacao) == null ){ 
+       if(trim((string) $this->h77_pontosavaliacao) == null ){ 
          $this->erro_sql = " Campo Pontos da avaliação nao Informado.";
          $this->erro_campo = "h77_pontosavaliacao";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_rhpromocaofechamento {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18731,'$this->h77_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h77_sequencial"]) || $this->h77_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3320,18731,'".AddSlashes(pg_result($resaco,$conresaco,'h77_sequencial'))."','$this->h77_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3320,18731,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h77_sequencial'))."','$this->h77_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h77_rhpromocao"]) || $this->h77_rhpromocao != "")
-           $resac = db_query("insert into db_acount values($acount,3320,18732,'".AddSlashes(pg_result($resaco,$conresaco,'h77_rhpromocao'))."','$this->h77_rhpromocao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3320,18732,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h77_rhpromocao'))."','$this->h77_rhpromocao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h77_pontosavaliacao"]) || $this->h77_pontosavaliacao != "")
-           $resac = db_query("insert into db_acount values($acount,3320,18733,'".AddSlashes(pg_result($resaco,$conresaco,'h77_pontosavaliacao'))."','$this->h77_pontosavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3320,18733,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h77_pontosavaliacao'))."','$this->h77_pontosavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_rhpromocaofechamento {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18731,'$h77_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3320,18731,'','".AddSlashes(pg_result($resaco,$iresaco,'h77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3320,18732,'','".AddSlashes(pg_result($resaco,$iresaco,'h77_rhpromocao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3320,18733,'','".AddSlashes(pg_result($resaco,$iresaco,'h77_pontosavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3320,18731,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3320,18732,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h77_rhpromocao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3320,18733,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h77_pontosavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhpromocaofechamento
@@ -345,7 +345,7 @@ class cl_rhpromocaofechamento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhpromocaofechamento";
@@ -360,7 +360,7 @@ class cl_rhpromocaofechamento {
    function sql_query ( $h77_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_rhpromocaofechamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_rhpromocaofechamento {
    function sql_query_file ( $h77_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_rhpromocaofechamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

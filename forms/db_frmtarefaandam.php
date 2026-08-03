@@ -171,7 +171,7 @@ db_inputdata('at43_diaini',@$at43_diaini_dia,@$at43_diaini_mes,@$at43_diaini_ano
     <td>
     <?php 
     //$y = array("0"=>"Normal","1"=>"SQL","2"=>"Atualiza menus");
-    $y = array("0"=>"Normal");
+    $y = ["0"=>"Normal"];
     db_select('at43_tipomov',$y,true,$db_opcao,"");
     ?>
    </td>
@@ -203,7 +203,7 @@ db_inputdata('at43_diafim',@$at43_diafim_dia,@$at43_diafim_mes,@$at43_diafim_ano
     </td>
     <td colspan="2"> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('at43_problema',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -214,7 +214,7 @@ db_select('at43_problema',$x,true,$db_opcao,"");
     </td>
     <td colspan="2"> 
 <?php 
-$x = array('0'=>'Ninguém','1'=>'Envolvidos no projeto','2'=>'Envolvidos na tarefa','3'=>'Todos');
+$x = ['0'=>'Ninguém','1'=>'Envolvidos no projeto','2'=>'Envolvidos na tarefa','3'=>'Todos'];
 if($db_opcao==1||$db_opcao==11) {
 	$at43_avisar = 3;
 }
@@ -257,7 +257,7 @@ db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_ver
     </td>
     <td> 
 <?php 
-  $matriz = array("0"=>"0%",
+  $matriz = ["0"=>"0%",
                   "10"=>"10%", 
                   "20"=>"20%",
                   "30"=>"30%",
@@ -267,7 +267,7 @@ db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_ver
                   "70"=>"70%",
                   "80"=>"80%",
                   "90"=>"90%",
-                  "100"=>"100%");
+                  "100"=>"100%"];
   db_select("at43_progresso", $matriz,true,$db_opcao); 
 ?>
     </td>
@@ -314,7 +314,7 @@ function js_preenchepesquisa(chave){
   db_iframe_contarefa.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

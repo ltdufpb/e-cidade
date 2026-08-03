@@ -329,11 +329,11 @@ define('TIPO_CALCULO_PARCIAL', 1);
     global $ajusta;
     $ajusta = false ;
 
-    $aTipoCalculoAjuste = array(PONTO_SALARIO,
+    $aTipoCalculoAjuste = [PONTO_SALARIO,
                                 PONTO_COMPLEMENTAR,
                                 PONTO_RESCISAO,
                                 PONTO_FERIAS,
-                                PONTO_13_SALARIO);
+                                PONTO_13_SALARIO];
     if( in_array($opcao_geral, $aTipoCalculoAjuste) ) {
       $ajusta = true;
     }
@@ -507,8 +507,8 @@ define('TIPO_CALCULO_PARCIAL', 1);
         $calcula_pensao = "n"  ;
       }
 
-      $matriz1 = array();
-      $matriz2 = array();
+      $matriz1 = [];
+      $matriz2 = [];
       $matriz1[ 1 ] = "r60_altera";
       $matriz2[ 1 ] = 'f';
       LogCalculoFolha::write("Alterando os dados da tabela previden, Condição: ".bb_condicaosubpes("r60_"));
@@ -530,8 +530,8 @@ define('TIPO_CALCULO_PARCIAL', 1);
          db_update("previden", $matriz1, $matriz2, bb_condicaosubpes("r60_") );
        }
 
-      $matriz1 = array();
-      $matriz2 = array();
+      $matriz1 = [];
+      $matriz2 = [];
       $matriz1[ 1 ] = "r61_altera";
       $matriz2[ 1 ] = 'f';
       LogCalculoFolha::write("Alterando os dados da tabela ajusteir, Condição: ".bb_condicaosubpes("r61_"));
@@ -630,12 +630,12 @@ define('TIPO_CALCULO_PARCIAL', 1);
         // R981 BASE IRF SALARIO
         // R982 BASE IRF 13O SAL (BRUTA) BASE -
         // R983 BASE IRF FERIAS BASE -
-        $aFolhas  = array(PONTO_COMPLEMENTAR, PONTO_SALARIO, PONTO_RESCISAO);
+        $aFolhas  = [PONTO_COMPLEMENTAR, PONTO_SALARIO, PONTO_RESCISAO];
         $y1 = ( in_array($opcao_geral, $aFolhas) ? 1: ( $opcao_geral == PONTO_13_SALARIO ? 2: 3 ) );
 
         if ($icalc == CALCULO_PENSAO && $opcao_geral != PONTO_RESCISAO) {
 
-          $aFolhas  = array(PONTO_COMPLEMENTAR, PONTO_SALARIO, PONTO_RESCISAO);
+          $aFolhas  = [PONTO_COMPLEMENTAR, PONTO_SALARIO, PONTO_RESCISAO];
           $rubrica1 = ( ($opcao_geral == PONTO_SALARIO || $opcao_geral ==PONTO_RESCISAO ) ? "R985": ( $opcao_geral == PONTO_13_SALARIO ? "R986": "R987" ) );
           $rubrica  =  in_array($opcao_geral, $aFolhas) ? "R981" : ($opcao_geral == PONTO_13_SALARIO ? "R982" : "R983");
 
@@ -744,17 +744,17 @@ define('TIPO_CALCULO_PARCIAL', 1);
 
           }
 
-          $tira_branco = trim($cfpess[0]["r11_desliq"]);
+          $tira_branco = trim((string) $cfpess[0]["r11_desliq"]);
           if ( !db_empty( $tira_branco )) {
 
             global $rubricas_in;
             $rubricas_in = "(";
-            for($ix=0;$ix < strlen( trim($cfpess[0]["r11_desliq"]) );$ix+=4){
-              $rubrica_desconto = db_substr( trim($cfpess[0]["r11_desliq"]), $ix+1, 4 ) ;
+            for($ix=0;$ix < strlen( trim((string) $cfpess[0]["r11_desliq"]) );$ix+=4){
+              $rubrica_desconto = db_substr( trim((string) $cfpess[0]["r11_desliq"]), $ix+1, 4 ) ;
 
               $calcula_valor = "calcula_valor_".$rubrica_desconto ;
-              global $$calcula_valor;
-              $$calcula_valor = false;
+              global ${$calcula_valor};
+              ${$calcula_valor} = false;
 
               $rubricas_in .= "'".$rubrica_desconto."',";
             }

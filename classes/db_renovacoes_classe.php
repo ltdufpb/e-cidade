@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE renovacoes
 class cl_renovacoes {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $cm07_i_codigo = 0;
-   var $cm07_i_sepultamento = 0;
-   var $cm07_i_renovante = 0;
-   var $cm07_c_motivo = null;
-   var $cm07_d_ultima_dia = null;
-   var $cm07_d_ultima_mes = null;
-   var $cm07_d_ultima_ano = null;
-   var $cm07_d_ultima = null;
-   var $cm07_d_vencimento_dia = null;
-   var $cm07_d_vencimento_mes = null;
-   var $cm07_d_vencimento_ano = null;
-   var $cm07_d_vencimento = null;
+   public $cm07_i_codigo = 0;
+   public $cm07_i_sepultamento = 0;
+   public $cm07_i_renovante = 0;
+   public $cm07_c_motivo = null;
+   public $cm07_d_ultima_dia = null;
+   public $cm07_d_ultima_mes = null;
+   public $cm07_d_ultima_ano = null;
+   public $cm07_d_ultima = null;
+   public $cm07_d_vencimento_dia = null;
+   public $cm07_d_vencimento_mes = null;
+   public $cm07_d_vencimento_ano = null;
+   public $cm07_d_vencimento = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  cm07_i_codigo = int4 = Código
                  cm07_i_sepultamento = int4 = Sepultamento
                  cm07_i_renovante = int4 = Renovante
@@ -64,10 +64,10 @@ class cl_renovacoes {
                  cm07_d_vencimento = date = Vencimento
                  ";
    //funcao construtor da classe
-   function cl_renovacoes() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("renovacoes");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -148,10 +148,10 @@ class cl_renovacoes {
          $this->erro_status = "0";
          return false;
        }
-       $this->cm07_i_codigo = pg_result($result,0,0);
+       $this->cm07_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from renovacoes_cm07_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cm07_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cm07_i_codigo)){
          $this->erro_sql = " Campo cm07_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -189,7 +189,7 @@ class cl_renovacoes {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Renovações ($this->cm07_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Renovações já Cadastrado";
@@ -213,15 +213,15 @@ class cl_renovacoes {
      $resaco = $this->sql_record($this->sql_query_file($this->cm07_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10405,'$this->cm07_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1798,10405,'','".AddSlashes(pg_result($resaco,0,'cm07_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1798,10406,'','".AddSlashes(pg_result($resaco,0,'cm07_i_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1798,10407,'','".AddSlashes(pg_result($resaco,0,'cm07_i_renovante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1798,10408,'','".AddSlashes(pg_result($resaco,0,'cm07_c_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1798,10409,'','".AddSlashes(pg_result($resaco,0,'cm07_d_ultima'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1798,10410,'','".AddSlashes(pg_result($resaco,0,'cm07_d_vencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1798,10405,'','".AddSlashes(pg_fetch_result($resaco,0,'cm07_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1798,10406,'','".AddSlashes(pg_fetch_result($resaco,0,'cm07_i_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1798,10407,'','".AddSlashes(pg_fetch_result($resaco,0,'cm07_i_renovante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1798,10408,'','".AddSlashes(pg_fetch_result($resaco,0,'cm07_c_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1798,10409,'','".AddSlashes(pg_fetch_result($resaco,0,'cm07_d_ultima'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1798,10410,'','".AddSlashes(pg_fetch_result($resaco,0,'cm07_d_vencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -230,10 +230,10 @@ class cl_renovacoes {
       $this->atualizacampos();
      $sql = " update renovacoes set ";
      $virgula = "";
-     if(trim($this->cm07_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_i_codigo"])){
+     if(trim((string) $this->cm07_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_i_codigo"])){
        $sql  .= $virgula." cm07_i_codigo = $this->cm07_i_codigo ";
        $virgula = ",";
-       if(trim($this->cm07_i_codigo) == null ){
+       if(trim((string) $this->cm07_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "cm07_i_codigo";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_renovacoes {
          return false;
        }
      }
-     if(trim($this->cm07_i_sepultamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_i_sepultamento"])){
+     if(trim((string) $this->cm07_i_sepultamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_i_sepultamento"])){
        $sql  .= $virgula." cm07_i_sepultamento = $this->cm07_i_sepultamento ";
        $virgula = ",";
-       if(trim($this->cm07_i_sepultamento) == null ){
+       if(trim((string) $this->cm07_i_sepultamento) == null ){
          $this->erro_sql = " Campo Sepultamento nao Informado.";
          $this->erro_campo = "cm07_i_sepultamento";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_renovacoes {
          return false;
        }
      }
-     if(trim($this->cm07_i_renovante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_i_renovante"])){
+     if(trim((string) $this->cm07_i_renovante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_i_renovante"])){
        $sql  .= $virgula." cm07_i_renovante = $this->cm07_i_renovante ";
        $virgula = ",";
-       if(trim($this->cm07_i_renovante) == null ){
+       if(trim((string) $this->cm07_i_renovante) == null ){
          $this->erro_sql = " Campo Renovante nao Informado.";
          $this->erro_campo = "cm07_i_renovante";
          $this->erro_banco = "";
@@ -269,11 +269,11 @@ class cl_renovacoes {
          return false;
        }
      }
-     if(trim($this->cm07_c_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_c_motivo"])){
+     if(trim((string) $this->cm07_c_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_c_motivo"])){
        $sql  .= $virgula." cm07_c_motivo = '$this->cm07_c_motivo' ";
        $virgula = ",";
      }
-     if(trim($this->cm07_d_ultima)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_d_ultima_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm07_d_ultima_dia"] !="") ){
+     if(trim((string) $this->cm07_d_ultima)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_d_ultima_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm07_d_ultima_dia"] !="") ){
        $sql  .= $virgula." cm07_d_ultima = '$this->cm07_d_ultima' ";
        $virgula = ",";
      }     else{
@@ -282,10 +282,10 @@ class cl_renovacoes {
          $virgula = ",";
        }
      }
-     if(trim($this->cm07_d_vencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_d_vencimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm07_d_vencimento_dia"] !="") ){
+     if(trim((string) $this->cm07_d_vencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm07_d_vencimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm07_d_vencimento_dia"] !="") ){
        $sql  .= $virgula." cm07_d_vencimento = '$this->cm07_d_vencimento' ";
        $virgula = ",";
-       if(trim($this->cm07_d_vencimento) == null ){
+       if(trim((string) $this->cm07_d_vencimento) == null ){
          $this->erro_sql = " Campo Vencimento nao Informado.";
          $this->erro_campo = "cm07_d_vencimento_dia";
          $this->erro_banco = "";
@@ -298,7 +298,7 @@ class cl_renovacoes {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm07_d_vencimento_dia"])){
          $sql  .= $virgula." cm07_d_vencimento = null ";
          $virgula = ",";
-         if(trim($this->cm07_d_vencimento) == null ){
+         if(trim((string) $this->cm07_d_vencimento) == null ){
            $this->erro_sql = " Campo Vencimento nao Informado.";
            $this->erro_campo = "cm07_d_vencimento_dia";
            $this->erro_banco = "";
@@ -326,21 +326,21 @@ class cl_renovacoes {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10405,'$this->cm07_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm07_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1798,10405,'".AddSlashes(pg_result($resaco,$conresaco,'cm07_i_codigo'))."','$this->cm07_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1798,10405,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm07_i_codigo'))."','$this->cm07_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm07_i_sepultamento"]))
-           $resac = db_query("insert into db_acount values($acount,1798,10406,'".AddSlashes(pg_result($resaco,$conresaco,'cm07_i_sepultamento'))."','$this->cm07_i_sepultamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1798,10406,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm07_i_sepultamento'))."','$this->cm07_i_sepultamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm07_i_renovante"]))
-           $resac = db_query("insert into db_acount values($acount,1798,10407,'".AddSlashes(pg_result($resaco,$conresaco,'cm07_i_renovante'))."','$this->cm07_i_renovante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1798,10407,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm07_i_renovante'))."','$this->cm07_i_renovante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm07_c_motivo"]))
-           $resac = db_query("insert into db_acount values($acount,1798,10408,'".AddSlashes(pg_result($resaco,$conresaco,'cm07_c_motivo'))."','$this->cm07_c_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1798,10408,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm07_c_motivo'))."','$this->cm07_c_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm07_d_ultima"]))
-           $resac = db_query("insert into db_acount values($acount,1798,10409,'".AddSlashes(pg_result($resaco,$conresaco,'cm07_d_ultima'))."','$this->cm07_d_ultima',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1798,10409,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm07_d_ultima'))."','$this->cm07_d_ultima',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm07_d_vencimento"]))
-           $resac = db_query("insert into db_acount values($acount,1798,10410,'".AddSlashes(pg_result($resaco,$conresaco,'cm07_d_vencimento'))."','$this->cm07_d_vencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1798,10410,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm07_d_vencimento'))."','$this->cm07_d_vencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -385,15 +385,15 @@ class cl_renovacoes {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10405,'$cm07_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1798,10405,'','".AddSlashes(pg_result($resaco,$iresaco,'cm07_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1798,10406,'','".AddSlashes(pg_result($resaco,$iresaco,'cm07_i_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1798,10407,'','".AddSlashes(pg_result($resaco,$iresaco,'cm07_i_renovante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1798,10408,'','".AddSlashes(pg_result($resaco,$iresaco,'cm07_c_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1798,10409,'','".AddSlashes(pg_result($resaco,$iresaco,'cm07_d_ultima'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1798,10410,'','".AddSlashes(pg_result($resaco,$iresaco,'cm07_d_vencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1798,10405,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm07_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1798,10406,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm07_i_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1798,10407,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm07_i_renovante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1798,10408,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm07_c_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1798,10409,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm07_d_ultima'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1798,10410,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm07_d_vencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from renovacoes
@@ -453,7 +453,7 @@ class cl_renovacoes {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:renovacoes";
@@ -467,7 +467,7 @@ class cl_renovacoes {
    function sql_query ( $cm07_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -497,7 +497,7 @@ class cl_renovacoes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_renovacoes {
    function sql_query_file ( $cm07_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,7 +530,7 @@ class cl_renovacoes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

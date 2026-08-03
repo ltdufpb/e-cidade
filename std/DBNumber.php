@@ -48,7 +48,7 @@ class DBNumber {
      * Metodo wrapper para correção de bug no metodo round em versões do php <= 5.2
      */
     if (floatval(phpversion()) <= 5.2) {
-      return round(round($nNumber*pow(10, $iBase+1), 0), -1)/pow(10, $iBase+1);
+      return round(round($nNumber*10 ** ($iBase + 1), 0), -1)/10 ** ($iBase + 1);
     }
     return round($nNumber,$iBase);
   }
@@ -90,7 +90,7 @@ class DBNumber {
   public static function isInteger( $iNumero ) {
 
     $sRegex = "/^-?([0-9])+$/";
-    return preg_match( $sRegex, $iNumero ) ? true : false;
+    return preg_match( $sRegex, (string) $iNumero ) ? true : false;
   }
 
   /**
@@ -103,17 +103,17 @@ class DBNumber {
    */
   public static function toCurrency( $nNumero ) {
 
-    $aPattern = array(
+    $aPattern = [
         '/\./',
         '/\,(?=\d*$)/'
-      );
+      ];
 
-    $aReplacement = array(
+    $aReplacement = [
         '',
         '.'
-      );
+      ];
 
-    return preg_replace($aPattern, $aReplacement, $nNumero);
+    return preg_replace($aPattern, $aReplacement, (string) $nNumero);
   }
 
   public static function overlaps($nValor, $nValorInicio, $nValorFim) {

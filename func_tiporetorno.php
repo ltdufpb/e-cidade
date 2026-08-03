@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tiporetorno_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltiporetorno = new cl_tiporetorno;
 $cltiporetorno->rotulo->label("ov22_sequencial");
 $cltiporetorno->rotulo->label("ov22_sequencial");
@@ -98,9 +98,9 @@ $cltiporetorno->rotulo->label("ov22_sequencial");
         }else{
            $sql = $cltiporetorno->sql_query("",$campos,"ov22_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov22_sequencial)){
-          $repassa = array("chave_ov22_sequencial"=>$chave_ov22_sequencial,"chave_ov22_sequencial"=>$chave_ov22_sequencial);
+          $repassa = ["chave_ov22_sequencial"=>$chave_ov22_sequencial,"chave_ov22_sequencial"=>$chave_ov22_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

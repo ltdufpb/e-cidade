@@ -153,7 +153,7 @@ db_input('nome',40,$Inome,true,'text',3,'');
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("x42_codmov"=>@$x42_codmov);
+	 $chavepri= ["x42_codmov"=>@$x42_codmov];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $claguacortematmov->sql_query(null,"*","x42_codmov desc, x42_data desc","x42_codcortemat=".$x42_codcortemat);
 	 $cliframe_alterar_excluir->campos  ="x42_codmov,x42_data,x42_codsituacao,x43_descr,x42_codcortemat,x42_leitura,x42_historico,x42_usuario,nome";

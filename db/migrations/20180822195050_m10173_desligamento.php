@@ -9,7 +9,7 @@ class M10173Desligamento extends PostgresMigration
     {
         $this->manutencaoTabelas();
 
-        $aSql = array();
+        $aSql = [];
 
         $aSql[] = "insert into db_itensmenu(id_item ,descricao ,help ,funcao ,itemativo ,manutencao ,desctec ,libcliente) 
                    values (10566, 'Desligamento / Rescisão', 'Desligamento / Rescisão', 'eso01_preenchimentodesligamento.php', '1', '1', 'Desligamento / Rescisão', 'true');";
@@ -40,7 +40,7 @@ class M10173Desligamento extends PostgresMigration
     {
         $this->removeManutencaoTabelas();
 
-        $aSql   = array();
+        $aSql   = [];
         $aSql[] = "DELETE FROM db_itensmenu WHERE id_item in (10566, 10569, 10568);";
         $aSql[] = "DELETE FROM db_menu WHERE id_item = 10220 AND id_item_filho = 10566 AND modulo = 10216;";
         $aSql[] = "DELETE FROM db_menu WHERE id_item_filho in(10568, 10569)";

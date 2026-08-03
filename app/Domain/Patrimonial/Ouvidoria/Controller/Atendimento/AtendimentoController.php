@@ -27,23 +27,13 @@ use InstituicaoRepository;
 class AtendimentoController extends Controller
 {
 
-    private $repository;
-    private $atendimentoProcessoService;
-    private $cidadaoCgmLegacyService;
-
     /**
      * Construtor da classe
      *
      * @return void
      */
-    public function __construct(
-        AtendimentoRepository      $atendimentoRepository,
-        AtendimentoProcessoService $atendimentoProcessoService,
-        CidadaoCgmLegacyService    $cidadaoCgmLegacyService
-    ) {
-        $this->repository = $atendimentoRepository;
-        $this->atendimentoProcessoService = $atendimentoProcessoService;
-        $this->cidadaoCgmLegacyService = $cidadaoCgmLegacyService;
+    public function __construct(private readonly AtendimentoRepository      $repository, private readonly AtendimentoProcessoService $atendimentoProcessoService, private readonly CidadaoCgmLegacyService    $cidadaoCgmLegacyService)
+    {
     }
 
     /**
@@ -157,21 +147,17 @@ class AtendimentoController extends Controller
         $oCgmResponsavel = $this->atendimentoProcessoService->getCgmResponsavelByMetadados($solicitacao->metadados);
 
         $emailSecundario = null;
-        if (trim($solicitacao->metadados->acao) === "atualizacao_cadastral") {
+        if (trim((string) $solicitacao->metadados->acao) === "atualizacao_cadastral") {
             $cgm = $this->cidadaoCgmLegacyService->getCgmBySolicitacao($solicitacao);
 
             if (!$oCgmResponsavel) {
                 $oCgmResponsavel = $cgm;
             }
-            $secaoContato = array_filter($solicitacao->metadados->secoes, function ($secao) {
-                return $secao->nome === "contato";
-            });
+            $secaoContato = array_filter($solicitacao->metadados->secoes, fn($secao) => $secao->nome === "contato");
 
             if (!empty($secaoContato)) {
                 $secaoContato =  reset($secaoContato);
-                $campoEmail = array_filter($secaoContato->campos, function ($campo) {
-                    return trim($campo->nome) == "email";
-                });
+                $campoEmail = array_filter($secaoContato->campos, fn($campo) => trim((string) $campo->nome) == "email");
 
                 if (!empty($campoEmail)) {
                     $campoEmail = reset($campoEmail);
@@ -367,16 +353,12 @@ class AtendimentoController extends Controller
             $mensagemNotificacao .= " foi rejeitado. Motivo: {$request->motivo}";
 
             $emailSecundario = null;
-            if (trim($solicitacao->metadados->acao) === "atualizacao_cadastral") {
-                $secaoContato = array_filter($solicitacao->metadados->secoes, function ($secao) {
-                    return $secao->nome === "contato";
-                });
+            if (trim((string) $solicitacao->metadados->acao) === "atualizacao_cadastral") {
+                $secaoContato = array_filter($solicitacao->metadados->secoes, fn($secao) => $secao->nome === "contato");
 
                 if (!empty($secaoContato)) {
                     $secaoContato =  reset($secaoContato);
-                    $campoEmail = array_filter($secaoContato->campos, function ($campo) {
-                        return trim($campo->nome) == "email";
-                    });
+                    $campoEmail = array_filter($secaoContato->campos, fn($campo) => trim((string) $campo->nome) == "email");
 
                     if (!empty($campoEmail)) {
                         $campoEmail = reset($campoEmail);
@@ -389,7 +371,7 @@ class AtendimentoController extends Controller
                 $cpfCnpj,
                 $solicitacao->ov33_client_atendimento_id,
                 $mensagemNotificacao,
-                trim($emailSecundario),
+                trim((string) $emailSecundario),
                 false
             );
         }
@@ -402,7 +384,7 @@ class AtendimentoController extends Controller
                 $dadosEauth->cgccpf,
                 $solicitacao->ov33_client_atendimento_id,
                 $mensagemNotificacao,
-                trim($dadosEauth->email),
+                trim((string) $dadosEauth->email),
                 true
             );
         }
@@ -438,7 +420,7 @@ class AtendimentoController extends Controller
         $solicitacao->metadados = \JSON::create()->parse($solicitacao->metadados);
         $serviceProcessosAlvaraOnline = $container->get('Inscricao\Service\AlvaraOnline');
         $acao = $parameterBag->getAcaoByTipoProcesso($solicitacao->tipo_processo);
-        $dados = json_decode($serviceProcessosAlvaraOnline->retornarProcessoAlvara($filtroProcesso, $filtroAtividades));
+        $dados = json_decode((string) $serviceProcessosAlvaraOnline->retornarProcessoAlvara($filtroProcesso, $filtroAtividades));
         $cgms = ProcessoEletronicoHelper::consultarCgmsByDados(
             $inclusaoCgmService,
             $dados,
@@ -455,7 +437,7 @@ class AtendimentoController extends Controller
 
         if (!empty($rs) and count($rs) > 0) {
             $responseData["success"] = true;
-            $responseData["inscricoes"] = array();
+            $responseData["inscricoes"] = [];
             foreach ($rs as $inscricao) {
                 $responseData["inscricoes"][] = $inscricao['q02_inscr'];
             }

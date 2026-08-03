@@ -71,10 +71,10 @@ class Economias extends Arquivo {
     $sCampos  = 'x38_aguacontrato, x54_aguabase, x38_aguacategoriaconsumo, count(*) as qtd';
     $sOrdem   = 'x38_aguacontrato, x54_aguabase, x38_aguacategoriaconsumo';
     $sGroupBy = 'x38_aguacontrato, x54_aguabase, x38_aguacategoriaconsumo';
-    $aWhere = array(
+    $aWhere = [
       'x54_aguabase is not null',
       'x54_condominio is true',
-    );
+    ];
     if ($this->aContratos) {
 
       $sCodigosContratos = implode(', ', $this->aContratos);
@@ -88,7 +88,7 @@ class Economias extends Arquivo {
       throw new \DBException('Ocorreu um erro ao buscar as economias.');
     }
 
-    $aEconomias = array();
+    $aEconomias = [];
     $iQtdEconomias = pg_num_rows($rsDados);
     for ($iEconomia = 0; $iEconomia < $iQtdEconomias; $iEconomia++) {
 

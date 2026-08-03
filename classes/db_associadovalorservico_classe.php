@@ -60,7 +60,7 @@ class cl_associadovalorservico
     public function __construct()
     {
         $this->rotulo = new rotulo("associadovalorservico"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -123,10 +123,10 @@ class cl_associadovalorservico
          $this->erro_status = "0";
          return false; 
        }
-       $this->fm13_codigo = pg_result($result,0,0); 
+       $this->fm13_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from associadovalorservico_fm13_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fm13_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fm13_codigo)){
          $this->erro_sql = " Campo fm13_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -160,7 +160,7 @@ class cl_associadovalorservico
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Associado Valor Servico ($this->fm13_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "associadovalorservico já Cadastrado";
@@ -189,13 +189,13 @@ class cl_associadovalorservico
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,124157575,'$this->fm13_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,116802261,124157575,'','".AddSlashes(pg_result($resaco,0,'fm13_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,116802261,306631516,'','".AddSlashes(pg_result($resaco,0,'fm13_servico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,116802261,222560603,'','".AddSlashes(pg_result($resaco,0,'fm13_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,116802261,220346436,'','".AddSlashes(pg_result($resaco,0,'fm13_vigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,116802261,124157575,'','".AddSlashes(pg_fetch_result($resaco,0,'fm13_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,116802261,306631516,'','".AddSlashes(pg_fetch_result($resaco,0,'fm13_servico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,116802261,222560603,'','".AddSlashes(pg_fetch_result($resaco,0,'fm13_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,116802261,220346436,'','".AddSlashes(pg_fetch_result($resaco,0,'fm13_vigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -206,10 +206,10 @@ class cl_associadovalorservico
       $this->atualizacampos();
      $sql = " update associadovalorservico set ";
      $virgula = "";
-     if(trim($this->fm13_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm13_codigo"])){ 
+     if(trim((string) $this->fm13_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm13_codigo"])){ 
        $sql  .= $virgula." fm13_codigo = $this->fm13_codigo ";
        $virgula = ",";
-       if(trim($this->fm13_codigo) == null ){ 
+       if(trim((string) $this->fm13_codigo) == null ){ 
          $this->erro_sql = " Campo Cód Vlr Serv Prestado não informado.";
          $this->erro_campo = "fm13_codigo";
          $this->erro_banco = "";
@@ -219,10 +219,10 @@ class cl_associadovalorservico
          return false;
        }
      }
-     if(trim($this->fm13_servico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm13_servico"])){ 
+     if(trim((string) $this->fm13_servico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm13_servico"])){ 
        $sql  .= $virgula." fm13_servico = $this->fm13_servico ";
        $virgula = ",";
-       if(trim($this->fm13_servico) == null ){ 
+       if(trim((string) $this->fm13_servico) == null ){ 
          $this->erro_sql = " Campo Cód Cad Serv Prestado não informado.";
          $this->erro_campo = "fm13_servico";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_associadovalorservico
          return false;
        }
      }
-     if(trim($this->fm13_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm13_valor"])){ 
+     if(trim((string) $this->fm13_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm13_valor"])){ 
        $sql  .= $virgula." fm13_valor = $this->fm13_valor ";
        $virgula = ",";
-       if(trim($this->fm13_valor) == null ){ 
+       if(trim((string) $this->fm13_valor) == null ){ 
          $this->erro_sql = " Campo Valor FUMAM não informado.";
          $this->erro_campo = "fm13_valor";
          $this->erro_banco = "";
@@ -245,7 +245,7 @@ class cl_associadovalorservico
          return false;
        }
      }
-     if(trim($this->fm13_vigencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm13_vigencia_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fm13_vigencia_dia"] !="") ){ 
+     if(trim((string) $this->fm13_vigencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm13_vigencia_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fm13_vigencia_dia"] !="") ){ 
        $sql  .= $virgula." fm13_vigencia = '$this->fm13_vigencia' ";
        $virgula = ",";
      }     else{ 
@@ -268,17 +268,17 @@ class cl_associadovalorservico
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,124157575,'$this->fm13_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fm13_codigo"]) || $this->fm13_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,116802261,124157575,'".AddSlashes(pg_result($resaco,$conresaco,'fm13_codigo'))."','$this->fm13_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,116802261,124157575,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fm13_codigo'))."','$this->fm13_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fm13_servico"]) || $this->fm13_servico != "")
-             $resac = db_query("insert into db_acount values($acount,116802261,306631516,'".AddSlashes(pg_result($resaco,$conresaco,'fm13_servico'))."','$this->fm13_servico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,116802261,306631516,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fm13_servico'))."','$this->fm13_servico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fm13_valor"]) || $this->fm13_valor != "")
-             $resac = db_query("insert into db_acount values($acount,116802261,222560603,'".AddSlashes(pg_result($resaco,$conresaco,'fm13_valor'))."','$this->fm13_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,116802261,222560603,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fm13_valor'))."','$this->fm13_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fm13_vigencia"]) || $this->fm13_vigencia != "")
-             $resac = db_query("insert into db_acount values($acount,116802261,220346436,'".AddSlashes(pg_result($resaco,$conresaco,'fm13_vigencia'))."','$this->fm13_vigencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,116802261,220346436,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fm13_vigencia'))."','$this->fm13_vigencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -332,13 +332,13 @@ class cl_associadovalorservico
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,124157575,'$fm13_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,116802261,124157575,'','".AddSlashes(pg_result($resaco,$iresaco,'fm13_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,116802261,306631516,'','".AddSlashes(pg_result($resaco,$iresaco,'fm13_servico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,116802261,222560603,'','".AddSlashes(pg_result($resaco,$iresaco,'fm13_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,116802261,220346436,'','".AddSlashes(pg_result($resaco,$iresaco,'fm13_vigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,116802261,124157575,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fm13_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,116802261,306631516,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fm13_servico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,116802261,222560603,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fm13_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,116802261,220346436,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fm13_vigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -31,7 +31,7 @@ include(modification("classes/db_procdoctipo_classe.php"));
 $clprocdoctipo = new cl_procdoctipo;
 $clrotulo = new rotulocampo;
 $clprocdoctipo->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $msg="";
 $param="";  
@@ -89,7 +89,7 @@ for($i = 0; $i<$numrows; $i++){
   db_fieldsmemory($result,$i);
  
   if($recebendo!=$p51_codigo || $i==0 || $pdf->gety() > $pdf->h - 30){
-    if(trim($recebendo)!="" && $recebendo!=$p51_codigo){
+    if(trim((string) $recebendo)!="" && $recebendo!=$p51_codigo){
       $pdf->setfont('arial','b',8);
       $pdf->cell(190,$alt,"TOTAL DE DOCUMENTOS  :  ".$total,"T",1,"L",0);
       $total=0;

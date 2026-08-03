@@ -28,7 +28,7 @@
 //MODULO: contabilidade
 $clconlancam->rotulo->label();
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
     $perini=$ini;
     $perfin=$fim; 
     //--- 

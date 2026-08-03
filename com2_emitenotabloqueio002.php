@@ -52,7 +52,7 @@ $iInstituicaoSessao = db_getsession("DB_instit");
 $iSolicitaInicio    = $oGet->iSolicitaInicio;
 $iSolicitaFim       = $oGet->iSolicitaFim;
 
-$aWhereSolicitacao = array();
+$aWhereSolicitacao = [];
 if (!empty($iSolicitaInicio)) {
     $aWhereSolicitacao[] = "pc10_numero >= {$iSolicitaInicio}";
 }
@@ -75,13 +75,13 @@ if ($iTotalSolicitacao == 0) {
     //db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado para o filtro selecionado.");exit;
 }
 
-$aDadosImprimir = array();
+$aDadosImprimir = [];
 for ($iRowSolicita = 0; $iRowSolicita < $iTotalSolicitacao; $iRowSolicita++) {
     $oDadoSolicita = db_utils::fieldsMemory($rsBuscaSolicita, $iRowSolicita);
     $oStdDadosSolicita = new stdClass();
     $oStdDadosSolicita->iCodigoSolicitacao = $oDadoSolicita->pc10_numero;
     $oStdDadosSolicita->sResumoSolicitacao = $oDadoSolicita->pc10_resumo;
-    $oStdDadosSolicita->aDotacao           = array();
+    $oStdDadosSolicita->aDotacao           = [];
 
     $oDaoSolicitem  = db_utils::getDao('solicitem');
     $sSqlBuscaItens = $oDaoSolicitem->sql_query_file(null, "*", null, "pc11_numero = {$oDadoSolicita->pc10_numero}");
@@ -156,7 +156,7 @@ for ($iRowSolicita = 0; $iRowSolicita < $iTotalSolicitacao; $iRowSolicita++) {
                                             where o200_sequencial = {$oDadosDotacao->o15_complemento}");
                         $oPegaComplemento = db_utils::fieldsMemory($rsPegarComplemento, 0);
                         $oStdDotacao->Complemento                = $oPegaComplemento->o200_descricao;
-                        $oStdDotacao->aDadosTabela               = array();
+                        $oStdDotacao->aDadosTabela               = [];
 
                         $oStdDadosTabela                          = new stdClass();
                         $oStdDadosTabela->nValorReserva           = $oDadosDotacao->o80_valor;
@@ -233,7 +233,7 @@ foreach ($aDadosImprimir as $iIndice => $oSolicitacao) {
     $oPdf->ln(10);
     if ($isPB) {
         $sDescricaoUnidadeSemAcento  = preg_replace(
-            array("/(á|à|ã|â|ä)/",
+            ["/(á|à|ã|â|ä)/",
                 "/(Á|À|Â|Ä)/",
                 "/(é|è|ê|ë)/",
                 "/(É|È|Ê|Ë)/",
@@ -244,16 +244,16 @@ foreach ($aDadosImprimir as $iIndice => $oSolicitacao) {
                 "/(ú|ù|û|ü)/",
                 "/(Ú|Ù|Û|Ü)/",
                 "/(ñ)/",
-                "/(Ñ)/"),
+                "/(Ñ)/"],
             explode(" ", "a A e E i I o O u U n N"),
-            $oStdDotacao->sDescricaoUnidade
+            (string) $oStdDotacao->sDescricaoUnidade
         );
         $sAssinatura = $oStdDotacao->nomeResponsavelUnidade;
         $oPdf->setfont('Arial', '', 7);
 
         $mesPorExtenso = ["01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho",
             "07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
-        $dataSeparada = explode("-", $oStdDadosTabela->dtReserva);
+        $dataSeparada = explode("-", (string) $oStdDadosTabela->dtReserva);
         if ((($oStdDadosTabela->nSaldoFinal) + ($oStdDadosTabela->nValorReserva)) >= floatval($oStdDadosTabela->nValorTotalItens)) {
             $oPdf->multicell(
                 160,
@@ -282,7 +282,7 @@ foreach ($aDadosImprimir as $iIndice => $oSolicitacao) {
         $oPdf->cell(
             0,
             $iAlturaLinha,
-            ucwords(strtolower(InstituicaoRepository::getInstituicaoPrefeitura()->getMunicipio()))
+            ucwords(strtolower((string) InstituicaoRepository::getInstituicaoPrefeitura()->getMunicipio()))
             .", ".$dataSeparada[2]." de ".$mesPorExtenso[$dataSeparada[1]]." de ".$dataSeparada[0],
             0,
             1,

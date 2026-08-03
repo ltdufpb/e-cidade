@@ -72,7 +72,7 @@ final class ImpressaoMatricialLote extends ImpressaoEpson
              ->adicionaConteudo($this->arrCodigos[self::HABILITAR_MODO_CONDENSADO]);
 
         foreach ($dados as $requisicao) {
-            $requisicao->cabecalhos = array();
+            $requisicao->cabecalhos = [];
             $this->setRequisicao($requisicao);
 
             $this->setTamanhoLinha(100);
@@ -83,7 +83,7 @@ final class ImpressaoMatricialLote extends ImpressaoEpson
             foreach ($this->requisicao->aSetor as $iSetor => $oSetor) {
                 $this->setLinhas(0);
                 $this->requisicao->iSetor = $iSetor;
-                $this->requisicao->sSetor = str_pad($oSetor->sDescricao, 75);
+                $this->requisicao->sSetor = str_pad((string) $oSetor->sDescricao, 75);
                 $this->requisicao->sSetor = DBString::removerAcentuacao($this->requisicao->sSetor);
                 $this->requisicao->aExames = $oSetor->aExames;
                 $this->imprimirCabecalho();
@@ -127,7 +127,7 @@ final class ImpressaoMatricialLote extends ImpressaoEpson
             $padCabecalhoPrefeitura
         );
         $this->requisicao->cabecalhos[0]->prefeitura = str_pad(
-            substr($prefeitura->getDescricao(), 0, $subCabecalhoPrefeitura),
+            substr((string) $prefeitura->getDescricao(), 0, $subCabecalhoPrefeitura),
             $padCabecalhoPrefeitura
         );
         $this->requisicao->cabecalhos[0]->logradouro = str_pad(
@@ -139,15 +139,15 @@ final class ImpressaoMatricialLote extends ImpressaoEpson
             $padCabecalhoPrefeitura
         );
         $this->requisicao->cabecalhos[0]->telefone = str_pad(
-            substr($telefone, 0, $subCabecalhoPrefeitura),
+            substr((string) $telefone, 0, $subCabecalhoPrefeitura),
             $padCabecalhoPrefeitura
         );
         $this->requisicao->cabecalhos[0]->email = str_pad(
-            substr($prefeitura->getEmail(), 0, $subCabecalhoPrefeitura),
+            substr((string) $prefeitura->getEmail(), 0, $subCabecalhoPrefeitura),
             $padCabecalhoPrefeitura
         );
         $this->requisicao->cabecalhos[0]->site = str_pad(
-            substr($prefeitura->getSite(), 0, $subCabecalhoPrefeitura),
+            substr((string) $prefeitura->getSite(), 0, $subCabecalhoPrefeitura),
             $padCabecalhoPrefeitura
         );
 
@@ -267,7 +267,7 @@ final class ImpressaoMatricialLote extends ImpressaoEpson
 
     public function imprimirCorpo()
     {
-        $aPosicaoAtributos    = array();
+        $aPosicaoAtributos    = [];
         $aPosicaoAtributos[1] = str_repeat(' ', 2);
         $aPosicaoAtributos[2] = str_repeat(' ', 4);
         $aPosicaoAtributos[3] = str_repeat(' ', 8);
@@ -295,9 +295,9 @@ final class ImpressaoMatricialLote extends ImpressaoEpson
                 $nome = $espacamento . $oAtributos->nome;
                 $nome = str_pad($nome, 50);
 
-                $oAtributos->valorpercentual = str_pad($oAtributos->valorpercentual, 20);
-                $oAtributos->valorabsoluto = str_pad($oAtributos->valorabsoluto, 28);
-                $oAtributos->referencia = str_pad($oAtributos->referencia, 50);
+                $oAtributos->valorpercentual = str_pad((string) $oAtributos->valorpercentual, 20);
+                $oAtributos->valorabsoluto = str_pad((string) $oAtributos->valorabsoluto, 28);
+                $oAtributos->referencia = str_pad((string) $oAtributos->referencia, 50);
 
                 $nome = DBString::removerAcentuacao($nome);
                 $oAtributos->valorpercentual = DBString::removerAcentuacao($oAtributos->valorpercentual);
@@ -340,7 +340,7 @@ final class ImpressaoMatricialLote extends ImpressaoEpson
     public function imprimirMedicamentosExame($medicamentosExame)
     {
         if (!empty($medicamentosExame)) {
-            $nomesMedicamentos = array();
+            $nomesMedicamentos = [];
 
             foreach ($medicamentosExame as $oMedicamento) {
                 $medicamento = DBString::removerAcentuacao($oMedicamento->getNome());
@@ -448,7 +448,7 @@ final class ImpressaoMatricialLote extends ImpressaoEpson
         $this->validaQuebraPagina($texto);
 
         $texto = wordwrap(
-            $texto,
+            (string) $texto,
             $this->tamanhoLinha,
             $this->arrCodigos[self::TAB] . $this->arrCodigos[self::QUEBRA_LINHA]
         );

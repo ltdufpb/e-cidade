@@ -37,17 +37,12 @@ class RelatorioDCASPFactory {
   public static function getInstancia($iCodigoRelatorio, $iAnoSessao, $iPeriodo) {
 
     $oRelatorio = null;
-    switch($iCodigoRelatorio) {
-        case BalancoFinanceiroDCASP2017::CODIGO_RELATORIO:
-            $oRelatorio = new BalancoFinanceiroDCASP2017($iAnoSessao, $iCodigoRelatorio, $iPeriodo);
-            break;
-        case BalancoFinanceiroDCASP2015::CODIGO_RELATORIO:
-            $oRelatorio = new BalancoFinanceiroDCASP2015($iAnoSessao, $iCodigoRelatorio, $iPeriodo);
-            break;
-        case BalancoFinanceiroDcasp::CODIGO_RELATORIO:
-        $oRelatorio = new BalancoFinanceiroDcasp($iAnoSessao, $iCodigoRelatorio, $iPeriodo);
-        break;
-    }
+    $oRelatorio = match ($iCodigoRelatorio) {
+        BalancoFinanceiroDCASP2017::CODIGO_RELATORIO => new BalancoFinanceiroDCASP2017($iAnoSessao, $iCodigoRelatorio, $iPeriodo),
+        BalancoFinanceiroDCASP2015::CODIGO_RELATORIO => new BalancoFinanceiroDCASP2015($iAnoSessao, $iCodigoRelatorio, $iPeriodo),
+        BalancoFinanceiroDcasp::CODIGO_RELATORIO => new BalancoFinanceiroDcasp($iAnoSessao, $iCodigoRelatorio, $iPeriodo),
+        default => $oRelatorio,
+    };
 
     return $oRelatorio;
   }

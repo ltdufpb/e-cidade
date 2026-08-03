@@ -38,7 +38,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
 $clrotulo = new rotulocampo;
 $clsolicita->rotulo->label();
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 ?>
 <html>

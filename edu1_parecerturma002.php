@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_parecerturma_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 db_postmemory($_GET);
 $clparecerturma = new cl_parecerturma;
@@ -57,7 +57,7 @@ if (isset($alterar)) {
   $result1 = db_query($sql1);
   if (isset($checkturma)) {
     
-    $aTurmasVinculadas = array();
+    $aTurmasVinculadas = [];
     for ($t = 0; $t < count($checkturma); $t++) {
       
       if ( in_array($checkturma[$t], $aTurmasVinculadas)) {
@@ -92,7 +92,7 @@ if (isset($alterar)) {
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
-   <fieldset style="width:95%"><legend><b>Turmas para o Parecer Cod.: <?=$codigoparecer?> - <?=substr($descrparecer,0,80)?><?=strlen($descrparecer)>80?"...":""?></b></legend>
+   <fieldset style="width:95%"><legend><b>Turmas para o Parecer Cod.: <?=$codigoparecer?> - <?=substr((string) $descrparecer,0,80)?><?=strlen((string) $descrparecer)>80?"...":""?></b></legend>
    <table border="0" align="left" width="95%">
     </tr>
      <td>

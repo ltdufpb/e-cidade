@@ -35,7 +35,7 @@ class PesquisaSituacaoGuias {
 
   public function statusDebitos($aDadosSituacao) {
 
-    $aRetorno = array();
+    $aRetorno = [];
 
     if (is_array($aDadosSituacao)) {
 

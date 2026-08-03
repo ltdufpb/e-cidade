@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE cancdebitostipo
 class cl_cancdebitostipo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k73_sequencial = 0; 
-   var $k73_descricao = null; 
+   public $k73_sequencial = 0; 
+   public $k73_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k73_sequencial = int4 = Código 
                  k73_descricao = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_cancdebitostipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cancdebitostipo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_cancdebitostipo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k73_sequencial = pg_result($result,0,0); 
+       $this->k73_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cancdebitostipo_k73_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k73_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k73_sequencial)){
          $this->erro_sql = " Campo k73_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_cancdebitostipo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cancdebitostipo ($this->k73_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cancdebitostipo já Cadastrado";
@@ -152,11 +152,11 @@ class cl_cancdebitostipo {
      $resaco = $this->sql_record($this->sql_query_file($this->k73_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11741,'$this->k73_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2023,11741,'','".AddSlashes(pg_result($resaco,0,'k73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2023,11742,'','".AddSlashes(pg_result($resaco,0,'k73_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2023,11741,'','".AddSlashes(pg_fetch_result($resaco,0,'k73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2023,11742,'','".AddSlashes(pg_fetch_result($resaco,0,'k73_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_cancdebitostipo {
       $this->atualizacampos();
      $sql = " update cancdebitostipo set ";
      $virgula = "";
-     if(trim($this->k73_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k73_sequencial"])){ 
+     if(trim((string) $this->k73_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k73_sequencial"])){ 
        $sql  .= $virgula." k73_sequencial = $this->k73_sequencial ";
        $virgula = ",";
-       if(trim($this->k73_sequencial) == null ){ 
+       if(trim((string) $this->k73_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "k73_sequencial";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_cancdebitostipo {
          return false;
        }
      }
-     if(trim($this->k73_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k73_descricao"])){ 
+     if(trim((string) $this->k73_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k73_descricao"])){ 
        $sql  .= $virgula." k73_descricao = '$this->k73_descricao' ";
        $virgula = ",";
-       if(trim($this->k73_descricao) == null ){ 
+       if(trim((string) $this->k73_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "k73_descricao";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_cancdebitostipo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11741,'$this->k73_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k73_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2023,11741,'".AddSlashes(pg_result($resaco,$conresaco,'k73_sequencial'))."','$this->k73_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2023,11741,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k73_sequencial'))."','$this->k73_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k73_descricao"]))
-           $resac = db_query("insert into db_acount values($acount,2023,11742,'".AddSlashes(pg_result($resaco,$conresaco,'k73_descricao'))."','$this->k73_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2023,11742,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k73_descricao'))."','$this->k73_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_cancdebitostipo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11741,'$k73_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2023,11741,'','".AddSlashes(pg_result($resaco,$iresaco,'k73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2023,11742,'','".AddSlashes(pg_result($resaco,$iresaco,'k73_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2023,11741,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2023,11742,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k73_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cancdebitostipo
@@ -314,7 +314,7 @@ class cl_cancdebitostipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cancdebitostipo";
@@ -328,7 +328,7 @@ class cl_cancdebitostipo {
    function sql_query ( $k73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -349,7 +349,7 @@ class cl_cancdebitostipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_cancdebitostipo {
    function sql_query_file ( $k73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_cancdebitostipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

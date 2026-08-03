@@ -32,8 +32,8 @@ $clvistestem->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("y70_id_usuario");
 $clrotulo->label("z01_nome");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_testem.location.href='fis1_vistestem002.php?chavepesquisa=$y25_codvist&chavepesquisa1=$y25_numcgm'</script>";
 }
@@ -93,7 +93,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   <tr>
     <td align="top" colspan="2">
    <?php 
-    $chavepri= array("y25_codvist"=>$y25_codvist,"y25_numcgm"=>@$y25_numcgm);
+    $chavepri= ["y25_codvist"=>$y25_codvist,"y25_numcgm"=>@$y25_numcgm];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y25_codvist,y25_numcgm,z01_nome";
     $cliframe_alterar_excluir->sql=$clvistestem->sql_query("","","*",""," y25_codvist = $y25_codvist");

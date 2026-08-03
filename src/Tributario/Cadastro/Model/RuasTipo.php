@@ -106,7 +106,7 @@ class RuasTipo
      * @param array $state
      * @return RuasTipo
      */
-    public static function fromState($state = array())
+    public static function fromState($state = [])
     {
         $self = new self();
         if (array_key_exists('j88_codigo', $state)) {

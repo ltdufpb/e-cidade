@@ -32,9 +32,9 @@ class Pack extends Command
         $disabled = $input->getOption('disabled');
         $modificationWithoutPlugin = $input->getOption('modification-without-plugin');
         $packageName = 'plugins-package.tar.gz';
-        $manifests = array();
-        $repack = array();
-        $files = array();
+        $manifests = [];
+        $repack = [];
+        $files = [];
         $service = new \PluginService();
         $plugins = $service->getPlugins();
 
@@ -48,7 +48,7 @@ class Pack extends Command
                 continue;
             }
 
-            $versao = Color::set('v' . ltrim($data->nVersao, 'v'), 'cyan');
+            $versao = Color::set('v' . ltrim((string) $data->nVersao, 'v'), 'cyan');
             $situacao = $data->lSituacao ? Color::set('ativado', 'light_green') : Color::set('desativado', 'brown');
             $log_path = "tmp/" .$data->sNome . '.log';
             echo sprintf(" - %s %s %s\n", Color::set($data->sLabel, 'white'), $versao, $situacao);
@@ -115,17 +115,14 @@ class Pack extends Command
     {
         return array_filter(
             $files,
-            function($path)
-            {
-                return strpos($path, 'modification/xml/') === 0;
-            }
+            fn($path) => str_starts_with((string) $path, 'modification/xml/')
         );
     }
 
     public function connect_db()
     {
-        $HTTP_SERVER_VARS['HTTP_HOST'] = '';
-        $HTTP_SERVER_VARS['PHP_SELF'] = '';
+        $_SERVER['HTTP_HOST'] = '';
+        $_SERVER['PHP_SELF'] = '';
         require_once ECIDADE_PATH . 'libs/db_conn.php';
         require_once ECIDADE_PATH . 'libs/db_stdlib.php';
 
@@ -147,12 +144,12 @@ class Pack extends Command
 
     private function manifest_extract_files($manifests)
     {
-        $files = array();
+        $files = [];
 
         foreach ($manifests as $manifest) {
 
             $name = (string) $manifest->plugin['name'];
-            $files[$name] = array();
+            $files[$name] = [];
 
             foreach ($manifest->plugin->files->file as $file) {
                 $files[$name][] = ltrim((string) $file['path'], '/');
@@ -164,7 +161,7 @@ class Pack extends Command
 
     private function manifest_extract_modifications($manifest_files)
     {
-        $plugins_modifications = array();
+        $plugins_modifications = [];
         foreach($manifest_files as $manifest => $files) {
             foreach ($this->files_extract_modifications($files) as $file) {
                 $plugins_modifications[] = $file;
@@ -176,7 +173,7 @@ class Pack extends Command
 
     private function modification_without_plugin($plugins_modifications)
     {
-        $data = array();
+        $data = [];
         $modications = glob(ECIDADE_PATH . 'modification/xml/*.xml', GLOB_BRACE);
 
         foreach ($modications as $modication) {

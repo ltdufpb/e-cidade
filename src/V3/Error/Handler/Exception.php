@@ -11,7 +11,7 @@ use \ECidade\V3\Error\Renderer;
 class Exception implements HandlerInterface {
 
   public static function register() {
-    return set_exception_handler(array(__CLASS__, 'handle'));
+    return set_exception_handler(self::handle(...));
   }
 
   public static function handle($exception) {
@@ -19,7 +19,7 @@ class Exception implements HandlerInterface {
     $entity = EntityFactory::createFromException($exception);
 
     $message = sprintf("Uncaught exception '%s' with message '%s' in %s on line %d",
-      get_class($exception),
+      $exception::class,
       $entity->getMessage(),
       $entity->getFile(),
       $entity->getLine()
@@ -28,7 +28,7 @@ class Exception implements HandlerInterface {
     $entity->setMessage($message);
     $entity->setCode(Entity::CODE_UNCAUGHT_EXCEPTION);
 
-    Registry::get('app.eventManager')->trigger('app.error', null, array($entity));
+    Registry::get('app.eventManager')->trigger('app.error', null, [$entity]);
     Renderer::render($entity);
 
     return $entity;

@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE caitransfdest
 class cl_caitransfdest { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k92_transf = 0; 
-   var $k92_instit = 0; 
-   var $k92_credito = 0; 
-   var $k92_debito = 0; 
+   public $k92_transf = 0; 
+   public $k92_instit = 0; 
+   public $k92_credito = 0; 
+   public $k92_debito = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k92_transf = int4 = Trasferencia 
                  k92_instit = int4 = Instituição 
                  k92_credito = int4 = Credito 
                  k92_debito = int4 = Debito 
                  ";
    //funcao construtor da classe 
-   function cl_caitransfdest() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("caitransfdest"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -133,7 +133,7 @@ class cl_caitransfdest {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->k92_transf) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -157,13 +157,13 @@ class cl_caitransfdest {
      $resaco = $this->sql_record($this->sql_query_file($this->k92_transf));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8320,'$this->k92_transf','I')");
-       $resac = db_query("insert into db_acount values($acount,1405,8320,'','".AddSlashes(pg_result($resaco,0,'k92_transf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1405,8321,'','".AddSlashes(pg_result($resaco,0,'k92_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1405,8323,'','".AddSlashes(pg_result($resaco,0,'k92_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1405,8322,'','".AddSlashes(pg_result($resaco,0,'k92_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1405,8320,'','".AddSlashes(pg_fetch_result($resaco,0,'k92_transf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1405,8321,'','".AddSlashes(pg_fetch_result($resaco,0,'k92_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1405,8323,'','".AddSlashes(pg_fetch_result($resaco,0,'k92_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1405,8322,'','".AddSlashes(pg_fetch_result($resaco,0,'k92_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -172,10 +172,10 @@ class cl_caitransfdest {
       $this->atualizacampos();
      $sql = " update caitransfdest set ";
      $virgula = "";
-     if(trim($this->k92_transf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k92_transf"])){ 
+     if(trim((string) $this->k92_transf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k92_transf"])){ 
        $sql  .= $virgula." k92_transf = $this->k92_transf ";
        $virgula = ",";
-       if(trim($this->k92_transf) == null ){ 
+       if(trim((string) $this->k92_transf) == null ){ 
          $this->erro_sql = " Campo Trasferencia nao Informado.";
          $this->erro_campo = "k92_transf";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_caitransfdest {
          return false;
        }
      }
-     if(trim($this->k92_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k92_instit"])){ 
+     if(trim((string) $this->k92_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k92_instit"])){ 
        $sql  .= $virgula." k92_instit = $this->k92_instit ";
        $virgula = ",";
-       if(trim($this->k92_instit) == null ){ 
+       if(trim((string) $this->k92_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "k92_instit";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_caitransfdest {
          return false;
        }
      }
-     if(trim($this->k92_credito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k92_credito"])){ 
+     if(trim((string) $this->k92_credito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k92_credito"])){ 
        $sql  .= $virgula." k92_credito = $this->k92_credito ";
        $virgula = ",";
-       if(trim($this->k92_credito) == null ){ 
+       if(trim((string) $this->k92_credito) == null ){ 
          $this->erro_sql = " Campo Credito nao Informado.";
          $this->erro_campo = "k92_credito";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_caitransfdest {
          return false;
        }
      }
-     if(trim($this->k92_debito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k92_debito"])){ 
+     if(trim((string) $this->k92_debito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k92_debito"])){ 
        $sql  .= $virgula." k92_debito = $this->k92_debito ";
        $virgula = ",";
-       if(trim($this->k92_debito) == null ){ 
+       if(trim((string) $this->k92_debito) == null ){ 
          $this->erro_sql = " Campo Debito nao Informado.";
          $this->erro_campo = "k92_debito";
          $this->erro_banco = "";
@@ -232,17 +232,17 @@ class cl_caitransfdest {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8320,'$this->k92_transf','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k92_transf"]))
-           $resac = db_query("insert into db_acount values($acount,1405,8320,'".AddSlashes(pg_result($resaco,$conresaco,'k92_transf'))."','$this->k92_transf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1405,8320,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k92_transf'))."','$this->k92_transf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k92_instit"]))
-           $resac = db_query("insert into db_acount values($acount,1405,8321,'".AddSlashes(pg_result($resaco,$conresaco,'k92_instit'))."','$this->k92_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1405,8321,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k92_instit'))."','$this->k92_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k92_credito"]))
-           $resac = db_query("insert into db_acount values($acount,1405,8323,'".AddSlashes(pg_result($resaco,$conresaco,'k92_credito'))."','$this->k92_credito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1405,8323,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k92_credito'))."','$this->k92_credito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k92_debito"]))
-           $resac = db_query("insert into db_acount values($acount,1405,8322,'".AddSlashes(pg_result($resaco,$conresaco,'k92_debito'))."','$this->k92_debito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1405,8322,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k92_debito'))."','$this->k92_debito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -287,13 +287,13 @@ class cl_caitransfdest {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8320,'$k92_transf','E')");
-         $resac = db_query("insert into db_acount values($acount,1405,8320,'','".AddSlashes(pg_result($resaco,$iresaco,'k92_transf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1405,8321,'','".AddSlashes(pg_result($resaco,$iresaco,'k92_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1405,8323,'','".AddSlashes(pg_result($resaco,$iresaco,'k92_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1405,8322,'','".AddSlashes(pg_result($resaco,$iresaco,'k92_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1405,8320,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k92_transf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1405,8321,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k92_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1405,8323,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k92_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1405,8322,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k92_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from caitransfdest
@@ -353,7 +353,7 @@ class cl_caitransfdest {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:caitransfdest";
@@ -367,7 +367,7 @@ class cl_caitransfdest {
    function sql_query ( $k92_transf=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_caitransfdest {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_caitransfdest {
    function sql_query_descr( $k92_transf=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,7 +434,7 @@ class cl_caitransfdest {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_caitransfdest {
    function sql_query_file ( $k92_transf=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -467,7 +467,7 @@ class cl_caitransfdest {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

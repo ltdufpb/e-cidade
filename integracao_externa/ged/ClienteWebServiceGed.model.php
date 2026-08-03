@@ -39,6 +39,6 @@ class ClienteWebServiceGed extends DBSoapClient {
   public function __construct() {    
     
     $this->oJsonParser = new services_json();
-    parent::__construct( null, array('location' => "http://swp10:8080/wsged/services/GED?wsdl") );
+    parent::__construct( null, ['location' => "http://swp10:8080/wsged/services/GED?wsdl"] );
   }
 }

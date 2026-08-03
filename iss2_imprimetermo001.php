@@ -40,7 +40,7 @@ $clrotulo->label('y30_codnoti');
 $clrotulo->label('y30_nome');
 
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 //-----------------------BUSCA AS INFORMAÇÕES DO TERMO--------------------------
 

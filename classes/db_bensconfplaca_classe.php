@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE bensconfplaca
 class cl_bensconfplaca { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t40_codigo = 0; 
-   var $t40_descr = null; 
+   public $t40_codigo = 0; 
+   public $t40_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t40_codigo = int4 = Código 
                  t40_descr = varchar(40) = Descrição tipo de configuração da placa 
                  ";
    //funcao construtor da classe 
-   function cl_bensconfplaca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bensconfplaca"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_bensconfplaca {
          $this->erro_status = "0";
          return false; 
        }
-       $this->t40_codigo = pg_result($result,0,0); 
+       $this->t40_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from bensconfplaca_t40_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $t40_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $t40_codigo)){
          $this->erro_sql = " Campo t40_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_bensconfplaca {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipos de configuração da placa do bem  ($this->t40_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipos de configuração da placa do bem  já Cadastrado";
@@ -152,11 +152,11 @@ class cl_bensconfplaca {
      $resaco = $this->sql_record($this->sql_query_file($this->t40_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8903,'$this->t40_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1522,8903,'','".AddSlashes(pg_result($resaco,0,'t40_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1522,8904,'','".AddSlashes(pg_result($resaco,0,'t40_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1522,8903,'','".AddSlashes(pg_fetch_result($resaco,0,'t40_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1522,8904,'','".AddSlashes(pg_fetch_result($resaco,0,'t40_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_bensconfplaca {
       $this->atualizacampos();
      $sql = " update bensconfplaca set ";
      $virgula = "";
-     if(trim($this->t40_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t40_codigo"])){ 
+     if(trim((string) $this->t40_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t40_codigo"])){ 
        $sql  .= $virgula." t40_codigo = $this->t40_codigo ";
        $virgula = ",";
-       if(trim($this->t40_codigo) == null ){ 
+       if(trim((string) $this->t40_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "t40_codigo";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_bensconfplaca {
          return false;
        }
      }
-     if(trim($this->t40_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t40_descr"])){ 
+     if(trim((string) $this->t40_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t40_descr"])){ 
        $sql  .= $virgula." t40_descr = '$this->t40_descr' ";
        $virgula = ",";
-       if(trim($this->t40_descr) == null ){ 
+       if(trim((string) $this->t40_descr) == null ){ 
          $this->erro_sql = " Campo Descrição tipo de configuração da placa nao Informado.";
          $this->erro_campo = "t40_descr";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_bensconfplaca {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8903,'$this->t40_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t40_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1522,8903,'".AddSlashes(pg_result($resaco,$conresaco,'t40_codigo'))."','$this->t40_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1522,8903,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t40_codigo'))."','$this->t40_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t40_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1522,8904,'".AddSlashes(pg_result($resaco,$conresaco,'t40_descr'))."','$this->t40_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1522,8904,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t40_descr'))."','$this->t40_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_bensconfplaca {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8903,'$t40_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1522,8903,'','".AddSlashes(pg_result($resaco,$iresaco,'t40_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1522,8904,'','".AddSlashes(pg_result($resaco,$iresaco,'t40_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1522,8903,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t40_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1522,8904,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t40_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from bensconfplaca
@@ -314,7 +314,7 @@ class cl_bensconfplaca {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bensconfplaca";
@@ -328,7 +328,7 @@ class cl_bensconfplaca {
    function sql_query ( $t40_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -349,7 +349,7 @@ class cl_bensconfplaca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_bensconfplaca {
    function sql_query_file ( $t40_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_bensconfplaca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

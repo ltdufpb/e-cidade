@@ -35,7 +35,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_orcparamrel_classe.php');
 require_once modification('classes/db_orcparamrelperiodos_classe.php');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcparamrel = new cl_orcparamrel();
 $db_opcao = 1;

@@ -49,7 +49,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("q177_setorfiscal");
 $clrotulo->label("q02_protocolojuntacomercial");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if(isset($cpfCnpj)){
     $cpfCnpj = trim(stripslashes($cpfCnpj));
@@ -163,13 +163,13 @@ if ( isset($numeroDaInscricao) ) {
 }
 
 $rsSqlDadosInscricao = db_query($sSqlDadosInscricao);
-$iNumRowsIncricao    = pg_numrows($rsSqlDadosInscricao);
+$iNumRowsIncricao    = pg_num_rows($rsSqlDadosInscricao);
 
 if ( isset($referenciaanterior) || !empty($cpfCnpj) ) {
     $numeroDaInscricao = null;
 
     if ( $iNumRowsIncricao == 1 ) {
-        $numeroDaInscricao = pg_result($rsSqlDadosInscricao,0,"q02_inscr");
+        $numeroDaInscricao = pg_fetch_result($rsSqlDadosInscricao,0,"q02_inscr");
     }
     $iCodigoInscricao = $numeroDaInscricao;
 }
@@ -341,8 +341,8 @@ if(!empty($iCodigoInscricao)) {
                     <td><?= $oInscriao->j14_nome ?></td>
                     <td><?= $oInscriao->z01_numero ?></td>
                     <td><?= $oInscriao->z01_compl ?></td>
-                    <td><?= date("d/m/Y", strtotime($oInscriao->q02_dtinic)) ?></td>
-                    <td><?= !empty($oInscriao->q02_dtbaix) ? date("d/m/Y", strtotime($oInscriao->q02_dtbaix)) : ""?></td>
+                    <td><?= date("d/m/Y", strtotime((string) $oInscriao->q02_dtinic)) ?></td>
+                    <td><?= !empty($oInscriao->q02_dtbaix) ? date("d/m/Y", strtotime((string) $oInscriao->q02_dtbaix)) : ""?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -388,10 +388,10 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
                               and (q140_datafim > current_date OR q140_datafim is null)";
             $resultparalisada = db_query($sqlparalisada) or die($sqlparalisada);
 
-            if (pg_numrows($resultparalisada) > 0) {
+            if (pg_num_rows($resultparalisada) > 0) {
               echo "<b> <font color=red><blink> - INSCRIÇÃO PARALISADA EM " 
-                  . db_formatar(pg_result($resultparalisada, 0, "q140_datainicio"), "d") 
-                  . " - " . pg_result($resultparalisada, 0, "q141_descricao") . "</b>";
+                  . db_formatar(pg_fetch_result($resultparalisada, 0, "q140_datainicio"), "d") 
+                  . " - " . pg_fetch_result($resultparalisada, 0, "q141_descricao") . "</b>";
             }?>
         </font>
       </td>
@@ -484,7 +484,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
       <td align="right" nowrap bgcolor="#CCCCCC">&nbsp;Capital social:&nbsp;</td>
       <td align="left" nowrap bgcolor="#FFFFFF">&nbsp;
         <font color="#666666">
-          <strong><?=(trim($oDadosInscricao->q02_capit) == 0 ? db_formatar($nPercentual, 'f') : db_formatar($oDadosInscricao->q02_capit, 'f'));?> &nbsp; </strong>
+          <strong><?=(trim((string) $oDadosInscricao->q02_capit) == 0 ? db_formatar($nPercentual, 'f') : db_formatar($oDadosInscricao->q02_capit, 'f'));?> &nbsp; </strong>
         </font>
       </td>
       <td align="right" nowrap bgcolor="#CCCCCC">&nbsp;<?=$LSq177_setorfiscal?>:&nbsp;</td>
@@ -705,7 +705,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
                   <?php 
                   $sql="select * from varfix inner join varfixval on q33_codigo=q34_codigo and q33_inscr=$iCodigoInscricao";
                   $varfix=db_query($sql);
-                  $numrows=pg_numrows($varfix);
+                  $numrows=pg_num_rows($varfix);
                   if ($numrows>0)
                   {
                       ?>

@@ -57,7 +57,7 @@ switch ($oParam->exec) {
 			$oDocumentoContabilRegra->setCodigoDocumento($oParam->c92_conhistdoc);
 			$oDocumentoContabilRegra->setAno(db_getsession('DB_anousu'));
 			$oDocumentoContabilRegra->setDescricao($oParam->c92_descricao);
-			$oDocumentoContabilRegra->setRegra(addslashes($oParam->c92_regra));
+			$oDocumentoContabilRegra->setRegra(addslashes((string) $oParam->c92_regra));
 			$oDocumentoContabilRegra->salvar();
 			
 			$oRetorno->message = "Regra salva com sucesso.";
@@ -103,7 +103,7 @@ switch ($oParam->exec) {
 				
 				if ($oDocumentoContabilRegra->getCodigoDocumento() == $oParam->iCodigoDocumento) {
 					
-					$oRetorno->c92_descricao  = urlencode($oDocumentoContabilRegra->getDescricao());
+					$oRetorno->c92_descricao  = urlencode((string) $oDocumentoContabilRegra->getDescricao());
 					$oRetorno->c92_regra      = $oDocumentoContabilRegra->getRegra();
 					$oRetorno->c92_sequencial = $oDocumentoContabilRegra->getCodigo();
 					break;
@@ -158,11 +158,11 @@ switch ($oParam->exec) {
 		  $iCodigoTipoDocumento = db_utils::fieldsMemory($rsBuscaTipoDocumento, 0)->c53_tipo;
 			
 			$oDocumentoContabil = new DocumentoContabil($iCodigoTipoDocumento);
-			$aVariaveis         = array();
+			$aVariaveis         = [];
 			$aDocumentoVariavel = $oDocumentoContabil->getInformacoesVariaveis();
 			
 			foreach ($aDocumentoVariavel as $oVariavel) {
-			  $oVariavel->c93_descricao = urlencode($oVariavel->c93_descricao);
+			  $oVariavel->c93_descricao = urlencode((string) $oVariavel->c93_descricao);
 				$aVariaveis[] = $oVariavel;
 			}
 			$oRetorno->aVariavel = $aVariaveis;
@@ -186,8 +186,8 @@ switch ($oParam->exec) {
 			 * Criei um array de variável que estão bloqueadas para impedir que o
 			 * usuário execute comandos como update delete e insert na base de dados
 			 */
-			$aComandosImpedidos = array("update", "delete", "insert");
-			$sSqlUsuario        = strtolower($oParam->c92_regra);
+			$aComandosImpedidos = ["update", "delete", "insert"];
+			$sSqlUsuario        = strtolower((string) $oParam->c92_regra);
 			
 			foreach ($aComandosImpedidos as $sComando) {
 				

@@ -51,7 +51,7 @@ if(isset($incluir)){
 
     db_inicio_transacao();
 
-    $clcgs_und->z01_v_telcel = preg_replace("/[^0-9]/", "",$z01_v_telcel);
+    $clcgs_und->z01_v_telcel = preg_replace("/[^0-9]/", "",(string) $z01_v_telcel);
     $clcgs_und->alterar( $z01_i_cgsund );
 
     $lErro = false;

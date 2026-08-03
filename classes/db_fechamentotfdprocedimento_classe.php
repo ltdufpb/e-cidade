@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE fechamentotfdprocedimento
 class cl_fechamentotfdprocedimento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tf40_sequencial = 0; 
-   var $tf40_tfd_fechamento = 0; 
-   var $tf40_tfd_pedidotfd = 0; 
-   var $tf40_cgs_und = 0; 
-   var $tf40_sau_procedimento = 0; 
-   var $tf40_faturamentoautomatico = 'f'; 
-   var $tf40_paciente = 'f'; 
+   public $tf40_sequencial = 0; 
+   public $tf40_tfd_fechamento = 0; 
+   public $tf40_tfd_pedidotfd = 0; 
+   public $tf40_cgs_und = 0; 
+   public $tf40_sau_procedimento = 0; 
+   public $tf40_faturamentoautomatico = 'f'; 
+   public $tf40_paciente = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tf40_sequencial = int4 = Código 
                  tf40_tfd_fechamento = int4 = Fechamento BPA do TFD 
                  tf40_tfd_pedidotfd = int4 = Pedido TFD 
@@ -60,10 +60,10 @@ class cl_fechamentotfdprocedimento {
                  tf40_paciente = bool = Se foi paciente 
                  ";
    //funcao construtor da classe 
-   function cl_fechamentotfdprocedimento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fechamentotfdprocedimento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -155,10 +155,10 @@ class cl_fechamentotfdprocedimento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tf40_sequencial = pg_result($result,0,0); 
+       $this->tf40_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from fechamentotfdprocedimento_tf40_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf40_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf40_sequencial)){
          $this->erro_sql = " Campo tf40_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -198,7 +198,7 @@ class cl_fechamentotfdprocedimento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Fechamento Procedimento TFD ($this->tf40_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Fechamento Procedimento TFD já Cadastrado";
@@ -227,16 +227,16 @@ class cl_fechamentotfdprocedimento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20303,'$this->tf40_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3651,20303,'','".AddSlashes(pg_result($resaco,0,'tf40_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3651,20304,'','".AddSlashes(pg_result($resaco,0,'tf40_tfd_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3651,20305,'','".AddSlashes(pg_result($resaco,0,'tf40_tfd_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3651,20307,'','".AddSlashes(pg_result($resaco,0,'tf40_cgs_und'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3651,20308,'','".AddSlashes(pg_result($resaco,0,'tf40_sau_procedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3651,20309,'','".AddSlashes(pg_result($resaco,0,'tf40_faturamentoautomatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3651,20310,'','".AddSlashes(pg_result($resaco,0,'tf40_paciente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3651,20303,'','".AddSlashes(pg_fetch_result($resaco,0,'tf40_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3651,20304,'','".AddSlashes(pg_fetch_result($resaco,0,'tf40_tfd_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3651,20305,'','".AddSlashes(pg_fetch_result($resaco,0,'tf40_tfd_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3651,20307,'','".AddSlashes(pg_fetch_result($resaco,0,'tf40_cgs_und'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3651,20308,'','".AddSlashes(pg_fetch_result($resaco,0,'tf40_sau_procedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3651,20309,'','".AddSlashes(pg_fetch_result($resaco,0,'tf40_faturamentoautomatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3651,20310,'','".AddSlashes(pg_fetch_result($resaco,0,'tf40_paciente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -246,10 +246,10 @@ class cl_fechamentotfdprocedimento {
       $this->atualizacampos();
      $sql = " update fechamentotfdprocedimento set ";
      $virgula = "";
-     if(trim($this->tf40_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_sequencial"])){ 
+     if(trim((string) $this->tf40_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_sequencial"])){ 
        $sql  .= $virgula." tf40_sequencial = $this->tf40_sequencial ";
        $virgula = ",";
-       if(trim($this->tf40_sequencial) == null ){ 
+       if(trim((string) $this->tf40_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "tf40_sequencial";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_tfd_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_tfd_fechamento"])){ 
+     if(trim((string) $this->tf40_tfd_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_tfd_fechamento"])){ 
        $sql  .= $virgula." tf40_tfd_fechamento = $this->tf40_tfd_fechamento ";
        $virgula = ",";
-       if(trim($this->tf40_tfd_fechamento) == null ){ 
+       if(trim((string) $this->tf40_tfd_fechamento) == null ){ 
          $this->erro_sql = " Campo Fechamento BPA do TFD não informado.";
          $this->erro_campo = "tf40_tfd_fechamento";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_tfd_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_tfd_pedidotfd"])){ 
+     if(trim((string) $this->tf40_tfd_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_tfd_pedidotfd"])){ 
        $sql  .= $virgula." tf40_tfd_pedidotfd = $this->tf40_tfd_pedidotfd ";
        $virgula = ",";
-       if(trim($this->tf40_tfd_pedidotfd) == null ){ 
+       if(trim((string) $this->tf40_tfd_pedidotfd) == null ){ 
          $this->erro_sql = " Campo Pedido TFD não informado.";
          $this->erro_campo = "tf40_tfd_pedidotfd";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_cgs_und)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_cgs_und"])){ 
+     if(trim((string) $this->tf40_cgs_und)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_cgs_und"])){ 
        $sql  .= $virgula." tf40_cgs_und = $this->tf40_cgs_und ";
        $virgula = ",";
-       if(trim($this->tf40_cgs_und) == null ){ 
+       if(trim((string) $this->tf40_cgs_und) == null ){ 
          $this->erro_sql = " Campo Cgs não informado.";
          $this->erro_campo = "tf40_cgs_und";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_sau_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_sau_procedimento"])){ 
+     if(trim((string) $this->tf40_sau_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_sau_procedimento"])){ 
        $sql  .= $virgula." tf40_sau_procedimento = $this->tf40_sau_procedimento ";
        $virgula = ",";
-       if(trim($this->tf40_sau_procedimento) == null ){ 
+       if(trim((string) $this->tf40_sau_procedimento) == null ){ 
          $this->erro_sql = " Campo Procedimento não informado.";
          $this->erro_campo = "tf40_sau_procedimento";
          $this->erro_banco = "";
@@ -311,10 +311,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_faturamentoautomatico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_faturamentoautomatico"])){ 
+     if(trim((string) $this->tf40_faturamentoautomatico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_faturamentoautomatico"])){ 
        $sql  .= $virgula." tf40_faturamentoautomatico = '$this->tf40_faturamentoautomatico' ";
        $virgula = ",";
-       if(trim($this->tf40_faturamentoautomatico) == null ){ 
+       if(trim((string) $this->tf40_faturamentoautomatico) == null ){ 
          $this->erro_sql = " Campo Faturou Automatico não informado.";
          $this->erro_campo = "tf40_faturamentoautomatico";
          $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_fechamentotfdprocedimento {
          return false;
        }
      }
-     if(trim($this->tf40_paciente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_paciente"])){ 
+     if(trim((string) $this->tf40_paciente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf40_paciente"])){ 
        $sql  .= $virgula." tf40_paciente = '$this->tf40_paciente' ";
        $virgula = ",";
-       if(trim($this->tf40_paciente) == null ){ 
+       if(trim((string) $this->tf40_paciente) == null ){ 
          $this->erro_sql = " Campo Se foi paciente não informado.";
          $this->erro_campo = "tf40_paciente";
          $this->erro_banco = "";
@@ -351,23 +351,23 @@ class cl_fechamentotfdprocedimento {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20303,'$this->tf40_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf40_sequencial"]) || $this->tf40_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3651,20303,'".AddSlashes(pg_result($resaco,$conresaco,'tf40_sequencial'))."','$this->tf40_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3651,20303,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf40_sequencial'))."','$this->tf40_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf40_tfd_fechamento"]) || $this->tf40_tfd_fechamento != "")
-             $resac = db_query("insert into db_acount values($acount,3651,20304,'".AddSlashes(pg_result($resaco,$conresaco,'tf40_tfd_fechamento'))."','$this->tf40_tfd_fechamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3651,20304,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf40_tfd_fechamento'))."','$this->tf40_tfd_fechamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf40_tfd_pedidotfd"]) || $this->tf40_tfd_pedidotfd != "")
-             $resac = db_query("insert into db_acount values($acount,3651,20305,'".AddSlashes(pg_result($resaco,$conresaco,'tf40_tfd_pedidotfd'))."','$this->tf40_tfd_pedidotfd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3651,20305,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf40_tfd_pedidotfd'))."','$this->tf40_tfd_pedidotfd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf40_cgs_und"]) || $this->tf40_cgs_und != "")
-             $resac = db_query("insert into db_acount values($acount,3651,20307,'".AddSlashes(pg_result($resaco,$conresaco,'tf40_cgs_und'))."','$this->tf40_cgs_und',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3651,20307,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf40_cgs_und'))."','$this->tf40_cgs_und',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf40_sau_procedimento"]) || $this->tf40_sau_procedimento != "")
-             $resac = db_query("insert into db_acount values($acount,3651,20308,'".AddSlashes(pg_result($resaco,$conresaco,'tf40_sau_procedimento'))."','$this->tf40_sau_procedimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3651,20308,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf40_sau_procedimento'))."','$this->tf40_sau_procedimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf40_faturamentoautomatico"]) || $this->tf40_faturamentoautomatico != "")
-             $resac = db_query("insert into db_acount values($acount,3651,20309,'".AddSlashes(pg_result($resaco,$conresaco,'tf40_faturamentoautomatico'))."','$this->tf40_faturamentoautomatico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3651,20309,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf40_faturamentoautomatico'))."','$this->tf40_faturamentoautomatico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf40_paciente"]) || $this->tf40_paciente != "")
-             $resac = db_query("insert into db_acount values($acount,3651,20310,'".AddSlashes(pg_result($resaco,$conresaco,'tf40_paciente'))."','$this->tf40_paciente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3651,20310,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf40_paciente'))."','$this->tf40_paciente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -421,16 +421,16 @@ class cl_fechamentotfdprocedimento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20303,'$tf40_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3651,20303,'','".AddSlashes(pg_result($resaco,$iresaco,'tf40_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3651,20304,'','".AddSlashes(pg_result($resaco,$iresaco,'tf40_tfd_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3651,20305,'','".AddSlashes(pg_result($resaco,$iresaco,'tf40_tfd_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3651,20307,'','".AddSlashes(pg_result($resaco,$iresaco,'tf40_cgs_und'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3651,20308,'','".AddSlashes(pg_result($resaco,$iresaco,'tf40_sau_procedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3651,20309,'','".AddSlashes(pg_result($resaco,$iresaco,'tf40_faturamentoautomatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3651,20310,'','".AddSlashes(pg_result($resaco,$iresaco,'tf40_paciente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3651,20303,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf40_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3651,20304,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf40_tfd_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3651,20305,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf40_tfd_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3651,20307,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf40_cgs_und'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3651,20308,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf40_sau_procedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3651,20309,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf40_faturamentoautomatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3651,20310,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf40_paciente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -491,7 +491,7 @@ class cl_fechamentotfdprocedimento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:fechamentotfdprocedimento";
@@ -506,7 +506,7 @@ class cl_fechamentotfdprocedimento {
    function sql_query ( $tf40_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -545,7 +545,7 @@ class cl_fechamentotfdprocedimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -558,7 +558,7 @@ class cl_fechamentotfdprocedimento {
    function sql_query_file ( $tf40_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -579,7 +579,7 @@ class cl_fechamentotfdprocedimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

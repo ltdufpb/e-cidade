@@ -35,8 +35,8 @@ include(modification("classes/db_advog_classe.php"));
 include(modification("classes/db_inicial_classe.php"));
 include(modification("classes/db_inicialcert_classe.php"));
 include(modification("classes/db_inicialmov_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $db_botao=1;
 $botao=1;
 $db_opcao=1;
@@ -98,7 +98,7 @@ if(isset($pesquisar)){
  if($datafim_dia!="" && $datafim_mes!="" && $datafim_ano!=""){
    $datafim=$datafim_ano."-".$datafim_mes."-".$datafim_dia;
  }  
- if(isset($dataini) && trim($dataini) != "" && trim($datafim) != "" && isset($datafim)  ){
+ if(isset($dataini) && trim($dataini) != "" && trim((string) $datafim) != "" && isset($datafim)  ){
     $data =" and v56_data between '$dataini' and '$datafim' ";
  }
  if(isset($dataini) && trim($dataini) != "" && !isset($datafim) ){
@@ -130,7 +130,7 @@ if(isset($pesquisar)){
  if(isset($dataini) && trim($dataini) != "" && !isset($datafim) ){
     $chave .= $Lv56_data." a partir de ".$dataini.$xx;
  }
- if(!isset($dataini) && isset($datafim) && trim($dataini) != ""){
+ if(!isset($dataini) && isset($datafim) && trim((string) $dataini) != ""){
     $chave .= $Lv56_data." até ".$datafim.$xx;
  }
  if(isset($v50_advog) && $v50_advog!=""){
@@ -196,7 +196,7 @@ function js_volta(){
 					  <td>&nbsp;</td>
             <td valign="top"  align="left">
               <?php  
-                $matriz=split("#",@$chave);
+                $matriz=preg_split("#\\##m",(string) @$chave);
                	for($y=0;$y<sizeof($matriz);$y++){
                	  if($matriz[$y]!=""){
            	        echo "<label>";

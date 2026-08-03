@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE rhpessalario
 class cl_rhpessalario { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh04_seqpes = 0; 
-   var $rh04_salari = 0; 
+   public $rh04_seqpes = 0; 
+   public $rh04_salari = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh04_seqpes = int4 = Sequência 
                  rh04_salari = float8 = Salário 
                  ";
    //funcao construtor da classe 
-   function cl_rhpessalario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpessalario"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_rhpessalario {
      $result = @db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Salário ($this->rh04_seqpes) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Salário já Cadastrado";
@@ -129,10 +129,10 @@ class cl_rhpessalario {
      $resaco = $this->sql_record($this->sql_query_file($this->rh04_seqpes));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,7041,'$this->rh04_seqpes','I')");
-       $resac = db_query("insert into db_acount values($acount,1160,7041,'','".AddSlashes(pg_result($resaco,0,'rh04_seqpes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1160,7042,'','".AddSlashes(pg_result($resaco,0,'rh04_salari'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1160,7041,'','".AddSlashes(pg_fetch_result($resaco,0,'rh04_seqpes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1160,7042,'','".AddSlashes(pg_fetch_result($resaco,0,'rh04_salari'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -141,10 +141,10 @@ class cl_rhpessalario {
       $this->atualizacampos();
      $sql = " update rhpessalario set ";
      $virgula = "";
-     if(trim($this->rh04_seqpes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh04_seqpes"])){ 
+     if(trim((string) $this->rh04_seqpes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh04_seqpes"])){ 
        $sql  .= $virgula." rh04_seqpes = $this->rh04_seqpes ";
        $virgula = ",";
-       if(trim($this->rh04_seqpes) == null ){ 
+       if(trim((string) $this->rh04_seqpes) == null ){ 
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "rh04_seqpes";
          $this->erro_banco = "";
@@ -154,10 +154,10 @@ class cl_rhpessalario {
          return false;
        }
      }
-     if(trim($this->rh04_salari)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh04_salari"])){ 
+     if(trim((string) $this->rh04_salari)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh04_salari"])){ 
        $sql  .= $virgula." rh04_salari = $this->rh04_salari ";
        $virgula = ",";
-       if(trim($this->rh04_salari) == null ){ 
+       if(trim((string) $this->rh04_salari) == null ){ 
          $this->erro_sql = " Campo Salário nao Informado.";
          $this->erro_campo = "rh04_salari";
          $this->erro_banco = "";
@@ -175,12 +175,12 @@ class cl_rhpessalario {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountkey values($acount,7041,'$this->rh04_seqpes','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh04_seqpes"]))
-           $resac = db_query("insert into db_acount values($acount,1160,7041,'".AddSlashes(pg_result($resaco,$conresaco,'rh04_seqpes'))."','$this->rh04_seqpes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1160,7041,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh04_seqpes'))."','$this->rh04_seqpes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh04_salari"]))
-           $resac = db_query("insert into db_acount values($acount,1160,7042,'".AddSlashes(pg_result($resaco,$conresaco,'rh04_salari'))."','$this->rh04_salari',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1160,7042,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh04_salari'))."','$this->rh04_salari',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = @db_query($sql);
@@ -225,10 +225,10 @@ class cl_rhpessalario {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountkey values($acount,7041,'$rh04_seqpes','E')");
-         $resac = db_query("insert into db_acount values($acount,1160,7041,'','".AddSlashes(pg_result($resaco,$iresaco,'rh04_seqpes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1160,7042,'','".AddSlashes(pg_result($resaco,$iresaco,'rh04_salari'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1160,7041,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh04_seqpes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1160,7042,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh04_salari'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhpessalario
@@ -288,7 +288,7 @@ class cl_rhpessalario {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhpessalario";
@@ -303,7 +303,7 @@ class cl_rhpessalario {
    function sql_query ( $rh04_seqpes=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -324,7 +324,7 @@ class cl_rhpessalario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -337,7 +337,7 @@ class cl_rhpessalario {
    function sql_query_file ( $rh04_seqpes=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -358,7 +358,7 @@ class cl_rhpessalario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

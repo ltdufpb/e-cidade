@@ -28,7 +28,7 @@
 set_time_limit(0);
 include(modification("libs/db_sql.php"));
 require(modification("fpdf151/pdf.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //echo $exerc;
 //exit;
 if ( $ordem == 'v01_proced' ){
@@ -60,7 +60,7 @@ $sql = "select v01_exerc,
          " ;
 $result = db_query($sql);
 
-$num = pg_numrows($result);
+$num = pg_num_rows($result);
 /*
 db_query("drop table totproced");			
 db_query("create table totproced(v01_exerc int4,v01_proced int4,k00_numpre int4,k00_numpar float8,vlrhis float8,vlrcor float8,vlrjuros float8,vlrmulta float8,vlrdesconto float8,total float8)");
@@ -127,7 +127,7 @@ $tvlrjuros2 = 0;
 $tvlrmulta2 = 0;
 $tvlrdesconto2 = 0;
 $ttotal2 = 0;
-for($s=0;$s<pg_numrows($result2);$s++){
+for($s=0;$s<pg_num_rows($result2);$s++){
   db_fieldsmemory($result2,$s);
   if ( $ordem == 'v01_proced' ){
      if ($quebra != $v01_proced.'-'.$v03_dcomp){

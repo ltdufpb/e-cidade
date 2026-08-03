@@ -44,8 +44,8 @@ if (!isset($arqinclude)){
   $classinatura = new cl_assinatura;
   $orcparamrel  = new cl_orcparamrel;
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
 }
 
@@ -111,7 +111,7 @@ $head6 = "ORIGEM E APLICAÇÂO DOS RECURSOS OBTIDOS COM A ALIENAÇÃO DE ATIVOS";
 
 
    //leitura das 3 primeira linhas do array
-	$aLinhasRelatorio = array();
+	$aLinhasRelatorio = [];
 	//Variáveis para armazenar o total da coluna da linha
 	$totalReceitasCapital_c1 = 0;
 	$totalReceitasCapital_c2 = 0;
@@ -173,7 +173,7 @@ $head6 = "ORIGEM E APLICAÇÂO DOS RECURSOS OBTIDOS COM A ALIENAÇÃO DE ATIVOS";
   $pdf->cell(35,$alt,"(e)",'LBR',0,"C",0);
   $pdf->cell(35,$alt,"(f)",'LB',1,"C",0);
 
-  $aLinhasRelatorio1 = array();
+  $aLinhasRelatorio1 = [];
 	//Variáveis para armazenar o total da coluna da linha
 	$totalDespesasCapital_c1 = 0;
 	$totalDespesasCapital_c2 = 0;
@@ -204,7 +204,7 @@ $head6 = "ORIGEM E APLICAÇÂO DOS RECURSOS OBTIDOS COM A ALIENAÇÃO DE ATIVOS";
 		$totalDespesasCapital_c3 += $total_c3;
 	}
 
-  $aLinhasRelatorio2 = array();
+  $aLinhasRelatorio2 = [];
 	//Variáveis para armazenar o total da coluna da linha
 	$totalDespesasCorrentes_c1 = 0;
 	$totalDespesasCorrentes_c2 = 0;

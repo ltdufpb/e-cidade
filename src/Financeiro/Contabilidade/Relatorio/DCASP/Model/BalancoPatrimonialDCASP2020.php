@@ -30,18 +30,19 @@ class BalancoPatrimonialDCASP2020 extends BalancoPatrimonialDCASP2019
         parent::__construct($iAnoUsu, $iCodigoRelatorio, $iCodigoPeriodo);
         $linhas = [8, 15, 16, 25, 34, 44, 45, 49, 61, 62, 68, 74];
         $this->aLinhasTotalizadoras = $linhas;
-        $this->linhas =  array(
-            'balanco_patrimonial' => array(
+        $this->linhas =  [
+            'balanco_patrimonial' => [
                 'inicio' => static::QUADRO_ATIVOS_PASSIVOS_INICIAL,
                 'final' => static::QUADRO_ATIVOS_PASSIVOS_FINAL
-            ),
-            'contas_compensacao' => array(
+            ],
+            'contas_compensacao' => [
                 'inicio' => static::QUADRO_CONTAS_COMPENSACAO_INICIAL,
                 'final' => static::QUADRO_CONTAS_COMPENSACAO_FINAL,
-            )
-        );
+            ]
+        ];
     }
 
+    #[\Override]
     public function emitir()
     {
         $this->preparaCabecalhos();
@@ -52,30 +53,30 @@ class BalancoPatrimonialDCASP2020 extends BalancoPatrimonialDCASP2019
 
         $this->configurarPdf();
 
-        $this->processarFormasDasLinhas(array(58, 51, 50, 61, 62, 63, 68, 69, 74));
+        $this->processarFormasDasLinhas([58, 51, 50, 61, 62, 63, 68, 69, 74]);
 
-        $quadros = array(
-            (object)array(
+        $quadros = [
+            (object)[
                 "nome" => 'QUADRO PRINCIPAL',
                 "coluna" => "ATIVO",
                 "quadro" => $this->aQuadroPrincipal
-            ),
-            (object)array(
+            ],
+            (object)[
                 "nome" => "QUADRO DE ATIVOS E PASSIVOS FINANCEIROS E PERMANENTES\n(Lei nº 4.320/1964)",
                 "coluna" => "",
                 "quadro" => $this->aQuadroAtivosPassivos
-            ),
-            (object)array(
+            ],
+            (object)[
                 "nome" => "QUADRO DE CONTAS DE COMPENSAÇÃO\n(Lei nº 4.320/1964)",
                 "coluna" => "",
                 "quadro" => $this->aQuadroContasCompensacao
-            ),
-            (object)array(
+            ],
+            (object)[
                 "nome" => "QUADRO DE SUPERÁVIT/DÉFICIT FINANCEIRO\n(Lei nº 4.320/1964)",
                 "coluna" => "FONTES DE RECURSOS",
                 "quadro" => $this->aQuadroSuperavitDeficit
-            )
-        );
+            ]
+        ];
 
         foreach ($quadros as $stdQuadro) {
             $this->emitirQuadro($stdQuadro->nome, $stdQuadro->coluna, $stdQuadro->quadro);

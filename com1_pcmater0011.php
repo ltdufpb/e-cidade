@@ -42,8 +42,8 @@ $auxiliar     = new cl_pcsubgrupo;
 $clorcparametro = new cl_orcparametro;
 $clpcmaterele = new cl_pcmaterele;
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 //db_postmemory($HTTP_GET_VARS,2);db_postmemory($HTTP_POST_VARS);
 
@@ -80,7 +80,7 @@ if ($clorcparametro->numrows >0){
   // parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
   // se usa subelemento ...
   // $o50_subelem='t';
-  $arr = split("XX",@$codele);
+  $arr = preg_split("#XX#m",(string) @$codele);
   $nexclui = false;
   if(isset($o50_subelem) && ($o50_subelem=="t")){  	
     $result = $clpcsubgrupo->sql_record($clpcsubgrupo->sql_query_orcelement(null,
@@ -93,7 +93,7 @@ if ($clorcparametro->numrows >0){
     echo "<tr bgcolor=\"#6699cc\"><th>&nbsp;</th><th>Reduzido</th><th>Desdobramento</th><th>$RLo56_descr</th></tr>\n";
     for($i = 0;$i < $numrows;$i++) {
       db_fieldsmemory($result,$i);
-      $elemento = substr($o56_elemento,0,7);   
+      $elemento = substr((string) $o56_elemento,0,7);   
       // echo $elemento;
       $sql=" select distinct (c60_codcon) as o56_codele, c60_estrut as o56_elemento, c60_descr as o56_descr
  	         from conplano
@@ -113,7 +113,7 @@ if ($clorcparametro->numrows >0){
                                                           and e55_codele=$o56_codele 
                                                           and e54_anulad is null 
                                                           and e54_anousu = ".db_getsession("DB_anousu"));
-          
+
 	      $result_trancaele = $clempautitem->sql_record($sSqlItens);
 	      $trancaele = false;
 	      if($clempautitem->numrows>0 && !isset($impmater)){
@@ -154,7 +154,7 @@ if ($clorcparametro->numrows >0){
       }
     };//end for
   } else {
-  	
+
     $sWhereGrupo = "o56_anousu = ".db_getsession("DB_anousu");
 
 		if ( !empty($codsubgrupo) ) {
@@ -174,7 +174,7 @@ if ($clorcparametro->numrows >0){
 		for($i = 0;$i < $numrows;$i++) {
 
 			db_fieldsmemory($result,$i);
-			$elemento = substr($o56_elemento,0,7);
+			$elemento = substr((string) $o56_elemento,0,7);
 			// echo $elemento;
 			$sql  =" select distinct(c60_codcon) as o56_codele, c60_estrut as o56_elemento, c60_descr as o56_descr ";
 			$sql .="  from  conplano ";

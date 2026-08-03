@@ -34,7 +34,7 @@ $clrotulo->label('r01_regist');
 $clrotulo->label('z01_nome');
 $clrotulo->label('r01_admiss');
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 $head3 = "FUNCIONÁRIOS DEMITIDOS";
 $head5 = "PERÍODO : ".db_formatar($datai, 'd')." até ".db_formatar($dataf, 'd');
@@ -91,7 +91,7 @@ $xordem
 ";
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários demitidos no período de '.db_formatar($datai,"d").' e '.db_formatar($dataf,"d"));
 
@@ -106,7 +106,7 @@ $pdf->setfont('arial', 'b', 8);
 $troca = 1;
 $alt = 4;
 $pre = 0;
-for ($x = 0; $x < pg_numrows($result); $x ++) {
+for ($x = 0; $x < pg_num_rows($result); $x ++) {
 	db_fieldsmemory($result, $x);
 	if ($pdf->gety() > $pdf->h - 30 || $troca != 0) {
 		$pdf->addpage();

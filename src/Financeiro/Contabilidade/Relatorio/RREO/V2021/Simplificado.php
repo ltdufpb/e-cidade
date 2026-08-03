@@ -126,7 +126,7 @@ class Simplificado extends AnexoXVIIIResumido
             $valorRcl = $receitaCorrenteLiquidaCorrente->somaRCLPeriodo($this->iCodigoPeriodo);
             $this->aLinhasConsistencia[17]->ate_bimestre = $valorRcl;
 
-            return array($this->aLinhasConsistencia[17]);
+            return [$this->aLinhasConsistencia[17]];
         }
         $instituicoes = InstituicaoRepository::getInstituicoes();
         $codigoInstituicoes = implode(',', array_keys($instituicoes));
@@ -211,7 +211,7 @@ class Simplificado extends AnexoXVIIIResumido
         $this->aLinhasConsistencia[24]->ate_bimestre = $dadosAnexo->TOTAL_DESPESAS_FUNDO_REPARTICAO_desppag;
         $this->aLinhasConsistencia[25]->ate_bimestre = $dadosAnexo->RESULTADO_PREVIDENCIARIO_FUNDO_REPARTICAO_desppag;
 
-        $aLinhas = array();
+        $aLinhas = [];
         $aLinhas[0] = $this->aLinhasConsistencia[18]; //Regime Próprio de Previdência dos Servidores - PLANO PREVIDE
         $aLinhas[1] = $this->aLinhasConsistencia[19];
         $aLinhas[2] = $oLinhaDespEmpPrev;
@@ -261,10 +261,10 @@ class Simplificado extends AnexoXVIIIResumido
         $this->aLinhasConsistencia[27]->resultado_apurado_ate_bimestre = $dadosSimplificado->resultadoPrimario;
         $this->aLinhasConsistencia[27]->relacao_meta = $dadosSimplificado->percentualMetaPrimario;
 
-        return array(
+        return [
             $this->aLinhasConsistencia[27],
             $this->aLinhasConsistencia[26],
-        );
+        ];
     }
 
     public function getResultadoNominalPrimarioNovo()
@@ -389,7 +389,7 @@ class Simplificado extends AnexoXVIIIResumido
             $this->aLinhasConsistencia[40]->saldo_pagar += $this->aLinhasConsistencia[$i]->saldo_pagar;
         }
 
-        return array(
+        return [
             $this->aLinhasConsistencia[28],
             $this->aLinhasConsistencia[29],
             $this->aLinhasConsistencia[30],
@@ -403,7 +403,7 @@ class Simplificado extends AnexoXVIIIResumido
             $this->aLinhasConsistencia[38],
             $this->aLinhasConsistencia[39],
             $this->aLinhasConsistencia[40]
-        );
+        ];
     }
 
     /**
@@ -443,13 +443,13 @@ class Simplificado extends AnexoXVIIIResumido
         $oLinhaPerc15->minimo_aplicar_exercicio = 15;
         $oLinhaPerc15->aplicado_ate_bimestre = $dadosSimplificado->MIN_15_percent_ate_bin;
 
-        $aLinhas = array(
+        $aLinhas = [
 
             $this->aLinhasConsistencia[41],
             $this->aLinhasConsistencia[42],
             $oLinhaPerc50,
             $oLinhaPerc15
-        );
+        ];
 
         return $aLinhas;
     }
@@ -492,10 +492,10 @@ class Simplificado extends AnexoXVIIIResumido
         $this->aLinhasConsistencia[44]->valor_apurado_ate_bimestre = $aDados[1]->nDespesasEmpenhadas;
         $this->aLinhasConsistencia[44]->saldo_nao_realizado = $aDados[1]->nSaldoNaoExecutado;
 
-        return array(
+        return [
             $this->aLinhasConsistencia[43],
             $this->aLinhasConsistencia[44],
-        );
+        ];
     }
 
     /**
@@ -517,7 +517,7 @@ class Simplificado extends AnexoXVIIIResumido
             $this->aLinhasConsistencia[46]->exercicio_35 = 0;
         }
 
-        return array(
+        return [
             $this->aLinhasConsistencia[45],
             $this->aLinhasConsistencia[46],
             $this->aLinhasConsistencia[47],
@@ -526,7 +526,7 @@ class Simplificado extends AnexoXVIIIResumido
             $this->aLinhasConsistencia[50],
             $this->aLinhasConsistencia[51],
             $this->aLinhasConsistencia[52],
-        );
+        ];
     }
 
     /**
@@ -549,10 +549,10 @@ class Simplificado extends AnexoXVIIIResumido
         $this->aLinhasConsistencia[54]->valor_apurado_ate_bimestre = $aDados[1]->nAteBimestre;
         $this->aLinhasConsistencia[54]->saldo_realizar = $aDados[1]->nSaldoRealizar;
 
-        return array(
+        return [
             $this->aLinhasConsistencia[53],
             $this->aLinhasConsistencia[54],
-        );
+        ];
     }
 
     /**
@@ -568,7 +568,7 @@ class Simplificado extends AnexoXVIIIResumido
         $this->aLinhasConsistencia[55]->minimo_aplicar_exercicio = $dadosSimplificado->nPercentualMinimoAplicar;
         $this->aLinhasConsistencia[55]->aplicado_ate_bimestre = $dadosSimplificado->nPercentualDespesasSaudeComImpostos;
 
-        return array($this->aLinhasConsistencia[55]);
+        return [$this->aLinhasConsistencia[55]];
     }
 
     /**
@@ -584,7 +584,7 @@ class Simplificado extends AnexoXVIIIResumido
 
         $this->aLinhasConsistencia[56]->valor_apurado_ate_bimestre = $totalDespesasRCL->exercicio_corrente;
 
-        return array($this->aLinhasConsistencia[56]);
+        return [$this->aLinhasConsistencia[56]];
     }
 
     /**

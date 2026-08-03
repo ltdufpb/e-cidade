@@ -33,7 +33,7 @@ class cl_contribuicaosindicalperiodosidicatos
     public function __construct()
     {
         $this->rotulo = new rotulo("contribuicaosindicalperiodosidicatos");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -100,10 +100,10 @@ class cl_contribuicaosindicalperiodosidicatos
                 $this->erro_status = "0";
                 return false;
             }
-            $this->eso31_sequencial = pg_result($result, 0, 0);
+            $this->eso31_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from contribuicaosindicalperiodosidicatos_eso31_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $eso31_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $eso31_sequencial)) {
                 $this->erro_sql = " Campo eso31_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -141,7 +141,7 @@ class cl_contribuicaosindicalperiodosidicatos
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = " ($this->eso31_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = " já Cadastrado";
@@ -173,22 +173,22 @@ class cl_contribuicaosindicalperiodosidicatos
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,1010275,'$this->eso31_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,1010402,1010275,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010402,1010275,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'eso31_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010402,1010276,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010402,1010276,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'eso31_rhsindicato')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010402,1010277,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010402,1010277,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'eso31_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010402,1010278,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010402,1010278,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'eso31_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010402,1010279,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010402,1010279,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'eso31_contribuicaosindicalperiodo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -262,10 +262,10 @@ class cl_contribuicaosindicalperiodosidicatos
         $this->atualizacampos();
         $sql = " update contribuicaosindicalperiodosidicatos set ";
         $virgula = "";
-        if (trim($this->eso31_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso31_sequencial"])) {
+        if (trim((string) $this->eso31_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso31_sequencial"])) {
             $sql .= $virgula . " eso31_sequencial = $this->eso31_sequencial ";
             $virgula = ",";
-            if (trim($this->eso31_sequencial) == null) {
+            if (trim((string) $this->eso31_sequencial) == null) {
                 $this->erro_sql = " Campo Código não informado.";
                 $this->erro_campo = "eso31_sequencial";
                 $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_contribuicaosindicalperiodosidicatos
                 return false;
             }
         }
-        if (trim($this->eso31_rhsindicato) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso31_rhsindicato"])) {
+        if (trim((string) $this->eso31_rhsindicato) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso31_rhsindicato"])) {
             $sql .= $virgula . " eso31_rhsindicato = $this->eso31_rhsindicato ";
             $virgula = ",";
-            if (trim($this->eso31_rhsindicato) == null) {
+            if (trim((string) $this->eso31_rhsindicato) == null) {
                 $this->erro_sql = " Campo Sindicato não informado.";
                 $this->erro_campo = "eso31_rhsindicato";
                 $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_contribuicaosindicalperiodosidicatos
                 return false;
             }
         }
-        if (trim($this->eso31_tipo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso31_tipo"])) {
+        if (trim((string) $this->eso31_tipo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso31_tipo"])) {
             $sql .= $virgula . " eso31_tipo = $this->eso31_tipo ";
             $virgula = ",";
-            if (trim($this->eso31_tipo) == null) {
+            if (trim((string) $this->eso31_tipo) == null) {
                 $this->erro_sql = " Campo Tipo não informado.";
                 $this->erro_campo = "eso31_tipo";
                 $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_contribuicaosindicalperiodosidicatos
                 return false;
             }
         }
-        if (trim($this->eso31_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso31_valor"])) {
+        if (trim((string) $this->eso31_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso31_valor"])) {
             $sql .= $virgula . " eso31_valor = $this->eso31_valor ";
             $virgula = ",";
-            if (trim($this->eso31_valor) == null) {
+            if (trim((string) $this->eso31_valor) == null) {
                 $this->erro_sql = " Campo Valor não informado.";
                 $this->erro_campo = "eso31_valor";
                 $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_contribuicaosindicalperiodosidicatos
                 return false;
             }
         }
-        if (trim($this->eso31_contribuicaosindicalperiodo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso31_contribuicaosindicalperiodo"])) {
+        if (trim((string) $this->eso31_contribuicaosindicalperiodo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso31_contribuicaosindicalperiodo"])) {
             $sql .= $virgula . " eso31_contribuicaosindicalperiodo = $this->eso31_contribuicaosindicalperiodo ";
             $virgula = ",";
-            if (trim($this->eso31_contribuicaosindicalperiodo) == null) {
+            if (trim((string) $this->eso31_contribuicaosindicalperiodo) == null) {
                 $this->erro_sql = " Campo Período não informado.";
                 $this->erro_campo = "eso31_contribuicaosindicalperiodo";
                 $this->erro_banco = "";
@@ -346,31 +346,31 @@ class cl_contribuicaosindicalperiodosidicatos
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010275,'$this->eso31_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["eso31_sequencial"]) || $this->eso31_sequencial != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010402,1010275,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010402,1010275,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'eso31_sequencial')) . "','$this->eso31_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["eso31_rhsindicato"]) || $this->eso31_rhsindicato != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010402,1010276,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010402,1010276,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'eso31_rhsindicato')) . "','$this->eso31_rhsindicato'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["eso31_tipo"]) || $this->eso31_tipo != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010402,1010277,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010402,1010277,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'eso31_tipo')) . "','$this->eso31_tipo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["eso31_valor"]) || $this->eso31_valor != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010402,1010278,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010402,1010278,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'eso31_valor')) . "','$this->eso31_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["eso31_contribuicaosindicalperiodo"]) || $this->eso31_contribuicaosindicalperiodo != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010402,1010279,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010402,1010279,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'eso31_contribuicaosindicalperiodo')) . "','$this->eso31_contribuicaosindicalperiodo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
@@ -430,22 +430,22 @@ class cl_contribuicaosindicalperiodosidicatos
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010275,'$eso31_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,1010402,1010275,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010402,1010275,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'eso31_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010402,1010276,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010402,1010276,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'eso31_rhsindicato')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010402,1010277,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010402,1010277,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'eso31_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010402,1010278,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010402,1010278,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'eso31_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010402,1010279,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010402,1010279,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'eso31_contribuicaosindicalperiodo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }

@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE disrec
 class cl_disrec {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $codcla = 0;
-   var $k00_receit = 0;
-   var $vlrrec = 0;
-   var $idret = 0;
-   var $instit = 0;
+   public $codcla = 0;
+   public $k00_receit = 0;
+   public $vlrrec = 0;
+   public $idret = 0;
+   public $instit = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  codcla = int4 = CodCla
                  k00_receit = int4 = Receita
                  vlrrec = float8 = Valor receita
@@ -56,10 +56,10 @@ class cl_disrec {
                  instit = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_disrec() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disrec");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -146,7 +146,7 @@ class cl_disrec {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Descricao das receitas () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Descricao das receitas já Cadastrado";
@@ -173,10 +173,10 @@ class cl_disrec {
       $this->atualizacampos();
      $sql = " update disrec set ";
      $virgula = "";
-     if(trim($this->codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcla"])){
+     if(trim((string) $this->codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcla"])){
        $sql  .= $virgula." codcla = $this->codcla ";
        $virgula = ",";
-       if(trim($this->codcla) == null ){
+       if(trim((string) $this->codcla) == null ){
          $this->erro_sql = " Campo CodCla nao Informado.";
          $this->erro_campo = "codcla";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_disrec {
          return false;
        }
      }
-     if(trim($this->k00_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_receit"])){
+     if(trim((string) $this->k00_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_receit"])){
        $sql  .= $virgula." k00_receit = $this->k00_receit ";
        $virgula = ",";
-       if(trim($this->k00_receit) == null ){
+       if(trim((string) $this->k00_receit) == null ){
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "k00_receit";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_disrec {
          return false;
        }
      }
-     if(trim($this->vlrrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vlrrec"])){
+     if(trim((string) $this->vlrrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vlrrec"])){
        $sql  .= $virgula." vlrrec = $this->vlrrec ";
        $virgula = ",";
-       if(trim($this->vlrrec) == null ){
+       if(trim((string) $this->vlrrec) == null ){
          $this->erro_sql = " Campo Valor receita nao Informado.";
          $this->erro_campo = "vlrrec";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_disrec {
          return false;
        }
      }
-     if(trim($this->idret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["idret"])){
+     if(trim((string) $this->idret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["idret"])){
        $sql  .= $virgula." idret = $this->idret ";
        $virgula = ",";
-       if(trim($this->idret) == null ){
+       if(trim((string) $this->idret) == null ){
          $this->erro_sql = " Campo Cód. Ret. nao Informado.";
          $this->erro_campo = "idret";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_disrec {
          return false;
        }
      }
-     if(trim($this->instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["instit"])){
+     if(trim((string) $this->instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["instit"])){
        $sql  .= $virgula." instit = $this->instit ";
        $virgula = ",";
-       if(trim($this->instit) == null ){
+       if(trim((string) $this->instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "instit";
          $this->erro_banco = "";
@@ -319,7 +319,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:disrec";
@@ -334,7 +334,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="disrec.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -374,7 +374,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,7 +455,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
 
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -506,7 +506,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
 
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -567,7 +567,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -629,7 +629,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -688,7 +688,7 @@ function sql_query_prestacao_conta ($oid = null,$campos="disrec.oid,*",$ordem=nu
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

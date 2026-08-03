@@ -43,10 +43,10 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 $anousu  = db_getsession('DB_anousu');
 
 if (isset($oGet->dfiscal) && $oGet->dfiscal == true) {
@@ -104,21 +104,21 @@ if (isset($oGet->dfiscal) && $oGet->dfiscal == true) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <?php 
-    $clcriaabas->identifica = array("relatorio" => "Relatório",
+    $clcriaabas->identifica = ["relatorio" => "Relatório",
                                     "parametro" => "Parâmetros",
                                     "notas"     => "Notas Explicativas"
-                                   );
-    $clcriaabas->title      = array("relatorio" => "Relatório",
+                                   ];
+    $clcriaabas->title      = ["relatorio" => "Relatório",
                                     "parametro" => "Parâmetros",
                                     "notas"     => "Notas Explicativas"
-                                    );
+                                    ];
 
-    $clcriaabas->src  = array("relatorio" => "con2_lrfrecdesprpps011.php?codrel=$codrel",
+    $clcriaabas->src  = ["relatorio" => "con2_lrfrecdesprpps011.php?codrel=$codrel",
                               "notas"     => "con2_conrelnotas.php?c83_codrel=$codrel",
                                     "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=$codrel"
-                                   );
+                                   ];
 
-    $clcriaabas->sizecampo= array("relatorio"=>"23","notas"=>"23","parametro"=>"23");
+    $clcriaabas->sizecampo= ["relatorio"=>"23","notas"=>"23","parametro"=>"23"];
     $clcriaabas->scrolling ='yes';
     $clcriaabas->cria_abas();
     ?>

@@ -70,7 +70,7 @@ $sSqlEstimativa .= " order by o08_orgao";
 
 $rsEstimativa 	   = pg_query($sSqlEstimativa); 
 $iLinhasEstimativa = pg_num_rows($rsEstimativa);
-$aEstimativa	   = array();	 
+$aEstimativa	   = [];	 
 
 for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
 
@@ -129,7 +129,7 @@ for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
 
   $rsConsultaAcoes 	= pg_query($sSqlAcoes);  
   $iLinhasAcoes    	= pg_num_rows($rsConsultaAcoes);
-  $aAcoes 			= array();
+  $aAcoes 			= [];
   
   if ( $iLinhasAcoes > 0 ) {
 
@@ -138,7 +138,7 @@ for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
   	  $oDadosAcao = db_utils::fieldsMemory($rsConsultaAcoes,$iIndAcao);
 
   	  $oAcao = new stdClass();
-  	  $aAcoes[$oDadosAcao->o08_projativ]['iAcao']        = str_pad($oDadosAcao->o08_projativ, 4, '0', STR_PAD_LEFT);
+  	  $aAcoes[$oDadosAcao->o08_projativ]['iAcao']        = str_pad((string) $oDadosAcao->o08_projativ, 4, '0', STR_PAD_LEFT);
   	  $aAcoes[$oDadosAcao->o08_projativ]['sDescricao']   = $oDadosAcao->o55_descr;
   	  $aAcoes[$oDadosAcao->o08_projativ]['sProduto']     = $oDadosAcao->o22_descrprod;
   	  $aAcoes[$oDadosAcao->o08_projativ]['sUnidade']     = $oDadosAcao->o20_descricao;
@@ -170,7 +170,7 @@ for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
 }
 
 $mostra = "";
-$Ativs  = array();
+$Ativs  = [];
  /*********
  *Faz a verificação das atividades que poderao ser mostradas
  * - Deverá  ter valor
@@ -206,7 +206,7 @@ if ( $oGet->selforma == "s" ) {
 	$head4 = "Forma de Emissão: Analítico";
 }
 if ($iModelo == 1) {
-  
+
   $head2  = "ANEXO DE OBJETIVOS , DIRETRIZES E METAS";
   $head3  = "PPA - {$oGet->anoini} - {$oGet->anofin}";
 
@@ -244,9 +244,9 @@ if ( $oGet->selforma == "s" ) {
   $pdf->cell(18,$alt, "Orgão:",0,0,"L");
   $pdf->cell(10,$alt, $aEstimativa[0]->iOrgao, 0, 0, "R"); 
   $pdf->cell(100,$alt, $aEstimativa[0]->sOrgao, 0, 1, "L"); 
-	
+
   foreach ( $aEstimativa as $iInd => $oEstimativa ) {
-  	
+
     /********
  *Faz a verificação dos registros que poderão ser mostrados	
  * - Deverá  ter valor
@@ -254,22 +254,22 @@ if ( $oGet->selforma == "s" ) {
  *********/
  /*
  foreach ( $oEstimativa->aAcoes as $iProjAtiv => $aDadosAcoes ) { 
-   
+
    foreach ( $aDadosAcoes['aExercicio'] as $iExercicio => $aDadosExerc ) {
      //$mostra += $aDadosExerc['nQuantFisica']+$aDadosExerc['nValor'];
      $mostra += $aDadosExerc['nValor'];
    }
-   
+
   }
-  
+
   if($mostra == "") {
   	continue;
   } else {
   	$mostra == "";
   }
   */
-  	   	
-  	
+
+
 		if ($iOrgaoAtual != $oEstimativa->iOrgao){
 	  	$pdf->AddPage("L");
 	  	$pdf->setfont('arial','B', 8);
@@ -282,25 +282,25 @@ if ( $oGet->selforma == "s" ) {
 		}
 	  $pdf->setfont('arial','B', 8);
 	  $pdf->cell(18,$alt, "Programa:",0,0,"L");
-	  $pdf->cell(10,$alt, str_pad($oEstimativa->iPrograma, 4, '0', STR_PAD_LEFT), 0, 0, "R"); 
+	  $pdf->cell(10,$alt, str_pad((string) $oEstimativa->iPrograma, 4, '0', STR_PAD_LEFT), 0, 0, "R"); 
 	  $pdf->cell(100,$alt, $oEstimativa->sPrograma, 0, 1, "L"); 
 	  $iPosYDepois = $pdf->GetY();
 	  $iPosXIndicador = 162;
 	  $pdf->ln();
 	  if ( $oEstimativa->iLinhasAcoes > 0 ) {
-	  	
+
 	  	foreach ( $oEstimativa->aAcoes as $iProjAtiv => $aDadosAcoes ){
-	  		
+
 	  		$nTotalGeral     = 0;	
 	  	  foreach ( $aDadosAcoes['aExercicio'] as $iExercicio => $aDadosExerc ){
 	  	    $nTotalRecurso    = $aDadosExerc['nValor'];
 	   	    $nTotalGeral	 += $nTotalRecurso;
 	  	  }
-  	    
+
 	  	  if ($nTotalGeral == 0) {
 	  	  	continue;
 	  	  }
-	     
+
 	  	  validaNovaPagina($pdf, 35);
 	  	  $pdf->setfont('arial','B', 8);
 	  	  $pdf->Cell(62,$alt,"Ação"	  							,"TBR",0,"C",1);
@@ -315,22 +315,22 @@ if ( $oGet->selforma == "s" ) {
         }
         $pdf->ln();
 	      $iPosYAntes  = $pdf->GetY();
-	    	
+
 	      $pdf->setfont('arial','', 8);
 	      $iAltDescr = ($alt);
-	  	
+
 	  	  $pdf->setfont('arial','', 8);
 	  	  //$pdf->multicell(62,$iAltDescr,str_pad(substr($aDadosAcoes["iAcao"]."-".$aDadosAcoes['sDescricao'],0,90),90," ",STR_PAD_RIGHT),"TR","L",0);
 	  	  $pdf->multicell(62,$iAltDescr,str_pad(substr($aDadosAcoes["iAcao"]."-".$aDadosAcoes['sDescricao'],0,90),4," ",STR_PAD_LEFT),"TR","L",0);
 	  	  $pdf->setfont('arial','', 8);
 	  	  $pdf->SetXY(72,$iPosYAntes);
-	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr($aDadosAcoes['sUnidade'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
+	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sUnidade'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
 	  	  $pdf->SetXY(98,$iPosYAntes);
-	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr($aDadosAcoes['sTipo'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
+	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sTipo'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
 	  	  $pdf->SetXY(124,$iPosYAntes);
-	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr($aDadosAcoes['sProduto'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
+	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sProduto'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
 	  	  $pdf->SetXY(150,$iPosYAntes);
-	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr($aDadosAcoes['sUnidadeMed'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
+	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sUnidadeMed'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
 	   	  $nTotalLivre     = 0;
 	  	  $nTotalVinculado = 0;
 	  	  $nTotalMetas     = 0;
@@ -338,13 +338,13 @@ if ( $oGet->selforma == "s" ) {
 	  	  $iLinhasExerc	 = 0;
 	  	  $pdf->SetY($iPosYAntes);
 	      foreach ( $aDadosAcoes['aExercicio'] as $iExercicio => $aDadosExerc ){
-	  	  	
+
 	  	    $nTotalRecurso    = $aDadosExerc['nValor'];
 	   	    $nTotalGeral	 += $nTotalRecurso;
 	   	    $nTotalMetas     += $aDadosExerc['nQuantFisica'];
 	     		$tipo = "f";
 	        if ($iModelo == 2) {
- 	    
+
 			 	    if ($iExercicio != $oGet->iAno) {
 			 	      $iExercicio = "";
 			 	      $tipo = "";
@@ -358,11 +358,11 @@ if ( $oGet->selforma == "s" ) {
           }
           $pdf->ln();
 	  	    $iLinhasExerc++;
-	  
+
 	      }
 	  	  $pdf->SetY($iPosYAntes);
 	  	  for ($iSeq=0; $iSeq < 4; $iSeq++ ) {
-	
+
 	  	    $sBorda = "R";
 	  	    if ($iSeq == 3) {
 	  	      $sBorda = "RB";
@@ -439,7 +439,7 @@ if ( $oGet->selforma == "s" ) {
 		} 
 	  $pdf->setfont('arial','B', 8);
 	  $pdf->cell(18,$alt, "Programa:",0,0,"L");
-	  $pdf->cell(10,$alt, str_pad($oEstimativa->iPrograma, 4, '0', STR_PAD_LEFT), 0, 0, "R"); 
+	  $pdf->cell(10,$alt, str_pad((string) $oEstimativa->iPrograma, 4, '0', STR_PAD_LEFT), 0, 0, "R"); 
 	  $pdf->cell(100,$alt, $oEstimativa->sPrograma, 0, 1, "L"); 
 	  $iPosYDepois = $pdf->GetY();
 	  $iPosXIndicador = 162;
@@ -495,7 +495,7 @@ if ( $oGet->selforma == "s" ) {
 	  	$pdf->setfont('arial','B', 8);
 			$pdf->cell(60,$alt, "Problema:",0,0,"L");
   		$pdf->setfont('arial','', 8);
-  		$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosPrograma->problema),'',''),
+  		$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosPrograma->problema),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
       if($texto != ""){
       	$pdf->addpage("L");
@@ -507,7 +507,7 @@ if ( $oGet->selforma == "s" ) {
 	  	$pdf->setfont('arial','B', 8); 
 	  	$pdf->cell(60,$alt, "Finalidade:",0,0,"L");
 	  	$pdf->setfont('arial','', 8);
-  		$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosPrograma->finalidade),'',''),
+  		$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosPrograma->finalidade),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
       if($texto != ""){
       	$pdf->addpage("L");
@@ -519,7 +519,7 @@ if ( $oGet->selforma == "s" ) {
 	  	$pdf->setfont('arial','B', 8);
 	  	$pdf->cell(60,$alt, "Público Alvo:",0,0,"L");
 	  	$pdf->setfont('arial','', 8);
-  		$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosPrograma->alvo),'',''),
+  		$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosPrograma->alvo),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
       if($texto != ""){
       	$pdf->addpage("L");
@@ -531,7 +531,7 @@ if ( $oGet->selforma == "s" ) {
 	  	$pdf->setfont('arial','B', 8);
 	  	$pdf->cell(60,$alt, "Justificativa:",0,0,"L");
 	  	$pdf->setfont('arial','', 8);
-  		$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosPrograma->justificativa),'',''),
+  		$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosPrograma->justificativa),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
       if($texto != ""){
       	$pdf->addpage("L");
@@ -543,7 +543,7 @@ if ( $oGet->selforma == "s" ) {
 	  	$pdf->setfont('arial','B', 8);
 	  	$pdf->cell(60,$alt, "Objetivo Setor Associado:",0,0,"L");
 	  	$pdf->setfont('arial','', 8);
-  		$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosPrograma->associado),'',''),
+  		$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosPrograma->associado),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
       if($texto != ""){
       	$pdf->addpage("L");
@@ -555,7 +555,7 @@ if ( $oGet->selforma == "s" ) {
 	  	$pdf->setfont('arial','B', 8);
 	  	$pdf->cell(60,$alt, "Estratégia de Implementação do Programa:",0,0,"L");
 	  	$pdf->setfont('arial','', 8);
-  		$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosPrograma->estrategia),'',''),
+  		$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosPrograma->estrategia),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
       if($texto != ""){
       	$pdf->addpage("L");
@@ -570,7 +570,7 @@ if ( $oGet->selforma == "s" ) {
 	  if ( $oEstimativa->iLinhasAcoes > 0 ) {
 	  	
 	  	foreach ( $oEstimativa->aAcoes as $iProjAtiv => $aDadosAcoes ){
-	  			  		
+
 	  		$sSqlAcao  = "select o55_finali as finalidade,    ";
 	  		$sSqlAcao .= "       o55_especproduto as produto, ";
 	  		$sSqlAcao .= "       case when o55_tipoacao = 1 then 'Orçamentária' ";
@@ -589,35 +589,35 @@ if ( $oGet->selforma == "s" ) {
 	  		$sSqlAcao .= " where o55_projativ = {$aDadosAcoes["iAcao"]}";
 	  		$sSqlAcao .= "  and  o55_anousu   = ".db_getsession('DB_anousu');
 	  		//$sSqlAcao .= "  and  o55_instit   = ".db_getsession('DB_instit');
-	  		
+
 	  		$resSqlAcao	= pg_query($sSqlAcao);  
   	    $iLinhaAcao	= pg_num_rows($resSqlAcao);
   	    $pdf->Ln();
   	    validaNovaPagina($pdf, 35);
   	    $iAltDescr = ($alt);
   	    $pdf->setfont('arial','B', 8);
-  	    
+
   	    //verifica a soma se for zero não mostra
-  	    
+
   	   	$nTotalGeral     = 0;	
 	  	  foreach ( $aDadosAcoes['aExercicio'] as $iExercicio => $aDadosExerc ){
 	  	    $nTotalRecurso    = $aDadosExerc['nValor'];
 	   	    $nTotalGeral	 += $nTotalRecurso;
 	  	  }
-  	    
+
 	  	  if ($nTotalGeral == 0) {
 	  	  	continue;
 	  	  }
-				
-  	    
+
+
   	    $pdf->cell(18,$alt, "Ação:",0,0,"L");
 	  		$pdf->cell(10,$alt, $aDadosAcoes["iAcao"], 0, 0, "R"); 
 	  		$pdf->cell(200,$alt, $aDadosAcoes['sDescricao'], 0, 1, "L"); 
-  	    
-  	    
+
+
 		  	//$pdf->Cell(25,$alt,"Ação:"	  							,"",0,"L",0);
 		  	//$pdf->multicell(200,$iAltDescr,str_pad(substr($aDadosAcoes["iAcao"]."-".$aDadosAcoes['sDescricao'],0,90),90," ",STR_PAD_RIGHT),"","L",0);
-  	    
+
 		  	if ( $iLinhaAcao > 0 ){
 		  		$oDadosAcao1 = db_utils::fieldsMemory($resSqlAcao,0);
 		  	}else{
@@ -634,7 +634,7 @@ if ( $oGet->selforma == "s" ) {
 					$pdf->setfont('arial','B', 8);
 		  		$pdf->cell(60,$alt, "Finalidade:",0,0,"L");
 		  		$pdf->setfont('arial','', 8);
-	  			$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosAcao1->finalidade),'',''),
+	  			$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosAcao1->finalidade),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
           if($texto != ""){
           	$pdf->addpage("L");
@@ -646,7 +646,7 @@ if ( $oGet->selforma == "s" ) {
 			  	$pdf->setfont('arial','B', 8); 
 			  	$pdf->cell(60,$alt, "Especificação do Produto:",0,0,"L");
 			  	$pdf->setfont('arial','', 8);
-	  			$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosAcao1->produto),'',''),
+	  			$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosAcao1->produto),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
           if($texto != ""){
           	$pdf->addpage("L");
@@ -658,7 +658,7 @@ if ( $oGet->selforma == "s" ) {
 			  	$pdf->setfont('arial','B', 8); 
 			  	$pdf->cell(60,$alt, "Tipo de Ação:",0,0,"L");
 			  	$pdf->setfont('arial','', 8);
-	  			$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosAcao1->tipo),'',''),
+	  			$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosAcao1->tipo),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
           if($texto != ""){
           	$pdf->addpage("L");
@@ -674,7 +674,7 @@ if ( $oGet->selforma == "s" ) {
 			  	$pdf->setfont('arial','B', 8);
 			  	$pdf->cell(60,$alt, "Detalhamento da Implementação:",0,0,"L");
 			  	$pdf->setfont('arial','', 8);
-			  	$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosAcao1->detalhamento),'',''),
+			  	$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosAcao1->detalhamento),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
           if($texto != ""){
           	$pdf->addpage("L");
@@ -687,7 +687,7 @@ if ( $oGet->selforma == "s" ) {
 			  	$pdf->setfont('arial','B', 8);
 			  	$pdf->cell(60,$alt, "Origem da Ação:",0,0,"L");
 			  	$pdf->setfont('arial','', 8);
-	  			$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosAcao1->origem),'',''),
+	  			$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosAcao1->origem),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
           if($texto != ""){
           	$pdf->addpage("L");
@@ -699,7 +699,7 @@ if ( $oGet->selforma == "s" ) {
 			  	$pdf->setfont('arial','B', 8);
 			  	$pdf->cell(60,$alt, "Base Legal:",0,0,"L");
 			  	$pdf->setfont('arial','', 8);
-	  			$texto = $pdf->Row_multicell(array('','','',stripslashes($oDadosAcao1->base),'',''),
+	  			$texto = $pdf->Row_multicell(['','','',stripslashes((string) $oDadosAcao1->base),'',''],
                                               $alt,false,5,0,true,true,3,($pdf->h - 35));
           if($texto != ""){
           	$pdf->addpage("L");
@@ -708,8 +708,8 @@ if ( $oGet->selforma == "s" ) {
           	$pdf->multicell(210,$alt, $oDadosAcao1->base, 0,"L");
           }
 			  	$pdf->multicell(210,$alt, $oDadosAcao1->base, 0,"L");     
-	  		  
-	     
+
+
 	  		//$pdf->Ln();
 	  	  validaNovaPagina($pdf, 35);
 	  	  $pdf->setfont('arial','B', 8);
@@ -722,21 +722,21 @@ if ( $oGet->selforma == "s" ) {
 	      $pdf->Cell(40,$alt,"Metas"    					,"TRL" ,0,"C",1);
 	      $pdf->Cell(40,$alt,"Valor R$"    					,"TL" ,1,"C",1);
 	      $iPosYAntes  = $pdf->GetY();
-	    	
+
 	      $pdf->setfont('arial','', 8);
 	      $iAltDescr = ($alt);
-	      	  	
+
 	  	  $pdf->setfont('arial','', 8);
 	  	  //$pdf->multicell(62,$iAltDescr,str_pad(substr($aDadosAcoes["iAcao"]."-".$aDadosAcoes['sDescricao'],0,90),90," ",STR_PAD_RIGHT),"TR","L",0);
 	  	  $pdf->setfont('arial','', 8);
 	  	  $pdf->SetXY(10,$iPosYAntes);
-	  	  $pdf->multicell(88,$iAltDescr,str_pad(substr($aDadosAcoes['sUnidade'],0,40),40," ",STR_PAD_RIGHT),"TR","L",0);
+	  	  $pdf->multicell(88,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sUnidade'],0,40),40," ",STR_PAD_RIGHT),"TR","L",0);
 	  	  $pdf->SetXY(98,$iPosYAntes);
-	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr($aDadosAcoes['sTipo'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
+	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sTipo'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
 	  	  $pdf->SetXY(124,$iPosYAntes);
-	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr($aDadosAcoes['sProduto'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
+	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sProduto'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
 	  	  $pdf->SetXY(150,$iPosYAntes);
-	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr($aDadosAcoes['sUnidadeMed'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
+	  	  $pdf->multicell(26,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sUnidadeMed'],0,40),40," ",STR_PAD_RIGHT),"TRL","L",0);
 	   	  $nTotalLivre     = 0;
 	  	  $nTotalVinculado = 0;
 	  	  $nTotalMetas     = 0;
@@ -744,13 +744,13 @@ if ( $oGet->selforma == "s" ) {
 	  	  $iLinhasExerc	 = 0;
 	  	  $pdf->SetY($iPosYAntes);
 	      foreach ( $aDadosAcoes['aExercicio'] as $iExercicio => $aDadosExerc ){
-	  	  	
+
 	  	    $nTotalRecurso    = $aDadosExerc['nValor'];
 	   	    $nTotalGeral	 += $nTotalRecurso;
 	   	    $nTotalMetas     += $aDadosExerc['nQuantFisica'];
 	   	    $tipo = "f";
 	        if ($iModelo == 2) {
- 	    
+
 			 	    if ($iExercicio != $oGet->iAno) {
 			 	      $iExercicio = "";
 			 	      $tipo = "";
@@ -759,15 +759,15 @@ if ( $oGet->selforma == "s" ) {
 	  	    $pdf->SetX(176);
 	  	    $pdf->Cell(26,$alt,$iExercicio  			     			,"BR" ,0,"C",0);
 	  	    $pdf->Cell(40,$alt,$aDadosExerc['nQuantFisica']	,"TBR",0,"R",0);
-	  	    
+
 	  	    $pdf->Cell(40,$alt,db_formatar($aDadosExerc['nValor'],$tipo)	,"TBL",1,"R",0);
-	  	    
+
 	  	    $iLinhasExerc++;
-	  
+
 	      }
 	  	  $pdf->SetY($iPosYAntes);
 	  	  for ($iSeq=0; $iSeq < 4; $iSeq++ ) {
-	
+
 	  	    $sBorda = "R";
 	  	    if ($iSeq == 3) {
 	  	      $sBorda = "RB";

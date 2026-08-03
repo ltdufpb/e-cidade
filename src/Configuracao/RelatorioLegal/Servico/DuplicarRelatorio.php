@@ -41,22 +41,16 @@ use Exception;
 class DuplicarRelatorio
 {
     /**
-     * @var Relatorio
-     */
-    public $relatorioBase;
-    /**
      * @var int
      */
     private $idNovoRelatorio;
-    /**
-     * @var string
-     */
-    private $nomeNovo;
 
-    public function __construct($relatorio, $nomeNovo)
+    /**
+     * @param Relatorio $relatorio
+     * @param string $nomeNovo
+     */
+    public function __construct(public $relatorioBase, private $nomeNovo)
     {
-        $this->relatorioBase = $relatorio;
-        $this->nomeNovo = $nomeNovo;
     }
 
     public function getCodigoNovoRelatorio()
@@ -83,12 +77,12 @@ class DuplicarRelatorio
      */
     private function duplicaRelatorio()
     {
-        $inserir = array(
+        $inserir = [
             "o42_codparrel" => $this->idNovoRelatorio,
             "o42_descrrel" => "'{$this->nomeNovo}'",
             "o42_orcparamrelgrupo" => $this->relatorioBase->getGrupo(),
             "o42_notapadrao" => "'{$this->relatorioBase->getNotaPadrao()}'",
-        );
+        ];
 
         $columns = implode(', ', array_keys($inserir));
         $values = implode(', ', $inserir);
@@ -172,7 +166,7 @@ class DuplicarRelatorio
      */
     private function duplicarColunas()
     {
-        $colunasDePara = array();
+        $colunasDePara = [];
 
         $daoColuna = new \cl_orcparamseqcoluna();
         $where = "o115_relatorio = {$this->relatorioBase->getSequencial()}";
@@ -314,7 +308,7 @@ class DuplicarRelatorio
             throw new Exception('Não foi possível buscar os lançamentos das informações complementares.');
         }
 
-        $lancamentos = array();
+        $lancamentos = [];
 
         while ($novoLancamento = pg_fetch_object($rsNovosLancamentos)) {
             $sql = "

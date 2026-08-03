@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_procedimentos_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprocedimentos = new cl_procedimentos;
 $db_opcao = 1;
 $db_botao = true;
@@ -141,7 +141,7 @@ elseif(isset($aterar))
   <tr><td height="1" bgcolor="#888888" colspan="2"></td></tr>
   <tr>
    <td class="bold" width="75%">Procedimento:</td>
-   <td class="bold3"><?=str_pad($proc,3,0,str_pad_left)?></td>
+   <td class="bold3"><?=str_pad((string) $proc,3,0,\STR_PAD_LEFT)?></td>
   </tr>
   <tr>
    <td class="bold">Taxa da Sala:</td>
@@ -213,7 +213,7 @@ elseif(isset($aterar))
   <tr>
    <td align="center" height="80" bgcolor="#eaeaea" colspan="2">
     <input type="button" value="Atualizar" onclick="EnviaDados()" style="text-align: center; font-family: Arial; color: #000000;">
-    <input type="button" value="Refazer" onclick="location='procvalores.php?Procedimento=<?=$_GET[Procedimento]?>&Servico=<?=$_GET[Servico]?>&Tipo=<?=$_GET[Tipo]?>&FEtaria=<?=$_GET[FEtaria]?>&Especialidade=<?=$_GET[Especialidade]?>&Valores=<?=$_GET[Valores]?>&Grupo=<?=$_GET[Grupo]?>'" style="text-align: center; font-family: Arial; color: #000000;">
+    <input type="button" value="Refazer" onclick="location='procvalores.php?Procedimento=<?=$_GET[\PROCEDIMENTO]?>&Servico=<?=$_GET[\SERVICO]?>&Tipo=<?=$_GET[\TIPO]?>&FEtaria=<?=$_GET[\FETARIA]?>&Especialidade=<?=$_GET[\ESPECIALIDADE]?>&Valores=<?=$_GET[\VALORES]?>&Grupo=<?=$_GET[\GRUPO]?>'" style="text-align: center; font-family: Arial; color: #000000;">
     <input type="button" value="Cancelar" onclick="javascript:window.close()" style="text-align: center; font-family: Arial; color: #000000;">
     <br><br>
     <div class="pequeno">
@@ -229,7 +229,7 @@ if(isset($_GET["Array"]))
 {
  //grava dados
  $Array  = $_GET["Array"];
- $Grava  = explode(",",$Array);
+ $Grava  = explode(",",(string) $Array);
  $SqlValores = "INSERT INTO valores
                 VALUES
                 (

@@ -42,7 +42,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('coddepto');
 $clrotulo->label('descrdepto');
 $clrotulo->label('m92_codalmox');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -56,11 +56,11 @@ db_postmemory($HTTP_POST_VARS);
         db_app::load("estilos.css, grid.style.css");
         ?>
         <script>
-            var codalmox = <?php echo isset($codalmox)? $codalmox : 0;?>;
+            var codalmox = <?php echo $codalmox ?? 0;?>;
             var sUrlRpc = "mat1_matdb_almoxdepto.RPC.php";
             var dtAtual = '<?php echo date("Y-m-d", db_getsession('DB_datausu'));?>';
             var instituicao = <?php echo db_getsession("DB_instit");?>;
-            var dbopcao = <?php echo isset($db_opcao)? $db_opcao : 0;?>;
+            var dbopcao = <?php echo $db_opcao ?? 0;?>;
             
             function js_marca(obj){ 
                 var OBJ = document.form1;

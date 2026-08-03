@@ -56,10 +56,10 @@ $db_opcao = 1;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
 	 //$clcriaabas->identifica = array("aguabase"=>"Cadastro","aguabaseresp"=>"Responsavel","aguabasecorresp"=>"Correspondencia","aguabasecar"=>"Caracteristicas","aguaconstr"=>"Construcoes","aguabasevenc"=>"Vencimentos"); 
-	 $clcriaabas->identifica = array("aguabase"=>"Cadastro","aguabaseresp"=>"Responsavel","aguabasecorresp"=>"Entrega","aguaconstr"=>"Construcoes","aguabasevenc"=>"Vencimentos", "histocorrencia"=>"Ocorrencias"); 
-	 $clcriaabas->src = array("aguabase"=>"agu1_aguabase004.php");
+	 $clcriaabas->identifica = ["aguabase"=>"Cadastro","aguabaseresp"=>"Responsavel","aguabasecorresp"=>"Entrega","aguaconstr"=>"Construcoes","aguabasevenc"=>"Vencimentos", "histocorrencia"=>"Ocorrencias"]; 
+	 $clcriaabas->src = ["aguabase"=>"agu1_aguabase004.php"];
 	 //$clcriaabas->disabled   =  array("aguabaseresp"=>"true","aguabasecorresp"=>"true","aguabasecar"=>"true","aguaconstr"=>"true","aguabasevenc"=>"true"); 
-	 $clcriaabas->disabled   =  array("aguabaseresp"=>"true","aguabasecorresp"=>"true","aguaconstr"=>"true","aguabasevenc"=>"true", "histocorrencia"=>"true"); 
+	 $clcriaabas->disabled   =  ["aguabaseresp"=>"true","aguabasecorresp"=>"true","aguaconstr"=>"true","aguabasevenc"=>"true", "histocorrencia"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

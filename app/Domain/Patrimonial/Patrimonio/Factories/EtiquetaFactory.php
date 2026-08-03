@@ -13,14 +13,10 @@ class EtiquetaFactory
 
     public static function getEtiqueta($tipo)
     {
-        switch ($tipo) {
-            case self::MODELO01:
-                return new EtiquetaModelo01Builder();
-            case self::MODELO02:
-                return new EtiquetaModelo02Builder();
-            default:
-                throw new Exception('Erro ao gerar Relatório! Selecione um tipo válido.');
-                break;
-        }
+        return match ($tipo) {
+            self::MODELO01 => new EtiquetaModelo01Builder(),
+            self::MODELO02 => new EtiquetaModelo02Builder(),
+            default => throw new Exception('Erro ao gerar Relatório! Selecione um tipo válido.'),
+        };
     }
 }

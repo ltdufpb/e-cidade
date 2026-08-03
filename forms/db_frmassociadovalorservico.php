@@ -88,7 +88,7 @@ if ($db_opcao == 1) {
                      $formatter->setAttribute(NumberFormatter::GROUPING_USED, true);
                      $formatter->setSymbol(NumberFormatter::CURRENCY_SYMBOL, 'R$');
                      $fm13_valor = $formatter->formatCurrency($fm13_valor, 'BRL');
-                     $fm13_valor = utf8_decode($fm13_valor);
+                     $fm13_valor = mb_convert_encoding($fm13_valor, 'ISO-8859-1');
                   }
 
                   db_input('fm13_valor', 15, $Ifm13_valor, true, 'text', $db_opcao, " onkeyup='js_atualizaValor(this)' ");
@@ -119,7 +119,7 @@ if ($db_opcao == 1) {
                      $formatter->setAttribute(NumberFormatter::GROUPING_USED, true);
                      $formatter->setSymbol(NumberFormatter::CURRENCY_SYMBOL, 'R$');
                      $db_coparticipacao = $formatter->formatCurrency($db_coparticipacao, 'BRL');
-                     $db_coparticipacao = utf8_decode($db_coparticipacao);
+                     $db_coparticipacao = mb_convert_encoding($db_coparticipacao, 'ISO-8859-1');
                  }
 
                  db_input('db_coparticipacao', 15, $Ifm13_valor, true, 'text', 3, "");
@@ -154,7 +154,7 @@ if ($db_opcao == 1) {
                  $sCampos .= "     then round(((fm13_valor * fm09_valor) / 100), 2) ";
                  $sCampos .= "     else fm09_valor ";
                  $sCampos .= "end as db_coparticipacao ";
-                 $chavepri= array("fm13_codigo"=>@$fm13_codigo);
+                 $chavepri= ["fm13_codigo"=>@$fm13_codigo];
                  $cliframe_alterar_excluir->iframe_nome = "frm_valorservico";
                  $cliframe_alterar_excluir->chavepri      = $chavepri;
                  $cliframe_alterar_excluir->sql           = $classociadovalorservico->sql_query(null,$sCampos,"fm13_vigencia desc","fm13_servico = $fm13_servico");
@@ -271,11 +271,11 @@ if ($db_opcao == 1) {
       db_iframe_associadovalorservico.hide();
       <?php
         if ($db_opcao != 1) {
-          echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
+          echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
         }
       ?>
     }
 
-    <?php echo (isset($sPosScripts) ? $sPosScripts : ""); ?>
+    <?php echo ($sPosScripts ?? ""); ?>
   </script>
 </html>

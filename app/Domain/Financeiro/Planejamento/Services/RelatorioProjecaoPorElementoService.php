@@ -234,12 +234,12 @@ class RelatorioProjecaoPorElementoService
 
     private function createDadosAgrupador($dado)
     {
-        $orgao = str_pad($dado->pl20_orcorgao, 2, '0', STR_PAD_LEFT);
-        $unidade = sprintf('%s.%s', $orgao, str_pad($dado->pl20_orcunidade, 2, '0', STR_PAD_LEFT));
-        $funcao = sprintf('%s.%s', $unidade, str_pad($dado->pl20_orcfuncao, 2, '0', STR_PAD_LEFT));
-        $subfuncao = sprintf('%s.%s', $funcao, str_pad($dado->pl20_orcsubfuncao, 3, '0', STR_PAD_LEFT));
-        $programa = sprintf('%s.%s', $subfuncao, str_pad($dado->pl9_orcprograma, 4, '0', STR_PAD_LEFT));
-        $iniciativa = sprintf('%s.%s', $programa, str_pad($dado->pl12_orcprojativ, 4, '0', STR_PAD_LEFT));
+        $orgao = str_pad((string) $dado->pl20_orcorgao, 2, '0', STR_PAD_LEFT);
+        $unidade = sprintf('%s.%s', $orgao, str_pad((string) $dado->pl20_orcunidade, 2, '0', STR_PAD_LEFT));
+        $funcao = sprintf('%s.%s', $unidade, str_pad((string) $dado->pl20_orcfuncao, 2, '0', STR_PAD_LEFT));
+        $subfuncao = sprintf('%s.%s', $funcao, str_pad((string) $dado->pl20_orcsubfuncao, 3, '0', STR_PAD_LEFT));
+        $programa = sprintf('%s.%s', $subfuncao, str_pad((string) $dado->pl9_orcprograma, 4, '0', STR_PAD_LEFT));
+        $iniciativa = sprintf('%s.%s', $programa, str_pad((string) $dado->pl12_orcprojativ, 4, '0', STR_PAD_LEFT));
 
         return (object)[
             'orgao' => $this->createObjeto($orgao, $dado->descricao_orgao),
@@ -266,7 +266,7 @@ class RelatorioProjecaoPorElementoService
         $elemento = $this->createObjeto($dado->elemento, $dado->descricao_elemento);
         $elemento->recurso_original = sprintf('%s - %s', $dado->recurso_original, $dado->o15_complemento);
         $elemento->recurso = sprintf('%s - %s', $dado->recurso, $dado->o15_complemento);
-        $elemento->valores = json_decode($dado->valores);
+        $elemento->valores = json_decode((string) $dado->valores);
         return $elemento;
     }
 
@@ -294,7 +294,7 @@ class RelatorioProjecaoPorElementoService
             $operador = $filtro->unidade->operador === 'notin' ? 'not in' : 'in';
             $filtroUnidades = [];
             foreach ($filtro->unidade->aUnidades as $unidade) {
-                $data = explode('-', $unidade);
+                $data = explode('-', (string) $unidade);
                 $filtroUnidades[] = sprintf(
                     '(pl20_orcorgao %s (%s) and pl20_orcunidade %s (%s))',
                     $operador,

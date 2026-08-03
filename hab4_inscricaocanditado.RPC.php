@@ -121,7 +121,7 @@ try {
       
       $oRetorno->aProgramas = db_utils::getCollectionByRecord($rsPogramas, false, false, true);             
 
-      $aProgramasSelecionados = explode(",",$oParam->sProgramasSelecionados);
+      $aProgramasSelecionados = explode(",",(string) $oParam->sProgramasSelecionados);
       
 
       /**
@@ -170,10 +170,10 @@ try {
       
       $oRetorno->candidato = new stdClass();
       $oRetorno->candidato->iNumCgm         = $oCandidato->getCgm()->getCodigo();
-      $oRetorno->candidato->sNome           = urlencode($oCandidato->getCgm()->getNome());
+      $oRetorno->candidato->sNome           = urlencode((string) $oCandidato->getCgm()->getNome());
       $oRetorno->candidato->iAvaliacao      = $oCandidato->getCadastroSocioEconomico();
-      $oRetorno->candidato->aInteresseGrupo = array();
-      $oRetorno->candidato->aFamiliares     = array();
+      $oRetorno->candidato->aInteresseGrupo = [];
+      $oRetorno->candidato->aFamiliares     = [];
 
       if ($oCandidato->getCgm()->getSituacao()) {
         $oRetorno->candidato->iSituacaoCpf  = $oCandidato->getCgm()->getSituacao();
@@ -198,8 +198,8 @@ try {
       
       foreach ($aFamiliares as &$oFamiliar) {
         
-        $oFamiliar->sNome  = urlencode($oFamiliar->sNome);
-        $oFamiliar->sTipo  = urlencode($oFamiliar->sTipo);
+        $oFamiliar->sNome  = urlencode((string) $oFamiliar->sNome);
+        $oFamiliar->sTipo  = urlencode((string) $oFamiliar->sTipo);
         $oRetorno->candidato->aFamiliares[]  = $oFamiliar;
       }
       
@@ -296,12 +296,12 @@ try {
         $oCgmFamilia   = new CgmFisico();
       }
       
-      $oCgmFamilia->setNome            (utf8_decode(db_stdClass::db_stripTagsJson($oParam->oCgm->nome))); 
-      $oCgmFamilia->setProfissao       (utf8_decode(db_stdClass::db_stripTagsJson($oParam->oCgm->profissao))); 
-      $oCgmFamilia->setDataNascimento  (implode("-", array_reverse(explode("/",$oParam->oCgm->nascimento)))); 
+      $oCgmFamilia->setNome            (mb_convert_encoding(db_stdClass::db_stripTagsJson($oParam->oCgm->nome), 'ISO-8859-1')); 
+      $oCgmFamilia->setProfissao       (mb_convert_encoding(db_stdClass::db_stripTagsJson($oParam->oCgm->profissao), 'ISO-8859-1')); 
+      $oCgmFamilia->setDataNascimento  (implode("-", array_reverse(explode("/",(string) $oParam->oCgm->nascimento)))); 
       $oCgmFamilia->setEstadoCivil     ($oParam->oCgm->estadocivil); 
       $oCgmFamilia->setRenda           ($oParam->oCgm->renda); 
-      $oCgmFamilia->setEscolaridade    (utf8_decode(db_stdClass::db_stripTagsJson($oParam->oCgm->escolaridade)));
+      $oCgmFamilia->setEscolaridade    (mb_convert_encoding(db_stdClass::db_stripTagsJson($oParam->oCgm->escolaridade), 'ISO-8859-1'));
       $oCgmFamilia->setSexo            ($oParam->oCgm->sexo);
       $oCgmFamilia->setBairro          ($oCgmPrincipal->getBairro());
       $oCgmFamilia->setComplemento     ($oCgmPrincipal->getComplemento());

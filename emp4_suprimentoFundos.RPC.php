@@ -165,7 +165,7 @@ try {
 			$oPrestacaoConta->dtFechamento					  = db_formatar($oParam->$oDadosPrestacaoConta->e45_conferido, 'd');
 			$oPrestacaoConta->dtAcertoPrestacaoContas = db_formatar($oDadosPrestacaoConta->e45_acerta, 'd');
 			$oPrestacaoConta->iTipo                   = $oDadosPrestacaoConta->e45_tipo;
-			$oPrestacaoConta->sObservacao             = urlencode($oDadosPrestacaoConta->e45_obs);
+			$oPrestacaoConta->sObservacao             = urlencode((string) $oDadosPrestacaoConta->e45_obs);
 
 			$oRetorno->dados = $oPrestacaoConta;
 

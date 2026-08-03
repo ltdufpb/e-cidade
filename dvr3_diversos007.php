@@ -50,7 +50,7 @@ require_once(modification("classes/db_disbancodiver_classe.php"));
 require_once(modification("model/cancelamentoDebitos.model.php"));
 
 //db_postmemory($HTTP_SERVER_VARS,2);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oCancelaDebito  = new cancelamentoDebitos();
 $cldiversos      = new cl_diversos;
 $clinflan        = new cl_inflan;
@@ -68,12 +68,12 @@ $db_opcao        = 33;
 $db_botao        = false;
 $sMsgErro        = '';
 
-if (isset($subtes) && $subtes=="ok" || isset($HTTP_POST_VARS["db_opcao"])) {
+if (isset($subtes) && $subtes=="ok" || isset($_POST["db_opcao"])) {
   $db_botao = true;
   $db_opcao=3;
 }
 
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir") {
 	
 	db_inicio_transacao();
   
@@ -86,7 +86,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Exclui
 	  $rsDebitosDiversos      = $clarrecad->sql_record($sSqlDebitosDiversos);
 	  $iLinhasDebitosDiversos = $clarrecad->numrows;
 	  
-	  $aDebitos = array();
+	  $aDebitos = [];
 	       
 	  if ($iLinhasDebitosDiversos > 0) {
 	    
@@ -94,7 +94,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Exclui
 	      
 	      $oDebitoDiverso = db_utils::fieldsMemory($rsDebitosDiversos,$iInd);
 	      
-	      $aDadosDebitos = array();  
+	      $aDadosDebitos = [];  
 	      $aDadosDebitos['Numpre']  = $oDebitoDiverso->k00_numpre;
 	      $aDadosDebitos['Numpar']  = $oDebitoDiverso->k00_numpar;
 	      $aDadosDebitos['Receita'] = $oDebitoDiverso->k00_receit;
@@ -195,7 +195,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Exclui
    } 		
  
 }
-$HTTP_SERVER_VARS['QUERY_STRING']="";
+$_SERVER['QUERY_STRING']="";
 
 ?>
 <html>
@@ -227,7 +227,7 @@ if(isset($foipago) && $foipago=="ok"){
 if($db_opcao==33 && !isset($foipago)){
   echo "<script>js_pesquisa();</script>";  
 }
-if ((isset($HTTP_POST_VARS["db_opcao"]))) {
+if ((isset($_POST["db_opcao"]))) {
 	
 	if (trim($sMsgErro) != '') {
 		

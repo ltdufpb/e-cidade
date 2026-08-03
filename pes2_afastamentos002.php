@@ -93,8 +93,8 @@ if ($oGet->iEmiteRetornados == "0") {
     $iAfastadosFim = date('d-m-Y') ;
   }
 
-  $iAnoRetorno = substr( $iAfastadosFim, 6, 4);
-  $iMesRetorno = substr( $iAfastadosFim, 3, 2);
+  $iAnoRetorno = substr( (string) $iAfastadosFim, 6, 4);
+  $iMesRetorno = substr( (string) $iAfastadosFim, 3, 2);
   /**
    * Pega todos que tenho data de retorno até o último dia do mês da data selecionada acima,
    * Ou todos que não possuam data de retorno
@@ -106,7 +106,7 @@ if ($oGet->iEmiteRetornados == "0") {
 
 $sCondicao = "";
 $sOrdem = " order by ";
-$aCamposOrdem = array();
+$aCamposOrdem = [];
 $sCampos = "r45_dtafas, z01_nome, r45_dtlanc, r45_situac, r45_regist, r45_dtreto";
 
 /**
@@ -118,7 +118,7 @@ switch ($oGet->iTipoRelatorio) {
     $aCamposOrdem[] = $sCampo;
     $sCampos       .= ", " . $sCampo . ", o40_descr";
 
-    $aCamposDescricaoQuebra = array("o40_orgao", "o40_descr");
+    $aCamposDescricaoQuebra = ["o40_orgao", "o40_descr"];
     $oPdf->addHeader( "Tipo de Resumo: ÓRGÃO" );
   break;
   case 2:
@@ -126,7 +126,7 @@ switch ($oGet->iTipoRelatorio) {
     $aCamposOrdem[] = $sCampo;
     $sCampos       .= ", " . $sCampo . ", r70_descr";
 
-    $aCamposDescricaoQuebra = array("r70_codigo", "r70_descr");
+    $aCamposDescricaoQuebra = ["r70_codigo", "r70_descr"];
     $oPdf->addHeader( "Tipo de Resumo: LOTAÇÃO" );
   break;
   case 3:
@@ -134,7 +134,7 @@ switch ($oGet->iTipoRelatorio) {
     $aCamposOrdem[] = $sCampo;
     $sCampos       .= ", " . $sCampo . ", z01_nome";
 
-    $aCamposDescricaoQuebra = array("rh01_regist", "z01_nome");
+    $aCamposDescricaoQuebra = ["rh01_regist", "z01_nome"];
     $oPdf->addHeader( "Tipo de Resumo: MATRÍCULA" );
   break;
   case 5:
@@ -142,18 +142,18 @@ switch ($oGet->iTipoRelatorio) {
     $aCamposOrdem[] = $sCampo;
     $sCampos       .= ", ".$sCampo . ", rh37_descr";
 
-    $aCamposDescricaoQuebra = array("rh37_funcao", "rh37_descr");
+    $aCamposDescricaoQuebra = ["rh37_funcao", "rh37_descr"];
     $oPdf->addHeader( "Tipo de Resumo: CARGO" );
   break;
   default:
     $sCampo = "";
-    $aCamposDescricaoQuebra = array();
+    $aCamposDescricaoQuebra = [];
 
     if ($lQuebra) {
       $sCampo         = "rh01_regist ";
       $sCampos       .= ", " . $sCampo . ", z01_nome";
 
-      $aCamposDescricaoQuebra = array("rh01_regist", "z01_nome");
+      $aCamposDescricaoQuebra = ["rh01_regist", "z01_nome"];
       $oPdf->addHeader( "Tipo de Resumo: GERAL" );
     }
   break;
@@ -211,7 +211,7 @@ if ( pg_num_rows($rsServidoresAfastados) == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período');
 }
 
-$aSituacoes = Array(
+$aSituacoes = [
   2 => "Afastado sem remuneração",
   3 => "Afastado acidente de trabalho +15 dias",
   4 => "Afastado serviço militar",
@@ -222,7 +222,7 @@ $aSituacoes = Array(
   9 => "Prorrogação Licença Maternidade",
   10 => "Cuidar de Familiar",
   11 => "Licença Prêmio",
-);
+];
 
 $iAltura = 4;
 
@@ -238,16 +238,16 @@ $oPdf->AliasNbPages();
 $oPdf->setHeaderMargin(0.2);
 $oPdf->setfillcolor(235);
 
-$iTotal    = pg_numrows($rsServidoresAfastados);
+$iTotal    = pg_num_rows($rsServidoresAfastados);
 $lPreenche = false;
 $sQuebra   = '';
 
-for ($iIndice = 0; $iIndice < pg_numrows($rsServidoresAfastados); $iIndice++) {
+for ($iIndice = 0; $iIndice < pg_num_rows($rsServidoresAfastados); $iIndice++) {
   $oServidor = db_utils::fieldsMemory($rsServidoresAfastados, $iIndice);
 
   if (!empty($aCamposDescricaoQuebra)) {
 
-    $aDescricao = array();
+    $aDescricao = [];
     foreach ($aCamposDescricaoQuebra as $sCampoDescricaoQuebra) {
       $aDescricao[] = $oServidor->{$sCampoDescricaoQuebra};
     }
@@ -275,7 +275,7 @@ for ($iIndice = 0; $iIndice < pg_numrows($rsServidoresAfastados); $iIndice++) {
   $oPdf->cell(20, $iAltura, db_formatar($oServidor->r45_dtafas, 'd'), 0, 0, "C", $lPreenche);
   $oPdf->cell(20, $iAltura, db_formatar($oServidor->r45_dtlanc, 'd'), 0, 0, "C", $lPreenche);
   $oPdf->cell(20, $iAltura, db_formatar($oServidor->r45_dtreto, 'd'), 0, 0, "C", $lPreenche);
-  $oPdf->cell(50, $iAltura, isset($aSituacoes[$oServidor->r45_situac]) ? $aSituacoes[$oServidor->r45_situac] : $oServidor->r45_situac, 0, 1, "L", $lPreenche);
+  $oPdf->cell(50, $iAltura, $aSituacoes[$oServidor->r45_situac] ?? $oServidor->r45_situac, 0, 1, "L", $lPreenche);
 
   $lPreenche = !($lPreenche);
 }

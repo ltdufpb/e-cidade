@@ -111,7 +111,7 @@ if (empty($bi06_dataregistro_dia)) {
             <label for="bi06_idioma" class="bold">Idioma:</label>
           </td>
           <td>
-              <?php db_select("bi06_idioma", array(), true, $db_opcao); ?>
+              <?php db_select("bi06_idioma", [], true, $db_opcao); ?>
             <input type="hidden" id="idiomaSelecionado" value="<?= $iIdioma ?>"/>
           </td>
         </tr>
@@ -415,7 +415,7 @@ if (empty($bi06_dataregistro_dia)) {
     db_iframe_acervo.hide();
       <?php 
       if ($db_opcao != 1) {
-          echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+          echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }
       ?>
   }

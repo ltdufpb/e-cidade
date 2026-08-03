@@ -87,7 +87,7 @@ $iMesFolha = db_mesfolha();
 					</td>
 					<td nowrap>
 						<?php 
-						  $aOpcaoServidor = array("1" => "Não", "2" => "Sim");
+						  $aOpcaoServidor = ["1" => "Não", "2" => "Sim"];
 						  db_select('iServidor', $aOpcaoServidor, true, 1);
 						?>
 					</td>
@@ -109,7 +109,7 @@ $iMesFolha = db_mesfolha();
 					</td>
 					<td> 
             <?php
-							$aQuebras = array('geral' => 'Geral', 'regime' => 'Regime', 'lotacao' => 'Lotação', 'cargo' => 'Cargo');
+							$aQuebras = ['geral' => 'Geral', 'regime' => 'Regime', 'lotacao' => 'Lotação', 'cargo' => 'Cargo'];
 						  db_select('sQuebraRelatorio', $aQuebras, false, 2);
             ?>
 					</td>
@@ -121,7 +121,7 @@ $iMesFolha = db_mesfolha();
 					</td>
 					<td> 
             <?php
-							$aFormatos = array('pdf' => 'PDF', 'csv' => 'CSV');
+							$aFormatos = ['pdf' => 'PDF', 'csv' => 'CSV'];
 						  db_select('sFormatoRelatorio', $aFormatos, false, 2);
             ?>
 					</td>
@@ -136,12 +136,12 @@ $iMesFolha = db_mesfolha();
 						<tr id="tipoFolha">
 							<td nowrap colspan="2">
 							<?php
-							$aPontos = Array(
+							$aPontos = [
 								"salario"      => "Salário",
 								"rescisao"     => "Rescisão",
 								"decimo13"     => "13o Salario",
 								"complementar" => "Complementar"
-							);
+							];
 
 							db_multiploselect("pontos", "descr", "nselecionados", "selecionados", $aPontos, null, 6, 250, null, null, true, 'js_complementar();');
 							?>
@@ -154,7 +154,7 @@ $iMesFolha = db_mesfolha();
 							</td>
 							<td class="colunaComplentares">
 							<?php
-								$aTodos = array('todos' => 'Todos');
+								$aTodos = ['todos' => 'Todos'];
 								db_select('complementares', $aTodos, false, 2);
 							?>
 							</td>

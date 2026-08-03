@@ -68,7 +68,7 @@ if (isset($r11_compararferias)) {
 
       $sRegra = '/^[A-Za-z0-9]/';
 
-      if (!preg_match($sRegra, $r11_baseferias) || !preg_match($sRegra, $r11_basesalario)) {
+      if (!preg_match($sRegra, $r11_baseferias) || !preg_match($sRegra, (string) $r11_basesalario)) {
 
         db_msgbox('O campo com o Código da Base, deve ser preenchido somente com letras e números!');
         return false;
@@ -111,7 +111,7 @@ if (isset($r11_compararferias)) {
   */
  if (isset($r11_histslip)) {
    $rsConhist = db_query("select * from conhist where c50_codhist = {$r11_histslip}");
-   if (pg_numrows($rsConhist) == 0){
+   if (pg_num_rows($rsConhist) == 0){
  	   $erro_msg = "Histórico de Slip informado não cadastrado (conhist).";
  	   $sqlerro = true;
    }

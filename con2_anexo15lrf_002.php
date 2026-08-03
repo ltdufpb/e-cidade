@@ -38,9 +38,9 @@ $orcparamrel  = new cl_orcparamrel;
 $orcparamseq  = new cl_orcparamseq;
 $classinatura = new cl_assinatura;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 //db_criatabela($resultinst);exit;
 
@@ -48,10 +48,10 @@ $descr_inst = '';
 $xvirg      = '';
 $flag_abrev = false;
 $descr_receita = "DEDUÇÕES DA RECEITA CORRENTE";
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
   db_fieldsmemory($resultinst,$xins);
   
-  if (strlen(trim($nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $nomeinstabrev)) > 0) {
     $descr_inst .= $xvirg.$nomeinstabrev;
     $flag_abrev  = true;
   } else {
@@ -199,15 +199,15 @@ for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   if (db_conplano_grupo($anousu,$o57_fonte,9000)==true   &&  ( $o70_codrec == 0 || true )  ) {
     // 497
     
-    $estrut     = substr($o57_fonte,0,1)."00000000000000";
+    $estrut     = substr((string) $o57_fonte,0,1)."00000000000000";
     if ($anousu < 2008) {
-      $estrut     = substr($o57_fonte,0,2)."0000000000000";
+      $estrut     = substr((string) $o57_fonte,0,2)."0000000000000";
     }
     
     $sql_estrut = "select o57_descr from orcfontes where o57_fonte = '$estrut' limit 1";
     $result_estrut = @db_query($sql_estrut);
-    if (@pg_numrows($result_estrut) > 0) {
-      $descr_receita = pg_result($result_estrut,0,"o57_descr");
+    if (@pg_num_rows($result_estrut) > 0) {
+      $descr_receita = pg_fetch_result($result_estrut,0,"o57_descr");
     } else {
       $descr_receita = "DEDUÇÕES DA RECEITA CORRENTE";
     }
@@ -232,32 +232,32 @@ $investimentos             = 0;
 $inv_financeiras           = 0;
 $amortizacao_divida        = 0;
 
-for ($i=0; $i<pg_numrows($result_desp); $i++) {
+for ($i=0; $i<pg_num_rows($result_desp); $i++) {
   db_fieldsmemory($result_desp,$i);
   
   // Despesas Corrente
-  if (substr($o58_elemento,0,3)=="331") {
+  if (str_starts_with((string) $o58_elemento, "331")) {
     $pes_enc_sociais += $empenhado_acumulado-$anulado_acumulado;
   }
   
-  if (substr($o58_elemento,0,3)=="332") {
+  if (str_starts_with((string) $o58_elemento, "332")) {
     $jur_enc_div     += $empenhado_acumulado-$anulado_acumulado;
   }
   
-  if (substr($o58_elemento,0,3)=="333") {
+  if (str_starts_with((string) $o58_elemento, "333")) {
     $outras_despesas_correntes+= $empenhado_acumulado-$anulado_acumulado;
   }
   
   // Despesas de Capital
-  if (substr($o58_elemento,0,3)=="344") {
+  if (str_starts_with((string) $o58_elemento, "344")) {
     $investimentos  += $empenhado_acumulado-$anulado_acumulado;
   }
   
-  if (substr($o58_elemento,0,3)=="345") {
+  if (str_starts_with((string) $o58_elemento, "345")) {
     $inv_financeiras+= $empenhado_acumulado-$anulado_acumulado;
   }
   
-  if (substr($o58_elemento,0,3)=="346") {
+  if (str_starts_with((string) $o58_elemento, "346")) {
     $amortizacao_divida+= $empenhado_acumulado-$anulado_acumulado;
   }
 }
@@ -323,12 +323,12 @@ if ($orcparamseq->numrows > 0) {
   }
 }
 
-$v_interf_ativa           = array();
-$v_interf_passiva         = array();
-$v_mutacao_ativa          = array();
-$v_mutacao_passiva        = array();
-$v_indep_exec_orc_ativa   = array();
-$v_indep_exec_orc_passiva = array();
+$v_interf_ativa           = [];
+$v_interf_passiva         = [];
+$v_mutacao_ativa          = [];
+$v_mutacao_passiva        = [];
+$v_indep_exec_orc_ativa   = [];
+$v_indep_exec_orc_passiva = [];
 
 $ind_interf_ativa            = 0;
 $ind_interf_passiva          = 0;
@@ -337,11 +337,11 @@ $ind_mutacao_passiva         = 0;
 $ind_indep_exec_orc_ativa    = 0;
 $ind_indep_exec_orc_passiva  = 0;
 
-for ($i=0; $i< pg_numrows($res_planocontas); $i++) {
+for ($i=0; $i< pg_num_rows($res_planocontas); $i++) {
   
   db_fieldsmemory($res_planocontas,$i);
   
-  $v_elementos = array($estrutural,$c61_instit);
+  $v_elementos = [$estrutural,$c61_instit];
   $flag_contar = false;
   if ($c61_instit != 0) {
     if (in_array($v_elementos,$m_interf_ativa)) {
@@ -650,7 +650,7 @@ for ($i=0; $i < $contador; $i++) {
   
   if (isset($v_interf_ativa[$i][2] ) ) {
     $pdf->cell(5, $alt,"",0,0,"L",0);
-    $pdf->cell(65,$alt,ucfirst(strtolower($v_interf_ativa[$i][1])),"R",0,"L",0);
+    $pdf->cell(65,$alt,ucfirst(strtolower((string) $v_interf_ativa[$i][1])),"R",0,"L",0);
     $pdf->cell(5, $alt,"",0,0,"L",0);
     $pdf->cell(15,$alt,db_formatar($v_interf_ativa[$i][2],"f"),"R",0,"R",0);
   } else {
@@ -661,7 +661,7 @@ for ($i=0; $i < $contador; $i++) {
   }
   if (isset($v_interf_passiva[$i][2] ) ) {
     $pdf->cell(5,$alt,"",0,0,"L",0);
-    $pdf->cell(65,$alt,ucfirst(strtolower($v_interf_passiva[$i][1])),"R",0,"L",0);
+    $pdf->cell(65,$alt,ucfirst(strtolower((string) $v_interf_passiva[$i][1])),"R",0,"L",0);
     $pdf->cell(5, $alt,"",0,0,"L",0);
     $pdf->cell(15,$alt,db_formatar($v_interf_passiva[$i][2],"f"),0,1,"R",0);
   } else {
@@ -695,7 +695,7 @@ $pdf->cell(20,$alt,db_formatar($soma_mutacao_passiva,"f"),"L",1,"R",0);
 for ($i=0; $i < $contador; $i++) {
   if (isset($v_mutacao_ativa[$i][2]) ) {
     $pdf->cell(5, $alt,"",0,0,"L",0);
-    $pdf->cell(65,$alt,ucfirst(strtolower($v_mutacao_ativa[$i][1])),"R",0,"L",0);
+    $pdf->cell(65,$alt,ucfirst(strtolower((string) $v_mutacao_ativa[$i][1])),"R",0,"L",0);
     $pdf->cell(5, $alt,"",0,0,"L",0);
     $pdf->cell(15,$alt,db_formatar($v_mutacao_ativa[$i][2],"f"),"R",0,"R",0);
   } else {
@@ -707,7 +707,7 @@ for ($i=0; $i < $contador; $i++) {
   
   if (isset($v_mutacao_passiva[$i][2]) ) {
     $pdf->cell(5, $alt,"",0,0,"L",0);
-    $pdf->cell(65,$alt,ucfirst(strtolower($v_mutacao_passiva[$i][1])),"R",0,"L",0);
+    $pdf->cell(65,$alt,ucfirst(strtolower((string) $v_mutacao_passiva[$i][1])),"R",0,"L",0);
     $pdf->cell(5, $alt,"",0,0,"L",0);
     $pdf->cell(15,$alt,db_formatar($v_mutacao_passiva[$i][2],"f"),0,1,0,0);
   } else {

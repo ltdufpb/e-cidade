@@ -34,8 +34,8 @@ include(modification("classes/db_iptubase_classe.php"));
 include(modification("classes/db_iptuconstr_classe.php"));
 include(modification("classes/db_carconstr_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $db_botao=1;
 $db_opcaoid=1;
@@ -61,7 +61,7 @@ if(isset($incluir)){
      $j39_idcons = $j39_idcons + 1;
    }      
    $cliptuconstr->incluir($j39_matric,$j39_idcons);
-   $matriz= split("X",$caracteristica);
+   $matriz= preg_split("#X#m",(string) $caracteristica);
    for($i=0;$i<sizeof($matriz);$i++){
      $j48_caract = $matriz[$i];
      if($j48_caract!=""){
@@ -78,7 +78,7 @@ if(isset($incluir)){
     $clcarconstr->excluir();
 
     $cliptuconstr->alterar($j39_matric,$j39_idcons);
-    $matriz= split("X",$caracteristica);
+    $matriz= preg_split("#X#m",(string) $caracteristica);
     for($i=0;$i<sizeof($matriz);$i++){
       $j48_caract = $matriz[$i];
       if($j48_caract!=""){

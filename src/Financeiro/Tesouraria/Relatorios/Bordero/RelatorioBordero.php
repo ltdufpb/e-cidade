@@ -16,21 +16,15 @@ class RelatorioBordero extends FpdfMultiCellBorder
      * @var string
      */
     private $modeloRelatorio;
-    /**
-     * @var BorderoService
-     */
-    private $service;
 
     /**
      * RelatorioBordero constructor.
-     * @param BorderoService $borderoService
+     * @param BorderoService $service
      */
-    public function __construct(BorderoService $borderoService)
+    public function __construct(private readonly BorderoService $service)
     {
         /* Inicia as configurações do PDF */
         parent::__construct('P');
-
-        $this->service = $borderoService;
         $tipo = $this->service->getTipoRelatorio();
         $this->modeloRelatorio = $tipo == BorderoService::SINTETICO ? "SINTÉTICO" : "ANALÍTICO";
 
@@ -63,16 +57,11 @@ class RelatorioBordero extends FpdfMultiCellBorder
             $this->Cell(192, 4, "Não há movimentações no período selecionado", 0, 1, "C");
         }
 
-        switch ($this->service->getTipoRelatorio()) {
-            case BorderoService::ANALITICO:
-                $this->imprimeAnalitico($contas);
-                break;
-            case BorderoService::SINTETICO:
-                $this->imprimeSintetico($contas);
-                break;
-            default:
-                throw new Exception("Modelo de relatório inválido.");
-        }
+        match ($this->service->getTipoRelatorio()) {
+            BorderoService::ANALITICO => $this->imprimeAnalitico($contas),
+            BorderoService::SINTETICO => $this->imprimeSintetico($contas),
+            default => throw new Exception("Modelo de relatório inválido."),
+        };
 
         $this->output();
     }
@@ -118,7 +107,7 @@ class RelatorioBordero extends FpdfMultiCellBorder
                 } else {
                     $this->cell(22, 4, "", 0, 0);
                 }
-                $this->cell(20, 4, str_pad($credor->arquivo, 7, "0", STR_PAD_LEFT), 0, 0, 'R');
+                $this->cell(20, 4, str_pad((string) $credor->arquivo, 7, "0", STR_PAD_LEFT), 0, 0, 'R');
                 $this->cell(25, 4, db_formatar($credor->valor, 'f'), 0, 0, 'R');
                 $this->cell(25, 4, $credor->data_pagamento->getDate(DBDate::DATA_PTBR), 0, 1, 'R');
             }
@@ -165,7 +154,7 @@ class RelatorioBordero extends FpdfMultiCellBorder
     {
         foreach ($contas as $contaPagadora => $datas) {
             $this->imprimeSubCabecalho($datas, $this->service->getTipoRelatorio());
-            $this->imprimeCredoresSintetico($datas, $contaPagadora);
+            $this->imprimeCredoresSintetico($datas);
         }
     }
 
@@ -190,7 +179,7 @@ class RelatorioBordero extends FpdfMultiCellBorder
                         $this->cell(90, 4, "Diversos credores", 0, 0);
                     }
                     $this->setX(120);
-                    $this->cell(25, 4, str_pad($key, 7, "0", STR_PAD_LEFT), 0, 0, 'R');
+                    $this->cell(25, 4, str_pad((string) $key, 7, "0", STR_PAD_LEFT), 0, 0, 'R');
                     $this->cell(30, 4, db_formatar($diversos->valor, 'f'), 0, 0, 'R');
                     $this->cell(27, 4, $diversos->data_pagamento->getDate(DBDate::DATA_PTBR), 0, 1, 'R');
                 }

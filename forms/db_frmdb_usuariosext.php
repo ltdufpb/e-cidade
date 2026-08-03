@@ -79,7 +79,7 @@ if($db_opcao==1){
                 $administrador = 0;
               }
 
-              $ativo = array("1" => "Sim", "0" => "Não");
+              $ativo = ["1" => "Sim", "0" => "Não"];
               db_select("administrador", $ativo, true, $db_opcao, 'onchange="return js_validaAdministrador(); "');
             ?>
           </td>
@@ -111,11 +111,11 @@ if($db_opcao==1){
                 $usuarioativo = 1;
               }
 
-              $aOpcoes = array(
+              $aOpcoes = [
                   "0" => "Inativo",
                   "1" => "Ativo",
                   "3" => "Aguardando Ativação"
-                );
+                ];
 
               if (!($db_opcao == 2 || $db_opcao == 22)) {
                 unset($aOpcoes[3]);
@@ -205,7 +205,7 @@ function js_preenchepesquisa(chave){
   db_iframe_db_usuarios.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

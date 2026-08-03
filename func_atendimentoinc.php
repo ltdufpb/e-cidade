@@ -35,8 +35,8 @@ include(modification("classes/db_db_usuarios_classe.php"));
 include(modification("classes/db_atendareatec_classe.php"));
 include(modification("classes/db_atendtipoausencia_classe.php"));
 include(modification("classes/db_atendtecnicoocupado_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatendimento = new cl_atendimento;
 $cldb_usuarios = new cl_db_usuarios;
 $clatendareatec= new cl_atendareatec;
@@ -158,7 +158,7 @@ function js_consulta_atend(){
         	 if($opcao=="incluir") {
 	         	 $sql = $clatendimento->sql_query_inc($chave_at02_codatend,$campos,"at02_codatend desc","at02_codatend = $chave_at02_codatend and atenditem.at05_codatend is null and at02_codtipo >= 100 and atendorig.at11_origematend is null");
         	 }
-        	 
+
         	 if($opcao=="alterar") {
 	         	 $sql = $clatendimento->sql_query_inc($chave_at02_codatend,$campos,"at02_codatend desc","at02_codatend = $chave_at02_codatend and at02_codtipo >= 100 and atendorig.at11_origematend is null");
         	 }
@@ -169,33 +169,33 @@ function js_consulta_atend(){
 
         	 if($opcao=="alterar") {
 		         $sql = $clatendimento->sql_query_inc("",$campos,"at02_codcli desc"," at02_codcli like '$chave_at02_codcli%' and at02_codtipo >= 100 and atendorig.at11_origematend is null");
-        	 	 
+
         	 }
         }else{
            if($opcao=="incluir") {
-           	
+
            	if (isset($at40_tecnico) and $at40_tecnico != "0") {
 	            $sql = $clatendimento->sql_query_inc("",$campos,"at02_codatend desc","at02_datafim is null and at02_codtipo >= 100 and atendorig.at11_origematend is null and atendimentosituacao.at16_situacao  in (1, 4) and (tecnico.at03_id_usuario=$at40_tecnico or (at28_atendcadarea is not null and at27_usuarios = $at40_tecnico))"); 
 
-           	 
+
            	} else {
            	  $sql = $clatendimento->sql_query_inc("",$campos,"at02_codatend desc","at02_datafim is null and at02_codtipo >= 100 and atendorig.at11_origematend is null and atendimentosituacao.at16_situacao in (1, 4)");
-           	
+
            	}
-	           
+
            }	
 
            if($opcao=="alterar") {
 	           $sql = $clatendimento->sql_query_inc("",$campos,"at02_codatend desc","at02_codtipo >= 100 and atendorig.at11_origematend is null");
-          
+
            }	
         }
-       
-		  $repassa = array();
+
+		  $repassa = [];
 		//die($sql);	 
 		//db_lovrot($sql,15,"()","",$funcao_js); 
 		//db_lovrot($sql,30,"()","",$funcao_js,null,"NoMe",$repassa,false);
-        db_lovrot($sql,20,"()","",$funcao_js, "", "NoMe", array (), false);
+        db_lovrot($sql,20,"()","",$funcao_js, "", "NoMe",  [], false);
         // db_criatabela(db_query($sql));
           
       }else{ 

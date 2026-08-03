@@ -75,7 +75,7 @@ class DbModulos {
    * Array com os itens de menu que fazem parte do módulo
    * @var array
    */
-  private $aItensMenuVinculados = array();
+  private $aItensMenuVinculados = [];
   
   /**
    * Construtor da classe. Recebe o id_item como parâmetro, que pode ser null

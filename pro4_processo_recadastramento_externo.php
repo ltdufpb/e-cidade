@@ -36,11 +36,11 @@ $oGet = db_utils::postMemory($_GET);
 
 $daoProcessoEletronico = new cl_ouvidoriaatendimentoprocessoeletronico();
 
-$campos = array(
+$campos = [
     "ov01_numero",
     "ov01_anousu",
     "p58_codproc"
-);
+];
 
 if (isset($oGet->iNumcgm) && !empty($oGet->iNumcgm)) {
     $sql = $daoProcessoEletronico->getProcessoEletronicoByCgmAndTipoProcesso(
@@ -60,7 +60,7 @@ if (isset($oGet->iNumcgm) && !empty($oGet->iNumcgm)) {
         $processo = $dados->ov01_numero;
         $ano = $dados->ov01_anousu;
         $escondeBotoes = 'true';
-        $codigoProcessoProtocolo = isset($dados->p58_codproc) ? $dados->p58_codproc : null;
+        $codigoProcessoProtocolo = $dados->p58_codproc ?? null;
         $oPreferenciaUsuario = db_getsession("DB_preferencias_usuario", false, true);
         $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
     }else{
@@ -68,11 +68,11 @@ if (isset($oGet->iNumcgm) && !empty($oGet->iNumcgm)) {
     }
 }else if (isset($oGet->atendimento) && !empty($oGet->atendimento)) {
 
-    $atendimento = explode("/", $oGet->atendimento);
+    $atendimento = explode("/", (string) $oGet->atendimento);
     $processo = $atendimento[0];
     $ano = $atendimento[1];
     $escondeBotoes = 'true';
-    $codigoProcessoProtocolo = isset($oGet->p58_codproc) ? $oGet->p58_codproc : null;
+    $codigoProcessoProtocolo = $oGet->p58_codproc ?? null;
     $oPreferenciaUsuario = db_getsession("DB_preferencias_usuario", false, true);
     $visualizarEmOutraJanela = (empty($oPreferenciaUsuario->isVisulizarEmOutraJanela()) ? 'false': $oPreferenciaUsuario->isVisulizarEmOutraJanela());
 }else{

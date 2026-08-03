@@ -99,7 +99,7 @@ class CertificadoPfxService
                 'auth' => [$user, $password, 'Basic']
         ];
         $response = $http->post("{$urlApi}/generate", $options);
-        $response = json_decode($response->getBody());
+        $response = json_decode((string) $response->getBody());
         $responseCertificado = $http->get($response->downloadURL, $options);
         $dadosCertificado = $responseCertificado->getBody()->getContents();
 
@@ -116,7 +116,7 @@ class CertificadoPfxService
         }
         $certificadoUsuario->c142_arquivopfx = $iOid;
         $certificadoUsuario->c142_data = new DateTime();
-        $certificadoUsuario->c142_validade = (new DateTime())->modify('+2 years')->modify('-1 day');
+        $certificadoUsuario->c142_validade = new DateTime()->modify('+2 years')->modify('-1 day');
         $certificadoUsuario->save();
 
         $nomeCertificado = str_replace(' ', '_', $nomeCertificado);

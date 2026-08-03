@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhestagioagendadata_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhestagioagendadata = new cl_rhestagioagendadata;
 $clrhestagioagendadata->rotulo->label("h64_sequencial");
 $clrhestagioagendadata->rotulo->label("h64_data");
@@ -119,7 +119,7 @@ $clrotulo->label("rh01_regist");
         }else{
            $sql = $clrhestagioagendadata->sql_query_nome("",$campos,"h64_sequencial",$sWhere);
         }
-        $repassa = array("chave_h64_sequencial"=>@$chave_h64_sequencial,"chave_rh01_regist"=>@$chave_rh01_regist,"chave_z01_nome" => @$chave_z01_nome);
+        $repassa = ["chave_h64_sequencial"=>@$chave_h64_sequencial,"chave_rh01_regist"=>@$chave_rh01_regist,"chave_z01_nome" => @$chave_z01_nome];
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){

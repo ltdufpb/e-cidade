@@ -36,7 +36,7 @@ final class PadArquivoSigapUnidade extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "UnidadeOrcamentaria";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   public function gerarDados() {
@@ -52,7 +52,7 @@ final class PadArquivoSigapUnidade extends PadArquivoSigap {
      * Separamos a data do em ano, mes, dia
      */
     $iCodigoInstit  = db_getsession("DB_instit");
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     
     $sSqlUnidades  = "select distinct ";
     $sSqlUnidades .= "       o41_anousu  as anousu,";
@@ -83,10 +83,10 @@ final class PadArquivoSigapUnidade extends PadArquivoSigap {
       $oUnidadeRetorno->uorCodigoEntidade            = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oUnidadeRetorno->uorMesAnoMovimento           = $sDiaMesAno;
       $oUnidadeRetorno->uorExercicio                 = $oUnidade->anousu;
-      $oUnidadeRetorno->uorCodigoOrgao               = str_pad($oUnidade->orgao, 2, "0", STR_PAD_LEFT);
-      $oUnidadeRetorno->uorCodigoUnidadeOrcamentaria = str_pad($oUnidade->unidade, 2, "0", STR_PAD_LEFT);
+      $oUnidadeRetorno->uorCodigoOrgao               = str_pad((string) $oUnidade->orgao, 2, "0", STR_PAD_LEFT);
+      $oUnidadeRetorno->uorCodigoUnidadeOrcamentaria = str_pad((string) $oUnidade->unidade, 2, "0", STR_PAD_LEFT);
       $oUnidadeRetorno->uorNomeUnidadeOrcamentaria   = $oUnidade->nome;
-      $oUnidadeRetorno->uorIdentificador             = str_pad($oUnidade->identificador, 2, "0", STR_PAD_LEFT);
+      $oUnidadeRetorno->uorIdentificador             = str_pad((string) $oUnidade->identificador, 2, "0", STR_PAD_LEFT);
       $oUnidadeRetorno->uorCNPJ                      = $oUnidade->cnpj;
       array_push($this->aDados, $oUnidadeRetorno);
       
@@ -94,7 +94,7 @@ final class PadArquivoSigapUnidade extends PadArquivoSigap {
   }
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "uorCodigoEntidade",
                         "uorMesAnoMovimento",
                         "uorExercicio",
@@ -104,7 +104,7 @@ final class PadArquivoSigapUnidade extends PadArquivoSigap {
                         "uorIdentificador", 
                         "uorCNPJ"
     
-                       );
+                       ];
     return $aElementos;  
   }
 }

@@ -317,9 +317,9 @@ if (isset($chavepesquisa)) {
                   if ($clmatricula->numrows > 0) {
                       db_fieldsmemory($result_verif, 0);
                       $datahj = date("Y-m-d");
-                      $datasaida_dia = substr($datasaida, 8, 2);
-                      $datasaida_mes = substr($datasaida, 5, 2);
-                      $datasaida_ano = substr($datasaida, 0, 4);
+                      $datasaida_dia = substr((string) $datasaida, 8, 2);
+                      $datasaida_mes = substr((string) $datasaida, 5, 2);
+                      $datasaida_ano = substr((string) $datasaida, 0, 4);
                       $data_in = mktime(0, 0, 0, $datasaida_mes, $datasaida_dia, $datasaida_ano);
                       $data_out = mktime(0, 0, 0, substr($datahj, 5, 2), substr($datahj, 8, 2), substr($datahj, 0, 4));
                       $data_entre = $data_out - $data_in;
@@ -432,7 +432,7 @@ if (isset($chavepesquisa)) {
 
       db_iframe_transfescolarede.hide();
         <?php 
-        echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+        echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         ?>
     }
 

@@ -61,7 +61,7 @@ $clipe->rotulo->label();
       </td>
       <td> 
         <?php 
-        $arr_opcoes = array("1"=>"Salário","2"=>"13o Salário");
+        $arr_opcoes = ["1"=>"Salário","2"=>"13o Salário"];
         db_select("xtipo",$arr_opcoes,true,1);
         ?>
       </td>

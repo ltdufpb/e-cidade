@@ -55,11 +55,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <?php 
-	    $clcriaabas->identifica = array("tabrec"=>"Cadastro de receitas","tabrecregrasjm"=>"Regras juros","tabrecdepto"=>"Departamentos");
-      $clcriaabas->sizecampo  = array("tabrec"=>"20","tabrecregrasjm"=>"20","tabrecdepto"=>"20");
-      $clcriaabas->title      = array("tabrec"=>"Cadastro de receitas","tabrecregrasjm"=>"Regras juros","tabrecdepto"=>"Departamentos");
-      $clcriaabas->src        = array("tabrec"=>"cai1_receita006.php");
-      $clcriaabas->disabled   = array("tabrecregrasjm"=>true,"tabrecdepto"=>true);
+	    $clcriaabas->identifica = ["tabrec"=>"Cadastro de receitas","tabrecregrasjm"=>"Regras juros","tabrecdepto"=>"Departamentos"];
+      $clcriaabas->sizecampo  = ["tabrec"=>"20","tabrecregrasjm"=>"20","tabrecdepto"=>"20"];
+      $clcriaabas->title      = ["tabrec"=>"Cadastro de receitas","tabrecregrasjm"=>"Regras juros","tabrecdepto"=>"Departamentos"];
+      $clcriaabas->src        = ["tabrec"=>"cai1_receita006.php"];
+      $clcriaabas->disabled   = ["tabrecregrasjm"=>true,"tabrecdepto"=>true];
       $clcriaabas->cria_abas(); 
       ?> 
     </td>

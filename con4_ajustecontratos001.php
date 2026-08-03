@@ -74,7 +74,7 @@ if(isset($oPost->gerar)) {
 
          while ( !$file->eof() ) {
 
-             $aLinha = $file->fgetcsv(";");
+             $aLinha = $file->fgetcsv(";", escape: '\\');
 
              // ignora o cabecalho
             if ( ($iLinha == "0" || $iLinha == 0) ||

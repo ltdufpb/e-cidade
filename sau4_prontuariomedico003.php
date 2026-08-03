@@ -41,8 +41,8 @@ $oDaoCgsUnd                 = new cl_cgs_und();
 $oDaoSauReceitaMedica       = new cl_sau_receitamedica();
 $oDaoSauMedicamentosReceita = new cl_sau_medicamentosreceita();
 
-$aWhereProntuarioMedico = array();
-$aWhereProntProced      = array();
+$aWhereProntuarioMedico = [];
+$aWhereProntProced      = [];
 
 if ( !empty($oGet->dIni) ) {
 
@@ -139,15 +139,15 @@ $head7 = "Micro Área:  ".$oDadosCGS->sd34_v_descricao;
 //Pré Condições do For
 $pri          = true;
 $retorna_obs  = 0;
-$ec_cgs       = array("1"=>"Solteiro",
+$ec_cgs       = ["1"=>"Solteiro",
                       "2"=>"Casado",
                       "3"=>"Viúvo",
                       "4"=>"Separado Judicialmente",
                       "5"=>"União Consensual",
                       "9"=>"Ignorado"
-                     );
+                     ];
 
-$sexo_cgs     = array("F"=>"Feminino", "M"=>"Masculino");
+$sexo_cgs     = ["F"=>"Feminino", "M"=>"Masculino"];
 $altura       = 3;
 $borda        = false;
 $espaco       = 2;
@@ -157,9 +157,9 @@ $usar_quebra  = true;
 $campo_testar = 2;
 $lagurafixa   = 0;
 
-cabecalho($pdf,$result,$pri);
-$pdf->SetWidths(array(20,45,127));
-$pdf->SetAligns(array("C","L","L"));
+cabecalho($pdf);
+$pdf->SetWidths([20,45,127]);
+$pdf->SetAligns(["C","L","L"]);
 
 $p = 0;
 $x = 0;
@@ -230,7 +230,7 @@ while ($p < $linhas1 || $x < $linhas) {
         $sd70_c_nome_ .= "\n                                          ".trim($sd70_c_cid." - ".$sd70_c_nome);
       }
 
-      $sd29_d_data        = substr($sd29_d_data,8,2)."/".substr($sd29_d_data,5,2)."/".substr($sd29_d_data,0,4);
+      $sd29_d_data        = substr((string) $sd29_d_data,8,2)."/".substr((string) $sd29_d_data,5,2)."/".substr((string) $sd29_d_data,0,4);
       $sd29_t_tratamento_ = trim(stripslashes($sd29_t_tratamento_));
 
       if ($sd24_v_pressao == 0){
@@ -257,7 +257,7 @@ while ($p < $linhas1 || $x < $linhas) {
 
       if (isset($s152_n_temperatura) && !empty($s152_n_temperatura)) {
 
-        $aTmp         = explode('.', $s152_n_temperatura);
+        $aTmp         = explode('.', (string) $s152_n_temperatura);
         $sTemperatura = $aTmp[0].','.$aTmp[1][0];
       } else {
         $sTemperatura = $sd24_f_temperatura;
@@ -265,7 +265,7 @@ while ($p < $linhas1 || $x < $linhas) {
 
       if (isset($s152_n_peso) && !empty($s152_n_peso)) {
 
-        $aTmp  = explode('.', $s152_n_peso);
+        $aTmp  = explode('.', (string) $s152_n_peso);
         $sPeso = $aTmp[0].','.$aTmp[1][0];
       } else {
         $sPeso = $sd24_f_peso;
@@ -308,7 +308,7 @@ while ($p < $linhas1 || $x < $linhas) {
 
           $oDadosAdministracao = db_utils::fieldsMemory($rsProntuarioAdministracao, $iAdministracao);
 
-          $aPartes    = explode( "\n", trim(chunk_split($oDadosAdministracao->m60_descr, 49, "\n")) );
+          $aPartes    = explode( "\n", trim(chunk_split((string) $oDadosAdministracao->m60_descr, 49, "\n")) );
           $sConteudo .= "\n" . str_pad($aPartes[0], 50);
           $sConteudo .= str_pad("{$oDadosAdministracao->sd105_quantidade} {$oDadosAdministracao->m61_abrev}", 15);
 
@@ -364,7 +364,7 @@ while ($p < $linhas1 || $x < $linhas) {
           $sConteudo .= "\n  CID...........: ".$oDados->sd70_c_cid." - ".$oDados->sd70_c_nome;
         }
 
-        $sConteudo .= "\n  Procedimento..: ".$oDados->sd63_c_procedimento." - ".str_pad($oDados->sd63_c_nome,60);
+        $sConteudo .= "\n  Procedimento..: ".$oDados->sd63_c_procedimento." - ".str_pad((string) $oDados->sd63_c_nome,60);
 
         $sConteudoPrescricao = "{$oDados->sd29_t_tratamento}";
 
@@ -405,10 +405,10 @@ while ($p < $linhas1 || $x < $linhas) {
         for( $iContador = 0; $iContador < $oDaoSauReceitaMedica->numrows; $iContador++ ) {
 
           $oDadosMedicamento   = db_utils::fieldsmemory($rs, $iContador, true);
-          $sConteudo .= "\n" . str_pad($oDadosMedicamento->m60_descr, 30);
-          $sConteudo .= str_pad($oDadosMedicamento->s160_c_descr, 15);
-          $sConteudo .= str_pad($oDadosMedicamento->s159_t_posologia, 30);
-          $sConteudo .= str_pad($oDadosMedicamento->s159_n_quant, 5);
+          $sConteudo .= "\n" . str_pad((string) $oDadosMedicamento->m60_descr, 30);
+          $sConteudo .= str_pad((string) $oDadosMedicamento->s160_c_descr, 15);
+          $sConteudo .= str_pad((string) $oDadosMedicamento->s159_t_posologia, 30);
+          $sConteudo .= str_pad((string) $oDadosMedicamento->s159_n_quant, 5);
         }
       }
 
@@ -451,18 +451,18 @@ while ($p < $linhas1 || $x < $linhas) {
 
         $sConteudo .= "\nObservação: {$oDadosRequisicao->sObservacao}";
       }
-      $data = array("$sd29_d_data",
+      $data = ["$sd29_d_data",
                     "$profissional_original \n\nAssinatura :\n",
                     $sConteudo
-                    );
+                    ];
     } else {
 
       $sd29_t_tratamento_ = $descricaoitemimprime;
       $retorna_obs        = 0;
-      $data               = array("$sd24_d_cadastro  $sd24_c_cadastro",
+      $data               = ["$sd24_d_cadastro  $sd24_c_cadastro",
                                   "$profissional_original \n\nAssinatura :\n",
                                   "\n$sd29_t_tratamento_"
-                                );
+                                ];
 
     }
     $pdf->Setfont('Courier', '', 7);
@@ -485,7 +485,7 @@ while ($p < $linhas1 || $x < $linhas) {
       $pdf->text(120, $xlin+15, "Continua na próxima página ");
     }
 
-    cabecalho( $pdf, $result, $pri );
+    cabecalho( $pdf );
   }
 
   //for de prontuariomedico
@@ -512,18 +512,18 @@ while ($p < $linhas1 || $x < $linhas) {
 
       db_fieldsmemory($query, $x);
       $pri                = false;
-      $z01_d_nasc         = substr($z01_d_nasc,8,2)."/".substr($z01_d_nasc,5,2)."/".substr($z01_d_nasc,0,4);
-      $sd32_d_atendimento = substr($sd32_d_atendimento,8,2)."/".substr($sd32_d_atendimento,5,2)."/".
-                            substr($sd32_d_atendimento,0,4);
+      $z01_d_nasc         = substr((string) $z01_d_nasc,8,2)."/".substr((string) $z01_d_nasc,5,2)."/".substr((string) $z01_d_nasc,0,4);
+      $sd32_d_atendimento = substr((string) $sd32_d_atendimento,8,2)."/".substr((string) $sd32_d_atendimento,5,2)."/".
+                            substr((string) $sd32_d_atendimento,0,4);
     } else {
 
       $sd32_t_descricao = $descricaoitemimprime;
       $retorna_obs = 0;
     }
 
-    $data = array("$sd32_d_atendimento $sd32_c_horaatend",
+    $data = ["$sd32_d_atendimento $sd32_c_horaatend",
                   "$profissional \n\nAssinatura :\n",
-                  "\nExecutado        ".$sd32_t_descricao);
+                  "\nExecutado        ".$sd32_t_descricao];
     $pdf->Setfont('Arial', '', 7);
 
     $set_altura_row = $pdf->h - 30;
@@ -546,7 +546,7 @@ while ($p < $linhas1 || $x < $linhas) {
       $pdf->text( 120, $xlin + 15, "Continua na próxima página " );
     }
 
-    cabecalho( $pdf, $result, $pri );
+    cabecalho( $pdf );
   }
 }
 $pdf->Output();
@@ -572,7 +572,7 @@ function cabecalho($pdf, $result, $pri) {
     $pdf->setfont( 'arial', 'b', 7 );
 
     $pdf->cell( 30, 4, "Nome : ", 0, 0, "R", 0 );
-    $pdf->cell( 66, 4, $z01_i_numcgs . "-" . trim( $z01_v_nome ), 0, 1, "L", 0 );
+    $pdf->cell( 66, 4, $z01_i_numcgs . "-" . trim( (string) $z01_v_nome ), 0, 1, "L", 0 );
 
     $pdf->cell( 30, 4, "Sexo :",                0, 0, "R", 0 );
     $pdf->cell( 66, 4, @$sexo_cgs[$z01_v_sexo], 0, 1, "L", 0 );

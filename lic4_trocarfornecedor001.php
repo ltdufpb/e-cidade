@@ -36,8 +36,8 @@ $clrotulo->label("pc10_numero");
 $clrotulo->label("l20_codigo");
 $clrotulo->label("pc80_codproc");
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 ?>
 <html>

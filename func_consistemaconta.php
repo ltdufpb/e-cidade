@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_consistemaconta_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconsistemaconta = new cl_consistemaconta;
 $clconsistemaconta->rotulo->label("c65_sequencial");
 $clconsistemaconta->rotulo->label("c65_descricao");
@@ -98,9 +98,9 @@ $clconsistemaconta->rotulo->label("c65_descricao");
         }else{
            $sql = $clconsistemaconta->sql_query("",$campos,"c65_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c65_descricao)){
-          $repassa = array("chave_c65_sequencial"=>$chave_c65_sequencial,"chave_c65_descricao"=>$chave_c65_descricao);
+          $repassa = ["chave_c65_sequencial"=>$chave_c65_sequencial,"chave_c65_descricao"=>$chave_c65_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

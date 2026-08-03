@@ -46,7 +46,7 @@ $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
 
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 /**
  * Camada de Tentativas do RPC
  */
@@ -78,7 +78,7 @@ try {
       /**
        * Tenta Escrever no arquivo 
        */
-      $lWriteTXT      = fputs( $fArquivo, $oArquivoTXT->ob16_arq);
+      $lWriteTXT      = fputs( $fArquivo, (string) $oArquivoTXT->ob16_arq);
       if (!$lWriteTXT) {
         throw new Exception(_M('tributario.projetos.pro4_txtINSS.erro_escrever_arquivo'));
       }
@@ -125,7 +125,7 @@ try {
          */
         if (pg_num_rows($rsRegistrosTXT) > 0) {
           
-          $aRegistrosTXT          = array();
+          $aRegistrosTXT          = [];
           $aObjRegistrosTXT       = db_utils::getCollectionByRecord($rsRegistrosTXT);
           
           /**
@@ -150,7 +150,7 @@ try {
            */
           if ( pg_num_rows($rsHabiteRegistrosTXT) > 0 ) { 
             
-            $aHabiteRegistrosTXT    = array();
+            $aHabiteRegistrosTXT    = [];
             $aObjHabiteRegistrosTXT = db_utils::getCollectionByRecord($rsHabiteRegistrosTXT);
             
             /**

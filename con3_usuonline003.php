@@ -28,8 +28,8 @@
 include(modification("libs/db_stdlib.php"));
 include(modification("libs/db_conecta.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-if(isset($HTTP_POST_VARS["sair"]) || @$sairfora == 1) {
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+if(isset($_POST["sair"]) || @$sairfora == 1) {
   //usuario local
   //   uol_chat = uol_chat||'\n"."".db_getsession("DB_id_usuario")."#".time()."#".db_getsession("DB_login")."#"."Usuário ".db_getsession("DB_login")." saiu do chat',
   db_query("update db_usuariosonline set  
@@ -56,19 +56,19 @@ if(isset($HTTP_POST_VARS["sair"]) || @$sairfora == 1) {
   exit;
 }
 
-if(isset($HTTP_POST_VARS["texto"])) {
+if(isset($_POST["texto"])) {
   //usuario local
-  $HTTP_POST_VARS["texto"] = htmlspecialchars($HTTP_POST_VARS["texto"]);
-  
+  $_POST["texto"] = htmlspecialchars($_POST["texto"]);
+
   db_query("update db_usuariosonline set  
-           uol_chat = uol_chat||'\n"."".db_getsession("DB_id_usuario")."#".time()."#".db_getsession("DB_login")."#".$HTTP_POST_VARS["texto"]."'
+           uol_chat = uol_chat||'\n"."".db_getsession("DB_id_usuario")."#".time()."#".db_getsession("DB_login")."#".$_POST["texto"]."'
 		   where uol_id = ".db_getsession("DB_id_usuario")."
 		   and uol_hora = ".db_getsession("DB_uol_hora")."
 		   ") or die("Erro(45) atualizando db_usuariosonline");
 		   //		   and uol_ip = '".(isset($_SERVER["HTTP_X_FORWARDED_FOR"])?$_SERVER["HTTP_X_FORWARDED_FOR"]:$HTTP_SERVER_VARS['REMOTE_ADDR'])."' 
   //usuario remoto
   db_query("update db_usuariosonline set  
-           uol_chat = uol_chat||'\n"."".db_getsession("DB_id_usuario")."#".time()."#".db_getsession("DB_login")."#".$HTTP_POST_VARS["texto"]."'
+           uol_chat = uol_chat||'\n"."".db_getsession("DB_id_usuario")."#".time()."#".db_getsession("DB_login")."#".$_POST["texto"]."'
 		   where uol_id = ".$id_usuario."
 		   and uol_hora = ".$hora."
 		   ") or die("Erro(52) atualizando db_usuariosonline");  

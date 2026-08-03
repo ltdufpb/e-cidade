@@ -8,18 +8,15 @@ use App\Domain\Saude\ESF\Contracts\ConsultaIndividual;
 class ConsultaIndividualProblemasAdapter implements ConsultaIndividual
 {
     /**
-     * @var integer
-     */
-    private $idProntuario;
-
-    /**
      * @var \Illuminate\Support\Collection;
      */
     private $problemas;
 
-    public function __construct($idProntuario)
+    /**
+     * @param int $idProntuario
+     */
+    public function __construct(private $idProntuario)
     {
-        $this->idProntuario = $idProntuario;
         $this->problemas = collect();
     }
 

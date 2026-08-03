@@ -48,7 +48,7 @@ try {
 
   if( $db_opcao == 1 ) {
 
-    $aVet = explode(".", $la25_c_estrutural);
+    $aVet = explode(".", (string) $la25_c_estrutural);
 
     // Retorna o último valor da série do estrutural, retornando 1 caso não haja registros
     $sCampos         = "(coalesce(max(split_part(la25_c_estrutural, '.', 1))::int, 0) + 1) as estrutural";
@@ -61,7 +61,7 @@ try {
 
     $sProximo          = db_utils::fieldsMemory($rsSqlEstrutural, 0)->estrutural;
     $iTam              = strlen($aVet[0]);
-    $aVet[0]           = str_pad($sProximo, $iTam, "0", STR_PAD_LEFT);
+    $aVet[0]           = str_pad((string) $sProximo, $iTam, "0", STR_PAD_LEFT);
     $la25_c_estrutural = implode(".", $aVet);
   }
 
@@ -131,7 +131,7 @@ if (!empty($la25_preenchimentoobrigatorio) && $la25_preenchimentoobrigatorio == 
           </td>
           <td>
             <?php
-              $aTipos = array("1" => "Sintetico", "2" => "Analitico");
+              $aTipos = ["1" => "Sintetico", "2" => "Analitico"];
               db_select("la25_c_tipo", $aTipos, true, $db_opcao2, "onchange='js_liberaformula()'");
             ?>          
         </tr>
@@ -266,7 +266,7 @@ if (!empty($la25_preenchimentoobrigatorio) && $la25_preenchimentoobrigatorio == 
     db_iframe_lab_atributo.hide();
     <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
     ?>
   }

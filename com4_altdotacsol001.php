@@ -103,7 +103,7 @@ if (isset($incluir) && $incluir != "") {
 	$sSqlItensAnt     .= "       inner join pcmater on pc01_codmater=pc16_codmater                                       ";
 	$sSqlItensAnt     .= " where pc11_numero = {$importado}   order by pc11_seq                                          ";
 	$result_itens_ant  = db_query($sSqlItensAnt);
-	$numrows_itens_ant = pg_numrows($result_itens_ant);
+	$numrows_itens_ant = pg_num_rows($result_itens_ant);
 	$sequencia = 0;
   
 	for ($w = 0; $w < $numrows_itens_ant; $w ++) {
@@ -127,7 +127,7 @@ if (isset($incluir) && $incluir != "") {
 			$clsolicitem->pc11_vlrun = $pc11_vlrun;
 			$clsolicitem->pc11_prazo = $pc11_prazo;
 			$clsolicitem->pc11_pgto = $pc11_pgto;
-			$clsolicitem->pc11_resum = addslashes($pc11_resum);
+			$clsolicitem->pc11_resum = addslashes((string) $pc11_resum);
 			$clsolicitem->pc11_just = $pc11_just;
 			$clsolicitem->pc11_liberado = "false";		
 			$clsolicitem->incluir(null);
@@ -233,10 +233,10 @@ if (isset($incluir) && $incluir != "") {
 			  
 				db_fieldsmemory($result_importacaodot, $ii);
 				$pc13_coddot_pos = "pc13_coddot_$pc16_codmater"."_".$pc13_coddot;
-				$pc13_coddot = $$pc13_coddot_pos;
+				$pc13_coddot = ${$pc13_coddot_pos};
 				$pc13_anousu = db_getsession("DB_anousu");
 				
-				if (trim($pc13_coddot) != "") {
+				if (trim((string) $pc13_coddot) != "") {
 				  
 					$result_codele = $clorcdotacao->sql_record($clorcdotacao->sql_query_file($pc13_anousu, $pc13_coddot));
 					if ($clorcdotacao->numrows > 0) {
@@ -372,7 +372,7 @@ $sSql = "select distinct
           inner join pcmater          on pc01_codmater  = pc16_codmater  
           where pc11_numero = $importado";
 $rsResult = db_query($sSql);
-$iNumrows = pg_numrows($rsResult);
+$iNumrows = pg_num_rows($rsResult);
 if ($iNumrows > 0) {
 ?>
     <table>
@@ -390,7 +390,7 @@ if ($iNumrows > 0) {
     ?>
 			<tr>  	            
 			  <td	 class='bordas_corp' align='center'><small><?=@$pc16_codmater?></small></td>
-		   	<td	 class='bordas_corp' nowrap align='left' title='<?=@$pc01_descrmater?>'><small><?=@substr($pc01_descrmater,0,20)?>&nbsp;</small></td>
+		   	<td	 class='bordas_corp' nowrap align='left' title='<?=@$pc01_descrmater?>'><small><?=@substr((string) $pc01_descrmater,0,20)?>&nbsp;</small></td>
 		   	<td	 class='bordas_corp' align='center'><small><?=@$pc13_coddot?></small></td>
 				<td	 class='bordas_corp' align='center'><small><?=@$pc13_codele?></small></td>                
 			  <td	 class='bordas_corp' align='right'><small><?=@$o56_elemento?></small></td>

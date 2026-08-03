@@ -6,7 +6,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_planilhadistribuicao_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clplanilhadistribuicao = new cl_planilhadistribuicao;
 $clplanilhadistribuicao->rotulo->label("pd01_sequencial");
 $clplanilhadistribuicao->rotulo->label("pd01_descricao");
@@ -47,9 +47,9 @@ if(!isset($pesquisa_chave)){
   }else{
     $sql = $clplanilhadistribuicao->sql_query("",$campos,"pd01_sequencial","");
   }
-  $repassa = array();
+  $repassa = [];
   if(isset($chave_pd01_sequencial)){
-    $repassa = array("chave_pd01_sequencial"=>$chave_pd01_sequencial,"chave_pd01_sequencial"=>$chave_pd01_sequencial);
+    $repassa = ["chave_pd01_sequencial"=>$chave_pd01_sequencial,"chave_pd01_sequencial"=>$chave_pd01_sequencial];
   }
   echo '<div class="container">';
   echo '  <fieldset>';

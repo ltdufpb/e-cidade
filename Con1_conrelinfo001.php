@@ -31,7 +31,7 @@ include("libs/db_sessoes.php");
 include("libs/db_usuariosonline.php");
 include("classes/db_conrelinfo_classe.php");
 include("dbforms/db_funcoes.php");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clconrelinfo = new cl_conrelinfo;
 $db_opcao = 1;
 $db_botao = true;

@@ -92,8 +92,8 @@ function diferencaferias($subpes)
       $max_total = count($cadferia);
       $chave_seek2 = "999999";
     }
-    $matriz1 = array();
-    $matriz2 = array();
+    $matriz1 = [];
+    $matriz2 = [];
     $matriz1[1] = "r29_regist";
     $matriz1[2] = "r29_rubric";
     $matriz1[3] = "r29_valor";
@@ -133,7 +133,7 @@ function diferencaferias($subpes)
       }
       if (db_month($cadferia[$Icadferia]["r30_per1f"]) == db_val(db_substr($subpes,-2))
       && db_year($cadferia[$Icadferia]["r30_per1f"]) == db_val(db_substr($subpes,1,4))
-      && (strtolower($cfpess[0]["r11_fersal"]) == 's' && !db_boolean($cfpess[0]["r11_recalc"]) ) ) {
+      && (strtolower((string) $cfpess[0]["r11_fersal"]) == 's' && !db_boolean($cfpess[0]["r11_recalc"]) ) ) {
         //echo "<BR> passou aqui 2 !!!";
         continue;
       }
@@ -213,13 +213,13 @@ function diferencaferias($subpes)
 //    echo "<BR> condicaoaux --> $condicaoaux";
       
       db_delete("pontofe", bb_condicaosubpes("r29_" ).$condicaoaux );
-      $m_rubr = array();
-      $m_quant= array();
-      $m_valor= array();
-      $m_media= array();
-      $m_tipo = array();
-      $qten   = array();
-      $vlrn   = array();
+      $m_rubr = [];
+      $m_quant= [];
+      $m_valor= [];
+      $m_media= [];
+      $m_tipo = [];
+      $qten   = [];
+      $vlrn   = [];
       $nsaldo = $cadferia[$Icadferia][$r30_dias];
       //$nsaldo = $r30_ndias - ($r30_dias1 + $r30_dias2 + $r30_abono);
       $nabono = $cadferia[$Icadferia]["r30_abono"];
@@ -268,9 +268,9 @@ function diferencaferias($subpes)
         }
       } else if (db_month($cadferia[$Icadferia][$r30_perf]) == db_val(db_substr($subpes,-2))
       && db_year($cadferia[$Icadferia][$r30_perf]) == db_val(db_substr($subpes,1,4)) ) {
-        
+
         // quando data do periodo aquisitivo final for igual ao que mes da folha em exercicio
-        
+
         $nsaldo = db_day($cadferia[$Icadferia][$r30_perf] );
         $nabono = 0;
         //echo "<BR> 1.5 nsaldo --> $nsaldo nabono --> $nabono dias_adi --> $dias_adi";
@@ -282,9 +282,9 @@ function diferencaferias($subpes)
       || ( db_month($cadferia[$Icadferia][$r30_perf]) > db_val(db_substr($subpes,-2))
       && db_year($cadferia[$Icadferia][$r30_perf]) == db_val(db_substr($subpes,1,4)) )) )
       && $cadferia[$Icadferia][$r30_proc] < $subpes ) {
-        
+
         // quando data do periodo aquisitivo inicial for menor que mes da folha em exercicio
-        
+
         $nsaldo = ndias(db_substr($subpes,6,2)."/".db_substr($subpes,1,4));
         $dias_adi = 0;
         $nabono = 0;
@@ -356,8 +356,8 @@ function diferencaferias($subpes)
       avalia_ponto(12);
 
       gera_ponto_salario("s");
-      $matriz1 = array();
-      $matriz2 = array();
+      $matriz1 = [];
+      $matriz2 = [];
       $matriz1[1] = "r29_regist";
       $matriz1[2] = "r29_rubric";
       $matriz1[3] = "r29_valor";
@@ -463,7 +463,7 @@ global $opcao_gml,$opcao_geral;
 
 global $condicao,$reg,$campo_auxilio_rubr;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(!isset($opcao_filtro)){
   $opcao_filtro = "0";
@@ -496,7 +496,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 global $db_config;
 db_selectmax("db_config","select lower(trim(munic)) as d08_carnes , cgc, db21_codcli from db_config where codigo = ".db_getsession("DB_instit"));
 
-if(trim($db_config[0]["cgc"]) == "90940172000138"){
+if(trim((string) $db_config[0]["cgc"]) == "90940172000138"){
      $d08_carnes = "daeb";
 }else{
      $d08_carnes = $db_config[0]["d08_carnes"];

@@ -38,7 +38,7 @@ $clliberafornecedor = new cl_liberafornecedor;
 $clliberafornecedorsol = new cl_liberafornecedorsol;
 $clliberafornecedorpcproc = new cl_liberafornecedorpcproc;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){
@@ -53,8 +53,8 @@ if(isset($alterar)){
   isset($pc82_liberaproc) ? $clliberafornecedor->pc82_liberaproc = "true" : $clliberafornecedor->pc82_liberaproc = "false";
   
   if($pc82_dataini != "" && $pc82_datafim != ""){
-	  $dtIni = implode("-",array_reverse(explode("/",$pc82_dataini)));
-	  $dtFim = implode("-",array_reverse(explode("/",$pc82_datafim)));
+	  $dtIni = implode("-",array_reverse(explode("/",(string) $pc82_dataini)));
+	  $dtFim = implode("-",array_reverse(explode("/",(string) $pc82_datafim)));
 	  
 	  $sWhere = "pc82_dataini = '$dtIni' and pc82_datafim = '$dtFim' and pc82_numcgm = $pc82_numcgm";
 	  //die($clliberafornecedor->sql_query_file(null,"*",null,$sWhere)); 

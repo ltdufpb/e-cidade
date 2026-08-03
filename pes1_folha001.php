@@ -53,7 +53,7 @@ $db_opcao = 1;
 $db_botao = true;
 
 if ( DBPessoal::verificarUtilizacaoEstruturaSuplementar() ) {
-  $aSequencialFolhas = array();
+  $aSequencialFolhas = [];
 }
 
 if (isset($incluir)) {
@@ -81,11 +81,11 @@ if (isset($incluir)) {
     
     if (isset($folhaselecion) && trim($folhaselecion) != "") {
         
-      if (trim($anofolha) == "") {
+      if (trim((string) $anofolha) == "") {
         $anofolha = db_anofolha();
       }
       
-      if (trim($mesfolha) == "") {
+      if (trim((string) $mesfolha) == "") {
         $mesfolha = db_mesfolha();
       }
       
@@ -172,7 +172,7 @@ if (isset($incluir)) {
             $oCompetencia             = new DBCompetencia($anofolha, $mesfolha);
             $clrhhistoricocalculo     = new cl_rhhistoricocalculo();
             $aFolhasPagamentos        = FolhaPagamento::getFolhaCompetenciaTipo( $oCompetencia, FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR, $complementares);
-            $aNumerosFolhasPagamentos = array();
+            $aNumerosFolhasPagamentos = [];
 
             foreach ($aFolhasPagamentos as $oFolhaPagamentoComplementar) {
 
@@ -191,7 +191,7 @@ if (isset($incluir)) {
             $oCompetencia             = new DBCompetencia($anofolha, $mesfolha);
             $clrhhistoricocalculo     = new cl_rhhistoricocalculo();
             $aFolhasPagamentos        = FolhaPagamento::getFolhaCompetenciaTipo( $oCompetencia, FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR, $suplementares);
-            $aNumerosFolhasPagamentos = array();
+            $aNumerosFolhasPagamentos = [];
 
             foreach ($aFolhasPagamentos as $oFolhaPagamentoSuplementar) {
 
@@ -263,7 +263,7 @@ if (isset($incluir)) {
         $valorunion = " union all ";
       }
 
-      if(trim($selecao) != ""){
+      if(trim((string) $selecao) != ""){
         $sSqlSelecao    = $clselecao->sql_query_file($selecao,db_getsession('DB_instit'),"r44_where as wher");
         $result_selecao = db_query($sSqlSelecao);
 
@@ -357,14 +357,14 @@ if (isset($incluir)) {
                              ),2 
                            )  ";
         
-      }else if(trim($pagarliq) == ""){
+      }else if(trim((string) $pagarliq) == ""){
         $liquidar = " (sum(proven) - sum(descon)) ";
       }else{
         $liquidar = " (case when (sum(proven) - sum(descon)) > ".$pagarliq." then ".$pagarliq." else (sum(proven) - sum(descon)) end) ";
         $sFiltrosGeracao .= "Faixa líquida a pagar (até): {$pagarliq};";
       }
 
-      if($pagarperc == 0 || trim($pagarperc) == ""){
+      if($pagarperc == 0 || trim((string) $pagarperc) == ""){
         $case = " round((".$liquidar." - ".$liquido1."),2) as liquido, ";
         $havi = " round((".$liquidar." - ".$liquido1."),2) ";
       }else{

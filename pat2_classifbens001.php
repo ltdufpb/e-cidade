@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_cfpatri_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $aux = new cl_arquivo_auxiliar;
 $cldb_estrut = new cl_db_estrut;
 $clcfpatri = new cl_cfpatri;
@@ -266,7 +266,7 @@ function js_mostraclabens11(chave1,chave2){
         <td nowrap title="Bens a serem listados"><b>Ordenar:</b></td>
         <td nowrap title="">
           <?php 
-            $ordenar = array(1=>"Placa",2=>"Descrição do bem", 3=>"Código do bem"); 
+            $ordenar = [1=>"Placa",2=>"Descrição do bem", 3=>"Código do bem"]; 
             db_select("ordenar",$ordenar,true,1);
           ?>
         </td>
@@ -275,7 +275,7 @@ function js_mostraclabens11(chave1,chave2){
         <td nowrap title="Bens a serem listados"><b>Listar:</b></td>
         <td nowrap title="">
           <?php 
-            $matriz_baix = array("t"=>"Todos","n"=>"Não Baixados", "b"=>"Baixados"); 
+            $matriz_baix = ["t"=>"Todos","n"=>"Não Baixados", "b"=>"Baixados"]; 
             db_select("opcao_baixados",$matriz_baix,true,1);
           ?>
         </td>
@@ -286,7 +286,7 @@ function js_mostraclabens11(chave1,chave2){
       	</td>
       	<td>
           <?php 
-            $tipo=array("s"=>"Sim","n"=>"Não");
+            $tipo=["s"=>"Sim","n"=>"Não"];
             db_select("quebra",$tipo,true,"text",1);
           ?>
       	</td>

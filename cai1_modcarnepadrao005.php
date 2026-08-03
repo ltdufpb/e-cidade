@@ -57,17 +57,17 @@ if (isset($oPost->alterar)) {
   $rsModCarnePadrao = $clmodcarnepadrao->sql_record($clmodcarnepadrao->sql_query($oPost->k48_sequencial));
   $iNroLinhasRegra  = $clmodcarnepadrao->numrows;
   
-  $aListaTipo = array();  
-  $aListaIp   = array();
+  $aListaTipo = [];  
+  $aListaIp   = [];
     
   for ($i=0; $i < $iNroLinhasRegra; $i++) {
   	
     $oModCarnePadrao  = db_utils::fieldsMemory($rsModCarnePadrao,$i);
     
-    if (trim($oModCarnePadrao->k49_tipo)) {  
+    if (trim((string) $oModCarnePadrao->k49_tipo)) {  
       $aListaTipo[] = $oModCarnePadrao->k49_tipo;  
     }
-    if (trim($oModCarnePadrao->k36_ip)) {    
+    if (trim((string) $oModCarnePadrao->k36_ip)) {    
       $aListaIp[]   = $oModCarnePadrao->k36_ip;  
     }
     

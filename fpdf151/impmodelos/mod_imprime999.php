@@ -89,7 +89,7 @@ $this->objpdf->SetFont('Arial','B',7);
 $this->objpdf->Text(13,$y+13,$this->descr3_1); // nome do contribuinte
 $this->objpdf->Text(13,$y+16,$this->descr3_2); // endereço
 $this->objpdf->SetFont('Arial','',5);
-$this->objpdf->Text(11,$y+19,substr($this->descr17,0,75)); // SQL
+$this->objpdf->Text(11,$y+19,substr((string) $this->descr17,0,75)); // SQL
 
 $this->objpdf->SetFont('Arial','',5);
 $this->objpdf->Text(13,$y+23,$this->titulo4); // Instruções
@@ -154,7 +154,7 @@ $this->objpdf->SetFont('Arial','B',7);
 $this->objpdf->Text(97,$y+13,$this->descr11_1); // nome do contribuinte
 $this->objpdf->Text(97,$y+16,$this->descr11_2); // endereço
 $this->objpdf->SetFont('Arial','',5);
-$this->objpdf->Text(95,$y+19,substr($this->descr17,0,92)); // SQL
+$this->objpdf->Text(95,$y+19,substr((string) $this->descr17,0,92)); // SQL
 
 $this->objpdf->SetFont('Arial','',5);
 $this->objpdf->Text(97,$y+24,$this->titulo12); // instruções

@@ -42,7 +42,7 @@ final class PadArquivoSigapComprovanteLiquidacao extends PadArquivoSigap {
   public function __construct() {
 
     $this->sNomeArquivo = "ComprovanteLiquidacao";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
 
   /**
@@ -63,7 +63,7 @@ final class PadArquivoSigapComprovanteLiquidacao extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao  = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
 
@@ -155,7 +155,7 @@ final class PadArquivoSigapComprovanteLiquidacao extends PadArquivoSigap {
 
       $sDiaMesAno      =  "{$iAno}-".str_pad($iMes, 2, "0", STR_PAD_LEFT)."-".str_pad($iDia, 2, "0", STR_PAD_LEFT);
       $oLiquidacao     = db_utils::fieldsMemory($rsLiquidacoes, $i);
-      $sNumeroEmpenho  = str_pad($oLiquidacao->e60_codemp, 16, "0", STR_PAD_LEFT);
+      $sNumeroEmpenho  = str_pad((string) $oLiquidacao->e60_codemp, 16, "0", STR_PAD_LEFT);
       if (empty($oLiquidacao->e63_emphist)) {
         $oLiquidacao->e63_emphist = 1;
       }
@@ -172,7 +172,7 @@ final class PadArquivoSigapComprovanteLiquidacao extends PadArquivoSigap {
       $oLiquidacaoRetorno->cliMesAnoMovimento           = $sDiaMesAno;
 
       $oLiquidacaoRetorno->cliEmpenhoNumero             = $oLiquidacao->ano.$sNumeroEmpenho;
-      $oLiquidacaoRetorno->cliNumeroLiquidacao          = str_pad($oLiquidacao->c80_codord, 20, '0', STR_PAD_LEFT);
+      $oLiquidacaoRetorno->cliNumeroLiquidacao          = str_pad((string) $oLiquidacao->c80_codord, 20, '0', STR_PAD_LEFT);
       $oLiquidacaoRetorno->cliDataLiquidacao            = $oLiquidacao->c75_data;
       $oLiquidacaoRetorno->cliValorComprovante          = number_format($oLiquidacao->c70_valor,2,".","");
       $oLiquidacaoRetorno->cliNumDocumento              = $oLiquidacao->e69_numero;
@@ -194,7 +194,7 @@ final class PadArquivoSigapComprovanteLiquidacao extends PadArquivoSigap {
    */
   public function getNomeElementos() {
 
-    $aElementos = array(
+    $aElementos = [
                          "cliCodigoEntidade",
                          "cliMesAnoMovimento",
                          "cliEmpenhoNumero",
@@ -206,7 +206,7 @@ final class PadArquivoSigapComprovanteLiquidacao extends PadArquivoSigap {
                          "cliAutorizacaoNotaFiscal",
                          "cliSinal",
                          "cliValorComprovante"
-                       );
+                       ];
     return $aElementos;
   }
 

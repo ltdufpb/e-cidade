@@ -172,11 +172,11 @@ $db_opcao = 1;
       <td>
        <?php 
          $retornar = 3;
-         $aTipos = array(
+         $aTipos = [
                          1 => "Selecionados",
                          2 => "Não Selecionados",
                          3 => "Todas"
-                        );
+                        ];
         db_select("retornar", $aTipos, true, 1);
        ?>
      </td>

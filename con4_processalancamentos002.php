@@ -48,8 +48,8 @@ $oRotulo->label("ac16_sequencial");
 $oRotulo->label("ac16_resumoobjeto");
 $oRotulo->label("c36_sequencial");
 
-$aDocumentos          = array();
-$aCodigoDocumentos    = array();
+$aDocumentos          = [];
+$aCodigoDocumentos    = [];
 $iTipoReprocessamento = null;
 $sTitulo              = null;
 $db_opcao             = 1;
@@ -70,31 +70,31 @@ try {
     case PASSIVO_SEM_SUPORTE_ORCAMENTARIO :
 
       $sTitulo = 'Passivo sem suporte orçamentário';
-      $aCodigoDocumentos = array(80, 81);
+      $aCodigoDocumentos = [80, 81];
     break;
 
     case ACORDOS :
 
       $sTitulo = 'Acordos';
-      $aCodigoDocumentos = array(900, 901, 903, 904);
+      $aCodigoDocumentos = [900, 901, 903, 904];
     break;
 
     case SUPRIMENTO_DE_FUNDOS :
 
       $sTitulo = 'Suprimento de fundos';
-      $aCodigoDocumentos = array(412, 413, 414, 415, 90, 91, 92);
+      $aCodigoDocumentos = [412, 413, 414, 415, 90, 91, 92];
     break;
 
     case MOVIMENTACAO_PATRIMONIAL :
 
       $sTitulo = 'Movimentação patrimonial';
-      $aCodigoDocumentos = array(700, 701, 703);
+      $aCodigoDocumentos = [700, 701, 703];
     break;
 
     case RECONHECIMENTO_CONTABIL:
 
       $sTitulo = 'Reconhecimento contábil';
-      $aCodigoDocumentos = array(508, 509, 510, 511, 513, 514);
+      $aCodigoDocumentos = [508, 509, 510, 511, 513, 514];
      break;
 
     default :

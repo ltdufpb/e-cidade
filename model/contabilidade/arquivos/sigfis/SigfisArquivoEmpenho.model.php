@@ -183,7 +183,7 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
                 /**
                  * recuperando ano e mes
                  */
-                $aDadosData     = explode('-', $oEmpenho->e60_emiss);
+                $aDadosData     = explode('-', (string) $oEmpenho->e60_emiss);
                 $sDataFormatada = $aDadosData[0].$aDadosData[1];
 
                 /**
@@ -211,38 +211,38 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
                 /**
                  * Manipulmos o campo e60_resumo eliminando quebras de linha
                  */
-                $sHistorico  = str_replace(array("\n", "\r", "<br>"), " ", trim($oEmpenho->e60_resumo));
+                $sHistorico  = str_replace(["\n", "\r", "<br>"], " ", trim((string) $oEmpenho->e60_resumo));
 
                 if ($oEmpenho->o55_tipo == 0 or $oEmpenho->o55_tipo == 9) $oEmpenho->o55_tipo = 3;
 
                 $oDadosLinha = new stdClass();
-                $oDadosLinha->cd_Unidade                 = str_pad($this->sCodigoTribunal,              4, ' ', STR_PAD_LEFT);
+                $oDadosLinha->cd_Unidade                 = str_pad((string) $this->sCodigoTribunal,              4, ' ', STR_PAD_LEFT);
 
-                $oDadosLinha->cd_UnidadeOrcamentaria     = str_pad($oEmpenho->o58_unidade,              4, ' ', STR_PAD_LEFT);
-                $oDadosLinha->nu_Empenho                 = str_pad($oEmpenho->e60_codemp,              10, ' ', STR_PAD_RIGHT);
+                $oDadosLinha->cd_UnidadeOrcamentaria     = str_pad((string) $oEmpenho->o58_unidade,              4, ' ', STR_PAD_LEFT);
+                $oDadosLinha->nu_Empenho                 = str_pad((string) $oEmpenho->e60_codemp,              10, ' ', STR_PAD_RIGHT);
 
-                $oDadosLinha->nu_ProcessoLicitatorio     = str_pad($rsProc, 36, ' ', STR_PAD_RIGHT );
+                $oDadosLinha->nu_ProcessoLicitatorio     = str_pad((string) $rsProc, 36, ' ', STR_PAD_RIGHT );
                 $oDadosLinha->dt_Ano                     = $oEmpenho->e60_anousu;
-                $oDadosLinha->Tp_ProjetoAtividade        = str_pad($oEmpenho->o55_tipo,                 1, ' ', STR_PAD_LEFT);
-                $oDadosLinha->nu_ProjetoAtividade        = str_pad(substr($oEmpenho->o58_projativ,-3),  4, ' ', STR_PAD_LEFT);
-                $oDadosLinha->cd_FonteRecurso            = str_pad($oEmpenho->o58_codigo,               4, ' ', STR_PAD_LEFT); // nao vem mais do XML
+                $oDadosLinha->Tp_ProjetoAtividade        = str_pad((string) $oEmpenho->o55_tipo,                 1, ' ', STR_PAD_LEFT);
+                $oDadosLinha->nu_ProjetoAtividade        = str_pad(substr((string) $oEmpenho->o58_projativ,-3),  4, ' ', STR_PAD_LEFT);
+                $oDadosLinha->cd_FonteRecurso            = str_pad((string) $oEmpenho->o58_codigo,               4, ' ', STR_PAD_LEFT); // nao vem mais do XML
                 $oDadosLinha->Reservado_tce              = str_repeat('0', 14);
-                $oDadosLinha->cd_Elemento                = str_pad(substr($oEmpenho->o56_elemento, 1, 8), 8, ' ', STR_PAD_LEFT);
+                $oDadosLinha->cd_Elemento                = str_pad(substr((string) $oEmpenho->o56_elemento, 1, 8), 8, ' ', STR_PAD_LEFT);
                 $oDadosLinha->vl_Empenho                 = str_pad($iValorEmpenhoSemSeparador,         16, ' ', STR_PAD_LEFT);
                 $oDadosLinha->de_Historico               = str_pad(substr(trim(addslashes($sHistorico)), 0, 255), 255, ' ', STR_PAD_RIGHT);
                 $oDadosLinha->Tp_Empenho                 = $oEmpenho->e60_codtipo;
                 $oDadosLinha->dt_Empenho                 = str_replace('/', '', db_formatar($oEmpenho->e60_emiss,"d"));
-                $oDadosLinha->nu_Contrato                = str_pad($acordo,                                 16, ' ', STR_PAD_RIGHT); // ?...
-                $oDadosLinha->nm_Credor                  = str_pad(substr($oEmpenho->z01_nome, 0, 50), 50, ' ', STR_PAD_RIGHT);
+                $oDadosLinha->nu_Contrato                = str_pad((string) $acordo,                                 16, ' ', STR_PAD_RIGHT); // ?...
+                $oDadosLinha->nm_Credor                  = str_pad(substr((string) $oEmpenho->z01_nome, 0, 50), 50, ' ', STR_PAD_RIGHT);
                 $oDadosLinha->dt_AnoMes                  = $sDataFormatada;
-                $oDadosLinha->nu_CGC_Credor              = str_pad($oEmpenho->z01_cgccpf,              14, ' ', STR_PAD_RIGHT);
+                $oDadosLinha->nu_CGC_Credor              = str_pad((string) $oEmpenho->z01_cgccpf,              14, ' ', STR_PAD_RIGHT);
                 $oDadosLinha->Tp_Pessoa                  = $oEmpenho->tipo_pessoa_credor;
-                $oDadosLinha->cd_Orgao                   = str_pad($oEmpenho->o58_orgao,                4, ' ', STR_PAD_LEFT);
-                $oDadosLinha->cd_Dispensa                = str_pad($rsProcDispensa,                                 16, ' ', STR_PAD_RIGHT);
+                $oDadosLinha->cd_Orgao                   = str_pad((string) $oEmpenho->o58_orgao,                4, ' ', STR_PAD_LEFT);
+                $oDadosLinha->cd_Dispensa                = str_pad((string) $rsProcDispensa,                                 16, ' ', STR_PAD_RIGHT);
                 $oDadosLinha->Reservado_tce2             = '0';
-                $oDadosLinha->cd_Funcao                  = str_pad($oEmpenho->o58_funcao,               2, ' ', STR_PAD_LEFT);
-                $oDadosLinha->cd_Programa                = str_pad($oEmpenho->o58_subfuncao,            4, ' ', STR_PAD_LEFT);
-                $oDadosLinha->cd_SubPrograma             = str_pad($oEmpenho->o58_programa,             4, ' ', STR_PAD_LEFT);
+                $oDadosLinha->cd_Funcao                  = str_pad((string) $oEmpenho->o58_funcao,               2, ' ', STR_PAD_LEFT);
+                $oDadosLinha->cd_Programa                = str_pad((string) $oEmpenho->o58_subfuncao,            4, ' ', STR_PAD_LEFT);
+                $oDadosLinha->cd_SubPrograma             = str_pad((string) $oEmpenho->o58_programa,             4, ' ', STR_PAD_LEFT);
                 $oDadosLinha->St_contrato_aplicavel      = 'N'; // padrão
                 $oDadosLinha->St_licitacao_sujeito       = ( trim($oDadosLinha->nu_ProcessoLicitatorio) == ""?'N':'S' ); // padrão
                 $oDadosLinha->NU_CONVENIO                = str_pad('',                                 16, ' ', STR_PAD_RIGHT); // ?...
@@ -255,10 +255,10 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
                 $oDadosLinha->RESERVADO_TCE_4 = ' ';
 //                $oDadosJustificativaEmpenho = getJustificativaByEmpenho( $numemp );
                 $oDadosJustificativaEmpenho = self::getJustificativas( $numemp );
-                $oDadosLinha->TPJUSTIFICATIVACONTRATO = str_pad($oDadosJustificativaEmpenho->tipoJustificativaContrato,      2, '0', STR_PAD_LEFT);
-                $oDadosLinha->DEJUSTIFICATIVACONTRATO = str_pad($oDadosJustificativaEmpenho->descricaoJustificativaContrato, 255, ' ', STR_PAD_RIGHT);
-                $oDadosLinha->TPJUSTIFICATIVALICITA   = str_pad($oDadosJustificativaEmpenho->tipoJustificativaLicitacao,     2, '0', STR_PAD_LEFT);
-                $oDadosLinha->DEJUSTIFICATIVALICITA   = str_pad($oDadosJustificativaEmpenho->descricaoJustificativaLicitacao,255, ' ', STR_PAD_RIGHT);
+                $oDadosLinha->TPJUSTIFICATIVACONTRATO = str_pad((string) $oDadosJustificativaEmpenho->tipoJustificativaContrato,      2, '0', STR_PAD_LEFT);
+                $oDadosLinha->DEJUSTIFICATIVACONTRATO = str_pad((string) $oDadosJustificativaEmpenho->descricaoJustificativaContrato, 255, ' ', STR_PAD_RIGHT);
+                $oDadosLinha->TPJUSTIFICATIVALICITA   = str_pad((string) $oDadosJustificativaEmpenho->tipoJustificativaLicitacao,     2, '0', STR_PAD_LEFT);
+                $oDadosLinha->DEJUSTIFICATIVALICITA   = str_pad((string) $oDadosJustificativaEmpenho->descricaoJustificativaLicitacao,255, ' ', STR_PAD_RIGHT);
 
                 $oDadosLinha->codigolinha = $iAnoSessao >= 2018 ? 1013 : 668;
                 if(db_getsession('DB_anousu') < 2013 ) {
@@ -288,12 +288,12 @@ class SigfisArquivoEmpenho extends SigfisArquivoBase implements iPadArquivoTXTBa
             throw new DBException("Ocorreu um erro ao consultar as justificativas de contrato e licitação.");
         }
 
-        $stdDados = (object)array(
+        $stdDados = (object)[
             'tipoJustificativaLicitacao'      => '',
             'descricaoJustificativaLicitacao' => '',
             'tipoJustificativaContrato'       => '',
             'descricaoJustificativaContrato'  => ''
-        );
+        ];
 
         if (pg_num_rows($resJustificativa) === 0) {
             return $stdDados;

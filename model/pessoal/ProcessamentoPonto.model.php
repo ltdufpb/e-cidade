@@ -177,32 +177,10 @@ class ProcessamentoPonto{
 
     $oServidor = ServidorRepository::getInstanciaByCodigo($iMatricula, $this->oCompetencia->getAno(), $this->oCompetencia->getMes(), $this->oInstituicao->getSequencial());
 
-    switch ($iTipoFolha) {
-      case FolhaPagamento::TIPO_FOLHA_SALARIO:
-        return new PontoSalario($oServidor);
-      break;
-
-      /**
-       * @todo Implementar o restante dos pontos, quando
-       * for necessário a utilização dos mesmos.
-       *
-       * case FolhaPagamento::TIPO_FOLHA_RESCISAO:
-       *   return new PontoRescisao($oServidor);
-       * break;
-       * case FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR:
-       *   return new PontoComplementar($oServidor);
-       * break;
-       * case FolhaPagamento::TIPO_FOLHA_ADIANTAMENTO:
-       *   return new PontoAdiantamento($oServidor);
-       * break;
-       * case FolhaPagamento::TIPO_FOLHA_13o_SALARIO:
-       *   return new Ponto13o($oServidor);
-       * break;
-       */
-      default:
-        throw new BusinessException(_M(self::MENSAGEM . 'ponto_nao_encontrado'));
-      break;
-    }
+    return match ($iTipoFolha) {
+        FolhaPagamento::TIPO_FOLHA_SALARIO => new PontoSalario($oServidor),
+        default => throw new BusinessException(_M(self::MENSAGEM . 'ponto_nao_encontrado')),
+    };
   }
 
   /**

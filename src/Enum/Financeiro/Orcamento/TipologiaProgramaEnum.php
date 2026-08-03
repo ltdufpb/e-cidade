@@ -48,13 +48,13 @@ class TipologiaProgramaEnum extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::REVISAR_TIPOLOGIA => "Revise a tipologia do programa",
             self::PROGRAMAS_FINALISTICOS => "Programas Temáticos",
             self::PROGRAMAS_APOIO_POLITICAS => "Programas de Gestão, Manutenção e Serviços ao Estado",
             self::PROGRAMAS_TEMATICOS => "Programas Temáticos",
             self::PROGRAMAS_GESTAO => "Programas de Gestão, Manutenção e Serviços ao Estado",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Tipologia inválida.');

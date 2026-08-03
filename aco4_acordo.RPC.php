@@ -42,7 +42,7 @@ $oJson    = new Services_JSON();
 $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno = new stdClass();
 
-$oRetorno->dados   = array();
+$oRetorno->dados   = [];
 $oRetorno->status  = 1;
 $oRetorno->message = '';
 
@@ -54,7 +54,7 @@ try {
   
         $tiposEvento = [];
         $tiposParalisacao = array_map(function($data) {
-            $data->descricao = urlencode($data->descricao);
+            $data->descricao = urlencode((string) $data->descricao);
             return $data;
         }, TipoEventoAcordo::getTiposByCodigo($oParam->codes));
         
@@ -64,7 +64,7 @@ try {
 
     case "getPeriodosReativados" : 
       
-      $aPeriodosReativados = array();
+      $aPeriodosReativados = [];
       $iAcordo             = $oParam->iAcordo;
       $oAcordo             = AcordoRepository::getByCodigo($iAcordo);
       $aParalisacao        = $oAcordo->getParalisacoes();
@@ -99,7 +99,7 @@ try {
               $oDadosPeriodo = new stdClass();
               $oDadosPeriodo->iCodigo    = $oDados->ac36_sequencial;
               $oDadosPeriodo->iNumero    = $oDados->ac36_numero;
-              $oDadosPeriodo->sDescricao = urlencode($oDados->ac36_descricao);
+              $oDadosPeriodo->sDescricao = urlencode((string) $oDados->ac36_descricao);
               $oDadosPeriodo->dtInicial  = urlEncode(db_formatar($oDados->ac36_datainicial, 'd'));
               $oDadosPeriodo->dtTermino  = urlEncode(db_formatar($oDados->ac36_datafinal, 'd'));
               $aPeriodosReativados[] = $oDadosPeriodo;
@@ -129,7 +129,7 @@ try {
         $oDados->dtTermino = $oParalisacao->getDataTermino()->getDate("d/m/Y"); 
       }
 
-      $oDados->sObservacao = urlEncode($oParalisacao->getUltimaMovimentacao()->getObservacao());
+      $oDados->sObservacao = urlEncode((string) $oParalisacao->getUltimaMovimentacao()->getObservacao());
       $sEvento = new AcordoEvento($oParalisacao->getEvento());
       $oDados->sTipoEvento = $sEvento->getTipoEvento();
       $oDados->sAnoProcesso = $sEvento->getProcesso()  .'/'. $sEvento->getAnoProcesso();
@@ -162,8 +162,8 @@ try {
       $oData        = new DBDate($oParam->dtInicial);
       $oAcordo      = AcordoRepository::getByCodigo($oParam->iAcordo);
       $oUltimaParalisacao = $oAcordo->getUltimaParalisacao();
-      $ano = isset($oParam->ano) ? $oParam->ano : null;
-      $processo = isset($oParam->processo) ? $oParam->processo : null;
+      $ano = $oParam->ano ?? null;
+      $processo = $oParam->processo ?? null;
       $evento = new AcordoEvento();
       $evento->setAcordo($oAcordo);
       $evento->setData($oData);
@@ -265,7 +265,7 @@ try {
 
       $oDataInicioParalisacao  = new DBDate($oParam->dtInicial);
       $oDataTerminoParalisacao = new DBDate($oParam->dtTermino);
-      $aPeriodos    = array();
+      $aPeriodos    = [];
 
       /**
        * Posicoes do acordo
@@ -293,7 +293,7 @@ try {
           $oDadosPeriodo = new StdClass();
           $oDadosPeriodo->iCodigo    = $oPeriodo->codigo;
           $oDadosPeriodo->iNumero    = $oPeriodo->periodo;
-          $oDadosPeriodo->sDescricao = urlEncode($oPeriodo->descrPer);
+          $oDadosPeriodo->sDescricao = urlEncode((string) $oPeriodo->descrPer);
           $oDadosPeriodo->dtInicial  = urlEncode($oDataInicial->getDate(DBDate::DATA_PTBR));
           $oDadosPeriodo->dtTermino  = urlEncode($oDataFinal->getDate(DBDate::DATA_PTBR));
 
@@ -333,14 +333,14 @@ try {
         throw new BusinessException("Nenhum documento cadastrado.");
       }
       
-      $aDocumentoRetorno = array();
+      $aDocumentoRetorno = [];
       for ($i = 0; $i < $iLinhas; $i++) {
         
         $oDadoDocumento = db_utils::fieldsMemory($rsDocumento, $i);
         $oDocumento     = new stdClass();
         
         $oDocumento->iCodigo        = $oDadoDocumento->db82_sequencial;
-        $oDocumento->sDescricao     = urlencode($oDadoDocumento->db82_descricao);
+        $oDocumento->sDescricao     = urlencode((string) $oDadoDocumento->db82_descricao);
         $aDocumentoRetorno[]        = $oDocumento;
       }
       $oRetorno->iTipoDocumento    = $aOrigem[$oParam->iOrigem];
@@ -349,12 +349,7 @@ try {
       break;
   }
   
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->message = urlencode($oErro->getMessage());
-  $oRetorno->status = 2;
-} catch (ParameterException $oErro) {
+} catch (BusinessException|ParameterException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->message = urlencode($oErro->getMessage());

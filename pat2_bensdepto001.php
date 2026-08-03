@@ -33,7 +33,7 @@ require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 require_once modification("dbforms/db_classesgenericas.php");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cldbdepart  = new cl_db_depart;
 $cldepartdiv = new cl_departdiv;
@@ -332,7 +332,7 @@ if($clcfpatric->numrows > 0) {
                     <td nowrap title="">
                     <div class="field-size3">
                       <?php 
-                      $matriz = array("G"=>"Geral","I"=>"Intervalo","S"=>"Selecionados");
+                      $matriz = ["G"=>"Geral","I"=>"Intervalo","S"=>"Selecionados"];
                   	  db_select("filtro_bens",$matriz,true,1,"onChange='js_filtro_bens();'");
                       ?>
                     </div>
@@ -415,7 +415,7 @@ if($clcfpatric->numrows > 0) {
                   <td nowrap>
                     <div class="field-size2">
                       <?php
-                        $matriz = array("S"=>"Sim","N"=>"Não");
+                        $matriz = ["S"=>"Sim","N"=>"Não"];
                     	  db_select("opcao_obs",$matriz,true,1);
                       ?>
                     </div>
@@ -428,7 +428,7 @@ if($clcfpatric->numrows > 0) {
                   <td nowrap title="">
                     <div class="field-size2">
                       <?php
-                        $matriz = array("A"=>"Acima","B"=>"Abaixo");
+                        $matriz = ["A"=>"Acima","B"=>"Abaixo"];
                     	  db_select("posicao",$matriz,true,1);
                       ?>
                     </div>
@@ -441,7 +441,7 @@ if($clcfpatric->numrows > 0) {
                   <td nowrap title="">
                     <div class="field-size2">
                       <?php
-                        $matriz = array(1=>"Sim", 2=>"Não");
+                        $matriz = [1=>"Sim", 2=>"Não"];
                         db_select("cboValor", $matriz, true, 1);
                       ?>
                     </div>
@@ -456,10 +456,10 @@ if($clcfpatric->numrows > 0) {
                     <div class="field-size2">
                       <?php
 
-                        $aOpcoes = array(
+                        $aOpcoes = [
                             1 => "Sim",
                             2 => "Não"
-                          );
+                          ];
 
                         db_select("exibeclassificacao", $aOpcoes, true, 1);
                       ?>
@@ -473,9 +473,9 @@ if($clcfpatric->numrows > 0) {
                   <td nowrap title="">
                     <div class="field-size4">
                       <?php
-                        $matriz = array(1=>"Nenhum", 4=>"Departamento", 5=>"Departamento/Divisão");
+                        $matriz = [1=>"Nenhum", 4=>"Departamento", 5=>"Departamento/Divisão"];
                         if ($t06_pesqorgao == 't') {
-                          $matriz = array(1=>"Nenhum", 2=>"Órgão", 3=>"Órgão/Unidade", 4=>"Departamento", 5=>"Departamento/Divisão");
+                          $matriz = [1=>"Nenhum", 2=>"Órgão", 3=>"Órgão/Unidade", 4=>"Departamento", 5=>"Departamento/Divisão"];
                         }
                         db_select("cboAgrupa", $matriz, true, 1);
                       ?>

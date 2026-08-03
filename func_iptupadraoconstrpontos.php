@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptupadraoconstrpontos_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cliptupadraoconstrpontos = new cl_iptupadraoconstrpontos;
 $cliptupadraoconstrpontos->rotulo->label("j118_sequencial");
@@ -93,9 +93,9 @@ $cliptupadraoconstrpontos->rotulo->label("j118_sequencial");
           $sql = $cliptupadraoconstrpontos->sql_query("",$campos,"j118_sequencial","");
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_j118_sequencial)) {
-          $repassa = array("chave_j118_sequencial"=>$chave_j118_sequencial);
+          $repassa = ["chave_j118_sequencial"=>$chave_j118_sequencial];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

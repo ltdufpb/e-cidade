@@ -42,7 +42,7 @@ require_once(modification("classes/db_iptubasepredio_classe.php"));
 $codProc = [];
 if (isset($_SESSION['PROCESSO_LOG'])) {
 
-    $codProc = explode('/', $_SESSION['PROCESSO_LOG']);
+    $codProc = explode('/', (string) $_SESSION['PROCESSO_LOG']);
     if (isset($codProc[0]) && isset($codProc[1])) {
 
         $processo = "
@@ -254,10 +254,10 @@ if (isset($incluir)) {
 */
     
         if ($liberaCalculoRetroativo) {
-            $sequencesIptubase = array();
-            $sequencesIptubasepredio = array();
-            $sequencesIptubaseregimovel = array();
-            $sequencesIptubasecondominio = array();
+            $sequencesIptubase = [];
+            $sequencesIptubasepredio = [];
+            $sequencesIptubaseregimovel = [];
+            $sequencesIptubasecondominio = [];
     
             for ($anoMatricula = $anoRetroativoMatricula; $anoMatricula <= $anousu; $anoMatricula++) {
     
@@ -443,7 +443,7 @@ if (isset($incluir)) {
     }
 } else if (isset($alterar)) {
 
-    $tipoImovel = isset($tipoImovel) ? $tipoImovel : $j01_tipoimovel;
+    $tipoImovel ??= $j01_tipoimovel;
     if ($tipoImovel == "2" || $j01_tipoimovel == "2") {
         
         db_inicio_transacao();
@@ -803,7 +803,7 @@ if (isset($incluir) || isset($alterar)) {
                 }
              </script> ";
             if (isset($incluir)) {
-                $tipoimovel = isset($tipoImovel) ? $tipoImovel : $j01_tipoimovel;
+                $tipoimovel = $tipoImovel ?? $j01_tipoimovel;
                 db_redireciona("cad1_iptubasealt.php?j01_matric=$cliptubase->j01_matric&tipoImovel=$tipoimovel");
             }
         }

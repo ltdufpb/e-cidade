@@ -23,7 +23,7 @@ define('QUEBRA', true);
 define('BORDA', true);
 define('LARGURA_MAXIMA', 279);
 
-$arquivos = array(
+$arquivos = [
   "01"   => "Servidores",
   "02"   => "Dependentes",
   "03"   => "Órgãos",
@@ -41,7 +41,7 @@ $arquivos = array(
   "14"   => "Tempos Fictícios",
   "15"   => "Tempo sem Contribuição",
   "16"   => "Funções Gratificadas",
-);
+];
 
 $head2  = "Relatório de Inconsistências SIPREV";
 $pdf = new PDF("L");
@@ -64,7 +64,7 @@ $escreverPDF = function($grupo, $chave, &$pdf) use($arquivos) {
 
   $cabecalhos = getHeaders($chave);
 
-  escreverCabecalho("Arquivo:  {$chave} - " . $arquivos[$chave], $cabecalhos, $pdf);
+  escreverCabecalho("Arquivo:  {$chave} - " . $arquivos[$chave]);
 
   $linha = 0;
 
@@ -73,7 +73,7 @@ $escreverPDF = function($grupo, $chave, &$pdf) use($arquivos) {
 
     if (++$linha == 31) {
       $linha = 0;
-      escreverCabecalho("Arquivo:  {$chave} - " . $arquivos[$chave], $cabecalhos, $pdf);
+      escreverCabecalho("Arquivo:  {$chave} - " . $arquivos[$chave]);
     }
     escreverLinha($dados, $cabecalhos, $pdf);
   }
@@ -87,7 +87,7 @@ function escreverCabecalho($titulo, array $itens, FPDF &$pdf) {
 
   $pdf->addPage("L");
   $pdf->setfont('arial','b',8);
-  $pdf->cell(LARGURA_MAXIMA, ALTURA_LINHA, mb_strtoupper($titulo), BORDA, QUEBRA, "C", PREENCHE);
+  $pdf->cell(LARGURA_MAXIMA, ALTURA_LINHA, mb_strtoupper((string) $titulo), BORDA, QUEBRA, "C", PREENCHE);
 
   for($indice = 1, $quantidade = count($itens); $indice <= $quantidade; $indice++) {
 
@@ -106,62 +106,41 @@ function escreverLinha($dados, $cabecalhos, &$pdf) {
   foreach ($cabecalhos as $item) {
 
     $quebra = ++$indice == $itens;
-    list($chave, $valor)      = each($dados);
-    list($largura, $conteudo) = each($item);
+    $chave = key($dados);
+    $valor = current($dados);
+    next($dados);
+    $largura = key($item);
+    $conteudo = current($item);
+    next($item);
     $pdf->cell($item['largura'], ALTURA_LINHA, " " .$valor, BORDA, $quebra, "L", !PREENCHE);
   }
 }
 
 function getHeaders($arquivoID) {
 
-  switch($arquivoID) {
-    case "01":
-    case "02":
-    case "08.1":
-    case "08.2":
-    case "10":
-    case "11":
-    case "16":
-      $headers = array(
-        array("largura" => 80,                   "conteudo" => "Instituição"),
-        array("largura" => 100,                  "conteudo" => "Servidor"),
-        array("largura" => LARGURA_MAXIMA - 180, "conteudo" => "Erro Encontrado"),
-      );
-      break;
-    case "03":
-      $headers = array(
-        array("largura" => 130,                  "conteudo" => "Instituição"),
-        array("largura" => LARGURA_MAXIMA - 130, "conteudo" => "Erro Encontrado"),
-      );
-      break;
-    case "07":
-      $headers = array(
-        array("largura" => 80,                   "conteudo" => "Instituição"),
-        array("largura" => 100,                  "conteudo" => "Pensionista"),
-        array("largura" => LARGURA_MAXIMA - 180, "conteudo" => "Erro Encontrado"),
-      );
-      break;
-    case "09":
-      $headers = array();
-      break;
-    case "12":
-      $headers = array();
-      break;
-    case "13":
-      $headers = array();
-      break;
-    case "14":
-      $headers = array();
-      break;
-    case "15":
-      $headers = array();
-      break;
-    case "04":
-    case "05":
-    case "06":
-      $headers = array();
-      break;
-  }
+  $headers = match ($arquivoID) {
+      "01", "02", "08.1", "08.2", "10", "11", "16" => [
+        ["largura" => 80,                   "conteudo" => "Instituição"],
+        ["largura" => 100,                  "conteudo" => "Servidor"],
+        ["largura" => LARGURA_MAXIMA - 180, "conteudo" => "Erro Encontrado"],
+      ],
+      "03" => [
+        ["largura" => 130,                  "conteudo" => "Instituição"],
+        ["largura" => LARGURA_MAXIMA - 130, "conteudo" => "Erro Encontrado"],
+      ],
+      "07" => [
+        ["largura" => 80,                   "conteudo" => "Instituição"],
+        ["largura" => 100,                  "conteudo" => "Pensionista"],
+        ["largura" => LARGURA_MAXIMA - 180, "conteudo" => "Erro Encontrado"],
+      ],
+      "09" => [],
+      "12" => [],
+      "13" => [],
+      "14" => [],
+      "15" => [],
+      "04", "05", "06" => [],
+      default => $headers,
+  };
 
   return $headers;
 }

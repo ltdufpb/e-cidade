@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_caractpreparo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_caractpreparo = new cl_mer_caractpreparo;
 $clmer_caractpreparo->rotulo->label("me06_i_codigo");
 $clmer_caractpreparo->rotulo->label("me06_i_codigo");
@@ -101,9 +101,9 @@ $clmer_caractpreparo->rotulo->label("me06_i_codigo");
         } else {
           $sql = $clmer_caractpreparo->sql_query("",$campos,"me06_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_me06_i_codigo)) {
-          $repassa = array("chave_me06_i_codigo"=>$chave_me06_i_codigo,"chave_me06_c_descr"=>$chave_me06_c_descr);
+          $repassa = ["chave_me06_i_codigo"=>$chave_me06_i_codigo,"chave_me06_c_descr"=>$chave_me06_c_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
         

@@ -39,7 +39,7 @@ include(modification("classes/db_itbiavalia_classe.php"));
 include(modification("classes/db_itbiavaliaformapagamentovalor_classe.php"));
 include(modification("classes/db_paritbi_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 db_postmemory($_POST);
 db_postmemory($_GET);
 
@@ -192,14 +192,14 @@ if (Isset($it21_numcgm)) {
     $it03_guia     = $clitbi->it01_guia;
     $it03_tipo     = 'T';
     $it03_princ    = 'true';
-    $it03_nome     = addslashes($oDadosPropri->z01_nome);
+    $it03_nome     = addslashes((string) $oDadosPropri->z01_nome);
     $it03_sexo     = 'm';
     $it03_cpfcnpj  = $oDadosPropri->z01_cgccpf;
-    $it03_endereco = addslashes($oDadosPropri->z01_ender);
+    $it03_endereco = addslashes((string) $oDadosPropri->z01_ender);
     $it03_numero   = $oDadosPropri->z01_numero;
     $it03_compl    = $oDadosPropri->z01_compl;
     $it03_cxpostal = $oDadosPropri->z01_cxpostal;
-    $it03_bairro   = addslashes($oDadosPropri->z01_bairro);
+    $it03_bairro   = addslashes((string) $oDadosPropri->z01_bairro);
     $it03_munic    = $oDadosPropri->z01_munic;
     $it03_uf       = $oDadosPropri->z01_uf;
     $it03_cep      = $oDadosPropri->z01_cep;

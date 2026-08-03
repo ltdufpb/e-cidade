@@ -62,7 +62,7 @@ $sDisplayCompromisso= "none";
 			        
 			       $e83_descr = $e83_descricao;
 			     }
-			     if (trim($c63_banco) == 104) {
+			     if (trim((string) $c63_banco) == 104) {
 			       $sDisplayCompromisso = "normal"; 
 			     }
 			   }
@@ -192,7 +192,7 @@ function js_preenchepesquisa(chave){
   db_iframe_empagetipo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

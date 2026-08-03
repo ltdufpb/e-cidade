@@ -33,8 +33,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("y30_data");
 $clrotulo->label("y39_codandam");
 $clrotulo->label("nome");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_fiscais.location.href='fis1_fiscalusuario002.php?chavepesquisa=$y38_codnoti&chavepesquisa1=$y38_id_usuario&y39_codandam=$y39_codandam'</script>";}
 if(isset($opcao) && $opcao == "excluir"){
@@ -104,7 +104,7 @@ db_textarea('y38_obs',3,50,$Iy38_obs,true,'text',$db_opcao,"")
   <tr>
     <td align="top" colspan="2">
    <?php 
-    $chavepri= array("y38_codnoti"=>@$y38_codnoti,"y38_id_usuario"=>@$y38_id_usuario);
+    $chavepri= ["y38_codnoti"=>@$y38_codnoti,"y38_id_usuario"=>@$y38_id_usuario];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y38_codnoti,y38_id_usuario,y38_obs";
     $cliframe_alterar_excluir->sql=$clfiscalusuario->sql_query("","","*",""," y38_codnoti = $y38_codnoti");

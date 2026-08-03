@@ -77,10 +77,10 @@ class Repository extends BaseClassRepository
      */
     public function cancelarEncerramento($sequencialInstituicao, $data)
     {
-        $where = implode(" and ", array(
+        $where = implode(" and ", [
             "c99_instit = {$sequencialInstituicao}",
             "c99_data = '{$data}'",
-        ));
+        ]);
         $daoConDataConf = new cl_condataconf();
         $daoConDataConf->excluir(null, null, $where);
         if ($daoConDataConf->erro_status === "0") {

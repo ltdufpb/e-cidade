@@ -131,7 +131,7 @@ $oImpressao->setIp($sIp);
 	          $oBem = db_utils::fieldsMemory($rsBens,$i);
 	
 	          $sNomeAbrev   = db_removeAcentuacao($oInstit->nomeabrev." - ".$oInstit->uf);
-	          $sT64Descr    = db_removeAcentuacao(substr($oBem->t64_descr,0,23));
+	          $sT64Descr    = db_removeAcentuacao(substr((string) $oBem->t64_descr,0,23));
 	          $sPatrimonio  = str_pad('PATRIMONIO : '.$oBem->t52_bem,23," ",STR_PAD_BOTH);
 	                  
 	         
@@ -139,7 +139,7 @@ $oImpressao->setIp($sIp);
 	          $oImpressao->addComando('A480,5,0,3,1,1,N,"'.str_pad($sNomeAbrev,23,' ',STR_PAD_BOTH).'"');
 	          $oImpressao->addComando('A480,30,0,3,1,1,N,"'.str_pad($sT64Descr,23,' ',STR_PAD_BOTH).'"');
 	          $oImpressao->addComando('A480,60,0,3,1,1,N,"'.$sPatrimonio.'"');
-	          $oImpressao->addComando('B480,80,0,9,3,3,41,B,"'.str_pad($oBem->t52_bem,7,'0',STR_PAD_LEFT).'"');
+	          $oImpressao->addComando('B480,80,0,9,3,3,41,B,"'.str_pad((string) $oBem->t52_bem,7,'0',STR_PAD_LEFT).'"');
 	          $oImpressao->addComando('P1');
 	          $oImpressao->rodarComandos("\n");
 	          $oImpressao->resetComandos();

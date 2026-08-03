@@ -47,7 +47,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
              where m51_codordem = $m51_codordem ";
      
      $result = db_query($sql); 
-     if (pg_numrows($result)==0){
+     if (pg_num_rows($result)==0){
      
      }
      db_fieldsmemory($result,0,true);

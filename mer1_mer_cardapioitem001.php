@@ -33,7 +33,7 @@ include(modification("classes/db_mer_cardapioitem_classe.php"));
 include(modification("classes/db_mer_modpreparo_classe.php"));
 include(modification("classes/db_mer_subitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_cardapioitem = new cl_mer_cardapioitem;
 $clmer_subitem            = new cl_mer_subitem;
 $clmer_modpreparo         = new cl_mer_modpreparo;

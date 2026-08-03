@@ -168,7 +168,7 @@ $sql = "
             
 
 $result 	= db_query($sql);
-$numrows 	= pg_numrows($result);
+$numrows 	= pg_num_rows($result);
 
 if ($numrows == 0){
 	db_redireciona('db_erros.php?fechar=true&db_erro=Nao existem itens cadastrados para fazer a consulta.');
@@ -238,19 +238,19 @@ for($x=0; $x<$numrows; $x++) {
 			
 			$pdf->cell($Mx04_matric*$fator      , $alt, $RLx04_matric,1,0,"C",1);
 			$pdf->cell(($Mz01_nome+6)*$fator        , $alt, $RLz01_nome,1,0,"C",1);
-			$pdf->cell(($Mx01_numero+6)*$fator      , $alt, substr($RLx01_numero,0,3),1,0,"C",1);
+			$pdf->cell(($Mx01_numero+6)*$fator      , $alt, substr((string) $RLx01_numero,0,3),1,0,"C",1);
 			$pdf->cell(($Mx11_complemento+8)*$fator , $alt, $RLx11_complemento,1,0,"C",1);
 			$pdf->cell($Mx04_nrohidro*$fator    , $alt, "Hidrometro",1,0,"C",1);
 			$pdf->cell($Mx04_matric*$fator      , $alt, $RLx04_matric,1,0,"C",1);
 			$pdf->cell(($Mx21_leitura+4)*$fator , $alt, $RLx21_leitura,1,0,"C",1);
-			$pdf->cell(($Mx21_situacao+4)*$fator    , $alt, substr($RLx21_situacao,0,3),1,1,"C",1);
+			$pdf->cell(($Mx21_situacao+4)*$fator    , $alt, substr((string) $RLx21_situacao,0,3),1,1,"C",1);
 		}
 		$pdf->setfont('courier','',10);
 
 		$fundo = 0;
 	  
 		$pdf->cell($Mx04_matric*$fator      , $alt, $x04_matric,1,0,"C",$fundo);
-		$pdf->cell(($Mz01_nome+6)*$fator        , $alt, substr($z01_nome,0,26),1,0,"L",$fundo);
+		$pdf->cell(($Mz01_nome+6)*$fator        , $alt, substr((string) $z01_nome,0,26),1,0,"L",$fundo);
 		$pdf->cell(($Mx01_numero+6)*$fator      , $alt, $x01_numero.$orientacao2,1,0,"R",$fundo);
 	
 		$pdf->setfont('courier','',9);
@@ -263,8 +263,8 @@ for($x=0; $x<$numrows; $x++) {
 		$pdf->cell(($Mx21_situacao+4)*$fator    , $alt, "",1,1,"C",$fundo);
 	
 	} else {
-		$z01_nome 		= addslashes($z01_nome);
-		$x04_nrohidro = addslashes($x04_nrohidro);
+		$z01_nome 		= addslashes((string) $z01_nome);
+		$x04_nrohidro = addslashes((string) $x04_nrohidro);
 		fwrite($file, "\"{$objGet->anousu}\",\"{$objGet->mesusu}\",\"{$x04_matric}\",\"{$z01_nome}\",\"{$x01_numero}{$letra2}\",\"{$x11_complemento}\",\"{$x04_nrohidro}\",\"{$x04_matric}\"\n");
 	}		
 

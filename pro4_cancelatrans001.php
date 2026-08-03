@@ -32,13 +32,13 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_proctransfer_classe.php"));
 include(modification("classes/db_proctransferproc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clproctransfer = new cl_proctransfer;
 $clproctransferproc = new cl_proctransferproc;
 $db_opcao = 1;
 $db_botao = true;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Cancelar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Cancelar"){
   db_inicio_transacao();
   $sql = "select p62_codtran,nome,descrdepto
           from   proctransfer inner join db_depart on p62_coddeptorec = coddepto 

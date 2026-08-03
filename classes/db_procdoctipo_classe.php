@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE procdoctipo
 class cl_procdoctipo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p57_codigo = 0; 
-   var $p57_coddoc = 0; 
-   var $p57_ouvidoriaobrigatorio = '';
+   public $p57_codigo = 0; 
+   public $p57_coddoc = 0; 
+   public $p57_ouvidoriaobrigatorio = '';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  p57_codigo = int4 = Código 
                  p57_coddoc = int4 = Código 
                  p57_ouvidoriaobrigatorio = boolean = Obrigatório( Sistema Externo ) 
                  ";
    //funcao construtor da classe 
-   function cl_procdoctipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procdoctipo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -113,7 +113,7 @@ class cl_procdoctipo {
      $result = db_query($sql);
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->p57_codigo."-".$this->p57_coddoc) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -137,13 +137,13 @@ class cl_procdoctipo {
      $resaco = $this->sql_record($this->sql_query_file($this->p57_codigo,$this->p57_coddoc));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,2452,'$this->p57_codigo','I')");
        $resac = db_query("insert into db_acountkey values($acount,2453,'$this->p57_coddoc','I')");
-       $resac = db_query("insert into db_acount values($acount,402,2452,'','".AddSlashes(pg_result($resaco,0,'p57_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,402,2453,'','".AddSlashes(pg_result($resaco,0,'p57_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,402,1010637,'','".AddSlashes(pg_result($resaco,0,'p57_ouvidoriaobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,402,2452,'','".AddSlashes(pg_fetch_result($resaco,0,'p57_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,402,2453,'','".AddSlashes(pg_fetch_result($resaco,0,'p57_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,402,1010637,'','".AddSlashes(pg_fetch_result($resaco,0,'p57_ouvidoriaobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -152,10 +152,10 @@ class cl_procdoctipo {
       $this->atualizacampos();
      $sql = " update procdoctipo set ";
      $virgula = "";
-     if(trim($this->p57_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p57_codigo"])){ 
+     if(trim((string) $this->p57_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p57_codigo"])){ 
        $sql  .= $virgula." p57_codigo = $this->p57_codigo ";
        $virgula = ",";
-       if(trim($this->p57_codigo) == null ){ 
+       if(trim((string) $this->p57_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "p57_codigo";
          $this->erro_banco = "";
@@ -165,10 +165,10 @@ class cl_procdoctipo {
          return false;
        }
      }
-     if(trim($this->p57_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p57_coddoc"])){ 
+     if(trim((string) $this->p57_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p57_coddoc"])){ 
        $sql  .= $virgula." p57_coddoc = $this->p57_coddoc ";
        $virgula = ",";
-       if(trim($this->p57_coddoc) == null ){ 
+       if(trim((string) $this->p57_coddoc) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "p57_coddoc";
          $this->erro_banco = "";
@@ -189,16 +189,16 @@ class cl_procdoctipo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2452,'$this->p57_codigo','A')");
          $resac = db_query("insert into db_acountkey values($acount,2453,'$this->p57_coddoc','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p57_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,402,2452,'".AddSlashes(pg_result($resaco,$conresaco,'p57_codigo'))."','$this->p57_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,402,2452,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p57_codigo'))."','$this->p57_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p57_coddoc"]))
-           $resac = db_query("insert into db_acount values($acount,402,2453,'".AddSlashes(pg_result($resaco,$conresaco,'p57_coddoc'))."','$this->p57_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,402,2453,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p57_coddoc'))."','$this->p57_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p57_ouvidoriaobrigatorio"]))
-             $resac = db_query("insert into db_acount values($acount,402,1010637,'".AddSlashes(pg_result($resaco,$conresaco,'p57_ouvidoriaobrigatorio'))."','$this->p57_ouvidoriaobrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,402,1010637,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p57_ouvidoriaobrigatorio'))."','$this->p57_ouvidoriaobrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -243,13 +243,13 @@ class cl_procdoctipo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2452,'$p57_codigo','E')");
          $resac = db_query("insert into db_acountkey values($acount,2453,'$p57_coddoc','E')");
-         $resac = db_query("insert into db_acount values($acount,402,2452,'','".AddSlashes(pg_result($resaco,$iresaco,'p57_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,402,2453,'','".AddSlashes(pg_result($resaco,$iresaco,'p57_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,402,1010637,'','".AddSlashes(pg_result($resaco,0,'p57_ouvidoriaobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,402,2452,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p57_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,402,2453,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p57_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,402,1010637,'','".AddSlashes(pg_fetch_result($resaco,0,'p57_ouvidoriaobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from procdoctipo
@@ -315,7 +315,7 @@ class cl_procdoctipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procdoctipo";
@@ -360,7 +360,7 @@ class cl_procdoctipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -401,7 +401,7 @@ class cl_procdoctipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -36,7 +36,7 @@ $oDaoDadosDispensacao = new cl_dadoscompetenciadispensacao();
 $oDaoDadosEntrada     = new cl_dadoscompetenciaentrada();
 $oDaoDadosSaida       = new cl_dadoscompetenciasaida();
 
-$aWhere   = array();
+$aWhere   = [];
 $aWhere[] = " fa59_mesreferente = " . (int) $oGet->iMes;
 $aWhere[] = " fa59_anoreferente = " . $oGet->iAno;
 $aWhere[] = " fa59_db_depart    = " . db_getsession( 'DB_coddepto' );
@@ -45,10 +45,10 @@ $sOrdem   = "m60_descr";
 $sWhereIntegracao = implode(" and ", $aWhere);
 
 
-$aInconsistenciaSaida       = array();
-$aInconsistenciaEntrada     = array();
-$aInconsistenciaDispensacao = array();
-$aInconsistenciaCGS         = array();
+$aInconsistenciaSaida       = [];
+$aInconsistenciaEntrada     = [];
+$aInconsistenciaDispensacao = [];
+$aInconsistenciaCGS         = [];
 
 try {
 
@@ -175,9 +175,9 @@ function criaObjetoLog($oDadosMedicamento, $sTipo) {
 /**
  * Ordera array de pacientes em ordem alfabética
  */
-uasort($aInconsistenciaCGS, "ordemAlfabetica");
+uasort($aInconsistenciaCGS, ordemAlfabetica(...));
 function ordemAlfabetica($aArrayAtual, $aProximoArray) {
-  return strcasecmp($aArrayAtual->sNome, $aProximoArray->sNome);
+  return strcasecmp((string) $aArrayAtual->sNome, (string) $aProximoArray->sNome);
 }
 
 

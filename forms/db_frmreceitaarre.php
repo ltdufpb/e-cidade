@@ -55,7 +55,7 @@ if (!isset($c70_data_dia)) {
   $c70_data_ano = date("Y",db_getsession("DB_datausu"));
 }
 
-if (isset($HTTP_SESSION_VARS["cdia"])) {
+if (isset($_SESSION["cdia"])) {
 	
   $c70_data_dia = db_getsession("cdia");
   $c70_data_mes = db_getsession("cmes");
@@ -172,7 +172,7 @@ if( isset($o70_codrec) && isset($cadastrar)){
   $result = db_query($sql);
   db_fieldsmemory($result,0);
 
-  $matriz= split("\.",$o50_estrutreceita);
+  $matriz= preg_split("#\\.#m",(string) $o50_estrutreceita);
   $inicia=false;//variavel que indica que o nivel não tem mais filhos
   $tam=(count($matriz)-1);
   $codigos='';
@@ -191,7 +191,7 @@ if( isset($o70_codrec) && isset($cadastrar)){
       $codigos=$codigo."#".$codigos;
     }  
   }
-  $matriz02= split("#",$codigos);
+  $matriz02= preg_split("#\\##m",$codigos);
   $tam=count($matriz02);
   $espaco=3;   
   $esp='';
@@ -297,7 +297,7 @@ if( isset($o70_codrec) && isset($cadastrar)){
       $flag_refazer     = false;
       $perc_valido      = 0;
       $perc_processados = 0;
-      for($i=0;$i<pg_numrows($result);$i++){
+      for($i=0;$i<pg_num_rows($result);$i++){
       	db_fieldsmemory($result,$i);
 
  	      $vlrperc  = round($vlrtot * ($o60_perc/100),2);
@@ -312,7 +312,7 @@ if( isset($o70_codrec) && isset($cadastrar)){
           $perc_valido++;
         }
 
-        if ($i + 1 == pg_numrows($result)){
+        if ($i + 1 == pg_num_rows($result)){
 //          echo $totsoma." => Proc ".$perc_valido." => ".$perc_processados;
           if ($perc_valido != $perc_processados){
             $flag_refazer = true;
@@ -326,7 +326,7 @@ if( isset($o70_codrec) && isset($cadastrar)){
         } 
       }
       
-      for($i=0;$i<pg_numrows($result);$i++){
+      for($i=0;$i<pg_num_rows($result);$i++){
       	db_fieldsmemory($result,$i);
 	    
         if ($flag_refazer == false){
@@ -346,16 +346,16 @@ if( isset($o70_codrec) && isset($cadastrar)){
 	echo "<tr>";
 	echo "<td width=\"20%\">".$o57_fonte;
 	$codrec = "db_rec_".$o70_codrec;
-	global $$codrec;
-	$$codrec = $vlrperc;
+	global ${$codrec};
+	${$codrec} = $vlrperc;
 	db_input("db_rec_$o70_codrec",15,4,true,'hidden',3);
         echo "</td>";
 	echo "<td width=\"50%\" align=\"left\">$o57_descr</td>";
 	echo "<td width=\"10%\" align=\"center\">$o60_perc%</td>";
 	echo "<td width=\"20%\">";
 	$codrec = "vlrperc_".$o57_fonte;
-	global $$codrec;
-	$$codrec = db_formatar($vlrperc,'f');
+	global ${$codrec};
+	${$codrec} = db_formatar($vlrperc,'f');
 	db_input("vlrperc_$o57_fonte",15,4,true,'text',3);
 	echo "</td>";
 	echo "</tr>";

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiculotransportemunicipal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveiculotransportemunicipal = new cl_veiculotransportemunicipal;
 $clveiculotransportemunicipal->rotulo->label("tre01_sequencial");
 $clveiculotransportemunicipal->rotulo->label("tre01_sequencial");
@@ -103,9 +103,9 @@ $clveiculotransportemunicipal->rotulo->label("tre01_sequencial");
         }else{
            $sql = $clveiculotransportemunicipal->sql_query("",$campos,"tre01_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tre01_sequencial)){
-          $repassa = array("chave_tre01_sequencial"=>$chave_tre01_sequencial,"chave_tre01_sequencial"=>$chave_tre01_sequencial);
+          $repassa = ["chave_tre01_sequencial"=>$chave_tre01_sequencial,"chave_tre01_sequencial"=>$chave_tre01_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

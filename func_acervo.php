@@ -41,8 +41,8 @@ require_once(modification("classes/db_localacervo_classe.php"));
 require_once(modification("classes/db_autor_classe.php"));
 require_once(modification("classes/db_assunto_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clacervo         = new cl_acervo;
 $clautor          = new cl_autor;
@@ -276,10 +276,10 @@ function js_mostraColecao1(iColecao, sNome) {
         $sql = $clacervo->sql_query("",$campos,"bi06_titulo",$where." bi06_titulooriginal like '{$chave_bi06_titulooriginal}%'");
       }
 
-      $repassa = array();
+      $repassa = [];
       if(isset($chave_bi10_codigo)){
 
-        $repassa = array(
+        $repassa = [
           "chave_bi06_seq"            => $chave_bi06_seq,
           "chave_bi06_titulo"         => $chave_bi06_titulo,
           "chave_bi06_titulooriginal" => $chave_bi06_titulooriginal,
@@ -287,7 +287,7 @@ function js_mostraColecao1(iColecao, sNome) {
           "chave_bi01_nome"           => $chave_bi01_nome,
           "chave_bi23_codbarras"      => $chave_bi23_codbarras,
           "chave_bi20_localizacao"    => $chave_bi20_localizacao,
-          "chave_bi29_nome"           => $bi29_nome);
+          "chave_bi29_nome"           => $bi29_nome];
       }
 
       echo '<div class="container">';

@@ -46,11 +46,11 @@ $oDaoCriterioAvaliacao = new cl_criterioavaliacao();
  */
 $oFiltros                         = new stdClass();
 $oFiltros->iLimiteCriteriosPagina = 10;
-$oFiltros->aCriterios             = array();
+$oFiltros->aCriterios             = [];
 $oFiltros->iAlturaPadrao          = 4;
 $oFiltros->iAlunosPagina          = 39;
 $oFiltros->iAlturaVertical        = 35;
-$oFiltros->aDisciplinas           = explode( ",", $oGet->aDisciplinas );
+$oFiltros->aDisciplinas           = explode( ",", (string) $oGet->aDisciplinas );
 $oFiltros->iPosicaoInicialX       = 10;
 $oFiltros->iLinhasAlunoEmBranco   = 0;
 
@@ -59,7 +59,7 @@ $oFiltros->iLinhasAlunoEmBranco   = 0;
  */
 $iPaginaAluno                 = 0;
 $iContadorAuxAluno            = 0;
-$oFiltros->aAlunosOrganizados = array();
+$oFiltros->aAlunosOrganizados = [];
 $oFiltros->iTotalAlunos       = 0;
 
 /**
@@ -131,7 +131,7 @@ for( $iContador = 0; $iContador < count( $oFiltros->aDisciplinas ); $iContador++
    */
   $iPagina                         = 0;
   $iContadorAux                    = 0;
-  $oFiltros->aCriteriosOrganizados = array();
+  $oFiltros->aCriteriosOrganizados = [];
   $oFiltros->iTotalCriterios       = 0;
 
   /**

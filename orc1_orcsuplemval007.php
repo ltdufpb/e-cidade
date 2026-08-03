@@ -43,8 +43,8 @@ require_once(modification("classes/db_orcreceita_classe.php")); // receita
 require_once(modification("classes/db_orcorgao_classe.php")); // receita
 
 db_app::import("orcamento.suplementacao.*");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clorcsuplemval = new cl_orcsuplemval;
@@ -106,7 +106,7 @@ if (isset($incluir)) {
   $sqlerro        = false;
   $limpa_dados    = true;
   $nPercentualLoa = 0;
-  $aParametro = db_stdClass::getParametro("orcsuplementacaoparametro", array(db_getsession("DB_anousu")));
+  $aParametro = db_stdClass::getParametro("orcsuplementacaoparametro", [db_getsession("DB_anousu")]);
   if (count($aParametro) > 0) {
     $nPercentualLoa = $aParametro[0]->o134_percentuallimiteloa;
   } else {

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 ?>
@@ -64,8 +64,8 @@ function js_marca() {
        }
     }
     //alert(org);
-    parent.document.form1.<?=(isset($qvernivel)?$qvernivel:"vernivel")?>.value = document.form1.nivel.value;
-    parent.document.form1.<?=(isset($qorgaos)?$qorgaos:"orgaos")?>.value = org;					
+    parent.document.form1.<?=($qvernivel ?? "vernivel")?>.value = document.form1.nivel.value;
+    parent.document.form1.<?=($qorgaos ?? "orgaos")?>.value = org;					
   
 }
 
@@ -101,8 +101,8 @@ function js_marcafilho(qpai){
 	}
      }
   }
- parent.document.form1.<?=(isset($qvernivel)?$qvernivel:"vernivel")?>.value = document.form1.nivel.value;
- parent.document.form1.<?=(isset($qorgaos)?$qorgaos:"orgaos")?>.value = org;					
+ parent.document.form1.<?=($qvernivel ?? "vernivel")?>.value = document.form1.nivel.value;
+ parent.document.form1.<?=($qorgaos ?? "orgaos")?>.value = org;					
   
 }
 function js_marcapai(qpai){
@@ -136,8 +136,8 @@ function js_marcapai(qpai){
      }
   }
 //  alert(org);
-  parent.document.form1.<?=(isset($qvernivel)?$qvernivel:"vernivel")?>.value = document.form1.nivel.value;
-  parent.document.form1.<?=(isset($qorgaos)?$qorgaos:"orgaos")?>.value = org;					
+  parent.document.form1.<?=($qvernivel ?? "vernivel")?>.value = document.form1.nivel.value;
+  parent.document.form1.<?=($qorgaos ?? "orgaos")?>.value = org;					
   
 }
 
@@ -156,7 +156,7 @@ function js_marcapai(qpai){
     </td>
   </tr>
 <?php 
-$xnumero = substr($nivel,0,1);
+$xnumero = substr((string) $nivel,0,1);
 if ($xnumero == 1){
   $xtitulo = 'Nivel 1 - Órgao';
 }elseif ($xnumero == 2){
@@ -182,10 +182,10 @@ if ($xnumero == 1){
 
 $sel_orgaos = " o58_instit in (".str_replace('-',',',$db_selinstit).") ";
 
-if(substr($nivel,1,1) == 'B'){
-  $result = db_dotacaosaldo(substr($nivel,0,1),3,2,true,$sel_orgaos,db_getsession("DB_anousu"));
+if(substr((string) $nivel,1,1) == 'B'){
+  $result = db_dotacaosaldo(substr((string) $nivel,0,1),3,2,true,$sel_orgaos,db_getsession("DB_anousu"));
 //  db_criatabela($result);
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
     db_fieldsmemory($result,$i);
 //  db_criatabela($result);exit;
     if ($xnumero == 1){
@@ -247,7 +247,7 @@ if($nivel >= '1A'){
          where o41_anousu = ".db_getsession("DB_anousu");
 //echo $sql1;
 $result1 = db_query($sql1);
-for($i1=0;$i1<pg_numrows($result1);$i1++){
+for($i1=0;$i1<pg_num_rows($result1);$i1++){
    db_fieldsmemory($result1,$i1);
 ?>
   <tr>
@@ -265,7 +265,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 	        inner join orcorgao on o41_orgao = $o41_orgao 
 	                           and o41_anousu = ".db_getsession("DB_anousu");
       $result2 = db_query($sql2);
-       for($i2=0;$i2<pg_numrows($result2);$i2++){
+       for($i2=0;$i2<pg_num_rows($result2);$i2++){
          db_fieldsmemory($result2,$i2);
    ?>
   <tr>
@@ -285,7 +285,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 	           and o58_unidade 	= $o41_unidade 
 	           and o58_anousu = ".db_getsession("DB_anousu");
         $result3 = db_query($sql3);
-        for($i3=0;$i3<pg_numrows($result3);$i3++){
+        for($i3=0;$i3<pg_num_rows($result3);$i3++){
            db_fieldsmemory($result3,$i3);
        ?>
   <tr>
@@ -306,7 +306,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 		   and o58_funcao       = $o52_funcao
 	           and o58_anousu = ".db_getsession("DB_anousu");
       $result4 = db_query($sql4);
-       for($i4=0;$i4<pg_numrows($result4);$i4++){
+       for($i4=0;$i4<pg_num_rows($result4);$i4++){
          db_fieldsmemory($result4,$i4);
    ?>
   <tr>
@@ -330,7 +330,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 		   and o58_subfuncao    = $o53_subfuncao
 	           and o58_anousu = ".db_getsession("DB_anousu");
       $result5 = db_query($sql5);
-       for($i5=0;$i5<pg_numrows($result5);$i5++){
+       for($i5=0;$i5<pg_num_rows($result5);$i5++){
          db_fieldsmemory($result5,$i5);
    ?>
   <tr>
@@ -356,7 +356,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 		   and o58_programa     = $o54_programa
 	           and o58_anousu = ".db_getsession("DB_anousu");
       $result6 = db_query($sql6);
-       for($i6=0;$i6<pg_numrows($result6);$i6++){
+       for($i6=0;$i6<pg_num_rows($result6);$i6++){
          db_fieldsmemory($result6,$i6);
    ?>
   <tr>
@@ -384,7 +384,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 		   and o58_projativ     = $o55_projativ
 	           and o58_anousu = ".db_getsession("DB_anousu");
       $result7 = db_query($sql7);
-       for($i7=0;$i7<pg_numrows($result7);$i7++){
+       for($i7=0;$i7<pg_num_rows($result7);$i7++){
          db_fieldsmemory($result7,$i7);
    ?>
   <tr>
@@ -412,7 +412,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 		   and o58_codele       = $o56_codele
 		   and o58_anousu = ".db_getsession("DB_anousu");
       $result8 = db_query($sql8);
-       for($i8=0;$i8<pg_numrows($result8);$i8++){
+       for($i8=0;$i8<pg_num_rows($result8);$i8++){
          db_fieldsmemory($result8,$i8);
    ?>
   <tr>

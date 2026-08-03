@@ -53,29 +53,29 @@ $clcgm							= new cl_cgm;
 $cldbdepart 				= new cl_db_depart;
 $clmatestoqueitemoc = new cl_matestoqueitemoc;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 if (isset($altera)){
   db_inicio_transacao();
   $valor_total=0;
   $sqlerro = false;
-  $dados=split("quant_","$valores");
-  $valordoitem=split("valor_","$val");
+  $dados=preg_split("#quant_#m","$valores");
+  $valordoitem=preg_split("#valor_#m","$val");
   for ($i=1;$i<sizeof($dados);$i++){
     if ($sqlerro==false){
-      $numero=split("_",$dados[$i]);
+      $numero=preg_split("#_#m",(string) $dados[$i]);
       $numemp=$numero[0];
       $sequen=$numero[1];
       $quanti=$numero[3];
-      $vlsoitem=split("_",$valordoitem[$i]);
+      $vlsoitem=preg_split("#_#m",(string) $valordoitem[$i]);
       $vl_soma_item=$vlsoitem[1];
-      if(strpos(trim($vl_soma_item),',')!=""){
+      if(strpos(trim((string) $vl_soma_item),',')!=""){
 	        $vl_soma_item=str_replace('.','',$vl_soma_item);
 	        $vl_soma_item=str_replace(',','.',$vl_soma_item);
       }
       $valor = "";
-      for($x=0; $x < strlen($vl_soma_item); $x++){
+      for($x=0; $x < strlen((string) $vl_soma_item); $x++){
            if(is_numeric($vl_soma_item[$x])||$vl_soma_item[$x]=="."){
                $valor .= $vl_soma_item[$x];
            }
@@ -116,11 +116,11 @@ if ($sqlerro==false){
 
 for ($i=1;$i<sizeof($dados);$i++){
   if ($sqlerro==false){
-    $numero=split("_",$dados[$i]);
+    $numero=preg_split("#_#m",(string) $dados[$i]);
     $numemp=$numero[0];
     $sequen=$numero[1];
     $quanti=$numero[3];
-    $vlsoitem=split("_",$valordoitem[$i]);
+    $vlsoitem=preg_split("#_#m",(string) $valordoitem[$i]);
     $vl_soma_item=$vlsoitem[1];
 
     $result_item=$clmatordemitem->sql_record($clmatordemitem->sql_query_file(null,"*",null,"m52_codordem = $m51_codordem and  m52_numemp = $numemp and m52_sequen = $sequen "));
@@ -133,11 +133,11 @@ for ($i=1;$i<sizeof($dados);$i++){
         $sqlerro=true;
       }
    }else{
-   	if (strpos(trim($vl_soma_item),',')!=""){
+   	if (strpos(trim((string) $vl_soma_item),',')!=""){
 	    $vl_soma_item=str_replace('.','',$vl_soma_item);
 	    $vl_soma_item=str_replace(',','.',$vl_soma_item);
 	}
-	if (strpos(trim($quanti),',')!=""){
+	if (strpos(trim((string) $quanti),',')!=""){
 	    $quanti=str_replace('.','',$quanti);
 	    $quanti=str_replace(',','.',$quanti);
 	}

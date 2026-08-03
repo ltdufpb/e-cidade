@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhtipoatras_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhtipoatras = new cl_rhtipoatras;
 $clrhtipoatras->rotulo->label("rh60_codigo");
 $clrhtipoatras->rotulo->label("rh60_descr");
@@ -98,9 +98,9 @@ $clrhtipoatras->rotulo->label("rh60_descr");
         }else{
            $sql = $clrhtipoatras->sql_query("",$campos,"rh60_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh60_descr)){
-          $repassa = array("chave_rh60_codigo"=>$chave_rh60_codigo,"chave_rh60_descr"=>$chave_rh60_descr);
+          $repassa = ["chave_rh60_codigo"=>$chave_rh60_codigo,"chave_rh60_descr"=>$chave_rh60_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

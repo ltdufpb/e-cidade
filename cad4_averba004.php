@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptubase_classe.php"));
 include(modification("classes/db_averba_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $db_opcao=3;
 $permite=false;
 $cliptubase = new cl_iptubase;
@@ -68,7 +68,7 @@ if(isset($excluir)){
       $result=db_query($sql);
       db_fieldsmemory($result,0);
       $result = $claverba->sql_record($claverba->sql_query("","max(j55_codave)","","j55_matric=$j01_matric"));
-      $ultimo=pg_result($result,0,0); 
+      $ultimo=pg_fetch_result($result,0,0); 
       $result = $claverba->sql_record($claverba->sql_query("","j55_codave#cgm.z01_nome as z01_nome2#j55_cidade#j55_data#j55_regimo#j55_numcgm","","j01_matric=$j01_matric and j55_codave=$ultimo"));
       if($claverba->numrows==0){
         db_redireciona("cad4_averba003.php?inexistente=true");

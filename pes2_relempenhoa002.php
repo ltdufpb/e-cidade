@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
  
 $tipoemp = "M";
@@ -173,7 +173,7 @@ if ($sinana == 'A'){
 }
 //echo $sql ; exit;
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem geração de empenhos no período de '.$mes.' / '.$ano);
 }
@@ -193,7 +193,7 @@ if($sinana == 'A'){
       db_fieldsmemory($result,0);
       
       $quebra = $r42_lotac+$r42_elemen;
-      $pdf->cell(15,5,$r42_lotac." - ".strtoupper($r13_descr).'    Atividade : '.$r42_proati.'  -  '.$r42_elemen,0,1,"L",0);
+      $pdf->cell(15,5,$r42_lotac." - ".strtoupper((string) $r13_descr).'    Atividade : '.$r42_proati.'  -  '.$r42_elemen,0,1,"L",0);
       
       if ($r42_reduz != 0){
          $pdf->cell(100,5,"Dotacao : ".$r42_reduz."-".db_CalculaDV($r42_reduz),0,1,"L",0);
@@ -207,7 +207,7 @@ if($sinana == 'A'){
       $pdf->cell(20,5,'EMPENHOS',1,0,"C",1);
       $pdf->cell(20,5,'DESCONTOS',1,1,"C",1);
       
-      for($x = 0;$x < pg_numrows($result);$x++){
+      for($x = 0;$x < pg_num_rows($result);$x++){
          db_fieldsmemory($result,$x);
          if ($quebra != $r42_lotac+$r42_elemen){
             $pdf->cell(15,5,'',"T",0,"C",0);
@@ -226,7 +226,7 @@ if($sinana == 'A'){
          if ($pdf->gety() > $pdf->h -30){
             $pdf->addpage();
             $pdf->setfont('arial','b',8);
-            $pdf->cell(15,5,$r42_lotac." - ".strtoupper($r13_descr).'    Atividade : '.$r42_proati.'  -  '.$r42_elemen,0,1,"L",0);
+            $pdf->cell(15,5,$r42_lotac." - ".strtoupper((string) $r13_descr).'    Atividade : '.$r42_proati.'  -  '.$r42_elemen,0,1,"L",0);
             if ($r42_reduz != 0){
                $pdf->cell(100,5,"Dotacao : ".$r42_reduz."-".db_CalculaDV($r42_reduz),0,1,"L",0);
             }else{
@@ -293,7 +293,7 @@ if($sinana == 'A'){
       $pdf->cell(20,5,'DESCONTOS',1,0,"C",1);
       $pdf->cell(20,5,'TOTAL',1,1,"C",1);
       
-      for($x = 0;$x < pg_numrows($result);$x++){
+      for($x = 0;$x < pg_num_rows($result);$x++){
          db_fieldsmemory($result,$x);
          if ($quebra != $r42_elemen){
             $pdf->cell(75,5,'TOTAL',"T",0,"L",0);
@@ -350,7 +350,7 @@ if($sinana == 'A'){
       $totdesc = 0;
       
       $troca = 't';
-      for($x = 0;$x < pg_numrows($result);$x++){
+      for($x = 0;$x < pg_num_rows($result);$x++){
          db_fieldsmemory($result,$x);
 //	 if ($troca == 't' && $r42_reduz != 0 ){
 //	    $pdf->sety(300);
@@ -407,7 +407,7 @@ if($sinana == 'A'){
       $totprov = 0;
       $totdesc = 0;
       
-      for($x = 0;$x < pg_numrows($result);$x++){
+      for($x = 0;$x < pg_num_rows($result);$x++){
          db_fieldsmemory($result,$x);
          if ($pdf->gety() > $pdf->h - 30){
             $pdf->addpage();

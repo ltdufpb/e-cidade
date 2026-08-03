@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcorgao_classe.php"));
 include(modification("classes/db_orcppalei_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clrotulo = new rotulocampo;
 $clorcppalei = new cl_orcppalei;
@@ -156,7 +156,7 @@ function js_emite(){
       </td>
       <td align="left"> 
 	<?php 
-	$xxx = array("S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;");
+	$xxx = ["S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;"];
 	db_select('param',$xxx,true,2);
 	?>
       </td>
@@ -167,7 +167,7 @@ function js_emite(){
       </td>
       <td align="left"> 
 	<?php 
-	$xxy = array("a"=>"Analítico&nbsp;","s"=>"Sintético&nbsp;");
+	$xxy = ["a"=>"Analítico&nbsp;","s"=>"Sintético&nbsp;"];
 	db_select('tiporel',$xxy,true,2);
 	?>
       </td>
@@ -179,7 +179,7 @@ function js_emite(){
       </td>
       <td align='left' >
 	<?php  
-	$tipo_ordem = array("RC"=>"Receita","R"=>"Recurso");
+	$tipo_ordem = ["RC"=>"Receita","R"=>"Recurso"];
 	db_select("tipo",$tipo_ordem,true,2); 
 	?>	&nbsp;&nbsp;&nbsp;&nbsp;
 	</td>
@@ -189,7 +189,7 @@ function js_emite(){
     <strong>Anos :<strong>
     <?php 
     $result_anosescolha = $clorcppalei->sql_record($clorcppalei->sql_query_file(@$o21_codleippa,"o21_anoini,o21_anofim"));
-    $arr_indexdescr = Array();
+    $arr_indexdescr = [];
       db_fieldsmemory($result_anosescolha,0);
       for($i=$o21_anoini;$i<=$o21_anofim;$i++){
 	  $arr_indexdescr[$i] = $i;

@@ -63,9 +63,9 @@ if ($clregencia->numrows == 0) {
 
 function Abreviar($nome,$max) {
 	
-  if (strlen(trim($nome)) > $max) {
+  if (strlen(trim((string) $nome)) > $max) {
   	
-    $strinv   = strrev(trim($nome));
+    $strinv   = strrev(trim((string) $nome));
     $ultnome  = substr($strinv,0,strpos($strinv," "));
     $ultnome  = strrev($ultnome);
     $nome     = strrev($strinv);
@@ -96,7 +96,7 @@ function Abreviar($nome,$max) {
     $nome .= $iniciais;
     $nome .= " ".$ultnome;
  }
- return trim($nome);
+ return trim((string) $nome);
 }
 
 $pdf = new PDF();
@@ -182,7 +182,7 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
     
     for ($r = 0; $r < count($array_meses); $r++) {
     	
-      $qtd_diasmes = explode(",",$array_meses[$r]);
+      $qtd_diasmes = explode(",",(string) $array_meses[$r]);
       $iquebra     = 0;      
       if ($r == (count($array_meses)-1) && ($avaliacao != "true" && $falta != "true")) {
         $iquebra = 1;	
@@ -230,7 +230,7 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
       	$iQuebra = 1;
       }
       
-      $umdia = explode("-",$n_dias[$r]);
+      $umdia = explode("-",(string) $n_dias[$r]);
       $pdf->cell($larguraindiv,4,$umdia[0],1,$iQuebra,"C",0);
       
     }

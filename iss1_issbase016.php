@@ -56,8 +56,8 @@ require_once(modification("classes/db_issporte_classe.php"));
 require_once(modification("model/logInscricao.model.php"));
 require_once(modification("classes/db_issbasecaracteristica_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);

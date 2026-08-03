@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $clacordocategoria = new cl_acordocategoria;
 $clacordocategoria->rotulo->label("ac50_sequencial");
@@ -113,12 +113,12 @@ $clacordocategoria->rotulo->label("ac50_descricao");
                     $sql = $clacordocategoria->sql_query("", $campos, "ac50_sequencial", "{$sWhere}");
                 }
             }
-            $repassa = array();
+            $repassa = [];
             if (isset($chave_ac50_descricao)) {
-                $repassa = array(
+                $repassa = [
                   "chave_ac50_sequencial" => $chave_ac50_sequencial,
                   "chave_ac50_descricao"  => $chave_ac50_descricao
-                );
+                ];
             }
             db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
         } else {

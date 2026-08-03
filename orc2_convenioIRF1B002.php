@@ -269,7 +269,7 @@ $sSqlDados    .= "                               and o54_programa    = o87_pacto
 $sSqlDados    .= " where o87_pactoplano  = {$oGet->iPlano} order by o54_descr, o55_descr";
 $rsDados       = db_query($sSqlDados);
 $iTotalRows    = pg_num_rows($rsDados);
-$aLinhaRelatorio = array();
+$aLinhaRelatorio = [];
 
 $aTotalizador["CP"]["realizado_trim_atual"]    = 0; 
 $aTotalizador["CP"]["realizado_ano_atual"]     = 0;
@@ -618,8 +618,8 @@ foreach ($aLinhaRelatorio as $oLinhaRelatorio) {
     $pdf->cell(20, $alt, db_formatar($oAtividade->cp_variacao_ano_atual+$oAtividade->bird_variacao_ano_atual,"f"),1,0,"R");
     $pdf->cell(20, $alt, db_formatar($oAtividade->cp_variacao_acumulado+$oAtividade->bird_variacao_acumulado,"f"),1,0,"R");
     $pdf->cell(20, $alt, db_formatar($oAtividade->cp_planejado_original+$oAtividade->planejado_original,"f"),1,1,"R");
-    $pdf->cell(10, $alt, substr($oAtividade->o55_projativ,0,38),"L",0,"L");
-    $pdf->cell(60, $alt, substr($oAtividade->o55_descr,0,38),"L",0,"L");
+    $pdf->cell(10, $alt, substr((string) $oAtividade->o55_projativ,0,38),"L",0,"L");
+    $pdf->cell(60, $alt, substr((string) $oAtividade->o55_descr,0,38),"L",0,"L");
     $pdf->cell(10, $alt, "CP","LTB",0,"L");
     
     $pdf->cell(20, $alt, db_formatar($oAtividade->cp_realizado_trim_atual,"f"),1,0,"R");

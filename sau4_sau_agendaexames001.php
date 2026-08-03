@@ -33,7 +33,7 @@ require_once(modification("libs/db_stdlibwebseller.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clsau_agendaexames      = new cl_sau_agendaexames();
 $clsau_prestadorhorarios = new cl_sau_prestadorhorarios();

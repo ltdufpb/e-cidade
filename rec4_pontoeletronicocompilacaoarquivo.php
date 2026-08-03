@@ -35,7 +35,7 @@ require_once modification("dbforms/db_funcoes.php");
 $clrotulo = new rotulocampo;
 $clrotulo->label("rh196_arquivo");
 
-$listaSobrescreverArquivo = array(0 => 'Não', 1 => 'Sim');
+$listaSobrescreverArquivo = [0 => 'Não', 1 => 'Sim'];
 
 if (isset($processar)) {
     $matriculas = json_decode($matriculas, true);
@@ -47,10 +47,10 @@ if (isset($processar)) {
         $periodoInicio = $oDataPeriodoInicio->getDate();
         $periodoFim = $oDataPeriodoFim->getDate();
 
-        $where = array(
+        $where = [
           "rh228_instituicao = " . db_getsession("DB_instit"),
           "rh229_data between '{$periodoInicio}' AND '{$periodoFim}'"
-        );
+        ];
 
         if (!empty($matriculas)) {
             $matriculas = implode(',', $matriculas);
@@ -72,7 +72,7 @@ if (isset($processar)) {
                         GROUP BY rh01_regist, z01_nome, rh229_data, rh229_hora, rh16_pis
                         ORDER BY rh229_data, rh229_hora";
 
-        $camposRelatorio = array(
+        $camposRelatorio = [
           "matricula",
           "nome",
           "data",
@@ -98,7 +98,7 @@ if (isset($processar)) {
                     and aa.rh229_data      = x.data 
                     and (x.data || ' ' || x.hora)::timestamp + '1 minute'::interval = (aa.rh229_data || ' ' || aa.rh229_hora)::timestamp
                 ) end as hora "
-        );
+        ];
 
         $sSqlDadosRelatorio = " SELECT DISTINCT " . implode(', ', $camposRelatorio) . " 
                                   FROM ( {$sSqlDadosRelatorio} ) AS x 
@@ -116,13 +116,13 @@ if (isset($processar)) {
         $dataInicio = \DateTime::createFromFormat('Y-m-d', $dadosPrimeiroRegistro->data);
         $dataFim = \DateTime::createFromFormat('Y-m-d', $dadosUltimoRegistro->data);
 
-        $dadosRelatorio = array();
+        $dadosRelatorio = [];
         $totalLinhas = pg_num_rows($rsDadosRelatorio);
 
         $oInstituicao = \InstituicaoRepository::getInstituicaoSessao();
 
         $header = "0000000001135893999000120000000000000";
-        $header .= str_pad($oInstituicao->getDescricao(), 150, " ", STR_PAD_RIGHT);
+        $header .= str_pad((string) $oInstituicao->getDescricao(), 150, " ", STR_PAD_RIGHT);
         $header .= str_pad(9, 17, "9",
           STR_PAD_LEFT);   //FIXO 99999999999999999 para validar na importação apenas arquivos compilados
         $header .= $dataInicio->format('dmY');
@@ -133,7 +133,7 @@ if (isset($processar)) {
 
         $footer = "999999999";
         $footer .= "000000000";
-        $footer .= str_pad($qtdeRegistros, 9, "0", STR_PAD_LEFT);
+        $footer .= str_pad((string) $qtdeRegistros, 9, "0", STR_PAD_LEFT);
         $footer .= "000000000";
         $footer .= "000000000";
         $footer .= "9";
@@ -195,7 +195,7 @@ function download($arquivo)
     <head>
         <meta http-equiv="Expires" CONTENT="0">
         <?php
-        db_app::load(array(
+        db_app::load([
             "scripts.js",
             "datagrid.widget.js",
             "strings.js",
@@ -209,7 +209,7 @@ function download($arquivo)
             "estilos.css",
             "grid.style.css",
             "classes/recursoshumanos/Efetividade/PeriodoEfetividade.js"
-        ));
+        ]);
         ?>
         <style type="text/css"></style>
     </head>

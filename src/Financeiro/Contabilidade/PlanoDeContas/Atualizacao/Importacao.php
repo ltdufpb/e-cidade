@@ -16,22 +16,16 @@ class Importacao
     private $codigo;
 
     /**
-     * @var integer
-     */
-    protected $modeloPlanoConta;
-
-    /**
      * @var \DBDate
      */
     protected $dataImportacao;
 
     /**
      * Importacao constructor.
-     * @param integer $modeloImportacao
+     * @param integer $modeloPlanoConta
      */
-    public function __construct($modeloImportacao)
+    public function __construct(protected $modeloPlanoConta)
     {
-        $this->modeloPlanoConta = $modeloImportacao;
     }
 
     /**
@@ -96,9 +90,7 @@ class Importacao
             return false;
         }
 
-        $ultimaImportacao = \db_utils::makeFromRecord($result, function($item) {
-            return $item;
-        });
+        $ultimaImportacao = \db_utils::makeFromRecord($result, fn($item) => $item);
 
         return $ultimaImportacao;
     }

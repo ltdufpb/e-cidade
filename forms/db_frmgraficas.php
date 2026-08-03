@@ -132,7 +132,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
 
   db_iframe.hide();
-  location.href = '<?php echo basename($_SERVER["PHP_SELF"]); ?>' + "?chavepesquisa=" + chave;
+  location.href = '<?php echo basename((string) $_SERVER["PHP_SELF"]); ?>' + "?chavepesquisa=" + chave;
 }
 </script>
 

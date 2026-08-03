@@ -4,11 +4,8 @@ namespace ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Campos\ExisteContrat
 
 class ExisteContratoTermoEstrategia
 {
-    protected $lancamento;
-
-    public function __construct($lancamento)
+    public function __construct(protected $lancamento)
     {
-        $this->lancamento = $lancamento;
     }
 
     public function getValor()

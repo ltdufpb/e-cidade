@@ -72,8 +72,8 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
       $oRetornoColuna = new stdClass();
       $oRetornoColuna->iId              = $oCampo->getId();
-      $oRetornoColuna->sNome            = urlencode($oCampo->getNome());
-      $oRetornoColuna->sAlias           = urlencode($oCampo->getAlias());
+      $oRetornoColuna->sNome            = urlencode((string) $oCampo->getNome());
+      $oRetornoColuna->sAlias           = urlencode((string) $oCampo->getAlias());
       $oRetornoColuna->iLargura         = $oCampo->getLargura();
       $oRetornoColuna->sAlinhamento     = $oCampo->getAlinhamento();
       $oRetornoColuna->sAlinhamentoCab  = $oCampo->getAlinhamentoCab();
@@ -92,7 +92,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
   try {
 
     $aVariaveis        = $oXML->getVariaveis();
-    $aRetornaVariaveis = array();
+    $aRetornaVariaveis = [];
 
     foreach ($aVariaveis as $sNome => $oVariavel){
       $oRetornoVariavel = new stdClass();
@@ -114,13 +114,13 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
   	unset($_SESSION['objetoXML']);
 
-	  $aRetorno  = array( "msg" =>urlencode($sMsgErro),
-                        "erro"=>true );
+	  $aRetorno  = [ "msg" =>urlencode($sMsgErro),
+                        "erro"=>true ];
   } else {
 
-    $aRetorno  = array( "aCampos"   =>$aRetornaCampos,
+    $aRetorno  = [ "aCampos"   =>$aRetornaCampos,
                         "aVariaveis"=>$aRetornaVariaveis,
-                        "erro"      =>false );
+                        "erro"      =>false ];
   }
 
 
@@ -138,8 +138,8 @@ if ( $oPost->tipo == "consultaCampos" ) {
 	foreach ($aObjCampos as $oCampos){
 
 		$oColunaRelatorio = new dbColunaRelatorio( $oCampos->iId,
-	                                             utf8_decode($oCampos->sNome),
-	                                             utf8_decode($oCampos->sAlias),
+	                                             mb_convert_encoding($oCampos->sNome, 'ISO-8859-1'),
+	                                             mb_convert_encoding($oCampos->sAlias, 'ISO-8859-1'),
 	                                             $oCampos->iLargura,
 	                                             $oCampos->sAlinhamento,
 	                                             $oCampos->sAlinhamentoCab,
@@ -182,13 +182,13 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
   } else if ($oPost->tipo == "alterarCampos") {
 
-  	$aReplace = array("\\","(",")");
+  	$aReplace = ["\\","(",")"];
 
   	$objCampo = $oJson->decode(str_replace($aReplace,"",$oPost->objCampo));
 
   	$oColuna  = new dbColunaRelatorio( $objCampo->iId,
-  	                                   utf8_decode($objCampo->sNome),
-  	                                   utf8_decode($objCampo->sAlias),
+  	                                   mb_convert_encoding($objCampo->sNome, 'ISO-8859-1'),
+  	                                   mb_convert_encoding($objCampo->sAlias, 'ISO-8859-1'),
   	                                   $objCampo->iLargura,
   	                                   $objCampo->sAlinhamento,
   	                                   $objCampo->sAlinhamentoCab,
@@ -210,7 +210,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
   } else if ($oPost->tipo == "excluirCampos") {
 
 
-  	$aCampos = split(",",$oPost->aCampos);
+  	$aCampos = preg_split("#,#m",(string) $oPost->aCampos);
 
   	foreach ( $aCampos as $sNomeCampo){
  	    unset($oXML->aColunas["Principal"][$sNomeCampo]);
@@ -228,7 +228,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
 
    	if ($oPost->tipoCampo == "d"){
-		  $aData  = explode("/",$oPost->sValor);
+		  $aData  = explode("/",(string) $oPost->sValor);
 		  $sValor = implode("-",array_reverse($aData));
   	} else {
   	  $sValor = $oPost->sValor;
@@ -273,7 +273,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
   	$oFiltros->sCampo 	  = urlencode($oFiltroRelatorio->getCampo());
   	$oFiltros->sCondicao  = $oFiltroRelatorio->getCondicao();
 	  $oFiltros->sOperador  = $oFiltroRelatorio->getOperador();
-  	$oFiltros->sValor     = urlencode($oPost->sValor);
+  	$oFiltros->sValor     = urlencode((string) $oPost->sValor);
 
   	$aFiltros[] = $oFiltros;
 
@@ -315,11 +315,11 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
 		unset($oXML->aVariaveis[$oPostVariavel->sNome]);
 
-		$oVariavel     = new dbVariaveisRelatorio( utf8_decode($oPostVariavel->sNome),
-				  								                     utf8_decode($oPostVariavel->sLabel),
-			                  										   utf8_decode($oPostVariavel->sValor),
-															   utf8_decode($oPostVariavel->sTipoDado), 
-															   utf8_decode($oPostVariavel->sSql));
+		$oVariavel     = new dbVariaveisRelatorio( mb_convert_encoding($oPostVariavel->sNome, 'ISO-8859-1'),
+				  								                     mb_convert_encoding($oPostVariavel->sLabel, 'ISO-8859-1'),
+			                  										   mb_convert_encoding($oPostVariavel->sValor, 'ISO-8859-1'),
+															   mb_convert_encoding($oPostVariavel->sTipoDado, 'ISO-8859-1'), 
+															   mb_convert_encoding($oPostVariavel->sSql, 'ISO-8859-1'));
 
 		$oXML->addVariavel($oPostVariavel->sNome,$oVariavel);
 
@@ -344,7 +344,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
   } else if ($oPost->tipo == "excluirVariaveis") {
 
 
-  	$aReplace = array("\\","(",")");
+  	$aReplace = ["\\","(",")"];
   	$aPostVar = $oJson->decode(str_replace($aReplace	,"",$oPost->aObjVariavel));
 
 		foreach ( $aPostVar as $sInd => $oPostVariavel ) {
@@ -387,7 +387,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
   } else if ($oPost->tipo == "incluirOrdem") {
 
 
-    $aReplace = array("\\","(",")");
+    $aReplace = ["\\","(",")"];
 	  $aObjCampos = $oJson->decode(str_replace($aReplace,"",$oPost->aObjCampos));
 
 	  if (isset($oXML->aOrdem["Principal"])) {
@@ -443,22 +443,22 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
 			  $rsRelatorioTemp   = fopen($sCaminhoRelatorio,"w");
 
-			  fputs($rsRelatorioTemp ,$oXML->getBufferAgt());
+			  fputs($rsRelatorioTemp ,(string) $oXML->getBufferAgt());
 			  fclose($rsRelatorioTemp);
 
 
 			  $aObjVariaveis = $oXML->getVariaveis();
 
-			  $aVariaveis	 = array();
+			  $aVariaveis	 = [];
 
 			  foreach ($aObjVariaveis as $sNome => $oVariavel){
 
 			  	$oRetornoVariavel = new stdClass();
-			    $oRetornoVariavel->sNome     = urlencode($oVariavel->getNome());
-			    $oRetornoVariavel->sLabel    = urlencode($oVariavel->getLabel());
-			    $oRetornoVariavel->sValor    = urlencode($oVariavel->getValor());
-          $oRetornoVariavel->sTipoDado = urlencode($oVariavel->getTipoDado());
-          $oRetornoVariavel->sSql = urlencode($oVariavel->getSql());
+			    $oRetornoVariavel->sNome     = urlencode((string) $oVariavel->getNome());
+			    $oRetornoVariavel->sLabel    = urlencode((string) $oVariavel->getLabel());
+			    $oRetornoVariavel->sValor    = urlencode((string) $oVariavel->getValor());
+          $oRetornoVariavel->sTipoDado = urlencode((string) $oVariavel->getTipoDado());
+          $oRetornoVariavel->sSql = urlencode((string) $oVariavel->getSql());
 
 			    $aVariaveis[] = $oRetornoVariavel;
 
@@ -467,9 +467,9 @@ if ( $oPost->tipo == "consultaCampos" ) {
 		}
 
 	  if ( !$lErro ) {
-		  $aRetorno = array("caminho"=>$sCaminhoRelatorio,"erro"=>false,"variaveis"=>$aVariaveis);
+		  $aRetorno = ["caminho"=>$sCaminhoRelatorio,"erro"=>false,"variaveis"=>$aVariaveis];
 		} else {
-		  $aRetorno = array("msg"=>urlencode($sMsgErro)  ,"erro"=>true);
+		  $aRetorno = ["msg"=>urlencode($sMsgErro)  ,"erro"=>true];
 		}
 
 		echo $oJson->encode($aRetorno);
@@ -506,7 +506,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
 	$oPropriedades = $oXML->getPropriedades();
 
-	if (trim($oPropriedades->getNome()) == ""){
+	if (trim((string) $oPropriedades->getNome()) == ""){
 	  $sMsgErro = "Inclusão abortada, favor incluir Nome do Relatório";
   	  $lErro    = true;
 	}
@@ -520,7 +520,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
 	  $cldb_relatorio->db63_nomerelatorio	     = "{$oPropriedades->getNome()}";
 	  $cldb_relatorio->db63_versao_xml		     = $oPropriedades->getVersao();
 	  $cldb_relatorio->db63_data		  	       = date("Y-m-d",db_getsession("DB_datausu"));
-	  $cldb_relatorio->db63_xmlestruturarel    = addslashes($oXML->getBuffer());
+	  $cldb_relatorio->db63_xmlestruturarel    = addslashes((string) $oXML->getBuffer());
 	  $cldb_relatorio->db63_db_relatorioorigem = $oXML->getOrigemRelatorio();
 	  $cldb_relatorio->incluir(null);
 
@@ -566,11 +566,11 @@ if ( $oPost->tipo == "consultaCampos" ) {
 	  if( isset($_SESSION['objetoXML']) ){
       unset($_SESSION['objetoXML']);
     }
-    $aRetorno = array( "msg"=>urlencode('Inclusão feita com sucesso!'),
-                       "erro"=>false);
+    $aRetorno = [ "msg"=>urlencode('Inclusão feita com sucesso!'),
+                       "erro"=>false];
 	} else {
-	  $aRetorno = array( "msg"=>urlencode($sMsgErro),
-	                     "erro"=>true);
+	  $aRetorno = [ "msg"=>urlencode($sMsgErro),
+	                     "erro"=>true];
 	}
 
   echo $oJson->encode($aRetorno);
@@ -603,7 +603,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
 	$oPropriedades = $oXML->getPropriedades();
 
-	if (trim($oPropriedades->getNome()) == ""){
+	if (trim((string) $oPropriedades->getNome()) == ""){
 	  $sMsgErro = "Inclusão abortada, favor incluir Nome do Relatório";
     $lErro    = true;
 	}
@@ -617,7 +617,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
 	  $cldb_relatorio->db63_nomerelatorio	    = "{$oPropriedades->getNome()}";
 	  $cldb_relatorio->db63_versao_xml		    = $oPropriedades->getVersao();
 	  $cldb_relatorio->db63_data		  	      = date("Y-m-d",db_getsession("DB_datausu"));
-	  $cldb_relatorio->db63_xmlestruturarel   = addslashes($oXML->getBuffer());
+	  $cldb_relatorio->db63_xmlestruturarel   = addslashes((string) $oXML->getBuffer());
 	  $cldb_relatorio->db63_sequencial		    = $oXML->getCodRelatorio();
 	  $cldb_relatorio->alterar($oXML->getCodRelatorio());
 
@@ -626,7 +626,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
 	    $sMsgErro = $cldb_relatorio->erro_msg;
 	  }
 
-		
+
 	  	$cldb_relatoriousuario->excluir(null,' db09_db_relatorio = '.$oXML->getCodRelatorio());
 
 	  	if($cldb_relatoriousuario->erro_status == 0){
@@ -646,7 +646,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
                   }
                 }
 
-             
+
 	     $cldb_relatoriodepart->excluir(null, ' db07_db_relatorio = '.$oXML->getCodRelatorio());
 
 	     if($cldb_relatoriodepart->erro_status == 0){
@@ -675,9 +675,9 @@ if ( $oPost->tipo == "consultaCampos" ) {
 	  if( isset($_SESSION['objetoXML']) ){
       unset($_SESSION['objetoXML']);
     }
-    $aRetorno = array("msg"=>urlencode('Alteração feita com sucesso!'),"erro"=>false);
+    $aRetorno = ["msg"=>urlencode('Alteração feita com sucesso!'),"erro"=>false];
 	} else {
-	  $aRetorno = array("msg"=>urlencode($sMsgErro),"erro"=>true);
+	  $aRetorno = ["msg"=>urlencode($sMsgErro),"erro"=>true];
 
 	}
 
@@ -734,9 +734,9 @@ if ( $oPost->tipo == "consultaCampos" ) {
 	db_fim_transacao($lSqlErro);
 
  	if (!$lSqlErro){
-	  $aRetorno = array("idRel"=>$oPost->codRelatorio,"erro"=>false);
+	  $aRetorno = ["idRel"=>$oPost->codRelatorio,"erro"=>false];
 	} else {
-	  $aRetorno = array("msg"=>$sMsgErro,"erro"=>true);
+	  $aRetorno = ["msg"=>$sMsgErro,"erro"=>true];
 	}
 
   echo $oJson->encode($aRetorno);
@@ -749,11 +749,11 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
     try{
 
-      $aRetornaCampos             = array();
-      $aRetornaCamposConfigurados = array();
-      $aRetornaOrdem              = array();
-      $aRetornaFiltros            = array();
-      $aRetornoVariaveis          = array();
+      $aRetornaCampos             = [];
+      $aRetornaCamposConfigurados = [];
+      $aRetornaOrdem              = [];
+      $aRetornaFiltros            = [];
+      $aRetornoVariaveis          = [];
 
       $cldb_relatorio = new cl_db_relatorio();
 
@@ -762,8 +762,8 @@ if ( $oPost->tipo == "consultaCampos" ) {
       foreach ($aCampos as $iInd => $oCampo) {
         $oRetornoColuna = new stdClass();
         $oRetornoColuna->iId              = $oCampo->getId();
-        $oRetornoColuna->sNome            = urlencode($oCampo->getNome());
-        $oRetornoColuna->sAlias           = urlencode($oCampo->getAlias());
+        $oRetornoColuna->sNome            = urlencode((string) $oCampo->getNome());
+        $oRetornoColuna->sAlias           = urlencode((string) $oCampo->getAlias());
         $oRetornoColuna->iLargura         = $oCampo->getLargura();
         $oRetornoColuna->sAlinhamento     = $oCampo->getAlinhamento();
         $oRetornoColuna->sAlinhamentoCab  = $oCampo->getAlinhamentoCab();
@@ -781,8 +781,8 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
           $oRetornoColunaConf = new stdClass();
           $oRetornoColunaConf->iId              = $oCampoConfigurado->getId();
-          $oRetornoColunaConf->sNome            = urlencode($oCampoConfigurado->getNome());
-          $oRetornoColunaConf->sAlias           = urlencode($oCampoConfigurado->getAlias());
+          $oRetornoColunaConf->sNome            = urlencode((string) $oCampoConfigurado->getNome());
+          $oRetornoColunaConf->sAlias           = urlencode((string) $oCampoConfigurado->getAlias());
           $oRetornoColunaConf->iLargura         = $oCampoConfigurado->getLargura();
           $oRetornoColunaConf->sAlinhamento     = $oCampoConfigurado->getAlinhamento();
           $oRetornoColunaConf->sAlinhamentoCab  = $oCampoConfigurado->getAlinhamentoCab();
@@ -800,9 +800,9 @@ if ( $oPost->tipo == "consultaCampos" ) {
         foreach ($aOrdem as $sInd => $oOrdem){
           $oRetornoOrdem = new stdClass();
           $oRetornoOrdem->iId      = $oOrdem->getId();
-          $oRetornoOrdem->sNome    = urlencode($oOrdem->getNome());
+          $oRetornoOrdem->sNome    = urlencode((string) $oOrdem->getNome());
           $oRetornoOrdem->sAscDesc = $oOrdem->getAscDesc();
-          $oRetornoOrdem->sAlias   = urlencode($oOrdem->getAlias());
+          $oRetornoOrdem->sAlias   = urlencode((string) $oOrdem->getAlias());
           $aRetornaOrdem[] = $oRetornoOrdem;
         }
       }
@@ -814,9 +814,9 @@ if ( $oPost->tipo == "consultaCampos" ) {
         foreach ($aFiltro as $sInd => $oFiltro){
           $oRetornoFiltro = new stdClass();
           $oRetornoFiltro->sOperador = $oFiltro->getOperador();
-          $oRetornoFiltro->sCampo    = urlencode($oFiltro->getCampo());
+          $oRetornoFiltro->sCampo    = urlencode((string) $oFiltro->getCampo());
           $oRetornoFiltro->sCondicao = $oFiltro->getCondicao();
-          $oRetornoFiltro->sValor    = urlencode($oFiltro->getValor());
+          $oRetornoFiltro->sValor    = urlencode((string) $oFiltro->getValor());
           $aRetornaFiltros[] = $oRetornoFiltro;
         }
       }
@@ -825,7 +825,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
       $oRetornoPropriedades = new stdClass();
       $oRetornoPropriedades->iVersao     = $oPropriedades->getVersao();
-      $oRetornoPropriedades->sNome       = urlencode($oPropriedades->getNome());
+      $oRetornoPropriedades->sNome       = urlencode((string) $oPropriedades->getNome());
       $oRetornoPropriedades->sOrientacao = $oPropriedades->getOrientacao();
       $oRetornoPropriedades->sFormato    = $oPropriedades->getFormato();
       $oRetornoPropriedades->sLayout     = $oPropriedades->getLayout();
@@ -841,8 +841,8 @@ if ( $oPost->tipo == "consultaCampos" ) {
       foreach ($aVariaveis as $sNomeVar => $oVariavel ){
         $oRetornoVariaveis = new stdClass();
         $oRetornoVariaveis->sNome     = $oVariavel->getNome();
-        $oRetornoVariaveis->sLabel    = urlencode($oVariavel->getLabel());
-        $oRetornoVariaveis->sValor    = urlencode($oVariavel->getValor());
+        $oRetornoVariaveis->sLabel    = urlencode((string) $oVariavel->getLabel());
+        $oRetornoVariaveis->sValor    = urlencode((string) $oVariavel->getValor());
         $oRetornoVariaveis->sTipoDado = $oVariavel->getTipoDado();
         $oRetornoVariaveis->sSql      = $oVariavel->getSql();
 
@@ -853,7 +853,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
       $rsConsultaTipoGrupo = $cldb_relatorio->sql_record($cldb_relatorio->sql_query_file($oXML->getCodRelatorio(),"db63_db_tiporelatorio as tiporel,db63_db_gruporelatorio as gruporel "));
       $oRetornoTipoGrupo   = db_utils::fieldsMemory($rsConsultaTipoGrupo,0);
 
-      $aRetorno = array(
+      $aRetorno = [
                         "aCampos"            =>$aRetornaCampos,
                         "aCamposConfigurados"=>$aRetornaCamposConfigurados,
                         "aOrdem"             =>$aRetornaOrdem,
@@ -861,14 +861,14 @@ if ( $oPost->tipo == "consultaCampos" ) {
                         "oPropriedades"      =>$oRetornoPropriedades,
                         "aVariaveis"         =>$aRetornoVariaveis,
                         "oTipoGrupo"         =>$oRetornoTipoGrupo
-                       );
+                       ];
 
 
       $_SESSION['objetoXML'] = serialize($oXML);
 
 
     } catch (Exception $oException) {
-      $aRetorno = array("msg"=>$oException->getMessage(),"erro"=>true);
+      $aRetorno = ["msg"=>$oException->getMessage(),"erro"=>true];
     }
 
     echo $oJson->encode($aRetorno);
@@ -910,9 +910,9 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
  	if ( $iNroLinhas > 0 ){
  	  $aRetornaRel = db_utils::getCollectionByRecord($rsConsultaRelatorios,false,false,true);
- 	  $aRetorno    = array("objRel"=>$aRetornaRel,"erro"=>false);
+ 	  $aRetorno    = ["objRel"=>$aRetornaRel,"erro"=>false];
 	} else {
-	  $aRetorno    = array("msg"=>urlencode("Nenhum relatório cadastrado!"),"erro"=>true);
+	  $aRetorno    = ["msg"=>urlencode("Nenhum relatório cadastrado!"),"erro"=>true];
 	}
 
     echo $oJson->encode($aRetorno);
@@ -940,17 +940,17 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
   } else if ($oPost->tipo == "consultaVariaveis") {
 
-  	$aRetorno   = array();
+  	$aRetorno   = [];
   	$aVariaveis = $oXML->getVariaveis();
 
   	foreach ( $aVariaveis as $sInd => $objVariavel ){
 
   	  $objRetornoVariavel = new stdClass();
-  	  $objRetornoVariavel->sNome     = utf8_encode($objVariavel->getNome());
-  	  $objRetornoVariavel->sLabel    = utf8_encode($objVariavel->getLabel());
-  	  $objRetornoVariavel->sValor    = utf8_encode($objVariavel->getValor());
-      $objRetornoVariavel->sTipoDado = utf8_encode($objVariavel->getTipoDado());
-      $objRetornoVariavel->sSql = utf8_encode($objVariavel->getSql());
+  	  $objRetornoVariavel->sNome     = mb_convert_encoding($objVariavel->getNome(), 'UTF-8', 'ISO-8859-1');
+  	  $objRetornoVariavel->sLabel    = mb_convert_encoding($objVariavel->getLabel(), 'UTF-8', 'ISO-8859-1');
+  	  $objRetornoVariavel->sValor    = mb_convert_encoding($objVariavel->getValor(), 'UTF-8', 'ISO-8859-1');
+      $objRetornoVariavel->sTipoDado = mb_convert_encoding($objVariavel->getTipoDado(), 'UTF-8', 'ISO-8859-1');
+      $objRetornoVariavel->sSql = mb_convert_encoding($objVariavel->getSql(), 'UTF-8', 'ISO-8859-1');
   	  $aRetorno[] = $objRetornoVariavel;
     }
 
@@ -1013,13 +1013,13 @@ if ( $oPost->tipo == "consultaCampos" ) {
   	}
 
   	if ($lErro) {
-  	  $aRetorno  = array( "msg" =>urlencode($sMsgErro),
-  	                      "erro"=>true );
+  	  $aRetorno  = [ "msg" =>urlencode($sMsgErro),
+  	                      "erro"=>true ];
   	} else {
 
       $_SESSION['objetoXML'] = serialize($oXML);
 
-      $aRetorno  = array( "erro"=>false );
+      $aRetorno  = [ "erro"=>false ];
   	}
 
     echo $oJson->encode($aRetorno);
@@ -1038,11 +1038,11 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
 
 	 if ($lErro) {
-	   $aRetorno  = array( "msg" =>urlencode($sMsgErro),
-	                       "erro"=>true );
+	   $aRetorno  = [ "msg" =>urlencode($sMsgErro),
+	                       "erro"=>true ];
 	 } else {
-	   $aRetorno  = array( "sSql"=>urlencode($sSql),
-	                       "erro"=>false );
+	   $aRetorno  = [ "sSql"=>urlencode((string) $sSql),
+	                       "erro"=>false ];
 	 }
 
 	 echo $oJson->encode($aRetorno);
@@ -1065,8 +1065,8 @@ if ( $oPost->tipo == "consultaCampos" ) {
     }
 
     if ($lErro) {
-      $aRetorno  = array( "msg" =>urlencode($sMsgErro),
-                          "erro"=>true );
+      $aRetorno  = [ "msg" =>urlencode($sMsgErro),
+                          "erro"=>true ];
     } else {
 
       if( isset($_SESSION['objetoXML']) ){
@@ -1082,8 +1082,8 @@ if ( $oPost->tipo == "consultaCampos" ) {
       	$lSql = false;
       }
 
-      $aRetorno  = array( "lSql"=>$lSql,
-                          "erro"=>false );
+      $aRetorno  = [ "lSql"=>$lSql,
+                          "erro"=>false ];
     }
 
     echo $oJson->encode($aRetorno);
@@ -1092,9 +1092,9 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
 
  	  if ( $_SESSION['lAlteraRelatorio'] ) {
- 	  	$aRetorno = array("lAlteracao"=>true);
+ 	  	$aRetorno = ["lAlteracao"=>true];
  	  } else {
- 	  	$aRetorno = array("lAlteracao"=>false);
+ 	  	$aRetorno = ["lAlteracao"=>false];
  	  }
 
  	  echo $oJson->encode($aRetorno);

@@ -43,18 +43,17 @@ use stdClass;
 class Cat extends ProcessamentoAbstract implements ProcessamentoInterface
 {
     /**
-     * @var
-     */
-    private $iCgm;
-
-    /**
      * LotacaoTributaria constructor.
      *
      * @param $iCgm
      */
-    public function __construct($iCgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $iCgm
+    )
     {
-        $this->iCgm = $iCgm;
     }
 
     /**

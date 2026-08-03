@@ -54,7 +54,7 @@ class AlvaraRenovacao extends AlvaraMovimentacao {
    */
   function getRenovacoesAlvara() {
   	
-  	$aMovimentacoesDeAlteracao = array();
+  	$aMovimentacoesDeAlteracao = [];
   	$oMovimentacoesAlvara = parent::getMovimentacoesAlvara();
   	foreach ($oMovimentacoesAlvara as $oMovimentacao) {
   		if ($oMovimentacao->q120_isstipomovalvara == 4) {
@@ -70,7 +70,7 @@ class AlvaraRenovacao extends AlvaraMovimentacao {
    */
   function getCancelamentosRenovacoesAlvara() {
      
-    $aMovimentacoesDeCancelamento = array();
+    $aMovimentacoesDeCancelamento = [];
     $oMovimentacoesAlvara         = parent::getMovimentacoesAlvara();
     foreach ($oMovimentacoesAlvara as $oMovimentacao) {
     		if ($oMovimentacao->q120_isstipomovalvara == 8) {

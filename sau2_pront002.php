@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_prontproced_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clprontproced = new cl_prontproced;
 $sql = "select sd24_c_atendimento,
                sd24_i_cgm,
@@ -77,7 +77,7 @@ db_fieldsmemory($query,0);
  $pdf->Open();
  $pdf->AliasNbPages();
  $head2 = "Dados do Prontuario";
- $head3 = "Numero do Atendimento: ".substr($sd24_c_atendimento,0,4)." | ".substr($sd24_c_atendimento,4,2)." | ".substr($sd24_c_atendimento,6,5);
+ $head3 = "Numero do Atendimento: ".substr((string) $sd24_c_atendimento,0,4)." | ".substr((string) $sd24_c_atendimento,4,2)." | ".substr((string) $sd24_c_atendimento,6,5);
  $head3 = "Data/Hora:".$sd24_d_data."/".$sd24_c_hora;
   $pdf->addpage();
   $pdf->setfillcolor(235);

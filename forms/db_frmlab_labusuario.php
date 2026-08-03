@@ -59,7 +59,7 @@ $clrotulo->label("nome");
                            <?=@$Lla05_d_inicio?>
                          <?php 
                           if(isset($la05_d_inicio)&&($la05_d_inicio!="")){
-                                       $vet=explode("/",$la05_d_inicio);
+                                       $vet=explode("/",(string) $la05_d_inicio);
                                        $la05_d_inicio_dia=$vet[0];
                                        $la05_d_inicio_mes=$vet[1];
                                        $la05_d_inicio_ano=$vet[2];
@@ -73,7 +73,7 @@ $clrotulo->label("nome");
                        <?=@$Lla05_d_fim?>
                        <?php 
                          if(isset($la05_d_fim)&&($la05_d_fim!="")){
-                                       $vet=explode("/",$la05_d_fim);
+                                       $vet=explode("/",(string) $la05_d_fim);
                                        $la05_d_fim_dia=$vet[0];
                                        $la05_d_fim_mes=$vet[1];
                                        $la05_d_fim_ano=$vet[2];
@@ -128,7 +128,7 @@ db_input('nome',50,$Inome,true,'text',3,'')
   <tr>
     <td valign="top"><br>
   <?php 
-    $chavepri = array ("la05_i_codigo" => @$la05_i_codigo, "la02_c_descr"=>@$la02_c_descr, "la05_i_laboratorio" => @$la05_i_laboratorio, "la05_i_usuario" => @$la05_usuario, "la05_d_inicio" => @$la05_d_inicio, "la05_d_fim" => @$la05_d_fim,"nome"=>@$nome);
+    $chavepri =  ["la05_i_codigo" => @$la05_i_codigo, "la02_c_descr"=>@$la02_c_descr, "la05_i_laboratorio" => @$la05_i_laboratorio, "la05_i_usuario" => @$la05_usuario, "la05_d_inicio" => @$la05_d_inicio, "la05_d_fim" => @$la05_d_fim,"nome"=>@$nome];
     $cliframe_alterar_excluir->chavepri = $chavepri;
    @$cliframe_alterar_excluir->sql = $cllab_labusuario->sql_query ("","*",""," la05_i_laboratorio = $la05_i_laboratorio");
     $cliframe_alterar_excluir->campos = "la05_i_codigo,la05_i_usuario,nome,la05_d_inicio,la05_d_fim";
@@ -217,7 +217,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lab_labusuario.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

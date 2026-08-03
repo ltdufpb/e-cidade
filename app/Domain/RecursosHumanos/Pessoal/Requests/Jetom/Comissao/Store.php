@@ -11,6 +11,7 @@ class Store extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -21,7 +22,7 @@ class Store extends BaseFormRequest
      */
     public function rules()
     {
-        return $this->preValidacaoRule() ? $this->preValidacaoRule() : [
+        return $this->preValidacaoRule() ?: [
             'instituicao' => 'required|filled|integer|max:50',
             'descricao' => [
                 'required',
@@ -46,24 +47,25 @@ class Store extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "descricao.required" => utf8_encode("É necessário informar a descrição da comissão."),
-            "descricao.filled" => utf8_encode("Descrição não pode estar vazia."),
-            "descricao.string" => utf8_encode("Descrição inválida."),
-            "descricao.unique" => utf8_encode("Esta descrição já cadastrada na instituição."),
-            "descricao.max" => utf8_encode("Excedido o limite máximo de 50 caracteres."),
-            "instituicao.required" => utf8_encode("Instituição não informada para o cadastro da comissão."),
-            "instituicao.filled" => utf8_encode("O código da instituição esta vazio."),
-            "instituicao.integer" => utf8_encode("Código inválido da Instituição."),
+            "descricao.required" => mb_convert_encoding("É necessário informar a descrição da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "descricao.filled" => mb_convert_encoding("Descrição não pode estar vazia.", 'UTF-8', 'ISO-8859-1'),
+            "descricao.string" => mb_convert_encoding("Descrição inválida.", 'UTF-8', 'ISO-8859-1'),
+            "descricao.unique" => mb_convert_encoding("Esta descrição já cadastrada na instituição.", 'UTF-8', 'ISO-8859-1'),
+            "descricao.max" => mb_convert_encoding("Excedido o limite máximo de 50 caracteres.", 'UTF-8', 'ISO-8859-1'),
+            "instituicao.required" => mb_convert_encoding("Instituição não informada para o cadastro da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "instituicao.filled" => mb_convert_encoding("O código da instituição esta vazio.", 'UTF-8', 'ISO-8859-1'),
+            "instituicao.integer" => mb_convert_encoding("Código inválido da Instituição.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

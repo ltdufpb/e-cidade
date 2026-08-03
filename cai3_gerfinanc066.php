@@ -35,8 +35,8 @@ require(modification("classes/db_arrejust_classe.php"));
 require(modification("classes/db_arrejustreg_classe.php"));
 require(modification("classes/db_numpref_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -58,7 +58,7 @@ $result1 = $clnumpref->sql_record($clnumpref->sql_query('','','k03_diasjust','',
 db_fieldsmemory($result1,0);
 $k27_dias = $k03_diasjust;
 if ( (isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) ) {
- $vt = $HTTP_POST_VARS;
+ $vt = $_POST;
  $virgula = "";
  $numpar1 = "";
  $numpre1 = "";
@@ -67,22 +67,22 @@ if (isset($inicial) && $inicial == true) {
 	
   foreach ($vt as $i => $v){
   //  echo "$i --- $v <br>";
-    if (substr($i,0,5) == "CHECK"){
+    if (str_starts_with((string) $i, "CHECK")){
     	
       if (isset($oPost->marcarvencidas) && isset($oPost->marcartodas)) {
           
         if ($oPost->marcarvencidas == 'true' && $oPost->marcartodas == 'false') {
 
-          $mat = split("N", $v);
+          $mat = preg_split("#N#m", (string) $v);
           for ($iInd = 0; $iInd < count($mat); $iInd++) {
                 
             if ($mat[$iInd] == "") {
               continue;   
             }
                 
-            $numpre = split("P", $mat[$iInd]);
-            $numpar = split("P", strstr($mat[$iInd], "P"));
-            $numpar = split("R",$numpar[1]);
+            $numpre = preg_split("#P#m", (string) $mat[$iInd]);
+            $numpar = preg_split("#P#m", strstr((string) $mat[$iInd], "P"));
+            $numpar = preg_split("#R#m",(string) $numpar[1]);
             $receit = @$numpar[1];
             $numpar = $numpar[0];
             $numpre = $numpre[0];
@@ -108,11 +108,11 @@ if (isset($inicial) && $inicial == true) {
 	        //    echo "if if ....  | $i --- $v<br>";
 	        $rsnumpre = db_query("select v59_numpre from inicialnumpre where v59_inicial = $v");
 	        //    db_criatabela($rsnumpre);
-	        $numrows  = pg_numrows($rsnumpre);
+	        $numrows  = pg_num_rows($rsnumpre);
 	        for($ii = 0; $ii < $numrows; $ii++ ){
 	          db_fieldsmemory($rsnumpre,$ii);
 	          $rsArrecad  = db_query(" select distinct k00_numpre,k00_numpar from arrecad where k00_numpre = $v59_numpre "); 
-	          $numArrecad = pg_numrows($rsArrecad);
+	          $numArrecad = pg_num_rows($rsArrecad);
 	          for($ia = 0 ;$ia < $numArrecad; $ia++ ){
 	            db_fieldsmemory($rsArrecad,$ia);
 	            $numpar1 .= $virgula.$k00_numpar;
@@ -126,11 +126,11 @@ if (isset($inicial) && $inicial == true) {
 	      //    echo "if if ....  | $i --- $v<br>";
 	      $rsnumpre = db_query("select v59_numpre from inicialnumpre where v59_inicial = $v");
 	      //    db_criatabela($rsnumpre);
-	      $numrows  = pg_numrows($rsnumpre);
+	      $numrows  = pg_num_rows($rsnumpre);
 	      for($ii = 0; $ii < $numrows; $ii++ ){
 	        db_fieldsmemory($rsnumpre,$ii);
 	        $rsArrecad  = db_query(" select distinct k00_numpre,k00_numpar from arrecad where k00_numpre = $v59_numpre "); 
-	        $numArrecad = pg_numrows($rsArrecad);
+	        $numArrecad = pg_num_rows($rsArrecad);
 	        for($ia = 0 ;$ia < $numArrecad; $ia++ ){
 	          db_fieldsmemory($rsArrecad,$ia);
 	          $numpar1 .= $virgula.$k00_numpar;
@@ -151,16 +151,16 @@ if (isset($inicial) && $inicial == true) {
         if ($oPost->marcarvencidas == 'true' && $oPost->marcartodas == 'false') {
 
           $numpres = $vt[key($vt)];
-          $mat     = split("N", $numpres);
+          $mat     = preg_split("#N#m", $numpres);
           for ($iInd = 0; $iInd < count($mat); $iInd++) {
                 
             if ($mat[$iInd] == "") {
               continue;   
             }
                 
-            $numpre = split("P", $mat[$iInd]);
-            $numpar = split("P", strstr($mat[$iInd], "P"));
-            $numpar = split("R",$numpar[1]);
+            $numpre = preg_split("#P#m", (string) $mat[$iInd]);
+            $numpar = preg_split("#P#m", strstr((string) $mat[$iInd], "P"));
+            $numpar = preg_split("#R#m",(string) $numpar[1]);
             $receit = @$numpar[1];
             $numpar = $numpar[0];
             $numpre = $numpre[0];
@@ -185,12 +185,12 @@ if (isset($inicial) && $inicial == true) {
             
          $numpres = $vt[key($vt)];
          if ($numpres == "") continue;
-         $mat     = split("N", $numpres);
+         $mat     = preg_split("#N#m", $numpres);
          for ($j = 0; $j < count($mat); $j++) {
            if ($mat[$j] == "") continue;
-           $numpre = split("P", $mat[$j]);
-           $numpar = split("P", strstr($mat[$j], "P"));
-           $numpar = split("R",$numpar[1]);
+           $numpre = preg_split("#P#m", (string) $mat[$j]);
+           $numpar = preg_split("#P#m", strstr((string) $mat[$j], "P"));
+           $numpar = preg_split("#R#m",(string) $numpar[1]);
            $numpar = $numpar[0];
            if (!isset ($inicial)) {
             // $numpar = $numpar[1];
@@ -205,12 +205,12 @@ if (isset($inicial) && $inicial == true) {
           
 		     $numpres = $vt[key($vt)];
 		     if ($numpres == "") continue;
-		     $mat     = split("N", $numpres);
+		     $mat     = preg_split("#N#m", $numpres);
 		     for ($j = 0; $j < count($mat); $j++) {
 		       if ($mat[$j] == "") continue;
-		       $numpre = split("P", $mat[$j]);
-		       $numpar = split("P", strstr($mat[$j], "P"));
-		       $numpar = split("R",$numpar[1]);
+		       $numpre = preg_split("#P#m", (string) $mat[$j]);
+		       $numpar = preg_split("#P#m", strstr((string) $mat[$j], "P"));
+		       $numpar = preg_split("#R#m",(string) $numpar[1]);
 		       $numpar = $numpar[0];
 		       if (!isset ($inicial)) {
 		        // $numpar = $numpar[1];
@@ -240,8 +240,8 @@ if(isset($submit)){
  }
  $erro_msg = $clarrejust->erro_msg;
  
-  $mat = split(",", $numpre);
-  $mat1 = split(",", $numpar);
+  $mat = preg_split("#,#m", (string) $numpre);
+  $mat1 = preg_split("#,#m", (string) $numpar);
 
   for ($i = 0; $i < count($mat); $i ++) {
    $numpre = $mat[$i];

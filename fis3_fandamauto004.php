@@ -25,8 +25,8 @@
  *                                licenca/licenca_pt.txt 
  */
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clauto->rotulo->label();
 ?>
 <html>

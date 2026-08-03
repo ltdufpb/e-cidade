@@ -14,12 +14,12 @@ class RelatorioRetencoesEfdReinfProcessamentoService extends RelatorioRetencoesE
         $sWhereSql = " and e60_instit = " . db_getsession("DB_instit");
 
         if ($filtros->dataInicial != "" && $filtros->dataFinal == "") {
-            $dataInicial = implode("-", array_reverse(explode("/", $filtros->dataInicial)));
+            $dataInicial = implode("-", array_reverse(explode("/", (string) $filtros->dataInicial)));
             $sWhereSql .= " and empnota.e69_dtnota = '{$dataInicial}'";
             $headerData = "{$filtros->dataInicial} a {$filtros->dataInicial}";
         } elseif ($filtros->dataFinal != "" && $filtros->dataInicial != "") {
-            $dataInicial = implode("-", array_reverse(explode("/", $filtros->dataInicial)));
-            $dataFinal = implode("-", array_reverse(explode("/", $filtros->dataFinal)));
+            $dataInicial = implode("-", array_reverse(explode("/", (string) $filtros->dataInicial)));
+            $dataFinal = implode("-", array_reverse(explode("/", (string) $filtros->dataFinal)));
             $sWhereSql .= " and empnota.e69_dtnota between '{$dataInicial}' and '{$dataFinal}'";
             $headerData = "{$filtros->dataInicial} a {$filtros->dataFinal}";
         }
@@ -104,9 +104,9 @@ class RelatorioRetencoesEfdReinfProcessamentoService extends RelatorioRetencoesE
         $sNomeQuebra = $preProcessamento['sNomeQuebra'];
 
         foreach ($retencoesEfdReinf as $oRetencao) {
-            if (strlen(trim($oRetencao->cnpj_prestador)) == 11) {
+            if (strlen(trim((string) $oRetencao->cnpj_prestador)) == 11) {
                 $cCnpjCpf = db_formatar($oRetencao->cnpj_prestador, "cpf");
-            } elseif (strlen(trim($oRetencao->cnpj_prestador)) == 14) {
+            } elseif (strlen(trim((string) $oRetencao->cnpj_prestador)) == 14) {
                 $cCnpjCpf = db_formatar($oRetencao->cnpj_prestador, "cnpj");
             } else {
                 $cCnpjCpf = $oRetencao->cnpj_prestador;
@@ -126,12 +126,12 @@ class RelatorioRetencoesEfdReinfProcessamentoService extends RelatorioRetencoesE
                         $texto .= " - CPF/CNPJ: $cCnpjCpf -";
                         $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $texto;
                     } elseif ($filtros->filtroAgrupaPor == 5) {
-                        $texto = $oRetencao->o41_orgao."/".str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
-                        $texto.= " - ".str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
+                        $texto = $oRetencao->o41_orgao."/".str_pad((string) $oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
+                        $texto.= " - ".str_pad((string) $oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
                         $texto.= $oRetencao->o41_descr;
                         $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $texto;
                     } elseif ($filtros->filtroAgrupaPor == 6) {
-                        $texto = $oRetencao->o41_orgao."/".str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
+                        $texto = $oRetencao->o41_orgao."/".str_pad((string) $oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
                         $texto .= " - ".$oRetencao->o41_descr;
                         $texto .= " Credor: ".$oRetencao->identificador_prestador." - ".$oRetencao->nome_prestador;
                         $aRetencoes[$oRetencao->$sCampoQuebrar]->texto  = $texto;

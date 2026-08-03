@@ -125,26 +125,26 @@ class Escola implements IEscola {
    * Array com os diretores da escola
    * @var array
    */
-  protected $aDiretores = array();
+  protected $aDiretores = [];
 
 
   /**
    * Periodos da Escola
    * @var array
    */
-  protected $aPeriodos = array();
+  protected $aPeriodos = [];
 
   /**
    * Procedimentos de Avaliações que a Escola possui
    * @var array
    */
-  protected $aProcedimentosAvaliacao = array();
+  protected $aProcedimentosAvaliacao = [];
 
   /**
    * Identifica que a escola oferece atendimento especial exclusivo
-   * @deprecated
    * @var integer
    */
+  #[\Deprecated]
   CONST OFERECE_EXCLUSIVAMENTE_ATENDIMENTO_ESPECIAL = 1;
 
   /**
@@ -161,9 +161,9 @@ class Escola implements IEscola {
 
   /**
    * Identifica que a escola oferece atividade complementar exclusiva
-   * @deprecated
    * @var integer
    */
+  #[\Deprecated]
   CONST OFERECE_EXCLUSIVAMENTE_ATIVIDADE_COMPLEMENTAR = 1;
 
   /**
@@ -182,7 +182,7 @@ class Escola implements IEscola {
    * Array com os telefones da escola
    * @var array
    */
-  protected $aTelefonesEscola = array();
+  protected $aTelefonesEscola = [];
 
   /**
    * Email da escola
@@ -200,7 +200,7 @@ class Escola implements IEscola {
    * Atos legais da escola
    * @var array AtoLegal
    */
-  protected $aAtosLegais = array();
+  protected $aAtosLegais = [];
 
   /**
    * Nome abreviado da escola
@@ -630,7 +630,7 @@ class Escola implements IEscola {
    */
   public function getDiasLetivos() {
 
-    $aDiasLetivos  = array();
+    $aDiasLetivos  = [];
 
     $sWhere        = "     ed04_i_escola = {$this->iCodigoEscola} ";
     $sWhere       .= " and ed04_c_letivo = 'S' ";
@@ -701,7 +701,7 @@ class Escola implements IEscola {
 
     if ($rsPeriodo && pg_num_rows($rsPeriodo) > 0) {
 
-      $this->aPeriodos = array();
+      $this->aPeriodos = [];
       foreach ( db_utils::getCollectionByRecord($rsPeriodo)as $iIndice => $oPeriodo) {
 
         $oPeriodoEscola    = new PeriodoEscola($oPeriodo->ed17_i_codigo);

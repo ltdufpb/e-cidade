@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_geradorrelatoriotemplate
 class cl_db_geradorrelatoriotemplate { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db15_sequencial = 0; 
-   var $db15_db_relatorio = 0; 
-   var $db15_documento = 0; 
+   public $db15_sequencial = 0; 
+   public $db15_db_relatorio = 0; 
+   public $db15_documento = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db15_sequencial = int4 = Sequencial 
                  db15_db_relatorio = int4 = Código do relatório 
                  db15_documento = oid = Documento 
                  ";
    //funcao construtor da classe 
-   function cl_db_geradorrelatoriotemplate() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_geradorrelatoriotemplate"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_db_geradorrelatoriotemplate {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db15_sequencial = pg_result($result,0,0); 
+       $this->db15_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_geradorrelatoriotemplate_db15_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db15_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db15_sequencial)){
          $this->erro_sql = " Campo db15_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_db_geradorrelatoriotemplate {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Gerador do template do relatório ($this->db15_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Gerador do template do relatório já Cadastrado";
@@ -166,12 +166,12 @@ class cl_db_geradorrelatoriotemplate {
      $resaco = $this->sql_record($this->sql_query_file($this->db15_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12283,'$this->db15_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2135,12283,'','".AddSlashes(pg_result($resaco,0,'db15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2135,12284,'','".AddSlashes(pg_result($resaco,0,'db15_db_relatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2135,12271,'','".AddSlashes(pg_result($resaco,0,'db15_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2135,12283,'','".AddSlashes(pg_fetch_result($resaco,0,'db15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2135,12284,'','".AddSlashes(pg_fetch_result($resaco,0,'db15_db_relatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2135,12271,'','".AddSlashes(pg_fetch_result($resaco,0,'db15_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_db_geradorrelatoriotemplate {
       $this->atualizacampos();
      $sql = " update db_geradorrelatoriotemplate set ";
      $virgula = "";
-     if(trim($this->db15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db15_sequencial"])){ 
+     if(trim((string) $this->db15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db15_sequencial"])){ 
        $sql  .= $virgula." db15_sequencial = $this->db15_sequencial ";
        $virgula = ",";
-       if(trim($this->db15_sequencial) == null ){ 
+       if(trim((string) $this->db15_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db15_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_db_geradorrelatoriotemplate {
          return false;
        }
      }
-     if(trim($this->db15_db_relatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db15_db_relatorio"])){ 
+     if(trim((string) $this->db15_db_relatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db15_db_relatorio"])){ 
        $sql  .= $virgula." db15_db_relatorio = $this->db15_db_relatorio ";
        $virgula = ",";
-       if(trim($this->db15_db_relatorio) == null ){ 
+       if(trim((string) $this->db15_db_relatorio) == null ){ 
          $this->erro_sql = " Campo Código do relatório nao Informado.";
          $this->erro_campo = "db15_db_relatorio";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_db_geradorrelatoriotemplate {
          return false;
        }
      }
-     if(trim($this->db15_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db15_documento"])){ 
+     if(trim((string) $this->db15_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db15_documento"])){ 
        $sql  .= $virgula." db15_documento = $this->db15_documento ";
        $virgula = ",";
-       if(trim($this->db15_documento) == null ){ 
+       if(trim((string) $this->db15_documento) == null ){ 
          $this->erro_sql = " Campo Documento nao Informado.";
          $this->erro_campo = "db15_documento";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_db_geradorrelatoriotemplate {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12283,'$this->db15_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db15_sequencial"]) || $this->db15_sequencial != '')
-           $resac = db_query("insert into db_acount values($acount,2135,12283,'".AddSlashes(pg_result($resaco,$conresaco,'db15_sequencial'))."','$this->db15_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2135,12283,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db15_sequencial'))."','$this->db15_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db15_db_relatorio"]) || $this->db15_db_relatorio != '')
-           $resac = db_query("insert into db_acount values($acount,2135,12284,'".AddSlashes(pg_result($resaco,$conresaco,'db15_db_relatorio'))."','$this->db15_db_relatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2135,12284,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db15_db_relatorio'))."','$this->db15_db_relatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db15_documento"]) || $this->db15_documento != '')
-           $resac = db_query("insert into db_acount values($acount,2135,12271,'".AddSlashes(pg_result($resaco,$conresaco,'db15_documento'))."','$this->db15_documento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2135,12271,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db15_documento'))."','$this->db15_documento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_db_geradorrelatoriotemplate {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12283,'$db15_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2135,12283,'','".AddSlashes(pg_result($resaco,$iresaco,'db15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2135,12284,'','".AddSlashes(pg_result($resaco,$iresaco,'db15_db_relatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2135,12271,'','".AddSlashes(pg_result($resaco,$iresaco,'db15_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2135,12283,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2135,12284,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db15_db_relatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2135,12271,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db15_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_geradorrelatoriotemplate
@@ -345,7 +345,7 @@ class cl_db_geradorrelatoriotemplate {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_geradorrelatoriotemplate";
@@ -383,7 +383,7 @@ class cl_db_geradorrelatoriotemplate {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_db_geradorrelatoriotemplate {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

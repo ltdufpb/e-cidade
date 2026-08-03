@@ -53,7 +53,7 @@ if (isset($post->incluir)){
 
    $rsIssBase    = $clissbase->sql_record($clissbase->sql_query($post->q51_inscr));
    $oIssBase     = db_utils::fieldsMemory($rsIssBase,0);
-   if ($oParametros->q60_notaavulsapesjur == 't' and strlen(trim($oIssBase->z01_cgccpf)) == 14){
+   if ($oParametros->q60_notaavulsapesjur == 't' and strlen(trim((string) $oIssBase->z01_cgccpf)) == 14){
      
         $rsTotalNotas = $clissnotaavulsa->sql_record($clissnotaavulsa->sql_query_baixa(null,"count(*) as numnotas",
                                                      null,"q51_inscr=".$post->q51_inscr
@@ -67,7 +67,7 @@ if (isset($post->incluir)){
 
         }
 
-   }else if ($oParametros->q60_notaavulsapesjur == 'f' and strlen(trim($oIssBase->z01_cgccpf)) == 14){
+   }else if ($oParametros->q60_notaavulsapesjur == 'f' and strlen(trim((string) $oIssBase->z01_cgccpf)) == 14){
 
       
       $lSqlErro = true;
@@ -85,7 +85,7 @@ if (isset($post->incluir)){
      $clissnotaavulsa->q51_inscr       = $post->q51_inscr;
      $clissnotaavulsa->q51_obs         = $post->q51_obs;
      if (isset($post->q51_dtemiss)){
-        $dtparte                          = split("/",$post->q51_dtemiss);
+        $dtparte                          = preg_split("#\\/#m",$post->q51_dtemiss);
         $clissnotaavulsa->q51_dtemiss_dia = $dtparte[0];
         $clissnotaavulsa->q51_dtemiss_mes = $dtparte[1];
         $clissnotaavulsa->q51_dtemiss_ano = $dtparte[2];

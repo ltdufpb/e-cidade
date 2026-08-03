@@ -26,12 +26,12 @@
  */
 
 class cta_oper {
-   var $arq = null;
+   public $arq = null;
 
-  function cta_oper($header){
+  function __construct($header){
     umask(74);
     $this->arq = fopen("tmp/CTA_OPER.TXT",'w+');
-    fputs($this->arq,$header);
+    fputs($this->arq,(string) $header);
     fputs($this->arq,"\r\n");
 
 
@@ -56,7 +56,7 @@ class cta_oper {
      // teste arquivo nao tem definição pelo tribunal
  
      //  trailer
-     $contador = espaco(10-(strlen($contador)),'0').$contador;
+     $contador = espaco(10-(strlen($contador))).$contador;
      $line = "FINALIZADOR".$contador;
      fputs($this->arq,$line);
      fputs($this->arq,"\r\n");

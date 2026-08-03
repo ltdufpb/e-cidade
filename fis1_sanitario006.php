@@ -33,7 +33,7 @@ include(modification("classes/db_sanitario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clSanitario = new cl_sanitario();
 $db_botao    = true;

@@ -43,11 +43,9 @@ class CamposS2200
      */
     public static function getCampo($campo)
     {
-        switch ($campo) {
-            case 'grauParentesco':
-                return new TipoDependente();
-            default:
-                throw new Exception('Campo inexistente.');
-        }
+        return match ($campo) {
+            'grauParentesco' => new TipoDependente(),
+            default => throw new Exception('Campo inexistente.'),
+        };
     }
 }

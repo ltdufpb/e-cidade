@@ -55,7 +55,7 @@ db_selectrecord("h11_regime", $result_regime, true, $db_opcao);
     </td>
     <td> 
 <?php 
-$arr_tipo = array("A"=>"Avanço","G"=>"Gratificação");
+$arr_tipo = ["A"=>"Avanço","G"=>"Gratificação"];
 db_select("h11_tipo", $arr_tipo, true, $db_opcao,"onchange='js_limpaleis();'");
 ?>
     </td>
@@ -433,7 +433,7 @@ function js_preenchepesquisa(chave){
   db_iframe_vinculos.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

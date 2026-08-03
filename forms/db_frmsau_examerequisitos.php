@@ -83,7 +83,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 <tr>
 	<td>
 		<?php 
-		$chavepri= array("s109_i_requisito"=>@$s109_i_requisito,"s109_i_codigo"=>@$s109_i_codigo);
+		$chavepri= ["s109_i_requisito"=>@$s109_i_requisito,"s109_i_codigo"=>@$s109_i_codigo];
 		$cliframe_alterar_excluir->chavepri=$chavepri;
 		@$cliframe_alterar_excluir->sql = $clsau_examerequisitos->sql_query(null,'*',null,"s109_i_exame=$s109_i_exame");
 		$cliframe_alterar_excluir->campos  ="s109_i_codigo,s107_c_requisito";
@@ -134,7 +134,7 @@ function js_preenchepesquisa(chave){
   db_iframe_sau_examerequisitos.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

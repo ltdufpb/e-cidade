@@ -65,7 +65,7 @@ if (isset($parametros->chavepesquisa)) {
 <div class="container">
     <form method="post" name="form1" id="formLinhas" onsubmit="return false;" style="width: 600px">
         <input type="hidden" name="relatorio" id="relatorio"
-               value="<?php echo isset($chavepesquisa) ? $chavepesquisa : ''; ?>">
+               value="<?php echo $chavepesquisa ?? ''; ?>">
         <?php if ($relatorio instanceof Relatorio) {
     ?>
             <fieldset>
@@ -209,7 +209,7 @@ db_menu();
 
     function js_preenchepesquisa(chave) {
         db_iframe_orcparamrel.hide();
-        location.href = `<?php echo basename($_SERVER['PHP_SELF']); ?>?chavepesquisa=${chave}`;
+        location.href = `<?php echo basename((string) $_SERVER['PHP_SELF']); ?>?chavepesquisa=${chave}`;
     }
 
     <?php

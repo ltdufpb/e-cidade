@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE leitoraluno
 class cl_leitoraluno { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $bi11_leitor = 0; 
-   var $bi11_aluno = 0; 
+   public $bi11_leitor = 0; 
+   public $bi11_aluno = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  bi11_leitor = int8 = Código do Leitor 
                  bi11_aluno = int8 = Código do Aluno 
                  ";
    //funcao construtor da classe 
-   function cl_leitoraluno() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("leitoraluno"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_leitoraluno {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Leitores Alunos () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Leitores Alunos já Cadastrado";
@@ -131,10 +131,10 @@ class cl_leitoraluno {
       $this->atualizacampos();
      $sql = " update leitoraluno set ";
      $virgula = "";
-     if(trim($this->bi11_leitor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi11_leitor"])){ 
+     if(trim((string) $this->bi11_leitor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi11_leitor"])){ 
        $sql  .= $virgula." bi11_leitor = $this->bi11_leitor ";
        $virgula = ",";
-       if(trim($this->bi11_leitor) == null ){ 
+       if(trim((string) $this->bi11_leitor) == null ){ 
          $this->erro_sql = " Campo Código do Leitor nao Informado.";
          $this->erro_campo = "bi11_leitor";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_leitoraluno {
          return false;
        }
      }
-     if(trim($this->bi11_aluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi11_aluno"])){ 
+     if(trim((string) $this->bi11_aluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi11_aluno"])){ 
        $sql  .= $virgula." bi11_aluno = $this->bi11_aluno ";
        $virgula = ",";
-       if(trim($this->bi11_aluno) == null ){ 
+       if(trim((string) $this->bi11_aluno) == null ){ 
          $this->erro_sql = " Campo Código do Aluno nao Informado.";
          $this->erro_campo = "bi11_aluno";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:leitoraluno";
@@ -252,7 +252,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="leitoraluno.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -276,7 +276,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -288,7 +288,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -306,7 +306,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -321,7 +321,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
   	$sql = "select ";
   	if ($campos != "*" ) {
   		
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = preg_split("#\\##m",$campos);
   		$virgula    = "";
   		
   		for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -349,7 +349,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
   	if ($ordem != null ) {
   		
   		$sql        .= " order by ";
-  		$campos_sql  = split("#",$ordem);
+  		$campos_sql  = preg_split("#\\##m",(string) $ordem);
   		$virgula     = "";
   		
   		for ($i = 0; $i < sizeof($campos_sql); $i++) {

@@ -66,9 +66,9 @@ abstract class ConexaoSoap
             $sXml = str_replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "", $sXml);
         }
 
-        $params = array(
+        $params = [
           "xmlEntrada"=>$sXml
-        );
+        ];
 
         if ($this->oRequisicao == 'consultarDocumento') {
             $this->oRetornoSoap = $this->oSoapClient->consultarDocumento($params);
@@ -85,7 +85,7 @@ abstract class ConexaoSoap
      */
     public function getRespostaRecepcaoLote()
     {
-        $new = simplexml_load_string($this->oRetornoSoap->xmlResultado);
+        $new = simplexml_load_string((string) $this->oRetornoSoap->xmlResultado);
         $con = json_encode($new);
         $newArr = json_decode($con, true);
 
@@ -122,7 +122,7 @@ abstract class ConexaoSoap
      */
     public function getRespostaConsultarDocumento()
     {
-        $new = simplexml_load_string($this->oRetornoSoap->xmlResultado);
+        $new = simplexml_load_string((string) $this->oRetornoSoap->xmlResultado);
         $con = json_encode($new);
         $newArr = json_decode($con, true);
 

@@ -8,7 +8,7 @@ require_once(modification("classes/db_importacaoplanoconta_classe.php"));
 db_postmemory($_POST);
 $oGet = db_utils::postMemory($_GET);
 $oPost = db_utils::postMemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $climportacaoplanoconta = new cl_importacaoplanoconta;
 $climportacaoplanoconta->rotulo->label("c96_sequencial");
 $climportacaoplanoconta->rotulo->label("c96_data");
@@ -41,12 +41,12 @@ $climportacaoplanoconta->rotulo->label("c96_data");
       <?php 
       if(!isset($pesquisa_chave)){
 
-        $aCampos = array(
+        $aCampos = [
           "c96_sequencial as dl_Código",
           "c96_data as dl_Data_de_Importação",
           "c94_nome as dl_Modelo",
           "c94_exercicio as dl_Exercício",
-        );
+        ];
         $campos = implode(',', $aCampos);
         if (!empty($oPost->chave_c96_sequencial)) {
 	         $sql = $climportacaoplanoconta->sql_query($oPost->chave_c96_sequencial,$campos,"c96_sequencial");
@@ -55,9 +55,9 @@ $climportacaoplanoconta->rotulo->label("c96_data");
         }else{
            $sql = $climportacaoplanoconta->sql_query("",$campos,"c96_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c96_data)){
-          $repassa = array("chave_c96_sequencial"=>$oPost->chave_c96_sequencial,"chave_c96_data"=>$oPost->chave_c96_data);
+          $repassa = ["chave_c96_sequencial"=>$oPost->chave_c96_sequencial,"chave_c96_data"=>$oPost->chave_c96_data];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

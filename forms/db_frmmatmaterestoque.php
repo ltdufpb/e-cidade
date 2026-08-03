@@ -60,7 +60,7 @@ if ($db_opcao != 1 && $lib != 4){
      }
 }
 ?>
-<form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" >
+<form name="form1" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>" >
 <br><br>
   <table border="0" cellspacing="0" cellpadding="0">
     <tr>
@@ -127,7 +127,7 @@ if ($db_opcao != 1 && $lib != 4){
     <tr>
       <td valign="top" colspan="2"> 
       <?php 
-     $chavepri= array("m64_sequencial"=>@$m64_sequencial,"m64_matmater"=>@$m64_matmater);
+     $chavepri= ["m64_sequencial"=>@$m64_sequencial,"m64_matmater"=>@$m64_matmater];
 
      $cliframe_alterar_excluir->chavepri=$chavepri;
 

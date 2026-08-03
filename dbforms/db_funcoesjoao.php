@@ -86,7 +86,7 @@ $campo = ($campo=="")?$label:$campo;
   <strong>
   <label for="db_<?=$campo?>">
   <a href="" class="rotulos" onClick="js_lista('dbforms/db_<?=$tab?>.php','db_<?=$campo?>' + '==' + document.form1.db_<?=$campo?>.value,'<?=$campo?>',100,50,600);return false">
-    <?=ucwords($label)?>:
+    <?=ucwords((string) $label)?>:
   </a>
   </label>
   </strong>

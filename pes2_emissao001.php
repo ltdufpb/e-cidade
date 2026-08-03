@@ -39,7 +39,7 @@
   $clrotulo    = new rotulocampo;
   $clrotulo->label("rh45_codigo");
   $clrotulo->label("rh45_descr");
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   $db_opcao = 1;
   $db_botao = true;
 ?>
@@ -91,7 +91,7 @@
             </td>
             <td>
               <?php
-                $aTiposResumo = array(
+                $aTiposResumo = [
                                       'g' => 'Geral',
                                       'o' => 'Órgão',
                                       'l' => 'Unidade',
@@ -100,7 +100,7 @@
                                       't' => 'Local de Trabalho',
                                       'c' => 'Cargo',
                                       'r' => 'Regime'
-                                     );
+                                     ];
                 db_select('tipo_resumo', $aTiposResumo, true, 4, "");
 
               ?>
@@ -112,10 +112,10 @@
             </td>
             <td>
               <?php
-                $aTipoArquivos = array(
+                $aTipoArquivos = [
                                        'pdf' => 'PDF', 
                                        'csv' => 'CSV' 
-                                      );
+                                      ];
                 db_select('tipo_arquivo', $aTipoArquivos, true, 4, "");
               ?>
             </td>
@@ -126,10 +126,10 @@
             </td>
             <td>
               <?php
-                $aModoImpressao = array(
+                $aModoImpressao = [
                                         'r' => 'Retrato', 
                                         'p' => 'Paisagem'
-                                       );
+                                       ];
 
                 db_select('modo_impressao', $aModoImpressao, true, 4, "");
               ?>
@@ -142,10 +142,10 @@
             </td>
             <td>
               <?php
-                $aOrdem = array(
+                $aOrdem = [
                                 'a' => 'Alfabética', 
                                 'n' => 'Numérica' 
-                               );
+                               ];
                 db_select('ordem', $aOrdem, true, 4, "");
               ?>
             </td>
@@ -156,13 +156,13 @@
             </td>
             <td>
               <?php
-                $aVinculo = array(
+                $aVinculo = [
                                   'g' =>'Geral',
                                   'a' =>'Ativos',
                                   'i' =>'Inativos',
                                   'p'=>'Pensionistas',
                                   'ip' =>'Inativos / Pensionistas'
-                                 );
+                                 ];
                 db_select('vinculo', $aVinculo, true, 4, "");
               ?>
             </td>
@@ -173,10 +173,10 @@
             </td>
             <td>
               <?php
-                $aSomenteTotais = array(
+                $aSomenteTotais = [
                                         'n' => 'Não',
                                         's' => 'Sim'
-                                       );
+                                       ];
 
                 db_select('somente_totais', $aSomenteTotais, true,4, "");
               ?>

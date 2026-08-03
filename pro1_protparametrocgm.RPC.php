@@ -23,7 +23,7 @@ try {
             $cl_cgmCamposObrigatorios =  new cl_cgmcamposobrigatorios();
 
             $oPostgresResource = db_query($cl_cgmCamposObrigatorios->sql_query_file());
-            $aQueries = array();
+            $aQueries = [];
 
             while ($row = pg_fetch_assoc($oPostgresResource)) {
                 $htmlId = $row['p73_html_id'] . '-' . $row['p73_tipo_pessoa'];
@@ -44,7 +44,7 @@ try {
             }
             
             array_walk($aQueries, function (&$value, $key) {
-                $value = trim(str_replace(array("\r", "\n"), '', $value));
+                $value = trim(str_replace(["\r", "\n"], '', $value));
             });
     
             db_inicio_transacao();
@@ -72,28 +72,27 @@ try {
             }
 
             $sCpfCnpj = $aCgm ? $aCgm['z01_cgccpf'] : $aParametros['cpf_cnpj'];
-            if (strlen($sCpfCnpj) != 14 && strlen($sCpfCnpj) != 11) {
+            if (strlen((string) $sCpfCnpj) != 14 && strlen((string) $sCpfCnpj) != 11) {
                 $oRetorno->validado = false;
                 break;
             }
 
-            $tipoPessoa = strlen($sCpfCnpj) == 14 ? 'juridica' : 'fisica';
+            $tipoPessoa = strlen((string) $sCpfCnpj) == 14 ? 'juridica' : 'fisica';
 
             $camposObrigatorios = getCamposObrigatorios($tipoPessoa);
 
-            $camposConsulta = array('z01_cgccpf');
-            $mapCampos = array();
+            $camposConsulta = ['z01_cgccpf'];
+            $mapCampos = [];
 
-            $mapCamposEndereco = array(
+            $mapCamposEndereco = [
                 'txtDescrBairropri' => 'db73_descricao',
                 'txtDescrRuapri' => 'db74_descricao',
                 'txtCepEndpri' => 'db74_cep',
                 'txtDescrPontoReferenciapri' => 'db74_cep'
-            );
+            ];
 
             foreach ($camposObrigatorios as $campo) {
-                $camposConsulta[] = $mapCamposEndereco[$campo['p73_html_id']] ? $mapCamposEndereco[$campo['p73_html_id']] :
-                    $campo['p73_html_id'];
+                $camposConsulta[] = $mapCamposEndereco[$campo['p73_html_id']] ?: $campo['p73_html_id'];
 
                 $mapCampos[$campo['p73_html_id']]['label'] = $campo['p73_label'];
                 $mapCampos[$campo['p73_html_id']]['preenchido'] = true;
@@ -144,7 +143,7 @@ function getCamposObrigatorios($sTipoPessoa)
         )
     );
     
-    $camposObrigatorios = array();
+    $camposObrigatorios = [];
     
     while ($row = pg_fetch_assoc($oPostgresResource)) {
         $camposObrigatorios[] = db_utils::utf8ize($row);

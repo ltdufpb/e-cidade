@@ -41,10 +41,10 @@ $iAno   =  $oGet->ano;
 $iMes   =  $oGet->mes;
 $exibeSemPeriodoGozo = $oGet->exibeSemPeriodoGozo;
 
-$sOrdem = array(
-    'n' => array("rh01_regist",  "Numérico") , 
-    "a" => array("z01_nome" , "Alfabética")
-);
+$sOrdem = [
+    'n' => ["rh01_regist",  "Numérico"] , 
+    "a" => ["z01_nome" , "Alfabética"]
+];
 $order  =  $sOrdem[$oGet->ordem];
 $sOrder  = $order[0];
 

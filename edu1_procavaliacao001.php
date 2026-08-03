@@ -41,7 +41,7 @@ $db_opcao  = 1;
 $db_opcao1 = 1;
 $db_botao  = true;
 
-$sPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) ? $_GET['possuiTurmasEncerradas'] : '';
+$sPossuiTurmasEncerradas = $_GET['possuiTurmasEncerradas'] ?? '';
 $lPossuiTurmasEncerradas = $sPossuiTurmasEncerradas === 'S';
 
 try {
@@ -70,7 +70,7 @@ try {
     if( $linhas == 0 ) {
       $max = 0;
     } else {
-      $max = pg_result( $result, $linhas - 1, "ed41_i_sequencia" );
+      $max = pg_fetch_result( $result, $linhas - 1, "ed41_i_sequencia" );
     }
 
     if( $tipoVinculo == "A" ) {
@@ -377,12 +377,12 @@ function AvalResultList( $nome, $procedimento, $disabled, $sequencia, $avalvinc,
       }
 
       $tipoaval  = $avalvinc != 0 ? $avalvinc : $resultvinc;
-      $selected1 = trim( $tipoaval ) == trim( $dados1["codigo"] ) && $tipoaval1 == trim( $dados1["tipo"] ) ? " selected " : "";
+      $selected1 = trim( (string) $tipoaval ) == trim( (string) $dados1["codigo"] ) && $tipoaval1 == trim( (string) $dados1["tipo"] ) ? " selected " : "";
 
       $sHtml  = "<option value='{$dados1["codigo"]}'";
-      $sHtml .= "        tipo='" . trim($dados1["tipo"]) . "'";
-      $sHtml .= "        forma_avaliacao='" . trim($dados1["ed37_c_tipo"]) . "'";
-      $sHtml .= "        {$selected1}>" . trim($dados1["tipo"]) . " - " . trim($dados1["avaliacao"]);
+      $sHtml .= "        tipo='" . trim((string) $dados1["tipo"]) . "'";
+      $sHtml .= "        forma_avaliacao='" . trim((string) $dados1["ed37_c_tipo"]) . "'";
+      $sHtml .= "        {$selected1}>" . trim((string) $dados1["tipo"]) . " - " . trim((string) $dados1["avaliacao"]);
       $sHtml .= "</option>";
       echo $sHtml;
     }

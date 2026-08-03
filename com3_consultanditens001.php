@@ -68,8 +68,8 @@ $clsolicitatipo->rotulo->label();
 $clsolicitem->rotulo->label();
 $clsolicitempcmater->rotulo->label();
 $clsolicitemunid->rotulo->label();
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

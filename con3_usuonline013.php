@@ -54,7 +54,7 @@ font {
 
 <body bgcolor=#CCCCCC onLoad="js_iniciar()">
 <?php 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 /*
 set_time_limit(0);
 $result = pg_exec("select uol_chat from db_usuariosonline
@@ -71,15 +71,15 @@ $verHora1 = $aux[1];
                      where uol_id = ".db_getsession("DB_id_usuario")."	  	             
 		             and uol_hora = ".db_getsession("DB_uol_hora")."");					 
 //and uol_ip = '".(isset($_SERVER["HTTP_X_FORWARDED_FOR"])?$_SERVER["HTTP_X_FORWARDED_FOR"]:$HTTP_SERVER_VARS['REMOTE_ADDR'])."' 					 
-  $linhas = split("\n",pg_result($result,0,0));
+  $linhas = preg_split("#\n#m",pg_fetch_result($result,0,0));
   $numLinhas = sizeof($linhas);
   //for($i = ($numLinhas <= 10?1:($numLinhas - 10));$i < $numLinhas;$i++) {
   for($i = 1;$i < $numLinhas;$i++) {
-    $aux = split("#",$linhas[$i]);
+    $aux = preg_split("#\\##m",(string) $linhas[$i]);
   //  $verHora2 = $aux[1];
  //   if($verHora2 > $verHora1) {
 //	  $verHora1 = $verHora2;
-	  if(db_indexOf(pg_result($result,0,0),"saio do chat") > 0) {
+	  if(db_indexOf(pg_fetch_result($result,0,0),"saio do chat") > 0) {
         pg_exec("update db_usuariosonline set  
            uol_chat = ' ',
            uol_sol = ' '

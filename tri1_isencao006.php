@@ -44,7 +44,7 @@ $clisencaoinscr = new cl_isencaoinscr;
 
 $clisencaolanc = new cl_isencaolanc;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

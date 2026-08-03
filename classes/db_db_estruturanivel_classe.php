@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE db_estruturanivel
 class cl_db_estruturanivel { 
    // cria variaveis de erro 
-   var $rotulo          = null; 
-   var $query_sql       = null; 
-   var $numrows         = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status     = null; 
-   var $erro_sql        = null; 
-   var $erro_banco      = null;  
-   var $erro_msg        = null;  
-   var $erro_campo      = null;  
-   var $pagina_retorno  = null; 
+   public $rotulo          = null; 
+   public $query_sql       = null; 
+   public $numrows         = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status     = null; 
+   public $erro_sql        = null; 
+   public $erro_banco      = null;  
+   public $erro_msg        = null;  
+   public $erro_campo      = null;  
+   public $pagina_retorno  = null; 
    // cria variaveis do arquivo 
-   var $db78_codestrut  = 0; 
-   var $db78_nivel      = 0; 
-   var $db78_descr      = null; 
-   var $db78_tamanho    = 0; 
-   var $db78_inicio     = 0; 
+   public $db78_codestrut  = 0; 
+   public $db78_nivel      = 0; 
+   public $db78_descr      = null; 
+   public $db78_tamanho    = 0; 
+   public $db78_inicio     = 0; 
    // cria propriedade com as variaveis do arquivo 
-	 var $campos          = "
+	 public $campos          = "
 					                 db78_codestrut = int8        = Código 
 					                 db78_nivel     = int4        = Nível 
 					                 db78_descr     = varchar(40) = Descrição 
@@ -56,10 +56,10 @@ class cl_db_estruturanivel {
 					                 db78_inicio    = int4        = Inicio 
 					                 ";
 					   //funcao construtor da classe 
-   function cl_db_estruturanivel() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_estruturanivel"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -148,7 +148,7 @@ class cl_db_estruturanivel {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql     = "Niveis das estruturas ($this->db78_codestrut."-".$this->db78_nivel) nao Incluído. Inclusao Abortada.";
          $this->erro_msg     = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco   = "Niveis das estruturas já Cadastrado";
@@ -172,15 +172,15 @@ class cl_db_estruturanivel {
      $resaco = $this->sql_record($this->sql_query_file($this->db78_codestrut,$this->db78_nivel));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount= pg_result($resac,0,0);
+       $acount= pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5694,'$this->db78_codestrut','I')");
        $resac = db_query("insert into db_acountkey values($acount,5695,'$this->db78_nivel','I')");
-       $resac = db_query("insert into db_acount    values($acount,899,5694,'','".AddSlashes(pg_result($resaco,0,'db78_codestrut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount    values($acount,899,5695,'','".AddSlashes(pg_result($resaco,0,'db78_nivel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount    values($acount,899,5696,'','".AddSlashes(pg_result($resaco,0,'db78_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount    values($acount,899,5697,'','".AddSlashes(pg_result($resaco,0,'db78_tamanho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount    values($acount,899,5698,'','".AddSlashes(pg_result($resaco,0,'db78_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount    values($acount,899,5694,'','".AddSlashes(pg_fetch_result($resaco,0,'db78_codestrut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount    values($acount,899,5695,'','".AddSlashes(pg_fetch_result($resaco,0,'db78_nivel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount    values($acount,899,5696,'','".AddSlashes(pg_fetch_result($resaco,0,'db78_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount    values($acount,899,5697,'','".AddSlashes(pg_fetch_result($resaco,0,'db78_tamanho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount    values($acount,899,5698,'','".AddSlashes(pg_fetch_result($resaco,0,'db78_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -191,10 +191,10 @@ class cl_db_estruturanivel {
    	 $this->atualizacampos();
      $sql = " update db_estruturanivel set ";
      $virgula = "";
-     if(trim($this->db78_codestrut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db78_codestrut"])){ 
+     if(trim((string) $this->db78_codestrut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db78_codestrut"])){ 
        $sql  .= $virgula." db78_codestrut = $this->db78_codestrut ";
        $virgula = ",";
-       if(trim($this->db78_codestrut) == null ){ 
+       if(trim((string) $this->db78_codestrut) == null ){ 
          $this->erro_sql    = " Campo Código nao Informado.";
          $this->erro_campo  = "db78_codestrut";
          $this->erro_banco  = "";
@@ -204,11 +204,11 @@ class cl_db_estruturanivel {
          return false;
        }
      }
-     if(trim($this->db78_nivel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db78_nivel"])){ 
+     if(trim((string) $this->db78_nivel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db78_nivel"])){ 
      	 $db78_nivel = $this->db78_nivel;
        $sql  .= $virgula." db78_nivel = $this->db78_nivel ";
        $virgula = ",";
-       if(trim($this->db78_nivel) == null ){ 
+       if(trim((string) $this->db78_nivel) == null ){ 
          $this->erro_sql    = " Campo Nível nao Informado.";
          $this->erro_campo  = "db78_nivel";
          $this->erro_banco  = "";
@@ -218,10 +218,10 @@ class cl_db_estruturanivel {
          return false;
        }
      }
-     if(trim($this->db78_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db78_descr"])){ 
+     if(trim((string) $this->db78_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db78_descr"])){ 
        $sql  .= $virgula." db78_descr = '$this->db78_descr' ";
        $virgula = ",";
-       if(trim($this->db78_descr) == null ){ 
+       if(trim((string) $this->db78_descr) == null ){ 
          $this->erro_sql    = " Campo Descrição nao Informado.";
          $this->erro_campo  = "db78_descr";
          $this->erro_banco  = "";
@@ -231,10 +231,10 @@ class cl_db_estruturanivel {
          return false;
        }
      }
-     if(trim($this->db78_tamanho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db78_tamanho"])){ 
+     if(trim((string) $this->db78_tamanho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db78_tamanho"])){ 
        $sql  .= $virgula." db78_tamanho = $this->db78_tamanho ";
        $virgula = ",";
-       if(trim($this->db78_tamanho) == null ){ 
+       if(trim((string) $this->db78_tamanho) == null ){ 
          $this->erro_sql    = " Campo Tamanho nao Informado.";
          $this->erro_campo  = "db78_tamanho";
          $this->erro_banco  = "";
@@ -244,10 +244,10 @@ class cl_db_estruturanivel {
          return false;
        }
      }
-     if(trim($this->db78_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db78_inicio"])){ 
+     if(trim((string) $this->db78_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db78_inicio"])){ 
        $sql  .= $virgula." db78_inicio = $this->db78_inicio ";
        $virgula = ",";
-       if(trim($this->db78_inicio) == null ){ 
+       if(trim((string) $this->db78_inicio) == null ){ 
          $this->erro_sql    = " Campo Inicio nao Informado.";
          $this->erro_campo  = "db78_inicio";
          $this->erro_banco  = "";
@@ -270,20 +270,20 @@ class cl_db_estruturanivel {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5694,'$this->db78_codestrut','A')");
          $resac = db_query("insert into db_acountkey values($acount,5695,'$this->db78_nivel','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db78_codestrut"]))
-           $resac = db_query("insert into db_acount values($acount,899,5694,'".AddSlashes(pg_result($resaco,$conresaco,'db78_codestrut'))."','$this->db78_codestrut',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,899,5694,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db78_codestrut'))."','$this->db78_codestrut',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db78_nivel"]))
-           $resac = db_query("insert into db_acount values($acount,899,5695,'".AddSlashes(pg_result($resaco,$conresaco,'db78_nivel'))."','$this->db78_nivel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,899,5695,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db78_nivel'))."','$this->db78_nivel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db78_descr"]))
-           $resac = db_query("insert into db_acount values($acount,899,5696,'".AddSlashes(pg_result($resaco,$conresaco,'db78_descr'))."','$this->db78_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,899,5696,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db78_descr'))."','$this->db78_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db78_tamanho"]))
-           $resac = db_query("insert into db_acount values($acount,899,5697,'".AddSlashes(pg_result($resaco,$conresaco,'db78_tamanho'))."','$this->db78_tamanho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,899,5697,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db78_tamanho'))."','$this->db78_tamanho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db78_inicio"]))
-           $resac = db_query("insert into db_acount values($acount,899,5698,'".AddSlashes(pg_result($resaco,$conresaco,'db78_inicio'))."','$this->db78_inicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,899,5698,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db78_inicio'))."','$this->db78_inicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
        $result = db_query($sql);
@@ -328,15 +328,15 @@ class cl_db_estruturanivel {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5694,'$db78_codestrut','E')");
          $resac = db_query("insert into db_acountkey values($acount,5695,'$db78_nivel','E')");
-         $resac = db_query("insert into db_acount values($acount,899,5694,'','".AddSlashes(pg_result($resaco,$iresaco,'db78_codestrut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,899,5695,'','".AddSlashes(pg_result($resaco,$iresaco,'db78_nivel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,899,5696,'','".AddSlashes(pg_result($resaco,$iresaco,'db78_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,899,5697,'','".AddSlashes(pg_result($resaco,$iresaco,'db78_tamanho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,899,5698,'','".AddSlashes(pg_result($resaco,$iresaco,'db78_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,899,5694,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db78_codestrut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,899,5695,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db78_nivel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,899,5696,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db78_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,899,5697,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db78_tamanho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,899,5698,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db78_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_estruturanivel
@@ -402,7 +402,7 @@ class cl_db_estruturanivel {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_estruturanivel";
@@ -416,7 +416,7 @@ class cl_db_estruturanivel {
    function sql_query ( $db78_codestrut=null,$db78_nivel=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_db_estruturanivel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -458,7 +458,7 @@ class cl_db_estruturanivel {
    function sql_query_file ( $db78_codestrut=null,$db78_nivel=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -487,7 +487,7 @@ class cl_db_estruturanivel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

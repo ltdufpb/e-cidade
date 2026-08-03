@@ -36,8 +36,8 @@ include(modification("dbforms/db_funcoes.php"));
 $clcarface = new cl_carface;
 $clface = new cl_face;
 $clcaracter = new cl_caracter;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -49,7 +49,7 @@ if(isset($faces)){
    $where58="j37_codigo=$j14_codigo and j37_face in($faces)";
    $result77  = $clcaracter->sql_record($clcaracter->sql_query_file("","j31_codigo as codigo,j31_descr","","j31_grupo=$j32_grupo"));
    $numrows77 = $clcaracter->numrows;
-   $matriz = array();
+   $matriz = [];
    $matriz[0]="...";
    for($i=0; $i<$numrows77; $i++){
      db_fieldsmemory($result77,$i);
@@ -67,11 +67,11 @@ if(isset($atualizar) && $atualizar!=""){
   $sqlerro=false;
   db_inicio_transacao();
 
-  $matriz01 = split(",",$faces);
+  $matriz01 = preg_split("#,#m",$faces);
   for($i=0; $i<sizeof($matriz01); $i++){
 
     $x="caracter_".$matriz01[$i];
-    if($$x!="0"){
+    if(${$x}!="0"){
 
       $result52=$clcarface->sql_record($clcarface->sql_query("","","j38_caract, j38_datalancamento","","j32_grupo=$j32_grupo and j38_face=".$matriz01[$i] ));
       if($clcarface->numrows>0){
@@ -85,7 +85,7 @@ if(isset($atualizar) && $atualizar!=""){
 	      }
       }
 
-      $clcarface->j38_caract=$$x;
+      $clcarface->j38_caract=${$x};
       $clcarface->j38_face=$matriz01[$i];
 
       /**
@@ -95,11 +95,11 @@ if(isset($atualizar) && $atualizar!=""){
       $oCarFace = db_utils::fieldsMemory($result52, 0);
 
       $clcarface->j38_datalancamento = date("Y-m-d", db_getsession("DB_datausu"));
-      if ($oCarFace->j38_caract == $$x) {
+      if ($oCarFace->j38_caract == ${$x}) {
         $clcarface->j38_datalancamento = $oCarFace->j38_datalancamento;
       }
 
-      $clcarface->incluir($matriz01[$i],$$x);
+      $clcarface->incluir($matriz01[$i],${$x});
       $erro_msg=$clcarface->erro_msg;
       if($clcarface->erro_status==0){
         $sqlerro=true;
@@ -261,7 +261,7 @@ background-color:#ccddcc;
           if($clcarface->numrows>0){
             db_fieldsmemory($result45,0);
 	    $x="caracter_$j37_face";
-	    $$x=$j38_caract;
+	    ${$x}=$j38_caract;
 	  }
       ?>
        <tr class="corpo">

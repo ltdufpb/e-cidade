@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <html>
@@ -65,7 +65,7 @@ if($tipototal==1){
     global $wid;
     global $ambiente;
     global $libcliente;
-    global $HTTP_POST_VARS;
+    global $_POST;
     global $matcli;
     global $codcli;
 		
@@ -77,23 +77,23 @@ if($tipototal==1){
     order by menusequencia
     ");			  
 
-    $numrows = pg_numrows($sub);
+    $numrows = pg_num_rows($sub);
     if($numrows > 0) {
       for($x = 0;$x < $numrows;$x++) {
-        $libcliente = pg_result($sub,$x,"libcliente");
-        $valor = pg_result($sub,$x,"id_item_filho");
-        $funcao= pg_result($sub,$x,"funcao");
+        $libcliente = pg_fetch_result($sub,$x,"libcliente");
+        $valor = pg_fetch_result($sub,$x,"id_item_filho");
+        $funcao= pg_fetch_result($sub,$x,"funcao");
         
         echo "<img src=\"imagens/alinha.gif\" height=\"5\" id=\"Img".$conta."\" width=\"".$wid."\" >";
         if($funcao != "" && isset($matcli[$valor]) ){
-          echo "<input size=\"1\" onClick=\"js_pesquisaitemcad($codcli,$mod,$valor)\" type=\"button\" id=\"ID$valor\" name=\"CHECK$valor\" ".($libcliente=="f"?"style=\"background-color:blue\" title=\"Bloqueado Cliente\"":"")." value=\"".(isset($matcli[$valor])?$matcli[$valor]:0)."\" >";
+          echo "<input size=\"1\" onClick=\"js_pesquisaitemcad($codcli,$mod,$valor)\" type=\"button\" id=\"ID$valor\" name=\"CHECK$valor\" ".($libcliente=="f"?"style=\"background-color:blue\" title=\"Bloqueado Cliente\"":"")." value=\"".($matcli[$valor] ?? 0)."\" >";
         }
-        echo "<label for=\"ID$valor\">".pg_result($sub,$x,"descricao")."</label>";			
+        echo "<label for=\"ID$valor\">".pg_fetch_result($sub,$x,"descricao")."</label>";			
 
 		echo "<br>\n";
         $wid += 15;
         $conta++;
-        submenus(pg_result($sub,$x,"id_item_filho"),$id,$mod);
+        submenus(pg_fetch_result($sub,$x,"id_item_filho"),$id,$mod);
         $wid -= 15;
       }
     }
@@ -126,15 +126,15 @@ if($tipototal==1){
   }
 $result_cli = db_query($sql);
   
-for($i=0;$i<pg_numrows($result_cli);$i++){
+for($i=0;$i<pg_num_rows($result_cli);$i++){
   db_fieldsmemory($result_cli,$i);
   $matcli[$at99_itensacesso] = $at99_acessos;
 }
   
   if($codcli==0){
-    echo "<strong>Módulo:</strong> ".pg_result($result_cli,0,'nome_modulo');
+    echo "<strong>Módulo:</strong> ".pg_fetch_result($result_cli,0,'nome_modulo');
   }else{
-    echo "<strong>Cliente:</strong> ".pg_result($result_cli,0,'at01_nomecli')." <strong>Módulo:</strong> ".pg_result($result_cli,0,'nome_modulo');
+    echo "<strong>Cliente:</strong> ".pg_fetch_result($result_cli,0,'at01_nomecli')." <strong>Módulo:</strong> ".pg_fetch_result($result_cli,0,'nome_modulo');
   }
   
 ?>
@@ -156,11 +156,11 @@ $SQL = "select i.id_item as pai,m.id_item,m.id_item_filho,m.modulo,i.descricao,i
   $wid = 15;
   
   $result = db_query($SQL);			
-  for($i = 0;$i < pg_numrows($result);$i++) {
-    $valor = pg_result($result,$i,"id_item_filho");
+  for($i = 0;$i < pg_num_rows($result);$i++) {
+    $valor = pg_fetch_result($result,$i,"id_item_filho");
     echo "<td id=\"col$i\" valign=\"top\" nowrap>\n
-    <label for=\"ID$valor\">".pg_result($result,$i,"descricao")."</label><br>\n";
-    submenus(pg_result($result,$i,"pai"),"col".$i,db_strpos($codmod,"##"));
+    <label for=\"ID$valor\">".pg_fetch_result($result,$i,"descricao")."</label><br>\n";
+    submenus(pg_fetch_result($result,$i,"pai"),"col".$i,db_strpos($codmod,"##"));
     echo "</td>\n";
   }	   
 
@@ -176,13 +176,13 @@ echo "</table>";
           where at01_codcli = $codcli";
   $result_cli = db_query($sql);
 
-  echo "<strong>Cliente:</strong> ".pg_result($result_cli,0,'at01_nomecli');
+  echo "<strong>Cliente:</strong> ".pg_fetch_result($result_cli,0,'at01_nomecli');
   
   $sql = "select at25_descr as nome_modulo 
           from atendcadarea 
           where at26_sequencial = $codmod";
   $result_cli = db_query($sql);
-  echo "<strong> Área:</strong> ".pg_result($result_cli,0,'nome_modulo');
+  echo "<strong> Área:</strong> ".pg_fetch_result($result_cli,0,'nome_modulo');
 
   $sql = "select at99_itemcodmod,nome_modulo,count(*) as dl_acessos
           from acesso_clientes 

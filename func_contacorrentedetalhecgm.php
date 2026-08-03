@@ -100,7 +100,7 @@ $campos = "distinct c17_sequencial, cast(cast(c17_contacorrente as varchar) ||' 
     <td align="center" valign="top">
       <?php 
 
-$aWhere   = array();
+$aWhere   = [];
 
 if (isset($oGet->c19_contacorrente) && trim($oGet->c19_contacorrente) != '') {
   $aWhere[] = "c19_contacorrente = {$oGet->c19_contacorrente}";
@@ -123,10 +123,10 @@ if (!isset($pesquisa_chave)) {
   }
 
   $sql     = $clcontacorrentedetalhe->sql_query_contacorrente_cgm(null, $campos, 1, implode(" and ", $aWhere));
-  $repassa = array();
+  $repassa = [];
   
   if (isset($chave_c19_sequencial)) {
-    $repassa = array("chave_c19_sequencial" => $chave_c19_sequencial, "chave_c19_sequencial" => $chave_c19_sequencial);
+    $repassa = ["chave_c19_sequencial" => $chave_c19_sequencial, "chave_c19_sequencial" => $chave_c19_sequencial];
   }
   
   db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

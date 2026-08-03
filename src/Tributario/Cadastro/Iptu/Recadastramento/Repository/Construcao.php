@@ -15,7 +15,7 @@ class Construcao
     /**
      * @var ConstrucaoModel[]
      */
-    protected $construcao = array();
+    protected $construcao = [];
 
 
     private function __construct()
@@ -86,9 +86,7 @@ class Construcao
             throw new \DBException("Erro ao verificar outros proprietários do imóvel da matrícula {$iCodigoMatricula}.");
         }
 
-        $aCgmPropri = \db_utils::makeCollectionFromRecord($rsDados, function ($Dados) {
-            return $Dados->j42_numcgm;
-        });
+        $aCgmPropri = \db_utils::makeCollectionFromRecord($rsDados, fn($Dados) => $Dados->j42_numcgm);
 
         $aCgm = array_merge($aCgm, $aCgmPropri);
         $construcao->setCgm($aCgm);
@@ -101,9 +99,7 @@ class Construcao
             throw new \Exception("Erro ao buscar as características da construção da matrícula {$iCodigoMatricula}.");
         }
 
-        $aCaracteristicasLote = \db_utils::makeCollectionFromRecord($rsCaracteristicas, function ($oDados) {
-            return $oDados->j48_caract;
-        });
+        $aCaracteristicasLote = \db_utils::makeCollectionFromRecord($rsCaracteristicas, fn($oDados) => $oDados->j48_caract);
 
         $construcao->setCaracteristicas($aCaracteristicasLote);
 

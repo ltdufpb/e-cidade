@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <html>
@@ -125,12 +125,12 @@ if($tipo!=0){
   }
 }
 if($scodigo!=""){
-  $campos = split("-",$scodigo);
+  $campos = preg_split("#\\-#m",(string) $scodigo);
   $sql .= " and ".$campos[0]." = ".$campos[1];
 }
 
 $result = db_query("select count(*) from (select distinct at40_sequencial from ($sql) as x ) as x ");
-echo "<strong>Tarefas Envolvidas:</strong>".pg_result($result,0,0)."<br>";
+echo "<strong>Tarefas Envolvidas:</strong>".pg_fetch_result($result,0,0)."<br>";
 
 
 db_lovrot($sql,50,"()","","js_processa|at40_sequencial");

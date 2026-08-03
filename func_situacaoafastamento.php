@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_situacaoafastamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsituacaoafastamento = new cl_situacaoafastamento;
 $clsituacaoafastamento->rotulo->label("rh166_sequencial");
 $clsituacaoafastamento->rotulo->label("rh166_descricao");
@@ -52,9 +52,9 @@ $clsituacaoafastamento->rotulo->label("rh166_descricao");
         }else{
            $sql = $clsituacaoafastamento->sql_query("",$campos,"rh166_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh166_sequencial)){
-          $repassa = array("chave_rh166_sequencial"=>$chave_rh166_sequencial,"chave_rh166_descricao"=>$chave_rh166_descricao);
+          $repassa = ["chave_rh166_sequencial"=>$chave_rh166_sequencial,"chave_rh166_descricao"=>$chave_rh166_descricao];
         }
         // dieSql($sql, false);
         echo '<div class="container">';

@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE habitcandidatointeresse
 class cl_habitcandidatointeresse { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ht20_sequencial = 0; 
-   var $ht20_habitcandidato = 0; 
-   var $ht20_habitgrupoprograma = 0; 
-   var $ht20_ativo = 'f'; 
+   public $ht20_sequencial = 0; 
+   public $ht20_habitcandidato = 0; 
+   public $ht20_habitgrupoprograma = 0; 
+   public $ht20_ativo = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ht20_sequencial = int4 = Sequencial 
                  ht20_habitcandidato = int4 = Candidato 
                  ht20_habitgrupoprograma = int4 = Grupo Programa 
                  ht20_ativo = bool = Ativo 
                  ";
    //funcao construtor da classe 
-   function cl_habitcandidatointeresse() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("habitcandidatointeresse"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_habitcandidatointeresse {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ht20_sequencial = pg_result($result,0,0); 
+       $this->ht20_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from habitcandidatointeresse_ht20_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ht20_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ht20_sequencial)){
          $this->erro_sql = " Campo ht20_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_habitcandidatointeresse {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Interesse do Candidato da Habitação ($this->ht20_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Interesse do Candidato da Habitação já Cadastrado";
@@ -180,13 +180,13 @@ class cl_habitcandidatointeresse {
      $resaco = $this->sql_record($this->sql_query_file($this->ht20_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17033,'$this->ht20_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3008,17033,'','".AddSlashes(pg_result($resaco,0,'ht20_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3008,17034,'','".AddSlashes(pg_result($resaco,0,'ht20_habitcandidato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3008,17035,'','".AddSlashes(pg_result($resaco,0,'ht20_habitgrupoprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3008,17036,'','".AddSlashes(pg_result($resaco,0,'ht20_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3008,17033,'','".AddSlashes(pg_fetch_result($resaco,0,'ht20_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3008,17034,'','".AddSlashes(pg_fetch_result($resaco,0,'ht20_habitcandidato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3008,17035,'','".AddSlashes(pg_fetch_result($resaco,0,'ht20_habitgrupoprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3008,17036,'','".AddSlashes(pg_fetch_result($resaco,0,'ht20_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_habitcandidatointeresse {
       $this->atualizacampos();
      $sql = " update habitcandidatointeresse set ";
      $virgula = "";
-     if(trim($this->ht20_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht20_sequencial"])){ 
+     if(trim((string) $this->ht20_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht20_sequencial"])){ 
        $sql  .= $virgula." ht20_sequencial = $this->ht20_sequencial ";
        $virgula = ",";
-       if(trim($this->ht20_sequencial) == null ){ 
+       if(trim((string) $this->ht20_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ht20_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_habitcandidatointeresse {
          return false;
        }
      }
-     if(trim($this->ht20_habitcandidato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht20_habitcandidato"])){ 
+     if(trim((string) $this->ht20_habitcandidato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht20_habitcandidato"])){ 
        $sql  .= $virgula." ht20_habitcandidato = $this->ht20_habitcandidato ";
        $virgula = ",";
-       if(trim($this->ht20_habitcandidato) == null ){ 
+       if(trim((string) $this->ht20_habitcandidato) == null ){ 
          $this->erro_sql = " Campo Candidato nao Informado.";
          $this->erro_campo = "ht20_habitcandidato";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_habitcandidatointeresse {
          return false;
        }
      }
-     if(trim($this->ht20_habitgrupoprograma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht20_habitgrupoprograma"])){ 
+     if(trim((string) $this->ht20_habitgrupoprograma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht20_habitgrupoprograma"])){ 
        $sql  .= $virgula." ht20_habitgrupoprograma = $this->ht20_habitgrupoprograma ";
        $virgula = ",";
-       if(trim($this->ht20_habitgrupoprograma) == null ){ 
+       if(trim((string) $this->ht20_habitgrupoprograma) == null ){ 
          $this->erro_sql = " Campo Grupo Programa nao Informado.";
          $this->erro_campo = "ht20_habitgrupoprograma";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_habitcandidatointeresse {
          return false;
        }
      }
-     if(trim($this->ht20_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht20_ativo"])){ 
+     if(trim((string) $this->ht20_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht20_ativo"])){ 
        $sql  .= $virgula." ht20_ativo = '$this->ht20_ativo' ";
        $virgula = ",";
-       if(trim($this->ht20_ativo) == null ){ 
+       if(trim((string) $this->ht20_ativo) == null ){ 
          $this->erro_sql = " Campo Ativo nao Informado.";
          $this->erro_campo = "ht20_ativo";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_habitcandidatointeresse {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17033,'$this->ht20_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht20_sequencial"]) || $this->ht20_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3008,17033,'".AddSlashes(pg_result($resaco,$conresaco,'ht20_sequencial'))."','$this->ht20_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3008,17033,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht20_sequencial'))."','$this->ht20_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht20_habitcandidato"]) || $this->ht20_habitcandidato != "")
-           $resac = db_query("insert into db_acount values($acount,3008,17034,'".AddSlashes(pg_result($resaco,$conresaco,'ht20_habitcandidato'))."','$this->ht20_habitcandidato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3008,17034,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht20_habitcandidato'))."','$this->ht20_habitcandidato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht20_habitgrupoprograma"]) || $this->ht20_habitgrupoprograma != "")
-           $resac = db_query("insert into db_acount values($acount,3008,17035,'".AddSlashes(pg_result($resaco,$conresaco,'ht20_habitgrupoprograma'))."','$this->ht20_habitgrupoprograma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3008,17035,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht20_habitgrupoprograma'))."','$this->ht20_habitgrupoprograma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht20_ativo"]) || $this->ht20_ativo != "")
-           $resac = db_query("insert into db_acount values($acount,3008,17036,'".AddSlashes(pg_result($resaco,$conresaco,'ht20_ativo'))."','$this->ht20_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3008,17036,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht20_ativo'))."','$this->ht20_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_habitcandidatointeresse {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17033,'$ht20_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3008,17033,'','".AddSlashes(pg_result($resaco,$iresaco,'ht20_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3008,17034,'','".AddSlashes(pg_result($resaco,$iresaco,'ht20_habitcandidato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3008,17035,'','".AddSlashes(pg_result($resaco,$iresaco,'ht20_habitgrupoprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3008,17036,'','".AddSlashes(pg_result($resaco,$iresaco,'ht20_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3008,17033,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht20_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3008,17034,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht20_habitcandidato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3008,17035,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht20_habitgrupoprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3008,17036,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht20_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from habitcandidatointeresse
@@ -376,7 +376,7 @@ class cl_habitcandidatointeresse {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:habitcandidatointeresse";
@@ -391,7 +391,7 @@ class cl_habitcandidatointeresse {
    function sql_query ( $ht20_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_habitcandidatointeresse {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -432,7 +432,7 @@ class cl_habitcandidatointeresse {
    function sql_query_file ( $ht20_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,7 +453,7 @@ class cl_habitcandidatointeresse {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

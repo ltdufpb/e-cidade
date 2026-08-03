@@ -54,11 +54,6 @@ class Formula extends FormulaCompiler implements FormulaInterface
     private $atributoExame;
 
     /**
-     * @var bool
-     */
-    private $buscarValoresVariaveis = false;
-
-    /**
      * Formula constructor.
      * @param $formula
      * @param RequisicaoExame $requisicaoExame
@@ -69,14 +64,13 @@ class Formula extends FormulaCompiler implements FormulaInterface
         $formula,
         RequisicaoExame $requisicaoExame,
         AtributoExame $atributoExame,
-        $buscarValoresVariaveis = false
+        private $buscarValoresVariaveis = false
     ) {
         $formula = str_replace('[', '', str_replace(']', '', $formula));
         parent::__construct($formula);
 
         $this->requisicaoExame = $requisicaoExame;
         $this->atributoExame = $atributoExame;
-        $this->buscarValoresVariaveis = $buscarValoresVariaveis;
     }
 
     /**
@@ -141,7 +135,7 @@ class Formula extends FormulaCompiler implements FormulaInterface
      */
     public function validaDecimais($resultado)
     {
-        $resultadoPartes = explode('.', $resultado);
+        $resultadoPartes = explode('.', (string) $resultado);
 
         if (isset($resultadoPartes[1])) {
             $resultado = number_format($resultado, 2);

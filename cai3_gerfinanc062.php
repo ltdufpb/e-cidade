@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 require modification("libs/db_stdlib.php");
 require modification("libs/db_conecta.php");
@@ -52,7 +52,7 @@ use ECidade\Tributario\Juridico\ProcessoForo\Repository\ProcessoForo as Processo
 use \ECidade\Tributario\Arrecadacao\Custas\Service;
 use \ECidade\Tributario\Arrecadacao\Repository\ParcValor as ParcValorRepository;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $nomeArquivo = '';
 $oPost = db_utils::postMemory($_POST);
@@ -94,7 +94,7 @@ if (!isset($inicial)) {
 $oGetalFinanceiraDebitos = new GeralFinanceiraDebitosRequest();
 $geralFinanceiraDebitosRequest = $oGetalFinanceiraDebitos->processDebitosRequest($lInicial);
 // Busca data de vencimento do numpre_numpar
-$aNumpreNumparVenc = array();
+$aNumpreNumparVenc = [];
 
 if ($tipo_debito == 13) {
    $aDebitos = $geralFinanceiraDebitosRequest->getDebitos();
@@ -103,30 +103,30 @@ if ($tipo_debito == 13) {
 
         if ($numpreVenc->lChecked) {
 
-            if (is_numeric(substr($numpreVenc->sNumpres, 0, 1))) {
+            if (is_numeric(substr((string) $numpreVenc->sNumpres, 0, 1))) {
                 $sNumpreVenc = substr(
-                    $numpreVenc->sNumpres,
+                    (string) $numpreVenc->sNumpres,
                     0
-                    , strpos($numpreVenc->sNumpres, 'P')
+                    , strpos((string) $numpreVenc->sNumpres, 'P')
                 );
             } else {
                 $sNumpreVenc = substr(
-                    $numpreVenc->sNumpres,
+                    (string) $numpreVenc->sNumpres,
                     1
-                    , strpos($numpreVenc->sNumpres, 'P') -1
+                    , strpos((string) $numpreVenc->sNumpres, 'P') -1
                 );
             }
 
 
             $sNumparVenc = substr(
-                $numpreVenc->sNumpres,
-                strpos($numpreVenc->sNumpres, 'P') + 1,
-                strpos($numpreVenc->sNumpres, 'R') - strpos($numpreVenc->sNumpres, 'P') - 1
+                (string) $numpreVenc->sNumpres,
+                strpos((string) $numpreVenc->sNumpres, 'P') + 1,
+                strpos((string) $numpreVenc->sNumpres, 'R') - strpos((string) $numpreVenc->sNumpres, 'P') - 1
             );
 
             $sReceitVenc = substr(
-                $numpreVenc->sNumpres,
-                strpos($numpreVenc->sNumpres, 'R') + 1
+                (string) $numpreVenc->sNumpres,
+                strpos((string) $numpreVenc->sNumpres, 'R') + 1
             );
 
             $sSqlVenc = "SELECT k00_dtvenc as dt_venc
@@ -137,7 +137,7 @@ if ($tipo_debito == 13) {
 
             $rsVenc = db_query($sSqlVenc) or die($sSqlVenc);
 
-            if (pg_numrows($rsVenc) > 0) {
+            if (pg_num_rows($rsVenc) > 0) {
                 $oVenc = db_utils::fieldsMemory($rsVenc, 0);
                 $aNumpreNumparVenc[] = [
                     "numpre" => $sNumpreVenc,
@@ -168,7 +168,7 @@ if ($tipo_debito == 13) {
 
          $rsNumpres = pg_query($sqlNumpres) or die($sqlNumpres);
 
-         for ($iReg = 0; $iReg < pg_numrows($rsNumpres); $iReg++) {
+         for ($iReg = 0; $iReg < pg_num_rows($rsNumpres); $iReg++) {
              $oVenc = db_utils::fieldsMemory($rsNumpres, $iReg);
              $aNumpreNumparVenc[] = ["numpre" => $oVenc->numpre_venc,
                                      "numpar" => $oVenc->numpar_venc,
@@ -197,17 +197,17 @@ foreach ($geralFinanceiraDebitosRequest as $reqNumpre) {
 
             $rsNumpres = pg_query($sqlNumpres) or die($sqlNumpres);
 
-            for ($iReg = 0; $iReg < pg_numrows($rsNumpres); $iReg++) {
+            for ($iReg = 0; $iReg < pg_num_rows($rsNumpres); $iReg++) {
                 $oVenc = db_utils::fieldsMemory($rsNumpres, $iReg);
                 $aNumpreNumparVenc[] = ["numpre" => $oVenc->numpre_venc,
                     "numpar" => $oVenc->numpar_venc,
                     "dt_venc" => $oVenc->dt_venc];
             }
-        } elseif (substr_count($reqNumpre->sNumpres, 'N') > 0) {
+        } elseif (substr_count((string) $reqNumpre->sNumpres, 'N') > 0) {
             /**
              *  Casos que o parâmetro de numpres tem uma lista numpre/numpar
              */
-            $aListaNumpres = explode('N', $reqNumpre->sNumpres);
+            $aListaNumpres = explode('N', (string) $reqNumpre->sNumpres);
             foreach ($aListaNumpres as $sNumpreParc) {
                 if (!empty($sNumpreParc)) {
                     $numpreVenc = substr($sNumpreParc, 0, strpos($sNumpreParc, 'P'));
@@ -222,7 +222,7 @@ foreach ($geralFinanceiraDebitosRequest as $reqNumpre) {
                                        and k00_numpar = $numparVenc limit 1";
 
                         $rsVenc = pg_query($sqlVenc);
-                        if (pg_numrows($rsVenc) > 0) {
+                        if (pg_num_rows($rsVenc) > 0) {
                             $oVenc = db_utils::fieldsMemory($rsVenc, 0);
                             $aNumpreNumparVenc[] = ["numpre" => $numpreVenc,
                                 "numpar" => $numparVenc,
@@ -234,10 +234,10 @@ foreach ($geralFinanceiraDebitosRequest as $reqNumpre) {
 
         } else {
 
-            $numpreVenc = substr($reqNumpre->sNumpres, 1, strpos($reqNumpre->sNumpres, 'P') - 1);
-            $numparVenc = substr($reqNumpre->sNumpres,
-                strpos($reqNumpre->sNumpres, 'P') + 1,
-                (strpos($reqNumpres->sNumpres, 'R') - strpos($reqNumpres->sNumpres, 'P')) - 2
+            $numpreVenc = substr((string) $reqNumpre->sNumpres, 1, strpos((string) $reqNumpre->sNumpres, 'P') - 1);
+            $numparVenc = substr((string) $reqNumpre->sNumpres,
+                strpos((string) $reqNumpre->sNumpres, 'P') + 1,
+                (strpos((string) $reqNumpres->sNumpres, 'R') - strpos((string) $reqNumpres->sNumpres, 'P')) - 2
             );
 
             if (!empty($numpreVenc) && !empty($numparVenc)) {
@@ -247,7 +247,7 @@ foreach ($geralFinanceiraDebitosRequest as $reqNumpre) {
                                and k00_numpar = $numparVenc limit 1";
 
                 $rsVenc = pg_query($sqlVenc);
-                if (pg_numrows($rsVenc) > 0) {
+                if (pg_num_rows($rsVenc) > 0) {
                     $oVenc = db_utils::fieldsMemory($rsVenc, 0);
                     $aNumpreNumparVenc[] = ["numpre" => $numpreVenc,
                         "numpar" => $numparVenc,
@@ -304,7 +304,7 @@ if (!empty($ver_numcgm)) {
     $sqlloteador .= "   where j120_cgm = {$ver_numcgm}                                                ";
 
     $resultloteador = db_query($sqlloteador) or die($sqlloteador);
-    if (pg_numrows($resultloteador) > 0) {
+    if (pg_num_rows($resultloteador) > 0) {
         $loteador = true;
     }
 }
@@ -450,8 +450,8 @@ if (!session_is_registered("conteudoparc")) {
 $sql_cgc = "select cgc, db21_codcli from db_config where codigo = " . db_getsession("DB_instit");
 $rs_cgc = db_query($sql_cgc);
 $oConfig = new stdClass();
-$oConfig->cgc = pg_result($rs_cgc, 0, 0);
-$oConfig->db21_codcli = pg_result($rs_cgc, 0, 1);
+$oConfig->cgc = pg_fetch_result($rs_cgc, 0, 0);
+$oConfig->db21_codcli = pg_fetch_result($rs_cgc, 0, 1);
 
 $iTemDesconto = 0;
 // Validação para buscar a receita associada a regra do parcelamento
@@ -540,15 +540,15 @@ $sqlcadtipoparc .= " order by k40_ordem ";
 
 $resultcadtipoparc = db_query($sqlcadtipoparc) or die($sqlcadtipoparc);
 
-if (pg_numrows($resultcadtipoparc) == 0) {
+if (pg_num_rows($resultcadtipoparc) == 0) {
     db_msgbox("Nao existem regras para parcelamento cadastrados na faixa da data atual ou conflito entre regras de parcelamento e tipos de débito! Contate suporte!");
     exit;
 }
 
 echo "Selecione a regra de parcelamento: ";
 
-$arr = array();
-for ($r = 0; $r < pg_numrows($resultcadtipoparc); $r++) {
+$arr = [];
+for ($r = 0; $r < pg_num_rows($resultcadtipoparc); $r++) {
     db_fieldsmemory($resultcadtipoparc, $r);
     $arr[$k40_codigo] = $k40_descr;
 }
@@ -556,8 +556,8 @@ flush();
 
 db_select("k40_cadtipoparc", $arr, true, 1, "onchange='js_reload(this.value)'");
 
-if (!isset($k40_cadtipoparc) and (pg_numrows($resultcadtipoparc) > 0)) {
-    $k40_cadtipoparc = pg_result($resultcadtipoparc, 0, 0);
+if (!isset($k40_cadtipoparc) and (pg_num_rows($resultcadtipoparc) > 0)) {
+    $k40_cadtipoparc = pg_fetch_result($resultcadtipoparc, 0, 0);
 }
 
 //Verificar tipo de débito e data limite
@@ -578,7 +578,7 @@ if (pg_num_rows($rsSqlDataLimite) > 0) {
 }
 
 if (($k03_tipo == 5 || $k03_tipo == 6 || $k03_tipo == 13 || $k03_tipo == 16 || $k03_tipo == 17) && !$lValidaReparcelamento) {
-    if (trim($k40_dtreparc) != "") {
+    if (trim((string) $k40_dtreparc) != "") {
         $dDataatual = date("Ymd", db_getsession("DB_datausu"));
 
         $dDataLimite = str_replace("-", "", $k40_dtreparc);
@@ -591,7 +591,7 @@ if (($k03_tipo == 5 || $k03_tipo == 6 || $k03_tipo == 13 || $k03_tipo == 16 || $
 
     if (!$lValidaReparcelamento) {
         //Verifica o numero de reparcelamentos por numpre.
-        $aNumpres = array();
+        $aNumpres = [];
         $matnumpres = explode("XXX", db_getsession("conteudoparc"));
         for ($contanumpres = 0; $contanumpres < sizeof($matnumpres); $contanumpres++) {
             if ($matnumpres[$contanumpres] == "") {
@@ -659,7 +659,7 @@ if ($k40_regraunif == 2) {
     if (isset($inicial)) {
         if (isset($numpres)) {
             foreach ($numpres as $iInicial) {
-                if (trim($iInicial) != '') {
+                if (trim((string) $iInicial) != '') {
                     $sIniciaisForo .= $sVirgula . $iInicial;
                     $sVirgula = ', ';
                 }
@@ -714,7 +714,7 @@ if ($entra == false) {
     $sqltipoparc .= " order by k40_ordem ";
 
     $resulttipoparc = db_query($sqltipoparc) or die($sqltipoparc);
-    if (pg_numrows($resulttipoparc) > 0) {
+    if (pg_num_rows($resulttipoparc) > 0) {
         db_fieldsmemory($resulttipoparc, 0);
     } else {
         $k40_todasmarc = false;
@@ -730,12 +730,12 @@ if ($entra == false) {
         $totalregistrospassados = $totregistros;
     }
 
-    if (pg_numrows($resulttipoparcdeb) == 0) {
+    if (pg_num_rows($resulttipoparcdeb) == 0) {
         $passar = true;
     } else {
         $sqltipoparcdeb = "select * from cadtipoparcdeb where k41_cadtipoparc = $k40_cadtipoparc and k41_arretipo = $tipo_debito";
         $resulttipoparcdeb = db_query($sqltipoparcdeb);
-        if (pg_numrows($resulttipoparcdeb) > 0) {
+        if (pg_num_rows($resulttipoparcdeb) > 0) {
             $passar = true;
         }
     }
@@ -748,7 +748,7 @@ if ($entra == false) {
         $totregistros = 0;
     }
 
-    if (pg_numrows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados != $totregistros : false) or $passar == false) {
+    if (pg_num_rows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados != $totregistros : false) or $passar == false) {
         $desconto = 0;
     } else {
         $desconto = $k40_codigo;
@@ -756,13 +756,13 @@ if ($entra == false) {
 
     $tiposparc = "";
 
-    for ($parcelas = 0; $parcelas < pg_numrows($resulttipoparc); $parcelas++) {
+    for ($parcelas = 0; $parcelas < pg_num_rows($resulttipoparc); $parcelas++) {
         db_fieldsmemory($resulttipoparc, $parcelas, true);
         if ($desconto == 0 and 1 == 2) {
             $descmul = 0;
             $descjur = 0;
         }
-        $tiposparc .= $tipoparc . "=" . $maxparc . "=" . $descmul . "=" . $descjur . "=" . (int) $k42_minentrada . "=" . $k40_forma . "=" . $descvlr . "=" . $vlrmin . "=" . $tipovlr . "=" . $minparc . "=" . ($parcelas == (pg_numrows($resulttipoparc) - 1) ? "" : "-");
+        $tiposparc .= $tipoparc . "=" . $maxparc . "=" . $descmul . "=" . $descjur . "=" . (int) $k42_minentrada . "=" . $k40_forma . "=" . $descvlr . "=" . $vlrmin . "=" . $tipovlr . "=" . $minparc . "=" . ($parcelas == (pg_num_rows($resulttipoparc) - 1) ? "" : "-");
     }
 
     if ($tiposparc == "") {
@@ -785,7 +785,7 @@ if ((isset($inicial) && $inicial != "") and ($entra == false)) {
            where v59_inicial in ($numpre) ";
 
     $result = db_query($sql) or die($sql);
-    $numrows = pg_numrows($result);
+    $numrows = pg_num_rows($result);
     $virgula = "";
     $numpar1 = "";
     $numpre1 = "";
@@ -812,7 +812,7 @@ if (!session_is_registered("conteudoparc")) {
 //db_msgbox('antes da matriz --- '.db_getsession("conteudoparc"));
 $matriz = explode("XXX", db_getsession("conteudoparc"));
 
-$novamatrizval = array();
+$novamatrizval = [];
 
 for ($x = 0; $x < sizeof($matriz); $x++) {
     if ($matriz[$x] == "") {
@@ -940,7 +940,7 @@ for ($contanumpres = 0; $contanumpres < sizeof($matnumpres); $contanumpres++) {
     }
     $resultprocura = db_query($sqlprocura) or die($sqlprocura);
 
-    if (pg_numrows($resultprocura) == 0) {
+    if (pg_num_rows($resultprocura) == 0) {
 
         $sqlparc = "insert into NUMPRES_CALC values ($numpre," . ($tiporeg == "NUMPRE" ? $numpar : "0") . ")";
         db_query($sqlparc) or die($sqlparc);
@@ -997,7 +997,7 @@ for ($contanumpres = 0; $contanumpres < sizeof($matnumpres); $contanumpres++) {
 						   $whereloteador";
         $sqltipoparc .= " order by maxparc ";
         $resulttipoparc = db_query($sqltipoparc) or die($sqltipoparc);
-        if (pg_numrows($resulttipoparc) > 0) {
+        if (pg_num_rows($resulttipoparc) > 0) {
             db_fieldsmemory($resulttipoparc, 0);
         } else {
             $k40_todasmarc = false;
@@ -1015,14 +1015,14 @@ for ($contanumpres = 0; $contanumpres < sizeof($matnumpres); $contanumpres++) {
             $totalregistrospassados = $totregistros;
         }
 
-        if (pg_numrows($resulttipoparcdeb) == 0) {
+        if (pg_num_rows($resulttipoparcdeb) == 0) {
             $passar = true;
         } else {
             $sqltipoparcdeb = "	select * from cadtipoparcdeb
 													where k41_cadtipoparc = $k40_cadtipoparc
    													and	k41_arretipo = $tipo_debito";
             $resulttipoparcdeb = db_query($sqltipoparcdeb);
-            if (pg_numrows($resulttipoparcdeb) > 0) {
+            if (pg_num_rows($resulttipoparcdeb) > 0) {
                 $passar = true;
             }
         }
@@ -1037,7 +1037,7 @@ for ($contanumpres = 0; $contanumpres < sizeof($matnumpres); $contanumpres++) {
 
 //        die("numrows: " . pg_numrows($resulttipoparc) . " - todasmarc: $k40_todasmarc - totalregpassados: $totalregistrospassados - totregistros: $totregistros - passar: $passar");
 
-        if (pg_numrows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados != $totregistros : false) or $passar == false) {
+        if (pg_num_rows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados != $totregistros : false) or $passar == false) {
             $desconto = 0;
         } else {
             $desconto = $k40_codigo;
@@ -1047,13 +1047,13 @@ for ($contanumpres = 0; $contanumpres < sizeof($matnumpres); $contanumpres++) {
 
         $tiposparc = "";
 
-        for ($parcelas = 0; $parcelas < pg_numrows($resulttipoparc); $parcelas++) {
+        for ($parcelas = 0; $parcelas < pg_num_rows($resulttipoparc); $parcelas++) {
             db_fieldsmemory($resulttipoparc, $parcelas, true);
             if ($desconto == 0 and 1 == 2) {
                 $descmul = 0;
                 $descjur = 0;
             }
-            $tiposparc .= $tipoparc . "=" . $maxparc . "=" . $descmul . "=" . $descjur . "=" . (int) $k42_minentrada . "=" . $k40_forma . "=" . $descvlr . "=" . $vlrmin . "=" . $tipovlr . "=" . $minparc . "=" . ($parcelas == (pg_numrows($resulttipoparc) - 1) ? "" : "-");
+            $tiposparc .= $tipoparc . "=" . $maxparc . "=" . $descmul . "=" . $descjur . "=" . (int) $k42_minentrada . "=" . $k40_forma . "=" . $descvlr . "=" . $vlrmin . "=" . $tipovlr . "=" . $minparc . "=" . ($parcelas == (pg_num_rows($resulttipoparc) - 1) ? "" : "-");
         }
 
         $sqlcalc_desativado = "select
@@ -1069,16 +1069,16 @@ for ($contanumpres = 0; $contanumpres < sizeof($matnumpres); $contanumpres++) {
 								from ($sqlcalc) as x";
         $resultcalc = db_query($sqlcalc) or die($sqlcalc);
 
-        for ($calc = 0; $calc < pg_numrows($resultcalc); $calc++) {
+        for ($calc = 0; $calc < pg_num_rows($resultcalc); $calc++) {
             db_fieldsmemory($resultcalc, $calc);
 
-            $totalvlrhis += 0 + (float) substr($fc_calcula, 01, 13);
-            $totalvlrcor += 0 + (float) substr($fc_calcula, 14, 13);
-            $totalvlrjuros += 0 + (float) substr($fc_calcula, 27, 13);
-            $totalvlrmulta += 0 + (float) substr($fc_calcula, 40, 13);
-            $totalvlrdesconto += 0 + (float) substr($fc_calcula, 53, 13);
-            $totaltotal += 0 + (float) substr($fc_calcula, 14, 13) + (float) substr($fc_calcula, 27,
-                13) + (float) substr($fc_calcula, 40, 13) - (float) substr($fc_calcula, 53, 13);
+            $totalvlrhis += 0 + (float) substr((string) $fc_calcula, 01, 13);
+            $totalvlrcor += 0 + (float) substr((string) $fc_calcula, 14, 13);
+            $totalvlrjuros += 0 + (float) substr((string) $fc_calcula, 27, 13);
+            $totalvlrmulta += 0 + (float) substr((string) $fc_calcula, 40, 13);
+            $totalvlrdesconto += 0 + (float) substr((string) $fc_calcula, 53, 13);
+            $totaltotal += 0 + (float) substr((string) $fc_calcula, 14, 13) + (float) substr((string) $fc_calcula, 27,
+                13) + (float) substr((string) $fc_calcula, 40, 13) - (float) substr((string) $fc_calcula, 53, 13);
 
             if ($tiporeg == "NUMPRE") {
                 $sqlparc = "insert into NUMPRES_PARC1 values ($numpre,$numpar,$k03_tipodebito)";
@@ -1096,14 +1096,14 @@ for ($contanumpres = 0; $contanumpres < sizeof($matnumpres); $contanumpres++) {
             $sqlportipo = "select * from totalportipo where k03_tipodebito = $k03_tipodebito";
             $resultportipo = db_query($sqlportipo) or die($sqlportipo);
 
-            $k00_vlrhis = 0 + (float) substr($fc_calcula, 01, 13);
-            $k00_vlrcor = 0 + (float) substr($fc_calcula, 14, 13);
-            $k00_juros = 0 + (float) substr($fc_calcula, 27, 13);
-            $k00_multa = 0 + (float) substr($fc_calcula, 40, 13);
-            $k00_desconto = 0 + (float) substr($fc_calcula, 53, 13);
+            $k00_vlrhis = 0 + (float) substr((string) $fc_calcula, 01, 13);
+            $k00_vlrcor = 0 + (float) substr((string) $fc_calcula, 14, 13);
+            $k00_juros = 0 + (float) substr((string) $fc_calcula, 27, 13);
+            $k00_multa = 0 + (float) substr((string) $fc_calcula, 40, 13);
+            $k00_desconto = 0 + (float) substr((string) $fc_calcula, 53, 13);
             $k00_total = round((0 + $k00_vlrcor + $k00_juros + $k00_multa - $k00_desconto), 2);
 
-            if (pg_numrows($resultportipo) == 0) {
+            if (pg_num_rows($resultportipo) == 0) {
 //                db_msgbox("Tipo de Debito = ".$k03_tipodebito);
                 $sql = "insert into totalportipo values ($k03_tipodebito, $desconto, ";
                 $sql .= "$k00_vlrhis, ";
@@ -1151,7 +1151,7 @@ $valoresportipo = "";
 
 $frase = "<font color=\"red\"><b>DEBITOS MARCADOS: </b>";
 
-for ($x = 0; $x < pg_numrows($resulttotalportipo); $x++) {
+for ($x = 0; $x < pg_num_rows($resulttotalportipo); $x++) {
     db_fieldsmemory($resulttotalportipo, $x);
     $valoresportipo .= $k03_tipodebito . "-" . $k00_cadtipoparc . "-" . $k00_vlrhis . "-" . $k00_vlrcor . "-" . $k00_juros . "-" . $k00_multa . "-" . $k00_desconto . "-" . $k00_total . "=";
 
@@ -1176,15 +1176,15 @@ $sProcessos = "";
 
 if (empty($oGet->inicial) && !empty($cgm->z01_numcgm)) {
 
-    $aIniciais = array();
-    $aProcessos = array();
+    $aIniciais = [];
+    $aProcessos = [];
 
     foreach ($aNumpres as $iNumpreInicial) {
 
         $sSqlTermo = "select v07_parcel from termo where v07_numpre = {$iNumpreInicial};";
         $rsTermo = db_query($sSqlTermo) or die($sSqlTermo);
-        if (pg_numrows($rsTermo) > 0) {
-            $iTermo = pg_result($rsTermo, 0);
+        if (pg_num_rows($rsTermo) > 0) {
+            $iTermo = pg_fetch_result($rsTermo, 0);
             $iTermoOrigem = OrigemTermo::getOrigemTermo($iTermo);
 
             $aTermo = OrigemTermo::getOrigemMultiplaTermo($iTermo);
@@ -1234,7 +1234,7 @@ if (empty($oGet->inicial) && !empty($cgm->z01_numcgm)) {
 }
 
 //
-$honorarios = array();
+$honorarios = [];
 $maiorNumeroParcelasHonorarios = 1;
 
 if (!empty($sProcessos)) {
@@ -1429,9 +1429,9 @@ if (isset($envia) || isset($oPost->btnSimularParcelamento) or (@$mostra == 1)) {
         db_query("delete from arreold where k00_numpre in ({$numpre1});");
     }
 
-    $datsec_dia = substr($datsec, 0, 2);
-    $datsec_mes = substr($datsec, 3, 2);
-    $datsec_ano = substr($datsec, 6, 4);
+    $datsec_dia = substr((string) $datsec, 0, 2);
+    $datsec_mes = substr((string) $datsec, 3, 2);
+    $datsec_ano = substr((string) $datsec, 6, 4);
 
     $sql = "select fc_parcelamento($v07_numcgm,'$datpri_ano-$datpri_mes-$datpri_dia'::date,'$datsec_ano-$datsec_mes-$datsec_dia'::date,$dia,$totparc,$ent," . db_getsession('DB_id_usuario') . ",$k03_tipo,$k40_cadtipoparc,$desconto,$parcval,$parcult,'$v07_hist',$iCodProc) as retorno";
     if (@$mostra == 1) {
@@ -1452,7 +1452,7 @@ if (isset($envia) || isset($oPost->btnSimularParcelamento) or (@$mostra == 1)) {
     } else {
         if ($retorno == 1) {
 
-            $parc = explode(":", $retorno);
+            $parc = explode(":", (string) $retorno);
             $parc = explode("-", $parc[1]);
 
             $parcelamentoCustasService = new Service\Parcelamento($parc[0]);
@@ -1686,9 +1686,9 @@ if ($oConfig->db21_codcli == 19985) { // marica/rj
 }
 $resultsegvenc = db_query($sqlsegvenc) or die($sqlsegvenc);
 db_fieldsmemory($resultsegvenc, 0);
-$datsec_dia = substr($segvenc, 8, 2);
-$datsec_mes = substr($segvenc, 5, 2);
-$datsec_ano = substr($segvenc, 0, 4);
+$datsec_dia = substr((string) $segvenc, 8, 2);
+$datsec_mes = substr((string) $segvenc, 5, 2);
+$datsec_ano = substr((string) $segvenc, 0, 4);
 
 $diaprox = date("d", db_getsession("DB_datausu"));
 $diaprox = $diapadrao;
@@ -1719,11 +1719,11 @@ db_inputdata('datsec', @$datsec_dia, @$datsec_mes, @$datsec_ano, true, 'text', 1
                             <td>
                                 <?php
 
-$matarredonda = array(
+$matarredonda = [
     "I" => "Próximo inteiro",
     "D" => "Próximo decimal",
     "N" => "Não arredonda",
-);
+];
 db_select('arredondamento', $matarredonda, true, 2,
     "onchange='parcelas.location.href=\"cai3_gerfinanc063.php?valor=$totaltotal&valorcorr=$totalvlrcor&juros=$totalvlrjuros&multa=$totalvlrmulta&valorcomdesconto=$totaltotal&tiposparc=$tiposparc&valoresportipo=$valoresportipo&temdesconto=$iTemDesconto&arredondamento=\"+this.value'");
 ?>

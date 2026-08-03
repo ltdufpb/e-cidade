@@ -147,7 +147,7 @@ class ServidorProcessosJudiciaisFolha
      */
     public function toArray()
     {
-        return array(
+        return [
           'sequencial'       => $this->getSequencial(),
           'tipoProcesso' => $this->getTipoProcesso(),
           'numeroProcesso'    => $this->getNumeroProcesso(),
@@ -156,7 +156,7 @@ class ServidorProcessosJudiciaisFolha
           'ano'              => $this->getAno(),
           'mes'              => $this->getMes(),
           'servidor'         => $this->getServidor()->toArray()
-        );
+        ];
     }
 
     /**

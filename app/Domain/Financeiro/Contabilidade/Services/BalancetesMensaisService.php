@@ -55,7 +55,7 @@ class BalancetesMensaisService
         ";
 
         $rs = db_query($sql);
-        if (pg_numrows($rs) > 0) {
+        if (pg_num_rows($rs) > 0) {
             $valorAcumulado = db_utils::fieldsMemory($rs, 0)->c70_valor;
         }
 
@@ -71,7 +71,7 @@ class BalancetesMensaisService
     public function gerarDadosExtra()
     {
 
-        $sInstituicoes = implode($this->getListaInstituicoes(), ',');
+        $sInstituicoes = implode(',', $this->getListaInstituicoes());
         $anousu = $this->filtros->ano;
         $datainicial = "$anousu-01-01";
         $datafinal = $this->filtros->dataFinal;
@@ -142,8 +142,8 @@ class BalancetesMensaisService
         $datafinal = $this->filtros->dataFinal;
 
         $oMovimentacaoExtra = new stdClass();
-        $receitaExtra = array();
-        $despesaExtra = array();
+        $receitaExtra = [];
+        $despesaExtra = [];
 
         $sqlReceitas = "
             select estrutural,
@@ -264,7 +264,7 @@ class BalancetesMensaisService
         $ano = $this->filtros->ano;
         $dataini = $this->filtros->dataInicial;
         $datafim = $this->filtros->dataFinal;
-        $sInstituicoes = implode($aInstit, ',');
+        $sInstituicoes = implode(',', $aInstit);
 
         $sql = "
         select estrut_mae,
@@ -365,12 +365,12 @@ class BalancetesMensaisService
             $c60_identificadorfinanceiro = null;
             $c60_consistemaconta = null;
 
-            $work_planomae = array();
-            $work_planoestrut = array();
-            $work_plano = array();
+            $work_planomae = [];
+            $work_planoestrut = [];
+            $work_plano = [];
             $seq = 0;
 
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
             $oDados = db_utils::fieldsMemory($result, $i);
 
@@ -399,7 +399,7 @@ class BalancetesMensaisService
             if ($key === false) { // não achou
                 $work_planomae[$seq] = $oDados->estrut_mae;
                 $work_planoestrut[$seq] = $oDados->estrut;
-                $work_plano[$seq] = array(
+                $work_plano[$seq] = [
                     0 => "$oDados->c61_reduz",
                     1 => "$oDados->c61_codcon",
                     2 => "$oDados->c61_codigo",
@@ -418,7 +418,7 @@ class BalancetesMensaisService
                     13 => "$oDados->sinal_final",
                     14 => "$oDados->c60_identificadorfinanceiro",
                     15 => "$oDados->c60_consistemaconta"
-                );
+                ];
                 $seq = $seq + 1;
             } else {
                 $work_plano[$key][6] =
@@ -446,7 +446,7 @@ class BalancetesMensaisService
                                        from conplano
                                       where c60_anousu = {$ano} and c60_estrut = '$estrutural' ");
 
-                    if ($res == false || pg_numrows($res) == 0) {
+                    if ($res == false || pg_num_rows($res) == 0) {
                         $sMensagemErro = "Está faltando cadastrar esse estrutural na
                           contabilidade. Nível : {$nivel}  Estrutural : {$estrutural} - ano: {$ano}";
                         throw new \Exception($sMensagemErro);
@@ -461,7 +461,7 @@ class BalancetesMensaisService
                     $work_planomae[$seq] = $estrutural;
                     $work_planoestrut[$seq] = '';
                 /// Validar Parametros do Orcamento para Acumular as Sinteticas (Estrutura e Instituicao)
-                    $work_plano[$seq] = (array(
+                    $work_plano[$seq] = ([
                     0 => 0,
                     1 => $c60_codcon,
                     2 => 0,
@@ -480,7 +480,7 @@ class BalancetesMensaisService
                     13 => $oDados->sinal_final,
                     14 => $c60_identificadorfinanceiro,
                     15 => $oDados->c60_consistemaconta
-                    ));
+                    ]);
 
                     $seq++;
                 } else {
@@ -602,7 +602,7 @@ class BalancetesMensaisService
             $acumulado_creditoTotal = 0;
 
 
-        for ($i = 0; $i < pg_numrows($rsBalver); $i++) {
+        for ($i = 0; $i < pg_num_rows($rsBalver); $i++) {
             $oDados = db_utils::fieldsMemory($rsBalver, $i);
 
             if ($oDados->c61_reduz <= 0) {
@@ -648,67 +648,67 @@ class BalancetesMensaisService
     {
         $retorno = "";
 
-        if ($retorno == "" && substr($codigo, 13, 2) != '00') {
+        if ($retorno == "" && substr((string) $codigo, 13, 2) != '00') {
             if ($nivel == true) {
                 $retorno = 10;
             } else {
-                $retorno = substr($codigo, 0, 13) . '00';
+                $retorno = substr((string) $codigo, 0, 13) . '00';
             }
         }
-        if ($retorno == "" && substr($codigo, 11, 2) != '00') {
+        if ($retorno == "" && substr((string) $codigo, 11, 2) != '00') {
             if ($nivel == true) {
                 $retorno = 9;
             } else {
-                $retorno = substr($codigo, 0, 11) . '0000';
+                $retorno = substr((string) $codigo, 0, 11) . '0000';
             }
         }
-        if ($retorno == "" && substr($codigo, 9, 6) != '000000') {
+        if ($retorno == "" && substr((string) $codigo, 9, 6) != '000000') {
             if ($nivel == true) {
                 $retorno = 8;
             } else {
-                $retorno = substr($codigo, 0, 9) . '000000';
+                $retorno = substr((string) $codigo, 0, 9) . '000000';
             }
         }
-        if ($retorno == "" && substr($codigo, 7, 8) != '00000000') {
+        if ($retorno == "" && substr((string) $codigo, 7, 8) != '00000000') {
             if ($nivel == true) {
                 $retorno = 7;
             } else {
-                $retorno = substr($codigo, 0, 7) . '00000000';
+                $retorno = substr((string) $codigo, 0, 7) . '00000000';
             }
         }
-        if ($retorno == "" && substr($codigo, 5, 10) != '0000000000') {
+        if ($retorno == "" && substr((string) $codigo, 5, 10) != '0000000000') {
             if ($nivel == true) {
                 $retorno = 6;
             } else {
-                $retorno = substr($codigo, 0, 5) . '0000000000';
+                $retorno = substr((string) $codigo, 0, 5) . '0000000000';
             }
         }
-        if ($retorno == "" && substr($codigo, 4, 11) != '00000000000') {
+        if ($retorno == "" && substr((string) $codigo, 4, 11) != '00000000000') {
             if ($nivel == true) {
                 $retorno = 5;
             } else {
-                $retorno = substr($codigo, 0, 4) . '00000000000';
+                $retorno = substr((string) $codigo, 0, 4) . '00000000000';
             }
         }
-        if ($retorno == "" && substr($codigo, 3, 12) != '000000000000') {
+        if ($retorno == "" && substr((string) $codigo, 3, 12) != '000000000000') {
             if ($nivel == true) {
                 $retorno = 4;
             } else {
-                $retorno = substr($codigo, 0, 3) . '000000000000';
+                $retorno = substr((string) $codigo, 0, 3) . '000000000000';
             }
         }
-        if ($retorno == "" && substr($codigo, 2, 13) != '0000000000000') {
+        if ($retorno == "" && substr((string) $codigo, 2, 13) != '0000000000000') {
             if ($nivel == true) {
                 $retorno = 3;
             } else {
-                $retorno = substr($codigo, 0, 2) . '0000000000000';
+                $retorno = substr((string) $codigo, 0, 2) . '0000000000000';
             }
         }
-        if ($retorno == "" && substr($codigo, 1, 14) != '00000000000000') {
+        if ($retorno == "" && substr((string) $codigo, 1, 14) != '00000000000000') {
             if ($nivel == true) {
                 $retorno = 2;
             } else {
-                $retorno = substr($codigo, 0, 1) . '00000000000000';
+                $retorno = substr((string) $codigo, 0, 1) . '00000000000000';
             }
         }
         if ($retorno == "") {
@@ -727,7 +727,7 @@ class BalancetesMensaisService
     public function getListaInstituicoes()
     {
 
-        $aInstit = array();
+        $aInstit = [];
         $instituicoes = str_replace('\"', '"', $this->filtros->instituicoes);
         $instituicoes = \JSON::create()->parse($instituicoes);
 
@@ -820,12 +820,12 @@ class BalancetesMensaisService
 
         //echo $sqlDespesa;die();
 
-        if (pg_numrows($rsDespesas) > 0) {
+        if (pg_num_rows($rsDespesas) > 0) {
             $aDespesas = [];
 
             $totalPago = 0;
             $totalPagoAcumulado = 0;
-            for ($i = 0; $i < pg_numrows($rsDespesas); $i++) {
+            for ($i = 0; $i < pg_num_rows($rsDespesas); $i++) {
                 $oDados = db_utils::fieldsMemory($rsDespesas, $i);
 
                 $oDadosDespesa = new stdClass;

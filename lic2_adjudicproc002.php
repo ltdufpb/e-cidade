@@ -42,16 +42,16 @@ $clpcorcamval = new cl_pcorcamval;
 $clrotulo = new rotulocampo;
 $clrotulo->label('');
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 db_postmemory($_SERVER);
 
 $dbinstit = db_getsession("DB_instit");
 $sSituacoes = SituacaoLicitacao::SITUACAO_ADJUDICADA . "," . SituacaoLicitacao::SITUACAO_JULGADA . "," . SituacaoLicitacao::SITUACAO_HOMOLOGADA;
-$aWhere = array(
+$aWhere = [
     "l20_codigo = {$l20_codigo}",
     "l20_instit = {$dbinstit}",
     "l20_licsituacao in ({$sSituacoes})"
-);
+];
 
 
 $sSqlBuscaLicitacao = $clliclicita->sql_query(null, "*", "l20_codigo", implode(' and ', $aWhere));
@@ -120,7 +120,7 @@ if ($oLibDocumento->lErro) {
 }
 
 db_fieldsmemory($rsLicitacao, 0);
-$l20_datacria = substr($l20_datacria, 0, 4);
+$l20_datacria = substr((string) $l20_datacria, 0, 4);
 
 $head3 = "ADJUDICAÇÃO DE PROCESSO ";
 $head4 = "LICITAÇÃO : $l20_numero/$l20_datacria";
@@ -136,8 +136,8 @@ $oPDF->ln();
 $oPDF->setfont('arial', '', 8);
 $olicitacao = db_utils::fieldsMemory($rsLicitacao, 0);
 $oLibDocumento->l20_numero = $olicitacao->l20_numero;
-$oLibDocumento->l03_descr = trim($olicitacao->l03_descr);
-$oLibDocumento->l20_datacria = substr($olicitacao->l20_datacria, 0, 4);
+$oLibDocumento->l03_descr = trim((string) $olicitacao->l03_descr);
+$oLibDocumento->l20_datacria = substr((string) $olicitacao->l20_datacria, 0, 4);
 $oLibDocumento->l20_codigo = $olicitacao->l20_codigo;
 $oLibDocumento->l30_portaria = $olicitacao->l30_portaria;
 

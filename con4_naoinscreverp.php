@@ -97,7 +97,7 @@ Não Inscrição de RPS
 (float)  $nValorLancar = 0;
 (integer)$iAnoUsu      = db_getsession("DB_anousu");
 (integer)$iInstit      = db_getsession("DB_instit");
-$data                  = explode("/",$get->datalanc);
+$data                  = explode("/",(string) $get->datalanc);
 $dataIni               = $iAnoUsu.'-01-01';
 $dataUsu               = $data[2]."-".$data[1]."-".$data[0];
 if (isset($post->confirma)){

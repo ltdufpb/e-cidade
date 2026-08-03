@@ -64,12 +64,12 @@ class AlunoLoginWebservice {
     
     $oLogin         = new stdClass();
     $oLogin->codigo = $this->oAluno->getCodigoAluno();
-    $oLogin->nome   = utf8_encode($this->oAluno->getNome());
+    $oLogin->nome   = mb_convert_encoding($this->oAluno->getNome(), 'UTF-8', 'ISO-8859-1');
     
     $oLogin->email  = null;
     
     if ( DBString::isEmail($this->oAluno->getEmail()) ) {
-      $oLogin->email  = utf8_encode($this->oAluno->getEmail());
+      $oLogin->email  = mb_convert_encoding($this->oAluno->getEmail(), 'UTF-8', 'ISO-8859-1');
     }
 
     return $oLogin;

@@ -137,7 +137,7 @@ class CalculoIPTU {
   
   private $iNumpre;
   
-  private $aConstrucoes = array();
+  private $aConstrucoes = [];
   
   public function __construct($iMatricula, $iAnousu) {
     

@@ -96,7 +96,7 @@ function validaForm() {
       <td>
       <?php 
         $origem = 'matric';
-        $aOrigem = array('cgm'=>'CGM Geral', 'somentecgm'=>'Somente CGM', 'matric'=>'Matr&iacute;cula', 'inscr'=>'Inscri&ccedil;&atilde;o');
+        $aOrigem = ['cgm'=>'CGM Geral', 'somentecgm'=>'Somente CGM', 'matric'=>'Matr&iacute;cula', 'inscr'=>'Inscri&ccedil;&atilde;o'];
         db_select('origem', $aOrigem, true, 1, 'style="width: 200px"'); 
       ?>
       </td>
@@ -109,7 +109,7 @@ function validaForm() {
       
       <td>
       <?php 
-        $aTipo = array('txt'=>'TXT', 'pdf'=>'PDF');
+        $aTipo = ['txt'=>'TXT', 'pdf'=>'PDF'];
         db_select('tipo', $aTipo, true, 1, 'style="width: 200px"'); 
       ?>
       </td>
@@ -122,7 +122,7 @@ function validaForm() {
       
       <td>
       <?php 
-        $aArquivo = array('T'=>'TODAS DO EXERCÍCIO', 'S'=>'SOMENTE NÃO GERADAS/CANCELADAS');
+        $aArquivo = ['T'=>'TODAS DO EXERCÍCIO', 'S'=>'SOMENTE NÃO GERADAS/CANCELADAS'];
         
         db_select('arquivo', $aArquivo, true, 1, 'style="width: 200px"');
       ?>

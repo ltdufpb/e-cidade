@@ -89,7 +89,7 @@
    $res= $cldbconfig->sql_record($cldbconfig->sql_query());
    db_fieldsmemory($res,0);
    $pdf->setX(10);
-   $pref = strtoupper($pref);
+   $pref = strtoupper((string) $pref);
    $txt="$pref, PREFEITO MUNICIPAL DE $munic, $uf  ";
    $pdf->multicell(180,4,$txt,'0','J','0');
    $pdf->Ln();
@@ -114,7 +114,7 @@
           where orcsuplemval.o47_valor > 0
 	  order by orcsuplem.o46_tiposup ";
    $res= $auxiliar->sql_record($sql); 
-   $artigo = array();
+   $artigo = [];
    $artigo_count=1;
    for ($x=0;$x< $auxiliar->numrows ;$x++){
        db_fieldsmemory($res,$x);
@@ -165,7 +165,7 @@
 		  db_query("BEGIN");
                   $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		  db_query("ROLLBACK");
-                  if(pg_numrows($r_dot)>0){
+                  if(pg_num_rows($r_dot)>0){
                       db_fieldsmemory($r_dot,0,true);
                       $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                       $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -227,7 +227,7 @@
 		  db_query("BEGIN");
                   $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		  db_query("ROLLBACK");
-                  if(pg_numrows($r_dot)>0){
+                  if(pg_num_rows($r_dot)>0){
                       db_fieldsmemory($r_dot,0,true);
                       $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                       $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -289,7 +289,7 @@
 		  db_query("BEGIN");
                   $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		  db_query("ROLLBACK");
-                  if(pg_numrows($r_dot)>0){
+                  if(pg_num_rows($r_dot)>0){
                       db_fieldsmemory($r_dot,0,true);
                       $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                       $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -351,7 +351,7 @@
 		  db_query("BEGIN");
                   $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		  db_query("ROLLBACK");
-                  if(pg_numrows($r_dot)>0){
+                  if(pg_num_rows($r_dot)>0){
                       db_fieldsmemory($r_dot,0,true);
                       $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                       $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -413,7 +413,7 @@
 		  db_query("BEGIN");
                   $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		  db_query("ROLLBACK");
-                  if(pg_numrows($r_dot)>0){
+                  if(pg_num_rows($r_dot)>0){
                       db_fieldsmemory($r_dot,0,true);
                       $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                       $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -475,7 +475,7 @@
 		  db_query("BEGIN");
                   $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		  db_query("ROLLBACK");
-                  if(pg_numrows($r_dot)>0){
+                  if(pg_num_rows($r_dot)>0){
                       db_fieldsmemory($r_dot,0,true);
                       $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                       $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -537,7 +537,7 @@
 		  db_query("BEGIN");
                   $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		  db_query("ROLLBACK");
-                  if(pg_numrows($r_dot)>0){
+                  if(pg_num_rows($r_dot)>0){
                       db_fieldsmemory($r_dot,0,true);
                       $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                       $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -599,7 +599,7 @@
 		  db_query("BEGIN");
                   $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		  db_query("ROLLBACK");
-                  if(pg_numrows($r_dot)>0){
+                  if(pg_num_rows($r_dot)>0){
                       db_fieldsmemory($r_dot,0,true);
                       $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                       $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -669,7 +669,7 @@
 		        db_query("BEGIN");
                         $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		        db_query("ROLLBACK");
-                        if(pg_numrows($r_dot)>0){
+                        if(pg_num_rows($r_dot)>0){
                              db_fieldsmemory($r_dot,0,true);
                              $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                              $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -699,7 +699,7 @@
 		            db_query("BEGIN");
                             $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		            db_query("ROLLBACK");
-                            if(pg_numrows($r_dot)>0){
+                            if(pg_num_rows($r_dot)>0){
                                db_fieldsmemory($r_dot,0,true);
                                $pdf->Cell(120,4,"$o58_codigo - $o15_descr",0,0,"L",'0');  
 	  	               $pdf->Cell(30,4,db_formatar($o47_valor,'f'),0,1,"R",'0');  $pdf->setX(20);         
@@ -780,7 +780,7 @@
 		        db_query("BEGIN");
                         $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		        db_query("ROLLBACK");
-                        if(pg_numrows($r_dot)>0){
+                        if(pg_num_rows($r_dot)>0){
                              db_fieldsmemory($r_dot,0,true);
                              $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                              $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -810,7 +810,7 @@
 		            db_query("BEGIN");
                             $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		            db_query("ROLLBACK");
-                            if(pg_numrows($r_dot)>0){
+                            if(pg_num_rows($r_dot)>0){
                                db_fieldsmemory($r_dot,0,true);
                                $pdf->Cell(120,4,"$o58_codigo - $o15_descr",0,0,"L",'0');  
 	  	               $pdf->Cell(30,4,db_formatar($o47_valor,'f'),0,1,"R",'0');  $pdf->setX(20);         
@@ -891,7 +891,7 @@
 		        db_query("BEGIN");
                         $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		        db_query("ROLLBACK");
-                        if(pg_numrows($r_dot)>0){
+                        if(pg_num_rows($r_dot)>0){
                              db_fieldsmemory($r_dot,0,true);
                              $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                              $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -921,7 +921,7 @@
 		            db_query("BEGIN");
                             $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		            db_query("ROLLBACK");
-                            if(pg_numrows($r_dot)>0){
+                            if(pg_num_rows($r_dot)>0){
                                db_fieldsmemory($r_dot,0,true);
                                $pdf->Cell(120,4,"$o58_codigo - $o15_descr",0,0,"L",'0');  
 	  	               $pdf->Cell(30,4,db_formatar($o47_valor,'f'),0,1,"R",'0');  $pdf->setX(20);         
@@ -1001,7 +1001,7 @@
 		        db_query("BEGIN");
                         $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		        db_query("ROLLBACK");
-                        if(pg_numrows($r_dot)>0){
+                        if(pg_num_rows($r_dot)>0){
                              db_fieldsmemory($r_dot,0,true);
                              $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                              $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -1031,7 +1031,7 @@
 		            db_query("BEGIN");
                             $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		            db_query("ROLLBACK");
-                            if(pg_numrows($r_dot)>0){
+                            if(pg_num_rows($r_dot)>0){
                                db_fieldsmemory($r_dot,0,true);
                                $pdf->Cell(120,4,"$o58_codigo - $o15_descr",0,0,"L",'0');  
 	  	               $pdf->Cell(30,4,db_formatar($o47_valor,'f'),0,1,"R",'0');  $pdf->setX(20);         
@@ -1110,7 +1110,7 @@
 		        db_query("BEGIN");
                         $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		        db_query("ROLLBACK");
-                        if(pg_numrows($r_dot)>0){
+                        if(pg_num_rows($r_dot)>0){
                              db_fieldsmemory($r_dot,0,true);
                              $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                              $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -1140,7 +1140,7 @@
 		            db_query("BEGIN");
                             $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		            db_query("ROLLBACK");
-                            if(pg_numrows($r_dot)>0){
+                            if(pg_num_rows($r_dot)>0){
                                db_fieldsmemory($r_dot,0,true);
                                $pdf->Cell(120,4,"$o58_codigo - $o15_descr",0,0,"L",'0');  
 	  	               $pdf->Cell(30,4,db_formatar($o47_valor,'f'),0,1,"R",'0');  $pdf->setX(20);         
@@ -1220,7 +1220,7 @@
 		        db_query("BEGIN");
                         $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		        db_query("ROLLBACK");
-                        if(pg_numrows($r_dot)>0){
+                        if(pg_num_rows($r_dot)>0){
                              db_fieldsmemory($r_dot,0,true);
                              $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                              $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -1250,7 +1250,7 @@
 		            db_query("BEGIN");
                             $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		            db_query("ROLLBACK");
-                            if(pg_numrows($r_dot)>0){
+                            if(pg_num_rows($r_dot)>0){
                                db_fieldsmemory($r_dot,0,true);
                                $pdf->Cell(120,4,"$o58_codigo - $o15_descr",0,0,"L",'0');  
 	  	               $pdf->Cell(30,4,db_formatar($o47_valor,'f'),0,1,"R",'0');  $pdf->setX(20);         
@@ -1330,7 +1330,7 @@
 		        db_query("BEGIN");
                         $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		        db_query("ROLLBACK");
-                        if(pg_numrows($r_dot)>0){
+                        if(pg_num_rows($r_dot)>0){
                              db_fieldsmemory($r_dot,0,true);
                              $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                              $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -1360,7 +1360,7 @@
 		            db_query("BEGIN");
                             $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		            db_query("ROLLBACK");
-                            if(pg_numrows($r_dot)>0){
+                            if(pg_num_rows($r_dot)>0){
                                db_fieldsmemory($r_dot,0,true);
                                $pdf->Cell(120,4,"$o58_codigo - $o15_descr",0,0,"L",'0');  
 	  	               $pdf->Cell(30,4,db_formatar($o47_valor,'f'),0,1,"R",'0');  $pdf->setX(20);         
@@ -1440,7 +1440,7 @@
 		        db_query("BEGIN");
                         $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		        db_query("ROLLBACK");
-                        if(pg_numrows($r_dot)>0){
+                        if(pg_num_rows($r_dot)>0){
                              db_fieldsmemory($r_dot,0,true);
                              $pdf->Cell(150,4,"$o58_orgao - $o40_descr",0,1,"L",'0');  $pdf->setX(20);    
                              $pdf->Cell(150,4,"$o58_unidade -  $o41_descr",0,1,"L",'0');  $pdf->setX(20);	    
@@ -1470,7 +1470,7 @@
 		            db_query("BEGIN");
                             $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot");
 		            db_query("ROLLBACK");
-                            if(pg_numrows($r_dot)>0){
+                            if(pg_num_rows($r_dot)>0){
                                db_fieldsmemory($r_dot,0,true);
                                $pdf->Cell(120,4,"$o58_codigo - $o15_descr",0,0,"L",'0');  
 	  	               $pdf->Cell(30,4,db_formatar($o47_valor,'f'),0,1,"R",'0');  $pdf->setX(20);         

@@ -45,8 +45,8 @@ if (!isset($arqinclude)){
   $classinatura = new cl_assinatura;
   $orcparamrel  = new cl_orcparamrel;
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
 }
 
@@ -123,7 +123,7 @@ $head6 = "EVOLUÇÂO DO PATRIMÔNIO LÍQUIDO";
   $pdf->cell(20,$alt,"",'LB',1,"C",0);
 
   //leitura das 3 primeira linhas do array
-	$aLinhasRelatorio = array();
+	$aLinhasRelatorio = [];
 	//Variáveis para armazenar o total da coluna da linha
 	$totalcoluna_c1 = 0;
 	$totalcoluna_c2 = 0;
@@ -209,7 +209,7 @@ $head6 = "EVOLUÇÂO DO PATRIMÔNIO LÍQUIDO";
   $pdf->cell(20,$alt,"",'LB',1,"C",0);
 
   //leitura das 3 ultimas linhas do array
-	$aLinhasRelatorio = array();
+	$aLinhasRelatorio = [];
 	$totalcoluna_c1 = 0;
 	$totalcoluna_c2 = 0;
 	$totalcoluna_c3 = 0;

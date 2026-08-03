@@ -31,12 +31,12 @@ require_once (modification("libs/db_sessoes.php"));
 require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempprestatip = new cl_empprestatip;
 $clempprestatip->rotulo->label("e44_tipo");
 $clempprestatip->rotulo->label("e44_descr");
-$sDescricao = isset($chave_e44_descr) ? $chave_e44_descr : null;
+$sDescricao = $chave_e44_descr ?? null;
 ?>
 <html>
 <head>
@@ -66,7 +66,7 @@ $sDescricao = isset($chave_e44_descr) ? $chave_e44_descr : null;
             </td>
             <td width="96%" align="left" nowrap>
               <?php
-              $chave_e44_descr = htmlentities(stripslashes($sDescricao), ENT_QUOTES, 'ISO-8859-1');
+              $chave_e44_descr = htmlentities(stripslashes((string) $sDescricao), ENT_QUOTES, 'ISO-8859-1');
               db_input("e44_descr", 40, $Ie44_descr, true, "text", 4, "", "chave_e44_descr");
               ?>
             </td>
@@ -85,7 +85,7 @@ $sDescricao = isset($chave_e44_descr) ? $chave_e44_descr : null;
   <tr>
     <td align="center" valign="top">
       <?php
-      $chave_e44_descr = pg_escape_string(stripcslashes($sDescricao));
+      $chave_e44_descr = pg_escape_string(stripcslashes((string) $sDescricao));
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empprestatip.php")==true){

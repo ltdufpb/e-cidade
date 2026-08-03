@@ -59,7 +59,7 @@ try {
             /**
              * Inclui autorização
              */
-            $dtAut = isset($oParam->dataAutoriza) ? $oParam->dataAutoriza : date('Y-m-d', db_getsession("DB_datausu"));
+            $dtAut = $oParam->dataAutoriza ?? date('Y-m-d', db_getsession("DB_datausu"));
             $oDaoAutoriza->la48_i_requisicao = $oParam->iRequisicao;
             $oDaoAutoriza->la48_d_data = $dtAut;
             $oDaoAutoriza->la48_c_hora = db_hora();
@@ -157,11 +157,11 @@ try {
                             );
                         }
 
-                        $oErro = (object)array(
+                        $oErro = (object)[
                             "valor_disponivel" => $nLimiteDisponivel,
                             "valor_autorizado" => $nValorAutorizado,
                             "exame"            => db_utils::fieldsMemory($rs, 0)->la08_c_descr
-                        );
+                        ];
                         throw new Exception(_M(MENSAGENS_LAB4_AUTORIZACAO_RPC . 'saldo_insuficiente', $oErro));
                     }
                 }

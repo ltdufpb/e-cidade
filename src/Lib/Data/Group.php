@@ -9,29 +9,22 @@ class Group
 {
 
     /**
-     * @var array
-     */
-    private $fields;
-    /**
-     * @var array
-     */
-    private $data;
-    /**
      * processed fields meta data
      * @var array
      */
-    private $parsedFields = array();
+    private $parsedFields = [];
 
     /**
      * keys to index
      * @var array
      */
-    private $keys = array();
+    private $keys = [];
 
-    public function __construct($fiels, array $data)
+    /**
+     * @param mixed[] $fiels
+     */
+    public function __construct(private $fields, private array $data)
     {
-        $this->fields = $fiels;
-        $this->data = $data;
         $this->parseFields();
     }
 
@@ -43,12 +36,12 @@ class Group
      */
     public function run($data = null, $item = null)
     {
-        $groupedData = array();
+        $groupedData = [];
         if (!empty($data)) {
             $groupedData = $data;
         }
         if (!empty($item)) {
-            $this->data = array($item);
+            $this->data = [$item];
         }
 
         /**
@@ -81,7 +74,7 @@ class Group
     {
         $hash = '';
         if (!empty($this->keys)) {
-            $values = array();
+            $values = [];
             foreach ($this->keys as $key) {
                 $values[] = $line->{$key};
             }
@@ -128,7 +121,7 @@ class Group
                 $parsedField->reference = $field["field"];
             }
             if ($action == 'nestedGroup') {
-                $parsedField->runner = new Group($field["fields"], array());
+                $parsedField->runner = new Group($field["fields"], []);
             }
             $this->parsedFields[] = $parsedField;
         }
@@ -156,7 +149,7 @@ class Group
                     break;
 
                 case 'nestedGroup':
-                    $data->{$field->name} = array();
+                    $data->{$field->name} = [];
                     break;
             }
         }

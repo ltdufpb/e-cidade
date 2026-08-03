@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE sau_medicosforarede
 class cl_sau_medicosforarede { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s154_i_codigo = 0; 
-   var $s154_i_medico = 0; 
-   var $s154_c_nome = null; 
-   var $s154_c_cns = null; 
-   var $s154_rhcbo = null; 
+   public $s154_i_codigo = 0; 
+   public $s154_i_medico = 0; 
+   public $s154_c_nome = null; 
+   public $s154_c_cns = null; 
+   public $s154_rhcbo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s154_i_codigo = int4 = Código 
                  s154_i_medico = int4 = Médico 
                  s154_c_nome = varchar(40) = Nome 
@@ -56,10 +56,10 @@ class cl_sau_medicosforarede {
                  s154_rhcbo = int4 = Código cbo 
                  ";
    //funcao construtor da classe 
-   function cl_sau_medicosforarede() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_medicosforarede"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -116,10 +116,10 @@ class cl_sau_medicosforarede {
          $this->erro_status = "0";
          return false; 
        }
-       $this->s154_i_codigo = pg_result($result,0,0); 
+       $this->s154_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sau_medicosforarede_s154_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $s154_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $s154_i_codigo)){
          $this->erro_sql = " Campo s154_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -155,7 +155,7 @@ class cl_sau_medicosforarede {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "sau_medicosforarede ($this->s154_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "sau_medicosforarede já Cadastrado";
@@ -184,14 +184,14 @@ class cl_sau_medicosforarede {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17488,'$this->s154_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3091,17488,'','".AddSlashes(pg_result($resaco,0,'s154_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3091,17490,'','".AddSlashes(pg_result($resaco,0,'s154_i_medico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3091,17489,'','".AddSlashes(pg_result($resaco,0,'s154_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3091,17491,'','".AddSlashes(pg_result($resaco,0,'s154_c_cns'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3091,20311,'','".AddSlashes(pg_result($resaco,0,'s154_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3091,17488,'','".AddSlashes(pg_fetch_result($resaco,0,'s154_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3091,17490,'','".AddSlashes(pg_fetch_result($resaco,0,'s154_i_medico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3091,17489,'','".AddSlashes(pg_fetch_result($resaco,0,'s154_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3091,17491,'','".AddSlashes(pg_fetch_result($resaco,0,'s154_c_cns'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3091,20311,'','".AddSlashes(pg_fetch_result($resaco,0,'s154_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -201,10 +201,10 @@ class cl_sau_medicosforarede {
       $this->atualizacampos();
      $sql = " update sau_medicosforarede set ";
      $virgula = "";
-     if(trim($this->s154_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s154_i_codigo"])){ 
+     if(trim((string) $this->s154_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s154_i_codigo"])){ 
        $sql  .= $virgula." s154_i_codigo = $this->s154_i_codigo ";
        $virgula = ",";
-       if(trim($this->s154_i_codigo) == null ){ 
+       if(trim((string) $this->s154_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "s154_i_codigo";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_sau_medicosforarede {
          return false;
        }
      }
-     if(trim($this->s154_i_medico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s154_i_medico"])){ 
+     if(trim((string) $this->s154_i_medico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s154_i_medico"])){ 
        $sql  .= $virgula." s154_i_medico = $this->s154_i_medico ";
        $virgula = ",";
-       if(trim($this->s154_i_medico) == null ){ 
+       if(trim((string) $this->s154_i_medico) == null ){ 
          $this->erro_sql = " Campo Médico não informado.";
          $this->erro_campo = "s154_i_medico";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_sau_medicosforarede {
          return false;
        }
      }
-     if(trim($this->s154_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s154_c_nome"])){ 
+     if(trim((string) $this->s154_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s154_c_nome"])){ 
        $sql  .= $virgula." s154_c_nome = '$this->s154_c_nome' ";
        $virgula = ",";
-       if(trim($this->s154_c_nome) == null ){ 
+       if(trim((string) $this->s154_c_nome) == null ){ 
          $this->erro_sql = " Campo Nome não informado.";
          $this->erro_campo = "s154_c_nome";
          $this->erro_banco = "";
@@ -240,12 +240,12 @@ class cl_sau_medicosforarede {
          return false;
        }
      }
-     if(trim($this->s154_c_cns)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s154_c_cns"])){ 
+     if(trim((string) $this->s154_c_cns)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s154_c_cns"])){ 
        $sql  .= $virgula." s154_c_cns = '$this->s154_c_cns' ";
        $virgula = ",";
      }
-     if(trim($this->s154_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s154_rhcbo"])){ 
-        if(trim($this->s154_rhcbo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s154_rhcbo"])){ 
+     if(trim((string) $this->s154_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s154_rhcbo"])){ 
+        if(trim((string) $this->s154_rhcbo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s154_rhcbo"])){ 
            $this->s154_rhcbo = "null" ; 
         } 
        $sql  .= $virgula." s154_rhcbo = $this->s154_rhcbo ";
@@ -265,19 +265,19 @@ class cl_sau_medicosforarede {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,17488,'$this->s154_i_codigo','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["s154_i_codigo"]) || $this->s154_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3091,17488,'".AddSlashes(pg_result($resaco,$conresaco,'s154_i_codigo'))."','$this->s154_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3091,17488,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s154_i_codigo'))."','$this->s154_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["s154_i_medico"]) || $this->s154_i_medico != "")
-             $resac = db_query("insert into db_acount values($acount,3091,17490,'".AddSlashes(pg_result($resaco,$conresaco,'s154_i_medico'))."','$this->s154_i_medico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3091,17490,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s154_i_medico'))."','$this->s154_i_medico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["s154_c_nome"]) || $this->s154_c_nome != "")
-             $resac = db_query("insert into db_acount values($acount,3091,17489,'".AddSlashes(pg_result($resaco,$conresaco,'s154_c_nome'))."','$this->s154_c_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3091,17489,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s154_c_nome'))."','$this->s154_c_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["s154_c_cns"]) || $this->s154_c_cns != "")
-             $resac = db_query("insert into db_acount values($acount,3091,17491,'".AddSlashes(pg_result($resaco,$conresaco,'s154_c_cns'))."','$this->s154_c_cns',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3091,17491,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s154_c_cns'))."','$this->s154_c_cns',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["s154_rhcbo"]) || $this->s154_rhcbo != "")
-             $resac = db_query("insert into db_acount values($acount,3091,20311,'".AddSlashes(pg_result($resaco,$conresaco,'s154_rhcbo'))."','$this->s154_rhcbo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3091,20311,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s154_rhcbo'))."','$this->s154_rhcbo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -331,14 +331,14 @@ class cl_sau_medicosforarede {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,17488,'$s154_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3091,17488,'','".AddSlashes(pg_result($resaco,$iresaco,'s154_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3091,17490,'','".AddSlashes(pg_result($resaco,$iresaco,'s154_i_medico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3091,17489,'','".AddSlashes(pg_result($resaco,$iresaco,'s154_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3091,17491,'','".AddSlashes(pg_result($resaco,$iresaco,'s154_c_cns'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3091,20311,'','".AddSlashes(pg_result($resaco,$iresaco,'s154_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3091,17488,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s154_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3091,17490,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s154_i_medico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3091,17489,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s154_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3091,17491,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s154_c_cns'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3091,20311,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s154_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -399,7 +399,7 @@ class cl_sau_medicosforarede {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sau_medicosforarede";
@@ -414,7 +414,7 @@ class cl_sau_medicosforarede {
    function sql_query ( $s154_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_sau_medicosforarede {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_sau_medicosforarede {
    function sql_query_file ( $s154_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,7 +472,7 @@ class cl_sau_medicosforarede {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

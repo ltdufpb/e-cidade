@@ -79,10 +79,10 @@ $clrotulo->label("x40_dtinc");
     </td>
     <td nowrap title="Campo a ser ordenado">
     <?php 
-      $aOrdem = array('corte'     => 'C&oacute;digo do corte', 
+      $aOrdem = ['corte'     => 'C&oacute;digo do corte', 
                       'historico' => 'Valor Hist&oacute;rico',
                       'corrigido' => 'Valor Corrigido',
-                      'tipo'      => 'Tipo de D&eacute;bito');
+                      'tipo'      => 'Tipo de D&eacute;bito'];
       db_select('ordem', $aOrdem, true, 1);
     ?>
     </td>

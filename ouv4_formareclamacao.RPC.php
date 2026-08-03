@@ -36,7 +36,7 @@ class FormaReclamacao
 {
 
     private $request;
-    private $response = array("message" => "", "data" => array(), "success" => false);
+    private $response = ["message" => "", "data" => [], "success" => false];
 
     public function __construct($request)
     {
@@ -70,7 +70,7 @@ class FormaReclamacao
 
         try {
             $formaReclamacaoDao = new cl_formareclamacao();
-            $formaReclamacaoDao->p42_descricao = utf8_decode($this->request->p42_descricao);
+            $formaReclamacaoDao->p42_descricao = mb_convert_encoding($this->request->p42_descricao, 'ISO-8859-1');
 
             if (!empty($this->request->p42_dtfim)) {
                 $formaReclamacaoDao->p42_dtfim = $this->request->p42_dtfim;

@@ -15,7 +15,7 @@ class Front {
   public function __construct() {
 
     $this->sPath = $_GET['_path'];
-    $aPath = explode('/', $this->sPath);
+    $aPath = explode('/', (string) $this->sPath);
     $sPath = array_shift($aPath);
 
     // multi janela
@@ -49,36 +49,36 @@ class Front {
    */
   public function fixQueryString() {
 
-    $aQueryString = array();
-    parse_str($_SERVER['QUERY_STRING'], $aQueryString);
+    $aQueryString = [];
+    parse_str((string) $_SERVER['QUERY_STRING'], $aQueryString);
     unset($aQueryString['_path']);
-    $PHP_SELF = explode("?", $_SERVER['REQUEST_URI']);
+    $PHP_SELF = explode("?", (string) $_SERVER['REQUEST_URI']);
     $_SERVER['QUERY_STRING'] = urldecode(http_build_query($aQueryString));
     $_SERVER['PHP_SELF'] = $PHP_SELF[0];
     $_SERVER['SCRIPT_NAME'] = $PHP_SELF[0];
     $_SERVER['SCRIPT_FILENAME'] = ECIDADE_PATH . $this->sPath;
 
-    $this->emulateRegisterGlobals(array('SERVER'));
+    $this->emulateRegisterGlobals(['SERVER']);
   }
 
   /**
    * variables_order = "EGPCS"
-   * @deprecated
    * @see \DBSeller\Legacy\PHP53\Emulate::$egpcs
    */
+  #[\Deprecated]
   protected function getSuperGlobals() {
-    return array('ENV', 'GET', 'POST', 'COOKIE', 'SERVER', 'SESSION');
+    return ['ENV', 'GET', 'POST', 'COOKIE', 'SERVER', 'SESSION'];
   }
 
   /**
    * Emula: register_long_arrays = On
-   * @deprecated
    * @see \DBSeller\Legacy\PHP53\Emulate::registerLongArrays()
    *
    * @param array $superglobals
    * @return void
    */
-  public function emulateRegisterLongArrays(array $superglobals = array()) {
+  #[\Deprecated]
+  public function emulateRegisterLongArrays(array $superglobals = []) {
 
     if (empty($_ENV)) {
       $_ENV['PATH_INFO'] = getenv('PATH_INFO');
@@ -93,13 +93,13 @@ class Front {
 
   /**
    * Emula: register_globals = On
-   * @deprecated
    * @see \DBSeller\Legacy\PHP53\Emulate::registerGlobals()
    *
    * @param array $superglobals
    * @return void
    */
-  public function emulateRegisterGlobals(array $superglobals = array()) {
+  #[\Deprecated]
+  public function emulateRegisterGlobals(array $superglobals = []) {
 
     $superglobals = $superglobals ?: $this->getSuperGlobals();
     foreach ($superglobals as $name) {

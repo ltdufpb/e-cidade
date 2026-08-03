@@ -71,9 +71,9 @@ switch ($oParam->sExec) {
         
         $oDadosPendencia = new stdClass();
         $oDadosPendencia->pc91_sequencial   = $oPendencia->pc91_sequencial;
-        $oDadosPendencia->pc91_pendencia    = substr($oPendencia->pc91_pendencia, 0, 30);
+        $oDadosPendencia->pc91_pendencia    = substr((string) $oPendencia->pc91_pendencia, 0, 30);
         $oDadosPendencia->pc91_datainclusao = db_formatar($oPendencia->pc91_datainclusao, 'd');
-        $oDadosPendencia->nome              = substr($oPendencia->nome, 0, 30);
+        $oDadosPendencia->nome              = substr((string) $oPendencia->nome, 0, 30);
         $oRetorno->aDados[] = $oDadosPendencia;
       }
     } else {

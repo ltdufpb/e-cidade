@@ -35,8 +35,8 @@ include(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_pcparam_classe.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clpctipodoccertif = new cl_pctipodoccertif;
 $clpcforne = new cl_pcforne;
 $db_opcao = 3;

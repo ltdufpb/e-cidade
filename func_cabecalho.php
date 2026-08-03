@@ -31,9 +31,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_syscampo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_GET_VARS,2);exit;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_syscampo = new cl_db_syscampo;
 $clrotulo = new rotulocampo;
 ?>
@@ -214,7 +214,7 @@ function js_enviarvalor(){
             <tr>
 			        <td align='center' nowrap>
 							  <?php 
-							  $arr_linhas = Array();
+							  $arr_linhas = [];
                 db_selectmultiple("cabecalho", $arr_linhas, 7, 1,'','','','','', " style='width:370px;' onDblClick='js_retornalinha();' ");
 							  ?>
 							  <BR><b>Dê dois clicks sobre a linha para alterá-la ou excluí-la</b>

@@ -32,16 +32,16 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_parprojetos_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-$oPost         = db_utils::postmemory($HTTP_POST_VARS);
+$oPost         = db_utils::postmemory($_POST);
 $clparprojetos = new cl_parprojetos;
 $db_opcao      = 22;
 $db_botao      = false;
-$iAnoUsu       = isset($oPost->ob21_anousu) ? $oPost->ob21_anousu : db_getsession("DB_anousu");
+$iAnoUsu       = $oPost->ob21_anousu ?? db_getsession("DB_anousu");
 $rsParProjetos = $clparprojetos->sql_record($clparprojetos->sql_query_pesquisaParametros($iAnoUsu));
 
 if(isset($oPost->alterar) || isset($oPost->incluir)){
 
-	$diretorio = dirname(__FILE__)."/src/Tributario/Projetos/Obras/Sisobras/Webservice/Arquivo/";
+	$diretorio = __DIR__."/src/Tributario/Projetos/Obras/Sisobras/Webservice/Arquivo/";
 
 	// Filtra certificado formato .pem
 	if (empty($_FILES["file_certificadopem"]["name"])) {
@@ -51,7 +51,7 @@ if(isset($oPost->alterar) || isset($oPost->incluir)){
 			$diretorioPem = $diretorio . $oPost->certificadopem;
 		}
 	} else {
-		$diretorioPem = $diretorio . basename($_FILES["file_certificadopem"]["name"]);
+		$diretorioPem = $diretorio . basename((string) $_FILES["file_certificadopem"]["name"]);
 	}
 
 	// Filtra certificado formato .pfx
@@ -62,7 +62,7 @@ if(isset($oPost->alterar) || isset($oPost->incluir)){
 			$diretorioPfx = $diretorio . $oPost->certificadopfx;
 		}
 	} else {
-		$diretorioPfx = $diretorio . basename($_FILES["file_certificadopfx"]["name"]);
+		$diretorioPfx = $diretorio . basename((string) $_FILES["file_certificadopfx"]["name"]);
 	}
 
 	// Efetua upload do certificado formato .pem

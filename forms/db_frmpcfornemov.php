@@ -152,7 +152,7 @@ if (isset($db_opcaoal)) {
           <tr>
             <td valign="top" align="center">
               <?php
-              $chavepri = array("pc62_codmov" => @$pc62_codmov);
+              $chavepri = ["pc62_codmov" => @$pc62_codmov];
               $cliframe_alterar_excluir->chavepri = $chavepri;
               $cliframe_alterar_excluir->sql     = $clpcfornemov->sql_query_file(null, '*', 'pc62_codmov', " pc62_numcgm = $pc62_numcgm");
               $cliframe_alterar_excluir->campos  = "pc62_codmov,pc62_numcgm,pc62_dtlanc,pc62_hist,pc62_id_usuario";

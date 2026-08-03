@@ -49,8 +49,8 @@ $clrotulo->label("db77_descr");
         </td>
         <td>
           <?php 
-          $aX = array('D' => 'Por departamento', 'S' => 'Por secretaria', 'G' => 'Por almoxarifado/departamento',
-                      'F' => 'Por almoxarifado/deposito');
+          $aX = ['D' => 'Por departamento', 'S' => 'Por secretaria', 'G' => 'Por almoxarifado/departamento',
+                      'F' => 'Por almoxarifado/deposito'];
           db_select('m90_tipocontrol', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
         </td>
@@ -61,7 +61,7 @@ $clrotulo->label("db77_descr");
         </td>
         <td>
           <?php 
-          $aX = array('18' => 'Modelo 18 - Observação Resumida', '181' => 'Modelo 181-  Observação Completa');
+          $aX = ['18' => 'Modelo 18 - Observação Resumida', '181' => 'Modelo 181-  Observação Completa'];
           db_select('m90_modrelsaidamat', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
         </td>
@@ -72,7 +72,7 @@ $clrotulo->label("db77_descr");
         </td>
         <td>
           <?php 
-          $aX = array('1' => 'Departamento(s) do(s) Usuário(s)', '2' => 'Departamento(s) de Origem');
+          $aX = ['1' => 'Departamento(s) do(s) Usuário(s)', '2' => 'Departamento(s) de Origem'];
           db_select('m90_almoxordemcompra', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
         </td>
@@ -83,7 +83,7 @@ $clrotulo->label("db77_descr");
         </td>
         <td>
           <?php 
-          $aX = array("f" => "Sim", "t" => "Não");
+          $aX = ["f" => "Sim", "t" => "Não"];
           db_select('m90_reqsemest', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
         </td>
@@ -94,7 +94,7 @@ $clrotulo->label("db77_descr");
         </td>
         <td>
           <?php 
-          $aVerSaldoItem = array("f" => "Não", "t" => "Sim");
+          $aVerSaldoItem = ["f" => "Não", "t" => "Sim"];
           db_select('m90_versaldoitemreq', $aVerSaldoItem, true, $db_opcao, "style='width:250px;'");
           ?>
         </td>
@@ -105,7 +105,7 @@ $clrotulo->label("db77_descr");
         </td>
         <td>
           <?php 
-          $aX = array('t' => 'Sim', 'f' => 'Não');
+          $aX = ['t' => 'Sim', 'f' => 'Não'];
           db_select('m90_deptalmox', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
         </td>
@@ -116,7 +116,7 @@ $clrotulo->label("db77_descr");
         </td>
         <td>
           <?php 
-          $aX = array('f' => 'Não', 't' => 'Sim');
+          $aX = ['f' => 'Não', 't' => 'Sim'];
           db_select('m90_liqentoc', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
         </td>
@@ -127,7 +127,7 @@ $clrotulo->label("db77_descr");
         </td>
         <td>
           <?php 
-          $aX = array('t' => 'Sim', 'f' => 'Não');
+          $aX = ['t' => 'Sim', 'f' => 'Não'];
           db_select('m90_entratrans', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
         </td>
@@ -160,7 +160,7 @@ $clrotulo->label("db77_descr");
         </td>
         <td>
           <?php 
-          $aX = array("1" => "Cinza", "2" => "Branco");
+          $aX = ["1" => "Cinza", "2" => "Branco"];
           db_select('m90_corfundorequisicao', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
         </td>
@@ -196,7 +196,7 @@ $clrotulo->label("db77_descr");
                 </td>
                 <td>
                   <?php 
-                  $aX = array('1' => 'Sim', '2' => 'Não');
+                  $aX = ['1' => 'Sim', '2' => 'Não'];
                   db_select('m90_mostrarsaldosolictransf', $aX, true, $db_opcao, "style='width:250px;'");
                   ?>
                 </td>
@@ -207,7 +207,7 @@ $clrotulo->label("db77_descr");
                 </td>
                 <td>
                   <?php 
-                  $aX = array('1' => 'Sim', '2' => 'Não');
+                  $aX = ['1' => 'Sim', '2' => 'Não'];
                   db_select('m90_validarsaldosolictransf', $aX, true, $db_opcao, "style='width:250px;'");
                   ?>
                 </td>
@@ -237,7 +237,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_matparam.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 

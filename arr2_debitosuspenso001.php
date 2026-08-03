@@ -128,7 +128,7 @@ $clrotulo->label('q02_inscr');
                     </td>
                     <td>
                         <?php 
-                        $aOptions = array("n" => "Não", "s" => "Sim", "todas" => "Todas");
+                        $aOptions = ["n" => "Não", "s" => "Sim", "todas" => "Todas"];
                         db_select("anulada", $aOptions, true, 4, "");
                         ?>
                     </td>
@@ -145,7 +145,7 @@ $clrotulo->label('q02_inscr');
                     </td>
                     <td>
                         <?php 
-                        $xx = array("c" => "Completo", "r" => "Resumido");
+                        $xx = ["c" => "Completo", "r" => "Resumido"];
                         db_select('seltipo', $xx, true, 4, "");
                         ?>
                     </td>
@@ -154,7 +154,7 @@ $clrotulo->label('q02_inscr');
                     </td>
                     <td>
                         <?php 
-                        $xx = array("d" => "Data", "c" => "CGM", "m" => "Matrícula", "i" => "Inscrição");
+                        $xx = ["d" => "Data", "c" => "CGM", "m" => "Matrícula", "i" => "Inscrição"];
                         db_select('selordem', $xx, true, 4, "");
                         ?>
                     </td>
@@ -163,7 +163,7 @@ $clrotulo->label('q02_inscr');
                     </td>
                     <td>
                         <?php 
-                        $xx = array("s" => "Sim", "n" => "Não");
+                        $xx = ["s" => "Sim", "n" => "Não"];
                         db_select('selhist', $xx, true, 4, "");
                         ?>
                     </td>

@@ -11,7 +11,7 @@ abstract class Layout
      *
      * Campos
      */
-    protected $fields = array();
+    protected $fields = [];
 
     /**
      * Construtor de classe

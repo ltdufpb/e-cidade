@@ -9,11 +9,8 @@ use ECidade\Tributario\Cadastro\Iptu\Arquivo\Entity\Filtro;
 
 final class DebitoRepository extends Service
 {
-    private $entityDebitoRepository;
-    
-    public function __construct(EntityDebitoRepository $entityDebitoRepository)
+    public function __construct(private readonly EntityDebitoRepository $entityDebitoRepository)
     {
-        $this->entityDebitoRepository = $entityDebitoRepository;
     }
 
     public function findAll(Matricula $matricula, Filtro $filtro)

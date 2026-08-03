@@ -93,8 +93,8 @@ if ($objParam->exec == "getFAA") {
 	//Gera fc_numatend
 	if( (int)$objParam->sd24_i_codigo == 0 ){
 		$sql_fc      = "select fc_numatend()";
-		$query_fc    = db_query($sql_fc) or die(pg_errormessage().$sql_fc);
-		$fc_numatend = explode(",",pg_result($query_fc,0,0));
+		$query_fc    = db_query($sql_fc) or die(pg_last_error().$sql_fc);
+		$fc_numatend = explode(",",pg_fetch_result($query_fc,0,0));
 		unset( $_SESSION["objRegProfissional"] );
 	}
 
@@ -176,17 +176,17 @@ if ($objParam->exec == "getFAA") {
 	$clprontprocedcid->excluir(null,"s135_i_prontproced in (select sd29_i_codigo from prontproced where  sd29_i_prontuario = {$objParam->sd24_i_codigo})");
 	if( $clprontprocedcid->erro_status == "0" && $clprontprocedcid->numrows_excluir == 0 ){
 		$objRetorno->status  = 2;
-		$objRetorno->message = urlencode( $clprontprocedcid->erro_msg );
+		$objRetorno->message = urlencode( (string) $clprontprocedcid->erro_msg );
 	}else if( $objRetorno->status == 1 ){
 		$clprontproced->excluir(null, " sd29_i_prontuario = {$objParam->sd24_i_codigo} ");
 		if( $clprontproced->erro_status == "0" && $clprontproced->numrows_excluir == 0 ){
 			$objRetorno->status  = 2;
-			$objRetorno->message = urlencode( $clprontproced->erro_msg );
+			$objRetorno->message = urlencode( (string) $clprontproced->erro_msg );
 		}else if( $objRetorno->status == 1 ){
 			$clprontuarios->excluir($objParam->sd24_i_codigo);
 			if( $clprontproced->erro_status == "0" && $clprontproced->numrows_excluir == 0 ){
 				$objRetorno->status  = 2;
-				$objRetorno->message = urlencode( $clprontproced->erro_msg );
+				$objRetorno->message = urlencode( (string) $clprontproced->erro_msg );
 			}
 		}
 	}

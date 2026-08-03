@@ -57,7 +57,7 @@ class RegraLancamentoEmLiquidacaoMaterialPermanente implements IRegraLancamentoC
         }
 
         $aRegrasDoLancamento = $oLancamentoEventoContabil->getRegrasLancamento();
-        $aContasEncontradas  = array();
+        $aContasEncontradas  = [];
 
         foreach ($aRegrasDoLancamento as  $oRegraLancamentoContabil ) {
 
@@ -99,9 +99,9 @@ class RegraLancamentoEmLiquidacaoMaterialPermanente implements IRegraLancamentoC
                 $mensagem = 'financeiro.contabilidade.RegraLancamentoEmLiquidacaoMaterialPermanente.mais_de_uma_regra_encontrada';
             } else {
 
-                $oStdDadosMensagem = (object)array(
+                $oStdDadosMensagem = (object)[
                     'documento' => $iCodigoDocumento . ' - ' . $oEventoContabil->getDescricaoDocumento()
-                );
+                ];
                 $mensagem = 'financeiro.contabilidade.RegraLancamentoEmLiquidacaoMaterialPermanente.mais_de_uma_regra_encontrada_1';
             }
             throw new BusinessException(_M($mensagem, $oStdDadosMensagem));

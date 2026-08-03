@@ -48,8 +48,8 @@ $oParam   = $oJson->decode((str_replace("\\","",$_POST["json"])));
 $oRetorno = new stdClass();
 $oRetorno->status           = 1;
 $oRetorno->message          = 1;
-$oRetorno->itens            = array();
-$oRetorno->aListaMatriculas = array();
+$oRetorno->itens            = [];
+$oRetorno->aListaMatriculas = [];
 
 switch($oParam->exec) {
 
@@ -73,7 +73,7 @@ switch($oParam->exec) {
       $oDirf->processar($oParam->lProcessaEmpenho);
 
       file_put_contents("tmp/LogDirf.txt", LogDirf::getLog(LogDirf::STR) );
-      $oRetorno->aArquivosInconsistentes = array();
+      $oRetorno->aArquivosInconsistentes = [];
 
       if ($oDirf->hasInconsistencias()) {
 
@@ -154,7 +154,7 @@ switch($oParam->exec) {
     $oRetorno->avisarfaltabases = false;
     $oCompetenciaAtual   = DBPessoal::getCompetenciaFolha();
     $oParametros         = ParametrosPessoalRepository::getParametros($oCompetenciaAtual);
-    $aBases             = array();
+    $aBases             = [];
     if (!$oParametros->getBaseRraParcelaIsenta()) {
       $aBases[] = " - Parcela isenta do RRA";
     }

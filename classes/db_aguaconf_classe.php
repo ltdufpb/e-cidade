@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE aguaconf
 class cl_aguaconf { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x18_anousu = 0; 
-   var $x18_carsemesgoto = 0; 
-   var $x18_carsemagua = 0; 
-   var $x18_arretipo = 0; 
-   var $x18_caresgoto = 0; 
-   var $x18_caragua = 0; 
-   var $x18_consumoexcesso = 0; 
-   var $x18_consumoesgoto = 0; 
-   var $x18_consumoagua = 0; 
-   var $x18_cartipoimovei = 0; 
-   var $x18_receitadebitorecalculo = 0; 
-   var $x18_receitacreditorecalculo = 0; 
+   public $x18_anousu = 0; 
+   public $x18_carsemesgoto = 0; 
+   public $x18_carsemagua = 0; 
+   public $x18_arretipo = 0; 
+   public $x18_caresgoto = 0; 
+   public $x18_caragua = 0; 
+   public $x18_consumoexcesso = 0; 
+   public $x18_consumoesgoto = 0; 
+   public $x18_consumoagua = 0; 
+   public $x18_cartipoimovei = 0; 
+   public $x18_receitadebitorecalculo = 0; 
+   public $x18_receitacreditorecalculo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x18_anousu = int4 = Exercício 
                  x18_carsemesgoto = int4 = Característica Sem Esgoto 
                  x18_carsemagua = int4 = Característica Sem Água 
@@ -70,10 +70,10 @@ class cl_aguaconf {
                  x18_receitacreditorecalculo = int4 = Receita Crédito Recalculo 
                  ";
    //funcao construtor da classe 
-   function cl_aguaconf() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaconf"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -232,7 +232,7 @@ class cl_aguaconf {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parametros () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parametros já Cadastrado";
@@ -264,10 +264,10 @@ class cl_aguaconf {
       $this->atualizacampos();
      $sql = " update aguaconf set ";
      $virgula = "";
-     if(trim($this->x18_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_anousu"])){ 
+     if(trim((string) $this->x18_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_anousu"])){ 
        $sql  .= $virgula." x18_anousu = $this->x18_anousu ";
        $virgula = ",";
-       if(trim($this->x18_anousu) == null ){ 
+       if(trim((string) $this->x18_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "x18_anousu";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_aguaconf {
          return false;
        }
      }
-     if(trim($this->x18_carsemesgoto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_carsemesgoto"])){ 
+     if(trim((string) $this->x18_carsemesgoto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_carsemesgoto"])){ 
        $sql  .= $virgula." x18_carsemesgoto = $this->x18_carsemesgoto ";
        $virgula = ",";
-       if(trim($this->x18_carsemesgoto) == null ){ 
+       if(trim((string) $this->x18_carsemesgoto) == null ){ 
          $this->erro_sql = " Campo Característica Sem Esgoto não informado.";
          $this->erro_campo = "x18_carsemesgoto";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_aguaconf {
          return false;
        }
      }
-     if(trim($this->x18_carsemagua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_carsemagua"])){ 
+     if(trim((string) $this->x18_carsemagua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_carsemagua"])){ 
        $sql  .= $virgula." x18_carsemagua = $this->x18_carsemagua ";
        $virgula = ",";
-       if(trim($this->x18_carsemagua) == null ){ 
+       if(trim((string) $this->x18_carsemagua) == null ){ 
          $this->erro_sql = " Campo Característica Sem Água não informado.";
          $this->erro_campo = "x18_carsemagua";
          $this->erro_banco = "";
@@ -303,10 +303,10 @@ class cl_aguaconf {
          return false;
        }
      }
-     if(trim($this->x18_arretipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_arretipo"])){ 
+     if(trim((string) $this->x18_arretipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_arretipo"])){ 
        $sql  .= $virgula." x18_arretipo = $this->x18_arretipo ";
        $virgula = ",";
-       if(trim($this->x18_arretipo) == null ){ 
+       if(trim((string) $this->x18_arretipo) == null ){ 
          $this->erro_sql = " Campo Tipo de Débito não informado.";
          $this->erro_campo = "x18_arretipo";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_aguaconf {
          return false;
        }
      }
-     if(trim($this->x18_caresgoto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_caresgoto"])){ 
+     if(trim((string) $this->x18_caresgoto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_caresgoto"])){ 
        $sql  .= $virgula." x18_caresgoto = $this->x18_caresgoto ";
        $virgula = ",";
-       if(trim($this->x18_caresgoto) == null ){ 
+       if(trim((string) $this->x18_caresgoto) == null ){ 
          $this->erro_sql = " Campo Característica Esgoto não informado.";
          $this->erro_campo = "x18_caresgoto";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_aguaconf {
          return false;
        }
      }
-     if(trim($this->x18_caragua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_caragua"])){ 
+     if(trim((string) $this->x18_caragua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_caragua"])){ 
        $sql  .= $virgula." x18_caragua = $this->x18_caragua ";
        $virgula = ",";
-       if(trim($this->x18_caragua) == null ){ 
+       if(trim((string) $this->x18_caragua) == null ){ 
          $this->erro_sql = " Campo Característica Água não informado.";
          $this->erro_campo = "x18_caragua";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_aguaconf {
          return false;
        }
      }
-     if(trim($this->x18_consumoexcesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_consumoexcesso"])){ 
+     if(trim((string) $this->x18_consumoexcesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_consumoexcesso"])){ 
        $sql  .= $virgula." x18_consumoexcesso = $this->x18_consumoexcesso ";
        $virgula = ",";
-       if(trim($this->x18_consumoexcesso) == null ){ 
+       if(trim((string) $this->x18_consumoexcesso) == null ){ 
          $this->erro_sql = " Campo Tipo Consumo Excesso não informado.";
          $this->erro_campo = "x18_consumoexcesso";
          $this->erro_banco = "";
@@ -355,10 +355,10 @@ class cl_aguaconf {
          return false;
        }
      }
-     if(trim($this->x18_consumoesgoto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_consumoesgoto"])){ 
+     if(trim((string) $this->x18_consumoesgoto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_consumoesgoto"])){ 
        $sql  .= $virgula." x18_consumoesgoto = $this->x18_consumoesgoto ";
        $virgula = ",";
-       if(trim($this->x18_consumoesgoto) == null ){ 
+       if(trim((string) $this->x18_consumoesgoto) == null ){ 
          $this->erro_sql = " Campo Tipo Consumo Esgoto não informado.";
          $this->erro_campo = "x18_consumoesgoto";
          $this->erro_banco = "";
@@ -368,10 +368,10 @@ class cl_aguaconf {
          return false;
        }
      }
-     if(trim($this->x18_consumoagua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_consumoagua"])){ 
+     if(trim((string) $this->x18_consumoagua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_consumoagua"])){ 
        $sql  .= $virgula." x18_consumoagua = $this->x18_consumoagua ";
        $virgula = ",";
-       if(trim($this->x18_consumoagua) == null ){ 
+       if(trim((string) $this->x18_consumoagua) == null ){ 
          $this->erro_sql = " Campo Tipo Consumo Água não informado.";
          $this->erro_campo = "x18_consumoagua";
          $this->erro_banco = "";
@@ -381,10 +381,10 @@ class cl_aguaconf {
          return false;
        }
      }
-     if(trim($this->x18_cartipoimovei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_cartipoimovei"])){ 
+     if(trim((string) $this->x18_cartipoimovei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_cartipoimovei"])){ 
        $sql  .= $virgula." x18_cartipoimovei = $this->x18_cartipoimovei ";
        $virgula = ",";
-       if(trim($this->x18_cartipoimovei) == null ){ 
+       if(trim((string) $this->x18_cartipoimovei) == null ){ 
          $this->erro_sql = " Campo Característica Tipo Imóvel não informado.";
          $this->erro_campo = "x18_cartipoimovei";
          $this->erro_banco = "";
@@ -394,15 +394,15 @@ class cl_aguaconf {
          return false;
        }
      }
-     if(trim($this->x18_receitadebitorecalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_receitadebitorecalculo"])){ 
-        if(trim($this->x18_receitadebitorecalculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x18_receitadebitorecalculo"])){ 
+     if(trim((string) $this->x18_receitadebitorecalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_receitadebitorecalculo"])){ 
+        if(trim((string) $this->x18_receitadebitorecalculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x18_receitadebitorecalculo"])){ 
            $this->x18_receitadebitorecalculo = "0" ; 
         } 
        $sql  .= $virgula." x18_receitadebitorecalculo = $this->x18_receitadebitorecalculo ";
        $virgula = ",";
      }
-     if(trim($this->x18_receitacreditorecalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_receitacreditorecalculo"])){ 
-        if(trim($this->x18_receitacreditorecalculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x18_receitacreditorecalculo"])){ 
+     if(trim((string) $this->x18_receitacreditorecalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x18_receitacreditorecalculo"])){ 
+        if(trim((string) $this->x18_receitacreditorecalculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x18_receitacreditorecalculo"])){ 
            $this->x18_receitacreditorecalculo = "0" ; 
         } 
        $sql  .= $virgula." x18_receitacreditorecalculo = $this->x18_receitacreditorecalculo ";

@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE empageconfche
 class cl_empageconfche {
   // cria variaveis de erro
-  var $rotulo     = null;
-  var $query_sql  = null;
-  var $numrows    = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status= null;
-  var $erro_sql   = null;
-  var $erro_banco = null;
-  var $erro_msg   = null;
-  var $erro_campo = null;
-  var $pagina_retorno = null;
+  public $rotulo     = null;
+  public $query_sql  = null;
+  public $numrows    = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status= null;
+  public $erro_sql   = null;
+  public $erro_banco = null;
+  public $erro_msg   = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
   // cria variaveis do arquivo
-  var $e91_codcheque = 0;
-  var $e91_codmov = 0;
-  var $e91_cheque = null;
-  var $e91_valor = 0;
-  var $e91_ativo = 'f';
+  public $e91_codcheque = 0;
+  public $e91_codmov = 0;
+  public $e91_cheque = null;
+  public $e91_valor = 0;
+  public $e91_ativo = 'f';
   // cria propriedade com as variaveis do arquivo
-  var $campos = "
+  public $campos = "
                  e91_codcheque = int8 = Código 
                  e91_codmov = int4 = Movimento 
                  e91_cheque = varchar(40) = Cheque 
@@ -56,10 +56,10 @@ class cl_empageconfche {
                  e91_ativo = bool = Ativo 
                  ";
   //funcao construtor da classe
-  function cl_empageconfche() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("empageconfche");
-    $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+    $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
   function erro($mostra,$retorna) {
@@ -131,10 +131,10 @@ class cl_empageconfche {
         $this->erro_status = "0";
         return false;
       }
-      $this->e91_codcheque = pg_result($result,0,0);
+      $this->e91_codcheque = pg_fetch_result($result,0,0);
     }else{
       $result = db_query("select last_value from empageconfche_e91_codcheque_seq");
-      if(($result != false) && (pg_result($result,0,0) < $e91_codcheque)){
+      if(($result != false) && (pg_fetch_result($result,0,0) < $e91_codcheque)){
         $this->erro_sql = " Campo e91_codcheque maior que último número da sequencia.";
         $this->erro_banco = "Sequencia menor que este número.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_empageconfche {
     $result = db_query($sql);
     if($result==false){
       $this->erro_banco = str_replace("\n","",@pg_last_error());
-      if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+      if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
         $this->erro_sql   = "Cheques e seus valores ($this->e91_codcheque) nao Incluído. Inclusao Abortada.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_banco = "Cheques e seus valores já Cadastrado";
@@ -194,14 +194,14 @@ class cl_empageconfche {
     $resaco = $this->sql_record($this->sql_query_file($this->e91_codcheque));
     if(($resaco!=false)||($this->numrows!=0)){
       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-      $acount = pg_result($resac,0,0);
+      $acount = pg_fetch_result($resac,0,0);
       $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
       $resac = db_query("insert into db_acountkey values($acount,6307,'$this->e91_codcheque','I')");
-      $resac = db_query("insert into db_acount values($acount,1027,6307,'','".AddSlashes(pg_result($resaco,0,'e91_codcheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-      $resac = db_query("insert into db_acount values($acount,1027,6304,'','".AddSlashes(pg_result($resaco,0,'e91_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-      $resac = db_query("insert into db_acount values($acount,1027,6305,'','".AddSlashes(pg_result($resaco,0,'e91_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-      $resac = db_query("insert into db_acount values($acount,1027,6306,'','".AddSlashes(pg_result($resaco,0,'e91_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-      $resac = db_query("insert into db_acount values($acount,1027,15191,'','".AddSlashes(pg_result($resaco,0,'e91_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,1027,6307,'','".AddSlashes(pg_fetch_result($resaco,0,'e91_codcheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,1027,6304,'','".AddSlashes(pg_fetch_result($resaco,0,'e91_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,1027,6305,'','".AddSlashes(pg_fetch_result($resaco,0,'e91_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,1027,6306,'','".AddSlashes(pg_fetch_result($resaco,0,'e91_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,1027,15191,'','".AddSlashes(pg_fetch_result($resaco,0,'e91_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
     }
     return true;
   }
@@ -210,10 +210,10 @@ class cl_empageconfche {
     $this->atualizacampos();
     $sql = " update empageconfche set ";
     $virgula = "";
-    if(trim($this->e91_codcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e91_codcheque"])){
+    if(trim((string) $this->e91_codcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e91_codcheque"])){
       $sql  .= $virgula." e91_codcheque = $this->e91_codcheque ";
       $virgula = ",";
-      if(trim($this->e91_codcheque) == null ){
+      if(trim((string) $this->e91_codcheque) == null ){
         $this->erro_sql = " Campo Código nao Informado.";
         $this->erro_campo = "e91_codcheque";
         $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_empageconfche {
         return false;
       }
     }
-    if(trim($this->e91_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e91_codmov"])){
+    if(trim((string) $this->e91_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e91_codmov"])){
       $sql  .= $virgula." e91_codmov = $this->e91_codmov ";
       $virgula = ",";
-      if(trim($this->e91_codmov) == null ){
+      if(trim((string) $this->e91_codmov) == null ){
         $this->erro_sql = " Campo Movimento nao Informado.";
         $this->erro_campo = "e91_codmov";
         $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_empageconfche {
         return false;
       }
     }
-    if(trim($this->e91_cheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e91_cheque"])){
+    if(trim((string) $this->e91_cheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e91_cheque"])){
       $sql  .= $virgula." e91_cheque = '$this->e91_cheque' ";
       $virgula = ",";
-      if(trim($this->e91_cheque) == null ){
+      if(trim((string) $this->e91_cheque) == null ){
         $this->erro_sql = " Campo Cheque nao Informado.";
         $this->erro_campo = "e91_cheque";
         $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_empageconfche {
         return false;
       }
     }
-    if(trim($this->e91_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e91_valor"])){
+    if(trim((string) $this->e91_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e91_valor"])){
       $sql  .= $virgula." e91_valor = $this->e91_valor ";
       $virgula = ",";
-      if(trim($this->e91_valor) == null ){
+      if(trim((string) $this->e91_valor) == null ){
         $this->erro_sql = " Campo Valor nao Informado.";
         $this->erro_campo = "e91_valor";
         $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_empageconfche {
         return false;
       }
     }
-    if(trim($this->e91_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e91_ativo"])){
+    if(trim((string) $this->e91_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e91_ativo"])){
       $sql  .= $virgula." e91_ativo = '$this->e91_ativo' ";
       $virgula = ",";
-      if(trim($this->e91_ativo) == null ){
+      if(trim((string) $this->e91_ativo) == null ){
         $this->erro_sql = " Campo Ativo nao Informado.";
         $this->erro_campo = "e91_ativo";
         $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_empageconfche {
     if($this->numrows>0){
       for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac,0,0);
+        $acount = pg_fetch_result($resac,0,0);
         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
         $resac = db_query("insert into db_acountkey values($acount,6307,'$this->e91_codcheque','A')");
         if(isset($GLOBALS["HTTP_POST_VARS"]["e91_codcheque"]) || $this->e91_codcheque != "")
-          $resac = db_query("insert into db_acount values($acount,1027,6307,'".AddSlashes(pg_result($resaco,$conresaco,'e91_codcheque'))."','$this->e91_codcheque',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,1027,6307,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e91_codcheque'))."','$this->e91_codcheque',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         if(isset($GLOBALS["HTTP_POST_VARS"]["e91_codmov"]) || $this->e91_codmov != "")
-          $resac = db_query("insert into db_acount values($acount,1027,6304,'".AddSlashes(pg_result($resaco,$conresaco,'e91_codmov'))."','$this->e91_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,1027,6304,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e91_codmov'))."','$this->e91_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         if(isset($GLOBALS["HTTP_POST_VARS"]["e91_cheque"]) || $this->e91_cheque != "")
-          $resac = db_query("insert into db_acount values($acount,1027,6305,'".AddSlashes(pg_result($resaco,$conresaco,'e91_cheque'))."','$this->e91_cheque',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,1027,6305,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e91_cheque'))."','$this->e91_cheque',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         if(isset($GLOBALS["HTTP_POST_VARS"]["e91_valor"]) || $this->e91_valor != "")
-          $resac = db_query("insert into db_acount values($acount,1027,6306,'".AddSlashes(pg_result($resaco,$conresaco,'e91_valor'))."','$this->e91_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,1027,6306,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e91_valor'))."','$this->e91_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         if(isset($GLOBALS["HTTP_POST_VARS"]["e91_ativo"]) || $this->e91_ativo != "")
-          $resac = db_query("insert into db_acount values($acount,1027,15191,'".AddSlashes(pg_result($resaco,$conresaco,'e91_ativo'))."','$this->e91_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,1027,15191,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e91_ativo'))."','$this->e91_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
       }
     }
     $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_empageconfche {
     if(($resaco!=false)||($this->numrows!=0)){
       for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac,0,0);
+        $acount = pg_fetch_result($resac,0,0);
         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
         $resac = db_query("insert into db_acountkey values($acount,6307,'$e91_codcheque','E')");
-        $resac = db_query("insert into db_acount values($acount,1027,6307,'','".AddSlashes(pg_result($resaco,$iresaco,'e91_codcheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,1027,6304,'','".AddSlashes(pg_result($resaco,$iresaco,'e91_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,1027,6305,'','".AddSlashes(pg_result($resaco,$iresaco,'e91_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,1027,6306,'','".AddSlashes(pg_result($resaco,$iresaco,'e91_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,1027,15191,'','".AddSlashes(pg_result($resaco,$iresaco,'e91_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,1027,6307,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e91_codcheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,1027,6304,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e91_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,1027,6305,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e91_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,1027,6306,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e91_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,1027,15191,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e91_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
       }
     }
     $sql = " delete from empageconfche
@@ -407,7 +407,7 @@ class cl_empageconfche {
       $this->erro_status = "0";
       return false;
     }
-    $this->numrows = pg_numrows($result);
+    $this->numrows = pg_num_rows($result);
     if($this->numrows==0){
       $this->erro_banco = "";
       $this->erro_sql   = "Record Vazio na Tabela:empageconfche";
@@ -422,7 +422,7 @@ class cl_empageconfche {
   function sql_query ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -445,7 +445,7 @@ class cl_empageconfche {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -458,7 +458,7 @@ class cl_empageconfche {
   function sql_query_file ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -479,7 +479,7 @@ class cl_empageconfche {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -491,7 +491,7 @@ class cl_empageconfche {
   function sql_query_cheques ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -522,7 +522,7 @@ class cl_empageconfche {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -534,7 +534,7 @@ class cl_empageconfche {
   function sql_query_cheques_cancelados ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -560,7 +560,7 @@ class cl_empageconfche {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -572,7 +572,7 @@ class cl_empageconfche {
   function sql_query_pagamento ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -596,7 +596,7 @@ class cl_empageconfche {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

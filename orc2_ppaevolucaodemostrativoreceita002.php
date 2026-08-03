@@ -37,13 +37,13 @@ $oGet      = db_utils::postMemory($_GET);
 $oPPA      = new ppa($oGet->ppalei, 1, $oGet->ppaversao);
 $oPPA->setInstituicoes($oGet->sInstit);
 $oPPAVersao     = new ppaVersao($oGet->ppaversao);
-$aRecursos = array();
+$aRecursos = [];
 if (isset($oGet->sRecursos)) {
   $aRecursos = explode(",", $oGet->sRecursos);
 }
 try {
   $aReceitas    = $oPPA->getQuadroEstimativas($oGet->estrut, $aRecursos);
-} catch (Exception $eException ) {
+} catch (Exception ) {
   //$lImprimeReceitaCorrente = false;
 }
 /**
@@ -52,7 +52,7 @@ try {
 if ($oGet->agrupaporrecurso == 1) {
 
   $oGrupoRecursos = $aReceitas;
-  $aReceitas       = array();
+  $aReceitas       = [];
   foreach ($oGrupoRecursos as $oRecurso) {
       dump($oRecurso);
 
@@ -87,8 +87,8 @@ if ($oGet->agrupaporrecurso == 1) {
   }
 }
 
-$aAno       = array();
-$aAnoBase   = array();
+$aAno       = [];
+$aAnoBase   = [];
 $iAnoInicio =  $oGet->anoini - ppa::ANOS_PREVISAO_CALCULO;
 for ($iInd = $iAnoInicio; $iInd < $oGet->anoini; $iInd++) {
   $aAnoBase[] = $iInd;
@@ -126,12 +126,12 @@ $pdf = new PDF("L");
 $pdf->Open();
 $pdf->AliasNbPages();
 $pdf->setfillcolor(235);
-cabecalho($pdf, $aAnoBase, $iAnoDaMedia, $aAno);
+cabecalho($pdf);
 
 $alt = 5;
 
 //Array para armazenar a soma total de cada coluna
-$aTotalizadores = array();
+$aTotalizadores = [];
 for($iIndice = 0; $iIndice <= 8; $iIndice++) {
   $aTotalizadores[] = 0;
 }
@@ -158,14 +158,14 @@ foreach ($aReceitas as $oReceita) {
     continue;
   }
   if ($pdf->GetY() > $pdf->h - 30) {
-    cabecalho($pdf, $aAnoBase, $iAnoDaMedia, $aAno);
+    cabecalho($pdf);
   }
   $pdf->setfont('arial','',7);
   if ($oReceita->iReduz == "" && $oGet->agrupaporrecurso == 2) {
     $pdf->setfont('arial','b',7);
   }
   $pdf->cell(25 , $alt, $oReceita->iEstrutural , "TBR", 0, "L", 0);
-  $pdf->cell(60 , $alt, substr(urldecode($oReceita->sDescricao),0,38), "TBL", 0, "L", 0);
+  $pdf->cell(60 , $alt, substr(urldecode((string) $oReceita->sDescricao),0,38), "TBL", 0, "L", 0);
   $pdf->cell(10 , $alt, $oReceita->iGestao    , "TBL", 0, "R", 0);
   $iIndice = 0;
   foreach ($oReceita->aBaseCalculo as $nValorBase) {

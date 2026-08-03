@@ -34,10 +34,10 @@ $oPdf = new PDF();
 $oPdf->Open();
 $oPdf->AliasNbPages();
 if (!empty($titulo)) {
-    $head1 = utf8_decode($titulo);
+    $head1 = mb_convert_encoding($titulo, 'ISO-8859-1');
 }
 if (!empty($subtitulo)) {
-    $head2 = utf8_decode($subtitulo);
+    $head2 = mb_convert_encoding($subtitulo, 'ISO-8859-1');
 }
 $oPdf->ln(5);
 $oPdf->addpage('L');
@@ -47,10 +47,10 @@ $oPdf->setfont('arial','b',7);
 $aLinhas = json_decode(file_get_contents($sCaminhoArquivo), true);
 
 foreach ($aLinhas as $cont => $linha) {
-    $oPdf->multiCell(280, 4, utf8_decode(trim($linha)), 0, "J", ($cont % 2 ));
+    $oPdf->multiCell(280, 4, mb_convert_encoding(trim((string) $linha), 'ISO-8859-1'), 0, "J", ($cont % 2 ));
 
     if($cont == 0){
-        $cabeçalho = trim($linha);
+        $cabeçalho = trim((string) $linha);
     }
 
     if($oPdf->gety() > $oPdf->h - 30){

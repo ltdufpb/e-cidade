@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_retencaotiporecgrupo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clretencaotiporecgrupo = new cl_retencaotiporecgrupo;
 $clretencaotiporecgrupo->rotulo->label("e01_sequencial");
 $clretencaotiporecgrupo->rotulo->label("e01_descricao");
@@ -98,9 +98,9 @@ $clretencaotiporecgrupo->rotulo->label("e01_descricao");
         }else{
            $sql = $clretencaotiporecgrupo->sql_query("",$campos,"e01_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e01_descricao)){
-          $repassa = array("chave_e01_sequencial"=>$chave_e01_sequencial,"chave_e01_descricao"=>$chave_e01_descricao);
+          $repassa = ["chave_e01_sequencial"=>$chave_e01_sequencial,"chave_e01_descricao"=>$chave_e01_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -39,17 +39,12 @@ use UsuarioSistema;
 class ItemRequisicaoRepository
 {
     /**
-     * @var Object
-     */
-    private $dao;
-
-    /**
      * ItemRequisicaoRepository constructor.
      * @param $dao \cl_lab_requiitem
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**
@@ -86,7 +81,7 @@ class ItemRequisicaoRepository
 
     public function buscaItensConferidosPorRequisicao($requisicao, $situacao)
     {
-        $codigo = substr($situacao, 0, 2);
+        $codigo = substr((string) $situacao, 0, 2);
         $rs = $this->dao->sql_record("
             select * 
             from (select * from lab_requiitem where SUBSTRING ( la21_c_situacao , 0 , 2) <> 'f') as x 

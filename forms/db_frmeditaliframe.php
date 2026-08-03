@@ -27,7 +27,7 @@
 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 <html>
 <head>
@@ -63,7 +63,7 @@ function js_marca(obj){
 if($db_opcao!=1){
   $sql="select  j14_codigo,d10_codigo,d40_trecho,j14_nome from  editalproj inner join projmelhorias on d40_codigo=d10_codigo inner join ruas on d40_codlog=j14_codigo where d10_codedi=$d01_codedi order by j14_codigo";
   $result=db_query($sql);
-  $num=pg_numrows($result);
+  $num=pg_num_rows($result);
   for($x=0; $x<$num; $x++){
     db_fieldsmemory($result,$x);
     $ck = ($d10_codigo!=""?"checked":"");
@@ -80,7 +80,7 @@ if($db_opcao!=3){
   (select j14_codigo,j14_nome,d40_codigo,d40_trecho,d10_codigo from projmelhorias left join editalproj on d40_codigo=d10_codigo inner join ruas on d40_codlog=j14_codigo)
   as x  where d10_codigo is null order by d40_codigo desc";
   $result=db_query($sql);
-  $num02=pg_numrows($result);
+  $num02=pg_num_rows($result);
   for($x=0; $x<$num02; $x++){
     db_fieldsmemory($result,$x);
     $ck = ($d10_codigo!=""?"checked":"");

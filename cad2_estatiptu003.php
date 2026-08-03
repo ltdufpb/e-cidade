@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 //include(modification("classes/db_sanitario_classe.php"));
 include(modification("classes/db_iptucalc_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliptucalc = new cl_iptucalc;
 
@@ -105,7 +105,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_estatiptu004.php'</script>"
 							</td>
 							<td> 
 							 <?php 
-									$x = array("m"=>"Matrícula","b"=>"Bairro","s"=>"Setor");
+									$x = ["m"=>"Matrícula","b"=>"Bairro","s"=>"Setor"];
 									db_select("selagrupa",$x,false,2,"onChange='js_mostratipo();'");
 								?>
 						  </td>
@@ -116,10 +116,10 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_estatiptu004.php'</script>"
 							</td>
 							<td>    
 							  <?php 
-									$x = array("m"=>"Matrícula",
+									$x = ["m"=>"Matrícula",
 														 "n"=>"Nome",
 														 "b"=>"Bairro",
-														 "s"=>"Setor");
+														 "s"=>"Setor"];
 									db_select("selordem",$x,false,2);
 								?>
 						  </td>
@@ -130,7 +130,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_estatiptu004.php'</script>"
 							</td>
 							<td>    
 							  <?php 
-									$x = array("a"=>"Analítica","s"=>"Sintética");
+									$x = ["a"=>"Analítica","s"=>"Sintética"];
 									db_select("seltipo",$x,false,2);
 								?>
 						  </td>

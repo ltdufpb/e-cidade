@@ -98,7 +98,7 @@ if(isset($db_opcaoal)){
   <tr>
     <td valign="top"  align="center">  
 	    <?php 
-		  $chavepri                              = array("k72_sequencial"=>@$k72_sequencial);
+		  $chavepri                              = ["k72_sequencial"=>@$k72_sequencial];
 		  $cliframe_alterar_excluir->chavepri	   = $chavepri;
 		  $cliframe_alterar_excluir->sql     	   = $clrecreparcarretipo->sql_query(null, "*",
 		                                                                                 " k72_sequencial ",

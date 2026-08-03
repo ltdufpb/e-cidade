@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -66,7 +66,7 @@ db_postmemory($HTTP_POST_VARS);
   </td>
   <td>
    <?php 
-   $tipo_ordem = array("a"=>"Alfabética","b"=>"Numérica");
+   $tipo_ordem = ["a"=>"Alfabética","b"=>"Numérica"];
    db_select("ordem",$tipo_ordem,true,2); ?>
   </td>
  </tr>

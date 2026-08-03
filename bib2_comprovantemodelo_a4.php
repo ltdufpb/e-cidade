@@ -30,7 +30,7 @@ require_once(modification("fpdf151/scpdf.php"));
 $ov02_sequencial = $oDadosEmprestimos->aEmprestimos[0]->ov02_sequencial;
 $ov02_nome       = $oDadosEmprestimos->aEmprestimos[0]->ov02_nome;
 $bi17_nome       = $oDadosEmprestimos->aEmprestimos[0]->bi17_nome;
-$barras          = str_pad($ov02_sequencial, 8, 0, STR_PAD_LEFT);
+$barras          = str_pad((string) $ov02_sequencial, 8, 0, STR_PAD_LEFT);
 
 $oPdf = new scpdf();
 $oPdf->Open();

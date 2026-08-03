@@ -34,7 +34,7 @@ require_once(modification("classes/db_lotenumero_proc_classe.php"));
 require_once(modification("classes/db_protprocesso_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cllotenumero      = new cl_lotenumero;
 $cllotenumero_proc = new cl_lotenumero_proc;

@@ -99,7 +99,7 @@ db_input('k12_valormov',15,$Ik12_valormov,true,'text',$db_opcao,"")
     </td>
     <td> 
       <?php 
-        $x = array("0"=>"Débito","1"=>"Crédito");
+        $x = ["0"=>"Débito","1"=>"Crédito"];
 	db_select('k12_tipomov',$x,true,$db_opcao);
 				
 //db_input('k12_tipomov',2,$Ik12_tipomov,true,'text',$db_opcao,"")
@@ -152,7 +152,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

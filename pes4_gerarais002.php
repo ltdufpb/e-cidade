@@ -216,7 +216,7 @@ db_inicio_transacao();
             $quais_diversos .= $separa . '$' . $codigo;
             $separa = ",";
 
-            global $$codigo;
+            global ${$codigo};
             eval('$$codigo = ' . $diversos[$Idiversos]["r07_valor"] . ";");
         }
 
@@ -260,8 +260,8 @@ db_inicio_transacao();
             $subpes_fim_ano = $subpes_atual;
         }
 
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
 
         $matriz1[1] = "w_matric";
         $matriz1[2] = "w_prefixo";
@@ -307,7 +307,7 @@ db_inicio_transacao();
 
         global $pess;
 
-        $campos_pessoal = array(
+        $campos_pessoal = [
             "distinct on (rh01_regist) rh01_regist as rh01_regist",
             "rh02_anousu as r01_anousu",
             "rh02_mesusu as r01_mesusu",
@@ -331,7 +331,7 @@ db_inicio_transacao();
             "rh05_causa as r01_causa",
             "rh01_sexo as r01_sexo",
             "rh30_vinculo"
-        );
+        ];
 
         $joinSindicato = "";
 
@@ -374,14 +374,14 @@ db_inicio_transacao();
 	db_query($sql);
 	
         db_selectmax("pess", "select * from pess order by rh01_regist");
-        $particoes = array();
+        $particoes = [];
         global $limite;
         $count = 0;
         $indexArray = 0;
         for ($i = 0; $i < sizeof($pess); $i++) {
             if ($count == 0) {
                 if(empty($particoes[$i%$limite])) {
-                    $particoes[$indexArray] = array();
+                    $particoes[$indexArray] = [];
                 }
             }
             $particoes[$indexArray][] = $pess[$i];
@@ -456,7 +456,7 @@ db_inicio_transacao();
                     $F008 = $pessoal_128[0]["r01_hrssem"] * 5;
                 } else {
                     $condicaoaux = " and r02_regime = " . db_sqlformat($pessoal_128[0]["r01_regime"]) . " 
-                and trim(upper(r02_codigo)) = " . db_sqlformat(trim(strtoupper($pessoal_128[0]["r01_padrao"])));
+                and trim(upper(r02_codigo)) = " . db_sqlformat(trim(strtoupper((string) $pessoal_128[0]["r01_padrao"])));
                     global $padroes;
                     if (db_selectmax("padroes", "select * from padroes " . bb_condicaosubpes("r02_") . $condicaoaux)) {
                         $F008 = $padroes[0]["r02_hrssem"] * 5;
@@ -468,7 +468,7 @@ db_inicio_transacao();
 
                 } else {
                     $condicaoaux = " and r02_regime = " . db_sqlformat($pessoal_128[0]["r01_regime"]);
-                    $condicaoaux .= " and r02_codigo = " . db_sqlformat(trim(strtoupper($pessoal_128[0]["r01_padrao"])));
+                    $condicaoaux .= " and r02_codigo = " . db_sqlformat(trim(strtoupper((string) $pessoal_128[0]["r01_padrao"])));
                     global $padroes;
                     if (db_selectmax("padroes", "select * from padroes " . bb_condicaosubpes("r02_") . $condicaoaux)) {
                         $mhrs = $padroes[0]["r02_hrssem"];
@@ -485,7 +485,7 @@ db_inicio_transacao();
                 $cbo = str_replace("-", "", $cbo);
                 $matriz2[1] = $pess[$Ipes]["r01_regist"];
                 $matriz2[2] = $prefixo;
-                $matriz2[3] = db_translate(addslashes($cgm[0]["z01_nome"]));
+                $matriz2[3] = db_translate(addslashes((string) $cgm[0]["z01_nome"]));
                 $matriz2[4] = $pess[$Ipes]["r01_pis"];
                 $matriz2[5] = $F010;
                 $matriz2[6] = $pess[$Ipes]["r01_tipsal"];
@@ -599,26 +599,26 @@ db_inicio_transacao();
                 $pess[$Ipes]["afa2"] = (isset($oAfastamento[1])) ? $oAfastamento[1]->afastamento : '';
                 $pess[$Ipes]["afa3"] = (isset($oAfastamento[2])) ? $oAfastamento[2]->afastamento : '';
 
-                $matriz2[27] = (trim(substr($pess[$Ipes]["afa1"], 0, 2)) == '' ? '00' : substr($pess[$Ipes]["afa1"], 0, 2));
-                $matriz2[28] = (trim(substr($pess[$Ipes]["afa1"], 3, 4)) == '' ? '0000' : substr($pess[$Ipes]["afa1"], 3, 4));
-                $matriz2[29] = (trim(substr($pess[$Ipes]["afa1"], 8, 4)) == '' ? '0000' : substr($pess[$Ipes]["afa1"], 8, 4));
-                $matriz2[30] = substr($pess[$Ipes]["afa1"], 14, 3) + 0;
+                $matriz2[27] = (trim(substr((string) $pess[$Ipes]["afa1"], 0, 2)) == '' ? '00' : substr((string) $pess[$Ipes]["afa1"], 0, 2));
+                $matriz2[28] = (trim(substr((string) $pess[$Ipes]["afa1"], 3, 4)) == '' ? '0000' : substr((string) $pess[$Ipes]["afa1"], 3, 4));
+                $matriz2[29] = (trim(substr((string) $pess[$Ipes]["afa1"], 8, 4)) == '' ? '0000' : substr((string) $pess[$Ipes]["afa1"], 8, 4));
+                $matriz2[30] = substr((string) $pess[$Ipes]["afa1"], 14, 3) + 0;
 
-                $matriz2[31] = (trim(substr($pess[$Ipes]["afa2"], 0, 2)) == '' ? '00' : substr($pess[$Ipes]["afa2"], 0, 2));
-                $matriz2[32] = (trim(substr($pess[$Ipes]["afa2"], 3, 4)) == '' ? '0000' : substr($pess[$Ipes]["afa2"], 3, 4));
-                $matriz2[33] = (trim(substr($pess[$Ipes]["afa2"], 8, 4)) == '' ? '0000' : substr($pess[$Ipes]["afa2"], 8, 4));
-                $matriz2[34] = substr($pess[$Ipes]["afa2"], 14, 3) + 0;
+                $matriz2[31] = (trim(substr((string) $pess[$Ipes]["afa2"], 0, 2)) == '' ? '00' : substr((string) $pess[$Ipes]["afa2"], 0, 2));
+                $matriz2[32] = (trim(substr((string) $pess[$Ipes]["afa2"], 3, 4)) == '' ? '0000' : substr((string) $pess[$Ipes]["afa2"], 3, 4));
+                $matriz2[33] = (trim(substr((string) $pess[$Ipes]["afa2"], 8, 4)) == '' ? '0000' : substr((string) $pess[$Ipes]["afa2"], 8, 4));
+                $matriz2[34] = substr((string) $pess[$Ipes]["afa2"], 14, 3) + 0;
 
-                $matriz2[35] = (trim(substr($pess[$Ipes]["afa3"], 0, 2)) == '' ? '00' : substr($pess[$Ipes]["afa3"], 0, 2));
-                $matriz2[36] = (trim(substr($pess[$Ipes]["afa3"], 3, 4)) == '' ? '0000' : substr($pess[$Ipes]["afa3"], 3, 4));
-                $matriz2[37] = (trim(substr($pess[$Ipes]["afa3"], 8, 4)) == '' ? '0000' : substr($pess[$Ipes]["afa3"], 8, 4));
-                $matriz2[38] = substr($pess[$Ipes]["afa3"], 14, 3) + 0;
+                $matriz2[35] = (trim(substr((string) $pess[$Ipes]["afa3"], 0, 2)) == '' ? '00' : substr((string) $pess[$Ipes]["afa3"], 0, 2));
+                $matriz2[36] = (trim(substr((string) $pess[$Ipes]["afa3"], 3, 4)) == '' ? '0000' : substr((string) $pess[$Ipes]["afa3"], 3, 4));
+                $matriz2[37] = (trim(substr((string) $pess[$Ipes]["afa3"], 8, 4)) == '' ? '0000' : substr((string) $pess[$Ipes]["afa3"], 8, 4));
+                $matriz2[38] = substr((string) $pess[$Ipes]["afa3"], 14, 3) + 0;
                 $matriz2[39] = $pessoal_128[0]["r01_deficientefisico"];
 
                 //Se não for informado (null) o tipo de deficiência será setado para 0
-                $matriz2[40] = $pessoal_128[0]["r01_tipodeficiencia"] === null ? '0' : $pessoal_128[0]["r01_tipodeficiencia"];
+                $matriz2[40] = $pessoal_128[0]["r01_tipodeficiencia"] ?? '0';
                 $matriz2[41] = (!empty($pess[$Ipes]['rh116_cnpj']) && $origemAss == "1" ? $pess[$Ipes]['rh116_cnpj'] : '');
-                $matriz2[41] = str_replace(array('.', '/', '-'), '', $matriz2[41]);
+                $matriz2[41] = str_replace(['.', '/', '-'], '', $matriz2[41]);
 
                 db_insert($arq_work, $matriz1, $matriz2);
                 $pess[$Ipes] = "";
@@ -661,11 +661,11 @@ function ficha_128()
         $atual = 0;
         $mes = db_substr("janfevmarabrmaijunjulagosetoutnovdez", ($ind * 3) - 2, 3);
 
-        $matriz1 = array();
+        $matriz1 = [];
         $matriz1[1] = "w_sal13";
         $matriz1[2] = "w_mes13";
 
-        $matriz2 = array();
+        $matriz2 = [];
         $matriz3[1] = "w_adianta";
         $matriz3[2] = "w_mesadi";
 
@@ -766,7 +766,7 @@ function ficha_128()
                                 and r14_regist = " . db_sqlformat($work[$Iwork]["w_matric"]) . "
                                 and r14_rubric between '4000' and '6000'";
                 $rsGerfsal13 = db_query($sSqlGerfsal13);
-                $nGerfSal13 = pg_result($rsGerfsal13, 0, 0);
+                $nGerfSal13 = pg_fetch_result($rsGerfsal13, 0, 0);
 
                 $sSqlGerfcom13 = "select coalesce(sum(r48_valor),0) as valor
                               from gerfcom
@@ -774,7 +774,7 @@ function ficha_128()
                                 and r48_regist = " . db_sqlformat($work[$Iwork]["w_matric"]) . "
                                 and r48_rubric between '4000' and '6000'";
                 $rsGerfcom13 = db_query($sSqlGerfcom13);
-                $nGerfcom13 = pg_result($rsGerfcom13, 0, 0);
+                $nGerfcom13 = pg_fetch_result($rsGerfcom13, 0, 0);
 
                 $sal13 += $x;
                 if ($sal13 != 0 && $ind < $r11_mes13 && (db_empty($work[$Iwork]["w_desliga"]) || $anomes < db_substr(db_dtos($work[$Iwork]["w_desliga"]), 1, 6))) {
@@ -798,8 +798,8 @@ function ficha_128()
                 }
             }
 
-            $matriz5 = array();
-            $matriz6 = array();
+            $matriz5 = [];
+            $matriz6 = [];
             $matriz5[1] = "w_" . $mes;
             $matriz5[2] = "w_avisop";
             $matriz5[3] = "w_si_" . $mes;
@@ -828,7 +828,7 @@ function ficha_128()
 
                 if ($iNumeroLinhasVerificaFeriasNaRescisao <> 0) {
 
-                    $lAtualizaValorFeriasNaRescisao = pg_result($rsVerificaFeriasNaRescisao, 0, 0);
+                    $lAtualizaValorFeriasNaRescisao = pg_fetch_result($rsVerificaFeriasNaRescisao, 0, 0);
 
                     if ($lAtualizaValorFeriasNaRescisao == 1) {
 
@@ -915,7 +915,7 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
     $ntam = (db_at(",", $d08_ender) > 0 ? true : false);
     $ccom = bb_space(21);
     if ($ncom != 0) {
-        $ccom = db_substr($d08_ender, (strlen($d08_ender) - $ncom) * -1);
+        $ccom = db_substr($d08_ender, (strlen((string) $d08_ender) - $ncom) * -1);
     }
     $ccom .= bb_space(21 - strlen($ccom));
 
@@ -923,7 +923,7 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
         if ($ncom != 0) {
             $nume = db_substr($d08_ender, (($ncom - 1) - $ntam) * -1);
         } else {
-            $nume = db_substr($d08_ender, (strlen($d08_ender) - $ntam) * -1);
+            $nume = db_substr($d08_ender, (strlen((string) $d08_ender) - $ntam) * -1);
         }
         $ende = db_substr($d08_ender, 1, $ntam - 1);
     } else {
@@ -935,22 +935,22 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
 
     // Registro Tipo 0 esta de acordo com o layout 2007
     $lin = "000001";                                                   // 01 a 06   - Sequencial do registro do arquivo;
-    $lin .= str_pad($d08_cgc, 14);                                     // 07 a 20   - Inscricao cnpj;
+    $lin .= str_pad((string) $d08_cgc, 14);                                     // 07 a 20   - Inscricao cnpj;
     $lin .= "00";                                                       // 21 a 22   - Prefixo do 1.estabelecimento;
     $lin .= "0";                                                        // 23 a 23   - Tipo dp registro = 0;
     $lin .= "1";                                                        // 24 a 24   - Constante indicador de endereço para envio;
-    $lin .= str_pad($d08_cgc, 14);                                       // 25 a 38   - Inscrição CNPJ/CEI/CPF do responsável;
+    $lin .= str_pad((string) $d08_cgc, 14);                                       // 25 a 38   - Inscrição CNPJ/CEI/CPF do responsável;
     $lin .= "1";                                                        // 39 a 39   - Tipo inscricao responsavel (1=cnpj/2=cei/3=cpf);
-    $lin .= str_pad($d08_nome, 40);                                      // 40 a 79   - Nome responsavel;
-    $lin .= str_pad($ende, 40);                                          // 80 a 119  - Ender responsavel;
+    $lin .= str_pad((string) $d08_nome, 40);                                      // 40 a 79   - Nome responsavel;
+    $lin .= str_pad((string) $ende, 40);                                          // 80 a 119  - Ender responsavel;
     $lin .= db_str($d08_numero, 6, 0, "0");                                // 120 a 125 - Numero;
     $lin .= str_pad(trim($ccom), 21);                                    // 126 a 146 - Complemento;
-    $lin .= str_pad(trim($d08_bairro), 19);                              // 147 a 165 - Bairro;
-    $lin .= str_pad($d08_cep, 8);                                        // 166 a 173 - Cep;
+    $lin .= str_pad(trim((string) $d08_bairro), 19);                              // 147 a 165 - Bairro;
+    $lin .= str_pad((string) $d08_cep, 8);                                        // 166 a 173 - Cep;
     $lin .= str_pad(str_replace('-', '', str_replace('.', '', $codmun)), 7); // 174 a 180 - Codigo do municipio;
-    $lin .= str_pad($d08_munic, 30);                                     // 181 a 210 - Nome do municipio;
-    $lin .= str_pad($d08_uf, 2);                                         // 211 a 212 - Uf;
-    $lin .= str_pad(substr($d08_telef, 0, 2), 2);                         // 213 a 214 - ddd;
+    $lin .= str_pad((string) $d08_munic, 30);                                     // 181 a 210 - Nome do municipio;
+    $lin .= str_pad((string) $d08_uf, 2);                                         // 211 a 212 - Uf;
+    $lin .= str_pad(substr((string) $d08_telef, 0, 2), 2);                         // 213 a 214 - ddd;
     $lin .= str_pad(trim(db_substr($d08_telef, -9)), 9);               // 215 a 223 - Telefone;
     $lin .= $retificacao;                                               // 224 a 224 - Indicador de retificação da declaração;
     //             1 - retifica os estabelecimentos entregues anteriormente
@@ -964,8 +964,8 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
     }
 
     $lin .= $datageracao;                                               // 233 a 240 - ddmmaaaa - data da geração do Arquivo;
-    $lin .= str_pad($d08_email, 45);                                  // 241 a 285 - E-mail;
-    $lin .= str_pad(trim($nome_resp), 52);                               // 286 a 337 - Nome do Responsável;
+    $lin .= str_pad((string) $d08_email, 45);                                  // 241 a 285 - E-mail;
+    $lin .= str_pad(trim((string) $nome_resp), 52);                               // 286 a 337 - Nome do Responsável;
     $lin .= bb_space(24);                                               // 338 a 361 - Espacos;
     $lin .= db_str($cpfr, 11, 0, "0");                                     // 362 a 372 - CPF do responsavel
     $lin .= "000000000000";                                             // 373 a 384 - CREA a ser retificado
@@ -977,11 +977,11 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
     $tot_ts = 0;
     $prefixo = 999;
 
-    $pre_fixo = array();
-    $pref_ts = array();
-    $pref_ta = array();
+    $pre_fixo = [];
+    $pref_ts = [];
+    $pref_ta = [];
 
-    $particoes = array();
+    $particoes = [];
     global $limite;
 
     $count = 0;
@@ -990,7 +990,7 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
     for ($i = 0; $i < sizeof($work); $i++) {
         if ($count == 0) {
             if(empty($particoes[$i%$limite])) {
-                $particoes[$index] = array();
+                $particoes[$index] = [];
             }
         }
         $particoes[$index][] = $work[$i]['w_matric'];
@@ -1065,21 +1065,21 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
                 // REGISTRO TIPO-1 esta de acordo com Layout 2007
                 $seq += 1;
                 $lin = db_str($seq, 6, 0, "0");                                       // 001 a 006 - sequencial do registro no arquivo ;
-                $lin .= str_pad(trim($d08_cgc), 14);                                 // 007 a 020 - inscrição do estabelecimento;
-                $lin .= db_str(trim($prefixo), 2, 0, "0");                             // 021 a 022 - diferenciador de sub-arquivos ;
+                $lin .= str_pad(trim((string) $d08_cgc), 14);                                 // 007 a 020 - inscrição do estabelecimento;
+                $lin .= db_str(trim((string) $prefixo), 2, 0, "0");                             // 021 a 022 - diferenciador de sub-arquivos ;
                 $lin .= "1";                                                        // 023 a 023 - tipo de registro;
-                $lin .= str_pad(trim($d08_nome), 52);                                // 024 a 075 - razão social;
-                $lin .= str_pad(trim($ende), 40);                                    // 076 a 115 - endereço ;
+                $lin .= str_pad(trim((string) $d08_nome), 52);                                // 024 a 075 - razão social;
+                $lin .= str_pad(trim((string) $ende), 40);                                    // 076 a 115 - endereço ;
                 $lin .= db_str($d08_numero, 6, 0, "0");                                // 116 a 121 - numero;
                 $lin .= str_pad(trim($ccom), 21);                                    // 122 a 142 - complemento;
-                $lin .= str_pad(trim($d08_bairro), 19);                              // 143 a 161 - bairro;
-                $lin .= str_pad(trim($d08_cep), 8);                                  // 162 a 169 - cep;
+                $lin .= str_pad(trim((string) $d08_bairro), 19);                              // 143 a 161 - bairro;
+                $lin .= str_pad(trim((string) $d08_cep), 8);                                  // 162 a 169 - cep;
                 $lin .= str_pad(str_replace('-', '', str_replace('.', '', $codmun)), 7); // 170 a 176 - codigo do municipio;
-                $lin .= str_pad(trim($d08_munic), 30);                               // 177 a 206 - municipio;
-                $lin .= str_pad($d08_uf, 2);                                         // 207 a 208 - uf;
-                $lin .= str_pad(substr($d08_telef, 0, 2), 2, " ");                      // 209 a 210 - ddd;
+                $lin .= str_pad(trim((string) $d08_munic), 30);                               // 177 a 206 - municipio;
+                $lin .= str_pad((string) $d08_uf, 2);                                         // 207 a 208 - uf;
+                $lin .= str_pad(substr((string) $d08_telef, 0, 2), 2, " ");                      // 209 a 210 - ddd;
                 $lin .= str_pad(trim(db_substr($d08_telef, -9)), 9, " ");             // 211 a 219 - telefone do estabelecimento;
-                $lin .= str_pad(trim($d08_email), 45);                              // 220 a 264 - email;
+                $lin .= str_pad(trim((string) $d08_email), 45);                              // 220 a 264 - email;
                 $lin .= "8411600";                                                  // 265 a 271 - cnae;
                 $lin .= "1031";                                                     // 272 a 275 - concla;
                 $lin .= "0000";                                                     // 276 a 279 - numero de socios;
@@ -1128,9 +1128,9 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
                 $lin .= "2";                                                        // 437 a 437 - Indicador de centralização do pagamento da contribuição sindical
                 $lin .= "00000000000000";                                           // 438 a 451 - cnpj - centralizadora
                 $lin .= "2";                                               // 452 a 452 - sindicalizada
-                $lin .= str_pad($iTipoSistemaPonto, 2, '0', STR_PAD_LEFT);           // 453 a 454 02 Número Tipo de Sistema de Controle de Ponto;
+                $lin .= str_pad((string) $iTipoSistemaPonto, 2, '0', STR_PAD_LEFT);           // 453 a 454 02 Número Tipo de Sistema de Controle de Ponto;
                 $lin .= bb_space(85);                                               // 455 a 539 - espacos;
-                $lin .= str_pad(substr($obs, 0, 45), 45);                           // 540 a 584 - espaco para empresa;
+                $lin .= str_pad(substr((string) $obs, 0, 45), 45);                           // 540 a 584 - espaco para empresa;
                 fputs($arquivo, $lin . "\n");
             }
 
@@ -1153,15 +1153,15 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
             }
             $pdf->ln($alt);
             $pdf->cell(0, $alt, '', "T", 1, "C", 0);
-            $pdf->cell(35, $alt, "PIS: " . trim($work[$Iwork]["w_pis"]), 0, 0, "L", 0);
-            $pdf->cell(80, $alt, "Nome: " . str_pad(trim($work[$Iwork]["w_nome"]), 40), 0, 0, "L", 0);
-            $pdf->cell(30, $alt, "Reg.: " . trim($work[$Iwork]["w_matric"]), 0, 0, "L", 0);
-            $pdf->cell(35, $alt, "Cpf: " . trim($work[$Iwork]["w_cpf"]), 0, 1, "L", 0);
+            $pdf->cell(35, $alt, "PIS: " . trim((string) $work[$Iwork]["w_pis"]), 0, 0, "L", 0);
+            $pdf->cell(80, $alt, "Nome: " . str_pad(trim((string) $work[$Iwork]["w_nome"]), 40), 0, 0, "L", 0);
+            $pdf->cell(30, $alt, "Reg.: " . trim((string) $work[$Iwork]["w_matric"]), 0, 0, "L", 0);
+            $pdf->cell(35, $alt, "Cpf: " . trim((string) $work[$Iwork]["w_cpf"]), 0, 1, "L", 0);
             $pdf->cell(40, $alt, "Admissão: " . db_formatar($work[$Iwork]["w_admissao"], 'd'), 0, 0, "L", 0);
             $pdf->cell(40, $alt, "Rescisão: " . db_formatar($work[$Iwork]["w_desliga"], 'd'), 0, 0, "L", 0);
-            $pdf->cell(40, $alt, "Causa: " . trim($work[$Iwork]["w_causa"]), 0, 0, "L", 0);
-            $pdf->cell(40, $alt, "Aviso: " . trim($work[$Iwork]["w_avisop"]), 0, 0, "L", 0);
-            $pdf->cell(50, $alt, "Férias Ind.: " . trim($work[$Iwork]["w_fer_res"]), 0, 1, "L", 0);
+            $pdf->cell(40, $alt, "Causa: " . trim((string) $work[$Iwork]["w_causa"]), 0, 0, "L", 0);
+            $pdf->cell(40, $alt, "Aviso: " . trim((string) $work[$Iwork]["w_avisop"]), 0, 0, "L", 0);
+            $pdf->cell(50, $alt, "Férias Ind.: " . trim((string) $work[$Iwork]["w_fer_res"]), 0, 1, "L", 0);
             $pdf->cell(50, $alt, "1o. Afas: " . db_str($work[$Iwork]["w_mot_afa1"], 2, 0, "0") . '-' . db_str($work[$Iwork]["w_ini_afa1"], 4, 0, "0") . '-' . db_str($work[$Iwork]["w_fin_afa1"], 4, 0, "0"), 0, 0, "L", 0);
             $pdf->cell(50, $alt, "2o. Afas: " . db_str($work[$Iwork]["w_mot_afa1"], 2, 0, "0") . '-' . db_str($work[$Iwork]["w_ini_afa1"], 4, 0, "0") . '-' . db_str($work[$Iwork]["w_fin_afa1"], 4, 0, "0"), 0, 0, "L", 0);
             $pdf->cell(50, $alt, "3o. Afas: " . db_str($work[$Iwork]["w_mot_afa1"], 2, 0, "0") . '-' . db_str($work[$Iwork]["w_ini_afa1"], 4, 0, "0") . '-' . db_str($work[$Iwork]["w_fin_afa1"], 4, 0, "0"), 0, 0, "L", 0);
@@ -1260,16 +1260,16 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
             $pdf->cell(18, $alt, db_formatar($tot_he, 'f'), 0, 1, "R", 0);
 
             $lin = db_str($seq, 6, 0, "0");                                                                  // 001 a 006 - sequencial no arquivo;
-            $lin .= str_pad($d08_cgc, 14);                                                                  // 007 a 020 - cnpj da empresa;
+            $lin .= str_pad((string) $d08_cgc, 14);                                                                  // 007 a 020 - cnpj da empresa;
             $lin .= db_str($prefixo, 2, 0, "0");                                                              // 021 a 022 - indicador de sub-arquivos;
             $lin .= "2";                                                                                   // 023 a 023 - indicador de tipo de registro;
-            $lin .= str_pad($work[$Iwork]["w_pis"], 11);                                                    // 024 a 034 - pis/pasep;
+            $lin .= str_pad((string) $work[$Iwork]["w_pis"], 11);                                                    // 024 a 034 - pis/pasep;
             $lin .= db_substr($work[$Iwork]["w_nome"], 1, 52);                                               // 035 a 086 - nome do empregado;
             $lin .= dat7_128($work[$Iwork]["w_nasc"]);                                                     // 087 a 094 - data de nascimento;
             $lin .= db_str($work[$Iwork]["w_nacion"], 2, 0, "0");                                             // 095 a 096 - nacionalidade;
-            $lin .= str_pad($chegada, 4);                                                                   // 097 a 100 - ano de chegada;
+            $lin .= str_pad((string) $chegada, 4);                                                                   // 097 a 100 - ano de chegada;
             $lin .= db_str($work[$Iwork]["w_instruc"], 2, 0, "0");                                            // 101 a 102 - grau de instruçao;
-            $lin .= (db_empty($work[$Iwork]["w_cpf"]) ? "00000000000" : substr($work[$Iwork]["w_cpf"], 0, 11));  // 103 a 113 - cpf;
+            $lin .= (db_empty($work[$Iwork]["w_cpf"]) ? "00000000000" : substr((string) $work[$Iwork]["w_cpf"], 0, 11));  // 103 a 113 - cpf;
             $ctps = db_str(db_val($work[$Iwork]["w_carteira"]), 13, 0, '0');
             $lin .= substr($ctps, 0, 8);                                                                  // 114 a 121 - no. carteira de trabalho ;
             $lin .= substr($ctps, 8, 5);                                                                  // 122 a 126 - serie carteira de trabalho ;
@@ -1348,7 +1348,7 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
             $cnpj_asso = (!empty($origemAss) && $origemAss == "1" ? $work[$Iwork]['w_cnpjsindicato'] : $cnpj_asso);
 
             if ($w_asso > 0 && !empty($cnpj_asso)) {
-                $lin .= db_str(trim($cnpj_asso), 14, 0, "0");                             // 386 a 399 - cnpj do sindicato (associativo);
+                $lin .= db_str(trim((string) $cnpj_asso), 14, 0, "0");                             // 386 a 399 - cnpj do sindicato (associativo);
                 $lin .= valor_8($w_asso);                                         // 400 a 407 - valor acumulado repassado ao sindicato (associativo) - 1a. ocorr;
             } else {
                 $lin .= "00000000000000";                                          // 386 a 399 - cnpj do sindicato (associativo);
@@ -1359,7 +1359,7 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
             $lin .= "00000000";                                                       // 422 a 429 - valor acumulado repassado ao sindicato (associativo) - 2a. ocorr;
 
             if ($w_sind > 0) {
-                $lin .= db_str(trim($cnpj_sind), 14, 0, "0");                               // 430 a 443 - cnpj do sindicato (contribuiçao);
+                $lin .= db_str(trim((string) $cnpj_sind), 14, 0, "0");                               // 430 a 443 - cnpj do sindicato (contribuiçao);
                 $lin .= valor_8($w_sind);                                         // 444 a 451 - valor acumulado repassado ao sindicato (contribuiçao sindiical);
             } else {
                 $lin .= "00000000000000";                                           // 430 a 443 - cnpj do sindicato (contribuiçao);
@@ -1406,7 +1406,7 @@ function imprime_rais_128($nomearq1,$nomepdf1,$nomearq2 = null,$nomepdf2 = null)
 
     $seq += 1;
     $lin = db_str($seq, 6, 0, "0");                                          // 001 a 006 - sequencial do arquivo;
-    $lin .= str_pad($d08_cgc, 14);                                          // 007 a 020 - cnpj ;
+    $lin .= str_pad((string) $d08_cgc, 14);                                          // 007 a 020 - cnpj ;
     $lin .= db_str($prefixo, 2, 0, "0");                                      // 021 a 022 - digitos diferenciadores de sub-arquivos;
     $lin .= "9";                                                           // 023 a 023 - indicador do tipo de registro;
     $lin .= db_str($prefixo + 1, 6, 0, "0");                                    // 024 a 029 - qtde de registros tipo 1 ;
@@ -1458,69 +1458,35 @@ function horas_128($numero)
 
 function vinculo_128($cod)
 {
-    switch ($cod) {
-        case 1:
-            $codigo = "10";
-            break;
-        case 2:
-            $codigo = "30";
-            break;
-        case 3:
-            $codigo = "40";
-            break;
-        case 4:
-            $codigo = "50";
-            break;
-        case 5:
-            $codigo = "60";
-            break;
-        case 6:
-            $codigo = "20";
-            break;
-        case 7:
-            $codigo = "80";
-            break;
-        case 8:
-            $codigo = "35";
-            break;
-    }
+    $codigo = match ($cod) {
+        1 => "10",
+        2 => "30",
+        3 => "40",
+        4 => "50",
+        5 => "60",
+        6 => "20",
+        7 => "80",
+        8 => "35",
+        default => $codigo,
+    };
     return $codigo;
 }
 
 function causa_128($causa)
 {
-    switch ($causa) {
-        case 0:
-            $resp = "00";
-            break;
-        case 1:
-            $resp = "10";
-            break;
-        case 2:
-            $resp = "11";
-            break;
-        case 3:
-            $resp = "20";
-            break;
-        case 4:
-            $resp = "21";
-            break;
-        case 5:
-            $resp = "30";
-            break;
-        case 6:
-            $resp = "31";
-            break;
-        case 7:
-            $resp = "72";
-            break;
-        case 8:
-            $resp = "60";
-            break;
-        case 9:
-            $resp = "90";
-            break;
-    }
+    $resp = match ($causa) {
+        0 => "00",
+        1 => "10",
+        2 => "11",
+        3 => "20",
+        4 => "21",
+        5 => "30",
+        6 => "31",
+        7 => "72",
+        8 => "60",
+        9 => "90",
+        default => $resp,
+    };
     return $resp;
 }
 
@@ -1538,35 +1504,18 @@ function dat7_128($data)
 
 function instruc_128($instruc)
 {
-    switch ($instruc) {
-        case 1:
-            $resp = "10";
-            break;
-        case 2:
-            $resp = "20";
-            break;
-        case 3:
-            $resp = "25";
-            break;
-        case 4:
-            $resp = "30";
-            break;
-        case 5:
-            $resp = "35";
-            break;
-        case 6:
-            $resp = "40";
-            break;
-        case 7:
-            $resp = "45";
-            break;
-        case 8:
-            $resp = "50";
-            break;
-        case 9:
-            $resp = "55";
-            break;
-    }
+    $resp = match ($instruc) {
+        1 => "10",
+        2 => "20",
+        3 => "25",
+        4 => "30",
+        5 => "35",
+        6 => "40",
+        7 => "45",
+        8 => "50",
+        9 => "55",
+        default => $resp,
+    };
     return $resp;
 }
 
@@ -1731,10 +1680,10 @@ function soma_128_extras($arq, $sigla, $w_extras)
 function cria_work_128()
 {
     global $arq_work;
-    $campo = array();
-    $tipo = array();
-    $tam = array();
-    $dec = array();
+    $campo = [];
+    $tipo = [];
+    $tam = [];
+    $dec = [];
 
     $campo[1] = "w_matric";
     $campo[2] = "w_prefixo";
@@ -2115,11 +2064,11 @@ function ajusresc()
 
     global $matricula, $work, $arq_work;
 
-    $matriz7 = array();
-    $matriz8 = array();
+    $matriz7 = [];
+    $matriz8 = [];
     $matriz7[1] = "w_mes13";
-    $matriz5 = array();
-    $matriz6 = array();
+    $matriz5 = [];
+    $matriz6 = [];
 
     for ($Iwork = 0; $Iwork < count($work); $Iwork++) {
 

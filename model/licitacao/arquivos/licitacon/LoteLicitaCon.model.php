@@ -52,18 +52,18 @@ class LoteLicitaCon extends ArquivoLicitaCon
      */
     public function getDados()
     {
-        $aLotes = array();
+        $aLotes = [];
         $oDaoLicitacao = new cl_liclicita;
-        $sTipos = implode(',', array(
+        $sTipos = implode(',', [
           licitacao::TIPO_JULGAMENTO_POR_ITEM,
           licitacao::TIPO_JULGAMENTO_GLOBAL,
-        ));
-        $aCampos = array(
+        ]);
+        $aCampos = [
           'distinct l20_codigo',
           'l20_tipojulg as tipo_julgamento',
           "min(coalesce(case when l20_tipojulg in({$sTipos}) then 1 else l04_codigo end, 1)) as nr_lote",
           "(case when l20_tipojulg in({$sTipos}) then null else l04_descricao end) as ds_lote",
-        );
+        ];
         $aWhere = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(),
           $this->oCabecalho->getDataGeracao());
         $sGroupBy = 'l20_codigo, tipo_julgamento, ds_lote';
@@ -98,11 +98,11 @@ class LoteLicitaCon extends ArquivoLicitaCon
             $oStdLote->CD_TIPO_MODALIDADE = $oLicitacao->getModalidade()->getSiglaTipoCompraTribunal();
             $oStdLote->NR_LOTE = $oLinha->nr_lote;
             $oStdLote->DS_LOTE = $this->oRegra->getDescricaoLote();
-            $oStdLote->VL_ESTIMADO = $valorEstimado ? $valorEstimado : '0,00';
+            $oStdLote->VL_ESTIMADO = $valorEstimado ?: '0,00';
             $oStdLote->TP_RESULTADO_LOTE = $this->oRegra->getResultadoLote($oFornecedores);
             $oStdLote->TP_DOCUMENTO_VENCEDOR = $oFornecedores->vencedor->tipo;
             $oStdLote->NR_DOCUMENTO_VENCEDOR = $oFornecedores->vencedor->documento;
-            $oStdLote->VL_HOMOLOGADO = $valorHomologado ? $valorHomologado : '0,00';
+            $oStdLote->VL_HOMOLOGADO = $valorHomologado ?: '0,00';
             $oStdLote->TP_DOCUMENTO_FORNECEDOR = $oFornecedores->fornecedor->tipo;
             $oStdLote->NR_DOCUMENTO_FORNECEDOR = $oFornecedores->fornecedor->documento;
             $oStdLote->TP_BENEFICIO_MICRO_EPP = $this->oRegra->obterTipoBeneficioMicroempresaEmpresaPequenoPorte($oLicitacao);

@@ -77,7 +77,7 @@ try {
                     $clAlmoxDepto->incluir($oParam->codalmox, $oParam->departamentos[$i]);
                     $erro_msg = $clAlmoxDepto->erro_msg;
                     if ($clAlmoxDepto->erro_status == '0') {
-                        $oRetorno->message = str_replace('\n', "", utf8_encode($erro_msg));
+                        $oRetorno->message = str_replace('\n', "", mb_convert_encoding($erro_msg, 'UTF-8', 'ISO-8859-1'));
                         $sqlerro = true;
                         continue;
                     }
@@ -102,7 +102,7 @@ try {
             }
 
             $qtdDepartamentos = pg_num_rows($rsDepartamentos);
-            $oRetorno->departamentos = array();
+            $oRetorno->departamentos = [];
             for ($i = 0; $i < $qtdDepartamentos; $i++) { 
                 $oRetorno->departamentos[] = db_utils::fieldsMemory($rsDepartamentos, $i);
 
@@ -111,7 +111,7 @@ try {
     }    
 } catch (Exception $e) {
     $oRetorno->status = 0;
-    $oRetorno->message = utf8_encode($e->getMessage());
+    $oRetorno->message = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
 }
 
 echo $oJson->encode($oRetorno);

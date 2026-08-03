@@ -43,7 +43,7 @@ if ($oGet->iAgenda != "") {
 }
 if (isset($oGet->dtAutorizacao) && $oGet->dtAutorizacao != "") {
 
-  $dtAutorizacao = implode("-", array_reverse(explode("/",$oGet->dtAutorizacao)));
+  $dtAutorizacao = implode("-", array_reverse(explode("/",(string) $oGet->dtAutorizacao)));
   if ($sWhere != "") {
     $sWhere .= " and ";
   }
@@ -181,9 +181,9 @@ if ($oDaoOrdemAuxiliar->numrows > 0) {
           $iPreencher = 1;
         }
         $sCpfCgc = "";
-        if (strlen($oMovimento->z01_cgccpf) == 14) {
+        if (strlen((string) $oMovimento->z01_cgccpf) == 14) {
           $sCpfCgc = db_formatar($oMovimento->z01_cgccpf,"cnpj");
-        } else if (strlen($oMovimento->z01_cgccpf) == 11) {
+        } else if (strlen((string) $oMovimento->z01_cgccpf) == 11) {
           $sCpfCgc = db_formatar($oMovimento->z01_cgccpf,"cpf");
         }
         if ($oMovimento->e60_codemp == "") {
@@ -200,7 +200,7 @@ if ($oDaoOrdemAuxiliar->numrows > 0) {
         $oPdf->cell(20, 4,$oMovimento->e69_numero, 0,0,"C",$iPreencher);
         $oPdf->cell(35, 4,substr($oMovimento->e83_conta."-".$oMovimento->e83_descr,0,25), 0,0,"L",$iPreencher);
         $oPdf->cell(23, 4,$sCpfCgc , 0,0,"L",$iPreencher);
-        $oPdf->cell(55, 4,substr($oMovimento->z01_nome,0,35)  , 0,0,"L",$iPreencher);
+        $oPdf->cell(55, 4,substr((string) $oMovimento->z01_nome,0,35)  , 0,0,"L",$iPreencher);
         $oPdf->cell(23, 4,db_formatar($oMovimento->e50_data,"d")   , 0, 0, "C", $iPreencher);
         $oPdf->cell(15, 4,$oMovimento->e96_descr , 0, 0, "C", $iPreencher);
         $oPdf->cell(18, 4,db_formatar($oMovimento->e43_valor,"f"), 0,0,"R",$iPreencher);

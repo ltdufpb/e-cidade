@@ -50,15 +50,15 @@ try {
                 throw new ParameterException("Exercício é de preenchimento obrigatório.");
             }
 
-            $campos = implode(',', array(
+            $campos = implode(',', [
                 'distinct v01_livro as livro',
                 'extract(year from v01_dtinclusao) as ano_inclusao'
-            ));
+            ]);
 
-            $where = implode(' and ', array(
+            $where = implode(' and ', [
                 "divida.v01_instit = {$codigoInstituicao}",
                 "extract(year from divida.v01_dtinclusao) = {$anoSessao}",
-            ));
+            ]);
 
             $daoDivida = new cl_divida();
             $buscaInformacoes = db_query($daoDivida->sql_query_file(null, $campos, null, $where));
@@ -76,11 +76,11 @@ try {
 
         case 'getFolha':
 
-            $where = implode(' and ', array(
+            $where = implode(' and ', [
                 "divida.v01_instit = {$codigoInstituicao}",
                 "extract(year from divida.v01_dtinclusao) = {$stdParam->anoLivro}",
                 "divida.v01_livro = {$stdParam->codigoLivro}",
-            ));
+            ]);
 
             $daoDivida = new cl_divida();
             $buscaFolhaDivida = db_query($daoDivida->sql_query_file(null, 'max(v01_folha) as folha', null, $where));
@@ -111,13 +111,13 @@ try {
                 throw new ParameterException("Dívidas é de preenchimento obrigatório.");
             }
 
-            list($codigoLivro, $anoLivro) = explode('-', $stdParam->livro);
-            $where = implode(' and ', array(
+            [$codigoLivro, $anoLivro] = explode('-', (string) $stdParam->livro);
+            $where = implode(' and ', [
                 "divida.v01_instit = {$codigoInstituicao}",
                 "extract(year from divida.v01_dtinclusao) = {$stdParam->ano_inclusao}",
                 "divida.v01_livro = {$codigoLivro}",
                 "divida.v01_folha = {$stdParam->folha}",
-            ));
+            ]);
 
             $daoDivida = new cl_divida();
             $buscaFolha = db_query($daoDivida->sql_query_file(null, 'max(v01_folha) as folha_atual, count(*) as total_registros_folha', null, $where));

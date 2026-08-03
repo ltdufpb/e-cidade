@@ -134,7 +134,7 @@ if(isset($db_opcaoal)){
                                              and j21_receit         = j08_tabrec
        where j09_matric = $j09_matric  ";
 
-         $chavepri = array("j09_iptucadtaxaexe"=>@$j09_iptucadtaxaexe,"j09_iptutaxamatric"=>@$j09_iptutaxamatric,"j09_valor"=>@$j09_valor);
+         $chavepri = ["j09_iptucadtaxaexe"=>@$j09_iptucadtaxaexe,"j09_iptutaxamatric"=>@$j09_iptutaxamatric,"j09_valor"=>@$j09_valor];
       	 $cliframe_alterar_excluir->chavepri      =$chavepri;
       	 $cliframe_alterar_excluir->sql           = $sql;
          $cliframe_alterar_excluir->alignlegenda  = "left";

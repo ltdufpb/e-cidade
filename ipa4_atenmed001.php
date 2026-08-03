@@ -29,7 +29,7 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 ?>
 <html>
@@ -85,7 +85,7 @@ input {
 	                   from medicos 
 					   where aa01_codlog = ".db_getsession("DB_id_usuario")."
 					   and aa01_tipoate >= 2 ");
-	if(pg_numrows($medico) == 0) {
+	if(pg_num_rows($medico) == 0) {
 	  $DB_MSG = "Usuário não cadastrado como médico.";
 	} else {
 	  db_fieldsmemory($medico,0);
@@ -125,8 +125,8 @@ input {
     </table>
 	</form>
 	<?php 
-	if(isset($HTTP_POST_VARS["pesquisar"])) {
-	  $data = $HTTP_POST_VARS["data_ano"]."-".$HTTP_POST_VARS["data_mes"]."-".$HTTP_POST_VARS["data_dia"];
+	if(isset($_POST["pesquisar"])) {
+	  $data = $_POST["data_ano"]."-".$_POST["data_mes"]."-".$_POST["data_dia"];
 	  if($data != date("Y-m-d",db_getsession("DB_datausu")))
 	    $DB_MSG = "Agenda de outro dia, verifique";
 	}
@@ -140,17 +140,17 @@ input {
 						 on agenesp.ag05_codage = ag02_codage
 						 left outer join especial
 						 on w12_codigo = agenesp.ag05_codesp
-                         where '".(isset($data)?$data:date("Y-m-d",db_getsession("DB_datausu")))."' = agendam.ag20_data
+                         where '".($data ?? date("Y-m-d",db_getsession("DB_datausu")))."' = agendam.ag20_data
 						 and ((agenmed.ag06_codmed is not null and agenmed.ag06_codmed = $aa01_codig) or (agenesp.ag05_codesp is not null and agenesp.ag05_codesp = $aa01_espec))";
 	$agenda = db_query($sql);
-	$numrows = pg_numrows($agenda);
+	$numrows = pg_num_rows($agenda);
 	if($numrows == 0) {
 	  $DB_MSG = "Não existe agenda para esta data.";		
 	//else if($numrows == 1) {
 //	  db_redireciona("ipa4_atenmed002.php?".base64_encode("nome=".$aa01_nome."&codage=".pg_result($agenda,0,"ag02_codage")."&descricao=".pg_result($agenda,0,"ag02_descr")."&dataini=".pg_result($agenda,0,"ag20_data")."&datastr=".pg_result($agenda,0,"datastr")));
 	} else {
 	  if(isset($meddir))
-        db_redireciona("ipa4_atenmed002.php?".base64_encode("nome=".$aa01_nome."&codage=".pg_result($agenda,0,"ag02_codage")."&descricao=".pg_result($agenda,0,"ag02_descr")."&dataini=".pg_result($agenda,0,"ag20_data")."&datastr=".pg_result($agenda,0,"datastr")));
+        db_redireciona("ipa4_atenmed002.php?".base64_encode("nome=".$aa01_nome."&codage=".pg_fetch_result($agenda,0,"ag02_codage")."&descricao=".pg_fetch_result($agenda,0,"ag02_descr")."&dataini=".pg_fetch_result($agenda,0,"ag20_data")."&datastr=".pg_fetch_result($agenda,0,"datastr")));
 	?>
 	<center>
 	<table border="0" width="80%" cellpadding="3" cellspacing="1">
@@ -167,12 +167,12 @@ input {
 	  $cor = "";
 	  for($i = 0;$i < $numrows;$i++) {
 	    ?> 
-		<tr bgcolor="<?php  echo $cor = ($cor==$cor1?$cor2:$cor1) ?>" style="cursor: hand" onClick="location.href='ipa4_atenmed002.php?<?=base64_encode("nome=".$aa01_nome."&codage=".pg_result($agenda,$i,"ag02_codage")."&descricao=".pg_result($agenda,$i,"ag02_descr")."&dataini=".pg_result($agenda,$i,"ag20_data")."&datastr=".pg_result($agenda,$i,"datastr") )?>'">
-		  <td nowrap><?=pg_result($agenda,$i,"ag02_codage")?>&nbsp;</td>
-		  <td nowrap><?=pg_result($agenda,$i,"ag02_descr")?>&nbsp;</td>
-		  <td nowrap><?=pg_result($agenda,$i,"dataini")?>&nbsp;</td>
-		  <td nowrap><?=pg_result($agenda,$i,"datastr")?>&nbsp;</td>
-		  <td nowrap><?=pg_result($agenda,$i,"w12_descr")?>&nbsp;</td>		  		  		  		  
+		<tr bgcolor="<?php  echo $cor = ($cor==$cor1?$cor2:$cor1) ?>" style="cursor: hand" onClick="location.href='ipa4_atenmed002.php?<?=base64_encode("nome=".$aa01_nome."&codage=".pg_fetch_result($agenda,$i,"ag02_codage")."&descricao=".pg_fetch_result($agenda,$i,"ag02_descr")."&dataini=".pg_fetch_result($agenda,$i,"ag20_data")."&datastr=".pg_fetch_result($agenda,$i,"datastr") )?>'">
+		  <td nowrap><?=pg_fetch_result($agenda,$i,"ag02_codage")?>&nbsp;</td>
+		  <td nowrap><?=pg_fetch_result($agenda,$i,"ag02_descr")?>&nbsp;</td>
+		  <td nowrap><?=pg_fetch_result($agenda,$i,"dataini")?>&nbsp;</td>
+		  <td nowrap><?=pg_fetch_result($agenda,$i,"datastr")?>&nbsp;</td>
+		  <td nowrap><?=pg_fetch_result($agenda,$i,"w12_descr")?>&nbsp;</td>		  		  		  		  
 		</tr>
 		<?php 
 	  }
@@ -182,7 +182,7 @@ input {
 	<?php 
 	} // fim do else do if($numrows == 0)
   }//fim do else do if(pg_numrows($medico) == 0) {
-  if(1==2 && !isset($HTTP_POST_VARS["pesquisar"])) {
+  if(1==2 && !isset($_POST["pesquisar"])) {
   	$codmed = str_pad(trim(db_getsession("codmed")),6," ",STR_PAD_LEFT);
 	$result = @db_query("select distinct to_char(ag30_data,'DD-MM-YYYY') as data,ag30_data
 	                   from agenate
@@ -191,10 +191,10 @@ input {
 					   where ag06_codmed = '$codmed'
 					   and ag30_codigo||ag30_data||ag30_hora not in(select ag40_codigo||ag40_data||ag40_hora from atendmed where ag40_medico = '$codmed')
 					   order by ag30_data desc limit 15");
-    $numrows = @pg_numrows($result);
+    $numrows = @pg_num_rows($result);
 	echo "<center><table><tr bgcolor=\"#CCFF99\"><th>Datas</th></tr>\n";
 	for($i = 0;$i < $numrows;$i++)
-	  echo "<tr onClick=\"js_inserir(document.getElementById('linha".$i."').innerText)\" style=\"cursor:hand\" bgcolor=\"=".($i%2==0?"#CCFF99":"#AABB99")."\"><td id=\"linha".$i."\">".@pg_result($result,$i,0)."</td></tr>\n";
+	  echo "<tr onClick=\"js_inserir(document.getElementById('linha".$i."').innerText)\" style=\"cursor:hand\" bgcolor=\"=".($i%2==0?"#CCFF99":"#AABB99")."\"><td id=\"linha".$i."\">".@pg_fetch_result($result,$i,0)."</td></tr>\n";
 	echo "</table></center>\n";
   }
     ?>

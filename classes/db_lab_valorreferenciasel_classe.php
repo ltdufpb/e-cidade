@@ -53,7 +53,7 @@ class cl_lab_valorreferenciasel {
    public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_valorreferenciasel");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    public function erro($mostra,$retorna) {
@@ -95,10 +95,10 @@ class cl_lab_valorreferenciasel {
          $this->erro_status = "0";
          return false;
        }
-       $this->la28_i_codigo = pg_result($result,0,0);
+       $this->la28_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from lab_valorreferenciasel_la28_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $la28_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $la28_i_codigo)){
          $this->erro_sql = " Campo la28_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_lab_valorreferenciasel {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Valor de Referência Selecionavel ($this->la28_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Valor de Referência Selecionavel já Cadastrado";
@@ -152,11 +152,11 @@ class cl_lab_valorreferenciasel {
      $resaco = $this->sql_record($this->sql_query_file($this->la28_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16506,'$this->la28_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2903,16506,'','".AddSlashes(pg_result($resaco,0,'la28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2903,16508,'','".AddSlashes(pg_result($resaco,0,'la28_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2903,16506,'','".AddSlashes(pg_fetch_result($resaco,0,'la28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2903,16508,'','".AddSlashes(pg_fetch_result($resaco,0,'la28_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -165,10 +165,10 @@ class cl_lab_valorreferenciasel {
       $this->atualizacampos();
      $sql = " update lab_valorreferenciasel set ";
      $virgula = "";
-     if(trim($this->la28_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la28_i_codigo"])){
+     if(trim((string) $this->la28_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la28_i_codigo"])){
        $sql  .= $virgula." la28_i_codigo = $this->la28_i_codigo ";
        $virgula = ",";
-       if(trim($this->la28_i_codigo) == null ){
+       if(trim((string) $this->la28_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "la28_i_codigo";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_lab_valorreferenciasel {
          return false;
        }
      }
-     if(trim($this->la28_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la28_c_descr"])){
+     if(trim((string) $this->la28_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la28_c_descr"])){
        $sql  .= $virgula." la28_c_descr = '$this->la28_c_descr' ";
        $virgula = ",";
-       if(trim($this->la28_c_descr) == null ){
+       if(trim((string) $this->la28_c_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "la28_c_descr";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_lab_valorreferenciasel {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16506,'$this->la28_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la28_i_codigo"]) || $this->la28_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2903,16506,'".AddSlashes(pg_result($resaco,$conresaco,'la28_i_codigo'))."','$this->la28_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2903,16506,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la28_i_codigo'))."','$this->la28_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la28_c_descr"]) || $this->la28_c_descr != "")
-           $resac = db_query("insert into db_acount values($acount,2903,16508,'".AddSlashes(pg_result($resaco,$conresaco,'la28_c_descr'))."','$this->la28_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2903,16508,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la28_c_descr'))."','$this->la28_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_lab_valorreferenciasel {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16506,'$la28_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2903,16506,'','".AddSlashes(pg_result($resaco,$iresaco,'la28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2903,16508,'','".AddSlashes(pg_result($resaco,$iresaco,'la28_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2903,16506,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2903,16508,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la28_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from lab_valorreferenciasel
@@ -314,7 +314,7 @@ class cl_lab_valorreferenciasel {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:lab_valorreferenciasel";
@@ -350,7 +350,7 @@ class cl_lab_valorreferenciasel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_lab_valorreferenciasel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

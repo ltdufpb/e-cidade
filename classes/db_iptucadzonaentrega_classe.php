@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE iptucadzonaentrega
 class cl_iptucadzonaentrega { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j85_codigo = 0; 
-   var $j85_descr = null; 
-   var $j85_ender = null; 
+   public $j85_codigo = 0; 
+   public $j85_descr = null; 
+   public $j85_ender = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j85_codigo = int4 = Código da zona de entrega 
                  j85_descr = varchar(40) = Descrição da zona de entrega 
                  j85_ender = varchar(60) = Endereço da zona de entrega 
                  ";
    //funcao construtor da classe 
-   function cl_iptucadzonaentrega() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucadzonaentrega"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_iptucadzonaentrega {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j85_codigo = pg_result($result,0,0); 
+       $this->j85_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptucadzonaentrega_j85_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j85_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j85_codigo)){
          $this->erro_sql = " Campo j85_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_iptucadzonaentrega {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro das zonas de entrega ($this->j85_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro das zonas de entrega já Cadastrado";
@@ -166,12 +166,12 @@ class cl_iptucadzonaentrega {
      $resaco = $this->sql_record($this->sql_query_file($this->j85_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8044,'$this->j85_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1358,8044,'','".AddSlashes(pg_result($resaco,0,'j85_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1358,8045,'','".AddSlashes(pg_result($resaco,0,'j85_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1358,8054,'','".AddSlashes(pg_result($resaco,0,'j85_ender'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1358,8044,'','".AddSlashes(pg_fetch_result($resaco,0,'j85_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1358,8045,'','".AddSlashes(pg_fetch_result($resaco,0,'j85_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1358,8054,'','".AddSlashes(pg_fetch_result($resaco,0,'j85_ender'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_iptucadzonaentrega {
       $this->atualizacampos();
      $sql = " update iptucadzonaentrega set ";
      $virgula = "";
-     if(trim($this->j85_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j85_codigo"])){ 
+     if(trim((string) $this->j85_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j85_codigo"])){ 
        $sql  .= $virgula." j85_codigo = $this->j85_codigo ";
        $virgula = ",";
-       if(trim($this->j85_codigo) == null ){ 
+       if(trim((string) $this->j85_codigo) == null ){ 
          $this->erro_sql = " Campo Código da zona de entrega não informado.";
          $this->erro_campo = "j85_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_iptucadzonaentrega {
          return false;
        }
      }
-     if(trim($this->j85_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j85_descr"])){ 
+     if(trim((string) $this->j85_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j85_descr"])){ 
        $sql  .= $virgula." j85_descr = '$this->j85_descr' ";
        $virgula = ",";
-       if(trim($this->j85_descr) == null ){ 
+       if(trim((string) $this->j85_descr) == null ){ 
          $this->erro_sql = " Campo Descrição da zona de entrega não informado.";
          $this->erro_campo = "j85_descr";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_iptucadzonaentrega {
          return false;
        }
      }
-     if(trim($this->j85_ender)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j85_ender"])){ 
+     if(trim((string) $this->j85_ender)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j85_ender"])){ 
        $sql  .= $virgula." j85_ender = '$this->j85_ender' ";
        $virgula = ",";
-       if(trim($this->j85_ender) == null ){ 
+       if(trim((string) $this->j85_ender) == null ){ 
          $this->erro_sql = " Campo Endereço da zona de entrega não informado.";
          $this->erro_campo = "j85_ender";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_iptucadzonaentrega {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8044,'$this->j85_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j85_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1358,8044,'".AddSlashes(pg_result($resaco,$conresaco,'j85_codigo'))."','$this->j85_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1358,8044,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j85_codigo'))."','$this->j85_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j85_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1358,8045,'".AddSlashes(pg_result($resaco,$conresaco,'j85_descr'))."','$this->j85_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1358,8045,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j85_descr'))."','$this->j85_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j85_ender"]))
-           $resac = db_query("insert into db_acount values($acount,1358,8054,'".AddSlashes(pg_result($resaco,$conresaco,'j85_ender'))."','$this->j85_ender',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1358,8054,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j85_ender'))."','$this->j85_ender',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_iptucadzonaentrega {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8044,'$j85_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1358,8044,'','".AddSlashes(pg_result($resaco,$iresaco,'j85_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1358,8045,'','".AddSlashes(pg_result($resaco,$iresaco,'j85_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1358,8054,'','".AddSlashes(pg_result($resaco,$iresaco,'j85_ender'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1358,8044,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j85_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1358,8045,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j85_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1358,8054,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j85_ender'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptucadzonaentrega
@@ -359,7 +359,7 @@ class cl_iptucadzonaentrega {
    function sql_query ( $j85_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,7 +380,7 @@ class cl_iptucadzonaentrega {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_iptucadzonaentrega {
    function sql_query_file ( $j85_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_iptucadzonaentrega {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

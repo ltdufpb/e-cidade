@@ -57,7 +57,7 @@ db_input('ed16_c_computador',10,$Ied16_c_computador,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('S'=>'S','N'=>'N');
+$x = ['S'=>'S','N'=>'N'];
 db_select('ed16_c_ativo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -85,7 +85,7 @@ function js_preenchepesquisa(chave){
   db_iframe_laboratorios.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

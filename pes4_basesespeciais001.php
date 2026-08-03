@@ -43,17 +43,17 @@ define('MENSAGEM', 'recursoshumanos.pessoal.pes4_basesespeciais.');
  *  Campos utilizados nas telas
  */
 $aCampos = array_merge(
-  $aCamposRRA = array(
+  $aCamposRRA = [
     'r11_baserrarendimentostributaveis',
     'r11_baserraprevidenciasocial',
     'r11_baserrapensaoalimenticia',
     'r11_baserrairrf',
     'r11_baserraparcelaisenta',
-  ),
-  $aCamposFG = array(
+  ],
+  $aCamposFG = [
     'r11_basefgintegral',
     'r11_basefgparcial',
-  )
+  ]
 );
 
 $sIDBases                     = " data='r08_codigo' ";
@@ -97,7 +97,7 @@ try {
     <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
     <?php
-      db_app::load(array("estilos.css", "scripts.js", "strings.js", "prototype.js", "DBLookUp.widget.js"));
+      db_app::load(["estilos.css", "scripts.js", "strings.js", "prototype.js", "DBLookUp.widget.js"]);
     ?>
   </head>
   <body>

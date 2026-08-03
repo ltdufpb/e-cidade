@@ -32,13 +32,13 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-if (isset($HTTP_POST_VARS["atualizarperm"])) {
+if (isset($_POST["atualizarperm"])) {
   
-  $modulo   = $HTTP_POST_VARS["modulos"];
-  $usuario  = $HTTP_POST_VARS["usuario"];
-  $anousu   = $HTTP_POST_VARS["anousu"];
+  $modulo   = $_POST["modulos"];
+  $usuario  = $_POST["usuario"];
+  $anousu   = $_POST["anousu"];
 
-  $instit = isset($HTTP_POST_VARS["instit"]) ? $HTTP_POST_VARS["instit"] : db_getsession("DB_instit");
+  $instit = $_POST["instit"] ?? db_getsession("DB_instit");
 
   /**
    * Instanciamos as classes 
@@ -46,7 +46,7 @@ if (isset($HTTP_POST_VARS["atualizarperm"])) {
   $oDaoDBItensMenu = db_utils::getDao('db_itensmenu');
   $oDaoDBPermissao = db_utils::getDao('db_permissao');
   $oDaoDBUsuarios  = db_utils::getDao('db_usuarios');
-  $ambiente        = $HTTP_POST_VARS["ambiente"];
+  $ambiente        = $_POST["ambiente"];
   
   db_query("BEGIN");
     
@@ -112,13 +112,13 @@ if (isset($HTTP_POST_VARS["atualizarperm"])) {
   DBMenu::limpaCache($usuario, $instit, $modulo);
 
   $grava_permissoes = true;
-  $tam_vetor = sizeof($HTTP_POST_VARS);
+  $tam_vetor = sizeof($_POST);
 
-  reset($HTTP_POST_VARS);
+  reset($_POST);
 
   for ($i = 0; $i < $tam_vetor; $i++) {
     
-    if (db_indexOf(key($HTTP_POST_VARS), "CHECK") > 0) {
+    if (db_indexOf(key($_POST), "CHECK") > 0) {
       
       if ($grava_permissoes == true) {
         
@@ -137,18 +137,18 @@ if (isset($HTTP_POST_VARS["atualizarperm"])) {
       }
   
       $oDaoDBPermissao->id_usuario     = $usuario;
-      $oDaoDBPermissao->id_item        = $HTTP_POST_VARS[key($HTTP_POST_VARS)];
+      $oDaoDBPermissao->id_item        = $_POST[key($_POST)];
       $oDaoDBPermissao->permissaoativa = 1;
       $oDaoDBPermissao->anousu         = $anousu;
       $oDaoDBPermissao->id_instit      = $instit;
       $oDaoDBPermissao->id_modulo      = $modulo;
       
-      $oDaoDBPermissao->incluir($usuario, $HTTP_POST_VARS[key($HTTP_POST_VARS)], $anousu, $instit, $modulo);
+      $oDaoDBPermissao->incluir($usuario, $_POST[key($_POST)], $anousu, $instit, $modulo);
       if ($oDaoDBPermissao->erro_status == 0) {
         die("Erro(18) inserindo em db_permissao: " . $oDaoDBPermissao->erro_msg);
       }
     }
-    next($HTTP_POST_VARS);
+    next($_POST);
   }
   db_query("COMMIT");  
 }
@@ -201,7 +201,7 @@ if (isset($atuusuarios) || isset($atuperfil)) {
     }
   }
   db_query("commit");
-  $HTTP_POST_VARS["mod"] = true;
+  $_POST["mod"] = true;
 }
 ?>
 <html>
@@ -308,7 +308,7 @@ input {
   <center>
     <form name="form1" method="post">
       <?php 
-	    if(!isset($HTTP_POST_VARS["selecionar"]) && !isset($HTTP_POST_VARS["mod"]) && !isset($HTTP_POST_VARS["verificar"])) {
+	    if(!isset($_POST["selecionar"]) && !isset($_POST["mod"]) && !isset($_POST["verificar"])) {
 	  ?>     
 		  <table border="0" cellspacing="0" cellpadding="0">
             <tr> 
@@ -328,8 +328,8 @@ input {
 							   on u.id_instit = c.codigo
 							   where u.id_usuario = ".db_getsession("DB_id_usuario"). " and u.id_instit = ".db_getsession("DB_instit"));
 		  }
-		    for($i = 0;$i < pg_numrows($result);$i++) {
-		      echo "<option ".($i == 0?'selected':'')." value=\"".pg_result($result,$i,"codigo")."\">".pg_result($result,$i,"nomeinst")."</option>\n";
+		    for($i = 0;$i < pg_num_rows($result);$i++) {
+		      echo "<option ".($i == 0?'selected':'')." value=\"".pg_fetch_result($result,$i,"codigo")."\">".pg_fetch_result($result,$i,"nomeinst")."</option>\n";
 		    }
 	      ?>
              </select> 
@@ -345,7 +345,7 @@ input {
            </tr>
           </table>
       <?php 
-	  } else if(isset($HTTP_POST_VARS["mod"])) {
+	  } else if(isset($_POST["mod"])) {
 	  ?>
       <table border="0" cellspacing="0" cellpadding="0">
 	  <tr>
@@ -374,22 +374,22 @@ input {
                                 and i.libcliente is true
 			    order by lower(m.nome_modulo)");
 		      }
-		      $numrows = pg_numrows($result);
+		      $numrows = pg_num_rows($result);
 		      if($numrows>0){
 		        for($i = 0;$i < $numrows;$i++) {
 			   $sql = "select p.id_modulo 
 			           from db_permissao p
 				        inner join db_itensmenu i on i.id_item = p.id_item
-				   where id_modulo = ".pg_result($result,$i,"id_item")." and id_instit = ".$HTTP_POST_VARS["instit"]." 
-				         and id_usuario = ".$HTTP_POST_VARS["usuario"]." and itemativo = 1
+				   where id_modulo = ".pg_fetch_result($result,$i,"id_item")." and id_instit = ".$_POST["instit"]." 
+				         and id_usuario = ".$_POST["usuario"]." and itemativo = 1
                                          and anousu = $anousu
 				   limit 1";
 		           $res = db_query($sql);
-			   if(pg_numrows($res)>0)
+			   if(pg_num_rows($res)>0)
 			     $temp = "+ ";
 			   else
 			     $temp = "- ";
-		           echo "<option value=\"".pg_result($result,$i,"id_item")."\">".$temp." ".pg_result($result,$i,"nome_modulo")."</option>\n";
+		           echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."\">".$temp." ".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
 		        }  
 	              }
 		?>
@@ -404,7 +404,7 @@ input {
 		                   from db_permherda d
 		                   where d.id_usuario = $usuario";
 		 $record_select = db_query($record_select);
-		 if($record_select==false || pg_numrows($record_select)==0){
+		 if($record_select==false || pg_num_rows($record_select)==0){
 		   $record_select = "";
 		 }
 	
@@ -415,13 +415,13 @@ input {
    	         $sql = "select i.id_usuario,i.nome 
 		         from db_usuarios i
 			      inner join db_userinst u on i.id_usuario = u.id_usuario								   
-			 where i.usuarioativo = '1' and i.usuext = 2 and i.id_usuario <> ".$HTTP_POST_VARS["usuario"]." and id_instit = ".$HTTP_POST_VARS["instit"	]." ";
+			 where i.usuarioativo = '1' and i.usuext = 2 and i.id_usuario <> ".$_POST["usuario"]." and id_instit = ".$_POST["instit"	]." ";
 		 if(isset($retorno)){
-		   $sql .=  " and id_usuario <> $retorno and id_usuario <> ".$HTTP_POST_VARS["usuario"]."";
+		   $sql .=  " and id_usuario <> $retorno and id_usuario <> ".$_POST["usuario"]."";
 		 }
 		 $sql .= " order by nome ";
 	         $result = db_query($sql);
-		 if(pg_numrows($result) > 0){
+		 if(pg_num_rows($result) > 0){
 		 ?>  
 		 <td><strong>Perfis:</strong><br>
 		 <?php 
@@ -435,16 +435,16 @@ input {
 	  </Tr>
 	  <tr>
 	    <td>
-		<input type="hidden" name="instit" value="<?=$HTTP_POST_VARS["instit"]?>">
-		<input type="hidden" name="usuario" value="<?=$HTTP_POST_VARS["usuario"]?>">
-		<input type="hidden" name="anousu" value="<?=$HTTP_POST_VARS["anousu"]?>">
+		<input type="hidden" name="instit" value="<?=$_POST["instit"]?>">
+		<input type="hidden" name="usuario" value="<?=$_POST["usuario"]?>">
+		<input type="hidden" name="anousu" value="<?=$_POST["anousu"]?>">
 		<input onClick="if(document.form1.modulos.selectedIndex == -1 ) { alert('Selecione um usuário!'); return false; }" name="verificar" type="submit" id="atualiza" value="Atualiza"></td>
            <!-- <td>
 		<input name="atuusuarios" type="submit" id="atuusuarios" value="Gravar"></td>
 	    </td>-->
 	    <td>
 	        <?php 
-		if(pg_numrows($result) > 0){
+		if(pg_num_rows($result) > 0){
 		?>
 		  <input name="atuperfil" type="submit" id="atuperfil" value="Gravar"></td>
 		<?php 
@@ -454,7 +454,7 @@ input {
             </tr>
 	  </table>
 	  <?php 
-	  } else if(isset($HTTP_POST_VARS["selecionar"])) {
+	  } else if(isset($_POST["selecionar"])) {
 	  ?>
 	   <table border="0" cellspacing="0" cellpadding="0">
           <tr> 
@@ -478,9 +478,9 @@ input {
 							 and u.usuext = 0
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_numrows($result);
+		$numrows = pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
-		  echo "<option style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
+		  echo "<option style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"login")."</option>\n";
 		  //echo "<option ".(pg_result($result,$i,"usuext") == 2?"style='color: blue;font-weight:bold'":"")." value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
 		}  
 		?>
@@ -499,16 +499,16 @@ input {
 							 and u.usuext = 2
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_numrows($result);
+		$numrows = pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
-		  echo "<option style='text-align:left;color:black;letter-spacing:normal;' value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"nome")."</option>\n";
+		  echo "<option style='text-align:left;color:black;letter-spacing:normal;' value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"nome")."</option>\n";
 		  //echo "<option ".(pg_result($result,$i,"usuext") == 2?"style='color: blue;font-weight:bold'":"")." value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
 		}  
 		?>
 	       </select> 
    	     </td>
             <td valign="top" width="80" align="right"> <strong>Exercício:</strong><br> 
-	        <input type="hidden" name="instit" value="<?=$HTTP_POST_VARS["instit"]?>">	  
+	        <input type="hidden" name="instit" value="<?=$_POST["instit"]?>">	  
 			<select name="anousu" id="anousu">
           <?php 
 		       $ano = date("Y");
@@ -530,20 +530,20 @@ input {
 		  </tr>
 		 </table>
       <?php 
-	} else if(isset($HTTP_POST_VARS["verificar"])) {
-		  $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$HTTP_POST_VARS["modulos"]);
-	  $mod = pg_result($result,0,0);
-	  $des = pg_result($result,0,1);
-	  $result = db_query("select login,nome from db_usuarios where id_usuario = ".$HTTP_POST_VARS["usuario"]);
-	  $log = pg_result($result,0,0);
-	  $nom = pg_result($result,0,1);
-	  $result = db_query("select nomeinst from db_config where codigo = ".$HTTP_POST_VARS["instit"]);
-	  $ins = pg_result($result,0,0);
+	} else if(isset($_POST["verificar"])) {
+		  $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$_POST["modulos"]);
+	  $mod = pg_fetch_result($result,0,0);
+	  $des = pg_fetch_result($result,0,1);
+	  $result = db_query("select login,nome from db_usuarios where id_usuario = ".$_POST["usuario"]);
+	  $log = pg_fetch_result($result,0,0);
+	  $nom = pg_fetch_result($result,0,1);
+	  $result = db_query("select nomeinst from db_config where codigo = ".$_POST["instit"]);
+	  $ins = pg_fetch_result($result,0,0);
 	  ?>
-	  <input type="hidden" name="modulos" value="<?=$HTTP_POST_VARS["modulos"]?>">
-	  <input type="hidden" name="usuario" value="<?=$HTTP_POST_VARS["usuario"]?>">
-	  <input type="hidden" name="anousu" value="<?=$HTTP_POST_VARS["anousu"]?>">
-	  <input type="hidden" name="instit" value="<?=$HTTP_POST_VARS["instit"]?>">	  
+	  <input type="hidden" name="modulos" value="<?=$_POST["modulos"]?>">
+	  <input type="hidden" name="usuario" value="<?=$_POST["usuario"]?>">
+	  <input type="hidden" name="anousu" value="<?=$_POST["anousu"]?>">
+	  <input type="hidden" name="instit" value="<?=$_POST["instit"]?>">	  
 <table border="1" cellspacing="0" cellpadding="0">
 <tr><td>
        <table border="0" cellspacing="0" cellpadding="0">
@@ -561,7 +561,7 @@ input {
 		 </tr>
 		 <tr>
 		   <td>Exercício:</td>
-		   <td><?=$HTTP_POST_VARS["anousu"]?></td>
+		   <td><?=$_POST["anousu"]?></td>
 		 </tr>
 	  </table>
 </td></tr>
@@ -578,9 +578,9 @@ input {
 		  <tr style='display:none'>
 		    <td align="center"><strong>Ambiente:</strong>
 			<input name="verificar" type="hidden" value="verificar">
-			 <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
+			 <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="1"?"checked":""):"checked" ?>> 
              <label for="web"><strong>Web</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-             <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
+             <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="0"?"checked":""):"" ?>>
              <label for="caracter"><strong>Caracter</strong></label>
 			</td>
 		  </tr>
@@ -589,7 +589,7 @@ input {
          <tr> 
            <td> 
 		   <?php  
-		   $ambiente = (!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"]);		  		   
+		   $ambiente = (!isset($_POST["ambiente"])?"1":$_POST["ambiente"]);		  		   
 		   	$wid = 15;
 			$conta = 0;
 			/***************/			
@@ -597,7 +597,7 @@ input {
 			  global $conta;
 			  global $wid;
 			  global $ambiente;
-			  global $HTTP_POST_VARS;
+			  global $_POST;
 
         /**
          * Busca a preferênia do usuário
@@ -609,25 +609,25 @@ input {
                            from db_menu m 
                                 inner join db_itensmenu i      on i.id_item     = m.id_item_filho 
 					                      left outer join db_permissao p on p.id_item     = m.id_item_filho 
-					                                                     and p.id_usuario = ".$HTTP_POST_VARS["usuario"]."
-					                                                     and p.anousu     = ".$HTTP_POST_VARS["anousu"]."
-					                                                     and p.id_instit  = ".$HTTP_POST_VARS["instit"]."
-					                                                     and p.id_modulo  = ".$HTTP_POST_VARS["modulos"]."							  
+					                                                     and p.id_usuario = ".$_POST["usuario"]."
+					                                                     and p.anousu     = ".$_POST["anousu"]."
+					                                                     and p.id_instit  = ".$_POST["instit"]."
+					                                                     and p.id_modulo  = ".$_POST["modulos"]."							  
                           where m.modulo    = $mod
 					                  and m.id_item   = $item
 					                  and i.itemativo = $ambiente 
                             and i.libcliente is true
                           order by {$sOrdenacao} asc");
 
-			  $numrows = pg_numrows($sub);
+			  $numrows = pg_num_rows($sub);
               if($numrows > 0) {
                 for($x = 0;$x < $numrows;$x++) {                  
-				  $valor = pg_result($sub,$x,"id_item_filho");
-                  echo "<img src=\"imagens/alinha.gif\" height=\"5\" id=\"Img".$conta."\" width=\"".$wid."\" ><input onClick=\"js_marcaP1('$id','Img".$conta."');js_marcaP2('$id','Img".$conta."')\" type=\"checkbox\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" onmouseover=\"js_msg_status('".pg_result($sub,$x,"help")."')\" onmouseout=\"js_lmp_status()\" ".(pg_result($sub,$x,"perm")==""?"":"checked").">
-				  <label onmouseover=\"js_msg_status('".pg_result($sub,$x,"help")."')\" onmouseout=\"js_lmp_status()\" for=\"ID$valor\">".pg_result($sub,$x,"descricao")."</label><br>\n";
+				  $valor = pg_fetch_result($sub,$x,"id_item_filho");
+                  echo "<img src=\"imagens/alinha.gif\" height=\"5\" id=\"Img".$conta."\" width=\"".$wid."\" ><input onClick=\"js_marcaP1('$id','Img".$conta."');js_marcaP2('$id','Img".$conta."')\" type=\"checkbox\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" onmouseover=\"js_msg_status('".pg_fetch_result($sub,$x,"help")."')\" onmouseout=\"js_lmp_status()\" ".(pg_fetch_result($sub,$x,"perm")==""?"":"checked").">
+				  <label onmouseover=\"js_msg_status('".pg_fetch_result($sub,$x,"help")."')\" onmouseout=\"js_lmp_status()\" for=\"ID$valor\">".pg_fetch_result($sub,$x,"descricao")."</label><br>\n";
 				  $wid += 15;
 				  $conta++;
-				  submenus(pg_result($sub,$x,"id_item_filho"),$id,$mod);
+				  submenus(pg_fetch_result($sub,$x,"id_item_filho"),$id,$mod);
 				  $wid -= 15;
                 }				                
               }
@@ -640,21 +640,21 @@ input {
 	                           on m.id_item_filho = i.id_item 
 							   left outer join db_permissao p
                                on p.id_item = m.id_item_filho 
-							   and p.id_usuario = ".$HTTP_POST_VARS["usuario"]."
-							   and p.anousu = ".$HTTP_POST_VARS["anousu"]."
-							   and p.id_instit = ".$HTTP_POST_VARS["instit"]."
-							   and p.id_modulo = ".$HTTP_POST_VARS["modulos"]."
-	                           where m.modulo = ".$HTTP_POST_VARS["modulos"]."
+							   and p.id_usuario = ".$_POST["usuario"]."
+							   and p.anousu = ".$_POST["anousu"]."
+							   and p.id_instit = ".$_POST["instit"]."
+							   and p.id_modulo = ".$_POST["modulos"]."
+	                           where m.modulo = ".$_POST["modulos"]."
 							   and i.itemativo = $ambiente
                                                            and i.libcliente is true							   
-							   and m.id_item = ".$HTTP_POST_VARS["modulos"] . " order by {$sOrdenacao} asc";
+							   and m.id_item = ".$_POST["modulos"] . " order by {$sOrdenacao} asc";
                 
             $result = db_query($SQL);			
-            for($i = 0;$i < pg_numrows($result);$i++) {
-			  $valor = pg_result($result,$i,"id_item_filho");
-              echo "<td id=\"col$i\" valign=\"top\" nowrap>\n<input onclick=\"js_marca('col$i',this)\" type=\"checkbox\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" onmouseover=\"js_msg_status('".pg_result($result,$i,"help")."')\" onmouseout=\"js_lmp_status()\" ".(pg_result($result,$i,"perm")==""?"":"checked").">
-			  <label onmouseover=\"js_msg_status('".pg_result($result,$i,"help")."')\" onmouseout=\"js_lmp_status()\" for=\"ID$valor\">".pg_result($result,$i,"descricao")."</label><br>\n";
-              submenus(pg_result($result,$i,"pai"),"col".$i,db_strpos($HTTP_POST_VARS["modulos"],"##"));
+            for($i = 0;$i < pg_num_rows($result);$i++) {
+			  $valor = pg_fetch_result($result,$i,"id_item_filho");
+              echo "<td id=\"col$i\" valign=\"top\" nowrap>\n<input onclick=\"js_marca('col$i',this)\" type=\"checkbox\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" onmouseover=\"js_msg_status('".pg_fetch_result($result,$i,"help")."')\" onmouseout=\"js_lmp_status()\" ".(pg_fetch_result($result,$i,"perm")==""?"":"checked").">
+			  <label onmouseover=\"js_msg_status('".pg_fetch_result($result,$i,"help")."')\" onmouseout=\"js_lmp_status()\" for=\"ID$valor\">".pg_fetch_result($result,$i,"descricao")."</label><br>\n";
+              submenus(pg_fetch_result($result,$i,"pai"),"col".$i,db_strpos($_POST["modulos"],"##"));
 			  echo "</td>\n";
             }	   
 		   ?> 

@@ -146,7 +146,7 @@ if (@$q02_inscr!="") {
             db_input('testasub', 4, 0, true, 'hidden', 1);
             db_input('q30_anousu', 4, 0, true, 'hidden', 1);
             db_input('q02_inscr', 10, $Iq02_inscr, true, 'text', 3);
-            $z01_nome = stripslashes($z01_nome);
+            $z01_nome = stripslashes((string) $z01_nome);
             ?>
         </td>
       <tr>
@@ -217,7 +217,7 @@ if (@$q02_inscr!="") {
     <Legend><strong>Endereço no Município</strong></Legend>
     <table border="0" width="100%" >
         <?php
-        if ($db_opcao==33 || $db_opcao==22 || strtoupper($munic)==strtoupper($z01_munic)) {
+        if ($db_opcao==33 || $db_opcao==22 || strtoupper((string) $munic)==strtoupper((string) $z01_munic)) {
             ?>
        <tr>
          <td nowrap title="<?=@$Tq05_matric?>" width="150px">  <strong>
@@ -242,7 +242,7 @@ if (@$q02_inscr!="") {
              <?php
                 if (isset($q05_matric) && $q05_matric!="") {
                     $result04  = $cliptuconstr->sql_record($cliptuconstr->sql_query($q05_matric, "", "j39_idcons as idcons,j39_codigo,j88_sigla || ' ' || j14_nome as nomerua,j39_numero,j39_compl,j34_bairro,j39_area", "j39_idcons"));
-                    $xxx       =  array();
+                    $xxx       =  [];
                     $numrows04 = $cliptuconstr->numrows;
                     if ($numrows04 > 0) {
                         for ($i = 0; $i < $numrows04; $i++) {
@@ -252,9 +252,9 @@ if (@$q02_inscr!="") {
                             if ($j34_bairro!="" && $j34_bairro!=0) {
                                  $result29 = $clbairro->sql_record($clbairro->sql_query_file($j34_bairro, "j13_descr"));
                                  db_fieldsmemory($result29, 0);
-                                 $$wx = $j39_codigo."XabX".$nomerua."XabX".$j39_numero."XabX".$j39_compl."XabX".$j34_bairro."XabX".$j13_descr."XabX".$j39_area;
+                                 ${$wx} = $j39_codigo."XabX".$nomerua."XabX".$j39_numero."XabX".$j39_compl."XabX".$j34_bairro."XabX".$j13_descr."XabX".$j39_area;
                             } else {
-                                $$wx=$j39_codigo."XabX".$nomerua."XabX".$j39_numero."XabX".$j39_compl."XabXXabXXabX".$j39_area;
+                                ${$wx}=$j39_codigo."XabX".$nomerua."XabX".$j39_numero."XabX".$j39_compl."XabXXabXXabX".$j39_area;
                             }
                             db_input('idcar_'.$idcons, 20, 0, true, 'hidden', 1);
                         }
@@ -308,7 +308,7 @@ if (@$q02_inscr!="") {
         }
          db_input('j14_nome', 53, $Ij14_nome, true, 'text', 3);
          echo "</td>";
-        if ($db_opcao!=33 && $db_opcao!=22 && strtoupper($munic)==strtoupper($z01_munic)) {
+        if ($db_opcao!=33 && $db_opcao!=22 && strtoupper((string) $munic)==strtoupper((string) $z01_munic)) {
         } else {
             $cgmnops="false";
         }
@@ -320,7 +320,7 @@ if (@$q02_inscr!="") {
        </td>
        <td nowrap >
             <?php
-            if ($db_opcao!=33 && $db_opcao!=22 && strtoupper($munic)!=strtoupper($z01_munic)) {
+            if ($db_opcao!=33 && $db_opcao!=22 && strtoupper((string) $munic)!=strtoupper((string) $z01_munic)) {
                 db_input('q02_numero', 10, $Iq02_numero, true, 'text', 1)
                 ?>
              </td>
@@ -329,7 +329,7 @@ if (@$q02_inscr!="") {
                 <?php
                  db_input('q02_compl', 18, $Iq02_compl, true, 'text', 1, "", "", "", "", 20);
             } else {
-                if ($db_opcao!=1 && $db_opcao!=33 && $db_opcao!=22 && strtoupper($munic)==strtoupper($z01_munic)) {
+                if ($db_opcao!=1 && $db_opcao!=33 && $db_opcao!=22 && strtoupper((string) $munic)==strtoupper((string) $z01_munic)) {
                     $result_issruas=$clissruas->sql_record($clissruas->sql_query_file($q02_inscr, "q02_numero, q02_compl"));
                     if ($clissruas->numrows > 0) {
                         db_fieldsmemory($result_issruas, 0);
@@ -436,7 +436,7 @@ if (@$q02_inscr!="") {
       <tr>
         <td nowrap title="<?=@$Tq40_codporte?>" >
             <?php
-            $tam_cgccpf=strlen($z01_cgccpf);
+            $tam_cgccpf=strlen((string) $z01_cgccpf);
             if ($tam_cgccpf == 14) {
                 db_ancora(@$Lq40_codporte, "js_pesquisa_porte(true,'j');", $db_opcao);
                 echo "</td>";
@@ -451,7 +451,7 @@ if (@$q02_inscr!="") {
             db_input('q40_descr', 53, $Iq40_descr, true, 'text', 3);
             echo "</td>
           </tr>";
-            $tam_cgccpf=strlen($z01_cgccpf);
+            $tam_cgccpf=strlen((string) $z01_cgccpf);
 
             if ($tam_cgccpf==14) {
                 ?>
@@ -463,7 +463,7 @@ if (@$q02_inscr!="") {
                 <?php
                 $sql = $clsocios->sql_query_socios($q02_numcgm, "", "sum(q95_perc) as somaval ");
                 $result_testaval=db_query($sql);
-                if (pg_numrows($result_testaval)!=0) {
+                if (pg_num_rows($result_testaval)!=0) {
                     db_fieldsmemory($result_testaval, 0);
                 } else {
                     $somaval=0;
@@ -624,7 +624,7 @@ if (@$q02_inscr!="") {
             db_inputdata('q02_dtjunta', @$q02_dtjunta_dia, @$q02_dtjunta_mes, @$q02_dtjunta_ano, true, 'text', $db_opcao);
             echo "</td>
                   <td align='right'>";
-            $tam_cgccpf = strlen($z01_cgccpf);
+            $tam_cgccpf = strlen((string) $z01_cgccpf);
             if ($tam_cgccpf==14) {
                 ?>
                 <?=$Lq02_regjuc?>
@@ -644,9 +644,9 @@ if (@$q02_inscr!="") {
         <td >
             <?php
             if (!isset($q02_dtcada) || $q02_dtcada == '') {
-                @list($q02_dtcada_ano, $q02_dtcada_mes, $q02_dtcada_dia) = @explode('-', date('Y-m-d', db_getsession('DB_datausu')));
+                @[$q02_dtcada_ano, $q02_dtcada_mes, $q02_dtcada_dia] = @explode('-', date('Y-m-d', db_getsession('DB_datausu')));
             } else {
-                @list($q02_dtcada_ano, $q02_dtcada_mes, $q02_dtcada_dia) = @explode('-', $q02_dtcada);
+                @[$q02_dtcada_ano, $q02_dtcada_mes, $q02_dtcada_dia] = @explode('-', (string) $q02_dtcada);
             }
             db_inputdata('q02_dtcada', @$q02_dtcada_dia, @$q02_dtcada_mes, @$q02_dtcada_ano, true, 'text', $db_opcao);
             ?>
@@ -1155,7 +1155,7 @@ function js_mostraprocesso(chave,nome,erro) {
     \n";
     }
     if (!isset($excluir) && !isset($alterar) && !isset($incluir)) {
-        if ($db_opcao==1 && strtoupper($munic)!=strtoupper($z01_munic) && empty($q05_matric)) {
+        if ($db_opcao==1 && strtoupper((string) $munic)!=strtoupper((string) $z01_munic) && empty($q05_matric)) {
             echo "alert('CGM de outra cidade.');";
         }
         if (isset($str_matric) && $str_matric==false) {

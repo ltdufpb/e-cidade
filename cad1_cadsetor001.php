@@ -36,7 +36,7 @@ $clcfiptu = new cl_cfiptu;
 $db_opcao = 1;
 $db_botao = true;
 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Incluir") {
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Incluir") {
 
   db_inicio_transacao();
 
@@ -48,7 +48,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Incluir
   	db_fieldsmemory($result_seq,0);
   }
 
-  $j30_codi = str_pad($j30_codi, 4, "0", STR_PAD_LEFT);
+  $j30_codi = str_pad((string) $j30_codi, 4, "0", STR_PAD_LEFT);
   $clsetor->j30_codi = $j30_codi;
 
   $result_param = $clcfiptu->sql_record($clcfiptu->sql_query(db_getsession("DB_anousu"),"j18_formatsetor"));
@@ -84,7 +84,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Incluir
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
 
   if($clsetor->erro_status == "0") {
 

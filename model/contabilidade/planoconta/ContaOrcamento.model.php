@@ -41,7 +41,7 @@ class ContaOrcamento extends ContaPlano {
   private $sMsgErro;
   private $oPlanoContaPCASP              = null;
   private $oDaoConplanoconplanoorcamento = null;
-  private $aGrupoConta                   = array();
+  private $aGrupoConta                   = [];
 
   private $identificadorResultadoPrimario  = 0;
   /**
@@ -390,8 +390,8 @@ class ContaOrcamento extends ContaPlano {
    */
   public function getEventosContabeisPeloElemento() {
 
-    $aEventoContabil       = array();
-    $aComparaDebitoCredito = array(RegraLancamentoContabil::COMPARA_DEBITO, RegraLancamentoContabil::COMPARA_CREDITO);
+    $aEventoContabil       = [];
+    $aComparaDebitoCredito = [RegraLancamentoContabil::COMPARA_DEBITO, RegraLancamentoContabil::COMPARA_CREDITO];
     $sComparaDebitoCredito = implode(',', $aComparaDebitoCredito);
 
   	$oDaoConTranslrElemento = db_utils::getDao("contranslrelemento");
@@ -637,6 +637,7 @@ class ContaOrcamento extends ContaPlano {
   * Valida se já existe um reduzido cadastrado para o Ano e Instituição
   * @return boolean
   */
+  #[\Override]
   public function hasReduzidoAnoInstituicao() {
 
     $oDaoReduzido       = db_utils::getDao("conplanoorcamentoanalitica");
@@ -660,8 +661,8 @@ class ContaOrcamento extends ContaPlano {
     if ($this->getEstrutural() == null){
       return false;
     }
-    if ( substr($this->getEstrutural(), 0, 1) == "4" ||
-         substr($this->getEstrutural(), 0, 1) == "9" ) {
+    if ( str_starts_with($this->getEstrutural(), "4") ||
+         str_starts_with($this->getEstrutural(), "9") ) {
       return true;
     }else {
       return false;
@@ -677,7 +678,7 @@ class ContaOrcamento extends ContaPlano {
     if ( $this->getEstrutural() == null ) {
       return false;
     }
-    if (substr($this->getEstrutural(), 0, 1) == "3" ) {
+    if (str_starts_with($this->getEstrutural(), "3") ) {
       return true;
     }else {
       return false;

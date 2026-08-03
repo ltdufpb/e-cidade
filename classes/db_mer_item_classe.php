@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE mer_item
 class cl_mer_item { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $me10_i_codigo = 0; 
-   var $me10_c_controlavalidade = null; 
-   var $me10_c_ativo = null; 
-   var $me10_i_unidade = 0; 
-   var $me10_c_descr = null; 
+   public $me10_i_codigo = 0; 
+   public $me10_c_controlavalidade = null; 
+   public $me10_c_ativo = null; 
+   public $me10_i_unidade = 0; 
+   public $me10_c_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  me10_i_codigo = int4 = Código 
                  me10_c_controlavalidade = char(2) = Controla Validade 
                  me10_c_ativo = char(1) = Ativo 
@@ -56,10 +56,10 @@ class cl_mer_item {
                  me10_c_descr = char(30) = Descrição do produto 
                  ";
    //funcao construtor da classe 
-   function cl_mer_item() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_item"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_mer_item {
          $this->erro_status = "0";
          return false; 
        }
-       $this->me10_i_codigo = pg_result($result,0,0); 
+       $this->me10_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from meritem_m10_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $me10_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $me10_i_codigo)){
          $this->erro_sql = " Campo me10_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_mer_item {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "mer_item ($this->me10_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "mer_item já Cadastrado";
@@ -194,14 +194,14 @@ class cl_mer_item {
      $resaco = $this->sql_record($this->sql_query_file($this->me10_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12725,'$this->me10_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2226,12725,'','".AddSlashes(pg_result($resaco,0,'me10_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2226,12726,'','".AddSlashes(pg_result($resaco,0,'me10_c_controlavalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2226,12727,'','".AddSlashes(pg_result($resaco,0,'me10_c_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2226,12728,'','".AddSlashes(pg_result($resaco,0,'me10_i_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2226,12795,'','".AddSlashes(pg_result($resaco,0,'me10_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2226,12725,'','".AddSlashes(pg_fetch_result($resaco,0,'me10_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2226,12726,'','".AddSlashes(pg_fetch_result($resaco,0,'me10_c_controlavalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2226,12727,'','".AddSlashes(pg_fetch_result($resaco,0,'me10_c_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2226,12728,'','".AddSlashes(pg_fetch_result($resaco,0,'me10_i_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2226,12795,'','".AddSlashes(pg_fetch_result($resaco,0,'me10_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_mer_item {
       $this->atualizacampos();
      $sql = " update mer_item set ";
      $virgula = "";
-     if(trim($this->me10_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me10_i_codigo"])){ 
+     if(trim((string) $this->me10_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me10_i_codigo"])){ 
        $sql  .= $virgula." me10_i_codigo = $this->me10_i_codigo ";
        $virgula = ",";
-       if(trim($this->me10_i_codigo) == null ){ 
+       if(trim((string) $this->me10_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "me10_i_codigo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_mer_item {
          return false;
        }
      }
-     if(trim($this->me10_c_controlavalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me10_c_controlavalidade"])){ 
+     if(trim((string) $this->me10_c_controlavalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me10_c_controlavalidade"])){ 
        $sql  .= $virgula." me10_c_controlavalidade = '$this->me10_c_controlavalidade' ";
        $virgula = ",";
-       if(trim($this->me10_c_controlavalidade) == null ){ 
+       if(trim((string) $this->me10_c_controlavalidade) == null ){ 
          $this->erro_sql = " Campo Controla Validade nao Informado.";
          $this->erro_campo = "me10_c_controlavalidade";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_mer_item {
          return false;
        }
      }
-     if(trim($this->me10_c_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me10_c_ativo"])){ 
+     if(trim((string) $this->me10_c_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me10_c_ativo"])){ 
        $sql  .= $virgula." me10_c_ativo = '$this->me10_c_ativo' ";
        $virgula = ",";
-       if(trim($this->me10_c_ativo) == null ){ 
+       if(trim((string) $this->me10_c_ativo) == null ){ 
          $this->erro_sql = " Campo Ativo nao Informado.";
          $this->erro_campo = "me10_c_ativo";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_mer_item {
          return false;
        }
      }
-     if(trim($this->me10_i_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me10_i_unidade"])){ 
+     if(trim((string) $this->me10_i_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me10_i_unidade"])){ 
        $sql  .= $virgula." me10_i_unidade = $this->me10_i_unidade ";
        $virgula = ",";
-       if(trim($this->me10_i_unidade) == null ){ 
+       if(trim((string) $this->me10_i_unidade) == null ){ 
          $this->erro_sql = " Campo Unidade nao Informado.";
          $this->erro_campo = "me10_i_unidade";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_mer_item {
          return false;
        }
      }
-     if(trim($this->me10_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me10_c_descr"])){ 
+     if(trim((string) $this->me10_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me10_c_descr"])){ 
        $sql  .= $virgula." me10_c_descr = '$this->me10_c_descr' ";
        $virgula = ",";
-       if(trim($this->me10_c_descr) == null ){ 
+       if(trim((string) $this->me10_c_descr) == null ){ 
          $this->erro_sql = " Campo Descrição do produto nao Informado.";
          $this->erro_campo = "me10_c_descr";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_mer_item {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12725,'$this->me10_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me10_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,2226,12725,'".AddSlashes(pg_result($resaco,$conresaco,'me10_i_codigo'))."','$this->me10_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2226,12725,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me10_i_codigo'))."','$this->me10_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me10_c_controlavalidade"]))
-           $resac = db_query("insert into db_acount values($acount,2226,12726,'".AddSlashes(pg_result($resaco,$conresaco,'me10_c_controlavalidade'))."','$this->me10_c_controlavalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2226,12726,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me10_c_controlavalidade'))."','$this->me10_c_controlavalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me10_c_ativo"]))
-           $resac = db_query("insert into db_acount values($acount,2226,12727,'".AddSlashes(pg_result($resaco,$conresaco,'me10_c_ativo'))."','$this->me10_c_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2226,12727,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me10_c_ativo'))."','$this->me10_c_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me10_i_unidade"]))
-           $resac = db_query("insert into db_acount values($acount,2226,12728,'".AddSlashes(pg_result($resaco,$conresaco,'me10_i_unidade'))."','$this->me10_i_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2226,12728,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me10_i_unidade'))."','$this->me10_i_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me10_c_descr"]))
-           $resac = db_query("insert into db_acount values($acount,2226,12795,'".AddSlashes(pg_result($resaco,$conresaco,'me10_c_descr'))."','$this->me10_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2226,12795,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me10_c_descr'))."','$this->me10_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_mer_item {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12725,'$me10_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2226,12725,'','".AddSlashes(pg_result($resaco,$iresaco,'me10_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2226,12726,'','".AddSlashes(pg_result($resaco,$iresaco,'me10_c_controlavalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2226,12727,'','".AddSlashes(pg_result($resaco,$iresaco,'me10_c_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2226,12728,'','".AddSlashes(pg_result($resaco,$iresaco,'me10_i_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2226,12795,'','".AddSlashes(pg_result($resaco,$iresaco,'me10_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2226,12725,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me10_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2226,12726,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me10_c_controlavalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2226,12727,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me10_c_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2226,12728,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me10_i_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2226,12795,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me10_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from mer_item
@@ -407,7 +407,7 @@ class cl_mer_item {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:mer_item";
@@ -422,7 +422,7 @@ class cl_mer_item {
    function sql_query ( $me10_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,7 +444,7 @@ class cl_mer_item {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -457,7 +457,7 @@ class cl_mer_item {
    function sql_query_file ( $me10_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -478,7 +478,7 @@ class cl_mer_item {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

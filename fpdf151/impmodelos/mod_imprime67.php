@@ -33,7 +33,7 @@ $this->totalrec = 0;
 $this->totaldesc = 0;
 $this->totalacres = 0;
 
-$aDadosContrib = explode("-", $this->descr11_1);
+$aDadosContrib = explode("-", (string) $this->descr11_1);
 $iReciboSacadoContribuinteCodigo = $aDadosContrib[0];
 $sReciboSacadoContribuinteTitulo = "Contribuinte";
 $iNroRec = count($this->arraycodreceitas);
@@ -201,7 +201,7 @@ $this->objpdf->SetFont('Arial', '', $nFonte);
 $sInstrucao = "Tipo/Exercício: " . @$this->tipo_exerc . " " . $this->descr12_1 . " \n";
 
 if (!empty($this->valororigem)) {
-    $sInstrucao .= " Valor origem = " . trim($this->valororigem);
+    $sInstrucao .= " Valor origem = " . trim((string) $this->valororigem);
 }
 
 if (!empty($this->valtotal)) {
@@ -217,7 +217,7 @@ if (!empty($this->mora_multa)) {
 }
 
 if (!empty($this->valor_cobrado)) {
-    $sInstrucao .= " Valor do documento = " . trim($this->valor_cobrado);
+    $sInstrucao .= " Valor do documento = " . trim((string) $this->valor_cobrado);
 }
 
 if (!empty($this->taxaExpediente)) {
@@ -277,9 +277,9 @@ $this->objpdf->setX($iXPosPagina);
 $this->objpdf->SetFont('Arial', 'b', $nFonteLabel);
 $this->objpdf->cell(15, $iAlt, 'Sacado', 'L', 0, "L");
 $this->objpdf->SetFont('Arial', '', $nFonte);
-$this->objpdf->cell(72, $iAlt, substr($this->descr11_1, 0, 52), '0', 0, "L");
+$this->objpdf->cell(72, $iAlt, substr((string) $this->descr11_1, 0, 52), '0', 0, "L");
 $this->objpdf->cell(35, $iAlt,
-  "CPF/CNPJ: " . db_formatar(@$this->cgccpf, (strlen(@$this->cgccpf) < 12 ? 'cpf' : 'cnpj')), 'R', 0, 'L');
+  "CPF/CNPJ: " . db_formatar(@$this->cgccpf, (strlen((string) @$this->cgccpf) < 12 ? 'cpf' : 'cnpj')), 'R', 0, 'L');
 $this->objpdf->cell(50, $iAlt, '', 'LR', 1, "L");
 $this->objpdf->setX($iXPosPagina);
 $this->objpdf->cell(15, $iAlt, '', 'L', 0, "L");

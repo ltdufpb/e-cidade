@@ -68,7 +68,7 @@ class FormsFields
         if (!$rs) {
         }
 
-        $maper = array();
+        $maper = [];
         \db_utils::makeCollectionFromRecord($rs, function ($dado) use (&$maper) {
             if (!array_key_exists($dado->id_campo, $maper)) {
                 $maper[$dado->id_campo] = $this->formatQuestion($dado);

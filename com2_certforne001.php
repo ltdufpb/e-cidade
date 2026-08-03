@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label("pc74_codigo");
 ?>
@@ -115,7 +115,7 @@ function js_emite(){
         <td align="right">Imprimir Objeto Social:</td>
         <td >
         	<?php 
-        	$db_matriz = array("0"=>'Sim',"1"=>"Não");
+        	$db_matriz = ["0"=>'Sim',"1"=>"Não"];
          	db_select('oSocial',$db_matriz,TRUE,1); 
          	?>
         </td>
@@ -124,7 +124,7 @@ function js_emite(){
         <td align="right">Imprimir Grupos de Fornecimento:</td>
         <td >
         	<?php 
-        	$db_matriz = array("0"=>'Sim',"1"=>"Não");
+        	$db_matriz = ["0"=>'Sim',"1"=>"Não"];
          	db_select('gFornecimento',$db_matriz,TRUE,1); 
          	?>
         </td>

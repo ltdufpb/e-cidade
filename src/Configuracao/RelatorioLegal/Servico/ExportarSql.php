@@ -27,8 +27,8 @@ class ExportarSql extends Exportar
     /**
      * @var array
      */
-    private $dePara = array(
-        'periodo' => array(
+    private $dePara = [
+        'periodo' => [
             'o114_sequencial' => 'sequencial',
             'o114_descricao' => 'descricao',
             'o114_qdtporano' => 'quantidadePorAno',
@@ -38,8 +38,8 @@ class ExportarSql extends Exportar
             'o114_mesfinal' => 'mesFinal',
             'o114_sigla' => 'sigla',
             'o114_ordem' => 'ordem',
-        ),
-        'orcparamseqcoluna' => array(
+        ],
+        'orcparamseqcoluna' => [
             'o115_sequencial' => 'sequencial',
             'o115_anousu' => 'ano',
             'o115_descricao' => 'descricao',
@@ -49,19 +49,19 @@ class ExportarSql extends Exportar
             'o115_formula' => 'formula',
             'o115_origem' => 'origem',
             'o115_relatorio' => 'relatorio'
-        ),
-        'orcparamrel' => array(
+        ],
+        'orcparamrel' => [
             'o42_codparrel' => 'sequencial',
             'o42_descrrel' => 'descricao',
             'o42_orcparamrelgrupo' => 'grupo',
             'o42_notapadrao' => 'notaPadrao',
-        ),
-        'orcparamrelperiodos' => array(
+        ],
+        'orcparamrelperiodos' => [
             'o113_sequencial' => 'sequencial',
             'o113_periodo' => 'periodo',
             'o113_orcparamrel' => 'relatorio',
-        ),
-        'orcparamseq' => array(
+        ],
+        'orcparamseq' => [
             'o69_codparamrel' => 'relatorio',
             'o69_codseq' => 'ordem',
             'o69_descr' => 'descricao',
@@ -81,8 +81,8 @@ class ExportarSql extends Exportar
             'o69_observacao' => 'observacao',
             'o69_desdobrarlinha' => 'desdobra',
             'o69_origem' => 'origem',
-        ),
-        'orcparamseqorcparamseqcoluna' => array(
+        ],
+        'orcparamseqorcparamseqcoluna' => [
             'o116_sequencial' => 'sequencial',
             'o116_codseq' => 'linha',
             'o116_codparamrel' => 'relatorio',
@@ -90,23 +90,23 @@ class ExportarSql extends Exportar
             'o116_ordem' => 'ordem',
             'o116_periodo' => 'periodo',
             'o116_formula' => 'formula',
-        ),
-        'orcparamseqcolunaestruturais' => array(
+        ],
+        'orcparamseqcolunaestruturais' => [
             'o158_sequencial' => 'sequencial',
             'o158_exclusao' => 'exclusao',
             'o158_estrutural' => 'estrutural',
             'o158_orcparamseqcoluna' => 'codigo_coluna',
             'o158_ano' => 'ano',
 
-        ),
-        'orcparamseqfiltropadrao' => array(
+        ],
+        'orcparamseqfiltropadrao' => [
             'o132_sequencial' => 'sequencial',
             'o132_orcparamrel' => 'relatorio',
             'o132_orcparamseq' => 'ordemLinha',
             'o132_anousu' => 'ano',
             'o132_filtro' => 'filtro',
-        ),
-        'orcparamseqinfocomplementar' => array(
+        ],
+        'orcparamseqinfocomplementar' => [
             'o157_sequencial' => 'sequencial',
             'o157_valor' => 'valor',
             'o157_conplanoinfocomplementar' => 'informacaoComplementar',
@@ -114,32 +114,32 @@ class ExportarSql extends Exportar
             'o157_linha' => 'linha',
             'o157_padrao' => 'padrao',
             'o157_infocomplementarlancamento' => 'lancamento'
-        ),
-        'orcparamseqinfocomplementarlancamento' => array(
+        ],
+        'orcparamseqinfocomplementarlancamento' => [
             'o102_sequencial' => 'sequencial',
             'o102_exclusao' => 'exclusao'
-        )
-    );
+        ]
+    ];
 
     /**
      * @var array
      */
-    private $camposParse = array(
-        'orcparamrel' => array(
+    private $camposParse = [
+        'orcparamrel' => [
             'descricao' => self::STRING,
             'notaPadrao' => self::STRING,
-        ),
-        'periodo' => array(
+        ],
+        'periodo' => [
             "descricao" => self::STRING,
             "sigla" => self::STRING,
-        ),
-        'orcparamseqcoluna' => array(
+        ],
+        'orcparamseqcoluna' => [
             'descricao' => self::STRING,
             'default' => self::STRING,
             'nome' => self::STRING,
             'formula' => self::STRING,
-        ),
-        'orcparamseq' => array(
+        ],
+        'orcparamseq' => [
             'descricao' => self::STRING,
             'label' => self::STRING,
             'observacao' => self::STRING,
@@ -151,30 +151,30 @@ class ExportarSql extends Exportar
             'manual' => self::BOOLEAN,
             'totalizadora' => self::BOOLEAN,
             'desdobra' => self::BOOLEAN,
-        ),
-        'orcparamseqorcparamseqcoluna' => array(
+        ],
+        'orcparamseqorcparamseqcoluna' => [
             'formula' => self::STRING,
-        ),
-        'orcparamseqcolunaestruturais' => array(
+        ],
+        'orcparamseqcolunaestruturais' => [
             'exclusao' => self::BOOLEAN,
             'estrutural' => self::STRING,
-        ),
-        'orcparamseqfiltropadrao' => array(
+        ],
+        'orcparamseqfiltropadrao' => [
             'filtro' => self::STRING,
-        ),
-        'orcparamseqinfocomplementar' => array(
+        ],
+        'orcparamseqinfocomplementar' => [
             'valor' => self::STRING,
             'padrao' => self::BOOLEAN
-        ),
-        'orcparamseqinfocomplementarlancamento' => array(
+        ],
+        'orcparamseqinfocomplementarlancamento' => [
             'exclusao' => self::BOOLEAN
-        )
-    );
+        ]
+    ];
 
     /**
      * @var array
      */
-    private $dados = array();
+    private $dados = [];
 
     /**
      * @return int
@@ -226,7 +226,7 @@ class ExportarSql extends Exportar
             ->get();
 
         foreach ($informacoesComplementares as $informacaoComplementar) {
-            $dadosInsert = array(
+            $dadosInsert = [
                 'sequencial' => "nextval('orcparamseqinfocomplementar_o157_sequencial_seq')",
                 'valor' => $informacaoComplementar->getValor(),
                 'informacaoComplementar' => $informacaoComplementar->getInformacaoComplementar(),
@@ -234,7 +234,7 @@ class ExportarSql extends Exportar
                 'linha' => $informacaoComplementar->getLinha()->getLinha(),
                 'padrao' => $informacaoComplementar->isPadrao(),
                 'lancamento' => "currval('orcparamseqinfocomplementarlancamento_o102_sequencial_seq')"
-            );
+            ];
             $this->dados[] = $this->montarQuery('orcparamseqinfocomplementar', $dadosInsert);
         }
     }
@@ -249,13 +249,13 @@ class ExportarSql extends Exportar
             ->setUseJoin(true)
             ->scopeRelatorio($this->relatorio)
             ->scopeLinha(LinhaRegistry::get($this->relatorio, $linha['linha']))
-            ->get(array("distinct orcparamseqinfocomplementarlancamento.*"));
+            ->get(["distinct orcparamseqinfocomplementarlancamento.*"]);
 
         foreach ($infosComplementaresLancamentos as $infoComplementarLancamento) {
-            $dadosInsert = array(
+            $dadosInsert = [
                 "sequencial" => "nextval('orcparamseqinfocomplementarlancamento_o102_sequencial_seq')",
                 "exclusao" => $infoComplementarLancamento->isExclusao()
-            );
+            ];
             $this->dados[] = $this->montarQuery('orcparamseqinfocomplementarlancamento', $dadosInsert);
             $this->adicionarInfoComplementar($infoComplementarLancamento);
         }
@@ -276,7 +276,7 @@ class ExportarSql extends Exportar
     private function adicionarLinha()
     {
         foreach ($this->dadosProcessados->relatorio['linhas'] as $linha) {
-            $linha['descricao'] = substr($linha['descricao'], 0, 60);
+            $linha['descricao'] = substr((string) $linha['descricao'], 0, 60);
             $this->dados[] = $this->montarQuery('orcparamseq', $linha);
         }
 
@@ -295,13 +295,13 @@ class ExportarSql extends Exportar
         $colunasEstruturias = $colunaEstruturalRepositorio->scopeColuna($coluna)->get();
 
         foreach ($colunasEstruturias as $colunaEstrutural) {
-            $dadosInsert = array(
+            $dadosInsert = [
                 'sequencial' => "nextval('orcparamseqcolunaestruturais_o158_sequencial_seq')",
                 'exclusao' => $colunaEstrutural->isExclusao(),
                 'estrutural' => $colunaEstrutural->getEstrutural(),
                 'codigo_coluna' => "currval('orcparamseqcoluna_o115_sequencial_seq')",
                 'ano' => $colunaEstrutural->getAno()
-            );
+            ];
             $this->dados[] = $this->montarQuery('orcparamseqcolunaestruturais', $dadosInsert);
         }
     }
@@ -318,7 +318,7 @@ class ExportarSql extends Exportar
             ->get();
 
         foreach ($linhasColunas as $linhaColuna) {
-            $dadosInsert = array(
+            $dadosInsert = [
                 'sequencial' => "nextval('orcparamseqorcparamseqcoluna_o116_sequencial_seq')",
                 'linha' => $linhaColuna->getLinha()->getOrdem(),
                 'relatorio' => $this->relatorio->getSequencial(),
@@ -326,14 +326,14 @@ class ExportarSql extends Exportar
                 'ordem' => $linhaColuna->getOrdem(),
                 'periodo' => $linhaColuna->getPeriodo(),
                 'formula' => $linhaColuna->getFormula()
-            );
+            ];
             $this->dados[] = $this->montarQuery('orcparamseqorcparamseqcoluna', $dadosInsert);
         }
     }
 
     private function adicionarColuna()
     {
-        $campos = array("DISTINCT orcparamseqcoluna.*");
+        $campos = ["DISTINCT orcparamseqcoluna.*"];
         $colunaRepositorio = new ColunaRepositorio();
         $colunas = $colunaRepositorio
             ->setUseJoin(true)
@@ -341,7 +341,7 @@ class ExportarSql extends Exportar
             ->get($campos);
 
         foreach ($colunas as $coluna) {
-            $dadosInsert = array(
+            $dadosInsert = [
                 'sequencial' => "nextval('orcparamseqcoluna_o115_sequencial_seq')",
                 'ano' => $coluna->getAno(),
                 'descricao' => $coluna->getDescricao(),
@@ -351,13 +351,14 @@ class ExportarSql extends Exportar
                 'formula' => $coluna->getFormula(),
                 'origem' => $coluna->getOrigem(),
                 'relatorio' => $this->relatorio->getSequencial()
-            );
+            ];
             $this->dados[] = $this->montarQuery('orcparamseqcoluna', $dadosInsert);
             $this->adicionarColunaEstruturais($coluna);
             $this->adicionarVinculoLinhaColuna($coluna);
         }
     }
 
+    #[\Override]
     protected function processar()
     {
         parent::processar();
@@ -377,7 +378,7 @@ class ExportarSql extends Exportar
      */
     private function montarQuery($tabela, array $dados)
     {
-        $values = array();
+        $values = [];
         $campos = $this->dePara[$tabela];
 
         foreach ($this->dePara[$tabela] as $campo) {

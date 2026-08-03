@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_inicial_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clinicial = new cl_inicial;
 $clinicial->rotulo->label("v50_inicial");
 $clinicial->rotulo->label("v50_data");
@@ -98,9 +98,9 @@ $clinicial->rotulo->label("v50_data");
         }else{
            $sql = $clinicial->sql_query_sitmanual("",$campos,"v50_inicial","v52_tpsit = 2");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v50_data)){
-          $repassa = array("chave_v50_inicial"=>$chave_v50_inicial,"chave_v50_data"=>$chave_v50_data);
+          $repassa = ["chave_v50_inicial"=>$chave_v50_inicial,"chave_v50_data"=>$chave_v50_data];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -31,12 +31,12 @@ ini_set('error_reporting', 0);
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_libtributario.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
-$dadosBic = array();
+$dadosBic = [];
 
 if(isset($par)){
-  $parametro = split("_",$par);
+  $parametro = preg_split("#_#m",$par);
   $tipo = 2;
   $geracalculo = true;
 }

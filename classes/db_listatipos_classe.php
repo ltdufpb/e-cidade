@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE listatipos
 class cl_listatipos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k62_lista = 0; 
-   var $k62_tipodeb = 0; 
+   public $k62_lista = 0; 
+   public $k62_tipodeb = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k62_lista = int4 = Número da Lista 
                  k62_tipodeb = int4 = Tipo de débito 
                  ";
    //funcao construtor da classe 
-   function cl_listatipos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("listatipos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_listatipos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipos de débitos da lista ($this->k62_lista."-".$this->k62_tipodeb) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipos de débitos da lista já Cadastrado";
@@ -130,12 +130,12 @@ class cl_listatipos {
      $resaco = $this->sql_record($this->sql_query_file($this->k62_lista,$this->k62_tipodeb));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4753,'$this->k62_lista','I')");
        $resac = db_query("insert into db_acountkey values($acount,4754,'$this->k62_tipodeb','I')");
-       $resac = db_query("insert into db_acount values($acount,634,4753,'','".AddSlashes(pg_result($resaco,0,'k62_lista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,634,4754,'','".AddSlashes(pg_result($resaco,0,'k62_tipodeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,634,4753,'','".AddSlashes(pg_fetch_result($resaco,0,'k62_lista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,634,4754,'','".AddSlashes(pg_fetch_result($resaco,0,'k62_tipodeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_listatipos {
       $this->atualizacampos();
      $sql = " update listatipos set ";
      $virgula = "";
-     if(trim($this->k62_lista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k62_lista"])){ 
+     if(trim((string) $this->k62_lista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k62_lista"])){ 
        $sql  .= $virgula." k62_lista = $this->k62_lista ";
        $virgula = ",";
-       if(trim($this->k62_lista) == null ){ 
+       if(trim((string) $this->k62_lista) == null ){ 
          $this->erro_sql = " Campo Número da Lista nao Informado.";
          $this->erro_campo = "k62_lista";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_listatipos {
          return false;
        }
      }
-     if(trim($this->k62_tipodeb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k62_tipodeb"])){ 
+     if(trim((string) $this->k62_tipodeb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k62_tipodeb"])){ 
        $sql  .= $virgula." k62_tipodeb = $this->k62_tipodeb ";
        $virgula = ",";
-       if(trim($this->k62_tipodeb) == null ){ 
+       if(trim((string) $this->k62_tipodeb) == null ){ 
          $this->erro_sql = " Campo Tipo de débito nao Informado.";
          $this->erro_campo = "k62_tipodeb";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_listatipos {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4753,'$this->k62_lista','A')");
          $resac = db_query("insert into db_acountkey values($acount,4754,'$this->k62_tipodeb','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k62_lista"]))
-           $resac = db_query("insert into db_acount values($acount,634,4753,'".AddSlashes(pg_result($resaco,$conresaco,'k62_lista'))."','$this->k62_lista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,634,4753,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k62_lista'))."','$this->k62_lista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k62_tipodeb"]))
-           $resac = db_query("insert into db_acount values($acount,634,4754,'".AddSlashes(pg_result($resaco,$conresaco,'k62_tipodeb'))."','$this->k62_tipodeb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,634,4754,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k62_tipodeb'))."','$this->k62_tipodeb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_listatipos {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4753,'$k62_lista','E')");
          $resac = db_query("insert into db_acountkey values($acount,4754,'$k62_tipodeb','E')");
-         $resac = db_query("insert into db_acount values($acount,634,4753,'','".AddSlashes(pg_result($resaco,$iresaco,'k62_lista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,634,4754,'','".AddSlashes(pg_result($resaco,$iresaco,'k62_tipodeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,634,4753,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k62_lista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,634,4754,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k62_tipodeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from listatipos
@@ -304,7 +304,7 @@ class cl_listatipos {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:listatipos";
@@ -321,12 +321,12 @@ class cl_listatipos {
      for ($iresaco=0; $iresaco < $this->numrows; $iresaco++ ) {
        if(($resaco!=false)||($this->numrows!=0)){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-         $resac = db_query("insert into db_acountkey values($acount,4753,'".pg_result($resaco,$iresaco,'k62_lista')."','E')");
-         $resac = db_query("insert into db_acountkey values($acount,4754,'".pg_result($resaco,$iresaco,'k62_tipodeb')."','E')");
-         $resac = db_query("insert into db_acount values($acount,634,4753,'','".pg_result($resaco,0,'k62_lista')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,634,4754,'','".pg_result($resaco,0,'k62_tipodeb')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acountkey values($acount,4753,'".pg_fetch_result($resaco,$iresaco,'k62_lista')."','E')");
+         $resac = db_query("insert into db_acountkey values($acount,4754,'".pg_fetch_result($resaco,$iresaco,'k62_tipodeb')."','E')");
+         $resac = db_query("insert into db_acount values($acount,634,4753,'','".pg_fetch_result($resaco,0,'k62_lista')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,634,4754,'','".pg_fetch_result($resaco,0,'k62_tipodeb')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from listatipos
@@ -376,7 +376,7 @@ class cl_listatipos {
    function sql_query ( $k62_lista=null,$k62_tipodeb=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,7 +408,7 @@ class cl_listatipos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -420,7 +420,7 @@ class cl_listatipos {
    function sql_query_file ( $k62_lista=null,$k62_tipodeb=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_listatipos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

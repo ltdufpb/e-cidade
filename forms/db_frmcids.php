@@ -67,7 +67,7 @@ db_inputdata('sd22_d_validade',@$sd22_d_validade_dia,@$sd22_d_validade_mes,@$sd2
     </td>
     <td> 
 <?php 
-$x = array('H'=>'Somente Homens','F'=>'Somente Mulheres','G'=>'Tanto Homem ou Mulher');
+$x = ['H'=>'Somente Homens','F'=>'Somente Mulheres','G'=>'Tanto Homem ou Mulher'];
 db_select('sd22_c_restrsexo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -85,7 +85,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cids.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

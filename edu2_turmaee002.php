@@ -59,7 +59,7 @@ if( $clturmaac->numrows == 0 ) {
   <?php
   exit;
 }
-$ano_calendario = pg_result( $result, 0, 'ed52_i_ano' );
+$ano_calendario = pg_fetch_result( $result, 0, 'ed52_i_ano' );
 
 $sSqlEduParametros = $cledu_parametros->sql_query( "", "ed233_c_database, ed233_c_limitemov", "", "ed233_i_escola = {$escola}" );
 $result_parametros = $cledu_parametros->sql_record( $sSqlEduParametros );
@@ -68,7 +68,7 @@ if( $cledu_parametros->numrows > 0 ) {
 
   db_fieldsmemory( $result_parametros, 0 );
 
-  if( !strstr( $ed233_c_database, "/" ) || !strstr( $ed233_c_limitemov, "/" ) ) {
+  if( !strstr( (string) $ed233_c_database, "/" ) || !strstr( (string) $ed233_c_limitemov, "/" ) ) {
 
     ?>
     <table width='100%'>
@@ -77,8 +77,8 @@ if( $cledu_parametros->numrows > 0 ) {
           <font color='#FF0000' face='arial'>
             <b>Parâmetros Dia/Mês Limite da Movimentação e Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
                devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
-               Valor atual do parâmetro Dia/Mês Limite da Movimentação: <?=trim($ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
-               Valor atual do parâmetro Data Base para Cálculo da Idade: <?=trim($ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br></b>
+               Valor atual do parâmetro Dia/Mês Limite da Movimentação: <?=trim((string) $ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
+               Valor atual do parâmetro Data Base para Cálculo da Idade: <?=trim((string) $ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br></b>
             <input type='button' value='Fechar' onclick='window.close()'>
           </font>
         </td>
@@ -88,8 +88,8 @@ if( $cledu_parametros->numrows > 0 ) {
     exit;
   }
 
-  $database      = explode( "/", $ed233_c_database );
-  $limitemov     = explode( "/", $ed233_c_limitemov );
+  $database      = explode( "/", (string) $ed233_c_database );
+  $limitemov     = explode( "/", (string) $ed233_c_limitemov );
   $dia_database  = $database[0];
   $mes_database  = $database[1];
   $dia_limitemov = $limitemov[0];
@@ -105,8 +105,8 @@ if( $cledu_parametros->numrows > 0 ) {
           <font color='#FF0000' face='arial'>
             <b>Parâmetros Dia/Mês Limite da Movimentação e Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
                devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2) e devem ser uma data válida.<br><br>
-               Valor atual do parâmetro Dia/Mês Limite da Movimentação: <?=trim($ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
-               Valor atual do parâmetro Data Base para Cálculo da Idade: <?=trim($ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br>
+               Valor atual do parâmetro Dia/Mês Limite da Movimentação: <?=trim((string) $ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
+               Valor atual do parâmetro Data Base para Cálculo da Idade: <?=trim((string) $ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br>
                Data Limite da Movimentação: <?=$dia_limitemov."/".$mes_limitemov."/".$ano_calendario?> <?=@!checkdate($mes_limitemov,$dia_limitemov,$ano_calendario)?"(Data Inválida)":"(Data Válida)"?><br>
                Data Base para Cálculo Idade: <?=$dia_database."/".$mes_database."/".$ano_calendario?> <?=@!checkdate($mes_database,$dia_database,$ano_calendario)?"(Data Inválida)":"(Data Válida)"?><br><br></b>
             <input type='button' value='Fechar' onclick='window.close()'>
@@ -234,7 +234,7 @@ for( $x = 0; $x < $clturmaac->numrows; $x++ ) {
       $cont = 0;
     }
 
-    if( $d != $datasaida ) {
+    if( $d != 0 ) {
       $total2 += 1;
     }
 
@@ -359,7 +359,7 @@ for( $x = 0; $x < $clturmaac->numrows; $x++ ) {
   	$pdf->cell( 190, 4, "",                       0, 1, "L", 0 );
   	$pdf->cell( 190, 4, "Atividades/Atendimento", 1, 1, "C", 1 );
 
-  	$outro = array(
+  	$outro = [
                     '0'  => 'Sistema Braile',
   	                '1'  => 'Atividades da vida autônoma',
   	                '2'  => 'Recursos para alunos com baixa visão',
@@ -371,11 +371,11 @@ for( $x = 0; $x < $clturmaac->numrows; $x++ ) {
   	                '8'  => 'Soroban',
   	                '9'  => 'Informática acessível',
   	                '10' => 'Língua Portuguesa na modalidade escrita'
-                  );
+                  ];
 
     for( $r = 0; $r < 11; $r++ ) {
 
-  	  if( substr( $ed268_c_aee, $r, 1 ) == 1 ) {
+  	  if( substr( (string) $ed268_c_aee, $r, 1 ) == 1 ) {
   	    $pdf->cell( 190, 4, $outro[$r], 1, 1, "C", 0 );
   	  }
     }

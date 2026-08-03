@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_rhrubricas_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clrhrubricas = new cl_rhrubricas;
 $clrhrubricas->rotulo->label();
@@ -45,8 +45,8 @@ $clrotulo->label("rh137_datainicio");
 $clrotulo->label("rh137_datafim");
 $clrotulo->label("rh137_descricao");
 
-$iAno = isset($ano) ? $ano : $iAno;
-$iMes = isset($mes) ? $mes : $iMes;
+$iAno = $ano ?? $iAno;
+$iMes = $mes ?? $iMes;
 
 if(!isset($iAno) || trim($iAno) == "") {
   $iAno = db_anofolha();
@@ -78,7 +78,7 @@ function montaLinkPontos($iRubrica, $iAno, $iMes) {
 	
 	$sQuery = "";
 	 
-	$aPontos = array();
+	$aPontos = [];
 	$aPontos["gerfsal"]["sigla"] = "r14";
 	$aPontos["gerfsal"]["descricao"] = "SALÁRIO";
 	
@@ -198,7 +198,7 @@ function montaLinkPontos($iRubrica, $iAno, $iMes) {
                    <td><b>Tipo de Documento:</b></td>
                    <td>
                      <?php 
-                       $x = array('1' => 'Decreto',
+                       $x = ['1' => 'Decreto',
                      		          '2' => 'Decreto Lei',
                      		          '3' => 'Emenda Constitucional',
                      		          '4' => 'Instrução Normativa',
@@ -207,7 +207,7 @@ function montaLinkPontos($iRubrica, $iAno, $iMes) {
                      		          '7' => 'Nota',
                      		          '8' => 'Ordem de Serviço',
                      		          '9' => 'Portaria',
-                     		          '10' => 'Resolução');
+                     		          '10' => 'Resolução'];
                        db_select('rh137_tipodocumentacao', $x, true, 3, "")
                      ?> 
                    </td>

@@ -35,20 +35,20 @@ include(modification("classes/db_orcparamrel_classe.php"));
 include(modification("classes/db_empresto_classe.php"));
 include(modification("classes/db_empempenho_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $orcparamrel = new cl_orcparamrel;
 $classinatura = new cl_assinatura;
 $clempresto   = new cl_empresto;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     }else{
@@ -113,7 +113,7 @@ $geral_passivo_baixa     = 0 ;
 $geral_passivo_saldo     = 0 ;
 
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
    db_fieldsmemory($result,$i);
    if ($c61_reduz==0) continue;
   
@@ -127,7 +127,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $pdf->cell(30,$alt,db_formatar($saldo_anterior_credito,'f'),"R",0,"R",0);
       $pdf->cell(30,$alt,db_formatar($saldo_final,'f'),"0",1,"R",0);
       
-      if (substr($estrutural,0,1)=='1'){
+      if (str_starts_with((string) $estrutural, '1')){
       	  //  totalizador ativo
       	 $geral_ativo_anterior  += $saldo_anterior;
       	 $geral_ativo_inscricao += $saldo_anterior_debito ;

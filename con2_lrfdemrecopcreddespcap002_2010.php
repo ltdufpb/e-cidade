@@ -48,7 +48,7 @@ try {
     throw new ParameterException('Campo Instituições é de preenchimento obrigatório.');
   }
 
-  $aInstituicoes = explode(',', $oGet->db_selinstit);
+  $aInstituicoes = explode(',', (string) $oGet->db_selinstit);
 
   foreach($aInstituicoes as $iInstituicao) {
 

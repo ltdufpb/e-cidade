@@ -54,11 +54,11 @@ $clcriaabas = new cl_criaabas;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <?php 
-		    $clcriaabas->identifica = array("pccflicitanum"=>"Dados Gerais",
-		                                    "template"     =>"Modelos");
+		    $clcriaabas->identifica = ["pccflicitanum"=>"Dados Gerais",
+		                                    "template"     =>"Modelos"];
 		    
-		    $clcriaabas->src        = array("pccflicitanum"=>"lic1_pccflicitanum003.php",
-		                                    "template"     =>"lic1_confgeraleditais001.php");
+		    $clcriaabas->src        = ["pccflicitanum"=>"lic1_pccflicitanum003.php",
+		                                    "template"     =>"lic1_confgeraleditais001.php"];
 			 
 			  $clcriaabas->cria_abas(); 
       ?> 

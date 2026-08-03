@@ -93,7 +93,7 @@ if(isset($db_opcaoal)){
           <td><b>Principal</b></td>
           <td>
             <?php 
-            $x   = array("0"=>"NAO","1"=>"SIM");
+            $x   = ["0"=>"NAO","1"=>"SIM"];
             $dbwhere = "rh23_rubric='$rh23_rubric'"; 
             if(isset($rh23_codele) && trim($rh23_codele)!=""){
               $dbwhere .= " and rh23_codele<>$rh23_codele";
@@ -121,7 +121,7 @@ if(isset($db_opcaoal)){
     <td valign="top" height="80%" width="100%">
       <?php 
       // $s = $clrhrubelemento->sql_record($clrhrubelemento->sql_query(@$rh23_rubric));
-      $chavepri= array("rh23_rubric"=>@$rh23_rubric,"rh23_codele"=>@$rh23_codele);
+      $chavepri= ["rh23_rubric"=>@$rh23_rubric,"rh23_codele"=>@$rh23_codele];
       $cliframe_alterar_excluir->chavepri      = $chavepri;
       $cliframe_alterar_excluir->sql           = $clrhrubelemento->sql_query(null,null,"rh23_rubric,rh23_codele,o56_codele,o56_elemento,o56_descr","o56_codele",$dbwhere);
       // echo $cliframe_alterar_excluir->sql;

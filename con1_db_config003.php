@@ -48,17 +48,17 @@ $db_opcao   = 3;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
        
-       $clcriaabas->identifica = array("instituicao" => "Dados da Instituição",
-                                       "imagens"     => "Imagens"); 
+       $clcriaabas->identifica = ["instituicao" => "Dados da Instituição",
+                                       "imagens"     => "Imagens"]; 
        
-       $clcriaabas->src        = array("instituicao" => "con1_db_config006.php",
-                                       "imagens"     => "con1_db_imagens001.php");
+       $clcriaabas->src        = ["instituicao" => "con1_db_config006.php",
+                                       "imagens"     => "con1_db_imagens001.php"];
        
-       $clcriaabas->disabled   = array("instituicao" => "true", 
-                                       "imagens"     => "true" ); 
+       $clcriaabas->disabled   = ["instituicao" => "true", 
+                                       "imagens"     => "true" ]; 
        
-       $clcriaabas->sizecampo  = array("instituicao" => "25",
-                                       "imagens"     => "25" );
+       $clcriaabas->sizecampo  = ["instituicao" => "25",
+                                       "imagens"     => "25" ];
        
        $clcriaabas->cria_abas(); 
        

@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhelementoemp_classe.php"));
 include(modification("classes/db_rhelementoemppcmater_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrhelementoemp        = new cl_rhelementoemp;
 $clrhelementoemppcmater = new cl_rhelementoemppcmater;

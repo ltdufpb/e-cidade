@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_localizacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllocalizacao = new cl_localizacao;
 $depto = db_getsession("DB_coddepto");
 $sql = "SELECT bi17_codigo FROM biblioteca WHERE bi17_coddepto = $depto";
@@ -44,7 +44,7 @@ if($linhas>0){
  db_fieldsmemory($result,0);
 }
 if($jatem!=""){
- $explode = explode(",",$jatem);
+ $explode = explode(",",(string) $jatem);
  $codigos_not = "";
  $sep = "";
  for($c=0;$c<count($explode);$c++){
@@ -122,7 +122,7 @@ if($jatem!=""){
    <b>Localizações para efetuar a busca:</b><br>
    <select name="localizacoesbusca" id="localizacoesbusca" size="10" onclick="js_desabexc()" style="font-size:9px;width:350px;height:400px" multiple>
     <?php if($jatem!=""){
-     $explode = explode(",",$jatem);
+     $explode = explode(",",(string) $jatem);
      for($c=0;$c<count($explode);$c++){
       $exp_registro = explode("|",$explode[$c]);
       ?>

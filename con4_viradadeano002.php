@@ -35,9 +35,9 @@ require_once(modification("classes/db_db_virada_classe.php"));
 require_once(modification("classes/db_db_viradaitem_classe.php"));
 require_once(modification("classes/db_db_viradaitemlog_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cldb_virada        = new cl_db_virada();
 $cldb_viradaitem    = new cl_db_viradaitem();
@@ -45,7 +45,7 @@ $cldb_viradaitemlog = new cl_db_viradaitemlog();
 
 $sqlerro = false;
 
-$aListaItens = explode("_",$lista);
+$aListaItens = explode("_",(string) $lista);
 array_shift($aListaItens);
 $sListaItens = implode(",",$aListaItens);
 
@@ -87,7 +87,7 @@ function js_imprime(virada){
     $rsConsultaInstit   = db_query($sSqlConsultaInstit);
     $iLinhasInstit      = pg_num_rows($rsConsultaInstit);
 
-    $aInstit = array();
+    $aInstit = [];
     for ( $iInd=0; $iInd < $iLinhasInstit; $iInd++ ) {
     	$oInstit = db_utils::fieldsMemory($rsConsultaInstit,$iInd);
     	$aInstit[$oInstit->codigo] = $oInstit->nomeinst;
@@ -115,7 +115,7 @@ function js_imprime(virada){
     $iLinhasVirada    = pg_num_rows($rsConsultaVirada);
 
     if ( $iLinhasVirada > 0 ) {
-    	$aListaItemErro = array();
+    	$aListaItemErro = [];
     	for ( $iInd=0; $iInd < $iLinhasVirada; $iInd++ ) {
     		$oItemVirada = db_utils::fieldsMemory($rsConsultaVirada,$iInd);
     		if ( $oItemVirada->erro == 't') {
@@ -133,7 +133,7 @@ function js_imprime(virada){
 
     $lValida = false;
     foreach ( $aListaItens as $iInd => $iItem ) {
-      if ( in_array($iItem,array(1,2,3,4,8,11,12,15))) {
+      if ( in_array($iItem,[1,2,3,4,8,11,12,15])) {
         $lValida = true;
       }
     }
@@ -222,7 +222,7 @@ function js_imprime(virada){
 	    //echo "<pre>".print_r($lista)."</pre>";
 
 	    if($sqlerro == false) {
-            $aItem = explode("_", $lista);
+            $aItem = explode("_", (string) $lista);
 	      $iCountItem = sizeof($aItem);
 	      for ($iItem=0; $iItem<$iCountItem; $iItem++) {
 	        if (($aItem[$iItem] != "") && ($sqlerro == false)) {

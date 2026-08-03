@@ -43,7 +43,7 @@ $munic = db_utils::fieldsMemory($resultinst, 0)->munic;
 
 $pdf = new Pdf();
 
-$pdf->addTitulo("MUNICÍPIO DE ".strtoupper($munic));
+$pdf->addTitulo("MUNICÍPIO DE ".strtoupper((string) $munic));
 $pdf->addTitulo('Relatório de Empenhos');
 $pdf->addTitulo('');
 $pdf->addTitulo('Todos os empenhos');
@@ -192,7 +192,7 @@ $sql = " SELECT * FROM (
 ORDER  BY codigo_agrupamento;  ";
 
 $result = db_query($sql);
-$total = pg_numrows($result);
+$total = pg_num_rows($result);
 
 $pdf->Ln();
 $pdf->SetFont('Arial', '', 8);
@@ -277,7 +277,7 @@ $pdf->output();
 function inverteData($data)
 {
     $datanova = '';
-    $lista = explode('-', $data);
+    $lista = explode('-', (string) $data);
     $datanova.=$lista[2].'-'.$lista[1].'-'.$lista[0];
     return $datanova;
 }

@@ -3,26 +3,26 @@
 //CLASSE DA ENTIDADE db_formulas
 class cl_db_formulas { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db148_sequencial = 0; 
-   var $db148_nome = null; 
-   var $db148_descricao = null; 
-   var $db148_formula = null; 
-   var $db148_ambiente = 'f'; 
+   public $db148_sequencial = 0; 
+   public $db148_nome = null; 
+   public $db148_descricao = null; 
+   public $db148_formula = null; 
+   public $db148_ambiente = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db148_sequencial = int4 = Sequencial 
                  db148_nome = varchar(40) = Nome 
                  db148_descricao = text = Descrição 
@@ -30,10 +30,10 @@ class cl_db_formulas {
                  db148_ambiente = bool = Variável de Ambiente 
                  ";
    //funcao construtor da classe 
-   function cl_db_formulas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_formulas"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,12 +105,12 @@ class cl_db_formulas {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db148_sequencial = pg_result($result,0,0); 
+       $this->db148_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_formulas_db148_sequencial_seq");
        if(empty($this->db148_sequencial)){
        
-         if(($result != false) && (pg_result($result,0,0) < $db148_sequencial)){
+         if(($result != false) && (pg_fetch_result($result,0,0) < $db148_sequencial)){
            $this->erro_sql = " Campo db148_sequencial maior que último número da sequencia.";
            $this->erro_banco = "Sequencia menor que este número.";
            $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -147,7 +147,7 @@ class cl_db_formulas {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Fórmulas  ($this->db148_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Fórmulas  já Cadastrado";
@@ -176,14 +176,14 @@ class cl_db_formulas {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21208,'$this->db148_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3820,21208,'','".AddSlashes(pg_result($resaco,0,'db148_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3820,21210,'','".AddSlashes(pg_result($resaco,0,'db148_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3820,21211,'','".AddSlashes(pg_result($resaco,0,'db148_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3820,21213,'','".AddSlashes(pg_result($resaco,0,'db148_formula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3820,21215,'','".AddSlashes(pg_result($resaco,0,'db148_ambiente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3820,21208,'','".AddSlashes(pg_fetch_result($resaco,0,'db148_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3820,21210,'','".AddSlashes(pg_fetch_result($resaco,0,'db148_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3820,21211,'','".AddSlashes(pg_fetch_result($resaco,0,'db148_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3820,21213,'','".AddSlashes(pg_fetch_result($resaco,0,'db148_formula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3820,21215,'','".AddSlashes(pg_fetch_result($resaco,0,'db148_ambiente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -193,10 +193,10 @@ class cl_db_formulas {
       $this->atualizacampos();
      $sql = " update db_formulas set ";
      $virgula = "";
-     if(trim($this->db148_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db148_sequencial"])){ 
+     if(trim((string) $this->db148_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db148_sequencial"])){ 
        $sql  .= $virgula." db148_sequencial = $this->db148_sequencial ";
        $virgula = ",";
-       if(trim($this->db148_sequencial) == null ){ 
+       if(trim((string) $this->db148_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "db148_sequencial";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_db_formulas {
          return false;
        }
      }
-     if(trim($this->db148_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db148_nome"])){ 
+     if(trim((string) $this->db148_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db148_nome"])){ 
        $sql  .= $virgula." db148_nome = '$this->db148_nome' ";
        $virgula = ",";
-       if(trim($this->db148_nome) == null ){ 
+       if(trim((string) $this->db148_nome) == null ){ 
          $this->erro_sql = " Campo Nome não informado.";
          $this->erro_campo = "db148_nome";
          $this->erro_banco = "";
@@ -219,10 +219,10 @@ class cl_db_formulas {
          return false;
        }
      }
-     if(trim($this->db148_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db148_descricao"])){ 
+     if(trim((string) $this->db148_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db148_descricao"])){ 
        $sql  .= $virgula." db148_descricao = '$this->db148_descricao' ";
        $virgula = ",";
-       if(trim($this->db148_descricao) == null ){ 
+       if(trim((string) $this->db148_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "db148_descricao";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_db_formulas {
          return false;
        }
      }
-     if(trim($this->db148_formula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db148_formula"])){ 
+     if(trim((string) $this->db148_formula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db148_formula"])){ 
        $sql  .= $virgula." db148_formula = '$this->db148_formula' ";
        $virgula = ",";
-       if(trim($this->db148_formula) == null ){ 
+       if(trim((string) $this->db148_formula) == null ){ 
          $this->erro_sql = " Campo Fórmula não informado.";
          $this->erro_campo = "db148_formula";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_db_formulas {
          return false;
        }
      }
-     if(trim($this->db148_ambiente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db148_ambiente"])){ 
+     if(trim((string) $this->db148_ambiente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db148_ambiente"])){ 
        $sql  .= $virgula." db148_ambiente = '$this->db148_ambiente' ";
        $virgula = ",";
-       if(trim($this->db148_ambiente) == null ){ 
+       if(trim((string) $this->db148_ambiente) == null ){ 
          $this->erro_sql = " Campo Variável de Ambiente não informado.";
          $this->erro_campo = "db148_ambiente";
          $this->erro_banco = "";
@@ -272,19 +272,19 @@ class cl_db_formulas {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21208,'$this->db148_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db148_sequencial"]) || $this->db148_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3820,21208,'".AddSlashes(pg_result($resaco,$conresaco,'db148_sequencial'))."','$this->db148_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3820,21208,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db148_sequencial'))."','$this->db148_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db148_nome"]) || $this->db148_nome != "")
-             $resac = db_query("insert into db_acount values($acount,3820,21210,'".AddSlashes(pg_result($resaco,$conresaco,'db148_nome'))."','$this->db148_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3820,21210,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db148_nome'))."','$this->db148_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db148_descricao"]) || $this->db148_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3820,21211,'".AddSlashes(pg_result($resaco,$conresaco,'db148_descricao'))."','$this->db148_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3820,21211,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db148_descricao'))."','$this->db148_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db148_formula"]) || $this->db148_formula != "")
-             $resac = db_query("insert into db_acount values($acount,3820,21213,'".AddSlashes(pg_result($resaco,$conresaco,'db148_formula'))."','$this->db148_formula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3820,21213,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db148_formula'))."','$this->db148_formula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db148_ambiente"]) || $this->db148_ambiente != "")
-             $resac = db_query("insert into db_acount values($acount,3820,21215,'".AddSlashes(pg_result($resaco,$conresaco,'db148_ambiente'))."','$this->db148_ambiente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3820,21215,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db148_ambiente'))."','$this->db148_ambiente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -338,14 +338,14 @@ class cl_db_formulas {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21208,'$db148_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3820,21208,'','".AddSlashes(pg_result($resaco,$iresaco,'db148_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3820,21210,'','".AddSlashes(pg_result($resaco,$iresaco,'db148_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3820,21211,'','".AddSlashes(pg_result($resaco,$iresaco,'db148_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3820,21213,'','".AddSlashes(pg_result($resaco,$iresaco,'db148_formula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3820,21215,'','".AddSlashes(pg_result($resaco,$iresaco,'db148_ambiente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3820,21208,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db148_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3820,21210,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db148_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3820,21211,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db148_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3820,21213,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db148_formula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3820,21215,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db148_ambiente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

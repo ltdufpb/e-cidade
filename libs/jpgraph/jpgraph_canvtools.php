@@ -24,11 +24,11 @@ DEFINE('CORNER_BOTTOMLEFT',3);
 //===================================================
  
 class CanvasScale {
-    var $g;
-    var $w,$h;
-    var $ixmin=0,$ixmax=10,$iymin=0,$iymax=10;
+    public $g;
+    public $w,$h;
+    public $ixmin=0,$ixmax=10,$iymin=0,$iymax=10;
 
-    function CanvasScale(&$graph,$xmin=0,$xmax=10,$ymin=0,$ymax=10) {
+    function __construct(&$graph,$xmin=0,$xmax=10,$ymin=0,$ymax=10) {
 	$this->g = &$graph;
 	$this->w = $graph->img->width;
 	$this->h = $graph->img->height;
@@ -48,7 +48,7 @@ class CanvasScale {
     function Translate($x,$y) {
 	$xp = round(($x-$this->ixmin)/($this->ixmax - $this->ixmin) * $this->w);
 	$yp = round(($y-$this->iymin)/($this->iymax - $this->iymin) * $this->h);
-	return array($xp,$yp);
+	return [$xp,$yp];
     }
 
     function TranslateX($x) {
@@ -69,9 +69,9 @@ class CanvasScale {
 // Description: Methods to draw shapes on canvas
 //===================================================
 class Shape {
-    var $img,$scale;
+    public $img,$scale;
 
-    function Shape(&$aGraph,&$scale) {
+    function __construct(&$aGraph,&$scale) {
 	$this->img = &$aGraph->img;
 	$this->img->SetColor('black');
 	$this->scale = &$scale;
@@ -82,8 +82,8 @@ class Shape {
     }
 
     function Line($x1,$y1,$x2,$y2) {
-	list($x1,$y1) = $this->scale->Translate($x1,$y1);
-	list($x2,$y2) = $this->scale->Translate($x2,$y2);
+	[$x1, $y1] = $this->scale->Translate($x1,$y1);
+	[$x2, $y2] = $this->scale->Translate($x2,$y2);
 	$this->img->Line($x1,$y1,$x2,$y2);
     }
 
@@ -140,19 +140,19 @@ class Shape {
     }
 
     function Rectangle($x1,$y1,$x2,$y2) {
-	list($x1,$y1) = $this->scale->Translate($x1,$y1);
-	list($x2,$y2)   = $this->scale->Translate($x2,$y2);
+	[$x1, $y1] = $this->scale->Translate($x1,$y1);
+	[$x2, $y2]   = $this->scale->Translate($x2,$y2);
 	$this->img->Rectangle($x1,$y1,$x2,$y2);
     }
 
     function FilledRectangle($x1,$y1,$x2,$y2) {
-	list($x1,$y1) = $this->scale->Translate($x1,$y1);
-	list($x2,$y2)   = $this->scale->Translate($x2,$y2);
+	[$x1, $y1] = $this->scale->Translate($x1,$y1);
+	[$x2, $y2]   = $this->scale->Translate($x2,$y2);
 	$this->img->FilledRectangle($x1,$y1,$x2,$y2);
     }
     
     function Circle($x1,$y1,$r) {
-	list($x1,$y1) = $this->scale->Translate($x1,$y1);
+	[$x1, $y1] = $this->scale->Translate($x1,$y1);
 	if( $r >= 0 )
 	    $r   = $this->scale->TranslateX($r);
 	else
@@ -161,7 +161,7 @@ class Shape {
     }
 
     function FilledCircle($x1,$y1,$r) {
-	list($x1,$y1) = $this->scale->Translate($x1,$y1);
+	[$x1, $y1] = $this->scale->Translate($x1,$y1);
 	if( $r >= 0 )
 	    $r   = $this->scale->TranslateX($r);
 	else
@@ -170,8 +170,8 @@ class Shape {
     }
 
     function RoundedRectangle($x1,$y1,$x2,$y2,$r=null) {    
-	list($x1,$y1) = $this->scale->Translate($x1,$y1);
-	list($x2,$y2)   = $this->scale->Translate($x2,$y2);
+	[$x1, $y1] = $this->scale->Translate($x1,$y1);
+	[$x2, $y2]   = $this->scale->Translate($x2,$y2);
 
 	if( $r == null )
 	    $r = 5;
@@ -183,8 +183,8 @@ class Shape {
     }
 
     function FilledRoundedRectangle($x1,$y1,$x2,$y2,$r=null) {    
-	list($x1,$y1) = $this->scale->Translate($x1,$y1);
-	list($x2,$y2)   = $this->scale->Translate($x2,$y2);
+	[$x1, $y1] = $this->scale->Translate($x1,$y1);
+	[$x2, $y2]   = $this->scale->Translate($x2,$y2);
 
 	if( $r == null )
 	    $r = 5;
@@ -195,9 +195,9 @@ class Shape {
 	$this->img->FilledRoundedRectangle($x1,$y1,$x2,$y2,$r);    
     }
 
-    function ShadowRectangle($x1,$y1,$x2,$y2,$fcolor=false,$shadow_width=null,$shadow_color=array(102,102,102)) {
-	list($x1,$y1) = $this->scale->Translate($x1,$y1);
-	list($x2,$y2) = $this->scale->Translate($x2,$y2);
+    function ShadowRectangle($x1,$y1,$x2,$y2,$fcolor=false,$shadow_width=null,$shadow_color=[102,102,102]) {
+	[$x1, $y1] = $this->scale->Translate($x1,$y1);
+	[$x2, $y2] = $this->scale->Translate($x2,$y2);
 	if( $shadow_width == null ) 
 	    $shadow_width=4;
 	else
@@ -210,7 +210,7 @@ class Shape {
     }
 
     function StrokeText($x1,$y1,$txt,$dir=0,$paragraph_align="left") {
-	list($x1,$y1) = $this->scale->Translate($x1,$y1);
+	[$x1, $y1] = $this->scale->Translate($x1,$y1);
 	$this->img->StrokeText($x1,$y1,$txt,$dir,$paragraph_align);
     }
 
@@ -219,9 +219,9 @@ class Shape {
     // 0=Top left, 1=top right, 2=bottom right, 3=bottom left
     function IndentedRectangle($xt,$yt,$w,$h,$iw=0,$ih=0,$aCorner=3,$aFillColor="",$r=4) {
     
-	list($xt,$yt) = $this->scale->Translate($xt,$yt);
-	list($w,$h)   = $this->scale->Translate($w,$h);
-	list($iw,$ih) = $this->scale->Translate($iw,$ih);
+	[$xt, $yt] = $this->scale->Translate($xt,$yt);
+	[$w, $h]   = $this->scale->Translate($w,$h);
+	[$iw, $ih] = $this->scale->Translate($iw,$ih);
 	
 	$xr = $xt + $w - 0;
 	$yl = $yt + $h - 0;
@@ -375,13 +375,13 @@ class Shape {
 // rounded, possible filled, rectangle.
 //===================================================
 class CanvasRectangleText {
-    var $ix,$iy,$iw,$ih,$ir=4;
-    var $iTxt,$iColor='black',$iFillColor='',$iFontColor='black';
-    var $iParaAlign='center';
-    var $iAutoBoxMargin=5;
-    var $iShadowWidth=3,$iShadowColor='';
+    public $ix,$iy,$iw,$ih,$ir=4;
+    public $iTxt,$iColor='black',$iFillColor='',$iFontColor='black';
+    public $iParaAlign='center';
+    public $iAutoBoxMargin=5;
+    public $iShadowWidth=3,$iShadowColor='';
 
-    function CanvasRectangleText($aTxt='',$xl=0,$yt=0,$w=0,$h=0) {
+    function __construct($aTxt='',$xl=0,$yt=0,$w=0,$h=0) {
 	$this->iTxt = new Text($aTxt);
 	$this->ix = $xl;
 	$this->iy = $yt;
@@ -466,7 +466,7 @@ class CanvasRectangleText {
 	    $this->iy = -$this->iy;
 	}
 	    
-	list($this->iw,$this->ih) = $scale->Translate($this->iw,$this->ih) ;
+	[$this->iw, $this->ih] = $scale->Translate($this->iw,$this->ih) ;
 
 	if( $this->iw == 0 ) 
 	    $this->iw = round($this->iTxt->GetWidth($aImg) + $this->iAutoBoxMargin);
@@ -507,7 +507,7 @@ class CanvasRectangleText {
 	$this->iTxt->SetColor($this->iFontColor);
 	$this->iTxt->Stroke($aImg, $this->ix+$this->iw/2, $this->iy+$this->ih/2);
 
-	return array($this->iw, $this->ih);
+	return [$this->iw, $this->ih];
 
     }
 

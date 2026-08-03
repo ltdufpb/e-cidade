@@ -59,7 +59,7 @@ $clclasse->rotulo->label();
     </td>
     <td> 
       <?php 
-        $x = array('f'=>'Física','t'=>'Juridica');
+        $x = ['f'=>'Física','t'=>'Juridica'];
         db_select('q12_fisica',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -70,7 +70,7 @@ $clclasse->rotulo->label();
     </td>
     <td> 
       <?php 
-        $x = array("f"=>"NAO","t"=>"SIM");
+        $x = ["f"=>"NAO","t"=>"SIM"];
         db_select('q12_calciss',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -81,7 +81,7 @@ $clclasse->rotulo->label();
     </td>
     <td> 
       <?php 
-        $x = array("f"=>"NAO","t"=>"SIM");
+        $x = ["f"=>"NAO","t"=>"SIM"];
         db_select('q12_integrasani',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -92,7 +92,7 @@ $clclasse->rotulo->label();
     </td>
     <td> 
       <?php 
-        $x = array("t"=>"SIM","f"=>"NAO");
+        $x = ["t"=>"SIM","f"=>"NAO"];
         db_select('q12_alvaraautomatico',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -111,7 +111,7 @@ function js_preenchepesquisa(chave){
   db_iframe_classe.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

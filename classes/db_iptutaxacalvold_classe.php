@@ -3,27 +3,27 @@
 //CLASSE DA ENTIDADE iptutaxacalvold
 class cl_iptutaxacalvold { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j158_sequencial = 0; 
-   var $j158_codigo = 0; 
-   var $j158_iptutaxanumpold = 0; 
-   var $j158_codhis = 0; 
-   var $j158_receit = 0; 
-   var $j158_valor = 0; 
-   var $j158_quant = 0; 
-   var $j158_areaed = 0; 
-   var $j158_iptucalclog = 0; 
+   public $j158_sequencial = 0; 
+   public $j158_codigo = 0; 
+   public $j158_iptutaxanumpold = 0; 
+   public $j158_codhis = 0; 
+   public $j158_receit = 0; 
+   public $j158_valor = 0; 
+   public $j158_quant = 0; 
+   public $j158_areaed = 0; 
+   public $j158_iptucalclog = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j158_sequencial = int4 = Sequencial 
                  j158_codigo = int4 = Código 
                  j158_iptutaxanumpold = int4 = Código Iptutaxanumpold 
@@ -35,10 +35,10 @@ class cl_iptutaxacalvold {
                  j158_iptucalclog = int4 = Código de vínculo com a iptucalclog 
                  ";
    //funcao construtor da classe 
-   function cl_iptutaxacalvold() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutaxacalvold"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -138,10 +138,10 @@ class cl_iptutaxacalvold {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j158_sequencial = pg_result($result,0,0); 
+       $this->j158_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = @db_query("select last_value from iptutaxacalvold_j158_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j158_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j158_sequencial)){
          $this->erro_sql = " Campo j158_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_iptutaxacalvold {
                       )");
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "iptutaxacalv ($this->j158_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "iptutaxacalv já Cadastrado";
@@ -206,17 +206,17 @@ class cl_iptutaxacalvold {
      $resaco = $this->sql_record($this->sql_query_file($this->j158_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1014484,'$this->j158_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1010516,1014484,'','".pg_result($resaco,0,'j158_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010982,'','".pg_result($resaco,0,'j158_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010983,'','".pg_result($resaco,0,'j158_iptutaxanumpold')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010984,'','".pg_result($resaco,0,'j158_codhis')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010986,'','".pg_result($resaco,0,'j158_receit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010988,'','".pg_result($resaco,0,'j158_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010990,'','".pg_result($resaco,0,'j158_quant')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1011791,'','".pg_result($resaco,0,'j158_areaed')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010992,'','".pg_result($resaco,0,'j158_iptucalclog')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1014484,'','".pg_fetch_result($resaco,0,'j158_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010982,'','".pg_fetch_result($resaco,0,'j158_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010983,'','".pg_fetch_result($resaco,0,'j158_iptutaxanumpold')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010984,'','".pg_fetch_result($resaco,0,'j158_codhis')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010986,'','".pg_fetch_result($resaco,0,'j158_receit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010988,'','".pg_fetch_result($resaco,0,'j158_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010990,'','".pg_fetch_result($resaco,0,'j158_quant')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1011791,'','".pg_fetch_result($resaco,0,'j158_areaed')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010992,'','".pg_fetch_result($resaco,0,'j158_iptucalclog')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,13 +225,13 @@ class cl_iptutaxacalvold {
       $this->atualizacampos();
      $sql = " update iptutaxacalvold set ";
      $virgula = "";
-     if(trim($this->j158_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_sequencial"])){ 
-        if(trim($this->j158_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_sequencial"])){ 
+     if(trim((string) $this->j158_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_sequencial"])){ 
+        if(trim((string) $this->j158_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_sequencial"])){ 
            $this->j158_sequencial = "0" ; 
         } 
        $sql  .= $virgula." j158_sequencial = $this->j158_sequencial ";
        $virgula = ",";
-       if(trim($this->j158_sequencial) == null ){ 
+       if(trim((string) $this->j158_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j158_sequencial";
          $this->erro_banco = "";
@@ -241,13 +241,13 @@ class cl_iptutaxacalvold {
          return false;
        }
      }
-     if(trim($this->j158_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_codigo"])){ 
-        if(trim($this->j158_codigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_codigo"])){ 
+     if(trim((string) $this->j158_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_codigo"])){ 
+        if(trim((string) $this->j158_codigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_codigo"])){ 
            $this->j158_codigo = "0" ; 
         } 
        $sql  .= $virgula." j158_codigo = $this->j158_codigo ";
        $virgula = ",";
-       if(trim($this->j158_codigo) == null ){ 
+       if(trim((string) $this->j158_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "j158_codigo";
          $this->erro_banco = "";
@@ -257,13 +257,13 @@ class cl_iptutaxacalvold {
          return false;
        }
      }
-     if(trim($this->j158_iptutaxanumpold)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_iptutaxanumpold"])){ 
-        if(trim($this->j158_iptutaxanumpold)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_iptutaxanumpold"])){ 
+     if(trim((string) $this->j158_iptutaxanumpold)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_iptutaxanumpold"])){ 
+        if(trim((string) $this->j158_iptutaxanumpold)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_iptutaxanumpold"])){ 
            $this->j158_iptutaxanumpold = "0" ; 
         } 
        $sql  .= $virgula." j158_iptutaxanumpold = $this->j158_iptutaxanumpold ";
        $virgula = ",";
-       if(trim($this->j158_iptutaxanumpold) == null ){ 
+       if(trim((string) $this->j158_iptutaxanumpold) == null ){ 
          $this->erro_sql = " Campo Código Iptutaxanumpold nao Informado.";
          $this->erro_campo = "j158_iptutaxanumpold";
          $this->erro_banco = "";
@@ -273,13 +273,13 @@ class cl_iptutaxacalvold {
          return false;
        }
      }
-     if(trim($this->j158_codhis)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_codhis"])){ 
-        if(trim($this->j158_codhis)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_codhis"])){ 
+     if(trim((string) $this->j158_codhis)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_codhis"])){ 
+        if(trim((string) $this->j158_codhis)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_codhis"])){ 
            $this->j158_codhis = "0" ; 
         } 
        $sql  .= $virgula." j158_codhis = $this->j158_codhis ";
        $virgula = ",";
-       if(trim($this->j158_codhis) == null ){ 
+       if(trim((string) $this->j158_codhis) == null ){ 
          $this->erro_sql = " Campo Código Iptucalh nao Informado.";
          $this->erro_campo = "j158_codhis";
          $this->erro_banco = "";
@@ -289,13 +289,13 @@ class cl_iptutaxacalvold {
          return false;
        }
      }
-     if(trim($this->j158_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_receit"])){ 
-        if(trim($this->j158_receit)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_receit"])){ 
+     if(trim((string) $this->j158_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_receit"])){ 
+        if(trim((string) $this->j158_receit)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_receit"])){ 
            $this->j158_receit = "0" ; 
         } 
        $sql  .= $virgula." j158_receit = $this->j158_receit ";
        $virgula = ",";
-       if(trim($this->j158_receit) == null ){ 
+       if(trim((string) $this->j158_receit) == null ){ 
          $this->erro_sql = " Campo Código da Receita nao Informado.";
          $this->erro_campo = "j158_receit";
          $this->erro_banco = "";
@@ -305,13 +305,13 @@ class cl_iptutaxacalvold {
          return false;
        }
      }
-     if(trim($this->j158_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_valor"])){ 
-        if(trim($this->j158_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_valor"])){ 
+     if(trim((string) $this->j158_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_valor"])){ 
+        if(trim((string) $this->j158_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_valor"])){ 
            $this->j158_valor = "0" ; 
         } 
        $sql  .= $virgula." j158_valor = $this->j158_valor ";
        $virgula = ",";
-       if(trim($this->j158_valor) == null ){ 
+       if(trim((string) $this->j158_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "j158_valor";
          $this->erro_banco = "";
@@ -321,27 +321,27 @@ class cl_iptutaxacalvold {
          return false;
        }
      }
-     if(trim($this->j158_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_quant"])){ 
-        if(trim($this->j158_quant)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_quant"])){ 
+     if(trim((string) $this->j158_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_quant"])){ 
+        if(trim((string) $this->j158_quant)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_quant"])){ 
            $this->j158_quant = "0" ; 
         } 
        $sql  .= $virgula." j158_quant = $this->j158_quant ";
        $virgula = ",";
      }
-     if(trim($this->j158_areaed)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_areaed"])){ 
-        if(trim($this->j158_areaed)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_areaed"])){ 
+     if(trim((string) $this->j158_areaed)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_areaed"])){ 
+        if(trim((string) $this->j158_areaed)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_areaed"])){ 
            $this->j158_areaed = "0" ; 
         } 
        $sql  .= $virgula." j158_areaed = $this->j158_areaed ";
        $virgula = ",";
      }
-     if(trim($this->j158_iptucalclog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_iptucalclog"])){ 
-        if(trim($this->j158_iptucalclog)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_iptucalclog"])){ 
+     if(trim((string) $this->j158_iptucalclog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j158_iptucalclog"])){ 
+        if(trim((string) $this->j158_iptucalclog)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j158_iptucalclog"])){ 
            $this->j158_iptucalclog = "0" ; 
         } 
        $sql  .= $virgula." j158_iptucalclog = $this->j158_iptucalclog ";
        $virgula = ",";
-       if(trim($this->j158_iptucalclog) == null ){ 
+       if(trim((string) $this->j158_iptucalclog) == null ){ 
          $this->erro_sql = " Campo Código de vínculo com a iptucalclog nao Informado.";
          $this->erro_campo = "j158_iptucalclog";
          $this->erro_banco = "";
@@ -355,26 +355,26 @@ class cl_iptutaxacalvold {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->j158_sequencial));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1014484,'$this->j158_sequencial','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j158_sequencial"]))
-         $resac = db_query("insert into db_acount values($acount,1010516,1014484,'".pg_result($resaco,0,'j158_sequencial')."','$this->j158_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010516,1014484,'".pg_fetch_result($resaco,0,'j158_sequencial')."','$this->j158_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j158_codigo"]))
-         $resac = db_query("insert into db_acount values($acount,1010516,1010982,'".pg_result($resaco,0,'j158_codigo')."','$this->j158_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010516,1010982,'".pg_fetch_result($resaco,0,'j158_codigo')."','$this->j158_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j158_iptutaxanumpold"]))
-         $resac = db_query("insert into db_acount values($acount,1010516,1010983,'".pg_result($resaco,0,'j158_iptutaxanumpold')."','$this->j158_iptutaxanumpold',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010516,1010983,'".pg_fetch_result($resaco,0,'j158_iptutaxanumpold')."','$this->j158_iptutaxanumpold',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j158_codhis"]))
-         $resac = db_query("insert into db_acount values($acount,1010516,1010984,'".pg_result($resaco,0,'j158_codhis')."','$this->j158_codhis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010516,1010984,'".pg_fetch_result($resaco,0,'j158_codhis')."','$this->j158_codhis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j158_receit"]))
-         $resac = db_query("insert into db_acount values($acount,1010516,1010986,'".pg_result($resaco,0,'j158_receit')."','$this->j158_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010516,1010986,'".pg_fetch_result($resaco,0,'j158_receit')."','$this->j158_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j158_valor"]))
-         $resac = db_query("insert into db_acount values($acount,1010516,1010988,'".pg_result($resaco,0,'j158_valor')."','$this->j158_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010516,1010988,'".pg_fetch_result($resaco,0,'j158_valor')."','$this->j158_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j158_quant"]))
-         $resac = db_query("insert into db_acount values($acount,1010516,1010990,'".pg_result($resaco,0,'j158_quant')."','$this->j158_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010516,1010990,'".pg_fetch_result($resaco,0,'j158_quant')."','$this->j158_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j158_areaed"]))
-         $resac = db_query("insert into db_acount values($acount,1010516,1011791,'".pg_result($resaco,0,'j158_areaed')."','$this->j158_areaed',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010516,1011791,'".pg_fetch_result($resaco,0,'j158_areaed')."','$this->j158_areaed',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j158_iptucalclog"]))
-         $resac = db_query("insert into db_acount values($acount,1010516,1010992,'".pg_result($resaco,0,'j158_iptucalclog')."','$this->j158_iptucalclog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010516,1010992,'".pg_fetch_result($resaco,0,'j158_iptucalclog')."','$this->j158_iptucalclog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
      if($result==false){ 
@@ -411,17 +411,17 @@ class cl_iptutaxacalvold {
      $resaco = $this->sql_record($this->sql_query_file($this->j158_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1014484,'$this->j158_sequencial','E')");
-       $resac = db_query("insert into db_acount values($acount,1010516,1014484,'','".pg_result($resaco,0,'j158_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010982,'','".pg_result($resaco,0,'j158_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010983,'','".pg_result($resaco,0,'j158_iptutaxanumpold')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010984,'','".pg_result($resaco,0,'j158_codhis')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010986,'','".pg_result($resaco,0,'j158_receit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010988,'','".pg_result($resaco,0,'j158_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010990,'','".pg_result($resaco,0,'j158_quant')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1011791,'','".pg_result($resaco,0,'j158_areaed')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010516,1010992,'','".pg_result($resaco,0,'j158_iptucalclog')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1014484,'','".pg_fetch_result($resaco,0,'j158_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010982,'','".pg_fetch_result($resaco,0,'j158_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010983,'','".pg_fetch_result($resaco,0,'j158_iptutaxanumpold')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010984,'','".pg_fetch_result($resaco,0,'j158_codhis')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010986,'','".pg_fetch_result($resaco,0,'j158_receit')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010988,'','".pg_fetch_result($resaco,0,'j158_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010990,'','".pg_fetch_result($resaco,0,'j158_quant')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1011791,'','".pg_fetch_result($resaco,0,'j158_areaed')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010516,1010992,'','".pg_fetch_result($resaco,0,'j158_iptucalclog')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $sql = " delete from iptutaxacalvold
                     where ";
@@ -473,7 +473,7 @@ class cl_iptutaxacalvold {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -488,7 +488,7 @@ class cl_iptutaxacalvold {
    function sql_query ( $j158_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -519,7 +519,7 @@ class cl_iptutaxacalvold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_iptutaxacalvold {
    function sql_query_file ( $j158_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -553,7 +553,7 @@ class cl_iptutaxacalvold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -614,7 +614,7 @@ class cl_iptutaxacalvold {
     if (!$rsIptutaxacalv) {
         throw new DBException("Não foi possivel buscar dados do cálculo da taxa (".pg_last_error().")");
     }
-    if (pg_numrows($rsIptutaxacalv) > 0) {
+    if (pg_num_rows($rsIptutaxacalv) > 0) {
 
        global $j152_codigo;
        global $j152_iptutaxanump;

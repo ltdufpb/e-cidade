@@ -29,63 +29,63 @@
 //CLASSE DA ENTIDADE db_carnesdados
 class cl_db_carnesdados { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $idcampos = 0; 
-   var $codmodelo = 0; 
-   var $z01_nome = null; 
-   var $z01_ender = null; 
-   var $z01_munic = null; 
-   var $z01_cep = null; 
-   var $z01_uf = null; 
-   var $z01_bairro = null; 
-   var $k00_codbco = 0; 
-   var $k00_codage = null; 
-   var $k00_txban = 0; 
-   var $k00_rectx = 0; 
-   var $j34_setor = null; 
-   var $j34_quadra = null; 
-   var $j34_lote = null; 
-   var $j39_numero = 0; 
-   var $j39_compl = null; 
-   var $j01_matric = 0; 
-   var $q02_inscr = 0; 
-   var $k15_local = null; 
-   var $k15_aceite = null; 
-   var $k15_carte = null; 
-   var $k15_espec = null; 
-   var $k15_gerent = null; 
-   var $k15_ageced = null; 
-   var $k00_hist1 = null; 
-   var $k00_hist2 = null; 
-   var $k00_hist3 = null; 
-   var $k00_hist4 = null; 
-   var $k00_hist5 = null; 
-   var $k00_hist6 = null; 
-   var $k00_hist7 = null; 
-   var $k00_hist8 = null; 
-   var $linhadigitavel = null; 
-   var $codigobarras = null; 
-   var $vlrtotal = 0; 
-   var $vencimento_dia = null; 
-   var $vencimento_mes = null; 
-   var $vencimento_ano = null; 
-   var $vencimento = null; 
-   var $ip = null; 
-   var $numpre = null; 
+   public $idcampos = 0; 
+   public $codmodelo = 0; 
+   public $z01_nome = null; 
+   public $z01_ender = null; 
+   public $z01_munic = null; 
+   public $z01_cep = null; 
+   public $z01_uf = null; 
+   public $z01_bairro = null; 
+   public $k00_codbco = 0; 
+   public $k00_codage = null; 
+   public $k00_txban = 0; 
+   public $k00_rectx = 0; 
+   public $j34_setor = null; 
+   public $j34_quadra = null; 
+   public $j34_lote = null; 
+   public $j39_numero = 0; 
+   public $j39_compl = null; 
+   public $j01_matric = 0; 
+   public $q02_inscr = 0; 
+   public $k15_local = null; 
+   public $k15_aceite = null; 
+   public $k15_carte = null; 
+   public $k15_espec = null; 
+   public $k15_gerent = null; 
+   public $k15_ageced = null; 
+   public $k00_hist1 = null; 
+   public $k00_hist2 = null; 
+   public $k00_hist3 = null; 
+   public $k00_hist4 = null; 
+   public $k00_hist5 = null; 
+   public $k00_hist6 = null; 
+   public $k00_hist7 = null; 
+   public $k00_hist8 = null; 
+   public $linhadigitavel = null; 
+   public $codigobarras = null; 
+   public $vlrtotal = 0; 
+   public $vencimento_dia = null; 
+   public $vencimento_mes = null; 
+   public $vencimento_ano = null; 
+   public $vencimento = null; 
+   public $ip = null; 
+   public $numpre = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  idcampos = int4 = Id Campos 
                  codmodelo = int4 = Código Modelo 
                  z01_nome = varchar(40) = Nome/Razão Social 
@@ -127,10 +127,10 @@ class cl_db_carnesdados {
                  numpre = char(15) = Nº arrecadação 
                  ";
    //funcao construtor da classe 
-   function cl_db_carnesdados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_carnesdados"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -479,7 +479,7 @@ class cl_db_carnesdados {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dados a Imprimir () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dados a Imprimir já Cadastrado";
@@ -506,10 +506,10 @@ class cl_db_carnesdados {
       $this->atualizacampos();
      $sql = " update db_carnesdados set ";
      $virgula = "";
-     if(trim($this->idcampos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["idcampos"])){ 
+     if(trim((string) $this->idcampos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["idcampos"])){ 
        $sql  .= $virgula." idcampos = $this->idcampos ";
        $virgula = ",";
-       if(trim($this->idcampos) == null ){ 
+       if(trim((string) $this->idcampos) == null ){ 
          $this->erro_sql = " Campo Id Campos nao Informado.";
          $this->erro_campo = "idcampos";
          $this->erro_banco = "";
@@ -519,10 +519,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->codmodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codmodelo"])){ 
+     if(trim((string) $this->codmodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codmodelo"])){ 
        $sql  .= $virgula." codmodelo = $this->codmodelo ";
        $virgula = ",";
-       if(trim($this->codmodelo) == null ){ 
+       if(trim((string) $this->codmodelo) == null ){ 
          $this->erro_sql = " Campo Código Modelo nao Informado.";
          $this->erro_campo = "codmodelo";
          $this->erro_banco = "";
@@ -532,10 +532,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->z01_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_nome"])){ 
+     if(trim((string) $this->z01_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_nome"])){ 
        $sql  .= $virgula." z01_nome = '$this->z01_nome' ";
        $virgula = ",";
-       if(trim($this->z01_nome) == null ){ 
+       if(trim((string) $this->z01_nome) == null ){ 
          $this->erro_sql = " Campo Nome/Razão Social nao Informado.";
          $this->erro_campo = "z01_nome";
          $this->erro_banco = "";
@@ -545,10 +545,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->z01_ender)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_ender"])){ 
+     if(trim((string) $this->z01_ender)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_ender"])){ 
        $sql  .= $virgula." z01_ender = '$this->z01_ender' ";
        $virgula = ",";
-       if(trim($this->z01_ender) == null ){ 
+       if(trim((string) $this->z01_ender) == null ){ 
          $this->erro_sql = " Campo Endereço nao Informado.";
          $this->erro_campo = "z01_ender";
          $this->erro_banco = "";
@@ -558,14 +558,14 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->z01_munic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_munic"])){ 
+     if(trim((string) $this->z01_munic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_munic"])){ 
        $sql  .= $virgula." z01_munic = '$this->z01_munic' ";
        $virgula = ",";
      }
-     if(trim($this->z01_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_cep"])){ 
+     if(trim((string) $this->z01_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_cep"])){ 
        $sql  .= $virgula." z01_cep = '$this->z01_cep' ";
        $virgula = ",";
-       if(trim($this->z01_cep) == null ){ 
+       if(trim((string) $this->z01_cep) == null ){ 
          $this->erro_sql = " Campo CEP nao Informado.";
          $this->erro_campo = "z01_cep";
          $this->erro_banco = "";
@@ -575,18 +575,18 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->z01_uf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_uf"])){ 
+     if(trim((string) $this->z01_uf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_uf"])){ 
        $sql  .= $virgula." z01_uf = '$this->z01_uf' ";
        $virgula = ",";
      }
-     if(trim($this->z01_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_bairro"])){ 
+     if(trim((string) $this->z01_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_bairro"])){ 
        $sql  .= $virgula." z01_bairro = '$this->z01_bairro' ";
        $virgula = ",";
      }
-     if(trim($this->k00_codbco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_codbco"])){ 
+     if(trim((string) $this->k00_codbco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_codbco"])){ 
        $sql  .= $virgula." k00_codbco = $this->k00_codbco ";
        $virgula = ",";
-       if(trim($this->k00_codbco) == null ){ 
+       if(trim((string) $this->k00_codbco) == null ){ 
          $this->erro_sql = " Campo codigo do banco nao Informado.";
          $this->erro_campo = "k00_codbco";
          $this->erro_banco = "";
@@ -596,10 +596,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->k00_codage)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_codage"])){ 
+     if(trim((string) $this->k00_codage)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_codage"])){ 
        $sql  .= $virgula." k00_codage = '$this->k00_codage' ";
        $virgula = ",";
-       if(trim($this->k00_codage) == null ){ 
+       if(trim((string) $this->k00_codage) == null ){ 
          $this->erro_sql = " Campo codigo da agencia nao Informado.";
          $this->erro_campo = "k00_codage";
          $this->erro_banco = "";
@@ -609,24 +609,24 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->k00_txban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_txban"])){ 
-        if(trim($this->k00_txban)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k00_txban"])){ 
+     if(trim((string) $this->k00_txban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_txban"])){ 
+        if(trim((string) $this->k00_txban)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k00_txban"])){ 
            $this->k00_txban = "0" ; 
         } 
        $sql  .= $virgula." k00_txban = $this->k00_txban ";
        $virgula = ",";
      }
-     if(trim($this->k00_rectx)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_rectx"])){ 
-        if(trim($this->k00_rectx)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k00_rectx"])){ 
+     if(trim((string) $this->k00_rectx)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_rectx"])){ 
+        if(trim((string) $this->k00_rectx)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k00_rectx"])){ 
            $this->k00_rectx = "0" ; 
         } 
        $sql  .= $virgula." k00_rectx = $this->k00_rectx ";
        $virgula = ",";
      }
-     if(trim($this->j34_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_setor"])){ 
+     if(trim((string) $this->j34_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_setor"])){ 
        $sql  .= $virgula." j34_setor = '$this->j34_setor' ";
        $virgula = ",";
-       if(trim($this->j34_setor) == null ){ 
+       if(trim((string) $this->j34_setor) == null ){ 
          $this->erro_sql = " Campo Setor nao Informado.";
          $this->erro_campo = "j34_setor";
          $this->erro_banco = "";
@@ -636,10 +636,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->j34_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_quadra"])){ 
+     if(trim((string) $this->j34_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_quadra"])){ 
        $sql  .= $virgula." j34_quadra = '$this->j34_quadra' ";
        $virgula = ",";
-       if(trim($this->j34_quadra) == null ){ 
+       if(trim((string) $this->j34_quadra) == null ){ 
          $this->erro_sql = " Campo Quadra nao Informado.";
          $this->erro_campo = "j34_quadra";
          $this->erro_banco = "";
@@ -649,10 +649,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->j34_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_lote"])){ 
+     if(trim((string) $this->j34_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_lote"])){ 
        $sql  .= $virgula." j34_lote = '$this->j34_lote' ";
        $virgula = ",";
-       if(trim($this->j34_lote) == null ){ 
+       if(trim((string) $this->j34_lote) == null ){ 
          $this->erro_sql = " Campo Lote nao Informado.";
          $this->erro_campo = "j34_lote";
          $this->erro_banco = "";
@@ -662,10 +662,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->j39_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j39_numero"])){ 
+     if(trim((string) $this->j39_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j39_numero"])){ 
        $sql  .= $virgula." j39_numero = $this->j39_numero ";
        $virgula = ",";
-       if(trim($this->j39_numero) == null ){ 
+       if(trim((string) $this->j39_numero) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "j39_numero";
          $this->erro_banco = "";
@@ -675,14 +675,14 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->j39_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j39_compl"])){ 
+     if(trim((string) $this->j39_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j39_compl"])){ 
        $sql  .= $virgula." j39_compl = '$this->j39_compl' ";
        $virgula = ",";
      }
-     if(trim($this->j01_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j01_matric"])){ 
+     if(trim((string) $this->j01_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j01_matric"])){ 
        $sql  .= $virgula." j01_matric = $this->j01_matric ";
        $virgula = ",";
-       if(trim($this->j01_matric) == null ){ 
+       if(trim((string) $this->j01_matric) == null ){ 
          $this->erro_sql = " Campo Matrícula do Imóvel nao Informado.";
          $this->erro_campo = "j01_matric";
          $this->erro_banco = "";
@@ -692,10 +692,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->q02_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q02_inscr"])){ 
+     if(trim((string) $this->q02_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q02_inscr"])){ 
        $sql  .= $virgula." q02_inscr = $this->q02_inscr ";
        $virgula = ",";
-       if(trim($this->q02_inscr) == null ){ 
+       if(trim((string) $this->q02_inscr) == null ){ 
          $this->erro_sql = " Campo Inscrição Municipal nao Informado.";
          $this->erro_campo = "q02_inscr";
          $this->erro_banco = "";
@@ -705,10 +705,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->k15_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_local"])){ 
+     if(trim((string) $this->k15_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_local"])){ 
        $sql  .= $virgula." k15_local = '$this->k15_local' ";
        $virgula = ",";
-       if(trim($this->k15_local) == null ){ 
+       if(trim((string) $this->k15_local) == null ){ 
          $this->erro_sql = " Campo local nao Informado.";
          $this->erro_campo = "k15_local";
          $this->erro_banco = "";
@@ -718,10 +718,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->k15_aceite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_aceite"])){ 
+     if(trim((string) $this->k15_aceite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_aceite"])){ 
        $sql  .= $virgula." k15_aceite = '$this->k15_aceite' ";
        $virgula = ",";
-       if(trim($this->k15_aceite) == null ){ 
+       if(trim((string) $this->k15_aceite) == null ){ 
          $this->erro_sql = " Campo aceite nao Informado.";
          $this->erro_campo = "k15_aceite";
          $this->erro_banco = "";
@@ -731,10 +731,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->k15_carte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_carte"])){ 
+     if(trim((string) $this->k15_carte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_carte"])){ 
        $sql  .= $virgula." k15_carte = '$this->k15_carte' ";
        $virgula = ",";
-       if(trim($this->k15_carte) == null ){ 
+       if(trim((string) $this->k15_carte) == null ){ 
          $this->erro_sql = " Campo carteira nao Informado.";
          $this->erro_campo = "k15_carte";
          $this->erro_banco = "";
@@ -744,10 +744,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->k15_espec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_espec"])){ 
+     if(trim((string) $this->k15_espec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_espec"])){ 
        $sql  .= $virgula." k15_espec = '$this->k15_espec' ";
        $virgula = ",";
-       if(trim($this->k15_espec) == null ){ 
+       if(trim((string) $this->k15_espec) == null ){ 
          $this->erro_sql = " Campo especie do documento nao Informado.";
          $this->erro_campo = "k15_espec";
          $this->erro_banco = "";
@@ -757,10 +757,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->k15_gerent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_gerent"])){ 
+     if(trim((string) $this->k15_gerent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_gerent"])){ 
        $sql  .= $virgula." k15_gerent = '$this->k15_gerent' ";
        $virgula = ",";
-       if(trim($this->k15_gerent) == null ){ 
+       if(trim((string) $this->k15_gerent) == null ){ 
          $this->erro_sql = " Campo gerente nao Informado.";
          $this->erro_campo = "k15_gerent";
          $this->erro_banco = "";
@@ -770,10 +770,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->k15_ageced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_ageced"])){ 
+     if(trim((string) $this->k15_ageced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k15_ageced"])){ 
        $sql  .= $virgula." k15_ageced = '$this->k15_ageced' ";
        $virgula = ",";
-       if(trim($this->k15_ageced) == null ){ 
+       if(trim((string) $this->k15_ageced) == null ){ 
          $this->erro_sql = " Campo agencia do cedente nao Informado.";
          $this->erro_campo = "k15_ageced";
          $this->erro_banco = "";
@@ -783,54 +783,54 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->k00_hist1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist1"])){ 
+     if(trim((string) $this->k00_hist1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist1"])){ 
        $sql  .= $virgula." k00_hist1 = '$this->k00_hist1' ";
        $virgula = ",";
      }
-     if(trim($this->k00_hist2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist2"])){ 
+     if(trim((string) $this->k00_hist2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist2"])){ 
        $sql  .= $virgula." k00_hist2 = '$this->k00_hist2' ";
        $virgula = ",";
      }
-     if(trim($this->k00_hist3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist3"])){ 
+     if(trim((string) $this->k00_hist3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist3"])){ 
        $sql  .= $virgula." k00_hist3 = '$this->k00_hist3' ";
        $virgula = ",";
      }
-     if(trim($this->k00_hist4)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist4"])){ 
+     if(trim((string) $this->k00_hist4)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist4"])){ 
        $sql  .= $virgula." k00_hist4 = '$this->k00_hist4' ";
        $virgula = ",";
      }
-     if(trim($this->k00_hist5)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist5"])){ 
+     if(trim((string) $this->k00_hist5)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist5"])){ 
        $sql  .= $virgula." k00_hist5 = '$this->k00_hist5' ";
        $virgula = ",";
      }
-     if(trim($this->k00_hist6)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist6"])){ 
+     if(trim((string) $this->k00_hist6)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist6"])){ 
        $sql  .= $virgula." k00_hist6 = '$this->k00_hist6' ";
        $virgula = ",";
      }
-     if(trim($this->k00_hist7)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist7"])){ 
+     if(trim((string) $this->k00_hist7)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist7"])){ 
        $sql  .= $virgula." k00_hist7 = '$this->k00_hist7' ";
        $virgula = ",";
      }
-     if(trim($this->k00_hist8)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist8"])){ 
+     if(trim((string) $this->k00_hist8)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist8"])){ 
        $sql  .= $virgula." k00_hist8 = '$this->k00_hist8' ";
        $virgula = ",";
      }
-     if(trim($this->linhadigitavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["linhadigitavel"])){ 
+     if(trim((string) $this->linhadigitavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["linhadigitavel"])){ 
        $sql  .= $virgula." linhadigitavel = '$this->linhadigitavel' ";
        $virgula = ",";
      }
-     if(trim($this->codigobarras)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codigobarras"])){ 
+     if(trim((string) $this->codigobarras)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codigobarras"])){ 
        $sql  .= $virgula." codigobarras = '$this->codigobarras' ";
        $virgula = ",";
      }
-     if(trim($this->vlrtotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vlrtotal"])){ 
-        if(trim($this->vlrtotal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["vlrtotal"])){ 
+     if(trim((string) $this->vlrtotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vlrtotal"])){ 
+        if(trim((string) $this->vlrtotal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["vlrtotal"])){ 
            $this->vlrtotal = "0" ; 
         } 
        $sql  .= $virgula." vlrtotal = $this->vlrtotal ";
        $virgula = ",";
      }
-     if(trim($this->vencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vencimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vencimento_dia"] !="") ){ 
+     if(trim((string) $this->vencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vencimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vencimento_dia"] !="") ){ 
        $sql  .= $virgula." vencimento = '$this->vencimento' ";
        $virgula = ",";
      }     else{ 
@@ -839,10 +839,10 @@ class cl_db_carnesdados {
          $virgula = ",";
        }
      }
-     if(trim($this->ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ip"])){ 
+     if(trim((string) $this->ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ip"])){ 
        $sql  .= $virgula." ip = '$this->ip' ";
        $virgula = ",";
-       if(trim($this->ip) == null ){ 
+       if(trim((string) $this->ip) == null ){ 
          $this->erro_sql = " Campo IP nao Informado.";
          $this->erro_campo = "ip";
          $this->erro_banco = "";
@@ -852,10 +852,10 @@ class cl_db_carnesdados {
          return false;
        }
      }
-     if(trim($this->numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numpre"])){ 
+     if(trim((string) $this->numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numpre"])){ 
        $sql  .= $virgula." numpre = '$this->numpre' ";
        $virgula = ",";
-       if(trim($this->numpre) == null ){ 
+       if(trim((string) $this->numpre) == null ){ 
          $this->erro_sql = " Campo Nº arrecadação nao Informado.";
          $this->erro_campo = "numpre";
          $this->erro_banco = "";
@@ -946,7 +946,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_carnesdados";

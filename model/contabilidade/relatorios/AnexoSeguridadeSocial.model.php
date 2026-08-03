@@ -49,7 +49,7 @@ class AnexoSeguridadeSocial extends RelatoriosLegaisBase {
    *
    * @var array
    */
-  protected $aTipoProcesso = array();
+  protected $aTipoProcesso = [];
   
   protected $iCodigoUsuario;
   
@@ -90,7 +90,8 @@ class AnexoSeguridadeSocial extends RelatoriosLegaisBase {
    * Retorna as Linhas do Relatório
    *
    */
-  public function getDados() { 
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) { 
     
     /**
      * Se for selecionado "Origem/Fase" como Orçamento deve selecionar como padrão o mes de janeiro
@@ -118,7 +119,7 @@ class AnexoSeguridadeSocial extends RelatoriosLegaisBase {
     $sWhereDespesa   .= $this->getWhereFiltro($oDadosFiltro);
     
     $rsDotacao        = db_dotacaosaldo(6 ,2, 2, true, $sWhereDespesa, $this->iAnoUsu,$sDataInicial, $sDataFinal );  
-    $aRetorno         = array();
+    $aRetorno         = [];
     
     /**
      * Percorre o ResultSet organizando os dados dentro do array $aRetorno
@@ -161,7 +162,7 @@ class AnexoSeguridadeSocial extends RelatoriosLegaisBase {
         $oFuncao->nAtividade        = 0;
         $oFuncao->nOperacaoEspecial = 0;
         $oFuncao->nTotal            = 0;
-        $oFuncao->subfuncao         = array();
+        $oFuncao->subfuncao         = [];
         $aRetorno[$oDespesa->o58_funcao] = $oFuncao;
       } else {
         $oFuncao = $aRetorno[$oDespesa->o58_funcao];
@@ -180,7 +181,7 @@ class AnexoSeguridadeSocial extends RelatoriosLegaisBase {
         $oSubFuncao->nAtividade        = 0;
         $oSubFuncao->nOperacaoEspecial = 0;
         $oSubFuncao->nTotal            = 0;
-        $oSubFuncao->projetos          = array();
+        $oSubFuncao->projetos          = [];
         
         $aRetorno[$oDespesa->o58_funcao]->subfuncao[$oDespesa->o58_subfuncao] = $oSubFuncao;
       } else {

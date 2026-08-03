@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_prestadorvinculos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_prestadorvinculos = new cl_sau_prestadorvinculos;
 $clsau_prestadorvinculos->rotulo->label();
 $clrotulo = new rotulocampo();
@@ -130,9 +130,9 @@ $clrotulo->label("s111_procedimento");
         }else{
            $sql = $clsau_prestadorvinculos->sql_query("",$campos,"z01_nome","$where");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s111_i_codigo)){
-          $repassa = array("chave_s111_i_codigo"=>$chave_s111_i_codigo,"chave_s111_i_codigo"=>$chave_s111_i_codigo);
+          $repassa = ["chave_s111_i_codigo"=>$chave_s111_i_codigo,"chave_s111_i_codigo"=>$chave_s111_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -89,7 +89,7 @@ class DatabaseSession
         $this->start();
 
         foreach ($_SESSION as $prop => $value) {
-            $key = strtoupper($prop);
+            $key = strtoupper((string) $prop);
 
             switch ($key) {
                 case 'DB_DATAUSU':
@@ -97,7 +97,7 @@ class DatabaseSession
                     $this->adicionarData($value);
                     break;
                 default:
-                    if (substr($key, 0, 2) == "DB") {
+                    if (str_starts_with($key, "DB")) {
                         $this->add($key, pg_escape_string($value));
                     }
                     break;

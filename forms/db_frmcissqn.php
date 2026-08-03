@@ -99,7 +99,7 @@ $clrotulo->label("v03_descr");
     </td>
     <td> 
 			<?php 
-			  $x = array('1'=>'Calcula somente variavel','2'=>'Calcula somente fixo','3'=>'Calcula variavel e fixo');
+			  $x = ['1'=>'Calcula somente variavel','2'=>'Calcula somente fixo','3'=>'Calcula variavel e fixo'];
 			  db_select('q04_calfixvar',$x,true,$db_opcao,"");
 			?>
     </td>
@@ -232,7 +232,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cissqn.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

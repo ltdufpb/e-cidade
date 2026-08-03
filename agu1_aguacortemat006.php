@@ -37,7 +37,7 @@ $claguacortemat = new cl_aguacortemat;
 $claguacortematmov = new cl_aguacortematmov;
 $claguacortematnumpre = new cl_aguacortematnumpre;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 33;
 $db_botao = false;

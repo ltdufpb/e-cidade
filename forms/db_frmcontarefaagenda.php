@@ -79,7 +79,7 @@ db_input('at13_tarefa',10,$Iat13_tarefa,true,'text',3,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at13_sequencial"=>@$at13_sequencial,"at13_tarefa"=>@$at13_tarefa);
+	 $chavepri= ["at13_sequencial"=>@$at13_sequencial,"at13_tarefa"=>@$at13_tarefa];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cltarefa_agenda->sql_query(null,"*"," at13_dia, at13_horaini, at13_horafim","at13_tarefa=$at13_tarefa");
 	 $cliframe_alterar_excluir->campos  ="at13_dia, at13_horaini, at13_horafim";

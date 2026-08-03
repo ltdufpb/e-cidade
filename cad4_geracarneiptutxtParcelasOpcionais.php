@@ -43,7 +43,7 @@ if ( $lGeraVencParcelas == true ) {
   $rsValorImpressao = db_query( $sSqlValorImpressao );
   $nValorImpressao = db_utils::fieldsMemory( $rsValorImpressao, 0 )->k00_txban;
 
-  $aUnicasComparativo = array();
+  $aUnicasComparativo = [];
   if ( count( @$aUnicas ) > 0 ) {
 
     foreach ( $aUnicas as $iIndiceUnicas => $oValorUnicas ) {
@@ -113,7 +113,7 @@ if ( $lGeraVencParcelas == true ) {
           $sDataVencimentoUnica = $oTeste->vencimento;
         }
 
-        $dtVencimentoUnicaCorrecao = implode( "-", array_reverse( explode( "/", $sDataVencimentoUnica ) ) );
+        $dtVencimentoUnicaCorrecao = implode( "-", array_reverse( explode( "/", (string) $sDataVencimentoUnica ) ) );
 
         /*
          * aplicamos debitos numpre para o valor corrigido da unica
@@ -161,10 +161,10 @@ if ( $lGeraVencParcelas == true ) {
 
         if ( $gerar == "layout" ) {
           fputs( $clabre_arquivo->arquivo,
-              db_contador( "VCTO_OPCAO_{$iIndicadorOpcao}_QUOTA_{$iOpcaoUnicas}",
+              (string) db_contador( "VCTO_OPCAO_{$iIndicadorOpcao}_QUOTA_{$iOpcaoUnicas}",
                   "OPCAO DE VENC. {$iIndicadorOpcao} DA QUOTA ÚNICA {$iOpcaoUnicas}", $contador, 10 ) );
           fputs( $clabre_arquivo->arquivo,
-              db_contador( "VALOR_{$iIndicadorOpcao}_QUOTA_{$iOpcaoUnicas}",
+              (string) db_contador( "VALOR_{$iIndicadorOpcao}_QUOTA_{$iOpcaoUnicas}",
                   "Valor Opçao {$iIndicadorOpcao} da Quota ÚNICA {$iOpcaoUnicas}", $contador, 15 ) );
           $iIndicadorOpcao++ ;
         } else { // DADOS DO LAYOUT
@@ -183,7 +183,7 @@ if ( $lGeraVencParcelas == true ) {
             echo "DESCONTO:" . $oValUnica->desconto . "  \n";
             $iIndicadorOpcao++ ;
           }
-          fputs( $clabre_arquivo->arquivo, $sDataVencimentoUnica );
+          fputs( $clabre_arquivo->arquivo, (string) $sDataVencimentoUnica );
           fputs( $clabre_arquivo->arquivo, str_pad( trim( db_formatar( $nTotalUnica, "f" ) ), 15, ' ', STR_PAD_LEFT ) );
         }
         $iProximoMesUnica++ ;
@@ -198,14 +198,14 @@ if ( $lGeraVencParcelas == true ) {
   /// FOEREACH PARA TOTAL PARCELAS
   $sDataVencParcela    = $aParcelasArrecad[0]->k00_dtvenc;
   $iTotalParcelas      = $aParcelasArrecad[0]->k00_numtot;
-  $iMesPrimeiraParcela = explode( "-", $sDataVencParcela );
+  $iMesPrimeiraParcela = explode( "-", (string) $sDataVencParcela );
   $iMesPrimeiraParcela = $iMesPrimeiraParcela[1];
   $iContadorParcela = 0;
   for ( $iMesParcela = 1; $iMesParcela <= $iTotalParcelas; $iMesParcela++ ) {
 
     $iIndice            = $iMesParcela - 1;
     $oParcela           = $aParcelasArrecad[$iIndice];//dados das parcelas tipo, numpre, valor etc.
-    $iProximoMesParcela = explode( "-", $oParcela->k00_dtvenc ); // MES VENCIMENTO DA PARCELA
+    $iProximoMesParcela = explode( "-", (string) $oParcela->k00_dtvenc ); // MES VENCIMENTO DA PARCELA
     $iProximoDiaParcela = $iProximoMesParcela[2];
     $iProximoMesParcela = $iProximoMesParcela[1];
 
@@ -228,7 +228,7 @@ if ( $lGeraVencParcelas == true ) {
         $iDiaVenc = $iProximoDiaParcela;
       }
 
-      $sDataVencimentoParcela = "{$iDiaVenc}/" . str_pad( $iProximoMesParcela, 2, "0", STR_PAD_LEFT )
+      $sDataVencimentoParcela = "{$iDiaVenc}/" . str_pad( (string) $iProximoMesParcela, 2, "0", STR_PAD_LEFT )
           . "/{$iProximoAnoParcela}";
       $dtVencimentoParcCorrecao = implode( "-", array_reverse( explode( "/", $sDataVencimentoParcela ) ) );
       $rsDadosParcela = debitos_numpre( $j20_numpre, 0, 0, strtotime( $dtVencimentoParcCorrecao ), $anousu,
@@ -248,10 +248,10 @@ if ( $lGeraVencParcelas == true ) {
       if ( $gerar == "layout" ) {
 
         fputs( $clabre_arquivo->arquivo,
-            db_contador( "VCTO_OPCAO_{$iContadorParcela}_PARCELA_{$iMesParcela}",
+            (string) db_contador( "VCTO_OPCAO_{$iContadorParcela}_PARCELA_{$iMesParcela}",
                 "OPCAO DE VENC. {$iMesParcelaOpcao} DA COTA ÚNICA {$iMesParcela}", $contador, 10 ) );
         fputs( $clabre_arquivo->arquivo,
-            db_contador( "VALOR_{$iContadorParcela}_PARCELA_{$iMesParcela}",
+            (string) db_contador( "VALOR_{$iContadorParcela}_PARCELA_{$iMesParcela}",
                 "VALOR OPCAO {$iMesParcelaOpcao} DA PARCELA  {$iMesParcela}", $contador, 15 ) );
       } else { // DADOS DAS PARCELAS
 

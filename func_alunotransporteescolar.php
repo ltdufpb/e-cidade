@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oGet      = db_utils::postMemory( $_GET );
 $oDaoAluno = new cl_aluno;
@@ -42,7 +42,7 @@ $oRotulo->label("ed47_i_codigo");
 $oRotulo->label("ed47_v_nome");
 $oRotulo->label("ed223_i_serie");
 
-$aWhere   = array();
+$aWhere   = [];
 $aWhere[] = " ed47_i_transpublico = 1 "; // todos alunos devem estar informado como Utiliza Transporte Público
 
 /**
@@ -118,10 +118,10 @@ if( !empty($oGet->lEscolaRede) && $oGet->lEscolaRede != "true" && !empty($oGet->
 
         $sWhere  = implode(" and ", $aWhere);
         $sSql    = $oDaoAluno->sql_query_file("", $sCampos, "ed47_v_nome", $sWhere);
-        $repassa = array();
+        $repassa = [];
 
         if(isset($chave_ed47_v_nome)){
-          $repassa = array("chave_ed47_i_codigo"=>$chave_ed47_i_codigo,"chave_ed47_v_nome"=>$chave_ed47_v_nome);
+          $repassa = ["chave_ed47_i_codigo"=>$chave_ed47_i_codigo,"chave_ed47_v_nome"=>$chave_ed47_v_nome];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

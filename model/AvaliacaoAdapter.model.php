@@ -26,13 +26,10 @@
  */
 class AvaliacaoAdapter
 {
-    private $oAvaliacao;
-
     protected $iCodigoGrupoResposta;
 
-    public function __construct(\Avaliacao $oAvaliacao)
+    public function __construct(private readonly \Avaliacao $oAvaliacao)
     {
-        $this->oAvaliacao = $oAvaliacao;
     }
 
     public function getObject()
@@ -49,7 +46,7 @@ class AvaliacaoAdapter
     private function getGrupos()
     {
         $aGruposPerguntas = $this->oAvaliacao->getGruposPerguntas();
-        $aDadosGruposPerguntas = array();
+        $aDadosGruposPerguntas = [];
         foreach ($aGruposPerguntas as $oGrupoPergunta) {
             $oGrupo = new \stdClass();
             $oGrupo->codigo = $oGrupoPergunta->getCodigo();
@@ -64,7 +61,7 @@ class AvaliacaoAdapter
 
     protected function getPerguntas(\AvaliacaoGrupo $avaliacaoGrupo)
     {
-        $aPerguntas = array();
+        $aPerguntas = [];
 
         foreach ($avaliacaoGrupo->getPerguntas() as $pergunta) {
             $pergunta->setAvaliacao($this->getCodigoGrupoResposta());
@@ -90,7 +87,7 @@ class AvaliacaoAdapter
 
     protected function getRespostas(\AvaliacaoPergunta $avaliacaoPergunta)
     {
-        $respostas = array();
+        $respostas = [];
 
         foreach ($avaliacaoPergunta->getRespostas() as $resposta) {
             $oResposta = new \stdClass();

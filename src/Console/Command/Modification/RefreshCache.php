@@ -67,7 +67,7 @@ class RefreshCache extends Command
                 echo Color::set("TOUCH: ", "light_blue");
                 echo Color::set(str_replace(ECIDADE_MODIFICATION_CACHE_PATH ."global/", "", $file), "white") . "\n";
 
-            } catch (\Exception $error) {
+            } catch (\Exception) {
                 echo Color::set(" - SKIP: ", "yellow") . Color::set($file, "white") . "\n";
             }
         }
@@ -90,7 +90,7 @@ class RefreshCache extends Command
                 $this->touch_sync_path($file, $old_mtime);
 
                 echo Color::set("TOUCH: ", "light_blue") . Color::set("$rel\n", "white");
-            } catch (\Exception $error) {
+            } catch (\Exception) {
                 echo Color::set(" - SKIP: ", "yellow") . Color::set($file, "white") . "\n";
             }
         }
@@ -135,7 +135,7 @@ class RefreshCache extends Command
 
             return rmdir($path);
 
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
     }

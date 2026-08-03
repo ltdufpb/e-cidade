@@ -70,7 +70,7 @@ $clrotulo->label("proctransfer");
 $clrotulo->label("p62_coddeptorecDestino");
 $clrotulo->label("m51_codordem");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 ?>

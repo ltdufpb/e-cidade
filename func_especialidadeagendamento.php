@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_especmedico_classe.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clespecmedico = new cl_especmedico;
 $clespecmedico->rotulo->label("sd27_i_codigo");
@@ -92,7 +92,7 @@ $clrotulo->label("rh70_descr");
       <tr>
         <td>
           <?php
-          $aWhere   = array();
+          $aWhere   = [];
           $aWhere[] = " sd27_c_situacao = 'A' ";
 
           if( isset($chave_sd04_i_unidade) && (int)$chave_sd04_i_unidade != 0){
@@ -130,9 +130,9 @@ $clrotulo->label("rh70_descr");
               $aWhere[] = "rh70_estrutural = '{$chave_rh70_estrutural}'";
             }
 
-            $repassa = array();
+            $repassa = [];
             if(isset($chave_sd27_i_codigo)){
-              $repassa = array("chave_sd27_i_codigo" => $chave_sd27_i_codigo);
+              $repassa = ["chave_sd27_i_codigo" => $chave_sd27_i_codigo];
             }
 
             $sWhere = implode(' AND ', $aWhere);

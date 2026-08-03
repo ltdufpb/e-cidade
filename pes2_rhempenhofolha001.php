@@ -91,11 +91,11 @@ db_app::load("datagrid.widget.js")
       			    <td>
       			     <?php 
 
-      			       $aSigla = array( "r14"=>"Salário",
+      			       $aSigla = [ "r14"=>"Salário",
       					                    "r48"=>"Complementar",
       					                    "r35"=>"13o. Salário",
       					                    "r20"=>"Rescisão",
-      					                    "r22"=>"Adiantamento");
+      					                    "r22"=>"Adiantamento"];
 
       			       db_select('ponto',$aSigla,true,4," style='width: 150px;' onChange='js_validaTipoPonto()'");
       			     ?>
@@ -108,11 +108,11 @@ db_app::load("datagrid.widget.js")
                 <td>
                  <?php 
 
-                   $aTipos = array(
+                   $aTipos = [
                                    "1" => "Salário        ",
                                    "2" => "Previdência    ",
                                    "3" => "FGTS           ",
-                                  );
+                                  ];
 
                    db_select('tipo',$aTipos,true,4," style='width: 150px;' onChange='js_validaTipoGeracao()'");
                  ?>
@@ -132,7 +132,7 @@ db_app::load("datagrid.widget.js")
 		               $sql .= "            and r33_instit = ".db_getsession('DB_instit') ;
 		               $rsPrev = db_query($sql);
 
-		               db_multiploselect("r33_codtab", "r33_nome", "nselecionados", "selecionados", $rsPrev, array(), 4, 250);
+		               db_multiploselect("r33_codtab", "r33_nome", "nselecionados", "selecionados", $rsPrev, [], 4, 250);
 	               ?>
 	              </td>
 	            </tr>
@@ -147,7 +147,7 @@ db_app::load("datagrid.widget.js")
                                and r11_instit   = ".db_getsession("DB_instit");
                     $rsRetencao = db_query($sql);
                     $lRetencao  = @db_utils::fieldsMemory($rsRetencao,0)->r11_geraretencaoempenho;
-                    $x = array("t"=>"SIM","f"=>"NÃO");
+                    $x = ["t"=>"SIM","f"=>"NÃO"];
                     db_select('lRetencao',$x,true,1," style='width: 150px;' ");
                   ?>
                 </td>

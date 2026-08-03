@@ -38,18 +38,6 @@
 class ProgramaProjetoAtividade {
 
   /**
-   * Codigo do projeto/atividade
-   * @var integer
-   */
-  protected $iCodigo;
-
-  /**
-   * Ano do projeto/atividade
-   * @var integer
-   */
-  protected $iAno;
-
-  /**
    * Descrição do projeto
    * @var string
    */
@@ -71,19 +59,23 @@ class ProgramaProjetoAtividade {
    * Array de iniciativas vinculadas ao projeto/atividade
    * @var array [] ProgramaIniciativa
    */
-  protected $aIniciativas = array();
+  protected $aIniciativas = [];
 
 
   /**
    * Constrói o objeto de acordo com os parâmetros passados no parâmetro do método.
-   * @param integer $iCodigoProjetoAtividade
-   * @param integer $iAnoProjetoAtividade
+   * @param integer $iCodigo
+   * @param integer $iAno
    * @throws BusinessException
    */
-  public function __construct($iCodigoProjetoAtividade = null, $iAnoProjetoAtividade = null) {
+  public function __construct(/**
+   * Codigo do projeto/atividade
+   */
+  protected $iCodigo = null, /**
+   * Ano do projeto/atividade
+   */
+  protected $iAno = null) {
 
-    $this->iCodigo            = $iCodigoProjetoAtividade;
-    $this->iAno               = $iAnoProjetoAtividade;
     if (!empty($this->iCodigo) && !empty($this->iAno)) {
 
       $oDaoProjAtiv     = db_utils::getDao("orcprojativ");

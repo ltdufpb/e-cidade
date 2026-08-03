@@ -11,6 +11,7 @@ class Store extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -48,25 +49,26 @@ class Store extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "comissao.required" => utf8_encode("Código do tipo de sessão da comissão não informado."),
-            "comissao.integer" => utf8_encode("Código inválido do tipo de sessão da comissão."),
-            "comissao.exists" => utf8_encode("Código não encontrado do tipo de sessão da comissão."),
-            "tiposessao.required" => utf8_encode("Código do tipo de sessão não informado."),
-            "tiposessao.integer" => utf8_encode("Código inválido do tipo de sessão."),
-            "tiposessao.exists" => utf8_encode("Código não encontrado do tipo de sessão."),
-            "tiposessao.unique" => utf8_encode("Tipo de sessão já cadastrado para a comissão."),
-            "quantidade.required" => utf8_encode("Quantidade não informada."),
-            "quantidade.integer" => utf8_encode("Quantidade inválida."),
+            "comissao.required" => mb_convert_encoding("Código do tipo de sessão da comissão não informado.", 'UTF-8', 'ISO-8859-1'),
+            "comissao.integer" => mb_convert_encoding("Código inválido do tipo de sessão da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "comissao.exists" => mb_convert_encoding("Código não encontrado do tipo de sessão da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "tiposessao.required" => mb_convert_encoding("Código do tipo de sessão não informado.", 'UTF-8', 'ISO-8859-1'),
+            "tiposessao.integer" => mb_convert_encoding("Código inválido do tipo de sessão.", 'UTF-8', 'ISO-8859-1'),
+            "tiposessao.exists" => mb_convert_encoding("Código não encontrado do tipo de sessão.", 'UTF-8', 'ISO-8859-1'),
+            "tiposessao.unique" => mb_convert_encoding("Tipo de sessão já cadastrado para a comissão.", 'UTF-8', 'ISO-8859-1'),
+            "quantidade.required" => mb_convert_encoding("Quantidade não informada.", 'UTF-8', 'ISO-8859-1'),
+            "quantidade.integer" => mb_convert_encoding("Quantidade inválida.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

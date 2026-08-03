@@ -38,7 +38,7 @@ require_once modification("dbforms/db_funcoes.php");
 
 $oPost = db_utils::postMemory($_POST); 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oIpe       = new cl_ipe;
 $oDaoCfpess = new cl_cfpess;
@@ -53,7 +53,7 @@ if ( isset($alterar) ) {
 
   db_inicio_transacao();
   
-  if ( trim($r11_recpatrafasta) == 't' ) {
+  if ( trim((string) $r11_recpatrafasta) == 't' ) {
     $lRecPatraFasta = "true";
   } else {
     $lRecPatraFasta = "false";
@@ -70,32 +70,32 @@ if ( isset($alterar) ) {
 
     for( $iIndice = 0; $iIndice < $iColunas; $iIndice++) {
 
-      $dcoluna = pg_fieldname($rsCfpess, $iIndice);
+      $dcoluna = pg_field_name($rsCfpess, $iIndice);
       $dtipoco = pg_field_type($rsCfpess, $iIndice);
 
-      if ( strpos( trim($dtipoco), "bool" ) === false ) {
+      if ( !str_contains( trim($dtipoco), "bool" ) ) {
 
-        if (trim($$dcoluna) == "") {
+        if (trim((string) ${$dcoluna}) == "") {
 
           if (trim($dtipoco) == "date") {
-            $$dcoluna = null;
+            ${$dcoluna} = null;
           } else if (strpos(trim($dtipoco),"float") == true || strpos(trim($dtipoco),"int") == true) {
-            $$dcoluna = "0";
+            ${$dcoluna} = "0";
           } else{
-            $$dcoluna = "";
+            ${$dcoluna} = "";
           }
         }
 
       } else {
 
-        if (trim($$dcoluna) == 't') {
-          $$dcoluna = "true";
+        if (trim((string) ${$dcoluna}) == 't') {
+          ${$dcoluna} = "true";
         } else {
-          $$dcoluna = "false";
+          ${$dcoluna} = "false";
         }
       }
 
-      $oDaocfpess->$dcoluna = $$dcoluna;
+      $oDaocfpess->$dcoluna = ${$dcoluna};
     }
   }
 

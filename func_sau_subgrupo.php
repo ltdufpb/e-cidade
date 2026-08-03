@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_subgrupo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoSauSubGrupo = new cl_sau_subgrupo;
 $oDaoSauSubGrupo->rotulo->label("sd61_i_codigo");
@@ -164,9 +164,9 @@ $oDaoSauSubGrupo->rotulo->label("sd61_c_subgrupo");
 
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_sd61_c_nome)) {
-          $repassa = array("chave_sd61_i_codigo"=>$chave_sd61_i_codigo,"chave_sd61_c_nome"=>$chave_sd61_c_nome);
+          $repassa = ["chave_sd61_i_codigo"=>$chave_sd61_i_codigo,"chave_sd61_c_nome"=>$chave_sd61_c_nome];
         }
         db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

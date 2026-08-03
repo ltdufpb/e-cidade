@@ -33,7 +33,7 @@ require_once modification("libs/db_libpessoal.php");
 require_once modification("classes/db_cadferia_classe.php");
 require_once modification("dbforms/db_funcoes.php");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcadferia = new cl_cadferia;
 $db_opcao = 1;
 $db_botao = true;
@@ -68,7 +68,7 @@ if(isset($excluir)){
           
           $oDadosRubricasFerias = db_utils::fieldsMemory($rsRubricasEspeciaisFerias, 0);
           
-          $aRubricasFerias   = array();
+          $aRubricasFerias   = [];
           $aRubricasFerias[] = $oDadosRubricasFerias->r11_ferias;
           $aRubricasFerias[] = $oDadosRubricasFerias->r11_fer13;
           $aRubricasFerias[] = $oDadosRubricasFerias->r11_ferabo;
@@ -123,8 +123,8 @@ if(isset($excluir)){
       if($cadferia[0]["r30_proc2"] >= $subpes){
     
         $subpes = $cadferia[0]["r30_proc2"];
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1] = "r30_per2i";
         $matriz1[2] = "r30_per2f";
         $matriz1[3] = "r30_proc2";
@@ -161,7 +161,7 @@ if(isset($excluir)){
       $erro_msg = "Usuário, alguns procedimentos não podem ser feitos automaticamente \\n
                    pelo sistema, portanto proceda da seguinte maneira:\\n\\n
                    - Reinicialize o ponto de salário para este funcionário.";
-      if(strtolower($cadferia[0]["r30_ponto"]) == "c"){
+      if(strtolower((string) $cadferia[0]["r30_ponto"]) == "c"){
         $condicaoaux = " and r47_regist = ".db_sqlformat($r30_regist);
         db_delete("pontocom", bb_condicaosubpes("r47_").$condicaoaux);
     
@@ -215,8 +215,8 @@ if(isset($excluir)){
       db_selectmax("pensao", $sql);
     
       for ($Ipensao=0; $Ipensao<count($pensao); $Ipensao++) {
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $condicaoaux  = " and r52_regist = ".db_sqlformat($pensao[$Ipensao]["r52_regist"]);
         $condicaoaux .= " and r52_numcgm = ".db_sqlformat($pensao[$Ipensao]["r52_numcgm"]);
 
@@ -301,7 +301,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 if(isset($excluir)) {
   
   $sMsgNotificacao = "Processamento concluído.\\nNão esqueça de inicializar o ponto do funcionário.\\nTomar cuidado com as rubricas variáveis informadas no ponto.";
-  if(trim($erro_msg) != ""){
+  if(trim((string) $erro_msg) != ""){
     $sMsgNotificacao = $erro_msg;
   }
   db_msgbox($sMsgNotificacao);  

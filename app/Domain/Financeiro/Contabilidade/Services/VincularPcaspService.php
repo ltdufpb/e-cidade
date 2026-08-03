@@ -82,9 +82,7 @@ class VincularPcaspService
                 $ateNivel = $estrutural->getEstruturalAteNivel();
 
                 $filtros['estrutural'] = $ateNivel;
-                $contas = $this->getContasEcidade($filtros)->map(function (Conplano $conplano) {
-                    return $conplano->c60_codigo;
-                });
+                $contas = $this->getContasEcidade($filtros)->map(fn(Conplano $conplano) => $conplano->c60_codigo);
 
                 $this->vincularContas($pcasp, $contas->toArray());
             });
@@ -205,9 +203,7 @@ class VincularPcaspService
      */
     private function removeAtributosConplano(Pcasp $pcasp, Collection $contasEcidade)
     {
-        $codCons = $contasEcidade->map(function (Conplano $conplano) {
-            return $conplano->c60_codcon;
-        });
+        $codCons = $contasEcidade->map(fn(Conplano $conplano) => $conplano->c60_codcon);
 
         DB::table('contabilidade.conplanoatributos')
             ->where('c120_conplanosistema', ConplanoAtributos::SISTEMA_SICONFI)

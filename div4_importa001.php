@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clcgm = new cl_cgm;
 $clcgm->rotulo->label();
 $clrotulo = new rotulocampo;
@@ -114,81 +114,81 @@ a.nome:hover {
   <center>
     <?php 	
 	$mensagem_semdebitos = false;
-	if(isset($HTTP_POST_VARS["pesquisar"]) || isset($matricula) || isset($inscricao)) {
+	if(isset($_POST["pesquisar"]) || isset($matricula) || isset($inscricao)) {
 	//aqui é pra se clicar no link da matricula em cai3_gerfinanc002.php
 	  if(isset($inscricao) && !empty($inscricao))
-   	    $HTTP_POST_VARS["q02_inscr"] = $inscricao;
+   	    $_POST["q02_inscr"] = $inscricao;
       if(isset($matricula) && !empty($matricula))
-	    $HTTP_POST_VARS["j01_matric"] = $matricula;
+	    $_POST["j01_matric"] = $matricula;
 	
-	  if(!empty($HTTP_POST_VARS["z01_numcgm"])) {
-	    $result = db_query("select z01_numcgm as k00_numcgm from cgm where z01_numcgm = ".$HTTP_POST_VARS["z01_numcgm"]);
-		if(pg_numrows($result) == 0) {
+	  if(!empty($_POST["z01_numcgm"])) {
+	    $result = db_query("select z01_numcgm as k00_numcgm from cgm where z01_numcgm = ".$_POST["z01_numcgm"]);
+		if(pg_num_rows($result) == 0) {
 		  db_msgbox("Numcgm inexistente");
 		  db_redireciona();
 		  exit;
 		} else {
 		  $resultaux = $result;
-	      if(!($result = debitos_tipos_numcgm($HTTP_POST_VARS["z01_numcgm"]))) {
+	      if(!($result = debitos_tipos_numcgm($_POST["z01_numcgm"]))) {
             //db_msgbox('Sem débitos a pagar');
 			$mensagem_semdebitos = true;
 			$result = $resultaux;		
 			unset($resultaux);
 		  }
-		  $arg = "numcgm=".$HTTP_POST_VARS["z01_numcgm"];		  
+		  $arg = "numcgm=".$_POST["z01_numcgm"];		  
 	    }
-	  } else if(!empty($HTTP_POST_VARS["z01_numcgm"])) {
- 	    $result = db_query("select z01_numcgm as k00_numcgm from cgm where z01_numcgm = ".$HTTP_POST_VARS["db_numcgm"]);
-		if(pg_numrows($result) == 0) {
+	  } else if(!empty($_POST["z01_numcgm"])) {
+ 	    $result = db_query("select z01_numcgm as k00_numcgm from cgm where z01_numcgm = ".$_POST["db_numcgm"]);
+		if(pg_num_rows($result) == 0) {
 		  db_msgbox("Numcgm inexistente");
 		  db_redireciona();
 		  exit;
 		} else {
 		  $resultaux = $result;
-	      if(!($result = debitos_tipos_numcgm($HTTP_POST_VARS["db_numcgm"]))) {
+	      if(!($result = debitos_tipos_numcgm($_POST["db_numcgm"]))) {
             //db_msgbox('Sem débitos a pagar');
 			$mensagem_semdebitos = true;
 			$result = $resultaux;
 			unset($resultaux);
 		  }
-		  $arg = "numcgm=".$HTTP_POST_VARS["db_numcgm"];
+		  $arg = "numcgm=".$_POST["db_numcgm"];
 		}
-	  } else if(!empty($HTTP_POST_VARS["j01_matric"])) {
+	  } else if(!empty($_POST["j01_matric"])) {
   	    $result = db_query("select j01_matric,j01_numcgm as k00_numcgm 
 		                   from iptubase 
-		                   where j01_matric = ".$HTTP_POST_VARS["j01_matric"]);
-		if(pg_numrows($result) == 0) {
+		                   where j01_matric = ".$_POST["j01_matric"]);
+		if(pg_num_rows($result) == 0) {
 		  db_msgbox("Matrícula inexistente");
 		  db_redireciona();
 		  exit;
 		} else {
 	      $resultaux = $result;
-		  if(!($result = debitos_tipos_matricula($HTTP_POST_VARS["j01_matric"]))) {
+		  if(!($result = debitos_tipos_matricula($_POST["j01_matric"]))) {
             //db_msgbox('Sem débitos a pagar');
 			$mensagem_semdebitos = true;
             $result = $resultaux;
 			unset($resultaux);
 		  }
-		  $arg = "matric=".$HTTP_POST_VARS["j01_matric"];
+		  $arg = "matric=".$_POST["j01_matric"];
 		}
-	  } else if(!empty($HTTP_POST_VARS["q02_inscr"])) {
-  	    $result = db_query("select q02_inscr,q02_numcgm as k00_numcgm from issbase where q02_inscr = ".$HTTP_POST_VARS["q02_inscr"]);
-		if(pg_numrows($result) == 0) {
+	  } else if(!empty($_POST["q02_inscr"])) {
+  	    $result = db_query("select q02_inscr,q02_numcgm as k00_numcgm from issbase where q02_inscr = ".$_POST["q02_inscr"]);
+		if(pg_num_rows($result) == 0) {
 		  db_msgbox("Inscrição inexistente");
 		  db_redireciona();
 		  exit;
 		} else {
           $resultaux = $result;
-		  if(!($result = debitos_tipos_inscricao($HTTP_POST_VARS["q02_inscr"]))) {
+		  if(!($result = debitos_tipos_inscricao($_POST["q02_inscr"]))) {
             //db_msgbox('Sem débitos a pagar');
 			$mensagem_semdebitos = true;
             $result = $resultaux;
 			unset($resultaux);
 		  }
-	      $arg = "inscr=".$HTTP_POST_VARS["q02_inscr"];
+	      $arg = "inscr=".$_POST["q02_inscr"];
 		}
-	  } else if(!empty($HTTP_POST_VARS["k00_numpre"])) {
-		if(!($result = debitos_tipos_numpre($HTTP_POST_VARS["k00_numpre"]))) {
+	  } else if(!empty($_POST["k00_numpre"])) {
+		if(!($result = debitos_tipos_numpre($_POST["k00_numpre"]))) {
 
 /*          $result = db_query("select k00_numpre,k00_numpar
 		                       from recibopaga 
@@ -214,25 +214,25 @@ a.nome:hover {
 		  exit;		
 		}
 		$resultaux = 1;
-	    $arg = "numpre=".$HTTP_POST_VARS["k00_numpre"];
-	  }  else if(!empty($HTTP_POST_VARS["v07_parcel"])) {
-	    $Rec = db_query("select v07_numpre from termo where v07_parcel = ".$HTTP_POST_VARS["v07_parcel"]);
-		if(pg_numrows($Rec) == 0)
-		  db_erro("Erro(175) não foi encontrado numpre pelo codigo do parcelamento ".$HTTP_POST_VARS["v07_parcel"]);
-	    if(!($result = debitos_tipos_numpre(pg_result($Rec,0,0)))) {
+	    $arg = "numpre=".$_POST["k00_numpre"];
+	  }  else if(!empty($_POST["v07_parcel"])) {
+	    $Rec = db_query("select v07_numpre from termo where v07_parcel = ".$_POST["v07_parcel"]);
+		if(pg_num_rows($Rec) == 0)
+		  db_erro("Erro(175) não foi encontrado numpre pelo codigo do parcelamento ".$_POST["v07_parcel"]);
+	    if(!($result = debitos_tipos_numpre(pg_fetch_result($Rec,0,0)))) {
           db_msgbox('Sem débitos a pagar');
 		  $mensagem_semdebitos = true;
 		  db_redireciona();
 		  exit;		
 		}
 		$resultaux = 1;
-	    $arg = "numpre=".pg_result($Rec,0,0);
-		$Parcelamento = $HTTP_POST_VARS["v07_parcel"];		
-		pg_freeresult($Rec);
+	    $arg = "numpre=".pg_fetch_result($Rec,0,0);
+		$Parcelamento = $_POST["v07_parcel"];		
+		pg_free_result($Rec);
 	  }
 	  $dados = db_query("select z01_numcgm,z01_nome,z01_ender,z01_munic,z01_uf,z01_cgccpf,z01_ident 
 	                    from cgm 
-						where z01_numcgm = ".pg_result($result,0,"k00_numcgm"));
+						where z01_numcgm = ".pg_fetch_result($result,0,"k00_numcgm"));
 	  db_fieldsmemory($dados,0);	  
 	?>
         <table width="100%" border="1" cellspacing="0" cellpadding="0">
@@ -246,7 +246,7 @@ a.nome:hover {
                           <input class="btcols" type="text" name="z01_numcgm" value="<?=@$z01_numcgm?>" size="5" readonly> 
                           &nbsp;&nbsp;&nbsp; 
                           <?php 
-					  parse_str($arg);
+					  parse_str((string) $arg, $result);
 					  if(isset($matric))
 					    $Label = "<a href='' onclick='js_mostrabic_matricula();return false;'>Matrícula:</a>";
 					  else if(isset($inscr))
@@ -284,7 +284,7 @@ a.nome:hover {
                     </table></td>
                   <td width="67%" valign="top"> 
                     <?php 
-		    $numrows = pg_numrows($result);
+		    $numrows = pg_num_rows($result);
 			   echo "<script>
 			   function js_envia(chave){
 			     debitos.location.href=chave;		        
@@ -298,7 +298,7 @@ a.nome:hover {
 				<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 				  <tr>
 				    <td valign=\"top\" class=\"links\" id=\"tipodeb$i\">
-				      <a title=\"".pg_result($result,$i,"k00_tipo")."\" class=\"links\" href=\"\" id=\"tipodeb$i\" onClick=\"js_envia('div4_importa002.php?".$arg."&tipo=".pg_result($result,$i,"k00_tipo")."&emrec=".pg_result($result,$i,"k00_emrec")."&agnum=".pg_result($result,$i,"k00_agnum")."&agpar=".pg_result($result,$i,"k00_agpar")."&db_datausu=');return false;\" target=\"debitos\">".pg_result($result,$i,"k00_descr")."&nbsp;</a>
+				      <a title=\"".pg_fetch_result($result,$i,"k00_tipo")."\" class=\"links\" href=\"\" id=\"tipodeb$i\" onClick=\"js_envia('div4_importa002.php?".$arg."&tipo=".pg_fetch_result($result,$i,"k00_tipo")."&emrec=".pg_fetch_result($result,$i,"k00_emrec")."&agnum=".pg_fetch_result($result,$i,"k00_agnum")."&agpar=".pg_fetch_result($result,$i,"k00_agpar")."&db_datausu=');return false;\" target=\"debitos\">".pg_fetch_result($result,$i,"k00_descr")."&nbsp;</a>
 					</td>
 				  </tr>
 				</table>\n";

@@ -93,7 +93,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                 <td>
                  <?php 
                    $sql = "select nome from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario");
-                   echo pg_result(db_query($sql),0,"nome");
+                   echo pg_fetch_result(db_query($sql),0,"nome");
 
                  ?>
                 </td>
@@ -157,7 +157,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                   </td>
                   <td nowrap>
                   <?php 
-                   $aUsuarios = array("0" => "Selecione o Usuário");
+                   $aUsuarios = ["0" => "Selecione o Usuário"];
                    db_select("p62_id_usorec",$aUsuarios,true,$db_opcao);
                   ?>
 
@@ -358,12 +358,12 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
 				             from proctransferproc
 				            where p63_codproc=$p58_codproc";
 				$result_proc=db_query($sql_proc) or die($sql_proc);
-				if (pg_numrows($result_proc)!=0) {
-					for ($yy=0; $yy<pg_numrows($result_proc); $yy++) {
+				if (pg_num_rows($result_proc)!=0) {
+					for ($yy=0; $yy<pg_num_rows($result_proc); $yy++) {
 						db_fieldsmemory($result_proc,$yy);
 						$sql_and="select * from proctransand where p64_codtran=$p63_codtran";
 						$result_and=db_query($sql_and) or die($sql_and);
-						if (pg_numrows($result_and)==0) {
+						if (pg_num_rows($result_and)==0) {
 							$passou=false;
 						}
 					}
@@ -949,7 +949,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 function js_ordena(ord){

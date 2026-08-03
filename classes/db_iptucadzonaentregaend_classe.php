@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE iptucadzonaentregaend
 class cl_iptucadzonaentregaend { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j87_sequencial = 0; 
-   var $j87_iptucadzonaentrega = 0; 
-   var $j87_lograd = 0; 
-   var $j87_numero = 0; 
-   var $j87_compl = null; 
+   public $j87_sequencial = 0; 
+   public $j87_iptucadzonaentrega = 0; 
+   public $j87_lograd = 0; 
+   public $j87_numero = 0; 
+   public $j87_compl = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j87_sequencial = int4 = Sequencial do iptucadzonaentregaend 
                  j87_iptucadzonaentrega = int4 = Codigo da zona de entrega 
                  j87_lograd = int4 = cód. Logradouro 
@@ -56,10 +56,10 @@ class cl_iptucadzonaentregaend {
                  j87_compl = varchar(20) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_iptucadzonaentregaend() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucadzonaentregaend"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_iptucadzonaentregaend {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j87_sequencial = pg_result($result,0,0); 
+       $this->j87_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptucadzonaentregaend_j87_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j87_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j87_sequencial)){
          $this->erro_sql = " Campo j87_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_iptucadzonaentregaend {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Endereco da zona de entrega ($this->j87_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Endereco da zona de entrega já Cadastrado";
@@ -194,14 +194,14 @@ class cl_iptucadzonaentregaend {
      $resaco = $this->sql_record($this->sql_query_file($this->j87_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8058,'$this->j87_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1361,8058,'','".AddSlashes(pg_result($resaco,0,'j87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1361,8053,'','".AddSlashes(pg_result($resaco,0,'j87_iptucadzonaentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1361,8055,'','".AddSlashes(pg_result($resaco,0,'j87_lograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1361,8056,'','".AddSlashes(pg_result($resaco,0,'j87_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1361,8057,'','".AddSlashes(pg_result($resaco,0,'j87_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1361,8058,'','".AddSlashes(pg_fetch_result($resaco,0,'j87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1361,8053,'','".AddSlashes(pg_fetch_result($resaco,0,'j87_iptucadzonaentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1361,8055,'','".AddSlashes(pg_fetch_result($resaco,0,'j87_lograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1361,8056,'','".AddSlashes(pg_fetch_result($resaco,0,'j87_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1361,8057,'','".AddSlashes(pg_fetch_result($resaco,0,'j87_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_iptucadzonaentregaend {
       $this->atualizacampos();
      $sql = " update iptucadzonaentregaend set ";
      $virgula = "";
-     if(trim($this->j87_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j87_sequencial"])){ 
+     if(trim((string) $this->j87_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j87_sequencial"])){ 
        $sql  .= $virgula." j87_sequencial = $this->j87_sequencial ";
        $virgula = ",";
-       if(trim($this->j87_sequencial) == null ){ 
+       if(trim((string) $this->j87_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial do iptucadzonaentregaend nao Informado.";
          $this->erro_campo = "j87_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_iptucadzonaentregaend {
          return false;
        }
      }
-     if(trim($this->j87_iptucadzonaentrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j87_iptucadzonaentrega"])){ 
+     if(trim((string) $this->j87_iptucadzonaentrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j87_iptucadzonaentrega"])){ 
        $sql  .= $virgula." j87_iptucadzonaentrega = $this->j87_iptucadzonaentrega ";
        $virgula = ",";
-       if(trim($this->j87_iptucadzonaentrega) == null ){ 
+       if(trim((string) $this->j87_iptucadzonaentrega) == null ){ 
          $this->erro_sql = " Campo Codigo da zona de entrega nao Informado.";
          $this->erro_campo = "j87_iptucadzonaentrega";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_iptucadzonaentregaend {
          return false;
        }
      }
-     if(trim($this->j87_lograd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j87_lograd"])){ 
+     if(trim((string) $this->j87_lograd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j87_lograd"])){ 
        $sql  .= $virgula." j87_lograd = $this->j87_lograd ";
        $virgula = ",";
-       if(trim($this->j87_lograd) == null ){ 
+       if(trim((string) $this->j87_lograd) == null ){ 
          $this->erro_sql = " Campo cód. Logradouro nao Informado.";
          $this->erro_campo = "j87_lograd";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_iptucadzonaentregaend {
          return false;
        }
      }
-     if(trim($this->j87_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j87_numero"])){ 
+     if(trim((string) $this->j87_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j87_numero"])){ 
        $sql  .= $virgula." j87_numero = $this->j87_numero ";
        $virgula = ",";
-       if(trim($this->j87_numero) == null ){ 
+       if(trim((string) $this->j87_numero) == null ){ 
          $this->erro_sql = " Campo Numero do imovel nao Informado.";
          $this->erro_campo = "j87_numero";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_iptucadzonaentregaend {
          return false;
        }
      }
-     if(trim($this->j87_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j87_compl"])){ 
+     if(trim((string) $this->j87_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j87_compl"])){ 
        $sql  .= $virgula." j87_compl = '$this->j87_compl' ";
        $virgula = ",";
-       if(trim($this->j87_compl) == null ){ 
+       if(trim((string) $this->j87_compl) == null ){ 
          $this->erro_sql = " Campo Complemento nao Informado.";
          $this->erro_campo = "j87_compl";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_iptucadzonaentregaend {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8058,'$this->j87_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j87_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1361,8058,'".AddSlashes(pg_result($resaco,$conresaco,'j87_sequencial'))."','$this->j87_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1361,8058,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j87_sequencial'))."','$this->j87_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j87_iptucadzonaentrega"]))
-           $resac = db_query("insert into db_acount values($acount,1361,8053,'".AddSlashes(pg_result($resaco,$conresaco,'j87_iptucadzonaentrega'))."','$this->j87_iptucadzonaentrega',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1361,8053,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j87_iptucadzonaentrega'))."','$this->j87_iptucadzonaentrega',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j87_lograd"]))
-           $resac = db_query("insert into db_acount values($acount,1361,8055,'".AddSlashes(pg_result($resaco,$conresaco,'j87_lograd'))."','$this->j87_lograd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1361,8055,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j87_lograd'))."','$this->j87_lograd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j87_numero"]))
-           $resac = db_query("insert into db_acount values($acount,1361,8056,'".AddSlashes(pg_result($resaco,$conresaco,'j87_numero'))."','$this->j87_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1361,8056,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j87_numero'))."','$this->j87_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j87_compl"]))
-           $resac = db_query("insert into db_acount values($acount,1361,8057,'".AddSlashes(pg_result($resaco,$conresaco,'j87_compl'))."','$this->j87_compl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1361,8057,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j87_compl'))."','$this->j87_compl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_iptucadzonaentregaend {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8058,'$j87_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1361,8058,'','".AddSlashes(pg_result($resaco,$iresaco,'j87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1361,8053,'','".AddSlashes(pg_result($resaco,$iresaco,'j87_iptucadzonaentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1361,8055,'','".AddSlashes(pg_result($resaco,$iresaco,'j87_lograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1361,8056,'','".AddSlashes(pg_result($resaco,$iresaco,'j87_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1361,8057,'','".AddSlashes(pg_result($resaco,$iresaco,'j87_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1361,8058,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j87_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1361,8053,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j87_iptucadzonaentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1361,8055,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j87_lograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1361,8056,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j87_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1361,8057,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j87_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptucadzonaentregaend
@@ -407,7 +407,7 @@ class cl_iptucadzonaentregaend {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptucadzonaentregaend";

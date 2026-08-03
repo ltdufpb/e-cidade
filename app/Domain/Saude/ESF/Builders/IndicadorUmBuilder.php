@@ -75,7 +75,7 @@ class IndicadorUmBuilder
             'nascimento' => db_formatar($paciente->z01_d_nasc, 'd'),
             'sexo' => $paciente->z01_v_sexo == 'F' ? 'FEMININO' : 'MASCULINO',
             'cns' => $cartaoSus ? $cartaoSus->s115_c_cartaosus : 'NÃO INFORMADO',
-            'cpf' => $paciente->z01_v_cgccpf ? $paciente->z01_v_cgccpf : 'NÃO INFORMADO',
+            'cpf' => $paciente->z01_v_cgccpf ?: 'NÃO INFORMADO',
             'situacao' => $preNatal->s170_ativo ? 'ATIVO' : 'RESOLVIDO',
             'dum' => $preNatal->s170_data_inicio->format('d/m/Y'),
             'dataParto' => $preNatal->s170_data_fim ? $preNatal->s170_data_fim->format('d/m/Y') : '',

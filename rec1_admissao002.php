@@ -38,7 +38,7 @@ include modification("classes/db_admissao_classe.php");
 include modification("classes/db_rhpessoal_classe.php");
 include modification("classes/db_rhparam_classe.php");
 include modification("dbforms/db_funcoes.php");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 include modification("classes/db_protprocesso_classe.php");
 $clprotprocesso = new cl_protprocesso;
@@ -371,9 +371,9 @@ if(isset($incluir)){
 
       // Registra alteração para envio do formulário S2205
       foreach(S2205::getCamposControleAlteracao() as $campo){
-          if(isset($$campo)){
+          if(isset(${$campo})){
               if(isset($dadosAtuais->$campo)){
-                  if( $dadosAtuais->$campo != $$campo){
+                  if( $dadosAtuais->$campo != ${$campo}){
                       $servidorAlteracao = ServidorAlteracao::findMatriculaByLayout($h07_regist, Tipo::S2205);
                       $servidorAlteracao->setDataS2205(new DBDate(date('Y-m-d')));
                       $servidorAlteracao->save();
@@ -689,7 +689,7 @@ function validaAlterarEstagiarioS2306($seqpes = null,
   if (!$alteraS2306) {
     if (!empty($dataterminoestagio)) {
         //fazemos a conversao do input
-        $dataterminoestagio = explode('/', $dataterminoestagio);
+        $dataterminoestagio = explode('/', (string) $dataterminoestagio);
         $dataterminoestagio = "{$dataterminoestagio[2]}-{$dataterminoestagio[1]}-{$dataterminoestagio[0]}";
     }
     if ($daoEstagioVinculo->rh260_dataterminoestagio != $dataterminoestagio) {

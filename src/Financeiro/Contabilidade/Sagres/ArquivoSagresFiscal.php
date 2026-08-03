@@ -41,18 +41,6 @@ abstract class ArquivoSagresFiscal implements ArquivosSagresFiscalInterface
      */
     const TEMPLATE_PATH = ECIDADE_PATH . DS . 'src' . DS . 'Financeiro' . DS . 'Contabilidade' . DS . 'Sagres' . DS;
     /**
-     * @var string
-     */
-    protected $periodo;
-    /**
-     * @var integer
-     */
-    protected $ano;
-    /**
-     * @var integer
-     */
-    protected $codigoTCE;
-    /**
      * @var array
      */
     protected $codigoInstituicoes = [];
@@ -73,13 +61,11 @@ abstract class ArquivoSagresFiscal implements ArquivosSagresFiscalInterface
      * @param array $codigoInstituicoes
      * @param integer $ano
      * @param integer $codigoTCE
+     * @param string $periodo
      */
-    public function __construct($periodo, array $codigoInstituicoes, $ano, $codigoTCE)
+    public function __construct(protected $periodo, array $codigoInstituicoes, protected $ano, protected $codigoTCE)
     {
-        $this->periodo = $periodo;
-        $this->ano = $ano;
         $this->codigoInstituicoes = $codigoInstituicoes;
-        $this->codigoTCE = $codigoTCE;
     }
 
     /**

@@ -69,26 +69,26 @@ if ( isset($oPost->incluir) ) {
 		}
 
     $sMsgErro = $clrecreparcori->erro_msg;
-	
+
 		if ( !$lSqlErro ) {
-   		
+
 			$clrecreparcdest->k71_codigo  = $clrecreparcori->k70_codigo;
 			$clrecreparcdest->k71_recdest = $oPost->k71_recdest;
 			$clrecreparcdest->incluir($clrecreparcori->k70_codigo);
-		
+
 			if ( $clrecreparcdest->erro_status == "0") {
 				$lSqlErro = true;
 			}
-	
+
 	    $sMsgErro = $clrecreparcdest->erro_msg;			
-		
+
 		}
-		
+
 		db_fim_transacao($lSqlErro);
 		*/
   	  	
   } else {
-		
+
     $rsRecReparcArretipo = $clrecreparcarretipo->sql_record($clrecreparcarretipo->sql_query_recreparcori(null, 
                                                                                                          "*", 
                                                                                                          null, 
@@ -96,23 +96,23 @@ if ( isset($oPost->incluir) ) {
                                                                                                          );
     $lSqlErro = false;
     if ($clrecreparcarretipo->numrows > 0) {
-      
+
       for ($iInd = 0 ; $iInd < $clrecreparcarretipo->numrows; $iInd++) {
-        
+
         $iK72_sequencial = db_utils::fieldsMemory($rsRecReparcArretipo,$iInd)->k72_sequencial;
-        if (trim($iK72_sequencial) == "" && $iK72_sequencial == null) {
-          
+        if (trim((string) $iK72_sequencial) == "" && $iK72_sequencial == null) {
+
           $lSqlErro = true;
         }
       }
-            
+
     }
 
     if ($lSqlErro) {
       $sMsgErro = "Já existe um intervalo númerico fornecido entre a parcela inicial e a final cadastrada para esta receita !";
       $db_botao = true;
     }
-  	
+
 		//$lSqlErro = true;
 		//$sMsgErro = "Já existe um intervalo númerico fornecido entre a parcela inicial e a final cadastrada para esta receita !";
 	

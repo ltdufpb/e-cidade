@@ -134,11 +134,11 @@ $oRotulo->label("cc31_classificacaocredores");
         </td>
         <td>
           <?php
-          $aOpcoes = array(
+          $aOpcoes = [
               0 => "Todos",
               RelatorioEmpenhoClassificacaoCredores::SITUACAO_PAGOS => "Pagos",
               RelatorioEmpenhoClassificacaoCredores::SITUACAO_APAGAR => "A Pagar"
-          );
+          ];
           db_select('iSituacao', $aOpcoes, true, 1, "style='width: 95;'");
           ?>
         </td>

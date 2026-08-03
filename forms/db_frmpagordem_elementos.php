@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clempelemento = new cl_empelemento;
 $clpagordemele = new cl_pagordemele;
 $clpagordem = new cl_pagordem;
@@ -318,30 +318,30 @@ if($desabilita==true || $db_opcao==3){
 
 		    if($db_opcao!=1 && $e50_codord!=""){//quando naum for inclusao
 		      $e="e53_vlrpag_$o56_codele";
-		      $$e = number_format($e53_vlrpag,"2",".","");
+		      ${$e} = number_format($e53_vlrpag,"2",".","");
 		      $e="e53_vlranu_$o56_codele";
-		      $$e = number_format($e53_vlranu,"2",".","");
+		      ${$e} = number_format($e53_vlranu,"2",".","");
 		      $e="e53_valor_$o56_codele";
-		      $$e = number_format($e53_valor,"2",".","");
+		      ${$e} = number_format($e53_valor,"2",".","");
                    }else{
 		      $e="e53_vlrpag_$o56_codele";
-		      $$e = "0.00";
+		      ${$e} = "0.00";
 		      $e="e53_vlranu_$o56_codele";
-		      $$e = "0.00";
+		      ${$e} = "0.00";
 		      $e="e53_valor_$o56_codele";
-		      $$e = "0.00";
+		      ${$e} = "0.00";
 		   }
 		     $e="e64_vlremp_$o56_codele";
-		     $$e = number_format($e64_vlremp,"2",".","");
+		     ${$e} = number_format($e64_vlremp,"2",".","");
 
 		     $e="e64_vlrliq_$o56_codele";
-		     $$e = number_format($e64_vlrliq,"2",".","");
+		     ${$e} = number_format($e64_vlrliq,"2",".","");
 
 		     $e="e64_vlranu_$o56_codele";
-		     $$e = number_format($e64_vlranu,"2",".","");
+		     ${$e} = number_format($e64_vlranu,"2",".","");
 
 		     $e="e64_vlrpag_$o56_codele";
-		     $$e = number_format($e64_vlrpag,"2",".","");
+		     ${$e} = number_format($e64_vlrpag,"2",".","");
 
                     //rotina que calcula os valores disponiveis
 		   if($db_opcao==1 ){
@@ -392,10 +392,10 @@ if($desabilita==true || $db_opcao==3){
       		   }
 
 		   $a="saldo_$o56_codele";
-  		   $$a = number_format($saldo,"2",".","");
+  		   ${$a} = number_format($saldo,"2",".","");
 
 		   $a="saldo_nota_$o56_codele";
-  		   $$a = number_format($saldo_nota,"2",".","");
+  		   ${$a} = number_format($saldo_nota,"2",".","");
 
 	           db_input("saldo_$o56_codele",7,0,true,'hidden',3);
 	           db_input("saldo_nota_$o56_codele",7,0,true,'hidden',3);
@@ -404,10 +404,10 @@ if($desabilita==true || $db_opcao==3){
 
 
 		     $a="disponivel_$o56_codele";
-  		     $$a = number_format($vlrdis,"2",".","");
+  		     ${$a} = number_format($vlrdis,"2",".","");
 
 		   $a="generico_$o56_codele";
-                   $$a = '0.00';
+                   ${$a} = '0.00';
 
 	    echo "<tr>
    	            <td class='bordas_corp' align='center' title='jose'><small>$o56_elemento </small></td>

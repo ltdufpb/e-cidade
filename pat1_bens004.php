@@ -75,8 +75,8 @@ $clrotulo = new rotulocampo;
 $clsituabens->rotulo->label();
 $clrotulo->label("t56_situac");
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -142,7 +142,7 @@ if (isset($incluir)) {
       db_fieldsmemory($result,0);
     }
 
-    if (trim(@$t52_ident) == "0" or @$t52_ident == "" or @$t52_ident == null){
+    if (trim((string) @$t52_ident) == "0" or @$t52_ident == "" or @$t52_ident == null){
       $clbens->erro_campo = "t52_ident";
       $sqlerro            = true;
       $erro_msg           = "Bem não incluido. Inclusão Abortada.\\n\\nUsuário: Placa de identificação não pode ser zero.\\n\\n Administrador.";
@@ -161,9 +161,9 @@ if (isset($incluir)) {
     }
 
     // Se campo t07_obrigplaca == true, obriga digitacao da placa
-    if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim($t52_ident)) > 0) && $sqlerro == false) {
+    if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim((string) $t52_ident)) > 0) && $sqlerro == false) {
     	
-      if ($t07_obrigplaca == "t" && strlen(trim(@$t52_ident)) == 0 && !isset($tipo_inclui)){
+      if ($t07_obrigplaca == "t" && strlen(trim((string) @$t52_ident)) == 0 && !isset($tipo_inclui)){
         $clbens->erro_campo = "t52_ident";
         $sqlerro            = true;
         $erro_msg           = "Bem não incluido. Inclusão Abortada.\\n\\nUsuário: Placa de identificação não informada.\\n\\n Administrador.";
@@ -264,10 +264,10 @@ if (isset($incluir)) {
             $t52_ident_seq = db_formatar($t52_ident_seq,'f','0',$t07_digseqplaca,'e',0);
             $placa         = $t52_ident.$t52_ident_seq;
           } else if ($t07_confplaca==4) {
-            if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim($t52_ident)) > 0)) {
+            if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim((string) $t52_ident)) > 0)) {
               $placa=$t52_ident;
                           
-              $placa    = str_pad($placa,$t07_digseqplaca,'0',STR_PAD_LEFT);
+              $placa    = str_pad((string) $placa,$t07_digseqplaca,'0',STR_PAD_LEFT);
 
               if ($sqlerro == false && strlen(trim(@$placa)) > 0) {
  		        $sqlbensplaca = $clbensplaca->sql_query(null,"t41_bem as codbem,t52_ident as identificacao",null,"t52_ident = '".str_replace(".","",$placa)."' and t52_instit = $t52_instit and t41_bem <> $t52_bem");
@@ -309,7 +309,7 @@ if (isset($incluir)) {
 
           if ($sqlerro == false) {
             if ($i == 0) {
-              if (strlen(trim($placa)) > 0){
+              if (strlen(trim((string) $placa)) > 0){
                 $placas_geradas = db_formatar($placa,"s","0",$t07_digseqplaca,"e",0)." a ";
               }
             }
@@ -319,7 +319,7 @@ if (isset($incluir)) {
               $xx++;
 
               if ($xx == $qtd_cont) {
-                if (strlen(trim($placa)) > 0){
+                if (strlen(trim((string) $placa)) > 0){
                   $placas_geradas .= db_formatar($placa,"s","0",$t07_digseqplaca,"e",0);
                 }
               }
@@ -352,8 +352,8 @@ if (isset($incluir)) {
               $placaseq      = $t52_ident_seq;
               $t52_ident_seq = $t52_ident_seq+1;
             } else if ($t07_confplaca==4) {
-              if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim($t52_ident)) > 0)) {
-                if (($t07_obrigplaca == "f" || $t07_obrigplaca == "t") && strlen(trim($t52_ident)) > 0){
+              if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim((string) $t52_ident)) > 0)) {
+                if (($t07_obrigplaca == "f" || $t07_obrigplaca == "t") && strlen(trim((string) $t52_ident)) > 0){
                   $placaseq  = $t52_ident;
                   $t52_ident = $t52_ident+1;
                 }
@@ -364,7 +364,7 @@ if (isset($incluir)) {
             //echo $t07_obrigplaca." => |".$placaseq."|<br>";
 
             $t41_obs = "";
-            if (strlen(trim($t52_ident)) == 0){
+            if (strlen(trim((string) $t52_ident)) == 0){
               $placaseq = 0;
               $t41_obs  = "PLACA NÃO INFORMADA";
             }
@@ -477,7 +477,7 @@ if (isset($incluir)) {
               break;
             }
           } else if (isset($dadmat) && trim($dadmat)!="") {
-            $dados_mat = split(",",$dadmat);
+            $dados_mat = preg_split("#,#m",$dadmat);
             $clbensmater->t53_codbem = $t52_bem;
             //				  					db_msgbox($dados_mat[0]." --- ".$dados_mat[1]." --- ".$dados_mat[2]." --- ".$dados_mat[3]);
             $clbensmater->t53_ntfisc = $dados_mat[0];
@@ -573,7 +573,7 @@ if (isset($incluir)) {
 <?php 
 if(isset($incluir)){
 
-  if (trim(@$erro_msg)!=""){
+  if (trim((string) @$erro_msg)!=""){
        db_msgbox($erro_msg);
   }
   if($sqlerro==true){

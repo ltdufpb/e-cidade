@@ -35,18 +35,6 @@
 class ReceitaOrcamentaria {
 
   /**
-   * Codigo
-   * @var integer
-   */
-  protected $iCodigo;
-
-  /**
-   * Ano
-   * @var integer
-   */
-  protected $iAno;
-
-  /**
    * Armazena um objeto do tipo ContaOrcamento
    * @var ContaOrcamento
    */
@@ -110,28 +98,32 @@ class ReceitaOrcamentaria {
    * @throws BusinessException
    * @return ReceitaOrcamentaria
    */
-  public function __construct($iCodigo = null, $iAno = null) {
+  public function __construct(/**
+   * Codigo
+   */
+  protected $iCodigo = null, /**
+   * Ano
+   */
+  protected $iAno = null) {
 
     $this->lDesconto = false;
-    $this->iCodigo = $iCodigo;
-    $this->iAno    = $iAno;
-    if (!empty($iCodigo)) {
+    if (!empty($this->iCodigo)) {
 
-      if (empty($iAno)) {
-        $iAno = db_getsession('DB_anousu');
+      if (empty($this->iAno)) {
+        $this->iAno = db_getsession('DB_anousu');
       }
 
       $oDaoOrcReceita   = db_utils::getDao('orcreceita');
-      $sSqlBuscaReceita = $oDaoOrcReceita->sql_query_file($iAno, $iCodigo);
+      $sSqlBuscaReceita = $oDaoOrcReceita->sql_query_file($this->iAno, $this->iCodigo);
       $rsBuscaReceita   = $oDaoOrcReceita->sql_record($sSqlBuscaReceita);
       if ($oDaoOrcReceita->erro_status == "0") {
-        throw new BusinessException("Não foi possível buscar a receita {$iCodigo}/{$iAno}.");
+        throw new BusinessException("Não foi possível buscar a receita {$this->iCodigo}/{$this->iAno}.");
       }
 
       $oDadoReceita                   = db_utils::fieldsMemory($rsBuscaReceita, 0);
-      $this->iCodigo                  = $iCodigo;
-      $this->iAno                     = $iAno;
-      $this->oContaOrcamento          = ContaOrcamentoRepository::getContaByCodigo($oDadoReceita->o70_codfon, $iAno);
+      $this->iCodigo                  = $this->iCodigo;
+      $this->iAno                     = $this->iAno;
+      $this->oContaOrcamento          = ContaOrcamentoRepository::getContaByCodigo($oDadoReceita->o70_codfon, $this->iAno);
       $this->iTipoRecurso             = $oDadoReceita->o70_codigo;
       $this->nValor                   = $oDadoReceita->o70_valor;
       $this->lReceitaLancada          = $oDadoReceita->o70_reclan == "t" ? true : false;
@@ -155,7 +147,7 @@ class ReceitaOrcamentaria {
 
     $oDadoSqlGeral = new stdClass();
     $oDadoSqlGeral->arrecada = $nValorArrecadacao;
-    list($iAnoAutenticacao, $iMesAutenticacao, $iDiaAutenticacao) = explode("-", $dtAutenticacao);
+    [$iAnoAutenticacao, $iMesAutenticacao, $iDiaAutenticacao] = explode("-", (string) $dtAutenticacao);
 
     /*
      * Verifica se existe desdobramento para a receita que está sendo percorrida
@@ -174,8 +166,8 @@ class ReceitaOrcamentaria {
     /**
      * Verifica se o codigo da fonte é possui recurso livre
      */
-    $aValoresDesdobrados = array();
-    $aReceitas           = array();
+    $aValoresDesdobrados = [];
+    $aReceitas           = [];
     if ($iLinhasBuscaFonte > 0 && $this->getTipoRecurso() == 1) {
 
       $iCodigoFonteReceita = db_utils::fieldsMemory($rsBuscaFonte, 0)->o57_fonte;
@@ -639,7 +631,7 @@ class ReceitaOrcamentaria {
       throw new BusinessException("Não foi possível verificar se a receita {$this->getCodigo()} possui desdobramento.");
     }
 
-    $aDesdobramentos = array();
+    $aDesdobramentos = [];
     if (pg_num_rows($rsBuscaFonte) > 0) {
 
       /**
@@ -664,7 +656,7 @@ class ReceitaOrcamentaria {
       }
 
       $iTotalDesdobramentos = pg_num_rows($rsBuscaEstruturalMae);
-      $aDesdobramentos = array();
+      $aDesdobramentos = [];
       for ($iDesdobramento = 0; $iDesdobramento < $iTotalDesdobramentos; $iDesdobramento++ ) {
 
         $oDesdobramento    = db_utils::fieldsMemory($rsBuscaEstruturalMae, $iDesdobramento);

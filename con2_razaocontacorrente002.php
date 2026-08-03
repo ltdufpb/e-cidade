@@ -39,12 +39,12 @@ $oGet = db_utils::postMemory($_GET,0);
 // definimos variaveis selecionadas nos filtros
 $dDataInicial    = $oGet->dtInicial;
 $dDataFinal      = $oGet->dtFinal;
-$sDataInicial    = implode("-", array_reverse(explode("/",$dDataInicial)));
-$sDataFinal      = implode("-", array_reverse(explode("/",$dDataFinal)));
+$sDataInicial    = implode("-", array_reverse(explode("/",(string) $dDataInicial)));
+$sDataFinal      = implode("-", array_reverse(explode("/",(string) $dDataFinal)));
 $iContaCorrente  = $oGet->iContaCorrente;
 $sReduzidos      = $oGet->sListaReduzido;
-$aDadosRelatorio = array();
-$aAtributos      = array();
+$aDadosRelatorio = [];
+$aAtributos      = [];
 $iInstit         = db_getsession("DB_instit");
 
 $oContaCorrente  = new ContaCorrente($iContaCorrente);
@@ -163,8 +163,8 @@ function getLancamentosContaCorrenteDetalhe($iNumcgm, $dtInicial, $dtFinal, $iFi
  
 function getSaldosIniciais ($dtInicial, $dtFinal, $iContaCorrente, $iReduzido, $iNumcgm, $iOrgao, $iUnidade) {
 
-  $aDataInicial = explode('-', $dtInicial);
-  $iDataInicial = mktime(null, null, null,$aDataInicial[1]  ,$aDataInicial[2]  , $aDataInicial[0], null);
+  $aDataInicial = explode('-', (string) $dtInicial);
+  $iDataInicial = mktime(null, null, null,$aDataInicial[1]  ,$aDataInicial[2]  , $aDataInicial[0]);
   $dDataInicial = date('Y-m-d', $iDataInicial);
 
   $sCampos = " sum(case when c28_tipo = 'D'

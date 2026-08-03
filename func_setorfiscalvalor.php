@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_setorfiscalvalor_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsetorfiscalvalor = new cl_setorfiscalvalor;
 $clsetorfiscalvalor->rotulo->label("j82_codigo");
@@ -104,10 +104,10 @@ $clsetorfiscalvalor->rotulo->label("j82_setorfiscal");
           $sql = $clsetorfiscalvalor->sql_query("",$campos,"j82_codigo","");
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_j82_setorfiscal)) {
-          $repassa = array("chave_j82_codigo"      => $chave_j82_codigo,
-                           "chave_j82_setorfiscal" => $chave_j82_setorfiscal);
+          $repassa = ["chave_j82_codigo"      => $chave_j82_codigo,
+                           "chave_j82_setorfiscal" => $chave_j82_setorfiscal];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

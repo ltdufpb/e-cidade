@@ -197,15 +197,15 @@ class M11131PrevisaoReceita extends PostgresMigration
 
         $this->execute($sql);
 
-        $table = $this->table('avaliacaogruporespostaconta', array(
+        $table = $this->table('avaliacaogruporespostaconta', [
             'id' => 'c06_sequencial',
             'schema' => 'contabilidade'
-        ));
+        ]);
 
         $table
-            ->addColumn('c06_avaliacaogruporesposta', 'integer', array('null' => false))
-            ->addColumn('c06_conta', 'integer', array('null' => false))
-            ->addColumn('c06_ano', 'integer', array('null' => false))
+            ->addColumn('c06_avaliacaogruporesposta', 'integer', ['null' => false])
+            ->addColumn('c06_conta', 'integer', ['null' => false])
+            ->addColumn('c06_ano', 'integer', ['null' => false])
             ->save();
 
         $sql = "
@@ -255,7 +255,7 @@ class M11131PrevisaoReceita extends PostgresMigration
 
     private function excluirPrevisaoReceita()
     {
-        $this->table('avaliacaogruporespostaconta', array('schema' => 'contabilidade'))
+        $this->table('avaliacaogruporespostaconta', ['schema' => 'contabilidade'])
             ->drop();
 
         $sql = "

@@ -69,7 +69,7 @@ try {
      */
     case "imprimeAcessos":
 
-      $aParametros                = array();
+      $aParametros                = [];
       $aParametros["dDataInicio"] = $oParametros->dDataInicio;
       $aParametros["dDataFim"]    = $oParametros->dDataFim;
 
@@ -125,7 +125,7 @@ try {
 
     case "getAcessos":
 
-      $aParametros                = array();
+      $aParametros                = [];
       $aParametros["dDataInicio"] = $oParametros->dDataInicio;
       $aParametros["dDataFim"]    = $oParametros->dDataFim;
 
@@ -187,17 +187,17 @@ try {
         throw new DBException( "Acessos ao sistema: "._M( "{$sCaminhoMensagens}.registros_nao_encontrados" ) );
       }
 
-      $aAcessos          = array();
-      $aCabecalhoAcessos = array();
-      $aDetalhesAcesso   = array();
-      $aRetornoAcessos   = array();
+      $aAcessos          = [];
+      $aCabecalhoAcessos = [];
+      $aDetalhesAcesso   = [];
+      $aRetornoAcessos   = [];
 
       $aAcessos = db_utils::getCollectionByRecord($rsBuscaAcessos, false, false, true);
 
       /**
        * Array para controlar se um logacessa já não foi inserido ao array dos detalhes do acesso, evitando duplicação
        */
-      $aControlaLogAcessa = array();
+      $aControlaLogAcessa = [];
 
       foreach ( $aAcessos as $oAcesso ) {
 
@@ -248,7 +248,7 @@ try {
        */
       foreach ($aCabecalhoAcessos as $iIdItemMenu => $oCabecalhoAcesso) {
 
-        $oCabecalhoAcesso->aDetalhesAcesso = array();
+        $oCabecalhoAcesso->aDetalhesAcesso = [];
         if (isset ($aDetalhesAcesso[$iIdItemMenu]) ) {
           $oCabecalhoAcesso->aDetalhesAcesso = $aDetalhesAcesso[$iIdItemMenu];
         }
@@ -262,10 +262,10 @@ try {
 
     case "getModificacoes":
 
-      $oRetorno->aTabelas   = array();
-      $oRetorno->aRegistros = array();
+      $oRetorno->aTabelas   = [];
+      $oRetorno->aRegistros = [];
 
-      $aParametros                     = array();
+      $aParametros                     = [];
       $aParametros['sEsquema']         = db_stdClass::normalizeStringJsonEscapeString($oParametros->sEsquema);
       $aParametros['sCampo']           = db_stdClass::normalizeStringJsonEscapeString($oParametros->sCampo);
       $aParametros['mValor']           = db_stdClass::normalizeStringJsonEscapeString($oParametros->mValor);
@@ -293,27 +293,27 @@ try {
       }
 
       $aDadosQuery               = db_utils::getCollectionByRecord($rsBuscaModificacoes);
-      $aTabelasManipuladas       = array();
-      $aTabelaCamposManipulados  = array();
-      $aDadosRetorno             = array();
+      $aTabelasManipuladas       = [];
+      $aTabelaCamposManipulados  = [];
+      $aDadosRetorno             = [];
 
       foreach ( $aDadosQuery as $oRegistroModificacao ) {
 
         $oTabela                                      = new stdClass();
         $oTabela->codigo_tabela                       = $oRegistroModificacao->codarq;
-        $oTabela->nome_tabela                         = urlencode($oRegistroModificacao->tabela);
-        $oTabela->rotulo_tabela                       = urlencode($oRegistroModificacao->rotulo);
+        $oTabela->nome_tabela                         = urlencode((string) $oRegistroModificacao->tabela);
+        $oTabela->rotulo_tabela                       = urlencode((string) $oRegistroModificacao->rotulo);
         $oRetorno->aTabelas[$oTabela->codigo_tabela]  = $oTabela;
 
         $oCampoManipulado                             = new stdClass();
         $oCampoManipulado->codigo_tabela              = $oRegistroModificacao->codarq;
-        $oCampoManipulado->nome_tabela                = urlencode($oRegistroModificacao->tabela);
+        $oCampoManipulado->nome_tabela                = urlencode((string) $oRegistroModificacao->tabela);
         $oCampoManipulado->tipo_alteracao             = $oRegistroModificacao->operacao;
         $oCampoManipulado->datahora_servidor          = $oRegistroModificacao->datahora_servidor;
-        $oCampoManipulado->rotulo_campo               = urlencode($oRegistroModificacao->nomecam);
-        $oCampoManipulado->nome_campo                 = urlencode($oRegistroModificacao->nome_campo);
-        $oCampoManipulado->valor_antigo               = urlencode($oRegistroModificacao->valor_antigo);
-        $oCampoManipulado->valor_novo                 = urlencode($oRegistroModificacao->valor_novo);
+        $oCampoManipulado->rotulo_campo               = urlencode((string) $oRegistroModificacao->nomecam);
+        $oCampoManipulado->nome_campo                 = urlencode((string) $oRegistroModificacao->nome_campo);
+        $oCampoManipulado->valor_antigo               = urlencode((string) $oRegistroModificacao->valor_antigo);
+        $oCampoManipulado->valor_novo                 = urlencode((string) $oRegistroModificacao->valor_novo);
 
         $oRetorno->aRegistros[]                       = $oCampoManipulado;
         unset($oTabela,$oCampoManipulado);
@@ -355,7 +355,7 @@ try {
       }
 
       $oRetorno->aModulos   = db_utils::getCollectionByRecord($rsModulos, false, false, true);
-      $oRetorno->aBaseMenus = array();
+      $oRetorno->aBaseMenus = [];
 
       foreach ( $aItens as $oItem ) {
 
@@ -374,7 +374,7 @@ try {
      */
     case 'getModulos':
 
-      $oRetorno->aModulos = array();
+      $oRetorno->aModulos = [];
 
       $oDaoDbModulos    = new cl_db_modulos();
       $sCamposDbModulos = "id_item, nome_modulo";
@@ -396,7 +396,7 @@ try {
           $oRetornoModulos       = db_utils::fieldsMemory( $rsDbModulos, $iContador );
           $oDadosModulo          = new stdClass();
           $oDadosModulo->iCodigo = $oRetornoModulos->id_item;
-          $oDadosModulo->sNome   = urlencode( $oRetornoModulos->nome_modulo );
+          $oDadosModulo->sNome   = urlencode( (string) $oRetornoModulos->nome_modulo );
           $oRetorno->aModulos[]  = $oDadosModulo;
       }
       break;
@@ -406,7 +406,7 @@ try {
      */
     case 'getEsquemas':
 
-      $oRetorno->aEsquemas = array();
+      $oRetorno->aEsquemas = [];
 
       $oDaoDbSysModulo    = new cl_db_sysmodulo();
       $sCamposDbSysModulo = "codmod, nomemod";
@@ -428,7 +428,7 @@ try {
         $oRetornoModulo        = db_utils::fieldsMemory( $rsDbSysModulo, $iContador );
         $oDadosModulo          = new stdClass();
         $oDadosModulo->iCodigo = $oRetornoModulo->codmod;
-        $oDadosModulo->sNome   = urlencode( $oRetornoModulo->nomemod );
+        $oDadosModulo->sNome   = urlencode( (string) $oRetornoModulo->nomemod );
         $oRetorno->aEsquemas[] = $oDadosModulo;
       }
       break;
@@ -442,7 +442,7 @@ try {
 
       if ( isset( $oParametros->iEsquema ) && !empty( $oParametros->iEsquema ) ) {
 
-        $oRetorno->aTabelas  = array();
+        $oRetorno->aTabelas  = [];
 
         $oDaoDbSysArquivo    = new cl_db_sysarquivo();
         $sCamposDbSysArquivo = "db_sysarquivo.codarq, db_sysarquivo.nomearq, db_sysarquivo.rotulo";
@@ -470,13 +470,13 @@ try {
           $oDadosTabelaModulo          = new stdClass();
           $oDadosTabelaModulo->iCodigo = $oRetornoTabelaModulo->codarq;
           $sNome = $oRetornoTabelaModulo->nomearq;
-          $oDadosTabelaModulo->sLabel   = urlencode( $sNome );
+          $oDadosTabelaModulo->sLabel   = urlencode( (string) $sNome );
 
           if (!empty($oRetornoTabelaModulo->rotulo)) {
             $sNome = $oRetornoTabelaModulo->rotulo . " (" . $sNome . ")";
           }
 
-          $oDadosTabelaModulo->sNome   = urlencode( $sNome );
+          $oDadosTabelaModulo->sNome   = urlencode( (string) $sNome );
           $oRetorno->aTabelas[]        = $oDadosTabelaModulo;
         }
       }
@@ -492,7 +492,7 @@ try {
 
       if ( isset( $oParametros->iTabela ) && !empty( $oParametros->iTabela ) ) {
 
-        $oRetorno->aCampos   = array();
+        $oRetorno->aCampos   = [];
 
         $oDaoDbSysArqCamp    = new cl_db_sysarqcamp();
         $sCamposDbSysArqCamp = "db_syscampo.codcam, db_syscampo.nomecam, db_syscampo.rotulo";
@@ -520,13 +520,13 @@ try {
           $oDadosCamposTabela          = new stdClass();
           $oDadosCamposTabela->iCodigo = $oRetornoCamposTabela->codcam;
           $sNome = $oRetornoCamposTabela->nomecam;
-          $oDadosCamposTabela->sLabel   = urlencode( $sNome );
+          $oDadosCamposTabela->sLabel   = urlencode( (string) $sNome );
 
           if ( !empty($oRetornoCamposTabela->rotulo) ) {
             $sNome = $oRetornoCamposTabela->rotulo . " (" . $sNome . ")";
           }
 
-          $oDadosCamposTabela->sNome   = urlencode( $sNome );
+          $oDadosCamposTabela->sNome   = urlencode( (string) $sNome );
           $oRetorno->aCampos[]         = $oDadosCamposTabela;
         }
       }

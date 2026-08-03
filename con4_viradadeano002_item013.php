@@ -442,7 +442,7 @@ function getEmpRestoTipo( $oDadosRecursivo)
     $iAnoUsu = $oDadosRecursivo->iAnousu;
     $iPosicao = $oDadosRecursivo->iPosicao;
 
-    $sElemento =str_pad( substr($oDadosRecursivo->sElemento,0,$iPosicao),15,'0',STR_PAD_RIGHT);
+    $sElemento =str_pad( substr((string) $oDadosRecursivo->sElemento,0,$iPosicao),15,'0',STR_PAD_RIGHT);
 
     //echo "<br>Elemento Procurado: $sElemento<br>";
     // se não achar até o ultimo digito retornará nulo para usar o tipo 999
@@ -491,7 +491,7 @@ function getCodigoTipo($e64_codele, $iAnoBusca){
   $rsElemento = $oDaoOrcElemento->sql_record($sSqlElemento);
   if ( $oDaoOrcElemento->numrows > 0 ) {
       // o elemento devera ser 15 digitos para comparar com c114_elemento
-      $sElemento = str_pad(db_utils::fieldsMemory($rsElemento, 0)->o56_elemento,15,'0',STR_PAD_RIGHT);
+      $sElemento = str_pad((string) db_utils::fieldsMemory($rsElemento, 0)->o56_elemento,15,'0',STR_PAD_RIGHT);
       $oDadosRecursivo = new stdClass();
       $oDadosRecursivo->sElemento = $sElemento;
       $oDadosRecursivo->iAnousu = $iAnoBusca;

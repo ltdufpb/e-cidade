@@ -87,11 +87,11 @@
                     </td>
                     <td>
                       <?php
-                        $aOrdenar = array('matricula'         => 'Matricula',
+                        $aOrdenar = ['matricula'         => 'Matricula',
                                           'logradouro'        => 'Logradouro',
                                           'leituracorte'      => 'Leitura Corte',
                                           'leituraleiturista' => 'Leitura Leiturista',
-                                          'data'              => 'Data Instalação');
+                                          'data'              => 'Data Instalação'];
                       
                         db_select('ordenar', $aOrdenar, true, 1); 
                       ?>

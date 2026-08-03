@@ -100,7 +100,7 @@ function js_hab(){
           </td>
           <td> 
               <?php 
-                $x = array("f"=>"NAO","t"=>"SIM");
+                $x = ["f"=>"NAO","t"=>"SIM"];
                 db_select('q81_integr',$x,true,$db_opcao,"onchange='js_troca(this.value);'");
               ?>
           </td>
@@ -111,10 +111,10 @@ function js_hab(){
           </td>
           <td nowrap> 
               <?php 
-                $x = array("Q"=>"QUINZENAL","M"=>"MENSAL","S"=>"SEMESTRAL","D"=>"DIARIA","T"=>"TRIMESTRAL");
+                $x = ["Q"=>"QUINZENAL","M"=>"MENSAL","S"=>"SEMESTRAL","D"=>"DIARIA","T"=>"TRIMESTRAL"];
                 db_select('q81_tippro',$x,true,$db_opcao,"");
                 echo @$Lq81_tipo;
-                $x = array("1"=>"ISSQN","2"=>"SANITÁRIO","3"=>"VISTORIA LOCALIZAÇÃO","4"=>"ALVARÁ","5"=>"TAXA", "6"=>"VISTORIA SANITÁRIO");
+                $x = ["1"=>"ISSQN","2"=>"SANITÁRIO","3"=>"VISTORIA LOCALIZAÇÃO","4"=>"ALVARÁ","5"=>"TAXA", "6"=>"VISTORIA SANITÁRIO"];
                 db_select('q81_tipo',$x,true,$db_opcao,"");
               ?>
           </td>
@@ -211,7 +211,7 @@ function js_hab(){
           </td>
           <td> 
             <?php 
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('q81_uqtab',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -222,7 +222,7 @@ function js_hab(){
           </td>
           <td> 
             <?php 
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('q81_uqcad',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -258,7 +258,7 @@ function js_hab(){
           </td>
           <td>
           <?php 
-            $x = array("f"=>"NAO","t"=>"SIM");
+            $x = ["f"=>"NAO","t"=>"SIM"];
             db_select('q81_usaretido',$x,true,$db_opcao,"");
           ?>
           </td>
@@ -369,7 +369,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tipcalc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }

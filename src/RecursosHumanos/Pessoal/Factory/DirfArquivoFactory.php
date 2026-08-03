@@ -18,16 +18,11 @@ class DirfArquivoFactory
      */
     public static function create($year, $layout)
     {
-        switch (true) {
-            case ($year >= 2017):
-                $oDirfArq = new \ArquivoDirf2018($layout);
-                break;
-            case ($year < 2017 && $year > 2014):
-                $oDirfArq = new \ArquivoDirf2015($layout);
-                break;
-            default:
-                $oDirfArq = new \ArquivoDirf2012($layout);
-        }
+        $oDirfArq = match (true) {
+            $year >= 2017 => new \ArquivoDirf2018($layout),
+            $year < 2017 && $year > 2014 => new \ArquivoDirf2015($layout),
+            default => new \ArquivoDirf2012($layout),
+        };
 
         return $oDirfArq;
     }

@@ -36,23 +36,23 @@ if ($db_opcao == 1) {
   $db_action = "lic1_liccomissao006.php";
 }
 
-$Tl30_codigo = isset($Tl30_codigo) ? $Tl30_codigo : null;
-$Ll30_codigo = isset($Ll30_codigo) ? $Ll30_codigo : null;
+$Tl30_codigo ??= null;
+$Ll30_codigo ??= null;
 
-$Tl30_data = isset($Tl30_data) ? $Tl30_data : null;
-$Ll30_data = isset($Ll30_data) ? $Ll30_data : null;
+$Tl30_data ??= null;
+$Ll30_data ??= null;
 
-$Tl30_portaria = isset($Tl30_portaria) ? $Tl30_portaria : null;
-$Ll30_portaria = isset($Ll30_portaria) ? $Ll30_portaria : null;
+$Tl30_portaria ??= null;
+$Ll30_portaria ??= null;
 
-$Tl30_datavalid = isset($Tl30_datavalid) ? $Tl30_datavalid : null;
-$Ll30_datavalid = isset($Ll30_datavalid) ? $Ll30_datavalid : null;
+$Tl30_datavalid ??= null;
+$Ll30_datavalid ??= null;
 
-$Tl30_tipo = isset($Tl30_tipo) ? $Tl30_tipo : null;
-$Ll30_tipo = isset($Ll30_tipo) ? $Ll30_tipo : null;
+$Tl30_tipo ??= null;
+$Ll30_tipo ??= null;
 
-$Tl30_arquivo = isset($Tl30_arquivo) ? $Tl30_arquivo : null;
-$Ll30_arquivo = isset($Ll30_arquivo) ? $Ll30_arquivo : null;
+$Tl30_arquivo ??= null;
+$Ll30_arquivo ??= null;
 ?>
 <style style="text/css">
 #l30_portaria, #l30_nomearquivo {
@@ -80,9 +80,9 @@ $Ll30_arquivo = isset($Ll30_arquivo) ? $Ll30_arquivo : null;
       </td>
       <td>
         <?php
-          $l30_data_dia = isset($l30_data_dia) ? $l30_data_dia : null;
-          $l30_data_mes = isset($l30_data_mes) ? $l30_data_mes : null;
-          $l30_data_ano = isset($l30_data_ano) ? $l30_data_ano : null;
+          $l30_data_dia ??= null;
+          $l30_data_mes ??= null;
+          $l30_data_ano ??= null;
           db_inputdata('l30_data', $l30_data_dia, $l30_data_mes, $l30_data_ano, true, 'text', $db_opcao, "")
         ?>
       </td>
@@ -101,9 +101,9 @@ $Ll30_arquivo = isset($Ll30_arquivo) ? $Ll30_arquivo : null;
       </td>
       <td>
         <?php
-        $l30_datavalid_dia = isset($l30_datavalid_dia) ? $l30_datavalid_dia : null;
-        $l30_datavalid_mes = isset($l30_datavalid_mes) ? $l30_datavalid_mes : null;
-        $l30_datavalid_ano = isset($l30_datavalid_ano) ? $l30_datavalid_ano : null;
+        $l30_datavalid_dia ??= null;
+        $l30_datavalid_mes ??= null;
+        $l30_datavalid_ano ??= null;
         db_inputdata('l30_datavalid', $l30_datavalid_dia, $l30_datavalid_mes, $l30_datavalid_ano, true, 'text', $db_opcao, "")
         ?>
       </td>
@@ -114,14 +114,14 @@ $Ll30_arquivo = isset($Ll30_arquivo) ? $Ll30_arquivo : null;
       </td>
       <td>
         <?php
-        $aOpcoes = array(
+        $aOpcoes = [
           '1' => 'Permanente',
           '2' => 'Especial',
           '3' => 'Pregão',
           '4' => 'Servidor Designado',
           '5' => 'Leiloeiro Oficial',
           '6' => 'Agente de Contratação',
-        );
+        ];
         db_select('l30_tipo', $aOpcoes, true, $db_opcao, "");
         ?>
       </td>
@@ -176,7 +176,7 @@ function js_preenchepesquisa(chave){
   db_iframe_liccomissao.hide();
   <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

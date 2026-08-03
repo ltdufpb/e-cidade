@@ -14,6 +14,7 @@ class Update extends BaseFormRequest
      *
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -26,7 +27,7 @@ class Update extends BaseFormRequest
      */
     public function rules(Request $request)
     {
-        return $this->preValidacaoRule() ? $this->preValidacaoRule():[
+        return $this->preValidacaoRule() ?: [
             'descricao' => [
                 'string',
                 'required',
@@ -38,18 +39,19 @@ class Update extends BaseFormRequest
 
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
+    #[\Override]
     public function messages()
     {
         return [
-            'instituicao.required' => utf8_encode('Instituição não informada.'),
-            'instituicao.integer' => utf8_encode('Código da instituição inválido.'),
-            'descricao.required' => utf8_encode('Descrição da função não informada.'),
-            'descricao.string' => utf8_encode('Descrição inválida para a função.'),
-            'descricao.unique' => utf8_encode('Descrição da função já cadastrada.')
+            'instituicao.required' => mb_convert_encoding('Instituição não informada.', 'UTF-8', 'ISO-8859-1'),
+            'instituicao.integer' => mb_convert_encoding('Código da instituição inválido.', 'UTF-8', 'ISO-8859-1'),
+            'descricao.required' => mb_convert_encoding('Descrição da função não informada.', 'UTF-8', 'ISO-8859-1'),
+            'descricao.string' => mb_convert_encoding('Descrição inválida para a função.', 'UTF-8', 'ISO-8859-1'),
+            'descricao.unique' => mb_convert_encoding('Descrição da função já cadastrada.', 'UTF-8', 'ISO-8859-1')
         ];
     }
 }

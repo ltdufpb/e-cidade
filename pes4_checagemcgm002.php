@@ -73,9 +73,9 @@ foreach ($aDadosRelatorio as $oDado) {
 	
 	$oPdf->SetFont('Arial','',$iFonte);
 	$oPdf->Cell(30, $iAlt, $oDado->z01_numcgm, "TB", 0, 'C', $iCorFundo);
-	$oPdf->Cell(65, $iAlt, substr($oDado->z01_nome, 0, 50), 1, 0, 'L', $iCorFundo);
+	$oPdf->Cell(65, $iAlt, substr((string) $oDado->z01_nome, 0, 50), 1, 0, 'L', $iCorFundo);
 	$oPdf->Cell(30, $iAlt, $oDado->matricula, 1, 0, 'C', $iCorFundo);
-	$oPdf->Cell(65, $iAlt, substr($oDado->nome, 0, 50), "TB", 1, 'L', $iCorFundo);
+	$oPdf->Cell(65, $iAlt, substr((string) $oDado->nome, 0, 50), "TB", 1, 'L', $iCorFundo);
 }
 
 $oPdf->Output();

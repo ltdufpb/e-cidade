@@ -363,7 +363,7 @@ class InformacaoCalculoAtuarialInativos extends InformacaoCalculoAtuarial {
   }
   
   public function toArray() {
-    $oRetorno = array();
+    $oRetorno = [];
     
  //   $oRetorno[] = $this->getTipoInativo();
     $oRetorno[] = $this->getMatricula();

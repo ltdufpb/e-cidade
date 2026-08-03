@@ -8,7 +8,7 @@ final class Container extends ContainerAbstract
 {
     public function charge()
     {
-        $this->content = array(
+        $this->content = [
             'InflaRepository' => function ($container) {
 
                 $dataBase = $container->get('DataBase');
@@ -16,6 +16,6 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Inflatores\Repository\InflaRepository($dataBase, $dao);
             }
-        );
+        ];
     }
 }

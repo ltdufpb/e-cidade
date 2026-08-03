@@ -251,7 +251,7 @@ function js_mostrapctipocontrato(chave,erro){
     document.form1.p71_codtipo.value = ''; 
   }else{
     <?php 
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?db_opcao=$db_opcao&abas=1&p71_codtipo='+document.form1.p71_codtipo.value+'&p70_descr='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?db_opcao=$db_opcao&abas=1&p71_codtipo='+document.form1.p71_codtipo.value+'&p70_descr='+chave";
     ?>
   }
 }
@@ -259,7 +259,7 @@ function js_mostrapctipocontrato1(chave1,chave2){
   document.form1.p71_codtipo.value = chave1;
   document.form1.p70_descr.value = chave2;
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?db_opcao=$db_opcao&".($db_opcao == 2 && @$p71_codcontr != ""?"chavepesquisa=$p71_codcontr&":"")."abas=1&p71_codtipo='+chave1+'&p70_descr='+chave2\n";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?db_opcao=$db_opcao&".($db_opcao == 2 && @$p71_codcontr != ""?"chavepesquisa=$p71_codcontr&":"")."abas=1&p71_codtipo='+chave1+'&p70_descr='+chave2\n";
   ?>
   db_iframe_pctipocontrato.hide();
 }

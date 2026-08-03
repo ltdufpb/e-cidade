@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbidadosimovel_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitbidadosimovel = new cl_itbidadosimovel;
 $clitbidadosimovel->rotulo->label("it22_sequencial");
 $clitbidadosimovel->rotulo->label("it22_itbi");
@@ -98,9 +98,9 @@ $clitbidadosimovel->rotulo->label("it22_itbi");
         }else{
            $sql = $clitbidadosimovel->sql_query("",$campos,"it22_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_it22_itbi)){
-          $repassa = array("chave_it22_sequencial"=>$chave_it22_sequencial,"chave_it22_itbi"=>$chave_it22_itbi);
+          $repassa = ["chave_it22_sequencial"=>$chave_it22_sequencial,"chave_it22_itbi"=>$chave_it22_itbi];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

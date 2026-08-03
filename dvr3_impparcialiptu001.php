@@ -42,7 +42,7 @@ $clrotulo->label('z01_nome');
 /** $oGet->sTipo                  TIPO DE IMPORTACAO ('agua','iptu') **/
 
 $oGet            = new _db_fields();
-$oGet            = db_utils::postMemory($HTTP_GET_VARS);
+$oGet            = db_utils::postMemory($_GET);
 $sTituloFieldset = '';
 
 if ($oGet->sTipo == 'iptu'){

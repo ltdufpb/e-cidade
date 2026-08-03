@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_transferenciafinanceirarecebimento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltransferenciafinanceirarecebimento = new cl_transferenciafinanceirarecebimento;
 $cltransferenciafinanceirarecebimento->rotulo->label("k151_sequencial");
 $cltransferenciafinanceirarecebimento->rotulo->label("k151_sequencial");
@@ -98,9 +98,9 @@ $cltransferenciafinanceirarecebimento->rotulo->label("k151_sequencial");
         }else{
            $sql = $cltransferenciafinanceirarecebimento->sql_query("",$campos,"k151_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k151_sequencial)){
-          $repassa = array("chave_k151_sequencial"=>$chave_k151_sequencial,"chave_k151_sequencial"=>$chave_k151_sequencial);
+          $repassa = ["chave_k151_sequencial"=>$chave_k151_sequencial,"chave_k151_sequencial"=>$chave_k151_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

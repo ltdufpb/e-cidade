@@ -91,7 +91,7 @@ $total_geral_alunos_aee = 0;
 $total_geral_turmas_aee = 0;
 $total_geral_salas_aee = 0;
 
-$aDadosEscola = array();
+$aDadosEscola = [];
 
 for ($i = 0; $i < $iLinhasEscola; $i++) {
 
@@ -318,14 +318,14 @@ function buscarAlunosMatriculadosIncluidosMunicipio($iEscola,$oNomeCal){
 
 function ordenarAlfabeticamente($arrays)
 {
-    $arrayOrganizado = array();
+    $arrayOrganizado = [];
     $tamanho = 0;
     $posicao = 0;
 
     for ($i = 0; $i < count($arrays); $i++) {
 
-        if (strcasecmp(substr($arrays[$i], 0, 4),"fase")==0) {
-            $arrays[$i] = substr($arrays[$i], 0, 4) . " " . romanoParaInteiro(substr($arrays[$i], 5));
+        if (strcasecmp(substr((string) $arrays[$i], 0, 4),"fase")==0) {
+            $arrays[$i] = substr((string) $arrays[$i], 0, 4) . " " . romanoParaInteiro(substr((string) $arrays[$i], 5));
         }
 
         if ($i == 0) {
@@ -337,7 +337,7 @@ function ordenarAlfabeticamente($arrays)
                 if ($arrays[$i] > $arrayOrganizado[$j]) {
                     $posicao++;
 
-                } else if (substr($arrays[$i], 3) < substr($arrayOrganizado[$j], 3)) {
+                } else if (substr((string) $arrays[$i], 3) < substr((string) $arrayOrganizado[$j], 3)) {
 
                     //fazer um for que agrupe para a direita se existe valor a direita cria mais uma casa senão apenas troca de lugar
                     if (isset($arrayOrganizado[$posicao + 1])) {
@@ -380,36 +380,36 @@ function ordenarAlfabeticamente($arrays)
 
 function ordenarPorEtapa($arrays)
 {
-    $etapas = array();
+    $etapas = [];
     $pos = 0;
     $existe = 0;
     for ($i = 0; $i < count($arrays); $i++) {
         if ($i == 0) {
-            $etapas[$i] = substr($arrays[$i], 4);
+            $etapas[$i] = substr((string) $arrays[$i], 4);
         } else {
             for ($k = 0; $k < count($etapas); $k++) {
-                if ($etapas[$k] == substr($arrays[$i], 4)) {
+                if ($etapas[$k] == substr((string) $arrays[$i], 4)) {
                     $existe++;
                 }
             }
 
             if ($existe == 0) {
                 $pos++;
-                $etapas[$pos] = substr($arrays[$i], 4);
+                $etapas[$pos] = substr((string) $arrays[$i], 4);
 
             }
             $existe = 0;
         }
 
     }
-    $etapaOrdenada = array();
+    $etapaOrdenada = [];
 
     for ($j = 0; $j < count($etapas); $j++) {
         for ($i = 0; $i < count($arrays); $i++) {
 
-            if ($etapas[$j] == substr($arrays[$i], 4)) {
-                if (strcasecmp(substr($arrays[$i], 0, 4),"fase")==0) {
-                    $etapaOrdenada[$i] = substr($arrays[$i], 0, 4) . " " . inteiroParaRomano(substr($arrays[$i], 5));
+            if ($etapas[$j] == substr((string) $arrays[$i], 4)) {
+                if (strcasecmp(substr((string) $arrays[$i], 0, 4),"fase")==0) {
+                    $etapaOrdenada[$i] = substr((string) $arrays[$i], 0, 4) . " " . inteiroParaRomano(substr((string) $arrays[$i], 5));
                 } else {
                     $etapaOrdenada[$i] = $arrays[$i];
                 }
@@ -427,7 +427,7 @@ function romanoParaInteiro($numRoman, $debug = false)
 {
 
     $nRoman = $numRoman;
-    $default = array(
+    $default = [
         'M' => 1000,
         'CM' => 900,
         'D' => 500,
@@ -441,13 +441,13 @@ function romanoParaInteiro($numRoman, $debug = false)
         'V' => 5,
         'IV' => 4,
         'I' => 1,
-    );
+    ];
 
     $int = 0;
     foreach ($default as $key => $value) {
-        while (strpos($numRoman, $key) === 0) {
+        while (str_starts_with((string) $numRoman, $key)) {
             $int += $value;
-            $numRoman = substr($numRoman, strlen($key));
+            $numRoman = substr((string) $numRoman, strlen($key));
         }
     }
 
@@ -467,7 +467,7 @@ function inteiroParaRomano($num, $debug = false)
     $n = intval($num);
     $nRoman = '';
 
-    $default = array(
+    $default = [
         'M' => 1000,
         'CM' => 900,
         'D' => 500,
@@ -481,7 +481,7 @@ function inteiroParaRomano($num, $debug = false)
         'V' => 5,
         'IV' => 4,
         'I' => 1,
-    );
+    ];
 
     foreach ($default as $roman => $number) {
         $matches = intval($n / $number);

@@ -34,7 +34,7 @@ require_once modification('dbforms/db_funcoes.php');
 db_postmemory($_GET);
 db_postmemory($_POST);
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']), $queryString);
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -42,9 +42,9 @@ foreach ($queryString as $key => $value) {
 
 //$tabela = isset($HTTP_POST_VARS["tabela"])?$HTTP_POST_VARS["tabela"]:$tabela;
 $nomearq = db_query("select nomearq from db_sysarquivo where codarq = $tabela");
-$nomearq = pg_result($nomearq, 0, 0);
-if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
-    $ref = $HTTP_POST_VARS["ref"];
+$nomearq = pg_fetch_result($nomearq, 0, 0);
+if (!isset($ref) && isset($_POST["ref"])) {
+    $ref = $_POST["ref"];
 }
 
 ?>
@@ -226,12 +226,12 @@ if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
                        ON s.codmod = m.codmod
                        GROUP BY m.codmod,m.nomemod
                        ORDER BY nomemod");
-                for ($i = 0; $i < pg_numrows($result); $i++) {
-                    echo '<option value="' . str_replace(" ", "_", trim(pg_result(
+                for ($i = 0; $i < pg_num_rows($result); $i++) {
+                    echo '<option value="' . str_replace(" ", "_", trim(pg_fetch_result(
                                                 $result,
                                                 $i,
                                                 "nomemod"
-                                            ))) . '">' . trim(pg_result(
+                                            ))) . '">' . trim(pg_fetch_result(
                                                 $result,
                                                 $i,
                                                 "nomemod"
@@ -252,46 +252,46 @@ if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
                         INNER JOIN db_sysmodulo d
                         ON d.codmod = m.codmod
                         ORDER BY d.nomemod,a.nomearq");
-                $numrows = pg_numrows($result);
+                $numrows = pg_num_rows($result);
                 for ($i = 0; $i < $numrows; $i++) {
-                    echo "NomeTabelas['" . str_replace(" ", "_", trim(pg_result(
+                    echo "NomeTabelas['" . str_replace(" ", "_", trim(pg_fetch_result(
                                             $result,
                                             $i,
                                             "nomemod"
-                                        ))) . $i . "'] = '" . trim(pg_result(
+                                        ))) . $i . "'] = '" . trim(pg_fetch_result(
                                             $result,
                                             $i,
                                             "nomearq"
                                         )) . "'; CodTabelas['" . str_replace(
                                             " ",
                                             "_",
-                                            trim(pg_result(
+                                            trim(pg_fetch_result(
                                                 $result,
                                                 $i,
                                                 "nomemod"
                                             ))
-                                        ) . $i . "'] = '" . trim(pg_result(
+                                        ) . $i . "'] = '" . trim(pg_fetch_result(
                                             $result,
                                             $i,
                                             "codarq"
                                         )) . "';\n";
                 }
                 $groupCampos = db_query("SELECT codarq FROM db_sysprikey GROUP BY codarq");
-                $numGroupCampos = pg_numrows($groupCampos);
+                $numGroupCampos = pg_num_rows($groupCampos);
                 for ($i = 0; $i < $numGroupCampos; $i++) {
                     $result = db_query("select p.codarq,c.nomecam 
                           from db_sysprikey p 
                           inner join db_syscampo c 
                           on c.codcam = p.codcam 
-                          where p.codarq = " . pg_result($groupCampos, $i, "codarq") . "
+                          where p.codarq = " . pg_fetch_result($groupCampos, $i, "codarq") . "
                           order by p.sequen");
                     $aux = "";
                     $c = "";
-                    for ($j = 0; $j < pg_numrows($result); $j++) {
-                        $aux .= $c . trim(pg_result($result, $j, "nomecam"));
+                    for ($j = 0; $j < pg_num_rows($result); $j++) {
+                        $aux .= $c . trim(pg_fetch_result($result, $j, "nomecam"));
                         $c = ",";
                     }
-                    echo "PriKeys[" . trim(pg_result(
+                    echo "PriKeys[" . trim(pg_fetch_result(
                                             $groupCampos,
                                             $i,
                                             "codarq"
@@ -333,16 +333,16 @@ if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
             select codarq 
             from db_sysarquivo 
             where nomearq = '$tabela'");
-                    $ref = pg_result($result, 0, 0);
+                    $ref = pg_fetch_result($result, 0, 0);
                 }
-                if (isset($HTTP_POST_VARS["b_ex"])) {
+                if (isset($_POST["b_ex"])) {
                     $result = db_query("
             delete from db_sysforkey 
             where codarq = $tabela
             and referen = $ref");
                     db_redireciona("sys3_campos001.php?" . base64_encode("tabela=$tabela"));
                 }
-                if (!isset($HTTP_POST_VARS["b_fk"])) {
+                if (!isset($_POST["b_fk"])) {
                     $result = db_query("
             select c.nomecam,a.nomearq,a.codarq, f.tipoobjrel
                     from db_sysarquivo a,db_syscampo c,db_sysforkey f
@@ -351,26 +351,26 @@ if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
                     and f.codarq = $tabela
             and f.referen = $ref
             order by f.sequen");
-                    $num_linhas = pg_numrows($result);
+                    $num_linhas = pg_num_rows($result);
                     if ($num_linhas == 0) {
                         form($ref, $tab, "", "");
                     } else {
                         $aux = "";
-                        $tipoobjrel = pg_result($result, 0, 'tipoobjrel');
+                        $tipoobjrel = pg_fetch_result($result, 0, 'tipoobjrel');
                         for ($i = 0; $i < $num_linhas; $i++) {
-                            $aux .= trim(pg_result($result, $i, "nomecam")) . "\n";
+                            $aux .= trim(pg_fetch_result($result, $i, "nomecam")) . "\n";
                         }
                         form(
-                            (isset($HTTP_POST_VARS["ref"]) ? $HTTP_POST_VARS["ref"] : $ref),
+                            ($_POST["ref"] ?? $ref),
                             $tabela,
-                            pg_result($result, 0, "nomearq"),
+                            pg_fetch_result($result, 0, "nomearq"),
                             $aux,
-                            pg_result($result, 0, "codarq")
+                            pg_fetch_result($result, 0, "codarq")
                         );
                     }
                 } else {
-                    db_postmemory($HTTP_POST_VARS);
-                    $campos = split("\r\n", $alt_ind);
+                    db_postmemory($_POST);
+                    $campos = preg_split("#\r\n#m", (string) $alt_ind);
                     db_query("BEGIN");
                     $result = db_query("delete from db_sysforkey where codarq = $tabela and referen = $ref") or die("Erro(122) excluindo db_sysforkey");
                     for ($i = 0; $i < sizeof($campos) - 1; $i++) {
@@ -382,7 +382,7 @@ if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
                            from db_syscampo
                            where nomecam = '$campos[$i]'") or die("Erro(127) selecionando db_syscampo");
                             $s = $i + 1;
-                            $result = db_query("insert into db_sysforkey values($tabela," . pg_result(
+                            $result = db_query("insert into db_sysforkey values($tabela," . pg_fetch_result(
                                 $result,
                                 0,
                                 'codcam'

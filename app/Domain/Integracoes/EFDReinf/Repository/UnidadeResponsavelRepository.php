@@ -33,7 +33,7 @@ class UnidadeResponsavelRepository extends BaseRepository
         // verificar se possui cgm ou base já possui cadastro
         $numCgm   = $data['efd08_cgm'];
         $cgmRepo  = CgmRepository::getByCodigo($numCgm);
-        $cnpjBase = substr($cgmRepo->getCnpj(), 0, 8);
+        $cnpjBase = substr((string) $cgmRepo->getCnpj(), 0, 8);
 
         $query = $this->newQuery();
         $query

@@ -131,7 +131,7 @@ switch($oParam->exec) {
 	    
 	    $oRetorno->aDebitos       = $oDeclQuitacao->getDebitosDeclaracao();
     	
-    } catch (Exception $e) {
+    } catch (Exception) {
       
       $oRetorno->status = 0;
       
@@ -178,7 +178,7 @@ switch($oParam->exec) {
       
       db_fim_transacao();
   
-    } catch (Exception $eErro) {
+    } catch (Exception) {
         
       $oRetorno->status = 0;
       

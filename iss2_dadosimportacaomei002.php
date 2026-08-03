@@ -96,8 +96,8 @@ try {
   db_redireciona("db_erros.php?fechar=true&db_erro={$eException->getMessage()}");
 }
 
-$aDadosAgrupados = array();
-$aRetornoImporta = array();
+$aDadosAgrupados = [];
+$aRetornoImporta = [];
 
 
 
@@ -115,7 +115,7 @@ foreach ( $aDadosImporta as $oDadosImporta ) {
      $oEvento->lInconsistente = false;
      $oEvento->sMsgPosicaoAtual   = "";
 
-     if ( trim($oDadosImporta->q112_sequencial) != '' ) {
+     if ( trim((string) $oDadosImporta->q112_sequencial) != '' ) {
 
      	 $oEvento->lProcessado = true;
 
@@ -215,7 +215,7 @@ switch ($oGet->iTipoReg) {
 }
 
 
-$head2 = " Competência : ".str_pad($iMesCompetencia,2,'0',STR_PAD_LEFT)."/{$iAnoCompetencia}";
+$head2 = " Competência : ".str_pad((string) $iMesCompetencia,2,'0',STR_PAD_LEFT)."/{$iAnoCompetencia}";
 $head5 = " Tipo Registros : $sCabTipoReg ";
 $head4 = " Situação : $sCabSituacao";
 $head3 = " Posição Atual : $sCabPosicaoAtual";

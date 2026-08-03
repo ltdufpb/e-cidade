@@ -33,8 +33,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_selecao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clselecao     = new cl_selecao;
 $db_opcao      = 22;
@@ -46,7 +46,7 @@ if ( isset($alterar) ) {
 
   db_inicio_transacao();
   $db_opcao = 2;
-  $clselecao->r44_where = pg_escape_string(str_replace(array("\r\n", "\\"), array("\n", ""), $r44_where));
+  $clselecao->r44_where = pg_escape_string(str_replace(["\r\n", "\\"], ["\n", ""], $r44_where));
   $clselecao->alterar($r44_selec, $r44_instit);
   db_fim_transacao();
 

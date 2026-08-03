@@ -127,7 +127,7 @@ class Exportacao
     private function organizarDados($aDados)
     {
         $header = Exportacao::getHeader();
-        $aDadosOrganizados = array();
+        $aDadosOrganizados = [];
         foreach ($aDados as $aDadosIndex => $aLinha) {
             foreach ($header as $headerIndex => $valorHeader) {
 
@@ -148,7 +148,7 @@ class Exportacao
      */
     public static function getHeader()
     {
-        $aHeader = array(
+        $aHeader = [
             "matricula",
             "referencia_anterior",
             "codigo_setor",
@@ -192,7 +192,7 @@ class Exportacao
             "endereco_entrega_cep",
             "endereco_entrega_caixapostal"
 
-        );
+        ];
 
         for ($i=1; $i < 10; $i++) {
             $aHeader[] = "lote_tipo_{$i}";

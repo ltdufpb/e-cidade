@@ -63,7 +63,7 @@ class LiberacaoAutorizacaoUnidadeRepository
         db_query('DELETE FROM emppreautorizacaounidade');
         $exercicio = $params->exercicio;
         foreach ($params->unidades as $orgaoUnidade) {
-            $codigoPartes = explode("-", $orgaoUnidade);
+            $codigoPartes = explode("-", (string) $orgaoUnidade);
             $orgao_id = $codigoPartes[0];
             $unidade_id = $codigoPartes[1];
 

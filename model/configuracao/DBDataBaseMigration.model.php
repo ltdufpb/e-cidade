@@ -153,7 +153,7 @@ class DBDataBaseMigration {
     $sLastVersion = null;
 
     if (pg_num_rows($rLastVersion) > 0) {
-      $sLastVersion = pg_result($rLastVersion, 0, 0);
+      $sLastVersion = pg_fetch_result($rLastVersion, 0, 0);
     }
 
     $sDirectoryCheck = $sDirectoryScripts;
@@ -172,7 +172,7 @@ class DBDataBaseMigration {
       $sVersao           = str_replace("/",'',$sVersao);
       $lExistePreDDL     = is_file( "{$sDiretorio}/up/pre_{$sVersao}.sql" );
       $lExisteDDL        = is_file( "{$sDiretorio}/up/ddl_{$sVersao}.sql" );
-      $aArquivosExecucao = array();
+      $aArquivosExecucao = [];
 
       if ( $lExistePreDDL && filesize("{$sDiretorio}/up/pre_{$sVersao}.sql") > 0 ) {
         $aArquivosExecucao["pre"] = file_get_contents("{$sDiretorio}/up/pre_{$sVersao}.sql");
@@ -244,7 +244,7 @@ class DBDataBaseMigration {
    */
   public static function loadDML( $connection, $sDiretorioBase = '' ) {
 
-    $aArquivos          = array();
+    $aArquivos          = [];
     $sSqlExecutado      = '';
     $sDiretorioAcertos  = DBDataBaseMigration::DIRETORIO_SQL_ACERTOS;
 
@@ -322,7 +322,7 @@ class DBDataBaseMigration {
     $sMetodo  = $sTipo != "dml" ? "loadScripts" : "loadDML";
     $sSql     = DBDataBaseMigration::$sMetodo( $connection, $sDiretorioBase );
 
-    if ( trim($sSql) != '') {
+    if ( trim((string) $sSql) != '') {
       $sSql = "/* ATUALIZANDO database_version */ \n" . $sSql;
     }
 
@@ -367,11 +367,11 @@ class DBDataBaseMigration {
 
     $app = new \Phinx\Console\PhinxApplication();
 
-    $config = array(
+    $config = [
       'environment' => 'ecidade',
       'configuration' => 'phinx.php',
       'parser' => 'php'
-    );
+    ];
 
     $wrap = new \Phinx\Wrapper\TextWrapper($app, $config);
 

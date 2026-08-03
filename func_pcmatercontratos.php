@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcmater_classe.php"));
 include(modification("classes/db_pcmaterele_classe.php"));
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clpcmater    = new cl_pcmater;
 $clpcmaterele = new cl_pcmaterele;
@@ -72,7 +72,7 @@ $clpcmater->rotulo->label("pc01_descrmater");
       if(!isset($opcao_bloq)){
       	$opcao_bloq = 1;
       }
-      $arr_opcao = array("i"=>"Todos","f"=>"Ativos","t"=>"Inativos");
+      $arr_opcao = ["i"=>"Todos","f"=>"Ativos","t"=>"Inativos"];
       db_select('opcao',$arr_opcao,true,$opcao_bloq,"onchange='js_reload();'"); 
       ?>
       </td>

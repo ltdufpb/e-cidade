@@ -49,14 +49,14 @@ try {
 
     $pdf = new \pdf('L');
     $head1 = "RELATÓRIO DE QUALIFICAÇÃO CADASTRAL";
-    $parametrosInformados = array();
+    $parametrosInformados = [];
 
     $head3 = "Cargo: ";
-    $head3 .= empty($get->descricaoCargo) ? "Todos." : utf8_decode($get->descricaoCargo);
+    $head3 .= empty($get->descricaoCargo) ? "Todos." : mb_convert_encoding($get->descricaoCargo, 'ISO-8859-1');
     $head4 = "Lotação: ";
-    $head4 .= empty($get->descricaoLotacao) ? "Todas." : utf8_decode($get->descricaoLotacao);
+    $head4 .= empty($get->descricaoLotacao) ? "Todas." : mb_convert_encoding($get->descricaoLotacao, 'ISO-8859-1');
     $head5 = "Listar servidores: ";
-    $head5 .= empty($get->descricaoListarServidores) ? "Todos." : utf8_decode($get->descricaoListarServidores);
+    $head5 .= empty($get->descricaoListarServidores) ? "Todos." : mb_convert_encoding($get->descricaoListarServidores, 'ISO-8859-1');
     $head6 = "Data de emissão: " . date('d/m/Y');
     
 

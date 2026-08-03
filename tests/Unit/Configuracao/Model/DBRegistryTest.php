@@ -9,11 +9,11 @@ class DBRegistryTest extends TestCase
 {
     function testShouldAddSingleArray()
     {
-        $items = array(
+        $items = [
             'item1' => 'item1',
             'item2' => 'item2',
             'item3' => 'item3'
-        );
+        ];
 
         DBRegistry::add('items', $items);
         $itemsFromRegistry = DBRegistry::get('items');
@@ -32,9 +32,9 @@ class DBRegistryTest extends TestCase
 
     function testShouldAddObject()
     {
-        $object = (object)array(
+        $object = (object)[
             'prop1' => 'prop1'
-        );
+        ];
 
         DBRegistry::add('object', $object);
         $objectFromRegistry = DBRegistry::get('object');
@@ -44,13 +44,13 @@ class DBRegistryTest extends TestCase
 
     function testShouldAddItemsToArray()
     {
-        $item1 = (object)array(
+        $item1 = (object)[
             'item1Key' => 'item1Value'
-        );
+        ];
 
-        $item2 = (object)array(
+        $item2 = (object)[
             'item2Key' => 'item2Value'
-        );
+        ];
 
         DBRegistry::addToArray('items', $item1);
         DBRegistry::addToArray('items', $item2);
@@ -63,13 +63,13 @@ class DBRegistryTest extends TestCase
 
     function testShouldAddItemsToArrayInSomeIndex()
     {
-        $item1 = (object)array(
+        $item1 = (object)[
             'item1Key' => 'item1Value'
-        );
+        ];
 
-        $item2 = (object)array(
+        $item2 = (object)[
             'item2Key' => 'item2Value'
-        );
+        ];
 
         DBRegistry::addToArray('items', $item1, 'x');
         DBRegistry::addToArray('items', $item2, 'y');
@@ -82,9 +82,9 @@ class DBRegistryTest extends TestCase
 
     function testShouldRemoveItem()
     {
-        $item = (object)array(
+        $item = (object)[
             'item1' => 'item1'
-        );
+        ];
 
         DBRegistry::add('item', $item);
         self::assertNotNull(DBRegistry::get('item'));
@@ -122,7 +122,6 @@ class DBRegistryTest extends TestCase
 
     protected function tearDown()
     {
-        parent::tearDown();
         DBRegistry::clean();
     }
 }

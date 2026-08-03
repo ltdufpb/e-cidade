@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE lab_resultadonum
 class cl_lab_resultadonum { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $la41_i_codigo = 0; 
-   var $la41_i_result = 0; 
-   var $la41_f_valor = 0; 
-   var $la41_valorpercentual = 0; 
-   var $la41_faixaescolhida = 0; 
+   public $la41_i_codigo = 0; 
+   public $la41_i_result = 0; 
+   public $la41_f_valor = 0; 
+   public $la41_valorpercentual = 0; 
+   public $la41_faixaescolhida = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  la41_i_codigo = int4 = Código 
                  la41_i_result = int4 = Resultado 
                  la41_f_valor = float4 = Valor 
@@ -56,10 +56,10 @@ class cl_lab_resultadonum {
                  la41_faixaescolhida = int4 = Faixa escolhida para o exame 
                  ";
    //funcao construtor da classe 
-   function cl_lab_resultadonum() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_resultadonum"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -113,10 +113,10 @@ class cl_lab_resultadonum {
          $this->erro_status = "0";
          return false; 
        }
-       $this->la41_i_codigo = pg_result($result,0,0); 
+       $this->la41_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from lab_resultadonum_la41_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $la41_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $la41_i_codigo)){
          $this->erro_sql = " Campo la41_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -152,7 +152,7 @@ class cl_lab_resultadonum {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Resultado em Número ($this->la41_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Resultado em Número já Cadastrado";
@@ -181,14 +181,14 @@ class cl_lab_resultadonum {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16516,'$this->la41_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,2898,16516,'','".AddSlashes(pg_result($resaco,0,'la41_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2898,16517,'','".AddSlashes(pg_result($resaco,0,'la41_i_result'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2898,16518,'','".AddSlashes(pg_result($resaco,0,'la41_f_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2898,20496,'','".AddSlashes(pg_result($resaco,0,'la41_valorpercentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2898,20497,'','".AddSlashes(pg_result($resaco,0,'la41_faixaescolhida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2898,16516,'','".AddSlashes(pg_fetch_result($resaco,0,'la41_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2898,16517,'','".AddSlashes(pg_fetch_result($resaco,0,'la41_i_result'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2898,16518,'','".AddSlashes(pg_fetch_result($resaco,0,'la41_f_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2898,20496,'','".AddSlashes(pg_fetch_result($resaco,0,'la41_valorpercentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2898,20497,'','".AddSlashes(pg_fetch_result($resaco,0,'la41_faixaescolhida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -198,10 +198,10 @@ class cl_lab_resultadonum {
       $this->atualizacampos();
      $sql = " update lab_resultadonum set ";
      $virgula = "";
-     if(trim($this->la41_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_i_codigo"])){ 
+     if(trim((string) $this->la41_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_i_codigo"])){ 
        $sql  .= $virgula." la41_i_codigo = $this->la41_i_codigo ";
        $virgula = ",";
-       if(trim($this->la41_i_codigo) == null ){ 
+       if(trim((string) $this->la41_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "la41_i_codigo";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_lab_resultadonum {
          return false;
        }
      }
-     if(trim($this->la41_i_result)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_i_result"])){ 
+     if(trim((string) $this->la41_i_result)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_i_result"])){ 
        $sql  .= $virgula." la41_i_result = $this->la41_i_result ";
        $virgula = ",";
-       if(trim($this->la41_i_result) == null ){ 
+       if(trim((string) $this->la41_i_result) == null ){ 
          $this->erro_sql = " Campo Resultado não informado.";
          $this->erro_campo = "la41_i_result";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_lab_resultadonum {
          return false;
        }
      }
-     if(trim($this->la41_f_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_f_valor"])){ 
+     if(trim((string) $this->la41_f_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_f_valor"])){ 
        $sql  .= $virgula." la41_f_valor = $this->la41_f_valor ";
        $virgula = ",";
-       if(trim($this->la41_f_valor) == null ){ 
+       if(trim((string) $this->la41_f_valor) == null ){ 
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "la41_f_valor";
          $this->erro_banco = "";
@@ -237,15 +237,15 @@ class cl_lab_resultadonum {
          return false;
        }
      }
-     if(trim($this->la41_valorpercentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_valorpercentual"])){ 
-        if(trim($this->la41_valorpercentual)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la41_valorpercentual"])){ 
+     if(trim((string) $this->la41_valorpercentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_valorpercentual"])){ 
+        if(trim((string) $this->la41_valorpercentual)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la41_valorpercentual"])){ 
            $this->la41_valorpercentual = "0" ; 
         } 
        $sql  .= $virgula." la41_valorpercentual = $this->la41_valorpercentual ";
        $virgula = ",";
      }
-     if(trim($this->la41_faixaescolhida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_faixaescolhida"])){ 
-        if(trim($this->la41_faixaescolhida)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la41_faixaescolhida"])){ 
+     if(trim((string) $this->la41_faixaescolhida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_faixaescolhida"])){ 
+        if(trim((string) $this->la41_faixaescolhida)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la41_faixaescolhida"])){ 
            $this->la41_faixaescolhida = "0" ; 
         } 
        $sql  .= $virgula." la41_faixaescolhida = $this->la41_faixaescolhida ";
@@ -265,19 +265,19 @@ class cl_lab_resultadonum {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,16516,'$this->la41_i_codigo','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la41_i_codigo"]) || $this->la41_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,2898,16516,'".AddSlashes(pg_result($resaco,$conresaco,'la41_i_codigo'))."','$this->la41_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2898,16516,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la41_i_codigo'))."','$this->la41_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la41_i_result"]) || $this->la41_i_result != "")
-             $resac = db_query("insert into db_acount values($acount,2898,16517,'".AddSlashes(pg_result($resaco,$conresaco,'la41_i_result'))."','$this->la41_i_result',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2898,16517,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la41_i_result'))."','$this->la41_i_result',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la41_f_valor"]) || $this->la41_f_valor != "")
-             $resac = db_query("insert into db_acount values($acount,2898,16518,'".AddSlashes(pg_result($resaco,$conresaco,'la41_f_valor'))."','$this->la41_f_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2898,16518,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la41_f_valor'))."','$this->la41_f_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la41_valorpercentual"]) || $this->la41_valorpercentual != "")
-             $resac = db_query("insert into db_acount values($acount,2898,20496,'".AddSlashes(pg_result($resaco,$conresaco,'la41_valorpercentual'))."','$this->la41_valorpercentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2898,20496,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la41_valorpercentual'))."','$this->la41_valorpercentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["la41_faixaescolhida"]) || $this->la41_faixaescolhida != "")
-             $resac = db_query("insert into db_acount values($acount,2898,20497,'".AddSlashes(pg_result($resaco,$conresaco,'la41_faixaescolhida'))."','$this->la41_faixaescolhida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2898,20497,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la41_faixaescolhida'))."','$this->la41_faixaescolhida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -331,14 +331,14 @@ class cl_lab_resultadonum {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,16516,'$la41_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,2898,16516,'','".AddSlashes(pg_result($resaco,$iresaco,'la41_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2898,16517,'','".AddSlashes(pg_result($resaco,$iresaco,'la41_i_result'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2898,16518,'','".AddSlashes(pg_result($resaco,$iresaco,'la41_f_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2898,20496,'','".AddSlashes(pg_result($resaco,$iresaco,'la41_valorpercentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2898,20497,'','".AddSlashes(pg_result($resaco,$iresaco,'la41_faixaescolhida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2898,16516,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la41_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2898,16517,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la41_i_result'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2898,16518,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la41_f_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2898,20496,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la41_valorpercentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2898,20497,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la41_faixaescolhida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -399,7 +399,7 @@ class cl_lab_resultadonum {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:lab_resultadonum";
@@ -414,7 +414,7 @@ class cl_lab_resultadonum {
    function sql_query ( $la41_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +437,7 @@ class cl_lab_resultadonum {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_lab_resultadonum {
    function sql_query_file ( $la41_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_lab_resultadonum {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

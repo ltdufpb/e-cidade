@@ -35,7 +35,7 @@ include(modification("classes/db_db_modulos_classe.php"));
 include(modification("classes/db_db_versao_classe.php"));
 include(modification("classes/db_db_versaoant_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 
 if(isset($grava_leitura)){
@@ -47,7 +47,7 @@ if(isset($grava_leitura)){
           order by db30_codver
          ";
   $result = db_query($sql);
-  if(pg_numrows($result)>0){
+  if(pg_num_rows($result)>0){
 
     $sql = "insert into db_versaolidousuario
             select nextval('db_versaolidousuario_db35_sequencial_seq'),db30_codver,".db_getsession("DB_id_usuario").",current_date
@@ -178,7 +178,7 @@ function js_muda_consulta(execucao){
       $tipo_consulta = 'M';
     }
     global $tipo_consulta;
-    $tipo_consulta_array = array("M"=>"Modulo","P"=>"Procedimento");
+    $tipo_consulta_array = ["M"=>"Modulo","P"=>"Procedimento"];
     echo "Tipo Consulta:";
     db_select("tipo_consulta",$tipo_consulta_array,true,2,"onchange='js_muda_consulta(\"con3_versao004.php?id_item=\"+document.form1.nome_modulo.value+\"&tipo_consulta=\"+document.form1.tipo_consulta.value".(isset($registra_atualizacao)?"+\"&registra_atualizacao=&versao_lida=".$versao_lida."\"":"").")'");
 
@@ -222,7 +222,7 @@ $sql .= " order by nome_modulo";
 
 $res = db_query($sql);
 
-$numrows = pg_numrows($res);
+$numrows = pg_num_rows($res);
 
 if( $numrows > 0 ) {
 
@@ -234,8 +234,8 @@ if( $numrows > 0 ) {
     
       $espacos = $modulo;
 
-      $matriz_item = array();
-      $matriz_item_seleciona = array();
+      $matriz_item = [];
+      $matriz_item_seleciona = [];
       
       $sSqldbVersao  = "  select distinct db30_codversao, db30_codrelease,db32_id_item                            ";
       $sSqldbVersao .= "    from db_versao                                                                        ";
@@ -260,21 +260,21 @@ if( $numrows > 0 ) {
 
       if( $cldb_versao->numrows > 0 ) {
 
-        for($ii=0;$ii<pg_numrows($result);$ii++){
-          $x = pg_result($result,$ii,2);
+        for($ii=0;$ii<pg_num_rows($result);$ii++){
+          $x = pg_fetch_result($result,$ii,2);
           $lista[$x]= $x;
         }
 
-        $matriz_item_seleciona = array();
+        $matriz_item_seleciona = [];
 
         monta_menu($modulo,$modulo,$espacos,$lista);
         
         // lista as descricoes
         
-        $itens_listados = array();
+        $itens_listados = [];
         for($x=0;$x<count($matriz_item_seleciona);$x++){
           $contador = 0;
-          $impmat = split("-",$matriz_item_seleciona[$x]);
+          $impmat = preg_split("#\\-#m",$matriz_item_seleciona[$x]);
           for($imp=0;$imp<count($impmat);$imp++){
             $contador += 1;
             if( ! isset($itens_listados[$impmat[$imp]])){
@@ -284,7 +284,7 @@ if( $numrows > 0 ) {
                       from db_itensmenu
                       where id_item = ".$impmat[$imp];
               $resi = db_query($sql);
-              $descr = pg_result($resi,0,0);
+              $descr = pg_fetch_result($resi,0,0);
 
               for($xx=1;$xx<$contador*2;$xx++){
                 echo "&nbsp ";
@@ -297,7 +297,7 @@ if( $numrows > 0 ) {
                       where db30_codver >= $versao_inicial
                         and db32_id_item = ".$impmat[$imp];
               $resi = db_query($sql);
-              for($o=0;$o<pg_numrows($resi);$o++){
+              for($o=0;$o<pg_num_rows($resi);$o++){
                 
                 db_fieldsmemory($resi,$o);
      
@@ -344,11 +344,11 @@ if( $numrows > 0 ) {
 
       $result = db_query($sql);
 
-      if(pg_numrows($result)>0){
+      if(pg_num_rows($result)>0){
         
         echo "<strong>$nome_modulo</strong><br>";
 
-        for($m=0;$m<pg_numrows($result);$m++){
+        for($m=0;$m<pg_num_rows($result);$m++){
           db_fieldsmemory($result,$m);
           echo "&nbsp&nbsp<strong>$descrproced </strong><br>";
           $sql = "select distinct db30_codversao,db30_codrelease,trim(db32_obs) as db32_obs
@@ -370,7 +370,7 @@ if( $numrows > 0 ) {
                   ";
 
           $resitem = db_query($sql);
-          for($mi=0;$mi<pg_numrows($resitem);$mi++){
+          for($mi=0;$mi<pg_num_rows($resitem);$mi++){
             db_fieldsmemory($resitem,$mi);
             echo "&nbsp&nbsp&nbsp<strong>2.$db30_codversao.$db30_codrelease</strong> $db32_obs<br>";
           }

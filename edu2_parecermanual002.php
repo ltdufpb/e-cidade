@@ -80,7 +80,7 @@ if ($oTurma->getFormaCalculoCargaHoraria() == 1) {
 
 $oProcedimentoAvalicao = $oTurma->getProcedimentoDeAvaliacaoDaEtapa($oEtapa);
 
-$periodo = explode("|",$periodo);
+$periodo = explode("|",(string) $periodo);
 if ($periodo[0] == 'R') {
 
   $oElementoAvaliacao = ResultadoAvaliacaoRepository::getResultadoAvaliacaoByCodigo($periodo[1]);
@@ -100,7 +100,7 @@ if ($periodo[0] == 'R') {
 } else {
 
   $oElementoAvaliacao = AvaliacaoPeriodicaRepository::getAvaliacaoPeriodicaByCodigo($periodo[1]);
-  $aAvaliacoes        = array($oElementoAvaliacao);
+  $aAvaliacoes        = [$oElementoAvaliacao];
 }
 
 if ($clmatricula->numrows == 0) {?>
@@ -239,7 +239,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
   } else {
     $order = "ed232_c_descr";
   }
-  if (strlen($nome) > 42 || strlen($sNomeEscola) > 42 ) {
+  if (strlen((string) $nome) > 42 || strlen((string) $sNomeEscola) > 42 ) {
     $TamFonteNome = 8;
   } else {
     $TamFonteNome = 9;

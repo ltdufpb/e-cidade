@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcparamrelperiodos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcparamrelperiodos = new cl_orcparamrelperiodos;
 $clorcparamrelperiodos->rotulo->label("o113_sequencial");
 $clorcparamrelperiodos->rotulo->label("o113_periodo");
@@ -98,9 +98,9 @@ $clorcparamrelperiodos->rotulo->label("o113_periodo");
         }else{
            $sql = $clorcparamrelperiodos->sql_query("",$campos,"o113_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o113_periodo)){
-          $repassa = array("chave_o113_sequencial"=>$chave_o113_sequencial,"chave_o113_periodo"=>$chave_o113_periodo);
+          $repassa = ["chave_o113_sequencial"=>$chave_o113_sequencial,"chave_o113_periodo"=>$chave_o113_periodo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

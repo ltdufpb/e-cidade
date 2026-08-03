@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 //
 ?>
@@ -120,7 +120,7 @@ function js_emite(){
          </td>
          <td>
          <?php  
-         $x = array ("cp" => "cliente e procedimento", "c" => "clientes", "p" => "procedimento", "m" => "módulo");
+         $x =  ["cp" => "cliente e procedimento", "c" => "clientes", "p" => "procedimento", "m" => "módulo"];
 	     db_select('totalizar', $x, true, 4, "");
 	     ?>
         </td>
@@ -136,7 +136,7 @@ function js_emite(){
          
           
       
-         $x = array ( "duvidas_atu"          => "Dúvidas atual",
+         $x =  [ "duvidas_atu"          => "Dúvidas atual",
 			          "duvidas_fin_atu"      => "Dúvidas atual finalizado",
 			          "duvidas_antes"        => "Dúvidas antes",
 			          "duvidas_fin_antes"    => "Dúvidas antes finalizado",
@@ -155,10 +155,10 @@ function js_emite(){
                       "total_aten_atu"       => "Total atual", 
                       "total_aten_fin_atu"   => "Total atual finalizados", 
                       "total_aten_antes"     => "Total anterior ", 
-                      "total_aten_fin_antes" => "Total anterior finalizados");
+                      "total_aten_fin_antes" => "Total anterior finalizados"];
 	     db_select('ordem', $x, true, 4, "");
 	    
-         $x = array ("a" => "ascendente", "d" => "descendente");
+         $x =  ["a" => "ascendente", "d" => "descendente"];
 	     db_select('ordem2', $x, true, 4, "");
 	     
 	     ?>

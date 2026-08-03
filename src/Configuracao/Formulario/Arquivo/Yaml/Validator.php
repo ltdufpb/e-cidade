@@ -32,37 +32,37 @@ class Validator implements ValidatorInterface
    *
    * @var array
    */
-    private $yamlData = array();
+    private $yamlData = [];
 
   /**
    * Erros do arquivo
    *
    * @var string[]
    */
-    private $errors = array();
+    private $errors = [];
 
   /**
    * Campos obrigatorios
    *
    * @var array
    */
-    private $requiredFields = array(
-    'formulario' => array(
+    private $requiredFields = [
+    'formulario' => [
       'tipo',
       'descricao',
       'observacao'
-    ),
-    'grupos' => array(
+    ],
+    'grupos' => [
       'descricao'
-    ),
-    'perguntas' => array(
+    ],
+    'perguntas' => [
       'descricao',
       'tipo_resposta',
-    ),
-    'respostas' => array(
+    ],
+    'respostas' => [
       'descricao',
-    )
-    );
+    ]
+    ];
 
   /**
    * @param string $parser
@@ -115,13 +115,13 @@ class Validator implements ValidatorInterface
    */
     private function formatMessageErrors()
     {
-        $messages = array();
-        $labels = array(
+        $messages = [];
+        $labels = [
         'formulario' => 'Formulário',
         'grupos' => 'Grupo(s)',
         'perguntas' => 'Pergunta(s)',
         'respostas' => 'Resposta(s)',
-        );
+        ];
 
         foreach ($this->errors as $key => $fields) {
           // Erro no parse do arquivo
@@ -166,7 +166,7 @@ class Validator implements ValidatorInterface
    * @param array $groups
    * @return boolean
    */
-    private function structValidationGroups(Array & $groups = null)
+    private function structValidationGroups(?Array & $groups = null)
     {
         if (empty($groups)) {
             return false;
@@ -184,7 +184,7 @@ class Validator implements ValidatorInterface
    * @param array $questions
    * @return boolean
    */
-    private function structValidationQuestions(Array & $questions = null)
+    private function structValidationQuestions(?Array & $questions = null)
     {
         if (empty($questions)) {
             return false;
@@ -202,7 +202,7 @@ class Validator implements ValidatorInterface
    * @param array $answers
    * @return boolean
    */
-    private function structValidationAnswers(Array & $answers = null)
+    private function structValidationAnswers(?Array & $answers = null)
     {
         if (empty($answers)) {
             return false;

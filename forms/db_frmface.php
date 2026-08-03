@@ -89,7 +89,7 @@ $clrotulo->label("j14_nome");
 	<tr>
 		<td nowrap title="<?=@$Tj37_lado?>"><?=@$Lj37_lado?></td>
 		<td><?php 
-		$matriz = array('I'=>"Impar",'P'=>"Par");
+		$matriz = ['I'=>"Impar",'P'=>"Par"];
 		db_select('j37_lado',$matriz,true,$db_opcao);
 		?>
 		</td>
@@ -150,7 +150,7 @@ $clrotulo->label("j14_nome");
   <?php
   $sql="select * from caracter inner join cargrup on j32_grupo=j31_grupo where j32_tipo='F'";
   $result= db_query($sql);
-  if (pg_numrows($result)!=0){
+  if (pg_num_rows($result)!=0){
     ?> <input
 	name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
 	type="submit" id="db_opcao"
@@ -264,7 +264,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 	<?php

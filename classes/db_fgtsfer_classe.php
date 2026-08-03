@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE fgtsfer
 class cl_fgtsfer { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r40_regist = 0; 
-   var $r40_proc = null; 
-   var $r40_recol = null; 
-   var $r40_valor = 0; 
+   public $r40_regist = 0; 
+   public $r40_proc = null; 
+   public $r40_recol = null; 
+   public $r40_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r40_regist = int4 = Codigo do Funcionario 
                  r40_proc = varchar(7) = Ano/Mês do Processamento 
                  r40_recol = varchar(7) = Ano/Mês de Rrecolhimento 
                  r40_valor = float8 = Valor base p/ fgts 
                  ";
    //funcao construtor da classe 
-   function cl_fgtsfer() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fgtsfer"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -132,7 +132,7 @@ class cl_fgtsfer {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "arquivo onde serao guardas as bases de fgts ref fe () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "arquivo onde serao guardas as bases de fgts ref fe já Cadastrado";
@@ -159,10 +159,10 @@ class cl_fgtsfer {
       $this->atualizacampos();
      $sql = " update fgtsfer set ";
      $virgula = "";
-     if(trim($this->r40_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r40_regist"])){ 
+     if(trim((string) $this->r40_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r40_regist"])){ 
        $sql  .= $virgula." r40_regist = $this->r40_regist ";
        $virgula = ",";
-       if(trim($this->r40_regist) == null ){ 
+       if(trim((string) $this->r40_regist) == null ){ 
          $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
          $this->erro_campo = "r40_regist";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_fgtsfer {
          return false;
        }
      }
-     if(trim($this->r40_proc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r40_proc"])){ 
+     if(trim((string) $this->r40_proc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r40_proc"])){ 
        $sql  .= $virgula." r40_proc = '$this->r40_proc' ";
        $virgula = ",";
-       if(trim($this->r40_proc) == null ){ 
+       if(trim((string) $this->r40_proc) == null ){ 
          $this->erro_sql = " Campo Ano/Mês do Processamento nao Informado.";
          $this->erro_campo = "r40_proc";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_fgtsfer {
          return false;
        }
      }
-     if(trim($this->r40_recol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r40_recol"])){ 
+     if(trim((string) $this->r40_recol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r40_recol"])){ 
        $sql  .= $virgula." r40_recol = '$this->r40_recol' ";
        $virgula = ",";
-       if(trim($this->r40_recol) == null ){ 
+       if(trim((string) $this->r40_recol) == null ){ 
          $this->erro_sql = " Campo Ano/Mês de Rrecolhimento nao Informado.";
          $this->erro_campo = "r40_recol";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_fgtsfer {
          return false;
        }
      }
-     if(trim($this->r40_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r40_valor"])){ 
+     if(trim((string) $this->r40_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r40_valor"])){ 
        $sql  .= $virgula." r40_valor = $this->r40_valor ";
        $virgula = ",";
-       if(trim($this->r40_valor) == null ){ 
+       if(trim((string) $this->r40_valor) == null ){ 
          $this->erro_sql = " Campo Valor base p/ fgts nao Informado.";
          $this->erro_campo = "r40_valor";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:fgtsfer";

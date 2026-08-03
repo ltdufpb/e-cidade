@@ -262,16 +262,11 @@ class DadosEmpresaService
      */
     private function buildCampoCategoriaSimples()
     {
-        switch ($this->oDados->dadosRedesim["porte"]) {
-            case "ME":
-                $aCategoriaSimples = ["codigo" => 1, "descricao" => "Micro Empresa"];
-                break;
-            case "EPP":
-                $aCategoriaSimples = ["codigo" => 2, "descricao" => "Empresa de pequeno porte"];
-                break;
-            default:
-                $aCategoriaSimples = ["codigo" => 5, "descricao" => "Demais"];
-        }
+        $aCategoriaSimples = match ($this->oDados->dadosRedesim["porte"]) {
+            "ME" => ["codigo" => 1, "descricao" => "Micro Empresa"],
+            "EPP" => ["codigo" => 2, "descricao" => "Empresa de pequeno porte"],
+            default => ["codigo" => 5, "descricao" => "Demais"],
+        };
 
         $oCampo = new \stdClass();
         $oCampo->nome = "categoria_simples";

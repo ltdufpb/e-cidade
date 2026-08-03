@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label('k13_conta');
@@ -75,7 +75,7 @@ function js_emite(){
         <td title="Habite-se" >Habite-se:</td>
         <td>
           <?php 
-            $xx = array("t"=>"Todos","p"=>"Parcial","g"=>"Total");
+            $xx = ["t"=>"Todos","p"=>"Parcial","g"=>"Total"];
             db_select('ordem',$xx,true,4,"");
           ?>
         </td>

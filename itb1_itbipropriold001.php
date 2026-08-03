@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_itbipropriold_classe.php"));
 include(modification("classes/db_itbirural_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clitbipropriold = new cl_itbipropriold;
 $clitbirural = new cl_itbirural;
 $db_opcao = 1;

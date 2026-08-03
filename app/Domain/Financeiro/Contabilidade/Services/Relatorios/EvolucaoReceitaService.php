@@ -186,7 +186,7 @@ class EvolucaoReceitaService
         
         $this->parser->setEnteFederativo($this->enteFederativo);
         $this->parser->setEmissor($this->emissor);
-        $this->parser->setPeriodo(mb_strtoupper($this->mesesProcessar[11]->nome, 'ISO-8859-1'));
+        $this->parser->setPeriodo(mb_strtoupper((string) $this->mesesProcessar[11]->nome, 'ISO-8859-1'));
         $this->parser->setMesesPeriodo($mesesPeriodo);
         $this->mesesProcessar = [];
         $filename = $this->parser->gerar();

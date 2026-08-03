@@ -102,6 +102,7 @@ class LancamentoAuxiliarPagamentoLimiteSaque extends LancamentoAuxiliarBase impl
     /**
      * @param string $sObservacaoHistorico
      */
+    #[\Override]
     public function setObservacaoHistorico($sObservacaoHistorico)
     {
         $this->complemento = $sObservacaoHistorico;
@@ -110,6 +111,7 @@ class LancamentoAuxiliarPagamentoLimiteSaque extends LancamentoAuxiliarBase impl
     /**
      * @return string
      */
+    #[\Override]
     public function getObservacaoHistorico()
     {
         return $this->complemento;

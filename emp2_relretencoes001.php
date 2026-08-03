@@ -78,7 +78,7 @@ $db_opcao = 1;
 							</td>
 							<td>
                  <?php 
-								 $xx = array("s"=>"Sim","n"=>"Não"); 
+								 $xx = ["s"=>"Sim","n"=>"Não"]; 
 								 db_select("selpagamento",$xx,true,4,"");
 							 	 ?>
 							</td>

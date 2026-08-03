@@ -37,8 +37,8 @@ include(modification("classes/db_veicmanutretirada_classe.php"));
 include(modification("classes/db_veiculos_classe.php"));
 include(modification("classes/db_veictipoabast_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clveicmanut         = new cl_veicmanut;
 $clveicmanutoficina  = new cl_veicmanutoficina;

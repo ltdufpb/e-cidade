@@ -29,7 +29,7 @@ try {
 
             unset($_SESSION["bases_folha"]);
             $oVariaveis         = new stdClass();
-            $fs = array(
+            $fs = [
                 'F001'     => "Salário Hora (F007/F008)",
                 'F002'     => "Horas semanais",
                 'F003'     => "Data de admissão",
@@ -56,8 +56,8 @@ try {
                 'F030' => "adrão base de previdência",
                 'F031' => "Domingos no mês",
                 'F032' => "Dias úteis do mês",
-            );
-            $aFs = array();
+            ];
+            $aFs = [];
             foreach ($fs as $codigo => $descricao) {
 
                 $oClasse = new \stdClass();
@@ -73,7 +73,7 @@ try {
                 $sqlBases .= "  and r08_instit = " . $_SESSION["DB_instit"];
                 $rsBases   = db_query($sqlBases);
                  $_SESSION["bases_folha"] = db_utils::makeCollectionFromRecord($rsBases, function($base) {
-                     $base->descricao = trim($base->descricao);
+                     $base->descricao = trim((string) $base->descricao);
                     return $base;
                 });
 

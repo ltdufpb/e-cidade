@@ -29,7 +29,7 @@ include(modification("libs/db_sql.php"));
 require(modification("fpdf151/pdf.php"));
 include(modification("classes/db_iptuconstr_classe.php"));
 include(modification("classes/db_iptuconstrdemo_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $where = " where ";

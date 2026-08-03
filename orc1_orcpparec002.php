@@ -37,8 +37,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcpparec     = new cl_orcpparec;
 ?>
@@ -92,7 +92,7 @@ $clorcpparec     = new cl_orcpparec;
 		    echo "</script>";
 		}   
 		    
-	       $chavepri= array("o27_codleippa"=>@$o27_codleippa,"o27_proces"=>@$o27_proces);
+	       $chavepri= ["o27_codleippa"=>@$o27_codleippa,"o27_proces"=>@$o27_proces];
 
 
                $cliframe_alterar_excluir->chavepri=$chavepri;

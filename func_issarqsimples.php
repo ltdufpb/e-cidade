@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issarqsimples_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissarqsimples = new cl_issarqsimples;
 $clissarqsimples->rotulo->label("q17_sequencial");
 $clissarqsimples->rotulo->label("q17_nomearq");
@@ -109,9 +109,9 @@ $clissarqsimples->rotulo->label("q17_nomearq");
         }else{
            $sql = $clissarqsimples->sql_query_processados("",$campos,"q17_sequencial",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q17_nomearq)){
-          $repassa = array("chave_q17_sequencial"=>$chave_q17_sequencial,"chave_q17_data"=>$chave_q17_nomearq);
+          $repassa = ["chave_q17_sequencial"=>$chave_q17_sequencial,"chave_q17_data"=>$chave_q17_nomearq];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

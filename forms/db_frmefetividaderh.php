@@ -58,7 +58,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
   </td>
   <td>
    <?php 
-   $x = array(""=>"", "P"=>"PROFESSORES", "F"=>"FUNCIONÁRIOS");
+   $x = [""=>"", "P"=>"PROFESSORES", "F"=>"FUNCIONÁRIOS"];
    db_select('ed98_c_tipo', $x, true, $db_opcao1, "onchange='js_pesquisaultimo()'")
    ?>
   </td>
@@ -79,7 +79,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
       </td>
       <td>
        <?php 
-       $x = array(""=>"", "M"=>"MENSAL", "P"=>"PERIÓDICA");
+       $x = [""=>"", "M"=>"MENSAL", "P"=>"PERIÓDICA"];
        db_select('ed98_c_tipocomp', $x, true, $db_opcao1, "onchange='js_competencia(this.value)'");
        ?>
       </td>
@@ -97,9 +97,9 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
       <td nowrap title="<?=@$Ted98_i_mes?>">
        <?=@$Led98_i_mes?>
        <?php 
-       $x = array(""=>"", "1"=>"JANEIRO", "2"=>"FEVEREIRO", "3"=>"MARÇO", "4"=>"ABRIL", "5"=>"MAIO", "6"=>"JUNHO",
+       $x = [""=>"", "1"=>"JANEIRO", "2"=>"FEVEREIRO", "3"=>"MARÇO", "4"=>"ABRIL", "5"=>"MAIO", "6"=>"JUNHO",
                   "7"=>"JULHO", "8"=>"AGOSTO", "9"=>"SETEMBRO", "10"=>"OUTUBRO", "11"=>"NOVEMBRO", "12"=>"DEZEMBRO"
-                 );
+                 ];
        db_select('ed98_i_mes', $x, true, $db_opcao1, "onchange='js_mesano()'");
        ?>
       </td>
@@ -168,7 +168,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_efetividaderh.hide();
   <?php 
    if ($db_opcao != 1) {
-     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
    }
   ?>
 

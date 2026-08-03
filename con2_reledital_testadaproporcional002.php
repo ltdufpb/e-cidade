@@ -45,7 +45,7 @@ $cleditalserv		  = new cl_editalserv;
 $cleditalrua			= new cl_editalrua;
 $cleditalruaproj  = new cl_editalruaproj;
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 $objGet  = db_utils::postmemory($_GET);
 $iQuebra = 0;
 //die($cleditalrua->sql_query("","d02_codigo,d01_numero,d02_contri,j14_nome,d01_data,(100 - d01_perc) as d01_perc ,d02_valorizacao","d02_contri,j14_nome","d02_codedi = {$objGet->edital}"));
@@ -187,14 +187,14 @@ for( $i = 0; $i < $iNumrows; $i++ ) {
 
     $rsSomaTestada   = db_query($sqlSomaTestada) or die($sqlSomaTestada);
 
-    if (pg_numrows($rsSomaTestada) == 0) {
+    if (pg_num_rows($rsSomaTestada) == 0) {
       $total_testada = 0;
     } else {
       $objSomaTestada  = db_utils::fieldsMemory($rsSomaTestada,0);
       $total_testada   = $objSomaTestada->total_testada;
     }
 
-    $iNumrowsMatricula = pg_numrows($rsMatriculas);
+    $iNumrowsMatricula = pg_num_rows($rsMatriculas);
 
     $linha = 60;
 
@@ -226,7 +226,7 @@ for( $i = 0; $i < $iNumrows; $i++ ) {
 
 
       // Altera o tamanho da celula rua e trecho
-			$iTamanhoTrecho = strlen($oEditalRuaProj->d40_trecho);
+			$iTamanhoTrecho = strlen((string) $oEditalRuaProj->d40_trecho);
 
 			if($iTamanhoTrecho < 50){
 				$iTamanhoTrecho = 50;
@@ -425,7 +425,7 @@ for( $i = 0; $i < $iNumrows; $i++ ) {
       $pdf->Cell(10,4,$objMatriculas->j01_matric                                  ,1,0,"C",1);
       $pdf->Cell(20,4,$sImovel                                                    ,1,0,"C",1);
       $pdf->Cell(60,4,$objMatriculas->z01_nome                                    ,1,0,"L",1);
-      $pdf->Cell(45,4,trim($objContribuicao->j14_nome).trim($sNumeroComplemento)  ,1,0,"L",1);
+      $pdf->Cell(45,4,trim((string) $objContribuicao->j14_nome).trim($sNumeroComplemento)  ,1,0,"L",1);
       $pdf->Cell(15,4,db_formatar($objMatriculas->d05_testad,'f')                 ,1,0,"R",1);
       $pdf->Cell(20,4,db_formatar($nAreaParcial,'f')                              ,1,0,"R",1);
       $pdf->Cell(20,4,db_formatar($nAreaCorrigida,'f')                            ,1,0,"R",1);

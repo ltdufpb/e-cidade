@@ -125,7 +125,7 @@ if (count($oDados->aProcessos) == 1) {
                      $sTbody .= "     {$oProcesso->coddepto} - {$oProcesso->descrdepto}";
                      $sTbody .= "  </td>";
                      $sTbody .= "  <td class='linhagrid'>";
-                     $sTbody .=    substr($oProcesso->pc80_resumo,0,50);
+                     $sTbody .=    substr((string) $oProcesso->pc80_resumo,0,50);
                      $sTbody .= "  </td>";
                      $sTbody .= "</tr>";
                    

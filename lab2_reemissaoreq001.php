@@ -38,7 +38,7 @@ include(modification("classes/db_lab_medico_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_app.utils.php"));
 require(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllab_requisicao  = new cl_lab_requisicao;
 $cllab_requiitem   = new cl_lab_requiitem;
 $cllab_laboratorio = new cl_lab_laboratorio;
@@ -82,11 +82,11 @@ $db_botao = true;
    db_fieldsmemory($result,0);
       $sSql=$cllab_requisicao->sql_query_requiitem("","lab_requiitem.*,lab_exame.*,lab_laboratorio.*",""," la21_i_requisicao=$chavepesquisa ");
       $result = $cllab_requisicao->sql_record($sSql);
-      $alinhasgrid=Array();
+      $alinhasgrid=[];
       for($x=0;$x<$cllab_requisicao->numrows;$x++){
           db_fieldsmemory($result,$x);
           //montar array com linhas do grid
-          $aData=explode("-",$la21_d_data);
+          $aData=explode("-",(string) $la21_d_data);
           $alinhasgrid[$x]="$la21_i_setorexame#$la02_c_descr#$la08_c_descr#".$aData[2]."/".$aData[1]."/".$aData[0]."#$la21_c_hora#$la08_i_dias#$la21_i_emergencia";
       }
       $result = $cllab_medico->sql_record($cllab_medico->sql_query(""," la38_i_medico,z01_nome as  la22_c_medico,sd03_i_crm ",""," la38_i_requisicao = $chavepesquisa "));

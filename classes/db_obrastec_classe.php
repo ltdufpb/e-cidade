@@ -64,7 +64,7 @@ class cl_obrastec {
     public function __construct()
     {
         $this->rotulo = new rotulo("obrastec"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -148,10 +148,10 @@ class cl_obrastec {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ob15_sequencial = pg_result($result,0,0); 
+       $this->ob15_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from obrastec_ob15_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ob15_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ob15_sequencial)){
          $this->erro_sql = " Campo ob15_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -189,7 +189,7 @@ class cl_obrastec {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tecnicos autorizados com crea ($this->ob15_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tecnicos autorizados com crea já Cadastrado";
@@ -218,15 +218,15 @@ class cl_obrastec {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11384,'$this->ob15_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1001,11384,'','".AddSlashes(pg_result($resaco,0,'ob15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1001,6191,'','".AddSlashes(pg_result($resaco,0,'ob15_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1001,6192,'','".AddSlashes(pg_result($resaco,0,'ob15_crea'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1001,11860,'','".AddSlashes(pg_result($resaco,0,'ob15_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1001,1013242,'','".AddSlashes(pg_result($resaco,0,'ob15_profissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1001,1014619,'','".AddSlashes(pg_result($resaco,0,'ob15_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1001,11384,'','".AddSlashes(pg_fetch_result($resaco,0,'ob15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1001,6191,'','".AddSlashes(pg_fetch_result($resaco,0,'ob15_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1001,6192,'','".AddSlashes(pg_fetch_result($resaco,0,'ob15_crea'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1001,11860,'','".AddSlashes(pg_fetch_result($resaco,0,'ob15_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1001,1013242,'','".AddSlashes(pg_fetch_result($resaco,0,'ob15_profissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1001,1014619,'','".AddSlashes(pg_fetch_result($resaco,0,'ob15_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -237,10 +237,10 @@ class cl_obrastec {
       $this->atualizacampos();
      $sql = " update obrastec set ";
      $virgula = "";
-     if(trim($this->ob15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_sequencial"])){ 
+     if(trim((string) $this->ob15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_sequencial"])){ 
        $sql  .= $virgula." ob15_sequencial = $this->ob15_sequencial ";
        $virgula = ",";
-       if(trim($this->ob15_sequencial) == null ){ 
+       if(trim((string) $this->ob15_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "ob15_sequencial";
          $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_obrastec {
          return false;
        }
      }
-     if(trim($this->ob15_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_numcgm"])){ 
+     if(trim((string) $this->ob15_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_numcgm"])){ 
        $sql  .= $virgula." ob15_numcgm = $this->ob15_numcgm ";
        $virgula = ",";
-       if(trim($this->ob15_numcgm) == null ){ 
+       if(trim((string) $this->ob15_numcgm) == null ){ 
          $this->erro_sql = " Campo CGM não informado.";
          $this->erro_campo = "ob15_numcgm";
          $this->erro_banco = "";
@@ -263,14 +263,14 @@ class cl_obrastec {
          return false;
        }
      }
-     if(trim($this->ob15_crea)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_crea"])){ 
+     if(trim((string) $this->ob15_crea)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_crea"])){ 
        $sql  .= $virgula." ob15_crea = '$this->ob15_crea' ";
        $virgula = ",";
      }
-     if(trim($this->ob15_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_tipo"])){ 
+     if(trim((string) $this->ob15_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_tipo"])){ 
        $sql  .= $virgula." ob15_tipo = $this->ob15_tipo ";
        $virgula = ",";
-       if(trim($this->ob15_tipo) == null ){ 
+       if(trim((string) $this->ob15_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo não informado.";
          $this->erro_campo = "ob15_tipo";
          $this->erro_banco = "";
@@ -280,10 +280,10 @@ class cl_obrastec {
          return false;
        }
      }
-     if(trim($this->ob15_profissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_profissao"])){ 
+     if(trim((string) $this->ob15_profissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_profissao"])){ 
        $sql  .= $virgula." ob15_profissao = $this->ob15_profissao ";
        $virgula = ",";
-       if(trim($this->ob15_profissao) == null ){ 
+       if(trim((string) $this->ob15_profissao) == null ){ 
          $this->erro_sql = " Campo referencia a tabela obrastecprofissao não informado.";
          $this->erro_campo = "ob15_profissao";
          $this->erro_banco = "";
@@ -293,10 +293,10 @@ class cl_obrastec {
          return false;
        }
      }
-     if(trim($this->ob15_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob15_datalimite_dia"] !="") ){ 
+     if(trim((string) $this->ob15_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob15_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob15_datalimite_dia"] !="") ){ 
        $sql  .= $virgula." ob15_datalimite = '$this->ob15_datalimite' ";
        $virgula = ",";
-       if(trim($this->ob15_datalimite) == null ){ 
+       if(trim((string) $this->ob15_datalimite) == null ){ 
          $this->erro_sql = " Campo Data Limite não informado.";
          $this->erro_campo = "ob15_datalimite_dia";
          $this->erro_banco = "";
@@ -309,7 +309,7 @@ class cl_obrastec {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ob15_datalimite_dia"])){ 
          $sql  .= $virgula." ob15_datalimite = null ";
          $virgula = ",";
-         if(trim($this->ob15_datalimite) == null ){ 
+         if(trim((string) $this->ob15_datalimite) == null ){ 
            $this->erro_sql = " Campo Data Limite não informado.";
            $this->erro_campo = "ob15_datalimite_dia";
            $this->erro_banco = "";
@@ -334,21 +334,21 @@ class cl_obrastec {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,11384,'$this->ob15_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob15_sequencial"]) || $this->ob15_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1001,11384,'".AddSlashes(pg_result($resaco,$conresaco,'ob15_sequencial'))."','$this->ob15_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1001,11384,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob15_sequencial'))."','$this->ob15_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob15_numcgm"]) || $this->ob15_numcgm != "")
-             $resac = db_query("insert into db_acount values($acount,1001,6191,'".AddSlashes(pg_result($resaco,$conresaco,'ob15_numcgm'))."','$this->ob15_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1001,6191,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob15_numcgm'))."','$this->ob15_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob15_crea"]) || $this->ob15_crea != "")
-             $resac = db_query("insert into db_acount values($acount,1001,6192,'".AddSlashes(pg_result($resaco,$conresaco,'ob15_crea'))."','$this->ob15_crea',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1001,6192,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob15_crea'))."','$this->ob15_crea',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob15_tipo"]) || $this->ob15_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,1001,11860,'".AddSlashes(pg_result($resaco,$conresaco,'ob15_tipo'))."','$this->ob15_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1001,11860,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob15_tipo'))."','$this->ob15_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob15_profissao"]) || $this->ob15_profissao != "")
-             $resac = db_query("insert into db_acount values($acount,1001,1013242,'".AddSlashes(pg_result($resaco,$conresaco,'ob15_profissao'))."','$this->ob15_profissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1001,1013242,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob15_profissao'))."','$this->ob15_profissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob15_datalimite"]) || $this->ob15_datalimite != "")
-             $resac = db_query("insert into db_acount values($acount,1001,1014619,'".AddSlashes(pg_result($resaco,$conresaco,'ob15_datalimite'))."','$this->ob15_datalimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1001,1014619,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob15_datalimite'))."','$this->ob15_datalimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -402,15 +402,15 @@ class cl_obrastec {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,11384,'$ob15_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1001,11384,'','".AddSlashes(pg_result($resaco,$iresaco,'ob15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1001,6191,'','".AddSlashes(pg_result($resaco,$iresaco,'ob15_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1001,6192,'','".AddSlashes(pg_result($resaco,$iresaco,'ob15_crea'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1001,11860,'','".AddSlashes(pg_result($resaco,$iresaco,'ob15_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1001,1013242,'','".AddSlashes(pg_result($resaco,$iresaco,'ob15_profissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1001,1014619,'','".AddSlashes(pg_result($resaco,$iresaco,'ob15_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1001,11384,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1001,6191,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob15_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1001,6192,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob15_crea'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1001,11860,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob15_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1001,1013242,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob15_profissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1001,1014619,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob15_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

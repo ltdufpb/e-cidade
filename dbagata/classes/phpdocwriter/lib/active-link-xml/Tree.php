@@ -34,16 +34,16 @@
 class Tree {
 
 	// protected variables
-	var $nodes;
-	var $id = 0;
+	public $nodes;
+	public $id = 0;
 
 	/**
 	  *	Constructor for the object
 	  *	@method		Tree
 	  *	@returns	none
 	  */
-	function Tree() {
-		$this->nodes = array();
+	function __construct() {
+		$this->nodes = [];
 	}
 
 	/**
@@ -71,7 +71,7 @@ class Tree {
 	  *	@returns	none
 	  */
 	function removeAllNodes () {
-		$this->nodes = array();
+		$this->nodes = [];
 	}
 
 	/**

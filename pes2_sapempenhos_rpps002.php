@@ -36,7 +36,7 @@ $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
 $clinssirf = new cl_inssirf;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 if($prev == 's'){
@@ -224,7 +224,7 @@ order by rh26_orgao
 //echo $sql ; exit;
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=No existem movimentos cadastrados no perodo de '.$mes.' / '.$ano);
 }
@@ -253,7 +253,7 @@ $pat          = 0;
 $teste        = 0;
 $aListaRecurso = [40,4502,1458,1412];
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();

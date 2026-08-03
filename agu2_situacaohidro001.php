@@ -34,7 +34,7 @@
   
   $arqAux = new cl_arquivo_auxiliar;
   
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   
   $clrotulo = new rotulocampo;
   $clrotulo->label("x21_exerc");
@@ -208,8 +208,8 @@
               <td>
                 <?php
                   $iListar = 1;
-                  $x = array("1" => "Última Situação",
-                             "2" => "Informar Ano/Mês");
+                  $x = ["1" => "Última Situação",
+                             "2" => "Informar Ano/Mês"];
                   db_select("iListar", $x, true, 1, "onchange=\"hidden(this.value)\"");
                 ?>
               </td>
@@ -220,9 +220,9 @@
               </td>
               <td>
                 <?php
-                  $a = array('1' => 'Todas',
+                  $a = ['1' => 'Todas',
                              '2' => 'Matrículas COM situação de corte',
-                             '3' => 'Matrículas SEM situação de corte');
+                             '3' => 'Matrículas SEM situação de corte'];
                   db_select('filtro', $a, true, 1); 
                 ?>
               </td>
@@ -233,10 +233,10 @@
               </td>
               <td>
                 <?php
-                  $aOrdenacao = array('1' => 'Matricula',
+                  $aOrdenacao = ['1' => 'Matricula',
                                       '2' => 'Bairro/Logradouro/Numero',
                                       '3' => 'Ano/Mês',
-                                      '4' => 'Leitura');
+                                      '4' => 'Leitura'];
                   db_select('ordenacao', $aOrdenacao, true, 1); 
                 ?>
               </td>

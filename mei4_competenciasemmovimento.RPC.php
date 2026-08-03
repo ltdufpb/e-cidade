@@ -46,7 +46,7 @@ $oParam            = $oJson->decode(db_stdClass::db_stripTagsJson(str_replace("\
 $oRetorno->status  = 1;
 
 if (isset($oParam->motivo)) {
-  $sMotivo = utf8_decode($oParam->motivo);
+  $sMotivo = mb_convert_encoding($oParam->motivo, 'ISO-8859-1');
 }
 
 $sMsgErro          = '';
@@ -84,7 +84,7 @@ switch($oParam->exec) {
 		    if ( $oParIssqn->numrows > 0 ) {
 		        
 		      $dtDataImpMei = db_utils::fieldsMemory($rsParIssqn,0)->q60_dataimpmei;
-		      list($iAnoDataImpMei,$iMesDataImpMei,$iDiaDataImpMei) = explode("-",$dtDataImpMei);
+		      [$iAnoDataImpMei, $iMesDataImpMei, $iDiaDataImpMei] = explode("-",(string) $dtDataImpMei);
 		
 		      if (   $iAnoArquivo < $iAnoDataImpMei || ( $iMesArquivo < $iMesDataImpMei && $iAnoArquivo == $iAnoDataImpMei) ) {
 		        $sMsgErro .= "\nCompetência informada menor que da implantação do MEI!";

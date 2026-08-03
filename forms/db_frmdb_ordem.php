@@ -214,7 +214,7 @@ db_input('nome',40,$Inome,true,'text',3);
     </td>  
     <td>
   <?php 
-  $xy = array("nao"=>"NÂO","sim"=>"SIM");
+  $xy = ["nao"=>"NÂO","sim"=>"SIM"];
   db_select('tipo',$xy,true,$db_opcao,"onchange='js_troca(this.value);'");
   ?>
     </td> 
@@ -230,7 +230,7 @@ if(isset($libera_anexos) && $libera_anexos=="sim" || isset($libera_anexos02) && 
 <table border='1' width='100%' cellspacing="0" cellpadding="0">   
   <tr> 
     <td colspan="2"  valign="top" nowrap  > 
-    
+
      <iframe src="con6_andamentoanexar.php?db_opcao=<?=$db_opcao?>" align="middle"  scrolling="no" hspace="0" name="iframe" width="100%" height="34" frameborder="0" marginwidth="0" marginheight="0"> 
       </iframe> 
     </td>
@@ -268,7 +268,7 @@ if(isset($libera_anexos) && $libera_anexos=="sim" || isset($libera_anexos02) && 
 		  <td valign='top'>
 		    <b>Anexos:</b>
 		  </td>
-		  
+
 		  <td>
 		  <?php 
 		    for($i=0; $i<$numrows_anexo; $i++){
@@ -399,7 +399,7 @@ function js_preenchepesquisa(chave){
   db_iframe_db_ordem.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

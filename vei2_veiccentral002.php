@@ -31,7 +31,7 @@
 	$clrotulo = new rotulocampo;
 	$clveiccadcentral = new cl_veiccadcentral;
 	
-	parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+	parse_str((string) $_SERVER['QUERY_STRING'], $result);
 	//db_postmemory($HTTP_SERVER_VARS,2);exit;
 	
 	if($quebra == 's') {
@@ -76,7 +76,7 @@
             else 'INATIVO'
             end as situacao";
 	
-	$iResultCentral = pg_numrows($result_central);
+	$iResultCentral = pg_num_rows($result_central);
 	
 	/**
 	 * Caso não retorne 0 linhas será exibida a mensagem de erro abaixo
@@ -110,7 +110,7 @@
 	$pp              = 0;
 	
 	
-	for ($x = 0; $x < pg_numrows($result_central); $x++) {
+	for ($x = 0; $x < pg_num_rows($result_central); $x++) {
 	  
 	  db_fieldsmemory($result_central, $x);
 	  if ($codcentral != "0" ) {
@@ -122,7 +122,7 @@
 	  }
 	
 		// Preenche com 0 (zero) a esquerda
-		$iRenavam = str_pad($renavam, 10, 0, STR_PAD_LEFT);
+		$iRenavam = str_pad((string) $renavam, 10, 0, STR_PAD_LEFT);
 	  
 	  //veiculos
 	  if ($passa==false ) {
@@ -151,10 +151,10 @@
 	  	
 	    $pdf->setfont('arial', '', 6);
 	    $pdf->cell(13, $alt, $codigo_veiculo, 0, 0, "C", $p);
-	    $pdf->cell(13, $alt, substr($placa, 0 , 7), 0, 0, "C", $p);
-	    $pdf->cell(27, $alt, substr($descr_tipo, 0, 23), 0, 0, "L", $p);
-	    $pdf->cell(43, $alt, substr($descr_modelo, 0, 22), 0, 0, "L", $p);
-	    $pdf->cell(30, $alt, substr($descr_marca, 0, 23), 0, 0, "L", $p);
+	    $pdf->cell(13, $alt, substr((string) $placa, 0 , 7), 0, 0, "C", $p);
+	    $pdf->cell(27, $alt, substr((string) $descr_tipo, 0, 23), 0, 0, "L", $p);
+	    $pdf->cell(43, $alt, substr((string) $descr_modelo, 0, 22), 0, 0, "L", $p);
+	    $pdf->cell(30, $alt, substr((string) $descr_marca, 0, 23), 0, 0, "L", $p);
 	    $pdf->cell(23, $alt, $ano_fabricacao, 0, 0, "C", $p);
 	    $pdf->cell(23, $alt, $iRenavam, 0, 0, "C", $p);
 	    $pdf->cell(20, $alt, $baixado, 0, 1, "C", $p);
@@ -169,7 +169,7 @@
 	    if ($clveiccadcentral->numrows > 0) {
 	      
 	    	$pdf->cell(195, $alt, "", 0, 1, "L", 0);
-	      for($y= 0; $y < pg_numrows($result_motoristas); $y++) {
+	      for($y= 0; $y < pg_num_rows($result_motoristas); $y++) {
 
 	      	db_fieldsmemory($result_motoristas, $y);
 	        if ($passamotorista == true) {
@@ -184,8 +184,8 @@
 	         
 	        $pdf->setfont('arial', '', 6);
 	        $pdf->cell(13, $alt2, "$codigo_motorista", 0, 0, "C", $pp);
-	        $pdf->cell(70, $alt2, substr($motorista,0,36), 0, 0, "L", $pp);
-	        $pdf->cell(23, $alt2, substr($cnh , 0, 10), 0, 0, "C", $pp);
+	        $pdf->cell(70, $alt2, substr((string) $motorista,0,36), 0, 0, "L", $pp);
+	        $pdf->cell(23, $alt2, substr((string) $cnh , 0, 10), 0, 0, "C", $pp);
 	        $pdf->cell(33, $alt2, db_formatar($datavenc, 'd'), 0, 0, "C", $pp);
 	        $pdf->cell(13, $alt2, "$situacao", 0, 1, "C", $pp);
 	        $passamotorista = false;
@@ -222,10 +222,10 @@
 	    $p = 0;
 	    $pdf->setfont('arial', '', 6);
 	    $pdf->cell(13, $alt, $codigo_veiculo, 0, 0, "C", $p);
-	    $pdf->cell(13, $alt, substr($placa, 0, 7), 0, 0, "C", $p);
-	    $pdf->cell(27, $alt, substr($descr_tipo, 0, 23), 0, 0, "L", $p);
-	    $pdf->cell(43, $alt, substr($descr_modelo, 0, 22), 0, 0, "L", $p);
-	    $pdf->cell(30, $alt, substr($descr_marca, 0, 23), 0, 0, "L", $p);
+	    $pdf->cell(13, $alt, substr((string) $placa, 0, 7), 0, 0, "C", $p);
+	    $pdf->cell(27, $alt, substr((string) $descr_tipo, 0, 23), 0, 0, "L", $p);
+	    $pdf->cell(43, $alt, substr((string) $descr_modelo, 0, 22), 0, 0, "L", $p);
+	    $pdf->cell(30, $alt, substr((string) $descr_marca, 0, 23), 0, 0, "L", $p);
 	    $pdf->cell(23, $alt, $ano_fabricacao, 0, 0, "C", $p);
 	    $pdf->cell(23, $alt, $iRenavam, 0, 0, "C", $p);
 	    $pdf->cell(20, $alt, $baixado, 0, 1, "C", $p);
@@ -249,7 +249,7 @@
 	if ($clveiccadcentral->numrows > 0) {
 		
 	  $pdf->cell(195, $alt, "", 0, 1, "L", 0);
-	  for ($y= 0; $y < pg_numrows($result_motoristas); $y++) {
+	  for ($y= 0; $y < pg_num_rows($result_motoristas); $y++) {
 	  	
 	    db_fieldsmemory ($result_motoristas, $y);
 	    if ($passamotorista == true) {
@@ -263,8 +263,8 @@
 	    }
 	    $pdf->setfont('arial', '', 6);
 	    $pdf->cell(13, $alt2, "$codigo_motorista", 0, 0, "C", $pp);
-	    $pdf->cell(70, $alt2, substr($motorista, 0, 36), 0, 0, "L", $pp);
-	    $pdf->cell(23, $alt2, substr($cnh, 0, 10), 0, 0, "C", $pp);
+	    $pdf->cell(70, $alt2, substr((string) $motorista, 0, 36), 0, 0, "L", $pp);
+	    $pdf->cell(23, $alt2, substr((string) $cnh, 0, 10), 0, 0, "C", $pp);
 	    $pdf->cell(33, $alt2, db_formatar($datavenc, 'd'), 0, 0, "C", $pp);
 	    $pdf->cell(13, $alt2, "$situacao", 0, 1, "C", $pp);
 	    $passamotorista = false;

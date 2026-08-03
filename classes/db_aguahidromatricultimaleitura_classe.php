@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE aguahidromatricultimaleitura
 class cl_aguahidromatricultimaleitura { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x09_codigo = 0; 
-   var $x09_codhidrometro = 0; 
-   var $x09_codleitura = 0; 
+   public $x09_codigo = 0; 
+   public $x09_codhidrometro = 0; 
+   public $x09_codleitura = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x09_codigo = int4 = Sequencial 
                  x09_codhidrometro = int4 = Hidrômetro 
                  x09_codleitura = int4 = Leitura 
                  ";
    //funcao construtor da classe 
-   function cl_aguahidromatricultimaleitura() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguahidromatricultimaleitura"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_aguahidromatricultimaleitura {
          $this->erro_status = "0";
          return false; 
        }
-       $this->x09_codigo = pg_result($result,0,0); 
+       $this->x09_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from aguahidromatricultimaleitura_x09_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $x09_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $x09_codigo)){
          $this->erro_sql = " Campo x09_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_aguahidromatricultimaleitura {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "aguahidromatricultimaleitura ($this->x09_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "aguahidromatricultimaleitura já Cadastrado";
@@ -166,12 +166,12 @@ class cl_aguahidromatricultimaleitura {
      $resaco = $this->sql_record($this->sql_query_file($this->x09_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10006,'$this->x09_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1718,10006,'','".AddSlashes(pg_result($resaco,0,'x09_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1718,10007,'','".AddSlashes(pg_result($resaco,0,'x09_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1718,10008,'','".AddSlashes(pg_result($resaco,0,'x09_codleitura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1718,10006,'','".AddSlashes(pg_fetch_result($resaco,0,'x09_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1718,10007,'','".AddSlashes(pg_fetch_result($resaco,0,'x09_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1718,10008,'','".AddSlashes(pg_fetch_result($resaco,0,'x09_codleitura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_aguahidromatricultimaleitura {
       $this->atualizacampos();
      $sql = " update aguahidromatricultimaleitura set ";
      $virgula = "";
-     if(trim($this->x09_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x09_codigo"])){ 
+     if(trim((string) $this->x09_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x09_codigo"])){ 
        $sql  .= $virgula." x09_codigo = $this->x09_codigo ";
        $virgula = ",";
-       if(trim($this->x09_codigo) == null ){ 
+       if(trim((string) $this->x09_codigo) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "x09_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_aguahidromatricultimaleitura {
          return false;
        }
      }
-     if(trim($this->x09_codhidrometro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x09_codhidrometro"])){ 
+     if(trim((string) $this->x09_codhidrometro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x09_codhidrometro"])){ 
        $sql  .= $virgula." x09_codhidrometro = $this->x09_codhidrometro ";
        $virgula = ",";
-       if(trim($this->x09_codhidrometro) == null ){ 
+       if(trim((string) $this->x09_codhidrometro) == null ){ 
          $this->erro_sql = " Campo Hidrômetro nao Informado.";
          $this->erro_campo = "x09_codhidrometro";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_aguahidromatricultimaleitura {
          return false;
        }
      }
-     if(trim($this->x09_codleitura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x09_codleitura"])){ 
+     if(trim((string) $this->x09_codleitura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x09_codleitura"])){ 
        $sql  .= $virgula." x09_codleitura = $this->x09_codleitura ";
        $virgula = ",";
-       if(trim($this->x09_codleitura) == null ){ 
+       if(trim((string) $this->x09_codleitura) == null ){ 
          $this->erro_sql = " Campo Leitura nao Informado.";
          $this->erro_campo = "x09_codleitura";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_aguahidromatricultimaleitura {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10006,'$this->x09_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x09_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1718,10006,'".AddSlashes(pg_result($resaco,$conresaco,'x09_codigo'))."','$this->x09_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1718,10006,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x09_codigo'))."','$this->x09_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x09_codhidrometro"]))
-           $resac = db_query("insert into db_acount values($acount,1718,10007,'".AddSlashes(pg_result($resaco,$conresaco,'x09_codhidrometro'))."','$this->x09_codhidrometro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1718,10007,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x09_codhidrometro'))."','$this->x09_codhidrometro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x09_codleitura"]))
-           $resac = db_query("insert into db_acount values($acount,1718,10008,'".AddSlashes(pg_result($resaco,$conresaco,'x09_codleitura'))."','$this->x09_codleitura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1718,10008,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x09_codleitura'))."','$this->x09_codleitura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_aguahidromatricultimaleitura {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10006,'$x09_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1718,10006,'','".AddSlashes(pg_result($resaco,$iresaco,'x09_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1718,10007,'','".AddSlashes(pg_result($resaco,$iresaco,'x09_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1718,10008,'','".AddSlashes(pg_result($resaco,$iresaco,'x09_codleitura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1718,10006,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x09_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1718,10007,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x09_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1718,10008,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x09_codleitura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from aguahidromatricultimaleitura
@@ -345,7 +345,7 @@ class cl_aguahidromatricultimaleitura {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aguahidromatricultimaleitura";

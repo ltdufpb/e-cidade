@@ -187,15 +187,15 @@ $clrotulo->label("cm07_d_vencimento");
           }
 
           if($cm07_d_vencimento_dia == "") {
-            $cm07_d_vencimento_dia = substr($cm01_d_falecimento, 8, 2);
+            $cm07_d_vencimento_dia = substr((string) $cm01_d_falecimento, 8, 2);
           }
 
           if($cm07_d_vencimento_mes == "") {
-            $cm07_d_vencimento_mes = substr($cm01_d_falecimento, 5, 2);
+            $cm07_d_vencimento_mes = substr((string) $cm01_d_falecimento, 5, 2);
           }
 
           if($cm07_d_vencimento_ano == "") {
-            $cm07_d_vencimento_ano = substr($cm01_d_falecimento, 0, 4) + 5;
+            $cm07_d_vencimento_ano = substr((string) $cm01_d_falecimento, 0, 4) + 5;
           }
 
           db_inputdata('cm07_d_vencimento', $cm07_d_vencimento_dia, $cm07_d_vencimento_mes, $cm07_d_vencimento_ano, true, 'text', $db_opcao, "");
@@ -438,7 +438,7 @@ function js_pesquisacm01_i_declarante(mostra) {
 
 function js_mostradeclarante(erro, chave) {
 
-  if(document.form1.cm01_i_declarante.value == <?php echo isset($cm01_i_codigo) ? $cm01_i_codigo : 'null'; ?>) {
+  if(document.form1.cm01_i_declarante.value == <?php echo $cm01_i_codigo ?? 'null'; ?>) {
     alert('Aviso!\n\nCgm informado para o declarante é o mesmo para o Sepultamento!');
     erro = true;
   }
@@ -455,7 +455,7 @@ function js_mostradeclarante(erro, chave) {
 
 function js_mostradeclarante1(chave1, chave2) {
 
-  if(chave1 == <?php echo isset($cm01_i_codigo) ? $cm01_i_codigo : 'null'; ?> ) {
+  if(chave1 == <?php echo $cm01_i_codigo ?? 'null'; ?> ) {
     alert('Aviso!\n\nCgm informado para o declarante é o mesmo para o Sepultamento!');
     return false;
   }
@@ -476,7 +476,7 @@ function js_preenchepesquisa(chave) {
 
   <?php
     if($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

@@ -33,8 +33,8 @@ require_once(modification("classes/db_cfiptu_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_db_documentotemplate_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $cldb_documentotemplate = new cl_db_documentotemplate;
 $clcfiptu               = new cl_cfiptu;
@@ -94,7 +94,7 @@ if( !empty($j18_rterri) ){
 
 if (!empty($j18_receitacreditorecalculo)) {
 
-  $j18_receitacreditorecalculo = preg_replace('/[^0-9]/', '', $j18_receitacreditorecalculo);
+  $j18_receitacreditorecalculo = preg_replace('/[^0-9]/', '', (string) $j18_receitacreditorecalculo);
 
   $sSqlValidacaoRecalculo = $oDaoArretipo->sql_query_file(null, "*", null, "k00_receitacredito = {$j18_receitacreditorecalculo}");
   $rsValidacaoRecalculo   = $oDaoArretipo->sql_record($sSqlValidacaoRecalculo);

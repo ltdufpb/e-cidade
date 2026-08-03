@@ -38,7 +38,7 @@ $clrotulo->label("c53_descr");
 $clrotulo->label("z01_nome");
 $clrotulo->label("c70_valor");
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 //db_postmemory($HTTP_GET_VARS,2);exit;
 //echo($HTTP_SERVER_VARS["QUERY_STRING"]);exit;
 $where = "";
@@ -133,7 +133,7 @@ else
 $result = db_query($sql);
 //db_criatabela($result);exit;
 
-if(pg_numrows($result) == 0){
+if(pg_num_rows($result) == 0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum processo encontrado com as seguintes informações passadas: <br> $msg_1 <br> $msg_3");
 }
 
@@ -156,7 +156,7 @@ $head7 = "$msg_2";
 //$pdf->addpage("L");
 $quebra = '';
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i,true);
   if($pdf->gety() > $pdf->h - 40 || $i==0){
 //    if($pdf->gety() > $pdf->h - 30){
@@ -197,7 +197,7 @@ for($i=0;$i<pg_numrows($result);$i++){
   $pdf->setfont('arial','',6);
   $pdf->cell(13,$alt,$e60_codemp,1,0,"C",0);
   $pdf->cell(13,$alt,$c80_codord,1,0,"C",0);
-  $pdf->cell(15,$alt,$$xdata,1,0,"C",0);
+  $pdf->cell(15,$alt,${$xdata},1,0,"C",0);
   $pdf->cell(80,$alt,$z01_nome  ,1,0,"L",0);
   $pdf->cell(50,$alt,$c53_descr,1,0,"L",0);
   $pdf->cell(20,$alt,db_formatar($valor,'f'),1,1,"R",0);

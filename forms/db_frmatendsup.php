@@ -97,8 +97,8 @@ if((isset($incluir)) || (isset($alterar)) || (isset($excluir))){
 }
 
 //Remove os slashes
-$at05_feito=stripslashes(@$at05_feito);
-$at05_solicitado=stripslashes(@$at05_solicitado);
+$at05_feito=stripslashes((string) @$at05_feito);
+$at05_solicitado=stripslashes((string) @$at05_solicitado);
 //$result_syscadproced = $cl_db_syscadproced->sql_record($cl_db_syscadproced -> sql_query_file ( null,"codproced,descrproced","descrproced",""));
 
 ?>
@@ -230,7 +230,7 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 				</td>
 			</tr>
 			<tr>	    
-				<td align=left><b>Solicitado pelo usuário:&nbsp;&nbsp;<?=$at10_usuario_ori?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=strtoupper($at10_nome_ori) ?></b></td>
+				<td align=left><b>Solicitado pelo usuário:&nbsp;&nbsp;<?=$at10_usuario_ori?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=strtoupper((string) $at10_nome_ori) ?></b></td>
 			</tr>	  	  
    		  	<tr>
        			<td align=left><b>Tipo de atendimento:&nbsp;&nbsp;<?=$at04_codtipo?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$at04_descr?></b></td>
@@ -298,7 +298,7 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 		    <td nowrap title="<?=@$Tat05_perc?>" align="left">
 		      	<?=@$Lat05_perc?>
 		       	<?php 
-				$matriz = array("0"=>"0%",
+				$matriz = ["0"=>"0%",
 			                  "10"=>"10%", 
 			                  "20"=>"20%",
 			                  "30"=>"30%",
@@ -308,15 +308,15 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 			                  "70"=>"70%",
 			                  "80"=>"80%",
 			                  "90"=>"90%",
-			                  "100"=>"100%");             
+			                  "100"=>"100%"];             
 		  		db_select("at05_perc", $matriz,true,$db_opcao); 
 				?>
 		  		<b> Prioridade:</b>
 		  		<?php 
-		  		 $x = array("1"=>"Baixa",
+		  		 $x = ["1"=>"Baixa",
              				"2"=>"Média", 
             				"3"=>"Alta"
-	   						); 	
+	   						]; 	
             				db_select("at05_prioridade", $x,true,$db_opcao); 
 		  		?>
 	
@@ -327,7 +327,7 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 		    	Motivo:
 		    	<?php 
 				$resultmot = $cl_tarefacadmotivo->sql_record("select  at54_sequencial,at54_descr from tarefacadmotivo where at54_tipo = 1 order by at54_descr");
-				if( pg_numrows($resultmot) > 0){
+				if( pg_num_rows($resultmot) > 0){
 				  db_selectrecord('motivo',$resultmot,true,2,"","","","0-Nenhum");
 				}
 				?>
@@ -398,7 +398,7 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 		}else{
 			$sqlproced="
 				select 0 as codproced,'Nenhuma' as descrproced, '' as nomemod
-                
+
                 union 
                 select * from ( 
 				select codproced,descrproced , nomemod
@@ -416,7 +416,7 @@ $at05_solicitado=stripslashes(@$at05_solicitado);
 				<b>
 		    	Procedimento:
 		    	<?php 
-		    	if( $result_syscadproced==null || pg_numrows($result_syscadproced) == 0 ){
+		    	if( $result_syscadproced==null || pg_num_rows($result_syscadproced) == 0 ){
 				  $result_syscadproced = db_query("select 0 as codproced,'Nenhuma' as descrproced");
 		    	}
 		    	db_selectrecord('codproced',$result_syscadproced,true,$db_opcao,"","","","","js_verifica();");
@@ -534,7 +534,7 @@ where atenditem.at05_codatend = ".@$at02_codatend
   
   // $clatenditem->sql_query(null,"*","","at05_codatend = $at02_codatend");
   
-    $chavepri= array("at05_seq"=>@$at05_seq,"at05_codatend"=>@$at05_codatend);
+    $chavepri= ["at05_seq"=>@$at05_seq,"at05_codatend"=>@$at05_codatend];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="at05_seq,at05_codatend,at05_solicitado,at05_feito,at18_tarefa,at05_horaini,at05_horafim";
     $cliframe_alterar_excluir->sql= $sql;
@@ -573,7 +573,7 @@ function js_preenchepesquisa(chave){
   	<?php 
   	if($db_opcao!=1||$db_opcao!=2) {
 		echo " db_iframe_atend.hide();";
-	  	echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&opcao=".$opcao."'";
+	  	echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&opcao=".$opcao."'";
   	}
 	?>
 }

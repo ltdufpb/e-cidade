@@ -34,13 +34,13 @@ require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_utils.php');
 require_once modification('dbforms/db_funcoes.php');
 
-$definicoes = array(
+$definicoes = [
     'sequencial' => FILTER_VALIDATE_INT,
     'cgm' => FILTER_VALIDATE_INT,
     'ans' => FILTER_VALIDATE_INT,
     'ativo' => FILTER_VALIDATE_BOOLEAN,
     'acao' => FILTER_SANITIZE_STRING,
-);
+];
 
 $parametros = JSON::requestParameters($definicoes, false);
 
@@ -55,9 +55,7 @@ try {
 
     switch ($parametros->acao) {
         case 'carregar':
-            $retorno->operadoras = array_map(function (OperadoraSaude $operadoraSaude) {
-                return $operadoraSaude->toArray();
-            }, $servico->todas());
+            $retorno->operadoras = array_map(fn(OperadoraSaude $operadoraSaude) => $operadoraSaude->toArray(), $servico->todas());
             break;
         case 'salvar':
             $retorno->operadora = $servico->salvar($parametros)->toArray();

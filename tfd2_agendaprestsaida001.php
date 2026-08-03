@@ -292,20 +292,20 @@ function formataData($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
  return $dData;
 
 }
 
-$dDataIni = substr($dataini,6,4).'-'.substr($dataini,3,2).'-'.substr($dataini,0,2);
-$dDataFim = substr($datafim,6,4).'-'.substr($datafim,3,2).'-'.substr($datafim,0,2);
+$dDataIni = substr((string) $dataini,6,4).'-'.substr((string) $dataini,3,2).'-'.substr((string) $dataini,0,2);
+$dDataFim = substr((string) $datafim,6,4).'-'.substr((string) $datafim,3,2).'-'.substr((string) $datafim,0,2);
 $sWhere   = " tf01_d_datapedido between '$dDataIni' and '$dDataFim'";
   
 if (isset($codigoespec) && $codigoespec != '') {
@@ -409,12 +409,12 @@ for($iCont = 0; $iCont < $iLinhas; $iCont++) {
   $oPaciente->sCpf     = $oDados->z01_v_cgccpf;
   $oPaciente->sRg      = $oDados->z01_v_ident;
   $oPaciente->iSusCard = getCns($oDados->tf01_i_cgsund);
-  $oPaciente->sMae     = substr($oDados->z01_v_mae, 0, 32);
+  $oPaciente->sMae     = substr((string) $oDados->z01_v_mae, 0, 32);
   $oPaciente->sSexo    = $sSexo;
-  $oPaciente->sEnder   = substr($oDados->z01_v_ender, 0, 36);
+  $oPaciente->sEnder   = substr((string) $oDados->z01_v_ender, 0, 36);
   $oPaciente->iNumero  = $oDados->z01_i_numero;
-  $oPaciente->sCompl   = substr($oDados->z01_v_compl, 0, 23);
-  $oPaciente->sBairro  = substr($oDados->z01_v_bairro, 0, 23);
+  $oPaciente->sCompl   = substr((string) $oDados->z01_v_compl, 0, 23);
+  $oPaciente->sBairro  = substr((string) $oDados->z01_v_bairro, 0, 23);
   $oPaciente->sMunic   = $oDados->z01_v_munic;
   $oPaciente->sUf      = $oDados->z01_v_uf;
   $oPaciente->sCep     = $oDados->z01_v_cep;
@@ -436,7 +436,7 @@ for($iCont = 0; $iCont < $iLinhas; $iCont++) {
   $oPrestadora->sUf     = $oDados->ufprest;
 
   /* CONSULTA/EXAME */
-  $oConExame->sEspec        = substr($oDados->rh70_descr, 0, 36);
+  $oConExame->sEspec        = substr((string) $oDados->rh70_descr, 0, 36);
   $oConExame->sComplEspec   = $oDados->tf01_complespec;
   $oConExame->sProtocolo    = $oDados->tf16_c_protocolo;
   $oConExame->dDataAgend    = db_formatar($oDados->tf16_d_dataagendamento, 'd');

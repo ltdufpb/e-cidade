@@ -52,14 +52,14 @@ class FluxoCaixaDCASP2015 extends RelatoriosLegaisBase
      *
      * @var array
      */
-    private $aLinhasTotalizadoras = array(11, 21, 31, 44, 53, 61, 90, 94);
+    private $aLinhasTotalizadoras = [11, 21, 31, 44, 53, 61, 90, 94];
 
     /**
      * Linhas que não devem exibir valor
      *
      * @var array
      */
-    private $aLinhasSemValor = array(1, 12, 22, 45, 54);
+    private $aLinhasSemValor = [1, 12, 22, 45, 54];
 
     /**
      * @var PDFDocument
@@ -127,7 +127,7 @@ class FluxoCaixaDCASP2015 extends RelatoriosLegaisBase
      *
      * @var array
      */
-    private $aRelatoriosExibir = array();
+    private $aRelatoriosExibir = [];
 
     /**
      * @param integer $iAnoUsu          Ano da emissão do relatório.
@@ -169,7 +169,8 @@ class FluxoCaixaDCASP2015 extends RelatoriosLegaisBase
      * @return array
      * @throws Exception
      */
-    public function getDados()
+    #[\Override]
+    public function getDados($trazerConfiguracaoPadrao = \true)
     {
 
 
@@ -362,7 +363,7 @@ class FluxoCaixaDCASP2015 extends RelatoriosLegaisBase
         /**
          * Recalcula o valor das linhas que vem de outros quadros
          */
-        foreach (array(3, 4, 7, 8, 9, 2, 6, 11, 32) as $iLinha) {
+        foreach ([3, 4, 7, 8, 9, 2, 6, 11, 32] as $iLinha) {
             $this->processarFormulaDaLinha($iLinha);
         }
 
@@ -401,7 +402,7 @@ class FluxoCaixaDCASP2015 extends RelatoriosLegaisBase
             $rsRestosPagarAnterior = db_query($sSqlRestosaPagar);
         }
 
-        $novaslinhas = array(18,19,20,29,30,91,92,93);
+        $novaslinhas = [18,19,20,29,30,91,92,93];
         for ($row = 62; $row <= 89; $row++) {
             $novaslinhas[] = $row;
         }
@@ -411,7 +412,7 @@ class FluxoCaixaDCASP2015 extends RelatoriosLegaisBase
         foreach ($novaslinhas as $linha) {
 
             $oLinha = $this->aLinhasConsistencia[$linha];
-            $aColunas = $this->getColunasPorLinha($oLinha, array(0));
+            $aColunas = $this->getColunasPorLinha($oLinha, [0]);
             $aColunas[0]->formula = '#vlrpag+#vlrpagnproc';
 
             RelatoriosLegaisBase::calcularValorDaLinha(
@@ -422,7 +423,7 @@ class FluxoCaixaDCASP2015 extends RelatoriosLegaisBase
             );
 
             if ($this->lExibirExercicioAnterior) {
-                $aColunas = $this->getColunasPorLinha($oLinha, array(1));
+                $aColunas = $this->getColunasPorLinha($oLinha, [1]);
                 $aColunas[0]->formula = '#vlrpag+#vlrpagnproc';
                 RelatoriosLegaisBase::calcularValorDaLinha(
                     $rsRestosPagarAnterior,

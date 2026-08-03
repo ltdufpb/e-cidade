@@ -40,7 +40,7 @@ include(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $anousu = db_getsession("DB_anousu");
 ?>
@@ -92,9 +92,9 @@ variavel = 1;
        <tr>
         <td align="left" colspan="2">
           <b>Modelo :</b> <?php  
-                    $sList = array("ldo"=>"LDO",
+                    $sList = ["ldo"=>"LDO",
                                    "loa"=>"LOA"
-                                  );
+                                  ];
                     db_select("modelo",$sList,"",1); ?>
         </td>
       </tr>      

@@ -33,8 +33,8 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-$oPost = db_utils::postMemory($HTTP_POST_VARS);
-$oGet = db_utils::postMemory($HTTP_GET_VARS);
+$oPost = db_utils::postMemory($_POST);
+$oGet = db_utils::postMemory($_GET);
 
 $oDaoObrasConstr = new cl_obrasconstr;
 $oDaoObrasEnder = new cl_obrasender;
@@ -83,7 +83,7 @@ $rsCaracterOcupacao = $oDaoCaracter->sql_record($sSqlCaracterOcupacao);
 $rsCaracterConstrucao = $oDaoCaracter->sql_record($sSqlCaracterConstrucao);
 $rsCaracterLancamento = $oDaoCaracter->sql_record($sSqlCaracterLancamento);
 
-$codigoobra = isset($codigoobra) ? $codigoobra : '';
+$codigoobra ??= '';
 
 ?>
 

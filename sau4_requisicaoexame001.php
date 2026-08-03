@@ -118,7 +118,7 @@ $sProfissional = $oGet->sNomeProfissional;
           <td><strong>Solicitado:</strong></td>
           <td>
           <?php 
-              $aOpcoes = array( "0"=>"Não", "1"=>"Sim" );
+              $aOpcoes = [ "0"=>"Não", "1"=>"Sim" ];
               db_select("lSolicitado", $aOpcoes, true, 1)
             ?>
           </td>
@@ -129,7 +129,7 @@ $sProfissional = $oGet->sNomeProfissional;
           <td><strong>Avaliado:</strong></td>
           <td>
             <?php 
-              $aOpcoes = array( "0"=>"Não", "1"=>"Sim" );
+              $aOpcoes = [ "0"=>"Não", "1"=>"Sim" ];
               db_select("lAvaliado", $aOpcoes, true, 1)
             ?>
           </td>

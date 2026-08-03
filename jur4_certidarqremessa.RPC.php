@@ -61,12 +61,12 @@ $clcgm                 = new cl_cgm;
 $lErro                 = false;
 $lInicialAtiva         = false;
 
-$aDadosProcessar       = array();
-$aDadosProcessar       = array();
-$aLinhas2Processadas   = array();
-$aLinhas3Processadas   = array();
-$aLinhas4Processadas   = array();
-$aLinhas5Processadas   = array();
+$aDadosProcessar       = [];
+$aDadosProcessar       = [];
+$aLinhas2Processadas   = [];
+$aLinhas3Processadas   = [];
+$aLinhas4Processadas   = [];
+$aLinhas5Processadas   = [];
 
 $sWhereArrecad         = "";
 $sMensagem             = "";
@@ -92,7 +92,7 @@ $oRetorno->message     = 1;
    function validaCPF($cpf) {
       $soma = 0;
       
-      if (strlen($cpf) != 11) {
+      if (strlen((string) $cpf) != 11) {
          return false;
       }
       // Verifica 1º digito      
@@ -124,7 +124,7 @@ $oRetorno->message     = 1;
    // VERFICA CNPJ
    function validaCNPJ($cnpj) {
    
-      if (strlen($cnpj) != 14) {
+      if (strlen((string) $cnpj) != 14) {
          return false;
       }   
       $soma = 0;
@@ -247,7 +247,7 @@ switch($oParam->exec) {
                                                    substr($dDtEmiss, 0, 4), 
                                                    $oDivida->k00_numpar);
 
-          for ($iIndDebito = 0; $iIndDebito < pg_numrows($rsDadosDebitoCorrigido); $iIndDebito++) {
+          for ($iIndDebito = 0; $iIndDebito < pg_num_rows($rsDadosDebitoCorrigido); $iIndDebito++) {
             $nValor += db_utils::fieldsMemory($rsDadosDebitoCorrigido, $iIndDebito)->total;
           }
         }
@@ -446,9 +446,9 @@ switch($oParam->exec) {
       $iMaiorInicial      = null;
       $dDataCitacao       = null;
 
-      $aIniciais          = array();
-      $aCertidoes         = array();
-      $aExecutados        = array();
+      $aIniciais          = [];
+      $aCertidoes         = [];
+      $aExecutados        = [];
       $iQuantDividaAvulsa = 0;
 
       foreach ($aDados as $oDados) {
@@ -591,7 +591,7 @@ switch($oParam->exec) {
         /**
          * Verificamos se trata-se de CPF ou CNPJ
          */
-        if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
+        if (strlen((string) $oDadosEnvol->z01_cgccpf) > 11) {
           
           $sCGC = $oDadosEnvol->z01_cgccpf;
           $sCPF = "";
@@ -657,7 +657,7 @@ switch($oParam->exec) {
           $oDadosLinha2->ident              = "2";
           $oDadosLinha2->fixo_2             = "2";
           $oDadosLinha2->codigo_processo    = str_pad($oDados->v50_inicial , 14, " ", STR_PAD_LEFT);
-          $oDadosLinha2->data_protocolo     = str_pad($oDados->v50_data    ,  8, " ", STR_PAD_LEFT);
+          $oDadosLinha2->data_protocolo     = str_pad((string) $oDados->v50_data    ,  8, " ", STR_PAD_LEFT);
           $oDadosLinha2->vara               = str_pad(""                   ,  6, " ", STR_PAD_LEFT);  // campo para retorno
           $oDadosLinha2->data_distribuicao  = str_pad(""                   ,  8, " ", STR_PAD_LEFT);  // campo para retorno
           $oDadosLinha2->valor_total_causa  = str_pad(str_replace(".","",trim(db_formatar($nValorTotalInicial,"f"))), 15, " ", STR_PAD_LEFT);
@@ -679,7 +679,7 @@ switch($oParam->exec) {
           
           $sDataNasc = "";
           if (!empty($oDadosEnvol->z01_nasc)) {
-            $aDataNasc    = split("-",$oDadosEnvol->z01_nasc);
+            $aDataNasc    = preg_split("#\\-#m",(string) $oDadosEnvol->z01_nasc);
             $sDataNasc    = $aDataNasc[2].$aDataNasc[1].$aDataNasc[0];
           }
                     
@@ -688,23 +688,23 @@ switch($oParam->exec) {
           $oDadosLinha3->ident                    = "3";
           $oDadosLinha3->fixo_3                   = "3";
           $oDadosLinha3->codigo_processo          = str_pad($oDados->v50_inicial                                                , 14, " ", STR_PAD_LEFT);
-          $oDadosLinha3->nome_executado           = str_pad($oDadosEnvol->z01_nome                                              , 90, " ", STR_PAD_RIGHT);
-          $oDadosLinha3->cpf                      = str_pad(substr(ereg_replace("[./-]","",trim($sCPF)),0,11)                   , 11, " ", STR_PAD_LEFT);
-          $oDadosLinha3->cgc                      = str_pad(substr(ereg_replace("[./-]","",trim($sCGC)),0,14)                   , 14, " ", STR_PAD_LEFT);
-          $oDadosLinha3->rg                       = str_pad(substr(ereg_replace("[./-]","",trim($oDadosEnvol->z01_ident)),0,12) , 12, " ", STR_PAD_LEFT);
-          $oDadosLinha3->orgao_expeditor_rg       = str_pad(substr(trim($oDadosEnvol->z01_identorgao),0,12)                     , 12, " ", STR_PAD_LEFT);
-          $oDadosLinha3->nome_pai                 = str_pad(substr(trim($oDadosEnvol->z01_pai),0,40)                            , 40, " ", STR_PAD_RIGHT);
-          $oDadosLinha3->nome_mae                 = str_pad(substr(trim($oDadosEnvol->z01_mae),0,40)                            , 40, " ", STR_PAD_RIGHT);
+          $oDadosLinha3->nome_executado           = str_pad((string) $oDadosEnvol->z01_nome                                              , 90, " ", STR_PAD_RIGHT);
+          $oDadosLinha3->cpf                      = str_pad(substr((string) preg_replace("#[\\.\\/\\-]#m","",trim((string) $sCPF)),0,11)                   , 11, " ", STR_PAD_LEFT);
+          $oDadosLinha3->cgc                      = str_pad(substr((string) preg_replace("#[\\.\\/\\-]#m","",trim((string) $sCGC)),0,14)                   , 14, " ", STR_PAD_LEFT);
+          $oDadosLinha3->rg                       = str_pad(substr((string) preg_replace("#[\\.\\/\\-]#m","",trim((string) $oDadosEnvol->z01_ident)),0,12) , 12, " ", STR_PAD_LEFT);
+          $oDadosLinha3->orgao_expeditor_rg       = str_pad(substr(trim((string) $oDadosEnvol->z01_identorgao),0,12)                     , 12, " ", STR_PAD_LEFT);
+          $oDadosLinha3->nome_pai                 = str_pad(substr(trim((string) $oDadosEnvol->z01_pai),0,40)                            , 40, " ", STR_PAD_RIGHT);
+          $oDadosLinha3->nome_mae                 = str_pad(substr(trim((string) $oDadosEnvol->z01_mae),0,40)                            , 40, " ", STR_PAD_RIGHT);
           $oDadosLinha3->data_nascimento          = str_pad($sDataNasc                                                          ,  8, " ", STR_PAD_LEFT);
-          $oDadosLinha3->naturalidade             = str_pad(substr($oDadosEnvol->z01_naturalidade,0,2)                          ,  2, " ", STR_PAD_RIGHT);
-          $oDadosLinha3->codigo_logradouro        = str_pad($iCodigoLogradouro                                                  ,  2, " ", STR_PAD_LEFT);
-          $oDadosLinha3->logradouro               = str_pad(substr($oDadosEnvol->z01_ender,0,60)                                , 60, " ", STR_PAD_RIGHT);
-          $oDadosLinha3->numero                   = str_pad(substr($oDadosEnvol->z01_numero,0,10)                               , 10, " ", STR_PAD_LEFT);
-          $oDadosLinha3->complemento              = str_pad(substr($oDadosEnvol->z01_compl,0,40)                                , 40, " ", STR_PAD_RIGHT);
-          $oDadosLinha3->bairro                   = str_pad(substr($oDadosEnvol->z01_bairro,0,40)                               , 40, " ", STR_PAD_RIGHT);
-          $oDadosLinha3->cidade                   = str_pad($iCodMunic                                                          ,  5, " ", STR_PAD_RIGHT);
-          $oDadosLinha3->cep                      = str_pad(substr($oDadosEnvol->z01_cep,0,8)                                   ,  8, " ", STR_PAD_RIGHT);
-          $oDadosLinha3->uf                       = str_pad(substr($oDadosEnvol->z01_uf,0,2)                                    ,  2, " ", STR_PAD_RIGHT);
+          $oDadosLinha3->naturalidade             = str_pad(substr((string) $oDadosEnvol->z01_naturalidade,0,2)                          ,  2, " ", STR_PAD_RIGHT);
+          $oDadosLinha3->codigo_logradouro        = str_pad((string) $iCodigoLogradouro                                                  ,  2, " ", STR_PAD_LEFT);
+          $oDadosLinha3->logradouro               = str_pad(substr((string) $oDadosEnvol->z01_ender,0,60)                                , 60, " ", STR_PAD_RIGHT);
+          $oDadosLinha3->numero                   = str_pad(substr((string) $oDadosEnvol->z01_numero,0,10)                               , 10, " ", STR_PAD_LEFT);
+          $oDadosLinha3->complemento              = str_pad(substr((string) $oDadosEnvol->z01_compl,0,40)                                , 40, " ", STR_PAD_RIGHT);
+          $oDadosLinha3->bairro                   = str_pad(substr((string) $oDadosEnvol->z01_bairro,0,40)                               , 40, " ", STR_PAD_RIGHT);
+          $oDadosLinha3->cidade                   = str_pad((string) $iCodMunic                                                          ,  5, " ", STR_PAD_RIGHT);
+          $oDadosLinha3->cep                      = str_pad(substr((string) $oDadosEnvol->z01_cep,0,8)                                   ,  8, " ", STR_PAD_RIGHT);
+          $oDadosLinha3->uf                       = str_pad(substr((string) $oDadosEnvol->z01_uf,0,2)                                    ,  2, " ", STR_PAD_RIGHT);
           $oDadosLinha3->mensagem                 = str_pad(" "                                                                 ,500, " ", STR_PAD_RIGHT);//.chr(10).chr(13);
           
           $aLinhas3Processadas[] = $oDados->v50_inicial."-".$oDados->k00_numcgm;
@@ -719,22 +719,22 @@ switch($oParam->exec) {
           $oDadosLinha4->ident                        = "4";
           $oDadosLinha4->fixo_4                       = "4";
           $oDadosLinha4->codigo_processo              = str_pad($oDados->v50_inicial                                             , 14," ", STR_PAD_LEFT);
-          $oDadosLinha4->numero_certidao_divida_ativa = str_pad($oDados->v13_certid                                              , 13," ", STR_PAD_LEFT);
-          $oDadosLinha4->ano_exercicio                = str_pad($oDados->exerc                                                   ,  4," ", STR_PAD_LEFT);
+          $oDadosLinha4->numero_certidao_divida_ativa = str_pad((string) $oDados->v13_certid                                              , 13," ", STR_PAD_LEFT);
+          $oDadosLinha4->ano_exercicio                = str_pad((string) $oDados->exerc                                                   ,  4," ", STR_PAD_LEFT);
           $oDadosLinha4->valor_certidao_inicial       = str_pad(str_replace(".","",db_formatar($nValorTotalCertid,"f"))          , 15," ", STR_PAD_LEFT);
           $oDadosLinha4->moeda                        = "1";
           $oDadosLinha4->quantidade_ufir              = str_pad(str_replace(".","",substr(db_formatar($nValorTotalCertid/$nValorUFIR,"f",0,4,"e",4),0,16)), 16 ," ", STR_PAD_LEFT);
-          $oDadosLinha4->natureza_divida              = str_pad($oDados->v03_procedtipo                                          , 2 , " ", STR_PAD_LEFT); // verificar com natureza da divida 
-          $oDadosLinha4->inscricao_imovel             = str_pad($oDados->k00_matric                                              , 20, " ", STR_PAD_LEFT);
-          $oDadosLinha4->nome_devedor                 = str_pad(substr($oDadosEnvol->z01_nome,0,90)                              , 90, " ", STR_PAD_RIGHT);
-          $oDadosLinha4->codigo_tipo_logradouro       = str_pad($iCodigoLogradouro                                               ,  2, " ", STR_PAD_LEFT);
-          $oDadosLinha4->logradouro                   = str_pad(substr($oDadosEnvol->z01_ender,0,60)                             , 60, " ", STR_PAD_RIGHT);
-          $oDadosLinha4->numero                       = str_pad(substr($oDadosEnvol->z01_numero,0,10)                            , 10, " ", STR_PAD_LEFT);
-          $oDadosLinha4->complemento                  = str_pad(substr($oDadosEnvol->z01_compl,0,40)                             , 40, " ", STR_PAD_RIGHT);
-          $oDadosLinha4->bairro                       = str_pad(substr($oDadosEnvol->z01_bairro,0,40)                            , 40, " ", STR_PAD_RIGHT);
-          $oDadosLinha4->codigo_cidade                = str_pad($iCodMunic                                                       ,  5, " ", STR_PAD_LEFT);
-          $oDadosLinha4->cep                          = str_pad(substr($oDadosEnvol->z01_cep,0,8)                                ,  8, " ", STR_PAD_LEFT);
-          $oDadosLinha4->uf                           = str_pad(substr($oDadosEnvol->z01_uf,0,2)                                 ,  2, " ", STR_PAD_RIGHT);
+          $oDadosLinha4->natureza_divida              = str_pad((string) $oDados->v03_procedtipo                                          , 2 , " ", STR_PAD_LEFT); // verificar com natureza da divida 
+          $oDadosLinha4->inscricao_imovel             = str_pad((string) $oDados->k00_matric                                              , 20, " ", STR_PAD_LEFT);
+          $oDadosLinha4->nome_devedor                 = str_pad(substr((string) $oDadosEnvol->z01_nome,0,90)                              , 90, " ", STR_PAD_RIGHT);
+          $oDadosLinha4->codigo_tipo_logradouro       = str_pad((string) $iCodigoLogradouro                                               ,  2, " ", STR_PAD_LEFT);
+          $oDadosLinha4->logradouro                   = str_pad(substr((string) $oDadosEnvol->z01_ender,0,60)                             , 60, " ", STR_PAD_RIGHT);
+          $oDadosLinha4->numero                       = str_pad(substr((string) $oDadosEnvol->z01_numero,0,10)                            , 10, " ", STR_PAD_LEFT);
+          $oDadosLinha4->complemento                  = str_pad(substr((string) $oDadosEnvol->z01_compl,0,40)                             , 40, " ", STR_PAD_RIGHT);
+          $oDadosLinha4->bairro                       = str_pad(substr((string) $oDadosEnvol->z01_bairro,0,40)                            , 40, " ", STR_PAD_RIGHT);
+          $oDadosLinha4->codigo_cidade                = str_pad((string) $iCodMunic                                                       ,  5, " ", STR_PAD_LEFT);
+          $oDadosLinha4->cep                          = str_pad(substr((string) $oDadosEnvol->z01_cep,0,8)                                ,  8, " ", STR_PAD_LEFT);
+          $oDadosLinha4->uf                           = str_pad(substr((string) $oDadosEnvol->z01_uf,0,2)                                 ,  2, " ", STR_PAD_RIGHT);
           $oDadosLinha4->mensagem                     = str_pad(""                                                               ,500, " ", STR_PAD_RIGHT);//.chr(10).chr(13);
           $aLinhas4Processadas[] = $oDados->v50_inicial."-".$oDados->k00_numcgm."-".$oDados->v13_certid;
           $aDadosProcessar[] = $oDadosLinha4;
@@ -749,11 +749,11 @@ switch($oParam->exec) {
 	          $oDadosLinha5->ident                        = "5";
 	          $oDadosLinha5->fixo_5                       = "5";
 	          $oDadosLinha5->codigo_processo              = str_pad($oDados->v50_inicial                              ,   14, " ", STR_PAD_LEFT);
-	          $oDadosLinha5->numero_certidao_divida_ativa = str_pad($oDados->v13_certid                               ,   13, " ", STR_PAD_LEFT);
-	          $oDadosLinha5->auto_infracao                = str_pad($oDadosAuto[0]->auto_infracao                     ,   20, " ", STR_PAD_LEFT);
-	          $oDadosLinha5->data_infracao                = str_pad($oDadosAuto[0]->data_infracao                     ,    8, " ", STR_PAD_LEFT);
-	          $oDadosLinha5->orgao_aplicou_multa          = str_pad(substr($oDadosAuto[0]->orgao_aplicou_multa,0,20)  ,   20, " ", STR_PAD_LEFT);
-	          $oDadosLinha5->descricao_infracao           = str_pad(substr($oDadosAuto[0]->descricao_infracao,0,1000) , 1000, " ", STR_PAD_RIGHT);
+	          $oDadosLinha5->numero_certidao_divida_ativa = str_pad((string) $oDados->v13_certid                               ,   13, " ", STR_PAD_LEFT);
+	          $oDadosLinha5->auto_infracao                = str_pad((string) $oDadosAuto[0]->auto_infracao                     ,   20, " ", STR_PAD_LEFT);
+	          $oDadosLinha5->data_infracao                = str_pad((string) $oDadosAuto[0]->data_infracao                     ,    8, " ", STR_PAD_LEFT);
+	          $oDadosLinha5->orgao_aplicou_multa          = str_pad(substr((string) $oDadosAuto[0]->orgao_aplicou_multa,0,20)  ,   20, " ", STR_PAD_LEFT);
+	          $oDadosLinha5->descricao_infracao           = str_pad(substr((string) $oDadosAuto[0]->descricao_infracao,0,1000) , 1000, " ", STR_PAD_RIGHT);
 	          $oDadosLinha5->mensagem                     = str_pad(" "                                               ,  500, " ", STR_PAD_RIGHT);//.chr(10).chr(13);
 	          
 	          $aLinhas5Processadas[] = $oDados->v50_inicial."-".$oDados->v13_certid."-".$oDadosAuto[0]->auto_infracao;
@@ -779,15 +779,15 @@ switch($oParam->exec) {
          */    
         $oDadosLinha1                           = new stdClass();
         $oDadosLinha1->fixo_1                   = 1;
-        $oDadosLinha1->codigo_prefeitura        = str_pad($aDbConfig->db21_codtj,                   5, " ", STR_PAD_LEFT);
+        $oDadosLinha1->codigo_prefeitura        = str_pad((string) $aDbConfig->db21_codtj,                   5, " ", STR_PAD_LEFT);
         $oDadosLinha1->codigo_processo_inicial  = str_pad($iMenorInicial."/".$oDados->ano_inicial, 14, " ", STR_PAD_LEFT);
         $oDadosLinha1->codigo_processo_final    = str_pad($iMaiorInicial."/".$oDados->ano_final,   14, " ", STR_PAD_LEFT);
-        $oDadosLinha1->data_citacao             = str_pad($dDataCitacao,                            8, " ", STR_PAD_LEFT);
+        $oDadosLinha1->data_citacao             = str_pad((string) $dDataCitacao,                            8, " ", STR_PAD_LEFT);
         $oDadosLinha1->quantidade_processos     = str_pad(count($aIniciais),                       10, " ", STR_PAD_LEFT);
         $oDadosLinha1->quantidade_executados    = str_pad(count($aExecutados),                     10, " ", STR_PAD_LEFT);
         $oDadosLinha1->quantidade_certidoes     = str_pad(count($aCertidoes),                      10, " ", STR_PAD_LEFT);
         $oDadosLinha1->quantidade_divida_avulsa = str_pad($iQuantDividaAvulsa,                     10, " ", STR_PAD_LEFT);
-        $oDadosLinha1->cnpj_prefeitura          = str_pad($aDbConfig->cgc,                         14, " ", STR_PAD_LEFT);
+        $oDadosLinha1->cnpj_prefeitura          = str_pad((string) $aDbConfig->cgc,                         14, " ", STR_PAD_LEFT);
         $oDadosLinha1->mensagem                 = str_pad("",                                     500, " ", STR_PAD_RIGHT);
 
         if( $oLayoutTxt->setByLineOfDBUtils($oDadosLinha1, 1, "1") == false ) {
@@ -831,7 +831,7 @@ switch($oParam->exec) {
 	      $iSequencial          = $oParam->iSequencial;
 	      $iCodLista            = $oParam->iCodLista;
 	      $sNomeArq             = $oParam->sNomeAqruivo;
-	      $aListaNaoProcessados = array();
+	      $aListaNaoProcessados = [];
 
         $sWhere = " v83_sequencial not in (select v84_certidarqremessa from certidarqretorno ) ";
 
@@ -873,13 +873,13 @@ switch($oParam->exec) {
       	$iCodRemessa         = $oParam->iCodRemessa;
 	      $iCodLista           = $oParam->iCodLista;
 	      $sNomeRemessa        = $oParam->sNomeRemessa;
-	      $sDataRemessa        = implode("-", array_reverse(explode("/",$oParam->sDataRemessa)));
+	      $sDataRemessa        = implode("-", array_reverse(explode("/",(string) $oParam->sDataRemessa)));
 	      $sNomeRetorno        = $oParam->sNomeRetorno;
 	      $sDataRetorno        = $oParam->sDataRetorno;
-	      $sDataProcessamento  = implode("-", array_reverse(explode("/",$oParam->sDataProcessamento)));
+	      $sDataProcessamento  = implode("-", array_reverse(explode("/",(string) $oParam->sDataProcessamento)));
 	      $iMenorCda           = 0;
 	      $iMaiorCda           = 0;
-	      $aListaProcessados   = array();
+	      $aListaProcessados   = [];
 	      $sWereProcessados    = "1 = 1";
 	      $sCamposProcessados  = " v83_sequencial, v83_lista, v83_dtgeracao, v83_nomearq,";
 	      $sCamposProcessados .= " v84_sequencial, v84_nomearq, v84_dtarquivo, v84_dtprocessamento ";

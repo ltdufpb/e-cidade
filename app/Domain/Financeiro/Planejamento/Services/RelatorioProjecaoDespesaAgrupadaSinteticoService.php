@@ -70,6 +70,7 @@ class RelatorioProjecaoDespesaAgrupadaSinteticoService extends RelatorioProjecao
      * @param array $filtros
      * @throws Exception
      */
+    #[\Override]
     protected function processar(array $filtros)
     {
         parent::processar($filtros);
@@ -88,26 +89,21 @@ class RelatorioProjecaoDespesaAgrupadaSinteticoService extends RelatorioProjecao
 
     public function buscarProgramasAplicandoFiltros()
     {
-        return $this->planejamento->programas->filter(function (ProgramaEstrategico $programaEstrategico) {
-            return empty($this->idPrograma) || $programaEstrategico->pl9_orcprograma === $this->idPrograma;
-        })->filter(function (ProgramaEstrategico $programaEstrategico) {
+        return $this->planejamento->programas->filter(fn(ProgramaEstrategico $programaEstrategico) => empty($this->idPrograma) || $programaEstrategico->pl9_orcprograma === $this->idPrograma)->filter(function (ProgramaEstrategico $programaEstrategico) {
             if (empty($this->idOrgao)) {
                 return true;
             } else {
-                $orgaosPrograma = $programaEstrategico->orgaos->map(function (OrgaoPrograma $orgaoPrograma) {
-                    return $orgaoPrograma->pl27_orcorgao;
-                })->toArray();
+                $orgaosPrograma = $programaEstrategico->orgaos->map(fn(OrgaoPrograma $orgaoPrograma) => $orgaoPrograma->pl27_orcorgao)->toArray();
                 return in_array($this->idOrgao, $orgaosPrograma);
             }
         });
     }
 
+    #[\Override]
     protected function buscarProgramas()
     {
         $this->dados['dados'] = $this->buscarProgramasAplicandoFiltros()->map(
-            function (ProgramaEstrategico $programaEstrategico) {
-                return $this->montaStdPrograma($programaEstrategico);
-            }
+            fn(ProgramaEstrategico $programaEstrategico) => $this->montaStdPrograma($programaEstrategico)
         )->toArray();
 
         if (empty($this->dados['dados'])) {
@@ -128,6 +124,7 @@ class RelatorioProjecaoDespesaAgrupadaSinteticoService extends RelatorioProjecao
         return $objeto;
     }
 
+    #[\Override]
     protected function buscarIniciativas()
     {
         $this->dados['dados'] = $this->buscarProgramasAplicandoFiltros()->map(

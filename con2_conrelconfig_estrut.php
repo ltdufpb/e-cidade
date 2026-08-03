@@ -38,8 +38,8 @@ include(modification("classes/db_orcparamrel_classe.php"));
 include(modification("classes/db_orcparamseq_classe.php"));
 include(modification("classes/db_orcparamelemento_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clconrelinfo = new cl_conrelinfo;
 $clconrelvalor = new cl_conrelvalor;
@@ -79,7 +79,7 @@ if (isset ($atualizar) && $atualizar == "atualizar") {
 			$msg = $clorcparamelemento->erro_msg;
 		}
 	}
-	$matriz = explode("#", $lista); //gera matriz com as chaves
+	$matriz = explode("#", (string) $lista); //gera matriz com as chaves
 	for ($i = 0; $i < sizeof($matriz); $i ++) {
 		// o teste abaixo e necessario porque quando desmerca todos os itens na tela, o expode acima gera 1 vazio
 		if ($matriz[$i] != "") {
@@ -126,7 +126,7 @@ function js_refresh(){
 
 
 $record = $clorcparamseq->sql_record($clorcparamseq->sql_query($c83_codrel, $sequen, "o69_codseq,o69_descr"));
-$matriz = array ();
+$matriz =  [];
 if ($clorcparamseq->numrows > 0) {
 	for ($x = 0; $x < $clorcparamseq->numrows; $x ++) {
 		db_fieldsmemory($record, $x);

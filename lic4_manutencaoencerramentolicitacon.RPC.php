@@ -51,7 +51,7 @@ try {
       }
       $oDataProcessamento = new DBDate($oParametros->dtProcessamento);
 
-      $aCamposBusca = array(
+      $aCamposBusca = [
         'l18_sequencial',
         'l20_codigo',
         'l20_numero',
@@ -64,7 +64,7 @@ try {
            then true 
              else false 
            end as possui_encerramento"
-      );
+      ];
       $sWhereEncerramento  = "       l18_data = '{$oDataProcessamento->getDate()}'";
       $sWhereEncerramento .= " and l20_instit = {$iInstituicao}";
       $oDaoEncerramento    = new cl_liclicitaencerramentolicitacon();
@@ -74,7 +74,7 @@ try {
         throw new DBException("Ocorreu um erro ao buscar as licitações encerradas.");
       }
 
-      $aLicitacoes = array();
+      $aLicitacoes = [];
       $iTotalRegistros = pg_num_rows($rsBuscaLicitacao);
       for ($iRow = 0; $iRow < $iTotalRegistros; $iRow++) {
 

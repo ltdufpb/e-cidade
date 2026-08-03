@@ -55,11 +55,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	   $clcriaabas->identifica = array("matmater"=>"Material Almox","transmater"=>"Material Compras","matmaterestoque"=>"Material Estoque");
-	   $clcriaabas->sizecampo  = array("matmater"=>"20","transmater"=>"20","matmaterestoque"=>"20");
-	   $clcriaabas->title      = array("matmater"=>"Material Almox","transmater"=>"Material Compras","matmaterestoque"=>"Material Estoque");
-	   $clcriaabas->src        = array("matmater"=>"mat1_matmater003.php","transmater"=>"","matmaterestoque"=>"");
-	   $clcriaabas->disabled   = array("transmater"=>"true","matmaterestoque"=>"true"); 
+	   $clcriaabas->identifica = ["matmater"=>"Material Almox","transmater"=>"Material Compras","matmaterestoque"=>"Material Estoque"];
+	   $clcriaabas->sizecampo  = ["matmater"=>"20","transmater"=>"20","matmaterestoque"=>"20"];
+	   $clcriaabas->title      = ["matmater"=>"Material Almox","transmater"=>"Material Compras","matmaterestoque"=>"Material Estoque"];
+	   $clcriaabas->src        = ["matmater"=>"mat1_matmater003.php","transmater"=>"","matmaterestoque"=>""];
+	   $clcriaabas->disabled   = ["transmater"=>"true","matmaterestoque"=>"true"]; 
 	   $clcriaabas->cria_abas(); 
 	 ?> 
 	 </td>

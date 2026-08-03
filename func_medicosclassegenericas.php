@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_medicos_classe.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoMedicos = new cl_medicos;
 $oRotulo     = new rotulocampo;
@@ -161,9 +161,9 @@ $oRotulo->label('z01_nome');
           $sSql = $oDaoMedicos->{$sQuery}(null, $campos, 'sd03_i_codigo', $sWhere);
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_sd03_i_crm)) {
-          $repassa = array('chave_sd03_i_codigo' => $chave_sd03_i_codigo, 'chave_z01_nome' => $chave_z01_nome);
+          $repassa = ['chave_sd03_i_codigo' => $chave_sd03_i_codigo, 'chave_z01_nome' => $chave_z01_nome];
         }
 
         if (isset($nao_mostra)) {

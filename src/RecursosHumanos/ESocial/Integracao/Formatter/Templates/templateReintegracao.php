@@ -1,22 +1,22 @@
 <?php
-return array(
-    'ideVinculo' => array(
-        'properties' => array(
+return [
+    'ideVinculo' => [
+        'properties' => [
             'cpfTrab',
             'nisTrab',
             'matricula'
-        )
-    ),
-    'infoReintegr' => array(
-        'properties' => array(
-            'tpReint' => array(
+        ]
+    ],
+    'infoReintegr' => [
+        'properties' => [
+            'tpReint' => [
                 'type' => 'int'
-            ),
+            ],
             'nrProcJud',
             'nrLeiAnistia',
             'dtEfetRetorno',
             'dtEfeito',
             'indPagtoJuizo'
-        )
-    )
-);
+        ]
+    ]
+];

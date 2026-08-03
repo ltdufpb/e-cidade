@@ -37,7 +37,7 @@ include(modification("classes/db_matestoqueitem_classe.php"));
 include(modification("classes/db_matmater_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $clmatparam = new cl_matparam;
@@ -211,7 +211,7 @@ for ($mater = 0; $mater < $clmatmater->numrows; $mater++) {
 
     //db_criatabela($result);
 
-    if (pg_numrows($result) == 0) {
+    if (pg_num_rows($result) == 0) {
 //		db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 //		exit;
         continue;
@@ -275,14 +275,14 @@ for ($mater = 0; $mater < $clmatmater->numrows; $mater++) {
     $nTransf = 0;
     $inicio_relatorio = 0;
 
-    for ($x = 0; $x < pg_numrows($result); $x++) {
+    for ($x = 0; $x < pg_num_rows($result); $x++) {
         db_fieldsmemory($result, $x);
 
 
         if ($data != "--") {
 
-            $dt_mktime1 = explode('-', $m80_data);
-            $dt_mktime2 = explode('-', $data);
+            $dt_mktime1 = explode('-', (string) $m80_data);
+            $dt_mktime2 = explode('-', (string) $data);
             $dt_inf = mktime(0, 0, 0, $dt_mktime1[1], $dt_mktime1[2], $dt_mktime1[0]);
             $dt_sup = mktime(0, 0, 0, $dt_mktime2[1], $dt_mktime2[2], $dt_mktime2[0]);
 
@@ -379,9 +379,9 @@ for ($mater = 0; $mater < $clmatmater->numrows; $mater++) {
         $pdf->setfont('arial', '', 7);
         $pdf->cell(15, $alt, db_formatar($m80_data, 'd'), 0, 0, "C", $p);
         $pdf->cell(10, $alt, $m80_codigo, 0, 0, "C", $p);
-        $pdf->cell(45, $alt, substr($m81_descr, 0, 28), 0, 0, "L", $p);
-        $pdf->cell(45, $alt, substr($descrdepto, 0, 28), 0, 0, "L", $p);
-        $pdf->cell(15, $alt, substr($login, 0, 10), 0, 0, "L", $p);
+        $pdf->cell(45, $alt, substr((string) $m81_descr, 0, 28), 0, 0, "L", $p);
+        $pdf->cell(45, $alt, substr((string) $descrdepto, 0, 28), 0, 0, "L", $p);
+        $pdf->cell(15, $alt, substr((string) $login, 0, 10), 0, 0, "L", $p);
         $pdf->cell(15, $alt, db_formatar(round($quant_ent, 2), "p", " ", 2), 0, 0, "C", $p);
         $pdf->cell(15, $alt, db_formatar($vlr_ent, 'f', ' ', 0, 'e', 5), 0, 0, "R", $p);
         $pdf->cell(20, $alt, db_formatar($tot_ent, 'f'), 0, 0, "R", $p);

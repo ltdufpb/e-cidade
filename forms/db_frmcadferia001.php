@@ -118,9 +118,9 @@ try {
                  $r30_periodolivreinicial_mes = @$_POST["r30_periodolivreinicial_mes"]!=""?@$_POST["r30_periodolivreinicial_mes"]:@$_GET["r30_periodolivreinicial_mes"];
                  $r30_periodolivreinicial_dia = @$_POST["r30_periodolivreinicial_dia"]!=""?@$_POST["r30_periodolivreinicial_dia"]:@$_GET["r30_periodolivreinicial_dia"];
                }
-               $aTipos = array(1 => "Período Aquisitivo Normal",
+               $aTipos = [1 => "Período Aquisitivo Normal",
                                2 => "Período Específico"
-                              );
+                              ];
                 db_select('r30_tipoapuracaomedia', $aTipos, true, ($dbopcao?3:1)==1?$db_opcao:3, "onchange='js_showCamposMedia()'")?>
             </td>
           </tr>
@@ -235,7 +235,7 @@ try {
 
         $mtipo = ($nDiasServidor == 30) ? '01' : '12';
 
-        $arr_fpagto = Array(
+        $arr_fpagto = [
                             "01"=>"01 - 30 dias ferias",
                             "02"=>"02 - 20 dias ferias",
                             "03"=>"03 - 15 dias ferias",
@@ -245,7 +245,7 @@ try {
                             "07"=>"07 - 10 dias ferias + 20 dias abono",
                             "08"=>"08 - 30 dias abono",
                             "12"=>"12 - Dias Livre"
-                           );
+                           ];
         db_select("mtipo", $arr_fpagto, true, $db_opcao,"onchange='js_validamtipo();'");
         ?>
       </td>
@@ -377,7 +377,7 @@ try {
               if(!isset($saldo)){
                 $saldo = "10";
               }
-              $arr_saldo = Array("10"=>"Férias","09"=>"Abono");
+              $arr_saldo = ["10"=>"Férias","09"=>"Abono"];
               db_select("saldo", $arr_saldo, true, 1, "onchange='js_habilitaperiodo(1);'");
               ?>
             </td>
@@ -466,10 +466,10 @@ try {
                 $ponto = "S";
               }
 
-              $aFolhaPagamento = array(
+              $aFolhaPagamento = [
                 'S' => 'Salário',
                 'C' => 'Complementar'
-              );
+              ];
 
               if (!$lComplementarAberta) {
                 unset($aFolhaPagamento['C']);
@@ -490,7 +490,7 @@ try {
               if(!isset($paga_13)){
                 $paga_13 = "f";
               }
-              $arr_SorN = Array("t"=>"Sim","f"=>"Não");
+              $arr_SorN = ["t"=>"Sim","f"=>"Não"];
               db_select("paga_13", $arr_SorN, true, $db_opcao);
               ?>
             </td>
@@ -510,7 +510,7 @@ try {
               <b>Direito a Férias:</b>
             </td>
             <td>
-              <?php db_select("direitoferias", array(1=>'SIM', 2=>'NÃO'), true, $db_opcao, 'onchange="js_direitoferias();"'); ?>
+              <?php db_select("direitoferias", [1=>'SIM', 2=>'NÃO'], true, $db_opcao, 'onchange="js_direitoferias();"'); ?>
             </td>
           </tr>
 

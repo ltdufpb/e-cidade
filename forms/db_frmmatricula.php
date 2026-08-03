@@ -433,7 +433,7 @@ if ($db_opcao == 2) {
                 </td>
                 <td>
                   <?php 
-                    $x = array();
+                    $x = [];
                     db_select('ed60_c_situacao',
                               $x,
                               true,
@@ -471,7 +471,7 @@ if ($db_opcao == 2) {
                 </td>
                 <td>
                   <?php 
-                    db_select( "cboImportarAproveitamento", array(0 =>"selecione", 1 => "Sim", 2 => "Não"), true, 1 );
+                    db_select( "cboImportarAproveitamento", [0 =>"selecione", 1 => "Sim", 2 => "Não"], true, 1 );
                   ?>
                 </td>
               </tr>
@@ -795,7 +795,7 @@ function js_preenchepesquisaturma(chave) {
 
   db_iframe_turma.hide();
   <?php 
-   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+   echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 

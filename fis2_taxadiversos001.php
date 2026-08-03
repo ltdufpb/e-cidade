@@ -57,7 +57,7 @@ require_once modification("dbforms/db_funcoes.php");
             </td>
             <td>
               <?php
-              db_select('grupos', array(''=>'Selecione'), true, 1, 'onchange="popularComboNatureza(event)"');
+              db_select('grupos', [''=>'Selecione'], true, 1, 'onchange="popularComboNatureza(event)"');
               ?>
             </td>
           </tr>
@@ -68,7 +68,7 @@ require_once modification("dbforms/db_funcoes.php");
             </td>
             <td>
               <?php
-              db_select('naturezas', array(''=>'Selecione'), true, 1);
+              db_select('naturezas', [''=>'Selecione'], true, 1);
               ?>
             </td>
           </tr>

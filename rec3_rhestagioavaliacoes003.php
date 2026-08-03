@@ -66,7 +66,7 @@ $rh01_numcgm   = $oEstagio->rh01_numcgm;
 $rh01_regist   = $oEstagio->rh01_regist;
 $rh01_numcgm   = $oEstagio->z01_numcgm;
 $z01_nome      = $oEstagio->z01_nome;
-$rh01_nascp    = explode("-",$oEstagio->rh01_nasc);
+$rh01_nascp    = explode("-",(string) $oEstagio->rh01_nasc);
 $rh01_nasc_dia = $rh01_nascp[2];
 $rh01_nasc_mes = $rh01_nascp[1];
 $rh01_nasc_ano = $rh01_nascp[0];
@@ -201,7 +201,7 @@ function js_marca(obj){
           </td>
           <td align="left" nowrap> 
             <?php 
-            $arr_sexo = array('M' => 'Masculino','F'=>'Feminino');
+            $arr_sexo = ['M' => 'Masculino','F'=>'Feminino'];
             db_select("rh01_sexo",$arr_sexo,true,3,"");
             ?>
           </td>

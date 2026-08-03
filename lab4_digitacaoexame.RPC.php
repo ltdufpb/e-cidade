@@ -65,16 +65,16 @@ try {
             $aAtributos = $oExame->getAtributos();
             $oRetorno->sObservacao = urlencode($oRequisicao->getObservacao());
             $oRetorno->sMotivoNovaColeta = urlencode($oRequisicao->getMotivoNovaColeta());
-            $oRetorno->atributos = array();
-            $oRetorno->dadosAtributos = array();
+            $oRetorno->atributos = [];
+            $oRetorno->dadosAtributos = [];
 
             foreach ($aAtributos as $oAtributo) {
                 $oAtributoStd = new stdClass();
-                $oAtributoStd->codigo = urlencode($oAtributo->getCodigo());
-                $oAtributoStd->codigo_estrutural = urlencode($oAtributo->getEstrutural());
-                $oAtributoStd->descricao = urlencode($oAtributo->getNome());
-                $oAtributoStd->tipo = urlencode($oAtributo->getTipo());
-                $oAtributoStd->nivel = urlencode($oAtributo->getNivel());
+                $oAtributoStd->codigo = urlencode((string) $oAtributo->getCodigo());
+                $oAtributoStd->codigo_estrutural = urlencode((string) $oAtributo->getEstrutural());
+                $oAtributoStd->descricao = urlencode((string) $oAtributo->getNome());
+                $oAtributoStd->tipo = urlencode((string) $oAtributo->getTipo());
+                $oAtributoStd->nivel = urlencode((string) $oAtributo->getNivel());
                 $oAtributoStd->tiporeferencia = $oAtributo->getTipoReferencia();
                 $oAtributoStd->valorpercentual = '';
                 $oAtributoStd->valorabsoluto = '';
@@ -98,8 +98,8 @@ try {
 
                 if ($oResultadoExame->getValorDoAtributo($oAtributo) != '') {
                     $oResultadoAtributo = $oResultadoExame->getValorDoAtributo($oAtributo);
-                    $oAtributoStd->titulacao = urlencode($oResultadoAtributo->getTitulacao());
-                    $oAtributoStd->valorabsoluto = urlencode($oResultadoAtributo->getValorAbsoluto());
+                    $oAtributoStd->titulacao = urlencode((string) $oResultadoAtributo->getTitulacao());
+                    $oAtributoStd->valorabsoluto = urlencode((string) $oResultadoAtributo->getValorAbsoluto());
                     $oAtributoStd->valorpercentual = $oResultadoAtributo->getValorPercentual();
                     $oReferenciaSalva = $oResultadoAtributo->getFaixaUtilizada();
                 }
@@ -122,7 +122,7 @@ try {
                     $oReferenciaStd->unidade = '';
 
                     if ($oAtributo->getUnidadeMedida() != null) {
-                        $oReferenciaStd->unidade = urlencode($oAtributo->getUnidadeMedida()->getNome());
+                        $oReferenciaStd->unidade = urlencode((string) $oAtributo->getUnidadeMedida()->getNome());
                     }
 
                     $oReferenciaStd->faixanormalminimo = '';
@@ -133,13 +133,13 @@ try {
                     $oReferenciaStd->atributobase = '';
                     $oReferenciaStd->baseparacalculo = false;
                     $oReferenciaStd->fixo = '';
-                    $oReferenciaStd->selecoes = array();
+                    $oReferenciaStd->selecoes = [];
                     $oReferenciaStd->tipo = '';
 
                     switch ($oAtributo->getTipoReferencia()) {
                         case AtributoExame::REFERENCIA_NUMERICA:
                             if (empty($oReferenciasAtributo)) {
-                                continue;
+                                break;
                             }
 
                             if ($oParam->lConferencia) {
@@ -179,7 +179,7 @@ try {
                             foreach ($oReferenciasAtributo->getReferenciasSelecionaveis() as $oReferencia) {
                                 $oSelecao = new stdClass();
                                 $oSelecao->codigo = $oReferencia->getCodigo();
-                                $oSelecao->nome = urlencode($oReferencia->getDescricao());
+                                $oSelecao->nome = urlencode((string) $oReferencia->getDescricao());
                                 $oReferenciaStd->selecoes[] = $oSelecao;
                             }
 
@@ -231,8 +231,8 @@ try {
                     $oResultadoExame->adicionarResultadoParaAtributo($oResultadoLancado);
                 }
 
-                $nValorAbsoluto = pg_escape_string(utf8_decode(db_stdClass::db_stripTagsJsonSemEscape($oAtributoLancado->nValorAbsoluto)));
-                $nValorPercentual = pg_escape_string(utf8_decode(db_stdClass::db_stripTagsJsonSemEscape($oAtributoLancado->nValorPercentual)));
+                $nValorAbsoluto = pg_escape_string(mb_convert_encoding(db_stdClass::db_stripTagsJsonSemEscape($oAtributoLancado->nValorAbsoluto), 'ISO-8859-1'));
+                $nValorPercentual = pg_escape_string(mb_convert_encoding(db_stdClass::db_stripTagsJsonSemEscape($oAtributoLancado->nValorPercentual), 'ISO-8859-1'));
                 $oResultadoLancado->setValorPercentual($nValorPercentual);
                 $oResultadoLancado->setValorAbsoluto($nValorAbsoluto);
                 $oResultadoLancado->setTitulacao(db_stdClass::normalizeStringJsonEscapeString($oAtributoLancado->sTitulacao));
@@ -314,13 +314,13 @@ try {
             }
 
             $oItemRequisicao = new RequisicaoExame($oParam->iCodigoExame);
-            $aMedicamentos = array();
+            $aMedicamentos = [];
 
             foreach ($oItemRequisicao->getMedicamentos() as $oMedicamento) {
                 $oDadosMedicamento = new stdClass();
                 $oDadosMedicamento->iCodigo = $oMedicamento->getCodigo();
-                $oDadosMedicamento->sNome = urlencode($oMedicamento->getNome());
-                $oDadosMedicamento->sAbreviatura = urlencode($oMedicamento->getAbreviatura());
+                $oDadosMedicamento->sNome = urlencode((string) $oMedicamento->getNome());
+                $oDadosMedicamento->sAbreviatura = urlencode((string) $oMedicamento->getAbreviatura());
 
                 $aMedicamentos[] = $oDadosMedicamento;
             }

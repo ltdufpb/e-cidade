@@ -37,7 +37,7 @@ $clrotulo->label('r06_pd');
 $clgerasql = new cl_gera_sql_folha;
 $clgerasql->inicio_rh = false;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $dbwhere = " rh23_rubric is null ";
 $dbwhererubs = "";
@@ -50,7 +50,7 @@ if(trim($rubrs) != ""){
   $dbwhererubs = " and #s#_rubric in ('".str_replace(",","','",$rubrs)."')";
 }
 
-$arr_pontos = split(",",$ponts);
+$arr_pontos = preg_split("#,#m",$ponts);
 $varSQL = "";
 
 $headPontos = "";
@@ -59,7 +59,7 @@ for($i=0; $i<6; $i++){
   $valor = "";
   if( isset($arr_pontos[$i]) && trim($arr_pontos[$i]) != "" ){
     $valor = $arr_pontos[$i];
-  }else if( count($arr_pontos) == 1 && trim($arr_pontos[0]) == "" ){
+  }else if( count($arr_pontos) == 1 && trim((string) $arr_pontos[0]) == "" ){
     $valor = "$i";
   }
   switch ( $valor ) {
@@ -71,7 +71,7 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r14");
+               $sigla ??= "r14";
                break;
     case "1" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Adiantamento";
@@ -81,7 +81,7 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r22");
+               $sigla ??= "r22";
                break;
     case "2" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Férias";
@@ -91,7 +91,7 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r31");
+               $sigla ??= "r31";
                break;
     case "3" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Rescisão";
@@ -101,7 +101,7 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r20");
+               $sigla ??= "r20";
                break;
     case "4" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Saldo do 13o.";
@@ -111,7 +111,7 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r35");
+               $sigla ??= "r35";
                break;
     case "5" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Complementar";
@@ -121,12 +121,12 @@ for($i=0; $i<6; $i++){
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs . (isset($semest) && $semest != "T" ? " and r48_semest = " . $semest : "")
                                                                                                   ) . " ) ";
-               $sigla = (isset($sigla) ? $sigla : "r48");
+               $sigla ??= "r48";
                break;
   }
 }
 
-if(count($arr_pontos) == 1 && trim($arr_pontos[0]) == ""){
+if(count($arr_pontos) == 1 && trim((string) $arr_pontos[0]) == ""){
   $headPontos = "Todos os pontos";
 }
 $clgerasql->inicio_rh = true;
@@ -188,7 +188,7 @@ $total_ger = 0;
 $cor = 1;
 $proxpag = true;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
   db_fieldsmemory($result,$x);
    
   if($pdf->gety() > $pdf->h - 30 || $troca != 0 ){

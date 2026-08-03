@@ -8,7 +8,7 @@ class CalculoPensao {
 	 * @var FolhaPagamento
 	 */
 	public static $oFolhaAtual;
-	private static $aPensoes = array();
+	private static $aPensoes = [];
 	public static function calcular($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo=null) {
 
 		$oDaoPensao            = new cl_pensao();
@@ -21,13 +21,13 @@ class CalculoPensao {
 		eval($quais_diversos);
 		global $anousu, $mesusu, $DB_instit;
 		global $siglap, $db21_codcli, $cfpess, $subpes ,$r110_regisi,$pensao;
-		global $$chamada_geral_arquivo,$minha_calcula_pensao,$campos_pessoal;
+		global ${$chamada_geral_arquivo},$minha_calcula_pensao,$campos_pessoal;
 
 		global $opcao_filtro,$opcao_gml,$r110_regisf,$r110_lotaci, $r110_lotacf,$faixa_regis,$faixa_lotac;
 
-    $aFolhasComEstruturaSuplementar  = array(PONTO_COMPLEMENTAR,
+    $aFolhasComEstruturaSuplementar  = [PONTO_COMPLEMENTAR,
                                              PONTO_SALARIO
-                                            );
+                                            ];
     $lComplementarOUSalario = false;
     if (in_array($opcao_geral, $aFolhasComEstruturaSuplementar)) {
       $lComplementarOUSalario = true;
@@ -418,8 +418,8 @@ class CalculoPensao {
 			$condicaoaux  = " and r52_regist = ".db_sqlformat($registrop);
 			$condicaoaux .= " and r52_numcgm = ".db_sqlformat($numcgmp);
 
-			$matriz1      = array();
-			$matriz2      = array();
+			$matriz1      = [];
+			$matriz2      = [];
 			$retornar     = true;
 
 			if ($chamada_geral_arquivo == "gerfs13") {
@@ -488,7 +488,7 @@ class CalculoPensao {
 					$qual_tpp = $sigla1."tpp";
 				}
 
-				$chamada_geral_ = $$chamada_geral_arquivo;
+				$chamada_geral_ = ${$chamada_geral_arquivo};
 				for ($Igeral=0; $Igeral<count($chamada_geral_); $Igeral++) {
 
 					if( $chamada_geral_[$Igeral][$qual_rub] == "R993" ){
@@ -502,18 +502,18 @@ class CalculoPensao {
 									db_year($cadferia[0][$r30_peri]) > db_val(substr("#".$cadferia[0][$r30_proc],1,4)))
 							   )
 					   ) {
-						if (strtolower($cfpess[0]["r11_fersal"]) == "f" && ('t' == $cadferia[0]["r30_paga13"]) ) {
+						if (strtolower((string) $cfpess[0]["r11_fersal"]) == "f" && ('t' == $cadferia[0]["r30_paga13"]) ) {
 							// Quando do Adiantamento de Férias , não Calcula a Pensão de Férias se for Pagar como Férias e somente 1/3 for sim
 							continue;
 						}
-						if ('f' == $cadferia[0]["r30_paga13"] && $cadferia[0][$r30_proc] < $subpes && strtolower($chamada_geral_[$Igeral][$qual_tpp]) == "d" ) {
+						if ('f' == $cadferia[0]["r30_paga13"] && $cadferia[0][$r30_proc] < $subpes && strtolower((string) $chamada_geral_[$Igeral][$qual_tpp]) == "d" ) {
 							// Não Processar no Calculo da Pensão de Férias as Rubricas de Férias Adiantadas quando somente 1/3 for não  e  Data de Pagto não Venceu
 							continue;
 						}
 					}
 					// a rubrica de pensao passa a ser calculada no gerffer
 					// e depois repassada para o salario ou complentar
-					if (( ( strtolower($cfpess[0]["r11_fersal"]) == "f" && ('t' ==  $cadferia[0]["r30_paga13"]) &&
+					if (( ( strtolower((string) $cfpess[0]["r11_fersal"]) == "f" && ('t' ==  $cadferia[0]["r30_paga13"]) &&
 									db_month($cadferia[0][$r30_peri]) == db_val(substr("#".$cadferia[0][$r30_proc],6,2))
 					      )
 								|| 'f' == $cadferia[0]["r30_paga13"]
@@ -545,8 +545,8 @@ class CalculoPensao {
 						// Para pagamento somente 1/3 sim e restante em salario (Pagar como Salário)
 						// para a geracao da Pensão de Férias so deve levar em conta para o Calculo da Pensão 1/3 Férias
 
-						if (strtolower($cfpess[0]["r11_fersal"]) == "s" && ('t' == $cadferia[0]["r30_paga13"])) {
-							if (( substr("#". $chamada_geral_[$Igeral][$qual_rub],1,1) != "R" && strtolower($chamada_geral_[$Igeral][$qual_tpp]) != "a" ) ) {
+						if (strtolower((string) $cfpess[0]["r11_fersal"]) == "s" && ('t' == $cadferia[0]["r30_paga13"])) {
+							if (( substr("#". $chamada_geral_[$Igeral][$qual_rub],1,1) != "R" && strtolower((string) $chamada_geral_[$Igeral][$qual_tpp]) != "a" ) ) {
 								continue;
 							}
 						}
@@ -665,7 +665,7 @@ class CalculoPensao {
 
 			}
 
-			$formula_pensao = trim($pensao[$Ipensao]["r52_formul"]);
+			$formula_pensao = trim((string) $pensao[$Ipensao]["r52_formul"]);
 			if (!db_empty($formula_pensao)) {
 
 				// if ($db_debug ) {
@@ -695,7 +695,7 @@ class CalculoPensao {
 
 							if (db_selectmax($chamada_geral_arquivo, "select * from ".$chamada_geral_arquivo." ".bb_condicaosubpes($siglag ).$condicaoaux )) {
 
-								$arq_ = $$chamada_geral_arquivo;
+								$arq_ = ${$chamada_geral_arquivo};
 								$vararq = $arq_[0][$sigla1."valor"] ;
 								$formpensao = db_strtran($formpensao,$rubricas_[$Irubricas]["rh27_rubric"],db_strtran(db_str($vararq,15,2),",","."));
 								//echo "<BR> formula da pensao 3 ->  $formpensao";
@@ -831,7 +831,7 @@ class CalculoPensao {
 				$condicaoaux  = " and ".$siglap."regist = ".db_sqlformat($pensao[$Ipensao]["r52_regist"] );
 				$condicaoaux .= " and ".$siglap."rubric = ".db_sqlformat($rubrica_pensao );
 
-				global $$qual_ponto;
+				global ${$qual_ponto};
 				if (db_selectmax($qual_ponto, "select * from ".$qual_ponto." ".bb_condicaosubpes($siglap ).$condicaoaux )) {
 
 					$acao = "altera";
@@ -850,7 +850,7 @@ class CalculoPensao {
 					}
 				}
 
-				$ponto = $$qual_ponto;
+				$ponto = ${$qual_ponto};
 
 				$qual_val = $sigla."valor";
 				$qual_rep = $sigla;
@@ -877,8 +877,8 @@ class CalculoPensao {
 
 
 					if ($opcao_geral == PONTO_SALARIO) {
-						$matriz1 = array();
-						$matriz2 = array();
+						$matriz1 = [];
+						$matriz2 = [];
 
 						$matriz1[1] = "r10_regist";
 						$matriz1[2] = "r10_rubric";
@@ -908,8 +908,8 @@ class CalculoPensao {
 
 					} else if ($opcao_geral == PONTO_FERIAS ) {
 
-						$matriz1 = array();
-						$matriz2 = array();
+						$matriz1 = [];
+						$matriz2 = [];
 						$matriz1[1] = "r29_regist";
 						$matriz1[2] = "r29_rubric";
 						$matriz1[3] = "r29_valor";
@@ -944,8 +944,8 @@ class CalculoPensao {
 						$matriz2[11] = $DB_instit;
 					} else if ($opcao_geral == PONTO_COMPLEMENTAR) {
 
-						$matriz1 = array();
-						$matriz2 = array();
+						$matriz1 = [];
+						$matriz2 = [];
 
 						$matriz1[1] = "r47_regist";
 						$matriz1[2] = "r47_rubric";
@@ -975,8 +975,8 @@ class CalculoPensao {
 
 					} else if ($opcao_geral == PONTO_RESCISAO) {
 
-						$matriz1 = array();
-						$matriz2 = array();
+						$matriz1 = [];
+						$matriz2 = [];
 
 						$matriz1[1] = "r19_regist";
 						$matriz1[2] = "r19_rubric";
@@ -1008,8 +1008,8 @@ class CalculoPensao {
 
 					} else if ($opcao_geral == PONTO_13_SALARIO) {
 
-						$matriz1 = array();
-						$matriz2 = array();
+						$matriz1 = [];
+						$matriz2 = [];
 
 						$matriz1[1] = "r34_regist";
 						$matriz1[2] = "r34_rubric";
@@ -1094,8 +1094,8 @@ class CalculoPensao {
 
 				}
 
-				$matriz1      = array();
-				$matriz2      = array();
+				$matriz1      = [];
+				$matriz2      = [];
 				$registrop    = $pensao[$Ipensao]["r52_regist"];
 				$numcgmp      = $pensao[$Ipensao]["r52_numcgm"];
 				$condicaoaux  = " and r52_regist = " . db_sqlformat($registrop);

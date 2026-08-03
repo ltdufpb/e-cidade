@@ -73,9 +73,9 @@ class cl_inicialpartilhacustas extends DAOBasica
      */
     public function sql_query_recibo_custas($v36_numnov, $inicial = null)
     {
-        $where = array(
+        $where = [
             "v36_numnov = {$v36_numnov}"
-        );
+        ];
 
         if (!empty($inicial)) {
             $where[] = "v35_inicial = {$inicial}";

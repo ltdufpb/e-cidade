@@ -35,8 +35,8 @@ $clrotulo->label('DBtxt28');
 $clrotulo->label("pc21_numcgm");
 $clrotulo->label("z01_nome");
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <table align="center">
@@ -69,7 +69,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
     <td><b>Ponto:</b></td>
     <td>
      <?php 
-       $x = array("s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento");
+       $x = ["s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento"];
        db_select('ponto',$x,true,4,"onchange='document.form1.submit();'");
      ?>
     </td>
@@ -114,7 +114,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
     <td><b>Gerado por:</b></td>
     <td>
     <?php 
-       $x = array("G"=>"Geral","O"=>"Orgão","U"=>"Unidade");
+       $x = ["G"=>"Geral","O"=>"Orgão","U"=>"Unidade"];
        db_select("gerado",$x,true,4,"");
     ?>
     </td>

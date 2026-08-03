@@ -32,22 +32,22 @@ class DBContaCorrenteAtributos
             $sinalNaturezaSalvar = $contaDebito ? 'D' : 'C';
         }
 
-        $where = implode(' and ', array(
+        $where = implode(' and ', [
                 "conplanoreduz.c61_reduz  = {$contaParaBusca}",
                 "conplanoreduz.c61_anousu = " . db_getsession('DB_anousu'),
                 "conplanoreduz.c61_instit = " . $instituicaoSessao,
                 "conplanosistema.c122_sequencial = {$codigoContaCorrente}",
                 /*"conplanosistema.c122_tipo = 2"*/
-            )) . ' order by conplanosistemaatributos.c129_ordem ';
+            ]) . ' order by conplanosistemaatributos.c129_ordem ';
 
-        $campos = implode(',', array(
+        $campos = implode(',', [
             "c121_sequencial      as codigo_atributo",
             "c121_sigla           as sigla",
             "c121_nomepropriedade as nome_propriedade",
             "c121_descricao       as descricao",
             "c121_valorpadrao     as valor_padrao",
             "c120_conplanosistema as conta_corrente"
-        ));
+        ]);
         $daoReduzidos = new cl_conplanoreduz();
         $consultaAtributos = $daoReduzidos->sql_query_infocomplementar_obrigatorias($campos, $where);
         $buscaAtributos = db_query($consultaAtributos);
@@ -81,7 +81,7 @@ class DBContaCorrenteAtributos
                 $informacaoComplementar->setCodigoInformacaoComplementar($stdAtributo->codigo_atributo);
                 $informacaoComplementar->setCodigoSistema($stdAtributo->conta_corrente);
 
-                $valorAtributo = trim($atributosIndexados[$stdAtributo->sigla]);
+                $valorAtributo = trim((string) $atributosIndexados[$stdAtributo->sigla]);
                 if ($valorAtributo == '') {
                     throw new Exception("Valor do atributo {$stdAtributo->sigla} não informado. Verifique.");
                 }
@@ -104,11 +104,11 @@ class DBContaCorrenteAtributos
 
         $hash = Processamento::montarHashesDolancamento($lancamento);
         $chave = key($hash);
-        $arrayProcessado = array();
+        $arrayProcessado = [];
         Processamento::calcularValorMovimentacaoDoHash($hash[$chave], $lancamento->getValor(),
             $lancamento->getNatureza(), $arrayProcessado, $lancamento->getSistema());
         $repository = LancamentoRepository::getInstance();
-        Processamento::salvarLancamentos(array($lancamento), $repository);
+        Processamento::salvarLancamentos([$lancamento], $repository);
         $chave = key($arrayProcessado);
         $registro = $arrayProcessado[$chave];
         Processamento::atualizaSaldoContaCorrente($registro, $registro->valor, $competencia->getAno(),
@@ -213,35 +213,35 @@ SQL_BUSCA_LANCAMENTO;
             $stdLinha = db_utils::fieldsMemory($resBusca, $row);
             if (empty($registros[$stdLinha->c124_natureza])) {
 
-                $stdRegistro = (object)array(
+                $stdRegistro = (object)[
                     'sinal'          => $stdLinha->c124_natureza,
-                    'conta_contabil' => (object)array(
+                    'conta_contabil' => (object)[
                         'codigo'     => $stdLinha->c60_codcon,
                         'reduzido'   => $stdLinha->c123_reduzido,
                         'estrutural' => $stdLinha->c60_estrut,
                         'descricao'  => $stdLinha->c60_descr
-                    ),
+                    ],
                     'conta_corrente' => []
-                );
+                ];
                 $registros[$stdLinha->c124_natureza] = $stdRegistro;
             }
 
             $linha = &$registros[$stdLinha->c124_natureza];
             if (empty($linha->conta_corrente[$stdLinha->c123_conplanosistema])) {
 
-                $linha->conta_corrente[$stdLinha->c123_conplanosistema] = (object)array(
+                $linha->conta_corrente[$stdLinha->c123_conplanosistema] = (object)[
                     'codigo'    => $stdLinha->c123_conplanosistema,
                     'descricao' => $stdLinha->c122_descricao,
                     'atributos' => []
-                );
+                ];
             }
 
-            $valorAtributo = (object)array(
+            $valorAtributo = (object)[
                 "codigo"    => $stdLinha->c121_sequencial,
                 "descricao" => $stdLinha->c121_descricao,
                 "sigla"     => $stdLinha->c121_sigla,
                 "valor"     => $stdLinha->c123_valor
-            );
+            ];
             $linha->conta_corrente[$stdLinha->c123_conplanosistema]->atributos[] = $valorAtributo;
         }
         return array_values($registros);

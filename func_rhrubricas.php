@@ -36,7 +36,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_rhrubricas_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhrubricas = new cl_rhrubricas;
 $clrhrubricas->rotulo->label("rh27_rubric");
@@ -50,20 +50,20 @@ $usuario = UsuarioSistemaRepository::getPorCodigo(db_getsession('DB_id_usuario')
 $instituicao = InstituicaoRepository::getInstituicaoSessao();
 
 $dao = new cl_rhrubricas();
-$where = array();
+$where = [];
 // agora por default devemos validar as rubricas configuradas por usuário se houver.
 // Se não devemos buscar todas as rubricas
 if ($service->possuiConfiguracao($usuario, $instituicao)) {
     $dao = new cl_rubricasusuario();
-    $where = array(
+    $where = [
         "rh219_usuario = {$usuario->getCodigo()}",
         "rh219_instituicao = {$instituicao->getCodigo()}"
-    );
+    ];
 }
 
 if (isset($oGet->naoFiltraUsuario) && $oGet->naoFiltraUsuario == 'true') {
     $dao = new cl_rhrubricas();
-    $where = array();
+    $where = [];
 }
 
 $where[] = "rh27_instit = {$instituicao->getCodigo()}";
@@ -80,7 +80,7 @@ $lUtilizaVinculoLotacaoRubrica = db_utils::fieldsMemory($rsCfPess, 0)->r11_utili
 /*
  * Lista do codigo dos itens de menu que nao devem utilizar o filtro de vinculo lotacao e rubrica.
  */
-$aItensMenuLiberados = array();
+$aItensMenuLiberados = [];
 $aItensMenuLiberados[] = 4376;   //Pessoal > Cadastros > Tabelas > Rubricas / Códigos > Inclusão
 $aItensMenuLiberados[] = 4377;   //Pessoal > Cadastros > Tabelas > Rubricas / Códigos > Alteração
 $aItensMenuLiberados[] = 4378;   //Pessoal > Cadastros > Tabelas > Rubricas / Códigos > Exclusão
@@ -131,11 +131,11 @@ $aItensMenuLiberados[] = 228373; //eSocial > Procedimentos > Re-enviar Eventos p
                         $opcao_bloq = 1;
                     }
 
-                    $arr_opcao = array(
+                    $arr_opcao = [
                         "i" => "Todos",
                         "t" => "Ativos",
                         "f" => "Inativos"
-                    );
+                    ];
 
                     db_select('opcao', $arr_opcao, true, $opcao_bloq);
                     ?>
@@ -216,7 +216,7 @@ if (!isset($pesquisa_chave)) {
         $where[] = "rh27_descr like '{$chave_rh27_descr}%' ";
     }
 
-    $sql = $dao->sqlRubricas($campos, $where, array('rh27_rubric'));
+    $sql = $dao->sqlRubricas($campos, $where, ['rh27_rubric']);
 
     echo "<div class='container'>";
     echo "  <fieldset>";

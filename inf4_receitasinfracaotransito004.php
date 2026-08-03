@@ -98,7 +98,7 @@ db_postmemory($_POST);
               <td align="left" nowrap title="Nível" class="tamanho-primeira-col bold">Nível:</td>
               <td colspan='3'>
                 <?php
-                  $aTipos = array('' => 'Selecione', '0'=>'Nível 0', '1' => 'Nível 1', '2' => 'Nível 2', '3' => 'Nível 3', '4' => 'Nível 4');
+                  $aTipos = ['' => 'Selecione', '0'=>'Nível 0', '1' => 'Nível 1', '2' => 'Nível 2', '3' => 'Nível 3', '4' => 'Nível 4'];
                   db_select("i06_nivel", $aTipos, "", "", "onchange=pesquisaNivel()");
                 ?>
               </td>

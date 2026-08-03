@@ -36,7 +36,7 @@ include(modification("classes/db_vac_sala_classe.php"));
 include(modification("classes/db_vac_dependencia_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clvac_aplica              = new cl_vac_aplica;
 $clvac_sala                = new cl_vac_sala;
 $clvac_dependencia         = new cl_vac_dependencia;

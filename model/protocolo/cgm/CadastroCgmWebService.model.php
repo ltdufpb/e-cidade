@@ -348,17 +348,17 @@ class CadastroCgmWebService {
       $oCgm->setBairro($this->getDescricaoBairro());
     } else {
 
-      $oCgm->setLogradouro(utf8_decode($this->sDescricaoLogradouro));
-      $oCgm->setBairro(utf8_decode($this->sDescricaoBairro));
+      $oCgm->setLogradouro(mb_convert_encoding($this->sDescricaoLogradouro, 'ISO-8859-1'));
+      $oCgm->setBairro(mb_convert_encoding($this->sDescricaoBairro, 'ISO-8859-1'));
     }
 
     $oCgm->setMunicipio($this->getNomeMunicipio()->db72_descricao);
     $oCgm->setCep($this->sCep);
     $oCgm->setUf($this->sUf);
 
-    $oCgm->setNome(utf8_decode($this->sNome));
+    $oCgm->setNome(mb_convert_encoding($this->sNome, 'ISO-8859-1'));
     $oCgm->setNumero($this->iNumeroLogradouro);
-    $oCgm->setComplemento(utf8_decode($this->sComplemento));
+    $oCgm->setComplemento(mb_convert_encoding($this->sComplemento, 'ISO-8859-1'));
     $oCgm->setEmail($this->sEmail);
     $oCgm->setTelefone($this->sTelefone);
     $oCgm->setCelular($this->sCelular);
@@ -573,18 +573,18 @@ class CadastroCgmWebService {
     $oRetorno = new stdClass();
 
     $oRetorno->iCodigoCgm   = $oCgm->getCodigo();
-    $oRetorno->sNome        = utf8_encode($oCgm->getNome());
+    $oRetorno->sNome        = mb_convert_encoding($oCgm->getNome(), 'UTF-8', 'ISO-8859-1');
     $oRetorno->lJuridico    = $oCgm->isJuridico();
 
-    $oRetorno->sNumero      = utf8_encode($oCgm->getNumero());
-    $oRetorno->sComplemento = utf8_encode($oCgm->getComplemento());
-    $oRetorno->sMunicipio   = utf8_encode($oCgm->getMunicipio());
-    $oRetorno->sUf          = utf8_encode($oCgm->getUf());
-    $oRetorno->sEmail       = utf8_encode($oCgm->getEmail());
-    $oRetorno->sCep         = utf8_encode($oCgm->getCep());
-    $oRetorno->sLogradouro  = utf8_encode($oCgm->getLogradouro());
-    $oRetorno->sBairro      = utf8_encode($oCgm->getBairro());
-    $oRetorno->sTelefone    = utf8_encode($oCgm->getTelefone());
+    $oRetorno->sNumero      = mb_convert_encoding($oCgm->getNumero(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sComplemento = mb_convert_encoding($oCgm->getComplemento(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sMunicipio   = mb_convert_encoding($oCgm->getMunicipio(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sUf          = mb_convert_encoding($oCgm->getUf(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sEmail       = mb_convert_encoding($oCgm->getEmail(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sCep         = mb_convert_encoding($oCgm->getCep(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sLogradouro  = mb_convert_encoding($oCgm->getLogradouro(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sBairro      = mb_convert_encoding($oCgm->getBairro(), 'UTF-8', 'ISO-8859-1');
+    $oRetorno->sTelefone    = mb_convert_encoding($oCgm->getTelefone(), 'UTF-8', 'ISO-8859-1');
 
     if ($oCgm->isFisico()) {
       $oRetorno->iCpf = $oCgm->getCpf();

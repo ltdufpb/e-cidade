@@ -100,7 +100,7 @@ $oPdf->cell(33,  $iAltura+2, "Preço Médio", 1, 1, "C", 1);
 
 $oPdf->setfont('arial','',8);
 $oPdf->cell(20, $iAltura,  $oDadoMaterial->m60_codmater, 0, 0, "C", 0);
-$oPdf->cell(130, $iAltura, substr($oDadoMaterial->m60_descr, 0, 100), 0, 0, "L", 0);
+$oPdf->cell(130, $iAltura, substr((string) $oDadoMaterial->m60_descr, 0, 100), 0, 0, "L", 0);
 $oPdf->cell(30, $iAltura,  $oDadoMaterial->m61_descr, 0, 0, "C", 0);
 $oPdf->cell(32, $iAltura,  db_formatar($oValorMaterial->valor_total, 'f'), 0, 0, "R", 0);
 $oPdf->cell(32, $iAltura,  $oValorMaterial->quantidade_total, 0, 0, "R", 0);
@@ -283,7 +283,7 @@ if (isset($oGet->lLancamentos) && $oGet->lLancamentos) {
        * Imprime os dados da primeira linha
       */
       $oPdf->cell(20,  $iAltura, $oLancamento->m80_codigo,                 0, 0, "C", 0);
-      $oPdf->cell(140, $iAltura, substr($oLancamento->m81_descr, 0, 120),  0, 0, "L", 0);
+      $oPdf->cell(140, $iAltura, substr((string) $oLancamento->m81_descr, 0, 120),  0, 0, "L", 0);
       $oPdf->cell(30,  $iAltura, $oLancamento->m81_entrada,                0, 0, "C", 0);
       $oPdf->cell(30,  $iAltura, $oLancamento->quantidade,                 0, 0, "R", 0);
       $oPdf->cell(30,  $iAltura, $oLancamento->valor_unitario,             0, 0, "R", 0);
@@ -291,11 +291,11 @@ if (isset($oGet->lLancamentos) && $oGet->lLancamentos) {
       /*
        * Imprime os dados da segunda linha
       */
-      $oPdf->cell(75,  $iAltura, substr($oLancamento->departamento_origem, 0, 65),  'B', 0, "L", 0);
-      $oPdf->cell(75,  $iAltura, substr($oLancamento->departamento_destino, 0, 65), 'B', 0, "L", 0);
+      $oPdf->cell(75,  $iAltura, substr((string) $oLancamento->departamento_origem, 0, 65),  'B', 0, "L", 0);
+      $oPdf->cell(75,  $iAltura, substr((string) $oLancamento->departamento_destino, 0, 65), 'B', 0, "L", 0);
       $oPdf->cell(30,  $iAltura, db_formatar($oLancamento->m80_data, 'd'),          'B', 0, "C", 0);
       $oPdf->cell(30,  $iAltura, $oLancamento->m80_hora,                            'B', 0, "C", 0);
-      $oPdf->cell(70,  $iAltura, substr($oLancamento->nome, 0, 60),                 'B', 1, "L", 0);
+      $oPdf->cell(70,  $iAltura, substr((string) $oLancamento->nome, 0, 60),                 'B', 1, "L", 0);
     }
   }
 }

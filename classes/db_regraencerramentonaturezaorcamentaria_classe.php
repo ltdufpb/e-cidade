@@ -28,26 +28,26 @@
 //MODULO: contabilidade
 class cl_regraencerramentonaturezaorcamentaria {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $c117_sequencial = 0;
-   var $c117_anousu = 0;
-   var $c117_instit = 0;
-   var $c117_contadevedora = null;
-   var $c117_contacredora = null;
+   public $c117_sequencial = 0;
+   public $c117_anousu = 0;
+   public $c117_instit = 0;
+   public $c117_contadevedora = null;
+   public $c117_contacredora = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  c117_sequencial = int4 = Sequencial
                  c117_anousu = int4 = Ano
                  c117_instit = int4 = Instituição
@@ -55,10 +55,10 @@ class cl_regraencerramentonaturezaorcamentaria {
                  c117_contacredora = varchar(15) = Conta Credora
                  ";
    //funcao construtor da classe
-   function cl_regraencerramentonaturezaorcamentaria() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regraencerramentonaturezaorcamentaria");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -130,10 +130,10 @@ class cl_regraencerramentonaturezaorcamentaria {
          $this->erro_status = "0";
          return false;
        }
-       $this->c117_sequencial = pg_result($result,0,0);
+       $this->c117_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from regraencerramentonaturezaorcamentaria_c117_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c117_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c117_sequencial)){
          $this->erro_sql = " Campo c117_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -169,7 +169,7 @@ class cl_regraencerramentonaturezaorcamentaria {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Regra Encerramento Natureza Orçamentária ($this->c117_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Regra Encerramento Natureza Orçamentária já Cadastrado";
@@ -198,14 +198,14 @@ class cl_regraencerramentonaturezaorcamentaria {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20874,'$this->c117_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3756,20874,'','".AddSlashes(pg_result($resaco,0,'c117_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3756,20875,'','".AddSlashes(pg_result($resaco,0,'c117_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3756,20876,'','".AddSlashes(pg_result($resaco,0,'c117_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3756,20877,'','".AddSlashes(pg_result($resaco,0,'c117_contadevedora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3756,20878,'','".AddSlashes(pg_result($resaco,0,'c117_contacredora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3756,20874,'','".AddSlashes(pg_fetch_result($resaco,0,'c117_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3756,20875,'','".AddSlashes(pg_fetch_result($resaco,0,'c117_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3756,20876,'','".AddSlashes(pg_fetch_result($resaco,0,'c117_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3756,20877,'','".AddSlashes(pg_fetch_result($resaco,0,'c117_contadevedora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3756,20878,'','".AddSlashes(pg_fetch_result($resaco,0,'c117_contacredora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -215,10 +215,10 @@ class cl_regraencerramentonaturezaorcamentaria {
       $this->atualizacampos();
      $sql = " update regraencerramentonaturezaorcamentaria set ";
      $virgula = "";
-     if(trim($this->c117_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c117_sequencial"])){
+     if(trim((string) $this->c117_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c117_sequencial"])){
        $sql  .= $virgula." c117_sequencial = $this->c117_sequencial ";
        $virgula = ",";
-       if(trim($this->c117_sequencial) == null ){
+       if(trim((string) $this->c117_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "c117_sequencial";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_regraencerramentonaturezaorcamentaria {
          return false;
        }
      }
-     if(trim($this->c117_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c117_anousu"])){
+     if(trim((string) $this->c117_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c117_anousu"])){
        $sql  .= $virgula." c117_anousu = $this->c117_anousu ";
        $virgula = ",";
-       if(trim($this->c117_anousu) == null ){
+       if(trim((string) $this->c117_anousu) == null ){
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "c117_anousu";
          $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_regraencerramentonaturezaorcamentaria {
          return false;
        }
      }
-     if(trim($this->c117_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c117_instit"])){
+     if(trim((string) $this->c117_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c117_instit"])){
        $sql  .= $virgula." c117_instit = $this->c117_instit ";
        $virgula = ",";
-       if(trim($this->c117_instit) == null ){
+       if(trim((string) $this->c117_instit) == null ){
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "c117_instit";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_regraencerramentonaturezaorcamentaria {
          return false;
        }
      }
-     if(trim($this->c117_contadevedora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c117_contadevedora"])){
+     if(trim((string) $this->c117_contadevedora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c117_contadevedora"])){
        $sql  .= $virgula." c117_contadevedora = '$this->c117_contadevedora' ";
        $virgula = ",";
-       if(trim($this->c117_contadevedora) == null ){
+       if(trim((string) $this->c117_contadevedora) == null ){
          $this->erro_sql = " Campo Conta Devedora não informado.";
          $this->erro_campo = "c117_contadevedora";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_regraencerramentonaturezaorcamentaria {
          return false;
        }
      }
-     if(trim($this->c117_contacredora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c117_contacredora"])){
+     if(trim((string) $this->c117_contacredora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c117_contacredora"])){
        $sql  .= $virgula." c117_contacredora = '$this->c117_contacredora' ";
        $virgula = ",";
-       if(trim($this->c117_contacredora) == null ){
+       if(trim((string) $this->c117_contacredora) == null ){
          $this->erro_sql = " Campo Conta Credora não informado.";
          $this->erro_campo = "c117_contacredora";
          $this->erro_banco = "";
@@ -294,19 +294,19 @@ class cl_regraencerramentonaturezaorcamentaria {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20874,'$this->c117_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c117_sequencial"]) || $this->c117_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3756,20874,'".AddSlashes(pg_result($resaco,$conresaco,'c117_sequencial'))."','$this->c117_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3756,20874,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c117_sequencial'))."','$this->c117_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c117_anousu"]) || $this->c117_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,3756,20875,'".AddSlashes(pg_result($resaco,$conresaco,'c117_anousu'))."','$this->c117_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3756,20875,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c117_anousu'))."','$this->c117_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c117_instit"]) || $this->c117_instit != "")
-             $resac = db_query("insert into db_acount values($acount,3756,20876,'".AddSlashes(pg_result($resaco,$conresaco,'c117_instit'))."','$this->c117_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3756,20876,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c117_instit'))."','$this->c117_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c117_contadevedora"]) || $this->c117_contadevedora != "")
-             $resac = db_query("insert into db_acount values($acount,3756,20877,'".AddSlashes(pg_result($resaco,$conresaco,'c117_contadevedora'))."','$this->c117_contadevedora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3756,20877,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c117_contadevedora'))."','$this->c117_contadevedora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c117_contacredora"]) || $this->c117_contacredora != "")
-             $resac = db_query("insert into db_acount values($acount,3756,20878,'".AddSlashes(pg_result($resaco,$conresaco,'c117_contacredora'))."','$this->c117_contacredora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3756,20878,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c117_contacredora'))."','$this->c117_contacredora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -360,14 +360,14 @@ class cl_regraencerramentonaturezaorcamentaria {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20874,'$c117_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3756,20874,'','".AddSlashes(pg_result($resaco,$iresaco,'c117_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3756,20875,'','".AddSlashes(pg_result($resaco,$iresaco,'c117_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3756,20876,'','".AddSlashes(pg_result($resaco,$iresaco,'c117_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3756,20877,'','".AddSlashes(pg_result($resaco,$iresaco,'c117_contadevedora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3756,20878,'','".AddSlashes(pg_result($resaco,$iresaco,'c117_contacredora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3756,20874,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c117_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3756,20875,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c117_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3756,20876,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c117_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3756,20877,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c117_contadevedora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3756,20878,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c117_contacredora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

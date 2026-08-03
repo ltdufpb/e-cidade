@@ -82,7 +82,7 @@ switch ($oParam->sExec) {
 		
 		$oPeticaoEmissao = new PeticaoEmissao($iTipoPeticao);
 		
-		$aIniciasPeticao = explode(',', $oParam->sIniciais);
+		$aIniciasPeticao = explode(',', (string) $oParam->sIniciais);
 		
 		$lErroBanco      = false;
 		
@@ -109,19 +109,7 @@ switch ($oParam->sExec) {
 
 			$oRetorno->sArquivo = $oPeticaoEmissao->emitir();
 			
-		} catch (DBException $oException) {
-			
-			$oRetorno->sMessage = urlEncode($oException->getMessage());
-			$oRetorno->iStatus  = 2;
-			$lErroBanco         = true;
-			
-		} catch (BusinessException $oException) {
-		  
-		  $oRetorno->sMessage = urlEncode($oException->getMessage());
-		  $oRetorno->iStatus  = 2;
-		  $lErroBanco         = true;
-		  
-		} catch (ParameterException $oException) {
+		} catch (DBException|BusinessException|ParameterException $oException) {
 		  
 		  $oRetorno->sMessage = urlEncode($oException->getMessage());
 		  $oRetorno->iStatus  = 2;

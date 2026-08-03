@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <html>
@@ -51,20 +51,20 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
           where at01_codcli = $codcli";
     $result_cli = db_query($sql);
 
-    echo "<strong>Cliente:</strong> ".pg_result($result_cli,0,'at01_nomecli');
+    echo "<strong>Cliente:</strong> ".pg_fetch_result($result_cli,0,'at01_nomecli');
   }
   $sql = "select nome_modulo 
           from db_modulos
           where id_item = $codmod";
   $result_cli = db_query($sql);
-  echo "<strong> Módulo: </strong>".pg_result($result_cli,0,'nome_modulo');
+  echo "<strong> Módulo: </strong>".pg_fetch_result($result_cli,0,'nome_modulo');
 
   if($codcli!=0){
     $sql = "select at10_nome 
           from db_usuclientes
           where at10_codcli = $codcli and at10_usuario = $codusu";
     $result_cli = db_query($sql);
-    echo "<strong> Usuário: </strong>".pg_result($result_cli,0,'at10_nome');
+    echo "<strong> Usuário: </strong>".pg_fetch_result($result_cli,0,'at10_nome');
   }
   if($codcli!=0){
     $sql = "select at99_itensacesso,descricao,at99_data,count(*) as dl_acessos

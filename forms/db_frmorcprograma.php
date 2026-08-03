@@ -113,8 +113,8 @@ db_input('o54_descr', 65, $Io54_descr, true, 'text', $db_opcao, "")
 				    </td>
 				    <td>
 					   <?php
-$aTipoPrograma = array(0=>'Selecione', 1 => "Programas Finalísticos", 2 => "Programas de Apoio as Políticas e Áreas Especiais",
-    3 => "Programas Temáticos", 4 => "Programas de Gestão, Manutenção e Serviços ao Estado");
+$aTipoPrograma = [0=>'Selecione', 1 => "Programas Finalísticos", 2 => "Programas de Apoio as Políticas e Áreas Especiais",
+    3 => "Programas Temáticos", 4 => "Programas de Gestão, Manutenção e Serviços ao Estado"];
 
 db_select("o54_tipoprograma", $aTipoPrograma, true, $db_opcao);
              ?>
@@ -285,7 +285,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_orcprograma.hide();
   <?php 
 if ($db_opcao != 1) {
-  echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])
+  echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])
       . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1;";
 }
   ?>

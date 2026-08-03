@@ -75,8 +75,8 @@ $clarrenumcgm               = new cl_arrenumcgm();
 (integer)$iTotalreg         = 0;
 (float)  $dVlrReg           = 0;  
 (float)  $dVlrTotal         = 0;
-$itensErro                  = array();
-$itensAviso                 = array();
+$itensErro                  = [];
+$itensAviso                 = [];
 $iNumpre                    = null;
 ?>
 <html>
@@ -319,7 +319,7 @@ if (isset($post->processar)){
                     $sSqlArrecad .= "   and k00_receit = ".$oCalc->q01_recei;
                     $rsArrecad    = db_query($sSqlArrecad);
                     if (pg_num_rows($rsArrecad)  != 1){
-                       
+
                         //inclui um isscomplementar 
                         $rsNumpre  = db_query("select nextval('numpref_k03_numpre_seq') as k03_numpre");
                         $oNumpre   = db_utils::fieldsmemory($rsNumpre,0);
@@ -338,7 +338,7 @@ if (isset($post->processar)){
                         $clissvar2->incluir(null);
                         $q05_codigo   = $clissvar2->q05_codigo;
                         if ($clissvar2->erro_status == 0){
-                            
+
                             $sErroMsg    = "Iss Complementar<br>".$clissvar2->erro_msg;
                             $lSqlErroreg = true;
 
@@ -357,7 +357,7 @@ if (isset($post->processar)){
                            $clarrecad->k00_tipojm = "0";
                            $clarrecad->incluir(null);
                            if ($clarrecad->erro_status == 0){
-                              
+
                               $sErroMsg    ="ARRECAD <BR>". $clarrecad->erro_msg;
                               $lSqlErroreg = true;
                            }else{
@@ -367,7 +367,7 @@ if (isset($post->processar)){
                                $clarreinscr->k00_perc   = 100;
                                $clarreinscr->incluir($iNumpre,$oInscr->q02_inscr);                                                     
                                if ($clarreinscr->erro_status == 0){
-                                  
+
                                   $sErroMsg    ="ARREinscr <BR>". $clarreinscr->erro_msg;
                                   $lSqlErroreg = true;
                                }
@@ -455,7 +455,7 @@ if (isset($post->processar)){
                 $clarrehist->k00_dtoper     = $oRegSimples->q23_dtvenc;
                 $clarrehist->k00_hora       = db_hora();
                 $clarrehist->k00_id_usuario = db_getsession("DB_id_usuario");
-                $clarrehist->k00_histtxt    = "BAIXA SIMPLES NACIONAL COMPETÊNCIA ".str_pad($oRegSimples->q23_mesusu,2,"0",STR_PAD_LEFT)."/".$oRegSimples->q23_anousu;
+                $clarrehist->k00_histtxt    = "BAIXA SIMPLES NACIONAL COMPETÊNCIA ".str_pad((string) $oRegSimples->q23_mesusu,2,"0",STR_PAD_LEFT)."/".$oRegSimples->q23_anousu;
                 $clarrehist->k00_limithist  = date("Y-m-d",db_getsession("DB_datausu"));
                 $clarrehist->incluir(null);
                 if ($clarrehist->erro_status == 0){

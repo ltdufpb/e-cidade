@@ -64,24 +64,12 @@ class DBLog {
    */
   public function __construct($sTipoLog = null, $sDestino = "") {
 
-    switch ($sTipoLog) {
-
-      case "JSON":
-        $this->oInstanciaLog = new DBLogJSON($sDestino . ".json");
-        break;
-
-      case "TXT":
-        $this->oInstanciaLog = new DBLogTXT($sDestino . ".txt");
-        break;
-
-      case "PDF":
-        $this->oInstanciaLog = new DBLogTXT($sDestino . ".pdf");
-        break;
-
-      case "XML":
-      default:
-        $this->oInstanciaLog = new DBLogXML($sDestino . ".xml");
-    }
+    $this->oInstanciaLog = match ($sTipoLog) {
+        "JSON" => new DBLogJSON($sDestino . ".json"),
+        "TXT" => new DBLogTXT($sDestino . ".txt"),
+        "PDF" => new DBLogTXT($sDestino . ".pdf"),
+        default => new DBLogXML($sDestino . ".xml"),
+    };
   }
 
   public function getArquivo() {

@@ -136,37 +136,35 @@ class ProcessoRepositorio
             throw new DBException('Não foi possível buscar os processos vencidos.');
         }
 
-        return db_utils::makeCollectionFromRecord($resultado, function ($processoRaw) {
-            return new Processo(
-                $processoRaw->codigo_processo,
-                $processoRaw->data_criacao,
-                $processoRaw->ultima_data,
-                $processoRaw->ultima_hora,
-                $processoRaw->descricao_departamento,
-                $processoRaw->nome,
-                $processoRaw->login,
-                $processoRaw->assunto,
-                $processoRaw->codigo_departamento,
-                $processoRaw->codigo_usuario,
-                $processoRaw->numero_processo,
-                $processoRaw->ano_processo,
-                (isset($processoRaw->prazodias) ? $processoRaw->prazodias : null)
-            );
-        });
+        return db_utils::makeCollectionFromRecord($resultado, fn($processoRaw) => new Processo(
+            $processoRaw->codigo_processo,
+            $processoRaw->data_criacao,
+            $processoRaw->ultima_data,
+            $processoRaw->ultima_hora,
+            $processoRaw->descricao_departamento,
+            $processoRaw->nome,
+            $processoRaw->login,
+            $processoRaw->assunto,
+            $processoRaw->codigo_departamento,
+            $processoRaw->codigo_usuario,
+            $processoRaw->numero_processo,
+            $processoRaw->ano_processo,
+            ($processoRaw->prazodias ?? null)
+        ));
     }
 
     public static function chunkByDepartamento(
         $sTabela,
         $aDepartamentos,
         \Closure $fRetorno,
-        $aCampos = array('*'),
-        $aFiltros = array(),
-        $aOrdem = array()
+        $aCampos = ['*'],
+        $aFiltros = [],
+        $aOrdem = []
     ) {
         $sCampos = implode(', ', $aCampos);
         $sDepartamentos = implode(', ', $aDepartamentos);
         $sQuery = "SELECT {$sCampos} FROM {$sTabela} ";
-        $aDepartamentosSelecionados = array();
+        $aDepartamentosSelecionados = [];
 
         if ($aDepartamentos || $aFiltros) {
             $sQuery .= ' WHERE ';
@@ -195,7 +193,7 @@ class ProcessoRepositorio
         $aDepartamentosNaoEncontrados = array_diff($aDepartamentos, array_keys($aDepartamentosSelecionados));
 
         foreach ($aDepartamentosNaoEncontrados as $iDepartamentoNaoEncontrado) {
-            $aDepartamentosSelecionados[$iDepartamentoNaoEncontrado] = array();
+            $aDepartamentosSelecionados[$iDepartamentoNaoEncontrado] = [];
         }
 
         foreach ($aDepartamentosSelecionados as $iDepartamento => $aProcessos) {
@@ -323,7 +321,7 @@ class ProcessoRepositorio
      * @return \stdClass[]
      * @throws DBException
      */
-    public static function getUsuariosComAcessoEmDepartamentoMenu($codigoDepartamento, array $codigosMenu = array(2182))
+    public static function getUsuariosComAcessoEmDepartamentoMenu($codigoDepartamento, array $codigosMenu = [2182])
     {
 
         $resBuscaUsuarios = db_query("

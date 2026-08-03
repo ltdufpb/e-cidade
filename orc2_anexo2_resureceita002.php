@@ -44,14 +44,14 @@ $tipo_impressao = 1;
 // 1 = orcamento
 // 2 = balanco
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (" . str_replace('-', ', ',
         $db_selinstit) . ") ");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinstabrev;
     $xvirg = ', ';
@@ -66,7 +66,7 @@ if ($origem == "O") {
     if ($opcao == 3) {
         $head6 = "PERÍODO : " . db_formatar($perini, 'd') . " A " . db_formatar($perfin, 'd');
     } else {
-        $head6 = "PERÍODO : " . strtoupper(db_mes(substr($perini, 5, 2))) . " A " . strtoupper(db_mes(substr($perfin, 5,
+        $head6 = "PERÍODO : " . strtoupper(db_mes(substr((string) $perini, 5, 2))) . " A " . strtoupper(db_mes(substr((string) $perfin, 5,
                 2)));
     }
 }
@@ -104,7 +104,7 @@ if (EMENTARIO_RECEITA) {
 $pagina = 1;
 $xx = 1;
 
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
     $elemento = $o57_fonte;
     $descr = $o57_descr;
@@ -143,7 +143,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
 
     $pdf->setfont('arial', '', 6);
     $pdf->cell(25, $alt, db_formatar($elemento, $formatacaoReceita), 0, 0, "L", 0);
-    if (substr($elemento, 2, 3) == "000") {
+    if (substr((string) $elemento, 2, 3) == "000") {
         $xx = 1;
         $pdf->cell($xx, $alt, "", 0, 0, "R", 0);
         $pdf->cell(61 + 11, $alt, $descr, 0, 0, "L", 0);
@@ -151,7 +151,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $pdf->cell(20, $alt, "", 0, 0, "R", 0);
         $pdf->cell(20, $alt, "", 0, 0, "R", 0);
         $pdf->cell(20, $alt, db_formatar($valor, 'f'), 0, 1, "R", 0);
-    } else if (substr($elemento, 3, 2) == "00") {
+    } else if (substr((string) $elemento, 3, 2) == "00") {
         $xx = 3;
         $pdf->cell($xx, $alt, "", 0, 0, "R", 0);
         $pdf->cell(61 + 9, $alt, $descr, 0, 0, "L", 0);
@@ -159,7 +159,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $pdf->cell(20, $alt, "", 0, 0, "R", 0);
         $pdf->cell(20, $alt, db_formatar($valor, 'f'), 0, 0, "R", 0);
         $pdf->cell(20, $alt, "", 0, 1, "R", 0);
-    } else if (substr($elemento, 4, 2) == "00") {
+    } else if (substr((string) $elemento, 4, 2) == "00") {
         $xx = 5;
         $pdf->cell($xx, $alt, "", 0, 0, "R", 0);
         $pdf->cell(61 + 7, $alt, $descr, 0, 0, "L", 0);
@@ -167,7 +167,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $pdf->cell(20, $alt, db_formatar($valor, 'f'), 0, 0, "R", 0);
         $pdf->cell(20, $alt, "", 0, 0, "R", 0);
         $pdf->cell(20, $alt, "", 0, 1, "R", 0);
-    } else if (substr($elemento, 6, 2) == "00") {
+    } else if (substr((string) $elemento, 6, 2) == "00") {
         $xx = 7;
         $pdf->cell($xx, $alt, "", 0, 0, "R", 0);
         $pdf->cell(61 + 5, $alt, $descr, 0, 0, "L", 0);
@@ -175,7 +175,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $pdf->cell(20, $alt, db_formatar($valor, 'f'), 0, 0, "R", 0);
         $pdf->cell(20, $alt, "", 0, 0, "R", 0);
         $pdf->cell(20, $alt, "", 0, 1, "R", 0);
-    } else if (substr($elemento, 8, 2) == "00") {
+    } else if (substr((string) $elemento, 8, 2) == "00") {
         $xx = 9;
         $pdf->cell($xx, $alt, "", 0, 0, "R", 0);
         $pdf->cell(61 + 3, $alt, $descr, 0, 0, "L", 0);
@@ -211,7 +211,7 @@ $pdf->cell(40, $alt, "Resumo", 0, 1, "L", 0);
 
 $rec_cor = 0;
 $rec_cap = 0;
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
     $elemento = $o57_fonte;
     $descr = $o57_descr;
@@ -222,8 +222,8 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $valor = $saldo_arrecadado;
     }
 
-    if (substr($o57_fonte, 3, 2) == "00" && substr($o57_fonte, 2, 1) != "0" && substr($o57_fonte, 5,
-            8) == "0000000" && $valor != 0 && substr($o57_fonte, 1, 1) != "2") {
+    if (substr((string) $o57_fonte, 3, 2) == "00" && substr((string) $o57_fonte, 2, 1) != "0" && substr((string) $o57_fonte, 5,
+            8) == "0000000" && $valor != 0 && substr((string) $o57_fonte, 1, 1) != "2") {
         $xx = 3;
         $pdf->cell($xx, $alt, "", 0, 0, "R", 0);
         $pdf->cell(55 + 9, $alt, '           ' . $o57_descr, 0, 0, "L", 0);
@@ -243,7 +243,7 @@ $pdf->cell(20, $alt, db_formatar($rec_cor, 'f'), "T", 0, "R", 0);
 $pdf->cell(20, $alt, "", 0, 1, "R", 0);
 $pdf->ln(3);
 
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
     $elemento = $o57_fonte;
     $descr = $o57_descr;
@@ -254,8 +254,8 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $valor = $saldo_arrecadado;
     }
 
-    if (substr($o57_fonte, 3, 10) == "0000000000" && substr($o57_fonte, 2,
-            1) != "0" && $valor != 0 && substr($o57_fonte, 1, 1) == "2") {
+    if (substr((string) $o57_fonte, 3, 10) == "0000000000" && substr((string) $o57_fonte, 2,
+            1) != "0" && $valor != 0 && substr((string) $o57_fonte, 1, 1) == "2") {
         $xx = 3;
         $pdf->cell($xx, $alt, "", 0, 0, "R", 0);
         $pdf->cell(55 + 9, $alt, '           ' . $o57_descr, 0, 0, "L", 0);

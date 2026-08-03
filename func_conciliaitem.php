@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conciliaitem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconciliaitem = new cl_conciliaitem;
 $clconciliaitem->rotulo->label("k83_sequencial");
 $clconciliaitem->rotulo->label("k83_hora");
@@ -98,9 +98,9 @@ $clconciliaitem->rotulo->label("k83_hora");
         }else{
            $sql = $clconciliaitem->sql_query("",$campos,"k83_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k83_hora)){
-          $repassa = array("chave_k83_sequencial"=>$chave_k83_sequencial,"chave_k83_hora"=>$chave_k83_hora);
+          $repassa = ["chave_k83_sequencial"=>$chave_k83_sequencial,"chave_k83_hora"=>$chave_k83_hora];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

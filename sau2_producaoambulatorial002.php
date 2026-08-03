@@ -48,7 +48,7 @@ function getTotalPorProcedimento ($sListaProcedimentos, $sIntervalo, $sd02_i_cod
   $rs      = $oDaoProntProced->sql_record($sSql);
   if ($oDaoProntProced->numrows > 0) {
     
-    $aData = array();
+    $aData = [];
     for ($iI = 0; $iI < $oDaoProntProced->numrows; $iI++) {
     
       $aData[$iI] = db_utils::fieldsmemory($rs, $iI);
@@ -157,7 +157,7 @@ function impEstrutura($oPdf, $sEstrutura, $sd02_i_codigo, $sIntervalo) {
       impCabecalho($oPdf);
       
     }
-    $iTotalGrupo = getTotalEstrutura ($sd02_i_codigo, substr($sEstrutura, 0, 2), $sIntervalo); 
+    $iTotalGrupo = getTotalEstrutura ($sd02_i_codigo, substr((string) $sEstrutura, 0, 2), $sIntervalo); 
     $oPdf->cell(50, 4, "Grupo ", 1, 0, "L", 0);
     $oPdf->cell(170, 4, $sGrupo, 1, 0, "L", 0);
     $oPdf->cell(60, 4, $iTotalGrupo, 1, 1, "L", 0);
@@ -172,7 +172,7 @@ function impEstrutura($oPdf, $sEstrutura, $sd02_i_codigo, $sIntervalo) {
       impCabecalho($oPdf);
       
     }
-    $iTotalSubGrupo = getTotalEstrutura ($sd02_i_codigo, substr($sEstrutura, 0, 4), $sIntervalo);
+    $iTotalSubGrupo = getTotalEstrutura ($sd02_i_codigo, substr((string) $sEstrutura, 0, 4), $sIntervalo);
     $oPdf->cell(50, 4, "Sub-Grupo ", 1, 0, "L", 0);
     $oPdf->cell(170, 4, $sSubGrupo, 1, 0, "L", 0);
     $oPdf->cell(60, 4, $iTotalSubGrupo, 1, 1, "L", 0);
@@ -228,8 +228,8 @@ function novaPagina($oPdf) {
 }
 
 $iCont          = 0;
-$dData1         = substr($dataini,6,4)."-".substr($dataini,3,2)."-".substr($dataini,0,2);
-$dData2         = substr($datafim,6,4)."-".substr($datafim,3,2)."-".substr($datafim,0,2);
+$dData1         = substr((string) $dataini,6,4)."-".substr((string) $dataini,3,2)."-".substr((string) $dataini,0,2);
+$dData2         = substr((string) $datafim,6,4)."-".substr((string) $datafim,3,2)."-".substr((string) $datafim,0,2);
 $sIntervalo     = "  sd29_d_data between '".$dData1."'::date and '".$dData2."'::date ";
 
 $sWhere         = $sIntervalo;
@@ -238,7 +238,7 @@ $iProducao      = 0;
 $sGrupo         = '';
 $sSubGrupo      = '';
 $sFormaOrg      = '';
-$aProcedimentos = array();
+$aProcedimentos = [];
 
 if ($lBuscarProcedimentos) {
   $sProcedimentos = $_SESSION['procedimentos'];
@@ -353,7 +353,7 @@ if ($agrupar == 1) { /* LISTAR AGRUPADO POR UPS */
       impProcedimentos($oPdf, $aProcedimentos);
     }
     
-    impRodape($oPdf, $oDataProced->total_procedimentos, $agrupar);
+    impRodape($oPdf, $oDataProced->total_procedimentos);
     $iProducao = 0;
     
   }

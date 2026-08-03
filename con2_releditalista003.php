@@ -27,7 +27,7 @@
 
 include(modification("libs/db_sql.php"));
 include(modification("fpdf151/scpdf.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 if ( $d01_codedi == null ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Código do edital não preenchido!');
 }
@@ -39,11 +39,11 @@ $result = db_query("select munic,db12_extenso
                    inner join db_uf on db12_uf = uf
 	               where codigo = ".db_getsession('DB_instit'));
 db_fieldsmemory($result,0);
-if ( pg_numrows($result) == 0 ) {
+if ( pg_num_rows($result) == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Instituição não cadastrada!');
 }
 $resultedital = db_query("select * from projmelhorias inner join editalproj on d10_codigo = d40_codigo inner join edital on d01_codedi = d10_codedi where d10_codedi = $d01_codedi");
-if ( pg_numrows($resultedital) == 0 ) {
+if ( pg_num_rows($resultedital) == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registros encontrado!');
 }
 db_fieldsmemory($resultedital,0);
@@ -87,7 +87,7 @@ $pdf->SetFont($Letra,'',7);
     $pdf->text(170,$pdf->h-8,'Página '.$pdf->PageNo().' de {nb}',0,1,'R');
     $pdf->SetFont($Letra,'B',12);
 $tot = 0;
-for($d=0;$d<pg_numrows($resultedital);$d++){
+for($d=0;$d<pg_num_rows($resultedital);$d++){
   db_fieldsmemory($resultedital,$d);
   $pdf->SetFont('Arial','',8);
   $pdf->SetFillColor(235);
@@ -115,7 +115,7 @@ for($d=0;$d<pg_numrows($resultedital);$d++){
 	    inner join proprietario on proprietario.j01_matric = projmelhoriasmatric.d41_matric
 	    where d41_codigo = $d40_codigo $dbwhere order by j40_refant";
   $result = db_query($sql);
-  if ( pg_numrows($result) == 0 ) {
+  if ( pg_num_rows($result) == 0 ) {
    continue; 
    // db_redireciona('db_erros.php?fechar=true&db_erro=Lista nao cadastrada!');
   }
@@ -124,7 +124,7 @@ for($d=0;$d<pg_numrows($resultedital);$d++){
   $pdf->ln(5);
   $pdf->SetFont('Arial','B',11);
   $pdf->Cell(190,6,"ANEXO II - ".$j14_tipo."  ".$j14_nome,1,1,"C",1);
-  $numrows03=pg_numrows($result);
+  $numrows03=pg_num_rows($result);
   $pdf->SetFont('Arial','',8);
   $pdf->Cell(70,$largura,'PROPRIETÁRIO',1,0,"C",1);
   $pdf->Cell(30,$largura,'NUMERO',1,0,"C",1);

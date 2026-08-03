@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptuconstr_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptuconstr = new cl_iptuconstr;
 $cliptuconstr->rotulo-> label("j39_idcons");
 ?>
@@ -76,7 +76,7 @@ $cliptuconstr->rotulo-> label("j39_idcons");
       if(!isset($pesquisa_chave)){
         $sql = "select * from iptuconstr where j39_matric = $j11_matric and (j39_dtdemo is null  or j39_dtdemo > current_date)";
         
-        $repassa = array();     
+        $repassa = [];     
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){

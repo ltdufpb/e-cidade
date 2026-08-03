@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE itbiavalia
 class cl_itbiavalia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $it14_guia = 0; 
-   var $it14_dtvenc_dia = null; 
-   var $it14_dtvenc_mes = null; 
-   var $it14_dtvenc_ano = null; 
-   var $it14_dtvenc = null; 
-   var $it14_dtliber_dia = null; 
-   var $it14_dtliber_mes = null; 
-   var $it14_dtliber_ano = null; 
-   var $it14_dtliber = null; 
-   var $it14_obs = null; 
-   var $it14_valoraval = 0; 
-   var $it14_valorpaga = 0; 
-   var $it14_valoravalter = 0; 
-   var $it14_valoravalconstr = 0; 
-   var $it14_id_usuario = 0; 
-   var $it14_hora = null; 
-   var $it14_desc = 0; 
+   public $it14_guia = 0; 
+   public $it14_dtvenc_dia = null; 
+   public $it14_dtvenc_mes = null; 
+   public $it14_dtvenc_ano = null; 
+   public $it14_dtvenc = null; 
+   public $it14_dtliber_dia = null; 
+   public $it14_dtliber_mes = null; 
+   public $it14_dtliber_ano = null; 
+   public $it14_dtliber = null; 
+   public $it14_obs = null; 
+   public $it14_valoraval = 0; 
+   public $it14_valorpaga = 0; 
+   public $it14_valoravalter = 0; 
+   public $it14_valoravalconstr = 0; 
+   public $it14_id_usuario = 0; 
+   public $it14_hora = null; 
+   public $it14_desc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  it14_guia = int8 = Código da ITBI 
                  it14_dtvenc = date = Data de Vencimento 
                  it14_dtliber = date = Data da liberação 
@@ -74,10 +74,10 @@ class cl_itbiavalia {
                  it14_desc = float8 = Desconto 
                  ";
    //funcao construtor da classe 
-   function cl_itbiavalia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiavalia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -242,7 +242,7 @@ class cl_itbiavalia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tabela de avaliação do ITBI ($this->it14_guia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tabela de avaliação do ITBI já Cadastrado";
@@ -266,20 +266,20 @@ class cl_itbiavalia {
      $resaco = $this->sql_record($this->sql_query_file($this->it14_guia));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5529,'$this->it14_guia','I')");
-       $resac = db_query("insert into db_acount values($acount,868,5529,'','".AddSlashes(pg_result($resaco,0,'it14_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,868,5530,'','".AddSlashes(pg_result($resaco,0,'it14_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,868,5531,'','".AddSlashes(pg_result($resaco,0,'it14_dtliber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,868,5534,'','".AddSlashes(pg_result($resaco,0,'it14_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,868,5532,'','".AddSlashes(pg_result($resaco,0,'it14_valoraval'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,868,5533,'','".AddSlashes(pg_result($resaco,0,'it14_valorpaga'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,868,5535,'','".AddSlashes(pg_result($resaco,0,'it14_valoravalter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,868,5536,'','".AddSlashes(pg_result($resaco,0,'it14_valoravalconstr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,868,5537,'','".AddSlashes(pg_result($resaco,0,'it14_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,868,5538,'','".AddSlashes(pg_result($resaco,0,'it14_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,868,5539,'','".AddSlashes(pg_result($resaco,0,'it14_desc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5529,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5530,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5531,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_dtliber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5534,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5532,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_valoraval'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5533,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_valorpaga'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5535,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_valoravalter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5536,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_valoravalconstr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5537,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5538,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,868,5539,'','".AddSlashes(pg_fetch_result($resaco,0,'it14_desc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -288,10 +288,10 @@ class cl_itbiavalia {
       $this->atualizacampos();
      $sql = " update itbiavalia set ";
      $virgula = "";
-     if(trim($this->it14_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_guia"])){ 
+     if(trim((string) $this->it14_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_guia"])){ 
        $sql  .= $virgula." it14_guia = $this->it14_guia ";
        $virgula = ",";
-       if(trim($this->it14_guia) == null ){ 
+       if(trim((string) $this->it14_guia) == null ){ 
          $this->erro_sql = " Campo Código da ITBI nao Informado.";
          $this->erro_campo = "it14_guia";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"] !="") ){ 
+     if(trim((string) $this->it14_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"] !="") ){ 
        $sql  .= $virgula." it14_dtvenc = '$this->it14_dtvenc' ";
        $virgula = ",";
-       if(trim($this->it14_dtvenc) == null ){ 
+       if(trim((string) $this->it14_dtvenc) == null ){ 
          $this->erro_sql = " Campo Data de Vencimento nao Informado.";
          $this->erro_campo = "it14_dtvenc_dia";
          $this->erro_banco = "";
@@ -317,7 +317,7 @@ class cl_itbiavalia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc_dia"])){ 
          $sql  .= $virgula." it14_dtvenc = null ";
          $virgula = ",";
-         if(trim($this->it14_dtvenc) == null ){ 
+         if(trim((string) $this->it14_dtvenc) == null ){ 
            $this->erro_sql = " Campo Data de Vencimento nao Informado.";
            $this->erro_campo = "it14_dtvenc_dia";
            $this->erro_banco = "";
@@ -328,10 +328,10 @@ class cl_itbiavalia {
          }
        }
      }
-     if(trim($this->it14_dtliber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"] !="") ){ 
+     if(trim((string) $this->it14_dtliber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"] !="") ){ 
        $sql  .= $virgula." it14_dtliber = '$this->it14_dtliber' ";
        $virgula = ",";
-       if(trim($this->it14_dtliber) == null ){ 
+       if(trim((string) $this->it14_dtliber) == null ){ 
          $this->erro_sql = " Campo Data da liberação nao Informado.";
          $this->erro_campo = "it14_dtliber_dia";
          $this->erro_banco = "";
@@ -344,7 +344,7 @@ class cl_itbiavalia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["it14_dtliber_dia"])){ 
          $sql  .= $virgula." it14_dtliber = null ";
          $virgula = ",";
-         if(trim($this->it14_dtliber) == null ){ 
+         if(trim((string) $this->it14_dtliber) == null ){ 
            $this->erro_sql = " Campo Data da liberação nao Informado.";
            $this->erro_campo = "it14_dtliber_dia";
            $this->erro_banco = "";
@@ -355,14 +355,14 @@ class cl_itbiavalia {
          }
        }
      }
-     if(trim($this->it14_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_obs"])){ 
+     if(trim((string) $this->it14_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_obs"])){ 
        $sql  .= $virgula." it14_obs = '$this->it14_obs' ";
        $virgula = ",";
      }
-     if(trim($this->it14_valoraval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoraval"])){ 
+     if(trim((string) $this->it14_valoraval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoraval"])){ 
        $sql  .= $virgula." it14_valoraval = $this->it14_valoraval ";
        $virgula = ",";
-       if(trim($this->it14_valoraval) == null ){ 
+       if(trim((string) $this->it14_valoraval) == null ){ 
          $this->erro_sql = " Campo Valor Total a Vista nao Informado.";
          $this->erro_campo = "it14_valoraval";
          $this->erro_banco = "";
@@ -372,10 +372,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_valorpaga)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valorpaga"])){ 
+     if(trim((string) $this->it14_valorpaga)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valorpaga"])){ 
        $sql  .= $virgula." it14_valorpaga = $this->it14_valorpaga ";
        $virgula = ",";
-       if(trim($this->it14_valorpaga) == null ){ 
+       if(trim((string) $this->it14_valorpaga) == null ){ 
          $this->erro_sql = " Campo Valor a Pagar nao Informado.";
          $this->erro_campo = "it14_valorpaga";
          $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_valoravalter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoravalter"])){ 
+     if(trim((string) $this->it14_valoravalter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoravalter"])){ 
        $sql  .= $virgula." it14_valoravalter = $this->it14_valoravalter ";
        $virgula = ",";
-       if(trim($this->it14_valoravalter) == null ){ 
+       if(trim((string) $this->it14_valoravalter) == null ){ 
          $this->erro_sql = " Campo Valor a Vista do Terreno nao Informado.";
          $this->erro_campo = "it14_valoravalter";
          $this->erro_banco = "";
@@ -398,10 +398,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_valoravalconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoravalconstr"])){ 
+     if(trim((string) $this->it14_valoravalconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_valoravalconstr"])){ 
        $sql  .= $virgula." it14_valoravalconstr = $this->it14_valoravalconstr ";
        $virgula = ",";
-       if(trim($this->it14_valoravalconstr) == null ){ 
+       if(trim((string) $this->it14_valoravalconstr) == null ){ 
          $this->erro_sql = " Campo Valor a Vista da Construção nao Informado.";
          $this->erro_campo = "it14_valoravalconstr";
          $this->erro_banco = "";
@@ -411,10 +411,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_id_usuario"])){ 
+     if(trim((string) $this->it14_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_id_usuario"])){ 
        $sql  .= $virgula." it14_id_usuario = $this->it14_id_usuario ";
        $virgula = ",";
-       if(trim($this->it14_id_usuario) == null ){ 
+       if(trim((string) $this->it14_id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "it14_id_usuario";
          $this->erro_banco = "";
@@ -424,10 +424,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_hora"])){ 
+     if(trim((string) $this->it14_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_hora"])){ 
        $sql  .= $virgula." it14_hora = '$this->it14_hora' ";
        $virgula = ",";
-       if(trim($this->it14_hora) == null ){ 
+       if(trim((string) $this->it14_hora) == null ){ 
          $this->erro_sql = " Campo Hora da liberação nao Informado.";
          $this->erro_campo = "it14_hora";
          $this->erro_banco = "";
@@ -437,10 +437,10 @@ class cl_itbiavalia {
          return false;
        }
      }
-     if(trim($this->it14_desc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_desc"])){ 
+     if(trim((string) $this->it14_desc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it14_desc"])){ 
        $sql  .= $virgula." it14_desc = $this->it14_desc ";
        $virgula = ",";
-       if(trim($this->it14_desc) == null ){ 
+       if(trim((string) $this->it14_desc) == null ){ 
          $this->erro_sql = " Campo Desconto nao Informado.";
          $this->erro_campo = "it14_desc";
          $this->erro_banco = "";
@@ -458,31 +458,31 @@ class cl_itbiavalia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5529,'$this->it14_guia','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_guia"]))
-           $resac = db_query("insert into db_acount values($acount,868,5529,'".AddSlashes(pg_result($resaco,$conresaco,'it14_guia'))."','$this->it14_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5529,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_guia'))."','$this->it14_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_dtvenc"]))
-           $resac = db_query("insert into db_acount values($acount,868,5530,'".AddSlashes(pg_result($resaco,$conresaco,'it14_dtvenc'))."','$this->it14_dtvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5530,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_dtvenc'))."','$this->it14_dtvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_dtliber"]))
-           $resac = db_query("insert into db_acount values($acount,868,5531,'".AddSlashes(pg_result($resaco,$conresaco,'it14_dtliber'))."','$this->it14_dtliber',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5531,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_dtliber'))."','$this->it14_dtliber',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_obs"]))
-           $resac = db_query("insert into db_acount values($acount,868,5534,'".AddSlashes(pg_result($resaco,$conresaco,'it14_obs'))."','$this->it14_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5534,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_obs'))."','$this->it14_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_valoraval"]))
-           $resac = db_query("insert into db_acount values($acount,868,5532,'".AddSlashes(pg_result($resaco,$conresaco,'it14_valoraval'))."','$this->it14_valoraval',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5532,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_valoraval'))."','$this->it14_valoraval',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_valorpaga"]))
-           $resac = db_query("insert into db_acount values($acount,868,5533,'".AddSlashes(pg_result($resaco,$conresaco,'it14_valorpaga'))."','$this->it14_valorpaga',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5533,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_valorpaga'))."','$this->it14_valorpaga',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_valoravalter"]))
-           $resac = db_query("insert into db_acount values($acount,868,5535,'".AddSlashes(pg_result($resaco,$conresaco,'it14_valoravalter'))."','$this->it14_valoravalter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5535,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_valoravalter'))."','$this->it14_valoravalter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_valoravalconstr"]))
-           $resac = db_query("insert into db_acount values($acount,868,5536,'".AddSlashes(pg_result($resaco,$conresaco,'it14_valoravalconstr'))."','$this->it14_valoravalconstr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5536,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_valoravalconstr'))."','$this->it14_valoravalconstr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_id_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,868,5537,'".AddSlashes(pg_result($resaco,$conresaco,'it14_id_usuario'))."','$this->it14_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5537,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_id_usuario'))."','$this->it14_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_hora"]))
-           $resac = db_query("insert into db_acount values($acount,868,5538,'".AddSlashes(pg_result($resaco,$conresaco,'it14_hora'))."','$this->it14_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5538,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_hora'))."','$this->it14_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it14_desc"]))
-           $resac = db_query("insert into db_acount values($acount,868,5539,'".AddSlashes(pg_result($resaco,$conresaco,'it14_desc'))."','$this->it14_desc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,868,5539,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it14_desc'))."','$this->it14_desc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -527,20 +527,20 @@ class cl_itbiavalia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5529,'$it14_guia','E')");
-         $resac = db_query("insert into db_acount values($acount,868,5529,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,868,5530,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,868,5531,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_dtliber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,868,5534,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,868,5532,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_valoraval'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,868,5533,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_valorpaga'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,868,5535,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_valoravalter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,868,5536,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_valoravalconstr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,868,5537,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,868,5538,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,868,5539,'','".AddSlashes(pg_result($resaco,$iresaco,'it14_desc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5529,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5530,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5531,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_dtliber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5534,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5532,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_valoraval'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5533,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_valorpaga'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5535,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_valoravalter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5536,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_valoravalconstr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5537,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5538,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,868,5539,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it14_desc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from itbiavalia
@@ -600,7 +600,7 @@ class cl_itbiavalia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:itbiavalia";
@@ -615,7 +615,7 @@ class cl_itbiavalia {
    function sql_query ( $it14_guia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -640,7 +640,7 @@ class cl_itbiavalia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -653,7 +653,7 @@ class cl_itbiavalia {
    function sql_query_file ( $it14_guia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -674,7 +674,7 @@ class cl_itbiavalia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -714,7 +714,7 @@ class cl_itbiavalia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

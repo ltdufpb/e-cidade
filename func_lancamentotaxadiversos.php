@@ -30,8 +30,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lancamentotaxadiversos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrotulo = new rotulocampo;
 $clrotulo->label("y120_sequencial");
 $clrotulo->label("y120_cgm");
@@ -46,12 +46,12 @@ $cllancamentotaxadiversos = new cl_lancamentotaxadiversos;
 <head>
   <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>
   <?php
-  db_app::load(array(
+  db_app::load([
     "strings.js",
     "scripts.js",
     "prototype.js",
     "widgets/DBLookUp.widget.js"
-  ));
+  ]);
   ?>
   <link href='estilos.css' rel='stylesheet' type='text/css'>
   <script language='JavaScript' type='text/javascript' src='scripts/scripts.js'></script>
@@ -120,7 +120,7 @@ if(!isset($pesquisa_chave)){
       || isset($chave_q02_inscr)     && (trim($chave_q02_inscr) != "")
     ) {
 
-      $aWhereLancamentoDiversos = array();
+      $aWhereLancamentoDiversos = [];
 
       if(isset($chave_y120_cgm) && (trim($chave_y120_cgm)!="") ) {
         $aWhereLancamentoDiversos[] = "y120_cgm = $chave_y120_cgm ";
@@ -140,9 +140,9 @@ if(!isset($pesquisa_chave)){
     $sql = $cllancamentotaxadiversos->sql_query_join_diversos("",$campos,"y120_sequencial",$sWhereLancamentoDiversos);
   }
 
-  $repassa = array();
+  $repassa = [];
   if(isset($chave_y120_sequencial)){
-    $repassa = array("chave_y120_sequencial"=>$chave_y120_sequencial,"chave_y120_sequencial"=>$chave_y120_sequencial);
+    $repassa = ["chave_y120_sequencial"=>$chave_y120_sequencial,"chave_y120_sequencial"=>$chave_y120_sequencial];
   }
   echo '<div class="container">';
   echo '  <fieldset>';

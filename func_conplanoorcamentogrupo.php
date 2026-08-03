@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplanoorcamentogrupo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconplanoorcamentogrupo = new cl_conplanoorcamentogrupo;
 $clconplanoorcamentogrupo->rotulo->label("c21_sequencial");
 $clconplanoorcamentogrupo->rotulo->label("c21_sequencial");
@@ -99,9 +99,9 @@ $iInstituicao = db_getsession("DB_instit");
         }else{
            $sql = $clconplanoorcamentogrupo->sql_query("",$campos,"c21_sequencial","c21_instit = {$iInstituicao}");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c21_sequencial)){
-          $repassa = array("chave_c21_sequencial"=>$chave_c21_sequencial,"chave_c21_sequencial"=>$chave_c21_sequencial);
+          $repassa = ["chave_c21_sequencial"=>$chave_c21_sequencial,"chave_c21_sequencial"=>$chave_c21_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

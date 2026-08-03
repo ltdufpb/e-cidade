@@ -61,10 +61,10 @@ switch ($idarq){
  <tr>
   <td height="460" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array("a1"=>"Identificação","a2"=>"Caracterização","a3"=>"Convênios / Vigilância","a4"=>"Serviços","a5"=>"Paralisa&ccedil;&atilde;o");
-   $clcriaabas->sizecampo  = array("a1"=>"25","a2"=>"25","a3"=>"25","a4"=>"25","a5"=>"25");
-   $clcriaabas->src        = array("a1"=>"$arquivo","a2"=>"","a3"=>"","a4"=>"","a5"=>"");
-   $clcriaabas->disabled   = array("a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true");
+   $clcriaabas->identifica = ["a1"=>"Identificação","a2"=>"Caracterização","a3"=>"Convênios / Vigilância","a4"=>"Serviços","a5"=>"Paralisa&ccedil;&atilde;o"];
+   $clcriaabas->sizecampo  = ["a1"=>"25","a2"=>"25","a3"=>"25","a4"=>"25","a5"=>"25"];
+   $clcriaabas->src        = ["a1"=>"$arquivo","a2"=>"","a3"=>"","a4"=>"","a5"=>""];
+   $clcriaabas->disabled   = ["a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->scrolling = "no";
    $clcriaabas->iframe_height= "600";

@@ -35,7 +35,7 @@ require_once(modification("classes/db_pcforne_classe.php"));
 require_once(modification("classes/db_empagemovconta_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 $clpcfornecon = new cl_pcfornecon;
 $clpcforneconpad = new cl_pcforneconpad;
@@ -75,11 +75,11 @@ function inputPixValido($tipo, $chave)
 {
   if ($tipo > 1) {
     if (
-      ($tipo == 2 && strlen(preg_replace('/[^0-9]+/', '', $chave)) == 0) ||
-      ($tipo == 3 && strlen(preg_replace('/[^0-9]+/', '', $chave)) == 0) ||
-      ($tipo == 4 && strlen(preg_replace('/[^0-9]+/', '', $chave)) == 0) ||
-      ($tipo == 5 && strlen($chave) == 0) ||
-      ($tipo == 6 && strlen($chave) == 0)
+      ($tipo == 2 && strlen((string) preg_replace('/[^0-9]+/', '', (string) $chave)) == 0) ||
+      ($tipo == 3 && strlen((string) preg_replace('/[^0-9]+/', '', (string) $chave)) == 0) ||
+      ($tipo == 4 && strlen((string) preg_replace('/[^0-9]+/', '', (string) $chave)) == 0) ||
+      ($tipo == 5 && strlen((string) $chave) == 0) ||
+      ($tipo == 6 && strlen((string) $chave) == 0)
     ) {
       return false;
     }
@@ -92,7 +92,7 @@ function tratarChavePix($tipo, $chave)
 {
   if ($tipo > 1) {
     if (in_array($tipo, [2, 3, 4])) {
-      return preg_replace('/[^0-9]+/', '', $chave);
+      return preg_replace('/[^0-9]+/', '', (string) $chave);
     }
     return $chave;
   }
@@ -112,13 +112,13 @@ if (isset($incluir)) {
     }
 
 
-    if (strlen($pc63_banco) > 3) {
+    if (strlen((string) $pc63_banco) > 3) {
       $sqlerro = true;
       $erro_msg = "Usuário:\\n\\nBanco deve ter no máximo três(3) caracteres.\\n\\nAdministrador:";
-    } else if (strlen($pc63_agencia) > 5) {
+    } else if (strlen((string) $pc63_agencia) > 5) {
       $sqlerro = true;
       $erro_msg = "Usuário:\\n\\nAgência deve ter no máximo cinco(5) caracteres.\\n\\nAdministrador:";
-    } else if (strlen($pc63_conta) > 12) {
+    } else if (strlen((string) $pc63_conta) > 12) {
       $sqlerro = true;
       $erro_msg = "Usuário:\\n\\nConta deve ter no máximo doze(12) caracteres.\\n\\nAdministrador.";
     }
@@ -126,7 +126,7 @@ if (isset($incluir)) {
       if (isset($conferido)) {
         $clpcfornecon->pc63_dataconf = date("Y-m-d", db_getsession("DB_datausu"));
       }
-      $clpcfornecon->pc63_codigooperacao = str_pad(@$pc63_codigooperacao, 4, "0", STR_PAD_LEFT);
+      $clpcfornecon->pc63_codigooperacao = str_pad((string) @$pc63_codigooperacao, 4, "0", STR_PAD_LEFT);
 
       if (isset($pc63_tipopix) && isset($pc63_chavepix)) {
         $clpcfornecon->pc63_chavepix = tratarChavePix($pc63_tipopix, $pc63_chavepix);
@@ -170,13 +170,13 @@ if (isset($incluir)) {
     }
   }
 
-  if (strlen($pc63_banco) > 3) {
+  if (strlen((string) $pc63_banco) > 3) {
     $sqlerro = true;
     $erro_msg = "Usuário:\\n\\nBanco deve ter no máximo três(3) caracteres.\\n\\nAdministrador:";
-  } else if (strlen($pc63_agencia) > 5) {
+  } else if (strlen((string) $pc63_agencia) > 5) {
     $sqlerro = true;
     $erro_msg = "Usuário:\\n\\nAgência deve ter no máximo cinco(5) caracteres.\\n\\nAdministrador:";
-  } else if (strlen($pc63_conta) > 12) {
+  } else if (strlen((string) $pc63_conta) > 12) {
     $sqlerro = true;
     $erro_msg = "Usuário:\\n\\nConta deve ter no máximo doze(12) caracteres.\\n\\nAdministrador.";
   }
@@ -188,7 +188,7 @@ if (isset($incluir)) {
       $clpcfornecon->pc63_dataconf = date("Y-m-d", db_getsession("DB_datausu"));
     }
 
-    $clpcfornecon->pc63_codigooperacao = str_pad($pc63_codigooperacao, 4, "0", STR_PAD_LEFT);
+    $clpcfornecon->pc63_codigooperacao = str_pad((string) $pc63_codigooperacao, 4, "0", STR_PAD_LEFT);
     $clpcfornecon->pc63_chavepix = tratarChavePix($pc63_tipopix, $pc63_chavepix);
     $clpcfornecon->alterar($pc63_contabanco);
     $erro_msg = $clpcfornecon->erro_msg;

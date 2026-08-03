@@ -15,43 +15,43 @@ final class ParcelaRecibo extends LayoutParcelas
             throw BusinessException('Informe o número de parcelas para o layout');
         }
         
-        $this->fields = array(
-            'VENCIMENTOPARCELA' => array(
+        $this->fields = [
+            'VENCIMENTOPARCELA' => [
                 'name'           => 'VENCPARC{$nroParcela}'
                 ,'description'   => 'VENCIMENTO DA PARCELA{$nroParcela}'
                 ,'size'           => 10
-            )
-            ,'VALORPARCELA' => array(
+            ]
+            ,'VALORPARCELA' => [
                 'name'           => 'VALPARC{$nroParcela}'
                 ,'description'   => 'VALOR DA PARCELA{$nroParcela}'
                 ,'size'           => 15
-            )
-            ,'VALORJUROPARCELA' => array(
+            ]
+            ,'VALORJUROPARCELA' => [
                 'name'           => 'VALJURPARC{$nroParcela}'
                 ,'description'   => 'JUROS POR ATRASO DE 1 MES JA CALCULADOS DA PARCELA{$nroParcela}'
                 ,'size'           => 15
-            )
-            ,'VALORMULTAPARCELA' => array(
+            ]
+            ,'VALORMULTAPARCELA' => [
                 'name'           => 'VALMULPARC{$nroParcela}'
                 ,'description'   => 'MULTA POR ATRASO DE 1 MES JA CALCULADOS DA PARCELA{$nroParcela}'
                 ,'size'           => 15
-            )
-            ,'NUMPREPARCELA' => array(
+            ]
+            ,'NUMPREPARCELA' => [
                 'name'           => 'NUMPREPARC{$nroParcela}'
                 ,'description'   => 'CODIGO DE ARRECADACAO DA PARCELA{$nroParcela}'
                 ,'size'           => 11
-            )
-            ,'CODIGOBARRASPARCELA' => array(
+            ]
+            ,'CODIGOBARRASPARCELA' => [
                 'name'           => 'BARRASPARC{$nroParcela}'
                 ,'description'   => 'CODIGO DE BARRAS DA PARCELA{$nroParcela}'
                 ,'size'           => 96
-            )
-            ,'PARCELA' => array(
+            ]
+            ,'PARCELA' => [
                 'name'           => 'PARC{$nroParcela}'
                 ,'description'   => 'PARCELA{$nroParcela}'
                 ,'size'           => 3
-            )
-        );
+            ]
+        ];
 
         parent::__construct($parcelas);
     }

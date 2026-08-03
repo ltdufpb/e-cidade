@@ -27,11 +27,11 @@
 
 class LicitaConTipoFase {
 
-  public static $aFases = array(
+  public static $aFases = [
     1 => 'Interna',
     2 => 'Edital Publicado',
     3 => 'Publicação',
     4 => 'Habilitação/Propostas',
     5 => 'Adjudicação/Homologação',
-  );
+  ];
 }

@@ -77,7 +77,7 @@ class  Cad4RecadastramentoRelatorio
    {
        global $head1, $head2 , $head3, $head4, $head5, $head6, $head7;
 
-       $schema = explode('_', $filters['sSchema']);
+       $schema = explode('_', (string) $filters['sSchema']);
        $dia = substr($schema[1], 0,2)    ;    // retorna "f"
        $mes = substr($schema[1], 2,2);    // retorna "ef"
        $ano = substr($schema[1], 4, 4);
@@ -136,15 +136,15 @@ class  Cad4RecadastramentoRelatorio
    private function imprimi($value)
    {
 
-       $aSistuacao = array(
+       $aSistuacao = [
              0 => "Pendente",      
              1 => "Pendente",  
              2 => "Aprovada",
              3 => "Rejeitada",
              4 => "Processada" 
-       );     
+       ];     
 
-       $aLabes = array(
+       $aLabes = [
            'iMatricula' =>"Matrícula",
            'iSituacao' =>"Situação",
            'sSetor' =>"Setor",
@@ -159,7 +159,7 @@ class  Cad4RecadastramentoRelatorio
            'nValorNovo' => "IPTU depois",
            'sMotivoRejeicao' => "Motivo",
            'sRazao' => "Proprietário",
-       );
+       ];
 
        foreach ($value as $label => $value) {
 

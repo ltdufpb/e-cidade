@@ -33,7 +33,7 @@ include(modification("classes/db_sepulturas_classe.php"));
 include(modification("classes/db_quadracemit_classe.php"));
 include(modification("classes/db_lotecemit_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clsepulturas  = new cl_sepulturas;
 $cllotecemit   = new cl_lotecemit; 
 $clquadracemit = new cl_quadracemit;

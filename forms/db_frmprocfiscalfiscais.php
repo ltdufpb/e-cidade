@@ -100,7 +100,7 @@ db_input('nome',40,$Iz01_nome,true,'text',3,'')
     </td>
     <td> 
 <?php 
- $prin = array("t"=>"Sim","f"=>"Não");
+ $prin = ["t"=>"Sim","f"=>"Não"];
  db_select("y106_principal",$prin,true,2); 
  ?>
     </td>
@@ -121,7 +121,7 @@ db_input('nome',40,$Iz01_nome,true,'text',3,'')
 		
 		$sql = "select * from procfiscalfiscais where y106_procfiscal=$y106_procfiscal";
 	//	echo $sql;
-	 $chavepri= array("y106_sequencial"=>@$y106_sequencial);
+	 $chavepri= ["y106_sequencial"=>@$y106_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $sql;
 	 $cliframe_alterar_excluir->campos  ="y106_sequencial,y106_procfiscal,y106_cadfiscais,y106_principal";

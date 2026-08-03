@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE iptucalcconfrec
 class cl_iptucalcconfrec { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j23_sequencial = 0; 
-   var $j23_matric = 0; 
-   var $j23_anousu = 0; 
-   var $j23_recorg = 0; 
-   var $j23_recdst = 0; 
-   var $j23_tipo = 0; 
+   public $j23_sequencial = 0; 
+   public $j23_matric = 0; 
+   public $j23_anousu = 0; 
+   public $j23_recorg = 0; 
+   public $j23_recdst = 0; 
+   public $j23_tipo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j23_sequencial = int4 = Codigo sequencial 
                  j23_matric = int4 = Matricula 
                  j23_anousu = int4 = Exercicio 
@@ -58,10 +58,10 @@ class cl_iptucalcconfrec {
                  j23_tipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_iptucalcconfrec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucalcconfrec"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,10 +143,10 @@ class cl_iptucalcconfrec {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j23_sequencial = pg_result($result,0,0); 
+       $this->j23_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptucalcconfrec_j23_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j23_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j23_sequencial)){
          $this->erro_sql = " Campo j23_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_iptucalcconfrec {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Configuracao de calculo por matricula ($this->j23_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Configuracao de calculo por matricula já Cadastrado";
@@ -208,15 +208,15 @@ class cl_iptucalcconfrec {
      $resaco = $this->sql_record($this->sql_query_file($this->j23_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10820,'$this->j23_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1863,10820,'','".AddSlashes(pg_result($resaco,0,'j23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1863,592,'','".AddSlashes(pg_result($resaco,0,'j23_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1863,591,'','".AddSlashes(pg_result($resaco,0,'j23_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1863,10822,'','".AddSlashes(pg_result($resaco,0,'j23_recorg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1863,10823,'','".AddSlashes(pg_result($resaco,0,'j23_recdst'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1863,12595,'','".AddSlashes(pg_result($resaco,0,'j23_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1863,10820,'','".AddSlashes(pg_fetch_result($resaco,0,'j23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1863,592,'','".AddSlashes(pg_fetch_result($resaco,0,'j23_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1863,591,'','".AddSlashes(pg_fetch_result($resaco,0,'j23_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1863,10822,'','".AddSlashes(pg_fetch_result($resaco,0,'j23_recorg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1863,10823,'','".AddSlashes(pg_fetch_result($resaco,0,'j23_recdst'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1863,12595,'','".AddSlashes(pg_fetch_result($resaco,0,'j23_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,10 +225,10 @@ class cl_iptucalcconfrec {
       $this->atualizacampos();
      $sql = " update iptucalcconfrec set ";
      $virgula = "";
-     if(trim($this->j23_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_sequencial"])){ 
+     if(trim((string) $this->j23_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_sequencial"])){ 
        $sql  .= $virgula." j23_sequencial = $this->j23_sequencial ";
        $virgula = ",";
-       if(trim($this->j23_sequencial) == null ){ 
+       if(trim((string) $this->j23_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "j23_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_iptucalcconfrec {
          return false;
        }
      }
-     if(trim($this->j23_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_matric"])){ 
+     if(trim((string) $this->j23_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_matric"])){ 
        $sql  .= $virgula." j23_matric = $this->j23_matric ";
        $virgula = ",";
-       if(trim($this->j23_matric) == null ){ 
+       if(trim((string) $this->j23_matric) == null ){ 
          $this->erro_sql = " Campo Matricula nao Informado.";
          $this->erro_campo = "j23_matric";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_iptucalcconfrec {
          return false;
        }
      }
-     if(trim($this->j23_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_anousu"])){ 
+     if(trim((string) $this->j23_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_anousu"])){ 
        $sql  .= $virgula." j23_anousu = $this->j23_anousu ";
        $virgula = ",";
-       if(trim($this->j23_anousu) == null ){ 
+       if(trim((string) $this->j23_anousu) == null ){ 
          $this->erro_sql = " Campo Exercicio nao Informado.";
          $this->erro_campo = "j23_anousu";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_iptucalcconfrec {
          return false;
        }
      }
-     if(trim($this->j23_recorg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_recorg"])){ 
+     if(trim((string) $this->j23_recorg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_recorg"])){ 
        $sql  .= $virgula." j23_recorg = $this->j23_recorg ";
        $virgula = ",";
-       if(trim($this->j23_recorg) == null ){ 
+       if(trim((string) $this->j23_recorg) == null ){ 
          $this->erro_sql = " Campo Receita Origem nao Informado.";
          $this->erro_campo = "j23_recorg";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_iptucalcconfrec {
          return false;
        }
      }
-     if(trim($this->j23_recdst)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_recdst"])){ 
+     if(trim((string) $this->j23_recdst)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_recdst"])){ 
        $sql  .= $virgula." j23_recdst = $this->j23_recdst ";
        $virgula = ",";
-       if(trim($this->j23_recdst) == null ){ 
+       if(trim((string) $this->j23_recdst) == null ){ 
          $this->erro_sql = " Campo Receita Destino nao Informado.";
          $this->erro_campo = "j23_recdst";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_iptucalcconfrec {
          return false;
        }
      }
-     if(trim($this->j23_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_tipo"])){ 
+     if(trim((string) $this->j23_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j23_tipo"])){ 
        $sql  .= $virgula." j23_tipo = $this->j23_tipo ";
        $virgula = ",";
-       if(trim($this->j23_tipo) == null ){ 
+       if(trim((string) $this->j23_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "j23_tipo";
          $this->erro_banco = "";
@@ -311,21 +311,21 @@ class cl_iptucalcconfrec {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10820,'$this->j23_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j23_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1863,10820,'".AddSlashes(pg_result($resaco,$conresaco,'j23_sequencial'))."','$this->j23_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1863,10820,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j23_sequencial'))."','$this->j23_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j23_matric"]))
-           $resac = db_query("insert into db_acount values($acount,1863,592,'".AddSlashes(pg_result($resaco,$conresaco,'j23_matric'))."','$this->j23_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1863,592,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j23_matric'))."','$this->j23_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j23_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,1863,591,'".AddSlashes(pg_result($resaco,$conresaco,'j23_anousu'))."','$this->j23_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1863,591,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j23_anousu'))."','$this->j23_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j23_recorg"]))
-           $resac = db_query("insert into db_acount values($acount,1863,10822,'".AddSlashes(pg_result($resaco,$conresaco,'j23_recorg'))."','$this->j23_recorg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1863,10822,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j23_recorg'))."','$this->j23_recorg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j23_recdst"]))
-           $resac = db_query("insert into db_acount values($acount,1863,10823,'".AddSlashes(pg_result($resaco,$conresaco,'j23_recdst'))."','$this->j23_recdst',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1863,10823,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j23_recdst'))."','$this->j23_recdst',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j23_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1863,12595,'".AddSlashes(pg_result($resaco,$conresaco,'j23_tipo'))."','$this->j23_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1863,12595,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j23_tipo'))."','$this->j23_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -370,15 +370,15 @@ class cl_iptucalcconfrec {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10820,'$j23_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1863,10820,'','".AddSlashes(pg_result($resaco,$iresaco,'j23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1863,592,'','".AddSlashes(pg_result($resaco,$iresaco,'j23_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1863,591,'','".AddSlashes(pg_result($resaco,$iresaco,'j23_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1863,10822,'','".AddSlashes(pg_result($resaco,$iresaco,'j23_recorg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1863,10823,'','".AddSlashes(pg_result($resaco,$iresaco,'j23_recdst'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1863,12595,'','".AddSlashes(pg_result($resaco,$iresaco,'j23_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1863,10820,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1863,592,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j23_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1863,591,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j23_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1863,10822,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j23_recorg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1863,10823,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j23_recdst'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1863,12595,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j23_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptucalcconfrec
@@ -438,7 +438,7 @@ class cl_iptucalcconfrec {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptucalcconfrec";
@@ -453,7 +453,7 @@ class cl_iptucalcconfrec {
    function sql_query ( $j23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,7 +479,7 @@ class cl_iptucalcconfrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -492,7 +492,7 @@ class cl_iptucalcconfrec {
    function sql_query_file ( $j23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -513,7 +513,7 @@ class cl_iptucalcconfrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

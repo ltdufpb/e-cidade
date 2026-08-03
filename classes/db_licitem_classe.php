@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE licitem
 class cl_licitem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l02_tipo = null; 
-   var $l02_numero = null; 
-   var $l02_item = null; 
-   var $l02_descr1 = null; 
-   var $l02_descr2 = null; 
-   var $l02_descr3 = null; 
-   var $l02_descr4 = null; 
-   var $l02_descr5 = null; 
-   var $l02_descr6 = null; 
-   var $l02_unent = null; 
-   var $l02_unsai = null; 
-   var $l02_quant = 0; 
-   var $l02_valor = 0; 
-   var $l02_compl01 = null; 
-   var $l02_compl02 = null; 
-   var $l02_compl03 = null; 
-   var $l02_compl04 = null; 
+   public $l02_tipo = null; 
+   public $l02_numero = null; 
+   public $l02_item = null; 
+   public $l02_descr1 = null; 
+   public $l02_descr2 = null; 
+   public $l02_descr3 = null; 
+   public $l02_descr4 = null; 
+   public $l02_descr5 = null; 
+   public $l02_descr6 = null; 
+   public $l02_unent = null; 
+   public $l02_unsai = null; 
+   public $l02_quant = 0; 
+   public $l02_valor = 0; 
+   public $l02_compl01 = null; 
+   public $l02_compl02 = null; 
+   public $l02_compl03 = null; 
+   public $l02_compl04 = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l02_tipo = varchar(1) = Tipo 
                  l02_numero = varchar(8) = Número 
                  l02_item = varchar(7) = Item 
@@ -80,10 +80,10 @@ class cl_licitem {
                  l02_compl04 = varchar(45) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_licitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("licitem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -278,7 +278,7 @@ class cl_licitem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Itens da licitacao                                 () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Itens da licitacao                                 já Cadastrado";
@@ -305,10 +305,10 @@ class cl_licitem {
       $this->atualizacampos();
      $sql = " update licitem set ";
      $virgula = "";
-     if(trim($this->l02_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_tipo"])){ 
+     if(trim((string) $this->l02_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_tipo"])){ 
        $sql  .= $virgula." l02_tipo = '$this->l02_tipo' ";
        $virgula = ",";
-       if(trim($this->l02_tipo) == null ){ 
+       if(trim((string) $this->l02_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "l02_tipo";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_numero"])){ 
+     if(trim((string) $this->l02_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_numero"])){ 
        $sql  .= $virgula." l02_numero = '$this->l02_numero' ";
        $virgula = ",";
-       if(trim($this->l02_numero) == null ){ 
+       if(trim((string) $this->l02_numero) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "l02_numero";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_item"])){ 
+     if(trim((string) $this->l02_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_item"])){ 
        $sql  .= $virgula." l02_item = '$this->l02_item' ";
        $virgula = ",";
-       if(trim($this->l02_item) == null ){ 
+       if(trim((string) $this->l02_item) == null ){ 
          $this->erro_sql = " Campo Item nao Informado.";
          $this->erro_campo = "l02_item";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_descr1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr1"])){ 
+     if(trim((string) $this->l02_descr1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr1"])){ 
        $sql  .= $virgula." l02_descr1 = '$this->l02_descr1' ";
        $virgula = ",";
-       if(trim($this->l02_descr1) == null ){ 
+       if(trim((string) $this->l02_descr1) == null ){ 
          $this->erro_sql = " Campo Descricao do Item nao Informado.";
          $this->erro_campo = "l02_descr1";
          $this->erro_banco = "";
@@ -357,10 +357,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_descr2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr2"])){ 
+     if(trim((string) $this->l02_descr2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr2"])){ 
        $sql  .= $virgula." l02_descr2 = '$this->l02_descr2' ";
        $virgula = ",";
-       if(trim($this->l02_descr2) == null ){ 
+       if(trim((string) $this->l02_descr2) == null ){ 
          $this->erro_sql = " Campo Descricao do Item nao Informado.";
          $this->erro_campo = "l02_descr2";
          $this->erro_banco = "";
@@ -370,10 +370,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_descr3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr3"])){ 
+     if(trim((string) $this->l02_descr3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr3"])){ 
        $sql  .= $virgula." l02_descr3 = '$this->l02_descr3' ";
        $virgula = ",";
-       if(trim($this->l02_descr3) == null ){ 
+       if(trim((string) $this->l02_descr3) == null ){ 
          $this->erro_sql = " Campo Descricao do Item nao Informado.";
          $this->erro_campo = "l02_descr3";
          $this->erro_banco = "";
@@ -383,10 +383,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_descr4)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr4"])){ 
+     if(trim((string) $this->l02_descr4)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr4"])){ 
        $sql  .= $virgula." l02_descr4 = '$this->l02_descr4' ";
        $virgula = ",";
-       if(trim($this->l02_descr4) == null ){ 
+       if(trim((string) $this->l02_descr4) == null ){ 
          $this->erro_sql = " Campo Descricao do Item nao Informado.";
          $this->erro_campo = "l02_descr4";
          $this->erro_banco = "";
@@ -396,10 +396,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_descr5)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr5"])){ 
+     if(trim((string) $this->l02_descr5)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr5"])){ 
        $sql  .= $virgula." l02_descr5 = '$this->l02_descr5' ";
        $virgula = ",";
-       if(trim($this->l02_descr5) == null ){ 
+       if(trim((string) $this->l02_descr5) == null ){ 
          $this->erro_sql = " Campo Descricao do Item nao Informado.";
          $this->erro_campo = "l02_descr5";
          $this->erro_banco = "";
@@ -409,10 +409,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_descr6)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr6"])){ 
+     if(trim((string) $this->l02_descr6)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_descr6"])){ 
        $sql  .= $virgula." l02_descr6 = '$this->l02_descr6' ";
        $virgula = ",";
-       if(trim($this->l02_descr6) == null ){ 
+       if(trim((string) $this->l02_descr6) == null ){ 
          $this->erro_sql = " Campo Descricao do Item nao Informado.";
          $this->erro_campo = "l02_descr6";
          $this->erro_banco = "";
@@ -422,10 +422,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_unent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_unent"])){ 
+     if(trim((string) $this->l02_unent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_unent"])){ 
        $sql  .= $virgula." l02_unent = '$this->l02_unent' ";
        $virgula = ",";
-       if(trim($this->l02_unent) == null ){ 
+       if(trim((string) $this->l02_unent) == null ){ 
          $this->erro_sql = " Campo Unidade de Entrada nao Informado.";
          $this->erro_campo = "l02_unent";
          $this->erro_banco = "";
@@ -435,10 +435,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_unsai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_unsai"])){ 
+     if(trim((string) $this->l02_unsai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_unsai"])){ 
        $sql  .= $virgula." l02_unsai = '$this->l02_unsai' ";
        $virgula = ",";
-       if(trim($this->l02_unsai) == null ){ 
+       if(trim((string) $this->l02_unsai) == null ){ 
          $this->erro_sql = " Campo Unidade de Saida nao Informado.";
          $this->erro_campo = "l02_unsai";
          $this->erro_banco = "";
@@ -448,10 +448,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_quant"])){ 
+     if(trim((string) $this->l02_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_quant"])){ 
        $sql  .= $virgula." l02_quant = $this->l02_quant ";
        $virgula = ",";
-       if(trim($this->l02_quant) == null ){ 
+       if(trim((string) $this->l02_quant) == null ){ 
          $this->erro_sql = " Campo Quantidade total do Item nao Informado.";
          $this->erro_campo = "l02_quant";
          $this->erro_banco = "";
@@ -461,10 +461,10 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_valor"])){ 
+     if(trim((string) $this->l02_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_valor"])){ 
        $sql  .= $virgula." l02_valor = $this->l02_valor ";
        $virgula = ",";
-       if(trim($this->l02_valor) == null ){ 
+       if(trim((string) $this->l02_valor) == null ){ 
          $this->erro_sql = " Campo valor item nao Informado.";
          $this->erro_campo = "l02_valor";
          $this->erro_banco = "";
@@ -474,19 +474,19 @@ class cl_licitem {
          return false;
        }
      }
-     if(trim($this->l02_compl01)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_compl01"])){ 
+     if(trim((string) $this->l02_compl01)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_compl01"])){ 
        $sql  .= $virgula." l02_compl01 = '$this->l02_compl01' ";
        $virgula = ",";
      }
-     if(trim($this->l02_compl02)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_compl02"])){ 
+     if(trim((string) $this->l02_compl02)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_compl02"])){ 
        $sql  .= $virgula." l02_compl02 = '$this->l02_compl02' ";
        $virgula = ",";
      }
-     if(trim($this->l02_compl03)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_compl03"])){ 
+     if(trim((string) $this->l02_compl03)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_compl03"])){ 
        $sql  .= $virgula." l02_compl03 = '$this->l02_compl03' ";
        $virgula = ",";
      }
-     if(trim($this->l02_compl04)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_compl04"])){ 
+     if(trim((string) $this->l02_compl04)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l02_compl04"])){ 
        $sql  .= $virgula." l02_compl04 = '$this->l02_compl04' ";
        $virgula = ",";
      }
@@ -571,7 +571,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:licitem";

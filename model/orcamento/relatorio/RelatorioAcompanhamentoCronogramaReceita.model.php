@@ -25,16 +25,6 @@
 class RelatorioAcompanhamentoCronogramaReceita {
 
   /**
-   * @var AcompanhamentoCronograma
-   */
-  private $oAcompanhamento;
-
-  /**
-   * @var array
-   */
-  private $aInstituicoes;
-
-  /**
    * @var \File
    */
   private $oArquivo;
@@ -44,10 +34,11 @@ class RelatorioAcompanhamentoCronogramaReceita {
    */
   private $aLinhasReceita;
 
-  function __construct(AcompanhamentoCronograma $oAcompanhamento, $aInstituicoes) {
+  /**
+   * @param mixed[] $aInstituicoes
+   */
+  function __construct(private readonly AcompanhamentoCronograma $oAcompanhamento, private $aInstituicoes) {
 
-    $this->oAcompanhamento = $oAcompanhamento;
-    $this->aInstituicoes   = $aInstituicoes;
     $this->sNomeArquivo    = "AcompanhamentoCronogramaReceita_{$this->oAcompanhamento->getPerspectiva()}.csv";
   }
 
@@ -86,7 +77,7 @@ class RelatorioAcompanhamentoCronogramaReceita {
      */
     foreach ($this->aLinhasReceita as $oLinha) {
 
-      $aLinha   = array();
+      $aLinha   = [];
 
       $aLinha[] = $oLinha->descricao;
 
@@ -117,7 +108,7 @@ class RelatorioAcompanhamentoCronogramaReceita {
    */
   private function getDados() {
 
-    $aLinhas = array();
+    $aLinhas = [];
 
     $this->oAcompanhamento->setInstituicoes($this->aInstituicoes);
     $aReceitas = $this->oAcompanhamento->getMetasReceita();
@@ -132,8 +123,8 @@ class RelatorioAcompanhamentoCronogramaReceita {
       }
 
       $oLinha            = new stdClass();
-      $oLinha->descricao = $oReceita->o57_fonte . "-" . urldecode($oReceita->o57_descr);
-      $aMesesValores     = array();
+      $oLinha->descricao = $oReceita->o57_fonte . "-" . urldecode((string) $oReceita->o57_descr);
+      $aMesesValores     = [];
 
       foreach ($oReceita->aMetas->dados as $oReceitaMes) {
 
@@ -174,7 +165,7 @@ class RelatorioAcompanhamentoCronogramaReceita {
    */
   private function montarCabecalhos() {
 
-    $aCabecalho   = array();
+    $aCabecalho   = [];
     $aCabecalho[] = "RECEITAS";
 
     for ($iMes = 0; $iMes < 12; $iMes++) {
@@ -202,7 +193,7 @@ class RelatorioAcompanhamentoCronogramaReceita {
    */
   private function montarCabecalhoMeses() {
 
-    $aMeses   = array();
+    $aMeses   = [];
     $aMeses[] = "";
 
     for ($iMes = 1; $iMes <= 12; $iMes++) {
@@ -228,6 +219,6 @@ class RelatorioAcompanhamentoCronogramaReceita {
    * @param array $aLinha
    */
   private function escreverNoArquivo($rsArquivo, $aLinha) {
-    fputcsv($rsArquivo, $aLinha, ';', '"');
+    fputcsv($rsArquivo, $aLinha, ';', '"', escape: '\\');
   }
 }

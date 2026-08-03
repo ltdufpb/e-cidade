@@ -34,10 +34,10 @@ require_once modification("dbforms/db_funcoes.php");
 use ECidade\Tributario\Agua\DebitoConta\DebitoContaFactory;
 
 $oParam   = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
-$oRetorno = (object) array(
+$oRetorno = (object) [
   "message" => '',
   "erro" => false
-);
+];
 
 $oFactory = new DebitoContaFactory();
 $oService = $oFactory->build();
@@ -52,9 +52,9 @@ try {
 
       $oPedido = $oService->carregar((int) $oParam->iCodigo);
 
-      $oBanco = db_utils::getRowFromDao(new cl_bancos, array($oPedido->getBanco()));
+      $oBanco = db_utils::getRowFromDao(new cl_bancos, [$oPedido->getBanco()]);
 
-      $oRetorno->oPedido = (object) array(
+      $oRetorno->oPedido = (object) [
         'iContrato' => $oPedido->getContrato() ? $oPedido->getContrato()->getCodigo() : $oPedido->getEconomia()->getContrato()->getCodigo(),
         'sContratoDescricao' => $oPedido->getContrato() ? $oPedido->getContrato()->getCgm()->getNome() : $oPedido->getEconomia()->getContrato()->getCgm()->getNome(),
         'iEconomia' => $oPedido->getEconomia() ? $oPedido->getEconomia()->getCodigo() : null,
@@ -65,7 +65,7 @@ try {
         'iConta' => $oPedido->getConta(),
         'iStatus' => $oPedido->getStatus(),
         'iIdEmpresa' => $oPedido->getIdEmpresa()
-      );
+      ];
 
       break;
 

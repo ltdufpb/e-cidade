@@ -52,7 +52,7 @@ if (isset($oParam->lContaCredito) && $oParam->lContaCredito == "true") {
 try {
   $oEventoContabil = new EventoContabil(getDocumentoPorTipoInclusao($oParam->iTipoTransferencia), $iAnoSessao);
   $aLancamentos    = $oEventoContabil->getEventoContabilLancamento();
-  $aInLancamentos  = array();
+  $aInLancamentos  = [];
 
   foreach ($aLancamentos as $oLancamento) {
 
@@ -81,8 +81,8 @@ if (isset($oParam->pesquisa_chave) && !empty($oParam->pesquisa_chave)) {
 
 $oRotulo        = new rotulocampo;
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oRotulo->label("c61_reduz");
 $oRotulo->label("c60_descr");
@@ -144,7 +144,7 @@ $oRotulo->label("c60_descr");
         }
 
         $sSqlDadosConta = $oDaoConPlano->sql_query(null, null, $sCamposPlano, null, $sWherePlano);
-        db_lovrot($sSqlDadosConta, 15, "()", "", $funcao_js, "", "NoMe", array(), false);
+        db_lovrot($sSqlDadosConta, 15, "()", "", $funcao_js, "", "NoMe", [], false);
       }else{
 
         if ($pesquisa_chave != null && $pesquisa_chave != "") {
@@ -179,53 +179,16 @@ if(!isset($pesquisa_chave)){
 function getDocumentoPorTipoInclusao($iTipoOperacao) {
 
   $iCodigoDocumento = 0;
-  switch ($iTipoOperacao) {
-
-    /**
-     * Transferencia Financeira
-     */
-    case 1:
-  	case 2:
-  	  $iCodigoDocumento = 120;
-	    break;
-  	case 3:
-  	case 4:
-  	  $iCodigoDocumento = 130;
-	  break;
-
-		/**
-		 * Transferencia Bancaria
-		 */
-  	case 5:
-  	case 6:
-  	  $iCodigoDocumento = 140;
-		break;
-
-    /**
-     * Caução
-     */
-  	case 7:
-  	case 8:
-  	  $iCodigoDocumento = 150;
-	  break;
-  	case 9:
-  	case 10:
-  	  $iCodigoDocumento = 151;
-	  break;
-
-	  /**
-	   * Depósito de Diversas Origens
-	   */
-  	case 11:
-  	case 12:
-  	  $iCodigoDocumento = 160;
-  	break;
-
-  	case 13:
-  	case 14:
-  	  $iCodigoDocumento = 161;
-	  break;
-  }
+  $iCodigoDocumento = match ($iTipoOperacao) {
+      1, 2 => 120,
+      3, 4 => 130,
+      5, 6 => 140,
+      7, 8 => 150,
+      9, 10 => 151,
+      11, 12 => 160,
+      13, 14 => 161,
+      default => $iCodigoDocumento,
+  };
 
   return $iCodigoDocumento;
 }

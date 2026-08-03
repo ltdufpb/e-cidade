@@ -31,10 +31,10 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_desper_und_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-$me12_d_data_dia  = substr($me12_d_data,8,2);
-$me12_d_data_mes  = substr($me12_d_data,5,2);
-$me12_d_data_ano  = substr($me12_d_data,0,4);
-db_postmemory($HTTP_POST_VARS);
+$me12_d_data_dia  = substr((string) $me12_d_data,8,2);
+$me12_d_data_mes  = substr((string) $me12_d_data,5,2);
+$me12_d_data_ano  = substr((string) $me12_d_data,0,4);
+db_postmemory($_POST);
 $clmer_desper_und = new cl_mer_desper_und;
 $db_opcao         = 1;
 $db_botao         = true;
@@ -128,7 +128,7 @@ if (isset($incluir)||isset($alterar)||isset($excluir)){
   } else {
  	
     $clmer_desper_und->erro(true,false);
-    $me12_d_data = substr($me12_d_data,6,4)."-".substr($me12_d_data,3,2)."-".substr($me12_d_data,0,2);
+    $me12_d_data = substr((string) $me12_d_data,6,4)."-".substr((string) $me12_d_data,3,2)."-".substr((string) $me12_d_data,0,2);
     db_redireciona("mer1_mer_desper_und001.php?me23_i_desperdicio=$me23_i_desperdicio&
                    me01_c_nome=$me01_c_nome&me12_d_data=$me12_d_data&me03_c_tipo=$me03_c_tipo"
                   );

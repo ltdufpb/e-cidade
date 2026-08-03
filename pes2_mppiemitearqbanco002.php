@@ -34,8 +34,8 @@ include(modification("classes/db_rharqbanco_classe.php"));
 include(modification("classes/db_orctiporec_classe.php"));
 include(modification("classes/db_pensao_classe.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 
 $clpensao      = new cl_pensao;
 $clfolha       = new cl_folha;
@@ -60,14 +60,14 @@ if($clrharqbanco->numrows>0){
   db_fieldsmemory($result_arqbanco,0);
 
   if(isset($datagera) && $datagera!=""){
-    $datag = split('-',$datagera);
+    $datag = preg_split('#\-#m',(string) $datagera);
     $datag_dia=$datag[2];
     $datag_mes=$datag[1];
     $datag_ano=$datag[0];
   }
 
   if(isset($datadeposit) && $datadeposit!=""){
-    $datad = split('-',$datadeposit);
+    $datad = preg_split('#\-#m',(string) $datadeposit);
     $datad_dia = $datad[2];
     $datad_mes = $datad[1];
     $datad_ano = $datad[0];
@@ -89,9 +89,9 @@ if($clrharqbanco->numrows>0){
   $dvagenciaheader = '';
   $dvagenciacontaheader = '';
   if($rh34_codban == "104"){
-    if(trim($rh34_dvconta)!=""){
+    if(trim((string) $rh34_dvconta)!=""){
       $dvcontaheader  = $rh34_dvconta[0];
-      $digitos        = strlen($rh34_dvconta);
+      $digitos        = strlen((string) $rh34_dvconta);
       if($digitos>1){
         $dvagenciacontaheader = $rh34_dvconta[1];
       }
@@ -102,9 +102,9 @@ if($clrharqbanco->numrows>0){
 //    $rh34_convenio = substr($rh34_convenio,0,6)."060001        ";
     $contaheader = $rh34_conta;
     $contalote   = $rh34_conta;
-    $operacaoheader = substr($contaheader,0,3);
+    $operacaoheader = substr((string) $contaheader,0,3);
 //    $contaheader2   = str_pad(trim(substr($contaheader,3,20)),8);
-    $contaheader2   =  db_formatar( substr($contaheader,3,20),'s','0',8,'e',0);
+    $contaheader2   =  db_formatar( substr((string) $contaheader,3,20),'s','0',8,'e',0);
     $dvagencialote = $dvagenciaheader;
     $dvcontalote   = $dvcontaheader;
     $dvagenciacontalote = $dvagenciacontaheader;
@@ -144,7 +144,7 @@ if($sqlerro == false){
   $titarquivo   = "pagtofuncionarios";
 
 
-  $conveniobanco = trim($rh34_convenio); 
+  $conveniobanco = trim((string) $rh34_convenio); 
 
   if($sqlerro == false){
     if($tiparq == 0){
@@ -250,7 +250,7 @@ if($sqlerro == false){
 
         if($entrar == true){
           $db_layouttxt = new db_layouttxt($layoutimprime,$nomearquivotxt);
-          db_setaPropriedadesLayoutTxt(&$db_layouttxt,1);
+          db_setaPropriedadesLayoutTxt($db_layouttxt,1);
 	      }
         $sequencialreg       = $i + 1;
 
@@ -289,17 +289,17 @@ if($sqlerro == false){
       	$totalvalor += $r38_liq;
 
         $sequencialbb120 ++;
-        $dvcontafunc   = substr($r38_conta,-1);
-        $contafunc     = substr($r38_conta,0,(strlen($r38_conta) - 1));
-        $dvagenciafunc = substr($r38_agenc,-1);
-        $agenciafunc   = substr($r38_agenc,0,(strlen($r38_agenc) - 1));
+        $dvcontafunc   = substr((string) $r38_conta,-1);
+        $contafunc     = substr((string) $r38_conta,0,(strlen((string) $r38_conta) - 1));
+        $dvagenciafunc = substr((string) $r38_agenc,-1);
+        $agenciafunc   = substr((string) $r38_agenc,0,(strlen((string) $r38_agenc) - 1));
       	$rh01_regist   = $r38_regist;
         $dataprocessamento = $datadedeposito;
         $valordebito = $r38_liq;
         if($layoutimprime != 18){
           $sequencialreg = "      ";
         }
-        db_setaPropriedadesLayoutTxt(&$db_layouttxt,3);
+        db_setaPropriedadesLayoutTxt($db_layouttxt,3);
       }
 
       $sequencialbb120 ++;
@@ -316,7 +316,7 @@ if($sqlerro == false){
       $quanttrailler  = $quantidadefuncionarios + 2;
       $sequencialreg += 1;
 
-      db_setaPropriedadesLayoutTxt(&$db_layouttxt,5);
+      db_setaPropriedadesLayoutTxt($db_layouttxt,5);
 
       //////////////////////////////////
       $pdf->Output($nomearquivopdf,false,true);

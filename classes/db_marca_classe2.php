@@ -29,43 +29,43 @@
 //CLASSE DA ENTIDADE marca
 class cl_marca { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ma01_i_codigo = 0; 
-   var $ma01_i_cgm = 0; 
-   var $ma01_d_data_dia = null; 
-   var $ma01_d_data_mes = null; 
-   var $ma01_d_data_ano = null; 
-   var $ma01_d_data = null; 
-   var $ma01_i_livro = 0; 
-   var $ma01_i_folha = 0; 
-   var $ma01_o_imagem = 0; 
-   var $ma01_c_nomeimagem = null; 
-   var $ma01_c_figura1 = null; 
-   var $ma01_c_figura2 = null; 
-   var $ma01_c_figura3 = null; 
-   var $ma01_c_letra1 = null; 
-   var $ma01_c_letra2 = null; 
-   var $ma01_c_letra3 = null; 
-   var $ma01_c_letra4 = null; 
-   var $ma01_c_objeto1 = null; 
-   var $ma01_c_objeto2 = null; 
-   var $ma01_c_objeto3 = null; 
-   var $ma01_c_ativo = null; 
-   var $ma01_v_sinal = null; 
+   public $ma01_i_codigo = 0; 
+   public $ma01_i_cgm = 0; 
+   public $ma01_d_data_dia = null; 
+   public $ma01_d_data_mes = null; 
+   public $ma01_d_data_ano = null; 
+   public $ma01_d_data = null; 
+   public $ma01_i_livro = 0; 
+   public $ma01_i_folha = 0; 
+   public $ma01_o_imagem = 0; 
+   public $ma01_c_nomeimagem = null; 
+   public $ma01_c_figura1 = null; 
+   public $ma01_c_figura2 = null; 
+   public $ma01_c_figura3 = null; 
+   public $ma01_c_letra1 = null; 
+   public $ma01_c_letra2 = null; 
+   public $ma01_c_letra3 = null; 
+   public $ma01_c_letra4 = null; 
+   public $ma01_c_objeto1 = null; 
+   public $ma01_c_objeto2 = null; 
+   public $ma01_c_objeto3 = null; 
+   public $ma01_c_ativo = null; 
+   public $ma01_v_sinal = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ma01_i_codigo = int4 = Código da Marca 
                  ma01_i_cgm = int4 = Cgm do Proprietário 
                  ma01_d_data = date = Data 
@@ -87,10 +87,10 @@ class cl_marca {
                  ma01_v_sinal = varchar(60) = Sinal 
                  ";
    //funcao construtor da classe 
-   function cl_marca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("marca"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -198,10 +198,10 @@ class cl_marca {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ma01_i_codigo = pg_result($result,0,0); 
+       $this->ma01_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = @pg_query("select last_value from marca_ma01_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ma01_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ma01_i_codigo)){
          $this->erro_sql = " Campo ma01_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -265,7 +265,7 @@ class cl_marca {
      $result = @pg_exec($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "marca ($this->ma01_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "marca já Cadastrado";
@@ -289,27 +289,27 @@ class cl_marca {
      $resaco = $this->sql_record($this->sql_query_file($this->ma01_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = pg_query("insert into db_acountkey values($acount,1008056,'$this->ma01_i_codigo','I')");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008056,'','".AddSlashes(pg_result($resaco,0,'ma01_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008057,'','".AddSlashes(pg_result($resaco,0,'ma01_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008058,'','".AddSlashes(pg_result($resaco,0,'ma01_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008059,'','".AddSlashes(pg_result($resaco,0,'ma01_i_livro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008060,'','".AddSlashes(pg_result($resaco,0,'ma01_i_folha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008061,'','".AddSlashes(pg_result($resaco,0,'ma01_o_imagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008093,'','".AddSlashes(pg_result($resaco,0,'ma01_c_nomeimagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008069,'','".AddSlashes(pg_result($resaco,0,'ma01_c_figura1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008070,'','".AddSlashes(pg_result($resaco,0,'ma01_c_figura2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008071,'','".AddSlashes(pg_result($resaco,0,'ma01_c_figura3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008062,'','".AddSlashes(pg_result($resaco,0,'ma01_c_letra1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008063,'','".AddSlashes(pg_result($resaco,0,'ma01_c_letra2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008064,'','".AddSlashes(pg_result($resaco,0,'ma01_c_letra3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008065,'','".AddSlashes(pg_result($resaco,0,'ma01_c_letra4'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008072,'','".AddSlashes(pg_result($resaco,0,'ma01_c_objeto1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008073,'','".AddSlashes(pg_result($resaco,0,'ma01_c_objeto2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008074,'','".AddSlashes(pg_result($resaco,0,'ma01_c_objeto3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008160,'','".AddSlashes(pg_result($resaco,0,'ma01_c_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,1008004,1008412,'','".AddSlashes(pg_result($resaco,0,'ma01_v_sinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008056,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008057,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008058,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008059,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_i_livro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008060,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_i_folha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008061,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_o_imagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008093,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_nomeimagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008069,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_figura1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008070,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_figura2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008071,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_figura3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008062,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_letra1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008063,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_letra2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008064,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_letra3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008065,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_letra4'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008072,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_objeto1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008073,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_objeto2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008074,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_objeto3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008160,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_c_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,1008004,1008412,'','".AddSlashes(pg_fetch_result($resaco,0,'ma01_v_sinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -318,10 +318,10 @@ class cl_marca {
       $this->atualizacampos();
      $sql = " update marca set ";
      $virgula = "";
-     if(trim($this->ma01_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_codigo"])){ 
+     if(trim((string) $this->ma01_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_codigo"])){ 
        $sql  .= $virgula." ma01_i_codigo = $this->ma01_i_codigo ";
        $virgula = ",";
-       if(trim($this->ma01_i_codigo) == null ){ 
+       if(trim((string) $this->ma01_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código da Marca nao Informado.";
          $this->erro_campo = "ma01_i_codigo";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_marca {
          return false;
        }
      }
-     if(trim($this->ma01_i_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_cgm"])){ 
+     if(trim((string) $this->ma01_i_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_cgm"])){ 
        $sql  .= $virgula." ma01_i_cgm = $this->ma01_i_cgm ";
        $virgula = ",";
-       if(trim($this->ma01_i_cgm) == null ){ 
+       if(trim((string) $this->ma01_i_cgm) == null ){ 
          $this->erro_sql = " Campo Cgm do Proprietário nao Informado.";
          $this->erro_campo = "ma01_i_cgm";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_marca {
          return false;
        }
      }
-     if(trim($this->ma01_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ma01_d_data_dia"] !="") ){ 
+     if(trim((string) $this->ma01_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ma01_d_data_dia"] !="") ){ 
        $sql  .= $virgula." ma01_d_data = '$this->ma01_d_data' ";
        $virgula = ",";
-       if(trim($this->ma01_d_data) == null ){ 
+       if(trim((string) $this->ma01_d_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "ma01_d_data_dia";
          $this->erro_banco = "";
@@ -360,7 +360,7 @@ class cl_marca {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_d_data_dia"])){ 
          $sql  .= $virgula." ma01_d_data = null ";
          $virgula = ",";
-         if(trim($this->ma01_d_data) == null ){ 
+         if(trim((string) $this->ma01_d_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "ma01_d_data_dia";
            $this->erro_banco = "";
@@ -371,24 +371,24 @@ class cl_marca {
          }
        }
      }
-     if(trim($this->ma01_i_livro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_livro"])){ 
-        if(trim($this->ma01_i_livro)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_livro"])){ 
+     if(trim((string) $this->ma01_i_livro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_livro"])){ 
+        if(trim((string) $this->ma01_i_livro)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_livro"])){ 
            $this->ma01_i_livro = "0" ; 
         } 
        $sql  .= $virgula." ma01_i_livro = $this->ma01_i_livro ";
        $virgula = ",";
      }
-     if(trim($this->ma01_i_folha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_folha"])){ 
-        if(trim($this->ma01_i_folha)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_folha"])){ 
+     if(trim((string) $this->ma01_i_folha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_folha"])){ 
+        if(trim((string) $this->ma01_i_folha)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_folha"])){ 
            $this->ma01_i_folha = "0" ; 
         } 
        $sql  .= $virgula." ma01_i_folha = $this->ma01_i_folha ";
        $virgula = ",";
      }
-     if(trim($this->ma01_o_imagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_o_imagem"])){ 
+     if(trim((string) $this->ma01_o_imagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_o_imagem"])){ 
        $sql  .= $virgula." ma01_o_imagem = $this->ma01_o_imagem ";
        $virgula = ",";
-       if(trim($this->ma01_o_imagem) == null ){ 
+       if(trim((string) $this->ma01_o_imagem) == null ){ 
          $this->erro_sql = " Campo Imagem nao Informado.";
          $this->erro_campo = "ma01_o_imagem";
          $this->erro_banco = "";
@@ -398,10 +398,10 @@ class cl_marca {
          return false;
        }
      }
-     if(trim($this->ma01_c_nomeimagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_nomeimagem"])){ 
+     if(trim((string) $this->ma01_c_nomeimagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_nomeimagem"])){ 
        $sql  .= $virgula." ma01_c_nomeimagem = '$this->ma01_c_nomeimagem' ";
        $virgula = ",";
-       if(trim($this->ma01_c_nomeimagem) == null ){ 
+       if(trim((string) $this->ma01_c_nomeimagem) == null ){ 
          $this->erro_sql = " Campo Nome da imagem nao Informado.";
          $this->erro_campo = "ma01_c_nomeimagem";
          $this->erro_banco = "";
@@ -411,50 +411,50 @@ class cl_marca {
          return false;
        }
      }
-     if(trim($this->ma01_c_figura1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_figura1"])){ 
+     if(trim((string) $this->ma01_c_figura1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_figura1"])){ 
        $sql  .= $virgula." ma01_c_figura1 = '$this->ma01_c_figura1' ";
        $virgula = ",";
      }
-     if(trim($this->ma01_c_figura2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_figura2"])){ 
+     if(trim((string) $this->ma01_c_figura2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_figura2"])){ 
        $sql  .= $virgula." ma01_c_figura2 = '$this->ma01_c_figura2' ";
        $virgula = ",";
      }
-     if(trim($this->ma01_c_figura3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_figura3"])){ 
+     if(trim((string) $this->ma01_c_figura3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_figura3"])){ 
        $sql  .= $virgula." ma01_c_figura3 = '$this->ma01_c_figura3' ";
        $virgula = ",";
      }
-     if(trim($this->ma01_c_letra1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra1"])){ 
+     if(trim((string) $this->ma01_c_letra1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra1"])){ 
        $sql  .= $virgula." ma01_c_letra1 = '$this->ma01_c_letra1' ";
        $virgula = ",";
      }
-     if(trim($this->ma01_c_letra2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra2"])){ 
+     if(trim((string) $this->ma01_c_letra2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra2"])){ 
        $sql  .= $virgula." ma01_c_letra2 = '$this->ma01_c_letra2' ";
        $virgula = ",";
      }
-     if(trim($this->ma01_c_letra3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra3"])){ 
+     if(trim((string) $this->ma01_c_letra3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra3"])){ 
        $sql  .= $virgula." ma01_c_letra3 = '$this->ma01_c_letra3' ";
        $virgula = ",";
      }
-     if(trim($this->ma01_c_letra4)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra4"])){ 
+     if(trim((string) $this->ma01_c_letra4)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra4"])){ 
        $sql  .= $virgula." ma01_c_letra4 = '$this->ma01_c_letra4' ";
        $virgula = ",";
      }
-     if(trim($this->ma01_c_objeto1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_objeto1"])){ 
+     if(trim((string) $this->ma01_c_objeto1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_objeto1"])){ 
        $sql  .= $virgula." ma01_c_objeto1 = '$this->ma01_c_objeto1' ";
        $virgula = ",";
      }
-     if(trim($this->ma01_c_objeto2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_objeto2"])){ 
+     if(trim((string) $this->ma01_c_objeto2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_objeto2"])){ 
        $sql  .= $virgula." ma01_c_objeto2 = '$this->ma01_c_objeto2' ";
        $virgula = ",";
      }
-     if(trim($this->ma01_c_objeto3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_objeto3"])){ 
+     if(trim((string) $this->ma01_c_objeto3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_objeto3"])){ 
        $sql  .= $virgula." ma01_c_objeto3 = '$this->ma01_c_objeto3' ";
        $virgula = ",";
      }
-     if(trim($this->ma01_c_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_ativo"])){ 
+     if(trim((string) $this->ma01_c_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_ativo"])){ 
        $sql  .= $virgula." ma01_c_ativo = '$this->ma01_c_ativo' ";
        $virgula = ",";
-       if(trim($this->ma01_c_ativo) == null ){ 
+       if(trim((string) $this->ma01_c_ativo) == null ){ 
          $this->erro_sql = " Campo Marca Ativa nao Informado.";
          $this->erro_campo = "ma01_c_ativo";
          $this->erro_banco = "";
@@ -464,7 +464,7 @@ class cl_marca {
          return false;
        }
      }
-     if(trim($this->ma01_v_sinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_v_sinal"])){ 
+     if(trim((string) $this->ma01_v_sinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma01_v_sinal"])){ 
        $sql  .= $virgula." ma01_v_sinal = '$this->ma01_v_sinal' ";
        $virgula = ",";
      }
@@ -476,46 +476,46 @@ class cl_marca {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = pg_query("insert into db_acountkey values($acount,1008056,'$this->ma01_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_codigo"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008056,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_i_codigo'))."','$this->ma01_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008056,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_i_codigo'))."','$this->ma01_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_cgm"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008057,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_i_cgm'))."','$this->ma01_i_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008057,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_i_cgm'))."','$this->ma01_i_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_d_data"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008058,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_d_data'))."','$this->ma01_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008058,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_d_data'))."','$this->ma01_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_livro"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008059,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_i_livro'))."','$this->ma01_i_livro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008059,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_i_livro'))."','$this->ma01_i_livro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_i_folha"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008060,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_i_folha'))."','$this->ma01_i_folha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008060,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_i_folha'))."','$this->ma01_i_folha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_o_imagem"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008061,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_o_imagem'))."','$this->ma01_o_imagem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008061,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_o_imagem'))."','$this->ma01_o_imagem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_nomeimagem"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008093,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_nomeimagem'))."','$this->ma01_c_nomeimagem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008093,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_nomeimagem'))."','$this->ma01_c_nomeimagem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_figura1"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008069,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_figura1'))."','$this->ma01_c_figura1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008069,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_figura1'))."','$this->ma01_c_figura1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_figura2"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008070,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_figura2'))."','$this->ma01_c_figura2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008070,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_figura2'))."','$this->ma01_c_figura2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_figura3"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008071,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_figura3'))."','$this->ma01_c_figura3',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008071,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_figura3'))."','$this->ma01_c_figura3',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra1"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008062,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_letra1'))."','$this->ma01_c_letra1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008062,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_letra1'))."','$this->ma01_c_letra1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra2"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008063,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_letra2'))."','$this->ma01_c_letra2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008063,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_letra2'))."','$this->ma01_c_letra2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra3"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008064,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_letra3'))."','$this->ma01_c_letra3',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008064,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_letra3'))."','$this->ma01_c_letra3',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_letra4"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008065,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_letra4'))."','$this->ma01_c_letra4',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008065,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_letra4'))."','$this->ma01_c_letra4',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_objeto1"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008072,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_objeto1'))."','$this->ma01_c_objeto1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008072,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_objeto1'))."','$this->ma01_c_objeto1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_objeto2"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008073,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_objeto2'))."','$this->ma01_c_objeto2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008073,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_objeto2'))."','$this->ma01_c_objeto2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_objeto3"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008074,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_objeto3'))."','$this->ma01_c_objeto3',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008074,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_objeto3'))."','$this->ma01_c_objeto3',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_c_ativo"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008160,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_c_ativo'))."','$this->ma01_c_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008160,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_c_ativo'))."','$this->ma01_c_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma01_v_sinal"]))
-           $resac = pg_query("insert into db_acount values($acount,1008004,1008412,'".AddSlashes(pg_result($resaco,$conresaco,'ma01_v_sinal'))."','$this->ma01_v_sinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,1008004,1008412,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma01_v_sinal'))."','$this->ma01_v_sinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = @pg_exec($sql);
@@ -560,27 +560,27 @@ class cl_marca {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = pg_query("insert into db_acountkey values($acount,1008056,'$ma01_i_codigo','E')");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008056,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008057,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008058,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008059,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_i_livro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008060,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_i_folha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008061,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_o_imagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008093,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_nomeimagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008069,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_figura1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008070,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_figura2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008071,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_figura3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008062,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_letra1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008063,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_letra2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008064,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_letra3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008065,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_letra4'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008072,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_objeto1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008073,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_objeto2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008074,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_objeto3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008160,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_c_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,1008004,1008412,'','".AddSlashes(pg_result($resaco,$iresaco,'ma01_v_sinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008056,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008057,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008058,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008059,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_i_livro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008060,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_i_folha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008061,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_o_imagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008093,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_nomeimagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008069,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_figura1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008070,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_figura2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008071,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_figura3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008062,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_letra1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008063,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_letra2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008064,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_letra3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008065,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_letra4'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008072,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_objeto1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008073,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_objeto2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008074,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_objeto3'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008160,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_c_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,1008004,1008412,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma01_v_sinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from marca
@@ -640,7 +640,7 @@ class cl_marca {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:marca";
@@ -655,7 +655,7 @@ class cl_marca {
    function sql_query ( $ma01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -677,7 +677,7 @@ class cl_marca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -690,7 +690,7 @@ class cl_marca {
    function sql_query_file ( $ma01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -711,7 +711,7 @@ class cl_marca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

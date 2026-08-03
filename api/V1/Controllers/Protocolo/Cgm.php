@@ -30,9 +30,9 @@ class Cgm extends GenericController implements ResourceInterface {
   public function getAll()
   {
     
-    $where = array(
+    $where = [
       " length(z01_nome) >= 2 "
-    );
+    ];
 
     if ($this->filters->has('nome')) {
       $where[] = "z01_nome ilike '%{$this->filters->getAlnum('nome')}%'";
@@ -57,9 +57,7 @@ class Cgm extends GenericController implements ResourceInterface {
       throw new BadRequestHttpException("Erro ao buscar cgm.");
     }
 
-    $dados = \db_utils::makeCollectionFromRecord($rs, function($data) {
-      return \CgmRepository::getByCodigo($data->z01_numcgm);
-    });
+    $dados = \db_utils::makeCollectionFromRecord($rs, fn($data) => \CgmRepository::getByCodigo($data->z01_numcgm));
 
     $transformer = new CgmTransformer();
     $transformer->setFields($this->fields);

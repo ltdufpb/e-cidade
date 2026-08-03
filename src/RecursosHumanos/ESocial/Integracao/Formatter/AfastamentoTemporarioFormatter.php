@@ -23,6 +23,7 @@ class AfastamentoTemporarioFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);
@@ -51,7 +52,7 @@ class AfastamentoTemporarioFormatter extends Formatter
             }
 
             $dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast = str_pad(
-                $dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast,
+                (string) $dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast,
                 2,
                 0,
                 STR_PAD_LEFT
@@ -71,7 +72,7 @@ class AfastamentoTemporarioFormatter extends Formatter
                 //Codigo afastamento igual a 15
                 //Código Categoria validar Array 1XX, 301, 302, 303, 304, 306, 307, 309, 310, 312, 410
                 $codigoCategoria = $this->servidor->getVinculo()->getCodigoCategoria();
-                $substrOne = substr($codigoCategoria, 0, 1);
+                $substrOne = substr((string) $codigoCategoria, 0, 1);
                 if (($dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast == '15'
                      && $this->servidor->validaCategoriaRescisao() || $substrOne == '1' &&
                     $this->servidor->getTipoRegime() == '1' || $codigoCategoria == '401')) {
@@ -116,7 +117,7 @@ class AfastamentoTemporarioFormatter extends Formatter
 
             // Removido os dados do atestado caso o motivo do afastamento for diferente de:
             // 1 - Acidente/Doença do trabalho e 3 - Acidente/Doença não relacionada ao trabalho
-            if (!in_array($dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast, array('01', '03'))) {
+            if (!in_array($dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast, ['01', '03'])) {
                 unset($dadoFormatado->infoAfastamento->iniAfastamento->infoAtestado);
             }
             // Removido dados do Mandato Sindical quando motivo do afastamento for diferente de:
@@ -184,7 +185,7 @@ class AfastamentoTemporarioFormatter extends Formatter
                 $cnpjSind = preg_replace(
                     '\'[^0-9]\'',
                     '',
-                    $cnpjSind
+                    (string) $cnpjSind
                 );
                 $dadoFormatado->infoAfastamento->iniAfastamento->infoMandSind->cnpjSind = $cnpjSind;
             }

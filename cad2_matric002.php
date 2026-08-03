@@ -41,9 +41,9 @@ $clrotulo->label("j40_refant");
 $clrotulo->label("j01_baixa");
 $clrotulo->label("j23_vlrter");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $head1 = "RELATÓRIO DE MATRÍCULAS";
 
@@ -87,11 +87,11 @@ if ($process == "S" || $process == "T") {
 
 if (isset($relatorio1)) {
 
-  $aSetorQuadraLote = array();
+  $aSetorQuadraLote = [];
 
-  $aSetor  = explode(',', $setorParametro);
-  $aQuadra = explode(',', $quadraParametro);
-  $aLote   = explode(',', $loteParametro);
+  $aSetor  = explode(',', (string) $setorParametro);
+  $aQuadra = explode(',', (string) $quadraParametro);
+  $aLote   = explode(',', (string) $loteParametro);
 
   foreach ($aSetor as $iIndice => $iSetor) {
     $aSetorQuadraLote[$iIndice]['setor'] = $iSetor;
@@ -177,7 +177,7 @@ if ($numrows_matric == 0) {
 }
 
 $sMore = "";
-$aSetores = array();
+$aSetores = [];
 
 for ($i = 0; $i < $numrows_matric; $i++) {
   $aSetores[] = db_utils::fieldsMemory($result_matric, $i)->j34_setor;
@@ -190,7 +190,7 @@ if (count($aSetores) > 47) {
   $sMore = "...";
 }
 
-$head4 = "SETORES: " . implode($aSetores, ", ") . $sMore;
+$head4 = "SETORES: " . implode(", ", $aSetores) . $sMore;
 
 $pdf->AddPage("L");
 $linm = 1;
@@ -240,7 +240,7 @@ for ($i = 0; $i < $numrows_matric; $i++) {
   $pdf->SetFont('Arial','',7);
   $pdf->Cell(15,$alt,$j01_matric,0,0,"C",$p);
   $pdf->Cell(15,$alt,$j01_numcgm,0,0,"C",$p);
-  $pdf->Cell(50,$alt,substr($z01_nome,0,29),0,0,"L",$p);
+  $pdf->Cell(50,$alt,substr((string) $z01_nome,0,29),0,0,"L",$p);
   $pdf->Cell(10,$alt,$j34_setor ,0,0,"C",$p);
   $pdf->Cell(11,$alt,$j34_quadra,0,0,"C",$p);
   $pdf->Cell(10,$alt,$j34_lote  ,0,0,"C",$p);
@@ -259,13 +259,13 @@ for ($i = 0; $i < $numrows_matric; $i++) {
   if (isset($mostra) && $mostra == 's') {
     $result_ender=db_query("select * from proprietario_ender where j01_matric = $j01_matric");
 
-    if (pg_numrows($result_ender)>0){
+    if (pg_num_rows($result_ender)>0){
       db_fieldsmemory($result_ender,0);
     }
 
     $pdf->Cell(50,$alt,@$j14_nome,0,0,"L",$p);
     $pdf->Cell(20,$alt,@$j39_numero ,0,0,"C",$p);
-    $pdf->Cell(20,$alt,substr(@$j39_compl,0,10),0,0,"L",$p);
+    $pdf->Cell(20,$alt,substr((string) @$j39_compl,0,10),0,0,"L",$p);
     $pdf->Cell(40,$alt,@$j13_descr,0,0,"L",$p);
   }
 

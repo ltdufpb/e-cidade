@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -86,7 +86,7 @@ echo "</td>";
 echo "<td><strong>Exercício:</strong></td>";
 echo "<td>";
 
-$exerc = array();
+$exerc = [];
 for($i=(db_getsession('DB_anousu')-2);$i<(db_getsession('DB_anousu')+5);$i++){
   $exerc[$i] = $i;
 }
@@ -259,4 +259,4 @@ if($departamento != 0 && $usuarios == 0 ){
 
  
 $cale->monta_calendario_semanal_turno(@$exercicio,@$metodo,(!isset($metodo)?@date("Y-m-d",db_getsession("DB_datausu")):"$data"));
-$cale->monta_fim_pagina(false);
+$cale->monta_fim_pagina();

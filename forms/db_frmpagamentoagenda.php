@@ -51,16 +51,16 @@ $result05  = $clempagetipo->sql_record($sSqlContaTesouraria);
 $numrows05 = $clempagetipo->numrows;
 
 
-$arr = array();
+$arr = [];
 $arr['0']="Nenhum";
 
 for($r=0; $r<$numrows05; $r++){
   db_fieldsmemory($result05,$r);
-  $arr[$codtipo] = $e83_conta." - ".$e83_descr . " - " . str_pad($c61_codigo, 4, "0", STR_PAD_LEFT);
+  $arr[$codtipo] = $e83_conta." - ".$e83_descr . " - " . str_pad((string) $c61_codigo, 4, "0", STR_PAD_LEFT);
 }
 
 $lUsaData    = false;
-$aParametrosCaixa = db_stdClass::getParametro("caiparametro",array(db_getsession("DB_instit")));
+$aParametrosCaixa = db_stdClass::getParametro("caiparametro",[db_getsession("DB_instit")]);
 if (count($aParametrosCaixa) > 0) {
   $lUsaData = $aParametrosCaixa[0]->k29_trazdatacheque =="t"?true:false;
 }

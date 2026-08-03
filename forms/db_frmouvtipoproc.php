@@ -90,7 +90,7 @@ $cltipoproc->rotulo->label();
                     </td>
                     <td>
                         <?php
-                        $matriz = array('t' => "Sim", 'f' => "Nao");
+                        $matriz = ['t' => "Sim", 'f' => "Nao"];
                         db_inputdata(
                             'p51_dtlimite',
                             @$p51_dtlimite_dia,
@@ -112,7 +112,7 @@ $cltipoproc->rotulo->label();
                     </td>
                     <td>
                         <?php
-                        $x = array('t' => 'Sim', 'f' => 'Não');
+                        $x = ['t' => 'Sim', 'f' => 'Não'];
                         db_select('p51_identificado', $x, true, $db_opcao, "");
                         ?>
                     </td>
@@ -157,7 +157,7 @@ $cltipoproc->rotulo->label();
 
     function js_preenchepesquisa(chave) {
         db_iframe.hide();
-        location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?chavepesquisa=" + chave;
+        location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?chavepesquisa=" + chave;
     }
 
     function js_novo() {

@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_econsigmovimentoservidorrubrica_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cleconsigmovimentoservidorrubrica = new cl_econsigmovimentoservidorrubrica();
 $cleconsigmovimentoservidorrubrica->rotulo->label("rh135_sequencial"); 
@@ -117,9 +117,9 @@ if (isset($chave_rh135_sequencial) && !DBNumber::isInteger($chave_rh135_sequenci
            $sql = $cleconsigmovimentoservidorrubrica->sql_query("", $campos, "rh135_sequencial","");
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_rh135_sequencial)) {
-          $repassa = array("chave_rh135_sequencial" => $chave_rh135_sequencial, "chave_rh135_sequencial" => $chave_rh135_sequencial);
+          $repassa = ["chave_rh135_sequencial" => $chave_rh135_sequencial, "chave_rh135_sequencial" => $chave_rh135_sequencial];
         }
 
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

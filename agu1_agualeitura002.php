@@ -33,8 +33,8 @@ require_once (modification("dbforms/db_funcoes.php"));
 
 use ECidade\Tributario\Agua\Repository\Leitura as LeituraRepository;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clagualeitura = new cl_agualeitura;
 $clagualeiturasaldoutilizado = new cl_agualeiturasaldoutilizado();
@@ -182,13 +182,13 @@ if(isset($alterar)){
     $x21_mesant = $oLeitura->getMes();
   }
 
-  $sOrder = implode(', ', array(
+  $sOrder = implode(', ', [
     'x21_exerc desc',
     'x21_mes desc',
     'x21_dtleitura desc',
     'x21_dtinc desc',
     'x21_codleitura desc',
-  ));
+  ]);
   $sWhere = "x21_codhidrometro=$x21_codhidrometro and fc_anousu_mesusu(x21_exerc, x21_mes) > fc_anousu_mesusu({$x21_exerc}, {$x21_mes})";
   $sSqlLeiturasPosteriores = $clagualeitura->sql_query_file(null, "*", "{$sOrder} limit 1", $sWhere);
   $result_leituraant = $clagualeitura->sql_record($sSqlLeiturasPosteriores);

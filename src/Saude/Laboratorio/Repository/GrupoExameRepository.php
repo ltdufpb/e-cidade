@@ -37,17 +37,12 @@ use Exception;
 class GrupoExameRepository
 {
     /**
-     * @var Object
-     */
-    private $dao;
-
-    /**
      * GrupoExameRepository constructor.
      * @param $dao \cl_lab_grupoexame
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**

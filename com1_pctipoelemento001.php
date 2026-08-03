@@ -35,7 +35,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clpctipoelemento = new cl_pctipoelemento;
 if(isset($incluir)){
   db_inicio_transacao();
@@ -105,7 +105,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clpctipoelemento->erro_status=="0"){
     $clpctipoelemento->erro(true,false);
     $db_botao=true;

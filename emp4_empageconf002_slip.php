@@ -45,7 +45,7 @@ $clempagemov  = new cl_empagemov;
 $clempagepag  = new cl_empagepag;
 $clempageslip  = new cl_empageslip;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //db_postmemory($HTTP_POST_VARS);
 $db_opcao = 1;
 $db_botao = false;
@@ -65,8 +65,8 @@ $clrotulo->label("e83_codtipo");
 
 
 if(isset($movs)){
-  $arr_movs = split("XX",$movs);
-  $arr_m = array();
+  $arr_movs = preg_split("#XX#m",$movs);
+  $arr_m = [];
   for($i=0; $i<count($arr_movs); $i++){
     $arr_m[$arr_movs[$i]] = $arr_movs[$i];
   }
@@ -177,7 +177,7 @@ function js_calcula(campo){
 
 
 	    $x= "valor_$e81_codmov";
-  	    $$x = $e81_valor;
+  	    ${$x} = $e81_valor;
             db_input("valor_$e81_codmov",10,'',true,'hidden',1);
 	    
 	    $xeque = '';
@@ -192,7 +192,7 @@ function js_calcula(campo){
           <td class='bordas' align='right'><small > <?=$k17_codigo?></small></td>
           <td class='bordas' align='right'><small > <?=$k17_credito?></small></td>
           <td class='bordas' align='right'><small > <?=$k17_debito?></small></td>
-          <td class='bordas' align='left' nowrap ><small > <?=(substr($c60_descr,0,20))?></small></td>
+          <td class='bordas' align='left' nowrap ><small > <?=(substr((string) $c60_descr,0,20))?></small></td>
           <td class='bordas' align='right' nowrap><small > <?=$e40_descr?></small></td>
           <td class='bordas' align='right'><small > <?=$k17_data?></small></td>
           <td class='bordas' align='right'><small > <?=$k17_valor?></small></td>

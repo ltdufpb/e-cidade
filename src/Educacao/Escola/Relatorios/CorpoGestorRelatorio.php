@@ -14,22 +14,20 @@ use stdClass;
 class CorpoGestorRelatorio extends FpdfMultiCellBorder
 {
     /**
-     * @var stdClass
-     */
-    private $parametros;
-    /**
      * @var Bairro|Null
      */
     private $bairro;
 
-    public function __construct($parametros, $filtros_cabecalho)
+    /**
+     * @param stdClass $parametros
+     */
+    public function __construct(private $parametros, $filtros_cabecalho)
     {
         parent::__construct();
-        $this->parametros = $parametros;
 
-        if ($parametros->opt_escola == 1) {
+        if ($this->parametros->opt_escola == 1) {
             $this->parametros->opt_escola = "Escolas";
-        } elseif ($parametros->opt_escola == 2) {
+        } elseif ($this->parametros->opt_escola == 2) {
             $this->parametros->opt_escola = "CEIs";
         } else {
             $this->parametros->opt_escola = "Escolas e CEIs";
@@ -40,8 +38,8 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
         global $head5;
         global $head7;
 
-        $sNomeDistrito = utf8_decode($this->parametros->nome_distrito);
-        $sCodBairro = utf8_decode($this->parametros->codEscolaBairro);
+        $sNomeDistrito = mb_convert_encoding($this->parametros->nome_distrito, 'ISO-8859-1');
+        $sCodBairro = mb_convert_encoding($this->parametros->codEscolaBairro, 'ISO-8859-1');
         
         if (!empty($filtros_cabecalho)) {
             $head2 = "Relatório de Endereço por: {$filtros_cabecalho}";
@@ -74,7 +72,7 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
         $this->opem();
         $this->AddPage();
 
-        $sCodBairro = utf8_decode($this->parametros->codEscolaBairro);
+        $sCodBairro = mb_convert_encoding($this->parametros->codEscolaBairro, 'ISO-8859-1');
         $where = "";
         if (!is_null($this->bairro)) {
             $where = " AND j13_codi = {$this->bairro->getCodigo()} ";
@@ -195,7 +193,7 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
         $sql .= "  WHERE  ed18_i_funcionamento = 1 AND ed18_i_tipoescola = 1";
         $sql .= " AND rechumanoescola.ed75_i_saidaescola IS NULL {$sqlRh} ";
 
-        $sNomeDistrito = utf8_decode($this->parametros->nome_distrito);
+        $sNomeDistrito = mb_convert_encoding($this->parametros->nome_distrito, 'ISO-8859-1');
         if (!empty($this->parametros->nome_distrito)) {
             $sql .= "and ed262_c_nome ilike fc_remove_acentos('%{$sNomeDistrito}%')";
         }
@@ -220,7 +218,7 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
             $where[] = "ed18_codigoreferencia = {$this->parametros->codEscolaBairro}";
         }
 
-        $sCodBairro = utf8_decode($this->parametros->codEscolaBairro);
+        $sCodBairro = mb_convert_encoding($this->parametros->codEscolaBairro, 'ISO-8859-1');
         if (!empty($this->parametros->codEscolaBairro && !is_numeric($this->parametros->codEscolaBairro))) {
             $where[] = "(
                 fc_remove_acentos(ed18_c_nome) ilike fc_remove_acentos('%{$sCodBairro}%') OR
@@ -257,7 +255,7 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
             $complemento = $row['complemento'];
             $bairro = $row['bairro'];
 
-            $cep = trim($row['cep']);
+            $cep = trim((string) $row['cep']);
 
             if (strlen($cep) == 8) {
                 $cep = substr($cep, 0, 5) . "-" . substr($cep, 5);
@@ -322,7 +320,7 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
             }
 
             $this->SetFont('Arial', '', 8);
-            $logradouro = trim($logradouro);
+            $logradouro = trim((string) $logradouro);
             $this->Cell(80, 4, "{$logradouro},  {$numero}");
             $this->Cell(52, 4, "CEP: {$cep}");
             $this->Cell(60, 4, "ECidade: {$codigo_escola}", 0, 1, 'R');
@@ -495,8 +493,8 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
      */
     private function maskFoneDdd($telefone, $ddd)
     {
-        $tamanho = strlen($telefone);
-        if (strlen($ddd) == 0) {
+        $tamanho = strlen((string) $telefone);
+        if (strlen((string) $ddd) == 0) {
             $ddd = "(00)";
         } else {
             $ddd = "(" . $ddd . ")";
@@ -506,21 +504,21 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
             return "";
         } else {
             if ($tamanho == 8) {
-                $telefone = $ddd . " " . substr($telefone, 0, 4) . "-" . substr($telefone, 4);
+                $telefone = $ddd . " " . substr((string) $telefone, 0, 4) . "-" . substr((string) $telefone, 4);
             }
 
             if ($tamanho == 9) {
-                $telefone = $ddd . " " . substr($telefone, 0, 5) . "-" . substr($telefone, 5);
+                $telefone = $ddd . " " . substr((string) $telefone, 0, 5) . "-" . substr((string) $telefone, 5);
             }
 
             if ($tamanho == 10) {
-                $telefone2 = substr($telefone, 2);
-                $telefone = substr($telefone, 0, 2) . " " . substr($telefone2, 0, 4) . "-" . substr($telefone2, 4);
+                $telefone2 = substr((string) $telefone, 2);
+                $telefone = substr((string) $telefone, 0, 2) . " " . substr($telefone2, 0, 4) . "-" . substr($telefone2, 4);
             }
 
             if ($tamanho == 11) {
-                $telefone2 = substr($telefone, 2);
-                $telefone = substr($telefone, 0, 2) . " " . substr($telefone2, 0, 5) . "-" . substr($telefone2, 5);
+                $telefone2 = substr((string) $telefone, 2);
+                $telefone = substr((string) $telefone, 0, 2) . " " . substr($telefone2, 0, 5) . "-" . substr($telefone2, 5);
             }
         }
 

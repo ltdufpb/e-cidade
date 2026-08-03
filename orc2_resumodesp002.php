@@ -29,15 +29,15 @@ include(modification("libs/db_liborcamento.php"));
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
       $descr_inst .= $xvirg.$nomeinst ;
         $xvirg = ', ';
@@ -58,8 +58,8 @@ $head7 = "PERÍODO      : ".db_formatar($perini,'d')." A ".db_formatar($perfin,'d
 
 // funcao para gerar work
 
-$tipo_agrupa = substr($nivel,0,1) ;
-$nivelele = substr($nivelele,0,1);
+$tipo_agrupa = substr((string) $nivel,0,1) ;
+$nivelele = substr((string) $nivelele,0,1);
 
 $tipo_rel = 2;
 
@@ -133,7 +133,7 @@ $result = db_query($sql);
 //db_criatabela($result);exit;
 
 
-$xcampos = split("-",$orgaos);
+$xcampos = preg_split("#\\-#m",$orgaos);
 
 $where = '';
 $virgula = '';
@@ -145,7 +145,7 @@ else{
    $where = " o58_unidade in (";
 }
 for($i=0;$i < sizeof($xcampos);$i++){
-   $xxcampos = split("_",$xcampos[$i]);
+   $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
    if($tipo_agrupa == 1){
      $where .= $virgula.$xxcampos[1];
    }else{
@@ -157,7 +157,7 @@ for($i=0;$i < sizeof($xcampos);$i++){
 
   // segundo filtro funcao-subfuncao-prog ..
 
-$xcampos = split("-",$orgaosele);
+$xcampos = preg_split("#\\-#m",(string) $orgaosele);
 
 $virgula = '';
 
@@ -168,7 +168,7 @@ if($tipo_rel=='2'){
 
  $where .= ") and $ccampo in (";
  for($i=0;$i < sizeof($xcampos);$i++){
-     $xxcampos = split("_",$xcampos[$i]);
+     $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
      for($ii=0;$ii<sizeof($xxcampos);$ii++){
 	if($ii > 0){
 	   $where .= $virgula."'".$xxcampos[$ii]."'";
@@ -189,7 +189,7 @@ $where .= ") and o58_instit in (".str_replace('-',', ',$db_selinstit).")";
 //  db_criatabela($result_rec);
   $valor = 0;
 
-  for($i=0;$i<pg_numrows($result_rec);$i++){
+  for($i=0;$i<pg_num_rows($result_rec);$i++){
     db_fieldsmemory($result_rec,$i);
     if($tipo_balanco==1){
       $valor = $dot_ini;
@@ -202,9 +202,9 @@ $where .= ") and o58_instit in (".str_replace('-',', ',$db_selinstit).")";
     }
      
     if($tipo_agrupa==1){
-      $sql = "update work set vlr1 = vlr1+$dot_ini, vlr2 = vlr2+$suplementado_acumulado, vlr3 = vlr3+$reduzido_acumulado, vlr4 = vlr4+$valor where work.campo = '".$$qcampo."' and orgao = ".$o58_orgao ;
+      $sql = "update work set vlr1 = vlr1+$dot_ini, vlr2 = vlr2+$suplementado_acumulado, vlr3 = vlr3+$reduzido_acumulado, vlr4 = vlr4+$valor where work.campo = '".${$qcampo}."' and orgao = ".$o58_orgao ;
     }else{
-      $sql = "update work set vlr1 = vlr1+$dot_ini, vlr2 = vlr2+$suplementado_acumulado, vlr3 = vlr3+$reduzido_acumulado, vlr4 = vlr4+$valor where work.campo = '".$$qcampo."' and orgao = ".$o58_orgao." and unidade = ".$o58_unidade;
+      $sql = "update work set vlr1 = vlr1+$dot_ini, vlr2 = vlr2+$suplementado_acumulado, vlr3 = vlr3+$reduzido_acumulado, vlr4 = vlr4+$valor where work.campo = '".${$qcampo}."' and orgao = ".$o58_orgao." and unidade = ".$o58_unidade;
     }
     //echo $sql;
     $result = db_query($sql);
@@ -240,8 +240,8 @@ if($tipo_rel==2){
    } else {
      $sql = "select * from work order by orgao,unidade,campo";
      $result = db_query($sql);
-     $qorgao = pg_result($result,0,'orgao');
-     $qunidade = pg_result($result,0,'unidade');
+     $qorgao = pg_fetch_result($result,0,'orgao');
+     $qunidade = pg_fetch_result($result,0,'unidade');
    }
 }else{
    $sql = "select orgao,unidade,
@@ -253,8 +253,8 @@ if($tipo_rel==2){
 	   group by orgao,unidade
 	   order by orgao,unidade";
     $result = db_query($sql);
-    $qorgao = pg_result($result,0,'orgao');
-    $qunidade = pg_result($result,0,'unidade');
+    $qorgao = pg_fetch_result($result,0,'orgao');
+    $qunidade = pg_fetch_result($result,0,'unidade');
 }
 
 
@@ -291,7 +291,7 @@ $pre = 1;
 if($tipo_rel==2){
 
   $troca_secretaria = false;
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
     db_fieldsmemory($result,$i);
     if($vlr1+$vlr2+$vlr3+$vlr4==0)
       continue;
@@ -388,7 +388,7 @@ if($tipo_rel==2){
       $perc =0;
     }  
     $pdf->cell(20,$alt,$campo,0,0,"R",$pre);
-    $pdf->cell(55,$alt,substr($descr,0,40),0,0,"L",$pre);
+    $pdf->cell(55,$alt,substr((string) $descr,0,40),0,0,"L",$pre);
     $pdf->cell(20,$alt,db_formatar($vlr1,'f'),0,0,"R",$pre);
     $pdf->cell(20,$alt,db_formatar($vlr2,'f'),0,0,"R",$pre);
     $pdf->cell(20,$alt,db_formatar($vlr3,'f'),0,0,"R",$pre);
@@ -432,7 +432,7 @@ if($tipo_rel==2){
 }else{
 
   $troca_secretaria = false;
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
     db_fieldsmemory($result,$i);
 
     if($vlr1+$vlr2+$vlr3+$vlr4 == 0 ){

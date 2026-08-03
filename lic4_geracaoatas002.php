@@ -71,7 +71,7 @@ if ( isset($oGet->lPosicaoInicial) && $oGet->lPosicaoInicial == "t" ) {
 	    
 	  $oFile = fopen($sCaminhoSalvoSxw, "w+");
 	    
-	  fwrite($oFile, $oDadosOid);
+	  fwrite($oFile, (string) $oDadosOid);
 	  fclose($oFile);
 	   
 	  db_fim_transacao();
@@ -125,7 +125,7 @@ if ( isset($oGet->lPosicaoInicial) && $oGet->lPosicaoInicial == "t" ) {
 		}
 	}
 	
-    $sVariaveisDoc = array(
+    $sVariaveisDoc = [
 							"munic_instituicao"       => $oInstituicao->getMunicipio(),
 							"processo_adm"            => $sProcessoAdm,
 							"descr_modalidade"        => $sDescrModalidade,
@@ -150,7 +150,7 @@ if ( isset($oGet->lPosicaoInicial) && $oGet->lPosicaoInicial == "t" ) {
 							"objeto"                  => $oDadosLic->l20_objeto,
 							"elemento_despesa"        => "",
 							"data_atual"              => $sDataAtual
-	                      );
+	                      ];
 						  
 	$templateProcessor->setValues($sVariaveisDoc,'');
 

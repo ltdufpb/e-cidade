@@ -3,34 +3,34 @@
 //CLASSE DA ENTIDADE descartemedicamento
 class cl_descartemedicamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd107_sequencial = 0; 
-   var $sd107_medicamento = 0; 
-   var $sd107_quantidade = 0; 
-   var $sd107_motivo = null; 
-   var $sd107_data_dia = null; 
-   var $sd107_data_mes = null; 
-   var $sd107_data_ano = null; 
-   var $sd107_data = null; 
-   var $sd107_hora = null; 
-   var $sd107_usuario = 0; 
-   var $sd107_db_depart = 0; 
-   var $sd107_quantidadetotal = 0; 
-   var $sd107_unidadesaida = 0; 
+   public $sd107_sequencial = 0; 
+   public $sd107_medicamento = 0; 
+   public $sd107_quantidade = 0; 
+   public $sd107_motivo = null; 
+   public $sd107_data_dia = null; 
+   public $sd107_data_mes = null; 
+   public $sd107_data_ano = null; 
+   public $sd107_data = null; 
+   public $sd107_hora = null; 
+   public $sd107_usuario = 0; 
+   public $sd107_db_depart = 0; 
+   public $sd107_quantidadetotal = 0; 
+   public $sd107_unidadesaida = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd107_sequencial = int4 = Código Sequencial 
                  sd107_medicamento = int4 = Medicamento 
                  sd107_quantidade = float8 = Quantidade 
@@ -43,10 +43,10 @@ class cl_descartemedicamento {
                  sd107_unidadesaida = int4 = Unidade de Saída 
                  ";
    //funcao construtor da classe 
-   function cl_descartemedicamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("descartemedicamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -175,10 +175,10 @@ class cl_descartemedicamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sd107_sequencial = pg_result($result,0,0); 
+       $this->sd107_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from descartemedicamento_sd107_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sd107_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sd107_sequencial)){
          $this->erro_sql = " Campo sd107_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -224,7 +224,7 @@ class cl_descartemedicamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Descarte de Medicamentos ($this->sd107_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Descarte de Medicamentos já Cadastrado";
@@ -253,19 +253,19 @@ class cl_descartemedicamento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21339,'$this->sd107_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3843,21339,'','".AddSlashes(pg_result($resaco,0,'sd107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3843,21340,'','".AddSlashes(pg_result($resaco,0,'sd107_medicamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3843,21341,'','".AddSlashes(pg_result($resaco,0,'sd107_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3843,21342,'','".AddSlashes(pg_result($resaco,0,'sd107_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3843,21343,'','".AddSlashes(pg_result($resaco,0,'sd107_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3843,21344,'','".AddSlashes(pg_result($resaco,0,'sd107_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3843,21345,'','".AddSlashes(pg_result($resaco,0,'sd107_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3843,21346,'','".AddSlashes(pg_result($resaco,0,'sd107_db_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3843,21348,'','".AddSlashes(pg_result($resaco,0,'sd107_quantidadetotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3843,21347,'','".AddSlashes(pg_result($resaco,0,'sd107_unidadesaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3843,21339,'','".AddSlashes(pg_fetch_result($resaco,0,'sd107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3843,21340,'','".AddSlashes(pg_fetch_result($resaco,0,'sd107_medicamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3843,21341,'','".AddSlashes(pg_fetch_result($resaco,0,'sd107_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3843,21342,'','".AddSlashes(pg_fetch_result($resaco,0,'sd107_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3843,21343,'','".AddSlashes(pg_fetch_result($resaco,0,'sd107_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3843,21344,'','".AddSlashes(pg_fetch_result($resaco,0,'sd107_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3843,21345,'','".AddSlashes(pg_fetch_result($resaco,0,'sd107_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3843,21346,'','".AddSlashes(pg_fetch_result($resaco,0,'sd107_db_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3843,21348,'','".AddSlashes(pg_fetch_result($resaco,0,'sd107_quantidadetotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3843,21347,'','".AddSlashes(pg_fetch_result($resaco,0,'sd107_unidadesaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -275,10 +275,10 @@ class cl_descartemedicamento {
       $this->atualizacampos();
      $sql = " update descartemedicamento set ";
      $virgula = "";
-     if(trim($this->sd107_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_sequencial"])){ 
+     if(trim((string) $this->sd107_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_sequencial"])){ 
        $sql  .= $virgula." sd107_sequencial = $this->sd107_sequencial ";
        $virgula = ",";
-       if(trim($this->sd107_sequencial) == null ){ 
+       if(trim((string) $this->sd107_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "sd107_sequencial";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_descartemedicamento {
          return false;
        }
      }
-     if(trim($this->sd107_medicamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_medicamento"])){ 
+     if(trim((string) $this->sd107_medicamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_medicamento"])){ 
        $sql  .= $virgula." sd107_medicamento = $this->sd107_medicamento ";
        $virgula = ",";
-       if(trim($this->sd107_medicamento) == null ){ 
+       if(trim((string) $this->sd107_medicamento) == null ){ 
          $this->erro_sql = " Campo Medicamento não informado.";
          $this->erro_campo = "sd107_medicamento";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_descartemedicamento {
          return false;
        }
      }
-     if(trim($this->sd107_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_quantidade"])){ 
+     if(trim((string) $this->sd107_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_quantidade"])){ 
        $sql  .= $virgula." sd107_quantidade = $this->sd107_quantidade ";
        $virgula = ",";
-       if(trim($this->sd107_quantidade) == null ){ 
+       if(trim((string) $this->sd107_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade não informado.";
          $this->erro_campo = "sd107_quantidade";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_descartemedicamento {
          return false;
        }
      }
-     if(trim($this->sd107_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_motivo"])){ 
+     if(trim((string) $this->sd107_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_motivo"])){ 
        $sql  .= $virgula." sd107_motivo = '$this->sd107_motivo' ";
        $virgula = ",";
-       if(trim($this->sd107_motivo) == null ){ 
+       if(trim((string) $this->sd107_motivo) == null ){ 
          $this->erro_sql = " Campo Motivo não informado.";
          $this->erro_campo = "sd107_motivo";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_descartemedicamento {
          return false;
        }
      }
-     if(trim($this->sd107_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd107_data_dia"] !="") ){ 
+     if(trim((string) $this->sd107_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd107_data_dia"] !="") ){ 
        $sql  .= $virgula." sd107_data = '$this->sd107_data' ";
        $virgula = ",";
-       if(trim($this->sd107_data) == null ){ 
+       if(trim((string) $this->sd107_data) == null ){ 
          $this->erro_sql = " Campo Data não informado.";
          $this->erro_campo = "sd107_data_dia";
          $this->erro_banco = "";
@@ -343,7 +343,7 @@ class cl_descartemedicamento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["sd107_data_dia"])){ 
          $sql  .= $virgula." sd107_data = null ";
          $virgula = ",";
-         if(trim($this->sd107_data) == null ){ 
+         if(trim((string) $this->sd107_data) == null ){ 
            $this->erro_sql = " Campo Data não informado.";
            $this->erro_campo = "sd107_data_dia";
            $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_descartemedicamento {
          }
        }
      }
-     if(trim($this->sd107_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_hora"])){ 
+     if(trim((string) $this->sd107_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_hora"])){ 
        $sql  .= $virgula." sd107_hora = '$this->sd107_hora' ";
        $virgula = ",";
-       if(trim($this->sd107_hora) == null ){ 
+       if(trim((string) $this->sd107_hora) == null ){ 
          $this->erro_sql = " Campo Hora não informado.";
          $this->erro_campo = "sd107_hora";
          $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_descartemedicamento {
          return false;
        }
      }
-     if(trim($this->sd107_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_usuario"])){ 
+     if(trim((string) $this->sd107_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_usuario"])){ 
        $sql  .= $virgula." sd107_usuario = $this->sd107_usuario ";
        $virgula = ",";
-       if(trim($this->sd107_usuario) == null ){ 
+       if(trim((string) $this->sd107_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "sd107_usuario";
          $this->erro_banco = "";
@@ -380,10 +380,10 @@ class cl_descartemedicamento {
          return false;
        }
      }
-     if(trim($this->sd107_db_depart)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_db_depart"])){ 
+     if(trim((string) $this->sd107_db_depart)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_db_depart"])){ 
        $sql  .= $virgula." sd107_db_depart = $this->sd107_db_depart ";
        $virgula = ",";
-       if(trim($this->sd107_db_depart) == null ){ 
+       if(trim((string) $this->sd107_db_depart) == null ){ 
          $this->erro_sql = " Campo Departamento não informado.";
          $this->erro_campo = "sd107_db_depart";
          $this->erro_banco = "";
@@ -393,10 +393,10 @@ class cl_descartemedicamento {
          return false;
        }
      }
-     if(trim($this->sd107_quantidadetotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_quantidadetotal"])){ 
+     if(trim((string) $this->sd107_quantidadetotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_quantidadetotal"])){ 
        $sql  .= $virgula." sd107_quantidadetotal = $this->sd107_quantidadetotal ";
        $virgula = ",";
-       if(trim($this->sd107_quantidadetotal) == null ){ 
+       if(trim((string) $this->sd107_quantidadetotal) == null ){ 
          $this->erro_sql = " Campo Conteúdo Medicamento não informado.";
          $this->erro_campo = "sd107_quantidadetotal";
          $this->erro_banco = "";
@@ -406,10 +406,10 @@ class cl_descartemedicamento {
          return false;
        }
      }
-     if(trim($this->sd107_unidadesaida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_unidadesaida"])){ 
+     if(trim((string) $this->sd107_unidadesaida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd107_unidadesaida"])){ 
        $sql  .= $virgula." sd107_unidadesaida = $this->sd107_unidadesaida ";
        $virgula = ",";
-       if(trim($this->sd107_unidadesaida) == null ){ 
+       if(trim((string) $this->sd107_unidadesaida) == null ){ 
          $this->erro_sql = " Campo Unidade de Saída não informado.";
          $this->erro_campo = "sd107_unidadesaida";
          $this->erro_banco = "";
@@ -433,29 +433,29 @@ class cl_descartemedicamento {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21339,'$this->sd107_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd107_sequencial"]) || $this->sd107_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3843,21339,'".AddSlashes(pg_result($resaco,$conresaco,'sd107_sequencial'))."','$this->sd107_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3843,21339,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd107_sequencial'))."','$this->sd107_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd107_medicamento"]) || $this->sd107_medicamento != "")
-             $resac = db_query("insert into db_acount values($acount,3843,21340,'".AddSlashes(pg_result($resaco,$conresaco,'sd107_medicamento'))."','$this->sd107_medicamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3843,21340,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd107_medicamento'))."','$this->sd107_medicamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd107_quantidade"]) || $this->sd107_quantidade != "")
-             $resac = db_query("insert into db_acount values($acount,3843,21341,'".AddSlashes(pg_result($resaco,$conresaco,'sd107_quantidade'))."','$this->sd107_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3843,21341,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd107_quantidade'))."','$this->sd107_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd107_motivo"]) || $this->sd107_motivo != "")
-             $resac = db_query("insert into db_acount values($acount,3843,21342,'".AddSlashes(pg_result($resaco,$conresaco,'sd107_motivo'))."','$this->sd107_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3843,21342,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd107_motivo'))."','$this->sd107_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd107_data"]) || $this->sd107_data != "")
-             $resac = db_query("insert into db_acount values($acount,3843,21343,'".AddSlashes(pg_result($resaco,$conresaco,'sd107_data'))."','$this->sd107_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3843,21343,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd107_data'))."','$this->sd107_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd107_hora"]) || $this->sd107_hora != "")
-             $resac = db_query("insert into db_acount values($acount,3843,21344,'".AddSlashes(pg_result($resaco,$conresaco,'sd107_hora'))."','$this->sd107_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3843,21344,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd107_hora'))."','$this->sd107_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd107_usuario"]) || $this->sd107_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,3843,21345,'".AddSlashes(pg_result($resaco,$conresaco,'sd107_usuario'))."','$this->sd107_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3843,21345,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd107_usuario'))."','$this->sd107_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd107_db_depart"]) || $this->sd107_db_depart != "")
-             $resac = db_query("insert into db_acount values($acount,3843,21346,'".AddSlashes(pg_result($resaco,$conresaco,'sd107_db_depart'))."','$this->sd107_db_depart',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3843,21346,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd107_db_depart'))."','$this->sd107_db_depart',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd107_quantidadetotal"]) || $this->sd107_quantidadetotal != "")
-             $resac = db_query("insert into db_acount values($acount,3843,21348,'".AddSlashes(pg_result($resaco,$conresaco,'sd107_quantidadetotal'))."','$this->sd107_quantidadetotal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3843,21348,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd107_quantidadetotal'))."','$this->sd107_quantidadetotal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd107_unidadesaida"]) || $this->sd107_unidadesaida != "")
-             $resac = db_query("insert into db_acount values($acount,3843,21347,'".AddSlashes(pg_result($resaco,$conresaco,'sd107_unidadesaida'))."','$this->sd107_unidadesaida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3843,21347,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd107_unidadesaida'))."','$this->sd107_unidadesaida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -509,19 +509,19 @@ class cl_descartemedicamento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21339,'$sd107_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3843,21339,'','".AddSlashes(pg_result($resaco,$iresaco,'sd107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3843,21340,'','".AddSlashes(pg_result($resaco,$iresaco,'sd107_medicamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3843,21341,'','".AddSlashes(pg_result($resaco,$iresaco,'sd107_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3843,21342,'','".AddSlashes(pg_result($resaco,$iresaco,'sd107_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3843,21343,'','".AddSlashes(pg_result($resaco,$iresaco,'sd107_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3843,21344,'','".AddSlashes(pg_result($resaco,$iresaco,'sd107_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3843,21345,'','".AddSlashes(pg_result($resaco,$iresaco,'sd107_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3843,21346,'','".AddSlashes(pg_result($resaco,$iresaco,'sd107_db_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3843,21348,'','".AddSlashes(pg_result($resaco,$iresaco,'sd107_quantidadetotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3843,21347,'','".AddSlashes(pg_result($resaco,$iresaco,'sd107_unidadesaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3843,21339,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3843,21340,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd107_medicamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3843,21341,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd107_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3843,21342,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd107_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3843,21343,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd107_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3843,21344,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd107_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3843,21345,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd107_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3843,21346,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd107_db_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3843,21348,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd107_quantidadetotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3843,21347,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd107_unidadesaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -63,9 +63,9 @@ for($x=0;$x<$clturma->numrows;$x++){
  $result1 = $clregenciaperiodo->sql_record($sql1);
  db_fieldsmemory($result1,0);
  $pdf->setfillcolor(223);
- $dia = substr($ed52_d_resultfinal,8,2);
- $mes = db_mes(substr($ed52_d_resultfinal,5,2));
- $ano = substr($ed52_d_resultfinal,0,4);
+ $dia = substr((string) $ed52_d_resultfinal,8,2);
+ $mes = db_mes(substr((string) $ed52_d_resultfinal,5,2));
+ $ano = substr((string) $ed52_d_resultfinal,0,4);
  $head1 = "ATA DE RESULTADOS FINAIS";
  $head2 = "Aos $dia dias do mês de $mes de $ano conclui-se a apuração final do rendimento escolar, nos termos da lei 9394 de 20 de dezembro de 1996.";
  $head3 = "Tipo de Ensino: $ed10_c_descr";
@@ -173,15 +173,15 @@ for($x=0;$x<$clturma->numrows;$x++){
   if($linhas5>0){
    for($v=0;$v<$linhas5;$v++){
     db_fieldsmemory($result5,$v);
-    if(trim($ed60_c_situacao)!="MATRICULADO"){
+    if(trim((string) $ed60_c_situacao)!="MATRICULADO"){
      //$aproveitamento = trim($ed60_c_situacao);
     }else{
-     if(trim($ed81_c_todoperiodo)=="S"){
+     if(trim((string) $ed81_c_todoperiodo)=="S"){
       $aproveitamento = "AMPARADO";
      }else{
-      if(trim($ed37_c_tipo)=="NOTA"){
+      if(trim((string) $ed37_c_tipo)=="NOTA"){
        $aproveitamento = number_format($ed74_c_valoraprov,2,".",".");
-      }elseif(trim($ed37_c_tipo)=="PARECER"){
+      }elseif(trim((string) $ed37_c_tipo)=="PARECER"){
        $aproveitamento = "Parecer";
       }else{
        $aproveitamento = $ed74_c_valoraprov;
@@ -465,15 +465,15 @@ for($x=0;$x<$clturma->numrows;$x++){
    if($linhas5>0){
     for($v=0;$v<$linhas5;$v++){
      db_fieldsmemory($result5,$v);
-     if(trim($ed60_c_situacao)!="MATRICULADO"){
+     if(trim((string) $ed60_c_situacao)!="MATRICULADO"){
       //$aproveitamento = trim($ed60_c_situacao);
      }else{
-      if(trim($ed81_c_todoperiodo)=="S"){
+      if(trim((string) $ed81_c_todoperiodo)=="S"){
        $aproveitamento = "AMPARADO";
       }else{
-       if(trim($ed37_c_tipo)=="NOTA"){
+       if(trim((string) $ed37_c_tipo)=="NOTA"){
         $aproveitamento = number_format($ed74_c_valoraprov,2,".",".");
-       }elseif(trim($ed37_c_tipo)=="PARECER"){
+       }elseif(trim((string) $ed37_c_tipo)=="PARECER"){
         $aproveitamento = "Parecer";
        }else{
         $aproveitamento = $ed74_c_valoraprov;

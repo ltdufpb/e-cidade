@@ -68,13 +68,13 @@ class EncerramentoExercicio {
      *
      * @var array
      */
-    private $aEncerramentos = array();
+    private $aEncerramentos = [];
 
     /**
      * Lista de Encerramentos para o exercicio
      * @var array
      */
-    protected $aListaEncerramentos = array();
+    protected $aListaEncerramentos = [];
 
     /**
      * Retorna a lista dos encerramentos disponíveis
@@ -100,14 +100,14 @@ class EncerramentoExercicio {
      * Codigo dos encerramentos
      * @var array
      */
-    private $aCodigosEncerramentos = array();
+    private $aCodigosEncerramentos = [];
 
 
     /**
      * Lista de contas Correntes removidas
      * @var array
      */
-    private $aListaContaCorrentes = array();
+    private $aListaContaCorrentes = [];
 
     /**
      * Encerramento do exercicio contabil
@@ -121,12 +121,12 @@ class EncerramentoExercicio {
         if (empty($oInstituicao) || empty ($iAno)) {
             throw new ParameterException("Informe a instituição e o ano do encerramento");
         }
-        $this->aListaEncerramentos = array(
+        $this->aListaEncerramentos = [
             self::ENCERRAR_RESTOS_A_PAGAR,
             self::ENCERRAR_SISTEMA_ORCAMENTARIO_CONTROLE,
             self::ENCERRAR_VARIACOES_PATRIMONIAIS,
             self::ENCERRAR_IMPLANTACAO_SALDOS
-        );
+        ];
 
         $this->oInstituicao = $oInstituicao;
         $this->iAno         = $iAno;
@@ -175,30 +175,13 @@ class EncerramentoExercicio {
             throw new DBException("Sem transacao com o banco de dados");
         }
         $this->desabiliarContaCorrente();
-        switch ($iTipoEncerramento) {
-
-            case EncerramentoExercicio::ENCERRAR_RESTOS_A_PAGAR:
-                $this->encerrarRestosAPagar();
-                break;
-
-            case EncerramentoExercicio::ENCERRAR_VARIACOES_PATRIMONIAIS:
-
-                $this->encerrarVariacoesPatrimoniais();
-                break;
-
-            case EncerramentoExercicio::ENCERRAR_SISTEMA_ORCAMENTARIO_CONTROLE:
-
-                $this->encerrarSistemaOrcamentario();
-                break;
-            case EncerramentoExercicio::ENCERRAR_IMPLANTACAO_SALDOS:
-
-                $this->encerrarImplantacaoSaldos();
-                break;
-            default:
-
-                throw new ParameterException('Tipo de encerramento não existe');
-                break;
-        }
+        match ($iTipoEncerramento) {
+            EncerramentoExercicio::ENCERRAR_RESTOS_A_PAGAR => $this->encerrarRestosAPagar(),
+            EncerramentoExercicio::ENCERRAR_VARIACOES_PATRIMONIAIS => $this->encerrarVariacoesPatrimoniais(),
+            EncerramentoExercicio::ENCERRAR_SISTEMA_ORCAMENTARIO_CONTROLE => $this->encerrarSistemaOrcamentario(),
+            EncerramentoExercicio::ENCERRAR_IMPLANTACAO_SALDOS => $this->encerrarImplantacaoSaldos(),
+            default => throw new ParameterException('Tipo de encerramento não existe'),
+        };
         $this->habilitarContasCorrentes();
         $this->encerrarPeriodoContabil();
     }
@@ -560,7 +543,7 @@ class EncerramentoExercicio {
             . " and c117_instit = {$this->oInstituicao->getCodigo()}" );
         $rsRegrasEncerramento   = $oDaoRegrasEncerramento->sql_record( $sSqlRegrasEncerramento );
 
-        $aRegras = array();
+        $aRegras = [];
 
         if ($oDaoRegrasEncerramento->numrows > 0) {
             $aRegras = db_utils::getCollectionByRecord($rsRegrasEncerramento);
@@ -602,8 +585,8 @@ class EncerramentoExercicio {
 
             $iContaReferencia = db_utils::fieldsMemory($rsContaReferencia, 0)->c61_reduz;
 
-            $iTamanhoEstruturalDevedor = strlen($oRegra->c117_contadevedora);
-            $iTamanhoEstruturalCredor  = strlen($oRegra->c117_contacredora);
+            $iTamanhoEstruturalDevedor = strlen((string) $oRegra->c117_contadevedora);
+            $iTamanhoEstruturalCredor  = strlen((string) $oRegra->c117_contacredora);
 
             $sWhereBalancete  = "(substr(c60_estrut, 1, {$iTamanhoEstruturalDevedor}) = '{$oRegra->c117_contadevedora}'  ";
             $sWhereBalancete .= "or substr(c60_estrut, 1, {$iTamanhoEstruturalCredor}) = '{$oRegra->c117_contacredora}' )";
@@ -719,11 +702,11 @@ class EncerramentoExercicio {
          * Consideramos somente esses para fins de bloqueio contábil, visto
          * que a implantação de saldo é opcional
          */
-        $aListaEncerramentos = array(
+        $aListaEncerramentos = [
             self::ENCERRAR_RESTOS_A_PAGAR,
             self::ENCERRAR_SISTEMA_ORCAMENTARIO_CONTROLE,
             self::ENCERRAR_VARIACOES_PATRIMONIAIS,
-        );
+        ];
 
         $oDaoConEncerramento = new cl_conencerramento();
         $oDaoConEncerramento->lancaBloqueioContabil(implode(",", $aListaEncerramentos));

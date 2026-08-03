@@ -96,8 +96,8 @@ $sLetra   = 'arial';
 
 if ( $lLista ) {
 	
-  $aDadosLoteamento      = array();
-  $aDadosCgm             = array();
+  $aDadosLoteamento      = [];
+  $aDadosCgm             = [];
   $iTotalGeralAreaConstr = 0;
   $iTotalGeralAreaPublic = 0;
   $iTotalGeralAreaTotal  = 0;
@@ -117,7 +117,7 @@ if ( $lLista ) {
       
      if ( !isset($aDadosLoteamento[$oDadosLoteAm->j34_loteam]) ) {
        $aDadosLoteamento[$oDadosLoteAm->j34_loteam]['oDadosLoteamento'] = $oDadosLoteamento;
-       $aDadosLoteamento[$oDadosLoteAm->j34_loteam]['oDadosCgm'] = array();
+       $aDadosLoteamento[$oDadosLoteAm->j34_loteam]['oDadosCgm'] = [];
      }  
      
      if ( !empty($oDadosLoteAm->z01_numcgm) ) {
@@ -132,7 +132,7 @@ if ( $lLista ) {
 
   foreach ( $aDadosLoteamento as $iCodigo => $aDadosListaResp ) {
     
-    $sDescr = substr($aDadosListaResp['oDadosLoteamento']->Descricao,0,35);
+    $sDescr = substr((string) $aDadosListaResp['oDadosLoteamento']->Descricao,0,35);
     
     if ($pdf->gety() > $pdf->h - 30  || $lImprime  ) {
       
@@ -173,7 +173,7 @@ if ( $lLista ) {
     	
       $pdf->Cell(88,5,""                            ,0,0,"C",$iPreencher);
       $pdf->Cell(30,5,$aDadosCGM->NumCgm            ,0,0,"C",$iPreencher);   
-      $pdf->Cell(75,5,substr($aDadosCGM->Nome,0,35) ,0,1,"L",$iPreencher);  
+      $pdf->Cell(75,5,substr((string) $aDadosCGM->Nome,0,35) ,0,1,"L",$iPreencher);  
     }
     
     $iTotalGeralAreaConstr += $aDadosListaResp['oDadosLoteamento']->AreaConstr;
@@ -194,7 +194,7 @@ $pdf->Cell(35,5,$iTotalGeralAreaPublic                                 ,0,0,"R",
 $pdf->Cell(35,5,$iTotalGeralAreaTotal                                  ,0,1,"R",0);
 } else {
 	
-	$aDadosLoteamento      = array();
+	$aDadosLoteamento      = [];
 	$iTotalGeralAreaConstr = 0;
 	$iTotalGeralAreaPublic = 0;
 	$iTotalGeralAreaTotal  = 0;
@@ -219,7 +219,7 @@ $pdf->Cell(35,5,$iTotalGeralAreaTotal                                  ,0,1,"R",
 	
 	foreach ( $aDadosLoteamento as $iCodigo => $aDadosListaResp ) {
 		
-		$sDescr = substr($aDadosListaResp['oDadosLoteamento']->Descricao,0,35);
+		$sDescr = substr((string) $aDadosListaResp['oDadosLoteamento']->Descricao,0,35);
 		
     if ($pdf->gety() > $pdf->h - 30  || $lImprime  ) {
       

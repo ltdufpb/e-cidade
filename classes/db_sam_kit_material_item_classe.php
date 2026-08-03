@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE sam_kit_material_item
 class cl_sam_kit_material_item { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sm04_sequencial = 0; 
-   var $sm04_material = 0; 
-   var $sm04_kit_material = 0; 
-   var $sm04_quantidade = 0; 
+   public $sm04_sequencial = 0; 
+   public $sm04_material = 0; 
+   public $sm04_kit_material = 0; 
+   public $sm04_quantidade = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sm04_sequencial = int4 = Código 
                  sm04_material = int4 = Material 
                  sm04_kit_material = int4 = kit_material 
                  sm04_quantidade = numeric(10) = Quantidade 
                  ";
    //funcao construtor da classe 
-   function cl_sam_kit_material_item() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sam_kit_material_item"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_sam_kit_material_item {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sm04_sequencial = pg_result($result,0,0); 
+       $this->sm04_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sam_kit_material_item_sm04_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sm04_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sm04_sequencial)){
          $this->erro_sql = " Campo sm04_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_sam_kit_material_item {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Kit Material Item ($this->sm04_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Kit Material Item já Cadastrado";
@@ -180,13 +180,13 @@ class cl_sam_kit_material_item {
      $resaco = $this->sql_record($this->sql_query_file($this->sm04_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18588,'$this->sm04_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3290,18588,'','".AddSlashes(pg_result($resaco,0,'sm04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3290,18589,'','".AddSlashes(pg_result($resaco,0,'sm04_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3290,18591,'','".AddSlashes(pg_result($resaco,0,'sm04_kit_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3290,18593,'','".AddSlashes(pg_result($resaco,0,'sm04_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3290,18588,'','".AddSlashes(pg_fetch_result($resaco,0,'sm04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3290,18589,'','".AddSlashes(pg_fetch_result($resaco,0,'sm04_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3290,18591,'','".AddSlashes(pg_fetch_result($resaco,0,'sm04_kit_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3290,18593,'','".AddSlashes(pg_fetch_result($resaco,0,'sm04_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_sam_kit_material_item {
       $this->atualizacampos();
      $sql = " update sam_kit_material_item set ";
      $virgula = "";
-     if(trim($this->sm04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm04_sequencial"])){ 
+     if(trim((string) $this->sm04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm04_sequencial"])){ 
        $sql  .= $virgula." sm04_sequencial = $this->sm04_sequencial ";
        $virgula = ",";
-       if(trim($this->sm04_sequencial) == null ){ 
+       if(trim((string) $this->sm04_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sm04_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_sam_kit_material_item {
          return false;
        }
      }
-     if(trim($this->sm04_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm04_material"])){ 
+     if(trim((string) $this->sm04_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm04_material"])){ 
        $sql  .= $virgula." sm04_material = $this->sm04_material ";
        $virgula = ",";
-       if(trim($this->sm04_material) == null ){ 
+       if(trim((string) $this->sm04_material) == null ){ 
          $this->erro_sql = " Campo Material nao Informado.";
          $this->erro_campo = "sm04_material";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_sam_kit_material_item {
          return false;
        }
      }
-     if(trim($this->sm04_kit_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm04_kit_material"])){ 
+     if(trim((string) $this->sm04_kit_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm04_kit_material"])){ 
        $sql  .= $virgula." sm04_kit_material = $this->sm04_kit_material ";
        $virgula = ",";
-       if(trim($this->sm04_kit_material) == null ){ 
+       if(trim((string) $this->sm04_kit_material) == null ){ 
          $this->erro_sql = " Campo kit_material nao Informado.";
          $this->erro_campo = "sm04_kit_material";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_sam_kit_material_item {
          return false;
        }
      }
-     if(trim($this->sm04_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm04_quantidade"])){ 
+     if(trim((string) $this->sm04_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm04_quantidade"])){ 
        $sql  .= $virgula." sm04_quantidade = $this->sm04_quantidade ";
        $virgula = ",";
-       if(trim($this->sm04_quantidade) == null ){ 
+       if(trim((string) $this->sm04_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "sm04_quantidade";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_sam_kit_material_item {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18588,'$this->sm04_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sm04_sequencial"]) || $this->sm04_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3290,18588,'".AddSlashes(pg_result($resaco,$conresaco,'sm04_sequencial'))."','$this->sm04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3290,18588,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sm04_sequencial'))."','$this->sm04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sm04_material"]) || $this->sm04_material != "")
-           $resac = db_query("insert into db_acount values($acount,3290,18589,'".AddSlashes(pg_result($resaco,$conresaco,'sm04_material'))."','$this->sm04_material',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3290,18589,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sm04_material'))."','$this->sm04_material',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sm04_kit_material"]) || $this->sm04_kit_material != "")
-           $resac = db_query("insert into db_acount values($acount,3290,18591,'".AddSlashes(pg_result($resaco,$conresaco,'sm04_kit_material'))."','$this->sm04_kit_material',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3290,18591,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sm04_kit_material'))."','$this->sm04_kit_material',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sm04_quantidade"]) || $this->sm04_quantidade != "")
-           $resac = db_query("insert into db_acount values($acount,3290,18593,'".AddSlashes(pg_result($resaco,$conresaco,'sm04_quantidade'))."','$this->sm04_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3290,18593,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sm04_quantidade'))."','$this->sm04_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_sam_kit_material_item {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18588,'$sm04_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3290,18588,'','".AddSlashes(pg_result($resaco,$iresaco,'sm04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3290,18589,'','".AddSlashes(pg_result($resaco,$iresaco,'sm04_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3290,18591,'','".AddSlashes(pg_result($resaco,$iresaco,'sm04_kit_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3290,18593,'','".AddSlashes(pg_result($resaco,$iresaco,'sm04_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3290,18588,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sm04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3290,18589,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sm04_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3290,18591,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sm04_kit_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3290,18593,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sm04_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sam_kit_material_item
@@ -376,7 +376,7 @@ class cl_sam_kit_material_item {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sam_kit_material_item";
@@ -391,7 +391,7 @@ class cl_sam_kit_material_item {
    function sql_query ( $sm04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_sam_kit_material_item {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,7 +428,7 @@ class cl_sam_kit_material_item {
    function sql_query_file ( $sm04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_sam_kit_material_item {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

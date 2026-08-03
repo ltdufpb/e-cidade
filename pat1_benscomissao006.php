@@ -34,7 +34,7 @@ include(modification("classes/db_benscomissao_classe.php"));
 include(modification("classes/db_benscomissaousu_classe.php"));
 $clbenscomissao = new cl_benscomissao;
 $clbenscomissaousu = new cl_benscomissaousu;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 

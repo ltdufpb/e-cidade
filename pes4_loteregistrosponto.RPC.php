@@ -129,7 +129,7 @@ try {
   case "confirmarLote":
 
     foreach($oParam->listLoteInfo as $oLoteInfo){
-      
+
         $oLoteRegistros = LoteRegistrosPontoRepository::getInstanceByCodigo($oLoteInfo->iCodigoLote);
         $oLoteRegistros->setTipoFolha($oLoteInfo->iCodigoTipoFolha);
         $oLoteRegistros->confirmarLote();
@@ -140,7 +140,7 @@ try {
     break;
 
   case "cancelarConfirmacaoLote":
-    
+
     foreach($oParam->listLoteInfo as $oLoteInfo){
 
         $oLoteRegistros = LoteRegistrosPontoRepository::getInstanceByCodigo($oLoteInfo->iCodigoLote);
@@ -154,7 +154,7 @@ try {
   case "buscarRegistrosLote":
 
     $oLoteRegistros = LoteRegistrosPontoRepository::getInstanceByCodigo($oParam->iCodigoLote);
-    $aRegistrosLote = array();
+    $aRegistrosLote = [];
 
     foreach ($oLoteRegistros->getRegistroPonto() as $oRegistro) {
 
@@ -186,15 +186,15 @@ try {
     /** Valida se a Rubrica é do tipo que espera quantidade e/ou valor
      */
     $oRubricaVerificar = RubricaRepository::getInstanciaByCodigo($oParam->sRubrica);
-    $sFormulaRubricaVerificar  = str_replace(" ", "", trim($oRubricaVerificar->getFormulaCalculo()));
-    $sFormula2RubricaVerificar = str_replace(" ", "", trim($oRubricaVerificar->getFormulaCalculo2()));
-    $sFormula3RubricaVerificar = str_replace(" ", "", trim($oRubricaVerificar->getFormulaCalculo3()));
+    $sFormulaRubricaVerificar  = str_replace(" ", "", trim((string) $oRubricaVerificar->getFormulaCalculo()));
+    $sFormula2RubricaVerificar = str_replace(" ", "", trim((string) $oRubricaVerificar->getFormulaCalculo2()));
+    $sFormula3RubricaVerificar = str_replace(" ", "", trim((string) $oRubricaVerificar->getFormulaCalculo3()));
     /**
      * Se a rubrica não tem fórmula deve ser informado valores, senão deve ser informado quantidade
      */
     if ($sFormulaRubricaVerificar == "" && $sFormula2RubricaVerificar == "" && $sFormula3RubricaVerificar == "") {
 
-      if (str_replace(" ", "",trim($oParam->nValor)) == "" || $oParam->nValor <= 0) {
+      if (str_replace(" ", "",trim((string) $oParam->nValor)) == "" || $oParam->nValor <= 0) {
         $oVarErro              = new stdClass();
         $oVarErro->codRubrica  = $oParam->sRubrica;
         $oVarErro->codServidor = $oParam->sMatricula;
@@ -205,7 +205,7 @@ try {
 
     } else {
 
-      if (str_replace(" ", "",trim($oParam->iQuantidade)) == "" || $oParam->iQuantidade <= 0) {
+      if (str_replace(" ", "",trim((string) $oParam->iQuantidade)) == "" || $oParam->iQuantidade <= 0) {
         $oVarErro              = new stdClass();
         $oVarErro->codRubrica  = $oParam->sRubrica;
         $oVarErro->codServidor = $oParam->sMatricula;
@@ -220,13 +220,13 @@ try {
                                                                                               db_getsession('DB_instit'),
                                                                                               $oParam->sRubrica,
                                                                                               $oParam->sMatricula);
-   
+
     if ($lVerificacaoDuplicidade) {
         $oRetorno->erro      = true;
         $oRetorno->message   = urlencode(_M(MENSAGENS ."registro_ponto_duplicado"));
         break;
     }
-    
+
     if ($oRetorno->erro === false) {
 
         $service = new ControleRubricasCalculoService(
@@ -314,7 +314,7 @@ try {
     }
 
     $aLoteRegistros = LoteRegistrosPontoRepository::getLotesByUsuario(UsuarioSistemaRepository::getPorCodigo($oParam->iCodigoUsuario), DBPessoal::getCompetenciaFolha());
-    $aResposta      = array();
+    $aResposta      = [];
     foreach ( $aLoteRegistros as $oLote ) {
       $aResposta[] = $oLote->toStdClass();
     }
@@ -325,7 +325,7 @@ try {
 
     $oCompetencia              = new DBCompetencia($oParam->iAno, $oParam->iMes);
     $aLoteRegistrosCompetencia = LoteRegistrosPontoRepository::getLotesByCompetencia($oCompetencia,false,null,null,false);
-    $aResposta                 = array();
+    $aResposta                 = [];
 
     foreach ($aLoteRegistrosCompetencia as $oLote) {
       $aResposta[] = $oLote->toStdClass();
@@ -337,8 +337,8 @@ try {
   case "alterarRegistrosLote":
 
     $oDadosAtualizar         = $oJson->decode($oParam->oDadosAtualizar);
-    $aMessagensLimiteRubricaBloqueio = array();
-    $aMessagensLimiteRubricaAviso    = array();
+    $aMessagensLimiteRubricaBloqueio = [];
+    $aMessagensLimiteRubricaAviso    = [];
     $lExcedeuLimite                  = false;
     $lExcedeuLimiteBloqueio          = false;
 
@@ -347,15 +347,15 @@ try {
       /** Valida se a Rubrica é do tipo que espera quantidade e/ou valor
        */
       $oRubricaVerificar         = RubricaRepository::getInstanciaByCodigo($oDados->sRubrica);
-      $sFormulaRubricaVerificar  = str_replace(" ", "", trim($oRubricaVerificar->getFormulaCalculo()));
-      $sFormula2RubricaVerificar = str_replace(" ", "", trim($oRubricaVerificar->getFormulaCalculo2()));
-      $sFormula3RubricaVerificar = str_replace(" ", "", trim($oRubricaVerificar->getFormulaCalculo3()));
+      $sFormulaRubricaVerificar  = str_replace(" ", "", trim((string) $oRubricaVerificar->getFormulaCalculo()));
+      $sFormula2RubricaVerificar = str_replace(" ", "", trim((string) $oRubricaVerificar->getFormulaCalculo2()));
+      $sFormula3RubricaVerificar = str_replace(" ", "", trim((string) $oRubricaVerificar->getFormulaCalculo3()));
       /**
        * Se a rubrica não tem fórmula deve ser informado valores, senão deve ser informado quantidade
        */
       if ($sFormulaRubricaVerificar == "" && $sFormula2RubricaVerificar == "" && $sFormula3RubricaVerificar == "") {
 
-        if (str_replace(" ", "",trim($oDados->iValor)) == "" || $oDados->iValor <= 0) {
+        if (str_replace(" ", "",trim((string) $oDados->iValor)) == "" || $oDados->iValor <= 0) {
           $oVarErro              = new stdClass();
           $oVarErro->codRubrica  = $oDados->sRubrica;
           $oVarErro->codServidor = $oDados->iMatricula;
@@ -366,7 +366,7 @@ try {
 
       } else {
 
-        if (str_replace(" ", "",trim($oDados->iQuantidade)) == "" || $oDados->iQuantidade <= 0) {
+        if (str_replace(" ", "",trim((string) $oDados->iQuantidade)) == "" || $oDados->iQuantidade <= 0) {
           $oVarErro             = new stdClass();
           $oVarErro->codRubrica = $oDados->sRubrica;
           $oVarErro->codServidor = $oDados->iMatricula;
@@ -376,13 +376,13 @@ try {
         }
       }
 
-      if(strtolower($oRubricaVerificar->getTipoBloqueio()) != 'n') {
+      if(strtolower((string) $oRubricaVerificar->getTipoBloqueio()) != 'n') {
 
         if((float)$oRubricaVerificar->getQuantidadeLimite() > 0 && (float)$oRubricaVerificar->getQuantidadeLimite() < $oDados->iQuantidade) {
 
-          $oVarErroLimiteQuantidade = (object)array('quantidade' => $oRubricaVerificar->getQuantidadeLimite());
+          $oVarErroLimiteQuantidade = (object)['quantidade' => $oRubricaVerificar->getQuantidadeLimite()];
 
-          if(strtolower($oRubricaVerificar->getTipoBloqueio()) == 'b') {
+          if(strtolower((string) $oRubricaVerificar->getTipoBloqueio()) == 'b') {
 
             $sMessagemLimiteRubricaBloqueio    = $oRubricaVerificar->getCodigo() .' - ';
             $sMessagemLimiteRubricaBloqueio   .= _M( MENSAGENS_VALIDAR_LIMITE_RUBRICA . "limite_quantidade_excedido", $oVarErroLimiteQuantidade );
@@ -390,7 +390,7 @@ try {
             $lExcedeuLimiteBloqueio = true;
           }
 
-          if(strtolower($oRubricaVerificar->getTipoBloqueio()) == 'a') {
+          if(strtolower((string) $oRubricaVerificar->getTipoBloqueio()) == 'a') {
 
             $sMessagemLimiteRubricaAviso    = $oRubricaVerificar->getCodigo() .' - ';
             $sMessagemLimiteRubricaAviso   .= _M( MENSAGENS_VALIDAR_LIMITE_RUBRICA . "limite_quantidade_excedido", $oVarErroLimiteQuantidade );
@@ -402,9 +402,9 @@ try {
 
         if((float)$oRubricaVerificar->getValorLimite() > 0 && (float)$oRubricaVerificar->getValorLimite() < $oDados->iValor) {
 
-          $oVarErroLimiteValor = (object)array('valor' => $oRubricaVerificar->getValorLimite());
+          $oVarErroLimiteValor = (object)['valor' => $oRubricaVerificar->getValorLimite()];
 
-          if(strtolower($oRubricaVerificar->getTipoBloqueio()) == 'b') {
+          if(strtolower((string) $oRubricaVerificar->getTipoBloqueio()) == 'b') {
 
             $sMessagemLimiteRubricaBloqueio    = $oRubricaVerificar->getCodigo() .' - ';
             $sMessagemLimiteRubricaBloqueio   .= _M( MENSAGENS_VALIDAR_LIMITE_RUBRICA . "limite_valor_excedido", $oVarErroLimiteValor );
@@ -412,7 +412,7 @@ try {
             $lExcedeuLimiteBloqueio = true;
           }
 
-          if(strtolower($oRubricaVerificar->getTipoBloqueio()) == 'a') {
+          if(strtolower((string) $oRubricaVerificar->getTipoBloqueio()) == 'a') {
 
             $sMessagemLimiteRubricaAviso    = $oRubricaVerificar->getCodigo() .' - ';
             $sMessagemLimiteRubricaAviso   .= _M( MENSAGENS_VALIDAR_LIMITE_RUBRICA . "limite_valor_excedido", $oVarErroLimiteValor );
@@ -466,7 +466,7 @@ try {
       $oRegistro->setInstituicao(InstituicaoRepository::getInstituicaoSessao());
       $oRegistro->setFolhaPagamento(new FolhaPagamentoSalario());
       $oRegistro->setCompetencia(db_stdClass::normalizeStringJsonEscapeString($oDados->sCompetencia));
-      
+
       $oRetorno->oRegistro = RegistroLoteRegistrosPontoRepository::persist($oRegistro);
       $oRetorno->oRegistro = $oRetorno->oRegistro->toStdClass();
       $oRetorno->erro      = false;
@@ -521,7 +521,7 @@ try {
 
   $oRetorno->erro                     = true;
   $oRetorno->message                  = urlencode($oErro->getMessage());
-  $oRetorno->messagemValidacaoLimites = urlencode($oRetorno->messagemValidacaoLimites);
+  $oRetorno->messagemValidacaoLimites = urlencode((string) $oRetorno->messagemValidacaoLimites);
 }
 
 echo $oJson->encode($oRetorno);

@@ -17,7 +17,7 @@ class Request extends ParameterBag
     /**
      * @var array
      */
-    protected $rules = array();
+    protected $rules = [];
 
     /**
      * @var Validator
@@ -29,7 +29,7 @@ class Request extends ParameterBag
      * @param array $parameters
      * @throws Exception
      */
-    public function __construct(array $parameters = array())
+    public function __construct(array $parameters = [])
     {
         $this->validator = new Validator($parameters);
         $this->validator->rules($this->rules);

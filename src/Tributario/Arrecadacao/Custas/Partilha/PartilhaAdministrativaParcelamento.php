@@ -52,8 +52,8 @@ abstract class PartilhaAdministrativaParcelamento extends PartilhaAdministrativa
         parent::__construct($calculoColesao, $inicial);
 
         $this->termo = $termo;
-        $this->termoTaxaParcelaRepository = TermoTaxaParcela::getInstance();
-        $this->taxasParcelas = array();
+        $this->termoTaxaParcelaRepository = (new TermoTaxaParcela())->getInstance();
+        $this->taxasParcelas = [];
     }
 
     protected function processarGeracaoPartilha(array $taxasEmissao)
@@ -94,7 +94,7 @@ abstract class PartilhaAdministrativaParcelamento extends PartilhaAdministrativa
     {
         $termoTaxasParcelas = $this->termoTaxaParcelaRepository->getByInstituicao();
 
-        $taxasParcelas = array();
+        $taxasParcelas = [];
 
         foreach ($termoTaxasParcelas as $termoTaxaParcela) {
             $parcela = $termoTaxaParcela->getNumpar();

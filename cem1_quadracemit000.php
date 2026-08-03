@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas     = new cl_criaabas;
 ?>
 <html>
@@ -55,9 +55,9 @@ $clcriaabas     = new cl_criaabas;
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-      $clcriaabas->identifica = array("a1"=>"Quadra","a2"=>"Lotes");
-      $clcriaabas->src = array("a1"=>"cem1_quadracemit00".$db_opcao.".php","a2"=>"cem1_lotecemit001.php");
-      $clcriaabas->disabled   =  array("a2"=>"true");
+      $clcriaabas->identifica = ["a1"=>"Quadra","a2"=>"Lotes"];
+      $clcriaabas->src = ["a1"=>"cem1_quadracemit00".$db_opcao.".php","a2"=>"cem1_lotecemit001.php"];
+      $clcriaabas->disabled   =  ["a2"=>"true"];
       $clcriaabas->scrolling  = "yes";
       $clcriaabas->cria_abas();
      ?>

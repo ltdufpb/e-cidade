@@ -38,7 +38,7 @@ $clacidentes = new cl_acidentes;
 $clveiculos_env = new cl_veiculos_env;
 $clvitimas_acid = new cl_vitimas_acid;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

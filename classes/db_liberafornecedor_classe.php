@@ -29,41 +29,41 @@
 //CLASSE DA ENTIDADE liberafornecedor
 class cl_liberafornecedor { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc82_sequencial = 0; 
-   var $pc82_id_usuario = 0; 
-   var $pc82_numcgm = 0; 
-   var $pc82_dataini_dia = null; 
-   var $pc82_dataini_mes = null; 
-   var $pc82_dataini_ano = null; 
-   var $pc82_dataini = null; 
-   var $pc82_datafim_dia = null; 
-   var $pc82_datafim_mes = null; 
-   var $pc82_datafim_ano = null; 
-   var $pc82_datafim = null; 
-   var $pc82_obs = null; 
-   var $pc82_data_dia = null; 
-   var $pc82_data_mes = null; 
-   var $pc82_data_ano = null; 
-   var $pc82_data = null; 
-   var $pc82_liberasol = 'f'; 
-   var $pc82_liberaproc = 'f'; 
-   var $pc82_liberaaut = 'f'; 
-   var $pc82_ativo = 'f'; 
+   public $pc82_sequencial = 0; 
+   public $pc82_id_usuario = 0; 
+   public $pc82_numcgm = 0; 
+   public $pc82_dataini_dia = null; 
+   public $pc82_dataini_mes = null; 
+   public $pc82_dataini_ano = null; 
+   public $pc82_dataini = null; 
+   public $pc82_datafim_dia = null; 
+   public $pc82_datafim_mes = null; 
+   public $pc82_datafim_ano = null; 
+   public $pc82_datafim = null; 
+   public $pc82_obs = null; 
+   public $pc82_data_dia = null; 
+   public $pc82_data_mes = null; 
+   public $pc82_data_ano = null; 
+   public $pc82_data = null; 
+   public $pc82_liberasol = 'f'; 
+   public $pc82_liberaproc = 'f'; 
+   public $pc82_liberaaut = 'f'; 
+   public $pc82_ativo = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc82_sequencial = int4 = Código 
                  pc82_id_usuario = int4 = Usuário 
                  pc82_numcgm = int4 = CGM 
@@ -77,10 +77,10 @@ class cl_liberafornecedor {
                  pc82_ativo = bool = Ativo 
                  ";
    //funcao construtor da classe 
-   function cl_liberafornecedor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liberafornecedor"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -212,10 +212,10 @@ class cl_liberafornecedor {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc82_sequencial = pg_result($result,0,0); 
+       $this->pc82_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from liberafornecedor_pc82_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc82_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc82_sequencial)){
          $this->erro_sql = " Campo pc82_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -263,7 +263,7 @@ class cl_liberafornecedor {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Libera Fornecedor ($this->pc82_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Libera Fornecedor já Cadastrado";
@@ -287,20 +287,20 @@ class cl_liberafornecedor {
      $resaco = $this->sql_record($this->sql_query_file($this->pc82_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15518,'$this->pc82_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2724,15518,'','".AddSlashes(pg_result($resaco,0,'pc82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2724,15519,'','".AddSlashes(pg_result($resaco,0,'pc82_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2724,15520,'','".AddSlashes(pg_result($resaco,0,'pc82_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2724,15521,'','".AddSlashes(pg_result($resaco,0,'pc82_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2724,15522,'','".AddSlashes(pg_result($resaco,0,'pc82_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2724,15523,'','".AddSlashes(pg_result($resaco,0,'pc82_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2724,15524,'','".AddSlashes(pg_result($resaco,0,'pc82_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2724,15525,'','".AddSlashes(pg_result($resaco,0,'pc82_liberasol'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2724,15526,'','".AddSlashes(pg_result($resaco,0,'pc82_liberaproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2724,15527,'','".AddSlashes(pg_result($resaco,0,'pc82_liberaaut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2724,15528,'','".AddSlashes(pg_result($resaco,0,'pc82_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15518,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15519,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15520,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15521,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15522,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15523,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15524,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15525,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_liberasol'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15526,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_liberaproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15527,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_liberaaut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2724,15528,'','".AddSlashes(pg_fetch_result($resaco,0,'pc82_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -309,10 +309,10 @@ class cl_liberafornecedor {
       $this->atualizacampos();
      $sql = " update liberafornecedor set ";
      $virgula = "";
-     if(trim($this->pc82_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_sequencial"])){ 
+     if(trim((string) $this->pc82_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_sequencial"])){ 
        $sql  .= $virgula." pc82_sequencial = $this->pc82_sequencial ";
        $virgula = ",";
-       if(trim($this->pc82_sequencial) == null ){ 
+       if(trim((string) $this->pc82_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "pc82_sequencial";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_id_usuario"])){ 
+     if(trim((string) $this->pc82_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_id_usuario"])){ 
        $sql  .= $virgula." pc82_id_usuario = $this->pc82_id_usuario ";
        $virgula = ",";
-       if(trim($this->pc82_id_usuario) == null ){ 
+       if(trim((string) $this->pc82_id_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "pc82_id_usuario";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_numcgm"])){ 
+     if(trim((string) $this->pc82_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_numcgm"])){ 
        $sql  .= $virgula." pc82_numcgm = $this->pc82_numcgm ";
        $virgula = ",";
-       if(trim($this->pc82_numcgm) == null ){ 
+       if(trim((string) $this->pc82_numcgm) == null ){ 
          $this->erro_sql = " Campo CGM nao Informado.";
          $this->erro_campo = "pc82_numcgm";
          $this->erro_banco = "";
@@ -348,7 +348,7 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_dataini_dia"] !="") ){ 
+     if(trim((string) $this->pc82_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_dataini_dia"] !="") ){ 
        $sql  .= $virgula." pc82_dataini = '$this->pc82_dataini' ";
        $virgula = ",";
      }     else{ 
@@ -357,7 +357,7 @@ class cl_liberafornecedor {
          $virgula = ",";
        }
      }
-     if(trim($this->pc82_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_datafim_dia"] !="") ){ 
+     if(trim((string) $this->pc82_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_datafim_dia"] !="") ){ 
        $sql  .= $virgula." pc82_datafim = '$this->pc82_datafim' ";
        $virgula = ",";
      }     else{ 
@@ -366,14 +366,14 @@ class cl_liberafornecedor {
          $virgula = ",";
        }
      }
-     if(trim($this->pc82_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_obs"])){ 
+     if(trim((string) $this->pc82_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_obs"])){ 
        $sql  .= $virgula." pc82_obs = '$this->pc82_obs' ";
        $virgula = ",";
      }
-     if(trim($this->pc82_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"] !="") ){ 
+     if(trim((string) $this->pc82_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"] !="") ){ 
        $sql  .= $virgula." pc82_data = '$this->pc82_data' ";
        $virgula = ",";
-       if(trim($this->pc82_data) == null ){ 
+       if(trim((string) $this->pc82_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "pc82_data_dia";
          $this->erro_banco = "";
@@ -386,7 +386,7 @@ class cl_liberafornecedor {
        if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"])){ 
          $sql  .= $virgula." pc82_data = null ";
          $virgula = ",";
-         if(trim($this->pc82_data) == null ){ 
+         if(trim((string) $this->pc82_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "pc82_data_dia";
            $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_liberafornecedor {
          }
        }
      }
-     if(trim($this->pc82_liberasol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberasol"])){ 
+     if(trim((string) $this->pc82_liberasol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberasol"])){ 
        $sql  .= $virgula." pc82_liberasol = '$this->pc82_liberasol' ";
        $virgula = ",";
-       if(trim($this->pc82_liberasol) == null ){ 
+       if(trim((string) $this->pc82_liberasol) == null ){ 
          $this->erro_sql = " Campo Libera Solicitação nao Informado.";
          $this->erro_campo = "pc82_liberasol";
          $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_liberaproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberaproc"])){ 
+     if(trim((string) $this->pc82_liberaproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberaproc"])){ 
        $sql  .= $virgula." pc82_liberaproc = '$this->pc82_liberaproc' ";
        $virgula = ",";
-       if(trim($this->pc82_liberaproc) == null ){ 
+       if(trim((string) $this->pc82_liberaproc) == null ){ 
          $this->erro_sql = " Campo Libera Processo de Compras nao Informado.";
          $this->erro_campo = "pc82_liberaproc";
          $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_liberaaut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberaaut"])){ 
+     if(trim((string) $this->pc82_liberaaut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberaaut"])){ 
        $sql  .= $virgula." pc82_liberaaut = '$this->pc82_liberaaut' ";
        $virgula = ",";
-       if(trim($this->pc82_liberaaut) == null ){ 
+       if(trim((string) $this->pc82_liberaaut) == null ){ 
          $this->erro_sql = " Campo Liberação Autorização de Empenho nao Informado.";
          $this->erro_campo = "pc82_liberaaut";
          $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_ativo"])){ 
+     if(trim((string) $this->pc82_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_ativo"])){ 
        $sql  .= $virgula." pc82_ativo = '$this->pc82_ativo' ";
        $virgula = ",";
-       if(trim($this->pc82_ativo) == null ){ 
+       if(trim((string) $this->pc82_ativo) == null ){ 
          $this->erro_sql = " Campo Ativo nao Informado.";
          $this->erro_campo = "pc82_ativo";
          $this->erro_banco = "";
@@ -457,31 +457,31 @@ class cl_liberafornecedor {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15518,'$this->pc82_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_sequencial"]) || $this->pc82_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15518,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_sequencial'))."','$this->pc82_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15518,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_sequencial'))."','$this->pc82_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_id_usuario"]) || $this->pc82_id_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15519,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_id_usuario'))."','$this->pc82_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15519,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_id_usuario'))."','$this->pc82_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_numcgm"]) || $this->pc82_numcgm != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15520,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_numcgm'))."','$this->pc82_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15520,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_numcgm'))."','$this->pc82_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_dataini"]) || $this->pc82_dataini != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15521,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_dataini'))."','$this->pc82_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15521,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_dataini'))."','$this->pc82_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_datafim"]) || $this->pc82_datafim != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15522,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_datafim'))."','$this->pc82_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15522,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_datafim'))."','$this->pc82_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_obs"]) || $this->pc82_obs != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15523,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_obs'))."','$this->pc82_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15523,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_obs'))."','$this->pc82_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_data"]) || $this->pc82_data != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15524,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_data'))."','$this->pc82_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15524,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_data'))."','$this->pc82_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberasol"]) || $this->pc82_liberasol != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15525,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_liberasol'))."','$this->pc82_liberasol',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15525,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_liberasol'))."','$this->pc82_liberasol',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberaproc"]) || $this->pc82_liberaproc != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15526,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_liberaproc'))."','$this->pc82_liberaproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15526,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_liberaproc'))."','$this->pc82_liberaproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberaaut"]) || $this->pc82_liberaaut != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15527,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_liberaaut'))."','$this->pc82_liberaaut',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15527,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_liberaaut'))."','$this->pc82_liberaaut',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_ativo"]) || $this->pc82_ativo != "")
-           $resac = db_query("insert into db_acount values($acount,2724,15528,'".AddSlashes(pg_result($resaco,$conresaco,'pc82_ativo'))."','$this->pc82_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2724,15528,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc82_ativo'))."','$this->pc82_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -526,20 +526,20 @@ class cl_liberafornecedor {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15518,'$pc82_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2724,15518,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2724,15519,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2724,15520,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2724,15521,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2724,15522,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2724,15523,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2724,15524,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2724,15525,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_liberasol'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2724,15526,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_liberaproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2724,15527,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_liberaaut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2724,15528,'','".AddSlashes(pg_result($resaco,$iresaco,'pc82_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15518,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15519,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15520,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15521,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15522,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15523,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15524,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15525,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_liberasol'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15526,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_liberaproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15527,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_liberaaut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2724,15528,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc82_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from liberafornecedor
@@ -599,7 +599,7 @@ class cl_liberafornecedor {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:liberafornecedor";
@@ -614,7 +614,7 @@ class cl_liberafornecedor {
    function sql_query ( $pc82_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -637,7 +637,7 @@ class cl_liberafornecedor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -650,7 +650,7 @@ class cl_liberafornecedor {
    function sql_query_file ( $pc82_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -671,7 +671,7 @@ class cl_liberafornecedor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $daoNumeroControleInterno = new cl_numerocontroleinternorequisicao();
 $daoNumeroControleInterno->rotulo->label();
@@ -92,7 +92,7 @@ $daoNumeroControleInterno->rotulo->label();
 $campos = '*';
 $query = 'sql_query_file';
 $order = 'la65_numero';
-$where = array();
+$where = [];
 
 if (isset($abreLookup)) {
     if (!empty($la65_numero)) {
@@ -108,7 +108,7 @@ if (isset($abreLookup)) {
     }
 
     $sql = $daoNumeroControleInterno->{$query}(null, $campos, $order, implode(' AND ', $where));
-    $repassa = array();
+    $repassa = [];
 
     echo '<div class="container">';
     echo '  <fieldset>';

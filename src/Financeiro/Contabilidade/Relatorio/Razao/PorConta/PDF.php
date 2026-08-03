@@ -234,8 +234,8 @@ class PDF extends Relatorio
                             "c61_reduz = {$conta->c61_reduz} and c61_instit in ({$this->getInstituicao()})"
                         );
                         db_fim_transacao(true);
-                        @$saldo_anterior = pg_result($r_anterior, 0, "saldo_anterior");
-                        @$sinal_anterior = pg_result($r_anterior, 0, "sinal_anterior");
+                        @$saldo_anterior = pg_fetch_result($r_anterior, 0, "saldo_anterior");
+                        @$sinal_anterior = pg_fetch_result($r_anterior, 0, "sinal_anterior");
                         $this->writeSaldoAnterior($sinal_anterior, $saldo_anterior);
                         //-----------------------------
                         //---- totalizadores do movimento
@@ -419,8 +419,8 @@ class PDF extends Relatorio
                 );
                 db_fim_transacao(true);
                 if ($this->getContasSemMovimento()) {
-                    $saldo_anterior = @pg_result($r_anterior, 0, "saldo_anterior");
-                    $sinal_anterior = @pg_result($r_anterior, 0, "sinal_anterior");
+                    $saldo_anterior = @pg_fetch_result($r_anterior, 0, "saldo_anterior");
+                    $sinal_anterior = @pg_fetch_result($r_anterior, 0, "sinal_anterior");
                     $this->writeCabecalhoConta(
                         $dado->c61_reduz,
                         $dado->c60_estrut,

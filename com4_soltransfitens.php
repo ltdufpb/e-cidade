@@ -46,8 +46,8 @@ include(modification("classes/db_procandam_classe.php"));
 include(modification("classes/db_protprocesso_classe.php"));
 include(modification("classes/db_solordemtransf_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clpcproc = new cl_pcproc;
@@ -87,12 +87,12 @@ if (isset ($incluir)&&$incluir!="") {
 	
 	db_inicio_transacao();
 	
-	$arr_dados = array();
-	$dados 	   = split('#', $valores);
+	$arr_dados = [];
+	$dados 	   = preg_split('#\##m', $valores);
 	
 	for($w=0;$w<count($dados);$w++){
-		if (trim($dados[$w])!=""){
-			$info=split('_', $dados[$w]);
+		if (trim((string) $dados[$w])!=""){
+			$info=preg_split('#_#m', (string) $dados[$w]);
 			if (array_key_exists($info[2],$arr_dados)){	    	
 	    		$esp="#";
 			} else{
@@ -104,7 +104,7 @@ if (isset ($incluir)&&$incluir!="") {
 	reset($arr_dados);
 	for($w=0;$w<count($arr_dados);$w++){
 		$depto_dest=key($arr_dados);		
-		$cod_ord=split('#',$arr_dados[$depto_dest]);
+		$cod_ord=preg_split('#\##m',$arr_dados[$depto_dest]);
 		$clproctransfer->p62_hora = db_hora();
 		$clproctransfer->p62_dttran = date("Y-m-d", db_getsession("DB_datausu"));
 		$clproctransfer->p62_id_usuario = db_getsession("DB_id_usuario");
@@ -118,7 +118,7 @@ if (isset ($incluir)&&$incluir!="") {
 			$erro_msg=$clproctransfer->erro_msg;
 		}		
 		for($i=0;$i<count($cod_ord);$i++){
-			$info_item=split("_",$cod_ord[$i]);
+			$info_item=preg_split("#_#m",(string) $cod_ord[$i]);
 			$solicitem=$info_item[0];
 			$ordem=$info_item[1];
 			if ($sqlerro == false) {

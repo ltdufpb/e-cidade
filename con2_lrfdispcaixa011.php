@@ -42,7 +42,7 @@ $iAnousu = db_getsession("DB_anousu");
 //}else{
 //  $sRelatorio = "con2_lrfdispcaixa002_2008.php";
 //}
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 

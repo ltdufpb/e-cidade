@@ -75,7 +75,7 @@ class Importacao
     /**
      * @var array
      */
-    private $estruturaisNaoExcluidos = array();
+    private $estruturaisNaoExcluidos = [];
 
     public function __construct($iCodigo = null)
     {
@@ -299,7 +299,7 @@ class Importacao
             if ($oConta->isExclusao()) {
                 $this->deletaConta($oConta);
             } else {
-                $aParametrosBusca = array($oConta->getEstruturalFormatado());
+                $aParametrosBusca = [$oConta->getEstruturalFormatado()];
                 $rsConta = pg_execute("importacao_pcasp_select", $aParametrosBusca);
 
                 if (!$rsConta) {
@@ -338,10 +338,10 @@ class Importacao
         $iNivelEstrutura = \ContaPlano::getNivelEstrutura($oConta->getEstrutural());
         $sEstruturalAteNivel = \ContaPlano::getEstruturalAteNivel($oConta->getEstrutural(), $iNivelEstrutura);
 
-        $aWhere = array(
+        $aWhere = [
             "conplano.c60_estrut ilike '" . str_replace('.', '', $sEstruturalAteNivel) . "%'",
             "conplano.c60_anousu between {$this->oModelo->getExercicio()} and {$this->iAnoFinal}"
-        );
+        ];
         $oDaoReduzidos = new \cl_conplanoreduz();
         $sSqlVerificaLancamento = $oDaoReduzidos->sql_query_razao(
             null,
@@ -463,7 +463,7 @@ class Importacao
             0
         )->codcon;
         for ($iAno = $oConta->getModelo()->getExercicio(); $iAno <= $iAnoFim; $iAno++) {
-            $aParametros = array(
+            $aParametros = [
                 $iCodigoConta,
                 $iAno,
                 $oConta->getEstruturalFormatado(),
@@ -475,11 +475,11 @@ class Importacao
                 $oConta->getIndicadorSuperavit(),
                 $oConta->getNaturezaSaldo(),
                 ''
-            );
+            ];
 
             $rsConta = pg_execute("importacao_pcasp_insert", $aParametros);
             if ($oConta->isAnalitica()) {
-                $aParametrosBusca = array($oConta->getEstruturalFormatado());
+                $aParametrosBusca = [$oConta->getEstruturalFormatado()];
                 $rsConta = pg_execute("importacao_pcasp_select", $aParametrosBusca);
 //                $iCodConta = \db_utils::fieldsMemory($rsConta, 0)->c60_codcon;
                 $this->geraContasAnalitica($oConta, $iCodigoConta, $iAno);
@@ -518,7 +518,7 @@ class Importacao
 
         foreach ($aInstituicoes as $oInstituicao) {
             // Verifica se existe reduzido para a instituição atual
-            $aParametrosBusca = array($iCodConta, $oInstituicao->getCodigo());
+            $aParametrosBusca = [$iCodConta, $oInstituicao->getCodigo()];
             $rsSelectReduzInstit = pg_execute('importacao_pcasp_select_reduz_instit', $aParametrosBusca);
             if (!$rsSelectReduzInstit) {
                 throw new \DBException("Houve um erro ao buscar informações do reduzido da
@@ -527,13 +527,13 @@ class Importacao
 
             // Não existe reduzido no ano anterior, será gerado um novo reduzido
             if (pg_num_rows($rsSelectReduzInstit) == 0) {
-                $aParametrosInsere = array($iCodConta, $iAno, $oInstituicao->getCodigo());
+                $aParametrosInsere = [$iCodConta, $iAno, $oInstituicao->getCodigo()];
                 $rsConplanoReduz = pg_execute('importacao_pcasp_insert_reduz', $aParametrosInsere);
                 if (!$rsConplanoReduz) {
                     throw new \DBException("Houve um erro ao salvar o reduzido para o plano de contas.");
                 }
 
-                $aParametros = array($iAno);//anousu
+                $aParametros = [$iAno];//anousu
                 $rsConplanoReduzExe = pg_execute('importacao_pcasp_insert_reduzexe', $aParametros);
                 if (!$rsConplanoReduzExe) {
                     throw new \DBException("Houve um erro ao salvar o reduzido para o plano de contas.");
@@ -542,7 +542,7 @@ class Importacao
                 if (empty(\db_utils::fieldsMemory($rsSelectReduzInstit, 0)->atualizado)) {
                     $iCodReduzido = \db_utils::fieldsMemory($rsSelectReduzInstit, 0)->reduzido;
 
-                    $aParametrosInsere = array($iCodConta, $iAno, $iCodReduzido, $oInstituicao->getCodigo());
+                    $aParametrosInsere = [$iCodConta, $iAno, $iCodReduzido, $oInstituicao->getCodigo()];
                     $rsConplanoReduz = pg_execute('importacao_pcasp_insert_reduz_codreduz', $aParametrosInsere);
                     if (!$rsConplanoReduz) {
                         throw new \DBException("Houve um erro ao salvar o reduzido para o plano de contas.");
@@ -563,7 +563,7 @@ class Importacao
     private function atualizaConta(Conta $oConta, $iCodConta)
     {
 
-        $aParametros = array(
+        $aParametros = [
             $oConta->getTitulo(),
             $oConta->getFuncao(),
             $oConta->getSistema(),
@@ -572,7 +572,7 @@ class Importacao
             $this->getCodigoDetalhamentoSistema($oConta),
             $oConta->getEstruturalFormatado(),
             $this->getModelo()->getExercicio()
-        );
+        ];
 
         if ($oConta->isAnalitica()) {
             /*
@@ -632,31 +632,31 @@ class Importacao
             return 0;
         }
 
-        if (in_array(substr($sEstrutural, 0, 1), array('7', '8'))) {
+        if (in_array(substr($sEstrutural, 0, 1), ['7', '8'])) {
             return 4;
         }
 
-        if (in_array(substr($sEstrutural, 0, 1), array('5', '6'))) {
+        if (in_array(substr($sEstrutural, 0, 1), ['5', '6'])) {
             return 3;
         }
 
-        if (in_array($oConta->getIndicadorSuperavit(), array('P', 'N'))) {
+        if (in_array($oConta->getIndicadorSuperavit(), ['P', 'N'])) {
             return 2;
         }
 
         if ($oConta->getIndicadorSuperavit() == 'F') {
-            if (substr($sEstrutural, 0, 5) == "11111") {
+            if (str_starts_with($sEstrutural, "11111")) {
                 return 5;
             }
 
-            if (substr($sEstrutural, 0, 5) == "11112" || substr($sEstrutural, 0, 5) == "11113"
-                || substr($sEstrutural, 0, 5) == "11113"
+            if (str_starts_with($sEstrutural, "11112") || str_starts_with($sEstrutural, "11113")
+                || str_starts_with($sEstrutural, "11113")
             ) {
                 return 6;
             }
         }
 
-        if (substr($sEstrutural, 0, 5) == "21881") {
+        if (str_starts_with($sEstrutural, "21881")) {
             return 7;
         }
 

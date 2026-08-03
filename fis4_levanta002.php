@@ -37,8 +37,8 @@ $clissbase = new cl_issbase;
 $clcgm = new cl_cgm;
 $cllevanta = new cl_levanta;
 $clrotulo = new rotulocampo;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $db_botao=true;
 $db_opcao=2;
 $clrotulo->label("z01_nome");
@@ -175,7 +175,7 @@ if(isset($varias_inscr) || isset($filtroquery)){//quando tiver várias inscrições
     document.form1.submit();
   }
   function js_voltar(){
-    location.href="<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>";
+    location.href="<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>";
   }
 </script>     
 <?php 

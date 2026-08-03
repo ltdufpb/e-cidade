@@ -55,8 +55,8 @@ $clsolicitempcmater->rotulo->label();
 $clsolicitemunid->rotulo->label();
 $clliclicitem->rotulo->label();
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $sair = true;
 if(isset($pc10_numero) && trim($pc10_numero)!=""){
@@ -123,7 +123,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
         echo "  </tr>";
 	}
 	$result_inst = db_query("select nomeinst from db_config where codigo=".$pc10_instit);
-	if($result_inst && pg_numrows($result_inst)>0){
+	if($result_inst && pg_num_rows($result_inst)>0){
 	  db_fieldsmemory($result_inst,0);
 	}
         echo "  <tr>";
@@ -141,7 +141,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
 	echo "</table>";
       	$result_itens = $clsolicitem->sql_record($clsolicitem->sql_query_file(null,"pc11_codigo","","pc11_numero=$pc10_numero"));
       	$numrows_itens = $clsolicitem->numrows;
-	$Tarray = Array();
+	$Tarray = [];
 	$Tarray[0] = "Itens e dotações da solicitação";
 	$Tarray[1] = "Orçamentos em que itens da solicitação estão incluídos";
 	$Tarray[2] = "Processos de compras em que itens da solicitação estão incluídos";

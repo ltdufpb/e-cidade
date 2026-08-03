@@ -56,7 +56,7 @@
           <td align="center">
             <b>Opções;</b>
             <?php 
-              $aOpcaoLocais = array(0 => "Com os locais selecionados", 1 => "Sem os locais selecionados");
+              $aOpcaoLocais = [0 => "Com os locais selecionados", 1 => "Sem os locais selecionados"];
               db_select("iOpcaoLocal", $aOpcaoLocais, true, 1);
             ?>
           </td>

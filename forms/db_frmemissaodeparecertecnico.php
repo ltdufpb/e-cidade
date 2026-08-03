@@ -99,10 +99,10 @@ $db_opcao = 1;
         </td>
         <td>
           <?php
-            $aOpcoes = array( ''      => 'Selecione',
+            $aOpcoes = [ ''      => 'Selecione',
                               'true'  => 'Sim',
                               'false' => 'Não'
-                            );
+                            ];
             db_select('am08_favoravel', $aOpcoes, true, $db_opcao, "onchange='js_alterarFavoravel(this.value)'");
           ?>
         </td>
@@ -123,7 +123,7 @@ $db_opcao = 1;
             </td>
             <td>
               <?php
-                $aOpcoes = array(''  => 'Selecione');
+                $aOpcoes = [''  => 'Selecione'];
                 db_select('am08_tipolicenca', $aOpcoes, true, $db_opcao, "onchange='js_getTiposEmissao()'");
               ?>
             </td>

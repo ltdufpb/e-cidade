@@ -36,7 +36,7 @@ require_once(modification("std/DBDate.php"));
 require_once(modification("classes/db_extratolinha_classe.php"));
 require_once(modification("classes/db_conciliapendextrato_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $iInstituicao = db_getsession("DB_instit");
 
 $oExtratoLinha        = new cl_extratolinha();

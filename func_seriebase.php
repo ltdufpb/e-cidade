@@ -34,8 +34,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clserie       = new cl_serie;
 $clbaseserie   = new cl_baseserie;
@@ -110,7 +110,7 @@ $clserie->rotulo->label("ed11_c_descr");
           
           if ( pg_num_rows( $result_hist ) > 0 ) {
           	
-            $ed62_c_resultadofinal = trim( pg_result( $result_hist, 0, 'ed62_c_resultadofinal' ) );
+            $ed62_c_resultadofinal = trim( pg_fetch_result( $result_hist, 0, 'ed62_c_resultadofinal' ) );
             
             if ( $ed62_c_resultadofinal == "P" ) {
           

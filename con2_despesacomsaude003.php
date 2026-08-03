@@ -63,10 +63,10 @@ $sSqlPeriodo   = $oDaoPeriodo->sql_query($oGet->sPeriodo);
 $rsPeriodo     = $oDaoPeriodo->sql_record($sSqlPeriodo);
 $oDadosPeriodo = db_utils::fieldsMemory($rsPeriodo, 0);
 
-$oDadosPeriodo->o114_diainicial = str_pad($oDadosPeriodo->o114_diainicial, 2, '0', STR_PAD_LEFT);
-$oDadosPeriodo->o114_mesinicial = str_pad($oDadosPeriodo->o114_mesinicial, 2, '0', STR_PAD_LEFT);
-$oDadosPeriodo->o114_diafinal   = str_pad($oDadosPeriodo->o114_diafinal, 2, '0', STR_PAD_LEFT);
-$oDadosPeriodo->o114_mesfinal   = str_pad($oDadosPeriodo->o114_mesfinal, 2, '0', STR_PAD_LEFT);
+$oDadosPeriodo->o114_diainicial = str_pad((string) $oDadosPeriodo->o114_diainicial, 2, '0', STR_PAD_LEFT);
+$oDadosPeriodo->o114_mesinicial = str_pad((string) $oDadosPeriodo->o114_mesinicial, 2, '0', STR_PAD_LEFT);
+$oDadosPeriodo->o114_diafinal   = str_pad((string) $oDadosPeriodo->o114_diafinal, 2, '0', STR_PAD_LEFT);
+$oDadosPeriodo->o114_mesfinal   = str_pad((string) $oDadosPeriodo->o114_mesfinal, 2, '0', STR_PAD_LEFT);
 
 
 $dDataInicial = $oDadosPeriodo->o114_diainicial . "/" .$oDadosPeriodo->o114_mesinicial. "/" . $iAnoUsu;
@@ -74,7 +74,7 @@ $dDataFinal   = $oDadosPeriodo->o114_diafinal   . "/" .$oDadosPeriodo->o114_mesf
 
 
 $aInstituicoes = explode(",", $sInstituicao);
-$aDescricaoInstituicao = array();;
+$aDescricaoInstituicao = [];;
 foreach ($aInstituicoes as $iCodigoInstituicao) {
   
   $oInstituicao = new Instituicao($iCodigoInstituicao);

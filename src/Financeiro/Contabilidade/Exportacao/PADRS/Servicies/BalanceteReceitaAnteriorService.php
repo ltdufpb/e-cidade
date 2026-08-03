@@ -17,11 +17,6 @@ use ParametroPCASP;
 class BalanceteReceitaAnteriorService extends PadService
 {
     protected $fileName = 'BREC_ANT.TXT';
-
-    /**
-     * @var integer
-     */
-    private $ano;
     private $dataInicio;
     private $dataFinal;
 
@@ -30,12 +25,11 @@ class BalanceteReceitaAnteriorService extends PadService
      * @param Instituicao[] $instituicoes
      * @param integer $ano para calculo
      */
-    public function __construct(array $instituicoes, $ano)
+    public function __construct(array $instituicoes, private $ano)
     {
         $this->instituicoes = $instituicoes;
-        $this->ano = $ano;
-        $this->dataInicio = "{$ano}-01-01";
-        $this->dataFinal = "{$ano}-12-31";
+        $this->dataInicio = "{$this->ano}-01-01";
+        $this->dataFinal = "{$this->ano}-12-31";
     }
 
     /**
@@ -111,12 +105,9 @@ class BalanceteReceitaAnteriorService extends PadService
     protected function getBuilder()
     {
         $ano = $this->ano + 1;
-        switch ($ano) {
-            case 2020:
-            case 2021:
-                return new BalanceteReceitaAnteriorBuilder2020();
-            default:
-                throw new Exception("Layout {$this->fileName} não foi implementado para o ano {$ano}.");
-        }
+        return match ($ano) {
+            2020, 2021 => new BalanceteReceitaAnteriorBuilder2020(),
+            default => throw new Exception("Layout {$this->fileName} não foi implementado para o ano {$ano}."),
+        };
     }
 }

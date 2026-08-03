@@ -61,13 +61,13 @@ try {
             }
 
             $conteudoArquivo = file_get_contents($parametros->sPath);
-            $certs = array();
+            $certs = [];
 
             $senha = db_stdClass::normalizeStringJsonEscapeString($parametros->senha);
             $empregador = new \stdClass();
             $empregador->inscricao = $parametros->documento;
             $empregador->razao_social = StringHelper::normalizeEncode($parametros->razao_social);
-            $empregador->tipo_inscricao = strlen($parametros->documento) == 11 ? 'cpf' : 'cnpj';
+            $empregador->tipo_inscricao = strlen((string) $parametros->documento) == 11 ? 'cpf' : 'cnpj';
             $empregador->senha = $senha;
             $empregador->certificado = base64_encode($conteudoArquivo);
             $empregador->integracao = $parametros->integracao;
@@ -75,7 +75,7 @@ try {
             $empregador->procuracao_tipo_inscricao = '';
             if (!empty($parametros->procuracao_documento)) {
                 $empregador->procuracao_inscricao = $parametros->procuracao_documento;
-                $empregador->procuracao_tipo_inscricao = strlen($parametros->procuracao_documento) == 11
+                $empregador->procuracao_tipo_inscricao = strlen((string) $parametros->procuracao_documento) == 11
                     ? 'cpf' : 'cnpj';
             }
 
@@ -100,24 +100,24 @@ try {
             }
 
             /* Array de tipos */
-            $retorno->tipos = array();
+            $retorno->tipos = [];
 
             if (sizeof($layouts) > 0) {
                 foreach ($layouts as $layout => $titulo) {
                     if (isset($parametros->integracao)) {
-                        if ($parametros->integracao == Tipo::EFD_REINF && substr($titulo, 0, 1) !== 'R') {
+                        if ($parametros->integracao == Tipo::EFD_REINF && !str_starts_with($titulo, 'R')) {
                             continue;
                         }
 
-                        if ($parametros->integracao == Tipo::ESOCIAL && substr($titulo, 0, 1) !== 'S') {
+                        if ($parametros->integracao == Tipo::ESOCIAL && !str_starts_with($titulo, 'S')) {
                             continue;
                         }
                     }
 
-                    $retorno->tipos[] = array(
+                    $retorno->tipos[] = [
                         'titulo' => $titulo,
                         'layout' => $layout
-                    );
+                    ];
                 }
             } else {
                 throw new Exception("N?o existe arquivos para envio.");
@@ -125,18 +125,18 @@ try {
             break;
 
         case 'getTiposRetorno':
-            $integracao = isset($parametros->integracao) ? $parametros->integracao : null;
+            $integracao = $parametros->integracao ?? null;
             $tipos = ConsultaTipo::tipos(null, $integracao);
             /* Array de tipos */
-            $retorno->tipos = array();
+            $retorno->tipos = [];
 
             if (sizeof($tipos) > 0) {
                 foreach ($tipos as $tipo => $titulo) {
-                    $retorno->tipos[] = array(
+                    $retorno->tipos[] = [
                         'tipo' => substr_replace($tipo, "-", 1, 0),
                         'titulo' => $titulo,
                         'layout' => $tipo
-                    );
+                    ];
                 }
             } else {
                 throw new Exception("Não existe arquivos para envio.");
@@ -309,9 +309,7 @@ try {
                 $parametros->mes
             );
             if (!empty($parametros->matriculas)) {
-                $servidores = array_map(function ($matricula) {
-                    return ServidorRepository::getInstanciaByCodigo($matricula);
-                }, $parametros->matriculas);
+                $servidores = array_map(fn($matricula) => ServidorRepository::getInstanciaByCodigo($matricula), $parametros->matriculas);
                 $processamentoInstance->setServidores($servidores);
             }
 

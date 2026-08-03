@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_listanotifica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $instit  = db_getsession("DB_instit");
 $cllistanotifica = new cl_listanotifica;
 $cllistanotifica->rotulo->label("k63_notifica");
@@ -115,7 +115,7 @@ $cllistanotifica->rotulo->label("k63_notifica");
       }
 	
       if(!isset($pesquisa_chave)){
-        if(isset($chave_codigo) && (trim($chave_k63_notifica)!="") ){
+        if(isset($chave_codigo) && (trim((string) $chave_k63_notifica)!="") ){
 	   $sql = "select k63_notifica, $xcodigo1,z01_numcgm,z01_nome,sum(valor_vencidos) as xvalor
                          from
                   (select distinct k63_notifica, $xcodigo as $xcodigo1,
@@ -196,7 +196,7 @@ $cllistanotifica->rotulo->label("k63_notifica");
 //		   echo $sql;exit;
           $result = db_query($sql);
 	  
-          if(pg_numrows($result) !=0 ){
+          if(pg_num_rows($result) !=0 ){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$z01_nome',false);</script>";
           }else{

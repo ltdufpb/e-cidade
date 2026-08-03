@@ -34,8 +34,8 @@ include(modification("classes/db_empagemov_classe.php"));
 include(modification("classes/db_empagetipo_classe.php"));
 $clempagemov  = new cl_empagemov;
 $clempagetipo = new cl_empagetipo;
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $sair = true;
 if(isset($valores) && trim($valores)!=""){
@@ -45,14 +45,14 @@ if(isset($valores) && trim($valores)!=""){
     $sair = false;
   }  
 }else if(isset($coluna) && trim($coluna)!=""){
-  $arr_valorescoluna = split(",",$coluna);
-  $arr_codigtipo = Array();
-  $arr_valortipo = Array();
-  $arr_indextipo = Array();
+  $arr_valorescoluna = preg_split("#,#m",$coluna);
+  $arr_codigtipo = [];
+  $arr_valortipo = [];
+  $arr_indextipo = [];
   $numrows_valores = 0;
   $sair  = false;
   for($i=0;$i<sizeof($arr_valorescoluna);$i++){    
-    $arr_quebracoluna = split("-",$arr_valorescoluna[$i]);
+    $arr_quebracoluna = preg_split("#\\-#m",(string) $arr_valorescoluna[$i]);
     $codigtipo = $arr_quebracoluna[0];
     $valortipo = $arr_quebracoluna[1];
     if(!isset($arr_codigtipo[$codigtipo])){

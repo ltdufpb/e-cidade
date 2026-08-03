@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE aguahidromatric
 class cl_aguahidromatric {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $x04_codhidrometro = 0;
-   var $x04_codmarca = 0;
-   var $x04_nrohidro = null;
-   var $x04_qtddigito = 0;
-   var $x04_coddiametro = 0;
-   var $x04_matric = null;
-   var $x04_leitinicial = 0;
-   var $x04_dtinst_dia = null;
-   var $x04_dtinst_mes = null;
-   var $x04_dtinst_ano = null;
-   var $x04_dtinst = null;
-   var $x04_avisoleiturista = null;
-   var $x04_observacao = null;
+   public $x04_codhidrometro = 0;
+   public $x04_codmarca = 0;
+   public $x04_nrohidro = null;
+   public $x04_qtddigito = 0;
+   public $x04_coddiametro = 0;
+   public $x04_matric = null;
+   public $x04_leitinicial = 0;
+   public $x04_dtinst_dia = null;
+   public $x04_dtinst_mes = null;
+   public $x04_dtinst_ano = null;
+   public $x04_dtinst = null;
+   public $x04_avisoleiturista = null;
+   public $x04_observacao = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  x04_codhidrometro = int4 = Código
                  x04_codmarca = int4 = Marca
                  x04_nrohidro = varchar(20) = Número
@@ -69,10 +69,10 @@ class cl_aguahidromatric {
                  x04_observacao = text = Observações
                  ";
    //funcao construtor da classe
-   function cl_aguahidromatric() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguahidromatric");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -174,10 +174,10 @@ class cl_aguahidromatric {
          $this->erro_status = "0";
          return false;
        }
-       $this->x04_codhidrometro = pg_result($result,0,0);
+       $this->x04_codhidrometro = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from aguahidromatric_x04_codhidrometro_seq");
-       if(($result != false) && (pg_result($result,0,0) < $x04_codhidrometro)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $x04_codhidrometro)){
          $this->erro_sql = " Campo x04_codhidrometro maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -223,7 +223,7 @@ class cl_aguahidromatric {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "aguahidromatric ($this->x04_codhidrometro) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "aguahidromatric já Cadastrado";
@@ -247,19 +247,19 @@ class cl_aguahidromatric {
      $resaco = $this->sql_record($this->sql_query_file($this->x04_codhidrometro));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8412,'$this->x04_codhidrometro','I')");
-       $resac = db_query("insert into db_acount values($acount,1421,8412,'','".AddSlashes(pg_result($resaco,0,'x04_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1421,8413,'','".AddSlashes(pg_result($resaco,0,'x04_codmarca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1421,8414,'','".AddSlashes(pg_result($resaco,0,'x04_nrohidro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1421,8415,'','".AddSlashes(pg_result($resaco,0,'x04_qtddigito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1421,8424,'','".AddSlashes(pg_result($resaco,0,'x04_coddiametro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1421,8432,'','".AddSlashes(pg_result($resaco,0,'x04_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1421,8433,'','".AddSlashes(pg_result($resaco,0,'x04_leitinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1421,8434,'','".AddSlashes(pg_result($resaco,0,'x04_dtinst'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1421,18421,'','".AddSlashes(pg_result($resaco,0,'x04_avisoleiturista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1421,17926,'','".AddSlashes(pg_result($resaco,0,'x04_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1421,8412,'','".AddSlashes(pg_fetch_result($resaco,0,'x04_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1421,8413,'','".AddSlashes(pg_fetch_result($resaco,0,'x04_codmarca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1421,8414,'','".AddSlashes(pg_fetch_result($resaco,0,'x04_nrohidro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1421,8415,'','".AddSlashes(pg_fetch_result($resaco,0,'x04_qtddigito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1421,8424,'','".AddSlashes(pg_fetch_result($resaco,0,'x04_coddiametro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1421,8432,'','".AddSlashes(pg_fetch_result($resaco,0,'x04_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1421,8433,'','".AddSlashes(pg_fetch_result($resaco,0,'x04_leitinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1421,8434,'','".AddSlashes(pg_fetch_result($resaco,0,'x04_dtinst'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1421,18421,'','".AddSlashes(pg_fetch_result($resaco,0,'x04_avisoleiturista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1421,17926,'','".AddSlashes(pg_fetch_result($resaco,0,'x04_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -268,10 +268,10 @@ class cl_aguahidromatric {
       $this->atualizacampos();
      $sql = " update aguahidromatric set ";
      $virgula = "";
-     if(trim($this->x04_codhidrometro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_codhidrometro"])){
+     if(trim((string) $this->x04_codhidrometro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_codhidrometro"])){
        $sql  .= $virgula." x04_codhidrometro = $this->x04_codhidrometro ";
        $virgula = ",";
-       if(trim($this->x04_codhidrometro) == null ){
+       if(trim((string) $this->x04_codhidrometro) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "x04_codhidrometro";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_aguahidromatric {
          return false;
        }
      }
-     if(trim($this->x04_codmarca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_codmarca"])){
+     if(trim((string) $this->x04_codmarca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_codmarca"])){
        $sql  .= $virgula." x04_codmarca = $this->x04_codmarca ";
        $virgula = ",";
-       if(trim($this->x04_codmarca) == null ){
+       if(trim((string) $this->x04_codmarca) == null ){
          $this->erro_sql = " Campo Marca nao Informado.";
          $this->erro_campo = "x04_codmarca";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_aguahidromatric {
          return false;
        }
      }
-     if(trim($this->x04_nrohidro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_nrohidro"])){
+     if(trim((string) $this->x04_nrohidro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_nrohidro"])){
        $sql  .= $virgula." x04_nrohidro = '$this->x04_nrohidro' ";
        $virgula = ",";
-       if(trim($this->x04_nrohidro) == null ){
+       if(trim((string) $this->x04_nrohidro) == null ){
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "x04_nrohidro";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_aguahidromatric {
          return false;
        }
      }
-     if(trim($this->x04_qtddigito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_qtddigito"])){
+     if(trim((string) $this->x04_qtddigito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_qtddigito"])){
        $sql  .= $virgula." x04_qtddigito = $this->x04_qtddigito ";
        $virgula = ",";
-       if(trim($this->x04_qtddigito) == null ){
+       if(trim((string) $this->x04_qtddigito) == null ){
          $this->erro_sql = " Campo Dígitos nao Informado.";
          $this->erro_campo = "x04_qtddigito";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_aguahidromatric {
          return false;
        }
      }
-     if(trim($this->x04_coddiametro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_coddiametro"])){
+     if(trim((string) $this->x04_coddiametro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_coddiametro"])){
        $sql  .= $virgula." x04_coddiametro = $this->x04_coddiametro ";
        $virgula = ",";
-       if(trim($this->x04_coddiametro) == null ){
+       if(trim((string) $this->x04_coddiametro) == null ){
          $this->erro_sql = " Campo Diâmetro nao Informado.";
          $this->erro_campo = "x04_coddiametro";
          $this->erro_banco = "";
@@ -333,14 +333,14 @@ class cl_aguahidromatric {
          return false;
        }
      }
-     if(trim($this->x04_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_matric"])){
+     if(trim((string) $this->x04_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_matric"])){
        $sql  .= $virgula." x04_matric = $this->x04_matric ";
        $virgula = ",";
      }
-     if(trim($this->x04_leitinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_leitinicial"])){
+     if(trim((string) $this->x04_leitinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_leitinicial"])){
        $sql  .= $virgula." x04_leitinicial = $this->x04_leitinicial ";
        $virgula = ",";
-       if(trim($this->x04_leitinicial) == null ){
+       if(trim((string) $this->x04_leitinicial) == null ){
          $this->erro_sql = " Campo Leitura Inicial nao Informado.";
          $this->erro_campo = "x04_leitinicial";
          $this->erro_banco = "";
@@ -350,10 +350,10 @@ class cl_aguahidromatric {
          return false;
        }
      }
-     if(trim($this->x04_dtinst)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_dtinst_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x04_dtinst_dia"] !="") ){
+     if(trim((string) $this->x04_dtinst)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_dtinst_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x04_dtinst_dia"] !="") ){
        $sql  .= $virgula." x04_dtinst = '$this->x04_dtinst' ";
        $virgula = ",";
-       if(trim($this->x04_dtinst) == null ){
+       if(trim((string) $this->x04_dtinst) == null ){
          $this->erro_sql = " Campo Data instalação nao Informado.";
          $this->erro_campo = "x04_dtinst_dia";
          $this->erro_banco = "";
@@ -366,7 +366,7 @@ class cl_aguahidromatric {
        if(isset($GLOBALS["HTTP_POST_VARS"]["x04_dtinst_dia"])){
          $sql  .= $virgula." x04_dtinst = null ";
          $virgula = ",";
-         if(trim($this->x04_dtinst) == null ){
+         if(trim((string) $this->x04_dtinst) == null ){
            $this->erro_sql = " Campo Data instalação nao Informado.";
            $this->erro_campo = "x04_dtinst_dia";
            $this->erro_banco = "";
@@ -377,11 +377,11 @@ class cl_aguahidromatric {
          }
        }
      }
-     if(trim($this->x04_avisoleiturista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_avisoleiturista"])){
+     if(trim((string) $this->x04_avisoleiturista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_avisoleiturista"])){
        $sql  .= $virgula." x04_avisoleiturista = '$this->x04_avisoleiturista' ";
        $virgula = ",";
      }
-     if(trim($this->x04_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_observacao"])){
+     if(trim((string) $this->x04_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x04_observacao"])){
        $sql  .= $virgula." x04_observacao = '$this->x04_observacao' ";
        $virgula = ",";
      }
@@ -393,29 +393,29 @@ class cl_aguahidromatric {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8412,'$this->x04_codhidrometro','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x04_codhidrometro"]) || $this->x04_codhidrometro != "")
-           $resac = db_query("insert into db_acount values($acount,1421,8412,'".AddSlashes(pg_result($resaco,$conresaco,'x04_codhidrometro'))."','$this->x04_codhidrometro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1421,8412,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x04_codhidrometro'))."','$this->x04_codhidrometro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x04_codmarca"]) || $this->x04_codmarca != "")
-           $resac = db_query("insert into db_acount values($acount,1421,8413,'".AddSlashes(pg_result($resaco,$conresaco,'x04_codmarca'))."','$this->x04_codmarca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1421,8413,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x04_codmarca'))."','$this->x04_codmarca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x04_nrohidro"]) || $this->x04_nrohidro != "")
-           $resac = db_query("insert into db_acount values($acount,1421,8414,'".AddSlashes(pg_result($resaco,$conresaco,'x04_nrohidro'))."','$this->x04_nrohidro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1421,8414,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x04_nrohidro'))."','$this->x04_nrohidro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x04_qtddigito"]) || $this->x04_qtddigito != "")
-           $resac = db_query("insert into db_acount values($acount,1421,8415,'".AddSlashes(pg_result($resaco,$conresaco,'x04_qtddigito'))."','$this->x04_qtddigito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1421,8415,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x04_qtddigito'))."','$this->x04_qtddigito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x04_coddiametro"]) || $this->x04_coddiametro != "")
-           $resac = db_query("insert into db_acount values($acount,1421,8424,'".AddSlashes(pg_result($resaco,$conresaco,'x04_coddiametro'))."','$this->x04_coddiametro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1421,8424,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x04_coddiametro'))."','$this->x04_coddiametro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x04_matric"]) || $this->x04_matric != "")
-           $resac = db_query("insert into db_acount values($acount,1421,8432,'".AddSlashes(pg_result($resaco,$conresaco,'x04_matric'))."','$this->x04_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1421,8432,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x04_matric'))."','$this->x04_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x04_leitinicial"]) || $this->x04_leitinicial != "")
-           $resac = db_query("insert into db_acount values($acount,1421,8433,'".AddSlashes(pg_result($resaco,$conresaco,'x04_leitinicial'))."','$this->x04_leitinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1421,8433,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x04_leitinicial'))."','$this->x04_leitinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x04_dtinst"]) || $this->x04_dtinst != "")
-           $resac = db_query("insert into db_acount values($acount,1421,8434,'".AddSlashes(pg_result($resaco,$conresaco,'x04_dtinst'))."','$this->x04_dtinst',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1421,8434,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x04_dtinst'))."','$this->x04_dtinst',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x04_avisoleiturista"]) || $this->x04_avisoleiturista != "")
-           $resac = db_query("insert into db_acount values($acount,1421,18421,'".AddSlashes(pg_result($resaco,$conresaco,'x04_avisoleiturista'))."','$this->x04_avisoleiturista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1421,18421,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x04_avisoleiturista'))."','$this->x04_avisoleiturista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x04_observacao"]) || $this->x04_observacao != "")
-           $resac = db_query("insert into db_acount values($acount,1421,17926,'".AddSlashes(pg_result($resaco,$conresaco,'x04_observacao'))."','$this->x04_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1421,17926,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x04_observacao'))."','$this->x04_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -460,19 +460,19 @@ class cl_aguahidromatric {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8412,'$x04_codhidrometro','E')");
-         $resac = db_query("insert into db_acount values($acount,1421,8412,'','".AddSlashes(pg_result($resaco,$iresaco,'x04_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1421,8413,'','".AddSlashes(pg_result($resaco,$iresaco,'x04_codmarca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1421,8414,'','".AddSlashes(pg_result($resaco,$iresaco,'x04_nrohidro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1421,8415,'','".AddSlashes(pg_result($resaco,$iresaco,'x04_qtddigito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1421,8424,'','".AddSlashes(pg_result($resaco,$iresaco,'x04_coddiametro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1421,8432,'','".AddSlashes(pg_result($resaco,$iresaco,'x04_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1421,8433,'','".AddSlashes(pg_result($resaco,$iresaco,'x04_leitinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1421,8434,'','".AddSlashes(pg_result($resaco,$iresaco,'x04_dtinst'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1421,18421,'','".AddSlashes(pg_result($resaco,$iresaco,'x04_avisoleiturista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1421,17926,'','".AddSlashes(pg_result($resaco,$iresaco,'x04_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1421,8412,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x04_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1421,8413,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x04_codmarca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1421,8414,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x04_nrohidro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1421,8415,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x04_qtddigito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1421,8424,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x04_coddiametro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1421,8432,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x04_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1421,8433,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x04_leitinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1421,8434,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x04_dtinst'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1421,18421,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x04_avisoleiturista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1421,17926,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x04_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from aguahidromatric
@@ -532,7 +532,7 @@ class cl_aguahidromatric {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aguahidromatric";
@@ -547,7 +547,7 @@ class cl_aguahidromatric {
    function sql_query ( $x04_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -574,7 +574,7 @@ class cl_aguahidromatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -614,7 +614,7 @@ class cl_aguahidromatric {
    function sql_query_file ( $x04_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -635,7 +635,7 @@ class cl_aguahidromatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -647,7 +647,7 @@ class cl_aguahidromatric {
    function sql_query_diametromarca ( $x04_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -672,7 +672,7 @@ class cl_aguahidromatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

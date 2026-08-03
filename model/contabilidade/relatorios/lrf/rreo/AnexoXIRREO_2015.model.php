@@ -217,7 +217,7 @@ class AnexoXIRREO_2015 extends RelatoriosLegaisBase implements AnexoRREO {
     $iAlturaAssinatura = 26;
 
     $this->oPdf->SetAutoPageBreak(true, 10);
-    $this->notaExplicativa($this->oPdf, array($this->oPdf, 'AddPage'), $iAlturaAssinatura);
+    $this->notaExplicativa($this->oPdf, [$this->oPdf, 'AddPage'], $iAlturaAssinatura);
     $this->oPdf->SetAutoPageBreak(false, 10);
     $this->oRelatorioLegal->assinatura($this->oPdf, 'LRF', false);
 
@@ -241,6 +241,6 @@ class AnexoXIRREO_2015 extends RelatoriosLegaisBase implements AnexoRREO {
     $oStdDespesa->sDescricao     = "Aplicação dos Recursos da Alienação de Ativos";
     $oStdDespesa->nAteBimestre   = $this->aLinhasConsistencia[4]->despemp;
     $oStdDespesa->nSaldoRealizar = $this->aLinhasConsistencia[4]->saldo;
-    return array($oStdReceita, $oStdDespesa);
+    return [$oStdReceita, $oStdDespesa];
   }
 }

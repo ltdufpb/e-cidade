@@ -6,12 +6,12 @@ use ECidade\Tributario\Arrecadacao\Arquivo\Autoatendimento\Entity\Header as Head
 
 final class Header extends HeaderPattern
 {
-    const NUMERO_REMESSA        = 'NUMEROREMESSA';
-    const INICIO_VIGENCIA       = 'INICIOVIGENCIA';
-    const FIM_VIGENCIA          = 'FIMVIGENCIA';
-    const CODIGO_CLIENTE_BANCO  = 'CODIGOCLIENTEBANCO';
-    const RESERVADO             = 'RESERVADO';
-    const SEQUENCIAL            = 'SEQUENCIAL';
+    const string NUMERO_REMESSA        = 'NUMEROREMESSA';
+    const string INICIO_VIGENCIA       = 'INICIOVIGENCIA';
+    const string FIM_VIGENCIA          = 'FIMVIGENCIA';
+    const string CODIGO_CLIENTE_BANCO  = 'CODIGOCLIENTEBANCO';
+    const string RESERVADO             = 'RESERVADO';
+    const string SEQUENCIAL            = 'SEQUENCIAL';
 
     private $numero;
     private $dataInicioVigencia;

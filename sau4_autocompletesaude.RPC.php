@@ -36,7 +36,7 @@ require_once(modification('libs/db_stdlibwebseller.php'));
 $oJson    = new services_json();
 $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $iLinhas  = 0;
-$aRetorno = array();
+$aRetorno = [];
 
 
 /********************************************

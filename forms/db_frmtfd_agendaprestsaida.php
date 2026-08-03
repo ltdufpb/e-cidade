@@ -46,7 +46,7 @@ $clrotulo->label("tf01_i_rhcbo");
           </td>
           <td>
             <?php
-              $aData = split( "/", strftime("%d/%m/%Y", mktime(0, 0, 0, date("m"), date("d") - 30, date("Y"))));
+              $aData = preg_split( "#\\/#m", strftime("%d/%m/%Y", mktime(0, 0, 0, date("m"), date("d") - 30, date("Y"))));
               $dia1  = $aData[0];
               $mes1  = $aData[1];
               $ano1  = $aData[2];
@@ -80,7 +80,7 @@ $clrotulo->label("tf01_i_rhcbo");
           </td>
           <td title="Prestadora.">
             <?php
-              $aPrestadora = Array(0=>'SEM PRESTADORA', 1=>'COM PRESTADORA', 2=>'TODOS');
+              $aPrestadora = [0=>'SEM PRESTADORA', 1=>'COM PRESTADORA', 2=>'TODOS'];
               db_select('sPrestadora', $aPrestadora, @$IsPrestadora, $db_opcao, '');
             ?>
           </td>
@@ -89,7 +89,7 @@ $clrotulo->label("tf01_i_rhcbo");
           </td>
           <td title="Ordenar.">
             <?php
-              $aOrdenar = Array(0=>'PEDIDO', 1=>'URGÊNCIA');
+              $aOrdenar = [0=>'PEDIDO', 1=>'URGÊNCIA'];
               db_select('sOrdenar', $aOrdenar, @$IsOrdenar, $db_opcao, '');
             ?>
           </td>

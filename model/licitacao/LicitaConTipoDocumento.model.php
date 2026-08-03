@@ -44,7 +44,7 @@ class LicitaConTipoDocumento {
    * Descrição dos tipos de doscumentos disponíveis para o LicitaCon
    * @type array
    */
-  public static $aDescricaoTipoDocumento = array(
+  public static $aDescricaoTipoDocumento = [
     1  => "Adjudicação",
     2  => "Anulação de ofício",
     3  => "Anulação por determinação judicial",
@@ -108,13 +108,13 @@ class LicitaConTipoDocumento {
     61 => "Revogação de ofício",
     62 => "Termo de formalização da dispensa de licitação",
     63 => "Termo de formalização da inexigibilidade de licitação",
-  );
+  ];
 
   /**
    * Siglas dos eventos esperados pelo LicitaCon
    * @type array
    */
-  public static $aSiglaTipoDocumento = array(
+  public static $aSiglaTipoDocumento = [
     1  => "ADJ",
     2  => "ANO",
     3  => "AND",
@@ -178,7 +178,7 @@ class LicitaConTipoDocumento {
     61 => "REO",
     62 => "TFD",
     63 => "TFI"
-  );
+  ];
 }
 
 

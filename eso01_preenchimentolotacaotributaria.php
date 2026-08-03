@@ -35,7 +35,7 @@ require_once modification("dbforms/db_funcoes.php");
 
 db_postmemory($_POST);
 
-$aCGM = array();
+$aCGM = [];
 $sMsg = null;
 
 try {
@@ -54,9 +54,7 @@ try {
     }
 
     if (pg_num_rows($rsSqlCGM) > 0) {
-        $aCGM = db_utils::makeCollectionFromRecord($rsSqlCGM, function ($oItemCGM) {
-            return (object)array('cgm'=>$oItemCGM->cgm,'empregador'=>$oItemCGM->empregador);
-        });
+        $aCGM = db_utils::makeCollectionFromRecord($rsSqlCGM, fn($oItemCGM) => (object)['cgm'=>$oItemCGM->cgm,'empregador'=>$oItemCGM->empregador]);
     } else {
         throw new DBException("Desculpe, não encontramos nenhum Empregador vinculado na instituição.\nContate o suporte.");
     }

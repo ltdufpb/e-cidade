@@ -18,16 +18,14 @@ class AnexoQuatroFactory extends AnexosFactory implements AnexosFactoryInterface
 
     public static function getCodigoRelatorio($exercicio)
     {
-        switch ($exercicio) {
-            case 2021:
-                return 244;
-            case 2022:
-                return 263;
-            default:
-                return 244;
-        }
+        return match ($exercicio) {
+            2021 => 244,
+            2022 => 263,
+            default => 244,
+        };
     }
 
+    #[\Override]
     public static function getProgramaRelatorio($exercicio)
     {
         return 'pla2_anexos_rreo_consolida001.php';
@@ -36,12 +34,9 @@ class AnexoQuatroFactory extends AnexosFactory implements AnexosFactoryInterface
 
     public static function getService($exercicio, $filtros)
     {
-        switch ($exercicio) {
-            case 2021:
-                return new AnexoQuatroService($filtros);
-            case 2022:
-            default:
-                return new AnexoQuatro2022Service($filtros);
-        }
+        return match ($exercicio) {
+            2021 => new AnexoQuatroService($filtros),
+            default => new AnexoQuatro2022Service($filtros),
+        };
     }
 }

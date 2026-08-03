@@ -38,7 +38,7 @@ $cldocumento          = new cl_caddocumento;
 $cldocumentoatributo  = new cl_caddocumentoatributo;
 $cltipodocumento      = new cl_cadtipodocumento;
   
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

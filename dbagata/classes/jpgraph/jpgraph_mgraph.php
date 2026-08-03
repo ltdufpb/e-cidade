@@ -14,22 +14,22 @@
 // Description: Create a container image that can hold several graph 
 //=============================================================================
 class MGraph {
-    var $img=NULL;
-    var $iCnt=0,$iGraphs = array(); // image_handle, x, y, fx, fy, sizex, sizey
-    var $iFillColor='white', $iCurrentColor=0;
-    var $lm=0,$rm=0,$tm=0,$bm=0;
-    var $iDoFrame = FALSE, $iFrameColor = 'black', $iFrameWeight = 1;
-    var $iLineWeight = 1;
-    var $expired=false;
-    var $img_format='png',$image_quality=75;
-    var $iWidth=NULL,$iHeight=NULL;
-    var $background_image='',$background_image_center=true,
+    public $img=NULL;
+    public $iCnt=0,$iGraphs = []; // image_handle, x, y, fx, fy, sizex, sizey
+    public $iFillColor='white', $iCurrentColor=0;
+    public $lm=0,$rm=0,$tm=0,$bm=0;
+    public $iDoFrame = FALSE, $iFrameColor = 'black', $iFrameWeight = 1;
+    public $iLineWeight = 1;
+    public $expired=false;
+    public $img_format='png',$image_quality=75;
+    public $iWidth=NULL,$iHeight=NULL;
+    public $background_image='',$background_image_center=true,
 	$backround_image_format='',$background_image_mix=100,
 	$background_image_y=NULL, $background_image_x=NULL;
 
 
     // Create a new instane of the combined graph
-    function MGraph($aWidth=NULL,$aHeight=NULL) {
+    function __construct($aWidth=NULL,$aHeight=NULL) {
 	$this->iWidth = $aWidth;
 	$this->iHeight = $aHeight;
     }
@@ -63,19 +63,19 @@ class MGraph {
 	}
 
 	// Get extension to determine image type
-	$e = explode('.',$aFileName);
+	$e = explode('.',(string) $aFileName);
 	if( !$e ) {
-	    JpGraphError::RaiseL(12002,$aFileName);
+	    (new JpGraphError())->RaiseL(12002, $aFileName);
 //('Incorrect file name for MGraph::SetBackgroundImage() : '.$aFileName.' Must have a valid image extension (jpg,gif,png) when using autodetection of image type');
 	}
 	
-	$valid_formats = array('png', 'jpg', 'gif');
+	$valid_formats = ['png', 'jpg', 'gif'];
 	$aImgFormat = strtolower($e[count($e)-1]);
 	if ($aImgFormat == 'jpeg')  {
 	    $aImgFormat = 'jpg';
 	}
 	elseif (!in_array($aImgFormat, $valid_formats) )  {
-	    JpGraphError::RaiseL(12003,$aImgFormat,$aFileName);
+	    (new JpGraphError())->RaiseL(12003, $aImgFormat, $aFileName);
 //('Unknown file extension ($aImgFormat) in MGraph::SetBackgroundImage() for filename: '.$aFileName);
 	}    
 
@@ -94,7 +94,7 @@ class MGraph {
 
 	// Remove case sensitivity and setup appropriate function to create image
 	// Get file extension. This should be the LAST '.' separated part of the filename
-	$e = explode('.',$aFile);
+	$e = explode('.',(string) $aFile);
 	$ext = strtolower($e[count($e)-1]);
 	if ($ext == "jpeg")  {
 	    $ext = "jpg";
@@ -107,7 +107,7 @@ class MGraph {
 	if( ( $ext == 'jpg' && !($supported & IMG_JPG) ) ||
 	    ( $ext == 'gif' && !($supported & IMG_GIF) ) ||
 	    ( $ext == 'png' && !($supported & IMG_PNG) ) ) {
-	    JpGraphError::RaiseL(12004,$aFile);//('The image format of your background image ('.$aFile.') is not supported in your system configuration. ');
+	    (new JpGraphError())->RaiseL(12004, $aFile);//('The image format of your background image ('.$aFile.') is not supported in your system configuration. ');
 	}
 
 	if( $ext == "jpg" || $ext == "jpeg") {
@@ -120,7 +120,7 @@ class MGraph {
 
 	$img = @$f($aFile);
 	if( !$img ) {
-	    JpGraphError::RaiseL(12005,$aFile);
+	    (new JpGraphError())->RaiseL(12005, $aFile);
 //(" Can't read background image: '".$aFile."'");   
 	}
 	return $img;
@@ -161,12 +161,12 @@ class MGraph {
 
     function _imageCreate($aWidth,$aHeight) {
 	if( $aWidth <= 1 || $aHeight <= 1 ) {
-	    JpGraphError::RaiseL(12006,$aWidth,$aHeight);
+	    (new JpGraphError())->RaiseL(12006, $aWidth, $aHeight);
 //("Illegal sizes specified for width or height when creating an image, (width=$aWidth, height=$aHeight)");
 	}
 	$this->img = @imagecreatetruecolor($aWidth, $aHeight);
 	if( $this->img < 1 ) {
-	    JpGraphError::RaiseL(12011);
+	    (new JpGraphError())->RaiseL(12011);
 // die("<b>JpGraph Error:</b> Can't create truecolor image. Check that you really have GD2 library installed.");
 	}
 	ImageAlphaBlending($this->img,true);
@@ -196,13 +196,13 @@ class MGraph {
 	
     function _rectangle($xl,$yu,$xr,$yl) {
 	for($i=0; $i < $this->iLineWeight; ++$i ) 
-	    $this->_polygon(array($xl+$i,$yu+$i,$xr-$i,$yu+$i,
+	    $this->_polygon([$xl+$i,$yu+$i,$xr-$i,$yu+$i,
 				  $xr-$i,$yl-$i,$xl+$i,$yl-$i,
-				  $xl+$i,$yu+$i));
+				  $xl+$i,$yu+$i]);
     }
 	
     function _filledRectangle($xl,$yu,$xr,$yl) {
-	$this->_filledPolygon(array($xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl));
+	$this->_filledPolygon([$xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl]);
     }
 
     function _setColor($aColor) {
@@ -220,12 +220,12 @@ class MGraph {
     function _gdImgHandle($agdCanvas,$x,$y,$fx=0,$fy=0,$w=0,$h=0,$mix=100) {
 	if( $w == 0 )  $w = @imagesx($agdCanvas);
 	if( $w === NULL ) {
-	    JpGraphError::RaiseL(12007);
+	    (new JpGraphError())->RaiseL(12007);
 //('Argument to MGraph::Add() is not a valid GD image handle.');
 	    return;
 	}
 	if( $h == 0 )  $h = @imagesy($agdCanvas);
-	$this->iGraphs[$this->iCnt++] = array($agdCanvas,$x,$y,$fx,$fy,$w,$h,$mix);
+	$this->iGraphs[$this->iCnt++] = [$agdCanvas,$x,$y,$fx,$fy,$w,$h,$mix];
     }
 
     function SetMargin($lm,$rm,$tm,$bm) {
@@ -269,7 +269,7 @@ HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b>
 
     function SetImgFormat($aFormat,$aQuality=75) {
 	$this->image_quality = $aQuality;
-	$aFormat = strtolower($aFormat);
+	$aFormat = strtolower((string) $aFormat);
 	$tst = true;
 	$supported = imagetypes();
 	if( $aFormat=="auto" ) {
@@ -280,7 +280,7 @@ HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b>
 	    elseif( $supported & IMG_GIF )
 		$this->img_format="gif";
 	    else
-		JpGraphError::RaiseL(12008);
+		(new JpGraphError())->RaiseL(12008);
 //(" Your PHP (and GD-lib) installation does not appear to support any known graphic formats.".
 	    return true;
 	}
@@ -300,7 +300,7 @@ HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b>
 	    else 
 		$tst=false;
 	    if( !$tst )
-		JpGraphError::RaiseL(12009,$aFormat);
+		(new JpGraphError())->RaiseL(12009, $aFormat);
 //(" Your PHP installation does not support the chosen graphic format: $aFormat");
 	}
     }
@@ -319,7 +319,7 @@ HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b>
 		$res = @$func($this->img);
 	}
 	if( !$res )
-	    JpGraphError::RaiseL(12010,$aFile);
+	    (new JpGraphError())->RaiseL(12010, $aFile);
 //("Can't create or stream image to file $aFile Check that PHP has enough permission to write a file to the current directory.");
     }
 

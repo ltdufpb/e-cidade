@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE pareceraval
 class cl_pareceraval {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed93_i_codigo = 0;
-   var $ed93_i_diarioavaliacao = 0;
-   var $ed93_t_parecer = 0;
+   public $ed93_i_codigo = 0;
+   public $ed93_i_diarioavaliacao = 0;
+   public $ed93_t_parecer = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed93_i_codigo = int8 = Código
                  ed93_i_diarioavaliacao = int8 = Período de Avaliação
                  ed93_t_parecer = text = Parecer Padronizado
                  ";
    //funcao construtor da classe
-   function cl_pareceraval() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pareceraval");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -107,10 +107,10 @@ class cl_pareceraval {
          $this->erro_status = "0";
          return false;
        }
-       $this->ed93_i_codigo = pg_result($result,0,0);
+       $this->ed93_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from pareceraval_ed93_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed93_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed93_i_codigo)){
          $this->erro_sql = " Campo ed93_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_pareceraval {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parecer das avaliações ($this->ed93_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parecer das avaliações já Cadastrado";
@@ -166,11 +166,11 @@ class cl_pareceraval {
      $resaco = $this->sql_record($this->sql_query_file($this->ed93_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1008701,'$this->ed93_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1010126,1008701,'','".AddSlashes(pg_result($resaco,0,'ed93_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010126,1008702,'','".AddSlashes(pg_result($resaco,0,'ed93_i_diarioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010126,1008701,'','".AddSlashes(pg_fetch_result($resaco,0,'ed93_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010126,1008702,'','".AddSlashes(pg_fetch_result($resaco,0,'ed93_i_diarioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -179,10 +179,10 @@ class cl_pareceraval {
       $this->atualizacampos();
      $sql = " update pareceraval set ";
      $virgula = "";
-     if(trim($this->ed93_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed93_i_codigo"])){
+     if(trim((string) $this->ed93_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed93_i_codigo"])){
        $sql  .= $virgula." ed93_i_codigo = $this->ed93_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed93_i_codigo) == null ){
+       if(trim((string) $this->ed93_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed93_i_codigo";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_pareceraval {
          return false;
        }
      }
-     if(trim($this->ed93_i_diarioavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed93_i_diarioavaliacao"])){
+     if(trim((string) $this->ed93_i_diarioavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed93_i_diarioavaliacao"])){
        $sql  .= $virgula." ed93_i_diarioavaliacao = $this->ed93_i_diarioavaliacao ";
        $virgula = ",";
-       if(trim($this->ed93_i_diarioavaliacao) == null ){
+       if(trim((string) $this->ed93_i_diarioavaliacao) == null ){
          $this->erro_sql = " Campo Período de Avaliação nao Informado.";
          $this->erro_campo = "ed93_i_diarioavaliacao";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_pareceraval {
          return false;
        }
      }
-     if(trim($this->ed93_t_parecer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed93_t_parecer"])){
+     if(trim((string) $this->ed93_t_parecer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed93_t_parecer"])){
        $sql  .= $virgula." ed93_t_parecer = '$this->ed93_t_parecer' ";
        $virgula = ",";
-       if(trim($this->ed93_t_parecer) == null ){
+       if(trim((string) $this->ed93_t_parecer) == null ){
          $this->erro_sql = " Campo Parecer Padronizado nao Informado.";
          $this->erro_campo = "ed93_t_parecer";
          $this->erro_banco = "";
@@ -226,13 +226,13 @@ class cl_pareceraval {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008701,'$this->ed93_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed93_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1010126,1008701,'".AddSlashes(pg_result($resaco,$conresaco,'ed93_i_codigo'))."','$this->ed93_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010126,1008701,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed93_i_codigo'))."','$this->ed93_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed93_i_diarioavaliacao"]))
-           $resac = db_query("insert into db_acount values($acount,1010126,1008702,'".AddSlashes(pg_result($resaco,$conresaco,'ed93_i_diarioavaliacao'))."','$this->ed93_i_diarioavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010126,1008702,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed93_i_diarioavaliacao'))."','$this->ed93_i_diarioavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -277,11 +277,11 @@ class cl_pareceraval {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008701,'$ed93_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1010126,1008701,'','".AddSlashes(pg_result($resaco,$iresaco,'ed93_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010126,1008702,'','".AddSlashes(pg_result($resaco,$iresaco,'ed93_i_diarioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010126,1008701,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed93_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010126,1008702,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed93_i_diarioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pareceraval
@@ -341,7 +341,7 @@ class cl_pareceraval {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pareceraval";
@@ -381,7 +381,7 @@ class cl_pareceraval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_pareceraval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -58,8 +58,8 @@ require_once(modification("classes/db_pactovalormovsolicitem_classe.php"));
 require_once(modification("classes/db_orctiporecconveniosolicita_classe.php"));
 require_once(modification("classes/db_solicitaprotprocesso_classe.php"));
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clsolicita = new cl_solicita;
 $clsolicitem = new cl_solicitem;
@@ -96,7 +96,7 @@ if (isset($lBloqueiaAncoraRegistro)) {
 $db_botao = true;
 $departusu = true;
 $confirma = false;
-$aParametrosOrcamento = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+$aParametrosOrcamento = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
 $lUtilizaPacto = false;
 if (count($aParametrosOrcamento) > 0) {
 
@@ -179,7 +179,7 @@ if (isset ($incluir) || (isset ($importar) && $confirma == true)) {
         if ($clsolicita->numrows > 0) {
 
             db_fieldsmemory($result_importacao, 0);
-            $ano_imp = substr($data_imp, 0, 4);
+            $ano_imp = substr((string) $data_imp, 0, 4);
             $clsolicita->pc10_data = date("Y-m-d", db_getsession("DB_datausu"));
             $clsolicita->pc10_log = $pc10_log;
             if ($pc10_correto == "f") {
@@ -205,7 +205,7 @@ if (isset ($incluir) || (isset ($importar) && $confirma == true)) {
         $clsolicita->pc10_instit = db_getsession("DB_instit");
         $clsolicita->pc10_login = db_getsession("DB_id_usuario");
         $clsolicita->pc10_data = date("Y-m-d", db_getsession("DB_datausu"));
-        $clsolicita->pc10_resumo = addslashes(stripslashes(chop($pc10_resumo)));
+        $clsolicita->pc10_resumo = addslashes(stripslashes(chop((string) $pc10_resumo)));
         $clsolicita->pc10_solicitacaotipo = $pc10_solicitacaotipo;
         $clsolicita->incluir(null);
         $pc10_numero = $clsolicita->pc10_numero;
@@ -333,7 +333,7 @@ if (isset ($incluir) || (isset ($importar) && $confirma == true)) {
                     break;
                 } else {
 
-                    if (strlen(trim($pc11_just)) < $pc30_mincar) {
+                    if (strlen(trim((string) $pc11_just)) < $pc30_mincar) {
                         $sqlerro = true;
                         $erro_msg = "Usuário: \\n\\nImportação abortada.\\nJustificativa para compra deve ter no mínimo $pc30_mincar caracteres.\\n\\nAdministrador:";
                         break;
@@ -351,10 +351,10 @@ if (isset ($incluir) || (isset ($importar) && $confirma == true)) {
                 $clsolicitem->pc11_seq = $sequencia;
                 $clsolicitem->pc11_quant = $pc11_quant;
                 $clsolicitem->pc11_vlrun = $pc11_vlrun;
-                $clsolicitem->pc11_prazo = addslashes(stripslashes(chop($pc11_prazo)));
-                $clsolicitem->pc11_pgto = addslashes(stripslashes(chop($pc11_pgto)));
-                $clsolicitem->pc11_resum = addslashes(stripslashes(chop($pc11_resum)));
-                $clsolicitem->pc11_just = addslashes(stripslashes(chop($pc11_just)));
+                $clsolicitem->pc11_prazo = addslashes(stripslashes(chop((string) $pc11_prazo)));
+                $clsolicitem->pc11_pgto = addslashes(stripslashes(chop((string) $pc11_pgto)));
+                $clsolicitem->pc11_resum = addslashes(stripslashes(chop((string) $pc11_resum)));
+                $clsolicitem->pc11_just = addslashes(stripslashes(chop((string) $pc11_just)));
 
                 if (isset($param) && trim($param) != "") {
                     $liberado = "true";

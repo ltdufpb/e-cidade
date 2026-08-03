@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_promitente_classe.php"));
 include(modification("classes/db_iptubase_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $db_botao=1;
 $db_opcao=1;
 $cliptubase = new cl_iptubase;
@@ -237,7 +237,7 @@ function js_lo5(){
        </td>
        <td> 
 <?php 
-$x = array("C"=>"Com contrato","S"=>"Sem contrato");
+$x = ["C"=>"Com contrato","S"=>"Sem contrato"];
 db_select('j41_promitipo',$x,true,$db_opcao,"");
 ?>
        </td>
@@ -248,7 +248,7 @@ db_select('j41_promitipo',$x,true,$db_opcao,"");
         </td>
         <td> 
 <?php 
-$xy = array("f"=>"Secundário","t"=>"Principal");
+$xy = ["f"=>"Secundário","t"=>"Principal"];
 db_select('j41_tipopro',$xy,true,$db_opcao,"");
 ?>
         </td>
@@ -339,7 +339,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 
@@ -395,7 +395,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

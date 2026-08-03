@@ -104,8 +104,8 @@ $clsolordemtransf    = new cl_solordemtransf;
 
 include(modification("classes/db_matordemitem_classe.php"));
 $clmatordemitem = new cl_matordemitem;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $db_opcao = 22;
 $db_botao = false;
@@ -161,7 +161,7 @@ if (isset ($confirmar) || isset ($confirmarn)) {
 
       //db_criatabela($result_erro);exit;
 
-      $erro_msg = pg_result($result_erro,0,0);
+      $erro_msg = pg_fetch_result($result_erro,0,0);
 
       if(substr($erro_msg,0,2) > 0 ){
 
@@ -295,16 +295,16 @@ if (isset ($confirmar) || isset ($confirmarn)) {
 
 	//---------------------------------------------------------
 	//array que irá armazenar os valores de cada elemento para fazer os lancamentos contabeis
-	$arr_codeleval = array ();
+	$arr_codeleval =  [];
 
-	$arr_dados = split("#", $dados);
+	$arr_dados = preg_split("#\\##m", $dados);
 	$tam = count($arr_dados);
 	if ($sqlerro == false) {
 		for ($i = 0; $i < $tam; $i ++) {
 			if ($sqlerro == true) {
 				break;
 			}
-			$arr_ele = split("-", $arr_dados[$i]);
+			$arr_ele = preg_split("#\\-#m", (string) $arr_dados[$i]);
 			$elemento = $arr_ele[0];
 			$vdigitado = $arr_ele[1];
 
@@ -316,7 +316,7 @@ if (isset ($confirmar) || isset ($confirmarn)) {
 			db_fieldsmemory($result09, 0);
 
 			$tot = $e64_vlranu + $vdigitado ;
-			if (bccomp($tot,$e64_vlremp)>0){ // if $tot > $e64_vlremp
+			if (bccomp($tot,(string) $e64_vlremp)>0){ // if $tot > $e64_vlremp
 				$sqlerro = true;
 				$erro_msg = "($tot ,$e64_vlremp) Não pode anular o valor digitado para o elemento $elemento do empenho. Verifique!";
 				break;
@@ -387,9 +387,9 @@ if (isset ($confirmar) || isset ($confirmarn)) {
 					if ($sqlerro == false) {
 						$result85 = db_query("select fc_lancam_dotacao($e60_coddot,'$datausu',$c71_coddoc,'$valor_anular') as dotacao");
 						db_fieldsmemory($result85, 0);
-						if (substr($dotacao, 0, 1) == 0) { //quando o primeiro caractere for igual a zero eh porque deu erro
+						if (substr((string) $dotacao, 0, 1) == 0) { //quando o primeiro caractere for igual a zero eh porque deu erro
 							$sqlerro = true;
-							$erro_msg = "Erro na atualização do orçamento \\n ".substr($dotacao, 1);
+							$erro_msg = "Erro na atualização do orçamento \\n ".substr((string) $dotacao, 1);
 						}
 					}
 					/*fim-orcdotacaoval*/
@@ -658,7 +658,7 @@ if (isset ($e60_numemp)) {
 
 				$result_testitem=$clempautitem->sql_record($clempautitem->sql_query_anuaut(null,null," distinct pc11_codigo as cod_item",null,"e54_anulad is null and e61_numemp = $e60_numemp"));
     		    if ($clempautitem->numrows>0){
-    		        for($w=0;$w<pg_numrows($result_testitem);$w++){
+    		        for($w=0;$w<pg_num_rows($result_testitem);$w++){
 		        	    db_fieldsmemory($result_testitem,$w);
 					    $result_prot = $clsolicitemprot->sql_record($clsolicitemprot->sql_query_file($cod_item));
 					    if ($clsolicitemprot->numrows > 0) {

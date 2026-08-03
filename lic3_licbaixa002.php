@@ -139,9 +139,9 @@ if ($clliclicita->numrows==0){
         </td>
         <td> 
 	         <?php 		
-            $ano=substr(@$l20_datacria,0,4);
-	          $mes=substr(@$l20_datacria,5,2);
-	          $dia=substr(@$l20_datacria,8,2);
+            $ano=substr((string) @$l20_datacria,0,4);
+	          $mes=substr((string) @$l20_datacria,5,2);
+	          $dia=substr((string) @$l20_datacria,8,2);
 	          db_inputdata('l20_datacria',"$dia","$mes","$ano",true,'text',3);
 	         ?>
        </td>
@@ -161,9 +161,9 @@ if ($clliclicita->numrows==0){
        </td>
        <td> 
 	      <?php 		
-         $ano1=substr(@$l20_dataaber,0,4);
-	       $mes1=substr(@$l20_dataaber,5,2);
-	       $dia1=substr(@$l20_dataaber,8,2);
+         $ano1=substr((string) @$l20_dataaber,0,4);
+	       $mes1=substr((string) @$l20_dataaber,5,2);
+	       $dia1=substr((string) @$l20_dataaber,8,2);
 	       db_inputdata('l20_dataaber',"$dia1","$mes1","$ano1",true,'text',3);
 	      ?>
       </td>
@@ -184,9 +184,9 @@ if ($clliclicita->numrows==0){
        </td>
        <td> 
 	       <?php 
-          $ano2=substr($l20_dtpublic,0,4);
-	        $mes2=substr($l20_dtpublic,5,2);
-	        $dia2=substr($l20_dtpublic,8,2);
+          $ano2=substr((string) $l20_dtpublic,0,4);
+	        $mes2=substr((string) $l20_dtpublic,5,2);
+	        $dia2=substr((string) $l20_dtpublic,8,2);
 	        db_inputdata('l20_dtpublic',"$dia2","$mes2","$ano2",true,'text',3);
          ?>
        </td>

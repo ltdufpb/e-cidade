@@ -71,11 +71,11 @@ input {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
         <?php 
-      if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
+      if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {
 
 	     $sql = "SELECT id_usuario as código,nome,login,CASE WHEN usuarioativo = '1' THEN 'Ativo'::text ELSE 'Inativo'::text END as \"Usuário Ativo\"
               FROM db_usuarios
-			  where login like '".$HTTP_POST_VARS["login"]."%'
+			  where login like '".$_POST["login"]."%'
 			  and usuext = 1
               ORDER BY nome";
 		db_lov($sql,15,"pre4_cadusu.php");
@@ -114,7 +114,7 @@ input {
             </tr>
             <tr>
               <td height="25" nowrap><strong>Usu&aacute;rio Ativo:</strong></td>
-              <td height="25" nowrap><input checked name="usuarioativo" type="checkbox" id="usuarioativo2" value="1" <?php  echo (!isset($HTTP_POST_VARS["usuarioativo"])?(@$usuarioativo=="1"?"checked":""):"checked") ?>></td>
+              <td height="25" nowrap><input checked name="usuarioativo" type="checkbox" id="usuarioativo2" value="1" <?php  echo (!isset($_POST["usuarioativo"])?(@$usuarioativo=="1"?"checked":""):"checked") ?>></td>
             </tr>
             <tr>
               <td height="25" nowrap>&nbsp;</td>

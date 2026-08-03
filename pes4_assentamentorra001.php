@@ -31,7 +31,7 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 
-$sCodigoAssentamento = isset($oGet->iTipoAssentamento) ? $oGet->iTipoAssentamento : '';
+$sCodigoAssentamento = $oGet->iTipoAssentamento ?? '';
 $oDaoAssentamentoRRA = new cl_assentamentorra();
 $oDaoAssentamentoRRA->rotulo->label();
 ?>

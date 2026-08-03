@@ -34,7 +34,7 @@ include(modification("classes/db_itenserv_classe.php"));
 include(modification("classes/db_txossoariojazigo_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clitenserv         = new cl_itenserv;
 $clpropricemit      = new cl_propricemit;
@@ -71,7 +71,7 @@ if(isset($incluir)){
    //gera arrecad
    $result_arrecad=db_query("select fc_cemitarrecad(1,$nextval,true) as retorno") or die("Erro ao incluir em arrecad.");
    db_fieldsmemory( $result_arrecad, 0 );
-   if( substr( $retorno, 0, 1 ) != '9' ){
+   if( !str_starts_with((string) $retorno, '9') ){
      db_msgbox($retorno);
    }
    db_fim_transacao();

@@ -43,7 +43,7 @@ $clrharqbanco->rotulo->label();
 $clrotulo->label('rh34_codarq');
 $clrotulo->label('rh34_descr');
 $clrotulo->label('db90_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

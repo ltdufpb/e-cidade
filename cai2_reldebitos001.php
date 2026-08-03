@@ -56,10 +56,10 @@ $db_opcao = 1;
   <tr height="50" valign="bottom"> 
      <td bgcolor="#CCCCCC">
      <?php 
-       $clcriaabas->identifica = array("dados"=>"Dados","receitas"=>"Tipos de receitas","historico"=>"Histórico de cálculos","debitos"=>"Tipos de débitos");//nome do iframe e o label    
-       $clcriaabas->sizecampo = array("dados"=>"20","receitas"=>"20","historico"=>"20","debitos"=>"20");//nome do iframe e o label    
-       $clcriaabas->title      = array("dados"=>"Dados para gerar o relatório","receitas"=>"TIPO DE RECEITAS","historico"=>"HISTÒRICO DE CÁLCULOS","debitos"=>"TIPOS DE DÉBITOS");//nome do iframe e o label    
-       $clcriaabas->src = array("dados"=>"cai2_reldebitos002.php","receitas"=>"cai2_reldebitos003.php","historico"=>"cai2_reldebitos004.php","debitos"=>"cai2_reldebitos005.php");
+       $clcriaabas->identifica = ["dados"=>"Dados","receitas"=>"Tipos de receitas","historico"=>"Histórico de cálculos","debitos"=>"Tipos de débitos"];//nome do iframe e o label    
+       $clcriaabas->sizecampo = ["dados"=>"20","receitas"=>"20","historico"=>"20","debitos"=>"20"];//nome do iframe e o label    
+       $clcriaabas->title      = ["dados"=>"Dados para gerar o relatório","receitas"=>"TIPO DE RECEITAS","historico"=>"HISTÒRICO DE CÁLCULOS","debitos"=>"TIPOS DE DÉBITOS"];//nome do iframe e o label    
+       $clcriaabas->src = ["dados"=>"cai2_reldebitos002.php","receitas"=>"cai2_reldebitos003.php","historico"=>"cai2_reldebitos004.php","debitos"=>"cai2_reldebitos005.php"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

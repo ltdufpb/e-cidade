@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancaminventario_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconlancaminventario = new cl_conlancaminventario;
 $clconlancaminventario->rotulo->label("c85_sequencial");
 $clconlancaminventario->rotulo->label("c85_sequencial");
@@ -98,9 +98,9 @@ $clconlancaminventario->rotulo->label("c85_sequencial");
         }else{
            $sql = $clconlancaminventario->sql_query("",$campos,"c85_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c85_sequencial)){
-          $repassa = array("chave_c85_sequencial"=>$chave_c85_sequencial,"chave_c85_sequencial"=>$chave_c85_sequencial);
+          $repassa = ["chave_c85_sequencial"=>$chave_c85_sequencial,"chave_c85_sequencial"=>$chave_c85_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

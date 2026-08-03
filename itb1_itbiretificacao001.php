@@ -58,20 +58,20 @@ $clcriaabas = new cl_criaabas;
      <td>
      <?php 
      
-       $clcriaabas->identifica = array("dados"    =>"Dados do imovel", 
+       $clcriaabas->identifica = ["dados"    =>"Dados do imovel", 
                                        "transm"   =>"Transmitentes",                  
                                        "compnome" =>"Adquirentes",                        
-                                       "constr"   =>"Benfeitorias");
+                                       "constr"   =>"Benfeitorias"];
        
-       $clcriaabas->title      = array("dados"    =>"Dados do imovel",            
+       $clcriaabas->title      = ["dados"    =>"Dados do imovel",            
                                        "transm"   =>"Transmitentes",                  
                                        "compnome" =>"Adquirentes",                        
-                                       "constr"   =>"Benfeitorias");
+                                       "constr"   =>"Benfeitorias"];
            
-       $clcriaabas->src        = array("dados"    =>"itb1_itbiretificacaodadosimovel001.php",
+       $clcriaabas->src        = ["dados"    =>"itb1_itbiretificacaodadosimovel001.php",
                                        "transm"   =>"itb1_itbinome001.php?tiponome=t",
                                        "compnome" =>"itb1_itbinomecomp001.php?tiponome=c",
-                                       "constr"   =>"itb1_itbiconstr001.php");    
+                                       "constr"   =>"itb1_itbiconstr001.php"];    
      
      
        $clcriaabas->cria_abas();    

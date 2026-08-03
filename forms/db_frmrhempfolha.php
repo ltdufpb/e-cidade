@@ -32,7 +32,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oPost = db_utils::postMemory( $_POST );
 ?>
 <table align="center">
@@ -65,7 +65,7 @@ $oPost = db_utils::postMemory( $_POST );
     <td><b>Ponto:</b></td>
     <td>
      <?php 
-       $x = array("s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento");
+       $x = ["s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento"];
        db_select('ponto',$x,true,4,"onchange='document.form1.submit();'");
      ?>
     </td>

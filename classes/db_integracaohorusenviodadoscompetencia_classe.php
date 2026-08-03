@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE integracaohorusenviodadoscompetencia
 class cl_integracaohorusenviodadoscompetencia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $fa65_sequencial = 0; 
-   var $fa65_integracaohorusenvio = 0; 
-   var $fa65_dadoscompetencia = 0; 
+   public $fa65_sequencial = 0; 
+   public $fa65_integracaohorusenvio = 0; 
+   public $fa65_dadoscompetencia = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  fa65_sequencial = int4 = Código 
                  fa65_integracaohorusenvio = int4 = Envio Arquivo 
                  fa65_dadoscompetencia = int4 = Dados enviados 
                  ";
    //funcao construtor da classe 
-   function cl_integracaohorusenviodadoscompetencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("integracaohorusenviodadoscompetencia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_integracaohorusenviodadoscompetencia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa65_sequencial = pg_result($result,0,0); 
+       $this->fa65_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from integracaohorusenviodadoscompetencia_fa65_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa65_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa65_sequencial)){
          $this->erro_sql = " Campo fa65_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_integracaohorusenviodadoscompetencia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dados enviados por protocolo ($this->fa65_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dados enviados por protocolo já Cadastrado";
@@ -145,12 +145,12 @@ class cl_integracaohorusenviodadoscompetencia {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21570,'$this->fa65_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3871,21570,'','".AddSlashes(pg_result($resaco,0,'fa65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3871,21571,'','".AddSlashes(pg_result($resaco,0,'fa65_integracaohorusenvio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3871,21572,'','".AddSlashes(pg_result($resaco,0,'fa65_dadoscompetencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3871,21570,'','".AddSlashes(pg_fetch_result($resaco,0,'fa65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3871,21571,'','".AddSlashes(pg_fetch_result($resaco,0,'fa65_integracaohorusenvio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3871,21572,'','".AddSlashes(pg_fetch_result($resaco,0,'fa65_dadoscompetencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_integracaohorusenviodadoscompetencia {
       $this->atualizacampos();
      $sql = " update integracaohorusenviodadoscompetencia set ";
      $virgula = "";
-     if(trim($this->fa65_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa65_sequencial"])){ 
+     if(trim((string) $this->fa65_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa65_sequencial"])){ 
        $sql  .= $virgula." fa65_sequencial = $this->fa65_sequencial ";
        $virgula = ",";
-       if(trim($this->fa65_sequencial) == null ){ 
+       if(trim((string) $this->fa65_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "fa65_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_integracaohorusenviodadoscompetencia {
          return false;
        }
      }
-     if(trim($this->fa65_integracaohorusenvio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa65_integracaohorusenvio"])){ 
+     if(trim((string) $this->fa65_integracaohorusenvio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa65_integracaohorusenvio"])){ 
        $sql  .= $virgula." fa65_integracaohorusenvio = $this->fa65_integracaohorusenvio ";
        $virgula = ",";
-       if(trim($this->fa65_integracaohorusenvio) == null ){ 
+       if(trim((string) $this->fa65_integracaohorusenvio) == null ){ 
          $this->erro_sql = " Campo Envio Arquivo não informado.";
          $this->erro_campo = "fa65_integracaohorusenvio";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_integracaohorusenviodadoscompetencia {
          return false;
        }
      }
-     if(trim($this->fa65_dadoscompetencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa65_dadoscompetencia"])){ 
+     if(trim((string) $this->fa65_dadoscompetencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa65_dadoscompetencia"])){ 
        $sql  .= $virgula." fa65_dadoscompetencia = $this->fa65_dadoscompetencia ";
        $virgula = ",";
-       if(trim($this->fa65_dadoscompetencia) == null ){ 
+       if(trim((string) $this->fa65_dadoscompetencia) == null ){ 
          $this->erro_sql = " Campo Dados enviados não informado.";
          $this->erro_campo = "fa65_dadoscompetencia";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_integracaohorusenviodadoscompetencia {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21570,'$this->fa65_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa65_sequencial"]) || $this->fa65_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3871,21570,'".AddSlashes(pg_result($resaco,$conresaco,'fa65_sequencial'))."','$this->fa65_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3871,21570,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa65_sequencial'))."','$this->fa65_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa65_integracaohorusenvio"]) || $this->fa65_integracaohorusenvio != "")
-             $resac = db_query("insert into db_acount values($acount,3871,21571,'".AddSlashes(pg_result($resaco,$conresaco,'fa65_integracaohorusenvio'))."','$this->fa65_integracaohorusenvio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3871,21571,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa65_integracaohorusenvio'))."','$this->fa65_integracaohorusenvio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa65_dadoscompetencia"]) || $this->fa65_dadoscompetencia != "")
-             $resac = db_query("insert into db_acount values($acount,3871,21572,'".AddSlashes(pg_result($resaco,$conresaco,'fa65_dadoscompetencia'))."','$this->fa65_dadoscompetencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3871,21572,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa65_dadoscompetencia'))."','$this->fa65_dadoscompetencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_integracaohorusenviodadoscompetencia {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21570,'$fa65_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3871,21570,'','".AddSlashes(pg_result($resaco,$iresaco,'fa65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3871,21571,'','".AddSlashes(pg_result($resaco,$iresaco,'fa65_integracaohorusenvio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3871,21572,'','".AddSlashes(pg_result($resaco,$iresaco,'fa65_dadoscompetencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3871,21570,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3871,21571,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa65_integracaohorusenvio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3871,21572,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa65_dadoscompetencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

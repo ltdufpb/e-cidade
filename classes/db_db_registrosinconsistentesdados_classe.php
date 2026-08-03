@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE db_registrosinconsistentesdados
 class cl_db_registrosinconsistentesdados { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db137_sequencial = 0; 
-   var $db137_db_registrosinconsistentes = 0; 
-   var $db137_correto = 'f'; 
-   var $db137_chave = 0; 
-   var $db137_excluir = 'f'; 
+   public $db137_sequencial = 0; 
+   public $db137_db_registrosinconsistentes = 0; 
+   public $db137_correto = 'f'; 
+   public $db137_chave = 0; 
+   public $db137_excluir = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db137_sequencial = int4 = Sequencial 
                  db137_db_registrosinconsistentes = int4 = Sequencial 
                  db137_correto = bool = Correto 
@@ -56,10 +56,10 @@ class cl_db_registrosinconsistentesdados {
                  db137_excluir = bool = Excluir 
                  ";
    //funcao construtor da classe 
-   function cl_db_registrosinconsistentesdados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_registrosinconsistentesdados"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -125,10 +125,10 @@ class cl_db_registrosinconsistentesdados {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db137_sequencial = pg_result($result,0,0); 
+       $this->db137_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_registrosinconsistentesdados_db137_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db137_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db137_sequencial)){
          $this->erro_sql = " Campo db137_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -164,7 +164,7 @@ class cl_db_registrosinconsistentesdados {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Registros inconsistentes Dados ($this->db137_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Registros inconsistentes Dados já Cadastrado";
@@ -192,14 +192,14 @@ class cl_db_registrosinconsistentesdados {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19787,'$this->db137_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3547,19787,'','".AddSlashes(pg_result($resaco,0,'db137_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3547,19788,'','".AddSlashes(pg_result($resaco,0,'db137_db_registrosinconsistentes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3547,19789,'','".AddSlashes(pg_result($resaco,0,'db137_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3547,19790,'','".AddSlashes(pg_result($resaco,0,'db137_chave'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3547,19899,'','".AddSlashes(pg_result($resaco,0,'db137_excluir'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3547,19787,'','".AddSlashes(pg_fetch_result($resaco,0,'db137_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3547,19788,'','".AddSlashes(pg_fetch_result($resaco,0,'db137_db_registrosinconsistentes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3547,19789,'','".AddSlashes(pg_fetch_result($resaco,0,'db137_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3547,19790,'','".AddSlashes(pg_fetch_result($resaco,0,'db137_chave'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3547,19899,'','".AddSlashes(pg_fetch_result($resaco,0,'db137_excluir'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -209,10 +209,10 @@ class cl_db_registrosinconsistentesdados {
       $this->atualizacampos();
      $sql = " update db_registrosinconsistentesdados set ";
      $virgula = "";
-     if(trim($this->db137_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_sequencial"])){ 
+     if(trim((string) $this->db137_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_sequencial"])){ 
        $sql  .= $virgula." db137_sequencial = $this->db137_sequencial ";
        $virgula = ",";
-       if(trim($this->db137_sequencial) == null ){ 
+       if(trim((string) $this->db137_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db137_sequencial";
          $this->erro_banco = "";
@@ -222,10 +222,10 @@ class cl_db_registrosinconsistentesdados {
          return false;
        }
      }
-     if(trim($this->db137_db_registrosinconsistentes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_db_registrosinconsistentes"])){ 
+     if(trim((string) $this->db137_db_registrosinconsistentes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_db_registrosinconsistentes"])){ 
        $sql  .= $virgula." db137_db_registrosinconsistentes = $this->db137_db_registrosinconsistentes ";
        $virgula = ",";
-       if(trim($this->db137_db_registrosinconsistentes) == null ){ 
+       if(trim((string) $this->db137_db_registrosinconsistentes) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db137_db_registrosinconsistentes";
          $this->erro_banco = "";
@@ -235,14 +235,14 @@ class cl_db_registrosinconsistentesdados {
          return false;
        }
      }
-     if(trim($this->db137_correto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_correto"])){ 
+     if(trim((string) $this->db137_correto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_correto"])){ 
        $sql  .= $virgula." db137_correto = '$this->db137_correto' ";
        $virgula = ",";
      }
-     if(trim($this->db137_chave)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_chave"])){ 
+     if(trim((string) $this->db137_chave)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_chave"])){ 
        $sql  .= $virgula." db137_chave = $this->db137_chave ";
        $virgula = ",";
-       if(trim($this->db137_chave) == null ){ 
+       if(trim((string) $this->db137_chave) == null ){ 
          $this->erro_sql = " Campo Chave nao Informado.";
          $this->erro_campo = "db137_chave";
          $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_db_registrosinconsistentesdados {
          return false;
        }
      }
-     if(trim($this->db137_excluir)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_excluir"])){ 
+     if(trim((string) $this->db137_excluir)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db137_excluir"])){ 
        $sql  .= $virgula." db137_excluir = '$this->db137_excluir' ";
        $virgula = ",";
-       if(trim($this->db137_excluir) == null ){ 
+       if(trim((string) $this->db137_excluir) == null ){ 
          $this->erro_sql = " Campo Excluir nao Informado.";
          $this->erro_campo = "db137_excluir";
          $this->erro_banco = "";
@@ -278,19 +278,19 @@ class cl_db_registrosinconsistentesdados {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19787,'$this->db137_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db137_sequencial"]) || $this->db137_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3547,19787,'".AddSlashes(pg_result($resaco,$conresaco,'db137_sequencial'))."','$this->db137_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3547,19787,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db137_sequencial'))."','$this->db137_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db137_db_registrosinconsistentes"]) || $this->db137_db_registrosinconsistentes != "")
-             $resac = db_query("insert into db_acount values($acount,3547,19788,'".AddSlashes(pg_result($resaco,$conresaco,'db137_db_registrosinconsistentes'))."','$this->db137_db_registrosinconsistentes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3547,19788,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db137_db_registrosinconsistentes'))."','$this->db137_db_registrosinconsistentes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db137_correto"]) || $this->db137_correto != "")
-             $resac = db_query("insert into db_acount values($acount,3547,19789,'".AddSlashes(pg_result($resaco,$conresaco,'db137_correto'))."','$this->db137_correto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3547,19789,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db137_correto'))."','$this->db137_correto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db137_chave"]) || $this->db137_chave != "")
-             $resac = db_query("insert into db_acount values($acount,3547,19790,'".AddSlashes(pg_result($resaco,$conresaco,'db137_chave'))."','$this->db137_chave',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3547,19790,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db137_chave'))."','$this->db137_chave',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db137_excluir"]) || $this->db137_excluir != "")
-             $resac = db_query("insert into db_acount values($acount,3547,19899,'".AddSlashes(pg_result($resaco,$conresaco,'db137_excluir'))."','$this->db137_excluir',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3547,19899,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db137_excluir'))."','$this->db137_excluir',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -343,14 +343,14 @@ class cl_db_registrosinconsistentesdados {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19787,'$db137_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3547,19787,'','".AddSlashes(pg_result($resaco,$iresaco,'db137_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3547,19788,'','".AddSlashes(pg_result($resaco,$iresaco,'db137_db_registrosinconsistentes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3547,19789,'','".AddSlashes(pg_result($resaco,$iresaco,'db137_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3547,19790,'','".AddSlashes(pg_result($resaco,$iresaco,'db137_chave'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3547,19899,'','".AddSlashes(pg_result($resaco,$iresaco,'db137_excluir'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3547,19787,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db137_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3547,19788,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db137_db_registrosinconsistentes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3547,19789,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db137_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3547,19790,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db137_chave'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3547,19899,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db137_excluir'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -411,7 +411,7 @@ class cl_db_registrosinconsistentesdados {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_registrosinconsistentesdados";
@@ -426,7 +426,7 @@ class cl_db_registrosinconsistentesdados {
    function sql_query ( $db137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_db_registrosinconsistentesdados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -463,7 +463,7 @@ class cl_db_registrosinconsistentesdados {
    function sql_query_file ( $db137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,7 +484,7 @@ class cl_db_registrosinconsistentesdados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

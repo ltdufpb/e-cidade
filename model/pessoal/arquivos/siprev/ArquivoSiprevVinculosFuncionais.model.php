@@ -32,7 +32,7 @@ class ArquivoSiprevVinculosFuncionais extends ArquivoSiprevBase {
   public function __construct() {
 
     call_user_func_array(
-      array($this, "parent::__construct"),
+      [$this, "parent::__construct"],
       func_get_args()
     );
 

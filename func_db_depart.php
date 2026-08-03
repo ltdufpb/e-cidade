@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $cldb_depart = new cl_db_depart;
 $cldb_config = new cl_db_config;
@@ -244,8 +244,8 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
                 } else {
                     if (isset($orgao) && $orgao != 0) {
                         if (isset($unidade) && $unidade != 0) {
-                            $aUnidades = explode(".", $unidade);
-                            list($iOrgao, $iUnidade) = $aUnidades;
+                            $aUnidades = explode(".", (string) $unidade);
+                            [$iOrgao, $iUnidade] = $aUnidades;
                             $where = "o40_orgao in ($orgao) and db01_unidade = $iUnidade and db01_anousu = {$anousu} and";
                         } else {
                             $where = "o40_orgao in ($orgao) and db01_anousu = {$anousu}and";
@@ -260,8 +260,8 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
                         $sql = $cldb_depart->sql_query_div("", $campos, "coddepto", $sWhere . $whereGeral);
                     } else {
                         if (isset($orgao) && $orgao == 0 && isset($unidade) && $unidade != 0) {
-                            $aUnidades = explode(".", $unidade);
-                            list($iOrgao, $iUnidade) = $aUnidades;
+                            $aUnidades = explode(".", (string) $unidade);
+                            [$iOrgao, $iUnidade] = $aUnidades;
 
                             $where = "db01_orgao = {$iOrgao} and db01_unidade = $iUnidade  and db01_anousu = {$anousu}  and ";
                             if (isset($unidades) && $unidades != "") {
@@ -290,7 +290,7 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
                 }
             }
             
-            db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", array(), true);
+            db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", [], true);
         } else {
             if ($pesquisa_chave != null && $pesquisa_chave != "") {
                 if (isset($unidades) && $unidades != "") {

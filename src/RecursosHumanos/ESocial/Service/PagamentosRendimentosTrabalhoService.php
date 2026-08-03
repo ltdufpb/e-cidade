@@ -125,7 +125,7 @@ class PagamentosRendimentosTrabalhoService
             );
         }
 
-        $pagamentos = array();
+        $pagamentos = [];
 
         foreach ($servidores as $indice => $servidor) {
             $this->addPagamentosRendimentos($servidor, $pagamentos, $tipoEvento);
@@ -459,7 +459,7 @@ class PagamentosRendimentosTrabalhoService
         if (!empty($numeroCgm)) {
             $sql = "select count(*) as qtdServidores from pessoal.rhpessoal where rh01_numcgm = {$numeroCgm} ";
             $resultado = db_query($sql);
-            if (pg_numrows($resultado) == 1) {
+            if (pg_num_rows($resultado) == 1) {
                 return (int) \db_utils::fieldsMemory($resultado, 0)->qtdservidores;
             }
         }

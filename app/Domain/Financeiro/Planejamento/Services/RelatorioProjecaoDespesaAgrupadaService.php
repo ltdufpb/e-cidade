@@ -65,6 +65,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
      * @param array $filtros
      * @throws Exception
      */
+    #[\Override]
     protected function processar(array $filtros)
     {
         parent::processar($filtros);
@@ -170,6 +171,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
         }
     }
 
+    #[\Override]
     protected function buscarOrgaos()
     {
         $orgaos = [];
@@ -183,6 +185,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
         $this->dados['dados'] = $orgaos;
     }
 
+    #[\Override]
     protected function buscarUnidades()
     {
         $unidades = [];
@@ -199,6 +202,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
         $this->dados['dados'] = $unidades;
     }
 
+    #[\Override]
     protected function buscarFuncoes()
     {
         $funcoes = [];
@@ -210,6 +214,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
         $this->dados['dados'] = $funcoes;
     }
 
+    #[\Override]
     protected function buscarSubfuncoes()
     {
         $subfuncoes = [];
@@ -224,6 +229,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
         $this->dados['dados'] = $subfuncoes;
     }
 
+    #[\Override]
     protected function buscarProgramas()
     {
         $programas = [];
@@ -240,6 +246,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
         $this->dados['dados'] = $programas;
     }
 
+    #[\Override]
     protected function buscarIniciativas()
     {
         $iniciativas = [];
@@ -256,6 +263,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
         $this->dados['dados'] = $iniciativas;
     }
 
+    #[\Override]
     protected function buscarElementos()
     {
         $elementos = [];
@@ -273,6 +281,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
         $this->dados['dados'] = $elementos;
     }
 
+    #[\Override]
     protected function buscarRecursos()
     {
         $recursos = [];
@@ -297,7 +306,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
                 sprintf(
                     '%s - Complemento: %s',
                     $fonteRecurso->descricao,
-                    str_pad($dadoFR->o15_complemento, 4, 0, STR_PAD_LEFT)
+                    str_pad((string) $dadoFR->o15_complemento, 4, 0, STR_PAD_LEFT)
                 )
             );
         }
@@ -347,7 +356,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
             $this->dados['dados'][$codigo]->valorBase += $detalhamento['valor_base'];
             $this->dados['totalizador']->valorBase += $detalhamento['valor_base'];
             if (!empty($detalhamento['valores'])) {
-                $valores = json_decode($detalhamento['valores']);
+                $valores = json_decode((string) $detalhamento['valores']);
                 foreach ($valores as $valor) {
                     $this->dados['dados'][$codigo]->exerciciosPlanejamento[$valor->ano] += $valor->valor;
                     $this->dados['totalizador']->exercicios[$valor->ano] += $valor->valor;
@@ -411,9 +420,7 @@ class RelatorioProjecaoDespesaAgrupadaService extends RelatorioProjecaoDespesaSe
     protected function removeZerados()
     {
         foreach ($this->dados['dados'] as $index => $dado) {
-            $x = array_filter($dado->exerciciosPlanejamento, function ($v) {
-                return !empty($v);
-            });
+            $x = array_filter($dado->exerciciosPlanejamento, fn($v) => !empty($v));
             if (empty($dado->valorBase) && empty($x)) {
                 unset($this->dados['dados'][$index]);
             }

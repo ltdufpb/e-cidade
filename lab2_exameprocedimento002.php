@@ -95,8 +95,8 @@ $iCampoTestar   = null;
 $iLaguraFixa    = 0; //false
 
 /* Setando os parametros fixos de Largura e alinhamento das celulas */
-$pdf->SetWidths(array(15, 15, 50, 50, 85, 20, 20, 25));
-$pdf->SetAligns(array("L","L","L", "L", "L", "R", "R", "R"));
+$pdf->SetWidths([15, 15, 50, 50, 85, 20, 20, 25]);
+$pdf->SetAligns(["L","L","L", "L", "L", "R", "R", "R"]);
 
 for($s=0; $s < $cllab_exame->numrows; $s++) {
   db_fieldsmemory($result,$s);
@@ -118,7 +118,7 @@ for($s=0; $s < $cllab_exame->numrows; $s++) {
   }
   $pdf->setfont('arial', '', 8);
   $iAlturaRow = $pdf->h - 30;
-  $aData = array($la08_i_codigo,
+  $aData = [$la08_i_codigo,
                 $la08_c_sigla,
                 $la08_c_descr,
                 $sd63_c_procedimento,
@@ -126,7 +126,7 @@ for($s=0; $s < $cllab_exame->numrows; $s++) {
                 number_format($valor_sus, 2, ',', '.'),
                 number_format($la53_n_acrescimo, 2, ',', '.'),
                 number_format($valor_sus + $la53_n_acrescimo, 2, ',', '.')
-               );
+               ];
   /* 
   * ====================================================================
   *   Setando a altura do retângulo que corresponde a borda da celula.

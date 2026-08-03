@@ -19,9 +19,7 @@ class MatriculaOnlineControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app["inscricaomatricula.controller"] = function () use ($app) {
-            return new InscricaoCandidato($app['request_stack']->getCurrentRequest());
-        };
+        $app["inscricaomatricula.controller"] = (fn() => new InscricaoCandidato($app['request_stack']->getCurrentRequest()));
 
         /**
          * creates a new controller based on the default route

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE db_sysarqmod
 class cl_db_sysarqmod { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codmod = 0; 
-   var $codarq = 0; 
+   public $codmod = 0; 
+   public $codarq = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codmod = int4 = Módulo 
                  codarq = int4 = Codigo Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysarqmod() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysarqmod"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_db_sysarqmod {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Modulo e Arquivos ($this->codmod."-".$this->codarq) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Modulo e Arquivos já Cadastrado";
@@ -130,12 +130,12 @@ class cl_db_sysarqmod {
      $resaco = $this->sql_record($this->sql_query_file($this->codmod,$this->codarq));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,748,'$this->codmod','I')");
        $resac = db_query("insert into db_acountkey values($acount,759,'$this->codarq','I')");
-       $resac = db_query("insert into db_acount values($acount,142,748,'','".AddSlashes(pg_result($resaco,0,'codmod'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,142,759,'','".AddSlashes(pg_result($resaco,0,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,142,748,'','".AddSlashes(pg_fetch_result($resaco,0,'codmod'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,142,759,'','".AddSlashes(pg_fetch_result($resaco,0,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_db_sysarqmod {
       $this->atualizacampos();
      $sql = " update db_sysarqmod set ";
      $virgula = "";
-     if(trim($this->codmod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codmod"])){ 
+     if(trim((string) $this->codmod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codmod"])){ 
        $sql  .= $virgula." codmod = $this->codmod ";
        $virgula = ",";
-       if(trim($this->codmod) == null ){ 
+       if(trim((string) $this->codmod) == null ){ 
          $this->erro_sql = " Campo Módulo nao Informado.";
          $this->erro_campo = "codmod";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_db_sysarqmod {
          return false;
        }
      }
-     if(trim($this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){ 
+     if(trim((string) $this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){ 
        $sql  .= $virgula." codarq = $this->codarq ";
        $virgula = ",";
-       if(trim($this->codarq) == null ){ 
+       if(trim((string) $this->codarq) == null ){ 
          $this->erro_sql = " Campo Codigo Arquivo nao Informado.";
          $this->erro_campo = "codarq";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_db_sysarqmod {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,748,'$this->codmod','A')");
          $resac = db_query("insert into db_acountkey values($acount,759,'$this->codarq','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codmod"]))
-           $resac = db_query("insert into db_acount values($acount,142,748,'".AddSlashes(pg_result($resaco,$conresaco,'codmod'))."','$this->codmod',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,142,748,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codmod'))."','$this->codmod',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codarq"]))
-           $resac = db_query("insert into db_acount values($acount,142,759,'".AddSlashes(pg_result($resaco,$conresaco,'codarq'))."','$this->codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,142,759,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codarq'))."','$this->codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_db_sysarqmod {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,748,'$codmod','E')");
          $resac = db_query("insert into db_acountkey values($acount,759,'$codarq','E')");
-         $resac = db_query("insert into db_acount values($acount,142,748,'','".AddSlashes(pg_result($resaco,$iresaco,'codmod'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,142,759,'','".AddSlashes(pg_result($resaco,$iresaco,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,142,748,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codmod'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,142,759,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_sysarqmod
@@ -304,7 +304,7 @@ class cl_db_sysarqmod {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_sysarqmod";
@@ -318,7 +318,7 @@ class cl_db_sysarqmod {
    function sql_query ( $codmod=null,$codarq=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -349,7 +349,7 @@ class cl_db_sysarqmod {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_db_sysarqmod {
    function sql_query_file ( $codmod=null,$codarq=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_db_sysarqmod {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -35,32 +35,28 @@
 class PrestacaoConta {
 
 	/**
-	 * Objeto do empenho financeiro
-	 * @var EmpenhoFinanceiro
-	 */
-	private $oEmpenhoFinanceiro;
-
-  /**
-   * Número do Sequencial do registro da prestação de contas da tabela emppresta
-   * @var Integer
-   */
-  private $iSequencialPrestacaoConta;
-
-	/**
 	 * Itens da prestacao de contas
 	 * @var array
 	 */
-	private $aItens = array();
+	private $aItens = [];
 
 	/**
 	 * Construtor da classe, recebe por parametro o empenho financeiro
 	 * @param EmpenhoFinanceiro $oEmpenhoFinanceiro
    * @param Integer $iSequencialPrestacaoConta
 	 */
-	public function __construct(EmpenhoFinanceiro $oEmpenhoFinanceiro, $iSequencialPrestacaoConta) {
-    $this->oEmpenhoFinanceiro        = $oEmpenhoFinanceiro;
-		$this->iSequencialPrestacaoConta = $iSequencialPrestacaoConta;
-	}
+	public function __construct(
+        /**
+         * Objeto do empenho financeiro
+         */
+        private readonly EmpenhoFinanceiro $oEmpenhoFinanceiro,
+        /**
+         * Número do Sequencial do registro da prestação de contas da tabela emppresta
+         */
+        private $iSequencialPrestacaoConta
+    )
+    {
+    }
 
   /**
    * Metodo criado para executar lancamento contabil
@@ -251,7 +247,7 @@ class PrestacaoConta {
     $oDaoEmpPrestaTip  = db_utils::getDao('empprestatip');
     $sSqlBuscaTipo     = $oDaoEmpPrestaTip->sql_query_file(null, "*", 'e44_tipo');
     $rsBuscaTipo       = $oDaoEmpPrestaTip->sql_record($sSqlBuscaTipo);
-    $aTiposEncontrados = array();
+    $aTiposEncontrados = [];
     if ($oDaoEmpPrestaTip->numrows > 0) {
       $aTiposEncontrados = db_utils::getCollectionByRecord($rsBuscaTipo);
     }

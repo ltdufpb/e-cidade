@@ -53,11 +53,11 @@ $db_opcao = 1;
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array("marca2"=>"Marca","local"=>"Localidades");
-   $clcriaabas->sizecampo  = array("marca2"=>"20","local"=>"20");
-   $clcriaabas->title      = array("marca2"=>"Marca","local"=>"Localidades");
-   $clcriaabas->src        = array("marca2"=>"mar1_marca002.php","local"=>"mar1_marcaloc002.php");
-   $clcriaabas->disabled   = array("local"=>"true");
+   $clcriaabas->identifica = ["marca2"=>"Marca","local"=>"Localidades"];
+   $clcriaabas->sizecampo  = ["marca2"=>"20","local"=>"20"];
+   $clcriaabas->title      = ["marca2"=>"Marca","local"=>"Localidades"];
+   $clcriaabas->src        = ["marca2"=>"mar1_marca002.php","local"=>"mar1_marcaloc002.php"];
+   $clcriaabas->disabled   = ["local"=>"true"];
    $clcriaabas->cria_abas();
    ?>
   </td>

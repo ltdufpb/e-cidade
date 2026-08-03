@@ -42,17 +42,17 @@ try{
 
         case 'setCookieDatabase':
 
-            setcookie("DB_base", $parametros->base, 0, "/");
-            setcookie("DB_servidor", $parametros->servidor, 0, "/");
-            setcookie("DB_porta", $parametros->port, 0, "/");
+            setcookie("DB_base", (string) $parametros->base, ['expires' => 0, 'path' => "/"]);
+            setcookie("DB_servidor", (string) $parametros->servidor, ['expires' => 0, 'path' => "/"]);
+            setcookie("DB_porta", (string) $parametros->port, ['expires' => 0, 'path' => "/"]);
 
             break;
 
         case 'destroyCookieDatabase':
 
-            setcookie("DB_base", null, 0, "/");
-            setcookie("DB_servidor", null, 0, "/");
-            setcookie("DB_porta", null, time() - 3600, "/");
+            setcookie("DB_base", '', ['expires' => 0, 'path' => "/"]);
+            setcookie("DB_servidor", '', ['expires' => 0, 'path' => "/"]);
+            setcookie("DB_porta", '', ['expires' => time() - 3600, 'path' => "/"]);
 
             break;
 

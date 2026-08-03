@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_orcprojeto_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcprojeto = new cl_orcprojeto;
 $clorcprojeto->rotulo->label();
@@ -85,7 +85,7 @@ if (isset($gravar)){
 	   if (isset($o39_codproj) && $o39_codproj!=""){
               $ro = $clorcprojeto->sql_record($clorcprojeto->sql_query_file($o39_codproj,"o39_texto"));	   
    	      //db_criatabela($ro);
-	      if (@pg_numrows($ro)>0){
+	      if (@pg_num_rows($ro)>0){
                  @db_fieldsmemory($ro,0);
    	      }  
   	      if ($o39_texto ==""){
@@ -105,7 +105,7 @@ if (isset($gravar)){
 	   if (isset($o39_codproj) && $o39_codproj!=""){
               $ro = $clorcprojeto->sql_record($clorcprojeto->sql_query_file($o39_codproj,"o39_compllei"));	   
    	      //db_criatabela($ro);
-	      if (@pg_numrows($ro)>0){
+	      if (@pg_num_rows($ro)>0){
                  @db_fieldsmemory($ro,0);
    	      }  
 	      db_textarea('o39_compllei',7,80,$Io39_compllei,true,'text',1); 

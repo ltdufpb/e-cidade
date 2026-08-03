@@ -11,14 +11,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 class DemandaReprimidaService
 {
-    /**
-     * @var DemandaReprimidaRepository
-     */
-    private $repository;
-
-    public function __construct(DemandaReprimidaRepository $repository)
+    public function __construct(private readonly DemandaReprimidaRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     /**

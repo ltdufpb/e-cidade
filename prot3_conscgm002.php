@@ -39,7 +39,7 @@ require_once(modification("classes/db_db_usuarios_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if (!isset($numcgm)) {
     db_redireciona("db_erros.php?fechar=true&db_erro=Número do CGM nao Informado");
@@ -51,7 +51,7 @@ $clsqlinscricoes = new cl_issbase;
 $sqlsocios = $clsqlinscricoes->sqlinscricoes_socios(0, $numcgm, "cgmsocio.z01_nome");
 $resultsocios = db_query($sqlsocios);
 
-if (pg_numrows($resultsocios) != 0) {
+if (pg_num_rows($resultsocios) != 0) {
     $socios = true;
 } else {
     $socios = false;
@@ -101,7 +101,7 @@ $clrotulo->label("rh70_descr");
 $db_opcao = 3;
 
 if (isset($z01_cgccpf) && $z01_cgccpf != "") {
-    if (strlen($z01_cgccpf) == 11) {
+    if (strlen((string) $z01_cgccpf) == 11) {
         $oDaoCgmFisico = db_utils::getDao('cgmfisico');
         $sSqlCgmFisico = $oDaoCgmFisico->sql_query(null, '*', null, "z04_numcgm = {$z01_numcgm}");
         $rsCgmFisico = $oDaoCgmFisico->sql_record($sSqlCgmFisico);
@@ -195,7 +195,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                 if ($cldb_cgmruas->numrows > 0) {
                                     $municipio = "t";
                                 } else {
-                                    if (strtoupper($munic) == strtoupper($z01_munic) && strtoupper($uf) == strtoupper($z01_uf)) {
+                                    if (strtoupper((string) $munic) == strtoupper((string) $z01_munic) && strtoupper((string) $uf) == strtoupper((string) $z01_uf)) {
                                         $municipio = "t";
                                     } else {
                                         $municipio = "f";
@@ -204,7 +204,7 @@ if (isset($z01_cgccpf) && $z01_cgccpf != "") {
                                 $consulta = 1;
                             }
 
-                            if (strlen($z01_cgccpf) == 14) {
+                            if (strlen((string) $z01_cgccpf) == 14) {
                                 include(modification("prot1_pjuridica.php"));
                             } else {
                                 include(modification("prot1_pfisica.php"));

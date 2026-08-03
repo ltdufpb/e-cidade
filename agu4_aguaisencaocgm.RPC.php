@@ -31,11 +31,11 @@ require_once modification("libs/db_sessoes.php");
 require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 
-$oParam   = JSON::create()->parse(stripslashes($_POST['json']));
-$oRetorno = (object) array(
+$oParam   = JSON::create()->parse(stripslashes((string) $_POST['json']));
+$oRetorno = (object) [
   'message' => '',
   'erro'    => false
-);
+];
 
 try {
 
@@ -51,7 +51,7 @@ try {
 
       $oIsencao = new AguaIsencaoCgm((int) $oParam->iCodigo);
 
-      $oRetorno->isencao = (object) array(
+      $oRetorno->isencao = (object) [
         'iCodigo'        => $oIsencao->getCodigo(),
         'iCgm'           => $oIsencao->getCgm()->getCodigo(),
         'sCgmDescricao'  => $oIsencao->getCgm()->getNome(),
@@ -61,7 +61,7 @@ try {
         'sDataFinal'     => ($oIsencao->getDataFinal() ? $oIsencao->getDataFinal()->getDate(DBDate::DATA_PTBR) : null),
         'sProcesso'      => $oIsencao->getNumeroProcesso(),
         'sObservacao'    => $oIsencao->getObservacoes(),
-      );
+      ];
 
       break;
 
@@ -105,9 +105,9 @@ try {
 
       $oIsencao->salvar();
 
-      $oRetorno->isencao = (object) array(
+      $oRetorno->isencao = (object) [
         'iCodigo' => $oIsencao->getCodigo(),
-      );
+      ];
 
       $oRetorno->message = 'Isenção salva com sucesso.';
       break;

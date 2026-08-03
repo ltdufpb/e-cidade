@@ -37,9 +37,9 @@ if(!$rsUnidades) {
   throw new DBException("Erro ao buscar as unidades.");
 }
 
-$aOptions   = array();
-$aOptions2  = array();
-$aOptions3  = array();
+$aOptions   = [];
+$aOptions2  = [];
+$aOptions3  = [];
 
 db_utils::makeCollectionFromRecord($rsUnidades, function($oUnidade) use (&$aOptions, &$aOptions2){
 

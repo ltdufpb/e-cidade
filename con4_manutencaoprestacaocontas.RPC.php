@@ -67,7 +67,7 @@ try {
       if ($iTotalRegistros == 0) {
         throw new Exception("Nenhum empenho encontrado.");
       }
-      $aEmpenhos = array();
+      $aEmpenhos = [];
       for ($iRow = 0; $iRow < $iTotalRegistros; $iRow++) {
 
         $oStdEmpenho = db_utils::fieldsMemory($rsBuscaEmpenhos, $iRow);
@@ -75,7 +75,7 @@ try {
         $oStdDadosRetorno->sequencial = $oStdEmpenho->e60_numemp;
         $oStdDadosRetorno->codigo     = $oStdEmpenho->e60_codemp;
         $oStdDadosRetorno->ano        = $oStdEmpenho->e60_anousu;
-        $oStdDadosRetorno->fornecedor = urlencode($oStdEmpenho->z01_nome);
+        $oStdDadosRetorno->fornecedor = urlencode((string) $oStdEmpenho->z01_nome);
         $aEmpenhos[] = $oStdDadosRetorno;
       }
       $oRetorno->aEmpenhos = $aEmpenhos;
@@ -97,7 +97,7 @@ try {
       $rsBuscaPrestacao = db_query($sSqlBuscaPrestacao);
       $oRetorno->aPrestacao = db_utils::getCollectionByRecord($rsBuscaPrestacao);
       foreach ($oRetorno->aPrestacao as $iIndice => $oStdPrestacao) {
-        $oRetorno->aPrestacao[$iIndice]->e44_descr = urlencode($oStdPrestacao->e44_descr);
+        $oRetorno->aPrestacao[$iIndice]->e44_descr = urlencode((string) $oStdPrestacao->e44_descr);
       }
       break;
 

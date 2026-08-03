@@ -82,7 +82,7 @@ try {
      */
     case 'getExamesRequisicao':
 
-      $oRetorno->aExames = array();
+      $oRetorno->aExames = [];
       $oRequisicaoLaboratorial = new RequisicaoLaboratorial($oParam->iCodigo);
       $aRequisicoesExames      = $oRequisicaoLaboratorial->getRequisicoesDeExames();
       $usuarioSessao = db_getsession('DB_id_usuario');
@@ -129,8 +129,8 @@ try {
           $oDadosExame         = new stdClass();
           $oExame              = $oRequisicaoExame->getExame();
           $oDadosExame->iExame = $oRequisicaoExame->getCodigo();
-          $oDadosExame->sExame = urlencode( $oExame->getNome() );
-          $oDadosExame->aCID   = array();
+          $oDadosExame->sExame = urlencode( (string) $oExame->getNome() );
+          $oDadosExame->aCID   = [];
 
           $oDadosExame->iProcedimento           = '';
           $oDadosExame->sProcedimentoEstrutural = '';
@@ -140,7 +140,7 @@ try {
           $oDadosExame->liberadoPor             = urlencode("");
 
           if($oRequisicaoExame->getConferenciaResultado() !== null) {
-              $oDadosExame->liberadoPor = urlencode( $oRequisicaoExame->getConferenciaResultado()->getUsuarioSistema()->getNome() );
+              $oDadosExame->liberadoPor = urlencode( (string) $oRequisicaoExame->getConferenciaResultado()->getUsuarioSistema()->getNome() );
           }
 
           $oDadosExame->iCidConferido           = null;
@@ -152,8 +152,8 @@ try {
           if ( !empty($oCID) ) {
 
             $oDadosExame->iCidConferido           = $oCID->getCodigo();
-            $oDadosExame->sNomeCidConferido       = urlencode($oCID->getNome());
-            $oDadosExame->sEstruturalCidConferido = urlencode($oCID->getCID());
+            $oDadosExame->sNomeCidConferido       = urlencode((string) $oCID->getNome());
+            $oDadosExame->sEstruturalCidConferido = urlencode((string) $oCID->getCID());
           }
 
           $oProcedimento = $oExame->getProcedimento();
@@ -162,7 +162,7 @@ try {
 
             $oDadosExame->iProcedimento           = $oProcedimento->getCodigo();
             $oDadosExame->sProcedimentoEstrutural = $oProcedimento->getEstrutural();
-            $oDadosExame->sProcedimento           = urlencode( $oProcedimento->getDescricao() );
+            $oDadosExame->sProcedimento           = urlencode( (string) $oProcedimento->getDescricao() );
 
             $aCIDProcedimento = $oProcedimento->getCID();
 
@@ -171,7 +171,7 @@ try {
               $oCID                = new stdClass();
               $oCID->iCodigo       = $oCIDProcedimento->getCID()->getCodigo();
               $oCID->sCID          = $oCIDProcedimento->getCID()->getCID();
-              $oCID->sNome         = urlencode( $oCIDProcedimento->getCID()->getNome() );
+              $oCID->sNome         = urlencode( (string) $oCIDProcedimento->getCID()->getNome() );
               $oCID->lPrincipal    = $oCIDProcedimento->cidPrincipal();
               $oDadosExame->aCID[] = $oCID;
             }

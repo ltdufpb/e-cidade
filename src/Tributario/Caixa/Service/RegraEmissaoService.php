@@ -11,14 +11,8 @@ use \regraEmissao as RegraEmissaoLegacy;
 
 final class RegraEmissaoService extends Service
 {
-    private $session;
-
-    private $arretipoRepository;
-
-    public function __construct(Session $session, ArretipoRepository $arretipoRepository)
+    public function __construct(private readonly Session $session, private readonly ArretipoRepository $arretipoRepository)
     {
-        $this->session = $session;
-        $this->arretipoRepository = $arretipoRepository;
     }
 
     public function execute(Recibo $recibo)

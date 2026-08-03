@@ -110,7 +110,7 @@ include(modification("dbforms/db_funcoes.php"));
             <div class="row">
                 <strong style="padding-right: 12px">Data :&nbsp;&nbsp;</strong>
                 <span id="ct_mensal">
-                <?php $result1=array("01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho","07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+                <?php $result1=["01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho","07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
                     db_select("mes", $result1, true, 2);
                     $mes =  STR_PAD(DBPessoal::getMesFolha(), 2, "0", STR_PAD_LEFT);
                     echo "<script> document.getElementById('mes').value = "."'{$mes}'"." </script>";

@@ -31,7 +31,7 @@ use ECidade\Financeiro\Orcamento\Registry\ComplementoRegistry;
 class bal_desp
 {
 
-    var $arq = null;
+    public $arq = null;
 
     protected $tipoRaterio = 0;
 
@@ -39,7 +39,7 @@ class bal_desp
     {
         umask(74);
         $this->arq = fopen("tmp/BAL_DESP.TXT", 'w+');
-        fputs($this->arq, $header);
+        fputs($this->arq, (string) $header);
         fputs($this->arq, "\r\n");
     }
 
@@ -129,16 +129,16 @@ class bal_desp
         ";
         $result_teste = db_query($sql_teste) or die($sql_teste);
         //db_criatabela($result_teste);exit;
-        if (pg_numrows($result_teste) > 0) {
+        if (pg_num_rows($result_teste) > 0) {
             $dotacoes = "";
 
             db_fieldsmemory($result_teste, 0);
-            $ult_estrut = formatar($o58_orgao, 2, 'n') . formatar($o58_unidade, 2, 'n') . formatar($o58_funcao, 2, 'n') . formatar($o58_subfuncao, 3, 'n') . formatar($o58_programa, 4, 'n') . formatar($o58_projativ, 5, 'n') . formatar($o58_codele, 10, 'n') . formatar($o58_codigo, 4, 'n');
+            $ult_estrut = formatar($o58_orgao, 2) . formatar($o58_unidade, 2) . formatar($o58_funcao, 2) . formatar($o58_subfuncao, 3) . formatar($o58_programa, 4) . formatar($o58_projativ, 5) . formatar($o58_codele, 10) . formatar($o58_codigo, 4);
 
-            for ($x = 0; $x < pg_numrows($result_teste); $x++) {
+            for ($x = 0; $x < pg_num_rows($result_teste); $x++) {
                 db_fieldsmemory($result_teste, $x);
 
-                $atu_estrut = formatar($o58_orgao, 2, 'n') . formatar($o58_unidade, 2, 'n') . formatar($o58_funcao, 2, 'n') . formatar($o58_subfuncao, 3, 'n') . formatar($o58_programa, 4, 'n') . formatar($o58_projativ, 5, 'n') . formatar($o58_codele, 10, 'n') . formatar($o58_codigo, 4, 'n');
+                $atu_estrut = formatar($o58_orgao, 2) . formatar($o58_unidade, 2) . formatar($o58_funcao, 2) . formatar($o58_subfuncao, 3) . formatar($o58_programa, 4) . formatar($o58_projativ, 5) . formatar($o58_codele, 10) . formatar($o58_codigo, 4);
 
                 if ($ult_estrut === $atu_estrut) {
                     //	  echo "igual - ultimo: $ult_estrut - atu: $atu_estrut <br><br><br><br><br>";
@@ -150,7 +150,7 @@ class bal_desp
 
                 $dotacoes .= $o58_coddot . " - ";
 
-                $ult_estrut = formatar($o58_orgao, 2, 'n') . formatar($o58_unidade, 2, 'n') . formatar($o58_funcao, 2, 'n') . formatar($o58_subfuncao, 3, 'n') . formatar($o58_programa, 4, 'n') . formatar($o58_projativ, 5, 'n') . formatar($o58_codele, 10, 'n') . formatar($o58_codigo, 4, 'n');
+                $ult_estrut = formatar($o58_orgao, 2) . formatar($o58_unidade, 2) . formatar($o58_funcao, 2) . formatar($o58_subfuncao, 3) . formatar($o58_programa, 4) . formatar($o58_projativ, 5) . formatar($o58_codele, 10) . formatar($o58_codigo, 4);
 
             }
             echo "<font color='red'><br><b>DOTACOES DUPLICADAS:</b><br>$dotacoes<br></font>";
@@ -443,7 +443,7 @@ SQL;
 
         db_query("rollback");
         $dotacoes = "";
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
 
             if ($o58_coddot > 0 and $o58_codigo <= 0) {
@@ -459,24 +459,24 @@ SQL;
         $totalsup = 0;
         $totalcre = 0;
         $totalesp = 0;
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
 
             $dados = db_utils::fieldsMemory($result, $i);
 
             if ($o58_codigo > 0) {
                 $o58_codigo = $o58_especificacao;
-                $line = formatar($o58_orgao, 2, 'n');
-                $line .= formatar($o58_unidade, 2, 'n');
-                $line .= formatar($o58_funcao, 2, 'n');
-                $line .= formatar($o58_subfuncao, 3, 'n');
-                $line .= formatar($o58_programa, 4, 'n');
-                $line .= formatar(0, 3, 'n'); // subprograma
-                $line .= formatar($o58_projativ, 5, 'n');
-                $line .= substr($o58_elemento, 1, 6);
+                $line = formatar($o58_orgao, 2);
+                $line .= formatar($o58_unidade, 2);
+                $line .= formatar($o58_funcao, 2);
+                $line .= formatar($o58_subfuncao, 3);
+                $line .= formatar($o58_programa, 4);
+                $line .= formatar(0, 3); // subprograma
+                $line .= formatar($o58_projativ, 5);
+                $line .= substr((string) $o58_elemento, 1, 6);
                 $line .= $dados->recurso;
-                $line .= formatar($dot_ini, 13, 'v'); // dotacao inicial
-                $line .= formatar(0, 13, 'v'); // atualizacao monetaria
+                $line .= formatar($dot_ini, 13); // dotacao inicial
+                $line .= formatar(0, 13); // atualizacao monetaria
                 $sup = 0;
                 $cre = 0;
                 $esp = 0;
@@ -526,7 +526,7 @@ SQL;
                         where c71_coddoc in (7,52,53,54,55,56,58,59,60,61,62,63,64,65)
                           and o46_tiposup not between 1014 and 1016
                           and c71_data between '$data_ini' and '$data_fim'
-                          and substr(o56_elemento,1,7)='" . substr($o58_elemento, 0, 7) . "'
+                          and substr(o56_elemento,1,7)='" . substr((string) $o58_elemento, 0, 7) . "'
                           and c73_anousu = {$anousu}";
 
                     if ($subelemento == "sim") {
@@ -535,10 +535,10 @@ SQL;
                         $resultsup = db_query($sql);
                     }
 
-                    if (pg_numrows($resultsup) > 0) {
-                        $sup = pg_result($resultsup, 0, 0) + 0;
-                        $cre = pg_result($resultsup, 0, 1) + 0;
-                        $esp = pg_result($resultsup, 0, 2) + 0;
+                    if (pg_num_rows($resultsup) > 0) {
+                        $sup = pg_fetch_result($resultsup, 0, 0) + 0;
+                        $cre = pg_fetch_result($resultsup, 0, 1) + 0;
+                        $esp = pg_fetch_result($resultsup, 0, 2) + 0;
                     }
                 }
 
@@ -547,23 +547,23 @@ SQL;
                 $totalcre += $cre;
                 $totalesp += $esp;
 
-                $line .= formatar(round($sup, 2), 13, 'v'); // creditos suple
-                $line .= formatar(round($cre, 2), 13, 'v'); // creditos especial
-                $line .= formatar(round($esp, 2), 13, 'v'); // creditos extraordinarios
+                $line .= formatar(round($sup, 2), 13); // creditos suple
+                $line .= formatar(round($cre, 2), 13); // creditos especial
+                $line .= formatar(round($esp, 2), 13); // creditos extraordinarios
 
-                $line .= formatar(abs(round($reduzido_acumulado, 2)), 13, 'v'); // reducoes
-                $line .= formatar($valor_suplementado_recurso, 13, 'v'); // suple recurso vinculado
-                $line .= formatar($valor_reduzido_recurso, 13, 'v'); // reducao recurso vinculado
-                $line .= formatar(abs(round($empenhado - $anulado, 2)), 13, 'v');
-                $line .= formatar(abs(round($liquidado, 2)), 13, 'v'); // liquidado
-                $line .= formatar(abs(round($pago, 2)), 13, 'v'); // pago
-                $line .= formatar(0, 13, 'v'); // limitado
-                $line .= formatar(0, 13, 'v'); // recomposicao
-                $line .= formatar(0, 13, 'v'); // previsao
+                $line .= formatar(abs(round($reduzido_acumulado, 2)), 13); // reducoes
+                $line .= formatar($valor_suplementado_recurso, 13); // suple recurso vinculado
+                $line .= formatar($valor_reduzido_recurso, 13); // reducao recurso vinculado
+                $line .= formatar(abs(round($empenhado - $anulado, 2)), 13);
+                $line .= formatar(abs(round($liquidado, 2)), 13); // liquidado
+                $line .= formatar(abs(round($pago, 2)), 13); // pago
+                $line .= formatar(0, 13); // limitado
+                $line .= formatar(0, 13); // recomposicao
+                $line .= formatar(0, 13); // previsao
 
                 if ($anousu >= 2020) {
                     $complementoFonteRecurso = $o58_complemento;
-                    $line .= str_pad($complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
+                    $line .= str_pad((string) $complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
                 }
 
                 if ($anousu >= 2021) {
@@ -573,21 +573,21 @@ SQL;
                     $remanejamento = dbround_php_52($dados->remanejamento, 2);
 
                     if ($transferencia < 0){
-                        $line .= '-'.formatar(($transferencia*-1), 12, 'v');
+                        $line .= '-'.formatar(($transferencia*-1), 12);
                     }else{
-                       $line .= formatar($transferencia, 13, 'v');
+                       $line .= formatar($transferencia, 13);
                     }
 
                     if ($transposicao < 0){
-                        $line .= '-'.formatar(($transposicao*-1), 12, 'v');
+                        $line .= '-'.formatar(($transposicao*-1), 12);
                     }else{
-                       $line .= formatar($transposicao, 13, 'v');
+                       $line .= formatar($transposicao, 13);
                     }
 
                     if ($remanejamento < 0){
-                        $line .= '-'.formatar(($remanejamento*-1), 12, 'v');
+                        $line .= '-'.formatar(($remanejamento*-1), 12);
                     }else{
-                       $line .= formatar($remanejamento, 13, 'v');
+                       $line .= formatar($remanejamento, 13);
                     }
 
                 }
@@ -602,7 +602,7 @@ SQL;
             }
         }
         //  trailer
-        $contador = espaco(10 - (strlen($contador)), '0') . $contador;
+        $contador = espaco(10 - (strlen($contador))) . $contador;
         $line = "FINALIZADOR" . $contador;
         fputs($this->arq, $line);
         fputs($this->arq, "\r\n");

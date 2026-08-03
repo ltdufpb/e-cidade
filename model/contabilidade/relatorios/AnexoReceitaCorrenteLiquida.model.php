@@ -41,7 +41,8 @@ class AnexoReceitaCorrenteLiquida extends RelatoriosLegaisBase {
    *
    * @return array $aRetorno
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
     
     /**
      * Para executar este anexo é necessário buscar por todas as instituições
@@ -77,19 +78,19 @@ class AnexoReceitaCorrenteLiquida extends RelatoriosLegaisBase {
                                         
     $iTotalLinhasReceita   = pg_num_rows($rsReceita);
     $aLinhasRelatorio = $this->oRelatorioLegal->getLinhasCompleto();
-    $aLinhas = array();
+    $aLinhas = [];
 
     for ($iLinha = 1; $iLinha <= count($aLinhasRelatorio); $iLinha++) {
        
       $aLinhasRelatorio[$iLinha]->setPeriodo($this->iCodigoPeriodo);
       $aColunasRelatorio  = $aLinhasRelatorio[$iLinha]->getCols($this->iCodigoPeriodo);
-      $aColunaslinha      = array();
+      $aColunaslinha      = [];
       $oLinha             = new stdClass();
       $oLinha->totalizar  = $aLinhasRelatorio[$iLinha]->isTotalizador();
       $oLinha->descricao  = $aLinhasRelatorio[$iLinha]->getDescricaoLinha();
       $oLinha->colunas    = $aColunasRelatorio; 
       $oLinha->desdobrar  = false;
-      $oLinha->contas     = array();
+      $oLinha->contas     = [];
       $oLinha->nivellinha = $aLinhasRelatorio[$iLinha]->getNivel();
       
       foreach ($aColunasRelatorio as $oColuna) {
@@ -145,7 +146,7 @@ class AnexoReceitaCorrenteLiquida extends RelatoriosLegaisBase {
 
         foreach ($oLinha->colunas as $iColuna => $oColuna) {
            
-          if (trim($oColuna->o116_formula) != "") {
+          if (trim((string) $oColuna->o116_formula) != "") {
              
             $sFormulaOriginal = ($oColuna->o116_formula);
             $sFormula         = $this->oRelatorioLegal->parseFormula('aLinhas', $sFormulaOriginal, $iColuna, $aLinhas);
@@ -154,7 +155,7 @@ class AnexoReceitaCorrenteLiquida extends RelatoriosLegaisBase {
             eval($evaluate);
             $sRetorno = ob_get_contents();
             ob_clean();
-            if (strpos(strtolower($sRetorno), "parse error") > 0 || strpos(strtolower($sRetorno), "undefined" > 0)) {
+            if (strpos(strtolower($sRetorno), "parse error") > 0 || strpos(strtolower($sRetorno), (string) (0 > 0))) {
               
               $sMsg =  "Linha {$iLinha} com erro no cadastro da formula<br>{$oColuna->o116_formula}";
               throw new Exception($sMsg);

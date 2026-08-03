@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptubaseregimovel_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptubaseregimovel = new cl_iptubaseregimovel;
 $cliptubaseregimovel->rotulo->label("j04_sequencial");
 $cliptubaseregimovel->rotulo->label("j04_setorregimovel");
@@ -112,9 +112,9 @@ if(isset($matricregimo)){
            $sql = $cliptubaseregimovel->sql_query("",$campos,"j04_sequencial",$where);
            
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j04_setorregimovel)){
-          $repassa = array("chave_j04_sequencial"=>$chave_j04_sequencial,"chave_j04_setorregimovel"=>$chave_j04_setorregimovel);
+          $repassa = ["chave_j04_sequencial"=>$chave_j04_sequencial,"chave_j04_setorregimovel"=>$chave_j04_setorregimovel];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-	db_postmemory($HTTP_SERVER_VARS);
-	db_postmemory($HTTP_POST_VARS);
+	db_postmemory($_SERVER);
+	db_postmemory($_POST);
 
 if (isset($alterar)){
 	if ((isset($instituicao))&&($conteudotexto!="")){
@@ -69,7 +69,7 @@ if (isset($db_opcao)) {
 	where descrtexto = '$db_opcao'
 	";//
 	$result_db_opcao = db_query($sql_db_opcao);
-	$num_db_opcao = pg_numrows($result_db_opcao);
+	$num_db_opcao = pg_num_rows($result_db_opcao);
 	if ($num_db_opcao!=0){
 		$habilita_alteracao = true;
 	}else{
@@ -125,15 +125,15 @@ if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o tex
 		from db_config
 	";
 	$result = db_query($sql);
-	$num = pg_numrows($result);
+	$num = pg_num_rows($result);
 	for ($i=0;$i<$num;$i++){
-  if(($num_db_opcao!=0)&&(pg_result($result,$i,"codigo")==pg_result($result_db_opcao,0,"id_instit"))){
+  if(($num_db_opcao!=0)&&(pg_fetch_result($result,$i,"codigo")==pg_fetch_result($result_db_opcao,0,"id_instit"))){
   $selected = true;
  }else{
   $selected = false;
  }
 ?>
-		<option value="<?=@pg_result($result,$i,"codigo")?>" <?=$selected?"selected":""?> >&nbsp;<?=@pg_result($result,$i,"nomeinst")?>&nbsp;</option>
+		<option value="<?=@pg_fetch_result($result,$i,"codigo")?>" <?=$selected?"selected":""?> >&nbsp;<?=@pg_fetch_result($result,$i,"nomeinst")?>&nbsp;</option>
 <?php 
 	}
 ?>
@@ -148,7 +148,7 @@ if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o tex
   </tr>
   <tr>
     <td>&nbsp;Texto:&nbsp;
-	<textarea name="conteudotexto" cols="140" rows="16" id="conteudotexto"><?=@$codigoclass?><?=@pg_result($result_db_opcao,0,"conteudotexto")?></textarea>
+	<textarea name="conteudotexto" cols="140" rows="16" id="conteudotexto"><?=@$codigoclass?><?=@pg_fetch_result($result_db_opcao,0,"conteudotexto")?></textarea>
 	</td>
   </tr>
   <tr>

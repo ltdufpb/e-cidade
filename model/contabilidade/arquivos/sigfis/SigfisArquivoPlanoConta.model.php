@@ -120,7 +120,7 @@ class SigfisArquivoPlanoConta extends SigfisArquivoBase implements iPadArquivoTX
          * Variáveis de contrele da Classe;
          */
         $ReservadoTCE = " ";
-        $iMes         = substr($this->dtDataFinal, 5, 2);
+        $iMes         = substr((string) $this->dtDataFinal, 5, 2);
         $this->addLog("=====Arquivo".$this->getNomeArquivo()." Erros:\n");
         if ($clConPlano->numrows > 0) {
 
@@ -182,31 +182,31 @@ class SigfisArquivoPlanoConta extends SigfisArquivoBase implements iPadArquivoTX
                 }
 
                 //// nÃo listar contar que nÃo possuam vinculo com o SIGFIS
-                if(trim($iCodigoContaTCE) == '') {
+                if(trim((string) $iCodigoContaTCE) == '') {
                     continue;
                 }
 
-                $oDados->dt_AnoCriacao          = str_pad($oDadosPlano->c60_anousu,4," ");
+                $oDados->dt_AnoCriacao          = str_pad((string) $oDadosPlano->c60_anousu,4," ");
                 $oDados->tp_OrigemSaldo         = str_pad($sNaturezaSaldo,1," "); // 'M'; // Vem do XML;
-                $oDados->cd_RecebeLanc          = str_pad($oDadosPlano->recebe_lancamento,1," ");
+                $oDados->cd_RecebeLanc          = str_pad((string) $oDadosPlano->recebe_lancamento,1," ");
                 $oDados->ST_EMPRESA             = str_pad($this->sIndicadorEmpresa,1," ");
                 $oDados->dt_AnoMes              = str_pad($oDadosPlano->c60_anousu.$iMes,6," ");
 
 
-                $oDadosPlano->c60_descr = preg_replace( '/[`^~\'"]/', '', iconv( 'UTF-8', 'ASCII//TRANSLIT', tirarAcentos($oDadosPlano->c60_descr) ) );
+                $oDadosPlano->c60_descr = preg_replace( '/[`^~\'"]/', '', iconv( 'UTF-8', 'ASCII//TRANSLIT', (string) tirarAcentos($oDadosPlano->c60_descr) ) );
 
                 $oDados->nu_SequencialTC        = str_pad("",          4, ' ', STR_PAD_LEFT); // Vem do XML
-                $oDados->cd_Unidade             = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
-                $oDados->cd_ContaContabil       = str_pad($oDadosPlano->c60_estrut, 34, ' ', STR_PAD_RIGHT);
-                $oDados->tp_ContaContabil       = str_pad(trim($oDadosPlano->tipo_conta),  1, ' ', STR_PAD_LEFT);
-                $oDados->nm_ContaContabil       = str_pad(trim(substr($oDadosPlano->c60_descr,0,49)),  50, " ", STR_PAD_RIGHT);
-                $oDados->nu_Nivel               = str_pad(trim($oDadosPlano->nivel),       4, " ", STR_PAD_LEFT);
-                $oDados->cd_Banco               = str_pad(substr($oDadosPlano->banco,0,4),   4, ' ', STR_PAD_LEFT);
-                $oDados->cd_AgenciaBancaria     = str_pad(trim(substr($oDadosPlano->agencia,0,12)),12, ' ', STR_PAD_RIGHT);
-                $oDados->cd_ContaBancaria       = str_pad(trim(substr($oDadosPlano->conta,( $oDadosPlano->banco == 104?2:0),10)),  10, ' ', STR_PAD_RIGHT);
+                $oDados->cd_Unidade             = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
+                $oDados->cd_ContaContabil       = str_pad((string) $oDadosPlano->c60_estrut, 34, ' ', STR_PAD_RIGHT);
+                $oDados->tp_ContaContabil       = str_pad(trim((string) $oDadosPlano->tipo_conta),  1, ' ', STR_PAD_LEFT);
+                $oDados->nm_ContaContabil       = str_pad(trim(substr((string) $oDadosPlano->c60_descr,0,49)),  50, " ", STR_PAD_RIGHT);
+                $oDados->nu_Nivel               = str_pad(trim((string) $oDadosPlano->nivel),       4, " ", STR_PAD_LEFT);
+                $oDados->cd_Banco               = str_pad(substr((string) $oDadosPlano->banco,0,4),   4, ' ', STR_PAD_LEFT);
+                $oDados->cd_AgenciaBancaria     = str_pad(trim(substr((string) $oDadosPlano->agencia,0,12)),12, ' ', STR_PAD_RIGHT);
+                $oDados->cd_ContaBancaria       = str_pad(trim(substr((string) $oDadosPlano->conta,( $oDadosPlano->banco == 104?2:0),10)),  10, ' ', STR_PAD_RIGHT);
                 $oDados->Reservado_tce1         = str_pad($ReservadoTCE,            34, " ", STR_PAD_LEFT);
                 $oDados->Reservado_tce2         = str_pad($ReservadoTCE,             4, " ", STR_PAD_LEFT);
-                $oDados->cd_FonteGestor         = str_pad($oDadosPlano->c61_codigo,  4, " ", STR_PAD_LEFT);
+                $oDados->cd_FonteGestor         = str_pad((string) $oDadosPlano->c61_codigo,  4, " ", STR_PAD_LEFT);
 
                 if($iAnoSessao < 2013 ) {
                     $oDados->codigolinha            = 396;
@@ -218,11 +218,11 @@ class SigfisArquivoPlanoConta extends SigfisArquivoBase implements iPadArquivoTX
                     $oDados->nu_Sequencial_PCASP    = str_pad(str_repeat(" ", 5),  5, " ", STR_PAD_LEFT);
                     if ( $oDadosPlano->tipo_conta == 1 ) {
                         $oDados->Cd_Atrib_ContaCorrente = '1';
-                        $oDados->Cd_Conta_Corrente      = str_pad($oDadosPlano->seq_conta_corrente,     30, ' ', STR_PAD_RIGHT);
-                        $oDados->de_ContaCorrente       = str_pad($oDadosPlano->descr_conta_corrente,  100, ' ', STR_PAD_RIGHT);
+                        $oDados->Cd_Conta_Corrente      = str_pad((string) $oDadosPlano->seq_conta_corrente,     30, ' ', STR_PAD_RIGHT);
+                        $oDados->de_ContaCorrente       = str_pad((string) $oDadosPlano->descr_conta_corrente,  100, ' ', STR_PAD_RIGHT);
                     }
-                    $oDados->nu_Sequencial_PCASP    = str_pad($iSeqPCASP, 5, " ", STR_PAD_LEFT);
-                    $oDados->nu_Sequencial_PCASP    = str_pad($iCodigoContaTCE, 5, " ", STR_PAD_LEFT);
+                    $oDados->nu_Sequencial_PCASP    = str_pad((string) $iSeqPCASP, 5, " ", STR_PAD_LEFT);
+                    $oDados->nu_Sequencial_PCASP    = str_pad((string) $iCodigoContaTCE, 5, " ", STR_PAD_LEFT);
                     $oDados->codigolinha            = 669;
 
                 }
@@ -240,5 +240,5 @@ class SigfisArquivoPlanoConta extends SigfisArquivoBase implements iPadArquivoTX
 
 }
 function tirarAcentos($string){
-    return preg_replace(array("/(á|à|ã|â|ä)/","/(Á|À|Ã|Â|Ä)/","/(é|è|ê|ë)/","/(É|È|Ê|Ë)/","/(í|ì|î|ï)/","/(Í|Ì|Î|Ï)/","/(ó|ò|õ|ô|ö)/","/(Ó|Ò|Õ|Ô|Ö)/","/(ú|ù|û|ü)/","/(Ú|Ù|Û|Ü)/","/(ñ)/","/(Ñ)/","/(Ç|ç)/"),explode(" ","a A e E i I o O u U n N C c"),$string);
+    return preg_replace(["/(á|à|ã|â|ä)/","/(Á|À|Ã|Â|Ä)/","/(é|è|ê|ë)/","/(É|È|Ê|Ë)/","/(í|ì|î|ï)/","/(Í|Ì|Î|Ï)/","/(ó|ò|õ|ô|ö)/","/(Ó|Ò|Õ|Ô|Ö)/","/(ú|ù|û|ü)/","/(Ú|Ù|Û|Ü)/","/(ñ)/","/(Ñ)/","/(Ç|ç)/"],explode(" ","a A e E i I o O u U n N C c"),(string) $string);
 }

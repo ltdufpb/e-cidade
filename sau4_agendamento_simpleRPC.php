@@ -52,7 +52,7 @@ if($objParam->exec == 'consulta'){
 	                   and sd23_i_codigo not in (select s114_i_agendaconsulta from agendaconsultaanula where s114_i_agendaconsulta=sd23_i_codigo)";
 	$result=db_query($sql);
     if(pg_num_rows($result)>0){
-        $objRetorno->cod_consulta  = pg_result($result,0,0);
+        $objRetorno->cod_consulta  = pg_fetch_result($result,0,0);
     }else{
     	$objRetorno->status  = 2;
     	$objRetorno->message = "Nenhuma consulta encontrada SQL[$sql]";
@@ -72,14 +72,14 @@ if($objParam->exec == 'medico'){
        $linhas=pg_num_rows($result);
     }
     if($linhas>0){
-        $objRetorno->sd27_i_codigo  = pg_result($result,0,0);
+        $objRetorno->sd27_i_codigo  = pg_fetch_result($result,0,0);
     }else{
     	$objRetorno->status  = 2;
     	$objRetorno->message = "Nenhuma consulta encontrada SQL[$sql]";
     }
 }
 if($objParam->exec == 'getSaldoconsulta'){
-  $vet=explode("/",$objParam->sd23_d_consulta);
+  $vet=explode("/",(string) $objParam->sd23_d_consulta);
   $data=$vet[2]."-".$vet[1]."-".$vet[0];
   
   $sWhere            = " s140_i_unidade = $departamento ";
@@ -145,15 +145,15 @@ if($objParam->exec == 'getSaldoconsulta'){
 
 	  if ($paralizacao != null){
       
-        $aparalizado       = explode("|",$paralizacao);
+        $aparalizado       = explode("|",(string) $paralizacao);
         $aparalizadoini    = explode(":",$aparalizado[0]);
         $sParalizadoIniMin = ((int)$aparalizadoini[0]*60)+(int)$aparalizadoini[1];
         $aparalizadofim    = explode(":",$aparalizado[1]);
         $iParalizadoFimMin = ((int)$aparalizadofim[0]*60)+(int)$aparalizadofim[1];
         $iDifParalisado    = $iParalizadoFimMin-$sParalizadoIniMin;
-        $aini              = explode(":",$inicio);
+        $aini              = explode(":",(string) $inicio);
         $iIniMin           = ((int)$aini[0]*60)+(int)$aini[1];
-        $afim              = explode(":",$fim);
+        $afim              = explode(":",(string) $fim);
         $iFimMin           = ((int)$afim[0]*60)+(int)$afim[1];
         $iDifhorario       = $iFimMin-$iIniMin;
         $paralizado       += ($total/$iDifhorario)*$iDifParalisado;

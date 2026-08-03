@@ -35,7 +35,7 @@ $clrotulo->label('r01_regist');
 $clrotulo->label('r14_quant');
 $clrotulo->label('r14_valor');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $head2 = "RELATÓRIO DE MARGEM CONSIGNÁVEL";
@@ -162,7 +162,7 @@ $where
 
 $result = db_query($sql);
 //echo $sql; db_criatabela($result);exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    //db_msgbox('Não existem Cálculo no período de '.$mes.' / '.$ano);
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Cálculo no período de '.$mes.' / '.$ano);
@@ -186,7 +186,7 @@ $quebra  = '';
 $t_quant = 0;
 $t_valor = 0;
 $t_func  = 0;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
         $pdf->addpage('L');

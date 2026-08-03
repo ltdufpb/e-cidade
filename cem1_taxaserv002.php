@@ -57,20 +57,20 @@ $clcriaabas = new cl_criaabas;
      <td>
      <?php 
      
-       $clcriaabas->identifica = array("dadostaxa"     =>"Dados Taxa", 
-                                       "valorestaxa"   =>"Valores Taxa");
+       $clcriaabas->identifica = ["dadostaxa"     =>"Dados Taxa", 
+                                       "valorestaxa"   =>"Valores Taxa"];
        
-       $clcriaabas->title      = array("dadostaxa"     =>"Dados Taxa", 
-                                       "valorestaxa"   =>"Valores Taxa");
+       $clcriaabas->title      = ["dadostaxa"     =>"Dados Taxa", 
+                                       "valorestaxa"   =>"Valores Taxa"];
            
-       $clcriaabas->src        = array("dadostaxa"     =>"cem1_taxaserv005.php",
-                                       "valorestaxa"   =>"cem1_taxavalorserv001.php");    
+       $clcriaabas->src        = ["dadostaxa"     =>"cem1_taxaserv005.php",
+                                       "valorestaxa"   =>"cem1_taxavalorserv001.php"];    
        
-       $clcriaabas->sizecampo  = array("dadostaxa"     =>"20",
-                                       "valorestaxa"   =>"20");
+       $clcriaabas->sizecampo  = ["dadostaxa"     =>"20",
+                                       "valorestaxa"   =>"20"];
   
-       $clcriaabas->disabled   = array("dadostaxa"     =>false,
-                                       "valorestaxa"   =>true);       
+       $clcriaabas->disabled   = ["dadostaxa"     =>false,
+                                       "valorestaxa"   =>true];       
      
        $clcriaabas->cria_abas();  
          

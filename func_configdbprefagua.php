@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_configdbprefagua_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconfigdbprefagua = new cl_configdbprefagua;
 $clconfigdbprefagua->rotulo->label("w16_sequencial");
 $clconfigdbprefagua->rotulo->label("w16_aguacortesituacao");
@@ -98,9 +98,9 @@ $clconfigdbprefagua->rotulo->label("w16_aguacortesituacao");
         }else{
            $sql = $clconfigdbprefagua->sql_query("",$campos,"w16_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_w16_aguacortesituacao)){
-          $repassa = array("chave_w16_sequencial"=>$chave_w16_sequencial,"chave_w16_aguacortesituacao"=>$chave_w16_aguacortesituacao);
+          $repassa = ["chave_w16_sequencial"=>$chave_w16_sequencial,"chave_w16_aguacortesituacao"=>$chave_w16_aguacortesituacao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

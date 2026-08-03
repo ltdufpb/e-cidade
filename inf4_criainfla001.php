@@ -39,7 +39,7 @@ $rotulocampo->label("DBtxt6");
 $clinfla = new cl_infla;
 $clinflan= new cl_inflan;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $confirme_reprocesso = false;
 $processa = false;

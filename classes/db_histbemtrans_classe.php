@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE histbemtrans
 class cl_histbemtrans { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t97_histbem = 0; 
-   var $t97_codtran = 0; 
+   public $t97_histbem = 0; 
+   public $t97_codtran = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t97_histbem = int8 = Sequencial do lançamento de histórico 
                  t97_codtran = int8 = Sequencial da lançamento das transferências 
                  ";
    //funcao construtor da classe 
-   function cl_histbemtrans() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("histbemtrans"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_histbemtrans {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Lançamento da confirmação da transferência ($this->t97_histbem."-".$this->t97_codtran) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Lançamento da confirmação da transferência já Cadastrado";
@@ -130,12 +130,12 @@ class cl_histbemtrans {
      $resaco = $this->sql_record($this->sql_query_file($this->t97_histbem,$this->t97_codtran));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5835,'$this->t97_histbem','I')");
        $resac = db_query("insert into db_acountkey values($acount,5836,'$this->t97_codtran','I')");
-       $resac = db_query("insert into db_acount values($acount,933,5835,'','".AddSlashes(pg_result($resaco,0,'t97_histbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,933,5836,'','".AddSlashes(pg_result($resaco,0,'t97_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,933,5835,'','".AddSlashes(pg_fetch_result($resaco,0,'t97_histbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,933,5836,'','".AddSlashes(pg_fetch_result($resaco,0,'t97_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_histbemtrans {
       $this->atualizacampos();
      $sql = " update histbemtrans set ";
      $virgula = "";
-     if(trim($this->t97_histbem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t97_histbem"])){ 
+     if(trim((string) $this->t97_histbem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t97_histbem"])){ 
        $sql  .= $virgula." t97_histbem = $this->t97_histbem ";
        $virgula = ",";
-       if(trim($this->t97_histbem) == null ){ 
+       if(trim((string) $this->t97_histbem) == null ){ 
          $this->erro_sql = " Campo Sequencial do lançamento de histórico nao Informado.";
          $this->erro_campo = "t97_histbem";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_histbemtrans {
          return false;
        }
      }
-     if(trim($this->t97_codtran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t97_codtran"])){ 
+     if(trim((string) $this->t97_codtran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t97_codtran"])){ 
        $sql  .= $virgula." t97_codtran = $this->t97_codtran ";
        $virgula = ",";
-       if(trim($this->t97_codtran) == null ){ 
+       if(trim((string) $this->t97_codtran) == null ){ 
          $this->erro_sql = " Campo Sequencial da lançamento das transferências nao Informado.";
          $this->erro_campo = "t97_codtran";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_histbemtrans {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5835,'$this->t97_histbem','A')");
          $resac = db_query("insert into db_acountkey values($acount,5836,'$this->t97_codtran','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t97_histbem"]))
-           $resac = db_query("insert into db_acount values($acount,933,5835,'".AddSlashes(pg_result($resaco,$conresaco,'t97_histbem'))."','$this->t97_histbem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,933,5835,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t97_histbem'))."','$this->t97_histbem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t97_codtran"]))
-           $resac = db_query("insert into db_acount values($acount,933,5836,'".AddSlashes(pg_result($resaco,$conresaco,'t97_codtran'))."','$this->t97_codtran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,933,5836,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t97_codtran'))."','$this->t97_codtran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_histbemtrans {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5835,'$t97_histbem','E')");
          $resac = db_query("insert into db_acountkey values($acount,5836,'$t97_codtran','E')");
-         $resac = db_query("insert into db_acount values($acount,933,5835,'','".AddSlashes(pg_result($resaco,$iresaco,'t97_histbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,933,5836,'','".AddSlashes(pg_result($resaco,$iresaco,'t97_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,933,5835,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t97_histbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,933,5836,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t97_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from histbemtrans
@@ -304,7 +304,7 @@ class cl_histbemtrans {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:histbemtrans";
@@ -318,7 +318,7 @@ class cl_histbemtrans {
    function sql_query ( $t97_histbem=null,$t97_codtran=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -354,7 +354,7 @@ class cl_histbemtrans {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -366,7 +366,7 @@ class cl_histbemtrans {
    function sql_query_file ( $t97_histbem=null,$t97_codtran=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_histbemtrans {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

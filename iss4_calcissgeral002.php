@@ -40,7 +40,7 @@ require_once(modification("classes/db_recibounica_classe.php"));
 
 $oDaoReciboUnica = new cl_recibounica();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcissqn          = new cl_cissqn;
 $clisscadlocalc    = new cl_isscadlogcalc;
 $clisscalclog      = new cl_isscalclog;
@@ -118,7 +118,7 @@ if(isset($calcular)){
   }
 
   $result1 = db_query($sql1) or die($sql1);
-	$numrows = pg_numrows($result1);
+	$numrows = pg_num_rows($result1);
 	$sqlerro = false;
 	$cont    = 0;
 
@@ -168,11 +168,11 @@ if(isset($calcular)){
 
 			$result_seq_ativ = db_query($sql_seq_ativ) or die($sql_seq_ativ);
 
-      if (pg_numrows($result_seq_ativ) > 0) {
+      if (pg_num_rows($result_seq_ativ) > 0) {
 
         $seqs = "";
 
-        for ($seq=0; $seq < pg_numrows($result_seq_ativ); $seq++) {
+        for ($seq=0; $seq < pg_num_rows($result_seq_ativ); $seq++) {
           db_fieldsmemory($result_seq_ativ,$seq);
           $seqs .=  ($seqs != ""?",":"") . $q07_seq;
         }
@@ -188,8 +188,8 @@ if(isset($calcular)){
 
           $clisscalcloginscr->q48_inscr      = $q07_inscr;
           $clisscalcloginscr->q48_isscalclog = $codigolog;
-          $clisscalcloginscr->q48_isscadlog  = substr($retorno,0,2);
-          $clisscalcloginscr->q48_obs        = substr($retorno,2,strlen($retorno));
+          $clisscalcloginscr->q48_isscadlog  = substr((string) $retorno,0,2);
+          $clisscalcloginscr->q48_obs        = substr((string) $retorno,2,strlen((string) $retorno));
           $clisscalcloginscr->incluir(null);
 
           if ($clisscalcloginscr->erro_status == 0){
@@ -198,12 +198,12 @@ if(isset($calcular)){
             break;
           }
 
-          if ( substr($retorno,0,2) == '01' ) {
+          if ( str_starts_with((string) $retorno, '01') ) {
 
             if ( isset($data1)&&$data1 != "--" || isset($data2) && $data2 != "--" || isset($data3) && $data3 != "--" ) {
 
               $result_calc  = db_query("select distinct q01_numpre from isscalc where q01_inscr = $q07_inscr and q01_anousu = $anousu");
-              $numrows_calc = pg_numrows($result_calc);
+              $numrows_calc = pg_num_rows($result_calc);
               $hoje = date('Y-m-d',db_getsession("DB_datausu"));
                 /*
                  * alteracao para incluir no cabeçalho criado para recibo unica

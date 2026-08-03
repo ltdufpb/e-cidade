@@ -139,9 +139,9 @@ if (isset($_POST["processar"])) {
     $rsReceitas   = db_query($sSqlReceita);
     $iTotalLinhas = pg_num_rows($rsReceitas);
     echo "<pre>";
-    $aSlipIncluidosTipo = array();
-    $aSlipConcar        = array();
-    $aSlipOperacao      = array();
+    $aSlipIncluidosTipo = [];
+    $aSlipConcar        = [];
+    $aSlipOperacao      = [];
     for ($i = 0; $i < $iTotalLinhas; $i++) {
 
        $oDadosAutenticacao = db_utils::fieldsMemory($rsReceitas, $i);

@@ -67,7 +67,7 @@ try {
   if ($oParam->sMethod == 'carregaFormDocumento' ) {
 
   	$oRetorno->aAtributos = Documento::getAtributosByCadDocumento($oParam->iCodCadDocumento);
-  	
+
   /**
    * 
    *  Salva um documento e retorna o código do documento gerado 
@@ -76,19 +76,19 @@ try {
   } else if ($oParam->sMethod == 'salvaDocumento') {
 
   	db_inicio_transacao();
-  	
+
     try {
 	  	$iCodDocumento = $oDocumento->incluirDocumento($oParam->aAtributos);
     } catch (Exception $eException) {
     	throw new Exception($eException->getMessage());
     }
-    
+
     db_fim_transacao(false);
-  	      
+
     $oRetorno->sMsg          = urlencode('Documento incluído com sucesso!');
     $oRetorno->iCodDocumento = $iCodDocumento;
-    
-    
+
+
   /**
    * 
    *  Altera os valores do atributo de um documento
@@ -97,7 +97,7 @@ try {
   } else if ($oParam->sMethod == 'alteraDocumento') {
 
   	db_inicio_transacao();
-  	
+
     try {
       $oDocumento->alterarDocumento($oParam->iCodDocumento,$oParam->aAtributos);
     } catch (Exception $eException) {
@@ -105,10 +105,10 @@ try {
     }
 
     db_fim_transacao(false);
-    
+
     $oRetorno->sMsg = urlencode("Documento alterado com sucesso!");
 
-    
+
   /*
    * 
    *  Retorna tods os atributos de um documento e seus valores já cadastrados,  

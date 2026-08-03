@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_stdlibwebseller.php"));
 include(modification("classes/db_mer_tipocardapio_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_tipocardapio  = new cl_mer_tipocardapio;
 $clrotulo            = new rotulocampo;
 $clrotulo->label("me11_d_data");

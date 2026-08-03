@@ -69,8 +69,8 @@ $clmatestoqueinimei = new cl_matestoqueinimei;
 $clmatestoqueitemunid = new cl_matestoqueitemunid;
 $clempnota->rotulo->label();
 $clempnotaele->rotulo->label();
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 /////// verifica se a ordem de compra já foi anulada
 $result_or = $clmatordem->sql_record($clmatordem->sql_query_numemp($chave_m51_codordem,"m51_codordem, m53_data ","m51_codordem"," m53_codordem is not null and m51_codordem = $m51_codordem "));
@@ -93,10 +93,10 @@ if (isset($confirma)){
 
   $sqlerro      = false;
   $erro_msg     = "";
-  $arr_eles     = array();
-  $valornota    = array();
-  $numempenho   = array();
-  $cdnota       = array();
+  $arr_eles     = [];
+  $valornota    = [];
+  $numempenho   = [];
+  $cdnota       = [];
 
   $clmatestoqueini->m80_data     = date('Y-m-d',db_getsession("DB_datausu"));
   $clmatestoqueini->m80_hora     = date('H:i:s');
@@ -115,28 +115,28 @@ if (isset($confirma)){
   }
   $erro_msg = $clmatestoqueini->erro_msg;
 
-  $dados    = split("quant_","$valores");
-  $cods     = split("coditem_","$codmatmater");
-  $vlitem   = split("valor","$val");
-  $qmult    = split("qntmul_",$valmul);
-  $unidad   = split("codunid_","$codunidade");
+  $dados    = preg_split("#quant_#m","$valores");
+  $cods     = preg_split("#coditem_#m","$codmatmater");
+  $vlitem   = preg_split("#valor#m","$val");
+  $qmult    = preg_split("#qntmul_#m",(string) $valmul);
+  $unidad   = preg_split("#codunid_#m","$codunidade");
 
   for ($i=1; $i<count($dados); $i++){
     if ($sqlerro==false){
-      $quamul          = split("_",$qmult[$i]);
+      $quamul          = preg_split("#_#m",(string) $qmult[$i]);
       $quant_mult      = db_formatar($quamul[1], 'p');
-      $numero          = split("_",$dados[$i]);
-      $codigosmat      = split("_",$cods[$i]);
+      $numero          = preg_split("#_#m",(string) $dados[$i]);
+      $codigosmat      = preg_split("#_#m",(string) $cods[$i]);
       $codmatmater     = $codigosmat[1];
       $codele          = $numero[0];
       $numemp          = $numero[1];
       $codmatordemitem = $numero[2];
       $quanti          = db_formatar($numero[4], 'p');
-      $valitem         = split("_",$vlitem[$i]);
+      $valitem         = preg_split("#_#m",(string) $vlitem[$i]);
       $valorquant      = $valitem[2];
       $valor_item      = "";
 
-      for($x=0; $x < strlen($valorquant); $x++){
+      for($x=0; $x < strlen((string) $valorquant); $x++){
         if(is_numeric($valorquant[$x]) || $valorquant[$x]==","){
           $valor_item .= $valorquant[$x];
         }
@@ -267,7 +267,7 @@ if (isset($confirma)){
 			reset($arr_eles);
 			for($y=0;$y<sizeof($arr_eles);$y++){ 
 				$codele_numemp = key($arr_eles);
-				$arr_emp       = split("_",$codele_numemp);
+				$arr_emp       = preg_split("#_#m",$codele_numemp);
 				$codelem       = $arr_emp[0];
 				$numemp1       = $arr_emp[1];
 				if ($numemp1==$num_emp){
@@ -292,8 +292,8 @@ if (isset($confirma)){
 
   for ($i=1; $i<sizeof($dados); $i++){
     if ($sqlerro==false){
-      $numero          = split("_",$dados[$i]);
-      $codigosmat      = split("_",$cods[$i]);
+      $numero          = preg_split("#_#m",(string) $dados[$i]);
+      $codigosmat      = preg_split("#_#m",(string) $cods[$i]);
       $codmatmater     = $codigosmat[1];
       $codele          = $numero[0];
       $numemp          = $numero[1];
@@ -301,20 +301,20 @@ if (isset($confirma)){
       $quanti          = $numero[4];
 
 			//echo "reg: $i - quanti: $quanti - " . $vlitem[$i] . "<br>";
-      $valitem    = split("_",$vlitem[$i]);
+      $valitem    = preg_split("#_#m",(string) $vlitem[$i]);
       $valorquant = $valitem[2];
-      $quamul     = split("_",$qmult[$i]);
+      $quamul     = preg_split("#_#m",(string) $qmult[$i]);
       $quant_mult = db_formatar($quamul[1], 'p');
       $quanti_ant = db_formatar($quanti,'p');
       $quanti     = $quanti*$quant_mult;
-      $unid       = split("_",$unidad[$i]);
+      $unid       = preg_split("#_#m",(string) $unidad[$i]);
       $codi_unid  = $unid[1];
-      $tam        = strlen($codi_unid);
+      $tam        = strlen((string) $codi_unid);
       $tam        = $tam-1;
-      $codi_unid  = substr($codi_unid,0,$tam);
+      $codi_unid  = substr((string) $codi_unid,0,$tam);
       
       $valor_item = "";
-      for($x=0; $x < strlen($valorquant); $x++){
+      for($x=0; $x < strlen((string) $valorquant); $x++){
         if(is_numeric($valorquant[$x])||$valorquant[$x]==","){
           $valor_item .= $valorquant[$x];
         }
@@ -325,7 +325,7 @@ if (isset($confirma)){
       db_fieldsmemory($result_depto,0);
       if ($quanti!=0) { // significa que o usuario deixou um item com valores preenchidos...
 
-				if (gettype(strpos($valorquant, "val")) == "integer") {
+				if (gettype(strpos((string) $valorquant, "val")) == "integer") {
 					$sqlerro  = true;
 					$erro_msg = "Lançamentos parciais inconsistentes! Verifique!";
 					break;
@@ -787,7 +787,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 ?>
 <?php 
 if (isset($confirma)){
-  if (strlen($erro_msg)>0){
+  if (strlen((string) $erro_msg)>0){
     db_msgbox($erro_msg);
   }
 

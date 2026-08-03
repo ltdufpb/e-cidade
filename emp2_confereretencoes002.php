@@ -43,7 +43,7 @@ if ($oParametros->iPagamento == 'p') {
 }
 
 if ($oParametros->datainicial != "" && $oParametros->datafinal == "") {
-    $dataInicial = implode("-", array_reverse(explode("/", $oParametros->datainicial)));
+    $dataInicial = implode("-", array_reverse(explode("/", (string) $oParametros->datainicial)));
     if ($oParametros->iPagamento == 'l') {
         $sWhere .= " and retencao.e23_dtcalculo = '{$dataInicial}'";
     } else if ($oParametros->iPagamento == 'p') {
@@ -54,8 +54,8 @@ if ($oParametros->datainicial != "" && $oParametros->datafinal == "") {
 
     $sHeaderData = "{$oParametros->datainicial} a {$oParametros->datainicial}";
 } else if ($oParametros->datainicial != "" && $oParametros->datafinal != "") {
-    $dataInicial = implode("-", array_reverse(explode("/", $oParametros->datainicial)));
-    $dataFinal = implode("-", array_reverse(explode("/", $oParametros->datafinal)));
+    $dataInicial = implode("-", array_reverse(explode("/", (string) $oParametros->datainicial)));
+    $dataFinal = implode("-", array_reverse(explode("/", (string) $oParametros->datafinal)));
     if ($oParametros->iPagamento == 'l') {
         $sWhere .= "and retencao.e23_dtcalculo between '{$dataInicial}' and '{$dataFinal}'";
     } if ($oParametros->iPagamento == 'p') {
@@ -267,15 +267,15 @@ if ($iTotalRetencoes == 0 || !$rsRetencoes) {
     exit;
 }
 
-$aRetencoes = array();
+$aRetencoes = [];
 $iTotalRetencoes = pg_num_rows($rsRetencoes);
 
 for ($i = 0; $i < $iTotalRetencoes; $i++) {
     $oRetencao = db_utils::fieldsMemory($rsRetencoes, $i);
 
-    if (strlen(trim($oRetencao->z01_cgccpf)) == 11) {
+    if (strlen(trim((string) $oRetencao->z01_cgccpf)) == 11) {
         $cCnpjCpf = db_formatar($oRetencao->z01_cgccpf, "cpf");
-    } elseif (strlen(trim($oRetencao->z01_cgccpf)) == 14) {
+    } elseif (strlen(trim((string) $oRetencao->z01_cgccpf)) == 14) {
         $cCnpjCpf = db_formatar($oRetencao->z01_cgccpf, "cnpj");
     } else {
         $cCnpjCpf = $oRetencao->z01_cgccpf;
@@ -291,13 +291,13 @@ for ($i = 0; $i < $iTotalRetencoes; $i++) {
         } else {
             if ($oParametros->group == 3) {
                 $aRetencoes[$oRetencao->$sCampoQuebrar]->texto  = $oRetencao->$sCampoQuebrar . " - " . $oRetencao->$sNomeQuebra;
-                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto .= " - CPF/CNPJ: $cCnpjCpf - PIS: $cPis " . (strlen(trim($cCbo)) == 0 ? "" : " - CBO: $cCbo");
+                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto .= " - CPF/CNPJ: $cCnpjCpf - PIS: $cPis " . (strlen(trim((string) $cCbo)) == 0 ? "" : " - CBO: $cCbo");
             } else if ($oParametros->group == 5) {
-                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $oRetencao->o41_orgao."/".str_pad($oRetencao->o41_unidade,3,"0",STR_PAD_LEFT)." - ".$oRetencao->o41_descr;
+                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $oRetencao->o41_orgao."/".str_pad((string) $oRetencao->o41_unidade,3,"0",STR_PAD_LEFT)." - ".$oRetencao->o41_descr;
             } else if ($oParametros->group == 6) {
-                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto  = $oRetencao->o41_orgao."/".str_pad($oRetencao->o41_unidade,3,"0",STR_PAD_LEFT)." - ".$oRetencao->o41_descr;
+                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto  = $oRetencao->o41_orgao."/".str_pad((string) $oRetencao->o41_unidade,3,"0",STR_PAD_LEFT)." - ".$oRetencao->o41_descr;
                 $aRetencoes[$oRetencao->$sCampoQuebrar]->texto .= " Credor: ".$oRetencao->z01_numcgm." - ".$oRetencao->z01_nome;
-                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto .= " - CPF/CNPJ: $cCnpjCpf - PIS: $cPis " . (strlen(trim($cCbo)) == 0 ? "" : " - CBO: $cCbo");
+                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto .= " - CPF/CNPJ: $cCnpjCpf - PIS: $cPis " . (strlen(trim((string) $cCbo)) == 0 ? "" : " - CBO: $cCbo");
             } else {
                 if (empty($aRetencoes[$oRetencao->$sCampoQuebrar])) {
                     $aRetencoes[$oRetencao->$sCampoQuebrar] = new \stdClass();
@@ -415,7 +415,7 @@ foreach ($aRetencoes as $oQuebra) {
         $oPdf->cell(12, 5, getFonteReduzidaRecurso($oRetencaoAtiva->o58_codigo), "TBR", 0, "R");
         $oPdf->cell(23 + $iTamCell, 5, substr("{$oRetencaoAtiva->k02_codigo} - {$oRetencaoAtiva->k02_descr}", 0, 20), "TBR", 0, "L");
         $oPdf->cell(15 + $iTamCell, 5, db_formatar($oRetencaoAtiva->e53_valor, "f"), "TBR", 0, "R");
-        $oPdf->cell(18, 5, substr($oRetencaoAtiva->e69_numero, 0, 14), "TBR", 0, "R");
+        $oPdf->cell(18, 5, substr((string) $oRetencaoAtiva->e69_numero, 0, 14), "TBR", 0, "R");
         $oPdf->cell(20, 5, db_formatar($oRetencaoAtiva->e69_dtnota, "d"), "TBR", 0, "C");
         $oPdf->cell(20, 5, db_formatar($oRetencaoAtiva->k12_data, "d"), "TBR", 0, "C");
 

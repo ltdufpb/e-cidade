@@ -34,21 +34,21 @@ include(modification("classes/db_empresto_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_libcontabilidade.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $classinatura = new cl_assinatura;
 $clempresto   = new cl_empresto;
 
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     } else {
@@ -109,7 +109,7 @@ $head2 = "INSTITUIÇÕES : ".$descr_inst;
 $head3 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTARIA";
 $head4 = "DEMONSTRATIVO DOS RESTOS A PAGAR POR PODER E ÓRGÃO";
 $head5 = "ANEXO (9) EXERCÍCIO: ".db_getsession("DB_anousu");
-$head7 = "PERÍODO : ".strtoupper(db_mes(substr($perini,5,2)))." A ".strtoupper(db_mes(substr($perfin,5,2)));
+$head7 = "PERÍODO : ".strtoupper(db_mes(substr((string) $perini,5,2)))." A ".strtoupper(db_mes(substr((string) $perfin,5,2)));
 
 /////////////////////////////////////////////////     SQL    /////////////////////////////////////////////////////////////
 $instit = ' e60_instit in ('.str_replace('-',', ',$db_selinstit).') ';
@@ -253,7 +253,7 @@ $tot_09 =0;
 $a_pagar_processado     = 0;
 $a_pagar_nao_processado = 0;
 
-for ($x=0;$x<pg_numrows($result);$x++){
+for ($x=0;$x<pg_num_rows($result);$x++){
      db_fieldsmemory($result,$x);
 
 
@@ -304,7 +304,7 @@ for ($x=0;$x<pg_numrows($result);$x++){
 
      // ----------------------------------------------------- 
 
-     $pdf->cell(60,$alt,$o58_orgao .'-'.substr($o40_descr,0,42), "R", 0, "L", 0);
+     $pdf->cell(60,$alt,$o58_orgao .'-'.substr((string) $o40_descr,0,42), "R", 0, "L", 0);
      // anterior ao exercicio de inscrição
      $pdf->cell(15,$alt,db_formatar($inscricao_ant,'f'),"LR",0,"R",0);      // processados
      $pdf->cell(15,$alt,db_formatar($valor_processado,'f'),"R",0,"R",0);    // o cancelamento sempre ocorre com os não liquidados     // porque sempre ocorre o estorno de liquidação para depois o estorno de rp
@@ -377,11 +377,11 @@ $pdf->cell(15,$alt,db_formatar($tot_09,'f'),"LTB",1,"R",0);
  
 $pdf->ln();
 
-notasExplicativas(&$pdf, 28, "{$periodo}", 190);
+notasExplicativas($pdf, 28, "{$periodo}", 190);
 
 $pdf->ln();
 
-assinaturas(&$pdf,&$classinatura,'LRF');
+assinaturas($pdf,$classinatura,'LRF');
 
 
 

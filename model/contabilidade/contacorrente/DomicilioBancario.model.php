@@ -124,6 +124,7 @@ class DomicilioBancario extends ContaCorrenteBase implements IContaCorrente{
    * Retorna o objeto Conta Corrente
    * @return ContaCorrente
    */
+  #[\Override]
   public function getContaCorrente() {
     return $this->oContaCorrente;
   }

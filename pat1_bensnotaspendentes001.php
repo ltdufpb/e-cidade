@@ -242,7 +242,7 @@ $clrotulo->label("descrdepto");
                 </td>
                 <td>
                   <?php
-                    db_select('divisao', array(), true, 1, "");
+                    db_select('divisao', [], true, 1, "");
                   ?>
                 </td>
               </tr>

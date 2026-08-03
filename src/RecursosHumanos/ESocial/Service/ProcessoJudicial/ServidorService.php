@@ -71,7 +71,7 @@ class ServidorService
             throw new Exception("<i>'Dados do Local de Trabalho'</i> do servidor <strong>({$matricula} - {$nome}) " .
                 "</strong>não definido. Favor revisar.");
         }
-        $qtdeDigitosInscricao = strlen($servidorFolha->getLocalTrabalhoPrincial()->getInstituicao()->getCNPJ());
+        $qtdeDigitosInscricao = strlen((string) $servidorFolha->getLocalTrabalhoPrincial()->getInstituicao()->getCNPJ());
         if ($qtdeDigitosInscricao < 11
             && $qtdeDigitosInscricao > 14
             && ($qtdeDigitosInscricao == 11 ||

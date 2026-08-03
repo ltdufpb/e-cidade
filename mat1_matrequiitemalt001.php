@@ -36,14 +36,14 @@ include(modification("classes/db_db_almox_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clmatrequiitem = new cl_matrequiitem;
 $clmatrequi     = new cl_matrequi;
 $cldb_almox     = new cl_db_almox;
 $oDaoMatRequiCriterio = db_utils::getDao("matrequiitemcriteriocustorateio");
-$aParamKeys          = array( db_getsession("DB_anousu") );
+$aParamKeys          = [ db_getsession("DB_anousu") ];
 $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
 $iTipoControleCustos = 0; 
 

@@ -40,9 +40,9 @@ require_once modification("dbforms/db_funcoes.php");
 
 db_app::import('exceptions.*');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST);
 
@@ -235,7 +235,7 @@ $clrotulo->label("v58_numcgm");
 							<td nowrap title="Tipo"><b>Tipo</b></td>
 							<td> 
 								<?php
-									$aTipo = array(""=>"TODOS", "1" => "ATIVA", "2" => "ANULADA");
+									$aTipo = [""=>"TODOS", "1" => "ATIVA", "2" => "ANULADA"];
 									db_select('v50_situacao',$aTipo, true, $db_opcao);
 								?>
 							</td>
@@ -312,7 +312,7 @@ $clrotulo->label("v58_numcgm");
 										/**
 										 * Filtros de pesquisa da inicial
 										 */	 
-										$aSqlFiltros = array();
+										$aSqlFiltros = [];
 
 										/**
 										 * Pesquisa por código do foro
@@ -377,7 +377,7 @@ $clrotulo->label("v58_numcgm");
 										 * Se não for vazio, pesquisa somente pelo código da inicial e ignora filtros anteriores
 										 */	 
 										if ( empty($oPost->v50_inicial) == false ) {
-											$aSqlFiltros = array("v50_inicial = '{$oPost->v50_inicial}'");
+											$aSqlFiltros = ["v50_inicial = '{$oPost->v50_inicial}'"];
 										}
 
 										/**

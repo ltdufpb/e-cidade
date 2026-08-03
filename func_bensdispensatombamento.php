@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensdispensatombamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbensdispensatombamento = new cl_bensdispensatombamento;
 $clbensdispensatombamento->rotulo->label("e139_sequencial");
 $clbensdispensatombamento->rotulo->label("e139_empnotaitem");
@@ -103,9 +103,9 @@ $clbensdispensatombamento->rotulo->label("e139_empnotaitem");
         }else{
            $sql = $clbensdispensatombamento->sql_query_dadosItem("",$campos,"e139_sequencial",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e139_empnotaitem)){
-          $repassa = array("chave_e139_sequencial"=>$chave_e139_sequencial,"chave_e139_empnotaitem"=>$chave_e139_empnotaitem);
+          $repassa = ["chave_e139_sequencial"=>$chave_e139_sequencial,"chave_e139_empnotaitem"=>$chave_e139_empnotaitem];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

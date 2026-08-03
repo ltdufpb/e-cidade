@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_sagresarquivogerado_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -62,9 +62,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clsagresarquivogerado->sql_query("",$campos,"c141_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c141_json)){
-          $repassa = array("chave_c141_sequencial"=>$chave_c141_sequencial,"chave_c141_json"=>$chave_c141_json);
+          $repassa = ["chave_c141_sequencial"=>$chave_c141_sequencial,"chave_c141_json"=>$chave_c141_json];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

@@ -33,9 +33,9 @@ class TermoDivida
    */
     protected $iCodigo     = null;
 
-    protected $aEnvolvidos = array();
+    protected $aEnvolvidos = [];
 
-    protected $aDebitos    = array();
+    protected $aDebitos    = [];
 
     protected $dataEmissao = null;
 
@@ -95,7 +95,7 @@ class TermoDivida
                 $this->dataLivro   = $oDadosCertid->datalivro;
                 $this->iTipo       = $oDadosCertid->tipocertidao;
                 $this->massafalida = $oDadosCertid->v13_certidmassa;
-                $this->iAno        = substr($oDadosCertid->v13_dtemis, 0, 4);
+                $this->iAno        = substr((string) $oDadosCertid->v13_dtemis, 0, 4);
             }
         }
     }
@@ -196,7 +196,7 @@ class TermoDivida
     public function getOrigensDebito()
     {
 
-        $aOrigem = array();
+        $aOrigem = [];
         if ($this->getTipo() == 2) {
             $aOrigem = $this->getOrigemDebitoDivida();
         } elseif ($this->getTipo() == 1) {
@@ -212,7 +212,7 @@ class TermoDivida
     function getDevedoresEnvolvidos($sTipoEndereco = 'o')
     {
 
-        $aParams  = db_stdClass::getParametro("pardiv", array(db_getsession("DB_instit")));
+        $aParams  = db_stdClass::getParametro("pardiv", [db_getsession("DB_instit")]);
 
         if (count($aParams) == 0) {
             throw new Exception("Sem parametros para o módulo dívida configurados");
@@ -231,12 +231,12 @@ class TermoDivida
             $lRegra = "true";
         }
 
-        $aMatric              = array();
-        $aInscr               = array();
-        $aCgm                 = array();
-        $aImoveisEnvolvidos   = array();
-        $aEmpresasEnvolvidos  = array();
-        $aDevedoresEnvolvidos = array();
+        $aMatric              = [];
+        $aInscr               = [];
+        $aCgm                 = [];
+        $aImoveisEnvolvidos   = [];
+        $aEmpresasEnvolvidos  = [];
+        $aDevedoresEnvolvidos = [];
         $aOrigens = $this->getOrigensDebito();
 
         foreach ($aOrigens as $oOrigens) {
@@ -256,7 +256,7 @@ class TermoDivida
                     $possuidor = "POSSUIDOR";
                     if ($linhasPossuidor > 0) {
                         $oTextoPossuido = db_utils::fieldsmemory($resultPossuidor, 0);
-                        if (trim($oTextoPossuido->j18_textoprom) != "") {
+                        if (trim((string) $oTextoPossuido->j18_textoprom) != "") {
                             $possuidor = $oTextoPossuido->j18_textoprom;
                         }
                     }
@@ -301,7 +301,7 @@ class TermoDivida
                         $iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
                         if ($iLinhasDadosEnvol > 0) {
                             $oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol, 0);
-                            if (trim($oDadosEnvol->z01_dtfalecimento) != '' && strlen($oDadosEnvol->z01_cgccpf) == 11
+                            if (trim((string) $oDadosEnvol->z01_dtfalecimento) != '' && strlen((string) $oDadosEnvol->z01_cgccpf) == 11
                             && $oDadosEnvol != '00000000000') {
                                   $oDevedor->nome = $sExpressaoFalecimento." ".$oDadosEnvol->z01_nome;
                             } else {
@@ -312,19 +312,19 @@ class TermoDivida
                             $oDevedor->celular  = $oDadosEnvol->z01_telcel;
                             $oDevedor->endereco = "";
                             $oDevedor->endereco = $oDadosEnvol->z01_ender != "" ? $oDadosEnvol->z01_ender : "";
-                            if (trim($oDadosEnvol->z01_numero) !="0" and trim($oDadosEnvol->z01_numero)!="") {
+                            if (trim((string) $oDadosEnvol->z01_numero) !="0" and trim((string) $oDadosEnvol->z01_numero)!="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->z01_numero} ";
                             }
-                            if (trim($oDadosEnvol->z01_compl)  !="0" and trim($oDadosEnvol->z01_compl) !="") {
+                            if (trim((string) $oDadosEnvol->z01_compl)  !="0" and trim((string) $oDadosEnvol->z01_compl) !="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->z01_compl} ";
                             }
-                            if (trim($oDadosEnvol->z01_bairro) !="0" and trim($oDadosEnvol->z01_bairro)!="") {
+                            if (trim((string) $oDadosEnvol->z01_bairro) !="0" and trim((string) $oDadosEnvol->z01_bairro)!="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->z01_bairro} ";
                             }
-                            if (trim($oDadosEnvol->z01_munic)  !="0" and trim($oDadosEnvol->z01_munic) !="") {
+                            if (trim((string) $oDadosEnvol->z01_munic)  !="0" and trim((string) $oDadosEnvol->z01_munic) !="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->z01_munic}/{$oDadosEnvol->z01_uf} ";
                             }
-                            if (trim($oDadosEnvol->z01_cep) !="0" and trim($oDadosEnvol->z01_cep) !="") {
+                            if (trim((string) $oDadosEnvol->z01_cep) !="0" and trim((string) $oDadosEnvol->z01_cep) !="") {
                                 $oDevedor->endereco .= "- CEP {$oDadosEnvol->z01_cep}";
                             }
 
@@ -337,7 +337,7 @@ class TermoDivida
                                 $oDevedor->tipo = $possuidor;
                             }
 
-                            if (strlen($oDadosEnvol->z01_cgccpf) == 14) {
+                            if (strlen((string) $oDadosEnvol->z01_cgccpf) == 14) {
                                 $oDevedor->cgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cnpj");
                             } else {
                                 $oDevedor->cgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cpf");
@@ -360,7 +360,7 @@ class TermoDivida
                     $sqlcidade = "select munic, uf, cep from db_config where codigo = ".db_getsession('DB_instit');
                     $resultcidade     = db_query($sqlcidade);
                     $oCidade          = db_utils::fieldsmemory($resultcidade, 0);
-                    $oImovel->cep    = $oProprietario->j29_cep ? $oProprietario->j29_cep : $oCidade->cep;
+                    $oImovel->cep    = $oProprietario->j29_cep ?: $oCidade->cep;
 
                     /**
                      * quando solicitado  o endereço de origem
@@ -438,7 +438,7 @@ class TermoDivida
                         if ($iLinhasDadosEnvol > 0) {
                             $oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol, 0);
 
-                            if (trim($oDadosEnvol->z01_dtfalecimento) != '' && strlen($oDadosEnvol->z01_cgccpf) == 11) {
+                            if (trim((string) $oDadosEnvol->z01_dtfalecimento) != '' && strlen((string) $oDadosEnvol->z01_cgccpf) == 11) {
                                 $oDevedor->nome = $sExpressaoFalecimento." ".$oDadosEnvol->z01_nome;
                             } else {
                                 $oDevedor->nome = $oDadosEnvol->z01_nome;
@@ -449,23 +449,23 @@ class TermoDivida
                             $oDevedor->celular  = $oDadosEnvol->z01_telcel;
                             $oDevedor->endereco = "";
                             $oDevedor->endereco = $oDadosEnvol->ender;
-                            if (trim($oDadosEnvol->numero) !="0" and trim($oDadosEnvol->numero)!="") {
+                            if (trim((string) $oDadosEnvol->numero) !="0" and trim((string) $oDadosEnvol->numero)!="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->numero} ";
                             }
-                            if (trim($oDadosEnvol->compl)  !="0" and trim($oDadosEnvol->compl) !="") {
+                            if (trim((string) $oDadosEnvol->compl)  !="0" and trim((string) $oDadosEnvol->compl) !="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->compl} ";
                             }
-                            if (trim($oDadosEnvol->bairro) !="0" and trim($oDadosEnvol->bairro)!="") {
+                            if (trim((string) $oDadosEnvol->bairro) !="0" and trim((string) $oDadosEnvol->bairro)!="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->bairro} ";
                             }
-                            if (trim($oDadosEnvol->munic)  !="0" and trim($oDadosEnvol->munic) !="") {
+                            if (trim((string) $oDadosEnvol->munic)  !="0" and trim((string) $oDadosEnvol->munic) !="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->munic}/{$oDadosEnvol->uf}";
                             }
-                            if (trim($oDadosEnvol->cep)    !="0" and trim($oDadosEnvol->cep)   !="") {
+                            if (trim((string) $oDadosEnvol->cep)    !="0" and trim((string) $oDadosEnvol->cep)   !="") {
                                 $oDevedor->endereco .= "- CEP {$oDadosEnvol->cep} .";
                             }
 
-                            if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
+                            if (strlen((string) $oDadosEnvol->z01_cgccpf) > 11) {
                                 if ($oEnvol->ritipoenvol == "4") {
                                     $oDevedor->tipo = "EMPRESA";
                                 } elseif ($oEnvol->ritipoenvol == "5") {
@@ -475,7 +475,7 @@ class TermoDivida
                                 $oDevedor->tipo = "CONTRIBUINTE";
                             }
 
-                            if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
+                            if (strlen((string) $oDadosEnvol->z01_cgccpf) > 11) {
                                 $oDevedor->cgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cnpj");
                             } else {
                                 $oDevedor->cgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cpf");
@@ -540,20 +540,20 @@ class TermoDivida
                     $oDevedor = new stdClass();
                     $oDevedor->endereco = $oCgm->z01_ender;
 
-                    if (trim($oCgm->z01_numero)!="0" and trim($oCgm->z01_numero)!="") {
+                    if (trim((string) $oCgm->z01_numero)!="0" and trim((string) $oCgm->z01_numero)!="") {
                         $oDevedor->endereco .= ",{$oCgm->z01_numero} ";
                     }
-                    if (trim($oCgm->z01_compl)!="0" and trim($oCgm->z01_compl)!="") {
+                    if (trim((string) $oCgm->z01_compl)!="0" and trim((string) $oCgm->z01_compl)!="") {
                         $oDevedor->endereco .= ",{$oCgm->z01_compl} ";
                     }
-                    if (trim($oCgm->z01_bairro)!="0" and  trim($oCgm->z01_bairro)!="") {
+                    if (trim((string) $oCgm->z01_bairro)!="0" and  trim((string) $oCgm->z01_bairro)!="") {
                         $oDevedor->endereco .= ",{$oCgm->z01_bairro} ";
                     }
-                    if (trim($oCgm->z01_munic) !="0" and trim($oCgm->z01_munic)!="") {
+                    if (trim((string) $oCgm->z01_munic) !="0" and trim((string) $oCgm->z01_munic)!="") {
                         $oDevedor->endereco .= ",{$oCgm->z01_munic}/{$oCgm->z01_uf} ";
                     }
 
-                    if (trim($oCgm->z01_cep) !="0" and trim($oCgm->z01_cep)!="") {
+                    if (trim((string) $oCgm->z01_cep) !="0" and trim((string) $oCgm->z01_cep)!="") {
                         $oDevedor->endereco .= "- CEP {$oCgm->z01_cep} .";
                     }
 
@@ -561,7 +561,7 @@ class TermoDivida
                     $oDevedor->telefone = $oCgm->z01_telef;
                     $oDevedor->celular = $oCgm->z01_telcel;
                     $oDevedor->nome     = $oCgm->z01_nome;
-                    if (strlen($oCgm->z01_cgccpf) > 11) {
+                    if (strlen((string) $oCgm->z01_cgccpf) > 11) {
                         $oDevedor->cgcCpf = db_formatar($oCgm->z01_cgccpf, 'cnpj');
                     } else {
                         $oDevedor->cgcCpf = db_formatar($oCgm->z01_cgccpf, 'cpf');
@@ -573,7 +573,7 @@ class TermoDivida
             }
         }
         $oRetorno = new stdClass();
-        $oRetorno->aDevedores = array_map("unserialize", array_unique(array_map("serialize", $aDevedoresEnvolvidos)));
+        $oRetorno->aDevedores = array_map(unserialize(...), array_unique(array_map(serialize(...), $aDevedoresEnvolvidos)));
         $oRetorno->aImoveis   = $aImoveisEnvolvidos;
         $oRetorno->aEmpresas  = $aEmpresasEnvolvidos;
         return $oRetorno;
@@ -582,7 +582,7 @@ class TermoDivida
     function getDebitos($lRemissao = false)
     {
 
-        $aDebitos = array();
+        $aDebitos = [];
 
         if ($this->getTipo() == 2) {
             $aDebitos = $this->getDebitosDivida($lRemissao);
@@ -602,17 +602,17 @@ class TermoDivida
       /**
        * Array com todos os debitos agrupados
        */
-        $aDebitosAgrupado    = array();
+        $aDebitosAgrupado    = [];
 
       /**
        * Debitos que sao agrupadores debitos sem procedenciaagrupa
        */
-        $aDebitosAgrupadores = array();
+        $aDebitosAgrupadores = [];
 
       /**
        * Debitos com procedenciaagrupa
        */
-        $aDebitosParaAgrupar = array();
+        $aDebitosParaAgrupar = [];
 
       /**
        * Verificamos quais debitos estao configurados para agrupar
@@ -687,7 +687,7 @@ class TermoDivida
             $campos       = " distinct v01_proced";
             $sProcedencia = "";
             $sVirgula     = "";
-            $aProcedenciasAgrupadas = array();
+            $aProcedenciasAgrupadas = [];
             foreach ($aOrigens as $oOrigem) {
                 $sqlProc        = $oDaoTermo->sql_query_origem_divida($oOrigem->numpre, $campos, true);
                 $rsProcedencias = $oDaoTermo->sql_record($sqlProc);

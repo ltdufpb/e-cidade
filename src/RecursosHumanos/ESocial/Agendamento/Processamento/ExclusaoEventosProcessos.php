@@ -22,17 +22,16 @@ require_once(modification('libs/db_stdlib.php'));
 class ExclusaoEventosProcessos extends ProcessamentoAbstract implements ProcessamentoInterface
 {
     /**
-     * @var
-     */
-    private $cgm;
-
-    /**
      * Constructor.
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $cgm
+    )
     {
-        $this->cgm = $cgm;
     }
 
     /**

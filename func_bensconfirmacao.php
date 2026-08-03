@@ -47,7 +47,7 @@ $clbens->rotulo->label("t52_descr");
 $clbens->rotulo->label("t52_ident");
 $clclabens->rotulo->label("t64_class");
 $cldb_depart->rotulo->label("descrdepto");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $result = $clcfpatri->sql_record($clcfpatri->sql_query_file());
 db_fieldsmemory($result,0);
 ?>
@@ -342,7 +342,7 @@ db_fieldsmemory($result,0);
           /**
            * Filtro pelo departamento
            */
-          } else if(isset($chave_coddepto) && (trim($chave_descrdepto) != "")) {
+          } else if(isset($chave_coddepto) && (trim((string) $chave_descrdepto) != "")) {
 
 	          $sql    = $clbens->sql_query_benstransf("", $campos, "", "t52_depart = $pesquisa_chave $where_g $where2_instit $where_baixado");
 	          $result = $clbens->sql_record($sql);

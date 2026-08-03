@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_sanitario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -56,9 +56,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Tipo de vistorias","g2"=>"Rua da vistoria","g3"=>"Bairro da vistoria");
-       $clcriaabas->title = array("g1"=>"Selecionar vistoria","g2"=>"Selecionar rua da vistoria","g3"=>"Selecionar bairro da vistoria");
-       $clcriaabas->src = array("g1"=>"fis2_relvistaba001.php","g2"=>"fis2_relvistaba002.php","g3"=>"fis2_relvistaba003.php");
+       $clcriaabas->identifica = ["g1"=>"Tipo de vistorias","g2"=>"Rua da vistoria","g3"=>"Bairro da vistoria"];
+       $clcriaabas->title = ["g1"=>"Selecionar vistoria","g2"=>"Selecionar rua da vistoria","g3"=>"Selecionar bairro da vistoria"];
+       $clcriaabas->src = ["g1"=>"fis2_relvistaba001.php","g2"=>"fis2_relvistaba002.php","g3"=>"fis2_relvistaba003.php"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

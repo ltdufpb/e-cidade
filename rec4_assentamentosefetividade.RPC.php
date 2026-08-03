@@ -62,7 +62,7 @@ try {
 
       $sTipoAssentamento                   = $oTipoAssentamento->getCodigo();
       $sDescricaoAssentamento              = $oTipoAssentamento->getDescricao();
-      $oRetorno->aAssentamentosEfetividade = array();
+      $oRetorno->aAssentamentosEfetividade = [];
 
       foreach ($aAssentamentosEfetividade as $oAssentamento) {
 

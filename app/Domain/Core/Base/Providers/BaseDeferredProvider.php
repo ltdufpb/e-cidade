@@ -24,6 +24,6 @@ abstract class BaseDeferredProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array();
+        return [];
     }
 }

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(isset($btAtualiza)){
    $erro           = 1;
@@ -56,7 +56,7 @@ if(isset($btAtualiza)){
 //	echo $selectRec."<br>";
 	$resultRec = db_query($connSam30, $selectRec);
 	if (pg_num_rows($resultRec) == 0){
-	  	$finali    = substr($linha["o15_finali"], 0, 160);
+	  	$finali    = substr((string) $linha["o15_finali"], 0, 160);
 		$insertRec = 
 		"insert into 
 			tiporec 
@@ -95,13 +95,13 @@ if(isset($btAtualiza)){
 	inner join orcfontes on o57_codfon = o70_codfon";
    $result = db_query($conn, $sql);
    while($linha = pg_fetch_array($result)){
-     	if (substr($linha["o57_fonte"],0,7) == '4199099' ){
-		$direita  = substr($linha["o57_fonte"], 1, 7);
-		$esquerda = substr($linha["o57_fonte"], 10, 15);
+     	if (str_starts_with((string) $linha["o57_fonte"], '4199099') ){
+		$direita  = substr((string) $linha["o57_fonte"], 1, 7);
+		$esquerda = substr((string) $linha["o57_fonte"], 10, 15);
 		$fonte    = $direita.$esquerda;
 	}
 	else{  
-		$fonte = substr($linha["o57_fonte"], 1, 12);
+		$fonte = substr((string) $linha["o57_fonte"], 1, 12);
 	}
       $selectSam30 = "
       			select 
@@ -152,15 +152,15 @@ if(isset($btAtualiza)){
 			orcfontes";
    $resultFonte = db_query($conn, $sqlFonte); 
    while($linha = pg_fetch_array($resultFonte)){	  
-     	if (substr($linha["o57_fonte"],0,7) == '4199099' ){
-		$direita  = substr($linha["o57_fonte"], 1, 7);
-		$esquerda = substr($linha["o57_fonte"], 10, 15);
+     	if (str_starts_with((string) $linha["o57_fonte"], '4199099') ){
+		$direita  = substr((string) $linha["o57_fonte"], 1, 7);
+		$esquerda = substr((string) $linha["o57_fonte"], 10, 15);
 		$fonte    = $direita.$esquerda;
 	}
 	else{  
-		$fonte = substr($linha["o57_fonte"], 1, 12);
+		$fonte = substr((string) $linha["o57_fonte"], 1, 12);
 	}
-	$descr = substr($linha["o57_descr"], 0, 40);
+	$descr = substr((string) $linha["o57_descr"], 0, 40);
    	$selectFonte = "
 			select 
 				o19_codigo, 

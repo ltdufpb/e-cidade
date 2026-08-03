@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE rhempenhofolharubricaretencao
 class cl_rhempenhofolharubricaretencao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh78_sequencial = 0; 
-   var $rh78_rhempenhofolharubrica = 0; 
-   var $rh78_retencaotiporec = 0; 
+   public $rh78_sequencial = 0; 
+   public $rh78_rhempenhofolharubrica = 0; 
+   public $rh78_retencaotiporec = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh78_sequencial = int4 = Sequencial 
                  rh78_rhempenhofolharubrica = int4 = rhempenhofolharubrica 
                  rh78_retencaotiporec = int4 = Retenção 
                  ";
    //funcao construtor da classe 
-   function cl_rhempenhofolharubricaretencao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhempenhofolharubricaretencao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_rhempenhofolharubricaretencao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh78_sequencial = pg_result($result,0,0); 
+       $this->rh78_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhempenhofolharubricaretencao_rh78_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh78_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh78_sequencial)){
          $this->erro_sql = " Campo rh78_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_rhempenhofolharubricaretencao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "rhempenhofolharubricaretencao ($this->rh78_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "rhempenhofolharubricaretencao já Cadastrado";
@@ -166,12 +166,12 @@ class cl_rhempenhofolharubricaretencao {
      $resaco = $this->sql_record($this->sql_query_file($this->rh78_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14409,'$this->rh78_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2540,14409,'','".AddSlashes(pg_result($resaco,0,'rh78_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2540,14410,'','".AddSlashes(pg_result($resaco,0,'rh78_rhempenhofolharubrica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2540,14411,'','".AddSlashes(pg_result($resaco,0,'rh78_retencaotiporec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2540,14409,'','".AddSlashes(pg_fetch_result($resaco,0,'rh78_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2540,14410,'','".AddSlashes(pg_fetch_result($resaco,0,'rh78_rhempenhofolharubrica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2540,14411,'','".AddSlashes(pg_fetch_result($resaco,0,'rh78_retencaotiporec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_rhempenhofolharubricaretencao {
       $this->atualizacampos();
      $sql = " update rhempenhofolharubricaretencao set ";
      $virgula = "";
-     if(trim($this->rh78_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh78_sequencial"])){ 
+     if(trim((string) $this->rh78_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh78_sequencial"])){ 
        $sql  .= $virgula." rh78_sequencial = $this->rh78_sequencial ";
        $virgula = ",";
-       if(trim($this->rh78_sequencial) == null ){ 
+       if(trim((string) $this->rh78_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "rh78_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_rhempenhofolharubricaretencao {
          return false;
        }
      }
-     if(trim($this->rh78_rhempenhofolharubrica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh78_rhempenhofolharubrica"])){ 
+     if(trim((string) $this->rh78_rhempenhofolharubrica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh78_rhempenhofolharubrica"])){ 
        $sql  .= $virgula." rh78_rhempenhofolharubrica = $this->rh78_rhempenhofolharubrica ";
        $virgula = ",";
-       if(trim($this->rh78_rhempenhofolharubrica) == null ){ 
+       if(trim((string) $this->rh78_rhempenhofolharubrica) == null ){ 
          $this->erro_sql = " Campo rhempenhofolharubrica nao Informado.";
          $this->erro_campo = "rh78_rhempenhofolharubrica";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_rhempenhofolharubricaretencao {
          return false;
        }
      }
-     if(trim($this->rh78_retencaotiporec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh78_retencaotiporec"])){ 
+     if(trim((string) $this->rh78_retencaotiporec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh78_retencaotiporec"])){ 
        $sql  .= $virgula." rh78_retencaotiporec = $this->rh78_retencaotiporec ";
        $virgula = ",";
-       if(trim($this->rh78_retencaotiporec) == null ){ 
+       if(trim((string) $this->rh78_retencaotiporec) == null ){ 
          $this->erro_sql = " Campo Retenção nao Informado.";
          $this->erro_campo = "rh78_retencaotiporec";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_rhempenhofolharubricaretencao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14409,'$this->rh78_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh78_sequencial"]) || $this->rh78_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2540,14409,'".AddSlashes(pg_result($resaco,$conresaco,'rh78_sequencial'))."','$this->rh78_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2540,14409,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh78_sequencial'))."','$this->rh78_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh78_rhempenhofolharubrica"]) || $this->rh78_rhempenhofolharubrica != "")
-           $resac = db_query("insert into db_acount values($acount,2540,14410,'".AddSlashes(pg_result($resaco,$conresaco,'rh78_rhempenhofolharubrica'))."','$this->rh78_rhempenhofolharubrica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2540,14410,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh78_rhempenhofolharubrica'))."','$this->rh78_rhempenhofolharubrica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh78_retencaotiporec"]) || $this->rh78_retencaotiporec != "")
-           $resac = db_query("insert into db_acount values($acount,2540,14411,'".AddSlashes(pg_result($resaco,$conresaco,'rh78_retencaotiporec'))."','$this->rh78_retencaotiporec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2540,14411,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh78_retencaotiporec'))."','$this->rh78_retencaotiporec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_rhempenhofolharubricaretencao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14409,'$rh78_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2540,14409,'','".AddSlashes(pg_result($resaco,$iresaco,'rh78_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2540,14410,'','".AddSlashes(pg_result($resaco,$iresaco,'rh78_rhempenhofolharubrica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2540,14411,'','".AddSlashes(pg_result($resaco,$iresaco,'rh78_retencaotiporec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2540,14409,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh78_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2540,14410,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh78_rhempenhofolharubrica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2540,14411,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh78_retencaotiporec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhempenhofolharubricaretencao
@@ -345,7 +345,7 @@ class cl_rhempenhofolharubricaretencao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhempenhofolharubricaretencao";
@@ -360,7 +360,7 @@ class cl_rhempenhofolharubricaretencao {
    function sql_query ( $rh78_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ class cl_rhempenhofolharubricaretencao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,7 +404,7 @@ class cl_rhempenhofolharubricaretencao {
    function sql_query_file ( $rh78_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_rhempenhofolharubricaretencao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

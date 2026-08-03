@@ -35,7 +35,7 @@ include(modification("classes/db_db_almoxdepto_classe.php"));
 
 $cldb_almox = new cl_db_almox;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 

@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 ?>
 <html>
 <head>
@@ -140,7 +140,7 @@ if(isset($pesquisar)){
                 where disbanco.classi = false
                 ".(empty($xwhere)?"":" and ".$xwhere)." $whereinstit
                 group by disarq.codret,arqret,disarq.k15_codbco,disarq.k15_codage,cadban.k15_local,dtarquivo,k00_conta,substr(k13_descr,1,20) order by disarq.codret desc";
-       $varrep = array("db_opcao"=>"1","pesquisar"=>"pesquisar");
+       $varrep = ["db_opcao"=>"1","pesquisar"=>"pesquisar"];
        db_lovrot($sql,15,"()","","js_mostradados|0","","NoMe",$varrep);
 
     } else if ($db_opcao == 3) {
@@ -168,7 +168,7 @@ if(isset($pesquisar)){
            ".(empty($xwhere)?"":"where ".$xwhere). " ".
              (empty($xwhere)?"where disarq.instit = {$instit}":"and disarq.instit={$instit}")
            . " group by disarq.codret,discla.codcla,arqret,disarq.k15_codbco,disarq.k15_codage, k15_local,dtarquivo ,k00_conta,substr(k13_descr,1,20),discla.dtaute order by disarq.codret desc";
-         $varrep = array("db_opcao"=>"3","pesquisar"=>"pesquisar");
+         $varrep = ["db_opcao"=>"3","pesquisar"=>"pesquisar"];
 
          db_lovrot($sql,15,"()","","js_classifica|1","","NoMe",$varrep);
 
@@ -186,7 +186,7 @@ if(isset($pesquisar)){
                     (empty($xwhere)?" where ":" and ".$xwhere).
                     (empty($xwhere)?"  k15_instit = {$instit} ":" and k15_instit = {$instit} ");
 
-         $varrep = array("db_opcao"=>"3","pesquisar"=>"pesquisar");
+         $varrep = ["db_opcao"=>"3","pesquisar"=>"pesquisar"];
          db_lovrot($sql,15,"()","","js_inclusao|0|1|2","","NoMe");
 
      } else {
@@ -203,11 +203,11 @@ if(isset($pesquisar)){
 
          if ($db_opcao == 2) {
 
-           $varrep = array("db_opcao"=>"2","pesquisar"=>"pesquisar");
+           $varrep = ["db_opcao"=>"2","pesquisar"=>"pesquisar"];
            db_lovrot($sql,15,"()","","js_verificar|0","","NoMe",$varrep);
          } else {
 
-            $varrep = array("db_opcao"=>"0","pesquisar"=>"pesquisar");
+            $varrep = ["db_opcao"=>"0","pesquisar"=>"pesquisar"];
             db_lovrot($sql,15,"()","","js_geraclas|0","","NoMe",$varrep);
          }
      }

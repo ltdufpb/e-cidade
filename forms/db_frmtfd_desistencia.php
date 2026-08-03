@@ -69,7 +69,7 @@ $clrotulo->label("z01_v_nome");
     </td>
     <td> 
       <?php 
-      $aX = array();
+      $aX = [];
       $sSql = $oDaotfd_situacaotfd->sql_query_file(null, ' * ', ' tf26_i_codigo ');
       $rs = $oDaotfd_situacaotfd->sql_record($sSql);
 

@@ -52,7 +52,7 @@ switch($oParam->exec) {
 
       $oRotasRuas      = new rotasRuas();
 
-      $oRetorno->aRuas = array();
+      $oRetorno->aRuas = [];
       $oRetorno->aRuas = $oRotasRuas->ruasRota($oParam->codRota);
 
     }catch (Exception $eErro) {

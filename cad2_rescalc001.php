@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -78,7 +78,7 @@ function js_emite(){
         <td ><b>Tipo : &nbsp;</b></td>
         <td >
         <?php  
-	       $tipo_ordem = array("E"=>"Somente Erros","T"=>"Todos");
+	       $tipo_ordem = ["E"=>"Somente Erros","T"=>"Todos"];
 	       db_select("tipo",$tipo_ordem,true,2); ?>
         &nbsp;
         </td>

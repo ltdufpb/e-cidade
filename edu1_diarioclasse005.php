@@ -26,21 +26,22 @@
  */
 
 class cl_criaabasrefresh {
- var $identifica = null;
- var $abas_top  = "44";
- var $abas_left  = "0";
- var $src       = null;
- var $title     = null;
- var $cortexto  = null;
- var $corfundo  = null;
- var $cordisabled  = null;
- var $sizecampo = null;
- var $disabled = null;
- var $iframe_width = '100%';
- var $iframe_height = '100%';
- var $scrolling = "yes";
- function cria_abas(){
-  ?>
+ public $identifica = null;
+ public $abas_top  = "44";
+ public $abas_left  = "0";
+ public $src       = null;
+ public $title     = null;
+ public $cortexto  = null;
+ public $corfundo  = null;
+ public $cordisabled  = null;
+ public $sizecampo = null;
+ public $disabled = null;
+ public $iframe_width = '100%';
+ public $iframe_height = '100%';
+ public $scrolling = "yes";
+ function cria_abas()
+ {
+     ?>
   <script>
    function mo_camada(idtabela){
     var camada="div_"+idtabela;
@@ -71,20 +72,20 @@ class cl_criaabasrefresh {
        tab[x].style.border = '1px outset #cccccc';
        tab[x].style.borderBottomColor = '#000000';
        <?php 
-       reset($this->identifica);
-       for($w=0; $w<sizeof($this->identifica); $w++){
-        $chave=key($this->identifica);
-        ?>
+     reset($this->identifica);
+     for($w=0; $w<sizeof($this->identifica); $w++){
+      $chave=key($this->identifica);
+      ?>
         document.formaba.<?=$chave?>.style.fontWeight = 'normal';
-        if(document.formaba.<?=$chave?>.disabled==true){
-         document.formaba.<?=$chave?>.style.color ='<?=(isset($this->cordisabled)&&$this->cordisabled!=""?$this->cordisabled:"black")?>';
-        }else{
-         document.formaba.<?=$chave?>.style.color ='black';
-        }
-        <?php 
-        next($this->identifica);
-       }
-       ?>
+      if(document.formaba.<?=$chave?>.disabled==true){
+       document.formaba.<?=$chave?>.style.color ='<?=(isset($this->cordisabled)&&$this->cordisabled!=""?$this->cordisabled:"black")?>';
+      }else{
+       document.formaba.<?=$chave?>.style.color ='black';
+      }
+      <?php 
+      next($this->identifica);
+     }
+     ?>
       }
       if(aba == tab[x].id){
        tab[x].style.border = '3px outset #999999';
@@ -154,28 +155,28 @@ class cl_criaabasrefresh {
      <table border="0" cellpadding="0" cellspacing="0" marginwidth="0">
       <tr>
       <?php 
-      reset($this->identifica);
-      for($w=0; $w<sizeof($this->identifica); $w++){
-       $chave=key($this->identifica);
-       $cortexto=(isset($this->cortexto[$chave])&&$this->cortexto[$chave]!=""?$this->cortexto[$chave]:'black');
-       $corfundo=(isset($this->corfundo[$chave])&&$this->corfundo[$chave]!=""?$this->corfundo[$chave]:'#cccccc');
-       $sizecampo=(isset($this->sizecampo[$chave])&&$this->sizecampo[$chave]!=""?$this->sizecampo[$chave]:'10');
-       $disabled=(isset($this->disabled[$chave])&&$this->disabled[$chave]=="true"?'disabled':'');
-       $src=(isset($this->src[$chave])&&$this->src[$chave]!=""?$this->src[$chave]:'');
-       ?>
-       <td>
-        <table class="bordas" id="<?=$chave?>" border="0" style="cursor:hand; border: 3px outset #666666; border-bottom-width: 0px; border-right-width: 1px ;border-right-color: #000000; border-top-color: #3c3c3c; border-right-style: inset; " cellpadding="3" cellspacing="0" >
-         <tr>
-          <td nowrap>
-           <input readonly <?=$disabled?>  name="<?=$chave?>" class="nomes"  style="cursor:hand;font-weight:bold; color:<?=$cortexto?>; background-color:<?=$corfundo?>;" type="text"  value="<?=$this->identifica[$chave]?>" title="<?=$this->title[$chave]?>" size="<?=$sizecampo?>"  onClick="iframe_<?=$chave?>.location.href='<?=$src?>';mo_camada('<?=$chave?>');">
-          </td>
-         </tr>
-        </table>
-       </td>
-       <?php 
-       next($this->identifica);
-      }
+     reset($this->identifica);
+     for($w=0; $w<sizeof($this->identifica); $w++){
+      $chave=key($this->identifica);
+      $cortexto=(isset($this->cortexto[$chave])&&$this->cortexto[$chave]!=""?$this->cortexto[$chave]:'black');
+      $corfundo=(isset($this->corfundo[$chave])&&$this->corfundo[$chave]!=""?$this->corfundo[$chave]:'#cccccc');
+      $sizecampo=(isset($this->sizecampo[$chave])&&$this->sizecampo[$chave]!=""?$this->sizecampo[$chave]:'10');
+      $disabled=(isset($this->disabled[$chave])&&$this->disabled[$chave]=="true"?'disabled':'');
+      $src=(isset($this->src[$chave])&&$this->src[$chave]!=""?$this->src[$chave]:'');
       ?>
+       <td>
+       <table class="bordas" id="<?=$chave?>" border="0" style="cursor:hand; border: 3px outset #666666; border-bottom-width: 0px; border-right-width: 1px ;border-right-color: #000000; border-top-color: #3c3c3c; border-right-style: inset; " cellpadding="3" cellspacing="0" >
+        <tr>
+         <td nowrap>
+          <input readonly <?=$disabled?>  name="<?=$chave?>" class="nomes"  style="cursor:hand;font-weight:bold; color:<?=$cortexto?>; background-color:<?=$corfundo?>;" type="text"  value="<?=$this->identifica[$chave]?>" title="<?=$this->title[$chave]?>" size="<?=$sizecampo?>"  onClick="iframe_<?=$chave?>.location.href='<?=$src?>';mo_camada('<?=$chave?>');">
+         </td>
+        </tr>
+       </table>
+      </td>
+      <?php 
+      next($this->identifica);
+     }
+     ?>
       </tr>
      </table>
     </td>
@@ -204,9 +205,8 @@ class cl_criaabasrefresh {
    </form>
   </table>
   <?php 
-  reset($this->identifica);
-  $chave=key($this->identifica);
-  echo "<script>mo_camada('$chave');</script>";
+     $chave=array_key_first($this->identifica);
+     echo "<script>mo_camada('$chave');</script>";
  }
 }
 require(modification("libs/db_stdlibwebseller.php"));
@@ -266,7 +266,7 @@ $pagina["G"] = "edu1_regenciaperiodo001.php?regencia=$regencia&nabas=$nabas&iTro
 for($x=0;$x<$linhas3;$x++){
  db_fieldsmemory($result3,$x);
  $num = $x+2;
- if(trim($tipo)=="A"){
+ if(trim((string) $tipo)=="A"){
   $ident["A$ed41_i_codigo"] = $ed09_c_abrev;
   $tamcampo["A$ed41_i_codigo"] = 4;
   $pagina["A$ed41_i_codigo"] = "edu1_diarioavaliacao001.php?regencia=$regencia&ed41_i_codigo=$ed41_i_codigo&iTrocaTurma=$iTrocaTurma";

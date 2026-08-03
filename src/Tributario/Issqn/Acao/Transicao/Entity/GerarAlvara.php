@@ -7,7 +7,7 @@ use ECidade\Tributario\Issqn\Repository\IssbaseRepository;
 
 final class GerarAlvara extends AcaoBase implements AcaoInterface
 {
-    const TIPO_ALVARA_PROVISORIO = 2;
+    const int TIPO_ALVARA_PROVISORIO = 2;
 
     protected $alvara;
 

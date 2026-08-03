@@ -33,8 +33,8 @@ include(modification("classes/db_liclicita_classe.php"));
 include(modification("classes/db_liclicitaata_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clliclicita    = new cl_liclicita;
 $clliclicitaata = new cl_liclicitaata;
@@ -50,7 +50,7 @@ if(isset($incluir)){
 		db_inicio_transacao();
   	try {
       $nomearq = File::cutName($_FILES["arquivoedital"]["name"], 50);
-    } catch (Exception $oErro) {
+    } catch (Exception) {
 
       $sqlerro = true;
       $erro_msg = 'O arquivo selecionado tem uma extensão inválida.';
@@ -59,7 +59,7 @@ if(isset($incluir)){
 		$arquivoedital = $nometmp;
 		$localrecebeedital =$arquivoedital;
 
-		if($sqlerro == false && trim($localrecebeedital) != ""){
+		if($sqlerro == false && trim((string) $localrecebeedital) != ""){
 
    		$arquivograva = fopen($localrecebeedital,"rb");
 			$dados = fread($arquivograva,filesize($localrecebeedital));
@@ -113,7 +113,7 @@ if(isset($incluir)){
 
       try {
         $nomearq = File::cutName($_FILES["arquivoedital"]["name"], 50);
-      } catch (Exception $oErro) {
+      } catch (Exception) {
 
         $sqlerro = true;
         $erro_msg = 'O arquivo selecionado tem uma extensão inválida.';

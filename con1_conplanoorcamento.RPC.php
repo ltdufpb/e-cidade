@@ -215,7 +215,7 @@ switch ($oParam->exec) {
 
                 $oRetorno->lReduzidoVinculado = true;
                 $oRetorno->iReduzido          = $oPlano->getReduzido();
-                $aDocumentosJaAdicionados     = array();
+                $aDocumentosJaAdicionados     = [];
 
                 foreach ($aEventoContabil as $oEventoContabil) {
 
@@ -226,7 +226,7 @@ switch ($oParam->exec) {
                     $aDocumentosJaAdicionados[] = $oEventoContabil->getCodigoDocumento();
                     $oDadosEventoContabil = new StdClass();
                     $oDadosEventoContabil->iDocumento           = $oEventoContabil->getCodigoDocumento();
-                    $oDadosEventoContabil->sDescricao           = urlencode($oEventoContabil->getDescricaoDocumento());
+                    $oDadosEventoContabil->sDescricao           = urlencode((string) $oEventoContabil->getDescricaoDocumento());
                     $oDadosEventoContabil->iSequencialTransacao = $oEventoContabil->getSequencialTransacao();
 
                     $oRetorno->aEventoContabilVinculado[] = $oDadosEventoContabil;
@@ -261,7 +261,7 @@ switch ($oParam->exec) {
         $oPlanoContaPcasp     = new ContaPlanoPCASP($iCodConPcasp, $iAnoUso);
         $iReduzidoPcasp       = $oPlanoContaPcasp->getReduzido();
         $oPlanoContaOrcamento = new ContaOrcamento($oParam->iCodigoContaOrcamento, $iAnoUso);
-        $aDocumentos          = array();
+        $aDocumentos          = [];
 
         foreach ( $oParam->aDocumentos as $iDocumento ) {
 
@@ -282,7 +282,7 @@ switch ($oParam->exec) {
                  * try criado só para nao disparar a excessao de falta de documento
                  * pois se ele nao achar o contrario nesse momento nao fara diferença
                  */
-            } catch (Exception $eException) { }
+            } catch (Exception) { }
         }
 
         /**
@@ -296,7 +296,7 @@ switch ($oParam->exec) {
                 $aRegrasLancamentos       = $oEventoContabilLancamento->getRegrasLancamento();
                 $oRegraLancamentoContabil = clone $aRegrasLancamentos[0];
                 $oRegraLancamentoContabil->setAnoUso($iAnoUso);
-                $aComparaDebitoCredito = array(RegraLancamentoContabil::COMPARA_DEBITO, RegraLancamentoContabil::COMPARA_CREDITO);
+                $aComparaDebitoCredito = [RegraLancamentoContabil::COMPARA_DEBITO, RegraLancamentoContabil::COMPARA_CREDITO];
 
                 if ( !in_array($oRegraLancamentoContabil->getCompara(), $aComparaDebitoCredito) ) {
                     continue;
@@ -374,7 +374,7 @@ switch ($oParam->exec) {
         $oContaOrcamento                     = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
         $grupoEstrutural = substr($oContaOrcamento->getEstrutural(), 0 ,1);
         $formatacaoReceita = 'receita';
-        if (EMENTARIO_RECEITA && in_array($grupoEstrutural, array(4,9))) {
+        if (EMENTARIO_RECEITA && in_array($grupoEstrutural, [4,9])) {
             $formatacaoReceita = 'ementario_receita';
         }
 
@@ -385,7 +385,7 @@ switch ($oParam->exec) {
         if ($oContaOrcamento->getPlanoContaPCASP() != null) {
 
             $oRetorno->dados->c72_conplano   = $oContaOrcamento->getPlanoContaPCASP()->getCodigoConta();
-            $oRetorno->dados->c60_descrPcasp = urlencode($oContaOrcamento->getPlanoContaPCASP()->getDescricao());
+            $oRetorno->dados->c60_descrPcasp = urlencode((string) $oContaOrcamento->getPlanoContaPCASP()->getDescricao());
         }
         $oRetorno->dados->c60_naturezasaldo = $oContaOrcamento->getNaturezaSaldo();
         $oRetorno->dados->c60_identificadorresultadoprimario = $oContaOrcamento->getIdentificadorResultadoPrimario();

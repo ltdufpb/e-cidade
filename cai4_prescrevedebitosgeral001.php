@@ -44,7 +44,7 @@ $clrotulo->label('k31_obs');
 
 $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS);
 $cllista         = new cl_lista;
 $cllistadoc      = new cl_listadoc;
@@ -110,7 +110,7 @@ function js_emite(){
         <td align="right"  ><b>Prescrever Débitos Notificados: </b></td>
         <td  align="left" > 
 				<?php 
-				$arr_op = array("n"=>"Não","s"=>"Sim");
+				$arr_op = ["n"=>"Não","s"=>"Sim"];
 				db_select("prescrnoti",$arr_op,true,"text");
 				?>&nbsp;</td>
       </tr>

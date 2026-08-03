@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE procdiver
 class cl_procdiver {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $dv09_procdiver = 0;
-   var $dv09_descra = null;
-   var $dv09_descr = null;
-   var $dv09_receit = 0;
-   var $dv09_hist = 0;
-   var $dv09_proced = 0;
-   var $dv09_tipo = 0;
-   var $dv09_instit = 0;
-   var $dv09_dtlimite_dia = null;
-   var $dv09_dtlimite_mes = null;
-   var $dv09_dtlimite_ano = null;
-   var $dv09_dtlimite = null;
-   var $dv09_cobranca = false;
+   public $dv09_procdiver = 0;
+   public $dv09_descra = null;
+   public $dv09_descr = null;
+   public $dv09_receit = 0;
+   public $dv09_hist = 0;
+   public $dv09_proced = 0;
+   public $dv09_tipo = 0;
+   public $dv09_instit = 0;
+   public $dv09_dtlimite_dia = null;
+   public $dv09_dtlimite_mes = null;
+   public $dv09_dtlimite_ano = null;
+   public $dv09_dtlimite = null;
+   public $dv09_cobranca = false;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  dv09_procdiver = int4 = Procedência
                  dv09_descra = varchar(20) = Descrição Abreviada
                  dv09_descr = varchar(40) = Descrição
@@ -69,10 +69,10 @@ class cl_procdiver {
                  dv09_cobranca = boolean = Débito de Cobrança
                  ";
    //funcao construtor da classe
-   function cl_procdiver() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procdiver");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -195,10 +195,10 @@ class cl_procdiver {
          $this->erro_status = "0";
          return false;
        }
-       $this->dv09_procdiver = pg_result($result,0,0);
+       $this->dv09_procdiver = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from procdiver_dv09_procdiver_seq");
-       if(($result != false) && (pg_result($result,0,0) < $dv09_procdiver)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $dv09_procdiver)){
          $this->erro_sql = " Campo dv09_procdiver maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -244,7 +244,7 @@ class cl_procdiver {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "procedências dos diversos ($this->dv09_procdiver) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "procedências dos diversos já Cadastrado";
@@ -268,19 +268,19 @@ class cl_procdiver {
      $resaco = $this->sql_record($this->sql_query_file($this->dv09_procdiver));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,3508,'$this->dv09_procdiver','I')");
-       $resac = db_query("insert into db_acount values($acount,374,3508,'','".AddSlashes(pg_result($resaco,0,'dv09_procdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,374,3509,'','".AddSlashes(pg_result($resaco,0,'dv09_descra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,374,3510,'','".AddSlashes(pg_result($resaco,0,'dv09_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,374,3511,'','".AddSlashes(pg_result($resaco,0,'dv09_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,374,3512,'','".AddSlashes(pg_result($resaco,0,'dv09_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,374,3513,'','".AddSlashes(pg_result($resaco,0,'dv09_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,374,4764,'','".AddSlashes(pg_result($resaco,0,'dv09_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,374,10553,'','".AddSlashes(pg_result($resaco,0,'dv09_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,374,18595,'','".AddSlashes(pg_result($resaco,0,'dv09_dtlimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,374,1011944,'','".AddSlashes(pg_result($resaco,0,'dv09_cobranca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,374,3508,'','".AddSlashes(pg_fetch_result($resaco,0,'dv09_procdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,374,3509,'','".AddSlashes(pg_fetch_result($resaco,0,'dv09_descra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,374,3510,'','".AddSlashes(pg_fetch_result($resaco,0,'dv09_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,374,3511,'','".AddSlashes(pg_fetch_result($resaco,0,'dv09_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,374,3512,'','".AddSlashes(pg_fetch_result($resaco,0,'dv09_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,374,3513,'','".AddSlashes(pg_fetch_result($resaco,0,'dv09_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,374,4764,'','".AddSlashes(pg_fetch_result($resaco,0,'dv09_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,374,10553,'','".AddSlashes(pg_fetch_result($resaco,0,'dv09_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,374,18595,'','".AddSlashes(pg_fetch_result($resaco,0,'dv09_dtlimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,374,1011944,'','".AddSlashes(pg_fetch_result($resaco,0,'dv09_cobranca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -289,10 +289,10 @@ class cl_procdiver {
       $this->atualizacampos();
      $sql = " update procdiver set ";
      $virgula = "";
-     if(trim($this->dv09_procdiver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_procdiver"])){
+     if(trim((string) $this->dv09_procdiver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_procdiver"])){
        $sql  .= $virgula." dv09_procdiver = $this->dv09_procdiver ";
        $virgula = ",";
-       if(trim($this->dv09_procdiver) == null ){
+       if(trim((string) $this->dv09_procdiver) == null ){
          $this->erro_sql = " Campo Procedência nao Informado.";
          $this->erro_campo = "dv09_procdiver";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_procdiver {
          return false;
        }
      }
-     if(trim($this->dv09_descra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_descra"])){
+     if(trim((string) $this->dv09_descra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_descra"])){
        $sql  .= $virgula." dv09_descra = '$this->dv09_descra' ";
        $virgula = ",";
-       if(trim($this->dv09_descra) == null ){
+       if(trim((string) $this->dv09_descra) == null ){
          $this->erro_sql = " Campo Descrição Abreviada nao Informado.";
          $this->erro_campo = "dv09_descra";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_procdiver {
          return false;
        }
      }
-     if(trim($this->dv09_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_descr"])){
+     if(trim((string) $this->dv09_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_descr"])){
        $sql  .= $virgula." dv09_descr = '$this->dv09_descr' ";
        $virgula = ",";
-       if(trim($this->dv09_descr) == null ){
+       if(trim((string) $this->dv09_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "dv09_descr";
          $this->erro_banco = "";
@@ -328,10 +328,10 @@ class cl_procdiver {
          return false;
        }
      }
-     if(trim($this->dv09_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_receit"])){
+     if(trim((string) $this->dv09_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_receit"])){
        $sql  .= $virgula." dv09_receit = $this->dv09_receit ";
        $virgula = ",";
-       if(trim($this->dv09_receit) == null ){
+       if(trim((string) $this->dv09_receit) == null ){
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "dv09_receit";
          $this->erro_banco = "";
@@ -341,10 +341,10 @@ class cl_procdiver {
          return false;
        }
      }
-     if(trim($this->dv09_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_hist"])){
+     if(trim((string) $this->dv09_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_hist"])){
        $sql  .= $virgula." dv09_hist = $this->dv09_hist ";
        $virgula = ",";
-       if(trim($this->dv09_hist) == null ){
+       if(trim((string) $this->dv09_hist) == null ){
          $this->erro_sql = " Campo Histórico do Cálculo nao Informado.";
          $this->erro_campo = "dv09_hist";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_procdiver {
          return false;
        }
      }
-     if(trim($this->dv09_proced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_proced"])){
+     if(trim((string) $this->dv09_proced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_proced"])){
        $sql  .= $virgula." dv09_proced = $this->dv09_proced ";
        $virgula = ",";
-       if(trim($this->dv09_proced) == null ){
+       if(trim((string) $this->dv09_proced) == null ){
          $this->erro_sql = " Campo Procedência da dívida nao Informado.";
          $this->erro_campo = "dv09_proced";
          $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_procdiver {
          return false;
        }
      }
-     if(trim($this->dv09_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_tipo"])){
+     if(trim((string) $this->dv09_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_tipo"])){
        $sql  .= $virgula." dv09_tipo = $this->dv09_tipo ";
        $virgula = ",";
-       if(trim($this->dv09_tipo) == null ){
+       if(trim((string) $this->dv09_tipo) == null ){
          $this->erro_sql = " Campo Tipo de Débito nao Informado.";
          $this->erro_campo = "dv09_tipo";
          $this->erro_banco = "";
@@ -380,10 +380,10 @@ class cl_procdiver {
          return false;
        }
      }
-     if(trim($this->dv09_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_instit"])){
+     if(trim((string) $this->dv09_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_instit"])){
        $sql  .= $virgula." dv09_instit = $this->dv09_instit ";
        $virgula = ",";
-       if(trim($this->dv09_instit) == null ){
+       if(trim((string) $this->dv09_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "dv09_instit";
          $this->erro_banco = "";
@@ -393,7 +393,7 @@ class cl_procdiver {
          return false;
        }
      }
-     if(trim($this->dv09_dtlimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_dtlimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dv09_dtlimite_dia"] !="") ){
+     if(trim((string) $this->dv09_dtlimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_dtlimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dv09_dtlimite_dia"] !="") ){
        $sql  .= $virgula." dv09_dtlimite = '$this->dv09_dtlimite' ";
        $virgula = ",";
      }     else{
@@ -402,10 +402,10 @@ class cl_procdiver {
          $virgula = ",";
        }
      }
-     if(trim($this->dv09_cobranca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_cobranca"])){
+     if(trim((string) $this->dv09_cobranca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv09_cobranca"])){
        $sql  .= $virgula." dv09_cobranca = '$this->dv09_cobranca' ";
        $virgula = ",";
-       if(trim($this->dv09_cobranca) == null ){
+       if(trim((string) $this->dv09_cobranca) == null ){
          $this->erro_sql = " Campo Tipo de Cobranca nao Informado.";
          $this->erro_campo = "dv09_cobranca";
          $this->erro_banco = "";
@@ -423,29 +423,29 @@ class cl_procdiver {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3508,'$this->dv09_procdiver','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv09_procdiver"]) || $this->dv09_procdiver != "")
-           $resac = db_query("insert into db_acount values($acount,374,3508,'".AddSlashes(pg_result($resaco,$conresaco,'dv09_procdiver'))."','$this->dv09_procdiver',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,374,3508,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv09_procdiver'))."','$this->dv09_procdiver',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv09_descra"]) || $this->dv09_descra != "")
-           $resac = db_query("insert into db_acount values($acount,374,3509,'".AddSlashes(pg_result($resaco,$conresaco,'dv09_descra'))."','$this->dv09_descra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,374,3509,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv09_descra'))."','$this->dv09_descra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv09_descr"]) || $this->dv09_descr != "")
-           $resac = db_query("insert into db_acount values($acount,374,3510,'".AddSlashes(pg_result($resaco,$conresaco,'dv09_descr'))."','$this->dv09_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,374,3510,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv09_descr'))."','$this->dv09_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv09_receit"]) || $this->dv09_receit != "")
-           $resac = db_query("insert into db_acount values($acount,374,3511,'".AddSlashes(pg_result($resaco,$conresaco,'dv09_receit'))."','$this->dv09_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,374,3511,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv09_receit'))."','$this->dv09_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv09_hist"]) || $this->dv09_hist != "")
-           $resac = db_query("insert into db_acount values($acount,374,3512,'".AddSlashes(pg_result($resaco,$conresaco,'dv09_hist'))."','$this->dv09_hist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,374,3512,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv09_hist'))."','$this->dv09_hist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv09_proced"]) || $this->dv09_proced != "")
-           $resac = db_query("insert into db_acount values($acount,374,3513,'".AddSlashes(pg_result($resaco,$conresaco,'dv09_proced'))."','$this->dv09_proced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,374,3513,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv09_proced'))."','$this->dv09_proced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv09_tipo"]) || $this->dv09_tipo != "")
-           $resac = db_query("insert into db_acount values($acount,374,4764,'".AddSlashes(pg_result($resaco,$conresaco,'dv09_tipo'))."','$this->dv09_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,374,4764,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv09_tipo'))."','$this->dv09_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv09_instit"]) || $this->dv09_instit != "")
-           $resac = db_query("insert into db_acount values($acount,374,10553,'".AddSlashes(pg_result($resaco,$conresaco,'dv09_instit'))."','$this->dv09_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,374,10553,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv09_instit'))."','$this->dv09_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv09_dtlimite"]) || $this->dv09_dtlimite != "")
-           $resac = db_query("insert into db_acount values($acount,374,18595,'".AddSlashes(pg_result($resaco,$conresaco,'dv09_dtlimite'))."','$this->dv09_dtlimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,374,18595,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv09_dtlimite'))."','$this->dv09_dtlimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dv09_cobranca"]) || $this->dv09_cobranca != "")
-           $resac = db_query("insert into db_acount values($acount,374,1011944,'".AddSlashes(pg_result($resaco,$conresaco,'dv09_cobranca'))."','$this->dv09_cobranca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,374,1011944,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv09_cobranca'))."','$this->dv09_cobranca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -494,19 +494,19 @@ class cl_procdiver {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3508,'$dv09_procdiver','E')");
-         $resac = db_query("insert into db_acount values($acount,374,3508,'','".AddSlashes(pg_result($resaco,$iresaco,'dv09_procdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,374,3509,'','".AddSlashes(pg_result($resaco,$iresaco,'dv09_descra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,374,3510,'','".AddSlashes(pg_result($resaco,$iresaco,'dv09_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,374,3511,'','".AddSlashes(pg_result($resaco,$iresaco,'dv09_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,374,3512,'','".AddSlashes(pg_result($resaco,$iresaco,'dv09_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,374,3513,'','".AddSlashes(pg_result($resaco,$iresaco,'dv09_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,374,4764,'','".AddSlashes(pg_result($resaco,$iresaco,'dv09_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,374,10553,'','".AddSlashes(pg_result($resaco,$iresaco,'dv09_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,374,18595,'','".AddSlashes(pg_result($resaco,$iresaco,'dv09_dtlimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,374,1011944,'','".AddSlashes(pg_result($resaco,$iresaco,'dv09_cobranca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,374,3508,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv09_procdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,374,3509,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv09_descra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,374,3510,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv09_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,374,3511,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv09_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,374,3512,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv09_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,374,3513,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv09_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,374,4764,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv09_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,374,10553,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv09_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,374,18595,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv09_dtlimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,374,1011944,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv09_cobranca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from procdiver
@@ -566,7 +566,7 @@ class cl_procdiver {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procdiver";
@@ -581,7 +581,7 @@ class cl_procdiver {
    function sql_query ( $dv09_procdiver=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -613,7 +613,7 @@ class cl_procdiver {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -626,7 +626,7 @@ class cl_procdiver {
    function sql_query_file ( $dv09_procdiver=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -647,7 +647,7 @@ class cl_procdiver {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

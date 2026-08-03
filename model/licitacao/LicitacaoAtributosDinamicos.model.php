@@ -59,11 +59,6 @@ class LicitacaoAtributosDinamicos {
   const NOME_TIPO_ATUACAO                      = 'tipoatuacao';
 
   /**
-   * @var integer Codigo da Licitação
-   */
-  private $iCodigoLicitacao;
-
-  /**
    * @var integer Codigo do Grupo de Atributo Dinamico
    */
   private $iCodigoGrupo;
@@ -77,8 +72,8 @@ class LicitacaoAtributosDinamicos {
    * LicitacaoAtributosDinamicos constructor.
    * @param integer $iCodigoLicitacao
    */
-  public function __construct($iCodigoLicitacao = null) {
-    $this->iCodigoLicitacao = $iCodigoLicitacao;
+  public function __construct(private $iCodigoLicitacao = null)
+  {
   }
 
   /**
@@ -109,7 +104,7 @@ class LicitacaoAtributosDinamicos {
    */
   private function carregarAtributos() {
 
-    $this->aAtributos = array();
+    $this->aAtributos = [];
 
     if ($this->iCodigoLicitacao && !$this->iCodigoGrupo) {
 

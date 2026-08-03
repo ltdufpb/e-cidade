@@ -54,22 +54,22 @@ class Servidor extends Migracao implements MigracaoInterface
      */
     public function buscarUltimoPreenchimento($codigoFormulario)
     {
-        $campos = array(
+        $campos = [
             'eso02_rhpessoal AS matricula',
             'max(eso02_avaliacaogruporesposta) AS preenchimento',
             'eso02_empregador AS empregador',
             'eso02_avaliacao AS avaliacao'
-        );
+        ];
 
-        $where = array(
+        $where = [
             "eso02_avaliacao = {$codigoFormulario}"
-        );
+        ];
 
         $dao = new cl_avaliacaogruporespostarhpessoal();
         $sql = $dao->sql_avaliacao_preenchida(
             $campos,
             $where,
-            array('eso02_rhpessoal', 'eso02_empregador', 'eso02_avaliacao')
+            ['eso02_rhpessoal', 'eso02_empregador', 'eso02_avaliacao']
         );
 
         $rs = db_query($sql);
@@ -86,6 +86,7 @@ class Servidor extends Migracao implements MigracaoInterface
      * @return int
      * @throws Exception
      */
+    #[\Override]
     protected function criarNovoPreenchimento($preenchimento)
     {
         $novoPreenchimento = parent::criarNovoPreenchimento($preenchimento);

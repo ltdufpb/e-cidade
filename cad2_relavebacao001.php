@@ -37,8 +37,8 @@ include(modification("classes/db_averbacao_classe.php"));
 include(modification("classes/db_ruas_classe.php"));
 include(modification("classes/db_averbatipo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER ['QUERY_STRING'], $result);
 
 $clcgm = new cl_cgm();
 $clcgm->rotulo->label("z01_numcgm");
@@ -180,10 +180,10 @@ $db_opcao = 1;
         <td align="right" nowrap title="Processados"><strong>Processados : </strong></td>
         <td align="left" nowrap title="Verificar o campo processados por: Processados ou Não Processados">
      <?php 
-    $sProcessados = array (       
+    $sProcessados =  [       
                                   "S" => "Processados",                                   
                                   "N" => "Não Processados"
-    );
+    ];
     db_select('processados', $sProcessados, true, 1, "onClick=''");
     ?>
     </td>
@@ -204,14 +204,14 @@ $db_opcao = 1;
         <td align="right" nowrap title="Ordem"><strong>Ordem : </strong></td>
         <td align="left" nowrap title="Ordenados por: Matricula, Averbação, Rua, Tipo de Averbação ou Data">
      <?php 
-    $ordem = array (
+    $ordem =  [
       
                                   "M" => "Matricula", 
                                   "A" => "Averbação", 
                                   "R" => "Rua", 
                                   "T" => "Tipo de Averbação", 
                                   "D" => "Data" 
-    );
+    ];
     db_select('ordem', $ordem, true, 1, "onClick=''");
     ?>
     </td>

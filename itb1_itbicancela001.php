@@ -31,19 +31,19 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_itbicancela_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clitbicancela = new cl_itbicancela;
 $db_opcao = 1;
 $db_botao = true;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Cancelar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Cancelar"){
   try{
 
     db_inicio_transacao();
     $clitbicancela->it16_id_usuario = db_getsession('DB_id_usuario');
     $clitbicancela->incluir($it16_guia);
     db_fim_transacao();   
-  } catch (Exception $oErro) {
+  } catch (Exception) {
      
     db_fim_transacao(true);  
   } 
@@ -69,7 +69,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Cancela
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   if($clitbicancela->erro_status=="0") {
 

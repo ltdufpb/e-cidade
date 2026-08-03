@@ -61,7 +61,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
    * @var array
    * @access private
    */
-  private $aTabelas = array();
+  private $aTabelas = [];
 
   /**
    * Dados da Linha do Arquivo
@@ -120,7 +120,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     $this->aTabelas['iptuant']    = new tableDataManager(Conexao::getInstancia()->getConexao(),"cadastro.iptuant"   , ""          , true, 1);
 
 
-    if ( !in_array( $this->oRegistro->sUnidadeImobiliariaAnterior, array('000','001') ) ) {
+    if ( !in_array( $this->oRegistro->sUnidadeImobiliariaAnterior, ['000','001'] ) ) {
       $this->lUnidadeSecundaria = true;
     }
   }
@@ -135,12 +135,12 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
 
     $oConexao = Conexao::getInstancia();
     
-    $this->logBanco(" |------Iniciando Processamento Matricula: {$this->iMatricula} ", DBLog::LOG_INFO);
+    $this->logBanco(" |------Iniciando Processamento Matricula: {$this->iMatricula} ");
     /**
      * Primeiramente validar se a matricula informada existe
      */
     if ( !RecadastramentoSQLUtils::getDadosIPTUBase($this->iMatricula, 1) ) {
-      $this->logBanco("  - Nao Foi encontrada Matricula com o Codigo Informado. Registro Nao Vai ser Processado.", DBLog::LOG_INFO);
+      $this->logBanco("  - Nao Foi encontrada Matricula com o Codigo Informado. Registro Nao Vai ser Processado.");
       return false;
     }
 
@@ -183,8 +183,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
         " Nao foram encontrados os Dados do Imovel. S/Q/L : ".
         $this->oRegistro->sSetorCartograficoAnterior  ."/"   .
         $this->oRegistro->sQuadraCartograficaAnterior ."/"   .
-        $this->oRegistro->sLoteCartograficoAnterior, 
-        DBLog::LOG_ERROR);       
+        $this->oRegistro->sLoteCartograficoAnterior);       
       return false;      
        
     }
@@ -224,7 +223,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
      
       if ( !$lValidou ) {
         $lContinuaProcessamento = false;
-        $this->logBanco("  - Encontrou Direfença na Comparação: $sComparacao.", DBLog::LOG_ERROR);
+        $this->logBanco("  - Encontrou Direfença na Comparação: $sComparacao.");
       }
     }
     
@@ -233,8 +232,8 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
      */
     if ( !$lContinuaProcessamento ) {
       
-      $this->logBanco("  - Os dados Anteriores Informados não conferem com os Dados Atuais no e-Cidade.", DBLog::LOG_ERROR);
-      $this->logBanco("", DBLog::LOG_ERROR);
+      $this->logBanco("  - Os dados Anteriores Informados não conferem com os Dados Atuais no e-Cidade.");
+      $this->logBanco("");
       return false;
     }
     $this->logBanco("  - Os dados Anteriores conferem com os Dados Atuais no e-Cidade, seguindo processamento.");
@@ -262,7 +261,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       $this->logBanco("   + Processando Alteração nas Tabelas Referentes as Construções.(iptuconstr, carconstr)");
     } else {
       
-      $this->logBanco("   Ocorrencia nao Caracteriza alteracao, processamento cancelado.", DBLog::LOG_ERROR);
+      $this->logBanco("   Ocorrencia nao Caracteriza alteracao, processamento cancelado.");
       return false;
     }
      
@@ -273,14 +272,14 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     /**
      * Após termino do processamento grava as alterações encontradas e define o registro como processado
      */
-    $oDadosProcessamento      = (object)array("ie28_observacoes"=> $this->sLog, "ie28_processado"=>'t');
+    $oDadosProcessamento      = (object)["ie28_observacoes"=> $this->sLog, "ie28_processado"=>'t'];
     $sWhereProcessamento      = "ie28_sequencial = {$this->oRegistro->iCodigoRegistro}";
     $rsAlteracaoProcessamento = RecadastramentoSQLUtils::alterar("recadastroimobiliarioimoveis", $oDadosProcessamento, $sWhereProcessamento);
     
     if ( !$rsAlteracaoProcessamento ) {
       
       $sMensagem = "Erro ao Gravar Registro da Alteração. Detalhe:".Conexao::getInstancia()->getLastError();
-      $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+      $this->logBanco( $sMensagem );
       throw new Exception($sMensagem);
     }
     
@@ -288,7 +287,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
      * Alterarando Codigo REf Anterior
      */
     $rsRemocaoCaracteristicas = RecadastramentoSQLUtils::excluir("iptuant", null, " j40_matric = {$this->iMatricula} ");
-    $oDadosRefAnt             = (object)array("j40_matric"=>$this->iMatricula,"j40_refant"=> $this->getCodigoAnteriorConstrucao(false,false));
+    $oDadosRefAnt             = (object)["j40_matric"=>$this->iMatricula,"j40_refant"=> $this->getCodigoAnteriorConstrucao(false,false)];
     $this->aTabelas['iptuant']->setByLineOfDBUtils( $oDadosRefAnt, true );
     return true;
   }
@@ -372,26 +371,26 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     $sCodigoReferenciaAnterior = "";
     if ( !$lComparacao ) {
       
-      $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistro->sDistritoNovo)        , 1,"0", STR_PAD_LEFT );
+      $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistro->sDistritoNovo)        , 1,"0", STR_PAD_LEFT );
       $sCodigoReferenciaAnterior .= "2";
     }
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistro->sSetorCartograficoNovo ), 4,"0", STR_PAD_LEFT );
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistro->sQuadraCartograficaNovo), 4,"0", STR_PAD_LEFT );
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistro->sLoteCartograficoNovo  ), 4,"0", STR_PAD_LEFT );
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistro->sUnidadeImobiliariaNova), 3,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistro->sSetorCartograficoNovo ), 4,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistro->sQuadraCartograficaNovo), 4,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistro->sLoteCartograficoNovo  ), 4,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistro->sUnidadeImobiliariaNova), 3,"0", STR_PAD_LEFT );
     
     if ( $lDadosAntigos ) {
       
     $sCodigoReferenciaAnterior = "";
       if ( !$lComparacao ) {
        
-        $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistro->sDistritoNovo)             , 1,"0", STR_PAD_LEFT );
+        $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistro->sDistritoNovo)             , 1,"0", STR_PAD_LEFT );
         $sCodigoReferenciaAnterior .= "2";
       }
-      $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistro->sSetorCartograficoAnterior ) , 4,"0", STR_PAD_LEFT );
-      $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistro->sQuadraCartograficaAnterior ), 4,"0", STR_PAD_LEFT );
-      $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistro->sLoteCartograficoAnterior )  , 4,"0", STR_PAD_LEFT );
-      $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistro->sUnidadeImobiliariaAnterior) , 3,"0", STR_PAD_LEFT );
+      $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistro->sSetorCartograficoAnterior ) , 4,"0", STR_PAD_LEFT );
+      $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistro->sQuadraCartograficaAnterior ), 4,"0", STR_PAD_LEFT );
+      $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistro->sLoteCartograficoAnterior )  , 4,"0", STR_PAD_LEFT );
+      $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistro->sUnidadeImobiliariaAnterior) , 3,"0", STR_PAD_LEFT );
     }
     return $sCodigoReferenciaAnterior;
   }
@@ -420,7 +419,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       return false;
     }
 
-    $oResultado = db_utils::fieldsMemory($rsCodigo, 0);
+    $oResultado = (new db_utils())->fieldsMemory($rsCodigo, 0);
 
     /**
      * Caso o ID encontrado seja de Outra matricula não retorna o Codigo
@@ -451,7 +450,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     $sQueryValidacao.= "                              and j48_idcons = j39_idcons                            ";
     $sQueryValidacao.= "   where j01_matric = {$this->iMatricula}                                            ";
     $sQueryValidacao.= "group by j01_matric                                                                  ";
-    $oDados          = db_utils::fieldsMemory( db_query( $sQueryValidacao ), 0);
+    $oDados          = (new db_utils())->fieldsMemory(db_query( $sQueryValidacao ), 0);
 
 
     if ( $oDados->construcoes == 0 ) {
@@ -503,7 +502,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     if ( !$rsAlteracaoLote ) {
 
       $sMensagem = "Erro ao Alterar os Dadso da Tabela lote. Detalhe:".Conexao::getInstancia()->getLastError();
-      $this->logBanco($sMensagem,DBLog::LOG_ERROR);
+      $this->logBanco($sMensagem);
       throw new Exception($sMensagem);
     }
     /**
@@ -522,7 +521,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     if ( isset($rsRemocaoCaracteristicas) and !$rsRemocaoCaracteristicas ) {
 
       $sMensagem = "Erro ao Remover as Caracteristicas do Lote. Detalhe:".Conexao::getInstancia()->getLastError();
-      $this->logBanco($sMensagem,DBLog::LOG_ERROR);
+      $this->logBanco($sMensagem);
       throw new Exception($sMensagem);
     }
 
@@ -555,9 +554,9 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
           continue;
         }
 
-        $oDadosCarlote = (object)array("j35_idbql"  => $iIDBQL,
+        $oDadosCarlote = (object)["j35_idbql"  => $iIDBQL,
                                        "j35_caract" => $iCodigoCaracateristicaLote,
-                                       "j35_dtlanc" => '');
+                                       "j35_dtlanc" => ''];
         $this->aTabelas['carlote']->setByLineOfDBUtils($oDadosCarlote, true);
         $this->logBanco("    - Definindo Caracteristica: {$oDadosCarlote->j35_caract}, Grupo: $sGrupo");
       }
@@ -598,7 +597,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       return false;
     }
 
-    $iCodigoFaceQuadra = db_utils::fieldsMemory($rsFaceQuadra,0)->j37_face;
+    $iCodigoFaceQuadra = (new db_utils())->fieldsMemory($rsFaceQuadra, 0)->j37_face;
     $this->logBanco("    - Face de Quadra Definida Pelo Arquivo: $iCodigoFaceQuadra");
 
     /**
@@ -626,7 +625,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     if ( !$rsTestaTestada || !$rsExisteTestada || !$rsExisteTestadaNumero ) {
 
       $sMensagem = "Erro ao Buscar Dados da TestadaAlterar os Dadso da Tabela lote. Detalhe:".Conexao::getInstancia()->getLastError();
-      $this->logBanco($sMensagem,DBLog::LOG_ERROR);
+      $this->logBanco($sMensagem);
       throw new Exception($sMensagem);
     }
     $lExisteTestada       = pg_num_rows($rsExisteTestada) > 0;
@@ -642,7 +641,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       return false;                     
     }
 
-    $oTesteTestada      = db_utils::fieldsMemory( $rsTestaTestada, 0 );
+    $oTesteTestada      = (new db_utils())->fieldsMemory($rsTestaTestada, 0);
     $lIncluiNovaTestada = ( $oTesteTestada->face_principal != $iCodigoFaceQuadra ) && !$lExisteTestada;
 
     $lExisteTestadaNumeroAntiga = true;
@@ -672,7 +671,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       if ( !$rsInsereTestada ) {
         
         $sMensagem = " Erro ao Incluir dados da Testada. Detalhe: ".Conexao::getInstancia()->getLastError();
-        $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+        $this->logBanco( $sMensagem );
         throw new Exception( $sMensagem );
       }
       
@@ -682,7 +681,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       if ( !$rsInsereTestPri ) {
         
         $sMensagem = " Erro ao Incluir dados da TestPri. Detalhe: ".Conexao::getInstancia()->getLastError();
-        $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+        $this->logBanco( $sMensagem );
         throw new Exception( $sMensagem );
       }
     } else {
@@ -698,7 +697,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       if ( !$rsAlteracaoTestad ) {
         
         $sMensagem = " Erro ao Alterar os Dados da Testada. j36_idbql = {$iIDBQL} and j36_face = {$iCodigoFaceQuadra}. Detalhe: ".Conexao::getInstancia()->getLastError();
-        $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+        $this->logBanco( $sMensagem );
         throw new Exception( $sMensagem );
       }
     }
@@ -707,7 +706,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     if ( $iSequencialTestadaNumero == "" || !$lExisteTestadaNumero ) {
 
       $this->logBanco("     Achou TestadaNumero: $iSequencialTestadaNumero"  );
-      $iTestadaNumero        = trim($this->oRegistro->sNumeroPortaNovo) == "" ? 0 : $this->oRegistro->sNumeroPortaNovo;
+      $iTestadaNumero        = trim((string) $this->oRegistro->sNumeroPortaNovo) == "" ? 0 : $this->oRegistro->sNumeroPortaNovo;
       $rsInsereTestadaNumero = Conexao::getInstancia()->query("insert  
                                                                  into testadanumero ( j15_codigo,
                                                                                       j15_idbql ,
@@ -724,7 +723,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       if ( !$rsInsereTestadaNumero ) {                                       
         
         $sMensagem = " Erro ao Incluir dados da TestadaNumero. Detalhe: ".Conexao::getInstancia()->getLastError();
-        $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+        $this->logBanco( $sMensagem );
         throw new Exception( $sMensagem );
       }
     } else {
@@ -740,19 +739,19 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       if ( !$rsAlteracaoTestadaNumero ) {                                       
         
         $sMensagem = " Erro ao Alterar dados da TestadaNumero. Detalhe: ".Conexao::getInstancia()->getLastError();
-        $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+        $this->logBanco( $sMensagem );
         throw new Exception( $sMensagem );
       }
       /**
        * Tabela : TESTPRI
        */
-      $oCamposTestPri              = (object)array("j49_codigo"  => $this->oRegistro->iCodigoLogradouroNovo);
+      $oCamposTestPri              = (object)["j49_codigo"  => $this->oRegistro->iCodigoLogradouroNovo];
       $rsAlteracaoTestadaPrincipal = RecadastramentoSQLUtils::alterar("testpri", $oCamposTestPri, " j49_idbql = {$iIDBQL} and j49_face = $iCodigoFaceQuadra");
 
       if ( !$rsAlteracaoTestadaPrincipal ) {
 
         $sMensagem = "Erro ao Alterar Dados da Testada Principal do Lote. Detalhe:".Conexao::getInstancia()->getLastError();
-        $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+        $this->logBanco( $sMensagem );
         throw new Exception( $sMensagem );
       }                                                  
     } 
@@ -768,7 +767,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       if ( !$rsExcluiTestada ) {                                       
 
         $sMensagem = " Erro ao Excluida dados antigos da Testada: ".Conexao::getInstancia()->getLastError();
-        $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+        $this->logBanco( $sMensagem );
         throw new Exception( $sMensagem );
       }
     }
@@ -793,23 +792,23 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
 
       $this->logBanco("    - Loteamento Nao Encontrado: " . $this->oRegistro->iPlantaLoteamentoNovo );
 
-      $oDadosLoteamento      = (object)array(
+      $oDadosLoteamento      = (object)[
         "j34_descr"  => $this->oRegistro->iPlantaLoteamentoNovo. " - Recadastramento",
         "j34_areacc" => '0',
         "j34_areapc" => '0',
         "j34_areato" => '0'
-       );
+       ];
 
       $iSequencialLoteamento  = $this->aTabelas['loteam']->setByLineOfDBUtils( $oDadosLoteamento, true );
       $this->logBanco("    - Incluido Novo codigo de Loteamento: {$iSequencialLoteamento} - {$this->oRegistro->iPlantaLoteamentoNovo}");
     } else {
-      $iSequencialLoteamento  = db_utils::fieldsMemory($rsLoteamento,0)->j34_loteam;
+      $iSequencialLoteamento  = (new db_utils())->fieldsMemory($rsLoteamento, 0)->j34_loteam;
     }
 
     /**
      * Tabela : LOTELOTEAM
      */
-    $oDadosLoteamentoLote       = (object)array("j34_loteam" => $iSequencialLoteamento);
+    $oDadosLoteamentoLote       = (object)["j34_loteam" => $iSequencialLoteamento];
     $rsAlteracaoLoteamentoLote  = RecadastramentoSQLUtils::alterar("loteloteam", $oDadosLoteamentoLote, " j34_idbql = {$iIDBQL} ");
 
     if ( !$rsAlteracaoLoteamentoLote ) { //Erro de Query
@@ -843,12 +842,12 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     if ( pg_num_rows($rsLoteLoc) == 0 ) { 
 
       $this->logBanco("    - Código Próprio Nao Encontrado: " . $this->oRegistro->sSetorCartograficoNovo  );
-      $oDadosSetorLoc              = (object)array("j05_descr"         => "Recadastramento: {$this->oRegistro->iPlantaLoteamentoNovo}",
-                                                   "j05_codigoproprio" => $this->oRegistro->iPlantaLoteamentoNovo);
+      $oDadosSetorLoc              = (object)["j05_descr"         => "Recadastramento: {$this->oRegistro->iPlantaLoteamentoNovo}",
+                                                   "j05_codigoproprio" => $this->oRegistro->iPlantaLoteamentoNovo];
       $iSequencialSetorLocalizacao = $this->aTabelas['setorloc']->setByLineOfDBUtils($oDadosSetorLoc, true);
       $this->logBanco("    - Incluido Novo codigo proprio: {$iSequencialSetorLocalizacao} - {$this->oRegistro->iPlantaLoteamentoNovo}" );
     } else {
-      $iSequencialSetorLocalizacao = db_utils::fieldsMemory($rsLoteLoc,0)->j05_codigo;
+      $iSequencialSetorLocalizacao = (new db_utils())->fieldsMemory($rsLoteLoc, 0)->j05_codigo;
     }
 
     //
@@ -867,7 +866,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     if ( !$rsAlteracaoLoteLoc ) {
 
       $sMensagem = "Erro ao Alterar Dados do Lote de Localização. Detalhe:".Conexao::getInstancia()->getLastError();
-      $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+      $this->logBanco( $sMensagem );
       throw new Exception( $sMensagem );
     }
 
@@ -892,25 +891,25 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     if (!$rsSql ) {
 
       $sMensagem = "Erro ao Buscar dados da observação da matricula. Detalhe:".Conexao::getInstancia()->getLastError();
-      $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+      $this->logBanco( $sMensagem );
       throw new Exception( $sMensagem );
     }
     
     
     if ( pg_num_rows( $rsSql ) > 0 ) {
      
-      $sObservacao            = db_utils::fieldsMemory($rsSql, 0)->j26_obs;
+      $sObservacao            = (new db_utils())->fieldsMemory($rsSql, 0)->j26_obs;
       $sObservacao           .=  "\\nAlteração efetuada pelo recadastramento.";
       $sObservacao           .=  "\\nObservações do Arquivo: {$this->oRegistro->sObservacaoNova}";
       $sObservacao           .=  "\\nNome do Proprietario no Arquivo({$this->oRegistro->sNomeArquivo}): {$this->oRegistro->sNomeProprietarioNovo}";
      
-      $oDadosObservacao       = (object)array("j26_obs" => $sObservacao);
+      $oDadosObservacao       = (object)["j26_obs" => $sObservacao];
       $rsAlteracaoObservacoes = RecadastramentoSQLUtils::alterar("matricobs", $oDadosObservacao, " j26_matric = {$this->iMatricula}");
       
       if (!$rsAlteracaoObservacoes ) {
         
         $sMensagem = "Erro ao Alterar Observação da Matricula. Detalhe:".Conexao::getInstancia()->getLastError();
-        $this->logBanco( $sMensagem, DBLog::LOG_ERROR );
+        $this->logBanco( $sMensagem );
         throw new Exception( $sMensagem );
       }
       $this->logBanco("    - ALTEROU Observações da Matricula com o Nome Vindo do Arquivo: " . $this->oRegistro->sNomeProprietarioNovo);
@@ -920,7 +919,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       $sObservacao            = "Alteração efetuada pelo recadastramento.";
       $sObservacao           .= "\\n Observações do Arquivo: {$this->oRegistro->sObservacaoNova}";
       $sObservacao           .= "\\n Nome do Proprietario no Arquivo({$this->oRegistro->sNomeArquivo}): {$this->oRegistro->sNomeProprietarioNovo}"; 
-      $oDadosObservacao       = (object)array("j26_matric" => $this->iMatricula, "j26_obs" => $sObservacao);
+      $oDadosObservacao       = (object)["j26_matric" => $this->iMatricula, "j26_obs" => $sObservacao];
       $this->aTabelas['matricobs']->setByLineOfDBUtils($oDadosObservacao, true);
     }
     $this->logBanco("    - Incluiu Observações da Matricula com o Nome Vindo do Arquivo: " . $this->oRegistro->sNomeProprietarioNovo);
@@ -947,7 +946,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     $lExisteAreaConstruida = $this->oRegistro->lExisteAreaContruida == 1;
     $lAreaConstruidaValida = $nAreaProposta > 1;
 
-    $iAnoConstrucao        = date('Y', time($this->dDataInclusao));
+    $iAnoConstrucao        = date('Y', time());
 
     $nAreaConstruida       = (float)  $this->oRegistro->nAreaConstruidaNova;
     $dDataLancamento       =          $this->dDataInclusao;
@@ -982,7 +981,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       if ( !$rsAlteracaoIPTUConstr ) {
 
         $sMensagem = "Erro ao Alterar os Dados da Construcao. Detalhe:".Conexao::getInstancia()->getLastError();
-        $this->logBanco($sMensagem,DBLog::LOG_ERROR);
+        $this->logBanco($sMensagem);
         throw new Exception($sMensagem);
       } 
       /**
@@ -999,7 +998,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       if ( !$rsRemocaoCaracteristicas ) {
 
         $sMensagem = "Erro ao Remover as Caracteristicas do Lote. Detalhe:".Conexao::getInstancia()->getLastError();
-        $this->logBanco($sMensagem,DBLog::LOG_ERROR);
+        $this->logBanco($sMensagem);
         throw new Exception($sMensagem);
       }
     } else {
@@ -1050,9 +1049,9 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
         continue;
       }
       
-      $oDados = (object)array("j48_matric" => $this->iMatricula,
+      $oDados = (object)["j48_matric" => $this->iMatricula,
                               "j48_idcons" => $this->iCodigoConstrucao,
-                              "j48_caract" => $iCodigoCaracteristica);
+                              "j48_caract" => $iCodigoCaracteristica];
       $this->aTabelas['carconstr']->setByLineOfDBUtils($oDados, true);
       $this->logBanco("    - Definindo Caracteristica da Construção: $iCodigoCaracteristica, Grupo: $sGrupo");
     }
@@ -1110,7 +1109,7 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
     $oImovel = new Imovel($iMatricula);
     $aConstrucoes = $oImovel->getConstrucoes( true );
     
-    $this->logBanco("   - Existem ". count($aConstrucoes) . " construções a Demolir", DBLog::LOG_ERROR);
+    $this->logBanco("   - Existem ". count($aConstrucoes) . " construções a Demolir");
     
     foreach ( $aConstrucoes as $oConstrucao ) {
       
@@ -1123,10 +1122,10 @@ class RecadastroImobiliarioImoveisAlteracao  implements RecadastroImobiliarioImo
       if ( !RecadastramentoSQLUtils::alterar("iptuconstr", $oDadosDemolicao, $sWhereDemolicao) ) {
         
         $sMensagem = "Erro ao Demolir Construcao. Detalhe:".Conexao::getInstancia()->getLastError();
-        $this->logBanco($sMensagem, DBLog::LOG_ERROR);
+        $this->logBanco($sMensagem);
         throw new Exception($sMensagem);
       } 
-      $this->logBanco("    - Construcao {$oConstrucao->getCodigoConstrucao()} Demolida.", DBLog::LOG_ERROR);
+      $this->logBanco("    - Construcao {$oConstrucao->getCodigoConstrucao()} Demolida.");
     }
     return true; 
   }

@@ -177,7 +177,7 @@ if (isset($incluir)) {
     } // Fim if matrícula não concluída
 
     if ($oDadosMatricula->concluida == 'S'
-        && trim($sSituacaoAnterior) == 'MATRICULADO') {
+        && trim((string) $sSituacaoAnterior) == 'MATRICULADO') {
 
 
       $sResultadoFinal = ResultadoFinal($matriculaorig, $codigoaluno, $codturmaorig,
@@ -554,7 +554,7 @@ if (isset($incluir)) {
         $lErro = true;
       } else {
 
-       if (trim(db_utils::fieldsmemory($rsResultAlunoCurso, 0)->ed56_c_situacao) != "TRANSFERIDO REDE") {
+       if (trim((string) db_utils::fieldsmemory($rsResultAlunoCurso, 0)->ed56_c_situacao) != "TRANSFERIDO REDE") {
          $lErro = true;
        }
 

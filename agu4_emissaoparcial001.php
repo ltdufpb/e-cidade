@@ -30,7 +30,7 @@ require_once modification("libs/db_conecta.php");
 require_once modification("libs/db_sessoes.php");
 require_once modification("dbforms/db_funcoes.php");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $claguabase = new cl_aguabase;
 $claguabase->rotulo->label();
@@ -39,9 +39,9 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('z01_nome');
 $clrotulo->label('z01_numcgm');
 
-$aAnos = array(
+$aAnos = [
   db_getsession('DB_anousu') => db_getsession('DB_anousu')
-);
+];
 
 if (!isset($mesini)) {
   $mesini = db_subdata(db_getsession("DB_datausu"), "m", "t");
@@ -97,10 +97,10 @@ if (!isset($mesfim)) {
             <tr>
               <td><label for="matriculas_sem_contrato" class="bold">Somente parcelamentos:</label></td>
               <?php
-              $aOpcoesFiltro = array(
+              $aOpcoesFiltro = [
                 '0' => 'Não',
                 '1' => 'Sim',
-              );
+              ];
               ?>
               <td><?php db_select('matriculas_sem_contrato', $aOpcoesFiltro, true, 1); ?></td>
             </tr>

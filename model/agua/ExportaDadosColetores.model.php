@@ -550,7 +550,7 @@ class clExpDadosColetores {
    * @param integer $sMotivo - motivo da operação - 
    * @param integer $iSituacao - situacao da operacao - Importar, exportar, cancelar
    */
-  public function geraACExportaSituacao($iCodColetorExporta = null, $iUsuario, $dData, $sHora, $sMotivo, $iSituacao) {
+  public function geraACExportaSituacao($iCodColetorExporta = null, $iUsuario = null, $dData = null, $sHora = null, $sMotivo = null, $iSituacao = null) {
     
     require_once(modification("classes/db_aguacoletorexportasituacao_classe.php"));
     $this->clACExportaSituacao = new cl_aguacoletorexportasituacao();

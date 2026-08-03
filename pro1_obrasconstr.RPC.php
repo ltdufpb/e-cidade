@@ -45,7 +45,7 @@ $oRetorno = new stdClass();
 $oRetorno->iStatus = 1;
 $oRetorno->sMessage = '';
 
-$aDadosRetorno = array();
+$aDadosRetorno = [];
 /**
  * Camada de Tentativas do RPC
  */
@@ -66,7 +66,7 @@ try {
             }
 
             $aCaracter = db_utils::getCollectionByRecord($rsCaracter, false, false, true);
-            $aDadosCaracter = array();
+            $aDadosCaracter = [];
 
             /**
              * Cria nova estrutura do array a ser retornado, para evitar dados duplicados

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
 <html>
@@ -55,9 +55,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Departamentos","g2"=>"Tipos de compra","g3"=>"Materiais","g4"=>"Dotações");
-       $clcriaabas->title = array("g1"=>"Selecionar os departamentos das solicitações","g2"=>"Selecionar os tipos de compra das solicitações","g3"=>"Selecionar os materiais dos itens solicitados","g4"=>"Selecionar as dotações com os itens solicitados");
-       $clcriaabas->src = array("g1"=>"com2_solic003.php","g2"=>"com2_solic004.php","g3"=>"com2_solic005.php","g4"=>"com2_solic006.php");
+       $clcriaabas->identifica = ["g1"=>"Departamentos","g2"=>"Tipos de compra","g3"=>"Materiais","g4"=>"Dotações"];
+       $clcriaabas->title = ["g1"=>"Selecionar os departamentos das solicitações","g2"=>"Selecionar os tipos de compra das solicitações","g3"=>"Selecionar os materiais dos itens solicitados","g4"=>"Selecionar as dotações com os itens solicitados"];
+       $clcriaabas->src = ["g1"=>"com2_solic003.php","g2"=>"com2_solic004.php","g3"=>"com2_solic005.php","g4"=>"com2_solic006.php"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

@@ -95,7 +95,7 @@ db_input('cc08_sequencial',10,$Icc08_sequencial,true,'text',3,"")
     </td>
     <td> 
    <?php 
-   $x = array("f"=>"NAO","t"=>"SIM");
+   $x = ["f"=>"NAO","t"=>"SIM"];
    db_select('cc08_ativo',$x,true,$db_opcao,"");
    ?>
     </td>
@@ -183,7 +183,7 @@ function js_preenchepesquisa(chave){
   db_iframe_custocriteriorateio.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

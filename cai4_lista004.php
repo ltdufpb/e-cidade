@@ -78,8 +78,8 @@ fieldset select {
       <div id="form_select">
       <span class="label_select">Op&ccedil;&otilde;es: </span>
       <?php   
-        $aSelSituacao = array('c' => 'Com as situa&ccedil;&otilde;es de corte selecionadas',
-                              's' => 'Sem as situa&ccedil;&otilde;es de corte selecionadas');
+        $aSelSituacao = ['c' => 'Com as situa&ccedil;&otilde;es de corte selecionadas',
+                              's' => 'Sem as situa&ccedil;&otilde;es de corte selecionadas'];
         db_select('situacaocorte', $aSelSituacao, true, 1);
       ?>
       </div>
@@ -95,8 +95,8 @@ fieldset select {
       <div id="form_select">
       <span class="label_select">Op&ccedil;&otilde;es: </span>
       <?php   
-        $aSelSituacao = array('c' => 'Com as zonas de entrega selecionadas',
-                              's' => 'Sem as zonas de entrega selecionadas');
+        $aSelSituacao = ['c' => 'Com as zonas de entrega selecionadas',
+                              's' => 'Sem as zonas de entrega selecionadas'];
         db_select('zonaentrega', $aSelSituacao, true, 1);
       ?>
       </div>
@@ -114,8 +114,8 @@ fieldset select {
       <div id="form_select">
       <span class="label_select">Op&ccedil;&otilde;es: </span>
       <?php   
-        $aSelSituacao = array('c'=>'Com as carater&iacute;sticas selecionadas',
-                              's'=>'Sem as carater&iacute;sticas selecionadas');
+        $aSelSituacao = ['c'=>'Com as carater&iacute;sticas selecionadas',
+                              's'=>'Sem as carater&iacute;sticas selecionadas'];
         db_select('caracteristica', $aSelSituacao, true, 1);
       ?>
       </div>     
@@ -131,8 +131,8 @@ fieldset select {
       <div id="form_select">
       <span class="label_select">Op&ccedil;&otilde;es: </span>
       <?php   
-        $aSelSituacao = array('c' => 'Com os logradouros selecionados',
-                              's' => 'Sem os logradouros selecionados');
+        $aSelSituacao = ['c' => 'Com os logradouros selecionados',
+                              's' => 'Sem os logradouros selecionados'];
         db_select('logradouro', $aSelSituacao, true, 1);
       ?>
       </div>  
@@ -147,7 +147,7 @@ fieldset select {
   <td colspan="2" align="center">
    <strong>Gerar notifica&ccedil;&otilde;es para matr&iacute;culas baixadas</strong>
    <?php 
-     db_select('matriculasbaixadas', array('S'=>'Sim', 'N'=>'N&atilde;o'), true, 1);   
+     db_select('matriculasbaixadas', ['S'=>'Sim', 'N'=>'N&atilde;o'], true, 1);   
    ?>
   </td>
 </tr>
@@ -156,7 +156,7 @@ fieldset select {
   <td colspan="2" align="center">
    <strong>Gerar notifica&ccedil;&otilde;es para terrenos</strong>
    <?php 
-     db_select('terrenos', array('S'=>'Sim', 'N'=>'N&atilde;o'), true, 1);
+     db_select('terrenos', ['S'=>'Sim', 'N'=>'N&atilde;o'], true, 1);
    ?>
   </td>
 </tr>

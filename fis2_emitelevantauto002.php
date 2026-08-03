@@ -56,7 +56,7 @@ $clrotulo->label();
 $clrotulo->label("q02_inscr");
 $clrotulo->label("y63_aliquota");
 //debug($cllevanta, true);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $pdf = new scpdf();
@@ -95,7 +95,7 @@ if (isset($codinscr) && $codinscr != ""){
 }
 //die($cllevanta->sql_querylev("",'*',"",$where));
 $resultlev = $cllevanta->sql_record($cllevanta->sql_querylev("",'*',"","$where"));
-$xxnum = pg_numrows($resultlev);
+$xxnum = pg_num_rows($resultlev);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem unidades cadastrados.');
    exit;
@@ -258,7 +258,7 @@ for($x=0;$x<$numrows01;$x++){
 
 
         $dtoper = date("Y-m-d",db_getsession("DB_datausu"));
-      
+
 	$result = db_query("select fc_corre(".$receit.",'".$y63_dtvenc."',".$y63_saldo.",'".$dtoper."',".db_getsession("DB_anousu").",'$y63_dtvenc') as correcao");
 	db_fieldsmemory($result,0,true);
 
@@ -268,7 +268,7 @@ for($x=0;$x<$numrows01;$x++){
 
 	$result = db_query("select fc_multa(".$receit.",'".$y63_dtvenc."','".$dtoper."','".$y63_dtvenc."',".db_getsession("DB_anousu").") as multa");
 	db_fieldsmemory($result,0,true);
-	
+
 	$multa = $correcao * $multa;
 
 	$total = $correcao + $juro + $multa;

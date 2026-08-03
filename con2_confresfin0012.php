@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
@@ -194,7 +194,7 @@ if ($db_opcao == 1) {
 
                 $sSql = $clorcparamrecursoval->sql_query(null, "*", "o48_codrec", "o48_grupo=1 and o48_anousu=" . db_getsession("DB_anousu"));
                 $db_opcao = 1;
-                $chavepri = array("o48_seq" => @$o48_seq);
+                $chavepri = ["o48_seq" => @$o48_seq];
                 $cliframe_alterar_excluir->chavepri = $chavepri;
                 $cliframe_alterar_excluir->sql = $sSql;
                 $cliframe_alterar_excluir->campos = "o48_anousu,o15_recurso ,o15_descr, o200_descricao,o48_valor";

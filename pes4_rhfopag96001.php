@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 $clrotulo->label('rh27_rubric');
 $clrotulo->label('rh27_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -121,7 +121,7 @@ db_postmemory($HTTP_POST_VARS);
         </td>
         <td>
           <?php 
-          $arr_ponto = array("s"=>"Salário", "c"=>"Complementar");
+          $arr_ponto = ["s"=>"Salário", "c"=>"Complementar"];
           db_select('ponto',$arr_ponto,true,4);
           ?>
        </td>

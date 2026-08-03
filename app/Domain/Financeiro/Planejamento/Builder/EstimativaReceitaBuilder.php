@@ -53,10 +53,10 @@ class EstimativaReceitaBuilder
     public function buildAnalitico($dados, EstruturalReceita $estrutural, $temDesdobramento = false)
     {
         $this->defaultData($estrutural, $dados, $temDesdobramento);
-        $valores = json_decode($dados->valores);
+        $valores = json_decode((string) $dados->valores);
         $this->mapper->setValores($valores);
 
-        $inflatores = json_decode($dados->inflatores);
+        $inflatores = json_decode((string) $dados->inflatores);
 
         /**
          * caso não tenha inflator confirurado configura com 0%

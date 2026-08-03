@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_prontuarios_classe.php"));
 include(modification("classes/db_unidades_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clprontuarios = new cl_prontuarios;
 $clprontuarios->rotulo->label();
@@ -78,7 +78,7 @@ $pri = true;
   $pdf->cell(17,4,$sd24_i_usuario,1,0,"C",0);
   $pdf->cell(90,4,$nome,1,0,"C",0);
   $pdf->cell(35,4,$count,1,0,"C",0);
-  $pdf->cell(15,4,str_pad(number_format(($count*100)/$total,2,',',''),6,0,str_pad_left),1,0,"C",0);
+  $pdf->cell(15,4,str_pad(number_format(($count*100)/$total,2,',',''),6,0,\STR_PAD_LEFT),1,0,"C",0);
 }
 $pdf->Output();
 ?>

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_sysprocedarq_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_sysprocedarq = new cl_db_sysprocedarq;
 $cldb_sysprocedarq->rotulo->label("sequencial");
 $cldb_sysprocedarq->rotulo->label("codarq");
@@ -98,9 +98,9 @@ $cldb_sysprocedarq->rotulo->label("codarq");
         }else{
            $sql = $cldb_sysprocedarq->sql_query("",$campos,"sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_codarq)){
-          $repassa = array("chave_sequencial"=>$chave_sequencial,"chave_codarq"=>$chave_codarq);
+          $repassa = ["chave_sequencial"=>$chave_sequencial,"chave_codarq"=>$chave_codarq];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 $oGet = db_utils::postMemory($_GET);
 
 
-$aTurnos    = array();
+$aTurnos    = [];
 $aTurnos[1] = new stdClass();
 $aTurnos[2] = new stdClass();
 $aTurnos[3] = new stdClass();
@@ -72,7 +72,7 @@ define('MSG_RECHUMANOATIVIDADE', "educacao.escola.edu_rechumanoatividade.");
 try {
 
   if( isset( $z01_nome ) && !empty( $z01_nome ) ) {
-    $z01_nome = stripslashes( $z01_nome );
+    $z01_nome = stripslashes( (string) $z01_nome );
   }
 
   $sWhereRechumano   = "     ed75_i_rechumano = {$oGet->ed75_i_rechumano} ";

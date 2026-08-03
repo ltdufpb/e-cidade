@@ -47,13 +47,13 @@ db_app::import("social.cadastrounico.*");
 db_app::import("exceptions.*");
 
 $oGet               = db_utils::postMemory($_GET);
-$aCrasSelecionados   = explode(",", $oGet->sCras);
-$aAvaliacoes        = array();
-$aRespostaAvaliacao = array();
-$aFamilias          = array();
-$aCidadaos          = array();
+$aCrasSelecionados   = explode(",", (string) $oGet->sCras);
+$aAvaliacoes        = [];
+$aRespostaAvaliacao = [];
+$aFamilias          = [];
+$aCidadaos          = [];
 
-$aCras = array("NomeCRAS");
+$aCras = ["NomeCRAS"];
 
 /**
  * Buscamos as avalicoes referentes aos filtros selecionados
@@ -130,7 +130,7 @@ $iTotalRegistros  = 0;
 /**
  * Ordenamos as familias em ordem alfabetica
  */
-uasort($aFamilias, "ordernarFamilias");
+uasort($aFamilias, ordernarFamilias(...));
 
 /**
  * Percorremos as Familias imprimindo os valores solicitados no relatorio
@@ -154,9 +154,9 @@ foreach ($aFamilias as $oFamilia) {
   $oPdf->SetFont('arial', '', 6);
   $oPdf->Cell(20,  $iHeigth, "{$oFamilia->sNIS}",                     "TBR", 0, 'C');
   $oPdf->Cell(20,  $iHeigth, "{$oFamilia->iCodigoFamilia}",               1, 0, 'C');
-  $oPdf->Cell(100, $iHeigth, substr($oFamilia->sResponsavel, 0, 100),     1, 0, 'L');
+  $oPdf->Cell(100, $iHeigth, substr((string) $oFamilia->sResponsavel, 0, 100),     1, 0, 'L');
   $oPdf->Cell(20,  $iHeigth, substr($iCodigoCras, 0, 20) ,                 1, 0, 'C');
-  $oPdf->Cell(120, $iHeigth, substr($oFamilia->sNomeCras, 0, 100),     "TBL", 1, 'L');
+  $oPdf->Cell(120, $iHeigth, substr((string) $oFamilia->sNomeCras, 0, 100),     "TBL", 1, 'L');
 
   $iTotalRegistros ++;
 }
@@ -168,7 +168,7 @@ $oPdf->Cell(40,  $iHeigth, $iTotalRegistros,      "LTB",  1);
  * Funcao para ordenacao das familias
 */
 function ordernarFamilias($aArrayAtual, $aProximoArray){
-  return strcasecmp($aArrayAtual->sResponsavel, $aProximoArray->sResponsavel);
+  return strcasecmp((string) $aArrayAtual->sResponsavel, (string) $aProximoArray->sResponsavel);
 }
 
 $oPdf->Output();

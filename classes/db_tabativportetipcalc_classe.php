@@ -3,35 +3,35 @@
 //CLASSE DA ENTIDADE tabativportetipcalc
 class cl_tabativportetipcalc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q143_sequencial = 0; 
-   var $q143_ativid = 0; 
-   var $q143_issporte = 0; 
-   var $q143_tipcalc = 0; 
+   public $q143_sequencial = 0; 
+   public $q143_ativid = 0; 
+   public $q143_issporte = 0; 
+   public $q143_tipcalc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q143_sequencial = int4 = Código 
                  q143_ativid = int4 = Codigo da Atividade 
                  q143_issporte = int8 = Cod. Porte 
                  q143_tipcalc = int4 = Código do Tipo de Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_tabativportetipcalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabativportetipcalc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -93,10 +93,10 @@ class cl_tabativportetipcalc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q143_sequencial = pg_result($result,0,0); 
+       $this->q143_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tabativportetipcalc_q143_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q143_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q143_sequencial)){
          $this->erro_sql = " Campo q143_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,7 +130,7 @@ class cl_tabativportetipcalc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo de Cálculo por Porte/Atividade ($this->q143_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo de Cálculo por Porte/Atividade já Cadastrado";
@@ -159,13 +159,13 @@ class cl_tabativportetipcalc {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20475,'$this->q143_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3682,20475,'','".AddSlashes(pg_result($resaco,0,'q143_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3682,20476,'','".AddSlashes(pg_result($resaco,0,'q143_ativid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3682,20477,'','".AddSlashes(pg_result($resaco,0,'q143_issporte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3682,20478,'','".AddSlashes(pg_result($resaco,0,'q143_tipcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3682,20475,'','".AddSlashes(pg_fetch_result($resaco,0,'q143_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3682,20476,'','".AddSlashes(pg_fetch_result($resaco,0,'q143_ativid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3682,20477,'','".AddSlashes(pg_fetch_result($resaco,0,'q143_issporte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3682,20478,'','".AddSlashes(pg_fetch_result($resaco,0,'q143_tipcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -175,10 +175,10 @@ class cl_tabativportetipcalc {
       $this->atualizacampos();
      $sql = " update tabativportetipcalc set ";
      $virgula = "";
-     if(trim($this->q143_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_sequencial"])){ 
+     if(trim((string) $this->q143_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_sequencial"])){ 
        $sql  .= $virgula." q143_sequencial = $this->q143_sequencial ";
        $virgula = ",";
-       if(trim($this->q143_sequencial) == null ){ 
+       if(trim((string) $this->q143_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "q143_sequencial";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_tabativportetipcalc {
          return false;
        }
      }
-     if(trim($this->q143_ativid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_ativid"])){ 
+     if(trim((string) $this->q143_ativid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_ativid"])){ 
        $sql  .= $virgula." q143_ativid = $this->q143_ativid ";
        $virgula = ",";
-       if(trim($this->q143_ativid) == null ){ 
+       if(trim((string) $this->q143_ativid) == null ){ 
          $this->erro_sql = " Campo Codigo da Atividade não informado.";
          $this->erro_campo = "q143_ativid";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_tabativportetipcalc {
          return false;
        }
      }
-     if(trim($this->q143_issporte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_issporte"])){ 
+     if(trim((string) $this->q143_issporte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_issporte"])){ 
        $sql  .= $virgula." q143_issporte = $this->q143_issporte ";
        $virgula = ",";
-       if(trim($this->q143_issporte) == null ){ 
+       if(trim((string) $this->q143_issporte) == null ){ 
          $this->erro_sql = " Campo Cod. Porte não informado.";
          $this->erro_campo = "q143_issporte";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_tabativportetipcalc {
          return false;
        }
      }
-     if(trim($this->q143_tipcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_tipcalc"])){ 
+     if(trim((string) $this->q143_tipcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q143_tipcalc"])){ 
        $sql  .= $virgula." q143_tipcalc = $this->q143_tipcalc ";
        $virgula = ",";
-       if(trim($this->q143_tipcalc) == null ){ 
+       if(trim((string) $this->q143_tipcalc) == null ){ 
          $this->erro_sql = " Campo Código do Tipo de Cálculo não informado.";
          $this->erro_campo = "q143_tipcalc";
          $this->erro_banco = "";
@@ -241,17 +241,17 @@ class cl_tabativportetipcalc {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20475,'$this->q143_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q143_sequencial"]) || $this->q143_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3682,20475,'".AddSlashes(pg_result($resaco,$conresaco,'q143_sequencial'))."','$this->q143_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3682,20475,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q143_sequencial'))."','$this->q143_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q143_ativid"]) || $this->q143_ativid != "")
-             $resac = db_query("insert into db_acount values($acount,3682,20476,'".AddSlashes(pg_result($resaco,$conresaco,'q143_ativid'))."','$this->q143_ativid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3682,20476,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q143_ativid'))."','$this->q143_ativid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q143_issporte"]) || $this->q143_issporte != "")
-             $resac = db_query("insert into db_acount values($acount,3682,20477,'".AddSlashes(pg_result($resaco,$conresaco,'q143_issporte'))."','$this->q143_issporte',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3682,20477,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q143_issporte'))."','$this->q143_issporte',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q143_tipcalc"]) || $this->q143_tipcalc != "")
-             $resac = db_query("insert into db_acount values($acount,3682,20478,'".AddSlashes(pg_result($resaco,$conresaco,'q143_tipcalc'))."','$this->q143_tipcalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3682,20478,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q143_tipcalc'))."','$this->q143_tipcalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -305,13 +305,13 @@ class cl_tabativportetipcalc {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20475,'$q143_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3682,20475,'','".AddSlashes(pg_result($resaco,$iresaco,'q143_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3682,20476,'','".AddSlashes(pg_result($resaco,$iresaco,'q143_ativid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3682,20477,'','".AddSlashes(pg_result($resaco,$iresaco,'q143_issporte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3682,20478,'','".AddSlashes(pg_result($resaco,$iresaco,'q143_tipcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3682,20475,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q143_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3682,20476,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q143_ativid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3682,20477,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q143_issporte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3682,20478,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q143_tipcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -372,7 +372,7 @@ class cl_tabativportetipcalc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tabativportetipcalc";
@@ -387,7 +387,7 @@ class cl_tabativportetipcalc {
    function sql_query ( $q143_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_tabativportetipcalc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_tabativportetipcalc {
    function sql_query_file ( $q143_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_tabativportetipcalc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

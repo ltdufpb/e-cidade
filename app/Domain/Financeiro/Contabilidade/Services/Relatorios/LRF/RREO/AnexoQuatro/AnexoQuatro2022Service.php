@@ -33,6 +33,7 @@ class AnexoQuatro2022Service extends AnexoQuatroService
      * Para isso executa o relatório legal processando totalizando as linhas necessárias do quadro
      * @return array
      */
+    #[\Override]
     public function processaLinhasSimplificado()
     {
         $this->linhasNaoProcessar = [

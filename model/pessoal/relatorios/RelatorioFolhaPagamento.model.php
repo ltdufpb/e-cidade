@@ -91,7 +91,7 @@ abstract class RelatorioFolhaPagamento {
    * 9 - provisao de 13o    - r94 - gerfprovs13
    * @var array
    */
-  private   $aTipoFolha          = array();
+  private   $aTipoFolha          = [];
 
   /**
    * variavel que define tipo agrupamento do relatorio
@@ -167,7 +167,7 @@ abstract class RelatorioFolhaPagamento {
    *
    * @var array
    */
-  private   $aDadosRelatorio     = array();
+  private   $aDadosRelatorio     = [];
 
   /**
    * Construtor da classe
@@ -265,7 +265,7 @@ abstract class RelatorioFolhaPagamento {
       $rsSelecao            = $oSelecao->sql_record($oSelecao->sql_query_file($iCodigoSelecao ,$this->iInstituicao," r44_where "));
       $sSelecaoWhere        = db_utils::fieldsMemory($rsSelecao, 0)->r44_where;
       $this->iCodigoSelecao = $iCodigoSelecao;
-      $this->sWhereSelecao  = trim($sSelecaoWhere) != "" ?  " and ".$sSelecaoWhere : "";
+      $this->sWhereSelecao  = trim((string) $sSelecaoWhere) != "" ?  " and ".$sSelecaoWhere : "";
     } else {
       $this->iCodigoSelecao = 0;
       $this->sWhereSelecao  = "";
@@ -302,7 +302,7 @@ abstract class RelatorioFolhaPagamento {
    */
   protected function retornaSQLBaseRelatorio($sWhere = null, $sOrderBy = null, $sCampos = '*') {
     
-    $aRetorno         = array();
+    $aRetorno         = [];
     $oFiltroAgrupador = $this->makeDadosAgrupador();
      
     if ( !empty($sWhere) ) {
@@ -373,7 +373,7 @@ abstract class RelatorioFolhaPagamento {
       $sSqlBase  .= "        {$oTipoFolha->sSigla}_rubric   as rubrica,                                              \n";
       $sSqlBase  .= "        {$oTipoFolha->sSigla}_pd       as provento_desconto,                                    \n";
       
-      if ( in_array( $oTipoFolha->sSigla, array('r93', 'r20', 'r31') ) ) {
+      if ( in_array( $oTipoFolha->sSigla, ['r93', 'r20', 'r31'] ) ) {
         $sSqlBase  .= "        {$oTipoFolha->sSigla}_tpp    as tipo_folha,                                           \n";
       }
       $sSqlBase  .= "        rh27_descr   as descr_rubrica,                                                          \n";
@@ -509,23 +509,17 @@ abstract class RelatorioFolhaPagamento {
       }
     } elseif ($this->sTipoFiltro == "INTERVALO") {
 
-      switch ($this->iAgrupador) {
-        default:
-          $sRetorno = "";
-        break;
-        case 1: //lotacao
-          $sRetorno = " r70_estrut  between '{$this->oFiltroAgrupador->sFiltroInicio}' and  '{$this->oFiltroAgrupador->sFiltroFim}' ";
-          break;
-        case 2://orgao
-          $sRetorno = " o40_orgao   between  {$this->oFiltroAgrupador->sFiltroInicio}  and   {$this->oFiltroAgrupador->sFiltroFim}  ";
-          break;
-        case 3://matricula
-          $sRetorno = " rh01_regist between  {$this->oFiltroAgrupador->sFiltroInicio}  and   {$this->oFiltroAgrupador->sFiltroFim}  ";
-          break;
-        case 4://locais de trabalho
-          $sRetorno = " rh55_estrut between '{$this->oFiltroAgrupador->sFiltroInicio}' and  '{$this->oFiltroAgrupador->sFiltroFim}' ";
-          break;
-      }
+      $sRetorno = match ($this->iAgrupador) {
+          //lotacao
+          1 => " r70_estrut  between '{$this->oFiltroAgrupador->sFiltroInicio}' and  '{$this->oFiltroAgrupador->sFiltroFim}' ",
+          //orgao
+          2 => " o40_orgao   between  {$this->oFiltroAgrupador->sFiltroInicio}  and   {$this->oFiltroAgrupador->sFiltroFim}  ",
+          //matricula
+          3 => " rh01_regist between  {$this->oFiltroAgrupador->sFiltroInicio}  and   {$this->oFiltroAgrupador->sFiltroFim}  ",
+          //locais de trabalho
+          4 => " rh55_estrut between '{$this->oFiltroAgrupador->sFiltroInicio}' and  '{$this->oFiltroAgrupador->sFiltroFim}' ",
+          default => "",
+      };
     }
     /**
      * dados especificos do agrupamento

@@ -16,7 +16,7 @@ class ArquivoConsignadoMotivo {
 
   public static function getDescricaoMotivo($iMotivo) {
 
-    $aMotivos = array(
+    $aMotivos = [
       '' => 'ACEITO',
       1 => 'FALECIMENTO',
       2 => 'SERVIDOR NÃO IDENTIFICADO',
@@ -27,7 +27,7 @@ class ArquivoConsignadoMotivo {
       7 => "SERVIDOR AFASTADO EM LICENÇA SAÚDE",
       8 => "EXCLUÍDO",
       9 => "SALDO INSUFICIENTE"
-    );
+    ];
     return $aMotivos[$iMotivo];
   }
 }

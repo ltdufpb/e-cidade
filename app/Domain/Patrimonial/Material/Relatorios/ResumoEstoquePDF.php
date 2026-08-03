@@ -10,11 +10,6 @@ use stdClass;
 class ResumoEstoquePDF extends Pdf
 {
     const SINTETICO = 1;
-
-    /**
-     * @var stdClass
-     */
-    private $dados;
     private $agruparPorConta;
     private $agruparPorGrupo;
     private $tipoImpressao;
@@ -23,10 +18,12 @@ class ResumoEstoquePDF extends Pdf
      */
     private $depositos;
 
-    public function __construct($dados, $configuracoes = null)
+    /**
+     * @param stdClass $dados
+     */
+    public function __construct(private $dados, $configuracoes = null)
     {
         parent::__construct('L');
-        $this->dados = $dados;
         $this->addTitulo("");
         $this->addTitulo("RESUMO CONTÁBIL DE ESTOQUE");
         $this->addTitulo("");
@@ -173,7 +170,7 @@ class ResumoEstoquePDF extends Pdf
             }
             $this->setFillColor($color);
             $this->Cell(18, 4, $material->codigo, "TBR", 0, "C", 1);
-            $this->Cell(62, 4, substr($material->descricao, 0, 50), "TBR", 0, "L", 1);
+            $this->Cell(62, 4, substr((string) $material->descricao, 0, 50), "TBR", 0, "L", 1);
             $this->Cell(25, 4, $this->formatarValor($material->valor_anterior), "TBR", 0, "R", 1);
             $quantidade_anterior = Material::arredondarQuantidade($material->quantidade_anterior);
             $this->Cell(25, 4, $quantidade_anterior, "TBR", 0, "C", 1);

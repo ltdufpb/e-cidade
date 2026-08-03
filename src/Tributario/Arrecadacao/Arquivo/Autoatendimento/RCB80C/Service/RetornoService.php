@@ -6,11 +6,8 @@ use ECidade\Tributario\Library\Service;
 
 class RetornoService extends Service
 {
-    private $detalheService;
-
-    public function __construct(DetalheService $detalheService)
+    public function __construct(private readonly DetalheService $detalheService)
     {
-        $this->detalheService = $detalheService;
     }
 
     public function execute($path)

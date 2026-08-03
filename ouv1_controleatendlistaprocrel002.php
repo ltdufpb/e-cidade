@@ -95,8 +95,8 @@ foreach ($aProcessos as $iInd => $oProcesso ) {
   $pdf->SetFont('Arial','',7);
 	$pdf->Cell(15,$iAlt,$oProcesso->p58_codproc ,0,0,"C",$iCor);
 	$pdf->Cell(20,$iAlt,$oProcesso->ov01_anousu ,0,0,"C",$iCor);
-	$pdf->Cell(65,$iAlt,substr($oProcesso->p58_requer, 0, 35) ,0,0,"L",$iCor);
-	$pdf->Cell(70,$iAlt,substr($oProcesso->p58_codigo, 0, 40)  ,0,0,"L",$iCor);
+	$pdf->Cell(65,$iAlt,substr((string) $oProcesso->p58_requer, 0, 35) ,0,0,"L",$iCor);
+	$pdf->Cell(70,$iAlt,substr((string) $oProcesso->p58_codigo, 0, 40)  ,0,0,"L",$iCor);
 	$pdf->Cell(20,$iAlt,$sPrazoPrevisto         ,0,0,"C",$iCor);
 	$pdf->Cell(60,$iAlt,$oProcesso->p61_coddepto,0,0,"L",$iCor);
 	$pdf->Cell(25,$iAlt,$oProcesso->login       ,0,1,"L",$iCor);

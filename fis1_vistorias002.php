@@ -39,14 +39,14 @@ include(modification("classes/db_vistinscr_classe.php"));
 include(modification("classes/db_vistsanitario_classe.php"));
 include(modification("classes/db_procfiscalvistorias_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='fis1_vistorias005.php?db_opcao=2&inscr=1'</script>";
   exit;
 }
 
 //parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clvistorias = new cl_vistorias;
 $cltipovistorias = new cl_tipovistorias;
 $clfandamusu = new cl_fandamusu;
@@ -59,7 +59,7 @@ $clprocfiscalvistorias = new cl_procfiscalvistorias;
 $db_opcao = 22;
 $db_botao = false;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $sqlerro=false;
@@ -215,7 +215,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 js_setatabulacao();
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clvistorias->erro_status=="0"){
     $clvistorias->erro(true,false);
     $db_botao=true;

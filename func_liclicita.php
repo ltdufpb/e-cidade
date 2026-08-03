@@ -35,7 +35,7 @@ db_postmemory($_GET);
 db_postmemory($_POST);
 $oGet = db_utils::postMemory($_GET);
 
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $clliclicitem = new cl_liclicitem;
 $clliclicita = new cl_liclicita;
@@ -325,7 +325,7 @@ $sWhereContratos = " and 1 = 1 ";
           }
 
 
-          $aRepassa = array();
+          $aRepassa = [];
           db_lovrot($sql . ' desc ', 15, "()", "", $funcao_js, null, 'NoMe', $aRepassa, false);
         } else {
           if ($pesquisa_chave != null && $pesquisa_chave != "") {

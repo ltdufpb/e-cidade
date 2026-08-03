@@ -37,7 +37,7 @@ $clrotulo->label('r01_regist');
 $clrotulo->label('r14_quant');
 $clrotulo->label('r14_valor');
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sSqlRubrica = "select rh27_rubric,
                        rh27_descr
@@ -46,7 +46,7 @@ $sSqlRubrica = "select rh27_rubric,
                    and rh27_instit = ".db_getsession("DB_instit");
 $rsRubrica = db_query($sSqlRubrica);
 db_fieldsmemory($rsRubrica, 0);
-if (pg_numrows($rsRubrica) == 0) {
+if (pg_num_rows($rsRubrica) == 0) {
    db_redireciona('db_erros.php?fechar=true&db_erro=Rubrica não cadastrada no período de ' . $mes . ' / ' . $ano);
 }
 
@@ -91,13 +91,13 @@ if ($recurso == 's') {
     }
 } else {
     if ($ordem == 'a') {
-        $head6 = 'ORDEM : ALFABÉTICA ' . strtoupper($tipoordem);
+        $head6 = 'ORDEM : ALFABÉTICA ' . strtoupper((string) $tipoordem);
         $sOrderBy = 'order by z01_nome ' . $tipoordem;
         if ($localtrab == "S") {
             $sOrderBy = 'order by rh55_estrut, z01_nome ' . $tipoordem;
         }
     } elseif ($ordem == 'n') {
-        $head6 = 'ORDEM : NUMÉRICA ' . strtoupper($tipoordem);
+        $head6 = 'ORDEM : NUMÉRICA ' . strtoupper((string) $tipoordem);
         $sOrderBy = 'order by regist ' . $tipoordem;
         if ($localtrab == "S") {
             $sOrderBy = 'order by rh55_estrut, regist ' . $tipoordem;
@@ -109,19 +109,19 @@ if ($recurso == 's') {
             $sOrderBy = 'order by rh55_estrut, ' . $sArquivo . '.oid ';
         }
     } elseif ($ordem == 'l') {
-        $head6 = 'ORDEM : LOTAÇÃO ' . strtoupper($tipoordem);
+        $head6 = 'ORDEM : LOTAÇÃO ' . strtoupper((string) $tipoordem);
         $sOrderBy = 'order by lotacao ' . $tipoordem;
         if ($localtrab == "S") {
             $sOrderBy = 'order by rh55_estrut, lotacao ' . $tipoordem;
         }
     } elseif ($ordem == 'v') {
-        $head6 = 'ORDEM : VALOR ' . strtoupper($tipoordem);
+        $head6 = 'ORDEM : VALOR ' . strtoupper((string) $tipoordem);
         $sOrderBy = 'order by valor ' . $tipoordem;
         if ($localtrab == "S") {
             $sOrderBy = 'order by rh55_estrut, valor ' . $tipoordem;
         }
     } elseif ($ordem == 'q') {
-        $head6 = 'ORDEM : QUANTIDADE ' . strtoupper($tipoordem);
+        $head6 = 'ORDEM : QUANTIDADE ' . strtoupper((string) $tipoordem);
         $sOrderBy = 'order by quant ' . $tipoordem;
         if ($localtrab == "S") {
             $sOrderBy = 'order by rh55_estrut, quant ' . $tipoordem;

@@ -40,25 +40,13 @@ final class DebitoContaService
 {
   private $oProgressBar;
 
-  private $oDebitoContaPedidoRepository;
-
-  private $oDebitoContaParametroRepository;
-
-  private $oDebitoContaArquivoRepository;
-
-  private $oDebitoContaArchive;
-
   public function __construct(
-    DebitoContaPedidoRepository $oDebitoContaPedidoRepository,
-    DebitoContaParametroRepository $oDebitoContaParametroRepository,
-    DebitoContaArquivoRepository $oDebitoContaArquivoRepository,
-    DebitoContaArchive $oDebitoContaArchive,
+    private readonly DebitoContaPedidoRepository $oDebitoContaPedidoRepository,
+    private readonly DebitoContaParametroRepository $oDebitoContaParametroRepository,
+    private readonly DebitoContaArquivoRepository $oDebitoContaArquivoRepository,
+    private readonly DebitoContaArchive $oDebitoContaArchive,
     ProgressBar $oProgressBar
   ) {
-    $this->oDebitoContaPedidoRepository = $oDebitoContaPedidoRepository;
-    $this->oDebitoContaParametroRepository = $oDebitoContaParametroRepository;
-    $this->oDebitoContaArquivoRepository = $oDebitoContaArquivoRepository;
-    $this->oDebitoContaArchive = $oDebitoContaArchive;
     $this->oProgressBar = $oProgressBar;
   }
 

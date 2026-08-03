@@ -67,7 +67,7 @@ $acordoPosicoes = $clAcordo->getPosicoes();
 $posicoes = [];
 foreach($acordoPosicoes as $acordoposicao){
   $tipo = $acordoposicao->getTipo();
-  if (in_array($tipo, array(5, 6))) {
+  if (in_array($tipo, [5, 6])) {
     $posicoes[] = $tipo;
   }
 }
@@ -304,7 +304,7 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
       </tr>
       <tr>
         <td class="tdWidth"><b>Instrumento:</b></td>
-        <td class="tdBgColor" colspan="3"><?php echo strtoupper($tipoInstrumento) ?></td>
+        <td class="tdBgColor" colspan="3"><?php echo strtoupper((string) $tipoInstrumento) ?></td>
       </tr>
 
       <tr>

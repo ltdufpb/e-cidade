@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE municipio
 class cl_municipio { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cgcter = null; 
-   var $nomemun = null; 
-   var $endermun = null; 
-   var $email = null; 
-   var $telef = null; 
-   var $senha = null; 
+   public $cgcter = null; 
+   public $nomemun = null; 
+   public $endermun = null; 
+   public $email = null; 
+   public $telef = null; 
+   public $senha = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cgcter = char(3) = Codigo do Município 
                  nomemun = varchar(100) = Nome do Município 
                  endermun = varchar(100) = Endereço Prefeitura 
@@ -58,10 +58,10 @@ class cl_municipio {
                  senha = varchar(20) = senha 
                  ";
    //funcao construtor da classe 
-   function cl_municipio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("municipio"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -152,7 +152,7 @@ class cl_municipio {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dados Municipio ($this->cgcter) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dados Municipio já Cadastrado";
@@ -176,15 +176,15 @@ class cl_municipio {
      $resaco = $this->sql_record($this->sql_query_file($this->cgcter));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,2275,'$this->cgcter','I')");
-       $resac = db_query("insert into db_acount values($acount,359,2275,'','".AddSlashes(pg_result($resaco,0,'cgcter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,359,2276,'','".AddSlashes(pg_result($resaco,0,'nomemun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,359,2277,'','".AddSlashes(pg_result($resaco,0,'endermun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,359,574,'','".AddSlashes(pg_result($resaco,0,'email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,359,457,'','".AddSlashes(pg_result($resaco,0,'telef'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,359,572,'','".AddSlashes(pg_result($resaco,0,'senha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,359,2275,'','".AddSlashes(pg_fetch_result($resaco,0,'cgcter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,359,2276,'','".AddSlashes(pg_fetch_result($resaco,0,'nomemun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,359,2277,'','".AddSlashes(pg_fetch_result($resaco,0,'endermun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,359,574,'','".AddSlashes(pg_fetch_result($resaco,0,'email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,359,457,'','".AddSlashes(pg_fetch_result($resaco,0,'telef'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,359,572,'','".AddSlashes(pg_fetch_result($resaco,0,'senha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -193,10 +193,10 @@ class cl_municipio {
       $this->atualizacampos();
      $sql = " update municipio set ";
      $virgula = "";
-     if(trim($this->cgcter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcter"])){ 
+     if(trim((string) $this->cgcter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcter"])){ 
        $sql  .= $virgula." cgcter = '$this->cgcter' ";
        $virgula = ",";
-       if(trim($this->cgcter) == null ){ 
+       if(trim((string) $this->cgcter) == null ){ 
          $this->erro_sql = " Campo Codigo do Município nao Informado.";
          $this->erro_campo = "cgcter";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_municipio {
          return false;
        }
      }
-     if(trim($this->nomemun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomemun"])){ 
+     if(trim((string) $this->nomemun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomemun"])){ 
        $sql  .= $virgula." nomemun = '$this->nomemun' ";
        $virgula = ",";
-       if(trim($this->nomemun) == null ){ 
+       if(trim((string) $this->nomemun) == null ){ 
          $this->erro_sql = " Campo Nome do Município nao Informado.";
          $this->erro_campo = "nomemun";
          $this->erro_banco = "";
@@ -219,10 +219,10 @@ class cl_municipio {
          return false;
        }
      }
-     if(trim($this->endermun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["endermun"])){ 
+     if(trim((string) $this->endermun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["endermun"])){ 
        $sql  .= $virgula." endermun = '$this->endermun' ";
        $virgula = ",";
-       if(trim($this->endermun) == null ){ 
+       if(trim((string) $this->endermun) == null ){ 
          $this->erro_sql = " Campo Endereço Prefeitura nao Informado.";
          $this->erro_campo = "endermun";
          $this->erro_banco = "";
@@ -232,14 +232,14 @@ class cl_municipio {
          return false;
        }
      }
-     if(trim($this->email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["email"])){ 
+     if(trim((string) $this->email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["email"])){ 
        $sql  .= $virgula." email = '$this->email' ";
        $virgula = ",";
      }
-     if(trim($this->telef)!="" || isset($GLOBALS["HTTP_POST_VARS"]["telef"])){ 
+     if(trim((string) $this->telef)!="" || isset($GLOBALS["HTTP_POST_VARS"]["telef"])){ 
        $sql  .= $virgula." telef = '$this->telef' ";
        $virgula = ",";
-       if(trim($this->telef) == null ){ 
+       if(trim((string) $this->telef) == null ){ 
          $this->erro_sql = " Campo Telefone nao Informado.";
          $this->erro_campo = "telef";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_municipio {
          return false;
        }
      }
-     if(trim($this->senha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["senha"])){ 
+     if(trim((string) $this->senha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["senha"])){ 
        $sql  .= $virgula." senha = '$this->senha' ";
        $virgula = ",";
-       if(trim($this->senha) == null ){ 
+       if(trim((string) $this->senha) == null ){ 
          $this->erro_sql = " Campo senha nao Informado.";
          $this->erro_campo = "senha";
          $this->erro_banco = "";
@@ -270,21 +270,21 @@ class cl_municipio {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2275,'$this->cgcter','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cgcter"]))
-           $resac = db_query("insert into db_acount values($acount,359,2275,'".AddSlashes(pg_result($resaco,$conresaco,'cgcter'))."','$this->cgcter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,359,2275,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cgcter'))."','$this->cgcter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["nomemun"]))
-           $resac = db_query("insert into db_acount values($acount,359,2276,'".AddSlashes(pg_result($resaco,$conresaco,'nomemun'))."','$this->nomemun',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,359,2276,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'nomemun'))."','$this->nomemun',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["endermun"]))
-           $resac = db_query("insert into db_acount values($acount,359,2277,'".AddSlashes(pg_result($resaco,$conresaco,'endermun'))."','$this->endermun',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,359,2277,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'endermun'))."','$this->endermun',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["email"]))
-           $resac = db_query("insert into db_acount values($acount,359,574,'".AddSlashes(pg_result($resaco,$conresaco,'email'))."','$this->email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,359,574,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'email'))."','$this->email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["telef"]))
-           $resac = db_query("insert into db_acount values($acount,359,457,'".AddSlashes(pg_result($resaco,$conresaco,'telef'))."','$this->telef',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,359,457,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'telef'))."','$this->telef',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["senha"]))
-           $resac = db_query("insert into db_acount values($acount,359,572,'".AddSlashes(pg_result($resaco,$conresaco,'senha'))."','$this->senha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,359,572,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'senha'))."','$this->senha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -329,15 +329,15 @@ class cl_municipio {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2275,'$cgcter','E')");
-         $resac = db_query("insert into db_acount values($acount,359,2275,'','".AddSlashes(pg_result($resaco,$iresaco,'cgcter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,359,2276,'','".AddSlashes(pg_result($resaco,$iresaco,'nomemun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,359,2277,'','".AddSlashes(pg_result($resaco,$iresaco,'endermun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,359,574,'','".AddSlashes(pg_result($resaco,$iresaco,'email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,359,457,'','".AddSlashes(pg_result($resaco,$iresaco,'telef'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,359,572,'','".AddSlashes(pg_result($resaco,$iresaco,'senha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,359,2275,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cgcter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,359,2276,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'nomemun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,359,2277,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'endermun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,359,574,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,359,457,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'telef'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,359,572,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'senha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from municipio
@@ -397,7 +397,7 @@ class cl_municipio {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:municipio";

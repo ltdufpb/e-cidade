@@ -88,10 +88,10 @@ class LoteLicitacao {
    */
   public function automatico() {
 
-    $aTiposLoteAutomatico = array(
+    $aTiposLoteAutomatico = [
       licitacao::TIPO_JULGAMENTO_POR_ITEM,
       licitacao::TIPO_JULGAMENTO_GLOBAL,
-    );
+    ];
 
     return in_array($this->iTipoJulgamento, $aTiposLoteAutomatico);
   }

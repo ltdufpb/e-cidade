@@ -13,11 +13,8 @@ use ECidade\Tributario\Caixa\Entity\Collection\ReciboCollection;
 
 final class ReciboService extends Service
 {
-    private $reciboService;
-
-    public function __construct(CaixaReciboService $reciboService, ArretipoRepository $arretipoRepository)
+    public function __construct(private readonly CaixaReciboService $reciboService, ArretipoRepository $arretipoRepository)
     {
-        $this->reciboService = $reciboService;
         $this->arretipoRepository = $arretipoRepository;
     }
 

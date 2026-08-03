@@ -48,8 +48,8 @@ $clcgm              = new cl_cgm;
 $cldbdepart         = new cl_db_depart;
 $clmatestoqueitemoc = new cl_matestoqueitemoc;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 if (isset($anula)){
   db_inicio_transacao();

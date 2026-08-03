@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_codigoclienterefeisul_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcodigoclienterefeisul = new cl_codigoclienterefeisul;
 $clcodigoclienterefeisul->rotulo->label("rh171_sequencial");
 $clcodigoclienterefeisul->rotulo->label("rh171_codigocliente");
@@ -52,9 +52,9 @@ $clcodigoclienterefeisul->rotulo->label("rh171_codigocliente");
         }else{
            $sql = $clcodigoclienterefeisul->sql_query("",$campos,"rh171_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh171_codigocliente)){
-          $repassa = array("chave_rh171_sequencial"=>$chave_rh171_sequencial,"chave_rh171_codigocliente"=>$chave_rh171_codigocliente);
+          $repassa = ["chave_rh171_sequencial"=>$chave_rh171_sequencial,"chave_rh171_codigocliente"=>$chave_rh171_codigocliente];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

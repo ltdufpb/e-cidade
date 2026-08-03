@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $escola = db_getsession("DB_coddepto");
 function db_criatermometro_edu($dbnametermo='termometro',$dbtexto='Concluído',$dbcor='blue',$dbborda=1,$dbacao='Aguarde Processando...'){
  //#00#//db_criatermometro
@@ -124,7 +124,7 @@ if(isset($ano_opcao)){
    <fieldset style="width:95%"><legend><b>Importação de informações do CENSO ESCOLAR <?=$titulofieldset?></b></legend>
     <?php 
     $result = db_query("SELECT ed18_c_codigoinep FROM escola WHERE ed18_i_codigo = $escola");
-    $codigoinep_banco = pg_result($result,0,0);
+    $codigoinep_banco = pg_fetch_result($result,0,0);
     ?>
     <table border="0" align="left">
      <tr>
@@ -272,7 +272,7 @@ $result_nomes = db_query($sql_nomes);
 $linhas_nomes = pg_num_rows($result_nomes);
 for($t=0;$t<$linhas_nomes;$t++){
  db_fieldsmemory($result_nomes,$t);
- $nome_partes = explode(" ",$nome1);
+ $nome_partes = explode(" ",(string) $nome1);
  $novo_nome = "";
  $espaco = "";
  for($e=0;$e<count($nome_partes);$e++){
@@ -374,7 +374,7 @@ if(isset($processar)){
       fwrite($ponteiro_log,"\n[Matr.INEP: $matcenso Turma INEP: $turmacenso Ano: $anocenso] $nome_censo2 : Nome cadastrado no censo não existe no sistema.");
       $erro_naoencontrado = true;
     }else{
-      $codigoaluno = pg_result($result11,0,'ed47_i_codigo');
+      $codigoaluno = pg_fetch_result($result11,0,'ed47_i_codigo');
       $sql21 = "UPDATE aluno SET
                  ed47_c_codigoinep = '$codigoinepaluno' 
                 WHERE ed47_i_codigo = $codigoaluno 

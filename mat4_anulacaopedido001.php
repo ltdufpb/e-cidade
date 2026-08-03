@@ -59,7 +59,7 @@ db_app::import("Dotacao");
 db_app::import("contabilidade.planoconta.*");
 db_app::import("contabilidade.contacorrente.*");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatpedido = new cl_matpedido;
 $clmatpedidoitem = new cl_matpedidoitem;
 $clatendrequiitem = new cl_atendrequiitem;
@@ -77,9 +77,9 @@ $clmatpedido->rotulo->label();
 $db_opcao = 1;
 $db_botao = true;
 $pesq     = false;
-$aParamKeys = array(
+$aParamKeys = [
                     db_getsession("DB_anousu")
-                   );
+                   ];
 $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
 $iTipoControleCustos = 0; 
 

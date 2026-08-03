@@ -48,8 +48,8 @@ include(modification("classes/db_tarefalogclientes_classe.php"));
 include(modification("classes/db_tarefacadsituacaousu_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cldb_usuarios          = new cl_db_usuarios;
 $cltarefa               = new cl_tarefa;
@@ -260,9 +260,9 @@ if(isset($incluir)){
               }
               $envio = false;
               if($at48_situacao==2){
-                $envio = $cltarefalog->enviar_email($emailenviar,"Tarefa Análise: ".$cltarefalog->at43_tarefa . " - " . substr($at43_descr,0,40),$mensagem);                
+                $envio = $cltarefalog->enviar_email($emailenviar,"Tarefa Análise: ".$cltarefalog->at43_tarefa . " - " . substr((string) $at43_descr,0,40),$mensagem);                
               }else{
-                $envio = $cltarefalog->enviar_email($emailenviar,"Tarefa: ".$cltarefalog->at43_tarefa . " - " . substr($at43_descr,0,40),$mensagem);
+                $envio = $cltarefalog->enviar_email($emailenviar,"Tarefa: ".$cltarefalog->at43_tarefa . " - " . substr((string) $at43_descr,0,40),$mensagem);
               }
               if($envio == false) {
                 db_msgbox("Erro ao enviar e-mail para " . $email);
@@ -336,7 +336,7 @@ if(isset($incluir)){
         // grava os items de menus ligados ao movimento da tarefa
         if ($sqlerro == false) {
           
-          $tarefaslogitem = split('-',$itens_menu_escolhidos);
+          $tarefaslogitem = preg_split('#\-#m',$itens_menu_escolhidos);
           
           if($cltarefalog->at43_tipomov == 3){
             if (count($tarefaslogitem) == 1) {
@@ -378,7 +378,7 @@ if(isset($incluir)){
             if(trim($itens_clientes_escolhidos) <> "") {
               $tarefalogclientes = explode('-',$itens_clientes_escolhidos);
             } else {
-              $tarefalogclientes = array();
+              $tarefalogclientes = [];
             }
             $countclientes     = count($tarefalogclientes);
 
@@ -411,7 +411,7 @@ if(isset($incluir)){
         }
 
         if ($sqlerro == false) {
-          $cltarefa->at40_descr = addslashes($at40_descr);
+          $cltarefa->at40_descr = addslashes((string) $at40_descr);
           $cltarefa->alterar($cltarefalog->at43_tarefa);
           if($cltarefa->erro_status!=0 and $sqlerro == false) {
             db_fim_transacao($sqlerro);
@@ -447,7 +447,7 @@ if(isset($incluir)){
       $cltarefalogitem->excluir(null,' at66_codmov = '.$at43_sequencial);
       
       if($cltarefalog->at43_tipomov == 3){
-        $tarefaslogitem = split('-',$itens_menu_escolhidos);
+        $tarefaslogitem = preg_split('#\-#m',$itens_menu_escolhidos);
         if( count($tarefaslogitem) == 1 ){
           
           $sqlerro = true;
@@ -482,7 +482,7 @@ if(isset($incluir)){
         if(trim($itens_clientes_escolhidos) <> "") {
           $tarefalogclientes = explode('-',$itens_clientes_escolhidos);
         } else {
-          $tarefalogclientes = array();
+          $tarefalogclientes = [];
         }
         $countclientes     = count($tarefalogclientes);
         if( $countclientes > 0 ){

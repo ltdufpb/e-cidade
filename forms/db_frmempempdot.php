@@ -67,7 +67,7 @@ $clrotulo->label("o56_elemento");
           $clorcdotacao->sql_record($clorcdotacao->sql_query_file("","","*","","o58_coddot=$o47_coddot and o58_instit=$instit"));
           if($clorcdotacao->numrows >0){
               $result= db_dotacaosaldo(8,2,2,"true","o58_coddot=$o47_coddot" ,db_getsession("DB_anousu")) ;
-	      $rnum = pg_numrows($result);
+	      $rnum = pg_num_rows($result);
 	      if ($rnum > 0 ){
                   db_fieldsmemory($result,0);
 	          $atual=number_format($atual,2,",",".");

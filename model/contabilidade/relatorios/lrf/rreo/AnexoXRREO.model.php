@@ -59,9 +59,10 @@ class AnexoXRREO extends RelatoriosLegaisBase implements AnexoRREO {
    *
    * @return array - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
-    $aRetorno        = array();
+    $aRetorno        = [];
     $oLinhaRelatorio = new linhaRelatorioContabil($this->iCodigoRelatorio, 1);
     $oLinhaRelatorio->setPeriodo($this->iCodigoPeriodo);
 

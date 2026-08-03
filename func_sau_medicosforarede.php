@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_medicosforarede_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoSauMedicosForaRede = new cl_sau_medicosforarede;
 $oDaoSauMedicosForaRede->rotulo->label('s154_i_medico');
@@ -112,9 +112,9 @@ $oDaoSauMedicosForaRede->rotulo->label('s154_c_nome');
           $sSql = $oDaoSauMedicosForaRede->sql_query(null, $campos, "s154_i_medico", '');
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_s154_i_medico)) {
-          $repassa = array("chave_s154_i_medico" => $chave_s154_i_medico);
+          $repassa = ["chave_s154_i_medico" => $chave_s154_i_medico];
         }
         db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
 

@@ -37,7 +37,7 @@ include(modification("classes/db_db_depusu_classe.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
 include(modification("classes/db_matestoqueini_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatpedido = new cl_matpedido;
 $clmatpedidoitem = new cl_matpedidoitem;
 $cldb_depart = new cl_db_depart;

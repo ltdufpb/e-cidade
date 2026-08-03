@@ -32,7 +32,7 @@ class NumeroControleInternoRequisicao
      *
      * @var NumeroControleInternoRequisicaoModel[]
      */
-    private $collection = array();
+    private $collection = [];
 
     /**
      * instance
@@ -120,7 +120,7 @@ class NumeroControleInternoRequisicao
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
     }
 
     /**

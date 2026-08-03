@@ -35,8 +35,8 @@ define('MENSAGEM', 'tributario.issqn.db_frmissbaseparalisacao.');
 
 $clissbaseparalisacao = new cl_issbaseparalisacao;
 $oRequest       = db_utils::postMemory($_REQUEST);
-$sChavePesquisa = isset($oRequest->chavepesquisa) ? $oRequest->chavepesquisa : null;
-$sAlterar       = isset($oRequest->alterar) ? $oRequest->alterar : null;
+$sChavePesquisa = $oRequest->chavepesquisa ?? null;
+$sAlterar       = $oRequest->alterar ?? null;
 $db_opcao       = 22;
 $db_botao       = false;
 
@@ -111,7 +111,7 @@ if ($sAlterar) {
 
     $db_opcao = 2;
     $db_botao = true;
-  } catch (Exception $eErro) {
+  } catch (Exception) {
 
     $db_botao = false;
     $db_opcao = 22;

@@ -81,7 +81,7 @@ class DomicilioBancarioRepository extends ContaCorrenteRepositoryBase {
    */ 
   private function agrupar() {
 
-    $aContas = array();
+    $aContas = [];
 
     /**
      * Para cada índice do array, buscamos seus atributos e os agrupamos
@@ -145,7 +145,7 @@ class DomicilioBancarioRepository extends ContaCorrenteRepositoryBase {
       $oStdDvContaCorrenteBanco->sIdentificador = "Dígito Verificador da Conta Corrente";
       $oStdDvContaCorrenteBanco->sValor         = $oStdContaBancaria->db83_dvconta;
       
-      $aContas[$sAgrupamento]->aCabecalho   = array();
+      $aContas[$sAgrupamento]->aCabecalho   = [];
       $aContas[$sAgrupamento]->aCabecalho[] = $oStdInstituicao;
       $aContas[$sAgrupamento]->aCabecalho[] = $oStdBanco;
       $aContas[$sAgrupamento]->aCabecalho[] = $oStdAgencia;

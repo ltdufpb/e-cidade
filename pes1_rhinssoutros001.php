@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_rhinssoutros_classe.php"));
 include(modification("classes/db_rhpessoal_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhinssoutros = new cl_rhinssoutros;
 $clrhpessoal = new cl_rhpessoal;
 $db_opcao = 1;
@@ -50,7 +50,7 @@ if(isset($incluir)){
   $db_opcao = 22;
   $sqlerro = false;
   db_inicio_transacao();
-  if(trim($rh51_ocorre) == ""){
+  if(trim((string) $rh51_ocorre) == ""){
     $rh51_ocorre = "  ";
   }
   $clrhinssoutros->rh51_ocorre = $rh51_ocorre;

@@ -119,7 +119,7 @@ $this->objpdf->Cell(12,3.5,"Mês",$borda,1,"L",0);
 $this->objpdf->sety(40);
 $this->objpdf->setx(66);
 $this->objpdf->SetFont('Times','',8);
-$this->objpdf->Cell(12,3.5,date('m', strtotime($this->it01_data)),$borda,1,"R",0);
+$this->objpdf->Cell(12,3.5,date('m', strtotime((string) $this->it01_data)),$borda,1,"R",0);
 
 
 // Vencimento
@@ -133,7 +133,7 @@ $this->objpdf->Cell(21,3.5,"Vencimento",$borda,1,"L",0);
 $this->objpdf->sety(40);
 $this->objpdf->setx(78);
 $this->objpdf->SetFont('Times','',8);
-$this->objpdf->Cell(21,3.5,date('d/m/Y', strtotime($this->datavencimento)),$borda,1,"R",0);
+$this->objpdf->Cell(21,3.5,date('d/m/Y', strtotime((string) $this->datavencimento)),$borda,1,"R",0);
 
 // Validade
 $this->objpdf->RoundedRect($xcol + 95, $ylin + 14, 19, 9, 0, 'D', '1234');
@@ -145,7 +145,7 @@ $this->objpdf->Cell(19,3.5,"Validade",$borda,1,"L",0);
 $this->objpdf->sety(40);
 $this->objpdf->setx(99);
 $this->objpdf->SetFont('Times','',8);
-$this->objpdf->Cell(19,3.5,date('d/m/Y', strtotime($this->datavencimento)),$borda,1,"R",0);
+$this->objpdf->Cell(19,3.5,date('d/m/Y', strtotime((string) $this->datavencimento)),$borda,1,"R",0);
 
 // Emissão
 $this->objpdf->RoundedRect($xcol + 114, $ylin + 14, 19, 9, 0, 'D', '1234');
@@ -157,7 +157,7 @@ $this->objpdf->Cell(19,3.5,"Emissão",$borda,1,"L",0);
 $this->objpdf->sety(40);
 $this->objpdf->setx(118);
 $this->objpdf->SetFont('Times','',8);
-$this->objpdf->Cell(19,3.5,date('d/m/Y', strtotime($this->dataemissao)),$borda,1,"R",0);
+$this->objpdf->Cell(19,3.5,date('d/m/Y', strtotime((string) $this->dataemissao)),$borda,1,"R",0);
 
 // Hora
 $this->objpdf->RoundedRect($xcol + 133, $ylin + 14, 12, 9, 0, 'D', '1234');
@@ -415,7 +415,7 @@ $this->objpdf->SetTextColor(128,128,128);
 $this->objpdf->SetFont('Times','B',70);
 $this->objpdf->sety(148);
 $this->objpdf->setx(4);
-$tipoitbi = strtoupper($this->tipoitbi);
+$tipoitbi = strtoupper((string) $this->tipoitbi);
 $this->objpdf->Cell(202,25,"ITBI " . $tipoitbi,$borda,1,"C",0);
 
 $this->objpdf->SetTextColor(50,50,50);

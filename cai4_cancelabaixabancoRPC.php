@@ -47,7 +47,7 @@ switch ($oParam->exec) {
 
     case "Processar":
 
-        $aRetorno = array();
+        $aRetorno = [];
         $aRetorno["status"]  = 1;
         $aRetorno["message"] = urlencode("Processamento efetuado com sucesso");
 

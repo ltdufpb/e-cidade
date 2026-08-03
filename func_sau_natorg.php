@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_natorg_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_natorg = new cl_sau_natorg;
 $clsau_natorg->rotulo->label("sd40_i_cod_natorg");
 $clsau_natorg->rotulo->label("sd40_v_descricao");
@@ -98,9 +98,9 @@ $clsau_natorg->rotulo->label("sd40_v_descricao");
         }else{
            $sql = $clsau_natorg->sql_query("",$campos,"sd40_v_descricao","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd40_i_cod_natorg)){
-          $repassa = array("chave_sd40_i_cod_natorg"=>$chave_sd40_i_cod_natorg,"chave_sd40_v_descricao"=>$chave_sd40_v_descricao);
+          $repassa = ["chave_sd40_i_cod_natorg"=>$chave_sd40_i_cod_natorg,"chave_sd40_v_descricao"=>$chave_sd40_v_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

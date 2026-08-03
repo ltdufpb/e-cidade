@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE pctipocompravalores
 class cl_pctipocompravalores { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc85_sequencial = 0; 
-   var $pc85_codtipocompra = 0; 
-   var $pc85_valorminimo = 0; 
-   var $pc85_valormaximo = 0; 
-   var $pc85_datainicial_dia = null; 
-   var $pc85_datainicial_mes = null; 
-   var $pc85_datainicial_ano = null; 
-   var $pc85_datainicial = null; 
-   var $pc85_datafinal_dia = null; 
-   var $pc85_datafinal_mes = null; 
-   var $pc85_datafinal_ano = null; 
-   var $pc85_datafinal = null; 
+   public $pc85_sequencial = 0; 
+   public $pc85_codtipocompra = 0; 
+   public $pc85_valorminimo = 0; 
+   public $pc85_valormaximo = 0; 
+   public $pc85_datainicial_dia = null; 
+   public $pc85_datainicial_mes = null; 
+   public $pc85_datainicial_ano = null; 
+   public $pc85_datainicial = null; 
+   public $pc85_datafinal_dia = null; 
+   public $pc85_datafinal_mes = null; 
+   public $pc85_datafinal_ano = null; 
+   public $pc85_datafinal = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc85_sequencial = int4 = Sequencial 
                  pc85_codtipocompra = int4 = Código do Tipo de Compra 
                  pc85_valorminimo = float8 = Valor Minímo 
@@ -64,10 +64,10 @@ class cl_pctipocompravalores {
                  pc85_datafinal = date = Data Final 
                  ";
    //funcao construtor da classe 
-   function cl_pctipocompravalores() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pctipocompravalores"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -163,10 +163,10 @@ class cl_pctipocompravalores {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc85_sequencial = pg_result($result,0,0); 
+       $this->pc85_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pctipocompravalores_pc85_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc85_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc85_sequencial)){
          $this->erro_sql = " Campo pc85_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -204,7 +204,7 @@ class cl_pctipocompravalores {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Faixa de Valores do Tipo de Compras ($this->pc85_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Faixa de Valores do Tipo de Compras já Cadastrado";
@@ -228,15 +228,15 @@ class cl_pctipocompravalores {
      $resaco = $this->sql_record($this->sql_query_file($this->pc85_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16678,'$this->pc85_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2933,16678,'','".AddSlashes(pg_result($resaco,0,'pc85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2933,16679,'','".AddSlashes(pg_result($resaco,0,'pc85_codtipocompra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2933,16680,'','".AddSlashes(pg_result($resaco,0,'pc85_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2933,16681,'','".AddSlashes(pg_result($resaco,0,'pc85_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2933,16682,'','".AddSlashes(pg_result($resaco,0,'pc85_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2933,16683,'','".AddSlashes(pg_result($resaco,0,'pc85_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2933,16678,'','".AddSlashes(pg_fetch_result($resaco,0,'pc85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2933,16679,'','".AddSlashes(pg_fetch_result($resaco,0,'pc85_codtipocompra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2933,16680,'','".AddSlashes(pg_fetch_result($resaco,0,'pc85_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2933,16681,'','".AddSlashes(pg_fetch_result($resaco,0,'pc85_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2933,16682,'','".AddSlashes(pg_fetch_result($resaco,0,'pc85_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2933,16683,'','".AddSlashes(pg_fetch_result($resaco,0,'pc85_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -245,10 +245,10 @@ class cl_pctipocompravalores {
       $this->atualizacampos();
      $sql = " update pctipocompravalores set ";
      $virgula = "";
-     if(trim($this->pc85_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_sequencial"])){ 
+     if(trim((string) $this->pc85_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_sequencial"])){ 
        $sql  .= $virgula." pc85_sequencial = $this->pc85_sequencial ";
        $virgula = ",";
-       if(trim($this->pc85_sequencial) == null ){ 
+       if(trim((string) $this->pc85_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "pc85_sequencial";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_pctipocompravalores {
          return false;
        }
      }
-     if(trim($this->pc85_codtipocompra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_codtipocompra"])){ 
+     if(trim((string) $this->pc85_codtipocompra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_codtipocompra"])){ 
        $sql  .= $virgula." pc85_codtipocompra = $this->pc85_codtipocompra ";
        $virgula = ",";
-       if(trim($this->pc85_codtipocompra) == null ){ 
+       if(trim((string) $this->pc85_codtipocompra) == null ){ 
          $this->erro_sql = " Campo Código do Tipo de Compra nao Informado.";
          $this->erro_campo = "pc85_codtipocompra";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_pctipocompravalores {
          return false;
        }
      }
-     if(trim($this->pc85_valorminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_valorminimo"])){ 
+     if(trim((string) $this->pc85_valorminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_valorminimo"])){ 
        $sql  .= $virgula." pc85_valorminimo = $this->pc85_valorminimo ";
        $virgula = ",";
-       if(trim($this->pc85_valorminimo) == null ){ 
+       if(trim((string) $this->pc85_valorminimo) == null ){ 
          $this->erro_sql = " Campo Valor Minímo nao Informado.";
          $this->erro_campo = "pc85_valorminimo";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_pctipocompravalores {
          return false;
        }
      }
-     if(trim($this->pc85_valormaximo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_valormaximo"])){ 
+     if(trim((string) $this->pc85_valormaximo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_valormaximo"])){ 
        $sql  .= $virgula." pc85_valormaximo = $this->pc85_valormaximo ";
        $virgula = ",";
-       if(trim($this->pc85_valormaximo) == null ){ 
+       if(trim((string) $this->pc85_valormaximo) == null ){ 
          $this->erro_sql = " Campo Valor Máximo nao Informado.";
          $this->erro_campo = "pc85_valormaximo";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_pctipocompravalores {
          return false;
        }
      }
-     if(trim($this->pc85_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc85_datainicial_dia"] !="") ){ 
+     if(trim((string) $this->pc85_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc85_datainicial_dia"] !="") ){ 
        $sql  .= $virgula." pc85_datainicial = '$this->pc85_datainicial' ";
        $virgula = ",";
-       if(trim($this->pc85_datainicial) == null ){ 
+       if(trim((string) $this->pc85_datainicial) == null ){ 
          $this->erro_sql = " Campo Data Inicial nao Informado.";
          $this->erro_campo = "pc85_datainicial_dia";
          $this->erro_banco = "";
@@ -313,7 +313,7 @@ class cl_pctipocompravalores {
        if(isset($GLOBALS["HTTP_POST_VARS"]["pc85_datainicial_dia"])){ 
          $sql  .= $virgula." pc85_datainicial = null ";
          $virgula = ",";
-         if(trim($this->pc85_datainicial) == null ){ 
+         if(trim((string) $this->pc85_datainicial) == null ){ 
            $this->erro_sql = " Campo Data Inicial nao Informado.";
            $this->erro_campo = "pc85_datainicial_dia";
            $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_pctipocompravalores {
          }
        }
      }
-     if(trim($this->pc85_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc85_datafinal_dia"] !="") ){ 
+     if(trim((string) $this->pc85_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc85_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc85_datafinal_dia"] !="") ){ 
        $sql  .= $virgula." pc85_datafinal = '$this->pc85_datafinal' ";
        $virgula = ",";
-       if(trim($this->pc85_datafinal) == null ){ 
+       if(trim((string) $this->pc85_datafinal) == null ){ 
          $this->erro_sql = " Campo Data Final nao Informado.";
          $this->erro_campo = "pc85_datafinal_dia";
          $this->erro_banco = "";
@@ -340,7 +340,7 @@ class cl_pctipocompravalores {
        if(isset($GLOBALS["HTTP_POST_VARS"]["pc85_datafinal_dia"])){ 
          $sql  .= $virgula." pc85_datafinal = null ";
          $virgula = ",";
-         if(trim($this->pc85_datafinal) == null ){ 
+         if(trim((string) $this->pc85_datafinal) == null ){ 
            $this->erro_sql = " Campo Data Final nao Informado.";
            $this->erro_campo = "pc85_datafinal_dia";
            $this->erro_banco = "";
@@ -359,21 +359,21 @@ class cl_pctipocompravalores {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16678,'$this->pc85_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc85_sequencial"]) || $this->pc85_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2933,16678,'".AddSlashes(pg_result($resaco,$conresaco,'pc85_sequencial'))."','$this->pc85_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2933,16678,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc85_sequencial'))."','$this->pc85_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc85_codtipocompra"]) || $this->pc85_codtipocompra != "")
-           $resac = db_query("insert into db_acount values($acount,2933,16679,'".AddSlashes(pg_result($resaco,$conresaco,'pc85_codtipocompra'))."','$this->pc85_codtipocompra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2933,16679,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc85_codtipocompra'))."','$this->pc85_codtipocompra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc85_valorminimo"]) || $this->pc85_valorminimo != "")
-           $resac = db_query("insert into db_acount values($acount,2933,16680,'".AddSlashes(pg_result($resaco,$conresaco,'pc85_valorminimo'))."','$this->pc85_valorminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2933,16680,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc85_valorminimo'))."','$this->pc85_valorminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc85_valormaximo"]) || $this->pc85_valormaximo != "")
-           $resac = db_query("insert into db_acount values($acount,2933,16681,'".AddSlashes(pg_result($resaco,$conresaco,'pc85_valormaximo'))."','$this->pc85_valormaximo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2933,16681,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc85_valormaximo'))."','$this->pc85_valormaximo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc85_datainicial"]) || $this->pc85_datainicial != "")
-           $resac = db_query("insert into db_acount values($acount,2933,16682,'".AddSlashes(pg_result($resaco,$conresaco,'pc85_datainicial'))."','$this->pc85_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2933,16682,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc85_datainicial'))."','$this->pc85_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc85_datafinal"]) || $this->pc85_datafinal != "")
-           $resac = db_query("insert into db_acount values($acount,2933,16683,'".AddSlashes(pg_result($resaco,$conresaco,'pc85_datafinal'))."','$this->pc85_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2933,16683,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc85_datafinal'))."','$this->pc85_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -418,15 +418,15 @@ class cl_pctipocompravalores {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16678,'$pc85_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2933,16678,'','".AddSlashes(pg_result($resaco,$iresaco,'pc85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2933,16679,'','".AddSlashes(pg_result($resaco,$iresaco,'pc85_codtipocompra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2933,16680,'','".AddSlashes(pg_result($resaco,$iresaco,'pc85_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2933,16681,'','".AddSlashes(pg_result($resaco,$iresaco,'pc85_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2933,16682,'','".AddSlashes(pg_result($resaco,$iresaco,'pc85_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2933,16683,'','".AddSlashes(pg_result($resaco,$iresaco,'pc85_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2933,16678,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2933,16679,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc85_codtipocompra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2933,16680,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc85_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2933,16681,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc85_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2933,16682,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc85_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2933,16683,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc85_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pctipocompravalores
@@ -486,7 +486,7 @@ class cl_pctipocompravalores {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pctipocompravalores";
@@ -501,7 +501,7 @@ class cl_pctipocompravalores {
    function sql_query ( $pc85_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,7 +523,7 @@ class cl_pctipocompravalores {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_pctipocompravalores {
    function sql_query_file ( $pc85_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -557,7 +557,7 @@ class cl_pctipocompravalores {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

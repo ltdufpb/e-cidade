@@ -93,7 +93,7 @@ class ClienteWebServiceTribunalJusticaRJ extends DBSoapClient {
        * Quando for uma conexão HTTPS é necessario passar o parametro location 
        * para forçar o client soap não trocar para HTTP
        */
-      parent::__construct($this->getUrlWSDL(), array('location' => $this->getUrlWSDL()) );
+      parent::__construct($this->getUrlWSDL(), ['location' => $this->getUrlWSDL()] );
       
       $this->setLogin      ($oDadosLogin->v19_login);
       $this->setSenha      ($oDadosLogin->v19_senha);
@@ -194,9 +194,9 @@ class ClienteWebServiceTribunalJusticaRJ extends DBSoapClient {
    */
   public function loginSistema() {
 
-    $this->LogarSistema(array('pLogin'    => $this->getLogin(),
+    $this->LogarSistema(['pLogin'    => $this->getLogin(),
                               'pSenha'    => $this->getSenha(),
-                              'pCodOrgao' => $this->getCodigoOrgao()));        
+                              'pCodOrgao' => $this->getCodigoOrgao()]);        
   }
 
   /**
@@ -233,13 +233,13 @@ class ClienteWebServiceTribunalJusticaRJ extends DBSoapClient {
   private function validaRetornoRequisicao($sRetorno) {
   	
 
-  	$aRetorno = array();
+  	$aRetorno = [];
   	
   	/**
   	* Erros possiveis
   	* @var  array
   	*/ 	
-  	$aErros = array(0  => "Envio sem nenhuma verificação de pendência",
+  	$aErros = [0  => "Envio sem nenhuma verificação de pendência",
   	                1  => "Código do município inválido",
   	                2  => "Nosso número com tamanho diferente do permitido",
   	                3  => "Nosso número já cadastrado",
@@ -263,7 +263,7 @@ class ClienteWebServiceTribunalJusticaRJ extends DBSoapClient {
   	                21 => "Valor da Taxa Judiciária acima do máximo distinto da tabela de custas atual",
   	                22 => "Valor da Taxa Judiciária incorreto",
   	                40 => "Cadastro de contatos desatualizado",
-  	                50 => "Data de pagamento nula ou inválida");
+  	                50 => "Data de pagamento nula ou inválida"];
   	
   	$aErrosRetorno      = explode("-", $sRetorno);
     foreach ($aErrosRetorno as $iCodigoRetorno) {
@@ -282,7 +282,7 @@ class ClienteWebServiceTribunalJusticaRJ extends DBSoapClient {
     
 
   	
-  	$aParametrosProcesso                             = array();
+  	$aParametrosProcesso                             = [];
   	$aParametrosProcesso["pNum_processo"]            = $oParametrosProcesso->pNum_processo;
   	$aParametrosProcesso["pNum_certidao"]            = $oParametrosProcesso->pNum_certidao;
   	$aParametrosProcesso["pData_ultima_distrib"]     = $oParametrosProcesso->pData_ultima_distrib;
@@ -347,7 +347,7 @@ class ClienteWebServiceTribunalJusticaRJ extends DBSoapClient {
   	/**
   	 * Total custas
   	 */
-  	$aNumnov = array();
+  	$aNumnov = [];
 
   	foreach ($aProcessoCustas as $oCusta) {
 
@@ -374,7 +374,7 @@ class ClienteWebServiceTribunalJusticaRJ extends DBSoapClient {
   	 
   	$oDadosProcesso->pNum_processo             = (string) $oProcessoForo->getNumeroProcesso();
   	$oDadosProcesso->pNum_certidao             = '';
-  	$oDadosProcesso->pData_ultima_distrib      = (string) date('d/m/Y', strtotime($oProcessoForo->getDataProcesso()));
+  	$oDadosProcesso->pData_ultima_distrib      = (string) date('d/m/Y', strtotime((string) $oProcessoForo->getDataProcesso()));
   	$oDadosProcesso->pValor_total_devido       = (float)  $oProcessoForo->getValorBaseCustasGeradas( $oRecibo );
   	$oDadosProcesso->pCod_cid                  = (int)    $iCodigoTJ;
   	$oDadosProcesso->pNosso_numero             = (string) $oDadosAdicionaisRecibo->nosso_numero;
@@ -414,7 +414,7 @@ class ClienteWebServiceTribunalJusticaRJ extends DBSoapClient {
   public function validarEmissaoProcessoForo() {
   	 
   	$oParametrosProcesso = $this->getParametrosProcesso();
-  	$aParametrosProcesso = array();
+  	$aParametrosProcesso = [];
 
   	
   	$aParametrosProcesso["pNum_processo"]            = $oParametrosProcesso->pNum_processo;

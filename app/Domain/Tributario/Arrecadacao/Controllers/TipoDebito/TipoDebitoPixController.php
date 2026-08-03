@@ -177,7 +177,7 @@ class TipoDebitoPixController extends Controller
             if ($codtipopix->update($data)) {
                 return response()->json([
                     "status"  => "Success",
-                    "message" => utf8_encode("Os dados de tipo de débito PIX foram atualizados.")
+                    "message" => mb_convert_encoding("Os dados de tipo de débito PIX foram atualizados.", 'UTF-8', 'ISO-8859-1')
                 ]);
             }
 
@@ -274,7 +274,7 @@ class TipoDebitoPixController extends Controller
         $successMessage = "Os dados são válidos para ";
         $successMessage .= ((!is_null($codtipopix)) ? "alteração" : "inclusão");
         $successMessage .= " do tipo de débido PIX.";
-        return response()->json(["status"  => "Success", "message" => utf8_encode($successMessage)]);
+        return response()->json(["status"  => "Success", "message" => mb_convert_encoding($successMessage, 'UTF-8', 'ISO-8859-1')]);
     }
 
     /**

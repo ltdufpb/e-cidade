@@ -52,6 +52,7 @@ class RelatorioPendentesTefService extends RelatorioPendentesTef
         return $this;
     }
 
+    #[\Override]
     public function gerar()
     {
         $this->buscarDados();

@@ -67,7 +67,7 @@ if ($oPost->sAction == 'PesquisaRefeicao') {
   if ($oPost->escola=="") {
 
     $oJson    = new services_json();
-    echo $oJson->encode(array(array(),array()));
+    echo $oJson->encode([[],[]]);
   	return false;
   	
   }	
@@ -113,7 +113,7 @@ if ($oPost->sAction == 'PesquisaTurma') {
   if ($oPost->escola=="") {
 
     $oJson    = new services_json();
-    echo $oJson->encode(array(array(),array()));
+    echo $oJson->encode([[],[]]);
     return false;
     
   } 
@@ -167,11 +167,11 @@ if ($oPost->sAction == 'PesquisaTurma') {
 if ($oPost->sAction == 'InclusaoCardapioTurma') {
     
   db_inicio_transacao();
-  if (trim($oPost->turma) != "") {
+  if (trim((string) $oPost->turma) != "") {
    
     $iTurmas = "";
     $sep = "";
-    $aCodTurma = explode(";",$oPost->turma);
+    $aCodTurma = explode(";",(string) $oPost->turma);
     for ($x=0;$x<count($aCodTurma);$x++) {
 
       $aExp = explode("|",$aCodTurma[$x]);
@@ -180,7 +180,7 @@ if ($oPost->sAction == 'InclusaoCardapioTurma') {
       
     }
     $clmer_cardapioturma->excluir(""," me39_i_cardapiodia = $oPost->cardapiodia and me39_i_turma in ($iTurmas)");
-    $aRegistro = explode(";",$oPost->turma);
+    $aRegistro = explode(";",(string) $oPost->turma);
     for ($x=0;$x<count($aRegistro);$x++) {
        
       $aCampos = explode("|",$aRegistro[$x]);

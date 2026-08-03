@@ -52,7 +52,7 @@ class RequisicaoExameRepository
             return false;
         }
 
-        $requisicaoExames = array();
+        $requisicaoExames = [];
         for ($i = 0; $i < $numeroRegistros; $i++) {
             $row = pg_fetch_array($rs, $i);
             $requisicaoExames[] = RequisicaoExame::fromState($row);

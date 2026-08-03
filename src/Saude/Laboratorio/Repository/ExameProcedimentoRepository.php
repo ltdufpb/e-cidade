@@ -36,17 +36,12 @@ use Exception;
 class ExameProcedimentoRepository
 {
     /**
-     * @var Object
-     */
-    private $dao;
-
-    /**
      * ExameProcedimentoRepository constructor.
      * @param $dao \cl_lab_exameproced
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     public function buscar($where)

@@ -40,7 +40,7 @@ $oPost = db_utils::postMemory($_POST);
 
 db_postmemory($_POST);
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cliptubase = new cl_iptubase;
 $clsetorloc = new cl_setorloc();
@@ -303,7 +303,7 @@ if ( isset($oPost->j107_nome) ) {
               <td width="34%" align="right"><strong>Exibir Matrículas Baixadas: </strong></td>
               <td width="66%" align="left" nowrap>
                   <?php
-                  $sOpcoes = array(1 => 'SIM', 2 => 'NÃO');
+                  $sOpcoes = [1 => 'SIM', 2 => 'NÃO'];
                   db_select("matriculas_baixadas", $sOpcoes, false, 1);
                   ?>
               </td>
@@ -463,7 +463,7 @@ if ( isset($oPost->j107_nome) ) {
                     }
                 }
 
-                $repassa = array('dblov' => '0');
+                $repassa = ['dblov' => '0'];
 
                 if ($sql2 != "") {
                     if (!empty($post->tipoImovel)) {
@@ -503,7 +503,7 @@ if ( isset($oPost->j107_nome) ) {
                                                            );";
                 $rsCGMRegra = db_query($sSqlCGMRegra);
 
-                if (pg_numrows($rsCGMRegra) > 0) {
+                if (pg_num_rows($rsCGMRegra) > 0) {
                     db_fieldsmemory($rsCGMRegra, 0);
                     echo "<script>" . $funcao_js . "(\"$z01_nome\",false,$z01_numcgm);</script>";
                 } else {

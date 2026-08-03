@@ -94,7 +94,7 @@ if (isset($oPost->cpf) && trim($oPost->cpf) != "") {
                   </td>
                   <td>
                     <?php 
-                      db_select("z16_fotoativa", array("t" => "Sim", "f"=> "Não"), true, 1);
+                      db_select("z16_fotoativa", ["t" => "Sim", "f"=> "Não"], true, 1);
                     ?>
                   </td>
                 </tr>
@@ -104,7 +104,7 @@ if (isset($oPost->cpf) && trim($oPost->cpf) != "") {
                   </td>
                   <td>
                     <?php 
-                      db_select("z16_principal", array("t" => "Sim", "f"=> "Não"), true, 1);
+                      db_select("z16_principal", ["t" => "Sim", "f"=> "Não"], true, 1);
                     ?>
                   </td>
                 </tr>

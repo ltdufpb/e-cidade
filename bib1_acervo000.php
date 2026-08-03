@@ -64,11 +64,11 @@ $clcriaabas     = new cl_criaabas;
    }else{
     $arquivo = "bib1_acervo003.php";
    }
-   $clcriaabas->identifica = array("acervo1"=>"Dados Gerais","acervo2"=>"Autores","acervo3"=>"Assuntos","acervo4"=>"Exemplares","acervo5"=>"Localização");
-   $clcriaabas->sizecampo  = array("acervo1"=>"20","acervo2"=>"20","acervo3"=>"20","acervo4"=>"20","acervo5"=>"20");
-   $clcriaabas->title      = array("acervo1"=>"Dados Gerais","acervo2"=>"Autores","acervo3"=>"Assuntos","acervo4"=>"Exemplares","acervo5"=>"Localização");
-   $clcriaabas->src        = array("acervo1"=>$arquivo,"acervo2"=>"","acervo3"=>"","acervo4"=>"","acervo5"=>"");
-   $clcriaabas->disabled   = array("acervo2"=>"true","acervo3"=>"true","acervo4"=>"true","acervo5"=>"true");
+   $clcriaabas->identifica = ["acervo1"=>"Dados Gerais","acervo2"=>"Autores","acervo3"=>"Assuntos","acervo4"=>"Exemplares","acervo5"=>"Localização"];
+   $clcriaabas->sizecampo  = ["acervo1"=>"20","acervo2"=>"20","acervo3"=>"20","acervo4"=>"20","acervo5"=>"20"];
+   $clcriaabas->title      = ["acervo1"=>"Dados Gerais","acervo2"=>"Autores","acervo3"=>"Assuntos","acervo4"=>"Exemplares","acervo5"=>"Localização"];
+   $clcriaabas->src        = ["acervo1"=>$arquivo,"acervo2"=>"","acervo3"=>"","acervo4"=>"","acervo5"=>""];
+   $clcriaabas->disabled   = ["acervo2"=>"true","acervo3"=>"true","acervo4"=>"true","acervo5"=>"true"];
    $clcriaabas->cria_abas();
    ?>
   </td>

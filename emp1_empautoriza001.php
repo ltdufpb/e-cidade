@@ -68,15 +68,15 @@ $db_opcao = 1;
        }
      }
        // $clcriaabas->identifica = array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","empautret"=>"Retenções","anulacao"=>"Anulação"); 
-       $clcriaabas->identifica = array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","anulacao"=>"Anulação"); 
+       $clcriaabas->identifica = ["empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","anulacao"=>"Anulação"]; 
 
-       $clcriaabas->sizecampo =  array("anulacao"=>"20"); 
+       $clcriaabas->sizecampo =  ["anulacao"=>"20"]; 
        // $clcriaabas->title      =  array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","empautret"=>"Retenções","anulacao"=>"Anulação de autorização"); 
-       $clcriaabas->title      =  array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","anulacao"=>"Anulação de autorização"); 
+       $clcriaabas->title      =  ["empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","anulacao"=>"Anulação de autorização"]; 
 
-       $clcriaabas->src = array("empautoriza"=>"emp1_empautoriza004.php$query");
+       $clcriaabas->src = ["empautoriza"=>"emp1_empautoriza004.php$query"];
        // $clcriaabas->disabled   =  array("empautitem"=>true,"empautidot"=>"true","prazos"=>"true","empautret"=>"true","anulacao"=>"true"); 
-       $clcriaabas->disabled   =  array("empautitem"=>true,"empautidot"=>"true","prazos"=>"true","anulacao"=>"true"); 
+       $clcriaabas->disabled   =  ["empautitem"=>true,"empautidot"=>"true","prazos"=>"true","anulacao"=>"true"]; 
 
        $clcriaabas->cria_abas();    
      ?> 

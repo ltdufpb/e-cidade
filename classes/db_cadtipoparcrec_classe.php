@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE cadtipoparcrec
 class cl_cadtipoparcrec {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $k180_cadtipoparc = 0;
-   var $k180_estorc = 0;
+   public $k180_cadtipoparc = 0;
+   public $k180_estorc = 0;
 
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  k180_cadtipoparc = int4 = Código
                  k180_estorc = varchar(15) = Estrutural da Receita
                  ";
    //funcao construtor da classe
-   function cl_cadtipoparcrec() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadtipoparcrec");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -107,7 +107,7 @@ class cl_cadtipoparcrec {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Receita que a regra de parcelamento usa ($this->k180_cadtipoparc."-".$this->k180_estorc) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Receita que a regra de parcelamento usa já Cadastrado";
@@ -131,12 +131,12 @@ class cl_cadtipoparcrec {
      $resaco = $this->sql_record($this->sql_query_file($this->k180_cadtipoparc,$this->k180_estorc));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1011173,'$this->k180_cadtipoparc','I')");
        $resac = db_query("insert into db_acountkey values($acount,1011174,'$this->k180_estorc','I')");
-       $resac = db_query("insert into db_acount values($acount,1010546,1011173,'','".AddSlashes(pg_result($resaco,0,'k180_cadtipoparc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010546,1011174,'','".AddSlashes(pg_result($resaco,0,'k180_estorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010546,1011173,'','".AddSlashes(pg_fetch_result($resaco,0,'k180_cadtipoparc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010546,1011174,'','".AddSlashes(pg_fetch_result($resaco,0,'k180_estorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -145,10 +145,10 @@ class cl_cadtipoparcrec {
       $this->atualizacampos();
      $sql = " update cadtipoparcrec set ";
      $virgula = "";
-     if(trim($this->k180_cadtipoparc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k180_cadtipoparc"])){
+     if(trim((string) $this->k180_cadtipoparc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k180_cadtipoparc"])){
        $sql  .= $virgula." k180_cadtipoparc = $this->k180_cadtipoparc ";
        $virgula = ",";
-       if(trim($this->k180_cadtipoparc) == null ){
+       if(trim((string) $this->k180_cadtipoparc) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "k180_cadtipoparc";
          $this->erro_banco = "";
@@ -158,10 +158,10 @@ class cl_cadtipoparcrec {
          return false;
        }
      }
-     if(trim($this->k180_estorc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k180_estorc"])){
+     if(trim((string) $this->k180_estorc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k180_estorc"])){
        $sql  .= $virgula." k180_estorc = '$this->k180_estorc' ";
        $virgula = ",";
-       if(trim($this->k180_estorc) == null ){
+       if(trim((string) $this->k180_estorc) == null ){
          $this->erro_sql = " Campo tipo de debito nao Informado.";
          $this->erro_campo = "k180_estorc";
          $this->erro_banco = "";
@@ -183,14 +183,14 @@ class cl_cadtipoparcrec {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1011173,'$this->k180_cadtipoparc','A')");
          $resac = db_query("insert into db_acountkey values($acount,1011174,'$this->k180_estorc','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k180_cadtipoparc"]))
-           $resac = db_query("insert into db_acount values($acount,1010546,1011173,'".AddSlashes(pg_result($resaco,$conresaco,'k180_cadtipoparc'))."','$this->k180_cadtipoparc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010546,1011173,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k180_cadtipoparc'))."','$this->k180_cadtipoparc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k180_estorc"]))
-           $resac = db_query("insert into db_acount values($acount,1010546,1011174,'".AddSlashes(pg_result($resaco,$conresaco,'k180_estorc'))."','$this->k180_estorc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010546,1011174,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k180_estorc'))."','$this->k180_estorc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
 
        }
      }
@@ -236,12 +236,12 @@ class cl_cadtipoparcrec {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1011173,'$k180_cadtipoparc','E')");
          $resac = db_query("insert into db_acountkey values($acount,1011174,'$k180_estorc','E')");
-         $resac = db_query("insert into db_acount values($acount,1010546,1011173,'','".AddSlashes(pg_result($resaco,$iresaco,'k180_cadtipoparc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010546,1011174,'','".AddSlashes(pg_result($resaco,$iresaco,'k180_estorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010546,1011173,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k180_cadtipoparc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010546,1011174,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k180_estorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cadtipoparcrec
@@ -307,7 +307,7 @@ class cl_cadtipoparcrec {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cadtipoparcrec";
@@ -321,7 +321,7 @@ class cl_cadtipoparcrec {
    function sql_query ( $k180_cadtipoparc=null,$k180_estorc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -353,7 +353,7 @@ class cl_cadtipoparcrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -365,7 +365,7 @@ class cl_cadtipoparcrec {
   function sql_query_file ( $k180_cadtipoparc=null,$k180_estorc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_cadtipoparcrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

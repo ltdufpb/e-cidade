@@ -58,20 +58,20 @@ class AnexoXII
         $dadosEmissor = $this->getDadosEmissor();
         $this->parser->setData($this->linhas);
         $this->parser->addVariable('texto_lei_organica', $this->anexo->getLabelLeiOrganica());
-        $this->parser->addVariable('ente_federecao', utf8_encode($ente));
-        $this->parser->addVariable('periodo_referencia', utf8_encode($this->anexo->getTituloPeriodo()));
-        $this->parser->addVariable('nota_explicativa', utf8_encode($texto));
-        $this->parser->addVariable('assinatura_prefeito', utf8_encode($assinaturas["prefeito"]));
-        $this->parser->addVariable('assinatura_contador', utf8_encode($assinaturas["contador"]));
-        $this->parser->addVariable('assinatura_secretario', utf8_encode($assinaturas["secretario"]));
-        $this->parser->addVariable('nota_explicativa', utf8_encode($texto));
-        $this->parser->addVariable('ente_emissor', utf8_encode($dadosEmissor->nome));
-        $this->parser->addVariable('endereco_ente', utf8_encode($dadosEmissor->endereco));
-        $this->parser->addVariable('municipio', utf8_encode($dadosEmissor->municipio));
-        $this->parser->addVariable('telefone', utf8_encode($dadosEmissor->telefone));
-        $this->parser->addVariable('cnpj', utf8_encode($dadosEmissor->cnpj));
-        $this->parser->addVariable('email', utf8_encode($dadosEmissor->email));
-        $this->parser->addVariable('site', utf8_encode($dadosEmissor->url));
+        $this->parser->addVariable('ente_federecao', mb_convert_encoding($ente, 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('periodo_referencia', mb_convert_encoding($this->anexo->getTituloPeriodo(), 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('nota_explicativa', mb_convert_encoding($texto, 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('assinatura_prefeito', mb_convert_encoding($assinaturas["prefeito"], 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('assinatura_contador', mb_convert_encoding($assinaturas["contador"], 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('assinatura_secretario', mb_convert_encoding($assinaturas["secretario"], 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('nota_explicativa', mb_convert_encoding($texto, 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('ente_emissor', mb_convert_encoding($dadosEmissor->nome, 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('endereco_ente', mb_convert_encoding($dadosEmissor->endereco, 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('municipio', mb_convert_encoding($dadosEmissor->municipio, 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('telefone', mb_convert_encoding($dadosEmissor->telefone, 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('cnpj', mb_convert_encoding($dadosEmissor->cnpj, 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('email', mb_convert_encoding($dadosEmissor->email, 'UTF-8', 'ISO-8859-1'));
+        $this->parser->addVariable('site', mb_convert_encoding($dadosEmissor->url, 'UTF-8', 'ISO-8859-1'));
         $this->parser->addImage(
             $dadosEmissor->logo,
             'B1',

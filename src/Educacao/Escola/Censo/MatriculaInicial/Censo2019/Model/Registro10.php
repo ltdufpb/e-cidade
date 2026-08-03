@@ -3308,7 +3308,7 @@ class Registro10
 
     public function toArray()
     {
-        return array(
+        return [
             "tipoRegistro" => $this->getTipoRegistro(),
             "codigoInep" => $this->getCodigoInep(),
             "predioEscolar" => $this->getPredioEscolar(),
@@ -3477,6 +3477,6 @@ class Registro10
             "gestoresEscola" => $this->getGestoresEscola(),
             "orientadorComunitario" => $this->getOrientadorComunitario(),
             "naoHaFuncionarios" => $this->getNaoHaFuncionarios(),
-        );
+        ];
     }
 }

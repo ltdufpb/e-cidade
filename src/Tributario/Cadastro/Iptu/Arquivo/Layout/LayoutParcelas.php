@@ -47,6 +47,7 @@ class LayoutParcelas extends Layout
      *
      * Retorna o layout
      */
+    #[\Override]
     public function get($counter)
     {
         if(empty($counter)) {

@@ -7,8 +7,8 @@ if(!defined('DB_BIBLIOT')){
   require(modification("fpdf151/libs/db_conecta.php"));
   include(modification("fpdf151/libs/db_sessoes.php"));
   include(modification("fpdf151/libs/db_usuariosonline.php"));
-  db_postmemory($HTTP_POST_VARS);
-  db_postmemory($HTTP_SERVER_VARS);
+  db_postmemory($_POST);
+  db_postmemory($_SERVER);
 
   define('FPDF_FONTPATH','fpdf151/font/');
   require(modification('fpdf151/fpdf.php'));
@@ -35,13 +35,13 @@ class PDF extends FPDF {
 	global $url;
 	//Dados da instituição
     $dados = @db_query("select nomeinst,trim(ender)||','||trim(cast(numero as text)) as ender,munic,uf,telef,email,url,logo from db_config where codigo = ".@$GLOBALS["DB_instit"]);
-	$url = @pg_result($dados,0,"url");
+	$url = @pg_fetch_result($dados,0,"url");
 	$this->SetXY(1,1);
-    $this->Image('../imagens/files/'.pg_result($dados,0,"logo"),7,3,20);
+    $this->Image('../imagens/files/'.pg_fetch_result($dados,0,"logo"),7,3,20);
 	//$this->Cell(100,32,"",1);
-	$nome = pg_result($dados,0,"nomeinst");
+	$nome = pg_fetch_result($dados,0,"nomeinst");
 	global $nomeinst;
-        $nomeinst = pg_result($dados,0,"nomeinst");
+        $nomeinst = pg_fetch_result($dados,0,"nomeinst");
 	if(strlen($nome) > 42)
 	  $TamFonteNome = 8;
 	else
@@ -49,10 +49,10 @@ class PDF extends FPDF {
     $this->SetFont('Arial','BI',$TamFonteNome);
     $this->Text(33,9,$nome);
     $this->SetFont('Arial','I',8);
-    $this->Text(33,14,trim(pg_result($dados,0,"ender")));
-    $this->Text(33,18,trim(pg_result($dados,0,"munic"))." - ".pg_result($dados,0,"uf"));	
-    $this->Text(33,22,trim(pg_result($dados,0,"telef")));
-    $this->Text(33,26,trim(pg_result($dados,0,"email")));
+    $this->Text(33,14,trim(pg_fetch_result($dados,0,"ender")));
+    $this->Text(33,18,trim(pg_fetch_result($dados,0,"munic"))." - ".pg_fetch_result($dados,0,"uf"));	
+    $this->Text(33,22,trim(pg_fetch_result($dados,0,"telef")));
+    $this->Text(33,26,trim(pg_fetch_result($dados,0,"email")));
     $this->Text(33,30,$url);	
 	//parametros
 //	$this->SetXY(108,3);
@@ -92,7 +92,7 @@ class PDF extends FPDF {
     $this->SetY(-10);
 //    $this->Text(14,293,$url);	
     $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
-    $nome = substr($nome,strrpos($nome,"/")+1);
+    $nome = substr((string) $nome,strrpos((string) $nome,"/")+1);
     $this->Cell(0,10,$nome.'     Emissor: '.@$GLOBALS["DB_login"].'     Exercício: '.db_getsession("DB_anousu").'    Data: '.date("d-m-Y - H:i:s"),"T",0,'C');
     $this->Cell(0,10,'Página '.$this->PageNo().' de {nb}',0,1,'R');
 

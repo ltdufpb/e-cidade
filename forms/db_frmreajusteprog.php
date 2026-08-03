@@ -75,7 +75,7 @@ $clrotulo->label("eso39_dataefeito");
                 <td align="right" nowrap title="<?=$Teso39_tipo?>"><?=$Leso39_tipo?></td>
                 <td align="left" nowrap>
                     <?php
-                        $matriz = array("T"=>"TODOS","f"=>"NAO","t"=>"SIM");
+                        $matriz = ["T"=>"TODOS","f"=>"NAO","t"=>"SIM"];
                     $matriz = ["A" => "A - Acordo Coletivo de Trabalho",
                                 "B" => "B - Legislação federal, estadual, municipal ou distrital",
                                 "C" => "C - Convenção Coletiva de Trabalho",

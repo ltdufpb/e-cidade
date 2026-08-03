@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clgerfsal = new cl_gerfsal;
 $clgerffx  = new cl_gerffx();
@@ -53,12 +53,12 @@ if(isset($processar)){
   db_inicio_transacao();
 
   $anousu = $r36_anousu;
-  if(trim($anousu) == ""){
+  if(trim((string) $anousu) == ""){
     $anousu = db_anofolha();
   }
 
   $mesusu = $r36_mesusu;
-  if(trim($mesusu) == ""){
+  if(trim((string) $mesusu) == ""){
     $mesusu = db_mesfolha();
   }
 
@@ -95,7 +95,7 @@ if(isset($processar)){
   $res_in = $clbasesr->sql_record($sql_in);
   $rub  = '';
   $virg = '';
-  for($x_in=0;$x_in<pg_numrows($res_in);$x_in++){
+  for($x_in=0;$x_in<pg_num_rows($res_in);$x_in++){
     db_fieldsmemory($res_in,$x_in);
     $rub .= $virg."'".$r09_rubric."'";
     $virg = ',';
@@ -144,7 +144,7 @@ if(isset($processar)){
         $prov       = 0;
         $nVlrProvFx = 0;
 
-        if(trim($rh01_regist) != "" && ($rh14_valor == 0 || trim($rh14_valor) == "")){
+        if(trim((string) $rh01_regist) != "" && ($rh14_valor == 0 || trim((string) $rh14_valor) == "")){
 
           /////////////
           // Se for funcionário e o valor do rhipe for igual a zero

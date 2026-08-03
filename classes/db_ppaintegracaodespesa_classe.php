@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE ppaintegracaodespesa
 class cl_ppaintegracaodespesa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o121_sequencial = 0; 
-   var $o121_ppaintegracao = 0; 
-   var $o121_coddot = 0; 
-   var $o121_anousu = 0; 
-   var $o121_ppaestimativadespesa = 0; 
+   public $o121_sequencial = 0; 
+   public $o121_ppaintegracao = 0; 
+   public $o121_coddot = 0; 
+   public $o121_anousu = 0; 
+   public $o121_ppaestimativadespesa = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o121_sequencial = int4 = Código Sequencial 
                  o121_ppaintegracao = int4 = Código da Integração 
                  o121_coddot = int4 = Código da Dotação 
@@ -56,10 +56,10 @@ class cl_ppaintegracaodespesa {
                  o121_ppaestimativadespesa = int4 = Código da Estimativa 
                  ";
    //funcao construtor da classe 
-   function cl_ppaintegracaodespesa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ppaintegracaodespesa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_ppaintegracaodespesa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o121_sequencial = pg_result($result,0,0); 
+       $this->o121_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from ppaintegracaodespesa_o121_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o121_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o121_sequencial)){
          $this->erro_sql = " Campo o121_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_ppaintegracaodespesa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Integracao da despesa (dotacoes) do ppa ($this->o121_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Integracao da despesa (dotacoes) do ppa já Cadastrado";
@@ -194,14 +194,14 @@ class cl_ppaintegracaodespesa {
      $resaco = $this->sql_record($this->sql_query_file($this->o121_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14510,'$this->o121_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2557,14510,'','".AddSlashes(pg_result($resaco,0,'o121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2557,14511,'','".AddSlashes(pg_result($resaco,0,'o121_ppaintegracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2557,14512,'','".AddSlashes(pg_result($resaco,0,'o121_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2557,14513,'','".AddSlashes(pg_result($resaco,0,'o121_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2557,14514,'','".AddSlashes(pg_result($resaco,0,'o121_ppaestimativadespesa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2557,14510,'','".AddSlashes(pg_fetch_result($resaco,0,'o121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2557,14511,'','".AddSlashes(pg_fetch_result($resaco,0,'o121_ppaintegracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2557,14512,'','".AddSlashes(pg_fetch_result($resaco,0,'o121_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2557,14513,'','".AddSlashes(pg_fetch_result($resaco,0,'o121_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2557,14514,'','".AddSlashes(pg_fetch_result($resaco,0,'o121_ppaestimativadespesa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_ppaintegracaodespesa {
       $this->atualizacampos();
      $sql = " update ppaintegracaodespesa set ";
      $virgula = "";
-     if(trim($this->o121_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o121_sequencial"])){ 
+     if(trim((string) $this->o121_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o121_sequencial"])){ 
        $sql  .= $virgula." o121_sequencial = $this->o121_sequencial ";
        $virgula = ",";
-       if(trim($this->o121_sequencial) == null ){ 
+       if(trim((string) $this->o121_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o121_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_ppaintegracaodespesa {
          return false;
        }
      }
-     if(trim($this->o121_ppaintegracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o121_ppaintegracao"])){ 
+     if(trim((string) $this->o121_ppaintegracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o121_ppaintegracao"])){ 
        $sql  .= $virgula." o121_ppaintegracao = $this->o121_ppaintegracao ";
        $virgula = ",";
-       if(trim($this->o121_ppaintegracao) == null ){ 
+       if(trim((string) $this->o121_ppaintegracao) == null ){ 
          $this->erro_sql = " Campo Código da Integração nao Informado.";
          $this->erro_campo = "o121_ppaintegracao";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_ppaintegracaodespesa {
          return false;
        }
      }
-     if(trim($this->o121_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o121_coddot"])){ 
+     if(trim((string) $this->o121_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o121_coddot"])){ 
        $sql  .= $virgula." o121_coddot = $this->o121_coddot ";
        $virgula = ",";
-       if(trim($this->o121_coddot) == null ){ 
+       if(trim((string) $this->o121_coddot) == null ){ 
          $this->erro_sql = " Campo Código da Dotação nao Informado.";
          $this->erro_campo = "o121_coddot";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_ppaintegracaodespesa {
          return false;
        }
      }
-     if(trim($this->o121_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o121_anousu"])){ 
+     if(trim((string) $this->o121_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o121_anousu"])){ 
        $sql  .= $virgula." o121_anousu = $this->o121_anousu ";
        $virgula = ",";
-       if(trim($this->o121_anousu) == null ){ 
+       if(trim((string) $this->o121_anousu) == null ){ 
          $this->erro_sql = " Campo Ano da Dotação nao Informado.";
          $this->erro_campo = "o121_anousu";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_ppaintegracaodespesa {
          return false;
        }
      }
-     if(trim($this->o121_ppaestimativadespesa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o121_ppaestimativadespesa"])){ 
+     if(trim((string) $this->o121_ppaestimativadespesa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o121_ppaestimativadespesa"])){ 
        $sql  .= $virgula." o121_ppaestimativadespesa = $this->o121_ppaestimativadespesa ";
        $virgula = ",";
-       if(trim($this->o121_ppaestimativadespesa) == null ){ 
+       if(trim((string) $this->o121_ppaestimativadespesa) == null ){ 
          $this->erro_sql = " Campo Código da Estimativa nao Informado.";
          $this->erro_campo = "o121_ppaestimativadespesa";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_ppaintegracaodespesa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14510,'$this->o121_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o121_sequencial"]) || $this->o121_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2557,14510,'".AddSlashes(pg_result($resaco,$conresaco,'o121_sequencial'))."','$this->o121_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2557,14510,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o121_sequencial'))."','$this->o121_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o121_ppaintegracao"]) || $this->o121_ppaintegracao != "")
-           $resac = db_query("insert into db_acount values($acount,2557,14511,'".AddSlashes(pg_result($resaco,$conresaco,'o121_ppaintegracao'))."','$this->o121_ppaintegracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2557,14511,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o121_ppaintegracao'))."','$this->o121_ppaintegracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o121_coddot"]) || $this->o121_coddot != "")
-           $resac = db_query("insert into db_acount values($acount,2557,14512,'".AddSlashes(pg_result($resaco,$conresaco,'o121_coddot'))."','$this->o121_coddot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2557,14512,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o121_coddot'))."','$this->o121_coddot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o121_anousu"]) || $this->o121_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,2557,14513,'".AddSlashes(pg_result($resaco,$conresaco,'o121_anousu'))."','$this->o121_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2557,14513,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o121_anousu'))."','$this->o121_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o121_ppaestimativadespesa"]) || $this->o121_ppaestimativadespesa != "")
-           $resac = db_query("insert into db_acount values($acount,2557,14514,'".AddSlashes(pg_result($resaco,$conresaco,'o121_ppaestimativadespesa'))."','$this->o121_ppaestimativadespesa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2557,14514,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o121_ppaestimativadespesa'))."','$this->o121_ppaestimativadespesa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_ppaintegracaodespesa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14510,'$o121_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2557,14510,'','".AddSlashes(pg_result($resaco,$iresaco,'o121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2557,14511,'','".AddSlashes(pg_result($resaco,$iresaco,'o121_ppaintegracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2557,14512,'','".AddSlashes(pg_result($resaco,$iresaco,'o121_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2557,14513,'','".AddSlashes(pg_result($resaco,$iresaco,'o121_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2557,14514,'','".AddSlashes(pg_result($resaco,$iresaco,'o121_ppaestimativadespesa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2557,14510,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2557,14511,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o121_ppaintegracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2557,14512,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o121_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2557,14513,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o121_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2557,14514,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o121_ppaestimativadespesa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from ppaintegracaodespesa
@@ -407,7 +407,7 @@ class cl_ppaintegracaodespesa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ppaintegracaodespesa";
@@ -422,7 +422,7 @@ class cl_ppaintegracaodespesa {
    function sql_query ( $o121_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_ppaintegracaodespesa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,7 +472,7 @@ class cl_ppaintegracaodespesa {
    function sql_query_file ( $o121_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,7 +493,7 @@ class cl_ppaintegracaodespesa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

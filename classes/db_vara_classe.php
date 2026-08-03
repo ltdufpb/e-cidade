@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE vara
 class cl_vara { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v53_codvara = 0; 
-   var $v53_descr = null; 
+   public $v53_codvara = 0; 
+   public $v53_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v53_codvara = int4 = Vara 
                  v53_descr = char(40) = Descrição da Vara 
                  ";
    //funcao construtor da classe 
-   function cl_vara() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vara"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_vara {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v53_codvara = pg_result($result,0,0); 
+       $this->v53_codvara = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from vara_v53_codvara_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v53_codvara)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v53_codvara)){
          $this->erro_sql = " Campo v53_codvara maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_vara {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "vara ($this->v53_codvara) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "vara já Cadastrado";
@@ -152,11 +152,11 @@ class cl_vara {
      $resaco = $this->sql_record($this->sql_query_file($this->v53_codvara));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1888,'$this->v53_codvara','I')");
-       $resac = db_query("insert into db_acount values($acount,315,1888,'','".AddSlashes(pg_result($resaco,0,'v53_codvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,315,1889,'','".AddSlashes(pg_result($resaco,0,'v53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,315,1888,'','".AddSlashes(pg_fetch_result($resaco,0,'v53_codvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,315,1889,'','".AddSlashes(pg_fetch_result($resaco,0,'v53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_vara {
       $this->atualizacampos();
      $sql = " update vara set ";
      $virgula = "";
-     if(trim($this->v53_codvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v53_codvara"])){ 
+     if(trim((string) $this->v53_codvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v53_codvara"])){ 
        $sql  .= $virgula." v53_codvara = $this->v53_codvara ";
        $virgula = ",";
-       if(trim($this->v53_codvara) == null ){ 
+       if(trim((string) $this->v53_codvara) == null ){ 
          $this->erro_sql = " Campo Vara nao Informado.";
          $this->erro_campo = "v53_codvara";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_vara {
          return false;
        }
      }
-     if(trim($this->v53_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v53_descr"])){ 
+     if(trim((string) $this->v53_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v53_descr"])){ 
        $sql  .= $virgula." v53_descr = '$this->v53_descr' ";
        $virgula = ",";
-       if(trim($this->v53_descr) == null ){ 
+       if(trim((string) $this->v53_descr) == null ){ 
          $this->erro_sql = " Campo Descrição da Vara nao Informado.";
          $this->erro_campo = "v53_descr";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_vara {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1888,'$this->v53_codvara','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v53_codvara"]))
-           $resac = db_query("insert into db_acount values($acount,315,1888,'".AddSlashes(pg_result($resaco,$conresaco,'v53_codvara'))."','$this->v53_codvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,315,1888,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v53_codvara'))."','$this->v53_codvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v53_descr"]))
-           $resac = db_query("insert into db_acount values($acount,315,1889,'".AddSlashes(pg_result($resaco,$conresaco,'v53_descr'))."','$this->v53_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,315,1889,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v53_descr'))."','$this->v53_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_vara {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1888,'$v53_codvara','E')");
-         $resac = db_query("insert into db_acount values($acount,315,1888,'','".AddSlashes(pg_result($resaco,$iresaco,'v53_codvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,315,1889,'','".AddSlashes(pg_result($resaco,$iresaco,'v53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,315,1888,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v53_codvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,315,1889,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from vara
@@ -314,7 +314,7 @@ class cl_vara {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vara";
@@ -328,7 +328,7 @@ class cl_vara {
    function sql_query ( $v53_codvara=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -349,7 +349,7 @@ class cl_vara {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_vara {
    function sql_query_file ( $v53_codvara=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_vara {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

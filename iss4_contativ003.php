@@ -31,18 +31,18 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("fpdf151/scpdf.php"));
 require_once(modification("classes/db_tabativ_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cltabativ    = new cl_tabativ;
 
-$data         = implode("-",array_reverse(explode("/",trim($data))));
-$data1        = implode("-",array_reverse(explode("/",trim($data1))));
+$data         = implode("-",array_reverse(explode("/",trim((string) $data))));
+$data1        = implode("-",array_reverse(explode("/",trim((string) $data1))));
 
-$baixai       = implode("-",array_reverse(explode("/",trim($baixai))));
-$baixaf       = implode("-",array_reverse(explode("/",trim($baixaf))));
+$baixai       = implode("-",array_reverse(explode("/",trim((string) $baixai))));
+$baixaf       = implode("-",array_reverse(explode("/",trim((string) $baixaf))));
 
-$dataini      = implode("-",array_reverse(explode("/",trim($dataini))));
-$datafim      = implode("-",array_reverse(explode("/",trim($datafim))));
+$dataini      = implode("-",array_reverse(explode("/",trim((string) $dataini))));
+$datafim      = implode("-",array_reverse(explode("/",trim((string) $datafim))));
 
 $atividades   = trim($dados1.$dados2.$dados3.$dados4.$dados5.$dados6.$dados7.$dados8.$dados9.$dados10);
 $ruas         = trim($recruas1.$recruas2.$recruas3.$recruas4.$recruas5.$recruas6.$recruas7.$recruas8.$recruas9.$recruas10);
@@ -110,12 +110,12 @@ if ($proce == 's') {
 }
 
 $sTipoInscricao = 'Todas';
-if (trim($tipoinscricao) == 'per') {
+if (trim((string) $tipoinscricao) == 'per') {
 
 	$sTipoInscricao = 'Permanentes';
 	$where2         = " and q07_perman is true and q07_datafi is null ";
 
-} else if (trim($tipoinscricao) == 'pro') {
+} else if (trim((string) $tipoinscricao) == 'pro') {
 
 	$sTipoInscricao = 'Provisórias';
 
@@ -219,7 +219,7 @@ $sql = "
 
 $result = db_query($sql);
 //db_criatabela($result);exit;
-$numlinhas = pg_numrows($result);
+$numlinhas = pg_num_rows($result);
 if(!isset($numlinhas) || $numlinhas == 0){
     db_redireciona('db_erros.php?fechar=true&db_erro=Não foi encontrado nenhum registro para o filtro selecionado.');
 }
@@ -385,11 +385,11 @@ if ($opcao == 'analitico'){
 
 	  		$pdf->Cell(30,05,$q02_inscr,0,0,"L",1);
 	  	 	$pdf->Cell(60,05,db_cgccpf($z01_cgccpf),0,0,"L",1);
-	  	 	$pdf->Cell(145,05,(strlen($z01_nome) > 140?substr($z01_nome,0,140)."...":$z01_nome),0,0,"L",1);
+	  	 	$pdf->Cell(145,05,(strlen((string) $z01_nome) > 140?substr((string) $z01_nome,0,140)."...":$z01_nome),0,0,"L",1);
 	  	 	$pdf->Cell(40,05,$q02_numero."/".$q02_compl,0,1,"L",1);
 
-	  		$pdf->Cell(50,05,(strlen($q12_descr) > 80?substr($q12_descr,0,80)."...":$q12_descr),0,0,"L",1);
-		  	$pdf->Cell(115,05,(strlen($q03_descr) > 110?substr($q03_descr,0,110)."...":$q03_descr),0,0,"L",1);
+	  		$pdf->Cell(50,05,(strlen((string) $q12_descr) > 80?substr((string) $q12_descr,0,80)."...":$q12_descr),0,0,"L",1);
+		  	$pdf->Cell(115,05,(strlen((string) $q03_descr) > 110?substr((string) $q03_descr,0,110)."...":$q03_descr),0,0,"L",1);
 
 				if ($proce=='s'){
 
@@ -422,17 +422,17 @@ if ($opcao == 'analitico'){
 		$currentX += 40;
 	    $pdf->SetY($pdf->getY() - 5);
 	    $pdf->SetX($currentX);
-        $pdf->MultiCell(80,05,(strlen($z01_nome) > 75?substr($z01_nome,0,75)."...":$z01_nome), 0, 'L', 1);
+        $pdf->MultiCell(80,05,(strlen((string) $z01_nome) > 75?substr((string) $z01_nome,0,75)."...":$z01_nome), 0, 'L', 1);
 		$currentX += 80;
         $pdf->SetY($pdf->getY() - 5);
         $pdf->SetX($currentX);
-        $pdf->MultiCell(100,05,(strlen($j14_nome) > 90?substr($j14_nome,0,90)."...":$j14_nome), 0, 'L', 1);
+        $pdf->MultiCell(100,05,(strlen((string) $j14_nome) > 90?substr((string) $j14_nome,0,90)."...":$j14_nome), 0, 'L', 1);
 		$currentX += 100;
         $pdf->SetY($pdf->getY() - 5);
         $pdf->SetX($currentX);
         $pdf->MultiCell(35,05,$numCompl, 0, 'L', 1);
 
-	    $pdf->Cell(170,05,(strlen($q12_descr) > 24?substr($q12_descr,0,24)."...":$q12_descr),0,0,"L",1);
+	    $pdf->Cell(170,05,(strlen((string) $q12_descr) > 24?substr((string) $q12_descr,0,24)."...":$q12_descr),0,0,"L",1);
 
 	    if ($proce=='s'){
 
@@ -450,11 +450,11 @@ if ($opcao == 'analitico'){
 
 	  	  $pdf->Cell(20,05,$q02_inscr,0,0,"L",1);
 	  	  $pdf->Cell(40,05,db_cgccpf($z01_cgccpf),0,0,"L",1);
-    	  $pdf->Cell(80,05,(strlen($z01_nome) > 70?substr($z01_nome,0,70)."...":$z01_nome),0,0,"L",1);
-	    	$pdf->Cell(100,05,(strlen($j14_nome) > 90?substr($j14_nome,0,90)."...":$j14_nome),0,0,"L",1);
+    	  $pdf->Cell(80,05,(strlen((string) $z01_nome) > 70?substr((string) $z01_nome,0,70)."...":$z01_nome),0,0,"L",1);
+	    	$pdf->Cell(100,05,(strlen((string) $j14_nome) > 90?substr((string) $j14_nome,0,90)."...":$j14_nome),0,0,"L",1);
 	    	$pdf->Cell(35,05,$q02_numero."/".$q02_compl,0,1,"L",1);
 
-	    	$pdf->Cell(170,05,(strlen($q03_descr) > 200?substr($q03_descr,0,200)."...":$q03_descr),0,0,"L",1);
+	    	$pdf->Cell(170,05,(strlen((string) $q03_descr) > 200?substr((string) $q03_descr,0,200)."...":$q03_descr),0,0,"L",1);
 
 	      if ($proce == 's') {
 
@@ -483,9 +483,9 @@ if ($opcao == 'analitico'){
 
 			$pdf->Cell(20,05,$q12_classe,0,0,"C",1);
 			$pdf->Cell(35,05,db_cgccpf($z01_cgccpf),0,0,"L",1);
-			$pdf->Cell(50,05,(strlen($q12_descr) > 55?substr($q12_descr,0,55)."...":$q12_descr),0,0,"L",1);
+			$pdf->Cell(50,05,(strlen((string) $q12_descr) > 55?substr((string) $q12_descr,0,55)."...":$q12_descr),0,0,"L",1);
 			$pdf->Cell(50,05,(strlen($q03_ativ."-".$q03_descr) > 54?substr($q03_ativ."-".$q03_descr,0,54)."...":$q03_ativ."-".$q03_descr),0,0,"L",1);
-			$pdf->Cell(45,05,(strlen($j14_nome) > 44?substr($j14_nome,0,44)."...":$j14_nome),0,0,"L",1);
+			$pdf->Cell(45,05,(strlen((string) $j14_nome) > 44?substr((string) $j14_nome,0,44)."...":$j14_nome),0,0,"L",1);
 			$pdf->Cell(25,05,$numCompl,0,0,"C",1);
 			$pdf->Cell(25,05,db_formatar($q07_datain,'d'),0,0,"C",1);
 			$pdf->Cell(25,05,db_formatar($q07_datafi,'d'),0,1,"C",1);
@@ -576,7 +576,7 @@ if ($opcao == 'analitico'){
 	    $pdf->SetFont('Arial','',7);
 	    $pdf->Cell(25,5,$q02_inscr,0,0,"L",1);
 	    $pdf->Cell(45,5,db_cgccpf($z01_cgccpf),0,0,"L",1);
-	    $pdf->Cell(80,5,(strlen($z01_nome) > 70?substr($z01_nome,0,70)."...":$z01_nome),0,0,"L",1);
+	    $pdf->Cell(80,5,(strlen((string) $z01_nome) > 70?substr((string) $z01_nome,0,70)."...":$z01_nome),0,0,"L",1);
 	    $pdf->Cell(90,5,$j14_nome,0,0,"L",1);
 	    $pdf->Cell(35,5,$q02_numero.'/'.$q02_compl,0,1,"L",1);
 
@@ -586,8 +586,8 @@ if ($opcao == 'analitico'){
         $iTam = 135;
       }
 
-	    $pdf->Cell(70,5,(strlen($q12_descr) > 80?substr($q12_descr,0,80)."...":$q12_descr),0,0,"L",1);
-	    $pdf->Cell($iTam,5,(strlen($q03_descr) > 140?substr($q03_descr,0,140)."...":$q03_descr),0,0,"L",1);
+	    $pdf->Cell(70,5,(strlen((string) $q12_descr) > 80?substr((string) $q12_descr,0,80)."...":$q12_descr),0,0,"L",1);
+	    $pdf->Cell($iTam,5,(strlen((string) $q03_descr) > 140?substr((string) $q03_descr,0,140)."...":$q03_descr),0,0,"L",1);
 
 
 			if ($proce=='s'){

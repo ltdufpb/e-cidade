@@ -84,7 +84,7 @@ try {
 	      unset($_SESSION['oMeiArquivo']);
 	    }		  	
 		  	
-	    list($iMes,$iAno) = explode("/",$oParam->sCompetencia);
+	    [$iMes, $iAno] = explode("/",$oParam->sCompetencia);
 	          
 	    $sWhereImporta   = "     extract( year  from q111_data) = {$iAno} ";
 	    $sWhereImporta  .= " and extract( month from q111_data) = {$iMes} ";
@@ -104,11 +104,11 @@ try {
 
     $dtDataImpMei = $oMeiArquivoSessao->getDataImpMEI();
     
-    list($iAnoDataImpMei,$iMesDataImpMei,$iDiaDataImpMei) = explode("-",$dtDataImpMei);
+    [$iAnoDataImpMei, $iMesDataImpMei, $iDiaDataImpMei] = explode("-",(string) $dtDataImpMei);
     $iAnoComp = $iAnoDataImpMei;
     $iMesComp = $iMesDataImpMei;
     
-    list($iMes,$iAno) = explode("/",$oParam->sCompetencia);
+    [$iMes, $iAno] = explode("/",(string) $oParam->sCompetencia);
     $dtDataCompFim = "{$iAno}-{$iMes}-".ultimo_dia_mes($iMes,$iAno);
                           
     try {
@@ -141,8 +141,8 @@ try {
 	  $rsDadosImporta  = $clMeiImporta->sql_record($sSqlImporta);
 	  $aDadosImporta   = db_utils::getCollectionByRecord($rsDadosImporta,false,false,true); 
 		
-	  $aDadosAgrupados = array();
-    $aRetornoImporta = array();
+	  $aDadosAgrupados = [];
+    $aRetornoImporta = [];
     
 	  foreach ( $aDadosImporta as $oDadosImporta ) {
 		
@@ -247,7 +247,7 @@ try {
 	  foreach ( $aDadosAgrupados as $iCnpj => $aTipoDados ) {
 		    
 	    $oDadosMei = $aTipoDados['oMei'];
-	    $oDadosMei->aEventos = array();
+	    $oDadosMei->aEventos = [];
 		        
 	    foreach ( $aTipoDados['aEventos'] as $oEvento ) {
 	      $oDadosMei->aEventos[] = $oEvento;
@@ -280,7 +280,7 @@ try {
  	  	throw new Exception($eException->getMessage());
  	  }
       
-    $oRetorno->sTelaDetalhe = urlencode($sTelaDetalhe);
+    $oRetorno->sTelaDetalhe = urlencode((string) $sTelaDetalhe);
     $oRetorno->oEvento      = $oDadosEvento;
 
     
@@ -292,7 +292,7 @@ try {
       throw new Exception($eException->getMessage());
     }
   	
-  	$oRetorno->sTelaDetalhe = urlencode($sTelaDetalhe);
+  	$oRetorno->sTelaDetalhe = urlencode((string) $sTelaDetalhe);
   	
  	} else if ( $oParam->sMethod == "processaArquivoMEI" )  {
 

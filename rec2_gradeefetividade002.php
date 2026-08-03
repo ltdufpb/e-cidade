@@ -34,11 +34,11 @@ require_once(modification("rec2_gradeefetividade003.php"));
 global $cfpess,$subpes,$d08_carnes,$matric ;
 
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 $subpes = db_anofolha().'/'.db_mesfolha();
 
-$tipos = split(",", $tipos);
+$tipos = preg_split("#,#m", $tipos);
 //echo "<BR> tipos --> ".print_r($tipos);
 
 if($pcount == 3){

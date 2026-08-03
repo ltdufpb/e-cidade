@@ -37,8 +37,8 @@ require_once(modification("classes/db_orcparametro_classe.php"));
 require_once(modification("classes/db_orcelemento_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clempautitem = new cl_empautitem;
 $clpcmater = new cl_pcmater;
@@ -63,7 +63,7 @@ if (isset ($consultando) || isset ($incluir) || isset ($alterar)) {
 		$sqlerro = true;
 		$erro_msg = "Item não válido!";
 	} else {
-		$pc01_servico = pg_result($result, 0, "pc01_servico");
+		$pc01_servico = pg_fetch_result($result, 0, "pc01_servico");
 	}
 	//
 	// o codigo abaixo pega o primeiro ítem que foi incluido na autorização
@@ -136,7 +136,7 @@ if (isset ($autori_importa)) {
 							$liberado = false;
 						}
 					} else {
-						if (substr($elemento01, 0, 7) != substr($elemento02, 0, 7)) {
+						if (substr($elemento01, 0, 7) != substr((string) $elemento02, 0, 7)) {
 							$liberado = false;
 						}
 					}

@@ -31,12 +31,12 @@
   include(modification("libs/db_usuariosonline.php"));
   include(modification("dbforms/db_funcoes.php"));
   include(modification("classes/db_editaltipo_classe.php"));
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-  db_postmemory($HTTP_POST_VARS);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
+  db_postmemory($_POST);
   $db_opcao = 2;
   $cleditaltipo = new cl_editaltipo;
   $db_botao = false;
-  if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+  if (isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
  	 $cleditaltipo->alterar($d03_tipos);
   }else if(isset($chavepesquisa)){
  	 $result = $cleditaltipo->sql_record($cleditaltipo->sql_query($chavepesquisa)); 

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcriaabas = new cl_criaabas;
 ?>
@@ -57,21 +57,21 @@ $clcriaabas = new cl_criaabas;
    <tr>
        <td>
         <?php 
-          $clcriaabas->identifica = array("tipoprocesso"=>"Tipo de Processo",
+          $clcriaabas->identifica = ["tipoprocesso"=>"Tipo de Processo",
                                           "departamento"=>"Departamentos",
-                                          "formreclamacao"=>"Formas de Reclamação");
+                                          "formreclamacao"=>"Formas de Reclamação"];
           
-          $clcriaabas->title 	  = array("tipoprocesso"=>"Tipo de Processo",
+          $clcriaabas->title 	  = ["tipoprocesso"=>"Tipo de Processo",
                                           "departamento"=>"Departamentos",
-                                          "formreclamacao"=>"Formas de Reclamação");
+                                          "formreclamacao"=>"Formas de Reclamação"];
           
-          $clcriaabas->src 		  = array("tipoprocesso"=>"ouv1_aba1tipoproc006.php",
+          $clcriaabas->src 		  = ["tipoprocesso"=>"ouv1_aba1tipoproc006.php",
                                           "departamento"=>"ouv1_aba2depto004.php",
-                                          "formreclamacao"=>"ouv1_aba3formrecl004.php");
+                                          "formreclamacao"=>"ouv1_aba3formrecl004.php"];
           
-          $clcriaabas->disabled   = array("tipoprocesso"=>"false",
+          $clcriaabas->disabled   = ["tipoprocesso"=>"false",
                                           "departamento"=>"true",
-                                          "formreclamacao"=>"true");
+                                          "formreclamacao"=>"true"];
           
 	      $clcriaabas->cria_abas();
         ?>

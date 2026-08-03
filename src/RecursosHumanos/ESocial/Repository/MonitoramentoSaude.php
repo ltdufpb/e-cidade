@@ -97,9 +97,7 @@ class MonitoramentoSaude extends \BaseClassRepository
             throw new DBException($mensagem);
         }
 
-        return db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            return new \Assentamento($retorno->h16_codigo);
-        });
+        return db_utils::makeCollectionFromRecord($rs, fn($retorno) => new \Assentamento($retorno->h16_codigo));
     }
 
     /**

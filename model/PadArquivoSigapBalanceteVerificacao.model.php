@@ -41,7 +41,7 @@ final class PadArquivoSigapBalanceteVerificacao extends PadArquivoSigap {
   public function __construct() {
 
     $this->sNomeArquivo = "BalanceteVerificacao";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
 
   /**
@@ -59,7 +59,7 @@ final class PadArquivoSigapBalanceteVerificacao extends PadArquivoSigap {
       throw new Exception("Data final não informada!");
     }
 
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
 
     /**
      * Separamos a data do em ano, mes, dia
@@ -92,9 +92,9 @@ final class PadArquivoSigapBalanceteVerificacao extends PadArquivoSigap {
       $oBalanceteRetorno = new stdClass();
       $oBalanceteRetorno->bveCodigoEntidade  = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oBalanceteRetorno->bveMesAnoMovimento = $sDiaMesAno;
-      $oBalanceteRetorno->bveCodigoConta     = str_pad($oBalancete->estrutural, 20, 0,STR_PAD_RIGHT);
+      $oBalanceteRetorno->bveCodigoConta     = str_pad((string) $oBalancete->estrutural, 20, 0,STR_PAD_RIGHT);
 
-      $iTamanhoCampo = strlen($oInstituicao->codtrib);
+      $iTamanhoCampo = strlen((string) $oInstituicao->codtrib);
       if ($iTamanhoCampo != 4) {
 
         $sMsg  = "Identificação do Orgão/Unidade da instituição ({$oInstituicao->codtrib}) está incorreto. \\n ";
@@ -104,8 +104,8 @@ final class PadArquivoSigapBalanceteVerificacao extends PadArquivoSigap {
         throw new Exception($sMsg);
       }
 
-      $sOrgao                                             = substr($oInstituicao->codtrib, 0, 2);
-      $sUnidade                                           = substr($oInstituicao->codtrib, 2, 2);
+      $sOrgao                                             = substr((string) $oInstituicao->codtrib, 0, 2);
+      $sUnidade                                           = substr((string) $oInstituicao->codtrib, 2, 2);
       $oBalanceteRetorno->bveCodigoOrgao                  = str_pad($sOrgao, 2, 0,STR_PAD_RIGHT);
       $oBalanceteRetorno->bveCodigoUnidadeOrcamentaria    = str_pad($sUnidade, 2, 0,STR_PAD_RIGHT);
 
@@ -172,7 +172,7 @@ final class PadArquivoSigapBalanceteVerificacao extends PadArquivoSigap {
    */
   public function getNomeElementos() {
 
-    $aElementos = array(
+    $aElementos = [
                         "bveCodigoEntidade",
                         "bveMesAnoMovimento",
                         "bveCodigoConta",
@@ -188,7 +188,7 @@ final class PadArquivoSigapBalanceteVerificacao extends PadArquivoSigap {
                         "bveTipoNivelConta",
                         "bveNumeroNivelConta",
                         "bveSistemaContabil"
-                       );
+                       ];
     return $aElementos;
   }
 

@@ -6,29 +6,15 @@ class tceFolhaPagamentoPosterior extends tceEstruturaBasica
     const NOME_ARQUIVO = 'PAGTO_POS.TXT';
     const CODIGO_ARQUIVO = 308;
 
-    public $iInstit;
-    public $sInstituicoes;
-    public $sDataIni;
-    public $sDataFim;
-    public $sCodRemessa;
-    public $iCodigoArquivo;
-
     private $oLeiaute = null;
 
-    public function __construct($iInstit, $sCodRemessa, $sDataIni, $sDataFim, $oData, $oLeiaute = null, $sInstituicoes, $iCodigoArquivo = 308)
+    public function __construct(public $iInstit, public $sCodRemessa, public $sDataIni, public $sDataFim, $oData, $oLeiaute = null, public $sInstituicoes = null, public $iCodigoArquivo = 308)
     {
         try {
             parent::__construct(self::CODIGO_ARQUIVO, self::NOME_ARQUIVO);
         } catch (Exception $e) {
             throw $e;
         }
-
-        $this->iInstit = $iInstit;
-        $this->sInstituicoes = $sInstituicoes;
-        $this->sDataIni = $sDataIni;
-        $this->sDataFim = $sDataFim;
-        $this->sCodRemessa = $sCodRemessa;
-        $this->iCodigoArquivo = $iCodigoArquivo;
 
         if ($oLeiaute != null) {
             $this->oLeiaute = $oLeiaute;
@@ -90,8 +76,8 @@ class tceFolhaPagamentoPosterior extends tceEstruturaBasica
 
     private function buscaInformacoesPagamentoPosterior()
     {
-        list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim) = explode("-", $this->sDataFim);
-        list ($iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni) = explode("-", $this->sDataIni);
+        [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $this->sDataFim);
+        [$iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni] = explode("-", (string) $this->sDataIni);
 
         $sql = "
             SELECT

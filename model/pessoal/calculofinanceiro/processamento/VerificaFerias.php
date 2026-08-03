@@ -70,14 +70,14 @@ function verificarFerias($lCalculoFeriasEfetuado) {
 
 
 
-      if (( $opcao_geral == PONTO_SALARIO && strtolower($cadferia[0]["r30_ponto"]) == "s" )
+      if (( $opcao_geral == PONTO_SALARIO && strtolower((string) $cadferia[0]["r30_ponto"]) == "s" )
         ||
         ( $opcao_geral == PONTO_SALARIO && $cadferia[0][$r30_proc]  < $subpes )
         ||
-        ( $opcao_geral == PONTO_SALARIO && $cadferia[0][$r30_proc] == $subpes && strtolower($cadferia[0]["r30_ponto"]) == "c"
-        && ('t' == $cadferia[0]["r30_paga13"]) && strtolower($cfpess[0]["r11_fersal"]) == "f" )
+        ( $opcao_geral == PONTO_SALARIO && $cadferia[0][$r30_proc] == $subpes && strtolower((string) $cadferia[0]["r30_ponto"]) == "c"
+        && ('t' == $cadferia[0]["r30_paga13"]) && strtolower((string) $cfpess[0]["r11_fersal"]) == "f" )
         ||
-        ( $opcao_geral == PONTO_COMPLEMENTAR && strtolower($cadferia[0]["r30_ponto"]) == "c" && $cadferia[0][$r30_proc] == $subpes ) ) {
+        ( $opcao_geral == PONTO_COMPLEMENTAR && strtolower((string) $cadferia[0]["r30_ponto"]) == "c" && $cadferia[0][$r30_proc] == $subpes ) ) {
 
 
         // 1 - Repassar para salario as rubricas de ferias que tem o 1/3 pago na
@@ -90,17 +90,17 @@ function verificarFerias($lCalculoFeriasEfetuado) {
 
         $pagar_so_1_3_na_complementar = false;
         $paga_como_ferias = false;
-        if ($cadferia[0][$r30_proc] == $subpes && strtolower($cadferia[0]["r30_ponto"]) == "c"
+        if ($cadferia[0][$r30_proc] == $subpes && strtolower((string) $cadferia[0]["r30_ponto"]) == "c"
           && ('t' == $cadferia[0]["r30_paga13"]) ) {
           $pagar_so_1_3_na_complementar = true ;
-          if (strtolower($cfpess[0]["r11_fersal"]) == "f") {
+          if (strtolower((string) $cfpess[0]["r11_fersal"]) == "f") {
             $paga_como_ferias  = true;
           }
         }
 
         $ferias_paga_1_3 = false;
 
-        if (strtolower($cfpess[0]["r11_fersal"]) == "f") {
+        if (strtolower((string) $cfpess[0]["r11_fersal"]) == "f") {
           if ($cadferia[0]["r30_paga13"] == 't') {
             $ferias_paga_1_3 = true;
           } else {
@@ -113,7 +113,7 @@ function verificarFerias($lCalculoFeriasEfetuado) {
 
         if ($ferias_paga_1_3  || 'f' == $cadferia[0]["r30_paga13"]) {
           $ir_calculado_ferias = true;
-        } else if (strtolower($cfpess[0]["r11_fersal"]) == "s" && 't' == $cadferia[0]["r30_paga13"]) {
+        } else if (strtolower((string) $cfpess[0]["r11_fersal"]) == "s" && 't' == $cadferia[0]["r30_paga13"]) {
           $ir_calculado_ferias = false;
         }
 
@@ -121,8 +121,8 @@ function verificarFerias($lCalculoFeriasEfetuado) {
         //echo "<BR> r30_paga13 --> ".$cadferia[0]["r30_paga13"];
         //echo "<BR> ir_calculado_ferias --> ".($ir_calculado_ferias?'1':'0')."   <---";
         $calcular_tipo_proc = false;
-        if (($opcao_geral == PONTO_COMPLEMENTAR && strtolower($cadferia[0]["r30_ponto"]) == "c")
-          || ($opcao_geral == PONTO_SALARIO && strtolower($cadferia[0]["r30_ponto"]) == "s" )  ) {
+        if (($opcao_geral == PONTO_COMPLEMENTAR && strtolower((string) $cadferia[0]["r30_ponto"]) == "c")
+          || ($opcao_geral == PONTO_SALARIO && strtolower((string) $cadferia[0]["r30_ponto"]) == "s" )  ) {
           $calcular_tipo_proc = true;
         }
 
@@ -165,9 +165,9 @@ function verificarFerias($lCalculoFeriasEfetuado) {
             //   R915 % IRRF S/FERIAS DESCONTO -
             //   R916 VALE TRANSPORTE DESCONTO
             if( 'f' == $cadferia[0]["r30_paga13"]){
-              if (strtolower($cfpess[0]["r11_fersal"]) == "f" && 't' == $cfpess[0]["r11_recalc"] ){
+              if (strtolower((string) $cfpess[0]["r11_fersal"]) == "f" && 't' == $cfpess[0]["r11_recalc"] ){
                 $rub_especial_ferias_descontos += $gerffer_[$Igerffer]["r31_valor"];
-                if (strtolower($gerffer_[$Igerffer]["r31_tpp"]) == "d" ) {
+                if (strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) == "d" ) {
                   $rub_especial_ferias_adia -= $gerffer_[$Igerffer]["r31_valor"];
                   //echo "<BR> 2 r10_rubric = ".$gerffer_[$Igerffer]["r31_rubric"]." valor --> ".$gerffer_[$Igerffer]["r31_valor"];
                   //echo "<BR> 1 r10_rubric = ".$gerffer_[$Igerffer]["r31_rubric"]." rub_especial_ferias_adia --> $rub_especial_ferias_adia";
@@ -180,8 +180,8 @@ function verificarFerias($lCalculoFeriasEfetuado) {
             } else if ($gerffer_[$Igerffer]["r31_rubric"] == $cfpess[0]["r11_ferant"]) {
               // Ferias mes anterior
               if ($opcao_geral == PONTO_SALARIO) {
-                $matriz1 = array();
-                $matriz2 = array();
+                $matriz1 = [];
+                $matriz2 = [];
 
                 $matriz1[1] = "r10_regist";
                 $matriz1[2] = "r10_rubric";
@@ -212,8 +212,8 @@ function verificarFerias($lCalculoFeriasEfetuado) {
               // Abono mes anterior
               if ($opcao_geral == PONTO_SALARIO) {
 
-                $matriz1 = array();
-                $matriz2 = array();
+                $matriz1 = [];
+                $matriz2 = [];
 
                 $matriz1[1] = "r10_regist";
                 $matriz1[2] = "r10_rubric";
@@ -317,7 +317,7 @@ function verificarFerias($lCalculoFeriasEfetuado) {
             //echo "<BR> nao achou na base inssirf_base_ferias lanca Rubrica ferias no ponto ou no salario";
 
             if (!$achou
-              && (strtolower($cfpess[0]["r11_fersal"]) == "f" )
+              && (strtolower((string) $cfpess[0]["r11_fersal"]) == "f" )
               && $cadferia[0][$r30_proc] <= $subpes  // Pagamento das ferias no mes do calculo da folha
             ) {
             //echo "<BR> passo aqui 2.0 -->".$gerffer_[$Igerffer]["r31_rubric"];
@@ -332,8 +332,8 @@ function verificarFerias($lCalculoFeriasEfetuado) {
               //echo "<BR> Repassando para o salario ";
               // Repassa para o salario
               // vai gerar as 2000 mais um 1/3
-              $matriz1 = array();
-              $matriz2 = array();
+              $matriz1 = [];
+              $matriz2 = [];
 
               $matriz1[1] = "r10_regist";
               $matriz1[2] = "r10_rubric";
@@ -358,11 +358,11 @@ function verificarFerias($lCalculoFeriasEfetuado) {
               global $transacao;
 
               if(
-                (strtolower($gerffer_[$Igerffer]["r31_tpp"]) != "d" && $cadferia[0]["r30_paga13"] == 't' )
+                (strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) != "d" && $cadferia[0]["r30_paga13"] == 't' )
                 || $cadferia[0]["r30_paga13"] == 'f'
               ) {
               $OK = true;
-              if(strtolower($gerffer_[$Igerffer]["r31_tpp"]) == "a" ){
+              if(strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) == "a" ){
                 $OK = false;
                 if($calcular_tipo_proc && $cadferia[0][$r30_proc] == $subpes ){
                   $OK = true;
@@ -387,14 +387,14 @@ function verificarFerias($lCalculoFeriasEfetuado) {
                 }
               }
               }
-              if(strtolower($gerffer_[$Igerffer]["r31_tpp"]) == "d" && $cadferia[0]["r30_paga13"] == 'f'){
+              if(strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) == "d" && $cadferia[0]["r30_paga13"] == 'f'){
                 $gravar_valor_adiantamento_ferias_a_descontar += $gerffer_[$Igerffer]["r31_valor"];
               }
             } else {
               // Repassa para a complementar
               // vai gerar as 2000 mais 1/3
-              $matriz1 = array();
-              $matriz2 = array();
+              $matriz1 = [];
+              $matriz2 = [];
 
               $matriz1[1] = "r47_regist";
               $matriz1[2] = "r47_rubric";
@@ -417,11 +417,11 @@ function verificarFerias($lCalculoFeriasEfetuado) {
               //echo "<BR> condicaoaux --> $condicaoaux";
               global $transacao;
               if(
-                (strtolower($gerffer_[$Igerffer]["r31_tpp"]) == "a" && $cadferia[0]["r30_paga13"] == 't' )
+                (strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) == "a" && $cadferia[0]["r30_paga13"] == 't' )
                 || $cadferia[0]["r30_paga13"] == 'f'
               ) {
               $OK = true;
-              if(strtolower($gerffer_[$Igerffer]["r31_tpp"]) == "a" ){
+              if(strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) == "a" ){
                 $OK = false;
                 if($calcular_tipo_proc && $cadferia[0][$r30_proc] == $subpes ){
                   $OK = true;
@@ -445,14 +445,14 @@ function verificarFerias($lCalculoFeriasEfetuado) {
                 }
               }
               }
-              if(strtolower($gerffer_[$Igerffer]["r31_tpp"]) == "d" && $cadferia[0]["r30_paga13"] == 'f'){
+              if(strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) == "d" && $cadferia[0]["r30_paga13"] == 'f'){
                 $gravar_valor_adiantamento_ferias_a_descontar += $gerffer_[$Igerffer]["r31_valor"];
               }
             }
             } else {
               // Achou na base inssirf_base_ferias lanca Rubrica ferias no ponto ou no salario
               //echo "<BR> r31_tpp --> ".strtolower($gerffer_[$Igerffer]["r31_tpp"]);
-              if (strtolower($gerffer_[$Igerffer]["r31_tpp"]) == "f") {
+              if (strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) == "f") {
                 if (( $calcular_tipo_proc && 'f' == $cadferia[0]["r30_paga13"] )
                   ||
                   ( $opcao_geral == PONTO_SALARIO && ( $ferias_paga_1_3 || ( 'f' == $cadferia[0]["r30_paga13"] && $cadferia[0][$r30_proc] < $subpes ) ) )
@@ -461,11 +461,11 @@ function verificarFerias($lCalculoFeriasEfetuado) {
                 $rub_especial_ferias += $gerffer_[$Igerffer]["r31_valor"];
                 //echo "<BR> 2 valor_ferias --> $rub_especial_ferias";
                 }
-              } else if (strtolower($gerffer_[$Igerffer]["r31_tpp"]) == "d" ) {
+              } else if (strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) == "d" ) {
                 // adiantamento de ferias
 
 
-                if (strtolower($cfpess[0]["r11_fersal"]) == "f" && 'f' == $cadferia[0]["r30_paga13"] ){
+                if (strtolower((string) $cfpess[0]["r11_fersal"]) == "f" && 'f' == $cadferia[0]["r30_paga13"] ){
                   $rub_especial_ferias_adia += $gerffer_[$Igerffer]["r31_valor"];
                   $rub_especial_ferias_descontos += $gerffer_[$Igerffer]["r31_valor"];
                   //echo "<BR> 3 r10_rubric = ".$gerffer_[$Igerffer]["r31_rubric"]." rub_especial_ferias_adia --> $rub_especial_ferias_adia";
@@ -488,11 +488,11 @@ function verificarFerias($lCalculoFeriasEfetuado) {
             ) {
             //echo "<BR> passou aqui !!!!  rubrica --> ".$gerffer_[$Igerffer]["r31_rubric"]."  tpp --->".$gerffer_[$Igerffer]["r31_tpp"];
             // sandro
-            $nr_dias_mes = pg_result(db_query("select ndias(".db_year($cadferia[0][$r30_peri] ).",".db_month($cadferia[0][$r30_peri] ).") as ndias "),0,"ndias");
+            $nr_dias_mes = pg_fetch_result(db_query("select ndias(".db_year($cadferia[0][$r30_peri] ).",".db_month($cadferia[0][$r30_peri] ).") as ndias "),0,"ndias");
 
             // adiantamento de ferias
-            if(  strtolower($gerffer_[$Igerffer]["r31_tpp"]) == "d"
-              && strtolower($cfpess[0]["r11_fersal"]) == "f"
+            if(  strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) == "d"
+              && strtolower((string) $cfpess[0]["r11_fersal"]) == "f"
               && 'f' == $cadferia[0]["r30_paga13"]
               && 't' ==  $cfpess[0]["r11_recalc"]
             ) {
@@ -503,7 +503,7 @@ function verificarFerias($lCalculoFeriasEfetuado) {
             $rub_especial_ferias_descontos += $gerffer_[$Igerffer]["r31_valor"];
             $rub_especial_ferias_adia -= $gerffer_[$Igerffer]["r31_valor"];
             //echo "<BR> 4 r10_rubric = ".$gerffer_[$Igerffer]["r31_rubric"]." rub_especial_ferias_adia --> $rub_especial_ferias_adia";
-            } else if ( strtolower($gerffer_[$Igerffer]["r31_tpp"]) == "f"
+            } else if ( strtolower((string) $gerffer_[$Igerffer]["r31_tpp"]) == "f"
               && ( $F019 == 30 && db_month($cadferia[0][$r30_peri]) == db_month($cadferia[0][$r30_perf]) || $F019 >= $nr_dias_mes )
               && db_str(db_year($cadferia[0][$r30_peri]),4,0)."/". db_str(db_month($cadferia[0][$r30_peri]),2,0,"0") == $subpes
               && $gerffer_[$Igerffer]["r31_rubric"] != db_str((db_val($cfpess[0]["r11_palime"])+2000),4,0 )
@@ -518,8 +518,8 @@ function verificarFerias($lCalculoFeriasEfetuado) {
             global $pontofx_;
             if (db_selectmax("pontofx_", "select * from pontofx ".bb_condicaosubpes("r90_" ).$condicaoaux )) {
 
-              $matriz1 = array();
-              $matriz2 = array();
+              $matriz1 = [];
+              $matriz2 = [];
 
               if ($opcao_geral == PONTO_SALARIO) {
                 $matriz1[1] = "r10_regist";
@@ -597,8 +597,8 @@ function verificarFerias($lCalculoFeriasEfetuado) {
 
                   if ($paga_como_ferias || !$pagar_so_1_3_na_complementar ) {
 
-                    $matriz1 = array();
-                    $matriz2 = array();
+                    $matriz1 = [];
+                    $matriz2 = [];
 
                     $matriz1[1] = "r10_regist";
                     $matriz1[2] = "r10_rubric";
@@ -638,8 +638,8 @@ function verificarFerias($lCalculoFeriasEfetuado) {
                 } else {
                   if (($pagar_so_1_3_na_complementar && !$paga_como_ferias) || !$pagar_so_1_3_na_complementar ) {
 
-                    $matriz1 = array();
-                    $matriz2 = array();
+                    $matriz1 = [];
+                    $matriz2 = [];
 
                     $matriz1[1] = "r47_regist";
                     $matriz1[2] = "r47_rubric";
@@ -684,8 +684,8 @@ function verificarFerias($lCalculoFeriasEfetuado) {
                 // Repassa as rubricas as Rubricas de desconto de salario que estão no Ponto calculado das Férias para o Ponto de Salario ou complementar
 
                 if ($opcao_geral == PONTO_SALARIO) {
-                  $matriz1 = array();
-                  $matriz2 = array();
+                  $matriz1 = [];
+                  $matriz2 = [];
 
                   $matriz1[1] = "r10_regist";
                   $matriz1[2] = "r10_rubric";
@@ -713,8 +713,8 @@ function verificarFerias($lCalculoFeriasEfetuado) {
                   }
                 } else {
                   //echo "<BR> passo aqui 3 -->".$gerffer_[$Igerffer]["r31_rubric"];
-                  $matriz1 = array();
-                  $matriz2 = array();
+                  $matriz1 = [];
+                  $matriz2 = [];
 
                   $matriz1[1] = "r47_regist";
                   $matriz1[2] = "r47_rubric";
@@ -773,8 +773,8 @@ function gravarRubricasEspeciaisFerias($r30_proc,$r30_peri,$r30_perf, $lCalculoF
     // Paga abono ferias
     if (db_substr(db_dtos($cadferia[0][$r30_peri]),1,6) > db_strtran($subpes,"/","") && ('t' ==  $cfpess[0]["r11_recalc"] )) {
       if ($rub_especial_ferias_13a+$rub_especial_ferias_abono > 0) {
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1] = "r30_vliq1";
         $matriz2[1] = round($valor_adiantamento_abono_a_descontar+$rub_especial_ferias_13a+$rub_especial_ferias_abono,2);
         db_update("cadferia",$matriz1,$matriz2,bb_condicaosubpes("r30_" ).$condicaoaux );
@@ -783,8 +783,8 @@ function gravarRubricasEspeciaisFerias($r30_proc,$r30_peri,$r30_perf, $lCalculoF
   }
   if ($cadferia[0][$r30_proc] == $subpes &&  $calcular_tipo_proc ) {
     if ($rub_especial_ferias_adia > 0 ){
-      $matriz4 = array();
-      $matriz5 = array();
+      $matriz4 = [];
+      $matriz5 = [];
       $matriz4[1] = "r30_vfgt1";
       $matriz4[2] = "r30_descad";
 
@@ -803,8 +803,8 @@ function gravarRubricasEspeciaisFerias($r30_proc,$r30_peri,$r30_perf, $lCalculoF
     //echo "<BR> 2 grava_rubricas_ferias()  gravando valor_ferias -> $rub_especial_ferias";
 
     if (( $rub_especial_ferias > 0 )) {
-      $matriz1 = array();
-      $matriz2 = array();
+      $matriz1 = [];
+      $matriz2 = [];
 
       $matriz1[1] = "r10_regist";
       $matriz1[2] = "r10_rubric";
@@ -842,8 +842,8 @@ function gravarRubricasEspeciaisFerias($r30_proc,$r30_peri,$r30_perf, $lCalculoF
 
         // Se o valor a receber como provento de adiantamento é menor que o valor dos descontos de adiantamento, não tem adiantamento
 
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
 
         $matriz1[1] = "r10_regist";
         $matriz1[2] = "r10_rubric";
@@ -878,8 +878,8 @@ function gravarRubricasEspeciaisFerias($r30_proc,$r30_peri,$r30_perf, $lCalculoF
     //echo "<BR> 1 grava_rubricas_ferias()  gravando rubrica ---> ".$cfpess[0]["r11_fer13"]." valor ---> $rub_especial_ferias_13";
 
     if (!db_empty($rub_especial_ferias_13) && $rub_especial_ferias_13 > 0) {
-      $matriz1 = array();
-      $matriz2 = array();
+      $matriz1 = [];
+      $matriz2 = [];
 
       $matriz1[1] = "r10_regist";
       $matriz1[2] = "r10_rubric";
@@ -918,8 +918,8 @@ function gravarRubricasEspeciaisFerias($r30_proc,$r30_peri,$r30_perf, $lCalculoF
       if (db_substr(db_dtos($cadferia[0][$r30_peri]),1,6) > db_strtran($subpes,"/","") && ('t' ==  $cfpess[0]["r11_recalc"] )) {
         // r11_recalc --> Recalcula 1/3 ferias mes gozo
         if ($rub_especial_ferias_13a+$rub_especial_ferias_abono > 0 && $calcular_tipo_proc) {
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r10_regist";
           $matriz1[2] = "r10_rubric";
@@ -950,8 +950,8 @@ function gravarRubricasEspeciaisFerias($r30_proc,$r30_peri,$r30_perf, $lCalculoF
           }
         }
       } else {
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1] = "r10_regist";
         $matriz1[2] = "r10_rubric";
         $matriz1[3] = "r10_lotac";
@@ -999,8 +999,8 @@ function gravarRubricasEspeciaisFerias($r30_proc,$r30_peri,$r30_perf, $lCalculoF
       }
     }
   } else {
-    $matriz1 = array();
-    $matriz2 = array();
+    $matriz1 = [];
+    $matriz2 = [];
 
     $matriz1[1] = "r47_regist";
     $matriz1[2] = "r47_rubric";

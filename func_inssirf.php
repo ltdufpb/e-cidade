@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_inssirf_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clinssirf = new cl_inssirf;
 $clinssirf->rotulo->label("r33_codigo");
 $clinssirf->rotulo->label("r33_codtab");
@@ -98,9 +98,9 @@ $clinssirf->rotulo->label("r33_codtab");
         }else{
            $sql = $clinssirf->sql_query("",$campos,"r33_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_r33_codtab)){
-          $repassa = array("chave_r33_codigo"=>$chave_r33_codigo,"chave_r33_codtab"=>$chave_r33_codtab);
+          $repassa = ["chave_r33_codigo"=>$chave_r33_codigo,"chave_r33_codtab"=>$chave_r33_codtab];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

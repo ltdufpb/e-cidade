@@ -79,7 +79,7 @@ $clrotulo->label('r70_descr');
 		      	<td><strong>Tipo de resumo:</strong></td>
 		      	<td>
 		      		<?php
-		      			$aTipoResumo = array('1'=>'Geral' , '2'=>'Lotação', '3'=>'Órgão');
+		      			$aTipoResumo = ['1'=>'Geral' , '2'=>'Lotação', '3'=>'Órgão'];
 		      			db_select('iTipoResumo', $aTipoResumo, true, 1, "style='width: 150px;' onchange=\"js_mostraResumo(this.value)\"");
 		      		?>
 		      	</td>
@@ -140,7 +140,7 @@ $clrotulo->label('r70_descr');
 		      	<td><strong>Tipo de ordem:</strong></td>
 		      	<td>
 		      		<?php
-		      			$aOrdem = array('1'=>'Alfabética', '2'=>'Numérica');
+		      			$aOrdem = ['1'=>'Alfabética', '2'=>'Numérica'];
 		      			db_select('iTipoOrdem', $aOrdem, true, 1, "style='width: 150px;'");
 		      		?>
 		      	</td>
@@ -149,7 +149,7 @@ $clrotulo->label('r70_descr');
 		      	<td><strong>Vínculo:</strong></td>
 		      	<td>
 		      		<?php
-		      			$aVinculo = array('1'=>'Todos', '2'=>'Ativo', '3'=>'Inativo', '4'=>'Pensionistas', '5'=>'Inativos/pensionistas');
+		      			$aVinculo = ['1'=>'Todos', '2'=>'Ativo', '3'=>'Inativo', '4'=>'Pensionistas', '5'=>'Inativos/pensionistas'];
 		      			db_select('iVinculo', $aVinculo, true, 1, "style='width: 150px;'");
 		      		?>
 		      	</td>

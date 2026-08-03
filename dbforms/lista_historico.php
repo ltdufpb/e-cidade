@@ -28,9 +28,9 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($arg))
-  parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+  parse_str(base64_decode((string) $_SERVER['QUERY_STRING']));
 if(isset($retorno)) {
   $ret = explode("##",$retorno);
   echo "
@@ -42,18 +42,18 @@ if(isset($retorno)) {
   </script>
   ";
 }
-if(isset($HTTP_POST_VARS["arg"]))
-  $arg = $HTTP_POST_VARS["arg"];
+if(isset($_POST["arg"]))
+  $arg = $_POST["arg"];
   if($arg == 'O') {
     $sql = "select (o02_codigo || '##' || o02_descr) as db_codigo,o02_codigo,o02_descr,o02_valor,o02_codtce,o02_percen
           from orcam
 		  where o02_anousu = ".db_getsession("DB_anousu")."
-		  and o02_codigo like '".$HTTP_POST_VARS["filtro"]."%'";
+		  and o02_codigo like '".$_POST["filtro"]."%'";
   } else if($arg == 'E') {
     $sql = "select (c01_estrut::varchar(13) || '##' || c01_descr) as db_codigo,c01_estrut,c01_descr
 	      from plano
 	  	  where c01_anousu = ".db_getsession("DB_anousu")."
-		  and c01_estrut like '".$HTTP_POST_VARS["filtro"]."%'";
+		  and c01_estrut like '".$_POST["filtro"]."%'";
   }
 ?>
 <html>
@@ -69,7 +69,7 @@ if(isset($HTTP_POST_VARS["arg"]))
 <td align="center" nowrap>
 
 <form name="form5" method="post">
-  <input type="text" name="filtro" value="<?=@$HTTP_POST_VARS['filtro']?>" onBlur="window.focus();">
+  <input type="text" name="filtro" value="<?=@$_POST['filtro']?>" onBlur="window.focus();">
   <input type="hidden" name="arg" value="<?=@$arg?>">
   <input type="submit" name="procurar" value="Procurar">
 </form>
@@ -78,7 +78,7 @@ if(isset($HTTP_POST_VARS["arg"]))
 <tr>
 <td align="center">
 <?php 
-db_lov($sql,15,"lista_historico.php",$HTTP_POST_VARS["filtro"]);
+db_lov($sql,15,"lista_historico.php",$_POST["filtro"]);
 ?>
 </td>
 </tr>

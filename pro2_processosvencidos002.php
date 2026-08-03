@@ -53,7 +53,7 @@ const TODOS_DEPARTAMENTOS_SELECIONADOS = 1;
 const MENOS_DEPARTAMENTOS_SELECIONADOS = 2;
 
 try {
-    $aDepartamentosSelecionados = explode(',', $oGet->aDepartamentosSelecionados);
+    $aDepartamentosSelecionados = explode(',', (string) $oGet->aDepartamentosSelecionados);
 
     switch ($oGet->tipoEmissao) {
         case TODOS_DEPARTAMENTOS:
@@ -90,9 +90,7 @@ try {
              * @param $oDados
              * @return mixed
              */
-                $rsDepartamento, function ($oDados) {
-                return $oDados->p103_db_depart;
-            });
+                $rsDepartamento, fn($oDados) => $oDados->p103_db_depart);
             break;
     }
 
@@ -105,18 +103,18 @@ try {
     $oPdf->SetFillColor(225);
     $oPdf->SetAutoPageBreak(false);
 
-    $aFiltros = array();
+    $aFiltros = [];
 
-    $aFiltros[] = array('NOW()', '>', 'ultima_data + (SELECT p101_diasprazo FROM mensageriaprocesso LIMIT 1)');
+    $aFiltros[] = ['NOW()', '>', 'ultima_data + (SELECT p101_diasprazo FROM mensageriaprocesso LIMIT 1)'];
 
     if ($oGet->dataInicial) {
         $oDataInicial = new DBDate($oGet->dataInicial);
-        $aFiltros[] = array('ultima_data', '>=', "'{$oDataInicial->getDate()}'");
+        $aFiltros[] = ['ultima_data', '>=', "'{$oDataInicial->getDate()}'"];
     }
 
     if ($oGet->dataFinal) {
         $oDataFinal = new DBDate($oGet->dataFinal);
-        $aFiltros[] = array('ultima_data', '<=', "'{$oDataFinal->getDate()}'");
+        $aFiltros[] = ['ultima_data', '<=', "'{$oDataFinal->getDate()}'"];
     }
 
     $aDepartamentosNaoEncontrados = $oGet->detalhamento
@@ -211,9 +209,7 @@ function departamentosPorInstituicao()
         throw new BusinessException('Nenhum departamento encontrado para a instituição.');
     }
 
-    return db_utils::makeCollectionFromRecord($rsDepartamento, function ($oDados) {
-        return $oDados->coddepto;
-    });
+    return db_utils::makeCollectionFromRecord($rsDepartamento, fn($oDados) => $oDados->coddepto);
 }
 
 /**
@@ -226,7 +222,7 @@ function departamentosPorInstituicao()
  */
 function imprimirComDetalhamento(PDFDocument $oPdf, DBDate $oDataAtual, $aDepartamentosSelecionados, $aFiltros)
 {
-    $aDepartamentosNaoEncontrados = array();
+    $aDepartamentosNaoEncontrados = [];
 
     ProcessoRepositorio::chunkByDepartamento('ultimas_movimentacoes_processos_vencidos', $aDepartamentosSelecionados,
         function ($aProcessos, $oDepartamento) use ($oPdf, $oDataAtual, &$aDepartamentosNaoEncontrados) {
@@ -267,7 +263,7 @@ function imprimirComDetalhamento(PDFDocument $oPdf, DBDate $oDataAtual, $aDepart
             } else {
                 $aDepartamentosNaoEncontrados[] = $oDepartamento;
             }
-        }, array('*'), $aFiltros, array('descricao_departamento'));
+        }, ['*'], $aFiltros, ['descricao_departamento']);
 
     return $aDepartamentosNaoEncontrados;
 }
@@ -281,7 +277,7 @@ function imprimirComDetalhamento(PDFDocument $oPdf, DBDate $oDataAtual, $aDepart
  */
 function imprimirSemDetalhamento(PDFDocument $oPdf, $aDepartamentosSelecionados, $aFiltros)
 {
-    $aDepartamentosNaoEncontrados = array();
+    $aDepartamentosNaoEncontrados = [];
 
     $aDepartamentos = ProcessoRepositorio::totalVencidosPorDepartamento($aDepartamentosSelecionados, $aFiltros);
 
@@ -296,7 +292,7 @@ function imprimirSemDetalhamento(PDFDocument $oPdf, $aDepartamentosSelecionados,
             $sResponsaveis = $oDadosDepartamento->responsaveis;
 
             if (!empty($sResponsaveis)) {
-                $sResponsaveis = implode(', ', json_decode($oDadosDepartamento->responsaveis));
+                $sResponsaveis = implode(', ', json_decode((string) $oDadosDepartamento->responsaveis));
             }
 
             $iLinhasResponsaveis = $oPdf->NbLines(84, $sResponsaveis);
@@ -327,7 +323,5 @@ function imprimirSemDetalhamento(PDFDocument $oPdf, $aDepartamentosSelecionados,
 
     $aDepartamentosNaoEncontrados = array_diff($aDepartamentosSelecionados, $aDepartamentosNaoEncontrados);
 
-    return array_map(function ($iDepartamentosNaoEncontrado) {
-        return new DBDepartamento($iDepartamentosNaoEncontrado);
-    }, $aDepartamentosNaoEncontrados);
+    return array_map(fn($iDepartamentosNaoEncontrado) => new DBDepartamento($iDepartamentosNaoEncontrado), $aDepartamentosNaoEncontrados);
 }

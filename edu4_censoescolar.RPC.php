@@ -56,7 +56,7 @@ switch ($oParam->exec) {
     try {
 
       $oCenso     = ExportacaoCensoFactory::getInstanceByAno($oParam->iAno);
-      $sDataCenso = implode("-", array_reverse(explode("/", $oParam->dtCenso)));
+      $sDataCenso = implode("-", array_reverse(explode("/", (string) $oParam->dtCenso)));
       $oCenso->setDataCenso($sDataCenso);
 
       $sArquivoRetorno        = $oCenso->escreverArquivo();
@@ -67,7 +67,7 @@ switch ($oParam->exec) {
       $oRetorno->message         = urlencode($eErro->getMessage());
       $oRetorno->sNomeArquivoLog = "";
       if ( !empty($oCenso) ) {
-        $oRetorno->sNomeArquivoLog = urlencode($oCenso->getNomeArquivoLog());
+        $oRetorno->sNomeArquivoLog = urlencode((string) $oCenso->getNomeArquivoLog());
       }
     }
     break;
@@ -77,19 +77,19 @@ switch ($oParam->exec) {
     try {
 
       $iEscola = db_getsession("DB_coddepto");
-      if (strtolower(substr($oParam->nomearquivo, strlen($oParam->nomearquivo) - 3, 3)) != 'txt') {
+      if (strtolower(substr((string) $oParam->nomearquivo, strlen((string) $oParam->nomearquivo) - 3, 3)) != 'txt') {
         throw new Exception('Arquivo deve ser um arquivo com extensão .txt');
       }
 
-      if (strpos($oParam->nomearquivo, 'censo') === false ) {
+      if (!str_contains((string) $oParam->nomearquivo, 'censo') ) {
 
         $sErroMensagem  = 'Arquivo  informado nao é válido.\n';
         $sErroMensagem .= 'Apenas arquivos gerados pelo sistema ou retornados pelo censo poderão ser verificados.';
         throw new Exception($sErroMensagem);
       }
-      $oRetorno->sNomeArquivo = basename($oParam->nomearquivo);
+      $oRetorno->sNomeArquivo = basename((string) $oParam->nomearquivo);
 
-      $aNomeArquivo = explode("_", $oParam->nomearquivo);
+      $aNomeArquivo = explode("_", (string) $oParam->nomearquivo);
       $iAno         = str_replace('.txt', '', $aNomeArquivo[3]);
 
       $iCodigoLayout  = 199;
@@ -106,10 +106,10 @@ switch ($oParam->exec) {
       $oLayoutReader = new DBLayoutReader($iCodigoLayout, $oParam->nomearquivo, true, false);
       $oLayoutReader->processarArquivo(0, true, true);
       $oRetorno->arquivo = new stdClass();
-      $oRetorno->arquivo->aEscolas     = array();
-      $oRetorno->arquivo->aTurmas      = array();
-      $oRetorno->arquivo->aDocentes    = array();
-      $oRetorno->arquivo->aAluno       = array();
+      $oRetorno->arquivo->aEscolas     = [];
+      $oRetorno->arquivo->aTurmas      = [];
+      $oRetorno->arquivo->aDocentes    = [];
+      $oRetorno->arquivo->aAluno       = [];
       foreach ($oLayoutReader->getLines() as $iInd => $oArquivo) {
 
         if ($oArquivo->tipo_registro == '00' || $oArquivo->tipo_registro == '10') {
@@ -117,18 +117,18 @@ switch ($oParam->exec) {
           if ($oArquivo->tipo_registro == '00') {
 
             $oEscola            = new stdClass();
-            $oEscola->nome      = $oArquivo->nome = urlEncode($oArquivo->nome_escola);
-            $oEscola->dados[$oArquivo->tipo_registro] = array();
+            $oEscola->nome      = $oArquivo->nome = urlEncode((string) $oArquivo->nome_escola);
+            $oEscola->dados[$oArquivo->tipo_registro] = [];
             $oRetorno->arquivo->aEscolas[]            = $oEscola;
           }
           $aPropriedadesLinha = $oArquivo->getProperties();
           foreach ($aPropriedadesLinha as $aPropriedade) {
 
             $sValor = isset($oArquivo->$aPropriedade[4])?urlencode($oArquivo->$aPropriedade[4]):'';
-            $oEscola->dados[$oArquivo->tipo_registro][] = array(urlencode($aPropriedade[6]),
+            $oEscola->dados[$oArquivo->tipo_registro][] = [urlencode((string) $aPropriedade[6]),
                                                                 $sValor,
-                                                                urlencode($aPropriedade[7])
-                                                                );
+                                                                urlencode((string) $aPropriedade[7])
+                                                                ];
           }
         }
 
@@ -136,26 +136,26 @@ switch ($oParam->exec) {
 
           $aPropriedadesLinha = $oArquivo->getProperties();
           $oTurma                                   = new stdClass();
-          $oTurma->nome                             = $oArquivo->nome = urlEncode($oArquivo->nome_turma);
-          $oTurma->dados[$oArquivo->tipo_registro]  = array();
+          $oTurma->nome                             = $oArquivo->nome = urlEncode((string) $oArquivo->nome_turma);
+          $oTurma->dados[$oArquivo->tipo_registro]  = [];
           $oRetorno->arquivo->aTurmas[]             = $oTurma;
           foreach ($aPropriedadesLinha as $aPropriedade) {
 
             $sValor = isset($oArquivo->$aPropriedade[4])?urlencode($oArquivo->$aPropriedade[4]):'';
-            $oTurma->dados[$oArquivo->tipo_registro][] = array(urlencode($aPropriedade[6]),
+            $oTurma->dados[$oArquivo->tipo_registro][] = [urlencode((string) $aPropriedade[6]),
                                                                $sValor,
-                                                               urlencode($aPropriedade[7]));
+                                                               urlencode((string) $aPropriedade[7])];
           }
         }
 
-        if (in_array($oArquivo->tipo_registro, array(30, 40, 50, 51))) {
+        if (in_array($oArquivo->tipo_registro, [30, 40, 50, 51])) {
 
           if ($oArquivo->tipo_registro == 30) {
 
             $oDocente                                   = new stdClass();
-            $oDocente->nome                             = $oArquivo->nome = urlEncode($oArquivo->nome_completo);
+            $oDocente->nome                             = $oArquivo->nome = urlEncode((string) $oArquivo->nome_completo);
             $oDocente->codigo                           = $oArquivo->codigo_docente_entidade_escola;
-            $oDocente->dados[$oArquivo->tipo_registro]  = array();
+            $oDocente->dados[$oArquivo->tipo_registro]  = [];
             $oRetorno->arquivo->aDocentes[]             = $oDocente;
           }
           if ($oArquivo->tipo_registro != 30) {
@@ -176,21 +176,21 @@ switch ($oParam->exec) {
           foreach ($aPropriedadesLinha as $aPropriedade) {
 
             $sValor = isset($oArquivo->$aPropriedade[4])?urlencode($oArquivo->$aPropriedade[4]):'';
-            $oDocente->dados[$oArquivo->tipo_registro][] = array(urlencode($aPropriedade[6]),
+            $oDocente->dados[$oArquivo->tipo_registro][] = [urlencode((string) $aPropriedade[6]),
                                                                  $sValor,
-                                                                 urlencode($aPropriedade[7])
-                                                                );
+                                                                 urlencode((string) $aPropriedade[7])
+                                                                ];
           }
         }
 
-        if (in_array($oArquivo->tipo_registro, array(60, 70, 80))) {
+        if (in_array($oArquivo->tipo_registro, [60, 70, 80])) {
 
           if ($oArquivo->tipo_registro == 60) {
 
             $oAluno                                   = new stdClass();
-            $oAluno->nome                             = $oArquivo->nome = urlEncode($oArquivo->nome_completo);
+            $oAluno->nome                             = $oArquivo->nome = urlEncode((string) $oArquivo->nome_completo);
             $oAluno->codigo                           = $oArquivo->identificacao_unica_aluno;
-            $oAluno->dados[$oArquivo->tipo_registro]  = array();
+            $oAluno->dados[$oArquivo->tipo_registro]  = [];
             $oRetorno->arquivo->aAlunos[]             = $oAluno;
           }
           if ($oArquivo->tipo_registro != 60) {
@@ -220,10 +220,10 @@ switch ($oParam->exec) {
 
           foreach ($aPropriedadesLinha as $aPropriedade) {
 
-            $aPropriedade[7] = str_replace(array("\n", "\r"), array("<br>", ""), $aPropriedade[7]);
+            $aPropriedade[7] = str_replace(["\n", "\r"], ["<br>", ""], $aPropriedade[7]);
             $sValor = isset($oArquivo->$aPropriedade[4])?urlencode($oArquivo->$aPropriedade[4]):'';
 
-            $oAluno->dados[$oArquivo->tipo_registro][] = array(urlencode($aPropriedade[6]), $sValor, urlencode($aPropriedade[7]));
+            $oAluno->dados[$oArquivo->tipo_registro][] = [urlencode((string) $aPropriedade[6]), $sValor, urlencode($aPropriedade[7])];
           }
         }
       }
@@ -259,12 +259,12 @@ switch ($oParam->exec) {
     $rsCensoEtapa   = $oDaoCensoEtapa->sql_record($sSqlCensoEtapa);
     $iLinhas        = $oDaoCensoEtapa->numrows;
 
-    $oRetorno->aCensoEtapa = array();
+    $oRetorno->aCensoEtapa = [];
     for ( $i = 0; $i < $iLinhas; $i++ ) {
 
       $oDados                  = db_utils::fieldsMemory($rsCensoEtapa, $i);
       $oCensoEtapa             = new stdClass();
-      $oCensoEtapa->sEtapa     = urlencode( $oDados->ed266_c_descr );
+      $oCensoEtapa->sEtapa     = urlencode( (string) $oDados->ed266_c_descr );
       $oCensoEtapa->iCodigo    = $oDados->ed266_i_codigo;
       $oRetorno->aCensoEtapa[] = $oCensoEtapa;
     }

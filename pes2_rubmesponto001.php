@@ -109,14 +109,14 @@ function js_emite() {
      <td>Ponto</td>
      <td>
         <?php
-          $x = array(
+          $x = [
               "f" => "Fixo",
               "s" => "Salário",
               "c" => "Complementar",
               "a" => "Adiantamento",
               "d" => "13o. Salário",
               "r" => "Rescisão"
-          );
+          ];
           db_select('ponto', $x, true, 4, "");
         ?>
      </td>
@@ -125,14 +125,14 @@ function js_emite() {
      <td>Ordem</td>
      <td> 
         <?php
-            $x = array(
+            $x = [
                 "a" => "Alfabética",
                 "n" => "Numérica",
                 "l" => "Lotação",
                 "v" => "Valor",
                 "q" => "Quantidade",
                 "d" => "Digitação"
-            );
+            ];
             db_select('ordem', $x, true, 4, "");
         ?>
      </td>
@@ -141,10 +141,10 @@ function js_emite() {
      <td>Tipo de Ordem</td>
      <td>
        <?php
-         $x = array(
+         $x = [
              "asc" => "Ascendente",
              "desc" => "Descendente"
-         );
+         ];
          db_select('tipoordem', $x, true, 4, "");
       ?>
      </td>
@@ -153,10 +153,10 @@ function js_emite() {
      <td>Totalização</td>
      <td>
        <?php
-         $x = array(
+         $x = [
              "a" => "Analítico",
              "s" => "Sintético"
-         );
+         ];
          db_select('total', $x, true, 4, "");
        ?>
      </td>
@@ -165,10 +165,10 @@ function js_emite() {
      <td>Quebrar por Recurso</td>
      <td>
        <?php
-         $xy = array(
+         $xy = [
              "n" => "Não",
              "s" => "Sim"
-         );
+         ];
          db_select('recurso', $xy, true, 4, "");
        ?>
      </td>
@@ -177,7 +177,7 @@ function js_emite() {
      <td>Local de Trabalho:</td>
      <td >
       <?php
-        $opcoes = array("N"=>"Não","S"=>"Sim");
+        $opcoes = ["N"=>"Não","S"=>"Sim"];
         db_select('localtrab',$opcoes,true,4,"");
       ?>
      </td>

@@ -31,7 +31,7 @@ class cl_contribuicaosindicalperiodo
     public function __construct()
     {
         $this->rotulo = new rotulo("contribuicaosindicalperiodo");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -88,10 +88,10 @@ class cl_contribuicaosindicalperiodo
                 $this->erro_status = "0";
                 return false;
             }
-            $this->eso30_sequencial = pg_result($result, 0, 0);
+            $this->eso30_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from contribuicaosindicalperiodo_eso30_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $eso30_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $eso30_sequencial)) {
                 $this->erro_sql = " Campo eso30_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -127,7 +127,7 @@ class cl_contribuicaosindicalperiodo
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = " ($this->eso30_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = " já Cadastrado";
@@ -159,19 +159,19 @@ class cl_contribuicaosindicalperiodo
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,1010271,'$this->eso30_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,1010401,1010271,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010401,1010271,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'eso30_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010401,1010272,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010401,1010272,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'eso30_empregador')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010401,1010273,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010401,1010273,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'eso30_indicativo_periodo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010401,1010274,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010401,1010274,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'eso30_periodo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -244,10 +244,10 @@ class cl_contribuicaosindicalperiodo
         $this->atualizacampos();
         $sql = " update contribuicaosindicalperiodo set ";
         $virgula = "";
-        if (trim($this->eso30_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso30_sequencial"])) {
+        if (trim((string) $this->eso30_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso30_sequencial"])) {
             $sql .= $virgula . " eso30_sequencial = $this->eso30_sequencial ";
             $virgula = ",";
-            if (trim($this->eso30_sequencial) == null) {
+            if (trim((string) $this->eso30_sequencial) == null) {
                 $this->erro_sql = " Campo Código não informado.";
                 $this->erro_campo = "eso30_sequencial";
                 $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_contribuicaosindicalperiodo
                 return false;
             }
         }
-        if (trim($this->eso30_empregador) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso30_empregador"])) {
+        if (trim((string) $this->eso30_empregador) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso30_empregador"])) {
             $sql .= $virgula . " eso30_empregador = $this->eso30_empregador ";
             $virgula = ",";
-            if (trim($this->eso30_empregador) == null) {
+            if (trim((string) $this->eso30_empregador) == null) {
                 $this->erro_sql = " Campo Empregador não informado.";
                 $this->erro_campo = "eso30_empregador";
                 $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_contribuicaosindicalperiodo
                 return false;
             }
         }
-        if (trim($this->eso30_indicativo_periodo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso30_indicativo_periodo"])) {
+        if (trim((string) $this->eso30_indicativo_periodo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso30_indicativo_periodo"])) {
             $sql .= $virgula . " eso30_indicativo_periodo = $this->eso30_indicativo_periodo ";
             $virgula = ",";
-            if (trim($this->eso30_indicativo_periodo) == null) {
+            if (trim((string) $this->eso30_indicativo_periodo) == null) {
                 $this->erro_sql = " Campo Indicativo de período não informado.";
                 $this->erro_campo = "eso30_indicativo_periodo";
                 $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_contribuicaosindicalperiodo
                 return false;
             }
         }
-        if (trim($this->eso30_periodo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso30_periodo"])) {
+        if (trim((string) $this->eso30_periodo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["eso30_periodo"])) {
             $sql .= $virgula . " eso30_periodo = '$this->eso30_periodo' ";
             $virgula = ",";
-            if (trim($this->eso30_periodo) == null) {
+            if (trim((string) $this->eso30_periodo) == null) {
                 $this->erro_sql = " Campo Período não informado.";
                 $this->erro_campo = "eso30_periodo";
                 $this->erro_banco = "";
@@ -314,26 +314,26 @@ class cl_contribuicaosindicalperiodo
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010271,'$this->eso30_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["eso30_sequencial"]) || $this->eso30_sequencial != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010401,1010271,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010401,1010271,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'eso30_sequencial')) . "','$this->eso30_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["eso30_empregador"]) || $this->eso30_empregador != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010401,1010272,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010401,1010272,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'eso30_empregador')) . "','$this->eso30_empregador'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["eso30_indicativo_periodo"]) || $this->eso30_indicativo_periodo != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010401,1010273,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010401,1010273,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'eso30_indicativo_periodo')) . "','$this->eso30_indicativo_periodo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["eso30_periodo"]) || $this->eso30_periodo != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010401,1010274,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010401,1010274,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'eso30_periodo')) . "','$this->eso30_periodo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
@@ -393,19 +393,19 @@ class cl_contribuicaosindicalperiodo
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010271,'$eso30_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,1010401,1010271,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010401,1010271,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'eso30_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010401,1010272,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010401,1010272,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'eso30_empregador')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010401,1010273,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010401,1010273,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'eso30_indicativo_periodo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010401,1010274,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010401,1010274,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'eso30_periodo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }

@@ -37,11 +37,11 @@ $oGet   = db_utils::postmemory($_GET);
 $sWhere = '';
 if ($oGet->dataini != null  && $oGet->datafim == null) {
 
-	$sWhere .= " and {$oGet->sFiltro} >= '".implode("-", array_reverse(explode("/",$oGet->dataini)))."'";
+	$sWhere .= " and {$oGet->sFiltro} >= '".implode("-", array_reverse(explode("/",(string) $oGet->dataini)))."'";
 } else if ($oGet->dataini != null  && $oGet->datafim != null) {
 
-	$sWhere .= " and {$oGet->sFiltro} between '".implode("-", array_reverse(explode("/",$oGet->dataini)))."'";
-	$sWhere .= " and '".implode("-", array_reverse(explode("/",$oGet->datafim)))."'";
+	$sWhere .= " and {$oGet->sFiltro} between '".implode("-", array_reverse(explode("/",(string) $oGet->dataini)))."'";
+	$sWhere .= " and '".implode("-", array_reverse(explode("/",(string) $oGet->datafim)))."'";
 
 }
 $funcao_js = "js_showReport|k80_codpla";

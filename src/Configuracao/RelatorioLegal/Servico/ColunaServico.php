@@ -21,17 +21,11 @@ use stdClass;
 class ColunaServico
 {
     /**
-     * @var stdClass
-     */
-    private $parametros;
-
-    /**
      * ColunaServico constructor.
      * @param stdClass $parametros
      */
-    public function __construct(stdClass $parametros)
+    public function __construct(private readonly stdClass $parametros)
     {
-        $this->parametros = $parametros;
     }
 
     /**
@@ -53,8 +47,8 @@ class ColunaServico
         }
 
         $coluna = new Coluna();
-        $coluna->setDescricao(trim($this->parametros->descricao));
-        $coluna->setNome(trim($this->parametros->nome));
+        $coluna->setDescricao(trim((string) $this->parametros->descricao));
+        $coluna->setNome(trim((string) $this->parametros->nome));
 
         if (!empty($this->parametros->sequencial)) {
             $coluna->setSequencial($this->parametros->sequencial);

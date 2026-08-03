@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhpessoal_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhpessoal = new cl_rhpessoal;
 $clgersubsql = new cl_gera_sql_folha;
@@ -208,10 +208,10 @@ if(!isset($pesquisa_chave)){
           $instit = '';
         }
 
-        $repassa = array( "chave_z01_nome"    => $chave_z01_nome,
+        $repassa = [ "chave_z01_nome"    => $chave_z01_nome,
                           "chave_rh01_regist" => $chave_rh01_regist,
                           "chave_rh01_numcgm" => $chave_rh01_numcgm,
-                          "rh02_instit"       => $instit );
+                          "rh02_instit"       => $instit ];
 
         $dbwhereValida  = " and rh02_anousu = ".$anofolha." and rh02_mesusu = ".$mesfolha;
         $dbwhereValida .= " and rh02_instit = ".db_getsession("DB_instit");

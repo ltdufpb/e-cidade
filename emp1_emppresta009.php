@@ -67,7 +67,7 @@ $clemppresta = new cl_emppresta;
 $clempprestaitem = new cl_empprestaitem;
   */
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao        = 22;
 $db_botao        = false;
@@ -107,7 +107,7 @@ if ( isset($alterar) ) {
 
     } catch (BusinessException $eBusinessException) {
 
-      $erro_msg = $$eBusinessException->getMessage();
+      $erro_msg = ${$eBusinessException}->getMessage();
       $sqlerro = true;
     }
   }

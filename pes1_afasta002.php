@@ -40,7 +40,7 @@ include(modification("classes/db_pontofs_classe.php"));
 include(modification("classes/db_rhrubricas_classe.php"));
 include(modification("classes/db_inssirf_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clafasta = new cl_afasta;
 $clrhpessoal = new cl_rhpessoal;
 $clrhpessoalmov = new cl_rhpessoalmov;
@@ -50,7 +50,7 @@ $clpontofx = new cl_pontofx;
 $clpontofs = new cl_pontofs;
 $clrhrubricas = new cl_rhrubricas;
 $clinssirf = new cl_inssirf;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){
@@ -59,7 +59,7 @@ if(isset($alterar)){
   $db_botao = true;
   $sqlerro = false;
   $clafasta->r45_codigo = $r45_codigo;
-  if(trim($r45_dtreto_dia) != "" && trim($r45_dtreto_mes) != "" && trim($r45_dtreto_ano) != ""){
+  if(trim((string) $r45_dtreto_dia) != "" && trim($r45_dtreto_mes) != "" && trim((string) $r45_dtreto_ano) != ""){
     $clafasta->r45_dtreto = $r45_dtreto_ano."-".$r45_dtreto_mes."-".$r45_dtreto_dia;
   }
   $clafasta->alterar($r45_codigo);
@@ -69,7 +69,7 @@ if(isset($alterar)){
   }
 
   if($sqlerro == false){
-    $arr_possiveis = Array(2,3,4,5,6,7,8);
+    $arr_possiveis = [2,3,4,5,6,7,8];
     if(in_array($r45_situac,$arr_possiveis)){
 
       $result_pontofx = $clpontofx->sql_record($clpontofx->sql_query_file(db_anofolha(),db_mesfolha(),$r45_regist));
@@ -81,7 +81,7 @@ if(isset($alterar)){
 
       //  db_verifica_dias_trabalhados($r45_regist,db_anofolha(),db_mesfolha());
         $result_dias_trab = db_query("select fc_dias_trabalhados(".$r45_regist.",".db_anofolha().",".db_mesfolha().",false,".db_getsession("DB_instit").") as dias_pagamento");
-        if(pg_numrows($result_dias_trab) > 0){
+        if(pg_num_rows($result_dias_trab) > 0){
           db_fieldsmemory($result_dias_trab, 0);
         }
 
@@ -94,13 +94,13 @@ if(isset($alterar)){
         for($i=0; $i<$numrows_pontofx; $i++){
           db_fieldsmemory($result_pontofx, $i);
 
-          $result_inssirfsau = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession("DB_instit"),"*","","r33_anousu = ".db_anofolha()." and r33_mesusu = ".db_mesfolha()." and r33_codtab = '".trim($rh02_tbpev)."' and (trim(r33_rubsau) <> '' and r33_rubsau is not null) "));
+          $result_inssirfsau = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession("DB_instit"),"*","","r33_anousu = ".db_anofolha()." and r33_mesusu = ".db_mesfolha()." and r33_codtab = '".trim((string) $rh02_tbpev)."' and (trim(r33_rubsau) <> '' and r33_rubsau is not null) "));
 	      $numrows_sau = $clinssirf->numrows;
 
-	      $result_inssirfmat = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession("DB_instit"),"*","","r33_anousu = ".db_anofolha()." and r33_mesusu = ".db_mesfolha()." and r33_codtab = '".trim($rh02_tbpev)."' and (trim(r33_rubmat) <> '' and r33_rubmat is not null) "));
+	      $result_inssirfmat = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession("DB_instit"),"*","","r33_anousu = ".db_anofolha()." and r33_mesusu = ".db_mesfolha()." and r33_codtab = '".trim((string) $rh02_tbpev)."' and (trim(r33_rubmat) <> '' and r33_rubmat is not null) "));
           $numrows_mat = $clinssirf->numrows;
 	        
-          $result_inssirfaci = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession("DB_instit"),"*","","r33_anousu = ".db_anofolha()." and r33_mesusu = ".db_mesfolha()." and r33_codtab = '".trim($rh02_tbpev)."' and (trim(r33_rubaci) <> '' and r33_rubaci is not null) "));
+          $result_inssirfaci = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession("DB_instit"),"*","","r33_anousu = ".db_anofolha()." and r33_mesusu = ".db_mesfolha()." and r33_codtab = '".trim((string) $rh02_tbpev)."' and (trim(r33_rubaci) <> '' and r33_rubaci is not null) "));
 	      $numrows_aci = $clinssirf->numrows;
 //	  echo "<br>  r45_situac --> $r45_situac dias_pagamento  $dias_pagamento rubsau $numrows_sau  rubaci $numrows_aci";
           if(($dias_pagamento > 0 && 

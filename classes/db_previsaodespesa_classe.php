@@ -4,39 +4,39 @@
 class cl_previsaodespesa
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $c333_sequencial = 0;
-    var $c333_ano = 0;
-    var $c333_esferaorcamentaria = 0;
-    var $c333_orcorgao = 0;
-    var $c333_orcunidade = 0;
-    var $c333_orcfuncao = 0;
-    var $c333_orcsubfuncao = 0;
-    var $c333_orcprograma = 0;
-    var $c333_orcprojativ = 0;
-    var $c333_ppasubtitulolocalizadorgasto = 0;
-    var $c333_conplanoorcamento = 0;
-    var $c333_identificadoruso = 0;
-    var $c333_tipodetalhamento = null;
-    var $c333_grupofonterecursos = null;
-    var $c333_especificacaofonte = null;
-    var $c333_identificadorresultadoprimario = null;
-    var $c333_previsao = 0;
-    var $c333_planoorcamentario = null;
+    public $c333_sequencial = 0;
+    public $c333_ano = 0;
+    public $c333_esferaorcamentaria = 0;
+    public $c333_orcorgao = 0;
+    public $c333_orcunidade = 0;
+    public $c333_orcfuncao = 0;
+    public $c333_orcsubfuncao = 0;
+    public $c333_orcprograma = 0;
+    public $c333_orcprojativ = 0;
+    public $c333_ppasubtitulolocalizadorgasto = 0;
+    public $c333_conplanoorcamento = 0;
+    public $c333_identificadoruso = 0;
+    public $c333_tipodetalhamento = null;
+    public $c333_grupofonterecursos = null;
+    public $c333_especificacaofonte = null;
+    public $c333_identificadorresultadoprimario = null;
+    public $c333_previsao = 0;
+    public $c333_planoorcamentario = null;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  c333_sequencial = int4 = Código 
                  c333_ano = int4 = Ano 
                  c333_esferaorcamentaria = oid = Esfera orçamentária 
@@ -58,11 +58,11 @@ class cl_previsaodespesa
                  ";
 
     //funcao construtor da classe
-    function cl_previsaodespesa()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("previsaodespesa");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -306,10 +306,10 @@ class cl_previsaodespesa
 
                 return false;
             }
-            $this->c333_sequencial = pg_result($result, 0, 0);
+            $this->c333_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from previsaodespesa_c333_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $c333_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $c333_sequencial)) {
                 $this->erro_sql = " Campo c333_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -375,7 +375,7 @@ class cl_previsaodespesa
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "previsaodespesa ($this->c333_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "previsaodespesa já Cadastrado";
@@ -406,61 +406,61 @@ class cl_previsaodespesa
             $resaco = $this->sql_record($this->sql_query_file($this->c333_sequencial));
             if (($resaco != false) || ($this->numrows != 0)) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,1009818,'$this->c333_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009818,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009818,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009819,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009819,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_ano')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009820,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009820,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_esferaorcamentaria')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009821,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009821,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_orcorgao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009822,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009822,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_orcunidade')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009823,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009823,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_orcfuncao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009824,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009824,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_orcsubfuncao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009827,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009827,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_orcprograma')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009825,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009825,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_orcprojativ')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009826,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009826,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_ppasubtitulolocalizadorgasto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009828,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009828,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_conplanoorcamento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009829,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009829,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_identificadoruso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009830,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009830,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_tipodetalhamento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009831,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009831,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_grupofonterecursos')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009832,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009832,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_especificacaofonte')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009833,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009833,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_identificadorresultadoprimario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009836,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009836,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_previsao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010295,1009837,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010295,1009837,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c333_planoorcamentario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -475,10 +475,10 @@ class cl_previsaodespesa
         $this->atualizacampos();
         $sql = " update previsaodespesa set ";
         $virgula = "";
-        if (trim($this->c333_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_sequencial"])) {
+        if (trim((string) $this->c333_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_sequencial"])) {
             $sql .= $virgula . " c333_sequencial = $this->c333_sequencial ";
             $virgula = ",";
-            if (trim($this->c333_sequencial) == null) {
+            if (trim((string) $this->c333_sequencial) == null) {
                 $this->erro_sql = " Campo Código não informado.";
                 $this->erro_campo = "c333_sequencial";
                 $this->erro_banco = "";
@@ -490,10 +490,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_ano"])) {
+        if (trim((string) $this->c333_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_ano"])) {
             $sql .= $virgula . " c333_ano = $this->c333_ano ";
             $virgula = ",";
-            if (trim($this->c333_ano) == null) {
+            if (trim((string) $this->c333_ano) == null) {
                 $this->erro_sql = " Campo Ano não informado.";
                 $this->erro_campo = "c333_ano";
                 $this->erro_banco = "";
@@ -505,10 +505,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_esferaorcamentaria) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_esferaorcamentaria"])) {
+        if (trim((string) $this->c333_esferaorcamentaria) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_esferaorcamentaria"])) {
             $sql .= $virgula . " c333_esferaorcamentaria = $this->c333_esferaorcamentaria ";
             $virgula = ",";
-            if (trim($this->c333_esferaorcamentaria) == null) {
+            if (trim((string) $this->c333_esferaorcamentaria) == null) {
                 $this->erro_sql = " Campo Esfera orçamentária não informado.";
                 $this->erro_campo = "c333_esferaorcamentaria";
                 $this->erro_banco = "";
@@ -520,10 +520,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_orcorgao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcorgao"])) {
+        if (trim((string) $this->c333_orcorgao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcorgao"])) {
             $sql .= $virgula . " c333_orcorgao = $this->c333_orcorgao ";
             $virgula = ",";
-            if (trim($this->c333_orcorgao) == null) {
+            if (trim((string) $this->c333_orcorgao) == null) {
                 $this->erro_sql = " Campo Orgão não informado.";
                 $this->erro_campo = "c333_orcorgao";
                 $this->erro_banco = "";
@@ -535,10 +535,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_orcunidade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcunidade"])) {
+        if (trim((string) $this->c333_orcunidade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcunidade"])) {
             $sql .= $virgula . " c333_orcunidade = $this->c333_orcunidade ";
             $virgula = ",";
-            if (trim($this->c333_orcunidade) == null) {
+            if (trim((string) $this->c333_orcunidade) == null) {
                 $this->erro_sql = " Campo Unidade não informado.";
                 $this->erro_campo = "c333_orcunidade";
                 $this->erro_banco = "";
@@ -550,10 +550,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_orcfuncao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcfuncao"])) {
+        if (trim((string) $this->c333_orcfuncao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcfuncao"])) {
             $sql .= $virgula . " c333_orcfuncao = $this->c333_orcfuncao ";
             $virgula = ",";
-            if (trim($this->c333_orcfuncao) == null) {
+            if (trim((string) $this->c333_orcfuncao) == null) {
                 $this->erro_sql = " Campo Função não informado.";
                 $this->erro_campo = "c333_orcfuncao";
                 $this->erro_banco = "";
@@ -565,10 +565,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_orcsubfuncao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcsubfuncao"])) {
+        if (trim((string) $this->c333_orcsubfuncao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcsubfuncao"])) {
             $sql .= $virgula . " c333_orcsubfuncao = $this->c333_orcsubfuncao ";
             $virgula = ",";
-            if (trim($this->c333_orcsubfuncao) == null) {
+            if (trim((string) $this->c333_orcsubfuncao) == null) {
                 $this->erro_sql = " Campo Subfunção não informado.";
                 $this->erro_campo = "c333_orcsubfuncao";
                 $this->erro_banco = "";
@@ -580,10 +580,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_orcprograma) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcprograma"])) {
+        if (trim((string) $this->c333_orcprograma) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcprograma"])) {
             $sql .= $virgula . " c333_orcprograma = $this->c333_orcprograma ";
             $virgula = ",";
-            if (trim($this->c333_orcprograma) == null) {
+            if (trim((string) $this->c333_orcprograma) == null) {
                 $this->erro_sql = " Campo Programa não informado.";
                 $this->erro_campo = "c333_orcprograma";
                 $this->erro_banco = "";
@@ -595,10 +595,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_orcprojativ) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcprojativ"])) {
+        if (trim((string) $this->c333_orcprojativ) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_orcprojativ"])) {
             $sql .= $virgula . " c333_orcprojativ = $this->c333_orcprojativ ";
             $virgula = ",";
-            if (trim($this->c333_orcprojativ) == null) {
+            if (trim((string) $this->c333_orcprojativ) == null) {
                 $this->erro_sql = " Campo Ação não informado.";
                 $this->erro_campo = "c333_orcprojativ";
                 $this->erro_banco = "";
@@ -610,10 +610,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_ppasubtitulolocalizadorgasto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_ppasubtitulolocalizadorgasto"])) {
+        if (trim((string) $this->c333_ppasubtitulolocalizadorgasto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_ppasubtitulolocalizadorgasto"])) {
             $sql .= $virgula . " c333_ppasubtitulolocalizadorgasto = $this->c333_ppasubtitulolocalizadorgasto ";
             $virgula = ",";
-            if (trim($this->c333_ppasubtitulolocalizadorgasto) == null) {
+            if (trim((string) $this->c333_ppasubtitulolocalizadorgasto) == null) {
                 $this->erro_sql = " Campo Subtítulo não informado.";
                 $this->erro_campo = "c333_ppasubtitulolocalizadorgasto";
                 $this->erro_banco = "";
@@ -625,10 +625,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_conplanoorcamento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_conplanoorcamento"])) {
+        if (trim((string) $this->c333_conplanoorcamento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_conplanoorcamento"])) {
             $sql .= $virgula . " c333_conplanoorcamento = $this->c333_conplanoorcamento ";
             $virgula = ",";
-            if (trim($this->c333_conplanoorcamento) == null) {
+            if (trim((string) $this->c333_conplanoorcamento) == null) {
                 $this->erro_sql = " Campo Natureza da Despesa não informado.";
                 $this->erro_campo = "c333_conplanoorcamento";
                 $this->erro_banco = "";
@@ -640,10 +640,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_identificadoruso) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_identificadoruso"])) {
+        if (trim((string) $this->c333_identificadoruso) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_identificadoruso"])) {
             $sql .= $virgula . " c333_identificadoruso = $this->c333_identificadoruso ";
             $virgula = ",";
-            if (trim($this->c333_identificadoruso) == null) {
+            if (trim((string) $this->c333_identificadoruso) == null) {
                 $this->erro_sql = " Campo Identificador de Uso não informado.";
                 $this->erro_campo = "c333_identificadoruso";
                 $this->erro_banco = "";
@@ -655,10 +655,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_tipodetalhamento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_tipodetalhamento"])) {
+        if (trim((string) $this->c333_tipodetalhamento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_tipodetalhamento"])) {
             $sql .= $virgula . " c333_tipodetalhamento = '$this->c333_tipodetalhamento' ";
             $virgula = ",";
-            if (trim($this->c333_tipodetalhamento) == null) {
+            if (trim((string) $this->c333_tipodetalhamento) == null) {
                 $this->erro_sql = " Campo Tipo de Detalhamento não informado.";
                 $this->erro_campo = "c333_tipodetalhamento";
                 $this->erro_banco = "";
@@ -670,10 +670,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_grupofonterecursos) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_grupofonterecursos"])) {
+        if (trim((string) $this->c333_grupofonterecursos) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_grupofonterecursos"])) {
             $sql .= $virgula . " c333_grupofonterecursos = '$this->c333_grupofonterecursos' ";
             $virgula = ",";
-            if (trim($this->c333_grupofonterecursos) == null) {
+            if (trim((string) $this->c333_grupofonterecursos) == null) {
                 $this->erro_sql = " Campo Grupo da fonte de recursos não informado.";
                 $this->erro_campo = "c333_grupofonterecursos";
                 $this->erro_banco = "";
@@ -685,10 +685,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_especificacaofonte) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_especificacaofonte"])) {
+        if (trim((string) $this->c333_especificacaofonte) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_especificacaofonte"])) {
             $sql .= $virgula . " c333_especificacaofonte = '$this->c333_especificacaofonte' ";
             $virgula = ",";
-            if (trim($this->c333_especificacaofonte) == null) {
+            if (trim((string) $this->c333_especificacaofonte) == null) {
                 $this->erro_sql = " Campo Especificação da Fonte não informado.";
                 $this->erro_campo = "c333_especificacaofonte";
                 $this->erro_banco = "";
@@ -700,10 +700,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_identificadorresultadoprimario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_identificadorresultadoprimario"])) {
+        if (trim((string) $this->c333_identificadorresultadoprimario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_identificadorresultadoprimario"])) {
             $sql .= $virgula . " c333_identificadorresultadoprimario = '$this->c333_identificadorresultadoprimario' ";
             $virgula = ",";
-            if (trim($this->c333_identificadorresultadoprimario) == null) {
+            if (trim((string) $this->c333_identificadorresultadoprimario) == null) {
                 $this->erro_sql = " Campo Identificador de Resultado Primário não informado.";
                 $this->erro_campo = "c333_identificadorresultadoprimario";
                 $this->erro_banco = "";
@@ -715,10 +715,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_previsao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_previsao"])) {
+        if (trim((string) $this->c333_previsao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_previsao"])) {
             $sql .= $virgula . " c333_previsao = $this->c333_previsao ";
             $virgula = ",";
-            if (trim($this->c333_previsao) == null) {
+            if (trim((string) $this->c333_previsao) == null) {
                 $this->erro_sql = " Campo Previsão não informado.";
                 $this->erro_campo = "c333_previsao";
                 $this->erro_banco = "";
@@ -730,10 +730,10 @@ class cl_previsaodespesa
                 return false;
             }
         }
-        if (trim($this->c333_planoorcamentario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_planoorcamentario"])) {
+        if (trim((string) $this->c333_planoorcamentario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c333_planoorcamentario"])) {
             $sql .= $virgula . " c333_planoorcamentario = '$this->c333_planoorcamentario' ";
             $virgula = ",";
-            if (trim($this->c333_planoorcamentario) == null) {
+            if (trim((string) $this->c333_planoorcamentario) == null) {
                 $this->erro_sql = " Campo Plano Orçamentáario não informado.";
                 $this->erro_campo = "c333_planoorcamentario";
                 $this->erro_banco = "";
@@ -756,96 +756,96 @@ class cl_previsaodespesa
             if ($this->numrows > 0) {
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1009818,'$this->c333_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_sequencial"]) || $this->c333_sequencial != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009818,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009818,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_sequencial')) . "','$this->c333_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_ano"]) || $this->c333_ano != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009819,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009819,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_ano')) . "','$this->c333_ano'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_esferaorcamentaria"]) || $this->c333_esferaorcamentaria != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009820,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009820,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_esferaorcamentaria')) . "','$this->c333_esferaorcamentaria'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_orcorgao"]) || $this->c333_orcorgao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009821,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009821,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_orcorgao')) . "','$this->c333_orcorgao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_orcunidade"]) || $this->c333_orcunidade != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009822,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009822,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_orcunidade')) . "','$this->c333_orcunidade'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_orcfuncao"]) || $this->c333_orcfuncao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009823,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009823,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_orcfuncao')) . "','$this->c333_orcfuncao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_orcsubfuncao"]) || $this->c333_orcsubfuncao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009824,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009824,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_orcsubfuncao')) . "','$this->c333_orcsubfuncao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_orcprograma"]) || $this->c333_orcprograma != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009827,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009827,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_orcprograma')) . "','$this->c333_orcprograma'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_orcprojativ"]) || $this->c333_orcprojativ != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009825,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009825,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_orcprojativ')) . "','$this->c333_orcprojativ'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_ppasubtitulolocalizadorgasto"]) || $this->c333_ppasubtitulolocalizadorgasto != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009826,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009826,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_ppasubtitulolocalizadorgasto')) . "','$this->c333_ppasubtitulolocalizadorgasto'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_conplanoorcamento"]) || $this->c333_conplanoorcamento != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009828,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009828,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_conplanoorcamento')) . "','$this->c333_conplanoorcamento'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_identificadoruso"]) || $this->c333_identificadoruso != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009829,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009829,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_identificadoruso')) . "','$this->c333_identificadoruso'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_tipodetalhamento"]) || $this->c333_tipodetalhamento != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009830,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009830,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_tipodetalhamento')) . "','$this->c333_tipodetalhamento'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_grupofonterecursos"]) || $this->c333_grupofonterecursos != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009831,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009831,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_grupofonterecursos')) . "','$this->c333_grupofonterecursos'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_especificacaofonte"]) || $this->c333_especificacaofonte != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009832,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009832,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_especificacaofonte')) . "','$this->c333_especificacaofonte'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_identificadorresultadoprimario"]) || $this->c333_identificadorresultadoprimario != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009833,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009833,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_identificadorresultadoprimario')) . "','$this->c333_identificadorresultadoprimario'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_previsao"]) || $this->c333_previsao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009836,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009836,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_previsao')) . "','$this->c333_previsao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c333_planoorcamentario"]) || $this->c333_planoorcamentario != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010295,1009837,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010295,1009837,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c333_planoorcamentario')) . "','$this->c333_planoorcamentario'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
@@ -905,61 +905,61 @@ class cl_previsaodespesa
             if (($resaco != false) || ($this->numrows != 0)) {
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1009818,'$c333_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009818,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009818,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009819,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009819,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_ano')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009820,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009820,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_esferaorcamentaria')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009821,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009821,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_orcorgao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009822,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009822,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_orcunidade')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009823,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009823,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_orcfuncao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009824,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009824,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_orcsubfuncao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009827,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009827,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_orcprograma')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009825,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009825,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_orcprojativ')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009826,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009826,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_ppasubtitulolocalizadorgasto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009828,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009828,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_conplanoorcamento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009829,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009829,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_identificadoruso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009830,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009830,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_tipodetalhamento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009831,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009831,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_grupofonterecursos')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009832,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009832,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_especificacaofonte')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009833,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009833,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_identificadorresultadoprimario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009836,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009836,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_previsao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010295,1009837,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010295,1009837,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c333_planoorcamentario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }

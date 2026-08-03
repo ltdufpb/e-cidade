@@ -99,7 +99,7 @@ db_input('d63_conta',14,$Id63_conta,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Pendente','2'=>'Ativo','3'=>'Inativo');
+$x = ['1'=>'Pendente','2'=>'Ativo','3'=>'Inativo'];
 db_select('d63_status',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -162,7 +162,7 @@ function js_preenchepesquisa(chave){
   db_iframe_debcontapedido.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+sTipo";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+sTipo";
   }
   ?>
 }

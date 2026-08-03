@@ -44,7 +44,7 @@ class Familia {
    * Composicao familiar
    * @var array
    */
-  private $aFamiliares = array();
+  private $aFamiliares = [];
   
   /**
    * Avaliacao da Familia
@@ -56,7 +56,7 @@ class Familia {
    * Array de Visitas
    * @var array
    */
-  private $aVisitas = array();  
+  private $aVisitas = [];  
   
   /**
    * codifo da familia do cadastro unico
@@ -85,7 +85,7 @@ class Familia {
    * Array dos benefícios da família
    * @var array
    */
-  protected $aBeneficiosFamilia = array();
+  protected $aBeneficiosFamilia = [];
   
   /*
    * valor da Renda Familiar
@@ -409,7 +409,7 @@ class Familia {
       if ($oCidadaoLancado->getCodigo() == $oCidadao->getCodigo()) {
         
         $lCidadaoJaEstaNaFamilia     = true;
-        if ($oCidadao->getCodigo() != "") {
+        if ($oCidadao->getCodigo() != 0) {
           $this->aFamiliares[$iIndice] = $oCidadao;
         }
         break;
@@ -790,7 +790,7 @@ class Familia {
    */
   public function getHistoricoAtendimentos() {
 
-    $aAtendimentos = array();
+    $aAtendimentos = [];
     if ($this->getCodigoSequencial() != null) {
        
       $oDaoLocalAtendimentoFamilia    = new cl_localatendimentofamilia();

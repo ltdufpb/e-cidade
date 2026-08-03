@@ -27,7 +27,7 @@ $passou = 0;
 
 //verifica se algum item tem observação
 for ($j = 0; $j < $this->linhasdositens; $j++) {
-    $obs = trim(pg_result($this->recorddositens, $j, $this->robsdositens));
+    $obs = trim(pg_fetch_result($this->recorddositens, $j, $this->robsdositens));
     if ($obs != null) {
         $cont_obs++;
     }
@@ -169,20 +169,20 @@ for ($i = 0; $i < $iVias; $i++) {
 
     for ($ii = $comeco; $ii < $this->linhasdositens; $ii++) {
 
-        $rquantatend = trim(pg_result($this->recorddositens, $ii, $this->rquantatend));
+        $rquantatend = trim(pg_fetch_result($this->recorddositens, $ii, $this->rquantatend));
         // Verifica se o valor inteiro é igual ao valor em float (1700 == 1700.000) para retirar os zeros após a virgula na visualização
         if (intval($rquantatend) == floatval($rquantatend)) {
             $rquantatend = intval($rquantatend);
         }
         $cont++;
         $this->objpdf->setx($xcol + 3 + $maiscol);
-        $this->objpdf->cell(28, 5, trim(pg_result($this->recorddositens, $ii, $this->rcodmaterial)), 0, 0, "L", 0);
-        $this->objpdf->cell(85, 5, substr(trim(pg_result($this->recorddositens, $ii, $this->rdescmaterial)), 0, 40), 0, 0, "L", 0);
-        $this->objpdf->cell(45, 5, pg_result($this->recorddositens, $ii, $this->runidadesaida), 0, 0, "L", 0);
-        $this->objpdf->cell(25, 5, trim(pg_result($this->recorddositens, $ii, $this->rquantdeitens)), 0, 0, "C", 0);
+        $this->objpdf->cell(28, 5, trim(pg_fetch_result($this->recorddositens, $ii, $this->rcodmaterial)), 0, 0, "L", 0);
+        $this->objpdf->cell(85, 5, substr(trim(pg_fetch_result($this->recorddositens, $ii, $this->rdescmaterial)), 0, 40), 0, 0, "L", 0);
+        $this->objpdf->cell(45, 5, pg_fetch_result($this->recorddositens, $ii, $this->runidadesaida), 0, 0, "L", 0);
+        $this->objpdf->cell(25, 5, trim(pg_fetch_result($this->recorddositens, $ii, $this->rquantdeitens)), 0, 0, "C", 0);
         $this->objpdf->cell(10, 5, "$rquantatend", 0, 1, "C", 0);
-        $this->objpdf->multicell(180, 4, pg_result($this->recorddositens, $ii, $this->robsdositens));
-        if ($quant_itens == 8 && (trim(pg_result($this->recorddositens, $ii, $this->robsdositens)) == '')) {
+        $this->objpdf->multicell(180, 4, pg_fetch_result($this->recorddositens, $ii, $this->robsdositens));
+        if ($quant_itens == 8 && (trim(pg_fetch_result($this->recorddositens, $ii, $this->robsdositens)) == '')) {
             $obsitens = "";
             $this->objpdf->multicell(180, 4, $obsitens);
         }
@@ -214,7 +214,7 @@ for ($i = 0; $i < $iVias; $i++) {
 														inner join db_depart on db_depart.coddepto = db_departender.coddepto
 														inner join ruas on j14_codigo = codlograd
 														inner join bairro on j13_codi = codbairro where db_departender.coddepto = " . $this->coddepartamento);
-    if (pg_numrows($result_endent) > 0) {
+    if (pg_num_rows($result_endent) > 0) {
         db_fieldsmemory($result_endent, 0, true);
         global $j14_nome_almox;
         global $numero_almox;
@@ -250,7 +250,7 @@ for ($i = 0; $i < $iVias; $i++) {
     $this->objpdf->Roundedrect($xcol, $xlin + 235, $xcol + 197, 25, 2, 'DF', '1234');
     $this->objpdf->Setfont('Arial', 'b', 8);
     $this->objpdf->text($xcol + 10, $xlin + 238, 'Atendente/Almoxarife');
-    $this->objpdf->text($xcol + 70, $xlin + 265, strtoupper($this->municpref) . ', ' . substr($this->emissao, 8, 2) . ' DE ' . strtoupper(db_mes(substr($this->emissao, 5, 2))) . ' DE ' . substr($this->emissao, 0, 4) . '.');
+    $this->objpdf->text($xcol + 70, $xlin + 265, strtoupper((string) $this->municpref) . ', ' . substr((string) $this->emissao, 8, 2) . ' DE ' . strtoupper(db_mes(substr((string) $this->emissao, 5, 2))) . ' DE ' . substr((string) $this->emissao, 0, 4) . '.');
     $this->objpdf->line($xcol + 30, $xlin + 250, $xcol + 185, $xlin + 250);
     $this->objpdf->text($xcol + 92, $xlin + 255, 'Responsável Almoxarifado');
     $this->objpdf->Setfont('Arial', '', 8);

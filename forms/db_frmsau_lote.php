@@ -91,7 +91,7 @@ $clrotulo->label("sd24_t_diagnostico");
 
       <?php
       $sOculta = "style = 'display: none;'";
-      if ( in_array($db_opcao, array(1,2)) ) {
+      if ( in_array($db_opcao, [1,2]) ) {
         $sOculta = "";
       }
       ?>
@@ -257,7 +257,7 @@ function js_limpadados(){
 	focoInclusao.focus();
 
 	if( $('db_opcao').name == 'alterar' ){
-		location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?idarq=<?=$idarq?>&chavepesquisalote='+$F('sd58_i_codigo');
+		location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?idarq=<?=$idarq?>&chavepesquisalote='+$F('sd58_i_codigo');
 	}else{
 		$('db_opcao').name       = "incluir";
 		$('db_opcao').value      = "Incluir FAA";
@@ -466,7 +466,7 @@ function js_preenchepesquisa(chave){
 	$('sd59_i_codigo').value = chave;
   db_iframe_sau_lotepront.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?idarq=$idarq&chavepesquisalotepront='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?idarq=$idarq&chavepesquisalotepront='+chave";
   ?>
 }
 function js_pesquisalote(){
@@ -476,7 +476,7 @@ function js_pesquisalote(){
 function js_preenchepesquisalote(chave){
   db_iframe_sau_lote.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?idarq=$idarq&chavepesquisalote='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?idarq=$idarq&chavepesquisalote='+chave";
   ?>
 }
 

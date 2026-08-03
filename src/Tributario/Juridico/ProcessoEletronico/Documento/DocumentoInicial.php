@@ -77,7 +77,7 @@ class DocumentoInicial extends \pdf3
         global $lImpFolha;
 
         db_fieldsmemory($result, 0);
-        $db12_extenso = pg_result($result, 0, "db12_extenso");
+        $db12_extenso = pg_fetch_result($result, 0, "db12_extenso");
 
         $S = $this->lMargin;
         $this->SetLeftMargin(10);

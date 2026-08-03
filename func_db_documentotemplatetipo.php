@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_documentotemplatetipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_documentotemplatetipo = new cl_db_documentotemplatetipo;
 $cldb_documentotemplatetipo->rotulo->label("db80_sequencial");
 $cldb_documentotemplatetipo->rotulo->label("db80_descricao");
@@ -98,9 +98,9 @@ $cldb_documentotemplatetipo->rotulo->label("db80_descricao");
         }else{
            $sql = $cldb_documentotemplatetipo->sql_query("",$campos,"db80_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db80_descricao)){
-          $repassa = array("chave_db80_sequencial"=>$chave_db80_sequencial,"chave_db80_descricao"=>$chave_db80_descricao);
+          $repassa = ["chave_db80_sequencial"=>$chave_db80_sequencial,"chave_db80_descricao"=>$chave_db80_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

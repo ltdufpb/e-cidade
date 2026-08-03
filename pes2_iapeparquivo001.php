@@ -32,15 +32,15 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhpessoalmov_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 
 $cldb_rhpessoalmov = new cl_rhpessoalmov;
 
-$aFolhasSalario = array("gerfsal", "gerfres", "gerfcom");
-$aFolhas13o     = array("gerfs13");
+$aFolhasSalario = ["gerfsal", "gerfres", "gerfcom"];
+$aFolhas13o     = ["gerfs13"];
 
 $aFolhas          = $aFolhasSalario;
 $sRub_Permanencia = "'0021', '2021', '4021'";
@@ -154,7 +154,7 @@ try {
    $sSql   .= "          rubrica;                                                                      \n";
    $result  = db_query($sSql);
   
-   if (pg_numrows($result) == 0) {
+   if (pg_num_rows($result) == 0) {
     throw new Exception("Não existem dados para os filtros informados.");
    }
 
@@ -165,7 +165,7 @@ try {
    $total_registro    = 0;
    $total_valor       = 0;
    $matricula_atual   = '';
-   for($x = 0;$x < pg_numrows($result);$x++){
+   for($x = 0;$x < pg_num_rows($result);$x++){
      db_fieldsmemory($result,$x);
      fputs($arquivo,$tipo."\r\n");
  
@@ -239,7 +239,7 @@ try {
         <td align="right"><b>Tipo de Arquivo:&nbsp;&nbsp;<b></td>
 	<td align="left">
 	<?php 
-	  $arr = array('I'=>'Iapep');
+	  $arr = ['I'=>'Iapep'];
 	  db_select("exporta",$arr,true,1);
 	?>
         </td>
@@ -248,7 +248,7 @@ try {
         <td align="right"><b>Emite Demitidos:&nbsp;&nbsp;<b></td>
 	<td align="left">
 	<?php 
-	  $arr_1 = array('n'=>'Não','s'=>'Sim');
+	  $arr_1 = ['n'=>'Não','s'=>'Sim'];
 	  db_select("demitidos",$arr_1,true,1);
 	?>
         </td>
@@ -257,7 +257,7 @@ try {
         <td align="right"><b>Tipo de Folha:&nbsp;&nbsp;<b></td>
 	<td align="left">
 	<?php 
-	  $arr_2 = array('s'=>'Salário', 'd'=>'13o Salário');
+	  $arr_2 = ['s'=>'Salário', 'd'=>'13o Salário'];
 	  db_select("ponto",$arr_2,true,1);
 	?>
         </td>

@@ -124,7 +124,7 @@ if ($db_opcao == 2) {
                         <td nowrap title="<?= @$Trh37_acumcargo ?>"><?= @$Lrh37_acumcargo ?></td>
                         <td>
                             <?php
-                            $aAtivox = array("" => "Nenhuma das opções","true" => "Sim", "false" => "Não");
+                            $aAtivox = ["" => "Nenhuma das opções","true" => "Sim", "false" => "Não"];
                             db_select('rh37_acumcargo', $aAtivox, true, $db_opcao, "");
                             ?>
                         </td>
@@ -133,7 +133,7 @@ if ($db_opcao == 2) {
                         <td nowrap title="<?= @$Trh37_ativo ?>"><?= @$Lrh37_ativo ?></td>
                         <td>
                             <?php
-                            $aAtivo = array("t" => "Sim", "f" => "Não");
+                            $aAtivo = ["t" => "Sim", "f" => "Não"];
                             db_select('rh37_ativo', $aAtivo, true, $db_opcao, "");
                             ?>
                         </td>
@@ -143,7 +143,7 @@ if ($db_opcao == 2) {
                         <td> Tipo Cargo: </td>
                         <td>
                         <?php 
-                        $tiposCargo = array(
+                        $tiposCargo = [
                             "0" => "Inativos / Pensionistas",
                             "1" => "Efetivos",
                             "2" => "Eletivos",
@@ -154,7 +154,7 @@ if ($db_opcao == 2) {
                             "7" => "Benefício previdenciário temporário",
                             "8" => "À disposição",
                             "" => "Não informado"
-                        );
+                        ];
                         db_select('rh267_dados', $tiposCargo, true, $db_opcao);?>
                         </td>
                     </tr>
@@ -293,7 +293,7 @@ function js_preenchepesquisa(chave) {
     db_iframe_rhfuncao.hide();
     <?php
     if ($db_opcao != 1) {
-        echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+        echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
     }
     ?>
 }

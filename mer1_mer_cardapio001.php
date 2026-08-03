@@ -33,7 +33,7 @@ include(modification("classes/db_mer_cardapio_classe.php"));
 include(modification("classes/db_mer_cardapiotipo_classe.php"));
 include(modification("classes/db_mer_tprefeicao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_cardapio     = new cl_mer_cardapio;
 $clmer_cardapiotipo = new cl_mer_cardapiotipo;
 $clmer_tprefeicao   = new cl_mer_tprefeicao;
@@ -50,7 +50,7 @@ if (isset($incluir)) {
   $clmer_cardapio->incluir(null);
   if ($clmer_cardapio->erro_status=="1") {
  	
-    $vet = explode(",",$lista);
+    $vet = explode(",",(string) $lista);
     for ($x=0;$x<count($vet);$x++) {
   	
       $clmer_cardapiotipo->me21_i_cardapio   = $clmer_cardapio->me01_i_codigo;

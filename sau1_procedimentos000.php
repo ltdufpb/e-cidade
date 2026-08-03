@@ -62,10 +62,10 @@ if($db_opcao==1){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-      $clcriaabas->identifica = array("a1"=>"Cadastro","a2"=>"Serviços","a3"=>"Tipo de Atendimento","a4"=>"Grupo de Atendimento","a5"=>"Faixa Etária","a6"=>"Especialidade");
-      $clcriaabas->src = array("a1"=>$arquivo1,"a2"=>$arquivo2,"a3"=>"sau1_proctipoatend001.php","a4"=>"sau1_procgrupoatend001.php","a5"=>"sau1_procfaixaetaria001.php","a6"=>"sau1_procespecialidades001.php");
-      $clcriaabas->disabled   =  array("a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true","a6"=>"true");
-      $clcriaabas->sizecampo  = array("a1"=>27,"a2"=>15,"a3"=>16,"a4"=>17,"a5"=>15,"a6"=>15);
+      $clcriaabas->identifica = ["a1"=>"Cadastro","a2"=>"Serviços","a3"=>"Tipo de Atendimento","a4"=>"Grupo de Atendimento","a5"=>"Faixa Etária","a6"=>"Especialidade"];
+      $clcriaabas->src = ["a1"=>$arquivo1,"a2"=>$arquivo2,"a3"=>"sau1_proctipoatend001.php","a4"=>"sau1_procgrupoatend001.php","a5"=>"sau1_procfaixaetaria001.php","a6"=>"sau1_procespecialidades001.php"];
+      $clcriaabas->disabled   =  ["a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true","a6"=>"true"];
+      $clcriaabas->sizecampo  = ["a1"=>27,"a2"=>15,"a3"=>16,"a4"=>17,"a5"=>15,"a6"=>15];
       $clcriaabas->scrolling = "no";
       $clcriaabas->iframe_width = 770;
       $clcriaabas->cria_abas();

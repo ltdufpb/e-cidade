@@ -49,19 +49,19 @@ $clrotulo->label('pc23_obs');
 $clrotulo->label('pc23_validmin');
 $clrotulo->label('pc11_vlrun');
 $clrotulo->label('pc11_quant');
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
-$arr_vlnomesitens = array();
-$arr_valoresitens = array();
-$arr_quantitens = array();
-$arr_vtnomesitens = array();
-$arr_nomesBDI = array();
-$arr_nomesEncargos = array();
-$arr_taxasEstimadas = array();
+db_postmemory($_GET);
+db_postmemory($_POST);
+$arr_vlnomesitens = [];
+$arr_valoresitens = [];
+$arr_quantitens = [];
+$arr_vtnomesitens = [];
+$arr_nomesBDI = [];
+$arr_nomesEncargos = [];
+$arr_taxasEstimadas = [];
 $res_empparametro = $clempparametro->sql_record($clempparametro->sql_query(db_getsession("DB_anousu"), "e30_numdec"));
 if ($clempparametro->numrows > 0) {
      db_fieldsmemory($res_empparametro, 0);
-    if (trim($e30_numdec) == "" || $e30_numdec == 0) {
+    if (trim((string) $e30_numdec) == "" || $e30_numdec == 0) {
          $numdec = 2;
     } else {
          $numdec = $e30_numdec;
@@ -392,7 +392,7 @@ function js_processar_lote(elemento){
                         }
                     }
 
-                    if (trim($pc01_descrmater)=="") {
+                    if (trim((string) $pc01_descrmater)=="") {
                         $pc01_descrmater = $pc11_resum;
                     }
 
@@ -407,7 +407,7 @@ function js_processar_lote(elemento){
             <td align='center'  class='bordas_corp' width='15%'><?= $lote ?></td>
                     <?php } ?>
           <td align='left'    class='bordas_corp' width='15%'><?=$pc01_descrmater?></td>
-          <td align='left'    class='bordas_corp' width='15%'><?=stripslashes($pc11_resum)?></td>
+          <td align='left'    class='bordas_corp' width='15%'><?=stripslashes((string) $pc11_resum)?></td>
             <td align='center'  class='bordas_corp' width='15%'><?php db_input("obs_$pc22_orcamitem", 18, $Ipc23_obs, true, 'text', $db_opcao, "onchange='document.form1.vlrun_$pc22_orcamitem.select();'"); ?> </td>
 
                     <?php
@@ -421,7 +421,7 @@ function js_processar_lote(elemento){
                         db_fieldsmemory($result_mater, 0);
                     }
 
-                    $pc11_resum = stripslashes($pc11_resum) ? stripslashes($pc11_resum) : "&nbsp";
+                    $pc11_resum = stripslashes((string) $pc11_resum) ?: "&nbsp";
 
                     ?>
 
@@ -432,7 +432,7 @@ function js_processar_lote(elemento){
               <table  width='100%'>
               <tr>
                 <td nowrap width='10%'>*</td>
-                <td nowrap> <?php db_inputdata("pc23_validmin_$pc22_orcamitem", @$$dia, @$$mes, @$$ano, true, "text", $db_opcao); ?></td>
+                <td nowrap> <?php db_inputdata("pc23_validmin_$pc22_orcamitem", @${$dia}, @${$mes}, @${$ano}, true, "text", $db_opcao); ?></td>
               <tr>
               </table>
               <script>document.form1.pc23_validmin_<?=$pc22_orcamitem ?>.className = 'valida';</script>";
@@ -442,7 +442,7 @@ function js_processar_lote(elemento){
               <table  width='100%'>
               <tr>
                 <td nowrap width='10%' ></td>
-                <td nowrap  ><?php db_inputdata("pc23_validmin_$pc22_orcamitem", @$$dia, @$$mes, @$$ano, true, "text", $db_opcao); ?> </td>
+                <td nowrap  ><?php db_inputdata("pc23_validmin_$pc22_orcamitem", @${$dia}, @${$mes}, @${$ano}, true, "text", $db_opcao); ?> </td>
               <tr>
               </table>
                     <?php } else {
@@ -450,7 +450,7 @@ function js_processar_lote(elemento){
               <table  width='100%'>
                 <tr >
                   <td nowrap  width='10%'>&nbsp;</td>
-                  <td nowrap  > <?php db_inputdata("pc23_validmin_$pc22_orcamitem", @$$dia, @$$mes, @$$ano, true, "text", $db_opcao); ?></td>
+                  <td nowrap  > <?php db_inputdata("pc23_validmin_$pc22_orcamitem", @${$dia}, @${$mes}, @${$ano}, true, "text", $db_opcao); ?></td>
                 </tr>
               </table>
                     <?php } ?>
@@ -471,13 +471,13 @@ function js_processar_lote(elemento){
                     $arr_taxasEstimadas[$i] = "taxaestimada_$pc22_orcamitem";
 
                     if ($clpcorcamval->numrows > 0) {
-                        if (strpos($$valor, ".") == "") {
-                            $$valor .= ".00";
+                        if (strpos((string) ${$valor}, ".") == "") {
+                            ${$valor} .= ".00";
                         }
                     }
 
-                    if (!isset($$qtd) || isset($$qtd) && $$qtd=='') {
-                        $$qtd = $pc11_quant;
+                    if (!isset(${$qtd}) || isset(${$qtd}) && ${$qtd}=='') {
+                        ${$qtd} = $pc11_quant;
                     }
 
                     if ($db_opcao==2) {
@@ -485,8 +485,8 @@ function js_processar_lote(elemento){
                             $somavalor  = 0;
                         }
 
-                        if (isset($$valor)) {
-                            $somavalor += $$valor;
+                        if (isset(${$valor})) {
+                            $somavalor += ${$valor};
                             $somavalor  = number_format($somavalor, $numdec, ".", "");
                         }
 
@@ -570,7 +570,7 @@ function js_importar(TouF){
   <?php
     for ($i=0; $i<count($arr_vlnomesitens); $i++) { ?>
     if(TouF==true){
-      document.form1.<?=$arr_vlnomesitens[$i]?>.value = <?= trim($arr_valoresitens[$i]) ?>;
+      document.form1.<?=$arr_vlnomesitens[$i]?>.value = <?= trim((string) $arr_valoresitens[$i]) ?>;
       document.form1.<?=$arr_vtnomesitens[$i]?>.value = <?= trim((round($arr_valoresitens[$i], 2)*$arr_quantitens[$i])) ?>;
     }else{
       document.form1.<?=$arr_nomesBDI[$i]?>.value = '0.00';

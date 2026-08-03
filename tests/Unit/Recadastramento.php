@@ -14,7 +14,6 @@ class Recadastramento extends TestCase
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
-        parent::__construct($name, $data, $dataName);
         $json = file_get_contents("tests/files/resposta.json");
         $this->json = new Formatter($json);
     }

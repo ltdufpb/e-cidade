@@ -32,7 +32,7 @@ class AssentamentoFuncionalRepository {
    *
    * @var  array
    */
-  private $aAssentamentosFuncionais = array();
+  private $aAssentamentosFuncionais = [];
 
   /**
    * Instancia do AssentamentoFuncional
@@ -143,7 +143,7 @@ class AssentamentoFuncionalRepository {
    * @throws BusinessException
    * @throws DBException
    */
-  public static function getAssentamentosEfetividadePorTipo(Tipoassentamento $oTipoAssentamento, DBDate $oDataInicio = null) {
+  public static function getAssentamentosEfetividadePorTipo(Tipoassentamento $oTipoAssentamento, ?DBDate $oDataInicio = null) {
 
     if(empty($oTipoAssentamento)) {
       throw new BusinessException("Tipo de assentamento não informado e/ou inválido.");
@@ -176,7 +176,7 @@ class AssentamentoFuncionalRepository {
       throw new DBException("Erro ao buscar assentamentos.");
     }
 
-    $aAssentamentosEfetividade = array();
+    $aAssentamentosEfetividade = [];
 
     if(pg_num_rows($rsAssentamento) > 0) {
 
@@ -208,7 +208,7 @@ class AssentamentoFuncionalRepository {
       throw new DBException("Erro ao buscar assentamentos.");
     }
 
-    $aAssentamentosEfetividade = array();
+    $aAssentamentosEfetividade = [];
 
     if(pg_num_rows($rsAssentamento) > 0) {
 

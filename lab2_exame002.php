@@ -49,7 +49,7 @@ if( !$lInformouRequisicao ) {
   if (isset($dDataini) && $dDatafim != "") {
 
     @$dData1  = substr(@$dDataini,6,4)."-".substr(@$dDataini,3,2)."-".substr(@$dDataini,0,2);
-    @$dData2  = substr(@$dDatafim,6,4)."-".substr(@$dDatafim,3,2)."-".substr(@$dDatafim,0,2);
+    @$dData2  = substr((string) @$dDatafim,6,4)."-".substr((string) @$dDatafim,3,2)."-".substr((string) @$dDatafim,0,2);
     $sWhere   = " la22_d_data between '$dData1' and '$dData2'";
     $sPeriodo = "PERÍODO: ".$dDataini." até ".$dDatafim;
   }
@@ -185,9 +185,9 @@ for ($iI = 0; $iI < $oDaoLabRequiItem->numrows; $iI++) {
   $oPdf->setfont('arial', '', 8);
   $oPdf->cell(24, 4, $oDataRequiItem->la22_i_codigo, 1, 0, "R", 0);
   $oPdf->cell(20, 4, db_formatar($oDataRequiItem->la21_d_data, 'd'), 1, 0, "R", 0);
-  $oPdf->cell(80, 4, substr($oDataRequiItem->z01_v_nome, 0, 80), 1, 0, "L", 0);
-  $oPdf->cell(50, 4, substr($oDataRequiItem->la08_c_descr, 0, 23), 1, 0, "L", 0);
-  $oPdf->cell(45, 4, substr($oDataRequiItem->la15_c_descr, 0, 23), 1, 0, "L", 0);
+  $oPdf->cell(80, 4, substr((string) $oDataRequiItem->z01_v_nome, 0, 80), 1, 0, "L", 0);
+  $oPdf->cell(50, 4, substr((string) $oDataRequiItem->la08_c_descr, 0, 23), 1, 0, "L", 0);
+  $oPdf->cell(45, 4, substr((string) $oDataRequiItem->la15_c_descr, 0, 23), 1, 0, "L", 0);
   $oPdf->cell(20, 4, db_formatar($oDataRequiItem->la32_d_data, 'd'), 1, 0, "R", 0);
   $oPdf->cell(20, 4, db_formatar($oDataRequiItem->la52_d_data, 'd'), 1, 0, "R", 0);
   $oPdf->cell(20, 4, db_formatar($oDataRequiItem->la31_d_data, 'd'), 1, 1, "R", 0); 

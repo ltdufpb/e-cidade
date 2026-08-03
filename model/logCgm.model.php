@@ -67,7 +67,7 @@ class logcgm {
    * 
    * @var array;
    */
-  private $aIssBaseLog = array();
+  private $aIssBaseLog = [];
   
   public function __construct(){
     
@@ -108,7 +108,7 @@ class logcgm {
    * @param string  $sEnderecoNovo endereco novo no cadastro de CGM
    * @param string  $sEnderecoAntigo endereco antigo no cadastro de CGM
    */
-  public function identificaAlteracao($iInscricao = null, $iOpcao, $iLogTipo = null, $sNomeNovo = "", $sNomeAntigo = "",  
+  public function identificaAlteracao($iInscricao = null, $iOpcao = null, $iLogTipo = null, $sNomeNovo = "", $sNomeAntigo = "",  
                                       $sEnderecoNovo = "", $sEnderecoAntigo = "") {
     
     if ($iInscricao == null) {

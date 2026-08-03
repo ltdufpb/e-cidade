@@ -83,7 +83,7 @@ class AdiantamentoConcessaoRepository extends ContaCorrenteRepositoryBase {
    */
   private function agrupar() {
 
-    $aContas = array();
+    $aContas = [];
 
     /**
      * Para cada índice do array, buscamos seus atributos e os agrupamos
@@ -179,7 +179,7 @@ class AdiantamentoConcessaoRepository extends ContaCorrenteRepositoryBase {
       $oStdCodigoCgm->sIdentificador = "Código no CGM";
       $oStdCodigoCgm->sValor         = $iCodigoCgm;
 
-      $aContas[$sAgrupamento]->aCabecalho    = array();
+      $aContas[$sAgrupamento]->aCabecalho    = [];
       $aContas[$sAgrupamento]->aCabecalho[]  = $oStdInstituicao;
       $aContas[$sAgrupamento]->aCabecalho[]  = $oStdOrgao;
       $aContas[$sAgrupamento]->aCabecalho[]  = $oStdUnidade;

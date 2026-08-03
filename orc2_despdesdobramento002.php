@@ -33,10 +33,10 @@ include(modification("libs/db_sql.php"));
 $cldesdobramento = new cl_desdobramento();
 
 //db_postmemory($HTTP_POST_VARS,2);exit;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$dtini = implode("-",array_reverse(explode("/",$DBtxt21)));
-$dtfim = implode("-",array_reverse(explode("/",$DBtxt22)));
+$dtini = implode("-",array_reverse(explode("/",(string) $DBtxt21)));
+$dtfim = implode("-",array_reverse(explode("/",(string) $DBtxt22)));
 
 //---------------------------------------------------------------  
 $clselorcdotacao = new cl_selorcdotacao();
@@ -59,7 +59,7 @@ $head3 = "Período selecionado: $d1 à $d2  ";
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in $instits");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $descr_inst .= $xvirg.$nomeinstabrev ; 
   $xvirg = ', ';
@@ -76,7 +76,7 @@ if ($w_elemento !=""){
 //echo $cldesdobramento->sql($sele_work,$dtini,$dtfim,$instits);    
     
 $result = db_query($cldesdobramento->sql($sele_work,$dtini,$dtfim,$instits));
-$rows = pg_numrows($result);
+$rows = pg_num_rows($result);
 //  db_criatabela($result);exit;
  /*
  if (pg_numrows($result)>0){

@@ -20,8 +20,8 @@
 class CanvasGraph extends Graph {
 //---------------
 // CONSTRUCTOR
-    function CanvasGraph($aWidth=300,$aHeight=200,$aCachedName="",$timeout=0,$inline=1) {
-	$this->Graph($aWidth,$aHeight,$aCachedName,$timeout,$inline);
+    function __construct($aWidth=300,$aHeight=200,$aCachedName="",$timeout=0,$inline=1) {
+	\Graph::__construct($aWidth, $aHeight, $aCachedName, $timeout, $inline);
     }
 
 //---------------
@@ -67,14 +67,14 @@ class CanvasGraph extends Graph {
 		if( !class_exists('ImgTrans') ) {
 		    require_once('jpgraph_imgtrans.php');
 		}
-	    
+
 		$tform = new ImgTrans($this->img->img);
 		$this->img->img = $tform->Skew3D($this->iImgTransHorizon,$this->iImgTransSkewDist,
 						 $this->iImgTransDirection,$this->iImgTransHighQ,
 						 $this->iImgTransMinSize,$this->iImgTransFillColor,
 						 $this->iImgTransBorder);
 	    }
-	
+
 
 	    // If the filename is given as the special _IMG_HANDLER
 	    // then the image handler is returned and the image is NOT

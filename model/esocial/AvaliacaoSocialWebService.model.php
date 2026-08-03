@@ -2,10 +2,9 @@
 Class AvaliacaoSocialWebservice {
 
   const CODIGO_AVALIACAO = 3000008;
-  private $iCodigoMatricula    = null;
 
-  public function __construct($iCodigoMatricula) {
-    $this->iCodigoMatricula = $iCodigoMatricula;
+  public function __construct(private $iCodigoMatricula)
+  {
   }
 
   /**

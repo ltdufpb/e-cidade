@@ -197,7 +197,7 @@ $db_instit = db_getsession("DB_instit");
                                     $sSqlBuscaTipos = $oDaoTipoTransmissao->sql_query_file(null, "*", 'e57_sequencial');
                                     $rsBuscaTipos = $oDaoTipoTransmissao->sql_record($sSqlBuscaTipos);
 
-                                    $aTipoTransmissao = array(0 => "Nenhum");
+                                    $aTipoTransmissao = [0 => "Nenhum"];
                                     for ($iTrans = 0; $iTrans < $oDaoTipoTransmissao->numrows; $iTrans++) {
                                         $oTipoTransmissao = db_utils::fieldsMemory($rsBuscaTipos, $iTrans);
                                         $aTipoTransmissao[$oTipoTransmissao->e57_sequencial] = $oTipoTransmissao->e57_descricao;

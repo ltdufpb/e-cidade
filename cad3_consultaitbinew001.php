@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_lote_classe.php"));
 require_once(modification("libs/db_app.utils.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $cllote = new cl_lote;
 $clrotulo = new rotulocampo;
 $clrotulo->label("j01_matric");
@@ -128,7 +128,7 @@ $db_opcao=1;
     </td>
     <td> 
      <?php
-      $x = array("u"=>"Urbana","r"=>"Rural");
+      $x = ["u"=>"Urbana","r"=>"Rural"];
       db_select('tipo',$x,true,1,"onClick='js_controlatipo(this.value);'");
      ?>
     </td>

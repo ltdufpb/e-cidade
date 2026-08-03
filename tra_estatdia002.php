@@ -140,7 +140,7 @@ while ($lnm = pg_fetch_array($rsm)){
       $legendm[] = $lnm["mes"];
       $totalm[]  = $lnm["total"];
  }
-$mes = array(  1  => "Janeiro",
+$mes = [  1  => "Janeiro",
                2  => "Fevereiro",
                3  => "Março",
                4  => "Abril",
@@ -151,7 +151,7 @@ $mes = array(  1  => "Janeiro",
                9  => "Setembro",
                10 => "Outubro",
                11 => "Novembro",
-               12 => "Dezembro");
+               12 => "Dezembro"];
 
 
 $grafico->img->SetMargin(40,40,40,40);

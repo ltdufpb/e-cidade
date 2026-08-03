@@ -123,7 +123,7 @@ abstract class RelatorioPendentesTef extends \GenericPdf
 
             $this->setY($altura);
             $this->setX(85);
-            $this->Cell(54, $height, substr($oOperacao->getBandeira(), 0, 25), 1, 0, "C");
+            $this->Cell(54, $height, substr((string) $oOperacao->getBandeira(), 0, 25), 1, 0, "C");
 
             $this->setY($altura);
             $this->setX(139);
@@ -131,7 +131,7 @@ abstract class RelatorioPendentesTef extends \GenericPdf
 
             $this->setY($altura);
             $this->setX(154);
-            $this->Cell(45, $height, substr($oOperacao->operacoesTef->getDescricao(), 0, 21), 1, 0, "C");
+            $this->Cell(45, $height, substr((string) $oOperacao->operacoesTef->getDescricao(), 0, 21), 1, 0, "C");
 
             $this->setY($altura);
             $this->setX(199);

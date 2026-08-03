@@ -64,7 +64,7 @@ $rsCabecalho        = $clouvidoriaatendimento->sql_record($sSqlCabecalho);
 $oCabecalho = db_utils::fieldsMemory($rsCabecalho, 0);
 
 
-$sDataProcesso = implode("/", array_reverse(explode("-", $oCabecalho->ov01_dataatend)));
+$sDataProcesso = implode("/", array_reverse(explode("-", (string) $oCabecalho->ov01_dataatend)));
 $head2 = "Detalhes do atendimento nº {$oCabecalho->ov01_numero}/{$oCabecalho->ov01_anousu}";
 $head3 = "Data do Processo: {$sDataProcesso}";
 $head4 = "Processo: {$oCabecalho->p58_codproc} / {$oCabecalho->p58_ano}";
@@ -194,7 +194,7 @@ if (isset($oGet->sAtendimentosVinculados)) {
   	// CPF
   	$sCpfCnpj = "CPF:";
   	$iCnpjCpf = db_formatar($oStdDadosRequerente->cpfcnpj , "cpf");
-  	if (strlen($oStdDadosRequerente->cpfcnpj) > 11) {
+  	if (strlen((string) $oStdDadosRequerente->cpfcnpj) > 11) {
 
   	  $iCnpjCpf = db_formatar($oStdDadosRequerente->cpfcnpj , "cnpj");
   	  $sCpfCnpj = "CNPJ:";

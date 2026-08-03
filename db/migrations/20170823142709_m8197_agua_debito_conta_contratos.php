@@ -57,32 +57,32 @@ class M8197AguaDebitoContaContratos extends PostgresMigration
   public function upDDL()
   {
     $this->execute("CREATE SEQUENCE caixa.debcontapedidoaguacontrato_codigo_seq");
-    $this->table('debcontapedidoaguacontrato',          array('schema'=>'caixa', 'id'=>false))
+    $this->table('debcontapedidoaguacontrato',          ['schema'=>'caixa', 'id'=>false])
       ->addColumn('d81_codigo',   'integer')
       ->addColumn('d81_contrato',   'integer')
-      ->addForeignKey('d81_contrato',  'agua.aguacontrato',  'x54_sequencial', array('constraint'=>'debcontapedidoaguacontrato_contrato_fk'))
-      ->addIndex('d81_contrato',  array('unique'=>false, 'name'=>'debcontapedidoaguacontrato_contrato_in'))
-      ->addForeignKey('d81_codigo',  'caixa.debcontapedido',  'd63_codigo', array('constraint'=>'debcontapedidoaguacontrato_codigo_fk'))
+      ->addForeignKey('d81_contrato',  'agua.aguacontrato',  'x54_sequencial', ['constraint'=>'debcontapedidoaguacontrato_contrato_fk'])
+      ->addIndex('d81_contrato',  ['unique'=>false, 'name'=>'debcontapedidoaguacontrato_contrato_in'])
+      ->addForeignKey('d81_codigo',  'caixa.debcontapedido',  'd63_codigo', ['constraint'=>'debcontapedidoaguacontrato_codigo_fk'])
       ->save();
     $this->execute("ALTER TABLE caixa.debcontapedidoaguacontrato ALTER COLUMN d81_codigo SET DEFAULT nextval('caixa.debcontapedidoaguacontrato_codigo_seq')");
 
     $this->execute("CREATE SEQUENCE caixa.debcontapedidoaguacontratoeconomia_codigo_seq");
-    $this->table('debcontapedidoaguacontratoeconomia',  array('schema'=>'caixa', 'id'=>false))
+    $this->table('debcontapedidoaguacontratoeconomia',  ['schema'=>'caixa', 'id'=>false])
       ->addColumn('d82_codigo',   'integer')
       ->addColumn('d82_economia',   'integer')
-      ->addForeignKey('d82_economia',  'agua.aguacontratoeconomia',  'x38_sequencial', array('constraint'=>'debcontapedidoaguacontratoeconomia_economia_fk'))
-      ->addForeignKey('d82_codigo',  'caixa.debcontapedido',  'd63_codigo', array('constraint'=>'debcontapedidoaguacontratoeconomia_codigo_fk'))
-      ->addIndex('d82_economia',  array('unique'=>false, 'name'=>'debcontapedidoaguacontratoeconomia_economia_in'))
+      ->addForeignKey('d82_economia',  'agua.aguacontratoeconomia',  'x38_sequencial', ['constraint'=>'debcontapedidoaguacontratoeconomia_economia_fk'])
+      ->addForeignKey('d82_codigo',  'caixa.debcontapedido',  'd63_codigo', ['constraint'=>'debcontapedidoaguacontratoeconomia_codigo_fk'])
+      ->addIndex('d82_economia',  ['unique'=>false, 'name'=>'debcontapedidoaguacontratoeconomia_economia_in'])
       ->save();
     $this->execute("ALTER TABLE caixa.debcontapedidoaguacontratoeconomia ALTER COLUMN d82_codigo SET DEFAULT nextval('caixa.debcontapedidoaguacontratoeconomia_codigo_seq')");
   }
 
   public function downDDL()
   {
-    $this->table('debcontapedidoaguacontratoeconomia', array('schema'=>'caixa'))->drop();
+    $this->table('debcontapedidoaguacontratoeconomia', ['schema'=>'caixa'])->drop();
     $this->execute("DROP SEQUENCE IF EXISTS caixa.debcontapedidoaguacontratoeconomia_codigo_seq");
 
-    $this->table('debcontapedidoaguacontrato', array('schema'=>'caixa'))->drop();
+    $this->table('debcontapedidoaguacontrato', ['schema'=>'caixa'])->drop();
     $this->execute("DROP SEQUENCE IF EXISTS caixa.debcontapedidoaguacontrato_codigo_seq");
   }
 

@@ -55,18 +55,18 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array (
+	 $clcriaabas->identifica =  [
 	                                   "orcdotacao"      => "Dotação",
 	                                   "orcdotacaocontr" => "Contra-Partida",
                                         'dotacaoplanoorcamentario' => 'Plano Orçamentário'
-	                                 ); 
-	 $clcriaabas->src        = array("orcdotacao"      => "orc4_manutdotacao006.php", 'dotacaoplanoorcamentario' => 'orc4_dotacaoplanoorcamentario001.php');
-	 $clcriaabas->disabled   = array("orcdotacaocontr" => "true", 'dotacaoplanoorcamentario' => 'true');
-	 $clcriaabas->sizecampo  = array(
+	                                 ]; 
+	 $clcriaabas->src        = ["orcdotacao"      => "orc4_manutdotacao006.php", 'dotacaoplanoorcamentario' => 'orc4_dotacaoplanoorcamentario001.php'];
+	 $clcriaabas->disabled   = ["orcdotacaocontr" => "true", 'dotacaoplanoorcamentario' => 'true'];
+	 $clcriaabas->sizecampo  = [
 	                                "orcdotacao"      => 30,
 	                                "orcdotacaocontr" => 30,
 	                                "dotacaoplanoorcamentario" => 30
-	                                );
+	                                ];
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

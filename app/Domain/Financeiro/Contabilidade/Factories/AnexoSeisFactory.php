@@ -25,17 +25,16 @@ class AnexoSeisFactory extends AnexosFactory implements AnexosFactoryInterface
      */
     public static function getCodigoRelatorio($exercicio)
     {
-        switch ($exercicio) {
-            case 2022:
-            default:
-                return 264;
-        }
+        return match ($exercicio) {
+            default => 264,
+        };
     }
 
     /**
      * @param $exercicio
      * @return string
      */
+    #[\Override]
     public static function getProgramaRelatorio($exercicio)
     {
         return 'pla2_anexos_rreo001.php';
@@ -48,10 +47,8 @@ class AnexoSeisFactory extends AnexosFactory implements AnexosFactoryInterface
      */
     public static function getService($exercicio, $filtros)
     {
-        switch ($exercicio) {
-            case 2022:
-            default:
-                return new AnexoSeisService($filtros);
-        }
+        return match ($exercicio) {
+            default => new AnexoSeisService($filtros),
+        };
     }
 }

@@ -40,8 +40,8 @@ $clempresto = new cl_empresto;
 $clrecurso = new cl_orctiporec;
 $clrecurso->rotulo->label();
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 
 
@@ -84,7 +84,7 @@ db_postmemory($HTTP_POST_VARS);
        <td ><strong>Acumular por:</strong></td>
        <td>
        <?php 
-       $acumu = array("e"=>"Empenho (Ordem Número)",
+       $acumu = ["e"=>"Empenho (Ordem Número)",
 		      "d"=>"Empenho (Ordem Data de Emissão)", 
 		      "c"=>"Empenho (Ordem Credor)",
                       "t"=>"Empenho (Ordem Tipo Resto)",
@@ -94,7 +94,7 @@ db_postmemory($HTTP_POST_VARS);
 		      "a"=>"Tipo de Resto",
 		      "r"=>"Recurso",
 		      "r_e"=>"Recurso/Elemento",
-		      "a_o"=>"Orgão");
+		      "a_o"=>"Orgão"];
        db_select("tipo",$acumu,true,"text",2);
        ?>
        </td>
@@ -103,7 +103,7 @@ db_postmemory($HTTP_POST_VARS);
        <td ><strong>Restos a Pagar:</strong></td>
        <td>
        <?php 
-       $acumu = array("0"=>"Geral","1"=>"Com Movimento até a Data","2"=>"Com saldo a pagar");
+       $acumu = ["0"=>"Geral","1"=>"Com Movimento até a Data","2"=>"Com saldo a pagar"];
        db_select("commov",$acumu,true,"text",2);
        ?>
        </td>
@@ -123,7 +123,7 @@ db_postmemory($HTTP_POST_VARS);
        <td><strong>Opção:</strong></td>
        <td>
        <?php 
-       $opcao = array("0"=>"Todos","1"=>"Liquidados","2"=>"Não liquidados","3"=>"Anulados");
+       $opcao = ["0"=>"Todos","1"=>"Liquidados","2"=>"Não liquidados","3"=>"Anulados"];
        db_select("opcao",$opcao,true,"text",2);
        ?>
        </td>
@@ -134,7 +134,7 @@ db_postmemory($HTTP_POST_VARS);
        <td>
        <?php 
        $result = $clempresto->sql_record($clempresto->sql_query_empenho(db_getsession("DB_anousu"),null,' distinct e60_anousu ','e60_anousu'));
-       $opcao = array("0"=>"Todos");// "1"=>"Liquidados","2"=>"Não liquidados","3"=>"Anulados");
+       $opcao = ["0"=>"Todos"];// "1"=>"Liquidados","2"=>"Não liquidados","3"=>"Anulados");
        
        for ($ini=0;$ini < $clempresto->numrows;$ini++){
        	   db_fieldsmemory($result,$ini);

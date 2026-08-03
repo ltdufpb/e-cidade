@@ -106,9 +106,9 @@ if( $db_opcao == 1 ) {
 		    </td>
 		    <td>
 					<?php 
-						$x = array('1'=>'Sem Aviso e Sem Bloqueio',
+						$x = ['1'=>'Sem Aviso e Sem Bloqueio',
 						           '2'=>'Com Aviso e Sem bloqueio',
-						           '3'=>'Com Aviso e Bloqueio');
+						           '3'=>'Com Aviso e Bloqueio'];
 
 						db_select('ht01_controlemultpartcandidato',$x,true,$db_opcao,"style='width:400px'");
 					?>
@@ -120,8 +120,8 @@ if( $db_opcao == 1 ) {
 		    </td>
 		    <td>
 					<?php 
-						$x = array('1'=>'Sem Limite',
-						           '2'=>'Máxima Determindada');
+						$x = ['1'=>'Sem Limite',
+						           '2'=>'Máxima Determindada'];
 						db_select('ht01_controleqtd',$x,true,$db_opcao,"style='width:400px' onChange='js_verificaControleQtd()'");
 					?>
 		    </td>
@@ -149,13 +149,13 @@ if( $db_opcao == 1 ) {
 		    </td>
 		    <td>
 					<?php 
-          $ht01_validadeini_dia = isset( $ht01_validadeini_dia ) ? $ht01_validadeini_dia : "";
-          $ht01_validadeini_mes = isset( $ht01_validadeini_mes ) ? $ht01_validadeini_mes : "";
-          $ht01_validadeini_ano = isset( $ht01_validadeini_ano ) ? $ht01_validadeini_ano : "";
+          $ht01_validadeini_dia ??= "";
+          $ht01_validadeini_mes ??= "";
+          $ht01_validadeini_ano ??= "";
 
-          $ht01_validadefim_dia = isset( $ht01_validadefim_dia ) ? $ht01_validadefim_dia : "";
-          $ht01_validadefim_mes = isset( $ht01_validadefim_mes ) ? $ht01_validadefim_mes : "";
-          $ht01_validadefim_ano = isset( $ht01_validadefim_ano ) ? $ht01_validadefim_ano : "";
+          $ht01_validadefim_dia ??= "";
+          $ht01_validadefim_mes ??= "";
+          $ht01_validadefim_ano ??= "";
 
 					db_inputdata('ht01_validadeini',$ht01_validadeini_dia,$ht01_validadeini_mes,$ht01_validadeini_ano,true,'text',$db_opcao,"");
 					echo "&nbsp;&nbsp;<strong>Até<strong>&nbsp;&nbsp;";
@@ -189,11 +189,11 @@ if( $db_opcao == 1 ) {
 		    </td>
 		    <td>
 					<?php
-						$x = array("f"=>"NAO","t"=>"SIM");
+						$x = ["f"=>"NAO","t"=>"SIM"];
 						db_select('ht01_exigeassconcedente',$x,true,$db_opcao,"style='width:90px'");
 
 						echo "&nbsp;&nbsp;".$Lht01_exigevalcpf."&nbsp;&nbsp;";
-            $x = array("f"=>"NAO","t"=>"SIM");
+            $x = ["f"=>"NAO","t"=>"SIM"];
             db_select('ht01_exigevalcpf',$x,true,$db_opcao,"style='width:90px'");
 					?>
 		    </td>
@@ -424,7 +424,7 @@ function js_preenchepesquisa(chave){
   db_iframe_habitprograma.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

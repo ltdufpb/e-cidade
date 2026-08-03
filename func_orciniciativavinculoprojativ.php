@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orciniciativavinculoprojativ_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorciniciativavinculoprojativ = new cl_orciniciativavinculoprojativ;
 $clorciniciativavinculoprojativ->rotulo->label("o149_sequencial");
 $clorciniciativavinculoprojativ->rotulo->label("o149_iniciativa");
@@ -98,9 +98,9 @@ $clorciniciativavinculoprojativ->rotulo->label("o149_iniciativa");
         }else{
            $sql = $clorciniciativavinculoprojativ->sql_query("",$campos,"o149_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o149_iniciativa)){
-          $repassa = array("chave_o149_sequencial"=>$chave_o149_sequencial,"chave_o149_iniciativa"=>$chave_o149_iniciativa);
+          $repassa = ["chave_o149_sequencial"=>$chave_o149_sequencial,"chave_o149_iniciativa"=>$chave_o149_iniciativa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

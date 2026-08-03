@@ -34,8 +34,8 @@ include(modification("classes/db_folha_classe.php"));
 include(modification("classes/db_pensao_classe.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
 include(modification("classes/db_orctiporec_classe.php"));
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 
 $cllayouts_bb  = new LayoutBB;
 $cllayout_BBBS = new LayoutBBBSFolha;
@@ -78,19 +78,19 @@ if($clrharqbanco->numrows>0){
     $dacontadobanco = $rh34_conta;
  
     $dvdacontabanco = "0";
-    if(trim($rh34_dvconta) != ""){
-      $digitos = strlen($rh34_dvconta);
+    if(trim((string) $rh34_dvconta) != ""){
+      $digitos = strlen((string) $rh34_dvconta);
       $dvdacontabanco = $rh34_dvconta[0];
     }
     $dacontadobanco .= $dvdacontabanco;
  
-    if(trim($rh34_dvagencia)!=""){
+    if(trim((string) $rh34_dvagencia)!=""){
       $dvagenciabanco = $rh34_dvagencia[0];
     }
  
-    if(trim($rh34_dvconta)!=""){
+    if(trim((string) $rh34_dvconta)!=""){
       $dvcontadobanco = $rh34_dvconta[0];
-      $digitos        = strlen($rh34_dvconta);
+      $digitos        = strlen((string) $rh34_dvconta);
       if($digitos>1){
         $dvcontaagencia = $rh34_dvconta[1];
       }
@@ -100,14 +100,14 @@ if($clrharqbanco->numrows>0){
     $descricaobanco = $db90_descr;
  
     if(isset($datagera) && $datagera!=""){
-      $datag = split('-',$datagera);
+      $datag = preg_split('#\-#m',(string) $datagera);
       $datag_dia=$datag[2];
       $datag_mes=$datag[1];
       $datag_ano=$datag[0];
     }
  
     if(isset($datadeposit) && $datadeposit!=""){
-      $datad = split('-',$datadeposit);
+      $datad = preg_split('#\-#m',(string) $datadeposit);
       $datad_dia = $datad[2];
       $datad_mes = $datad[1];
       $datad_ano = $datad[0];
@@ -142,13 +142,13 @@ if($clrharqbanco->numrows>0){
     $contalote   = $rh34_conta;
 
     if($db90_codban == "104"){
-      if(trim($rh34_convenio) == '003881'){
-        $conveniobanco = substr($rh34_convenio,0,6)."060003        ";
+      if(trim((string) $rh34_convenio) == '003881'){
+        $conveniobanco = substr((string) $rh34_convenio,0,6)."060003        ";
       }else{
-        $conveniobanco = substr($rh34_convenio,0,6)."060001        ";
+        $conveniobanco = substr((string) $rh34_convenio,0,6)."060001        ";
       }
     }else{
-      $conveniobanco = trim($rh34_convenio); 
+      $conveniobanco = trim((string) $rh34_convenio); 
     }
     
     $descrarquivo = "FOLHA PAGAMENTO"; // Campo somente do layout 3
@@ -156,18 +156,18 @@ if($clrharqbanco->numrows>0){
     $dvagenciaheader = "0";
     $dvcontaheader   = "0";
     $dvagenciacontaheader = " ";
-    if(trim($rh34_dvagencia)!=""){
+    if(trim((string) $rh34_dvagencia)!=""){
       $dvagenciaheader = $rh34_dvagencia[0];
     }
-    if(trim($rh34_dvconta)!=""){
+    if(trim((string) $rh34_dvconta)!=""){
       $dvcontaheader  = $rh34_dvconta[0];
-      $digitos        = strlen($rh34_dvconta);
+      $digitos        = strlen((string) $rh34_dvconta);
       if($digitos>1){
         $dvagenciacontaheader = $rh34_dvconta[1];
       }
     }
-    $operacaoheader = substr($contaheader,0,3);
-    $contaheader2   = str_pad(trim(substr($contaheader,4,20)),8);
+    $operacaoheader = substr((string) $contaheader,0,3);
+    $contaheader2   = str_pad(trim(substr((string) $contaheader,4,20)),8);
     $dvagencialote = $dvagenciaheader;
     $dvcontalote   = $dvcontaheader;
     $dvagenciacontalote = $dvagenciacontaheader;
@@ -176,13 +176,13 @@ if($clrharqbanco->numrows>0){
     $horageracao = date("H").date("i").date("s");
  
     if(isset($datageracao) && $datageracao!=""){
-      $datag = split('-',$datageracao);
+      $datag = preg_split('#\-#m',(string) $datageracao);
       $datag_dia = $datag[2];
       $datag_mes = $datag[1];
       $datag_ano = $datag[0];
     }
     if(isset($datadeposit) && $datadeposit!=""){
-      $datad = split('-',$datadeposit);
+      $datad = preg_split('#\-#m',(string) $datadeposit);
       $datad_dia = $datad[2];
       $datad_mes = $datad[1];
       $datad_ano = $datad[0];
@@ -202,16 +202,16 @@ if($clrharqbanco->numrows>0){
     $db_layouttxt = new db_layouttxt($layoutimprime,"tmp/".$nomearquivo, $posicao);
 
     if($db90_codban == "104"){
-      if(trim($rh34_convenio) == '003881'){
-        $conveniobanco = substr($rh34_convenio,0,6)."060003        ";
+      if(trim((string) $rh34_convenio) == '003881'){
+        $conveniobanco = substr((string) $rh34_convenio,0,6)."060003        ";
       }else{
-        $conveniobanco = substr($rh34_convenio,0,6)."060001        ";
+        $conveniobanco = substr((string) $rh34_convenio,0,6)."060001        ";
       }
     }else{
-      $conveniobanco = trim($rh34_convenio); 
+      $conveniobanco = trim((string) $rh34_convenio); 
     }
     ////// DADOS SOMENTE CNAB240 CEF
-    $parametrotransmiss = substr($rh34_convenio,10,2);
+    $parametrotransmiss = substr((string) $rh34_convenio,10,2);
     $indicaambcaixa   = "P";
     $indicaambcliente = "P";
     $densidadearquivo = "01600";
@@ -221,7 +221,7 @@ if($clrharqbanco->numrows>0){
       $nomeinst = "FUNPAS";
     }
 
-    db_setaPropriedadesLayoutTxt(&$db_layouttxt,1);
+    db_setaPropriedadesLayoutTxt($db_layouttxt,1);
 
   }
 
@@ -612,7 +612,7 @@ if($sqlerro == false){
 
     $loteservic = 1;
     $finalidadedoc = "00";
-    $codigocompromisso = substr($rh34_convenio,6,4);
+    $codigocompromisso = substr((string) $rh34_convenio,6,4);
     $tipocompromisso = "02";
     $agencialote = $agenciaheader;
 
@@ -624,7 +624,7 @@ if($sqlerro == false){
       $formalancamento = "03";
     }
     ///// HEADER DO LOTE
-    db_setaPropriedadesLayoutTxt(&$db_layouttxt, 2);
+    db_setaPropriedadesLayoutTxt($db_layouttxt, 2);
     ///// FINAL DO HEADER DO LOTE
 
     $sequencialnolote = 0;
@@ -685,7 +685,7 @@ if($sqlerro == false){
       $dataprocessamento = $datadedeposito;
 //      $sequencialreg = "      ";
       ///// REGISTRO A
-      db_setaPropriedadesLayoutTxt(&$db_layouttxt, 3, $posicao);
+      db_setaPropriedadesLayoutTxt($db_layouttxt, 3, $posicao);
       ///// FINAL DO REGISTRO A
 
       if($tam == 11){
@@ -753,7 +753,7 @@ if($sqlerro == false){
     $quantidadetotallote = $sequencialnolote + 2;
     $valortotallote = $valortotal;
     ///// TRAILLER DE LOTE
-    db_setaPropriedadesLayoutTxt(&$db_layouttxt, 4);
+    db_setaPropriedadesLayoutTxt($db_layouttxt, 4);
     ///// FINAL DO TRAILLER DE LOTE
 
 
@@ -775,7 +775,7 @@ if($sqlerro == false){
 
     ///// TRAILLER DE ARQUIVO
     $loteservico = '9999';
-    db_setaPropriedadesLayoutTxt(&$db_layouttxt, 5);
+    db_setaPropriedadesLayoutTxt($db_layouttxt, 5);
     ///// FINAL DO TRAILLER DE ARQUIVO
     //////////////////////////////////
 

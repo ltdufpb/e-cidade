@@ -143,7 +143,7 @@ $clrotulo->label("sd28_i_cgm");
       }
 
      function Cancela(){
-      location.href = "<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>";
+      location.href = "<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>";
      }
     </script>
   </td>

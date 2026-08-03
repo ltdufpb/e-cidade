@@ -29,7 +29,7 @@ namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Layout\Mapper
 
 class Registro00Mapper extends Mapper
 {
-    protected $dePara = array(
+    protected $dePara = [
         "Tipo de registro" => "registro",
         "Código de escola - Inep" => "codigoInep",
         "Situação de funcionamento" => "situacaoFuncionamento",
@@ -162,5 +162,5 @@ class Registro00Mapper extends Mapper
         "Unidade vinculada à escola de educação básica ou unidade ofertante de educação superior" => "unidadeVinculada",
         "Código da Escola Sede" => "codigoEscolaSede",
         "Código da IES" => "codigoIES",
-    );
+    ];
 }

@@ -32,7 +32,7 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipoassunto = new cl_tipoassunto;
 $cltipoassunto->rotulo->label("bi30_sequencial");
 $cltipoassunto->rotulo->label("bi30_descricao");
@@ -78,9 +78,9 @@ $cltipoassunto->rotulo->label("bi30_descricao");
         }else{
            $sql = $cltipoassunto->sql_query("",$campos,"bi30_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_bi30_descricao)){
-          $repassa = array("chave_bi30_sequencial"=>$chave_bi30_sequencial,"chave_bi30_descricao"=>$chave_bi30_descricao);
+          $repassa = ["chave_bi30_sequencial"=>$chave_bi30_sequencial,"chave_bi30_descricao"=>$chave_bi30_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

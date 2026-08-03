@@ -70,20 +70,11 @@ class RestosAPagar extends EmpenhoFinanceiro {
       $lExerciciosAnteriores = false;
     }
 
-    switch ($iTipo) {
-
-      case RestosAPagar::TIPO_RP_NAO_PROCESSADO:
-        return RestosAPagar::getValorNaoProcessadoAno($iAno, $iInstituicao, $lExerciciosAnteriores);
-        break;
-
-      case RestosAPagar::TIPO_RP_PROCESSADO:
-        return RestosAPagar::getValorProcessado($iAno, $iInstituicao, $lExerciciosAnteriores);
-      break;
-
-      default:
-        throw new ParameterException("Tipo de Restos a Pagar inválido.");
-        break;
-    }
+    return match ($iTipo) {
+        RestosAPagar::TIPO_RP_NAO_PROCESSADO => RestosAPagar::getValorNaoProcessadoAno($iAno, $iInstituicao, $lExerciciosAnteriores),
+        RestosAPagar::TIPO_RP_PROCESSADO => RestosAPagar::getValorProcessado($iAno, $iInstituicao, $lExerciciosAnteriores),
+        default => throw new ParameterException("Tipo de Restos a Pagar inválido."),
+    };
   }
 
   /**
@@ -224,7 +215,7 @@ class RestosAPagar extends EmpenhoFinanceiro {
           throw new Exception('Erro técnico: erro ao buscar valor de restos a pagar.');
       }
       if (pg_num_rows($rsSqlEmpresto) === 0) {
-          return array();
+          return [];
       }
 
       return db_utils::getCollectionByRecord($rsSqlEmpresto);
@@ -293,7 +284,7 @@ class RestosAPagar extends EmpenhoFinanceiro {
       }
 
       if (pg_num_rows($rsSqlEmpresto) === 0) {
-          return array();
+          return [];
       }
       return db_utils::getCollectionByRecord($rsSqlEmpresto);
   }

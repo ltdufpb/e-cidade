@@ -25,10 +25,10 @@
  *                                licenca/licenca_pt.txt
  */
 
-$HTTP_SESSION_VARS['DB_acessado']   = 1;
-$HTTP_SESSION_VARS['DB_datausu']    = time();
-$HTTP_SESSION_VARS['DB_anousu']     = date('Y',time());
-$HTTP_SESSION_VARS['DB_id_usuario'] = 1;
+$_SESSION['DB_acessado']   = 1;
+$_SESSION['DB_datausu']    = time();
+$_SESSION['DB_anousu']     = date('Y',time());
+$_SESSION['DB_id_usuario'] = 1;
 
 /**
  *  A variável iParamLog define o tipo de log que deve ser gerado :
@@ -101,7 +101,7 @@ try {
 
 		$sSqlConsultaInstit = "select fc_getsession('DB_instit') as instit ";
 		$rsConsultaInstit   = db_query($pConexao,$sSqlConsultaInstit);
-		$HTTP_SESSION_VARS['DB_instit'] = db_utils::fieldsMemory($rsConsultaInstit,0)->instit;
+		$_SESSION['DB_instit'] = (new db_utils())->fieldsMemory($rsConsultaInstit, 0)->instit;
 	}
 
   /**
@@ -120,16 +120,16 @@ try {
   } else {
 
     for( $indx = 0; $indx < $iLinhasIptuSemAgua; $indx++) {
-      $oIptubase = db_utils::fieldsMemory($rsIptuSemAgua, $indx);
+      $oIptubase = (new db_utils())->fieldsMemory($rsIptuSemAgua, $indx);
 
       logProcessamento($indx, $iLinhasIptuSemAgua, $iParamLog);
 
       $sSqlProprietario = "SELECT * FROM proprietario WHERE j01_matric = {$oIptubase->j01_matric}";
       $rsProprietario = db_query($pConexao, $sSqlProprietario);
-      if ( pg_numrows($rsProprietario) == 0 ) {
+      if ( pg_num_rows($rsProprietario) == 0 ) {
         throw new Exception("Não foram encontradas informações para importação da Matricula {$oIptubase->j01_matric}!");
       }
-      $oProprietario = db_utils::fieldsMemory($rsProprietario, 0);
+      $oProprietario = (new db_utils())->fieldsMemory($rsProprietario, 0);
 
 
       /**
@@ -174,7 +174,7 @@ try {
 
       if ( $iLinhasIptuConstr > 0 ) {
 
-        $oIptuConstr = db_utils::fieldsMemory($rsIptuConstr, 0);
+        $oIptuConstr = (new db_utils())->fieldsMemory($rsIptuConstr, 0);
 
         $oDaoAguaConstr->x11_matric      = $oIptuConstr->j39_matric;
         $oDaoAguaConstr->x11_area        = $oIptuConstr->j39_area;
@@ -209,7 +209,7 @@ try {
 
       if ( $iLinhasCarConstr > 0 ) {
 
-        $oCarConstr = db_utils::fieldsMemory($rsCarConstr, 0);
+        $oCarConstr = (new db_utils())->fieldsMemory($rsCarConstr, 0);
 
         $oDaoAguaConstrCar->x12_codconstr = $oDaoAguaConstr->x11_codconstr;
         $oDaoAguaConstrCar->x12_codigo    = $oCarConstr->j48_caract;
@@ -234,7 +234,7 @@ try {
         throw new Exception("ERRO-04: Configurações não encontradas do Módulo Água para o ano {$iAnoUsu}");
       }
 
-      $oCarAgua = db_utils::fieldsMemory($rsCarAgua, 0);
+      $oCarAgua = (new db_utils())->fieldsMemory($rsCarAgua, 0);
 
       /**
        *  Verifica Se tem Caracteristicas 76, 77 ou 78 do Grupo 65 para Gerar AGUA LIGADA
@@ -279,7 +279,7 @@ try {
   $sSqlIptuBaixa .= " WHERE NOT EXISTS (SELECT 1 FROM aguabasebaixa WHERE x08_matric = j02_matric) ";
   $sSqlIptuBaixa .= "   AND EXISTS (SELECT 1 FROM aguabase WHERE x01_matric = j02_matric) ";
   $rsIptuBaixa = db_query($pConexao, $sSqlIptuBaixa);
-  $iLinhasIptuBaixa = pg_numrows($rsIptuBaixa);
+  $iLinhasIptuBaixa = pg_num_rows($rsIptuBaixa);
 
 
   if ( $iLinhasIptuBaixa == 0 ) {
@@ -289,7 +289,7 @@ try {
   } else {
 
     for ( $indx = 0; $indx < $iLinhasIptuBaixa; $indx++ ) {
-      $oIptuBaixa = db_utils::fieldsMemory($rsIptuBaixa, $indx);
+      $oIptuBaixa = (new db_utils())->fieldsMemory($rsIptuBaixa, $indx);
 
       logProcessamento($indx, $iLinhasIptuBaixa, $iParamLog);
 

@@ -107,22 +107,22 @@ db_input('o63_codimpger',4,0,true,'text',3);
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
     
      $x  = "o69_sequen_$i";
-     $$x  = "";
+     ${$x}  = "";
     
      $x = "o69_valor_$i";
-     $$x  = "";
+     ${$x}  = "";
       
      $x = "o57_fonte_$i";
-     $$x = "";
+     ${$x} = "";
      
      $x = "o69_codigo_$i";
-     $$x = "";
+     ${$x} = "";
      
      $x = "o69_obs_$i";
-     $$x = "";
+     ${$x} = "";
 
      $x = "o69_perc_$i";
-     $$x = "";
+     ${$x} = "";
       
    //echo "if(isset($o69_proces) && $o69_proces !='' && empty($novo) && empty($incluir) && empty($alterar) && empty($excluir) ){";
    if(isset($o69_proces) && $o69_proces !='' && empty($novo) && empty($incluir) && empty($alterar) && empty($excluir) ){
@@ -134,26 +134,26 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
        db_fieldsmemory($result01,0);
    
        $x  = "o69_sequen_$i";
-       $$x  = $o69_sequen;
+       ${$x}  = $o69_sequen;
 	  
        $x = "o69_valor_$i";
-       $$x = $o69_valor;
+       ${$x} = $o69_valor;
        
        $x = "o69_obs_$i";
-       $$x = $o69_obs;
+       ${$x} = $o69_obs;
        
        $x = "o69_perc_$i";
-       $$x = $o69_perc;
+       ${$x} = $o69_perc;
        
        $x = "o69_codigo_$i";
-       $$x = $o69_codigo;
+       ${$x} = $o69_codigo;
    
        //retorna os dados do orcfontes
        $result01 = $clorcfontes->sql_record($clorcfontes->sql_query_file($o69_codfon,db_getsession("DB_anousu")));
        if($clorcfontes->numrows>0){
          db_fieldsmemory($result01,0);
          $x = "o57_fonte_$i";
-         $$x = $o57_fonte;
+         ${$x} = $o57_fonte;
        }  	 
      }
      
@@ -175,8 +175,8 @@ db_input("o69_sequen_$i",8,$Io69_sequen,true,'hidden',1);
     <td> 
 <?php 
 $x = "o69_exercicio_$i";
-if(empty($$x)){
-  $$x = $i;
+if(empty(${$x})){
+  ${$x} = $i;
 }
 db_input("o69_exercicio_$i",4,$Io69_exercicio,true,'text',3);
 
@@ -207,7 +207,7 @@ db_input("o69_perc_$i",8,$Io69_perc,true,'text',$db_opcao,($i == $o96_anoini?"on
     <?php 
        $x = "o57_fonte_$i";
     ?>
-    <input type="text"  value="<?=@$$x?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o57_fonte_<?=$i?>" size="19" maxlength='15'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_fonte_<?=$i?>(false);'>
+    <input type="text"  value="<?=@${$x}?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o57_fonte_<?=$i?>" size="19" maxlength='15'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_fonte_<?=$i?>(false);'>
     
     </td>
     <td nowrap title="<?=@$To69_codigo?>">
@@ -218,8 +218,8 @@ db_input("o69_perc_$i",8,$Io69_perc,true,'text',$db_opcao,($i == $o96_anoini?"on
     <td> 
 <?php 
 $x = "o69_codigo_$i";
-if(empty($$x)){
-  $$x = 1;
+if(empty(${$x})){
+  ${$x} = 1;
 }  
 db_input("o69_codigo_$i",4,$Io69_codigo,true,'text',$db_opcao," onchange='js_codigo_$i(false);'")
 ?>

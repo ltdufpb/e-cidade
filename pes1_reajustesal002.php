@@ -34,7 +34,7 @@ include(modification("classes/db_rhpessoal_classe.php"));
 include(modification("classes/db_rhpessoalmov_classe.php"));
 $clrhpessoal = new cl_rhpessoal;
 $clrhpessoalmov = new cl_rhpessoalmov;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $anofolha = db_anofolha();
 $mesfolha = db_mesfolha();

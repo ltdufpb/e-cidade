@@ -27,7 +27,7 @@
 
 require(modification('fpdf151/pdfipa.php'));
 $result = db_query("select *,to_char(ag40_dataatestado,'DD') as dataat_dia,to_char(ag40_dataatestado,'MM') as dataat_mes,to_char(ag40_dataatestado,'YYYY') as dataat_ano,to_char(ag40_data,'DD') as ag40_data_dia,to_char(ag40_data,'MM') as ag40_data_mes,to_char(ag40_data,'YYYY') as ag40_data_ano from atendmed where ag40_codigo = $ag40_codigo");
-if(pg_numrows($result) > 0)
+if(pg_num_rows($result) > 0)
 db_fieldsmemory($result,0);
 $pdf = new PDF(); // abre a classe
 $Letra = 'arial';
@@ -61,12 +61,12 @@ $pdf->MultiCell(0,6,'COMPROVANTE ('.@$marcado1.')',0,"J",0,30);
 $pdf->Ln(3);
 if(isset($ag40_altcid) && $ag40_altcid == "t") {
   $result = db_query("select ag40_codcid from atendmedcid where ag40_codigo = $ag40_codigo");
-  if(pg_numrows($result) != 0){
+  if(pg_num_rows($result) != 0){
     $pdf->MultiCell(0,6,'CID:',0,"J",0,30);
-    for($i = 0; $i < pg_numrows($result); $i++){  
+    for($i = 0; $i < pg_num_rows($result); $i++){  
       db_fieldsmemory($result,$i);
       $result = db_query("select descr from cid10 where codcid = '$ag40_codcid'");
-      $pdf->MultiCell(0,6,pg_result($result,0,0),0,"J",0,30);
+      $pdf->MultiCell(0,6,pg_fetch_result($result,0,0),0,"J",0,30);
     }
   }  
 }
@@ -79,15 +79,15 @@ if(db_getsession("w03_codigo") != ""){
 						 on cad.w01_numcgi = c.j01_numero
 						 where cad.w01_regist = '".str_pad(trim(db_getsession("w01_regist")),6," ",STR_PAD_LEFT)."'");
 }
-if(pg_numrows($result) > 0)
+if(pg_num_rows($result) > 0)
   db_fieldsmemory($result,0);
   
 $result = db_query("select ag40_horainiate,ag40_horafimate from atendmed where ag40_codigo = ".db_getsession("COD_atendimento"));
-if(pg_numrows($result) > 0)
+if(pg_num_rows($result) > 0)
   db_fieldsmemory($result,0);
 $pdf->MultiCell(0,6,'Sr. EMPREGADOR,',0,"J",0,30);
 $pdf->MultiCell(0,6,'Comunicamos que o Sr(a) '.$nome.',',0,"J",0,30);
-if((int)db_parse_int(substr($ag40_horainiate,0,2)) >= 12)
+if((int)db_parse_int(substr((string) $ag40_horainiate,0,2)) >= 12)
   $periodo = "tarde";
 else
   $periodo = "manhã";	   
@@ -100,9 +100,9 @@ if($ag40_tarevisao == "1")
 $pdf->MultiCell(0,6,'compareceu no dia de hoje, no período da '.$periodo.',',0,"J",0,30);
 $pdf->MultiCell(0,6,'das '.$ag40_horainiate.' às '.$ag40_horafimate.' para '.$AuX.'.',0,"J",0,30);
 function extenso($num) {
-  $u = Array("zero","um","dois","três","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","qunize","dezesseis","dezessete","dezoito","dezenove");
-  $d = Array(2 => "vinte",3 => "trinta",4 => "quarenta",5 => "cinquenta",6 => "sessenta",7 => "setenta",8 => "oitenta",9 => "noventa");
-  $c = Array(1 => "cento",2 => "duzentos",3 => "trezentos",4 => "quatrocentos",5 => "quinhentos",6 => "seiscentos",7 => "setecentos",8 => "oitocentos",9 => "novecentos");
+  $u = ["zero","um","dois","três","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","qunize","dezesseis","dezessete","dezoito","dezenove"];
+  $d = [2 => "vinte",3 => "trinta",4 => "quarenta",5 => "cinquenta",6 => "sessenta",7 => "setenta",8 => "oitenta",9 => "noventa"];
+  $c = [1 => "cento",2 => "duzentos",3 => "trezentos",4 => "quatrocentos",5 => "quinhentos",6 => "seiscentos",7 => "setecentos",8 => "oitocentos",9 => "novecentos"];
   if($num > 999 || $num < 0)
     return $num;
   else if($num >= 0 && $num <= 19)
@@ -121,9 +121,9 @@ if($ag40_tipoform == "a") {
 } else 
   $pdf->MultiCell(0,6,'',0,"J",0,30);
 $result = db_query("select aa01_nome,aa01_creme from medicos where aa01_codlog = ".db_getsession("DB_id_usuario"));
-$cremers = @pg_result($result,0,1);
-$nomemed = @pg_result($result,0,0);
-$mes = array(1 => "janeiro",2 => "fevereiro",3 => "março",4 => "abril",5 => "maio",6 => "junho",7 => "julho",8 => "agosto",9 => "setembro",10 => "outubro",11 => "novembro",12 => "dezembro");
+$cremers = @pg_fetch_result($result,0,1);
+$nomemed = @pg_fetch_result($result,0,0);
+$mes = [1 => "janeiro",2 => "fevereiro",3 => "março",4 => "abril",5 => "maio",6 => "junho",7 => "julho",8 => "agosto",9 => "setembro",10 => "outubro",11 => "novembro",12 => "dezembro"];
 $pdf->Text(20,170,'Campo Bom, '.date("d").' de '.$mes[date("n")].' de '.date("Y"));
 $pdf->Text(20,175,$nomemed);
 $pdf->Text(20,180,'Cremers: '.$cremers);

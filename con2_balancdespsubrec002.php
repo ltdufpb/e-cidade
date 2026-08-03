@@ -30,7 +30,7 @@ include(modification("libs/db_liborcamento.php"));
 include(modification("libs/db_sql.php"));
 
 //db_postmemory($HTTP_POST_VARS,2);exit;
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 
 
@@ -120,19 +120,19 @@ $totgeralliquidado_acumulado    = 0;
 $totgeralpago_acumulado         = 0;
 $totgeralatual_a_pagar_liquidado= 0;      
 
-for($i=0;$i<pg_numrows($res);$i++){
+for($i=0;$i<pg_num_rows($res);$i++){
 
   db_fieldsmemory($res,$i);
-  
+
   $codigo = db_formatar($o58_codigo,'recurso');
   $descr  = $o15_descr;
-  
+
   if($pdf->gety() > $pdf->h-40 || $pagina == 1){
     $pagina = 0;
 
     $pdf->addpage();
     $pdf->setfont('arial','b',7);
-    
+
     $pdf->ln(2);
     $pdf->cell(40,$alt,"",0,0,"C",0);
     $pdf->cell(30,$alt,"SALDO INICIAL",0,0,"R",0);
@@ -153,8 +153,8 @@ for($i=0;$i<pg_numrows($res);$i++){
     $pdf->cell(30,$alt,"PAGO NO ANO",0,0,"R",0);
     $pdf->cell(30,$alt,"A PAGAR LIQUIDO",0,1,"R",0);
     $pdf->cell(0,$alt,'',"T",1,"C",0);
-  
-    
+
+
   }
   if ($funcao != $o58_subfuncao){
     if($funcao != ''){
@@ -166,14 +166,14 @@ for($i=0;$i<pg_numrows($res);$i++){
     $pdf->cell(30,$alt,db_formatar($totfuncareduzido_acumulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncadot_ini + $totfuncasuplementado_acumulado - $totfuncareduzido_acumulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncadot_ini + $totfuncasuplementado_acumulado - $totfuncareduzido_acumulado - $totfuncaempenhado + $totfuncaanulado,'f'),0,1,"R",0);
-    
+
     $pdf->cell(40,$alt,"",0,0,"L",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaempenhado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaanulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaliquidado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncapago,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaatual_a_pagar,'f'),0,1,"R",0);
-    
+
     $pdf->cell(40,$alt,"",0,0,"L",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaempenhado_acumulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaanulado_acumulado,'f'),0,0,"R",0);

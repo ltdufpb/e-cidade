@@ -26,7 +26,7 @@ $escolas = getEscolas();
 $arquivo = 'tmp/arquivo_infra_escola_'.time().'.csv';
 $file = fopen($arquivo, 'w');
 
-fputcsv($file, $cabecalho);
+fputcsv($file, $cabecalho, escape: '\\');
 
 foreach ($escolas as $escola) {
 
@@ -48,7 +48,7 @@ foreach ($escolas as $escola) {
         }
     }
 
-    fputcsv($file, $linha);
+    fputcsv($file, $linha, escape: '\\');
 }
 
 fclose($file);

@@ -30,23 +30,13 @@ namespace ECidade\Patrimonial\Ouvidoria\Externa\WebService\ProcessoEletronico\Mo
 class Requerente
 {
     const ANONIMO = 'ANONIMO';
-  
-  /**
-   * @var String
-   */
-    protected $nome;
 
-  /**
-   * @var String
-   */
-    protected $cpf;
-
-    public function __construct(
-        $nome = Requerente::ANONIMO,
-        $cpf = null
-    ) {
-        $this->nome = $nome;
-        $this->cpf  = $cpf;
+    /**
+     * @param string $nome
+     * @param string $cpf
+     */
+    public function __construct(protected $nome = Requerente::ANONIMO, protected $cpf = null)
+    {
     }
 
   /**

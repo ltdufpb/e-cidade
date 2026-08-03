@@ -79,8 +79,8 @@ if($oGet->ordenar == 'datacancelamento') {
 }
 
 $head1 = '';
-$head2 = 'Data Inicial: '. implode('/', array_reverse(explode('-', $oGet->datainicial)));
-$head4 = 'Data Final: '. implode('/', array_reverse(explode('-', $oGet->datafinal)));
+$head2 = 'Data Inicial: '. implode('/', array_reverse(explode('-', (string) $oGet->datainicial)));
+$head4 = 'Data Final: '. implode('/', array_reverse(explode('-', (string) $oGet->datafinal)));
 $head6 = 'Origem: '.$sOrigem;
 $head8 = 'Ordenado por: '.$sOrdenar;
 

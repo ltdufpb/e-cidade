@@ -38,7 +38,7 @@ try {
   $oSoapClient               = new SoapClient(null, (array)$oParametrosSoap);
   $sTextoConsulta            = $argv[1];//"compra";
   $sAcervo                   = null;// ou Nome do Acervo  
-  $aParametrosMetodo         = array();
+  $aParametrosMetodo         = [];
   $oResposta                 = $oSoapClient->buscarListaDocumentoPorConteudo( $sTextoConsulta, $sAcervo );
 
   echo BR . "--------------------- INICIO RESPOSTA ---------------------";

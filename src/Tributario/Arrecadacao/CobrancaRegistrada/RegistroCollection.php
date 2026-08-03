@@ -37,19 +37,9 @@ class RegistroCollection implements \Iterator
     private $resource;
 
     /**
-     * @var string
-     */
-    private $sSqlRecibos;
-
-    /**
      * @var resource
      */
     private $resourceInstituicao;
-
-    /**
-     * @var string
-     */
-    private $sSqlInstituicao;
 
     /**
      * @var integer
@@ -71,10 +61,12 @@ class RegistroCollection implements \Iterator
      */
     private $sCursorNome;
 
-    public function __construct($sSqlRecibos, $sSqlInstituicao = null)
+    /**
+     * @param string $sSqlRecibos
+     * @param string $sSqlInstituicao
+     */
+    public function __construct(private $sSqlRecibos, private $sSqlInstituicao = null)
     {
-        $this->sSqlRecibos = $sSqlRecibos;
-        $this->sSqlInstituicao = $sSqlInstituicao;
         $this->sCursorNome = "c_cobranca_registrada" . time();
         $this->lStarted = false;
         $this->iContadorGeral = 0;
@@ -148,13 +140,13 @@ class RegistroCollection implements \Iterator
 
         if (!empty($oObject->endereco_matricula)) {
 
-            $oObject->endereco = substr($oObject->endereco_matricula, 0, 40);
-            $oObject->numero = substr($oObject->endereco_matricula, 41, 10);
-            $oObject->complemento = substr($oObject->endereco_matricula, 52, 20);
-            $oObject->bairro = substr($oObject->endereco_matricula, 73, 40);
-            $oObject->municipio = substr($oObject->endereco_matricula, 114, 40);
-            $oObject->uf = substr($oObject->endereco_matricula, 155, 2);
-            $oObject->cep = substr($oObject->endereco_matricula, 158, 8);
+            $oObject->endereco = substr((string) $oObject->endereco_matricula, 0, 40);
+            $oObject->numero = substr((string) $oObject->endereco_matricula, 41, 10);
+            $oObject->complemento = substr((string) $oObject->endereco_matricula, 52, 20);
+            $oObject->bairro = substr((string) $oObject->endereco_matricula, 73, 40);
+            $oObject->municipio = substr((string) $oObject->endereco_matricula, 114, 40);
+            $oObject->uf = substr((string) $oObject->endereco_matricula, 155, 2);
+            $oObject->cep = substr((string) $oObject->endereco_matricula, 158, 8);
         }
 
         if ( !\DBString::isCNPJ($oObject->cpf_cnpj) && !\DBString::isCPF($oObject->cpf_cnpj)) {

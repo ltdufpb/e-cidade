@@ -18,6 +18,7 @@ class EstabelecimentoFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);
@@ -91,8 +92,8 @@ class EstabelecimentoFormatter extends Formatter
 
             if (isset($dadoEstabelecimento->dadosEstab->cnaePrep)) {
                 $dadoEstabelecimento->dadosEstab->cnaePrep = str_replace(
-                    array("/", "-"),
-                    array("",""),
+                    ["/", "-"],
+                    ["",""],
                     $dadoEstabelecimento->dadosEstab->cnaePrep
                 );
 

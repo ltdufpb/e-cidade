@@ -35,9 +35,9 @@ include(modification("classes/db_promitente_classe.php"));
 include(modification("classes/db_propri_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("classes/db_socios_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $clpromitente = new cl_promitente;
 $clpropri = new cl_propri;

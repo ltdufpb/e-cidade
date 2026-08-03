@@ -38,13 +38,13 @@ db_validarMenuPCASP(db_getsession("DB_itemmenu_acessado", false));
 
 $clcriaabas      = new cl_criaabas;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 ?>
 <html>
@@ -69,11 +69,11 @@ $sizecp  = array();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <?php 
-    $clcriaabas->identifica = array("conta"=>"Conta","reduzido"=>"Reduzidos");
-    $clcriaabas->title      = array("conta"=>"Conta","reduzido"=>"Reduzidos");
-    $clcriaabas->src  = array("conta"=>"con1_conplano033.php","reduzido"=>"con1_conplano004.php");
-    $clcriaabas->sizecampo= array("conta"=>"23","reduzido"=>"15");
-    $clcriaabas->disabled = array("reduzido");
+    $clcriaabas->identifica = ["conta"=>"Conta","reduzido"=>"Reduzidos"];
+    $clcriaabas->title      = ["conta"=>"Conta","reduzido"=>"Reduzidos"];
+    $clcriaabas->src  = ["conta"=>"con1_conplano033.php","reduzido"=>"con1_conplano004.php"];
+    $clcriaabas->sizecampo= ["conta"=>"23","reduzido"=>"15"];
+    $clcriaabas->disabled = ["reduzido"];
     $clcriaabas->cria_abas();
     ?>
     </center>

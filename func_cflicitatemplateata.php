@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cflicitatemplateata_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcflicitatemplateata = new cl_cflicitatemplateata;
 $clcflicitatemplateata->rotulo->label("l37_sequencial");
 $clcflicitatemplateata->rotulo->label("l37_cflicita");
@@ -98,9 +98,9 @@ $clcflicitatemplateata->rotulo->label("l37_cflicita");
         }else{
            $sql = $clcflicitatemplateata->sql_query("",$campos,"l37_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_l37_cflicita)){
-          $repassa = array("chave_l37_sequencial"=>$chave_l37_sequencial,"chave_l37_cflicita"=>$chave_l37_cflicita);
+          $repassa = ["chave_l37_sequencial"=>$chave_l37_sequencial,"chave_l37_cflicita"=>$chave_l37_cflicita];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

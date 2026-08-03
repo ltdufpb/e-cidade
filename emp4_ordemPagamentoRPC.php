@@ -64,19 +64,19 @@ if ($oParam->exec == "consultarNotas") {
 
   if ($oParam->dtDataIni != "" && $oParam->dtDataFim == "") {
 
-    $sWhere     .= " and e50_data = '".implode("-",array_reverse(explode("/",$oParam->dtDataIni)))."'";
-    $sWhereSlip .= " and k17_data = '".implode("-",array_reverse(explode("/",$oParam->dtDataIni)))."'";
+    $sWhere     .= " and e50_data = '".implode("-",array_reverse(explode("/",(string) $oParam->dtDataIni)))."'";
+    $sWhereSlip .= " and k17_data = '".implode("-",array_reverse(explode("/",(string) $oParam->dtDataIni)))."'";
 
   } else if ($oParam->dtDataIni != "" && $oParam->dtDataFim != "") {
 
-    $dtDataIni   = implode("-",array_reverse(explode("/",$oParam->dtDataIni)));
-    $dtDataFim   = implode("-",array_reverse(explode("/",$oParam->dtDataFim)));
+    $dtDataIni   = implode("-",array_reverse(explode("/",(string) $oParam->dtDataIni)));
+    $dtDataFim   = implode("-",array_reverse(explode("/",(string) $oParam->dtDataFim)));
     $sWhere     .= " and e50_data between '{$dtDataIni}' and '{$dtDataFim}'";
     $sWhereSlip .= " and k17_data between '{$dtDataIni}' and '{$dtDataFim}'";
 
   } else if ($oParam->dtDataIni == "" && $oParam->dtDataFim != "") {
 
-    $dtDataFim   = implode("-",array_reverse(explode("/",$oParam->dtDataFim)));
+    $dtDataFim   = implode("-",array_reverse(explode("/",(string) $oParam->dtDataFim)));
     $sWhere     .= " and e50_data <= '{$dtDataFim}'";
     $sWhereSlip .= " and k17_data <= '{$dtDataFim}'";
   }
@@ -84,9 +84,9 @@ if ($oParam->exec == "consultarNotas") {
   //Filtro para Empenho
   if ($oParam->iCodEmp!= '') {
 
-    if (strpos($oParam->iCodEmp,"/")) {
+    if (strpos((string) $oParam->iCodEmp,"/")) {
 
-      $aEmpenho = explode("/",$oParam->iCodEmp);
+      $aEmpenho = explode("/",(string) $oParam->iCodEmp);
       $sWhere .= " and e60_codemp = '{$aEmpenho[0]}' and e60_anousu={$aEmpenho[1]}";
 
     } else {
@@ -320,7 +320,7 @@ if ($oParam->exec == "consultarNotas") {
    * incluimos uma nova op auxiliar
    */
   $oDaoOPAuxiliar =  db_utils::getDao("empageordem");
-  $oDaoOPAuxiliar->e42_dtpagamento = implode("-", array_reverse(explode("/", $oParam->e42_dtpagamento)));
+  $oDaoOPAuxiliar->e42_dtpagamento = implode("-", array_reverse(explode("/", (string) $oParam->e42_dtpagamento)));
   $oDaoOPAuxiliar->incluir(null);
   if ($oDaoOPAuxiliar->erro_status == "0") {
 
@@ -337,7 +337,7 @@ if ($oParam->exec == "consultarNotas") {
     $oDaoEmpAgeOrdemAuxiliar =  db_utils::getDao("empageordemcgm");
     $oDaoEmpAgeOrdemAuxiliar->e94_empageordem = $oRetorno->iCodigoOPaxiliar;
     $oDaoEmpAgeOrdemAuxiliar->e94_numcgm      = $oParam->z01_numcgm;
-    $sHistorico = db_stdClass::db_stripTagsJson(utf8_decode($oParam->historico));
+    $sHistorico = db_stdClass::db_stripTagsJson(mb_convert_encoding($oParam->historico, 'ISO-8859-1'));
     $oDaoEmpAgeOrdemAuxiliar->e94_historico   = addslashes($sHistorico);
     $oDaoEmpAgeOrdemAuxiliar->incluir(null);
     if ($oDaoEmpAgeOrdemAuxiliar->erro_status == "0") {
@@ -359,7 +359,7 @@ if ($oParam->exec == "consultarNotas") {
    * Alteramos a data
    */
   $oDaoOPAuxiliar =  db_utils::getDao("empageordem");
-  $oDaoOPAuxiliar->e42_dtpagamento = implode("-", array_reverse(explode("/", $oParam->e42_dtpagamento)));
+  $oDaoOPAuxiliar->e42_dtpagamento = implode("-", array_reverse(explode("/", (string) $oParam->e42_dtpagamento)));
   $oDaoOPAuxiliar->e42_sequencial  = $oParam->e42_sequencial;
   $oDaoOPAuxiliar->alterar($oParam->e42_sequencial);
   if ($oDaoOPAuxiliar->erro_status == "0") {
@@ -371,12 +371,12 @@ if ($oParam->exec == "consultarNotas") {
     $oRetorno->iCodigoOPaxiliar = $oDaoOPAuxiliar->e42_sequencial;
   }
 
-  if($oRetorno->status  != 2 && trim($oParam->historico) != ""){
+  if($oRetorno->status  != 2 && trim((string) $oParam->historico) != ""){
 
     $oDaoEmpAgeOrdemAuxiliar =  db_utils::getDao("empageordemcgm");
     //$oDaoEmpAgeOrdemAuxiliar->e94_empageordem = $oRetorno->iCodigoOPaxiliar;
     //$oDaoEmpAgeOrdemAuxiliar->e94_numcgm      = $oParam->z01_numcgm;
-    $sHistorico = db_stdClass::db_stripTagsJson(utf8_decode($oParam->historico));
+    $sHistorico = db_stdClass::db_stripTagsJson(mb_convert_encoding($oParam->historico, 'ISO-8859-1'));
     $oDaoEmpAgeOrdemAuxiliar->e94_historico   = addslashes($sHistorico);
     $oDaoEmpAgeOrdemAuxiliar->e94_sequencial  = $oParam->e94_sequencial;
     $oDaoEmpAgeOrdemAuxiliar->alterar($oParam->e94_sequencial);

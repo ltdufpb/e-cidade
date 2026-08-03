@@ -41,9 +41,9 @@ class AssentConfigController extends Controller
     public function gravarAssentConfig(Request $request)
     {
         $data = $request->all();
-        $data['rh500_datalimite'] = substr($data['rh500_datalimite'], 6, 4) .
-            '-' . substr($data['rh500_datalimite'], 3, 2) .
-            "-" . substr($data['rh500_datalimite'], 0, 2);
+        $data['rh500_datalimite'] = substr((string) $data['rh500_datalimite'], 6, 4) .
+            '-' . substr((string) $data['rh500_datalimite'], 3, 2) .
+            "-" . substr((string) $data['rh500_datalimite'], 0, 2);
         $rules  = $this->concessaoRequest->rulesAssentConfig();
         $errors = $this->validationRule(
             $data,

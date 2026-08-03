@@ -42,8 +42,8 @@ $iCodigoRelatorio  = $oGet->codrel;
 $sListaInstituicao = str_replace('-', ', ', $oGet->db_selinstit);  
 
 $rsDadosInstituicoes    = db_query("select codigo, nomeinst, nomeinstabrev from db_config where codigo in ({$sListaInstituicao}) ");
-$aCodigoInstituicoes    = array();
-$aDescricaoInstituicoes = array();
+$aCodigoInstituicoes    = [];
+$aDescricaoInstituicoes = [];
 
 $aDadosInstituicao = db_utils::getCollectionByRecord($rsDadosInstituicoes);
 
@@ -109,27 +109,27 @@ $oPdf->SetLeftMargin(LARGURA_PAGINA/2 + $oPdf->lMargin);
 $oPdf->setY($iPosicaoLinha + 4);
 
 for ($iIndice = 42; $iIndice <= 57; $iIndice++ ) {
-  linha($oPdf, $aDados[$iIndice], false, true, true);
+  linha($oPdf, $aDados[$iIndice], false, true);
 }
 
-linha($oPdf, $aDados[58], true, true, true);
+linha($oPdf, $aDados[58], true, true);
 
 $oPdf->ln();
 $oPdf->cell(larguraColuna(50), 3, 'PATRIMÔNIO LÍQUIDO', 'TB', 1, 'C');
 
-cabecalho($oPdf, true);
+cabecalho($oPdf);
 
 for ($iIndice = 59; $iIndice <= 69; $iIndice++ ) { 
-  linha($oPdf, $aDados[$iIndice], false, true, true);
+  linha($oPdf, $aDados[$iIndice], false, true);
 }
 
 $oPdf->setY($oPdf->getY() - 1);
 for ($iIndice = 0; $iIndice <= 7; $iIndice++) {  
-  linha($oPdf, null, false, true, true);
+  linha($oPdf, null, false, true);
 }
 
-linha($oPdf, $aDados[70], true, true, true);
-linha($oPdf, $aDados[71], true, true, true);
+linha($oPdf, $aDados[70], true, true);
+linha($oPdf, $aDados[71], true, true);
 
 $oPdf->SetLeftMargin(10);
 $oPdf->ln(6);
@@ -141,8 +141,8 @@ linha($oPdf, $aDados[73], true);
 $oPdf->SetLeftMargin(LARGURA_PAGINA/2 + $oPdf->lMargin);
 $oPdf->setY($iPosicaoLinha);
 
-linha($oPdf, $aDados[74],true, true, true);
-linha($oPdf, $aDados[75],true, true, true);
+linha($oPdf, $aDados[74],true, true);
+linha($oPdf, $aDados[75],true, true);
 
 $oPdf->SetLeftMargin(10);
 $oPdf->ln();
@@ -161,7 +161,7 @@ $oPdf->cell(larguraColuna(50), 3, $aDados[79]->descricao, 'TBL', 0, 'C');
 linhasContas($oPdf, $aDados[77], $aDados[79]);
 
 linha($oPdf, $aDados[78], true);
-linha($oPdf, $aDados[80], true, false, true);
+linha($oPdf, $aDados[80], true, false);
 
 /** 
  * Notas Explicativas
@@ -199,7 +199,7 @@ function getParametrosEnvioExibeAnoAnterior() {
  * @param  integer $iColuna 
  * @return void          
  */
-function linha(PDF $oPdf, StdClass $oDados = null, $lTotal = false,  $lQuebrarLinha = true, $lDireita = false) {
+function linha(PDF $oPdf, ?StdClass $oDados = null, $lTotal = false,  $lQuebrarLinha = true, $lDireita = false) {
 
   $oPdf->setfont('arial', '', 6);
   
@@ -277,8 +277,8 @@ function linhasContas(PDF $oPdf, StdClass $oDadosEsquerda, StdClass $oDadosDirei
   /**
    * Arrays com as contas de cada coluna
    */
-  $aContasEsquerda = array();
-  $aContasDireita  = array();
+  $aContasEsquerda = [];
+  $aContasDireita  = [];
 
   if ($oDadosEsquerda->desdobrar) {
 
@@ -331,7 +331,7 @@ function linhasContas(PDF $oPdf, StdClass $oDadosEsquerda, StdClass $oDadosDirei
     }
 
     linha($oPdf, $oDadosEsquerda, false, true);
-    linha($oPdf, $oDadosDireita, false, false, true);
+    linha($oPdf, $oDadosDireita, false, false);
   }
 
 }

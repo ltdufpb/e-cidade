@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -93,10 +93,10 @@ function js_emite(){
     </td>
     <td>
       <?php 
-      $arr_tiparq = Array(
+      $arr_tiparq = [
                           "r14"=>"Salario",
 	                  "r35"=>"13o. Salario"
-                         );
+                         ];
       db_select("folha", $arr_tiparq, true, 1, "");
       ?>
     </td>

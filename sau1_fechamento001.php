@@ -36,7 +36,7 @@ include(modification("classes/db_prontproced_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 require(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clsau_fechamento = new cl_sau_fechamento;
 $clsau_fechapront = new cl_sau_fechapront;
 $clsau_arquivos = new cl_sau_arquivos;
@@ -49,7 +49,7 @@ $sd97_d_data_ano    = date("Y",db_getsession("DB_datausu"));
 $verifica=false;
 
 function somarDias($sd97_d_datafim ,$dias){
-  $sd97_d_datafim  = explode("/",$sd97_d_datafim );
+  $sd97_d_datafim  = explode("/",(string) $sd97_d_datafim );
   $dia = (int)$sd97_d_datafim [0];
   $mes = (int)$sd97_d_datafim [1];
   $ano = (int)$sd97_d_datafim [2];

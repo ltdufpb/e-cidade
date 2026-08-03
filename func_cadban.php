@@ -38,9 +38,9 @@ include(modification("classes/db_cgm_classe.php"));
 
 $method = "sql_query";
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -143,10 +143,10 @@ $instit = db_getsession("DB_instit");
           $sql = $clcadban->$method("",$campos, $sOrder," $sWhere");
         }
 
-        $repassa = array();
+        $repassa = [];
 
         if (isset($chave_z01_nome)) {
-          $repassa = array("chave_k15_codigo"=>$chave_k15_codigo,"chave_z01_nome"=>$chave_z01_nome);
+          $repassa = ["chave_k15_codigo"=>$chave_k15_codigo,"chave_z01_nome"=>$chave_z01_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","nome",$repassa);
 

@@ -44,7 +44,7 @@ require_once(modification("libs/db_libdicionario.php"));
               </td>
               <td> 
           <?php 
-          $x = array("f"=>"NAO","t"=>"SIM");
+          $x = ["f"=>"NAO","t"=>"SIM"];
           db_select('pc08_incluiritemestimativa',$x,true,$db_opcao,"");
           ?>
               </td>
@@ -55,7 +55,7 @@ require_once(modification("libs/db_libdicionario.php"));
               </td>
               <td> 
           <?php 
-          $x = array("f"=>"NAO","t"=>"SIM");
+          $x = ["f"=>"NAO","t"=>"SIM"];
           db_select('pc08_alteraabertura',$x,true,$db_opcao,"");
           ?>
               </td>
@@ -128,7 +128,7 @@ function js_preenchepesquisa(chave){
   db_iframe_registroprecoparam.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

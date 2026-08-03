@@ -39,7 +39,7 @@ include(modification("classes/db_gerfs13_classe.php"));
 include(modification("classes/db_gerfcom_classe.php"));
 include(modification("classes/db_gerffx_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clfolha = new cl_folha;
 $clselecao = new cl_selecao;
 $clgerfsal = new cl_gerfsal;
@@ -83,16 +83,16 @@ $db_botao = true;
           <td nowrap colspan="2" align="center">
           <?php 
           db_input("folhaselecion", 3, 0, true, 'hidden', 3);
-          $arr_pontosgerfs_inicial = Array();
-          $arr_pontosgerfs_final   = Array();
-          $arr_pontos = Array(
+          $arr_pontosgerfs_inicial = [];
+          $arr_pontosgerfs_final   = [];
+          $arr_pontos = [
                               "0" =>"Salário",
                               "1" =>"Adiantamento",
                               "2" =>"Férias",
                               "3" =>"Rescisão",
                               "4" =>"Saldo do 13o",
                               "5" =>"Complementar"
-                             );
+                             ];
           if(isset($objeto1)){
             foreach ($objeto1 as $index) {
               $arr_pontosgerfs_inicial[$index] = $arr_pontos[$index];

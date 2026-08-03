@@ -136,7 +136,7 @@ function js_verinome(){
 			<?php } ?>
 			<tr>
 				<td nowrap title="<?php echo @$Tj40_refant?>"><?php echo @$Lj40_refant?></td>
-				<td><?php db_input('j40_refant',20,$Ij40_refant,true,'text',isset($db_opcaorefant)?$db_opcaorefant:$db_opcao,"") ?></td>
+				<td><?php db_input('j40_refant',20,$Ij40_refant,true,'text',$db_opcaorefant ?? $db_opcao,"") ?></td>
 			</tr>
             <tr>
                 <td nowrap title="<?php echo @$Tj40_registrocartografico?>"><?php echo @$Lj40_registrocartografico?></td>
@@ -278,9 +278,9 @@ function js_verinome(){
 					<label><strong>Data Cadastro:</strong></label>
 				</td>
 				<td><?php
-				$j01_datacad_dia = !empty($j01_datacad) ? date('d',strtotime($j01_datacad)) : "" ;
-				$j01_datacad_mes = !empty($j01_datacad) ? date('m',strtotime($j01_datacad)) : "" ;
-				$j01_datacad_ano = !empty($j01_datacad) ? date('Y',strtotime($j01_datacad)) : "" ;
+				$j01_datacad_dia = !empty($j01_datacad) ? date('d',strtotime((string) $j01_datacad)) : "" ;
+				$j01_datacad_mes = !empty($j01_datacad) ? date('m',strtotime((string) $j01_datacad)) : "" ;
+				$j01_datacad_ano = !empty($j01_datacad) ? date('Y',strtotime((string) $j01_datacad)) : "" ;
 
 				db_inputdata('j01_datacad',$j01_datacad_dia,$j01_datacad_mes,$j01_datacad_ano,true,'text',1,"");
 				?></td>
@@ -297,7 +297,7 @@ function js_verinome(){
 					<td nowrap>
 						<?php
 						$lProcessoSistema = true;
-						db_select('lProcessoSistema', array(true => 'SIM', false => 'NÃO'), true, $db_opcao,
+						db_select('lProcessoSistema', [true => 'SIM', false => 'NÃO'], true, $db_opcao,
 							"onchange='js_processoSistema()' style='width: 95px'")
 						?>
 					</td>
@@ -531,7 +531,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 function js_pesquisaj04_setorregimovel(mostra){

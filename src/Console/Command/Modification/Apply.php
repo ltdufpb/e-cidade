@@ -42,25 +42,16 @@ class Apply extends Command
         $logger->setVerbosity(Logger::DEBUG);
         $logger->addHandler(function($output, $level) {
 
-            switch($level) {
-
-            case Logger::DEBUG:
-                $output = Color::set($output, 'light_gray');
-                break;
-
-            case Logger::WARNING:
-                $output = Color::set($output, 'brown');
-                break;
-
-            case Logger::ERROR:
-                $output = Color::set($output, 'red');
-                break;
-
-            }
+            $output = match ($level) {
+                Logger::DEBUG => Color::set($output, 'light_gray'),
+                Logger::WARNING => Color::set($output, 'brown'),
+                Logger::ERROR => Color::set($output, 'red'),
+                default => $output,
+            };
 
             return $output;
         });
-        $files = array();
+        $files = [];
         $filesPath = ECIDADE_MODIFICATION_CACHE_PATH . 'user' . DS . $user . DS;
         $backupPath = ECIDADE_PATH . 'tmp' . DS . 'bkp_' . $user . DS;
         $data = $manager->unpack($file, true);
@@ -120,7 +111,7 @@ class Apply extends Command
         }
 
         $manager->uninstall($data->getId(), $user);
-        $logger->debug('removendo arquivo de cache da modificação: ' . basename($data->getPath()));
+        $logger->debug('removendo arquivo de cache da modificação: ' . basename((string) $data->getPath()));
         $data->remove();
 
         $processUser = posix_getpwuid(posix_geteuid());
@@ -140,7 +131,7 @@ class Apply extends Command
 
     private function check_syntax($filepath)
     {
-        if (pathinfo($filepath, PATHINFO_EXTENSION) != 'php') {
+        if (pathinfo((string) $filepath, PATHINFO_EXTENSION) != 'php') {
             return true;
         }
 

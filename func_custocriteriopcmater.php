@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_custocriteriopcmater_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcustocriteriopcmater = new cl_custocriteriopcmater;
 $clcustocriteriopcmater->rotulo->label("cc10_sequencial");
 $clcustocriteriopcmater->rotulo->label("cc10_custocriteriorateio");
@@ -98,9 +98,9 @@ $clcustocriteriopcmater->rotulo->label("cc10_custocriteriorateio");
         }else{
            $sql = $clcustocriteriopcmater->sql_query("",$campos,"cc10_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cc10_custocriteriorateio)){
-          $repassa = array("chave_cc10_sequencial"=>$chave_cc10_sequencial,"chave_cc10_custocriteriorateio"=>$chave_cc10_custocriteriorateio);
+          $repassa = ["chave_cc10_sequencial"=>$chave_cc10_sequencial,"chave_cc10_custocriteriorateio"=>$chave_cc10_custocriteriorateio];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

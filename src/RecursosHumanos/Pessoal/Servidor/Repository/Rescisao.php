@@ -28,8 +28,8 @@ class Rescisao extends \BaseClassRepository
      */
     public static function getByCodigoDeRescisao(
         $codigoRescisao,
-        \DBCompetencia $competencia = null,
-        \Instituicao $instituicao = null
+        ?\DBCompetencia $competencia = null,
+        ?\Instituicao $instituicao = null
     ) {
 
         if (empty($competencia)) {
@@ -39,12 +39,12 @@ class Rescisao extends \BaseClassRepository
             $instituicao = \InstituicaoRepository::getInstituicaoSessao();
         }
 
-        $where = array(
+        $where = [
             'rh02_anousu = ' . $competencia->getAno(),
             'rh02_mesusu = ' . $competencia->getMes(),
             'rh02_instit = ' . $instituicao->getCodigo(),
             "rh05_codigorescisao = '{$codigoRescisao}'",
-        );
+        ];
         $daoRescisao = new \cl_rhpesrescisao();
         $sqlRescisao = $daoRescisao->sql_query_rescisao(null, '*', null, implode(" and ", $where));
         $rsRescisao = db_query($sqlRescisao);
@@ -107,12 +107,12 @@ class Rescisao extends \BaseClassRepository
             return $rescisaoModel;
         }
 
-        $where = array(
+        $where = [
           'rh02_anousu = ' . $servidor->getAnoCompetencia(),
           'rh02_mesusu = ' . $servidor->getMesCompetencia(),
           'rh02_instit = ' . $servidor->getInstituicao()->getCodigo(),
           'rh02_regist = ' . $servidor->getMatricula()
-        );
+        ];
 
         $dao = new cl_rhpesrescisao();
         $sql = $dao->sql_query_rescisao(null, '*', null, implode(" and ", $where));

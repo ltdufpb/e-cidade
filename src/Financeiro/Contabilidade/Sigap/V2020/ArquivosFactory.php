@@ -38,10 +38,8 @@ use Periodo;
  */
 class ArquivosFactory
 {
-    private $ano;
-    public function __construct($ano)
+    public function __construct(private $ano)
     {
-        $this->ano = $ano;
     }
 
     /**
@@ -54,48 +52,25 @@ class ArquivosFactory
      */
     public function get($arquivo, Periodo $periodo, array $codigoInstituicoes, $codigoTCE)
     {
-        switch ($arquivo) {
-            case 'RREOBalancoOrcamentario':
-                return new BalancoOrcamentario($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RREOBalancoFuncao':
-                return new BalancoFuncao($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RREOReceitaCorrenteLiquida':
-                return new DemonstrativoReceitaCorrenteLiquida($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RREODespesaReceitaRPPS':
-                return new RreoDespesaReceitaRPPS($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RREOResultadoPrimarioNominal':
-                return new ResultadoPrimarioNominal($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RREORestosPagar':
-                return new RestosPagar($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RREOReceitasDespesasMDE':
-                return new RREODemonstrativoReceitasDespesasMDE($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RREOOperacoesCreditoDespesasCapital':
-                // return class
-            case 'RREOProjecaoAtuarial':
-                // return class
-            case 'RREOAlienacaoAtivosAplicacaoRecursos':
-                // return class
-            case 'RREOReceitasDespesasSaude':
-                return new RREOReceitasDespesasSaude($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RREOParticipacaoPublicaPrivada':
-                return new RREOParticipacaoPublicaPrivada($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RREODemonstrativoSimplificado':
-                return new RreoDemonstrativoSimplificado($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RGFDespesaPessoalDetalhada':
-                return new RgfDemonstrativoDespesaPessoal($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RGFDividaConsolidadaLiquida':
-                return new DividaConsolidadaLiquida($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RGFGarantiasContraGarantias':
-                return new RgfGarantiasContraGarantias($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RGFOperacaoCredito':
-                return new RgfOperacoesDeCredito($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RGFDisponibilidadeCaixa':
-                return new DisponibilidadeCaixaRestosPagar($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RGFDemonstrativoSimplificado':
-                return new RgfDemonstrativoSimplificado($periodo, $codigoInstituicoes, $this->ano, $codigoTCE);
-            default:
-                throw new Exception("Classe {$arquivo} não implementada.");
-        }
+        return match ($arquivo) {
+            'RREOBalancoOrcamentario' => new BalancoOrcamentario($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RREOBalancoFuncao' => new BalancoFuncao($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RREOReceitaCorrenteLiquida' => new DemonstrativoReceitaCorrenteLiquida($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RREODespesaReceitaRPPS' => new RreoDespesaReceitaRPPS($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RREOResultadoPrimarioNominal' => new ResultadoPrimarioNominal($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RREORestosPagar' => new RestosPagar($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RREOReceitasDespesasMDE' => new RREODemonstrativoReceitasDespesasMDE($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RREOOperacoesCreditoDespesasCapital', 'RREOProjecaoAtuarial', 'RREOAlienacaoAtivosAplicacaoRecursos', 'RREOReceitasDespesasSaude' => new RREOReceitasDespesasSaude($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RREOParticipacaoPublicaPrivada' => new RREOParticipacaoPublicaPrivada($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RREODemonstrativoSimplificado' => new RreoDemonstrativoSimplificado($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RGFDespesaPessoalDetalhada' => new RgfDemonstrativoDespesaPessoal($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RGFDividaConsolidadaLiquida' => new DividaConsolidadaLiquida($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RGFGarantiasContraGarantias' => new RgfGarantiasContraGarantias($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RGFOperacaoCredito' => new RgfOperacoesDeCredito($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RGFDisponibilidadeCaixa' => new DisponibilidadeCaixaRestosPagar($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RGFDemonstrativoSimplificado' => new RgfDemonstrativoSimplificado($periodo, $codigoInstituicoes, $this->ano, $codigoTCE),
+            default => throw new Exception("Classe {$arquivo} não implementada."),
+        };
     }
 
     /**

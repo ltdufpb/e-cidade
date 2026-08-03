@@ -92,7 +92,7 @@ db_input('ve22_descr',40,$Ive01_codigo,true,'text',3,'');
          $dbwhere = " ve36_sequencial = $ve41_veiccadcentral";
        }
 
-       $chavepri = array ("ve40_sequencial"=>@$ve41_veiccadcentral);
+       $chavepri =  ["ve40_sequencial"=>@$ve41_veiccadcentral];
        $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql = $clveiccentral->sql_query(null,"ve40_sequencial,ve40_veiccadcentral,ve40_veiculos,ve01_placa,ve22_descr",null,"$dbwhere");
        $cliframe_alterar_excluir->campos = "ve40_sequencial,ve40_veiccadcentral,ve40_veiculos,ve01_placa,ve22_descr";
@@ -119,7 +119,7 @@ function js_preenchepesquisa(chave1,chave2,chave3){
     db_iframe_veiculos.hide();
       <?php 
         if($db_opcao!=1){
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
          }
       ?>
 }

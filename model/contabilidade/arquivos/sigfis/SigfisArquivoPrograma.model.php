@@ -30,10 +30,12 @@ require_once(modification('model/ppadespesa.model.php'));
 
 class SigfisArquivoPrograma extends SigfisArquivoBase {
 	
+  #[\Override]
   public function getCodigoLayout() {
     return '110'; 
   }
   
+  #[\Override]
   public function getNomeArquivo() {
      return 'programa';
   }

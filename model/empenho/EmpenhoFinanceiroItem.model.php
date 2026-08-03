@@ -8,12 +8,6 @@
 class EmpenhoFinanceiroItem {
 
   /**
-   * Sequencial do Item de Empenho
-   * @var integer
-   **/
-  private $iSequencial;
-
-  /**
    * Número do Empenho (sequencial)
    * @var integer
    **/
@@ -77,14 +71,15 @@ class EmpenhoFinanceiroItem {
    * Constroi os dados de um item de um empenho financeiro
    * @param integer $iSequencial
    */
-  public function __construct ($iSequencial = null) {
+  public function __construct (/**
+   * Sequencial do Item de Empenho
+   **/
+  private $iSequencial = null) {
 
-    $this->iSequencial = $iSequencial;
-
-    if ($iSequencial != null) {
+    if ($this->iSequencial != null) {
 
       $oDAOEmpenhoItem = db_utils::getDao("empempitem");
-      $sSQLEmpenhoItem = $oDAOEmpenhoItem->sql_query_file(null, null, "*", null, "e62_sequencial = {$iSequencial}");
+      $sSQLEmpenhoItem = $oDAOEmpenhoItem->sql_query_file(null, null, "*", null, "e62_sequencial = {$this->iSequencial}");
       $rsEmpenhoItem   = $oDAOEmpenhoItem->sql_record($sSQLEmpenhoItem);
 
       if ($oDAOEmpenhoItem->numrows > 0) {
@@ -97,7 +92,7 @@ class EmpenhoFinanceiroItem {
         $this->sDescricao                 = $oDAOEmpenhoItem->e62_descr;
         $this->iCodigoElemento            = $oDAOEmpenhoItem->e62_codele;
         $this->nValorUnitario             = $oDAOEmpenhoItem->e62_vlrun;
-        $this->iSequencial                = $iSequencial;
+        $this->iSequencial                = $this->iSequencial;
         $this->iSequencialAutorizacaoItem = $oDAOEmpenhoItem->e62_sequen;
         /**
          * Carrega Objeto referente a Material de come62_sequencial
@@ -331,12 +326,12 @@ class EmpenhoFinanceiroItem {
       throw new ParameterException("Nenhum parâmetro válido informado para buscar o valor do item anulado.");
     }
 
-    $aWhere = array("empempitem.e62_sequencial = {$iSequencial}");
+    $aWhere = ["empempitem.e62_sequencial = {$iSequencial}"];
     if (!empty($iOrdemInclusao) && !empty($iNumeroEmpenho)) {
-      $aWhere = array(
+      $aWhere = [
         "empempitem.e62_sequen = {$iOrdemInclusao}",
         "empempitem.e62_numemp = {$iNumeroEmpenho}",
-      );
+      ];
     }
 
     $oDaoDesconto      = new cl_pagordemdescontoempanulado();

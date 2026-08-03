@@ -31,10 +31,10 @@ require_once(modification("libs/db_utils.php"));
 $oGet = db_utils::postMemory($_GET);
 
 # Datas configuradas para buscar no banco de dados
-list($iDiaInicial, $iMesInicial, $iAnoInicial) = explode ("/", $oGet->sDataInicial);
+[$iDiaInicial, $iMesInicial, $iAnoInicial] = explode ("/", (string) $oGet->sDataInicial);
 $dDataInicialBanco = "{$iAnoInicial}-{$iMesInicial}-{$iDiaInicial}";
 
-list($iDiaFinal,   $iMesFinal,   $iAnoFinal)   = explode ("/", $oGet->sDataFinal);
+[$iDiaFinal, $iMesFinal, $iAnoFinal]   = explode ("/", (string) $oGet->sDataFinal);
 $dDataFinalBanco   = "{$iAnoFinal}-{$iMesFinal}-{$iDiaFinal}";
 
 
@@ -55,12 +55,12 @@ if ( $oGet->iTipoUsuario == 't' ) {
 }
 
 
-$aWhereData = array();
-if (trim($oGet->sDataInicial) != '')  {  
+$aWhereData = [];
+if (trim((string) $oGet->sDataInicial) != '')  {  
   $aWhereData[] = " db_logsacessa.data >= '{$dDataInicialBanco}'::date ";
 }
 
-if (trim($oGet->sDataFinal) != '')  {  
+if (trim((string) $oGet->sDataFinal) != '')  {  
   $aWhereData[] = " db_logsacessa.data <= '{$dDataFinalBanco}'::date ";
 }
 
@@ -154,14 +154,14 @@ $iFonte    = 8;
 $iAlt      = 5;
 $iPreenche = 1;
 
-imprimeCabecalho($oPdf,$iAlt,$iFonte);
+imprimeCabecalho($oPdf,$iAlt);
 
 for ($iRow = 0; $iRow < $iUltimosacessos; $iRow++) {
   
   $oDadosGerados = db_utils::fieldsMemory($rsUltimosAcessos, $iRow);
   
   if ( $oPdf->gety() > $oPdf->h-40) {
-    imprimeCabecalho($oPdf,$iAlt,$iFonte);
+    imprimeCabecalho($oPdf,$iAlt);
     $iPreenche = 1;
   }
      

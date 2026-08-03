@@ -62,7 +62,7 @@ final class custoPlanilhaDiarias implements iCustoPlanilha {
    *
    * @var array
    */
-  protected $aCustos = array();
+  protected $aCustos = [];
   /**
    *  
    * 

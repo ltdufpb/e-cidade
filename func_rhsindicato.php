@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_rhsindicato_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -90,7 +90,7 @@ if (isset($pesquisa_chave) === false) {
         }
     }
     $sWhere = null;
-    $aWhere = array();
+    $aWhere = [];
 
     if (!empty($oPost->chave_rh116_codigo)) {
         $aWhere[] = "rh116_codigo ilike '%{$oPost->chave_rh116_codigo}%'";
@@ -114,11 +114,11 @@ if (isset($pesquisa_chave) === false) {
             $sql = $clrhsindicato->sql_query("", $campos, "rh116_sequencial", "");
         }
     }
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_rh116_sequencial)) {
-        $repassa = array(
+        $repassa = [
             "chave_rh116_sequencial" => $chave_rh116_sequencial
-        );
+        ];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

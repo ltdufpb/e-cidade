@@ -62,7 +62,7 @@
    * Coleção de instancias de Regime
    * @var Regime[]
    */
-  private $aColecao = array();
+  private $aColecao = [];
 
 
   /**
@@ -74,7 +74,7 @@
 
     if (empty(self::$oInstance)) {
 
-      $sClasse  = get_class();
+      $sClasse  = self::class;
       self::$oInstance = new RegimeRepository();
     }
 

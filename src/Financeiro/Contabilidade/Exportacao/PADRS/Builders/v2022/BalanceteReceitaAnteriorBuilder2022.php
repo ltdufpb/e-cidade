@@ -6,6 +6,7 @@ use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Layouts\v2022\BalanceteRec
 
 class BalanceteReceitaAnteriorBuilder2022 extends BalanceteReceitaAnteriorBuilder2020
 {
+    #[\Override]
     protected function create()
     {
         $this->layout = new BalanceteReceitaAnterior();

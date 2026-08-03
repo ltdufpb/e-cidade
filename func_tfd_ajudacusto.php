@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaotfd_ajudacusto = db_utils::getdao('tfd_ajudacusto');
 $oDaotfd_ajudacusto->rotulo->label('tf12_i_codigo');
@@ -177,9 +177,9 @@ $oRotulo->label('sd63_c_procedimento');
           }
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tf12_i_codigo)) {
-          $repassa = array('chave_tf12_i_codigo'=>$chave_tf12_i_codigo);
+          $repassa = ['chave_tf12_i_codigo'=>$chave_tf12_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
 

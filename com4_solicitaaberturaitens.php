@@ -51,7 +51,7 @@ $sSqlUnid     = $oDaoUnidades->sql_query_file(null, "m61_codmatunid,substr(m61_d
                                                      m61_usaquant,m61_usadec", "m61_descr");
 $rsUnid             = $oDaoUnidades->sql_record($sSqlUnid);
 $aUnidades          = db_utils::getCollectionByRecord($rsUnid);
-$aParametrosCompras = db_stdClass::getParametro("pcparam",array(db_getsession("DB_anousu")));
+$aParametrosCompras = db_stdClass::getParametro("pcparam",[db_getsession("DB_anousu")]);
 $db_opcao           = 1;
 
 

@@ -102,6 +102,6 @@ abstract class PlanoOrcamentarioBuilder
      */
     protected function normalize($string)
     {
-        return mb_strtoupper(str_replace(' ', '', trim($string)), 'ISO-8859-1');
+        return mb_strtoupper(str_replace(' ', '', trim((string) $string)), 'ISO-8859-1');
     }
 }

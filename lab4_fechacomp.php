@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 require(modification("libs/db_stdlibwebseller.php"));
 require(modification("libs/db_utils.php"));
-db_postmemory ( $HTTP_POST_VARS );
+db_postmemory ( $_POST );
 $oDaoLabFechamento        = db_utils::getdao("lab_fechamento");
 $cllab_bpamagnetico       = db_utils::getdao("lab_bpamagnetico");
 $oDaoLabFechaConferencia  = db_utils::getdao("lab_fechaconferencia");
@@ -43,10 +43,10 @@ $hoje                     = date ( "Y-m-d", db_getsession ( "DB_datausu" ) );
 
 function somarDias($data, $dias) {
 
-  if (strstr($data, "/" )) {
-    $data = explode("/", $data);
+  if (strstr((string) $data, "/" )) {
+    $data = explode("/", (string) $data);
   } else {
-    $data = explode("-", $data);
+    $data = explode("-", (string) $data);
   }
   $dia   = (int)$data[0];
   $mes   = (int)$data[1];
@@ -79,8 +79,8 @@ if (isset ( $opcao )) {
 if (isset ($incluir)) {
   
   //Verifica se tem registro para gerar o BPA
-  $la54_d_ini            = substr($la54_d_ini, 6, 4)."-".substr($la54_d_ini, 3, 2)."-".substr($la54_d_ini, 0, 2);
-  $la54_d_fim            = substr($la54_d_fim, 6, 4)."-".substr($la54_d_fim, 3, 2)."-".substr($la54_d_fim, 0, 2);
+  $la54_d_ini            = substr((string) $la54_d_ini, 6, 4)."-".substr((string) $la54_d_ini, 3, 2)."-".substr((string) $la54_d_ini, 0, 2);
+  $la54_d_fim            = substr((string) $la54_d_fim, 6, 4)."-".substr((string) $la54_d_fim, 3, 2)."-".substr((string) $la54_d_fim, 0, 2);
   $oDados->sTipo         = '03';
   $oDados->iCompano      = date('Y');
   $oDados->iCompmes      = date('m');
@@ -136,8 +136,8 @@ if (isset ($incluir)) {
 } elseif (isset ($alterar)) {
   
   //Verifica se tem registro para gerar o BPA
-  $la54_d_ini             = substr(la54_d_ini, 6, 4)."-".substr($la54_d_ini, 3, 2)."-".substr($la54_d_ini, 0, 2);
-  $la54_d_fim             = substr($la54_d_fim, 6, 4)."-".substr($la54_d_fim, 3, 2)."-".substr($la54_d_fim, 0, 2);
+  $la54_d_ini             = substr(\LA54_D_INI, 6, 4)."-".substr((string) $la54_d_ini, 3, 2)."-".substr((string) $la54_d_ini, 0, 2);
+  $la54_d_fim             = substr((string) $la54_d_fim, 6, 4)."-".substr((string) $la54_d_fim, 3, 2)."-".substr((string) $la54_d_fim, 0, 2);
   $oDados->sTipo          = '03';
   $oDados->iCompano       = date('Y');
   $oDados->icompmes       = date('m');
@@ -223,7 +223,7 @@ if (isset ($incluir)) {
       $la54_i_compano = $oFechamento->la54_i_compano;
 
     }
-    $aDataIni       = explode('-',$oFechamento->la54_d_fim);
+    $aDataIni       = explode('-',(string) $oFechamento->la54_d_fim);
     $la54_d_ini     = somaDataDiaMesAno($aDataIni[2], $aDataIni[1], $aDataIni[0], 1, 0, 0);
     $aData          = explode('/', $la54_d_ini);
     $la54_d_ini_dia = $aData[0];

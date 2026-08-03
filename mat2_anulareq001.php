@@ -72,31 +72,31 @@ switch (true) {
 // verifica se somente o mês inicial foi preenchido
 if (isset($perini) || isset($perfim)){
  
- if ( trim($perini) != "" && trim($perfim) == "" ) {
+ if ( trim((string) $perini) != "" && trim((string) $perfim) == "" ) {
    $where_matrequi .= " AND exists (select * from 
                                      matanulitemrequi
                                       inner join matanulitem on m103_codigo = m102_matanulitem
                                       inner join matrequiitem on m41_codigo = m102_matrequiitem 
                                      where m41_codmatrequi = m40_codigo
-                                     and m103_data >= '".implode('-',array_reverse(explode('/',$perini)))."')";   
-   
+                                     and m103_data >= '".implode('-',array_reverse(explode('/',(string) $perini)))."')";   
+
  // verifica se somente o mês final foi preenchido
- } else if ( trim($perfim) != "" && trim($perini) == "" ) {
+ } else if ( trim((string) $perfim) != "" && trim((string) $perini) == "" ) {
    $where_matrequi .= " AND exists (select * from 
                                      matanulitemrequi
                                       inner join matanulitem on m103_codigo = m102_matanulitem
                                       inner join matrequiitem on m41_codigo = m102_matrequiitem 
                                      where m41_codmatrequi = m40_codigo
-                                     and m103_data <= '".implode('-',array_reverse(explode('/',$perfim)))."')";
-      
+                                     and m103_data <= '".implode('-',array_reverse(explode('/',(string) $perfim)))."')";
+
  // se todos períodos foram preenchidos
- } else if ( trim($perini) != "" && trim($perfim) != "" ) {
+ } else if ( trim((string) $perini) != "" && trim((string) $perfim) != "" ) {
    $where_matrequi .= " AND exists (select * from 
                                      matanulitemrequi
                                       inner join matanulitem on m103_codigo = m102_matanulitem
                                       inner join matrequiitem on m41_codigo = m102_matrequiitem 
                                      where m41_codmatrequi = m40_codigo
-                                     and m103_data between '".implode('-',array_reverse(explode('/',$perini)))."' and '".implode('-',array_reverse(explode('/',$perfim)))."')";   
+                                     and m103_data between '".implode('-',array_reverse(explode('/',(string) $perini)))."' and '".implode('-',array_reverse(explode('/',(string) $perfim)))."')";   
    
  }
 	

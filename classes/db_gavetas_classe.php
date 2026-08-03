@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE gavetas
 class cl_gavetas {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $cm27_i_codigo = 0;
-   var $cm27_i_restogaveta = 0;
-   var $cm27_d_exumprevista_dia = null;
-   var $cm27_d_exumprevista_mes = null;
-   var $cm27_d_exumprevista_ano = null;
-   var $cm27_d_exumprevista = null;
-   var $cm27_d_exumfeita_dia = null;
-   var $cm27_d_exumfeita_mes = null;
-   var $cm27_d_exumfeita_ano = null;
-   var $cm27_d_exumfeita = null;
-   var $cm27_c_ossoario = null;
-   var $cm27_i_gaveta = 0;
+   public $cm27_i_codigo = 0;
+   public $cm27_i_restogaveta = 0;
+   public $cm27_d_exumprevista_dia = null;
+   public $cm27_d_exumprevista_mes = null;
+   public $cm27_d_exumprevista_ano = null;
+   public $cm27_d_exumprevista = null;
+   public $cm27_d_exumfeita_dia = null;
+   public $cm27_d_exumfeita_mes = null;
+   public $cm27_d_exumfeita_ano = null;
+   public $cm27_d_exumfeita = null;
+   public $cm27_c_ossoario = null;
+   public $cm27_i_gaveta = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  cm27_i_codigo = int4 = Código
                  cm27_i_restogaveta = int4 = Resto/Gaveta
                  cm27_d_exumprevista = date = Exumação Prevista
@@ -64,10 +64,10 @@ class cl_gavetas {
                  cm27_i_gaveta = int4 = N da Gaveta
                  ";
    //funcao construtor da classe
-   function cl_gavetas() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("gavetas");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -142,10 +142,10 @@ class cl_gavetas {
          $this->erro_status = "0";
          return false;
        }
-       $this->cm27_i_codigo = pg_result($result,0,0);
+       $this->cm27_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from gavetas_cm27_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cm27_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cm27_i_codigo)){
          $this->erro_sql = " Campo cm27_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -183,7 +183,7 @@ class cl_gavetas {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Gavetas do Jazigo ($this->cm27_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Gavetas do Jazigo já Cadastrado";
@@ -207,15 +207,15 @@ class cl_gavetas {
      $resaco = $this->sql_record($this->sql_query_file($this->cm27_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10303,'$this->cm27_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1784,10303,'','".AddSlashes(pg_result($resaco,0,'cm27_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1784,10304,'','".AddSlashes(pg_result($resaco,0,'cm27_i_restogaveta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1784,10305,'','".AddSlashes(pg_result($resaco,0,'cm27_d_exumprevista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1784,10306,'','".AddSlashes(pg_result($resaco,0,'cm27_d_exumfeita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1784,10307,'','".AddSlashes(pg_result($resaco,0,'cm27_c_ossoario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1784,10308,'','".AddSlashes(pg_result($resaco,0,'cm27_i_gaveta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1784,10303,'','".AddSlashes(pg_fetch_result($resaco,0,'cm27_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1784,10304,'','".AddSlashes(pg_fetch_result($resaco,0,'cm27_i_restogaveta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1784,10305,'','".AddSlashes(pg_fetch_result($resaco,0,'cm27_d_exumprevista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1784,10306,'','".AddSlashes(pg_fetch_result($resaco,0,'cm27_d_exumfeita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1784,10307,'','".AddSlashes(pg_fetch_result($resaco,0,'cm27_c_ossoario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1784,10308,'','".AddSlashes(pg_fetch_result($resaco,0,'cm27_i_gaveta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -224,10 +224,10 @@ class cl_gavetas {
       $this->atualizacampos();
      $sql = " update gavetas set ";
      $virgula = "";
-     if(trim($this->cm27_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_i_codigo"])){
+     if(trim((string) $this->cm27_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_i_codigo"])){
        $sql  .= $virgula." cm27_i_codigo = $this->cm27_i_codigo ";
        $virgula = ",";
-       if(trim($this->cm27_i_codigo) == null ){
+       if(trim((string) $this->cm27_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "cm27_i_codigo";
          $this->erro_banco = "";
@@ -237,17 +237,17 @@ class cl_gavetas {
          return false;
        }
      }
-     if(trim($this->cm27_i_restogaveta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_i_restogaveta"])){
-       if(trim($this->cm27_i_restogaveta) == null ){
+     if(trim((string) $this->cm27_i_restogaveta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_i_restogaveta"])){
+       if(trim((string) $this->cm27_i_restogaveta) == null ){
          $this->cm27_i_restogaveta = 0;
        }
        $sql  .= $virgula." cm27_i_restogaveta = $this->cm27_i_restogaveta ";
        $virgula = ",";
      }
-     if(trim($this->cm27_d_exumprevista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumprevista_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumprevista_dia"] !="") ){
+     if(trim((string) $this->cm27_d_exumprevista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumprevista_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumprevista_dia"] !="") ){
        $sql  .= $virgula." cm27_d_exumprevista = '$this->cm27_d_exumprevista' ";
        $virgula = ",";
-       if(trim($this->cm27_d_exumprevista) == null ){
+       if(trim((string) $this->cm27_d_exumprevista) == null ){
          $this->erro_sql = " Campo Exumação Prevista nao Informado.";
          $this->erro_campo = "cm27_d_exumprevista_dia";
          $this->erro_banco = "";
@@ -260,7 +260,7 @@ class cl_gavetas {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumprevista_dia"])){
          $sql  .= $virgula." cm27_d_exumprevista = null ";
          $virgula = ",";
-         if(trim($this->cm27_d_exumprevista) == null ){
+         if(trim((string) $this->cm27_d_exumprevista) == null ){
            $this->erro_sql = " Campo Exumação Prevista nao Informado.";
            $this->erro_campo = "cm27_d_exumprevista_dia";
            $this->erro_banco = "";
@@ -271,16 +271,16 @@ class cl_gavetas {
          }
        }
      }
-     if(trim($this->cm27_d_exumfeita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumfeita_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumfeita_dia"] !="") ){
+     if(trim((string) $this->cm27_d_exumfeita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumfeita_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumfeita_dia"] !="") ){
        $sql  .= $virgula." cm27_d_exumfeita = '$this->cm27_d_exumfeita' ";
        $virgula = ",";
      }
-     if(trim($this->cm27_c_ossoario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_c_ossoario"])){
+     if(trim((string) $this->cm27_c_ossoario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_c_ossoario"])){
        $sql  .= $virgula." cm27_c_ossoario = '$this->cm27_c_ossoario' ";
        $virgula = ",";
      }
-     if(trim($this->cm27_i_gaveta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_i_gaveta"])){
-       if(trim($this->cm27_i_gaveta) == null ){
+     if(trim((string) $this->cm27_i_gaveta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm27_i_gaveta"])){
+       if(trim((string) $this->cm27_i_gaveta) == null ){
          $this->cm27_i_gaveta = 0;
        }
        $sql  .= $virgula." cm27_i_gaveta = $this->cm27_i_gaveta ";
@@ -294,21 +294,21 @@ class cl_gavetas {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10303,'$this->cm27_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm27_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1784,10303,'".AddSlashes(pg_result($resaco,$conresaco,'cm27_i_codigo'))."','$this->cm27_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1784,10303,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm27_i_codigo'))."','$this->cm27_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm27_i_restogaveta"]))
-           $resac = db_query("insert into db_acount values($acount,1784,10304,'".AddSlashes(pg_result($resaco,$conresaco,'cm27_i_restogaveta'))."','$this->cm27_i_restogaveta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1784,10304,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm27_i_restogaveta'))."','$this->cm27_i_restogaveta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumprevista"]))
-           $resac = db_query("insert into db_acount values($acount,1784,10305,'".AddSlashes(pg_result($resaco,$conresaco,'cm27_d_exumprevista'))."','$this->cm27_d_exumprevista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1784,10305,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm27_d_exumprevista'))."','$this->cm27_d_exumprevista',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm27_d_exumfeita"]))
-           $resac = db_query("insert into db_acount values($acount,1784,10306,'".AddSlashes(pg_result($resaco,$conresaco,'cm27_d_exumfeita'))."','$this->cm27_d_exumfeita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1784,10306,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm27_d_exumfeita'))."','$this->cm27_d_exumfeita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm27_c_ossoario"]))
-           $resac = db_query("insert into db_acount values($acount,1784,10307,'".AddSlashes(pg_result($resaco,$conresaco,'cm27_c_ossoario'))."','$this->cm27_c_ossoario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1784,10307,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm27_c_ossoario'))."','$this->cm27_c_ossoario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm27_i_gaveta"]))
-           $resac = db_query("insert into db_acount values($acount,1784,10308,'".AddSlashes(pg_result($resaco,$conresaco,'cm27_i_gaveta'))."','$this->cm27_i_gaveta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1784,10308,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm27_i_gaveta'))."','$this->cm27_i_gaveta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -353,15 +353,15 @@ class cl_gavetas {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10303,'$cm27_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1784,10303,'','".AddSlashes(pg_result($resaco,$iresaco,'cm27_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1784,10304,'','".AddSlashes(pg_result($resaco,$iresaco,'cm27_i_restogaveta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1784,10305,'','".AddSlashes(pg_result($resaco,$iresaco,'cm27_d_exumprevista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1784,10306,'','".AddSlashes(pg_result($resaco,$iresaco,'cm27_d_exumfeita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1784,10307,'','".AddSlashes(pg_result($resaco,$iresaco,'cm27_c_ossoario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1784,10308,'','".AddSlashes(pg_result($resaco,$iresaco,'cm27_i_gaveta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1784,10303,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm27_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1784,10304,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm27_i_restogaveta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1784,10305,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm27_d_exumprevista'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1784,10306,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm27_d_exumfeita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1784,10307,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm27_c_ossoario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1784,10308,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm27_i_gaveta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from gavetas
@@ -421,7 +421,7 @@ class cl_gavetas {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:gavetas";
@@ -435,7 +435,7 @@ class cl_gavetas {
    function sql_query ( $cm27_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_gavetas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_gavetas {
    function sql_query_file ( $cm27_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -492,7 +492,7 @@ class cl_gavetas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

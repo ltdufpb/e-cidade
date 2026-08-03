@@ -120,7 +120,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("pc34_sequencial"=>@$pc34_sequencial);
+	 $chavepri= ["pc34_sequencial"=>@$pc34_sequencial];
 	 $cliframe_alterar_excluir->chavepri= $chavepri;
 	 $sSqlIframe = $clpctipocertifdepartamento->sql_query(null, "*", "", "pc34_pctipocertif = {$pc34_pctipocertif}");
 	 $cliframe_alterar_excluir->sql     = $sSqlIframe; 

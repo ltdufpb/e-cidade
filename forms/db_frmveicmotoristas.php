@@ -244,7 +244,7 @@ if ($clveicparam->numrows > 0) {
     db_iframe_veicmotoristas.hide();
     <?php
     if ($db_opcao != 1) {
-      echo " location.href = '" . basename($_SERVER["PHP_SELF"]) . "?chavepesquisa='+chave";
+      echo " location.href = '" . basename((string) $_SERVER["PHP_SELF"]) . "?chavepesquisa='+chave";
     }
     ?>
   }

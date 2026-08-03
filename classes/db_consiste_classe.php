@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE consiste
 class cl_consiste { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r46_rubdig = null; 
-   var $r46_rubcon = null; 
-   var $r46_quant = 0; 
-   var $r46_valor = 0; 
-   var $r46_tipo = null; 
-   var $r46_descr = null; 
+   public $r46_rubdig = null; 
+   public $r46_rubcon = null; 
+   public $r46_quant = 0; 
+   public $r46_valor = 0; 
+   public $r46_tipo = null; 
+   public $r46_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r46_rubdig = varchar(4) = Rubrica a digitar 
                  r46_rubcon = varchar(4) = Rubrica a consistir 
                  r46_quant = float8 = Qtda ou Valor para inicializar 
@@ -58,10 +58,10 @@ class cl_consiste {
                  r46_descr = varchar(40) = Descrição da Ocorrência 
                  ";
    //funcao construtor da classe 
-   function cl_consiste() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("consiste"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -162,7 +162,7 @@ class cl_consiste {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Consistencia de digitacao no ponto                 ($this->r46_rubdig."-".$this->r46_rubcon) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Consistencia de digitacao no ponto                 já Cadastrado";
@@ -186,16 +186,16 @@ class cl_consiste {
      $resaco = $this->sql_record($this->sql_query_file($this->r46_rubdig,$this->r46_rubcon));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,3838,'$this->r46_rubdig','I')");
        $resac = db_query("insert into db_acountkey values($acount,3839,'$this->r46_rubcon','I')");
-       $resac = db_query("insert into db_acount values($acount,540,3838,'','".AddSlashes(pg_result($resaco,0,'r46_rubdig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,540,3839,'','".AddSlashes(pg_result($resaco,0,'r46_rubcon'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,540,3840,'','".AddSlashes(pg_result($resaco,0,'r46_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,540,3841,'','".AddSlashes(pg_result($resaco,0,'r46_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,540,3842,'','".AddSlashes(pg_result($resaco,0,'r46_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,540,3843,'','".AddSlashes(pg_result($resaco,0,'r46_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,540,3838,'','".AddSlashes(pg_fetch_result($resaco,0,'r46_rubdig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,540,3839,'','".AddSlashes(pg_fetch_result($resaco,0,'r46_rubcon'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,540,3840,'','".AddSlashes(pg_fetch_result($resaco,0,'r46_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,540,3841,'','".AddSlashes(pg_fetch_result($resaco,0,'r46_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,540,3842,'','".AddSlashes(pg_fetch_result($resaco,0,'r46_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,540,3843,'','".AddSlashes(pg_fetch_result($resaco,0,'r46_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -204,10 +204,10 @@ class cl_consiste {
       $this->atualizacampos();
      $sql = " update consiste set ";
      $virgula = "";
-     if(trim($this->r46_rubdig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_rubdig"])){ 
+     if(trim((string) $this->r46_rubdig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_rubdig"])){ 
        $sql  .= $virgula." r46_rubdig = '$this->r46_rubdig' ";
        $virgula = ",";
-       if(trim($this->r46_rubdig) == null ){ 
+       if(trim((string) $this->r46_rubdig) == null ){ 
          $this->erro_sql = " Campo Rubrica a digitar nao Informado.";
          $this->erro_campo = "r46_rubdig";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_consiste {
          return false;
        }
      }
-     if(trim($this->r46_rubcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_rubcon"])){ 
+     if(trim((string) $this->r46_rubcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_rubcon"])){ 
        $sql  .= $virgula." r46_rubcon = '$this->r46_rubcon' ";
        $virgula = ",";
-       if(trim($this->r46_rubcon) == null ){ 
+       if(trim((string) $this->r46_rubcon) == null ){ 
          $this->erro_sql = " Campo Rubrica a consistir nao Informado.";
          $this->erro_campo = "r46_rubcon";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_consiste {
          return false;
        }
      }
-     if(trim($this->r46_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_quant"])){ 
+     if(trim((string) $this->r46_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_quant"])){ 
        $sql  .= $virgula." r46_quant = $this->r46_quant ";
        $virgula = ",";
-       if(trim($this->r46_quant) == null ){ 
+       if(trim((string) $this->r46_quant) == null ){ 
          $this->erro_sql = " Campo Qtda ou Valor para inicializar nao Informado.";
          $this->erro_campo = "r46_quant";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_consiste {
          return false;
        }
      }
-     if(trim($this->r46_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_valor"])){ 
+     if(trim((string) $this->r46_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_valor"])){ 
        $sql  .= $virgula." r46_valor = $this->r46_valor ";
        $virgula = ",";
-       if(trim($this->r46_valor) == null ){ 
+       if(trim((string) $this->r46_valor) == null ){ 
          $this->erro_sql = " Campo Valor (utilizado como work) nao Informado.";
          $this->erro_campo = "r46_valor";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_consiste {
          return false;
        }
      }
-     if(trim($this->r46_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_tipo"])){ 
+     if(trim((string) $this->r46_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_tipo"])){ 
        $sql  .= $virgula." r46_tipo = '$this->r46_tipo' ";
        $virgula = ",";
-       if(trim($this->r46_tipo) == null ){ 
+       if(trim((string) $this->r46_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo verificação nao Informado.";
          $this->erro_campo = "r46_tipo";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_consiste {
          return false;
        }
      }
-     if(trim($this->r46_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_descr"])){ 
+     if(trim((string) $this->r46_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r46_descr"])){ 
        $sql  .= $virgula." r46_descr = '$this->r46_descr' ";
        $virgula = ",";
-       if(trim($this->r46_descr) == null ){ 
+       if(trim((string) $this->r46_descr) == null ){ 
          $this->erro_sql = " Campo Descrição da Ocorrência nao Informado.";
          $this->erro_campo = "r46_descr";
          $this->erro_banco = "";
@@ -293,22 +293,22 @@ class cl_consiste {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3838,'$this->r46_rubdig','A')");
          $resac = db_query("insert into db_acountkey values($acount,3839,'$this->r46_rubcon','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r46_rubdig"]))
-           $resac = db_query("insert into db_acount values($acount,540,3838,'".AddSlashes(pg_result($resaco,$conresaco,'r46_rubdig'))."','$this->r46_rubdig',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,540,3838,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r46_rubdig'))."','$this->r46_rubdig',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r46_rubcon"]))
-           $resac = db_query("insert into db_acount values($acount,540,3839,'".AddSlashes(pg_result($resaco,$conresaco,'r46_rubcon'))."','$this->r46_rubcon',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,540,3839,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r46_rubcon'))."','$this->r46_rubcon',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r46_quant"]))
-           $resac = db_query("insert into db_acount values($acount,540,3840,'".AddSlashes(pg_result($resaco,$conresaco,'r46_quant'))."','$this->r46_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,540,3840,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r46_quant'))."','$this->r46_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r46_valor"]))
-           $resac = db_query("insert into db_acount values($acount,540,3841,'".AddSlashes(pg_result($resaco,$conresaco,'r46_valor'))."','$this->r46_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,540,3841,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r46_valor'))."','$this->r46_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r46_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,540,3842,'".AddSlashes(pg_result($resaco,$conresaco,'r46_tipo'))."','$this->r46_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,540,3842,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r46_tipo'))."','$this->r46_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r46_descr"]))
-           $resac = db_query("insert into db_acount values($acount,540,3843,'".AddSlashes(pg_result($resaco,$conresaco,'r46_descr'))."','$this->r46_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,540,3843,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r46_descr'))."','$this->r46_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -353,16 +353,16 @@ class cl_consiste {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3838,'$r46_rubdig','E')");
          $resac = db_query("insert into db_acountkey values($acount,3839,'$r46_rubcon','E')");
-         $resac = db_query("insert into db_acount values($acount,540,3838,'','".AddSlashes(pg_result($resaco,$iresaco,'r46_rubdig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,540,3839,'','".AddSlashes(pg_result($resaco,$iresaco,'r46_rubcon'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,540,3840,'','".AddSlashes(pg_result($resaco,$iresaco,'r46_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,540,3841,'','".AddSlashes(pg_result($resaco,$iresaco,'r46_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,540,3842,'','".AddSlashes(pg_result($resaco,$iresaco,'r46_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,540,3843,'','".AddSlashes(pg_result($resaco,$iresaco,'r46_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,540,3838,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r46_rubdig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,540,3839,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r46_rubcon'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,540,3840,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r46_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,540,3841,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r46_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,540,3842,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r46_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,540,3843,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r46_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from consiste
@@ -428,7 +428,7 @@ class cl_consiste {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:consiste";

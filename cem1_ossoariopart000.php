@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-	 $clcriaabas->identifica = array("a1"=>"Ossário","a2"=>"Diversos");
-	 $clcriaabas->src = array("a1"=>"cem1_ossoariopart001.php","a2"=>"dvr_diversos004.php");
-	 $clcriaabas->disabled   =  array("a2"=>"true");
+	 $clcriaabas->identifica = ["a1"=>"Ossário","a2"=>"Diversos"];
+	 $clcriaabas->src = ["a1"=>"cem1_ossoariopart001.php","a2"=>"dvr_diversos004.php"];
+	 $clcriaabas->disabled   =  ["a2"=>"true"];
      $clcriaabas->scrolling  = "yes";
 	 $clcriaabas->cria_abas();
        ?>

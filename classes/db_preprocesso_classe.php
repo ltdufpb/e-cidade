@@ -41,7 +41,7 @@ class cl_preprocesso extends DAOBasica
      * @param array $where
      * @return string
      */
-    public function sqlPreProcessoTipoProcesso($campos = array(), $where = array())
+    public function sqlPreProcessoTipoProcesso($campos = [], $where = [])
     {
         $campos = empty($campos) ? '*' : implode(', ', $campos);
         $where = empty($where) ? '' : ' where ' . implode(' AND ', $where);

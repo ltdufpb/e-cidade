@@ -31,7 +31,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_gradeshorarios_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $instituicao = db_getsession('DB_instit');
 
 $clgradeshorarios = new cl_gradeshorarios;
@@ -64,7 +64,7 @@ $clgradeshorarios->rotulo->label("rh190_sequencial");
 </form>
 <?php
 
-$where = array("rh190_instit = {$instituicao}");
+$where = ["rh190_instit = {$instituicao}"];
 if (!isset($pesquisa_chave)) {
     if (isset($campos) == false) {
         if (file_exists("funcoes/db_func_gradeshorarios.php") == true) {
@@ -82,9 +82,9 @@ if (!isset($pesquisa_chave)) {
     }
     $sql = $clgradeshorarios->sql_query(null, $campos, "rh190_sequencial", implode(" and ", $where));
 
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_sequencial)) {
-        $repassa = array("chave_sequencial" => $chave_sequencial);
+        $repassa = ["chave_sequencial" => $chave_sequencial];
     }
 
     echo '<div class="container">';

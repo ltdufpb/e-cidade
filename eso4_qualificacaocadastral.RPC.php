@@ -67,7 +67,7 @@ try {
          */
         case 'importarArquivo':
             $arquivo = $parametros->arquivo;
-            $partes = explode('/', $arquivo);
+            $partes = explode('/', (string) $arquivo);
             $arquivo = array_pop($partes); // remove os diretorios para ficar só com o nome do arquivo
 
             $partes = explode('.', $arquivo);
@@ -107,7 +107,7 @@ try {
         case 'buscarArquivosImportados':
             $repository = new ImportacaoQualificacaoCadastral();
             $arquivos = $repository->getByInstituicao(InstituicaoRepository::getInstituicaoSessao()->getCodigo());
-            $retorno->arquivos = array();
+            $retorno->arquivos = [];
             foreach ($arquivos as $arquivo) {
 
                 $stdArquivo = new stdClass();

@@ -67,7 +67,7 @@ function js_consulta(){
       </td>
       <td>
         <?php 
-	$arr_opcao = array("to"=>"Todos", "A"=>"Afastamento", "S"=>"Assentamento");
+	$arr_opcao = ["to"=>"Todos", "A"=>"Afastamento", "S"=>"Assentamento"];
         db_select("opcao", $arr_opcao, true, 1);
         ?>
       </td>

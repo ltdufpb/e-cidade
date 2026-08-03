@@ -82,11 +82,9 @@ class AnexoIVDemonstrativoRPPS extends RelatoriosLegaisBase {
 
     $this->oDataInicialAnterior->modificarIntervalo('-1 year');
     $this->oDataFinalAnterior->modificarIntervalo('-1 year');
-    $aInstituicoes = InstituicaoRepository::getInstituicoesPorTipo( array(5,6) );
+    $aInstituicoes = InstituicaoRepository::getInstituicoesPorTipo( [5,6] );
 
-    $aCodigos = array_map(function(\Instituicao $oInstiuicao) {
-      return $oInstiuicao->getCodigo();
-    }, $aInstituicoes);
+    $aCodigos = array_map(fn(\Instituicao $oInstiuicao) => $oInstiuicao->getCodigo(), $aInstituicoes);
 
     $sInstituicoes = implode(',', $aCodigos);
 
@@ -498,7 +496,8 @@ class AnexoIVDemonstrativoRPPS extends RelatoriosLegaisBase {
   /**
    * Executa o balancete da receita do ano atual e do ano anterior.
    */
-  protected function executarBalanceteDaReceita() {
+  #[\Override]
+  protected function executarBalanceteDaReceita(?array $linhas = \null, ?array $colunas = \null, $dataInicial = \null, $dataFinal = \null) {
 
     parent::executarBalanceteDaReceita();
 
@@ -537,6 +536,7 @@ class AnexoIVDemonstrativoRPPS extends RelatoriosLegaisBase {
   /**
    * Executa o balancete da despesa do ano atual e do ano anterior.
    */
+  #[\Override]
   protected function executarBalanceteDespesa() {
 
     parent::executarBalanceteDespesa();
@@ -583,7 +583,8 @@ class AnexoIVDemonstrativoRPPS extends RelatoriosLegaisBase {
   /**
    * Executa o Balancete de Verificação
    */
-  protected function executarBalanceteVerificacao() {
+  #[\Override]
+  protected function executarBalanceteVerificacao(?array $linhas = \null, ?array $colunas = \null, $where = \null) {
 
     parent::executarBalanceteVerificacao();
 
@@ -616,6 +617,7 @@ class AnexoIVDemonstrativoRPPS extends RelatoriosLegaisBase {
     $this->limparEstruturaBalanceteVerificacao();
   }
 
+  #[\Override]
   public function getDados($trazerConfiguracaoPadrao = true) {
     parent::getDados();
 

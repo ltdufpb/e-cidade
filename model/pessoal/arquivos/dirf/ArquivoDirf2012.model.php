@@ -10,7 +10,7 @@
  */
 class ArquivoDirf2012 {
 
-  protected $aBaseValoresMensais = array(
+  protected $aBaseValoresMensais = [
      1 => "",
      2 => "",
      3 => "",
@@ -24,9 +24,9 @@ class ArquivoDirf2012 {
     11 => "",
     12 => "",
     13 => ""
-  );
+  ];
 
-  protected $aMeses = array(
+  protected $aMeses = [
     1 => "janeiro",
     2 => "fevereiro",
     3 => "marco",
@@ -40,7 +40,7 @@ class ArquivoDirf2012 {
     11 => "novembro",
     12 => "dezembro",
     13 => "decimo_terceiro",
-  );
+  ];
   protected $oGerador;
 
   public function __construct(db_layouttxt $oLayout) {
@@ -142,14 +142,14 @@ class ArquivoDirf2012 {
     /**
      * geramos as linhas do plano de saude
      */
-    if (trim($this->oGerador->getNumeroANS()) != "" || trim($this->oGerador->getNumeroANS2()) != "") {
+    if (trim((string) $this->oGerador->getNumeroANS()) != "" || trim((string) $this->oGerador->getNumeroANS2()) != "") {
 
       $this->oLayout->setCampoTipoLinha(3);
       $this->oLayout->setCampoIdentLinha("PSE");
       $this->oLayout->setCampo("identificador_registro", 'PSE');
       $this->oLayout->geraDadosLinha();
 
-      if (trim($this->oGerador->getNumeroANS()) != "") {
+      if (trim((string) $this->oGerador->getNumeroANS()) != "") {
 
         $oDaoCgm   = db_utils::getDao("cgm");
         $sSqlNome  = $oDaoCgm->sql_query_file($this->oGerador->getCcgmSaude(), "z01_nome, z01_cgccpf");
@@ -168,9 +168,9 @@ class ArquivoDirf2012 {
         $this->oLayout->setCampoTipoLinha(3);
         $this->oLayout->setCampoIdentLinha("OPSE");
         $this->oLayout->setCampo("identificador_registro", 'OPSE');
-        $this->oLayout->setCampo("cnpj", str_pad($oOperador->z01_cgccpf, 14, "0", STR_PAD_LEFT));
+        $this->oLayout->setCampo("cnpj", str_pad((string) $oOperador->z01_cgccpf, 14, "0", STR_PAD_LEFT));
         $this->oLayout->setCampo("nome", $oOperador->z01_nome);
-        $this->oLayout->setCampo("registro_ans", str_pad($this->oGerador->getNumeroANS(), 6, "0", STR_PAD_LEFT));
+        $this->oLayout->setCampo("registro_ans", str_pad((string) $this->oGerador->getNumeroANS(), 6, "0", STR_PAD_LEFT));
         $this->oLayout->geraDadosLinha();
 
         /**
@@ -189,7 +189,7 @@ class ArquivoDirf2012 {
               $this->oLayout->setCampoTipoLinha(3);
               $this->oLayout->setCampoIdentLinha("TPSE");
               $this->oLayout->setCampo("identificador_registro", 'TPSE');
-              $this->oLayout->setCampo("cnpj", str_pad($oPessoaFisica->cpf, 11, "0", STR_PAD_LEFT));
+              $this->oLayout->setCampo("cnpj", str_pad((string) $oPessoaFisica->cpf, 11, "0", STR_PAD_LEFT));
               $this->oLayout->setCampo("nome", $oPessoaFisica->nome);
               $this->oLayout->setCampo("valor_ano", $nValorAno);
               $this->oLayout->geraDadosLinha();
@@ -198,7 +198,7 @@ class ArquivoDirf2012 {
         }
       }
 
-      if (trim($this->oGerador->getNumeroANS2()) != "") {
+      if (trim((string) $this->oGerador->getNumeroANS2()) != "") {
 
         $oDaoCgm   = db_utils::getDao("cgm");
         $sSqlNome  = $oDaoCgm->sql_query_file($this->oGerador->getCcgmSaude2(), "z01_nome, z01_cgccpf");
@@ -217,9 +217,9 @@ class ArquivoDirf2012 {
         $this->oLayout->setCampoTipoLinha(3);
         $this->oLayout->setCampoIdentLinha("OPSE");
         $this->oLayout->setCampo("identificador_registro", 'OPSE');
-        $this->oLayout->setCampo("cnpj", str_pad($oOperador->z01_cgccpf, 14, "0", STR_PAD_LEFT));
+        $this->oLayout->setCampo("cnpj", str_pad((string) $oOperador->z01_cgccpf, 14, "0", STR_PAD_LEFT));
         $this->oLayout->setCampo("nome", $oOperador->z01_nome);
-        $this->oLayout->setCampo("registro_ans", str_pad($this->oGerador->getNumeroANS2(), 6, "0", STR_PAD_LEFT));
+        $this->oLayout->setCampo("registro_ans", str_pad((string) $this->oGerador->getNumeroANS2(), 6, "0", STR_PAD_LEFT));
         $this->oLayout->geraDadosLinha();
 
         /**
@@ -236,7 +236,7 @@ class ArquivoDirf2012 {
               $this->oLayout->setCampoTipoLinha(3);
               $this->oLayout->setCampoIdentLinha("TPSE");
               $this->oLayout->setCampo("identificador_registro", 'TPSE');
-              $this->oLayout->setCampo("cnpj", str_pad($oPessoaFisica->cpf, 11, "0", STR_PAD_LEFT));
+              $this->oLayout->setCampo("cnpj", str_pad((string) $oPessoaFisica->cpf, 11, "0", STR_PAD_LEFT));
               $this->oLayout->setCampo("nome", $oPessoaFisica->nome);
               $this->oLayout->setCampo("valor_ano", $nValorAno);
               $this->oLayout->geraDadosLinha();
@@ -256,18 +256,18 @@ class ArquivoDirf2012 {
 
     $aLinhasDirf = $this->oGerador->getRegistros();
 
-    $aInformacoesComplementares = array();
+    $aInformacoesComplementares = [];
 
     foreach ($aLinhasDirf as $oLinhaDirf) {
 
       foreach ($oLinhaDirf->fisica as $oPessoaFisica) {
         if ($oPessoaFisica->informacao_complementar != '') {
-          $aInformacoesComplementares[$oPessoaFisica->cpf] = substr($oPessoaFisica->informacao_complementar, 0, 200);
+          $aInformacoesComplementares[$oPessoaFisica->cpf] = substr((string) $oPessoaFisica->informacao_complementar, 0, 200);
         }
       }
     }
     ksort($aInformacoesComplementares);
-    $aInformacoesJaImpressas = array();
+    $aInformacoesJaImpressas = [];
 
     foreach ($aInformacoesComplementares as $cpf  => $informacao ) {
 
@@ -318,7 +318,7 @@ class ArquivoDirf2012 {
         /**
          *  Se for algum dos tipos para RRA passa para o próximo
          */
-        if (in_array($iTipo, array(17,18,19,20,21,22,23))) {
+        if (in_array($iTipo, [17,18,19,20,21,22,23])) {
           continue;
         }
 
@@ -386,18 +386,16 @@ class ArquivoDirf2012 {
       /**
        * escrevemos os dados dos pensionistas
        */
-      uasort($oPessoaFisica->pensionistas, function($primeiro, $proximo) {
-         return strcasecmp($primeiro->cpf, $proximo->cpf);
-      });
+      uasort($oPessoaFisica->pensionistas, fn($primeiro, $proximo) => strcasecmp((string) $primeiro->cpf, (string) $proximo->cpf));
       foreach ($oPessoaFisica->pensionistas as $oPensionista) {
 
         $this->oLayout->setCampoTipoLinha(3);
-        $relacao_depedencia = str_pad($oPensionista->relacao_dependencia, 2, "0", STR_PAD_LEFT);
+        $relacao_depedencia = str_pad((string) $oPensionista->relacao_dependencia, 2, "0", STR_PAD_LEFT);
 
         if ($oPensionista->relacao_dependencia == 0) {
           $relacao_depedencia = '';
         }
-        $sDataPensionista = implode("", (explode("-", $oPensionista->data_nascimento)));
+        $sDataPensionista = implode("", (explode("-", (string) $oPensionista->data_nascimento)));
         $this->oLayout->setCampoIdentLinha("INFPA");
         $this->oLayout->setCampo('cpf', $oPensionista->cpf);
         $this->oLayout->setCampo('nome', $oPensionista->nome);
@@ -551,7 +549,7 @@ class ArquivoDirf2012 {
               if ($oPensionista->relacao_dependencia == 0) {
                 $relacao_depedencia = '';
               }
-              $sDataPensionista = implode("", (explode("-", $oPensionista->data_nascimento)));
+              $sDataPensionista = implode("", (explode("-", (string) $oPensionista->data_nascimento)));
               $this->oLayout->setCampoTipoLinha(3);
               $this->oLayout->setCampoIdentLinha("INFPA");
               $this->oLayout->setCampo('cpf', $oPensionista->cpf);

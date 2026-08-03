@@ -39,13 +39,13 @@ $oRotulo->label("ac16_sequencial");
 $oRotulo->label("c36_sequencial");
 $oRotulo->label("k17_codigo");
 
-$aDocumentos          = array();
-$aCodigoDocumentos    = array();
+$aDocumentos          = [];
+$aCodigoDocumentos    = [];
 $sTitulo              = null;
 $db_opcao             = 1;
 $oGet                 = db_utils::postMemory($_GET);
 $sTitulo              = 'Operações Extra-Orçamentárias';
-$aCodigoDocumentos    = array( 120, 130, 140, 150, 151, 160, 161, 121, 131, 141, 152, 153, 162, 163);
+$aCodigoDocumentos    = [ 120, 130, 140, 150, 151, 160, 161, 121, 131, 141, 152, 153, 162, 163];
 
 $sDocumentos = implode(', ', $aCodigoDocumentos);
 

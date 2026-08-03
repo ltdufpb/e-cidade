@@ -25,8 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
-$HTTP_SERVER_VARS["PHP_SELF"]  = "";
-$HTTP_SERVER_VARS['HTTP_HOST'] = 'localhost';
+$_SERVER["PHP_SELF"]  = "";
+$_SERVER['HTTP_HOST'] = 'localhost';
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("dbforms/db_funcoes.php"));

@@ -35,8 +35,8 @@ require_once(modification("classes/db_liclicita_classe.php"));
 require_once(modification("classes/db_pcproc_classe.php"));
 require_once(modification("classes/db_pcparam_classe.php"));
 require_once(modification("classes/db_liclicitem_classe.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clsolicitem = new cl_solicitem;
 $clpcproc= new cl_pcproc;
 $clpcparam = new cl_pcparam;
@@ -180,7 +180,7 @@ function js_submit(){
         if (isset($codproc) && $codproc != "") {
 
             $couni = "codproc";
-            $$couni = $codproc;
+            ${$couni} = $codproc;
         }
     }
 

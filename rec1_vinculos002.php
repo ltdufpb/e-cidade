@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_vinculos_classe.php"));
 include(modification("classes/db_rhcadregime_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clvinculos = new cl_vinculos;
 $clrhcadregime = new cl_rhcadregime;
 $db_opcao = 22;
@@ -41,7 +41,7 @@ $db_botao = false;
 if(isset($alterar)){
   db_inicio_transacao();
   $db_opcao = 2;
-  $clvinculos->h11_cert02 = substr($h11_cert01, 199, 200);
+  $clvinculos->h11_cert02 = substr((string) $h11_cert01, 199, 200);
   $clvinculos->alterar($h11_codigo);
   db_fim_transacao();
 }else if(isset($chavepesquisa)){

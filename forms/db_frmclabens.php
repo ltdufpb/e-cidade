@@ -159,7 +159,7 @@ db_fieldsmemory($result_t06_codcla, 0);
                 </td>
                 <td>
                     <?php
-                    $x = array("f" => "Sintéticas", "t" => "Analíticas");
+                    $x = ["f" => "Sintéticas", "t" => "Analíticas"];
                     db_select('t64_analitica', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -170,7 +170,7 @@ db_fieldsmemory($result_t06_codcla, 0);
                 </td>
                 <td>
                     <?php
-                    $x = array();
+                    $x = [];
                     $oDaoBemTipos = db_utils::getDao('bemtipos');
                     $rsSql = $oDaoBemTipos->sql_record($oDaoBemTipos->sql_query(null, "*", "t24_sequencial", null));
                     if ($oDaoBemTipos->numrows > 0) {
@@ -439,7 +439,7 @@ db_fieldsmemory($result_t06_codcla, 0);
         db_iframe_clabens.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

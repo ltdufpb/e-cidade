@@ -44,7 +44,7 @@ $clescola = new cl_escola;
 $clturma = new cl_turma;
 $clturmaturnoadicional = new cl_turmaturnoadicional;
 $escola = db_getsession("DB_coddepto");
-$result1 = $clturma->sql_record($clturma->sql_query_turmaserie("", "ed57_i_turno", "", " ed220_i_codigo = $turma")) or die(pg_errormessage());
+$result1 = $clturma->sql_record($clturma->sql_query_turmaserie("", "ed57_i_turno", "", " ed220_i_codigo = $turma")) or die(pg_last_error());
 db_fieldsmemory($result1, 0);
 ?>
 <html>
@@ -78,7 +78,7 @@ db_fieldsmemory($result1, 0);
         }
         $turno = "";
         $sql = $clperiodoescola->sql_query("", "*", "ed15_i_sequencia,ed08_i_sequencia", " ed17_i_escola = $escola AND ed17_i_turno in ($cod_turnos)");
-        $result1 = $clperiodoescola->sql_record($sql) or die(pg_errormessage());
+        $result1 = $clperiodoescola->sql_record($sql) or die(pg_last_error());
         $contp = 0;
         $contd = 0;
 
@@ -93,7 +93,7 @@ db_fieldsmemory($result1, 0);
                     <b><?= $ed15_i_codigo == $ed57_i_turno ? "TURNO PRINCIPAL" : "TURNO ADICIONAL" ?></b></td>
             </tr>
             <tr bgcolor="#444444">
-            <td align="center" style="font-weight: bold; color: #DEB887;"><?= pg_result($result1, $z, "ed15_c_nome"); ?>
+            <td align="center" style="font-weight: bold; color: #DEB887;"><?= pg_fetch_result($result1, $z, "ed15_c_nome"); ?>
             </td>
                 <?php
                 if ($cldiasemana->numrows == 0) {
@@ -110,7 +110,7 @@ db_fieldsmemory($result1, 0);
                     <table cellspacing="0" cellpading="0">
                         <tr>
                             <td width="120" style="font-weight: bold; color: #DEB887;">
-                                <div align="center"><?= trim($ed32_c_descr) ?></div>
+                                <div align="center"><?= trim((string) $ed32_c_descr) ?></div>
                             </td>
                         </tr>
                     </table>
@@ -174,7 +174,7 @@ db_fieldsmemory($result1, 0);
             $linhas2 = pg_num_rows($result2);
 
             if ($linhas2 > 0) {
-                $aDisciplinas = array();
+                $aDisciplinas = [];
                 for ($i = 0; $i < $linhas2; $i++) {
                     db_fieldsmemory($result2, $i);
                     $aDisciplinas[] = $ed232_c_descr;

@@ -102,6 +102,7 @@ class LancamentoAuxiliarRetencao  extends LancamentoAuxiliarBase implements ILan
     /**
      *  Incluindo vinculo do Lançamento com Empenho [conlancamemp]
      */
+    #[\Override]
     protected function salvarVinculoEmpenho() {
 
         if (empty($this->empenho)) {

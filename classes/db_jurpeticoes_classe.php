@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE jurpeticoes
 class cl_jurpeticoes { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v60_peticao = 0; 
-   var $v60_inicial = 0; 
-   var $v60_tipopet = 0; 
-   var $v60_data_dia = null; 
-   var $v60_data_mes = null; 
-   var $v60_data_ano = null; 
-   var $v60_data = null; 
-   var $v60_hora = null; 
-   var $v60_usuario = 0; 
-   var $v60_texto = 0; 
+   public $v60_peticao = 0; 
+   public $v60_inicial = 0; 
+   public $v60_tipopet = 0; 
+   public $v60_data_dia = null; 
+   public $v60_data_mes = null; 
+   public $v60_data_ano = null; 
+   public $v60_data = null; 
+   public $v60_hora = null; 
+   public $v60_usuario = 0; 
+   public $v60_texto = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v60_peticao = int8 = Petição 
                  v60_inicial = int4 = Inicial Numero 
                  v60_tipopet = int4 = Código do Tipo de Petição 
@@ -63,10 +63,10 @@ class cl_jurpeticoes {
                  v60_texto = oid = Texto da Petição 
                  ";
    //funcao construtor da classe 
-   function cl_jurpeticoes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("jurpeticoes"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -156,10 +156,10 @@ class cl_jurpeticoes {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v60_peticao = pg_result($result,0,0); 
+       $this->v60_peticao = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from jurpeticoes_v60_peticao_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v60_peticao)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v60_peticao)){
          $this->erro_sql = " Campo v60_peticao maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -199,7 +199,7 @@ class cl_jurpeticoes {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Petições Emitidas ($this->v60_peticao) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Petições Emitidas já Cadastrado";
@@ -223,16 +223,16 @@ class cl_jurpeticoes {
      $resaco = $this->sql_record($this->sql_query_file($this->v60_peticao));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6812,'$this->v60_peticao','I')");
-       $resac = db_query("insert into db_acount values($acount,1116,6812,'','".AddSlashes(pg_result($resaco,0,'v60_peticao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1116,6813,'','".AddSlashes(pg_result($resaco,0,'v60_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1116,6814,'','".AddSlashes(pg_result($resaco,0,'v60_tipopet'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1116,6815,'','".AddSlashes(pg_result($resaco,0,'v60_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1116,6816,'','".AddSlashes(pg_result($resaco,0,'v60_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1116,6817,'','".AddSlashes(pg_result($resaco,0,'v60_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1116,6818,'','".AddSlashes(pg_result($resaco,0,'v60_texto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1116,6812,'','".AddSlashes(pg_fetch_result($resaco,0,'v60_peticao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1116,6813,'','".AddSlashes(pg_fetch_result($resaco,0,'v60_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1116,6814,'','".AddSlashes(pg_fetch_result($resaco,0,'v60_tipopet'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1116,6815,'','".AddSlashes(pg_fetch_result($resaco,0,'v60_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1116,6816,'','".AddSlashes(pg_fetch_result($resaco,0,'v60_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1116,6817,'','".AddSlashes(pg_fetch_result($resaco,0,'v60_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1116,6818,'','".AddSlashes(pg_fetch_result($resaco,0,'v60_texto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -241,10 +241,10 @@ class cl_jurpeticoes {
       $this->atualizacampos();
      $sql = " update jurpeticoes set ";
      $virgula = "";
-     if(trim($this->v60_peticao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_peticao"])){ 
+     if(trim((string) $this->v60_peticao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_peticao"])){ 
        $sql  .= $virgula." v60_peticao = $this->v60_peticao ";
        $virgula = ",";
-       if(trim($this->v60_peticao) == null ){ 
+       if(trim((string) $this->v60_peticao) == null ){ 
          $this->erro_sql = " Campo Petição nao Informado.";
          $this->erro_campo = "v60_peticao";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_jurpeticoes {
          return false;
        }
      }
-     if(trim($this->v60_inicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_inicial"])){ 
+     if(trim((string) $this->v60_inicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_inicial"])){ 
        $sql  .= $virgula." v60_inicial = $this->v60_inicial ";
        $virgula = ",";
-       if(trim($this->v60_inicial) == null ){ 
+       if(trim((string) $this->v60_inicial) == null ){ 
          $this->erro_sql = " Campo Inicial Numero nao Informado.";
          $this->erro_campo = "v60_inicial";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_jurpeticoes {
          return false;
        }
      }
-     if(trim($this->v60_tipopet)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_tipopet"])){ 
+     if(trim((string) $this->v60_tipopet)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_tipopet"])){ 
        $sql  .= $virgula." v60_tipopet = $this->v60_tipopet ";
        $virgula = ",";
-       if(trim($this->v60_tipopet) == null ){ 
+       if(trim((string) $this->v60_tipopet) == null ){ 
          $this->erro_sql = " Campo Código do Tipo de Petição nao Informado.";
          $this->erro_campo = "v60_tipopet";
          $this->erro_banco = "";
@@ -280,10 +280,10 @@ class cl_jurpeticoes {
          return false;
        }
      }
-     if(trim($this->v60_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v60_data_dia"] !="") ){ 
+     if(trim((string) $this->v60_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v60_data_dia"] !="") ){ 
        $sql  .= $virgula." v60_data = '$this->v60_data' ";
        $virgula = ",";
-       if(trim($this->v60_data) == null ){ 
+       if(trim((string) $this->v60_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "v60_data_dia";
          $this->erro_banco = "";
@@ -296,7 +296,7 @@ class cl_jurpeticoes {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v60_data_dia"])){ 
          $sql  .= $virgula." v60_data = null ";
          $virgula = ",";
-         if(trim($this->v60_data) == null ){ 
+         if(trim((string) $this->v60_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "v60_data_dia";
            $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_jurpeticoes {
          }
        }
      }
-     if(trim($this->v60_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_hora"])){ 
+     if(trim((string) $this->v60_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_hora"])){ 
        $sql  .= $virgula." v60_hora = '$this->v60_hora' ";
        $virgula = ",";
-       if(trim($this->v60_hora) == null ){ 
+       if(trim((string) $this->v60_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "v60_hora";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_jurpeticoes {
          return false;
        }
      }
-     if(trim($this->v60_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_usuario"])){ 
+     if(trim((string) $this->v60_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_usuario"])){ 
        $sql  .= $virgula." v60_usuario = $this->v60_usuario ";
        $virgula = ",";
-       if(trim($this->v60_usuario) == null ){ 
+       if(trim((string) $this->v60_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "v60_usuario";
          $this->erro_banco = "";
@@ -333,7 +333,7 @@ class cl_jurpeticoes {
          return false;
        }
      }
-     if(trim($this->v60_texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_texto"])){ 
+     if(trim((string) $this->v60_texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v60_texto"])){ 
        $sql  .= $virgula." v60_texto = $this->v60_texto ";
        $virgula = ",";
      }
@@ -345,23 +345,23 @@ class cl_jurpeticoes {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6812,'$this->v60_peticao','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v60_peticao"]))
-           $resac = db_query("insert into db_acount values($acount,1116,6812,'".AddSlashes(pg_result($resaco,$conresaco,'v60_peticao'))."','$this->v60_peticao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1116,6812,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v60_peticao'))."','$this->v60_peticao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v60_inicial"]))
-           $resac = db_query("insert into db_acount values($acount,1116,6813,'".AddSlashes(pg_result($resaco,$conresaco,'v60_inicial'))."','$this->v60_inicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1116,6813,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v60_inicial'))."','$this->v60_inicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v60_tipopet"]))
-           $resac = db_query("insert into db_acount values($acount,1116,6814,'".AddSlashes(pg_result($resaco,$conresaco,'v60_tipopet'))."','$this->v60_tipopet',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1116,6814,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v60_tipopet'))."','$this->v60_tipopet',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v60_data"]))
-           $resac = db_query("insert into db_acount values($acount,1116,6815,'".AddSlashes(pg_result($resaco,$conresaco,'v60_data'))."','$this->v60_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1116,6815,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v60_data'))."','$this->v60_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v60_hora"]))
-           $resac = db_query("insert into db_acount values($acount,1116,6816,'".AddSlashes(pg_result($resaco,$conresaco,'v60_hora'))."','$this->v60_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1116,6816,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v60_hora'))."','$this->v60_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v60_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1116,6817,'".AddSlashes(pg_result($resaco,$conresaco,'v60_usuario'))."','$this->v60_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1116,6817,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v60_usuario'))."','$this->v60_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v60_texto"]))
-           $resac = db_query("insert into db_acount values($acount,1116,6818,'".AddSlashes(pg_result($resaco,$conresaco,'v60_texto'))."','$this->v60_texto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1116,6818,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v60_texto'))."','$this->v60_texto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -406,16 +406,16 @@ class cl_jurpeticoes {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6812,'$v60_peticao','E')");
-         $resac = db_query("insert into db_acount values($acount,1116,6812,'','".AddSlashes(pg_result($resaco,$iresaco,'v60_peticao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1116,6813,'','".AddSlashes(pg_result($resaco,$iresaco,'v60_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1116,6814,'','".AddSlashes(pg_result($resaco,$iresaco,'v60_tipopet'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1116,6815,'','".AddSlashes(pg_result($resaco,$iresaco,'v60_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1116,6816,'','".AddSlashes(pg_result($resaco,$iresaco,'v60_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1116,6817,'','".AddSlashes(pg_result($resaco,$iresaco,'v60_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1116,6818,'','".AddSlashes(pg_result($resaco,$iresaco,'v60_texto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1116,6812,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v60_peticao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1116,6813,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v60_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1116,6814,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v60_tipopet'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1116,6815,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v60_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1116,6816,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v60_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1116,6817,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v60_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1116,6818,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v60_texto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from jurpeticoes
@@ -475,7 +475,7 @@ class cl_jurpeticoes {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:jurpeticoes";
@@ -489,7 +489,7 @@ class cl_jurpeticoes {
    function sql_query ( $v60_peticao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -516,7 +516,7 @@ class cl_jurpeticoes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -528,7 +528,7 @@ class cl_jurpeticoes {
    function sql_query_file ( $v60_peticao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -549,7 +549,7 @@ class cl_jurpeticoes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

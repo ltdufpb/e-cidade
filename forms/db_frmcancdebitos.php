@@ -125,7 +125,7 @@ $clrotulo->label("nome");
 				<td><?php 
 				  $resulttipo = db_query("select k73_sequencial,k73_descricao from cancdebitostipo order by k73_sequencial");
 				  $linhasTipo = pg_num_rows($resulttipo);
-				  $tipo = array();
+				  $tipo = [];
 				  if($linhasTipo > 0 ){
 				    for($t=0;$t<$linhasTipo;$t++){
 				    	db_fieldsmemory($resulttipo, $t);
@@ -243,7 +243,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cancdebitos.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

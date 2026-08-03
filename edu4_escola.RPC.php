@@ -45,14 +45,14 @@ function formataData($dData, $iTipo = 1)
 
     if ($iTipo == 1) {
 
-        $dData = explode('/', $dData);
+        $dData = explode('/', (string) $dData);
         $dData = $dData[2] . '-' . $dData[1] . '-' . $dData[0];
 
         return $dData;
 
     }
 
-    $dData = explode('-', $dData);
+    $dData = explode('-', (string) $dData);
     $dData = @$dData[2] . '/' . @$dData[1] . '/' . @$dData[0];
 
     return $dData;
@@ -98,16 +98,16 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
             $oDadosMatricula = db_utils::fieldsmemory($rsResultMatricula, 0);
 
             $oRetorno->ed60_i_codigo = $oDadosMatricula->ed60_i_codigo;
-            $oRetorno->ed11_c_descr = urlencode($oDadosMatricula->ed11_c_descr);
+            $oRetorno->ed11_c_descr = urlencode((string) $oDadosMatricula->ed11_c_descr);
             $oRetorno->ed57_i_codigo = $oDadosMatricula->ed57_i_codigo;
-            $oRetorno->ed57_c_descr = urlencode($oDadosMatricula->ed57_c_descr);
+            $oRetorno->ed57_c_descr = urlencode((string) $oDadosMatricula->ed57_c_descr);
             $oRetorno->ed57_i_base = $oDadosMatricula->ed57_i_base;
             $oRetorno->ed57_i_calendario = $oDadosMatricula->ed57_i_calendario;
-            $oRetorno->ed60_c_situacao = urlencode($oDadosMatricula->ed60_c_situacao);
-            $oRetorno->ed60_c_concluida = urlencode($oDadosMatricula->ed60_c_concluida);
+            $oRetorno->ed60_c_situacao = urlencode((string) $oDadosMatricula->ed60_c_situacao);
+            $oRetorno->ed60_c_concluida = urlencode((string) $oDadosMatricula->ed60_c_concluida);
             $oRetorno->ed60_d_datamatricula = formataData($oDadosMatricula->ed60_d_datamatricula, 0);
             $oRetorno->ed60_d_datamodif = formataData($oDadosMatricula->ed60_d_datamodif, 0);
-            $oRetorno->ed52_c_descr = urlencode($oDadosMatricula->ed52_c_descr);
+            $oRetorno->ed52_c_descr = urlencode((string) $oDadosMatricula->ed52_c_descr);
             $oRetorno->ed52_d_inicio = formataData($oDadosMatricula->ed52_d_inicio, 0);
             $oRetorno->ed52_d_fim = formataData($oDadosMatricula->ed52_d_fim, 0);
 
@@ -169,7 +169,7 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
 
 
             $oRetorno->ed291_i_codigo = $oDadosCartorio->ed291_i_codigo;
-            $oRetorno->ed291_c_nome = urlencode($oDadosCartorio->ed291_c_nome);
+            $oRetorno->ed291_c_nome = urlencode((string) $oDadosCartorio->ed291_c_nome);
             $oRetorno->ed291_i_serventia = $oDadosCartorio->ed291_i_serventia;
             $oRetorno->ed291_i_censomunic = $oDadosCartorio->ed291_i_censomunic;
 
@@ -186,7 +186,7 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
                 $oDadosMunicipio = db_utils::fieldsmemory($rsResultCensoMunic, 0);
 
                 $oRetorno->ed261_i_codigo = $oDadosMunicipio->ed261_i_codigo;
-                $oRetorno->ed261_c_nome = urlencode($oDadosMunicipio->ed261_c_nome);
+                $oRetorno->ed261_c_nome = urlencode((string) $oDadosMunicipio->ed261_c_nome);
 
                 $oDaoCensoUf = db_utils::getdao('censouf');
                 $sSqlCensoUf = $oDaoCensoUf->sql_query("",
@@ -201,8 +201,8 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
                     $oDadosUf = db_utils::fieldsmemory($rsResultCensoUf, 0);
 
                     $oRetorno->ed260_i_codigo = $oDadosUf->ed260_i_codigo;
-                    $oRetorno->ed260_c_sigla = urlencode($oDadosUf->ed260_c_sigla);
-                    $oRetorno->ed260_c_nome = urlencode($oDadosUf->ed260_c_nome);
+                    $oRetorno->ed260_c_sigla = urlencode((string) $oDadosUf->ed260_c_sigla);
+                    $oRetorno->ed260_c_nome = urlencode((string) $oDadosUf->ed260_c_nome);
 
                 } else { //Se não encontrar o UF do cartorio
                     $oRetorno->iStatus = 0;
@@ -276,7 +276,7 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
 
             $oRetorno->ed16_i_codigo = $oDadosTurmaAc->ed16_i_codigo;
             $oRetorno->ed16_i_capacidade = $oDadosTurmaAc->ed16_i_capacidade;
-            $oRetorno->ed16_c_descr = urlencode($oDadosTurmaAc->ed16_c_descr);
+            $oRetorno->ed16_c_descr = urlencode((string) $oDadosTurmaAc->ed16_c_descr);
 
         } else { //Turma não encontrada
             $oRetorno->iStatus = 0;
@@ -357,9 +357,9 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
     if (isset($oParam->iAtoLegal) && isset($oParam->iEscola)) {
 
         $iRegistros = 0;
-        $aCursos = array();
-        $aBases = array();
-        $aEtapas = array();
+        $aCursos = [];
+        $aBases = [];
+        $aEtapas = [];
         $oDaoAtoLegal = db_utils::getdao('atolegal');
 
         $sSql = "SELECT ed29_i_codigo,ed29_c_descr FROM cursoedu ";
@@ -381,8 +381,8 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
 
                 if (!isset($aCursos[$oDadosCurso->ed29_i_codigo])) {
 
-                    $aTemp = array();
-                    $aTemp['descricao'] = urlencode($oDadosCurso->ed29_c_descr);
+                    $aTemp = [];
+                    $aTemp['descricao'] = urlencode((string) $oDadosCurso->ed29_c_descr);
                     $aTemp['codigo'] = 'C_' . $oDadosCurso->ed29_i_codigo;
                     $aCursos[$oDadosCurso->ed29_i_codigo] = $aTemp;
 
@@ -406,8 +406,8 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
 
                         if (!isset($aBases['B_' . $oDadosBase->ed31_i_codigo])) {
 
-                            $aTemp = array();
-                            $aTemp['descricao'] = urlencode($oDadosBase->ed31_c_descr);
+                            $aTemp = [];
+                            $aTemp['descricao'] = urlencode((string) $oDadosBase->ed31_c_descr);
                             $aTemp['codigo'] = 'B_' . $oDadosBase->ed31_i_codigo;
                             $aTemp['node_pai'] = 'C_' . $oDadosCurso->ed29_i_codigo;
                             $aBases['B_' . $oDadosBase->ed31_i_codigo] = $aTemp;
@@ -444,8 +444,8 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
 
                                 if (!isset($aEtapas['E_' . $oDadosEtapa->ed11_i_codigo])) {
 
-                                    $aTemp = array();
-                                    $aTemp['descricao'] = urlencode($oDadosEtapa->ed11_c_descr);
+                                    $aTemp = [];
+                                    $aTemp['descricao'] = urlencode((string) $oDadosEtapa->ed11_c_descr);
                                     $aTemp['codigo'] = 'E_' . $oDadosEtapa->ed11_i_codigo;
                                     $aTemp['node_pai'] = 'B_' . $oDadosBase->ed31_i_codigo;
                                     $aEtapas['E_' . $oDadosEtapa->ed11_i_codigo] = $aTemp;
@@ -494,26 +494,26 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
 
         if ($oDaoRecHumano->numrows > 0) {
 
-            $aAtividades = array();
-            $aRH = array();
+            $aAtividades = [];
+            $aRH = [];
 
             for ($iCont = 0; $iCont < $oDaoRecHumano->numrows; $iCont++) {
 
                 $oResultado = db_utils::fieldsmemory($rsRHAto, $iCont);
 
                 if (!isset($aAtividades[$oResultado->ed01_i_codigo])) {
-                    $aAtividades[$oResultado->ed01_i_codigo] = array(
+                    $aAtividades[$oResultado->ed01_i_codigo] = [
                         "codigo" => $oResultado->ed01_i_codigo,
-                        "descricao" => urlencode($oResultado->ed01_c_descr)
-                    );
+                        "descricao" => urlencode((string) $oResultado->ed01_c_descr)
+                    ];
                 }
 
                 if (!isset($aRH[$oResultado->z01_numcgm])) {
-                    $aRH[$oResultado->z01_numcgm] = array(
+                    $aRH[$oResultado->z01_numcgm] = [
                         "codigo" => $oResultado->z01_numcgm,
                         "descricao" => $oResultado->z01_nome,
                         "node_pai" => $oResultado->ed01_i_codigo
-                    );
+                    ];
                 }
 
             }
@@ -1427,7 +1427,7 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
 
 } elseif ($oParam->exec == 'getPeriodosAvaliacaoPorTurma') {
 
-    $oRetorno->aPeriodos = array();
+    $oRetorno->aPeriodos = [];
     if (isset($oParam->iTurma)) {
         $oDaoPeriodoTurma = new cl_turma();
         $sWherePeriodoTurma = "ed57_i_codigo = {$oParam->iTurma}";
@@ -1470,7 +1470,7 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
     } else {
 
         $oRetorno->iStatus = 0;
-        $oRetorno->sMessage = urlencode($oDaoAluno->erro_msg);
+        $oRetorno->sMessage = urlencode((string) $oDaoAluno->erro_msg);
     }
 } else if ($oParam->exec == 'salvaSituacaoDocumentacao') {
 
@@ -1556,7 +1556,7 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
         $cod_bairro .= $oParam->bairros[$abc];
     }
 
-    $calendarios = explode(",",$oParam->calendarios);
+    $calendarios = explode(",",(string) $oParam->calendarios);
     for($def = 0, $defMax = count($calendarios); $def < $defMax; $def++){
         if($def > 0){
             $cod_calendario .= "','";

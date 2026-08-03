@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_condominio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcondominio = new cl_condominio;
 $clcondominio->rotulo->label("j107_sequencial");
 $clcondominio->rotulo->label("j107_nome");
@@ -99,9 +99,9 @@ $clcondominio->rotulo->label("j107_nome");
         }else{
            $sql = $clcondominio->sql_query("",$campos,"j107_sequencial");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j107_nome)){
-          $repassa = array("chave_j107_sequencial"=>$chave_j107_sequencial,"chave_j107_nome"=>$chave_j107_nome);
+          $repassa = ["chave_j107_sequencial"=>$chave_j107_sequencial,"chave_j107_nome"=>$chave_j107_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

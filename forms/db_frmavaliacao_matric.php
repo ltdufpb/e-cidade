@@ -90,7 +90,7 @@ db_input('ed29_f_nota',5,$Ied29_f_nota,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('t'=>'Sim','f'=>'Não');
+$x = ['t'=>'Sim','f'=>'Não'];
 db_select('ed29_l_presente',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -164,7 +164,7 @@ function js_preenchepesquisa(chave){
   db_iframe_avaliacao_matric.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

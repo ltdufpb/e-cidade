@@ -35,8 +35,8 @@ require_once(modification("classes/db_sanitario_classe.php"));
 require_once(modification("classes/db_sanibaixa_classe.php"));
 require_once(modification("classes/db_sanibaixaproc_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clsaniatividade = new cl_saniatividade;
 $clsanibaixa     = new cl_sanibaixa;
@@ -52,22 +52,22 @@ $clrotulo->label("z01_nome");
 $clrotulo->label("y80_numcgm");
 $clrotulo->label("q03_descr");
 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Alterar"){
+if(isset($_POST["db_opcao"]) && $db_opcao == "Alterar"){
 	$sqlerro = false;
   if(isset($chaves) && $chaves != ""){
     db_inicio_transacao();
-    $chaves = split("#",$chaves);
+    $chaves = preg_split("#\\##m",$chaves);
     $db_opcao = 2;
-    $HTTP_POST_VARS["y83_dtfim_dia"] = "";
-    $HTTP_POST_VARS["y83_dtfim_mes"] = "";
-    $HTTP_POST_VARS["y83_dtfim_ano"] = "";
+    $_POST["y83_dtfim_dia"] = "";
+    $_POST["y83_dtfim_mes"] = "";
+    $_POST["y83_dtfim_ano"] = "";
     
-    $HTTP_POST_VARS["y83_databx_dia"] = "";
-    $HTTP_POST_VARS["y83_databx_mes"] = "";
-    $HTTP_POST_VARS["y83_databx_ano"] = "";
+    $_POST["y83_databx_dia"] = "";
+    $_POST["y83_databx_mes"] = "";
+    $_POST["y83_databx_ano"] = "";
     
     for($i=0;$i<sizeof($chaves);$i++){
-      $seq = str_replace("-","",strstr($chaves[$i],"-"));
+      $seq = str_replace("-","",strstr((string) $chaves[$i],"-"));
       $clsaniatividade->y83_dtfim = "";
       $clsaniatividade->y83_databx = "";
       $clsaniatividade->y83_seq = $seq;
@@ -85,9 +85,9 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Alterar"){
     $result = $clsanitario->sql_record($clsanitario->sql_query("","*",""," y80_codsani = $y83_codsani"));
     if($clsanitario->numrows > 0){
       db_fieldsmemory($result,0);
-      $HTTP_POST_VARS["y80_dtbaixa_dia"] = "";
-      $HTTP_POST_VARS["y80_dtbaixa_mes"] = "";
-      $HTTP_POST_VARS["y80_dtbaixa_ano"] = "";
+      $_POST["y80_dtbaixa_dia"] = "";
+      $_POST["y80_dtbaixa_mes"] = "";
+      $_POST["y80_dtbaixa_ano"] = "";
       if($y80_dtbaixa != ""){
         $clsanitario->y80_dtbaixa= "";
         $clsanitario->y80_codsani=$y83_codsani;

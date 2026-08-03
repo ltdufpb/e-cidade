@@ -49,7 +49,7 @@ abstract class RecursoAbstract
                 $rsLancamentos,
                 function ($lancamento) use ($recurso, $codigoLancamento, $daoConlancamRecurso, $recursosEspecificos) {
 
-                    $contas = array("D" => $lancamento->c69_debito, "C" => $lancamento->c69_credito);
+                    $contas = ["D" => $lancamento->c69_debito, "C" => $lancamento->c69_credito];
                     foreach ($contas as $sinal => $conta) {
                         $recursoConta = $recurso;
                         if (!empty($recursosEspecificos[$conta])) {
@@ -76,5 +76,5 @@ abstract class RecursoAbstract
     }
 
 
-    abstract public function processar($codigoLancamnento, ILancamentoAuxiliar $lancamentoAuxiliar = null);
+    abstract public function processar($codigoLancamnento, ?ILancamentoAuxiliar $lancamentoAuxiliar = null);
 }

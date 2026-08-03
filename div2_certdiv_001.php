@@ -158,7 +158,7 @@ function js_AbreJanelaRelatorio() {
             </td>
           <td>
             <?php
-              $aReemissao = array("t" => "Sim", "f" => "Não");
+              $aReemissao = ["t" => "Sim", "f" => "Não"];
               db_select("DBtxt14", $aReemissao, true, 4, "");
             ?>
           </td>
@@ -168,7 +168,7 @@ function js_AbreJanelaRelatorio() {
           <td><label for="totexe">Totaliza por exercício:</label></td>
           <td>
             <?php
-              $aTotaliza = array("f" => "Não", "t" => "Sim");
+              $aTotaliza = ["f" => "Não", "t" => "Sim"];
               db_select("totexe", $aTotaliza, true, 4, "");
             ?>
           </td>
@@ -178,7 +178,7 @@ function js_AbreJanelaRelatorio() {
           <td nowrap title="Escolha a Ordem"><label for="DBtxt16">Ordenar por:</label></td>
           <td>
             <?php
-              $aOrder = array("v14_certid" => "Certidão", "z01_nome" => "Nome");
+              $aOrder = ["v14_certid" => "Certidão", "z01_nome" => "Nome"];
               db_select("DBtxt16", $aOrder, true, 4, "");
             ?>
           </td>
@@ -196,7 +196,7 @@ function js_AbreJanelaRelatorio() {
               $endaimp = "c";
             }
 
-            $aImprime = array("o" => "Origem", "c" => "CGM");
+            $aImprime = ["o" => "Origem", "c" => "CGM"];
             db_select("endaimp", $aImprime, true, 4, "");
           ?>
         </td>

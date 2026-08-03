@@ -9,7 +9,7 @@ class Router {
 
   public function __construct(Request $request) {
 
-    $uri = explode('/', trim($request->getUri(), '/'));
+    $uri = explode('/', trim((string) $request->getUri(), '/'));
     $extension = ucfirst(array_shift($uri)); 
 
     /**
@@ -25,7 +25,7 @@ class Router {
     /**
      * Verifica se é um asset
      */
-    $sExtensao = pathinfo($request->getUri(), PATHINFO_EXTENSION);
+    $sExtensao = pathinfo((string) $request->getUri(), PATHINFO_EXTENSION);
     if (!empty($sExtensao) && $sExtensao != 'php') {
       $request->isAsset(true);
     } 

@@ -28,8 +28,8 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 //phpinfo();
 //echo $_SERVER['PHP_SELF'];
@@ -82,7 +82,7 @@ $xmod	order by modulo,arquivo,d.seqarq
 ";
 
 $result=db_query($sql);
-if ( pg_numrows($result) == 0 ) {
+if ( pg_num_rows($result) == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro= Problema na estrutura, não retornou nenhum registro na seleção.');
 }
 
@@ -98,9 +98,9 @@ $pdf->SetFont('Arial','B',6);
 $bordat = 1;
 $preenc = 0;
 $xxarq = 0;
-$xmod = pg_result($result,0,"modulo");
-$xarq = pg_result($result,0,"arquivo");
-$xdescr = pg_result($result,0,"descricao");
+$xmod = pg_fetch_result($result,0,"modulo");
+$xarq = pg_fetch_result($result,0,"arquivo");
+$xdescr = pg_fetch_result($result,0,"descricao");
 
 $pdf->SetFont('Arial','B',8);
 $pdf->multicell(0,4,"Módulo  : ".strtoupper($xmod),0,"L",$preenc);
@@ -123,12 +123,12 @@ $pdf->Cell(25,4,"ARQ.REF",$bordat,0,"C",1);
 $pdf->Cell(25,4,"CAMPO PAI",$bordat,1,"C",1);
 $pdf->ln(3);
 
-for($i = 0;$i < pg_numrows($result);$i++){
+for($i = 0;$i < pg_num_rows($result);$i++){
    db_fieldsmemory($result,$i);
    if ($xmod != $modulo){
 	$pdf->ln(3);
         $pdf->SetFont('Arial','B',8);
-	$pdf->multicell(0,4,"Módulo  : ".strtoupper($modulo),0,"L",$preenc);
+	$pdf->multicell(0,4,"Módulo  : ".strtoupper((string) $modulo),0,"L",$preenc);
         $pdf->ln(3);
    }
         
@@ -141,11 +141,11 @@ for($i = 0;$i < pg_numrows($result);$i++){
                 order by nomeind,sequen";
         $resindice = db_query($sqlind);
         $pdf->SetFont('Arial','B',8);
-        if ( pg_numrows($resindice) != 0 ) {
+        if ( pg_num_rows($resindice) != 0 ) {
            $prinome = '';
            $espaco = '';
            $xnome = ''; 
-           for ($iind = 0;$iind < pg_numrows($resindice);$iind++){
+           for ($iind = 0;$iind < pg_num_rows($resindice);$iind++){
                db_fieldsmemory($resindice,$iind);
                if ($prinome != $nomeind){
                    $xnome .= $espaco.$nomeind."   -   Campos :  ";
@@ -156,7 +156,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
                $virgula = ', '; 
                $prinome = $nomeind;
            }
-           $matrizind = split('#',$xnome);
+           $matrizind = preg_split('#\##m',$xnome);
            $pdf->multicell(0,4,'Índices do arquivo : ',0,"L",$preenc);
 
            for( $xind = 0 ;$xind < sizeof($matrizind); $xind++ ){
@@ -167,7 +167,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
         }
 	$pdf->ln(3);
         $pdf->SetFont('Arial','B',8);
-	$pdf->multicell(0,4,"Arquivo  : ".strtoupper($arquivo)." - ".$descricao,0,"L",$preenc);
+	$pdf->multicell(0,4,"Arquivo  : ".strtoupper((string) $arquivo)." - ".$descricao,0,"L",$preenc);
         $pdf->ln(1);
         $pdf->SetFont('Arial','B',6);
 	$pdf->Cell(6,4,"SEQ",$bordat,0,"C",1);
@@ -188,11 +188,11 @@ for($i = 0;$i < pg_numrows($result);$i++){
         $pdf->addpage();
 	$pdf->ln(3);
         $pdf->SetFont('Arial','B',8);
-	$pdf->multicell(0,4,"Módulo  : ".strtoupper($modulo),0,"L",$preenc);
+	$pdf->multicell(0,4,"Módulo  : ".strtoupper((string) $modulo),0,"L",$preenc);
         $pdf->ln(3);
 	$pdf->ln(3);
         $pdf->SetFont('Arial','B',8);
-	$pdf->multicell(0,4,"Arquivo  : ".strtoupper($arquivo)." - ".$descricao,0,"L",$preenc);
+	$pdf->multicell(0,4,"Arquivo  : ".strtoupper((string) $arquivo)." - ".$descricao,0,"L",$preenc);
         $pdf->ln(1);
         $pdf->SetFont('Arial','B',6);
 	$pdf->Cell(6,4,"SEQ",$bordat,0,"C",1);

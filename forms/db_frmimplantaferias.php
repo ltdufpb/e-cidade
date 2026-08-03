@@ -177,7 +177,7 @@ db_sel_cfpess($r30_anousu,$r30_mesusu);
         </td>
         <td>
         <?php
-           $arr_tip1 = Array();
+           $arr_tip1 = [];
            db_select(
              "r30_tip1",
              $arr_tip1,
@@ -334,7 +334,7 @@ db_sel_cfpess($r30_anousu,$r30_mesusu);
     echo "<fieldset>";
     echo "<legend>Períodos Lançados</legend>";
     include(modification("dbforms/db_classesgenericas.php"));
-    $chavepri = array ("r30_anousu" => @ $r30_anousu, "r30_mesusu" => @ $r30_mesusu, "r30_regist" => @ $r30_regist, "r30_perai" => @ $r30_perai);
+    $chavepri =  ["r30_anousu" => @ $r30_anousu, "r30_mesusu" => @ $r30_mesusu, "r30_regist" => @ $r30_regist, "r30_perai" => @ $r30_perai];
     $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
     $cliframe_alterar_excluir->chavepri = $chavepri;
     $dbwhere = " r30_anousu = $r30_anousu and r30_mesusu = $r30_mesusu and r30_regist = $r30_regist ";

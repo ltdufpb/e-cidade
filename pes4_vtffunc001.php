@@ -35,7 +35,7 @@ require_once(modification("classes/db_vtfdias_classe.php"));
 require_once(modification("classes/db_rhpessoal_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcfpess = new cl_cfpess;
 $clvtffunc = new cl_vtffunc;
 $clvtfdias = new cl_vtfdias;
@@ -75,10 +75,10 @@ if(isset($incluir)){
         $datarc = $r17_anousu."-".$r17_mesusu."-".$i;
         $diasem = strtolower(db_diasemana($datarc));
         $obrdia = "o".$diasem;
-        if($$diasem > 0){
-          $clvtfdias->r63_quant  = $$diasem;
-          $clvtfdias->r63_obrig  = ($$obrdia=="f"?"false":"true");
-          $clvtfdias->r63_quants = $$diasem;
+        if(${$diasem} > 0){
+          $clvtfdias->r63_quant  = ${$diasem};
+          $clvtfdias->r63_obrig  = (${$obrdia}=="f"?"false":"true");
+          $clvtfdias->r63_quants = ${$diasem};
           $clvtfdias->incluir($r17_anousu,$r17_mesusu,$r17_regist,$r17_codigo,$r17_difere,$datarc);
           if($clvtfdias->erro_status==0){
             $erro_msg = $clvtfdias->erro_msg;
@@ -123,10 +123,10 @@ if(isset($incluir)){
           $datarc = $r17_anousu."-".$r17_mesusu."-".$i;
           $diasem = strtolower(db_diasemana($datarc));
           $obrdia = "o".$diasem;
-          if($$diasem > 0){
-            $clvtfdias->r63_quant  = $$diasem;
-            $clvtfdias->r63_obrig  = ($$obrdia=="f"?"false":"true");
-            $clvtfdias->r63_quants = $$diasem;
+          if(${$diasem} > 0){
+            $clvtfdias->r63_quant  = ${$diasem};
+            $clvtfdias->r63_obrig  = (${$obrdia}=="f"?"false":"true");
+            $clvtfdias->r63_quants = ${$diasem};
             $clvtfdias->incluir($r17_anousu,$r17_mesusu,$r17_regist,$r17_codigo,$r17_difere,$datarc);
             if($clvtfdias->erro_status==0){
               $erro_msg = $clvtfdias->erro_msg;
@@ -184,8 +184,8 @@ if(isset($incluir)){
         if($r17_tipo == "f"){
           $dia   = strtolower(db_diasemana($r63_dia));
           $odia  = "o".$dia;
-          $$dia  = $r63_quant;
-          $$odia = $r63_obrig;
+          ${$dia}  = $r63_quant;
+          ${$odia} = $r63_obrig;
         }
       }
     }

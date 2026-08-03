@@ -46,7 +46,7 @@ require_once(modification("classes/db_conplanoreduz_classe.php"));
 $oGet      = db_utils::postMemory($_GET);
 $sFileName = $oGet->sFileName;
 $aLinhas   = file("tmp/{$sFileName}");
-if (substr($aLinhas[0],0,24) != "1.0.0.0.0.00.00.00.00.00") {
+if (!str_starts_with($aLinhas[0], "1.0.0.0.0.00.00.00.00.00")) {
 
   db_msgbox("o Arquivo {$sFileName} Não é um arquivo de plano de contas. Operação cancelada.");
   echo "<script>parent.iframe_importar.hide()</script>";
@@ -90,9 +90,9 @@ if (pg_num_rows($rsConplano) > 0) {
    
     db_criatermometro("ano"," da importação concluída");
     db_criatermometro("plano"," da importação concluída");
-    $aContas = array();
+    $aContas = [];
     $iLinha  = 0;
-    $aLinhasInvalidas = array(); 
+    $aLinhasInvalidas = []; 
     foreach ($aLinhas as $sLinha) {
       
       $iLinha++;
@@ -146,48 +146,21 @@ if (pg_num_rows($rsConplano) > 0) {
           $oConta->sistema  = 6;
         }
       }
-      switch ($sSistema) {
-        
-        case 'F':
-          
-          $oConta->subsistema  = 1;
-          break;
-  
-        case 'P':
-          
-          $oConta->subsistema  = 2;
-          break;  
-  
-        case 'C':
-          
-          $oConta->subsistema  = 4;
-          break;
-        default:
-          
-          $oConta->subsistema = "0";
-          break;
-      }
+      $oConta->subsistema = match ($sSistema) {
+          'F' => 1,
+          'P' => 2,
+          'C' => 4,
+          default => "0",
+      };
         
        if (trim($oConta->identificadorfinanceiro) == "") {
          $oConta->identificadorfinanceiro = 'N';
       }
-      switch ($sNaturezaSaldo) {
-        
-        case 'D' :
-          
-          $oConta->naturezasaldo = 1;
-          break;
-          
-        case 'C' :
-          
-          $oConta->naturezasaldo = 2;
-          break;
-
-        default:
-          
-          $oConta->naturezasaldo = 3;
-          break;
-      }
+      $oConta->naturezasaldo = match ($sNaturezaSaldo) {
+          'D' => 1,
+          'C' => 2,
+          default => 3,
+      };
       $aContas[] = $oConta;
     }
     
@@ -203,7 +176,7 @@ if (pg_num_rows($rsConplano) > 0) {
        $iAnoFinal = db_utils::fieldsMemory($rsUltimoAno, 0)->ano;
     }
     $iTotalLinhas          = count($aContas);
-    $aAnos                 = array(db_getsession("DB_anousu"));
+    $aAnos                 = [db_getsession("DB_anousu")];
     db_inicio_transacao();
     $oDaoConplano      = new cl_conplano;
     $oDaoConplanoReduz = new cl_conplanoreduz;
@@ -227,7 +200,7 @@ if (pg_num_rows($rsConplano) > 0) {
            $oDaoConplano->c60_codsis                   = $aContas[$iConta]->sistema;
            $oDaoConplano->c60_descr                    = $aContas[$iConta]->descricao;
            $oDaoConplano->c60_estrut                   = $aContas[$iConta]->estrutural;
-           $oDaoConplano->c60_finali                   = addslashes($aContas[$iConta]->finalidade);
+           $oDaoConplano->c60_finali                   = addslashes((string) $aContas[$iConta]->finalidade);
            $oDaoConplano->c60_consistemaconta          = $aContas[$iConta]->subsistema;
            $oDaoConplano->c60_naturezasaldo            = $aContas[$iConta]->naturezasaldo;
            $oDaoConplano->c60_identificadorfinanceiro  = $aContas[$iConta]->identificadorfinanceiro;

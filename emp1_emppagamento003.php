@@ -34,8 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empagemov_classe.php"));
 $clempagemov    = new cl_empagemov;
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = false;
 
@@ -97,7 +97,7 @@ $clrotulo->label("e50_codord");
         <tr>
 	  <td>
 <?php 	  
-        db_lovrot($sql,15,"()","",$js_funcao, "", "NoMe", array(), false);
+        db_lovrot($sql,15,"()","",$js_funcao, "", "NoMe", [], false);
 ?>	    
 	</tr>
       </table>

@@ -156,11 +156,11 @@ class AguaEstruturaTarifaria {
    */
   public static function getTiposEstrutura() {
 
-    return array(
+    return [
       self::TIPO_VALOR_FIXO    => 'Valor Fixo',
       self::TIPO_PERCENTUAL    => 'Percentual',
       self::TIPO_FAIXA_CONSUMO => 'Faixa de Consumo',
-    );
+    ];
   }
 
   /**
@@ -224,7 +224,7 @@ class AguaEstruturaTarifaria {
       throw new BusinessException('O campo Faixa de Consumo é de preenchimento obrigatório.');
     }
 
-    if (in_array($this->iCodigoTipoEstrutura, array(self::TIPO_FAIXA_CONSUMO, self::TIPO_VALOR_FIXO)) && !$this->nValor) {
+    if (in_array($this->iCodigoTipoEstrutura, [self::TIPO_FAIXA_CONSUMO, self::TIPO_VALOR_FIXO]) && !$this->nValor) {
       throw new BusinessException('O campo Valor é de preenchimento obrigatório.');
     }
 
@@ -236,11 +236,11 @@ class AguaEstruturaTarifaria {
       throw new BusinessException('O campo Valor não deve ser informado para esse Tipo de Estrutura.');
     }
 
-    if (in_array($this->iCodigoTipoEstrutura, array(self::TIPO_PERCENTUAL, self::TIPO_VALOR_FIXO)) && ($this->iValorInicial || $this->iValorFinal)) {
+    if (in_array($this->iCodigoTipoEstrutura, [self::TIPO_PERCENTUAL, self::TIPO_VALOR_FIXO]) && ($this->iValorInicial || $this->iValorFinal)) {
       throw new BusinessException('O campo Faixa de Consumo não deve ser informado para esse Tipo de Estrutura.');
     }
 
-    if (in_array($this->iCodigoTipoEstrutura, array(self::TIPO_FAIXA_CONSUMO, self::TIPO_VALOR_FIXO)) && $this->iPercentual) {
+    if (in_array($this->iCodigoTipoEstrutura, [self::TIPO_FAIXA_CONSUMO, self::TIPO_VALOR_FIXO]) && $this->iPercentual) {
       throw new BusinessException('O campo Percentual não deve ser informado para esse Tipo de Estrutura.');
     }
 

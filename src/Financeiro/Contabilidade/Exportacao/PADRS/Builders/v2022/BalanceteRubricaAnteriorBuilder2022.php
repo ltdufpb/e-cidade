@@ -7,6 +7,7 @@ use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Layouts\v2022\BalanceteRub
 
 class BalanceteRubricaAnteriorBuilder2022 extends BalanceteRubricaAnteriorBuilder2020
 {
+    #[\Override]
     protected function create()
     {
         $this->layout = new BalanceteRubricaAnterior();

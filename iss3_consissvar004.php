@@ -31,13 +31,13 @@
   include(modification("libs/db_usuariosonline.php"));
   include(modification("classes/db_issplan_classe.php"));
   include(modification("classes/db_issplanit_classe.php"));
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
  $clissplanit = new cl_issplanit;
  $clissplan = new cl_issplan;
   $clissplanit->rotulo->label();
   $clissplan->rotulo->label();
   if(isset($string2)){
-    $where_data= base64_decode($string);
+    $where_data= base64_decode((string) $string);
   }else{
     $where_data="";
   }  
@@ -123,7 +123,7 @@
 	  <td>&nbsp;<?=$q20_numpre?></td>
           <td>&nbsp;<?=ucfirst(db_mes($q20_mes))?></td>
 	  <td>&nbsp;<?=$q20_ano?></td>
-	  <td>&nbsp;<?=ucfirst($q20_nomecontri)?></td>
+	  <td>&nbsp;<?=ucfirst((string) $q20_nomecontri)?></td>
 	  <td>&nbsp;<?=$q20_fonecontri?></td>
 	  <td><b>&nbsp;<?=$recibo?></b></td>
 	  <td><b>&nbsp;<?=$pago?></b></td>

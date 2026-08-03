@@ -39,12 +39,12 @@ class Excel extends Relatorio
         $this->sheet->setCellValue("B{$this->getRow()}", "SEQ");
         $this->sheet->setCellValue("C{$this->getRow()}", "DATA");
         $this->sheet->setCellValue("D{$this->getRow()}", "RECEITA");
-        $this->sheet->setCellValue("E{$this->getRow()}", utf8_encode("DOTA플O"));
+        $this->sheet->setCellValue("E{$this->getRow()}", mb_convert_encoding("DOTA플O", 'UTF-8', 'ISO-8859-1'));
         $this->sheet->setCellValue("F{$this->getRow()}", "EMPENHO");
-        $this->sheet->setCellValue("G{$this->getRow()}", utf8_encode("SUPLEMENTA플O"));
+        $this->sheet->setCellValue("G{$this->getRow()}", mb_convert_encoding("SUPLEMENTA플O", 'UTF-8', 'ISO-8859-1'));
         $this->sheet->setCellValue("H{$this->getRow()}", "DOCUMENTO");
         $this->sheet->setCellValue("I{$this->getRow()}", "SLIP");
-        $this->sheet->setCellValue("J{$this->getRow()}", utf8_encode("OP"));
+        $this->sheet->setCellValue("J{$this->getRow()}", mb_convert_encoding("OP", 'UTF-8', 'ISO-8859-1'));
         $this->sheet->setCellValue("k{$this->getRow()}", "PLANILHA");
         $this->sheet->setCellValue("L{$this->getRow()}", "CONTA ORIGEM");
         $this->sheet->setCellValue("M{$this->getRow()}", "CONTRAPARTIDA");
@@ -57,23 +57,23 @@ class Excel extends Relatorio
     public function writeLine(ExcelLinha $linha)
     {
         $this->nextRow();
-        $this->sheet->setCellValue("A{$this->getRow()}", utf8_encode($linha->getLancamento()));
-        $this->sheet->setCellValue("B{$this->getRow()}", utf8_encode($linha->getSequencial()));
-        $this->sheet->setCellValue("C{$this->getRow()}", utf8_encode($linha->getData()));
-        $this->sheet->setCellValue("D{$this->getRow()}", utf8_encode($linha->getReceita()));
-        $this->sheet->setCellValue("E{$this->getRow()}", utf8_encode($linha->getDotacao()));
-        $this->sheet->setCellValue("F{$this->getRow()}", utf8_encode($linha->getEmpenho()));
-        $this->sheet->setCellValue("G{$this->getRow()}", utf8_encode($linha->getSuplementacao()));
-        $this->sheet->setCellValue("H{$this->getRow()}", utf8_encode($linha->getDocumento()));
-        $this->sheet->setCellValue("I{$this->getRow()}", utf8_encode($linha->getSlip()));
-        $this->sheet->setCellValue("J{$this->getRow()}", utf8_encode($linha->getOp()));
-        $this->sheet->setCellValue("K{$this->getRow()}", utf8_encode($linha->getPlanilha()));
-        $this->sheet->setCellValue("L{$this->getRow()}", utf8_encode($linha->getContaOrigem()));
-        $this->sheet->setCellValue("M{$this->getRow()}", utf8_encode($linha->getContraPartida()));
-        $this->sheet->setCellValue("N{$this->getRow()}", utf8_encode($linha->getValor()));
-        $this->sheet->setCellValue("O{$this->getRow()}", utf8_encode($linha->getTipo()));
-        $this->sheet->setCellValue("P{$this->getRow()}", utf8_encode($linha->getHistorico()));
-        $this->sheet->setCellValue("Q{$this->getRow()}", utf8_encode($linha->getInstituicao()));
+        $this->sheet->setCellValue("A{$this->getRow()}", mb_convert_encoding($linha->getLancamento(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("B{$this->getRow()}", mb_convert_encoding($linha->getSequencial(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("C{$this->getRow()}", mb_convert_encoding($linha->getData(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("D{$this->getRow()}", mb_convert_encoding($linha->getReceita(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("E{$this->getRow()}", mb_convert_encoding($linha->getDotacao(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("F{$this->getRow()}", mb_convert_encoding($linha->getEmpenho(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("G{$this->getRow()}", mb_convert_encoding($linha->getSuplementacao(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("H{$this->getRow()}", mb_convert_encoding($linha->getDocumento(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("I{$this->getRow()}", mb_convert_encoding($linha->getSlip(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("J{$this->getRow()}", mb_convert_encoding($linha->getOp(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("K{$this->getRow()}", mb_convert_encoding($linha->getPlanilha(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("L{$this->getRow()}", mb_convert_encoding($linha->getContaOrigem(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("M{$this->getRow()}", mb_convert_encoding($linha->getContraPartida(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("N{$this->getRow()}", mb_convert_encoding($linha->getValor(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("O{$this->getRow()}", mb_convert_encoding($linha->getTipo(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("P{$this->getRow()}", mb_convert_encoding($linha->getHistorico(), 'UTF-8', 'ISO-8859-1'));
+        $this->sheet->setCellValue("Q{$this->getRow()}", mb_convert_encoding($linha->getInstituicao(), 'UTF-8', 'ISO-8859-1'));
     }
 
     public function writeBody()

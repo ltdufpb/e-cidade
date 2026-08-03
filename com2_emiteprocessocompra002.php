@@ -83,10 +83,10 @@ if ($oDaoEmparametro->numrows > 0) {
   unset($oParametrosEmpenho);
 }
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $oGet = db_utils::postMemory($_GET);
 
-$aWhereProcessoCompras = array();
+$aWhereProcessoCompras = [];
 if (!empty($oGet->pc80_codproc_inicial)) {
   $aWhereProcessoCompras[] = " pc80_codproc >= {$oGet->pc80_codproc_inicial} ";
 }
@@ -135,7 +135,7 @@ for ($iContador = 0;$iContador < $iTotalLinhasProcessoDeCompras; $iContador++) {
 
   $oDadosProcessoDeCompras = db_utils::fieldsMemory($rsDadosProcessoCompras, $iContador);
   $pdf1->prefeitura = $nomeinst;
-  $pdf1->enderpref  = trim($ender).",".$numero;
+  $pdf1->enderpref  = trim((string) $ender).",".$numero;
   $pdf1->municpref  = $munic;
   $pdf1->telefpref  = $telef;
   $pdf1->emailpref  = $email;
@@ -151,7 +151,7 @@ for ($iContador = 0;$iContador < $iTotalLinhasProcessoDeCompras; $iContador++) {
 
   $pdf1->Snumero     = $oDadosProcessoDeCompras->pc80_codproc;
   $pdf1->Sdata       = $oDadosProcessoDeCompras->pc80_data;
-  $pdf1->Sresumo     = substr(htmlspecialchars_decode(stripslashes($oDadosProcessoDeCompras->pc80_resumo)), 0, 735);
+  $pdf1->Sresumo     = substr(htmlspecialchars_decode(stripslashes((string) $oDadosProcessoDeCompras->pc80_resumo)), 0, 735);
   $pdf1->Sdepart     = $oDadosProcessoDeCompras->coddepto.' - '.$oDadosProcessoDeCompras->descrdepto;
   $pdf1->Srespdepart = $oDadosProcessoDeCompras->nomeresponsavel;
   $pdf1->Susuarioger = $oDadosProcessoDeCompras->nome;
@@ -321,7 +321,7 @@ if ($oConfiguracaoGed->utilizaGED()) {
     $oStdDadosGED->tipo  = "NUMERO";
     $oStdDadosGED->valor = $pc80_codproc_inicial;
     $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$pc80_codproc_inicial}.pdf");
-    $oGerenciador->moverArquivo(array($oStdDadosGED));
+    $oGerenciador->moverArquivo([$oStdDadosGED]);
 
   } catch (Exception $eErro) {
 

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matimplantacaotipogrupo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatimplantacaotipogrupo = new cl_matimplantacaotipogrupo;
 $clmatimplantacaotipogrupo->rotulo->label("m93_sequencial");
 $clmatimplantacaotipogrupo->rotulo->label("m93_db_usuarios");
@@ -98,9 +98,9 @@ $clmatimplantacaotipogrupo->rotulo->label("m93_db_usuarios");
         }else{
            $sql = $clmatimplantacaotipogrupo->sql_query("",$campos,"m93_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m93_db_usuarios)){
-          $repassa = array("chave_m93_sequencial"=>$chave_m93_sequencial,"chave_m93_db_usuarios"=>$chave_m93_db_usuarios);
+          $repassa = ["chave_m93_sequencial"=>$chave_m93_sequencial,"chave_m93_db_usuarios"=>$chave_m93_db_usuarios];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

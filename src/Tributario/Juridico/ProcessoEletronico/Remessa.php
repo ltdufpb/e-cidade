@@ -45,18 +45,11 @@ class Remessa
      */
     private $iInstituicao = 1;
 
-
     /**
-     * @var Configuracao;
+     * @param \ECidade\Tributario\Juridico\ProcessoEletronico\Configuracao $configuracao
      */
-    private $configuracao;
-
-    /**
-     * @param \ECidade\Tributario\Juridico\ProcessoEletronico\Configuracao $oConfiguracao
-     */
-    public function __construct(Configuracao $oConfiguracao)
+    public function __construct(private Configuracao $configuracao)
     {
-        $this->configuracao = $oConfiguracao;
     }
 
     /**

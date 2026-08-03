@@ -74,27 +74,27 @@ $db_opcao       = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-  	   $clcriaabas->identifica = array("bens"        => "Cadastro de bens",
+  	   $clcriaabas->identifica = ["bens"        => "Cadastro de bens",
   	                                   "bensimoveis" => "Dados do imóvel",
   	                                   "bensmater"=>"Dados do material"
-  	                                  );
+  	                                  ];
   	   
-  	   $clcriaabas->sizecampo  = array("bens"        => "20",
+  	   $clcriaabas->sizecampo  = ["bens"        => "20",
   	                                   "bensimoveis" => "20",
-  	                                   "bensmater"   => "20");
+  	                                   "bensmater"   => "20"];
   	   
-  	   $clcriaabas->title      =  array("bens"        => "Cadastrar bens",
+  	   $clcriaabas->title      =  ["bens"        => "Cadastrar bens",
   	                                    "bensimoveis" => "Ativar bem como imóvel",
   	                                    "bensmater"   => "Ativar bem como material"
-  	                                   );
+  	                                   ];
    	   
        if ($lFormNovo) {
-         $clcriaabas->src = array("bens"=>"pat1_bensnovo004.php".$iCodigoEmpNotaItem);
+         $clcriaabas->src = ["bens"=>"pat1_bensnovo004.php".$iCodigoEmpNotaItem];
 //          $clcriaabas->src = array("bens"=>"pat1_bens004.php");
        } else {
-  	     $clcriaabas->src = array("bens"=>"pat1_bens004.php");
+  	     $clcriaabas->src = ["bens"=>"pat1_bens004.php"];
        }
-  	   $clcriaabas->disabled   =  array("bensimoveis"=>"true","bensmater"=>"true","bensbaix"=>"true"); 
+  	   $clcriaabas->disabled   =  ["bensimoveis"=>"true","bensmater"=>"true","bensbaix"=>"true"]; 
   	   $clcriaabas->cria_abas(); 
 	 ?> 
 	 </td>

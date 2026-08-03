@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_prescricaomedica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_prescricaomedica = new cl_far_prescricaomedica;
 $clfar_prescricaomedica->rotulo->label("fa20_i_codigo");
 $clfar_prescricaomedica->rotulo->label("fa20_c_prescricao");
@@ -98,9 +98,9 @@ $clfar_prescricaomedica->rotulo->label("fa20_c_prescricao");
         }else{
            $sql = $clfar_prescricaomedica->sql_query("",$campos,"fa20_c_prescricao","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa20_i_codigo)){
-          $repassa = array("chave_fa20_i_codigo"=>$chave_fa20_i_codigo,"chave_fa20_i_codigo"=>$chave_fa20_i_codigo);
+          $repassa = ["chave_fa20_i_codigo"=>$chave_fa20_i_codigo,"chave_fa20_i_codigo"=>$chave_fa20_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

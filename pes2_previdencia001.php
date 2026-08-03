@@ -99,13 +99,13 @@ db_postmemory($_POST);
                                                       //                                       l - lotação,
 
       $geraform->tipofol = true;                      // MOSTRAR DO CAMPO PARA TIPO DE FOLHA
-      $geraform->arr_tipofol = array(
+      $geraform->arr_tipofol = [
                                      "r14"=>"Salário",
                                      "r48"=>"Complementar",
                                      "r35"=>"13o Salário",
                                      "r20"=>"Rescisão",
                                      "todas"=>"Todas"
-                                    );
+                                    ];
       $geraform->complementar = "r48";
                       // VALUE DA COMPLEMENTAR PARA BUSCAR SEMEST 
 
@@ -131,7 +131,7 @@ db_postmemory($_POST);
         </td>
         <td>
           <?php 
-          $opcalculo = array(1=>"Com Cálculo", 2=>"Sem Cálculo", 3=>"Todos");
+          $opcalculo = [1=>"Com Cálculo", 2=>"Sem Cálculo", 3=>"Todos"];
           db_select('calc',$opcalculo,true,4,"");
           ?>
         </td>
@@ -142,9 +142,9 @@ db_postmemory($_POST);
         </td>
         <td>
           <?php 
-            $aFiltro = array("0"=>"Todos",  
+            $aFiltro = ["0"=>"Todos",  
                              "1"=>"Somente Servidores",
-                             "2"=>"Somente Autônomos");
+                             "2"=>"Somente Autônomos"];
             
             db_select('filtro_rel',$aFiltro,true,4,"");
           ?>
@@ -156,7 +156,7 @@ db_postmemory($_POST);
         </td>
         <td>
           <?php 
-          $quebra_pagina = array("n"=>"Não", "s"=>"Sim");
+          $quebra_pagina = ["n"=>"Não", "s"=>"Sim"];
           db_select('quebra_pagina',$quebra_pagina,true,4,"");
           ?>
         </td>
@@ -178,8 +178,8 @@ db_postmemory($_POST);
                          $arr_colunas[$rh30_codreg]= $rh30_descr;
                     }
                   }
-                  $arr_colunas_final   = Array();
-                  $arr_colunas_inicial = Array();
+                  $arr_colunas_final   = [];
+                  $arr_colunas_inicial = [];
                   if(isset($colunas_sselecionados) && $colunas_sselecionados != ""){
                      $colunas_sselecionados = explode(",",$colunas_sselecionados);
                      for($Ic=0;$Ic < count($colunas_sselecionados);$Ic++){
@@ -193,7 +193,7 @@ db_postmemory($_POST);
                      }
                   }
                   if(!isset($colunas_sselecionados) || !isset($colunas_sselecionados) || $colunas_sselecionados == ""){
-                     $arr_colunas_final  = Array();
+                     $arr_colunas_final  = [];
                      $arr_colunas_inicial = $arr_colunas;
                   }
                  db_multiploselect("rh30_codreg","rh30_descr", "nselecionados", "sselecionados", $arr_colunas_inicial, $arr_colunas_final, 6, 250, "", "", true, "js_complementar('c');");

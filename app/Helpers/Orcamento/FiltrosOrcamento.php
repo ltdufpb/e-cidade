@@ -19,7 +19,7 @@ if (!function_exists('filtrosDespesa')) {
             $operador = $filtro->unidade->operador === 'notin' ? 'not in' : 'in';
             $filtroUnidades = [];
             foreach ($filtro->unidade->aUnidades as $unidade) {
-                $data = explode('-', $unidade);
+                $data = explode('-', (string) $unidade);
                 $filtroUnidades[] = sprintf(
                     '(o58_orgao %s (%s) and o58_unidade %s (%s))',
                     $operador,
@@ -93,7 +93,7 @@ if (!function_exists('filtrosConfiguracaoLinhaRelatorioLegal')) {
             $operador = $filtro->unidade->operador === 'notin' ? 'not in' : 'in';
             $filtroUnidades = [];
             foreach ($filtro->unidade->valor as $unidade) {
-                $data = explode('-', $unidade);
+                $data = explode('-', (string) $unidade);
                 $filtroUnidades[] = sprintf(
                     '(o58_orgao %s (%s) and o58_unidade %s (%s))',
                     $operador,

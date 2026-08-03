@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_nutricionistaescola_classe.php"));
 include(modification("classes/db_mer_nutricionista_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_nutricionistaescola = new cl_mer_nutricionistaescola;
 $clmer_nutricionista = new cl_mer_nutricionista;
 $clcgm = new cl_cgm;
@@ -104,9 +104,9 @@ $clcgm->rotulo->label("z01_nome");
         } else { 
           $sql = $clmer_nutricionista->sql_query("",$campos,"me02_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_me02_i_codigo)) {
-          $repassa = array("chave_me02_i_codigo"=>$chave_me02_i_codigo,"chave_z01_nome"=>$chave_z01_nome);
+          $repassa = ["chave_me02_i_codigo"=>$chave_me02_i_codigo,"chave_z01_nome"=>$chave_z01_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
         

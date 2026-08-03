@@ -64,7 +64,7 @@ if (isset($oPost->saveFile)) {
                 throw new \Exception("Selecione um arquivo");
             }
 
-            $ext = explode("/", $_FILES["fileToUpload"]['type'])[1];
+            $ext = explode("/", (string) $_FILES["fileToUpload"]['type'])[1];
             if ($ext != "json") {
                 throw new \Exception("Arquivo permitido apenas formato json");
             }
@@ -108,7 +108,7 @@ if (isset($oPost->download)) {
     unset($_POST["download"]);
 }
 
-function download()
+function download(): never
 {
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');

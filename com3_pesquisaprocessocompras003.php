@@ -39,7 +39,7 @@ $oDaoPcProc = db_utils::getDao("pcproc");
 $oDaoPcProc->rotulo->label();
 $oRotulo    = new rotulocampo;
 $oRotulo->label("pc80_codproc");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oProcessoCompras = new ProcessoCompras($oGet->pc80_codproc);
 $sSituacaoProcesso = '';
 switch ($oProcessoCompras->getSituacao()) {

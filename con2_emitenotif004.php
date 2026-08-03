@@ -32,8 +32,8 @@ include(modification("classes/db_db_config_classe.php"));
 $cldb_config     = new cl_db_config;
 $clnotificacao   = new cl_notificacao;
 
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if ( $contribuicao == '' ) {
      db_redireciona('db_erros.php?fechar=true&db_erro=Contribuição não encontrada!');
         exit;

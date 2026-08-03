@@ -30,7 +30,7 @@ require(modification("libs/db_stdlib.php"));
 define('FPDF_FONTPATH','fpdf151/font/');
 require(modification('fpdf151/fpdf.php'));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if(!($conn = pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$DB_USUARIO password=$DB_SENHA"))) {
   echo "Erro(10) ao tentar conectar no servidor.";
@@ -40,12 +40,12 @@ if(!($conn = pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$
   $campos = db_query("select nomecam,posxmodelo,posymodelo from db_carnescampos where codmodelo = $codigo");
   $result = db_query("select * from cgm limit 10");
   $nomeimg = db_query("select nomemodelo,imgmodelo,orientacao from db_carnesimg where codmodelo = $codigo");
-  $arquivo = str_replace(" ","_",pg_result($nomeimg,0,"nomemodelo")).".jpg";
+  $arquivo = str_replace(" ","_",pg_fetch_result($nomeimg,0,"nomemodelo")).".jpg";
   db_query("begin");
-  $oid = pg_result($nomeimg,0,"imgmodelo");
-  pg_loexport($oid,$arquivo);
+  $oid = pg_fetch_result($nomeimg,0,"imgmodelo");
+  pg_lo_export($oid,$arquivo);
   db_query("end");
-  $orientacao = pg_result($nomeimg,0,"orientacao");
+  $orientacao = pg_fetch_result($nomeimg,0,"orientacao");
   if($orientacao == "R") {
     $orientacao = "P";
 	$W = 595;
@@ -58,8 +58,8 @@ if(!($conn = pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$
   $pdf = new FPDF($orientacao,"pt","A4");
   $pdf->Open();
 
-  $numrows = pg_numrows($result);
-  $numfields = pg_numrows($campos);
+  $numrows = pg_num_rows($result);
+  $numfields = pg_num_rows($campos);
   
   for($i = 0;$i < $numrows;$i++) {
     $pdf->AddPage();
@@ -68,7 +68,7 @@ if(!($conn = pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$
     $pdf->SetTextColor(0,0,0);
 	for($j = 0;$j < $numfields;$j++) {
       db_fieldsmemory($campos,$j);	  
-      $pdf->Text($posxmodelo,$posymodelo,pg_result($result,$i,$nomecam));    
+      $pdf->Text($posxmodelo,$posymodelo,pg_fetch_result($result,$i,$nomecam));    
     }
   }
   $pdf->Output();

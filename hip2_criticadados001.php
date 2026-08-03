@@ -35,7 +35,7 @@ require_once(modification("libs/db_app.utils.php"));
 
 $oDaoTfdAgendaSaida = db_utils::getdao('tfd_agendasaida');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoTfdAgendaSaida->rotulo->label();
 $oRotulo = new rotulocampo;

@@ -104,7 +104,7 @@ db_input('j97_profun',15,$Ij97_profun,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('4'=>'Esquina','5'=>'Meio de Quadra','6'=>'Vila/Servidão/Encravado');
+$x = ['4'=>'Esquina','5'=>'Meio de Quadra','6'=>'Vila/Servidão/Encravado'];
 db_select('j97_sitterreno',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -115,7 +115,7 @@ db_select('j97_sitterreno',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('7'=>'Alagado','8'=>'Inundável','9'=>'Normal');
+$x = ['7'=>'Alagado','8'=>'Inundável','9'=>'Normal'];
 db_select('j97_pedol',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -126,7 +126,7 @@ db_select('j97_pedol',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('10'=>'Em Nível','11'=>'Acima do Nível','12'=>'Abaixo do Nível','13'=>'Topografia Irregular');
+$x = ['10'=>'Em Nível','11'=>'Acima do Nível','12'=>'Abaixo do Nível','13'=>'Topografia Irregular'];
 db_select('j97_topog',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -137,7 +137,7 @@ db_select('j97_topog',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Vistoriado','2'=>'Não Autorizado','3'=>'Fechado');
+$x = ['1'=>'Vistoriado','2'=>'Não Autorizado','3'=>'Fechado'];
 db_select('j97_vistoria',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -198,7 +198,7 @@ function js_preenchepesquisa(chave){
   db_iframe_moblevantamento.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

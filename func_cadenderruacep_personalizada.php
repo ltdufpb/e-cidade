@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhpessoal_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 ?>
 
 <html>
@@ -131,12 +131,12 @@ parse_str($_SERVER["QUERY_STRING"]);
 </script>
 <?php
 
-    $cep = isset($_POST['cep']) ? $_POST['cep'] : "";
-    $municipio = isset($_POST['municipio']) ? $_POST['municipio'] : "";
-    $logradouro = isset($_POST['logradouro']) ? $_POST['logradouro'] : "";
-    $numero = isset($_POST['numero']) ? $_POST['numero'] : "";
+    $cep = $_POST['cep'] ?? "";
+    $municipio = $_POST['municipio'] ?? "";
+    $logradouro = $_POST['logradouro'] ?? "";
+    $numero = $_POST['numero'] ?? "";
 
-    $whereFiltrosPesquisa = array();
+    $whereFiltrosPesquisa = [];
 
     if(!empty($cep)) {
         $whereFiltrosPesquisa[] = "db86_cep = '$cep'";

@@ -33,7 +33,7 @@ class RelatorioErrosSIPREV {
   const QUEBRA         = true;
   const BORDA          = true;
   const LARGURA_MAXIMA = 279;
-  private $arquivos = array(
+  private $arquivos = [
     "01"   => "Servidores",
     "02"   => "Dependentes",
     "03"   => "Órgãos",
@@ -51,19 +51,16 @@ class RelatorioErrosSIPREV {
     "14"   => "Tempos Fictícios",
     "15"   => "Tempo sem Contribuição",
     "16"   => "Funções Gratificadas",
-  );
-  private $aErros = array();
+  ];
   private $pdf;
 
   /**
    * Construtor do Relatório
    */
-  public function __construct(array $erros = array()) {
+  public function __construct(private array $aErros = []) {
 
     global $head2;
     $head2 = "Relatório de Inconsistências SIPREV";
-
-    $this->aErros = $erros;
     $this->pdf    = new PDF("L");
     $this->pdf->open();
     $this->pdf->aliasNbPages();
@@ -106,7 +103,7 @@ class RelatorioErrosSIPREV {
 
   public function criar() {
 
-    array_walk($this->aErros, array($this, 'escreverBloco'), $this->pdf);
+    array_walk($this->aErros, $this->escreverBloco(...), $this->pdf);
     $this->pdf->output('tmp/inconsistencias_siprev.pdf', false, true);
   }
 
@@ -114,7 +111,7 @@ class RelatorioErrosSIPREV {
 
     $pdf->addPage("L");
     $pdf->setfont('arial','b',8);
-    $pdf->cell(self::LARGURA_MAXIMA, self::ALTURA_LINHA, mb_strtoupper($titulo), self::BORDA, self::QUEBRA, "C", self::PREENCHE);
+    $pdf->cell(self::LARGURA_MAXIMA, self::ALTURA_LINHA, mb_strtoupper((string) $titulo), self::BORDA, self::QUEBRA, "C", self::PREENCHE);
 
     for($indice = 1, $quantidade = count($itens); $indice <= $quantidade; $indice++) {
 
@@ -133,59 +130,42 @@ class RelatorioErrosSIPREV {
     foreach ($cabecalhos as $item) {
 
       $QUEBRA = ++$indice == $itens;
-      list($chave, $valor)      = each($dados);
-      list($largura, $conteudo) = each($item);
+      $chave = key($dados);
+      $valor = current($dados);
+      next($dados);
+      $largura = key($item);
+      $conteudo = current($item);
+      next($item);
       $pdf->cell($item['largura'], self::ALTURA_LINHA, " " .$valor, self::BORDA, $QUEBRA, "L", !self::PREENCHE);
     }
   }
 
   private function getHeaders($arquivoID) {
 
-    switch($arquivoID) {
-    case "01":
-    case "02":
-    case "08.1":
-    case "08.2":
-    case "10":
-    case "11":
-    case "16":
-      $headers = array(
-        array("largura" => 80,                   "conteudo" => "Instituição"),
-        array("largura" => 100,                  "conteudo" => "Servidor"),
-        array("largura" => self::LARGURA_MAXIMA - 180, "conteudo" => "Erro Encontrado"),
-      );
-      break;
-    case "03":
-      $headers = array(
-        array("largura" => 130,                  "conteudo" => "Instituição"),
-        array("largura" => self::LARGURA_MAXIMA - 130, "conteudo" => "Erro Encontrado"),
-      );
-      break;
-    case "07":
-      $headers = array(
-        array("largura" => 80,                   "conteudo" => "Instituição"),
-        array("largura" => 100,                  "conteudo" => "Pensionista"),
-        array("largura" => self::LARGURA_MAXIMA - 180, "conteudo" => "Erro Encontrado"),
-      );
-      break;
-    case "12":
-    case "13":
-    case "14":
-    case "15":
-      $headers = array(
-        array("largura" => 25,                   "conteudo" => "Assentamento"),
-        array("largura" => 70,                   "conteudo" => "Instituição"),
-        array("largura" => 100,                  "conteudo" => "Servidor"),
-        array("largura" => self::LARGURA_MAXIMA - 195, "conteudo" => "Erro Encontrado"),
-      );
-      break;
-    case "09":
-    case "04":
-    case "05":
-    case "06":
-      $headers = array();
-      break;
-    }
+    $headers = match ($arquivoID) {
+        "01", "02", "08.1", "08.2", "10", "11", "16" => [
+          ["largura" => 80,                   "conteudo" => "Instituição"],
+          ["largura" => 100,                  "conteudo" => "Servidor"],
+          ["largura" => self::LARGURA_MAXIMA - 180, "conteudo" => "Erro Encontrado"],
+        ],
+        "03" => [
+          ["largura" => 130,                  "conteudo" => "Instituição"],
+          ["largura" => self::LARGURA_MAXIMA - 130, "conteudo" => "Erro Encontrado"],
+        ],
+        "07" => [
+          ["largura" => 80,                   "conteudo" => "Instituição"],
+          ["largura" => 100,                  "conteudo" => "Pensionista"],
+          ["largura" => self::LARGURA_MAXIMA - 180, "conteudo" => "Erro Encontrado"],
+        ],
+        "12", "13", "14", "15" => [
+          ["largura" => 25,                   "conteudo" => "Assentamento"],
+          ["largura" => 70,                   "conteudo" => "Instituição"],
+          ["largura" => 100,                  "conteudo" => "Servidor"],
+          ["largura" => self::LARGURA_MAXIMA - 195, "conteudo" => "Erro Encontrado"],
+        ],
+        "09", "04", "05", "06" => [],
+        default => $headers,
+    };
 
     return $headers;
   }

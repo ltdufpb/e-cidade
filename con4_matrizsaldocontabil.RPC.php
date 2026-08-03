@@ -61,7 +61,7 @@ try {
             }
 
             $inicio = microtime(true);
-            $data = explode("/", $oParametros->competencia);
+            $data = explode("/", (string) $oParametros->competencia);
             $mes = $data[0];
             $ano = $data[1];
 

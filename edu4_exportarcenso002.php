@@ -82,7 +82,7 @@ function escreveLog( FPDF $oPdf, $sTitulo, $aMensagens) {
     }
 
     $iCor = ($i % 2 == 0) ? 0 : 1;
-    $oPdf->Multicell(280, 4, trim( urldecode($sMensagem) ), 1, "J", $iCor, 0);
+    $oPdf->Multicell(280, 4, trim( urldecode((string) $sMensagem) ), 1, "J", $iCor, 0);
   }
 }
 

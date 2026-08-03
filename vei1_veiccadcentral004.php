@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadcentral_classe.php"));
 include(modification("classes/db_veiccadcentraldepart_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clveiccadcentral       = new cl_veiccadcentral;
 $clveiccadcentraldepart = new cl_veiccadcentraldepart;

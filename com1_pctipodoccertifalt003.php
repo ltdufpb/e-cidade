@@ -35,7 +35,7 @@ $clpcdoccertif = new cl_pcdoccertif;
 $clrotulo = new rotulocampo;
 $clrotulo->label("pc71_codigo");
 $clrotulo->label("pc71_descr");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if (isset ($atualizar)) {
 	db_inicio_transacao();
 	$result03 = $clpctipodoccertif->sql_record($clpctipodoccertif->sql_query_file(null, "*", "pc72_pcdoccertif","pc72_pctipocertif=$pc72_pctipocertif"));
@@ -49,14 +49,14 @@ if (isset ($atualizar)) {
 	}
 
 	$sqlerro = false;
-	$vt = $HTTP_POST_VARS;
+	$vt = $_POST;
 	$ta = sizeof($vt);
 	reset($vt);
 	for ($i = 0; $i < $ta; $i ++) {
 		$chave = key($vt);
-		if (substr($chave, 0, 5) == "CHECK") {
-			$dados = split("_", $chave);
-			$obtes = $HTTP_POST_VARS;
+		if (str_starts_with((string) $chave, "CHECK")) {
+			$dados = preg_split("#_#m", (string) $chave);
+			$obtes = $_POST;
 			$tam = sizeof($obtes);
 			if (array_key_exists("OB_".$dados[1],$obtes)){
 				$ob=1;

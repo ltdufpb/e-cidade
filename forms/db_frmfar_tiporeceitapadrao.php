@@ -50,7 +50,7 @@ $oRotulo->label('descrdepto');
     </td>
     <td> 
       <?php 
-      $aX = array();
+      $aX = [];
       $sSql = $oDaofar_tiporeceita->sql_query_file(null, 'fa03_i_codigo, fa03_c_descr', 'fa03_c_descr', 'fa03_i_ativa = 1');
       $rsFar_tiporeceita = $oDaofar_tiporeceita->sql_record($sSql);
 
@@ -91,11 +91,11 @@ $oRotulo->label('descrdepto');
 	  <tr>
 		  <td valign="top"><br>
         <?php 
-				$aChavepri = array ('fa42_i_codigo' => @$fa42_i_codigo,
+				$aChavepri =  ['fa42_i_codigo' => @$fa42_i_codigo,
                             'fa42_i_tiporeceita' => @$fa02_i_tiporeceita,
                             'fa42_i_departamento' => @$fa42_i_departamento, 
                             'fa03_c_descr' => @$fa03_c_descr, 
-                            'descrdepto' => @$descrdepto);
+                            'descrdepto' => @$descrdepto];
 				$oIframeAE->chavepri = $aChavepri;
 
         $sCampos = 
@@ -129,7 +129,7 @@ $oRotulo->label('descrdepto');
 function js_cancelar() {
 
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
   ?>
 
 }

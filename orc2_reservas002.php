@@ -47,7 +47,7 @@ $iNroLista      = count($aListaTipos);
 $sWhereTipo     = "";
 $sCamposTipo    = "";
 
-$aDataFinal     = explode('/',$data_fin);
+$aDataFinal     = explode('/',(string) $data_fin);
 $sDataFinal     = implode('-',array_reverse($aDataFinal));
 
 foreach ($aListaTipos as $iInd => $sTipo) {
@@ -111,29 +111,29 @@ if (trim(@$instits) == ""){
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in ($instits)");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $descr_inst .= $xvirg.$nomeinst ;
   $xvirg = ', ';
 }
 
-if ( $nivel{0} == "1" ) {
+if ( $nivel[0] == "1" ) {
 	$sDescricaoNivel = "Orgão";
-} else if ($nivel{0} == "2" ) {
+} else if ($nivel[0] == "2" ) {
 	$sDescricaoNivel = "Orgão/Unidade";
-} else if ($nivel{0} == "3" ) {
+} else if ($nivel[0] == "3" ) {
   $sDescricaoNivel = "Função";
-} else if ($nivel{0} == "4" ) {
+} else if ($nivel[0] == "4" ) {
   $sDescricaoNivel = "Subfunção";
-} else if ($nivel{0} == "5" ) {
+} else if ($nivel[0] == "5" ) {
   $sDescricaoNivel = "Programa";
-} else if ($nivel{0} == "6" ) {
+} else if ($nivel[0] == "6" ) {
   $sDescricaoNivel = "Projeto/Atividade";
-} else if ($nivel{0} == "7" ) {
+} else if ($nivel[0] == "7" ) {
   $sDescricaoNivel = "Elemento";
-} else if ($nivel{0} == "8" ) {
+} else if ($nivel[0] == "8" ) {
   $sDescricaoNivel = "Recurso";
-} else if ($nivel{0} == "9" ) {
+} else if ($nivel[0] == "9" ) {
   $sDescricaoNivel = "Desdobramento";
 }
 
@@ -149,7 +149,7 @@ $sCampos .= "e.o56_elemento,e.o56_descr,";
 $sCampos .= "w.o58_codigo, w.o58_coddot, r.o15_recurso,o15_descr";
 $sCampos .= "";
 
-if ( $nivel{0} == 9 ) {
+if ( $nivel[0] == 9 ) {
 
 	$sCamposDesd  = " case                                                        ";
 	$sCamposDesd .=	"   when dsol.o56_elemento is not null then dsol.o56_elemento ";
@@ -245,24 +245,24 @@ for ( $iInd=0; $iInd < $iNroReserva; $iInd++ ) {
 
 	$oReserva = db_utils::fieldsMemory($rsDadosReserva,$iInd);
 
-  if(trim($oReserva->pc13_codigo) != ''){
+  if(trim((string) $oReserva->pc13_codigo) != ''){
 
 	  $sDescricaoReserva  = 'Solicitação de Compra No. '.
-	                        $oReserva->pc11_numero.(trim($oReserva->o80_descr)!=''?' - '.$oReserva->o80_descr:'');
+	                        $oReserva->pc11_numero.(trim((string) $oReserva->o80_descr)!=''?' - '.$oReserva->o80_descr:'');
 	$sDescricaoReserva .= ' Item: '.$oReserva->pc11_codigo.' - '.
-	                        ucfirst(strtolower(substr($oReserva->pc01_descrmater,0,53)));
+	                        ucfirst(strtolower(substr((string) $oReserva->pc01_descrmater,0,53)));
 
-  } elseif(trim($oReserva->o81_codsup) != ''){
+  } elseif(trim((string) $oReserva->o81_codsup) != ''){
 
     $sDescricaoReserva = 'Projeto de Suplementação N.o '.$oReserva->o46_codlei.' ('.$oReserva->o38_descr.')';
 
-  } elseif(trim($oReserva->o83_autori) != ''){
+  } elseif(trim((string) $oReserva->o83_autori) != ''){
 
     $sDescricaoReserva = 'Reserva Gerada pela Autorização N.o '.$oReserva->o83_autori;
 
   } else{
 
-    $sDescricaoReserva = (trim($oReserva->o80_descr)==''?'Reserva Gerada Manualmente':$oReserva->o80_descr);
+    $sDescricaoReserva = (trim((string) $oReserva->o80_descr)==''?'Reserva Gerada Manualmente':$oReserva->o80_descr);
 
   }
 
@@ -309,7 +309,7 @@ $head1 = "RELATORIO DE RESERVA DE SALDO";
 $head2 = "EXERCÍCIO : ".db_getsession("DB_anousu");
 $head3 = "INSTITUIÇÕES : ".$descr_inst;
 $head4 = "POSIÇÃO ATÉ : ".$data_fin;
-$head5 = "NIVEL : ".($nivel{1}=="A"?"Até ":"").$sDescricaoNivel;
+$head5 = "NIVEL : ".($nivel[1]=="A"?"Até ":"").$sDescricaoNivel;
 
 $pdf = new PDF();
 $pdf->Open();
@@ -319,7 +319,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $alt = 4;
 
-if ( $nivel{1} == 'A') {
+if ( $nivel[1] == 'A') {
 
 
 	foreach ( $aNivel as $sTipoReserva => $aDados) {
@@ -330,35 +330,35 @@ if ( $nivel{1} == 'A') {
 	  $nValorTotalNivel   = 0;
 
 	  foreach ($aDados as $sOrgao => $aDadosOrgao) {
-	  	if ( $nivel{0} >= 1 ) {
+	  	if ( $nivel[0] >= 1 ) {
         $pdf->cell(0,$alt,$sOrgao,0,1,"L",0);
 	  	}
 	    foreach ($aDadosOrgao as $sUnidade => $aDadosUnidade) {
-	    	if ( $nivel{0} >= 2 ) {
+	    	if ( $nivel[0] >= 2 ) {
           $pdf->cell(0,$alt,$sUnidade,0,1,"L",0);
 	    	}
 	      foreach ($aDadosUnidade as $sFuncao => $aDadosFuncao) {
-	      	if ( $nivel{0} >= 3 ) {
+	      	if ( $nivel[0] >= 3 ) {
             $pdf->cell(0,$alt,$sFuncao,0,1,"L",0);
 	      	}
 	        foreach ($aDadosFuncao as $sSubFuncao => $aDadosSubFuncao) {
-	        	if ( $nivel{0} >= 4 ) {
+	        	if ( $nivel[0] >= 4 ) {
               $pdf->cell(0,$alt,$sSubFuncao,0,1,"L",0);
 	        	}
 	          foreach ($aDadosSubFuncao as $sPrograma => $aDadosPrograma) {
-	          	if ( $nivel{0} >= 5 ) {
+	          	if ( $nivel[0] >= 5 ) {
 	          	  $pdf->cell(0,$alt,$sPrograma,0,1,"L",0);
 	          	}
 	            foreach ($aDadosPrograma as $sProjAtiv => $aDadosProjAtiv) {
-	            	if ( $nivel{0} >= 6 ) {
+	            	if ( $nivel[0] >= 6 ) {
 	            	  $pdf->cell(0,$alt,$sProjAtiv,0,1,"L",0);
 	            	}
 	              foreach ($aDadosProjAtiv as $sElemento => $aDadosElemento) {
-	              	if ( $nivel{0} >= 7 ) {
+	              	if ( $nivel[0] >= 7 ) {
 	              	  $pdf->cell(0,$alt,$sElemento,0,1,"L",0);
 	              	}
 	                foreach ($aDadosElemento as $sRecurso => $aDadosRecursos) {
-         	          if ( $nivel{0} >= 8 ) {
+         	          if ( $nivel[0] >= 8 ) {
 	                	  $pdf->cell(0,$alt,$sRecurso,0,1,"L",0);
          	          }
 	                  foreach ($aDadosRecursos['aReservas'] as $iCodReserva => $aReserva) {
@@ -374,7 +374,7 @@ if ( $nivel{1} == 'A') {
 	                      $pdf->cell(20,$alt,$iCodReserva                		,'TBR',0,'C');
 						  $pdf->cell(20,$alt,$codDot." - ".db_CalculaDV($codDot),'TBR',0,'C');
 						  $pdf->setfont('arial','',5);
-						  $pdf->cell(30,$alt, substr($descricao, 0, 25),		'TBR','L');
+						  $pdf->cell(30,$alt, substr((string) $descricao, 0, 25),		'TBR','L');
 						  $pdf->setfont('arial','',8);
 	                      $pdf->cell(20,$alt,db_formatar($dtDataLanc,'d')		,'TBR',0,'C');
 	                      $pdf->cell(20,$alt,db_formatar($nValor,'f')    		,'TBR',0,"R");
@@ -385,28 +385,28 @@ if ( $nivel{1} == 'A') {
 	                    $nValorTotalReserva += $nValor;
 
 	                  }
-	                  imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL RECURSO",$nivel{0},8);
+	                  imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL RECURSO",$nivel[0],8);
 	                }
-	                imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL ELEMENTO",$nivel{0},7);
+	                imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL ELEMENTO",$nivel[0],7);
 	              }
-	              imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL ATIVIDADE",$nivel{0},6);
+	              imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL ATIVIDADE",$nivel[0],6);
 	            }
-	            imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL PROGRAMA",$nivel{0},5);
+	            imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL PROGRAMA",$nivel[0],5);
 	          }
-	          imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL SUBFUNÇÃO",$nivel{0},4);
+	          imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL SUBFUNÇÃO",$nivel[0],4);
 	        }
-	        imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL FUNÇÃO",$nivel{0},3);
+	        imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL FUNÇÃO",$nivel[0],3);
 	      }
-	      imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL UNIDADE",$nivel{0},2);
+	      imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL UNIDADE",$nivel[0],2);
 	    }
-	    imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL ORGÃO",$nivel{0},1);
+	    imprimeTotal($pdf,$alt,$nValorTotalNivel,"TOTAL ORGÃO",$nivel[0],1);
 	  }
 	  imprimeTotal($pdf,$alt,$nValorTotalReserva,"TOTAL TIPO RESERVA",0,0);
 	}
 
 } else {
 
-	foreach ($aNivelUnico[$nivel{0}] as $sTipoReserva => $aDadosNivel ) {
+	foreach ($aNivelUnico[$nivel[0]] as $sTipoReserva => $aDadosNivel ) {
 
 		$pdf->setfont('arial','b',8);
 		$pdf->Ln(3);
@@ -433,7 +433,7 @@ if ( $nivel{1} == 'A') {
 					$pdf->cell(20,$alt,$iCodReserva                ,'TBR',0,'C');
 					$pdf->cell(20,$alt,$codDot." - ".db_CalculaDV($codDot),'TBR',0,'C');
 					$pdf->setfont('arial','',5);
-					$pdf->cell(30,$alt, substr($descricao, 0, 25),		'TBR','L');
+					$pdf->cell(30,$alt, substr((string) $descricao, 0, 25),		'TBR','L');
 					$pdf->setfont('arial','',8);
 					$pdf->cell(20,$alt,db_formatar($dtDataLanc,'d'),'TBR',0,'C');
 					$pdf->cell(20,$alt,db_formatar($nValor,'f')    ,'TBR',0,"R");
@@ -445,7 +445,7 @@ if ( $nivel{1} == 'A') {
 				$nValorTotalReserva += $nValor;
 
 			}
-			$pdf->cell(90,$alt,'TOTAL '.strtoupper($sDescricaoNivel),'TBR',0,'L');
+			$pdf->cell(90,$alt,'TOTAL '.strtoupper((string) $sDescricaoNivel),'TBR',0,'L');
 	    $pdf->cell(20,$alt,db_formatar($nValorTotalNivel,'f')   ,'TBR',1,"R");
 	    $pdf->ln(3);
 		}

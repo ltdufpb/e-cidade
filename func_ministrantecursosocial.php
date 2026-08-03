@@ -85,7 +85,7 @@ $oRotuloCampo->label("z01_nome");
       $sOrder = "z01_nome";
       if (!isset($pesquisa_chave)) {
         
-        $aWhere = array();
+        $aWhere = [];
         /**
          * Adiciona os filtros informados em um array
          */
@@ -98,7 +98,7 @@ $oRotuloCampo->label("z01_nome");
         
         $sWhere  = implode(" and ", $aWhere);
         $sSql    = $oDaoCursoSocial->sql_query(null, $campos, $sOrder, $sWhere);
-        $repassa = array();
+        $repassa = [];
 
         db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

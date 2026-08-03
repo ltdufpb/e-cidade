@@ -211,13 +211,13 @@ $clrotulo->label("rh74_tipofolha");
             </td>
             <td>
               <?php 
-                $aTipoFolha = Array( "0" => "Todos",
+                $aTipoFolha = [ "0" => "Todos",
                                      "1" => "Salário",
                                      "2" => "Complementar",
                                      "3" => "Rescisão",
                                      "4" => "13º Salário",
                                      "5" => "Adiantamento"
-                                     );
+                                     ];
 
                 db_select("rh74_tipofolha", $aTipoFolha, true, $db_opcao, "onchange= 'js_getRubricas();'");
               ?>

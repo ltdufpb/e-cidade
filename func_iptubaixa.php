@@ -35,7 +35,7 @@ include(modification("classes/db_setorloc_classe.php"));
 include(modification("libs/db_app.utils.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptubaixa = new cl_iptubaixa;
 $cliptubaixa->rotulo->label("j02_matric");
 $cliptubaixa->rotulo->label("j02_dtbaixa");
@@ -164,9 +164,9 @@ $rsSetorLoc = $clsetorloc->sql_record($clsetorloc->sql_query_file(null, 'j05_cod
           }
           $sql = $cliptubaixa->sql_query_loteloc("",$campos,"j02_matric", $sql2);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j02_dtbaixa)){
-          $repassa = array("chave_j02_matric"=>$chave_j02_matric,"chave_j02_dtbaixa"=>$chave_j02_dtbaixa);
+          $repassa = ["chave_j02_matric"=>$chave_j02_matric,"chave_j02_dtbaixa"=>$chave_j02_dtbaixa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

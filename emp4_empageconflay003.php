@@ -57,8 +57,8 @@ $clempagemod  = new cl_empagemod;
 
 
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 
 $db_botao = false;
 
@@ -106,12 +106,12 @@ if(isset($atualizar) ){
   
   //-----------------------------------
  //inclui na tabela empageconf
-    $arr =  split("XX",$movs);
+    $arr =  preg_split("#XX#m",$movs);
     $tot_valor ='';
     for($i=0; $i<count($arr); $i++ ){
        $mov = $arr[$i];  
 
-               
+
        //-------------
        //manutenção empagetipo
        //soh quando for banco do brasil
@@ -199,7 +199,7 @@ order by c63_conta,lanc,e90_codmov
      ";
 //echo $sql;
 $result  =  @db_query($sql);
-$numrows =  @pg_numrows($result);
+$numrows =  @pg_num_rows($result);
 //db_criatabela($result);exit;
 if($numrows==0){
   $sqlerro =true;
@@ -253,14 +253,14 @@ if($numrows==0){
      $cllayouts_bs->cabec104 = str_repeat(' ',9) ;
      $cllayouts_bs->cabec105 = '2';			/// 1 - cpf , 2 - cnpj
      $cllayouts_bs->cabec106 = $cgc;
-     $cllayouts_bs->cabec107 = db_formatar(substr($convenio,0,5),'s',' ',5,'e',0);
+     $cllayouts_bs->cabec107 = db_formatar(substr((string) $convenio,0,5),'s',' ',5,'e',0);
      $cllayouts_bs->cabec108 = str_repeat(' ',15) ;
      $cllayouts_bs->cabec109 = $agencia_pre;
      $cllayouts_bs->cabec110 = '0';
      $cllayouts_bs->cabec111 = '000';
      $cllayouts_bs->cabec112 = $conta_pre;
      $cllayouts_bs->cabec113 = '0';
-     $cllayouts_bs->cabec114 = db_formatar(substr(strtoupper($nomeinst),0,30),'s',' ',30,'e',0); 
+     $cllayouts_bs->cabec114 = db_formatar(substr(strtoupper((string) $nomeinst),0,30),'s',' ',30,'e',0); 
      $cllayouts_bs->cabec115 = $dbanco; 
      $cllayouts_bs->cabec116 = str_repeat(' ',10) ;
      $cllayouts_bs->cabec117 = '1';
@@ -325,7 +325,7 @@ if($numrows==0){
 //        echo 'TRAILLER LOTE '.db_formatar(str_replace(',','',str_replace('.','',$valor_header)),'s','0',18,'e',0)."<br>";
 	  $valor_header = 0;
           $registro += 1;
-	  
+
 	  ///// FINAL DO TRAILLER DO LOTE
        }
        $seq_header  += 1;
@@ -346,18 +346,18 @@ if($numrows==0){
        $cllayouts_bs->cabec208 = ' ';
        $cllayouts_bs->cabec209 = '2'; 
        $cllayouts_bs->cabec210 = $cgc;
-       $cllayouts_bs->cabec211 = db_formatar(substr($convenio,0,5),'s',' ',5,'e',0);
+       $cllayouts_bs->cabec211 = db_formatar(substr((string) $convenio,0,5),'s',' ',5,'e',0);
        $cllayouts_bs->cabec212 = str_repeat(' ',15) ;
        $cllayouts_bs->cabec213 = $agencia_pre;
        $cllayouts_bs->cabec214 = '0000';
        $cllayouts_bs->cabec215 = $conta_pre;
        $cllayouts_bs->cabec216 = ' ';
-       $cllayouts_bs->cabec217 = substr(strtoupper($nomeinst),0,30) ; // nome da empresa 
+       $cllayouts_bs->cabec217 = substr(strtoupper((string) $nomeinst),0,30) ; // nome da empresa 
        $cllayouts_bs->cabec218 = str_repeat(' ',40) ;
-       $cllayouts_bs->cabec219 = db_formatar(strtoupper($ender),'s',' ',30,'d',0);
+       $cllayouts_bs->cabec219 = db_formatar(strtoupper((string) $ender),'s',' ',30,'d',0);
        $cllayouts_bs->cabec220 = db_formatar($numero,'s',' ',5,'e',0);
        $cllayouts_bs->cabec221 = str_repeat(' ',15) ;
-       $cllayouts_bs->cabec222 = db_formatar(strtoupper($munic),'s',' ',20,'d',0);
+       $cllayouts_bs->cabec222 = db_formatar(strtoupper((string) $munic),'s',' ',20,'d',0);
        $cllayouts_bs->cabec223 = db_formatar($cep,'s',' ',8,'e',0);
        $cllayouts_bs->cabec224 = $uf;
        $cllayouts_bs->cabec225 = '  ';
@@ -372,9 +372,9 @@ if($numrows==0){
 //     for($i = 0;$i < $numrows;$i++){
 //       db_fieldsmemory($result,$i);
 
-       $tama =  strlen($pc63_conta);
+       $tama =  strlen((string) $pc63_conta);
        if($tama>11){
-	 $pc63_conta = substr($pc63_conta,($tama-11));
+	 $pc63_conta = substr((string) $pc63_conta,($tama-11));
        }
        
        $agencia_fav = db_formatar(str_replace('.','',str_replace('-','',$pc63_agencia)),'s','0',5,'e',0);
@@ -382,7 +382,7 @@ if($numrows==0){
        $agencia_fav = db_formatar($agencia_fav,'s','0',5,'e',0);
 
        
-       $conta_fav   = db_formatar(str_replace('.','',str_replace('-','',trim($pc63_conta))),'s','0',11,'e',0);
+       $conta_fav   = db_formatar(str_replace('.','',str_replace('-','',trim((string) $pc63_conta))),'s','0',11,'e',0);
 
        
        if($tam == 14){
@@ -413,7 +413,7 @@ if($numrows==0){
        $cllayouts_bs->detalhe11 = '0';
        $cllayouts_bs->detalhe12 = '00'.$conta_fav; 
        $cllayouts_bs->detalhe13 = '0';
-       $cllayouts_bs->detalhe14 = db_formatar(  str_replace("-",'',substr($z01_nome,0,30)),'s',' ',30,'d',0) ;   // nome do favorecido 
+       $cllayouts_bs->detalhe14 = db_formatar(  str_replace("-",'',substr((string) $z01_nome,0,30)),'s',' ',30,'d',0) ;   // nome do favorecido 
        $cllayouts_bs->detalhe15 = db_formatar($e90_codmov,'s','0',6,'e',0)."000000000" ; 
        $cllayouts_bs->detalhe16 = '00005';
        $cllayouts_bs->detalhe17 = $dat_cred; 

@@ -96,7 +96,7 @@ if (!isset($pesquisa_chave)) {
         $sql .= "where " . implode(' and ', $where);
     }
 
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_pl18_descricao)) {
         $repassa = ["chave_pl18_descricao" => $chave_pl18_descricao, "chave_pl18_descricao" => $chave_pl18_descricao];
     }

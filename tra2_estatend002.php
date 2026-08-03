@@ -104,7 +104,7 @@ from  (select (trim(r1.j14_nome)::varchar||
        $rs2 = db_query($sql2);
        $pdf->setfont("Arial","",7);
        if (pg_num_rows($rs2) > 0){
-          $pdf->cell(10,5,pg_result($rs2,0,"total"),1,0,"C");     
+          $pdf->cell(10,5,pg_fetch_result($rs2,0,"total"),1,0,"C");     
        }else{
           $pdf->cell(10,5,"",1,0,"C");  
        }

@@ -93,7 +93,7 @@ db_input('at62_descr',40,$Iat62_descr,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at63_sequencial"=>@$at63_sequencial,"at63_projeto"=>@$at63_projeto);
+	 $chavepri= ["at63_sequencial"=>@$at63_sequencial,"at63_projeto"=>@$at63_projeto];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_projetosgrupos->sql_query(null,"*","at63_sequencial","at63_projeto=$at63_projeto");
 	 $cliframe_alterar_excluir->campos  ="at62_descr";

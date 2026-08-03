@@ -167,7 +167,7 @@ db_input('descrdepto',75,$Is140_i_unidade,true,'text',3,"");
 </form>
 <br>
 <?php
-$chavepri= array("s140_i_codigo"=>@$s140_i_codigoo);
+$chavepri= ["s140_i_codigo"=>@$s140_i_codigoo];
 $cliframe_alterar_excluir->chavepri=$chavepri;
 @$cliframe_alterar_excluir->sql = "select s140_i_codigo, s140_d_inicio, s140_d_fim, (s140_d_fim - s140_d_inicio) + 1 as sd27_i_quantidade, sau_motivo_ausencia.s139_c_descr as s140_i_tipo,s140_c_horaini,s140_c_horafim
                                            from sau_upsparalisada
@@ -278,7 +278,7 @@ function js_preenchepesquisa(chave){
   db_iframe_sau_upsparalisada.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

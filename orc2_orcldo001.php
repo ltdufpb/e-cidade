@@ -142,7 +142,7 @@ function js_emite(){
       <td align='right'><strong>Ano:</strong></td>
       <td>
       ";
-      $arr_indexdescr = Array();
+      $arr_indexdescr = [];
       db_fieldsmemory($result_anosescolha,0);
       for($i=$o21_anoini;$i<=$o21_anofim;$i++){
 	  $arr_indexdescr[$i] = $i;

@@ -42,7 +42,7 @@ class DBEducacaoTermo {
    * Colecao de termos
    * @var array
    */
-  private $aTermos = array();
+  private $aTermos = [];
 
   private function __construct() {
 
@@ -93,7 +93,7 @@ class DBEducacaoTermo {
       $sAno = db_getsession("DB_anousu");
     }
 
-    $aTermosEnsino = array();
+    $aTermosEnsino = [];
     foreach (DBEducacaoTermo::getInstance()->aTermos as $oTermo) {
 
       if ($oTermo->iEnsino == $iCodigoEnsino && $oTermo->sReferencia == $sReferencia && $oTermo->sAno == $sAno) {
@@ -118,7 +118,7 @@ class DBEducacaoTermo {
       $sAno = db_getsession("DB_anousu");
     }
 
-    $aTermosEnsino = array();
+    $aTermosEnsino = [];
     foreach (DBEducacaoTermo::getInstance()->aTermos as $oTermos) {
 
       if ($oTermos->iEnsino == $iCodigoEnsino && $oTermos->sAno == $sAno) {
@@ -164,7 +164,7 @@ class DBEducacaoTermo {
     $oParcial->sReferencia  = "P";
     $oParcial->sAno         = db_getsession("DB_anousu");
 
-    $aTermoPadrao = array();
+    $aTermoPadrao = [];
 
     switch ($sReferencia) {
 
@@ -202,7 +202,7 @@ class DBEducacaoTermo {
     $iAnoCalendario = $oTurma->getCalendario()->getAnoExecucao();
     $aTermos        = DBEducacaoTermo::getTermoEncerramentoDoEnsino($iCodigoEnsino, $iAnoCalendario);
 
-    $aTermos = array();
+    $aTermos = [];
 
     $iContadorTermos        = 1;
     $oStdTermo              = new stdClass();

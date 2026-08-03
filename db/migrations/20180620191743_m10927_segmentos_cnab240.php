@@ -7,7 +7,7 @@ class M10927SegmentosCnab240 extends PostgresMigration
     public function up()
     {
 
-        $aSql = array();
+        $aSql = [];
 
 
         // segemnto J
@@ -81,7 +81,7 @@ class M10927SegmentosCnab240 extends PostgresMigration
 
     public function down()
     {
-        $aSql = array();
+        $aSql = [];
 
         $aSql []  = "DELETE FROM db_layoutcampos WHERE  db52_layoutlinha = 2010;";
         $aSql []  = "DELETE FROM db_layoutcampos WHERE  db52_layoutlinha = 2011 ;";

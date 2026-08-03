@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_lotepront_ext_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_lotepront = new cl_sau_lotepront_ext;
 $clsau_lotepront->rotulo->label("sd59_i_codigo");
 $clsau_lotepront->rotulo->label("sd59_i_lote");
@@ -111,9 +111,9 @@ $clsau_lotepront->rotulo->label("sd59_i_prontuario");
         }else{
            //$sql = $clsau_lotepront->sql_query_ext("","distinct ".$campos,"sd59_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd59_i_codigo)){
-          $repassa = array("chave_sd59_i_codigo"=>$chave_sd59_i_codigo,"chave_sd59_i_lote"=>$chave_sd59_i_lote);
+          $repassa = ["chave_sd59_i_codigo"=>$chave_sd59_i_codigo,"chave_sd59_i_lote"=>$chave_sd59_i_lote];
         }
         if( isset($sql) ){
             db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

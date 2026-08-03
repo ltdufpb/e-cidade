@@ -118,7 +118,7 @@ function js_emite(){
                  <td align="right" ><strong>Nível :</strong></td>
                  <td>
                  <?php 
-                   $xy = array('1B'=>'Órgão','2A'=>'Unidade','3B'=>'Função','4B'=>'Subfunção','5B'=>'Programa','6B'=>'Proj/Ativ','7B'=>'Elemento','8B'=>'Recurso');
+                   $xy = ['1B'=>'Órgão','2A'=>'Unidade','3B'=>'Função','4B'=>'Subfunção','5B'=>'Programa','6B'=>'Proj/Ativ','7B'=>'Elemento','8B'=>'Recurso'];
               	   db_select('nivel',$xy,true,2,"");
 	               ?>
                  </td>

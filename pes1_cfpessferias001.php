@@ -34,8 +34,8 @@ require_once modification("classes/db_cfpess_classe.php");
 require_once modification("classes/db_inssirf_classe.php");
 require_once modification("dbforms/db_funcoes.php");
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $clcfpess  = new cl_cfpess;
 $clinssirf = new cl_inssirf;

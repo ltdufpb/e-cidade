@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE afastamento
 class cl_afastamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r69_anousu = 0; 
-   var $r69_mesusu = 0; 
-   var $r69_regist = 0; 
-   var $r69_codigo = 0; 
-   var $r69_dtafast_dia = null; 
-   var $r69_dtafast_mes = null; 
-   var $r69_dtafast_ano = null; 
-   var $r69_dtafast = null; 
-   var $r69_dtretorno_dia = null; 
-   var $r69_dtretorno_mes = null; 
-   var $r69_dtretorno_ano = null; 
-   var $r69_dtretorno = null; 
-   var $r69_dtlanc_dia = null; 
-   var $r69_dtlanc_mes = null; 
-   var $r69_dtlanc_ano = null; 
-   var $r69_dtlanc = null; 
-   var $r69_login = null; 
+   public $r69_anousu = 0; 
+   public $r69_mesusu = 0; 
+   public $r69_regist = 0; 
+   public $r69_codigo = 0; 
+   public $r69_dtafast_dia = null; 
+   public $r69_dtafast_mes = null; 
+   public $r69_dtafast_ano = null; 
+   public $r69_dtafast = null; 
+   public $r69_dtretorno_dia = null; 
+   public $r69_dtretorno_mes = null; 
+   public $r69_dtretorno_ano = null; 
+   public $r69_dtretorno = null; 
+   public $r69_dtlanc_dia = null; 
+   public $r69_dtlanc_mes = null; 
+   public $r69_dtlanc_ano = null; 
+   public $r69_dtlanc = null; 
+   public $r69_login = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r69_anousu = int4 = Exercício 
                  r69_mesusu = int4 = Mês do Exercício 
                  r69_regist = int4 = Número Registro 
@@ -71,10 +71,10 @@ class cl_afastamento {
                  r69_login = varchar(8) = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_afastamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("afastamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -218,7 +218,7 @@ class cl_afastamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Afastamento Informativo () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Afastamento Informativo já Cadastrado";
@@ -245,10 +245,10 @@ class cl_afastamento {
       $this->atualizacampos();
      $sql = " update afastamento set ";
      $virgula = "";
-     if(trim($this->r69_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_anousu"])){ 
+     if(trim((string) $this->r69_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_anousu"])){ 
        $sql  .= $virgula." r69_anousu = $this->r69_anousu ";
        $virgula = ",";
-       if(trim($this->r69_anousu) == null ){ 
+       if(trim((string) $this->r69_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "r69_anousu";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_afastamento {
          return false;
        }
      }
-     if(trim($this->r69_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_mesusu"])){ 
+     if(trim((string) $this->r69_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_mesusu"])){ 
        $sql  .= $virgula." r69_mesusu = $this->r69_mesusu ";
        $virgula = ",";
-       if(trim($this->r69_mesusu) == null ){ 
+       if(trim((string) $this->r69_mesusu) == null ){ 
          $this->erro_sql = " Campo Mês do Exercício nao Informado.";
          $this->erro_campo = "r69_mesusu";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_afastamento {
          return false;
        }
      }
-     if(trim($this->r69_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_regist"])){ 
+     if(trim((string) $this->r69_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_regist"])){ 
        $sql  .= $virgula." r69_regist = $this->r69_regist ";
        $virgula = ",";
-       if(trim($this->r69_regist) == null ){ 
+       if(trim((string) $this->r69_regist) == null ){ 
          $this->erro_sql = " Campo Número Registro nao Informado.";
          $this->erro_campo = "r69_regist";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_afastamento {
          return false;
        }
      }
-     if(trim($this->r69_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_codigo"])){ 
+     if(trim((string) $this->r69_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_codigo"])){ 
        $sql  .= $virgula." r69_codigo = $this->r69_codigo ";
        $virgula = ",";
-       if(trim($this->r69_codigo) == null ){ 
+       if(trim((string) $this->r69_codigo) == null ){ 
          $this->erro_sql = " Campo Código do Afastamento nao Informado.";
          $this->erro_campo = "r69_codigo";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_afastamento {
          return false;
        }
      }
-     if(trim($this->r69_dtafast)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_dtafast_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r69_dtafast_dia"] !="") ){ 
+     if(trim((string) $this->r69_dtafast)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_dtafast_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r69_dtafast_dia"] !="") ){ 
        $sql  .= $virgula." r69_dtafast = '$this->r69_dtafast' ";
        $virgula = ",";
-       if(trim($this->r69_dtafast) == null ){ 
+       if(trim((string) $this->r69_dtafast) == null ){ 
          $this->erro_sql = " Campo Início do Afastamento nao Informado.";
          $this->erro_campo = "r69_dtafast_dia";
          $this->erro_banco = "";
@@ -313,7 +313,7 @@ class cl_afastamento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r69_dtafast_dia"])){ 
          $sql  .= $virgula." r69_dtafast = null ";
          $virgula = ",";
-         if(trim($this->r69_dtafast) == null ){ 
+         if(trim((string) $this->r69_dtafast) == null ){ 
            $this->erro_sql = " Campo Início do Afastamento nao Informado.";
            $this->erro_campo = "r69_dtafast_dia";
            $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_afastamento {
          }
        }
      }
-     if(trim($this->r69_dtretorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_dtretorno_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r69_dtretorno_dia"] !="") ){ 
+     if(trim((string) $this->r69_dtretorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_dtretorno_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r69_dtretorno_dia"] !="") ){ 
        $sql  .= $virgula." r69_dtretorno = '$this->r69_dtretorno' ";
        $virgula = ",";
-       if(trim($this->r69_dtretorno) == null ){ 
+       if(trim((string) $this->r69_dtretorno) == null ){ 
          $this->erro_sql = " Campo Final do Afastamento nao Informado.";
          $this->erro_campo = "r69_dtretorno_dia";
          $this->erro_banco = "";
@@ -340,7 +340,7 @@ class cl_afastamento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r69_dtretorno_dia"])){ 
          $sql  .= $virgula." r69_dtretorno = null ";
          $virgula = ",";
-         if(trim($this->r69_dtretorno) == null ){ 
+         if(trim((string) $this->r69_dtretorno) == null ){ 
            $this->erro_sql = " Campo Final do Afastamento nao Informado.";
            $this->erro_campo = "r69_dtretorno_dia";
            $this->erro_banco = "";
@@ -351,10 +351,10 @@ class cl_afastamento {
          }
        }
      }
-     if(trim($this->r69_dtlanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_dtlanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r69_dtlanc_dia"] !="") ){ 
+     if(trim((string) $this->r69_dtlanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_dtlanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r69_dtlanc_dia"] !="") ){ 
        $sql  .= $virgula." r69_dtlanc = '$this->r69_dtlanc' ";
        $virgula = ",";
-       if(trim($this->r69_dtlanc) == null ){ 
+       if(trim((string) $this->r69_dtlanc) == null ){ 
          $this->erro_sql = " Campo Data do Lançamento nao Informado.";
          $this->erro_campo = "r69_dtlanc_dia";
          $this->erro_banco = "";
@@ -367,7 +367,7 @@ class cl_afastamento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r69_dtlanc_dia"])){ 
          $sql  .= $virgula." r69_dtlanc = null ";
          $virgula = ",";
-         if(trim($this->r69_dtlanc) == null ){ 
+         if(trim((string) $this->r69_dtlanc) == null ){ 
            $this->erro_sql = " Campo Data do Lançamento nao Informado.";
            $this->erro_campo = "r69_dtlanc_dia";
            $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_afastamento {
          }
        }
      }
-     if(trim($this->r69_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_login"])){ 
+     if(trim((string) $this->r69_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r69_login"])){ 
        $sql  .= $virgula." r69_login = '$this->r69_login' ";
        $virgula = ",";
-       if(trim($this->r69_login) == null ){ 
+       if(trim((string) $this->r69_login) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "r69_login";
          $this->erro_banco = "";
@@ -472,7 +472,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:afastamento";

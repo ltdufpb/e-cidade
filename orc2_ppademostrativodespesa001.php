@@ -162,7 +162,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
               </td>
               <td>
               <?php
-                $aNiveis = array(
+                $aNiveis = [
                   1 => "Orgão",
                   2 => "Unidade",
                   3 => "Função",
@@ -171,7 +171,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
                   6 => "Projeto/Atividade",
                   7 => "Elemento",
                   8 => "Recurso",
-                );
+                ];
               db_select("nivel", $aNiveis,true,1);
               ?>
               </td>

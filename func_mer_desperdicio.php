@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_desperdicio_classe.php"));
 include(modification("classes/db_mer_cardapio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_desperdicio = new cl_mer_desperdicio;
 $clmer_cardapio = new cl_mer_cardapio;
 $clmer_desperdicio->rotulo->label("me22_i_codigo");
@@ -107,9 +107,9 @@ $clmer_cardapio->rotulo->label("me01_c_nome");
     } else {
       $sql = $clmer_desperdicio->sql_query("",$campos,"me12_d_data desc,me03_i_orden"," ed18_i_codigo = $escola");
     }
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_me22_i_codigo)) {
-      $repassa = array("chave_me22_i_codigo"=>$chave_me22_i_codigo,"chave_me01_c_nome"=>$chave_me01_c_nome);
+      $repassa = ["chave_me22_i_codigo"=>$chave_me22_i_codigo,"chave_me01_c_nome"=>$chave_me01_c_nome];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
     

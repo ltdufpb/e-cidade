@@ -37,21 +37,15 @@ class MapaExecucaoFinanceira {
   private $oPdf;
 
   /**
-   * @type Acordo
-   */
-  private $oAcordo;
-
-  /**
    * @type stdClass[]
    */
-  private $aEmpenhos = array();
+  private $aEmpenhos = [];
 
   /**
    * @param Acordo $oAcordo
    */
-  public function __construct(Acordo $oAcordo) {
+  public function __construct(private readonly Acordo $oAcordo) {
 
-    $this->oAcordo = $oAcordo;
     $this->getEmpenhosAcordo();
 
     $oDepartamento = new DBDepartamento($this->oAcordo->getDepartamentoResponsavel());
@@ -190,10 +184,10 @@ class MapaExecucaoFinanceira {
    */
   private function getEmpenhosAcordo() {
 
-    $aWhere = array(
+    $aWhere = [
       "acordo.ac16_sequencial = {$this->oAcordo->getCodigo()}",
       "(pagordemnota.e71_anulado is false or pagordemnota.e71_anulado is null)"
-    );
+    ];
     $sCampos = "e69_numero, e69_codnota, e70_valor, e53_vlrpag, m51_codordem, e60_numemp, e60_codemp, e60_anousu, e60_vlremp";
     $oDaoAcordo      = new cl_acordo();
     $sSqlBuscaAcordo = $oDaoAcordo->sql_query_movimentacao_empenho(null, $sCampos, null, implode(' and ', $aWhere));
@@ -301,7 +295,7 @@ class MapaExecucaoFinanceira {
 
     $oStdDadosOrdem         = new stdClass();
     $oStdDadosOrdem->codigo = $oStdDadosEmpenho->m51_codordem;
-    $oStdDadosOrdem->notas  = array();
+    $oStdDadosOrdem->notas  = [];
     return $oStdDadosOrdem;
   }
 
@@ -316,7 +310,7 @@ class MapaExecucaoFinanceira {
     $oStdInformacaoEmpenho->numero = $oStdDadosEmpenho->e60_codemp.'/'.$oStdDadosEmpenho->e60_anousu;
     $oStdInformacaoEmpenho->valor  = $oStdDadosEmpenho->e60_vlremp;
     $oStdInformacaoEmpenho->saldo  = 0;
-    $oStdInformacaoEmpenho->ordens = array();
+    $oStdInformacaoEmpenho->ordens = [];
     return $oStdInformacaoEmpenho;
   }
 }

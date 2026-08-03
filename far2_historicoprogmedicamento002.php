@@ -178,7 +178,7 @@ function escreverPdf($pdf, $dados)
     }
     
     while ($pdf->GetStringWidth($dado->nome) > 92) {
-      $dado->nome = substr($dado->nome, 0, strlen($dado->nome) - 2);
+      $dado->nome = substr((string) $dado->nome, 0, strlen((string) $dado->nome) - 2);
     }
 
     novaLinha(
@@ -209,7 +209,7 @@ try {
 
   $pdf->addTitulo("Ultimas retiradas por Programa / Medicamento");
   $pdf->addTitulo('');
-  $pdf->addTitulo(utf8_decode($programas));
+  $pdf->addTitulo(mb_convert_encoding($programas, 'ISO-8859-1'));
   $pdf->addTitulo('');
   $pdf->addTitulo('Ordem:');
   $pdf->addTitulo('  1 - Medicamento');

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpeslocaltrab_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhpeslocaltrab = new cl_rhpeslocaltrab;
 $clrhpeslocaltrab->rotulo->label("rh56_seq");
 $clrhpeslocaltrab->rotulo->label("rh56_seqpes");
@@ -98,9 +98,9 @@ $clrhpeslocaltrab->rotulo->label("rh56_seqpes");
         }else{
            $sql = $clrhpeslocaltrab->sql_query("",$campos,"rh56_seq","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh56_seqpes)){
-          $repassa = array("chave_rh56_seq"=>$chave_rh56_seq,"chave_rh56_seqpes"=>$chave_rh56_seqpes);
+          $repassa = ["chave_rh56_seq"=>$chave_rh56_seq,"chave_rh56_seqpes"=>$chave_rh56_seqpes];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

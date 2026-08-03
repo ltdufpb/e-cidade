@@ -98,7 +98,7 @@ db_input('o40_descr',50,$Io40_descr,true,'text',3,'');
 		 }
 		 $sqlInstit       = "select codigo,nomeinst from db_config ";
      $rsInstit        = db_query($sqlInstit);
-     $intInstit       = pg_numrows($rsInstit);
+     $intInstit       = pg_num_rows($rsInstit);
      $arraycadtipo[0] = 'Selecione a Instituição';
      for($i = 0; $i < $intInstit; $i++){
        db_fieldsmemory($rsInstit,$i);
@@ -165,7 +165,7 @@ db_input('o41_cnpj',14,$Io41_cnpj,true,'text',$db_opcao,"")
     </td>
     <td>
 <?php 
-$x = array('01'=>'Prefeitura Municipal','02'=>'Câmara Municipal','03'=>'Secretaria da Educação','04'=>'Secretaria da Saúde','05'=>'RPPS (Exceto Autarquia)','06'=>'Autarquia (Exceto RPPS)','07'=>'Autarquia (RPPS)','08'=>'Fundação','09'=>'Empresa Estatal Dependente','10'=>'Empresa Estatal não Dependente','11'=>'Consórcio','12'=>'Outras');
+$x = ['01'=>'Prefeitura Municipal','02'=>'Câmara Municipal','03'=>'Secretaria da Educação','04'=>'Secretaria da Saúde','05'=>'RPPS (Exceto Autarquia)','06'=>'Autarquia (Exceto RPPS)','07'=>'Autarquia (RPPS)','08'=>'Fundação','09'=>'Empresa Estatal Dependente','10'=>'Empresa Estatal não Dependente','11'=>'Consórcio','12'=>'Outras'];
 db_select('o41_ident',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -279,7 +279,7 @@ function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_orcunidade.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }
   ?>
 }

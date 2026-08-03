@@ -56,13 +56,13 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("benstransf"=>"Gera transferência","benstransfcodigo"=>"Itens da tranferência"); 
- 	 $clcriaabas->sizecampo  = array("benstransf"=>"20","benstransfcodigo"=>"20");
- 	 $clcriaabas->title      = array("benstransf"=>"Gerar transferência","benstransfcodigo"=>"Itens da transferência");
+	 $clcriaabas->identifica = ["benstransf"=>"Gera transferência","benstransfcodigo"=>"Itens da tranferência"]; 
+ 	 $clcriaabas->sizecampo  = ["benstransf"=>"20","benstransfcodigo"=>"20"];
+ 	 $clcriaabas->title      = ["benstransf"=>"Gerar transferência","benstransfcodigo"=>"Itens da transferência"];
 //	 $clcriaabas->src = array("benscorlanc"=>"pat1_benscorlanc005.php");
 //die($db_param);
-	 $clcriaabas->src        = array("benstransf"=>"pat1_benstransf004.php?db_param=$db_param");
-	 $clcriaabas->disabled   = array("benstransfcodigo"=>"true"); 
+	 $clcriaabas->src        = ["benstransf"=>"pat1_benstransf004.php?db_param=$db_param"];
+	 $clcriaabas->disabled   = ["benstransfcodigo"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

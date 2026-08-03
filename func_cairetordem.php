@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cairetordem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcairetordem = new cl_cairetordem;
 $clcairetordem->rotulo->label("k32_sequencia");
 $clcairetordem->rotulo->label("k32_sequencia");
@@ -98,9 +98,9 @@ $clcairetordem->rotulo->label("k32_sequencia");
         }else{
            $sql = $clcairetordem->sql_query("",$campos,"k32_sequencia","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k32_sequencia)){
-          $repassa = array("chave_k32_sequencia"=>$chave_k32_sequencia,"chave_k32_sequencia"=>$chave_k32_sequencia);
+          $repassa = ["chave_k32_sequencia"=>$chave_k32_sequencia,"chave_k32_sequencia"=>$chave_k32_sequencia];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

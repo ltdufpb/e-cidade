@@ -75,7 +75,7 @@ if(!isset($rh58_data_dia) && !isset($rh58_data_mes) && !isset($rh58_data_ano)){
           <td align="right"><b>Pagar:</b></td>
           <td>
             <?php 
-            $arr_pagar = Array(0=>"Todos",1=>"Funcionários que não estão na justiça");
+            $arr_pagar = [0=>"Todos",1=>"Funcionários que não estão na justiça"];
             db_select("pagar", $arr_pagar, true, 1, "");
             ?>
           </td>

@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoundmedhorario = db_utils::getdao('undmedhorario_ext');
 $oDaoundmedhorario->rotulo->label("sd30_i_codigo");
@@ -193,9 +193,9 @@ $oDaoundmedhorario->rotulo->label("sd30_i_codigo");
           }
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd30_i_codigo)){
-          $repassa = array("chave_sd30_i_codigo"=>$chave_sd30_i_codigo,"chave_sd30_i_codigo"=>$chave_sd30_i_codigo);
+          $repassa = ["chave_sd30_i_codigo"=>$chave_sd30_i_codigo,"chave_sd30_i_codigo"=>$chave_sd30_i_codigo];
         }
         db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

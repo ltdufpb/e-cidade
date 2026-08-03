@@ -56,7 +56,7 @@ if(isset($fa01_i_codigo)){
  $result = $clfar_matersaude->sql_record($sql);
  if($clfar_matersaude->numrows>0){
  	//db_fieldsmemory($result,0);
- 	$iCodMater=pg_result($result,0,0);
+ 	$iCodMater=pg_fetch_result($result,0,0);
  }
 }else{
    $iCodMater=$oGet->iCodMater;

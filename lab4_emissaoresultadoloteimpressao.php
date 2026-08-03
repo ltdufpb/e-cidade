@@ -42,7 +42,7 @@ $retorno->mensagem = '';
 
 try {
     $oGet = db_utils::postMemory($_GET);
-    $datas = explode(',', $oGet->datas);
+    $datas = explode(',', (string) $oGet->datas);
 
     $dataInicio = $datas[0];
     $dataFim = $datas[1];
@@ -79,7 +79,7 @@ try {
         throw new DBException('Nenhum exame para os filtros selecionados.');
     }
 
-    $dados = array();
+    $dados = [];
 
     while ($objRequisicao = pg_fetch_object($rs)) {
         $requisicao = $objRequisicao->la22_i_codigo;
@@ -87,8 +87,8 @@ try {
         $oDadosEstrutura                 = new stdClass();
         $oDadosEstrutura->iLarguraPadrao = 192;
         $oDadosEstrutura->iAlturaPadrao  = 5;
-        $oDadosEstrutura->aSetor         = array();
-        $oDadosEstrutura->aExames        = array();
+        $oDadosEstrutura->aSetor         = [];
+        $oDadosEstrutura->aExames        = [];
         $oDadosEstrutura->iRequisicao    = $requisicao;
         $oDadosEstrutura->sData          = ''  ;
 
@@ -105,7 +105,7 @@ try {
          * Array com atributos que possuem valor para impressão.
          * Ao buscar os dados, caso encontre o registro, incrementa o array
          */
-        $aAtributosSelecionaveis  = array();
+        $aAtributosSelecionaveis  = [];
         $oDaoAtributoSelecionavel = new cl_lab_valorreferenciasel();
         $sSqlAtributos            = $oDaoAtributoSelecionavel->sql_query_file();
         $rsAtributosSelecionaveis = db_query($sSqlAtributos);
@@ -128,7 +128,7 @@ try {
             /**
              * Caso não seja do tipo CONFERIDO '60 - Conferido', segue percorrendo o próximo registro
              */
-            if (!in_array($oRequisicao->getSituacao(), array(RequisicaoExame::CONFERIDO, RequisicaoExame::ENTREGUE))) {
+            if (!in_array($oRequisicao->getSituacao(), [RequisicaoExame::CONFERIDO, RequisicaoExame::ENTREGUE])) {
                 continue;
             }
 
@@ -169,7 +169,7 @@ try {
                 $oDadosSetor             = new stdClass();
                 $oDadosSetor->iCodigo    = $oRequisicao->getLaboratorioSetor()->getCodigo();
                 $oDadosSetor->sDescricao = $oRequisicao->getLaboratorioSetor()->getDescricao();
-                $oDadosSetor->aExames    = array();
+                $oDadosSetor->aExames    = [];
 
                 $oDadosEstrutura->aSetor[$iCodigoSetor] = $oDadosSetor;
             }
@@ -197,7 +197,7 @@ try {
                 $oStdExame->aMedicamentosExame   = $oRequisicao->getMedicamentos();
                 $oStdExame->aDadosMaterialColeta = $aDadosMaterialColeta;
                 $oStdExame->sObservacao          = $oRequisicao->getObservacao();
-                $oStdExame->aAtributos           = array();
+                $oStdExame->aAtributos           = [];
 
                 $responsavelRepository = ResponsavelRepository::getInstance();
                 $coletaItem = $oRequisicao->getColetaItem();
@@ -346,7 +346,7 @@ function getIdadeSolicitante($dtNascimento)
     $sSqlAnoMesDia   = "SELECT fc_idade_anomesdia('{$dtNascimento}', '{$dtSistema}', false) as dias;";
     $rsAnoMesDia     = db_query($sSqlAnoMesDia);
     if ($rsAnoMesDia && pg_num_rows($rsAnoMesDia) > 0) {
-        $aDadosIdade   = explode(',', db_utils::fieldsMemory($rsAnoMesDia, 0)->dias);
+        $aDadosIdade   = explode(',', (string) db_utils::fieldsMemory($rsAnoMesDia, 0)->dias);
         $oIdade->anos  = trim($aDadosIdade[0]);
         $oIdade->meses = trim($aDadosIdade[1]);
         $oIdade->dias  = trim($aDadosIdade[2]);

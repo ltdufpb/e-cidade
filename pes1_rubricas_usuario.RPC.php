@@ -49,10 +49,10 @@ try {
         case 'instituicao':
             $instituicao = InstituicaoRepository::getInstituicaoSessao();
 
-            $retorno->instituicao = array(
+            $retorno->instituicao = [
                 'codigo' => $instituicao->getCodigo(),
                 'descricao' => $instituicao->getDescricao()
-            );
+            ];
             break;
         case 'buscarRubricasUsuario':
             $rubricasUsuario = $servico->buscarRubricasUsuario(

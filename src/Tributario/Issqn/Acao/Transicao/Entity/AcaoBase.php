@@ -6,13 +6,10 @@ use ECidade\Tributario\Issqn\Repository\IssbaseRepository;
 
 abstract class AcaoBase
 {
-    protected $processo;
-
     protected $issbaseRepository;
 
-    public function __construct($processo, IssbaseRepository $issbaseRepository)
+    public function __construct(protected $processo, IssbaseRepository $issbaseRepository)
     {
-        $this->processo = $processo;
         $this->issbaseRepository = $issbaseRepository;
     }
 

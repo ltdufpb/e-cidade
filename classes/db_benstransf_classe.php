@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE benstransf
 class cl_benstransf {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $t93_codtran = 0;
-   var $t93_data_dia = null;
-   var $t93_data_mes = null;
-   var $t93_data_ano = null;
-   var $t93_data = null;
-   var $t93_depart = 0;
-   var $t93_id_usuario = 0;
-   var $t93_obs = null;
-   var $t93_instit = 0;
-   var $t93_clabens = 0;
-   var $t93_divisao = null;
+   public $t93_codtran = 0;
+   public $t93_data_dia = null;
+   public $t93_data_mes = null;
+   public $t93_data_ano = null;
+   public $t93_data = null;
+   public $t93_depart = 0;
+   public $t93_id_usuario = 0;
+   public $t93_obs = null;
+   public $t93_instit = 0;
+   public $t93_clabens = 0;
+   public $t93_divisao = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  t93_codtran = int8 = Transferência
                  t93_data = date = Data da transferência
                  t93_depart = int4 = Departamento origem
@@ -65,10 +65,10 @@ class cl_benstransf {
                  t93_divisao = int4 = Divisão
                  ";
    //funcao construtor da classe
-   function cl_benstransf() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benstransf");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -153,10 +153,10 @@ class cl_benstransf {
          $this->erro_status = "0";
          return false;
        }
-       $this->t93_codtran = pg_result($result,0,0);
+       $this->t93_codtran = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from benstransf_t93_codtran_seq");
-       if(($result != false) && (pg_result($result,0,0) < $t93_codtran)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $t93_codtran)){
          $this->erro_sql = " Campo t93_codtran maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -201,7 +201,7 @@ class cl_benstransf {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Transferência de bens ($this->t93_codtran) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Transferência de bens já Cadastrado";
@@ -225,17 +225,17 @@ class cl_benstransf {
      $resaco = $this->sql_record($this->sql_query_file($this->t93_codtran));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5823,'$this->t93_codtran','I')");
-       $resac = db_query("insert into db_acount values($acount,930,5823,'','".AddSlashes(pg_result($resaco,0,'t93_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,930,5824,'','".AddSlashes(pg_result($resaco,0,'t93_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,930,5825,'','".AddSlashes(pg_result($resaco,0,'t93_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,930,5826,'','".AddSlashes(pg_result($resaco,0,'t93_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,930,9562,'','".AddSlashes(pg_result($resaco,0,'t93_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,930,9822,'','".AddSlashes(pg_result($resaco,0,'t93_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,930,13772,'','".AddSlashes(pg_result($resaco,0,'t93_clabens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,930,13773,'','".AddSlashes(pg_result($resaco,0,'t93_divisao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,930,5823,'','".AddSlashes(pg_fetch_result($resaco,0,'t93_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,930,5824,'','".AddSlashes(pg_fetch_result($resaco,0,'t93_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,930,5825,'','".AddSlashes(pg_fetch_result($resaco,0,'t93_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,930,5826,'','".AddSlashes(pg_fetch_result($resaco,0,'t93_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,930,9562,'','".AddSlashes(pg_fetch_result($resaco,0,'t93_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,930,9822,'','".AddSlashes(pg_fetch_result($resaco,0,'t93_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,930,13772,'','".AddSlashes(pg_fetch_result($resaco,0,'t93_clabens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,930,13773,'','".AddSlashes(pg_fetch_result($resaco,0,'t93_divisao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -244,10 +244,10 @@ class cl_benstransf {
       $this->atualizacampos();
      $sql = " update benstransf set ";
      $virgula = "";
-     if(trim($this->t93_codtran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_codtran"])){
+     if(trim((string) $this->t93_codtran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_codtran"])){
        $sql  .= $virgula." t93_codtran = $this->t93_codtran ";
        $virgula = ",";
-       if(trim($this->t93_codtran) == null ){
+       if(trim((string) $this->t93_codtran) == null ){
          $this->erro_sql = " Campo Transferência nao Informado.";
          $this->erro_campo = "t93_codtran";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_benstransf {
          return false;
        }
      }
-     if(trim($this->t93_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t93_data_dia"] !="") ){
+     if(trim((string) $this->t93_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t93_data_dia"] !="") ){
        $sql  .= $virgula." t93_data = '$this->t93_data' ";
        $virgula = ",";
-       if(trim($this->t93_data) == null ){
+       if(trim((string) $this->t93_data) == null ){
          $this->erro_sql = " Campo Data da transferência nao Informado.";
          $this->erro_campo = "t93_data_dia";
          $this->erro_banco = "";
@@ -273,7 +273,7 @@ class cl_benstransf {
        if(isset($GLOBALS["HTTP_POST_VARS"]["t93_data_dia"])){
          $sql  .= $virgula." t93_data = null ";
          $virgula = ",";
-         if(trim($this->t93_data) == null ){
+         if(trim((string) $this->t93_data) == null ){
            $this->erro_sql = " Campo Data da transferência nao Informado.";
            $this->erro_campo = "t93_data_dia";
            $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_benstransf {
          }
        }
      }
-     if(trim($this->t93_depart)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_depart"])){
+     if(trim((string) $this->t93_depart)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_depart"])){
        $sql  .= $virgula." t93_depart = $this->t93_depart ";
        $virgula = ",";
-       if(trim($this->t93_depart) == null ){
+       if(trim((string) $this->t93_depart) == null ){
          $this->erro_sql = " Campo Departamento origem nao Informado.";
          $this->erro_campo = "t93_depart";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_benstransf {
          return false;
        }
      }
-     if(trim($this->t93_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_id_usuario"])){
+     if(trim((string) $this->t93_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_id_usuario"])){
        $sql  .= $virgula." t93_id_usuario = $this->t93_id_usuario ";
        $virgula = ",";
-       if(trim($this->t93_id_usuario) == null ){
+       if(trim((string) $this->t93_id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "t93_id_usuario";
          $this->erro_banco = "";
@@ -310,14 +310,14 @@ class cl_benstransf {
          return false;
        }
      }
-     if(trim($this->t93_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_obs"])){
+     if(trim((string) $this->t93_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_obs"])){
        $sql  .= $virgula." t93_obs = '$this->t93_obs' ";
        $virgula = ",";
      }
-     if(trim($this->t93_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_instit"])){
+     if(trim((string) $this->t93_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_instit"])){
        $sql  .= $virgula." t93_instit = $this->t93_instit ";
        $virgula = ",";
-       if(trim($this->t93_instit) == null ){
+       if(trim((string) $this->t93_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "t93_instit";
          $this->erro_banco = "";
@@ -327,15 +327,15 @@ class cl_benstransf {
          return false;
        }
      }
-     if(trim($this->t93_clabens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_clabens"])){
-        if(trim($this->t93_clabens)=="" && isset($GLOBALS["HTTP_POST_VARS"]["t93_clabens"])){
+     if(trim((string) $this->t93_clabens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_clabens"])){
+        if(trim((string) $this->t93_clabens)=="" && isset($GLOBALS["HTTP_POST_VARS"]["t93_clabens"])){
            $this->t93_clabens = "0" ;
         }
        $sql  .= $virgula." t93_clabens = $this->t93_clabens ";
        $virgula = ",";
      }
-     if(trim($this->t93_divisao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_divisao"])){
-        if(trim($this->t93_divisao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["t93_divisao"])){
+     if(trim((string) $this->t93_divisao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t93_divisao"])){
+        if(trim((string) $this->t93_divisao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["t93_divisao"])){
            $this->t93_divisao = null ;
         }
        $sql  .= $virgula." t93_divisao = $this->t93_divisao ";
@@ -349,25 +349,25 @@ class cl_benstransf {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5823,'$this->t93_codtran','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t93_codtran"]))
-           $resac = db_query("insert into db_acount values($acount,930,5823,'".AddSlashes(pg_result($resaco,$conresaco,'t93_codtran'))."','$this->t93_codtran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,930,5823,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t93_codtran'))."','$this->t93_codtran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t93_data"]))
-           $resac = db_query("insert into db_acount values($acount,930,5824,'".AddSlashes(pg_result($resaco,$conresaco,'t93_data'))."','$this->t93_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,930,5824,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t93_data'))."','$this->t93_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t93_depart"]))
-           $resac = db_query("insert into db_acount values($acount,930,5825,'".AddSlashes(pg_result($resaco,$conresaco,'t93_depart'))."','$this->t93_depart',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,930,5825,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t93_depart'))."','$this->t93_depart',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t93_id_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,930,5826,'".AddSlashes(pg_result($resaco,$conresaco,'t93_id_usuario'))."','$this->t93_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,930,5826,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t93_id_usuario'))."','$this->t93_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t93_obs"]))
-           $resac = db_query("insert into db_acount values($acount,930,9562,'".AddSlashes(pg_result($resaco,$conresaco,'t93_obs'))."','$this->t93_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,930,9562,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t93_obs'))."','$this->t93_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t93_instit"]))
-           $resac = db_query("insert into db_acount values($acount,930,9822,'".AddSlashes(pg_result($resaco,$conresaco,'t93_instit'))."','$this->t93_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,930,9822,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t93_instit'))."','$this->t93_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t93_clabens"]))
-           $resac = db_query("insert into db_acount values($acount,930,13772,'".AddSlashes(pg_result($resaco,$conresaco,'t93_clabens'))."','$this->t93_clabens',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,930,13772,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t93_clabens'))."','$this->t93_clabens',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t93_divisao"]))
-           $resac = db_query("insert into db_acount values($acount,930,13773,'".AddSlashes(pg_result($resaco,$conresaco,'t93_divisao'))."','$this->t93_divisao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,930,13773,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t93_divisao'))."','$this->t93_divisao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -412,17 +412,17 @@ class cl_benstransf {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5823,'$t93_codtran','E')");
-         $resac = db_query("insert into db_acount values($acount,930,5823,'','".AddSlashes(pg_result($resaco,$iresaco,'t93_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,930,5824,'','".AddSlashes(pg_result($resaco,$iresaco,'t93_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,930,5825,'','".AddSlashes(pg_result($resaco,$iresaco,'t93_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,930,5826,'','".AddSlashes(pg_result($resaco,$iresaco,'t93_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,930,9562,'','".AddSlashes(pg_result($resaco,$iresaco,'t93_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,930,9822,'','".AddSlashes(pg_result($resaco,$iresaco,'t93_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,930,13772,'','".AddSlashes(pg_result($resaco,$iresaco,'t93_clabens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,930,13773,'','".AddSlashes(pg_result($resaco,$iresaco,'t93_divisao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,930,5823,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t93_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,930,5824,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t93_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,930,5825,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t93_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,930,5826,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t93_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,930,9562,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t93_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,930,9822,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t93_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,930,13772,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t93_clabens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,930,13773,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t93_divisao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from benstransf
@@ -482,7 +482,7 @@ class cl_benstransf {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:benstransf";
@@ -525,7 +525,7 @@ class cl_benstransf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -567,7 +567,7 @@ class cl_benstransf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -581,7 +581,7 @@ class cl_benstransf {
    function sql_query_file ( $t93_codtran=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -602,7 +602,7 @@ class cl_benstransf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

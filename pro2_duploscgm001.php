@@ -35,7 +35,7 @@ $clcgm = new cl_cgm;
 $clrotulo = new rotulocampo;
 $clcgm->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -179,7 +179,7 @@ function js_changenome(x){
         </td>
         <td>
 	  <?php  
-	  $tipo_zerados = array("n"=>"Não","s"=>"Sim","m"=>"Somente os zerados/branco");
+	  $tipo_zerados = ["n"=>"Não","s"=>"Sim","m"=>"Somente os zerados/branco"];
 	  db_select("zerados",$tipo_zerados,true,2); ?>
         </td>
       </tr>

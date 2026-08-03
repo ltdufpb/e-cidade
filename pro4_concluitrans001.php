@@ -34,8 +34,8 @@ require_once(modification("classes/db_proctransfer_classe.php"));
 require_once(modification("classes/db_protprocesso_classe.php"));
 require_once(modification("classes/db_proctransand_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clprocandam    = new cl_procandam;
 $clproctransfer = new cl_proctransfer;
 $clprotprocesso = new cl_protprocesso;
@@ -110,7 +110,7 @@ $db_botao = true;
                                     </tr>
                                 </table>
                                 <?php 
-                                if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Receber"){
+                                if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Receber"){
 
                                     echo "<table cellspacing = 0>";
                                     echo "  <tr>";
@@ -146,8 +146,8 @@ $db_botao = true;
                                             
                                             $rsproc = db_query($sqlproc);
                                             //inclui o andamento
-                                            $despach = pg_result($rsproc,0,"p58_despacho");
-                                            $publico = pg_result($rsproc,0,"p58_publico");
+                                            $despach = pg_fetch_result($rsproc,0,"p58_despacho");
+                                            $publico = pg_fetch_result($rsproc,0,"p58_publico");
                                             $despach =  str_replace("'","",$despach);
                                             $publico =  str_replace("'","",$publico);
                                             $dDataProcesso = $p62_dttran;

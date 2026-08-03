@@ -84,12 +84,12 @@ $this->objpdf->Text(75 - $iAjusteColunaX, $y + 6, $this->descr5); // Parcela ini
 $this->objpdf->SetFont('Arial', '', 5);
 $this->objpdf->Text(13 - $iAjusteColunaX, $y + 10, $this->titulo3); // contribuinte/endereço
 $this->objpdf->SetFont('Arial', 'B', 7);
-$this->objpdf->Text(13 - $iAjusteColunaX, $y + 13, substr($this->descr3_1, 0, 45) . "..."); // nome do contribuinte
+$this->objpdf->Text(13 - $iAjusteColunaX, $y + 13, substr((string) $this->descr3_1, 0, 45) . "..."); // nome do contribuinte
 $this->objpdf->SetFont('Arial', 'B', 6);
 $this->objpdf->Text(13 - $iAjusteColunaX, $y + 16,
 $this->descr3_2 . (!empty($this->descr3_3) ? " - " . $this->descr3_3 : "")); // endereço
 $this->objpdf->SetFont('Arial', 'B', 7);
-$this->objpdf->Text(12 - $iAjusteColunaX, $y + 19, substr($this->descr17, 0, 75)); // SQL
+$this->objpdf->Text(12 - $iAjusteColunaX, $y + 19, substr((string) $this->descr17, 0, 75)); // SQL
 
 $this->objpdf->SetFont('Arial', '', 5);
 $this->objpdf->Text(13 - $iAjusteColunaX, $y + 23, $this->titulo4 . $this->descr4_1); // Instruções
@@ -167,7 +167,7 @@ $this->objpdf->SetFont('Arial', 'B', 6);
 $this->objpdf->Text(97 - $iAjusteColunaX, $y + 16,
 $this->descr11_2 . (!empty($this->descr11_3) ? " - " . $this->descr11_3 : "")); // endereço
 $this->objpdf->SetFont('Arial', 'B', 7);
-$this->objpdf->Text(97 - $iAjusteColunaX, $y + 19, substr($this->descr17, 0, 92)); // SQL
+$this->objpdf->Text(97 - $iAjusteColunaX, $y + 19, substr((string) $this->descr17, 0, 92)); // SQL
 
 $this->objpdf->SetFont('Arial', '', 5);
 $this->objpdf->Text(97 - $iAjusteColunaX, $y + 24, $this->titulo12); // instruções
@@ -181,7 +181,7 @@ $this->objpdf->sety($y + 25);
 
 // mensagem de instruções da guia prefeitura
 $this->objpdf->SetFont('Arial', 'B', 6);
-$this->objpdf->multicell(100 - $iAjusteColunaX, 2, substr($this->descr12_1, 0, 274)); // Instruções 2 - linha 1
+$this->objpdf->multicell(100 - $iAjusteColunaX, 2, substr((string) $this->descr12_1, 0, 274)); // Instruções 2 - linha 1
 $this->objpdf->multicell(100 - $iAjusteColunaX, 2, $this->descr12_2); // Instruções 2 - linha 2
 $this->objpdf->setxy($xx, $yy);
 

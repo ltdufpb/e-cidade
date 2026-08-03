@@ -51,8 +51,8 @@ $clempagedadosret     = new cl_empagedadosret;
 $clempagedadosretmov  = new cl_empagedadosretmov;
 $clerrobanco          = new cl_errobanco;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 ?>
 <html>

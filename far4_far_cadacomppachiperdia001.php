@@ -33,7 +33,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oIframeAE                   = new cl_iframe_alterar_excluir();
 $oDaoFarCadAcompPacHiperdia  = db_utils::getdao('far_cadacomppachiperdia');
@@ -70,8 +70,8 @@ if (isset($opcao)) {
 // Carrega campos para a memória para as rotinas de alteração / exclusão
 if (isset($chavepesquisa) && !isset($incluir) && !isset($alterar) && !isset($excluir)) {
 
-  $aComplicAltExc = array();
-  $aExamesAltExc  = array();
+  $aComplicAltExc = [];
+  $aExamesAltExc  = [];
 
   // Busco as informações da triagem e do cadastro / acompanhamento
   $sCampos        = 'sau_triagemavulsa.*, far_cadacomppachiperdia.*, sd03_i_codigo, ';
@@ -304,7 +304,7 @@ if (isset($incluir) || isset($alterar)) {
       * Laco que exclui todos os medicamentos relacionados ao cadastro / acompanhamento
       */
       for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
-       
+
         $oDados = db_utils::fieldsmemory($rs, $iCont);
         $oDaoFarMedicamentoCadAcomp->excluir($oDados->fa49_i_codigo);
         if ($oDaoFarMedicamentoCadAcomp->erro_status == '0') {
@@ -314,7 +314,7 @@ if (isset($incluir) || isset($alterar)) {
           break;
 
         }
-     
+
       } // fim do for
 
     }
@@ -328,7 +328,7 @@ if (isset($incluir) || isset($alterar)) {
       for ($iCont = 0; $iCont < $iTam; $iCont++) {
 
         /* Os dados dos medicamentos vem no seguinte formato: id_medicamento ## quantidade */
-        $aDados = explode(' ## ',$aMedicamentos[$iCont]);
+        $aDados = explode(' ## ',(string) $aMedicamentos[$iCont]);
         $oDaoFarMedicamentoCadAcomp->fa49_i_medicamento = $aDados[0];
         $oDaoFarMedicamentoCadAcomp->fa49_n_quantidade  = $aDados[1];
         $oDaoFarMedicamentoCadAcomp->fa49_i_cadacomp    = $oDaoFarCadAcompPacHiperdia->fa50_i_codigo;
@@ -338,7 +338,7 @@ if (isset($incluir) || isset($alterar)) {
           $oDaoFarCadAcompPacHiperdia->erro_status = '0';
           $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoFarMedicamentoCadAcomp->erro_msg;
           break;
-          
+
         }
 
       } // fim do for
@@ -362,7 +362,7 @@ if (isset($incluir) || isset($alterar)) {
       * Laco que exclui todas as complicações relacionadas ao cadastro / acompanhamento
       */
       for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
-       
+
         $oDados = db_utils::fieldsmemory($rs, $iCont);
         $oDaoFarComplicacoesCadAcomp->excluir($oDados->fa52_i_codigo);
         if ($oDaoFarComplicacoesCadAcomp->erro_status == '0') {
@@ -372,7 +372,7 @@ if (isset($incluir) || isset($alterar)) {
           break;
 
         }
-     
+
       } // fim do for
 
     }
@@ -386,7 +386,7 @@ if (isset($incluir) || isset($alterar)) {
       for ($iCont = 0; $iCont < $iTam; $iCont++) {
 
         /* Os dados das complicacoes vem no seguinte formato: id_complicacao ## cod_estrutural */
-        $aDados = explode(' ## ',$aComplicacoes[$iCont]);
+        $aDados = explode(' ## ',(string) $aComplicacoes[$iCont]);
         $oDaoFarComplicacoesCadAcomp->fa52_i_complicacao = $aDados[0];
         $oDaoFarComplicacoesCadAcomp->fa52_i_cadacomp    = $oDaoFarCadAcompPacHiperdia->fa50_i_codigo;
         $oDaoFarComplicacoesCadAcomp->incluir(null);
@@ -395,7 +395,7 @@ if (isset($incluir) || isset($alterar)) {
           $oDaoFarCadAcompPacHiperdia->erro_status = '0';
           $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoFarComplicacoesCadAcomp->erro_msg;
           break;
-          
+
         }
 
       } // fim do for
@@ -419,7 +419,7 @@ if (isset($incluir) || isset($alterar)) {
       * Laco que exclui todos os exames relacionadas ao cadastro / acompanhamento
       */
       for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
-       
+
         $oDados = db_utils::fieldsmemory($rs, $iCont);
         $oDaoFarExamesAcomp->excluir($oDados->fa48_i_codigo);
         if ($oDaoFarExamesAcomp->erro_status == '0') {
@@ -429,7 +429,7 @@ if (isset($incluir) || isset($alterar)) {
           break;
 
         }
-     
+
       } // fim do for
 
     }
@@ -449,7 +449,7 @@ if (isset($incluir) || isset($alterar)) {
           $oDaoFarCadAcompPacHiperdia->erro_status = '0';
           $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoFarExamesAcomp->erro_msg;
           break;
-          
+
         }
 
       } // fim do for
@@ -530,17 +530,17 @@ if (isset($excluir)) {
     * Laco que exclui todos os exames relacionadas ao cadastro / acompanhamento
     */
     for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
-     
+
       $oDados = db_utils::fieldsmemory($rs, $iCont);
       $oDaoFarExamesAcomp->excluir($oDados->fa48_i_codigo);
       if ($oDaoFarExamesAcomp->erro_status == '0') {
-    
+
         $oDaoFarCadAcompPacHiperdia->erro_status = '0';
         $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoFarExamesAcomp->erro_msg;
         break;
-    
+
       }
-    
+
     } // fim do for
 
   }
@@ -584,7 +584,7 @@ if (isset($excluir)) {
   
       $oDaoFarCadAcompPacHiperdia->erro_status = '0';
       $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoSauTriagemAvulsa->erro_msg;
-      break;
+      return;
   
     }
 

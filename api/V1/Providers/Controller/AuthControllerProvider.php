@@ -14,9 +14,7 @@ class AuthControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $app["login.controller"] = function () use ($app) {
-            return new Login($app['request_stack']->getCurrentRequest(), $app);
-        };
+        $app["login.controller"] = (fn() => new Login($app['request_stack']->getCurrentRequest(), $app));
 
         // creates a new controller based on the default route
         $controllers = $app['controllers_factory'];

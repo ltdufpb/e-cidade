@@ -41,7 +41,7 @@ include(modification("classes/db_empnotaele_classe.php"));
 include(modification("classes/db_empparametro_classe.php"));
 //db_postmemory($HTTP_POST_VARS,2);
 //db_postmemory($HTTP_SERVER_VARS,2);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clpagordem      = new cl_pagordem;
 $clpagordemconta = new cl_pagordemconta;
 $clpagordemele   = new cl_pagordemele;

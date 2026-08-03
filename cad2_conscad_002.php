@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $result = db_query("select proprietario.* , c.z01_nome as promitente, c.z01_ender as ender_promitente,j.z01_nome as imobiliaria,j.z01_ender as ender_imobiliaria
                    from proprietario
@@ -39,7 +39,7 @@ $result = db_query("select proprietario.* , c.z01_nome as promitente, c.z01_ende
                         left outer join cgm j on j44_numcgm = j.z01_numcgm              
  			       where j01_matric = $cod_matricula");
 
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
    msgbox("Matrícula não Cadastrada.");
 }
 db_fieldsmemory($result,0);
@@ -132,7 +132,7 @@ a.nome:hover {
                   <?=$z01_nome?>
                 </td>
                 <td class="tabfonte" width="53%"><strong>Endereco:&nbsp; 
-                  <?=substr($z01_ender,0,30)?>
+                  <?=substr((string) $z01_ender,0,30)?>
                   </strong></td>
               </tr>
             </table></td>
@@ -146,7 +146,7 @@ a.nome:hover {
                   <?=$promitente?>
                 </td>
                 <td class="tabfonte" width="54%"><strong>Endereco:&nbsp; 
-                  <?=substr($ender_promitente,0,30)?>
+                  <?=substr((string) $ender_promitente,0,30)?>
                   </strong></td>
               </tr>
             </table></td>
@@ -160,7 +160,7 @@ a.nome:hover {
                   <?=$imobiliaria?>
                 </td>
                 <td class="tabfonte" width="54%"><strong>Endereco:&nbsp; 
-                  <?=substr($ender_imobiliaria,0,30)?>
+                  <?=substr((string) $ender_imobiliaria,0,30)?>
                   </strong></td>
               </tr>
             </table></td>
@@ -255,8 +255,8 @@ a.nome:hover {
 	    $result = db_query("select * from carlote,caracter 
 		                   where j35_idbql = $j01_idbql and
 						         j35_caract = j31_codigo");
-		if( pg_numrows($result) != 0 ) {
-		  for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+		if( pg_num_rows($result) != 0 ) {
+		  for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 		    db_fieldsmemory($result,$contador);
 		    if ($controle == 1 ) {
 		     ?>
@@ -276,7 +276,7 @@ a.nome:hover {
                   <?=$j35_caract?>
                 </td>
                 <td class="tabfonte" width="37%"> 
-                  <?=substr($j31_descr,0,20)?>
+                  <?=substr((string) $j31_descr,0,20)?>
                 </td>
                 <?php 
 			 $controle = 2;
@@ -287,7 +287,7 @@ a.nome:hover {
                   <?=$j35_caract?>
                 </td>
                 <td class="tabfonte" width="34%"> 
-                  <?=substr($j31_descr,0,20)?>
+                  <?=substr((string) $j31_descr,0,20)?>
                 </td>
               </tr>
               <?php 
@@ -304,13 +304,13 @@ a.nome:hover {
 										 ,tipoisen 
 		                   where j46_matric = $cod_matricula and j47_anousu >= 
 						   '".date("Y")."' and tipoisen.j45_tipo = iptuisen.j46_tipo ");
-		if( pg_numrows($result) != 0 ) {
-		  for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+		if( pg_num_rows($result) != 0 ) {
+		  for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 		    db_fieldsmemory($result,$contador);
 	        $result_lim = db_query("select j47_anousu
 			                       from isenexe 
 		                           where j47_codigo = $j46_codigo order by  j47_anousu ");
-		    $numrows = pg_numrows($result_lim);
+		    $numrows = pg_num_rows($result_lim);
 			db_fieldsmemory($result_lim,1);
 			$anoini = $j47_anousu;
 			db_fieldsmemory($result_lim,$numrows-1);
@@ -325,11 +325,11 @@ a.nome:hover {
                 </td>
                 <td class="tabfonte" width="7%"><strong>Tipo:</strong></td>
                 <td class="tabfonte" width="31%"> 
-                  <?=substr($j46_hist,0,20)?>
+                  <?=substr((string) $j46_hist,0,20)?>
                 </td>
                 <td class="tabfonte" width="8%"><strong>Motivo:</strong></td>
                 <td class="tabfonte" width="34%"> 
-                  <?=substr($j45_descr,0,20)?>
+                  <?=substr((string) $j45_descr,0,20)?>
                 </td>
               </tr>
               <?php 
@@ -350,13 +350,13 @@ a.nome:hover {
 		$result = db_query("select * from testada,ruas 
 		                   where j36_idbql  = $j01_idbql  and
 								 j36_codigo = j14_codigo");
-		if( pg_numrows($result) != 0 ) {
-		  for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+		if( pg_num_rows($result) != 0 ) {
+		  for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 		    db_fieldsmemory($result,$contador);
 		    ?>
               <tr> 
                 <td class="tabfonte" width="8%">Rua:</td>
-                <td class="tabfonte" width="53%"><?php  echo $j36_codigo." - ".substr($j14_nome,0,20)?></td>
+                <td class="tabfonte" width="53%"><?php  echo $j36_codigo." - ".substr((string) $j14_nome,0,20)?></td>
                 <td class="tabfonte" width="13%"><strong>Face:</strong></td>
                 <td class="tabfonte" width="8%"> 
                   <?=$j36_face?>
@@ -387,8 +387,8 @@ a.nome:hover {
 						   j39_codigo = j14_codigo
 						   order by j39_idcons ");
 		$numero = 0;
-		if( pg_numrows($result) != 0 ) {
-		  for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+		if( pg_num_rows($result) != 0 ) {
+		  for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 		    db_fieldsmemory($result,$contador);
   		    if( $numero != $j39_idcons ){
 			  $confere = 0;
@@ -437,7 +437,7 @@ a.nome:hover {
                   <?=$j48_caract?>
                 </td>
                 <td class="tabfonte" width="36%" height="29"> 
-                  <?=substr($j31_descr,0,20)?>
+                  <?=substr((string) $j31_descr,0,20)?>
                 </td>
                 <?php 
 			  } else {
@@ -447,7 +447,7 @@ a.nome:hover {
                   <?=$j48_caract?>
                 </td>
                 <td class="tabfonte" width="43%" height="29"> 
-                  <?=substr($j31_descr,0,20)?>
+                  <?=substr((string) $j31_descr,0,20)?>
                 </td>
               </tr>
               <?php 
@@ -472,8 +472,8 @@ a.nome:hover {
 		$result = db_query("select z01_nome,z01_ender from propri,cgm
 		                   where j42_matric = $cod_matricula and
 						   j42_numcgm = z01_numcgm");
-		if( pg_numrows($result) != 0 ) {
-		  for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+		if( pg_num_rows($result) != 0 ) {
+		  for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 		    db_fieldsmemory($result,$contador);
 		    ?>
               <tr> 
@@ -502,12 +502,12 @@ a.nome:hover {
       <?php 
 	db_query("begin");			
     $img = db_query("select arq from db_imgsitbi where trim(matricula) = trim('$j11_matric') order by data desc limit 1");
-    if(pg_numrows($img) > 0) {
-	  $oid = pg_result($img,0,0);
-	  $DocHome = "http://".$_SERVER["SERVER_ADDR"].substr($_SERVER['PHP_SELF'],0,strrpos($_SERVER['PHP_SELF'],"/"));
-      $DocRoot = substr($_SERVER['SCRIPT_FILENAME'],0,strrpos($_SERVER['SCRIPT_FILENAME'],"/"));
+    if(pg_num_rows($img) > 0) {
+	  $oid = pg_fetch_result($img,0,0);
+	  $DocHome = "http://".$_SERVER["SERVER_ADDR"].substr((string) $_SERVER['PHP_SELF'],0,strrpos((string) $_SERVER['PHP_SELF'],"/"));
+      $DocRoot = substr((string) $_SERVER['SCRIPT_FILENAME'],0,strrpos((string) $_SERVER['SCRIPT_FILENAME'],"/"));
       $caminho = tempnam($DocRoot."/tmp/","img");
-	  pg_loexport($oid,$caminho);			  
+	  pg_lo_export($oid,$caminho);			  
 	?>
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr> 

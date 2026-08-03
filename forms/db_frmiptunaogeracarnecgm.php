@@ -108,7 +108,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("j68_sequencial"=>@$j68_sequencial);
+	 $chavepri= ["j68_sequencial"=>@$j68_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cliptunaogeracarnecgm->sql_query(null,"*",null,"j68_naogeracarne=$j68_naogeracarne");
 	 $cliframe_alterar_excluir->campos  ="j68_numcgm,z01_nome";

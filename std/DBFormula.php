@@ -8,8 +8,8 @@ abstract class DBFormula {
   /**
    * Fórmulas que ficarão em memória, que sejam utilizadas
    */
-  protected $aFormulas          = array();
-  protected $aFormulasEstaticas = array();
+  protected $aFormulas          = [];
+  protected $aFormulasEstaticas = [];
 
   const REGEX_PARSE  = "|\[(.*)\]|U";
 

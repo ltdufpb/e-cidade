@@ -141,7 +141,7 @@ $clclientes->rotulo->label();
 		    </td>
 		    <td> 
 					<?php 
-						$x = array("f"=>"NAO","t"=>"SIM");
+						$x = ["f"=>"NAO","t"=>"SIM"];
 						db_select('at01_status',$x,true,$db_opcao,"style='width:90px'");
 					?>
 		    </td>
@@ -174,13 +174,13 @@ $clclientes->rotulo->label();
         <td colspan="3"> 
           <?php 
           
-            $aTipoCliente = array("1"=>"Prefeitura",
+            $aTipoCliente = ["1"=>"Prefeitura",
                                   "2"=>"Câmara",
                                   "3"=>"RPPS",  
                                   "4"=>"Autarquias/Fundações",
                                   "5"=>"Autarquias de Saneamentos",
                                   "6"=>"Empresa Mista",
-                                  "7"=>"Outros");
+                                  "7"=>"Outros"];
           
             db_select('at01_tipocliente',$aTipoCliente,true,$db_opcao,"style='width:300px'");
             
@@ -193,7 +193,7 @@ $clclientes->rotulo->label();
 		    </td>
 		    <td> 
 					<?php 
-						$x = array("f"=>"NAO","t"=>"SIM");
+						$x = ["f"=>"NAO","t"=>"SIM"];
 						db_select('at01_ativo',$x,true,$db_opcao,"style='width:90px;'");
 					?>
 		    </td>
@@ -202,7 +202,7 @@ $clclientes->rotulo->label();
 		    </td>
 		    <td align="right" > 
 					<?php 
-						$x = array("f"=>"NAO","t"=>"SIM");
+						$x = ["f"=>"NAO","t"=>"SIM"];
 						db_select('at01_base',$x,true,$db_opcao,"style='width:90px;'");
 					?>
 		    </td>
@@ -239,7 +239,7 @@ function js_preenchepesquisa(chave){
   db_iframe_clientes.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

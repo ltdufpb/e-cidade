@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_layouttxt.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("libs/db_sql.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -95,13 +95,13 @@ db_postmemory($HTTP_POST_VARS);
                                                   //                                       o - órgão,
 
   $geraform->tipofol = true;                      // NOME DO CAMPO PARA TIPO DE FOLHA
-  $geraform->arr_tipofol = array(
+  $geraform->arr_tipofol = [
                                  "salario"=>"Salário",
                                  "complementar"=>"Complementar",
                                  "rescisao"=>"Rescisão",
                                  "13salario"=>"13o. Salário",
                                  "adiantamento"=>"Adiantamento"
-                                );
+                                ];
   $geraform->complementar = "complementar";                // VALUE DA COMPLEMENTAR PARA BUSCAR SEMEST 
 
   $geraform->campo_auxilio_lota = "faixa_lotac";  // NOME DO DAS LOTAÇÕES SELECIONADAS
@@ -109,7 +109,7 @@ db_postmemory($HTTP_POST_VARS);
 
   $geraform->trenome = "tipo";                    // NOME DO CAMPO TIPO DE RESUMO
   $geraform->mostord = true;
-  $geraform->arr_mostord = Array("a"=>"Alfabética", "n"=>"Numérica");
+  $geraform->arr_mostord = ["a"=>"Alfabética", "n"=>"Numérica"];
 
   $geraform->onchpad = true;                      // MUDAR AS OPÇÕES AO SELECIONAR OS TIPOS DE FILTRO OU RESUMO
   $geraform->gera_form($anofolha,$mesfolha);
@@ -309,7 +309,7 @@ if(isset($emite2)){
                                          );
 	echo $sqlDentro;
   $res = db_query($sqlDentro);
-  $num = pg_numrows($res);
+  $num = pg_num_rows($res);
   if($num == 0){
     $erro_msg = "Não existe cálculo no período de $mesfolha / $anofolha";
     $sqlerro = true;

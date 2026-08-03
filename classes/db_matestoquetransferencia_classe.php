@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE matestoquetransferencia
 class cl_matestoquetransferencia {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $m84_sequencial = 0;
-   var $m84_matestoqueitem = 0;
-   var $m84_matestoqueini = 0;
-   var $m84_coddepto = 0;
-   var $m84_valortotal = 0;
-   var $m84_quantidade = 0;
-   var $m84_transferido = 'f';
-   var $m84_ativo = 'f';
+   public $m84_sequencial = 0;
+   public $m84_matestoqueitem = 0;
+   public $m84_matestoqueini = 0;
+   public $m84_coddepto = 0;
+   public $m84_valortotal = 0;
+   public $m84_quantidade = 0;
+   public $m84_transferido = 'f';
+   public $m84_ativo = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  m84_sequencial = int4 = Transferência
                  m84_matestoqueitem = int8 = Sequencial do item no estoque
                  m84_matestoqueini = int8 = Movimentação do estoque
@@ -62,10 +62,10 @@ class cl_matestoquetransferencia {
                  m84_ativo = bool = Situação da Transferência
                  ";
    //funcao construtor da classe
-   function cl_matestoquetransferencia() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoquetransferencia");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -167,10 +167,10 @@ class cl_matestoquetransferencia {
          $this->erro_status = "0";
          return false;
        }
-       $this->m84_sequencial = pg_result($result,0,0);
+       $this->m84_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from matestoquetransferencia_m84_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m84_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m84_sequencial)){
          $this->erro_sql = " Campo m84_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -212,7 +212,7 @@ class cl_matestoquetransferencia {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Transferência entre depósitos ($this->m84_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Transferência entre depósitos já Cadastrado";
@@ -236,29 +236,29 @@ class cl_matestoquetransferencia {
      $resaco = $this->sql_record($this->sql_query_file($this->m84_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19818,'$this->m84_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3553,19818,'','".AddSlashes(pg_result($resaco,0,'m84_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3553,19819,'','".AddSlashes(pg_result($resaco,0,'m84_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3553,19820,'','".AddSlashes(pg_result($resaco,0,'m84_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3553,19821,'','".AddSlashes(pg_result($resaco,0,'m84_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3553,19822,'','".AddSlashes(pg_result($resaco,0,'m84_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3553,19823,'','".AddSlashes(pg_result($resaco,0,'m84_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3553,19824,'','".AddSlashes(pg_result($resaco,0,'m84_transferido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3553,19825,'','".AddSlashes(pg_result($resaco,0,'m84_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3553,19818,'','".AddSlashes(pg_fetch_result($resaco,0,'m84_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3553,19819,'','".AddSlashes(pg_fetch_result($resaco,0,'m84_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3553,19820,'','".AddSlashes(pg_fetch_result($resaco,0,'m84_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3553,19821,'','".AddSlashes(pg_fetch_result($resaco,0,'m84_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3553,19822,'','".AddSlashes(pg_fetch_result($resaco,0,'m84_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3553,19823,'','".AddSlashes(pg_fetch_result($resaco,0,'m84_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3553,19824,'','".AddSlashes(pg_fetch_result($resaco,0,'m84_transferido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3553,19825,'','".AddSlashes(pg_fetch_result($resaco,0,'m84_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
    // funcao para alteracao
-   function alterar ($m84_sequencial=null, $sWhereAlterar) {
+   function alterar ($m84_sequencial=null, $sWhereAlterar = null) {
       $this->atualizacampos();
      $sql = " update matestoquetransferencia set ";
      $virgula = "";
-     if(trim($this->m84_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_sequencial"])){
+     if(trim((string) $this->m84_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_sequencial"])){
        $sql  .= $virgula." m84_sequencial = $this->m84_sequencial ";
        $virgula = ",";
-       if(trim($this->m84_sequencial) == null ){
+       if(trim((string) $this->m84_sequencial) == null ){
          $this->erro_sql = " Campo Transferência nao Informado.";
          $this->erro_campo = "m84_sequencial";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_matestoquetransferencia {
          return false;
        }
      }
-     if(trim($this->m84_matestoqueitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_matestoqueitem"])){
+     if(trim((string) $this->m84_matestoqueitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_matestoqueitem"])){
        $sql  .= $virgula." m84_matestoqueitem = $this->m84_matestoqueitem ";
        $virgula = ",";
-       if(trim($this->m84_matestoqueitem) == null ){
+       if(trim((string) $this->m84_matestoqueitem) == null ){
          $this->erro_sql = " Campo Sequencial do item no estoque nao Informado.";
          $this->erro_campo = "m84_matestoqueitem";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_matestoquetransferencia {
          return false;
        }
      }
-     if(trim($this->m84_matestoqueini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_matestoqueini"])){
+     if(trim((string) $this->m84_matestoqueini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_matestoqueini"])){
        $sql  .= $virgula." m84_matestoqueini = $this->m84_matestoqueini ";
        $virgula = ",";
-       if(trim($this->m84_matestoqueini) == null ){
+       if(trim((string) $this->m84_matestoqueini) == null ){
          $this->erro_sql = " Campo Movimentação do estoque nao Informado.";
          $this->erro_campo = "m84_matestoqueini";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_matestoquetransferencia {
          return false;
        }
      }
-     if(trim($this->m84_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_coddepto"])){
+     if(trim((string) $this->m84_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_coddepto"])){
        $sql  .= $virgula." m84_coddepto = $this->m84_coddepto ";
        $virgula = ",";
-       if(trim($this->m84_coddepto) == null ){
+       if(trim((string) $this->m84_coddepto) == null ){
          $this->erro_sql = " Campo Código Depto. Destino nao Informado.";
          $this->erro_campo = "m84_coddepto";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_matestoquetransferencia {
          return false;
        }
      }
-     if(trim($this->m84_valortotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_valortotal"])){
+     if(trim((string) $this->m84_valortotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_valortotal"])){
        $sql  .= $virgula." m84_valortotal = $this->m84_valortotal ";
        $virgula = ",";
-       if(trim($this->m84_valortotal) == null ){
+       if(trim((string) $this->m84_valortotal) == null ){
          $this->erro_sql = " Campo Valor total nao Informado.";
          $this->erro_campo = "m84_valortotal";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_matestoquetransferencia {
          return false;
        }
      }
-     if(trim($this->m84_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_quantidade"])){
+     if(trim((string) $this->m84_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_quantidade"])){
        $sql  .= $virgula." m84_quantidade = $this->m84_quantidade ";
        $virgula = ",";
-       if(trim($this->m84_quantidade) == null ){
+       if(trim((string) $this->m84_quantidade) == null ){
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "m84_quantidade";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_matestoquetransferencia {
          return false;
        }
      }
-     if(trim($this->m84_transferido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_transferido"])){
+     if(trim((string) $this->m84_transferido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_transferido"])){
        $sql  .= $virgula." m84_transferido = '$this->m84_transferido' ";
        $virgula = ",";
-       if(trim($this->m84_transferido) == null ){
+       if(trim((string) $this->m84_transferido) == null ){
          $this->erro_sql = " Campo Status Transferência nao Informado.";
          $this->erro_campo = "m84_transferido";
          $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_matestoquetransferencia {
          return false;
        }
      }
-     if(trim($this->m84_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_ativo"])){
+     if(trim((string) $this->m84_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m84_ativo"])){
        $sql  .= $virgula." m84_ativo = '$this->m84_ativo' ";
        $virgula = ",";
-       if(trim($this->m84_ativo) == null ){
+       if(trim((string) $this->m84_ativo) == null ){
          $this->erro_sql = " Campo Situação da Transferência nao Informado.";
          $this->erro_campo = "m84_ativo";
          $this->erro_banco = "";
@@ -380,28 +380,28 @@ class cl_matestoquetransferencia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
-         $iValorSequencial = pg_result($resaco,$conresaco,'m84_sequencial');
+         $iValorSequencial = pg_fetch_result($resaco,$conresaco,'m84_sequencial');
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19818,'$iValorSequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m84_sequencial"]) || $this->m84_sequencial != "")
            $resac = db_query("insert into db_acount values($acount,3553,19818,'".AddSlashes($iValorSequencial)."','$this->m84_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m84_matestoqueitem"]) || $this->m84_matestoqueitem != "")
-           $resac = db_query("insert into db_acount values($acount,3553,19819,'".AddSlashes(pg_result($resaco,$conresaco,'m84_matestoqueitem'))."','$this->m84_matestoqueitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3553,19819,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m84_matestoqueitem'))."','$this->m84_matestoqueitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m84_matestoqueini"]) || $this->m84_matestoqueini != "")
-           $resac = db_query("insert into db_acount values($acount,3553,19820,'".AddSlashes(pg_result($resaco,$conresaco,'m84_matestoqueini'))."','$this->m84_matestoqueini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3553,19820,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m84_matestoqueini'))."','$this->m84_matestoqueini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m84_coddepto"]) || $this->m84_coddepto != "")
-           $resac = db_query("insert into db_acount values($acount,3553,19821,'".AddSlashes(pg_result($resaco,$conresaco,'m84_coddepto'))."','$this->m84_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3553,19821,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m84_coddepto'))."','$this->m84_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m84_valortotal"]) || $this->m84_valortotal != "")
-           $resac = db_query("insert into db_acount values($acount,3553,19822,'".AddSlashes(pg_result($resaco,$conresaco,'m84_valortotal'))."','$this->m84_valortotal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3553,19822,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m84_valortotal'))."','$this->m84_valortotal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m84_quantidade"]) || $this->m84_quantidade != "")
-           $resac = db_query("insert into db_acount values($acount,3553,19823,'".AddSlashes(pg_result($resaco,$conresaco,'m84_quantidade'))."','$this->m84_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3553,19823,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m84_quantidade'))."','$this->m84_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m84_transferido"]) || $this->m84_transferido != "")
-           $resac = db_query("insert into db_acount values($acount,3553,19824,'".AddSlashes(pg_result($resaco,$conresaco,'m84_transferido'))."','$this->m84_transferido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3553,19824,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m84_transferido'))."','$this->m84_transferido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m84_ativo"]) || $this->m84_ativo != "")
-           $resac = db_query("insert into db_acount values($acount,3553,19825,'".AddSlashes(pg_result($resaco,$conresaco,'m84_ativo'))."','$this->m84_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3553,19825,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m84_ativo'))."','$this->m84_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -446,17 +446,17 @@ class cl_matestoquetransferencia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19818,'$m84_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3553,19818,'','".AddSlashes(pg_result($resaco,$iresaco,'m84_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3553,19819,'','".AddSlashes(pg_result($resaco,$iresaco,'m84_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3553,19820,'','".AddSlashes(pg_result($resaco,$iresaco,'m84_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3553,19821,'','".AddSlashes(pg_result($resaco,$iresaco,'m84_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3553,19822,'','".AddSlashes(pg_result($resaco,$iresaco,'m84_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3553,19823,'','".AddSlashes(pg_result($resaco,$iresaco,'m84_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3553,19824,'','".AddSlashes(pg_result($resaco,$iresaco,'m84_transferido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3553,19825,'','".AddSlashes(pg_result($resaco,$iresaco,'m84_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3553,19818,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m84_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3553,19819,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m84_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3553,19820,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m84_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3553,19821,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m84_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3553,19822,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m84_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3553,19823,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m84_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3553,19824,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m84_transferido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3553,19825,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m84_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matestoquetransferencia
@@ -516,7 +516,7 @@ class cl_matestoquetransferencia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matestoquetransferencia";
@@ -531,7 +531,7 @@ class cl_matestoquetransferencia {
    function sql_query ( $m84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_matestoquetransferencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -574,7 +574,7 @@ class cl_matestoquetransferencia {
    function sql_query_file ( $m84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -595,7 +595,7 @@ class cl_matestoquetransferencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -607,7 +607,7 @@ class cl_matestoquetransferencia {
    function sql_query_transferencia ( $m84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -632,7 +632,7 @@ class cl_matestoquetransferencia {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

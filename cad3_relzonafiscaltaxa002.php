@@ -39,13 +39,13 @@ require_once(modification("fpdf151/PDFTable.php"));
 $oGet    = db_utils::postMemory($_GET);
 $iAnousu = $oGet->anousu;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPdfTable = new PDFTable(PDFDocument::PRINT_LANDSCAPE);
-$aCabecalho     = array( "Código", "Desrição", "Código da Receita", "Descrição da Receita", "Valor" );
-$aLarguraColuna = array( 5, 35, 15, 30, 15 );
-$aLinhamento    = array( PDFDocument::ALIGN_CENTER, PDFDocument::ALIGN_LEFT, PDFDocument::ALIGN_CENTER,
-                         PDFDocument::ALIGN_LEFT, PDFDocument::ALIGN_CENTER );
+$aCabecalho     = [ "Código", "Desrição", "Código da Receita", "Descrição da Receita", "Valor" ];
+$aLarguraColuna = [ 5, 35, 15, 30, 15 ];
+$aLinhamento    = [ PDFDocument::ALIGN_CENTER, PDFDocument::ALIGN_LEFT, PDFDocument::ALIGN_CENTER,
+                         PDFDocument::ALIGN_LEFT, PDFDocument::ALIGN_CENTER ];
 
 $oPdfTable->setTotalByPage(true);
 $oPdfTable->setPercentWidth(true);
@@ -69,13 +69,13 @@ if( $rsZonasTaxa ){
     $oZonasTaxas = db_utils::fieldsMemory($rsZonasTaxa, $iRow);
 
     $oPdfTable->addLineInformation(
-      array(
+      [
         $oZonasTaxas->j50_zona,
         $oZonasTaxas->j50_descr,
         $oZonasTaxas->j57_receit,
         $oZonasTaxas->k02_descr,
         trim(db_formatar($oZonasTaxas->j57_valor,'f'))
-      )
+      ]
     );
   }
 }

@@ -33,7 +33,7 @@ use Exception;
 
 class PontoComplementarRepository
 {
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param $matricula
@@ -90,7 +90,7 @@ class PontoComplementarRepository
             throw new Exception("Não foi possível encontrar o ponto complementar.\nContate o suporte.");
         }
 
-        $pontoComplementar = array();
+        $pontoComplementar = [];
 
         if (pg_num_rows($rs) === 0) {
             return $pontoComplementar;

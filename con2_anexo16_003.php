@@ -36,8 +36,8 @@ $clconreltitulos          = new cl_conreltitulos;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clconreltitulos->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -236,7 +236,7 @@ if($db_opcao==1&&!$sqlerro) {
  <tr>
  <td colspan=2>
  <?php 
-   $chavepri= array("c44_sequencia"=>@$c44_sequencia);
+   $chavepri= ["c44_sequencia"=>@$c44_sequencia];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql   = $clconreltitulos->sql_query(null,"c44_sequencia,c44_lei,c44_quantidade,c44_valemiss,c44_saldo,c44_movemiss,c44_movresgate,c44_saldoqtd,c44_saldovalor","c44_sequencia desc","c44_anousu=$anousu and c44_instit=$instit");
    $cliframe_alterar_excluir->campos = "c44_sequencia,c44_lei,c44_quantidade,c44_valemiss,c44_saldo,c44_movemiss,c44_movresgate,c44_saldoqtd,c44_saldovalor";

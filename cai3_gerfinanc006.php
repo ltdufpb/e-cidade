@@ -35,7 +35,7 @@
  require_once(modification("std/DBLargeObject.php"));
  require_once(modification("classes/db_certidao_classe.php"));
 
- parse_str(base64_decode($_SERVER['QUERY_STRING']));
+ parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
  
  if($tipo_cert==1){
  	$tipo = "Positiva";
@@ -311,8 +311,8 @@ montarGrid();
 
 <?php 
 flush();
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 if($tipo_cert==1){
   echo "<script> document.form1.tipo.value = 1;</script>";
@@ -323,7 +323,7 @@ if($tipo_cert==1){
 }
 flush();
 $rsNumpref = db_query("select * from numpref where k03_anousu = ".db_getsession("DB_anousu")." and k03_instit = ".db_getsession('DB_instit') );
-$numrows = pg_numrows($rsNumpref);
+$numrows = pg_num_rows($rsNumpref);
 if ($numrows>0){
   db_fieldsmemory($rsNumpref,0);
   if(isset($k03_reccert) && $k03_reccert == 't'){

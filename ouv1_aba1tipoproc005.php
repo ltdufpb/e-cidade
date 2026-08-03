@@ -33,8 +33,8 @@ include(modification("libs/db_utils.php"));
 include(modification("classes/db_tipoproc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet = db_utils::postMemory($_GET);
@@ -58,8 +58,8 @@ SQL
     if ($cltipoproc->numrows > 0) {
         db_fieldsmemory($result, 0);
 
-        $d1 = substr($p51_dtlimite, 6, 4) . substr($p51_dtlimite, 3, 2) . substr($p51_dtlimite, 0, 2);
-        $d2 = substr($limite, 0, 4) . substr($limite, 5, 2) . substr($limite, 8, 2);
+        $d1 = substr((string) $p51_dtlimite, 6, 4) . substr((string) $p51_dtlimite, 3, 2) . substr((string) $p51_dtlimite, 0, 2);
+        $d2 = substr((string) $limite, 0, 4) . substr((string) $limite, 5, 2) . substr((string) $limite, 8, 2);
 
         if ($d2 != "" && $d2 < date('Ymd', db_getsession("DB_datausu"))) {
             db_msgbox(
@@ -84,7 +84,7 @@ SQL
 
         $cltipoproc->p51_descr = $oPost->p51_descr;
         $tipoprocgrupo = 1;
-        if (in_array($oPost->p51_prottipodocumentoprocesso, array(5))) {
+        if (in_array($oPost->p51_prottipodocumentoprocesso, [5])) {
             $tipoprocgrupo = 2;
         }
         $cltipoproc->p51_prottipodocumentoprocesso = $oPost->p51_prottipodocumentoprocesso;

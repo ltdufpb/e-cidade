@@ -97,10 +97,10 @@ $this->objpdf->Text(75,$y+6,$this->descr5); // Parcela inicial e total de parcel
 $this->objpdf->SetFont('Arial','',5);
 $this->objpdf->Text(13,$y+10,$this->titulo3); // contribuinte/endereço
 $this->objpdf->SetFont('Arial','B',7);
-$this->objpdf->Text(13,$y+13,substr($this->descr3_1, 0, 45)."..."); // nome do contribuinte
+$this->objpdf->Text(13,$y+13,substr((string) $this->descr3_1, 0, 45)."..."); // nome do contribuinte
 $this->objpdf->Text(13,$y+16,$this->descr3_2); // endereço
 $this->objpdf->SetFont('Arial','B',7);
-$this->objpdf->Text(13,$y+19,substr($this->descr17,0,75)); // SQL
+$this->objpdf->Text(13,$y+19,substr((string) $this->descr17,0,75)); // SQL
 
 $this->objpdf->SetFont('Arial','',5);
 $this->objpdf->Text(13,$y+23,$this->titulo4); // Instruções
@@ -165,7 +165,7 @@ $this->objpdf->SetFont('Arial','B',7);
 $this->objpdf->Text(97,$y+13,$this->descr11_1); // nome do contribuinte
 $this->objpdf->Text(97,$y+16,$this->descr11_2); // endereço
 $this->objpdf->SetFont('Arial','B',7);
-$this->objpdf->Text(97,$y+19,substr($this->descr17,0,92)); // SQL
+$this->objpdf->Text(97,$y+19,substr((string) $this->descr17,0,92)); // SQL
 
 $this->objpdf->SetFont('Arial','',5);
 $this->objpdf->Text(97,$y+24,$this->titulo12); // instruções
@@ -179,7 +179,7 @@ $this->objpdf->sety($y+25);
 
 // mensagem de instruções da guia prefeitura
 $this->objpdf->SetFont('Arial','B',5);
-$this->objpdf->multicell(100,2,substr($this->descr12_1,0,274)); // Instruções 2 - linha 1
+$this->objpdf->multicell(100,2,substr((string) $this->descr12_1,0,274)); // Instruções 2 - linha 1
 $this->objpdf->multicell(100,2,$this->descr12_2); // Instruções 2 - linha 2
 $this->objpdf->setxy($xx,$yy);
 

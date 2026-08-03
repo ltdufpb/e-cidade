@@ -11,15 +11,9 @@ use App\Domain\Saude\TFD\Contracts\ViagensPorMotorista;
  */
 class ViagensPorMotoristaCSV extends Dumper implements ViagensPorMotorista
 {
-    /**
-     * @var array $dados
-     */
-    private $dados;
-
-    public function __construct(array $dados)
+    public function __construct(private readonly array $dados)
     {
         $this->setCsvControl(';', '"');
-        $this->dados = $dados;
     }
 
     public function emitir($ordem)
@@ -37,86 +31,74 @@ class ViagensPorMotoristaCSV extends Dumper implements ViagensPorMotorista
 
     private function cabecalho($ordem)
     {
-        switch ($ordem) {
-            case self::ORDEM_DATA:
-                return [
-                    'id',
-                    'nome',
-                    'data',
-                    'destino',
-                    'veiculo',
-                    'placa',
-                    'passageiros',
-                    'km'
-                ];
-                break;
-            case self::ORDEM_VEICULO:
-                return [
-                    'id',
-                    'nome',
-                    'veiculo',
-                    'destino',
-                    'data',
-                    'placa',
-                    'passageiros',
-                    'km'
-                ];
-                break;
-            default:
-                return [
-                    'id',
-                    'nome',
-                    'destino',
-                    'data',
-                    'veiculo',
-                    'placa',
-                    'passageiros',
-                    'km'
-                ];
-                break;
-        }
+        return match ($ordem) {
+            self::ORDEM_DATA => [
+                'id',
+                'nome',
+                'data',
+                'destino',
+                'veiculo',
+                'placa',
+                'passageiros',
+                'km'
+            ],
+            self::ORDEM_VEICULO => [
+                'id',
+                'nome',
+                'veiculo',
+                'destino',
+                'data',
+                'placa',
+                'passageiros',
+                'km'
+            ],
+            default => [
+                'id',
+                'nome',
+                'destino',
+                'data',
+                'veiculo',
+                'placa',
+                'passageiros',
+                'km'
+            ],
+        };
     }
 
     private function preparaDados($motorista, $viagem, $ordem)
     {
-        switch ($ordem) {
-            case self::ORDEM_DATA:
-                return [
-                    $motorista->id,
-                    $motorista->nome,
-                    $viagem->data,
-                    $viagem->destino,
-                    $viagem->veiculo,
-                    $viagem->placa,
-                    $viagem->passageiros,
-                    $viagem->km
-                ];
-                break;
-            case self::ORDEM_VEICULO:
-                return [
-                    $motorista->id,
-                    $motorista->nome,
-                    $viagem->veiculo,
-                    $viagem->destino,
-                    $viagem->data,
-                    $viagem->placa,
-                    $viagem->passageiros,
-                    $viagem->km
-                ];
-                break;
-            default:
-                return [
-                    $motorista->id,
-                    $motorista->nome,
-                    $viagem->destino,
-                    $viagem->data,
-                    $viagem->veiculo,
-                    $viagem->placa,
-                    $viagem->passageiros,
-                    $viagem->km
-                ];
-                break;
-        }
+        return match ($ordem) {
+            self::ORDEM_DATA => [
+                $motorista->id,
+                $motorista->nome,
+                $viagem->data,
+                $viagem->destino,
+                $viagem->veiculo,
+                $viagem->placa,
+                $viagem->passageiros,
+                $viagem->km
+            ],
+            self::ORDEM_VEICULO => [
+                $motorista->id,
+                $motorista->nome,
+                $viagem->veiculo,
+                $viagem->destino,
+                $viagem->data,
+                $viagem->placa,
+                $viagem->passageiros,
+                $viagem->km
+            ],
+            default => [
+                $motorista->id,
+                $motorista->nome,
+                $viagem->destino,
+                $viagem->data,
+                $viagem->veiculo,
+                $viagem->placa,
+                $viagem->passageiros,
+                $viagem->km
+            ],
+        };
     }
 
     private function imprimir($dados)

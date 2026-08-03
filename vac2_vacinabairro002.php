@@ -29,8 +29,8 @@ include(modification("fpdf151/pdf.php"));
 include(modification("classes/db_lab_requiitem_classe.php"));
 require_once(modification("libs/db_utils.php"));
 $oDaoVacAplicalote = db_utils::getdao('vac_aplicalote');
-$dIni              = substr($dDataini,6,4)."-".substr($dDataini,3,2)."-".substr($dDataini,0,2);
-$dFim              = substr($dDatafim,6,4)."-".substr($dDatafim,3,2)."-".substr($dDatafim,0,2);
+$dIni              = substr((string) $dDataini,6,4)."-".substr((string) $dDataini,3,2)."-".substr((string) $dDataini,0,2);
+$dFim              = substr((string) $dDatafim,6,4)."-".substr((string) $dDatafim,3,2)."-".substr((string) $dDatafim,0,2);
 $sWhere            = " vc16_d_data between '$dIni' and '$dFim' ";
 if ($iBairro != "0") {
   $sWhere .= " and z01_v_bairro = '$iBairro' ";

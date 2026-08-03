@@ -40,7 +40,7 @@ db_postmemory($_POST);
 $clArrecad  = new cl_arrecad();
 $clArrecant = new cl_arrecant();
 
-$aDados  = array();
+$aDados  = [];
 
 if(!isset($k00_numpre)){
   db_redireciona("cai4_cancnumpre001.php");

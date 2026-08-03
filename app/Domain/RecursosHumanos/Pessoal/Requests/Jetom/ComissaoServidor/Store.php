@@ -13,6 +13,7 @@ class Store extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -48,32 +49,33 @@ class Store extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "comissao.required" => utf8_encode("Código da comissão não informado."),
-            "comissao.integer" => utf8_encode("Código inválido da comissão."),
-            "comissao.exists" => utf8_encode("Comissão não encontrada."),
-            "funcao.required" => utf8_encode("Função do servidor não informada."),
-            "funcao.integer" => utf8_encode("Função inválida do servidor."),
-            "funcao.exists" => utf8_encode("Função não encontrada."),
-            "funcao.unique" => utf8_encode("Função já cadastrada para o servidor."),
-            "matricula.required" => utf8_encode("Matricula não informada."),
-            "matricula.integer" => utf8_encode("Matricula inválida."),
-            "mesinicio.integer" => utf8_encode("Mês de inicio da função inválido."),
-            "mesinicio.between" => utf8_encode("Mês de inicio da função deve ser entre 1 e 12."),
-            "mesfim.integer" => utf8_encode("Mês de termino da função inválido."),
-            "mesfim.between" => utf8_encode("Mês de termino da função deve ser entre 1 e 12."),
-            "anoinicio.integer" => utf8_encode("Ano de inicio da função inválido."),
-            "anoinicio.min" => utf8_encode("Ano inicial não pode ser inferior a " . date("Y") . "."),
-            "anofim.integer" => utf8_encode("Ano de termino da função inválido."),
+            "comissao.required" => mb_convert_encoding("Código da comissão não informado.", 'UTF-8', 'ISO-8859-1'),
+            "comissao.integer" => mb_convert_encoding("Código inválido da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "comissao.exists" => mb_convert_encoding("Comissão não encontrada.", 'UTF-8', 'ISO-8859-1'),
+            "funcao.required" => mb_convert_encoding("Função do servidor não informada.", 'UTF-8', 'ISO-8859-1'),
+            "funcao.integer" => mb_convert_encoding("Função inválida do servidor.", 'UTF-8', 'ISO-8859-1'),
+            "funcao.exists" => mb_convert_encoding("Função não encontrada.", 'UTF-8', 'ISO-8859-1'),
+            "funcao.unique" => mb_convert_encoding("Função já cadastrada para o servidor.", 'UTF-8', 'ISO-8859-1'),
+            "matricula.required" => mb_convert_encoding("Matricula não informada.", 'UTF-8', 'ISO-8859-1'),
+            "matricula.integer" => mb_convert_encoding("Matricula inválida.", 'UTF-8', 'ISO-8859-1'),
+            "mesinicio.integer" => mb_convert_encoding("Mês de inicio da função inválido.", 'UTF-8', 'ISO-8859-1'),
+            "mesinicio.between" => mb_convert_encoding("Mês de inicio da função deve ser entre 1 e 12.", 'UTF-8', 'ISO-8859-1'),
+            "mesfim.integer" => mb_convert_encoding("Mês de termino da função inválido.", 'UTF-8', 'ISO-8859-1'),
+            "mesfim.between" => mb_convert_encoding("Mês de termino da função deve ser entre 1 e 12.", 'UTF-8', 'ISO-8859-1'),
+            "anoinicio.integer" => mb_convert_encoding("Ano de inicio da função inválido.", 'UTF-8', 'ISO-8859-1'),
+            "anoinicio.min" => mb_convert_encoding("Ano inicial não pode ser inferior a " . date("Y") . ".", 'UTF-8', 'ISO-8859-1'),
+            "anofim.integer" => mb_convert_encoding("Ano de termino da função inválido.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

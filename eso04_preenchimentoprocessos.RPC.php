@@ -73,7 +73,7 @@ try {
             $oAvaliacao->setAvaliacaoGrupo();
 
             $iCodigoGrupoPerguntas = null;
-            $aProcesso             = array();
+            $aProcesso             = [];
 
             if (!empty($oParam->iCodigoGrupoPerguntas)) {
                 $iCodigoGrupoPerguntas = $oParam->iCodigoGrupoPerguntas;
@@ -88,7 +88,7 @@ try {
                 throw new BusinessException("Número de Processo não informado.");
             }
 
-            $aParametros = array('nroProcesso' => $oParam->processo, 'tipoProcesso' => $oParam->tipoProcesso);
+            $aParametros = ['nroProcesso' => $oParam->processo, 'tipoProcesso' => $oParam->tipoProcesso];
 
             if (!empty($oParam->iCodigoPreenchimento)) {
                 $aParametros["iCodigoPreenchimento"] = $oParam->iCodigoPreenchimento;

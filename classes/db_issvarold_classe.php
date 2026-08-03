@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE issvarold
 class cl_issvarold { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q22_codlev = 0; 
-   var $q22_codigo = 0; 
-   var $q22_numpre = 0; 
-   var $q22_numpar = 0; 
-   var $q22_valor = 0; 
-   var $q22_ano = 0; 
-   var $q22_mes = 0; 
-   var $q22_histor = null; 
-   var $q22_aliq = 0; 
-   var $q22_bruto = 0; 
-   var $q22_vlrinf = 0; 
+   public $q22_codlev = 0; 
+   public $q22_codigo = 0; 
+   public $q22_numpre = 0; 
+   public $q22_numpar = 0; 
+   public $q22_valor = 0; 
+   public $q22_ano = 0; 
+   public $q22_mes = 0; 
+   public $q22_histor = null; 
+   public $q22_aliq = 0; 
+   public $q22_bruto = 0; 
+   public $q22_vlrinf = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q22_codlev = int4 = Levantamento 
                  q22_codigo = int8 = Código 
                  q22_numpre = int4 = Numpre 
@@ -68,10 +68,10 @@ class cl_issvarold {
                  q22_vlrinf = float8 = valor contribuinte 
                  ";
    //funcao construtor da classe 
-   function cl_issvarold() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issvarold"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -230,7 +230,7 @@ class cl_issvarold {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Backup do issvar () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Backup do issvar já Cadastrado";
@@ -257,10 +257,10 @@ class cl_issvarold {
       $this->atualizacampos();
      $sql = " update issvarold set ";
      $virgula = "";
-     if(trim($this->q22_codlev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_codlev"])){ 
+     if(trim((string) $this->q22_codlev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_codlev"])){ 
        $sql  .= $virgula." q22_codlev = $this->q22_codlev ";
        $virgula = ",";
-       if(trim($this->q22_codlev) == null ){ 
+       if(trim((string) $this->q22_codlev) == null ){ 
          $this->erro_sql = " Campo Levantamento nao Informado.";
          $this->erro_campo = "q22_codlev";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_issvarold {
          return false;
        }
      }
-     if(trim($this->q22_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_codigo"])){ 
+     if(trim((string) $this->q22_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_codigo"])){ 
        $sql  .= $virgula." q22_codigo = $this->q22_codigo ";
        $virgula = ",";
-       if(trim($this->q22_codigo) == null ){ 
+       if(trim((string) $this->q22_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "q22_codigo";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_issvarold {
          return false;
        }
      }
-     if(trim($this->q22_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_numpre"])){ 
+     if(trim((string) $this->q22_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_numpre"])){ 
        $sql  .= $virgula." q22_numpre = $this->q22_numpre ";
        $virgula = ",";
-       if(trim($this->q22_numpre) == null ){ 
+       if(trim((string) $this->q22_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "q22_numpre";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_issvarold {
          return false;
        }
      }
-     if(trim($this->q22_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_numpar"])){ 
+     if(trim((string) $this->q22_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_numpar"])){ 
        $sql  .= $virgula." q22_numpar = $this->q22_numpar ";
        $virgula = ",";
-       if(trim($this->q22_numpar) == null ){ 
+       if(trim((string) $this->q22_numpar) == null ){ 
          $this->erro_sql = " Campo Parcela nao Informado.";
          $this->erro_campo = "q22_numpar";
          $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_issvarold {
          return false;
        }
      }
-     if(trim($this->q22_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_valor"])){ 
+     if(trim((string) $this->q22_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_valor"])){ 
        $sql  .= $virgula." q22_valor = $this->q22_valor ";
        $virgula = ",";
-       if(trim($this->q22_valor) == null ){ 
+       if(trim((string) $this->q22_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "q22_valor";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_issvarold {
          return false;
        }
      }
-     if(trim($this->q22_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_ano"])){ 
+     if(trim((string) $this->q22_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_ano"])){ 
        $sql  .= $virgula." q22_ano = $this->q22_ano ";
        $virgula = ",";
-       if(trim($this->q22_ano) == null ){ 
+       if(trim((string) $this->q22_ano) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "q22_ano";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_issvarold {
          return false;
        }
      }
-     if(trim($this->q22_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_mes"])){ 
+     if(trim((string) $this->q22_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_mes"])){ 
        $sql  .= $virgula." q22_mes = $this->q22_mes ";
        $virgula = ",";
-       if(trim($this->q22_mes) == null ){ 
+       if(trim((string) $this->q22_mes) == null ){ 
          $this->erro_sql = " Campo Mes nao Informado.";
          $this->erro_campo = "q22_mes";
          $this->erro_banco = "";
@@ -348,10 +348,10 @@ class cl_issvarold {
          return false;
        }
      }
-     if(trim($this->q22_histor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_histor"])){ 
+     if(trim((string) $this->q22_histor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_histor"])){ 
        $sql  .= $virgula." q22_histor = '$this->q22_histor' ";
        $virgula = ",";
-       if(trim($this->q22_histor) == null ){ 
+       if(trim((string) $this->q22_histor) == null ){ 
          $this->erro_sql = " Campo Histórico nao Informado.";
          $this->erro_campo = "q22_histor";
          $this->erro_banco = "";
@@ -361,10 +361,10 @@ class cl_issvarold {
          return false;
        }
      }
-     if(trim($this->q22_aliq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_aliq"])){ 
+     if(trim((string) $this->q22_aliq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_aliq"])){ 
        $sql  .= $virgula." q22_aliq = $this->q22_aliq ";
        $virgula = ",";
-       if(trim($this->q22_aliq) == null ){ 
+       if(trim((string) $this->q22_aliq) == null ){ 
          $this->erro_sql = " Campo Aliquota nao Informado.";
          $this->erro_campo = "q22_aliq";
          $this->erro_banco = "";
@@ -374,10 +374,10 @@ class cl_issvarold {
          return false;
        }
      }
-     if(trim($this->q22_bruto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_bruto"])){ 
+     if(trim((string) $this->q22_bruto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_bruto"])){ 
        $sql  .= $virgula." q22_bruto = $this->q22_bruto ";
        $virgula = ",";
-       if(trim($this->q22_bruto) == null ){ 
+       if(trim((string) $this->q22_bruto) == null ){ 
          $this->erro_sql = " Campo Bruto nao Informado.";
          $this->erro_campo = "q22_bruto";
          $this->erro_banco = "";
@@ -387,10 +387,10 @@ class cl_issvarold {
          return false;
        }
      }
-     if(trim($this->q22_vlrinf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_vlrinf"])){ 
+     if(trim((string) $this->q22_vlrinf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q22_vlrinf"])){ 
        $sql  .= $virgula." q22_vlrinf = $this->q22_vlrinf ";
        $virgula = ",";
-       if(trim($this->q22_vlrinf) == null ){ 
+       if(trim((string) $this->q22_vlrinf) == null ){ 
          $this->erro_sql = " Campo valor contribuinte nao Informado.";
          $this->erro_campo = "q22_vlrinf";
          $this->erro_banco = "";
@@ -481,7 +481,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:issvarold";
@@ -495,7 +495,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="issvarold.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -516,7 +516,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -528,7 +528,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -546,7 +546,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

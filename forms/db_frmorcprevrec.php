@@ -65,7 +65,7 @@ if(isset($receita)){
     </td>
     <td nowrap title="Selecione o bimestre" align="left">
       <?php 
-      $arr_bimestres = Array("1"=>"1º - Primeiro","2"=>"2º - Segundo","3"=>"3º - Terceiro","4"=>"4º - Quarto","5"=>"5º - Quinto","6"=>"6º - Sexto");
+      $arr_bimestres = ["1"=>"1º - Primeiro","2"=>"2º - Segundo","3"=>"3º - Terceiro","4"=>"4º - Quarto","5"=>"5º - Quinto","6"=>"6º - Sexto"];
       db_select("bimestre", $arr_bimestres, true, $opcaoreceita);
       ?>
     </td>
@@ -158,7 +158,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_orcprevrec.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

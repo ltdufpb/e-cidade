@@ -136,7 +136,7 @@ db_input('cc07_percentual',10,$Icc07_percentual,true,'text', 3,"");
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("cc07_sequencial"=>@$cc07_custocriteriorateio);
+	 $chavepri= ["cc07_sequencial"=>@$cc07_custocriteriorateio];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcustoplanoanaliticacriteriorateio->sql_query(null,
 	                                                                                           "*",

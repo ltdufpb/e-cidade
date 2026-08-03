@@ -49,8 +49,8 @@ db_app::import("contabilidade.lancamento.*");
 db_app::import("Dotacao");
 db_app::import("contabilidade.planoconta.*");
 db_app::import("contabilidade.contacorrente.*");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clmatrequiitem = new cl_matrequiitem;
 $clatendrequiitem = new cl_atendrequiitem;
@@ -186,11 +186,11 @@ if (isset($m40_codigo) && $m40_codigo!= "") {
       } else {
         $quant_auto = "$quant_estoque";
       }
-      $$quantidade = "$quant_auto";
+      ${$quantidade} = "$quant_auto";
 
       echo "<td class='linhagrid' align='center'><small>";
       $bloqueado = "bloq_$m41_codmatmater"."_"."$m41_codigo"."_"."$i";
-      $$bloqueado = $op ;
+      ${$bloqueado} = $op ;
       db_input("bloq_$m41_codmatmater"."_"."$m41_codigo"."_"."$i",6,0,true,'hidden',3,"");
       db_input("quant_$m41_codmatmater"."_"."$m41_codigo"."_"."$i",6,0,true,'text',$op,"onchange='js_verifica($quant,this.value,this.name,$m41_quant);'");
       echo "</small></td>";
@@ -231,7 +231,7 @@ if (isset($m40_codigo) && $m40_codigo!= "") {
         $quant_auto = "$quant_estoque";
       }
 
-      $$quantidade = "$quant_auto";
+      ${$quantidade} = "$quant_auto";
       $op          = 1;
 
       if ($quant_estoque == 0 || $m41_quant == $quant_soma) {
@@ -250,7 +250,7 @@ if (isset($m40_codigo) && $m40_codigo!= "") {
       echo "<td class='linhagrid' align='center'><small>";
       db_input("quant_$m41_codmatmater"."_"."$m41_codigo"."_"."$i",6,0,true,'text',$op,"onchange='js_verifica($quant,this.value,this.name,$quant_sol);'");
       $bloqueado = "bloq_$m41_codmatmater"."_"."$m41_codigo"."_"."$i";
-      $$bloqueado = $op ;
+      ${$bloqueado} = $op ;
       db_input("bloq_$m41_codmatmater"."_"."$m41_codigo"."_"."$i",6,0,true,'hidden',3,"");
       echo "</small></td>";
       echo " <td class='linhagrid' title='Inverte a marcação' align='center'><input type='checkbox' name='CHECK_$m41_codmatmater"."_"."$m41_codigo"."_"."$i"."' id='CHECK_".$m41_codmatmater."_"."$m41_codigo"."_"."$i"."' onclick='js_bloq(this.name);' > </td>";

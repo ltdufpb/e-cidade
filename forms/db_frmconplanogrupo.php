@@ -58,7 +58,7 @@ db_input('c20_descr',50,$Ic20_descr,true,'text',3,"")
   </tr>
   </table>
 <?php 
-	$chavepri = array ("c20_sequencial"=>@$c20_sequencial,"c21_sequencial"=>@$c21_sequencial,"c21_codcon"=>$c21_codcon,"c21_anousu"=>$c21_anousu);
+	$chavepri =  ["c20_sequencial"=>@$c20_sequencial,"c21_sequencial"=>@$c21_sequencial,"c21_codcon"=>$c21_codcon,"c21_anousu"=>$c21_anousu];
 	$cliframe_alterar_excluir->chavepri      = $chavepri;
 	$cliframe_alterar_excluir->sql           = $clconplanogrupo->sql_query(null,"c21_sequencial,c20_sequencial,c20_descr,c21_codcon,c21_anousu","c20_descr","c21_codcon = $c21_codcon and c21_anousu = $c21_anousu");
 	$cliframe_alterar_excluir->campos        = "c21_sequencial,c20_descr";

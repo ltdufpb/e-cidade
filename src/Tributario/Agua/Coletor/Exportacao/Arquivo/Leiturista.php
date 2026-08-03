@@ -55,17 +55,17 @@ class Leiturista extends Arquivo {
     }
 
     if (pg_num_rows($rsLeiturista) == 0) {
-      return array();
+      return [];
     }
 
-    $aLeituristas = array();
+    $aLeituristas = [];
     while ($oLeiturista = pg_fetch_object($rsLeiturista)) {
 
-      $aLeituristas[] = (object) array(
+      $aLeituristas[] = (object) [
         'codigo' => $oLeiturista->x16_numcgm,
         'nome' => trim($oLeiturista->z01_nome),
         'senha' => $oLeiturista->x16_senha
-      );
+      ];
     }
 
     return $aLeituristas;

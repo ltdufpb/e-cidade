@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_lab_paralizacao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllab_paralizacao = new cl_lab_paralizacao;
 include(modification("classes/db_sau_motivo_ausencia_classe.php"));
 $clmotivo_ausencia = new cl_sau_motivo_ausencia;

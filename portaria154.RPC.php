@@ -97,20 +97,20 @@ SQL;
 
         if (pg_num_rows($rs) > 0) {
             $oRetorno->possuiDados = true;
-            $aExercicioAnterior    = array();
+            $aExercicioAnterior    = [];
             $contador              = pg_num_rows($rs);
 
             for ($i = 0; $i < $contador; $i++) {
                 $dado = db_utils::fieldsMemory($rs, $i);
 
-                if (trim($dado->addres) == 'gerfs13') {
+                if (trim((string) $dado->addres) == 'gerfs13') {
                     $dado->mes = 13; 
                 }
 
                 if (empty($aExercicioAnterior[$dado->exercicio])) {
-                    $aExercicioAnterior[$dado->exercicio] = array();
+                    $aExercicioAnterior[$dado->exercicio] = [];
                     $aExercicioAnterior[$dado->exercicio]['exercicio'] = $dado->exercicio;
-                    $aExercicioAnterior[$dado->exercicio]['mes'] = array();
+                    $aExercicioAnterior[$dado->exercicio]['mes'] = [];
                 }
                 
                 $aExercicioAnterior[$dado->exercicio]['mes'][$dado->mes] = $dado->valor;
@@ -162,14 +162,14 @@ SQL;
                 $informacoes->incluir();
             }
         }
-        $oRetorno->message = utf8_encode('Informações dos exercicios salvas com sucesso.');
+        $oRetorno->message = mb_convert_encoding('Informações dos exercicios salvas com sucesso.', 'UTF-8', 'ISO-8859-1');
         break;
     }
     db_fim_transacao();
 } catch (Exception $e) {
     $oRetorno->status = 2;
     db_fim_transacao(true);
-    $oRetorno->erro = utf8_encode($e->getMessage());
+    $oRetorno->erro = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
 }
 echo $oJson->encode($oRetorno);
 
@@ -177,7 +177,7 @@ function buscaInformacoes($oParam) {
     $oRetorno = new \stdClass();
     $oRetorno->status  = 1;
     $oRetorno->message = '';
-    $oServidor = \ServidorRepository::getServidoresByMatriculas(\DBPessoal::getAnoFolha(), \DBPessoal::getMesFolha(), array($oParam->matricula));
+    $oServidor = \ServidorRepository::getServidoresByMatriculas(\DBPessoal::getAnoFolha(), \DBPessoal::getMesFolha(), [$oParam->matricula]);
     $oServidor = $oServidor[$oParam->matricula];
     $oRetorno->anoInicial = date('Y', $oServidor->getDataAdmissao()->getTimestamp());
     $oRetorno->mesInicial = date('m', $oServidor->getDataAdmissao()->getTimestamp());

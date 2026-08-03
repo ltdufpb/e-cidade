@@ -56,10 +56,10 @@ class InformacaoComplementarLancamento
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'exclusao' => $this->isExclusao()
-        );
+        ];
     }
 
     /**

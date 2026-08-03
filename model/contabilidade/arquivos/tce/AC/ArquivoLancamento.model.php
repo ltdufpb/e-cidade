@@ -75,7 +75,7 @@ class ArquivoLancamento extends ArquivoBase {
    */
   private function getLancamentos() {
 
-    $aLancamentos = array();
+    $aLancamentos = [];
     $oDaoLancamentos = new cl_conlancam();
     $sInstituicoes = implode(',', $this->aInstituicoes);
     $sDocumentos = implode(',', $this->getDocumentos());
@@ -108,14 +108,14 @@ class ArquivoLancamento extends ArquivoBase {
        * Lancamento sem dotacao, usa unidade da instituicao
        */
       if (empty($iUnidade)) {
-        $iUnidade = (int) substr($oStdDadosLancamento->codtrib, 0, 2);
+        $iUnidade = (int) substr((string) $oStdDadosLancamento->codtrib, 0, 2);
       }
 
       /**
        * Lancamento sem dotacao, usa orgao da instituicao
        */
       if (empty($iOrgao)) {
-        $iOrgao = (int) substr($oStdDadosLancamento->codtrib, 2, 2);
+        $iOrgao = (int) substr((string) $oStdDadosLancamento->codtrib, 2, 2);
       }
 
       $oStdLancamento = new stdClass();
@@ -151,7 +151,7 @@ class ArquivoLancamento extends ArquivoBase {
       $sHistorico = mb_convert_encoding(
         $oStdLancamento->historico,
         "UTF-8",
-        mb_detect_encoding($oStdLancamento->historico, "UTF-8, ISO-8859-1, ISO-8859-15", true)
+        mb_detect_encoding((string) $oStdLancamento->historico, "UTF-8, ISO-8859-1, ISO-8859-15", true)
       );
 
       $oHistorico = $oDocumento->createElement('historico', $sHistorico);

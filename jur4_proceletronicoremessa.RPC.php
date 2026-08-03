@@ -78,12 +78,12 @@ switch ($oParam->exec) {
             $integracao = new Integracao($iLista, $configuracaoTJ);
 
             $aDados = $integracao->getIniciaisParaEnvio(
-                array(Integracao::SITUACAO_ASSINADO,
+                [Integracao::SITUACAO_ASSINADO,
                     Integracao::SITUACAO_RETORNO_ERRO
-                ),
+                ],
                 $oParam->processosEletronicos);
 
-            $listaErros = array();
+            $listaErros = [];
 
             foreach ($aDados as $oDados) {
 

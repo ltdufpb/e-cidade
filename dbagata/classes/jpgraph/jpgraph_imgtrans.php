@@ -13,11 +13,8 @@
 // Perform some simple image transformations. 
 //------------------------------------------------------------------------
 class ImgTrans {
-    var $gdImg=null;
-
-    function ImgTrans($aGdImg) {
-	// Constructor
-	$this->gdImg = $aGdImg;
+    function __construct(public $gdImg)
+    {
     }
 
     // --------------------------------------------------------------------
@@ -29,7 +26,7 @@ class ImgTrans {
 
 	// Parameter check
 	if( $aHorizonPos < 0 || $aHorizonPos > 1.0 ) {
-	    JpGraphError::RaiseL(9001);
+	    (new JpGraphError())->RaiseL(9001);
 //("Value for image transformation out of bounds.\nVanishing point on horizon must be specified as a value between 0 and 1.");
 	}
 

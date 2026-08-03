@@ -30,34 +30,34 @@
 
 class cl_issbaseparalisacao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $q140_sequencial = 0;
-   var $q140_issbase = 0;
-   var $q140_issmotivoparalisacao = 0;
-   var $q140_datainicio_dia = null;
-   var $q140_datainicio_mes = null;
-   var $q140_datainicio_ano = null;
-   var $q140_datainicio = null;
-   var $q140_datafim_dia = null;
-   var $q140_datafim_mes = null;
-   var $q140_datafim_ano = null;
-   var $q140_datafim = null;
-   var $q140_observacao = null;
+   public $q140_sequencial = 0;
+   public $q140_issbase = 0;
+   public $q140_issmotivoparalisacao = 0;
+   public $q140_datainicio_dia = null;
+   public $q140_datainicio_mes = null;
+   public $q140_datainicio_ano = null;
+   public $q140_datainicio = null;
+   public $q140_datafim_dia = null;
+   public $q140_datafim_mes = null;
+   public $q140_datafim_ano = null;
+   public $q140_datafim = null;
+   public $q140_observacao = null;
    public $q140_usuario = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  q140_sequencial = int4 = Sequencial 
                  q140_issbase = int4 = Código issbase 
                  q140_issmotivoparalisacao = int4 = Motivo paralisação 
@@ -67,10 +67,10 @@ class cl_issbaseparalisacao {
                  q140_usuario = int4 = Usuário 
                  ";
    //funcao construtor da classe
-   function cl_issbaseparalisacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issbaseparalisacao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -170,10 +170,10 @@ class cl_issbaseparalisacao {
          $this->erro_status = "0";
          return false;
        }
-       $this->q140_sequencial = pg_result($result,0,0);
+       $this->q140_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from issbaseparalisacao_q140_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q140_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q140_sequencial)){
          $this->erro_sql = " Campo q140_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -213,7 +213,7 @@ class cl_issbaseparalisacao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Paralisação ($this->q140_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Paralisação já Cadastrado";
@@ -242,16 +242,16 @@ class cl_issbaseparalisacao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20172,'$this->q140_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3621,20172,'','".AddSlashes(pg_result($resaco,0,'q140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3621,20173,'','".AddSlashes(pg_result($resaco,0,'q140_issbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3621,20174,'','".AddSlashes(pg_result($resaco,0,'q140_issmotivoparalisacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3621,20175,'','".AddSlashes(pg_result($resaco,0,'q140_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3621,20176,'','".AddSlashes(pg_result($resaco,0,'q140_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3621,20177,'','".AddSlashes(pg_result($resaco,0,'q140_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3621,1014448,'','".AddSlashes(pg_result($resaco,0,'q140_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3621,20172,'','".AddSlashes(pg_fetch_result($resaco,0,'q140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3621,20173,'','".AddSlashes(pg_fetch_result($resaco,0,'q140_issbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3621,20174,'','".AddSlashes(pg_fetch_result($resaco,0,'q140_issmotivoparalisacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3621,20175,'','".AddSlashes(pg_fetch_result($resaco,0,'q140_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3621,20176,'','".AddSlashes(pg_fetch_result($resaco,0,'q140_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3621,20177,'','".AddSlashes(pg_fetch_result($resaco,0,'q140_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3621,1014448,'','".AddSlashes(pg_fetch_result($resaco,0,'q140_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -261,10 +261,10 @@ class cl_issbaseparalisacao {
       $this->atualizacampos();
      $sql = " update issbaseparalisacao set ";
      $virgula = "";
-     if(trim($this->q140_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_sequencial"])){
+     if(trim((string) $this->q140_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_sequencial"])){
        $sql  .= $virgula." q140_sequencial = $this->q140_sequencial ";
        $virgula = ",";
-       if(trim($this->q140_sequencial) == null ){
+       if(trim((string) $this->q140_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "q140_sequencial";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_issbaseparalisacao {
          return false;
        }
      }
-     if(trim($this->q140_issbase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_issbase"])){
+     if(trim((string) $this->q140_issbase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_issbase"])){
        $sql  .= $virgula." q140_issbase = $this->q140_issbase ";
        $virgula = ",";
-       if(trim($this->q140_issbase) == null ){
+       if(trim((string) $this->q140_issbase) == null ){
          $this->erro_sql = " Campo Código issbase nao Informado.";
          $this->erro_campo = "q140_issbase";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_issbaseparalisacao {
          return false;
        }
      }
-     if(trim($this->q140_issmotivoparalisacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_issmotivoparalisacao"])){
+     if(trim((string) $this->q140_issmotivoparalisacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_issmotivoparalisacao"])){
        $sql  .= $virgula." q140_issmotivoparalisacao = $this->q140_issmotivoparalisacao ";
        $virgula = ",";
-       if(trim($this->q140_issmotivoparalisacao) == null ){
+       if(trim((string) $this->q140_issmotivoparalisacao) == null ){
          $this->erro_sql = " Campo Motivo paralisação nao Informado.";
          $this->erro_campo = "q140_issmotivoparalisacao";
          $this->erro_banco = "";
@@ -300,10 +300,10 @@ class cl_issbaseparalisacao {
          return false;
        }
      }
-     if(trim($this->q140_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q140_datainicio_dia"] !="") ){
+     if(trim((string) $this->q140_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q140_datainicio_dia"] !="") ){
        $sql  .= $virgula." q140_datainicio = '$this->q140_datainicio' ";
        $virgula = ",";
-       if(trim($this->q140_datainicio) == null ){
+       if(trim((string) $this->q140_datainicio) == null ){
          $this->erro_sql = " Campo Data de inicio nao Informado.";
          $this->erro_campo = "q140_datainicio_dia";
          $this->erro_banco = "";
@@ -316,7 +316,7 @@ class cl_issbaseparalisacao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["q140_datainicio_dia"])){
          $sql  .= $virgula." q140_datainicio = null ";
          $virgula = ",";
-         if(trim($this->q140_datainicio) == null ){
+         if(trim((string) $this->q140_datainicio) == null ){
            $this->erro_sql = " Campo Data de inicio nao Informado.";
            $this->erro_campo = "q140_datainicio_dia";
            $this->erro_banco = "";
@@ -327,7 +327,7 @@ class cl_issbaseparalisacao {
          }
        }
      }
-     if(trim($this->q140_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q140_datafim_dia"] !="") ){
+     if(trim((string) $this->q140_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q140_datafim_dia"] !="") ){
        $sql  .= $virgula." q140_datafim = '$this->q140_datafim' ";
        $virgula = ",";
      }     else{
@@ -336,10 +336,10 @@ class cl_issbaseparalisacao {
          $virgula = ",";
        }
      }
-     if(trim($this->q140_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_observacao"])){
+     if(trim((string) $this->q140_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_observacao"])){
        $sql  .= $virgula." q140_observacao = '$this->q140_observacao' ";
        $virgula = ",";
-       if(trim($this->q140_observacao) == null ){
+       if(trim((string) $this->q140_observacao) == null ){
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "q140_observacao";
          $this->erro_banco = "";
@@ -349,10 +349,10 @@ class cl_issbaseparalisacao {
          return false;
        }
      }
-     if(trim($this->q140_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_usuario"])){ 
+     if(trim((string) $this->q140_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q140_usuario"])){ 
       $sql  .= $virgula." q140_usuario = $this->q140_usuario ";
       $virgula = ",";
-      if(trim($this->q140_usuario) == null ){ 
+      if(trim((string) $this->q140_usuario) == null ){ 
         $this->erro_sql = " Campo Usuário não informado.";
         $this->erro_campo = "q140_usuario";
         $this->erro_banco = "";
@@ -376,23 +376,23 @@ class cl_issbaseparalisacao {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20172,'$this->q140_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q140_sequencial"]) || $this->q140_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3621,20172,'".AddSlashes(pg_result($resaco,$conresaco,'q140_sequencial'))."','$this->q140_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3621,20172,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q140_sequencial'))."','$this->q140_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q140_issbase"]) || $this->q140_issbase != "")
-             $resac = db_query("insert into db_acount values($acount,3621,20173,'".AddSlashes(pg_result($resaco,$conresaco,'q140_issbase'))."','$this->q140_issbase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3621,20173,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q140_issbase'))."','$this->q140_issbase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q140_issmotivoparalisacao"]) || $this->q140_issmotivoparalisacao != "")
-             $resac = db_query("insert into db_acount values($acount,3621,20174,'".AddSlashes(pg_result($resaco,$conresaco,'q140_issmotivoparalisacao'))."','$this->q140_issmotivoparalisacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3621,20174,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q140_issmotivoparalisacao'))."','$this->q140_issmotivoparalisacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q140_datainicio"]) || $this->q140_datainicio != "")
-             $resac = db_query("insert into db_acount values($acount,3621,20175,'".AddSlashes(pg_result($resaco,$conresaco,'q140_datainicio'))."','$this->q140_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3621,20175,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q140_datainicio'))."','$this->q140_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q140_datafim"]) || $this->q140_datafim != "")
-             $resac = db_query("insert into db_acount values($acount,3621,20176,'".AddSlashes(pg_result($resaco,$conresaco,'q140_datafim'))."','$this->q140_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3621,20176,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q140_datafim'))."','$this->q140_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q140_observacao"]) || $this->q140_observacao != "")
-             $resac = db_query("insert into db_acount values($acount,3621,20177,'".AddSlashes(pg_result($resaco,$conresaco,'q140_observacao'))."','$this->q140_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3621,20177,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q140_observacao'))."','$this->q140_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q140_usuario"]) || $this->q140_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,3621,1014448,'".AddSlashes(pg_result($resaco,$conresaco,'q140_usuario'))."','$this->q140_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3621,1014448,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q140_usuario'))."','$this->q140_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -446,16 +446,16 @@ class cl_issbaseparalisacao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20172,'$q140_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3621,20172,'','".AddSlashes(pg_result($resaco,$iresaco,'q140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3621,20173,'','".AddSlashes(pg_result($resaco,$iresaco,'q140_issbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3621,20174,'','".AddSlashes(pg_result($resaco,$iresaco,'q140_issmotivoparalisacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3621,20175,'','".AddSlashes(pg_result($resaco,$iresaco,'q140_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3621,20176,'','".AddSlashes(pg_result($resaco,$iresaco,'q140_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3621,20177,'','".AddSlashes(pg_result($resaco,$iresaco,'q140_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3621,1014448,'','".AddSlashes(pg_result($resaco,$iresaco,'q140_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3621,20172,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3621,20173,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q140_issbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3621,20174,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q140_issmotivoparalisacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3621,20175,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q140_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3621,20176,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q140_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3621,20177,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q140_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3621,1014448,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q140_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -516,7 +516,7 @@ class cl_issbaseparalisacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:issbaseparalisacao";
@@ -556,7 +556,7 @@ class cl_issbaseparalisacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -590,7 +590,7 @@ class cl_issbaseparalisacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

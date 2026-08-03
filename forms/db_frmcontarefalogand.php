@@ -220,7 +220,7 @@ if($cltarefaenvol->numrows==0){
   db_fieldsmemory($resusu,0);
 }
 
-$x = array("0"=>'Nenhum');
+$x = ["0"=>'Nenhum'];
 $resusu = $cldb_usuarios->sql_record($cldb_usuarios->sql_query_file(null,'id_usuario,nome','nome'," usuarioativo = '1' and usuext = '0'"));
 for($i=0;$i<$cldb_usuarios->numrows; $i++){
   db_fieldsmemory($resusu,$i);
@@ -228,7 +228,7 @@ for($i=0;$i<$cldb_usuarios->numrows; $i++){
 }
 db_select('at45_usuario',$x,true,$db_opcao,"");
 
-$x = array("10"=>"10%","20"=>"20%","30"=>"30%","40"=>"40%","50"=>"50%","60"=>"60%","70"=>"70%","80"=>"80%","90"=>"90%","100"=>"100%");
+$x = ["10"=>"10%","20"=>"20%","30"=>"30%","40"=>"40%","50"=>"50%","60"=>"60%","70"=>"70%","80"=>"80%","90"=>"90%","100"=>"100%"];
 db_select('at45_perc',$x,true,$db_opcao,"");
 
 ?>
@@ -246,7 +246,7 @@ db_select('at45_perc',$x,true,$db_opcao,"");
 </td>
 <td>
   <?php 
-  $x = array();
+  $x = [];
   $resusu = $clclientes->sql_record($clclientes->sql_query_file(null,'at01_codcli,at01_nomecli','at01_nomecli'," at01_status = true "));
   for($i=0;$i<$clclientes->numrows; $i++){
     db_fieldsmemory($resusu,$i);
@@ -316,7 +316,7 @@ function js_pesquisaitemcad(item,modulo){
 </script>
     
     <?php 
-    $y = array("0"=>"Normal","1"=>"SQL","2"=>"Atualiza menus","3"=>"Usuário","4"=>"PHP-Programa","5"=>"Atualiza Manual","6"=>"Manual Atualizado","7"=>"Cliente Atualizado");
+    $y = ["0"=>"Normal","1"=>"SQL","2"=>"Atualiza menus","3"=>"Usuário","4"=>"PHP-Programa","5"=>"Atualiza Manual","6"=>"Manual Atualizado","7"=>"Cliente Atualizado"];
     db_select('at43_tipomov',$y,true,$db_opcao," onchange='js_habilitar(this.value)'");
     ?>
     <input name='itens_menu' type='button' value=' Menus ' id='itens_menu' onclick='js_itens_menu()' style='visibility: <?=(@$at43_tipomov==3?'visible':'hidden')?>'>
@@ -328,7 +328,7 @@ function js_pesquisaitemcad(item,modulo){
     
     <?php 
     echo @$Lat43_avisar;
-$x = array('0'=>'Ninguém','1'=>'Envolvidos no projeto','2'=>'Envolvidos na tarefa','3'=>'Todos');
+$x = ['0'=>'Ninguém','1'=>'Envolvidos no projeto','2'=>'Envolvidos na tarefa','3'=>'Todos'];
 if($db_opcao==1||$db_opcao==11) {
 	$at43_avisar = 3;
 }
@@ -354,7 +354,7 @@ db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_ver
     </td>
     <td> 
 <?php 
-  $matriz = array("0"=>"0%",
+  $matriz = ["0"=>"0%",
                   "10"=>"10%", 
                   "20"=>"20%",
                   "30"=>"30%",
@@ -364,7 +364,7 @@ db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_ver
                   "70"=>"70%",
                   "80"=>"80%",
                   "90"=>"90%",
-                  "100"=>"100%");             
+                  "100"=>"100%"];             
   db_select("at43_progresso", $matriz,true,$db_opcao); 
 ?>
 <strong>Situação:</strong>
@@ -648,14 +648,14 @@ function js_abre_agendamento(tarefa){
 	 if(isset($db_opcao)&&$db_opcao==2) {
 	 	//$chavepri= array("at43_tarefa"=>@$at43_tarefa);
 		//$chavepri= array("at43_usuario"=>@$at43_usuario);
-	 	$chavepri= array("at43_sequencial"=>@$at43_sequencial,"at43_tarefa"=>@$at43_tarefa);
+	 	$chavepri= ["at43_sequencial"=>@$at43_sequencial,"at43_tarefa"=>@$at43_tarefa];
 	 }
 	 else if(isset($db_opcao)&&$db_opcao==3) {
 	 	//$chavepri= array("at43_tarefa"=>@$at43_tarefa);
-	 	$chavepri= array("at43_sequencial"=>@$at43_sequencial,"at43_tarefa"=>@$at43_tarefa);
+	 	$chavepri= ["at43_sequencial"=>@$at43_sequencial,"at43_tarefa"=>@$at43_tarefa];
 	 }
 	 else if(isset($db_opcao)&&$db_opcao==1) {
-	 	$chavepri= array("at43_sequencial"=>@$at43_sequencial,"at43_tarefa"=>@$at43_tarefa);
+	 	$chavepri= ["at43_sequencial"=>@$at43_sequencial,"at43_tarefa"=>@$at43_tarefa];
 	 }
 	
          echo " <form name='form2' method='post' action='' >";

@@ -47,8 +47,8 @@ $oRotulo->label("k00_numpar");
 $oRotulo->label("k00_receit");
 $oRotulo->label("k00_histtxt");
 
-$aParcelas = array('0' => 'Todas parcelas');
-$aReceitas = array('0' => 'Todas receitas');
+$aParcelas = ['0' => 'Todas parcelas'];
+$aReceitas = ['0' => 'Todas receitas'];
 
 $nValorHistorico     = 0;
 $nValorTotal         = 0;

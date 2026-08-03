@@ -35,7 +35,7 @@ $auxiliar = new cl_orcsuplem;
 $anousu = db_getsession("DB_anousu");
 $instit = db_getsession("DB_instit");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 // str_replace('-',', ',$db_selinstit);
 
@@ -118,16 +118,16 @@ for ($tiporel = 0; $tiporel <= 1; $tiporel++) {
 
   //////////////////////////////////
   $head4 = "Relatorio de Projetos";
-  $perini= split("-",$dt_ini);
-  $perfim= split("-",$dt_fim);
+  $perini= preg_split("#\\-#m",(string) $dt_ini);
+  $perfim= preg_split("#\\-#m",(string) $dt_fim);
   $head5 = "PERIODO : $perini[2]/$perini[1]/$perini[0]  à  $perfim[2]/$perfim[1]$perfim[0]";
 
-  $xinstit = split("-",$db_selinstit);
+  $xinstit = preg_split("#\\-#m",(string) $db_selinstit);
   $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
   $descr_inst = '';
   $xvirg = '';
   $consolidado = false;
-  for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+  for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
     if ($xvirg==','){
       $consolidado = true;
@@ -194,9 +194,9 @@ for ($tiporel = 0; $tiporel <= 1; $tiporel++) {
     $pdf->Cell(20,4,db_formatar($o39_data, "d"),'B',0,"C",'0');    
     $pdf->Cell(20,4,db_formatar($data_proc, "d"),'B',0,"C",'0');    
     $pdf->Cell(40,4,$o39_numero . " / " .db_formatar($o39_data, "d"),'B',0,"L",'0');
-    $pdf->Cell(15,4,substr($o45_numlei,0,8),'B',0,"L",'0');
+    $pdf->Cell(15,4,substr((string) $o45_numlei,0,8),'B',0,"L",'0');
     $pdf->Cell(20,4,db_formatar($o45_dataini, "d"),'B',0,"L",'0');
-    $pdf->Cell(60,4,substr($o39_descr,0,30),'B',0,"L",'0');
+    $pdf->Cell(60,4,substr((string) $o39_descr,0,30),'B',0,"L",'0');
     
     /////// ----- 
     $total_suplem       = 0;  
@@ -233,7 +233,7 @@ for ($tiporel = 0; $tiporel <= 1; $tiporel++) {
     o47_valor > 0   
     ";  
     $result = db_query($sql);
-    if (pg_numrows($result) > 0 ){
+    if (pg_num_rows($result) > 0 ){
       db_fieldsmemory($result,0,true);
     } 
     ///////

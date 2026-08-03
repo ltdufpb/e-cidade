@@ -61,7 +61,7 @@ if(isset($oGet->z01_numcgm) and $oGet->z01_numcgm != '') {
   
 }
 
-$aExercicios = explode(',', $oGet->exercicios);
+$aExercicios = explode(',', (string) $oGet->exercicios);
 
 $lErro = false;
 

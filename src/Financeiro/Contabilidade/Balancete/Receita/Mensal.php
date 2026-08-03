@@ -223,7 +223,7 @@ class Mensal
     public function getDados()
     {
         if ($this->sql == null) {
-            $this->montarConsultaSql($this->receita);
+            $this->montarConsultaSql();
         }
 
         db_query("drop table if exists work_plano ");
@@ -246,7 +246,7 @@ class Mensal
         $previsaoDezembro = 0;
         $totalReceita = 0;
 
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             $dadosReceita = \db_utils::fieldsmemory($result, $i);
             $estrutural = $dadosReceita->o57_fonte;
 
@@ -278,7 +278,7 @@ class Mensal
 
                 $rsSaldoPrevisao = db_query($sSqlSaldoPrevisao);
                 $aMeses = db_utils::getCollectionByRecord($rsSaldoPrevisao);
-                $aValorPrevMes = array();
+                $aValorPrevMes = [];
                 foreach ($aMeses as &$oSaldoMes) {
                     $aValorPrevMes[$oSaldoMes->mes] = $oSaldoMes->valor;
                 }
@@ -359,14 +359,14 @@ class Mensal
                 $sqlEstrutural .= "where o57_fonte = '$estrutural' ";
                 $sqlEstrutural .= "  and o70_anousu = {$dadosReceita->o70_anousu}";
                 $result_estrut = db_query($sqlEstrutural);
-                if (pg_numrows($result_estrut) == 0) {
+                if (pg_num_rows($result_estrut) == 0) {
                     $sqlReceitaFonte = "select o57_descr ";
                     $sqlReceitaFonte .= " from orcamento.orcfontes ";
                     $sqlReceitaFonte .= "where o57_anousu = {$dadosReceita->o70_anousu} ";
                     $sqlReceitaFonte .= "  and o57_fonte = '$estrutural'";
                     $result_estrut = db_query($sqlReceitaFonte);
 
-                    if (pg_numrows($result_estrut) == 0) {
+                    if (pg_num_rows($result_estrut) == 0) {
                         echo "Conta não encontrada nas fontes de Receita Comando: "
                             . "select o57_descr from orcamento.orcfontes
                                 where o57_anousu = " . $dadosReceita->o70_anousu
@@ -501,7 +501,7 @@ class Mensal
             //db_criatabela($this->result);
         }
         if ($this->result != false) {
-            $this->numrows = pg_numrows($this->result);
+            $this->numrows = pg_num_rows($this->result);
         } else {
             $this->numrows = 0;
         }

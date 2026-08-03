@@ -9,9 +9,9 @@
 //========================================================================
 
 class HandDigits {
-    var $digits_thumb30x30 = array();
-    var $iHeight=30, $iWidth=30;
-    function HandDigits() {
+    public $digits_thumb30x30 = [];
+    public $iHeight=30, $iWidth=30;
+    function __construct() {
 //==========================================================
 // d6-small.jpg
 //==========================================================
@@ -153,16 +153,14 @@ class HandDigits {
 
 class AntiSpam {
 
-    var $iNumber='';
-
-    function AntiSpam($aNumber='') {
-	$this->iNumber = $aNumber;
+    function __construct(public $iNumber='')
+    {
     }
 
     function Rand($aLen) {
 	$d='';
 	for($i=0; $i < $aLen; ++$i) {
-	    $d .= rand(1,9);
+	    $d .= random_int(1,9);
 	}
 	$this->iNumber = $d;
 	return $d;
@@ -170,7 +168,7 @@ class AntiSpam {
 
     function Stroke() {
 
-	$n=strlen($this->iNumber);
+	$n=strlen((string) $this->iNumber);
 	for($i=0; $i < $n; ++$i ) {
 	    if( !is_numeric($this->iNumber[$i]) || $this->iNumber[$i]==0 ) {
 		return false;
@@ -178,7 +176,7 @@ class AntiSpam {
 	}
 
 	$dd = new HandDigits();
-	$n = strlen($this->iNumber);
+	$n = strlen((string) $this->iNumber);
 	$img = @imagecreatetruecolor($n*$dd->iWidth, $dd->iHeight);
 	if( $img < 1 ) {
 	    return false;
@@ -186,7 +184,7 @@ class AntiSpam {
 	$start=0;
 	for($i=0; $i < $n; ++$i ) {
 	    $size = $dd->digits[$this->iNumber[$i]][0];
-	    $dimg = imagecreatefromstring(base64_decode($dd->digits[$this->iNumber[$i]][1]));
+	    $dimg = imagecreatefromstring(base64_decode((string) $dd->digits[$this->iNumber[$i]][1]));
 	    imagecopy($img,$dimg,$start,0,0,0,imagesx($dimg), $dd->iHeight);
 	    $start += imagesx($dimg);
 	}

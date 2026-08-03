@@ -57,7 +57,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
               where m51_codordem = $m51_codordem ";
 
      $result = db_query($sql); 
-     if (pg_numrows($result)==0){
+     if (pg_num_rows($result)==0){
      
      }
      db_fieldsmemory($result,0);
@@ -148,9 +148,9 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 					</td>
           <td> 
 						<?php 
-              $ano = substr($m51_data,0,4);
-						  $mes = substr($m51_data,5,2);
-						  $dia = substr($m51_data,8,2);
+              $ano = substr((string) $m51_data,0,4);
+						  $mes = substr((string) $m51_data,5,2);
+						  $dia = substr((string) $m51_data,8,2);
 						  db_inputdata('dataemis',"$dia","$mes","$ano",true,'text',3);
 						?>
           </td>

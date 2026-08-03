@@ -307,7 +307,7 @@ class Condicionante {
 
       return $aTipoLicenca;
 
-    } catch ( Exception $oErro ) {
+    } catch ( Exception ) {
       throw $oError;
     }
   }

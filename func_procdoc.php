@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_procdoc_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -62,9 +62,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clprocdoc->sql_query("",$campos,"p56_coddoc","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_p56_coddoc)){
-          $repassa = array("chave_p56_coddoc"=>$chave_p56_coddoc,"chave_p56_coddoc"=>$chave_p56_coddoc);
+          $repassa = ["chave_p56_coddoc"=>$chave_p56_coddoc,"chave_p56_coddoc"=>$chave_p56_coddoc];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

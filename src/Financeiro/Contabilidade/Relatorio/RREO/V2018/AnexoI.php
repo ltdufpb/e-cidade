@@ -25,6 +25,7 @@ class AnexoI extends AnexoI2017
     const LINHA_TOTAL_XIV = 104;
     const LINHA_RESERVA_RPPS = 105;
 
+    #[\Override]
     protected function processar()
     {
         parent::processar();
@@ -32,6 +33,7 @@ class AnexoI extends AnexoI2017
         $this->processarSaldosExerciciosAnteriores();
     }
 
+    #[\Override]
     protected function calcularSuperavitDeficit()
     {
         parent::calcularSuperavitDeficit();
@@ -80,6 +82,7 @@ class AnexoI extends AnexoI2017
      * Retorna Os dados simplificados do Relatorio
      * @return \stdClass
      */
+    #[\Override]
     public function getDadosSimplificado()
     {
 

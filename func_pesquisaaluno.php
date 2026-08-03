@@ -84,7 +84,7 @@ $oDaoAluno->rotulo->label();
     <?php
 
       $sCampos = "distinct ed47_i_codigo, ed47_v_nome";
-      $aWhere  = array();
+      $aWhere  = [];
 
       /**
        * Filtros realizados no formulário
@@ -102,7 +102,7 @@ $oDaoAluno->rotulo->label();
 
       if ( !isset($pesquisa_chave) ) {
 
-        $aRepassa                         = array();
+        $aRepassa                         = [];
         $aRepassa["chave_ed47_i_codigo"]  = !empty($chave_ed47_i_codigo) ? $chave_ed47_i_codigo : '';
         $aRepassa["chave_ed47_v_nome"]    = !empty($chave_ed47_v_nome) ? $chave_ed47_v_nome : '';
 

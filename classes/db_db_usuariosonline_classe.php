@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE db_usuariosonline
 class cl_db_usuariosonline { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $uol_id = 0; 
-   var $uol_hora = 0; 
-   var $uol_ip = null; 
-   var $uol_login = null; 
-   var $uol_arquivo = null; 
-   var $uol_modulo = null; 
-   var $uol_inativo = 0; 
-   var $uol_chat = null; 
-   var $uol_sol = null; 
+   public $uol_id = 0; 
+   public $uol_hora = 0; 
+   public $uol_ip = null; 
+   public $uol_login = null; 
+   public $uol_arquivo = null; 
+   public $uol_modulo = null; 
+   public $uol_inativo = 0; 
+   public $uol_chat = null; 
+   public $uol_sol = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  uol_id = int4 = Cod. Usuário 
                  uol_hora = int8 = Hora 
                  uol_ip = varchar(50) = IP 
@@ -64,10 +64,10 @@ class cl_db_usuariosonline {
                  uol_sol = varchar(100) = Sol 
                  ";
    //funcao construtor da classe 
-   function cl_db_usuariosonline() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_usuariosonline"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -202,7 +202,7 @@ class cl_db_usuariosonline {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Usuários on-line () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Usuários on-line já Cadastrado";
@@ -229,10 +229,10 @@ class cl_db_usuariosonline {
       $this->atualizacampos();
      $sql = " update db_usuariosonline set ";
      $virgula = "";
-     if(trim($this->uol_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_id"])){ 
+     if(trim((string) $this->uol_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_id"])){ 
        $sql  .= $virgula." uol_id = $this->uol_id ";
        $virgula = ",";
-       if(trim($this->uol_id) == null ){ 
+       if(trim((string) $this->uol_id) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "uol_id";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_db_usuariosonline {
          return false;
        }
      }
-     if(trim($this->uol_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_hora"])){ 
+     if(trim((string) $this->uol_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_hora"])){ 
        $sql  .= $virgula." uol_hora = $this->uol_hora ";
        $virgula = ",";
-       if(trim($this->uol_hora) == null ){ 
+       if(trim((string) $this->uol_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "uol_hora";
          $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_db_usuariosonline {
          return false;
        }
      }
-     if(trim($this->uol_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_ip"])){ 
+     if(trim((string) $this->uol_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_ip"])){ 
        $sql  .= $virgula." uol_ip = '$this->uol_ip' ";
        $virgula = ",";
-       if(trim($this->uol_ip) == null ){ 
+       if(trim((string) $this->uol_ip) == null ){ 
          $this->erro_sql = " Campo IP nao Informado.";
          $this->erro_campo = "uol_ip";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_db_usuariosonline {
          return false;
        }
      }
-     if(trim($this->uol_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_login"])){ 
+     if(trim((string) $this->uol_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_login"])){ 
        $sql  .= $virgula." uol_login = '$this->uol_login' ";
        $virgula = ",";
-       if(trim($this->uol_login) == null ){ 
+       if(trim((string) $this->uol_login) == null ){ 
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "uol_login";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_db_usuariosonline {
          return false;
        }
      }
-     if(trim($this->uol_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_arquivo"])){ 
+     if(trim((string) $this->uol_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_arquivo"])){ 
        $sql  .= $virgula." uol_arquivo = '$this->uol_arquivo' ";
        $virgula = ",";
-       if(trim($this->uol_arquivo) == null ){ 
+       if(trim((string) $this->uol_arquivo) == null ){ 
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "uol_arquivo";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_db_usuariosonline {
          return false;
        }
      }
-     if(trim($this->uol_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_modulo"])){ 
+     if(trim((string) $this->uol_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_modulo"])){ 
        $sql  .= $virgula." uol_modulo = '$this->uol_modulo' ";
        $virgula = ",";
-       if(trim($this->uol_modulo) == null ){ 
+       if(trim((string) $this->uol_modulo) == null ){ 
          $this->erro_sql = " Campo Módulo nao Informado.";
          $this->erro_campo = "uol_modulo";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_db_usuariosonline {
          return false;
        }
      }
-     if(trim($this->uol_inativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_inativo"])){ 
+     if(trim((string) $this->uol_inativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_inativo"])){ 
        $sql  .= $virgula." uol_inativo = $this->uol_inativo ";
        $virgula = ",";
-       if(trim($this->uol_inativo) == null ){ 
+       if(trim((string) $this->uol_inativo) == null ){ 
          $this->erro_sql = " Campo Inativo nao Informado.";
          $this->erro_campo = "uol_inativo";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_db_usuariosonline {
          return false;
        }
      }
-     if(trim($this->uol_chat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_chat"])){ 
+     if(trim((string) $this->uol_chat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_chat"])){ 
        $sql  .= $virgula." uol_chat = '$this->uol_chat' ";
        $virgula = ",";
-       if(trim($this->uol_chat) == null ){ 
+       if(trim((string) $this->uol_chat) == null ){ 
          $this->erro_sql = " Campo Chat nao Informado.";
          $this->erro_campo = "uol_chat";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_db_usuariosonline {
          return false;
        }
      }
-     if(trim($this->uol_sol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_sol"])){ 
+     if(trim((string) $this->uol_sol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["uol_sol"])){ 
        $sql  .= $virgula." uol_sol = '$this->uol_sol' ";
        $virgula = ",";
-       if(trim($this->uol_sol) == null ){ 
+       if(trim((string) $this->uol_sol) == null ){ 
          $this->erro_sql = " Campo Sol nao Informado.";
          $this->erro_campo = "uol_sol";
          $this->erro_banco = "";
@@ -427,7 +427,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_usuariosonline";

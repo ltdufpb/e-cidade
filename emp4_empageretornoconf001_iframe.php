@@ -37,8 +37,8 @@ $clempage     = new cl_empage;
 $clempageconf = new cl_empageconf;
 $clerrobanco  = new cl_errobanco;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = false;
 
@@ -180,9 +180,9 @@ $clrotulo->label("e80_data");
 
                         $result_arq  = $clempage->sql_record($sSqlEmpAgeCons);
                         $numrows_arq = $clempage->numrows;
-                        $arr_valorcontas = Array();
-                        $arr_valorproces = Array();
-                        $arr_valoragenda = Array();
+                        $arr_valorcontas = [];
+                        $arr_valorproces = [];
+                        $arr_valoragenda = [];
                         if ($numrows_arq > 0) {
 
                             for ($i = 0; $i < $numrows_arq; $i++) {
@@ -334,7 +334,7 @@ $clrotulo->label("e80_data");
                             if($e92_sequencia==35){
                                 $class = "01";
                             }
-                            
+
                             if($e92_sequencia==114){
 
                               $class = "01";

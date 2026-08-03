@@ -38,7 +38,7 @@
             <b>Mês:</b>
           </td>
           <td nowrap="nowrap">
-            <?php  $x = array('1'=>'Janeiro',
+            <?php  $x = ['1'=>'Janeiro',
                           '2'=>'Fevereiro',
                           '3'=>'Março',
                           '4'=>'Abril',
@@ -49,7 +49,7 @@
                           '9'=>'Setembro',
                           '10'=>'Outubro',
                           '11'=>'Novembro',
-                          '12'=>'Dezembro');
+                          '12'=>'Dezembro'];
                db_select('mes',$x,true,$db_opcao,"");?>
           </td>
           <td nowrap >
@@ -62,8 +62,8 @@
             <b>Estratégia:</b>
           </td>
           <td nowrap="nowrap">
-            <?php  $x = array('1'=>'Rotina',
-                          '2'=>'Campanha');
+            <?php  $x = ['1'=>'Rotina',
+                          '2'=>'Campanha'];
                db_select('estrategia',$x,true,$db_opcao,"");?>
           </td>
         </tr>

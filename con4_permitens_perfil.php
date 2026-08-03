@@ -34,20 +34,20 @@ include(modification("dbforms/db_funcoes.php"));
 
 $oDaoPermHerda = db_utils::getDao('db_permherda');
 
-if(isset($HTTP_POST_VARS["atualizarperm"])) {  
-  $modulo   = $HTTP_POST_VARS["modulos"];
-  $usuario  = $HTTP_POST_VARS["usuario"];
-  $anousu   = $HTTP_POST_VARS["anousu"];
-  $instit   = $HTTP_POST_VARS["instit"];
-  $ambiente = $HTTP_POST_VARS["ambiente"];
-  
+if(isset($_POST["atualizarperm"])) {  
+  $modulo   = $_POST["modulos"];
+  $usuario  = $_POST["usuario"];
+  $anousu   = $_POST["anousu"];
+  $instit   = $_POST["instit"];
+  $ambiente = $_POST["ambiente"];
+
   db_query("BEGIN");
   //primeiro delete os itens
 
 }
-if (isset($HTTP_POST_VARS["incluir"])) {
+if (isset($_POST["incluir"])) {
   
-  db_postmemory($HTTP_POST_VARS); 
+  db_postmemory($_POST); 
   db_query("begin");
 
   /**
@@ -126,7 +126,7 @@ if (isset($atuusuarios) || isset($atuperfil)) {
     }
   }
   db_query("commit");
-  $HTTP_POST_VARS["mod"] = true;
+  $_POST["mod"] = true;
 }
 ?>
 <html>
@@ -229,7 +229,7 @@ function js_marca(tag,inp) {
   <center>
     <form name="form1" method="post">
       <?php 
-	    if(!isset($HTTP_POST_VARS["selecionar"]) && !isset($HTTP_POST_VARS["mod"]) && !isset($HTTP_POST_VARS["verificar"])) {
+	    if(!isset($_POST["selecionar"]) && !isset($_POST["mod"]) && !isset($_POST["verificar"])) {
 	  ?>     
 		  <table border="0" cellspacing="0" cellpadding="0">
             <tr> 
@@ -243,7 +243,7 @@ function js_marca(tag,inp) {
 		   if(db_getsession("DB_id_usuario") == "1" || db_getsession("DB_administrador") == "1"  ) {
 		    $result = db_query("select codigo,nomeinst from db_config");
 		  } else {
-  	            
+
                     $result = db_query("select c.codigo,c.nomeinst 
 		                   from db_config c where c.codigo = ".db_getsession("DB_instit"));
 
@@ -251,8 +251,8 @@ function js_marca(tag,inp) {
 //		                   from db_config c
 //				        inner join db_userinst u on u.id_instit = c.codigo where u.id_usuario = ".db_getsession("DB_id_usuario"));
 		  }
-		    for($i = 0;$i < pg_numrows($result);$i++) {
-		      echo "<option ".($i == 0?'selected':'')." value=\"".pg_result($result,$i,"codigo")."\">".pg_result($result,$i,"nomeinst")."</option>\n";
+		    for($i = 0;$i < pg_num_rows($result);$i++) {
+		      echo "<option ".($i == 0?'selected':'')." value=\"".pg_fetch_result($result,$i,"codigo")."\">".pg_fetch_result($result,$i,"nomeinst")."</option>\n";
 		    }
 	      ?>
              </select> 
@@ -268,7 +268,7 @@ function js_marca(tag,inp) {
            </tr>
           </table>
       <?php 
-	  } else if(isset($HTTP_POST_VARS["selecionar"])) {
+	  } else if(isset($_POST["selecionar"])) {
 	  ?>
 	   <table border="0" cellspacing="0" cellpadding="0">
           <tr> 
@@ -300,9 +300,9 @@ function js_marca(tag,inp) {
                                                           and u.usuext = 2 ) as x
 							 order by lower(login)");
 		}				
-		$numrows = pg_numrows($result);
+		$numrows = pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
-		  echo "<option style='text-align:left;color:black;letter-spacing:normal;' value=\"".pg_result($result,$i,"id_usuario")."\" onClick=\"document.form1.perfil.value='".pg_result($result,$i,"nome")."'\">".pg_result($result,$i,"nome")."</option>\n";
+		  echo "<option style='text-align:left;color:black;letter-spacing:normal;' value=\"".pg_fetch_result($result,$i,"id_usuario")."\" onClick=\"document.form1.perfil.value='".pg_fetch_result($result,$i,"nome")."'\">".pg_fetch_result($result,$i,"nome")."</option>\n";
 		  //echo "<option ".(pg_result($result,$i,"usuext") == 2?"style='color: blue;font-weight:bold'":"")." value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
 		}  
 		?>
@@ -310,7 +310,7 @@ function js_marca(tag,inp) {
 		<input type='hidden' name ='perfil' value="">
    	     </td>
             <td valign="top" width="80" align="right"> <strong>Exercício:</strong><br> 
-	        <input type="hidden" name="instit" value="<?=$HTTP_POST_VARS["instit"]?>">	  
+	        <input type="hidden" name="instit" value="<?=$_POST["instit"]?>">	  
 			<select name="anousu" id="anousu">
 			    <?php 
 	  		   $ano = date("Y");
@@ -333,15 +333,15 @@ function js_marca(tag,inp) {
 		 </table>
       <?php 
         }elseif(isset($mod)){
-	  db_postmemory($HTTP_POST_VARS);
+	  db_postmemory($_POST);
           $sql = "select db_permherda.id_usuario from db_usuarios inner join db_permherda on db_usuarios.id_usuario = db_permherda.id_usuario where db_permherda.id_perfil = $usuario"; 
 	  $res = db_query($sql);
-	  $usuarios = array();
+	  $usuarios = [];
 	  $vir = "";
-	  if(pg_numrows($res) > 0){
+	  if(pg_num_rows($res) > 0){
             $usuarios[0] = "";
-	    for($i=0;$i<pg_numrows($res);$i++){				
-	      $usuarios[$i] = pg_result($res,$i,0);
+	    for($i=0;$i<pg_num_rows($res);$i++){				
+	      $usuarios[$i] = pg_fetch_result($res,$i,0);
 	    }
 	  }
 	   ?>
@@ -365,10 +365,10 @@ function js_marca(tag,inp) {
 							 and u.usuext <> 2
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_numrows($result);
+		$numrows = pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
 		  db_fieldsmemory($result,$i);
-		  echo "<option ".(in_array($id_usuario,$usuarios)?"selected":"" )." style='text-align:left;color:black;letter-spacing:normal;' value=\"".pg_result($result,$i,"id_usuario")."\" >".pg_result($result,$i,"login")." - ".pg_result($result,$i,"nome")."</option>\n";
+		  echo "<option ".(in_array($id_usuario,$usuarios)?"selected":"" )." style='text-align:left;color:black;letter-spacing:normal;' value=\"".pg_fetch_result($result,$i,"id_usuario")."\" >".pg_fetch_result($result,$i,"login")." - ".pg_fetch_result($result,$i,"nome")."</option>\n";
 		  //echo "<option ".(pg_result($result,$i,"usuext") == 2?"style='color: blue;font-weight:bold'":"")." value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
 		}  
 		?>
@@ -377,7 +377,7 @@ function js_marca(tag,inp) {
 	     <?php 
 	     ?>
             <td valign="top" width="80" align="right"> <strong>Exercício:</strong><br> 
-	        <input type="hidden" name="instit" value="<?=$HTTP_POST_VARS["instit"]?>">	  
+	        <input type="hidden" name="instit" value="<?=$_POST["instit"]?>">	  
 			<select name="anousu" id="anousu">
            <?php 
            $ano = date("Y");
@@ -400,20 +400,20 @@ function js_marca(tag,inp) {
 		  </tr>
 		 </table>
 		 <?php 
-	} else if(isset($HTTP_POST_VARS["verificar"])) {
-		  $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$HTTP_POST_VARS["modulos"]);
-	  $mod = pg_result($result,0,0);
-	  $des = pg_result($result,0,1);
-	  $result = db_query("select login,nome from db_usuarios where id_usuario = ".$HTTP_POST_VARS["usuario"]);
-	  $log = pg_result($result,0,0);
-	  $nom = pg_result($result,0,1);
-	  $result = db_query("select nomeinst from db_config where codigo = ".$HTTP_POST_VARS["instit"]);
-	  $ins = pg_result($result,0,0);
+	} else if(isset($_POST["verificar"])) {
+		  $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$_POST["modulos"]);
+	  $mod = pg_fetch_result($result,0,0);
+	  $des = pg_fetch_result($result,0,1);
+	  $result = db_query("select login,nome from db_usuarios where id_usuario = ".$_POST["usuario"]);
+	  $log = pg_fetch_result($result,0,0);
+	  $nom = pg_fetch_result($result,0,1);
+	  $result = db_query("select nomeinst from db_config where codigo = ".$_POST["instit"]);
+	  $ins = pg_fetch_result($result,0,0);
 	  ?>
-	  <input type="hidden" name="modulos" value="<?=$HTTP_POST_VARS["modulos"]?>">
-	  <input type="hidden" name="usuario" value="<?=$HTTP_POST_VARS["usuario"]?>">
-	  <input type="hidden" name="anousu" value="<?=$HTTP_POST_VARS["anousu"]?>">
-	  <input type="hidden" name="instit" value="<?=$HTTP_POST_VARS["instit"]?>">	  
+	  <input type="hidden" name="modulos" value="<?=$_POST["modulos"]?>">
+	  <input type="hidden" name="usuario" value="<?=$_POST["usuario"]?>">
+	  <input type="hidden" name="anousu" value="<?=$_POST["anousu"]?>">
+	  <input type="hidden" name="instit" value="<?=$_POST["instit"]?>">	  
 <table border="1" cellspacing="0" cellpadding="0">
 <tr><td>
        <table border="0" cellspacing="0" cellpadding="0">
@@ -431,7 +431,7 @@ function js_marca(tag,inp) {
 		 </tr>
 		 <tr>
 		   <td>Exercício:</td>
-		   <td><?=$HTTP_POST_VARS["anousu"]?></td>
+		   <td><?=$_POST["anousu"]?></td>
 		 </tr>
 	  </table>
 </td></tr>
@@ -448,9 +448,9 @@ function js_marca(tag,inp) {
 		  <tr>
 		    <td align="center"><strong>Ambiente:</strong>
 			<input name="verificar" type="hidden" value="verificar">
-			 <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
+			 <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="1"?"checked":""):"checked" ?>> 
              <label for="web"><strong>Web</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-             <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
+             <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="0"?"checked":""):"" ?>>
              <label for="caracter"><strong>Caracter</strong></label>
 			</td>
 		  </tr>
@@ -459,7 +459,7 @@ function js_marca(tag,inp) {
          <tr> 
            <td> 
 		   <?php  
-		   $ambiente = (!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"]);		  		   
+		   $ambiente = (!isset($_POST["ambiente"])?"1":$_POST["ambiente"]);		  		   
 		   	$wid = 15;
 			$conta = 0;
 			/***************/			
@@ -467,29 +467,29 @@ function js_marca(tag,inp) {
 			  global $conta;
 			  global $wid;
 			  global $ambiente;
-			  global $HTTP_POST_VARS;
+			  global $_POST;
               $sub = db_query("select p.id_item as perm,m.id_item_filho,i.descricao,i.help,i.funcao,m.id_item,m.modulo
                               from db_menu m 
                               inner join db_itensmenu i
                               on i.id_item = m.id_item_filho 
 							  left outer join db_permissao p
                               on p.id_item = m.id_item_filho 
-							  and p.id_usuario = ".$HTTP_POST_VARS["usuario"]."
-							  and p.anousu = ".$HTTP_POST_VARS["anousu"]."
-							  and p.id_instit = ".$HTTP_POST_VARS["instit"]."
-							  and p.id_modulo = ".$HTTP_POST_VARS["modulos"]."							  
+							  and p.id_usuario = ".$_POST["usuario"]."
+							  and p.anousu = ".$_POST["anousu"]."
+							  and p.id_instit = ".$_POST["instit"]."
+							  and p.id_modulo = ".$_POST["modulos"]."							  
                               where m.modulo = $mod
 							  and m.id_item = $item
 							  and i.itemativo = $ambiente order by id_item,menusequencia"  );			  
-			  $numrows = pg_numrows($sub);
+			  $numrows = pg_num_rows($sub);
               if($numrows > 0) {
                 for($x = 0;$x < $numrows;$x++) {                  
-				  $valor = pg_result($sub,$x,"id_item_filho");
-                  echo "<img src=\"imagens/alinha.gif\" height=\"5\" id=\"Img".$conta."\" width=\"".$wid."\" ><input onClick=\"js_marcaP1('$id','Img".$conta."');js_marcaP2('$id','Img".$conta."')\" type=\"checkbox\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" onmouseover=\"js_msg_status('".pg_result($sub,$x,"help")."')\" onmouseout=\"js_lmp_status()\" ".(pg_result($sub,$x,"perm")==""?"":"checked").">
-				  <label onmouseover=\"js_msg_status('".pg_result($sub,$x,"help")."')\" onmouseout=\"js_lmp_status()\" for=\"ID$valor\">".pg_result($sub,$x,"descricao")."</label><br>\n";
+				  $valor = pg_fetch_result($sub,$x,"id_item_filho");
+                  echo "<img src=\"imagens/alinha.gif\" height=\"5\" id=\"Img".$conta."\" width=\"".$wid."\" ><input onClick=\"js_marcaP1('$id','Img".$conta."');js_marcaP2('$id','Img".$conta."')\" type=\"checkbox\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" onmouseover=\"js_msg_status('".pg_fetch_result($sub,$x,"help")."')\" onmouseout=\"js_lmp_status()\" ".(pg_fetch_result($sub,$x,"perm")==""?"":"checked").">
+				  <label onmouseover=\"js_msg_status('".pg_fetch_result($sub,$x,"help")."')\" onmouseout=\"js_lmp_status()\" for=\"ID$valor\">".pg_fetch_result($sub,$x,"descricao")."</label><br>\n";
 				  $wid += 15;
 				  $conta++;
-				  submenus(pg_result($sub,$x,"id_item_filho"),$id,$mod);
+				  submenus(pg_fetch_result($sub,$x,"id_item_filho"),$id,$mod);
 				  $wid -= 15;
                 }				                
               }
@@ -501,19 +501,19 @@ function js_marca(tag,inp) {
 	                           on m.id_item_filho = i.id_item 
 							   left outer join db_permissao p
                                on p.id_item = m.id_item_filho 
-							   and p.id_usuario = ".$HTTP_POST_VARS["usuario"]."
-							   and p.anousu = ".$HTTP_POST_VARS["anousu"]."
-							   and p.id_instit = ".$HTTP_POST_VARS["instit"]."
-							   and p.id_modulo = ".$HTTP_POST_VARS["modulos"]."
-	                           where m.modulo = ".$HTTP_POST_VARS["modulos"]."
+							   and p.id_usuario = ".$_POST["usuario"]."
+							   and p.anousu = ".$_POST["anousu"]."
+							   and p.id_instit = ".$_POST["instit"]."
+							   and p.id_modulo = ".$_POST["modulos"]."
+	                           where m.modulo = ".$_POST["modulos"]."
 							   and i.itemativo = $ambiente							   
-							   and m.id_item = ".$HTTP_POST_VARS["modulos"];
+							   and m.id_item = ".$_POST["modulos"];
             $result = db_query($SQL);			
-            for($i = 0;$i < pg_numrows($result);$i++) {
-			  $valor = pg_result($result,$i,"id_item_filho");
-              echo "<td id=\"col$i\" valign=\"top\" nowrap>\n<input onclick=\"js_marca('col$i',this)\" type=\"checkbox\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" onmouseover=\"js_msg_status('".pg_result($result,$i,"help")."')\" onmouseout=\"js_lmp_status()\" ".(pg_result($result,$i,"perm")==""?"":"checked").">
-			  <label onmouseover=\"js_msg_status('".pg_result($result,$i,"help")."')\" onmouseout=\"js_lmp_status()\" for=\"ID$valor\">".pg_result($result,$i,"descricao")."</label><br>\n";
-              submenus(pg_result($result,$i,"pai"),"col".$i,db_strpos($HTTP_POST_VARS["modulos"],"##"));
+            for($i = 0;$i < pg_num_rows($result);$i++) {
+			  $valor = pg_fetch_result($result,$i,"id_item_filho");
+              echo "<td id=\"col$i\" valign=\"top\" nowrap>\n<input onclick=\"js_marca('col$i',this)\" type=\"checkbox\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" onmouseover=\"js_msg_status('".pg_fetch_result($result,$i,"help")."')\" onmouseout=\"js_lmp_status()\" ".(pg_fetch_result($result,$i,"perm")==""?"":"checked").">
+			  <label onmouseover=\"js_msg_status('".pg_fetch_result($result,$i,"help")."')\" onmouseout=\"js_lmp_status()\" for=\"ID$valor\">".pg_fetch_result($result,$i,"descricao")."</label><br>\n";
+              submenus(pg_fetch_result($result,$i,"pai"),"col".$i,db_strpos($_POST["modulos"],"##"));
 			  echo "</td>\n";
             }	   
 		   ?> 

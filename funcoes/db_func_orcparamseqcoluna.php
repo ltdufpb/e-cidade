@@ -1,6 +1,6 @@
 <?php
 
-$campos = implode(', ', array(
+$campos = implode(', ', [
     'orcparamseqcoluna.o115_sequencial',
     'orcparamseqcoluna.o115_descricao',
     'orcparamseqcoluna.o115_tipo',
@@ -11,4 +11,4 @@ $campos = implode(', ', array(
     'orcparamseqcoluna.o115_anousu AS db_o115_anousu',
     'orcparamseqcoluna.o115_relatorio',
     'orcparamrel.o42_descrrel'
-));
+]);

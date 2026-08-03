@@ -43,9 +43,9 @@ if (strlen($dia)=="1")
 $dtat = $ano.$mes.$dia;
 if(strcmp($dtat, $dtvenc)<"0"){
   if($cerweb == true){
-    echo pg_result($result,0,'cerhtml');
+    echo pg_fetch_result($result,0,'cerhtml');
   }else{
-    echo pg_result($result,0,'cercertidao');
+    echo pg_fetch_result($result,0,'cercertidao');
   }
 }elseif(strcmp($dtat, $dtvenc)>"0"){
 //passou 90 dias

@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cidadao_classe.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcidadao = new cl_cidadao;
 $clcidadao->rotulo->label("ov02_sequencial");
 $clcidadao->rotulo->label("ov02_seq");
@@ -144,9 +144,9 @@ $chave_ov02_seq = null;
         	}
           $sql = $clcidadao->sql_query("","",$campos,"ov02_sequencial#ov02_seq",$dbWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_ov02_sequencial)) {
-          $repassa = array("chave_ov02_sequencial"=>$chave_ov02_sequencial);
+          $repassa = ["chave_ov02_sequencial"=>$chave_ov02_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

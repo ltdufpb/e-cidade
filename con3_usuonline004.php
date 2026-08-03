@@ -27,9 +27,9 @@
 
 session_start();
 include("libs/db_stdlib.php");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-if(isset($HTTP_POST_VARS["sair"])) {
+if(isset($_POST["sair"])) {
   $fp = fopen("chat/".$arquivo,"r+");
   $str = "\n"."2#".time()."#".$usuario."#"."CONVERSA ENCERRADA";
   fseek($fp,0,SEEK_END);
@@ -46,9 +46,9 @@ if(isset($HTTP_POST_VARS["sair"])) {
 }
 
 
-if(isset($HTTP_POST_VARS["texto"])) {
+if(isset($_POST["texto"])) {
   $fp = fopen("chat/".$arquivo,"r+");
-  $str = "\n"."2#".time()."#".$usuario."#".$HTTP_POST_VARS["texto"];
+  $str = "\n"."2#".time()."#".$usuario."#".$_POST["texto"];
   fseek($fp,0,SEEK_END);
   fputs($fp,$str,strlen($str));
   fclose($fp);

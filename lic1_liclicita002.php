@@ -122,7 +122,7 @@ if (isset($alterar)) {
         $sProcAdmin = " ";
         $l20_procadmin = "";
     } else {
-        $sProcAdmin = trim($l20_procadmin);
+        $sProcAdmin = trim((string) $l20_procadmin);
         if ($sProcAdmin === '') {
             $sqlerro = true;
             $erro_msg = "O campo Processo Administrativo é de preenchimento obrigatório.";
@@ -474,7 +474,7 @@ if (isset($chavepesquisa)) {
      * Verifica se a última situação da licitação permite alteração nos dados da licitação
      */
     $sSqlUltimaSituacao = "select max(l11_sequencial) from liclicitasituacao lls where lls.l11_liclicita = ls.l11_liclicita";
-    $aWhereSituacao = array("l11_liclicita  = {$chavepesquisa}", "l11_sequencial = ({$sSqlUltimaSituacao})");
+    $aWhereSituacao = ["l11_liclicita  = {$chavepesquisa}", "l11_sequencial = ({$sSqlUltimaSituacao})"];
     $sSqlAlteracao = "select l08_altera::varchar from liclicitasituacao ls inner join licsituacao on l11_licsituacao = l08_sequencial where "
         . implode(' AND ', $aWhereSituacao);
     $rsAlteracao = db_query($sSqlAlteracao);
@@ -567,7 +567,7 @@ $db_botao = true;
 <?php
 if (isset($alterar)) {
     if ($sqlerro == true) {
-        if (trim($erro_msg) == "") {
+        if (trim((string) $erro_msg) == "") {
             $erro_msg = "Alteracao abortada";
         }
 

@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clcriaabas = new cl_criaabas;
@@ -58,13 +58,13 @@ $clcriaabas = new cl_criaabas;
     <tr>
       <td>
           <?php 
-          $clcriaabas->identifica = array("obras" => "Obras", "constr" => "Construções", "areas" => "Áreas Complementares");
-          $clcriaabas->title = array("obras" => "Obras", "constr" => "Construções", "areas" => "Áreas Complementares");
-          $clcriaabas->src = array(
+          $clcriaabas->identifica = ["obras" => "Obras", "constr" => "Construções", "areas" => "Áreas Complementares"];
+          $clcriaabas->title = ["obras" => "Obras", "constr" => "Construções", "areas" => "Áreas Complementares"];
+          $clcriaabas->src = [
               "obras"  => "pro1_obras001.php?abas=1&pri=true",
               "constr" => "pro1_obrasconstr001.php",
               "areas" => "pro1_areascomplementares001.php"
-          );
+          ];
           $clcriaabas->cria_abas();
           ?>
       </td>

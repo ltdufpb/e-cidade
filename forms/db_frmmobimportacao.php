@@ -49,7 +49,7 @@ db_input('j95_codimporta',8,$Ij95_codimporta,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Pda 1','2'=>'Pda 2','3'=>'Pda 3','4'=>'Pda 4','5'=>'Pda 5','6'=>'Pda 6','7'=>'Pda 7','8'=>'Pda 8','9'=>'Pda 9','10'=>'pda 10','11'=>'Pda 11','12'=>'Pda 12','13'=>'Pda 13','14'=>'Pda 14','15'=>'Pda 15');
+$x = ['1'=>'Pda 1','2'=>'Pda 2','3'=>'Pda 3','4'=>'Pda 4','5'=>'Pda 5','6'=>'Pda 6','7'=>'Pda 7','8'=>'Pda 8','9'=>'Pda 9','10'=>'pda 10','11'=>'Pda 11','12'=>'Pda 12','13'=>'Pda 13','14'=>'Pda 14','15'=>'Pda 15'];
 db_select('j95_pda',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -115,7 +115,7 @@ function js_preenchepesquisa(chave){
   db_iframe_mobimportacao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

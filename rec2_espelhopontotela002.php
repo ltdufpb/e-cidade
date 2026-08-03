@@ -87,10 +87,10 @@ use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\ProcessamentoPontoE
 
 $oParametros = \db_utils::postMemory(array_merge($_GET, $_POST));
 
-$aMatriculas = explode(',', $oParametros->aMatriculas);
+$aMatriculas = explode(',', (string) $oParametros->aMatriculas);
 
 $iCodigoSelecao = !empty($oParametros->iCodigoSelecao) ? $oParametros->iCodigoSelecao : null;
-$lMostraObservacoes = $oParametros->lMostraObservacoes ? $oParametros->lMostraObservacoes : false;
+$lMostraObservacoes = $oParametros->lMostraObservacoes ?: false;
 $lEmiteTodosAfastamentos = !empty($oParametros->iEmiteTodosAfastamentos) && $oParametros->iEmiteTodosAfastamentos == 1;
 $limiteMatriculasInconsistentes = 50;
 
@@ -123,22 +123,22 @@ try {
 
     foreach ($aPeriodos as $oPeriodo) {
         $aDatasEfetividade = \DBDate::getDatasNoIntervalo($oPeriodo->getDataInicio(), $oPeriodo->getDataFim());
-        $aDatasProcessar = array();
-        $aDatasProcessarJustificativas = array();
+        $aDatasProcessar = [];
+        $aDatasProcessarJustificativas = [];
 
         foreach (\DBDate::getDatasNoIntervalo($oPeriodo->getDataInicio(), $oPeriodo->getDataFim()) as $oDataProcessar) {
             $aDatasProcessar[] = $oDataProcessar->getDate();
-            $aDatasProcessarJustificativas[] = (object)array('data' => $oDataProcessar->getDate());
+            $aDatasProcessarJustificativas[] = (object)['data' => $oDataProcessar->getDate()];
         }
     }
 
-    $aServidores = array();
+    $aServidores = [];
 
     if (empty($aMatriculas)) {
         throw new BusinessException("Não há servidores para esta selecão.");
     }
 
-    $matriculasInconsistentes = array();
+    $matriculasInconsistentes = [];
     foreach ($aMatriculas as $iMatricula) {
         $sTipo = '';
 
@@ -238,12 +238,12 @@ try {
         $aServidores[] = $oEspelho->retornaDados();
     }
 
-    $sDataInicio = implode('/', array_reverse(explode('-', $oParametros->sDataInicio)));
-    $sDataFim = implode('/', array_reverse(explode('-', $oParametros->sDataFim)));
+    $sDataInicio = implode('/', array_reverse(explode('-', (string) $oParametros->sDataInicio)));
+    $sDataFim = implode('/', array_reverse(explode('-', (string) $oParametros->sDataFim)));
 
     $head3 = "{$sDataInicio} a {$sDataFim}";
 
-    escreverPDF($aServidores, $lMostraObservacoes, $lEmiteTodosAfastamentos);
+    escreverPDF($aServidores, $lMostraObservacoes);
 } catch (Exception $e) {
     db_redireciona('db_erros.php?db_erro=' . urlencode($e->getMessage()));
 }
@@ -325,7 +325,7 @@ function escreverPDF($aServidores, $lMostraObservacoes, $lEmiteTodosAfastamentos
         $aDatasServidor = $servidor['datas'];
 
         foreach ($aDatasServidor as $indDatas => $oData) {
-            if ((!!preg_match('/^\d{1,2}\/(\d{1,2})\/\d{1,4}$/', $oData->data, $aMes)) !== true) {
+            if ((!!preg_match('/^\d{1,2}\/(\d{1,2})\/\d{1,4}$/', (string) $oData->data, $aMes)) !== true) {
                 throw new BusinessException("Não foi possível identificar o mês.");
             }
             $mesAtual = $aMes[1];
@@ -464,8 +464,8 @@ function escreverPDF($aServidores, $lMostraObservacoes, $lEmiteTodosAfastamentos
                     break;
                 }
 
-                if (strlen($sObservacao) > $iLimiteCarateresObservacoes) {
-                    $sObservacao = substr($sObservacao, 0, $iLimiteCarateresObservacoes);
+                if (strlen((string) $sObservacao) > $iLimiteCarateresObservacoes) {
+                    $sObservacao = substr((string) $sObservacao, 0, $iLimiteCarateresObservacoes);
                     $sObservacao .= '...';
                 }
 
@@ -494,8 +494,8 @@ function escreverPDF($aServidores, $lMostraObservacoes, $lEmiteTodosAfastamentos
             }
 
             foreach ($aObservacoesServidor as $sObservacao) {
-                if (strlen($sObservacao) > $iLimiteCarateresObservacoes) {
-                    $sObservacao = substr($sObservacao, 0, $iLimiteCarateresObservacoes);
+                if (strlen((string) $sObservacao) > $iLimiteCarateresObservacoes) {
+                    $sObservacao = substr((string) $sObservacao, 0, $iLimiteCarateresObservacoes);
                     $sObservacao .= '...';
                 }
 
@@ -530,7 +530,7 @@ function escreverGrade($pdf, $dados, $lHeader = false)
 
     $colunas = (array)$dados;
     $iMaximoDeLinhas = 5;
-    $aColunasNaoContar = array(
+    $aColunasNaoContar = [
       'afastamento',
       'oJornada',
       'data_dia',
@@ -539,7 +539,7 @@ function escreverGrade($pdf, $dados, $lHeader = false)
       'data',
       'possuiEvento',
       'dadosEvento'
-    );
+    ];
     foreach ($colunas as $campo => $coluna) {
         if (in_array($campo, $aColunasNaoContar)) {
             continue;
@@ -559,7 +559,7 @@ function escreverGrade($pdf, $dados, $lHeader = false)
     $sql = "select distinct rh229_hora as hora , rh229_serial as serial 
             from recursoshumanos.pontoeletronicoarquivoimportacaoregistro 
             where rh229_matricula = $pdf
-              and rh229_data = '".substr($dados->data_dia,6,4)."-".substr($dados->data_dia,3,2)."-".substr($dados->data_dia,0,2)."' 
+              and rh229_data = '".substr((string) $dados->data_dia,6,4)."-".substr((string) $dados->data_dia,3,2)."-".substr((string) $dados->data_dia,0,2)."' 
             order by rh229_hora";
 
     $linha = "";
@@ -570,8 +570,8 @@ function escreverGrade($pdf, $dados, $lHeader = false)
       $hora = "";
       for($i=0;$i<pg_num_rows($res);$i++){
 
-         $linha .= pg_result($res,$i,'hora')." - Serial : ";
-         $linha .= pg_result($res,$i,'serial')."<br>";
+         $linha .= pg_fetch_result($res,$i,'hora')." - Serial : ";
+         $linha .= pg_fetch_result($res,$i,'serial')."<br>";
 
       }
 
@@ -672,7 +672,7 @@ function somarHora($horarios)
             continue;
         }
 
-        list($iHora, $iMinute) = explode(':', $horario);
+        [$iHora, $iMinute] = explode(':', (string) $horario);
         $nTotalMinutos += $iHora * 60;
         $nTotalMinutos += $iMinute;
     }
@@ -703,7 +703,7 @@ function escreverAssinaturas($pdf, $nomeServidor, $nomeSupervisor)
 function montarMarcacao($marcacao, $mostrarAfastamento, $afastamento, &$mostrarLegenda)
 {
 
-    $aDados = array();
+    $aDados = [];
     $string = '';
     $iTotalAfastamento = 0;
     if ($afastamento->isAfastado) {

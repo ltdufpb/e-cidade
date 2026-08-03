@@ -42,8 +42,8 @@ $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
 
-$aDadosRetorno          = array();
-$aErros                 = array();
+$aDadosRetorno          = [];
+$aErros                 = [];
 try {
 
   db_inicio_transacao();

@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_saltescontrapartida_classe.php"));
 require_once(modification("classes/db_saltesextra_classe.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 $oPost = db_utils::postMemory($_POST);
 
@@ -44,15 +44,15 @@ $clsaltesextra         = new cl_saltesextra;
 $db_opcao = 22;
 $db_botao = false;
 $sqlerro = false;
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
   db_inicio_transacao();
      /**
       * Verificamos se a data de criaçao eh menor ou igual a data do saldo;
       */
      if ($k13_datvlr != "") {
 
-       if (db_strtotime(implode("-", array_reverse(explode("/", $k13_datvlr)))) <
-           db_strtotime(implode("-", array_reverse(explode("/", $k13_dtimplantacao))))) {
+       if (db_strtotime(implode("-", array_reverse(explode("/", (string) $k13_datvlr)))) <
+           db_strtotime(implode("-", array_reverse(explode("/", (string) $k13_dtimplantacao))))) {
 
           $sqlerro               = true;
           $clsaltes->erro_status = "0";
@@ -153,7 +153,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
   if($clsaltes->erro_status=="0"){
     $clsaltes->erro(true,false);
     $db_botao=true;

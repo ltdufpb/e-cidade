@@ -65,9 +65,9 @@ class Request
     /**
      * @var array
      */
-    protected $headers    = array();
-    private $options    = array();
-    protected $postFields = array();
+    protected $headers    = [];
+    private $options    = [];
+    protected $postFields = [];
 
     /**
      * @var string
@@ -130,12 +130,12 @@ class Request
             $this->options[CURLOPT_HTTPHEADER] = $this->headers;
         }
 
-        if (in_array($this->tipoRequisicao, array(self::REQUISICAO_POST))) {
+        if (in_array($this->tipoRequisicao, [self::REQUISICAO_POST])) {
             $this->options[CURLOPT_POSTFIELDS] = ($this->postFields);
             // $this->options[CURLOPT_POSTFIELDS] = http_build_query($this->postFields);
         }
 
-        if (in_array($this->tipoRequisicao, array(self::REQUISICAO_PUT))) {
+        if (in_array($this->tipoRequisicao, [self::REQUISICAO_PUT])) {
             $this->options[CURLOPT_POSTFIELDS] = http_build_query($this->postFields);
         }
 

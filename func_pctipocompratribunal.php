@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pctipocompratribunal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpctipocompratribunal = new cl_pctipocompratribunal;
 $clpctipocompratribunal->rotulo->label("l44_sequencial");
 $clpctipocompratribunal->rotulo->label("l44_sequencial");
@@ -98,9 +98,9 @@ $clpctipocompratribunal->rotulo->label("l44_sequencial");
         }else{
            $sql = $clpctipocompratribunal->sql_query("",$campos,"l44_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_l44_sequencial)){
-          $repassa = array("chave_l44_sequencial"=>$chave_l44_sequencial,"chave_l44_sequencial"=>$chave_l44_sequencial);
+          $repassa = ["chave_l44_sequencial"=>$chave_l44_sequencial,"chave_l44_sequencial"=>$chave_l44_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

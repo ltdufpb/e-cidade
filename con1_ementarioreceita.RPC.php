@@ -51,7 +51,7 @@ try {
         case "getExercicios";
 
             $aExercicios          = Exercicio::getExercicioEmentarioDaReceita();
-            $oRetorno->exercicios = array();
+            $oRetorno->exercicios = [];
             foreach ($aExercicios as $oExercicio) {
 
                 $oStdExercicio = new stdClass();
@@ -65,7 +65,7 @@ try {
 
         case "getModelos";
 
-            $oRetorno->modelos = array();
+            $oRetorno->modelos = [];
 
             if (empty($oParam->exercicio)) {
                 throw new ParameterException("O campo Exercício é de preenchimento obrigatório.");

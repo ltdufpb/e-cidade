@@ -28,12 +28,12 @@ class cl_orcparamseqinfocomplementarlancamento
     /**
      * @var array
      */
-    private $join = array();
+    private $join = [];
 
     public function __construct()
     {
         $this->rotulo = new rotulo("orcparamseqinfocomplementarlancamento");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -86,7 +86,7 @@ class cl_orcparamseqinfocomplementarlancamento
                 $this->erro_status = "0";
                 return false;
             }
-            $this->o102_sequencial = pg_result($result, 0, 0);
+            $this->o102_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $this->o102_sequencial = $o102_sequencial;
         }
@@ -113,7 +113,7 @@ class cl_orcparamseqinfocomplementarlancamento
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Linha Informação Complementar Conta Corrente ($this->o102_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Linha Informação Complementar Conta Corrente já Cadastrado";
@@ -174,7 +174,7 @@ class cl_orcparamseqinfocomplementarlancamento
                     throw new Exception(pg_last_error());
                 }
 
-                $rs = db_query("INSERT INTO db_acount VALUES ({$acount}, 1010439, 13912, '','" . AddSlashes(pg_result(
+                $rs = db_query("INSERT INTO db_acount VALUES ({$acount}, 1010439, 13912, '','" . AddSlashes(pg_fetch_result(
                         $rsSql,
                         0,
                         'o102_sequencial'
@@ -184,7 +184,7 @@ class cl_orcparamseqinfocomplementarlancamento
                     throw new Exception(pg_last_error());
                 }
 
-                $rs = db_query("insert into db_acount values($acount,1010439,1010422,'','" . AddSlashes(pg_result(
+                $rs = db_query("insert into db_acount values($acount,1010439,1010422,'','" . AddSlashes(pg_fetch_result(
                         $rsSql,
                         0,
                         'o102_exclusao'
@@ -208,10 +208,10 @@ class cl_orcparamseqinfocomplementarlancamento
         $this->atualizacampos();
         $sql = " UPDATE orcparamseqinfocomplementarlancamento SET ";
         $virgula = "";
-        if (trim($this->o102_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o102_sequencial"])) {
+        if (trim((string) $this->o102_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o102_sequencial"])) {
             $sql .= $virgula . " o102_sequencial = $this->o102_sequencial ";
             $virgula = ",";
-            if (trim($this->o102_sequencial) == null) {
+            if (trim((string) $this->o102_sequencial) == null) {
                 $this->erro_sql = " Campo Código não informado.";
                 $this->erro_campo = "o102_sequencial";
                 $this->erro_banco = "";
@@ -225,9 +225,9 @@ class cl_orcparamseqinfocomplementarlancamento
                 return false;
             }
         }
-        if (trim($this->o102_exclusao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o102_exclusao"])) {
+        if (trim((string) $this->o102_exclusao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o102_exclusao"])) {
             $sql .= $virgula . " o102_exclusao = '$this->o102_exclusao' ";
-            if (trim($this->o102_exclusao) == null) {
+            if (trim((string) $this->o102_exclusao) == null) {
                 $this->erro_sql = " Campo Exclusão não informado.";
                 $this->erro_campo = "o102_exclusao";
                 $this->erro_banco = "";
@@ -316,7 +316,7 @@ class cl_orcparamseqinfocomplementarlancamento
                     throw new Exception(pg_last_error());
                 }
 
-                $rs = db_query("INSERT INTO db_acount VALUES ({$acount}, 1010439, 13912, '','" . AddSlashes(pg_result(
+                $rs = db_query("INSERT INTO db_acount VALUES ({$acount}, 1010439, 13912, '','" . AddSlashes(pg_fetch_result(
                         $rs,
                         0,
                         'o102_sequencial'
@@ -326,7 +326,7 @@ class cl_orcparamseqinfocomplementarlancamento
                     throw new Exception(pg_last_error());
                 }
 
-                $rs = db_query("insert into db_acount values($acount,1010439,1010422,'','" . AddSlashes(pg_result(
+                $rs = db_query("insert into db_acount values($acount,1010439,1010422,'','" . AddSlashes(pg_fetch_result(
                         $rs,
                         0,
                         'o102_exclusao'
@@ -354,15 +354,15 @@ class cl_orcparamseqinfocomplementarlancamento
             if (($resaco != false) || ($this->numrows != 0)) {
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,13912,'$o102_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,1010439,13912,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1010439,13912,'','" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $iresaco,
                             'o102_sequencial'
                         )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010439,1010422,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1010439,1010422,'','" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $iresaco,
                             'o102_exclusao'
@@ -526,7 +526,7 @@ class cl_orcparamseqinfocomplementarlancamento
      * @param array $order
      * @return string
      */
-    public function sql($columns = array('*'), $where = array(), $order = array())
+    public function sql($columns = ['*'], $where = [], $order = [])
     {
         $columns = implode(', ', $columns);
         $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';

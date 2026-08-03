@@ -16,7 +16,7 @@ class AdmissaoPreliminarRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     public static function getInstance()
     {
@@ -46,7 +46,7 @@ class AdmissaoPreliminarRepository
             throw new Exception('Não foi possível buscar a admissão preliminar.');
         }
 
-        $admissoes = array();
+        $admissoes = [];
 
         $rows = pg_fetch_all($res);
         if ($rows) {
@@ -101,6 +101,6 @@ class AdmissaoPreliminarRepository
 
     private function clearScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
     }
 }

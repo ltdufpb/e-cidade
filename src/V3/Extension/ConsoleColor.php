@@ -3,7 +3,7 @@ namespace ECidade\V3\Extension;
 
 class ConsoleColor {
 
-  protected static $foreground = array(
+  protected static $foreground = [
     'black' => '0;30',
     'dark_gray' => '1;30',
     'blue' => '0;34',
@@ -20,9 +20,9 @@ class ConsoleColor {
     'yellow' => '1;33',
     'light_gray' => '0;37',
     'white' => '1;37',
-  );
+  ];
 
-  protected static $background = array(
+  protected static $background = [
     'black' => '40',
     'red' => '41',
     'green' => '42',
@@ -31,7 +31,7 @@ class ConsoleColor {
     'magenta' => '45',
     'cyan' => '46',
     'light_gray' => '47',
-  );
+  ];
 
   public static function set($string, $foreground = null, $background = null) {
 

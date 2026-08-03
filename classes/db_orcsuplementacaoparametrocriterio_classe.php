@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE orcsuplementacaoparametrocriterio
 class cl_orcsuplementacaoparametrocriterio { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o135_sequencial = 0; 
-   var $o135_orcsuplementacaoparametro = 0; 
-   var $o135_descricao = null; 
-   var $o135_nivel = 0; 
-   var $o135_valor = null; 
-   var $o135_fundamentacaolegal = null; 
+   public $o135_sequencial = 0; 
+   public $o135_orcsuplementacaoparametro = 0; 
+   public $o135_descricao = null; 
+   public $o135_nivel = 0; 
+   public $o135_valor = null; 
+   public $o135_fundamentacaolegal = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o135_sequencial = int4 = Código Sequencial 
                  o135_orcsuplementacaoparametro = int4 = Ano do Parâmetro 
                  o135_descricao = varchar(50) = Descrição 
@@ -58,10 +58,10 @@ class cl_orcsuplementacaoparametrocriterio {
                  o135_fundamentacaolegal = text = Fundamentação Legal do Critério 
                  ";
    //funcao construtor da classe 
-   function cl_orcsuplementacaoparametrocriterio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcsuplementacaoparametrocriterio"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -125,10 +125,10 @@ class cl_orcsuplementacaoparametrocriterio {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o135_sequencial = pg_result($result,0,0); 
+       $this->o135_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from orcsuplementacaoparametrocriterio_o135_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o135_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o135_sequencial)){
          $this->erro_sql = " Campo o135_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_orcsuplementacaoparametrocriterio {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "orcsuplementacaoparametrocriterio ($this->o135_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "orcsuplementacaoparametrocriterio já Cadastrado";
@@ -190,15 +190,15 @@ class cl_orcsuplementacaoparametrocriterio {
      $resaco = $this->sql_record($this->sql_query_file($this->o135_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17660,'$this->o135_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3119,17660,'','".AddSlashes(pg_result($resaco,0,'o135_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3119,17661,'','".AddSlashes(pg_result($resaco,0,'o135_orcsuplementacaoparametro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3119,17662,'','".AddSlashes(pg_result($resaco,0,'o135_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3119,17663,'','".AddSlashes(pg_result($resaco,0,'o135_nivel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3119,17664,'','".AddSlashes(pg_result($resaco,0,'o135_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3119,17665,'','".AddSlashes(pg_result($resaco,0,'o135_fundamentacaolegal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3119,17660,'','".AddSlashes(pg_fetch_result($resaco,0,'o135_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3119,17661,'','".AddSlashes(pg_fetch_result($resaco,0,'o135_orcsuplementacaoparametro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3119,17662,'','".AddSlashes(pg_fetch_result($resaco,0,'o135_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3119,17663,'','".AddSlashes(pg_fetch_result($resaco,0,'o135_nivel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3119,17664,'','".AddSlashes(pg_fetch_result($resaco,0,'o135_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3119,17665,'','".AddSlashes(pg_fetch_result($resaco,0,'o135_fundamentacaolegal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -207,10 +207,10 @@ class cl_orcsuplementacaoparametrocriterio {
       $this->atualizacampos();
      $sql = " update orcsuplementacaoparametrocriterio set ";
      $virgula = "";
-     if(trim($this->o135_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_sequencial"])){ 
+     if(trim((string) $this->o135_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_sequencial"])){ 
        $sql  .= $virgula." o135_sequencial = $this->o135_sequencial ";
        $virgula = ",";
-       if(trim($this->o135_sequencial) == null ){ 
+       if(trim((string) $this->o135_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o135_sequencial";
          $this->erro_banco = "";
@@ -220,10 +220,10 @@ class cl_orcsuplementacaoparametrocriterio {
          return false;
        }
      }
-     if(trim($this->o135_orcsuplementacaoparametro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_orcsuplementacaoparametro"])){ 
+     if(trim((string) $this->o135_orcsuplementacaoparametro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_orcsuplementacaoparametro"])){ 
        $sql  .= $virgula." o135_orcsuplementacaoparametro = $this->o135_orcsuplementacaoparametro ";
        $virgula = ",";
-       if(trim($this->o135_orcsuplementacaoparametro) == null ){ 
+       if(trim((string) $this->o135_orcsuplementacaoparametro) == null ){ 
          $this->erro_sql = " Campo Ano do Parâmetro nao Informado.";
          $this->erro_campo = "o135_orcsuplementacaoparametro";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_orcsuplementacaoparametrocriterio {
          return false;
        }
      }
-     if(trim($this->o135_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_descricao"])){ 
+     if(trim((string) $this->o135_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_descricao"])){ 
        $sql  .= $virgula." o135_descricao = '$this->o135_descricao' ";
        $virgula = ",";
-       if(trim($this->o135_descricao) == null ){ 
+       if(trim((string) $this->o135_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "o135_descricao";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_orcsuplementacaoparametrocriterio {
          return false;
        }
      }
-     if(trim($this->o135_nivel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_nivel"])){ 
+     if(trim((string) $this->o135_nivel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_nivel"])){ 
        $sql  .= $virgula." o135_nivel = $this->o135_nivel ";
        $virgula = ",";
-       if(trim($this->o135_nivel) == null ){ 
+       if(trim((string) $this->o135_nivel) == null ){ 
          $this->erro_sql = " Campo Nível do Critério nao Informado.";
          $this->erro_campo = "o135_nivel";
          $this->erro_banco = "";
@@ -259,11 +259,11 @@ class cl_orcsuplementacaoparametrocriterio {
          return false;
        }
      }
-     if(trim($this->o135_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_valor"])){ 
+     if(trim((string) $this->o135_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_valor"])){ 
        $sql  .= $virgula." o135_valor = '$this->o135_valor' ";
        $virgula = ",";
      }
-     if(trim($this->o135_fundamentacaolegal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_fundamentacaolegal"])){ 
+     if(trim((string) $this->o135_fundamentacaolegal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o135_fundamentacaolegal"])){ 
        $sql  .= $virgula." o135_fundamentacaolegal = '$this->o135_fundamentacaolegal' ";
        $virgula = ",";
      }
@@ -275,21 +275,21 @@ class cl_orcsuplementacaoparametrocriterio {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17660,'$this->o135_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o135_sequencial"]) || $this->o135_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3119,17660,'".AddSlashes(pg_result($resaco,$conresaco,'o135_sequencial'))."','$this->o135_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3119,17660,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o135_sequencial'))."','$this->o135_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o135_orcsuplementacaoparametro"]) || $this->o135_orcsuplementacaoparametro != "")
-           $resac = db_query("insert into db_acount values($acount,3119,17661,'".AddSlashes(pg_result($resaco,$conresaco,'o135_orcsuplementacaoparametro'))."','$this->o135_orcsuplementacaoparametro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3119,17661,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o135_orcsuplementacaoparametro'))."','$this->o135_orcsuplementacaoparametro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o135_descricao"]) || $this->o135_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,3119,17662,'".AddSlashes(pg_result($resaco,$conresaco,'o135_descricao'))."','$this->o135_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3119,17662,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o135_descricao'))."','$this->o135_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o135_nivel"]) || $this->o135_nivel != "")
-           $resac = db_query("insert into db_acount values($acount,3119,17663,'".AddSlashes(pg_result($resaco,$conresaco,'o135_nivel'))."','$this->o135_nivel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3119,17663,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o135_nivel'))."','$this->o135_nivel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o135_valor"]) || $this->o135_valor != "")
-           $resac = db_query("insert into db_acount values($acount,3119,17664,'".AddSlashes(pg_result($resaco,$conresaco,'o135_valor'))."','$this->o135_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3119,17664,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o135_valor'))."','$this->o135_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o135_fundamentacaolegal"]) || $this->o135_fundamentacaolegal != "")
-           $resac = db_query("insert into db_acount values($acount,3119,17665,'".AddSlashes(pg_result($resaco,$conresaco,'o135_fundamentacaolegal'))."','$this->o135_fundamentacaolegal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3119,17665,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o135_fundamentacaolegal'))."','$this->o135_fundamentacaolegal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -334,15 +334,15 @@ class cl_orcsuplementacaoparametrocriterio {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17660,'$o135_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3119,17660,'','".AddSlashes(pg_result($resaco,$iresaco,'o135_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3119,17661,'','".AddSlashes(pg_result($resaco,$iresaco,'o135_orcsuplementacaoparametro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3119,17662,'','".AddSlashes(pg_result($resaco,$iresaco,'o135_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3119,17663,'','".AddSlashes(pg_result($resaco,$iresaco,'o135_nivel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3119,17664,'','".AddSlashes(pg_result($resaco,$iresaco,'o135_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3119,17665,'','".AddSlashes(pg_result($resaco,$iresaco,'o135_fundamentacaolegal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3119,17660,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o135_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3119,17661,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o135_orcsuplementacaoparametro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3119,17662,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o135_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3119,17663,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o135_nivel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3119,17664,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o135_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3119,17665,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o135_fundamentacaolegal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcsuplementacaoparametrocriterio
@@ -402,7 +402,7 @@ class cl_orcsuplementacaoparametrocriterio {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcsuplementacaoparametrocriterio";
@@ -417,7 +417,7 @@ class cl_orcsuplementacaoparametrocriterio {
    function sql_query ( $o135_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,7 +439,7 @@ class cl_orcsuplementacaoparametrocriterio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,7 +452,7 @@ class cl_orcsuplementacaoparametrocriterio {
    function sql_query_file ( $o135_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,7 +473,7 @@ class cl_orcsuplementacaoparametrocriterio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

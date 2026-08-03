@@ -50,8 +50,8 @@ exit;
 //die("where == ".$txt_where);
 //die("inner == ".$txt_inner);
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 /*
 Voce selecionou uma parcela, e naun todas as receitas da mesma parcela, Deseja continuar
 com a importação?
@@ -365,12 +365,12 @@ if(isset($procreg) && $procreg == 't'){
 					       k00_receit ";
 //  die($sql_pesq);
     $result_pesq_divida = db_query($sql_pesq);
-    $numrows = pg_numrows($result_pesq_divida);
+    $numrows = pg_num_rows($result_pesq_divida);
     if (isset($numrows) && $numrows == 0 ){
 	 db_msgbox("Nenhum registro para o filtro selecionado !");	
     }
-    $codigo_k02 = split(",",$codreceita);
-    $codigo_v03 = split(",",$cod_v03_codigo);
+    $codigo_k02 = preg_split("#,#m",(string) $codreceita);
+    $codigo_v03 = preg_split("#,#m",$cod_v03_codigo);
     $sqlerro=false;
    
     db_inicio_transacao();
@@ -395,7 +395,7 @@ if(isset($procreg) && $procreg == 't'){
       db_fieldsmemory($result_pesq_divida,$i,true);
       $rsArrecad = db_query(" select * from arrecad 
                                  where k00_numpre = $k00_numpre 
-				   ".(isset($$andnumpar)&&$$andnumpar!=""?$$andnumpar:"")."
+				   ".(isset(${$andnumpar})&&${$andnumpar}!=""?${$andnumpar}:"")."
 				   and k00_receit = $k00_receit 
 				   and k00_valor > 0 limit 1 ");
       db_fieldsmemory($rsArrecad,0,true);
@@ -414,10 +414,10 @@ if(isset($procreg) && $procreg == 't'){
 	$cod_v03_codigo = $codigo_v03[$ii];
 
 	if($k00_receit == $cod_k02_codigo && $sqlerro==false){
-	  if ($numpre_par_rec <> str_pad($k00_numpre,10,"0",STR_PAD_LEFT) . str_pad($k00_receit,5,"0",STR_PAD_LEFT)){
+	  if ($numpre_par_rec <> str_pad((string) $k00_numpre,10,"0",STR_PAD_LEFT) . str_pad((string) $k00_receit,5,"0",STR_PAD_LEFT)){
 	    $nextval_numpre=db_query("select nextval('numpref_k03_numpre_seq') as numpre_novo");
 	    db_fieldsmemory($nextval_numpre,0);
-	    $numpre_par_rec = str_pad($k00_numpre,10,"0",STR_PAD_LEFT) . str_pad($k00_receit,5,"0",STR_PAD_LEFT);
+	    $numpre_par_rec = str_pad((string) $k00_numpre,10,"0",STR_PAD_LEFT) . str_pad((string) $k00_receit,5,"0",STR_PAD_LEFT);
 	    $result_arrematric=$clarrematric->sql_record($clarrematric->sql_query_file($k00_numpre,0,"k00_matric"));
 	    if($clarrematric->numrows>0){
 	      db_fieldsmemory($result_arrematric,0);
@@ -447,7 +447,7 @@ if(isset($procreg) && $procreg == 't'){
 	  $cldivida->v01_numcgm  =  $k00_numcgm;
 	  $cldivida->v01_dtinsc  =  date("Y-m-d");
 //	  die($cldivida->v01_dtinsc);
-	  $cldivida->v01_exerc   =  substr($k00_dtoper,6,4);
+	  $cldivida->v01_exerc   =  substr((string) $k00_dtoper,6,4);
 	  $cldivida->v01_numpre  =  $numpre_novo;
 	  if (isset($uni) && $uni == 'p'){
 	     $cldivida->v01_numpar  =  1;
@@ -464,7 +464,7 @@ if(isset($procreg) && $procreg == 't'){
 	  $cldivida->v01_livro   =  "";
 	  $cldivida->v01_folha   =  "";
 
-	  $dt_venc=split("/",$k00_dtvenc);
+	  $dt_venc=preg_split("#\\/#m",(string) $k00_dtvenc);
 	  $dt_venc_data = $dt_venc[2]."-".$dt_venc[1]."-".$dt_venc[0];
 //	  $cldivida->v01_dtvenc  = $dt_venc_data;
 	  if (isset($uni) && $uni == 'p'){
@@ -473,7 +473,7 @@ if(isset($procreg) && $procreg == 't'){
 	     $cldivida->v01_dtvenc  = $dt_venc_data;
 	  }
 //	  die($cldivida->v01_dtvenc);
-	  $dt_oper=split("/",$k00_dtoper);
+	  $dt_oper=preg_split("#\\/#m",(string) $k00_dtoper);
 	  $dt_oper_data = $dt_oper[2]."-".$dt_oper[1]."-".$dt_oper[0];
 	  $cldivida->v01_dtoper  = $dt_oper_data;
 	  $cldivida->v01_valor   = $val;
@@ -556,8 +556,8 @@ if(isset($procreg) && $procreg == 't'){
 	    if($sqlerro==false){
 //           se agrupar por numpre,  receita
 //                          die("select * from arrecad where k00_numpre = $k00_numpre ".(isset($$andnumpar)&& $$andnumpar!=""?$$andnumpar:"")." and k00_receit = $k00_receit");
-          $rsArreold = db_query("select * from arrecad where k00_numpre = $k00_numpre ".(isset($$andnumpar)&& $$andnumpar!=""?$$andnumpar:"")." and k00_receit = $k00_receit");
-	      $numrowsArreold = pg_numrows($rsArreold);
+          $rsArreold = db_query("select * from arrecad where k00_numpre = $k00_numpre ".(isset(${$andnumpar})&& ${$andnumpar}!=""?${$andnumpar}:"")." and k00_receit = $k00_receit");
+	      $numrowsArreold = pg_num_rows($rsArreold);
           for ($iarreold=0;$iarreold<$numrowsArreold;$iarreold++){
 				db_fieldsmemory($rsArreold,$iarreold);
 //	                                                   die($clproced->sql_query_file(null,"v03_receit,k00_hist",null," v03_codigo=$cod_v03_codigo"));
@@ -584,7 +584,7 @@ if(isset($procreg) && $procreg == 't'){
 				  $erro_msg = $clarreold->erro_msg."--- Inclusão Arreold";
 				  break;
 				}
-				$clarrecad->excluir(null," k00_numpre=$k00_numpre_exc ".(isset($$excnumpar)&&$$excnumpar!=""?$$excnumpar:"")." and k00_receit=$k00_receit_exc");
+				$clarrecad->excluir(null," k00_numpre=$k00_numpre_exc ".(isset(${$excnumpar})&&${$excnumpar}!=""?${$excnumpar}:"")." and k00_receit=$k00_receit_exc");
 				if($clarrecad->erro_status==0){	      
 				  $sqlerro=true;	      
 				  $erro_msg = $clarrecad->erro_msg."--- Exclusão Arrecad";

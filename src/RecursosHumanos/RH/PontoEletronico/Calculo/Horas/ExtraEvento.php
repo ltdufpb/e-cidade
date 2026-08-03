@@ -86,6 +86,7 @@ class ExtraEvento extends CalculoExtraLinear implements HorasLinear {
     }
   }
 
+  #[\Override]
   public function calcular(\DateTime $oHorasExtra50, \DateTime $oHorasExtra50Noturna, \DateTime $oHorasExtra75, \DateTime $oHorasExtra75Noturna, \DateTime $oHorasExtra100, \DateTime $oHorasExtra100Noturna, \DateTime $oHorasAdicionalNoturno) {
 
     $momentoAtual  = clone $this->getDiaTrabalho()->getMarcacoes()->getMarcacaoEntrada1()->getMarcacao();

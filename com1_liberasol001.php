@@ -50,8 +50,8 @@ require_once(modification("classes/db_solordemtransf_classe.php"));
 require_once(modification("classes/db_procandam_classe.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 //db_postmemory($HTTP_POST_VARS,2);db_postmemory($HTTP_GET_VARS,2);
 $clpcparam           = new cl_pcparam;
 $clsolicita          = new cl_solicita;
@@ -76,7 +76,7 @@ if (isset ($incluir)) {
 	$result_pcparam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"), "pc30_gerareserva,pc30_contrandsol"));
 	db_fieldsmemory($result_pcparam, 0);
 	$sqlerro = false;
-	$arr_valores = split(",", $valores);
+	$arr_valores = preg_split("#,#m", $valores);
 	if ($pc30_contrandsol=='t'){		 		
 	  	 $sqltran = "select distinct x.p62_codtran                   
       
@@ -108,8 +108,8 @@ if (isset ($incluir)) {
 				 left join arqproc 	on p68_codproc = x.p63_codproc
 			where p64_codtran is null and p68_codproc is null and x.pc11_numero = $pc10_numero";
 			$result_tran=db_query($sqltran);
-			if(pg_numrows($result_tran)!=0){				
-				for($w=0;$w<pg_numrows($result_tran);$w++){					
+			if(pg_num_rows($result_tran)!=0){				
+				for($w=0;$w<pg_num_rows($result_tran);$w++){					
 					db_fieldsmemory($result_tran,$w);					
 					$recebetransf=recprocandsol($p62_codtran);
 					if ($recebetransf==true){
@@ -137,7 +137,7 @@ if (isset ($incluir)) {
 	if (trim($valores) != "") {
 		
 		for ($i = 0; $i < sizeof($arr_valores); $i ++) {
-			$arr_item = split("_", $arr_valores[$i]);
+			$arr_item = preg_split("#_#m", (string) $arr_valores[$i]);
 			$codigo = $arr_item[2];
 			$clsolicitem->pc11_liberado = "false";
 			$clsolicitem->pc11_codigo = $codigo;
@@ -149,7 +149,7 @@ if (isset ($incluir)) {
 		}
 		
 		for ($i = 0; $i < sizeof($arr_valores); $i ++) {
-			$arr_item = split("_", $arr_valores[$i]);
+			$arr_item = preg_split("#_#m", (string) $arr_valores[$i]);
 			$codigo = $arr_item[2];			        
 			//// Controle do andamento da solicitação  
 			if ($i == 0) {

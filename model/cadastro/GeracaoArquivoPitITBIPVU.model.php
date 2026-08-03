@@ -37,12 +37,6 @@ class GeracaoArquivoPitITBIPVU {
 	 * Caminho do JSON com as mensagens
 	 */
 	const MENSAGENS = 'arrecadacao.cadastro.GeracaoArquivoPitITBIPVU.';
-	
-  /**
-   * Ano que deve ser usado para a geração do arquivo.
-   * @var Integer
-   */
-  private $iAno;
 
   /**
    * Semestre que deve ser usado para a geração do arquivo
@@ -66,16 +60,18 @@ class GeracaoArquivoPitITBIPVU {
    * Array com as inconsistencias
    * @var array
    */
-  private $aErros = array();
+  private $aErros = [];
 
   /**
    * Função construtora para geração de arquivo ITBI-PVU
    * @param integer $iAno      Ano que deve ser usado para a geração de Arquivo
    * @param integer $iSemestre Semestre que deve ser usado para a geração do Arquivo
    */
-  function __construct( $iAno, $iSemestre ){
+  function __construct( /**
+   * Ano que deve ser usado para a geração do arquivo.
+   */
+  private $iAno, $iSemestre ){
     
-    $this->iAno         = $iAno;
     $this->iSemestre    = $iSemestre;
     $this->iInstit      = db_getsession('DB_instit');
     
@@ -209,7 +205,7 @@ class GeracaoArquivoPitITBIPVU {
 
     $oLocal = $this->oDomDocument->createElement('local');
     $oLocal->setAttribute('tipo_logradouro', $oLocalidades->tipo_logradouro );
-    $oLocal->setAttribute('logradouro',      utf8_encode( $oLocalidades->logradouro ) );
+    $oLocal->setAttribute('logradouro',      mb_convert_encoding( $oLocalidades->logradouro, 'UTF-8', 'ISO-8859-1' ) );
     
     $oFaixaNumero = $this->getFaixaNumeros( $oLocalidades->codigo_rua );
     $iNroInicial  = 0;
@@ -223,8 +219,8 @@ class GeracaoArquivoPitITBIPVU {
     $oLocal->setAttribute('nro_inicial',     $iNroInicial );
     $oLocal->setAttribute('nro_final', 			 $iNroFinal );
     $oLocal->setAttribute('vila', 					 '' );
-    $oLocal->setAttribute('quadra', 				 utf8_encode( $oLocalidades->quadra ) );
-    $oLocal->setAttribute('bairro', 				 utf8_encode( $oLocalidades->bairro ) );
+    $oLocal->setAttribute('quadra', 				 mb_convert_encoding( $oLocalidades->quadra, 'UTF-8', 'ISO-8859-1' ) );
+    $oLocal->setAttribute('bairro', 				 mb_convert_encoding( $oLocalidades->bairro, 'UTF-8', 'ISO-8859-1' ) );
     $oLocal->setAttribute('valor_m2',        number_format( $oLocalidades->valor_m2, 2, ',', '') );
     return $oLocal;
   }

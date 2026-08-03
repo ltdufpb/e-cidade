@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_categoriatipoproc_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -60,9 +60,9 @@ if (isset($pesquisa_chave) === false) {
             $sql = $clcategoriatipoproc->sql_query("", $campos, "p104_nome", "");
         }
     }
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_p104_sequencial)) {
-        $repassa = array("chave_p104_nome" => $chave_p104_nome, "chave_p104_sequencial" => $chave_p104_sequencial);
+        $repassa = ["chave_p104_nome" => $chave_p104_nome, "chave_p104_sequencial" => $chave_p104_sequencial];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

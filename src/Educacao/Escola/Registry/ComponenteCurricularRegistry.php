@@ -16,7 +16,7 @@ class ComponenteCurricularRegistry
     /**
      * @var ComponenteCurricular[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param ComponenteCurricular $componenteCurricular

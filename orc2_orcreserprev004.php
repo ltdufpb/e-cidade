@@ -34,7 +34,7 @@ $tipo_mesfim = 1;
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
  
 $head2 = "PROGRAMAÇÃO DE BLOQUEIO DE DESPESA";
 $head4 = "EXERCICIO: ".db_getsession("DB_anousu");
@@ -44,7 +44,7 @@ $head5 = "INSTITUIÇÕES : ".db_getsession("DB_instit");
 $clorcreserprev = new cl_orcreserprev;
 
 $result = $clorcreserprev->sql_reserva_prev(false,$atividade);
-if($result==false || pg_numrows($result)==0){
+if($result==false || pg_num_rows($result)==0){
   db_redireciona("db_erro.php?fechar=true&db_erro='Não há dados a serem impressos'");	
   exit;
 }
@@ -61,7 +61,7 @@ $alt = 4;
 $total = 0;
 
 $pagina = 1;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
 
   db_fieldsmemory($result,$i);
 

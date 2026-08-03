@@ -9,6 +9,7 @@ class SolicitacaoOuvidoria extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -31,22 +32,23 @@ class SolicitacaoOuvidoria extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "numeroProcesso.required" => utf8_encode("Código da Numero de Processo não informado."),
-            "numeroProcesso.filled" => utf8_encode("O código da Numero de Processo informado está vazio."),
-            "numeroProcesso.integer" => utf8_encode("Código inválido da Numero de Processo."),
-            "anoProcesso.required" => utf8_encode("Código do anoProcesso não informado."),
-            "anoProcesso.filled" => utf8_encode("O código do anoProcesso informado está vazio."),
-            "anoProcesso.integer" => utf8_encode("Código inválido do anoProcesso."),
+            "numeroProcesso.required" => mb_convert_encoding("Código da Numero de Processo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "numeroProcesso.filled" => mb_convert_encoding("O código da Numero de Processo informado está vazio.", 'UTF-8', 'ISO-8859-1'),
+            "numeroProcesso.integer" => mb_convert_encoding("Código inválido da Numero de Processo.", 'UTF-8', 'ISO-8859-1'),
+            "anoProcesso.required" => mb_convert_encoding("Código do anoProcesso não informado.", 'UTF-8', 'ISO-8859-1'),
+            "anoProcesso.filled" => mb_convert_encoding("O código do anoProcesso informado está vazio.", 'UTF-8', 'ISO-8859-1'),
+            "anoProcesso.integer" => mb_convert_encoding("Código inválido do anoProcesso.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

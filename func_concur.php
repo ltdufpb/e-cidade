@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_concur_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconcur = new cl_concur;
 $clconcur->rotulo->label("h06_refer");
 $clconcur->rotulo->label("h06_eaber");
@@ -98,9 +98,9 @@ $clconcur->rotulo->label("h06_eaber");
         }else{
            $sql = $clconcur->sql_query("",$campos,"h06_refer","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h06_eaber)){
-          $repassa = array("chave_h06_refer"=>$chave_h06_refer,"chave_h06_eaber"=>$chave_h06_eaber);
+          $repassa = ["chave_h06_refer"=>$chave_h06_refer,"chave_h06_eaber"=>$chave_h06_eaber];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

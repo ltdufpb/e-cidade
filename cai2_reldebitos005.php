@@ -56,7 +56,7 @@ $db_opcao = 1;
 	</td>
         <td align="left">&nbsp;&nbsp;&nbsp;
           <?php 
-	 $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
+	 $xxx = ["S"=>"Somente Selecionados","N"=>"Menos os Selecionados"];
 	  db_select('seledeb',$xxx,true,2);
           ?>
 

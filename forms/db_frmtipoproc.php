@@ -87,7 +87,7 @@ db_input('p51_descr',60,$Ip51_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$matriz = array('t'=>"Sim",'f'=>"Nao");
+$matriz = ['t'=>"Sim",'f'=>"Nao"];
 db_inputdata('p51_dtlimite',@$p51_dtlimite_dia,@$p51_dtlimite_mes,@$p51_dtlimite_ano,true,'text',$db_opcao,"");
 ?>
     </td>
@@ -111,7 +111,7 @@ db_inputdata('p51_dtlimite',@$p51_dtlimite_dia,@$p51_dtlimite_mes,@$p51_dtlimite
   }
   function js_preenchepesquisa(chave){
     db_iframe.hide();
-    location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+    location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
   }
 
   function js_pesquisa_tipo_documento_processo(mostra){

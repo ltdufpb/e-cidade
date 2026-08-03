@@ -63,7 +63,7 @@ class Outros
     {
     }
 
-    private static $documentosNaoEnviados = array ( 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 32, 33, 34);
+    private static $documentosNaoEnviados =  [ 4, 6, 7, 8, 9, 10, 11, 12, 13, 15, 32, 33, 34];
 
     /**
      * retorna os documentos que podem ser configurados para envio ao portal transparencia
@@ -73,8 +73,8 @@ class Outros
     {
 
         $todosDocumentos   = \LicitaConTipoDocumento::$aDescricaoTipoDocumento;
-        $aDocumentos       = array();
-        $aDocumentosSalvos = array();
+        $aDocumentos       = [];
+        $aDocumentosSalvos = [];
 
         $oDaoDocumentos = new \cl_documentolicitacaotransparencia();
         $sSql           = $oDaoDocumentos->sql_query_file();
@@ -85,9 +85,7 @@ class Outros
         }
 
         if (pg_num_rows($rsDocumentos) > 0) {
-            $aDocumentosSalvos = \db_utils::makeCollectionFromRecord($rsDocumentos, function ($oDados) {
-                return $oDados->l48_documento;
-            });
+            $aDocumentosSalvos = \db_utils::makeCollectionFromRecord($rsDocumentos, fn($oDados) => $oDados->l48_documento);
         }
 
         //Remove Documentos que não são do tipo Outros

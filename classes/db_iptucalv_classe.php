@@ -30,27 +30,27 @@
 class cl_iptucalv
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $j21_anousu = 0;
-    var $j21_matric = 0;
-    var $j21_receit = 0;
-    var $j21_valor = 0;
-    var $j21_quant = 0;
-    var $j21_codhis = 0;
+    public $j21_anousu = 0;
+    public $j21_matric = 0;
+    public $j21_receit = 0;
+    public $j21_valor = 0;
+    public $j21_quant = 0;
+    public $j21_codhis = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  j21_anousu = int4 = Exercicio
                  j21_matric = int4 = Matricula
                  j21_receit = int4 = Receita
@@ -60,11 +60,11 @@ class cl_iptucalv
                  ";
 
     //funcao construtor da classe
-    function cl_iptucalv()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("iptucalv");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -181,7 +181,7 @@ class cl_iptucalv
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = " () nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = " já Cadastrado";
@@ -215,10 +215,10 @@ class cl_iptucalv
         $this->atualizacampos();
         $sql = " update iptucalv set ";
         $virgula = "";
-        if (trim($this->j21_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_anousu"])) {
+        if (trim((string) $this->j21_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_anousu"])) {
             $sql .= $virgula . " j21_anousu = $this->j21_anousu ";
             $virgula = ",";
-            if (trim($this->j21_anousu) == null) {
+            if (trim((string) $this->j21_anousu) == null) {
                 $this->erro_sql = " Campo Exercicio nao Informado.";
                 $this->erro_campo = "j21_anousu";
                 $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_iptucalv
                 return false;
             }
         }
-        if (trim($this->j21_matric) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_matric"])) {
+        if (trim((string) $this->j21_matric) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_matric"])) {
             $sql .= $virgula . " j21_matric = $this->j21_matric ";
             $virgula = ",";
-            if (trim($this->j21_matric) == null) {
+            if (trim((string) $this->j21_matric) == null) {
                 $this->erro_sql = " Campo Matricula nao Informado.";
                 $this->erro_campo = "j21_matric";
                 $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_iptucalv
                 return false;
             }
         }
-        if (trim($this->j21_receit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_receit"])) {
+        if (trim((string) $this->j21_receit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_receit"])) {
             $sql .= $virgula . " j21_receit = $this->j21_receit ";
             $virgula = ",";
-            if (trim($this->j21_receit) == null) {
+            if (trim((string) $this->j21_receit) == null) {
                 $this->erro_sql = " Campo Receita nao Informado.";
                 $this->erro_campo = "j21_receit";
                 $this->erro_banco = "";
@@ -260,10 +260,10 @@ class cl_iptucalv
                 return false;
             }
         }
-        if (trim($this->j21_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_valor"])) {
+        if (trim((string) $this->j21_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_valor"])) {
             $sql .= $virgula . " j21_valor = $this->j21_valor ";
             $virgula = ",";
-            if (trim($this->j21_valor) == null) {
+            if (trim((string) $this->j21_valor) == null) {
                 $this->erro_sql = " Campo Valor nao Informado.";
                 $this->erro_campo = "j21_valor";
                 $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_iptucalv
                 return false;
             }
         }
-        if (trim($this->j21_quant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_quant"])) {
+        if (trim((string) $this->j21_quant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_quant"])) {
             $sql .= $virgula . " j21_quant = $this->j21_quant ";
             $virgula = ",";
-            if (trim($this->j21_quant) == null) {
+            if (trim((string) $this->j21_quant) == null) {
                 $this->erro_sql = " Campo Quantidade nao Informado.";
                 $this->erro_campo = "j21_quant";
                 $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_iptucalv
                 return false;
             }
         }
-        if (trim($this->j21_codhis) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_codhis"])) {
+        if (trim((string) $this->j21_codhis) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j21_codhis"])) {
             $sql .= $virgula . " j21_codhis = $this->j21_codhis ";
             $virgula = ",";
-            if (trim($this->j21_codhis) == null) {
+            if (trim((string) $this->j21_codhis) == null) {
                 $this->erro_sql = " Campo Código do histórico nao Informado.";
                 $this->erro_campo = "j21_codhis";
                 $this->erro_banco = "";
@@ -405,7 +405,7 @@ class cl_iptucalv
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:iptucalv";
@@ -444,7 +444,7 @@ class cl_iptucalv
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -479,7 +479,7 @@ class cl_iptucalv
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_iptucalv
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -816,7 +816,7 @@ class cl_iptucalv
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

@@ -29,14 +29,14 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("libs/db_libcontabilidade.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
   db_fieldsmemory($resultinst,$xins);
   $descr_inst .= $xvirg.$nomeinst ;
   $xvirg = ', ';
@@ -77,14 +77,14 @@ $total_debitos  = 0;
 $total_creditos = 0;
 $total_final    = 0;
 
-for ($x = 0; $x < pg_numrows($result);$x++) {
+for ($x = 0; $x < pg_num_rows($result);$x++) {
   db_fieldsmemory($result,$x);
 
    if( ( $tipo == "S" ) && ( $c61_reduz != 0 ) ) {
      continue;
    }
 
-   if( substr($estrutural,0,1) != "1"  ) {
+   if( !str_starts_with((string) $estrutural, "1")  ) {
      continue;
    }
 
@@ -112,7 +112,7 @@ for ($x = 0; $x < pg_numrows($result);$x++) {
    $espaco = '';
    $maislinha = 0;
 
-   if (substr($estrutural,1,14)      == '00000000000000') {
+   if (substr((string) $estrutural,1,14)      == '00000000000000') {
 
    	 $espaco="";
 	   $maislinha=1;
@@ -131,21 +131,21 @@ for ($x = 0; $x < pg_numrows($result);$x++) {
      $total_debitos  += $saldo_anterior_debito;
      $total_creditos += $saldo_anterior_credito;
 
-   } elseif(substr($estrutural,2,13) == '0000000000000') {
+   } elseif(substr((string) $estrutural,2,13) == '0000000000000') {
    	 $espaco="  ";
 	   $maislinha=1;
-   } elseif (substr($estrutural,3,12) == '000000000000') {
+   } elseif (substr((string) $estrutural,3,12) == '000000000000') {
    	 $espaco="    ";
 	   $maislinha=1;
-   } elseif(substr($estrutural,4,11) == '00000000000') {
+   } elseif(substr((string) $estrutural,4,11) == '00000000000') {
    	 $espaco="      ";
-   } elseif(substr($estrutural,5,10) == '0000000000') {
+   } elseif(substr((string) $estrutural,5,10) == '0000000000') {
    	 $espaco="        ";
-   } elseif(substr($estrutural,7,8)  == '00000000') {
+   } elseif(substr((string) $estrutural,7,8)  == '00000000') {
    	 $espaco="          ";
-   } elseif(substr($estrutural,9,6)  == '000000') {
+   } elseif(substr((string) $estrutural,9,6)  == '000000') {
    	 $espaco="            ";
-   } elseif(substr($estrutural,11,4) == '0000') {
+   } elseif(substr((string) $estrutural,11,4) == '0000') {
    	 $espaco="              ";
    }
 
@@ -179,7 +179,7 @@ SQL;
 
    $pdf->cell(25,$alt,db_formatar($estrutural,'receita_int'),0,0,"L",0,0);
    $pdf->cell(15,$alt,($c61_reduz == 0?'':$c61_reduz),0,0,"C",0,0);
-   $pdf->cell(130,$alt,(pg_numrows($resconta) == 0?$espaco.$c60_descr:$espaco.$c60_descr.'   ( Bco: '.$c63_banco.'  Ag: '.$c63_agencia.'  Cta: '.$c63_conta),0,0,"L",0,0,'.');
+   $pdf->cell(130,$alt,(pg_num_rows($resconta) == 0?$espaco.$c60_descr:$espaco.$c60_descr.'   ( Bco: '.$c63_banco.'  Ag: '.$c63_agencia.'  Cta: '.$c63_conta),0,0,"L",0,0,'.');
    $pdf->cell(20,$alt,($c61_reduz == 0?'':$c61_codigo),0,0,"C",0);
    $pdf->cell(20,$alt,db_formatar($saldo_anterior,'f') ,0,0,"R",0);
    $pdf->cell(2,$alt,$sinal_anterior,0,0,"R",0);

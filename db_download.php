@@ -39,7 +39,7 @@ if(isset($arquivo) && trim($arquivo)!=""){
       throw new Exception('Sem permissão para realizar download do arquivo.<br/>Contate suporte.');
     }
 
-    if ( strpos($filename, '/tmp/') === false && strpos($filename, __DIR__ . '/tmp/') === false ) {
+    if ( !str_contains($filename, '/tmp/') && !str_contains($filename, __DIR__ . '/tmp/') ) {
       throw new Exception('Sem permissão para realizar download do arquivo.<br/>Contate suporte.');
     }
 
@@ -53,25 +53,22 @@ if(isset($arquivo) && trim($arquivo)!=""){
 
   $file_extension = strtolower(substr(strrchr($filename,"."),1));
 
-  switch($file_extension) {
-
-    case "txt": $ctype="application/text";              break;
-    case "pdf": $ctype="application/pdf";               break;
-    case "xml": $ctype="application/xml";               break;
-    case "exe": $ctype="application/octet-stream";      break;
-    case "zip": $ctype="application/zip";               break;
-    case "doc": $ctype="application/msword"; 						break;
-    case "xls": $ctype="application/vnd.ms-excel";      break;
-    case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
-    case "log": $ctype="application/txt";               break;
-    case "gif": $ctype="image/gif";                     break;
-    case "png": $ctype="image/png";                     break;
-    case "jpe":
-    case "jpeg":
-    case "jpg": $ctype="image/jpg";                     break;
-    case "csv": $ctype="text/csv";                      break;
-    default: $ctype="application/force-download";
-  }
+  $ctype = match ($file_extension) {
+      "txt" => "application/text",
+      "pdf" => "application/pdf",
+      "xml" => "application/xml",
+      "exe" => "application/octet-stream",
+      "zip" => "application/zip",
+      "doc" => "application/msword",
+      "xls" => "application/vnd.ms-excel",
+      "ppt" => "application/vnd.ms-powerpoint",
+      "log" => "application/txt",
+      "gif" => "image/gif",
+      "png" => "image/png",
+      "jpe", "jpeg", "jpg" => "image/jpg",
+      "csv" => "text/csv",
+      default => "application/force-download",
+  };
 
   header("Pragma: public");
   header("Expires: 0");

@@ -21,7 +21,7 @@ switch($oParam->exec) {
 
   case 'processar' :
 
-    $oRetorno->erros      = array();
+    $oRetorno->erros      = [];
     if (db_getsession("DB_id_usuario") != 1) {
 
       $oRetorno->erro    = true;
@@ -29,7 +29,7 @@ switch($oParam->exec) {
       break;
     }
 
-    $aEmpenhosProcessados = array();
+    $aEmpenhosProcessados = [];
     $aEmpenhos            = getEmpenhosSuprimentoFundos($oParam);
     foreach ($aEmpenhos as $oEmpenho) {
 
@@ -49,7 +49,7 @@ switch($oParam->exec) {
 
        } catch (Exception $o) {
 
-        $oRetorno->erros[] = (object) array("empenho" => $oEmpenho->e60_numemp, "Erro:" =>$o->getMessage());
+        $oRetorno->erros[] = (object) ["empenho" => $oEmpenho->e60_numemp, "Erro:" =>$o->getMessage()];
         $lErro = true;
         db_fim_transacao(true);
       }
@@ -62,7 +62,7 @@ function processarCorrecaoLancamentoEmpenho($oEmpenho, EmpenhoFinanceiro $oEmpen
   if ($oEmpenho->empenho_doc_1 == 0) {
     return false;
   }
-  $aLancamentosEmpenho = getLancamentosDoEmpenhoComODocumento($oEmpenho, array(1));
+  $aLancamentosEmpenho = getLancamentosDoEmpenhoComODocumento($oEmpenho, [1]);
   foreach ($aLancamentosEmpenho as $oLancamento) {
 
     $oDotacao = $oEmpenhoFinanceiro->getDotacao();
@@ -97,7 +97,7 @@ function processarCorrecaoLancamendoLiquidacao($oEmpenho, EmpenhoFinanceiro $oEm
     return false;
   }
 
-  $aLancamentosEmpenho = getLancamentosDoEmpenhoComODocumento($oEmpenho, array(3, 23, 24));
+  $aLancamentosEmpenho = getLancamentosDoEmpenhoComODocumento($oEmpenho, [3, 23, 24]);
   foreach ($aLancamentosEmpenho as $oLancamento) {
 
     $oPlanoContaOrcamento = new ContaOrcamento($oLancamento->c67_codele, $oEmpenho->e60_anousu, null, db_getsession("DB_instit") );
@@ -141,12 +141,12 @@ function processarCorrecaoLancamendoLiquidacao($oEmpenho, EmpenhoFinanceiro $oEm
 
 function criarSuprimentoDeFundos($oEmpenho, EmpenhoFinanceiro $oEmpenhoFinanceiro) {
 
-  $aListaDocumentosPesquisar = array();
+  $aListaDocumentosPesquisar = [];
   if ($oEmpenho->suprimento_fundos == 0) {
     $aListaDocumentosPesquisar[] = 5;
   }
 
-  if ($oEmpenho->suprimento_fundos > 0 && count(getLancamentosDoEmpenhoComODocumento($oEmpenho, array(6))) > 0
+  if ($oEmpenho->suprimento_fundos > 0 && count(getLancamentosDoEmpenhoComODocumento($oEmpenho, [6])) > 0
     && $oEmpenho->prestacao_contas  == 0) {
     $aListaDocumentosPesquisar[] = 6;
   }
@@ -311,7 +311,7 @@ function getEmpenhosSuprimentoFundos($oParam) {
   $rsQuerySuprimentos = db_query($sSqlQuerySuprimentosIncosistentes);
   $iTotalEmpenhos     = pg_num_rows($rsQuerySuprimentos);
 
-  $aEmpenhos = array();
+  $aEmpenhos = [];
   for ($iEmpenho = 0; $iEmpenho < $iTotalEmpenhos; $iEmpenho++) {
     $aEmpenhos[] = db_utils::fieldsMemory($rsQuerySuprimentos, $iEmpenho);
   }

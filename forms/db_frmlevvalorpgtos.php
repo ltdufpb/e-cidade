@@ -133,7 +133,7 @@ db_inputdata('y68_pgto',@$y68_pgto_dia,@$y68_pgto_mes,@$y68_pgto_ano,true,'text'
 <tr>
   <td valign="top">  
    <?php 
-	   $cliframe_alterar_excluir_html->colunas =array("y68_valor"=>$Ly68_valor,"y68_pgto"=>$Ly68_pgto);
+	   $cliframe_alterar_excluir_html->colunas =["y68_valor"=>$Ly68_valor,"y68_pgto"=>$Ly68_pgto];
 	   $cliframe_alterar_excluir_html->iframe_width ="350";
 	   $cliframe_alterar_excluir_html->iframe_nome ="criatabela";
 	   $cliframe_alterar_excluir_html->iframe_height="185";
@@ -154,9 +154,9 @@ db_inputdata('y68_pgto',@$y68_pgto_dia,@$y68_pgto_mes,@$y68_pgto_ano,true,'text'
 function js_monta(){
 <?php 
 if(isset($valores)){
-  $matriz01=split('HHH',$valores);
+  $matriz01=preg_split('#HHH#m',$valores);
   for($i=0; $i<count($matriz01); $i++){
-    $matriz=split('-',$matriz01[$i]);
+    $matriz=preg_split('#\-#m',(string) $matriz01[$i]);
     if($db_opcao==33){
       echo " js_incluirlinhas_disabled('".$matriz[0]."','".$matriz[1]."');\n\n  ";
     }else{

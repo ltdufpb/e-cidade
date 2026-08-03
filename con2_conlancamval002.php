@@ -26,7 +26,7 @@
  */
 
  include_once(modification("fpdf151/pdf.php"));
- db_postmemory($HTTP_SERVER_VARS);
+ db_postmemory($_SERVER);
 
  $instituicao = str_replace("-",",",$db_selinstit);
 
@@ -84,7 +84,7 @@
    //--
    //echo $sql;exit;
    $result = db_query($sql);
-   $rows = pg_numrows($result);
+   $rows = pg_num_rows($result);
    if($result==false){
         db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado, verifique as datas e tente novamente');   
    }
@@ -139,9 +139,9 @@
         $pdf->Cell(20,4,$c69_data,"0",0,"C",$preen);
         $pdf->Cell(40,4,$c50_descr,"0",0,"L",$preen);
         $pdf->Cell(20,4,$c69_debito,"0",0,"R",$preen);
-        $pdf->Cell(55,4,substr($debito_descr,0,50),"0",0,"L",$preen);
+        $pdf->Cell(55,4,substr((string) $debito_descr,0,50),"0",0,"L",$preen);
         $pdf->Cell(20,4,$c69_credito,"0",0,"R",$preen);
-        $pdf->Cell(55,4,substr($credito_descr,0,50),"0",0,"L",$preen);
+        $pdf->Cell(55,4,substr((string) $credito_descr,0,50),"0",0,"L",$preen);
         $pdf->Cell(30,4,$c69_valor,"0",1,"R",$preen);
 	if ($c72_complem != ''){
            $pdf->multicell(260,4,"Complemento :  ".$c72_complem,0,"L",$preen);

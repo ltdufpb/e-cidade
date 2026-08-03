@@ -84,7 +84,7 @@ class ImportacaoArquivoTCEAC {
     foreach ($aDadosArquivo as $sDadosArquivo) {
 
       $sDadosArquivo = str_replace(';', ',', $sDadosArquivo);
-      list($iCodigoTCE, $iCodigoEcidade) = explode(",", $sDadosArquivo);
+      [$iCodigoTCE, $iCodigoEcidade] = explode(",", $sDadosArquivo);
       if ( (empty($iCodigoTCE) || empty($iCodigoEcidade)) || $sDadosArquivo == "Código do MP Acre, Código do e-Cidade\n" ) {
         continue;
       }
@@ -110,23 +110,12 @@ class ImportacaoArquivoTCEAC {
    */
   public static function getNodeName($iTipo) {
 
-    switch ($iTipo) {
-
-      case self::TIPO_ARQUIVO_RECURSO:
-        $sNodeName = 'recurso';
-        break;
-
-      case self::TIPO_ARQUIVO_PLANOCONTA:
-        $sNodeName = 'planoconta';
-        break;
-
-      case self::TIPO_ARQUIVO_DOCUMENTOS:
-        $sNodeName = 'documento';
-        break;
-
-      default:
-        throw new Exception("Programa não configurado para ler o arquivo tipo {$iTipo}.");
-    }
+    $sNodeName = match ($iTipo) {
+        self::TIPO_ARQUIVO_RECURSO => 'recurso',
+        self::TIPO_ARQUIVO_PLANOCONTA => 'planoconta',
+        self::TIPO_ARQUIVO_DOCUMENTOS => 'documento',
+        default => throw new Exception("Programa não configurado para ler o arquivo tipo {$iTipo}."),
+    };
 
     return $sNodeName;
   }
@@ -139,23 +128,12 @@ class ImportacaoArquivoTCEAC {
    */
   public static function getPath($iTipo) {
 
-    switch ($iTipo) {
-
-      case self::TIPO_ARQUIVO_RECURSO:
-        $sPath = self::ARQUIVO_RECURSO;
-        break;
-
-      case self::TIPO_ARQUIVO_PLANOCONTA:
-        $sPath = self::ARQUIVO_PLANOCONTA;
-        break;
-
-      case self::TIPO_ARQUIVO_DOCUMENTOS:
-        $sPath = self::ARQUIVO_DOCUMENTOS;
-        break;
-
-      default:
-        throw new Exception("Programa não configurado para ler o arquivo tipo {$iTipo}.");
-    }
+    $sPath = match ($iTipo) {
+        self::TIPO_ARQUIVO_RECURSO => self::ARQUIVO_RECURSO,
+        self::TIPO_ARQUIVO_PLANOCONTA => self::ARQUIVO_PLANOCONTA,
+        self::TIPO_ARQUIVO_DOCUMENTOS => self::ARQUIVO_DOCUMENTOS,
+        default => throw new Exception("Programa não configurado para ler o arquivo tipo {$iTipo}."),
+    };
 
     return $sPath;
   }
@@ -170,7 +148,7 @@ class ImportacaoArquivoTCEAC {
       throw new BusinessException("Arquivo de configuração não encontrado.");
     }
 
-    $aArquivo = array("Código do MP Acre, Código do e-Cidade");
+    $aArquivo = ["Código do MP Acre, Código do e-Cidade"];
     $oDomDocument = new DOMDocument('1.0', 'ISO-8859-1');
     $oDomDocument->load(self::getPath($iTipo));
     $aPlanoContas = $oDomDocument->getElementsByTagName(self::getNodeName($iTipo));

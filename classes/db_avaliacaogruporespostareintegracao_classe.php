@@ -14,8 +14,8 @@ class cl_avaliacaogruporespostareintegracao extends DAOBasica
     }
 
     public function buscarRespostasPreenchimento(
-        array $campos = array('*'),
-        array $where = array(),
+        array $campos = ['*'],
+        array $where = [],
         $outrosComandos = null
     ) {
         $sql = " SELECT " . implode(', ', $campos);
@@ -58,8 +58,8 @@ class cl_avaliacaogruporespostareintegracao extends DAOBasica
     }
 
     public function sqlDadosServidorPreenchimento(
-        array $campos = array('*'),
-        array $where = array(),
+        array $campos = ['*'],
+        array $where = [],
         $outrosComandos = null
     ) {
         $sql  = " SELECT " . implode(', ', $campos);

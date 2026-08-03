@@ -85,7 +85,7 @@ for ($iInd = 0; $iInd < $INumRowsDbConfig; $iInd++) {
 
   $oMunicipio = db_utils::fieldsMemory($rsSqlDbConfig, $iInd);
 
-  if (strlen(trim($oMunicipio->nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $oMunicipio->nomeinstabrev)) > 0) {
 
     $sDescricaoInstituicao .= $sVirgula.$oMunicipio->nomeinstabrev;
     $lFlagAbrev  = true;
@@ -116,15 +116,15 @@ if ($lFlagAbrev == false) {
 }
 
 if ($lTemCamara == true && ($lTemPrefeitura == true || $lTemAdminD == true)) {
-  $head2 = "MUNICÍPIO DE ".strtoupper($oMunicipio->munic)." - PODERES EXECUTIVO E LEGISLATIVO";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $oMunicipio->munic)." - PODERES EXECUTIVO E LEGISLATIVO";
 }
 
 if ($lTemCamara == true && $lTemPrefeitura == false && $lTemAdminD == false) {
-  $head2 = "MUNICÍPIO DE ".strtoupper($oMunicipio->munic)." - PODER LEGISLATIVO";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $oMunicipio->munic)." - PODER LEGISLATIVO";
 }
 
 if ($lTemPrefeitura == true && $lTemCamara == false && ($lTemAdminD == false || $lTemAdminD == true)) {
-  $head2 = "MUNICÍPIO DE ".strtoupper($oMunicipio->munic)." - PODER EXECUTIVO/ADM. INDIRETA";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $oMunicipio->munic)." - PODER EXECUTIVO/ADM. INDIRETA";
 }
 
 if ($lTemMinisterio == true && $oMunicipio->db21_codcli == 70) {
@@ -159,14 +159,14 @@ if ($lTemCamara == true && $lTemPrefeitura == false && $lTemAdminD == false) {
 /**
  * Procura data inical do exercício anterior.
  */
-$dtInicialAnterior = explode("-", $oAnexoIRGF->getDataFinal()->getDate());
+$dtInicialAnterior = explode("-", (string) $oAnexoIRGF->getDataFinal()->getDate());
 if ($dtInicialAnterior[1] == "12") {
   $dtInicialAnterior[1] = 11;
 }
 
 $dtInicialAnterior = ($iAnoUsu-1)."-".($dtInicialAnterior[1]+1)."-01";
 $dtInicial         = explode('-', $dtInicialAnterior);
-$dtFinal           = explode('-', $oAnexoIRGF->getDataFinal()->getDate());
+$dtFinal           = explode('-', (string) $oAnexoIRGF->getDataFinal()->getDate());
 
 /**
  * Monta a descrição por período.
@@ -329,7 +329,7 @@ if ($oGet->emissao == 1) {
   }
 
   $oRelatorio = new relatorioContabil($iCodigoRelatorio, false);
-  $oRelatorio->getNotaExplicativa(&$oPdf, $oGet->periodo, 195);
+  $oRelatorio->getNotaExplicativa($oPdf, $oGet->periodo, 195);
 
   $oPdf->Ln(5);
 
@@ -339,7 +339,7 @@ if ($oGet->emissao == 1) {
   $oPdf->SetFont('arial', '', $iTamFonte-2);
   $oPdf->Ln(20);
 
-  assinaturas(&$oPdf, &$classinatura, 'GF');
+  assinaturas($oPdf, $classinatura, 'GF');
 } else {
 
   $oPdf->AddPage("L");
@@ -556,14 +556,14 @@ if ($oGet->emissao == 1) {
    * Assinaturas e notas explicativas.
    */
   $oRelatorio = new relatorioContabil($iCodigoRelatorio, false);
-  $oRelatorio->getNotaExplicativa(&$oPdf, $oGet->periodo, 284);
+  $oRelatorio->getNotaExplicativa($oPdf, $oGet->periodo, 284);
 
   $oPdf->Ln(5);
 
   $oPdf->SetFont('arial', '', $iTamFonte);
   $oPdf->Ln(20);
 
-  assinaturas(&$oPdf, &$classinatura, 'GF');
+  assinaturas($oPdf, $classinatura, 'GF');
 }
 
 $oPdf->Output();

@@ -74,9 +74,9 @@ $clfar_retirada->rotulo->label();
     }
      
     $sql = $clfar_retirada->sql_query(""," distinct ".$campos,""," fa04_i_cgsund = $fa04_i_cgsund".$where);
-    $repassa = array("fa04_i_cgsund"=>$fa04_i_cgsund);
+    $repassa = ["fa04_i_cgsund"=>$fa04_i_cgsund];
     if(isset($chave_fa04_i_cgsund)){
-    $repassa = array("chave_fa04_i_cgsund"=>$chave_fa04_i_cgsund,"chave_fa04_i_cgsund"=>$chave_fa04_i_cgsund);
+    $repassa = ["chave_fa04_i_cgsund"=>$chave_fa04_i_cgsund,"chave_fa04_i_cgsund"=>$chave_fa04_i_cgsund];
     }
     if(isset($consultar)){
     	db_lovrot(@$sql,10,"()","","js_itens|fa04_i_codigo|fa07_i_matrequi","","NoMe",$repassa);

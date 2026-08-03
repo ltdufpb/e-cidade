@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -108,13 +108,13 @@ $aux = new cl_arquivo_auxiliar;
              <td align="right"  title="Ordem por  Ordem de compra/Departamento/Cgm/Data" >
                <strong>Ordem :&nbsp;&nbsp;</strong>
 	       <?php  
-	       $tipo_ordem = array("a"=>"Ordem de Compra","b"=>"Departamento","c"=>"Cgm","d"=>"Data");
+	       $tipo_ordem = ["a"=>"Ordem de Compra","b"=>"Departamento","c"=>"Cgm","d"=>"Data"];
 	       db_select("ordem",$tipo_ordem,true,2); ?>
         
                <td align="left"  title="Opções  Não Anuladas/Todas/Anuladas" >
                <strong>Opção de impressão :&nbsp;&nbsp;</strong>
 	       <?php  
-	       $tipo_opcao = array("b"=>"Não Anuladas","a"=>"Todas","c"=>"Anuladas");
+	       $tipo_opcao = ["b"=>"Não Anuladas","a"=>"Todas","c"=>"Anuladas"];
 	       db_select("opcao",$tipo_opcao,true,2); ?>
             </td>
 	  </tr>

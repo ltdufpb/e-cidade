@@ -161,7 +161,7 @@ function js_pesquisaed115_i_progmatricula(mostra){
 function js_preenchepesquisamat(chave){
  db_iframe_progmatricula.hide();
  <?php 
- echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?codmatricula='+chave";
+ echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?codmatricula='+chave";
  ?>
 }
 function js_ano(valor,codmatricula){

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE massamat
 class cl_massamat { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j59_codigo = 0; 
-   var $j59_matric = 0; 
+   public $j59_codigo = 0; 
+   public $j59_matric = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j59_codigo = int4 = Código da sequencia 
                  j59_matric = int4 = Código da massa falida 
                  ";
    //funcao construtor da classe 
-   function cl_massamat() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("massamat"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_massamat {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela com massas falidas ($this->j59_codigo."-".$this->j59_matric) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela com massas falidas já Cadastrado";
@@ -130,12 +130,12 @@ class cl_massamat {
      $resaco = $this->sql_record($this->sql_query_file($this->j59_codigo,$this->j59_matric));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,2538,'$this->j59_codigo','I')");
        $resac = db_query("insert into db_acountkey values($acount,2539,'$this->j59_matric','I')");
-       $resac = db_query("insert into db_acount values($acount,415,2538,'','".AddSlashes(pg_result($resaco,0,'j59_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,415,2539,'','".AddSlashes(pg_result($resaco,0,'j59_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,415,2538,'','".AddSlashes(pg_fetch_result($resaco,0,'j59_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,415,2539,'','".AddSlashes(pg_fetch_result($resaco,0,'j59_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_massamat {
       $this->atualizacampos();
      $sql = " update massamat set ";
      $virgula = "";
-     if(trim($this->j59_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j59_codigo"])){ 
+     if(trim((string) $this->j59_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j59_codigo"])){ 
        $sql  .= $virgula." j59_codigo = $this->j59_codigo ";
        $virgula = ",";
-       if(trim($this->j59_codigo) == null ){ 
+       if(trim((string) $this->j59_codigo) == null ){ 
          $this->erro_sql = " Campo Código da sequencia nao Informado.";
          $this->erro_campo = "j59_codigo";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_massamat {
          return false;
        }
      }
-     if(trim($this->j59_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j59_matric"])){ 
+     if(trim((string) $this->j59_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j59_matric"])){ 
        $sql  .= $virgula." j59_matric = $this->j59_matric ";
        $virgula = ",";
-       if(trim($this->j59_matric) == null ){ 
+       if(trim((string) $this->j59_matric) == null ){ 
          $this->erro_sql = " Campo Código da massa falida nao Informado.";
          $this->erro_campo = "j59_matric";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_massamat {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2538,'$this->j59_codigo','A')");
          $resac = db_query("insert into db_acountkey values($acount,2539,'$this->j59_matric','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j59_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,415,2538,'".AddSlashes(pg_result($resaco,$conresaco,'j59_codigo'))."','$this->j59_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,415,2538,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j59_codigo'))."','$this->j59_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j59_matric"]))
-           $resac = db_query("insert into db_acount values($acount,415,2539,'".AddSlashes(pg_result($resaco,$conresaco,'j59_matric'))."','$this->j59_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,415,2539,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j59_matric'))."','$this->j59_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_massamat {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2538,'$j59_codigo','E')");
          $resac = db_query("insert into db_acountkey values($acount,2539,'$j59_matric','E')");
-         $resac = db_query("insert into db_acount values($acount,415,2538,'','".AddSlashes(pg_result($resaco,$iresaco,'j59_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,415,2539,'','".AddSlashes(pg_result($resaco,$iresaco,'j59_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,415,2538,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j59_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,415,2539,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j59_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from massamat
@@ -304,7 +304,7 @@ class cl_massamat {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:massamat";
@@ -318,7 +318,7 @@ class cl_massamat {
    function sql_query ( $j59_codigo=null,$j59_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -352,7 +352,7 @@ class cl_massamat {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -364,7 +364,7 @@ class cl_massamat {
    function sql_query_file ( $j59_codigo=null,$j59_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,7 +393,7 @@ class cl_massamat {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

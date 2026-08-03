@@ -97,7 +97,7 @@ class SecretariaEstruturalNota extends EstruturalNota {
     $oDao->ed139_ativo               = $oParametro->lAtivo          ? 't' : 'false';
     $oDao->ed139_arredondamedia      = $oParametro->lArredondaMedia ? 't' : 'false';
     $oDao->ed139_regraarredondamento = empty($oParametro->iRegraArredondamento) ? "null" : $oParametro->iRegraArredondamento;
-    $oDao->ed139_observacao          = trim($oParametro->sObservacao);
+    $oDao->ed139_observacao          = trim((string) $oParametro->sObservacao);
     $oDao->ed139_ano                 = $oParametro->iAno;
 
     if (empty($oParametro->iCodigo) ) {

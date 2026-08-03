@@ -45,13 +45,13 @@ class Encerramento extends ExercicioContabil
      * lista de encerramentos realizados
      * @var array
      */
-    private $encerramentos = array();
+    private $encerramentos = [];
 
     /**
      * Códigos de documentos que devem ser cancelados o encerramento
      * @var array
      */
-    private $documentosParaCancelar = array();
+    private $documentosParaCancelar = [];
 
 
     /**
@@ -90,7 +90,7 @@ class Encerramento extends ExercicioContabil
      */
     public function getDocumentosParaProcessamento()
     {
-        return array(
+        return [
 
 
             Documento::ENCERRAMENTO_TRANSFERENCIA_SALDOS_RPNP_EX_ANT => self::ENCERRAMENTO_TRANSFERENCIA_SALDO,// 2030;
@@ -121,18 +121,18 @@ class Encerramento extends ExercicioContabil
                 self::ENCERRAR_SISTEMA_ORCAMENTARIO_CONTROLE,
             Documento::ENCERRAMENTO_CONTRATOS_CONVENIOS_EXECUTADOS => // 1022
                 self::ENCERRAR_SISTEMA_ORCAMENTARIO_CONTROLE,
-        );
+        ];
     }
 
     public function getDocumentosParaProcessamentoEncerramentoOrcamentario()
     {
-        return array(
+        return [
 
             Documento::ENCERRAMENTO_EXERC_ORC_DESP_LIQUIDAR => self::ENCERRAR_EXECUCAO_ORCAMENTARIA_DESPESA,// 1024;
             Documento::ENCERRAMENTO_EXERC_ORC_DESP_LIQUIDACAO => self::ENCERRAR_EXECUCAO_ORCAMENTARIA_DESPESA, // 1025;
             Documento::ENCERRAMENTO_EXERC_ORC_DESP_LIQUIDADOS => self::ENCERRAR_EXECUCAO_ORCAMENTARIA_DESPESA, // 1026;
 
-        );
+        ];
     }
 
 
@@ -250,7 +250,7 @@ class Encerramento extends ExercicioContabil
      * @throws \DBException
      * @throws \ParameterException
      */
-    public function encerrar($documentosEncerrar = array())
+    public function encerrar($documentosEncerrar = [])
     {
         $sTipoEncerramento = $this->getTipoEncerramento();
         $aDocumentos = $this->getDocumentosParaProcessamento();
@@ -271,6 +271,7 @@ class Encerramento extends ExercicioContabil
     /**
      * @throws \Exception
      */
+    #[\Override]
     public function cancelar()
     {
         $this->abrirPeriodoContabil();
@@ -327,14 +328,14 @@ class Encerramento extends ExercicioContabil
             $tipoEncerramento
         ) {
 
-            $instancia->mensagensLog = array();
+            $instancia->mensagensLog = [];
             $lancamentoAuxiliar = $instancia->getLancamentoAuxiliar($documento, $dados);
             if (empty($lancamentoAuxiliar)) {
                 throw new \Exception("Não foi possível executar identificar o o lancamento. ");
             }
             $opcoes = [
                 'ignorar_conta_corrente' => true,
-                'itens_ignorar_pos' => ['\ECidade\Financeiro\Contabilidade\LancamentoContabil\Validacao\Atributos']
+                'itens_ignorar_pos' => [\ECidade\Financeiro\Contabilidade\LancamentoContabil\Validacao\Atributos::class]
             ];
             $codigoLancamento = $eventoContabil->executaLancamento(
                 $lancamentoAuxiliar,
@@ -411,10 +412,7 @@ class Encerramento extends ExercicioContabil
     private function getCodigoEncerramentoDoTipo($iTipoEncerramento, $documento)
     {
 
-        if (isset($this->encerramentos[$iTipoEncerramento . $documento])) {
-            return $this->encerramentos[$iTipoEncerramento . $documento];
-        }
-        return false;
+        return $this->encerramentos[$iTipoEncerramento . $documento] ?? false;
     }
 
 
@@ -445,7 +443,7 @@ class Encerramento extends ExercicioContabil
 
         $totalRegistros = pg_num_rows($rsEncerrar);
 
-        $codigosEncerramento = array();
+        $codigosEncerramento = [];
         for ($i = 0; $i < $totalRegistros; $i++) {
             $dados = \db_utils::fieldsMemory($rsEncerrar, $i);
             $oDaoConEncerramentolancan->excluir($dados->c44_sequencial);

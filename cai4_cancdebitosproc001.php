@@ -45,7 +45,7 @@ $clcancdebitos = new cl_cancdebitos;
 $clcancdebitosreg = new cl_cancdebitosreg;
 $clcancdebitosproc = new cl_cancdebitosproc;
 $clcancdebitosprocreg = new cl_cancdebitosprocreg;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if (isset ($processa)) {

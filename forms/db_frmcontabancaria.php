@@ -114,7 +114,7 @@ $clrotulo->label("db89_codagencia");
                     </td>
                     <td>
                         <?php
-                        $x = array('1' => 'Conta Corrente', '2' => 'Conta Poupanca', '3' => 'Conta Aplicacao');
+                        $x = ['1' => 'Conta Corrente', '2' => 'Conta Poupanca', '3' => 'Conta Aplicacao'];
                         db_select('db83_tipoconta', $x, true, $db_opcao, "style='width: 150px;'");
                         ?>
                     </td>
@@ -125,7 +125,7 @@ $clrotulo->label("db89_codagencia");
                     </td>
                     <td>
                         <?php
-                        $x = array('f' => 'NÃO', 't' => 'SIM');
+                        $x = ['f' => 'NÃO', 't' => 'SIM'];
                         db_select('db83_contaunica', $x, true, $db_opcao, "style='width: 150px;'");
                         ?>
                     </td>
@@ -137,7 +137,7 @@ $clrotulo->label("db89_codagencia");
                     <td>
                         <?php
                         $funcaoOnchange = $db_opcao == 1 ? "onchange='mostrarVinculoConta()';" : '';
-                        $aContaPlano = array('t' => 'Sim', 'f' => 'Não');
+                        $aContaPlano = ['t' => 'Sim', 'f' => 'Não'];
                         db_select('db83_contaplano', $aContaPlano, true, $db_opcao, "style='width: 150px;' {$funcaoOnchange}");
                         ?>
                     </td>
@@ -231,7 +231,7 @@ $clrotulo->label("db89_codagencia");
         db_iframe_contabancaria.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

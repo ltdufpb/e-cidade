@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE cgmsaida
 class cl_cgmsaida { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd28_i_codigo = 0; 
-   var $sd28_i_cgm = 0; 
-   var $sd28_i_departamento = 0; 
-   var $sd28_i_material = 0; 
-   var $sd28_i_quantidade = 0; 
-   var $sd28_i_usuario = 0; 
-   var $sd28_d_data_dia = null; 
-   var $sd28_d_data_mes = null; 
-   var $sd28_d_data_ano = null; 
-   var $sd28_d_data = null; 
+   public $sd28_i_codigo = 0; 
+   public $sd28_i_cgm = 0; 
+   public $sd28_i_departamento = 0; 
+   public $sd28_i_material = 0; 
+   public $sd28_i_quantidade = 0; 
+   public $sd28_i_usuario = 0; 
+   public $sd28_d_data_dia = null; 
+   public $sd28_d_data_mes = null; 
+   public $sd28_d_data_ano = null; 
+   public $sd28_d_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd28_i_codigo = int8 = Código 
                  sd28_i_cgm = int8 = Cgm 
                  sd28_i_departamento = int8 = Departamento 
@@ -63,10 +63,10 @@ class cl_cgmsaida {
                  sd28_d_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_cgmsaida() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgmsaida"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_cgmsaida {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sd28_i_codigo = pg_result($result,0,0); 
+       $this->sd28_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = @db_query("select last_value from cgmsaida_sd28_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sd28_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sd28_i_codigo)){
          $this->erro_sql = " Campo sd28_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_cgmsaida {
      $result = @db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Saída por Cgm ($this->sd28_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Saída por Cgm já Cadastrado";
@@ -232,15 +232,15 @@ class cl_cgmsaida {
      $resaco = $this->sql_record($this->sql_query_file($this->sd28_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1006130,'$this->sd28_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1006016,1006130,'','".AddSlashes(pg_result($resaco,0,'sd28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006016,1006148,'','".AddSlashes(pg_result($resaco,0,'sd28_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006016,1006149,'','".AddSlashes(pg_result($resaco,0,'sd28_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006016,1006132,'','".AddSlashes(pg_result($resaco,0,'sd28_i_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006016,1006134,'','".AddSlashes(pg_result($resaco,0,'sd28_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006016,1006147,'','".AddSlashes(pg_result($resaco,0,'sd28_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006016,1006146,'','".AddSlashes(pg_result($resaco,0,'sd28_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006016,1006130,'','".AddSlashes(pg_fetch_result($resaco,0,'sd28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006016,1006148,'','".AddSlashes(pg_fetch_result($resaco,0,'sd28_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006016,1006149,'','".AddSlashes(pg_fetch_result($resaco,0,'sd28_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006016,1006132,'','".AddSlashes(pg_fetch_result($resaco,0,'sd28_i_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006016,1006134,'','".AddSlashes(pg_fetch_result($resaco,0,'sd28_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006016,1006147,'','".AddSlashes(pg_fetch_result($resaco,0,'sd28_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006016,1006146,'','".AddSlashes(pg_fetch_result($resaco,0,'sd28_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -249,10 +249,10 @@ class cl_cgmsaida {
       $this->atualizacampos();
      $sql = " update cgmsaida set ";
      $virgula = "";
-     if(trim($this->sd28_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_codigo"])){ 
+     if(trim((string) $this->sd28_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_codigo"])){ 
        $sql  .= $virgula." sd28_i_codigo = $this->sd28_i_codigo ";
        $virgula = ",";
-       if(trim($this->sd28_i_codigo) == null ){ 
+       if(trim((string) $this->sd28_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sd28_i_codigo";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_cgmsaida {
          return false;
        }
      }
-     if(trim($this->sd28_i_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_cgm"])){ 
+     if(trim((string) $this->sd28_i_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_cgm"])){ 
        $sql  .= $virgula." sd28_i_cgm = $this->sd28_i_cgm ";
        $virgula = ",";
-       if(trim($this->sd28_i_cgm) == null ){ 
+       if(trim((string) $this->sd28_i_cgm) == null ){ 
          $this->erro_sql = " Campo Cgm nao Informado.";
          $this->erro_campo = "sd28_i_cgm";
          $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_cgmsaida {
          return false;
        }
      }
-     if(trim($this->sd28_i_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_departamento"])){ 
+     if(trim((string) $this->sd28_i_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_departamento"])){ 
        $sql  .= $virgula." sd28_i_departamento = $this->sd28_i_departamento ";
        $virgula = ",";
-       if(trim($this->sd28_i_departamento) == null ){ 
+       if(trim((string) $this->sd28_i_departamento) == null ){ 
          $this->erro_sql = " Campo Departamento nao Informado.";
          $this->erro_campo = "sd28_i_departamento";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_cgmsaida {
          return false;
        }
      }
-     if(trim($this->sd28_i_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_material"])){ 
+     if(trim((string) $this->sd28_i_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_material"])){ 
        $sql  .= $virgula." sd28_i_material = $this->sd28_i_material ";
        $virgula = ",";
-       if(trim($this->sd28_i_material) == null ){ 
+       if(trim((string) $this->sd28_i_material) == null ){ 
          $this->erro_sql = " Campo Material nao Informado.";
          $this->erro_campo = "sd28_i_material";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_cgmsaida {
          return false;
        }
      }
-     if(trim($this->sd28_i_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_quantidade"])){ 
+     if(trim((string) $this->sd28_i_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_quantidade"])){ 
        $sql  .= $virgula." sd28_i_quantidade = $this->sd28_i_quantidade ";
        $virgula = ",";
-       if(trim($this->sd28_i_quantidade) == null ){ 
+       if(trim((string) $this->sd28_i_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "sd28_i_quantidade";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_cgmsaida {
          return false;
        }
      }
-     if(trim($this->sd28_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_usuario"])){ 
+     if(trim((string) $this->sd28_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_usuario"])){ 
        $sql  .= $virgula." sd28_i_usuario = $this->sd28_i_usuario ";
        $virgula = ",";
-       if(trim($this->sd28_i_usuario) == null ){ 
+       if(trim((string) $this->sd28_i_usuario) == null ){ 
          $this->erro_sql = " Campo Usuario nao Informado.";
          $this->erro_campo = "sd28_i_usuario";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_cgmsaida {
          return false;
        }
      }
-     if(trim($this->sd28_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd28_d_data_dia"] !="") ){ 
+     if(trim((string) $this->sd28_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd28_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd28_d_data_dia"] !="") ){ 
        $sql  .= $virgula." sd28_d_data = '$this->sd28_d_data' ";
        $virgula = ",";
-       if(trim($this->sd28_d_data) == null ){ 
+       if(trim((string) $this->sd28_d_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "sd28_d_data_dia";
          $this->erro_banco = "";
@@ -343,7 +343,7 @@ class cl_cgmsaida {
        if(isset($GLOBALS["HTTP_POST_VARS"]["sd28_d_data_dia"])){ 
          $sql  .= $virgula." sd28_d_data = null ";
          $virgula = ",";
-         if(trim($this->sd28_d_data) == null ){ 
+         if(trim((string) $this->sd28_d_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "sd28_d_data_dia";
            $this->erro_banco = "";
@@ -362,22 +362,22 @@ class cl_cgmsaida {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountkey values($acount,1006130,'$this->sd28_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1006016,1006130,'".AddSlashes(pg_result($resaco,$conresaco,'sd28_i_codigo'))."','$this->sd28_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006016,1006130,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd28_i_codigo'))."','$this->sd28_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_cgm"]))
-           $resac = db_query("insert into db_acount values($acount,1006016,1006148,'".AddSlashes(pg_result($resaco,$conresaco,'sd28_i_cgm'))."','$this->sd28_i_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006016,1006148,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd28_i_cgm'))."','$this->sd28_i_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_departamento"]))
-           $resac = db_query("insert into db_acount values($acount,1006016,1006149,'".AddSlashes(pg_result($resaco,$conresaco,'sd28_i_departamento'))."','$this->sd28_i_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006016,1006149,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd28_i_departamento'))."','$this->sd28_i_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_material"]))
-           $resac = db_query("insert into db_acount values($acount,1006016,1006132,'".AddSlashes(pg_result($resaco,$conresaco,'sd28_i_material'))."','$this->sd28_i_material',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006016,1006132,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd28_i_material'))."','$this->sd28_i_material',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_quantidade"]))
-           $resac = db_query("insert into db_acount values($acount,1006016,1006134,'".AddSlashes(pg_result($resaco,$conresaco,'sd28_i_quantidade'))."','$this->sd28_i_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006016,1006134,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd28_i_quantidade'))."','$this->sd28_i_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd28_i_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1006016,1006147,'".AddSlashes(pg_result($resaco,$conresaco,'sd28_i_usuario'))."','$this->sd28_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006016,1006147,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd28_i_usuario'))."','$this->sd28_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd28_d_data"]))
-           $resac = db_query("insert into db_acount values($acount,1006016,1006146,'".AddSlashes(pg_result($resaco,$conresaco,'sd28_d_data'))."','$this->sd28_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006016,1006146,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd28_d_data'))."','$this->sd28_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = @db_query($sql);
@@ -422,15 +422,15 @@ class cl_cgmsaida {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountkey values($acount,1006130,'$sd28_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1006016,1006130,'','".AddSlashes(pg_result($resaco,$iresaco,'sd28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006016,1006148,'','".AddSlashes(pg_result($resaco,$iresaco,'sd28_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006016,1006149,'','".AddSlashes(pg_result($resaco,$iresaco,'sd28_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006016,1006132,'','".AddSlashes(pg_result($resaco,$iresaco,'sd28_i_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006016,1006134,'','".AddSlashes(pg_result($resaco,$iresaco,'sd28_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006016,1006147,'','".AddSlashes(pg_result($resaco,$iresaco,'sd28_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006016,1006146,'','".AddSlashes(pg_result($resaco,$iresaco,'sd28_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006016,1006130,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd28_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006016,1006148,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd28_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006016,1006149,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd28_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006016,1006132,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd28_i_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006016,1006134,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd28_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006016,1006147,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd28_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006016,1006146,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd28_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cgmsaida
@@ -490,7 +490,7 @@ class cl_cgmsaida {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cgmsaida";
@@ -505,7 +505,7 @@ class cl_cgmsaida {
    function sql_query ( $sd28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_cgmsaida {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -545,7 +545,7 @@ class cl_cgmsaida {
    function sql_query_file ( $sd28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -566,7 +566,7 @@ class cl_cgmsaida {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

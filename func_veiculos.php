@@ -35,9 +35,9 @@ include(modification("classes/db_veiccadmodelo_classe.php"));
 include(modification("classes/db_veiccadmarca_classe.php"));
 include(modification("classes/db_veiccadtipo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveiculos      = new cl_veiculos;
 $clveiccadmodelo = new cl_veiccadmodelo;
@@ -201,15 +201,15 @@ $clveiculos->rotulo->label("ve01_veiccadtipo");
         }else {
            $sql = $clveiculos->sql_query("",$campos,"ve01_codigo","1=1 $sWhereInstituicao ");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve01_codigo)        || isset($chave_ve01_placa)        ||
            isset($chave_ve01_veiccadmodelo) || isset($chave_ve01_veiccadmarca) ||
            isset($chave_ve01_veiccadtipo)){
-          $repassa = array("chave_ve01_codigo"=>$chave_ve01_codigo,
+          $repassa = ["chave_ve01_codigo"=>$chave_ve01_codigo,
                            "chave_ve01_placa"=>$chave_ve01_placa,
                            "chave_ve01_veiccadmodelo"=>$chave_ve01_veiccadmodelo,
                            "chave_ve01_veiccadmarca"=>$chave_ve01_veiccadmarca,
-                           "chave_ve01_veiccadtipo"=>$chave_ve01_veiccadtipo);
+                           "chave_ve01_veiccadtipo"=>$chave_ve01_veiccadtipo];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

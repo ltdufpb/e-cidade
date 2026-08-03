@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE pactoplano
 class cl_pactoplano { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o74_sequencial = 0; 
-   var $o74_orctiporecconvenio = 0; 
-   var $o74_descricao = null; 
-   var $o74_obs = null; 
+   public $o74_sequencial = 0; 
+   public $o74_orctiporecconvenio = 0; 
+   public $o74_descricao = null; 
+   public $o74_obs = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o74_sequencial = int4 = Sequencial 
                  o74_orctiporecconvenio = int4 = Código Pacto 
                  o74_descricao = varchar(50) = Descrição 
                  o74_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_pactoplano() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pactoplano"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_pactoplano {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o74_sequencial = pg_result($result,0,0); 
+       $this->o74_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pactoplano_o74_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o74_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o74_sequencial)){
          $this->erro_sql = " Campo o74_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_pactoplano {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Pacto Plano ($this->o74_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Pacto Plano já Cadastrado";
@@ -180,13 +180,13 @@ class cl_pactoplano {
      $resaco = $this->sql_record($this->sql_query_file($this->o74_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13875,'$this->o74_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2432,13875,'','".AddSlashes(pg_result($resaco,0,'o74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2432,13880,'','".AddSlashes(pg_result($resaco,0,'o74_orctiporecconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2432,13881,'','".AddSlashes(pg_result($resaco,0,'o74_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2432,13882,'','".AddSlashes(pg_result($resaco,0,'o74_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2432,13875,'','".AddSlashes(pg_fetch_result($resaco,0,'o74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2432,13880,'','".AddSlashes(pg_fetch_result($resaco,0,'o74_orctiporecconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2432,13881,'','".AddSlashes(pg_fetch_result($resaco,0,'o74_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2432,13882,'','".AddSlashes(pg_fetch_result($resaco,0,'o74_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_pactoplano {
       $this->atualizacampos();
      $sql = " update pactoplano set ";
      $virgula = "";
-     if(trim($this->o74_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o74_sequencial"])){ 
+     if(trim((string) $this->o74_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o74_sequencial"])){ 
        $sql  .= $virgula." o74_sequencial = $this->o74_sequencial ";
        $virgula = ",";
-       if(trim($this->o74_sequencial) == null ){ 
+       if(trim((string) $this->o74_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "o74_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_pactoplano {
          return false;
        }
      }
-     if(trim($this->o74_orctiporecconvenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o74_orctiporecconvenio"])){ 
+     if(trim((string) $this->o74_orctiporecconvenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o74_orctiporecconvenio"])){ 
        $sql  .= $virgula." o74_orctiporecconvenio = $this->o74_orctiporecconvenio ";
        $virgula = ",";
-       if(trim($this->o74_orctiporecconvenio) == null ){ 
+       if(trim((string) $this->o74_orctiporecconvenio) == null ){ 
          $this->erro_sql = " Campo Código Pacto nao Informado.";
          $this->erro_campo = "o74_orctiporecconvenio";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_pactoplano {
          return false;
        }
      }
-     if(trim($this->o74_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o74_descricao"])){ 
+     if(trim((string) $this->o74_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o74_descricao"])){ 
        $sql  .= $virgula." o74_descricao = '$this->o74_descricao' ";
        $virgula = ",";
-       if(trim($this->o74_descricao) == null ){ 
+       if(trim((string) $this->o74_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "o74_descricao";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_pactoplano {
          return false;
        }
      }
-     if(trim($this->o74_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o74_obs"])){ 
+     if(trim((string) $this->o74_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o74_obs"])){ 
        $sql  .= $virgula." o74_obs = '$this->o74_obs' ";
        $virgula = ",";
-       if(trim($this->o74_obs) == null ){ 
+       if(trim((string) $this->o74_obs) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "o74_obs";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_pactoplano {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13875,'$this->o74_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o74_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2432,13875,'".AddSlashes(pg_result($resaco,$conresaco,'o74_sequencial'))."','$this->o74_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2432,13875,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o74_sequencial'))."','$this->o74_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o74_orctiporecconvenio"]))
-           $resac = db_query("insert into db_acount values($acount,2432,13880,'".AddSlashes(pg_result($resaco,$conresaco,'o74_orctiporecconvenio'))."','$this->o74_orctiporecconvenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2432,13880,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o74_orctiporecconvenio'))."','$this->o74_orctiporecconvenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o74_descricao"]))
-           $resac = db_query("insert into db_acount values($acount,2432,13881,'".AddSlashes(pg_result($resaco,$conresaco,'o74_descricao'))."','$this->o74_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2432,13881,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o74_descricao'))."','$this->o74_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o74_obs"]))
-           $resac = db_query("insert into db_acount values($acount,2432,13882,'".AddSlashes(pg_result($resaco,$conresaco,'o74_obs'))."','$this->o74_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2432,13882,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o74_obs'))."','$this->o74_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_pactoplano {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13875,'$o74_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2432,13875,'','".AddSlashes(pg_result($resaco,$iresaco,'o74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2432,13880,'','".AddSlashes(pg_result($resaco,$iresaco,'o74_orctiporecconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2432,13881,'','".AddSlashes(pg_result($resaco,$iresaco,'o74_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2432,13882,'','".AddSlashes(pg_result($resaco,$iresaco,'o74_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2432,13875,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2432,13880,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o74_orctiporecconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2432,13881,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o74_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2432,13882,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o74_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pactoplano
@@ -376,7 +376,7 @@ class cl_pactoplano {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pactoplano";
@@ -391,7 +391,7 @@ class cl_pactoplano {
    function sql_query ( $o74_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_pactoplano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,7 +431,7 @@ class cl_pactoplano {
    function sql_query_file ( $o74_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,7 +452,7 @@ class cl_pactoplano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

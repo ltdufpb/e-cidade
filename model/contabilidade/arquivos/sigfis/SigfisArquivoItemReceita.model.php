@@ -95,7 +95,7 @@ class SigfisArquivoItemReceita extends SigfisArquivoBase implements iPadArquivoT
                 $oDadosQuery = db_utils::fieldsMemory($rsOrcFontes, $i);
                 $oDados      = new stdClass();
 
-                if (substr($oDadosQuery->o57_fonte, 1,  13) == '00000000') {
+                if (substr((string) $oDadosQuery->o57_fonte, 1,  13) == '00000000') {
                     continue;
                 }
 
@@ -109,10 +109,10 @@ class SigfisArquivoItemReceita extends SigfisArquivoBase implements iPadArquivoT
                     continue;
                 }
 
-                $oDados->cd_Unidade           = str_pad($this->sCodigoTribunal,                  4, ' ', STR_PAD_LEFT);
-                $oDados->cd_ItemReceitaGestor = str_pad($oDadosQuery->o57_fonte, 13, " ", STR_PAD_RIGHT);
-                $oDados->de_ItemReceita       = str_pad(substr($oDadosQuery->o57_descr, 0, 50), 50, ' ', STR_PAD_RIGHT);
-                $oDados->cd_ItemReceita       = str_pad(substr($oVinculo->receitatce,0,13), 13, ' ', STR_PAD_RIGHT);
+                $oDados->cd_Unidade           = str_pad((string) $this->sCodigoTribunal,                  4, ' ', STR_PAD_LEFT);
+                $oDados->cd_ItemReceitaGestor = str_pad((string) $oDadosQuery->o57_fonte, 13, " ", STR_PAD_RIGHT);
+                $oDados->de_ItemReceita       = str_pad(substr((string) $oDadosQuery->o57_descr, 0, 50), 50, ' ', STR_PAD_RIGHT);
+                $oDados->cd_ItemReceita       = str_pad(substr((string) $oVinculo->receitatce,0,13), 13, ' ', STR_PAD_RIGHT);
                 $oDados->dt_ano               = $oDadosQuery->o57_anousu;
                 $oDados->Cd_receblanc         = $oDadosQuery->reduz;
                 $oDados->codigolinha          = 403;

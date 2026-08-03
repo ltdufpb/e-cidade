@@ -123,11 +123,11 @@ input {
 <br>
 <?php 	
 	
-	if(isset($HTTP_POST_VARS["excluir"])) {
+	if(isset($_POST["excluir"])) {
   db_query("BEGIN");
-  db_query("delete from db_caritbilan where id_itbi = ".$HTTP_POST_VARS["itbi"]);
-  $result = db_query("delete from db_itbi where id_itbi = ".$HTTP_POST_VARS["itbi"]);
-  if(pg_cmdtuples($result) > 0) {
+  db_query("delete from db_caritbilan where id_itbi = ".$_POST["itbi"]);
+  $result = db_query("delete from db_itbi where id_itbi = ".$_POST["itbi"]);
+  if(pg_affected_rows($result) > 0) {
     db_query("COMMIT");
     echo "<script>
 	        alert('itbi excluido.');
@@ -143,13 +143,13 @@ input {
     exit;
   }
 }
-  if(isset($HTTP_POST_VARS["itbi"])) {		
-     $itbi = $HTTP_POST_VARS["itbi"];
-     $valoravaliacao = $HTTP_POST_VARS["valoravaliado"];
-     $aliquota = $HTTP_POST_VARS["aliquota"];
-     $valorapagar = $HTTP_POST_VARS["valorapagar"];
-	 $obsliber = $HTTP_POST_VARS["obsliber"];
-     $data = $HTTP_POST_VARS["data_ano"]."-".$HTTP_POST_VARS["data_mes"]."-".$HTTP_POST_VARS["data_dia"];
+  if(isset($_POST["itbi"])) {		
+     $itbi = $_POST["itbi"];
+     $valoravaliacao = $_POST["valoravaliado"];
+     $aliquota = $_POST["aliquota"];
+     $valorapagar = $_POST["valorapagar"];
+	 $obsliber = $_POST["obsliber"];
+     $data = $_POST["data_ano"]."-".$_POST["data_mes"]."-".$_POST["data_dia"];
      db_query("BEGIN");
      $result = db_query("UPDATE db_itbi SET dataliber = CURRENT_DATE,
                                            valoravterr = $valoravterr,
@@ -161,7 +161,7 @@ input {
 					  					 liberado = 1,
 										 obsliber = '$obsliber' 
 				         WHERE id_itbi = $itbi");
-     if(pg_cmdtuples($result) <= 0) {
+     if(pg_affected_rows($result) <= 0) {
 	    db_query("ROLLBACK");
 	    echo "Erro atualizando tabela db_itbi. <a href=\"\" onclick=\"history.back();return false\">Voltar</a><br>\n";
 	    exit;
@@ -177,7 +177,7 @@ input {
      } 
   } else if(isset($retorno)) {
 	  $result = db_query("SELECT *,to_char(datasolicitacao,'DD-MM-YYYY') as datasolicit FROM db_itbi WHERE id_itbi = $retorno");
-	  if(pg_numrows($result) > 0) {
+	  if(pg_num_rows($result) > 0) {
 	    db_fieldsmemory($result,0);
 	   /* $sql = "select z01_cgccpf,z01_nome,z01_ender,z01_munic,z01_uf,z01_cep,
 	                       z01_bairro,z01_email,v11_bql
@@ -188,7 +188,7 @@ input {
 		*/
 		$sql = "select * from proprietario where j01_matric = $matricula";
 	    $dadosp = db_query($sql);
-	    if(pg_numrows($dadosp) > 0)
+	    if(pg_num_rows($dadosp) > 0)
 	      db_fieldsmemory($dadosp,0);
 		 // printfieldsmemory($dadosp,0);
         //$predterr = db_query("select v12_matric from edifica where trim(v12_matric) = '$matricula' limit 1");	  
@@ -252,7 +252,7 @@ input {
     <table width="90%" border="1" cellpadding="0" cellspacing="0">
       <tr bgcolor="#E0E0E0"> 
         <td colspan="2"><div align="center"><font color="#FF0000" >
-		<em><strong><a href="" title="Clique aqui para ver as observações do comprador" class="obs" onClick="jan = window.open('pre4_liberaitbi002.php?itbi=<?=trim($id_itbi)?>','','width=400,height=400');jan.moveTo(200,100);return false">Dados do Comprador</a></strong></em></font>&nbsp;&nbsp; 
+		<em><strong><a href="" title="Clique aqui para ver as observações do comprador" class="obs" onClick="jan = window.open('pre4_liberaitbi002.php?itbi=<?=trim((string) $id_itbi)?>','','width=400,height=400');jan.moveTo(200,100);return false">Dados do Comprador</a></strong></em></font>&nbsp;&nbsp; 
 </div></td>
       </tr>
       <tr> 
@@ -369,14 +369,14 @@ input {
                     where c.codcaritbi = i.codcaritbi
                     and i.area <> 0
                     and i.id_itbi = $id_itbi");
-    for($i = 0;$i < pg_numrows($CAR);$i++) {
+    for($i = 0;$i < pg_num_rows($CAR);$i++) {
       ?>  
       <tr> 
         <td width="16%"><?php  echo $i==0?"<strong>Construções:</strong>":"" ?>&nbsp;</td>
-        <td width="23%"><?=@pg_result($CAR,$i,"descrcar")?>&nbsp;</td>
-        <td width="24%"><?=@pg_result($CAR,$i,"descricao")?>&nbsp;</td>
-        <td width="24%"><?=@pg_result($CAR,$i,"area")?>&nbsp;</td>
-        <td width="20%"><?=@pg_result($CAR,$i,"anoconstr")?>&nbsp;</td>
+        <td width="23%"><?=@pg_fetch_result($CAR,$i,"descrcar")?>&nbsp;</td>
+        <td width="24%"><?=@pg_fetch_result($CAR,$i,"descricao")?>&nbsp;</td>
+        <td width="24%"><?=@pg_fetch_result($CAR,$i,"area")?>&nbsp;</td>
+        <td width="20%"><?=@pg_fetch_result($CAR,$i,"anoconstr")?>&nbsp;</td>
       </tr>
 	  <?php 
 	  }

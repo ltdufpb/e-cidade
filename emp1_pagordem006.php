@@ -48,7 +48,7 @@ $clempord       = new cl_empord;
 $clempnotaele   = new cl_empnotaele;
 $clpagordemnota = new cl_pagordemnota;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 33;
 $db_botao = false;
@@ -64,10 +64,10 @@ if(isset($anular)){
   
   //rotina que inclui em pagordemele 
   if($sqlerro==false){
-    $arr_dados = split("#",$dados);
+    $arr_dados = preg_split("#\\##m",$dados);
     $tam = count($arr_dados);
     for($i=0; $i<$tam; $i++){
-         $arr_ele = split("-",$arr_dados[$i]);
+         $arr_ele = preg_split("#\\-#m",(string) $arr_dados[$i]);
          $elemento    = $arr_ele[0];
 	 $vlrord      = $arr_ele[1];
 
@@ -116,7 +116,7 @@ if(isset($anular)){
 
      //rotina pega as notas marcadas para anular
      if($sqlerro==false && isset($chaves) && $chaves!=''){
-	$arr_notas = split("#",$chaves);
+	$arr_notas = preg_split("#\\##m",$chaves);
 	$tam = count($arr_notas);
 	for($i=0; $i<$tam; $i++){
 	        $nota = $arr_notas[$i];
@@ -182,26 +182,26 @@ if(isset($chavepesquisa) || isset($e50_codord)){
    if(isset($chavepesquisa)){
        $e50_codord=$chavepesquisa;
    }
-   
+
    $db_opcao = 3;
    $db_botao = true;
-   
+
    //rotina que traz os dados do pagordem
    $result = $clpagordem->sql_record($clpagordem->sql_query($e50_codord)); 
    db_fieldsmemory($result,0);
-   
+
    //rotina que traz os dados do empenho
    $result = $clempempenho->sql_record($clempempenho->sql_query_file($e50_numemp)); 
    db_fieldsmemory($result,0);
-   
-   
+
+
    //rotina que traz os dados do pagordem
    $result = $clpagordemconta->sql_record($clpagordemconta->sql_query($e50_codord,"z01_numcgm as z01_numcgm2,z01_nome as z01_nome2")); 
    if($clpagordemconta->numrows>0){
      db_fieldsmemory($result,0);
    }  
-   
-   
+
+
    //verifica se ja naum tem agenda
      $res_agenda = $clempord->sql_record($clempord->sql_query(null,$e50_codord,"e81_codage,e80_data"));
      if($clempord->numrows>0){

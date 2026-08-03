@@ -14,7 +14,7 @@ class DBTooltipAvisoQuestionario extends DBTooltipAviso {
    *
    * @return String
    */
-  public function renderQuestionario($iIdItem=null, $iModulo, $iTop) {
+  public function renderQuestionario($iIdItem=null, $iModulo = null, $iTop = null) {
 
     $sHtml         = "";
 

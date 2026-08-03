@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 if(isset($retorno)) {
   $result = db_query("select s_codigo as codigo,                            
@@ -52,10 +52,10 @@ if(isset($retorno)) {
 					 from db_calendario where s_codigo = $retorno");
   db_fieldsmemory($result,0);
 }
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $result = db_query("select max(s_codigo) + 1 from db_calendario");
-  $codigo = pg_result($result,0,0);
+  $codigo = pg_fetch_result($result,0,0);
   $codigo = $codigo==""?1:$codigo;
   $SQL = "insert into db_calendario values(
     $codigo,
@@ -71,12 +71,12 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 	'$obs',
 	'$intext')";
   $result = db_query($SQL);
-  if(pg_cmdtuples($result) > 0) {
+  if(pg_affected_rows($result) > 0) {
     echo "<script>location.href = 'sit1_eventos001.php'</script>\n";
 	exit;
   }
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   $result = db_query("UPDATE db_calendario SET
                        s_datainicio = ".($datainicio_ano==""?"null":"'$datainicio_ano-$datainicio_mes-$datainicio_dia'").",
                        s_horainicio = '$horainicio',
@@ -90,13 +90,13 @@ if(isset($HTTP_POST_VARS["incluir"])) {
                        s_obs = '$obs',
 					   s_intext = '$intext'
 					 WHERE s_codigo = $codigo");
-  if(pg_cmdtuples($result) > 0) {
+  if(pg_affected_rows($result) > 0) {
     db_redireciona();
 	exit;
   }					
-} else if(isset($HTTP_POST_VARS["excluir"])) {
-  $result = db_query("delete from db_calendario where s_codigo = ".$HTTP_POST_VARS["codigo"]);
-  if(pg_cmdtuples($result) > 0) {
+} else if(isset($_POST["excluir"])) {
+  $result = db_query("delete from db_calendario where s_codigo = ".$_POST["codigo"]);
+  if(pg_affected_rows($result) > 0) {
     db_redireciona();
 	exit;
   }
@@ -136,7 +136,7 @@ input {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC" onLoad="js_iniciar()">
-<?php  if(!isset($HTTP_POST_VARS["consultar"]) && !isset($HTTP_POST_VARS["priNoMe"]) && !isset($HTTP_POST_VARS["antNoMe"]) && !isset($HTTP_POST_VARS["proxNoMe"]) && !isset($HTTP_POST_VARS["ultNoMe"])) { ?>
+<?php  if(!isset($_POST["consultar"]) && !isset($_POST["priNoMe"]) && !isset($_POST["antNoMe"]) && !isset($_POST["proxNoMe"]) && !isset($_POST["ultNoMe"])) { ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr> 
     <td width="360" height="18">&nbsp;</td>
@@ -191,9 +191,9 @@ input {
 		  <option value="0">Evento</option>
 		  <?php 
 		  $result = db_query($conn,"select cs_odigo,s_descricao from db_secretaria order by s_codigo");
-		  $numrows = pg_numrows($result);
+		  $numrows = pg_num_rows($result);
 		  for($i = 0;$i < $numrows;$i++) {
-		    echo "<option value=\"".pg_result($result,$i,"codigo")."\" ".(@$secretaria==pg_result($result,$i,"codigo")?"selected":"").">".pg_result($result,$i,"descricao")."</option>\n";
+		    echo "<option value=\"".pg_fetch_result($result,$i,"codigo")."\" ".(@$secretaria==pg_fetch_result($result,$i,"codigo")?"selected":"").">".pg_fetch_result($result,$i,"descricao")."</option>\n";
 		  }
 		  ?>
           </select>
@@ -243,13 +243,13 @@ input {
 </table>
 <?php  } else { ?>
 <?php 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   if(checkdate($datainicio_mes,$datainicio_dia,$datainicio_ano)) {
     $datainicio = $datainicio_ano."-".$datainicio_mes."-".$datainicio_dia;
     $filtro = "and s_datainicio >= '$datainicio'";
   } 
-  if(isset($HTTP_POST_VARS["filtro"]))
-    $filtro = base64_decode($HTTP_POST_VARS["filtro"]);
+  if(isset($_POST["filtro"]))
+    $filtro = base64_decode($_POST["filtro"]);
     $sql = "select c.s_codigo as db_codigo,(CASE WHEN  c.s_intext = 'f' THEN 'Extranet' ELSE 'Intranet' END) as acesso,
           to_char(c.s_datainicio,'DD-MM-YYYY') as \"Data de Início\",c.s_horainicio as \"Hora de Início\",
           (CASE WHEN s.s_descricao is null THEN 'Evento' ELSE s.s_descricao END) as secretaria,
@@ -262,7 +262,7 @@ input {
 		  ".@$filtro."
 		  order by c.s_descricao";
   echo "<center>\n";
-  db_lov($sql,100,"sit1_eventos001.php",base64_encode(@$filtro),"corpo");
+  db_lov($sql,100,"sit1_eventos001.php",base64_encode((string) @$filtro),"corpo");
   //db_lov($query,$numlinhas,$arquivo="",$filtro="%",$aonde="_self",$mensagem="Clique Aqui",$NomeForm="NoMe") { 
   echo "</center>\n";
 ?>

@@ -32,14 +32,14 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_saniatividade_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sanitario_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clsaniatividade = new cl_saniatividade;
 $clsanitario = new cl_sanitario;
 $db_opcao = 22;
 $db_botao = false;
 //if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
-if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Alterar"){
+if((isset($_POST["opcaoExec"]) && $_POST["opcaoExec"])=="Alterar"){
  
   db_inicio_transacao();
   $sqlerro=false;
@@ -129,7 +129,7 @@ if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Alter
 </body>
 </html>
 		<?php 
-		if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Alterar"){
+		if((isset($_POST["opcaoExec"]) && $_POST["opcaoExec"])=="Alterar"){
 		  if($clsaniatividade->erro_status=="0"&&$sqlerro==true){
 		    $clsaniatividade->erro(true,false);
 		    $db_botao=true;

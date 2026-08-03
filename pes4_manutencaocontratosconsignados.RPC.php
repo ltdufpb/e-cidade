@@ -36,7 +36,7 @@ require_once modification("libs/JSON.php");
 $oPost       = db_utils::postMemory($_REQUEST);
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParametro  = JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$oRetorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 try {
 
@@ -201,7 +201,7 @@ try {
        * Retornamos os dados
        */
       $aParcelasNaCompetencia = ArquivoConsignadoManualParcelaRepository::getParcelasNaCompetencia($oCompetencia, $oInstituicao);
-      $oRetorno->consignacoes = array();
+      $oRetorno->consignacoes = [];
       foreach ($aParcelasNaCompetencia as $oParcela) {
 
         if ($oParcela->getConsignado()->getBanco()->getCodigo() != $oParametro->banco) {
@@ -249,7 +249,7 @@ try {
       }
 
       ArquivoConsignadoManualParcelaRepository::persist($oParcela, $oParcela->getConsignado());
-      $iMotivo                    = ($oParcela->getMotivo() === null) ? '' : $oParcela->getMotivo();
+      $iMotivo                    = $oParcela->getMotivo() ?? '';
       $oRetorno->motivo           = $oParcela->getMotivo();
       $oRetorno->descricao_motivo = urlencode(ArquivoConsignadoMotivo::getDescricaoMotivo($iMotivo));
       break;
@@ -277,10 +277,10 @@ try {
  */
 function getContratos($iMatricula = null, $iCodigoConsignado = null) {
 	
-	$aContratos = array();
+	$aContratos = [];
 
 	if(!empty($iCodigoConsignado)) {
-		$aArquivoConsignadoManual = array(ArquivoConsignadoManualRepository::getByCodigo($iCodigoConsignado));
+		$aArquivoConsignadoManual = [ArquivoConsignadoManualRepository::getByCodigo($iCodigoConsignado)];
 	} else {
 		$oServidor                = ServidorRepository::getInstanciaByCodigo($iMatricula);
 		$aArquivoConsignadoManual = ArquivoConsignadoManualRepository::getContratosAtivosByServidor($oServidor);

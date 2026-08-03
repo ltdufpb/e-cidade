@@ -30,8 +30,8 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrotulo = new rotulocampo;
 $clcriaabas     = new cl_criaabas;
 ?>
@@ -58,17 +58,17 @@ $clcriaabas     = new cl_criaabas;
      <?php 
 
 
-       $clcriaabas->identifica = array("lista"    => "Listas",
+       $clcriaabas->identifica = ["lista"    => "Listas",
                                        "filtros"  => "Filtros"
-                                      );//nome do iframe e o label
-       $clcriaabas->title      = array("lista"    => "Listas",
+                                      ];//nome do iframe e o label
+       $clcriaabas->title      = ["lista"    => "Listas",
                                        "filtros"  => "Filtros"
-                                      );//nome do iframe e o label
-       $clcriaabas->src        = array( "lista"   => "cai4_lista003.php"
+                                      ];//nome do iframe e o label
+       $clcriaabas->src        = [ "lista"   => "cai4_lista003.php"
                                        //,"filtros" => "cai4_listafiltros003.php"
-                                      );  //nome do iframe e SRC
+                                      ];  //nome do iframe e SRC
        //$clcriaabas->sizecampo  = array("lista" => "20");
-       $clcriaabas->disabled   = array("filtros"=>"true");
+       $clcriaabas->disabled   = ["filtros"=>"true"];
        $clcriaabas->cria_abas();    // iss1_isstipolistaAba001.php
      ?>
      </td>

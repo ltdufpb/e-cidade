@@ -46,9 +46,9 @@ $oRotulo->label("c111_descricao");
 $oRotulo->label("z01_nome");
 $oRotulo->label("c72_complem");
 
-$aOpcoesEstorno = array("f" => "NAO", "t" => "SIM");
+$aOpcoesEstorno = ["f" => "NAO", "t" => "SIM"];
 $aDadosReconhecimentoContabilTipo = TipoReconhecimentoContabil::buscaDadosTiposDeReconhecimento('c111_sequencial, c111_descricao');
-$aReconhecimentoContabilTipo = array();
+$aReconhecimentoContabilTipo = [];
 
 foreach ( $aDadosReconhecimentoContabilTipo as $oDadosReconhecimentoContabil ) {
   $aReconhecimentoContabilTipo[ $oDadosReconhecimentoContabil->c111_sequencial ] = $oDadosReconhecimentoContabil->c111_descricao;

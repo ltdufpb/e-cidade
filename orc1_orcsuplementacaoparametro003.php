@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	     $clcriaabas->identifica = array("orcsuplementacaoparametro"=>"Parâmetros","orcsuplementacaoparametrocriterio"=>"Critérios"); 
-	     $clcriaabas->src = array("orcsuplementacaoparametro"=>"orc1_orcsuplementacaoparametro006.php");
-	     $clcriaabas->disabled   =  array("orcsuplementacaoparametrocriterio"=>"true"); 
+	     $clcriaabas->identifica = ["orcsuplementacaoparametro"=>"Parâmetros","orcsuplementacaoparametrocriterio"=>"Critérios"]; 
+	     $clcriaabas->src = ["orcsuplementacaoparametro"=>"orc1_orcsuplementacaoparametro006.php"];
+	     $clcriaabas->disabled   =  ["orcsuplementacaoparametrocriterio"=>"true"]; 
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

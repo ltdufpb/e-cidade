@@ -45,7 +45,7 @@ $iEscola           = db_getsession("DB_coddepto");
 $oJson             = new Services_JSON();
 $oParam            = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 $oRetorno          = new stdClass();
-$oRetorno->dados   = array();
+$oRetorno->dados   = [];
 $oRetorno->status  = 1;
 $oRetorno->message = '';
 
@@ -60,7 +60,7 @@ try {
      */
     case 'getAlunosAprovadosPeloConselhoPorRegencia':
 
-      $oRetorno->aResultados = array();
+      $oRetorno->aResultados = [];
 
       $oTurma    = EducacaoSessionManager::carregarTurma( $oParam->iTurma );
       $oEtapa    = EducacaoSessionManager::carregarEtapa( $oParam->iEtapa );
@@ -97,11 +97,11 @@ try {
         $oAluno                  = new stdClass();
         $oAluno->iAprovConselho  = $oAprovadoPeloConselho->getCodigo();
         $oAluno->iMatricula      = $oMatricula->getCodigo();
-        $oAluno->sAluno          = urlencode($oMatricula->getAluno()->getNome());
-        $oAluno->sJustificativa  = urlencode($oAprovadoPeloConselho->getJustificativa());
+        $oAluno->sAluno          = urlencode((string) $oMatricula->getAluno()->getNome());
+        $oAluno->sJustificativa  = urlencode((string) $oAprovadoPeloConselho->getJustificativa());
         $oAluno->dtData          = $oAprovadoPeloConselho->getData()->getDate(DBDate::DATA_PTBR);
         $oAluno->sHora           = $oAprovadoPeloConselho->getHora();
-        $oAluno->sProfessor      = urlencode($sNomeProfessor);
+        $oAluno->sProfessor      = urlencode((string) $sNomeProfessor);
         $oAluno->sFormaAprovacao = urlencode($sFormaAprovacao);
 
         $oRetorno->aResultados[] = $oAluno;
@@ -118,7 +118,7 @@ try {
      */
     case 'getAlunosAlteraResultadoFinal':
 
-      $oRetorno->aAlunos = array() ;
+      $oRetorno->aAlunos = [] ;
 
       $oTurma    = EducacaoSessionManager::carregarTurma( $oParam->iTurma );
       $oEtapa    = EducacaoSessionManager::carregarEtapa( $oParam->iEtapa );
@@ -140,7 +140,7 @@ try {
 
         $oAluno                       = new stdClass();
         $oAluno->iMatricula           = $oMatricula->getCodigo();
-        $oAluno->sAluno               = urlencode($oMatricula->getAluno()->getNome());
+        $oAluno->sAluno               = urlencode((string) $oMatricula->getAluno()->getNome());
         $oAluno->lReprovadoNota       = false;
         $oAluno->lReprovadoFrequencia = false;
 
@@ -256,7 +256,7 @@ try {
       $oDados->sFormaAvaliacao  = $oElementoResultado->getFormaDeAvaliacao()->getTipo();
       $oDados->mVariacao        = $oElementoResultado->getFormaDeAvaliacao()->getVariacao();
       $oDados->sMascara         = ArredondamentoNota::getMascara($oTurma->getCalendario()->getAnoExecucao());
-      $oDados->aConceitos       = array();
+      $oDados->aConceitos       = [];
 
       if ($oDados->sFormaAvaliacao == 'NIVEL') {
 

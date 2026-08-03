@@ -85,7 +85,7 @@ $oGet = db_utils::postmemory($_GET);
             $arrayTot["k00_vlrdes"] = "k00_vlrdes";
             $arrayTot["total"] = "total";
 
-            db_lovrot($sSqlSusp, 50, "()", "", "", "", "NoMe", array(), false, $arrayTot);
+            db_lovrot($sSqlSusp, 50, "()", "", "", "", "NoMe", [], false, $arrayTot);
 
             ?>
         </td>

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_quadracemit_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clquadracemit = new cl_quadracemit;
 $clquadracemit->rotulo->label("cm22_i_codigo");
 $clquadracemit->rotulo->label("cm22_c_quadra");
@@ -98,9 +98,9 @@ $clquadracemit->rotulo->label("cm22_c_quadra");
         }else{
            $sql = $clquadracemit->sql_query("",$campos,"cm22_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cm22_i_codigo)){
-          $repassa = array("chave_cm22_i_codigo"=>$chave_cm22_i_codigo,"chave_cm22_i_codigo"=>$chave_cm22_i_codigo);
+          $repassa = ["chave_cm22_i_codigo"=>$chave_cm22_i_codigo,"chave_cm22_i_codigo"=>$chave_cm22_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

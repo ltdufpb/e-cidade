@@ -115,7 +115,7 @@ class Entity {
 
   public function getTypeAsString() {
 
-    $errorType = array(
+    $errorType = [
       E_ERROR             => 'E_ERROR',
       E_WARNING           => 'E_WARNING',
       E_PARSE             => 'E_PARSE',
@@ -131,13 +131,13 @@ class Entity {
       E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
       E_DEPRECATED        => 'E_DEPRECATED',
       E_USER_DEPRECATED   => 'E_USER_DEPRECATED'
-    );
+    ];
 
-    return isset($errorType[$this->type]) ? $errorType[$this->type] : 'Unknown PHP error';
+    return $errorType[$this->type] ?? 'Unknown PHP error';
   }
 
   public function toArray() {
-    return array(
+    return [
       'id' => $this->id,
       'type' => $this->type,
       'suppress' => $this->suppress,
@@ -146,8 +146,8 @@ class Entity {
       'line' => $this->line,
       'time' => $this->time,
       'code' => $this->code,
-      'trace' => $this->trace ? $this->trace->getSanitizedData() : array()
-    );
+      'trace' => $this->trace ? $this->trace->getSanitizedData() : []
+    ];
   }
 
 }

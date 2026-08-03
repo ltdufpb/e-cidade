@@ -59,7 +59,7 @@ require_once(modification("model/logInscricao.model.php"));
 
 db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -360,7 +360,7 @@ if (isset($incluir)) {
         }
       }
     }
-    if (strtoupper($munic)==strtoupper($z01_munic)) {
+    if (strtoupper((string) $munic)==strtoupper((string) $z01_munic)) {
 
       if (!$sqlerro) {
 
@@ -403,7 +403,7 @@ if (isset($incluir)) {
       if ($rsCgm !== false) {
 
         $sZ01_nomefanta = db_utils::fieldsMemory($rsCgm,0)->z01_nomefanta;
-        if (trim($sZ01_nomefanta) != trim($oPost->z01_nomefanta)) {
+        if (trim((string) $sZ01_nomefanta) != trim((string) $oPost->z01_nomefanta)) {
               //update na cgm
           $clcgm->z01_numcgm    = $oPost->q02_numcgm;
           $clcgm->z01_nomefanta = $oPost->z01_nomefanta;

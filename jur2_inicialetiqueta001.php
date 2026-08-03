@@ -93,7 +93,7 @@
                       <tr>
                          <td ><b>Tamanho</b>
                          <?php 
-                         $x = array("1"=>"8cm x 6,5cm");
+                         $x = ["1"=>"8cm x 6,5cm"];
                          db_select('tamanho',$x,true,4,"");
                         ?>
 	

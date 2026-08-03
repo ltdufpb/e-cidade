@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_syscadproceditem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_syscadproceditem = new cl_db_syscadproceditem;
 $cldb_syscadproceditem->rotulo->label("seqproitem");
 $cldb_syscadproceditem->rotulo->label("codproced");
@@ -98,9 +98,9 @@ $cldb_syscadproceditem->rotulo->label("codproced");
         }else{
            $sql = $cldb_syscadproceditem->sql_query("",$campos,"seqproitem","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_codproced)){
-          $repassa = array("chave_seqproitem"=>$chave_seqproitem,"chave_codproced"=>$chave_codproced);
+          $repassa = ["chave_seqproitem"=>$chave_seqproitem,"chave_codproced"=>$chave_codproced];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

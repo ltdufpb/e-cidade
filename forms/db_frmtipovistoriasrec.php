@@ -104,7 +104,7 @@ db_input('y78_descr',50,$Iy78_descr,true,'text',$db_opcao,"")
   <tr>
     <td colspan="2" align="top">
    <?php 
-    $chavepri= array("y78_codtipo"=>@$y78_codtipo,"y78_receit"=>@$y78_receit);
+    $chavepri= ["y78_codtipo"=>@$y78_codtipo,"y78_receit"=>@$y78_receit];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y78_codtipo,y78_receit,y78_valor,y78_descr";
     $cliframe_alterar_excluir->sql=$cltipovistoriasrec->sql_query("","","*",""," y78_codtipo = $y78_codtipo");

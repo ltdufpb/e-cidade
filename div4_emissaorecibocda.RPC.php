@@ -43,8 +43,8 @@ $oParametros                = $oJson->decode(str_replace("\\","",$_POST["json"])
 
 $oRetorno                   = new stdClass();
 $oRetorno->erro             = false;
-$oRetorno->aInconsistencias = array();
-$oRetorno->aRecibosEmissao  = array();
+$oRetorno->aInconsistencias = [];
+$oRetorno->aRecibosEmissao  = [];
 
 $oDataVencimento            = new DBDate( $oParametros->dataVencimento );
 $iAnousu                    = db_getsession("DB_anousu");
@@ -62,7 +62,7 @@ try {
       $oCartorio = new Cartorio($oParametros->cartorio);
       $oDataUsu  = new DBDate( date("Y-m-d", db_getsession("DB_datausu") ) );
 
-      $aCertidoesInexistentes = array();
+      $aCertidoesInexistentes = [];
 
       if ( $oParametros->certidaoInicial > $oParametros->certidaoFinal ) {
 
@@ -77,11 +77,11 @@ try {
 
         if ( is_null( $oCertidao->getSequencial() ) ) {
 
-          $oRetorno->aInconsistencias[] = array(
+          $oRetorno->aInconsistencias[] = [
             "iCertidao"       => $i,
             "sInconsistencia" => urlencode( _M( MENSAGENS . "certidao_inexistente" ) ),
             "lIsErro"         => true
-          );
+          ];
 
           continue;
         }
@@ -90,11 +90,11 @@ try {
 
         if (empty($aCertidaoArrecad)) {
 
-          $oRetorno->aInconsistencias[] = array(
+          $oRetorno->aInconsistencias[] = [
             "iCertidao"       => $i,
             "sInconsistencia" => urlencode(_M( MENSAGENS . "certidao_fechada" ) ),
             "lIsErro"         => true
-          );
+          ];
 
           continue;
         }
@@ -103,11 +103,11 @@ try {
 
         if ( !empty($iCertidaoInicial) ) {
 
-          $oRetorno->aInconsistencias[] = array(
+          $oRetorno->aInconsistencias[] = [
             "iCertidao"       => $i,
             "sInconsistencia" => urlencode(_M( MENSAGENS . "certidao_com_inicial" ) ),
             "lIsErro"         => true
-          );
+          ];
 
           continue;
         }
@@ -125,11 +125,11 @@ try {
 
           if ( $oCartorio->getSequencial() != $oCertidaoCartorio->getCartorio()->getSequencial() ) {
 
-            $oRetorno->aInconsistencias[] = array(
+            $oRetorno->aInconsistencias[] = [
               "iCertidao"       => $i,
               "sInconsistencia" => urlencode( _M( MENSAGENS . "erro_cartorio_diferente"  ) ),
               "lIsErro"         => true
-            );
+            ];
 
             continue;
           }
@@ -138,11 +138,11 @@ try {
 
           if ( !empty($aAbatimentosCertidao) ) {
 
-            $oRetorno->aInconsistencias[] = array(
+            $oRetorno->aInconsistencias[] = [
               "iCertidao"       => $i,
               "sInconsistencia" => urlencode( _M( MENSAGENS . "pagamento_parcial"  ) ),
               "lIsErro"         => false
-            );
+            ];
 
             $oRetorno->aRecibosEmissao[] = (string) $i;
             continue;
@@ -152,11 +152,11 @@ try {
 
           if ( DBDate::calculaIntervaloEntreDatas( $oDataUsu, $oDataRecibo, 'd' ) < 0 ) {
 
-            $oRetorno->aInconsistencias[] = array(
+            $oRetorno->aInconsistencias[] = [
               "iCertidao"       => $i,
               "sInconsistencia" => urlencode( _M( MENSAGENS . "recibo_valido" ) ),
               "lIsErro"         => false
-            );
+            ];
           }
         }
 
@@ -170,9 +170,9 @@ try {
       $oInstituicao      = new Instituicao(db_getsession('DB_instit'));
       $oCartorio         = new Cartorio($oParametros->iCartorio);
       $oDataEmissao      = new DBDate( date("Y-m-d",db_getsession("DB_datausu")) );
-      $aDadosRelatorio   = array();
-      $aArquivosCda      = array();
-      $aArquivosRecibo   = array();
+      $aDadosRelatorio   = [];
+      $aArquivosCda      = [];
+      $aArquivosRecibo   = [];
 
       db_inicio_transacao();
 
@@ -202,7 +202,7 @@ try {
             $sOrdenacao         = "v14_certid";
 
             $oInstituicao      = new Instituicao(db_getsession('DB_instit'));
-            $oParametrosDivida = db_stdClass::getParametro("pardiv", array($oInstituicao->getSequencial()));
+            $oParametrosDivida = db_stdClass::getParametro("pardiv", [$oInstituicao->getSequencial()]);
 
             if (isset($oParametrosDivida[0]->v04_cobrarjurosmultacda) && $oParametrosDivida[0]->v04_cobrarjurosmultacda == 't') {
               $oGeradorCda->setDataRecalculoJurosMulta($oDataVencimento);
@@ -213,7 +213,7 @@ try {
             $sNomeArquivoCda    =  "tmp/cda_{$iCertidao}_".time().".pdf";
             $sNomeArquivoCda    = $oGeradorCda->escreverArquivo($sNomeArquivoCda);
             $aArquivosCda[]     = $sNomeArquivoCda;
-          } catch (Exception $oError) {
+          } catch (Exception) {
             throw new Exception(_M( MENSAGENS . "erro_pdf_cda"));
           }
 
@@ -261,19 +261,19 @@ try {
        */
       $oPdfRelatorio = new PDFTable();
       $oPdfRelatorio->setPercentWidth(true);
-      $oPdfRelatorio->setHeaders( array( "Código da Certidão", "Identificação", "Código de Arrecadação", "Valor" ) );
-      $oPdfRelatorio->setColumnsAlign( array( PDFDocument::ALIGN_CENTER,
+      $oPdfRelatorio->setHeaders( [ "Código da Certidão", "Identificação", "Código de Arrecadação", "Valor" ] );
+      $oPdfRelatorio->setColumnsAlign( [ PDFDocument::ALIGN_CENTER,
                                               PDFDocument::ALIGN_LEFT,
                                               PDFDocument::ALIGN_CENTER,
-                                              PDFDocument::ALIGN_RIGHT ) );
-      $oPdfRelatorio->setColumnsWidth(array( "15", "55", "20", "10"));
+                                              PDFDocument::ALIGN_RIGHT ] );
+      $oPdfRelatorio->setColumnsWidth([ "15", "55", "20", "10"]);
 
       foreach ($aDadosRelatorio as $aDadoCdaRecibo) {
 
-        $aLinha = array( $aDadoCdaRecibo['iCertidao'],
+        $aLinha = [ $aDadoCdaRecibo['iCertidao'],
                          $aDadoCdaRecibo['sNome'],
                          $aDadoCdaRecibo['iArrecadacao'],
-                         trim( $aDadoCdaRecibo['iValor'] ) );
+                         trim( (string) $aDadoCdaRecibo['iValor'] ) ];
         $oPdfRelatorio->addLineInformation( $aLinha );
       }
 

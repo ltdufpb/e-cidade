@@ -68,7 +68,7 @@ $clrotulo->label('z01_nome');
 		    <td>
 				<?php
 
-				$aTipo = array("0"=>"Nenhum","1"=>"VERTICAL","2"=>"HORIZONTAL");
+				$aTipo = ["0"=>"Nenhum","1"=>"VERTICAL","2"=>"HORIZONTAL"];
 				db_select('j107_tipo',$aTipo,1,$db_opcao);
 				//db_input('j107_tipo',10,$Ij107_tipo,true,'text',$db_opcao,"")
 				?>
@@ -126,7 +126,7 @@ function js_preenchepesquisa(chave){
   db_iframe_condominio.hide();
   <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

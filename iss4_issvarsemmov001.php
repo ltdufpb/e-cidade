@@ -56,7 +56,7 @@ if (isset($oPost->lancar)) {
       
       foreach ($aItensIssVarSemMov as $sItemIssVarSemMov) {
         
-        list($iNumpre, $iNumpar) = explode('-', $sItemIssVarSemMov);
+        [$iNumpre, $iNumpar] = explode('-', $sItemIssVarSemMov);
         
         $oCancelamentoISSQNVariavel->addDebito($iNumpre, $iNumpar);
       }
@@ -65,17 +65,7 @@ if (isset($oPost->lancar)) {
     $bSucesso = $oCancelamentoISSQNVariavel->incluirCancelamento();
     
     db_fim_transacao( false );
-  } catch ( ParameterException $oErro ) {
-
-    $sMensagemErro .= $oErro->getMessage();
-    db_msgbox( $sMensagemErro );
-    db_fim_transacao( true );
-  } catch ( BusinessException $oErro ) {
-  
-    $sMensagemErro .= $oErro->getMessage();
-    db_msgbox( $sMensagemErro );
-    db_fim_transacao( true );
-  } catch ( DBException $oErro ) {
+  } catch ( ParameterException|BusinessException|DBException $oErro ) {
   
     $sMensagemErro .= $oErro->getMessage();
     db_msgbox( $sMensagemErro );

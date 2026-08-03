@@ -30,29 +30,29 @@
 class cl_bensbaix
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $t55_codbem = 0;
-    var $t55_baixa_dia = null;
-    var $t55_baixa_mes = null;
-    var $t55_baixa_ano = null;
-    var $t55_baixa = null;
-    var $t55_motivo = 0;
-    var $t55_obs = null;
-    var $t55_documento = null;
+    public $t55_codbem = 0;
+    public $t55_baixa_dia = null;
+    public $t55_baixa_mes = null;
+    public $t55_baixa_ano = null;
+    public $t55_baixa = null;
+    public $t55_motivo = 0;
+    public $t55_obs = null;
+    public $t55_documento = null;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  t55_codbem = int8 = Código do bem
                  t55_baixa = date = Data da baixa
                  t55_motivo = int8 = Motivo da baixa
@@ -61,11 +61,11 @@ class cl_bensbaix
                  ";
 
     //funcao construtor da classe
-    function cl_bensbaix()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("bensbaix");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -159,7 +159,7 @@ class cl_bensbaix
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Baixa de bens ($this->t55_codbem) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Baixa de bens já Cadastrado";
@@ -187,18 +187,18 @@ class cl_bensbaix
         $resaco = $this->sql_record($this->sql_query_file($this->t55_codbem));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,5784,'$this->t55_codbem','I')");
-            $resac = db_query("insert into db_acount values($acount,917,5784,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,917,5784,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't55_codbem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,917,5785,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,917,5785,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't55_baixa')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,917,5786,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,917,5786,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't55_motivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,917,9579,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,917,9579,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't55_obs')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,917,1011319,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,917,1011319,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't55_documento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -211,10 +211,10 @@ class cl_bensbaix
         $this->atualizacampos();
         $sql = " update bensbaix set ";
         $virgula = "";
-        if (trim($this->t55_codbem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t55_codbem"])) {
+        if (trim((string) $this->t55_codbem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t55_codbem"])) {
             $sql .= $virgula . " t55_codbem = $this->t55_codbem ";
             $virgula = ",";
-            if (trim($this->t55_codbem) == null) {
+            if (trim((string) $this->t55_codbem) == null) {
                 $this->erro_sql = " Campo Código do bem nao Informado.";
                 $this->erro_campo = "t55_codbem";
                 $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_bensbaix
                 return false;
             }
         }
-        if (trim($this->t55_baixa) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t55_baixa_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["t55_baixa_dia"] != "")) {
+        if (trim((string) $this->t55_baixa) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t55_baixa_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["t55_baixa_dia"] != "")) {
             $sql .= $virgula . " t55_baixa = '$this->t55_baixa' ";
             $virgula = ",";
-            if (trim($this->t55_baixa) == null) {
+            if (trim((string) $this->t55_baixa) == null) {
                 $this->erro_sql = " Campo Data da baixa nao Informado.";
                 $this->erro_campo = "t55_baixa_dia";
                 $this->erro_banco = "";
@@ -244,7 +244,7 @@ class cl_bensbaix
             if (isset($GLOBALS["HTTP_POST_VARS"]["t55_baixa_dia"])) {
                 $sql .= $virgula . " t55_baixa = null ";
                 $virgula = ",";
-                if (trim($this->t55_baixa) == null) {
+                if (trim((string) $this->t55_baixa) == null) {
                     $this->erro_sql = " Campo Data da baixa nao Informado.";
                     $this->erro_campo = "t55_baixa_dia";
                     $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_bensbaix
                 }
             }
         }
-        if (trim($this->t55_motivo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t55_motivo"])) {
+        if (trim((string) $this->t55_motivo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t55_motivo"])) {
             $sql .= $virgula . " t55_motivo = $this->t55_motivo ";
             $virgula = ",";
-            if (trim($this->t55_motivo) == null) {
+            if (trim((string) $this->t55_motivo) == null) {
                 $this->erro_sql = " Campo Motivo da baixa nao Informado.";
                 $this->erro_campo = "t55_motivo";
                 $this->erro_banco = "";
@@ -273,7 +273,7 @@ class cl_bensbaix
             }
         }
 
-        if (trim($this->t55_obs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t55_obs"])) {
+        if (trim((string) $this->t55_obs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t55_obs"])) {
             $sql .= $virgula . " t55_obs = '$this->t55_obs' ";
             $virgula = ",";
         }
@@ -291,32 +291,32 @@ class cl_bensbaix
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,5784,'$this->t55_codbem','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t55_codbem"])) {
-                    $resac = db_query("insert into db_acount values($acount,917,5784,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,917,5784,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't55_codbem')) . "','$this->t55_codbem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t55_baixa"])) {
-                    $resac = db_query("insert into db_acount values($acount,917,5785,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,917,5785,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't55_baixa')) . "','$this->t55_baixa'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t55_motivo"])) {
-                    $resac = db_query("insert into db_acount values($acount,917,5786,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,917,5786,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't55_motivo')) . "','$this->t55_motivo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t55_obs"])) {
-                    $resac = db_query("insert into db_acount values($acount,917,9579,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,917,9579,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't55_obs')) . "','$this->t55_obs'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
 
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t55_documento"])) {
-                    $resac = db_query("insert into db_acount values($acount,917,1011319,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,917,1011319,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't55_documento')) . "','$this->t55_obs'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -372,22 +372,22 @@ class cl_bensbaix
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,5784,'$t55_codbem','E')");
-                $resac = db_query("insert into db_acount values($acount,917,5784,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,917,5784,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't55_codbem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,917,5785,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,917,5785,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't55_baixa')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,917,5786,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,917,5786,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't55_motivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,917,9579,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,917,9579,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't55_obs')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,917,1011319,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,917,1011319,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't55_documento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -459,7 +459,7 @@ class cl_bensbaix
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:bensbaix";
@@ -505,7 +505,7 @@ class cl_bensbaix
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -524,7 +524,7 @@ class cl_bensbaix
         $sSql .= "      inner join db_depart  on  db_depart.coddepto = bens.t52_depart ";
         $sSql .= "      inner join clabens  on  clabens.t64_codcla = bens.t52_codcla   ";
 
-        $aConditions = array();
+        $aConditions = [];
 
         if (!empty($iCodigoBem)) {
             $aConditions[] = "bensbaix.t55_codbem = {$iCodigoBem}";
@@ -582,7 +582,7 @@ class cl_bensbaix
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -620,7 +620,7 @@ class cl_bensbaix
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

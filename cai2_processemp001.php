@@ -42,7 +42,7 @@ $clrotulo->label("o40_orgao");
 $clrotulo->label("o41_unidade");
 $clconlancamdoc->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -112,19 +112,19 @@ function js_abre(botao){
     <td  align="left" nowrap title="Escolha os processos a serem impressos"> <b>Opção: </b>  </td>
     <td align="left" nowrap>
       <?php 
-      $processo = array("0"=>"Selecione uma opção",
+      $processo = ["0"=>"Selecione uma opção",
                         "10,11"=>"Empenhado - Estornado",
                         "20,21"=>"Liquidado - Estornado",
-                        "30,31"=>"Pago - Estornado");
+                        "30,31"=>"Pago - Estornado"];
       db_select('db_processop',$processo,true,1);
       ?>
     </td>
     <td  align="left" nowrap title="Ordem dos campos na impressão."> <b>Ordem: </b>  </td>
     <td align="left" nowrap>
       <?php 
-      $ordem = array("c71_data"=>"Data",
+      $ordem = ["c71_data"=>"Data",
                      "e60_codemp::text::int"=>"Empenho",
-                     "z01_nome"=>"Nome");
+                     "z01_nome"=>"Nome"];
       db_select('db_ordemop',$ordem,true,1);
       ?>
     </td>
@@ -133,8 +133,8 @@ function js_abre(botao){
     <td  align="left" nowrap > <b>Tipo: </b>  </td>
     <td align="left" nowrap>
       <?php 
-      $xtipo = array("e"=>"Empenho",
-                     "r"=>"RP");
+      $xtipo = ["e"=>"Empenho",
+                     "r"=>"RP"];
       db_select('tipo',$xtipo,true,1);
       ?>
     </td>

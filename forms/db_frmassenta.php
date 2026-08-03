@@ -102,7 +102,7 @@ if (isset($lAssentamentoFuncional) && $iCodigoEfetividade) {
 }
 
 if (!empty($h16_hora)) {
-    $horaFormatada = preg_replace('/(\d{1,2}\:\d{1,2})[\:\d]*$/', "$1", $h16_hora);
+    $horaFormatada = preg_replace('/(\d{1,2}\:\d{1,2})[\:\d]*$/', "$1", (string) $h16_hora);
     $h16_hora = $h16_hora;
     if (!empty($horaFormatada) && (bool)preg_match('/^\d{1,2}\:\d{2}$/', $horaFormatada)) {
         $h16_hora = $horaFormatada;
@@ -126,10 +126,10 @@ if (!empty($h16_codigo)) {
     }
 }
 
-$naturezasCampoHora = array(
+$naturezasCampoHora = [
     Assentamento::NATUREZA_PONTO_ELETRONICO,
     Assentamento::NATUREZA_ABONO_FALTA
-);
+];
 
 $displayHoras = 'none';
 $displayHorasAbonoFalta = 'none';
@@ -450,7 +450,7 @@ if (isset($lAssentamentoFuncional)) {
                                 <td>
                                     <?php
                                     if (!empty($h26_dataatestado)) {
-                                        $h26_dataatestado = explode("-", $h26_dataatestado);
+                                        $h26_dataatestado = explode("-", (string) $h26_dataatestado);
                                         $h26_dataatestado_dia = $h26_dataatestado[2];
                                         $h26_dataatestado_mes = $h26_dataatestado[1];
                                         $h26_dataatestado_ano = $h26_dataatestado[0];
@@ -750,14 +750,14 @@ if (isset($lAssentamentoFuncional)) {
                 </td>
                 <td>
                     <?php
-                    $aOpcaoAssentamento = array(1 => 'Efetividade', 2 => 'Histórico Funcional');
+                    $aOpcaoAssentamento = [1 => 'Efetividade', 2 => 'Histórico Funcional'];
 
                     if (isset($lAssentamentoFuncional)) {
                         $sOpcaoAssentamento = 2;
                     }
 
                     if ($db_opcao == 1 || $db_opcao == 11) {
-                        $sOpcaoAssentamento = isset($iTipoFuncionamento) ? $iTipoFuncionamento : 2;
+                        $sOpcaoAssentamento = $iTipoFuncionamento ?? 2;
                     }
 
                     db_select('sOpcaoAssentamento', $aOpcaoAssentamento, true, 3, "", "", "");?>
@@ -1815,7 +1815,7 @@ if (isset($lAssentamentoFuncional)) {
         require_once("scripts/classes/recursoshumanos/TipoAssentamentoFactory.js");
 
         if (!empty(iCodigoAssentamento)) {
-            db_opcao = <?= isset($db_opcao) ? $db_opcao : ''?>;
+            db_opcao = <?= $db_opcao ?? ''?>;
             var oTipoAssentamento = TipoAssentamentoFactory.createFromAssentamento(iCodigoAssentamento);
         }
 
@@ -1902,7 +1902,7 @@ if (isset($lAssentamentoFuncional)) {
             } else {
                 $bloque = "";
             }
-            $sUrlToRedirect = " location.href = '" . basename($_SERVER["PHP_SELF"])
+            $sUrlToRedirect = " location.href = '" . basename((string) $_SERVER["PHP_SELF"])
                 . "?chavepesquisa='+chave+'" . $bloque . "'";
 
             if (!isset($iTipoFuncionamento)) {

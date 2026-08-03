@@ -36,7 +36,7 @@ $claguaconsumo = new cl_aguaconsumo;
   /*
 $claguaconsumorec = new cl_aguaconsumorec;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){

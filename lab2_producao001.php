@@ -101,7 +101,7 @@ $oDaolab_labusuario;
                                 "nselecionados",
                                 "sselecionados",
                                 $labs,
-                                array(),
+                                [],
                                 5,
                                 250);
               ?>
@@ -112,7 +112,7 @@ $oDaolab_labusuario;
               <b>Tipo:</b>
             </td>
             <td colspan="3" align="left">
-              <?php $aX = array(1=>'SINTÉTICO',2=>'ANALÍTICO');
+              <?php $aX = [1=>'SINTÉTICO',2=>'ANALÍTICO'];
                 db_select('tipo',$aX,true,1,"");?>
             </td>
           </tr>

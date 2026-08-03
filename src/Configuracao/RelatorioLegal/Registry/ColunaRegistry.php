@@ -36,7 +36,7 @@ class ColunaRegistry
     /**
      * @var Coluna[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param $key

@@ -38,7 +38,7 @@ class ResumoProjecaoReceitaService extends ReceitaService
         foreach ($projecao as $receita) {
             if ($receita->nivel <= 3) {
                 if ($receita->nivel === 3 &&
-                    (strpos($receita->fonte, '47') === 0 || strpos($receita->fonte, '48') === 0)) {
+                    (str_starts_with((string) $receita->fonte, '47') || str_starts_with((string) $receita->fonte, '48'))) {
                     continue;
                 }
 

@@ -44,7 +44,7 @@ try {
   $oDaoParjuridico               = db_utils::getDao("parjuridico");
 
   $oGet                          = db_utils::postMemory($_GET);
-  $aTiposDebitosSelecionados     = explode(",", $oGet->tipos);
+  $aTiposDebitosSelecionados     = explode(",", (string) $oGet->tipos);
   $oData                         = new DBDate($db_datausu);
   $oDataSessao                   = new DBDate(date('Y-m-d', db_getsession("DB_datausu")));
   $DB_DATACALC                   = $oDataSessao->getTimeStamp();
@@ -73,7 +73,7 @@ try {
     $DB_DATACALC = $oData->getTimeStamp();
   }
 
-  $aTiposDebitoProcessoForo = array(12,13,18);
+  $aTiposDebitoProcessoForo = [12,13,18];
   $sDadosExercicio          = "";
   $sDadosPeriodo            = "";
   $sOutrosDados1            = "";
@@ -140,7 +140,7 @@ try {
 
       $oRotulo->label("j40_refant"); 
       
-      $sOutrosDados1 = mb_strtoupper($GLOBALS['RLj40_refant']);
+      $sOutrosDados1 = mb_strtoupper((string) $GLOBALS['RLj40_refant']);
       $sOutrosDados2 = $oDadosPesquisa->j40_refant;
       $sOutrosDados3 = 'MATRÍCULA';
       $sOutrosDados4 = "Setor: "     . $oDadosPesquisa->j34_setor  .
@@ -175,7 +175,7 @@ try {
       $sOutrosDados1  = 'ATIVIDADE';
       $sOutrosDados2  = $oDadosPesquisa->q03_descr;
       $sOutrosDados3  = 'INSCRIÇÃO';
-      $sOutrosDados4  = mb_strtoupper($GLOBALS['RLq02_inscmu'])." : ".$oDadosPesquisa->q02_inscmu;
+      $sOutrosDados4  = mb_strtoupper((string) $GLOBALS['RLq02_inscmu'])." : ".$oDadosPesquisa->q02_inscmu;
 
     break;
 
@@ -240,7 +240,7 @@ try {
 }
 
 $aTipoDebitos = DBTributario::getTiposDebitoByOrigem($sTipoBusca, $sChavePesquisa);
-$aWhere       = array();
+$aWhere       = [];
 $where        = "";
 $and          = " and ";
 
@@ -288,9 +288,9 @@ if ( !empty($oGet->exercini) && !empty($oGet->exercfim) ) {
  * para serem pre-processado para o relatorio
  */
 $oDadosRelatorio              = new stdClass();
-$oDadosRelatorio->aDebitos    = array();
-$aTiposDebitosDetalhe         = array();
-$oDadosRelatorio->aSuspensoes = array();
+$oDadosRelatorio->aDebitos    = [];
+$aTiposDebitosDetalhe         = [];
+$oDadosRelatorio->aSuspensoes = [];
 $aValoresTipoDebito           = $oDadosRelatorio->aDebitos;
 
 foreach ( $aTipoDebitos as $oTipoDebito ) {
@@ -301,7 +301,7 @@ foreach ( $aTipoDebitos as $oTipoDebito ) {
   /**
    * Parametros da Funcao
    */
-  $aParametros     = array();
+  $aParametros     = [];
   $aParametros[]   = $sChavePesquisa;           // Valor do Tipo de Pesquisa Ex.: Numero do CGM, MATRICULA...
   $aParametros[]   = 0;                         // Limite de Registros
   $aParametros[]   = $oTipoDebito->k00_tipo;    // Tipo de Debito
@@ -332,7 +332,7 @@ foreach ( $aTipoDebitos as $oTipoDebito ) {
   if ( !is_resource($rsDebitos) ) {
     throw new DBException( "Não existem debitos({$oTipoDebito->k00_descr}) para o Exercicio/Periodo informado.");
   }
-  $aNumpreDebito    = array();
+  $aNumpreDebito    = [];
 
   for ( $iIndiceDebitos = 0; $iIndiceDebitos < pg_num_rows($rsDebitos); $iIndiceDebitos++ ) {
 
@@ -387,7 +387,7 @@ foreach ( $aTipoDebitos as $oTipoDebito ) {
 
     if ( in_array($oTipoDebito->k03_tipo, $aTiposDebitoProcessoForo) ) {
 
-      $aValorProcesso    = array();
+      $aValorProcesso    = [];
 
       foreach ( $aProcessosForo as $iProcesso  ) {
 
@@ -476,7 +476,7 @@ foreach ( $aTipoDebitos as $oTipoDebito ) {
     */
 
   $oDaoArresusp   = db_utils::getDao('arresusp');
-  $sSqlSuspensoes = $oDaoArresusp->sql_query_debitosSuspensos($sTipoBusca, $sChavePesquisa, explode(",", $parReceit), array($oTipoDebito->k00_tipo));
+  $sSqlSuspensoes = $oDaoArresusp->sql_query_debitosSuspensos($sTipoBusca, $sChavePesquisa, explode(",", (string) $parReceit), [$oTipoDebito->k00_tipo]);
 
   $rsSuspensoes   = db_query($sSqlSuspensoes);
 
@@ -621,7 +621,7 @@ foreach ( $aTipoDebitos as $oTipoDebito ) {
     foreach ($oDadosRelatorio->aSuspensoes as $oValoresSuspencoes  ) {
 
       $oPDF->Cell(7 , $iAlturaLinha, $oValoresSuspencoes->k00_tipo                              , 1, 0, "C", 0);
-      $oPDF->Cell(60, $iAlturaLinha, substr($oValoresSuspencoes->k00_descr, 0, 35)	            , 1, 0, "L", 0);
+      $oPDF->Cell(60, $iAlturaLinha, substr((string) $oValoresSuspencoes->k00_descr, 0, 35)	            , 1, 0, "L", 0);
       $oPDF->Cell(21, $iAlturaLinha, db_formatar($oValoresSuspencoes->valor_historico  , 'f')   , 1, 0, "R", 0);
       $oPDF->Cell(21, $iAlturaLinha, db_formatar($oValoresSuspencoes->valor_corrigido  , 'f')   , 1, 0, "R", 0);
       $oPDF->Cell(21, $iAlturaLinha, db_formatar($oValoresSuspencoes->valor_juros      , 'f')   , 1, 0, "R", 0);

@@ -45,8 +45,8 @@ if (! isset($arqinclude)) {
   $cldb_config = new cl_db_config();
   $clorcparamelemento = new cl_orcparamelemento();
   
-  parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER ['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
 }
 $sTodasInstit = null;
@@ -181,7 +181,7 @@ if ($clconrelinfo->numrows > 0) {
 
 $sSelInstit   = str_replace('-', ', ', $db_selinstit);
 $anousu       = db_getsession("DB_anousu");
-$xinstit      = split("-", $db_selinstit);
+$xinstit      = preg_split("#\\-#m", (string) $db_selinstit);
 
 $valor_outras_obrigacoes_ex_anterior           = $clconrelinfo->getValorVariavel(475, $sSelInstit,'1Q');
 $valor_obrigacoes_nao_integ_dcprev_ex_anterior = $clconrelinfo->getValorVariavel(476, $sSelInstit,'1Q');
@@ -205,20 +205,20 @@ for($x = 0; $x < $numrowsinstit; $x ++) {
     $virgula = ",";
   }
 }
-$head2 = "MUNICÍPIO DE " . strtoupper($munic);
+$head2 = "MUNICÍPIO DE " . strtoupper((string) $munic);
 $head3 = "RELATÓRIO DE GESTÃO FISCAL";
 $head4 = "DEMONSTRATIVO DA DIVIDA CONSOLIDADA LIQUIDA";
 $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
 // verifica se foi informada datas iniciais e finais
 $usa_datas = false;
-if (strlen($dtini) > 5 && strlen($dtfin) > 5) {
+if (strlen((string) $dtini) > 5 && strlen((string) $dtfin) > 5) {
   $usa_datas = true;
 }
 
 $dt = data_periodo($anousu, $periodo);
-$dt_ini = split("-", $dt [0]);
-$dt_fin = split("-", $dt [1]);
+$dt_ini = preg_split("#\\-#m", (string) $dt [0]);
+$dt_fin = preg_split("#\\-#m", (string) $dt [1]);
 
 $period = strtoupper(db_mes("01")) . " A " . strtoupper(db_mes($dt_fin [1])) . " DE " . $anousu;
 
@@ -262,7 +262,7 @@ if ($usa_datas == true) {
 }
 
 if ($usa_datas == true) {
-  $dt = split('-', $dtfin); // mktime -- (mes,dia,ano)
+  $dt = preg_split('#\-#m', (string) $dtfin); // mktime -- (mes,dia,ano)
   $dtini_ant = date('Y-m-d', mktime(0, 0, 0, $dt [1], $dt [2] - 364, $dt [0]));
 }
 
@@ -433,11 +433,11 @@ if ($instituicao != '') {
     for($linha = 1; $linha <= 14; $linha ++) {
       
       $instit = $c61_instit;
-      $v_elementos = array (
+      $v_elementos =  [
         
                       $estrutural, 
                       $instit 
-      );
+      ];
       $flag_contar = false;
        for($xx = 0; $xx < count($parametro[$linha]["estrut"]); $xx ++) {
           if ($estrutural == $parametro [$linha] ["estrut"] [$xx] [0]) {
@@ -456,17 +456,17 @@ if ($instituicao != '') {
   }
   
   // segundo quadrimestre e terceiro quadrimestre
-  for($i = 0; $i < pg_numrows($result_02); $i ++) {
+  for($i = 0; $i < pg_num_rows($result_02); $i ++) {
     db_fieldsmemory($result_02, $i);
     
     for($linha = 1; $linha <= 14; $linha ++) {
       
       $instit = $c61_instit;
-      $v_elementos = array (
+      $v_elementos =  [
         
                       $estrutural, 
                       $instit 
-      );
+      ];
       $flag_contar = false;
       for($xx = 0; $xx < count($parametro [$linha] ["estrut"]); $xx ++) {
           if ($estrutural == $parametro [$linha] ["estrut"] [$xx] [0]) {
@@ -485,18 +485,18 @@ if ($instituicao != '') {
 }
 if (trim($instit_rpps) != "") {
   // exercicio + primeiro quadrimestre ou seleção por periodo informado
-  for($i = 0; $i < pg_numrows($result_01_rpps); $i ++) {
+  for($i = 0; $i < pg_num_rows($result_01_rpps); $i ++) {
     db_fieldsmemory($result_01_rpps, $i);
     
     for($linha = 15; $linha <= 20; $linha ++) {
       
       
       $instit = $c61_instit;
-      $v_elementos = array (
+      $v_elementos =  [
         
                       $estrutural, 
                       $instit 
-      );
+      ];
       
       $flag_contar = false;
       if ($instit != 0) {
@@ -522,17 +522,17 @@ if (trim($instit_rpps) != "") {
   }
   
   // segundo quadrimestre e terceiro quadrimestre
-  for($i = 0; $i < pg_numrows($result_02_rpps); $i ++) {
+  for($i = 0; $i < pg_num_rows($result_02_rpps); $i ++) {
     db_fieldsmemory($result_02_rpps, $i);
     
     for($linha = 15; $linha <= 20; $linha ++) {
       
       $instit = $c61_instit;
-      $v_elementos = array (
+      $v_elementos =  [
         
                       $estrutural, 
                       $instit 
-      );
+      ];
       
       $flag_contar = false;
       if ($instit != 0) {
@@ -594,13 +594,13 @@ $texto [22] ["ano"] = $valor_outras_obrigacoes_ex_anterior;
 $texto [36] ["ano"] = $valor_obrigacoes_nao_integ_dcprev_ex_anterior;
 
 for($i = 1; $i <= 4; $i ++) {
-  $pp = array (
+  $pp =  [
     
                   '1' => 'ano', 
                   '2' => 'quad1', 
                   '3' => 'quad2', 
                   '4' => 'quad3' 
-  );
+  ];
   // atribuições diretas
   $texto [2] [$pp [$i]] = $parametro [1] [$pp [$i]]; //div mobiliaria
   
@@ -644,13 +644,13 @@ for($i = 1; $i <= 4; $i ++) {
 
 // REGIME PREVIDENCIARIO
 for($i = 1; $i <= 4; $i ++) {
-  $pp = array (
+  $pp =  [
     
                   '1' => 'ano', 
                   '2' => 'quad1', 
                   '3' => 'quad2', 
                   '4' => 'quad3' 
-  );
+  ];
   
   $texto [29] [$pp [$i]] = $parametro [15] [$pp [$i]]; // Passivo Atuarial
   $texto [30] [$pp [$i]] = $parametro [16] [$pp [$i]]; // Demais Dividas
@@ -671,7 +671,7 @@ for($i = 1; $i <= 4; $i ++) {
     $texto [36] [$pp [$i]] = abs($texto [36] [$pp [$i]]);
     
   } else {
-    
+
     $texto [31] [$pp [$i]] = $texto [32] [$pp [$i]] + $texto [33] [$pp [$i]] + $texto [34] [$pp [$i]] - $texto [35] [$pp [$i]]; // DEDUCOES
     $texto [37] [$pp [$i]] = $texto [28] [$pp [$i]] - $texto [31] [$pp [$i]]; // DIVIDA CONSOLIDADA LIQUIDA PREVIDENCIARIA
     
@@ -808,13 +808,13 @@ exit;
 // --
 
 
-$pcol = array (
+$pcol =  [
   
                 1 => 'ano', 
                 2 => 'quad1', 
                 3 => 'quad2', 
                 4 => 'quad3' 
-);
+];
 
 if (! isset($arqinclude)) {
   
@@ -1462,13 +1462,13 @@ if (! isset($arqinclude)) {
     $pdf->Ln();
   }
   
-  notasExplicativas(&$pdf, 29, "{$periodo}", 185);
+  notasExplicativas($pdf, 29, "{$periodo}", 185);
   
   $pdf->ln($linhas);
   // assinaturas
   
 
-  assinaturas(&$pdf, &$classinatura, 'GF');
+  assinaturas($pdf, $classinatura, 'GF');
   
   $pdf->Output();
 

@@ -42,7 +42,7 @@ class AnexoV extends \RelatoriosLegaisBase
      * Linhas que devem ser processadas no relatório
      * @type array
      */
-    protected $linhasAnaliticas = array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15);
+    protected $linhasAnaliticas = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15];
 
     /**
      * AnexoV constructor.
@@ -115,13 +115,13 @@ class AnexoV extends \RelatoriosLegaisBase
             (substr(#estrutural, 0, 1) == 2 && #sinal_final == 'D') ? #saldo_final *= -1 : #saldo_final";
 
             $oLinha->parametros->contas_origem = $oLinha->parametros->contas;
-            $oLinha->parametros->contas = array();
-            $oLinha->parametros->contas[] = (object)array(
+            $oLinha->parametros->contas = [];
+            $oLinha->parametros->contas[] = (object)[
                 'estrutural' => '111000000000000',
                 'nivel' => '3',
                 'exclusao' => '',
                 'indicador' => ''
-            );
+            ];
 /*
             $oLinha->parametros->contas[] = (object)array(
                 'estrutural' => '114000000000000',
@@ -130,7 +130,7 @@ class AnexoV extends \RelatoriosLegaisBase
                 'indicador' => ''
             );
 */
-            $aColunasProcessar = $this->getColunasPorLinha($oLinha, array(0));
+            $aColunasProcessar = $this->getColunasPorLinha($oLinha, [0]);
             \RelatoriosLegaisBase::calcularValorDaLinha(
                 $rsBalanceteVerificacao,
                 $oLinha,
@@ -172,7 +172,7 @@ class AnexoV extends \RelatoriosLegaisBase
             $stdLinha->colunas[1]->o116_formula = $formulaColuna_B;
             $stdLinha->colunas[3]->o116_formula = $aliquidargeral;
 
-            $aColunasProcessar = $this->getColunasPorLinha($stdLinha, array(1, 3));
+            $aColunasProcessar = $this->getColunasPorLinha($stdLinha, [1, 3]);
             \RelatoriosLegaisBase::calcularValorDaLinha(
                 $rsRestosPagar,
                 $stdLinha,
@@ -208,7 +208,7 @@ class AnexoV extends \RelatoriosLegaisBase
             }
             $oLinha->colunas[2]->o116_formula = '#atual_a_pagar_liquidado';
             $oLinha->colunas[7]->o116_formula = '((#empenhado_acumulado - #anulado_acumulado) - #liquidado_acumulado)';
-            $aColunasProcessar = $this->getColunasPorLinha($oLinha, array(2, 7));
+            $aColunasProcessar = $this->getColunasPorLinha($oLinha, [2, 7]);
             \RelatoriosLegaisBase::calcularValorDaLinha(
                 $rsBalanceteDespesa,
                 $oLinha,
@@ -236,11 +236,11 @@ class AnexoV extends \RelatoriosLegaisBase
             }
             $instituicoesSelecionadas = $this->getInstituicoes(true);
             foreach ($instituicoesSelecionadas as $instituicao) {
-                $where = implode(' and ', array(
+                $where = implode(' and ', [
                     "conplanoreduz.c61_instit = {$instituicao->getCodigo()}",
                     "conplanoreduz.c61_anousu = {$this->getAno()}",
                     "(((c60_estrut ilike '8211302%') or (c60_estrut ilike '8211303%')))",
-                ));
+                ]);
                 $buscaReduzido = $daoReduzido->sql_query_plano_reduzido('c61_reduz', $where);
                 $resBuscaReduzido = db_query($buscaReduzido);
                 if (!$resBuscaReduzido) {
@@ -280,9 +280,9 @@ class AnexoV extends \RelatoriosLegaisBase
     {
         $this->getDados();
 
-        return (object) array (
+        return (object)  [
            'rp_nao_processado' => $this->aLinhasConsistencia[16]->rp_empenhado_nao_processado,
            'disponibilidade_caixa_liquida' => $this->aLinhasConsistencia[16]->disp_caixa_liquida
-        );
+        ];
     }
 }

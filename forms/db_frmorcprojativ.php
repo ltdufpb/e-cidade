@@ -64,9 +64,9 @@ $clrotulo->label("nomeinst");
 	if(empty($o55_tipo)){
 	  $o55_tipo=2;
 	}
-	$x = array('2'=>'Atividade',
+	$x = ['2'=>'Atividade',
 			   '1'=>'Projetos',
-			   '3'=>'Operações especiais');
+			   '3'=>'Operações especiais'];
 	
 	  db_select('o55_tipo',$x,true,$db_opcao02,"onchange='js_trocacod(this.value);'");
 	?>
@@ -83,17 +83,17 @@ $clrotulo->label("nomeinst");
 	<?php 
 
 	 if ( isset($o55_tipo) && $o55_tipo == 1  ) {
-	   $aInicioCod = array( 1000=>"1",
+	   $aInicioCod = [ 1000=>"1",
 	   						3000=>"3",
 	   						5000=>"5",
-	   						7000=>"7");
+	   						7000=>"7"];
 	 } else if ( isset($o55_tipo) && $o55_tipo == 2 ) {
-	   $aInicioCod = array( 2000=>"2",
+	   $aInicioCod = [ 2000=>"2",
 	   						4000=>"4",
 	   						6000=>"6",
-	   						8000=>"8");
+	   						8000=>"8"];
 	 } else if ( isset($o55_tipo) && $o55_tipo == 3 ) {
-	   $aInicioCod = array( 0=>"0");
+	   $aInicioCod = [ 0=>"0"];
 	 }
 	 
 	 db_select("digito",$aInicioCod,true,$db_opcao02,"");
@@ -131,7 +131,7 @@ $clrotulo->label("nomeinst");
 	<?php 
 	} else {
 	?>
-	<input title="Projetos / Atividades do orçamento Campo:o55_projativ" name="o55_projativ_rd"  type="text" id="o55_projativ_rd" value="<?php  echo substr($o55_projativ,1,3); ?>" size="3" 
+	<input title="Projetos / Atividades do orçamento Campo:o55_projativ" name="o55_projativ_rd"  type="text" id="o55_projativ_rd" value="<?php  echo substr((string) $o55_projativ,1,3); ?>" size="3" 
     maxlength="3" readonly style="background-color:#DEB887;" autocomplete='off'>
 	<?php 
 	  db_input('o55_projativ',3,$Io55_projativ,true,'hidden',$db_opcao02,"");
@@ -222,8 +222,8 @@ $clrotulo->label("nomeinst");
     </td>
     <td> 
 	<?php 
-	  $aTipoAcao = array('1'=>'Orçamentária',
-			     		 '2'=>'Não-Orçamentária');
+	  $aTipoAcao = ['1'=>'Orçamentária',
+			     		 '2'=>'Não-Orçamentária'];
 	
 	  db_select('o55_tipoacao',$aTipoAcao,true,$db_opcao,"style='width:300px;'");
 	?>
@@ -235,11 +235,11 @@ $clrotulo->label("nomeinst");
     </td>
     <td> 
 	<?php 
-	  $aFormaImplementacao = array('1'=>'Direta',
+	  $aFormaImplementacao = ['1'=>'Direta',
 			     		 		   '2'=>'Descentralizada',
 								   '3'=>'Transferência Obrigatória',
 								   '4'=>'Transferência Voluntária',
-	  							   '5'=>'Transferência em Linha de Crédito');
+	  							   '5'=>'Transferência em Linha de Crédito'];
 	
 	  db_select('o55_formaimplementacao',$aFormaImplementacao,true,$db_opcao,"style='width:300px;'");
 	?>
@@ -381,7 +381,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_orcprojativ.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadtipoitemgrupo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcadtipoitemgrupo = new cl_cadtipoitemgrupo;
 $clcadtipoitemgrupo->rotulo->label("k37_sequencial");
 $clcadtipoitemgrupo->rotulo->label("k37_descr");
@@ -98,9 +98,9 @@ $clcadtipoitemgrupo->rotulo->label("k37_descr");
         }else{
            $sql = $clcadtipoitemgrupo->sql_query("",$campos,"k37_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k37_descr)){
-          $repassa = array("chave_k37_sequencial"=>$chave_k37_sequencial,"chave_k37_descr"=>$chave_k37_descr);
+          $repassa = ["chave_k37_sequencial"=>$chave_k37_sequencial,"chave_k37_descr"=>$chave_k37_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

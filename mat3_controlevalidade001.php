@@ -33,13 +33,13 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_matparam_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatparam = new cl_matparam;
 $clmatparam->rotulo->label();
 
 function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
 {
-  $data = explode("/", $data);
+  $data = explode("/", (string) $data);
   $novadata = date("d/m/Y", mktime(0, 0, 0, $data[1] - $meses,   $data[0] - $dias, $data[2] - $ano));
   return $novadata;
 }
@@ -128,7 +128,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
         </td>
         <td align='left'>
           <?php 
-						$x = array('1'=>'Todos','2'=>'Vencidos','3'=>'&Agrave; Vencer', '4'=>'No Prazo');
+						$x = ['1'=>'Todos','2'=>'Vencidos','3'=>'&Agrave; Vencer', '4'=>'No Prazo'];
 						db_select('situacao',$x,true,1,"style='width:200px;'");
 					?>
         </td>
@@ -140,7 +140,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
         </td>
         <td align='left'>
           <?php 
-						$x = array('1'=>'C&oacute;digo','2'=>'Alfab&eacute;tica');
+						$x = ['1'=>'C&oacute;digo','2'=>'Alfab&eacute;tica'];
 						db_select('ordenacao',$x,true,1,"style='width:200px;'");
 					?>
         </td>

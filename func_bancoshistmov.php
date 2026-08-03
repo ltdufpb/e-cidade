@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bancoshistmov_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbancoshistmov = new cl_bancoshistmov;
 $clbancoshistmov->rotulo->label("k66_sequencial");
 $clbancoshistmov->rotulo->label("k66_descricao");
@@ -105,9 +105,9 @@ $oGet = db_utils::postMemory($_GET);
         }else{
            $sql = $clbancoshistmov->sql_query("",$campos,"k66_sequencial", $sWhereBanco);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k66_descricao)){
-          $repassa = array("chave_k66_sequencial"=>$chave_k66_sequencial,"chave_k66_descricao"=>$chave_k66_descricao);
+          $repassa = ["chave_k66_sequencial"=>$chave_k66_sequencial,"chave_k66_descricao"=>$chave_k66_descricao];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

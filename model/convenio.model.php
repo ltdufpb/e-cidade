@@ -72,7 +72,7 @@ class convenio {
   private $vencimento     = null;
 
 
-  function __construct($iCodConvenio="",$iNumpre,$iNumpar,$sValor,$sVlrbar,$dDataVenc,$iTercDig, $dataVencimento = null) {
+  function __construct($iCodConvenio="",$iNumpre = null,$iNumpar = null,$sValor = null,$sVlrbar = null,$dDataVenc = null,$iTercDig = null, $dataVencimento = null) {
     $this->custasHonorarios = (boolean) Registry::get('app.config')->get('custas_honorarios');
     $oConvenio = new RegistroConvenio($iCodConvenio);
 
@@ -167,12 +167,12 @@ class convenio {
         throw new Exception("Erro ao gerar código de barras(2)");
       }
 
-      $this->sCodigoBarra     = substr($oFebraban->fc_febraban,0,strpos($oFebraban->fc_febraban, ','));
-      $this->sLinhaDigitavel  = substr($oFebraban->fc_febraban, strpos($oFebraban->fc_febraban, ',') + 1);
+      $this->sCodigoBarra     = substr((string) $oFebraban->fc_febraban,0,strpos((string) $oFebraban->fc_febraban, ','));
+      $this->sLinhaDigitavel  = substr((string) $oFebraban->fc_febraban, strpos((string) $oFebraban->fc_febraban, ',') + 1);
     } else {
 
-      $this->sCodigoBarra     = str_pad($iNumpre, 8, '0', STR_PAD_LEFT).str_pad($iNumpar, 3, '0', STR_PAD_LEFT);
-      $this->sLinhaDigitavel  = str_pad($iNumpre, 8, '0', STR_PAD_LEFT).str_pad($iNumpar, 3, '0', STR_PAD_LEFT);
+      $this->sCodigoBarra     = str_pad((string) $iNumpre, 8, '0', STR_PAD_LEFT).str_pad((string) $iNumpar, 3, '0', STR_PAD_LEFT);
+      $this->sLinhaDigitavel  = str_pad((string) $iNumpre, 8, '0', STR_PAD_LEFT).str_pad((string) $iNumpar, 3, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -349,7 +349,7 @@ class convenio {
         $sAgenciaCedente = $this->getCodAgencia()."/".$sCedente;
       break;
     	default:
-        $sCedente        = substr($this->getCedente(),0,strlen($this->getCedente())-1)."-". substr($this->getCedente(),strlen($this->getCedente())-1,1);
+        $sCedente        = substr((string) $this->getCedente(),0,strlen((string) $this->getCedente())-1)."-". substr((string) $this->getCedente(),strlen((string) $this->getCedente())-1,1);
         $sAgenciaCedente = $this->getCodAgencia()."/".$sCedente;
     	break;
     }

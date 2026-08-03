@@ -34,8 +34,8 @@ $cllote = new cl_lote;
 $cliptuconstr = new cl_iptuconstr;
 $cliptuconstr1 = new cl_iptuconstr;
 $cliptubase = new cl_iptubase;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $instit = db_getsession("DB_instit");
 
 $head4 = "DÉBITOS ";
@@ -129,8 +129,8 @@ if(isset($setor) && $setor != ""){
     $quadra1 = $quadra;
     if(isset($setor) && $setor != ""){
 
-      $chaves  = split(",",$setor);
-      $chaves1 = split(",",$quadra);
+      $chaves  = preg_split("#,#m",(string) $setor);
+      $chaves1 = preg_split("#,#m",(string) $quadra);
       $and   = "";
       $setor = "( ";
       for($i=0;$i<sizeof($chaves);$i++){
@@ -176,7 +176,7 @@ $sql .=" inner join lote lote2 on lote2.j34_idbql = iptubase.j01_idbql\n
 group by iptubase.j01_matric, lote2.j34_setor, lote2.j34_quadra, lote2.j34_lote, arretipo.k00_descr,z01_nome $ordem $modo";
 
 $result = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 $matric = "";
 $idcons = "";
 $area   = "";
@@ -271,7 +271,7 @@ if(isset($j14_comruas) && $j14_comruas != ""){
   $vir = "";
   $cod = "";
   $result1 = db_query("select j14_nome from ruas where j14_codigo in ($j14_comruas)");
-      for($x=0;$x<pg_numrows($result1);$x++){
+      for($x=0;$x<pg_num_rows($result1);$x++){
 	db_fieldsmemory($result1,$x);
 	$cod .= $vir.$j14_nome;
 	$vir=", ";
@@ -285,7 +285,7 @@ if(isset($debit) && $debit != ""){
   $vir = "";
   $cod = "";
   $result1 = db_query("select k00_descr from arretipo where k00_tipo in ($debit)");
-      for($x  = 0; $x < pg_numrows($result1);$x++){
+      for($x  = 0; $x < pg_num_rows($result1);$x++){
 		db_fieldsmemory($result1,$x);
 		$cod .= $vir.$k00_descr;
 		$vir=", ";
@@ -299,7 +299,7 @@ if(isset($j34_loteam) && $j34_loteam != ""){
   $vir = "";
   $cod = "";
   $result1 = db_query("select j34_descr from loteam where j34_loteam in ($j34_loteam)");
-      for($x=0;$x<pg_numrows($result1);$x++){
+      for($x=0;$x<pg_num_rows($result1);$x++){
 	db_fieldsmemory($result1,$x);
 	$cod .= $vir.$j34_descr;
 	$vir=", ";
@@ -313,8 +313,8 @@ if(isset($j34_loteam) && $j34_loteam != ""){
 
 if(isset($setores) && $setores != ""){
   if(isset($setor) && $setor != ""){
-    $chaves = split(",",$setores);
-    $chaves1 = split(",",$quadra);
+    $chaves = preg_split("#,#m",$setores);
+    $chaves1 = preg_split("#,#m",(string) $quadra);
     $and = "";
     $setores = "";
     for($i=0;$i<sizeof($chaves);$i++){

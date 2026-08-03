@@ -37,7 +37,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $anousu    = db_getsession("DB_anousu");
 $sLabelMsg = "Anexo II - Demonstrativo Função/Subfunção";
@@ -235,7 +235,7 @@ function js_limpa(){
         <td align="left">
          <?php 
           //$xy = array('1A'=>'Órgão','2A'=>'Unidade','3A'=>'Função','4A'=>'Subfunção','5A'=>'Programa','6A'=>'Proj/Ativ','7A'=>'Elemento','8A'=>'Recurso');
-          $xy = array('1A'=>'Órgão');
+          $xy = ['1A'=>'Órgão'];
           db_select('nivel',$xy,true,2,"");
          ?>
         <td align="left">
@@ -246,7 +246,7 @@ function js_limpa(){
 		    <td align="right" ><strong>Agrupar Por :</strong></td>
 		    <td align="left">
          <?php 
-          $z = array("1"=>"Geral","2"=>"Órgão","3"=>"Unidade");
+          $z = ["1"=>"Geral","2"=>"Órgão","3"=>"Unidade"];
           db_select('tipo_agrupa',$z,true,2,"");
          ?>
         </td>
@@ -274,7 +274,7 @@ function js_limpa(){
         </td>
         <td>
           <?php
-          $aPeriodo = array("Mensal"=>"Mensal","Bimestral"=>"Bimestral");
+          $aPeriodo = ["Mensal"=>"Mensal","Bimestral"=>"Bimestral"];
            db_select("periodo",$aPeriodo,true,4); 
           ?> 
         </td>
@@ -292,7 +292,7 @@ function js_limpa(){
           $sSqlPeriodo    = $oDaoPeriodo->sql_query( null,"*","o114_sequencial","o114_qdtporano = 1 and o114_ordem > 10");
           $rsPeriodo      = $oDaoPeriodo->sql_record($sSqlPeriodo);
           $aResultadoPeriodo  = db_utils::getCollectionByRecord($rsPeriodo);
-          $aPeriodo = array();
+          $aPeriodo = [];
           
           foreach ($aResultadoPeriodo as $oPeriodo) {
             
@@ -312,14 +312,14 @@ function js_limpa(){
         <td>
         <?php 
           if ($anousu < 2010) {
-            $x = array("1B"=>"Primeiro","2B"=>"Segundo","3B"=>"Terceiro",
-                       "4B"=>"Quarto"  ,"5B"=>"Quinto" ,"6B"=>"Sexto");
+            $x = ["1B"=>"Primeiro","2B"=>"Segundo","3B"=>"Terceiro",
+                       "4B"=>"Quarto"  ,"5B"=>"Quinto" ,"6B"=>"Sexto"];
             db_select("bimestre",$x,true,1);
           } else {
             
              $oRelatorio = new relatorioContabil(96, false);
              $aPeriodos = $oRelatorio->getPeriodos();
-             $aListaPeriodos = array();
+             $aListaPeriodos = [];
              foreach ($aPeriodos as $oPeriodo) {
                $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;
              }

@@ -59,11 +59,11 @@ class AtributValorReferenciaNumerico {
 
   protected $iValorAbsurdoFim;
 
-  protected $aSexos = array();
+  protected $aSexos = [];
 
-  protected $oIdadeInicial = array();
+  protected $oIdadeInicial = [];
 
-  protected $oIdadeFinal = array();
+  protected $oIdadeFinal = [];
 
   /**
    * Atributo base para calculo
@@ -105,7 +105,7 @@ class AtributValorReferenciaNumerico {
         $this->setValorAbsurdoMinimo($oDadosReferencia->la30_f_absurdomin);
         $this->setValorMinimo($oDadosReferencia->la30_f_normalmin);
         $this->setValorMaximo($oDadosReferencia->la30_f_normalmax);
-        $this->aSexos = explode(",", $oDadosReferencia->sexos);
+        $this->aSexos = explode(",", (string) $oDadosReferencia->sexos);
 
         if (!empty($oDadosReferencia->la59_periodoinicial)) {
           $this->oIdadeInicial = new DBInterval($oDadosReferencia->la59_periodoinicial);

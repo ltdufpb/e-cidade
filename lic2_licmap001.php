@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 $clrotulo = new rotulocampo;
@@ -96,7 +96,7 @@ function js_emite(){
         </td>
         <td>
 	  <?php 
-	  $tipo_ordem = array("1"=>"Modelo 1","2"=>"Modelo 2");
+	  $tipo_ordem = ["1"=>"Modelo 1","2"=>"Modelo 2"];
 	  db_select("modelo",$tipo_ordem,true,2); ?>
         </td>
       </tr>
@@ -106,7 +106,7 @@ function js_emite(){
         </td>
         <td>
 	  <?php 
-	  $matriz_vlrun = array("S"=>"SIM","N"=>"NÃO");
+	  $matriz_vlrun = ["S"=>"SIM","N"=>"NÃO"];
 	  db_select("imp_vlrun",$matriz_vlrun,true,2); ?>
         </td>
       </tr>
@@ -116,7 +116,7 @@ function js_emite(){
         </td>
         <td>
 	  <?php 
-	  $matriz_vlrtotal = array("S"=>"SIM","N"=>"NÃO");
+	  $matriz_vlrtotal = ["S"=>"SIM","N"=>"NÃO"];
 	  db_select("imp_vlrtotal",$matriz_vlrtotal,true,2); ?>
         </td>
       </tr>
@@ -125,7 +125,7 @@ function js_emite(){
         <b>Imprimir justificativa de desclassificacao:&nbsp;&nbsp;</b></td>
         <td>
         <?php 
-          $matriz_descla = array("S"=>"SIM","N"=>"NÃO");
+          $matriz_descla = ["S"=>"SIM","N"=>"NÃO"];
           db_select("imp_descla",$matriz_descla,true,2);
         ?>
         </td>
@@ -135,7 +135,7 @@ function js_emite(){
         <b>Imprimir justificativa de troca de fornecedor:&nbsp;&nbsp;</b></td>
         <td>
         <?php 
-          $matriz_troca = array("S"=>"SIM","N"=>"NÃO");
+          $matriz_troca = ["S"=>"SIM","N"=>"NÃO"];
           db_select("imp_troca",$matriz_troca,true,2);
         ?>
         </td>
@@ -145,7 +145,7 @@ function js_emite(){
         <b>Imprimir justificativa de lote/itens anulados:&nbsp;&nbsp;</b></td>
         <td>
         <?php 
-          $matriz_lote = array("S"=>"SIM","N"=>"NÃO");
+          $matriz_lote = ["S"=>"SIM","N"=>"NÃO"];
           db_select("imp_lote",$matriz_lote,true,2);
         ?>
         </td>

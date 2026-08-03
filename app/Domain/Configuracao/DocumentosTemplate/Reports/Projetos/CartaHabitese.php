@@ -8,13 +8,11 @@ use \cl_obrashabite;
 class CartaHabitese extends ProcessaDocumentoTemplate
 {
   
-    private $codigoHabitese;
     const GRUPOTEMPLATE = 15;
   
-    public function __construct($codigoHabitese)
+    public function __construct(private $codigoHabitese)
     {
         parent::__construct(self::GRUPOTEMPLATE);
-        $this->codigoHabitese    = $codigoHabitese;
         $this->setNomeDocumento('CartaHabitese');
     }
     

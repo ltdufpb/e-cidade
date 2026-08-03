@@ -21,7 +21,7 @@ try {
 
     case "getTarefas":
 
-      $aTarefas = array();
+      $aTarefas = [];
 
       $oAgenda = new Agenda();
       $aJobs = $oAgenda->importarTarefas();
@@ -55,7 +55,7 @@ try {
           $sTextoErro = !empty($lock[2]) ? str_replace('UltimoErro=', '', $lock[2]) : '';
         }
 
-        $aTarefas[] = array(
+        $aTarefas[] = [
           'sNome' => $oJob->getNome(),
           'sNomeClasse' => $oJob->getNomeClasse(),
           'sDescricao' => $oJob->getDescricao(),
@@ -66,7 +66,7 @@ try {
           'sTextoErro' => $sTextoErro,
           'lLock' => file_exists($sCaminhoArquivoLock),
           'lLog' => $lLog
-        );
+        ];
       }
 
       $oRetorno->aTarefas = $aTarefas;
@@ -93,7 +93,7 @@ try {
 
         $className = $oParam->className;
         $aArquivosLog = \scandir(Task::CAMINHO_LOG);
-        $aLogs = array();
+        $aLogs = [];
 
         foreach ($aArquivosLog as $sArquivoLog) {
             $aNome = explode("-", $sArquivoLog);

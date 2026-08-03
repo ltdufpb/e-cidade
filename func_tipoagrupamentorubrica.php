@@ -7,7 +7,7 @@ require_once modification("dbforms/db_funcoes.php");
 require_once modification("classes/db_tipoagrupamentorubrica_classe.php");
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $oPost = db_utils::postMemory($_POST);
 
 $daoTipoAgrupamento = new cl_tipoagrupamentorubrica;
@@ -36,7 +36,7 @@ $daoTipoAgrupamento->rotulo->label("rh238_descricao");
         <td><label for="rh238_descricao"><?php echo $Lrh238_descricao ?></label></td>
         <td>
           <?php
-          $rh238_descricao = !empty($rh238_descricao) ? htmlentities(stripslashes($rh238_descricao), ENT_QUOTES, 'ISO-8859-1') : '';
+          $rh238_descricao = !empty($rh238_descricao) ? htmlentities(stripslashes((string) $rh238_descricao), ENT_QUOTES, 'ISO-8859-1') : '';
           db_input("rh238_descricao", 50, $Irh238_descricao, true, "text", 4);
           ?>
         </td>
@@ -51,10 +51,10 @@ $daoTipoAgrupamento->rotulo->label("rh238_descricao");
 <?php
 if(!isset($pesquisa_chave)) {
 
-  $aCampos = array(
+  $aCampos = [
     "rh238_sequencial",
     "rh238_descricao"
-  );
+  ];
 
   $campos = implode(',', $aCampos);
 
@@ -66,13 +66,13 @@ if(!isset($pesquisa_chave)) {
     $sSql = $daoTipoAgrupamento->sql_query(null, $campos, "rh238_sequencial");
   }
 
-  $repassa = array();
+  $repassa = [];
   if(isset($chave_rh238_sequencial)) {
 
-    $repassa = array(
+    $repassa = [
       "chave_rh238_sequencial" => $chave_rh238_sequencial,
       "rh238_descricao"    => $oPost->rh238_descricao,
-    );
+    ];
   }
 
   echo '<div class="container">';

@@ -25,11 +25,11 @@
  *                                licenca/licenca_pt.txt 
  */
 
-      db_postmemory($HTTP_POST_VARS);
+      db_postmemory($_POST);
       if(!empty($k11_id)) {
         $result = db_query("select k11_id from cfautent where k11_id = $k11_id");
-	    if(pg_numrows($result) > 0) {
- 	      db_redireciona("cai1_autenticadora002.php?".base64_encode("retorno=".pg_result($result,0,0)));
+	    if(pg_num_rows($result) > 0) {
+ 	      db_redireciona("cai1_autenticadora002.php?".base64_encode("retorno=".pg_fetch_result($result,0,0)));
 	      exit;
 	    } else {
           $sql = "select k11_id as db_codigo,k11_id as Código,k11_ipterm as \"Ip/Term\",k11_local as Local from cfautent where k11_id like '".$k11_id."%' and k11_instit = " . db_getsession("DB_instit");

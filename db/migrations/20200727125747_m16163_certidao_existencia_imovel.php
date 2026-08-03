@@ -6,7 +6,7 @@ class M16163CertidaoExistenciaImovel extends PostgresMigration
 {
     public function up()
     {
-        $table = $this->table('certidaoexistencia', array('schema' => 'cadastro'));
+        $table = $this->table('certidaoexistencia', ['schema' => 'cadastro']);
 
         if (!$table->hasColumn('j133_arealote')) {
             $this->upAddColumns();

@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE tabplansaldorecursomov
 class cl_tabplansaldorecursomov { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k113_sequencial = 0; 
-   var $k113_recurso = 0; 
-   var $k113_conta = 0; 
-   var $k113_valor = 0; 
-   var $k113_data_dia = null; 
-   var $k113_data_mes = null; 
-   var $k113_data_ano = null; 
-   var $k113_data = null; 
+   public $k113_sequencial = 0; 
+   public $k113_recurso = 0; 
+   public $k113_conta = 0; 
+   public $k113_valor = 0; 
+   public $k113_data_dia = null; 
+   public $k113_data_mes = null; 
+   public $k113_data_ano = null; 
+   public $k113_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k113_sequencial = int4 = Código Sequêncial 
                  k113_recurso = int4 = Código do Recurso 
                  k113_conta = int4 = Cód. Plano Contas 
@@ -59,10 +59,10 @@ class cl_tabplansaldorecursomov {
                  k113_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_tabplansaldorecursomov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabplansaldorecursomov"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -135,10 +135,10 @@ class cl_tabplansaldorecursomov {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k113_sequencial = pg_result($result,0,0); 
+       $this->k113_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tabplansaldorecursomov_k113_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k113_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k113_sequencial)){
          $this->erro_sql = " Campo k113_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -174,7 +174,7 @@ class cl_tabplansaldorecursomov {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Movimentações dos Saldos Extras ($this->k113_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Movimentações dos Saldos Extras já Cadastrado";
@@ -198,14 +198,14 @@ class cl_tabplansaldorecursomov {
      $resaco = $this->sql_record($this->sql_query_file($this->k113_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14541,'$this->k113_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2561,14541,'','".AddSlashes(pg_result($resaco,0,'k113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2561,14542,'','".AddSlashes(pg_result($resaco,0,'k113_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2561,14544,'','".AddSlashes(pg_result($resaco,0,'k113_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2561,14543,'','".AddSlashes(pg_result($resaco,0,'k113_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2561,14545,'','".AddSlashes(pg_result($resaco,0,'k113_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2561,14541,'','".AddSlashes(pg_fetch_result($resaco,0,'k113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2561,14542,'','".AddSlashes(pg_fetch_result($resaco,0,'k113_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2561,14544,'','".AddSlashes(pg_fetch_result($resaco,0,'k113_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2561,14543,'','".AddSlashes(pg_fetch_result($resaco,0,'k113_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2561,14545,'','".AddSlashes(pg_fetch_result($resaco,0,'k113_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -214,10 +214,10 @@ class cl_tabplansaldorecursomov {
       $this->atualizacampos();
      $sql = " update tabplansaldorecursomov set ";
      $virgula = "";
-     if(trim($this->k113_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_sequencial"])){ 
+     if(trim((string) $this->k113_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_sequencial"])){ 
        $sql  .= $virgula." k113_sequencial = $this->k113_sequencial ";
        $virgula = ",";
-       if(trim($this->k113_sequencial) == null ){ 
+       if(trim((string) $this->k113_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequêncial nao Informado.";
          $this->erro_campo = "k113_sequencial";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_tabplansaldorecursomov {
          return false;
        }
      }
-     if(trim($this->k113_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_recurso"])){ 
+     if(trim((string) $this->k113_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_recurso"])){ 
        $sql  .= $virgula." k113_recurso = $this->k113_recurso ";
        $virgula = ",";
-       if(trim($this->k113_recurso) == null ){ 
+       if(trim((string) $this->k113_recurso) == null ){ 
          $this->erro_sql = " Campo Código do Recurso nao Informado.";
          $this->erro_campo = "k113_recurso";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_tabplansaldorecursomov {
          return false;
        }
      }
-     if(trim($this->k113_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_conta"])){ 
+     if(trim((string) $this->k113_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_conta"])){ 
        $sql  .= $virgula." k113_conta = $this->k113_conta ";
        $virgula = ",";
-       if(trim($this->k113_conta) == null ){ 
+       if(trim((string) $this->k113_conta) == null ){ 
          $this->erro_sql = " Campo Cód. Plano Contas nao Informado.";
          $this->erro_campo = "k113_conta";
          $this->erro_banco = "";
@@ -253,17 +253,17 @@ class cl_tabplansaldorecursomov {
          return false;
        }
      }
-     if(trim($this->k113_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_valor"])){ 
-        if(trim($this->k113_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k113_valor"])){ 
+     if(trim((string) $this->k113_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_valor"])){ 
+        if(trim((string) $this->k113_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k113_valor"])){ 
            $this->k113_valor = "0" ; 
         } 
        $sql  .= $virgula." k113_valor = $this->k113_valor ";
        $virgula = ",";
      }
-     if(trim($this->k113_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"] !="") ){ 
+     if(trim((string) $this->k113_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"] !="") ){ 
        $sql  .= $virgula." k113_data = '$this->k113_data' ";
        $virgula = ",";
-       if(trim($this->k113_data) == null ){ 
+       if(trim((string) $this->k113_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "k113_data_dia";
          $this->erro_banco = "";
@@ -276,7 +276,7 @@ class cl_tabplansaldorecursomov {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k113_data_dia"])){ 
          $sql  .= $virgula." k113_data = null ";
          $virgula = ",";
-         if(trim($this->k113_data) == null ){ 
+         if(trim((string) $this->k113_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "k113_data_dia";
            $this->erro_banco = "";
@@ -295,19 +295,19 @@ class cl_tabplansaldorecursomov {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14541,'$this->k113_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k113_sequencial"]) || $this->k113_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2561,14541,'".AddSlashes(pg_result($resaco,$conresaco,'k113_sequencial'))."','$this->k113_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2561,14541,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k113_sequencial'))."','$this->k113_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k113_recurso"]) || $this->k113_recurso != "")
-           $resac = db_query("insert into db_acount values($acount,2561,14542,'".AddSlashes(pg_result($resaco,$conresaco,'k113_recurso'))."','$this->k113_recurso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2561,14542,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k113_recurso'))."','$this->k113_recurso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k113_conta"]) || $this->k113_conta != "")
-           $resac = db_query("insert into db_acount values($acount,2561,14544,'".AddSlashes(pg_result($resaco,$conresaco,'k113_conta'))."','$this->k113_conta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2561,14544,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k113_conta'))."','$this->k113_conta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k113_valor"]) || $this->k113_valor != "")
-           $resac = db_query("insert into db_acount values($acount,2561,14543,'".AddSlashes(pg_result($resaco,$conresaco,'k113_valor'))."','$this->k113_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2561,14543,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k113_valor'))."','$this->k113_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k113_data"]) || $this->k113_data != "")
-           $resac = db_query("insert into db_acount values($acount,2561,14545,'".AddSlashes(pg_result($resaco,$conresaco,'k113_data'))."','$this->k113_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2561,14545,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k113_data'))."','$this->k113_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -352,14 +352,14 @@ class cl_tabplansaldorecursomov {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14541,'$k113_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2561,14541,'','".AddSlashes(pg_result($resaco,$iresaco,'k113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2561,14542,'','".AddSlashes(pg_result($resaco,$iresaco,'k113_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2561,14544,'','".AddSlashes(pg_result($resaco,$iresaco,'k113_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2561,14543,'','".AddSlashes(pg_result($resaco,$iresaco,'k113_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2561,14545,'','".AddSlashes(pg_result($resaco,$iresaco,'k113_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2561,14541,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2561,14542,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k113_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2561,14544,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k113_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2561,14543,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k113_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2561,14545,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k113_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tabplansaldorecursomov
@@ -419,7 +419,7 @@ class cl_tabplansaldorecursomov {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tabplansaldorecursomov";
@@ -434,7 +434,7 @@ class cl_tabplansaldorecursomov {
    function sql_query ( $k113_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -458,7 +458,7 @@ class cl_tabplansaldorecursomov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_tabplansaldorecursomov {
    function sql_query_file ( $k113_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -492,7 +492,7 @@ class cl_tabplansaldorecursomov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -71,7 +71,7 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
         $sSql .= "  order by rh56_princ desc, rh56_seq                                                          \n";
         $rsServidorDadosLocaisTrabalho = $oDaoServidorDadosLocaisTrabalho->sql_record($sSql);
 
-        $aServidorDadosLocaisTrabalho = array();
+        $aServidorDadosLocaisTrabalho = [];
 
         for ( $iContador = 0; $iContador < $oDaoServidorDadosLocaisTrabalho->numrows; $iContador++ ) {
 

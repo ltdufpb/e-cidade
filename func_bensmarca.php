@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensmarca_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbensmarca = new cl_bensmarca;
 $clbensmarca->rotulo->label("t65_sequencial");
 $clbensmarca->rotulo->label("t65_descricao");
@@ -98,9 +98,9 @@ $clbensmarca->rotulo->label("t65_descricao");
         }else{
            $sql = $clbensmarca->sql_query("",$campos,"t65_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t65_descricao)){
-          $repassa = array("chave_t65_sequencial"=>$chave_t65_sequencial,"chave_t65_descricao"=>$chave_t65_descricao);
+          $repassa = ["chave_t65_sequencial"=>$chave_t65_sequencial,"chave_t65_descricao"=>$chave_t65_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -33,7 +33,7 @@ require_once(modification("classes/db_rharqbanco_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $db_opcao = 1;
 $db_botao = true;

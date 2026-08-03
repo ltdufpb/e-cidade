@@ -13,11 +13,9 @@ class BuscaCgmLogadoFactory
      */
     public static function getService($tipo)
     {
-        switch ($tipo) {
-            case 'profissionalSaude':
-                return new BuscaProfissionalLogadoService;
-            default:
-                throw new \Exception('Não foi possivel buscar o CGM logado! Tipo inválido.');
-        }
+        return match ($tipo) {
+            'profissionalSaude' => new BuscaProfissionalLogadoService,
+            default => throw new \Exception('Não foi possivel buscar o CGM logado! Tipo inválido.'),
+        };
     }
 }

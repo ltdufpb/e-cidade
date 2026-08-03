@@ -26,7 +26,7 @@
  */
 
 include(modification("fpdf151/pdf.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $seleciona_conta = '';
 $descr_conta = 'TODAS AS CONTAS';
 $dataf = $datai;
@@ -86,7 +86,7 @@ $res1 = db_query("select c61_reduz
 	 order by c60_estrut");
 $virg = '';
 $conta_caixa = ''; 
-for($ii = 0;$ii < pg_numrows($res1); $ii++){
+for($ii = 0;$ii < pg_num_rows($res1); $ii++){
    db_fieldsmemory($res1,$ii);
    $conta_caixa .= $virg.$c61_reduz;   
    $virg = ' ,';
@@ -105,7 +105,7 @@ $CoL8 = 25;
 $StrPad1 = 20;
 $StrPad2 = 26;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $exercicio = $GLOBALS["DB_anousu"];
 $sql  = "
          select distinct k12_conta,k13_descr as conta_saltes
@@ -136,13 +136,13 @@ $sql  = "
 $result = db_query($sql);
 //db_criatabela($result);
 //exit;
-$num = pg_numrows($result);
+$num = pg_num_rows($result);
 //$num = 1;
 $xconta = '';
 for($conta=0;$conta<$num;$conta++){
   db_fieldsmemory($result,$conta);
   $seleciona_conta = ' and ( a.k12_conta = '.$k12_conta.' or e.k12_conta = '.$k12_conta.' )';
-  
+
   if($xconta != $k12_conta){
     $descr_conta = "CONTA : ".$k12_conta.' - '.$conta_saltes;
     $xconta = $k12_conta;
@@ -181,7 +181,7 @@ $sql  = "select x.*,
 		p.c60_descr as corlanc_descr,
 		e.k12_codigo as corlanc_slip,
 		z01_nome
-		
+
               from corrente a
 		   left join saltes  w on a.k12_conta  = w.k13_conta
 		   left join cornump b on b.k12_id     = a.k12_id
@@ -211,7 +211,7 @@ $sql  = "select x.*,
 //echo $sql;
 $result1 = db_query($sql);
 //db_criatabela($result);
-$numrows = pg_numrows($result1);
+$numrows = pg_num_rows($result1);
 
 $velho_nump_id     = ""; 
 $velho_nump_data   = "";
@@ -226,20 +226,20 @@ for($i=0;$i<$numrows;$i++){
   $cornump = false;
   $corcla  = false;
   db_fieldsmemory($result1,$i);
-  if(trim($coremp_empen)!="" || trim($coremp_cheque)!="" || trim($coremp_empen)!="" || trim($coremp_anousu)!=""){
+  if(trim((string) $coremp_empen)!="" || trim((string) $coremp_cheque)!="" || trim((string) $coremp_empen)!="" || trim((string) $coremp_anousu)!=""){
     $coremp = true;
   }
-  if(trim($corlanc_conta)!="" || trim($corlanc_descr)!="" || trim($corlanc_slip)!=""){
+  if(trim((string) $corlanc_conta)!="" || trim((string) $corlanc_descr)!="" || trim((string) $corlanc_slip)!=""){
     $corlanc = true;
   }
-  if(trim($cornump_numpre)!="" || trim($cornump_numpar)!="" || trim($cornump_receit)!="" || trim($cornump_descr)!="" || trim($cornump_valor)!=""){
+  if(trim((string) $cornump_numpre)!="" || trim((string) $cornump_numpar)!="" || trim((string) $cornump_receit)!="" || trim((string) $cornump_descr)!="" || trim((string) $cornump_valor)!=""){
     $cornump = true;
     $passa = true;
     if($velho_nump_id ==$corrente_id && $velho_nump_data == $corrente_data && $velho_nump_autent == $corrente_autent){
       $passa = false;
     }
   }
-  if(trim($corcla_codcla)!=""){
+  if(trim((string) $corcla_codcla)!=""){
     $corcla = true;
   }
   if (1 == 2) {
@@ -292,7 +292,7 @@ for($i=0;$i<$numrows;$i++){
     else
       $tt='Cre';
     $pdf->Cell($CoL5,5,"$tt-".@$corrente_conta,"T",0,"C",0);
- 
+
     $pdf->Cell(65,5,@$corrente_descr,"T",0,"L",0);
     if ($corrente_valor < 0){$pdf->SetTextColor(255,0,0);}
     $pdf->Cell($CoL6,5,"R$".str_pad(number_format($corrente_valor,2,",","."),14," ",STR_PAD_LEFT),"T",0,"R",0);

@@ -55,10 +55,10 @@ $db_opcao = 1;
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
-   $clcriaabas->identifica = array("a1"=>"Justificativa","a2"=>"Atos");
-   $clcriaabas->sizecampo  = array("a1"=>"20","a2"=>"15");
-   $clcriaabas->src        = array("a1"=>"edu1_justificativa002.php","a2"=>"edu1_atojustificativa001.php");
-   $clcriaabas->disabled   = array("a2"=>"true");
+   $clcriaabas->identifica = ["a1"=>"Justificativa","a2"=>"Atos"];
+   $clcriaabas->sizecampo  = ["a1"=>"20","a2"=>"15"];
+   $clcriaabas->src        = ["a1"=>"edu1_justificativa002.php","a2"=>"edu1_atojustificativa001.php"];
+   $clcriaabas->disabled   = ["a2"=>"true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->iframe_height = "600";
    $clcriaabas->cria_abas();

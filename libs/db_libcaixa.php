@@ -28,30 +28,23 @@
 //MODULO: configuracoes
 //CLASSE PARA AUTENTICAR IMPRESSORA
 class cl_autenticar { 
-   var $tipoimp   = 'bematech';  
-   var $erro_msg  = 'ok';
-   var $erro      = false;
-   var $testando  = false;
-   var $transacao = '0';
-   var $ip        = null;
-   var $data_dia  = null;
-   var $data_mes  = null;
-   var $data_ano  = null;
+   public $tipoimp   = 'bematech';  
+   public $erro_msg  = 'ok';
+   public $erro      = false;
+   public $testando  = false;
+   public $transacao = '0';
+   public $ip        = null;
+   public $data_dia  = null;
+   public $data_mes  = null;
+   public $data_ano  = null;
    
    function cancelar($msg){
-	      switch($this->transacao) {
-		case SEM_PAPEL:
-		  $this->erro_msg  = 'Impressora sem papel!';
-		  break;
-		case OFFLINE:
-		  $this->erro_msg  = 'Impressora OffLine!';
-		  break;
-		case ERRO:
-		  $this->erro_msg  = 'Ocorreu um erro indeterminado!';
-		  break;
-		default:  
-                   $this->erro_msg = $msg;
-	      }							  
+	      $this->erro_msg = match ($this->transacao) {
+              SEM_PAPEL => 'Impressora sem papel!',
+              OFFLINE => 'Impressora OffLine!',
+              ERRO => 'Ocorreu um erro indeterminado!',
+              default => $msg,
+          };							  
       	      
       $this->fechar();
       $this->erro=true;
@@ -96,7 +89,7 @@ class cl_autenticar {
 	   }else{ 	 
 	       $sql     = "select k11_id from cfautent where k11_instit = " . db_getsession('DB_instit') . " and k11_ipterm = '$ip'"; 
 	       $result  = db_query($sql);
-	       $numrows = pg_numrows($result);
+	       $numrows = pg_num_rows($result);
 	       if($numrows<1){
 		   $this->cancelar("IP ".db_getsession('DB_ip')." não autorizado! ");
 		   return false;
@@ -118,10 +111,10 @@ class cl_autenticar {
        $sql    = "select k11_id from cfautent where k11_instit = " . db_getsession('DB_instit') . " and k11_ipterm ='".$this->ip."'"; 
        $result = db_query($sql);
        db_fieldsmemory($result,0);
-       if(empty($HTTP_SESSION_VARS['autenticando'])){
+       if(empty($_SESSION['autenticando'])){
 	  $sql = "select 0 from corrente where k12_instit = " . db_getsession('DB_instit') . " and k12_id = $k11_id and k12_data ='".date("Y-m-d",db_getsession('DB_datausu'))."' limit 2";
 	  $result  = db_query($sql);
-	  $numrows = pg_numrows($result);
+	  $numrows = pg_num_rows($result);
 	  if($numrows==1){
 	    db_putsession('autenticando',true);
 	    $this->cabecalho();
@@ -386,7 +379,7 @@ class cl_autenticar {
    }
 }
 
-function db_imprimecheque ($nome, $codbco, $valor, $data, $modelo = 1, $ip_imprime, $porta,$municipio ){
+function db_imprimecheque ($nome, $codbco, $valor, $data, $modelo = 1, $ip_imprime = null, $porta = null,$municipio = null ){
  /*   
     echo " 
 <br> nome = $nome
@@ -406,8 +399,8 @@ function db_imprimecheque ($nome, $codbco, $valor, $data, $modelo = 1, $ip_impri
   if($municipio == ''){
     $municipio = '............';
   }
-  $valor = trim(db_formatar($valor, 'p', '', 2));
-  $nome = str_pad($nome,40," ", STR_PAD_RIGHT);
+  $valor = trim((string) db_formatar($valor, 'p', '', 2));
+  $nome = str_pad((string) $nome,40," ", STR_PAD_RIGHT);
   $fd = fsockopen($ip_imprime, $porta);
   if(!$fd) {
 		//

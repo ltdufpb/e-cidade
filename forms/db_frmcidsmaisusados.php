@@ -35,7 +35,7 @@ include(modification("classes/db_medicocid_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clmedicocid   = new cl_medicocid;
 ?>

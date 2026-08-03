@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE mensagerialicenca_db_usuarios
 class cl_mensagerialicenca_db_usuarios {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $am16_sequencial = 0;
-   var $am16_usuario = 0;
-   var $am16_dias = 0;
+   public $am16_sequencial = 0;
+   public $am16_usuario = 0;
+   public $am16_dias = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  am16_sequencial = int4 = Sequencial
                  am16_usuario = int4 = Usuário
                  am16_dias = int4 = Dias
                  ";
    //funcao construtor da classe
-   function cl_mensagerialicenca_db_usuarios() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensagerialicenca_db_usuarios");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -81,10 +81,10 @@ class cl_mensagerialicenca_db_usuarios {
          $this->erro_status = "0";
          return false;
        }
-       $this->am16_sequencial = pg_result($result,0,0);
+       $this->am16_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from mensagerialicenca_db_usuarios_am16_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $am16_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $am16_sequencial)){
          $this->erro_sql = " Campo am16_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_mensagerialicenca_db_usuarios {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Usuário ($this->am16_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Usuário já Cadastrado";
@@ -145,12 +145,12 @@ class cl_mensagerialicenca_db_usuarios {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20980,'$this->am16_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3780,20980,'','".AddSlashes(pg_result($resaco,0,'am16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3780,20981,'','".AddSlashes(pg_result($resaco,0,'am16_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3780,20982,'','".AddSlashes(pg_result($resaco,0,'am16_dias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3780,20980,'','".AddSlashes(pg_fetch_result($resaco,0,'am16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3780,20981,'','".AddSlashes(pg_fetch_result($resaco,0,'am16_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3780,20982,'','".AddSlashes(pg_fetch_result($resaco,0,'am16_dias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_mensagerialicenca_db_usuarios {
       $this->atualizacampos();
      $sql = " update mensagerialicenca_db_usuarios set ";
      $virgula = "";
-     if(trim($this->am16_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am16_sequencial"])){
+     if(trim((string) $this->am16_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am16_sequencial"])){
        $sql  .= $virgula." am16_sequencial = $this->am16_sequencial ";
        $virgula = ",";
-       if(trim($this->am16_sequencial) == null ){
+       if(trim((string) $this->am16_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "am16_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_mensagerialicenca_db_usuarios {
          return false;
        }
      }
-     if(trim($this->am16_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am16_usuario"])){
+     if(trim((string) $this->am16_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am16_usuario"])){
        $sql  .= $virgula." am16_usuario = $this->am16_usuario ";
        $virgula = ",";
-       if(trim($this->am16_usuario) == null ){
+       if(trim((string) $this->am16_usuario) == null ){
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "am16_usuario";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_mensagerialicenca_db_usuarios {
          return false;
        }
      }
-     if(trim($this->am16_dias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am16_dias"])){
+     if(trim((string) $this->am16_dias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am16_dias"])){
        $sql  .= $virgula." am16_dias = $this->am16_dias ";
        $virgula = ",";
-       if(trim($this->am16_dias) == null ){
+       if(trim((string) $this->am16_dias) == null ){
          $this->erro_sql = " Campo Dias não informado.";
          $this->erro_campo = "am16_dias";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_mensagerialicenca_db_usuarios {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20980,'$this->am16_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am16_sequencial"]) || $this->am16_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3780,20980,'".AddSlashes(pg_result($resaco,$conresaco,'am16_sequencial'))."','$this->am16_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3780,20980,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am16_sequencial'))."','$this->am16_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am16_usuario"]) || $this->am16_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,3780,20981,'".AddSlashes(pg_result($resaco,$conresaco,'am16_usuario'))."','$this->am16_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3780,20981,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am16_usuario'))."','$this->am16_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am16_dias"]) || $this->am16_dias != "")
-             $resac = db_query("insert into db_acount values($acount,3780,20982,'".AddSlashes(pg_result($resaco,$conresaco,'am16_dias'))."','$this->am16_dias',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3780,20982,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am16_dias'))."','$this->am16_dias',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_mensagerialicenca_db_usuarios {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20980,'$am16_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3780,20980,'','".AddSlashes(pg_result($resaco,$iresaco,'am16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3780,20981,'','".AddSlashes(pg_result($resaco,$iresaco,'am16_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3780,20982,'','".AddSlashes(pg_result($resaco,$iresaco,'am16_dias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3780,20980,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3780,20981,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am16_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3780,20982,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am16_dias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

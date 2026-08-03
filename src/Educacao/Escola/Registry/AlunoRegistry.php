@@ -12,7 +12,7 @@ class AlunoRegistry
     /**
      * @var Aluno[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Aluno $aluno

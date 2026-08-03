@@ -50,20 +50,20 @@ $db_botao = true;
     <td> 
      <?php
 
-	    $clcriaabas->identifica = array( "prestador"      =>"Prestador",
+	    $clcriaabas->identifica = [ "prestador"      =>"Prestador",
 	                                     "profissionais"  =>"Profissionais",
-	                                     "servicos"       =>"Servicos");
+	                                     "servicos"       =>"Servicos"];
 
-      $clcriaabas->src        = array( "prestador"      =>"fum4_prestadores004.php?db_opcao=2",
+      $clcriaabas->src        = [ "prestador"      =>"fum4_prestadores004.php?db_opcao=2",
                                        "profissionais"  =>"fum4_prestadores005.php?db_opcao=2",
-                                       "servicos"       =>"fum4_prestadores006.php?db_opcao=2");
+                                       "servicos"       =>"fum4_prestadores006.php?db_opcao=2"];
 
-      $clcriaabas->sizecampo  = array( "prestador"      =>"23",
+      $clcriaabas->sizecampo  = [ "prestador"      =>"23",
                                        "profissionais"  =>"23",
-                                       "servicos"       =>"23");
+                                       "servicos"       =>"23"];
 
-	    $clcriaabas->disabled   = array( "profissionais"  =>"false",
-                                       "servicos"       =>"false");
+	    $clcriaabas->disabled   = [ "profissionais"  =>"false",
+                                       "servicos"       =>"false"];
  
 	    $clcriaabas->cria_abas(); 
      ?> 

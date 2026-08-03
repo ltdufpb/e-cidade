@@ -113,7 +113,7 @@ db_input('k01_descr',20,$Ik01_descr,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('t'=>'SIM','f'=>'NÃO');
+$x = ['t'=>'SIM','f'=>'NÃO'];
 db_select('q60_impcodativ',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -124,7 +124,7 @@ db_select('q60_impcodativ',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('t'=>'SIM','f'=>'NÃO');
+$x = ['t'=>'SIM','f'=>'NÃO'];
 db_select('q60_impobsativ',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -135,7 +135,7 @@ db_select('q60_impobsativ',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('t'=>'SIM','f'=>'NÃO');
+$x = ['t'=>'SIM','f'=>'NÃO'];
 db_select('q60_impdatas',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -146,7 +146,7 @@ db_select('q60_impdatas',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('t'=>'SIM','f'=>'NÃO');
+$x = ['t'=>'SIM','f'=>'NÃO'];
 db_select('q60_impobsissqn',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -256,7 +256,7 @@ function js_preenchepesquisa(chave){
   db_iframe_parissqn.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

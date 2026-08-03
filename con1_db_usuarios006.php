@@ -36,7 +36,7 @@ $cldb_usuarios = new cl_db_usuarios;
   /*
 $cldb_depusu = new cl_db_depusu;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

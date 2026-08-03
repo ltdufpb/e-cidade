@@ -242,7 +242,7 @@ try {
 
       $oDaoArrecad = db_utils::getDao('arrecad');
 
-      $aParcelasDebitoCorrigido = array();
+      $aParcelasDebitoCorrigido = [];
 
       /**
        * Busca debitos do numpre já corrigindo
@@ -345,7 +345,7 @@ try {
       }
 
       $aDescontos = db_utils::getCollectionByRecord($rsDesconto);
-      $aRetorno   = array();
+      $aRetorno   = [];
 
       foreach ($aDescontos as $oDesconto) {
 

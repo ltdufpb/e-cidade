@@ -36,13 +36,13 @@ class cl_arquivoestorageassinaturas extends DAOBasica
     {
         if(empty($campos)) {
 
-            $campos = implode(", ", array(
+            $campos = implode(", ", [
                  "portaria.h31_sequencial"
                 ,"portaria.h31_numero"
                 ,"portaria.h31_anousu"
                 ,"count(distinct arquivoestorageassinaturas.db179_assinatura) as db179_assinatura"
                 ,"count(distinct assinaturadocumentodesignacao.db59_usuario) as db59_usuario"
-            ));
+            ]);
         } else {
 
             if(is_array($campos)) {

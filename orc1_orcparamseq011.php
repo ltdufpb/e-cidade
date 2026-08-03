@@ -33,7 +33,7 @@ include(modification("classes/db_orcparamelemento_classe.php"));
 $clorcparamelemento = new cl_orcparamelemento;
 $auxiliar = new cl_orcparamelemento;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 //--- traz todos os elementos
 $sql = "select c60_estrut,c60_codcon,c52_descrred,c60_descr
@@ -90,21 +90,21 @@ $result=$clorcparamelemento->sql_record($sql);
 	   
     $espaco ="";	  
     $estrutural =$c60_estrut;
-    if(substr($estrutural,1,14)     == '00000000000000'){
+    if(substr((string) $estrutural,1,14)     == '00000000000000'){
      	$espaco="";
-    }elseif(substr($estrutural,2,13)== '0000000000000'){
+    }elseif(substr((string) $estrutural,2,13)== '0000000000000'){
    	    $espaco="&nbsp;&nbsp;";
-    }elseif(substr($estrutural,3,12)== '000000000000'){
+    }elseif(substr((string) $estrutural,3,12)== '000000000000'){
    	    $espaco="&nbsp;&nbsp;&nbsp;&nbsp;";
-    }elseif(substr($estrutural,4,11) == '00000000000'){
+    }elseif(substr((string) $estrutural,4,11) == '00000000000'){
    	    $espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp";
-    }elseif(substr($estrutural,5,10) == '0000000000'){
+    }elseif(substr((string) $estrutural,5,10) == '0000000000'){
     	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    }elseif(substr($estrutural,7,8)  == '00000000'){
+    }elseif(substr((string) $estrutural,7,8)  == '00000000'){
     	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp";
-    }elseif(substr($estrutural,9,6)  == '000000'){
+    }elseif(substr((string) $estrutural,9,6)  == '000000'){
     	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp";
-    }elseif(substr($estrutural,11,4) == '0000'){
+    }elseif(substr((string) $estrutural,11,4) == '0000'){
  	    $espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp";
    }
    // ve se é analitica

@@ -121,7 +121,7 @@ db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("k41_cadtipoparc"=>@$k41_cadtipoparc,"k41_arretipo"=>@$k41_arretipo);
+	 $chavepri= ["k41_cadtipoparc"=>@$k41_cadtipoparc,"k41_arretipo"=>@$k41_arretipo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcadtipoparcdeb->sql_query($k41_cadtipoparc);
 	 $cliframe_alterar_excluir->campos  ="k41_cadtipoparc,k40_descr,k41_arretipo,k00_descr,k41_vencini,k41_vencfim";

@@ -40,7 +40,7 @@ $oJson               = JSON::create();
 $oRetorno            = new stdClass();
 $oParam              = $oJson->parse(str_replace("\\","",$_POST["json"]));
 $oRetorno->erro      = false;
-$oRetorno->aParcelas = array();
+$oRetorno->aParcelas = [];
 $iIdUsuario          = db_getsession('DB_id_usuario');
 
 $oRegimeCompetenciaRepository = new RegimeCompetencia();
@@ -58,7 +58,7 @@ try {
             $oRetorno->parcelas_processadas  = false;
             $oRetorno->saldo_programar       = $oRetorno->valor_acordo;
             $oProgramacao                    = $oRegimeCompetenciaRepository->getByAcordo($oAcordo);
-            $oRetorno->parcelas              = array();
+            $oRetorno->parcelas              = [];
 
             if (!empty($oProgramacao)) {
                 $oRetorno->saldo_programar         = $oProgramacao->getSaldoProgramar();
@@ -89,7 +89,7 @@ try {
         case "processar":
             $oAcordo              = AcordoRepository::getByCodigo($oParam->acordo);
             $oProgramacao         = $oRegimeCompetenciaRepository->getByAcordo($oAcordo);
-            $aParcelasProgramadas = array();
+            $aParcelasProgramadas = [];
 
             if ($oProgramacao) {
                 $aParcelasProgramadas = $oRegimeCompetenciaRepository->getParcelasDoRegime($oProgramacao);
@@ -104,7 +104,7 @@ try {
             $oProgramacao->setConta(ContaPlanoPCASPRepository::getContaByCodigo($oParam->conta, db_getsession("DB_anousu")));
             $oRegimeCompetenciaRepository->persist($oProgramacao);
             $parcelas = $oProgramacao->processarParcelas($oParam->numero_parcelas, $oParam->mes_inicial, db_getsession("DB_anousu"), $oParam->valor);
-            $oRetorno->parcelas = array();
+            $oRetorno->parcelas = [];
 
             if (count($aParcelasProgramadas) > 0) {
                 foreach ($aParcelasProgramadas as $oParcelaProgramada) {
@@ -193,7 +193,7 @@ function getParcelas(RegimeCompetencia $oRegimeCompetenciaRepository, RegimeComp
 {
 
     $aParcelas = $oRegimeCompetenciaRepository->getParcelasDoRegime($oProgramacao);
-    $parcelas  = array();
+    $parcelas  = [];
 
     foreach ($aParcelas as $parcela) {
         $dadosParcela              = new \stdClass();

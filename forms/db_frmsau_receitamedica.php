@@ -217,7 +217,7 @@ $oRotulo->label('m60_descr');
               <?php
               $sSql = $oDaoSauFormaAdmMedicamento->sql_query_file(null, 's160_i_codigo, s160_c_descr', 's160_c_descr');
               $rs   = $oDaoSauFormaAdmMedicamento->sql_record($sSql);
-              $aX   = array('' => 'Selecione...');
+              $aX   = ['' => 'Selecione...'];
               for ($iCont = 0; $iCont < $oDaoSauFormaAdmMedicamento->numrows; $iCont++) {
 
                 $oDados                     = db_utils::fieldsmemory($rs, $iCont);
@@ -263,7 +263,7 @@ $oRotulo->label('m60_descr');
   }
 
   echo '<span id="modelo" style="display: '.$sDisplay.';">';
-  $aX    = array();
+  $aX    = [];
   $aX[0] = 'Modelo Padrão';
   // Obtenho todos os templates cadastrados para receita médica
   $sSql = $oDaoDbDocumentoTemplate->sql_query_file(null, 'db82_sequencial, db82_descricao', 'db82_descricao',

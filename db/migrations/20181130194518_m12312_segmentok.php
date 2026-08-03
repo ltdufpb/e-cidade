@@ -89,7 +89,7 @@ class M12312Segmentok extends PostgresMigration
     public function down()
     {
 
-        $aSql = array();
+        $aSql = [];
 
         $aSql []  = "DELETE FROM db_layoutcampos WHERE  db52_layoutlinha = 2012 ;";
 

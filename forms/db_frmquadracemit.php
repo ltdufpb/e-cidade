@@ -76,7 +76,7 @@ db_input('cm22_c_quadra',3,$Icm22_c_quadra,true,'text',$db_opcao,"")
   </td>
   <td>
    <?php 
-    $x = array('C'=>'Campa','J'=>'Jazigo','O'=>'Ossário','S'=>'Sepultura');
+    $x = ['C'=>'Campa','J'=>'Jazigo','O'=>'Ossário','S'=>'Sepultura'];
     db_select('cm22_c_tipo',$x,true,$db_opcao,"");
    ?>
   </tr>
@@ -120,7 +120,7 @@ function js_preenchepesquisa(chave){
   db_iframe_quadracemit.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

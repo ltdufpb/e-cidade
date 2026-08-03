@@ -39,7 +39,7 @@ if (is_dir($dir)) {
 		while ((($file = readdir($dh)) !== false) && ($numero!=30)){
 			$tipo = filetype($dir . $file);
 			if($tipo=='file'){
-				$arr = split("_", $file);
+				$arr = preg_split("#_#m", $file);
 				$count = count($arr);
 				//pega somente db_* _classe.php
 				if($arr[0]=="db" and $arr[$count-1]=="classe.php" and $count >= 3){
@@ -56,7 +56,7 @@ if (is_dir($dir)) {
 						$funcao = strstr($linha, 'function');
 						if($funcao!=""){
 							//echo "$funcao <br>";
-							$arrfunc = split(" ", $funcao);
+							$arrfunc = preg_split("# #m", $funcao);
 							// se não for incluir, alterar, excluir,sql_query,sql_query_file
 							if(($arrfunc[1]!="incluir")and($arrfunc[1]!="alterar")and($arrfunc[1]!="excluir")and($arrfunc[1]!="sql_query")and($arrfunc[1]!="sql_query_file")){
 								//echo "$funcao <br>";
@@ -74,7 +74,7 @@ if (is_dir($dir)) {
 											$funcao4 = strstr($funcao, 'cl_');
 											if($funcao4==""){
 												// aqui estão as função que preciso...na $funcao
-												
+
 												// para a tabela tenho que ver quando for db_db_... para pegar o 1 e 2 do split
 												if ($arr[1]=="db"){
 													$tabela = $arr[1]."_".$arr[2];
@@ -85,22 +85,22 @@ if (is_dir($dir)) {
 												// para pegaro codigo da tabela
 												$sqltab = "select codarq from db_sysarquivo where nomearq = '$tabela'";
 												$resulttab = db_query($sqltab);
-												$codigo = pg_result($resulttab,0,"codarq");
-												
-												
+												$codigo = pg_fetch_result($resulttab,0,"codarq");
+
+
 												// para o metodo tenho que tirar o "(" das funções xxx(
-												$metodo = split("\(", $arrfunc[1]);
+												$metodo = preg_split("#\\(#m", (string) $arrfunc[1]);
 												//print_r($metodo);
-												
+
 												// para ver se ja tem cadastrado no banco
 												$sql = "select * from db_sysclasses where codarq = $codigo and nomclasse = '$metodo[0]'";
-												
+
 												// ver tabela db_sysclasses
 												$result = db_query($sql);	
 												$linhasres = pg_num_rows($result);
 												if($linhasres>0){
 													$exibe = montaMetodoEx($lines,$line_num);
-													$exibe = addslashes($exibe);
+													$exibe = addslashes((string) $exibe);
 													echo "tem no banco <br>";
 													/*
 													$sqldel = "delete from db_sysclasses where codarq = $codigo and nomclasse = '$metodo[0]'";
@@ -109,7 +109,7 @@ if (is_dir($dir)) {
 												}else{
 													echo "<b>não tem no banco </b><br>";
 													$exibe = montaMetodoEx($lines,$line_num);
-													$exibe = addslashes($exibe);
+													$exibe = addslashes((string) $exibe);
 													$sqlinsert = "insert into db_sysclasses (codarq,nomclasse,descrclasse,codigoclass) 
 																					values ($codigo,
 																							'$metodo[0]',
@@ -122,19 +122,19 @@ if (is_dir($dir)) {
 													}else{
 												  		db_msgbox("Inclusão efetuada com sucesso codigo = $codigo ");
 												    }
-												  
-													
+
+
 												}
 												echo "<br> codigo = $codigo <br>
 														   tabela = ".$tabela."<br>
 											               metodo= ".$metodo[0]."<br>";
 												//echo "$line_num - $funcao <br>";
-												
-												
+
+
 												echo "<br> *************************inicio******************************************** <br>" ;
 												//echo "$exibe <br>";
 												echo "<br> *************************fim******************************************** <br>" ;
-													
+
 											}
 										}
 									}
@@ -164,7 +164,7 @@ function montaMetodoEx($array,$posIni){
 		//echo "$funcao <br>";
 		$metodoEx .= $funcao;
 		//pegara função
-     	$chaveabre= strstr($funcao, '{');
+     	$chaveabre= strstr((string) $funcao, '{');
 		//echo "chaveabre= $chaveabre<br>";
 		if($chaveabre!=""){
 			if($chave==""){
@@ -174,7 +174,7 @@ function montaMetodoEx($array,$posIni){
 			$chave = $chave + 1;
 			//echo "chave abre= $chave <br>";
 		}
-		$chavefecha= strstr($funcao, '}');
+		$chavefecha= strstr((string) $funcao, '}');
 		//echo "chavefecha= $chavefecha <br>";
 		if($chavefecha!=""){
 			$chave = $chave - 1;

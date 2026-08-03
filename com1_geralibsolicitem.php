@@ -39,8 +39,8 @@ require_once(modification("classes/db_solandam_classe.php"));
 require_once(modification("classes/db_solandpadraodepto_classe.php"));
 require_once(modification("classes/db_solicitemprot_classe.php"));
 require_once(modification("classes/db_empparametro_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clsolicitem         = new cl_solicitem;
 $clpcprocitem        = new cl_pcprocitem;
 $clpcparam           = new cl_pcparam;
@@ -120,7 +120,7 @@ if($clempparametro->numrows > 0){
 						echo "<fieldset style='width:800px;'>
             <legend><strong>Itens da Solicitação</strong>
              <table border='1' align='center'>\n  ";
-						$arr_disabled = array();
+						$arr_disabled = [];
 						$index = 0;
 						for($i=0;$i<$clsolicitem->numrows;$i++){
 							db_fieldsmemory($select_itens,$i);
@@ -173,7 +173,7 @@ x.pc11_codigo,
 			where p64_codtran is null and p68_codproc is null and x.pc11_codigo = $pc11_codigo";
 
 												$result_tran=db_query($sqltran);
-												if(pg_numrows($result_tran)==0){
+												if(pg_num_rows($result_tran)==0){
 
 													$readonly = " disabled ";
 													//echo "<script>parent.document.form1.incluir.disabled=true;</script>";
@@ -224,7 +224,7 @@ x.pc11_codigo,
 			where p64_codtran is null and p68_codproc is null and x.pc11_codigo = $pc11_codigo";
 
 										$result_tran=db_query($sqltran);
-										if(pg_numrows($result_tran)==0){
+										if(pg_num_rows($result_tran)==0){
 											$readonly = " disabled ";
 											//echo "<script>parent.document.form1.incluir.disabled=true;</script>";
 										}
@@ -310,8 +310,8 @@ x.pc11_codigo,
 							echo "  <td nowrap class='$bordas' align='center' ".($ok!="OK"?" title='Clique para selecionar o tipo de material' ":" title='Tipo material selecionado. Item pode ser liberado' ").">";db_ancora($ok,"js_selmater($pc11_codigo,$pc11_numero);",($ok=="OK"?"3":"1"));echo"</td>\n";
 							echo "  <td nowrap class='$bordas' align='center' >$pc11_seq</td>\n";
 							echo "  <td nowrap class='$bordas' align='center' >$pc11_codigo</td>\n";
-							echo "  <td class='$bordas' align='left' >  ".ucfirst(strtolower($pc01_descrmater))."</td>\n";
-							echo "  <td class='$bordas' align='left' >  ".ucfirst(strtolower($m61_descr))."</td>\n";
+							echo "  <td class='$bordas' align='left' >  ".ucfirst(strtolower((string) $pc01_descrmater))."</td>\n";
+							echo "  <td class='$bordas' align='left' >  ".ucfirst(strtolower((string) $m61_descr))."</td>\n";
 							echo "  <td nowrap class='$bordas' align='center' >$pc11_quant</td>\n";
 							echo "  <td nowrap class='$bordas' align='right' >R$ ".db_formatar($pc11_vlrun,'v'," ",$casadec)."</td>\n";
 							echo "  <td nowrap class='$bordas' align='right' >R$ ".db_formatar(($pc11_vlrun*$pc11_quant),"f")."</td>\n";
@@ -319,7 +319,7 @@ x.pc11_codigo,
 							if(isset($pc11_resum) && trim($pc11_resum)==""){
 								$pc11_resum="&nbsp;";
 							}
-							echo "  <td class='$bordas' align='left'>".substr($pc11_resum,0,40)."</td>\n";
+							echo "  <td class='$bordas' align='left'>".substr((string) $pc11_resum,0,40)."</td>\n";
 							echo "  <td nowrap class='$bordas' align='center' title='Ver dotações com este item foi incluído.'>";db_ancora("Ver","js_verdotac($pc11_codigo,'$pc01_codmater','$pc11_numero');",1);echo"</td>\n";
 							echo "</tr>\n";
 						}

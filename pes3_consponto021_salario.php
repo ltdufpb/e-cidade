@@ -63,7 +63,7 @@ $aResultado  = db_utils::getCollectionByRecord($rsResultado);
  * O valor guardado é um array com todos os objetos
  * trazidos do banco de dados.
  */
-$aSuplementar = array();
+$aSuplementar = [];
 foreach ($aResultado as $oResultado) {
   $aSuplementar[$oResultado->codigo][] = $oResultado;
 }

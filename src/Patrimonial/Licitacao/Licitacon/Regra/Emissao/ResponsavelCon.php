@@ -134,10 +134,10 @@ class ResponsavelCon extends BaseAbstract
     private function getDataInicioVigencia($sCodigoAcordo)
     {
         $oDaoEventoAcordo = new \cl_acordoevento();
-        $sWhere = implode(' and ', array(
+        $sWhere = implode(' and ', [
             "ac55_tipoevento = 5",
             "ac55_acordo = {$sCodigoAcordo}"
-        ));
+        ]);
         $sSql = $oDaoEventoAcordo->sql_query_file(null, 'ac55_acordo, ac55_tipoevento, ac55_data', null, $sWhere);
         $rsEvento = db_query($sSql);
 
@@ -174,10 +174,10 @@ class ResponsavelCon extends BaseAbstract
         $sCampos .= "exists(select 1 from acordoacordogarantia where ac12_acordo = ac16_sequencial) as garantias,";
         $sCampos .= "(ac18_datafim - ac18_datainicio) as nr_dias_prazo, ac18_datainicio as datainiciooriginal,";
         $sCampos .= "ac16_objeto";
-        $sWhere = implode(' and ', array(
+        $sWhere = implode(' and ', [
             "(ac58_acordo is null or ac58_data >= '{$sDataAtual}')",
             "ac16_instit = {$oInstituicao->getCodigo()}"
-        ));
+        ]);
         $sOrderBy = "ac16_sequencial";
         $sSqlContratos = $oDaoAcordo->sql_query_licitacon($sCampos, $sWhere, $sOrderBy);
         $rsContratos = db_query($sSqlContratos);

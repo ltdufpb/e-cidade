@@ -67,7 +67,7 @@ class logsocios {
    * 
    * @var array;
    */
-  private $aIssBaseLog = array();
+  private $aIssBaseLog = [];
   
   public function __construct(){
     
@@ -120,7 +120,7 @@ class logsocios {
    * @param float   $fValorCapNovo valor capital novo
    * @param float   $fValorCapAntigo valor capital antigo
    */
-  public function identificaAlteracao($iInscricao = null, $iOpcao, $iLogTipo = null, $iSocio = "", 
+  public function identificaAlteracao($iInscricao = null, $iOpcao = null, $iLogTipo = null, $iSocio = "", 
                                       $fValorCapNovo = "", $fValorCapAntigo = "") {
     
     if ($iInscricao == null) {

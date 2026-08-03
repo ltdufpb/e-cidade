@@ -25,7 +25,7 @@ class ComissaoController extends Controller
      * @param  ServerRequestInterface|null $request
      * @return DBJsonResponse
      */
-    public function index(ServerRequestInterface $request = null)
+    public function index(?ServerRequestInterface $request = null)
     {
         $instituicao = ($request->getQueryParams()['instituicao']);
         if (!empty($request)) {

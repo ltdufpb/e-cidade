@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_liclicitaeventodocumento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clliclicitaeventodocumento = new cl_liclicitaeventodocumento;
 $clliclicitaeventodocumento->rotulo->label("l47_sequencial");
 $clliclicitaeventodocumento->rotulo->label("l47_nomearquivo");
@@ -52,9 +52,9 @@ $clliclicitaeventodocumento->rotulo->label("l47_nomearquivo");
         }else{
            $sql = $clliclicitaeventodocumento->sql_query("",$campos,"l47_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_l47_nomearquivo)){
-          $repassa = array("chave_l47_sequencial"=>$chave_l47_sequencial,"chave_l47_nomearquivo"=>$chave_l47_nomearquivo);
+          $repassa = ["chave_l47_sequencial"=>$chave_l47_sequencial,"chave_l47_nomearquivo"=>$chave_l47_nomearquivo];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

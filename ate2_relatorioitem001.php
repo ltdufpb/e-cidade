@@ -61,7 +61,7 @@ if($clatenditem->numrows > 0){
   $pdf->Cell(20,4,"CÓDIGO: ",1,0,"L",1);
   $pdf->Cell(80,4,"SOLICITADO: ",1,0,"L",1);
   $pdf->Cell(80,4,"EXECUTADO: ",1,1,"L",1);
-  $pdf->SetWidths(array(20,80,80));
+  $pdf->SetWidths([20,80,80]);
   for($x=0;$x<$numrows;$x++){
     db_fieldsmemory($result,$x);
     $pdf->SetFont($Letra,'I',6);
@@ -71,7 +71,7 @@ if($clatenditem->numrows > 0){
       $pdf->Cell(80,4,"SOLICITADO: ",1,0,"L",1);
       $pdf->Cell(80,4,"EXECUTADO: ",1,1,"L",1);
     }
-    $pdf->Row(array($at05_seq,$at05_solicitado,$at05_feito),3);
+    $pdf->Row([$at05_seq,$at05_solicitado,$at05_feito],3);
   }
 }
 $pdf->Ln(2);

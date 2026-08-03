@@ -39,8 +39,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('c83_variavel');
 $clrotulo->label('e53_valor');
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $op = 1;
 $db_opcao = 1;
@@ -213,7 +213,7 @@ function js_testaRetencao(){
       <?php 
 
  // cria uma lista com as receitas ja existentes nessa liquidação       
-$retencoes = array ();
+$retencoes =  [];
 /*
 if (isset($e50_codord) && $e50_codord!=""){
   $res = $clpagordemrec->sql_record($clpagordemrec->sql_query($e50_codord,null,"e52_receit,e52_valor"));
@@ -248,8 +248,8 @@ if ($clpagordemtiporec->numrows > 0) {
                 <td>
                   <?php  
                      $v = 'receita_chk_'.$cont;
-                     $$v   = $e59_codrec;
-                     global $$v;                  
+                     ${$v}   = $e59_codrec;
+                     global ${$v};                  
                      db_input('receita_chk_'.$cont, 10, '', true, 'text',3);
                 
                   ?></td>
@@ -257,8 +257,8 @@ if ($clpagordemtiporec->numrows > 0) {
                 <td align=right>
                 <?php 
                        $v = 'aliquota_chk_'.$cont;
-                       $$v   = $e59_aliquota;
-                       global $$v;
+                       ${$v}   = $e59_aliquota;
+                       global ${$v};
                        db_input('aliquota_chk_'.$cont, 15, $Ie53_valor, true, 'text',3, '','','','text-align:right')
                 ?>
                 </td>

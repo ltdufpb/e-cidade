@@ -34,13 +34,11 @@
 
 class Dirf {
 
-  protected $iAno;
   protected $iMes;
-  protected $sCnpj;
   protected $sMatriculas;
   protected $iCodigoDirf;
   protected $iInstituicao;
-  protected $aInconsistentes = array();
+  protected $aInconsistentes = [];
   protected $nValorLimite;
   protected $sCodigoArquivo;
   protected $iCodigoLayout;
@@ -51,41 +49,39 @@ class Dirf {
    * Codigo sequencial gerado para cada cgm
    * @var array
    */
-  protected $aCodigosGeracaoPessoalPorCgm = array();
+  protected $aCodigosGeracaoPessoalPorCgm = [];
 
   /**
    * Rubricas que são processadas como rais (B904), descontada na Rais
    * @var array
    */
-  protected $aRubricasBaseRais = array();
+  protected $aRubricasBaseRais = [];
 
   /**
    * Rubricas que são processadas como Pensao Alimenticia B905
    * @var array
    */
-  protected $aRubricasPensaoAlimenticia = array();
+  protected $aRubricasPensaoAlimenticia = [];
 
   /**
    * Rubricas que são processadas como Previdencia Privada B910
    * @var array
    */
-  protected $aRubricasPrevidenciaPrivada = array();
+  protected $aRubricasPrevidenciaPrivada = [];
 
-  protected $aGruposRRA = array("RTRT"    => 17 ,
+  protected $aGruposRRA = ["RTRT"    => 17 ,
                                 "RTPO"    => 18 ,
                                 "RTIRF"   => 20 ,
                                 "DAJUD"   => 21 ,
                                 "QTMESES" => 22 ,
-                                "RIMOG"   => 23 );
+                                "RIMOG"   => 23 ];
 
   /**
    *
    */
-  function __construct($iAno,  $sCnpj) {
+  function __construct(protected $iAno,  protected $sCnpj) {
 
-    $this->iAno        = $iAno;
     $this->iMes        = DBPessoal::getMesFolha();
-    $this->sCnpj       = $sCnpj;
     $this->sMatriculas = "";
     $_SESSION["ignoreAccount"] = true;
   }
@@ -616,7 +612,7 @@ class Dirf {
     $sSqlPessoal   .= " where rh02_anousu = {$this->iAno} " . $condicaoaux;
     $rsDadosPessoal = db_query($sSqlPessoal);
     if(!$rsDadosPessoal || pg_num_rows($rsDadosPessoal) == 0) {
-      $aPessoas       = array();
+      $aPessoas       = [];
     } else {
       $aPessoas       = db_utils::getCollectionByRecord($rsDadosPessoal);
     }
@@ -665,7 +661,7 @@ class Dirf {
          * incluimos os dados pessoais
          */
 
-        if ( trim($oPessoa->z01_cgccpf) == "" ) {
+        if ( trim((string) $oPessoa->z01_cgccpf) == "" ) {
           LogDirf::write('Cpf vazio adiciona o cgm a lista de inconsistências. E vai para o próximo');
           $this->addInconsistente($oPessoa->rh01_numcgm,$oPessoa->z01_nome,'CPF Inválido');
           continue;
@@ -732,7 +728,7 @@ class Dirf {
         $rsComplementoPessoal    = db_query($sSqlComplementoPessoal);
 
         if(!$rsComplementoPessoal || pg_num_rows($rsComplementoPessoal) == 0) {
-          $aComplementoPessoal = array();
+          $aComplementoPessoal = [];
         } else {
           $aComplementoPessoal     = db_utils::getCollectionByRecord($rsComplementoPessoal);
         }
@@ -749,7 +745,7 @@ class Dirf {
           LogDirf::write('--> Molestia----------------------> ' .$aComplementoPessoal[0]->r01_pmolestia);
         }
 
-        $oPessoa->aValorGrupo   = array();
+        $oPessoa->aValorGrupo   = [];
         $oPessoa->aValorGrupo[1] = 0;
         if (!empty($aComplementoPessoal[0]->r01_nasc)){
           $oPessoa->idade = ver_idade(db_dtoc($datet),db_dtoc($aComplementoPessoal[0]->r01_nasc));
@@ -769,16 +765,16 @@ class Dirf {
         $oPessoa->previdenciaprivada13 = 0;
 
         if (!isset($oPessoa->aValorGrupo13)) {
-          $oPessoa->aValorGrupo13 = array();
+          $oPessoa->aValorGrupo13 = [];
         }
-        $aMatriculas = array();
+        $aMatriculas = [];
 
         LogDirf::write("Iniciando agrupamento de valores, agora vai.");
 
         foreach ($aComplementoPessoal as $oDados) {
-          $oPessoa->aValorGrupo13         = array();
+          $oPessoa->aValorGrupo13         = [];
 
-          $oPessoa->aValorGrupo           = array();
+          $oPessoa->aValorGrupo           = [];
           $oPessoa->aValorGrupo[1]        = 0;
           $oPessoa->aValorGrupo[17]       = 0;
           $oPessoa->aValorGrupo[18]       = 0;
@@ -887,7 +883,7 @@ class Dirf {
 
           $iContador ++;
 
-          if (db_at(strtolower($oDados->r01_tpvinc),"ip") > 0 && ($oPessoa->idade >= 65)) {
+          if (db_at(strtolower((string) $oDados->r01_tpvinc),"ip") > 0 && ($oPessoa->idade >= 65)) {
 
             if(!isset($ina)){
               $ina = 0;
@@ -1352,7 +1348,7 @@ class Dirf {
               if (!isset($oPessoa->aValorGrupo[2])) {
                 $oPessoa->aValorGrupo[2] = 0;
               }
-              if (strtolower($inssirf[0]["r33_tipo"]) == "o" && $pess[$Ipes]["r01_tbprev"] != '0') {
+              if (strtolower((string) $inssirf[0]["r33_tipo"]) == "o" && $pess[$Ipes]["r01_tbprev"] != '0') {
                 if($arq[$Iarq][$sigla."pd"] == 2) {
                   $oPessoa->aValorGrupo[2] += $arq[$Iarq][$sigla."valor"];
                 }else{
@@ -1545,12 +1541,12 @@ class Dirf {
 
     $rsDadosContabilidade    = db_query($sSqlDadosContabilidade);
     if(!$rsDadosContabilidade || pg_num_rows($rsDadosContabilidade) == 0) {
-      $aOrdensPagamento        = array();
+      $aOrdensPagamento        = [];
     } else {
       $aOrdensPagamento        = db_utils::getCollectionByRecord($rsDadosContabilidade);
     }
-    $aDadosDirf              = array();
-    $aOrdensIndex            = array();
+    $aDadosDirf              = [];
+    $aOrdensIndex            = [];
 
     /**
      * processa as anulações de empenho reduzindo os valores de pagamentos anteriores.
@@ -1591,7 +1587,7 @@ class Dirf {
       }
     }
 
-    $aDadosDirf = array();
+    $aDadosDirf = [];
 
     foreach ($aOrdensPagamento as $oContribuinte) {
 
@@ -1603,8 +1599,8 @@ class Dirf {
          $oDeclaracaoDirf  = new stdClass();
          $oDeclaracaoDirf->cnpj         = $oContribuinte->z01_cgccpf;
          $oDeclaracaoDirf->nome         = $oContribuinte->z01_nome;
-         $oDeclaracaoDirf->valores      = array();
-         $oDeclaracaoDirf->retencaomes  = array();
+         $oDeclaracaoDirf->valores      = [];
+         $oDeclaracaoDirf->retencaomes  = [];
          $aDadosDirf[$oContribuinte->z01_numcgm] = $oDeclaracaoDirf;
        }
        /**
@@ -1711,7 +1707,7 @@ class Dirf {
      */
     foreach ($aDadosDirf as $iNumCgm => $oDirf) {
 
-      if ( trim($oDirf->cnpj) == "" ) {
+      if ( trim((string) $oDirf->cnpj) == "" ) {
 
         $this->addInconsistente($iNumCgm,$oDirf->nome,'CPF Inválido');
 
@@ -1759,7 +1755,7 @@ class Dirf {
 
   public function gerarArquivo($oDados, $lGerarContabil=true) {
 
-    $aArquivosGerar     = array("Dirf",
+    $aArquivosGerar     = ["Dirf",
                                 "DECPJ",
                                 "RESPO",
                                 "IDREC",
@@ -1770,13 +1766,13 @@ class Dirf {
                                 "PSE",
                                 "RIO",
                                 "OPSE",
-                                "TPSE");
+                                "TPSE"];
     /**
      * tipo de registros de valores gerados.
      * os tipos usados por mes vao de 1 até 11.
      * os demais são valores unicos, em outro registro.
      */
-    $aSiglasTipoArquivo = array( 1 => "RTRT",
+    $aSiglasTipoArquivo = [ 1 => "RTRT",
                                  2 => "RTPO" ,
                                  3 => "RTPP",
                                  4 => "RTDP",
@@ -1791,8 +1787,8 @@ class Dirf {
                                 13 => "SAUDE1",
                                 14 => "SAUDE2",
                                 15 => "RIO",
-                                );
-     $aMeses            = array( 1 => "janeiro",
+                                ];
+     $aMeses            = [ 1 => "janeiro",
                                  2 => "fevereiro" ,
                                  3 => "marco",
                                  4 => "abril",
@@ -1805,7 +1801,7 @@ class Dirf {
                                 11 => "novembro",
                                 12 => "dezembro",
                                 13 => "decimo_terceiro",
-                                );
+                                ];
 
     foreach ($aSiglasTipoArquivo as $sSigla) {
        //$aArquivosGerar[] = $sSigla;
@@ -1924,7 +1920,7 @@ class Dirf {
       $iTotalLinhas      = pg_num_rows($rsTipoReceitas);
     }
 
-    $aLinhasDirf       = array();
+    $aLinhasDirf       = [];
 
     for ($i = 0; $i < $iTotalLinhas; $i++) {
 
@@ -1934,8 +1930,8 @@ class Dirf {
 
         $oLinhaDirf = new stdClass();
         $oLinhaDirf->receita  = $oTipoReceita->rh98_tipoirrf;
-        $oLinhaDirf->fisica   = array();
-        $oLinhaDirf->juridica = array();
+        $oLinhaDirf->fisica   = [];
+        $oLinhaDirf->juridica = [];
 
         $aLinhasDirf[$oTipoReceita->rh98_tipoirrf] = $oLinhaDirf;
       }
@@ -2140,14 +2136,14 @@ class Dirf {
      * geramos as linhas do plano de saude
      */
 
-    if (trim($oDados->iNumeroANS) != "" || trim($oDados->iNumeroANS2) != "") {
+    if (trim((string) $oDados->iNumeroANS) != "" || trim((string) $oDados->iNumeroANS2) != "") {
 
       $oLayout->setCampoTipoLinha(3);
       $oLayout->setCampoIdentLinha("PSE");
       $oLayout->setCampo("identificador_registro", 'PSE');
       $oLayout->geraDadosLinha();
 
-      if (trim($oDados->iNumeroANS) != "") {
+      if (trim((string) $oDados->iNumeroANS) != "") {
 
         $oDaoCgm   = db_utils::getDao("cgm");
         $sSqlNome  = $oDaoCgm->sql_query_file($oDados->iCcgmSaude, "z01_nome, z01_cgccpf");
@@ -2164,9 +2160,9 @@ class Dirf {
         $oLayout->setCampoTipoLinha(3);
         $oLayout->setCampoIdentLinha("OPSE");
         $oLayout->setCampo("identificador_registro", 'OPSE');
-        $oLayout->setCampo("cnpj", str_pad($oOperador->z01_cgccpf, 14, "0", STR_PAD_LEFT));
+        $oLayout->setCampo("cnpj", str_pad((string) $oOperador->z01_cgccpf, 14, "0", STR_PAD_LEFT));
         $oLayout->setCampo("nome", $oOperador->z01_nome);
-        $oLayout->setCampo("registro_ans", str_pad($oDados->iNumeroANS, 6, "0", STR_PAD_LEFT));
+        $oLayout->setCampo("registro_ans", str_pad((string) $oDados->iNumeroANS, 6, "0", STR_PAD_LEFT));
         $oLayout->geraDadosLinha();
 
         /**
@@ -2183,7 +2179,7 @@ class Dirf {
               $oLayout->setCampoTipoLinha(3);
               $oLayout->setCampoIdentLinha("TPSE");
               $oLayout->setCampo("identificador_registro", 'TPSE');
-              $oLayout->setCampo("cnpj", str_pad($oPessoaFisica->cpf, 11, "0", STR_PAD_LEFT));
+              $oLayout->setCampo("cnpj", str_pad((string) $oPessoaFisica->cpf, 11, "0", STR_PAD_LEFT));
               $oLayout->setCampo("nome", $oPessoaFisica->nome);
               $oLayout->setCampo("valor_ano", $nValorAno);
               $oLayout->geraDadosLinha();
@@ -2191,7 +2187,7 @@ class Dirf {
           }
         }
       }
-      if (trim($oDados->iNumeroANS2) != "") {
+      if (trim((string) $oDados->iNumeroANS2) != "") {
 
         $oDaoCgm   = db_utils::getDao("cgm");
         $sSqlNome  = $oDaoCgm->sql_query_file($oDados->iCcgmSaude2, "z01_nome, z01_cgccpf");
@@ -2205,9 +2201,9 @@ class Dirf {
         $oLayout->setCampoTipoLinha(3);
         $oLayout->setCampoIdentLinha("OPSE");
         $oLayout->setCampo("identificador_registro", 'OPSE');
-        $oLayout->setCampo("cnpj", str_pad($oOperador->z01_cgccpf, 14, "0", STR_PAD_LEFT));
+        $oLayout->setCampo("cnpj", str_pad((string) $oOperador->z01_cgccpf, 14, "0", STR_PAD_LEFT));
         $oLayout->setCampo("nome", $oOperador->z01_nome);
-        $oLayout->setCampo("registro_ans", str_pad($oDados->iNumeroANS2, 6, "0", STR_PAD_LEFT));
+        $oLayout->setCampo("registro_ans", str_pad((string) $oDados->iNumeroANS2, 6, "0", STR_PAD_LEFT));
         $oLayout->geraDadosLinha();
 
         /**
@@ -2224,7 +2220,7 @@ class Dirf {
               $oLayout->setCampoTipoLinha(3);
               $oLayout->setCampoIdentLinha("TPSE");
               $oLayout->setCampo("identificador_registro", 'TPSE');
-              $oLayout->setCampo("cnpj", str_pad($oPessoaFisica->cpf, 11, "0", STR_PAD_LEFT));
+              $oLayout->setCampo("cnpj", str_pad((string) $oPessoaFisica->cpf, 11, "0", STR_PAD_LEFT));
               $oLayout->setCampo("nome", $oPessoaFisica->nome);
               $oLayout->setCampo("valor_ano", $nValorAno);
               $oLayout->geraDadosLinha();
@@ -2264,7 +2260,7 @@ class Dirf {
 
     $rsPagamentos = db_query($sSqlPagamentos);
     if(!$rsPagamentos || pg_num_rows($rsPagamentos) == 0) {
-      $aPagamentos  = array();
+      $aPagamentos  = [];
     } else {
       $aPagamentos  = db_utils::getCollectionByRecord($rsPagamentos);
     }
@@ -2281,7 +2277,7 @@ class Dirf {
            ) {
 
           if (!isset($oPessoa->pagamentos[$oPagamento->rh98_rhdirftipovalor])) {
-            $oPessoa->pagamentos[$oPagamento->rh98_rhdirftipovalor] = array();
+            $oPessoa->pagamentos[$oPagamento->rh98_rhdirftipovalor] = [];
           }
 
           $oPessoa->pagamentos[$oPagamento->rh98_rhdirftipovalor][] = $oPagamento;
@@ -2338,7 +2334,7 @@ class Dirf {
   public function clearInconsistente() {
 
     LogDirf::write('Limpando array de inconsistências...');
-    $this->aInconsistentes = array();
+    $this->aInconsistentes = [];
   }
 
   /**
@@ -2435,12 +2431,12 @@ class Dirf {
     $sSqlVerificaUnidades .= " where o41_cnpj <> cnpj_instituicao ";
     $rsVerificacao         = db_query($sSqlVerificaUnidades);
     if(!$rsVerificacao || pg_num_rows($rsVerificacao) == 0) {
-      return array();
+      return [];
     }
     return db_utils::getCollectionByRecord($rsVerificacao, false, false, true);
   }
 
-  function retornaMatriculasDirf($lGerarContabil=true, $sAcima) {
+  function retornaMatriculasDirf($lGerarContabil=true, $sAcima = null) {
 
     $sTipo = "1";
     if ($lGerarContabil) {
@@ -2494,10 +2490,10 @@ class Dirf {
 
     $rsMatriculasDirf    = db_query($sSqlMatriculasDirf);
     if(!$rsMatriculasDirf) {
-      return array();
+      return [];
     }
     $iTotalLinhas        = pg_num_rows($rsMatriculasDirf);
-    $aMatriculasDirf     = array();
+    $aMatriculasDirf     = [];
     if ($iTotalLinhas > 0) {
       $aMatriculasDirf = db_utils::getCollectionByRecord($rsMatriculasDirf);
     }

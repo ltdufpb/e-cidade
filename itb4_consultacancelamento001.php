@@ -80,7 +80,7 @@ $oDaoItbiCancela = new cl_itbicancela();
       <td class="texto"><?php echo $oDadosGuiasCanceladas->it16_obs; ?></td>
     </tr>
     <tr>
-      <?php if(trim($oDadosGuiasCanceladas->z01_nome) != "") { ?>
+      <?php if(trim((string) $oDadosGuiasCanceladas->z01_nome) != "") { ?>
         <th align="left">Nome do Responsável :</th>  
         <td class="texto"><?php echo $oDadosGuiasCanceladas->z01_nome; ?></td>
       <?php } else { ?>

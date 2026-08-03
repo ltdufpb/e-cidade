@@ -48,7 +48,7 @@ for ($i = $vinicio;$i <= $vfim;$i++){
         $pdf->AddPage();
     }
 
-    $linelength = strlen($i) * 1.75;
+    $linelength = strlen((string) $i) * 1.75;
 
     $pdf->SetFont("Times","b",12);
     $pdf->Text(55,10+$y,"Protocolo");

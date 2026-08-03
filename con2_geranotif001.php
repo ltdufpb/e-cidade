@@ -48,8 +48,8 @@ $clrotulo->label('k60_descr');
 $clrotulo->label('k51_procede');
 $clrotulo->label('k51_descr');
 $clrotulo->label('d07_matric');
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clnotificacao   = new cl_notificacao;
 $cleditalrua     = new cl_editalrua;
 $clnotidebitos   = new cl_notidebitos;
@@ -66,7 +66,7 @@ $clnotificacao->k50_instit = $instit;
 $db_opcao = 1;
 $db_botao = true;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   $xcampo = '';
   if(isset($campos)){
     $xcampo = ' and j01_matric in (';
@@ -88,13 +88,13 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 
   $sqlmatricula = $clcontrib->sql_query_not("","","j01_matric,d08_notif",""," d07_contri = ".$d02_contri." and j01_matric in (select d09_matric from contricalc where d09_contri = ".$d02_contri.") ".$xcampo.$xtipo);
   $resultmatric = db_query($sqlmatricula);
-  if (pg_numrows($resultmatric) == 0){
+  if (pg_num_rows($resultmatric) == 0){
     echo "<script>alert('Não existem notificações a serem geradas para esta contribuição!')</script>";
     echo "<script>location.href='con2_geranotif001.php?d02_contri=$d02_contri'</script>";
     exit;
   }
 
-  for($xx = 0;$xx < pg_numrows($resultmatric);$xx++){
+  for($xx = 0;$xx < pg_num_rows($resultmatric);$xx++){
     db_fieldsmemory($resultmatric,$xx);
 
     $clnotificacao->k50_dtemite = date('Y-m-d',db_getsession('DB_datausu'));
@@ -126,12 +126,12 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 			break;
     }
     $resultnumpre = $clcontricalc->sql_record($clcontricalc->sql_query(null," d09_contri,d09_numpre ",null," d09_contri = $d02_contri and d09_matric = $j01_matric"));
-    for ($xy = 0;$xy < pg_numrows($resultnumpre);$xy++){
+    for ($xy = 0;$xy < pg_num_rows($resultnumpre);$xy++){
 
       db_fieldsmemory($resultnumpre,$xy);
       $resultarrec = db_query("select k00_numpre,k00_numpar from arrecad where k00_numpre = $d09_numpre");
-      if (pg_numrows($resultarrec) > 0){
-        for($xarrec = 0;$xarrec < pg_numrows($resultarrec);$xarrec++){
+      if (pg_num_rows($resultarrec) > 0){
+        for($xarrec = 0;$xarrec < pg_num_rows($resultarrec);$xarrec++){
 
           db_fieldsmemory($resultarrec,$xarrec);
           $clnotidebitos->k53_notifica = $clnotificacao->k50_notifica;
@@ -149,7 +149,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
      $resultcontrinot = $clcontrinot->sql_record($clcontrinot->sql_query(null,"*",null,"contrib.d07_contri = $d02_contri and contrib.d07_matric = $j01_matric and notificacao.k50_instit = $instit and notificacao.k50_notifica = ".$clnotificacao->k50_notifica));
       if ($clcontrinot->numrows == 0 ){
 				$rsContricalc = db_query(" select d09_sequencial from contricalc where contricalc.d09_contri = $d02_contri and d09_matric = $j01_matric ");
-				if (pg_numrows($rsContricalc) > 0 ){
+				if (pg_num_rows($rsContricalc) > 0 ){
 
 					db_fieldsmemory($rsContricalc,0);
 				}else{
@@ -359,7 +359,7 @@ db_input('k51_descr',40,$Ik51_descr,true,'text',3,'')
 </td>
 <td align="left">&nbsp;&nbsp;&nbsp;
 <?php 
-$x = array("1"=>"Não Notificados","2"=>"Todos");
+$x = ["1"=>"Não Notificados","2"=>"Todos"];
 db_select('tipo',$x,true,2);
 ?>
 </td>
@@ -546,7 +546,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 

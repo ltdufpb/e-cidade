@@ -28,13 +28,13 @@
 
 final class cronogramaMetaDespesa {
 
-  const MENSAGENS = 'financeiro.orcamento.cronogramaMetaDespesa.';
+  const string MENSAGENS = 'financeiro.orcamento.cronogramaMetaDespesa.';
 
   protected $iDespesa;
 
   protected $iPerspectiva;
 
-  protected $aAnos = array();
+  protected $aAnos = [];
 
   protected $oDespesa ;
 
@@ -42,18 +42,12 @@ final class cronogramaMetaDespesa {
 
   protected $iNivel = null;
 
-  protected $aInstituicoes = array();
+  protected $aInstituicoes = [];
 
-  protected  $aListaDotacoesGrupo = array();
+  protected  $aListaDotacoesGrupo = [];
 
-  /**
-   * @var cronogramaFinanceiro
-   */
-  protected $oCronograma = null;
+  public function __construct($oDespesa, $iNivel = null, protected ?cronogramaFinanceiro $oCronograma = null) {
 
-  public function __construct($oDespesa, $iNivel = null, cronogramaFinanceiro $oCronogramaFinanceiro) {
-
-    $this->oCronograma = $oCronogramaFinanceiro;
     if ($iNivel == null) {
 
       $this->iDespesa       = $oDespesa->dotacao;
@@ -70,7 +64,7 @@ final class cronogramaMetaDespesa {
         $this->iDespesa       = $oDespesa->codigo;
       }
     }
-    $this->aListaDotacoesGrupo = explode(",", urldecode($oDespesa->lista_dotacoes_grupo));
+    $this->aListaDotacoesGrupo = explode(",", urldecode((string) $oDespesa->lista_dotacoes_grupo));
     unset($this->oDespesa->lista_dotacoes_grupo);
   }
 
@@ -213,8 +207,8 @@ final class cronogramaMetaDespesa {
     require_once(modification("libs/db_liborcamento.php"));
     $oSelDotacao = new cl_selorcdotacao();
     $oSelDotacao->setDados($sFiltros); // passa os parametros vindos da func_selorcdotacao_abas.php
-    $this->aMeses       = array();
-    $aDadosBases        = array();
+    $this->aMeses       = [];
+    $aDadosBases        = [];
     $oDaoCronogramaMeta = new cl_cronogramametadespesa;
     if ($this->iNivel  == null) {
 
@@ -531,7 +525,7 @@ final class cronogramaMetaDespesa {
    *
    * @return \CronogramaInformacaoDespesa
    */
-  public static function getInformacaoDespesa(stdClass $oStdDespesa, $iNivel, DBDate $oDataInicial = null, DBDate $oDataFinal = null) {
+  public static function getInformacaoDespesa(stdClass $oStdDespesa, $iNivel, ?DBDate $oDataInicial = null, ?DBDate $oDataFinal = null) {
 
     $aWherePadrao = explode(" and ", self::getFiltroByNivel($oStdDespesa, $iNivel));
     unset($aWherePadrao[0]);

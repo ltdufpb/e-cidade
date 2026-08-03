@@ -28,20 +28,20 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 
 $sqlerro = false;
 
-$ponto       = array("r90"=>"Fixo","r10"=>"Salário","r47"=>"Complementar","r21"=>"Adiantamento","r34"=>"13o. Salário","r19"=>"Rescisão");
-$sigla       = array("pontofx"=>"r90","pontofs"=>"r10","pontocom"=>"r47","pontofa"=>"r21","pontof13"=>"r34","pontofr"=>"r19");
-$sigla_ponto = array("r90"=>"pontofx","r10"=>"pontofs","r47"=>"pontocom","r21"=>"pontofa","r34"=>"pontof13","r19"=>"pontofr");
+$ponto       = ["r90"=>"Fixo","r10"=>"Salário","r47"=>"Complementar","r21"=>"Adiantamento","r34"=>"13o. Salário","r19"=>"Rescisão"];
+$sigla       = ["pontofx"=>"r90","pontofs"=>"r10","pontocom"=>"r47","pontofa"=>"r21","pontof13"=>"r34","pontofr"=>"r19"];
+$sigla_ponto = ["r90"=>"pontofx","r10"=>"pontofs","r47"=>"pontocom","r21"=>"pontofa","r34"=>"pontof13","r19"=>"pontofr"];
 
 if($ponto2 != $sigla_ponto[$ponto1] || $rh27_rub1 != $rh27_rubric || $ano2 != $ano1 || $mes2 != $mes1){ 
    $clgerasql = new cl_gera_sql_folha;
   
-   parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+   parse_str((string) $_SERVER['QUERY_STRING'], $result);
    //echo "<BR> ".$HTTP_SERVER_VARS['QUERY_STRING'];exit;
    $clgerasql->inner_rub = false;
    $clgerasql->usar_ger = true;
@@ -159,7 +159,7 @@ if($ponto2 != $sigla_ponto[$ponto1] || $rh27_rub1 != $rh27_rubric || $ano2 != $a
    $sql_dados  = $clgerasql->gerador_sql($ponto1,$ano1,$mes1,null,null,$camposSQL,"",$whereRESC1,db_getsession("DB_instit"));
    $result     = db_query($sql_dados);
 
-   $xxnum      = pg_numrows($result);
+   $xxnum      = pg_num_rows($result);
 
 
    /**
@@ -182,11 +182,9 @@ if($ponto2 != $sigla_ponto[$ponto1] || $rh27_rub1 != $rh27_rubric || $ano2 != $a
         $erro_msg = 'Erro ao verificar tabelas de ponto.';
       }
    
-      $aMatriculasInvalidas = array();
+      $aMatriculasInvalidas = [];
    
-      $aMatriculasInvalidas = db_utils::makeCollectionFromRecord($rsVerificacao, function ($oRegistro){
-        return $oRegistro->r47_regist;
-      });
+      $aMatriculasInvalidas = db_utils::makeCollectionFromRecord($rsVerificacao, fn($oRegistro) => $oRegistro->r47_regist);
    
       if (count($aMatriculasInvalidas) > 0) {
    
@@ -206,7 +204,7 @@ if($ponto2 != $sigla_ponto[$ponto1] || $rh27_rub1 != $rh27_rubric || $ano2 != $a
        $whereRESC1 =  $whereRESC.$andwhere." #s#_rubric = '".$rh27_rub1."'";
        $sql_dados2 = $clgerasql->gerador_sql($sigla[$ponto2],$ano2,$mes2,null,null,"#s#_regist","",$whereRESC1,db_getsession("DB_instit"));
        $result     = db_query($sql_dados2);
-       $xxnum      = pg_numrows($result);
+       $xxnum      = pg_num_rows($result);
         
        if($xxnum > 0){
 

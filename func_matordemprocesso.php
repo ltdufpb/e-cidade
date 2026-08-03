@@ -5,8 +5,8 @@ include("libs/db_sessoes.php");
 include("libs/db_usuariosonline.php");
 include("dbforms/db_funcoes.php");
 include("classes/db_matordemprocesso_classe.php");
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatordemprocesso = new cl_matordemprocesso;
 $clmatordemprocesso->rotulo->label("m08_sequencial");
 $clmatordemprocesso->rotulo->label("m08_sequencial");
@@ -72,9 +72,9 @@ $clmatordemprocesso->rotulo->label("m08_sequencial");
         }else{
            $sql = $clmatordemprocesso->sql_query("",$campos,"m08_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m08_sequencial)){
-          $repassa = array("chave_m08_sequencial"=>$chave_m08_sequencial,"chave_m08_sequencial"=>$chave_m08_sequencial);
+          $repassa = ["chave_m08_sequencial"=>$chave_m08_sequencial,"chave_m08_sequencial"=>$chave_m08_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

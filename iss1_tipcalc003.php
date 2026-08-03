@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("tipcalc"=>"Tipo de Cálculo","tipcalcexe"=>"Vencimento"); 
-	 $clcriaabas->src = array("tipcalc"=>"iss1_tipcalc006.php");
-	 $clcriaabas->disabled   =  array("tipcalcexe"=>"true"); 
+	 $clcriaabas->identifica = ["tipcalc"=>"Tipo de Cálculo","tipcalcexe"=>"Vencimento"]; 
+	 $clcriaabas->src = ["tipcalc"=>"iss1_tipcalc006.php"];
+	 $clcriaabas->disabled   =  ["tipcalcexe"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

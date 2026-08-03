@@ -175,7 +175,7 @@ class BalanceteDespesaService
      */
     public function sqlPrincipal()
     {
-        list($where, $dataInicio, $dataFinal) = $this->montaWhere();
+        [$where, $dataInicio, $dataFinal] = $this->montaWhere();
         return "
             select fc_saldo_dotacao.*,
                    o58_orgao as orgao,
@@ -243,7 +243,7 @@ class BalanceteDespesaService
         $dataInicio = $this->filtroDataInicio->format('Y-m-d');
         $dataFinal = $this->filtroDataFinal->format('Y-m-d');
         $where = implode(' and ', $where);
-        return array($where, $dataInicio, $dataFinal);
+        return [$where, $dataInicio, $dataFinal];
     }
 
     /**

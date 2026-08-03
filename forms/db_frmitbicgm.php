@@ -32,8 +32,8 @@ $clrotulo->label("z01_nome");
 $clrotulo->label("it01_guia");
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_comp.location.href='itb1_itbicgm002.php?chavepesquisa=$it02_guia&chavepesquisa1=$it02_numcgm'</script>";
 }
@@ -86,7 +86,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   <tr>
     <td align="top" colspan="2">
    <?php 
-    $chavepri= array("it02_guia"=>@$it02_guia,"it02_numcgm"=>@$it02_numcgm);
+    $chavepri= ["it02_guia"=>@$it02_guia,"it02_numcgm"=>@$it02_numcgm];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="it02_guia,it02_numcgm,z01_nome";
     $cliframe_alterar_excluir->sql=$clitbicgm->sql_query("","","*",""," it02_guia = ".@$it02_guia."");
@@ -164,7 +164,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_itbicgm.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

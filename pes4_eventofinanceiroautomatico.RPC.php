@@ -100,7 +100,7 @@ try {
     case 'getEventos':
 
       $aConfiguracoesCadastradas = ConfiguracaoEventoFinanceiroAutomaticoRepository::getConfiguracoesPorMesInstituicao();
-      $oRetorno->eventos         = array(); 
+      $oRetorno->eventos         = []; 
       foreach ($aConfiguracoesCadastradas as $oConfiguracao) {
 
         $oConfiguracoes = new stdClass();

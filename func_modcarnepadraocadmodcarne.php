@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_modcarnepadraocadmodcarne_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmodcarnepadraocadmodcarne = new cl_modcarnepadraocadmodcarne;
 $clmodcarnepadraocadmodcarne->rotulo->label("m01_sequencial");
 $clmodcarnepadraocadmodcarne->rotulo->label("m01_cadmodcarne");
@@ -98,9 +98,9 @@ $clmodcarnepadraocadmodcarne->rotulo->label("m01_cadmodcarne");
         }else{
            $sql = $clmodcarnepadraocadmodcarne->sql_query("",$campos,"m01_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m01_cadmodcarne)){
-          $repassa = array("chave_m01_sequencial"=>$chave_m01_sequencial,"chave_m01_cadmodcarne"=>$chave_m01_cadmodcarne);
+          $repassa = ["chave_m01_sequencial"=>$chave_m01_sequencial,"chave_m01_cadmodcarne"=>$chave_m01_cadmodcarne];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -42,7 +42,7 @@ include(modification("classes/db_conlancamdot_classe.php"));
 include(modification("classes/db_conlancamdig_classe.php"));
 include(modification("classes/db_pagordemnota_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clconlancamval  = new cl_conlancamval;
@@ -93,7 +93,7 @@ if ($so_emp == 'n') {
      }  
      $w = $w.")";
   }
-  
+
 //--  monta sql
    $txt_where="1=1";
    if (isset($lista)){
@@ -160,7 +160,7 @@ if ($so_emp == 'n') {
                   c69_codlan,
 		              c69_sequen,
            	      c69_data";
-           	      
+
 //echo $sql_analitico;exit;
 $sql_sintetico= "select c76_numcgm,
                         z01_nome,
@@ -182,7 +182,7 @@ $sql_sintetico= "select c76_numcgm,
                   inner join conplanoreduz cc  on c69_debito              = cc.c61_reduz 
                                               and cc.c61_anousu           = ".db_getsession("DB_anousu")."
                                               and cc.c61_instit           = ".db_getsession("DB_instit")."
-                  
+
                   where $txt_where
                   order by c76_numcgm,
                            c76_codlan,
@@ -232,7 +232,7 @@ $__total=0;
 
 /*  geral analitico */
 if ($tipo=="a") {
-  
+
 	$pdf->SetFont('Arial','',7);
   for ($x=0; $x < $rows;$x++){
      db_fieldsmemory($res,$x,true);
@@ -245,12 +245,12 @@ if ($tipo=="a") {
 	   if ($imprime_header==true) {
 		   $imprime_header=false;
 		 }
-		 
+
 	    /* ----------- */
 	  if ($repete != $c76_numcgm) {
 	        /*  */
 		   if ($x > 0 ){
-         
+
 		   	 $sql_resumido ="select c53_coddoc,
                                 c53_descr,
                                 sum(c70_valor) as total
@@ -262,11 +262,11 @@ if ($tipo=="a") {
                           group by c53_coddoc,c53_descr
 		                     order by c53_coddoc   ";
 		     $rr=$clconlancamval->sql_record($sql_resumido);     
-		     
+
 		     $pdf->SetFont('Arial','B',7);	 
 		     $pdf->setX(80);
-         $pdf->Cell(20,$tam,strtoupper($RLc53_coddoc),'B',0,"C",0); // recurso
-		     $pdf->Cell(80,$tam,strtoupper($RLc53_descr),'B',0,"L",0); // recurso
+         $pdf->Cell(20,$tam,strtoupper((string) $RLc53_coddoc),'B',0,"C",0); // recurso
+		     $pdf->Cell(80,$tam,strtoupper((string) $RLc53_descr),'B',0,"L",0); // recurso
          $pdf->Cell(20,$tam,"SOMATORIO",'B',1,"R",0);  // cod+estrut dotatao // quebra linha		
   	     $pdf->Ln(1);
 
@@ -278,7 +278,7 @@ if ($tipo=="a") {
             $pdf->Cell(20,$tam,db_formatar($total,'f'),0,1,"R",0);  // cod+estrut dotatao // quebra linha
 	       }		 
        }
-       
+
 	        /*  */
 	     $repete = $c76_numcgm;
        $pdf->Ln(); $pdf->Ln();    
@@ -288,14 +288,14 @@ if ($tipo=="a") {
   		 $pdf->SetFont('Arial','',7);	
 
   		 /* header  */
-       $pdf->Cell(20,$tam,strtoupper($RLc69_codlan),'TB',0,"C",0);
-	     $pdf->Cell(20,$tam,strtoupper($RLc69_sequen),'TB',0,"C",0);	 
-       $pdf->Cell(20,$tam,strtoupper($RLc69_data)  ,'TB',0,"C",0);
-       $pdf->Cell(20,$tam,strtoupper($RLc69_debito),'TB',0,"C",0); // recurso
-	     $pdf->Cell(35,$tam,strtoupper($RLc60_descr) ,'TB',0,"L",0); // recurso
-       $pdf->Cell(20,$tam,strtoupper($RLc69_credito),'TB',0,"C",0); // recurso
-	     $pdf->Cell(35,$tam,strtoupper($RLc60_descr) ,'TB',0,"L",0); // recurso
-       $pdf->Cell(20,$tam,strtoupper($RLc69_valor),'TB',1,"R",0); // cod+estrut dotatao // quebra linha       
+       $pdf->Cell(20,$tam,strtoupper((string) $RLc69_codlan),'TB',0,"C",0);
+	     $pdf->Cell(20,$tam,strtoupper((string) $RLc69_sequen),'TB',0,"C",0);	 
+       $pdf->Cell(20,$tam,strtoupper((string) $RLc69_data)  ,'TB',0,"C",0);
+       $pdf->Cell(20,$tam,strtoupper((string) $RLc69_debito),'TB',0,"C",0); // recurso
+	     $pdf->Cell(35,$tam,strtoupper((string) $RLc60_descr) ,'TB',0,"L",0); // recurso
+       $pdf->Cell(20,$tam,strtoupper((string) $RLc69_credito),'TB',0,"C",0); // recurso
+	     $pdf->Cell(35,$tam,strtoupper((string) $RLc60_descr) ,'TB',0,"L",0); // recurso
+       $pdf->Cell(20,$tam,strtoupper((string) $RLc69_valor),'TB',1,"R",0); // cod+estrut dotatao // quebra linha       
 	  }
 
 	  /* detalhe */
@@ -303,9 +303,9 @@ if ($tipo=="a") {
 	  $pdf->Cell(20,$tam,$c69_sequen        ,0,0,"C",0);	 
     $pdf->Cell(18,$tam,$c69_data          ,0,0,"C",0);
     $pdf->Cell(20,$tam,$c69_debito        ,0,0,"C",0); // recurso
-  	$pdf->Cell(35,$tam,substr($debito_descr,0,25) ,0,0,"L",0); // recurso
+  	$pdf->Cell(35,$tam,substr((string) $debito_descr,0,25) ,0,0,"L",0); // recurso
 	  $pdf->Cell(20,$tam,$c69_credito               ,'0',0,"C",0);
-    $pdf->Cell(35,$tam,substr($credito_descr,0,25),'0',0,"L",0);        
+    $pdf->Cell(35,$tam,substr((string) $credito_descr,0,25),'0',0,"L",0);        
     $pdf->Cell(20,$tam,db_formatar($c69_valor,'f'),'0',1,"R",0); // cod+estrut dotatao // quebra linha
 
     // outros dados
@@ -322,7 +322,7 @@ if ($tipo=="a") {
 
   	//---- outros dados
 	  $pdf->Ln(1);
-    
+
     /* somatorio  */
 	  $__total += $c69_valor;
 	    /*  */
@@ -342,8 +342,8 @@ if ($tipo=="a") {
 		   $rr=$clconlancamval->sql_record($sql_resumido);     
 		   $pdf->SetFont('Arial','B',7);	 
 		   $pdf->setX(80);
-       $pdf->Cell(20,$tam,strtoupper($RLc53_coddoc),'B',0,"C",0); // recurso
-		   $pdf->Cell(80,$tam,strtoupper($RLc53_descr),'B',0,"L",0); // recurso
+       $pdf->Cell(20,$tam,strtoupper((string) $RLc53_coddoc),'B',0,"C",0); // recurso
+		   $pdf->Cell(80,$tam,strtoupper((string) $RLc53_descr),'B',0,"L",0); // recurso
        $pdf->Cell(20,$tam,"SOMATORIO",'B',1,"R",0);  // cod+estrut dotatao // quebra linha		
   	   $pdf->Ln(1);
 
@@ -356,7 +356,7 @@ if ($tipo=="a") {
 	     }	
 		      //--
   	   $pdf->Ln(10);
-       
+
   	   $sql_total ="select c53_coddoc,
   	                       c53_descr,sum(c70_valor) as total
                       from conlancamcgm
@@ -372,8 +372,8 @@ if ($tipo=="a") {
 		   // $pdf->setX(80);
        $pdf->Cell(20,$tam,"TOTAL",'B',0,"C",0); // recurso
        $pdf->Cell(50,$tam," ",'B',0,"C",0); // recurso
-       $pdf->Cell(20,$tam,strtoupper($RLc53_coddoc),'B',0,"C",0); // recurso
-		   $pdf->Cell(80,$tam,strtoupper($RLc53_descr),'B',0,"L",0); // recurso
+       $pdf->Cell(20,$tam,strtoupper((string) $RLc53_coddoc),'B',0,"C",0); // recurso
+		   $pdf->Cell(80,$tam,strtoupper((string) $RLc53_descr),'B',0,"L",0); // recurso
        $pdf->Cell(20,$tam,"SOMATORIO",'B',1,"R",0);  // cod+estrut dotatao // quebra linha		
   	   $pdf->Ln(1);
 		   for ($i=0;$i < $clconlancamval->numrows;$i++) {
@@ -401,23 +401,23 @@ if ($tipo=="s"){
       if ($imprime_header==true) {
          $pdf->Ln();
 	       $pdf->SetFont('Arial','B',7);	 
-	       $pdf->Cell(20,$tam,strtoupper($RLc69_codlan),1,0,"C",1);
-         $pdf->Cell(18,$tam,strtoupper($RLc69_data)  ,1,0,"C",1);
-         $pdf->Cell(20,$tam,strtoupper($RLc53_coddoc),1,0,"C",1); // recurso
-		     $pdf->Cell(100,$tam,strtoupper($RLc53_descr),1,0,"L",1); // recurso
-         $pdf->Cell(20,$tam,strtoupper($RLc69_valor) ,1,1,"C",1);  // cod+estrut dotatao // quebra linha
+	       $pdf->Cell(20,$tam,strtoupper((string) $RLc69_codlan),1,0,"C",1);
+         $pdf->Cell(18,$tam,strtoupper((string) $RLc69_data)  ,1,0,"C",1);
+         $pdf->Cell(20,$tam,strtoupper((string) $RLc53_coddoc),1,0,"C",1); // recurso
+		     $pdf->Cell(100,$tam,strtoupper((string) $RLc53_descr),1,0,"L",1); // recurso
+         $pdf->Cell(20,$tam,strtoupper((string) $RLc69_valor) ,1,1,"C",1);  // cod+estrut dotatao // quebra linha
 		     $pdf->Ln();
 	       $pdf->SetFont('Arial','',7);	
 		     $imprime_header=false;
       }
-      
+
 	    /* ----------- */
 	    if ($repete != $c76_numcgm) {
 	        /*  */
 		     if ($x > 0 ){
    		     $pdf->setX(150);
 	         $pdf->SetFont('Arial','B',7);
-	         	
+
 		       //-- mostra total dos conhistdoc
 		       //-- //classe conlancamcgm
 	 	       $sql01 = "select c53_coddoc, 
@@ -450,7 +450,7 @@ if ($tipo=="s"){
   		   $pdf->SetFont('Arial','',7);	
 	    }
 	    /* detalhe */
-	    
+
 	    $pdf->Ln(1);
       $pdf->Cell(20,$tam,$c70_codlan                ,0,0,"C",0);
       $pdf->Cell(18,$tam,$c70_data                  ,0,0,"C",0);
@@ -610,8 +610,8 @@ group by c53_descr ";
 $result = pg_exec($sql);
 $result2 = pg_exec($sql2); 
 
-$xxnum = pg_numrows($result);
-$xxnum2= pg_numrows($result2);
+$xxnum = pg_num_rows($result);
+$xxnum2= pg_num_rows($result2);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Movimentações para este credor.');
 
@@ -632,7 +632,7 @@ $total_anupago = 0;
 $cor = 0;
 $emp = 0;
 $cgm = 0;
-   for($x=0;$x<pg_numrows($result);$x++){
+   for($x=0;$x<pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    
    if($cgm != $e60_numcgm && $troca != 1){
@@ -675,7 +675,7 @@ $cgm = 0;
        $sepnotas = "";
        for( $ord = 0; $ord < $clpagordemnota->numrows; $ord ++){
        	 db_fieldsmemory($res,$ord);
-       	 $notas .= $sepnotas.trim($e69_numero);
+       	 $notas .= $sepnotas.trim((string) $e69_numero);
        	 $sepnotas = "-";
        } 
        $pdf->cell(33,$alt,$notas,0,0,"L",$cor);
@@ -697,7 +697,7 @@ $cgm = 0;
    $pdf->cell(142,$alt,'MOVIMENTAÇÃO',1,0,"C",1);
    $pdf->cell(30,$alt,'TOTAIS',1,1,"C",1);
    
-   for($y=0;$y<pg_numrows($result2);$y++){
+   for($y=0;$y<pg_num_rows($result2);$y++){
        db_fieldsmemory($result2,$y);
        
        if($y % 2)

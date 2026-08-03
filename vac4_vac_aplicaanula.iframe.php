@@ -39,7 +39,7 @@ $oDaoVacSala      = new cl_vac_sala;
 $oDaoVacAplica      = new cl_vac_aplica;
 $sSql             = $oDaoVacSala->sql_query_file("","*",""," vc01_i_unidade=$iDepartamento ");
 $rsResult         = $oDaoVacSala->sql_record($sSql);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoVacAplicaanula = db_utils::getdao('vac_aplicaanula');
 
 $db_opcao = 1;

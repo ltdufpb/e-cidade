@@ -33,7 +33,7 @@ include(modification("classes/db_rhvisavale_classe.php"));
 include(modification("classes/db_rhvisavalecgm_classe.php"));
 include(modification("classes/db_db_config_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhvisavale = new cl_rhvisavale;
 $clrhvisavalecgm = new cl_rhvisavalecgm;
 $cldb_config = new cl_db_config;
@@ -69,7 +69,7 @@ if(isset($alterar)){
   }
 
   if($sqlerro == false){
-	  if(trim($inter2) != ""){
+	  if(trim((string) $inter2) != ""){
 	    $clrhvisavalecgm->rh48_instit = $rh47_instit;
 		  $clrhvisavalecgm->rh48_numcgm = $inter2;
 	    $clrhvisavalecgm->rh48_ordem  = "2";
@@ -82,7 +82,7 @@ if(isset($alterar)){
   }
 
   if($sqlerro == false){	
-	  if(trim($inter3) != ""){
+	  if(trim((string) $inter3) != ""){
 	    $clrhvisavalecgm->rh48_instit = $rh47_instit;
 		  $clrhvisavalecgm->rh48_numcgm = $inter3;
   	  $clrhvisavalecgm->rh48_ordem  = "3";
@@ -103,9 +103,9 @@ if(isset($alterar)){
    for($i=0; $i<$clrhvisavalecgm->numrows; $i++){
    	 db_fieldsmemory($resultcgm,$i);
    	 $inter  = "inter".($i+1);
-   	 $$inter = $rh48_numcgm;
+   	 ${$inter} = $rh48_numcgm;
    	 $dinter  = "deinter".($i+1);
-   	 $$dinter = $z01_nome;
+   	 ${$dinter} = $z01_nome;
    }
    $db_botao = true;
 }

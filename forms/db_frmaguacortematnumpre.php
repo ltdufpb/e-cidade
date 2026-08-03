@@ -138,6 +138,6 @@ $clrotulo->label("x44_total");
  </table>
 
 </center>
-<input name="tipo" type="submit" id="tipo" value=<?=isset($tipo)?$tipo:"Sintetico"?>  >
+<input name="tipo" type="submit" id="tipo" value=<?=$tipo ?? "Sintetico"?>  >
 
 </form>

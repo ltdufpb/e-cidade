@@ -60,10 +60,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-   $clcriaabas->identifica = array("isencao"=>"Dados da Isenção","isencaolanc"=>"Lançamentos"); 
-	 $clcriaabas->sizecampo = array("isencao"=>"30","isencaolanc"=>"30");
-	 $clcriaabas->src = array("isencao"=>"tri1_isencao004.php?origem=$origem&valorigem=$valorigem");
-	 $clcriaabas->disabled   =  array("isencaolanc"=>"true"); 
+   $clcriaabas->identifica = ["isencao"=>"Dados da Isenção","isencaolanc"=>"Lançamentos"]; 
+	 $clcriaabas->sizecampo = ["isencao"=>"30","isencaolanc"=>"30"];
+	 $clcriaabas->src = ["isencao"=>"tri1_isencao004.php?origem=$origem&valorigem=$valorigem"];
+	 $clcriaabas->disabled   =  ["isencaolanc"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
 
    // testa se a origem ja nao esta baixada 

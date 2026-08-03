@@ -33,9 +33,9 @@ require_once (modification("dbforms/db_funcoes.php"));
 
 $oGET        = db_utils::postMemory($_GET);
 $oPOST       = db_utils::postMemory($_POST);
-$iChave      = isset($oGET->pesquisa_chave) ? $oGET->pesquisa_chave : null;
-$iSequencial = isset($oPOST->chave_x54_sequencial) ? $oPOST->chave_x54_sequencial : null;
-$iCgm        = isset($oGET->filtro_cgm) ? $oGET->filtro_cgm : null;
+$iChave      = $oGET->pesquisa_chave ?? null;
+$iSequencial = $oPOST->chave_x54_sequencial ?? null;
+$iCgm        = $oGET->filtro_cgm ?? null;
 
 $oAguaContrato = new cl_aguacontrato;
 $oAguaContrato->rotulo->label("x54_sequencial");
@@ -68,7 +68,7 @@ $oAguaContrato->rotulo->label("x54_sequencial");
   </form>
   <?php
 
-  $aWhere = array();
+  $aWhere = [];
 
   if ($iCgm) {
 
@@ -101,7 +101,7 @@ $oAguaContrato->rotulo->label("x54_sequencial");
 
   if ($iSequencial || $iChave) {
 
-    $iCodigo = $iSequencial ? $iSequencial : $iChave;
+    $iCodigo = $iSequencial ?: $iChave;
     $aWhere[] = "x54_sequencial = {$iCodigo}";
   }
 
@@ -115,12 +115,12 @@ $oAguaContrato->rotulo->label("x54_sequencial");
 
   if (!$iChave) {
 
-    $aRepassa = array();
+    $aRepassa = [];
     if ($iSequencial) {
 
-      $aRepassa = array(
+      $aRepassa = [
         "chave_x54_sequencial" => $iSequencial,
-      );
+      ];
     }
     ?>
     <div class="container">

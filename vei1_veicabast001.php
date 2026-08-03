@@ -40,7 +40,7 @@ include(modification("classes/db_veicparam_classe.php"));
 include(modification("classes/db_veicretirada_classe.php"));
 require(modification("libs/db_app.utils.php"));
 db_app::import("veiculos.*");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clveiculos              = new cl_veiculos;
 $clveicabast             = new cl_veicabast;
@@ -56,7 +56,7 @@ $sqlerro=false;
 
 if (isset($ve60_datasaida) && $ve60_datasaida != "") {
   
-  $aData = explode("/", $ve60_datasaida);
+  $aData = explode("/", (string) $ve60_datasaida);
 
   if (count($aData) >= 3) {
 
@@ -70,7 +70,7 @@ if (isset($ve60_datasaida) && $ve60_datasaida != "") {
 
 if (isset($incluir)) {
   $medida     = $ve70_medida;
-  $dataabast  = implode("-",array_reverse(explode("/",$ve70_dtabast)));
+  $dataabast  = implode("-",array_reverse(explode("/",(string) $ve70_dtabast)));
   $sDataBanco = $ve70_dtabast_ano."-".$ve70_dtabast_mes."-".$ve70_dtabast_dia;
   $passa=false;
   //último abastecimento

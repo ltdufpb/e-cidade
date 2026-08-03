@@ -81,7 +81,7 @@ function js_opcoes(){
       </td>
     </tr>
     <?php 
-    $j01_tipoimovel = isset($j01_tipoimovel) ? $j01_tipoimovel : $tipoImovel;
+    $j01_tipoimovel ??= $tipoImovel;
     if ($j01_tipoimovel == "2") { 
       if (empty($j166_sequencial)) {
         $j166_sequencial="";

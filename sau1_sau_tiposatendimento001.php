@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_sau_tiposatendimento_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clsau_tiposatendimento = new cl_sau_tiposatendimento;
 $db_opcao = 1;
 $db_botao = true;

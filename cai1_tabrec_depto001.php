@@ -35,8 +35,8 @@ require_once (modification("classes/db_tabrecdepto_classe.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("dbforms/db_classesgenericas.php"));
 $cliframe_seleciona = new cl_iframe_seleciona;
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $cltabdesc = new cl_tabdesc;
 $cltabrecdepto = new cl_tabrecdepto;
 $cltabdescarretipo = new cl_tabdescarretipo;
@@ -60,7 +60,7 @@ if(isset($incluir) or isset($alterar)){
 		    $msgerro = $cltabrecdepto->erro_msg;
 	}
 
-	$depto = split("#",$chaves);
+	$depto = preg_split("#\\##m",$chaves);
   for($w=0;$w<count($depto);$w++){
     if($erro==false){
 

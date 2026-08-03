@@ -48,7 +48,7 @@ $clrhlotavincativ = new cl_rhlotavincativ;
 $clorcdotacao = new cl_orcdotacao;
 $clorcelemento = new cl_orcelemento;
 $clorcparametro = new cl_orcparametro;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $passa = false;
 if(isset($confirma) || isset($gera)){
@@ -114,7 +114,7 @@ if(isset($confirma) || isset($gera)){
 	     ";
       $result  = db_query($sql);
 //      db_criatabela($result);
-      $numrows = pg_numrows($result);
+      $numrows = pg_num_rows($result);
       $sqlerro = false;
       db_inicio_transacao();
       for($i=0;$i<$numrows;$i++){
@@ -271,7 +271,7 @@ if(isset($confirma) || isset($gera)){
 	    $clrhempfolha->rh40_provento = "$provento";
 	    $clrhempfolha->rh40_desconto = "$desconto";
 	    $clrhempfolha->rh40_siglaarq = $siglaarq;
-	    $clrhempfolha->rh40_tipo     = strtolower($rh40_tipo); 
+	    $clrhempfolha->rh40_tipo     = strtolower((string) $rh40_tipo); 
 	    $clrhempfolha->rh40_tabprev  = "0";
 	    $clrhempfolha->rh40_coddot   = $dotacao; 
 	    $clrhempfolha->incluir(@$anousu,@$mesusu,$orgao,$unidade,$projativ,$recurso,$elemento,$rubric);	    

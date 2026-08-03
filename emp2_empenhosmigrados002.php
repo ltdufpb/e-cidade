@@ -109,7 +109,7 @@ function cabecalho(&$pdf,&$troca){
 
 for ($iInd = 0; $iInd < $oDaoEmpempenho->numrows; $iInd++) {
   
-  cabecalho($pdf,$troca);
+  cabecalho($pdf);
   $pdf->SetFont('Arial', '',8);
   $troca = 1;
   $oEmpenho  = db_utils::fieldsMemory($rsEmpenhos, $iInd);

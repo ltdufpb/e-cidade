@@ -37,7 +37,7 @@ $ipbase="$DB_SERVIDOR";
 $aborta=0;
 $sql    = "select db30_codversao,db30_codrelease from db_versao order by db30_codver desc limit 1";
 $result = db_query($sql);
-$numrows= pg_numrows($result);
+$numrows= pg_num_rows($result);
 if ($numrows==0)
 {
    #echo "\n Não existe registro na tabela db_versão. \n";
@@ -47,12 +47,12 @@ if ($numrows==0)
 if ($aborta<>1)
 {  
  
- $db30_codversao = pg_result($result,0,0);
- $db30_codrelease= pg_result($result,0,1);
+ $db30_codversao = pg_fetch_result($result,0,0);
+ $db30_codrelease= pg_fetch_result($result,0,1);
 
  $releaseatual="2.".$db30_codversao.".".$db30_codrelease."";
 
- $db30_codrelease= pg_result($result,0,1)+1;
+ $db30_codrelease= pg_fetch_result($result,0,1)+1;
  $release_nova="2.$db30_codversao.$db30_codrelease";
 
  $verifica=getcwd()."/release/";
@@ -93,11 +93,11 @@ if ($aborta<>1)
   <td nowrap><strong>Release a ser atualizada:</strong></td>
 
 <?php 
-  if (trim($verifica)=='')
+  if (trim((string) $verifica)=='')
      {
       print"<td> Release $release_nova não disponível no momento!</td>";
      }
-  if ( trim($verifica)<>'')
+  if ( trim((string) $verifica)<>'')
      {
      
      db_msgbox("Atenção!Antes de começar a atualização da release verifique se existe usuários logados no sistema acessando o menu consulta e submenu usuários on-line,pois quando começar a atualização o sistema ficará inativo para os usuários.");  

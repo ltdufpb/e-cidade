@@ -33,8 +33,8 @@ $clrotulo->label("y70_data");
 $clrotulo->label("y39_codandam");
 $clrotulo->label("nome");
 $aux = new cl_arquivo_auxiliar;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_fiscais.location.href='fis1_vistusuario002.php?chavepesquisa=$y75_codvist&chavepesquisa1=$y75_id_usuario&y39_codandam=$y39_codandam'</script>";}
 if(isset($opcao) && $opcao == "excluir"){
@@ -163,7 +163,7 @@ db_textarea('y75_obs',3,50,$Iy75_obs,true,'text',$db_opcao,"");
 
      if(!empty($y75_codvist)){
 
-      $chavepri= array("y75_codvist"=>$y75_codvist,"y75_id_usuario"=>$y75_id_usuario);
+      $chavepri= ["y75_codvist"=>$y75_codvist,"y75_id_usuario"=>$y75_id_usuario];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       $cliframe_alterar_excluir->campos="y75_codvist,y75_id_usuario,y75_obs,nome";
       $cliframe_alterar_excluir->sql=$clvistusuario->sql_query("",""," vistusuario.*,db_usuarios.*",""," y75_codvist = $y75_codvist");
@@ -182,7 +182,7 @@ db_textarea('y75_obs',3,50,$Iy75_obs,true,'text',$db_opcao,"");
    if(!empty($y75_codvist)){
 
      $resultvistusuario = db_query($clvistusuario->sql_query("",""," vistusuario.*,db_usuarios.*",""," y75_codvist = $y75_codvist"));
-     if(pg_numrows($resultvistusuario) != 0){
+     if(pg_num_rows($resultvistusuario) != 0){
 
          echo "<script>
            tam = parent.document.formaba;

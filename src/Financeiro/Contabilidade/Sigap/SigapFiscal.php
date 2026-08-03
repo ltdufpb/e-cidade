@@ -42,19 +42,9 @@ class SigapFiscal
     protected $periodo;
 
     /**
-     * @var
-     */
-    protected $ano;
-
-    /**
      * @var array
      */
     protected $codigoInstituicoes = [];
-
-    /**
-     * @var integer
-     */
-    protected $codigoTCE;
 
     /**
      * Arquivos gerados pelo sistema
@@ -74,14 +64,13 @@ class SigapFiscal
      * @param array $instituicoes
      * @param integer $ano
      * @param $codigoTCE
+     * @param int $codigoTCE
      */
-    public function __construct(Periodo $periodo, DBDepartamento $departamento, array $instituicoes, $ano, $codigoTCE)
+    public function __construct(Periodo $periodo, DBDepartamento $departamento, array $instituicoes, protected $ano, protected $codigoTCE)
     {
         $this->periodo = $periodo;
         $this->departamento = $departamento;
-        $this->ano = $ano;
         $this->codigoInstituicoes = $instituicoes;
-        $this->codigoTCE = $codigoTCE;
     }
 
     public function processarArquivos($arquivos)

@@ -107,7 +107,7 @@ $clrotulo->label("nome");
                 </td>
                 <td>
                     <?php
-                    $x = array("f" => "NAO", "t" => "SIM");
+                    $x = ["f" => "NAO", "t" => "SIM"];
                     db_select('z10_proc', $x, true, $db_opcao, ($db_opcao == 1 ? "onChange='this.options[0].selected = true'" : ""));
                     ?>
                 </td>

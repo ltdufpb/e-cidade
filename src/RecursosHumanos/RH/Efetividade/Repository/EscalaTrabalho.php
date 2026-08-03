@@ -60,7 +60,7 @@ class EscalaTrabalho {
         $sCamposEscalaServidor .= " ,gradeshorarios.rh190_database";
         $sCamposEscalaServidor .= " ,gradeshorarios.rh190_revezamento";
         $sCamposEscalaServidor .= " ,gradeshorarios.rh190_extra_autorizada_feriado::int";
-        $aWhereEscalaServidor   = array();
+        $aWhereEscalaServidor   = [];
         $aWhereEscalaServidor[] = "rh192_gradeshorarios = {$iGradeHorario}";
         $sSqlEscalaServidor     = $oDaoEscalaServidor->sqlEscalaTrabalhoJornada($sCamposEscalaServidor, null, $aWhereEscalaServidor);
         $rsEscalaServidor       = db_query($sSqlEscalaServidor);
@@ -97,7 +97,7 @@ class EscalaTrabalho {
 
         $oDaoEscalaServidor     = new \cl_escalaservidor();
         $sCamposEscalaServidor  = "distinct gradeshorariosjornada.*";
-        $aWhereEscalaServidor   = array();
+        $aWhereEscalaServidor   = [];
         $aWhereEscalaServidor[] = "rh191_gradehorarios = {$oEscalaTrabalho->getCodigo()}";
         $sSqlEscalaServidor     = $oDaoEscalaServidor->sqlEscalaTrabalhoJornada($sCamposEscalaServidor, null, $aWhereEscalaServidor);
         $rsEscalaServidor       = db_query($sSqlEscalaServidor);

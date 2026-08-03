@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE colecaoacervo
 class cl_colecaoacervo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $bi29_sequencial = 0; 
-   var $bi29_nome = null; 
-   var $bi29_abreviatura = null; 
-   var $bi29_quantidade = null;
+   public $bi29_sequencial = 0; 
+   public $bi29_nome = null; 
+   public $bi29_abreviatura = null; 
+   public $bi29_quantidade = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  bi29_sequencial = int4 = Sequencial 
                  bi29_nome = varchar(70) = Nome 
                  bi29_abreviatura = varchar(5) = Abreviatura 
                  bi29_quantidade = int4 = Quantidade de Itens 
                  ";
    //funcao construtor da classe 
-   function cl_colecaoacervo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("colecaoacervo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -112,10 +112,10 @@ class cl_colecaoacervo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->bi29_sequencial = pg_result($result,0,0); 
+       $this->bi29_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from colecaoacervo_bi29_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $bi29_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $bi29_sequencial)){
          $this->erro_sql = " Campo bi29_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Seuqência menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -149,7 +149,7 @@ class cl_colecaoacervo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Coleção de Acervo ($this->bi29_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Coleção de Acervo já Cadastrado";
@@ -178,13 +178,13 @@ class cl_colecaoacervo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19991,'$this->bi29_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3584,19991,'','".AddSlashes(pg_result($resaco,0,'bi29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3584,19992,'','".AddSlashes(pg_result($resaco,0,'bi29_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3584,19993,'','".AddSlashes(pg_result($resaco,0,'bi29_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3584,1010589,'','".AddSlashes(pg_result($resaco,0,'bi29_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3584,19991,'','".AddSlashes(pg_fetch_result($resaco,0,'bi29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3584,19992,'','".AddSlashes(pg_fetch_result($resaco,0,'bi29_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3584,19993,'','".AddSlashes(pg_fetch_result($resaco,0,'bi29_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3584,1010589,'','".AddSlashes(pg_fetch_result($resaco,0,'bi29_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -194,10 +194,10 @@ class cl_colecaoacervo {
       $this->atualizacampos();
      $sql = " update colecaoacervo set ";
      $virgula = "";
-     if(trim($this->bi29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_sequencial"])){ 
+     if(trim((string) $this->bi29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_sequencial"])){ 
        $sql  .= $virgula." bi29_sequencial = $this->bi29_sequencial ";
        $virgula = ",";
-       if(trim($this->bi29_sequencial) == null ){ 
+       if(trim((string) $this->bi29_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não Informado.";
          $this->erro_campo = "bi29_sequencial";
          $this->erro_banco = "";
@@ -207,10 +207,10 @@ class cl_colecaoacervo {
          return false;
        }
      }
-     if(trim($this->bi29_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_nome"])){ 
+     if(trim((string) $this->bi29_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_nome"])){ 
        $sql  .= $virgula." bi29_nome = '$this->bi29_nome' ";
        $virgula = ",";
-       if(trim($this->bi29_nome) == null ){ 
+       if(trim((string) $this->bi29_nome) == null ){ 
          $this->erro_sql = " Campo Nome não Informado.";
          $this->erro_campo = "bi29_nome";
          $this->erro_banco = "";
@@ -221,7 +221,7 @@ class cl_colecaoacervo {
        }
      }
 
-     if(trim($this->bi29_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_quantidade"])){
+     if(trim((string) $this->bi29_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_quantidade"])){
          $sql  .= $virgula." bi29_quantidade = $this->bi29_quantidade ";
          $virgula = ",";
          if(empty($this->bi29_quantidade)){
@@ -235,7 +235,7 @@ class cl_colecaoacervo {
          }
      }
 
-     if(trim($this->bi29_abreviatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_abreviatura"])){ 
+     if(trim((string) $this->bi29_abreviatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi29_abreviatura"])){ 
        $sql  .= $virgula." bi29_abreviatura = '$this->bi29_abreviatura' ";
        $virgula = ",";
      }
@@ -253,17 +253,17 @@ class cl_colecaoacervo {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19991,'$this->bi29_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["bi29_sequencial"]) || $this->bi29_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3584,19991,'".AddSlashes(pg_result($resaco,$conresaco,'bi29_sequencial'))."','$this->bi29_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3584,19991,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi29_sequencial'))."','$this->bi29_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["bi29_nome"]) || $this->bi29_nome != "")
-             $resac = db_query("insert into db_acount values($acount,3584,19992,'".AddSlashes(pg_result($resaco,$conresaco,'bi29_nome'))."','$this->bi29_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3584,19992,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi29_nome'))."','$this->bi29_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["bi29_abreviatura"]) || $this->bi29_abreviatura != "")
-             $resac = db_query("insert into db_acount values($acount,3584,19993,'".AddSlashes(pg_result($resaco,$conresaco,'bi29_abreviatura'))."','$this->bi29_abreviatura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3584,19993,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi29_abreviatura'))."','$this->bi29_abreviatura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["bi29_quantidade"]) || $this->bi29_quantidade != "")
-               $resac = db_query("insert into db_acount values($acount,3584,1010589,'".AddSlashes(pg_result($resaco,$conresaco,'bi29_quantidade'))."','$this->bi29_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+               $resac = db_query("insert into db_acount values($acount,3584,1010589,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi29_quantidade'))."','$this->bi29_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -317,13 +317,13 @@ class cl_colecaoacervo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19991,'$bi29_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3584,19991,'','".AddSlashes(pg_result($resaco,$iresaco,'bi29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3584,19992,'','".AddSlashes(pg_result($resaco,$iresaco,'bi29_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3584,19993,'','".AddSlashes(pg_result($resaco,$iresaco,'bi29_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3584,1010589,'','".AddSlashes(pg_result($resaco,$iresaco,'bi29_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3584,19991,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3584,19992,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi29_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3584,19993,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi29_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3584,1010589,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi29_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -384,7 +384,7 @@ class cl_colecaoacervo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:colecaoacervo";
@@ -399,7 +399,7 @@ class cl_colecaoacervo {
    function sql_query ( $bi29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -420,7 +420,7 @@ class cl_colecaoacervo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,7 +433,7 @@ class cl_colecaoacervo {
    function sql_query_file ( $bi29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -454,7 +454,7 @@ class cl_colecaoacervo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

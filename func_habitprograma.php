@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitprograma_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabitprograma = new cl_habitprograma;
 $clhabitprograma->rotulo->label("ht01_sequencial");
 $clhabitprograma->rotulo->label("ht01_descricao");
@@ -84,7 +84,7 @@ $clhabitprograma->rotulo->label("ht01_descricao");
     <td align="center" valign="top"> 
       <?php 
      
-      $aWhere = array();
+      $aWhere = [];
       $sAnd   = "";
       $sWhere = "";      
       
@@ -122,9 +122,9 @@ $clhabitprograma->rotulo->label("ht01_descricao");
            $sql = $clhabitprograma->sql_query("", $campos, "ht01_sequencial", $sWhere.$sAnd);
            //die($sql);
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_ht01_descricao)) {
-          $repassa = array("chave_ht01_sequencial" => $chave_ht01_sequencial, "chave_ht01_descricao" => $chave_ht01_descricao);
+          $repassa = ["chave_ht01_sequencial" => $chave_ht01_sequencial, "chave_ht01_descricao" => $chave_ht01_descricao];
         }
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
       } else {

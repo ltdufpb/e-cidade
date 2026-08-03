@@ -6,67 +6,67 @@ final class Imovel extends Layout
 {
     public function __construct ()
     {
-        $this->fields = array(
-            'TIPOIMOVELCODIGO' => array(
+        $this->fields = [
+            'TIPOIMOVELCODIGO' => [
                 'name'         => 'ESPECIE'
                 ,'description' => 'CODIGO DO TIPO DO IMOVEL - 1 = TERRITORIAL E 2 = PREDIAL'
                 ,'size'        => 1
-            )
-            ,'TIPOIMOVELDESCRICAO' => array(
+            ]
+            ,'TIPOIMOVELDESCRICAO' => [
                 'name'         => 'TIPOIMOVEL'
                 ,'description' => 'EXPRESSAO DO TIPO DO IMOVEL - TERRITORIAL OU PREDIAL'
                 ,'size'        => 11
-            )
-            ,'MATRICULA' => array(
+            ]
+            ,'MATRICULA' => [
                 'name'         => 'MATRICULA'
                 ,'description' => 'MATRICULA'
                 ,'size'        => 10
-            )
-            ,'EXERCICIO' => array(
+            ]
+            ,'EXERCICIO' => [
                 'name'         => 'EXERCICIO'
                 ,'description' => 'EXERCÍCIO DO CALCULO'
                 ,'size'        => 4
-            )
-            ,'NOTIFICACAO' => array(
+            ]
+            ,'NOTIFICACAO' => [
                 'name'         => 'NOTIFICACAO'
                 ,'description' => 'NOTIFICACAO'
                 ,'size'        => 10
-            )
-            ,'ZONAENTREGA' => array(
+            ]
+            ,'ZONAENTREGA' => [
                 'name'         => 'ZONAENTREGA'
                 ,'description' => 'ZONA DE ENTREGA'
                 ,'size'        => 5
-            )
-            ,'ZONAFISCALLOTE' => array(
+            ]
+            ,'ZONAFISCALLOTE' => [
                 'name'         => 'ZONAFISCALLOTE'
                 ,'description' => 'ZONA FISCAL DA TABELA LOTE'
                 ,'size'        => 5
-            )
-            ,'SETORFISCAL' => array(
+            ]
+            ,'SETORFISCAL' => [
                 'name'         => 'SETORFISCAL'
                 ,'description' => 'SETOR FISCAL'
                 ,'size'        => 5
-            )
-            ,'SETORCARTOGRAFICA' => array(
+            ]
+            ,'SETORCARTOGRAFICA' => [
                 'name'         => 'SETORCARTO'
                 ,'description' => 'SETOR CARTOGRAFICO (DO SETOR/QUADRA/LOTE)'
                 ,'size'        => 4
-            )
-            ,'QUADRACARTOGRAFICA' => array(
+            ]
+            ,'QUADRACARTOGRAFICA' => [
                 'name'         => 'QUADRACARTO'
                 ,'description' => 'QUADRA CARTOGRAFICA'
                 ,'size'        => 4
-            )
-            ,'LOTECARTOGRAFICA' => array(
+            ]
+            ,'LOTECARTOGRAFICA' => [
                 'name'         => 'LOTECARTO'
                 ,'description' => 'LOTE CARTOGRAFICA'
                 ,'size'        => 4
-            )
-            ,'SUBLOTE' => array(
+            ]
+            ,'SUBLOTE' => [
                 'name'         => 'SUBLOTELOC'
                 ,'description' => 'SUBLOTE'
                 ,'size'        => 4
-            )
-        );
+            ]
+        ];
     }
 }

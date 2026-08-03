@@ -42,12 +42,12 @@ class AtributoValorReferenciaNumerico {
    */
   protected $iCasasDecimaisApresentacao = null;
 
-  protected $aSexos = array();
+  protected $aSexos = [];
 
 
-  protected $oIdadeInicial = array();
+  protected $oIdadeInicial = [];
 
-  protected $oIdadeFinal = array();
+  protected $oIdadeFinal = [];
 
   /**
    * Atributo base para calculo
@@ -100,7 +100,7 @@ class AtributoValorReferenciaNumerico {
         if (!empty($oDadosReferencia->la61_atributobase)) {
             $this->setAtributoBase(new AtributoExame($oDadosReferencia->la61_atributobase));
         }
-        $this->aSexos = explode(",", $oDadosReferencia->sexos);
+        $this->aSexos = explode(",", (string) $oDadosReferencia->sexos);
 
         if (!empty($oDadosReferencia->la59_periodoinicial)) {
           $this->oIdadeInicial = new DBInterval($oDadosReferencia->la59_periodoinicial);
@@ -234,7 +234,7 @@ class AtributoValorReferenciaNumerico {
    * @return array
    */
   public function limpaSexos() {
-    $this->aSexos = array();
+    $this->aSexos = [];
   }
 
   /**

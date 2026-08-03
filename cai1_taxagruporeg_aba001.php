@@ -33,7 +33,7 @@ include(modification("classes/db_taxagruporeg_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 //db_postmemory($HTTP_POST_VARS,2);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $cltaxagruporeg = new cl_taxagruporeg;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $db_botao = true;

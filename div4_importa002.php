@@ -28,14 +28,14 @@
 // select k00_numpre,k00_numpar,k00_receit from arrecad where k00_numpre = 11111454;
 set_time_limit(0);
 require(modification("libs/db_stdlib.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //se for submit, ele cria o recibo
   require(modification("libs/db_conecta.php"));
   include(modification("libs/db_sessoes.php"));
   include(modification("libs/db_sql.php"));
-  if(isset($HTTP_POST_VARS["calculavalor"])) {
+  if(isset($_POST["calculavalor"])) {
 
-  $vt = $HTTP_POST_VARS;
+  $vt = $_POST;
   $tam = sizeof($vt);
   reset($vt);
   $j = 0;
@@ -60,11 +60,11 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
   for($i = 0;$i < $tam;$i++) {
    // if(abs($valores[$i]) != 0) {
       //$mat = base64_decode($numpres[$i]);
-      $mat = split("P",$numpres[$i]);
+      $mat = preg_split("#P#m",(string) $numpres[$i]);
       $numpre = $mat[0];	  
       $numpar = $mat[1];
       $sql = "update issvar set q05_vlrinf = ".$valores[$i]." where q05_numpre = $numpre and q05_numpar = $numpar";
-	  db_query($sql) or die("Erro(37) atualizando issvar: ".pg_errormessage());
+	  db_query($sql) or die("Erro(37) atualizando issvar: ".pg_last_error());
 	//}
   }
   db_query("COMMIT");
@@ -313,13 +313,13 @@ if(isset($tipo)) {
   echo "<form name=\"form1\" id=\"form1\" method=\"post\" target=\"reciboweb2\">\n";
   echo "<input type=\"hidden\" name=\"H_ANOUSU\" value=\"".db_getsession("DB_anousu")."\">\n";  
   echo "<input type=\"hidden\" name=\"H_DATAUSU\" value=\"".$DB_DATACALC."\">\n";    
-  echo "<input type=\"hidden\" name=\"ver_matric\" value=\"".pg_result($result,0,"k00_matric")."\">\n";
-  echo "<input type=\"hidden\" name=\"ver_inscr\" value=\"".pg_result($result,0,"k00_inscr")."\">\n";
-  echo "<input type=\"hidden\" name=\"ver_numcgm\" value=\"".pg_result($result,0,"k00_numcgm")."\">\n";
+  echo "<input type=\"hidden\" name=\"ver_matric\" value=\"".pg_fetch_result($result,0,"k00_matric")."\">\n";
+  echo "<input type=\"hidden\" name=\"ver_inscr\" value=\"".pg_fetch_result($result,0,"k00_inscr")."\">\n";
+  echo "<input type=\"hidden\" name=\"ver_numcgm\" value=\"".pg_fetch_result($result,0,"k00_numcgm")."\">\n";
   echo "<input type=\"hidden\" name=\"tipo_debito\" value=\"".$tipo."\">\n";  
   echo "<table border=\"0\" cellspacing=\"0\" cellpadding=\"3\" id=\"tabdebitos\">\n";
 //cria o cabeçalho 
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
   echo "<tr bgcolor=\"#FFCC66\">\n";
   echo "<th class=\"borda\" style=\"font-size:12px\" nowrap>&nbsp;</th>\n";
   echo "<th class=\"borda\" style=\"font-size:12px\" nowrap>Numpre</th>\n";
@@ -355,7 +355,7 @@ if(isset($tipo)) {
   echo "</tr>\n";
   //verifica se foi clicado no link agrupar e recria as variaveis do QUERY_STRING pra atualizar o agnump e agpar
   if(isset($verificaagrupar)) {
-    parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+    parse_str((string) $_SERVER['QUERY_STRING']);
   }
   
   //if com 3 partes. Primeiro se é pra agrupar por numpre, segundo se é pra agrupar por parcela e terceiro mostra o default
@@ -367,9 +367,9 @@ if(isset($tipo)) {
 	$vlrtotal = 0;
 	$elementos[0] = "";
     for($i = 0;$i < $numrows;$i++) {
-      if(!in_array(pg_result($result,$i,"k00_numpre"),$elementos)) {
+      if(!in_array(pg_fetch_result($result,$i,"k00_numpre"),$elementos)) {
         $REGISTRO[$j] = pg_fetch_array($result,$i);
-	    $elementos[$j++] = pg_result($result,$i,"k00_numpre");
+	    $elementos[$j++] = pg_fetch_result($result,$i,"k00_numpre");
 	  }
 	}
 	//faz a mao...
@@ -383,29 +383,29 @@ if(isset($tipo)) {
       $separador = "";
 	  $numpres = "";
 	  for($j = 0;$j < $numrows;$j++) {
-	    if($elementos[$i] == pg_result($result,$j,"k00_numpre")) {
-          if(pg_result($result,$j,"k00_numpar") != @pg_result($result,$j+1,"k00_numpar")             || (	$elementos[$i] != pg_result($result,$j+1,"k00_numpre")) ) {
-		    $numpres .= $separador.pg_result($result,$j,"k00_numpre")."P".pg_result($result,$j,"k00_numpar");
+	    if($elementos[$i] == pg_fetch_result($result,$j,"k00_numpre")) {
+          if(pg_fetch_result($result,$j,"k00_numpar") != @pg_fetch_result($result,$j+1,"k00_numpar")             || (	$elementos[$i] != pg_fetch_result($result,$j+1,"k00_numpre")) ) {
+		    $numpres .= $separador.pg_fetch_result($result,$j,"k00_numpre")."P".pg_fetch_result($result,$j,"k00_numpar");
 		    $separador = "N";
 		  }
-		  $valor += (float)pg_result($result,$j,"vlrhis");
-          $valorcorr += (float)pg_result($result,$j,"vlrcor");
-          $juros += (float)pg_result($result,$j,"vlrjuros");
-          $multa += (float)pg_result($result,$j,"vlrmulta");
-          $desconto += (float)pg_result($result,$j,"vlrdesconto");
-          $total += (float)pg_result($result,$j,"total"); 
+		  $valor += (float)pg_fetch_result($result,$j,"vlrhis");
+          $valorcorr += (float)pg_fetch_result($result,$j,"vlrcor");
+          $juros += (float)pg_fetch_result($result,$j,"vlrjuros");
+          $multa += (float)pg_fetch_result($result,$j,"vlrmulta");
+          $desconto += (float)pg_fetch_result($result,$j,"vlrdesconto");
+          $total += (float)pg_fetch_result($result,$j,"total"); 
 		}
 	  }	  
 	  /**************************/
       $vlrtotal += $REGISTRO[$i]["total"];
-	  $dtoper = pg_result($result,$i,"k00_dtoper");
+	  $dtoper = pg_fetch_result($result,$i,"k00_dtoper");
 	  $dtoper = mktime(0,0,0,substr($dtoper,5,2),substr($dtoper,8,2),substr($dtoper,0,4));
 	  //if($dtoper > time())
 	  //  $corDtoper = "#FF5151";
 	  //else
 	  $corDtoper = "";
 	  $dtvenc = $REGISTRO[$i]["k00_dtvenc"];
-	  $dtvenc = mktime(0,0,0,substr($dtvenc,5,2),substr($dtvenc,8,2),substr($dtvenc,0,4));
+	  $dtvenc = mktime(0,0,0,substr((string) $dtvenc,5,2),substr((string) $dtvenc,8,2),substr((string) $dtvenc,0,4));
 	  if($dtvenc < time())
 	    $corDtvenc = "red";
 	  else
@@ -431,7 +431,7 @@ if(isset($tipo)) {
                  from recibounica r
 				 where r.k00_numpre = ".$elementos[$i]." and r.k00_dtvenc >= '".date('Y-m-d', $DB_DATACALC)."'
 				 ) as unica");
-		for($unicont=0;$unicont<pg_numrows($resultunica);$unicont++){
+		for($unicont=0;$unicont<pg_num_rows($resultunica);$unicont++){
           db_fieldsmemory($resultunica,$unicont);
 		  if($dtvencunic>=date('Y-m-d',$DB_DATACALC)){
   		    $dtvencunic = db_formatar($dtvencunic,'d');
@@ -448,7 +448,7 @@ if(isset($tipo)) {
             echo "<td colspan=\"3\" class=\"borda\" style=\"font-size:11px;color:white\" nowrap>Parcela Única com $k00_percdes% desconto</td>\n";
 //          echo "<td class=\"borda\" style=\"font-size:11px\" nowrap></td>\n";
  //         echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>Parcela Única</td>\n";
-       
+
             echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".number_format($uvlrhis,2,".",",")."</td>\n";
             echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".number_format($uvlrcorr,2,".",",")."</td>\n";
             echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".number_format($uvlrjuros,2,".",",")."</td>\n";
@@ -474,9 +474,9 @@ if(isset($tipo)) {
       echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".$REGISTRO[$i]["k00_numtot"]."</td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtoper==""?"":"bgcolor=$corDtoper")." nowrap>".date("d-m-Y",$dtoper)."</td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtvenc==""?"":"bgcolor=$corDtvenc")." nowrap>".date("d-m-Y",$dtvenc)."</td>\n";	
-      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim($REGISTRO[$i]["k01_descr"])==""?"&nbsp":$REGISTRO[$i]["k01_descr"])."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim((string) $REGISTRO[$i]["k01_descr"])==""?"&nbsp":$REGISTRO[$i]["k01_descr"])."</td>\n";
    echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><a href=\"cai3_gerfinanc002.php?numpre=".$elementos[$i]."&tipo=$tipo&verificaagrupar=1&agnump=f&agpar=t&emrec=".$emrec."&db_datausu=".date("Y-m-d",$DB_DATACALC)."&inscr=".@$inscr."&matric=".@$matric."&numpre=".@$numpre."&numcgm=".@$numcgm."\">AP</a></td>\n";
-   echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim($REGISTRO[$i]["k02_descr"])==""?"&nbsp":$REGISTRO[$i]["k02_descr"])."</td>\n";
+   echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim((string) $REGISTRO[$i]["k02_descr"])==""?"&nbsp":$REGISTRO[$i]["k02_descr"])."</td>\n";
 
    echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"valor$i\" value=\"".$valor."\">".number_format($valor,2,".",",")."</td>\n";
    echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"valorcorr$i\" value=\"".$valorcorr."\">".number_format($valorcorr,2,".",",")."</td>\n";
@@ -508,8 +508,8 @@ if(isset($tipo)) {
      $j = 0;
      $elementos_numpres[0] = "";
  for($i = 0;$i < $numrows;$i++) {
-   if(!in_array(pg_result($result,$i,"k00_numpre"),$elementos_numpres)) {
-	 $elementos_numpres[$j++] = pg_result($result,$i,"k00_numpre");
+   if(!in_array(pg_fetch_result($result,$i,"k00_numpre"),$elementos_numpres)) {
+	 $elementos_numpres[$j++] = pg_fetch_result($result,$i,"k00_numpre");
        }
      }
      //contador unico para nomear os inputs
@@ -533,10 +533,10 @@ if(isset($tipo)) {
 	 unset($elementos_parcelas);
        $elementos_parcelas[0] = "";
    for($r = 0;$r < $numrows;$r++) {
-	 if($elementos_numpres[$x] == pg_result($result,$r,"k00_numpre"))
-     if(!in_array(pg_result($result,$r,"k00_numpar"),$elementos_parcelas)) {
+	 if($elementos_numpres[$x] == pg_fetch_result($result,$r,"k00_numpre"))
+     if(!in_array(pg_fetch_result($result,$r,"k00_numpar"),$elementos_parcelas)) {
 	   $REGISTRO[$f] = pg_fetch_array($result,$r);
-	       $elementos_parcelas[$f++] = pg_result($result,$r,"k00_numpar");
+	       $elementos_parcelas[$f++] = pg_fetch_result($result,$r,"k00_numpar");
 	 }
        }
    for($i = 0;$i < sizeof($elementos_parcelas);$i++) {
@@ -549,29 +549,29 @@ if(isset($tipo)) {
      $desconto = 0;
      $total = 0;
 	 for($j = 0;$j < $numrows;$j++) {
-	   if($elementos_parcelas[$i] == pg_result($result,$j,"k00_numpar") && $elementos_numpres[$x] == pg_result($result,$j,"k00_numpre")) {		    
-          if(pg_result($result,$j,"k00_numpar") != @pg_result($result,$j+1,"k00_numpar") || (	$elementos_numpres[$x] != pg_result($result,$j+1,"k00_numpre")) ) {
+	   if($elementos_parcelas[$i] == pg_fetch_result($result,$j,"k00_numpar") && $elementos_numpres[$x] == pg_fetch_result($result,$j,"k00_numpre")) {		    
+          if(pg_fetch_result($result,$j,"k00_numpar") != @pg_fetch_result($result,$j+1,"k00_numpar") || (	$elementos_numpres[$x] != pg_fetch_result($result,$j+1,"k00_numpre")) ) {
 		       $numpres .= $separador.$elementos_numpres[$x]."P".$elementos_parcelas[$i];
 	   $separador = "N";
 		     }			
-		 $valor += (float)pg_result($result,$j,"vlrhis");
-	 $valorcorr += (float)pg_result($result,$j,"vlrcor");
-	 $juros += (float)pg_result($result,$j,"vlrjuros");
-	 $multa += (float)pg_result($result,$j,"vlrmulta");
-	 $desconto += (float)pg_result($result,$j,"vlrdesconto");
-	 $total += (float)pg_result($result,$j,"total"); 		    
+		 $valor += (float)pg_fetch_result($result,$j,"vlrhis");
+	 $valorcorr += (float)pg_fetch_result($result,$j,"vlrcor");
+	 $juros += (float)pg_fetch_result($result,$j,"vlrjuros");
+	 $multa += (float)pg_fetch_result($result,$j,"vlrmulta");
+	 $desconto += (float)pg_fetch_result($result,$j,"vlrdesconto");
+	 $total += (float)pg_fetch_result($result,$j,"total"); 		    
 	       }
 	 }	  
 	 /**************************/
      $vlrtotal += $REGISTRO[$i]["total"];
 	 $dtoper = $REGISTRO[$i]["k00_dtoper"];
-	 $dtoper = mktime(0,0,0,substr($dtoper,5,2),substr($dtoper,8,2),substr($dtoper,0,4));
+	 $dtoper = mktime(0,0,0,substr((string) $dtoper,5,2),substr((string) $dtoper,8,2),substr((string) $dtoper,0,4));
 	 //if($dtoper > time())
 	 //  $corDtoper = "#FF5151";
 	 //else
 	 $corDtoper = "";
 	 $dtvenc = $REGISTRO[$i]["k00_dtvenc"];
-	 $dtvenc = mktime(0,0,0,substr($dtvenc,5,2),substr($dtvenc,8,2),substr($dtvenc,0,4));
+	 $dtvenc = mktime(0,0,0,substr((string) $dtvenc,5,2),substr((string) $dtvenc,8,2),substr((string) $dtvenc,0,4));
 	 if($dtvenc < time())
 	   $corDtvenc = "red";
 	 else
@@ -596,7 +596,7 @@ if(isset($tipo)) {
 	      from recibounica r
 			      where r.k00_numpre = ".$elementos_numpres[$i]." and r.k00_dtvenc >= '".date('Y-m-d', $DB_DATACALC)."'
 			      ) as unica");
-	     for($unicont=0;$unicont<pg_numrows($resultunica);$unicont++){
+	     for($unicont=0;$unicont<pg_num_rows($resultunica);$unicont++){
        db_fieldsmemory($resultunica,$unicont);
 	       if($dtvencunic>=date('Y-m-d',$DB_DATACALC)){
 		 $dtvencunic = db_formatar($dtvencunic,'d');
@@ -613,7 +613,7 @@ if(isset($tipo)) {
 	 echo "<td colspan=\"3\" class=\"borda\" style=\"font-size:11px;color:white\" nowrap>Parcela Única com $k00_percdes% desconto</td>\n";
 //          echo "<td class=\"borda\" style=\"font-size:11px\" nowrap></td>\n";
 //         echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>Parcela Única</td>\n";
-    
+
 	 echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".number_format($uvlrhis,2,".",",")."</td>\n";
 	 echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".number_format($uvlrcorr,2,".",",")."</td>\n";
 	 echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap>".number_format($uvlrjuros,2,".",",")."</td>\n";
@@ -637,10 +637,10 @@ if(isset($tipo)) {
      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".$REGISTRO[$i]["k00_numtot"]."</td>\n";
      echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtoper==""?"":"bgcolor=$corDtoper")." nowrap>".date("d-m-Y",$dtoper)."</td>\n";
      echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtvenc==""?"":"bgcolor=$corDtvenc")." nowrap>".date("d-m-Y",$dtvenc)."</td>\n";	
-     echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim($REGISTRO[$i]["k01_descr"])==""?"&nbsp":$REGISTRO[$i]["k01_descr"])."</td>\n";
+     echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim((string) $REGISTRO[$i]["k01_descr"])==""?"&nbsp":$REGISTRO[$i]["k01_descr"])."</td>\n";
      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><a href=\"cai3_gerfinanc002.php?".$arg."&tipo=$tipo&agnump=f&agpar=f&emrec=".$emrec."&db_datausu=".date("Y-m-d",$DB_DATACALC)."&numcgm=".@$numcgm."&inscr=".@$inscr."&matric=".@$matric."&numpre=".@$numpre."\">DE</a></td>\n";
-        echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim($REGISTRO[$i]["k02_descr"])==""?"&nbsp":$REGISTRO[$i]["k02_descr"])."</td>\n";
-       
+        echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim((string) $REGISTRO[$i]["k02_descr"])==""?"&nbsp":$REGISTRO[$i]["k02_descr"])."</td>\n";
+
       echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"valor$ContadorUnico\" value=\"".$valor."\">".number_format($valor,2,".",",")."</td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"valorcorr$ContadorUnico\" value=\"".$valorcorr."\">".number_format($valorcorr,2,".",",")."</td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"juros$ContadorUnico\" value=\"".$juros."\">".number_format($juros,2,".",",")."</td>\n";
@@ -649,7 +649,7 @@ if(isset($tipo)) {
       echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"total$ContadorUnico\" value=\"".$total."\">".number_format($total,2,".",",")."</td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" id=\"coluna$ContadorUnico\" nowrap>".($tipo==3?"<input type=\"submit\" name=\"calculavalor\" id=\"calculavalor$ContadorUnico\" value=\"Calcular\">":"")."<input type=\"".($tipo==3?"hidden":"checkbox")."\" value=\"".$numpres."\" onclick=\"js_soma(2)\" id=\"CHECK$ContadorUnico\" name=\"CHECK".$ContadorUnico++."\" ".((abs($REGISTRO[$i]["k00_valor"])!=0 && $tipo==3)?"disabled":"")."></td>\n";
 /*	   
-	   
+
 	    echo "<td class=\"borda\" style=\"font-size:11px\" id=\"valor$ContadorUnico\" align=\"right\" nowrap>".number_format($valor,2,".",",")."</td>\n";
         echo "<td class=\"borda\" style=\"font-size:11px\" id=\"valorcorr$ContadorUnico\" align=\"right\" nowrap>".number_format($valorcorr,2,".",",")."</td>\n";
         echo "<td class=\"borda\" style=\"font-size:11px\" id=\"juros$ContadorUnico\" align=\"right\" nowrap>".number_format($juros,2,".",",")."</td>\n";
@@ -672,8 +672,8 @@ if(isset($tipo)) {
 	$j = 0;
 	$elementos_numpres[0] = "";
     for($i = 0;$i < $numrows;$i++) {	  
-      if(!in_array(pg_result($result,$i,"k00_numpre"),$elementos_numpres))
-	    $elementos_numpres[$j++] = pg_result($result,$i,"k00_numpre");
+      if(!in_array(pg_fetch_result($result,$i,"k00_numpre"),$elementos_numpres))
+	    $elementos_numpres[$j++] = pg_fetch_result($result,$i,"k00_numpre");
 	}				
     for($i = 0;$i < sizeof($elementos_numpres);$i++) {
       $auxValor = 0;
@@ -683,20 +683,20 @@ if(isset($tipo)) {
 	  $auxDesconto = 0;
 	  $auxTotal = 0;
       for($j = 0;$j < $numrows;$j++) {   	        	 
-	    if($elementos_numpres[$i] == pg_result($result,$j,"k00_numpre")) {
-		  if(pg_result($result,$j,"k00_numpar") == @pg_result($result,($j+1),"k00_numpar")) {
-		    $auxValor += (float)pg_result($result,$j,"vlrhis");
-		    $auxValorcorr += (float)pg_result($result,$j,"vlrcor");
-		    $auxJuros += (float)pg_result($result,$j,"vlrjuros");
-		    $auxMulta += (float)pg_result($result,$j,"vlrmulta");
-		    $auxDesconto += (float)pg_result($result,$j,"vlrdesconto");
-		    $auxTotal += (float)pg_result($result,$j,"total");															
-			$SomaDasParcelasValor[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] = $auxValor;
-			$SomaDasParcelasValorcorr[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] = $auxValorcorr;
-			$SomaDasParcelasJuros[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] = $auxJuros;
-			$SomaDasParcelasMulta[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] = $auxMulta;
-			$SomaDasParcelasDesconto[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] = $auxDesconto;
-			$SomaDasParcelasTotal[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] = $auxTotal;												
+	    if($elementos_numpres[$i] == pg_fetch_result($result,$j,"k00_numpre")) {
+		  if(pg_fetch_result($result,$j,"k00_numpar") == @pg_fetch_result($result,($j+1),"k00_numpar")) {
+		    $auxValor += (float)pg_fetch_result($result,$j,"vlrhis");
+		    $auxValorcorr += (float)pg_fetch_result($result,$j,"vlrcor");
+		    $auxJuros += (float)pg_fetch_result($result,$j,"vlrjuros");
+		    $auxMulta += (float)pg_fetch_result($result,$j,"vlrmulta");
+		    $auxDesconto += (float)pg_fetch_result($result,$j,"vlrdesconto");
+		    $auxTotal += (float)pg_fetch_result($result,$j,"total");															
+			$SomaDasParcelasValor[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] = $auxValor;
+			$SomaDasParcelasValorcorr[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] = $auxValorcorr;
+			$SomaDasParcelasJuros[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] = $auxJuros;
+			$SomaDasParcelasMulta[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] = $auxMulta;
+			$SomaDasParcelasDesconto[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] = $auxDesconto;
+			$SomaDasParcelasTotal[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] = $auxTotal;												
 			//echo $elementos_numpres[$i]." == ".pg_result($result,$j,"k00_numpar")." == ".@pg_result($result,$j+1,"k00_numpar")." == ".$aux."<br>";
 		  } else {
             $auxValor = 0;
@@ -713,12 +713,12 @@ if(isset($tipo)) {
             $SomaDasParcelasDesconto[$elementos_numpres[$i]][@pg_result($result,$j+1,"k00_numpar")] = 0;
             $SomaDasParcelasTotal[$elementos_numpres[$i]][@pg_result($result,$j+1,"k00_numpar")] = 0;
              */
-	        @$SomaDasParcelasValor[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] += pg_result($result,$j,"vlrhis");
-	        @$SomaDasParcelasValorcorr[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] += pg_result($result,$j,"vlrcor");
-	        @$SomaDasParcelasJuros[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] += pg_result($result,$j,"vlrjuros");
-	        @$SomaDasParcelasMulta[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] += pg_result($result,$j,"vlrmulta");
-	        @$SomaDasParcelasDesconto[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] += pg_result($result,$j,"vlrdesconto");												
-	        @$SomaDasParcelasTotal[$elementos_numpres[$i]][pg_result($result,$j,"k00_numpar")] += pg_result($result,$j,"total");
+	        @$SomaDasParcelasValor[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] += pg_fetch_result($result,$j,"vlrhis");
+	        @$SomaDasParcelasValorcorr[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] += pg_fetch_result($result,$j,"vlrcor");
+	        @$SomaDasParcelasJuros[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] += pg_fetch_result($result,$j,"vlrjuros");
+	        @$SomaDasParcelasMulta[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] += pg_fetch_result($result,$j,"vlrmulta");
+	        @$SomaDasParcelasDesconto[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] += pg_fetch_result($result,$j,"vlrdesconto");												
+	        @$SomaDasParcelasTotal[$elementos_numpres[$i]][pg_fetch_result($result,$j,"k00_numpar")] += pg_fetch_result($result,$j,"total");
 		  }
 		} else {		  		  				      
           //unset($SomaDasParcelasValor, $SomaDasParcelasValorcorr, $SomaDasParcelasJuros, $SomaDasParcelasMulta, $SomaDasParcelasDesconto, $SomaDasParcelasTotal);			  
@@ -737,7 +737,7 @@ if(isset($tipo)) {
  
     $listaunica = true;
     for($i = 0;$i < $numrows;$i++) {
-	  if($elementos_numpres[$cont] != pg_result($result,$i,"k00_numpre")) {
+	  if($elementos_numpres[$cont] != pg_fetch_result($result,$i,"k00_numpre")) {
 	    $listaunica = true;
 	    $cont++;
 	    if($bool == 0) {
@@ -750,30 +750,30 @@ if(isset($tipo)) {
 		  $bool = 0;
 		}
 	  }
-      $vlrtotal += pg_result($result,$i,"total");
-	  $dtoper = pg_result($result,$i,"k00_dtoper");
+      $vlrtotal += pg_fetch_result($result,$i,"total");
+	  $dtoper = pg_fetch_result($result,$i,"k00_dtoper");
 	  $dtoper = mktime(0,0,0,substr($dtoper,5,2),substr($dtoper,8,2),substr($dtoper,0,4));
 	  //if($dtoper > time())
 	  //  $corDtoper = "#FF5151";
 	  //else
 	  $corDtoper = "";
-	  $dtvenc = pg_result($result,$i,"k00_dtvenc");
+	  $dtvenc = pg_fetch_result($result,$i,"k00_dtvenc");
 	  $dtvenc = mktime(0,0,0,substr($dtvenc,5,2),substr($dtvenc,8,2),substr($dtvenc,0,4));
 	  if($dtvenc < time())
 	    $corDtvenc = "red";
 	  else
 	    $corDtvenc = "";
-	  if(pg_result($result,$i,"k00_numpar") == @$salva_parcela) {
+	  if(pg_fetch_result($result,$i,"k00_numpar") == @$salva_parcela) {
 	    $cor = $ConfCor1;
 	  } else {
   	    $cor = $ConfCor2;
-	    if(pg_result($result,$i,"k00_numpar") == @pg_result($result,$i+1,"k00_numpar"))
+	    if(pg_fetch_result($result,$i,"k00_numpar") == @pg_fetch_result($result,$i+1,"k00_numpar"))
 	      $salva_parcela = "";
 	    else
-	      $salva_parcela = @pg_result($result,$i+1,"k00_numpar");		
+	      $salva_parcela = @pg_fetch_result($result,$i+1,"k00_numpar");		
 	  }	
       // unica
-	  if(($elementos_numpres[$cont] == pg_result($result,$i,"k00_numpre")) && $listaunica) {
+	  if(($elementos_numpres[$cont] == pg_fetch_result($result,$i,"k00_numpre")) && $listaunica) {
 //	    if($verf_parc != pg_result($result,$i,"k00_numpar") && $emrec == "t") {
 	    $listaunica = false;
 	    $resultunica = db_query(
@@ -791,9 +791,9 @@ if(isset($tipo)) {
 				 select r.k00_numpre,r.k00_dtvenc as dtvencunic, r.k00_dtoper as dtoperunic, r.k00_percdes,
 				        fc_calcula(r.k00_numpre,0,0,r.k00_dtvenc,r.k00_dtvenc,".db_getsession("DB_anousu").")
                  from recibounica r
-				 where r.k00_numpre = ".pg_result($result,$i,"k00_numpre")." and r.k00_dtvenc >= '".date('Y-m-d', $DB_DATACALC)."'
+				 where r.k00_numpre = ".pg_fetch_result($result,$i,"k00_numpre")." and r.k00_dtvenc >= '".date('Y-m-d', $DB_DATACALC)."'
 				 ) as unica");
-		for($unicont=0;$unicont<pg_numrows($resultunica);$unicont++){
+		for($unicont=0;$unicont<pg_num_rows($resultunica);$unicont++){
           db_fieldsmemory($resultunica,$unicont);
  		  if($dtvencunic>=date('Y-m-d',$DB_DATACALC)){
 		    $dtvencunic = db_formatar($dtvencunic,'d');
@@ -828,24 +828,24 @@ if(isset($tipo)) {
 
       echo "<label for=\"CHECK$i\"><tr style=\"cursor: hand\" bgcolor=\"".$cor."\">\n";	
       echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>
-	  <input style=\"background-color:$cor;border:none\" onclick=\"window.open('cai3_gerfinanc005.php?".base64_encode($tipo."#".pg_result($result,$i,"k00_numpre")."#".pg_result($result,$i,"k00_numpar"))."','','width=600,height=500,scrollbars=1')\" type=\"button\" value=\"MI\">
+	  <input style=\"background-color:$cor;border:none\" onclick=\"window.open('cai3_gerfinanc005.php?".base64_encode($tipo."#".pg_fetch_result($result,$i,"k00_numpre")."#".pg_fetch_result($result,$i,"k00_numpar"))."','','width=600,height=500,scrollbars=1')\" type=\"button\" value=\"MI\">
 	  </td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><input style=\"border:none;background-color:$cor\" onclick=\"location.href='cai3_gerfinanc008.php?".base64_encode("numpre=".pg_result($result,$i,"k00_numpre"))."'\" type=\"button\" value=\"".pg_result($result,$i,"k00_numpre")."\"></td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap><input style=\"border:none;background-color:$cor\" onclick=\"location.href='cai3_gerfinanc008.php?".base64_encode("numpre=".pg_fetch_result($result,$i,"k00_numpre"))."'\" type=\"button\" value=\"".pg_fetch_result($result,$i,"k00_numpre")."\"></td>\n";
 
 //      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".pg_result($result,$i,"k00_numpre")."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_result($result,$i,"k00_numpar"))==""?"&nbsp":pg_result($result,$i,"k00_numpar"))."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_result($result,$i,"k00_numtot"))==""?"&nbsp":pg_result($result,$i,"k00_numtot"))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_fetch_result($result,$i,"k00_numpar"))==""?"&nbsp":pg_fetch_result($result,$i,"k00_numpar"))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_fetch_result($result,$i,"k00_numtot"))==""?"&nbsp":pg_fetch_result($result,$i,"k00_numtot"))."</td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtoper==""?"":"bgcolor=$corDtoper")." nowrap>".date("d-m-Y",$dtoper)."</td>\n";
       echo "<td class=\"borda\" style=\"font-size:11px\" ".($corDtvenc==""?"":"bgcolor=$corDtvenc")." nowrap>".date("d-m-Y",$dtvenc)."</td>\n";	
-      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_result($result,$i,"k01_descr"))==""?"&nbsp":pg_result($result,$i,"k01_descr"))."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_result($result,$i,"k00_receit"))==""?"&nbsp":pg_result($result,$i,"k00_receit"))."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_result($result,$i,"k02_descr"))==""?"&nbsp":pg_result($result,$i,"k02_descr"))."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"valor$i\" value=\"".$SomaDasParcelasValor[pg_result($result,$i,"k00_numpre")][pg_result($result,$i,"k00_numpar")]."\">".(trim(pg_result($result,$i,"vlrhis"))==""?"&nbsp":((abs(pg_result($result,$i,"k00_valor"))==0 && $tipo==3)?"<input style=\"height: 16px;font-size=12px\" onfocus=\"if(parent.document.getElementById('enviar').value == 'Agrupar') parent.document.getElementById('enviar').disabled = true;\" type=\"text\" name=\"VAL".$i."\" value=\"".abs(pg_result($result,$i,"valor_variavel"))."\" size=\"5\">":number_format(pg_result($result,$i,"vlrhis"),2,".",",")))."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"valorcorr$i\" value=\"".$SomaDasParcelasValorcorr[pg_result($result,$i,"k00_numpre")][pg_result($result,$i,"k00_numpar")]."\">".(trim(pg_result($result,$i,"vlrcor"))==""?"&nbsp":number_format(pg_result($result,$i,"vlrcor"),2,".",","))."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"juros$i\" value=\"".$SomaDasParcelasJuros[pg_result($result,$i,"k00_numpre")][pg_result($result,$i,"k00_numpar")]."\">".(trim(pg_result($result,$i,"vlrjuros"))==""?"&nbsp":number_format(pg_result($result,$i,"vlrjuros"),2,".",","))."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"multa$i\" value=\"".$SomaDasParcelasMulta[pg_result($result,$i,"k00_numpre")][pg_result($result,$i,"k00_numpar")]."\">".(trim(pg_result($result,$i,"vlrmulta"))==""?"&nbsp":number_format(pg_result($result,$i,"vlrmulta"),2,".",","))."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"desconto$i\" value=\"".$SomaDasParcelasDesconto[pg_result($result,$i,"k00_numpre")][pg_result($result,$i,"k00_numpar")]."\">".(trim(pg_result($result,$i,"vlrdesconto"))==""?"&nbsp":number_format(pg_result($result,$i,"vlrdesconto"),2,".",","))."</td>\n";
-      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"total$i\" value=\"".$SomaDasParcelasTotal[pg_result($result,$i,"k00_numpre")][pg_result($result,$i,"k00_numpar")]."\">".(trim(pg_result($result,$i,"total"))==""?"&nbsp":number_format(pg_result($result,$i,"total"),2,".",","))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_fetch_result($result,$i,"k01_descr"))==""?"&nbsp":pg_fetch_result($result,$i,"k01_descr"))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_fetch_result($result,$i,"k00_receit"))==""?"&nbsp":pg_fetch_result($result,$i,"k00_receit"))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" nowrap>".(trim(pg_fetch_result($result,$i,"k02_descr"))==""?"&nbsp":pg_fetch_result($result,$i,"k02_descr"))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"valor$i\" value=\"".$SomaDasParcelasValor[pg_fetch_result($result,$i,"k00_numpre")][pg_fetch_result($result,$i,"k00_numpar")]."\">".(trim(pg_fetch_result($result,$i,"vlrhis"))==""?"&nbsp":((abs(pg_fetch_result($result,$i,"k00_valor"))==0 && $tipo==3)?"<input style=\"height: 16px;font-size=12px\" onfocus=\"if(parent.document.getElementById('enviar').value == 'Agrupar') parent.document.getElementById('enviar').disabled = true;\" type=\"text\" name=\"VAL".$i."\" value=\"".abs(pg_fetch_result($result,$i,"valor_variavel"))."\" size=\"5\">":number_format(pg_fetch_result($result,$i,"vlrhis"),2,".",",")))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"valorcorr$i\" value=\"".$SomaDasParcelasValorcorr[pg_fetch_result($result,$i,"k00_numpre")][pg_fetch_result($result,$i,"k00_numpar")]."\">".(trim(pg_fetch_result($result,$i,"vlrcor"))==""?"&nbsp":number_format(pg_fetch_result($result,$i,"vlrcor"),2,".",","))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"juros$i\" value=\"".$SomaDasParcelasJuros[pg_fetch_result($result,$i,"k00_numpre")][pg_fetch_result($result,$i,"k00_numpar")]."\">".(trim(pg_fetch_result($result,$i,"vlrjuros"))==""?"&nbsp":number_format(pg_fetch_result($result,$i,"vlrjuros"),2,".",","))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"multa$i\" value=\"".$SomaDasParcelasMulta[pg_fetch_result($result,$i,"k00_numpre")][pg_fetch_result($result,$i,"k00_numpar")]."\">".(trim(pg_fetch_result($result,$i,"vlrmulta"))==""?"&nbsp":number_format(pg_fetch_result($result,$i,"vlrmulta"),2,".",","))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"desconto$i\" value=\"".$SomaDasParcelasDesconto[pg_fetch_result($result,$i,"k00_numpre")][pg_fetch_result($result,$i,"k00_numpar")]."\">".(trim(pg_fetch_result($result,$i,"vlrdesconto"))==""?"&nbsp":number_format(pg_fetch_result($result,$i,"vlrdesconto"),2,".",","))."</td>\n";
+      echo "<td class=\"borda\" style=\"font-size:11px\" align=\"right\" nowrap><input type=\"hidden\" id=\"total$i\" value=\"".$SomaDasParcelasTotal[pg_fetch_result($result,$i,"k00_numpre")][pg_fetch_result($result,$i,"k00_numpar")]."\">".(trim(pg_fetch_result($result,$i,"total"))==""?"&nbsp":number_format(pg_fetch_result($result,$i,"total"),2,".",","))."</td>\n";
 
 /*
 echo "<script>alert('kjkjk');</script>";
@@ -857,20 +857,20 @@ echo "<script>alert('kjkjk');</script>";
       $SomaDasParcelasTotal[pg_result($result,$i,"k00_numpre")][pg_result($result,$i,"k00_numpar")] = 0;
 */
 
-	  if($elementos_numpres[$cont2] == pg_result($result,$i,"k00_numpre")) {
+	  if($elementos_numpres[$cont2] == pg_fetch_result($result,$i,"k00_numpre")) {
 //	    if($verf_parc != pg_result($result,$i,"k00_numpar") && $emrec == "t") {
-	    if($verf_parc != pg_result($result,$i,"k00_numpar")) {
-          echo "<td class=\"borda\" style=\"font-size:11px\" id=\"coluna$i\" nowrap>".($tipo==3?"<input type=\"submit\"  onclick=\"this.form.target = ''\" name=\"calculavalor\" id=\"calculavalor$i\" value=\"Calcular\">":"")."<input type=\"".($tipo==3?"hidden":"checkbox")."\" value=\"".pg_result($result,$i,"k00_numpre")."P".pg_result($result,$i,"k00_numpar")."\" onclick=\"js_soma(2)\" id=\"CHECK$i\" name=\"CHECK$i\" ".((abs(pg_result($result,$i,"k00_valor"))!=0 && $tipo==3)?"disabled":"")."></td>\n";
-	      $verf_parc = pg_result($result,$i,"k00_numpar");
+	    if($verf_parc != pg_fetch_result($result,$i,"k00_numpar")) {
+          echo "<td class=\"borda\" style=\"font-size:11px\" id=\"coluna$i\" nowrap>".($tipo==3?"<input type=\"submit\"  onclick=\"this.form.target = ''\" name=\"calculavalor\" id=\"calculavalor$i\" value=\"Calcular\">":"")."<input type=\"".($tipo==3?"hidden":"checkbox")."\" value=\"".pg_fetch_result($result,$i,"k00_numpre")."P".pg_fetch_result($result,$i,"k00_numpar")."\" onclick=\"js_soma(2)\" id=\"CHECK$i\" name=\"CHECK$i\" ".((abs(pg_fetch_result($result,$i,"k00_valor"))!=0 && $tipo==3)?"disabled":"")."></td>\n";
+	      $verf_parc = pg_fetch_result($result,$i,"k00_numpar");
 	    } else {
-	      $verf_parc = pg_result($result,$i,"k00_numpar");
+	      $verf_parc = pg_fetch_result($result,$i,"k00_numpar");
 	      echo "<td class=\"borda\" style=\"font-size:11px\" id=\"coluna$i\" nowrap>&nbsp;</td>\n";		
         }
 	  } else {
  	    $cont2++;
-        $verf_parc = pg_result($result,$i,"k00_numpar");
+        $verf_parc = pg_fetch_result($result,$i,"k00_numpar");
 //		if($emrec == "t")
-          echo "<td class=\"borda\" style=\"font-size:11px\" id=\"coluna$i\" nowrap>".($tipo==3?"<input type=\"submit\" onclick=\"this.form.target = ''\" name=\"calculavalor\" id=\"calculavalor$i\" value=\"Calcular\">":"")."<input type=\"".($tipo==3?"hidden":"checkbox")."\" value=\"".pg_result($result,$i,"k00_numpre")."P".pg_result($result,$i,"k00_numpar")."\" onclick=\"js_soma(2)\" id=\"CHECK$i\" name=\"CHECK$i\" ".((abs(pg_result($result,$i,"k00_valor"))!=0 && $tipo==3)?"disabled":"")."></td>\n";
+          echo "<td class=\"borda\" style=\"font-size:11px\" id=\"coluna$i\" nowrap>".($tipo==3?"<input type=\"submit\" onclick=\"this.form.target = ''\" name=\"calculavalor\" id=\"calculavalor$i\" value=\"Calcular\">":"")."<input type=\"".($tipo==3?"hidden":"checkbox")."\" value=\"".pg_fetch_result($result,$i,"k00_numpre")."P".pg_fetch_result($result,$i,"k00_numpar")."\" onclick=\"js_soma(2)\" id=\"CHECK$i\" name=\"CHECK$i\" ".((abs(pg_fetch_result($result,$i,"k00_valor"))!=0 && $tipo==3)?"disabled":"")."></td>\n";
 //        else
 //		  echo "<td class=\"borda\" style=\"font-size:11px\" id=\"coluna$i\" nowrap>&nbsp;</td>\n";				  
 	  }

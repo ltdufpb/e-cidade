@@ -229,11 +229,11 @@ if (isset($exclusao) && $exclusao == "true") {
                    
                    if (isset($rh239_rhlota) && !empty($rh239_rhlota)) {
                        
-                     $chavepri= array("rh239_sequencial"=>null);
+                     $chavepri= ["rh239_sequencial"=>null];
                      $sWhereIframeManutencao = " rhlotavincrubrica.rh239_instituicao = ".db_getsession("DB_instit")." and rhlotavincrubrica.rh239_rhlota = {$rh239_rhlota}";
                      if(isset($rh239_sequencial) && trim($rh239_sequencial) != ""){
                          $sWhereIframeManutencao .= " and rhlotavincrubrica.rh239_sequencial <> ".$rh239_sequencial;
-                         $chavepri= array("rh239_sequencial"=>$rh239_sequencial);
+                         $chavepri= ["rh239_sequencial"=>$rh239_sequencial];
                      }
                      
                      $sCampos = "distinct rh239_sequencial,rh239_rhlota,r70_estrut,r70_descr,rh239_rhrubricas,rh27_descr";

@@ -209,7 +209,7 @@ $clrotulo->label("ed57_i_nummatr");
   </td>
   <td>
    <?php 
-   $x = array();
+   $x = [];
    db_select('ed60_c_situacao',$x,true,$db_opcao," disabled");
    ?>
   </td>
@@ -332,7 +332,7 @@ function js_pesquisaed60_i_turma(){
 function js_preenchepesquisaturma(chave){
  db_iframe_turma.hide();
  <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  ?>
 }
 function js_calcvagas(){

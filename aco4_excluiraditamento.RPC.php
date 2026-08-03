@@ -66,13 +66,13 @@ try {
              * Remove o vínculo com a reserva de saldo da posição do acordo
              * @var array
              */
-            $aSqlVinculoReserva = array(
+            $aSqlVinculoReserva = [
                 "delete from orcreservaacordoitemdotacao where o84_acordoitemdotacao in (",
                 "select ac22_sequencial from acordoitemdotacao where ac22_acordoitem in (",
                 "select ac20_sequencial from acordoitem where ac20_acordoposicao in ($iAcordoPosicao)",
                 ")",
                 ")",
-            );
+            ];
             $sSqlVinculoReserva = implode(' ', $aSqlVinculoReserva);
             $rsDeleteVinculoReserva = db_query($sSqlVinculoReserva);
             if (!$rsDeleteVinculoReserva) {
@@ -83,7 +83,7 @@ try {
              * Remove a reserva de saldo vinculada a posição do acordo
              * @var array
              */
-            $aSqlReserva = array(
+            $aSqlReserva = [
                 "delete from orcreserva where o80_codres in (",
                 "select o84_orcreserva from orcreservaacordoitemdotacao where o84_acordoitemdotacao in (",
                 "select ac22_sequencial from acordoitemdotacao where ac22_acordoitem in (",
@@ -91,7 +91,7 @@ try {
                 ")",
                 ")",
                 ")",
-            );
+            ];
             $sSqlReserva = implode(' ', $aSqlReserva);
             $rsDeleteReserva = db_query($sSqlReserva);
             if (!$rsDeleteReserva) {
@@ -131,7 +131,7 @@ try {
                 throw new Exception(pg_lasterror());
             }
 
-            $aTabelasExcluirItem = array(
+            $aTabelasExcluirItem = [
                 'acordoitemaditamento' => 'ac21_acordoitem',
                 'acordoitemdotacao' => 'ac22_acordoitem',
                 'acordoitemexecutado' => 'ac29_acordoitem',
@@ -142,17 +142,17 @@ try {
                 'acordoliclicitem' => 'ac24_acordoitem',
                 'acordopcprocitem' => 'ac23_acordoitem',
                 'acordoempempitem' => 'ac44_acordoitem',
-            );
-            $aTabelasExcluirPosicao = array(
+            ];
+            $aTabelasExcluirPosicao = [
                 'acordoitem' => 'ac20_acordoposicao',
                 'acordoposicaoacordomovimentacao' => 'ac31_acordoposicao',
                 'acordoposicaoaditamento' => 'ac35_acordoposicao',
                 'acordoposicaoperiodo' => 'ac36_acordoposicao',
                 'acordovigencia' => 'ac18_acordoposicao',
                 'acordoposicao' => 'ac26_sequencial',
-            );
+            ];
 
-            $aComandosSql = array();
+            $aComandosSql = [];
             $sSqlItensPosicao = "select ac20_sequencial from acordoitem where ac20_acordoposicao = {$iAcordoPosicao}";
             foreach ($aTabelasExcluirItem as $sTabela => $sCampo) {
 

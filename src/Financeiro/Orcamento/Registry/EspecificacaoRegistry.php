@@ -16,7 +16,7 @@ class EspecificacaoRegistry
     /**
      * @var Especificacao[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Especificacao $especificacao

@@ -220,7 +220,7 @@ class RecadastroImobiliarioImoveisReinclusao  implements RecadastroImobiliarioIm
   
   public function registraLog() {
   
-    $this->sMensagemLog = pg_escape_string(Conexao::getInstancia()->getConexao(), $this->sMensagemLog);
+    $this->sMensagemLog = pg_escape_string(Conexao::getInstancia()->getConexao(), (string) $this->sMensagemLog);
   
     $sUpdateRecadastroImobiliarioImoveis  = "update recadastroimobiliarioimoveis                 ";
     $sUpdateRecadastroImobiliarioImoveis .= "   set ie28_processado  = 't',                      ";

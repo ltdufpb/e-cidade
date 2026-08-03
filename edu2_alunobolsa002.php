@@ -35,7 +35,7 @@ $oGet = db_utils::postMemory($_GET);
 */
 $oParametros                    = new stdClass();
 $oParametros->iEscola           = $oGet->iEscola;
-$oParametros->aListaCalendarios = explode(",", $oGet->aCalendarios);
+$oParametros->aListaCalendarios = explode(",", (string) $oGet->aCalendarios);
 $oParametros->iEtapa            = $oGet->iEtapa;
 $oParametros->lFrequencia       = $oGet->lFrequencia == 'true' ? true : false;
 
@@ -62,7 +62,7 @@ if ($oParametros->lFrequencia) {
 }
 $iCodigoEscola        = db_getsession("DB_coddepto");
 $sWhereMatricula      = '';
-$aFiltros    = array("ed47_c_bolsafamilia = 'S'");
+$aFiltros    = ["ed47_c_bolsafamilia = 'S'"];
 $sNomeEtapa  = "TODAS";
 $sNomeEscola = "TODAS";
 if (!empty($oParametros->iEscola)) {
@@ -101,13 +101,13 @@ $sSqlMatricula     = $oDaoMatricula->sql_query_bolsafamilia("", $sCamposMatricul
 $rsMatricula       = $oDaoMatricula->sql_record($sSqlMatricula);
 $iNumLinhas        = $oDaoMatricula->numrows;
 
-$aEscolas              = array();
+$aEscolas              = [];
 $oIdade                = new stdClass();
 $oIdade->iIdadeInicial = 0;
 $oIdade->iIdadeFinal   = 15;
 $oIdade->nPercentual   = 85;
 $oIdade->iTotalAlunos  = 0;
-$oIdade->aEscolas      = array();
+$oIdade->aEscolas      = [];
 $aFaixaDeIdades[]      = $oIdade;
 
 $oIdade                = new stdClass();
@@ -115,7 +115,7 @@ $oIdade->iIdadeInicial = 0;
 $oIdade->iIdadeFinal   = 17;
 $oIdade->nPercentual   = 75;
 $oIdade->iTotalAlunos  = 0;
-$oIdade->aEscolas      = array();
+$oIdade->aEscolas      = [];
 $aFaixaDeIdades[]      = $oIdade;
 
 $iTotalAlunos  = 0;
@@ -138,7 +138,7 @@ for ($iCont = 0; $iCont < $iNumLinhas; $iCont++) {
     $oEscola->sNomeEscola      = $oDadosMatricula->ed18_c_nome;
     $oEscola->iTotalAlunos     = 0;
     $oEscola->nTotalFrequencia = 0;
-    $oEscola->aEtapas          = array();
+    $oEscola->aEtapas          = [];
     
     $oFaixaDeIdade->aEscolas[$oEscola->iCodigoEscola] = $oEscola;
   }
@@ -152,7 +152,7 @@ for ($iCont = 0; $iCont < $iNumLinhas; $iCont++) {
     $oEtapa->sNomeEtapa       = $oDadosMatricula->ed11_c_descr;
     $oEtapa->iTotalAlunos     = 0;
     $oEtapa->nTotalFrequencia = 0;
-    $oEtapa->aAlunos          = array();
+    $oEtapa->aAlunos          = [];
     $oEscola->aEtapas[$oDadosMatricula->ed11_i_codigo] = $oEtapa;
   }
   

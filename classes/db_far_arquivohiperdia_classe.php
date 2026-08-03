@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE far_arquivohiperdia
 class cl_far_arquivohiperdia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $fa56_i_codigo = 0; 
-   var $fa56_d_dataini_dia = null; 
-   var $fa56_d_dataini_mes = null; 
-   var $fa56_d_dataini_ano = null; 
-   var $fa56_d_dataini = null; 
-   var $fa56_d_datafim_dia = null; 
-   var $fa56_d_datafim_mes = null; 
-   var $fa56_d_datafim_ano = null; 
-   var $fa56_d_datafim = null; 
-   var $fa56_c_nomearquivo = null; 
-   var $fa56_o_arquivo = 0; 
-   var $fa56_i_login = 0; 
-   var $fa56_d_datasistema_dia = null; 
-   var $fa56_d_datasistema_mes = null; 
-   var $fa56_d_datasistema_ano = null; 
-   var $fa56_d_datasistema = null; 
-   var $fa56_c_horasistema = null; 
+   public $fa56_i_codigo = 0; 
+   public $fa56_d_dataini_dia = null; 
+   public $fa56_d_dataini_mes = null; 
+   public $fa56_d_dataini_ano = null; 
+   public $fa56_d_dataini = null; 
+   public $fa56_d_datafim_dia = null; 
+   public $fa56_d_datafim_mes = null; 
+   public $fa56_d_datafim_ano = null; 
+   public $fa56_d_datafim = null; 
+   public $fa56_c_nomearquivo = null; 
+   public $fa56_o_arquivo = 0; 
+   public $fa56_i_login = 0; 
+   public $fa56_d_datasistema_dia = null; 
+   public $fa56_d_datasistema_mes = null; 
+   public $fa56_d_datasistema_ano = null; 
+   public $fa56_d_datasistema = null; 
+   public $fa56_c_horasistema = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  fa56_i_codigo = int4 = Código 
                  fa56_d_dataini = date = Data de Início 
                  fa56_d_datafim = date = Data de Fim 
@@ -71,10 +71,10 @@ class cl_far_arquivohiperdia {
                  fa56_c_horasistema = char(5) = Hora do sistema 
                  ";
    //funcao construtor da classe 
-   function cl_far_arquivohiperdia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_arquivohiperdia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -197,10 +197,10 @@ class cl_far_arquivohiperdia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa56_i_codigo = pg_result($result,0,0); 
+       $this->fa56_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from far_arquivohiperdia_fa56_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa56_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa56_i_codigo)){
          $this->erro_sql = " Campo fa56_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -242,7 +242,7 @@ class cl_far_arquivohiperdia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "far_arquivohiperdia ($this->fa56_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "far_arquivohiperdia já Cadastrado";
@@ -266,17 +266,17 @@ class cl_far_arquivohiperdia {
      $resaco = $this->sql_record($this->sql_query_file($this->fa56_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17420,'$this->fa56_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,3081,17420,'','".AddSlashes(pg_result($resaco,0,'fa56_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3081,17421,'','".AddSlashes(pg_result($resaco,0,'fa56_d_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3081,17422,'','".AddSlashes(pg_result($resaco,0,'fa56_d_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3081,17426,'','".AddSlashes(pg_result($resaco,0,'fa56_c_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3081,17427,'','".AddSlashes(pg_result($resaco,0,'fa56_o_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3081,17423,'','".AddSlashes(pg_result($resaco,0,'fa56_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3081,17424,'','".AddSlashes(pg_result($resaco,0,'fa56_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3081,17425,'','".AddSlashes(pg_result($resaco,0,'fa56_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3081,17420,'','".AddSlashes(pg_fetch_result($resaco,0,'fa56_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3081,17421,'','".AddSlashes(pg_fetch_result($resaco,0,'fa56_d_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3081,17422,'','".AddSlashes(pg_fetch_result($resaco,0,'fa56_d_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3081,17426,'','".AddSlashes(pg_fetch_result($resaco,0,'fa56_c_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3081,17427,'','".AddSlashes(pg_fetch_result($resaco,0,'fa56_o_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3081,17423,'','".AddSlashes(pg_fetch_result($resaco,0,'fa56_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3081,17424,'','".AddSlashes(pg_fetch_result($resaco,0,'fa56_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3081,17425,'','".AddSlashes(pg_fetch_result($resaco,0,'fa56_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -285,10 +285,10 @@ class cl_far_arquivohiperdia {
       $this->atualizacampos();
      $sql = " update far_arquivohiperdia set ";
      $virgula = "";
-     if(trim($this->fa56_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_i_codigo"])){ 
+     if(trim((string) $this->fa56_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_i_codigo"])){ 
        $sql  .= $virgula." fa56_i_codigo = $this->fa56_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa56_i_codigo) == null ){ 
+       if(trim((string) $this->fa56_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "fa56_i_codigo";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_far_arquivohiperdia {
          return false;
        }
      }
-     if(trim($this->fa56_d_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"] !="") ){ 
+     if(trim((string) $this->fa56_d_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"] !="") ){ 
        $sql  .= $virgula." fa56_d_dataini = '$this->fa56_d_dataini' ";
        $virgula = ",";
-       if(trim($this->fa56_d_dataini) == null ){ 
+       if(trim((string) $this->fa56_d_dataini) == null ){ 
          $this->erro_sql = " Campo Data de Início nao Informado.";
          $this->erro_campo = "fa56_d_dataini_dia";
          $this->erro_banco = "";
@@ -314,7 +314,7 @@ class cl_far_arquivohiperdia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"])){ 
          $sql  .= $virgula." fa56_d_dataini = null ";
          $virgula = ",";
-         if(trim($this->fa56_d_dataini) == null ){ 
+         if(trim((string) $this->fa56_d_dataini) == null ){ 
            $this->erro_sql = " Campo Data de Início nao Informado.";
            $this->erro_campo = "fa56_d_dataini_dia";
            $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_far_arquivohiperdia {
          }
        }
      }
-     if(trim($this->fa56_d_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"] !="") ){ 
+     if(trim((string) $this->fa56_d_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"] !="") ){ 
        $sql  .= $virgula." fa56_d_datafim = '$this->fa56_d_datafim' ";
        $virgula = ",";
-       if(trim($this->fa56_d_datafim) == null ){ 
+       if(trim((string) $this->fa56_d_datafim) == null ){ 
          $this->erro_sql = " Campo Data de Fim nao Informado.";
          $this->erro_campo = "fa56_d_datafim_dia";
          $this->erro_banco = "";
@@ -341,7 +341,7 @@ class cl_far_arquivohiperdia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"])){ 
          $sql  .= $virgula." fa56_d_datafim = null ";
          $virgula = ",";
-         if(trim($this->fa56_d_datafim) == null ){ 
+         if(trim((string) $this->fa56_d_datafim) == null ){ 
            $this->erro_sql = " Campo Data de Fim nao Informado.";
            $this->erro_campo = "fa56_d_datafim_dia";
            $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_far_arquivohiperdia {
          }
        }
      }
-     if(trim($this->fa56_c_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_c_nomearquivo"])){ 
+     if(trim((string) $this->fa56_c_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_c_nomearquivo"])){ 
        $sql  .= $virgula." fa56_c_nomearquivo = '$this->fa56_c_nomearquivo' ";
        $virgula = ",";
-       if(trim($this->fa56_c_nomearquivo) == null ){ 
+       if(trim((string) $this->fa56_c_nomearquivo) == null ){ 
          $this->erro_sql = " Campo Nome do arquivo nao Informado.";
          $this->erro_campo = "fa56_c_nomearquivo";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_far_arquivohiperdia {
          return false;
        }
      }
-     if(trim($this->fa56_o_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_o_arquivo"])){ 
+     if(trim((string) $this->fa56_o_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_o_arquivo"])){ 
        $sql  .= $virgula." fa56_o_arquivo = $this->fa56_o_arquivo ";
        $virgula = ",";
-       if(trim($this->fa56_o_arquivo) == null ){ 
+       if(trim((string) $this->fa56_o_arquivo) == null ){ 
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "fa56_o_arquivo";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_far_arquivohiperdia {
          return false;
        }
      }
-     if(trim($this->fa56_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_i_login"])){ 
+     if(trim((string) $this->fa56_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_i_login"])){ 
        $sql  .= $virgula." fa56_i_login = $this->fa56_i_login ";
        $virgula = ",";
-       if(trim($this->fa56_i_login) == null ){ 
+       if(trim((string) $this->fa56_i_login) == null ){ 
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "fa56_i_login";
          $this->erro_banco = "";
@@ -391,10 +391,10 @@ class cl_far_arquivohiperdia {
          return false;
        }
      }
-     if(trim($this->fa56_d_datasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"] !="") ){ 
+     if(trim((string) $this->fa56_d_datasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"] !="") ){ 
        $sql  .= $virgula." fa56_d_datasistema = '$this->fa56_d_datasistema' ";
        $virgula = ",";
-       if(trim($this->fa56_d_datasistema) == null ){ 
+       if(trim((string) $this->fa56_d_datasistema) == null ){ 
          $this->erro_sql = " Campo Data do sistema nao Informado.";
          $this->erro_campo = "fa56_d_datasistema_dia";
          $this->erro_banco = "";
@@ -407,7 +407,7 @@ class cl_far_arquivohiperdia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"])){ 
          $sql  .= $virgula." fa56_d_datasistema = null ";
          $virgula = ",";
-         if(trim($this->fa56_d_datasistema) == null ){ 
+         if(trim((string) $this->fa56_d_datasistema) == null ){ 
            $this->erro_sql = " Campo Data do sistema nao Informado.";
            $this->erro_campo = "fa56_d_datasistema_dia";
            $this->erro_banco = "";
@@ -418,10 +418,10 @@ class cl_far_arquivohiperdia {
          }
        }
      }
-     if(trim($this->fa56_c_horasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_c_horasistema"])){ 
+     if(trim((string) $this->fa56_c_horasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_c_horasistema"])){ 
        $sql  .= $virgula." fa56_c_horasistema = '$this->fa56_c_horasistema' ";
        $virgula = ",";
-       if(trim($this->fa56_c_horasistema) == null ){ 
+       if(trim((string) $this->fa56_c_horasistema) == null ){ 
          $this->erro_sql = " Campo Hora do sistema nao Informado.";
          $this->erro_campo = "fa56_c_horasistema";
          $this->erro_banco = "";
@@ -439,25 +439,25 @@ class cl_far_arquivohiperdia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17420,'$this->fa56_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_i_codigo"]) || $this->fa56_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3081,17420,'".AddSlashes(pg_result($resaco,$conresaco,'fa56_i_codigo'))."','$this->fa56_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3081,17420,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa56_i_codigo'))."','$this->fa56_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini"]) || $this->fa56_d_dataini != "")
-           $resac = db_query("insert into db_acount values($acount,3081,17421,'".AddSlashes(pg_result($resaco,$conresaco,'fa56_d_dataini'))."','$this->fa56_d_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3081,17421,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa56_d_dataini'))."','$this->fa56_d_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim"]) || $this->fa56_d_datafim != "")
-           $resac = db_query("insert into db_acount values($acount,3081,17422,'".AddSlashes(pg_result($resaco,$conresaco,'fa56_d_datafim'))."','$this->fa56_d_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3081,17422,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa56_d_datafim'))."','$this->fa56_d_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_c_nomearquivo"]) || $this->fa56_c_nomearquivo != "")
-           $resac = db_query("insert into db_acount values($acount,3081,17426,'".AddSlashes(pg_result($resaco,$conresaco,'fa56_c_nomearquivo'))."','$this->fa56_c_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3081,17426,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa56_c_nomearquivo'))."','$this->fa56_c_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_o_arquivo"]) || $this->fa56_o_arquivo != "")
-           $resac = db_query("insert into db_acount values($acount,3081,17427,'".AddSlashes(pg_result($resaco,$conresaco,'fa56_o_arquivo'))."','$this->fa56_o_arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3081,17427,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa56_o_arquivo'))."','$this->fa56_o_arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_i_login"]) || $this->fa56_i_login != "")
-           $resac = db_query("insert into db_acount values($acount,3081,17423,'".AddSlashes(pg_result($resaco,$conresaco,'fa56_i_login'))."','$this->fa56_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3081,17423,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa56_i_login'))."','$this->fa56_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema"]) || $this->fa56_d_datasistema != "")
-           $resac = db_query("insert into db_acount values($acount,3081,17424,'".AddSlashes(pg_result($resaco,$conresaco,'fa56_d_datasistema'))."','$this->fa56_d_datasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3081,17424,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa56_d_datasistema'))."','$this->fa56_d_datasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_c_horasistema"]) || $this->fa56_c_horasistema != "")
-           $resac = db_query("insert into db_acount values($acount,3081,17425,'".AddSlashes(pg_result($resaco,$conresaco,'fa56_c_horasistema'))."','$this->fa56_c_horasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3081,17425,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa56_c_horasistema'))."','$this->fa56_c_horasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -502,17 +502,17 @@ class cl_far_arquivohiperdia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17420,'$fa56_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,3081,17420,'','".AddSlashes(pg_result($resaco,$iresaco,'fa56_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3081,17421,'','".AddSlashes(pg_result($resaco,$iresaco,'fa56_d_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3081,17422,'','".AddSlashes(pg_result($resaco,$iresaco,'fa56_d_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3081,17426,'','".AddSlashes(pg_result($resaco,$iresaco,'fa56_c_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3081,17427,'','".AddSlashes(pg_result($resaco,$iresaco,'fa56_o_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3081,17423,'','".AddSlashes(pg_result($resaco,$iresaco,'fa56_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3081,17424,'','".AddSlashes(pg_result($resaco,$iresaco,'fa56_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3081,17425,'','".AddSlashes(pg_result($resaco,$iresaco,'fa56_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3081,17420,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa56_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3081,17421,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa56_d_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3081,17422,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa56_d_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3081,17426,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa56_c_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3081,17427,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa56_o_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3081,17423,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa56_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3081,17424,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa56_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3081,17425,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa56_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from far_arquivohiperdia
@@ -572,7 +572,7 @@ class cl_far_arquivohiperdia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:far_arquivohiperdia";
@@ -587,7 +587,7 @@ class cl_far_arquivohiperdia {
    function sql_query ( $fa56_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -609,7 +609,7 @@ class cl_far_arquivohiperdia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -622,7 +622,7 @@ class cl_far_arquivohiperdia {
    function sql_query_file ( $fa56_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -643,7 +643,7 @@ class cl_far_arquivohiperdia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

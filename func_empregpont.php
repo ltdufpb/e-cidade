@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empregpont_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempregpont = new cl_empregpont;
 $clempregpont->rotulo->label("q27_sequencia");
 $clempregpont->rotulo->label("q27_pontuacao");
@@ -98,9 +98,9 @@ $clempregpont->rotulo->label("q27_pontuacao");
         }else{
            $sql = $clempregpont->sql_query("",$campos,"q27_sequencia","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q27_pontuacao)){
-          $repassa = array("chave_q27_sequencia"=>$chave_q27_sequencia,"chave_q27_pontuacao"=>$chave_q27_pontuacao);
+          $repassa = ["chave_q27_sequencia"=>$chave_q27_sequencia,"chave_q27_pontuacao"=>$chave_q27_pontuacao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

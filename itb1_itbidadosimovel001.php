@@ -337,7 +337,7 @@ if (isset($oPost->incluir)) {
 
           foreach ( $aListaCaracUtil as $aChave ) {
 
-            $aListaDadosCaracUtil = split("X", $aChave);
+            $aListaDadosCaracUtil = preg_split("#X#m", $aChave);
 
             // $aListaDadosCaracUtil[0] -- Código da Característica
             // $aListaDadosCaracUtil[1] -- Valor  da Característica
@@ -462,14 +462,14 @@ if (isset($oPost->incluir)) {
     $clitbinome->it03_guia     = $clitbi->it01_guia;
     $clitbinome->it03_tipo     = 'T';
     $clitbinome->it03_princ    = 'true';
-    $clitbinome->it03_nome     = addslashes($oDadosPropri->z01_nome);
+    $clitbinome->it03_nome     = addslashes((string) $oDadosPropri->z01_nome);
     $clitbinome->it03_sexo     = 'm';
     $clitbinome->it03_cpfcnpj  = $oDadosPropri->z01_cgccpf;
-    $clitbinome->it03_endereco = addslashes($oDadosPropri->z01_ender);
+    $clitbinome->it03_endereco = addslashes((string) $oDadosPropri->z01_ender);
     $clitbinome->it03_numero   = $oDadosPropri->z01_numero;
     $clitbinome->it03_compl    = $oDadosPropri->z01_compl;
     $clitbinome->it03_cxpostal = $oDadosPropri->z01_cxpostal;
-    $clitbinome->it03_bairro   = addslashes($oDadosPropri->z01_bairro);
+    $clitbinome->it03_bairro   = addslashes((string) $oDadosPropri->z01_bairro);
     $clitbinome->it03_munic    = $oDadosPropri->z01_munic;
     $clitbinome->it03_uf       = $oDadosPropri->z01_uf;
     $clitbinome->it03_cep      = $oDadosPropri->z01_cep;
@@ -505,14 +505,14 @@ if (isset($oPost->incluir)) {
           $clitbinome->it03_guia     = $clitbi->it01_guia;
           $clitbinome->it03_tipo     = 'T';
           $clitbinome->it03_princ    = 'true';
-          $clitbinome->it03_nome     = addslashes($oDadosPropri->z01_nome);
+          $clitbinome->it03_nome     = addslashes((string) $oDadosPropri->z01_nome);
           $clitbinome->it03_sexo     = 'm';
           $clitbinome->it03_cpfcnpj  = $oDadosPropri->z01_cgccpf;
-          $clitbinome->it03_endereco = addslashes($oDadosPropri->z01_ender);
+          $clitbinome->it03_endereco = addslashes((string) $oDadosPropri->z01_ender);
           $clitbinome->it03_numero   = $oDadosPropri->z01_numero;
           $clitbinome->it03_compl    = $oDadosPropri->z01_compl;
           $clitbinome->it03_cxpostal = $oDadosPropri->z01_cxpostal;
-          $clitbinome->it03_bairro   = addslashes($oDadosPropri->z01_bairro);
+          $clitbinome->it03_bairro   = addslashes((string) $oDadosPropri->z01_bairro);
           $clitbinome->it03_munic    = $oDadosPropri->z01_munic;
           $clitbinome->it03_uf       = $oDadosPropri->z01_uf;
           $clitbinome->it03_cep      = $oDadosPropri->z01_cep;
@@ -555,14 +555,14 @@ if (isset($oPost->incluir)) {
         $clitbinome->it03_guia     = $clitbi->it01_guia;
         $clitbinome->it03_tipo     = 'T';
         $clitbinome->it03_princ    = 'false';
-        $clitbinome->it03_nome     = addslashes($oDadosOutros->z01_nome);
+        $clitbinome->it03_nome     = addslashes((string) $oDadosOutros->z01_nome);
         $clitbinome->it03_sexo     = 'm';
         $clitbinome->it03_cpfcnpj  = $oDadosOutros->z01_cgccpf;
-        $clitbinome->it03_endereco = addslashes($oDadosOutros->z01_ender);
+        $clitbinome->it03_endereco = addslashes((string) $oDadosOutros->z01_ender);
         $clitbinome->it03_numero   = $oDadosOutros->z01_numero;
         $clitbinome->it03_compl    = $oDadosOutros->z01_compl;
         $clitbinome->it03_cxpostal = $oDadosOutros->z01_cxpostal;
-        $clitbinome->it03_bairro   = addslashes($oDadosOutros->z01_bairro);
+        $clitbinome->it03_bairro   = addslashes((string) $oDadosOutros->z01_bairro);
         $clitbinome->it03_munic    = "";
         $clitbinome->it03_uf       = $oDadosOutros->z01_uf;
         $clitbinome->it03_cep      = $oDadosOutros->z01_cep;
@@ -597,7 +597,7 @@ if (isset($oPost->incluir)) {
 
     foreach ( $aListaFormaPag as $aChave ) {
 
-      $aListaValorFormaPag = split("X", $aChave);
+      $aListaValorFormaPag = preg_split("#X#m", $aChave);
 
       // $aListaValorFormaPag[0]  -- Código da Forma de Pagamento da Transação
       // $aListaValorFormaPag[1]  -- Valor  da Forma de Pagamento da Transação

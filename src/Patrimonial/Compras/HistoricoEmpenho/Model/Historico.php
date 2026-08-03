@@ -87,10 +87,10 @@ class Historico
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'e40_codhist' => $this->getCodigo(),
             'e40_desc' => $this->getDescricao()
-        );
+        ];
 
         return $retorno;
     }

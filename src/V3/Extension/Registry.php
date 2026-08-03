@@ -4,7 +4,7 @@ namespace ECidade\V3\Extension;
 
 class Registry {
 
-  private static $data = array();
+  private static $data = [];
 
   public static function has($key) {
     return array_key_exists($key, static::$data);

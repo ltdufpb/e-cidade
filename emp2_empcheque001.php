@@ -105,8 +105,8 @@ fieldset table td:first-child {
               </td>
               <td>
                 <?php 
-                  $aVer = array("com" => "Com as contas selecionados",
-                                "sem" => "Sem as contas selecionadas");
+                  $aVer = ["com" => "Com as contas selecionados",
+                                "sem" => "Sem as contas selecionadas"];
                   db_select('ver', $aVer, true, 4, "");
                 ?>
               </td>
@@ -172,9 +172,9 @@ fieldset table td:first-child {
 				              </td>
 				              <td width="100%">
 				                <?php 
-				                  $aConsiderar = array("t" => "Todos",
+				                  $aConsiderar = ["t" => "Todos",
 				                                       "s" => "Autenticados",
-				                                       "n" => "Não autenticados");
+				                                       "n" => "Não autenticados"];
 				                  db_select('considerar', $aConsiderar, true, 4, "");
 				                ?>
 				              </td>
@@ -185,9 +185,9 @@ fieldset table td:first-child {
 				              </td>
 				              <td>
 				                <?php 
-				                  $aFiltro = array("t" => "Todos",
+				                  $aFiltro = ["t" => "Todos",
 				                                   "o" => "Ordem de pagamento",
-				                                   "s" => "Slips");
+				                                   "s" => "Slips"];
 				                  db_select('filtro', $aFiltro, true, 4, "");
 				                ?>
 				              </td>
@@ -198,8 +198,8 @@ fieldset table td:first-child {
 				              </td>
 				              <td>
 				                <?php 
-				                  $aTotaliza = array("t" => "Sim",
-				                                     "f" => "Não");
+				                  $aTotaliza = ["t" => "Sim",
+				                                     "f" => "Não"];
 				                  db_select('totaliza', $aTotaliza, true, 4, "");
 				                ?>
 				              </td>
@@ -210,8 +210,8 @@ fieldset table td:first-child {
                       </td>
                       <td>
                         <?php 
-                          $aQuebraPaginaConta = array("f" => "Não",
-                                                      "t" => "Sim");
+                          $aQuebraPaginaConta = ["f" => "Não",
+                                                      "t" => "Sim"];
                           db_select('quebrarpaginaconta', $aQuebraPaginaConta, true, 4, "");
                         ?>
                       </td>

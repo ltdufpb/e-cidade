@@ -33,13 +33,13 @@ include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_liborcamento.php"));
 include(modification("classes/db_bensbaix_classe.php"));
 $clbensbaix = new cl_bensbaix;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $numrows = 0;
 $relbaix = null;
 $msg = null;
 if(isset($dataINI) && trim($dataINI)!="" || isset($dataFIM) && trim($dataFIM)!=""){
-  if(isset($dataINI) && trim($dataINI)!=""&&trim($dataFIM)!=""){
+  if(isset($dataINI) && trim($dataINI)!=""&&trim((string) $dataFIM)!=""){
     $relbaix=" t55_baixa >='".$dataINI."' ";
     $msg = "posterior a ".db_formatar($dataINI,"d");
   }

@@ -57,7 +57,7 @@ $cltarefaanexos   = new cl_tarefaanexos;
 $cltarefasyscadproced = new cl_tarefasyscadproced;
 $cltarefa_lanc    = new cl_tarefa_lanc;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

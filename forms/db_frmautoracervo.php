@@ -72,7 +72,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("bi21_acervo"=>@$bi21_acervo,"bi06_titulo"=>@$bi06_titulo,"bi21_autor"=>@$bi21_autor,"bi01_nome"=>@$bi01_nome);
+   $chavepri= ["bi21_acervo"=>@$bi21_acervo,"bi06_titulo"=>@$bi06_titulo,"bi21_autor"=>@$bi21_autor,"bi01_nome"=>@$bi01_nome];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clautoracervo->sql_query("","*","bi01_nome"," bi21_acervo = $bi21_acervo");
    $cliframe_alterar_excluir->campos  ="bi01_nome";

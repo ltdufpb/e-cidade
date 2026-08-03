@@ -33,8 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_debcontapedido_classe.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cldebcontapedido = new cl_debcontapedido;
 $cldebcontapedido->rotulo->label("d63_codigo");
@@ -42,7 +42,7 @@ $cldebcontapedido->rotulo->label("d63_instit");
 $cldebcontapedido->rotulo->label("d63_idempresa");
 
 $oGet             = new _db_fields();
-$oGet             = db_utils::postMemory($HTTP_GET_VARS);
+$oGet             = db_utils::postMemory($_GET);
 ?>
 <html>
 <head>
@@ -124,7 +124,7 @@ $oGet             = db_utils::postMemory($HTTP_GET_VARS);
            $sql = $cldebcontapedido->sql_query_info("",$campos,"d63_codigo","$sWhere");
         }
 
-        db_lovrot($sql,15,"()","",$funcao_js, "", "NoMe", array(), false);
+        db_lovrot($sql,15,"()","",$funcao_js, "", "NoMe", [], false);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
           $result = $cldebcontapedido->sql_record($cldebcontapedido->sql_query(null,"*",null,"db63_codigo = $pesquisa_chave $sAnd $sWhere"));

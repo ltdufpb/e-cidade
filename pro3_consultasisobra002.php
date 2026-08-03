@@ -51,7 +51,7 @@ $clobraslotei    = new cl_obraslotei;
 $clobras         = new cl_obras;
 $clobrasiptubase = new cl_obrasiptubase;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if (empty($tipoDocumento) || empty($numeroDocumento) || empty($anoDocumento)) {
     db_msgbox("Preencha os campos para efetuar a pesquisa.");
@@ -76,11 +76,11 @@ if (empty($tipoDocumento) || empty($numeroDocumento) || empty($anoDocumento)) {
   $client->processarRequisicao();
   $getRespostaConsultarDocumento = $client->getRespostaConsultarDocumento();
 
-  if (substr($getRespostaConsultarDocumento['codRetorno'], 0, 2) == 'ER') {
-    db_msgbox($getRespostaConsultarDocumento['codRetorno'].' - '.utf8_decode($getRespostaConsultarDocumento['descricao']));
+  if (str_starts_with((string) $getRespostaConsultarDocumento['codRetorno'], 'ER')) {
+    db_msgbox($getRespostaConsultarDocumento['codRetorno'].' - '.mb_convert_encoding($getRespostaConsultarDocumento['descricao'], 'ISO-8859-1'));
     echo "<script>parent.db_iframe_consultasisobra.hide();</script>";
   } else {
-    $xml = html_entity_decode($getRespostaConsultarDocumento['xmlRetornoConsulta'], ENT_NOQUOTES, 'UTF-8');
+    $xml = html_entity_decode((string) $getRespostaConsultarDocumento['xmlRetornoConsulta'], ENT_NOQUOTES, 'UTF-8');
 
     $dom = dom_import_simplexml($getRespostaConsultarDocumento['dadosRetornoConsulta'])->ownerDocument;
     $doc->preserveWhiteSpace = false;

@@ -116,7 +116,7 @@ form fieldset select {
     </td>
     <td> 
     <?php 
-      $x = array("f"=>"NÃO","t"=>"SIM");
+      $x = ["f"=>"NÃO","t"=>"SIM"];
       db_select('k155_automatica',$x,true,$db_opcao,"");
     ?>
     </td>
@@ -127,7 +127,7 @@ form fieldset select {
     </td>
     <td> 
     <?php 
-      $x = array("f"=>"NÃO","t"=>"SIM");
+      $x = ["f"=>"NÃO","t"=>"SIM"];
       db_select('k155_permitetransferencia',$x,true,$db_opcao,"");
     ?>
     </td>
@@ -285,7 +285,7 @@ function js_preenchepesquisa(chave){
   db_iframe_regracompensacao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

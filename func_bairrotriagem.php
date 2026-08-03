@@ -95,7 +95,7 @@ $oDaoBairro->rotulo->label("j13_descr");
           }
           
           $sCampos  = " bairro.* ";
-          $aWhere   = array();
+          $aWhere   = [];
           $sFiltro  = " exists ( select 1 ";
           $sFiltro .= "            from sau_triagemavulsaagravo ";
           $sFiltro .= "                 inner join sau_triagemavulsa on s152_i_codigo = s167_sau_triagemavulsa ";

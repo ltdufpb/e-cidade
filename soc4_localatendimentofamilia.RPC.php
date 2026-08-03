@@ -119,15 +119,15 @@ try {
           $oLocalAtendimentoSocial  = $oFamilia->getLocalAtendimentoAtual()->getLocalAtendimentoSocial();
         }
         $oRetorno->iFamilia           = $oFamilia->getCodigoSequencial();
-        $oRetorno->sResponsavel       = urlencode($oFamilia->getResponsavel()->getNome());
+        $oRetorno->sResponsavel       = urlencode((string) $oFamilia->getResponsavel()->getNome());
 
         if ($oLocalAtendimentoSocial != null) {
 
-          $oRetorno->dtVinculo          = urlencode($oFamilia->getLocalAtendimentoAtual()
+          $oRetorno->dtVinculo          = urlencode((string) $oFamilia->getLocalAtendimentoAtual()
                                                              ->getDataVinculo()
                                                              ->getDate(DBDate::DATA_PTBR));
           $oRetorno->iLocalAtendimento  = $oLocalAtendimentoSocial->getDbDepart()->getCodigo();
-          $oRetorno->sLocalAtendimento  = urlencode($oLocalAtendimentoSocial->getDescricao());
+          $oRetorno->sLocalAtendimento  = urlencode((string) $oLocalAtendimentoSocial->getDescricao());
           $oRetorno->lTemLocalVinculado = true;
         }
       } else {
@@ -153,7 +153,7 @@ try {
     case 'getLocaisAtendimento':
 
       $oRetorno->lTemLocaisAtendimento = false;
-      $oRetorno->aLocaisAtendimento    = array();
+      $oRetorno->aLocaisAtendimento    = [];
       $oDaoLocalAtendimentoSocial      = new cl_localatendimentosocial();
       $sSqlLocalAtendimentoSocial      = $oDaoLocalAtendimentoSocial->sql_query_file(null, "as16_sequencial", "as16_sequencial");
       $rsLocalAtendimentoSocial        = $oDaoLocalAtendimentoSocial->sql_record($sSqlLocalAtendimentoSocial);
@@ -211,17 +211,7 @@ try {
       FamiliaRepository::removerFamilia($oFamilia);
       break;
   }
-} catch (ParameterException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode($oErro->getMessage());
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode($oErro->getMessage());
-} catch (DBException $oErro) {
+} catch (ParameterException|BusinessException|DBException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->iStatus   = 2;

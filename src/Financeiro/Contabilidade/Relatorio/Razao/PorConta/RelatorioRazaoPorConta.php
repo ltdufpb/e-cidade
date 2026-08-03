@@ -34,15 +34,10 @@ class RelatorioRazaoPorConta
 
     public function __construct($tipo)
     {
-        switch ($tipo) {
-            case self::PDF:
-                $this->setRelatorio(new PDF());
-                break;
-            case self::EXCEL:
-                $this->setRelatorio(new Excel());
-                break;
-            default:
-                throw new \Exception("Opção inválida!");
-        }
+        match ($tipo) {
+            self::PDF => $this->setRelatorio(new PDF()),
+            self::EXCEL => $this->setRelatorio(new Excel()),
+            default => throw new \Exception("Opção inválida!"),
+        };
     }
 }

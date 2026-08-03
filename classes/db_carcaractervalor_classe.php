@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE carcaractervalor
 class cl_carcaractervalor { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j119_sequencial = 0; 
-   var $j119_anousu = 0; 
-   var $j119_caracteristica1 = 0; 
-   var $j119_caracteristica2 = 0; 
-   var $j119_valor = 0; 
+   public $j119_sequencial = 0; 
+   public $j119_anousu = 0; 
+   public $j119_caracteristica1 = 0; 
+   public $j119_caracteristica2 = 0; 
+   public $j119_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j119_sequencial = int4 = Código 
                  j119_anousu = int4 = Ano 
                  j119_caracteristica1 = int4 = Característica 1 
@@ -56,10 +56,10 @@ class cl_carcaractervalor {
                  j119_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_carcaractervalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carcaractervalor"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_carcaractervalor {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j119_sequencial = pg_result($result,0,0); 
+       $this->j119_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from carcaractervalor_j119_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j119_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j119_sequencial)){
          $this->erro_sql = " Campo j119_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_carcaractervalor {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Caracteristica Caracter Valor ($this->j119_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Caracteristica Caracter Valor já Cadastrado";
@@ -194,14 +194,14 @@ class cl_carcaractervalor {
      $resaco = $this->sql_record($this->sql_query_file($this->j119_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15484,'$this->j119_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2716,15484,'','".AddSlashes(pg_result($resaco,0,'j119_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2716,15485,'','".AddSlashes(pg_result($resaco,0,'j119_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2716,15486,'','".AddSlashes(pg_result($resaco,0,'j119_caracteristica1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2716,15487,'','".AddSlashes(pg_result($resaco,0,'j119_caracteristica2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2716,15488,'','".AddSlashes(pg_result($resaco,0,'j119_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2716,15484,'','".AddSlashes(pg_fetch_result($resaco,0,'j119_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2716,15485,'','".AddSlashes(pg_fetch_result($resaco,0,'j119_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2716,15486,'','".AddSlashes(pg_fetch_result($resaco,0,'j119_caracteristica1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2716,15487,'','".AddSlashes(pg_fetch_result($resaco,0,'j119_caracteristica2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2716,15488,'','".AddSlashes(pg_fetch_result($resaco,0,'j119_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_carcaractervalor {
       $this->atualizacampos();
      $sql = " update carcaractervalor set ";
      $virgula = "";
-     if(trim($this->j119_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j119_sequencial"])){ 
+     if(trim((string) $this->j119_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j119_sequencial"])){ 
        $sql  .= $virgula." j119_sequencial = $this->j119_sequencial ";
        $virgula = ",";
-       if(trim($this->j119_sequencial) == null ){ 
+       if(trim((string) $this->j119_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "j119_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_carcaractervalor {
          return false;
        }
      }
-     if(trim($this->j119_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j119_anousu"])){ 
+     if(trim((string) $this->j119_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j119_anousu"])){ 
        $sql  .= $virgula." j119_anousu = $this->j119_anousu ";
        $virgula = ",";
-       if(trim($this->j119_anousu) == null ){ 
+       if(trim((string) $this->j119_anousu) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "j119_anousu";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_carcaractervalor {
          return false;
        }
      }
-     if(trim($this->j119_caracteristica1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j119_caracteristica1"])){ 
+     if(trim((string) $this->j119_caracteristica1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j119_caracteristica1"])){ 
        $sql  .= $virgula." j119_caracteristica1 = $this->j119_caracteristica1 ";
        $virgula = ",";
-       if(trim($this->j119_caracteristica1) == null ){ 
+       if(trim((string) $this->j119_caracteristica1) == null ){ 
          $this->erro_sql = " Campo Característica 1 nao Informado.";
          $this->erro_campo = "j119_caracteristica1";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_carcaractervalor {
          return false;
        }
      }
-     if(trim($this->j119_caracteristica2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j119_caracteristica2"])){ 
+     if(trim((string) $this->j119_caracteristica2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j119_caracteristica2"])){ 
        $sql  .= $virgula." j119_caracteristica2 = $this->j119_caracteristica2 ";
        $virgula = ",";
-       if(trim($this->j119_caracteristica2) == null ){ 
+       if(trim((string) $this->j119_caracteristica2) == null ){ 
          $this->erro_sql = " Campo Caracteristica 2 nao Informado.";
          $this->erro_campo = "j119_caracteristica2";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_carcaractervalor {
          return false;
        }
      }
-     if(trim($this->j119_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j119_valor"])){ 
+     if(trim((string) $this->j119_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j119_valor"])){ 
        $sql  .= $virgula." j119_valor = $this->j119_valor ";
        $virgula = ",";
-       if(trim($this->j119_valor) == null ){ 
+       if(trim((string) $this->j119_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "j119_valor";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_carcaractervalor {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15484,'$this->j119_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j119_sequencial"]) || $this->j119_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2716,15484,'".AddSlashes(pg_result($resaco,$conresaco,'j119_sequencial'))."','$this->j119_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2716,15484,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j119_sequencial'))."','$this->j119_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j119_anousu"]) || $this->j119_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,2716,15485,'".AddSlashes(pg_result($resaco,$conresaco,'j119_anousu'))."','$this->j119_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2716,15485,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j119_anousu'))."','$this->j119_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j119_caracteristica1"]) || $this->j119_caracteristica1 != "")
-           $resac = db_query("insert into db_acount values($acount,2716,15486,'".AddSlashes(pg_result($resaco,$conresaco,'j119_caracteristica1'))."','$this->j119_caracteristica1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2716,15486,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j119_caracteristica1'))."','$this->j119_caracteristica1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j119_caracteristica2"]) || $this->j119_caracteristica2 != "")
-           $resac = db_query("insert into db_acount values($acount,2716,15487,'".AddSlashes(pg_result($resaco,$conresaco,'j119_caracteristica2'))."','$this->j119_caracteristica2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2716,15487,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j119_caracteristica2'))."','$this->j119_caracteristica2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j119_valor"]) || $this->j119_valor != "")
-           $resac = db_query("insert into db_acount values($acount,2716,15488,'".AddSlashes(pg_result($resaco,$conresaco,'j119_valor'))."','$this->j119_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2716,15488,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j119_valor'))."','$this->j119_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_carcaractervalor {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15484,'$j119_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2716,15484,'','".AddSlashes(pg_result($resaco,$iresaco,'j119_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2716,15485,'','".AddSlashes(pg_result($resaco,$iresaco,'j119_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2716,15486,'','".AddSlashes(pg_result($resaco,$iresaco,'j119_caracteristica1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2716,15487,'','".AddSlashes(pg_result($resaco,$iresaco,'j119_caracteristica2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2716,15488,'','".AddSlashes(pg_result($resaco,$iresaco,'j119_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2716,15484,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j119_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2716,15485,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j119_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2716,15486,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j119_caracteristica1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2716,15487,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j119_caracteristica2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2716,15488,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j119_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from carcaractervalor
@@ -407,7 +407,7 @@ class cl_carcaractervalor {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:carcaractervalor";
@@ -422,7 +422,7 @@ class cl_carcaractervalor {
    function sql_query ( $j119_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,7 +445,7 @@ class cl_carcaractervalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -458,7 +458,7 @@ class cl_carcaractervalor {
    function sql_query_file ( $j119_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,7 +479,7 @@ class cl_carcaractervalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -77,12 +77,12 @@ db_postmemory($_POST);
           </td>
           <td align="left">
             <?php
-              $aTipoFolha = array(
+              $aTipoFolha = [
                 's' => 'Salário',
                 'c' => 'Complementar',
                 '3' => '13o. Salário',
                 'r' => 'Rescisão'
-              );
+              ];
 
               if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
                 $aTipoFolha['u'] = 'Suplementar';
@@ -98,10 +98,10 @@ db_postmemory($_POST);
           </td>
           <td align="left">
             <?php
-            $aImprimeFuncionarios = array(
+            $aImprimeFuncionarios = [
               'n' => 'Não',
               's' => 'Sim'
-            );
+            ];
 
             db_select('func', $aImprimeFuncionarios, true, 4, '');
             ?>
@@ -113,10 +113,10 @@ db_postmemory($_POST);
           </td>
           <td align="left">
             <?php
-              $aTipoQuebra = array(
+              $aTipoQuebra = [
                 'b' => 'Banco',
                 'a' => 'Agência'
-              );
+              ];
 
               db_select('tipoquebra', $aTipoQuebra, true, 4, '');
             ?>
@@ -128,10 +128,10 @@ db_postmemory($_POST);
           </td>
           <td align="left">
             <?php
-            $aOrdem = array(
+            $aOrdem = [
               'a' => 'Alfabética',
               'n' => 'Numérica'
-            );
+            ];
 
             db_select('ordem', $aOrdem, true, 4, '');
             ?>
@@ -144,8 +144,8 @@ db_postmemory($_POST);
           <td>
             <?php
               
-              $xv = array("f" => "NÃO",
-                          "t" => "SIM");
+              $xv = ["f" => "NÃO",
+                          "t" => "SIM"];
               db_select('mostraobservacao', $xv, true, 4, "");
             ?>
           </td>

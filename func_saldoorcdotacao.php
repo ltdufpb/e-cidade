@@ -49,7 +49,7 @@ $clrotulo->label("DBtxtmesacumulado");
 $clrotulo->label("DBtxtperiodoini");
 $clrotulo->label("DBtxtperiodofim");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 db_postmemory($_GET);
 
@@ -152,7 +152,7 @@ if (!isset($nivel)) {
     $dPeriodoFim = $DBtxtperiodofim;
     $result = db_dotacaosaldo($nivel, 2, 2, true, " o58_coddot = $coddot and o58_anousu = $anousu", $anousu, date("Y-m-d", db_getsession("DB_datausu")), date("Y-m-d", db_getsession("DB_datausu")));
 }
-if (pg_numrows($result) > 0) {
+if (pg_num_rows($result) > 0) {
     db_fieldsmemory($result, 0, true);
 
 } else {
@@ -238,7 +238,7 @@ $complementoDescricao = ComplementoRepository::find($complemento)->getDescricao(
 
             var iCodDot = document.form1.o58_coddot.value;
             var iAnoUsu = <?php echo(db_getsession("DB_anousu"))?>;
-            var iNivel = <?php echo @$nivel ? @$nivel : 8?>;
+            var iNivel = <?php echo @$nivel ?: 8?>;
             var iDiaUsu = document.form1.DBtxtdia.value;
 
             qry = "coddot=" + iCodDot;
@@ -332,7 +332,7 @@ $complementoDescricao = ComplementoRepository::find($complemento)->getDescricao(
                             <td class="coluna-label">Mês:</td>
                             <td>
                                 <?php 
-                                $x = array("01" => "Janeiro",
+                                $x = ["01" => "Janeiro",
                                     "02" => "Fevereiro",
                                     "03" => "Março",
                                     "04" => "Abril",
@@ -343,7 +343,7 @@ $complementoDescricao = ComplementoRepository::find($complemento)->getDescricao(
                                     "09" => "Setembro",
                                     "10" => "Outubro",
                                     "11" => "Novembro",
-                                    "12" => "Dezembro");
+                                    "12" => "Dezembro"];
                                 if ($DBtxtmes == 0) {
                                     $DBtxtmes = db_hora(db_getsession("DB_datausu"), "m");
                                 }
@@ -357,7 +357,7 @@ $complementoDescricao = ComplementoRepository::find($complemento)->getDescricao(
                             <td>
                                 <?php
                                 $iDias = cal_days_in_month(CAL_GREGORIAN, $DBtxtmes, db_getsession("DB_anousu"));
-                                $yDias = array();
+                                $yDias = [];
                                 $sIncrem = "";
 
                                 for ($iInd = 1; $iInd < $iDias + 1; $iInd++) {

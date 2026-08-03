@@ -29,10 +29,10 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-if(isset($HTTP_POST_VARS["excluir"])){
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["excluir"])){
+  db_postmemory($_POST);
   // excluir itens cadastrados para este arquivo
   db_query("begin");
   // excluir items das permissoes deste arquivo
@@ -100,14 +100,14 @@ if(!isset($excluir)){
    //
    db_fieldsmemory($result,0);
    //
-   $nomearqc = ucfirst($nomearq);
-   $nomearq  = substr($nomemod,0,3)."1_".trim($nomearq);
+   $nomearqc = ucfirst((string) $nomearq);
+   $nomearq  = substr((string) $nomemod,0,3)."1_".trim((string) $nomearq);
    $sql = "select id_item 
 	   from db_itensmenu 
 	   where funcao like '".$nomearq."0%.php' and itemativo = '1'";
 
    $result = db_query($sql);
-   if(pg_numrows($result)!=0){
+   if(pg_num_rows($result)!=0){
       ?>
       <form name="form1" method="POST" >
      <table width="100%"><tr><td  align="center"><b>Item Já cadastrado...</b>&nbsp;&nbsp;&nbsp;&nbsp;<input name="excluir" value="Excluir" type="submit">
@@ -182,19 +182,19 @@ if(!isset($excluir)){
 		where arqfilho = '".$nomearq."001.php'";
         
         $result = db_query($sql);
-	if(pg_numrows($result)==0){
+	if(pg_num_rows($result)==0){
 	  
           $sql = "select nextval('db_arquivos_codfilho_seq') as codfilho" ;
 	
           $result = db_query($sql);
-          $codfilho = pg_result($result,0,0);
+          $codfilho = pg_fetch_result($result,0,0);
           $sql = "insert into db_arquivos values($codfilho,
                                            '".$nomearq."001.php',
 			  		   'Inclusão:  ".$descricao."')";
 		   
           $result = db_query($sql);
 	}else{
-	  $codfilho = pg_result($result,0,'codfilho');
+	  $codfilho = pg_fetch_result($result,0,'codfilho');
 	}
         $sql = "insert into db_itensfilho values($segundo,
                                           ".$codfilho.")";
@@ -237,19 +237,19 @@ if(!isset($excluir)){
 		where arqfilho = '".$nomearq."002.php'";
         
         $result = db_query($sql);
-	if(pg_numrows($result)==0){
+	if(pg_num_rows($result)==0){
 	
           $sql = "select nextval('db_arquivos_codfilho_seq') as codfilho" ;
 	
           $result = db_query($sql);
-          $codfilho = pg_result($result,0,0);
+          $codfilho = pg_fetch_result($result,0,0);
           $sql = "insert into db_arquivos values(".$codfilho.",
                                          '".$nomearq."002.php',
 					 'Inclusão:  ".$descricao."')";
 		   
           $result = db_query($sql);
 	}else{
-	  $codfilho = pg_result($result,0,'codfilho');
+	  $codfilho = pg_fetch_result($result,0,'codfilho');
 	}
         $sql = "insert into db_itensfilho values($terceiro,
                                           ".$codfilho.")";
@@ -294,19 +294,19 @@ if(!isset($excluir)){
 		where arqfilho = '".$nomearq."003.php'";
         
         $result = db_query($sql);
-	if(pg_numrows($result)==0){
+	if(pg_num_rows($result)==0){
 	
           $sql = "select nextval('db_arquivos_codfilho_seq') as codfilho" ;
 	
           $result = db_query($sql);
-          $codfilho = pg_result($result,0,0);
+          $codfilho = pg_fetch_result($result,0,0);
           $sql = "insert into db_arquivos values(".$codfilho.",
                                          '".$nomearq."003.php',
 					 'Inclusão:  ".$descricao."')";
 		   
           $result = db_query($sql);
 	}else{
-	  $codfilho = pg_result($result,0,'codfilho');
+	  $codfilho = pg_fetch_result($result,0,'codfilho');
 	}
         $sql = "insert into db_itensfilho values($quarto,
                                           ".$codfilho.")";
@@ -478,19 +478,19 @@ if(!isset($excluir)){
 		where arqfilho = '".$nomearq."002.php'";
         
         $result = db_query($sql);
-	if(pg_numrows($result)==0){
+	if(pg_num_rows($result)==0){
 	
           $sql = "select nextval('db_arquivos_codfilho_seq') as codfilho" ;
 	
           $result = db_query($sql);
-          $codfilho = pg_result($result,0,0);
+          $codfilho = pg_fetch_result($result,0,0);
           $sql = "insert into db_arquivos values(".$codfilho.",
                                          '".$nomearq."002.php',
 					 'Inclusão:  ".$descricao."')";
 		   
           $result = db_query($sql);
 	}else{
-	  $codfilho = pg_result($result,0,'codfilho');
+	  $codfilho = pg_fetch_result($result,0,'codfilho');
 	}
         $sql = "insert into db_itensfilho values($primeiro,
                                           ".$codfilho.")";
@@ -537,19 +537,19 @@ if(!isset($excluir)){
 		where arqfilho = 'db_func_".strtolower($nomearqc).".php'";
         
       $result = db_query($sql);
-      if(pg_numrows($result)==0){
+      if(pg_num_rows($result)==0){
 	
         $sql = "select nextval('db_arquivos_codfilho_seq') as codfilho" ;
 	
         $result = db_query($sql);
-        $codfilho = pg_result($result,0,0);
+        $codfilho = pg_fetch_result($result,0,0);
         $sql = "insert into db_arquivos values(".$codfilho.",
                                          'db_func_".strtolower($nomearqc).".php',
 					 'Arquivo com os campos para a função da tabela :  ".$nomearqc."')";
 		   
         $result = db_query($sql);
       }else{
-        $codfilho = pg_result($result,0,'codfilho');
+        $codfilho = pg_fetch_result($result,0,'codfilho');
       }
       if($tipotabela=="0"){
         $sql = "insert into db_itensfilho values($segundo,
@@ -572,19 +572,19 @@ if(!isset($excluir)){
 		where arqfilho = 'func_".strtolower($nomearqc).".php'";
         
       $result = db_query($sql);
-      if(pg_numrows($result)==0){
+      if(pg_num_rows($result)==0){
 	
         $sql = "select nextval('db_arquivos_codfilho_seq') as codfilho" ;
 	
         $result = db_query($sql);
-        $codfilho = pg_result($result,0,0);
+        $codfilho = pg_fetch_result($result,0,0);
         $sql = "insert into db_arquivos values(".$codfilho.",
                                          'func_".strtolower($nomearqc).".php',
 					 'Função de consulta aos dados da tabela :  ".$nomearqc."')";
 		   
         $result = db_query($sql);
       }else{
-        $codfilho = pg_result($result,0,'codfilho');
+        $codfilho = pg_fetch_result($result,0,'codfilho');
       }
       if($tipotabela=="0"){
         $sql = "insert into db_itensfilho values($segundo,
@@ -606,19 +606,19 @@ if(!isset($excluir)){
               from db_arquivos
               where arqfilho = 'db_frm".strtolower($nomearqc).".php'";
       $result = db_query($sql);
-      if(pg_numrows($result)==0){
+      if(pg_num_rows($result)==0){
 	
         $sql = "select nextval('db_arquivos_codfilho_seq') as codfilho" ;
 	
         $result = db_query($sql);
-        $codfilho = pg_result($result,0,0);
+        $codfilho = pg_fetch_result($result,0,0);
         $sql = "insert into db_arquivos values(".$codfilho.",
                                          'db_frm".strtolower($nomearqc).".php',
 					 'Formulario utilizado para a tabela :  ".$nomearqc."')";
 		   
         $result = db_query($sql);
       }else{
-        $codfilho = pg_result($result,0,'codfilho');
+        $codfilho = pg_fetch_result($result,0,'codfilho');
       }
       if($tipotabela=="0"){
         $sql = "insert into db_itensfilho values($segundo,

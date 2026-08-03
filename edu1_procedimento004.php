@@ -36,7 +36,7 @@ require_once (modification("model/educacao/ArredondamentoNota.model.php"));
 require_once (modification("classes/db_conceito_classe.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clformaavaliacao = new cl_formaavaliacao;
 $clconceito       = new cl_conceito;
 if (isset($codigo)) {
@@ -64,7 +64,7 @@ if (isset($codigo)) {
                   Mínimo para aprovação: ".$sClasse::formatar($ed37_c_minimoaprov, db_getsession("DB_anousu"));
   } elseif ($ed37_c_tipo == "NIVEL") {
 
-    $aConceitos = array();
+    $aConceitos = [];
     for($x=0;$x<$clformaavaliacao->numrows;$x++){
 
       db_fieldsmemory($result,$x);

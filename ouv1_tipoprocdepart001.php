@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcriaabas = new cl_criaabas;
 ?>
@@ -58,41 +58,41 @@ $clcriaabas = new cl_criaabas;
    <tr>
        <td>
         <?php 
-          $clcriaabas->identifica = array("abaPeriodo"        => "Período / Tipo Local",
+          $clcriaabas->identifica = ["abaPeriodo"        => "Período / Tipo Local",
                                           "abaDepartProcesso" => "Departamento por Tipo de Processo",
                                           "abaTipoProcesso"   => "Tipo de Processo",
                                           "abaLocal"          => "Local",
                                           "abaBairro"         => "Bairro",
-                                          "abaDepartDestino"  => "Departamento Destino");
+                                          "abaDepartDestino"  => "Departamento Destino"];
           
           
-          $clcriaabas->title    = array("abaPeriodo"        => "Período / Tipo Local",
+          $clcriaabas->title    = ["abaPeriodo"        => "Período / Tipo Local",
                                         "abaDepartProcesso" => "Departamento por Tipo de Processo",
                                         "abaTipoProcesso"   => "Tipos de Processo",
                                         "abaLocal"          => "Local",
                                         "abaBairro"         => "Bairro",
-                                        "abaDepartDestino"  => "Departamento Destino");
+                                        "abaDepartDestino"  => "Departamento Destino"];
           
-          $clcriaabas->src      = array("abaPeriodo"        => "ouv1_tipoprocdepart002.php",
+          $clcriaabas->src      = ["abaPeriodo"        => "ouv1_tipoprocdepart002.php",
                                         "abaDepartProcesso" => "ouv1_tipoprocdepart003.php",
                                         "abaTipoProcesso"   => "ouv1_tipoprocdepart004.php",
                                         "abaLocal"          => "ouv1_tipoprocdepart005.php",
                                         "abaBairro"         => "ouv1_tipoprocdepart006.php",
-                                        "abaDepartDestino"  => "ouv1_tipoprocdepart007.php");
+                                        "abaDepartDestino"  => "ouv1_tipoprocdepart007.php"];
           
-          $clcriaabas->disabled   = array("abaPeriodo"        => "false",
+          $clcriaabas->disabled   = ["abaPeriodo"        => "false",
                                           "abaDepartProcesso" => "false",
                                           "abaTipoProcesso"   => "false",
                                           "abaLocal"          => "false",
                                           "abaBairro"         => "Bairro",
-                                          "abaDepartDestino"  => "Departamento Destino");
+                                          "abaDepartDestino"  => "Departamento Destino"];
           
-          $clcriaabas->sizecampo = array("abaPeriodo"        => "20",
+          $clcriaabas->sizecampo = ["abaPeriodo"        => "20",
                                          "abaDepartProcesso" => "30",
                                          "abaTipoProcesso"   => "22",
                                          "abaLocal"          => "10",
                                          "abaBairro"         => "10",
-                                         "abaDepartDestino"  => "20");
+                                         "abaDepartDestino"  => "20"];
           
           $clcriaabas->cria_abas();
         ?>

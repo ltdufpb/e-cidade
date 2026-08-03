@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_custoapropria_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcustoapropria = new cl_custoapropria;
 $oRotulo = new rotulocampo();
 $clcustoapropria->rotulo->label("cc12_sequencial");
@@ -123,20 +123,20 @@ $oRotulo->label("m60_descr");
         }
         if (isset($datainicial) && $datainicial != "" and (isset($datafinal) && $datafinal == "")){
 
-          $datainicial  = implode(array_reverse(explode("/",$datainicial)));
+          $datainicial  = implode('', array_reverse(explode("/",(string) $datainicial)));
           $sWhere      .= " and m80_data = '{$datainicial}'";
           
         }
         if (isset($datainicial) && $datainicial != "" and (isset($datafinal) && $datafinal != "")){
 
-          $datainicial  = implode("-",array_reverse(explode("/",$datainicial)));
-          $datafinal    = implode("-",array_reverse(explode("/",$datafinal)));
+          $datainicial  = implode("-",array_reverse(explode("/",(string) $datainicial)));
+          $datafinal    = implode("-",array_reverse(explode("/",(string) $datafinal)));
           $sWhere      .= " and m80_data between'{$datainicial}' and '{$datafinal}'";
           
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cc12_sequencial)){
-          $repassa = array("chave_cc12_sequencial"=>$chave_cc12_sequencial,"chave_cc12_sequencial"=>$chave_cc12_sequencial);
+          $repassa = ["chave_cc12_sequencial"=>$chave_cc12_sequencial,"chave_cc12_sequencial"=>$chave_cc12_sequencial];
         }
         $sql = $clcustoapropria->sql_query_custoapropria(null,
 	                                                         $campos,

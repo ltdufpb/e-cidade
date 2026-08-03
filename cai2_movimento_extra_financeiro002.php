@@ -58,7 +58,7 @@ $oJson       = new Services_JSON();
 $oParametros = $oJson->decode(str_replace("\\","",$_GET["sFiltros"]));
 $sPeriodo    = $oParametros->periodo;
 $aRecursos   = $oParametros->sRecursos;
-$sPeriodoBanco = implode("-", array_reverse(explode("/", $oParametros->periodo)));
+$sPeriodoBanco = implode("-", array_reverse(explode("/", (string) $oParametros->periodo)));
 
 /*
  * Instancia a classe para retornar do objeto, a
@@ -102,7 +102,7 @@ $sSqlRecursos .= "order by o15_codigo";
 $rsRecursos      = db_query($sSqlRecursos);
 $iTotalRecursos  = pg_num_rows($rsRecursos);
 $oLinhas           = new stdClass();
-$oLinhas->recursos = array();
+$oLinhas->recursos = [];
 
 
 for ($iLinhaRecurso = 0; $iLinhaRecurso < $iTotalRecursos; $iLinhaRecurso++) {
@@ -114,7 +114,7 @@ for ($iLinhaRecurso = 0; $iLinhaRecurso < $iTotalRecursos; $iLinhaRecurso++) {
    	 $oRecurso->codigo    = $oRecursos->o15_codigo;
    	// $oRecurso->estrut    = $oRecursos->c60_estrut;
    	 $oRecurso->descricao = $oRecursos->o15_descr.$oRecursos->c60_estrut;
-   	 $oRecurso->contas    = array();
+   	 $oRecurso->contas    = [];
    	 $oLinhas ->recursos[$oRecursos->o15_codigo] = $oRecurso;   	 
    }
    
@@ -200,7 +200,7 @@ foreach ($oLinhas->recursos as $oRecurso) {
 		 $iTotal_Saldo_Receber = $iTotal_Saldo_Receber + $oConta->saldoreceber;
 		 $iTotal_Pagar         = $iTotal_Pagar         + $oConta->saldopagar;
 		 $sContaRecurso        = $oConta->codDescr." - ".$oConta->estrut." - ".$oConta->descricao;
-		
+
 	   $oPdf->SetFont('arial', '', 6);
 	   //$oPdf->Cell(25, $iAlturalinha, $oConta->codigo,                         "TRB",  0, "C", 0);
 	   $oPdf->Cell(75, $iAlturalinha, $sContaRecurso,                          "TRB",  0, "L", 0);
@@ -209,7 +209,7 @@ foreach ($oLinhas->recursos as $oRecurso) {
 	   $oPdf->Cell(25, $iAlturalinha, db_formatar($oConta->pagamentos,   "f"), "TLRB", 0, "R", 0);
 	   $oPdf->Cell(25, $iAlturalinha, db_formatar($oConta->saldoreceber, "f"), "TLRB", 0, "R", 0);
 	   $oPdf->Cell(25, $iAlturalinha, db_formatar($oConta->saldopagar,   "f"), "TLB",  1, "R", 0);   
-	  
+
 	 imprimirCabecalho($oPdf, $iAlturalinha, false);
 	 //imprimeInfoProxPagina($oPdf, $iAlturalinha, false);
 	} 
@@ -284,7 +284,7 @@ function imprimeInfoProxPagina($oPdf, $iAlturalinha, $lImprime) {
     } else {
       //die('aqui');
       $oPdf->Cell(190, ($iAlturalinha*3), 'Continua na página '.($oPdf->PageNo()+1)."/{nb}", 'T', 1, "R", 0);
-      imprimirCabecalho($oPdf, $iAlturalinha, false,'');
+      imprimirCabecalho($oPdf, $iAlturalinha, false);
     }
   }
 } 

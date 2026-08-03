@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE tipoandam
 class cl_tipoandam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y41_codtipo = 0; 
-   var $y41_descr = null; 
-   var $y41_obs = null; 
-   var $y41_permcalc = 'f'; 
-   var $y41_instit = 0; 
+   public $y41_codtipo = 0; 
+   public $y41_descr = null; 
+   public $y41_obs = null; 
+   public $y41_permcalc = 'f'; 
+   public $y41_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y41_codtipo = int4 = Tipo de Andamento 
                  y41_descr = varchar(50) = Descrição do tipo 
                  y41_obs = text = Observação do Tipo 
@@ -56,10 +56,10 @@ class cl_tipoandam {
                  y41_instit = int4 = Cod. Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_tipoandam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoandam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -122,10 +122,10 @@ class cl_tipoandam {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y41_codtipo = pg_result($result,0,0); 
+       $this->y41_codtipo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tipoandam_y41_codtipo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y41_codtipo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y41_codtipo)){
          $this->erro_sql = " Campo y41_codtipo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -161,7 +161,7 @@ class cl_tipoandam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tipoandam ($this->y41_codtipo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tipoandam já Cadastrado";
@@ -185,14 +185,14 @@ class cl_tipoandam {
      $resaco = $this->sql_record($this->sql_query_file($this->y41_codtipo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4925,'$this->y41_codtipo','I')");
-       $resac = db_query("insert into db_acount values($acount,678,4925,'','".AddSlashes(pg_result($resaco,0,'y41_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,678,4926,'','".AddSlashes(pg_result($resaco,0,'y41_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,678,4927,'','".AddSlashes(pg_result($resaco,0,'y41_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,678,6809,'','".AddSlashes(pg_result($resaco,0,'y41_permcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,678,10664,'','".AddSlashes(pg_result($resaco,0,'y41_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,678,4925,'','".AddSlashes(pg_fetch_result($resaco,0,'y41_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,678,4926,'','".AddSlashes(pg_fetch_result($resaco,0,'y41_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,678,4927,'','".AddSlashes(pg_fetch_result($resaco,0,'y41_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,678,6809,'','".AddSlashes(pg_fetch_result($resaco,0,'y41_permcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,678,10664,'','".AddSlashes(pg_fetch_result($resaco,0,'y41_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -201,10 +201,10 @@ class cl_tipoandam {
       $this->atualizacampos();
      $sql = " update tipoandam set ";
      $virgula = "";
-     if(trim($this->y41_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y41_codtipo"])){ 
+     if(trim((string) $this->y41_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y41_codtipo"])){ 
        $sql  .= $virgula." y41_codtipo = $this->y41_codtipo ";
        $virgula = ",";
-       if(trim($this->y41_codtipo) == null ){ 
+       if(trim((string) $this->y41_codtipo) == null ){ 
          $this->erro_sql = " Campo Tipo de Andamento nao Informado.";
          $this->erro_campo = "y41_codtipo";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_tipoandam {
          return false;
        }
      }
-     if(trim($this->y41_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y41_descr"])){ 
+     if(trim((string) $this->y41_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y41_descr"])){ 
        $sql  .= $virgula." y41_descr = '$this->y41_descr' ";
        $virgula = ",";
-       if(trim($this->y41_descr) == null ){ 
+       if(trim((string) $this->y41_descr) == null ){ 
          $this->erro_sql = " Campo Descrição do tipo nao Informado.";
          $this->erro_campo = "y41_descr";
          $this->erro_banco = "";
@@ -227,14 +227,14 @@ class cl_tipoandam {
          return false;
        }
      }
-     if(trim($this->y41_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y41_obs"])){ 
+     if(trim((string) $this->y41_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y41_obs"])){ 
        $sql  .= $virgula." y41_obs = '$this->y41_obs' ";
        $virgula = ",";
      }
-     if(trim($this->y41_permcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y41_permcalc"])){ 
+     if(trim((string) $this->y41_permcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y41_permcalc"])){ 
        $sql  .= $virgula." y41_permcalc = '$this->y41_permcalc' ";
        $virgula = ",";
-       if(trim($this->y41_permcalc) == null ){ 
+       if(trim((string) $this->y41_permcalc) == null ){ 
          $this->erro_sql = " Campo Permite Cálculo nao Informado.";
          $this->erro_campo = "y41_permcalc";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_tipoandam {
          return false;
        }
      }
-     if(trim($this->y41_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y41_instit"])){ 
+     if(trim((string) $this->y41_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y41_instit"])){ 
        $sql  .= $virgula." y41_instit = $this->y41_instit ";
        $virgula = ",";
-       if(trim($this->y41_instit) == null ){ 
+       if(trim((string) $this->y41_instit) == null ){ 
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "y41_instit";
          $this->erro_banco = "";
@@ -265,19 +265,19 @@ class cl_tipoandam {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4925,'$this->y41_codtipo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y41_codtipo"]))
-           $resac = db_query("insert into db_acount values($acount,678,4925,'".AddSlashes(pg_result($resaco,$conresaco,'y41_codtipo'))."','$this->y41_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,678,4925,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y41_codtipo'))."','$this->y41_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y41_descr"]))
-           $resac = db_query("insert into db_acount values($acount,678,4926,'".AddSlashes(pg_result($resaco,$conresaco,'y41_descr'))."','$this->y41_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,678,4926,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y41_descr'))."','$this->y41_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y41_obs"]))
-           $resac = db_query("insert into db_acount values($acount,678,4927,'".AddSlashes(pg_result($resaco,$conresaco,'y41_obs'))."','$this->y41_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,678,4927,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y41_obs'))."','$this->y41_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y41_permcalc"]))
-           $resac = db_query("insert into db_acount values($acount,678,6809,'".AddSlashes(pg_result($resaco,$conresaco,'y41_permcalc'))."','$this->y41_permcalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,678,6809,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y41_permcalc'))."','$this->y41_permcalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y41_instit"]))
-           $resac = db_query("insert into db_acount values($acount,678,10664,'".AddSlashes(pg_result($resaco,$conresaco,'y41_instit'))."','$this->y41_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,678,10664,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y41_instit'))."','$this->y41_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -322,14 +322,14 @@ class cl_tipoandam {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4925,'$y41_codtipo','E')");
-         $resac = db_query("insert into db_acount values($acount,678,4925,'','".AddSlashes(pg_result($resaco,$iresaco,'y41_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,678,4926,'','".AddSlashes(pg_result($resaco,$iresaco,'y41_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,678,4927,'','".AddSlashes(pg_result($resaco,$iresaco,'y41_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,678,6809,'','".AddSlashes(pg_result($resaco,$iresaco,'y41_permcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,678,10664,'','".AddSlashes(pg_result($resaco,$iresaco,'y41_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,678,4925,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y41_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,678,4926,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y41_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,678,4927,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y41_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,678,6809,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y41_permcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,678,10664,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y41_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tipoandam
@@ -389,7 +389,7 @@ class cl_tipoandam {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tipoandam";
@@ -426,7 +426,7 @@ class cl_tipoandam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_tipoandam {
    function sql_query_file ( $y41_codtipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_tipoandam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

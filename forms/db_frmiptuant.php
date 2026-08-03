@@ -87,7 +87,7 @@ db_input('j40_refant',20,$Ij40_refant,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("j40_matric"=>@$j40_matric);
+	 $chavepri= ["j40_matric"=>@$j40_matric];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cliptuant->sql_query_file($j40_matric);
 	 $cliframe_alterar_excluir->campos  ="j40_matric,j40_refant";

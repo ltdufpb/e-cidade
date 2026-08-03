@@ -36,7 +36,7 @@ class DBDepartamentoRepository {
    * Collection de DBDepartamento 
    * @var array
    */    
-  private $aDBDepartamento = array();
+  private $aDBDepartamento = [];
   
   /**
    * Instancia da classe 

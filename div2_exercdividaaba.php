@@ -56,10 +56,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	   $clcriaabas->identifica = array("g1"=>"Exercício","g2"=>"Procedências","g3"=>"CGM","g4"=>"Inscrição","g5"=>"Matrícula");
-	   $clcriaabas->sizecampo  = array("g1"=>"20","g2"=>"20","g3"=>"20","g4"=>"20","g5"=>"20");
-	   $clcriaabas->title      = array("g1"=>"Dívida por Exercício","g2"=>"Dívida por Exercício","g3"=>"Dívida por Exercício","g4"=>"Dívida por Exercício","g5"=>"Dívida por Exercício");
-	   $clcriaabas->src        = array("g1"=>"div2_exercdivida011.php","g2"=>"div2_exercdivida033.php","g3"=>"div2_exercdivida044.php","g4"=>"div2_exercdivida055.php","g5"=>"div2_exercdivida066.php");
+	   $clcriaabas->identifica = ["g1"=>"Exercício","g2"=>"Procedências","g3"=>"CGM","g4"=>"Inscrição","g5"=>"Matrícula"];
+	   $clcriaabas->sizecampo  = ["g1"=>"20","g2"=>"20","g3"=>"20","g4"=>"20","g5"=>"20"];
+	   $clcriaabas->title      = ["g1"=>"Dívida por Exercício","g2"=>"Dívida por Exercício","g3"=>"Dívida por Exercício","g4"=>"Dívida por Exercício","g5"=>"Dívida por Exercício"];
+	   $clcriaabas->src        = ["g1"=>"div2_exercdivida011.php","g2"=>"div2_exercdivida033.php","g3"=>"div2_exercdivida044.php","g4"=>"div2_exercdivida055.php","g5"=>"div2_exercdivida066.php"];
 	   $clcriaabas->cria_abas(); 
 	 ?> 
 	 </td>

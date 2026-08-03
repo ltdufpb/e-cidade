@@ -33,8 +33,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_db_depart_classe.php"));
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //---- instancia classes
 $cl_depto = new cl_db_depart;
@@ -63,7 +63,7 @@ $cl_depto->rotulo->label();
 	            <td align="center">
 	              <b>Opções:</b>
 	                <?php 
-	                  $aCondicoes = array ('com' => 'Com o Andamento', 'sem' => 'Sem o Andamento');
+	                  $aCondicoes =  ['com' => 'Com o Andamento', 'sem' => 'Sem o Andamento'];
 	                  db_select('ver',$aCondicoes, true, 1);
 	                ?>
 	            </td>

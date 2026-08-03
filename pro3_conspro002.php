@@ -46,8 +46,8 @@ include(modification("classes/db_arqandam_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_protparam_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $clprotprocesso          = new cl_protprocesso;
 $clprotprocessodoc       = new cl_procprocessodoc;

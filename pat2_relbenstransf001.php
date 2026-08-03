@@ -39,7 +39,7 @@ $clbens->rotulo->label();
 $clbenstransfconf->rotulo->label();
 $clrotulo->label("nome");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

@@ -33,7 +33,7 @@ require(modification("libs/db_app.utils.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux    = new cl_arquivo_auxiliar;
 $rotulo = new rotulocampo();
@@ -92,8 +92,8 @@ $rotulo->label("m81_codtipo");
 			      </td>
 			      <td align="left">
 			        <?php 
-			          $aOpcao = array("com"=>"Com os Fornecedores selecionados",
-			                          "sem"=>"Sem os Fornecedores selecionados");
+			          $aOpcao = ["com"=>"Com os Fornecedores selecionados",
+			                          "sem"=>"Sem os Fornecedores selecionados"];
 			          db_select("vertipo",$aOpcao,true,1);
 			        ?>
 			      </td>
@@ -104,8 +104,8 @@ $rotulo->label("m81_codtipo");
             </td>
             <td align="left">
               <?php 
-                $aAgruparPor = array("agrpn"=>"Por Nota",
-                                     "agrpoc"=>"Por Ordem de Compra");
+                $aAgruparPor = ["agrpn"=>"Por Nota",
+                                     "agrpoc"=>"Por Ordem de Compra"];
                 db_select("agrupar",$aAgruparPor,true,1);
               ?>
             </td>
@@ -116,10 +116,10 @@ $rotulo->label("m81_codtipo");
             </td>
             <td align="left">
               <?php 
-                $aOrdenar = array("ordfrn"=>"Fornecedor",
+                $aOrdenar = ["ordfrn"=>"Fornecedor",
                                   "ordoc"=>"Ordem de compra",
                                   "ordnt"=>"Nota",
-                                  "orddt"=>"Data");
+                                  "orddt"=>"Data"];
                 db_select("ordenar",$aOrdenar,true,1);
               ?>
             </td>

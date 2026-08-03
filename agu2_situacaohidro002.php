@@ -235,14 +235,14 @@
     $sEndereco = 'B. ' . $j13_descr  . ' - ' . $j88_sigla . '. ' . $j14_nome;
     
     $pdf->cell(20, $alt, $x01_matric , 0, 0, 'C', $p);
-    $pdf->cell(70, $alt, substr($z01_nome, 0, 45)   , 0, 0, 'L', $p);
+    $pdf->cell(70, $alt, substr((string) $z01_nome, 0, 45)   , 0, 0, 'L', $p);
     $pdf->cell(70, $alt, substr($sEndereco, 0, 45)  , 0, 0, 'L', $p);
     
-    $letra  = trim($x01_letra);
+    $letra  = trim((string) $x01_letra);
     $numero = $x01_numero . (empty($letra) ? "" : "/" . $letra);
     
     $pdf->cell(15, $alt, $numero,                         0, 0, 'R', $p);
-    $pdf->cell(25, $alt, substr($x11_complemento, 0, 15), 0, 0, 'L', $p);
+    $pdf->cell(25, $alt, substr((string) $x11_complemento, 0, 15), 0, 0, 'L', $p);
     $pdf->cell(25, $alt, $x04_nrohidro,                   0, 0, 'L', $p);
     $pdf->cell(10, $alt, $x21_exerc,                      0, 0, 'C', $p);
     $pdf->cell(10, $alt, $x21_mes,                        0, 0, 'C', $p);

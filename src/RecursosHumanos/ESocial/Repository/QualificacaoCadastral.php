@@ -71,7 +71,7 @@ class QualificacaoCadastral
      */
     private function montaDadosServidores($servidores)
     {
-        $qualificacoesCadastrais = array();
+        $qualificacoesCadastrais = [];
 
         foreach ($servidores as $servidor) {
             if ($servidor->isRescindido()) {
@@ -97,9 +97,7 @@ class QualificacaoCadastral
             $qualificacoesCadastrais[$cgm->getCodigo()] = $qualificacaoCadastral;
         }
 
-        usort($qualificacoesCadastrais, function($qualificacoesCadastrais, $qualificacoesCadastraisComparacao){
-            return strcmp($qualificacoesCadastrais->getNome(), $qualificacoesCadastraisComparacao->getNome());    
-        });
+        usort($qualificacoesCadastrais, fn($qualificacoesCadastrais, $qualificacoesCadastraisComparacao) => strcmp((string) $qualificacoesCadastrais->getNome(), (string) $qualificacoesCadastraisComparacao->getNome()));
 
         return $qualificacoesCadastrais;
     }
@@ -116,7 +114,7 @@ class QualificacaoCadastral
             throw new \ParameterException('Matrículas não informadas.');
         }
 
-        $servidores = array();
+        $servidores = [];
 
         foreach ($matriculas as $matricula) {
             $servidores[] = \ServidorRepository::getInstanciaByCodigo($matricula, \DBPessoal::getAnoFolha(),

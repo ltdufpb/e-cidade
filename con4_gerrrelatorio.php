@@ -68,10 +68,10 @@
   
 
   $clrotulolov = new rotulolov; 
-  $fm_numfields = pg_numfields($resultsql);
-  $tamanho = array();
+  $fm_numfields = pg_num_fields($resultsql);
+  $tamanho = [];
   for ($i = 0;$i < $fm_numfields;$i++){
-    $clrotulolov->label(pg_fieldname($resultsql,$i));
+    $clrotulolov->label(pg_field_name($resultsql,$i));
     $pdf->Cell($clrotulolov->tamanho,4,$clrotulolov->titulo,"LRBT",($i==($fm_numfields-1)?1:0),"L",0);
     if($clrotulolov->tamanho==""){
   	  $tamanho[$i] = 10;
@@ -89,15 +89,15 @@
     $pdf->setX(5);
     //db_fieldsmemory($resultsql,$i);
     for ($c=0;$c<($fm_numfields-1);$c++){
-	  $pdf->Cell($tamanho[$c],4,pg_result($resultsql,$xi,$c),"B",0,"L",0);
+	  $pdf->Cell($tamanho[$c],4,pg_fetch_result($resultsql,$xi,$c),"B",0,"L",0);
     }
-	$pdf->Cell($tamanho[($fm_numfields-1)],4,pg_result($resultsql,$xi,($fm_numfields-1)),"B",1,"L",0);
+	$pdf->Cell($tamanho[($fm_numfields-1)],4,pg_fetch_result($resultsql,$xi,($fm_numfields-1)),"B",1,"L",0);
     $linha += 1;
 	if($linha>57){
 	   $linha = 0;
        $pdf->AddPage();
        for ($cabe=0;$cabec < $fm_numfields;$cabec++){
-         $clrotulolov->label(pg_fieldname($resultsql,$cabec));
+         $clrotulolov->label(pg_field_name($resultsql,$cabec));
          $pdf->Cell($clrotulolov->tamanho,4,$clrotulolov->titulo,"LRBT",($cabec==($fm_numfields-1)?1:0),"L",0);
        }	   
     }

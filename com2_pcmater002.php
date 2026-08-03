@@ -46,7 +46,7 @@ $clrotulo->label('o56_descr');
 $clrotulo->label('pc01_complmater');
 $clrotulo->label('pc01_id_usuario');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($grupo == "geral") {
@@ -149,9 +149,9 @@ for($x = 0; $x < $clpcmater->numrows;$x++){
 	   	$cor = 1;
 	   }
 	   $pdf->cell(13,$alt,$pc01_codmater,0,0,"C",$cor);
-	   $pdf->cell(55,$alt,substr($pc01_descrmater,0,40),0,0,"L",$cor);
+	   $pdf->cell(55,$alt,substr((string) $pc01_descrmater,0,40),0,0,"L",$cor);
 	   $pdf->cell(16,$alt,$pc04_codsubgrupo,0,0,"C",$cor);
-	   $pdf->cell(55,$alt,substr($pc04_descrsubgrupo,0,34),0,0,"L",$cor);
+	   $pdf->cell(55,$alt,substr((string) $pc04_descrsubgrupo,0,34),0,0,"L",$cor);
    }else{
 	   $pdf->cell(13,$alt,"",0,0,"C",$cor);
 	   $pdf->cell(55,$alt,"",0,0,"L",$cor);
@@ -159,10 +159,10 @@ for($x = 0; $x < $clpcmater->numrows;$x++){
 	   $pdf->cell(55,$alt,"",0,0,"L",$cor);
    }
    $pdf->cell(19,$alt,$o56_elemento,0,0,"C",$cor);
-   $pdf->cell(60,$alt,substr($o56_descr,0,40),0,0,"L",$cor);
+   $pdf->cell(60,$alt,substr((string) $o56_descr,0,40),0,0,"L",$cor);
 
    if($codmater != $pc01_codmater){
-	   $pdf->cell(60,$alt,substr($nome,0,40),0,1,"L",$cor);
+	   $pdf->cell(60,$alt,substr((string) $nome,0,40),0,1,"L",$cor);
    }else{
 	   $pdf->cell(60,$alt,"",0,1,"L",$cor);
    }

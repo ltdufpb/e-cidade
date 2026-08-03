@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE auladada
 class cl_auladada { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed243_i_codigo = 0; 
-   var $ed243_d_data_dia = null; 
-   var $ed243_d_data_mes = null; 
-   var $ed243_d_data_ano = null; 
-   var $ed243_d_data = null; 
-   var $ed243_i_procavaliacao = 0; 
-   var $ed243_i_regencia = 0; 
+   public $ed243_i_codigo = 0; 
+   public $ed243_d_data_dia = null; 
+   public $ed243_d_data_mes = null; 
+   public $ed243_d_data_ano = null; 
+   public $ed243_d_data = null; 
+   public $ed243_i_procavaliacao = 0; 
+   public $ed243_i_regencia = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed243_i_codigo = int4 = Código 
                  ed243_d_data = date = Data 
                  ed243_i_procavaliacao = int4 = Procavaliacao 
                  ed243_i_regencia = int4 = Regencia 
                  ";
    //funcao construtor da classe 
-   function cl_auladada() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("auladada"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -129,10 +129,10 @@ class cl_auladada {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed243_i_codigo = pg_result($result,0,0); 
+       $this->ed243_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from auladada_ed243_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed243_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed243_i_codigo)){
          $this->erro_sql = " Campo ed243_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_auladada {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Aula dada ($this->ed243_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Aula dada já Cadastrado";
@@ -190,13 +190,13 @@ class cl_auladada {
      $resaco = $this->sql_record($this->sql_query_file($this->ed243_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11780,'$this->ed243_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2036,11780,'','".AddSlashes(pg_result($resaco,0,'ed243_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2036,11781,'','".AddSlashes(pg_result($resaco,0,'ed243_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2036,11796,'','".AddSlashes(pg_result($resaco,0,'ed243_i_procavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2036,11795,'','".AddSlashes(pg_result($resaco,0,'ed243_i_regencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2036,11780,'','".AddSlashes(pg_fetch_result($resaco,0,'ed243_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2036,11781,'','".AddSlashes(pg_fetch_result($resaco,0,'ed243_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2036,11796,'','".AddSlashes(pg_fetch_result($resaco,0,'ed243_i_procavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2036,11795,'','".AddSlashes(pg_fetch_result($resaco,0,'ed243_i_regencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -205,10 +205,10 @@ class cl_auladada {
       $this->atualizacampos();
      $sql = " update auladada set ";
      $virgula = "";
-     if(trim($this->ed243_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed243_i_codigo"])){ 
+     if(trim((string) $this->ed243_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed243_i_codigo"])){ 
        $sql  .= $virgula." ed243_i_codigo = $this->ed243_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed243_i_codigo) == null ){ 
+       if(trim((string) $this->ed243_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed243_i_codigo";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_auladada {
          return false;
        }
      }
-     if(trim($this->ed243_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed243_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed243_d_data_dia"] !="") ){ 
+     if(trim((string) $this->ed243_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed243_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed243_d_data_dia"] !="") ){ 
        $sql  .= $virgula." ed243_d_data = '$this->ed243_d_data' ";
        $virgula = ",";
-       if(trim($this->ed243_d_data) == null ){ 
+       if(trim((string) $this->ed243_d_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "ed243_d_data_dia";
          $this->erro_banco = "";
@@ -234,7 +234,7 @@ class cl_auladada {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ed243_d_data_dia"])){ 
          $sql  .= $virgula." ed243_d_data = null ";
          $virgula = ",";
-         if(trim($this->ed243_d_data) == null ){ 
+         if(trim((string) $this->ed243_d_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "ed243_d_data_dia";
            $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_auladada {
          }
        }
      }
-     if(trim($this->ed243_i_procavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed243_i_procavaliacao"])){ 
+     if(trim((string) $this->ed243_i_procavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed243_i_procavaliacao"])){ 
        $sql  .= $virgula." ed243_i_procavaliacao = $this->ed243_i_procavaliacao ";
        $virgula = ",";
-       if(trim($this->ed243_i_procavaliacao) == null ){ 
+       if(trim((string) $this->ed243_i_procavaliacao) == null ){ 
          $this->erro_sql = " Campo Procavaliacao nao Informado.";
          $this->erro_campo = "ed243_i_procavaliacao";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_auladada {
          return false;
        }
      }
-     if(trim($this->ed243_i_regencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed243_i_regencia"])){ 
+     if(trim((string) $this->ed243_i_regencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed243_i_regencia"])){ 
        $sql  .= $virgula." ed243_i_regencia = $this->ed243_i_regencia ";
        $virgula = ",";
-       if(trim($this->ed243_i_regencia) == null ){ 
+       if(trim((string) $this->ed243_i_regencia) == null ){ 
          $this->erro_sql = " Campo Regencia nao Informado.";
          $this->erro_campo = "ed243_i_regencia";
          $this->erro_banco = "";
@@ -279,17 +279,17 @@ class cl_auladada {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11780,'$this->ed243_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed243_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,2036,11780,'".AddSlashes(pg_result($resaco,$conresaco,'ed243_i_codigo'))."','$this->ed243_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2036,11780,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed243_i_codigo'))."','$this->ed243_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed243_d_data"]))
-           $resac = db_query("insert into db_acount values($acount,2036,11781,'".AddSlashes(pg_result($resaco,$conresaco,'ed243_d_data'))."','$this->ed243_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2036,11781,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed243_d_data'))."','$this->ed243_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed243_i_procavaliacao"]))
-           $resac = db_query("insert into db_acount values($acount,2036,11796,'".AddSlashes(pg_result($resaco,$conresaco,'ed243_i_procavaliacao'))."','$this->ed243_i_procavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2036,11796,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed243_i_procavaliacao'))."','$this->ed243_i_procavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed243_i_regencia"]))
-           $resac = db_query("insert into db_acount values($acount,2036,11795,'".AddSlashes(pg_result($resaco,$conresaco,'ed243_i_regencia'))."','$this->ed243_i_regencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2036,11795,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed243_i_regencia'))."','$this->ed243_i_regencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -334,13 +334,13 @@ class cl_auladada {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11780,'$ed243_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2036,11780,'','".AddSlashes(pg_result($resaco,$iresaco,'ed243_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2036,11781,'','".AddSlashes(pg_result($resaco,$iresaco,'ed243_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2036,11796,'','".AddSlashes(pg_result($resaco,$iresaco,'ed243_i_procavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2036,11795,'','".AddSlashes(pg_result($resaco,$iresaco,'ed243_i_regencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2036,11780,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed243_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2036,11781,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed243_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2036,11796,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed243_i_procavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2036,11795,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed243_i_regencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from auladada
@@ -400,7 +400,7 @@ class cl_auladada {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:auladada";

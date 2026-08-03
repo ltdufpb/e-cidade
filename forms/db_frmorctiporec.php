@@ -173,10 +173,10 @@ if (InstituicaoRepository::usaFonteRecursoUniao()) {
                         </td>
                         <td>
                             <?php
-                            $aTipo = array(
+                            $aTipo = [
                                 '1' => 'Sintético',
                                 '2' => 'Analítico'
-                            );
+                            ];
                             db_select('iTipo', $aTipo, true, $db_opcao);
                             ?>
                         </td>
@@ -187,10 +187,10 @@ if (InstituicaoRepository::usaFonteRecursoUniao()) {
                         </td>
                         <td>
                             <?php
-                            $aTipoRecurso = array(
+                            $aTipoRecurso = [
                                 '1' => 'Recurso Livre',
                                 '2' => 'Recurso Vinculado'
-                            );
+                            ];
                             db_select('o15_tipo', $aTipoRecurso, true, $db_opcao);
                             ?>
                         </td>

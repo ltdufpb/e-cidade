@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cidadao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcidadao = new cl_cidadao;
 $clcidadao->rotulo->label("ov02_sequencial");
 $clcidadao->rotulo->label("ov02_seq");
@@ -138,10 +138,10 @@ $chave_ov02_seq = null;
            $sql = $clcidadao->sql_query_cidadaovinculos("","",$campos,"ov02_sequencial#ov02_seq",$dbWhere);
            
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov02_sequencial)){
 //          $repassa = array("chave_ov02_sequencial"=>$chave_ov02_sequencial,"chave_ov02_sequencial"=>$chave_ov02_sequencial);
-          $repassa = array("chave_ov02_sequencial"=>$chave_ov02_sequencial);
+          $repassa = ["chave_ov02_sequencial"=>$chave_ov02_sequencial];
         }
         //die($sql);
         //($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_self", $campos_layer = "", $NomeForm = "NoMe", $variaveis_repassa = array (), $automatico = true

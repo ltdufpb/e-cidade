@@ -39,8 +39,8 @@ $clpcorcamval    = new cl_pcorcamval();
 $clrotulo        = new rotulocampo();
 $oDaoPcorcamitem = new cl_pcorcamitem();
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = false;
@@ -52,14 +52,14 @@ try {
 
   if (isset($trocar)) {
 
-    if (trim($pc25_motivo) == '') {
+    if (trim((string) $pc25_motivo) == '') {
       throw new Exception("Campo motivo da troca da pontuação é de preenchimento obrigatório.");
     }
 
     $sSqlOrcamItem = $oDaoPcorcamitem->sql_query_pcmaterproc($pc25_orcamitem, "pc22_codorc, pc69_processocompralote");
     $rsOrcamItem   = $oDaoPcorcamitem->sql_record($sSqlOrcamItem);
 
-    $aItensTroca = array();
+    $aItensTroca = [];
     $oDadosItem  = null;
 
     if ($oDaoPcorcamitem->numrows) {
@@ -113,7 +113,7 @@ try {
       /**
        * Busca a pontuação do fornecedor substituto e do substituido
        */
-      $aPontuacoes   = array();
+      $aPontuacoes   = [];
       $sSqlOrcamJulg = $clpcorcamjulg->sql_query_file( null,
                                                        null,
                                                        "pc24_orcamforne as pc24_orcamforne_sql, pc24_pontuacao",

@@ -286,7 +286,7 @@ if ($desabilitabotao == false) {
 } else {
   echo "<input type='submit'  name='confirma' value='Emitir Slip' disabled >";
 }
-$db_opcao = isset($db_opcao)?$db_opcao:1;
+$db_opcao ??= 1;
 echo "<input name=\"pesquisar\" type=\"button\" ";
 echo "id=\"pesquisar\" value='".($db_opcao==1?"Importar":"Pesquisar")."' onclick=\"js_pesquisa();\">" ;
 ?>

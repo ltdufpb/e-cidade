@@ -18,20 +18,20 @@ abstract class RelatorioCsv implements Layout
      */
     protected $dumperCsv;
     /**
-     * Array com os dados a ser impressos
-     * @var array
-     */
-    protected $dados = [];
-    /**
      * @var CampoDinamico[]
      */
     protected $campos = [];
 
-    public function __construct(Dumper $dumperCsv, $dados)
+    /**
+     * @param mixed[] $dados
+     */
+    public function __construct(Dumper $dumperCsv, /**
+     * Array com os dados a ser impressos
+     */
+    protected $dados)
     {
         $this->dumperCsv = $dumperCsv;
         $this->dumperCsv->setCsvControl(';');
-        $this->dados = $dados;
     }
 
     /**

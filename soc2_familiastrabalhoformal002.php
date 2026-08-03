@@ -48,8 +48,8 @@ db_app::import("social.cadastrounico.*");
 db_app::import("exceptions.*");
 
 $oGet               = db_utils::postMemory($_GET);
-$aTipoTrabalho      = explode(",", $oGet->sTipoTrabalho);
-$aIdentificador     = array();
+$aTipoTrabalho      = explode(",", (string) $oGet->sTipoTrabalho);
+$aIdentificador     = [];
 foreach ($aTipoTrabalho as $iTipoTrabalho) {
   
   if ($iTipoTrabalho == 0) {
@@ -64,9 +64,9 @@ foreach ($aTipoTrabalho as $iTipoTrabalho) {
     $aIdentificador[] = 'DomesticoComCarteiraAssinada';
   }
 }
-$aAvaliacoes        = array();
-$aFamilias          = array();
-$aRespostaAvaliacao = array();
+$aAvaliacoes        = [];
+$aFamilias          = [];
+$aRespostaAvaliacao = [];
 
 $oFiltroAvaliacao = new FiltroAvaliacao();
 $aAvaliacoes      = $oFiltroAvaliacao->daAvaliacao('AvaliacaoCadastroUnicoCidadao')
@@ -152,12 +152,12 @@ foreach ($aFamilias as $oFamilia) {
   $oPdf->SetFont('arial', '', 6);
   $oPdf->Cell(20,  $iHeigth, "{$sNIS}",                                        "TBR",  0);
   $oPdf->Cell(20,  $iHeigth, "{$iCodigoFamilia}",                              "TBRL", 0);
-  $oPdf->Cell(70,  $iHeigth, substr($sResponsavel, 0, 70),                     "TBRL", 0);
+  $oPdf->Cell(70,  $iHeigth, substr((string) $sResponsavel, 0, 70),                     "TBRL", 0);
   $oPdf->Cell(60,  $iHeigth, substr($sEndereco, 0, 60),                        "LTB",  0);
-  $oPdf->Cell(30,  $iHeigth, substr($sBairro, 0, 30),                          "TBRL", 0);
+  $oPdf->Cell(30,  $iHeigth, substr((string) $sBairro, 0, 30),                          "TBRL", 0);
   $oPdf->Cell(25,  $iHeigth, db_formatar($oFamilia->getRendaPerCapita(), 'f'), "TBRL", 0, "R");
   foreach ($aRespostaAvaliacao[$oFamilia->getCodigoSequencial()] as $sResposta) {
-    $oPdf->Cell(55,  $iHeigth, substr(urldecode($sResposta->descricaoresposta), 4), "TBRL", 1);
+    $oPdf->Cell(55,  $iHeigth, substr(urldecode((string) $sResposta->descricaoresposta), 4), "TBRL", 1);
   }
 
   $iTotalRegistros ++;

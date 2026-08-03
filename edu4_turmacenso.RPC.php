@@ -57,7 +57,7 @@ try {
       $aTurmas = TurmaRepository::getTurmasCompartilhamSala($oCalendario, $oSala, $oParam->iTurnoReferente);
 
 
-      $oRetorno->aTurmasSala = array();
+      $oRetorno->aTurmasSala = [];
       $oRetorno->iTurmaCenso = null;
       $oRetorno->iEtapaCenso = null;
       $oRetorno->sNomeTurma  = "";
@@ -71,7 +71,7 @@ try {
       foreach ( $aTurmas as $oTurma ) {
 
         $oDados             = new stdClass();
-        $oDados->sTurma     = urlencode( $oTurma->getDescricao() );
+        $oDados->sTurma     = urlencode( (string) $oTurma->getDescricao() );
         $oDados->iTurma     = $oTurma->getCodigo();
         $oDados->lVinculada = false;
 
@@ -87,7 +87,7 @@ try {
 
           $oRetorno->iTurmaCenso = $oDadosRetorno->ed343_turmacenso;
           $oRetorno->iEtapaCenso = $oDadosRetorno->ed134_censoetapa;
-          $oRetorno->sNomeTurma  = urlencode( $oDadosRetorno->ed342_nome );
+          $oRetorno->sNomeTurma  = urlencode( (string) $oDadosRetorno->ed342_nome );
         }
       }
 
@@ -99,12 +99,12 @@ try {
       $oRetorno->iTurmaCenso = $oTurmaCenso->getCodigo();
       $oRetorno->sTurmaCenso = urlencode( $oTurmaCenso->getNomeTurma() );
       $oRetorno->iEtapaCenso = $oTurmaCenso->getEtapaCenso();
-      $oRetorno->aTurmasSala = array();
+      $oRetorno->aTurmasSala = [];
 
       foreach ( $oTurmaCenso->getTurmaCensoTurma() as $oTurmaVinculada ) {
 
         $oDados             = new stdClass();
-        $oDados->sTurma     = urlencode( $oTurmaVinculada->getTurma()->getDescricao() );
+        $oDados->sTurma     = urlencode( (string) $oTurmaVinculada->getTurma()->getDescricao() );
         $oDados->iTurma     = $oTurmaVinculada->getTurma()->getCodigo();
         $oDados->lVinculada = true;
 

@@ -103,7 +103,7 @@ function db_exclusao_solicitacao($dbwhere){
     for ($i = 0; $i < $numrows_pcorcamitem; $i++){
       db_fieldsmemory($res_pcorcamitem,$i);
 
-      if (trim($pc20_codorc) == "" || trim($pc21_orcamforne) == ""){
+      if (trim((string) $pc20_codorc) == "" || trim((string) $pc21_orcamforne) == ""){
         break;
       }
 
@@ -244,7 +244,7 @@ function db_exclusao_solicitacao($dbwhere){
       $erro = true;
       $erro_msg = $clsolicita->erro_msg;
     }
-  
+
 //  db_msgbox("4 ".$erro_msg);
   }
   

@@ -119,15 +119,16 @@ class EstadosEnum extends Enum
      * @return array
      * @throws Exception
      */
+    #[\Override]
     public static function toArrayWithNames()
     {
         $tipos = self::values();
-        $return = array();
+        $return = [];
         foreach ($tipos as $tipo) {
-            $return[] = array(
+            $return[] = [
                 'value' => $tipo->value(),
                 'name' => $tipo->name()
-            );
+            ];
         }
 
         return $return;

@@ -145,7 +145,7 @@ function js_mandadados(){
                     db_fieldsmemory($result_proctransfer, 0);
                   }
                 }
-                $arr                    = array();
+                $arr                    = [];
                 $sSqlTransferenciaDepto = $clproctransfer->sql_query_trans(null,
                                                                            "p62_codtran as codtran ",
                                                                            "p62_codtran desc",

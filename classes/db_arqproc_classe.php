@@ -29,23 +29,23 @@
 //CLASSE DA ENTIDADE arqproc
 class cl_arqproc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p68_codarquiv = 0; 
-   var $p68_codproc = 0; 
+   public $p68_codarquiv = 0; 
+   public $p68_codproc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p68_codarquiv = int4 = Código do Arquivamento 
                  p68_codproc = int4 = Processo 
                  ";
@@ -53,7 +53,7 @@ class cl_arqproc {
    function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arqproc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -108,7 +108,7 @@ class cl_arqproc {
      
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Reabertura de Processos ($this->p68_codarquiv."-".$this->p68_codproc) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Reabertura de Processos já Cadastrado";
@@ -132,12 +132,12 @@ class cl_arqproc {
      $resaco = $this->sql_record($this->sql_query_file($this->p68_codarquiv,$this->p68_codproc));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4675,'$this->p68_codarquiv','I')");
        $resac = db_query("insert into db_acountkey values($acount,4676,'$this->p68_codproc','I')");
-       $resac = db_query("insert into db_acount values($acount,614,4675,'','".AddSlashes(pg_result($resaco,0,'p68_codarquiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,614,4676,'','".AddSlashes(pg_result($resaco,0,'p68_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,614,4675,'','".AddSlashes(pg_fetch_result($resaco,0,'p68_codarquiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,614,4676,'','".AddSlashes(pg_fetch_result($resaco,0,'p68_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -146,10 +146,10 @@ class cl_arqproc {
       $this->atualizacampos();
      $sql = " update arqproc set ";
      $virgula = "";
-     if(trim($this->p68_codarquiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p68_codarquiv"])){ 
+     if(trim((string) $this->p68_codarquiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p68_codarquiv"])){ 
        $sql  .= $virgula." p68_codarquiv = $this->p68_codarquiv ";
        $virgula = ",";
-       if(trim($this->p68_codarquiv) == null ){ 
+       if(trim((string) $this->p68_codarquiv) == null ){ 
          $this->erro_sql = " Campo Código do Arquivamento nao Informado.";
          $this->erro_campo = "p68_codarquiv";
          $this->erro_banco = "";
@@ -159,10 +159,10 @@ class cl_arqproc {
          return false;
        }
      }
-     if(trim($this->p68_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p68_codproc"])){ 
+     if(trim((string) $this->p68_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p68_codproc"])){ 
        $sql  .= $virgula." p68_codproc = $this->p68_codproc ";
        $virgula = ",";
-       if(trim($this->p68_codproc) == null ){ 
+       if(trim((string) $this->p68_codproc) == null ){ 
          $this->erro_sql = " Campo Processo nao Informado.";
          $this->erro_campo = "p68_codproc";
          $this->erro_banco = "";
@@ -183,14 +183,14 @@ class cl_arqproc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4675,'$this->p68_codarquiv','A')");
          $resac = db_query("insert into db_acountkey values($acount,4676,'$this->p68_codproc','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p68_codarquiv"]))
-           $resac = db_query("insert into db_acount values($acount,614,4675,'".AddSlashes(pg_result($resaco,$conresaco,'p68_codarquiv'))."','$this->p68_codarquiv',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,614,4675,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p68_codarquiv'))."','$this->p68_codarquiv',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p68_codproc"]))
-           $resac = db_query("insert into db_acount values($acount,614,4676,'".AddSlashes(pg_result($resaco,$conresaco,'p68_codproc'))."','$this->p68_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,614,4676,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p68_codproc'))."','$this->p68_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -235,12 +235,12 @@ class cl_arqproc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4675,'$p68_codarquiv','E')");
          $resac = db_query("insert into db_acountkey values($acount,4676,'$p68_codproc','E')");
-         $resac = db_query("insert into db_acount values($acount,614,4675,'','".AddSlashes(pg_result($resaco,$iresaco,'p68_codarquiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,614,4676,'','".AddSlashes(pg_result($resaco,$iresaco,'p68_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,614,4675,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p68_codarquiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,614,4676,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p68_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from arqproc
@@ -306,7 +306,7 @@ class cl_arqproc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:arqproc";
@@ -321,7 +321,7 @@ class cl_arqproc {
    function sql_query ( $p68_codarquiv=null,$p68_codproc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -350,7 +350,7 @@ class cl_arqproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -363,7 +363,7 @@ class cl_arqproc {
    function sql_query_file ( $p68_codarquiv=null,$p68_codproc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_arqproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_arqproc {
    function sql_query_consprocarquiv ( $p68_codarquiv=null,$p68_codproc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -435,7 +435,7 @@ class cl_arqproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_sanitario_classe.php"));
 include(modification("classes/db_iptucalh_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clcaracter = new cl_caracter;
 $cliptucalh = new cl_iptucalh;
 $cliptucalh->rotulo->label();
@@ -225,7 +225,7 @@ db_input('j32_descr',40,$Ij32_descr,true,'text',1,"")
     }
     for($x=0;$x<$numrows;$x++){ 
       db_fieldsmemory($rsResult,$x);
-      echo "<input type='checkbox' checked name='check".$x."'value='".$j17_codhis."'><strong>".ucfirst(strtolower($j17_descr))."</strong>";
+      echo "<input type='checkbox' checked name='check".$x."'value='".$j17_codhis."'><strong>".ucfirst(strtolower((string) $j17_descr))."</strong>";
     }
     ?>  
     </fieldset>

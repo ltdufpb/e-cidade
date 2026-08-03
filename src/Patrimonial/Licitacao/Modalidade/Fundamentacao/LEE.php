@@ -45,10 +45,10 @@ final class LEE implements DeparaInterface
      */
     public function __construct()
     {
-        $this->aFundamentacoes = array(
+        $this->aFundamentacoes = [
           'A28IVNLL',
           'OUT'
-        );
+        ];
     }
 
     /**

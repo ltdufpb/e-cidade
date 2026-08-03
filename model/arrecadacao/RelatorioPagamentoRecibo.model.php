@@ -40,23 +40,23 @@ class RelatorioPagamentoRecibo {
   /**
    * Array com o tipo de relatório para cada nível
    */
-  private static $aTipo = array(
+  private static $aTipo = [
     self::NIVEL_UM   => PDFDocument::PRINT_LANDSCAPE,
     self::NIVEL_DOIS => PDFDocument::PRINT_LANDSCAPE
-  );
+  ];
 
   /**
    * Array com os cabeçalho dos relatórios de cada nível
    */
-  private static $aCabecalho = array(
-    self::NIVEL_UM   => array( "Cód. Arrecadação",
+  private static $aCabecalho = [
+    self::NIVEL_UM   => [ "Cód. Arrecadação",
                                "Tipo",
                                "Tipo Débito",
                                "Vencimento",
                                "Pagamento",
-                               "Valor"),
+                               "Valor"],
 
-    self::NIVEL_DOIS => array( "Numpre",
+    self::NIVEL_DOIS => [ "Numpre",
                                "Parcela",
                                "Total",
                                "Tipo",
@@ -66,29 +66,29 @@ class RelatorioPagamentoRecibo {
                                "Vencimento",
                                "Pagamento",
                                "Efetivação",
-                               "Valor" )
-  );
+                               "Valor" ]
+  ];
 
   /**
    * Array com as larguras de cada coluna dos relatórios de acordo com os níveis
    */
-  private static $aLargura = array(
-    self::NIVEL_UM   => array( 10, 10, 40, 20, 10, 10 ),
-    self::NIVEL_DOIS => array( 6, 4, 4, 4, 20, 5, 25, 8, 8, 8, 8 )
-  );
+  private static $aLargura = [
+    self::NIVEL_UM   => [ 10, 10, 40, 20, 10, 10 ],
+    self::NIVEL_DOIS => [ 6, 4, 4, 4, 20, 5, 25, 8, 8, 8, 8 ]
+  ];
 
   /**
    * Array com os alinhamentos do relatório de cada nível
    */
-  private static $aAlinhamento = array(
-    self::NIVEL_UM   => array( PDFDocument::ALIGN_CENTER,
+  private static $aAlinhamento = [
+    self::NIVEL_UM   => [ PDFDocument::ALIGN_CENTER,
                                PDFDocument::ALIGN_CENTER,
                                PDFDocument::ALIGN_LEFT,
                                PDFDocument::ALIGN_CENTER,
                                PDFDocument::ALIGN_CENTER,
-                               PDFDocument::ALIGN_RIGHT ),
+                               PDFDocument::ALIGN_RIGHT ],
 
-    self::NIVEL_DOIS => array( PDFDocument::ALIGN_CENTER,
+    self::NIVEL_DOIS => [ PDFDocument::ALIGN_CENTER,
                                PDFDocument::ALIGN_CENTER,
                                PDFDocument::ALIGN_CENTER,
                                PDFDocument::ALIGN_CENTER,
@@ -98,21 +98,21 @@ class RelatorioPagamentoRecibo {
                                PDFDocument::ALIGN_CENTER,
                                PDFDocument::ALIGN_CENTER,
                                PDFDocument::ALIGN_CENTER,
-                               PDFDocument::ALIGN_RIGHT )
-  );
+                               PDFDocument::ALIGN_RIGHT ]
+  ];
 
   /**
    * Array com as formatações de cada coluna do relatório por nível
    */
-  private static $aFormatacao = array(
-    self::NIVEL_UM   => array( false,
+  private static $aFormatacao = [
+    self::NIVEL_UM   => [ false,
                                false,
                                false,
                                PDFTable::FORMAT_DATE,
                                PDFTable::FORMAT_DATE,
-                               PDFTable::FORMAT_NUMERIC ),
+                               PDFTable::FORMAT_NUMERIC ],
 
-    self::NIVEL_DOIS => array( false,
+    self::NIVEL_DOIS => [ false,
                                false,
                                false,
                                false,
@@ -122,8 +122,8 @@ class RelatorioPagamentoRecibo {
                                PDFTable::FORMAT_DATE,
                                PDFTable::FORMAT_DATE,
                                PDFTable::FORMAT_DATE,
-                               PDFTable::FORMAT_NUMERIC)
-  );
+                               PDFTable::FORMAT_NUMERIC]
+  ];
 
   /**
    * Atributo que armazena o nível do relatório
@@ -134,7 +134,7 @@ class RelatorioPagamentoRecibo {
   /**
    * Atributo que conterá os dados que serão impresso no relatório
    */
-  private $aDados = array();
+  private $aDados = [];
 
   /**
    * Alteramos o nível do relatório
@@ -146,10 +146,10 @@ class RelatorioPagamentoRecibo {
     /**
      * Colocamos os níveis em um array para facilitar a validação
      */
-    $aNiveis = array(
+    $aNiveis = [
       self::NIVEL_UM,
       self::NIVEL_DOIS
-    );
+    ];
 
     /**
      * Validamos o nível informado para garantir que este é um dos níveis suportados pela classe

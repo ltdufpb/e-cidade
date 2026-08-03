@@ -12,9 +12,9 @@ class QuadroParcelamento
     const LARGURA_INICIAL = 49.5;
     const ALTURA = 4;
 
-    private $juridico = array();
-    private $parcelamentos = array();
-    private $quantidadeIniciais = array();
+    private $juridico = [];
+    private $parcelamentos = [];
+    private $quantidadeIniciais = [];
     private $pdf;
 
     public function __construct(PDF $pdf)
@@ -25,7 +25,7 @@ class QuadroParcelamento
     public function adicionarDados($dados)
     {
         if (!empty($dados->numero_parcelamento)) {
-            $parcelamentos = array();
+            $parcelamentos = [];
             $this->quantidadeIniciais[$dados->numpre] = 0;
 
             foreach ($dados->processo_foro as $processosForo) {

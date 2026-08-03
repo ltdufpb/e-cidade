@@ -25,15 +25,15 @@ require_once(modification("dbforms/db_funcoes.php"));
 </head>
 <body class="body-default">
 <div class="container">
-    <input type="hidden" id="codigoTipoProcesso" value="<?= isset($p51_codigo) ? $p51_codigo : '' ?>">
+    <input type="hidden" id="codigoTipoProcesso" value="<?= $p51_codigo ?? '' ?>">
     <fieldset>
         <legend>Atividades de Execução do Processo</legend>
         <table class="form-container" style="border-collapse: separate;">
             <tr>
                 <td><label for="p51_codigo" id="tipoprocesso_ancora">Código do Tipo: &nbsp;</label></td>
                 <td>
-                    <input type="text" id="p51_codigo" value="<?= isset($p51_codigo) ? $p51_codigo : '' ?>"/>
-                    <input type="text" id="p51_descr" value="<?= isset($p51_descr) ? $p51_descr : '' ?>"/>
+                    <input type="text" id="p51_codigo" value="<?= $p51_codigo ?? '' ?>"/>
+                    <input type="text" id="p51_descr" value="<?= $p51_descr ?? '' ?>"/>
                 </td>
             </tr>
             <tr>

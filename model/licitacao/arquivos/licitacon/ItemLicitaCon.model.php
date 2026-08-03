@@ -68,7 +68,7 @@ class ItemLicitaCon extends ArquivoLicitaCon
      */
     public function getDados()
     {
-        $aItens = array();
+        $aItens = [];
         $sCampos = "distinct l20_numero, l20_codigo, l20_licsituacao, l21_codigo, l21_ordem, ";
         $sCampos .= "(pc01_codmater||' - '||replace(pc01_descrmater, '|', '')) as pc01_descrmater, replace(pc11_resum, '|', '') as pc11_resum, pc11_quant, pc11_vlrun, pc23_quant, pc23_vlrun, m61_codigotribunal, ";
         $sCampos .= "pc17_codigo, pc23_orcamitem, z01_numcgm, pc23_bdi, pc23_encargossociais, ";
@@ -103,7 +103,7 @@ class ItemLicitaCon extends ArquivoLicitaCon
 
             $descricaoItem = $oStdItem->pc01_descrmater;
             if ($oStdItem->pc01_descrmater != $oStdItem->pc11_resum && !empty($oStdItem->pc11_resum)) {
-              $resumoItem = preg_replace( "/\r|\n/", "", $oStdItem->pc11_resum);
+              $resumoItem = preg_replace( "/\r|\n/", "", (string) $oStdItem->pc11_resum);
               $descricaoItem = "{$oStdItem->pc01_descrmater} - {$resumoItem}";
             }
 
@@ -129,7 +129,7 @@ class ItemLicitaCon extends ArquivoLicitaCon
             if ($oLicitacao->getFase() == \EventoLicitacao::FASE_ADJUDICACAO_HOMOLOGACAO &&
                 !in_array(
                     $oLicitacao->getModalidade()->getSiglaTipoCompraTribunal(),
-                    array('PRD', 'PRI', 'RPO', 'CPC', 'MAI', 'CPP')
+                    ['PRD', 'PRI', 'RPO', 'CPC', 'MAI', 'CPP']
                 )) {
                 $totalHomologado = ((float) $oStdItem->pc23_vlrun) * ((float) $oStdItem->pc23_quant);
                 $totalHomologado = $totalHomologado ? number_format($totalHomologado, 2, ',', '') : '';
@@ -167,8 +167,8 @@ class ItemLicitaCon extends ArquivoLicitaCon
               $oStdItem->z01_numcgm,
               $oStdItem->pc23_orcamitem
             );
-            $oDados->PC_BDI_HOMOLOGADO = $oDbiEngargos->dbi ? $oDbiEngargos->dbi : '0,00';
-            $oDados->PC_ENCARGOS_SOCIAIS_HOMOLOGADO = $oDbiEngargos->encargos ? $oDbiEngargos->encargos : '0,00';
+            $oDados->PC_BDI_HOMOLOGADO = $oDbiEngargos->dbi ?: '0,00';
+            $oDados->PC_ENCARGOS_SOCIAIS_HOMOLOGADO = $oDbiEngargos->encargos ?: '0,00';
             $oDados->TP_ORCAMENTO = $oAtributosDinamicos->getAtributo('tipoorcamento', null);
             $oDados->TP_DOCUMENTO_FORNECEDOR = $oFornecedores->fornecedor->tipo;
             $oDados->NR_DOCUMENTO_FORNECEDOR = $oFornecedores->fornecedor->documento;

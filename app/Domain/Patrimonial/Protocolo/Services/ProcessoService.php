@@ -275,7 +275,7 @@ class ProcessoService
     public function arquivar(
         Processo $processo,
         $motivo,
-        ProcessoAndamento $processoAndamento = null
+        ?ProcessoAndamento $processoAndamento = null
     ) {
 
         $defaultSession = DefaultSession::getInstance();
@@ -335,7 +335,7 @@ class ProcessoService
         require_once("pro4_capaprocesso.php");
 
         $storageConfig = StorageHelper::getStorageConfig();
-        $allowed = array();
+        $allowed = [];
 
         if (isset($storageConfig->client_id_ouvidoria) && !empty($storageConfig->client_id_ouvidoria)) {
             $allowed[] = $storageConfig->client_id_ouvidoria;

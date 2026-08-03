@@ -35,7 +35,7 @@ class cl_obrasrenovacaoalvara
     public function __construct()
     {
         $this->rotulo = new rotulo("obrasrenovacaoalvara"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -115,7 +115,7 @@ class cl_obrasrenovacaoalvara
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Data de renovação do alvará () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Data de renovação do alvará já Cadastrado";
@@ -148,10 +148,10 @@ class cl_obrasrenovacaoalvara
       $this->atualizacampos();
      $sql = " update obrasrenovacaoalvara set ";
      $virgula = "";
-     if(trim($this->ob33_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob33_codobra"])){ 
+     if(trim((string) $this->ob33_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob33_codobra"])){ 
        $sql  .= $virgula." ob33_codobra = $this->ob33_codobra ";
        $virgula = ",";
-       if(trim($this->ob33_codobra) == null ){ 
+       if(trim((string) $this->ob33_codobra) == null ){ 
          $this->erro_sql = " Campo ob33_codobra não informado.";
          $this->erro_campo = "ob33_codobra";
          $this->erro_banco = "";
@@ -161,10 +161,10 @@ class cl_obrasrenovacaoalvara
          return false;
        }
      }
-     if(trim($this->ob33_dtrenovacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob33_dtrenovacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob33_dtrenovacao_dia"] !="") ){ 
+     if(trim((string) $this->ob33_dtrenovacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob33_dtrenovacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob33_dtrenovacao_dia"] !="") ){ 
        $sql  .= $virgula." ob33_dtrenovacao = '$this->ob33_dtrenovacao' ";
        $virgula = ",";
-       if(trim($this->ob33_dtrenovacao) == null ){ 
+       if(trim((string) $this->ob33_dtrenovacao) == null ){ 
          $this->erro_sql = " Campo Data de renovação do alvará não informado.";
          $this->erro_campo = "ob33_dtrenovacao_dia";
          $this->erro_banco = "";
@@ -177,7 +177,7 @@ class cl_obrasrenovacaoalvara
        if(isset($GLOBALS["HTTP_POST_VARS"]["ob33_dtrenovacao_dia"])){ 
          $sql  .= $virgula." ob33_dtrenovacao = null ";
          $virgula = ",";
-         if(trim($this->ob33_dtrenovacao) == null ){ 
+         if(trim((string) $this->ob33_dtrenovacao) == null ){ 
            $this->erro_sql = " Campo Data de renovação do alvará não informado.";
            $this->erro_campo = "ob33_dtrenovacao_dia";
            $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_obrasrenovacaoalvara
          }
        }
      }
-     if(trim($this->ob33_dtvalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob33_dtvalidade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob33_dtvalidade_dia"] !="") ){ 
+     if(trim((string) $this->ob33_dtvalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob33_dtvalidade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob33_dtvalidade_dia"] !="") ){ 
        $sql  .= $virgula." ob33_dtvalidade = '$this->ob33_dtvalidade' ";
        $virgula = ",";
-       if(trim($this->ob33_dtvalidade) == null ){ 
+       if(trim((string) $this->ob33_dtvalidade) == null ){ 
          $this->erro_sql = " Campo Data de validade do alvará não informado.";
          $this->erro_campo = "ob33_dtvalidade_dia";
          $this->erro_banco = "";
@@ -204,7 +204,7 @@ class cl_obrasrenovacaoalvara
        if(isset($GLOBALS["HTTP_POST_VARS"]["ob33_dtvalidade_dia"])){ 
          $sql  .= $virgula." ob33_dtvalidade = null ";
          $virgula = ",";
-         if(trim($this->ob33_dtvalidade) == null ){ 
+         if(trim((string) $this->ob33_dtvalidade) == null ){ 
            $this->erro_sql = " Campo Data de validade do alvará não informado.";
            $this->erro_campo = "ob33_dtvalidade_dia";
            $this->erro_banco = "";

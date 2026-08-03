@@ -64,9 +64,9 @@ if($clcfpess->numrows > 0){
             <td>
                 
                <?php  
-               $aTipos = array(1 => "Período Aquisitivo Normal",
+               $aTipos = [1 => "Período Aquisitivo Normal",
                                2 => "Período Específico"
-                              );
+                              ];
                 db_select('r30_tipoapuracaomedia', $aTipos, true, 1, "onchange='js_showCamposMedia()'")?>
             </td>
           </tr>
@@ -148,7 +148,7 @@ if($clcfpess->numrows > 0){
     </td>
     <td>
       <?php 
-      $arr_fpagto = Array(
+      $arr_fpagto = [
                           "01"=>"01 - 30 dias ferias",
                           "02"=>"02 - 20 dias ferias",
                           "03"=>"03 - 15 dias ferias",
@@ -158,7 +158,7 @@ if($clcfpess->numrows > 0){
                           "07"=>"07 - 10 dias ferias + 20 dias abono",
                           "08"=>"08 - 30 dias abono",
                           "12"=>"12 - Dias Livre"
-                         );
+                         ];
       db_select("tipofer", $arr_fpagto, true, 1);
       ?>
     </td>
@@ -174,7 +174,7 @@ if($clcfpess->numrows > 0){
       if(!isset($pontofer)){
         $pontofer = "S";
       }
-      $arr_SorC = Array("S"=>"Salário","C"=>"Complementar");
+      $arr_SorC = ["S"=>"Salário","C"=>"Complementar"];
       db_select("pontofer", $arr_SorC, true, 1);
       ?>
     </td>
@@ -190,7 +190,7 @@ if($clcfpess->numrows > 0){
       if(!isset($pagafer13)){
         $pagafer13 = "f";
       }
-      $arr_SorN = Array("t"=>"Sim","f"=>"Não");
+      $arr_SorN = ["t"=>"Sim","f"=>"Não"];
       db_select("pagafer13", $arr_SorN, true, 1);
       ?>
     </td>
@@ -221,9 +221,9 @@ if($clcfpess->numrows > 0){
      <?php 
       $filtraferiasprocessadas = 2;
       
-      $aFiltroFerias  = Array("1" => "Sim",
+      $aFiltroFerias  = ["1" => "Sim",
                               "2" => "Não"
-                             );
+                             ];
       db_select("filtraferiasprocessadas", $aFiltroFerias, true, 1);
      ?>
     </td>
@@ -238,10 +238,10 @@ if($clcfpess->numrows > 0){
      <?php 
       //$filtraferiasprocessadas = 2;
       
-      $aFiltroPeriodo  = Array("3" => "Todos",
+      $aFiltroPeriodo  = ["3" => "Todos",
                                "1" => "Vencidos Até",
                                "2" => "Não Vencidos"
-                              );
+                              ];
       db_select("periodoaquisitivo", $aFiltroPeriodo, true, 1, 'onchange=show_dtvencidos(this.value);');
      ?>
     </td>

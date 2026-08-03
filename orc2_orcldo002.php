@@ -32,7 +32,7 @@ include(modification("classes/db_orcppa_classe.php"));
 include(modification("classes/db_orcppaval_classe.php"));
 include(modification("classes/db_orcppatiporec_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clorcppa = new cl_orcppa;
 $clorcppaval = new cl_orcppaval;
@@ -47,7 +47,7 @@ if (!isset ($lei)) {
 
 $ano1 = $ano;
 $ano = substr(str_replace('-', ',', $ano1), 1);
-$ano_arr = split(',', $ano);
+$ano_arr = preg_split('#,#m', $ano);
 $anoini = $ano_arr[0];
 $anofim = $ano_arr[count($ano_arr) - 1];
 //print($anofim);exit;
@@ -99,12 +99,12 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial', 'b', 10);
 //echo $numrows01;
 
-$pdf->SetWidths(array (140, 140));
-$pdf->SetAligns(array ('J', 'J'));
+$pdf->SetWidths( [140, 140]);
+$pdf->SetAligns( ['J', 'J']);
 
-$tottlorgao = Array ();
-$tottoorgao = Array ();
-$tottquanto = Array ();
+$tottlorgao =  [];
+$tottoorgao =  [];
+$tottquanto =  [];
 
 $orgao_antigo = "";
 $unida_antigo = "";
@@ -116,19 +116,19 @@ $passar = true;
 
 $texto_livre_contador=0;
 
-      $total_orgao = array();
-      $total_orgao_livre = array();
-      $total_orgao_outro = array ();
-      $total_orgao_quant = array();;
+      $total_orgao = [];
+      $total_orgao_livre = [];
+      $total_orgao_outro =  [];
+      $total_orgao_quant = [];;
 for ($x = 0; $x < $numrows01; $x ++) {
   db_fieldsmemory($result01, $x);
   //----------------------------------------------------------------------------------------------------------------------------------------------------------      
   //----------------------------------------------------------------------------------------------------------------------------------------------------------      
   //----------------------------------------------------------------------------------------------------------------------------------------------------------      
   
-  $arr_ano_livre = array ();
-  $arr_ano_outro = array ();
-  $arr_qua = array ();
+  $arr_ano_livre =  [];
+  $arr_ano_outro =  [];
+  $arr_qua =  [];
   for ($s = $anoini; $s <= $anofim; $s ++) {
     $arr_ano_livre[$s] = '0.00';
     $arr_ano_outro[$s] = '0.00';
@@ -185,9 +185,9 @@ for ($x = 0; $x < $numrows01; $x ++) {
       $pdf->cell(40, $alt, "Outros", 1, 0, "C", 0);
       $pdf->cell(40, $alt, "Total", 1, 1, "C", 0);
       
-      $arr_ano_livre = array ();
-      $arr_ano_outro = array ();
-      $arr_qua = array ();
+      $arr_ano_livre =  [];
+      $arr_ano_outro =  [];
+      $arr_qua =  [];
       //$tottlorgao = array ();
       //$tottoorgao = array ();
       //$tottquanto = array ();
@@ -233,10 +233,10 @@ for ($x = 0; $x < $numrows01; $x ++) {
         $tot_livre += $arr_ano_livre[$s];
         $tot_outro += $arr_ano_outro[$s];
       }
-      $total_orgao = array();
-      $total_orgao_livre = array();
-      $total_orgao_outro = array ();
-      $total_orgao_quant = array();;
+      $total_orgao = [];
+      $total_orgao_livre = [];
+      $total_orgao_outro =  [];
+      $total_orgao_quant = [];;
       if ($xtroca > 2) {
         //        $pdf->addpage("L");
         $xtroca = 0;
@@ -337,9 +337,9 @@ for ($x = 0; $x < $numrows01; $x ++) {
   $pdf->cell(40, $alt, "Próprios", 1, 0, "C", 0);
   $pdf->cell(40, $alt, "Outros", 1, 0, "C", 0);
   $pdf->cell(40, $alt, "Total", 1, 1, "C", 0);
-  $arr_ano_livre = array ();
-  $arr_ano_outro = array ();
-  $arr_qua = array ();
+  $arr_ano_livre =  [];
+  $arr_ano_outro =  [];
+  $arr_qua =  [];
   for ($s = $anoini; $s <= $anofim; $s ++) {
     $arr_ano_livre[$s] = '0.00';
     $arr_ano_outro[$s] = '0.00';
@@ -431,9 +431,9 @@ if (isset ($orgao_antigo)) {
     $pdf->cell(40, $alt, "Outros", 1, 0, "C", 0);
     $pdf->cell(40, $alt, "Total", 1, 1, "C", 0);
     
-    $arr_ano_livre = array ();
-    $arr_ano_outro = array ();
-    $arr_qua = array ();
+    $arr_ano_livre =  [];
+    $arr_ano_outro =  [];
+    $arr_qua =  [];
     for ($s = $anoini; $s <= $anofim; $s ++) {
       $arr_ano_livre[$s] = '0.00';
       $arr_ano_outro[$s] = '0.00';

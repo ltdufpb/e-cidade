@@ -67,7 +67,7 @@ $clrhcfpessmatr                   = new cl_rhcfpessmatr;
 $clrhcontratoemergencial          = new cl_rhcontratoemergencial;
 $clrhcontratoemergencialrenovacao = new cl_rhcontratoemergencialrenovacao;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -79,14 +79,14 @@ $visibilityContratoEmergencial = false;
 if (isset($incluir)) {
     $sqlerro = false;
     db_inicio_transacao();
-    if (trim($rh01_anoche) == "" && $rh01_nacion != 10) {
+    if (trim((string) $rh01_anoche) == "" && $rh01_nacion != 10) {
         $sqlerro = true;
         $erro_msg = "Ano de chegada inválido.";
     }
 
   /* INICIO VALIDAÇÃO PARA E-SOCIAL */
 
-  $nasc   = explode('/', $rh01_nasc);
+  $nasc   = explode('/', (string) $rh01_nasc);
   $dtmin  = strtotime('1890-01-01');
   $dtnasc = strtotime($nasc[2].'-'.$nasc[1].'-'.$nasc[0]);
 
@@ -113,7 +113,7 @@ if (isset($incluir)) {
           "rh13_instit=" . db_getsession("DB_instit")));
         if ($clrhcfpessmatr->numrows > 0) {
             db_fieldsmemory($result_parametros_matr, 0);
-            if (trim($rh13_matricula) != "" && $rh13_matricula != 0) {
+            if (trim((string) $rh13_matricula) != "" && $rh13_matricula != 0) {
                 $rh01_regist = $rh13_matricula;
                 $registparam = $rh13_matricula + 1;
             }
@@ -136,7 +136,7 @@ if (isset($incluir)) {
         }
 
         if ($sqlerro == false) {
-            if (trim($rh15_banco) != "") {
+            if (trim((string) $rh15_banco) != "") {
                 $clrhpesfgts->incluir($rh01_regist);
                 if ($clrhpesfgts->erro_status == 0) {
                     $erro_msg = $clrhpesfgts->erro_msg;
@@ -172,7 +172,7 @@ if (isset($incluir)) {
             */
         }
 
-        if ($sqlerro == false && trim($localrecebefoto) != "") {
+        if ($sqlerro == false && trim((string) $localrecebefoto) != "") {
             // Abre o arquivo
             $arquivograva = fopen($localrecebefoto, "rb");
             // Lê o arquivo inteiro
@@ -543,7 +543,7 @@ if (isset($incluir)) {
         if ($clcgm->numrows > 0) {
             db_fieldsmemory($result_dados, 0);
             $limpar = false;
-            if (trim($rh01_nasc) != "") {
+            if (trim((string) $rh01_nasc) != "") {
                 $rh01_nasc_dia = db_subdata($rh01_nasc, "d");
                 $rh01_nasc_mes = db_subdata($rh01_nasc, "m");
                 $rh01_nasc_ano = db_subdata($rh01_nasc, "a");

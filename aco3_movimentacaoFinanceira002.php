@@ -255,7 +255,7 @@ if (!empty($oGet->iOrigem)) {
    * 6 | Empenho
    */
   $sWhereGeral .= " and ac16_origem in ({$oGet->iOrigem})";
-  $aOrigens     = array();
+  $aOrigens     = [];
   $aOrigens[1]  = "PROCESSO DE COMPRAS";
   $aOrigens[2]  = "LICITAÇÃO";
   $aOrigens[3]  = "MANUAL";
@@ -283,7 +283,7 @@ if (!empty($oGet->iCodigoEmpenhoInicial)) {
 
   ${$sHeader.$iHeader} = "EMPENHO INICIAL: {$oGet->iCodigoEmpenhoInicial}";
   $iHeader++;
-  $aFiltro             = explode("/", $oGet->iCodigoEmpenhoInicial);
+  $aFiltro             = explode("/", (string) $oGet->iCodigoEmpenhoInicial);
   $iCodigoEmpenho      = $aFiltro[0];
   $iAnoEmpenho         = $aFiltro[1];
   $sWhereEmpenho       = " and (e60_codemp >= '{$iCodigoEmpenho}' and e60_anousu = {$iAnoEmpenho})";
@@ -462,7 +462,7 @@ if ($oDAOAcordo->numrows <= 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.');
 }
 
-$aCGM = array();
+$aCGM = [];
 
 /**
  *  Seta as propriedades do pdf
@@ -475,7 +475,7 @@ $oPdf->setfillcolor(235);
 $iAlturaLinha = 7;
 $oPdf->AddPage();
 $oPdf->SetFont('arial', '', 6);
-$aContratos = array();
+$aContratos = [];
 
 /**
  * Percorre cada movimentao de contrato, agrupando por CGM
@@ -491,7 +491,7 @@ for ($iLinha = 0; $iLinha < $oDAOAcordo->numrows; $iLinha++) {
     $oCgm->cgm             = $oLinha->z01_nome;
     $oCgm->ac16_contratado = $oLinha->cgm;
     $oCgm->s_cnpj_cpf      = $oLinha->s_cnpj_cpf;
-    $oCgm->aContratos      = array();
+    $oCgm->aContratos      = [];
     $aCGM[$oLinha->cgm]    = $oCgm;
   }
 
@@ -499,7 +499,7 @@ for ($iLinha = 0; $iLinha < $oDAOAcordo->numrows; $iLinha++) {
   if (empty($oCgm->aContratos[$oLinha->i_contrato])) {
 
     $oContrato                             = new stdClass();
-    $oContrato->aEmpenhos                  = array();
+    $oContrato->aEmpenhos                  = [];
     $oContrato->n_contrato_valor           = $oLinha->n_contrato_valor;
     $oContrato->n_contrato_empenhar        = $oLinha->n_contrato_valor;
     $oContrato->n_contrato_empenhado       = 0;
@@ -583,7 +583,7 @@ for ($iLinha = 0; $iLinha < $oDAOAcordo->numrows; $iLinha++) {
     $oCgm->n_liquidado_saldo     = 0;
     $oCgm->n_geral_saldo         = 0;
     $oCgm->s_cnpj_cpf            = $oLinha->z01_cgccpf;
-    $oCgm->aContratos            = array();
+    $oCgm->aContratos            = [];
     $aCGM[$oLinha->z01_numcgm]   = $oCgm;
   }
 
@@ -591,7 +591,7 @@ for ($iLinha = 0; $iLinha < $oDAOAcordo->numrows; $iLinha++) {
   if (empty($oCgm->aContratos[$oLinha->ac16_sequencial])) {
 
     $oContrato                             = new stdClass();
-    $oContrato->aEmpenhos                  = array();
+    $oContrato->aEmpenhos                  = [];
     $oContrato->n_contrato_valor           = 0;
     $oContrato->n_contrato_empenhar        = 0;
     $oContrato->n_contrato_empenhado       = 0;

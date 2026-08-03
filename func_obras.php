@@ -35,8 +35,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 require_once(modification("classes/db_obras_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if (isset($chave_ob01_nomeobra)) {
   $chave_ob01_nomeobra = stripslashes($chave_ob01_nomeobra);
@@ -137,7 +137,7 @@ $oGet    = db_utils::postMemory($_GET);
 	          </td>
 	          <td>
 	          	<?php 
-	          		db_select('lPossuiAlvara', array(''=>'Todos', 'S'=>'Sim', 'N'=>'Não'), true, 1, "style='width:92px;'");
+	          		db_select('lPossuiAlvara', [''=>'Todos', 'S'=>'Sim', 'N'=>'Não'], true, 1, "style='width:92px;'");
 	          	?>
           	</td>
           </tr>
@@ -184,7 +184,7 @@ $oGet    = db_utils::postMemory($_GET);
       		}
       	}
 
-      	$aWherePesquisa  =  array();
+      	$aWherePesquisa  =  [];
 
       	if ( !empty($lPossuiAlvara) ) {
 
@@ -205,7 +205,7 @@ $oGet    = db_utils::postMemory($_GET);
       			$aWherePesquisa[]   = "ob03_numcgm = $ob03_numcgm";
       		}
       		if ( !empty($ob01_codobra) ) {
-      			$aWherePesquisa     = array(" ob01_codobra = $ob01_codobra");
+      			$aWherePesquisa     = [" ob01_codobra = $ob01_codobra"];
       		}
 
 
@@ -254,12 +254,12 @@ $oGet    = db_utils::postMemory($_GET);
       		}
 
       	}
-      	$repassa = array();
+      	$repassa = [];
 
       	if ( isset($chave_ob01_nomeobra) ) {
 
-      		$repassa = array("chave_ob01_codobra"  => $chave_ob01_codobra,
-      		                 "chave_ob01_nomeobra" => $chave_ob01_nomeobra);
+      		$repassa = ["chave_ob01_codobra"  => $chave_ob01_codobra,
+      		                 "chave_ob01_nomeobra" => $chave_ob01_nomeobra];
       	}
 
       	db_lovrot($sSqlPesquisa, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

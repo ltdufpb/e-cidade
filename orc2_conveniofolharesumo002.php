@@ -128,7 +128,7 @@ $sSqlDados    .= " where o103_mesusu between {$iMesIni} and {$iMesFim} ";
 $sSqlDados    .= "  and o103_anousu  = 2009 ";     
 $sSqlDados    .= " order by e69_numero ";
 $rsDados       = db_query($sSqlDados);
-$aLinhasRelatorio = array();
+$aLinhasRelatorio = [];
 $aDadosConsulta   = db_utils::getCollectionByRecord($rsDados);
 $iIndice          = 0;
 for ($i = 0; $i < count($aDadosConsulta) ; $i++) {

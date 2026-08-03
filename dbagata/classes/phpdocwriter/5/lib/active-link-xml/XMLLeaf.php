@@ -43,7 +43,7 @@ import("active-link-xml.Leaf");
 class XMLLeaf extends Leaf
 {
 
-	var $parentXML;
+	public $parentXML;
 
 	/**
 	  *	Gets parent object of the XML leaf
@@ -64,7 +64,7 @@ class XMLLeaf extends Leaf
 	function setParentXML(&$xml)
        	{
 		$success = false;
-		if(get_class($xml) == "XML" || get_class($xml) == "XMLBranch") {
+		if($xml::class == "XML" || $xml::class == "XMLBranch") {
 			$this->parentXML = &$xml;
 			$success = true;
 		}

@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_emppresta_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clemppresta = new cl_emppresta;
 $clemppresta->rotulo->label("e45_numemp");
 $clemppresta->rotulo->label("e45_tipo");
@@ -114,7 +114,7 @@ $rotulo->label("e60_numemp");
           if(isset($chave_e60_numemp) && (trim($chave_e60_numemp)!="") ){
             $sql = $clemppresta->sql_query_depto(null,$campos,"e45_numemp","$dbwhere and e45_numemp = $chave_e60_numemp");
           } else if(isset($chave_e60_codemp) && (trim($chave_e60_codemp)!="") ){
-            $arr = split("/",$chave_e60_codemp);
+            $arr = preg_split("#\\/#m",$chave_e60_codemp);
             if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
               $dbwhere_ano = " and e60_anousu = ".$arr[1];
             }else{

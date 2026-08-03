@@ -67,13 +67,13 @@ class CadvencIPTU implements iViradaIPTU {
    * Campos chave configurados na tabela iptutabelasconfigcampochave
    * @var array
    */
-  private $aCampoChave    = array();
+  private $aCampoChave    = [];
   
   /**
    * Campos correcao configurados na tabela iptutabelasconfigcampocorrecao
    * @var array
    */
-  private $aCampoCorrecao = array();
+  private $aCampoCorrecao = [];
   
   /**
    * @return $this->iAnoAtual
@@ -326,16 +326,16 @@ class CadvencIPTU implements iViradaIPTU {
             $oDaoCadVenc->$sNomeCampoCadVenc = "{$nSomaPercentual}";
           } else {
           	
-          	if (trim($sNomeCampoCadVenc) == 'q82_codigo') {
+          	if (trim((string) $sNomeCampoCadVenc) == 'q82_codigo') {
           		$iCodigo = $oDadosCadVenc->$sNomeCampoCadVenc;
           	}
 
-            if (trim($sNomeCampoCadVenc) == 'q82_parc') {
+            if (trim((string) $sNomeCampoCadVenc) == 'q82_parc') {
               $iParc = $oDadosCadVenc->$sNomeCampoCadVenc;
             }
        	
             $oDaoCadVenc->$sNomeCampoCadVenc = $oDadosCadVenc->$sNomeCampoCadVenc;
-            if (trim($sNomeCampoCadVenc) == 'q82_calculaparcvenc') {
+            if (trim((string) $sNomeCampoCadVenc) == 'q82_calculaparcvenc') {
               $oDaoCadVenc->$sNomeCampoCadVenc = ($oDadosCadVenc->$sNomeCampoCadVenc='t'?'true':'false');
             }
           }

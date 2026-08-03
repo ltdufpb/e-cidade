@@ -38,7 +38,7 @@ class TipoMovimentacaoEstoqueRespository {
    * Coleção com os tipos de movimentação do estoque
    * @var TipoMovimentacaoEstoque[]
    */
-  private $aTipoMovimentacao = array();
+  private $aTipoMovimentacao = [];
 
   /**
    * Instancia de TipoMovimentacaoEstoqueRespository
@@ -76,9 +76,9 @@ class TipoMovimentacaoEstoqueRespository {
    */
   public static function getTipoMovimentaoPorCodigo($iCodigoMovimentacao) {
 
-    if ( ! array_key_exists($iCodigoMovimentacao, TipoMovimentacaoEstoqueRespository::getInstancia()->aTipoMovimentacao)) {
-      TipoMovimentacaoEstoqueRespository::getInstancia()->aTipoMovimentacao[$iCodigoMovimentacao] = new TipoMovimentacaoEstoque($iCodigoMovimentacao);
+    if ( ! array_key_exists($iCodigoMovimentacao, $this->getInstancia()->aTipoMovimentacao)) {
+      $this->getInstancia()->aTipoMovimentacao[$iCodigoMovimentacao] = new TipoMovimentacaoEstoque($iCodigoMovimentacao);
     }
-    return TipoMovimentacaoEstoqueRespository::getInstancia()->aTipoMovimentacao[$iCodigoMovimentacao];
+    return $this->getInstancia()->aTipoMovimentacao[$iCodigoMovimentacao];
   }
 }

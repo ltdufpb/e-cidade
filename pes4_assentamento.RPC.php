@@ -80,10 +80,10 @@ try {
 
     case "buscarServidoresAssentamentoSubstituicao":
 
-      $oRetorno->aResposta = array();
+      $oRetorno->aResposta = [];
       $oRetorno->erro      = true;
       $oVarErros           = new stdClass();
-      $aServidores         = array();
+      $aServidores         = [];
       $oRetorno->message   = urlencode(_M(MENSAGENS ."erro_buscar_servidores_assentamento", $oVarErros));
       $aServidores         = AssentamentoRepository::getServidoresAssentamentoSubstituicao();
 
@@ -124,9 +124,9 @@ try {
 
     case "buscarAssentamentosServidor":
 
-      $oRetorno->aItems    = array();
+      $oRetorno->aItems    = [];
       $oRetorno->erro      = false;
-      $aServidores         = array();
+      $aServidores         = [];
 
       $aAssentamentos   = AssentamentoRepository::getAssentamentosSubstituicaoServidor($oParam->iMatricula);
       $oRetorno->aItems = $aAssentamentos;
@@ -219,7 +219,7 @@ try {
           $nValor                  = str_replace('.', '', $aRegistro[5]);
           $nValor                  = str_replace(',', '.', $nValor);
 
-          $aAnoLancamento          = explode('/', $sDataFim);
+          $aAnoLancamento          = explode('/', (string) $sDataFim);
           $iAnoLancamento          = $aAnoLancamento[2];
 
           /**
@@ -482,7 +482,7 @@ try {
       $oRetorno->natureza     = '';
 
       if(pg_num_rows($rsSql) > 0) {
-        $oRetorno->natureza   = strtolower(db_utils::fieldsMemory($rsSql, 0)->rh159_descricao);
+        $oRetorno->natureza   = strtolower((string) db_utils::fieldsMemory($rsSql, 0)->rh159_descricao);
       }
 
       break;
@@ -544,13 +544,13 @@ function getServidoresEAssentamentoPorTipoAssentamento($iTipo) {
   }
 
   $aServidores          = ServidorRepository::getServidoresPorTipoAssentamento($iTipo, $oDataInicio);
-  $aDadosServidores     = array();
+  $aDadosServidores     = [];
   foreach ($aServidores as $oServidor) {
 
     $oDadosServidor = new stdClass();
     $oDadosServidor->matricula     = $oServidor->getMatricula();
     $oDadosServidor->nome          = $oServidor->getCgm()->getNome();
-    $oDadosServidor->assentamentos = array();
+    $oDadosServidor->assentamentos = [];
     $aAssentamentos                = AssentamentoRepository::getAssentamentosPorServidor($oServidor, $iTipo, $oDataInicio);
     $oCompetencia                  = DBPessoal::getCompetenciaFolha();
 
@@ -651,7 +651,7 @@ function cancelarLancamentoAssentamento(TipoAssentamento $oTipoAssentamento, Ser
   $oCompetencia           = DBPessoal::getCompetenciaFolha();
   $oInstituicao           = InstituicaoRepository::getInstituicaoSessao();
   $aAssentamentosServidor = AssentamentoRepository::getAssentamentosPorServidor($oServidor, $oTipoAssentamento->getSequencial());
-  $aLotesRetorno          = array();
+  $aLotesRetorno          = [];
 
   foreach ($aAssentamentosServidor as $oAssentamento) {
 
@@ -708,9 +708,9 @@ function cancelarLancamentoAssentamento(TipoAssentamento $oTipoAssentamento, Ser
         /**
          * Guardando lotes que devem parmanecer como lançados no ponto
          */
-        $aLotesRetorno[] = array('sequencial_lote'=>$oLote->getSequencial(),
+        $aLotesRetorno[] = ['sequencial_lote'=>$oLote->getSequencial(),
           'sequencial_folha_pagamento' => $iSequencialFolhaPagamento
-        );
+        ];
       }
     }
   }

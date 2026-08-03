@@ -64,8 +64,8 @@ abstract class DescontoConsignado {
       $aRubricasConsignadas = DescontoConsignado::getCodigosRubricasConsignadas();
       $oServidor            = ServidorRepository::getInstanciaByCodigo($iMatriculaServidor, $anousu, $mesusu, $DB_instit); 
       $oCalculoSalario      = $oServidor->getCalculoFinanceiro(CalculoFolha::CALCULO_SALARIO);
-      $aEventosConsignados  = array();
-      
+      $aEventosConsignados  = [];
+
       LogCalculoFolha::write("Rubricas consignadas Encontradas");
       LogCalculoFolha::write(implode(", ", $aRubricasConsignadas));
 
@@ -75,7 +75,7 @@ abstract class DescontoConsignado {
       foreach ( $aRubricasConsignadas as $sRubricaConsignada ) {
 
         $aEventos = $oCalculoSalario->getEventosFinanceiros(null, $sRubricaConsignada);
-        
+
         /**
          * Caso não exista Evento financeiro, não adiciona a rubrica ao cálculo.
          */
@@ -100,7 +100,7 @@ abstract class DescontoConsignado {
         $nValorProventosAbatidos = $tot_prov - $nValorBase;
         $nValorLiquidoFolha      = round($nValorProventosAbatidos - $tot_desc,2);
         $nSaldoMinimo            = round($nValorProventosAbatidos * 0.3, 2);
-           
+
         LogCalculoFolha::write("Total de Proventos..: {$tot_prov}");
         LogCalculoFolha::write("Total de Descontos..: {$tot_desc}");
         LogCalculoFolha::write("Valor da Base.......: {$nValorBase}");
@@ -118,7 +118,7 @@ abstract class DescontoConsignado {
             "1"
           );
           $rsRubricaInsuficienciaSaldo  = db_query($sSqlRubricaInsuficienciaSaldo);
-           
+
           if ( !$rsRubricaInsuficienciaSaldo ) {
             throw new DBException("Erro ao pesquisar Rubrica de Insuficiencia de Saldo");
           }
@@ -152,11 +152,11 @@ abstract class DescontoConsignado {
 
             LogCalculoFolha::write();
             LogCalculoFolha::write("Operando a Rubrica({$sRubrica}).");
-            
+
             LogCalculoFolha::write("DescontadoAntes:{$nTotalDescontado}.");
             $nTotalDescontado    -= $oEventoConsignado->getValor();
             $nSaldo               = $nValorProventosAbatidos - $nTotalDescontado;
-            
+
             $sWhere  = " and r14_regist = ".db_sqlformat($iMatriculaServidor);
             $sWhere .= " and r14_rubric = ".db_sqlformat($sRubrica);
             LogCalculoFolha::write("ValorDesconto  :{$oEventoConsignado->getValor()}");
@@ -173,7 +173,7 @@ abstract class DescontoConsignado {
               break;
 
             } elseif ( $nSaldo <= $nSaldoMinimo || $nSaldo <= 0 ) {
-              
+
               $oDaoFolhaSalario->excluir(
                 $anousu,
                 $mesusu,
@@ -206,7 +206,7 @@ abstract class DescontoConsignado {
     /**
      * Rubricas a serem devolvidas
      */
-    $aRubricasConsignadas    = array();
+    $aRubricasConsignadas    = [];
 
     $oDaoRubricasConsignadas = new cl_rubricadescontoconsignado();
     $sSqlRubricasConsignadas = $oDaoRubricasConsignadas->sql_query_file(null, "rh140_rubric", 'rh140_ordem', "rh140_instit = " . db_getsession('DB_instit'));

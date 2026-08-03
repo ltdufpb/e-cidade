@@ -2,15 +2,8 @@
 include(modification("fpdf151/assinatura.php"));
 
 class cl_cabec_rodape extends cl_assinatura {
-//|00|//assinatura
-//|10|//Esta é o construtor da classe. Ele permite que seja impresso a assinatura do usuario corrente ou  
-//|10|//de um tipo de assinatura específica a qual será definida nas tabelas db_paragrafos e db_documentos
-//|10|//escolhendo o tipo de assinatura de acordo com a tabela db_tipodoc.
-//|15|//$classinatura = new cl_assinatura;
-  var $modelo = null;
-  
-  function cl_cabec_rodape ($modelo){
-    $this->modelo = $modelo;
+function __construct(public $modelo)
+  {
   }
 
 

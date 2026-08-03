@@ -85,9 +85,9 @@ $clrotulo->label("z01_numcgm");
             </td>
             <td> 
               <?php 
-              $aFinalidades = array("61" => "Solicitação de Auditor-Fiscal da Secretaria da Receita Previdenciária através de MPF",
+              $aFinalidades = ["61" => "Solicitação de Auditor-Fiscal da Secretaria da Receita Previdenciária através de MPF",
                                     "62" => "Entrega na Secretaria da Receita Previdenciária - Movimento anual de órgão publico, conforme intimação",
-                                    "90" => "Dados Internos UF");
+                                    "90" => "Dados Internos UF"];
               
               db_select("finalidade",$aFinalidades,true,"");
               ?>

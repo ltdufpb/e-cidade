@@ -72,6 +72,7 @@ class TSVETerminoFormatter extends Formatter
     private $rubricasRepository;
     private $rubricasValidas;
 
+    #[\Override]
     public function formatar($dados)
     {
         $dadosServidor = [];
@@ -243,8 +244,8 @@ class TSVETerminoFormatter extends Formatter
         $ideEstabLot->tpInsc = 1;
         $ideEstabLot->nrInsc = $this->getEmpregador()->getCnpj();
         $ideEstabLot->codLotacao = '01';
-        $anoRescisao = (int) substr($this->servidorAtual->getDadosRescisao()->rh05_recis, 0, 4);
-        $mesRescisao = (int) substr($this->servidorAtual->getDadosRescisao()->rh05_recis, 5, 2);
+        $anoRescisao = (int) substr((string) $this->servidorAtual->getDadosRescisao()->rh05_recis, 0, 4);
+        $mesRescisao = (int) substr((string) $this->servidorAtual->getDadosRescisao()->rh05_recis, 5, 2);
         $infoRubrica = [];
 
         foreach ($this->eventosRescisao as $eventoRescisao) {
@@ -306,7 +307,7 @@ class TSVETerminoFormatter extends Formatter
         $this->rubricaPensaoAlimenticia[] = PagamentosRendTrabalhoRepository::buscarParametroRubricaPensaoAlimenticia(
             $competencia
         );
-        $this->rubricaPensaoAlimenticia[] = "4" . substr($this->rubricaPensaoAlimenticia[0], 1, 3);
+        $this->rubricaPensaoAlimenticia[] = "4" . substr((string) $this->rubricaPensaoAlimenticia[0], 1, 3);
     }
 
     /**
@@ -366,6 +367,7 @@ class TSVETerminoFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
+    #[\Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -378,6 +380,7 @@ class TSVETerminoFormatter extends Formatter
      *
      * @return  self
      */
+    #[\Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

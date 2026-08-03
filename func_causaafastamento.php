@@ -35,8 +35,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_causaafastamento_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcausaafastamento = new cl_causaafastamento;
 $clcausaafastamento->rotulo->label("rh115_sequencial");
 $clcausaafastamento->rotulo->label("rh115_sequencial");
@@ -98,9 +98,9 @@ if ( !empty($oGet->sSigla) ) {
         }else{
            $sql = $clcausaafastamento->sql_query("",$campos,"rh115_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh115_sequencial)){
-          $repassa = array("chave_rh115_sequencial"=>$chave_rh115_sequencial,"chave_rh115_sequencial"=>$chave_rh115_sequencial);
+          $repassa = ["chave_rh115_sequencial"=>$chave_rh115_sequencial,"chave_rh115_sequencial"=>$chave_rh115_sequencial];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

@@ -49,7 +49,7 @@ $clrotulo->label("c69_valor");
    obj = document.form1;
    dt1 = obj.data_ini_dia.value+'/'+obj.data_ini_mes.value+'/'+obj.data_ini_ano.value;
    dt2 = obj.data_fim_dia.value+'/'+obj.data_fim_mes.value+'/'+obj.data_fim_ano.value;
-   jan = window.open('con1_conlancam_rel1001.php?sql=<?=@base64_encode($res_sql)?>&codigo='+document.form1.codigo.value+'&pesquisa=<?=@$pesquisa?>&dt1='+dt1+'&dt2='+dt2,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
+   jan = window.open('con1_conlancam_rel1001.php?sql=<?=@base64_encode((string) $res_sql)?>&codigo='+document.form1.codigo.value+'&pesquisa=<?=@$pesquisa?>&dt1='+dt1+'&dt2='+dt2,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
  }  
 </script>
 <br>
@@ -141,7 +141,7 @@ function js_preenchepesquisa(chave){
        case 7: echo "db_iframe_conlancamdoc.hide();"; break;
        case 8: echo "db_iframe_conlancamcgm.hide();"; break;
     }
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 </script>

@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE cadarrecadacao
 class cl_cadarrecadacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ar16_sequencial = 0; 
-   var $ar16_instit = 0; 
-   var $ar16_convenio = null; 
-   var $ar16_segmento = 0; 
-   var $ar16_formatovenc = 0; 
+   public $ar16_sequencial = 0; 
+   public $ar16_instit = 0; 
+   public $ar16_convenio = null; 
+   public $ar16_segmento = 0; 
+   public $ar16_formatovenc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ar16_sequencial = int4 = Sequêncial 
                  ar16_instit = int4 = Instituição 
                  ar16_convenio = varchar(10) = Convênio 
@@ -56,10 +56,10 @@ class cl_cadarrecadacao {
                  ar16_formatovenc = int4 = Formato do vencimento 
                  ";
    //funcao construtor da classe 
-   function cl_cadarrecadacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadarrecadacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_cadarrecadacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ar16_sequencial = pg_result($result,0,0); 
+       $this->ar16_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cadarrecadacao_ar16_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ar16_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ar16_sequencial)){
          $this->erro_sql = " Campo ar16_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_cadarrecadacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Arrecadação ($this->ar16_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Arrecadação já Cadastrado";
@@ -194,14 +194,14 @@ class cl_cadarrecadacao {
      $resaco = $this->sql_record($this->sql_query_file($this->ar16_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12544,'$this->ar16_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2190,12544,'','".AddSlashes(pg_result($resaco,0,'ar16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2190,12545,'','".AddSlashes(pg_result($resaco,0,'ar16_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2190,12546,'','".AddSlashes(pg_result($resaco,0,'ar16_convenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2190,12547,'','".AddSlashes(pg_result($resaco,0,'ar16_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2190,12548,'','".AddSlashes(pg_result($resaco,0,'ar16_formatovenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2190,12544,'','".AddSlashes(pg_fetch_result($resaco,0,'ar16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2190,12545,'','".AddSlashes(pg_fetch_result($resaco,0,'ar16_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2190,12546,'','".AddSlashes(pg_fetch_result($resaco,0,'ar16_convenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2190,12547,'','".AddSlashes(pg_fetch_result($resaco,0,'ar16_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2190,12548,'','".AddSlashes(pg_fetch_result($resaco,0,'ar16_formatovenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_cadarrecadacao {
       $this->atualizacampos();
      $sql = " update cadarrecadacao set ";
      $virgula = "";
-     if(trim($this->ar16_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar16_sequencial"])){ 
+     if(trim((string) $this->ar16_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar16_sequencial"])){ 
        $sql  .= $virgula." ar16_sequencial = $this->ar16_sequencial ";
        $virgula = ",";
-       if(trim($this->ar16_sequencial) == null ){ 
+       if(trim((string) $this->ar16_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequêncial nao Informado.";
          $this->erro_campo = "ar16_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_cadarrecadacao {
          return false;
        }
      }
-     if(trim($this->ar16_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar16_instit"])){ 
+     if(trim((string) $this->ar16_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar16_instit"])){ 
        $sql  .= $virgula." ar16_instit = $this->ar16_instit ";
        $virgula = ",";
-       if(trim($this->ar16_instit) == null ){ 
+       if(trim((string) $this->ar16_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "ar16_instit";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_cadarrecadacao {
          return false;
        }
      }
-     if(trim($this->ar16_convenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar16_convenio"])){ 
+     if(trim((string) $this->ar16_convenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar16_convenio"])){ 
        $sql  .= $virgula." ar16_convenio = '$this->ar16_convenio' ";
        $virgula = ",";
-       if(trim($this->ar16_convenio) == null ){ 
+       if(trim((string) $this->ar16_convenio) == null ){ 
          $this->erro_sql = " Campo Convênio nao Informado.";
          $this->erro_campo = "ar16_convenio";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_cadarrecadacao {
          return false;
        }
      }
-     if(trim($this->ar16_segmento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar16_segmento"])){ 
+     if(trim((string) $this->ar16_segmento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar16_segmento"])){ 
        $sql  .= $virgula." ar16_segmento = $this->ar16_segmento ";
        $virgula = ",";
-       if(trim($this->ar16_segmento) == null ){ 
+       if(trim((string) $this->ar16_segmento) == null ){ 
          $this->erro_sql = " Campo Segmento nao Informado.";
          $this->erro_campo = "ar16_segmento";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_cadarrecadacao {
          return false;
        }
      }
-     if(trim($this->ar16_formatovenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar16_formatovenc"])){ 
+     if(trim((string) $this->ar16_formatovenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar16_formatovenc"])){ 
        $sql  .= $virgula." ar16_formatovenc = $this->ar16_formatovenc ";
        $virgula = ",";
-       if(trim($this->ar16_formatovenc) == null ){ 
+       if(trim((string) $this->ar16_formatovenc) == null ){ 
          $this->erro_sql = " Campo Formato do vencimento nao Informado.";
          $this->erro_campo = "ar16_formatovenc";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_cadarrecadacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12544,'$this->ar16_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar16_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2190,12544,'".AddSlashes(pg_result($resaco,$conresaco,'ar16_sequencial'))."','$this->ar16_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2190,12544,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar16_sequencial'))."','$this->ar16_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar16_instit"]))
-           $resac = db_query("insert into db_acount values($acount,2190,12545,'".AddSlashes(pg_result($resaco,$conresaco,'ar16_instit'))."','$this->ar16_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2190,12545,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar16_instit'))."','$this->ar16_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar16_convenio"]))
-           $resac = db_query("insert into db_acount values($acount,2190,12546,'".AddSlashes(pg_result($resaco,$conresaco,'ar16_convenio'))."','$this->ar16_convenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2190,12546,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar16_convenio'))."','$this->ar16_convenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar16_segmento"]))
-           $resac = db_query("insert into db_acount values($acount,2190,12547,'".AddSlashes(pg_result($resaco,$conresaco,'ar16_segmento'))."','$this->ar16_segmento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2190,12547,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar16_segmento'))."','$this->ar16_segmento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar16_formatovenc"]))
-           $resac = db_query("insert into db_acount values($acount,2190,12548,'".AddSlashes(pg_result($resaco,$conresaco,'ar16_formatovenc'))."','$this->ar16_formatovenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2190,12548,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar16_formatovenc'))."','$this->ar16_formatovenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_cadarrecadacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12544,'$ar16_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2190,12544,'','".AddSlashes(pg_result($resaco,$iresaco,'ar16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2190,12545,'','".AddSlashes(pg_result($resaco,$iresaco,'ar16_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2190,12546,'','".AddSlashes(pg_result($resaco,$iresaco,'ar16_convenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2190,12547,'','".AddSlashes(pg_result($resaco,$iresaco,'ar16_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2190,12548,'','".AddSlashes(pg_result($resaco,$iresaco,'ar16_formatovenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2190,12544,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2190,12545,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar16_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2190,12546,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar16_convenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2190,12547,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar16_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2190,12548,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar16_formatovenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cadarrecadacao
@@ -407,7 +407,7 @@ class cl_cadarrecadacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cadarrecadacao";
@@ -422,7 +422,7 @@ class cl_cadarrecadacao {
    function sql_query ( $ar16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,7 +445,7 @@ class cl_cadarrecadacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -458,7 +458,7 @@ class cl_cadarrecadacao {
    function sql_query_file ( $ar16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,7 +479,7 @@ class cl_cadarrecadacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

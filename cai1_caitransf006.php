@@ -34,7 +34,7 @@ include(modification("classes/db_caitransf_classe.php"));
 include(modification("classes/db_caitransfdest_classe.php"));
 include(modification("classes/db_caitransflanc_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcaitransf     = new cl_caitransf;
 $clcaitransfdest = new cl_caitransfdest;

@@ -37,7 +37,7 @@ $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno          = new stdClass;
 $oRetorno->status  = 1;
 $oRetorno->message = "";
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 if ($oParam->exec == "getSaldos") {
   
   $oItemPacto = new itemPacto($oParam->iItemPacto);

@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 //retorno da funcao db_lov
 if(isset($retorno)) {
@@ -39,8 +39,8 @@ if(isset($retorno)) {
 }
 
 //$caminho = "/var/www/default/imagens/noticias";
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   db_postmemory($_FILES["im_menA"]);
  db_query("begin");
   if($name != "") {
@@ -49,7 +49,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   	  echo "<a href=\"noticias.php\">Voltar para cadastro de noticias</a>\n";
 	  exit;
     }
-    $oid1 = pg_loimport($tmp_name);
+    $oid1 = pg_lo_import($tmp_name);
     //copy($tmp_name,"$caminho/$im_men");   
   } else
     $oid1 = "null";
@@ -60,26 +60,26 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   	  echo "<a href=\"noticias.php\">Voltar para cadastro de noticias</a>\n";
 	  exit;
     }
-   $oid2 = pg_loimport($tmp_name);
+   $oid2 = pg_lo_import($tmp_name);
    //copy($tmp_name,"$caminho/$im_mai");
   } else
     $oid2 = "null";
   $result = db_query("select max(s_codigo) from db_noticias");
-  $codigo = pg_result($result,0,0)==""?0:(integer)pg_result($result,0,0) + 1;
+  $codigo = pg_fetch_result($result,0,0)==""?0:(integer)pg_fetch_result($result,0,0) + 1;
   db_query("insert into db_noticias(s_codigo,s_tit,s_data,s_texto,s_im_men,s_im_mai) 
-  values($codigo,'$tit','$data_ano-$data_mes-$data_dia','$texto',$oid1,$oid2)") or die(pg_errormessage($result));
+  values($codigo,'$tit','$data_ano-$data_mes-$data_dia','$texto',$oid1,$oid2)") or die(pg_last_error($result));
   db_query("commit");
   db_redireciona();
   exit;
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   if($not_destaque == 1) {    
     db_query("begin");
 	$result = db_query("select max(s_codigo) + 1 from db_noticias");
-	$aux = pg_result($result,0,0);
-	db_query("update db_noticias set s_codigo = $aux where s_codigo = 0") or die(pg_errormessage());	
-    db_query("update db_noticias set s_codigo = 0 where s_codigo = $codigo") or die(pg_errormessage());
-	db_query("update db_noticias set s_codigo = $codigo where s_codigo = $aux") or die(pg_errormessage());
+	$aux = pg_fetch_result($result,0,0);
+	db_query("update db_noticias set s_codigo = $aux where s_codigo = 0") or die(pg_last_error());	
+    db_query("update db_noticias set s_codigo = 0 where s_codigo = $codigo") or die(pg_last_error());
+	db_query("update db_noticias set s_codigo = $codigo where s_codigo = $aux") or die(pg_last_error());
 	db_query("COMMIT");
     $codigo = 0;
   }  
@@ -89,8 +89,8 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   if($name != "") {
     //system("rm -f $caminho/".pg_result($result,0,"s_im_men"));
     //copy($tmp_name,"$caminho/$im_men");
-    $oid1 = pg_loimport($tmp_name);
-    db_query("update db_noticias set s_im_men = $oid1 where s_codigo = $codigo") or die(pg_errormessage($result));
+    $oid1 = pg_lo_import($tmp_name);
+    db_query("update db_noticias set s_im_men = $oid1 where s_codigo = $codigo") or die(pg_last_error($result));
   } 
   /*
   else if($im_men != "") {
@@ -101,8 +101,8 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   if($name != "") {
     //system("rm -f $caminho/".pg_result($result,0,"s_im_mai"));  
     //copy($tmp_name,"$caminho/$im_mai"); 
-    $oid2 = pg_loimport($tmp_name);
-	db_query("update db_noticias set s_im_mai = $oid2 where s_codigo = $codigo") or die(pg_errormessage($result));
+    $oid2 = pg_lo_import($tmp_name);
+	db_query("update db_noticias set s_im_mai = $oid2 where s_codigo = $codigo") or die(pg_last_error($result));
   } 
   /*
   else if($im_mai != "") {
@@ -113,13 +113,13 @@ if(isset($HTTP_POST_VARS["incluir"])) {
              s_tit = '$tit',
 			 s_data = '$data_ano-$data_mes-$data_dia',
 			 s_texto = '$texto'
-		   where s_codigo = $codigo") or die(pg_errormessage($result));		   
+		   where s_codigo = $codigo") or die(pg_last_error($result));		   
   db_query("commit");		   
   db_redireciona();
   exit;
-} else if(isset($HTTP_POST_VARS["excluir"])) {
+} else if(isset($_POST["excluir"])) {
 //  $result = db_query("select s_im_men,s_im_mai from db_noticias where s_codigo = ".$HTTP_POST_VARS["codigo"]);
-  db_query("delete from db_noticias where s_codigo = ".$HTTP_POST_VARS["codigo"])  or die(pg_errormessage($result));
+  db_query("delete from db_noticias where s_codigo = ".$_POST["codigo"])  or die(pg_last_error($result));
   //system("rm -f $caminho/".pg_result($result,0,"s_im_men"));
   //system("rm -f $caminho/".pg_result($result,0,"s_im_mai"));  
   db_redireciona();
@@ -161,7 +161,7 @@ input {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC" onLoad="js_iniciar()">
-<?php  if(!isset($HTTP_POST_VARS["consultar"]) && !isset($HTTP_POST_VARS["priNoMe"]) && !isset($HTTP_POST_VARS["antNoMe"]) && !isset($HTTP_POST_VARS["proxNoMe"]) && !isset($HTTP_POST_VARS["ultNoMe"])) { ?>
+<?php  if(!isset($_POST["consultar"]) && !isset($_POST["priNoMe"]) && !isset($_POST["antNoMe"]) && !isset($_POST["proxNoMe"]) && !isset($_POST["ultNoMe"])) { ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr> 
     <td width="360" height="18">&nbsp;</td>
@@ -231,7 +231,7 @@ input {
 </table>
 <?php  } else { ?>
 <?php 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   if(!empty($tit))
     $filtro = "and upper(s_tit) like upper('$tit%')";
   $sql = "select s_codigo as db_codigo,s_tit as título,s_texto 
@@ -239,12 +239,12 @@ input {
 		  where 2 > 1
 		  ".@$filtro."
 		  order by db_codigo";
-  if(isset($HTTP_POST_VARS["filtro"])) {
-    $filtro = base64_decode($HTTP_POST_VARS["filtro"]);
+  if(isset($_POST["filtro"])) {
+    $filtro = base64_decode($_POST["filtro"]);
   }
 		  
   echo "<center>\n";
-  db_lov($sql,100,"sit1_noticias001.php",base64_encode(@$filtro),"corpo");
+  db_lov($sql,100,"sit1_noticias001.php",base64_encode((string) @$filtro),"corpo");
   //db_lov($query,$numlinhas,$arquivo="",$filtro="%",$aonde="_self",$mensagem="Clique Aqui",$NomeForm="NoMe") { 
   echo "</center>\n";
 ?>

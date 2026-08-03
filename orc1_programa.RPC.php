@@ -106,12 +106,12 @@ try{
       $oObjetivo = new ProgramaObjetivo($oParametro->iCodigoObjetivo);
       $aMetas    = $oObjetivo->getMetas();
 
-      $oRetorno->aMetas = array();
+      $oRetorno->aMetas = [];
       foreach($aMetas as $oMeta) {
 
         $oStdMeta = new stdClass();
         $oStdMeta->iCodigoMeta    = $oMeta->getCodigoSequencial();
-        $oStdMeta->sDescricaoMeta = urlencode($oMeta->getDescricao());
+        $oStdMeta->sDescricaoMeta = urlencode((string) $oMeta->getDescricao());
         $oRetorno->aMetas[]       = $oStdMeta;
       }
 
@@ -124,18 +124,18 @@ try{
 
       $oRetorno->oMeta                 = new stdClass();
       $oRetorno->oMeta->iCodigoMeta    = $oMeta->getCodigoSequencial();
-      $oRetorno->oMeta->sDescricaoMeta = urlencode($oMeta->getDescricao());
-      $oRetorno->oMeta->sMeta          = urlencode($oMeta->getMeta());
-      $oRetorno->oMeta->indices        = array();
+      $oRetorno->oMeta->sDescricaoMeta = urlencode((string) $oMeta->getDescricao());
+      $oRetorno->oMeta->sMeta          = urlencode((string) $oMeta->getMeta());
+      $oRetorno->oMeta->indices        = [];
 
       $indices = $oMeta->getIndices();
       foreach ($indices as $indiceMeta) {
 
-        $oRetorno->oMeta->indices[] = (object)array(
+        $oRetorno->oMeta->indices[] = (object)[
           'ano' => $indiceMeta->getAno(),
           'indice' => $indiceMeta->getIndice(),
           'unidade_medida' => $indiceMeta->getUnidadeMedida()
-        );
+        ];
       }
 
 
@@ -200,12 +200,12 @@ try{
       $oMeta        = $oObjetivo->getMetaPorCodigo($oParametro->iCodigoMeta);
       $aIniciativas = $oMeta->getIniciativas();
 
-      $oRetorno->aIniciativas = array();
+      $oRetorno->aIniciativas = [];
       foreach ($aIniciativas as $oIniciativa) {
 
         $oStdIniciativa = new stdClass();
         $oStdIniciativa->iCodigoIniciativa    = $oIniciativa->getCodigoSequencial();
-        $oStdIniciativa->sDescricaoIniciativa = urlencode($oIniciativa->getDescricao());
+        $oStdIniciativa->sDescricaoIniciativa = urlencode((string) $oIniciativa->getDescricao());
         $oRetorno->aIniciativas[]             = $oStdIniciativa;
       }
 
@@ -219,8 +219,8 @@ try{
 
       $oStdIniciativa                       = new stdClass();
       $oStdIniciativa->iCodigoIniciativa    = $oIniciativa->getCodigoSequencial();
-      $oStdIniciativa->sDescricaoIniciativa = urlencode($oIniciativa->getDescricao());
-      $oStdIniciativa->sIniciativa          = urlencode($oIniciativa->getIniciativa());
+      $oStdIniciativa->sDescricaoIniciativa = urlencode((string) $oIniciativa->getDescricao());
+      $oStdIniciativa->sIniciativa          = urlencode((string) $oIniciativa->getIniciativa());
       $oStdIniciativa->iAno                 = $oIniciativa->getAno();
       $oStdIniciativa->iAnoFinal            = $oIniciativa->getAnoFinal();
       $oRetorno->oIniciativa                = $oStdIniciativa;
@@ -261,14 +261,14 @@ try{
 
       $oProgramaProjetoAtividade = new ProgramaProjetoAtividade($oParametro->iCodigoProjeto, $oParametro->iAnoProjeto);
       $aIniciativas              = $oProgramaProjetoAtividade->getIniciativas();
-      $aIniciativasRetorno       = array();
+      $aIniciativasRetorno       = [];
       if (count($aIniciativas) > 0) {
 
         foreach ($aIniciativas as $iCodigoIniciativa => $oIniciativa) {
 
           $oStdIniciativa                  = new stdClass();
           $oStdIniciativa->o147_sequencial = $iCodigoIniciativa;
-          $oStdIniciativa->o147_descricao  = urlencode($oIniciativa->getDescricao());
+          $oStdIniciativa->o147_descricao  = urlencode((string) $oIniciativa->getDescricao());
           $aIniciativasRetorno[] = $oStdIniciativa;
           unset($oStdIniciativa);
         }
@@ -327,13 +327,13 @@ try{
       $oPrograma  = new Programa($oParametro->iCodigoPrograma, $oParametro->iAnoPrograma);
       $aObjetivos = $oPrograma->getObjetivos();
 
-      $oRetorno->aObjetivos = array();
+      $oRetorno->aObjetivos = [];
 
       foreach ($aObjetivos as $oObjetivo) {
 
         $oStdObjetivo = new stdClass();
         $oStdObjetivo->iCodigoObjetivo    = $oObjetivo->getCodigoSequencial();
-        $oStdObjetivo->sDescricaoObjetivo = urlencode($oObjetivo->getDescricao());
+        $oStdObjetivo->sDescricaoObjetivo = urlencode((string) $oObjetivo->getDescricao());
         $oRetorno->aObjetivos[]           = $oStdObjetivo;
       }
       break;

@@ -298,7 +298,7 @@ $clrotulo->label("p58_nome");
     db_iframe_iptubaixa.hide();
       <?php
       if ($db_opcao != 1) {
-          echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?tipoImovel=".$tipoImovel."&chavepesquisa='+chave ";
+          echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?tipoImovel=".$tipoImovel."&chavepesquisa='+chave ";
       }
       ?>
   }

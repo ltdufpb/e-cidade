@@ -38,7 +38,7 @@ abstract class Sugestao
      *   No ecidade o campo Raça e cor o valor para INDIGENA é 1 e no eSocial é 5.
      * @var array
      */
-    protected $deParaESocial = array();
+    protected $deParaESocial = [];
 
     /**
      * Os campos considerados 'simples', são os que possuem uma única opção de resposta.
@@ -50,7 +50,7 @@ abstract class Sugestao
      *
      * @var array
      */
-    protected $deParaCamposSimples = array();
+    protected $deParaCamposSimples = [];
 
     /**
      * Os campos 'complexos', são os que possuem MAIS de uma opção de resposta. Exemplo os rádio button
@@ -63,9 +63,9 @@ abstract class Sugestao
      * )
      * @var array
      */
-    protected $deParaCamposComplexos = array();
+    protected $deParaCamposComplexos = [];
 
-    protected $dados = array();
+    protected $dados = [];
 
 
     public function parse()
@@ -107,7 +107,7 @@ abstract class Sugestao
             $identificadorPergunta = key($campo);
             if (!empty($campo[$identificadorPergunta][$valor])) {
                 $identificadorResposta = $campo[$identificadorPergunta][$valor];
-                $this->dados[$identificadorPergunta] = array();
+                $this->dados[$identificadorPergunta] = [];
                 $this->dados[$identificadorPergunta]["option"] = $identificadorResposta;
             }
         }

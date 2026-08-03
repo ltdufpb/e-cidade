@@ -54,7 +54,7 @@ db_input('la24_i_codigo',10,$Ila24_i_codigo,true,'text',3,"")
      if($la24_o_assinatura!=0){
       $arquivo = "tmp/".$la24_c_nomearq;
       db_query("begin");
-      pg_loexport($la24_o_assinatura,$arquivo);
+      pg_lo_export($la24_o_assinatura,$arquivo);
       db_query("end");
      }else{
       $arquivo = "imagens/semmarca.jpg";
@@ -130,7 +130,7 @@ db_input('la23_c_descr',40,@$Ila23_c_descr,true,'text',3,'')
   <tr>
     <td valign="top"><br>
   <?php 
-    $chavepri = array ("la24_i_codigo" => @$la05_i_codigo,"z01_nome"=>@$z01_nome ,"la23_c_descr"=>@$la23_c_descr, "la24_i_laboratorio" => @$la24_i_laboratorio, "la24_i_resp" => @$la24_resp, "la24_i_setor" => @$la24_i_setor, "la24_o_assinatura" => @$la24_o_assinatura,"la24_c_nomearq" => @$la24_c_nomearq);
+    $chavepri =  ["la24_i_codigo" => @$la05_i_codigo,"z01_nome"=>@$z01_nome ,"la23_c_descr"=>@$la23_c_descr, "la24_i_laboratorio" => @$la24_i_laboratorio, "la24_i_resp" => @$la24_resp, "la24_i_setor" => @$la24_i_setor, "la24_o_assinatura" => @$la24_o_assinatura,"la24_c_nomearq" => @$la24_c_nomearq];
     $cliframe_alterar_excluir->chavepri = $chavepri;
     @$cliframe_alterar_excluir->sql = $cllab_labsetor->sql_query ("","*",""," la24_i_laboratorio = $la24_i_laboratorio");
     $cliframe_alterar_excluir->campos = "la24_i_codigo,la24_i_resp,z01_nome,la24_i_setor,la23_c_descr";
@@ -229,7 +229,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lab_labsetor.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

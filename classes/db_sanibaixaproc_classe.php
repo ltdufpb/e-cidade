@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE sanibaixaproc
 class cl_sanibaixaproc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y82_codsani = 0; 
-   var $y82_seq = 0; 
-   var $y82_codproc = 0; 
+   public $y82_codsani = 0; 
+   public $y82_seq = 0; 
+   public $y82_codproc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y82_codsani = int4 = Código do Alvará sanitário 
                  y82_seq = int4 = Sequência 
                  y82_codproc = int4 = Código do processo 
                  ";
    //funcao construtor da classe 
-   function cl_sanibaixaproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sanibaixaproc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -120,7 +120,7 @@ class cl_sanibaixaproc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "sanibaixaproc ($this->y82_codsani."-".$this->y82_seq) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "sanibaixaproc já Cadastrado";
@@ -144,13 +144,13 @@ class cl_sanibaixaproc {
      $resaco = $this->sql_record($this->sql_query_file($this->y82_codsani,$this->y82_seq));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4885,'$this->y82_codsani','I')");
        $resac = db_query("insert into db_acountkey values($acount,4886,'$this->y82_seq','I')");
-       $resac = db_query("insert into db_acount values($acount,665,4885,'','".AddSlashes(pg_result($resaco,0,'y82_codsani'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,665,4886,'','".AddSlashes(pg_result($resaco,0,'y82_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,665,4887,'','".AddSlashes(pg_result($resaco,0,'y82_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,665,4885,'','".AddSlashes(pg_fetch_result($resaco,0,'y82_codsani'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,665,4886,'','".AddSlashes(pg_fetch_result($resaco,0,'y82_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,665,4887,'','".AddSlashes(pg_fetch_result($resaco,0,'y82_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -159,10 +159,10 @@ class cl_sanibaixaproc {
       $this->atualizacampos();
      $sql = " update sanibaixaproc set ";
      $virgula = "";
-     if(trim($this->y82_codsani)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y82_codsani"])){ 
+     if(trim((string) $this->y82_codsani)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y82_codsani"])){ 
        $sql  .= $virgula." y82_codsani = $this->y82_codsani ";
        $virgula = ",";
-       if(trim($this->y82_codsani) == null ){ 
+       if(trim((string) $this->y82_codsani) == null ){ 
          $this->erro_sql = " Campo Código do Alvará sanitário nao Informado.";
          $this->erro_campo = "y82_codsani";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_sanibaixaproc {
          return false;
        }
      }
-     if(trim($this->y82_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y82_seq"])){ 
+     if(trim((string) $this->y82_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y82_seq"])){ 
        $sql  .= $virgula." y82_seq = $this->y82_seq ";
        $virgula = ",";
-       if(trim($this->y82_seq) == null ){ 
+       if(trim((string) $this->y82_seq) == null ){ 
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "y82_seq";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_sanibaixaproc {
          return false;
        }
      }
-     if(trim($this->y82_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y82_codproc"])){ 
+     if(trim((string) $this->y82_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y82_codproc"])){ 
        $sql  .= $virgula." y82_codproc = $this->y82_codproc ";
        $virgula = ",";
-       if(trim($this->y82_codproc) == null ){ 
+       if(trim((string) $this->y82_codproc) == null ){ 
          $this->erro_sql = " Campo Código do processo nao Informado.";
          $this->erro_campo = "y82_codproc";
          $this->erro_banco = "";
@@ -209,16 +209,16 @@ class cl_sanibaixaproc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4885,'$this->y82_codsani','A')");
          $resac = db_query("insert into db_acountkey values($acount,4886,'$this->y82_seq','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y82_codsani"]))
-           $resac = db_query("insert into db_acount values($acount,665,4885,'".AddSlashes(pg_result($resaco,$conresaco,'y82_codsani'))."','$this->y82_codsani',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,665,4885,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y82_codsani'))."','$this->y82_codsani',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y82_seq"]))
-           $resac = db_query("insert into db_acount values($acount,665,4886,'".AddSlashes(pg_result($resaco,$conresaco,'y82_seq'))."','$this->y82_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,665,4886,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y82_seq'))."','$this->y82_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y82_codproc"]))
-           $resac = db_query("insert into db_acount values($acount,665,4887,'".AddSlashes(pg_result($resaco,$conresaco,'y82_codproc'))."','$this->y82_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,665,4887,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y82_codproc'))."','$this->y82_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -263,13 +263,13 @@ class cl_sanibaixaproc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4885,'$y82_codsani','E')");
          $resac = db_query("insert into db_acountkey values($acount,4886,'$y82_seq','E')");
-         $resac = db_query("insert into db_acount values($acount,665,4885,'','".AddSlashes(pg_result($resaco,$iresaco,'y82_codsani'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,665,4886,'','".AddSlashes(pg_result($resaco,$iresaco,'y82_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,665,4887,'','".AddSlashes(pg_result($resaco,$iresaco,'y82_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,665,4885,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y82_codsani'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,665,4886,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y82_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,665,4887,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y82_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sanibaixaproc
@@ -335,7 +335,7 @@ class cl_sanibaixaproc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sanibaixaproc";
@@ -349,7 +349,7 @@ class cl_sanibaixaproc {
    function sql_query ( $y82_codsani=null,$y82_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -388,7 +388,7 @@ class cl_sanibaixaproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,7 +400,7 @@ class cl_sanibaixaproc {
    function sql_query_file ( $y82_codsani=null,$y82_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_sanibaixaproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE portariaref
 class cl_portariaref { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h35_sequencial = 0; 
-   var $h35_portariaassenta = 0; 
-   var $h35_portaria = 0; 
+   public $h35_sequencial = 0; 
+   public $h35_portariaassenta = 0; 
+   public $h35_portaria = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h35_sequencial = int8 = Cod. Sequencial 
                  h35_portariaassenta = int8 = Portaria Assentada 
                  h35_portaria = int8 = Portaria 
                  ";
    //funcao construtor da classe 
-   function cl_portariaref() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariaref"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_portariaref {
          $this->erro_status = "0";
          return false; 
        }
-       $this->h35_sequencial = pg_result($result,0,0); 
+       $this->h35_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from portariaref_h35_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $h35_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $h35_sequencial)){
          $this->erro_sql = " Campo h35_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_portariaref {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Referencial de portaria ($this->h35_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Referencial de portaria já Cadastrado";
@@ -166,12 +166,12 @@ class cl_portariaref {
      $resaco = $this->sql_record($this->sql_query_file($this->h35_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10133,'$this->h35_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1744,10133,'','".AddSlashes(pg_result($resaco,0,'h35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1744,10134,'','".AddSlashes(pg_result($resaco,0,'h35_portariaassenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1744,10135,'','".AddSlashes(pg_result($resaco,0,'h35_portaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1744,10133,'','".AddSlashes(pg_fetch_result($resaco,0,'h35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1744,10134,'','".AddSlashes(pg_fetch_result($resaco,0,'h35_portariaassenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1744,10135,'','".AddSlashes(pg_fetch_result($resaco,0,'h35_portaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_portariaref {
       $this->atualizacampos();
      $sql = " update portariaref set ";
      $virgula = "";
-     if(trim($this->h35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h35_sequencial"])){ 
+     if(trim((string) $this->h35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h35_sequencial"])){ 
        $sql  .= $virgula." h35_sequencial = $this->h35_sequencial ";
        $virgula = ",";
-       if(trim($this->h35_sequencial) == null ){ 
+       if(trim((string) $this->h35_sequencial) == null ){ 
          $this->erro_sql = " Campo Cod. Sequencial nao Informado.";
          $this->erro_campo = "h35_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_portariaref {
          return false;
        }
      }
-     if(trim($this->h35_portariaassenta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h35_portariaassenta"])){ 
+     if(trim((string) $this->h35_portariaassenta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h35_portariaassenta"])){ 
        $sql  .= $virgula." h35_portariaassenta = $this->h35_portariaassenta ";
        $virgula = ",";
-       if(trim($this->h35_portariaassenta) == null ){ 
+       if(trim((string) $this->h35_portariaassenta) == null ){ 
          $this->erro_sql = " Campo Portaria Assentada nao Informado.";
          $this->erro_campo = "h35_portariaassenta";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_portariaref {
          return false;
        }
      }
-     if(trim($this->h35_portaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h35_portaria"])){ 
+     if(trim((string) $this->h35_portaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h35_portaria"])){ 
        $sql  .= $virgula." h35_portaria = $this->h35_portaria ";
        $virgula = ",";
-       if(trim($this->h35_portaria) == null ){ 
+       if(trim((string) $this->h35_portaria) == null ){ 
          $this->erro_sql = " Campo Portaria nao Informado.";
          $this->erro_campo = "h35_portaria";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_portariaref {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10133,'$this->h35_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h35_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1744,10133,'".AddSlashes(pg_result($resaco,$conresaco,'h35_sequencial'))."','$this->h35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1744,10133,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h35_sequencial'))."','$this->h35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h35_portariaassenta"]))
-           $resac = db_query("insert into db_acount values($acount,1744,10134,'".AddSlashes(pg_result($resaco,$conresaco,'h35_portariaassenta'))."','$this->h35_portariaassenta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1744,10134,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h35_portariaassenta'))."','$this->h35_portariaassenta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h35_portaria"]))
-           $resac = db_query("insert into db_acount values($acount,1744,10135,'".AddSlashes(pg_result($resaco,$conresaco,'h35_portaria'))."','$this->h35_portaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1744,10135,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h35_portaria'))."','$this->h35_portaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_portariaref {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10133,'$h35_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1744,10133,'','".AddSlashes(pg_result($resaco,$iresaco,'h35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1744,10134,'','".AddSlashes(pg_result($resaco,$iresaco,'h35_portariaassenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1744,10135,'','".AddSlashes(pg_result($resaco,$iresaco,'h35_portaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1744,10133,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1744,10134,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h35_portariaassenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1744,10135,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h35_portaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from portariaref
@@ -345,7 +345,7 @@ class cl_portariaref {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:portariaref";

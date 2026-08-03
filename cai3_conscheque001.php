@@ -35,7 +35,7 @@ include(modification("classes/db_orctiporec_classe.php"));
 include(modification("classes/db_empempenho_classe.php"));
 include(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorctiporec				=new cl_orctiporec;
 $cliframe_seleciona = new cl_iframe_seleciona;

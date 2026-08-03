@@ -34,8 +34,8 @@ require_once(modification("classes/db_matordemitem_classe.php"));
 require_once(modification("classes/db_matestoqueitemoc_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clmatordemitem     = new cl_matordemitem;
 $clmatestoqueitemoc = new cl_matestoqueitemoc;
@@ -130,9 +130,9 @@ $clrotulo->label("e62_descr");
 															 <td	class='linhagrid' 			 align='center'											  ><small>$e60_codemp															 </small></td>
 															 <td	class='linhagrid' 			 align='center'												><small>$m52_numemp															 </small></td>
 															 <td	class='linhagrid' 			 align='center'												><small>$e62_item																 </small></td>		    
-															 <td	class='linhagrid' nowrap align='left' title='$pc01_descrmater'><small>".substr($pc01_descrmater, 0, 20)."&nbsp;</small></td>
+															 <td	class='linhagrid' nowrap align='left' title='$pc01_descrmater'><small>".substr((string) $pc01_descrmater, 0, 20)."&nbsp;</small></td>
 															 <td	class='linhagrid' 			 align='center'												><small>$m52_sequen															 </small></td>
-															 <td	class='linhagrid' nowrap align='left' title='$e62_descr'			><small>".substr($e62_descr, 0, 20)."&nbsp;			 </small></td>";
+															 <td	class='linhagrid' nowrap align='left' title='$e62_descr'			><small>".substr((string) $e62_descr, 0, 20)."&nbsp;			 </small></td>";
 
                       /**
                        * Caso for um materail
@@ -149,9 +149,9 @@ $clrotulo->label("e62_descr");
 												
 												$quant 			 = $m52_quant;
 												$quantidade  = "quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
-												$$quantidade = $m52_quant;
+												${$quantidade} = $m52_quant;
 												$valor 			 = "valor_$i";
-												$$valor 		 = db_formatar($m52_valor, 'f');
+												${$valor} 		 = db_formatar($m52_valor, 'f');
 												$valoruni 	 = $m52_valor / $m52_quant;
 												
 												echo " 	 <td class='linhagrid' align='center'>";
@@ -170,9 +170,9 @@ $clrotulo->label("e62_descr");
 											} else if ($pc01_servico == 't') {
 
 												$quantidade  = "quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
-												$$quantidade = $m52_quant;
+												${$quantidade} = $m52_quant;
 												$valor 			 = "valor_$i";
-												$$valor 		 = db_formatar($m52_valor, 'f');
+												${$valor} 		 = db_formatar($m52_valor, 'f');
 												$valoruni 	 = $m52_valor / $m52_quant;
 												
 												echo "   <td class='linhagrid' align='center'>";
@@ -193,9 +193,9 @@ $clrotulo->label("e62_descr");
 												echo " 	 <td class='linhagrid'				align='center'>												<small>$e60_codemp														  </small></td>";
 												echo " 	 <td class='linhagrid'				align='center'>												<small>$m52_numemp														  </small></td>";
 												echo "   <td class='linhagrid'				align='center'>												<small>$e62_item															  </small></td>";
-												echo "   <td class='linhagrid' nowrap align='left' title='$pc01_descrmater'><small>".substr($pc01_descrmater, 0, 20)."&nbsp;</small></td>";
+												echo "   <td class='linhagrid' nowrap align='left' title='$pc01_descrmater'><small>".substr((string) $pc01_descrmater, 0, 20)."&nbsp;</small></td>";
 												echo "   <td class='linhagrid' 			  align='center'>												<small>$m52_sequen														  </small></td>";
-												echo "   <td class='linhagrid' nowrap align='left' title='$e62_descr'>			<small>".substr($e62_descr, 0, 20)."&nbsp;			</small></td>";
+												echo "   <td class='linhagrid' nowrap align='left' title='$e62_descr'>			<small>".substr((string) $e62_descr, 0, 20)."&nbsp;			</small></td>";
 											
                       /**
                        * Caso for um materail
@@ -206,10 +206,10 @@ $clrotulo->label("e62_descr");
 												db_fieldsmemory($result2, 0);
 												$quant 			 = $m52_quant - $m71_quant;
 												$quantidade  = "quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
-												$$quantidade = $m52_quant - $m71_quant;
+												${$quantidade} = $m52_quant - $m71_quant;
 												$valor 			 = "valor_$i";
 												$vlr 				 = $m52_valor - $m71_valor;
-												$$valor 		 = db_formatar($vlr, 'f');
+												${$valor} 		 = db_formatar($vlr, 'f');
 												$valoruni 	 = $m52_valor / $m52_quant;
 
 												echo "   <td class='linhagrid' align='center'>";
@@ -228,10 +228,10 @@ $clrotulo->label("e62_descr");
 
 											    db_fieldsmemory($result2, 0);
 												$quantidade  = "quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
-												$$quantidade = $m52_quant -@ $m71_quant;
+												${$quantidade} = $m52_quant -@ $m71_quant;
 												$valor 			 = "valor_$i";
 												$vlr 				 = $m52_valor - @$m71_valor;
-												$$valor 		 = db_formatar($vlr, 'f');
+												${$valor} 		 = db_formatar($vlr, 'f');
 												$valoruni 	 = $m52_valor / $m52_quant;
 
 												echo "	 <td class='linhagrid' align='center'>";

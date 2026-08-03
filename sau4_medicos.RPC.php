@@ -53,7 +53,7 @@ try {
      */
   	case 'getUnidadeCBOMedico':
   	  
-  	  $aWhere = array();
+  	  $aWhere = [];
   	  if (!empty($oParam->iMedico)) {
   	    $aWhere[] = " codigo_medico = {$oParam->iMedico}";
         $aWhere[] = " (situacao = 'A' OR situacao IS NULL)";

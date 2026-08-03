@@ -33,8 +33,8 @@ require_once(modification("classes/db_levanta_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_procfiscallevanta_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cllevanta           = new cl_levanta;
 $clprocfiscallevanta = new cl_procfiscallevanta;

@@ -54,16 +54,16 @@ $db_opcao   = 1;
  <tr>
   <td height="460" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica    = array("a1"=>"Nutricionista",
+   $clcriaabas->identifica    = ["a1"=>"Nutricionista",
                                       "a2"=>"Escolas"
-                                     );
-   $clcriaabas->sizecampo     = array("a1"=>"20",
+                                     ];
+   $clcriaabas->sizecampo     = ["a1"=>"20",
                                       "a2"=>"20"
-                                     );
-   $clcriaabas->src           = array("a1"=>"mer1_mer_nutricionista001.php",
+                                     ];
+   $clcriaabas->src           = ["a1"=>"mer1_mer_nutricionista001.php",
                                       "a2"=>""
-                                     );
-   $clcriaabas->disabled      = array("a2"=>"true");
+                                     ];
+   $clcriaabas->disabled      = ["a2"=>"true"];
    $clcriaabas->cordisabled   = "#9b9b9b";
    $clcriaabas->scrolling     = "no";
    $clcriaabas->iframe_height = "1200";

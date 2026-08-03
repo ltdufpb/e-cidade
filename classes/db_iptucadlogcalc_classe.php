@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE iptucadlogcalc
 class cl_iptucadlogcalc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j62_codigo = 0; 
-   var $j62_descr = null; 
-   var $j62_erro = 'f'; 
+   public $j62_codigo = 0; 
+   public $j62_descr = null; 
+   public $j62_erro = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j62_codigo = int4 = Codigo 
                  j62_descr = varchar(100) = Descricao 
                  j62_erro = bool = Erro 
                  ";
    //funcao construtor da classe 
-   function cl_iptucadlogcalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucadlogcalc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_iptucadlogcalc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j62_codigo = pg_result($result,0,0); 
+       $this->j62_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptucadlogcalc_j62_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j62_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j62_codigo)){
          $this->erro_sql = " Campo j62_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_iptucadlogcalc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro dos tipos de log do calculo de IPTU ($this->j62_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro dos tipos de log do calculo de IPTU já Cadastrado";
@@ -166,12 +166,12 @@ class cl_iptucadlogcalc {
      $resaco = $this->sql_record($this->sql_query_file($this->j62_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7890,'$this->j62_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1322,7890,'','".AddSlashes(pg_result($resaco,0,'j62_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1322,7891,'','".AddSlashes(pg_result($resaco,0,'j62_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1322,7892,'','".AddSlashes(pg_result($resaco,0,'j62_erro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1322,7890,'','".AddSlashes(pg_fetch_result($resaco,0,'j62_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1322,7891,'','".AddSlashes(pg_fetch_result($resaco,0,'j62_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1322,7892,'','".AddSlashes(pg_fetch_result($resaco,0,'j62_erro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_iptucadlogcalc {
       $this->atualizacampos();
      $sql = " update iptucadlogcalc set ";
      $virgula = "";
-     if(trim($this->j62_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j62_codigo"])){ 
+     if(trim((string) $this->j62_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j62_codigo"])){ 
        $sql  .= $virgula." j62_codigo = $this->j62_codigo ";
        $virgula = ",";
-       if(trim($this->j62_codigo) == null ){ 
+       if(trim((string) $this->j62_codigo) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "j62_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_iptucadlogcalc {
          return false;
        }
      }
-     if(trim($this->j62_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j62_descr"])){ 
+     if(trim((string) $this->j62_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j62_descr"])){ 
        $sql  .= $virgula." j62_descr = '$this->j62_descr' ";
        $virgula = ",";
-       if(trim($this->j62_descr) == null ){ 
+       if(trim((string) $this->j62_descr) == null ){ 
          $this->erro_sql = " Campo Descricao nao Informado.";
          $this->erro_campo = "j62_descr";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_iptucadlogcalc {
          return false;
        }
      }
-     if(trim($this->j62_erro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j62_erro"])){ 
+     if(trim((string) $this->j62_erro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j62_erro"])){ 
        $sql  .= $virgula." j62_erro = '$this->j62_erro' ";
        $virgula = ",";
-       if(trim($this->j62_erro) == null ){ 
+       if(trim((string) $this->j62_erro) == null ){ 
          $this->erro_sql = " Campo Erro nao Informado.";
          $this->erro_campo = "j62_erro";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_iptucadlogcalc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7890,'$this->j62_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j62_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1322,7890,'".AddSlashes(pg_result($resaco,$conresaco,'j62_codigo'))."','$this->j62_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1322,7890,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j62_codigo'))."','$this->j62_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j62_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1322,7891,'".AddSlashes(pg_result($resaco,$conresaco,'j62_descr'))."','$this->j62_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1322,7891,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j62_descr'))."','$this->j62_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j62_erro"]))
-           $resac = db_query("insert into db_acount values($acount,1322,7892,'".AddSlashes(pg_result($resaco,$conresaco,'j62_erro'))."','$this->j62_erro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1322,7892,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j62_erro'))."','$this->j62_erro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_iptucadlogcalc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7890,'$j62_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1322,7890,'','".AddSlashes(pg_result($resaco,$iresaco,'j62_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1322,7891,'','".AddSlashes(pg_result($resaco,$iresaco,'j62_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1322,7892,'','".AddSlashes(pg_result($resaco,$iresaco,'j62_erro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1322,7890,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j62_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1322,7891,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j62_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1322,7892,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j62_erro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptucadlogcalc
@@ -345,7 +345,7 @@ class cl_iptucadlogcalc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptucadlogcalc";

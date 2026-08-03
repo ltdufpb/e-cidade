@@ -48,7 +48,7 @@ $clorcdotacao    = new cl_orcdotacao();
 $clorctiporec = new cl_orctiporec();
 $clorctiporecconvenio = new cl_orctiporecconvenio();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if (isset($excluir)) {

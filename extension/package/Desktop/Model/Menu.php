@@ -194,7 +194,7 @@ class Menu extends Model {
         $iItemMenuId = $iModuloId;
     }
 
-    $aItensMenu = array();
+    $aItensMenu = [];
 
     $sCampos = "m.id_item as id_pai, m.id_item_filho as id, i.descricao as nome, i.funcao as action, menusequencia";
 
@@ -243,7 +243,7 @@ class Menu extends Model {
     if ( !$this->sOrdenacaoMenu ) {
 
       require_once(modification(ECIDADE_PATH . 'model/configuracao/PreferenciaUsuario.model.php'));
-      $oPreferencias = unserialize(base64_decode($_SESSION['DB_preferencias_usuario']));
+      $oPreferencias = unserialize(base64_decode((string) $_SESSION['DB_preferencias_usuario']));
       $this->sOrdenacaoMenu = ( $oPreferencias->getOrdenacao() == "alfabetico" ? "nome" : "menusequencia" );
     }
 
@@ -286,21 +286,21 @@ class Menu extends Model {
       return $menus;
     }
 
-    $menus = array();
+    $menus = [];
 
     foreach ($this->getAreas($instit) as $area) {
 
       foreach ($this->getModulos($instit, $area['id']) as $modulo) {
 
-        $data = array(
+        $data = [
           'breadcrumb' => $modulo['nome'],
           'area' => $area['id'],
           'modulo' => $modulo['id'],
           'action' => null,
-        );
+        ];
 
         foreach($this->getItensMenu($instit, $area['id'], $modulo['id']) as $menu) {
-          $this->buildMenuChildren(array($menu), $data, $menus);
+          $this->buildMenuChildren([$menu], $data, $menus);
         }
       }
 

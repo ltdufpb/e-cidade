@@ -41,7 +41,7 @@ require_once(modification("std/db_stdClass.php"));
 
 $clisstipoalvara = new cl_isstipoalvara;
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 /**
  * Get tem as variáveis
@@ -77,7 +77,7 @@ if($q60_modalvara == 9) {
 
   $oTipoAlvara     = db_utils::fieldsMemory($rsTipoAlvara,0);
 
-	$aParam          = array();
+	$aParam          = [];
 	$aParam['$inscr'] = $oGet->inscricao;
 
 	db_stdClass::oo2pdf(6, $oTipoAlvara->q98_documento, $sAgt, $aParam, $sCaminhoSalvoSxw, $sNomeRelatorio);
@@ -94,7 +94,7 @@ $pdf->Open();
 //$pdf1 = new db_impcarne($pdf);
 $rsResultpar = db_query("select * from parissqn");
 //db_criatabela($rsResult);exit;
-if (pg_numrows($rsResultpar) > 0) {
+if (pg_num_rows($rsResultpar) > 0) {
   db_fieldsmemory($rsResultpar, 0);
 }
 
@@ -109,11 +109,11 @@ $ano = db_getsession("DB_anousu");
 
 if (isset($q60_modalvara) && $q60_modalvara == "3") {
 
-  $tamanho = array (
+  $tamanho =  [
 
                         290,
                         95
-  );
+  ];
   $spdf1 = new scpdf("P", "mm", $tamanho);
   $spdf1->Open();
   $pdf2 = new db_impcarne($spdf1, '26');
@@ -177,7 +177,7 @@ if (isset($q60_modalvara) && $q60_modalvara == "3") {
   // die($cldb_config->sql_query(db_getsession("DB_instit"),"nomeinst as prefeitura, munic"));
   $resul = $cldb_config->sql_record($cldb_config->sql_query(db_getsession("DB_instit"), "nomeinst as prefeitura, munic"));
   db_fieldsmemory($resul, 0); //pega o dados da prefa
-  $munic = strtoupper($munic);
+  $munic = strtoupper((string) $munic);
   //global $db02_texto;
   //	                             die($cltabativ->sql_queryinf("$oGet->inscricao","","*","","(q07_databx < '".date("Y-m-d", db_getsession("DB_datausu"))."' or  q07_databx is null) and tabativ.q07_inscr = $oGet->inscricao "));
   $result = $cltabativ->sql_record($cltabativ->sql_queryinf($oGet->inscricao, "", "*", "", "q88_inscr is not null and (q07_databx < '" . date("Y-m-d", db_getsession("DB_datausu")) . "' or  q07_databx is null) and tabativ.q07_inscr = $oGet->inscricao "));
@@ -202,11 +202,11 @@ if (isset($q60_modalvara) && $q60_modalvara == "3") {
     $resparag = db_query($sqlparag);
     //	   die($sqlparag);
     //db_criatabela($resparag);exit;
-    if (pg_numrows($resparag) == 0) {
+    if (pg_num_rows($resparag) == 0) {
       db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento 26 com os paragrafos do alvara!');
       exit();
     }
-    $numrows = pg_numrows($resparag);
+    $numrows = pg_num_rows($resparag);
     //	$pdf1->inicia = $db02_inicia;
     for($i = 0; $i < $numrows; $i ++) {
       db_fieldsmemory($resparag, $i);
@@ -237,7 +237,7 @@ if (isset($q60_modalvara) && $q60_modalvara == "3") {
       order by db02_descr
       ";
     $res_tipoalvara = db_query($sql_tipoalvara);
-    if (pg_numrows($res_tipoalvara) > 0) {
+    if (pg_num_rows($res_tipoalvara) > 0) {
       db_fieldsmemory($res_tipoalvara, 0);
       $pdf1->tipoalvara = $db02_texto;
     } else {
@@ -256,11 +256,11 @@ if (isset($q60_modalvara) && $q60_modalvara == "3") {
     $resparag = db_query($sqlparag);
     //die($sqlparag);
     //db_criatabela($resparag);exit;
-    if (pg_numrows($resparag) == 0) {
+    if (pg_num_rows($resparag) == 0) {
       db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do alvara!');
       exit();
     }
-    $numrows = pg_numrows($resparag);
+    $numrows = pg_num_rows($resparag);
     //		$pdf1->inicia = $db02_inicia;
     for($i = 0; $i < $numrows; $i ++) {
       db_fieldsmemory($resparag, $i);
@@ -299,7 +299,7 @@ if (isset($q60_modalvara) && $q60_modalvara == "3") {
                  where issbase.q02_inscr = {$oGet->inscricao}";
   //die($sSql);
   $result = db_query($sSql);
-  if (pg_numrows($result) > 0) {
+  if (pg_num_rows($result) > 0) {
     db_fieldsmemory($result, 0);
   }
 
@@ -341,8 +341,8 @@ if (isset($q60_modalvara) && $q60_modalvara == "3") {
 
   // PEGA AS ATIVIDADES SECUNDARIAS
   //die($cltabativ->sql_queryinf($q02_inscr,"","*",""," q88_inscr is null "));
-  $arr = array ();
-  $arr02 = array ();
+  $arr =  [];
+  $arr02 =  [];
   $descr = "";
 
     // die($cltabativ->sql_queryinf($oGet->inscricao, "", "*", "", " q88_inscr is null and q11_inscr is null and (q07_databx > '".date("Y-m-d", db_getsession("DB_datausu"))."' or  q07_databx is null) and tabativ.q07_inscr = $oGet->inscricao "));
@@ -392,7 +392,7 @@ for($i = 0; $i < $iTotalLinhas; $i ++) {
   if (isset($oCodCnae->princ) && $oCodCnae->princ != "") {
     $pdf1->iAtivPrincCnae = substr($oCodCnae->q71_estrutural, 1, strlen($oCodCnae->q71_estrutural));
   } else {
-    $pdf1->aCodigosCnae [] = substr($oCodCnae->q71_estrutural, 1, strlen($oCodCnae->q71_estrutural));
+    $pdf1->aCodigosCnae [] = substr((string) $oCodCnae->q71_estrutural, 1, strlen((string) $oCodCnae->q71_estrutural));
   }
 
 }

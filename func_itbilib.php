@@ -37,8 +37,8 @@ $situacao = "";
 $tipo     = "";
 $sWhereLogradouro = "";
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if(!isset($setorCodigo)) {
 	$setorCodigo = '';
@@ -125,9 +125,9 @@ $clrotulo->label("it18_nomelograd");
 	</td>
 	<td>
 	<?php 
-		$aTipo = array( 't'=>'Todos',
+		$aTipo = [ 't'=>'Todos',
 	                             'u'=>'Urbano',
-	                             'r'=>'Rural' );
+	                             'r'=>'Rural' ];
 
 		db_select('tipo',$aTipo,true,2," style='width:295px;'");
 	?>
@@ -151,10 +151,10 @@ $clrotulo->label("it18_nomelograd");
 	</td>
 	<td>
 	<?php 
-		$aSituacao = array( '1'=>'Todos',
+		$aSituacao = [ '1'=>'Todos',
 	                                 '2'=>'Aberto',
 	                                 '3'=>'Pago',
-	                                 '4'=>'Cancelado');
+	                                 '4'=>'Cancelado'];
 		db_select('situacao',$aSituacao,true,2," style='width:295px;'");
 	?>
 	</td>
@@ -231,15 +231,15 @@ $clrotulo->label("it18_nomelograd");
 			}
 
 			if ( isset($j34_setor) && $j34_setor != "") {
-				$sWhere  .= " and j34_setor = '" . str_pad($j34_setor,4,"0",STR_PAD_LEFT)."'";
+				$sWhere  .= " and j34_setor = '" . str_pad((string) $j34_setor,4,"0",STR_PAD_LEFT)."'";
 			}
 
 			if ( isset($j34_quadra) && $j34_quadra != "" ) {
-				$sWhere  .= " and j34_quadra = '" . str_pad($j34_quadra,4,"0",STR_PAD_LEFT)."'";
+				$sWhere  .= " and j34_quadra = '" . str_pad((string) $j34_quadra,4,"0",STR_PAD_LEFT)."'";
 			}
 
 			if ( isset($j34_lote) && $j34_lote != "" ) {
-				$sWhere  .= " and j34_lote = '" . str_pad($j34_lote,4,"0",STR_PAD_LEFT)."'";
+				$sWhere  .= " and j34_lote = '" . str_pad((string) $j34_lote,4,"0",STR_PAD_LEFT)."'";
 			}
 
 			if(isset($setorCodigo) || isset($quadra) || isset($lote)) {

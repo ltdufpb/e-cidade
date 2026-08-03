@@ -48,7 +48,7 @@ $iEscola       = db_getsession("DB_coddepto");
 $oTurma        = TurmaRepository::getTurmaByCodigo($iTurma);
 $iTurno				 = $oGet->iTurno;
 
-$aCodigosDisciplinas = array();
+$aCodigosDisciplinas = [];
 
 foreach ($oTurma->getDisciplinas() as $oRegencia) {
   $aCodigosDisciplinas[] = $oRegencia->getDisciplina()->getCodigoDisciplina();
@@ -75,7 +75,7 @@ $rsRecHumano     = $oDaoHorarioDisp->sql_record($sSqlRecHumano);
 
 $iRegistrosRecHumano = $oDaoHorarioDisp->numrows;
 
-$aRecHumano = array();
+$aRecHumano = [];
 
 for ($i = 0; $i < $iRegistrosRecHumano; $i++) {
 	$aRecHumano[] = db_utils::fieldsMemory($rsRecHumano, $i)->ed20_i_codigo;
@@ -115,7 +115,7 @@ $iRegistrosDisponivel  = $oDaoRecHumano->numrows;
 	<div>
 	<?php
 		if (!isset($pesquisa_chave) && $iRegistrosDisponivel > 0) {
-			db_lovrot($sSqlRegenteDisponivel, 15, "()", "", $oGet->funcao_js, "", "NoMe", array());
+			db_lovrot($sSqlRegenteDisponivel, 15, "()", "", $oGet->funcao_js, "", "NoMe", []);
 		} else {
 
       if (isset($pesquisa_chave) && !empty($pesquisa_chave)) {

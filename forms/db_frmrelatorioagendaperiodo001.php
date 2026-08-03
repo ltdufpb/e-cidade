@@ -91,20 +91,20 @@ if(isset($pesquisar)){
         }
         $d1=$sd23_d_consulta;
         $rest = "";
-        $rest = substr($sd23_d_consulta, 6);
+        $rest = substr((string) $sd23_d_consulta, 6);
         $rest .="-";
-        $rest .= substr($sd23_d_consulta, 3, 2);
+        $rest .= substr((string) $sd23_d_consulta, 3, 2);
         $rest .="-";
-        $rest .= substr($sd23_d_consulta, 0, 2);
+        $rest .= substr((string) $sd23_d_consulta, 0, 2);
         $sql .= "sd23_d_consulta  BETWEEN '".$rest."' and";
 
         $d2=$sd23_d_consulta2;
         $rest = "";
-        $rest = substr($sd23_d_consulta2, 6);
+        $rest = substr((string) $sd23_d_consulta2, 6);
         $rest .="-";
-        $rest .= substr($sd23_d_consulta2, 3, 2);
+        $rest .= substr((string) $sd23_d_consulta2, 3, 2);
         $rest .="-";
-        $rest .= substr($sd23_d_consulta2, 0, 2);
+        $rest .= substr((string) $sd23_d_consulta2, 0, 2);
         $sql .= " '".$rest."'";
         $primeiro=true;
      }else{
@@ -164,7 +164,7 @@ if(isset($pesquisar)){
                            <td><b>Situação</b></td>
                            <td>
                                <?php 
-                                 $situacao= array('0'=>'Todos','1'=>'Cancelado','2'=>'Faltou','3'=>'Outros');
+                                 $situacao= ['0'=>'Todos','1'=>'Cancelado','2'=>'Faltou','3'=>'Outros'];
                                  db_select('s114_i_situacao',$situacao,true,$db_opcao,"");
                                ?>
                            </td>

@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE empagedadosretmovocorrencia
 class cl_empagedadosretmovocorrencia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e02_sequencial = 0; 
-   var $e02_empagedadosret = 0; 
-   var $e02_empagedadosretmov = 0; 
-   var $e02_errobanco = 0; 
+   public $e02_sequencial = 0; 
+   public $e02_empagedadosret = 0; 
+   public $e02_empagedadosretmov = 0; 
+   public $e02_errobanco = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e02_sequencial = int4 = Sequencial 
                  e02_empagedadosret = int4 = Sequencial EmpAgeDadosRet 
                  e02_empagedadosretmov = int4 = Sequencial EmpAgeDadosRetMov 
                  e02_errobanco = int4 = Sequencial ErroBanco 
                  ";
    //funcao construtor da classe 
-   function cl_empagedadosretmovocorrencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagedadosretmovocorrencia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_empagedadosretmovocorrencia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e02_sequencial = pg_result($result,0,0); 
+       $this->e02_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from empagedadosretmovocorrencia_e02_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e02_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e02_sequencial)){
          $this->erro_sql = " Campo e02_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_empagedadosretmovocorrencia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "empagedadosretmovocorrencia ($this->e02_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "empagedadosretmovocorrencia já Cadastrado";
@@ -180,13 +180,13 @@ class cl_empagedadosretmovocorrencia {
      $resaco = $this->sql_record($this->sql_query_file($this->e02_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18446,'$this->e02_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3262,18446,'','".AddSlashes(pg_result($resaco,0,'e02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3262,18449,'','".AddSlashes(pg_result($resaco,0,'e02_empagedadosret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3262,18447,'','".AddSlashes(pg_result($resaco,0,'e02_empagedadosretmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3262,18448,'','".AddSlashes(pg_result($resaco,0,'e02_errobanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3262,18446,'','".AddSlashes(pg_fetch_result($resaco,0,'e02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3262,18449,'','".AddSlashes(pg_fetch_result($resaco,0,'e02_empagedadosret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3262,18447,'','".AddSlashes(pg_fetch_result($resaco,0,'e02_empagedadosretmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3262,18448,'','".AddSlashes(pg_fetch_result($resaco,0,'e02_errobanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_empagedadosretmovocorrencia {
       $this->atualizacampos();
      $sql = " update empagedadosretmovocorrencia set ";
      $virgula = "";
-     if(trim($this->e02_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e02_sequencial"])){ 
+     if(trim((string) $this->e02_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e02_sequencial"])){ 
        $sql  .= $virgula." e02_sequencial = $this->e02_sequencial ";
        $virgula = ",";
-       if(trim($this->e02_sequencial) == null ){ 
+       if(trim((string) $this->e02_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "e02_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_empagedadosretmovocorrencia {
          return false;
        }
      }
-     if(trim($this->e02_empagedadosret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e02_empagedadosret"])){ 
+     if(trim((string) $this->e02_empagedadosret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e02_empagedadosret"])){ 
        $sql  .= $virgula." e02_empagedadosret = $this->e02_empagedadosret ";
        $virgula = ",";
-       if(trim($this->e02_empagedadosret) == null ){ 
+       if(trim((string) $this->e02_empagedadosret) == null ){ 
          $this->erro_sql = " Campo Sequencial EmpAgeDadosRet nao Informado.";
          $this->erro_campo = "e02_empagedadosret";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_empagedadosretmovocorrencia {
          return false;
        }
      }
-     if(trim($this->e02_empagedadosretmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e02_empagedadosretmov"])){ 
+     if(trim((string) $this->e02_empagedadosretmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e02_empagedadosretmov"])){ 
        $sql  .= $virgula." e02_empagedadosretmov = $this->e02_empagedadosretmov ";
        $virgula = ",";
-       if(trim($this->e02_empagedadosretmov) == null ){ 
+       if(trim((string) $this->e02_empagedadosretmov) == null ){ 
          $this->erro_sql = " Campo Sequencial EmpAgeDadosRetMov nao Informado.";
          $this->erro_campo = "e02_empagedadosretmov";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_empagedadosretmovocorrencia {
          return false;
        }
      }
-     if(trim($this->e02_errobanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e02_errobanco"])){ 
+     if(trim((string) $this->e02_errobanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e02_errobanco"])){ 
        $sql  .= $virgula." e02_errobanco = $this->e02_errobanco ";
        $virgula = ",";
-       if(trim($this->e02_errobanco) == null ){ 
+       if(trim((string) $this->e02_errobanco) == null ){ 
          $this->erro_sql = " Campo Sequencial ErroBanco nao Informado.";
          $this->erro_campo = "e02_errobanco";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_empagedadosretmovocorrencia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18446,'$this->e02_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e02_sequencial"]) || $this->e02_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3262,18446,'".AddSlashes(pg_result($resaco,$conresaco,'e02_sequencial'))."','$this->e02_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3262,18446,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e02_sequencial'))."','$this->e02_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e02_empagedadosret"]) || $this->e02_empagedadosret != "")
-           $resac = db_query("insert into db_acount values($acount,3262,18449,'".AddSlashes(pg_result($resaco,$conresaco,'e02_empagedadosret'))."','$this->e02_empagedadosret',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3262,18449,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e02_empagedadosret'))."','$this->e02_empagedadosret',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e02_empagedadosretmov"]) || $this->e02_empagedadosretmov != "")
-           $resac = db_query("insert into db_acount values($acount,3262,18447,'".AddSlashes(pg_result($resaco,$conresaco,'e02_empagedadosretmov'))."','$this->e02_empagedadosretmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3262,18447,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e02_empagedadosretmov'))."','$this->e02_empagedadosretmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e02_errobanco"]) || $this->e02_errobanco != "")
-           $resac = db_query("insert into db_acount values($acount,3262,18448,'".AddSlashes(pg_result($resaco,$conresaco,'e02_errobanco'))."','$this->e02_errobanco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3262,18448,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e02_errobanco'))."','$this->e02_errobanco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_empagedadosretmovocorrencia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18446,'$e02_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3262,18446,'','".AddSlashes(pg_result($resaco,$iresaco,'e02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3262,18449,'','".AddSlashes(pg_result($resaco,$iresaco,'e02_empagedadosret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3262,18447,'','".AddSlashes(pg_result($resaco,$iresaco,'e02_empagedadosretmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3262,18448,'','".AddSlashes(pg_result($resaco,$iresaco,'e02_errobanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3262,18446,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3262,18449,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e02_empagedadosret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3262,18447,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e02_empagedadosretmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3262,18448,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e02_errobanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from empagedadosretmovocorrencia
@@ -376,7 +376,7 @@ class cl_empagedadosretmovocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empagedadosretmovocorrencia";
@@ -391,7 +391,7 @@ class cl_empagedadosretmovocorrencia {
    function sql_query ( $e02_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_empagedadosretmovocorrencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_empagedadosretmovocorrencia {
    function sql_query_file ( $e02_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_empagedadosretmovocorrencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

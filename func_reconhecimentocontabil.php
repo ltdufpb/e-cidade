@@ -33,8 +33,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_reconhecimentocontabil_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clreconhecimentocontabil = new cl_reconhecimentocontabil;
 $clreconhecimentocontabil->rotulo->label();
@@ -116,10 +116,10 @@ $oGet = db_utils::postMemory($_GET);
           $sql = $clreconhecimentocontabil->sql_query("",$campos,"c112_sequencial", $sWhere);
         }
 
-        $repassa = array();
+        $repassa = [];
 
         if(isset($chave_c111_descricao)){
-          $repassa = array("chave_c112_sequencial"=>$chave_c112_sequencial,"chave_c111_descricao"=>$chave_c111_descricao);
+          $repassa = ["chave_c112_sequencial"=>$chave_c112_sequencial,"chave_c111_descricao"=>$chave_c111_descricao];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

@@ -43,7 +43,7 @@ $oRetorno             = new stdClass();
 $oRetorno->iStatus    = 1;
 $oRetorno->sMensagem  = '';
 $oHoje                = new DBDate(date("Y-m-d", db_getsession("DB_datausu")));
-$aRegistros           = array();
+$aRegistros           = [];
 
 $oDaoFaixaFaltas      = new cl_rhcadregimefaltasperiodoaquisitivo();
 
@@ -81,7 +81,7 @@ try {
       
       if(!$rsDAOFaixaFaltas){
       	 
-      	$oMensagem = (object)array('sErro'=>pg_last_error());
+      	$oMensagem = (object)['sErro'=>pg_last_error()];
       	throw new DBException( _M( MENSAGENS . 'erro_buscar_dados_faixas') );
       }
       

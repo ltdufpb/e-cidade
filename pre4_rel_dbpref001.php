@@ -33,9 +33,9 @@
     include(modification("dbforms/db_funcoes.php"));
     include(modification("dbforms/db_classesgenericas.php"));
 
-if( !isset($HTTP_GET_VARS["ano"]) && !isset( $HTTP_GET_VARS["mes"])){
+if( !isset($_GET["ano"]) && !isset( $_GET["mes"])){
 
-    db_postmemory($HTTP_POST_VARS);
+    db_postmemory($_POST);
     ?>
 
     <html>
@@ -155,7 +155,7 @@ if( !isset($HTTP_GET_VARS["ano"]) && !isset( $HTTP_GET_VARS["mes"])){
     </html>
     <?php 
 } else {
-    db_postmemory($HTTP_POST_VARS);
+    db_postmemory($_POST);
     $str_sql = "select issqnret.*,
                   case when arrecad.k00_numpre is not null then
                      'no financeiro'
@@ -182,7 +182,7 @@ if( !isset($HTTP_GET_VARS["ano"]) && !isset( $HTTP_GET_VARS["mes"])){
                 order by q20_planilha ";
 
     $result = db_query($str_sql) or die("FALHA: <br>$str_sql" );
-    if(pg_numrows($result)==0){
+    if(pg_num_rows($result)==0){
       db_redireciona('db_erros.php?fechar=true&db_erro=Não existem informações pata gerar o relatório. ('.$ano.'/'.$mes.').');
     }
     $head2 = "Lançamentos efetuados no DBPREF";
@@ -197,7 +197,7 @@ if( !isset($HTTP_GET_VARS["ano"]) && !isset( $HTTP_GET_VARS["mes"])){
 
     $pag = 1;
 
-    for ($x = 0 ; $x < pg_numrows($result);$x++){
+    for ($x = 0 ; $x < pg_num_rows($result);$x++){
         db_fieldsmemory($result,$x);
         if (($pdf->gety() > $pdf->h - 30) || $pag == 1 ){
             $pdf->addpage();

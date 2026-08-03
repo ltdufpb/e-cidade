@@ -225,38 +225,21 @@ $head4 = $headOrdem;
 /**
  * Tipo de seleção do relatorio
  */
-switch ($oGet->seltipo) {
-
-  case "r":
-    $sShowTipoSelecao = "Resumido por tipo";
-  break;
-
-  case "rc":
-    $sShowTipoSelecao = "Resumido por contribuinte";
-  break;
-
-  default:
-    $sShowTipoSelecao = "Completo";
-  break;
-}
+$sShowTipoSelecao = match ($oGet->seltipo) {
+    "r" => "Resumido por tipo",
+    "rc" => "Resumido por contribuinte",
+    default => "Completo",
+};
 $head5 = "Tipo: " . $sShowTipoSelecao;
 
 /**
  * Tipo de Cancelamento selecionado
  */
-switch ($oGet->tipoDebito) {
-  case 1:
-    $sShowTipoCancelamento = "Normal";
-  break;
-
-  case 2:
-    $sShowTipoCancelamento = "Renúncia";
-  break;
-
-  default:
-    $sShowTipoCancelamento = "Todos";
-  break;
-}
+$sShowTipoCancelamento = match ($oGet->tipoDebito) {
+    1 => "Normal",
+    2 => "Renúncia",
+    default => "Todos",
+};
 $head6 = "Tipo de cancelamento: " . $sShowTipoCancelamento;
 
 if($oGet->tipoDebito != 1){
@@ -279,17 +262,17 @@ $lPreecher           = false;
 $lImprimeCab         = false;
 $lImprimeSubTotal    = false;
 
-$aDadosCancProc      = array();
-$aDados              = array();
-$aCabecalho          = array();
-$aTotalMatric        = array();
-$aTotalInscr         = array();
-$aTotalCgm           = array();
-$aDadosResTipoDeb    = array();
-$aDadosResTipoProced = array();
-$aDadosResTipoReceit = array();
-$aCanceladoTotalGeral =array();
-$aAgrupaEstrutural    = array();
+$aDadosCancProc      = [];
+$aDados              = [];
+$aCabecalho          = [];
+$aTotalMatric        = [];
+$aTotalInscr         = [];
+$aTotalCgm           = [];
+$aDadosResTipoDeb    = [];
+$aDadosResTipoProced = [];
+$aDadosResTipoReceit = [];
+$aCanceladoTotalGeral =[];
+$aAgrupaEstrutural    = [];
 $sPeculiar           = "";
 
 $codProc             = null;
@@ -362,7 +345,7 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
   $oDadosItens->sLogin           = $oCancProc->login;
   $oDadosItens->sObsCancProc     = $obsCancProc;
 
-  $aIndiceCancProc = array();
+  $aIndiceCancProc = [];
 
   $aIndiceCancProc[] = $oCancProc->k00_numcgm;
   if ( isset( $oCancProc->k00_matric ) && !empty( $oCancProc->k00_matric ) ) {
@@ -384,28 +367,28 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
 
   if(isset($aDadosResTipoDeb[$oCancProc->k03_tipo])){
 
-    if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+    if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
       $aDadosResTipoDeb[$oCancProc->k03_tipo]['Vlr' ]   += $oCancProc->total;
     }
   }else{
 
-    if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+    if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
       $aDadosResTipoDeb[$oCancProc->k03_tipo]['Vlr' ]    = $oCancProc->total;
       $aDadosResTipoDeb[$oCancProc->k03_tipo]['sDescr' ] = $oCancProc->k03_descr;
     }
   }
 
-  if ( trim($oCancProc->v07_sequencial) != "") {
+  if ( trim((string) $oCancProc->v07_sequencial) != "") {
 
     if(isset($aDadosResTipoProced[$oCancProc->k03_descr][$oCancProc->v07_sequencial])){
 
-      if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+      if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
         $aDadosResTipoProced[$oCancProc->k03_descr][$oCancProc->v07_sequencial]['Vlr' ]   += $oCancProc->total;
       }
     } else {
 
-      if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+      if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
         $aDadosResTipoProced[$oCancProc->k03_descr][$oCancProc->v07_sequencial]['Vlr' ]    = $oCancProc->total;
         $aDadosResTipoProced[$oCancProc->k03_descr][$oCancProc->v07_sequencial]['sDescr' ] = $oCancProc->k03_descr
@@ -417,12 +400,12 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
 
       if(isset($aDadosResTipoProced["SEM PROCEDENCIA"])){
 
-        if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+        if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
           $aDadosResTipoProced["SEM PROCEDENCIA"][0]['Vlr' ]   += $oCancProc->total;
         }
       } else {
 
-        if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+        if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
           $aDadosResTipoProced["SEM PROCEDENCIA"][0]['Vlr' ]    = $oCancProc->total;
           $aDadosResTipoProced["SEM PROCEDENCIA"][0]['sDescr' ] = "DÉBITOS SEM PROCEDÊNCIA";
@@ -432,12 +415,12 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
 
   if(isset($aDadosResTipoReceit[$oCancProc->k02_codigo])){
 
-    if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+    if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
       $aDadosResTipoReceit[$oCancProc->k02_codigo]['Vlr' ]   += $oCancProc->total;
     }
   }else{
 
-    if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+    if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
       $aDadosResTipoReceit[$oCancProc->k02_codigo]['Vlr' ]    = $oCancProc->total;
       $aDadosResTipoReceit[$oCancProc->k02_codigo]['sDescr' ] = $oCancProc->k02_drecei;
@@ -447,7 +430,7 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
   // totais da segunda folha
   if(isset($aAgrupaCarPec[$oCancProc->c58_sequencial])){
 
-    if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+    if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
       $aAgrupaCarPec[$oCancProc->c58_sequencial][$oCancProc->c58_descr]['valor' ] += $oCancProc->k00_valor;
       $aAgrupaCarPec[$oCancProc->c58_sequencial][$oCancProc->c58_descr]['vlrcor'] += $oCancProc->k24_vlrcor;
@@ -457,7 +440,7 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
     }
   }else{
 
-    if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+    if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
       $aAgrupaCarPec[$oCancProc->c58_sequencial][$oCancProc->c58_descr]['valor' ] = $oCancProc->k00_valor;
       $aAgrupaCarPec[$oCancProc->c58_sequencial][$oCancProc->c58_descr]['vlrcor'] = $oCancProc->k24_vlrcor;
@@ -469,7 +452,7 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
 
   if(isset($aAgrupaRec[$oCancProc->k02_codigo])){
 
-    if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+    if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
       $aAgrupaRec[$oCancProc->k02_codigo][$oCancProc->k02_drecei]['valor' ] += $oCancProc->k00_valor;
       $aAgrupaRec[$oCancProc->k02_codigo][$oCancProc->k02_drecei]['vlrcor'] += $oCancProc->k24_vlrcor;
@@ -479,7 +462,7 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
     }
   }else{
 
-    if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+    if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
       $aAgrupaRec[$oCancProc->k02_codigo][$oCancProc->k02_drecei]['valor' ]  = $oCancProc->k00_valor;
       $aAgrupaRec[$oCancProc->k02_codigo][$oCancProc->k02_drecei]['vlrcor']  = $oCancProc->k24_vlrcor;
@@ -491,7 +474,7 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
 
   if (isset($aAgrupaEstrutural[$oCancProc->k02_estorc])) {
 
-    if (!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)) {
+    if (!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)) {
 
       $aAgrupaEstrutural[$oCancProc->k02_estorc][$oCancProc->o57_descr]['valor'] += $oCancProc->k00_valor;
       $aAgrupaEstrutural[$oCancProc->k02_estorc][$oCancProc->o57_descr]['vlrcor'] += $oCancProc->k24_vlrcor;
@@ -501,7 +484,7 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
     }
   } else {
 
-    if (!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)) {
+    if (!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)) {
 
       $aAgrupaEstrutural[$oCancProc->k02_estorc][$oCancProc->o57_descr]['valor']  = $oCancProc->k00_valor;
       $aAgrupaEstrutural[$oCancProc->k02_estorc][$oCancProc->o57_descr]['vlrcor']  = $oCancProc->k24_vlrcor;
@@ -514,7 +497,7 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
   
   if(isset($aAgrupaTipo[$oCancProc->k00_descr])){
 
-    if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+    if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
       $aAgrupaTipo[$oCancProc->k00_descr]['valor' ] += $oCancProc->k00_valor;
       $aAgrupaTipo[$oCancProc->k00_descr]['vlrcor'] += $oCancProc->k24_vlrcor;
@@ -524,7 +507,7 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
     }
   }else{
 
-    if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+    if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
       $aAgrupaTipo[$oCancProc->k00_descr]['valor' ]  = $oCancProc->k00_valor;
       $aAgrupaTipo[$oCancProc->k00_descr]['vlrcor']  = $oCancProc->k24_vlrcor;
@@ -550,10 +533,10 @@ for( $iInd = 0; $iInd < $iCancProc; $iInd++ ) {
     $iNroCgm++;
   }
 
-  $aCanceladoTotalGeral[] = array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit);
+  $aCanceladoTotalGeral[] = [$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit];
 }
 
-$aCanceladoTotalGeral = array();
+$aCanceladoTotalGeral = [];
 
 if($oGet->seltipo == "c" || $oGet->seltipo == "rc"){
 
@@ -603,7 +586,7 @@ foreach ( $aDadosCancProc as $iInd => $aDados ) {
                    $aDados['oDadosCancProc']->sComplemento;
 
       $pdf->cell(75,$alt,substr($sEndereco,0,50)                                      ,0,0,"L",0);
-      $pdf->cell(35,$alt,substr($aDados['oDadosCancProc']->sMunicipio,0,50)           ,0,0,"L",0);
+      $pdf->cell(35,$alt,substr((string) $aDados['oDadosCancProc']->sMunicipio,0,50)           ,0,0,"L",0);
       $pdf->cell(10,$alt,$aDados['oDadosCancProc']->sUf                               ,0,0,"C",0);
       $pdf->cell(19,$alt,$aDados['oDadosCancProc']->iFone                             ,0,0,"C",0);
     }
@@ -714,13 +697,13 @@ foreach ( $aDadosCancProc as $iInd => $aDados ) {
             if($oGet->tipoDebito== 1 or  $oGet->agrupar=="CP"){
               $pdf->cell(71,$alt,$oDadosItens->sDescrRecei               ,0,0,"L",$iList);
             }else{
-              $pdf->cell(48,$alt,substr($oDadosItens->sDescrRecei,0,31)  ,0,0,"L",$iList);
+              $pdf->cell(48,$alt,substr((string) $oDadosItens->sDescrRecei,0,31)  ,0,0,"L",$iList);
             }
 
-            $pdf->cell(25,$alt,substr($oDadosItens->sDescr, 0, 15)                     ,0,0,"L",$iList);
+            $pdf->cell(25,$alt,substr((string) $oDadosItens->sDescr, 0, 15)                     ,0,0,"L",$iList);
 
             if($oGet->tipoDebito!= 1 and  $oGet->agrupar=="N"){
-              $pdf->cell(26,$alt,substr($oDadosItens->sPeculiar,0,17)    ,0,0,"L",$iList);
+              $pdf->cell(26,$alt,substr((string) $oDadosItens->sPeculiar,0,17)    ,0,0,"L",$iList);
             }
 
             $pdf->cell(16,$alt,$oDadosItens->sLogin                      ,0,1,"C",$iList);
@@ -757,7 +740,7 @@ foreach ( $aDadosCancProc as $iInd => $aDados ) {
         $TotalVlrJuros    += $oDadosItens->VlrJuro;
         $Total            += $oDadosItens->VlrTotal;
 
-        if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+        if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
           $GeralVlrHist     += $oDadosItens->Valor;
           $GeralVlrCorr     += $oDadosItens->VlrCor;
@@ -769,7 +752,7 @@ foreach ( $aDadosCancProc as $iInd => $aDados ) {
         // total do agrupamento por Carac. peculiar
         if( $AuxCaracPeculiar ==  $oDadosItens->iSeq ){
 
-          if(!in_array(array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit), $aCanceladoTotalGeral)){
+          if(!in_array([$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit], $aCanceladoTotalGeral)){
 
             $TotalVlrHistCP   += $oDadosItens->Valor;
             $TotalVlrCorrCP   += $oDadosItens->VlrCor;
@@ -778,7 +761,7 @@ foreach ( $aDadosCancProc as $iInd => $aDados ) {
             $TotalCP          += $oDadosItens->VlrTotal;
           }
         }
-        $aCanceladoTotalGeral[] = array($oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit);
+        $aCanceladoTotalGeral[] = [$oDadosItens->iCodCancelado, $oDadosItens->iNumPre, $oDadosItens->iNumPar, $oDadosItens->iReceit];
       // }
       
       if($lImprimeCab == true){
@@ -795,7 +778,7 @@ foreach ( $aDadosCancProc as $iInd => $aDados ) {
             $lPreecher = true;
           }
 
-          $iTam = strlen($obsCancProc);
+          $iTam = strlen((string) $obsCancProc);
           //if ($iTam > 185) {
           //  $obsCancProc = substr($obsCancProc,0,181)."...";
           //}

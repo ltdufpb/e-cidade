@@ -280,7 +280,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   (window.CurrentWindow || parent.CurrentWindow).corpo.db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 

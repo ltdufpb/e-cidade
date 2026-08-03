@@ -41,16 +41,16 @@ $clrotulo->label('e45_data');
 $clrotulo->label('e45_acerta');
 $clrotulo->label('e45_conferido');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-$xinstit = explode("-",$db_selinstit);
+$xinstit = explode("-",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   } else {
@@ -244,7 +244,7 @@ for($x = 0; $x < $clemppresta->numrows;$x++) {
    }
 
   $pdf->setfont('arial','',8);
-  $pdf->cell(25,$alt,trim($e60_codemp).'/'.$e60_anousu,0,0,"C",$p);
+  $pdf->cell(25,$alt,trim((string) $e60_codemp).'/'.$e60_anousu,0,0,"C",$p);
   $pdf->cell(65,$alt,$z01_nome,0,0,"L",$p);
   $pdf->cell(20,$alt,db_formatar($e45_data,'d'),0,0,"C",$p);
   $pdf->cell(20,$alt,db_formatar($e45_acerta,'d'),0,0,"C",$p);

@@ -203,7 +203,7 @@ db_input ( 'la08_c_descr', 50, $Ila08_c_descr, true, 'text', 3, '' );
 			<tr>
 				<td valign="top"><br>
                 <?php 
-				  $chavepri = array ('la08_i_codigo' => @$la08_i_codigo,
+				  $chavepri =  ['la08_i_codigo' => @$la08_i_codigo,
                              'la08_c_descr' => @$la08_c_descr, 
                              "la35_i_codigo" => @$la35_i_codigo, 
                              "la02_i_codigo" => @$la02_i_codigo, 
@@ -215,7 +215,7 @@ db_input ( 'la08_c_descr', 50, $Ila08_c_descr, true, 'text', 3, '' );
                              "la35_d_valinicio" => @$la35_d_valinicio, 
                              "la35_d_valfim" => @$la35_d_valfim,
                              "la35_i_diasemana" => @$la35_i_diasemana
-                            );
+                            ];
 				  $cliframe_alterar_excluir->chavepri = $chavepri;
 				  @$cliframe_alterar_excluir->sql = $cllab_horario->sql_query_laboratorio ( "", "*", "la08_c_descr,la35_i_diasemana", "la02_i_codigo = $la02_i_codigo" );
 				  $cliframe_alterar_excluir->campos = "la35_i_codigo,la08_c_descr,ed32_c_descr,la35_c_horaini,la35_c_horafim,la35_d_valinicio,la35_d_valfim";
@@ -276,7 +276,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lab_horario.hide();
   <?php 
 		if ($db_opcao != 1) {
-			echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave";
+			echo " location.href = '" . basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave";
 		}
 		?>
 }

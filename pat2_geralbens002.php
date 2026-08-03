@@ -44,7 +44,7 @@ $clrotulo->label('descrdepto');
 $clrotulo->label('t64_descr');
 $clrotulo->label('t64_class');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sSqlPatriPlaca   = $clcfpatriplaca->sql_query_file(db_getsession("DB_instit"));
 $res_cfpatriplaca = $clcfpatriplaca->sql_record($sSqlPatriPlaca);
@@ -327,9 +327,9 @@ $divisao_null			= false;
 $class_anterior		= 0;
 $background 			= 1;
 $limprime_total_depto = false;
-$aClassiImpressos 	  = array();
-$aDeptosImpressos 	  = array();
-$aDivisaoImpressos 	  = array();
+$aClassiImpressos 	  = [];
+$aDeptosImpressos 	  = [];
+$aDivisaoImpressos 	  = [];
 
 
 for($x = 0; $x < $numrows; $x++){
@@ -772,7 +772,7 @@ for($x = 0; $x < $numrows; $x++){
 
             $troca = 0;
         }
-        if (strlen(trim($t52_ident)) > 0){
+        if (strlen(trim((string) $t52_ident)) > 0){
             if ($t07_confplaca == 4){
                 $t52_ident = db_formatar($t52_ident,"s","0",$t07_digseqplaca,"e",0);
             }
@@ -780,7 +780,7 @@ for($x = 0; $x < $numrows; $x++){
 
         $pdf->setfont('arial','',7);
         $pdf->cell(15,$alt,$t52_bem											,0,0,"C",$p);
-        $pdf->cell(65,$alt,substr($t52_descr,0,50)			,0,0,"L",$p);
+        $pdf->cell(65,$alt,substr((string) $t52_descr,0,50)			,0,0,"L",$p);
         $pdf->cell(20,$alt,db_formatar($t52_valaqu,"f")	,0,0,"R",$p);
         if($tipoData == 1){
             $pdf->cell(25,$alt,db_formatar($t52_dtaqu,"d")	,0,0,"C",$p);
@@ -789,8 +789,8 @@ for($x = 0; $x < $numrows; $x++){
 
         }
         $pdf->cell(30,$alt,$t52_ident										,0,0,"C",$p);
-        $pdf->cell(60,$alt,$t52_depart."-".substr($descrdepto,0,36)	,0,0,"L",$p);
-        $pdf->cell(48,$alt,$t33_divisao."-".substr($t30_descr,0,27)	,0,0,"L",$p);
+        $pdf->cell(60,$alt,$t52_depart."-".substr((string) $descrdepto,0,36)	,0,0,"L",$p);
+        $pdf->cell(48,$alt,$t33_divisao."-".substr((string) $t30_descr,0,27)	,0,0,"L",$p);
         $placaIdentificacao = $totaletiquetas >= 1 ? "Sim" : "No";
         $pdf->cell(15,$alt,$placaIdentificacao	,0,1,"C",$p);
 
@@ -1059,16 +1059,16 @@ for($x = 0; $x < $numrows; $x++){
 
         $pdf->setfont('arial','',7);
         $pdf->cell(15,$alt,$t52_bem											,0,0,"C",$background);
-        $pdf->cell(65,$alt,substr($t52_descr,0,50)			,0,0,"L",$background);
+        $pdf->cell(65,$alt,substr((string) $t52_descr,0,50)			,0,0,"L",$background);
         $pdf->cell(20,$alt,db_formatar($t52_valaqu,"f")	,0,0,"R",$background);
         if($tipoData == 1){
             $pdf->cell(25,$alt,db_formatar($t52_dtaqu,"d")	,0,0,"C",$background);
         }
         $pdf->cell(25,$alt,db_formatar($t52_dtinclusao,"d")	,0,0,"C",$background);
         $pdf->cell(20,$alt,$t52_ident										,0,0,"C",$background);
-        $pdf->cell(60,$alt,$t52_depart."-".substr($descrdepto,0,36)	,0,0,"L",$background);
+        $pdf->cell(60,$alt,$t52_depart."-".substr((string) $descrdepto,0,36)	,0,0,"L",$background);
         $t33_divisao =  $divisao_null == true ? "" : $t33_divisao;
-        $pdf->cell(60,$alt,$t33_divisao."-".substr($t30_descr,0,28)	,0,0,"L",$background);
+        $pdf->cell(60,$alt,$t33_divisao."-".substr((string) $t30_descr,0,28)	,0,0,"L",$background);
         $placaIdentificacao = $totaletiquetas >= 1 ? "Sim" : "No";
         $pdf->cell(15,$alt,$placaIdentificacao  ,0,1,"C",$p);
 

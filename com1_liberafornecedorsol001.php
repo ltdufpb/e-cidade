@@ -33,8 +33,8 @@ include(modification("classes/db_liberafornecedorsol_classe.php"));
 include(modification("classes/db_liberafornecedor_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clliberafornecedorsol = new cl_liberafornecedorsol;
 $clliberafornecedor = new cl_liberafornecedor;
 $db_opcao = 22;
@@ -50,7 +50,7 @@ $clliberafornecedorsol->pc83_solicita = $pc83_solicita;
 if(isset($incluir)){
   if($sqlerro==false){
     db_inicio_transacao();
-    if(trim($pc83_solicita) != ""){
+    if(trim((string) $pc83_solicita) != ""){
 	    $sWhere = " pc83_liberafornecedor = $pc83_liberafornecedor and  pc83_solicita = $pc83_solicita ";
 	    $rsFornecedorSol = $clliberafornecedorsol->sql_record($clliberafornecedorsol->sql_query_file(null,"*",null,$sWhere));
 	    if($rsFornecedorSol != false){

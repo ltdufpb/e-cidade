@@ -27,8 +27,8 @@
 
 include(modification("libs/db_conecta.php"));
 include(modification("libs/db_stdlib.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 if(!isset($munic)){
   echo "<script>alert('Municipio Inválido.');";
   echo "location.href='index.php';</script>";
@@ -176,7 +176,7 @@ if($numerolista != 0)
   </tr>
 <?php 
 $result = db_query($sql);
-if(pg_numrows($result)!=0){
+if(pg_num_rows($result)!=0){
   $tfatur = 0;
   $tcatego= 0;
   $tref001= 0;
@@ -186,7 +186,7 @@ if(pg_numrows($result)!=0){
   $tref011= 0;
   $tref012= 0;
 
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
      db_fieldsmemory($result,$i);
 ?>
   <tr> 
@@ -228,7 +228,7 @@ if(pg_numrows($result)!=0){
   <?php 
 }
 
-echo "Total de Empresas:".pg_numrows($result);
+echo "Total de Empresas:".pg_num_rows($result);
 ?>
 </table>
 <?php 

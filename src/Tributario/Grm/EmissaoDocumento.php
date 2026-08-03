@@ -31,16 +31,6 @@ class EmissaoDocumento
 {
 
   /**
-   * @var \Recibo
-   */
-    private $recibo;
-
-  /**
-   * @var Recibo
-   */
-    private $reciboGrm;
-
-  /**
    * @var \Instituicao
    */
     private $instituicao;
@@ -68,12 +58,10 @@ class EmissaoDocumento
    * @param \Instituicao $instituicao
    *
    */
-    public function __construct(\Recibo $recibo, \Instituicao $instituicao, Recibo $reciboGrm)
+    public function __construct(private readonly \Recibo $recibo, \Instituicao $instituicao, private readonly Recibo $reciboGrm)
     {
 
-        $this->recibo      = $recibo;
         $this->instituicao = $instituicao;
-        $this->reciboGrm   = $reciboGrm;
     }
 
     public function setAnousu($iAnousu)
@@ -209,10 +197,10 @@ class EmissaoDocumento
             $rsDadosReceita           = $this->getDadosReceita();
             $aReceitas = \db_utils::getColectionByRecord($rsDadosReceita);
 
-            $arraycodreceitas = array();
-            $arrayreduzreceitas = array();
-            $arraydescrreceitas = array();
-            $arrayvalreceitas = array();
+            $arraycodreceitas = [];
+            $arrayreduzreceitas = [];
+            $arraydescrreceitas = [];
+            $arrayvalreceitas = [];
 
             foreach ($aReceitas as $key => $oReceitas) {
                 $arraycodreceitas[$key] = $oReceitas->k00_receit;
@@ -243,7 +231,7 @@ class EmissaoDocumento
 
             $oPdf->datacalc             = date('d-m-Y');
             $oPdf->predatacalc          = date('d-m-Y');
-            $oPdf->linhasdadospagto   = pg_numrows($rsDadosReceita);
+            $oPdf->linhasdadospagto   = pg_num_rows($rsDadosReceita);
             $oPdf->recorddadospagto   = $rsDadosReceita;
             $oPdf->receita                = 'k00_receit';
             $oPdf->receitared         = 'codreduz';

@@ -36,8 +36,8 @@ $clempautoriza = new cl_empautoriza;
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clrotulo = new rotulocampo;
 $clempautoriza->rotulo->label();
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -215,7 +215,7 @@ db_postmemory($HTTP_POST_VARS);
 	         <td align="right"> <strong>Opção de Seleção :<strong></td>
 		 <td align="left">&nbsp;&nbsp;&nbsp;
 		   <?php 
-		   $xxx = array("S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;");
+		   $xxx = ["S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;"];
 		   db_select('param_autoriza',$xxx,true,2);
 		   ?>
 		 </td>
@@ -242,7 +242,7 @@ db_postmemory($HTTP_POST_VARS);
 	         <td align="right"> <strong>Processar :<strong></td>
 		 <td align="left" colspan=2 >&nbsp;&nbsp;&nbsp;
 		   <?php 
-		   $rrr= array("N"=>"Não Anuladas","A"=>"Anuladas","T"=>"Todas");
+		   $rrr= ["N"=>"Não Anuladas","A"=>"Anuladas","T"=>"Todas"];
 		   db_select('anula',$rrr,true,2);
 		   ?>
 		 </td>
@@ -251,7 +251,7 @@ db_postmemory($HTTP_POST_VARS);
 	         <td align="right"> <strong>Tipo :<strong></td>
 		 <td align="left" colspan=2 >&nbsp;&nbsp;&nbsp;
 		   <?php 
-		   $rr= array("T"=>"Todas","E"=>"Empenhadas","N"=>"Não Empenhadas");
+		   $rr= ["T"=>"Todas","E"=>"Empenhadas","N"=>"Não Empenhadas"];
 		   db_select('tipo',$rr,true,2);
 		   
 		   ?>
@@ -261,7 +261,7 @@ db_postmemory($HTTP_POST_VARS);
 	         <td align="right"> <strong>Listar Itens :<strong></td>
 		 <td align="left" colspan=2 >&nbsp;&nbsp;&nbsp;
 		   <?php 
-		   $ll= array("s"=>"Sim","n"=>"Não");
+		   $ll= ["s"=>"Sim","n"=>"Não"];
 		   db_select('listar',$ll,true,2);
 		   ?>
 		 </td>

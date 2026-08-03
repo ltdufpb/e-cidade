@@ -60,8 +60,8 @@ $result_per = $clperiodoescola->sql_record($clperiodoescola->sql_query("", $sCam
 
 db_fieldsmemory($result_per, 0);
 
-$hora1 = (int)substr($menorhorario, 0, 2);
-$hora2 = (int)substr($maiorhorario, 0, 2) + 1;
+$hora1 = (int)substr((string) $menorhorario, 0, 2);
+$hora2 = (int)substr((string) $maiorhorario, 0, 2) + 1;
 $horainicial = $hora1 * 100;
 $horafinal = $hora2 * 100;
 $tempo_ini = mktime($hora1, 0, 0, date("m"), date("d"), date("Y"));
@@ -125,9 +125,9 @@ if ($rsRecHumanoEscola && pg_num_rows($rsRecHumanoEscola) > 0) {
     exit;
 }
 unset($_SESSION["sess_cordisp"]);
-$array_cores = array("#CCCCFF", "#99FFCC", "#CCFF66", "#CC9933", "#FF99FF", "#996699", "#66CC99", "#FFCCCC", "#9999FF");
+$array_cores = ["#CCCCFF", "#99FFCC", "#CCFF66", "#CC9933", "#FF99FF", "#996699", "#66CC99", "#FFCCCC", "#9999FF"];
 
-$sess_cordisp = array();
+$sess_cordisp = [];
 $sCampos = "DISTINCT ed18_i_codigo, ed18_c_nome";
 $sWhere = "ed20_i_codigo = {$ed20_i_codigo} AND ed33_ativo = 't' AND ed75_i_saidaescola is null";
 $sSqlRecHumanoHoraDisp = $clrechumanohoradisp->sql_query_disponibilidade("", $sCampos, "ed18_c_nome", $sWhere);
@@ -172,7 +172,7 @@ if ($clrechumanohoradisp->numrows > 0) {
             </td>
             <td>
                     <?php
-                    $x = array('N' => 'NÃO', 'S' => 'SIM');
+                    $x = ['N' => 'NÃO', 'S' => 'SIM'];
                     db_select('ed75_c_simultaneo', $x, true, $db_opcao, "");
                     ?>
             </td>
@@ -235,7 +235,7 @@ if ($clrechumanohoradisp->numrows > 0) {
             ?>
             <td align="center" width="<?= $larg_dia ?>" style="background:#444444;color:#DEB887">
                 <a style="color:#DEB887;"
-                   href="javascript:js_incluir('<?= $ed32_i_codigo ?>','<?= trim($ed32_c_descr) ?>')">
+                   href="javascript:js_incluir('<?= $ed32_i_codigo ?>','<?= trim((string) $ed32_c_descr) ?>')">
                     <b><?= $ed32_c_descr ?></b>
                 </a>
             </td>
@@ -266,7 +266,7 @@ $top_ini = $tabela1_top + 20;
 $tt = 0;
 for ($t = $horainicial; $t <= $horafinal; $t += 1) {
     $hora = strlen($t) == 3 ? "0" . $t : $t;
-    $hora = substr($hora, 0, 2) . ":" . substr($hora, 2, 2);
+    $hora = substr((string) $hora, 0, 2) . ":" . substr((string) $hora, 2, 2);
     $id_hora = "H" . $hora;
     $id_hora2 = "HH" . $hora;
     $id_linhahora = "LH" . $hora;
@@ -345,15 +345,15 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
                         $hora = "00:{$t}";
                     }
                 } else {
-                    $hora = substr($hora, 0, 2) . ":" . substr($hora, 2, 2);
+                    $hora = substr((string) $hora, 0, 2) . ":" . substr((string) $hora, 2, 2);
                 }
 
                 if ($clrechumanohoradisp->numrows > 0) {
                     for ($y = 0; $y < $clrechumanohoradisp->numrows; $y++) {
                         db_fieldsmemory($result1, $y);
-                        if (trim($hora) == trim($ed17_h_inicio)) {
-                            $tempo_ini = mktime(substr($ed17_h_inicio, 0, 2), substr($ed17_h_inicio, 3, 2), 0, 1, 1, 1999);
-                            $tempo_fim = mktime(substr($ed17_h_fim, 0, 2), substr($ed17_h_fim, 3, 2), 0, 1, 1, 1999);
+                        if (trim($hora) == trim((string) $ed17_h_inicio)) {
+                            $tempo_ini = mktime(substr((string) $ed17_h_inicio, 0, 2), substr((string) $ed17_h_inicio, 3, 2), 0, 1, 1, 1999);
+                            $tempo_fim = mktime(substr((string) $ed17_h_fim, 0, 2), substr((string) $ed17_h_fim, 3, 2), 0, 1, 1, 1999);
                             $difermin = ($tempo_fim - $tempo_ini) / 60;
                             $difer = ceil($difermin / 2);
                             ?>

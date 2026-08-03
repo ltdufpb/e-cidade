@@ -135,7 +135,7 @@ class MedicamentoLaboratorio {
     $oDaoMedicamentosLaboratorio->la43_nome        = $this->sNome;
     $oDaoMedicamentosLaboratorio->la43_abreviatura = strtoupper( $this->sAbreviatura );
 
-    $aWhereVerificaAbreviatura = array();
+    $aWhereVerificaAbreviatura = [];
     $lAlterar                  = false;
 
     $aWhereVerificaAbreviatura[] = "la43_abreviatura = '{$this->sAbreviatura}'";    

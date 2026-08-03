@@ -45,14 +45,6 @@ abstract class ArquivoSigapFiscal implements ArquivosSigapFiscalInterface
      */
     protected $periodo;
     /**
-     * @var integer
-     */
-    protected $ano;
-    /**
-     * @var integer
-     */
-    protected $codigoTCE;
-    /**
      * @var array
      */
     protected $codigoInstituicoes = [];
@@ -74,12 +66,10 @@ abstract class ArquivoSigapFiscal implements ArquivosSigapFiscalInterface
      * @param integer $ano
      * @param integer $codigoTCE
      */
-    public function __construct(Periodo $periodo, array $codigoInstituicoes, $ano, $codigoTCE)
+    public function __construct(Periodo $periodo, array $codigoInstituicoes, protected $ano, protected $codigoTCE)
     {
         $this->periodo = $periodo;
-        $this->ano = $ano;
         $this->codigoInstituicoes = $codigoInstituicoes;
-        $this->codigoTCE = $codigoTCE;
     }
 
     /**

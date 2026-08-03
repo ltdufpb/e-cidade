@@ -97,7 +97,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_orcimpactoger.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipo=$tipo&chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipo=$tipo&chavepesquisa='+chave";
   ?>
 }
 </script>

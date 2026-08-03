@@ -55,17 +55,17 @@ class SituacoesLeitura extends Arquivo {
     }
 
     if (pg_num_rows($rsAguaSitLeitura) == 0) {
-      return array();
+      return [];
     }
 
-    $aSituacoesLeitura = array();
+    $aSituacoesLeitura = [];
     while ($oSituacaoLeitura = pg_fetch_object($rsAguaSitLeitura)) {
 
-      $aSituacoesLeitura[] = (object) array(
+      $aSituacoesLeitura[] = (object) [
         'codigo' => $oSituacaoLeitura->x17_codigo,
         'descricao' => $oSituacaoLeitura->x17_descr,
         'regra' => $oSituacaoLeitura->x17_regra
-      );
+      ];
     }
 
     return $aSituacoesLeitura;

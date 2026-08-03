@@ -42,7 +42,7 @@ $clmodcarnepadrao 			     = new cl_modcarnepadrao;
 $clmodcarnepadraolayouttxt   = new cl_modcarnepadraolayouttxt;
 $clmodcarnepadraocadmodcarne = new cl_modcarnepadraocadmodcarne;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;

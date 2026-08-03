@@ -28,11 +28,11 @@
 
 $oDadosIniFile         = (object)parse_ini_file(PATH_JOB."libs/db_config_integracao_tj.ini");
 
-$sDataSourcePrefeitura = " host="     . trim($oDadosIniFile->sHostBancoDados);
-$sDataSourcePrefeitura.= " dbname="   . trim($oDadosIniFile->sBaseDados);
-$sDataSourcePrefeitura.= " port="     . trim($oDadosIniFile->iPortaBancoDados);
-$sDataSourcePrefeitura.= " user="     . trim($oDadosIniFile->sUsuario);
-$sDataSourcePrefeitura.= " password=" . trim($oDadosIniFile->sSenha);
+$sDataSourcePrefeitura = " host="     . trim((string) $oDadosIniFile->sHostBancoDados);
+$sDataSourcePrefeitura.= " dbname="   . trim((string) $oDadosIniFile->sBaseDados);
+$sDataSourcePrefeitura.= " port="     . trim((string) $oDadosIniFile->iPortaBancoDados);
+$sDataSourcePrefeitura.= " user="     . trim((string) $oDadosIniFile->sUsuario);
+$sDataSourcePrefeitura.= " password=" . trim((string) $oDadosIniFile->sSenha);
 $conn                  = pg_connect($sDataSourcePrefeitura);
 
 db_query("select fc_startsession()");

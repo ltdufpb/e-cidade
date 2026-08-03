@@ -31,8 +31,8 @@ require_once(modification("classes/db_cgm_classe.php"));
 require_once(modification("classes/db_sanitario_classe.php"));
 require_once(modification("classes/db_fiscal_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $db_botao = 1;
 $db_opcao = 1;

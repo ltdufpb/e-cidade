@@ -94,10 +94,10 @@ class CidadaoCgmLegacyService
         if (strlen(trim($cidadao->ov02_cnpjcpf)) == '11') {
             $oCgm->setDataNascimento($cidadao->ov02_datanascimento);
             if (!empty($dadosEauth->pai)) {
-                $oCgm->setNomePai(substr($dadosEauth->pai, 0, 40));
+                $oCgm->setNomePai(substr((string) $dadosEauth->pai, 0, 40));
             }
             if (!empty($dadosEauth->mae)) {
-                $oCgm->setNomeMae(substr($dadosEauth->mae, 0, 40));
+                $oCgm->setNomeMae(substr((string) $dadosEauth->mae, 0, 40));
             }
         } elseif (strlen(trim($cidadao->ov02_cnpjcpf)) == '14') {
             $oCgm->setNomeFantasia(strtoupper(substr($cidadao->ov02_nome, 0, 100)));
@@ -118,9 +118,9 @@ class CidadaoCgmLegacyService
         $oCgm->setBairro(strtoupper($cidadao->ov02_bairro));
         $oCgm->setNumero(strtoupper($cidadao->ov02_numero));
         $oCgm->setMunicipio(strtoupper($cidadao->ov02_munic));
-        $oCgm->setLogradouro(strtoupper($endereco));
+        $oCgm->setLogradouro(strtoupper((string) $endereco));
         $oCgm->setComplemento(strtoupper($cidadao->ov02_compl));
-        $oCgm->setEmail(trim($dadosEauth->email));
+        $oCgm->setEmail(trim((string) $dadosEauth->email));
         $oCgm->setTelefone($dadosEauth->telefone);
         $oCgm->setCelular($dadosEauth->celular);
         $oCgm->save();
@@ -142,10 +142,10 @@ class CidadaoCgmLegacyService
             $oCgm->setCpf($cidadao->ov02_cnpjcpf);
             $oCgm->setDataNascimento($cidadao->ov02_datanascimento);
             if (!empty($dadosEauth->pai)) {
-                $oCgm->setNomePai(substr($dadosEauth->pai, 0, 40));
+                $oCgm->setNomePai(substr((string) $dadosEauth->pai, 0, 40));
             }
             if (!empty($dadosEauth->mae)) {
-                $oCgm->setNomeMae(substr($dadosEauth->mae, 0, 40));
+                $oCgm->setNomeMae(substr((string) $dadosEauth->mae, 0, 40));
             }
         } elseif (strlen(trim($cidadao->ov02_cnpjcpf)) == '14') {
             $oCgm = CgmFactory::getInstanceByType(CgmFactory::JURIDICO);
@@ -170,9 +170,9 @@ class CidadaoCgmLegacyService
         $oCgm->setBairro(strtoupper($cidadao->ov02_bairro));
         $oCgm->setNumero(strtoupper($cidadao->ov02_numero));
         $oCgm->setMunicipio(strtoupper($cidadao->ov02_munic));
-        $oCgm->setLogradouro(strtoupper($endereco));
+        $oCgm->setLogradouro(strtoupper((string) $endereco));
         $oCgm->setComplemento(strtoupper($cidadao->ov02_compl));
-        $oCgm->setEmail(trim($dadosEauth->email));
+        $oCgm->setEmail(trim((string) $dadosEauth->email));
         $oCgm->setTelefone($dadosEauth->telefone);
         $oCgm->setCelular($dadosEauth->celular);
         $oCgm->save();

@@ -85,18 +85,18 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
   <td>
    <?php 
    if (@$ed255_i_ativcomplementar == 3) {
-     $x = array('5'=>'ATENDIMENTO EDUCACIONAL ESPECIAL - AEE');
+     $x = ['5'=>'ATENDIMENTO EDUCACIONAL ESPECIAL - AEE'];
    }
    if (@$ed255_i_aee == 3) {
-     $x = array('4'=>'ATIVIDADE COMPLEMENTAR');
+     $x = ['4'=>'ATIVIDADE COMPLEMENTAR'];
    }
    if (@$ed255_i_aee == 3 && @$ed255_i_ativcomplementar == 3) {
-     $x = array(''=>'');
+     $x = [''=>''];
    }
    if ((@$ed255_i_aee != 3 && @$ed255_i_ativcomplementar != 3) || ($db_opcao == 2 || $db_opcao == 3)) {
-     $x = array('4'=>'ATIVIDADE COMPLEMENTAR',
+     $x = ['4'=>'ATIVIDADE COMPLEMENTAR',
                 '5'=>'ATENDIMENTO EDUCACIONAL ESPECIAL - AEE'
-               );
+               ];
    }
    db_select('ed268_i_tipoatend',$x,true,$db_opcao1," onchange='js_tipoatend(this.value)'");
    ?>
@@ -116,7 +116,7 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
       }
       ?>
       <fieldset id="AEE" style="padding:0px;visibility:<?=$visible?>;"><legend><?=$Led268_c_aee?></legend>
-       <input <?=substr(@$ed268_c_aee,0,1)=="1"?"checked":""?> style="height:13px;" id="ed268_c_aee"
+       <input <?=str_starts_with(@$ed268_c_aee, "1")?"checked":""?> style="height:13px;" id="ed268_c_aee"
               name="ed268_c_aee[]" type="checkbox" value="1"> Ensino do Sistema Braille<br>
        <input <?=substr(@$ed268_c_aee,2,1)=="1"?"checked":""?> style="height:13px;" id="ed268_c_aee"
               name="ed268_c_aee[]" type="checkbox" value="3"> Ensino do uso de recursos ópticos e não ópticos<br>
@@ -156,12 +156,12 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
   </td>
   <td>
    <?php 
-   $x = array('1'=>'UMA VEZ POR SEMANA',
+   $x = ['1'=>'UMA VEZ POR SEMANA',
               '2'=>'DUAS VEZES POR SEMANA',
               '3'=>'TRÊS VEZES POR SEMANA',
               '4'=>'QUATRO VEZES POR SEMANA',
               '5'=>'CINCO VEZES POR SEMANA'
-             );
+             ];
    db_select('ed268_i_ativqtd',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -229,7 +229,7 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
    </td>
    <td>
      <?php 
-       $aOpcoes = array(0 => "Não", 1 => "Sim");
+       $aOpcoes = [0 => "Não", 1 => "Sim"];
        db_select('ed268_programamaiseducacao', $aOpcoes, true, 1);
      ?>
    </td>

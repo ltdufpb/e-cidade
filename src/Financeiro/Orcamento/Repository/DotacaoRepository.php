@@ -24,7 +24,7 @@ class DotacaoRepository extends Repository
             throw new Exception("Erro ao buscar dotação");
         }
 
-        $dotacoes = array();
+        $dotacoes = [];
         while ($state = pg_fetch_array($rs)) {
             $dotacoes[] = Dotacao::fromState($state);
         }

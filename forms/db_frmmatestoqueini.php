@@ -451,7 +451,7 @@ if(isset($m80_codigo) && trim($m80_codigo)!="" && $db_opcao==2){
     ?>
     <?php
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+qry";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+qry";
     }
     ?>
   }

@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE aguaconfvenc
 class cl_aguaconfvenc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x33_exerc = 0; 
-   var $x33_parcela = 0; 
-   var $x33_dtvenc_dia = null; 
-   var $x33_dtvenc_mes = null; 
-   var $x33_dtvenc_ano = null; 
-   var $x33_dtvenc = null; 
+   public $x33_exerc = 0; 
+   public $x33_parcela = 0; 
+   public $x33_dtvenc_dia = null; 
+   public $x33_dtvenc_mes = null; 
+   public $x33_dtvenc_ano = null; 
+   public $x33_dtvenc = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x33_exerc = int4 = Exercício 
                  x33_parcela = int4 = Parcela 
                  x33_dtvenc = date = Vencimento 
                  ";
    //funcao construtor da classe 
-   function cl_aguaconfvenc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaconfvenc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -130,7 +130,7 @@ class cl_aguaconfvenc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Vencimentos ($this->x33_exerc."-".$this->x33_parcela) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Vencimentos já Cadastrado";
@@ -154,13 +154,13 @@ class cl_aguaconfvenc {
      $resaco = $this->sql_record($this->sql_query_file($this->x33_exerc,$this->x33_parcela));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8453,'$this->x33_exerc','I')");
        $resac = db_query("insert into db_acountkey values($acount,8454,'$this->x33_parcela','I')");
-       $resac = db_query("insert into db_acount values($acount,1436,8453,'','".AddSlashes(pg_result($resaco,0,'x33_exerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1436,8454,'','".AddSlashes(pg_result($resaco,0,'x33_parcela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1436,8515,'','".AddSlashes(pg_result($resaco,0,'x33_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1436,8453,'','".AddSlashes(pg_fetch_result($resaco,0,'x33_exerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1436,8454,'','".AddSlashes(pg_fetch_result($resaco,0,'x33_parcela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1436,8515,'','".AddSlashes(pg_fetch_result($resaco,0,'x33_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -169,10 +169,10 @@ class cl_aguaconfvenc {
       $this->atualizacampos();
      $sql = " update aguaconfvenc set ";
      $virgula = "";
-     if(trim($this->x33_exerc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x33_exerc"])){ 
+     if(trim((string) $this->x33_exerc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x33_exerc"])){ 
        $sql  .= $virgula." x33_exerc = $this->x33_exerc ";
        $virgula = ",";
-       if(trim($this->x33_exerc) == null ){ 
+       if(trim((string) $this->x33_exerc) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "x33_exerc";
          $this->erro_banco = "";
@@ -182,10 +182,10 @@ class cl_aguaconfvenc {
          return false;
        }
      }
-     if(trim($this->x33_parcela)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x33_parcela"])){ 
+     if(trim((string) $this->x33_parcela)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x33_parcela"])){ 
        $sql  .= $virgula." x33_parcela = $this->x33_parcela ";
        $virgula = ",";
-       if(trim($this->x33_parcela) == null ){ 
+       if(trim((string) $this->x33_parcela) == null ){ 
          $this->erro_sql = " Campo Parcela nao Informado.";
          $this->erro_campo = "x33_parcela";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_aguaconfvenc {
          return false;
        }
      }
-     if(trim($this->x33_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x33_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x33_dtvenc_dia"] !="") ){ 
+     if(trim((string) $this->x33_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x33_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x33_dtvenc_dia"] !="") ){ 
        $sql  .= $virgula." x33_dtvenc = '$this->x33_dtvenc' ";
        $virgula = ",";
-       if(trim($this->x33_dtvenc) == null ){ 
+       if(trim((string) $this->x33_dtvenc) == null ){ 
          $this->erro_sql = " Campo Vencimento nao Informado.";
          $this->erro_campo = "x33_dtvenc_dia";
          $this->erro_banco = "";
@@ -211,7 +211,7 @@ class cl_aguaconfvenc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["x33_dtvenc_dia"])){ 
          $sql  .= $virgula." x33_dtvenc = null ";
          $virgula = ",";
-         if(trim($this->x33_dtvenc) == null ){ 
+         if(trim((string) $this->x33_dtvenc) == null ){ 
            $this->erro_sql = " Campo Vencimento nao Informado.";
            $this->erro_campo = "x33_dtvenc_dia";
            $this->erro_banco = "";
@@ -233,16 +233,16 @@ class cl_aguaconfvenc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8453,'$this->x33_exerc','A')");
          $resac = db_query("insert into db_acountkey values($acount,8454,'$this->x33_parcela','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x33_exerc"]))
-           $resac = db_query("insert into db_acount values($acount,1436,8453,'".AddSlashes(pg_result($resaco,$conresaco,'x33_exerc'))."','$this->x33_exerc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1436,8453,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x33_exerc'))."','$this->x33_exerc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x33_parcela"]))
-           $resac = db_query("insert into db_acount values($acount,1436,8454,'".AddSlashes(pg_result($resaco,$conresaco,'x33_parcela'))."','$this->x33_parcela',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1436,8454,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x33_parcela'))."','$this->x33_parcela',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x33_dtvenc"]))
-           $resac = db_query("insert into db_acount values($acount,1436,8515,'".AddSlashes(pg_result($resaco,$conresaco,'x33_dtvenc'))."','$this->x33_dtvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1436,8515,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x33_dtvenc'))."','$this->x33_dtvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -287,13 +287,13 @@ class cl_aguaconfvenc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8453,'$x33_exerc','E')");
          $resac = db_query("insert into db_acountkey values($acount,8454,'$x33_parcela','E')");
-         $resac = db_query("insert into db_acount values($acount,1436,8453,'','".AddSlashes(pg_result($resaco,$iresaco,'x33_exerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1436,8454,'','".AddSlashes(pg_result($resaco,$iresaco,'x33_parcela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1436,8515,'','".AddSlashes(pg_result($resaco,$iresaco,'x33_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1436,8453,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x33_exerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1436,8454,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x33_parcela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1436,8515,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x33_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from aguaconfvenc
@@ -359,7 +359,7 @@ class cl_aguaconfvenc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aguaconfvenc";
@@ -373,7 +373,7 @@ class cl_aguaconfvenc {
    function sql_query ( $x33_exerc=null,$x33_parcela=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_aguaconfvenc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_aguaconfvenc {
    function sql_query_file ( $x33_exerc=null,$x33_parcela=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -443,7 +443,7 @@ class cl_aguaconfvenc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -36,8 +36,8 @@ $clrotulo->label('j34_quadra');
 $clrotulo->label('j34_lote');
 $clrotulo->label('j39_numero');	
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 $where = "";
 $and = "";
 
@@ -176,7 +176,7 @@ $sql = "select distinct * from (
              z01_numcgm ) as x $order";
 
 $result = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 if ($numrows == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Nao existem registros cadastrados.');
 }
@@ -196,7 +196,7 @@ for($x = 0; $x < $numrows;$x++){
       $pdf->setfont('arial','b',8);
       $pdf->cell(13,$alt,"Matricula",1,0,"C",1);
       $pdf->cell(8,$alt,$RLj34_setor,1,0,"C",1);
-      $pdf->cell(8,$alt,substr($RLj34_quadra,0,4),1,0,"C",1);
+      $pdf->cell(8,$alt,substr((string) $RLj34_quadra,0,4),1,0,"C",1);
       $pdf->cell(8,$alt,$RLj34_lote,1,0,"C",1);
       $pdf->cell(16,$alt,"Area Lote",1,0,"C",1);
       $pdf->cell(16,$alt,"Area Constr",1,0,"C",1);
@@ -217,13 +217,13 @@ for($x = 0; $x < $numrows;$x++){
    $pdf->cell(8,$alt,$j34_lote,0,0,"L",$p);
    $pdf->cell(16,$alt,db_formatar($area_lote+0,'p'),0,0,"R",$p);
    $pdf->cell(16,$alt,db_formatar($area_const+0,'p'),0,0,"R",$p);
-   $pdf->cell(50,$alt,substr($testada_principal,0,30),0,0,"L",$p);
+   $pdf->cell(50,$alt,substr((string) $testada_principal,0,30),0,0,"L",$p);
    $pdf->cell(12,$alt,$j39_numero,0,0,"R",$p);
-   $pdf->cell(15,$alt,substr($j39_compl,0,9),0,0,"L",$p);
-   $pdf->cell(50,$alt,substr($proprietario,0,30),0,0,"L",$p);
-   $pdf->cell(28,$alt,substr($z01_municpri,0,29),0,0,"L",$p);
-   $pdf->cell(50,$alt,substr($possuidor,0,32),0,0,"L",$p);
-   $pdf->cell(5,$alt,substr($tipo,0,1),0,1,"L",$p);
+   $pdf->cell(15,$alt,substr((string) $j39_compl,0,9),0,0,"L",$p);
+   $pdf->cell(50,$alt,substr((string) $proprietario,0,30),0,0,"L",$p);
+   $pdf->cell(28,$alt,substr((string) $z01_municpri,0,29),0,0,"L",$p);
+   $pdf->cell(50,$alt,substr((string) $possuidor,0,32),0,0,"L",$p);
+   $pdf->cell(5,$alt,substr((string) $tipo,0,1),0,1,"L",$p);
    
    if ($p==1)$p=0;
    else $p=1;

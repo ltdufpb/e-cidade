@@ -48,29 +48,29 @@ class ModeloImpressao
     /**
      * @var array
      */
-    private static $tiposDescricoes = array(
+    private static $tiposDescricoes = [
       self::TIPO_M1 => self::DESCRICAO_TIPO_M1,
       self::TIPO_M2 => self::DESCRICAO_TIPO_M2,
       self::TIPO_M3 => self::DESCRICAO_TIPO_M3
-    );
+    ];
 
     /**
      * @var array
      */
-    private static $tiposCodigos = array(
+    private static $tiposCodigos = [
       self::TIPO_M1 => self::CODIGO_TIPO_M1,
       self::TIPO_M2 => self::CODIGO_TIPO_M2,
       self::TIPO_M3 => self::CODIGO_TIPO_M3
-    );
+    ];
 
     /**
      * @var array
      */
-    private static $codigosDescricoes = array(
+    private static $codigosDescricoes = [
       self::CODIGO_TIPO_M1 => self::DESCRICAO_TIPO_M1,
       self::CODIGO_TIPO_M2 => self::DESCRICAO_TIPO_M2,
       self::CODIGO_TIPO_M3 => self::DESCRICAO_TIPO_M3
-    );
+    ];
 
     /**
      * @return array

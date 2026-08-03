@@ -37,7 +37,7 @@ include(modification("classes/db_conplanoorcamento_classe.php"));
 include(modification("classes/db_orcfontes_classe.php"));
 include(modification("classes/db_orcelemento_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $anousu = db_getsession("DB_anousu");
 
@@ -63,16 +63,16 @@ if (isset($alterar) && trim(@$alterar) != ""){
                                                                        "c60_anousu = $anousu and c60_codcon in ($c60_codcon)"));
      $numrows   = $clconplanoOrcamento->numrows;
 
-     $vetor_contas_sinteticas = array(array("novo","novo_mae","codcon_mae"));
+     $vetor_contas_sinteticas = [["novo","novo_mae","codcon_mae"]];
      $cont_contas_sinteticas  = 0;
 
      if ($numrows > 0){
           for($i = 0; $i < $numrows; $i++){
                db_fieldsmemory($resultado,$i);
 
-               $tam_inicial = strlen($chave_c60_estrut_alt);
-               $tam_final   = strlen($c60_estrut) - $tam_inicial;
-               $novo_estrutural = $chave_c60_estrut.substr($c60_estrut,$tam_inicial,$tam_final);
+               $tam_inicial = strlen((string) $chave_c60_estrut_alt);
+               $tam_final   = strlen((string) $c60_estrut) - $tam_inicial;
+               $novo_estrutural = $chave_c60_estrut.substr((string) $c60_estrut,$tam_inicial,$tam_final);
 
                $sWhere       = "c60_codcon = {$codcon}";
                $sSqlConPlan  = $clconplanoOrcamento->sql_query_file(null,null,"max(conplano.c60_anousu) as anomax",null,$sWhere);
@@ -96,9 +96,9 @@ if (isset($alterar) && trim(@$alterar) != ""){
 		                         if ($clconplanoOrcamento->numrows > 0){
 		                              db_fieldsmemory($res_sintetica,0);
 		
-		                              $tam_inicial = strlen($chave_c60_estrut_alt);
-		                              $tam_final   = strlen($estrutural_mae) - $tam_inicial;
-		                              $novo_estrutural_mae = $chave_c60_estrut.substr($estrutural_mae,$tam_inicial,$tam_final);
+		                              $tam_inicial = strlen((string) $chave_c60_estrut_alt);
+		                              $tam_final   = strlen((string) $estrutural_mae) - $tam_inicial;
+		                              $novo_estrutural_mae = $chave_c60_estrut.substr((string) $estrutural_mae,$tam_inicial,$tam_final);
 		
 		                              $sql = $clconplanoOrcamento->sql_query_file(null, null, "*", null, "c60_anousu = {$iAnoAtual} and 
 		                                                                                         c60_estrut like '$novo_estrutural_mae'");
@@ -185,7 +185,7 @@ if (isset($alterar) && trim(@$alterar) != ""){
 
      if ($sqlerro == false){
           $msg = "";
-          if (trim(@$estrut_mostrar) == ""){
+          if (trim((string) @$estrut_mostrar) == ""){
                $msg .= "Estruturais sem pendencias de estrutural sintetico.\\n";
           }
 

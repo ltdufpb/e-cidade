@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matparamconsulta_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatparamconsulta = new cl_matparamconsulta;
 $clmatparamconsulta->rotulo->label("m38_instit");
 $clmatparamconsulta->rotulo->label("m38_visualizacaoitens");
@@ -98,9 +98,9 @@ $clmatparamconsulta->rotulo->label("m38_visualizacaoitens");
         }else{
            $sql = $clmatparamconsulta->sql_query("",$campos,"m38_instit","m38_instit=".db_getsession("DB_instit"));
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m38_visualizacaoitens)){
-          $repassa = array("chave_m38_instit"=>$chave_m38_instit,"chave_m38_visualizacaoitens"=>$chave_m38_visualizacaoitens);
+          $repassa = ["chave_m38_instit"=>$chave_m38_instit,"chave_m38_visualizacaoitens"=>$chave_m38_visualizacaoitens];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

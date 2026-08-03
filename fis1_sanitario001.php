@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_sanitario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -56,9 +56,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("sanitario"=>"Sanitário", "observacoes"=>"Observa&ccedil;&otilde;es","saniatividade"=>"Atividades","resptecnico"=>"Responsável Técnico","calculo"=>"Cálculo");//nome do iframe e o label    
-       $clcriaabas->title      = array("sanitario"=>"Manutenção de Alvará Sanitário","observacoes"=>"Observa&ccedil;&otilde;es", "saniatividade"=>"Manutenção de atividades do sanitário","resptecnico"=>"Responsável Técnico","calculo"=>"Cálculo");//nome do iframe e o label    
-       $clcriaabas->src = array("sanitario"=>"fis1_sanitario005.php","observacoes"=>"fis1_sanitario006.php","saniatividade"=>"fis1_saniatividade001.php","resptecnico"=>"fis1_resptecnico001.php","calculo"=>"fis1_sanicalc001.php");//nome do iframe e o label    
+       $clcriaabas->identifica = ["sanitario"=>"Sanitário", "observacoes"=>"Observa&ccedil;&otilde;es","saniatividade"=>"Atividades","resptecnico"=>"Responsável Técnico","calculo"=>"Cálculo"];//nome do iframe e o label    
+       $clcriaabas->title      = ["sanitario"=>"Manutenção de Alvará Sanitário","observacoes"=>"Observa&ccedil;&otilde;es", "saniatividade"=>"Manutenção de atividades do sanitário","resptecnico"=>"Responsável Técnico","calculo"=>"Cálculo"];//nome do iframe e o label    
+       $clcriaabas->src = ["sanitario"=>"fis1_sanitario005.php","observacoes"=>"fis1_sanitario006.php","saniatividade"=>"fis1_saniatividade001.php","resptecnico"=>"fis1_resptecnico001.php","calculo"=>"fis1_sanicalc001.php"];//nome do iframe e o label    
        $clcriaabas->cria_abas();    
      ?> 
      </td>

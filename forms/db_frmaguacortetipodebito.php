@@ -100,7 +100,7 @@ db_input('x45_codcortetipodebito',10,$Ix45_codcortetipodebito,true,'text',3,"")
 db_input('x45_codcorte',10,$Ix45_codcorte,true,'text',3," onchange='js_pesquisax45_codcorte(false);'")
 ?>
        <?php 
-$data = strtotime($x40_dtinc);
+$data = strtotime((string) $x40_dtinc);
 $x40_dtinc_dia = date("d", $data);
 $x40_dtinc_mes = date("m", $data);
 $x40_dtinc_ano = date("Y", $data);
@@ -191,7 +191,7 @@ db_input('x45_vlrminimo',15,$Ix45_vlrminimo,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("x45_codcortetipodebito"=>@$x45_codcortetipodebito);
+	 $chavepri= ["x45_codcortetipodebito"=>@$x45_codcortetipodebito];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $claguacortetipodebito->sql_query(null,"*",null,"x45_codcorte=$x45_codcorte");
 	 $cliframe_alterar_excluir->campos  ="x45_codcortetipodebito,x45_tipo,k00_descr,x45_parcelas,x45_dtvenc,x45_dtopini,x45_dtopfim,x45_vlrminimo";

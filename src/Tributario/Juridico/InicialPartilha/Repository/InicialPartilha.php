@@ -101,7 +101,7 @@ class InicialPartilha extends \BaseClassRepository implements Interfaces\Calcula
             foreach ($oInicialPartilha->getCustas() as $oCustas) {
                 $oCustas->setInicialPartilha($oInicialPartilha);
 
-                $oCustasRepository = CustasRepository::getInstance();
+                $oCustasRepository = (new CustasRepository())->getInstance();
                 $oCustasRepository->persist($oCustas);
             }
         }
@@ -136,7 +136,7 @@ class InicialPartilha extends \BaseClassRepository implements Interfaces\Calcula
             $oInicialPartilha->setDataPartilha(new DateTime($oDados->v35_datapartilha));
         }
 
-        $oCustasRepository = CustasRepository::getInstance();
+        $oCustasRepository = (new CustasRepository())->getInstance();
         $aCustas = $oCustasRepository->getByInicialPartilha($oDados->v35_sequencial);
 
         if (count($aCustas) > 0) {
@@ -154,11 +154,11 @@ class InicialPartilha extends \BaseClassRepository implements Interfaces\Calcula
      */
     private function makeCollection($rsResult)
     {
-        $aCollection = array();
+        $aCollection = [];
         $aResult = pg_fetch_all($rsResult);
 
         if (empty($aResult)) {
-            return array();
+            return [];
         }
 
         foreach ($aResult as $oResult) {
@@ -283,9 +283,7 @@ class InicialPartilha extends \BaseClassRepository implements Interfaces\Calcula
             throw new DBException("Erro ao buscar as parcelas pagas dos honorários.");
         }
 
-        return \db_utils::makeCollectionFromRecord($result, function ($parcela) {
-            return $parcela->k00_numpar;
-        });
+        return \db_utils::makeCollectionFromRecord($result, fn($parcela) => $parcela->k00_numpar);
     }
 
     public function getPagoSemHonorariosByInicial(Inicial $inicial)
@@ -323,7 +321,7 @@ class InicialPartilha extends \BaseClassRepository implements Interfaces\Calcula
      * @return float|int
      * @throws DBException
      */
-    public function getValorPago(\Taxa $taxa, Inicial $inicial, \DateTime $data = null)
+    public function getValorPago(\Taxa $taxa, Inicial $inicial, ?\DateTime $data = null)
     {
         $sql  = "select v36_valor ";
         $sql .= "  from inicialpartilha ";
@@ -347,9 +345,7 @@ class InicialPartilha extends \BaseClassRepository implements Interfaces\Calcula
             return 0;
         }
 
-        $resultado = \db_utils::makeCollectionFromRecord($rs, function ($taxa) {
-            return round($taxa->v36_valor, 2);
-        });
+        $resultado = \db_utils::makeCollectionFromRecord($rs, fn($taxa) => round($taxa->v36_valor, 2));
 
         return array_sum($resultado);
     }

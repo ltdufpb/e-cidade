@@ -39,7 +39,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('z01_numcgm');
 $clrotulo->label('z01_nome');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if ((isset($z01_numcgm) && $z01_numcgm!="") && (isset($alterar))){
   db_inicio_transacao();

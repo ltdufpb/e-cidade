@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"],  $queryString);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"],  $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -113,7 +113,7 @@ $daoAlvaraEvento = new cl_alvaraevento();
 
         if(!isset($pesquisa_chave)){
 
-            $where = array();
+            $where = [];
             
             if(!empty($codigo)){
                 $where[] = "q170_codigo = {$codigo}";

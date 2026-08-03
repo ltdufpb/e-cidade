@@ -23,11 +23,11 @@ class LoteParser
 
         $oLote = new Lote();
 
-        $aCaracteristicas = array(
+        $aCaracteristicas = [
             $aLinha[15], $aLinha[17], $aLinha[19],
             $aLinha[21], $aLinha[23], $aLinha[25],
             $aLinha[27], $aLinha[29], $aLinha[31]
-        );
+        ];
 
         $aCaracteristicas = array_filter($aCaracteristicas);
 

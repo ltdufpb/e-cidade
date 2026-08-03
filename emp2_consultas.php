@@ -42,8 +42,8 @@ include(modification("classes/db_pagordem_classe.php"));
 include(modification("classes/db_pagordemele_classe.php"));
 include(modification("classes/db_empagemov_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clempempenho   = new cl_empempenho;
 $clorcdotacao   = new cl_orcdotacao;
@@ -263,7 +263,7 @@ if (isset($sItens)) {
     $pdf->cell(17,$alt,db_formatar($e62_vltot,'f'),"T",0,"R",0);
     $pdf->cell(18,$alt,$o56_elemento_itens,"T",0,"C",0);
     $pdf->cell(90,$alt,$o56_descr,"T",0,"L",0);
-    $pdf->multicell(60,4,substr($pc01_descrmater,0,55),"T","L",0);
+    $pdf->multicell(60,4,substr((string) $pc01_descrmater,0,55),"T","L",0);
     $pdf->cell(255,$alt,$e62_descr,"T",1,"L",0);	
     $total++;
 

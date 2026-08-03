@@ -54,7 +54,7 @@ $clorcelemento = new cl_orcelemento;
 $clorcparametro = new cl_orcparametro;
 $cldb_config = new cl_db_config;
 $clgeradorsql = new cl_gera_sql_folha;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $passa = false;
 if(isset($confirma) || isset($gera)){
@@ -149,12 +149,12 @@ if(isset($confirma) || isset($gera)){
       //$ano_exercicio = 2008;
 
 	    $result  = db_query($sql);
-      $numrows = pg_numrows($result);
+      $numrows = pg_num_rows($result);
       $sqlerro = false;
 
-      $arr_rubprinc = Array();
-      $arr_lotacexe = Array();
-      $arr_lotacatv = Array();
+      $arr_rubprinc = [];
+      $arr_lotacexe = [];
+      $arr_lotacatv = [];
 
       $barran = "";
       $erro_msg = "";
@@ -285,7 +285,7 @@ if(isset($confirma) || isset($gera)){
 	
 	
 					  //// específica para Sapiranga ver depois como acertar via sistema 03/10/2005
-		        if(trim(strtoupper($munic)) == "SAPIRANGA" ){
+		        if(trim(strtoupper((string) $munic)) == "SAPIRANGA" ){
 		 			    if($rubric == '0032' || $rubric == '2032' || $rubric == '4032' || $rubric == '1910'){
 					      if($ano_exercicio > 2008){
 				 		      $orgao = 2;
@@ -349,7 +349,7 @@ if(isset($confirma) || isset($gera)){
                                                 //$elemento = 875;
 	       				}
 					    }
-            }elseif(trim(strtoupper($munic)) == "GUAIBA" ){
+            }elseif(trim(strtoupper((string) $munic)) == "GUAIBA" ){
               if($ano_exercicio == 2006){
                 if($elemento == 868 || $elemento == 869){
                   if( $orgao != 7){
@@ -365,29 +365,29 @@ if(isset($confirma) || isset($gera)){
                   }
                 }
               }
-            }elseif(trim(strtoupper($munic)) == "ALEGRETE" ){
+            }elseif(trim(strtoupper((string) $munic)) == "ALEGRETE" ){
              // if($ano_exercicio == 2009){
-              	
+
 					      if($rubric == '0247' || $rubric == '0248' || $rubric == '4247' || $rubric == '4248' ){
-					      	
+
                   $orgao    = 4;
                   $unidade  = 2;
                   $projativ = 2052;
                   $recurso  = 50;
-                  
+
                 }else if($orgao == 9 && $unidade == 1 && $projativ == 2094 && $recurso == 4510){
-                	
+
                 	if($rubric == '0005' || $rubric == '0006' || $rubric == '0066' || $rubric == '0067' || 
                 		 $rubric == '0073' || $rubric == '0075' || $rubric == '0076' || $rubric == '0077' ||
                 		 $rubric == '0079' || $rubric == '0096' || $rubric == '0160' || $rubric == '0168' ||
                 		 $rubric == '0169' || $rubric == '0170' || $rubric == '0173' || $rubric == '0177' ||
                 		 $rubric == '0188' || $rubric == '0249'){
-                		
+
                 	$orgao    = 9;
                   $unidade  = 2;
                   $projativ = 2091;
                   $recurso  = 40;
-                  
+
                 	}
                 }
               //}

@@ -3,8 +3,8 @@ require(modification('fpdf151/fpdf.php'));
 
 class PDF_Javascript extends FPDF {
 
-	var $javascript;
-	var $n_js;
+	public $javascript;
+	public $n_js;
 
 	function IncludeJS($script) {
 		$this->javascript=$script;

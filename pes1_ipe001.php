@@ -47,7 +47,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(!isset($r36_anousu)){
   $r36_anousu = db_anofolha();
@@ -171,7 +171,7 @@ if(isset($incluir)){
       $cllayout_IPE->IPERegistro_107_114 = $r36_dtvinc;
       $cllayout_IPE->IPERegistro_115_122 = $r36_dtalt;
       $cllayout_IPE->IPERegistro_123_130 = $z01_nasc;
-      $cllayout_IPE->IPERegistro_131_131 = (strtoupper($z01_sexo) == "M" ? 1 : 2);
+      $cllayout_IPE->IPERegistro_131_131 = (strtoupper((string) $z01_sexo) == "M" ? 1 : 2);
       $cllayout_IPE->IPERegistro_132_132 = $z01_estciv;
       $cllayout_IPE->IPERegistro_133_142 = $z01_ident;
       $cllayout_IPE->IPERegistro_143_153 = $z01_cgccpf;

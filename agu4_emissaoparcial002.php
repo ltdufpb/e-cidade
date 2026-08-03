@@ -50,14 +50,14 @@ require_once(modification("model/convenio.model.php"));
 
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $oGET = db_utils::postMemory($_GET);
 $lMatriculasSemContrato = isset($oGET->matriculas_sem_contrato) && $oGET->matriculas_sem_contrato === '1' ? true : false;
 $oInstit = new Instituicao(db_getsession("DB_instit"));
 $quanti = 0;
 
-$aListaArquivos = array();
+$aListaArquivos = [];
 
 if( !isset( $qtdreg ) ) { // emissao geral pode informar quantidade de registros
 
@@ -104,8 +104,8 @@ if ($tipo_emissao=="txt") {
  */
 function retornaTexto($descricao, $paragrafos, $tamanho) {
   foreach($paragrafos as $oParag) {
-    if($oParag->oParag->db02_descr == trim($descricao)) {
-      return substr($oParag->oParag->db02_texto,0,$tamanho);
+    if($oParag->oParag->db02_descr == trim((string) $descricao)) {
+      return substr((string) $oParag->oParag->db02_texto,0,$tamanho);
     }
   }
 }
@@ -126,7 +126,7 @@ function MensagemCarne($exerc, $arretipo, $dtbase, $matric, $arrematric="w_arrem
   $sql .= "         arretipo.k03_tipo";
   $sql .= " ORDER BY 3 DESC"; // ordena pela qtd parcelas em atraso em ordem descendente
   $resDebitos = db_query($sql);
-  $rowsDebitos = pg_numrows($resDebitos);
+  $rowsDebitos = pg_num_rows($resDebitos);
 
   for ($iDeb = 0; $iDeb < $rowsDebitos; $iDeb++) {
 
@@ -428,11 +428,11 @@ $sTmpArrematric = "w_tmp_arrematric";
 
 //$sSqlTmpArrematric  = "create temporary table {$sTmpArrematric} (k00_numpre integer, k00_matric integer, k00_perc float8) on commit drop;";
 $sSqlTmpArrematric  = "create temporary table {$sTmpArrematric} (k00_numpre integer, k00_matric integer, k00_perc float8) ;";
-db_query($sSqlTmpArrematric) or die("Erro criando tabela temporária com os numpres da matricula {$x01_matric}: ".pg_errormessage());;
+db_query($sSqlTmpArrematric) or die("Erro criando tabela temporária com os numpres da matricula {$x01_matric}: ".pg_last_error());;
 
 $sSqlTmpArrematric = "create index {$sTmpArrematric}_in on {$sTmpArrematric}(k00_numpre, k00_matric) ;";
 
-db_query($sSqlTmpArrematric) or die("Erro criando indice na tabela temporária dos numpres da matricula {$x01_matric}: ".pg_errormessage());;
+db_query($sSqlTmpArrematric) or die("Erro criando indice na tabela temporária dos numpres da matricula {$x01_matric}: ".pg_last_error());;
 
 $lProcessa     = false;
 $iMatricInicio = 0;
@@ -464,7 +464,7 @@ for($indx=0; $indx<$numrows; $indx++) {
 
   //echo "Matricula: $x01_matric<br>";
 
-  db_query("truncate {$sTmpArrematric}") or die("Erro limpando tabela temporária para processar matricula {$x01_matric}: ".pg_errormessage() . "<br>  " . pg_last_error());
+  db_query("truncate {$sTmpArrematric}") or die("Erro limpando tabela temporária para processar matricula {$x01_matric}: ".pg_last_error() . "<br>  " . pg_last_error());
 
   $sSqlTmpArrematric  = "insert into {$sTmpArrematric} (k00_numpre, k00_matric, k00_perc) ";
   $sSqlTmpArrematric .= "select distinct ";
@@ -476,9 +476,9 @@ for($indx=0; $indx<$numrows; $indx++) {
   $sSqlTmpArrematric .= "                             and arreinstit.k00_instit = {$instit}";
   $sSqlTmpArrematric .= " where arrematric.k00_matric = {$x01_matric} ;";
 
-  db_query($sSqlTmpArrematric) or die("Erro inserindo na tabela temporária dos numpres da matricula {$x01_matric}: ".pg_errormessage());
+  db_query($sSqlTmpArrematric) or die("Erro inserindo na tabela temporária dos numpres da matricula {$x01_matric}: ".pg_last_error());
 
-  db_query("analyze {$sTmpArrematric}") or die("Erro executando analyze na tabela temporária dos numpres da matricula {$x01_matric}: ".pg_errormessage());
+  db_query("analyze {$sTmpArrematric}") or die("Erro executando analyze na tabela temporária dos numpres da matricula {$x01_matric}: ".pg_last_error());
 
   // Percorre Parcelas informadas na Interface
   for($parcela=$parcela_ini; $parcela<=$parcela_fim; $parcela++) {
@@ -529,7 +529,7 @@ for($indx=0; $indx<$numrows; $indx++) {
     // Processa ARRECAD
     //
     $anousu   = db_getsession("DB_anousu");
-    $dtvenc   = explode("-",$k00_dtvenc);
+    $dtvenc   = explode("-",(string) $k00_dtvenc);
     $ano_venc = $dtvenc[0];
     $mes_venc = $dtvenc[1];
 
@@ -684,24 +684,24 @@ QUERY;
                         where arrenaoagrupa.k00_numpre = arrecad.k00_numpre)
 QUERY;
 
-    $sSqlUnion = implode(" union ", array(
+    $sSqlUnion = implode(" union ", [
       $sSqlTaxas,
       $sSqlDescontos,
       $sSqlParcelamentoDivida,
       $sSqlParcelamentoForo,
       $sSqlOutrasReceitas,
-    ));
+    ]);
     if ($tipo_agrup == 1) {
-      $sSqlUnion = implode(" union ", array(
+      $sSqlUnion = implode(" union ", [
         $sSqlTaxas
-      ));
+      ]);
     }
     if ($lMatriculasSemContrato) {
 
-      $sSqlUnion = implode(" union ", array(
+      $sSqlUnion = implode(" union ", [
         $sSqlParcelamentoDivida,
         $sSqlParcelamentoForo,
-      ));
+      ]);
     }
     $sqlarrecad = "
       select
@@ -712,7 +712,7 @@ QUERY;
 
 
 
-    $pdf->resultArrecad = db_query($sqlarrecad) or die("Erro selecionando registros da tabela arrecad: ".pg_errormessage());
+    $pdf->resultArrecad = db_query($sqlarrecad) or die("Erro selecionando registros da tabela arrecad: ".pg_last_error());
 
     $numrowsArrecad = pg_num_rows($pdf->resultArrecad);
 
@@ -728,7 +728,7 @@ QUERY;
 
     $nValorTotal = 0;
     for($ii=0; $ii<$numrowsArrecad; $ii++) {
-      $nValorTotal += pg_result($pdf->resultArrecad, $ii, "k00_valor");
+      $nValorTotal += pg_fetch_result($pdf->resultArrecad, $ii, "k00_valor");
     }
 
     if($nValorTotal <= 0) {
@@ -776,10 +776,10 @@ QUERY;
 
 
     $entrega = "";
-    $entrega = trim(trim($denominacao)." / ".trim($localizacao));
+    $entrega = trim(trim((string) $denominacao)." / ".trim((string) $localizacao));
 
     if(!empty($entrega)) {
-      $cod = str_pad($x99_zona, 4, "0", STR_PAD_LEFT);
+      $cod = str_pad((string) $x99_zona, 4, "0", STR_PAD_LEFT);
       $pdf->zona_entrega = "ENTREGA: $cod - $entrega";
     }
 
@@ -788,11 +788,11 @@ QUERY;
 
       //$pdf->endereco_imovel = "$x98_tipologradouro $x98_logradouro, Nro $x98_numero $x98_orientacao  $x98_complemento - $x98_bairro / Bage-RS";
       $pdf->endereco_imovel = "$x98_tipologradouro $x98_logradouro, Nro $x98_numero $x98_orientacao  $x98_complemento - $x98_bairro";
-      $pdf->codlograd       = str_pad($x98_codlogradouro, 6, "0", STR_PAD_LEFT);
+      $pdf->codlograd       = str_pad((string) $x98_codlogradouro, 6, "0", STR_PAD_LEFT);
       $pdf->bairro          = $x98_bairro;
     } else {
       $pdf->endereco_imovel = "";
-      $pdf->codlograd       = str_pad($x99_codlogradouro, 6, "0", STR_PAD_LEFT);
+      $pdf->codlograd       = str_pad((string) $x99_codlogradouro, 6, "0", STR_PAD_LEFT);
       $pdf->bairro          = $x99_bairro;
     }
 
@@ -809,7 +809,7 @@ QUERY;
     $rescategoria = db_query($sqlcategoria);
 
     if(pg_num_rows($rescategoria)>0) {
-      $pdf->categoria = pg_result($rescategoria, 0, "j31_descr");
+      $pdf->categoria = pg_fetch_result($rescategoria, 0, "j31_descr");
     } else {
       $pdf->categoria = "Terreno";
     }
@@ -833,7 +833,7 @@ QUERY;
       $pdf->hidrometro = "Sem Hidrometro";
     }
 
-    $ano_parc = str_pad($exercicio,4,"0",STR_PAD_LEFT) . str_pad($parcela,2,"0",STR_PAD_LEFT);
+    $ano_parc = str_pad((string) $exercicio,4,"0",STR_PAD_LEFT) . str_pad((string) $parcela,2,"0",STR_PAD_LEFT);
 
     $sqlleitura  = "select x21_exerc, ";
     $sqlleitura .= "       x21_mes, ";
@@ -873,13 +873,13 @@ QUERY;
     $rowsleitura = pg_num_rows($pdf->resultLeitura);
 
     if($rowsleitura > 0) {
-      $pdf->leitura_atual = pg_result($pdf->resultLeitura, 0, "x21_dtleitura");
+      $pdf->leitura_atual = pg_fetch_result($pdf->resultLeitura, 0, "x21_dtleitura");
       if($rowsleitura>1) {
-        $pdf->leitura_ant = pg_result($pdf->resultLeitura, 1, "x21_dtleitura");
+        $pdf->leitura_ant = pg_fetch_result($pdf->resultLeitura, 1, "x21_dtleitura");
       } else {
         $pdf->leitura_ant = 0;
       }
-      $pdf->consumo = pg_result($pdf->resultLeitura, 0, "x21_consumo");
+      $pdf->consumo = pg_fetch_result($pdf->resultLeitura, 0, "x21_consumo");
     } else {
       $pdf->leitura_atual = 0;
       $pdf->leitura_ant   = 0;
@@ -931,7 +931,7 @@ QUERY;
     $incluirecibo = false;
 
     // Numpre do Primeiro Debito
-    $pdf->numpre = pg_result($pdf->resultArrecad, 0, "k00_numpre");
+    $pdf->numpre = pg_fetch_result($pdf->resultArrecad, 0, "k00_numpre");
 
     // Forcar sempre incluir recibopaga
     $incluirecibo = true;
@@ -942,7 +942,7 @@ QUERY;
       //  $incluirecibo = true;
       //}
 
-      $total_carne += pg_result($pdf->resultArrecad, $y, "k00_valor");
+      $total_carne += pg_fetch_result($pdf->resultArrecad, $y, "k00_valor");
 
     }
 
@@ -966,7 +966,7 @@ QUERY;
         and  k00_instit = {$instit}";
     $resultarretipo = db_query($sqlarretipo) or die($sqlarretipo);
 
-    if(pg_numrows($resultarretipo)==0){
+    if(pg_num_rows($resultarretipo)==0){
       echo "O código do banco não está cadastrado no arquivo arretipo para este tipo.";
       exit;
     }
@@ -1075,7 +1075,7 @@ QUERY;
     } else {
       $k03_numpre = $pdf->numpre;
       // Parcela do Arrecad
-      $parc = pg_result($pdf->resultArrecad, 0, "k00_numpar");
+      $parc = pg_fetch_result($pdf->resultArrecad, 0, "k00_numpar");
       $numpar = str_pad($parc, 3, "0", STR_PAD_LEFT);
     }
 
@@ -1203,7 +1203,7 @@ QUERY;
 
     $resultDebconta = db_query($sqldebconta);
 
-    if(pg_numrows($resultDebconta)>0) {
+    if(pg_num_rows($resultDebconta)>0) {
       $pdf->msg_debconta01 = $k00_hist7;
       $pdf->msg_debconta02 = $k00_hist8;
     } else {
@@ -1232,7 +1232,7 @@ QUERY;
       $sEnderCapa = db_utils::fieldsmemory($rsEnderCapa, 0)->fc_iptuender;
 
       if($sEnderCapa != ""){
-        $aDadosEnderCapa = explode("#",$sEnderCapa);
+        $aDadosEnderCapa = explode("#",(string) $sEnderCapa);
         $pdfcapa->contrcapa = trim($aDadosEnderCapa[8]);
         $pdfcapa->endcapa = trim($aDadosEnderCapa[0]).' '.trim($aDadosEnderCapa[1]).' '.trim($aDadosEnderCapa[2]);
         $pdfcapa->bairrocapa = trim($aDadosEnderCapa[3]);
@@ -1331,8 +1331,8 @@ QUERY;
       unset($bMensagem);
       for($ii = 0; $ii < $numrowsArrecad; $ii++) {
 
-        $nParcela = pg_result($pdf->resultArrecad, $ii, "k00_numpar");
-        $iNumpre  = pg_result($pdf->resultArrecad, $ii, "k00_numpre");
+        $nParcela = pg_fetch_result($pdf->resultArrecad, $ii, "k00_numpar");
+        $iNumpre  = pg_fetch_result($pdf->resultArrecad, $ii, "k00_numpre");
 
         $sql2  = "  SELECT true as bMensagem";
         $sql2 .= "    FROM arrecad";
@@ -1344,7 +1344,7 @@ QUERY;
 
         if (pg_num_rows($resMsgParcela) > 0) {
 
-          if (pg_result($resMsgParcela, 0, "bmensagem")) {
+          if (pg_fetch_result($resMsgParcela, 0, "bmensagem")) {
 
             $bMensagem = True;
             break;
@@ -1361,7 +1361,7 @@ QUERY;
         $mensagem_debito = "Solicitamos seu comparecimento no Setor de Cadatro e Atendimento para reparcelamento de débitos pendentes.";
       } else {
 
-        $mensagem_debito = MensagemCarne($exercicio, $x18_arretipo, $DB_DATACALC, $x01_matric, $sArreMatric, $parcela_ini);
+        $mensagem_debito = MensagemCarne($exercicio, $x18_arretipo, $DB_DATACALC, $x01_matric, $sArreMatric);
       }
 
       $oDocumento->msg_debconta01 = $pdf->msg_debconta01;  //aviso1
@@ -1470,7 +1470,7 @@ QUERY;
       $cldb_layouttxt->setCampo("contador",         $impcontador);
       $cldb_layouttxt->setCampo("processamento",    $pdf->numpre);
       $cldb_layouttxt->setCampo("natureza",         $pdf->natureza);
-      $cldb_layouttxt->setCampo("area_construida",  str_pad($pdf->area, 8, " ", STR_PAD_LEFT));
+      $cldb_layouttxt->setCampo("area_construida",  str_pad((string) $pdf->area, 8, " ", STR_PAD_LEFT));
 
       //
       // Leituras
@@ -1479,19 +1479,19 @@ QUERY;
       $nleituras = min(6, $numrowsLeitura);
 
       for($zz=0; $zz<$nleituras; $zz++) {
-        $exerc = pg_result($pdf->resultLeitura, $zz, $pdf->campo_ano);
-        $parc  = pg_result($pdf->resultLeitura, $zz, $pdf->campo_mes);
+        $exerc = pg_fetch_result($pdf->resultLeitura, $zz, $pdf->campo_ano);
+        $parc  = pg_fetch_result($pdf->resultLeitura, $zz, $pdf->campo_mes);
 
         $linha  = " ".substr(db_mes($parc, 2), 0, 3);
-        $linha .= "  ".str_pad(substr(pg_result($pdf->resultLeitura, $zz, $pdf->campo_situacao), 0, 10), 10, " ", STR_PAD_RIGHT);
-        $linha .= "  ".str_pad(pg_result($pdf->resultLeitura, $zz, $pdf->campo_leitura), 6, " ", STR_PAD_LEFT);
-        $linha .= "  ".str_pad(pg_result($pdf->resultLeitura, $zz, $pdf->campo_consumo), 4, " ", STR_PAD_LEFT);
-        $linha .= "  ".str_pad(pg_result($pdf->resultLeitura, $zz, $pdf->campo_excesso), 4, " ", STR_PAD_LEFT);
+        $linha .= "  ".str_pad(substr(pg_fetch_result($pdf->resultLeitura, $zz, $pdf->campo_situacao), 0, 10), 10, " ", STR_PAD_RIGHT);
+        $linha .= "  ".str_pad(pg_fetch_result($pdf->resultLeitura, $zz, $pdf->campo_leitura), 6, " ", STR_PAD_LEFT);
+        $linha .= "  ".str_pad(pg_fetch_result($pdf->resultLeitura, $zz, $pdf->campo_consumo), 4, " ", STR_PAD_LEFT);
+        $linha .= "  ".str_pad(pg_fetch_result($pdf->resultLeitura, $zz, $pdf->campo_excesso), 4, " ", STR_PAD_LEFT);
 
         if (($zz+1)<$numrowsLeitura) {
 
-          $dtatual    = pg_result($pdf->resultLeitura, $zz,   $pdf->campo_dtleitura);
-          $dtanterior = pg_result($pdf->resultLeitura, $zz+1, $pdf->campo_dtleitura);
+          $dtatual    = pg_fetch_result($pdf->resultLeitura, $zz,   $pdf->campo_dtleitura);
+          $dtanterior = pg_fetch_result($pdf->resultLeitura, $zz+1, $pdf->campo_dtleitura);
 
           if(empty($dtatual) || empty($dtanterior)) {
             $dias = 0;
@@ -1501,7 +1501,7 @@ QUERY;
 
           $linha .= "  ".str_pad($dias, 3, " ", STR_PAD_LEFT);
         } else {
-          $linha .= "  ".str_pad(pg_result($pdf->resultLeitura, $zz, $pdf->campo_dias), 3, " ", STR_PAD_LEFT);
+          $linha .= "  ".str_pad(pg_fetch_result($pdf->resultLeitura, $zz, $pdf->campo_dias), 3, " ", STR_PAD_LEFT);
         }
 
         $cldb_layouttxt->setCampo("leitura_".($zz+1), $linha);
@@ -1523,25 +1523,25 @@ QUERY;
       $pdf->valor_total = 0;
       $lGeraAviso7 = false;
       for($zz=0; $zz<$nReceitas; $zz++) {
-        if(pg_result($pdf->resultArrecad, $zz, $pdf->campo_receit) == '401002' && pg_result($pdf->resultArrecad, $zz, $pdf->campo_valor) < 0) {
+        if(pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_receit) == '401002' && pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_valor) < 0) {
           $lGeraAviso7   = true;
-          $sMsgAviso7    = pg_result($pdf->resultArrecad, $zz, $pdf->campo_historico);
-          $pdf->desconto += -(pg_result($pdf->resultArrecad, $zz, $pdf->campo_valor));
+          $sMsgAviso7    = pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_historico);
+          $pdf->desconto += -(pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_valor));
         }
 
-        $linha  = pg_result($pdf->resultArrecad, $zz, $pdf->campo_receit);
-        $linha .= "  ".str_pad(pg_result($pdf->resultArrecad, $zz, $pdf->campo_recdescr), 14, " ", STR_PAD_RIGHT);
+        $linha  = pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_receit);
+        $linha .= "  ".str_pad(pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_recdescr), 14, " ", STR_PAD_RIGHT);
 
-        $parc = str_pad(pg_result($pdf->resultArrecad, $zz, $pdf->campo_numpar),3,"0",STR_PAD_LEFT) . "/" .
-                str_pad(pg_result($pdf->resultArrecad, $zz, $pdf->campo_numtot),3,"0",STR_PAD_LEFT) ;
+        $parc = str_pad(pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_numpar),3,"0",STR_PAD_LEFT) . "/" .
+                str_pad(pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_numtot),3,"0",STR_PAD_LEFT) ;
         $linha .= "  ".$parc;
 
-        $valor = str_pad(trim(db_formatar(pg_result($pdf->resultArrecad, $zz, $pdf->campo_valor),"f")), 10, "*", STR_PAD_LEFT);
+        $valor = str_pad(trim(db_formatar(pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_valor),"f")), 10, "*", STR_PAD_LEFT);
         $linha .= "  ".$valor;
 
-        $pdf->valor_total += pg_result($pdf->resultArrecad, $zz, $pdf->campo_valor);
+        $pdf->valor_total += pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_valor);
 
-        $numpre = str_pad(pg_result($pdf->resultArrecad, $zz, $pdf->campo_numpre), 8, "0", STR_PAD_LEFT);
+        $numpre = str_pad(pg_fetch_result($pdf->resultArrecad, $zz, $pdf->campo_numpre), 8, "0", STR_PAD_LEFT);
         $linha .= "  ".$numpre;
 
         $cldb_layouttxt->setCampo("linha_receita_".($zz+1), $linha);
@@ -1707,7 +1707,7 @@ if ($tipo_emissao=="pdf") {
   }
 
 
-  $sNomearquivo = explode("/", $arq)[1];
+  $sNomearquivo = explode("/", (string) $arq)[1];
   $pNomearquivo = "$arq#$sNomearquivo";
 
   echo "<script>

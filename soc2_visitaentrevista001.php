@@ -36,9 +36,9 @@ $oRotulo = new rotulocampo();
 $oRotulo->label("as04_dataentrevista");
 $oRotulo->label("as05_datavisita");
 
-$aAlfabeto = array("A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J",
+$aAlfabeto = ["A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J",
                    "K"=>"K", "L"=>"L", "M"=>"M", "N"=>"N","O"=>"O","P"=>"P","Q"=>"Q","R"=>"R","S"=>"S","T"=>"T","U"=>"U",
-                   "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z");
+                   "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"];
 ?>
 <html>
 <head>

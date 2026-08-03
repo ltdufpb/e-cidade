@@ -29,7 +29,7 @@ require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $oDaosaucadsus = db_utils::getdao('sau_cadsus');
 $oDaosaucadsus->rotulo->label();
 

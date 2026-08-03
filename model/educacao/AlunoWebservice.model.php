@@ -51,7 +51,7 @@ class AlunoWebservice {
     $oDadosAluno                               = new stdClass();
     $oDadosAluno->codigo_aluno                 = $this->oAluno->getCodigoAluno();
     $oDadosAluno->codigo_inep                  = $this->oAluno->getCodigoInep();
-    $oDadosAluno->nome_aluno                   = utf8_encode($this->oAluno->getNome());
+    $oDadosAluno->nome_aluno                   = mb_convert_encoding($this->oAluno->getNome(), 'UTF-8', 'ISO-8859-1');
     $oDadosAluno->data_nascimento_aluno        = $this->oAluno->getDataNascimento();
 
     $oNaturalidade = $this->oAluno->getNaturalidade();
@@ -59,30 +59,30 @@ class AlunoWebservice {
     $oDadosAluno->municipio_naturalidade_aluno = null;
 
     if ( !is_null($oNaturalidade->getCodigo()) ) {
-      $oDadosAluno->municipio_naturalidade_aluno = utf8_encode($this->oAluno->getNaturalidade()->getNome());
+      $oDadosAluno->municipio_naturalidade_aluno = mb_convert_encoding($this->oAluno->getNaturalidade()->getNome(), 'UTF-8', 'ISO-8859-1');
       $oDadosAluno->uf_naturalidade_aluno        = $this->oAluno->getNaturalidade()->getUF()->getUF();
     }
 
     $oDadosAluno->nacionalidade_aluno          = '';
-    $oDadosAluno->pais_aluno                   = utf8_encode($this->oAluno->getPaisNaturalidade()->getDescricao());
-    $oDadosAluno->endereco_residencia_aluno    = utf8_encode($this->oAluno->getEnderecoResidencia());
-    $oDadosAluno->numero_residencia_aluno      = utf8_encode($this->oAluno->getNumeroResidencia());
-    $oDadosAluno->bairro_residencia_aluno      = utf8_encode($this->oAluno->getBairroResidencia());
-    $oDadosAluno->complemento_residencia_aluno = utf8_encode($this->oAluno->getComplementoResidencia());
-    $oDadosAluno->zona_residencia_aluno        = utf8_encode($this->oAluno->getZonaResidencia());
+    $oDadosAluno->pais_aluno                   = mb_convert_encoding($this->oAluno->getPaisNaturalidade()->getDescricao(), 'UTF-8', 'ISO-8859-1');
+    $oDadosAluno->endereco_residencia_aluno    = mb_convert_encoding($this->oAluno->getEnderecoResidencia(), 'UTF-8', 'ISO-8859-1');
+    $oDadosAluno->numero_residencia_aluno      = mb_convert_encoding($this->oAluno->getNumeroResidencia(), 'UTF-8', 'ISO-8859-1');
+    $oDadosAluno->bairro_residencia_aluno      = mb_convert_encoding($this->oAluno->getBairroResidencia(), 'UTF-8', 'ISO-8859-1');
+    $oDadosAluno->complemento_residencia_aluno = mb_convert_encoding($this->oAluno->getComplementoResidencia(), 'UTF-8', 'ISO-8859-1');
+    $oDadosAluno->zona_residencia_aluno        = mb_convert_encoding($this->oAluno->getZonaResidencia(), 'UTF-8', 'ISO-8859-1');
 
     $oMunicipio = $this->oAluno->getMunicipioResidencia();
     $oDadosAluno->municipio_residencia_aluno   = null;
     $oDadosAluno->uf_residencia_aluno          = null;
     if ( !is_null($oMunicipio) ) {
 
-      $oDadosAluno->municipio_residencia_aluno = utf8_encode($oMunicipio->getNome());
-      $oDadosAluno->uf_residencia_aluno        = utf8_encode($oMunicipio->getUF()->getUF());
+      $oDadosAluno->municipio_residencia_aluno = mb_convert_encoding($oMunicipio->getNome(), 'UTF-8', 'ISO-8859-1');
+      $oDadosAluno->uf_residencia_aluno        = mb_convert_encoding($oMunicipio->getUF()->getUF(), 'UTF-8', 'ISO-8859-1');
     }
 
     $oDadosAluno->cep_residencia_aluno         = $this->oAluno->getCepResidencia();
-    $oDadosAluno->sexo_aluno                   = utf8_encode($this->oAluno->getSexo() == "M"?"MASCULINO":"FEMININO");
-    $oDadosAluno->raca_aluno                   = utf8_encode($this->oAluno->getRaca());
+    $oDadosAluno->sexo_aluno                   = mb_convert_encoding($this->oAluno->getSexo() == "M"?"MASCULINO":"FEMININO", 'UTF-8', 'ISO-8859-1');
+    $oDadosAluno->raca_aluno                   = mb_convert_encoding($this->oAluno->getRaca(), 'UTF-8', 'ISO-8859-1');
     $sEstadoCivil                              = '';
     switch ($this->oAluno->getEstadoCivil()) {
 
@@ -126,10 +126,10 @@ class AlunoWebservice {
         break;
 
     }
-    $oDadosAluno->nacionalidade_aluno    = utf8_encode($sNacionalidade);
+    $oDadosAluno->nacionalidade_aluno    = mb_convert_encoding($sNacionalidade, 'UTF-8', 'ISO-8859-1');
     $oDadosAluno->estado_civil_aluno     = $sEstadoCivil;
-    $oDadosAluno->telefone_aluno         = utf8_encode($this->oAluno->getNumeroTelefone());
-    $oDadosAluno->telefone_celular_aluno = utf8_encode($this->oAluno->getNumeroCelular());
+    $oDadosAluno->telefone_aluno         = mb_convert_encoding($this->oAluno->getNumeroTelefone(), 'UTF-8', 'ISO-8859-1');
+    $oDadosAluno->telefone_celular_aluno = mb_convert_encoding($this->oAluno->getNumeroCelular(), 'UTF-8', 'ISO-8859-1');
     $oDadosAluno->foto_aluno             = '';
     $oDadosAluno->none_foto_aluno        = '';
     $oDadosAluno->idade_aluno            = $this->oAluno->getIdadeNaData(date('Y-m-d'));
@@ -159,35 +159,35 @@ class AlunoWebservice {
     if ( !empty( $oMatricula ) ) {
 
       $oEscola                            = $oMatricula->getTurma()->getEscola();
-      $oDadosEscola->sNome                = utf8_encode($oEscola->getNome());
+      $oDadosEscola->sNome                = mb_convert_encoding($oEscola->getNome(), 'UTF-8', 'ISO-8859-1');
 
       $aDiretores = $oEscola->getDiretor();
 
       for( $iContador = 0; $iContador < count($aDiretores); $iContador++ )  {
 
-        $aDiretores[$iContador]->sNome     = utf8_encode($aDiretores[$iContador]->sNome);
-        $aDiretores[$iContador]->sAtoLegal = utf8_encode($aDiretores[$iContador]->sAtoLegal);
-        $aDiretores[$iContador]->sTurno    = utf8_encode($aDiretores[$iContador]->sTurno);
+        $aDiretores[$iContador]->sNome     = mb_convert_encoding($aDiretores[$iContador]->sNome, 'UTF-8', 'ISO-8859-1');
+        $aDiretores[$iContador]->sAtoLegal = mb_convert_encoding($aDiretores[$iContador]->sAtoLegal, 'UTF-8', 'ISO-8859-1');
+        $aDiretores[$iContador]->sTurno    = mb_convert_encoding($aDiretores[$iContador]->sTurno, 'UTF-8', 'ISO-8859-1');
       }
 
       $oDadosEscola->aDiretores           = $aDiretores;
-      $oDadosEscola->sUrl                 = utf8_encode($oEscola->getHomePage());
-      $oDadosEscola->sEndereco            = utf8_encode($oEscola->getEndereco());
+      $oDadosEscola->sUrl                 = mb_convert_encoding($oEscola->getHomePage(), 'UTF-8', 'ISO-8859-1');
+      $oDadosEscola->sEndereco            = mb_convert_encoding($oEscola->getEndereco(), 'UTF-8', 'ISO-8859-1');
       $oDadosEscola->iNumeroEndereco      = $oEscola->getNumeroEndereco();
-      $oDadosEscola->sComplementoEndereco = utf8_encode($oEscola->getComplementoEndereco());
-      $oDadosEscola->sBairro              = utf8_encode($oEscola->getBairro());
-      $oDadosEscola->sMunicipio           = utf8_encode($oEscola->getMunicipio());
-      $oDadosEscola->sUf                  = utf8_encode($oEscola->getUf());
-      $oDadosEscola->sEstado              = utf8_encode($oEscola->getEstado());
-      $oDadosEscola->sCep                 = utf8_encode($oEscola->getCep());
-      $oDadosEscola->sEmail               = utf8_encode($oEscola->getEmail());
+      $oDadosEscola->sComplementoEndereco = mb_convert_encoding($oEscola->getComplementoEndereco(), 'UTF-8', 'ISO-8859-1');
+      $oDadosEscola->sBairro              = mb_convert_encoding($oEscola->getBairro(), 'UTF-8', 'ISO-8859-1');
+      $oDadosEscola->sMunicipio           = mb_convert_encoding($oEscola->getMunicipio(), 'UTF-8', 'ISO-8859-1');
+      $oDadosEscola->sUf                  = mb_convert_encoding($oEscola->getUf(), 'UTF-8', 'ISO-8859-1');
+      $oDadosEscola->sEstado              = mb_convert_encoding($oEscola->getEstado(), 'UTF-8', 'ISO-8859-1');
+      $oDadosEscola->sCep                 = mb_convert_encoding($oEscola->getCep(), 'UTF-8', 'ISO-8859-1');
+      $oDadosEscola->sEmail               = mb_convert_encoding($oEscola->getEmail(), 'UTF-8', 'ISO-8859-1');
 
       $aTelefones = $oEscola->getTelefones();
 
       for( $iContador = 0; $iContador < count($aTelefones); $iContador++ )  {
 
-        $aTelefones[$iContador]->sObservacao   = utf8_encode($aTelefones[$iContador]->sObservacao);
-        $aTelefones[$iContador]->sTipoTelefone = utf8_encode($aTelefones[$iContador]->sTipoTelefone);
+        $aTelefones[$iContador]->sObservacao   = mb_convert_encoding($aTelefones[$iContador]->sObservacao, 'UTF-8', 'ISO-8859-1');
+        $aTelefones[$iContador]->sTipoTelefone = mb_convert_encoding($aTelefones[$iContador]->sTipoTelefone, 'UTF-8', 'ISO-8859-1');
       }
 
       $oDadosEscola->aTelefones = $aTelefones;
@@ -204,17 +204,17 @@ class AlunoWebservice {
    */
   public function getMatriculas() {
 
-    $aMatriculas = array();
+    $aMatriculas = [];
     foreach ($this->oAluno->getMatriculas() as $oMatriculaAluno) {
 
       $oMatricula                   = new stdClass();
-      $oMatricula->etapa_matricula  = utf8_encode($oMatriculaAluno->getEtapaDeOrigem()->getNome());
+      $oMatricula->etapa_matricula  = mb_convert_encoding($oMatriculaAluno->getEtapaDeOrigem()->getNome(), 'UTF-8', 'ISO-8859-1');
       $oMatricula->codigo_matricula = $oMatriculaAluno->getCodigo();
       $oMatricula->ano_matricula    = $oMatriculaAluno->getTurma()->getCalendario()->getAnoExecucao();
       $aMatriculas[]                = $oMatricula;
     }
 
-    uasort($aMatriculas, 'ordernarMatriculas');
+    uasort($aMatriculas, ordernarMatriculas(...));
     return $aMatriculas;
   }
 
@@ -251,22 +251,11 @@ class AlunoWebservice {
       $oDadosAluno = db_utils::fieldsMemory($rsOutrosDados, 0);
 
       $sEscolarizacaoOutroEspaco = '';
-      switch ($oDadosAluno->ed47_c_atenddifer) {
-
-        case "1":
-
-          $sEscolarizacaoOutroEspaco = "EM HOSPITAL";
-          break;
-        case '2':
-
-          $sEscolarizacaoOutroEspaco = "EM DOMICÍLIO";
-          break;
-
-        default:
-
-          $sEscolarizacaoOutroEspaco = "NÃO RECEBE";
-          break;
-      }
+      $sEscolarizacaoOutroEspaco = match ($oDadosAluno->ed47_c_atenddifer) {
+          "1" => "EM HOSPITAL",
+          '2' => "EM DOMICÍLIO",
+          default => "NÃO RECEBE",
+      };
       $sTipoTransportePublico = 'NÃO INFORMADO';
       switch ($oDadosAluno->ed47_c_transporte) {
 
@@ -280,32 +269,32 @@ class AlunoWebservice {
           $sTipoTransportePublico = "MUNICIPAL";
           break;
       }
-      $oOutrosDados->filiacao_aluno            = utf8_encode($oDadosAluno->ed47_i_filiacao == "0"
-                                                                          ? "NÃO DECLARADO/IGNORADO" : "PAI E/OU MÃE"
+      $oOutrosDados->filiacao_aluno            = mb_convert_encoding($oDadosAluno->ed47_i_filiacao == "0"
+                                                                          ? "NÃO DECLARADO/IGNORADO" : "PAI E/OU MÃE", 'UTF-8', 'ISO-8859-1'
                                                             );
-      $oOutrosDados->pai_aluno                 = utf8_encode($oDadosAluno->ed47_v_pai);
-      $oOutrosDados->mae_aluno                 = utf8_encode($oDadosAluno->ed47_v_mae);
-      $oOutrosDados->responsavel_aluno         = utf8_encode($oDadosAluno->ed47_c_nomeresp);
-      $oOutrosDados->email_responsavel_aluno   = utf8_encode($oDadosAluno->ed47_c_emailresp);
-      $oOutrosDados->celular_responsavel_aluno = utf8_encode($oDadosAluno->ed47_celularresponsavel);
-      $oOutrosDados->bolsa_familia_aluno       = utf8_encode($oDadosAluno->ed47_c_bolsafamilia == 'S' ? 'SIM' : 'NÃO');
+      $oOutrosDados->pai_aluno                 = mb_convert_encoding($oDadosAluno->ed47_v_pai, 'UTF-8', 'ISO-8859-1');
+      $oOutrosDados->mae_aluno                 = mb_convert_encoding($oDadosAluno->ed47_v_mae, 'UTF-8', 'ISO-8859-1');
+      $oOutrosDados->responsavel_aluno         = mb_convert_encoding($oDadosAluno->ed47_c_nomeresp, 'UTF-8', 'ISO-8859-1');
+      $oOutrosDados->email_responsavel_aluno   = mb_convert_encoding($oDadosAluno->ed47_c_emailresp, 'UTF-8', 'ISO-8859-1');
+      $oOutrosDados->celular_responsavel_aluno = mb_convert_encoding($oDadosAluno->ed47_celularresponsavel, 'UTF-8', 'ISO-8859-1');
+      $oOutrosDados->bolsa_familia_aluno       = mb_convert_encoding($oDadosAluno->ed47_c_bolsafamilia == 'S' ? 'SIM' : 'NÃO', 'UTF-8', 'ISO-8859-1');
       $oOutrosDados->numero_nis_aluno          = $oDadosAluno->ed47_c_nis;
 
-      $oOutrosDados->transporte_publico_aluno  = utf8_encode($oDadosAluno->ed47_i_transpublico == "0" ? "NÃO UTILIZA"
-                                                                                                      : "UTILIZA"
+      $oOutrosDados->transporte_publico_aluno  = mb_convert_encoding($oDadosAluno->ed47_i_transpublico == "0" ? "NÃO UTILIZA"
+                                                                                                      : "UTILIZA", 'UTF-8', 'ISO-8859-1'
                                                             );
 
-      $oOutrosDados->poder_publico_transporte         = utf8_encode($sTipoTransportePublico);
-      $oOutrosDados->email_aluno                      = utf8_encode($oDadosAluno->ed47_v_email);
-      $oOutrosDados->profissao_aluno                  = utf8_encode($oDadosAluno->ed47_v_profis);
-      $oOutrosDados->escolarizacao_outro_espaco_aluno = utf8_encode($sEscolarizacaoOutroEspaco);
+      $oOutrosDados->poder_publico_transporte         = mb_convert_encoding($sTipoTransportePublico, 'UTF-8', 'ISO-8859-1');
+      $oOutrosDados->email_aluno                      = mb_convert_encoding($oDadosAluno->ed47_v_email, 'UTF-8', 'ISO-8859-1');
+      $oOutrosDados->profissao_aluno                  = mb_convert_encoding($oDadosAluno->ed47_v_profis, 'UTF-8', 'ISO-8859-1');
+      $oOutrosDados->escolarizacao_outro_espaco_aluno = mb_convert_encoding($sEscolarizacaoOutroEspaco, 'UTF-8', 'ISO-8859-1');
       $oOutrosDados->data_cadastramento_aluno         = $oDadosAluno->ed47_d_cadast;
       $oOutrosDados->ultima_alteracao_aluno           = $oDadosAluno->ed47_d_ultalt;
-      $oOutrosDados->observacao_aluno                 = utf8_encode($oDadosAluno->ed47_t_obs);
-      $oOutrosDados->contato_aluno                    = utf8_encode($oDadosAluno->ed47_v_contato);
+      $oOutrosDados->observacao_aluno                 = mb_convert_encoding($oDadosAluno->ed47_t_obs, 'UTF-8', 'ISO-8859-1');
+      $oOutrosDados->contato_aluno                    = mb_convert_encoding($oDadosAluno->ed47_v_contato, 'UTF-8', 'ISO-8859-1');
 
 
-      $oOutrosDados->transportes_utilizados = array();
+      $oOutrosDados->transportes_utilizados = [];
       $oDaoAlunoTransportes                 = new cl_alunocensotipotransporte();
       $sWhereTransportes                    = "ed311_aluno = {$this->oAluno->getCodigoAluno()}";
       $sSqlTransportes                      = $oDaoAlunoTransportes->sql_query_tipo_transporte(null,
@@ -320,7 +309,7 @@ class AlunoWebservice {
 
           $sDescricaoTransporte = db_utils::fieldsMemory($rsTransportes, $iTransporte)->ed312_descricao;
 
-          $oOutrosDados->transportes_utilizados[] = utf8_decode($sDescricaoTransporte);
+          $oOutrosDados->transportes_utilizados[] = mb_convert_encoding($sDescricaoTransporte, 'ISO-8859-1');
         }
       }
     }
@@ -334,8 +323,8 @@ class AlunoWebservice {
     if ($rsProcedencia && $oDaoPrimeiraMatricula->numrows > 0) {
 
       $oDadosProcedencia               = db_utils::fieldsMemory($rsProcedencia, 0);
-      $oOutrosDados->local_procedencia = utf8_encode($oDadosProcedencia->nome_escola);
-      $oOutrosDados->data_procedencia  = utf8_encode($oDadosProcedencia->ed76_d_data);
+      $oOutrosDados->local_procedencia = mb_convert_encoding($oDadosProcedencia->nome_escola, 'UTF-8', 'ISO-8859-1');
+      $oOutrosDados->data_procedencia  = mb_convert_encoding($oDadosProcedencia->ed76_d_data, 'UTF-8', 'ISO-8859-1');
     }
     return $oOutrosDados;
   }
@@ -404,29 +393,29 @@ class AlunoWebservice {
       if ($oDadosDocumento->ed47_i_censomuniccert != "") {
 
         $oMunicipioCartorio = CensoMunicipioRepository::getMunicipioByCodigo($oDadosDocumento->ed47_i_censomuniccert);
-        $oDocumentos->certidao_nascimento->municipio     = utf8_encode($oMunicipioCartorio->getNome());
-        $oDocumentos->certidao_nascimento->uf            = utf8_encode($oMunicipioCartorio->getUF()->getUF());
+        $oDocumentos->certidao_nascimento->municipio     = mb_convert_encoding($oMunicipioCartorio->getNome(), 'UTF-8', 'ISO-8859-1');
+        $oDocumentos->certidao_nascimento->uf            = mb_convert_encoding($oMunicipioCartorio->getUF()->getUF(), 'UTF-8', 'ISO-8859-1');
       }
 
-      $oDocumentos->certidao_nascimento->tipo_certidao = utf8_encode($sTipoCertidao);
-      $oDocumentos->certidao_nascimento->numero_termo  = utf8_encode($oDadosDocumento->ed47_c_certidaonum);
-      $oDocumentos->certidao_nascimento->livro         = utf8_encode($oDadosDocumento->ed47_c_certidaolivro);
-      $oDocumentos->certidao_nascimento->folha         = utf8_encode($oDadosDocumento->ed47_c_certidaofolha);
-      $oDocumentos->certidao_nascimento->data_emissao  = utf8_encode($oDadosDocumento->ed47_c_certidaodata);
-      $oDocumentos->certidao_nascimento->cartorio      = utf8_encode($sCartorio);
+      $oDocumentos->certidao_nascimento->tipo_certidao = mb_convert_encoding($sTipoCertidao, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->certidao_nascimento->numero_termo  = mb_convert_encoding($oDadosDocumento->ed47_c_certidaonum, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->certidao_nascimento->livro         = mb_convert_encoding($oDadosDocumento->ed47_c_certidaolivro, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->certidao_nascimento->folha         = mb_convert_encoding($oDadosDocumento->ed47_c_certidaofolha, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->certidao_nascimento->data_emissao  = mb_convert_encoding($oDadosDocumento->ed47_c_certidaodata, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->certidao_nascimento->cartorio      = mb_convert_encoding($sCartorio, 'UTF-8', 'ISO-8859-1');
       if (!empty($oDadosDocumento->ed47_certidaomatricula)) {
 
-        $sMatricula  = substr($oDadosDocumento->ed47_certidaomatricula, 0, 6)." ";
-        $sMatricula .= substr($oDadosDocumento->ed47_certidaomatricula, 6, 2)." ";
-        $sMatricula .= substr($oDadosDocumento->ed47_certidaomatricula, 8, 2)." ";
-        $sMatricula .= substr($oDadosDocumento->ed47_certidaomatricula, 10, 4)." ";
-        $sMatricula .= substr($oDadosDocumento->ed47_certidaomatricula, 14, 1)." ";
-        $sMatricula .= substr($oDadosDocumento->ed47_certidaomatricula, 15, 5)." ";
-        $sMatricula .= substr($oDadosDocumento->ed47_certidaomatricula, 20, 3)." ";
-        $sMatricula .= substr($oDadosDocumento->ed47_certidaomatricula, 23, 7)." ";
-        $sMatricula .= substr($oDadosDocumento->ed47_certidaomatricula, 30, 2);
+        $sMatricula  = substr((string) $oDadosDocumento->ed47_certidaomatricula, 0, 6)." ";
+        $sMatricula .= substr((string) $oDadosDocumento->ed47_certidaomatricula, 6, 2)." ";
+        $sMatricula .= substr((string) $oDadosDocumento->ed47_certidaomatricula, 8, 2)." ";
+        $sMatricula .= substr((string) $oDadosDocumento->ed47_certidaomatricula, 10, 4)." ";
+        $sMatricula .= substr((string) $oDadosDocumento->ed47_certidaomatricula, 14, 1)." ";
+        $sMatricula .= substr((string) $oDadosDocumento->ed47_certidaomatricula, 15, 5)." ";
+        $sMatricula .= substr((string) $oDadosDocumento->ed47_certidaomatricula, 20, 3)." ";
+        $sMatricula .= substr((string) $oDadosDocumento->ed47_certidaomatricula, 23, 7)." ";
+        $sMatricula .= substr((string) $oDadosDocumento->ed47_certidaomatricula, 30, 2);
       }
-      $oDocumentos->certidao_nascimento->matricula = utf8_encode($sMatricula);
+      $oDocumentos->certidao_nascimento->matricula = mb_convert_encoding($sMatricula, 'UTF-8', 'ISO-8859-1');
 
       /**
        * Dados da carteira de identidade
@@ -435,31 +424,31 @@ class AlunoWebservice {
       if (!empty($oDadosDocumento->ed47_i_censoufident)) {
         $sUfIdentidade = CensoUFRepository::getEstadoPorCodigo($oDadosDocumento->ed47_i_censoufident)->getUF();
       }
-      $oDocumentos->identidade->numero         = utf8_encode($oDadosDocumento->ed47_v_ident);
-      $oDocumentos->identidade->complemento    = utf8_encode($oDadosDocumento->ed47_v_identcompl);
-      $oDocumentos->identidade->uf_emissao     = utf8_encode($sUfIdentidade);
-      $oDocumentos->identidade->data_expedicao = utf8_encode($oDadosDocumento->ed47_d_identdtexp);
+      $oDocumentos->identidade->numero         = mb_convert_encoding($oDadosDocumento->ed47_v_ident, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->identidade->complemento    = mb_convert_encoding($oDadosDocumento->ed47_v_identcompl, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->identidade->uf_emissao     = mb_convert_encoding($sUfIdentidade, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->identidade->data_expedicao = mb_convert_encoding($oDadosDocumento->ed47_d_identdtexp, 'UTF-8', 'ISO-8859-1');
       if (!empty($oDadosDocumento->ed47_i_censoorgemissrg)) {
 
         $oEmissor = new CensoOrgaoEmissorRG($oDadosDocumento->ed47_i_censoorgemissrg);
-        $oDocumentos->identidade->orgao_emissor  = utf8_encode($oEmissor->getNome());
+        $oDocumentos->identidade->orgao_emissor  = mb_convert_encoding($oEmissor->getNome(), 'UTF-8', 'ISO-8859-1');
       }
 
 
       /**
        * Dados da CNH
        */
-      $oDocumentos->cnh->numero          = utf8_encode($oDadosDocumento->ed47_v_cnh);
-      $oDocumentos->cnh->categoria       = utf8_encode($oDadosDocumento->ed47_v_categoria);
-      $oDocumentos->cnh->data_emissao    = utf8_encode($oDadosDocumento->ed47_d_dtemissao);
-      $oDocumentos->cnh->primeira_cnh    = utf8_encode($oDadosDocumento->ed47_d_dthabilitacao);
-      $oDocumentos->cnh->data_vencimento = utf8_encode($oDadosDocumento->ed47_d_dtvencimento);
+      $oDocumentos->cnh->numero          = mb_convert_encoding($oDadosDocumento->ed47_v_cnh, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->cnh->categoria       = mb_convert_encoding($oDadosDocumento->ed47_v_categoria, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->cnh->data_emissao    = mb_convert_encoding($oDadosDocumento->ed47_d_dtemissao, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->cnh->primeira_cnh    = mb_convert_encoding($oDadosDocumento->ed47_d_dthabilitacao, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->cnh->data_vencimento = mb_convert_encoding($oDadosDocumento->ed47_d_dtvencimento, 'UTF-8', 'ISO-8859-1');
 
       /**
        * cpf e passaporte
        */
-      $oDocumentos->cpf        = utf8_encode($oDadosDocumento->ed47_v_cpf);
-      $oDocumentos->passaporte = utf8_encode($oDadosDocumento->ed47_c_passaporte);
+      $oDocumentos->cpf        = mb_convert_encoding($oDadosDocumento->ed47_v_cpf, 'UTF-8', 'ISO-8859-1');
+      $oDocumentos->passaporte = mb_convert_encoding($oDadosDocumento->ed47_c_passaporte, 'UTF-8', 'ISO-8859-1');
     }
     return $oDocumentos;
   }
@@ -471,10 +460,7 @@ class AlunoWebservice {
  * @param unknown $oProximaMatricula
  * @return number
  */
-function ordernarMatriculas($oMatriculaAtual, $oProximaMatricula) {
-
-  if ($oMatriculaAtual->ano_matricula == $oProximaMatricula->ano_matricula) {
-    return 0;
-  }
-  return ($oMatriculaAtual->ano_matricula > $oProximaMatricula->ano_matricula) ? -1 : 1;
+function ordernarMatriculas($oMatriculaAtual, $oProximaMatricula)
+{
+    return $oProximaMatricula->ano_matricula <=> $oMatriculaAtual->ano_matricula;
 }

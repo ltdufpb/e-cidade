@@ -13,16 +13,6 @@ class Processamento {
   const DOCUMENTO_CARNE_AGUA = 32;
 
   /**
-   * @var string
-   */
-  private $sArquivo;
-
-  /**
-   * @var string
-   */
-  private $sArquivoLayout;
-
-  /**
    * @var \db_layouttxt
    */
   private $oArquivo;
@@ -31,11 +21,9 @@ class Processamento {
    * @param string $sArquivo
    * @param string $sArquivoLayout
    */
-  public function __construct($sArquivo, $sArquivoLayout) {
+  public function __construct(private $sArquivo, private $sArquivoLayout) {
 
-    $this->sArquivo = $sArquivo;
-    $this->sArquivoLayout = $sArquivoLayout;
-    $this->oArquivo = new \db_layouttxt(self::LAYOUT_EMISSAO, $sArquivo);
+    $this->oArquivo = new \db_layouttxt(self::LAYOUT_EMISSAO, $this->sArquivo);
   }
 
   /**
@@ -44,11 +32,11 @@ class Processamento {
    */
   private function formatarLeituras(array $aLeituras) {
 
-    $aCampos = array();
+    $aCampos = [];
     foreach ($aLeituras as $iMes => $oLeitura) {
 
       $aLeitura = $aLeituras[$iMes];
-      $aLeituraAnterior = isset($aLeituras[$iMes + 1]) ? $aLeituras[$iMes + 1] : null;
+      $aLeituraAnterior = $aLeituras[$iMes + 1] ?? null;
 
       $oDataAtual = null;
       $oDataAnterior = null;
@@ -59,9 +47,9 @@ class Processamento {
         $oDataAnterior = new \DateTime($aLeituraAnterior['data']);
       }
       $sLinha  = " " . substr(db_mes($aLeitura['mes']), 0, 3);
-      $sLinha .= "  " . str_pad(substr($aLeitura['descricao'], 0, 10), 10, " ", STR_PAD_RIGHT);
-      $sLinha .= "  " . str_pad($aLeitura['leitura'], 6, " ", STR_PAD_LEFT);
-      $sLinha .= "  " . str_pad($aLeitura['consumo'], 4, " ", STR_PAD_LEFT);
+      $sLinha .= "  " . str_pad(substr((string) $aLeitura['descricao'], 0, 10), 10, " ", STR_PAD_RIGHT);
+      $sLinha .= "  " . str_pad((string) $aLeitura['leitura'], 6, " ", STR_PAD_LEFT);
+      $sLinha .= "  " . str_pad((string) $aLeitura['consumo'], 4, " ", STR_PAD_LEFT);
 
       if (($iMes + 1) < count($aLeituras)) {
 
@@ -71,7 +59,7 @@ class Processamento {
           $iDias = $oDataAtual->diff($oDataAnterior)->format('%a');
         }
 
-        $sLinha .= "  ".str_pad($iDias, 3, " ", STR_PAD_LEFT);
+        $sLinha .= "  ".str_pad((string) $iDias, 3, " ", STR_PAD_LEFT);
       } else {
         $sLinha .= "  ".str_pad(30, 3, " ", STR_PAD_LEFT);
       }
@@ -88,17 +76,17 @@ class Processamento {
    */
   private function formatarDebitos(array $aDebitos) {
 
-    $aCampos = array();
+    $aCampos = [];
     foreach ($aDebitos as $aDebito) {
 
-      $sParcela = str_pad($aDebito['parcela'], 3, "0", STR_PAD_LEFT);
-      $sTotalParcelas = str_pad($aDebito['total_parcelas'], 3, '0', STR_PAD_LEFT);
+      $sParcela = str_pad((string) $aDebito['parcela'], 3, "0", STR_PAD_LEFT);
+      $sTotalParcelas = str_pad((string) $aDebito['total_parcelas'], 3, '0', STR_PAD_LEFT);
       $sParcelas = "{$sParcela} / {$sTotalParcelas}";
       $sValor = str_pad(trim(db_formatar($aDebito['valor'], 'f')), 10, '*', STR_PAD_LEFT);
-      $sNumpre = str_pad($aDebito['codigo_cobranca'], 8, '0', STR_PAD_LEFT);
+      $sNumpre = str_pad((string) $aDebito['codigo_cobranca'], 8, '0', STR_PAD_LEFT);
 
       $sLinha  = $aDebito['codigo_receita'];
-      $sLinha .= "  " . str_pad($aDebito['descricao'], 14, " ", STR_PAD_RIGHT);
+      $sLinha .= "  " . str_pad((string) $aDebito['descricao'], 14, " ", STR_PAD_RIGHT);
       $sLinha .= "  " . $sParcelas;
       $sLinha .= "  " . $sValor;
       $sLinha .= "  " . $sNumpre;
@@ -160,9 +148,9 @@ class Processamento {
      * Transforma o retorno da libdocumento em um array associativo
      */
     $aParagrafos = $oDocumento->getDocParagrafos();
-    $aMensagens = array();
+    $aMensagens = [];
     foreach ($aParagrafos as $oParagrafo) {
-      $aMensagens[strtolower($oParagrafo->oParag->db02_descr)] = $oParagrafo->oParag->db02_texto;
+      $aMensagens[strtolower((string) $oParagrafo->oParag->db02_descr)] = $oParagrafo->oParag->db02_texto;
     }
 
     /**
@@ -190,7 +178,7 @@ class Processamento {
    */
   private function formatar(\stdClass $oDados) {
 
-    $aLinhas = array();
+    $aLinhas = [];
     foreach ($oDados->meses as $oMes) {
 
       $oLinha = new \stdClass;
@@ -210,7 +198,7 @@ class Processamento {
       $oLinha->dados_usuario_3        = '';
       $oLinha->processamento          = $oMes->codigo_cobranca;
       $oLinha->natureza               = $oDados->natureza;
-      $oLinha->area_construida        = trim($oDados->area_construida);
+      $oLinha->area_construida        = trim((string) $oDados->area_construida);
       $oLinha->hidrometro             = $oDados->codigo_hidrometro;
       $oLinha->dt_leitura_atual       = $oMes->data_leitura_atual;
       $oLinha->dt_leitura_anterior    = $oMes->data_leitura_anterior;

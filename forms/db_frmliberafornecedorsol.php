@@ -89,7 +89,7 @@ if(isset($db_opcaoal)){
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("pc83_sequencial"=>@$pc82_sequencial);
+	 $chavepri= ["pc83_sequencial"=>@$pc82_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clliberafornecedorsol->sql_query_file(null,"*",null,"pc83_liberafornecedor = $pc82_sequencial");
 	 $cliframe_alterar_excluir->campos  ="pc83_sequencial,pc83_liberafornecedor,pc83_solicita";

@@ -65,7 +65,7 @@ $clrotulo->label('k130_concarpeculiar');
 $clrotulo->label('c58_descr');
 $clrotulo->label('e60_codemp');
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 /*
  * Esta variável controla onde serão mostradas as LookUp's.

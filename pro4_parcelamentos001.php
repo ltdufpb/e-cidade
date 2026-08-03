@@ -56,7 +56,7 @@ $db_opcao = 1;
 
 if(isset($processar)){
   
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
 
   if ($z01_numcgm == "") {
 
@@ -94,7 +94,7 @@ if(isset($processar)){
 
     $parcmarcada = "parc$i";
 
-    if ($$parcmarcada == 't') {
+    if (${$parcmarcada} == 't') {
 
       $sql = "select '$dtvenc'::date + '$i months'::interval as k00_dtvenc";
       $result = db_query($sql);

@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE benscadlote
 class cl_benscadlote { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t42_codigo = 0; 
-   var $t42_descr = null; 
-   var $t42_data_dia = null; 
-   var $t42_data_mes = null; 
-   var $t42_data_ano = null; 
-   var $t42_data = null; 
-   var $t42_hora = null; 
-   var $t42_usuario = 0; 
+   public $t42_codigo = 0; 
+   public $t42_descr = null; 
+   public $t42_data_dia = null; 
+   public $t42_data_mes = null; 
+   public $t42_data_ano = null; 
+   public $t42_data = null; 
+   public $t42_hora = null; 
+   public $t42_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t42_codigo = int4 = Código do lote 
                  t42_descr = varchar(40) = Descrição do lote 
                  t42_data = date = Data 
@@ -59,10 +59,10 @@ class cl_benscadlote {
                  t42_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_benscadlote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benscadlote"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_benscadlote {
          $this->erro_status = "0";
          return false; 
        }
-       $this->t42_codigo = pg_result($result,0,0); 
+       $this->t42_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from benscadlote_t42_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $t42_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $t42_codigo)){
          $this->erro_sql = " Campo t42_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_benscadlote {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de um lote para inclusão global do bem. ($this->t42_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de um lote para inclusão global do bem. já Cadastrado";
@@ -204,14 +204,14 @@ class cl_benscadlote {
      $resaco = $this->sql_record($this->sql_query_file($this->t42_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8912,'$this->t42_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1524,8912,'','".AddSlashes(pg_result($resaco,0,'t42_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1524,8913,'','".AddSlashes(pg_result($resaco,0,'t42_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1524,8914,'','".AddSlashes(pg_result($resaco,0,'t42_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1524,8915,'','".AddSlashes(pg_result($resaco,0,'t42_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1524,8916,'','".AddSlashes(pg_result($resaco,0,'t42_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1524,8912,'','".AddSlashes(pg_fetch_result($resaco,0,'t42_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1524,8913,'','".AddSlashes(pg_fetch_result($resaco,0,'t42_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1524,8914,'','".AddSlashes(pg_fetch_result($resaco,0,'t42_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1524,8915,'','".AddSlashes(pg_fetch_result($resaco,0,'t42_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1524,8916,'','".AddSlashes(pg_fetch_result($resaco,0,'t42_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_benscadlote {
       $this->atualizacampos();
      $sql = " update benscadlote set ";
      $virgula = "";
-     if(trim($this->t42_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t42_codigo"])){ 
+     if(trim((string) $this->t42_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t42_codigo"])){ 
        $sql  .= $virgula." t42_codigo = $this->t42_codigo ";
        $virgula = ",";
-       if(trim($this->t42_codigo) == null ){ 
+       if(trim((string) $this->t42_codigo) == null ){ 
          $this->erro_sql = " Campo Código do lote nao Informado.";
          $this->erro_campo = "t42_codigo";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_benscadlote {
          return false;
        }
      }
-     if(trim($this->t42_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t42_descr"])){ 
+     if(trim((string) $this->t42_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t42_descr"])){ 
        $sql  .= $virgula." t42_descr = '$this->t42_descr' ";
        $virgula = ",";
-       if(trim($this->t42_descr) == null ){ 
+       if(trim((string) $this->t42_descr) == null ){ 
          $this->erro_sql = " Campo Descrição do lote nao Informado.";
          $this->erro_campo = "t42_descr";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_benscadlote {
          return false;
        }
      }
-     if(trim($this->t42_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t42_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t42_data_dia"] !="") ){ 
+     if(trim((string) $this->t42_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t42_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t42_data_dia"] !="") ){ 
        $sql  .= $virgula." t42_data = '$this->t42_data' ";
        $virgula = ",";
-       if(trim($this->t42_data) == null ){ 
+       if(trim((string) $this->t42_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "t42_data_dia";
          $this->erro_banco = "";
@@ -262,7 +262,7 @@ class cl_benscadlote {
        if(isset($GLOBALS["HTTP_POST_VARS"]["t42_data_dia"])){ 
          $sql  .= $virgula." t42_data = null ";
          $virgula = ",";
-         if(trim($this->t42_data) == null ){ 
+         if(trim((string) $this->t42_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "t42_data_dia";
            $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_benscadlote {
          }
        }
      }
-     if(trim($this->t42_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t42_hora"])){ 
+     if(trim((string) $this->t42_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t42_hora"])){ 
        $sql  .= $virgula." t42_hora = '$this->t42_hora' ";
        $virgula = ",";
-       if(trim($this->t42_hora) == null ){ 
+       if(trim((string) $this->t42_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "t42_hora";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_benscadlote {
          return false;
        }
      }
-     if(trim($this->t42_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t42_usuario"])){ 
+     if(trim((string) $this->t42_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t42_usuario"])){ 
        $sql  .= $virgula." t42_usuario = $this->t42_usuario ";
        $virgula = ",";
-       if(trim($this->t42_usuario) == null ){ 
+       if(trim((string) $this->t42_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "t42_usuario";
          $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_benscadlote {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8912,'$this->t42_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t42_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1524,8912,'".AddSlashes(pg_result($resaco,$conresaco,'t42_codigo'))."','$this->t42_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1524,8912,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t42_codigo'))."','$this->t42_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t42_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1524,8913,'".AddSlashes(pg_result($resaco,$conresaco,'t42_descr'))."','$this->t42_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1524,8913,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t42_descr'))."','$this->t42_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t42_data"]))
-           $resac = db_query("insert into db_acount values($acount,1524,8914,'".AddSlashes(pg_result($resaco,$conresaco,'t42_data'))."','$this->t42_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1524,8914,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t42_data'))."','$this->t42_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t42_hora"]))
-           $resac = db_query("insert into db_acount values($acount,1524,8915,'".AddSlashes(pg_result($resaco,$conresaco,'t42_hora'))."','$this->t42_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1524,8915,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t42_hora'))."','$this->t42_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t42_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1524,8916,'".AddSlashes(pg_result($resaco,$conresaco,'t42_usuario'))."','$this->t42_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1524,8916,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t42_usuario'))."','$this->t42_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_benscadlote {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8912,'$t42_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1524,8912,'','".AddSlashes(pg_result($resaco,$iresaco,'t42_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1524,8913,'','".AddSlashes(pg_result($resaco,$iresaco,'t42_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1524,8914,'','".AddSlashes(pg_result($resaco,$iresaco,'t42_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1524,8915,'','".AddSlashes(pg_result($resaco,$iresaco,'t42_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1524,8916,'','".AddSlashes(pg_result($resaco,$iresaco,'t42_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1524,8912,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t42_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1524,8913,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t42_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1524,8914,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t42_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1524,8915,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t42_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1524,8916,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t42_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from benscadlote
@@ -431,7 +431,7 @@ class cl_benscadlote {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:benscadlote";
@@ -445,7 +445,7 @@ class cl_benscadlote {
    function sql_query ( $t42_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -467,7 +467,7 @@ class cl_benscadlote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,7 +479,7 @@ class cl_benscadlote {
    function sql_query_file ( $t42_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -500,7 +500,7 @@ class cl_benscadlote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

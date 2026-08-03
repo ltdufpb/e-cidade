@@ -3,23 +3,23 @@
 //CLASSE DA ENTIDADE assentamentosubstituicao
 class cl_assentamentosubstituicao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh161_assentamento = 0; 
-   var $rh161_regist = 0; 
+   public $rh161_assentamento = 0; 
+   public $rh161_regist = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh161_assentamento = int4 = Assentamento 
                  rh161_regist = int4 = Matrícula 
                  ";
@@ -30,7 +30,7 @@ class cl_assentamentosubstituicao {
     public function __construct()
     {
         $this->rotulo = new rotulo("assentamentosubstituicao");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
    //funcao erro 
@@ -83,7 +83,7 @@ class cl_assentamentosubstituicao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->rh161_assentamento) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -112,11 +112,11 @@ class cl_assentamentosubstituicao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21165,'$this->rh161_assentamento','I')");
-         $resac = db_query("insert into db_acount values($acount,3812,21165,'','".AddSlashes(pg_result($resaco,0,'rh161_assentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3812,21166,'','".AddSlashes(pg_result($resaco,0,'rh161_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3812,21165,'','".AddSlashes(pg_fetch_result($resaco,0,'rh161_assentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3812,21166,'','".AddSlashes(pg_fetch_result($resaco,0,'rh161_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -126,10 +126,10 @@ class cl_assentamentosubstituicao {
       $this->atualizacampos();
      $sql = " update assentamentosubstituicao set ";
      $virgula = "";
-     if(trim($this->rh161_assentamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh161_assentamento"])){ 
+     if(trim((string) $this->rh161_assentamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh161_assentamento"])){ 
        $sql  .= $virgula." rh161_assentamento = $this->rh161_assentamento ";
        $virgula = ",";
-       if(trim($this->rh161_assentamento) == null ){ 
+       if(trim((string) $this->rh161_assentamento) == null ){ 
          $this->erro_sql = " Campo Assentamento não informado.";
          $this->erro_campo = "rh161_assentamento";
          $this->erro_banco = "";
@@ -139,10 +139,10 @@ class cl_assentamentosubstituicao {
          return false;
        }
      }
-     if(trim($this->rh161_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh161_regist"])){ 
+     if(trim((string) $this->rh161_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh161_regist"])){ 
        $sql  .= $virgula." rh161_regist = $this->rh161_regist ";
        $virgula = ",";
-       if(trim($this->rh161_regist) == null ){ 
+       if(trim((string) $this->rh161_regist) == null ){ 
          $this->erro_sql = " Campo Matrícula não informado.";
          $this->erro_campo = "rh161_regist";
          $this->erro_banco = "";
@@ -166,13 +166,13 @@ class cl_assentamentosubstituicao {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21165,'$this->rh161_assentamento','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh161_assentamento"]) || $this->rh161_assentamento != "")
-             $resac = db_query("insert into db_acount values($acount,3812,21165,'".AddSlashes(pg_result($resaco,$conresaco,'rh161_assentamento'))."','$this->rh161_assentamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3812,21165,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh161_assentamento'))."','$this->rh161_assentamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh161_regist"]) || $this->rh161_regist != "")
-             $resac = db_query("insert into db_acount values($acount,3812,21166,'".AddSlashes(pg_result($resaco,$conresaco,'rh161_regist'))."','$this->rh161_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3812,21166,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh161_regist'))."','$this->rh161_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -226,11 +226,11 @@ class cl_assentamentosubstituicao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21165,'$rh161_assentamento','E')");
-           $resac  = db_query("insert into db_acount values($acount,3812,21165,'','".AddSlashes(pg_result($resaco,$iresaco,'rh161_assentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3812,21166,'','".AddSlashes(pg_result($resaco,$iresaco,'rh161_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3812,21165,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh161_assentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3812,21166,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh161_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

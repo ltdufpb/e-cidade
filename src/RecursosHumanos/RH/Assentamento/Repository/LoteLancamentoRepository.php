@@ -16,7 +16,7 @@ class LoteLancamentoRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param $sequencial
@@ -81,7 +81,7 @@ class LoteLancamentoRepository
     public static function delete(LoteLancamento $loteLancamento, $assentamentoFuncional = false)
     {
         $dao = new cl_lotelancamento();
-        $erros = array();
+        $erros = [];
         foreach ($loteLancamento->getAssentamentos() as $indice => $assentamento) {
             try {
                 if (!$assentamentoFuncional) {
@@ -91,10 +91,10 @@ class LoteLancamentoRepository
                 }
                 $loteLancamento->unsetAssentamentoPorIndice($indice);
             } catch (Exception $exception) {
-                $erros[$assentamento->getCodigo()] = (object) array (
+                $erros[$assentamento->getCodigo()] = (object)  [
                     'mensagem' => $exception->getMessage(),
                     'assentamento' => $assentamento
-                );
+                ];
             }
         }
         if (count($erros) === 0) {
@@ -104,10 +104,10 @@ class LoteLancamentoRepository
             }
         }
 
-        return (object) array(
+        return (object) [
             'erros' => $erros,
             'loteLancamento' => $loteLancamento
-        );
+        ];
     }
 
     /**
@@ -124,7 +124,7 @@ class LoteLancamentoRepository
             throw new Exception("Não foi possível buscar os lotes de assentamentos.");
         }
 
-        $lotes = array();
+        $lotes = [];
 
         if (pg_num_rows($rs) === 0) {
             return $lotes;
@@ -200,7 +200,7 @@ class LoteLancamentoRepository
             throw new Exception('Não foi possível buscar os assentamentos do lote.');
         }
 
-        $assentamentos = array();
+        $assentamentos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $assentamentos;
@@ -262,7 +262,7 @@ class LoteLancamentoRepository
             throw new Exception('Não foi possível buscar as lotações do usuário.');
         }
 
-        $lotacao = array();
+        $lotacao = [];
 
         if (pg_num_rows($rs) === 0) {
             return $lotacao;
@@ -286,7 +286,7 @@ class LoteLancamentoRepository
             throw new Exception('Não foi possível buscar as lotações do usuário.');
         }
 
-        $lotacao = array();
+        $lotacao = [];
 
         if (pg_num_rows($rs) === 0) {
             return $lotacao;

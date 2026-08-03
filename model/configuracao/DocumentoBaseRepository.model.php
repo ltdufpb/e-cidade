@@ -34,7 +34,7 @@ define( 'MENSAGENS_DDOCUMENTOBASE_REPOSITORY', 'configuracao.configuracao.Docume
  */
 class DocumentoBaseRepository {
 	
-  private $aDocumentoBase = array();
+  private $aDocumentoBase = [];
   private static $oInstance;
   
   private function __construct() {}
@@ -102,7 +102,7 @@ class DocumentoBaseRepository {
       return null;
     }
 
-    $aCadDocumentos = array();
+    $aCadDocumentos = [];
 
     for( $iContador = 0; $iContador < $iLinhasCadDocumento; $iContador++ ) {
 

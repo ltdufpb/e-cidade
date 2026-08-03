@@ -46,7 +46,7 @@ if (isset($excluir)) {
   $db_opcao = 3;
 }
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if (isset($retorno)) {
   $sql = "select *,to_char(dtcont,'DD') as dtcont_dia,to_char(dtcont,'MM') as dtcont_mes,to_char(dtcont,'YYYY') as dtcont_ano from db_config where codigo = $retorno";
   $result = db_query($sql);
@@ -54,19 +54,19 @@ if (isset($retorno)) {
 }
 
 //////////INCLUIR/////////////
-if (isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if (isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $dtcont = "'".$dtcont_ano."-".$dtcont_mes."-".$dtcont_dia."'";
   if (!checkdate($dtcont_mes,$dtcont_dia,$dtcont_ano)) {
     db_erro("Campo 'Data da Contabilidade' está inválido: $dtcont");
   }
   $tx_banc = $tx_banc == ""?"null":$tx_banc;
   $ident = $ident == ""?"null":$ident;
-  
+
   db_getfile("db_figura",$dbh_figura);
   db_getfile("db_logo",$dbh_logo);
   $result = db_query("select max(codigo) + 1 from db_config");
-  $codigo = pg_result($result,0,0);
+  $codigo = pg_fetch_result($result,0,0);
   $codigo = $codigo==""?"1":$codigo;
 	$insert = "insert into db_config
 	                (codigo,
@@ -127,20 +127,20 @@ if (isset($HTTP_POST_VARS["incluir"])) {
 					'$numero',
 					'$db21_codigomunicipoestado'
 					)";
-					db_query($insert) or die("Erro(23) inserindo em db_config: ".pg_errormessage());
-					db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+					db_query($insert) or die("Erro(23) inserindo em db_config: ".pg_last_error());
+					db_redireciona($_SERVER['PHP_SELF']);
 				exit;
 				////////////////ALTERAR////////////////
-} else if (isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
-  
+} else if (isset($_POST["alterar"])) {
+  db_postmemory($_POST);
+
   $dtcont = "'".$dtcont_ano."-".$dtcont_mes."-".$dtcont_dia."'";
   if (!checkdate($dtcont_mes,$dtcont_dia,$dtcont_ano)) {
     db_erro("Campo 'Data da Contabilidade' está inválido: $dtcont");
   }
   $tx_banc = $tx_banc == ""?"null":$tx_banc;
   $ident = $ident == ""?"null":$ident;
-  
+
   $result = db_query("select figura,logo from db_config where codigo = $codigo ");
   db_query("update db_config set
 nomeinst = '$nomeinst',
@@ -167,18 +167,18 @@ cep = '$cep',
 db21_codigomunicipoestado = '$db21_codigomunicipoestado',
 bairro = '$bairro',
 numcgm = $numcgm,
-logo = '".db_getfile("db_logo",$dbh_logo,pg_result($result,0,1))."',
-figura = '".db_getfile("db_figura",$dbh_figura,pg_result($result,0,0))."'
-where codigo = $codigo") or die("Erro(38) alterando db_config: ".pg_errormessage());
-  db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+logo = '".db_getfile("db_logo",$dbh_logo,pg_fetch_result($result,0,1))."',
+figura = '".db_getfile("db_figura",$dbh_figura,pg_fetch_result($result,0,0))."'
+where codigo = $codigo") or die("Erro(38) alterando db_config: ".pg_last_error());
+  db_redireciona($_SERVER['PHP_SELF']);
   exit;
   ////////////////EXCLUIR//////////////
-} else if (isset($HTTP_POST_VARS["excluir"])) {
-  $result = db_query("select figura,logo from db_config where codigo = ".$HTTP_POST_VARS["codigo"]);
-  db_query("delete from db_config where codigo = ".$HTTP_POST_VARS["codigo"]) or die("Erro(43) excluindo db_usuarios: ".pg_errormessage());
-  system("rm -f $DB_FILES/".pg_result($result,0,0));
-  system("rm -f $DB_FILES/".pg_result($result,0,1));
-  db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+} else if (isset($_POST["excluir"])) {
+  $result = db_query("select figura,logo from db_config where codigo = ".$_POST["codigo"]);
+  db_query("delete from db_config where codigo = ".$_POST["codigo"]) or die("Erro(43) excluindo db_usuarios: ".pg_last_error());
+  system("rm -f $DB_FILES/".pg_fetch_result($result,0,0));
+  system("rm -f $DB_FILES/".pg_fetch_result($result,0,1));
+  db_redireciona($_SERVER['PHP_SELF']);
   exit;
 }
 ?>
@@ -287,11 +287,11 @@ input {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
         <?php 
-      if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
+      if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {
         $sql = "SELECT  codigo as db_codigo,nomeinst,ender as endereço,telef as telefone,munic as município,uf,figura,
                         db21_codigomunicipoestado
                 FROM db_config
-		  	    WHERE upper(nomeinst) like upper('".$HTTP_POST_VARS["nomeinst"]."%')
+		  	    WHERE upper(nomeinst) like upper('".$_POST["nomeinst"]."%')
 			    ORDER BY nomeinst";
         db_lov($sql,15,"con1_cadinst.php"); 
       } else {

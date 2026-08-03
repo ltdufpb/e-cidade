@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_escrituraprovisao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clescrituraprovisao = new cl_escrituraprovisao;
 $clescrituraprovisao->rotulo->label("c102_sequencial");
 $clescrituraprovisao->rotulo->label("c102_usuario");
@@ -98,9 +98,9 @@ $clescrituraprovisao->rotulo->label("c102_usuario");
         }else{
            $sql = $clescrituraprovisao->sql_query("",$campos,"c102_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c102_usuario)){
-          $repassa = array("chave_c102_sequencial"=>$chave_c102_sequencial,"chave_c102_usuario"=>$chave_c102_usuario);
+          $repassa = ["chave_c102_sequencial"=>$chave_c102_sequencial,"chave_c102_usuario"=>$chave_c102_usuario];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

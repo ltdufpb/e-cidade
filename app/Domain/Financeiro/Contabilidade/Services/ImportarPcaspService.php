@@ -76,7 +76,7 @@ class ImportarPcaspService
             }
 
             // usando BULK inserts
-            $dados[] = (new PcaspBuilder())
+            $dados[] = new PcaspBuilder()
                 ->addExercicio($this->exercicio)
                 ->addTipoPlano($this->plano)
                 ->addLayout($this->layout)

@@ -7,6 +7,7 @@ use ECidade\Tributario\Caixa\Entity\Recibo;
 
 final class ReciboCollection extends ArrayCollection
 {
+    #[\Override]
     public function add(Recibo $recibo)
     {
         parent::add($recibo);

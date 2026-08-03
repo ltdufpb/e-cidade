@@ -72,7 +72,7 @@ class AnexoVI
         $this->pdf->Open();
 
         $instituicaoPrefeitura = \InstituicaoRepository::getInstituicaoPrefeitura();
-        $instituicoesSelecionadas = explode(",", $this->anexo->getInstituicoes());
+        $instituicoesSelecionadas = explode(",", (string) $this->anexo->getInstituicoes());
         if (count($instituicoesSelecionadas) == 1) {
 
             $instituicao = \InstituicaoRepository::getInstituicaoByCodigo($instituicoesSelecionadas[0]);

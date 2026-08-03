@@ -32,7 +32,7 @@ require_once(modification("classes/db_matestoque_classe.php"));
 require_once(modification("classes/db_matestoqueitem_classe.php"));
 require_once(modification("classes/db_matmaterestoque_classe.php"));
 require_once modification("classes/materialestoque.model.php");
-parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
+parse_str((string) $_SERVER ['QUERY_STRING'], $result);
 
 $clmatestoque = new cl_matestoque();
 $clmatestoqueitem = new cl_matestoqueitem();
@@ -156,7 +156,7 @@ if($listar_serv == "T") {
 } else {
 	$sSql = $clmatestoque->sql_query_pcmater(null, $sCampos, $ordem, "$txt_where");
 }
-$iNumDec = pg_result(db_query("select coalesce(e30_numdec,2) from empparametro where e39_anousu = ".db_getsession("DB_anousu")),0,0);
+$iNumDec = pg_fetch_result(db_query("select coalesce(e30_numdec,2) from empparametro where e39_anousu = ".db_getsession("DB_anousu")),0,0);
 $result  = $clmatestoque->sql_record($sSql);
 
 if ($clmatestoque->numrows == 0) {
@@ -328,12 +328,12 @@ for($x = 0; $x < $clmatestoque->numrows; $x ++) {
     $pdf->setfont('arial', 'b', 8);
     $pdf->cell(20, $alt,$m70_codigo, $borda, 0, "C", $p);
     $pdf->cell(20, $alt, $m70_codmatmater, $borda, 0, "C", $p);
-    $pdf->cell($tam, $alt, substr($m60_descr, 0, 45), $borda, 0, "L", $p);
+    $pdf->cell($tam, $alt, substr((string) $m60_descr, 0, 45), $borda, 0, "L", $p);
     if ($tipo == "S") {
       $pdf->cell(18, $alt, $sLocalizacao, $borda, 0, "C", $p);
     }
     $pdf->cell(14+$iAcrescimoCelula, $alt, $m70_coddepto, $borda, 0, "C", $p);
-    $pdf->cell(50, $alt, substr($descrdepto, 0, 25), $borda, 0, "L", $p);
+    $pdf->cell(50, $alt, substr((string) $descrdepto, 0, 25), $borda, 0, "L", $p);
 
 	if($m61_usadec == 'true'){
      $pdf->cell(19+$iAcrescimoCelula, $alt, db_formatar($m70_quant, 'f'," ",0,'',$iNumDec), $borda, 0, "C", $p);

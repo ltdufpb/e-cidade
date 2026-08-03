@@ -40,9 +40,9 @@ class TipoRecursos
         $handle = fopen($file, 'r');
 
         // Ignora a primeira linha
-        fgetcsv($handle, 0, ",");
-        $arquivoPorAno = array();
-        while (($data = fgetcsv($handle, 0, ",")) !== false) {
+        fgetcsv($handle, 0, ",", escape: '\\');
+        $arquivoPorAno = [];
+        while (($data = fgetcsv($handle, 0, ",", escape: '\\')) !== false) {
             $object = $this->parser($data);
 
             $repository = RecursoRepository::getInstance();
@@ -76,7 +76,7 @@ class TipoRecursos
     public static function getCodigoParaAno($ano, $codigoRecurso = null)
     {
         $arquivo = file_get_contents("config/financeiro/siconfi/recursos/recurso_{$ano}.csv");
-        $retorno = array();
+        $retorno = [];
         foreach ($arquivo as $linha) {
             $dadosLinha = explode('#', $linha);
             $retorno[$dadosLinha[0]] = $dadosLinha[2];
@@ -102,7 +102,7 @@ class TipoRecursos
         $object = new \stdClass();
 
         $pad = \InstituicaoRepository::usaFonteRecursoUniao() ? 5 : 4;
-        $object->recurso = str_pad($data[0], $pad, '0', STR_PAD_LEFT);
+        $object->recurso = str_pad((string) $data[0], $pad, '0', STR_PAD_LEFT);
         $object->descricao = $data[1];
         $object->codigosiconfi = $data[2];
 
@@ -120,7 +120,7 @@ class TipoRecursos
             $recurso->setCodigoSiconfi($object->codigosiconfi);
             $recurso->salvar();
             return true;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->erros[$object->recurso] = $object->recurso ;
             return false;
         }

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_usuarios = new cl_db_usuarios;
 $cldb_usuarios->rotulo->label("id_usuario");
 $cldb_usuarios->rotulo->label("nome");
@@ -105,9 +105,9 @@ $cldb_usuarios->rotulo->label("nome");
         }else{
            $sql = $cldb_usuarios->sql_query_instit("",$campos,"nome"," 1=1 $whereinstit and usuarioativo = '1' and usuext = 0");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_nome)){
-          $repassa = array("chave_id_usuario"=>$chave_id_usuario,"chave_nome"=>$chave_nome);
+          $repassa = ["chave_id_usuario"=>$chave_id_usuario,"chave_nome"=>$chave_nome];
         }
         db_lovrot($sql,50,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

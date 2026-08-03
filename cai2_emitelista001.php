@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 require_once(modification('libs/db_utils.php'));
 require_once(modification("libs/db_libpostgres.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clpostgresqlutils = new PostgreSQLUtils;
 $clrotulo          = new rotulocampo;
@@ -112,7 +112,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-            $xx = array("v"=>"Valor", "a"=>"Alfabética","n"=>"Numérica");
+            $xx = ["v"=>"Valor", "a"=>"Alfabética","n"=>"Numérica"];
             db_select('ordem',$xx,true,$db_opcao,"");
           ?>
         </td>
@@ -123,7 +123,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-            $xx = array("n"=>"Nao", "s"=>"Sim");
+            $xx = ["n"=>"Nao", "s"=>"Sim"];
             db_select('agrupar',$xx,true,$db_opcao,"");
           ?>
         </td>
@@ -134,7 +134,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-            $arraycomvalor = array("s"=>"Sim", "n"=>"Não");
+            $arraycomvalor = ["s"=>"Sim", "n"=>"Não"];
             db_select('comvalor',$arraycomvalor,true,$db_opcao,"");
           ?>
         </td>
@@ -145,7 +145,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-            $xx = array("p"=>"PDF", "t"=>"TXT");
+            $xx = ["p"=>"PDF", "t"=>"TXT"];
             db_select('tipo',$xx,true,$db_opcao," onchange='js_filtro();' ");
           ?>
         </td>
@@ -156,7 +156,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-            $sn = array("s"=>"Sim", "n"=>"Não");
+            $sn = ["s"=>"Sim", "n"=>"Não"];
             db_select('filtro',$sn,true,$db_opcao,"");
           ?>
         </td>

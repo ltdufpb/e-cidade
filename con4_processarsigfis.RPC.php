@@ -49,7 +49,7 @@ $oParam            = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
 $oRetorno          = new stdClass();
 $oRetorno->status  = 1;
-$oRetorno->lista   = array();
+$oRetorno->lista   = [];
 switch ($oParam->exec) {
 
   case "processarSigfis":
@@ -58,7 +58,7 @@ switch ($oParam->exec) {
 
       $oEscritor     = new PadArquivoEscritorTXT();
       $iAnoUsu       = db_getsession("DB_anousu");
-      $sMesFinal     = str_pad($oParam->iPeriodo, 2, "0", STR_PAD_LEFT);
+      $sMesFinal     = str_pad((string) $oParam->iPeriodo, 2, "0", STR_PAD_LEFT);
       $sDataInicial  = "{$iAnoUsu}-{$sMesFinal}-01";
       $iUltimoDiaMes = cal_days_in_month(CAL_GREGORIAN, $sMesFinal, $iAnoUsu);
       $sDataFinal    = "{$iAnoUsu}-{$sMesFinal}-{$iUltimoDiaMes}";
@@ -79,7 +79,7 @@ switch ($oParam->exec) {
             $oArquivo    = new $sNomeClasse;
             $oArquivo->setDataInicial($sDataInicial);
             $oArquivo->setDataFinal($sDataFinal);
-            $oArquivo->setCodigoTribunal(urldecode($oParam->sCodigoTribunal));
+            $oArquivo->setCodigoTribunal(urldecode((string) $oParam->sCodigoTribunal));
             $oArquivo->setTXTLogger($otxtLogger);
             $oArquivo->gerarDados();
             $oEscritor->adicionarArquivo($oEscritor->criarArquivo($oArquivo), $oArquivo->getNomeArquivo());

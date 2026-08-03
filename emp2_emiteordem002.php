@@ -35,7 +35,7 @@ require_once(modification("classes/db_pagordemele_classe.php"));
 $oGet = db_utils::postMemory($_GET);
 
 db_postmemory($_GET);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clpagordem     = new cl_pagordem;
 $clpagordemele  = new cl_pagordemele;
 
@@ -57,7 +57,7 @@ if ( isset($oGet->aFornecedor) && !empty($oGet->aFornecedor) ) {
 $dbwhere = "";
 if ((isset($e60_codemp_ini) && !empty($e60_codemp_ini)) && !isset($e60_codemp_fim)) {
 
-  $aEmpenhoIni = explode("/", $e60_codemp_ini);
+  $aEmpenhoIni = explode("/", (string) $e60_codemp_ini);
   $dbwhere    .= " e60_codemp  = ";
   $dbwhere    .= " '{$aEmpenhoIni[0]}'";
   $dbwhere    .= " and e60_anousu = ";
@@ -67,8 +67,8 @@ if ((isset($e60_codemp_ini) && !empty($e60_codemp_ini)) && !isset($e60_codemp_fi
 
 if ((isset($e60_codemp_ini) && !empty($e60_codemp_ini)) && (isset($e60_codemp_fim) && !empty($e60_codemp_fim))) {
 
-  $aEmpenhoIni = explode("/", $e60_codemp_ini);
-  $aEmpenhoFim = explode("/", $e60_codemp_fim);
+  $aEmpenhoIni = explode("/", (string) $e60_codemp_ini);
+  $aEmpenhoFim = explode("/", (string) $e60_codemp_fim);
   $dbwhere    .= " cast(e60_codemp as integer) between ";
   $dbwhere    .= " {$aEmpenhoIni[0]} and {$aEmpenhoFim[0]} ";
   $dbwhere    .= " and e60_anousu between";
@@ -148,7 +148,7 @@ if ($clpagordem->numrows>0) {
 
 $result2 = db_query("select * from empparametro where e39_anousu = {$iAnoUso} ");
 
-if (pg_numrows($result2)>0) {
+if (pg_num_rows($result2)>0) {
   db_fieldsmemory($result2,0);
   $pdf1->nvias= $e30_nroviaord;
 }
@@ -194,7 +194,7 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
   //
   // coloquei a linha abaixo porque emitindo por data em charqueadas dava erro
   //
-  if (pg_numrows($resultord)==0) continue;
+  if (pg_num_rows($resultord)==0) continue;
 
   db_fieldsmemory($resultord,0);
 
@@ -248,7 +248,7 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
                                          inner join pcforneconpad on pc64_contabanco = pc63_contabanco
                                    where pc63_numcgm = ".$z01_numcgm);
 
-   if(pg_numrows($result_pcfornecon) > 0){
+   if(pg_num_rows($result_pcfornecon) > 0){
      db_fieldsmemory($result_pcfornecon,0);
    }
 
@@ -265,7 +265,7 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
    $pdf1->codigo_ordem     = $e50_codord;
    $pdf1->logo             = $logo;
    $pdf1->prefeitura       = $nomeinst;
-   $pdf1->enderpref        = trim($ender).",".$numero;
+   $pdf1->enderpref        = trim((string) $ender).",".$numero;
    $pdf1->municpref        = $munic;
    $pdf1->cgcpref          = $cgc;
    $pdf1->telefpref        = $telef;
@@ -292,7 +292,7 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
    $result_conta = db_query(analiseQueryPlanoOrcamento($sql));
 //	 echo $sql;
 //   die("<br><br>".$sqlConta);
-   if ($result_conta != false && (pg_numrows($result_conta) == 1)) {
+   if ($result_conta != false && (pg_num_rows($result_conta) == 1)) {
      db_fieldsmemory($result_conta,0);
      $sqlConta = "select * from conplanoconta where c63_codcon = $c61_codcon and c63_anousu = {$iAnoUso} and c63_reduz = {$c61_reduz} ";
      $result_conta = db_query($sqlConta);
@@ -318,7 +318,7 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
    $pdf1->outrasordens     = $outrasordens;
    $pdf1->recorddositens   = $resultitem;
    $pdf1->ano		           = $e60_anousu;
-   $pdf1->linhasdositens   = pg_numrows($resultitem);
+   $pdf1->linhasdositens   = pg_num_rows($resultitem);
    $pdf1->elementoitem     = "o56_elemento";
    $pdf1->descr_elementoitem = "o56_descr";
    $pdf1->vlremp           = "e53_valor";
@@ -327,7 +327,7 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
    $pdf1->vlrsaldo         = "saldo";
    $pdf1->saldo_final      = "saldo_final";
    $pdf1->recordretencoes  = $resultretencoes;
-   $pdf1->linhasretencoes  = pg_numrows($resultretencoes);
+   $pdf1->linhasretencoes  = pg_num_rows($resultretencoes);
    $pdf1->receita          = "e52_receit";
    $pdf1->dreceita         = "k02_drecei";
    $pdf1->vlrrec           = "e52_valor";
@@ -379,8 +379,8 @@ for ($i = 0;$i < $clpagordem->numrows;$i++) {
 
    if($clpagordem->numrows == 1 && isset($valor_ordem)){
 
-   	if( $valor_ordem > pg_result($resultitem,0,"saldo") ){
-       $valor_ordem = pg_result($resultitem,0,"saldo");
+   	if( $valor_ordem > pg_fetch_result($resultitem,0,"saldo") ){
+       $valor_ordem = pg_fetch_result($resultitem,0,"saldo");
      }
 
      $pdf1->valor_ordem  = "$valor_ordem";
@@ -427,7 +427,7 @@ if (GerenciadorEletronicoDocumentoConfiguracao::getInstance()->utilizaGED()) {
     $oStdDadosGED->tipo  = "NUMERO";
     $oStdDadosGED->valor = $e50_codord_ini;
     $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$e50_codord_ini}.pdf");
-    $oGerenciador->moverArquivo(array($oStdDadosGED));
+    $oGerenciador->moverArquivo([$oStdDadosGED]);
 
 
   } catch (Exception $eErro) {

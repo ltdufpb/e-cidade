@@ -28,8 +28,8 @@
 set_time_limit(0);
 include(modification("libs/db_sql.php"));
 include(modification("fpdf151/pdf.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $pdf = new pdf();
 $pdf->Open();
 $pdf->AliasNbPages();
@@ -89,7 +89,7 @@ select z.*, proprietario_nome.proprietario from (
 inner join proprietario_nome on proprietario_nome.j01_matric = z.j41_matric $where $ordem $modo  
 ";
 $result = db_query($sql);
-$num = pg_numrows($result);
+$num = pg_num_rows($result);
 $pdf->AddPage();
 $pdf->SetFont('Arial','B',7);
 $pdf->Cell(25,05,"Matrícula",1,0,"C",1);
@@ -100,7 +100,7 @@ $pdf->Cell(20,05,"Contrato",1,1,"C",1);
 $prin = 0;
 $sec = 0;
 if($resumido == 't'){
-  for($s=0;$s<pg_numrows($result);$s++){
+  for($s=0;$s<pg_num_rows($result);$s++){
     db_fieldsmemory($result,$s);
     $pdf->SetFont('Arial','',7);
     $pdf->Cell(25,05,$j41_matric,1,0,"C",0);
@@ -116,7 +116,7 @@ if($resumido == 't'){
     }
   }
 }elseif($resumido == 'f'){
-  for($s=0;$s<pg_numrows($result);$s++){
+  for($s=0;$s<pg_num_rows($result);$s++){
     db_fieldsmemory($result,$s);
     $pdf->SetFont('Arial','',7);
     $pdf->Cell(25,05,$j41_matric,1,0,"C",1);
@@ -125,7 +125,7 @@ if($resumido == 't'){
     $pdf->Cell(100,05,$proprietario,1,0,"L",1);
     $pdf->Cell(20,05,$j41_promitipo,1,1,"C",1);
     $resultp = db_query("SELECT z01_nome,j41_tipopro from promitente inner join cgm on z01_numcgm = j41_numcgm where j41_matric = $j41_matric");
-    for($i=0;$i<pg_numrows($resultp);$i++){
+    for($i=0;$i<pg_num_rows($resultp);$i++){
       db_fieldsmemory($resultp,$i);
       if($j41_tipopro == 't'){
         $pdf->Cell(25,05,"PRINCIPAL",1,0,"L",0);

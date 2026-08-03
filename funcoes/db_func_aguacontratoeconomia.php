@@ -25,12 +25,12 @@
  *                                licenca/licenca_pt.txt
  */
 
-$aCampos = array(
+$aCampos = [
   'aguacontratoeconomia.x38_sequencial',
   'aguacontratoeconomia.x38_aguacontrato',
   'cgm_economia.z01_nome',
   'aguacategoriaconsumo.x13_descricao',
   'aguacontratoeconomia.x38_complemento'
-);
+];
 
 $campos = implode(', ', $aCampos);

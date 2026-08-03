@@ -12,14 +12,8 @@ use DateTime;
 
 class DemandaReprimidaController extends Controller
 {
-    /**
-     * @var DemandaReprimidaService
-     */
-    private $service;
-
-    public function __construct(DemandaReprimidaService $service)
+    public function __construct(private readonly DemandaReprimidaService $service)
     {
-        $this->service = $service;
     }
 
     public function salvar(SalvarDemandaReprimidaRequest $request)
@@ -55,7 +49,7 @@ class DemandaReprimidaController extends Controller
 
         $pdf = $this->service->gerarRelatorio($dados)
             ->setPeriodo(new DateTime($request->periodoInicial), new DateTime($request->periodoFinal))
-            ->setDepartamentos(array_map('utf8_decode', $request->get('txtDepartamentos', ['TODOS'])));
+            ->setDepartamentos(array_map(utf8_decode(...), $request->get('txtDepartamentos', ['TODOS'])));
 
         return new DBJsonResponse(
             $pdf->emitir($request->ordem, $request->somenteTotal, $request->exibeObservacao),

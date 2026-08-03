@@ -30,32 +30,32 @@
 class cl_solicitem
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $pc11_codigo = 0;
-    var $pc11_numero = 0;
-    var $pc11_seq = 0;
-    var $pc11_quant = 0;
-    var $pc11_vlrun = 0;
-    var $pc11_prazo = null;
-    var $pc11_pgto = null;
-    var $pc11_resum = null;
-    var $pc11_just = null;
-    var $pc11_liberado = 'f';
-    var $pc11_servicoquantidade = 'f';
+    public $pc11_codigo = 0;
+    public $pc11_numero = 0;
+    public $pc11_seq = 0;
+    public $pc11_quant = 0;
+    public $pc11_vlrun = 0;
+    public $pc11_prazo = null;
+    public $pc11_pgto = null;
+    public $pc11_resum = null;
+    public $pc11_just = null;
+    public $pc11_liberado = 'f';
+    public $pc11_servicoquantidade = 'f';
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  pc11_codigo = int8 = Código do registro
                  pc11_numero = int4 = Solicitacao
                  pc11_seq = int4 = Sequencial
@@ -70,11 +70,11 @@ class cl_solicitem
                  ";
 
     //funcao construtor da classe
-    function cl_solicitem()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("solicitem");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -169,10 +169,10 @@ class cl_solicitem
                 $this->erro_status = "0";
                 return false;
             }
-            $this->pc11_codigo = pg_result($result, 0, 0);
+            $this->pc11_codigo = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from solicitem_pc11_codigo_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $pc11_codigo)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $pc11_codigo)) {
                 $this->erro_sql = " Campo pc11_codigo maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -222,7 +222,7 @@ class cl_solicitem
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "itens da solicitacao de compras ($this->pc11_codigo) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "itens da solicitacao de compras já Cadastrado";
@@ -249,30 +249,30 @@ class cl_solicitem
         $resaco = $this->sql_record($this->sql_query_file($this->pc11_codigo));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,5558,'$this->pc11_codigo','I')");
-            $resac = db_query("insert into db_acount values($acount,870,5558,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,5558,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,870,5548,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,5548,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_numero')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,870,5549,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,5549,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_seq')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,870,5551,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,5551,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_quant')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,870,5552,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,5552,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_vlrun')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,870,5553,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,5553,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_prazo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,870,5554,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,5554,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_pgto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,870,5555,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,5555,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_resum')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,870,5556,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,5556,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_just')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,870,5557,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,5557,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_liberado')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,870,19696,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,870,19696,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'pc11_servicoquantidade')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
         return true;
@@ -284,10 +284,10 @@ class cl_solicitem
         $this->atualizacampos();
         $sql = " update solicitem set ";
         $virgula = "";
-        if (trim($this->pc11_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_codigo"])) {
+        if (trim((string) $this->pc11_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_codigo"])) {
             $sql .= $virgula . " pc11_codigo = $this->pc11_codigo ";
             $virgula = ",";
-            if (trim($this->pc11_codigo) == null) {
+            if (trim((string) $this->pc11_codigo) == null) {
                 $this->erro_sql = " Campo Código do registro nao Informado.";
                 $this->erro_campo = "pc11_codigo";
                 $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_solicitem
                 return false;
             }
         }
-        if (trim($this->pc11_numero) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_numero"])) {
+        if (trim((string) $this->pc11_numero) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_numero"])) {
             $sql .= $virgula . " pc11_numero = $this->pc11_numero ";
             $virgula = ",";
-            if (trim($this->pc11_numero) == null) {
+            if (trim((string) $this->pc11_numero) == null) {
                 $this->erro_sql = " Campo Solicitacao nao Informado.";
                 $this->erro_campo = "pc11_numero";
                 $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_solicitem
                 return false;
             }
         }
-        if (trim($this->pc11_seq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_seq"])) {
+        if (trim((string) $this->pc11_seq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_seq"])) {
             $sql .= $virgula . " pc11_seq = $this->pc11_seq ";
             $virgula = ",";
-            if (trim($this->pc11_seq) == null) {
+            if (trim((string) $this->pc11_seq) == null) {
                 $this->erro_sql = " Campo Sequencial nao Informado.";
                 $this->erro_campo = "pc11_seq";
                 $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_solicitem
                 return false;
             }
         }
-        if (trim($this->pc11_quant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_quant"])) {
+        if (trim((string) $this->pc11_quant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_quant"])) {
             $sql .= $virgula . " pc11_quant = $this->pc11_quant ";
             $virgula = ",";
-            if (trim($this->pc11_quant) == null) {
+            if (trim((string) $this->pc11_quant) == null) {
                 $this->erro_sql = " Campo Qtde solicitada nao Informado.";
                 $this->erro_campo = "pc11_quant";
                 $this->erro_banco = "";
@@ -340,33 +340,33 @@ class cl_solicitem
                 return false;
             }
         }
-        if (trim($this->pc11_vlrun) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_vlrun"])) {
-            if (trim($this->pc11_vlrun) == "" && isset($GLOBALS["HTTP_POST_VARS"]["pc11_vlrun"])) {
+        if (trim((string) $this->pc11_vlrun) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_vlrun"])) {
+            if (trim((string) $this->pc11_vlrun) == "" && isset($GLOBALS["HTTP_POST_VARS"]["pc11_vlrun"])) {
                 $this->pc11_vlrun = "0";
             }
             $sql .= $virgula . " pc11_vlrun = $this->pc11_vlrun ";
             $virgula = ",";
         }
-        if (trim($this->pc11_prazo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_prazo"])) {
+        if (trim((string) $this->pc11_prazo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_prazo"])) {
             $sql .= $virgula . " pc11_prazo = '$this->pc11_prazo' ";
             $virgula = ",";
         }
-        if (trim($this->pc11_pgto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_pgto"])) {
+        if (trim((string) $this->pc11_pgto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_pgto"])) {
             $sql .= $virgula . " pc11_pgto = '$this->pc11_pgto' ";
             $virgula = ",";
         }
-        if (trim($this->pc11_resum) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_resum"])) {
+        if (trim((string) $this->pc11_resum) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_resum"])) {
             $sql .= $virgula . " pc11_resum = '$this->pc11_resum' ";
             $virgula = ",";
         }
-        if (trim($this->pc11_just) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_just"])) {
+        if (trim((string) $this->pc11_just) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_just"])) {
             $sql .= $virgula . " pc11_just = '$this->pc11_just' ";
             $virgula = ",";
         }
-        if (trim($this->pc11_liberado) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_liberado"])) {
+        if (trim((string) $this->pc11_liberado) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_liberado"])) {
             $sql .= $virgula . " pc11_liberado = '$this->pc11_liberado' ";
             $virgula = ",";
-            if (trim($this->pc11_liberado) == null) {
+            if (trim((string) $this->pc11_liberado) == null) {
                 $this->erro_sql = " Campo Liberar para contabilidade nao Informado.";
                 $this->erro_campo = "pc11_liberado";
                 $this->erro_banco = "";
@@ -377,7 +377,7 @@ class cl_solicitem
                 return false;
             }
         }
-        if (trim($this->pc11_servicoquantidade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_servicoquantidade"])) {
+        if (trim((string) $this->pc11_servicoquantidade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc11_servicoquantidade"])) {
             $sql .= $virgula . " pc11_servicoquantidade = '$this->pc11_servicoquantidade' ";
             $virgula = ",";
         }
@@ -389,61 +389,61 @@ class cl_solicitem
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,5558,'$this->pc11_codigo','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_codigo"]) || $this->pc11_codigo != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,5558,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,5558,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_codigo')) . "','$this->pc11_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_numero"]) || $this->pc11_numero != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,5548,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,5548,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_numero')) . "','$this->pc11_numero'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_seq"]) || $this->pc11_seq != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,5549,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,5549,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_seq')) . "','$this->pc11_seq'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_quant"]) || $this->pc11_quant != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,5551,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,5551,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_quant')) . "','$this->pc11_quant'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_vlrun"]) || $this->pc11_vlrun != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,5552,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,5552,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_vlrun')) . "','$this->pc11_vlrun'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_prazo"]) || $this->pc11_prazo != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,5553,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,5553,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_prazo')) . "','$this->pc11_prazo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_pgto"]) || $this->pc11_pgto != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,5554,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,5554,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_pgto')) . "','$this->pc11_pgto'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_resum"]) || $this->pc11_resum != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,5555,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,5555,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_resum')) . "','$this->pc11_resum'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_just"]) || $this->pc11_just != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,5556,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,5556,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_just')) . "','$this->pc11_just'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_liberado"]) || $this->pc11_liberado != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,5557,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,5557,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_liberado')) . "','$this->pc11_liberado'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["pc11_servicoquantidade"]) || $this->pc11_servicoquantidade != "") {
-                    $resac = db_query("insert into db_acount values($acount,870,19696,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,870,19696,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'pc11_servicoquantidade')) . "','$this->pc11_servicoquantidade'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -499,40 +499,40 @@ class cl_solicitem
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,5558,'$pc11_codigo','E')");
-                $resac = db_query("insert into db_acount values($acount,870,5558,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,5558,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,870,5548,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,5548,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_numero')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,870,5549,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,5549,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_seq')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,870,5551,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,5551,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_quant')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,870,5552,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,5552,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_vlrun')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,870,5553,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,5553,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_prazo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,870,5554,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,5554,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_pgto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,870,5555,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,5555,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_resum')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,870,5556,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,5556,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_just')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,870,5557,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,5557,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_liberado')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,870,19696,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,870,19696,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'pc11_servicoquantidade')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -665,7 +665,7 @@ class cl_solicitem
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:solicitem";
@@ -709,7 +709,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -747,7 +747,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -823,7 +823,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -873,7 +873,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -914,7 +914,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -966,7 +966,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1024,7 +1024,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1073,7 +1073,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1127,7 +1127,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1171,7 +1171,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1239,7 +1239,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1290,7 +1290,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1329,7 +1329,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1366,12 +1366,12 @@ class cl_solicitem
             }
         }
         $sql .= $sql2;
-        if (trim($having) != "") {
+        if (trim((string) $having) != "") {
             $sql .= $having;
         }
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1410,7 +1410,7 @@ class cl_solicitem
 
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1461,7 +1461,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1510,7 +1510,7 @@ class cl_solicitem
         if ($ordem != null) {
 
             $sSql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1566,7 +1566,7 @@ class cl_solicitem
         if ($ordem != null) {
 
             $sSql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1628,7 +1628,7 @@ class cl_solicitem
         if ($ordem != null) {
 
             $sSql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1669,7 +1669,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1719,7 +1719,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1783,7 +1783,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1823,7 +1823,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1893,7 +1893,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1934,7 +1934,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1988,7 +1988,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -2043,7 +2043,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -2096,7 +2096,7 @@ class cl_solicitem
         if ($ordem != null) {
 
             $sSql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -2142,7 +2142,7 @@ class cl_solicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -2195,7 +2195,7 @@ class cl_solicitem
         if ($ordem != null) {
 
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
 
             for ($i = 0; $i < sizeof($campos_sql); $i++) {

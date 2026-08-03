@@ -40,12 +40,12 @@ if (empty($chave_pc50_codcom)) {
   $chave_pc50_codcom = null;
 }
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpctipocompra = new cl_pctipocompra;
 $clpctipocompra->rotulo->label("pc50_codcom");
 $clpctipocompra->rotulo->label("pc50_descr");
 
-$sDescricao = isset($chave_pc50_descr) ? $chave_pc50_descr : null;
+$sDescricao = $chave_pc50_descr ?? null;
 ?>
 <html>
 <head>
@@ -75,7 +75,7 @@ $sDescricao = isset($chave_pc50_descr) ? $chave_pc50_descr : null;
             </td>
             <td width="96%" align="left" nowrap>
               <?php
-              $chave_pc50_descr = htmlentities(stripslashes($sDescricao), ENT_QUOTES, 'ISO-8859-1');
+              $chave_pc50_descr = htmlentities(stripslashes((string) $sDescricao), ENT_QUOTES, 'ISO-8859-1');
               db_input("pc50_descr",50,$Ipc50_descr,true,"text",4,"","chave_pc50_descr");
               ?>
             </td>
@@ -94,20 +94,20 @@ $sDescricao = isset($chave_pc50_descr) ? $chave_pc50_descr : null;
   <tr>
     <td align="center" valign="top">
       <?php
-      $chave_pc50_descr = pg_escape_string(stripcslashes($sDescricao));
+      $chave_pc50_descr = pg_escape_string(stripcslashes((string) $sDescricao));
       if(!isset($pesquisa_chave)){
 
         $campos = "pctipocompra.*";
-        if(isset($chave_pc50_codcom) && (trim($chave_pc50_codcom)!="") ){
+        if(isset($chave_pc50_codcom) && (trim((string) $chave_pc50_codcom)!="") ){
           $sql = $clpctipocompra->sql_query($chave_pc50_codcom,$campos,"pc50_codcom");
         }else if(isset($chave_pc50_descr) && (trim($chave_pc50_descr)!="") ){
           $sql = $clpctipocompra->sql_query("",$campos,"pc50_descr"," pc50_descr like '$chave_pc50_descr%' ");
         }else{
           $sql = $clpctipocompra->sql_query("",$campos,"pc50_codcom","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_pc50_descr)){
-          $repassa = array("chave_pc50_codcom"=>$chave_pc50_codcom,"chave_pc50_descr"=>$chave_pc50_descr);
+          $repassa = ["chave_pc50_codcom"=>$chave_pc50_codcom,"chave_pc50_descr"=>$chave_pc50_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -41,7 +41,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 $oJson              = new Services_JSON();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno           = new stdClass();
-$oRetorno->dados    = array();
+$oRetorno->dados    = [];
 $oRetorno->status   = 1;
 
 try {
@@ -78,19 +78,7 @@ try {
       break;
 
   }
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (Exception $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (ParameterException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (FileException $oErro) {
+} catch (BusinessException|Exception|ParameterException|FileException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->message = urlencode($oErro->getMessage());

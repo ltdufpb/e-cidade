@@ -16,15 +16,15 @@ class M10507TermoTaxaFixa extends PostgresMigration
      */
     public function up()
     {
-        $table = $this->table($this->tableName, array(
+        $table = $this->table($this->tableName, [
             'id' => 'ar42_sequencial',
             'schema' => 'arrecadacao'
-        ));
+        ]);
 
         $table
-            ->addColumn('ar42_parcel', 'integer', array('null' => false))
-            ->addColumn('ar42_processoforo', 'integer', array('null' => false))
-            ->addColumn('ar42_fixa', 'boolean', array('null' => false))
+            ->addColumn('ar42_parcel', 'integer', ['null' => false])
+            ->addColumn('ar42_processoforo', 'integer', ['null' => false])
+            ->addColumn('ar42_fixa', 'boolean', ['null' => false])
             ->save();
 
         $this->upPremenu();
@@ -35,7 +35,7 @@ class M10507TermoTaxaFixa extends PostgresMigration
      */
     public function down()
     {
-        $this->table($this->tableName, array('schema' => 'arrecadacao'))
+        $this->table($this->tableName, ['schema' => 'arrecadacao'])
             ->drop();
 
         $this->downPremenu();

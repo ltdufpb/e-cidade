@@ -63,10 +63,10 @@ $escola = db_getsession("DB_coddepto");
             <?php
             global $oid;
 
-            if( trim( $z01_i_cgsund ) != "" && $z01_i_cgsund != null ) {
+            if( trim( (string) $z01_i_cgsund ) != "" && $z01_i_cgsund != null ) {
 
               $result_foto = db_query("select z01_o_oid as oid from cgs_und where z01_i_cgsund = {$z01_i_cgsund}");
-              if( pg_numrows( $result_foto ) > 0 ) {
+              if( pg_num_rows( $result_foto ) > 0 ) {
                 db_fieldsmemory( $result_foto, 0 );
               }
             }
@@ -175,7 +175,7 @@ $escola = db_getsession("DB_coddepto");
                 <?php
                 if( isset( $z01_i_familiamicroarea ) && $z01_i_familiamicroarea != "" ) {
                 ?>
-                  if( <?=trim( $z01_i_familiamicroarea)?> == itemArray[i][1] ) {
+                  if( <?=trim( (string) $z01_i_familiamicroarea)?> == itemArray[i][1] ) {
                     indice = i;
                   }
                 <?php }?>
@@ -259,7 +259,7 @@ $escola = db_getsession("DB_coddepto");
           </td>
           <td>
             <?php
-            $x = array( '0' => '', '1' => 'POSITIVO', '2' => 'NEGATIVO' );
+            $x = [ '0' => '', '1' => 'POSITIVO', '2' => 'NEGATIVO' ];
             db_select( 'z01_i_fatorrh', $x, true, $db_opcao );
             ?>
           </td>
@@ -268,7 +268,7 @@ $escola = db_getsession("DB_coddepto");
           </td>
           <td>
             <?php
-              $x = array( '0' => '', '1' => 'A', '2' => 'B', '3' => 'O', '4' => 'AB' );
+              $x = [ '0' => '', '1' => 'A', '2' => 'B', '3' => 'O', '4' => 'AB' ];
               db_select( 'z01_i_tiposangue', $x, true, $db_opcao );
             ?>
           </td>
@@ -289,7 +289,7 @@ $escola = db_getsession("DB_coddepto");
           </td>
           <td>
             <?php
-            $x = array(
+            $x = [
                         'NÃO DECLARADA'  => 'NÃO DECLARADA',
                         'BRANCA'         => 'BRANCA',
                         'PRETA'          => 'PRETA',
@@ -297,7 +297,7 @@ $escola = db_getsession("DB_coddepto");
                         'AMARELA'        => 'AMARELA',
                         'INDÍGENA'       => 'INDÍGENA',
                         'SEM INFORMACAO' => 'SEM INFORMACAO'
-                      );
+                      ];
             db_select( 'z01_c_raca', $x, true, $db_opcao, "onchange='js_validaRaca();'" );
             ?>
           </td>
@@ -306,13 +306,13 @@ $escola = db_getsession("DB_coddepto");
           </td>
           <td>
             <?php
-            $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+            $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
             db_select( 'z01_c_bolsafamilia', $x, true, $db_opcao );
             ?>
           </td>
           <td style="display: none;">
             <?php
-            $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+            $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
             db_select( 'z01_c_passivo',      $x, true, $db_opcao , "style='visibility:hidden;'" );
             ?>
           </td>

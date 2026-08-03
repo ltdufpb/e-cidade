@@ -56,7 +56,7 @@ if($db_opcao == 1){
     $result_parametros = $clrhcfpessmatr->sql_record($clrhcfpessmatr->sql_query_file(null,"rh13_matricula",null,"rh13_instit=".db_getsession("DB_instit")));
     if($clrhcfpessmatr->numrows > 0){
         db_fieldsmemory($result_parametros,0);
-        if(trim($rh13_matricula)!="" && $rh13_matricula!=0){
+        if(trim((string) $rh13_matricula)!="" && $rh13_matricula!=0){
             $mostra = 3;
         }
     }
@@ -144,7 +144,7 @@ if( ($db_opcao == 2 || $db_opcao == 22) && isset($rh01_regist) && $rh01_regist !
               </td>
               <td nowrap>
                   <?php
-                  $arr_sexo = array('M' => 'Masculino','F'=>'Feminino');
+                  $arr_sexo = ['M' => 'Masculino','F'=>'Feminino'];
                   db_select("rh01_sexo",$arr_sexo,true,$db_opcao,"");
                   ?>
               </td>
@@ -279,12 +279,12 @@ if( ($db_opcao == 2 || $db_opcao == 22) && isset($rh01_regist) && $rh01_regist !
                 </td>
                 <td colspan="2" nowrap>
                     <?php
-                    $h01_tipadm = array(
+                    $h01_tipadm = [
                       1 => 'Admissao do 1o emprego',
                       2 => 'Admissao c/ emprego anterior',
                       3 => 'Transf de empreg s/ onus p/ a cedente',
                       4 => 'Transf de empreg c/ onus p/ a cedente'
-                    );
+                    ];
                     db_select("rh01_tipadm",$h01_tipadm,true,$db_opcao,"");
                     ?>
                 </td>
@@ -295,7 +295,7 @@ if( ($db_opcao == 2 || $db_opcao == 22) && isset($rh01_regist) && $rh01_regist !
                 </td>
                 <td colspan="2" nowrap>
                     <?php $clrotulo->label("rh08_descr");
-                    $arr_vale = array('S' => 'Sim','N'=>'Não');
+                    $arr_vale = ['S' => 'Sim','N'=>'Não'];
                     db_select("rh01_vale",$arr_vale,true,$db_opcao,"");
                     ?>
                 </td>
@@ -443,7 +443,7 @@ if( ($db_opcao == 2 || $db_opcao == 22) && isset($rh01_regist) && $rh01_regist !
                 </td>
                 <td>
                     <?php
-                    $aOptions = array('t' => 'Sim', 'f'=>'Não');
+                    $aOptions = ['t' => 'Sim', 'f'=>'Não'];
                     db_select("rh01_registrapontoeletronico", $aOptions, true, $db_opcao, "");
                     ?>
                 </td>
@@ -866,7 +866,7 @@ if( ($db_opcao == 2 || $db_opcao == 22) && isset($rh01_regist) && $rh01_regist !
   function js_preenchepesquisa(chave){
     db_iframe_rhpessoal.hide();
       <?php
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
       ?>
   }
   <?php

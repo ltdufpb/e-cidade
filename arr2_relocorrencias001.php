@@ -178,7 +178,7 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
       
       <td>
       <?php 
-        $aTipos = array('matric'=>'Matr&iacute;cula', 'cgm'=>'CGM', 'inscr'=>'Inscri&ccedil;&atilde;o');
+        $aTipos = ['matric'=>'Matr&iacute;cula', 'cgm'=>'CGM', 'inscr'=>'Inscri&ccedil;&atilde;o'];
         
         db_select('tipo', $aTipos, true, 1, ' onchange="js_filtros(this.value)" ;');
       ?>
@@ -224,9 +224,9 @@ if (isset($db21_usasisagua) and $db21_usasisagua == 't') {
       
       <td>
       <?php 
-        $aOrdenar = array('codigo'       => 'C&oacute;digo (CGM, Matr&iacute;cula, Inscri&ccedil;&atilde;o)', 
+        $aOrdenar = ['codigo'       => 'C&oacute;digo (CGM, Matr&iacute;cula, Inscri&ccedil;&atilde;o)', 
                           'data'         => 'Data Ocorr&ecirc;ncia', 
-                          'descricao'    => 'Descri&ccedil;&atilde;o');
+                          'descricao'    => 'Descri&ccedil;&atilde;o'];
         
         db_select('ordenar', $aOrdenar, true, 1)
       ?>

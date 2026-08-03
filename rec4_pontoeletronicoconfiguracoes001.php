@@ -55,26 +55,26 @@ $oAbasConfiguracoes = new cl_criaabas;
   <tr>
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
      <?php
-      $oAbasConfiguracoes->identifica = array(
+      $oAbasConfiguracoes->identifica = [
         'gerais'         => 'Gerais',
         'lotacao'        => 'Lotação',
         'justificativas' => 'Justificativas',
         'dsr'            => 'DSR',
-      );
+      ];
 
-      $oAbasConfiguracoes->sizecampo  = array(
+      $oAbasConfiguracoes->sizecampo  = [
         'gerais'         => '20',
         'lotacao'        => '20',
         'justificativas' => '20',
         'dsr'            => '20',
-      );
+      ];
 
-      $oAbasConfiguracoes->src        = array(
+      $oAbasConfiguracoes->src        = [
         'gerais'         => 'rec4_pontoeletronicoconfiguracoesgerais.php',
         'lotacao'        => 'rec4_pontoeletronicoconfiguracoeslotacao.php',
         'justificativas' => 'rec4_pontoeletronicoconfiguracoesjustificativas001.php',
         'dsr'            => 'rec4_pontoeletronicoconfiguracoesassentamentonaoperdedsr.php',
-      );
+      ];
 
       $oAbasConfiguracoes->cria_abas();
      ?>

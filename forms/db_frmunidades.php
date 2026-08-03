@@ -96,7 +96,7 @@ $clrotulo->label("z01_nomefanta");
                 </td>
                 <td colspan="3">
                   <?php
-                  $x = array( '1' => 'INDIVIDUAL', '2' => 'MANTIDO' );
+                  $x = [ '1' => 'INDIVIDUAL', '2' => 'MANTIDO' ];
                   db_select( 'sd02_i_situacao', $x, true, $db_opcao, "style='font-size:9px;height:15px;width:80px;'" );
                   ?>
                 </td>
@@ -143,7 +143,7 @@ $clrotulo->label("z01_nomefanta");
                 <td>
                   <?php
                   if(    ( isset( $z01_cgccpf ) && strlen( $z01_cgccpf ) == 11 )
-                      || ( isset( $z01_cgccpf ) && strlen( $z01_cgccpf ) == "" )
+                      || ( isset( $z01_cgccpf ) && strlen( $z01_cgccpf ) == 0 )
                      ) {
                     $pessoa = "FÍSICA";
                   } else if( ( isset( $z01_cgccpf ) && strlen( $z01_cgccpf ) == 14 ) ) {
@@ -352,7 +352,7 @@ $clrotulo->label("z01_nomefanta");
                 </td>
                 <td>
                   <?php
-                  $x      = array( 'N' => 'NÃO', 'S' => 'SIM' );
+                  $x      = [ 'N' => 'NÃO', 'S' => 'SIM' ];
                   $sStyle = "style='font-size:9px;height:15px;width:80px;'";
 
                   db_select( 'sd02_c_centralagenda', $x, true, $db_opcao, $sStyle );
@@ -688,7 +688,7 @@ function js_preenchepesquisa( chave ) {
 
   <?php
   if( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

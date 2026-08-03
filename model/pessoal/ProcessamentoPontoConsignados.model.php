@@ -40,7 +40,7 @@ class ProcessamentoPontoConsignados {
 
     try {
       ArquivoConsignetRepository::importarPrePonto();
-    } catch (Exception $eErro) {
+    } catch (Exception) {
       
     }
     $aConfiguracoesConsignados = ConfiguracaoConsignadoRepository::getConfiguracaoInstituicao(InstituicaoRepository::getInstituicaoSessao());
@@ -51,7 +51,7 @@ class ProcessamentoPontoConsignados {
 
       if ($oProcessamentoPontoConsignados instanceof ProcessamentoPontoConsignados) {
 
-        $oProcessamentoPontoConsignados->importarDadosPreponto($oConfiguracaoConsignado);
+        $oProcessamentoPontoConsignados->importarDadosPreponto();
       }
     }
 

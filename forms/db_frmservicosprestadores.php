@@ -119,7 +119,7 @@ if ($db_opcao == 1) {
               </td>
               <td>
                 <?php
-                  $aSituacao = array("t" => "ATIVO", "f" => "INATIVO");
+                  $aSituacao = ["t" => "ATIVO", "f" => "INATIVO"];
                   db_select('fm08_situacao', $aSituacao, true, ($db_opcao==3?3:1));
                 ?>
               </td>
@@ -130,7 +130,7 @@ if ($db_opcao == 1) {
               </td>
               <td>
                 <?php
-                  $x = array("f" => "NAO", "t" => "SIM");
+                  $x = ["f" => "NAO", "t" => "SIM"];
                   db_select('fm08_autoriza', $x, true, $db_opcao, "");
                 ?>
               </td>
@@ -148,7 +148,7 @@ if ($db_opcao == 1) {
                  $sCampos = "fm08_codigo, fm12_descricao, fm08_servico, ";
                  $sCampos .= " case when fm08_autoriza is true then 'Sim' else 'NÃO' end as fm08_autoriza, ";
                  $sCampos .= " case when fm08_situacao is true then 'ATIVO' else 'INATIVO' end as fm08_situacao ";
-                 $chavepri= array("fm08_codigo"=>@$fm08_codigo);
+                 $chavepri= ["fm08_codigo"=>@$fm08_codigo];
                  $cliframe_alterar_excluir->iframe_nome = "frm_servicos";
                  $cliframe_alterar_excluir->chavepri      = $chavepri;
                  $cliframe_alterar_excluir->sql           = $clservicos->sql_query(null,$sCampos,null,"fm08_prestador = $fm08_prestador");
@@ -293,11 +293,11 @@ if ($db_opcao == 1) {
       db_iframe_servicosprestadores.hide();
       <?php
         if ($db_opcao != 1) {
-           echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
+           echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
         }
       ?>
     }
 
-    <?php echo (isset($sPosScripts) ? $sPosScripts : ""); ?>
+    <?php echo ($sPosScripts ?? ""); ?>
   </script>
 </html>

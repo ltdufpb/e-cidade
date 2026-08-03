@@ -85,15 +85,15 @@ final class TaxaDescricaoRepository extends DataBaseRepository
             }
         }
 
-        return array(
-            'iptu' => array(
+        return [
+            'iptu' => [
                 'codigo_arrecadacao' => $numpreIptu,
                 'valor' => $valorDescontoUnicaIptu
-            ),
-            'taxa' => array(
+            ],
+            'taxa' => [
                 'codigo_arrecadacao' => $numpreTaxa,
                 'valor' => $valorDescontoUnicaTaxa
-            )
-        );
+            ]
+        ];
     }
 }

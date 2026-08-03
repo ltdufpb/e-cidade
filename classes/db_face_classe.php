@@ -74,7 +74,7 @@ class cl_face
     public function __construct()
     {
         $this->rotulo = new rotulo("face"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -190,10 +190,10 @@ class cl_face
          $this->erro_status = "0";
          return false; 
        }
-       $this->j37_face = pg_result($result,0,0); 
+       $this->j37_face = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from face_j37_face_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j37_face)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j37_face)){
          $this->erro_sql = " Campo j37_face maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -245,7 +245,7 @@ class cl_face
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Face de Quadra ($this->j37_face) não Incluída. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Face de Quadra já Cadastrada";
@@ -274,22 +274,22 @@ class cl_face
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,62,'$this->j37_face','I')");
-         $resac = db_query("insert into db_acount values($acount,15,62,'','".AddSlashes(pg_result($resaco,0,'j37_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,63,'','".AddSlashes(pg_result($resaco,0,'j37_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,64,'','".AddSlashes(pg_result($resaco,0,'j37_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,65,'','".AddSlashes(pg_result($resaco,0,'j37_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,66,'','".AddSlashes(pg_result($resaco,0,'j37_lado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,67,'','".AddSlashes(pg_result($resaco,0,'j37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,68,'','".AddSlashes(pg_result($resaco,0,'j37_exten'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,69,'','".AddSlashes(pg_result($resaco,0,'j37_profr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,70,'','".AddSlashes(pg_result($resaco,0,'j37_outros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,807,'','".AddSlashes(pg_result($resaco,0,'j37_vlcons'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,5086,'','".AddSlashes(pg_result($resaco,0,'j37_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,1014006,'','".AddSlashes(pg_result($resaco,0,'j37_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,15,1014007,'','".AddSlashes(pg_result($resaco,0,'j37_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,62,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,63,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,64,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,65,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,66,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_lado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,67,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,68,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_exten'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,69,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_profr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,70,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_outros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,807,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_vlcons'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,5086,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,1014006,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,15,1014007,'','".AddSlashes(pg_fetch_result($resaco,0,'j37_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -300,10 +300,10 @@ class cl_face
       $this->atualizacampos();
      $sql = " update face set ";
      $virgula = "";
-     if(trim($this->j37_face)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_face"])){ 
+     if(trim((string) $this->j37_face)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_face"])){ 
        $sql  .= $virgula." j37_face = $this->j37_face ";
        $virgula = ",";
-       if(trim($this->j37_face) == null ){ 
+       if(trim((string) $this->j37_face) == null ){ 
          $this->erro_sql = " Campo Cód. Face não informado.";
          $this->erro_campo = "j37_face";
          $this->erro_banco = "";
@@ -313,10 +313,10 @@ class cl_face
          return false;
        }
      }
-     if(trim($this->j37_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_setor"])){ 
+     if(trim((string) $this->j37_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_setor"])){ 
        $sql  .= $virgula." j37_setor = '$this->j37_setor' ";
        $virgula = ",";
-       if(trim($this->j37_setor) == null ){ 
+       if(trim((string) $this->j37_setor) == null ){ 
          $this->erro_sql = " Campo Setor não informado.";
          $this->erro_campo = "j37_setor";
          $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_face
          return false;
        }
      }
-     if(trim($this->j37_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_quadra"])){ 
+     if(trim((string) $this->j37_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_quadra"])){ 
        $sql  .= $virgula." j37_quadra = '$this->j37_quadra' ";
        $virgula = ",";
-       if(trim($this->j37_quadra) == null ){ 
+       if(trim((string) $this->j37_quadra) == null ){ 
          $this->erro_sql = " Campo Quadra não informado.";
          $this->erro_campo = "j37_quadra";
          $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_face
          return false;
        }
      }
-     if(trim($this->j37_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_codigo"])){ 
+     if(trim((string) $this->j37_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_codigo"])){ 
        $sql  .= $virgula." j37_codigo = $this->j37_codigo ";
        $virgula = ",";
-       if(trim($this->j37_codigo) == null ){ 
+       if(trim((string) $this->j37_codigo) == null ){ 
          $this->erro_sql = " Campo Logradouro não informado.";
          $this->erro_campo = "j37_codigo";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_face
          return false;
        }
      }
-     if(trim($this->j37_lado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_lado"])){ 
+     if(trim((string) $this->j37_lado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_lado"])){ 
        $sql  .= $virgula." j37_lado = '$this->j37_lado' ";
        $virgula = ",";
-       if(trim($this->j37_lado) == null ){ 
+       if(trim((string) $this->j37_lado) == null ){ 
          $this->erro_sql = " Campo Lado não informado.";
          $this->erro_campo = "j37_lado";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_face
          return false;
        }
      }
-     if(trim($this->j37_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_valor"])){ 
+     if(trim((string) $this->j37_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_valor"])){ 
        $sql  .= $virgula." j37_valor = $this->j37_valor ";
        $virgula = ",";
-       if(trim($this->j37_valor) === null ){ 
+       if(trim((string) $this->j37_valor) === null ){ 
          $this->erro_sql = " Campo Valor M2 terreno não informado.";
          $this->erro_campo = "j37_valor";
          $this->erro_banco = "";
@@ -378,28 +378,28 @@ class cl_face
          return false;
        }
      }
-     if(trim($this->j37_exten)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_exten"])){ 
-        if(trim($this->j37_exten)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j37_exten"])){ 
+     if(trim((string) $this->j37_exten)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_exten"])){ 
+        if(trim((string) $this->j37_exten)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j37_exten"])){ 
            $this->j37_exten = "0" ; 
         } 
        $sql  .= $virgula." j37_exten = $this->j37_exten ";
        $virgula = ",";
      }
-     if(trim($this->j37_profr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_profr"])){ 
-        if(trim($this->j37_profr)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j37_profr"])){ 
+     if(trim((string) $this->j37_profr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_profr"])){ 
+        if(trim((string) $this->j37_profr)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j37_profr"])){ 
            $this->j37_profr = "0" ; 
         } 
        $sql  .= $virgula." j37_profr = $this->j37_profr ";
        $virgula = ",";
      }
-     if(trim($this->j37_outros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_outros"])){ 
+     if(trim((string) $this->j37_outros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_outros"])){ 
        $sql  .= $virgula." j37_outros = '$this->j37_outros' ";
        $virgula = ",";
      }
-     if(trim($this->j37_vlcons)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_vlcons"])){ 
+     if(trim((string) $this->j37_vlcons)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_vlcons"])){ 
        $sql  .= $virgula." j37_vlcons = $this->j37_vlcons ";
        $virgula = ",";
-       if(trim($this->j37_vlcons) === null ){
+       if(trim((string) $this->j37_vlcons) === null ){
          $this->erro_sql = " Campo Valor M2 Construção não informado.";
          $this->erro_campo = "j37_vlcons";
          $this->erro_banco = "";
@@ -409,22 +409,22 @@ class cl_face
          return false;
        }
      }
-     if(trim($this->j37_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_zona"])){ 
-        if(trim($this->j37_zona)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j37_zona"])){ 
+     if(trim((string) $this->j37_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_zona"])){ 
+        if(trim((string) $this->j37_zona)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j37_zona"])){ 
            $this->j37_zona = "0" ; 
         } 
        $sql  .= $virgula." j37_zona = $this->j37_zona ";
        $virgula = ",";
      }
-     if(trim($this->j37_segmento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_segmento"])){ 
-        if(trim($this->j37_segmento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j37_segmento"])){ 
+     if(trim((string) $this->j37_segmento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_segmento"])){ 
+        if(trim((string) $this->j37_segmento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j37_segmento"])){ 
            $this->j37_segmento = "0" ; 
         } 
        $sql  .= $virgula." j37_segmento = $this->j37_segmento ";
        $virgula = ",";
      }
-     if(trim($this->j37_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_sequencia"])){ 
-        if(trim($this->j37_sequencia)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j37_sequencia"])){ 
+     if(trim((string) $this->j37_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j37_sequencia"])){ 
+        if(trim((string) $this->j37_sequencia)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j37_sequencia"])){ 
            $this->j37_sequencia = "0" ; 
         } 
        $sql  .= $virgula." j37_sequencia = $this->j37_sequencia ";
@@ -444,35 +444,35 @@ class cl_face
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,62,'$this->j37_face','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_face"]) || $this->j37_face != "")
-             $resac = db_query("insert into db_acount values($acount,15,62,'".AddSlashes(pg_result($resaco,$conresaco,'j37_face'))."','$this->j37_face',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,62,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_face'))."','$this->j37_face',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_setor"]) || $this->j37_setor != "")
-             $resac = db_query("insert into db_acount values($acount,15,63,'".AddSlashes(pg_result($resaco,$conresaco,'j37_setor'))."','$this->j37_setor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,63,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_setor'))."','$this->j37_setor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_quadra"]) || $this->j37_quadra != "")
-             $resac = db_query("insert into db_acount values($acount,15,64,'".AddSlashes(pg_result($resaco,$conresaco,'j37_quadra'))."','$this->j37_quadra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,64,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_quadra'))."','$this->j37_quadra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_codigo"]) || $this->j37_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,15,65,'".AddSlashes(pg_result($resaco,$conresaco,'j37_codigo'))."','$this->j37_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,65,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_codigo'))."','$this->j37_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_lado"]) || $this->j37_lado != "")
-             $resac = db_query("insert into db_acount values($acount,15,66,'".AddSlashes(pg_result($resaco,$conresaco,'j37_lado'))."','$this->j37_lado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,66,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_lado'))."','$this->j37_lado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_valor"]) || $this->j37_valor != "")
-             $resac = db_query("insert into db_acount values($acount,15,67,'".AddSlashes(pg_result($resaco,$conresaco,'j37_valor'))."','$this->j37_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,67,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_valor'))."','$this->j37_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_exten"]) || $this->j37_exten != "")
-             $resac = db_query("insert into db_acount values($acount,15,68,'".AddSlashes(pg_result($resaco,$conresaco,'j37_exten'))."','$this->j37_exten',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,68,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_exten'))."','$this->j37_exten',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_profr"]) || $this->j37_profr != "")
-             $resac = db_query("insert into db_acount values($acount,15,69,'".AddSlashes(pg_result($resaco,$conresaco,'j37_profr'))."','$this->j37_profr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,69,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_profr'))."','$this->j37_profr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_outros"]) || $this->j37_outros != "")
-             $resac = db_query("insert into db_acount values($acount,15,70,'".AddSlashes(pg_result($resaco,$conresaco,'j37_outros'))."','$this->j37_outros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,70,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_outros'))."','$this->j37_outros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_vlcons"]) || $this->j37_vlcons != "")
-             $resac = db_query("insert into db_acount values($acount,15,807,'".AddSlashes(pg_result($resaco,$conresaco,'j37_vlcons'))."','$this->j37_vlcons',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,807,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_vlcons'))."','$this->j37_vlcons',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_zona"]) || $this->j37_zona != "")
-             $resac = db_query("insert into db_acount values($acount,15,5086,'".AddSlashes(pg_result($resaco,$conresaco,'j37_zona'))."','$this->j37_zona',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,5086,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_zona'))."','$this->j37_zona',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_segmento"]) || $this->j37_segmento != "")
-             $resac = db_query("insert into db_acount values($acount,15,1014006,'".AddSlashes(pg_result($resaco,$conresaco,'j37_segmento'))."','$this->j37_segmento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,1014006,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_segmento'))."','$this->j37_segmento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j37_sequencia"]) || $this->j37_sequencia != "")
-             $resac = db_query("insert into db_acount values($acount,15,1014007,'".AddSlashes(pg_result($resaco,$conresaco,'j37_sequencia'))."','$this->j37_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,15,1014007,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j37_sequencia'))."','$this->j37_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -526,22 +526,22 @@ class cl_face
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,62,'$j37_face','E')");
-           $resac  = db_query("insert into db_acount values($acount,15,62,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,63,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,64,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,65,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,66,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_lado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,67,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,68,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_exten'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,69,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_profr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,70,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_outros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,807,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_vlcons'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,5086,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,1014006,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,15,1014007,'','".AddSlashes(pg_result($resaco,$iresaco,'j37_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,62,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,63,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,64,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,65,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,66,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_lado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,67,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,68,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_exten'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,69,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_profr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,70,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_outros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,807,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_vlcons'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,5086,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,1014006,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,15,1014007,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j37_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

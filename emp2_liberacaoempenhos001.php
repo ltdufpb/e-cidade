@@ -71,7 +71,7 @@ $dbopcao  = 1;
 					        <td align="left"><b>Empenhos: </b></td>
 					        <td align="left">
 					          <?php 
-					          $aArray = array("t"=>"Todos","l"=>"Liberados" ,"n"=>"Não Liberados");
+					          $aArray = ["t"=>"Todos","l"=>"Liberados" ,"n"=>"Não Liberados"];
 					          db_select('emempenho',$aArray,true,4,"");
 					          ?>
 					        </td>

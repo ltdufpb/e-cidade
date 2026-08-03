@@ -42,8 +42,8 @@ include(modification("classes/db_matparam_classe.php"));
 include(modification("classes/db_db_departorg_classe.php"));
 include(modification("classes/db_db_almoxdepto_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clmatrequiitem = new cl_matrequiitem;
 $clatendrequiitem = new cl_atendrequiitem;
 $clatendrequiitemmei = new cl_atendrequiitemmei;
@@ -107,10 +107,10 @@ if (isset($confirma)) {
     }
     $codigo_atenditem=$clatendrequiitem->m43_codigo;
   }
-  $dados=split("quant_","$quantis");
+  $dados=preg_split("#quant_#m","$quantis");
   for ($y=1; $y<count($dados); $y++) {
     if ($sqlerro==false) {
-      $info=split("_",$dados[$y]);
+      $info=preg_split("#_#m",(string) $dados[$y]);
       $codestoque=$info[0];
       $quantidade=$info[2];
       $quant_resta=$quantidade;
@@ -140,7 +140,7 @@ if (isset($confirma)) {
           $clmatestoqueitem->m71_quant = $quantatual;
           $clmatestoqueitem->m71_codlanc = $m71_codlanc;
           $clmatestoqueitem->alterar($m71_codlanc);
-          
+
           if ($clmatestoqueitem->erro_status==0) {
             $sqlerro=true;
             $erro_msg=$clmatestoqueitem->erro_msg;
@@ -306,13 +306,13 @@ exit;*/
 		  <td class='bordas_corp' align='center'><small>";
           $quant="quant_$m70_codigo"."_"."$i";
 	  if ($numrows==1){
-            $$quant="$quantatend";
+            ${$quant}="$quantatend";
 	  }else{
 	    if ($m70_quant>$quantresta){
-	      $$quant="$quantresta";
+	      ${$quant}="$quantresta";
 	      $quantresta='0';
 	    }else{
-	      $$quant=$m70_quant;
+	      ${$quant}=$m70_quant;
 	      $rst=$quantresta-$m70_quant;
 	      $quantresta="$rst";
 	    }

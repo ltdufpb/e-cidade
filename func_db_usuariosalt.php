@@ -32,7 +32,7 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_db_usuarios_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_usuarios = new cl_db_usuarios;
 $cldb_usuarios->rotulo->label("id_usuario");
 $cldb_usuarios->rotulo->label("nome");
@@ -106,7 +106,7 @@ $cldb_usuarios->rotulo->label("chave_usuarioativo");
 </div>
 <?php
 
-  $aWhere = array();
+  $aWhere = [];
   $dbwhere_usuext = " usuext = 0 ";
   if (isset($usuext) && trim(@$usuext) != ""){
        db_input("usuext",1,0,true,"hidden",3);
@@ -145,12 +145,12 @@ $cldb_usuarios->rotulo->label("chave_usuarioativo");
     $sql = $cldb_usuarios->sql_query("",$campos,"nome", implode(" and ", $aWhere));
 
 
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_nome)){
-      $repassa = array(
+      $repassa = [
         "chave_id_usuario"=>$chave_id_usuario,
         "chave_nome"=>$chave_nome,
-        "chave_usuarioativo"=>@$chave_usuarioativo);
+        "chave_usuarioativo"=>@$chave_usuarioativo];
     }
 
     echo '<div class="container">';

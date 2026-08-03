@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_inflan_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if (!isset($chave_i01_codigo)){
   $chave_i01_codigo = '';
@@ -126,9 +126,9 @@ $clinflan->rotulo->label("i01_descr");
           $chave_i01_descr = str_replace("\\", "", $chave_i01_descr);
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_i01_descr)){
-          $repassa = array("chave_i01_codigo"=>$chave_i01_codigo,"chave_i01_descr"=>$chave_i01_descr);
+          $repassa = ["chave_i01_codigo"=>$chave_i01_codigo,"chave_i01_descr"=>$chave_i01_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

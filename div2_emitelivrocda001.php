@@ -46,7 +46,7 @@ $clrotulo->label("v01_livro");
 $clrotulo->label("v01_dtoper");
 $clrotulo->label("v14_certid");
 $db_opcao = 1;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $dia = date("d", db_getsession("DB_datausu"));
 $mes = date("m", db_getsession("DB_datausu"));
 $ano = date("Y", db_getsession("DB_datausu"));
@@ -71,10 +71,10 @@ $ano = date("Y", db_getsession("DB_datausu"));
         </td>
         <td>
           <?php 
-            $aTipos = array( 
+            $aTipos = [ 
                             1 => "Completo",
                             2 => "Resumido",
-                            );            
+                            ];            
             db_select('tipo',$aTipos,true,4,"style='width:95px' onchange='js_setTipo(this.value)'");                 
           ?>
         </td>
@@ -103,10 +103,10 @@ $ano = date("Y", db_getsession("DB_datausu"));
         </td>
         <td>
           <?php 
-            $aTipos = array( 
+            $aTipos = [ 
                             1 => "Sim",
                             2 => "Não",
-                            );           
+                            ];           
             db_select('imprimirorigem',$aTipos,true,4,"");                            
           ?>
         </td>

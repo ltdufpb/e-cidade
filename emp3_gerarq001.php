@@ -38,7 +38,7 @@ $clrotulo     = new rotulocampo;
 $clempagegera->rotulo->label();
 $clempagetipo->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

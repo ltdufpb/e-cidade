@@ -50,8 +50,8 @@ $clpctipocertifcom  = new cl_pctipocertifcom;
 $clpcparam          = new cl_pcparam;
 $clpctipocertif     = new cl_pctipocertif;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $sWhere       = "";
 $sAnd         = "";
@@ -120,11 +120,11 @@ for ($z = 0; $z < $retorno_numrows; $z++) {
       continue;
     }
 
-    if (trim($oParagrafo->oParag->db02_descr) == 'TITULO') {
+    if (trim((string) $oParagrafo->oParag->db02_descr) == 'TITULO') {
       $sTitulo = nl2br($oLibDocumento->replaceText($oParagrafo->oParag->db02_texto));
     }
 
-    if (trim($oParagrafo->oParag->db02_descr) == 'TIPO_CGM') {
+    if (trim((string) $oParagrafo->oParag->db02_descr) == 'TIPO_CGM') {
     	$sDescrcaoCGM = nl2br($oLibDocumento->replaceText($oParagrafo->oParag->db02_texto));
     }
   }
@@ -236,8 +236,8 @@ for ($z = 0; $z < $retorno_numrows; $z++) {
   $pdf->setfont('arial', '', 7);
   for ($w = 0; $w < $clpctipodoccertif->numrows; $w++) {
 
-    $pdf->SetWidths(array($tam+10, 20, 20, 18, 60));
-    $pdf->SetAligns(array('L', 'C', 'C', 'C', 'L'));
+    $pdf->SetWidths([$tam+10, 20, 20, 18, 60]);
+    $pdf->SetAligns(['L', 'C', 'C', 'C', 'L']);
 
     db_fieldsmemory($result_doc, $w);
 
@@ -270,9 +270,9 @@ for ($z = 0; $z < $retorno_numrows; $z++) {
     if ($pc30_comobs == "t") {
 
       $sObservacao = (strlen($pc75_obs) < 255 ? $pc75_obs : substr($pc75_obs, 0, 252).'...');
-      $aDados      = array($sDescricao, $sEmissao, $sValidade, $sApresentado, $sObservacao);
+      $aDados      = [$sDescricao, $sEmissao, $sValidade, $sApresentado, $sObservacao];
     } else {
-      $aDados      = array($sDescricao, $sEmissao, $sValidade, $sApresentado);
+      $aDados      = [$sDescricao, $sEmissao, $sValidade, $sApresentado];
     }
 
     $pdf->Row($aDados, $alt, true, 5, 0, true);
@@ -387,7 +387,7 @@ for ($z = 0; $z < $retorno_numrows; $z++) {
   }
 
   $pdf->setfont('arial', 'b', 8);
-  if (strtoupper($munic) == "BAGE") {
+  if (strtoupper((string) $munic) == "BAGE") {
 
     $pdf->setfont('arial', 'b', 6);
     $pdf->ln(10);
@@ -398,7 +398,7 @@ for ($z = 0; $z < $retorno_numrows; $z++) {
   $ano = date ('Y',db_getsession("DB_datausu"));
   $mes = db_mes($mes);
 
-  if (strtoupper($munic) != "BAGE") {
+  if (strtoupper((string) $munic) != "BAGE") {
     $pdf->cell(60, 4, "DATA DA INCLUSÃO DO REGISTRO: " . db_formatar($pc74_data, "d"),0,1,"L",0);
   }
 
@@ -431,7 +431,7 @@ for ($z = 0; $z < $retorno_numrows; $z++) {
   $sqlparag     .= "    and db03_instit = {$iInstituicao}                           ";
   $sqlparag     .= "  order by db04_ordem                                           ";
   $resparag      = db_query($sqlparag);
-  $iNumRowsParag = pg_numrows($resparag);
+  $iNumRowsParag = pg_num_rows($resparag);
 
   if ($iNumRowsParag > 0) {
     db_fieldsmemory($resparag, 0);
@@ -442,7 +442,7 @@ for ($z = 0; $z < $retorno_numrows; $z++) {
     $assinatura_diretor = "ASSINATURA";
   } else if ($db02_descr == "CODIGO PHP") {
     eval($db02_texto);
-  } else if (trim($assinatura_diretor) == "" && trim($db02_texto) == "") {
+  } else if (trim($assinatura_diretor) == "" && trim((string) $db02_texto) == "") {
 
     $pdf->cell(200, 4, $assinatura_diretor, 0, 1, "C", 0);
     $pdf->cell(200, 4, "DIRETOR(A) DEPARTAMENTO DE COMPRAS", 0, 1, "C", 0);
@@ -467,7 +467,7 @@ for ($z = 0; $z < $retorno_numrows; $z++) {
       db_fieldsmemory($result_comissao, $x);
 
       $pdf->cell(90,4,$z01_nome,0,0,"C",0);
-      if ($conta++ == 1 or $x == pg_numrows($result_comissao) - 1) {
+      if ($conta++ == 1 or $x == pg_num_rows($result_comissao) - 1) {
 
         $pdf->ln();
         for ($a = 0; $a < $clliccomissaocgm->numrows; $a++) {

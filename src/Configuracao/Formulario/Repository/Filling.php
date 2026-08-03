@@ -139,7 +139,7 @@ class Filling
      */
     private function deleteOldLink($dao, $fields)
     {
-        $where = array();
+        $where = [];
         foreach ($fields as $field) {
             $where[] = "{$field->campo} = '{$field->valor}'";
         }
@@ -203,7 +203,7 @@ class Filling
     {
         $questions = $fill->getPerguntas();
 
-        $filterQuestionsAndAnswers = array();
+        $filterQuestionsAndAnswers = [];
         foreach ($questions as $question) {
             if (!$question->isPerguntaIdentificadora()) {
                 continue;
@@ -216,7 +216,7 @@ class Filling
                     $resporta = $answer->getData();
                 }
 
-                $filterQuestionsAndAnswers[] = array("pergunta" => $question, "resposta" => $resporta);
+                $filterQuestionsAndAnswers[] = ["pergunta" => $question, "resposta" => $resporta];
             }
         }
         $form = \ECidade\Configuracao\Formulario\Repository\Formulario::getById($this->idForm);

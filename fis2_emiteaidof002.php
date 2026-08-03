@@ -42,11 +42,11 @@ $clissbase   = new cl_issbase;
 $clnotasiss  = new cl_notasiss;
 $clparfiscal = new cl_parfiscal;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sqlpref = "select * from db_config where codigo = ".db_getsession("DB_instit");
 $resultpref = db_query($sqlpref);
-if (pg_numrows($resultpref)!=0){
+if (pg_num_rows($resultpref)!=0){
   db_fieldsmemory($resultpref,0);
 }
 
@@ -102,13 +102,13 @@ $sql_empr=" select empresa.q02_inscr  as inscr_usu,
              where empresa.q02_inscr = $y08_inscr ";           
            
 $result_empresa=db_query($sql_empr);
-if (pg_numrows($result_empresa)!=0){
+if (pg_num_rows($result_empresa)!=0){
   db_fieldsmemory($result_empresa,0);
 }
 
 $sqlDbUsuarioAutoriza = "select nome as nomeusu from db_usuarios where id_usuario = $y08_login";
 $rsDbUsuarioAutoriza  = db_query($sqlDbUsuarioAutoriza);
-$iDbUsuarioAutoriza   = pg_numrows($rsDbUsuarioAutoriza);
+$iDbUsuarioAutoriza   = pg_num_rows($rsDbUsuarioAutoriza);
 
 if ($iDbUsuarioAutoriza > 0) {
   $oDbUsuarioAutoriza = db_utils::fieldsMemory($rsDbUsuarioAutoriza,0);
@@ -117,14 +117,14 @@ if ($iDbUsuarioAutoriza > 0) {
 
 $sqlDbUsuario = "select nome as nomeusu from db_usuarios where id_usuario =".db_getsession("DB_id_usuario");
 $rsDbUsuario  = db_query($sqlDbUsuario);
-$iDbUsuario   = pg_numrows($rsDbUsuario);
+$iDbUsuario   = pg_num_rows($rsDbUsuario);
 
 if ($iDbUsuario > 0) {
 	$oDbUsuario = db_utils::fieldsMemory($rsDbUsuario,0);
 }
 
 $sNomeArquivo = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
-$sNomeArquivo = substr($sNomeArquivo,strrpos($sNomeArquivo,"/")+1);
+$sNomeArquivo = substr((string) $sNomeArquivo,strrpos((string) $sNomeArquivo,"/")+1);
 
 if (isset($oDbUsuario->nomeusu) && $oDbUsuario->nomeusu != "") {
   $emissor = $oDbUsuario->nomeusu;
@@ -134,7 +134,7 @@ if (isset($oDbUsuario->nomeusu) && $oDbUsuario->nomeusu != "") {
 
 $sBase      = @$GLOBALS["DB_NBASE"];
 $sArquivo   = $sNomeArquivo;
-$sEmissor   = substr(ucwords(strtolower($emissor)),0,30);
+$sEmissor   = substr(ucwords(strtolower((string) $emissor)),0,30);
 $sExercicio = db_getsession("DB_anousu");
 $sData      = date("d-m-Y",db_getsession("DB_datausu"))." - ".date("H:i:s");
 
@@ -157,7 +157,7 @@ if ($oParfiscal->y32_modaidof == 1) {
 //$pdf1->modelo = 14;
 $pdf1->objpdf->SetTextColor(0,0,0);
 
-for($i = 0;$i < pg_numrows($result);$i++){
+for($i = 0;$i < pg_num_rows($result);$i++){
   db_fieldsmemory($result,0);
 
   $pdf1->enderpref     = $ender;
@@ -168,7 +168,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
   $pdf1->telefpref     = $telef;
   $pdf1->emailpref     = $email;
   $pdf1->codaidof      = @$y08_codigo;
-  $pdf1->ano           = substr($y08_dtlanc,0,4);
+  $pdf1->ano           = substr((string) $y08_dtlanc,0,4);
   $pdf1->nome_graf     = @$nome_graf;
   $pdf1->ender_graf    = @$ender_graf.".".$num_graf."-".@$bairro_graf."/".@$munic_graf;
   if($compl_graf != ""){

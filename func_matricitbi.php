@@ -46,7 +46,7 @@ if(!isset($lote)) {
   $lote = '';
 }
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptubase = new cl_iptubase;
 $cliptubase->rotulo->label("j01_matric");
 $clrotulo = new rotulocampo;
@@ -307,7 +307,7 @@ $clrotulo->label("j04_loteregimo");
       
       if($sql!="" || isset($dblov)){
 
-        $repassa = array('dblov'=>'0');
+        $repassa = ['dblov'=>'0'];
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
          
       }

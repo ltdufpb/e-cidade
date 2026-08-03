@@ -30,6 +30,7 @@ namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 class EFDServicosPrestados extends Formatter
 {
 
+    #[\Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);

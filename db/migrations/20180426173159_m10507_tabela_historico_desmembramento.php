@@ -13,18 +13,18 @@ class M10507TabelaHistoricoDesmembramento extends PostgresMigration
 
     public function up()
     {
-        $table = $this->table($this->tableName, array(
+        $table = $this->table($this->tableName, [
             'id' => 'v37_sequencial',
             'schema' => 'juridico'
-        ));
+        ]);
 
         $table
-            ->addColumn('v37_inicial_old', 'integer', array('null' => false))
-            ->addColumn('v37_inicial', 'integer', array('null' => false))
-            ->addColumn('v37_cda_old', 'integer', array('null' => false))
-            ->addColumn('v37_cda', 'integer', array('null' => false))
-            ->addColumn('v37_data', 'timestamp', array('default' => 'CURRENT_TIMESTAMP'))
-            ->addColumn('v37_usuario', 'integer', array('null' => false))
+            ->addColumn('v37_inicial_old', 'integer', ['null' => false])
+            ->addColumn('v37_inicial', 'integer', ['null' => false])
+            ->addColumn('v37_cda_old', 'integer', ['null' => false])
+            ->addColumn('v37_cda', 'integer', ['null' => false])
+            ->addColumn('v37_data', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('v37_usuario', 'integer', ['null' => false])
             ->addForeignKey('v37_inicial_old', 'inicial', 'v50_inicial')
             ->addForeignKey('v37_inicial', 'inicial', 'v50_inicial')
             ->addForeignKey('v37_cda_old', 'certid', 'v13_certid')
@@ -36,7 +36,7 @@ class M10507TabelaHistoricoDesmembramento extends PostgresMigration
 
     public function down()
     {
-        $this->table($this->tableName, array('schema' => 'juridico'))
+        $this->table($this->tableName, ['schema' => 'juridico'])
             ->drop();
 
         $this->downPremenu();

@@ -51,7 +51,7 @@ $cldb_depart->rotulo->label("descrdepto");
 
 $where_depart = "";
 $where_g      = "";
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $result = $clcfpatri->sql_record($clcfpatri->sql_query_file());
 db_fieldsmemory($result,0);
@@ -135,7 +135,7 @@ db_fieldsmemory($result,0);
     <tr>
       <td align="center" valign="top">
         <?php
-        $aWhereGeral   = array('1 = 1');
+        $aWhereGeral   = ['1 = 1'];
         $where_instit  = " and db_depart.instit = ".db_getsession("DB_instit");
         $where2_instit = " and t52_instit = ".db_getsession("DB_instit");
         $where3_instit = " t52_instit = ".db_getsession("DB_instit");
@@ -307,7 +307,7 @@ db_fieldsmemory($result,0);
                                                    "tudo");
               $result = $clbens->sql_record($sql);
 
-            } else if(isset($chave_coddepto) && (trim($chave_descrdepto)!="")) {
+            } else if(isset($chave_coddepto) && (trim((string) $chave_descrdepto)!="")) {
               $sql = $clbens->sql_query_benstransf("",
                                                    $campos,
                                                    "",

@@ -63,7 +63,7 @@ class AguaEmissao {
     /**
      * @todo Refatorar usando um alias mais significativo para as tabelas e campos.
      */
-    $sCampos = implode(', ', array(
+    $sCampos = implode(', ', [
       'x01_matric          as codigo_matricula',
       'x01_quadra          as quadra',
       'x01_entrega         as entrega_zona',
@@ -211,9 +211,9 @@ class AguaEmissao {
       else
         1
       end) as economias',
-    ));
+    ]);
 
-    $sJoins = implode(' ', array(
+    $sJoins = implode(' ', [
       'inner join aguacontrato                              on x54_aguabase                      = x01_matric',
       'inner join cgm as responsavel_contrato               on x54_cgm                           = z01_numcgm',
       'left join aguacontratoeconomia                       on x54_sequencial                    = x38_aguacontrato and x54_condominio is true and x54_responsavelpagamento = 1',
@@ -230,7 +230,7 @@ class AguaEmissao {
       'left join iptucadzonaentrega as entrega              on entrega.j85_codigo                = x01_entrega',
       'left join aguacategoriaconsumo                       on x54_aguacategoriaconsumo          = aguacategoriaconsumo.x13_sequencial',
       'left join aguacategoriaconsumo as categoria_economia on categoria_economia.x13_sequencial = x38_aguacategoriaconsumo',
-    ));
+    ]);
 
     $sQuery = "select distinct {$sCampos} from aguabase {$sJoins}";
     if ($sWhere) {
@@ -260,14 +260,14 @@ class AguaEmissao {
       $sWhere .= " and x54_sequencial = {$iCodigoContrato} ";
     }
 
-    $sOrderBy = implode(', ', array(
+    $sOrderBy = implode(', ', [
       'entrega_zona',
       'entrega_codigo_logradouro',
       'entrega_orientacao',
       'entrega_numero',
       'entrega_complemento',
       'codigo_matricula',
-    ));
+    ]);
     $sQuery = $this->queryInformacoesContratos($sWhere, $sOrderBy);
 
     $rsContratos = db_query($sQuery);
@@ -280,10 +280,10 @@ class AguaEmissao {
   }
 
   /**
-   * @deprecated
    * @param int|null $iCodigoContrato
    * @return mixed
    */
+  #[\Deprecated]
   public function getInformacoesContratos($iCodigoContrato = null) {
     return $this->getInformacoesEmissao($iCodigoContrato);
   }
@@ -379,13 +379,13 @@ class AguaEmissao {
     $sFiltroEconomia = null;
     if ($oContrato->is_condominio == 't' && $oContrato->codigo_economia) {
 
-      $sFiltroEconomia = 'and ' . implode(' and ', array(
+      $sFiltroEconomia = 'and ' . implode(' and ', [
         "aguacalc.x22_manual = '1'",
         "aguacalc.x22_aguacontratoeconomia = {$oContrato->codigo_economia}",
-      ));
+      ]);
     }
 
-    $aSql = array();
+    $aSql = [];
 
     /**
      * Tarifas de água
@@ -543,7 +543,7 @@ class AguaEmissao {
     }
 
     if (pg_num_rows($rsDebitos) == 0) {
-      return array();
+      return [];
     }
 
     return pg_fetch_all($rsDebitos);
@@ -558,7 +558,7 @@ class AguaEmissao {
    */
   public function getUltimasLeituras($iCodigoContrato, DateTime $oDataInicial, $iTotalLeituras = 6) {
 
-    $sCampos = implode(', ', array(
+    $sCampos = implode(', ', [
       'x21_exerc      as exercicio',
       'x21_mes        as mes',
       'x21_leitura    as leitura',
@@ -570,14 +570,14 @@ class AguaEmissao {
        else
         x21_consumo
        end            as consumo',
-    ));
+    ]);
 
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join aguahidromatric     on x04_codhidrometro = x21_codhidrometro',
       'inner join aguacontratoligacao on x04_codhidrometro = x55_aguahidromatric',
       'inner join aguacontrato        on x54_sequencial    = x55_aguacontrato',
       'inner join aguasitleitura      on x17_codigo        = x21_situacao'
-    ));
+    ]);
 
     $oDataInicial->modify('+1 month');
     $sMeses = implode(', ', array_map(function () use ($oDataInicial) {
@@ -585,11 +585,11 @@ class AguaEmissao {
       return $oDataInicial->format('(Y, n)');
     }, range(1, $iTotalLeituras)));
 
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       'agualeitura.x21_status = ' . AguaLeitura::STATUS_ATIVA,
       "aguacontrato.x54_sequencial = {$iCodigoContrato}",
       "(agualeitura.x21_exerc, agualeitura.x21_mes) in ({$sMeses})"
-    ));
+    ]);
 
     $sOrder = "x21_exerc desc, x21_mes desc";
     $sSql = "select {$sCampos} from agualeitura {$sJoin} where {$sWhere} order by {$sOrder}";
@@ -600,7 +600,7 @@ class AguaEmissao {
     }
 
     if (pg_num_rows($rsLeituras) == 0) {
-      return array();
+      return [];
     }
 
     return pg_fetch_all($rsLeituras);

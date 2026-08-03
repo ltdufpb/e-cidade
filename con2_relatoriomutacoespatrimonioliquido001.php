@@ -46,29 +46,29 @@ $iCodigoRelatorio = MutacoesPatrimonioLiquidoDCASP::CODIGO_RELATORIO;
 <body class="body-default abas">
 
 <?php
-$oCriaAbas->identifica = array(
+$oCriaAbas->identifica = [
   "relatorio" => "Relatório",
   "parametro" => "Parâmetros",
   "notas"     => "Fonte/Notas Explicativas"
-);
+];
 
-$oCriaAbas->title = array(
+$oCriaAbas->title = [
   "relatorio" => "Relatório",
   "parametro" => "Parâmetros",
   "notas"     => "Fonte/Notas Explicativas"
-);
+];
 
-$oCriaAbas->src = array(
+$oCriaAbas->src = [
   "relatorio" => "con2_mutacoespatrimonioliquidoDCASP001_2016.php",
   "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel={$iCodigoRelatorio}",
   "notas"     => "con2_conrelnotas.php?c83_codrel={$iCodigoRelatorio}"
-);
+];
 
-$oCriaAbas->sizecampo = array(
+$oCriaAbas->sizecampo = [
   "relatorio" => "23",
   "parametro" => "23",
   "notas"     => "23"
-);
+];
 
 $oCriaAbas->cria_abas();
 ?>

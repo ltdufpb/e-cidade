@@ -46,7 +46,7 @@ if ($modeloImpressao == 2) {
     $impressaoMatricialLote = new ImpressaoMatricialLote();
 }
 
-$aAtributosDoExame = array();
+$aAtributosDoExame = [];
 $lExisteAtributos = false;
 
 /**
@@ -55,8 +55,8 @@ $lExisteAtributos = false;
 $oDadosEstrutura = new stdClass();
 $oDadosEstrutura->iLarguraPadrao = 192;
 $oDadosEstrutura->iAlturaPadrao = 5;
-$oDadosEstrutura->aSetor = array();
-$oDadosEstrutura->aExames = array();
+$oDadosEstrutura->aSetor = [];
+$oDadosEstrutura->aExames = [];
 $oDadosEstrutura->iRequisicao = $requisicao;
 $oDadosEstrutura->sData = '';
 $oDadosEstrutura->mostrarConferenciaPorExame = $oGet->liberarPorExame === '1';
@@ -77,7 +77,7 @@ try {
      * Array com atributos que possuem valor para impressão.
      * Ao buscar os dados, caso encontre o registro, incrementa o array
      */
-    $aAtributosSelecionaveis = array();
+    $aAtributosSelecionaveis = [];
     $oDaoAtributoSelecionavel = new cl_lab_valorreferenciasel();
     $sSqlAtributos = $oDaoAtributoSelecionavel->sql_query_file();
     $rsAtributosSelecionaveis = db_query($sSqlAtributos);
@@ -100,7 +100,7 @@ try {
         /**
          * Caso não seja do tipo CONFERIDO '60 - Conferido', segue percorrendo o próximo registro
          */
-        if (!in_array($oRequisicao->getSituacao(), array(RequisicaoExame::CONFERIDO, RequisicaoExame::ENTREGUE))) {
+        if (!in_array($oRequisicao->getSituacao(), [RequisicaoExame::CONFERIDO, RequisicaoExame::ENTREGUE])) {
             continue;
         }
 
@@ -134,7 +134,7 @@ try {
             $oDadosSetor = new stdClass();
             $oDadosSetor->iCodigo = $setor->getCodigo();
             $oDadosSetor->sDescricao = $setor->getDescricao();
-            $oDadosSetor->aExames = array();
+            $oDadosSetor->aExames = [];
 
             $oDadosEstrutura->aSetor[$iCodigoSetor] = $oDadosSetor;
         }
@@ -162,7 +162,7 @@ try {
             $oStdExame->aMedicamentosExame = $oRequisicao->getMedicamentos();
             $oStdExame->aDadosMaterialColeta = $aDadosMaterialColeta;
             $oStdExame->sObservacao = $oRequisicao->getObservacao();
-            $oStdExame->aAtributos = array();
+            $oStdExame->aAtributos = [];
 
             $responsavelRepository = ResponsavelRepository::getInstance();
             $coletaItem = $oRequisicao->getColetaItem();
@@ -196,7 +196,7 @@ try {
 
                     if ($responsavelConferenciaModel->getOrgaoClasse() !== '') {
                         $siglaOrgao = 'CRF';
-                        if (substr(strtoupper($cbo), 0, 4) == 'BIOM') {
+                        if (str_starts_with(strtoupper((string) $cbo), 'BIOM')) {
                             $siglaOrgao = 'CRBM';
                         }
                         $mensagemLiberacao .= "{$siglaOrgao} {$responsavelConferenciaModel->getOrgaoClasse()}, ";
@@ -253,8 +253,7 @@ try {
                     $oResultadoAtributo,
                     $oAtributoDoExame->unidade,
                     $oAtributo->getTipoReferencia(),
-                    $aAtributosSelecionaveis,
-                    $oRequisicao
+                    $aAtributosSelecionaveis
                 );
 
                 $oAtributoDoExame->valorabsoluto = $oRetorno->valorabsoluto;
@@ -270,8 +269,7 @@ try {
                     $oResultadoAnterior,
                     $oAtributoDoExame->unidade,
                     $oAtributo->getTipoReferencia(),
-                    $aAtributosSelecionaveis,
-                    $oRequisicao
+                    $aAtributosSelecionaveis
                 );
 
                 $oAtributoDoExame->valorabsolutoanterior = $oRetornoAnterior->valorabsoluto;
@@ -390,7 +388,7 @@ function getIdadeSolicitante($dtNascimento)
     $rsAnoMesDia = db_query($sSqlAnoMesDia);
 
     if ($rsAnoMesDia && pg_num_rows($rsAnoMesDia) > 0) {
-        $aDadosIdade = explode(',', db_utils::fieldsMemory($rsAnoMesDia, 0)->dias);
+        $aDadosIdade = explode(',', (string) db_utils::fieldsMemory($rsAnoMesDia, 0)->dias);
         $oIdade->anos = trim($aDadosIdade[0]);
         $oIdade->meses = trim($aDadosIdade[1]);
         $oIdade->dias = trim($aDadosIdade[2]);
@@ -533,7 +531,7 @@ function rodape(scpdf $oPdf, $oDadosEstrutura)
         $sArquivo = "tmp/" . $oDadosAssinatura->la24_c_nomearq;
 
         db_query("begin");
-        pg_loexport($oDadosAssinatura->assinatura, $sArquivo);
+        pg_lo_export($oDadosAssinatura->assinatura, $sArquivo);
         db_query("end");
 
         $oPdf->Image($sArquivo, 170, 260, 15);
@@ -592,7 +590,7 @@ try {
             throw new Exception("Nenhum registro encontrado para os filtros selecionados.");
         }
         
-        $dados = array();
+        $dados = [];
         array_push($dados, $oDadosEstrutura);
         $impressaoMatricialLote->gerarArquivo($dados);
         $retorno->mensagem = "Dados enviados para a impressora.";

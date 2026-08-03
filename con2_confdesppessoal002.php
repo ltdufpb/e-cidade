@@ -35,8 +35,8 @@ include(modification("dbforms/db_funcoes.php"));
 
 $classinatura = new cl_assinatura;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $anousu = db_getsession("DB_anousu");
 $dt = datas_quadrimestre($bimestre,$anousu); // no dbforms/db_funcoes.php
@@ -45,11 +45,11 @@ $dt_fin= $dt[1]; // data final do período
 
 $orcparamrel = new cl_orcparamrel;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
     $descr_inst .= $xvirg.$nomeinst ;
     $xvirg = ', ';
@@ -122,13 +122,13 @@ $m_pensionistas = $orcparamrel->sql_parametro('20','5');
 $m_pessoal  = $orcparamrel->sql_parametro('20','6');
 $m_repasses = $orcparamrel->sql_parametro('20','7');
 //--------- // ------------- // ------------- // ---------------
-for($i=0;$i< pg_numrows($result);$i++) {
+for($i=0;$i< pg_num_rows($result);$i++) {
    db_fieldsmemory($result,$i);
    //$valor_desp = ($saldo_final - $saldo_anterior);        
     $o58_elemento = $o58_elemento."00";
     $estrutural= substr($o58_elemento,0,15);       
     $valor_desp = $liquidado;
-   
+
    if (in_array($estrutural,$m_ativo)){
    	  $soma_ativo += $valor_desp;   	  
    } 
@@ -155,7 +155,7 @@ for($i=0;$i< pg_numrows($result);$i++) {
    //	  $soma_repasses += $valor_desp;
    // }
 }
-for($i=0;$i< pg_numrows($result_plano);$i++) {
+for($i=0;$i< pg_num_rows($result_plano);$i++) {
     db_fieldsmemory($result_plano,$i);
           
     $valor_desp = $saldo_anterior_debito - $saldo_anterior_credito;

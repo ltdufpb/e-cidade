@@ -49,9 +49,7 @@ class Paises implements TabelasInterface
      */
     public function getValue($valor)
     {
-        $pais = array_filter($this->paises, function($pais) use ($valor) {
-            return DBString::slugify($pais->label) === DBString::slugify($valor);
-        });
+        $pais = array_filter($this->paises, fn($pais) => DBString::slugify($pais->label) === DBString::slugify($valor));
 
         $pais = array_shift($pais);
 

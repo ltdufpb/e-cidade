@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 echo "<BR><BR>";
-db_postmemory($HTTP_POST_VARS,2);
+db_postmemory($_POST,2);
 ?>
 <html>
 <head>
@@ -82,11 +82,11 @@ $clform->mornome = "k123"; // Nome do campo ORDEM.
 $clform->masnome = "l456"; // Nome do campo TIPO DE ORDEM.
 $clform->mtonome = "m789"; // Nome do campo TOTALIZAÇÃO.
 
-$clform->arr_tipofol = Array("gerfadi"=>"Adiantamento","1"=>"qualquer coisa");
-$clform->arr_tipopon = Array("gerfsal"=>"Salário","gerfcom"=>"Complementar","gerfres"=>"Rescisão","gerfs13"=>"13o. Salário","gerfadi"=>"Adiantamento");
-$clform->arr_tipores = Array("gerfsal"=>"Salário","gerfcom"=>"Complementar","gerfres"=>"Rescisão","gerfs13"=>"13o. Salário","gerfadi"=>"Adiantamento");
-$clform->arr_mostord = Array("a"=>"Matrícula","b"=>"Lotação","c"=>"Rubrica");
-$clform->arr_mosttot = Array("gerfsal"=>"Salário","gerfcom"=>"Complementar","gerfres"=>"Rescisão","gerfs13"=>"13o. Salário","gerfadi"=>"Adiantamento");
+$clform->arr_tipofol = ["gerfadi"=>"Adiantamento","1"=>"qualquer coisa"];
+$clform->arr_tipopon = ["gerfsal"=>"Salário","gerfcom"=>"Complementar","gerfres"=>"Rescisão","gerfs13"=>"13o. Salário","gerfadi"=>"Adiantamento"];
+$clform->arr_tipores = ["gerfsal"=>"Salário","gerfcom"=>"Complementar","gerfres"=>"Rescisão","gerfs13"=>"13o. Salário","gerfadi"=>"Adiantamento"];
+$clform->arr_mostord = ["a"=>"Matrícula","b"=>"Lotação","c"=>"Rubrica"];
+$clform->arr_mosttot = ["gerfsal"=>"Salário","gerfcom"=>"Complementar","gerfres"=>"Rescisão","gerfs13"=>"13o. Salário","gerfadi"=>"Adiantamento"];
 
 $clform->gera_form(db_anofolha(),db_mesfolha());
 ?>

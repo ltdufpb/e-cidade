@@ -40,8 +40,8 @@ require_once(modification("classes/db_caracter_classe.php"));
 require_once(modification("classes/db_itbiconstrpadraoconstrutivo_classe.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oGet  = db_utils::postMemory($_GET);
 $oPost = db_utils::postMemory($_POST); 
@@ -59,7 +59,7 @@ $db_botao = false;
 $db_opcao = 33;
 $lSqlErro = false;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 	
   db_inicio_transacao();
   $db_opcao = 3;
@@ -158,7 +158,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clitbiconstr->erro_status=="0"){
     $clitbiconstr->erro(true,false);
   }else{

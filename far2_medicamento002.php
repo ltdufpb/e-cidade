@@ -29,7 +29,7 @@ require_once(modification("libs/db_utils.php"));
 
 $oDaoFarMater = new cl_far_matersaude();
 
-parse_str( $_SERVER['QUERY_STRING'] );
+parse_str( (string) $_SERVER['QUERY_STRING'], $result );
 
 if( $sOrdem == 'n' ) {
 
@@ -93,7 +93,7 @@ for( $x = 0; $x < $iLinhas; $x++ ) {
   if( $sQuebra == 'q' ) {
 
     $troca   = 0;
-    $c_class = substr( $oResult->fa05_c_class, 0, ( strlen( $oResult->fa05_c_class ) - 2 ) );
+    $c_class = substr( (string) $oResult->fa05_c_class, 0, ( strlen( (string) $oResult->fa05_c_class ) - 2 ) );
     $sSqlc   = "select fa05_c_descr from far_class where trim(fa05_c_class) = '{$c_class}"."00'";
     $resultc = db_query($sSqlc);
 
@@ -119,7 +119,7 @@ for( $x = 0; $x < $iLinhas; $x++ ) {
       $pdf->setXY( $posx, $posy );
       $pdf->setfont( 'arial', '', 8 );
 
-      while( $c_class == substr( $oResult->fa05_c_class, 0, ( strlen( $oResult->fa05_c_class ) - 2 ) ) ) {
+      while( $c_class == substr( (string) $oResult->fa05_c_class, 0, ( strlen( (string) $oResult->fa05_c_class ) - 2 ) ) ) {
 
         if( $pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
 
@@ -151,7 +151,7 @@ for( $x = 0; $x < $iLinhas; $x++ ) {
         }
 
   	    $pdf->cell( $iColunaCodigo, $alt, $oResult->fa01_i_codigo, 0, 0, "L", 0 );
-        $nome = substr( $oResult->m60_descr, 0, 20 );
+        $nome = substr( (string) $oResult->m60_descr, 0, 20 );
   	    $pdf->cell( $iColunaMedicamento, $alt, $nome,                  0, 0, "L", 0 );
         $pdf->cell( $iColunaUnidade,     $alt, $oResult->m61_descr,    0, 0, "L", 0 );
         $pdf->cell( $iColunaClassif,     $alt, $oResult->fa05_c_class, 0, 0, "L", 0 );
@@ -216,7 +216,7 @@ for( $x = 0; $x < $iLinhas; $x++ ) {
     }
 
 		$pdf->cell( $iColunaCodigo, $alt, $oResult->fa01_i_codigo, 0, 0, "L", 0 );
-    $nome = substr( $oResult->m60_descr, 0, 20 );
+    $nome = substr( (string) $oResult->m60_descr, 0, 20 );
 		$pdf->cell( $iColunaMedicamento, $alt, $nome,                  0, 0, "L", 0 );
     $pdf->cell( $iColunaUnidade,     $alt, $oResult->m61_descr,    0, 0, "L", 0 );
     $pdf->cell( $iColunaClassif,     $alt, $oResult->fa05_c_class, 0, 0, "L", 0 );

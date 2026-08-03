@@ -29,8 +29,8 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <html>
@@ -107,9 +107,9 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
 	                                     inner join db_itensmenu on db_itensmenu.id_item = db_modulos.id_item
 	                                     where libcliente is true
 	                                     order by lower(nome_modulo)");
-	                $numrows = pg_numrows($result);
+	                $numrows = pg_num_rows($result);
 		              for($i = 0;$i < $numrows;$i++) {
-		                echo "<option value=\"".pg_result($result,$i,"id_item")."\">".pg_result($result,$i,"nome_modulo")."</option>\n";
+		                echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."\">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
 		              }  
 		            ?>
               </select> 
@@ -126,8 +126,8 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
 	      <?php 
 	        } else {
 	          $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$modulos);
-	          $mod = pg_result($result,0,0);
-	          $des = pg_result($result,0,1);
+	          $mod = pg_fetch_result($result,0,0);
+	          $des = pg_fetch_result($result,0,1);
 	      ?>
         <table border="1" align="center" cellspacing="0" cellpadding="0">
           <tr>
@@ -185,18 +185,18 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
   							                          and i.itemativo = $ambiente                              
                                         order by m.id_item, {$sOrdenacao} asc");			  
   
-  			              $numrows = pg_numrows($sub);
+  			              $numrows = pg_num_rows($sub);
                       if($numrows > 0) {
                         
                         for($x = 0;$x < $numrows;$x++) {                  
   
-				                  $valor = pg_result($sub,$x,"id_item_filho");
+				                  $valor = pg_fetch_result($sub,$x,"id_item_filho");
                           echo "<img src=\"imagens/alinha.gif\" height=\"5\" id=\"Img".$conta."\" width=\"".$wid."\" >
                           <input size=\"1\" onClick=\"js_pesquisaitemcad('$valor','".$GLOBALS['modulos']."')\" type=\"button\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" >
-				                  <label for=\"ID$valor\">".pg_result($sub,$x,"descricao")."</label><br>\n";
+				                  <label for=\"ID$valor\">".pg_fetch_result($sub,$x,"descricao")."</label><br>\n";
 				                  $wid += 15;
 				                  $conta++;
-				                  submenus(pg_result($sub,$x,"id_item_filho"),$id,$mod);
+				                  submenus(pg_fetch_result($sub,$x,"id_item_filho"),$id,$mod);
 				                  $wid -= 15;
                         }				                
                       }
@@ -211,13 +211,13 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
 							                 and m.id_item = {$modulos} 
                              order by {$sOrdenacao} asc";
                     $result = db_query($SQL);			
-                    for($i = 0;$i < pg_numrows($result);$i++) {
+                    for($i = 0;$i < pg_num_rows($result);$i++) {
 
-			                $valor = pg_result($result,$i,"id_item_filho");
+			                $valor = pg_fetch_result($result,$i,"id_item_filho");
                       echo "<td id=\"col$i\" valign=\"top\" nowrap>\n
                       <input size=\"1\" type=\"button\" onclick=\"js_pesquisaitemcad('$valor','".$modulos."')\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" >
-			                <label for=\"ID$valor\">".pg_result($result,$i,"descricao")."</label><br>\n";
-                      submenus(pg_result($result,$i,"pai"),"col".$i,db_strpos($modulos,"##"));
+			                <label for=\"ID$valor\">".pg_fetch_result($result,$i,"descricao")."</label><br>\n";
+                      submenus(pg_fetch_result($result,$i,"pai"),"col".$i,db_strpos($modulos,"##"));
 			                echo "</td>\n";
                     }	   
 		                ?> 

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_tpcontra_classe.php"));
 include(modification("classes/db_rhcadregime_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltpcontra = new cl_tpcontra;
 $clrhcadregime = new cl_rhcadregime;
 $db_opcao = 1;

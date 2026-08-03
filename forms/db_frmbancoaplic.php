@@ -79,12 +79,12 @@ if(isset($k90_conta)){
           from bancoaplic 
 	  where k90_conta=$k90_conta and k90_codreceita=$k02_codreceita order by k90_data desc limit 1";
   $rs  = db_query($sql);
-  $sldantcp = @pg_result($rs,0,'saldo_anterior_cp');
+  $sldantcp = @pg_fetch_result($rs,0,'saldo_anterior_cp');
   $sql               = "select coalesce(k90_pfsldaplicf,0) as saldo_anterior_pf 
                       from bancoaplic 
 		      where k90_conta=$k90_conta and k90_codreceita=$k02_codreceita order by k90_data desc limit 1";
   $rs                = db_query($sql);
-  $k90_pfsldaplicant = @pg_result($rs,0,'saldo_anterior_pf');
+  $k90_pfsldaplicant = @pg_fetch_result($rs,0,'saldo_anterior_pf');
 }
 ?>
     </td>
@@ -282,7 +282,7 @@ function js_preenchepesquisa(chave){
   db_iframe_bancoaplic.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

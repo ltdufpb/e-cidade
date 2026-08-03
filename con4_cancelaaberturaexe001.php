@@ -132,7 +132,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         db_iframe_conaberturaexe.hide();
         <?php 
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }
@@ -261,7 +261,7 @@ if (isset($p->cancelar)) {
         /**
          * Array que armazenará as contas que tiveram update realizado
          */
-        $aContasUpdate = array();
+        $aContasUpdate = [];
         if ($iRowsBuscaSaltes > 0) {
 
             /**
@@ -415,7 +415,7 @@ if (isset($p->cancelar)) {
              * do campo k13_limite para null
              */
             foreach ($aContasUpdate as $iContaSaltes) {
-                $HTTP_POST_VARS["k13_limite_dia"] = '';
+                $_POST["k13_limite_dia"] = '';
                 $oDaoSaltes->k13_limite = null;
                 $oDaoSaltes->k13_conta = $iContaSaltes;
                 $oDaoSaltes->alterar($iContaSaltes);

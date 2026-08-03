@@ -94,8 +94,8 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 	              <td>
 	                <?php 
 	                  
-	                  if ( trim($p58_dtproc) != '' ) {
-		                  $aDataProc = explode('-',$p58_dtproc);
+	                  if ( trim((string) $p58_dtproc) != '' ) {
+		                  $aDataProc = explode('-',(string) $p58_dtproc);
 		                  $iDia = $aDataProc[2];
 		                  $iMes = $aDataProc[1];
 		                  $iAno = $aDataProc[0];

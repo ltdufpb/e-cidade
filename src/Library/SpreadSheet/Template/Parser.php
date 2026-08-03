@@ -162,7 +162,7 @@ class Parser
                     $linha = $cell->getRow();
                     $configuracoes = "";
                     $re = '/(\{.*\})/m';
-                    preg_match_all($re, $cell->getValue(), $matches, PREG_SET_ORDER, 0);
+                    preg_match_all($re, (string) $cell->getValue(), $matches, PREG_SET_ORDER, 0);
                     if (is_array($matches) && count($matches) > 0) {
                         $configuracoes = json_decode($matches[0][0]);
                     }
@@ -277,7 +277,7 @@ class Parser
                 }
                 if (isset($linhaProcessar->{$item}) && trim($linhaProcessar->{$item}) != '') {
                     $valor = $linhaProcessar->{$item};
-                    $valor = utf8_encode($valor);
+                    $valor = mb_convert_encoding($valor, 'UTF-8', 'ISO-8859-1');
                 }
                 if ($valor == '') {
                     continue;
@@ -285,7 +285,7 @@ class Parser
 
                 $cordenadas = $coluna . $linha;
                 // se tem formula continue
-                if (substr($planilha->getCell($cordenadas), 0, 1) === "=") {
+                if (str_starts_with((string) $planilha->getCell($cordenadas), "=")) {
                     continue;
                 }
                 $planilha->setCellValue($cordenadas, $valor);
@@ -330,7 +330,7 @@ class Parser
      */
     public function save($path)
     {
-        $extension = array_reverse(explode(".", $path));
+        $extension = array_reverse(explode(".", (string) $path));
         $extension = $extension[0];
         $writer = null;
         switch ($extension) {
@@ -427,7 +427,7 @@ class Parser
      */
     public function download($path)
     {
-        $extension = array_reverse(explode(".", $path));
+        $extension = array_reverse(explode(".", (string) $path));
         $extension = $extension[0];
         $writer = null;
         switch ($extension) {
@@ -446,7 +446,7 @@ class Parser
                 throw new \ParameterException('O tipo de arquivo. ' . $extension . ' não é suportado.');
         }
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="'. urlencode($path).'"');
+        header('Content-Disposition: attachment; filename="'. urlencode((string) $path).'"');
         $writer->save('php://output');
     }
 

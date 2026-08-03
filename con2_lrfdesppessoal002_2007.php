@@ -45,8 +45,8 @@ if (!isset($arqinclude)){
   $orcparamrel = new cl_orcparamrel;
   $clconrelinfo = new cl_conrelinfo;
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
   
   $anousu  = db_getsession("DB_anousu");
   
@@ -62,14 +62,14 @@ $textodt = $dt['texto'];
 // calcula periodo do exercicio anterior para fechar os 12 meses
 $anousu_ant  = db_getsession("DB_anousu")-1;
 // se o ano atual é bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-$dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+$dt = preg_split('#\-#m',(string) $dt_fin);  // mktime -- (mes,dia,ano)
 //$dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1],$dt[2]-365,$dt[0]));
 $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1]-11,"01",$dt[0]));
 $dt_fin_ant = $anousu_ant.'-12-31';
 
 ////////////////////////////////////////////////////////////////////
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev,db21_tipoinstit from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -79,9 +79,9 @@ $temcamara  = false;
 $temadmind  = false;
 $flag_abrev = false;
 
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   } else {
@@ -122,8 +122,8 @@ $head3 = "RELATÓRIO DE GESTÃO FISCAL";
 $head4 = "DEMONSTRATIVO DA DESPESA COM PESSOAL";
 $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
-$dt1 = split('-',$dt_ini);
-$dt2 = split('-',$dt_fin); 
+$dt1 = preg_split('#\-#m',$dt_ini);
+$dt2 = preg_split('#\-#m',(string) $dt_fin); 
 if ($tipo_emissao=='periodo'){
   $textodt = strtoupper(db_mes($dt1[1]))." A ".strtoupper(db_mes($dt2[1]))." DE ";
   $head6   = $textodt.db_getsession("DB_anousu");
@@ -196,7 +196,7 @@ $m_despesa[7]["exercicio"]     = 0;
 $sele_work = 'o58_instit in ('.$instituicao.')   ';
 $result_despesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
-for ($x = 0; $x < pg_numrows($result_despesa); $x++){
+for ($x = 0; $x < pg_num_rows($result_despesa); $x++){
   db_fieldsmemory($result_despesa,$x);
 
   $nivel        = $m_despesa[7]["nivel"];
@@ -275,7 +275,7 @@ m_p[linha][1:estruturais]
 --------- [3:saldo ant]
 */
 
-for($x=0;$x< pg_numrows($result_bal);$x++) {
+for($x=0;$x< pg_num_rows($result_bal);$x++) {
   db_fieldsmemory($result_bal,$x);
   for ($aa=1;$aa<=8;$aa++){
     if (in_array($estrutural,$m_p[$aa][1])) {
@@ -288,7 +288,7 @@ for($x=0;$x< pg_numrows($result_bal);$x++) {
     }// end if
     //## exclusao de parametros
     if (in_array($estrutural,$m_p[$aa]['1e'])){
-      
+
       if (isset($m_p[$aa][2])){
         $m_p[$aa][2]-= $saldo_anterior_credito-$saldo_anterior_debito;
       } else {
@@ -296,7 +296,7 @@ for($x=0;$x< pg_numrows($result_bal);$x++) {
         $m_p[$aa][2] = ($saldo_anterior_credito-$saldo_anterior_debito)*-1;
       }  
     }// end if
-    
+
   }// endfor
   
 }
@@ -304,7 +304,7 @@ for($x=0;$x< pg_numrows($result_bal);$x++) {
 // echo "<br> ".$m_p[1][2];
 // exit;
 
-for($x=0;$x< pg_numrows($result_bal_ant);$x++) {
+for($x=0;$x< pg_num_rows($result_bal_ant);$x++) {
   db_fieldsmemory($result_bal_ant,$x);
   for ($aa=1;$aa<=8;$aa++){
     if (in_array($estrutural,$m_p[$aa][1])){
@@ -333,7 +333,7 @@ for ($aa=1;$aa<=8;$aa++) {
     
     $pontoz=14;
     for ($tz=13; $tz >= 0; $tz--) {
-      if (substr($m_p[$aa][1][$aaa],$tz,1) > 0) {
+      if (substr((string) $m_p[$aa][1][$aaa],$tz,1) > 0) {
         $pontoz=$tz;
         break;
       }
@@ -354,7 +354,7 @@ for ($aa=1;$aa<=8;$aa++) {
     inner join orcelemento  on c67_codele = o56_codele and o56_anousu = $anousu
     inner join conlancam    on c70_codlan = c67_codlan
     inner join conlancamdoc on c70_codlan = c71_codlan
-    where o56_elemento like '" . substr($m_p[$aa][1][$aaa],0,$pontoz+1) . "%'
+    where o56_elemento like '" . substr((string) $m_p[$aa][1][$aaa],0,$pontoz+1) . "%'
     and c71_coddoc in (1,2,3,4,5,6)
     and c70_data between '$dt_ini' and '$dt_fin'
     group by o56_codele,o56_elemento,o56_descr";
@@ -362,8 +362,8 @@ for ($aa=1;$aa<=8;$aa++) {
     
     //		echo "sql - $aa - $aaa - $sql<br>";
     
-    if (pg_numrows($result_ele) > 0) {
-      for ($ele=0; $ele < pg_numrows($result_ele); $ele++) {
+    if (pg_num_rows($result_ele) > 0) {
+      for ($ele=0; $ele < pg_num_rows($result_ele); $ele++) {
         db_fieldsmemory($result_ele, $ele);
         $m_p[$aa][3] += $emp - $anu_emp - $liq + $anu_liq;
       }
@@ -440,14 +440,14 @@ if ($dt_ini_ant != $dt_fin_ant) {
   
   for ($p=1;$p<=18;$p++){  
     // 18 é a quantidade de parametros ou linhas existentes nos parametros
-    for ($i=0;$i<pg_numrows($result_rec_ant);$i++){
+    for ($i=0;$i<pg_num_rows($result_rec_ant);$i++){
       db_fieldsmemory($result_rec_ant,$i);
       $estrutural = $o57_fonte;
       if (in_array($estrutural,$param[$p])) {
         if ($p <= 15){
           $tx[12][2] += $janeiro+$fevereiro+$marco+$abril+$maio+$junho+$julho+$agosto+$setembro+$outubro+$novembro+$dezembro;
         } else {
-					if (substr($estrutural,0,3) == "497"){
+					if (str_starts_with((string) $estrutural, "497")){
 						$tx[12][2] -= abs($janeiro)+abs($fevereiro)+abs($marco)+abs($abril)+abs($maio)+abs($junho)+abs($julho)+abs($agosto)+abs($setembro)+abs($outubro)+abs($novembro)+abs($dezembro);
 					} else {
 						$tx[12][2] -= $janeiro+$fevereiro+$marco+$abril+$maio+$junho+$julho+$agosto+$setembro+$outubro+$novembro+$dezembro;
@@ -484,14 +484,14 @@ $param[18] = $orcparamrel->sql_parametro('5','18', 'f', str_replace('-', ', ', $
 ///// TESTE O CODIGO ABAIXO E RETORNA SALDO DE 2006 CORRETO
 for ($p=1;$p<=18;$p++) {
   // 18 é a quantidade de parametros ou linhas existentes nos parametros
-  for ($i=0;$i<pg_numrows($result_rec);$i++){
+  for ($i=0;$i<pg_num_rows($result_rec);$i++){
     db_fieldsmemory($result_rec,$i);
     $estrutural = $o57_fonte;
     if (in_array($estrutural,$param[$p])){       
       if ($p <=15){
         $tx[12][2] += $janeiro+$fevereiro+$marco+$abril+$maio+$junho+$julho+$agosto+$setembro+$outubro+$novembro+$dezembro;
       } else {
-        if (substr($estrutural,0,3) == "497"){
+        if (str_starts_with((string) $estrutural, "497")){
 					$tx[12][2] -= abs($janeiro)+abs($fevereiro)+abs($marco)+abs($abril)+abs($maio)+abs($junho)+abs($julho)+abs($agosto)+abs($setembro)+abs($outubro)+abs($novembro)+abs($dezembro);
 				} else {
 					$tx[12][2] -= $janeiro+$fevereiro+$marco+$abril+$maio+$junho+$julho+$agosto+$setembro+$outubro+$novembro+$dezembro;
@@ -721,7 +721,7 @@ if (!isset($arqinclude)) {
   $pdf->setfont('arial','',5);
   $pdf->ln(20);
   
-  assinaturas(&$pdf,&$classinatura,'GF');
+  assinaturas($pdf,$classinatura,'GF');
   
   $pdf->Output();
   

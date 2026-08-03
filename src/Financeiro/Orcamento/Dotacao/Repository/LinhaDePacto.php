@@ -45,7 +45,7 @@ class LinhaDePacto extends \BaseClassRepository
     /**
      * @var LinhaDePactoModel[]
      */
-    protected $aColecao = array();
+    protected $aColecao = [];
 
 
     /**
@@ -107,7 +107,7 @@ class LinhaDePacto extends \BaseClassRepository
             $mensagem = "Esta linha de pacto possui movimentação. Deste modo não é possível realizar a exclusão";
             throw new \Exception($mensagem);
         }
-        self::getInstance()->aColecao = array();
+        self::getInstance()->aColecao = [];
     }
 
     /**

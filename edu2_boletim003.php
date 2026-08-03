@@ -47,7 +47,7 @@ $oDadosGrade       = new stdClass();
 
 $oDadosGrade->nLarguraGrade = 191;
 
-$obs1   = base64_decode($obs1);
+$obs1   = base64_decode((string) $obs1);
 $escola = db_getsession("DB_coddepto");
 
 $clobsboletim   = new cl_obsboletim;
@@ -181,7 +181,7 @@ $pdf->AliasNbPages();
 $pdf->ln(5);
 $pdf->SetAutoPageBreak(true, 10);
 
-if ( strlen($nome) > 42 || strlen($sNomeEscola) > 42 ) {
+if ( strlen((string) $nome) > 42 || strlen((string) $sNomeEscola) > 42 ) {
   $TamFonteNome = 8;
 } else {
   $TamFonteNome = 9;
@@ -225,9 +225,9 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
   $head4    = "Código Aluno: {$ed47_i_codigo} Matrícula: {$ed60_i_codigo}";
   $head5    = "Etapa: {$ed11_c_descr} Ano: {$ed52_i_ano}";
   $head6    = "Turma: {$ed57_c_descr}";
-  $situacao = trim($ed60_c_concluida) == "S" &&
-              trim($ed60_c_situacao) != 'AVANÇADO' &&
-              trim($ed60_c_situacao) != 'CLASSIFICADO' ? "CONCLUÍDO" : Situacao( $ed60_c_situacao, $ed60_i_codigo );
+  $situacao = trim((string) $ed60_c_concluida) == "S" &&
+              trim((string) $ed60_c_situacao) != 'AVANÇADO' &&
+              trim((string) $ed60_c_situacao) != 'CLASSIFICADO' ? "CONCLUÍDO" : Situacao( $ed60_c_situacao, $ed60_i_codigo );
   $head7 = "Situação: $situacao";
 
 
@@ -313,7 +313,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
   }
 
   $ed72_t_obs   = "";
-  $aObservacoes = array();
+  $aObservacoes = [];
 
   for( $iContador = 0; $iContador < pg_num_rows( $result_obs ); $iContador++ ) {
 
@@ -360,7 +360,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
 
           if ($padraotipo == "L") {
 
-            $explode_parecer = explode( "**", $ed93_t_parecer );
+            $explode_parecer = explode( "**", (string) $ed93_t_parecer );
 
             for ($b = 0; $b < count($explode_parecer); $b++) {
               $pdf->cell( $oDadosGrade->nLarguraGrade, 4, trim( $explode_parecer[$b] ), 1, 1, "L", 0 );
@@ -387,7 +387,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
 
     if ($cldiarioavaliacao->numrows > 0) {
 
-      $pardescr = trim( pg_result( $result_pardescr, 0, 'pardescr' ) );
+      $pardescr = trim( pg_fetch_result( $result_pardescr, 0, 'pardescr' ) );
 
       if ($pardescr != "") {
 
@@ -429,8 +429,8 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
   $sSqlAprovConselho = $claprovconselho->sql_query( "", $sCampos, "ed59_i_ordenacao", $sWhere );
   $result_cons       = @$claprovconselho->sql_record( $sSqlAprovConselho );
 
-  $aAprovadoBaixaFrequencia   = array();
-  $aAprovadoConselhoRegimento = array();
+  $aAprovadoBaixaFrequencia   = [];
+  $aAprovadoConselhoRegimento = [];
   $sObservacaoConselho        = '';
 
   if ($claprovconselho->numrows > 0) {
@@ -457,7 +457,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
           $oDadosObservacao              = new stdClass();
           $oDadosObservacao->aParagrafos = $oDocumento->getDocParagrafos();
 
-          if( trim( $oDadosObservacao->aParagrafos[1]->oParag->db02_texto ) ) {
+          if( trim( (string) $oDadosObservacao->aParagrafos[1]->oParag->db02_texto ) ) {
             $aAprovadoConselhoRegimento[]  = "- {$oDadosObservacao->aParagrafos[1]->oParag->db02_texto}";
           }
 
@@ -514,7 +514,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
       || trim( str_replace( chr(92), "", $obs1 ) ) != ""
       || trim( $obs2 ) != ""
       || trim( $sObservacaoConselho ) != ""
-      || trim ($sObsProporcionalidadeAluno) != '') {
+      || trim ((string) $sObsProporcionalidadeAluno) != '') {
 
     $pdf->setfont( 'arial', 'b', 7 );
     $pdf->cell( $oDadosGrade->nLarguraGrade, 4, "Observações / Mensagens", 1, 1, "L", 1 );
@@ -524,7 +524,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
     $ed72_t_obs = substr( $ed72_t_obs,          0, 270 );
     $obs2 = substr($obs2, 0, 350);
       $obs3 = $sObservacaoConselho;
-      $obs4 = substr($sObsProporcionalidadeAluno, 0, 150);
+      $obs4 = substr((string) $sObsProporcionalidadeAluno, 0, 150);
 
 
     $pdf->multicell( $oDadosGrade->nLarguraGrade, 4, ( $ed60_t_obs != "" ? $ed60_t_obs . "\n" : "" ).
@@ -538,12 +538,12 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
 
   if ($impresso == false) {
 
-    $sTexto  = "TF - Total Faltas | " . ( trim( $ed57_c_medfreq ) == "PERÌODOS" ? "AD - Aulas Dadas" : "DL - Dias Letivos");
+    $sTexto  = "TF - Total Faltas | " . ( trim( (string) $ed57_c_medfreq ) == "PERÌODOS" ? "AD - Aulas Dadas" : "DL - Dias Letivos");
     $sTexto .= " | FA - Faltas Abonadas";
     $pdf->cell( $oDadosGrade->nLarguraGrade, 4, $sTexto, 1, 1, "L", 0 );
   } else {
 
-    $sTexto  = "TF - Total Faltas | " . ( trim( $ed57_c_medfreq ) == "PERÌODOS" ? "AD - Aulas Dadas" : "DL - Dias Letivos");
+    $sTexto  = "TF - Total Faltas | " . ( trim( (string) $ed57_c_medfreq ) == "PERÌODOS" ? "AD - Aulas Dadas" : "DL - Dias Letivos");
     $sTexto .= " | FA - Faltas Abonadas";
     $pdf->cell( $oDadosGrade->nLarguraGrade, 4, $sTexto, "LRB", 1, "L", 0 );
   }

@@ -37,7 +37,7 @@ class FaltasMatriculaAlunoWebservice {
   
   public function getFaltas() {
 
-    $aFaltas                     = array();
+    $aFaltas                     = [];
     $oDaoDiarioClasseAlunoFalta  = new cl_diarioclassealunofalta();
     $sCamposFalta  = " count(*) as total_faltas, ed300_datalancamento";
     $sCamposFalta .= ", ed232_c_descr as disciplina";
@@ -61,7 +61,7 @@ class FaltasMatriculaAlunoWebservice {
         $oDadosFalta               = new stdClass();
         $oDadosFalta->dtFalta      = $oFalta->ed300_datalancamento;
         $oDadosFalta->iTotalFaltas = $oFalta->total_faltas;
-        $oDadosFalta->sDisciplinas = utf8_encode($oFalta->disciplina);
+        $oDadosFalta->sDisciplinas = mb_convert_encoding($oFalta->disciplina, 'UTF-8', 'ISO-8859-1');
         $aFaltas[]                 = $oDadosFalta;
       }
       unset($oDadosFalta);

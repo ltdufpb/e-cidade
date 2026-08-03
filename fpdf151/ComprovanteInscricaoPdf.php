@@ -18,7 +18,6 @@ class ComprovanteInscricaoPdf extends FpdfMultiCellBorder
      */
     public function __construct($orientation = 'P', $unit = 'mm', $format = 'A4')
     {
-        parent::__construct($orientation, $unit, $format);
         $this->exibeHeader(true);
         $this->mostrarRodape(true);
         $this->mostrarTotalDePaginas(true);
@@ -31,6 +30,7 @@ class ComprovanteInscricaoPdf extends FpdfMultiCellBorder
         $this->serviceConfiguracao = new ConfiguracaoComprovanteInscricaoService();
     }
 
+    #[\Override]
     function Header()
     {
         global $conn;

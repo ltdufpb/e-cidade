@@ -169,7 +169,7 @@ function js_emite(){
 	         <td align="right"> <strong>Opção de Seleção :<strong></td>
 	    	 <td align="left">&nbsp;&nbsp;&nbsp;
 		   <?php 
-		   $xxx = array("S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;");
+		   $xxx = ["S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;"];
 		   db_select('param_situacao',$xxx,true,2);
 		   ?>
 		     </td>

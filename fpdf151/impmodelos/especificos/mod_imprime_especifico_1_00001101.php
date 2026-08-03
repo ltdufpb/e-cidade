@@ -49,14 +49,14 @@ $this->objpdf->Text(165,$y-3,"Data para pagamento : ".$this->dtparapag);
 $this->objpdf->Text(58 ,$y-3,"Data para pagamento : ".$this->dtparapag);
 $this->objpdf->SetFont('Times','',5);
 
-$iNumpre =  substr($this->descr2, 0, -3);
+$iNumpre =  substr((string) $this->descr2, 0, -3);
 $sSqlVistoria = " select *
                     from vistorias
                          inner join vistorianumpre on y69_codvist = y70_codvist
                    where y69_numpre = {$iNumpre}  ";
 $rsVistorias = db_query($sSqlVistoria);
 $sObsVistorias = '';
-if ( pg_numrows($rsVistorias) > 0 ) {
+if ( pg_num_rows($rsVistorias) > 0 ) {
 
   $sObsVistorias = db_utils::fieldsMemory($rsVistorias, 0)->y70_obs;
 }
@@ -86,10 +86,10 @@ $this->objpdf->Text(75,$y+6,$this->descr5); // Parcela inicial e total de parcel
 $this->objpdf->SetFont('Arial','',5);
 $this->objpdf->Text(13,$y+10,$this->titulo3); // contribuinte/endereço
 $this->objpdf->SetFont('Arial','B',7);
-$this->objpdf->Text(13,$y+13,substr($this->descr3_1, 0, 45)."..."); // nome do contribuinte
+$this->objpdf->Text(13,$y+13,substr((string) $this->descr3_1, 0, 45)."..."); // nome do contribuinte
 $this->objpdf->Text(13,$y+16,$this->descr3_2); // endereço
 $this->objpdf->SetFont('Arial','B',7);
-$this->objpdf->Text(12,$y+19,substr($this->descr17,0,75)); // SQL
+$this->objpdf->Text(12,$y+19,substr((string) $this->descr17,0,75)); // SQL
 
 $this->objpdf->SetFont('Arial','',5);
 $this->objpdf->Text(13,$y+23,$this->titulo4 . $this->descr4_1); // Instruções
@@ -162,7 +162,7 @@ $this->objpdf->SetFont('Arial','B',7);
 $this->objpdf->Text(97,$y+13,$this->descr11_1); // nome do contribuinte
 $this->objpdf->Text(97,$y+16,$this->descr11_2); // endereço
 $this->objpdf->SetFont('Arial','B',7);
-$this->objpdf->Text(96,$y+19,substr($this->descr17,0,92)); // SQL
+$this->objpdf->Text(96,$y+19,substr((string) $this->descr17,0,92)); // SQL
 
 $this->objpdf->SetFont('Arial','',5);
 $this->objpdf->Text(97,$y+24,$this->titulo12 ); // instruções
@@ -176,7 +176,7 @@ $this->objpdf->sety($y+25);
 
 // mensagem de instruções da guia prefeitura
 $this->objpdf->SetFont('Arial','B',5);
-$this->objpdf->multicell(100,2,substr($this->descr12_1,0,274)); // Instruções 2 - linha 1
+$this->objpdf->multicell(100,2,substr((string) $this->descr12_1,0,274)); // Instruções 2 - linha 1
 $this->objpdf->multicell(100,2,$this->descr12_2); // Instruções 2 - linha 2
 
 if ( $sObsVistorias != '' ) {

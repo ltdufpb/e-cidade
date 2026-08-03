@@ -40,7 +40,7 @@ SQL_UP;
         $sColuna = $sTabela->hasColumn('j152_areaed');
 
         if ( !$sColuna ){
-            
+
             $sql_iptutaxacalv_areaed = <<<STRING_IPTUTAXACALV_AREAED
                                           alter table iptutaxacalv add COLUMN j152_areaed double precision default 0;
                                           update iptutaxacalv set j152_areaed = tot_areaed 
@@ -85,14 +85,14 @@ STRING_IPTUCADTAXAEXE;
             }
 
             $exists_iptutaxacalv = $this->hasTable('cadastro_'.$iAno.'.iptutaxacalv');
-            
+
             if ($exists_iptutaxacalv) {
 
                 $sTabela = $this->table('cadastro_'.$iAno.'.iptutaxacalv');
                 $sColuna = $sTabela->hasColumn('j152_areaed');
 
                 if ( !$sColuna ){
-            
+
                       $sql_iptutaxacalv_areaed = <<<STRING_IPTUTAXACALV_AREAED
                                                     alter table cadastro_$iAno.iptutaxacalv add COLUMN j152_areaed double precision default 0;
 STRING_IPTUTAXACALV_AREAED;

@@ -32,12 +32,12 @@ final class cronogramaBaseReceita {
 
   protected $iPerspectiva;
   
-  protected $aAnos = array();
+  protected $aAnos = [];
   
   protected $oReceita ;
   protected $iCodigoReceita;
   
-  protected $aMeses = array();
+  protected $aMeses = [];
   /**
    * 
    */
@@ -355,8 +355,8 @@ final class cronogramaBaseReceita {
     /**
      * Consultamos todas as bases cadastradas para a receita
      */
-    $this->aMeses = array();
-    $aDadosBases  = array();
+    $this->aMeses = [];
+    $aDadosBases  = [];
     $oDaoCronogramaReceitaBase = db_utils::getDao("cronogramabasecalculoreceita");
     $sSqlDadosBase = $oDaoCronogramaReceitaBase->sql_query_file(null, 
                                                                 "*,

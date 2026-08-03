@@ -150,7 +150,7 @@ if ($db_opcao == 1) {
           <td nowrap>
               <?php
               $lProcessoSistema = true;
-              db_select('lProcessoSistema', array(true => 'SIM', false => 'NÃO'), true, $db_opcao,
+              db_select('lProcessoSistema', [true => 'SIM', false => 'NÃO'], true, $db_opcao,
                 "onchange='js_processoSistema()' style='width: 95px'")
               ?>
           </td>
@@ -240,7 +240,7 @@ if ($db_opcao == 1) {
                   <td>
                       <?php
                       if (empty($v01_dtvenc_dia) && $db_opcao == 1) {
-                          $data = split("-", verifica_data($dia, $mes, $ano));
+                          $data = preg_split("#\\-#m", verifica_data($dia, $mes, $ano));
                           $v01_dtvenc_dia = $dia;
                           $v01_dtvenc_mes = $mes;
                           $v01_dtvenc_ano = $ano;
@@ -279,8 +279,8 @@ if ($db_opcao == 1) {
                       $sqlTipo .= "  where k03_tipo   = 5  ";
                       $sqlTipo .= "    and k00_instit = " . db_getsession('DB_instit');
                       $rsTipo = db_query($sqlTipo);
-                      $iTipo = pg_numrows($rsTipo);
-                      $arrTipo = array();
+                      $iTipo = pg_num_rows($rsTipo);
+                      $arrTipo = [];
                       $arrTipo[0] = "Selecione";
 
                       for ($w = 0; $w < $iTipo; $w++) {
@@ -622,7 +622,7 @@ if ($db_opcao == 1) {
       db_iframe_divida.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

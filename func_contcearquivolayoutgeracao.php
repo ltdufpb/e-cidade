@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contcearquivolayoutgeracao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcontcearquivolayoutgeracao = new cl_contcearquivolayoutgeracao;
 $clcontcearquivolayoutgeracao->rotulo->label("c15_sequencial");
 $clcontcearquivolayoutgeracao->rotulo->label("c15_db_layouttxtgeracao");
@@ -98,9 +98,9 @@ $clcontcearquivolayoutgeracao->rotulo->label("c15_db_layouttxtgeracao");
         }else{
            $sql = $clcontcearquivolayoutgeracao->sql_query("",$campos,"c15_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c15_db_layouttxtgeracao)){
-          $repassa = array("chave_c15_sequencial"=>$chave_c15_sequencial,"chave_c15_db_layouttxtgeracao"=>$chave_c15_db_layouttxtgeracao);
+          $repassa = ["chave_c15_sequencial"=>$chave_c15_sequencial,"chave_c15_db_layouttxtgeracao"=>$chave_c15_db_layouttxtgeracao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

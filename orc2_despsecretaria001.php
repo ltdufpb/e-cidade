@@ -63,20 +63,20 @@ $oPost = db_utils::postMemory($_POST);
     <?php 
 
 
-    $clcriaabas->identifica = array( "g1" => "Relatório",
-                                     "filtro"    => "Filtro");
+    $clcriaabas->identifica = [ "g1" => "Relatório",
+                                     "filtro"    => "Filtro"];
 
-    $clcriaabas->title      = array( "g1" => "Relatório",
-                                     "filtro"    => "Filtro");
+    $clcriaabas->title      = [ "g1" => "Relatório",
+                                     "filtro"    => "Filtro"];
 
-    $clcriaabas->src        = array( "g1" => "orc2_despsecretaria011.php",
-                                     "filtro"    => "func_selorcdotacao_aba.php");
+    $clcriaabas->src        = [ "g1" => "orc2_despsecretaria011.php",
+                                     "filtro"    => "func_selorcdotacao_aba.php"];
 
-    $clcriaabas->funcao_js  = array( "g1" => "",
-                                     "filtro"    => "js_atualizar_instit();");
+    $clcriaabas->funcao_js  = [ "g1" => "",
+                                     "filtro"    => "js_atualizar_instit();"];
 
-    $clcriaabas->sizecampo  = array( "g1" => "23",
-                                     "filtro"    => "23");
+    $clcriaabas->sizecampo  = [ "g1" => "23",
+                                     "filtro"    => "23"];
 
 
     $clcriaabas->cria_abas();

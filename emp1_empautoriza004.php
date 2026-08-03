@@ -37,7 +37,7 @@ require_once(modification("model/fornecedor.model.php"));
 
 require_once(modification("classes/db_empautorizaprocesso_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clempautpresta = new cl_empautpresta;
 $clempprestatip = new cl_empprestatip;

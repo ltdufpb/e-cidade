@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from tipojur where v51_codigo = ".$HTTP_POST_VARS["codigo"]) or die("Erro(7) excluindo tipojur");  
+if(isset($_POST["excluir"])) {
+  db_query("delete from tipojur where v51_codigo = ".$_POST["codigo"]) or die("Erro(7) excluindo tipojur");  
 }
 ?>
 <html>

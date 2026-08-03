@@ -37,12 +37,12 @@ $tipoImovel        = null;
 $j34_area          = null;
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 //  db_postmemory($HTTP_SERVER_VARS,2);
 
 $rsparametro = db_query("select * from cfiptu where j18_anousu = ".db_getsession('DB_anousu'));
-$numrows     = pg_numrows($rsparametro);
+$numrows     = pg_num_rows($rsparametro);
 if($numrows > 0){
   db_fieldsmemory($rsparametro,0);
 }else{
@@ -586,10 +586,10 @@ return true;
        if(isset($idlote)){
          $query_xx.="j34_idbql=$idlote&novolote=true&";
        }else if(isset($nov)){
-         $query_xx = $HTTP_SERVER_VARS['QUERY_STRING']."&";
+         $query_xx = $_SERVER['QUERY_STRING']."&";
        }
 
-       if (strpos($query_xx, '?') === false) {
+       if (!str_contains($query_xx, '?')) {
           $query_xx = "?".$query_xx;
        }
 

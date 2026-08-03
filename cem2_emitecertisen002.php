@@ -43,7 +43,7 @@ $sAgt             = "cemiterio/cem2_emitecertisen002.agt";
 $sCaminhoSalvoSxw = "tmp/docSalvoSxw".date("YmdHis").db_getsession("DB_id_usuario").".sxw";
 $sNomeRelatorio   = "tmp/geraRelatorio".date("YmdHis").db_getsession("DB_id_usuario").".pdf";
 
-$aParam                   = array();
+$aParam                   = [];
 $aParam['$codigoisencao'] = $oGet->codigoisencao;
 $aParam['$dia_atual']     = date('d',db_getsession('DB_datausu'));
 $aParam['$mes_atual']     = db_mes(date('m',db_getsession('DB_datausu')),2);

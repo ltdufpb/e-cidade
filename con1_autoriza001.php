@@ -37,8 +37,8 @@ $clrotulo->label("d02_contri");
 $clrotulo->label("j14_nome");
 $db_opcao = 1;
 $db_botao = true;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 
@@ -51,7 +51,7 @@ if(isset($confirmar)){
    $cleditalrua->alterar($d02_contri);
    if($cleditalrua->erro_status=='0'){
        $sqlerro = true;
-       break;
+       return;
    }
   db_fim_transacao($sqlerro);
 }
@@ -107,7 +107,7 @@ function js_confirmar(){
       </td>
       <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('d02_autori',$x,true,$db_opcao,"");
 ?>
       </td>

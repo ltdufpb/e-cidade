@@ -1,284 +1,284 @@
 <?php
-return array(
-    'ideTrabalhador' => array(
-        'properties' => array(
+return [
+    'ideTrabalhador' => [
+        'properties' => [
             'cpfTrab',
             'nisTrab'
-        ),
-        'groups' => array(
-            'infoMV' => array(
-                'properties' => array(
-                    'indMV' => array(
+        ],
+        'groups' => [
+            'infoMV' => [
+                'properties' => [
+                    'indMV' => [
                         'type' => 'int'
-                    )
-                ),
-                'groups' => array(
-                    'remunOutrEmpr' => array (
+                    ]
+                ],
+                'groups' => [
+                    'remunOutrEmpr' =>  [
                         'type' => 'array',
-                        'items' => array(
-                            'properties' => array(
-                                'tpInsc' => array(
+                        'items' => [
+                            'properties' => [
+                                'tpInsc' => [
                                     'type' => 'int'
-                                ),
+                                ],
                                 'nrInsc',
-                                'codCateg' => array(
+                                'codCateg' => [
                                     'type' => 'int'
-                                ),
-                                'vlrRemunOE' => array(
+                                ],
+                                'vlrRemunOE' => [
                                     'type' => 'float'
-                                )
-                            )
-                        )
-                    )
-                )
-            ),
-            'infoComplem' => array(
-                'properties' => array(
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'infoComplem' => [
+                'properties' => [
                     'nmTrab',
                     'dtNascto'
-                ),
-                'groups' => array(
-                    'sucessaoVinc' => array(
-                        'properties' => array(
+                ],
+                'groups' => [
+                    'sucessaoVinc' => [
+                        'properties' => [
                             'nrInsc',
                             'matricAnt',
                             'dtAdm',
                             'observacao'
-                        )
-                    )
-                )
-            ),
-            'procJudTrab' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'procJudTrab' => [
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
-                        'tpTrib' => array(
+                'items' => [
+                    'properties' => [
+                        'tpTrib' => [
                             'type' => 'int'
-                        ),
+                        ],
                         'nrProcJud',
                         'codSusp'
-                    )
-                )
-            ),
-            'infoInterm' => array(
-                'properties' => array(
-                    'dia' => array(
+                    ]
+                ]
+            ],
+            'infoInterm' => [
+                'properties' => [
+                    'dia' => [
                         'type' => 'int'
-                    )
-                )
-            )
-        )
-    ),
-    'dmDev' => array(
-        'properties' => array(
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'dmDev' => [
+        'properties' => [
             'ideDmDev',
-            'codCateg' => array(
+            'codCateg' => [
                 'type' => 'int'
-            )
-        ),
-        'groups' => array(
-            'infoPerApur' => array(
-                'groups'=> array(
-                    'ideEstabLot' => array(
+            ]
+        ],
+        'groups' => [
+            'infoPerApur' => [
+                'groups'=> [
+                    'ideEstabLot' => [
                         'type' => 'array',
-                        'items' => array(
-                            'properties' => array(
-                                'tpInsc' => array(
+                        'items' => [
+                            'properties' => [
+                                'tpInsc' => [
                                     'type' => 'int'
-                                ),
+                                ],
                                 'nrInsc',
                                 'codLotacao',
-                                'qtdDiasAv' => array(
+                                'qtdDiasAv' => [
                                     'type' => 'int'
-                                )
-                            ),
-                            'groups' => array(
-                                'remunPerApur' => array(
+                                ]
+                            ],
+                            'groups' => [
+                                'remunPerApur' => [
                                     'type' => 'array',
-                                    'items' => array(
-                                        'properties' => array(
+                                    'items' => [
+                                        'properties' => [
                                             'matricula',
-                                            'indSimples' => array(
+                                            'indSimples' => [
                                                 'type' => 'int'
-                                            )
-                                        ),
-                                        'groups' => array(
-                                            'itensRemun' => array(
+                                            ]
+                                        ],
+                                        'groups' => [
+                                            'itensRemun' => [
                                                 'type' => 'array',
-                                                'items' => array(
-                                                    'properties' => array(
+                                                'items' => [
+                                                    'properties' => [
                                                         'codRubr',
                                                         'ideTabRubr',
-                                                        'qtdRubr' => array(
+                                                        'qtdRubr' => [
                                                             'type' => 'float'
-                                                        ),
-                                                        'fatorRubr' => array(
+                                                        ],
+                                                        'fatorRubr' => [
                                                             'type' => 'float'
-                                                        ),
-                                                        'vrRubr' => array(
+                                                        ],
+                                                        'vrRubr' => [
                                                             'type' => 'float'
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            'infoSaudeColet' => array(
-                                                'groups' => array(
-                                                    'detOper' => array(
+                                                        ]
+                                                    ]
+                                                ]
+                                            ],
+                                            'infoSaudeColet' => [
+                                                'groups' => [
+                                                    'detOper' => [
                                                         'type' => 'array',
-                                                        'items' => array(
-                                                            'properties' => array(
+                                                        'items' => [
+                                                            'properties' => [
                                                                 'cnpjOper',
                                                                 'regANS',
-                                                                'vrPgTit' => array(
+                                                                'vrPgTit' => [
                                                                     'type' => 'float'
-                                                                )
-                                                            ),
-                                                            'groups' => array(
-                                                                'detPlano' => array(
+                                                                ]
+                                                            ],
+                                                            'groups' => [
+                                                                'detPlano' => [
                                                                     'type' => 'array',
-                                                                    'items' => array(
-                                                                        'properties' => array(
+                                                                    'items' => [
+                                                                        'properties' => [
                                                                             'tpDep',
                                                                             'cpfDep',
                                                                             'nmDep',
                                                                             'dtNascto',
-                                                                            'vlrPgDep' => array(
+                                                                            'vlrPgDep' => [
                                                                                 'type' => 'float'
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            'infoAgNocivo' => array(
-                                                'properties' => array(
-                                                    'grauExp' => array(
+                                                                            ]
+                                                                        ]
+                                                                    ]
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ],
+                                            'infoAgNocivo' => [
+                                                'properties' => [
+                                                    'grauExp' => [
                                                         'type' => 'int'
-                                                    )
-                                                )
-                                            ),
-                                            'infoTrabInterm' => array(
+                                                    ]
+                                                ]
+                                            ],
+                                            'infoTrabInterm' => [
                                                 'type' => 'array',
-                                                'items' => array(
-                                                    'properties' => array(
+                                                'items' => [
+                                                    'properties' => [
                                                         'codConv'
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            ),
-            'infoPerAnt' => array(
-                'groups' => array(
-                    'ideADC' => array(
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'infoPerAnt' => [
+                'groups' => [
+                    'ideADC' => [
                         'type' => 'array',
-                        'items' => array(
-                            'properties' => array(
+                        'items' => [
+                            'properties' => [
                                 'dtAcConv',
                                 'tpAcConv',
                                 'compAcConv',
                                 'dtEfAcConv',
                                 'dsc',
                                 'remunSuc'
-                            ),
-                            'groups' => array(
-                                'idePeriodo' => array(
+                            ],
+                            'groups' => [
+                                'idePeriodo' => [
                                     'type' => 'array',
-                                    'items' => array(
-                                        'properties' => array(
+                                    'items' => [
+                                        'properties' => [
                                             'perRef',
-                                        ),
-                                        'groups' => array(
-                                            'ideEstabLot' => array(
+                                        ],
+                                        'groups' => [
+                                            'ideEstabLot' => [
                                                 'type' => 'array',
-                                                'items' => array(
-                                                    'properties' => array(
-                                                        'tpInsc' => array(
+                                                'items' => [
+                                                    'properties' => [
+                                                        'tpInsc' => [
                                                             'type' => 'int'
-                                                        ),
+                                                        ],
                                                         'nrInsc',
                                                         'codLotacao'
-                                                    ),
-                                                    'groups' => array(
-                                                        'remunPerAnt' => array(
+                                                    ],
+                                                    'groups' => [
+                                                        'remunPerAnt' => [
                                                             'type' => 'array',
-                                                            'items' => array(
-                                                                'properties' => array(
+                                                            'items' => [
+                                                                'properties' => [
                                                                     'matricula',
-                                                                    'indSimples' => array(
+                                                                    'indSimples' => [
                                                                         'type' => 'int'
-                                                                    ),
-                                                                ),
-                                                                'groups' => array(
-                                                                    'itensRemun' => array(
+                                                                    ],
+                                                                ],
+                                                                'groups' => [
+                                                                    'itensRemun' => [
                                                                         'type' => 'array',
-                                                                        'items' => array(
-                                                                            'properties' => array(
+                                                                        'items' => [
+                                                                            'properties' => [
                                                                                 'codRubr',
                                                                                 'ideTabRubr',
-                                                                                'qtdRubr' => array(
+                                                                                'qtdRubr' => [
                                                                                     'type' => 'float'
-                                                                                ),
-                                                                                'fatorRubr' => array(
+                                                                                ],
+                                                                                'fatorRubr' => [
                                                                                     'type' => 'float'
-                                                                                ),
-                                                                                'vrRubr' => array(
+                                                                                ],
+                                                                                'vrRubr' => [
                                                                                     'type' => 'float'
-                                                                                ),
-                                                                                'indApurIR' => array(
+                                                                                ],
+                                                                                'indApurIR' => [
                                                                                     'type' => 'int'
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    ),
-                                                                    'infoAgNocivo' => array(
-                                                                        'properties' => array(
-                                                                            'grauExp' => array(
+                                                                                ]
+                                                                            ]
+                                                                        ]
+                                                                    ],
+                                                                    'infoAgNocivo' => [
+                                                                        'properties' => [
+                                                                            'grauExp' => [
                                                                                 'type' => 'int'
-                                                                            )
-                                                                        )
-                                                                    ),
-                                                                    'infoTrabInterm'  => array(
+                                                                            ]
+                                                                        ]
+                                                                    ],
+                                                                    'infoTrabInterm'  => [
                                                                         'type' => 'array',
-                                                                        'items' => array(
-                                                                            'properties' => array(
+                                                                        'items' => [
+                                                                            'properties' => [
                                                                                 'codConv'
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            ),
-            'infoComplCont' => array(
-                'properties' => array(
+                                                                            ]
+                                                                        ]
+                                                                    ]
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'infoComplCont' => [
+                'properties' => [
                     'codCBO',
-                    'natAtividade' => array(
+                    'natAtividade' => [
                         'type' => 'int'
-                    ),
-                    'qtdDiasTrab' => array(
+                    ],
+                    'qtdDiasTrab' => [
                         'type' => 'int'
-                    )
-                )
-            )
-        )
-    )
-);
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

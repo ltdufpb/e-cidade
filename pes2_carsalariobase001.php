@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $iInstit = db_getsession("DB_instit");
 ?>
@@ -86,7 +86,7 @@ $iInstit = db_getsession("DB_instit");
     </td>
     <td align="left">
       <?php 
-      $array_ordem = array("n"=>"Numérica","a"=>"Alfabética");
+      $array_ordem = ["n"=>"Numérica","a"=>"Alfabética"];
       db_select('ordem',$array_ordem,true,1);
       ?>
     </td>
@@ -97,7 +97,7 @@ $iInstit = db_getsession("DB_instit");
     </td>
     <td align="left">
       <?php 
-      $array_sal = array("t"=>"Sim","f"=>"Não");
+      $array_sal = ["t"=>"Sim","f"=>"Não"];
       db_select('salario',$array_sal,true,1);
       ?>
     </td>
@@ -108,7 +108,7 @@ $iInstit = db_getsession("DB_instit");
     </td>
     <td align="left">
       <?php 
-      $xx = array("p"=>"Professores","d"=>"Demais Funcionários","t"=>"Todos");
+      $xx = ["p"=>"Professores","d"=>"Demais Funcionários","t"=>"Todos"];
       db_select('prof',$xx,true,1);
       ?>
     </td>
@@ -139,7 +139,7 @@ $iInstit = db_getsession("DB_instit");
         $sWhere        = "rh30_instit = {$iInstit}";
         $sSqlRhRegime  = $clrhregime->sql_query_file(null, "rh30_codreg, rh30_descr", "rh30_descr", $sWhere);
         $rsSqlRhRegime = $clrhregime->sql_record($sSqlRhRegime);
-        db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $rsSqlRhRegime, array(), 5, 250);
+        db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $rsSqlRhRegime, [], 5, 250);
       ?>
       </td>
     </tr>

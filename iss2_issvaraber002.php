@@ -35,7 +35,7 @@ $clrotulo->label('z01_nome');
 $clrotulo->label('q05_mes');
 $clrotulo->label('q05_ano');
 $clrotulo->label('q05_valor');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $txt_where = "";
 $and = "";
 if ($listaativ != "") {
@@ -58,16 +58,16 @@ if ($listaclas != "") {
 }
 if ($ano_ini!="" && $ano_fim!=""){	
   $txt_where .= $and . " cast(trim(to_char(q05_ano,'0000'))||trim(to_char(q05_mes,'00')) as integer) between ".
-    str_pad($ano_ini, 4, '0', STR_PAD_LEFT) . str_pad($mes_ini, 2, '0', STR_PAD_LEFT) . " and " .
-    str_pad($ano_fim, 4, '0', STR_PAD_LEFT) . str_pad($mes_fim, 2, '0', STR_PAD_LEFT);
+    str_pad((string) $ano_ini, 4, '0', STR_PAD_LEFT) . str_pad((string) $mes_ini, 2, '0', STR_PAD_LEFT) . " and " .
+    str_pad((string) $ano_fim, 4, '0', STR_PAD_LEFT) . str_pad((string) $mes_fim, 2, '0', STR_PAD_LEFT);
   $and = " and ";	
 }else if ($ano_ini!=""){	
   $txt_where .= $and . " cast(trim(to_char(q05_ano,'0000'))||trim(to_char(q05_mes,'00')) as integer) >= ".
-    str_pad($ano_ini, 4, '0', STR_PAD_LEFT) . str_pad($mes_ini, 2, '0', STR_PAD_LEFT);
+    str_pad((string) $ano_ini, 4, '0', STR_PAD_LEFT) . str_pad((string) $mes_ini, 2, '0', STR_PAD_LEFT);
   $and = " and ";	
 }else if ($ano_fim!=""){	
   $txt_where .= $and . " cast(trim(to_char(q05_ano,'0000'))||trim(to_char(q05_mes,'00')) as integer) <= ".
-    str_pad($ano_ini, 4, '0', STR_PAD_LEFT) . str_pad($mes_ini, 2, '0', STR_PAD_LEFT);
+    str_pad($ano_ini, 4, '0', STR_PAD_LEFT) . str_pad((string) $mes_ini, 2, '0', STR_PAD_LEFT);
   $and = " and ";
 }
 if ($mostra=="z"){
@@ -99,7 +99,7 @@ for($x = 0; $x < $clissvar->numrows;$x++){
   if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
     $pdf->addpage();
     $pdf->setfont('arial','b',8);
-    $pdf->cell(20,$alt,substr($RLq02_inscr,0,9),1,0,"C",1);
+    $pdf->cell(20,$alt,substr((string) $RLq02_inscr,0,9),1,0,"C",1);
     $pdf->cell(70,$alt,$RLz01_nome,1,0,"C",1); 
     $pdf->cell(60,$alt,"Atividade Principal",1,0,"C",1);
     $pdf->cell(8,$alt,$RLq05_mes,1,0,"C",1);
@@ -119,8 +119,8 @@ for($x = 0; $x < $clissvar->numrows;$x++){
   }   
   $pdf->setfont('arial','',7);
   $pdf->cell(20,$alt,$q02_inscr,0,0,"C",$p);
-  $pdf->cell(70,$alt,substr($z01_nome,0,40),0,0,"L",$p);
-  $pdf->cell(60,$alt,substr($q03_descr,0,35),0,0,"L",$p);
+  $pdf->cell(70,$alt,substr((string) $z01_nome,0,40),0,0,"L",$p);
+  $pdf->cell(60,$alt,substr((string) $q03_descr,0,35),0,0,"L",$p);
   $pdf->cell(8,$alt,$q05_mes,0,0,"C",$p);   
   $pdf->cell(8,$alt,$q05_ano,0,0,"C",$p);
 

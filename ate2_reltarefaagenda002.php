@@ -29,7 +29,7 @@
 require(modification('fpdf151/pdf.php'));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $pdf = new PDF();
 $head1 = "RELATÓRIO TAREFAS";
@@ -38,7 +38,7 @@ $head2 = "";
 $sql = "select * from tarefa_agenda where at13_tarefa = 6";
 $result = db_query($sql);
 
-$numlinha = pg_numrows($result);
+$numlinha = pg_num_rows($result);
 
 $pdf->open();
 $total_geral = 0;
@@ -50,12 +50,12 @@ $pdf->addpage('L');
 for($x=0; $x< $numlinha;$x++) {
   db_fieldsmemory($result,$x);
 
-  $horarioini 	= split(":",$at13_horaini);
+  $horarioini 	= preg_split("#:#m",(string) $at13_horaini);
   if (sizeof($horarioini) == 0) {
     
-    if (strlen($at13_horaini) == 4) {
-      $horaini	 = substr($at13_horaini,0,2);
-      $minutoini = substr($at13_horaini,2,2);
+    if (strlen((string) $at13_horaini) == 4) {
+      $horaini	 = substr((string) $at13_horaini,0,2);
+      $minutoini = substr((string) $at13_horaini,2,2);
     } else {
       continue;
     }
@@ -71,12 +71,12 @@ for($x=0; $x< $numlinha;$x++) {
   die("x: $agenda_ini - $at13_dia");
 
 
-  $horariofim 	= split(":",$at13_horafim);
+  $horariofim 	= preg_split("#:#m",(string) $at13_horafim);
   if (sizeof($horariofim) == 0) {
     
-    if (strlen($at13_horafim) == 4) {
-      $horafim	 = substr($at13_horafim,0,2);
-      $minutofim = substr($at13_horafim,2,2);
+    if (strlen((string) $at13_horafim) == 4) {
+      $horafim	 = substr((string) $at13_horafim,0,2);
+      $minutofim = substr((string) $at13_horafim,2,2);
     } else {
       continue;
     }

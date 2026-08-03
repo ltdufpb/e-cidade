@@ -18,11 +18,6 @@ use Illuminate\Support\Facades\DB;
 class EmissaoContraChequeJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /**
-     * @var ContraChequePdf
-     */
-    private $contraChequePdf;
     /**
      * @var QueuedJob
      */
@@ -32,21 +27,15 @@ class EmissaoContraChequeJob implements ShouldQueue
      * @var integer
      */
     public $tries = 3;
-    /**
-     * @var QueueService
-     */
-    private $queueService;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(ContraChequePdf $contraChequePdf, QueueService $queueService)
+    public function __construct(private ContraChequePdf $contraChequePdf, private QueueService $queueService)
     {
-        $this->contraChequePdf = $contraChequePdf;
-        $this->queueService = $queueService;
-        $this->queuedJob = $queueService->next();
+        $this->queuedJob = $this->queueService->next();
     }
 
     /**

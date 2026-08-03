@@ -32,7 +32,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 db_postmemory($_POST);
 
 $classinatura = new cl_assinatura;
@@ -40,11 +40,11 @@ $classinatura = new cl_assinatura;
 $qorgao = 0;
 $qunidade = 0;
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-', ', ', $db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins ++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins ++) {
 	db_fieldsmemory($resultinst, $xins);
 	$descr_inst .= $xvirg.$nomeinstabrev;
 	$xvirg = ', ';
@@ -58,14 +58,14 @@ if ($origem == "O") {
 	if ($opcao == 3)
 		$head6 = "PERÍODO : ".db_formatar($perini, 'd')." A ".db_formatar($perfin, 'd');
 	else
-		$head6 = "PERÍODO : ".strtoupper(db_mes(substr($perini, 5, 2)))." A ".strtoupper(db_mes(substr($perfin, 5, 2)));
+		$head6 = "PERÍODO : ".strtoupper(db_mes(substr((string) $perini, 5, 2)))." A ".strtoupper(db_mes(substr((string) $perfin, 5, 2)));
 }
 $head2 = "DESPESA POR PROJ/ATIVIDADE";
 $head3 = "POR ORGÃO E UNIDADE ";
 $head4 = "ANEXO (6) EXERCÍCIO: ".db_getsession("DB_anousu")." - ".$xtipo;
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
 
-$nivela = substr($nivel, 0, 1);
+$nivela = substr((string) $nivel, 0, 1);
 $sele_work = ' w.o58_instit in ('.str_replace('-', ', ', $db_selinstit).') ';
 if ($nivela >= 1) {
 	$sele_work .= " and exists (select 1 from t where t.o58_orgao = w.o58_orgao) ";
@@ -102,12 +102,12 @@ db_query("create temp table t(o58_orgao int8,
                               o58_elemento varchar(255),
                               o58_codigo int8)");
 
-$xcampos = split("-", $orgaos);
+$xcampos = preg_split("#\\-#m", $orgaos);
 
 for ($i = 0; $i < sizeof($xcampos); $i ++) {
 	$where = '';
 	$virgula = '';
-	$xxcampos = split("_", $xcampos[$i]);
+	$xxcampos = preg_split("#_#m", (string) $xcampos[$i]);
 	for ($ii = 0; $ii < sizeof($xxcampos); $ii ++) {
 		if ($ii > 0) {
 			$where .= $virgula.$xxcampos[$ii];
@@ -171,13 +171,13 @@ $result = db_dotacaosaldo(8, 1, 3, true, $sele_work, $anousu, $dataini, $datafin
 //$result = db_dotacaosaldo(8,1,2,true,$sele_work,$anousu,$dataini,$datafin,1,6);
 //db_criatabela($result);exit;
 $iTotalLinhas     = pg_num_rows($result);
-$aLinhasRelatorio = array();
+$aLinhasRelatorio = [];
 if ($tipo_agrupa == 1) {
 
   $oOrgao             = new stdClass();
   $oOrgao->descricao  = '';
   $oOrgao->codigo     = '';
-  $oOrgao->nos        = array();
+  $oOrgao->nos        = [];
   $aLinhasRelatorio[0] = $oOrgao;
 }
 
@@ -196,7 +196,7 @@ for ($i = 0; $i < $iTotalLinhas; $i++) {
          $oOrgao                   = new stdClass();
          $oOrgao->descricaoorgao   = $oLinha->o40_descr;
          $oOrgao->codigoorgao      = $oLinha->o58_orgao;
-         $oOrgao->nos              = array();
+         $oOrgao->nos              = [];
          $oOrgao->projeto          = $oLinha->proj;
          $oOrgao->atividade        = $oLinha->ativ;
          $oOrgao->operacao         = $oLinha->oper;
@@ -217,7 +217,7 @@ for ($i = 0; $i < $iTotalLinhas; $i++) {
       $oOrgao->projeto           = $oLinha->proj;
       $oOrgao->atividade         = $oLinha->ativ;
       $oOrgao->operacao          = $oLinha->oper;
-      $oOrgao->nos               = array();
+      $oOrgao->nos               = [];
       $aLinhasRelatorio[$sHash] = $oOrgao;
     }
   }
@@ -356,7 +356,7 @@ for ($i = 0; $i < $iTotalLinhas; $i++) {
             ->first();
 
         $oFuncao->codigo = $recurso->gestao;
-        $oFuncao->descricao = substr($recurso->descricao, 0, 80) ;
+        $oFuncao->descricao = substr((string) $recurso->descricao, 0, 80) ;
     }
 
 

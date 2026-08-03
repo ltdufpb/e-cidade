@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_mediacaodidaticopedagogica_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmediacaodidaticopedagogica = new cl_mediacaodidaticopedagogica;
 $clmediacaodidaticopedagogica->rotulo->label("ed130_codigo");
 $clmediacaodidaticopedagogica->rotulo->label("ed130_descricao");
@@ -78,9 +78,9 @@ $clmediacaodidaticopedagogica->rotulo->label("ed130_descricao");
         }else{
            $sql = $clmediacaodidaticopedagogica->sql_query("",$campos,"ed130_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed130_descricao)){
-          $repassa = array("chave_ed130_codigo"=>$chave_ed130_codigo,"chave_ed130_descricao"=>$chave_ed130_descricao);
+          $repassa = ["chave_ed130_codigo"=>$chave_ed130_codigo,"chave_ed130_descricao"=>$chave_ed130_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

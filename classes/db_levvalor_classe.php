@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE levvalor
 class cl_levvalor { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y63_sequencia = 0; 
-   var $y63_codlev = 0; 
-   var $y63_ano = 0; 
-   var $y63_mes = 0; 
-   var $y63_dtvenc_dia = null; 
-   var $y63_dtvenc_mes = null; 
-   var $y63_dtvenc_ano = null; 
-   var $y63_dtvenc = null; 
-   var $y63_bruto = 0; 
-   var $y63_aliquota = 0; 
-   var $y63_pago = 0; 
-   var $y63_saldo = 0; 
-   var $y63_histor = null; 
+   public $y63_sequencia = 0; 
+   public $y63_codlev = 0; 
+   public $y63_ano = 0; 
+   public $y63_mes = 0; 
+   public $y63_dtvenc_dia = null; 
+   public $y63_dtvenc_mes = null; 
+   public $y63_dtvenc_ano = null; 
+   public $y63_dtvenc = null; 
+   public $y63_bruto = 0; 
+   public $y63_aliquota = 0; 
+   public $y63_pago = 0; 
+   public $y63_saldo = 0; 
+   public $y63_histor = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y63_sequencia = int4 = Sequencial 
                  y63_codlev = int4 = Levantamento 
                  y63_ano = int4 = Exercicio 
@@ -69,10 +69,10 @@ class cl_levvalor {
                  y63_histor = text = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_levvalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levvalor"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -192,10 +192,10 @@ class cl_levvalor {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y63_sequencia = pg_result($result,0,0); 
+       $this->y63_sequencia = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from levvalor_y63_sequencia_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y63_sequencia)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y63_sequencia)){
          $this->erro_sql = " Campo y63_sequencia maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -241,7 +241,7 @@ class cl_levvalor {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "levvalor ($this->y63_sequencia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "levvalor já Cadastrado";
@@ -265,19 +265,19 @@ class cl_levvalor {
      $resaco = $this->sql_record($this->sql_query_file($this->y63_sequencia));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5027,'$this->y63_sequencia','I')");
-       $resac = db_query("insert into db_acount values($acount,713,5027,'','".AddSlashes(pg_result($resaco,0,'y63_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,713,5028,'','".AddSlashes(pg_result($resaco,0,'y63_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,713,5029,'','".AddSlashes(pg_result($resaco,0,'y63_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,713,5030,'','".AddSlashes(pg_result($resaco,0,'y63_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,713,5031,'','".AddSlashes(pg_result($resaco,0,'y63_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,713,5032,'','".AddSlashes(pg_result($resaco,0,'y63_bruto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,713,5033,'','".AddSlashes(pg_result($resaco,0,'y63_aliquota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,713,5035,'','".AddSlashes(pg_result($resaco,0,'y63_pago'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,713,5036,'','".AddSlashes(pg_result($resaco,0,'y63_saldo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,713,5037,'','".AddSlashes(pg_result($resaco,0,'y63_histor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,713,5027,'','".AddSlashes(pg_fetch_result($resaco,0,'y63_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,713,5028,'','".AddSlashes(pg_fetch_result($resaco,0,'y63_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,713,5029,'','".AddSlashes(pg_fetch_result($resaco,0,'y63_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,713,5030,'','".AddSlashes(pg_fetch_result($resaco,0,'y63_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,713,5031,'','".AddSlashes(pg_fetch_result($resaco,0,'y63_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,713,5032,'','".AddSlashes(pg_fetch_result($resaco,0,'y63_bruto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,713,5033,'','".AddSlashes(pg_fetch_result($resaco,0,'y63_aliquota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,713,5035,'','".AddSlashes(pg_fetch_result($resaco,0,'y63_pago'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,713,5036,'','".AddSlashes(pg_fetch_result($resaco,0,'y63_saldo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,713,5037,'','".AddSlashes(pg_fetch_result($resaco,0,'y63_histor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -286,10 +286,10 @@ class cl_levvalor {
       $this->atualizacampos();
      $sql = " update levvalor set ";
      $virgula = "";
-     if(trim($this->y63_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_sequencia"])){ 
+     if(trim((string) $this->y63_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_sequencia"])){ 
        $sql  .= $virgula." y63_sequencia = $this->y63_sequencia ";
        $virgula = ",";
-       if(trim($this->y63_sequencia) == null ){ 
+       if(trim((string) $this->y63_sequencia) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "y63_sequencia";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_levvalor {
          return false;
        }
      }
-     if(trim($this->y63_codlev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_codlev"])){ 
+     if(trim((string) $this->y63_codlev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_codlev"])){ 
        $sql  .= $virgula." y63_codlev = $this->y63_codlev ";
        $virgula = ",";
-       if(trim($this->y63_codlev) == null ){ 
+       if(trim((string) $this->y63_codlev) == null ){ 
          $this->erro_sql = " Campo Levantamento nao Informado.";
          $this->erro_campo = "y63_codlev";
          $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_levvalor {
          return false;
        }
      }
-     if(trim($this->y63_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_ano"])){ 
+     if(trim((string) $this->y63_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_ano"])){ 
        $sql  .= $virgula." y63_ano = $this->y63_ano ";
        $virgula = ",";
-       if(trim($this->y63_ano) == null ){ 
+       if(trim((string) $this->y63_ano) == null ){ 
          $this->erro_sql = " Campo Exercicio nao Informado.";
          $this->erro_campo = "y63_ano";
          $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_levvalor {
          return false;
        }
      }
-     if(trim($this->y63_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_mes"])){ 
+     if(trim((string) $this->y63_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_mes"])){ 
        $sql  .= $virgula." y63_mes = $this->y63_mes ";
        $virgula = ",";
-       if(trim($this->y63_mes) == null ){ 
+       if(trim((string) $this->y63_mes) == null ){ 
          $this->erro_sql = " Campo Competência nao Informado.";
          $this->erro_campo = "y63_mes";
          $this->erro_banco = "";
@@ -338,10 +338,10 @@ class cl_levvalor {
          return false;
        }
      }
-     if(trim($this->y63_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y63_dtvenc_dia"] !="") ){ 
+     if(trim((string) $this->y63_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y63_dtvenc_dia"] !="") ){ 
        $sql  .= $virgula." y63_dtvenc = '$this->y63_dtvenc' ";
        $virgula = ",";
-       if(trim($this->y63_dtvenc) == null ){ 
+       if(trim((string) $this->y63_dtvenc) == null ){ 
          $this->erro_sql = " Campo Vencimento nao Informado.";
          $this->erro_campo = "y63_dtvenc_dia";
          $this->erro_banco = "";
@@ -354,7 +354,7 @@ class cl_levvalor {
        if(isset($GLOBALS["HTTP_POST_VARS"]["y63_dtvenc_dia"])){ 
          $sql  .= $virgula." y63_dtvenc = null ";
          $virgula = ",";
-         if(trim($this->y63_dtvenc) == null ){ 
+         if(trim((string) $this->y63_dtvenc) == null ){ 
            $this->erro_sql = " Campo Vencimento nao Informado.";
            $this->erro_campo = "y63_dtvenc_dia";
            $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_levvalor {
          }
        }
      }
-     if(trim($this->y63_bruto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_bruto"])){ 
+     if(trim((string) $this->y63_bruto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_bruto"])){ 
        $sql  .= $virgula." y63_bruto = $this->y63_bruto ";
        $virgula = ",";
-       if(trim($this->y63_bruto) == null ){ 
+       if(trim((string) $this->y63_bruto) == null ){ 
          $this->erro_sql = " Campo Valor Bruto nao Informado.";
          $this->erro_campo = "y63_bruto";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_levvalor {
          return false;
        }
      }
-     if(trim($this->y63_aliquota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_aliquota"])){ 
+     if(trim((string) $this->y63_aliquota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_aliquota"])){ 
        $sql  .= $virgula." y63_aliquota = $this->y63_aliquota ";
        $virgula = ",";
-       if(trim($this->y63_aliquota) == null ){ 
+       if(trim((string) $this->y63_aliquota) == null ){ 
          $this->erro_sql = " Campo Alíquota(%) nao Informado.";
          $this->erro_campo = "y63_aliquota";
          $this->erro_banco = "";
@@ -391,10 +391,10 @@ class cl_levvalor {
          return false;
        }
      }
-     if(trim($this->y63_pago)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_pago"])){ 
+     if(trim((string) $this->y63_pago)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_pago"])){ 
        $sql  .= $virgula." y63_pago = $this->y63_pago ";
        $virgula = ",";
-       if(trim($this->y63_pago) == null ){ 
+       if(trim((string) $this->y63_pago) == null ){ 
          $this->erro_sql = " Campo Valor Pago nao Informado.";
          $this->erro_campo = "y63_pago";
          $this->erro_banco = "";
@@ -404,10 +404,10 @@ class cl_levvalor {
          return false;
        }
      }
-     if(trim($this->y63_saldo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_saldo"])){ 
+     if(trim((string) $this->y63_saldo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_saldo"])){ 
        $sql  .= $virgula." y63_saldo = $this->y63_saldo ";
        $virgula = ",";
-       if(trim($this->y63_saldo) == null ){ 
+       if(trim((string) $this->y63_saldo) == null ){ 
          $this->erro_sql = " Campo Saldo a Pagar nao Informado.";
          $this->erro_campo = "y63_saldo";
          $this->erro_banco = "";
@@ -417,7 +417,7 @@ class cl_levvalor {
          return false;
        }
      }
-     if(trim($this->y63_histor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_histor"])){ 
+     if(trim((string) $this->y63_histor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y63_histor"])){ 
        $sql  .= $virgula." y63_histor = '$this->y63_histor' ";
        $virgula = ",";
      }
@@ -429,29 +429,29 @@ class cl_levvalor {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5027,'$this->y63_sequencia','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y63_sequencia"]))
-           $resac = db_query("insert into db_acount values($acount,713,5027,'".AddSlashes(pg_result($resaco,$conresaco,'y63_sequencia'))."','$this->y63_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,713,5027,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y63_sequencia'))."','$this->y63_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y63_codlev"]))
-           $resac = db_query("insert into db_acount values($acount,713,5028,'".AddSlashes(pg_result($resaco,$conresaco,'y63_codlev'))."','$this->y63_codlev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,713,5028,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y63_codlev'))."','$this->y63_codlev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y63_ano"]))
-           $resac = db_query("insert into db_acount values($acount,713,5029,'".AddSlashes(pg_result($resaco,$conresaco,'y63_ano'))."','$this->y63_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,713,5029,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y63_ano'))."','$this->y63_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y63_mes"]))
-           $resac = db_query("insert into db_acount values($acount,713,5030,'".AddSlashes(pg_result($resaco,$conresaco,'y63_mes'))."','$this->y63_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,713,5030,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y63_mes'))."','$this->y63_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y63_dtvenc"]))
-           $resac = db_query("insert into db_acount values($acount,713,5031,'".AddSlashes(pg_result($resaco,$conresaco,'y63_dtvenc'))."','$this->y63_dtvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,713,5031,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y63_dtvenc'))."','$this->y63_dtvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y63_bruto"]))
-           $resac = db_query("insert into db_acount values($acount,713,5032,'".AddSlashes(pg_result($resaco,$conresaco,'y63_bruto'))."','$this->y63_bruto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,713,5032,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y63_bruto'))."','$this->y63_bruto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y63_aliquota"]))
-           $resac = db_query("insert into db_acount values($acount,713,5033,'".AddSlashes(pg_result($resaco,$conresaco,'y63_aliquota'))."','$this->y63_aliquota',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,713,5033,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y63_aliquota'))."','$this->y63_aliquota',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y63_pago"]))
-           $resac = db_query("insert into db_acount values($acount,713,5035,'".AddSlashes(pg_result($resaco,$conresaco,'y63_pago'))."','$this->y63_pago',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,713,5035,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y63_pago'))."','$this->y63_pago',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y63_saldo"]))
-           $resac = db_query("insert into db_acount values($acount,713,5036,'".AddSlashes(pg_result($resaco,$conresaco,'y63_saldo'))."','$this->y63_saldo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,713,5036,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y63_saldo'))."','$this->y63_saldo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y63_histor"]))
-           $resac = db_query("insert into db_acount values($acount,713,5037,'".AddSlashes(pg_result($resaco,$conresaco,'y63_histor'))."','$this->y63_histor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,713,5037,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y63_histor'))."','$this->y63_histor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -496,19 +496,19 @@ class cl_levvalor {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5027,'$y63_sequencia','E')");
-         $resac = db_query("insert into db_acount values($acount,713,5027,'','".AddSlashes(pg_result($resaco,$iresaco,'y63_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,713,5028,'','".AddSlashes(pg_result($resaco,$iresaco,'y63_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,713,5029,'','".AddSlashes(pg_result($resaco,$iresaco,'y63_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,713,5030,'','".AddSlashes(pg_result($resaco,$iresaco,'y63_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,713,5031,'','".AddSlashes(pg_result($resaco,$iresaco,'y63_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,713,5032,'','".AddSlashes(pg_result($resaco,$iresaco,'y63_bruto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,713,5033,'','".AddSlashes(pg_result($resaco,$iresaco,'y63_aliquota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,713,5035,'','".AddSlashes(pg_result($resaco,$iresaco,'y63_pago'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,713,5036,'','".AddSlashes(pg_result($resaco,$iresaco,'y63_saldo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,713,5037,'','".AddSlashes(pg_result($resaco,$iresaco,'y63_histor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,713,5027,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y63_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,713,5028,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y63_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,713,5029,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y63_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,713,5030,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y63_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,713,5031,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y63_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,713,5032,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y63_bruto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,713,5033,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y63_aliquota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,713,5035,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y63_pago'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,713,5036,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y63_saldo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,713,5037,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y63_histor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from levvalor
@@ -568,7 +568,7 @@ class cl_levvalor {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:levvalor";
@@ -582,7 +582,7 @@ class cl_levvalor {
    function sql_compl ( $y63_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -606,7 +606,7 @@ class cl_levvalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -618,7 +618,7 @@ class cl_levvalor {
    function sql_query ( $y63_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -641,7 +641,7 @@ class cl_levvalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -653,7 +653,7 @@ class cl_levvalor {
    function sql_query_file ( $y63_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -674,7 +674,7 @@ class cl_levvalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -686,7 +686,7 @@ class cl_levvalor {
    function sql_query_inf ( $y63_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -716,7 +716,7 @@ class cl_levvalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -728,7 +728,7 @@ class cl_levvalor {
    function sql_query_notas ( $y63_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -751,7 +751,7 @@ class cl_levvalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -40,8 +40,8 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clrhpessoal = new cl_rhpessoal;
 $clpessoal   = new cl_pessoal;
@@ -267,11 +267,11 @@ if ( (isset($incluir) && !isset($alertconfirma)) || (isset($pontonovo) && !isset
   $valor_em_branco = false;
   $quant_em_branco = false;
 
-  if(trim($r90_quant) == ""){
+  if(trim((string) $r90_quant) == ""){
     $r90_quant = "0";
     $quant_em_branco = true;
   }
-  if(trim($r90_valor) == ""){
+  if(trim((string) $r90_valor) == ""){
     $r90_valor = "0";
     $valor_em_branco = true;
   }
@@ -288,7 +288,7 @@ if ( (isset($incluir) && !isset($alertconfirma)) || (isset($pontonovo) && !isset
       }
     }else if($limdata_testa == "f"){
       $r90_datlim = "";
-    }else if(trim($formula_testa) != ""){
+    }else if(trim((string) $formula_testa) != ""){
       if($r90_quant == 0){
         $sqlerro = true;
         $erro_msg = "Quantidade não informada";
@@ -377,7 +377,7 @@ if ( (isset($incluir) && !isset($alertconfirma)) || (isset($pontonovo) && !isset
     try {
         verificaHorasExtras(
             $ponto,
-            isset($pontonovo) ? $pontonovo : null,
+            $pontonovo ?? null,
             $r90_anousu,
             $r90_mesusu,
             $r90_regist,
@@ -429,7 +429,7 @@ if ( (isset($incluir) && !isset($alertconfirma)) || (isset($pontonovo) && !isset
       if (!empty($oDataInicioControle)) {
         $sDataValidar = $oDataInicioControle->getDate(DBDate::DATA_EN);
       }
-      $arr_ano_mes_usu = explode("-", $sDataValidar);
+      $arr_ano_mes_usu = explode("-", (string) $sDataValidar);
       $ano_da_admissao = $arr_ano_mes_usu[0];
       $mes_da_admissao = $arr_ano_mes_usu[1];
       $dia_da_admissao = $arr_ano_mes_usu[2] - 1;
@@ -637,11 +637,11 @@ else if (isset($alterar)) {
     $valor_em_branco = false;
     $quant_em_branco = false;
 
-    if(trim($r90_quant) == ""){
+    if(trim((string) $r90_quant) == ""){
       $r90_quant = "0";
       $quant_em_branco = true;
     }
-    if(trim($r90_valor) == ""){
+    if(trim((string) $r90_valor) == ""){
       $r90_valor = "0";
       $valor_em_branco = true;
     }
@@ -649,7 +649,7 @@ else if (isset($alterar)) {
     $result_verifica_rubrica_com_formula = $clrhrubricas->sql_record($clrhrubricas->sql_query_file(null,null,"rh27_form as formula_testa,rh27_limdat as limdata_testa, rh27_propq as proporcionalizar, rh27_periodolancamento","","rh27_instit = ".db_getsession("DB_instit")." and rh27_rubric = '".$r90_rubric."'"));
     if($clrhrubricas->numrows > 0){
       db_fieldsmemory($result_verifica_rubrica_com_formula,0);
-      if(trim($formula_testa) != ""){
+      if(trim((string) $formula_testa) != ""){
         if($r90_quant == 0){
           $sqlerro = true;
           $erro_msg = "Quantidade não informada";
@@ -682,7 +682,7 @@ else if (isset($alterar)) {
     /**
      * Removemos o periodo para ser incluido novamente
      */
-    if (!empty($oRubricaPeriodoLancamento) && (!isset($pontonovo) && in_array($ponto, array('fs', 'fx')))) {
+    if (!empty($oRubricaPeriodoLancamento) && (!isset($pontonovo) && in_array($ponto, ['fs', 'fx']))) {
 
       PontoRubricaPeriodoRepository::remove($oRubricaPeriodoLancamento->getCodigo());
       unset($oRubricaPeriodoLancamento);
@@ -747,7 +747,7 @@ else if (isset($alterar)) {
     try {
         verificaHorasExtras(
             $ponto,
-            isset($pontonovo) ? $pontonovo : null,
+            $pontonovo ?? null,
             $r90_anousu,
             $r90_mesusu,
             $r90_regist,
@@ -796,7 +796,7 @@ else if (isset($alterar)) {
         if (!empty($oDataInicioControle)) {
           $sDataValidar = $oDataInicioControle->getDate(DBDate::DATA_EN);
         }
-        $arr_ano_mes_usu = explode("-", $sDataValidar);
+        $arr_ano_mes_usu = explode("-", (string) $sDataValidar);
         $ano_da_admissao = $arr_ano_mes_usu[0];
         $mes_da_admissao = $arr_ano_mes_usu[1];
         $dia_da_admissao = $arr_ano_mes_usu[2] - 1;
@@ -991,14 +991,14 @@ elseif ( isset($excluir) || isset ( $pontoexcluir) ) {
     db_inicio_transacao();
     $sqlerro = false;
 
-   $aPontosRemoverControlePeriodo = array("fx", "fs");
+   $aPontosRemoverControlePeriodo = ["fx", "fs"];
    if (in_array($ponto, $aPontosRemoverControlePeriodo) || (isset($pontoexcluir) && in_array($pontoexcluir, $aPontosRemoverControlePeriodo))) {
 
      $iInstituicao   = db_getsession("DB_instit");
-     $aWhereRubricas = array("rh183_matricula = $r90_regist",
+     $aWhereRubricas = ["rh183_matricula = $r90_regist",
        "rh183_rubrica   = '$r90_rubric'",
        "rh183_instituicao = $iInstituicao"
-     );
+     ];
      $sWhereRubricas = implode(" and ", $aWhereRubricas);
 
      $oDaoPontoRubrica                    = new cl_pontosalariodatalimite();
@@ -1262,11 +1262,11 @@ elseif ( isset($excluir) || isset ( $pontoexcluir) ) {
   /**
    * pesquisa os dados do controle por periodo da Rubrica
    */
-  $aPontosRemoverControlePeriodo = array("fx", "fs");
+  $aPontosRemoverControlePeriodo = ["fx", "fs"];
   if (in_array($ponto, $aPontosRemoverControlePeriodo) && $rh27_periodolancamento == 't') {
 
     $iInstituicao = db_getsession("DB_instit");
-    $aWhereRubricas = array("rh183_matricula = $r90_regist", "rh183_rubrica = '$r90_rubric'", "rh183_instituicao = $iInstituicao");
+    $aWhereRubricas = ["rh183_matricula = $r90_regist", "rh183_rubrica = '$r90_rubric'", "rh183_instituicao = $iInstituicao"];
     $sWhereRubricas = implode(" and ", $aWhereRubricas);
 
     $oDaoPontoRubrica                  = new cl_pontosalariodatalimite();
@@ -1283,9 +1283,9 @@ elseif ( isset($excluir) || isset ( $pontoexcluir) ) {
 
       $oDadosControlePonto = db_utils::fieldsMemory($rsRubricaNoPonto, 0);
       $rh183_datainicio    = $oDadosControlePonto->rh183_datainicio;
-      list($rh183_datainicio_ano, $rh183_datainicio_mes, $rh183_datainicio_dia) = explode("-", $rh183_datainicio);
+      [$rh183_datainicio_ano, $rh183_datainicio_mes, $rh183_datainicio_dia] = explode("-", (string) $rh183_datainicio);
       $rh183_datafim       = $oDadosControlePonto->rh183_datafim;
-      list($rh183_datafim_ano, $rh183_datafim_mes, $rh183_datafim_dia) = explode("-", $rh183_datafim);
+      [$rh183_datafim_ano, $rh183_datafim_mes, $rh183_datafim_dia] = explode("-", (string) $rh183_datafim);
     }
   }
 

@@ -35,7 +35,7 @@ include(modification("classes/db_issbase_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //echo "<BR><BR>".$HTTP_SERVER_VARS['QUERY_STRING'];
 //db_postmemory($HTTP_POST_VARS,2);
 $clcgm = new cl_cgm;
@@ -166,23 +166,23 @@ function js_relatorio(){
     <?php 	
 	$mensagem_semdebitos = false;
 	$com_debitos = true;
-	if(isset($HTTP_POST_VARS["pesquisar"]) || isset($matricula) ) {
+	if(isset($_POST["pesquisar"]) || isset($matricula) ) {
       echo "<form name=\"formatu\" action=\"pes3_consponto001.php\" method=\"post\">\n";
       //aqui é pra se clicar no link da matricula em cai3_gerfinanc002.php
       if(isset($matricula) && !empty($matricula))
-	    $HTTP_POST_VARS["r01_regist"] = $matricula;
+	    $_POST["r01_regist"] = $matricula;
 	
-	  if(!empty($HTTP_POST_VARS["r01_regist"])) {
+	  if(!empty($_POST["r01_regist"])) {
   	    $sql = "select r01_regist,
                        r01_numcgm as k00_numcgm,
                        z01_numcgm,r01_tbprev 
                 from   pessoal 
                        inner join cgm on r01_numcgm = z01_numcgm 
 		        where 
-                       r01_regist = ".$HTTP_POST_VARS["r01_regist"]." limit 1" ;
+                       r01_regist = ".$_POST["r01_regist"]." limit 1" ;
         // echo $sql;
 	    $result = db_query($sql);
-	    if(pg_numrows($result) == 0) {
+	    if(pg_num_rows($result) == 0) {
 	      echo "
                 <script>
                   alert('Funcionário sem cálculo')
@@ -192,18 +192,18 @@ function js_relatorio(){
 	    } else {
 	      db_fieldsmemory($result,0);
 	      $resultaux = $result;
-          $arg = "matric=".$HTTP_POST_VARS["r01_regist"]; 
+          $arg = "matric=".$_POST["r01_regist"]; 
 	    }
 
             
         ///////// VERIFICA SE A MATRÍCULA POSSUI SALÁRIO
-	    $matricula = $HTTP_POST_VARS["r01_regist"];
+	    $matricula = $_POST["r01_regist"];
  	    $resultgerfsal = db_query("select * 
 	                              from pontofs 
 		                          where     r10_regist = $matricula 
                                         and r10_anousu = $ano 
                                         and r10_mesusu = $mes limit 1");
-        if(pg_numrows($resultgerfsal) != 0){
+        if(pg_num_rows($resultgerfsal) != 0){
 	      $temsalario = true;
 	    }else{
           $temsalario = false;
@@ -214,7 +214,7 @@ function js_relatorio(){
 			                      where     r29_regist = $matricula 
 			                            and r29_anousu = $ano 
 				                        and r29_mesusu = $mes limit 1");
-        if(pg_numrows($resultgerffer) != 0){
+        if(pg_num_rows($resultgerffer) != 0){
 	      $temferias = true;
 	    }else{
           $temferias = false;
@@ -225,7 +225,7 @@ function js_relatorio(){
                                   where     r19_regist = $matricula 
 			                            and r19_anousu = $ano 
 				                        and r19_mesusu = $mes limit 1");
-        if(pg_numrows($resultgerfres) != 0){
+        if(pg_num_rows($resultgerfres) != 0){
 	      $temrescisao = true;
 	    }else{
           $temrescisao = false;
@@ -236,7 +236,7 @@ function js_relatorio(){
 			                      where     r21_regist = $matricula 
 			                            and r21_anousu = $ano 
 				                        and r21_mesusu = $mes limit 1");
-        if(pg_numrows($resultgerfadi) != 0){
+        if(pg_num_rows($resultgerfadi) != 0){
 	      $temadiantamento = true;
 	    }else{
           $temadiantamento = false;
@@ -247,7 +247,7 @@ function js_relatorio(){
 			                      where     r34_regist = $matricula 
 			                            and r34_anousu = $ano 
 				                        and r34_mesusu = $mes limit 1");
-        if(pg_numrows($resultgerfs13) != 0){
+        if(pg_num_rows($resultgerfs13) != 0){
 	      $tem13salario = true;
 	    }else{
           $tem13salario = false;
@@ -258,7 +258,7 @@ function js_relatorio(){
               		              where     r47_regist = $matricula 
 			                            and r47_anousu = $ano 
 				                        and r47_mesusu = $mes limit 1");
-        if(pg_numrows($resultgerfcom) != 0){
+        if(pg_num_rows($resultgerfcom) != 0){
 	      $temcomplementar = true;
 	    }else{
           $temcomplementar = false;
@@ -269,7 +269,7 @@ function js_relatorio(){
 			                     where     r90_regist = $matricula 
 			                           and r90_anousu = $ano 
 				                       and r90_mesusu = $mes limit 1");
-        if(pg_numrows($resultgerffx) != 0){
+        if(pg_num_rows($resultgerffx) != 0){
 	      $tempontofixo = true;
 	    }else{
           $tempontofixo = false;
@@ -284,7 +284,7 @@ function js_relatorio(){
                                z01_cgccpf,
                                z01_ident 
 	                    from cgm 
-						where z01_numcgm = ".pg_result($result,0,"k00_numcgm"));
+						where z01_numcgm = ".pg_fetch_result($result,0,"k00_numcgm"));
 	  db_fieldsmemory($dados,0);	  
 
 	?>
@@ -305,7 +305,7 @@ function js_relatorio(){
                           <input class="btcols" type="text" name="z01_numcgm" value="<?=@$z01_numcgm?>" size="5" readonly> 
                           &nbsp;&nbsp;&nbsp; 
                           <?php 
-					      parse_str($arg);
+					      parse_str((string) $arg, $result);
 					      $Label = "<a href='' onclick='js_mostrapessoal();return false;'>$Lr01_regist</a>";
 					      echo "<strong style=\"color:blue\">$Label</strong> <input style=\"border: 1px solid blue;font-weight: bold;background-color:#80E6FF\" class=\"btcols\" type=\"text\" name=\"Label\" value=\"".@$matric.@$inscr.@$numpre.@$Parcelamento."\" size=\"10\" readonly>\n";
 					      ?>
@@ -338,16 +338,16 @@ function js_relatorio(){
                       <tr> 
                         <td height="21" colspan="2" nowrap class="tabcols"> 
                           <?php 
-                          if(isset($HTTP_POST_VARS["r01_regist"]) && !empty($HTTP_POST_VARS["r01_regist"]))
-                            echo "<input type=\"hidden\" name=\"r01_regist\"  value=\"".$HTTP_POST_VARS["r01_regist"]."\">";
-                          if(isset($HTTP_POST_VARS["q02_inscr"]) && !empty($HTTP_POST_VARS["q02_inscr"]))
-                            echo "<input type=\"hidden\" name=\"q02_inscr\"  value=\"".$HTTP_POST_VARS["q02_inscr"]."\">";
-                          if(isset($HTTP_POST_VARS["z01_numcgm"]) && !empty($HTTP_POST_VARS["z01_numcgm"]))
-                            echo "<input type=\"hidden\" name=\"z01_numcgm\"  value=\"".$HTTP_POST_VARS["z01_numcgm"]."\">";
-                          if(isset($HTTP_POST_VARS["v07_parcel"]) && !empty($HTTP_POST_VARS["v07_parcel"]))
-                            echo "<input type=\"hidden\" name=\"v07_parcel\"  value=\"".$HTTP_POST_VARS["v07_parcel"]."\">";
-	                      if(isset($HTTP_POST_VARS["k00_numpre"]) && !empty($HTTP_POST_VARS["k00_numpre"]))
-                            echo "<input type=\"hidden\" name=\"k00_numpre\"  value=\"".$HTTP_POST_VARS["k00_numpre"]."\">";
+                          if(isset($_POST["r01_regist"]) && !empty($_POST["r01_regist"]))
+                            echo "<input type=\"hidden\" name=\"r01_regist\"  value=\"".$_POST["r01_regist"]."\">";
+                          if(isset($_POST["q02_inscr"]) && !empty($_POST["q02_inscr"]))
+                            echo "<input type=\"hidden\" name=\"q02_inscr\"  value=\"".$_POST["q02_inscr"]."\">";
+                          if(isset($_POST["z01_numcgm"]) && !empty($_POST["z01_numcgm"]))
+                            echo "<input type=\"hidden\" name=\"z01_numcgm\"  value=\"".$_POST["z01_numcgm"]."\">";
+                          if(isset($_POST["v07_parcel"]) && !empty($_POST["v07_parcel"]))
+                            echo "<input type=\"hidden\" name=\"v07_parcel\"  value=\"".$_POST["v07_parcel"]."\">";
+	                      if(isset($_POST["k00_numpre"]) && !empty($_POST["k00_numpre"]))
+                            echo "<input type=\"hidden\" name=\"k00_numpre\"  value=\"".$_POST["k00_numpre"]."\">";
 					      ?>
                         </td>
                       </tr>

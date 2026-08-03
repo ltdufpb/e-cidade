@@ -27,26 +27,21 @@ class PessoasController extends Controller
      */
     public function pesquisaPorNome($nome, $tp_pesquisa = 0)
     {
-        $nome = utf8_decode($nome);
+        $nome = mb_convert_encoding($nome, 'ISO-8859-1');
 
         if (strlen($nome) < 2) {
             return response()->json([
                 "error" => true,
-                "message" => utf8_encode("Nome deve ter no mínimo 2 caracteres"),
+                "message" => mb_convert_encoding("Nome deve ter no mínimo 2 caracteres", 'UTF-8', 'ISO-8859-1'),
                 "status" => 400,
             ], 400);
         }
 
-        switch ($tp_pesquisa) {
-            case 1:
-                $this->queryCgm->whereRaw("to_ascii(z01_nomecomple) ilike to_ascii('{$nome}%')");
-                break;
-            case 2:
-                $this->queryCgm->whereRaw("to_ascii(z01_nomecomple) ilike to_ascii('%{$nome}%')");
-                break;
-            default:
-                $this->queryCgm->whereRaw("z01_nomecomple = '{$nome}'");
-        }
+        match ($tp_pesquisa) {
+            1 => $this->queryCgm->whereRaw("to_ascii(z01_nomecomple) ilike to_ascii('{$nome}%')"),
+            2 => $this->queryCgm->whereRaw("to_ascii(z01_nomecomple) ilike to_ascii('%{$nome}%')"),
+            default => $this->queryCgm->whereRaw("z01_nomecomple = '{$nome}'"),
+        };
         $this->queryCgm->whereRaw("length(z01_cgccpf) <= 11");
 
         $response = $this->makeResponse($this->queryCgm->get());
@@ -78,19 +73,19 @@ class PessoasController extends Controller
         ];
 
         $cgm = Cgm::find($numcgm);
-        $data_atualizacao = $cgm->z01_ultalt?date('Y-m-d H:i:s', strtotime($cgm->z01_ultalt)):date('Y-m-d H:i:s');
+        $data_atualizacao = $cgm->z01_ultalt?date('Y-m-d H:i:s', strtotime((string) $cgm->z01_ultalt)):date('Y-m-d H:i:s');
         $response->enderecospessoa[] = (object)[
             "data_endereco" => $data_atualizacao,
             "tp_endereco" => "PRINCIPAL",
             "txt_endereco" => sprintf(
                 "%s %s %s %s %s %s %s",
-                utf8_encode(trim($cgm->z01_ender)),
-                utf8_encode(trim($cgm->z01_numero)),
-                utf8_encode(trim($cgm->z01_compl)),
-                utf8_encode(trim($cgm->z01_bairro)),
-                utf8_encode(trim($cgm->z01_munic)),
-                utf8_encode(trim($cgm->z01_uf)),
-                utf8_encode(trim($cgm->z01_cep))
+                mb_convert_encoding(trim((string) $cgm->z01_ender), 'UTF-8', 'ISO-8859-1'),
+                mb_convert_encoding(trim((string) $cgm->z01_numero), 'UTF-8', 'ISO-8859-1'),
+                mb_convert_encoding(trim((string) $cgm->z01_compl), 'UTF-8', 'ISO-8859-1'),
+                mb_convert_encoding(trim((string) $cgm->z01_bairro), 'UTF-8', 'ISO-8859-1'),
+                mb_convert_encoding(trim((string) $cgm->z01_munic), 'UTF-8', 'ISO-8859-1'),
+                mb_convert_encoding(trim((string) $cgm->z01_uf), 'UTF-8', 'ISO-8859-1'),
+                mb_convert_encoding(trim((string) $cgm->z01_cep), 'UTF-8', 'ISO-8859-1')
             )
         ];
 
@@ -102,16 +97,16 @@ class PessoasController extends Controller
             ->map(function ($endereco) use (&$response) {
                 $response->enderecospessoa[] = (object)[
                     "data_endereco" => date('Y-m-d H:i:s'),
-                    "tp_endereco" =>utf8_encode("Carnê IPTU"),
+                    "tp_endereco" =>mb_convert_encoding("Carnê IPTU", 'UTF-8', 'ISO-8859-1'),
                     "txt_endereco" => sprintf(
                         "%s %s %s %s %s %s %s",
-                        utf8_encode(trim($endereco->z01_ender)),
-                        utf8_encode(trim($endereco->z01_numero)),
-                        utf8_encode(trim($endereco->z01_compl)),
-                        utf8_encode(trim($endereco->z01_bairro)),
-                        utf8_encode(trim($endereco->z01_munic)),
-                        utf8_encode(trim($endereco->z01_uf)),
-                        utf8_encode(trim($endereco->z01_cep))
+                        mb_convert_encoding(trim((string) $endereco->z01_ender), 'UTF-8', 'ISO-8859-1'),
+                        mb_convert_encoding(trim((string) $endereco->z01_numero), 'UTF-8', 'ISO-8859-1'),
+                        mb_convert_encoding(trim((string) $endereco->z01_compl), 'UTF-8', 'ISO-8859-1'),
+                        mb_convert_encoding(trim((string) $endereco->z01_bairro), 'UTF-8', 'ISO-8859-1'),
+                        mb_convert_encoding(trim((string) $endereco->z01_munic), 'UTF-8', 'ISO-8859-1'),
+                        mb_convert_encoding(trim((string) $endereco->z01_uf), 'UTF-8', 'ISO-8859-1'),
+                        mb_convert_encoding(trim((string) $endereco->z01_cep), 'UTF-8', 'ISO-8859-1')
                     )
                 ];
             });
@@ -133,8 +128,8 @@ class PessoasController extends Controller
 
         $response->pessoas = $pessoas->map(function ($cgm) {
             $nro_rg = null;
-            if (!empty(trim($cgm->z01_ident))) {
-                $nro_rg = trim($cgm->z01_ident);
+            if (!empty(trim((string) $cgm->z01_ident))) {
+                $nro_rg = trim((string) $cgm->z01_ident);
             }
 
             $nro_cpf = null;
@@ -146,11 +141,11 @@ class PessoasController extends Controller
 //            if (!empty(trim($cgm->z01_obs))) {
 //                $observacoes[] = utf8_encode($cgm->z01_obs);
 //            }
-            if (!empty(trim($cgm->z01_telcel))) {
-                $observacoes[] = trim($cgm->z01_telcel);
+            if (!empty(trim((string) $cgm->z01_telcel))) {
+                $observacoes[] = trim((string) $cgm->z01_telcel);
             }
-            if (!empty(trim($cgm->z01_telef))) {
-                $observacoes[] = trim($cgm->z01_telef);
+            if (!empty(trim((string) $cgm->z01_telef))) {
+                $observacoes[] = trim((string) $cgm->z01_telef);
             }
 
             return (object)[
@@ -158,10 +153,10 @@ class PessoasController extends Controller
                 "nro_cpf" => $nro_cpf,
                 "nro_rg" => $nro_rg,
                 "uf_rg" => $cgm->z01_identorgao,
-                "nome_pessoa" => utf8_encode($cgm->z01_nomecomple),
-                "dt_nascimento" => date('Y-m-d H:i:s', strtotime($cgm->z01_nasc)),
-                "nome_mae" => utf8_encode($cgm->z01_mae),
-                "nome_pai" => utf8_encode($cgm->z01_pai),
+                "nome_pessoa" => mb_convert_encoding($cgm->z01_nomecomple, 'UTF-8', 'ISO-8859-1'),
+                "dt_nascimento" => date('Y-m-d H:i:s', strtotime((string) $cgm->z01_nasc)),
+                "nome_mae" => mb_convert_encoding($cgm->z01_mae, 'UTF-8', 'ISO-8859-1'),
+                "nome_pai" => mb_convert_encoding($cgm->z01_pai, 'UTF-8', 'ISO-8859-1'),
                 "txt_observacao" => implode(" - ", $observacoes)
             ];
         });

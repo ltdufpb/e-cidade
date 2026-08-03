@@ -108,7 +108,7 @@ class cl_sau_config
     public function __construct()
     {
         $this->rotulo = new rotulo("sau_config"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -354,7 +354,7 @@ class cl_sau_config
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Configuração parâmetros () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Configuração parâmetros já Cadastrado";
@@ -387,26 +387,26 @@ class cl_sau_config
       $this->atualizacampos();
      $sql = " update sau_config set ";
      $virgula = "";
-     if(trim($this->s103_c_lancafaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_lancafaa"])){ 
+     if(trim((string) $this->s103_c_lancafaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_lancafaa"])){ 
        $sql  .= $virgula." s103_c_lancafaa = '$this->s103_c_lancafaa' ";
        $virgula = ",";
      }
-     if(trim($this->s103_v_msgagenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_v_msgagenda"])){ 
+     if(trim((string) $this->s103_v_msgagenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_v_msgagenda"])){ 
        $sql  .= $virgula." s103_v_msgagenda = '$this->s103_v_msgagenda' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_agendaproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_agendaproc"])){ 
+     if(trim((string) $this->s103_c_agendaproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_agendaproc"])){ 
        $sql  .= $virgula." s103_c_agendaproc = '$this->s103_c_agendaproc' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_emitircomprovante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_emitircomprovante"])){ 
+     if(trim((string) $this->s103_c_emitircomprovante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_emitircomprovante"])){ 
        $sql  .= $virgula." s103_c_emitircomprovante = '$this->s103_c_emitircomprovante' ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_departamentos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_departamentos"])){ 
+     if(trim((string) $this->s103_i_departamentos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_departamentos"])){ 
        $sql  .= $virgula." s103_i_departamentos = $this->s103_i_departamentos ";
        $virgula = ",";
-       if(trim($this->s103_i_departamentos) == null ){ 
+       if(trim((string) $this->s103_i_departamentos) == null ){ 
          $this->erro_sql = " Campo Controle UPS não informado.";
          $this->erro_campo = "s103_i_departamentos";
          $this->erro_banco = "";
@@ -416,10 +416,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_emitirfaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_emitirfaa"])){ 
+     if(trim((string) $this->s103_c_emitirfaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_emitirfaa"])){ 
        $sql  .= $virgula." s103_c_emitirfaa = '$this->s103_c_emitirfaa' ";
        $virgula = ",";
-       if(trim($this->s103_c_emitirfaa) == null ){ 
+       if(trim((string) $this->s103_c_emitirfaa) == null ){ 
          $this->erro_sql = " Campo Gerar FA Automática não informado.";
          $this->erro_campo = "s103_c_emitirfaa";
          $this->erro_banco = "";
@@ -429,10 +429,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_cancelafa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_cancelafa"])){ 
+     if(trim((string) $this->s103_c_cancelafa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_cancelafa"])){ 
        $sql  .= $virgula." s103_c_cancelafa = '$this->s103_c_cancelafa' ";
        $virgula = ",";
-       if(trim($this->s103_c_cancelafa) == null ){ 
+       if(trim((string) $this->s103_c_cancelafa) == null ){ 
          $this->erro_sql = " Campo Cancelar FA anteriores não informado.";
          $this->erro_campo = "s103_c_cancelafa";
          $this->erro_banco = "";
@@ -442,40 +442,40 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_i_modalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modalidade"])){ 
-        if(trim($this->s103_i_modalidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modalidade"])){ 
+     if(trim((string) $this->s103_i_modalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modalidade"])){ 
+        if(trim((string) $this->s103_i_modalidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modalidade"])){ 
            $this->s103_i_modalidade = "0" ; 
         } 
        $sql  .= $virgula." s103_i_modalidade = $this->s103_i_modalidade ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_sgdb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_sgdb"])){ 
+     if(trim((string) $this->s103_c_sgdb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_sgdb"])){ 
        $sql  .= $virgula." s103_c_sgdb = '$this->s103_c_sgdb' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_ip"])){ 
+     if(trim((string) $this->s103_c_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_ip"])){ 
        $sql  .= $virgula." s103_c_ip = '$this->s103_c_ip' ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_porta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_porta"])){ 
-        if(trim($this->s103_i_porta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_porta"])){ 
+     if(trim((string) $this->s103_i_porta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_porta"])){ 
+        if(trim((string) $this->s103_i_porta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_porta"])){ 
            $this->s103_i_porta = "0" ; 
         } 
        $sql  .= $virgula." s103_i_porta = $this->s103_i_porta ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_senha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_senha"])){ 
+     if(trim((string) $this->s103_c_senha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_senha"])){ 
        $sql  .= $virgula." s103_c_senha = '$this->s103_c_senha' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_usuario"])){ 
+     if(trim((string) $this->s103_c_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_usuario"])){ 
        $sql  .= $virgula." s103_c_usuario = '$this->s103_c_usuario' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_apareceragenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_apareceragenda"])){ 
+     if(trim((string) $this->s103_c_apareceragenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_apareceragenda"])){ 
        $sql  .= $virgula." s103_c_apareceragenda = '$this->s103_c_apareceragenda' ";
        $virgula = ",";
-       if(trim($this->s103_c_apareceragenda) == null ){ 
+       if(trim((string) $this->s103_c_apareceragenda) == null ){ 
          $this->erro_sql = " Campo Aparecer FAAs geradas não informado.";
          $this->erro_campo = "s103_c_apareceragenda";
          $this->erro_banco = "";
@@ -485,10 +485,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_idadeproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_idadeproc"])){ 
+     if(trim((string) $this->s103_c_idadeproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_idadeproc"])){ 
        $sql  .= $virgula." s103_c_idadeproc = '$this->s103_c_idadeproc' ";
        $virgula = ",";
-       if(trim($this->s103_c_idadeproc) == null ){ 
+       if(trim((string) $this->s103_c_idadeproc) == null ){ 
          $this->erro_sql = " Campo Valida Idade do Procedimento não informado.";
          $this->erro_campo = "s103_c_idadeproc";
          $this->erro_banco = "";
@@ -498,10 +498,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_servicoproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_servicoproc"])){ 
+     if(trim((string) $this->s103_c_servicoproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_servicoproc"])){ 
        $sql  .= $virgula." s103_c_servicoproc = '$this->s103_c_servicoproc' ";
        $virgula = ",";
-       if(trim($this->s103_c_servicoproc) == null ){ 
+       if(trim((string) $this->s103_c_servicoproc) == null ){ 
          $this->erro_sql = " Campo Valida Serviço do Procedimento não informado.";
          $this->erro_campo = "s103_c_servicoproc";
          $this->erro_banco = "";
@@ -511,39 +511,39 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_ipauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_ipauto"])){ 
+     if(trim((string) $this->s103_c_ipauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_ipauto"])){ 
        $sql  .= $virgula." s103_c_ipauto = '$this->s103_c_ipauto' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_agendaprog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_agendaprog"])){ 
+     if(trim((string) $this->s103_c_agendaprog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_agendaprog"])){ 
        $sql  .= $virgula." s103_c_agendaprog = '$this->s103_c_agendaprog' ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_validaagenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_validaagenda"])){ 
-        if(trim($this->s103_i_validaagenda)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_validaagenda"])){ 
+     if(trim((string) $this->s103_i_validaagenda)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_validaagenda"])){ 
+        if(trim((string) $this->s103_i_validaagenda)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_validaagenda"])){ 
            $this->s103_i_validaagenda = "0" ; 
         } 
        $sql  .= $virgula." s103_i_validaagenda = $this->s103_i_validaagenda ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_revisacgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_revisacgs"])){ 
-        if(trim($this->s103_i_revisacgs)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_revisacgs"])){ 
+     if(trim((string) $this->s103_i_revisacgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_revisacgs"])){ 
+        if(trim((string) $this->s103_i_revisacgs)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_revisacgs"])){ 
            $this->s103_i_revisacgs = "0" ; 
         } 
        $sql  .= $virgula." s103_i_revisacgs = $this->s103_i_revisacgs ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_tipodb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_tipodb"])){ 
-        if(trim($this->s103_i_tipodb)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_tipodb"])){ 
+     if(trim((string) $this->s103_i_tipodb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_tipodb"])){ 
+        if(trim((string) $this->s103_i_tipodb)=="" && isset($GLOBALS["HTTP_POST_VARS"]["s103_i_tipodb"])){ 
            $this->s103_i_tipodb = "0" ; 
         } 
        $sql  .= $virgula." s103_i_tipodb = $this->s103_i_tipodb ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_datahorafaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_datahorafaa"])){ 
+     if(trim((string) $this->s103_i_datahorafaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_datahorafaa"])){ 
        $sql  .= $virgula." s103_i_datahorafaa = $this->s103_i_datahorafaa ";
        $virgula = ",";
-       if(trim($this->s103_i_datahorafaa) == null ){ 
+       if(trim((string) $this->s103_i_datahorafaa) == null ){ 
          $this->erro_sql = " Campo Data e hora na FAA não informado.";
          $this->erro_campo = "s103_i_datahorafaa";
          $this->erro_banco = "";
@@ -553,10 +553,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_i_modelofaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modelofaa"])){ 
+     if(trim((string) $this->s103_i_modelofaa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_modelofaa"])){ 
        $sql  .= $virgula." s103_i_modelofaa = $this->s103_i_modelofaa ";
        $virgula = ",";
-       if(trim($this->s103_i_modelofaa) == null ){ 
+       if(trim((string) $this->s103_i_modelofaa) == null ){ 
          $this->erro_sql = " Campo Modelo FA não informado.";
          $this->erro_campo = "s103_i_modelofaa";
          $this->erro_banco = "";
@@ -566,22 +566,22 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_c_bpasecrdestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpasecrdestino"])){ 
+     if(trim((string) $this->s103_c_bpasecrdestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpasecrdestino"])){ 
        $sql  .= $virgula." s103_c_bpasecrdestino = '$this->s103_c_bpasecrdestino' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_bpasigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpasigla"])){ 
+     if(trim((string) $this->s103_c_bpasigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpasigla"])){ 
        $sql  .= $virgula." s103_c_bpasigla = '$this->s103_c_bpasigla' ";
        $virgula = ",";
      }
-     if(trim($this->s103_c_bpaibge)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpaibge"])){ 
+     if(trim((string) $this->s103_c_bpaibge)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_c_bpaibge"])){ 
        $sql  .= $virgula." s103_c_bpaibge = '$this->s103_c_bpaibge' ";
        $virgula = ",";
      }
-     if(trim($this->s103_i_todacomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_todacomp"])){ 
+     if(trim((string) $this->s103_i_todacomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_i_todacomp"])){ 
        $sql  .= $virgula." s103_i_todacomp = $this->s103_i_todacomp ";
        $virgula = ",";
-       if(trim($this->s103_i_todacomp) == null ){ 
+       if(trim((string) $this->s103_i_todacomp) == null ){ 
          $this->erro_sql = " Campo Apresentar Todas Competências não informado.";
          $this->erro_campo = "s103_i_todacomp";
          $this->erro_banco = "";
@@ -591,10 +591,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_procsemcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_procsemcbo"])){ 
+     if(trim((string) $this->s103_procsemcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_procsemcbo"])){ 
        $sql  .= $virgula." s103_procsemcbo = '$this->s103_procsemcbo' ";
        $virgula = ",";
-       if(trim($this->s103_procsemcbo) == null ){
+       if(trim((string) $this->s103_procsemcbo) == null ){
          $this->erro_sql = " Campo Exibir Procedimentos sem CBO nao Informado.";
          $this->erro_campo = "s103_procsemcbo";
          $this->erro_banco = "";
@@ -604,10 +604,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_obrigarcns)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_obrigarcns"])){ 
+     if(trim((string) $this->s103_obrigarcns)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_obrigarcns"])){ 
        $sql  .= $virgula." s103_obrigarcns = '$this->s103_obrigarcns' ";
        $virgula = ",";
-       if(trim($this->s103_obrigarcns) == null ){ 
+       if(trim((string) $this->s103_obrigarcns) == null ){ 
          $this->erro_sql = " Campo Obrigar Informar CNS não informado.";
          $this->erro_campo = "s103_obrigarcns";
          $this->erro_banco = "";
@@ -617,10 +617,10 @@ class cl_sau_config
          return false;
        }
      }
-     if(trim($this->s103_validamicroarea)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_validamicroarea"])){ 
+     if(trim((string) $this->s103_validamicroarea)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s103_validamicroarea"])){ 
        $sql  .= $virgula." s103_validamicroarea = '$this->s103_validamicroarea' ";
        $virgula = ",";
-       if(trim($this->s103_validamicroarea) == null ){ 
+       if(trim((string) $this->s103_validamicroarea) == null ){ 
          $this->erro_sql = " Campo Valida Cadastro Paciente Micro Area não informado.";
          $this->erro_campo = "s103_validamicroarea";
          $this->erro_banco = "";
@@ -770,7 +770,7 @@ class cl_sau_config
 
 	  if ($campos != "*") {
 
-		  $campos_sql = split ( "#", $campos );
+		  $campos_sql = preg_split ( "#\\##m", $campos );
 		  $virgula    = "";
 
 		  for($i = 0; $i < sizeof ( $campos_sql ); $i ++) {
@@ -805,7 +805,7 @@ class cl_sau_config
 	  if ($ordem != null) {
 
 		  $sSqlSauConfig .= " order by ";
-		  $campos_sql     = split ( "#", $ordem );
+		  $campos_sql     = preg_split ( "#\\##m", (string) $ordem );
 		  $virgula        = "";
 
 		  for ($i = 0; $i < sizeof ( $campos_sql ); $i ++) {

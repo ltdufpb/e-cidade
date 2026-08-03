@@ -58,11 +58,11 @@ $db_opcao = 1;
       //$clcriaabas->identifica = array("a1"=>"Localização","a2"=>"Sepultura","a3"=>"Ossoario","a4"=>"Ossoario Particular","a5"=>"Jazigo","a6"=>"Outra Necropole");
       //$clcriaabas->src        = array("a1"=>"cem1_transacao001.php");
       
-      $clcriaabas->identifica = array("a1"=>"Sepultamento","a2"=>"Certidão de Óbito","a3"=>"Localização","a4"=>"Transações/Retirada");
-      $clcriaabas->src = array("a1"=>"cem3_sepultamentos001.php");
+      $clcriaabas->identifica = ["a1"=>"Sepultamento","a2"=>"Certidão de Óbito","a3"=>"Localização","a4"=>"Transações/Retirada"];
+      $clcriaabas->src = ["a1"=>"cem3_sepultamentos001.php"];
 
-      $clcriaabas->disabled   = array("a2"=>"true","a3"=>"true","a4"=>"true");
-      $clcriaabas->sizecampo  = array("a1"=>15,"a2"=>15,"a3"=>15,"a4"=>18);
+      $clcriaabas->disabled   = ["a2"=>"true","a3"=>"true","a4"=>"true"];
+      $clcriaabas->sizecampo  = ["a1"=>15,"a2"=>15,"a3"=>15,"a4"=>18];
       $clcriaabas->scrolling  = "yes";
       $clcriaabas->cria_abas();
        ?> 

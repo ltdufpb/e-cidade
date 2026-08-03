@@ -30,8 +30,8 @@ include(modification("libs/db_sql.php"));
 //include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_far_retirada_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clfar_retirada = new cl_far_retirada;
@@ -40,7 +40,7 @@ $z01_v_nome = $z01_v_nome;
 
 if(isset($data1) && $data2!=""){ 
 @$d1= substr(@$data1,6,4)."/".substr(@$data1,3,2)."/".substr(@$data1,0,2);
-@$d2= substr(@$data2,6,4)."/".substr(@$data2,3,2)."/".substr(@$data2,0,2);
+@$d2= substr((string) @$data2,6,4)."/".substr((string) @$data2,3,2)."/".substr((string) @$data2,0,2);
 $result = $clfar_retirada->sql_record($clfar_retirada->sql_query(null,"fa04_i_codigo,fa04_d_data,fa04_c_numeroreceita,fa04_d_dtvalidade,fa03_c_descr,fa04_i_profissional,z01_nome,fa04_i_unidades,descrdepto","fa04_i_codigo desc","fa04_i_cgsund=$fa04_i_cgsund and fa04_d_data BETWEEN '$d1' AND '$d2'"));
 }else{
 $result = $clfar_retirada->sql_record($clfar_retirada->sql_query(null,"fa04_i_codigo,fa04_d_data,fa04_c_numeroreceita,fa04_d_dtvalidade,fa03_c_descr,fa04_i_profissional,z01_nome,fa04_i_unidades,descrdepto","fa04_i_codigo desc","fa04_i_cgsund=$fa04_i_cgsund"));
@@ -98,7 +98,7 @@ $cont=0;
 	$pdf->setfont('arial','',8);
     $pdf->cell(20,4,"$fa04_i_codigo",0,0,"L",0);
     $pdf->cell(30,4,db_formatar($fa04_d_data,'d'),0,0,"L",0);
-    $pdf->cell(35,4,substr($fa04_c_numeroreceita,0,10),0,0,"L",0);
+    $pdf->cell(35,4,substr((string) $fa04_c_numeroreceita,0,10),0,0,"L",0);
     $pdf->cell(20,4,db_formatar($fa04_d_dtvalidade,'d'),0,0,"L",0);
     $pdf->cell(40,4,"$fa03_c_descr",0,0,"L",0);
     $pdf->cell(56,4,substr($fa04_i_profissional. "-". $z01_nome,0,32),0,0,"L",0);

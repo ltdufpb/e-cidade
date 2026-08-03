@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -64,9 +64,9 @@ input {
 <center>
 <form name="form1" method="post">
 <?php 
-if(!isset($HTTP_POST_VARS['mod'])){
+if(!isset($_POST['mod'])){
   ?>
-	<input name="proced" type="hidden" value="<?=(isset($proced)?$proced:false)?>">
+	<input name="proced" type="hidden" value="<?=($proced ?? false)?>">
   <table border="0" cellspacing="0" cellpadding="0">
   <tr>
   <td> <strong>Pesquisa:</strong><br> <input name="procura" type="text" id="procura" onKeyUp="js_pesquisa(this.value.toLowerCase(),document.form1.modulos)" size="25"></td>
@@ -80,9 +80,9 @@ if(!isset($HTTP_POST_VARS['mod'])){
        inner join db_itensmenu on db_modulos.id_item = db_itensmenu.id_item
   where libcliente is true
   order by lower(nome_modulo)");
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
   for($i = 0;$i < $numrows;$i++) {
-    echo "<option value=\"".pg_result($result,$i,"id_item")."\">".pg_result($result,$i,"nome_modulo")."</option>\n";
+    echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."\">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
   }  
   ?>
   </select> 
@@ -94,10 +94,10 @@ if(!isset($HTTP_POST_VARS['mod'])){
   </tr>
   </table>
   <?php 
-} else if(isset($HTTP_POST_VARS["mod"])) {
-  $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$HTTP_POST_VARS["modulos"]);
-  $mod = pg_result($result,0,0);
-  $des = pg_result($result,0,1);
+} else if(isset($_POST["mod"])) {
+  $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$_POST["modulos"]);
+  $mod = pg_fetch_result($result,0,0);
+  $des = pg_fetch_result($result,0,1);
   ?>
   <table border="1" cellspacing="0" cellpadding="0">
   <tr><td>
@@ -115,11 +115,11 @@ if(!isset($HTTP_POST_VARS['mod'])){
   <tr>
   <tr>
   <td align="center" style='display:none'><strong>Ambiente:</strong>
-  <input name="modulos" type="hidden" value="<?=$HTTP_POST_VARS["modulos"]?>">
+  <input name="modulos" type="hidden" value="<?=$_POST["modulos"]?>">
   <input name="mod" type="hidden" value="selecionar">
-  <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
+  <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="1"?"checked":""):"checked" ?>> 
   <label for="web"><strong>Web</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-  <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
+  <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="0"?"checked":""):"" ?>>
   <label for="caracter"><strong>Caracter</strong></label>
   </td>
   </tr>
@@ -158,11 +158,11 @@ if(!isset($HTTP_POST_VARS['mod'])){
   <tr> 
   <td> 
   <?php  
-  $ambiente = (!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"]);		  		   
+  $ambiente = (!isset($_POST["ambiente"])?"1":$_POST["ambiente"]);		  		   
   $wid = 15;
   $conta = 0;
-	if (!isset($HTTP_POST_VARS["proced"])) {
-		$HTTP_POST_VARS["proced"] = false;
+	if (!isset($_POST["proced"])) {
+		$_POST["proced"] = false;
 	}
   /***************/
   function submenus($item,$id,$mod) {
@@ -170,7 +170,7 @@ if(!isset($HTTP_POST_VARS['mod'])){
     global $wid;
     global $ambiente;
     global $libcliente;
-    global $HTTP_POST_VARS;
+    global $_POST;
 		global $descrproced;
     $sOrdenacao = DBMenu::getCampoOrdenacao();
     $sub = db_query("select m.id_item_filho,i.descricao,i.help,i.funcao,m.id_item,m.modulo, libcliente
@@ -180,22 +180,22 @@ if(!isset($HTTP_POST_VARS['mod'])){
     and m.id_item = $item 
     and i.itemativo = $ambiente
     order by {$sOrdenacao}");			  
-    $numrows = pg_numrows($sub);
+    $numrows = pg_num_rows($sub);
     if($numrows > 0) {
       for($x = 0;$x < $numrows;$x++) {
-        $libcliente = pg_result($sub,$x,"libcliente");
-        $valor = pg_result($sub,$x,"id_item_filho");
+        $libcliente = pg_fetch_result($sub,$x,"libcliente");
+        $valor = pg_fetch_result($sub,$x,"id_item_filho");
         $sub1 = db_query("
         select distinct nome,login
         from db_permissao p inner join db_usuarios u on u.id_usuario = p.id_usuario
         where p.id_item = $valor" 
         );			 
-        $numrows1 = pg_numrows($sub1);
+        $numrows1 = pg_num_rows($sub1);
         $usuarios = "<br>";
         $login    = "<br>";
         for($y = 0;$y < $numrows1;$y++) {                  
-          $usuarios .= pg_result($sub1,$y,"nome")."<br>";
-          $login    .= pg_result($sub1,$y,"login")."<br>";
+          $usuarios .= pg_fetch_result($sub1,$y,"nome")."<br>";
+          $login    .= pg_fetch_result($sub1,$y,"login")."<br>";
         }
         
         $sqlsub2 = "select distinct nome,login,anousu,id_instit  
@@ -203,31 +203,31 @@ if(!isset($HTTP_POST_VARS['mod'])){
         where p.id_item = $valor";
         $sub2 = db_query($sqlsub2);
         $anos    = "<br>";
-        if (pg_numrows($sub2) > 0) {
-          $ultimo= pg_result($sub2,0,"login");
-          for($z = 0;$z < pg_numrows($sub2);$z++) {
-            if ($ultimo != pg_result($sub2,$z,"login")) {;
+        if (pg_num_rows($sub2) > 0) {
+          $ultimo= pg_fetch_result($sub2,0,"login");
+          for($z = 0;$z < pg_num_rows($sub2);$z++) {
+            if ($ultimo != pg_fetch_result($sub2,$z,"login")) {;
               $anos .= "<br>";
-              $ultimo = pg_result($sub2,$z,"login");
+              $ultimo = pg_fetch_result($sub2,$z,"login");
             }
-            $anos .= pg_result($sub2,$z,"anousu")."-".pg_result($sub2,$z,"id_instit")."|";
+            $anos .= pg_fetch_result($sub2,$z,"anousu")."-".pg_fetch_result($sub2,$z,"id_instit")."|";
           }
         }
         $anos .= "<br>";
         
-        echo "<img src=\"imagens/alinha.gif\" height=\"5\" id=\"Img".$conta."\" width=\"".$wid."\" ><input size=\"1\" onClick=\"parent.js_pesquisaitemcad('$valor','".$HTTP_POST_VARS["modulos"]."')\" type=\"button\" id=\"ID$valor\" name=\"CHECK$valor\" ".($libcliente=="f"?"style=\"background-color:blue\" title=\"Bloqueado Cliente\"":"")." value=\"$valor\" >
-        <label for=\"ID$valor\">".pg_result($sub,$x,"descricao")."</label>";
+        echo "<img src=\"imagens/alinha.gif\" height=\"5\" id=\"Img".$conta."\" width=\"".$wid."\" ><input size=\"1\" onClick=\"parent.js_pesquisaitemcad('$valor','".$_POST["modulos"]."')\" type=\"button\" id=\"ID$valor\" name=\"CHECK$valor\" ".($libcliente=="f"?"style=\"background-color:blue\" title=\"Bloqueado Cliente\"":"")." value=\"$valor\" >
+        <label for=\"ID$valor\">".pg_fetch_result($sub,$x,"descricao")."</label>";
 				
-				if (isset($HTTP_POST_VARS["proced"]) and $HTTP_POST_VARS["proced"] == true) {
+				if (isset($_POST["proced"]) and $_POST["proced"] == true) {
 					$sqlproced = "select descrproced from db_syscadproceditem 
 												inner join db_syscadproced on db_syscadproceditem.codproced = db_syscadproced.codproced
 												where id_item = $valor";
 					$resultproced = db_query($sqlproced) or die($sqlproced);
 					$mostrar="";
-					if (pg_numrows($resultproced) > 0) {
-						for ($xxx=0; $xxx <  pg_numrows($resultproced); $xxx++) {
+					if (pg_num_rows($resultproced) > 0) {
+						for ($xxx=0; $xxx <  pg_num_rows($resultproced); $xxx++) {
 							db_fieldsmemory($resultproced,$xxx);
-							$mostrar .= substr($descrproced,0,20) . ($xxx == pg_numrows($resultproced) -1?"":" / ");
+							$mostrar .= substr((string) $descrproced,0,20) . ($xxx == pg_num_rows($resultproced) -1?"":" / ");
 						}
 					}
 					echo " - <font color=\"red\">$mostrar<font color=\"black\">";
@@ -237,7 +237,7 @@ if(!isset($HTTP_POST_VARS['mod'])){
         //<label onmouseover=\"js_mostradiv(true,event,'$usuarios','$login','$anos')\" onmouseout=\"js_mostradiv(false,event)\" for=\"ID$valor\">".pg_result($sub,$x,"descricao")."</label>
         $wid += 15;
         $conta++;
-        submenus(pg_result($sub,$x,"id_item_filho"),$id,$mod);
+        submenus(pg_fetch_result($sub,$x,"id_item_filho"),$id,$mod);
         $wid -= 15;
       }
     }
@@ -248,15 +248,15 @@ if(!isset($HTTP_POST_VARS['mod'])){
   from db_itensmenu i 
   inner join db_menu m 
   on m.id_item_filho = i.id_item 
-  where m.modulo = ".$HTTP_POST_VARS["modulos"]."
+  where m.modulo = ".$_POST["modulos"]."
   and i.itemativo = $ambiente							   
-  and m.id_item = ".$HTTP_POST_VARS["modulos"]." order by {$sOrdenacao} ";
+  and m.id_item = ".$_POST["modulos"]." order by {$sOrdenacao} ";
   $result = db_query($SQL);			
-  for($i = 0;$i < pg_numrows($result);$i++) {
-    $valor = pg_result($result,$i,"id_item_filho");
-    echo "<td id=\"col$i\" valign=\"top\" nowrap>\n<input size=\"1\" type=\"button\" onclick=\"js_trocacor(this);parent.js_pesquisaitemcad('$valor','".$HTTP_POST_VARS["modulos"]."');\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" >
-    <label for=\"ID$valor\">".pg_result($result,$i,"descricao")."</label><br>\n";
-    submenus(pg_result($result,$i,"pai"),"col".$i,db_strpos($HTTP_POST_VARS["modulos"],"##"));
+  for($i = 0;$i < pg_num_rows($result);$i++) {
+    $valor = pg_fetch_result($result,$i,"id_item_filho");
+    echo "<td id=\"col$i\" valign=\"top\" nowrap>\n<input size=\"1\" type=\"button\" onclick=\"js_trocacor(this);parent.js_pesquisaitemcad('$valor','".$_POST["modulos"]."');\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" >
+    <label for=\"ID$valor\">".pg_fetch_result($result,$i,"descricao")."</label><br>\n";
+    submenus(pg_fetch_result($result,$i,"pai"),"col".$i,db_strpos($_POST["modulos"],"##"));
     echo "</td>\n";
   }	   
   ?> 

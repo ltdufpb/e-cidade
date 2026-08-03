@@ -29,9 +29,9 @@ include(modification("classes/db_cgm_classe.php"));
 include(modification("classes/db_cgmalt_classe.php"));
 include(modification("fpdf151/pdf.php"));
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcgm	  = new cl_cgm;
 $clcgmalt = new cl_cgmalt;
@@ -53,8 +53,8 @@ db_fieldsmemory($result,0,true);
 
 $head4 = "RELATÓRIO CADASTRO DO CGM";
 $tam = 0;
-for($ii=0;$ii<pg_numfields($result);$ii++){
-   $tamlabel = "RL".pg_fieldname($result,$ii);
+for($ii=0;$ii<pg_num_fields($result);$ii++){
+   $tamlabel = "RL".pg_field_name($result,$ii);
 //   echo 'campo : '.$tamlabel.'   tammanho : '.strlen($tamlabel).'<br>';
    if ( $tam < strlen($tamlabel)){
       $tam = strlen($tamlabel);
@@ -67,14 +67,14 @@ $pdf->AliasNbPages(); // gera alias para as paginas
 $pdf->AddPage(); // adiciona uma pagina
 $pdf->SetTextColor(0,0,0);
 $pdf->SetFillColor(235);
-for($i=0;$i<pg_numfields($result);$i++){
-   $label = "RL".pg_fieldname($result,$i);
-   $campo = pg_fieldname($result,$i);
+for($i=0;$i<pg_num_fields($result);$i++){
+   $label = "RL".pg_field_name($result,$i);
+   $campo = pg_field_name($result,$i);
    $pdf->SetFont('courier','B',8);
-   $pdf->cell($tam,6,db_formatar(strtoupper(@$$label),'s',".",$tam/2+3,"d"),0,0,"L",0);
+   $pdf->cell($tam,6,db_formatar(strtoupper((string) @${$label}),'s',".",$tam/2+3,"d"),0,0,"L",0);
    $pdf->cell(2,6,':',0,0,"L",0);
    $pdf->SetFont('Arial','',8);
-   $pdf->cell(100,6,@$$campo,0,1,"L",0);
+   $pdf->cell(100,6,@${$campo},0,1,"L",0);
 }
 $pdf->Output();
 ?>

@@ -29,14 +29,14 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 $segue = true;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $instit = db_getsession("DB_instit");
 if(!isset($arg)) {
-  $str = split("\?",$HTTP_SERVER_VARS['QUERY_STRING']);
-  $str1 = base64_decode($str[0]);
-  $str2 = base64_decode($str[1]);
+  $str = preg_split("#\\?#m",(string) $_SERVER['QUERY_STRING']);
+  $str1 = base64_decode((string) $str[0]);
+  $str2 = base64_decode((string) $str[1]);
 //  echo "$str1<br>$str2";
-  parse_str($str1);
+  parse_str($str1, $result);
   parse_str($str2);  
 }
 if(isset($retorno)) {
@@ -47,7 +47,7 @@ if(isset($retorno)) {
             order by k07_valorv desc";
   $result = db_query($sql);
   if($ret[2] != $ret[0]){
-    if(pg_numrows($result)>0){
+    if(pg_num_rows($result)>0){
       $segue = false;
     }
   }
@@ -59,7 +59,7 @@ if(isset($retorno)) {
   	        </script>";
 	   exit;
     }
-    if(pg_numrows($result) == 0 || $ret[5] == 'sai'){
+    if(pg_num_rows($result) == 0 || $ret[5] == 'sai'){
       echo "
       <script>
       for(i = 0;i < opener.parent.corpo.document.form1.elements.length;i++) {
@@ -98,10 +98,10 @@ if(isset($retorno)) {
 }
 //$arg = explode("==",$arg);
 //$argaux = explode("==",$argaux);
-if(empty($HTTP_POST_VARS["filtro"]) && $segue == true)
-  $HTTP_POST_VARS["filtro"] = $arg;
+if(empty($_POST["filtro"]) && $segue == true)
+  $_POST["filtro"] = $arg;
 else
-  $arg = $HTTP_POST_VARS["filtro"];
+  $arg = $_POST["filtro"];
   
   if( $argaux !=""){
      $chave = $campoaux;
@@ -122,8 +122,8 @@ else
 			    where k01_codigo = ".$chave_valor."
 		        order by k01_codigo";
         $result = db_query($sql);
-	    if(pg_numrows($result)==1){
-          $ret = explode("##",pg_result($result,0,0));
+	    if(pg_num_rows($result)==1){
+          $ret = explode("##",pg_fetch_result($result,0,0));
           echo "
           <script>
           window.blur();
@@ -160,8 +160,8 @@ else
 		        order by k02_codigo";
         $result = db_query($sql);
 		$sqltem = true;
-	    if(pg_numrows($result)==1){
-          $ret = explode("##",pg_result($result,0,0));
+	    if(pg_num_rows($result)==1){
+          $ret = explode("##",pg_fetch_result($result,0,0));
           $sql = "select ( k02_codigo || '##' || k02_drecei|| '##'  || k02_codigo ||'##' || k02_descr::varchar|| '##' || k02_tipo::varchar || '##' || 'sai') as db_receita,tabdesc.*
                   from tabdesc, 
 				               tabrec
@@ -171,7 +171,7 @@ else
                         and k07_instit = $instit 
                   order by k07_valorv desc";
           $result = db_query($sql);
-          if(pg_numrows($result) == 0){
+          if(pg_num_rows($result) == 0){
             echo "
             <script>
             window.blur();
@@ -270,8 +270,8 @@ function js_verificavalor(){
 <td align="center" nowrap>
 
 <form name="form5" method="post">
-  <input type="text" name="filtro" value="<?=@$HTTP_POST_VARS['filtro']?>" onBlur="window.focus();">
-  <input type="hidden" name="arg" value="<?=@$HTTP_POST_VARS['arg']?>">
+  <input type="text" name="filtro" value="<?=@$_POST['filtro']?>" onBlur="window.focus();">
+  <input type="hidden" name="arg" value="<?=@$_POST['arg']?>">
   <input type="submit" name="procurar" value="Procurar">
 </form>
 </td>
@@ -279,7 +279,7 @@ function js_verificavalor(){
 <tr>
   <td align="center"> 
 <?php 
-db_lov($sql,15,"db_caixa.php?".base64_encode("campo=$campo&campoaux=$campoaux"),$HTTP_POST_VARS["filtro"]);
+db_lov($sql,15,"db_caixa.php?".base64_encode("campo=$campo&campoaux=$campoaux"),$_POST["filtro"]);
 if($sqltem == false){
   ?>
   <form>

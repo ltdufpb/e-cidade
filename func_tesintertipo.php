@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tesintertipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltesintertipo = new cl_tesintertipo;
 $cltesintertipo->rotulo->label("j92_sequencial");
 $cltesintertipo->rotulo->label("j92_descr");
@@ -98,9 +98,9 @@ $cltesintertipo->rotulo->label("j92_descr");
         }else{
            $sql = $cltesintertipo->sql_query("",$campos,"j92_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j92_descr)){
-          $repassa = array("chave_j92_sequencial"=>$chave_j92_sequencial,"chave_j92_descr"=>$chave_j92_descr);
+          $repassa = ["chave_j92_sequencial"=>$chave_j92_sequencial,"chave_j92_descr"=>$chave_j92_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -183,7 +183,7 @@ class Pdf extends Fpdf
     {
         if ($this->lShowPageNumber) {
             $sString = 'Pág ' . $this->PageNo() . '/{nb}';
-            $this->text(($this->w - $this->rMargin) - $this->GetStringWidth($sString) + 1, $this->h - 6, $sString, 0, 1, 'R');
+            $this->text(($this->w - $this->rMargin) - $this->GetStringWidth($sString) + 1, $this->h - 6, $sString);
         }
     }
 
@@ -211,7 +211,7 @@ class Pdf extends Fpdf
         $link = ''
     ) {
         // Adiciona uma "margin" com espaos
-        $content = "${content}  ";
+        $content = "{$content}  ";
         $tamanhoString = $this->GetStringWidth($content);
 
         $content = trim($content);
@@ -245,6 +245,7 @@ class Pdf extends Fpdf
      * @param integer $indent tamanhodo Recuo de 1 linha
      * @see FPDF::MultiCell()
      */
+    #[\Override]
     function MultiCell($w, $h, $txt, $border = 0, $align = 'J', $fill = 0, $indent = 0)
     {
         $sTopBorder = '';
@@ -271,20 +272,20 @@ class Pdf extends Fpdf
                 $b2 = 'LR';
                 $sTopBorder = 'TB';
             } else {
-                if (strpos($border, "B") !== false) {
+                if (str_contains((string) $border, "B")) {
                     $sTopBorder .= 'B';
                 }
-                if (strpos($border, "T") !== false) {
+                if (str_contains((string) $border, "T")) {
                     $sTopBorder .= 'T';
                 }
                 $b2 = '';
-                if (is_int(strpos($border, 'L'))) {
+                if (is_int(strpos((string) $border, 'L'))) {
                     $b2 .= 'L';
                 }
-                if (is_int(strpos($border, 'R'))) {
+                if (is_int(strpos((string) $border, 'R'))) {
                     $b2 .= 'R';
                 }
-                $b = is_int(strpos($border, 'T')) ? $b2 . 'T' : $b2;
+                $b = is_int(strpos((string) $border, 'T')) ? $b2 . 'T' : $b2;
             }
         }
         $sep = -1;
@@ -390,7 +391,7 @@ class Pdf extends Fpdf
             $this->_out('0 Tw');
         }
 
-        if ($border && is_int(strpos($border, 'B'))) {
+        if ($border && is_int(strpos((string) $border, 'B'))) {
             $b .= 'B';
         }
 
@@ -426,7 +427,7 @@ class Pdf extends Fpdf
         /**
          * Borda do multicell necessita a impressao na parte de baixo
          */
-        $lBottomBorder = strpos($sParentBorder, "B") !== false;
+        $lBottomBorder = str_contains($sParentBorder, "B");
 
         /**
          * próxima celula deverá estar na página de baixo, marcamos essa celula com a última da página
@@ -446,7 +447,7 @@ class Pdf extends Fpdf
                 return;
             }
 
-            $lTopBorder = strpos($sParentBorder, "T") !== false ? true : false;
+            $lTopBorder = str_contains($sParentBorder, "T") ? true : false;
             $this->AddPage($this->CurOrientation);
             if ($this->sFunctionMulticellBreakPage != "") {
                 call_user_func($this->sFunctionMulticellBreakPage);
@@ -590,26 +591,24 @@ class Pdf extends Fpdf
     }
 
 
+    #[\Override]
     function Header()
     {
         if (!$this->lExibeHeader) {
             return false;
         }
 
-        switch ($this->tipoHeader) {
-            case self::HEADER_ESCOLA:
-                return $this->headerEscola();
-            case self::HEADER_ESTADO_PREFEITURA:
-                return $this->headerEstadoPrefeitura();
-            case self::HEADER_DEFAULT:
-            default:
-                return $this->headerInstituicao();
-        }
+        return match ($this->tipoHeader) {
+            self::HEADER_ESCOLA => $this->headerEscola(),
+            self::HEADER_ESTADO_PREFEITURA => $this->headerEstadoPrefeitura(),
+            default => $this->headerInstituicao(),
+        };
     }
 
     /**
      * Imprime o footer padrão
      */
+    #[\Override]
     public function footer()
     {
         if (!$this->lEnableFooter) {
@@ -644,7 +643,7 @@ class Pdf extends Fpdf
                 date("H:i:s")
             );
 
-            $this->text(($this->lMargin) + 15, $this->h - 6, $string, 0, 1, 'R');
+            $this->text(($this->lMargin) + 15, $this->h - 6, $string);
         }
 
         $this->showPageNumber();
@@ -665,7 +664,7 @@ class Pdf extends Fpdf
             $rs = db_query($sql);
 
             if (pg_num_rows($rs)) {
-                $this->menuAcessado = substr(pg_result($rs, 0, "menu"), 0, 50);
+                $this->menuAcessado = substr(pg_fetch_result($rs, 0, "menu"), 0, 50);
             }
         }
         return $this->menuAcessado;
@@ -679,8 +678,8 @@ class Pdf extends Fpdf
         if (empty($this->nomeUsuario)) {
             $sql = "select nome as nomeusu from db_usuarios where id_usuario = " . db_getsession("DB_id_usuario");
             $rs = db_query($sql);
-            if ($rs && pg_numrows($rs) > 0) {
-                $this->nomeUsuario = pg_result($rs, 0, 0);
+            if ($rs && pg_num_rows($rs) > 0) {
+                $this->nomeUsuario = pg_fetch_result($rs, 0, 0);
             } elseif (isset($_SESSION["DB_login"]) && !empty($_SESSION["DB_login"])) {
                 $this->nomeUsuario = $_SESSION["DB_login"];
             }
@@ -708,7 +707,7 @@ class Pdf extends Fpdf
         }
 
         $TamFonteNome = 9;
-        if (strlen($nomeInstituicao) > 42 || strlen($nomeEscola) > 42) {
+        if (strlen((string) $nomeInstituicao) > 42 || strlen((string) $nomeEscola) > 42) {
             $TamFonteNome = 8;
         }
 
@@ -796,14 +795,14 @@ class Pdf extends Fpdf
 
         $nome = $instituicao->getDescricao();
         $fonteNomeInstituicao = 9;
-        if (strlen($nome) > 42) {
+        if (strlen((string) $nome) > 42) {
             $fonteNomeInstituicao = 8;
         }
 
         $this->SetFont('Arial', 'BI', $fonteNomeInstituicao);
         $this->Text(33, 9, $nome);
         $this->SetFont('Arial', 'I', 8);
-        $complemento = substr(trim($instituicao->getComplemento()), 0, 20);
+        $complemento = substr(trim((string) $instituicao->getComplemento()), 0, 20);
 
         $endereco = sprintf('%s, %s', $instituicao->getLogradouro(), $instituicao->getNumero());
         if (!empty($complemento)) {
@@ -812,12 +811,12 @@ class Pdf extends Fpdf
 
         $url = $instituicao->getSite();
         $cnpj = db_formatar($instituicao->getCNPJ(), 'cnpj');
-        $telefone = trim($instituicao->getTelefone());
+        $telefone = trim((string) $instituicao->getTelefone());
 
         $this->Text(33, 14, $endereco);
         $this->Text(33, 18, "{$instituicao->getMunicipio()} - {$instituicao->getUf()}");
         $this->Text(33, 22, "{$telefone} - {$cnpj}");
-        $this->Text(33, 26, trim($instituicao->getEmail()));
+        $this->Text(33, 26, trim((string) $instituicao->getEmail()));
         $this->Text(33, 30, $url);
 
         $this->imprimeTitulo();
@@ -836,7 +835,7 @@ class Pdf extends Fpdf
         $this->setleftmargin($marginTitulo);
         $this->sety(6);
         $this->setfillcolor(235);
-        $this->roundedrect($marginTitulo - 3, 5, 75, 28, 2, 'DF', '123');
+        $this->roundedrect($marginTitulo - 3, 5, 75, 28, 2, 'DF');
         $this->line(10, 33, $comprim, 33);
         $this->setfillcolor(255);
         $this->SetFont('Arial', '', 7);
@@ -952,7 +951,7 @@ class Pdf extends Fpdf
         //Draw the cells of the row
         for ($i = 0; $i < count($data); $i++) {
             $w = $this->widths[$i];
-            $a = isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+            $a = $this->aligns[$i] ?? 'L';
             //Save the current position
             $x = $this->GetX();
             $y = $this->GetY();
@@ -1120,13 +1119,13 @@ class Pdf extends Fpdf
         $barcodethickwidth = $barcodethinwidth * 2.2;          // seta a relacao barra larga/barra estreita
 
         // seta os codigos dos caracteres, sendo 0 para estreito e 1 para largo
-        $codingmap = array(
+        $codingmap = [
             "0" => "00110", "1" => "10001",
             "2" => "01001", "3" => "11000",
             "4" => "00101", "5" => "10100",
             "6" => "01100", "7" => "00011",
             "8" => "10010", "9" => "01010"
-        );
+        ];
 
         // se no. de caracteres impar adiciona 0 no comeco
         if (strlen($text) % 2) {
@@ -1288,7 +1287,7 @@ class Pdf extends Fpdf
                     // Extract attributes
                     $a2 = explode(' ', $e);
                     $tag = strtoupper(array_shift($a2));
-                    $attr = array();
+                    $attr = [];
                     foreach ($a2 as $v) {
                         if (preg_match('/([^=]*)=["\']?([^"\']*)/', $v, $a3)) {
                             $attr[strtoupper($a3[1])] = $a3[2];
@@ -1330,7 +1329,7 @@ class Pdf extends Fpdf
         // Modify style and select corresponding font
         $this->$tag += ($enable ? 1 : -1);
         $style = '';
-        foreach (array('B', 'I', 'U') as $s) {
+        foreach (['B', 'I', 'U'] as $s) {
             if ($this->$s > 0) {
                 $style .= $s;
             }

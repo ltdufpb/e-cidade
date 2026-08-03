@@ -47,7 +47,7 @@ $oPost = db_utils::postMemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $clObrasAlvara->alterar($ob04_codobra);
@@ -170,7 +170,7 @@ fieldset.form {
 			<td nowrap>
 				<?php 
 				  $lProcessoSistema = true;
-					db_select('lProcessoSistema', array(true=>'SIM', false=>'NÃO'), true, $db_opcao, "onchange='js_processoSistema(this.value)' style='width: 95px'") 
+					db_select('lProcessoSistema', [true=>'SIM', false=>'NÃO'], true, $db_opcao, "onchange='js_processoSistema(this.value)' style='width: 95px'") 
 				?>
 			</td>
 		</tr>
@@ -468,7 +468,7 @@ function js_preenchepesquisa(chave){
   db_iframe_obrasalvara.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
@@ -483,7 +483,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </html>
 
 <?php 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
   if($clObrasAlvara->erro_status=="0"){
     $clObrasAlvara->erro(true,false);
     $db_botao=true;

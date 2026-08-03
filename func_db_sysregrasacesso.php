@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_sysregrasacesso_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_sysregrasacesso = new cl_db_sysregrasacesso;
 $cldb_sysregrasacesso->rotulo->label("db46_idacesso");
 $cldb_sysregrasacesso->rotulo->label("db46_observ");
@@ -98,9 +98,9 @@ $cldb_sysregrasacesso->rotulo->label("db46_observ");
         }else{
            $sql = $cldb_sysregrasacesso->sql_query("",$campos,"db46_idacesso","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db46_observ)){
-          $repassa = array("chave_db46_idacesso"=>$chave_db46_idacesso,"chave_db46_observ"=>$chave_db46_observ);
+          $repassa = ["chave_db46_idacesso"=>$chave_db46_idacesso,"chave_db46_observ"=>$chave_db46_observ];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

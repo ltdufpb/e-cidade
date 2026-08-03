@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_processoouvidoriaprorrogacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocessoouvidoriaprorrogacao = new cl_processoouvidoriaprorrogacao;
 $clprocessoouvidoriaprorrogacao->rotulo->label("ov15_sequencial");
 $clprocessoouvidoriaprorrogacao->rotulo->label("ov15_protprocesso");
@@ -98,9 +98,9 @@ $clprocessoouvidoriaprorrogacao->rotulo->label("ov15_protprocesso");
         }else{
            $sql = $clprocessoouvidoriaprorrogacao->sql_query("",$campos,"ov15_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov15_protprocesso)){
-          $repassa = array("chave_ov15_sequencial"=>$chave_ov15_sequencial,"chave_ov15_protprocesso"=>$chave_ov15_protprocesso);
+          $repassa = ["chave_ov15_sequencial"=>$chave_ov15_sequencial,"chave_ov15_protprocesso"=>$chave_ov15_protprocesso];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

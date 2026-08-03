@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_sau_vinculosus_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clsau_vinculosus = new cl_sau_vinculosus;
 $db_botao = true;
 $result = $clsau_vinculosus->sql_record($clsau_vinculosus->sql_query("","*",""," sd50_i_unidade = $sd50_i_unidade"));

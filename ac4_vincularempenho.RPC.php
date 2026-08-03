@@ -62,7 +62,7 @@ try {
         throw new DBException("Não foi possivel encontrar empenhos vinculados a este acordo.");
       }
 
-      $aEmpenhosVinculados = array();
+      $aEmpenhosVinculados = [];
       if (pg_num_rows($rsEmpenhosVinculados) > 0) {
 
         for ($iIndice = 0; $iIndice < pg_num_rows($rsEmpenhosVinculados); $iIndice++) {
@@ -71,7 +71,7 @@ try {
 
           $oEmpenho = new stdClass;
           $oEmpenho->sCodigo          = urlencode($oStdEmpenho->e60_codemp."/".$oStdEmpenho->e60_anousu);
-          $oEmpenho->sNomeCredor      = urlencode($oStdEmpenho->z01_nome);
+          $oEmpenho->sNomeCredor      = urlencode((string) $oStdEmpenho->z01_nome);
           $oEmpenho->iCodigoAcordo    = $oStdEmpenho->ac54_acordo;
           $oEmpenho->sDataEmissao     = db_formatar($oStdEmpenho->e60_emiss, "d");
           $oEmpenho->iNumeroEmpenho   = $oStdEmpenho->ac54_empempenho;
@@ -99,7 +99,7 @@ try {
         throw new ParameterException("Nenhum empenho informado.");
       }
 
-      if (!empty($oParam->iNumeroLicitacao) && !preg_match("/([0-9]+)\\/([0-9]{4})/", $oParam->iNumeroLicitacao)) {
+      if (!empty($oParam->iNumeroLicitacao) && !preg_match("/([0-9]+)\\/([0-9]{4})/", (string) $oParam->iNumeroLicitacao)) {
         throw new ParameterException("O Número da Licitação é inválido. Informe Número/Ano da Licitacação.");
       }
 
@@ -107,13 +107,13 @@ try {
       $iAnoLicitacao    = null;
       if (!empty($oParam->iNumeroLicitacao)) {
 
-        $aNumeroLicitacao = explode('/', $oParam->iNumeroLicitacao);
+        $aNumeroLicitacao = explode('/', (string) $oParam->iNumeroLicitacao);
         $iNumeroLicitacao = $aNumeroLicitacao[0];
         $iAnoLicitacao    = $aNumeroLicitacao[1];
       }
 
       $iCodigoAcordo  = (integer) $oParam->iCodigoAcordo;
-      $aPartesEmpenho = explode("/", $oParam->iNumeroEmpenho);
+      $aPartesEmpenho = explode("/", (string) $oParam->iNumeroEmpenho);
       $iNumemp        = $aPartesEmpenho[0];
       $iAnoEmpenho    = db_getsession("DB_anousu");
       if (!empty($aPartesEmpenho[1])) {
@@ -197,7 +197,7 @@ try {
         throw new DBException("Não foi informado o empenho!");
       }
 
-      $aPartesEmpenho = explode("/", $oParam->iNumeroEmpenho);
+      $aPartesEmpenho = explode("/", (string) $oParam->iNumeroEmpenho);
       $iNumemp        = $aPartesEmpenho[0];
       $iAnoEmpenho    = db_getsession("DB_anousu");
 

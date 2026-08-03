@@ -38,12 +38,12 @@ $clinssirf->rotulo->label();
                 </td>
                 <td>
                     <?php
-                    $arr_tabelas = Array("1" => "IRRF",
+                    $arr_tabelas = ["1" => "IRRF",
                         "2" => "IRRF mês anterior",
                         "3" => "INSS",
                         "4" => "Previdência 2",
                         "5" => "Previdência 3",
-                        "6" => "Previdência 4");
+                        "6" => "Previdência 4"];
 
                     $sSqlTabelas = $clinssirf->sql_query_file(null,
                         null,

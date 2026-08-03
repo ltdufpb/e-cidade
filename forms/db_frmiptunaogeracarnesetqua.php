@@ -117,7 +117,7 @@ db_input('j67_quadra',4,$Ij67_quadra,true,'text',3,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("j67_sequencial"=>@$j67_sequencial);
+	 $chavepri= ["j67_sequencial"=>@$j67_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cliptunaogeracarnesetqua->sql_query(null,"*",null,"j67_naogeracarne=$j67_naogeracarne");
 	 $cliframe_alterar_excluir->campos  ="j67_setor,j67_quadra";

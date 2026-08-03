@@ -46,17 +46,17 @@ class Regin implements Dicionario
   const PROTOCOLO = "PSC_PROTOCOLO";
   const INFO_EXTRA = "TAB_INFORM_EXTRA_JUNTA";
 
-  private $pai = array(
+  private $pai = [
     self::ENDERECO_SOCIO => "GROUPRUC_PROF",
     self::SOCIO => "GROUPRUC_RELAT_PROF",
     self::ATIVIDADE => "GROUPRUC_ACTV_ECON",
     self::INFO_COMPLEMENTAR => "GROUPRUC_GEN_PROTOCOLO",
     self::EVENTO => "GROUPPSC_PROT_EVENTO_RFB",
     self::INFO_EXTRA => "GROUPTAB_INFORM_EXTRA_JUNTA"
-  );
+  ];
 
-  public $campos = array(
-    self::EMPRESA =>  array( //empresa
+  public $campos = [
+    self::EMPRESA =>  [ //empresa
       "cpfcnpj" => "RGE_CGC_CPF",
       "protocolo" => "RGE_PRA_PROTOCOLO",
       "inscricao_estadual" => "RGE_RUC",
@@ -70,8 +70,8 @@ class Regin implements Dicionario
       "tipo_inscricao" => "RGE_TGE_VTIP_INSC",
       "codigo_municipio" => "RGE_CODG_MUN",
       "uf" => "RGE_TUF_COD_UF"
-    ),
-    self::ENDERECO_CGM =>  array( //endereço cgm
+    ],
+    self::ENDERECO_CGM =>  [ //endereço cgm
       "protocolo" => "RCO_RGE_PRA_PROTOCOLO",
       "nire" => "RCO_NUM_REG_MERC", //cadastro cgm e cadastro inscrição
       "numero" => "RCO_NUME",
@@ -83,8 +83,8 @@ class Regin implements Dicionario
       "uf" => "RCO_TES_COD_ESTADO",
       "cep" => "RCO_ZONA_POSTAL",
       "codigo_municipio" => "RCO_TMU_COD_MUN",
-    ),
-    self::ENDERECO_INSCRICAO =>  array( //endereço inscrição
+    ],
+    self::ENDERECO_INSCRICAO =>  [ //endereço inscrição
       "protocolo" => "RES_RGE_PRA_PROTOCOLO",
       "tipo_estabelecimento" => "RES_TIP_ESTAB",
       "area" => "RES_AREA",
@@ -97,16 +97,16 @@ class Regin implements Dicionario
       "cep" => "RES_ZONA_POSTAL",
       "codigo_municipio" => "RES_TMU_COD_MUN",
       "nome_fantasia" => "RES_NOM_ESTAB"
-    ),
-    self::SOCIO =>  array(
+    ],
+    self::SOCIO =>  [
       "protocolo" => "RRP_RGE_PRA_PROTOCOLO",
       "identificador" => "RRP_CGC_CPF_SECD",
       "cpfcnpj" => "RRP_CGC_CPF_SECD",
       "tipo_relacionamento" => "RRP_TGE_VTIP_RELAC",
       "data_atualizacao" => "RRP_FEC_ACTL",
       "valor_capital" => "RRP_PORC_PART"
-    ),
-    self::ENDERECO_SOCIO =>  array(
+    ],
+    self::ENDERECO_SOCIO =>  [
       "protocolo" => "RPR_RGE_PRA_PROTOCOLO",
       "identificador" => "RPR_CGC_CPF_SECD",
       "tipo_documento" => "RPR_TGE_VTIP_DOC",
@@ -122,30 +122,30 @@ class Regin implements Dicionario
       "cpfcnpj" => "RPR_CGC_CPF_SECD",
       "tipo_pessoa" => "RPR_TGE_VTIP_PERS",
       "razao_social" => "RPR_NOMB",
-    ),
-    self::ATIVIDADE =>  array( // CNAE
+    ],
+    self::ATIVIDADE =>  [ // CNAE
       "protocolo" => "RAE_RGE_PRA_PROTOCOLO",
       "codigo" => "RAE_TAE_COD_ACTVD",
       "tipo_atividade" => "RAE_CALIF_ACTV",
       "data_inicio" => "RAE_FEC_ACTL"
-    ),
-    self::INFO_COMPLEMENTAR =>  array(
+    ],
+    self::INFO_COMPLEMENTAR =>  [
       "protocolo" => "RGP_RGE_PRA_PROTOCOLO",
       "chave" => "RGP_TGE_COD_TIP_TAB",
       "valor" => "RGP_VALOR"
-    ),
-    self::PROTOCOLO =>  array(
+    ],
+    self::PROTOCOLO =>  [
       "nire" => "NIRE",
       "cpfcnpj" => "CNPJ",
       "inscricao_municipal" => "INCRICAOMUNICIPAL",
       "tipo_acao" => "PRO_TGE_VGACAO",
-    ),
-    self::EVENTO =>  array(
+    ],
+    self::EVENTO =>  [
       "protocolo" => "PEV_PRO_PROTOCOLO",
       "codigo_evento" => "PEV_COD_EVENTO",
       "nome_evento" => "PEV_NOME_EVENTO",
-    ),
-    self::INFO_EXTRA => array(
+    ],
+    self::INFO_EXTRA => [
         "protocolo" => "TIE_PROTOCOLO",
         "identificador" => "TIE_CPF_CNPJ",
         "cpfcnpj" => "TIE_CPF_CNPJ",
@@ -158,8 +158,8 @@ class Regin implements Dicionario
         "tipo_unidade" => "TIE_TIPO_UNIDADE",
         "forma_atuacao" => "TIE_FORMA_ATUACAO",
         "atuacao_outros" => "TIE_FORMA_ATUACAO_OUTROS",
-    )
-  );
+    ]
+  ];
 
   private $xml;
 
@@ -170,8 +170,8 @@ class Regin implements Dicionario
   public function __construct($xml)
   {
     try{
-      $this->xml = simplexml_load_string($xml);
-    } catch (\Exception $exception) {
+      $this->xml = simplexml_load_string((string) $xml);
+    } catch (\Exception) {
       throw new \Exception("XML com formato inválido");
     }
 
@@ -231,13 +231,13 @@ class Regin implements Dicionario
       $grupoPai = (array) $this->xml->ROWSET->$nomePai;
 
       if (isset($grupoPai[$grupo]) && !is_array($grupoPai[$grupo])) {
-        return array($grupoPai[$grupo]);
+        return [$grupoPai[$grupo]];
       }
 
       return  $grupoPai[$grupo];
     }
 
-    return isset($this->xml->ROWSET->$grupo) ? array($this->xml->ROWSET->$grupo) : array();
+    return isset($this->xml->ROWSET->$grupo) ? [$this->xml->ROWSET->$grupo] : [];
   }
 
   public function getCampo($campo)
@@ -263,14 +263,14 @@ class Regin implements Dicionario
 
   public function getEventos()
   {
-    $aEventos = array();
+    $aEventos = [];
     $this->selecionarGrupo(Regin::EVENTO);
 
     while ($this->next()) {
       $iCodigoEvento    = $this->getCampo("codigo_evento");
       $sDescricaoEvento = $this->getCampo("nome_evento");
 
-      $aEventos[] = new Evento($iCodigoEvento, utf8_decode($sDescricaoEvento));
+      $aEventos[] = new Evento($iCodigoEvento, mb_convert_encoding($sDescricaoEvento, 'ISO-8859-1'));
     }
 
     return $aEventos;
@@ -282,7 +282,7 @@ class Regin implements Dicionario
 
   public function getDadosGrupo($sGrupo)
   {
-    $aDados = array();
+    $aDados = [];
     $oDado  = new \stdClass();
 
     $this->selecionarGrupo($sGrupo);
@@ -292,7 +292,7 @@ class Regin implements Dicionario
       while ($this->next($sGrupo)) {
         $oDado  = new \stdClass();
         foreach ($this->campos[$sGrupo] as $key => $campos) {
-          $oDado->$key = trim($this->getCampo($key));
+          $oDado->$key = trim((string) $this->getCampo($key));
         }
         $aDados[] = $oDado;
       }
@@ -301,7 +301,7 @@ class Regin implements Dicionario
 
     while ($this->next($sGrupo)) {
       foreach ($this->campos[$sGrupo] as $key => $campos) {
-        $oDado->$key = trim($this->getCampo($key));
+        $oDado->$key = trim((string) $this->getCampo($key));
       }
     }
 

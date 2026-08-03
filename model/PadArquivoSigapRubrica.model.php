@@ -41,7 +41,7 @@ final class PadArquivoSigapRubrica extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "RubricaDespesa";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -62,7 +62,7 @@ final class PadArquivoSigapRubrica extends PadArquivoSigap {
      * Separamos a data do em ano, mes, dia
      */
     $sWhereInstit = " and o58_instit = ".db_getsession("DB_instit");
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     
     $sSqlRubrica  = "select distinct on (o56_anousu,elemento) elemento,";
     $sSqlRubrica .= "       o56_anousu as ano,";
@@ -112,10 +112,10 @@ final class PadArquivoSigapRubrica extends PadArquivoSigap {
       $oRubricaRetorno->rubCodigoEntidade  = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oRubricaRetorno->rubMesAnoMovimento = $sDiaMesAno;
       $oRubricaRetorno->rubExercicio       = $oRubrica->ano;
-      $oRubricaRetorno->rubCodigoRubrica   = str_pad($oRubrica->elemento, 15, "0", STR_PAD_RIGHT);
-      $oRubricaRetorno->rubEspecificacao   = substr($oRubrica->o56_descr, 0, 110);
+      $oRubricaRetorno->rubCodigoRubrica   = str_pad((string) $oRubrica->elemento, 15, "0", STR_PAD_RIGHT);
+      $oRubricaRetorno->rubEspecificacao   = substr((string) $oRubrica->o56_descr, 0, 110);
       $oRubricaRetorno->rubTipoNivel       = $oRubrica->tipo;
-      $oRubricaRetorno->rubNumeroNivel     = str_pad($oRubrica->nivel, 2, "0", STR_PAD_LEFT);
+      $oRubricaRetorno->rubNumeroNivel     = str_pad((string) $oRubrica->nivel, 2, "0", STR_PAD_LEFT);
       array_push($this->aDados, $oRubricaRetorno);
       
     }
@@ -130,7 +130,7 @@ final class PadArquivoSigapRubrica extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "rubCodigoEntidade",
                         "rubMesAnoMovimento",
                         "rubExercicio",
@@ -138,7 +138,7 @@ final class PadArquivoSigapRubrica extends PadArquivoSigap {
                         "rubEspecificacao",
                         "rubTipoNivel",
                         "rubNumeroNivel",
-                       );
+                       ];
     return $aElementos;  
   }
   

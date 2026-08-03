@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_isscadsimples_classe.php"));
 $mostra  = "T";
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clisscadsimples = new cl_isscadsimples;
 $clisscadsimples->rotulo->label("q38_sequencial");
 $clisscadsimples->rotulo->label("q38_inscr");
@@ -106,7 +106,7 @@ $clrotulo->label("DBtxt31");
             </td>
             <td width="96%" align="left" nowrap> 
               <?php 
-							  $itens = array("T" => "Todos", "B" => "Baixados","A" => "Ativos");
+							  $itens = ["T" => "Todos", "B" => "Baixados","A" => "Ativos"];
 								db_select("mostra",$itens,true,1);
 
 		          ?>
@@ -166,9 +166,9 @@ $clrotulo->label("DBtxt31");
         }else{
            $sql = $clisscadsimples->sql_query_baixa("",$campos,"q38_sequencial","$where 1=1");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q38_inscr)){
-          $repassa = array("chave_q38_sequencial"=>$chave_q38_sequencial," $where chave_q38_inscr"=>$chave_q38_inscr);
+          $repassa = ["chave_q38_sequencial"=>$chave_q38_sequencial," $where chave_q38_inscr"=>$chave_q38_inscr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

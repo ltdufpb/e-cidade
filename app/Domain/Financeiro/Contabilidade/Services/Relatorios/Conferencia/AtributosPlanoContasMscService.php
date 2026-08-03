@@ -65,9 +65,7 @@ class AtributosPlanoContasMscService
     {
         $where = ["c60_anousu = {$this->exercicio}"];
         if (!empty($this->filtrarEstrutural)) {
-            $estruturais = array_map(function ($estrutural) {
-                return "(c60_estrut like '{$estrutural}%')";
-            }, $this->filtrarEstrutural);
+            $estruturais = array_map(fn($estrutural) => "(c60_estrut like '{$estrutural}%')", $this->filtrarEstrutural);
 
             $where[] = '(' . implode(' or ', $estruturais) . ')';
         }

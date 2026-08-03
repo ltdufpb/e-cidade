@@ -35,9 +35,9 @@ require_once(modification("classes/db_db_ouvidoria_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 $cl_db_ouvidoria = new cl_db_ouvidoria();
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
-$oPost = db_utils::postMemory($HTTP_POST_VARS);
+$oPost = db_utils::postMemory($_POST);
 
 $oConfigDBpref    = db_utils::getDao("configdbpref");
 $rsConfigDBpref   = $oConfigDBpref->sql_record($oConfigDBpref->sql_query_file(db_getsession('DB_instit'),"w13_emailadmin"));
@@ -57,7 +57,7 @@ if(isset($oPost->enviar)) {
   $oMail->setsSubject($assunto);
   $oMail->setsMsg(nl2br($corpo_email));
   $sMsgMail = $oMail->Send();
-  if (substr($sMsgMail,0,1) != "0") {
+  if (!str_starts_with($sMsgMail, "0")) {
     db_msgbox($sMsgMail);
   
 	  db_inicio_transacao();
@@ -180,7 +180,7 @@ input {
               <td width="87%"><?=@$categoria?></td>
             </tr>
             <tr> 
-              <?php  $x = array('f'=>'Não','t'=>'Sim');?>
+              <?php  $x = ['f'=>'Não','t'=>'Sim'];?>
               <td width="13%" height="20" nowrap><strong>Deseja manter o nome e<br /> dados em sigilo?</strong></td>
               <td width="87%"><?=@$x[$sigilo]?></td>
             </tr>
@@ -188,7 +188,7 @@ input {
               <td width="13%" height="20" nowrap><strong>Deseja receber resposta?</strong></td>
               <td width="87%"><?=@$x[$resposta]?></td>
             </tr>
-            <?php  $x = array('0'=>'Carta','1'=>'E-mail','2'=>'Telefone');?>
+            <?php  $x = ['0'=>'Carta','1'=>'E-mail','2'=>'Telefone'];?>
             <tr> 
               <td width="13%" height="20" nowrap><strong>Tipo da resposta?</strong></td>
               <td width="87%"><?=@$x[$tiporesposta]?></td>
@@ -198,7 +198,7 @@ input {
               <td width="87%"><?=@($datanascimento!='null')?$datanascimento:''?></td>
             </tr>
             <tr> 
-              <?php  $x = array('F'=>'Feminino','M'=>'Masculino');?>
+              <?php  $x = ['F'=>'Feminino','M'=>'Masculino'];?>
               <td width="13%" height="20" nowrap><strong>Sexo:</strong></td>
               <td width="87%"><?=@$x[$sexo]?></td>
             </tr>
@@ -207,7 +207,7 @@ input {
               <td width="87%"><?=@$profissao?></td>
             </tr>
             <tr> 
-              <?php  $x = array('0'=>'Não alfabetizado','1'=>'Nível fundamental','2'=>'Nível médio','3'=>'Graduado');?>
+              <?php  $x = ['0'=>'Não alfabetizado','1'=>'Nível fundamental','2'=>'Nível médio','3'=>'Graduado'];?>
               <td width="13%" height="20" nowrap><strong>Escolaridade:</strong></td>
               <td width="87%"><?=@$x[$escolaridade]?></td>
             </tr>
@@ -249,7 +249,7 @@ input {
             </tr>
             <tr> 
               <td width="13%" height="20" nowrap><strong>Mensagem:</strong></td>
-              <td width="87%"><?=@nl2br($comentario)?></td>
+              <td width="87%"><?=@nl2br((string) $comentario)?></td>
             </tr>
             <?php  if(!empty($url01)){ ?>
             <tr> 

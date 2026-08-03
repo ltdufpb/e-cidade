@@ -33,7 +33,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_prestadores_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -71,7 +71,7 @@ if (isset($pesquisa_chave) === false) {
         }
     }
 	    $sql = $clprestadores->sql_query(null, 'fm06_codigo, z01_nome as dl_prestador');
-        $repassa = array();
+        $repassa = [];
         echo '<div class="container">';
         echo '  <fieldset>';
         echo '    <legend>Resultado da Pesquisa</legend>';

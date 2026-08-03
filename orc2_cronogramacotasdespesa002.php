@@ -40,7 +40,7 @@ $iCodRel = 78;
 $sListaInstit = str_replace('-',',',$oParams->db_selinstit);
 $cldb_config                = new cl_db_config; 
 $oCronogramaFinanceiro			= new cronogramaFinanceiro($oParams->o124_sequencial);
-$oCronogramaFinanceiro->setInstituicoes(explode("-", $oParams->db_selinstit));
+$oCronogramaFinanceiro->setInstituicoes(explode("-", (string) $oParams->db_selinstit));
 $oRelatorioOrcamento        = new relatorioContabil($iCodRel);
 
 try{
@@ -49,7 +49,7 @@ try{
 	db_redireciona('db_erros.php?fechar=true&db_erro='.$erro->getMessage());
 }
 
-$aLinhasRelatorio = array();
+$aLinhasRelatorio = [];
 
 /**
  * Agrupamos as despesas por mes/Bimestre
@@ -66,7 +66,7 @@ foreach ($aDespesas as $oDespesa) {
 
     $oDespesa->codigo              = "{$oDespesa->o58_orgao}{$oDespesa->o58_unidade}{$oDespesa->o58_codigo}{$oDespesa->o58_localizadorgastos}";
     $oDespesa->descricao           = "$oDespesa->o58_codigo: {$oDespesa->o15_descr} / {$oDespesa->o58_localizadorgastos}:{$oDespesa->o11_descricao}";
-    $oDespesa->codigo_apresentacao = str_pad($oDespesa->o58_orgao, 2, "0", STR_PAD_LEFT).".".str_pad($oDespesa->o58_unidade, 2, "0", STR_PAD_LEFT);
+    $oDespesa->codigo_apresentacao = str_pad((string) $oDespesa->o58_orgao, 2, "0", STR_PAD_LEFT).".".str_pad((string) $oDespesa->o58_unidade, 2, "0", STR_PAD_LEFT);
   }
 
   if ($oParams->iPeriodoImpr == 1) {
@@ -74,7 +74,7 @@ foreach ($aDespesas as $oDespesa) {
      $aLinhasRelatorio[$oDespesa->codigo]->codigo              = $oDespesa->codigo;
      $aLinhasRelatorio[$oDespesa->codigo]->codigo_apresentacao = $oDespesa->codigo_apresentacao;
      $aLinhasRelatorio[$oDespesa->codigo]->descricao           = $oDespesa->descricao;
-     $aLinhasRelatorio[$oDespesa->codigo]->aMeses              = array();
+     $aLinhasRelatorio[$oDespesa->codigo]->aMeses              = [];
 
      $aLinhasRelatorio[$oDespesa->codigo]->aMeses[0]->valor   = @$oDespesa->aMetas->dados[0]->valor;
      $aLinhasRelatorio[$oDespesa->codigo]->aMeses[1]->valor   = @$oDespesa->aMetas->dados[1]->valor;
@@ -95,7 +95,7 @@ foreach ($aDespesas as $oDespesa) {
     $aLinhasRelatorio[$oDespesa->codigo]->codigo                 = $oDespesa->codigo;
     $aLinhasRelatorio[$oDespesa->codigo]->codigo_apresentacao    = $oDespesa->codigo;
     $aLinhasRelatorio[$oDespesa->codigo]->descricao              = $oDespesa->descricao;
-    $aLinhasRelatorio[$oDespesa->codigo]->aMeses                 = array();
+    $aLinhasRelatorio[$oDespesa->codigo]->aMeses                 = [];
      
     $aLinhasRelatorio[$oDespesa->codigo]->aMeses[0]->valor   = $oDespesa->aMetas->dados[0]->valor+$oDespesa->aMetas->dados[1]->valor;
     $aLinhasRelatorio[$oDespesa->codigo]->aMeses[1]->valor   = $oDespesa->aMetas->dados[2]->valor+$oDespesa->aMetas->dados[3]->valor;
@@ -116,7 +116,7 @@ if ($oParams->iPeriodoImpr == 1) {
   $iNumColunas = 6;
 }
 $oTotalizador->total  = 0;
-$oTotalizador->aMeses = array();
+$oTotalizador->aMeses = [];
 foreach ($aLinhasRelatorio as $oLinhaRelatorio) {
   
   for ($i = 0; $i < $iNumColunas; $i++  ) {
@@ -129,13 +129,13 @@ foreach ($aLinhasRelatorio as $oLinhaRelatorio) {
   $oTotalizador->total +=  $oLinhaRelatorio->total;
 }
 $oRelatorio        = new stdClass();
-$oRelatorio->linha = array();
+$oRelatorio->linha = [];
 $slabelPeriodo = ""; 
 if ($oParams->iPeriodoImpr == 1) {
 	
   $slabelPeriodo = "MENSAL"; 
 	$tamanho	     = 30;
-	$aCabecalho    = array();
+	$aCabecalho    = [];
 	
 	$aCabecalho[0]->descricao  = "Janeiro";
 	$aCabecalho[0]->tamanho 	 = $tamanho;
@@ -166,7 +166,7 @@ if ($oParams->iPeriodoImpr == 1) {
 } else if ($oParams->iPeriodoImpr == 2) {
   
   $slabelPeriodo = "BIMESTRAL"; 
-	$aCabecalho    = array();
+	$aCabecalho    = [];
 	$tamanho       = 30;
 	$aCabecalho[0]->descricao = "1º Bimestre";
 	$aCabecalho[0]->tamanho 	= $tamanho;
@@ -183,7 +183,7 @@ if ($oParams->iPeriodoImpr == 1) {
 	$oRelatorio->aPeriocidade = $aCabecalho;
 	
 }	
- $aNiveis = array(
+ $aNiveis = [
                   1 => "Orgão",
                   2 => "Unidade",
                   3 => "Função",
@@ -193,7 +193,7 @@ if ($oParams->iPeriodoImpr == 1) {
                   7 => "Elemento",
                   8 => "Recurso",
                   9 => "Orgão / Unidade / Recurso / Anexo",
-                 );
+                 ];
 
 
 $head2 = "Cronograma Mensal de Desembolso por {$aNiveis[$oParams->nivel]}";

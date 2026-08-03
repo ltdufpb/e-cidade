@@ -32,7 +32,7 @@ require(modification("libs/db_app.utils.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_numprebloqpag_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clnumprebloqpag = new cl_numprebloqpag;
 $db_opcao = 1;
 $db_botao = true;

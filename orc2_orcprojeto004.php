@@ -40,7 +40,7 @@ $clorcsuplem = new cl_orcsuplem;
 $auxiliar = new cl_orcsuplem;
 $aux = new cl_orcsuplem;
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $anousu = db_getsession("DB_anousu");
 $projeto = (isset($o46_codlei) && !empty($o46_codlei)) ? $o46_codlei : 'null';
@@ -60,7 +60,7 @@ $sPrefeito = "PREFEITO";
  */
 
 $sPrefeitoDeTal = "";
-$aTexto = array();
+$aTexto = [];
 $sQuery =  "select db_paragrafo.*
               from db_documento
               join db_docparag on db03_docum = db04_docum
@@ -71,8 +71,8 @@ $sQuery =  "select db_paragrafo.*
 ";
 
 $rsPrefeito = db_query($sQuery);
-if (pg_numrows($rsPrefeito) > 0) {
-    for ($i = 0; $i < pg_numrows($rsPrefeito); $i++) {
+if (pg_num_rows($rsPrefeito) > 0) {
+    for ($i = 0; $i < pg_num_rows($rsPrefeito); $i++) {
         $oDados = db_utils::fieldsMemory($rsPrefeito, $i);
         $aTexto[] = $oDados->db02_texto;
     }
@@ -215,7 +215,7 @@ if ($projeto_tipo == "1") {
         "R$ " . db_formatar($total_suplementado, 'f') . " (" . db_extenso($total_suplementado, true) . ") e da outras providências. ";
 } else {
     // tipo 3 = retificador
-    if (strlen(trim($o39_lei)) > 0) {
+    if (strlen(trim((string) $o39_lei)) > 0) {
         $projeto_tipo_texto = "PROJETO DE LEI";
         $txt = "Autoriza o Poder Executivo Municipal a abrir $tipo_sup na importancia de " .
             "R$ " . db_formatar($total_suplementado, 'f') . " (" . db_extenso($total_suplementado, true) . ") e da outras providências. ";
@@ -227,7 +227,7 @@ if ($projeto_tipo == "1") {
 }
 
 $pdf->setX(20);
-$pdf->Cell(170, 4, $projeto_tipo_texto . " " . ($projeto_tipo == 1 ? $o39_numero : '') . strtoupper(" de " . substr($o39_data, 0, 2) . " de " . db_mes(substr($o39_data, 3, 2)) . " de " . substr($o39_data, 6, 4)), 0, 1, "C", '1');
+$pdf->Cell(170, 4, $projeto_tipo_texto . " " . ($projeto_tipo == 1 ? $o39_numero : '') . strtoupper(" de " . substr((string) $o39_data, 0, 2) . " de " . db_mes(substr((string) $o39_data, 3, 2)) . " de " . substr((string) $o39_data, 6, 4)), 0, 1, "C", '1');
 $pdf->Ln(7);
 
 /*
@@ -240,7 +240,7 @@ $sql = "select o48_projeto,o48_data,o39_numero,o39_data
             where o48_retificado = $projeto
             ";
 $res_retif = db_query($sql);
-if (pg_numrows($res_retif) > 0) {
+if (pg_num_rows($res_retif) > 0) {
     db_fieldsmemory($res_retif, 0, true);
     $pdf->setX(20);
     $pdf->multicell(170, 4, "Este projeto foi retificado pelo projeto $o48_projeto em $o48_data referente ao Decreto/Lei $o39_numero de $o39_data", 'B', 'J', '0', 20);
@@ -256,9 +256,9 @@ $sql = "select o48_texto
             where o48_projeto = $projeto
            ";
 $res_retif = db_query($sql);
-if (pg_numrows($res_retif) > 0) {
+if (pg_num_rows($res_retif) > 0) {
     db_fieldsmemory($res_retif, 0, true);
-    if (strlen($o48_texto) > 1) {
+    if (strlen((string) $o48_texto) > 1) {
         $pdf->setX(20);
         $pdf->multicell(170, 4, "$o48_texto", 'B', 'J', '0', 20);
         $pdf->Ln(4);
@@ -288,19 +288,19 @@ if ($projeto_tipo == "1") { // decreto
     $_ass = "";
     $_ass = $classinatura->assinatura(1300, $_ass);
 
-    $pref_somente_nome = strtoupper($pref);
-    $pref = strtoupper($pref) . ', Prefeito Municipal';
+    $pref_somente_nome = strtoupper((string) $pref);
+    $pref = strtoupper((string) $pref) . ', Prefeito Municipal';
 
-    if (strtoupper(trim($munic)) == "CANELA") {
-        $txt = "O Prefeito Municipal de Canela, no uso de suas atribuições legais e de conformidade com a Lei Municipal $o45_numlei de " . substr($o45_dataini, 0, 2) . " de " . db_mes(substr($o45_dataini, 3, 2)) . " de " . substr($o45_dataini, 6, 4);
+    if (strtoupper(trim((string) $munic)) == "CANELA") {
+        $txt = "O Prefeito Municipal de Canela, no uso de suas atribuições legais e de conformidade com a Lei Municipal $o45_numlei de " . substr((string) $o45_dataini, 0, 2) . " de " . db_mes(substr((string) $o45_dataini, 3, 2)) . " de " . substr((string) $o45_dataini, 6, 4);
     } else {
         if ($db21_codcli == 26) {
             if (db_getsession("DB_anousu") == 2012) {
                 $pref = "GLACY DELIS DA CONCEICAO OSORIO";
-                $txt = "$pref, no uso de suas atribuições legais e de conformidade com a Lei Municipal $o45_numlei de " . substr($o45_dataini, 0, 2) . " de " . db_mes(substr($o45_dataini, 3, 2)) . " de " . substr($o45_dataini, 6, 4);
+                $txt = "$pref, no uso de suas atribuições legais e de conformidade com a Lei Municipal $o45_numlei de " . substr((string) $o45_dataini, 0, 2) . " de " . db_mes(substr((string) $o45_dataini, 3, 2)) . " de " . substr((string) $o45_dataini, 6, 4);
             }
         } else {
-            $txt = "$sPrefeitoDeTal, no uso de suas atribuições legais e de conformidade com a Lei Municipal $o45_numlei de " . substr($o45_dataini, 0, 2) . " de " . db_mes(substr($o45_dataini, 3, 2)) . " de " . substr($o45_dataini, 6, 4);
+            $txt = "$sPrefeitoDeTal, no uso de suas atribuições legais e de conformidade com a Lei Municipal $o45_numlei de " . substr((string) $o45_dataini, 0, 2) . " de " . db_mes(substr((string) $o45_dataini, 3, 2)) . " de " . substr((string) $o45_dataini, 6, 4);
         }
     }
     if ($o39_compllei != "") {
@@ -320,7 +320,7 @@ if ($projeto_tipo == "1") { // decreto
     db_fieldsmemory($res, 0);
 
     $pdf->setX(20);
-    $pref = strtoupper($pref);
+    $pref = strtoupper((string) $pref);
     $txt = "$pref, PREFEITO MUNICIPAL DE $munic, $uf.";
     $pdf->multicell(170, 4, $txt, '0', 'J', '0');
     $pdf->Ln(7);
@@ -480,14 +480,14 @@ select o39_texto, o46_tiposup
 $res = $auxiliar->sql_record($sql);
 db_fieldsmemory($res, 0);
 $pdf->Ln(4);
-$txt = pg_result($res, 0, "o39_texto");
+$txt = pg_fetch_result($res, 0, "o39_texto");
 $pdf->setX(20);
 $pdf->multicell(170, 4, $txt, '0', 'J', '0', 20);
 $pdf->Ln(4);
 
 if (in_array($o46_tiposup, [1003, 1008])) {
     $pdf->setX(20);
-    $pdf->Cell(120, 4, db_formatar($o15_recurso, 'recurso') . " - " . trim($o15_descr), 0, 0, "L", '0');
+    $pdf->Cell(120, 4, db_formatar($o15_recurso, 'recurso') . " - " . trim((string) $o15_descr), 0, 0, "L", '0');
 }
 //-------
 $sql = "select
@@ -534,7 +534,7 @@ if ($auxiliar->numrows > 0) {
         db_query("BEGIN");
         $r_dot = db_dotacaosaldo(8, 2, 2, true, " o58_coddot = $o47_coddot and o58_anousu =$o47_anousu ");
         db_query("ROLLBACK");
-        if (pg_numrows($r_dot) > 0) {
+        if (pg_num_rows($r_dot) > 0) {
             db_fieldsmemory($r_dot, 0, true);
             $pdf->setX(20);
             $pdf->Cell(150, 4, db_formatar($o58_orgao, 'orgao') . " - $o40_descr", 0, 1, "L", '0');
@@ -593,7 +593,7 @@ $sSqlPPA = "select
          ";
 $res = $auxiliar->sql_record($sql . " union all {$sSqlPPA}");
 // db_criatabela($res);
-if ($auxiliar->numrows > 0 && strtoupper(trim($munic)) != "SAPIRANGA" ) {
+if ($auxiliar->numrows > 0 && strtoupper(trim((string) $munic)) != "SAPIRANGA" ) {
     ///////////////////////////////////////////////
     for ($x = 0; $x < $auxiliar->numrows; $x++) {
         db_fieldsmemory($res, $x);
@@ -635,7 +635,7 @@ $pdf->multicell(170, 4, $txt, '0', 'J', '0', 20);
 
 
 
-if ($projeto_tipo == "1" && (strtoupper(trim($munic)) != "ITAQUI" and strtoupper(trim($munic)) != "CANELA")) {
+if ($projeto_tipo == "1" && (strtoupper(trim((string) $munic)) != "ITAQUI" and strtoupper(trim((string) $munic)) != "CANELA")) {
     $sec = "";
     $ass_sec = $classinatura->assinatura(1300, $sec);
     if ($db21_codcli == 26 && db_getsession("DB_anousu") == 2012) {
@@ -643,31 +643,31 @@ if ($projeto_tipo == "1" && (strtoupper(trim($munic)) != "ITAQUI" and strtoupper
     }
 
     $pdf->Ln(5);
-    $txt = "Gabinete do Prefeito, " . substr($xdata, 8, 2) . " de " . db_mes(substr($xdata, 5, 2)) . " de " . substr($xdata, 0, 4) . ".";
+    $txt = "Gabinete do Prefeito, " . substr((string) $xdata, 8, 2) . " de " . db_mes(substr((string) $xdata, 5, 2)) . " de " . substr((string) $xdata, 0, 4) . ".";
 
-    if (strtoupper(trim($munic)) == "SAPIRANGA") {
-        $txt = "Gabinete da Prefeita, " . substr($xdata, 8, 2) . " de " . db_mes(substr($xdata, 5, 2)) . " de " . substr($xdata, 0, 4) . ".";
+    if (strtoupper(trim((string) $munic)) == "SAPIRANGA") {
+        $txt = "Gabinete da Prefeita, " . substr((string) $xdata, 8, 2) . " de " . db_mes(substr((string) $xdata, 5, 2)) . " de " . substr((string) $xdata, 0, 4) . ".";
         $sec = "";
         $ass_sec = $classinatura->assinatura(1300, $sec);
     }
     $pdf->multicell(180, 4, $txt, '0', 'C', '0', 20);
     $pdf->Ln(10);
     $pdf->multicell(0, 4, $ass_sec, '0', 'C', '0');
-} elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "ITAQUI") {
+} elseif ($projeto_tipo == "1" && strtoupper(trim((string) $munic)) == "ITAQUI") {
     $sec = "";
     $ass_sec = $classinatura->assinatura(1300, $sec);
 
     $pdf->Ln(5);
-    $txt = "Gabinete do Prefeito, " . substr($xdata, 8, 2) . " de " . db_mes(substr($xdata, 5, 2)) . " de " . substr($xdata, 0, 4) . ".";
+    $txt = "Gabinete do Prefeito, " . substr((string) $xdata, 8, 2) . " de " . db_mes(substr((string) $xdata, 5, 2)) . " de " . substr((string) $xdata, 0, 4) . ".";
     $pdf->multicell(180, 4, $txt, '0', 'C', '0', 20);
     $pdf->Ln(10);
     $pdf->multicell(0, 4, $ass_sec, '0', 'C', '0');
-} else if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "BAGE") {
+} else if ($projeto_tipo == "1" && strtoupper(trim((string) $munic)) == "BAGE") {
     $sec = "";
     $ass_sec = $classinatura->assinatura(1002, $sec);
 
     $pdf->Ln(5);
-    $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper($munic) . ", " . substr($xdata, 8, 2) . " DE " . strtoupper(db_mes(substr($xdata, 5, 2))) . " DE " . substr($xdata, 0, 4) . ".";
+    $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper((string) $munic) . ", " . substr((string) $xdata, 8, 2) . " DE " . strtoupper(db_mes(substr((string) $xdata, 5, 2))) . " DE " . substr((string) $xdata, 0, 4) . ".";
     $pdf->cell(30, 4, '', '0', 'J', '0');
     $pdf->multicell(180, 4, $txt, '0', 'J', '0');
     $pdf->Ln(10);
@@ -677,7 +677,7 @@ if ($projeto_tipo == "1" && (strtoupper(trim($munic)) != "ITAQUI" and strtoupper
     $pdf->Ln(10);
     $pdf->multicell(0, 4, "Registre-se e cumpra-se", '0', 'L', '0');
 
-} else if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "CANELA") {
+} else if ($projeto_tipo == "1" && strtoupper(trim((string) $munic)) == "CANELA") {
     if ($pdf->Gety() > 230) {
         $pdf->AddPage("P");
     }
@@ -686,7 +686,7 @@ if ($projeto_tipo == "1" && (strtoupper(trim($munic)) != "ITAQUI" and strtoupper
     $ass_sec = $classinatura->assinatura(1002, $sec);
 
     $pdf->Ln(5);
-    $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper($munic) . ", " . substr($xdata, 8, 2) . " DE " . strtoupper(db_mes(substr($xdata, 5, 2))) . " DE " . substr($xdata, 0, 4) . ".";
+    $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper((string) $munic) . ", " . substr((string) $xdata, 8, 2) . " DE " . strtoupper(db_mes(substr((string) $xdata, 5, 2))) . " DE " . substr((string) $xdata, 0, 4) . ".";
     $pdf->cell(30, 4, '', '0', 'J', '0');
     $pdf->multicell(180, 4, $txt, '0', 'J', '0');
     $pdf->Ln(10);

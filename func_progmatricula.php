@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_progmatricula_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprogmatricula = new cl_progmatricula;
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed20_i_codigo");
@@ -95,9 +95,9 @@ $clrotulo->label("z01_nome");
     }else{
      $sql = $clprogmatricula->sql_query("",$campos,"z01_nome"," ed112_c_situacao = 'A'");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed20_i_codigo)){
-     $repassa = array("chave_ed20_i_codigo"=>$chave_ed20_i_codigo,"chave_z01_nome"=>$chave_z01_nome);
+     $repassa = ["chave_ed20_i_codigo"=>$chave_ed20_i_codigo,"chave_z01_nome"=>$chave_z01_nome];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

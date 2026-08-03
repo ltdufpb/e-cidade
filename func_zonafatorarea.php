@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_zonafatorarea_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clzonafatorarea = new cl_zonafatorarea;
 $clzonafatorarea->rotulo->label("j113_sequencial");
@@ -93,9 +93,9 @@ $clzonafatorarea->rotulo->label("j113_sequencial");
           $sql = $clzonafatorarea->sql_query("",$campos,"j113_sequencial","");
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_j113_sequencial)) {
-          $repassa = array("chave_j113_sequencial"=>$chave_j113_sequencial,"chave_j113_sequencial"=>$chave_j113_sequencial);
+          $repassa = ["chave_j113_sequencial"=>$chave_j113_sequencial,"chave_j113_sequencial"=>$chave_j113_sequencial];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

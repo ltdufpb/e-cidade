@@ -27,13 +27,9 @@ use App\Domain\Patrimonial\Protocolo\Repository\Processo\ProcessoDocumentoReposi
 
 final class AlterarInscricao extends AcaoBase implements AcaoInterface, InscricaoInterface
 {
-    const SOCIO_RESPONSAVEL_MEI = 2;
-
-    private $serviceProcessosAlvaraOnline;
-    private $filtroProcesso;
-    private $filtroAtividades;
+    const int SOCIO_RESPONSAVEL_MEI = 2;
     private $dados;
-    private $cgms = array();
+    private $cgms = [];
     private $clissbase;
     private $acao;
     private $grauRisco;
@@ -56,20 +52,17 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
     public function __construct(
         $processo,
         IssbaseRepository $issbaseRepository,
-        AlvaraOnline $serviceProcessosAlvaraOnline,
+        private readonly AlvaraOnline $serviceProcessosAlvaraOnline,
         InclusaoCgmLegacy $inclusaoCgmService,
         ParametrosProcessoEletronicoBag $parameterBag,
         ProcessoEletronicoGrauRiscoRepository $processoEletronicoGrauRiscoRepository,
-        FiltroListagemProcessos $filtroProcesso,
-        FiltroListagemAtividades $filtroAtividades
+        private readonly FiltroListagemProcessos $filtroProcesso,
+        private readonly FiltroListagemAtividades $filtroAtividades
     ) {
         parent::__construct($processo, $issbaseRepository);
-        $this->serviceProcessosAlvaraOnline = $serviceProcessosAlvaraOnline;
         $this->inclusaoCgmService  = $inclusaoCgmService;
         $this->parameterBag = $parameterBag;
         $this->processoEletronicoGrauRiscoRepository = $processoEletronicoGrauRiscoRepository;
-        $this->filtroProcesso = $filtroProcesso;
-        $this->filtroAtividades = $filtroAtividades;
     }
 
 
@@ -135,7 +128,7 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
         $this->filtroProcesso->setCodigoProcessoProtocolo($this->processo->getCodProcesso());
         $this->filtroProcesso->setCodigoTipoProcesso($this->processo->getTipoProcesso());
 
-        $this->dados = json_decode($this->serviceProcessosAlvaraOnline->retornarProcessoAlvara(
+        $this->dados = json_decode((string) $this->serviceProcessosAlvaraOnline->retornarProcessoAlvara(
             $this->filtroProcesso,
             $this->filtroAtividades
         ));
@@ -247,7 +240,7 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
             $registroJunta = $this->getAtribute($this->dados->empresa->registro);
         }
 
-        $clissbase->q02_dtjunta  = !empty($dataJunta) ? (new DBDate($dataJunta))->getDate() : $dataJunta;
+        $clissbase->q02_dtjunta  = !empty($dataJunta) ? new DBDate($dataJunta)->getDate() : $dataJunta;
         $clissbase->q02_regjuc   = $registroJunta;
         $clissbase->q02_inscr = $this->inscricao;
         $clissbase->alterar($clissbase->q02_inscr);
@@ -272,8 +265,8 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
             if (array_key_exists('empregados', $outrosDados)) {
                 if (intval($this->getAtribute($outrosDados->empregados)) != 0) {
                     $clissquant->q30_quant  =  str_replace(
-                        array(".", ","),
-                        array("", "."),
+                        [".", ","],
+                        ["", "."],
                         $this->getAtribute($outrosDados->empregados)
                     );
                 }
@@ -281,9 +274,9 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
 
             if (array_key_exists('area', $outrosDados)) {
                 if (intval($this->getAtribute($outrosDados->area)) != 0) {
-                    $outrosDados->area = preg_replace('/[^\d\.,]/', '', $this->getAtribute($outrosDados->area));
-                    if (strpos($outrosDados->area, ",") == true) {
-                        $clissquant->q30_area   = str_replace(array(".", ","), array("", "."), $outrosDados->area);
+                    $outrosDados->area = preg_replace('/[^\d\.,]/', '', (string) $this->getAtribute($outrosDados->area));
+                    if (strpos((string) $outrosDados->area, ",") == true) {
+                        $clissquant->q30_area   = str_replace([".", ","], ["", "."], $outrosDados->area);
                     } else {
                         $clissquant->q30_area = $outrosDados->area;
                     }
@@ -374,7 +367,7 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
         $clissruas->q02_inscr  = $clissbase->q02_inscr;
         $clissruas->j14_codigo = $logradouro;
         $clissruas->q02_numero = $numero;
-        $clissruas->q02_compl  = substr(mb_strtoupper($complemento), 0, 40);
+        $clissruas->q02_compl  = substr(mb_strtoupper((string) $complemento), 0, 40);
         $clissruas->q02_cxpost = '';
         $clissruas->z01_cep    = str_replace('-', '', $cep);
         $clissruas->alterar($clissbase->q02_inscr);
@@ -464,13 +457,11 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
     private function incluirAtividades()
     {
         Log::info("Inicializando inclusão de atividades");
-        $atividadesSecundarias = array();
+        $atividadesSecundarias = [];
 
         if ($this->acao == ProcessoEletronicoHelper::ACAO_ALVARA_AUTONOMO) {
             if (is_array($this->dados->atividades)) {
-                $atividadePrincipal = array_filter($this->dados->atividades, function ($atividade) {
-                    return $atividade->principal == "1";
-                })[0];
+                $atividadePrincipal = array_filter($this->dados->atividades, fn($atividade) => $atividade->principal == "1")[0];
             } else {
                 $atividadePrincipal = $this->dados->atividades;
             }
@@ -507,7 +498,7 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
 
         if (!empty($atividadesSecundarias)) {
             foreach ($atividadesSecundarias as $key => $atividade) {
-                $data_inicio = date("Y-m-d", strtotime($atividade->data_inicio->value));
+                $data_inicio = date("Y-m-d", strtotime((string) $atividade->data_inicio->value));
 
                 $cltabativ = $this->incluirTabativ(
                     $atividade->atividade->id,
@@ -526,7 +517,7 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
 
     private function incluirTabativ($idAtividade, $dataInicio, $principal)
     {
-        $dataInicio = !empty($dataInicio) ? (new DBDate($dataInicio))->getDate() : $dataInicio;
+        $dataInicio = !empty($dataInicio) ? new DBDate($dataInicio)->getDate() : $dataInicio;
 
         $cltabativ = new \cl_tabativ;
 
@@ -646,29 +637,29 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
         Log::info("Inicializando inclusão de socios");
         if ($this->acao == ProcessoEletronicoHelper::ACAO_ALVARA_EMPRESA) {
             foreach ($this->dados->empresa->socios as $key => $socio) {
-                $valor_capital = preg_replace('/[^\d\.,]/', '', $this->getAtribute($socio->valor_capital));
-                if (strpos($valor_capital, ",") == true) {
-                    $valor_capital   = str_replace(array(".", ","), array("", "."), $valor_capital);
+                $valor_capital = preg_replace('/[^\d\.,]/', '', (string) $this->getAtribute($socio->valor_capital));
+                if (strpos((string) $valor_capital, ",") == true) {
+                    $valor_capital   = str_replace([".", ","], ["", "."], $valor_capital);
                 }
 
                 $this->incluirSocio(
                     $this->cgms['cgmEmpresa']->getCodigo(),
                     $this->cgms['cgmSocios'][$key]->getCodigo(),
-                    $valor_capital ? $valor_capital : 0,
+                    $valor_capital ?: 0,
                     $this->getAtribute($socio->tipo_socio)
                 );
             }
         } elseif ($this->acao == ProcessoEletronicoHelper::ACAO_ALVARA_MEI) {
             foreach ((array) $this->dados->empresa->responsavel_mei as $key => $responsavel) {
-                $valor_capital = preg_replace('/[^\d\.,]/', '', $this->getAtribute($responsavel->valor_capital));
-                if (strpos($valor_capital, ",") == true) {
-                    $valor_capital   = str_replace(array(".", ","), array("", "."), $valor_capital);
+                $valor_capital = preg_replace('/[^\d\.,]/', '', (string) $this->getAtribute($responsavel->valor_capital));
+                if (strpos((string) $valor_capital, ",") == true) {
+                    $valor_capital   = str_replace([".", ","], ["", "."], $valor_capital);
                 }
 
                 $this->incluirSocio(
                     $this->cgms['cgmEmpresa']->getCodigo(),
                     $this->cgms['cgmResponsavel'][$key]->getCodigo(),
-                    $valor_capital ? $valor_capital : 0,
+                    $valor_capital ?: 0,
                     $this->getAtribute($responsavel->tipo_socio)
                 );
             }
@@ -686,7 +677,7 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
 
         $clsocios->q95_cgmpri = $cgmEmpresa;
         $clsocios->q95_numcgm = $cgmSocio;
-        $clsocios->q95_perc   = str_replace(',', '.', (!is_null($percentual) ? $percentual : '0'));
+        $clsocios->q95_perc   = str_replace(',', '.', ($percentual ?? '0'));
         $clsocios->q95_tipo   = $tipo;
 
         if ($this->verificaSeJaExisteSocio($cgmEmpresa, $cgmSocio)) {
@@ -747,7 +738,7 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
             return;
         }
 
-        $idAtividades = array();
+        $idAtividades = [];
 
         $oLiberarAlvara  = new \AlvaraMovimentacaoLiberacao($this->alvara->getCodigo());
         foreach ($this->dados->documentos as $documento) {
@@ -776,9 +767,9 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
                     && $this->getAtribute($this->dados->empresa->simples->data_opcao_simples) != null
                 ) {
                     $dataOpcapSimples = $this->getAtribute($this->dados->empresa->simples->data_opcao_simples);
-                    $dataSimples = new DateTime((new DBDate($dataOpcapSimples))->getDate());
+                    $dataSimples = new DateTime(new DBDate($dataOpcapSimples)->getDate());
                 } else {
-                    $dataSimples = new DateTime((new DBDate($this->clissbase->q02_dtinic))->getDate());
+                    $dataSimples = new DateTime(new DBDate($this->clissbase->q02_dtinic)->getDate());
                 }
 
                 if (array_key_exists('categoria_simples', $this->dados->empresa->simples)
@@ -923,7 +914,7 @@ final class AlterarInscricao extends AcaoBase implements AcaoInterface, Inscrica
     {
         Log::info("Salvando arquivo no storage");
         $storageConfig = StorageHelper::getStorageConfig();
-        $allowed = array();
+        $allowed = [];
 
         $metadata = new \stdClass();
         $metadata->tipo_documento = "processo";

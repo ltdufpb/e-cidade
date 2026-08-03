@@ -46,11 +46,6 @@ use Illuminate\Support\Collection;
 class RelatorioProgramaGestaoService
 {
     /**
-     * @var array
-     */
-    private $filtros;
-
-    /**
      * @var Planejamento
      */
     private $planejamento;
@@ -64,9 +59,8 @@ class RelatorioProgramaGestaoService
      */
     private $dados = [];
 
-    public function __construct(array $filtros)
+    public function __construct(private array $filtros)
     {
-        $this->filtros = $filtros;
         $this->processar();
     }
 
@@ -141,9 +135,7 @@ class RelatorioProgramaGestaoService
     }
     private function organizaComissao()
     {
-        $cgms = $this->planejamento->comissoes->map(function (Comissao $comissao) {
-            return $comissao->cgm->z01_nome;
-        })->toArray();
+        $cgms = $this->planejamento->comissoes->map(fn(Comissao $comissao) => $comissao->cgm->z01_nome)->toArray();
         $this->dados['planejamento']['comissao'] = $cgms;
     }
     private function organizaProgramas()

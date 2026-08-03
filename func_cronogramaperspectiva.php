@@ -35,7 +35,7 @@ db_postmemory($_POST);
 
 $oGet = db_utils::postMemory($_GET);
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcronogramaperspectiva = new cl_cronogramaperspectiva;
 $clcronogramaperspectiva->rotulo->label("o124_sequencial");
 $clcronogramaperspectiva->rotulo->label("o124_descricao");
@@ -87,7 +87,7 @@ $clcronogramaperspectiva->rotulo->label("o124_descricao");
     <td align="center" valign="top">
       <?php 
 
-      $aWhere = array();
+      $aWhere = [];
       if (!empty($oGet->tipo)) {
         $aWhere[] = "o124_tipo = {$oGet->tipo}";
       }
@@ -123,9 +123,9 @@ $clcronogramaperspectiva->rotulo->label("o124_descricao");
           $sql = $clcronogramaperspectiva->sql_query(null, $campos, "o124_sequencial", implode(' and ', $aWhere));
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o124_descricao)){
-          $repassa = array("chave_o124_sequencial"=>$chave_o124_sequencial,"chave_o124_descricao"=>$chave_o124_descricao);
+          $repassa = ["chave_o124_sequencial"=>$chave_o124_sequencial,"chave_o124_descricao"=>$chave_o124_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

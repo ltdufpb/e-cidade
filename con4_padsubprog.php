@@ -26,12 +26,12 @@
  */
 
 class subprog {
-  var $arq = null;
-  function subprog($header){
+  public $arq = null;
+  function __construct($header){
     //
      umask(74);
      $this->arq = fopen("tmp/SUBPROG.TXT",'w+');
-     fputs($this->arq,$header);
+     fputs($this->arq,(string) $header);
      fputs($this->arq,"\r\n");
 
   }  
@@ -50,16 +50,16 @@ class subprog {
         
     $virg="";
     if($clarqpad->numrows > 0){
-      $rubant = split("\r\n",pg_result($res,0,"c54_arquivo"));
+      $rubant = preg_split("#\r\n#m",pg_fetch_result($res,0,"c54_arquivo"));
       for($yy=0;$yy<sizeof($rubant);$yy++){
          $contador++;
          $line = $rubant[$yy];
          
-         $exercicios .= $virg.substr($rubant[$yy],0,4);
-         $anousu = substr($rubant[$yy],0,4)+0;
+         $exercicios .= $virg.substr((string) $rubant[$yy],0,4);
+         $anousu = substr((string) $rubant[$yy],0,4)+0;
          $virg = ",";
                   
-         fputs($this->arq,$line);
+         fputs($this->arq,(string) $line);
          fputs($this->arq,"\r\n");
       }
     }
@@ -83,39 +83,39 @@ class subprog {
 	     ";
 
      $res = db_query($sql);
-     if (pg_numrows($res) > 0) {
-       for ($x=0;$x < pg_numrows($res);$x++){
+     if (pg_num_rows($res) > 0) {
+       for ($x=0;$x < pg_num_rows($res);$x++){
            db_fieldsmemory($res,$x);
-	   $anousu = formatar($o32_anousu,4,'n');
-	   $codigo = formatar($o32_subprog,3,'n');
-	   $nome   = formatar($o32_descr,80,'c');
+	   $anousu = formatar($o32_anousu,4);
+	   $codigo = formatar($o32_subprog,3);
+	   $nome   = formatar($o32_descr,80);
 
 	   //-- 
 	   $line = $anousu.$codigo.$nome; 
 	   fputs($this->arq,$line);
 	   fputs($this->arq,"\r\n");
-    
+
 	   $contador = $contador+1; // incrementa contador global
        }
      }
 
      for ($x=($anousu+1);$x <= db_getsession("DB_anousu");$x++){
-	   $anousux = formatar($x,4,'n');
-	   $codigo = formatar(0,3,'n');
-	   $nome   = formatar('Não Existe',80,'c');
+	   $anousux = formatar($x,4);
+	   $codigo = formatar(0,3);
+	   $nome   = formatar('Não Existe',80);
 
 	   //-- 
 	   $line = $anousux.$codigo.$nome; 
 	   fputs($this->arq,$line);
 	   fputs($this->arq,"\r\n");
-    
+
 	   $contador = $contador+1; // incrementa contador global
      }
 
 
 
      //  trailer
-     $contador = espaco(10-(strlen($contador)),'0').$contador;
+     $contador = espaco(10-(strlen($contador))).$contador;
      $line = "FINALIZADOR".$contador;
      fputs($this->arq,$line);
      fputs($this->arq,"\r\n");

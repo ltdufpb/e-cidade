@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contcearquivorespcgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcontcearquivorespcgm = new cl_contcearquivorespcgm;
 $clcontcearquivorespcgm->rotulo->label("c13_sequencial");
 $clcontcearquivorespcgm->rotulo->label("c13_numcgm");
@@ -98,9 +98,9 @@ $clcontcearquivorespcgm->rotulo->label("c13_numcgm");
         }else{
            $sql = $clcontcearquivorespcgm->sql_query("",$campos,"c13_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c13_numcgm)){
-          $repassa = array("chave_c13_sequencial"=>$chave_c13_sequencial,"chave_c13_numcgm"=>$chave_c13_numcgm);
+          $repassa = ["chave_c13_sequencial"=>$chave_c13_sequencial,"chave_c13_numcgm"=>$chave_c13_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

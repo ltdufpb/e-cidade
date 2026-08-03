@@ -34,7 +34,7 @@ try {
 
       $rsModalidade = db_query($sqlModalidade);
       $retorno->modalidade = [];
-      $iQuantidade = pg_numrows($rsModalidade);
+      $iQuantidade = pg_num_rows($rsModalidade);
       for ($iRow = 0; $iRow < $iQuantidade; $iRow++) {
 
         $oModalidade = db_utils::fieldsMemory($rsModalidade, $iRow);
@@ -158,7 +158,7 @@ try {
       }
       
       $retorno->situacao = [];
-      for ($i=0; $i < pg_numrows($rsBuscaSituacao); $i++) { 
+      for ($i=0; $i < pg_num_rows($rsBuscaSituacao); $i++) { 
 
         $oStdSituacao      = db_utils::fieldsMemory($rsBuscaSituacao, $i);
         $retorno->situacao[] = $oStdSituacao;
@@ -317,7 +317,7 @@ try {
       foreach ($response->lotes as $lote) {
           
           foreach ($lote->Vencedores as $vencedor) {
-          
+
                 // $itemRetorno->Cancelado         = $vencedor->Cancelado;
                 // $itemRetorno->IdItem            = $vencedor->IdItem;
                 // $itemRetorno->RazaoSocial       = $vencedor->RazaoSocial; 
@@ -329,13 +329,13 @@ try {
           }
           
           foreach ($lote->itens as $item) {
-          
+
             $licitacao                      = new licitacao($item->_id);
             $loteLicitacao                  = new ComprasPublicasLote($licitacao);
             $itensLote                      = $loteLicitacao->getItensLote($licitacao->getCodigo(), $item->DS_ITEM);
-            
+
             foreach ($itensLote as $itemLicitacao) {
-              
+
               $itemRetorno = new stdClass();
               $itemRetorno->readequarvalor       = count($itensLote)==1?false:true;
               $itemRetorno->codigo               = $itemLicitacao->getCodigo();

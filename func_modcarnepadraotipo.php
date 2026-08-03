@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_modcarnepadraotipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmodcarnepadraotipo = new cl_modcarnepadraotipo;
 $clmodcarnepadraotipo->rotulo->label("k49_sequencial");
 $clmodcarnepadraotipo->rotulo->label("k49_cadmodcarne");
@@ -98,9 +98,9 @@ $clmodcarnepadraotipo->rotulo->label("k49_cadmodcarne");
         }else{
            $sql = $clmodcarnepadraotipo->sql_query("",$campos,"k49_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k49_cadmodcarne)){
-          $repassa = array("chave_k49_sequencial"=>$chave_k49_sequencial,"chave_k49_cadmodcarne"=>$chave_k49_cadmodcarne);
+          $repassa = ["chave_k49_sequencial"=>$chave_k49_sequencial,"chave_k49_cadmodcarne"=>$chave_k49_cadmodcarne];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

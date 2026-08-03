@@ -6,12 +6,9 @@ use ECidade\File\Csv\Dumper\Dumper;
 
 class VacinasRelatorioCSV extends Dumper
 {
-    private $dados = [];
-
-    public function __construct(array $dados)
+    public function __construct(private readonly array $dados)
     {
         $this->setCsvControl(';', '"');
-        $this->dados = $dados;
     }
 
     public function emitirCsv()
@@ -32,7 +29,7 @@ class VacinasRelatorioCSV extends Dumper
             $dadosImprimir[] = [
                 $dado->ed18_i_codigo,
                 $dado->ed18_codigoreferencia,
-                trim($dado->escola),
+                trim((string) $dado->escola),
                 $dado->matricula?:'--',
                 $dado->numcgm,
                 $dado->nome,

@@ -91,7 +91,7 @@ include(modification("dbforms/db_funcoes.php"));
            </td>
            <td>
             <?php 
-            $tipo_ordem = array("0"=>"Todas","1"=>"Ativas","2"=>"Canceladas");
+            $tipo_ordem = ["0"=>"Todas","1"=>"Ativas","2"=>"Canceladas"];
             db_select("opcao",$tipo_ordem,true,2);
             ?>
           </td>

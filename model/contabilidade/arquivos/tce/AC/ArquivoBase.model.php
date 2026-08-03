@@ -70,7 +70,7 @@ abstract class ArquivoBase {
       throw new Exception("Erro ao buscar instituições.");
     }
 
-    $this->aInstituicoes = array();
+    $this->aInstituicoes = [];
 
     foreach( db_utils::getCollectionByRecord($rsInstituicoes) as $oInstituicao) {
       $this->aInstituicoes[] = $oInstituicao->codigo;
@@ -89,7 +89,7 @@ abstract class ArquivoBase {
 
     $aErros = libxml_get_errors();
     $iTotalErros = count($aErros);
-    $aMensagem = array();
+    $aMensagem = [];
 
     if ($lDocumentoValido || $iTotalErros == 0) {
       return true;

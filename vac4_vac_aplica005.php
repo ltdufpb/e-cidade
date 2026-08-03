@@ -85,10 +85,10 @@ $oRotulo->label('z01_v_nome');
    $rsResult  = $clvac_calendario->sql_record($sSql);
    if ($clvac_calendario->numrows > 0) {
 
-     $aAbaNome   = array();
-     $aSrc       = array();
-     $aSizecampo = array();
-     $aDisabled  = array();
+     $aAbaNome   = [];
+     $aSrc       = [];
+     $aSizecampo = [];
+     $aDisabled  = [];
      for($iX=0; $iX < $clvac_calendario->numrows; $iX++){
       
        $oCalendario           = db_utils::fieldsmemory($rsResult,$iX); 

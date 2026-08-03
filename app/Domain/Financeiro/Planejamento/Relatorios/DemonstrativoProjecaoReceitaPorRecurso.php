@@ -34,6 +34,7 @@ class DemonstrativoProjecaoReceitaPorRecurso extends DemonstrativoProjecaoReceit
 
     protected $titulo = 'Demonstrativo das Projeções da Receita - por Recurso';
 
+    #[\Override]
     protected function cabecalhoReceita()
     {
         $exercicioProjecao = $this->dados['planejamento']['pl2_ano_inicial'] - 1;
@@ -76,6 +77,7 @@ class DemonstrativoProjecaoReceitaPorRecurso extends DemonstrativoProjecaoReceit
      * @param $exerciciosAnteriores
      * @param $exercicios
      */
+    #[\Override]
     protected function imprimeLinha(stdClass $recurso, $exerciciosAnteriores, $exercicios)
     {
         $this->SetFont('Arial', '', 6);

@@ -59,9 +59,9 @@ SQL;
      */
     public function down()
     {
-        $this->table('inicialpartilha', array(
+        $this->table('inicialpartilha', [
             'schema' => 'juridico'
-        ))
+        ])
             ->removeColumn('v35_justificativa')
             ->save();
 

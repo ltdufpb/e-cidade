@@ -35,7 +35,7 @@ $clrotulo->label('m60_descr');
 $clrotulo->label('m60_quantent');
 //$clrotulo->label('m61_abrev');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($_GET,2);exit;
 
 $where = 'and  1=1';
@@ -94,7 +94,7 @@ $result = $clmatmater->sql_record($sql);
 
 //$result =  $clmatmater->sql_record($clmatmater->sql_query_file(null,"*",$xordem));
 //db_criatabela($result);exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem unidades cadastrados.');
 }
@@ -106,7 +106,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 4;
-for($x = 0; $x < pg_numrows($result);$x++)
+for($x = 0; $x < pg_num_rows($result);$x++)
 {
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 )

@@ -108,7 +108,7 @@ db_inputdata('datafim',"","","",true,'text',$db_opcao,"")
 	  </td>
 	  <td>
 <?php  
-$result=array("d40_data"=>"DATA","j14_nome"=>"LOGRADOURO","d40_codigo"=>"LISTAS");
+$result=["d40_data"=>"DATA","j14_nome"=>"LOGRADOURO","d40_codigo"=>"LISTAS"];
 db_select("ordem",$result,true,$db_opcao);
 ?>
 	  </td>

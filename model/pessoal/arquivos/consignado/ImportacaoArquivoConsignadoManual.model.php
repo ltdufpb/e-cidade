@@ -44,24 +44,19 @@ class ImportacaoArquivoConsignadoManual {
   private $oCompetencia;
 
   /**
-   * @var \Instituicao
+   * @var \ArquivoConsignadoManualParcela[]
    */
-  private $oInstituicao;
+  protected $parcelas = [];
 
   /**
    * @var \ArquivoConsignadoManualParcela[]
    */
-  protected $parcelas = array();
-
-  /**
-   * @var \ArquivoConsignadoManualParcela[]
-   */
-  protected $parcelasPorServidor = array();
+  protected $parcelasPorServidor = [];
 
   /**
    * @var array
    */
-  protected $aSaldoSalarioServidor = array();
+  protected $aSaldoSalarioServidor = [];
 
   /**
    * ImportacaoArquivoConsignadoManual constructor.
@@ -69,10 +64,9 @@ class ImportacaoArquivoConsignadoManual {
    * @param \DBCompetencia $oCompetencia
    * @param \Instituicao   $oInstituicao
    */
-  public function __construct(DBCompetencia $oCompetencia,  Instituicao $oInstituicao) {
+  public function __construct(DBCompetencia $oCompetencia,  private readonly Instituicao $oInstituicao) {
 
     $this->oCompetencia = $oCompetencia;
-    $this->oInstituicao = $oInstituicao;
 
     $this->parcelas = ArquivoConsignadoManualParcelaRepository::getParcelasParaProcessamentoNaCompetencia($this->oCompetencia, $this->oInstituicao);
   }

@@ -56,7 +56,7 @@ class ArquivoConsignet {
    * Array com os Registros do ponto
    * @var array
    */
-  private $aRegistros = array();
+  private $aRegistros = [];
 
   /**
    * Nome do arquivo
@@ -172,7 +172,7 @@ class ArquivoConsignet {
   }
 
   public function limparRegistros(){
-    $this->aRegistros = array();
+    $this->aRegistros = [];
   }
 
   /**
@@ -183,7 +183,7 @@ class ArquivoConsignet {
     
     if ( empty($this->iCodigo) ) {
 
-      $this->aRegistros = array();
+      $this->aRegistros = [];
       return false;
     }
 
@@ -205,7 +205,7 @@ class ArquivoConsignet {
 
     if ($iQuantidadeRegistros == 0) {
 
-      $this->aRegistros = array();
+      $this->aRegistros = [];
       return false;
     }
 
@@ -214,14 +214,14 @@ class ArquivoConsignet {
       $oDadosRegistro = db_utils::fieldsMemory($rsRegistros, $iRegistro); 
       try {
         $oServidor      = ServidorRepository::getInstanciaByCodigo($oDadosRegistro->rh152_regist, $this->oCompetencia->getAno(), $this->oCompetencia->getMes(), $this->oInstituicao->getSequencial());
-      } catch ( BusinessException $eErro ) {
+      } catch ( BusinessException ) {
         $oServidor      = new Servidor();
         $oServidor->setMatricula($oDadosRegistro->rh152_regist);
       }
 
       try { 
         $oRubrica = RubricaRepository::getInstanciaByCodigo( $oDadosRegistro->rh153_rubrica, $this->oInstituicao->getSequencial());
-      } catch ( BusinessException $eException ) {
+      } catch ( BusinessException ) {
 
         $oRubrica = new Rubrica();
         $oRubrica->setCodigo( $oDadosRegistro->rh153_rubrica );

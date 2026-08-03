@@ -41,7 +41,7 @@ $clmatestoqueinil = new cl_matestoqueinil();
 
 $oAlmox = new cl_db_almox();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sqlpref = "select * from db_config where codigo = ".db_getsession("DB_instit");
 $resultpref = db_query($sqlpref);
@@ -63,9 +63,9 @@ if (isset($ini) && trim($ini)!="") {
 /* periodos */
 if(isset($dataini) && $dataini != "") {
 
-	$dataini = explode('/',$dataini);
+	$dataini = explode('/',(string) $dataini);
 	$dataini = $dataini[2].'-'.$dataini[1].'-'.$dataini[0];
-	$datafim = explode('/',$datafim);
+	$datafim = explode('/',(string) $datafim);
 	$datafim = $datafim[2].'-'.$datafim[1].'-'.$datafim[0];
 
 
@@ -113,7 +113,7 @@ $numrows_matestoqueini     = $clmatestoqueini->numrows;
 if($numrows_matestoqueini==0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum Registro Encontrado ! ");
 }
-$aErros = array();
+$aErros = [];
 $pdf = new scpdf();
 $pdf->Open();
 

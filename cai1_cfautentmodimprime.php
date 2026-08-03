@@ -186,9 +186,9 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 		<tr>
 		  <td valign="top"  align="center">  
 		    <?php 
-			  $aChavePri = array( "db68_sequencial"    	 => @$db68_sequencial,
+			  $aChavePri = [ "db68_sequencial"    	 => @$db68_sequencial,
 			  					 				  "db68_cfautent" 		   => @$db68_cfautent,
-			  					 				  "db68_modeloimpressao" => @$db68_modeloimpressao);
+			  					 				  "db68_modeloimpressao" => @$db68_modeloimpressao];
 			  
 			  $cliframe_alterar_excluir->chavepri	     = $aChavePri;
 			  $cliframe_alterar_excluir->sql   		     = $clcfautentmodeloimpressao->sql_query(null,"*","db68_sequencial"," db68_cfautent = {$db68_cfautent}");

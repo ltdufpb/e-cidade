@@ -81,7 +81,7 @@ try {
                 }
             }
 
-            $slipsGerados = array();
+            $slipsGerados = [];
             foreach ($transferenciasRalizar as $transferencia) {
                 $recurso  = $transferencia[1];
                 $reduzido = $transferencia[3];

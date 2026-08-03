@@ -41,7 +41,7 @@ $clmotivo_ausencia        = new cl_sau_motivo_ausencia;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clsau_upsparalisada      = new cl_sau_upsparalisada;
 $clagendamentos           = new cl_agendamentos_ext;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_opcao2 = 1;
 $db_botao = true;
@@ -82,13 +82,13 @@ if(isset($opcao)){
 
 if(isset($incluir)||isset($alterar)){
 
-  $inicio_ano = substr( $s140_d_inicio, 6, 4 );
-  $inicio_mes = substr( $s140_d_inicio, 3, 2 );
-  $inicio_dia = substr( $s140_d_inicio, 0, 2 );
+  $inicio_ano = substr( (string) $s140_d_inicio, 6, 4 );
+  $inicio_mes = substr( (string) $s140_d_inicio, 3, 2 );
+  $inicio_dia = substr( (string) $s140_d_inicio, 0, 2 );
 
-  $fim_ano = substr( $s140_d_fim, 6, 4 );
-  $fim_mes = substr( $s140_d_fim, 3, 2 );
-  $fim_dia = substr( $s140_d_fim, 0, 2 );
+  $fim_ano = substr( (string) $s140_d_fim, 6, 4 );
+  $fim_mes = substr( (string) $s140_d_fim, 3, 2 );
+  $fim_dia = substr( (string) $s140_d_fim, 0, 2 );
 
   $sWhere  = " s140_i_unidade = $s140_i_unidade ";
   $sWhere .= "and (s140_d_inicio between '$inicio_ano/$inicio_mes/$inicio_dia' and '$fim_ano/$fim_mes/$fim_dia' ";
@@ -120,23 +120,23 @@ if(isset($incluir)||isset($alterar)){
 
   }
   
-  $inicio_ano = substr( $s140_d_inicio, 6, 4 );
-  $inicio_mes = substr( $s140_d_inicio, 3, 2 );
-  $inicio_dia = substr( $s140_d_inicio, 0, 2 );
-  $fim_ano    = substr( $s140_d_fim, 6, 4 );
-  $fim_mes    = substr( $s140_d_fim, 3, 2 );
-  $fim_dia    = substr( $s140_d_fim, 0, 2 );
+  $inicio_ano = substr( (string) $s140_d_inicio, 6, 4 );
+  $inicio_mes = substr( (string) $s140_d_inicio, 3, 2 );
+  $inicio_dia = substr( (string) $s140_d_inicio, 0, 2 );
+  $fim_ano    = substr( (string) $s140_d_fim, 6, 4 );
+  $fim_mes    = substr( (string) $s140_d_fim, 3, 2 );
+  $fim_dia    = substr( (string) $s140_d_fim, 0, 2 );
   $sWhere    .= "and sd23_d_consulta between '$inicio_ano/$inicio_mes/$inicio_dia' and '$fim_ano/$fim_mes/$fim_dia' ";
   $sSql = $clagendamentos->sql_query_ext("","*",null, $sWhere);
   $rsAgendamentos = $clagendamentos->sql_record($sSql);
   
   $iDias          = quantDias($s140_d_inicio,$s140_d_fim)+1;
-  $aVet           = explode("/",$s140_d_inicio);
+  $aVet           = explode("/",(string) $s140_d_inicio);
   $dInicio        = $aVet[2].'-'.$aVet[1].'-'.$aVet[0];
   $lLibera        = true;
   for($iY=0;$iY < $iDias;$iY++){
 
-    $aFichas = array();
+    $aFichas = [];
     for($iX=0; $iX < $clagendamentos->numrows; $iX++){
 
       $oAgendamentos = db_utils::fieldsmemory($rsAgendamentos,$iX);
@@ -179,12 +179,12 @@ if(isset($incluir)||isset($alterar)){
         if ($s140_c_horafim > $aFichas[$iZ]["horafim"]) {
           $sFim = $aFichas[$iZ]["horafim"];
         }
-        $aIni = explode(':',$sIni);
-        $aFim = explode(':',$sFim);
+        $aIni = explode(':',(string) $sIni);
+        $aFim = explode(':',(string) $sFim);
         $iMinutosParalizados = (((int)$aFim[0]*60)+(int)$aFim[1])-(((int)$aIni[0]*60)+(int)$aIni[1]);
         //Minutos da grade
-        $aIni              = explode(':',$aFichas[$iZ]["horaini"]);
-        $aFim              = explode(':',$aFichas[$iZ]["horafim"]);
+        $aIni              = explode(':',(string) $aFichas[$iZ]["horaini"]);
+        $aFim              = explode(':',(string) $aFichas[$iZ]["horafim"]);
         $iMinutosDaGrade   = (((int)$aFim[0]*60)+(int)$aFim[1])-(((int)$aIni[0]*60)+(int)$aIni[1]);
         if ($aFichas[$iZ]["tipo"] == "P") {
 
@@ -211,10 +211,10 @@ if(isset($incluir)||isset($alterar)){
             //tempo em minutos do fim da consulta
             $iMinutosFimConsulta = $iMinutosIniConsulta+$MinutosPorFicha;
             //tempo em minutos do inicio da paralização 
-            $aVet = explode(':',$s140_c_horaini);
+            $aVet = explode(':',(string) $s140_c_horaini);
             $iMinutosIniParalizacao = (((int)$aVet[0]*60)+(int)$aVet[1]);
             //tempo em minutos do fim da paralização
-            $aVet = explode(':',$s140_c_horafim);
+            $aVet = explode(':',(string) $s140_c_horafim);
             $iMinutosFimParalizacao = (((int)$aVet[0]*60)+(int)$aVet[1]);
             //verificar se há intercecção entre os tempos
             //echo"<br> Consulata = $iMinutosIniConsulta - $iMinutosFimConsulta |".

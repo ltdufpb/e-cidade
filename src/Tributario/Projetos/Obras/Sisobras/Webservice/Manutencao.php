@@ -42,22 +42,22 @@ class Manutencao extends ConexaoSoap
     public function __construct($filenameXmlSigned, $oRequisicao, $localA1, $senhaA1)
     {
         $oContext = stream_context_create(
-            array(
-                'ssl' => array(
+            [
+                'ssl' => [
                     'verify_peer'      => false,
                     'verify_peer_name' => false,
                     'allow_self_signed'=> true
-                )
-            )
+                ]
+            ]
         );
         $localA1Pem = str_replace('.pfx', '.pem', $localA1);
-        $aOpcoes = array("soap_version"   => SOAP_1_2,
+        $aOpcoes = ["soap_version"   => SOAP_1_2,
                          "stream_context" => $oContext,
                          "cache_wsdl"     => WSDL_CACHE_NONE,
                          "trace"          => true,
                          "local_cert"     => $localA1Pem,
                          "passphrase"     => $senhaA1
-        );
+        ];
 
         $sWsdl = self::WSDL;
 
@@ -71,6 +71,7 @@ class Manutencao extends ConexaoSoap
    *
    * @return \stdClass
    */
+    #[\Override]
     public function processarRequisicao()
     {
         parent::processarRequisicao();

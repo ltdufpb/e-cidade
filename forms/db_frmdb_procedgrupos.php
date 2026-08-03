@@ -93,13 +93,13 @@ db_input('at51_descr',40,$Iat51_descr,true,'text',3,'')
     <td valign="top"  align="center">  
     <?php 
 	 if(isset($db_opcao)&&$db_opcao==2) {
-	 	$chavepri= array("at52_proced"=>@$at52_proced);
+	 	$chavepri= ["at52_proced"=>@$at52_proced];
 	 }
 	 else if(isset($db_opcao)&&$db_opcao==3) {
-	 	$chavepri= array("at52_proced"=>@$at52_proced);
+	 	$chavepri= ["at52_proced"=>@$at52_proced];
 	 }
      else if(isset($db_opcao)&&$db_opcao==1) {
-	 	$chavepri= array("at52_sequencial"=>@$at52_sequencial,"at52_proced"=>@$at52_proced);
+	 	$chavepri= ["at52_sequencial"=>@$at52_sequencial,"at52_proced"=>@$at52_proced];
 	 }
 
 	 $cliframe_alterar_excluir->chavepri=$chavepri;

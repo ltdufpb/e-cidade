@@ -58,7 +58,7 @@ class cl_orcdotacao
     public function __construct()
     {
         $this->rotulo = new rotulo("orcdotacao");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -278,7 +278,7 @@ class cl_orcdotacao
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dotações Lançadas ($this->o58_anousu."-".$this->o58_coddot) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dotações Lançadas já Cadastrado";
@@ -308,10 +308,10 @@ class cl_orcdotacao
       $this->atualizacampos();
      $sql = " update orcdotacao set ";
      $virgula = "";
-     if(trim($this->o58_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_anousu"])){
+     if(trim((string) $this->o58_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_anousu"])){
        $sql  .= $virgula." o58_anousu = $this->o58_anousu ";
        $virgula = ",";
-       if(trim($this->o58_anousu) == null ){
+       if(trim((string) $this->o58_anousu) == null ){
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "o58_anousu";
          $this->erro_banco = "";
@@ -321,10 +321,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_coddot"])){
+     if(trim((string) $this->o58_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_coddot"])){
        $sql  .= $virgula." o58_coddot = $this->o58_coddot ";
        $virgula = ",";
-       if(trim($this->o58_coddot) == null ){
+       if(trim((string) $this->o58_coddot) == null ){
          $this->erro_sql = " Campo Reduzido não informado.";
          $this->erro_campo = "o58_coddot";
          $this->erro_banco = "";
@@ -334,10 +334,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_orgao"])){
+     if(trim((string) $this->o58_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_orgao"])){
        $sql  .= $virgula." o58_orgao = $this->o58_orgao ";
        $virgula = ",";
-       if(trim($this->o58_orgao) == null ){
+       if(trim((string) $this->o58_orgao) == null ){
          $this->erro_sql = " Campo Código Orgão não informado.";
          $this->erro_campo = "o58_orgao";
          $this->erro_banco = "";
@@ -347,10 +347,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_unidade"])){
+     if(trim((string) $this->o58_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_unidade"])){
        $sql  .= $virgula." o58_unidade = $this->o58_unidade ";
        $virgula = ",";
-       if(trim($this->o58_unidade) == null ){
+       if(trim((string) $this->o58_unidade) == null ){
          $this->erro_sql = " Campo Código Unidade não informado.";
          $this->erro_campo = "o58_unidade";
          $this->erro_banco = "";
@@ -360,10 +360,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_funcao"])){
+     if(trim((string) $this->o58_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_funcao"])){
        $sql  .= $virgula." o58_funcao = $this->o58_funcao ";
        $virgula = ",";
-       if(trim($this->o58_funcao) == null ){
+       if(trim((string) $this->o58_funcao) == null ){
          $this->erro_sql = " Campo Código da Função não informado.";
          $this->erro_campo = "o58_funcao";
          $this->erro_banco = "";
@@ -373,10 +373,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_subfuncao"])){
+     if(trim((string) $this->o58_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_subfuncao"])){
        $sql  .= $virgula." o58_subfuncao = $this->o58_subfuncao ";
        $virgula = ",";
-       if(trim($this->o58_subfuncao) == null ){
+       if(trim((string) $this->o58_subfuncao) == null ){
          $this->erro_sql = " Campo Sub Função não informado.";
          $this->erro_campo = "o58_subfuncao";
          $this->erro_banco = "";
@@ -386,10 +386,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_programa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_programa"])){
+     if(trim((string) $this->o58_programa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_programa"])){
        $sql  .= $virgula." o58_programa = $this->o58_programa ";
        $virgula = ",";
-       if(trim($this->o58_programa) == null ){
+       if(trim((string) $this->o58_programa) == null ){
          $this->erro_sql = " Campo Programas Orçamento não informado.";
          $this->erro_campo = "o58_programa";
          $this->erro_banco = "";
@@ -399,10 +399,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_projativ"])){
+     if(trim((string) $this->o58_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_projativ"])){
        $sql  .= $virgula." o58_projativ = $this->o58_projativ ";
        $virgula = ",";
-       if(trim($this->o58_projativ) == null ){
+       if(trim((string) $this->o58_projativ) == null ){
          $this->erro_sql = " Campo Projetos / Atividades não informado.";
          $this->erro_campo = "o58_projativ";
          $this->erro_banco = "";
@@ -412,10 +412,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_codele"])){
+     if(trim((string) $this->o58_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_codele"])){
        $sql  .= $virgula." o58_codele = $this->o58_codele ";
        $virgula = ",";
-       if(trim($this->o58_codele) == null ){
+       if(trim((string) $this->o58_codele) == null ){
          $this->erro_sql = " Campo Código Elemento não informado.";
          $this->erro_campo = "o58_codele";
          $this->erro_banco = "";
@@ -425,10 +425,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_codigo"])){
+     if(trim((string) $this->o58_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_codigo"])){
        $sql  .= $virgula." o58_codigo = $this->o58_codigo ";
        $virgula = ",";
-       if(trim($this->o58_codigo) == null ){
+       if(trim((string) $this->o58_codigo) == null ){
          $this->erro_sql = " Campo Tipo de Recurso não informado.";
          $this->erro_campo = "o58_codigo";
          $this->erro_banco = "";
@@ -438,10 +438,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_valor"])){
+     if(trim((string) $this->o58_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_valor"])){
        $sql  .= $virgula." o58_valor = $this->o58_valor ";
        $virgula = ",";
-       if(trim($this->o58_valor) == null ){
+       if(trim((string) $this->o58_valor) == null ){
          $this->erro_sql = " Campo Previsão não informado.";
          $this->erro_campo = "o58_valor";
          $this->erro_banco = "";
@@ -451,10 +451,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_instit"])){
+     if(trim((string) $this->o58_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_instit"])){
        $sql  .= $virgula." o58_instit = $this->o58_instit ";
        $virgula = ",";
-       if(trim($this->o58_instit) == null ){
+       if(trim((string) $this->o58_instit) == null ){
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "o58_instit";
          $this->erro_banco = "";
@@ -464,10 +464,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_localizadorgastos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_localizadorgastos"])){
+     if(trim((string) $this->o58_localizadorgastos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_localizadorgastos"])){
        $sql  .= $virgula." o58_localizadorgastos = $this->o58_localizadorgastos ";
        $virgula = ",";
-       if(trim($this->o58_localizadorgastos) == null ){
+       if(trim((string) $this->o58_localizadorgastos) == null ){
          $this->erro_sql = " Campo Localizador dos Gastos não informado.";
          $this->erro_campo = "o58_localizadorgastos";
          $this->erro_banco = "";
@@ -477,7 +477,7 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_datacriacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_datacriacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["o58_datacriacao_dia"] !="") ){
+     if(trim((string) $this->o58_datacriacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_datacriacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["o58_datacriacao_dia"] !="") ){
        $sql  .= $virgula." o58_datacriacao = '$this->o58_datacriacao' ";
        $virgula = ",";
      }     else{
@@ -486,10 +486,10 @@ class cl_orcdotacao
          $virgula = ",";
        }
      }
-     if(trim($this->o58_concarpeculiar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_concarpeculiar"])){
+     if(trim((string) $this->o58_concarpeculiar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_concarpeculiar"])){
        $sql  .= $virgula." o58_concarpeculiar = '$this->o58_concarpeculiar' ";
        $virgula = ",";
-       if(trim($this->o58_concarpeculiar) == null ){
+       if(trim((string) $this->o58_concarpeculiar) == null ){
          $this->erro_sql = " Campo C.Peculiar/ C. Aplicação não informado.";
          $this->erro_campo = "o58_concarpeculiar";
          $this->erro_banco = "";
@@ -499,10 +499,10 @@ class cl_orcdotacao
          return false;
        }
      }
-     if(trim($this->o58_esferaorcamentaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_esferaorcamentaria"])){
+     if(trim((string) $this->o58_esferaorcamentaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o58_esferaorcamentaria"])){
        $sql  .= $virgula." o58_esferaorcamentaria = $this->o58_esferaorcamentaria ";
        $virgula = ",";
-       if(trim($this->o58_esferaorcamentaria) == null ){
+       if(trim((string) $this->o58_esferaorcamentaria) == null ){
          $this->erro_sql = " Campo Esfera Orçamentária não informado.";
          $this->erro_campo = "o58_esferaorcamentaria";
          $this->erro_banco = "";
@@ -745,7 +745,7 @@ class cl_orcdotacao
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<count($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -801,7 +801,7 @@ class cl_orcdotacao
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<count($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -853,7 +853,7 @@ class cl_orcdotacao
     if($ordem != null ) {
 
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<count($campos_sql);$i++) {
 

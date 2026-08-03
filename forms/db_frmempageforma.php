@@ -184,7 +184,7 @@ function js_mostravalores(){
        if(!isset($recursos)){
          $recursos = "proprios";
        }
-       $ar = array("proprios"=>"Vinculados","todos"=>"Todos");
+       $ar = ["proprios"=>"Vinculados","todos"=>"Todos"];
        db_select("recursos",$ar,true,1);
      ?>
      </td>    

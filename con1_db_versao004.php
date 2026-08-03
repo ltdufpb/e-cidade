@@ -36,8 +36,8 @@ include(modification("classes/db_db_versaousu_classe.php"));
 $cldb_versao = new cl_db_versao;
 $cldb_versaocpd = new cl_db_versaocpd;
 $cldb_versaousu = new cl_db_versaousu;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
@@ -54,11 +54,11 @@ if(isset($incluir)){
   //  echo $cldb_versao->sql_query_file('',"max(db30_codversao||'P'||db30_codrelease+1)");
      $result = $cldb_versao->sql_record($cldb_versao->sql_query_file('',"max(db30_codversao::text||'P'::text||(db30_codrelease+1)::text)"));
      db_fieldsmemory($result,0);
-     if(trim($max) == ''){
+     if(trim((string) $max) == ''){
       echo "<script>alert('Não existe versão para esta release! Cadastre primeiro uma versao')</script>";
       exit;
      }
-     $matriz= split("P",$max);
+     $matriz= preg_split("#P#m",(string) $max);
 //     $db30_codversao = $matriz[0]; 
      $db30_codrelease = $matriz[1];
   }

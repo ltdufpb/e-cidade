@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ceplocalidades_classe.php"));
-db_postmemory($HTTP_POST_VARS,0);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST,0);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clceplocalidades = new cl_ceplocalidades;
 $clceplocalidades->rotulo->label("cp05_codlocalidades");
 $clceplocalidades->rotulo->label("cp05_localidades");
@@ -111,9 +111,9 @@ $clceplocalidades->rotulo->label("cp05_sigla");
         }else{
            $sql = $clceplocalidades->sql_query("",$campos,"cp05_codlocalidades","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cp05_codlocalidades)){
-          $repassa = array("chave_cp05_codlocalidades"=>$chave_cp05_codlocalidades,"chave_cp05_codlocalidades"=>$chave_cp05_codlocalidades);
+          $repassa = ["chave_cp05_codlocalidades"=>$chave_cp05_codlocalidades,"chave_cp05_codlocalidades"=>$chave_cp05_codlocalidades];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

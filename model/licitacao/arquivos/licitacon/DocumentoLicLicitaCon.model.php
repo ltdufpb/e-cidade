@@ -49,8 +49,8 @@ class DocumentoLicLicitaCon extends ArquivoLicitaCon {
    */
   public function getDados() {
 
-    $aLinhas = array();
-    $aCampos = array(
+    $aLinhas = [];
+    $aCampos = [
       'l20_codigo',
       'l47_tipodocumento',
       'l47_nomearquivo',
@@ -59,7 +59,7 @@ class DocumentoLicLicitaCon extends ArquivoLicitaCon {
       'l47_arquivo',
       'l46_fase',
       'l46_liclicitatipoevento'
-    );
+    ];
 
     $aWhere = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(), $this->oCabecalho->getDataGeracao());
     $oDaoLicitacao = new cl_liclicita;
@@ -76,7 +76,7 @@ class DocumentoLicLicitaCon extends ArquivoLicitaCon {
 
       $sSiglaTipoDocumento = LicitaConTipoDocumento::$aSiglaTipoDocumento[$oStdDocumento->l47_tipodocumento];
 
-      $sCaminhoArquivo = $this->sNomeArquivo . "\\" . preg_replace("/((?![\w\\.!@#$%*()_+= ,<>?\/^~-]).)/", "", $oStdDocumento->l47_nomearquivo);
+      $sCaminhoArquivo = $this->sNomeArquivo . "\\" . preg_replace("/((?![\w\\.!@#$%*()_+= ,<>?\/^~-]).)/", "", (string) $oStdDocumento->l47_nomearquivo);
 			$sCaminhoArquivo = File::cutName($sCaminhoArquivo, $this->oRegra->getTamanhoNomeArquivo());
 
 			$oLicitacao = LicitacaoRepository::getByCodigo($oStdDocumento->l20_codigo);
@@ -144,11 +144,11 @@ class DocumentoLicLicitaCon extends ArquivoLicitaCon {
    */
   private function mostrarLicitante($sModalidade, $sTipoDocumento) {
 
-    if (in_array($sModalidade, array('PRD', 'PRI', 'RPO'))) {
+    if (in_array($sModalidade, ['PRD', 'PRI', 'RPO'])) {
       return false;
     }
 
-    $aDocumentosObrigatorios = array();
+    $aDocumentosObrigatorios = [];
     switch ($sModalidade) {
 
       case 'CHP':

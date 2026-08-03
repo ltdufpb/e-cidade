@@ -44,7 +44,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $ed103_d_data_dia     = date("d", db_getsession("DB_datausu"));
 $ed103_d_data_mes     = date("m", db_getsession("DB_datausu"));
@@ -111,9 +111,9 @@ if (isset($incluir)) {
         }
       }//fecha o for
 
-      $dDataModif                         = substr($ed103_d_data,6,4)."-".substr($ed103_d_data,3,2)."-".
-                                            substr($ed103_d_data,0,2);
-      $dDataModifAnt                      = substr($datamodif,6,4)."-".substr($datamodif,3,2)."-".substr($datamodif,0,2);
+      $dDataModif                         = substr((string) $ed103_d_data,6,4)."-".substr((string) $ed103_d_data,3,2)."-".
+                                            substr((string) $ed103_d_data,0,2);
+      $dDataModifAnt                      = substr((string) $datamodif,6,4)."-".substr((string) $datamodif,3,2)."-".substr((string) $datamodif,0,2);
       $oDaoMatricula->ed60_c_situacao     = 'TRANSFERIDO REDE';
       $oDaoMatricula->ed60_d_datamodif    = $dDataModif;
       $oDaoMatricula->ed60_d_datasaida    = ($dDataModif==""?"null":$dDataModif);
@@ -128,11 +128,11 @@ if (isset($incluir)) {
         $matriculaAluno = MatriculaRepository::getMatriculaByCodigo($matricula);
         $matriculaAluno->getDiarioDeClasse()->getDiarioAlunoService()->encerrar();
 
-      $sDescr                                 = "ALUNO DA TURMA ".trim($turma)." TRANSFERIDO PARA ESCOLA ";
-      $sDescr                                .= trim($nomeescola).",CONFORME ATESTADO DE VAGA N°";
+      $sDescr                                 = "ALUNO DA TURMA ".trim((string) $turma)." TRANSFERIDO PARA ESCOLA ";
+      $sDescr                                .= trim((string) $nomeescola).",CONFORME ATESTADO DE VAGA N°";
       $sDescr                                .= $ed103_i_atestvaga." DE". $dataatestado;
-      $dDataEvento                            = substr($ed103_d_data,6,4)."-".
-                                                substr($ed103_d_data,3,2)."-".substr($ed103_d_data,0,2);
+      $dDataEvento                            = substr((string) $ed103_d_data,6,4)."-".
+                                                substr((string) $ed103_d_data,3,2)."-".substr((string) $ed103_d_data,0,2);
       $oDaoMatriculaMov->ed229_i_matricula    = $matricula;
       $oDaoMatriculaMov->ed229_i_usuario      = db_getsession("DB_id_usuario");
       $oDaoMatriculaMov->ed229_c_procedimento = "TRANSFERÊNCIA ENTRE ESCOLAS DA REDE";

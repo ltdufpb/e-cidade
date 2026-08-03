@@ -87,9 +87,7 @@ class Iniciativa extends Model
     {
         return $query->where('pl12_programaestrategico', '=', $idProgramaEstrategico)
             ->where('pl12_orcprojativ', '=', $idAcao)
-            ->when(!empty($id), function ($query) use ($id) {
-                return $query->where('pl12_codigo', '!=', $id);
-            });
+            ->when(!empty($id), fn($query) => $query->where('pl12_codigo', '!=', $id));
     }
 
     /**
@@ -105,7 +103,7 @@ class Iniciativa extends Model
 
         $filtroUnidades = [];
         foreach ($idsUnidades as $unidade) {
-            $data = explode('-', $unidade);
+            $data = explode('-', (string) $unidade);
             $filtroUnidades[] = sprintf(
                 '(pl20_orcorgao %s (%s) and pl20_orcunidade %s (%s))',
                 $operador,

@@ -64,7 +64,7 @@ class EfetividadeRH {
    * Coleção com as efetividades da competência
    * @var Efetividade[]
    */
-  private $aEfetividades = array();
+  private $aEfetividades = [];
 
   /**
    * Construtor da classe. Recebe o códido de vínculo como parâmetro e busca as informações da competência lançada

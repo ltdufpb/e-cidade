@@ -46,7 +46,7 @@ $oRetorno = new stdClass();
 $oRetorno->iStatus = 1;
 
 $sMessage     = "";
-$aDebitos     = array();
+$aDebitos     = [];
 $iInstituicao = db_getsession('DB_instit');
 $iAnoUsu      = db_getsession('DB_anousu');
 $oDaoPcParam  = db_utils::getDao('pcparam');
@@ -193,7 +193,7 @@ switch ($oParam->sExecucao) {
 	            
 	            foreach ($aParagrafos as $oParagrafo) {
 	              
-	              if (trim($oParagrafo->oParag->db02_descr) == 'LISTA_DEBITOS' 
+	              if (trim((string) $oParagrafo->oParag->db02_descr) == 'LISTA_DEBITOS' 
 	                  && $oPcPram->pc30_permitirgerarnotifdebitos == 'f' 
 	                  && !$lPossuiValor) {
 	                continue;
@@ -286,7 +286,7 @@ switch ($oParam->sExecucao) {
       /**
        * Verifica os parametros de configuração da forma de envio da notificação
        */
-      $aFormaNotificacao = array();
+      $aFormaNotificacao = [];
       if ($oPcPram->pc30_notificaemail == 't') {
       	$aFormaNotificacao[] = 'Email';
       }

@@ -46,16 +46,16 @@ ini_set('display_errors','On');
 ini_set('error_log','log/php_error.log');
 
 /* Parametros */
-$sData         = isset($argv[1])?$argv[1]:date('Y-m-d');
-$iInstit       = isset($argv[2])?$argv[2]:1;
+$sData         = $argv[1] ?? date('Y-m-d');
+$iInstit       = $argv[2] ?? 1;
 
 $sSufixo       = str_replace("-", "", $sData)."_{$iInstit}";
 $sDebitosName  = "caixa.debitos_{$sSufixo}";
 $sDebitosGera  = "caixa.debitos_{$sSufixo}_processa";
 
-$sWhere        = isset($argv[3])?$argv[3]:"1=1";
-$iMaxThreads   = isset($argv[4])?$argv[4]:2;
-$lForceRebuild = isset($argv[6])?$argv[6]:false;
+$sWhere        = $argv[3] ?? "1=1";
+$iMaxThreads   = $argv[4] ?? 2;
+$lForceRebuild = $argv[6] ?? false;
 
 
 // Procedimento para verificar geracao cancelada para essa DATA e INSTITUICAO
@@ -194,12 +194,12 @@ if ($iNumrows==0) {
 
 echo "\n";
 
-$aThreads = array();
+$aThreads = [];
 
 $oThreadFinish = new Thread('finish_build_debitos');
 
 for ($i=0; $i<$iNumrows; $i++) {
-	$oDebito = db_utils::fieldsMemory($rsProcessamento, $i);
+	$oDebito = (new db_utils())->fieldsMemory($rsProcessamento, $i);
 
 	$iPercPrincipal = round((($i+1)/$iNumrows)*100, 2);
 

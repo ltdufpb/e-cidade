@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 global $cfpess,$subpes;
 
@@ -85,8 +85,8 @@ global $subpes,$ponto;
               $condicaoaux = " and r10_rubric = ".db_sqlformat($rh27_rubric)." and r10_regist = ".db_sqlformat( $rhfopag[$Ipes]["rh66_regist"] );
 
               if( !db_selectmax( "pontofs", "select * from pontofs ".bb_condicaosubpes("r10_"). $condicaoaux )){
-                   $mtzCampos  = array();
-                   $mtzValores = array();
+                   $mtzCampos  = [];
+                   $mtzValores = [];
 
                    $mtzCampos[1]   = "r10_anousu";
                    $mtzCampos[2]   = "r10_mesusu";
@@ -112,8 +112,8 @@ global $subpes,$ponto;
           }else{
               $condicaoaux = " and r47_rubric = ".db_sqlformat($rh27_rubric)." and r47_regist = ".db_sqlformat( $rhfopag[$Ipes]["rh66_regist"] );
               if( !db_selectmax( "pontocom", "select * from pontocom ".bb_condicaosubpes("r47_"). $condicaoaux)){
-                   $mtzCampos  = array();
-                   $mtzValores = array();
+                   $mtzCampos  = [];
+                   $mtzValores = [];
 
                    $mtzCampos[1]   = "r47_anousu";
                    $mtzCampos[2]   = "r47_mesusu";

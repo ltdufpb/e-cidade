@@ -39,9 +39,9 @@
       <input type="hidden" name="municipio" value="<?=($municipio == "t"?'f':'t')?>">
       <?php 
       if(isset($z01_cgccpf) && $z01_cgccpf != ""){
-        if(strlen($z01_cgccpf) == 14){
+        if(strlen((string) $z01_cgccpf) == 14){
 	  $cnpj = $z01_cgccpf;
-	}elseif(strlen($z01_cgccpf) == 11){
+	}elseif(strlen((string) $z01_cgccpf) == 11){
 	  $cnpj = "";
 	}else{
 	  $cnpj = "";
@@ -60,7 +60,7 @@
       <td align="left" title="<?=$TDBtxt29?>">
 	<strong><?=$LDBtxt29?></strong>
 	<?php 
-	  $x = array("t"=>"SIM","f"=>"NÃO");
+	  $x = ["t"=>"SIM","f"=>"NÃO"];
 	  db_select('municipio',$x,true,$db_opcao,'onChange="js_zerac()"');
 	?>
       </td>
@@ -102,7 +102,7 @@
             </td>
             <td nowrap>
               <?php 
-		    $x = array("2"=>"Empresa Privada","1"=>"Empresa Pública");
+		    $x = ["2"=>"Empresa Privada","1"=>"Empresa Pública"];
 		    db_select('z01_tipcre',$x,true,$db_opcao);
 		    ?>
             </td>

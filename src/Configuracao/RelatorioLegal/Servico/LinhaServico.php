@@ -28,17 +28,11 @@ use stdClass;
 class LinhaServico
 {
     /**
-     * @var stdClass
-     */
-    private $parametros;
-
-    /**
      * LinhaServico constructor.
      * @param stdClass $parametros
      */
-    public function __construct(stdClass $parametros = null)
+    public function __construct(private readonly ?\stdClass $parametros = null)
     {
-        $this->parametros = $parametros;
     }
 
     /**
@@ -77,12 +71,12 @@ class LinhaServico
         }
 
         $informacoesComplementares = JSON::create()->parse($this->parametros->informacoesComplementares);
-        $informacoesComplementaresSalvas = array();
-        $atributos = array();
-        $codigosAtributos = array();
+        $informacoesComplementaresSalvas = [];
+        $atributos = [];
+        $codigosAtributos = [];
 
         foreach ($informacoesComplementares as $informacoesComplementar) {
-            $valores = explode(',', $informacoesComplementar->valor);
+            $valores = explode(',', (string) $informacoesComplementar->valor);
             $atributos[$informacoesComplementar->sigla] = array_unique($valores);
             $codigosAtributos[$informacoesComplementar->sigla] = $informacoesComplementar->codigo;
         }
@@ -104,7 +98,7 @@ class LinhaServico
                         break;
                 }
 
-                $valor = trim(str_replace(array('X', '.'), array('_', ''), $valor));
+                $valor = trim(str_replace(['X', '.'], ['_', ''], $valor));
 
                 $linhaInformacaoComplementar = new LinhaInformacaoComplementar();
                 $linhaInformacaoComplementar->setValor($valor);
@@ -130,14 +124,14 @@ class LinhaServico
      */
     private function combinarAtributos(array $atributos)
     {
-        $informacoesComplementares = array(array());
+        $informacoesComplementares = [[]];
 
         foreach ($atributos as $sigla => $valores) {
-            $aux = array();
+            $aux = [];
 
             foreach ($informacoesComplementares as $informacaoComplementar) {
                 foreach ($valores as $valor) {
-                    if ($valor = trim($valor)) {
+                    if ($valor = trim((string) $valor)) {
                         $informacaoComplementar[$sigla] = $valor;
                         $aux[] = $informacaoComplementar;
                     }

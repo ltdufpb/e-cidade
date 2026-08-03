@@ -36,20 +36,14 @@ class ItemAutorizacao {
 
   protected $sResumo;
 
-  protected $iAutorizacao;
-
   protected $nQuantidade;
 
   protected $nValorTotal;
 
-  protected $nSequencia;
-
   protected $isSave=false;
 
-  function __construct($iAutorizacao, $iSequencia) {
-
-    $this->iAutorizacao = $iAutorizacao;
-    $this->nSequencia   = $iSequencia;
+  function __construct(protected $iAutorizacao, protected $nSequencia)
+  {
   }
   /**
    * @return unknown

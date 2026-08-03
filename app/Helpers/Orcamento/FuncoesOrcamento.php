@@ -20,7 +20,7 @@ if (!function_exists('estruturalAteNivel')) {
     function estruturalAteNivel($natureza)
     {
         $estrutural = new EstruturalReceita($natureza);
-        if ((strpos($natureza, '3') === 0) || (strpos($natureza, '1') === 0)) {
+        if ((str_starts_with((string) $natureza, '3')) || (str_starts_with((string) $natureza, '1'))) {
             $estrutural = new Estrutural($natureza);
         }
 
@@ -117,9 +117,7 @@ if (!function_exists('contasBalanceteVerificacao')) {
         ";
 
         $rs = db_query($sql);
-        $contas = db_utils::makeCollectionFromRecord($rs, function ($dado) {
-            return $dado->estrutural;
-        });
+        $contas = db_utils::makeCollectionFromRecord($rs, fn($dado) => $dado->estrutural);
 
         Registry::set('contasBalanceteVerificacao', $contas);
 

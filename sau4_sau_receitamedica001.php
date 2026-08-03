@@ -33,7 +33,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_sau_receitamedica_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoSauReceitaMedica       = new cl_sau_receitamedica();
 $oDaoFarTipoReceita         = new cl_far_tiporeceita();
 $oDaoSauFormaAdmMedicamento = new cl_sau_formaadmmedicamento();

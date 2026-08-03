@@ -48,8 +48,8 @@ if ( !$rsLinhaTransporte ) {
 
 $iLinhas = pg_num_rows($rsLinhaTransporte);
 
-$aDadosAnalitico = array();
-$aDadosSintetico = array();
+$aDadosAnalitico = [];
+$aDadosSintetico = [];
 
 $oPdf = new PDF('P');
 $oPdf->Open();
@@ -57,17 +57,11 @@ $oPdf->SetAutoPageBreak(false, 20);
 $oPdf->AliasNbPages();
 $oPdf->SetFillColor(225);
 
-switch ($oGet->iItinerario) {
-	case 1 :
-	  $head3  = "Itinerário: Ida";
-	  break;
-	case 2 :
-	  $head3  = "Itinerário: Volta";
-	  break;
-	default:
-	  $head3  = "Itinerário: TODOS";
-	  break;
-}
+$head3 = match ($oGet->iItinerario) {
+    1 => "Itinerário: Ida",
+    2 => "Itinerário: Volta",
+    default => "Itinerário: TODOS",
+};
 
 $head1  = "Relatório de Alunos por Linha";
 $head2  = "Linha: {$oGet->sLinha}";
@@ -90,7 +84,7 @@ if ( $oGet->iTipo == 1 ) {
     $oVeiculo->sNome     = $oDadosLinha->nome_veiculo;
     $oVeiculo->iVagas    = $oDadosLinha->vagas;
     $oVeiculo->iOcupadas = $oDadosLinha->vagas_ocupadas;
-    $oVeiculo->aAlunos = array();
+    $oVeiculo->aAlunos = [];
     
     /**
      * Query para buscar os alunos que estão vinculados a um veículo
@@ -112,7 +106,7 @@ if ( $oGet->iTipo == 1 ) {
       $oItinerario               = new stdClass();
       $oItinerario->iItinerario  = $oDadosLinha->itinerario;
       $oItinerario->sItinerario  = $oDadosLinha->itinerario == 1 ? "Ida" : "Volta";
-      $oItinerario->aHora        = array();
+      $oItinerario->aHora        = [];
       $aDadosAnalitico[$oDadosLinha->itinerario] = $oItinerario;
     }
     
@@ -132,7 +126,7 @@ if ( $oGet->iTipo == 1 ) {
       $oHora->sHoraEntrada  = $oDadosLinha->hora_chegada;
       $oHora->iHoraVagas    = $oVeiculo->iVagas;
       $oHora->iHoraOcupadas = $oVeiculo->iOcupadas;
-      $oHora->aVeiculos     = array();
+      $oHora->aVeiculos     = [];
       
       $oHora->aVeiculos[$oDadosLinha->vinculo_veiculo_horario] = $oVeiculo;
       $aDadosAnalitico[$oDadosLinha->itinerario]->aHora[$oDadosLinha->codigo_horario] = $oHora;

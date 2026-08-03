@@ -30,33 +30,33 @@
 class cl_veiccadcentral
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $ve36_sequencial = 0;
-    var $ve36_coddepto = 0;
+    public $ve36_sequencial = 0;
+    public $ve36_coddepto = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  ve36_sequencial = int4 = Cód. Sequencial 
                  ve36_coddepto = int4 = Depto. 
                  ";
 
     //funcao construtor da classe
-    function cl_veiccadcentral()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veiccadcentral");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -108,10 +108,10 @@ class cl_veiccadcentral
 
                 return false;
             }
-            $this->ve36_sequencial = pg_result($result, 0, 0);
+            $this->ve36_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from veiccadcentral_ve36_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $ve36_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $ve36_sequencial)) {
                 $this->erro_sql = " Campo ve36_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -145,7 +145,7 @@ class cl_veiccadcentral
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Central de Abastecimento ($this->ve36_sequencial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Central de Abastecimento já Cadastrado";
@@ -173,12 +173,12 @@ class cl_veiccadcentral
         $resaco = $this->sql_record($this->sql_query_file($this->ve36_sequencial));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,11268,'$this->ve36_sequencial','I')");
-            $resac = db_query("insert into db_acount values($acount,1936,11268,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1936,11268,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've36_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1936,11269,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1936,11269,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've36_coddepto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -191,10 +191,10 @@ class cl_veiccadcentral
         $this->atualizacampos();
         $sql = " update veiccadcentral set ";
         $virgula = "";
-        if (trim($this->ve36_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve36_sequencial"])) {
+        if (trim((string) $this->ve36_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve36_sequencial"])) {
             $sql .= $virgula . " ve36_sequencial = $this->ve36_sequencial ";
             $virgula = ",";
-            if (trim($this->ve36_sequencial) == null) {
+            if (trim((string) $this->ve36_sequencial) == null) {
                 $this->erro_sql = " Campo Cód. Sequencial nao Informado.";
                 $this->erro_campo = "ve36_sequencial";
                 $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_veiccadcentral
                 return false;
             }
         }
-        if (trim($this->ve36_coddepto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve36_coddepto"])) {
+        if (trim((string) $this->ve36_coddepto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ve36_coddepto"])) {
             $sql .= $virgula . " ve36_coddepto = $this->ve36_coddepto ";
             $virgula = ",";
-            if (trim($this->ve36_coddepto) == null) {
+            if (trim((string) $this->ve36_coddepto) == null) {
                 $this->erro_sql = " Campo Depto. nao Informado.";
                 $this->erro_campo = "ve36_coddepto";
                 $this->erro_banco = "";
@@ -229,16 +229,16 @@ class cl_veiccadcentral
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,11268,'$this->ve36_sequencial','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve36_sequencial"])) {
-                    $resac = db_query("insert into db_acount values($acount,1936,11268,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1936,11268,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've36_sequencial')) . "','$this->ve36_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["ve36_coddepto"])) {
-                    $resac = db_query("insert into db_acount values($acount,1936,11269,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1936,11269,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've36_coddepto')) . "','$this->ve36_coddepto'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -294,13 +294,13 @@ class cl_veiccadcentral
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,11268,'$ve36_sequencial','E')");
-                $resac = db_query("insert into db_acount values($acount,1936,11268,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1936,11268,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've36_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1936,11269,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1936,11269,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've36_coddepto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -372,7 +372,7 @@ class cl_veiccadcentral
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:veiccadcentral";
@@ -421,7 +421,7 @@ class cl_veiccadcentral
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -463,7 +463,7 @@ class cl_veiccadcentral
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -501,7 +501,7 @@ class cl_veiccadcentral
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -540,7 +540,7 @@ class cl_veiccadcentral
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -585,7 +585,7 @@ class cl_veiccadcentral
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -628,7 +628,7 @@ class cl_veiccadcentral
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

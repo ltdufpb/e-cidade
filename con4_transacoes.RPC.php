@@ -63,11 +63,11 @@ function getEstruturalFromReduzido($iReduzido) {
   if ($oDaoConplanoReduz->numrows > 0) {
 
     $oEstrutural = db_utils::fieldsMemory($rsBuscaEstrutural, 0);
-    return array('c60_estrut' => (string)$oEstrutural->c60_estrut,
-                 'c60_descr'  => $oEstrutural->c60_descr);
+    return ['c60_estrut' => (string)$oEstrutural->c60_estrut,
+                 'c60_descr'  => $oEstrutural->c60_descr];
   }
-  return array('c60_estrut' => "0",
-               'c60_descr' => "Nenhuma conta informada");
+  return ['c60_estrut' => "0",
+               'c60_descr' => "Nenhuma conta informada"];
 }
 
 /**
@@ -140,7 +140,7 @@ switch ($oParam->exec) {
         $oXmlWriter->writeAttribute('c45_seqtrans', $oTransacao->c45_seqtrans);
         $oXmlWriter->writeAttribute('c45_anousu', $oTransacao->c45_anousu);
         $oXmlWriter->writeAttribute('c45_coddoc', $oTransacao->c45_coddoc);
-        $oXmlWriter->writeAttribute('c53_descr', utf8_encode(getDescricaoDocumentoTransacao($oTransacao->c45_coddoc)));
+        $oXmlWriter->writeAttribute('c53_descr', mb_convert_encoding(getDescricaoDocumentoTransacao($oTransacao->c45_coddoc), 'UTF-8', 'ISO-8859-1'));
         $oXmlWriter->writeAttribute('c45_instit', $oTransacao->c45_instit);
 
         /**
@@ -159,11 +159,11 @@ switch ($oParam->exec) {
             $oXmlWriter->writeAttribute('c46_seqtranslan', $oLancamento->c46_seqtranslan);
             $oXmlWriter->writeAttribute('c46_seqtrans', $oLancamento->c46_seqtrans);
             $oXmlWriter->writeAttribute('c46_codhist', $oLancamento->c46_codhist);
-            $oXmlWriter->writeAttribute('c46_obs', utf8_encode($oLancamento->c46_obs." "));
-            $oXmlWriter->writeAttribute('c46_valor', utf8_encode($oLancamento->c46_valor." "));
+            $oXmlWriter->writeAttribute('c46_obs', mb_convert_encoding($oLancamento->c46_obs." ", 'UTF-8', 'ISO-8859-1'));
+            $oXmlWriter->writeAttribute('c46_valor', mb_convert_encoding($oLancamento->c46_valor." ", 'UTF-8', 'ISO-8859-1'));
             $oXmlWriter->writeAttribute('c46_obrigatorio', $oLancamento->c46_obrigatorio);
             $oXmlWriter->writeAttribute('c46_evento', $oLancamento->c46_evento);
-            $oXmlWriter->writeAttribute('c46_descricao', utf8_encode($oLancamento->c46_descricao." "));
+            $oXmlWriter->writeAttribute('c46_descricao', mb_convert_encoding($oLancamento->c46_descricao." ", 'UTF-8', 'ISO-8859-1'));
             $oXmlWriter->writeAttribute('c46_ordem', $oLancamento->c46_ordem);
 
             /**
@@ -182,17 +182,17 @@ switch ($oParam->exec) {
                 $oXmlWriter->writeAttribute('c47_seqtranslr', $oConta->c47_seqtranslr);
                 $oXmlWriter->writeAttribute('c47_seqtranslan', $oConta->c47_seqtranslan);
                 $aContaDebito = getEstruturalFromReduzido($oConta->c47_debito);
-                $oXmlWriter->writeAttribute('c47_debito', utf8_encode($aContaDebito['c60_estrut']));
-                $oXmlWriter->writeAttribute('c47_debito_descricao', utf8_encode($aContaDebito['c60_descr']));
+                $oXmlWriter->writeAttribute('c47_debito', mb_convert_encoding($aContaDebito['c60_estrut'], 'UTF-8', 'ISO-8859-1'));
+                $oXmlWriter->writeAttribute('c47_debito_descricao', mb_convert_encoding($aContaDebito['c60_descr'], 'UTF-8', 'ISO-8859-1'));
                 $aContaCredito = getEstruturalFromReduzido($oConta->c47_credito);
-                $oXmlWriter->writeAttribute('c47_credito', utf8_encode($aContaCredito['c60_estrut']));
-                $oXmlWriter->writeAttribute('c47_credito_descricao', utf8_encode($aContaCredito['c60_descr']));
-                $oXmlWriter->writeAttribute('c47_obs', utf8_encode($oConta->c47_obs." "));
-                $oXmlWriter->writeAttribute('c47_ref', utf8_encode($oConta->c47_ref." "));
+                $oXmlWriter->writeAttribute('c47_credito', mb_convert_encoding($aContaCredito['c60_estrut'], 'UTF-8', 'ISO-8859-1'));
+                $oXmlWriter->writeAttribute('c47_credito_descricao', mb_convert_encoding($aContaCredito['c60_descr'], 'UTF-8', 'ISO-8859-1'));
+                $oXmlWriter->writeAttribute('c47_obs', mb_convert_encoding($oConta->c47_obs." ", 'UTF-8', 'ISO-8859-1'));
+                $oXmlWriter->writeAttribute('c47_ref', mb_convert_encoding($oConta->c47_ref." ", 'UTF-8', 'ISO-8859-1'));
                 $oXmlWriter->writeAttribute('c47_anousu', $oConta->c47_anousu);
                 $oXmlWriter->writeAttribute('c47_instit', $oConta->c47_instit);
-                $oXmlWriter->writeAttribute('c47_compara', utf8_encode($oConta->c47_compara." "));
-                $oXmlWriter->writeAttribute('c47_tiporesto', utf8_encode($oConta->c47_tiporesto." "));
+                $oXmlWriter->writeAttribute('c47_compara', mb_convert_encoding($oConta->c47_compara." ", 'UTF-8', 'ISO-8859-1'));
+                $oXmlWriter->writeAttribute('c47_tiporesto', mb_convert_encoding($oConta->c47_tiporesto." ", 'UTF-8', 'ISO-8859-1'));
                 $oXmlWriter->writeAttribute('c114_elemento', getElementoTransacao($oConta->c47_seqtranslr));
                 $oXmlWriter->endElement();
                 unset($oConta);

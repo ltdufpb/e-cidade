@@ -52,7 +52,7 @@ function build_debitos($oDebito, $aConfigConexao, $sArquivoLog, $sNomeScript, $s
 
 	$sSql   = "SELECT pg_try_advisory_lock({$oDebito->sequencial}) AS bloqueou ";
 	$rsLock = db_query($pConexao, $sSql, $sArquivoLog);
-	$oLock  = db_utils::fieldsMemory($rsLock, 0);
+	$oLock  = (new db_utils())->fieldsMemory($rsLock, 0);
 
 	if ($oLock->bloqueou == 'f') {
 		unset($rsLock);
@@ -178,7 +178,7 @@ function build_debitos_processa($pConexao, $sArquivoLog, $sDebitosGera, $iInstit
 	for($i=0; $i<$iNumpreCount; $i++) {
 		$iPerc = round((($i+1)/$iNumpreCount)*100, 2);
 
-		$oDebitosProcessa = db_utils::fieldsMemory($rsDebitosProcessa, $i);
+		$oDebitosProcessa = (new db_utils())->fieldsMemory($rsDebitosProcessa, $i);
 
 		db_log("> gerando {$sDebitosGera} - ".($i+1)." de {$iNumpreCount} - {$iPerc}% (memoria atual=".db_uso_memoria()." pico=".db_uso_memoria(1).")              \r",
 			$sArquivoLog, 1, true, false);
@@ -284,7 +284,7 @@ function finish_build_debitos($aConfigConexao, $sArquivoLog, $sSufixo, $sDebitos
 	$iNumrows        = db_numrows($rsProcessamento, $sArquivoLog);
 
 	for ($i=0; $i<$iNumrows; $i++) {
-		$oDebito = db_utils::fieldsMemory($rsProcessamento, $i);
+		$oDebito = (new db_utils())->fieldsMemory($rsProcessamento, $i);
 
 		if (is_null($iLimit)) {
 			$iPercPrincipal = round((($i+1)/$iNumrows)*100, 2);
@@ -296,7 +296,7 @@ function finish_build_debitos($aConfigConexao, $sArquivoLog, $sSufixo, $sDebitos
 		$sSql = "
 			BEGIN;
 				DELETE FROM {$sDebitosGera} WHERE sequencial = {$oDebito->sequencial};
-				INSERT INTO {$sDebitosName} SELECT * FROM ${sTempName};
+				INSERT INTO {$sDebitosName} SELECT * FROM {$sTempName};
 				DROP TABLE {$sTempName};
 			COMMIT;
 			";
@@ -305,7 +305,7 @@ function finish_build_debitos($aConfigConexao, $sArquivoLog, $sSufixo, $sDebitos
 	}
 
 	if (is_null($iLimit)) {
-		$sPrefixConstraint = explode('.', $sDebitosName);
+		$sPrefixConstraint = explode('.', (string) $sDebitosName);
 		$sPrefixConstraint = $sPrefixConstraint[1];
 		$sSql = "
 			BEGIN;

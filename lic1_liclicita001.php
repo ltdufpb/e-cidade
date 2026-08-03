@@ -135,7 +135,7 @@ if(isset($incluir)){
     }
 
 
-    $l20_procadmin = trim($l20_procadmin);
+    $l20_procadmin = trim((string) $l20_procadmin);
     if ($lprocsis == 'n' && $l20_procadmin === '') {
 
       $sqlerro  = true;

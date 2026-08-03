@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE db_procedcadgrupos
 class cl_db_procedcadgrupos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at51_codigo = 0; 
-   var $at51_descr = null; 
+   public $at51_codigo = 0; 
+   public $at51_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at51_codigo = int4 = Codigo 
                  at51_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_db_procedcadgrupos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_procedcadgrupos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_db_procedcadgrupos {
          $this->erro_status = "0";
          return false; 
        }
-       $this->at51_codigo = pg_result($result,0,0); 
+       $this->at51_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_projetoscadgrupos_at51_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $at51_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $at51_codigo)){
          $this->erro_sql = " Campo at51_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_db_procedcadgrupos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Grupos de procedimentos ($this->at51_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Grupos de procedimentos já Cadastrado";
@@ -152,11 +152,11 @@ class cl_db_procedcadgrupos {
      $resaco = $this->sql_record($this->sql_query_file($this->at51_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8139,'$this->at51_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1377,8139,'','".AddSlashes(pg_result($resaco,0,'at51_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1377,8140,'','".AddSlashes(pg_result($resaco,0,'at51_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1377,8139,'','".AddSlashes(pg_fetch_result($resaco,0,'at51_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1377,8140,'','".AddSlashes(pg_fetch_result($resaco,0,'at51_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_db_procedcadgrupos {
       $this->atualizacampos();
      $sql = " update db_procedcadgrupos set ";
      $virgula = "";
-     if(trim($this->at51_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at51_codigo"])){ 
+     if(trim((string) $this->at51_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at51_codigo"])){ 
        $sql  .= $virgula." at51_codigo = $this->at51_codigo ";
        $virgula = ",";
-       if(trim($this->at51_codigo) == null ){ 
+       if(trim((string) $this->at51_codigo) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "at51_codigo";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_db_procedcadgrupos {
          return false;
        }
      }
-     if(trim($this->at51_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at51_descr"])){ 
+     if(trim((string) $this->at51_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at51_descr"])){ 
        $sql  .= $virgula." at51_descr = '$this->at51_descr' ";
        $virgula = ",";
-       if(trim($this->at51_descr) == null ){ 
+       if(trim((string) $this->at51_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "at51_descr";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_db_procedcadgrupos {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8139,'$this->at51_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at51_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1377,8139,'".AddSlashes(pg_result($resaco,$conresaco,'at51_codigo'))."','$this->at51_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1377,8139,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at51_codigo'))."','$this->at51_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at51_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1377,8140,'".AddSlashes(pg_result($resaco,$conresaco,'at51_descr'))."','$this->at51_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1377,8140,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at51_descr'))."','$this->at51_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_db_procedcadgrupos {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8139,'$at51_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1377,8139,'','".AddSlashes(pg_result($resaco,$iresaco,'at51_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1377,8140,'','".AddSlashes(pg_result($resaco,$iresaco,'at51_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1377,8139,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at51_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1377,8140,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at51_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_procedcadgrupos
@@ -314,7 +314,7 @@ class cl_db_procedcadgrupos {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_procedcadgrupos";
@@ -328,7 +328,7 @@ class cl_db_procedcadgrupos {
    function sql_query ( $at51_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -349,7 +349,7 @@ class cl_db_procedcadgrupos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_db_procedcadgrupos {
    function sql_query_file ( $at51_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_db_procedcadgrupos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

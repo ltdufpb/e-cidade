@@ -43,17 +43,11 @@ use stdClass;
 class LinhaColunaServico
 {
     /**
-     * @var stdClass
-     */
-    private $parametros;
-
-    /**
      * LinhaColunaServico constructor.
      * @param stdClass $parametros
      */
-    public function __construct(stdClass $parametros)
+    public function __construct(private stdClass $parametros)
     {
-        $this->parametros = $parametros;
     }
 
     /**

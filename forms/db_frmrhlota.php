@@ -83,7 +83,7 @@ $r70_instit = db_getsession("DB_instit");
           $result = $clcfpess->sql_record($clcfpess->sql_query_file($anofolha,$mesfolha,db_getsession("DB_instit"),"r11_codestrut"));
           if($clcfpess->numrows>0){
             db_fieldsmemory($result,0);
-            if((trim($r11_codestrut) == "" || $r11_codestrut == 0) && ($db_opcao <= 3)){
+            if((trim((string) $r11_codestrut) == "" || $r11_codestrut == 0) && ($db_opcao <= 3)){
               $sqlerro = true;
               $erro_msg = "ALERTA: \\nEstrutural da lotação não definido! \\nVerifique manutenção de parâmetros gerais.";
               $sem_parametro_configurado = true;
@@ -176,7 +176,7 @@ $r70_instit = db_getsession("DB_instit");
               if(isset($sem_parametro_configurado)){
                 $opcao_nao_troca_analitica = 3;
               }
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('r70_analitica',$x,true,$opcao_nao_troca_analitica,"onchange='js_troca();'");
               ?>
             </td>
@@ -187,7 +187,7 @@ $r70_instit = db_getsession("DB_instit");
             </td>
             <td> 
               <?php 
-              $x = array("t"=>"Ativo","f"=>"Inativo");
+              $x = ["t"=>"Ativo","f"=>"Inativo"];
               db_select('r70_ativo',$x,true,$db_opcao);
               ?>
             </td>
@@ -441,7 +441,7 @@ function js_preenchepesquisa(chave){
   db_iframerhlota.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

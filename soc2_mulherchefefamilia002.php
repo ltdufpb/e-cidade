@@ -43,7 +43,7 @@ require_once(modification("model/educacao/avaliacao/iElementoAvaliacao.interface
 require_once(modification("std/DBDate.php"));
 
 $oGet       = db_utils::postMemory($_GET);
-$aAtividade = explode(",", $oGet->sAtividade);
+$aAtividade = explode(",", (string) $oGet->sAtividade);
 
 $oDaoCidadaoFamilia = new cl_cidadaofamilia();
 $sSqlListaCidadaos  = $oDaoCidadaoFamilia->sql_query_responsavel_por_resposta_avaliacao($aAtividade);
@@ -103,12 +103,12 @@ $head2 = "Mulheres Chefe de Família";
 $iTotalRegistros = 0;
 foreach ($aFamilia as $sAtividade => $aFamilia) {
 
-  uasort($aFamilia, "ordernarFamilias");
+  uasort($aFamilia, ordernarFamilias(...));
   foreach ($aFamilia as $oFamilia) {
 
     if ($lPrimeiroLaco || $oPdf->gety() > $oPdf->h - 15) {
 
-      setHeader($oPdf, $iHeigth, $sAtividade);
+      setHeader($oPdf, $iHeigth);
       $lPrimeiroLaco = false;
     }
     $nRenda = is_numeric($oFamilia->nRendaPerCapita) ? $oFamilia->nRendaPerCapita : 0;
@@ -119,7 +119,7 @@ foreach ($aFamilia as $sAtividade => $aFamilia) {
     $oPdf->Cell(25,  $iHeigth, "{$oFamilia->iCodigoFamilia}",     "TBRL", 0);
     $oPdf->Cell(105, $iHeigth, "{$oFamilia->sResponsavel}",       "TBRL", 0);
     $oPdf->Cell(25,  $iHeigth, $nRenda,                           "TBRL", 0, "R");
-    $oPdf->Cell(100, $iHeigth, substr($oFamilia->sBairro, 0, 90), "LTB",  1);
+    $oPdf->Cell(100, $iHeigth, substr((string) $oFamilia->sBairro, 0, 90), "LTB",  1);
     $iTotalRegistros++;
   }
   $lPrimeiroLaco = true;
@@ -134,7 +134,7 @@ $oPdf->Cell(40,  $iHeigth, $iTotalRegistros,      "LTB",  1);
  */
 function ordernarFamilias($aArrayAtual, $aProximoArray){
 
-  return strcasecmp($aArrayAtual->sResponsavel, $aProximoArray->sResponsavel);
+  return strcasecmp((string) $aArrayAtual->sResponsavel, (string) $aProximoArray->sResponsavel);
 }
 
 /**
@@ -159,7 +159,7 @@ function setHeader($oPdf, $iHeigth, $sAtividade) {
 
 function ajustaResposta($sResposta) {
 
-  $sResposta = urldecode($sResposta);
+  $sResposta = urldecode((string) $sResposta);
   $iInicio   = strpos($sResposta, "-");
   $iInicio   = $iInicio === false ? 0 : $iInicio + 1;
   $sResposta = trim(substr($sResposta, $iInicio));

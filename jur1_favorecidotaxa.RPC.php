@@ -52,7 +52,7 @@ $lErro               = false;
 switch ($oParam->exec) {
   case "getTaxas" :
     
-    $oRetorno->aTaxas    = array();
+    $oRetorno->aTaxas    = [];
     $sSqlFavorecidoTaxa  = $oDaoFavorecidoTaxa->sql_query("","ar36_descricao,ar36_sequencial,v87_sequencial  ","","v87_favorecido = {$oParam->v87_favorecido}");
     $rsSqlFavorecidoTaxa = $oDaoFavorecidoTaxa->sql_record($sSqlFavorecidoTaxa);
     

@@ -45,7 +45,7 @@ $clobrastec      = new cl_obrastec;
 $clobrastecnicos = new cl_obrastecnicos;
 $clobrasconstr   = new cl_obrasconstr;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if(!isset($codigo) || $codigo==''){
   
@@ -131,7 +131,7 @@ if($clobrasconstr->numrows>0){
 $dia = date("d");
 $mes = date("m");
 $ano = date("Y");
-$mes_extenso = array("01"=>"janeiro","02"=>"fevereiro","03"=>"março","04"=>"abril","05"=>"maio","06"=>"junho","07"=>"julho","08"=>"agosto","09"=>"setembro","10"=>"outubro","11"=>"novembro","12"=>"dezembro");
+$mes_extenso = ["01"=>"janeiro","02"=>"fevereiro","03"=>"março","04"=>"abril","05"=>"maio","06"=>"junho","07"=>"julho","08"=>"agosto","09"=>"setembro","10"=>"outubro","11"=>"novembro","12"=>"dezembro"];
 $data="Guaíba, ".$dia." de ".$mes_extenso[$mes]." de ".$ano.".";
 
 $head1 = 'Departamento de Cadastro Imobiliário';
@@ -156,14 +156,14 @@ if (pg_num_rows($resulttexto) == 0 || $resulttexto == false) {
 }
 
 
-for( $xx = 0;$xx < pg_numrows($resulttexto);$xx ++ ){
+for( $xx = 0;$xx < pg_num_rows($resulttexto);$xx ++ ){
   db_fieldsmemory($resulttexto,$xx);
   $text  = $descrtexto;
-  $$text = db_geratexto($conteudotexto);
+  ${$text} = db_geratexto($conteudotexto);
 }
 ////////relatorio
 $pdf->SetFont('Arial','B',15);
-$pdf->MultiCell(0,4,utf8_decode($alvara_tit),0,"C",0,0);
+$pdf->MultiCell(0,4,mb_convert_encoding($alvara_tit, 'ISO-8859-1'),0,"C",0,0);
 $pdf->Ln(15);
 $alt=4;
 
@@ -175,9 +175,9 @@ $pdf->Cell(0,$alt,@$z01_nome,"TR",1,"L",0);
 $pdf->SetFont('Arial','B',8);
 $pdf->Cell(35,$alt,"CPF/CNPJ: ","L",0,"L",0);
 $pdf->SetFont('Arial','',8);
-if(strlen(trim($z01_cgccpf))==11){
+if(strlen(trim((string) $z01_cgccpf))==11){
   $z01_cgccpf=db_formatar($z01_cgccpf,"cpf");
-}else if(strlen(trim($z01_cgccpf))==14){
+}else if(strlen(trim((string) $z01_cgccpf))==14){
   $z01_cgccpf=db_formatar($z01_cgccpf,"cgc");
 }
 $pdf->Cell(0,$alt,@$z01_cgccpf,"R",1,"L",0);

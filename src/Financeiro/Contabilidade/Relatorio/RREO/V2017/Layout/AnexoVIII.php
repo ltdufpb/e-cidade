@@ -60,40 +60,40 @@ class AnexoVIII
     const CONTROLE_FINANCEIRO = 11;
     const TOTAL_LINHAS_FINANCEIRO = 11;
 
-    private $aReceita = array(
+    private $aReceita = [
         self::RECEITA_RESULTANTE_IMPOSTO,
         self::RECEITA_ADICIONAL,
         self::RECEITA_FUNDEB,
-    );
+    ];
 
-    private $aDespesa = array(
+    private $aDespesa = [
         self::DESPESA_FUNDEB,
         self::DESPESA_MDE,
         self::OUTRAS_DESPESAS_INF_CONTROLE,
-    );
+    ];
 
-    private $aDeducao = array(
+    private $aDeducao = [
         self::DEDUCAO_FUNDEB,
         self::INDICADOR_FUNDEB,
         self::CONTROLE_USO_RECURSO_SUBSEQUENTE,
         self::DEDUCAO_LIMITE_CONSTITUCIONAL,
-    );
+    ];
 
-    protected $aPosicoes = array(
-        self::RECEITA_RESULTANTE_IMPOSTO => array('inicio' => 1, 'fim' => 26), //0
-        self::RECEITA_ADICIONAL => array('inicio' => 27, 'fim' => 40), //1
-        self::RECEITA_FUNDEB => array('inicio' => 41, 'fim' => 52), //2
-        self::DESPESA_FUNDEB => array('inicio' => 53, 'fim' => 59), //3
-        self::DEDUCAO_FUNDEB => array('inicio' => 60, 'fim' => 66), //4
-        self::INDICADOR_FUNDEB => array('inicio' => 67, 'fim' => 70), //5
-        self::CONTROLE_USO_RECURSO_SUBSEQUENTE => array('inicio' => 71, 'fim' => 72), //6
-        self::DESPESA_MDE => array('inicio' => 73, 'fim' => 87), //7
-        self::DEDUCAO_LIMITE_CONSTITUCIONAL => array('inicio' => 88, 'fim' => 97), //8
-        self::OUTRAS_DESPESAS_INF_CONTROLE => array('inicio' => 98, 'fim' => 103),//9
-        self::RP_VINCULADO_ENSINO => array('inicio' => 104, 'fim' => 106),//10
-        self::CONTROLE_FINANCEIRO => array('inicio' => 107, 'fim' => 117),//11
-        12 => array('inicio' => 118, 'fim' => 128), //12
-    );
+    protected $aPosicoes = [
+        self::RECEITA_RESULTANTE_IMPOSTO => ['inicio' => 1, 'fim' => 26], //0
+        self::RECEITA_ADICIONAL => ['inicio' => 27, 'fim' => 40], //1
+        self::RECEITA_FUNDEB => ['inicio' => 41, 'fim' => 52], //2
+        self::DESPESA_FUNDEB => ['inicio' => 53, 'fim' => 59], //3
+        self::DEDUCAO_FUNDEB => ['inicio' => 60, 'fim' => 66], //4
+        self::INDICADOR_FUNDEB => ['inicio' => 67, 'fim' => 70], //5
+        self::CONTROLE_USO_RECURSO_SUBSEQUENTE => ['inicio' => 71, 'fim' => 72], //6
+        self::DESPESA_MDE => ['inicio' => 73, 'fim' => 87], //7
+        self::DEDUCAO_LIMITE_CONSTITUCIONAL => ['inicio' => 88, 'fim' => 97], //8
+        self::OUTRAS_DESPESAS_INF_CONTROLE => ['inicio' => 98, 'fim' => 103],//9
+        self::RP_VINCULADO_ENSINO => ['inicio' => 104, 'fim' => 106],//10
+        self::CONTROLE_FINANCEIRO => ['inicio' => 107, 'fim' => 117],//11
+        12 => ['inicio' => 118, 'fim' => 128], //12
+    ];
 
     // Comprimentos das linhas
     private $aLinhaReceita;
@@ -104,9 +104,9 @@ class AnexoVIII
     private $oRelatorio;
 
 
-    private $aCustomizado = array(
+    private $aCustomizado = [
         self::RP_VINCULADO_ENSINO,
-    );
+    ];
 
     /**
      * @var \PDFDocument
@@ -177,15 +177,15 @@ class AnexoVIII
             $this->lREstoPagar = true;
         }
 
-        $this->aLinhaReceita = array(
+        $this->aLinhaReceita = [
             $iColuna1,
             $iColuna2,
             $iColuna2,
             $iColuna3,
             $iColuna3,
-        );
+        ];
 
-        $this->aLinhaDespesa = array(
+        $this->aLinhaDespesa = [
             $iColuna4,
             $iColuna5,
             $iColuna5,
@@ -194,11 +194,11 @@ class AnexoVIII
             $iColuna5,
             $iColuna5,
             $iColuna6,
-        );
+        ];
 
         if (!$this->lREstoPagar) {
             $iAux = ($iColuna6 / 2) + $iColuna5;
-            $this->aLinhaDespesa = array(
+            $this->aLinhaDespesa = [
                 $iColuna4,
                 $iAux,
                 $iAux,
@@ -207,19 +207,19 @@ class AnexoVIII
                 $iColuna5,
                 $iColuna5,
                 $iColuna6,
-            );
+            ];
         }
 
-        $this->aLinhaDeducao = array(
+        $this->aLinhaDeducao = [
             $iColuna7,
             $iColuna8,
-        );
+        ];
 
-        $this->aLinhaCustomizado = array(
+        $this->aLinhaCustomizado = [
             $iColuna9,
             $iColuna10,
             $iColuna10,
-        );
+        ];
     }
 
     public function setAnexo(\RelatoriosLegaisBase $oRelatorio)
@@ -503,11 +503,11 @@ class AnexoVIII
 
             case self::RP_VINCULADO_ENSINO:
 
-                $aDescricao = array(
+                $aDescricao = [
                     "RESTOS A PAGAR INSCRITOS COM DISPONIBILIDADE FINANCEIRA DE RECURSOS DE IMPOSTOS VINCULADOS AO ENSINO",
                     "SALDO ATÉ O BIMESTRE",
                     "CANCELADO EM <EXERCÍCIO> (j)",
-                );
+                ];
                 $this->imprimeDadosCabecalhoCustomizado($aDescricao);
                 break;
 
@@ -909,7 +909,7 @@ class AnexoVIII
 
         $sFonte = "Fonte: Sistema E-Cidade, Unidade Responsável {$oDepartamento->getNomeDepartamento()}, Data de emissão";
         $sFonte .= " {$sData} e hora de emissão {$sHora}";
-        $aNotas = array(
+        $aNotas = [
             "",
             $sFonte,
             "",
@@ -920,7 +920,7 @@ class AnexoVIII
             "5 Limites mínimos anuais a serem cumpridos no encerramento do exercício, no âmbito de atuação prioritária, conforme LDB, art. 11, V.",
             "6 Nos cinco primeiros bimestres do exercício o acompanhamento poderá ser feito com base na despesa empenhada ou na despesa liquidada. No último bimestre do exercício, o valor deverá corresponder ao total da despesa empenhada.",
             "7 Essa coluna poderá ser apresentada somente no último bimestre",
-        );
+        ];
         $this->oPdf->setFontSize(5);
         foreach ($aNotas as $sNota) {
             $this->oPdf->cell(self::COMPRIMENTO_MAXIMO, 2, $sNota, "", 1, "L");

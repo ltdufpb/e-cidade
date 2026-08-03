@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("db_sysfuncoes"=>" Dados da Função ","db_sysfuncoesparam"=>"Parametros da Função"); 
-	 $clcriaabas->src        = array("db_sysfuncoes"=>"con1_db_sysfuncoes004.php");
-	 $clcriaabas->disabled   =  array("db_sysfuncoesparam"=>"true"); 
+	 $clcriaabas->identifica = ["db_sysfuncoes"=>" Dados da Função ","db_sysfuncoesparam"=>"Parametros da Função"]; 
+	 $clcriaabas->src        = ["db_sysfuncoes"=>"con1_db_sysfuncoes004.php"];
+	 $clcriaabas->disabled   =  ["db_sysfuncoesparam"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
    
    echo "<script>document.formaba.db_sysfuncoes.size='50';</script>";

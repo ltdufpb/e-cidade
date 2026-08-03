@@ -1,92 +1,92 @@
 <?php
-return array(
-    'ideHorContratual' => array(
-        'properties' => array(
-            'codHorContrat' => array(
+return [
+    'ideHorContratual' => [
+        'properties' => [
+            'codHorContrat' => [
                 'required' => true,
                 'type' => 'string',
                 'maxLength' => 30,
                 'pattern' => '^(?!eSocial)',
-            ),
-            'iniValid' => array(
+            ],
+            'iniValid' => [
                 'required' => true,
                 'type' => 'string',
                 'pattern' => '^(19[0-9][0-9]|2[0-9][0-9][0-9])[-/](0?[1-9]|1[0-2])$',
-            ),
-            'fimValid' => array(
+            ],
+            'fimValid' => [
                 'required' => false,
-                'type' => array(
+                'type' => [
                     0 => 'string',
                     1 => 'null',
-                ),
+                ],
                 'pattern' => '^(19[0-9][0-9]|2[0-9][0-9][0-9])[-/](0?[1-9]|1[0-2])$',
-            ),
+            ],
 
-        )
-    ),
-    'dadosHorContratual' => array(
+        ]
+    ],
+    'dadosHorContratual' => [
         'required' => true,
         'type' => 'object',
-        'properties' => array(
+        'properties' => [
             'hrEntr' =>
-                array(
+                [
                     'required' => true,
                     'type' => 'string',
                     'pattern' => '^(?:2[0-3]|[0-1]?[0-9])[0-5]?[0-9]$',
-                ),
+                ],
             'hrSaida' =>
-                array(
+                [
                     'required' => true,
                     'type' => 'string',
                     'pattern' => '^(?:2[0-3]|[0-1]?[0-9])[0-5]?[0-9]$',
-                ),
+                ],
             'durJornada' =>
-                array(
+                [
                     'required' => true,
                     'type' => 'integer',
                     'minimum' => 1,
                     'maximum' => 9999,
-                ),
-            'perHorFlexivel' => array(
+                ],
+            'perHorFlexivel' => [
                 'required' => true,
                 'type' => 'string',
                 'pattern' => 'S|N',
-            )
-        ),
-        'groups' => array(
-            'horarioIntervalo' => array(
+            ]
+        ],
+        'groups' => [
+            'horarioIntervalo' => [
                 'required' => false,
                 'type' => 'array',
                 'minItems' => 0,
                 'maxItems' => 99,
-                'items' => array(
+                'items' => [
                     'type' => 'object',
-                    'properties' => array(
-                        'tpInterv' => array(
+                    'properties' => [
+                        'tpInterv' => [
                             'required' => true,
                             'type' => 'integer',
                             'minimum' => 1,
                             'maximum' => 2,
-                        ),
-                        'durInterv' => array(
+                        ],
+                        'durInterv' => [
                             'required' => true,
                             'type' => 'integer',
                             'minimum' => 1,
                             'maximum' => 999,
-                        ),
-                        'iniInterv' => array(
+                        ],
+                        'iniInterv' => [
                             'required' => false,
                             'type' => 'string',
                             'pattern' => '^[0-2][0-3][0-5][0-9]$',
-                        ),
-                        'termInterv' => array(
+                        ],
+                        'termInterv' => [
                             'required' => false,
                             'type' => 'string',
                             'pattern' => '^[0-2][0-3][0-5][0-9]$',
-                        )
-                    )
-                )
-            )
-        )
-    )
-);
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

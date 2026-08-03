@@ -31,27 +31,27 @@ require_once('model/protocolo/ProcessoProtocoloNumeracao.model.php');
 //CLASSE DA ENTIDADE protprocessonumeracao
 class cl_protprocessonumeracao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $p07_sequencial = 0;
-   var $p07_instit = 0;
-   var $p07_ano = 0;
-   var $p07_proximonumero = 0;
-   var $p07_orgao = 0;
-   var $p07_prottipodocumentoprocesso = 0;
+   public $p07_sequencial = 0;
+   public $p07_instit = 0;
+   public $p07_ano = 0;
+   public $p07_proximonumero = 0;
+   public $p07_orgao = 0;
+   public $p07_prottipodocumentoprocesso = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  p07_sequencial = int4 = Sequencial
                  p07_instit = int4 = Instituição
                  p07_ano = int4 = Ano do Processo
@@ -60,10 +60,10 @@ class cl_protprocessonumeracao {
                  p07_prottipodocumentoprocesso = Tipo de Documento
                  ";
    //funcao construtor da classe
-   function cl_protprocessonumeracao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("protprocessonumeracao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -127,10 +127,10 @@ class cl_protprocessonumeracao {
          $this->erro_status = "0";
          return false;
        }
-       $this->p07_sequencial = pg_result($result,0,0);
+       $this->p07_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from protprocessonumeracao_p07_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p07_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p07_sequencial)){
          $this->erro_sql = " Campo p07_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -151,10 +151,10 @@ class cl_protprocessonumeracao {
          $this->erro_status = "0";
          return false;
        }
-       $this->p07_sequencial = pg_result($result,0,0);
+       $this->p07_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from protprocessonumeracao_p07_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p07_proximonumero)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p07_proximonumero)){
          $this->erro_sql = " Campo p07_proximonumero maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -196,7 +196,7 @@ class cl_protprocessonumeracao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Númeração do Protocolo ($this->p07_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Númeração do Protocolo já Cadastrado";
@@ -220,15 +220,15 @@ class cl_protprocessonumeracao {
      $resaco = $this->sql_record($this->sql_query_file($this->p07_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18214,'$this->p07_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3216,18214,'','".AddSlashes(pg_result($resaco,0,'p07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3216,18210,'','".AddSlashes(pg_result($resaco,0,'p07_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3216,18209,'','".AddSlashes(pg_result($resaco,0,'p07_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3216,18211,'','".AddSlashes(pg_result($resaco,0,'p07_proximonumero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3216,1699,'','".AddSlashes(pg_result($resaco,0,'p07_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3216,1011787,'','".AddSlashes(pg_result($resaco,0,'p07_prottipodocumentoprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3216,18214,'','".AddSlashes(pg_fetch_result($resaco,0,'p07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3216,18210,'','".AddSlashes(pg_fetch_result($resaco,0,'p07_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3216,18209,'','".AddSlashes(pg_fetch_result($resaco,0,'p07_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3216,18211,'','".AddSlashes(pg_fetch_result($resaco,0,'p07_proximonumero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3216,1699,'','".AddSlashes(pg_fetch_result($resaco,0,'p07_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3216,1011787,'','".AddSlashes(pg_fetch_result($resaco,0,'p07_prottipodocumentoprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -237,10 +237,10 @@ class cl_protprocessonumeracao {
       $this->atualizacampos();
      $sql = " update protprocessonumeracao set ";
      $virgula = "";
-     if(trim($this->p07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p07_sequencial"])){
+     if(trim((string) $this->p07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p07_sequencial"])){
        $sql  .= $virgula." p07_sequencial = $this->p07_sequencial ";
        $virgula = ",";
-       if(trim($this->p07_sequencial) == null ){
+       if(trim((string) $this->p07_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "p07_sequencial";
          $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_protprocessonumeracao {
          return false;
        }
      }
-     if(trim($this->p07_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p07_instit"])){
+     if(trim((string) $this->p07_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p07_instit"])){
        $sql  .= $virgula." p07_instit = $this->p07_instit ";
        $virgula = ",";
-       if(trim($this->p07_instit) == null ){
+       if(trim((string) $this->p07_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "p07_instit";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_protprocessonumeracao {
          return false;
        }
      }
-     if(trim($this->p07_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p07_ano"])){
+     if(trim((string) $this->p07_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p07_ano"])){
        $sql  .= $virgula." p07_ano = $this->p07_ano ";
        $virgula = ",";
-       if(trim($this->p07_ano) == null ){
+       if(trim((string) $this->p07_ano) == null ){
          $this->erro_sql = " Campo Ano do Processo nao Informado.";
          $this->erro_campo = "p07_ano";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_protprocessonumeracao {
          return false;
        }
      }
-     if(trim($this->p07_proximonumero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p07_proximonumero"])){
+     if(trim((string) $this->p07_proximonumero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p07_proximonumero"])){
        $sql  .= $virgula." p07_proximonumero = $this->p07_proximonumero ";
        $virgula = ",";
-       if(trim($this->p07_proximonumero) == null ){
+       if(trim((string) $this->p07_proximonumero) == null ){
          $this->erro_sql = " Campo Próximo Número nao Informado.";
          $this->erro_campo = "p07_proximonumero";
          $this->erro_banco = "";
@@ -303,21 +303,21 @@ class cl_protprocessonumeracao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18214,'$this->p07_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p07_sequencial"]) || $this->p07_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3216,18214,'".AddSlashes(pg_result($resaco,$conresaco,'p07_sequencial'))."','$this->p07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3216,18214,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p07_sequencial'))."','$this->p07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p07_instit"]) || $this->p07_instit != "")
-           $resac = db_query("insert into db_acount values($acount,3216,18210,'".AddSlashes(pg_result($resaco,$conresaco,'p07_instit'))."','$this->p07_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3216,18210,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p07_instit'))."','$this->p07_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p07_ano"]) || $this->p07_ano != "")
-           $resac = db_query("insert into db_acount values($acount,3216,18209,'".AddSlashes(pg_result($resaco,$conresaco,'p07_ano'))."','$this->p07_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3216,18209,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p07_ano'))."','$this->p07_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p07_proximonumero"]) || $this->p07_proximonumero != "")
-           $resac = db_query("insert into db_acount values($acount,3216,18211,'".AddSlashes(pg_result($resaco,$conresaco,'p07_proximonumero'))."','$this->p07_proximonumero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3216,18211,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p07_proximonumero'))."','$this->p07_proximonumero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p07_orgao"]) || $this->p07_orgao != "")
-           $resac = db_query("insert into db_acount values($acount,3216,1699,'".AddSlashes(pg_result($resaco,$conresaco,'p07_orgao'))."','$this->p07_orgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3216,1699,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p07_orgao'))."','$this->p07_orgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p07_prottipodocumentoprocesso"]) || $this->p07_orgao != "")
-           $resac = db_query("insert into db_acount values($acount,3216,1011787,'".AddSlashes(pg_result($resaco,$conresaco,'p07_prottipodocumentoprocesso'))."','$this->p07_orgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3216,1011787,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p07_prottipodocumentoprocesso'))."','$this->p07_orgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -363,15 +363,15 @@ class cl_protprocessonumeracao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18214,'$p07_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3216,18214,'','".AddSlashes(pg_result($resaco,$iresaco,'p07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3216,18210,'','".AddSlashes(pg_result($resaco,$iresaco,'p07_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3216,18209,'','".AddSlashes(pg_result($resaco,$iresaco,'p07_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3216,18211,'','".AddSlashes(pg_result($resaco,$iresaco,'p07_proximonumero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3216,1699,'','".AddSlashes(pg_result($resaco,$iresaco,'p07_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3216,1011787,'','".AddSlashes(pg_result($resaco,$iresaco,'p07_prottipodocumentoprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3216,18214,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3216,18210,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p07_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3216,18209,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p07_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3216,18211,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p07_proximonumero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3216,1699,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p07_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3216,1011787,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p07_prottipodocumentoprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from protprocessonumeracao
@@ -431,7 +431,7 @@ class cl_protprocessonumeracao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:protprocessonumeracao";
@@ -470,7 +470,7 @@ class cl_protprocessonumeracao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -516,7 +516,7 @@ class cl_protprocessonumeracao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

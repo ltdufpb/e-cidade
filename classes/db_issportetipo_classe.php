@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE issportetipo
 class cl_issportetipo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q41_codigo = 0; 
-   var $q41_codporte = 0; 
-   var $q41_codclasse = 0; 
-   var $q41_codtipcalc = 0; 
+   public $q41_codigo = 0; 
+   public $q41_codporte = 0; 
+   public $q41_codclasse = 0; 
+   public $q41_codtipcalc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q41_codigo = int8 = Codigo 
                  q41_codporte = int8 = Cod. Porte 
                  q41_codclasse = int4 = codigo da classe 
                  q41_codtipcalc = int4 = codigo do tipo de calculo 
                  ";
    //funcao construtor da classe 
-   function cl_issportetipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issportetipo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_issportetipo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q41_codigo = pg_result($result,0,0); 
+       $this->q41_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from issportetipo_q41_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q41_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q41_codigo)){
          $this->erro_sql = " Campo q41_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_issportetipo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo de calculo por porte e classe ($this->q41_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo de calculo por porte e classe já Cadastrado";
@@ -180,13 +180,13 @@ class cl_issportetipo {
      $resaco = $this->sql_record($this->sql_query_file($this->q41_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6437,'$this->q41_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1048,6437,'','".AddSlashes(pg_result($resaco,0,'q41_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1048,6393,'','".AddSlashes(pg_result($resaco,0,'q41_codporte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1048,6394,'','".AddSlashes(pg_result($resaco,0,'q41_codclasse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1048,6395,'','".AddSlashes(pg_result($resaco,0,'q41_codtipcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1048,6437,'','".AddSlashes(pg_fetch_result($resaco,0,'q41_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1048,6393,'','".AddSlashes(pg_fetch_result($resaco,0,'q41_codporte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1048,6394,'','".AddSlashes(pg_fetch_result($resaco,0,'q41_codclasse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1048,6395,'','".AddSlashes(pg_fetch_result($resaco,0,'q41_codtipcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_issportetipo {
       $this->atualizacampos();
      $sql = " update issportetipo set ";
      $virgula = "";
-     if(trim($this->q41_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codigo"])){ 
+     if(trim((string) $this->q41_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codigo"])){ 
        $sql  .= $virgula." q41_codigo = $this->q41_codigo ";
        $virgula = ",";
-       if(trim($this->q41_codigo) == null ){ 
+       if(trim((string) $this->q41_codigo) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "q41_codigo";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_issportetipo {
          return false;
        }
      }
-     if(trim($this->q41_codporte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codporte"])){ 
+     if(trim((string) $this->q41_codporte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codporte"])){ 
        $sql  .= $virgula." q41_codporte = $this->q41_codporte ";
        $virgula = ",";
-       if(trim($this->q41_codporte) == null ){ 
+       if(trim((string) $this->q41_codporte) == null ){ 
          $this->erro_sql = " Campo Cod. Porte nao Informado.";
          $this->erro_campo = "q41_codporte";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_issportetipo {
          return false;
        }
      }
-     if(trim($this->q41_codclasse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codclasse"])){ 
+     if(trim((string) $this->q41_codclasse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codclasse"])){ 
        $sql  .= $virgula." q41_codclasse = $this->q41_codclasse ";
        $virgula = ",";
-       if(trim($this->q41_codclasse) == null ){ 
+       if(trim((string) $this->q41_codclasse) == null ){ 
          $this->erro_sql = " Campo codigo da classe nao Informado.";
          $this->erro_campo = "q41_codclasse";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_issportetipo {
          return false;
        }
      }
-     if(trim($this->q41_codtipcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codtipcalc"])){ 
+     if(trim((string) $this->q41_codtipcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q41_codtipcalc"])){ 
        $sql  .= $virgula." q41_codtipcalc = $this->q41_codtipcalc ";
        $virgula = ",";
-       if(trim($this->q41_codtipcalc) == null ){ 
+       if(trim((string) $this->q41_codtipcalc) == null ){ 
          $this->erro_sql = " Campo codigo do tipo de calculo nao Informado.";
          $this->erro_campo = "q41_codtipcalc";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_issportetipo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6437,'$this->q41_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q41_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1048,6437,'".AddSlashes(pg_result($resaco,$conresaco,'q41_codigo'))."','$this->q41_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1048,6437,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q41_codigo'))."','$this->q41_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q41_codporte"]))
-           $resac = db_query("insert into db_acount values($acount,1048,6393,'".AddSlashes(pg_result($resaco,$conresaco,'q41_codporte'))."','$this->q41_codporte',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1048,6393,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q41_codporte'))."','$this->q41_codporte',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q41_codclasse"]))
-           $resac = db_query("insert into db_acount values($acount,1048,6394,'".AddSlashes(pg_result($resaco,$conresaco,'q41_codclasse'))."','$this->q41_codclasse',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1048,6394,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q41_codclasse'))."','$this->q41_codclasse',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q41_codtipcalc"]))
-           $resac = db_query("insert into db_acount values($acount,1048,6395,'".AddSlashes(pg_result($resaco,$conresaco,'q41_codtipcalc'))."','$this->q41_codtipcalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1048,6395,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q41_codtipcalc'))."','$this->q41_codtipcalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_issportetipo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6437,'$q41_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1048,6437,'','".AddSlashes(pg_result($resaco,$iresaco,'q41_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1048,6393,'','".AddSlashes(pg_result($resaco,$iresaco,'q41_codporte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1048,6394,'','".AddSlashes(pg_result($resaco,$iresaco,'q41_codclasse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1048,6395,'','".AddSlashes(pg_result($resaco,$iresaco,'q41_codtipcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1048,6437,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q41_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1048,6393,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q41_codporte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1048,6394,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q41_codclasse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1048,6395,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q41_codtipcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from issportetipo
@@ -376,7 +376,7 @@ class cl_issportetipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:issportetipo";
@@ -392,7 +392,7 @@ class cl_issportetipo {
 		
    	$sql = "select ";
    	if($campos != "*" ){
-   		$campos_sql = split("#",$campos);
+   		$campos_sql = preg_split("#\\##m",$campos);
    		$virgula = "";
    		for($i=0;$i<sizeof($campos_sql);$i++){
    			$sql .= $virgula.$campos_sql[$i];
@@ -428,7 +428,7 @@ class cl_issportetipo {
    	$sql .= $sql2;
    	if($ordem != null ){
    		$sql .= " order by ";
-   		$campos_sql = split("#",$ordem);
+   		$campos_sql = preg_split("#\\##m",(string) $ordem);
    		$virgula = "";
    		for($i=0;$i<sizeof($campos_sql);$i++){
    			$sql .= $virgula.$campos_sql[$i];
@@ -440,7 +440,7 @@ class cl_issportetipo {
    function sql_query_file ( $q41_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_issportetipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

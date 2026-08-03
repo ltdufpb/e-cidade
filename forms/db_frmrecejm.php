@@ -26,8 +26,8 @@
  */
 
 $cltabrecjm->rotulo->label();
-if(isset($HTTP_POST_VARS)) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST)) {
+  db_postmemory($_POST);
 	 if(!empty($verfEstrut)) {
 	   $verfEstrut = "";
 	   if($k02_tipo == "O") {
@@ -37,10 +37,10 @@ if(isset($HTTP_POST_VARS)) {
 	     $tipo = "Extra-orçamentária";
 	     $result = db_query("select c01_descr from plano where c01_anousu = ".db_getsession("DB_anousu")." and c01_estrut = '$k02_estrut'");
 	   }
-	   if(pg_numrows($result) == 0) {
+	   if(pg_num_rows($result) == 0) {
 	     echo "<script>alert('Código da receita $tipo não encontrado!')</script>\n";
 	   } else {
-	     $k02_drecei = pg_result($result,0,0);
+	     $k02_drecei = pg_fetch_result($result,0,0);
 	   }
 	 }
 }
@@ -74,9 +74,9 @@ if(isset($HTTP_POST_VARS)) {
 							<option value="null">Nenhum...</option>
 							<?php 
 					  $result = db_query("select i01_codigo,i01_descr from inflan");
-					  $numrows = pg_numrows($result);
+					  $numrows = pg_num_rows($result);
 					  for($i = 0;$i < $numrows;$i++)
-					  echo "<option value=\"".pg_result($result,$i,"i01_codigo")."\" ".(isset($k02_corr)?($k02_corr==pg_result($result,$i,"i01_codigo")?"selected":""):"").">".pg_result($result,$i,"i01_codigo")." - ".pg_result($result,$i,"i01_descr")."</option>\n";
+					  echo "<option value=\"".pg_fetch_result($result,$i,"i01_codigo")."\" ".(isset($k02_corr)?($k02_corr==pg_fetch_result($result,$i,"i01_codigo")?"selected":""):"").">".pg_fetch_result($result,$i,"i01_codigo")." - ".pg_fetch_result($result,$i,"i01_descr")."</option>\n";
 					  ?>
 					 </select>
 			    </td>
@@ -229,6 +229,6 @@ function js_mostratabrecjm1(chave1, chave2) {
     return;
   }
 
-  location.href = '<?php echo basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]); ?>?chavepesquisa=' + chave1;
+  location.href = '<?php echo basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]); ?>?chavepesquisa=' + chave1;
 }
 </script>

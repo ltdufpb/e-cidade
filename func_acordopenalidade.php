@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_acordopenalidade_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clacordopenalidade = new cl_acordopenalidade;
 $clacordopenalidade->rotulo->label("ac13_sequencial");
 $clacordopenalidade->rotulo->label("ac13_sequencial");
@@ -91,9 +91,9 @@ $clacordopenalidade->rotulo->label("ac13_sequencial");
         }else{
            $sql = $clacordopenalidade->sql_query("",$campos,"ac13_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ac13_sequencial)){
-          $repassa = array("chave_ac13_sequencial"=>$chave_ac13_sequencial,"chave_ac13_sequencial"=>$chave_ac13_sequencial);
+          $repassa = ["chave_ac13_sequencial"=>$chave_ac13_sequencial,"chave_ac13_sequencial"=>$chave_ac13_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

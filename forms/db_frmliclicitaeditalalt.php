@@ -139,7 +139,7 @@ if(isset($db_opcaoal)){
   <tr>
 	  <td valign="top"  align="center">  
 	    <?php 
-			  $chavepri= array("l27_sequencial"=>@$l27_sequencial);
+			  $chavepri= ["l27_sequencial"=>@$l27_sequencial];
 			  $cliframe_alterar_excluir->chavepri=$chavepri;
 			  $cliframe_alterar_excluir->sql     = $clliclicitaedital->sql_query(null,"*",null,"l27_liclicita=".@$l20_codigo);
 			  $cliframe_alterar_excluir->campos  ="l27_arqnome";
@@ -172,7 +172,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
   db_iframe_liclicita.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   ?>
   
   parent.iframe_liclicitem.location.href='lic1_liclicitemalt001.php?licitacao='+chave;

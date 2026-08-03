@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE liclicitafornitem
 class cl_liclicitafornitem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l23_codigo = 0; 
-   var $l23_codliclicitaforne = 0; 
-   var $l23_codliclicitem = 0; 
-   var $l23_obs = null; 
-   var $l23_condpag = null; 
-   var $l23_prazo = null; 
-   var $l23_garantia = null; 
-   var $l23_quantcot = 0; 
-   var $l23_valcot = 0; 
-   var $l23_pontuacao = 0; 
+   public $l23_codigo = 0; 
+   public $l23_codliclicitaforne = 0; 
+   public $l23_codliclicitem = 0; 
+   public $l23_obs = null; 
+   public $l23_condpag = null; 
+   public $l23_prazo = null; 
+   public $l23_garantia = null; 
+   public $l23_quantcot = 0; 
+   public $l23_valcot = 0; 
+   public $l23_pontuacao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l23_codigo = float8 = Cod. Sequencial 
                  l23_codliclicitaforne = int8 = Cod. Sequencial 
                  l23_codliclicitem = int8 = Cod. Sequencial 
@@ -66,10 +66,10 @@ class cl_liclicitafornitem {
                  l23_pontuacao = int4 = Pontuação 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitafornitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitafornitem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -182,10 +182,10 @@ class cl_liclicitafornitem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->l23_codigo = pg_result($result,0,0); 
+       $this->l23_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from liclicitafornitem_l23_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l23_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l23_codigo)){
          $this->erro_sql = " Campo l23_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -231,7 +231,7 @@ class cl_liclicitafornitem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "liclicitafornitem ($this->l23_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "liclicitafornitem já Cadastrado";
@@ -255,19 +255,19 @@ class cl_liclicitafornitem {
      $resaco = $this->sql_record($this->sql_query_file($this->l23_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7606,'$this->l23_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1263,7606,'','".AddSlashes(pg_result($resaco,0,'l23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1263,7607,'','".AddSlashes(pg_result($resaco,0,'l23_codliclicitaforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1263,7608,'','".AddSlashes(pg_result($resaco,0,'l23_codliclicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1263,7609,'','".AddSlashes(pg_result($resaco,0,'l23_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1263,7610,'','".AddSlashes(pg_result($resaco,0,'l23_condpag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1263,7611,'','".AddSlashes(pg_result($resaco,0,'l23_prazo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1263,7612,'','".AddSlashes(pg_result($resaco,0,'l23_garantia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1263,7613,'','".AddSlashes(pg_result($resaco,0,'l23_quantcot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1263,7614,'','".AddSlashes(pg_result($resaco,0,'l23_valcot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1263,7615,'','".AddSlashes(pg_result($resaco,0,'l23_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1263,7606,'','".AddSlashes(pg_fetch_result($resaco,0,'l23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1263,7607,'','".AddSlashes(pg_fetch_result($resaco,0,'l23_codliclicitaforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1263,7608,'','".AddSlashes(pg_fetch_result($resaco,0,'l23_codliclicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1263,7609,'','".AddSlashes(pg_fetch_result($resaco,0,'l23_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1263,7610,'','".AddSlashes(pg_fetch_result($resaco,0,'l23_condpag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1263,7611,'','".AddSlashes(pg_fetch_result($resaco,0,'l23_prazo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1263,7612,'','".AddSlashes(pg_fetch_result($resaco,0,'l23_garantia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1263,7613,'','".AddSlashes(pg_fetch_result($resaco,0,'l23_quantcot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1263,7614,'','".AddSlashes(pg_fetch_result($resaco,0,'l23_valcot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1263,7615,'','".AddSlashes(pg_fetch_result($resaco,0,'l23_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -276,10 +276,10 @@ class cl_liclicitafornitem {
       $this->atualizacampos();
      $sql = " update liclicitafornitem set ";
      $virgula = "";
-     if(trim($this->l23_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_codigo"])){ 
+     if(trim((string) $this->l23_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_codigo"])){ 
        $sql  .= $virgula." l23_codigo = $this->l23_codigo ";
        $virgula = ",";
-       if(trim($this->l23_codigo) == null ){ 
+       if(trim((string) $this->l23_codigo) == null ){ 
          $this->erro_sql = " Campo Cod. Sequencial nao Informado.";
          $this->erro_campo = "l23_codigo";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_liclicitafornitem {
          return false;
        }
      }
-     if(trim($this->l23_codliclicitaforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_codliclicitaforne"])){ 
+     if(trim((string) $this->l23_codliclicitaforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_codliclicitaforne"])){ 
        $sql  .= $virgula." l23_codliclicitaforne = $this->l23_codliclicitaforne ";
        $virgula = ",";
-       if(trim($this->l23_codliclicitaforne) == null ){ 
+       if(trim((string) $this->l23_codliclicitaforne) == null ){ 
          $this->erro_sql = " Campo Cod. Sequencial nao Informado.";
          $this->erro_campo = "l23_codliclicitaforne";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_liclicitafornitem {
          return false;
        }
      }
-     if(trim($this->l23_codliclicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_codliclicitem"])){ 
+     if(trim((string) $this->l23_codliclicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_codliclicitem"])){ 
        $sql  .= $virgula." l23_codliclicitem = $this->l23_codliclicitem ";
        $virgula = ",";
-       if(trim($this->l23_codliclicitem) == null ){ 
+       if(trim((string) $this->l23_codliclicitem) == null ){ 
          $this->erro_sql = " Campo Cod. Sequencial nao Informado.";
          $this->erro_campo = "l23_codliclicitem";
          $this->erro_banco = "";
@@ -315,14 +315,14 @@ class cl_liclicitafornitem {
          return false;
        }
      }
-     if(trim($this->l23_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_obs"])){ 
+     if(trim((string) $this->l23_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_obs"])){ 
        $sql  .= $virgula." l23_obs = '$this->l23_obs' ";
        $virgula = ",";
      }
-     if(trim($this->l23_condpag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_condpag"])){ 
+     if(trim((string) $this->l23_condpag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_condpag"])){ 
        $sql  .= $virgula." l23_condpag = '$this->l23_condpag' ";
        $virgula = ",";
-       if(trim($this->l23_condpag) == null ){ 
+       if(trim((string) $this->l23_condpag) == null ){ 
          $this->erro_sql = " Campo Condição de Pagamento nao Informado.";
          $this->erro_campo = "l23_condpag";
          $this->erro_banco = "";
@@ -332,10 +332,10 @@ class cl_liclicitafornitem {
          return false;
        }
      }
-     if(trim($this->l23_prazo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_prazo"])){ 
+     if(trim((string) $this->l23_prazo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_prazo"])){ 
        $sql  .= $virgula." l23_prazo = '$this->l23_prazo' ";
        $virgula = ",";
-       if(trim($this->l23_prazo) == null ){ 
+       if(trim((string) $this->l23_prazo) == null ){ 
          $this->erro_sql = " Campo Prazo nao Informado.";
          $this->erro_campo = "l23_prazo";
          $this->erro_banco = "";
@@ -345,10 +345,10 @@ class cl_liclicitafornitem {
          return false;
        }
      }
-     if(trim($this->l23_garantia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_garantia"])){ 
+     if(trim((string) $this->l23_garantia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_garantia"])){ 
        $sql  .= $virgula." l23_garantia = '$this->l23_garantia' ";
        $virgula = ",";
-       if(trim($this->l23_garantia) == null ){ 
+       if(trim((string) $this->l23_garantia) == null ){ 
          $this->erro_sql = " Campo Garantia nao Informado.";
          $this->erro_campo = "l23_garantia";
          $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_liclicitafornitem {
          return false;
        }
      }
-     if(trim($this->l23_quantcot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_quantcot"])){ 
+     if(trim((string) $this->l23_quantcot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_quantcot"])){ 
        $sql  .= $virgula." l23_quantcot = $this->l23_quantcot ";
        $virgula = ",";
-       if(trim($this->l23_quantcot) == null ){ 
+       if(trim((string) $this->l23_quantcot) == null ){ 
          $this->erro_sql = " Campo Quantidade Cotada nao Informado.";
          $this->erro_campo = "l23_quantcot";
          $this->erro_banco = "";
@@ -371,10 +371,10 @@ class cl_liclicitafornitem {
          return false;
        }
      }
-     if(trim($this->l23_valcot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_valcot"])){ 
+     if(trim((string) $this->l23_valcot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_valcot"])){ 
        $sql  .= $virgula." l23_valcot = $this->l23_valcot ";
        $virgula = ",";
-       if(trim($this->l23_valcot) == null ){ 
+       if(trim((string) $this->l23_valcot) == null ){ 
          $this->erro_sql = " Campo Valor Cotado nao Informado.";
          $this->erro_campo = "l23_valcot";
          $this->erro_banco = "";
@@ -384,10 +384,10 @@ class cl_liclicitafornitem {
          return false;
        }
      }
-     if(trim($this->l23_pontuacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_pontuacao"])){ 
+     if(trim((string) $this->l23_pontuacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l23_pontuacao"])){ 
        $sql  .= $virgula." l23_pontuacao = $this->l23_pontuacao ";
        $virgula = ",";
-       if(trim($this->l23_pontuacao) == null ){ 
+       if(trim((string) $this->l23_pontuacao) == null ){ 
          $this->erro_sql = " Campo Pontuação nao Informado.";
          $this->erro_campo = "l23_pontuacao";
          $this->erro_banco = "";
@@ -405,29 +405,29 @@ class cl_liclicitafornitem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7606,'$this->l23_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l23_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1263,7606,'".AddSlashes(pg_result($resaco,$conresaco,'l23_codigo'))."','$this->l23_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1263,7606,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l23_codigo'))."','$this->l23_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l23_codliclicitaforne"]))
-           $resac = db_query("insert into db_acount values($acount,1263,7607,'".AddSlashes(pg_result($resaco,$conresaco,'l23_codliclicitaforne'))."','$this->l23_codliclicitaforne',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1263,7607,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l23_codliclicitaforne'))."','$this->l23_codliclicitaforne',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l23_codliclicitem"]))
-           $resac = db_query("insert into db_acount values($acount,1263,7608,'".AddSlashes(pg_result($resaco,$conresaco,'l23_codliclicitem'))."','$this->l23_codliclicitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1263,7608,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l23_codliclicitem'))."','$this->l23_codliclicitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l23_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1263,7609,'".AddSlashes(pg_result($resaco,$conresaco,'l23_obs'))."','$this->l23_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1263,7609,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l23_obs'))."','$this->l23_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l23_condpag"]))
-           $resac = db_query("insert into db_acount values($acount,1263,7610,'".AddSlashes(pg_result($resaco,$conresaco,'l23_condpag'))."','$this->l23_condpag',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1263,7610,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l23_condpag'))."','$this->l23_condpag',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l23_prazo"]))
-           $resac = db_query("insert into db_acount values($acount,1263,7611,'".AddSlashes(pg_result($resaco,$conresaco,'l23_prazo'))."','$this->l23_prazo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1263,7611,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l23_prazo'))."','$this->l23_prazo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l23_garantia"]))
-           $resac = db_query("insert into db_acount values($acount,1263,7612,'".AddSlashes(pg_result($resaco,$conresaco,'l23_garantia'))."','$this->l23_garantia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1263,7612,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l23_garantia'))."','$this->l23_garantia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l23_quantcot"]))
-           $resac = db_query("insert into db_acount values($acount,1263,7613,'".AddSlashes(pg_result($resaco,$conresaco,'l23_quantcot'))."','$this->l23_quantcot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1263,7613,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l23_quantcot'))."','$this->l23_quantcot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l23_valcot"]))
-           $resac = db_query("insert into db_acount values($acount,1263,7614,'".AddSlashes(pg_result($resaco,$conresaco,'l23_valcot'))."','$this->l23_valcot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1263,7614,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l23_valcot'))."','$this->l23_valcot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l23_pontuacao"]))
-           $resac = db_query("insert into db_acount values($acount,1263,7615,'".AddSlashes(pg_result($resaco,$conresaco,'l23_pontuacao'))."','$this->l23_pontuacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1263,7615,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l23_pontuacao'))."','$this->l23_pontuacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -472,19 +472,19 @@ class cl_liclicitafornitem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7606,'$l23_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1263,7606,'','".AddSlashes(pg_result($resaco,$iresaco,'l23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1263,7607,'','".AddSlashes(pg_result($resaco,$iresaco,'l23_codliclicitaforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1263,7608,'','".AddSlashes(pg_result($resaco,$iresaco,'l23_codliclicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1263,7609,'','".AddSlashes(pg_result($resaco,$iresaco,'l23_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1263,7610,'','".AddSlashes(pg_result($resaco,$iresaco,'l23_condpag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1263,7611,'','".AddSlashes(pg_result($resaco,$iresaco,'l23_prazo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1263,7612,'','".AddSlashes(pg_result($resaco,$iresaco,'l23_garantia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1263,7613,'','".AddSlashes(pg_result($resaco,$iresaco,'l23_quantcot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1263,7614,'','".AddSlashes(pg_result($resaco,$iresaco,'l23_valcot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1263,7615,'','".AddSlashes(pg_result($resaco,$iresaco,'l23_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1263,7606,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1263,7607,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l23_codliclicitaforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1263,7608,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l23_codliclicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1263,7609,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l23_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1263,7610,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l23_condpag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1263,7611,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l23_prazo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1263,7612,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l23_garantia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1263,7613,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l23_quantcot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1263,7614,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l23_valcot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1263,7615,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l23_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from liclicitafornitem
@@ -544,7 +544,7 @@ class cl_liclicitafornitem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:liclicitafornitem";
@@ -558,7 +558,7 @@ class cl_liclicitafornitem {
    function sql_query ( $l23_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -585,7 +585,7 @@ class cl_liclicitafornitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -597,7 +597,7 @@ class cl_liclicitafornitem {
    function sql_query_file ( $l23_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -618,7 +618,7 @@ class cl_liclicitafornitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -36,45 +36,45 @@ $clcfautent = new cl_cfautent;
    
    //{============================== 
   //rotina que verifica se o ip do usuario irá imprimir autenticar ou naum ira fazer nada 
-      $result99 = $clcfautent->sql_record($clcfautent->sql_query_file(null,"k11_tipautent as tipautent",'',"k11_ipterm = '".$HTTP_SERVER_VARS['REMOTE_ADDR']."'"));
+      $result99 = $clcfautent->sql_record($clcfautent->sql_query_file(null,"k11_tipautent as tipautent",'',"k11_ipterm = '".$_SERVER['REMOTE_ADDR']."'"));
       if($clcfautent->numrows > 0){
 	db_fieldsmemory($result99,0);
       }else{
-	db_msgbox("Cadastre o ip ".$HTTP_SERVER_VARS['REMOTE_ADDR']." como um caixa.");
+	db_msgbox("Cadastre o ip ".$_SERVER['REMOTE_ADDR']." como um caixa.");
 	die();
 	//db_redireciona('');
       }    
     //============================}
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $ip = db_getsession("DB_ip");
 $porta = 5001;
 
-if(isset($HTTP_POST_VARS["numpre"]) && empty($reautenticar)){
-    $valor     = $HTTP_POST_VARS["valor"];
+if(isset($_POST["numpre"]) && empty($reautenticar)){
+    $valor     = $_POST["valor"];
     $historico = "S/Historico";
-    if (isset($HTTP_POST_VARS["historico"]) && trim($HTTP_POST_VARS["historico"])!=""){
-          $historico = $HTTP_POST_VARS["historico"];
+    if (isset($_POST["historico"]) && trim($_POST["historico"])!=""){
+          $historico = $_POST["historico"];
     }
 
     if($acao!=1) {
        $valor = str_replace(",",".",$valor) * (double) (-1);
 		}
 
-    $sql = "select fc_difautentica(".substr($HTTP_POST_VARS["numpre"],0,8).",
-	                           ".substr($HTTP_POST_VARS["numpre"],8,3).",
+    $sql = "select fc_difautentica(".substr($_POST["numpre"],0,8).",
+	                           ".substr($_POST["numpre"],8,3).",
       	                          '".date('Y-m-d',db_getsession("DB_datausu"))."',
    	                           ".db_getsession("DB_anousu").",
-	                           ".$HTTP_POST_VARS["reduz"].",'".db_getsession('DB_ip')."',
-	                           ".$HTTP_POST_VARS["receitas"].",
+	                           ".$_POST["reduz"].",'".db_getsession('DB_ip')."',
+	                           ".$_POST["receitas"].",
 	                           ".db_formatar($valor, "p").",
 	                           ". db_getsession("DB_instit").",
 	                          '".$historico."',
 														" . db_getsession("DB_id_usuario") . ") as fc_autentica";
     $result = db_query($sql) or die($sql);
     db_fieldsmemory($result,0);
-    if(substr($fc_autentica,0,1) != '1'){
+    if(!str_starts_with((string) $fc_autentica, '1')){
      ?>
 	  <script>
 	  parent.alert('Erro ao gerar autenticacao.');
@@ -140,7 +140,7 @@ if(isset($HTTP_POST_VARS["numpre"]) && empty($reautenticar)){
     fclose($fd);
   }  
 
-    $encod=base64_encode($str_aut1);
+    $encod=base64_encode((string) $str_aut1);
      echo "\n
 	<script>
        if(confirm('Autenticar Novamente?')==false) {

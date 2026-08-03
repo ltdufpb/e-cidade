@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mensagerialicenca_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmensagerialicenca = new cl_mensagerialicenca;
 $clmensagerialicenca->rotulo->label("am14_sequencial");
 $clmensagerialicenca->rotulo->label("am14_mensagem");
@@ -52,9 +52,9 @@ $clmensagerialicenca->rotulo->label("am14_mensagem");
         }else{
            $sql = $clmensagerialicenca->sql_query("",$campos,"am14_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_am14_mensagem)){
-          $repassa = array("chave_am14_sequencial"=>$chave_am14_sequencial,"chave_am14_mensagem"=>$chave_am14_mensagem);
+          $repassa = ["chave_am14_sequencial"=>$chave_am14_sequencial,"chave_am14_mensagem"=>$chave_am14_mensagem];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

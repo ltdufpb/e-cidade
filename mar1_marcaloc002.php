@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_marcaloc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clmarcaloc = new cl_marcaloc;
 $db_opcao = 1;
 $db_botao = true;
@@ -50,7 +50,7 @@ if(isset($incluir)){
    }
   }else{
    $clmarcaloc->erro(true,false);
-   $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
+   $pagina = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
    <script>location.href ="<?=$pagina?>";</script><?php 
   }
 }
@@ -69,7 +69,7 @@ if(isset($alterar)){
    }
   }else{
    $clmarcaloc->erro(true,false);
-   $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
+   $pagina = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
    <script>location.href ="<?=$pagina?>";</script><?php 
   }
 }
@@ -82,12 +82,12 @@ if(isset($excluir)){
   $clmarcaloc->erro(true,false);
  }else{
   $clmarcaloc->erro(true,false);
-  $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
+  $pagina = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
   <script>location.href ="<?=$pagina?>";</script><?php 
  }
 }
 if(isset($cancelar)){
- $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
+ $pagina = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
  <script>location.href ="<?=$pagina?>";</script><?php 
 }
 ?>

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgmendereco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcgmendereco = new cl_cgmendereco;
 $clcgmendereco->rotulo->label("z07_sequencial");
 $clcgmendereco->rotulo->label("z07_numcgm");
@@ -98,9 +98,9 @@ $clcgmendereco->rotulo->label("z07_numcgm");
         }else{
            $sql = $clcgmendereco->sql_query("",$campos,"z07_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_z07_numcgm)){
-          $repassa = array("chave_z07_sequencial"=>$chave_z07_sequencial,"chave_z07_numcgm"=>$chave_z07_numcgm);
+          $repassa = ["chave_z07_sequencial"=>$chave_z07_sequencial,"chave_z07_numcgm"=>$chave_z07_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

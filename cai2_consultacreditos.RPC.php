@@ -110,7 +110,7 @@ try {
         throw new Exception('O Crédito não possui origem. Crédito Manual.');
       }
 
-      $aCreditos = array();
+      $aCreditos = [];
       for($i = 0; $i < pg_num_rows($rsCredito); $i++) {
         $oCredito = db_utils::fieldsMemory($rsCredito, $i);
 
@@ -163,14 +163,14 @@ try {
        */
       $aUtilizacao = db_utils::getCollectionByRecord($rsUtilizacao);
 
-      $aCreditos = array();
+      $aCreditos = [];
       foreach ($aUtilizacao as $oUtilizacao) {
 
         $oDadosCredido = new StdClass;
         $oDadosCredido->iNumpre     = (!empty($oUtilizacao->k170_numpre) ? $oUtilizacao->k170_numpre : ' - ');
         $oDadosCredido->iNumpar     = (!empty($oUtilizacao->k170_numpar) ? $oUtilizacao->k170_numpar : ' - ');
-        $oDadosCredido->sDestino    = (!empty($oUtilizacao->k00_descr)   ? urlencode($oUtilizacao->k00_descr) : ' - ');
-        $oDadosCredido->sTipo       = urlencode($oUtilizacao->tipo_utilizacao);
+        $oDadosCredido->sDestino    = (!empty($oUtilizacao->k00_descr)   ? urlencode((string) $oUtilizacao->k00_descr) : ' - ');
+        $oDadosCredido->sTipo       = urlencode((string) $oUtilizacao->tipo_utilizacao);
         $oDadosCredido->sReceita    = $oUtilizacao->k00_receit;
         $oDadosCredido->nValor      = db_formatar($oUtilizacao->k157_valor, 'f');
         $oDadosCredido->sData       = db_formatar($oUtilizacao->k157_data, 'd');

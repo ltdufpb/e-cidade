@@ -17,10 +17,6 @@ use stdClass;
 class AvaliacaoSpedAdapter extends AvaliacaoAdapter
 {
     /**
-     * @var EventoAbstract
-     */
-    private $evento;
-    /**
      * @var bool
      */
     private $usaSugestoes = false;
@@ -30,11 +26,9 @@ class AvaliacaoSpedAdapter extends AvaliacaoAdapter
      * @param Avaliacao $avaliacao
      * @param EventoAbstract $evento
      */
-    public function __construct(Avaliacao $avaliacao, EventoAbstract $evento)
+    public function __construct(Avaliacao $avaliacao, private readonly EventoAbstract $evento)
     {
         parent::__construct($avaliacao);
-
-        $this->evento = $evento;
     }
 
     /**
@@ -68,7 +62,7 @@ class AvaliacaoSpedAdapter extends AvaliacaoAdapter
      */
     protected function getPerguntas(AvaliacaoGrupo $avaliacaoGrupo)
     {
-        $perguntas = array();
+        $perguntas = [];
 
         foreach ($avaliacaoGrupo->getPerguntas() as $avaliacaoPergunta) {
             $avaliacaoPergunta->getRespostas();
@@ -111,6 +105,6 @@ class AvaliacaoSpedAdapter extends AvaliacaoAdapter
             $respostas = $this->evento->getSugestaoRespostaDaPergunta($avaliacaoPergunta);
         }
 
-        return $respostas ?: array();
+        return $respostas ?: [];
     }
 }

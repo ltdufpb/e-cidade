@@ -39,7 +39,7 @@ $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno = new stdClass();
 $oRetorno->status  = 1;
 $oRetorno->message = 1;
-$oRetorno->aItens  = array();
+$oRetorno->aItens  = [];
 $sWhere            = "";
 
 switch ($oParam->exec) {
@@ -65,7 +65,7 @@ switch ($oParam->exec) {
        * verifica se a data de processamento e maior que a data da implantacao
        * se for anterior a data de processo recebe a data de implantacao  
        */
-      $dtDataBase = implode("-", array_reverse(explode("/", $oParam->database)));
+      $dtDataBase = implode("-", array_reverse(explode("/", (string) $oParam->database)));
     	if ( $dtDataBase < $oConta->k13_dtimplantacao ){
       	$dtDataBase = $oConta->k13_dtimplantacao;
       }
@@ -108,7 +108,7 @@ switch ($oParam->exec) {
     	$oContaRetorno  = new stdClass();
     	$oContaRetorno->k13_conta         = $oConta->getCodigoConta(); 
     	$oContaRetorno->k13_reduz         = $oConta->getCodigoReduzido();
-    	$oContaRetorno->k13_descr         = urlencode($oConta->getDescricao());
+    	$oContaRetorno->k13_descr         = urlencode((string) $oConta->getDescricao());
     	$oContaRetorno->k13_saldo         = $oConta->getSaldoInicial();
     	$oContaRetorno->k13_ident         = $oConta->getIdentificacao();
     	$oContaRetorno->k13_vlratu        = $oConta->getValorAtualizado();

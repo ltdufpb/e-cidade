@@ -127,16 +127,16 @@ if ($oPost->sAcao == "consultaPortarias") {
 	  	}
 
 
-	    $aRetorno = array(
+	    $aRetorno = [
 	    				  "aParametros"   =>$aRetornoParametros,
 	    				  "iModIndividual"=>$sRetornoTipoIndividual,
 	    				  "iModColetiva"  =>$sRetornoTipoColetiva,
 	    				  "erro"		  =>false
-	    				 );
+	    				 ];
 
   } else {
 
-	$aRetorno = array("msg"=>urlencode("Nenhuma portaria cadastrada!"),"erro"=>true);
+	$aRetorno = ["msg"=>urlencode("Nenhuma portaria cadastrada!"),"erro"=>true];
 
   }
 

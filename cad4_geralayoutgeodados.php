@@ -45,7 +45,7 @@ $cliptunump  = new cl_iptunump;
 $clmassamat  = new cl_massamat;
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -71,11 +71,11 @@ db_postmemory($HTTP_POST_VARS);
             <td nowrap="nowrap">
                 <?php
                   
-                  $aOpcoes = array (
+                  $aOpcoes =  [
                                     //"1" => "Geodados"  ,
                                     "2" => "Versão 2"    , 
                                     "3" => "Lista Pontos"
-                                   );
+                                   ];
                   db_select('formato', $aOpcoes, true, 1);
                 ?>
             </td>
@@ -88,10 +88,10 @@ db_postmemory($HTTP_POST_VARS);
 
             <td>
               <?php
-                $aOpcoes = array(
+                $aOpcoes = [
                     ';' => ';',
                     '|' => '|'
-                  );
+                  ];
 
                 db_select('separador', $aOpcoes, true, 1);
               ?>

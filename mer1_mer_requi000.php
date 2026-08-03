@@ -250,8 +250,8 @@ $clmer_requiitem_ext = new cl_mer_requiitem_ext;
 $clmer_item = new cl_mer_item;
 $clmer_estoque = new cl_mer_estoque;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $db_botao                 = true;
 
 if (isset($incluir)) {
@@ -299,7 +299,7 @@ if (isset($incluir)) {
     $me10_i_codigo   = $clmer_requiitem->me17_i_item;
     $me17_i_codigo= $clmer_requiitem->me17_i_codigo;
     $tot_quant  = $clmer_requiitem->me17_f_quant;
-    $aItens = array();
+    $aItens = [];
     $aSubItens[0]->iCodMater   = $codmater;
     $aSubItens[0]->iCodItemReq = $codreqitem;
     $aSubItens[0]->iCodalmox   = $oMatRequi->m91_depto;

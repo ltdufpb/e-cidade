@@ -65,7 +65,7 @@ $oGet = db_utils::postMemory($_GET);
 				$sConsultaFinanceira = '?chavepesquisa='.$oGet->iServidor;
 			}
 			
-       $clcriaabas->identifica = array(
+       $clcriaabas->identifica = [
                                         "rhpessoal"      => "Dados Pessoais",
                                         "rhadmissional"  => "Dados admissionais",
                                         "rhpesdoc"       => "Documentos",
@@ -75,9 +75,9 @@ $oGet = db_utils::postMemory($_GET);
                                         "rhpontofixo"    => "Ponto Fixo",
                                         "rhpontosalario" => "Ponto de Salário",
                                         "rhcedencia"     => "Cedidos / Disposição"
-                                      );
+                                      ];
                                        
-       $clcriaabas->sizecampo  = array(
+       $clcriaabas->sizecampo  = [
                                         "rhpessoal"      => "20",
                                         "rhadmissional"  => "20",
                                         "rhpesdoc"       => "15",
@@ -87,11 +87,11 @@ $oGet = db_utils::postMemory($_GET);
                                         "rhpontofixo"    => "15",
                                         "rhpontosalario" => "15",
                                         "rhcedencia"     => "20"
-                                      );
+                                      ];
                                       
-       $clcriaabas->src        = array("rhpessoal" => "pes1_rhpessoal005.php".$sConsultaFinanceira);
+       $clcriaabas->src        = ["rhpessoal" => "pes1_rhpessoal005.php".$sConsultaFinanceira];
        
-       $clcriaabas->disabled   = array(
+       $clcriaabas->disabled   = [
                                         "rhadmissional"  => "true",
                                         "rhpesdoc"       => "true",
                                         "rhpessoalmov"   => "true",
@@ -100,7 +100,7 @@ $oGet = db_utils::postMemory($_GET);
                                         "rhpontofixo"    => "true",
                                         "rhpontosalario" => "true",  
                                         "rhcedencia"     => "true"  
-                                      ); 
+                                      ]; 
 
        $verifica_permissao = db_permissaomenu(db_getsession('DB_anousu'), 952, 8820);    
 

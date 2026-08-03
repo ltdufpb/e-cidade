@@ -39,7 +39,7 @@ $clcontricalc = new cl_contricalc;
 $clcontlotv = new cl_contlotv;
 $cleditalserv = new cl_editalserv;
 $cleditalrua = new cl_editalrua;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sSqlEditalRua = $cleditalrua->sql_query("","d01_numero,d02_contri,j14_nome,d01_data","j14_nome","d02_codedi=$edital");
 $rsEditalRua   = $cleditalrua->sql_record($sSqlEditalRua);
@@ -175,12 +175,12 @@ for ( $iEditalRua = 0; $iEditalRua < $cleditalrua->numrows; $iEditalRua++ ) {
 
     $rsContribuicao = db_query($sSqlContribuicao);         
     
-    if ( pg_numrows($rsContribuicao) > 0  ) {
+    if ( pg_num_rows($rsContribuicao) > 0  ) {
 
       $head2 = "Relatório de Valores Da Contribuição";
       $head3 = "Contribuição: $oDadosEditalRua->d02_contri ";
       $head4 = "Rua: $oDadosEditalRua->j14_nome";
-      $head5 = "Registros da Contribuição: " . pg_numrows($rsContribuicao);
+      $head5 = "Registros da Contribuição: " . pg_num_rows($rsContribuicao);
 
       $oPdf->AddPage("L");
       imprimirCabecalho($oPdf, $iAlturalinha, true);
@@ -192,7 +192,7 @@ for ( $iEditalRua = 0; $iEditalRua < $cleditalrua->numrows; $iEditalRua++ ) {
       $nDesconto     = 0;
 
 
-      for ( $iContribuicao = 0; $iContribuicao < pg_numrows($rsContribuicao); $iContribuicao++ ) {
+      for ( $iContribuicao = 0; $iContribuicao < pg_num_rows($rsContribuicao); $iContribuicao++ ) {
 
         $oDadosContribuicao = db_utils::fieldsMemory($rsContribuicao, $iContribuicao);
 
@@ -353,7 +353,7 @@ for($i=0;$i<$num;$i++) {
     ";
 
      $result01 = pg_query($sSqlContLot);
-     $numrows01 = pg_numrows($result01);
+     $numrows01 = pg_num_rows($result01);
 
 
      $linha = 60;
@@ -502,7 +502,7 @@ for($i=0;$i<$num;$i++) {
            	  $valmetro+=$d04_vlrcal;
            	}
         $pdf->SetFont('Times','',6);
-        $pdf->Cell(60,4,substr($z01_nome,0,35),1,0,"L",0);
+        $pdf->Cell(60,4,substr((string) $z01_nome,0,35),1,0,"L",0);
         $pdf->Cell(16,4,$j01_matric,1,0,"C",0);
         $pdf->Cell(10,4,$j34_setor,1,0,"C",0);
         $pdf->Cell(12,4,$j34_quadra,1,0,"C",0);

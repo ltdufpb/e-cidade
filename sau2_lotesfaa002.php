@@ -32,7 +32,7 @@ include(modification("libs/db_stdlibwebseller.php"));
 
 include(modification("classes/db_sau_lotepront_ext_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 set_time_limit(0);
 
 $clsau_lotepront = new cl_sau_lotepront_ext;
@@ -60,10 +60,10 @@ for( $i=0; $i < $clsau_lotepront->numrows; $i++ ){
 	
 	if( $loteant != $obj_sau_lotepront->sd59_i_lote){
 		$loteant = $obj_sau_lotepront->sd59_i_lote;
-		$dia = substr($obj_sau_lotepront->sd58_d_data,8,2);
-		$mes = substr($obj_sau_lotepront->sd58_d_data,5,2);
-		$ano = substr($obj_sau_lotepront->sd58_d_data,0,4);
-		$hora = substr($obj_sau_lotepront->sd58_c_hora, 0, 8);
+		$dia = substr((string) $obj_sau_lotepront->sd58_d_data,8,2);
+		$mes = substr((string) $obj_sau_lotepront->sd58_d_data,5,2);
+		$ano = substr((string) $obj_sau_lotepront->sd58_d_data,0,4);
+		$hora = substr((string) $obj_sau_lotepront->sd58_c_hora, 0, 8);
 		
 		$pdf->setfont('arial','b',10);
 		$pdf->cell(20,4,"Lote",1,0,"C",0);

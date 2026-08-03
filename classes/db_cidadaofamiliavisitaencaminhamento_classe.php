@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE cidadaofamiliavisitaencaminhamento
 class cl_cidadaofamiliavisitaencaminhamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $as14_sequencial = 0; 
-   var $as14_cidadaofamiliavisita = 0; 
-   var $as14_cgm = 0; 
+   public $as14_sequencial = 0; 
+   public $as14_cidadaofamiliavisita = 0; 
+   public $as14_cgm = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  as14_sequencial = int4 = Sequencial 
                  as14_cidadaofamiliavisita = int4 = Código 
                  as14_cgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_cidadaofamiliavisitaencaminhamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cidadaofamiliavisitaencaminhamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_cidadaofamiliavisitaencaminhamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->as14_sequencial = pg_result($result,0,0); 
+       $this->as14_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cidadaofamiliavisitaencaminhamento_as14_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $as14_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $as14_sequencial)){
          $this->erro_sql = " Campo as14_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_cidadaofamiliavisitaencaminhamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Família Visita Encaminhamento ($this->as14_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Família Visita Encaminhamento já Cadastrado";
@@ -171,12 +171,12 @@ class cl_cidadaofamiliavisitaencaminhamento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19934,'$this->as14_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3572,19934,'','".AddSlashes(pg_result($resaco,0,'as14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3572,19935,'','".AddSlashes(pg_result($resaco,0,'as14_cidadaofamiliavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3572,19936,'','".AddSlashes(pg_result($resaco,0,'as14_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3572,19934,'','".AddSlashes(pg_fetch_result($resaco,0,'as14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3572,19935,'','".AddSlashes(pg_fetch_result($resaco,0,'as14_cidadaofamiliavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3572,19936,'','".AddSlashes(pg_fetch_result($resaco,0,'as14_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_cidadaofamiliavisitaencaminhamento {
       $this->atualizacampos();
      $sql = " update cidadaofamiliavisitaencaminhamento set ";
      $virgula = "";
-     if(trim($this->as14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as14_sequencial"])){ 
+     if(trim((string) $this->as14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as14_sequencial"])){ 
        $sql  .= $virgula." as14_sequencial = $this->as14_sequencial ";
        $virgula = ",";
-       if(trim($this->as14_sequencial) == null ){ 
+       if(trim((string) $this->as14_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "as14_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_cidadaofamiliavisitaencaminhamento {
          return false;
        }
      }
-     if(trim($this->as14_cidadaofamiliavisita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as14_cidadaofamiliavisita"])){ 
+     if(trim((string) $this->as14_cidadaofamiliavisita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as14_cidadaofamiliavisita"])){ 
        $sql  .= $virgula." as14_cidadaofamiliavisita = $this->as14_cidadaofamiliavisita ";
        $virgula = ",";
-       if(trim($this->as14_cidadaofamiliavisita) == null ){ 
+       if(trim((string) $this->as14_cidadaofamiliavisita) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "as14_cidadaofamiliavisita";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_cidadaofamiliavisitaencaminhamento {
          return false;
        }
      }
-     if(trim($this->as14_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as14_cgm"])){ 
+     if(trim((string) $this->as14_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as14_cgm"])){ 
        $sql  .= $virgula." as14_cgm = $this->as14_cgm ";
        $virgula = ",";
-       if(trim($this->as14_cgm) == null ){ 
+       if(trim((string) $this->as14_cgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "as14_cgm";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_cidadaofamiliavisitaencaminhamento {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19934,'$this->as14_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as14_sequencial"]) || $this->as14_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3572,19934,'".AddSlashes(pg_result($resaco,$conresaco,'as14_sequencial'))."','$this->as14_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3572,19934,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as14_sequencial'))."','$this->as14_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as14_cidadaofamiliavisita"]) || $this->as14_cidadaofamiliavisita != "")
-             $resac = db_query("insert into db_acount values($acount,3572,19935,'".AddSlashes(pg_result($resaco,$conresaco,'as14_cidadaofamiliavisita'))."','$this->as14_cidadaofamiliavisita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3572,19935,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as14_cidadaofamiliavisita'))."','$this->as14_cidadaofamiliavisita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as14_cgm"]) || $this->as14_cgm != "")
-             $resac = db_query("insert into db_acount values($acount,3572,19936,'".AddSlashes(pg_result($resaco,$conresaco,'as14_cgm'))."','$this->as14_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3572,19936,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as14_cgm'))."','$this->as14_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_cidadaofamiliavisitaencaminhamento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19934,'$as14_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3572,19934,'','".AddSlashes(pg_result($resaco,$iresaco,'as14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3572,19935,'','".AddSlashes(pg_result($resaco,$iresaco,'as14_cidadaofamiliavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3572,19936,'','".AddSlashes(pg_result($resaco,$iresaco,'as14_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3572,19934,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3572,19935,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as14_cidadaofamiliavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3572,19936,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as14_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -367,7 +367,7 @@ class cl_cidadaofamiliavisitaencaminhamento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cidadaofamiliavisitaencaminhamento";
@@ -382,7 +382,7 @@ class cl_cidadaofamiliavisitaencaminhamento {
    function sql_query ( $as14_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,7 +408,7 @@ class cl_cidadaofamiliavisitaencaminhamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_cidadaofamiliavisitaencaminhamento {
    function sql_query_file ( $as14_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_cidadaofamiliavisitaencaminhamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

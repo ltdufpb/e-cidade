@@ -33,7 +33,7 @@ class cl_tfd_parametros
     public function __construct()
     {
         $this->rotulo = new rotulo("tfd_parametros");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -102,10 +102,10 @@ class cl_tfd_parametros
          $this->erro_status = "0";
          return false;
        }
-       $this->tf11_i_codigo = pg_result($result,0,0);
+       $this->tf11_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from tfd_parametros_tf11_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf11_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf11_i_codigo)){
          $this->erro_sql = " Campo tf11_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -141,7 +141,7 @@ class cl_tfd_parametros
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tfd_parametros ($this->tf11_i_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tfd_parametros já Cadastrado";
@@ -170,14 +170,14 @@ class cl_tfd_parametros
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16371,'$this->tf11_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,2867,16371,'','".AddSlashes(pg_result($resaco,0,'tf11_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2867,16372,'','".AddSlashes(pg_result($resaco,0,'tf11_i_utilizagradehorario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2867,17592,'','".AddSlashes(pg_result($resaco,0,'tf11_i_campofoco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2867,18250,'','".AddSlashes(pg_result($resaco,0,'tf11_especmedico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2867,1014316,'','".AddSlashes(pg_result($resaco,0,'tf11_obriga_hora_saida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2867,16371,'','".AddSlashes(pg_fetch_result($resaco,0,'tf11_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2867,16372,'','".AddSlashes(pg_fetch_result($resaco,0,'tf11_i_utilizagradehorario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2867,17592,'','".AddSlashes(pg_fetch_result($resaco,0,'tf11_i_campofoco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2867,18250,'','".AddSlashes(pg_fetch_result($resaco,0,'tf11_especmedico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2867,1014316,'','".AddSlashes(pg_fetch_result($resaco,0,'tf11_obriga_hora_saida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -188,10 +188,10 @@ class cl_tfd_parametros
       $this->atualizacampos();
      $sql = " update tfd_parametros set ";
      $virgula = "";
-     if(trim($this->tf11_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf11_i_codigo"])){
+     if(trim((string) $this->tf11_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf11_i_codigo"])){
        $sql  .= $virgula." tf11_i_codigo = $this->tf11_i_codigo ";
        $virgula = ",";
-       if(trim($this->tf11_i_codigo) == null ){
+       if(trim((string) $this->tf11_i_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "tf11_i_codigo";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_tfd_parametros
          return false;
        }
      }
-     if(trim($this->tf11_i_utilizagradehorario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf11_i_utilizagradehorario"])){
+     if(trim((string) $this->tf11_i_utilizagradehorario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf11_i_utilizagradehorario"])){
        $sql  .= $virgula." tf11_i_utilizagradehorario = $this->tf11_i_utilizagradehorario ";
        $virgula = ",";
-       if(trim($this->tf11_i_utilizagradehorario) == null ){
+       if(trim((string) $this->tf11_i_utilizagradehorario) == null ){
          $this->erro_sql = " Campo Utiliza Grade de Horário não informado.";
          $this->erro_campo = "tf11_i_utilizagradehorario";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_tfd_parametros
          return false;
        }
      }
-     if(trim($this->tf11_i_campofoco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf11_i_campofoco"])){
+     if(trim((string) $this->tf11_i_campofoco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf11_i_campofoco"])){
        $sql  .= $virgula." tf11_i_campofoco = $this->tf11_i_campofoco ";
        $virgula = ",";
-       if(trim($this->tf11_i_campofoco) == null ){
+       if(trim((string) $this->tf11_i_campofoco) == null ){
          $this->erro_sql = " Campo Foco no Pedido de TFD não informado.";
          $this->erro_campo = "tf11_i_campofoco";
          $this->erro_banco = "";
@@ -227,17 +227,17 @@ class cl_tfd_parametros
          return false;
        }
      }
-     if(trim($this->tf11_especmedico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf11_especmedico"])){
-        if(trim($this->tf11_especmedico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tf11_especmedico"])){
+     if(trim((string) $this->tf11_especmedico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf11_especmedico"])){
+        if(trim((string) $this->tf11_especmedico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tf11_especmedico"])){
            $this->tf11_especmedico = "null" ;
         }
        $sql  .= $virgula." tf11_especmedico = $this->tf11_especmedico ";
        $virgula = ",";
      }
-     if(trim($this->tf11_obriga_hora_saida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf11_obriga_hora_saida"])){
+     if(trim((string) $this->tf11_obriga_hora_saida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf11_obriga_hora_saida"])){
        $sql  .= $virgula." tf11_obriga_hora_saida = '$this->tf11_obriga_hora_saida' ";
        $virgula = ",";
-       if(trim($this->tf11_obriga_hora_saida) == null ){
+       if(trim((string) $this->tf11_obriga_hora_saida) == null ){
          $this->erro_sql = " Campo Hora Saída obrigatório no Agendamento não informado.";
          $this->erro_campo = "tf11_obriga_hora_saida";
          $this->erro_banco = "";
@@ -261,19 +261,19 @@ class cl_tfd_parametros
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,16371,'$this->tf11_i_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf11_i_codigo"]) || $this->tf11_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,2867,16371,'".AddSlashes(pg_result($resaco,$conresaco,'tf11_i_codigo'))."','$this->tf11_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2867,16371,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf11_i_codigo'))."','$this->tf11_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf11_i_utilizagradehorario"]) || $this->tf11_i_utilizagradehorario != "")
-             $resac = db_query("insert into db_acount values($acount,2867,16372,'".AddSlashes(pg_result($resaco,$conresaco,'tf11_i_utilizagradehorario'))."','$this->tf11_i_utilizagradehorario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2867,16372,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf11_i_utilizagradehorario'))."','$this->tf11_i_utilizagradehorario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf11_i_campofoco"]) || $this->tf11_i_campofoco != "")
-             $resac = db_query("insert into db_acount values($acount,2867,17592,'".AddSlashes(pg_result($resaco,$conresaco,'tf11_i_campofoco'))."','$this->tf11_i_campofoco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2867,17592,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf11_i_campofoco'))."','$this->tf11_i_campofoco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf11_especmedico"]) || $this->tf11_especmedico != "")
-             $resac = db_query("insert into db_acount values($acount,2867,18250,'".AddSlashes(pg_result($resaco,$conresaco,'tf11_especmedico'))."','$this->tf11_especmedico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2867,18250,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf11_especmedico'))."','$this->tf11_especmedico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf11_obriga_hora_saida"]) || $this->tf11_obriga_hora_saida != "")
-             $resac = db_query("insert into db_acount values($acount,2867,1014316,'".AddSlashes(pg_result($resaco,$conresaco,'tf11_obriga_hora_saida'))."','$this->tf11_obriga_hora_saida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2867,1014316,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf11_obriga_hora_saida'))."','$this->tf11_obriga_hora_saida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -327,14 +327,14 @@ class cl_tfd_parametros
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,16371,'$tf11_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,2867,16371,'','".AddSlashes(pg_result($resaco,$iresaco,'tf11_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2867,16372,'','".AddSlashes(pg_result($resaco,$iresaco,'tf11_i_utilizagradehorario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2867,17592,'','".AddSlashes(pg_result($resaco,$iresaco,'tf11_i_campofoco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2867,18250,'','".AddSlashes(pg_result($resaco,$iresaco,'tf11_especmedico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2867,1014316,'','".AddSlashes(pg_result($resaco,$iresaco,'tf11_obriga_hora_saida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2867,16371,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf11_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2867,16372,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf11_i_utilizagradehorario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2867,17592,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf11_i_campofoco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2867,18250,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf11_especmedico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2867,1014316,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf11_obriga_hora_saida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -487,7 +487,7 @@ class cl_tfd_parametros
     if ($ordem != null ) {
 
       $sql       .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 

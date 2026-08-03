@@ -36,8 +36,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_arrecad_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 
 if(isset($desconto)){
@@ -52,11 +52,11 @@ if(isset($desconto)){
      if( $clarrecad->numrows <> 0 ) {
        echo "<script>alert('Parcelamento ja foi concedido desconto.')</script>";
      }
-     elseif(pg_numrows($record) != 0 ){ 
+     elseif(pg_num_rows($record) != 0 ){ 
            $numpar = $k00_numpar;
            $receit = $k00_receit;
            $ttotal = 0;
-           for($i=0;$i<pg_numrows($record);$i++){
+           for($i=0;$i<pg_num_rows($record);$i++){
              db_fieldsmemory($record,$i);
             if($numpar!=0 && $numpar == $k00_numpar ){
                 if($receit!=0 && $receit == $k00_receit){
@@ -77,7 +77,7 @@ if(isset($desconto)){
            $vlrdes = 0;
            db_query("begin");
            $erro = false;
-           for($i=0;$i<pg_numrows($record);$i++){
+           for($i=0;$i<pg_num_rows($record);$i++){
              db_fieldsmemory($record,$i);
              $processa = false;
              if($numpar!=0 && $numpar == $k00_numpar ){
@@ -140,9 +140,9 @@ if(isset($desconto)){
            
 //8160
            $record = debitos_numpre($k00_numpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"));
-           if(pg_numrows($record) != 0){
+           if(pg_num_rows($record) != 0){
                 $ttotal = 0;
-                for($i=0;$i<pg_numrows($record);$i++){
+                for($i=0;$i<pg_num_rows($record);$i++){
                     db_fieldsmemory($record,$i);
                     if($numpar!=0 && $numpar == $k00_numpar ){
                         $ttotal += $total;
@@ -336,7 +336,7 @@ if(isset($desconto)){
                                 GROUP BY v07_numpre, v07_totpar ";
                         //AND EXISTS ( SELECT * FROM ARRECAD WHERE ARRECAD.K00_NUMPRE = TERMO.V07_NUMPRE )
                         $result = db_query( $sql );
-			if( pg_numrows( $result ) > 0 ){
+			if( pg_num_rows( $result ) > 0 ){
                             db_fieldsmemory( $result, 0 );
 			}
 			else {
@@ -355,12 +355,12 @@ if(isset($desconto)){
                         $record = debitos_numpre($v07_numpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"));
 
                         if($record!=false){
-                            if(pg_numrows($record) != 0){
+                            if(pg_num_rows($record) != 0){
                                 $sql = "select count(*) as int_totpar from ( select distinct k00_numpre, k00_numpar from arrecad where k00_numpre=$v07_numpre ) tt";
                                 $result = db_query( $sql );
                                 db_fieldsmemory( $result, 0 );
                                 
-                                $matrec=array();
+                                $matrec=[];
                                 $matpar["0"]="Todas Parcelas ...";
                                 $matrec["0"]="Todas Receitas ...";
                                 $valor = 0;
@@ -369,7 +369,7 @@ if(isset($desconto)){
                                 $tvlrmulta= 0;
                                 $tvlrdesconto= 0;
                                 $ttotal = 0;
-                                for($i=0;$i<pg_numrows($record);$i++){
+                                for($i=0;$i<pg_num_rows($record);$i++){
                                     db_fieldsmemory($record,$i);
                                     $matpar[$k00_numpar]= "$k00_numpar";
                                     if($numpar!=0 && $k00_numpar == $numpar) {

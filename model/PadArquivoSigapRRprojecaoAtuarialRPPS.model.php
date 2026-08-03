@@ -41,7 +41,7 @@ final class PadArquivoSigapRRprojecaoAtuarialRPPS extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "RRProjecaoAtuarialRPPS";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapRRprojecaoAtuarialRPPS extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao  = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
 
@@ -78,14 +78,14 @@ final class PadArquivoSigapRRprojecaoAtuarialRPPS extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                          "parCodigoEntidade",
                          "parMesAnoMovimento",
                          "parExercicio",
                          "parReceitaPrevidenciaria",
                          "parConta",
                          "parDespesaPrevidenciaria"
-                       );
+                       ];
     return $aElementos;  
   }
   

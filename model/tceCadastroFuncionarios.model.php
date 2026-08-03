@@ -35,12 +35,6 @@ class tceCadastroFuncionarios extends tceEstruturaBasica
 
     const CODIGO_ARQUIVO = 35;
 
-    public $iInstit = "";
-    public $sInstituicoes = "";
-    public $sDataIni = "";
-    public $sDataFim = "";
-    public $sCodRemessa = "";
-
     private $oLeiaute = null;
 
     /**
@@ -54,19 +48,13 @@ class tceCadastroFuncionarios extends tceEstruturaBasica
      * @param $sInstituicoes
      * @throws Exception
      */
-    function __construct($iInstit, $sCodRemessa, $sDataIni, $sDataFim, $oData, $oLeiaute = null, $sInstituicoes)
+    function __construct(public $iInstit, public $sCodRemessa, public $sDataIni, public $sDataFim, $oData, $oLeiaute = null, public $sInstituicoes = null)
     {
         try {
             parent::__construct(self::CODIGO_ARQUIVO, self::NOME_ARQUIVO);
         } catch (Exception $e) {
             throw $e;
         }
-
-        $this->iInstit = $iInstit;
-        $this->sInstituicoes = $sInstituicoes;
-        $this->sDataIni = $sDataIni;
-        $this->sDataFim = $sDataFim;
-        $this->sCodRemessa = $sCodRemessa;
 
         if ($oLeiaute != null) {
             $this->oLeiaute = $oLeiaute;
@@ -124,8 +112,8 @@ class tceCadastroFuncionarios extends tceEstruturaBasica
      */
     function sqlCadastroFuncionarios($sDatafim, $sDataini)
     {
-        list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim) = explode("-", $sDatafim);
-        list ($iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni) = explode("-", $sDataini);
+        [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDatafim);
+        [$iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni] = explode("-", (string) $sDataini);
 
         $sql = <<<SQL
             select (cast(rh02_anousu::varchar||'-'||rh02_mesusu::varchar||'-01'::varchar as date))  as dataatualizacao,
@@ -392,7 +380,7 @@ SQL;
             return str_repeat('0', 17);
         }
 
-        if(!strpos($retornoVariaveis->f010, '.')) {
+        if(!strpos((string) $retornoVariaveis->f010, '.')) {
             return str_pad($retornoVariaveis->f010 . '00', 17, '0', STR_PAD_LEFT);
         }
 

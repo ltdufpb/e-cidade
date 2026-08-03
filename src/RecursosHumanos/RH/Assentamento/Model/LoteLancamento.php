@@ -193,13 +193,13 @@ class LoteLancamento
      */
     public function toArray()
     {
-        $toArray = array(
+        $toArray = [
             'codigo' => $this->getSequencial(),
             'data' => $this->getData() ? $this->getData()->format('Y-m-d') : null,
             'instituicao' => $this->getInstituicao()->toArray(),
             'tipo' => $this->getTipoAssentamento()->toArray(),
-            'assentamentos' => array()
-        );
+            'assentamentos' => []
+        ];
 
         foreach ($this->getAssentamentos() as $assentamento) {
             $toArray['assentamentos'][] = $assentamento->toArray();

@@ -38,17 +38,12 @@ use UsuarioSistema;
 class LaboratorioRepository
 {
     /**
-     * @var Object
-     */
-    private $dao;
-
-    /**
      * LaboratorioRepository constructor.
      * @param $dao \cl_lab_laboratorio
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**

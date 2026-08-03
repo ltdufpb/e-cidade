@@ -90,12 +90,12 @@ try {
         throw new Exception("Nenhum registro encontrado para os filtros selecionados!");
       }
 
-      $arrTipos = array();
+      $arrTipos = [];
       $oRetorno->aRemessasGeradas = DbUtils::makeCollectionFromRecord($rsRemessaCobrancaRegistrada, function($oItem) {
 
         $oDataEmissao = new DBDate($oItem->k147_dataemissao);
 
-        $arrAux = (strpos($oItem->k147_tiposemissao, '.')) ? explode('.', $oItem->k147_tiposemissao) : array($oItem->k147_tiposemissao);
+        $arrAux = (strpos((string) $oItem->k147_tiposemissao, '.')) ? explode('.', (string) $oItem->k147_tiposemissao) : [$oItem->k147_tiposemissao];
         $strTipos = "";
 
         if($oItem->k147_tiposemissao == 0){
@@ -118,7 +118,7 @@ try {
           $strTipos = substr($strTipos, 2);
         }
 
-        return (object) array(
+        return (object) [
           "codigo"          => $oItem->k147_sequencial,
           "sequencial"      => $oItem->k147_sequencialremessa,
           "codigo_convenio" => $oItem->k147_convenio,
@@ -126,7 +126,7 @@ try {
           "data"            => $oDataEmissao->getDate(DBDate::DATA_PTBR),
           "hora"            => $oItem->k147_horaemissao,
           "tipos"           => $strTipos
-        );
+        ];
       });
 
       break;
@@ -173,7 +173,7 @@ try {
     case "buscarParcelasUnicas":
 
       $k00_tipo = $oParametros->k00_tipo;
-      $arrUnicas = array();
+      $arrUnicas = [];
 
       if (empty($k00_tipo)) {
         throw new Exception("Campo k00_tipo é obrigatório.");
@@ -200,7 +200,7 @@ try {
       $rs = db_query($sql);
 
       while ($parcelaunica = pg_fetch_array($rs)) {
-        $aux = array();
+        $aux = [];
         $aux['k00_dtvenc']  = $parcelaunica['k00_dtvenc'];
         $aux['k00_dtoper']  = $parcelaunica['k00_dtoper'];
         $aux['k00_percdes'] = $parcelaunica['k00_percdes'];
@@ -216,7 +216,7 @@ try {
     case "buscarParcelas":
 
       $k00_tipo = $oParametros->k00_tipo;
-      $arrParcelas = array();
+      $arrParcelas = [];
 
       if (empty($k00_tipo)) {
         throw new Exception("Campo k00_tipo é obrigatório.");
@@ -242,8 +242,8 @@ try {
       $rs = db_query($sql);
 
       while ($parcela = pg_fetch_array($rs)) {
-        $aux = array();
-        $aux['k00_dtvenc'] = str_replace(array('{', '}'), "", $parcela['k00_dtvenc']);
+        $aux = [];
+        $aux['k00_dtvenc'] = str_replace(['{', '}'], "", $parcela['k00_dtvenc']);
         $aux['k00_numpar'] = $parcela['k00_numpar'];
         $aux['k00_tipo']   = $parcela['k00_tipo'];
         $aux['k00_descr']  = $parcela['k00_descr'];

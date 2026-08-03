@@ -50,14 +50,14 @@ $codrel = $relatorio->getRelatorioContabil()->getCodigo();
     <?php
       $clcriaabas = new cl_criaabas;
 
-      $clcriaabas->identifica = array( "relatorio"  => "Relatório",
-                                       "notas"      => "Fonte/Notas Explicativas");
-      $clcriaabas->title      = array( "relatorio"  => "Relatório",
-                                       "notas"      => "Fonte/Notas Explicativas");
-      $clcriaabas->src        = array( "relatorio" => "con2_lrfranexoxviii011.php?codrel={$codrel}",
-                                       "notas"     => "con2_conrelnotas.php?c83_codrel={$codrel}" );
-      $clcriaabas->sizecampo  = array( "relatorio" => "23",
-                                       "notas"     => "23" );
+      $clcriaabas->identifica = [ "relatorio"  => "Relatório",
+                                       "notas"      => "Fonte/Notas Explicativas"];
+      $clcriaabas->title      = [ "relatorio"  => "Relatório",
+                                       "notas"      => "Fonte/Notas Explicativas"];
+      $clcriaabas->src        = [ "relatorio" => "con2_lrfranexoxviii011.php?codrel={$codrel}",
+                                       "notas"     => "con2_conrelnotas.php?c83_codrel={$codrel}" ];
+      $clcriaabas->sizecampo  = [ "relatorio" => "23",
+                                       "notas"     => "23" ];
       $clcriaabas->cria_abas();
       db_menu();
     ?>

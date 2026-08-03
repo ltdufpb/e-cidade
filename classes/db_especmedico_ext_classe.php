@@ -38,7 +38,7 @@ class cl_especmedico_ext extends cl_especmedico  {
  		$data = "'".date("Y/m/d", time())."'";
  		$result_agenda = db_query($clagendamentos->sql_query_ext(null, "count(*) as total_agendado",null,"sd27_i_codigo = $sd27_i_codigo and sd23_i_situacao = 1 and sd23_d_consulta >= $data"));
  		
- 		if( pg_result($result_agenda,0,"total_agendado") > 0 ){
+ 		if( pg_fetch_result($result_agenda,0,"total_agendado") > 0 ){
  			/*
  			$this->erro_sql = " Profissional possui agendamentos para data posterior. Alteração não efetuada.\\n";
  			$this->erro_campo = "sd27_i_codigo";

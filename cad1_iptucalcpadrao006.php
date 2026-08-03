@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 
 $cliptucalcpadrao = new cl_iptucalcpadrao;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 33;
 $db_botao = false;

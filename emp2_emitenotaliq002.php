@@ -71,7 +71,7 @@ if ($oConfiguracaoGed->utilizaGED()) {
 }
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sqlpref = "select * from db_config where codigo = ".db_getsession("DB_instit");
 $resultpref = db_query($sqlpref);
@@ -81,12 +81,12 @@ $dbwhere = "";
 $iAnoUso = db_getsession('DB_anousu');
 
 if(isset($e60_codemp_ini) && $e60_codemp_ini != "") {
-  $codemp  = split("/",$e60_codemp_ini);
+  $codemp  = preg_split("#\\/#m",(string) $e60_codemp_ini);
 
   if (isset($e60_codemp_fim) && $e60_codemp_fim != "") {
      $str = " e60_codemp between '".$e60_codemp_ini."' and '".$e60_codemp_fim."' and e60_anousu = {$iAnoUso} ";
   } else {
-       $codemp  = split("/",$e60_codemp_ini);
+       $codemp  = preg_split("#\\/#m",(string) $e60_codemp_ini);
 
        if (count($codemp) > 1) {
          $str = " e60_codemp = '".$codemp[0]."' and e60_anousu = ".$codemp[1]." ";
@@ -167,7 +167,7 @@ if($clpagordem->numrows>0){
 
 $result2 = db_query("select * from empparametro where e39_anousu = ".db_getsession("DB_anousu"));
 
-if(pg_numrows($result2)>0){
+if(pg_num_rows($result2)>0){
   db_fieldsmemory($result2,0);
   $pdf1->nvias= $e30_nroviaord;
 }
@@ -216,7 +216,7 @@ for($i = 0;$i < $clpagordem->numrows;$i++){
 
   $resultord = db_query($sql);
 
-  if (pg_numrows($resultord)==0) continue;
+  if (pg_num_rows($resultord)==0) continue;
 
   db_fieldsmemory($resultord,0);
 
@@ -254,7 +254,7 @@ for($i = 0;$i < $clpagordem->numrows;$i++){
    $aRetencoes = $oRetencaoNota->getRetencoesFromDB($e50_codord, false, 0, "","",true);
 
    $result_pcfornecon = db_query("select *,case when pc63_cnpjcpf is not null and trim(pc63_cnpjcpf) <> '' and pc63_cnpjcpf::text::int8 > 0 then pc63_cnpjcpf else '".$z01_cgccpf."' end as z01_cgccpf from pcfornecon inner join pcforneconpad on pc64_contabanco = pc63_contabanco where pc63_numcgm = ".$z01_numcgm);
-   if(pg_numrows($result_pcfornecon) > 0){
+   if(pg_num_rows($result_pcfornecon) > 0){
      db_fieldsmemory($result_pcfornecon,0);
    }
 
@@ -299,7 +299,7 @@ for($i = 0;$i < $clpagordem->numrows;$i++){
    $pdf1->outrasordens     = $outrasordens;
    $pdf1->recorddositens   = $resultitem;
    $pdf1->ano		   = $e60_anousu;
-   $pdf1->linhasdositens   = pg_numrows($resultitem);
+   $pdf1->linhasdositens   = pg_num_rows($resultitem);
    $pdf1->elementoitem     = "o56_elemento";
    $pdf1->descr_elementoitem = "o56_descr";
    $pdf1->vlremp           = "e53_valor";
@@ -353,8 +353,8 @@ for($i = 0;$i < $clpagordem->numrows;$i++){
 
   if($clpagordem->numrows == 1 && isset($valor_ordem)){
 
-   	if( $valor_ordem > pg_result($resultitem,0,"saldo") ){
-       $valor_ordem = pg_result($resultitem,0,"saldo");
+   	if( $valor_ordem > pg_fetch_result($resultitem,0,"saldo") ){
+       $valor_ordem = pg_fetch_result($resultitem,0,"saldo");
      }
 
      $pdf1->valor_ordem  = "$valor_ordem";
@@ -386,7 +386,7 @@ if ($oConfiguracaoGed->utilizaGED()) {
     $oStdDadosGED->tipo  = "NUMERO";
     $oStdDadosGED->valor = $e50_codord;
     $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$e50_codord}.pdf");
-    $oGerenciador->moverArquivo(array($oStdDadosGED));
+    $oGerenciador->moverArquivo([$oStdDadosGED]);
 
   } catch (Exception $eErro) {
     db_redireciona("db_erros.php?fechar=true&db_erro=".$eErro->getMessage());

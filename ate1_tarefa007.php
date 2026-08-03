@@ -46,7 +46,7 @@ $cltarefasituacao = new cl_tarefasituacao;
 $cltarefaitem     = new cl_tarefaitem;
 $cltarefausu      = new cl_tarefausu;
 $cltarefaenvol    = new cl_tarefaenvol;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 11;
 $db_botao = true;
 if(isset($incluir)){

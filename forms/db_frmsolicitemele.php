@@ -58,7 +58,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_pcproc.hide();
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&liberaaba=false'";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&liberaaba=false'";
   ?>
 }
 function js_submit(){

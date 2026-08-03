@@ -43,7 +43,7 @@ $clsolicita = new cl_solicita;
 $clpcorcam->rotulo->label();
 $clpcproc->rotulo->label();
 $clsolicita->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

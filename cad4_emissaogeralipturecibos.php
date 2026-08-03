@@ -64,7 +64,7 @@ $oParams = \db_utils::postMemory($_REQUEST);
       (!empty($oParams->proc)),
       (!empty($oParams->entregavalido)),
       (!empty($oParams->cidadebranco)),
-      array_filter( explode(",", $oParams->parcobrig) ),
+      array_filter( explode(",", (string) $oParams->parcobrig) ),
       $oParams->quantidadeparcelas,
       $oParams->listamatrics,
       $oParams->unica,

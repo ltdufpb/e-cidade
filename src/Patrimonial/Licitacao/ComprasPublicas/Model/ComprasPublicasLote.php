@@ -25,7 +25,7 @@ class ComprasPublicasLote
      */
     private $aItensLote = [];
 
-    public function __construct(licitacao $licitacao = null)
+    public function __construct(?licitacao $licitacao = null)
     {
 
         if ($licitacao == null) {
@@ -52,7 +52,7 @@ class ComprasPublicasLote
                         $item                = new ComprasPublicasItem($this->licitacao->getCodigo());
                         $lote                = new stdClass();
                         $lote->numero        = $itensLicitacao->getOrdem();
-                        $lote->descricao     = utf8_encode($itensLicitacao->getLoteLicitacao()->getDescricao());
+                        $lote->descricao     = mb_convert_encoding($itensLicitacao->getLoteLicitacao()->getDescricao(), 'UTF-8', 'ISO-8859-1');
                         $lote->exclusivoMPE  = $exclusivoMPE;
                         foreach ($configuracao as $configuracaoLote) {
                             if ($itensLicitacao->getLoteLicitacao()->getDescricao() == $configuracaoLote->descricao) {
@@ -62,7 +62,7 @@ class ComprasPublicasLote
                         }
 
                         $lote->cotaReservada = $itensLicitacao->hasCota();
-                        $lote->justificativa = utf8_encode("Lote único");
+                        $lote->justificativa = mb_convert_encoding("Lote único", 'UTF-8', 'ISO-8859-1');
                         $lote->itens         = $item->getItens(null, $itensLicitacao->getCodigo());
                         $lotes[]             = $lote;
                     }
@@ -81,7 +81,7 @@ class ComprasPublicasLote
                         $numeroLote++;
                         $lote                = new stdClass();
                         $lote->numero        = $numeroLote;
-                        $lote->descricao     = utf8_encode($descricao);
+                        $lote->descricao     = mb_convert_encoding($descricao, 'UTF-8', 'ISO-8859-1');
                         $lote->exclusivoMPE  = $exclusivoMPE;
                         foreach ($configuracao as $configuracaoLote) {
                             if ($descricao == $configuracaoLote->descricao) {
@@ -91,7 +91,7 @@ class ComprasPublicasLote
                         }
 
                         $lote->cotaReservada = false;
-                        $lote->justificativa = utf8_encode($descricao);
+                        $lote->justificativa = mb_convert_encoding($descricao, 'UTF-8', 'ISO-8859-1');
                         $item                = new ComprasPublicasItem($this->licitacao->getCodigo());
                         $lote->itens         = $item->getItens($descricao);
                         $lotes[]             = $lote;
@@ -114,7 +114,7 @@ class ComprasPublicasLote
                         $item                = new ComprasPublicasItem($this->licitacao->getCodigo());
                         $lote                = new stdClass();
                         $lote->numero        = $itensLicitacao->getOrdem();
-                        $lote->descricao     = utf8_encode($itensLicitacao->getLoteLicitacao()->getDescricao());
+                        $lote->descricao     = mb_convert_encoding($itensLicitacao->getLoteLicitacao()->getDescricao(), 'UTF-8', 'ISO-8859-1');
                         $lote->exclusivoMPE  = $exclusivoMPE;
                         foreach ($configuracao as $configuracaoLote) {
                             if ($itensLicitacao->getLoteLicitacao()->getDescricao() == $configuracaoLote->descricao) {
@@ -123,7 +123,7 @@ class ComprasPublicasLote
                             }
                         }
                         $lote->cotaReservada = $cotaReservada;
-                        $lote->justificativa = utf8_encode("Lote único");
+                        $lote->justificativa = mb_convert_encoding("Lote único", 'UTF-8', 'ISO-8859-1');
                         $lote->itens         = $item->getItens(null, $itensLicitacao->getCodigo());
                         $lotes[]             = $lote;
                     }
@@ -135,7 +135,7 @@ class ComprasPublicasLote
                         $item                = new ComprasPublicasItem($this->licitacao->getCodigo());
                         $lote                = new stdClass();
                         $lote->numero        = $itensLicitacao->getOrdem();
-                        $lote->descricao     = utf8_encode($itensLicitacao->getLoteLicitacao()->getDescricao());
+                        $lote->descricao     = mb_convert_encoding($itensLicitacao->getLoteLicitacao()->getDescricao(), 'UTF-8', 'ISO-8859-1');
                         $lote->exclusivoMPE  = $exclusivoMPE;
                         foreach ($configuracao as $configuracaoLote) {
                             if ($itensLicitacao->getLoteLicitacao()->getDescricao() == $configuracaoLote->descricao) {
@@ -144,7 +144,7 @@ class ComprasPublicasLote
                             }
                         }
                         $lote->cotaReservada = $cotaReservada;
-                        $lote->justificativa = utf8_encode("Lote único");
+                        $lote->justificativa = mb_convert_encoding("Lote único", 'UTF-8', 'ISO-8859-1');
                         $lote->itens         = $item->getItens(null, $itensLicitacao->getCodigo());
                         $lotes[]             = $lote;
                     }
@@ -162,7 +162,7 @@ class ComprasPublicasLote
                         $numeroLote++;
                         $lote                = new stdClass();
                         $lote->numero        = $numeroLote;
-                        $lote->descricao     = utf8_encode($descricao);
+                        $lote->descricao     = mb_convert_encoding($descricao, 'UTF-8', 'ISO-8859-1');
                         $lote->exclusivoMPE  = $exclusivoMPE;
                         foreach ($configuracao as $configuracaoLote) {
                             if ($descricao == $configuracaoLote->descricao) {
@@ -171,7 +171,7 @@ class ComprasPublicasLote
                             }
                         }
                         $lote->cotaReservada = $cotaReservada;
-                        $lote->justificativa = utf8_encode($descricao);
+                        $lote->justificativa = mb_convert_encoding($descricao, 'UTF-8', 'ISO-8859-1');
                         $item                = new ComprasPublicasItem($this->licitacao->getCodigo());
                         $lote->itens         = $item->getItensRegraPRP($descricao);
                         $lotes[]             = $lote;

@@ -38,7 +38,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 $oGet = db_utils::postMemory($_GET);
 
 $aCalendarios = [];
-foreach (explode(',', $oGet->calendarios) as $calendario) {
+foreach (explode(',', (string) $oGet->calendarios) as $calendario) {
     $aCalendarios[] = db_stdClass::normalizeStringJsonEscapeString(trim($calendario));
 }
 $oGet->calendarios = $aCalendarios;
@@ -95,7 +95,7 @@ if ($oGet->chk_funcional == 'true') {
     $oGet->chk_funcional = 0;
 }
 
-if ($oGet->chk_corpo_gestor_completo == 'true') {
+if ($oGet->chk_corpo_gestor_completo == 0) {
     $oGet->chk_corpo_gestor_completo = 1;
 } else {
     $oGet->chk_corpo_gestor_completo = 0;

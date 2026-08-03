@@ -40,8 +40,8 @@ include(modification("classes/db_veiculos_classe.php"));
 include(modification("classes/db_veictipoabast_classe.php"));
 include(modification("classes/db_veicretirada_classe.php"));
 require(modification("libs/db_app.utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clveiculos              = new cl_veiculos;
 $clveicabast             = new cl_veicabast;
@@ -61,7 +61,7 @@ $ve70_medida3=null;
 
 if (isset($ve60_datasaida) && $ve60_datasaida != "") {
 
-  $aData = explode("/", $ve60_datasaida);
+  $aData = explode("/", (string) $ve60_datasaida);
 
   $ve60_datasaida_dia = $aData[0];
   $ve60_datasaida_mes = $aData[1];
@@ -72,7 +72,7 @@ if (isset($ve60_datasaida) && $ve60_datasaida != "") {
 if(isset($alterar)){
 
 $medida     = $ve70_medida;
-$dataabast  = implode("-",array_reverse(explode("/",$ve70_dtabast)));
+$dataabast  = implode("-",array_reverse(explode("/",(string) $ve70_dtabast)));
 $databanco  = "'".$ve70_dtabast_ano."-".$ve70_dtabast_mes."-".$ve70_dtabast_dia."'";
 
 //último abastecimento

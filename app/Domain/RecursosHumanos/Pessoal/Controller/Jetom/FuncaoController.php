@@ -18,7 +18,7 @@ class FuncaoController extends Controller
      * @param ServerRequestInterface|null $request
      * @return DBJsonResponse
      */
-    public function index(ServerRequestInterface $request = null)
+    public function index(?ServerRequestInterface $request = null)
     {
         if (!empty($request)) {
             if (isset($request->getQueryParams()['instituicao']) && !empty($request->getQueryParams()['instituicao'])) {

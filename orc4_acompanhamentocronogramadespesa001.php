@@ -138,7 +138,7 @@ unset($_SESSION["cronogramabasespages"]);
         </td>
         <td>
           <?php 
-          $aNiveis = array(
+          $aNiveis = [
             1 => "Orgão",
             2 => "Unidade",
             3 => "Função",
@@ -147,7 +147,7 @@ unset($_SESSION["cronogramabasespages"]);
             6 => "Projeto/Atividade",
             7 => "Elemento",
             8 => "Recurso",
-          );
+          ];
           $nivel = 8;
           /* [Extensao] Cronograma de Desembolso */
           db_select("nivel", $aNiveis, true, 1, null);

@@ -80,7 +80,7 @@ if(isset($db_opcaoal)){
 	  <tr>
 	    <td valign="top"  align="center">  
 		    <?php 
-					 $chavepri= array("l38_sequencial"=>@$l38_sequencial);
+					 $chavepri= ["l38_sequencial"=>@$l38_sequencial];
 					 
 					 $cliframe_alterar_excluir->chavepri      = $chavepri;
 					 $cliframe_alterar_excluir->sql           = $clatatemplategeral->sql_query(null);

@@ -26,12 +26,12 @@
  */
 
 include(modification("fpdf151/pdf.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $sqlinst = "select munic as municipio from db_config where codigo = ".db_getsession("DB_instit");
 $resultinst = db_query($sqlinst);
 db_fieldsmemory($resultinst, 0);
-$municipio = strtoupper($municipio);
+$municipio = strtoupper((string) $municipio);
 if($municipio =='BAGE' and 1==2){
   if(!($conn2 = @pg_connect("host=192.168.78.245 dbname=daeb port=5433 user=postgres"))) {
 //  if(!($conn2 = @pg_connect("host= 192.168.0.44 dbname= auto_dae_20070619 port=5432 user=postgres"))) {
@@ -149,7 +149,7 @@ for ($x=0; $x < $linhas; $x++) {
                 inner join arrecad    on arrenumcgm.k00_numpre = arrecad.k00_numpre
                 where z01_cgccpf = '$z01_cgccpf'";
     $result_daeb = db_query($conn2,$sql_daeb) or die($sql_daeb);
-    if (pg_numrows($result_daeb) > 0 and $tipo == 1) {
+    if (pg_num_rows($result_daeb) > 0 and $tipo == 1) {
       $vaitxt=false;
     }
 
@@ -230,7 +230,7 @@ function validaCNPJ($cnpj,$format,$arquivo_invalidos,$arquivo_validos){
     $cnpj1 = $cnpj;
   }
 
-  if (strlen($cnpj) <> 14){
+  if (strlen((string) $cnpj) <> 14){
     //echo " - Inválido <br>";
 //    system("echo $cnpj1 >> /tmp/cnpj_simples_invalidos.txt");
     fputs($arquivo_invalidos,$cnpj1 . "\n");

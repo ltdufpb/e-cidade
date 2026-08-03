@@ -49,18 +49,18 @@ $db_opcao   = 1;
   <tr> 
     <td> 
      <?php 
-			 $clcriaabas->identifica = array( "benstransf"      =>"Gera transferência",
-			                                  "benstransfcodigo"=>"Itens da tranferência");
+			 $clcriaabas->identifica = [ "benstransf"      =>"Gera transferência",
+			                                  "benstransfcodigo"=>"Itens da tranferência"];
 			  
-		 	 $clcriaabas->sizecampo  = array( "benstransf"      =>"20",
-		 	                                  "benstransfcodigo"=>"20");
+		 	 $clcriaabas->sizecampo  = [ "benstransf"      =>"20",
+		 	                                  "benstransfcodigo"=>"20"];
 		 	 
-		 	 $clcriaabas->title      = array( "benstransf"      =>"Gerar transferência",
-		 	                                  "benstransfcodigo"=>"Itens da transferência");
+		 	 $clcriaabas->title      = [ "benstransf"      =>"Gerar transferência",
+		 	                                  "benstransfcodigo"=>"Itens da transferência"];
 		
-			 $clcriaabas->src        = array("benstransf"      =>"pat1_benstransflote011.php");
+			 $clcriaabas->src        = ["benstransf"      =>"pat1_benstransflote011.php"];
 			 
-			 $clcriaabas->disabled   = array("benstransfcodigo"=>"true");
+			 $clcriaabas->disabled   = ["benstransfcodigo"=>"true"];
 			  
 			 $clcriaabas->cria_abas();
 			  

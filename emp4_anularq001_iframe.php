@@ -35,8 +35,8 @@ include(modification("classes/db_empageconf_classe.php"));
 $clempage  = new cl_empage;
 $clempageconf  = new cl_empageconf;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = false;
 
@@ -120,8 +120,8 @@ function js_marca(obj){
 	
 	$result_arq  = $clempage->sql_record($clempage->sql_query_cons(null,"e53_valor,e53_vlranu,e53_vlrpag,e87_codgera,e87_descgera,e87_data,e87_hora,e83_descr,pc63_conta,pc63_conta_dig,pc63_agencia,pc63_agencia_dig,pc63_banco,e81_codmov,e60_codemp,e82_codord,e86_codmov,case when a.z01_numcgm='' or a.z01_numcgm is null then cgm.z01_numcgm else a.z01_numcgm end as z01_numcgm,case when a.z01_nome='' or a.z01_nome is null then cgm.z01_nome else a.z01_nome end as z01_nome,e81_valor,e83_codtipo,e83_descr","e83_codtipo,e82_codord",$dbwhere));
 	$numrows_arq = $clempage->numrows;
-	$arr_valorcontas = Array();
-	$arr_valorproces = Array();
+	$arr_valorcontas = [];
+	$arr_valorproces = [];
 	if($numrows_arq>0){
 	  for($i = 0;$i<$numrows_arq;$i++){
 	    db_fieldsmemory($result_arq,$i);
@@ -175,10 +175,10 @@ function js_marca(obj){
 		  </tr>
 	    ";
 	  }
-	  if(trim($pc63_agencia_dig)!=""){
+	  if(trim((string) $pc63_agencia_dig)!=""){
 	    $pc63_agencia_dig = "/".$pc63_agencia_dig;
 	  }
-	  if(trim($pc63_conta_dig)!=""){
+	  if(trim((string) $pc63_conta_dig)!=""){
 	    $pc63_conta_dig = "/".$pc63_conta_dig;
 	  }
 	  echo "

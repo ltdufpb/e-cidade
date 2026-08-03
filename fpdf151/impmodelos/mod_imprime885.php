@@ -30,7 +30,7 @@ $contaobs    = 0;
 //verifica se algum item tem observação
 for ($j = 0 ;$j < $this->linhasdositens; $j++) {
   
-  $obs = trim(pg_result($this->recorddositens, $j, $this->robsdositens));
+  $obs = trim(pg_fetch_result($this->recorddositens, $j, $this->robsdositens));
   if ($obs != '') {
     $cont_obs++;
   }
@@ -200,7 +200,7 @@ function printRectanglePaciente($oPdf, $iY, $iX, $oImp) {
   $oPdf->Setfont('arial', 'B', 8);
   $oPdf->text(6, $iY + 28, 'Nome da Mãe');
   $oPdf->Setfont('arial', '', 8);
-  $oPdf->text(26, $iY + 28, ': '.substr($oImp->sRMaePaciente, 0, 32));
+  $oPdf->text(26, $iY + 28, ': '.substr((string) $oImp->sRMaePaciente, 0, 32));
   $oPdf->Setfont('arial', 'B', 8);
   $oPdf->text(101, $iY + 28, 'Sexo ');
   $oPdf->Setfont('arial', '', 8);
@@ -208,7 +208,7 @@ function printRectanglePaciente($oPdf, $iY, $iX, $oImp) {
   $oPdf->Setfont('arial', 'B', 8);
   $oPdf->text(11, $iY + 32, 'Endereço');
   $oPdf->Setfont('arial', '', 8);
-  $oPdf->text(26, $iY + 32, ': '.substr($oImp->sREnderecoPaciente, 0, 36));
+  $oPdf->text(26, $iY + 32, ': '.substr((string) $oImp->sREnderecoPaciente, 0, 36));
   $oPdf->Setfont('arial', 'B', 8);
   $oPdf->text(97, $iY + 32, 'Número');
   $oPdf->Setfont('arial', '', 8);
@@ -216,11 +216,11 @@ function printRectanglePaciente($oPdf, $iY, $iX, $oImp) {
   $oPdf->Setfont('arial', 'B', 8);
   $oPdf->text(141, $iY + 32, 'Complemento ');
   $oPdf->Setfont('arial', '', 8);
-  $oPdf->text(162, $iY + 32, ': '.substr($oImp->sRComplPaciente, 0, 23));
+  $oPdf->text(162, $iY + 32, ': '.substr((string) $oImp->sRComplPaciente, 0, 23));
   $oPdf->Setfont('arial', 'B', 8);
   $oPdf->text(15, $iY + 36, 'Bairro ');
   $oPdf->Setfont('arial', '', 8);
-  $oPdf->text(26, $iY + 36, ': '.substr($oImp->sRBairroPaciente, 0, 23));
+  $oPdf->text(26, $iY + 36, ': '.substr((string) $oImp->sRBairroPaciente, 0, 23));
   $oPdf->Setfont('arial', 'B', 8);
   $oPdf->text(95, $iY + 36, 'Município ');
   $oPdf->Setfont('arial', '', 8);
@@ -264,25 +264,25 @@ function printItens($oPdf, $iLin, $iCol, $oImp, $comeco, $quant_itens, $passada)
   for($ii = $comeco;$ii < $oImp->linhasdositens ;$ii++) {
 
     $cont++;
-    $oImp->rtotal += pg_result($oImp->recorddositens,$ii,$oImp->rvalor);
+    $oImp->rtotal += pg_fetch_result($oImp->recorddositens,$ii,$oImp->rvalor);
     $oPdf->setx($iCol+3+$maiscol);
     
-    $oPdf->cell(10 ,5, trim(pg_result($oImp->recorddositens,$ii,$oImp->rcodcgs))                       ,0,0,"L",0);
-    $oPdf->cell(66 ,5, substr(trim(pg_result($oImp->recorddositens,$ii,$oImp->rbeneficiado)),0,50)     ,0,0,"L",0);
-    $oPdf->cell(100,5, pg_result($oImp->recorddositens,$ii, 'tf12_descricao')                          ,0,0,"L",0);
-    if (trim(pg_result($oImp->recorddositens,$ii,$oImp->robsdositens)) != '') {
+    $oPdf->cell(10 ,5, trim(pg_fetch_result($oImp->recorddositens,$ii,$oImp->rcodcgs))                       ,0,0,"L",0);
+    $oPdf->cell(66 ,5, substr(trim(pg_fetch_result($oImp->recorddositens,$ii,$oImp->rbeneficiado)),0,50)     ,0,0,"L",0);
+    $oPdf->cell(100,5, pg_fetch_result($oImp->recorddositens,$ii, 'tf12_descricao')                          ,0,0,"L",0);
+    if (trim(pg_fetch_result($oImp->recorddositens,$ii,$oImp->robsdositens)) != '') {
 
-      $oPdf->cell(15, 4, number_format(pg_result($oImp->recorddositens,$ii,$oImp->rvalor), 2, ',', '.'),0,1,"R",0);
-      $obsitens=substr(trim(pg_result($oImp->recorddositens,$ii,$oImp->robsdositens)),0,110);
+      $oPdf->cell(15, 4, number_format(pg_fetch_result($oImp->recorddositens,$ii,$oImp->rvalor), 2, ',', '.'),0,1,"R",0);
+      $obsitens=substr(trim(pg_fetch_result($oImp->recorddositens,$ii,$oImp->robsdositens)),0,110);
       $oPdf->Setfont('Arial', '', 6);
       $oPdf->multicell(200, 4,$obsitens);
       $oPdf->Setfont('Arial', '', 8);
 	  
     } else {
-      $oPdf->cell(15,5,number_format(pg_result($oImp->recorddositens,$ii,$oImp->rvalor), 2, ',', '.'),0,1,"R",0);
+      $oPdf->cell(15,5,number_format(pg_fetch_result($oImp->recorddositens,$ii,$oImp->rvalor), 2, ',', '.'),0,1,"R",0);
     }
     
-    if ($quant_itens==6 && (trim(pg_result($oImp->recorddositens,$ii,$oImp->robsdositens)) == '')){
+    if ($quant_itens==6 && (trim(pg_fetch_result($oImp->recorddositens,$ii,$oImp->robsdositens)) == '')){
 
       $obsitens="";
       $oPdf->multicell(180,4,"");
@@ -325,7 +325,7 @@ function printItens($oPdf, $iLin, $iCol, $oImp, $comeco, $quant_itens, $passada)
 	$oPdf->Setfont('Arial','b',8);
 	$oPdf->text($iCol+2,$iLin+110,'TOTAL: ');
 	$oPdf->Setfont('Arial','b',8);
-	$oPdf->text($iCol+134,$iLin+120,strtoupper($oImp->municpref).', '.substr($oImp->emissao,8,2).' DE '.strtoupper(db_mes(substr($oImp->emissao,5,2))).' DE '.substr($oImp->emissao,0,4).'.');
+	$oPdf->text($iCol+134,$iLin+120,strtoupper((string) $oImp->municpref).', '.substr((string) $oImp->emissao,8,2).' DE '.strtoupper(db_mes(substr((string) $oImp->emissao,5,2))).' DE '.substr((string) $oImp->emissao,0,4).'.');
 	$oPdf->line($iCol+130,$iLin+110,$iCol+195,$iLin+110);
 	$oPdf->text($iCol+152,$iLin+114,'RECEBEDOR');
 	$oPdf->Setfont('Arial','',8);

@@ -39,13 +39,13 @@ class Dirf extends \Dirf2015 {
 
   const REGISTRO_PREVIDENCIA_PRIVADA = 3;
 
-  protected $aListaPrevidenciasPrivadas = array();
+  protected $aListaPrevidenciasPrivadas = [];
 
-  protected $aListaPessoasGeradasDirf   = array();
+  protected $aListaPessoasGeradasDirf   = [];
 
-  protected $aListaPessoasPensaoRRA  = array();
+  protected $aListaPessoasPensaoRRA  = [];
 
-  protected $aListaPessoasPensao   = array();
+  protected $aListaPessoasPensao   = [];
 
   /**
    * Construtor da classe
@@ -89,7 +89,7 @@ class Dirf extends \Dirf2015 {
     
     $iMes = $arq[$Iarq][$sigla."mesusu"];
     $oDaoDirfPensionista = new \cl_rhdirfgeracaopessoalpensionista();
-    $aCampos = array(
+    $aCampos = [
       "rh96_sequencial",
       "r52_regist",
       "r52_mesusu",
@@ -98,19 +98,19 @@ class Dirf extends \Dirf2015 {
       "sum(case when rh141_tipofolha <> 5 then rh145_valor else 0 end) as valor_pensao_estrutura_suplementar",
       "sum(case when rh141_tipofolha = 5 then rh145_valor else 0 end) as valor_pensao_estrutura_suplementar_13",
       "sum(r52_val13) as valor_pago_13"
-    );
-    $aWhere = array(
+    ];
+    $aWhere = [
       "r52_anousu         = {$this->iAno}",      
       "rh95_fontepagadora ='{$this->sCnpj}'",
       "rh95_ano           = {$this->iAno}",
       "rh01_regist        = {$oPessoa->matricula_corrente}",
-    );
-    $aGroup = array(
+    ];
+    $aGroup = [
       "r52_regist",
       "r52_numcgm",
       "r52_mesusu",
       "rh96_sequencial"
-    );
+    ];
     $sSqlPensionistas  =  $oDaoDirfPensionista->sql_query_valor_pensao(implode(", ", $aCampos),
       implode(" and ", $aWhere),
       implode(", ", $aGroup),
@@ -130,7 +130,7 @@ class Dirf extends \Dirf2015 {
     
       $oDadosPensao = \db_utils::fieldsMemory($rsPensionistas, $iPensao);
       if (empty($this->aListaPessoasPensao[$iCodigoRegistro][$oDadosPensao->rh96_sequencial])) {
-        $this->aListaPessoasPensao[$iCodigoRegistro][$oDadosPensao->rh96_sequencial] = array();
+        $this->aListaPessoasPensao[$iCodigoRegistro][$oDadosPensao->rh96_sequencial] = [];
       }
 
       if (empty($this->aListaPessoasPensao[$iCodigoRegistro][$oDadosPensao->rh96_sequencial][$oDadosPensao->r52_numcgm])) {
@@ -139,7 +139,7 @@ class Dirf extends \Dirf2015 {
         $oDadosPensionista->numcgm      = $oDadosPensao->r52_numcgm;
         $oDadosPensionista->matricula   = $oDadosPensao->r52_regist;
         $oDadosPensionista->codigo_dirf = $oDadosPensao->r52_regist;
-        $oDadosPensionista->valores     = array(13 => 0);
+        $oDadosPensionista->valores     = [13 => 0];
         $this->aListaPessoasPensao[$iCodigoRegistro][$oDadosPensao->rh96_sequencial][$oDadosPensao->r52_numcgm] = $oDadosPensionista;
       }
       $oPensionista = $this->aListaPessoasPensao[$iCodigoRegistro][$oDadosPensao->rh96_sequencial][$oDadosPensao->r52_numcgm];
@@ -187,7 +187,7 @@ class Dirf extends \Dirf2015 {
     if (empty($this->aListaPrevidenciasPrivadas[$oPessoa->rh01_numcgm])) {
 
       $oDadosPrevidencia              = new \stdClass();
-      $oDadosPrevidencia->previdencia = array();
+      $oDadosPrevidencia->previdencia = [];
       $oDadosPrevidencia->cgm         = $oPessoa->rh01_numcgm;
       $oDadosPrevidencia->codigo_dirf = $oPessoa->codigodirf;
       $oDadosPrevidencia->matricula   = $aRegistros[$iLinhaProcessamento][$sSiglaTabela."regist"];
@@ -197,7 +197,7 @@ class Dirf extends \Dirf2015 {
     $oDadosPrevidencia = $this->aListaPrevidenciasPrivadas[$oPessoa->rh01_numcgm];
 
     if (empty($oDadosPrevidencia->previdencia[$oEmpresa->getCodigo()])) {
-      $oDadosPrevidencia->previdencia[$oEmpresa->getCodigo()] = array();
+      $oDadosPrevidencia->previdencia[$oEmpresa->getCodigo()] = [];
     }
     $iMes = $aRegistros[$iLinhaProcessamento][$sSiglaTabela."mesusu"];
     if (!isset($oDadosPrevidencia->previdencia[$oEmpresa->getCodigo()][$iMes])) {
@@ -287,7 +287,7 @@ class Dirf extends \Dirf2015 {
     $nValorPensao = $oPessoa->aValorGrupo[19];
     $oPessoa->aValorGrupo[19] = 0;    
     if (empty($this->aListaPessoasPensaoRRA[$oPessoa->codigodirf])) {
-      $this->aListaPessoasPensaoRRA[$oPessoa->codigodirf] = array();
+      $this->aListaPessoasPensaoRRA[$oPessoa->codigodirf] = [];
     }
     $oDaoLancamentoRRAPensionista = new \cl_lancamentorrapensionista();
     $sSqlPensionistasRRA = $oDaoLancamentoRRAPensionista->sql_query_dirf($oServidor->getMatricula(), $iMes, $iAno);    
@@ -303,7 +303,7 @@ class Dirf extends \Dirf2015 {
         $oPensionista = new \stdClass();
         $oPensionista->numcgm    = $oDadosPensionista->rh201_numcgm;
         $oPensionista->matricula = $oServidor->getMatricula();
-        $oPensionista->valores   = array();
+        $oPensionista->valores   = [];
         $this->aListaPessoasPensaoRRA[$oPessoa->codigodirf][$oDadosPensionista->rh201_numcgm] = $oPensionista;
       }
       $oPensionista = $this->aListaPessoasPensaoRRA[$oPessoa->codigodirf][$oDadosPensionista->rh201_numcgm];

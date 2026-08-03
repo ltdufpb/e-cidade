@@ -111,7 +111,7 @@ db_input('y76_descr',50,$Iy76_descr,true,'text',$db_opcao,"")
   <tr>
     <td colspan="2" align="top">
    <?php 
-    $chavepri= array("y76_codvist"=>@$y76_codvist,"y76_receita"=>@$y76_receita);
+    $chavepri= ["y76_codvist"=>@$y76_codvist,"y76_receita"=>@$y76_receita];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y76_codvist,y76_receita,y76_valor,y76_descr";
     $cliframe_alterar_excluir->sql=$clvistoriarec->sql_query("","","*",""," y76_codvist = $y76_codvist");

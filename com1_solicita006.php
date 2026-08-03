@@ -108,7 +108,7 @@ $oDaoProcessoAdministrativo = new cl_solicitaprotprocesso();
 $opselec = 3;
 $db_opcao = 33;
 $db_botao = false;
-$aParametrosOrcamento = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+$aParametrosOrcamento = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
 $lUtilizaPacto = false;
 
 if (count($aParametrosOrcamento) > 0) {

@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhpessoal_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $daoAvaliacaoGrupoRespostaRescisao = new cl_avaliacaogruporespostarhpesrescisao;
 $rotulo = new rotulocampo();
@@ -89,8 +89,8 @@ $rotulo->label('z01_nome');
 </html>
 <?php
 
-    $whereFiltrosPesquisa = array();
-    $repassa = array();
+    $whereFiltrosPesquisa = [];
+    $repassa = [];
 
     if(isset($chave_rh01_regist) && !empty($chave_rh01_regist)) {
         $whereFiltrosPesquisa[] = "rh01_regist = $chave_rh01_regist";
@@ -121,14 +121,14 @@ $rotulo->label('z01_nome');
     $sql = $daoAvaliacaoGrupoRespostaRescisao->buscaServidorCargaDesligamento($campos, $where);
 
     if(isset($chave_rh01_regist)) {
-        $repassa = array("chave_rh01_regist"=>$chave_rh01_regist,"chave_z01_nome=>$chave_z01_nome");
+        $repassa = ["chave_rh01_regist"=>$chave_rh01_regist,"chave_z01_nome=>$chave_z01_nome"];
     }
     if(isset($pesquisa_chave)) {
-        $repassa = array(
+        $repassa = [
             "chave_rh01_regist" => $chave_rh01_regist,
             "chave_z01_nome" => $chave_z01_nome,
             "chave_rh01_numcgm" => $chave_rh01_numcgm
-        );
+        ];
     }
     if (!isset($pesquisa_chave)) {
         echo '<div class="container">';

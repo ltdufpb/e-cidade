@@ -18,9 +18,9 @@ use ECidade\Tributario\Library\Entity;
 
 final class DetalheConverter extends Converter
 {
-    const TIPO_ATUALIZACAO_INCLUSAO  = "01";
-    const TIPO_ATUALIZACAO_ALTERACAO = "02";
-    const TIPO_ATUALIZACAO_EXCLUSAO  = "03";
+    const string TIPO_ATUALIZACAO_INCLUSAO  = "01";
+    const string TIPO_ATUALIZACAO_ALTERACAO = "02";
+    const string TIPO_ATUALIZACAO_EXCLUSAO  = "03";
     /**
      * @param Entity $entity
      * @return string
@@ -34,7 +34,7 @@ final class DetalheConverter extends Converter
         $detalhe  = TipoRegistro::DETALHE;
 
         $size = $this->layout->getSize(Detalhe::RESPONSAVEL_DEBITO);
-        $detalhe .= substr(str_pad($entity->getInstituicao()->getNome(), $size, ' ', STR_PAD_RIGHT), 0, $size);
+        $detalhe .= substr(str_pad((string) $entity->getInstituicao()->getNome(), $size, ' ', STR_PAD_RIGHT), 0, $size);
 
         $size = $this->layout->getSize(Detalhe::TIPO_ATUALIZACAO);
         $detalhe .= substr(str_pad(self::TIPO_ATUALIZACAO_INCLUSAO, $size, '0', STR_PAD_LEFT), ($size * -1));
@@ -42,7 +42,7 @@ final class DetalheConverter extends Converter
         $size = $this->layout->getSize(Detalhe::IDENTIFICACAO_DEVEDOR);
 
 
-        $cpfCnpj = preg_replace('/\D/', '', $entity->getContribuinte()->getCpfCnpj());
+        $cpfCnpj = preg_replace('/\D/', '', (string) $entity->getContribuinte()->getCpfCnpj());
         $detalhe .= substr(str_pad($cpfCnpj, $size, '0', STR_PAD_LEFT), ($size * -1));
 
         if ($entity->getContribuinte() instanceof Contribuinte) {
@@ -76,14 +76,14 @@ final class DetalheConverter extends Converter
 
         $size = $this->layout->getSize(Detalhe::VENCIMENTO_CODIGO_BARRAS);
         $dtVencimento = $entity->getRecibo()->getVencimento()->format("Ymd");
-        $detalhe .= substr(str_pad($dtVencimento, $size, ' ', STR_PAD_LEFT), ($size * -1));
+        $detalhe .= substr(str_pad((string) $dtVencimento, $size, ' ', STR_PAD_LEFT), ($size * -1));
 
         $size = $this->layout->getSize(Detalhe::CODIGO_BARRAS);
-        $codigoBarras = preg_replace('/\D/', '', $entity->getRecibo()->getLinhaDigitavel());
+        $codigoBarras = preg_replace('/\D/', '', (string) $entity->getRecibo()->getLinhaDigitavel());
         $detalhe .= substr(str_pad($codigoBarras, $size, ' ', STR_PAD_LEFT), ($size * -1));
         
         $size = $this->layout->getSize(Detalhe::VALOR_DEBITO);
-        $valorRecibo = preg_replace('/\D/', '', $this->format->decimal($valorRecibo));
+        $valorRecibo = preg_replace('/\D/', '', (string) $this->format->decimal($valorRecibo));
         $detalhe .= substr(str_pad($valorRecibo, $size, '0', STR_PAD_LEFT), ($size * -1));
         
         $size = $this->layout->getSize(Detalhe::TIPO_DEBITO);

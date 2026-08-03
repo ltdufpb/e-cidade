@@ -32,10 +32,10 @@ require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 
 $oParam   = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
-$oRetorno = (object) array(
+$oRetorno = (object) [
   "message" => '',
   "erro" => false
-);
+];
 
 try {
 
@@ -61,7 +61,7 @@ try {
       
       $rsTipoDebito = db_query($sSqlTipoDebito);
       $iQuantidadeTipoDebito = pg_num_rows($rsTipoDebito);
-      $aTipoDebito = array();
+      $aTipoDebito = [];
 
       for($iLinha = 0; $iLinha < $iQuantidadeTipoDebito; $iLinha++){
         $oTipoDebito = pg_fetch_object($rsTipoDebito, $iLinha);
@@ -80,7 +80,7 @@ try {
 
       $rsBanco = db_query($sSqlBanco);
       $iQuantidadeBanco = pg_num_rows($rsBanco);
-      $aBanco = array();
+      $aBanco = [];
 
       for($iLinha = 0; $iLinha < $iQuantidadeBanco; $iLinha++){
         $oBanco = pg_fetch_object($rsBanco, $iLinha);

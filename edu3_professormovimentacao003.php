@@ -63,7 +63,7 @@ if ($iRegistro == 0) {
 	$lSemMovimento = true;
 }
 
-$aMovimentos = array();
+$aMovimentos = [];
 
 for ($i = 0; $i < $iRegistro; $i++) {
 	

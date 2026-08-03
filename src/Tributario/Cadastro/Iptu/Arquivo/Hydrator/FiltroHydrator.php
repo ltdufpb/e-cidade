@@ -26,11 +26,11 @@ final class FiltroHydrator extends Service
         $filtro->setTerceiroDigitoParcela($parametros->barrasparc);
 
         if (!empty($parametros->listamatrics)) {
-            $filtro->setMatriculas(explode(',', $parametros->listamatrics));
+            $filtro->setMatriculas(explode(',', (string) $parametros->listamatrics));
         }
 
         if (!empty($parametros->debito)) {
-            $debitos = explode(",", $parametros->debito);
+            $debitos = explode(",", (string) $parametros->debito);
 
             if ($debitos[0] == "IPTU") {
                 $filtro->setIptu(true);
@@ -43,9 +43,9 @@ final class FiltroHydrator extends Service
         }
 
         if (!empty($parametros->unica)) {
-            $unicas = array();
+            $unicas = [];
 
-            $array = explode('U', $parametros->unica);
+            $array = explode('U', (string) $parametros->unica);
 
             foreach ($array as $value) {
                 $dados = explode('=', $value);

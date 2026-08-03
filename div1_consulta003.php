@@ -38,8 +38,8 @@
 	require(modification("classes/db_termo_classe.php"));
 	require(modification("classes/db_certid_classe.php"));
 	include(modification("dbforms/db_funcoes.php"));
-	db_postmemory($HTTP_SERVER_VARS);
-	db_postmemory($HTTP_POST_VARS);
+	db_postmemory($_SERVER);
+	db_postmemory($_POST);
 	$cldivida = new cl_divida;
 	$cltermo = new cl_termo;
 	$clcertdiv = new cl_certdiv;
@@ -75,7 +75,7 @@
 			//aqui o codigo da divida foi localizada e pode-se trazer os seus dados
 			$sqlSituacao = $cldivida->sql_querysituacao($v01_coddiv," v01_instit = ".db_getsession('DB_instit'));
 			$resultSituacao = db_query($sqlSituacao);
-			$fraseSituacao = " ( ".pg_result($resultSituacao,0,0)." )";
+			$fraseSituacao = " ( ".pg_fetch_result($resultSituacao,0,0)." )";
 ?>
     <tr>
       <th align="center" colspan="4">&nbsp;<b>Dados da dívida<?=@$fraseSituacao?></b> </th>
@@ -133,7 +133,7 @@
 	}else if (isset($codCert)){
 		$sql = $clcertid->sql_query($codCert);
 		$result = $clcertid->sql_record($sql);
-		if(pg_numrows($result)!=0){
+		if(pg_num_rows($result)!=0){
 			$clcertid->rotulo->label();
 			db_fieldsmemory($result,0,3);
 			//aqui o codigo da divida foi localizada e pode-se trazer os seus dados
@@ -162,7 +162,7 @@
 <?php 
 		$sql = $clcertdiv->sql_query($v13_certid);
 		$result = $clcertdiv->sql_record($sql);
-			if(pg_numrows($result)!=0){
+			if(pg_num_rows($result)!=0){
 ?>
       <td align="left" width="35%" nowrap>&nbsp;Certidão de dívida normal&nbsp;
 	  </td>
@@ -196,7 +196,7 @@
 	}else if(isset($codTerm)){
 		$sql = $cltermo->sql_query($codTerm);
 		$result = $cltermo->sql_record($sql);
-		if(pg_numrows($result)!=0){
+		if(pg_num_rows($result)!=0){
 			$cltermo->rotulo->label();
 			db_fieldsmemory($result,0,3);
 ?>
@@ -264,7 +264,7 @@
 <?php 
 		$sql = $cltermodiv->sql_query($v07_parcel);
 		$result = $cltermodiv->sql_record($sql);
-			if(pg_numrows($result)!=0){
+			if(pg_num_rows($result)!=0){
 ?>
       <td align="left" width="35%" nowrap>&nbsp;Parcelamento de dívida normal&nbsp;
 	  </td>
@@ -301,7 +301,7 @@
 	}else if(isset($codInicial)){
 		$sql = $clinicial->sql_query($codInicial);
 		$result = $clinicial->sql_record($sql);
-		if(pg_numrows($result)!=0){
+		if(pg_num_rows($result)!=0){
 			$clinicial->rotulo->label();
 			db_fieldsmemory($result,0,3);
 ?>

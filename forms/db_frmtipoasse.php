@@ -34,7 +34,7 @@ $clrotulo->label("h37_modportariaindividual");
 $clrotulo->label("h38_modportariacoletiva");
 
 $h12_natureza     = !empty($h12_natureza) ? $h12_natureza : '';
-$opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
+$opcoesGeraFaltas = ['t'=>'Sim', 'f'=>'Não'];
 ?>
 <br />
 <style>
@@ -100,7 +100,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
             </td>
             <td>
               <?php 
-              $x = array(
+              $x = [
                 0=>"0 - Nao Soma",
                 1=>"1 - Tempo Municipal",
                 2=>"2 - Tempo Empresa Privada",
@@ -109,7 +109,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
                 5=>"5 - Tempo Estadual",
                 6=>"6 - Tempo Municipal Averbado",
                 9=>"9 - Tempo Convertido"
-              );
+              ];
               db_select('h12_reltot',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -118,7 +118,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
             </td>
             <td>
               <?php 
-              $x = array("f"=>"Não","t"=>"Sim");
+              $x = ["f"=>"Não","t"=>"Sim"];
               db_select('h12_relgra',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -129,10 +129,10 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
             </td>
             <td>
               <?php 
-              $x = array(
+              $x = [
                 "A"=>"A - Afastamento",
                 "S"=>"S - Assentamento"
-              );
+              ];
               db_select('h12_tipo',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -141,7 +141,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
             </td>
             <td>
               <?php 
-              $x = array("f"=>"Não","t"=>"Sim");
+              $x = ["f"=>"Não","t"=>"Sim"];
               db_select('h12_graefe',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -152,7 +152,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
             </td>
             <td>
               <?php 
-              $x = array(
+              $x = [
                 "I"=>"I - Inicio",
                 "F"=>"F - Fim",
                 "+"=>"+ - Soma",
@@ -160,7 +160,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
                 "N"=>"N - Desconsidera",
                 "D"=>"D - Tempo Dobrado",
                 "S"=>"S - Nao Soma Tempo"
-              );
+              ];
               db_select('h12_efetiv',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -169,11 +169,11 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
             </td>
             <td>
               <?php 
-              $x = array(
+              $x = [
                 "I"=>"INSS",
                 "P"=>"Instituição",
                 "C"=>"Convertida"
-              );
+              ];
               db_select('h12_tipefe',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -184,7 +184,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
             </td>
             <td>
               <?php 
-              $x = array("f"=>"Não","t"=>"Sim");
+              $x = ["f"=>"Não","t"=>"Sim"];
               db_select('h12_regenc',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -193,7 +193,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
             </td>
             <td>
               <?php 
-              $x = array("f"=>"Não","t"=>"Sim");
+              $x = ["f"=>"Não","t"=>"Sim"];
               db_select('h12_vinculaperiodoaquisitivo',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -204,11 +204,11 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
             </td>
             <td>
               <?php
-              $aOh12_tiporeajuste = array(
+              $aOh12_tiporeajuste = [
                 "0" => "Nenhum",
                 "1" => "Real",
                 "2" => "Paridade"
-              );
+              ];
 
               db_select("h12_tiporeajuste", $aOh12_tiporeajuste, true, $db_opcao, "");
               ?>
@@ -223,7 +223,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               $oDaoNaturezaTipoAssentamento = new cl_naturezatipoassentamento();
               $sSqlNaturezaTipoAssentamento = $oDaoNaturezaTipoAssentamento->sql_query(null, "rh159_sequencial, rh159_descricao", null);
               $rsNaturezaTipoAssentamento   = db_query($sSqlNaturezaTipoAssentamento);
-              $aNaturezasTipoassentamento   = array();
+              $aNaturezasTipoassentamento   = [];
 
               if(is_resource($rsNaturezaTipoAssentamento) && pg_num_rows($rsNaturezaTipoAssentamento) > 0) {
                 for ($iIndNatureza=0; $iIndNatureza < pg_num_rows($rsNaturezaTipoAssentamento); $iIndNatureza++) {
@@ -401,7 +401,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
     db_iframe_tipoasse.hide();
     <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave;";
+      echo " location.href = '".basename((string) $_SERVER["PHP_SELF"])."?chavepesquisa='+chave;";
     }
     ?>
   }

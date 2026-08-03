@@ -65,7 +65,7 @@
             <td>
               <input type="hidden" value="<?php echo $lReprocessamento; ?>" id="lReprocessamento" name="lReprocessamento"></input>
               <?php
-                db_select('q64_sequencial', array('' => 'SELECIONE'), '', 1, "onchange='js_getDataVencimento(this.value);'");
+                db_select('q64_sequencial', ['' => 'SELECIONE'], '', 1, "onchange='js_getDataVencimento(this.value);'");
               ?>
             </td>
           </tr>

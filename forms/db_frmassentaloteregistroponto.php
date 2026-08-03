@@ -79,7 +79,7 @@ $sDisplay = ( isset($_GET['action']) && $_GET['action'] == 'cancelar' ) ? "none"
   
               if(DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
   
-                $aTiposFolha = array(0=>'Selecione');
+                $aTiposFolha = [0=>'Selecione'];
                 if(FolhaPagamentoSalario::hasFolhaAberta()) {
                   $aTiposFolha[FolhaPagamento::TIPO_FOLHA_SALARIO]      ='Salário';
                 } elseif(FolhaPagamentoSuplementar::hasFolhaAberta()){

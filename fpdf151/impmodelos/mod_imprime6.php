@@ -47,7 +47,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
         $this->objpdf->Setfont('Arial', 'B', 8);
     }
 
-    if (strtoupper(trim($this->municpref)) != 'GUAIBA') {
+    if (strtoupper(trim((string) $this->municpref)) != 'GUAIBA') {
         $this->objpdf->text(149.5, $xlin - 2, 'TIPO : ');
         $this->objpdf->text(159, $xlin - 2, $this->emptipo);
     }
@@ -94,7 +94,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
     $this->objpdf->text($xcol + 2, $xlin + 51, "Emissor");
 
     $this->objpdf->Setfont('Arial', '', 8);
-    $this->objpdf->text($xcol + 17, $xlin + 5, ':  ' . db_formatar($this->orgao, 'orgao') . ' - ' . substr($this->descr_orgao, 0, 46));
+    $this->objpdf->text($xcol + 17, $xlin + 5, ':  ' . db_formatar($this->orgao, 'orgao') . ' - ' . substr((string) $this->descr_orgao, 0, 46));
     $this->objpdf->text($xcol + 17, $xlin + 8.5, ':  ' . db_formatar($this->unidade, 'unidade') . ' - ' . $this->descr_unidade);
     $this->objpdf->text($xcol + 17, $xlin + 12, ':  ' . db_formatar($this->funcao, 'funcao') . ' - ' . $this->descr_funcao);
     $this->objpdf->text($xcol + 17, $xlin + 15.5, ':  ' . db_formatar($this->subfuncao, 'subfuncao') . ' - ' . $this->descr_subfuncao);
@@ -118,7 +118,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
     /**
      * Se o tamanho da descrição é maior que $iTamanhoLinha, quebra em duas linhas (sem cortar as palavras ao meio)
      */
-    if (strlen($this->descr_recurso) > $iTamanhoLinha) {
+    if (strlen((string) $this->descr_recurso) > $iTamanhoLinha) {
 
         $aDescricaoRecurso = explode("\n", wordwrap($sDescricaoRecurso, $iTamanhoLinha));
         $sDescricaoRecurso = current($aDescricaoRecurso);
@@ -156,7 +156,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
         try {
             $dadosLog = lancamentoContabil::buscaLogPorCodigoDocumento($this->numemp, 10);
             $nomeEmissor = !empty($dadosLog) ? $dadosLog[0]->nome : '';
-        } catch (Exception $e) {
+        } catch (Exception) {
             $nomeEmissor = '';
         }
 
@@ -170,7 +170,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
     $this->objpdf->text($xcol + 108, $xlin + 4, 'Dados do Credor:');
     $this->objpdf->Setfont('Arial', 'B', 8);
     $this->objpdf->text($xcol + 107, $xlin + 7, 'Nº Credor');
-    $this->objpdf->text($xcol + 150, $xlin + 7, (strlen($this->cnpj) == 11 ? 'CPF' : 'CNPJ'));
+    $this->objpdf->text($xcol + 150, $xlin + 7, (strlen((string) $this->cnpj) == 11 ? 'CPF' : 'CNPJ'));
     $this->objpdf->text($xcol + 107, $xlin + 10, 'Nome');
     $this->objpdf->text($xcol + 107, $xlin + 13, 'Endereço');
     $this->objpdf->text($xcol + 107, $xlin + 16, 'Município');
@@ -183,7 +183,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
 
     $this->objpdf->Setfont('Arial', '', 8);
     $this->objpdf->text($xcol + 124, $xlin + 7, ': ' . $this->numcgm);
-    $this->objpdf->text($xcol + 158, $xlin + 7, ': ' . (strlen($this->cnpj) == 11 ? db_formatar($this->cnpj, 'cpf') : db_formatar($this->cnpj, 'cnpj')));
+    $this->objpdf->text($xcol + 158, $xlin + 7, ': ' . (strlen((string) $this->cnpj) == 11 ? db_formatar($this->cnpj, 'cpf') : db_formatar($this->cnpj, 'cnpj')));
     $this->objpdf->text($xcol + 124, $xlin + 10, ': ' . $this->nome);
     $this->objpdf->text($xcol + 124, $xlin + 13, ': ' . $this->ender . '  ' . $this->compl);
     $this->objpdf->text($xcol + 124, $xlin + 16, ': ' . $this->munic . '-' . $this->ufFornecedor . '    CEP : ' . $this->cep);
@@ -207,7 +207,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
     $this->objpdf->text($xcol + 157, $xlin + 47, 'Saldo Atual');
 
     $this->objpdf->Setfont('Arial', '', 7);
-    $this->objpdf->text($xcol + 108, $xlin + 27, 'PROCESSO DE COMPRA N' . CHR(176) . " " . db_formatar(pg_result($this->recorddositens, 0, $this->Snumeroproc), 's', '0', 6, 'e'));
+    $this->objpdf->text($xcol + 108, $xlin + 27, 'PROCESSO DE COMPRA N' . CHR(176) . " " . db_formatar(pg_fetch_result($this->recorddositens, 0, $this->Snumeroproc), 's', '0', 6, 'e'));
     $this->objpdf->text($xcol + 108, $xlin + 32, 'AUTORIZAÇÃO N' . chr(176) . ' ' . db_formatar($this->numaut, 's', '0', 5, 'e'));
     $this->objpdf->text($xcol + 156, $xlin + 27, 'SEQ. DO EMPENHO N' . chr(176) . ' ' . db_formatar($this->numemp, 's', '0', 6, 'e'));
     $this->objpdf->text($xcol + 156, $xlin + 32, 'PROC. ADMIN (P.A.) : ' . $this->processo_administrativo);
@@ -249,8 +249,8 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
 
     for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
 
-        $this->objpdf->SetWidths(array(15, 137, 25, 25));
-        $this->objpdf->SetAligns(array('C', 'L', 'R', 'R'));
+        $this->objpdf->SetWidths([15, 137, 25, 25]);
+        $this->objpdf->SetAligns(['C', 'L', 'R', 'R']);
         db_fieldsmemory($this->recorddositens, $ii);
         $oStdDadosItens = db_utils::fieldsMemory($this->recorddositens, $ii);
 
@@ -278,11 +278,11 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
              */
             if (empty($sDescricaoUnidade)) {
 
-                $aWhereUnidade = array(
+                $aWhereUnidade = [
                     "empautitem.e55_sequen = {$oStdDadosItens->e62_sequen}",
                     "empempitem.e62_numemp = {$oStdDadosItens->e62_numemp}",
                     "matunid.m61_codmatunid is not null",
-                );
+                ];
                 $oDaoAutorizacao = new cl_empempaut();
                 $sSqlBuscaItem = $oDaoAutorizacao->sql_query_empenho_autorizacao(null, 'distinct m61_descr', null, implode(' and ', $aWhereUnidade));
                 $rsBuscaUnidade = db_query($sSqlBuscaItem);
@@ -292,24 +292,24 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
             }
 
 
-            if ($ele != pg_result($this->recorddositens, $ii, $this->analitico)) {
+            if ($ele != pg_fetch_result($this->recorddositens, $ii, $this->analitico)) {
                 $this->objpdf->cell(15, 4, '', 0, 0, "C", 0);
-                $this->objpdf->cell(137, 4, db_formatar(pg_result($this->recorddositens, $ii, $this->analitico), 'elemento_int') . ' - ' . pg_result($this->recorddositens, $ii, $this->descr_analitico), 0, 1, "L", 0);
-                $ele = pg_result($this->recorddositens, $ii, $this->analitico);
+                $this->objpdf->cell(137, 4, db_formatar(pg_fetch_result($this->recorddositens, $ii, $this->analitico), 'elemento_int') . ' - ' . pg_fetch_result($this->recorddositens, $ii, $this->descr_analitico), 0, 1, "L", 0);
+                $ele = pg_fetch_result($this->recorddositens, $ii, $this->analitico);
             }
 
-            $xtotal += pg_result($this->recorddositens, $ii, $this->valoritem);
-            $quantitem = pg_result($this->recorddositens, $ii, $this->quantitem);
-            $descricaoitem = pg_result($this->recorddositens, $ii, $this->descricaoitem) . " - $sDescricaoUnidade";
+            $xtotal += pg_fetch_result($this->recorddositens, $ii, $this->valoritem);
+            $quantitem = pg_fetch_result($this->recorddositens, $ii, $this->quantitem);
+            $descricaoitem = pg_fetch_result($this->recorddositens, $ii, $this->descricaoitem) . " - $sDescricaoUnidade";
 
-            if (pg_result($this->recorddositens, $ii, $this->Snumero) != "") {
-                $descricaoitem .= "\n" . 'SOLICITAÇÃO: ' . pg_result($this->recorddositens, $ii, $this->Snumero);
+            if (pg_fetch_result($this->recorddositens, $ii, $this->Snumero) != "") {
+                $descricaoitem .= "\n" . 'SOLICITAÇÃO: ' . pg_fetch_result($this->recorddositens, $ii, $this->Snumero);
             }
 
-            $obsitem = pg_result($this->recorddositens, $ii, $this->observacaoitem);
+            $obsitem = pg_fetch_result($this->recorddositens, $ii, $this->observacaoitem);
 
-            $valoritemuni = db_formatar(pg_result($this->recorddositens, $ii, $this->valor), 'v', " ", $this->casadec);
-            $valoritemtot = db_formatar(pg_result($this->recorddositens, $ii, $this->valoritem), 'f');
+            $valoritemuni = db_formatar(pg_fetch_result($this->recorddositens, $ii, $this->valor), 'v', " ", $this->casadec);
+            $valoritemtot = db_formatar(pg_fetch_result($this->recorddositens, $ii, $this->valoritem), 'f');
 
             /**
              * Não é uma licitação
@@ -318,7 +318,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
              */
             if (empty($obsitem) && !empty($this->numcgm)) {
 
-                $iSolicitacao = pg_result($this->recorddositens, $ii, 'pc11_codigo');
+                $iSolicitacao = pg_fetch_result($this->recorddositens, $ii, 'pc11_codigo');
 
                 if (!empty($iSolicitacao)) {
 
@@ -381,7 +381,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
                 $iTotalCaract = ($iWidthMulticell * $iLinhasRestantes);
                 $iLimitString = $iTotalCaract;
 
-                $iTamanhoDaStringEmCaracteres = strlen($descricaoitem);
+                $iTamanhoDaStringEmCaracteres = strlen((string) $descricaoitem);
 
                 // Percorre o resumo do limite de caraceters até um ponto que haja espaço em branco para não quebre alguma palavra
                 for ($iInd = $iTotalCaract; $iInd < $iTamanhoDaStringEmCaracteres; $iInd++) {
@@ -393,22 +393,22 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
                     }
                 }
 
-                $iLinhasMulticell = $this->objpdf->NbLines($iWidthMulticell, substr($descricaoitem, 0, $iLimitString));
+                $iLinhasMulticell = $this->objpdf->NbLines($iWidthMulticell, substr((string) $descricaoitem, 0, $iLimitString));
                 // Insere quebra no ponto informado
-                $descricaoitem = substr($descricaoitem, 0, $iLimitString) . "\n" . substr($descricaoitem, $iLimitString, strlen($descricaoitem));
+                $descricaoitem = substr((string) $descricaoitem, 0, $iLimitString) . "\n" . substr((string) $descricaoitem, $iLimitString, strlen((string) $descricaoitem));
             }
         }
 
         $this->objpdf->Setfont('Arial', '', 7);
 
-        $descricaoitem = str_replace(array("\\n", "\n"), "\n", $descricaoitem);
+        $descricaoitem = str_replace(["\\n", "\n"], "\n", $descricaoitem);
 
-        $aCampos = array($quantitem, $descricaoitem, $valoritemuni, $valoritemtot);
+        $aCampos = [$quantitem, $descricaoitem, $valoritemuni, $valoritemtot];
 
         $descricaoitemimprime = $this->objpdf->Row_multicell($aCampos, 3, false, 5, 0, true, true, 1, $set_altura_row);
 
         $retorna_obs = 0;
-        if (trim($descricaoitemimprime) != "") {
+        if (trim((string) $descricaoitemimprime) != "") {
 
             $retorna_obs = 1;
             $ii--;
@@ -421,11 +421,11 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
             if ($proxima_pagina == 2) {
 
                 $this->objpdf->sety($this->objpdf->h - 125);
-                $this->objpdf->Row(array('', "Continua na página $proxima_pagina", '', ''), 3, false, 4);
+                $this->objpdf->Row(['', "Continua na página $proxima_pagina", '', ''], 3, false, 4);
             } else {
 
                 $this->objpdf->sety($this->objpdf->h - 25);
-                $this->objpdf->Row(array('', "Continua na página $proxima_pagina", '', ''), 3, false, 4);
+                $this->objpdf->Row(['', "Continua na página $proxima_pagina", '', ''], 3, false, 4);
             }
 
             if ($pagina == 1) {
@@ -460,7 +460,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
 
                 $resparag = @db_query($sqlparag);
 
-                if (@pg_numrows($resparag) > 0) {
+                if (@pg_num_rows($resparag) > 0) {
                     db_fieldsmemory($resparag, 0);
                     /**[extensao ordenadordespesa] doc_usuario*/
                     @eval($db02_texto);
@@ -473,7 +473,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
                     $sqlparagpadrao .= " where db60_tipodoc = 1501 and db60_instit = " . db_getsession("DB_instit") . " order by db62_ordem";
 
                     $resparagpadrao = @db_query($sqlparagpadrao);
-                    if (@pg_numrows($resparagpadrao) > 0) {
+                    if (@pg_num_rows($resparagpadrao) > 0) {
                         db_fieldsmemory($resparagpadrao, 0);
                         /**[extensao ordenadordespesa] doc_padrao*/
 
@@ -510,7 +510,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
             $this->objpdf->text(175, $xlin - 8, $this->emissao);
 
             $this->objpdf->text(120, $xlin - 3, 'PROCESSO DE COMPRA N' . CHR(176) . ": ");
-            $this->objpdf->text(175, $xlin - 3, db_formatar(pg_result($this->recorddositens, 0, $this->Snumeroproc), 's', '0', 6, 'e'));
+            $this->objpdf->text(175, $xlin - 3, db_formatar(pg_fetch_result($this->recorddositens, 0, $this->Snumeroproc), 's', '0', 6, 'e'));
 
             $this->objpdf->Image('imagens/files/' . $this->logo, 15, $xlin - 17, 12);
             $this->objpdf->Setfont('Arial', 'B', 9);
@@ -564,36 +564,36 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
         $this->objpdf->text($xcol + 2, $xlin + 164, 'RESUMO : ', 0, 1, 'L', 0);
         $this->objpdf->setxy($xcol + 1, $xlin + 161.5);
 
-        if ($possuiFinalidadePagto = strlen($this->finalidade_pagto) > 0) {
+        if ($possuiFinalidadePagto = strlen((string) $this->finalidade_pagto) > 0) {
             $this->objpdf->text(6, $xlin + 175, 'FINALIDADE PAGAMENTO : ', 0, 1, 'L', 0);
         }
 
         // trata o resumo para que caiba no espaço correto
 //  global $texto_resumo, $qtd_string, $tam_string, $spaco_a_acupar;
         $texto_resumo = $this->resumo;
-        $qtd_string = strlen($this->resumo);  /// numero de caracteres da string
+        $qtd_string = strlen((string) $this->resumo);  /// numero de caracteres da string
         $tam_string = $this->objpdf->GetStringWidth($this->resumo); /// espaco ocupado pela string
         $spaco_a_acupar = 825;  /// tamanho do espaco disponivel
         while ($spaco_a_acupar < $tam_string) {
             $qtd_string--;
-            $tam_string = $this->objpdf->GetStringWidth(substr($texto_resumo, 0, $qtd_string));
+            $tam_string = $this->objpdf->GetStringWidth(substr((string) $texto_resumo, 0, $qtd_string));
         }
 
         if ($possuiFinalidadePagto) {
             $texto_finalidade = $this->finalidade_pagto;
-            $qtd_string_finalidade = strlen($this->finalidade_pagto);  /// numero de caracteres da string
+            $qtd_string_finalidade = strlen((string) $this->finalidade_pagto);  /// numero de caracteres da string
             $tam_string_finalidade = $this->objpdf->GetStringWidth($this->finalidade_pagto); /// espaco ocupado pela string
             while ($spaco_a_acupar < $tam_string_finalidade) {
                 $qtd_string_finalidade--;
-                $tam_string_finalidade = $this->objpdf->GetStringWidth(substr($texto_finalidade, 0, $qtd_string_finalidade));
+                $tam_string_finalidade = $this->objpdf->GetStringWidth(substr((string) $texto_finalidade, 0, $qtd_string_finalidade));
             }
         }
 
-        $this->objpdf->multicell(147, 3.5, substr($this->resumo, 0, $qtd_string), 0, 'J', 0, 14);
+        $this->objpdf->multicell(147, 3.5, substr((string) $this->resumo, 0, $qtd_string), 0, 'J', 0, 14);
 
         if ($possuiFinalidadePagto) {
             $this->objpdf->setxy($xcol + 1, $xlin + 176);
-            $this->objpdf->multicell(148, 3.5, substr($this->finalidade_pagto, 0, $qtd_string_finalidade), 0, 'L');
+            $this->objpdf->multicell(148, 3.5, substr((string) $this->finalidade_pagto, 0, $qtd_string_finalidade), 0, 'L');
         }
 
         $this->objpdf->text($xcol + 159, $xlin + 187, 'T O T A L', 0, 1, 'L', 0);
@@ -608,7 +608,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
             $rsOrdenador = @db_query($sSqlOrdenador) or die($sSqlOrdenador);
 //    db_fieldsmemory($rsOrdenador,0);
 
-            $ordenador = pg_result($rsOrdenador, 0, 0);
+            $ordenador = pg_fetch_result($rsOrdenador, 0, 0);
         }
 
 
@@ -622,7 +622,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
 
         $resparag = @db_query($sqlparag);
 
-        if (@pg_numrows($resparag) > 0) {
+        if (@pg_num_rows($resparag) > 0) {
             db_fieldsmemory($resparag, 0);
             /**[extensao ordenadordespesa] doc_usuario*/
 
@@ -636,7 +636,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
             $sqlparagpadrao .= " where db60_tipodoc = 1501 and db60_instit = " . db_getsession("DB_instit") . " order by db62_ordem";
 
             $resparagpadrao = @db_query($sqlparagpadrao);
-            if (@pg_numrows($resparagpadrao) > 0) {
+            if (@pg_num_rows($resparagpadrao) > 0) {
                 db_fieldsmemory($resparagpadrao, 0);
                 /**[extensao ordenadordespesa] doc_padrao*/
 

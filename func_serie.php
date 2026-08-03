@@ -35,8 +35,8 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory( $HTTP_POST_VARS );
-parse_str    ( $HTTP_SERVER_VARS["QUERY_STRING"] );
+db_postmemory( $_POST );
+parse_str    ( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clserie = new cl_serie;
 $clserie->rotulo->label( "ed11_i_codigo" );
@@ -50,12 +50,12 @@ $where = "";
 /**
  * Array com as etapas equivalentes e menores que a etapa passada por parâmetro
  */
-$aEtapasAnteriores = array();
+$aEtapasAnteriores = [];
 
 /**
  * Array com as etapas equivalentes de uma etapa passada por parâmetro
  */
-$aEtapasEquivalentes = array();
+$aEtapasEquivalentes = [];
 
 /**
  * Variável que armazena uma instância de Curso, quando este for passado por parâmetro
@@ -114,7 +114,7 @@ if( isset( $iEtapa ) && !empty( $iEtapa ) ) {
               </tr>
               <tr>
                 <td colspan="2" align="center">
-                  <input name="curso" type="hidden" value="<?=isset( $curso ) ? $curso : "";?>">
+                  <input name="curso" type="hidden" value="<?=$curso ?? "";?>">
                   <?php
                     if ( isset( $inicial ) ) {
                   ?>
@@ -183,7 +183,7 @@ if( isset( $iEtapa ) && !empty( $iEtapa ) ) {
      */
     if( count( $aEtapasAnteriores ) > 0 ) {
 
-      $aCodigoEtapa = array();
+      $aCodigoEtapa = [];
 
       /**
        * Percorre as etapas equivalentes e menores

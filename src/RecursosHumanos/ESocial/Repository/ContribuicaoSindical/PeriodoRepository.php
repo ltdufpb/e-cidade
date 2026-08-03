@@ -38,7 +38,7 @@ class PeriodoRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param array|int $ids
@@ -64,7 +64,7 @@ class PeriodoRepository
      * @param Periodo|null $periodo
      * @throws Exception
      */
-    public function delete(Periodo $periodo = null)
+    public function delete(?Periodo $periodo = null)
     {
         $id = $periodo instanceof Periodo ? $periodo->getSequencial() : null;
 
@@ -82,7 +82,7 @@ class PeriodoRepository
      * @return bool|Periodo
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_contribuicaosindicalperiodo();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -106,13 +106,13 @@ class PeriodoRepository
      * @return Periodo[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_contribuicaosindicalperiodo();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $periodos = array();
+        $periodos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $periodos;
@@ -139,7 +139,7 @@ class PeriodoRepository
             throw new Exception("Não foi possível buscar o período da contribuicao sindical");
         }
 
-        $periodos = array();
+        $periodos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $periodos;
@@ -242,7 +242,7 @@ class PeriodoRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
         return $this;
     }
 

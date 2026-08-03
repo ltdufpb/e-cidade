@@ -53,7 +53,7 @@ require_once(modification("classes/db_listadoc_classe.php"));
 require_once(modification("model/convenio.model.php"));
 require_once(modification("model/regraEmissao.model.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $cliptucalc    = new cl_iptucalc;
 $cliptuender   = new cl_iptuender;
@@ -77,33 +77,16 @@ $nomeinst2 = $prefeitura;
 
 $sOrder = null;
 
-switch ($ordem)  {
-
-case "endereco":
-  $sOrder = "j23_ender, j23_bairro, j23_numero, j23_compl";
-  break;
-case "bairroender":
-  $sOrder = "j23_bairro, j23_ender, j23_numero, j23_compl";
-  break;
-case "alfabetica":
-  $sOrder = "z01_nome";
-  break;
-case "zonaentrega": 
-  $sOrder = "j86_iptucadzonaentrega";       
-  break;
-case "refant":
-  $sOrder = "j40_refant";
-  break;
-case "setorquadralote":
-  $sOrder = "j34_setor, j34_quadra, j34_lote";
-  break;
-case "bairroalfa":
-  $sOrder = " j23_bairro ";
-  break;  
-default : 
-  $sOrder = "z01_nome";
-  break;
-}
+$sOrder = match ($ordem) {
+    "endereco" => "j23_ender, j23_bairro, j23_numero, j23_compl",
+    "bairroender" => "j23_bairro, j23_ender, j23_numero, j23_compl",
+    "alfabetica" => "z01_nome",
+    "zonaentrega" => "j86_iptucadzonaentrega",
+    "refant" => "j40_refant",
+    "setorquadralote" => "j34_setor, j34_quadra, j34_lote",
+    "bairroalfa" => " j23_bairro ",
+    default => "z01_nome",
+};
 
 $sql  = " select j20_matric,";
 $sql .= "        j23_vlrter, ";
@@ -152,7 +135,7 @@ $sql .= "         where iptucalc.j23_anousu = $anousu $wheretipo " . ($quantidad
 $sql .= " order by $sOrder "; 
 
 $rsUnica = db_query($sql) or die($sql);
-$numrowsunica = pg_numrows($rsUnica);
+$numrowsunica = pg_num_rows($rsUnica);
 if ($numrowsunica == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existe calculo para o IPTU '.$anousu);
   exit;
@@ -179,7 +162,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
   $numpre_unica = $j20_numpre;
   $numpres      = "";
   $cliptubase   = new cl_iptubase;
-  $vt           = $HTTP_POST_VARS;
+  $vt           = $_POST;
   $tam          = sizeof($vt);
   reset($vt);
 
@@ -189,20 +172,20 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
     }
     next($vt);
   }
-  $numpres = split("N", $numpres);
+  $numpres = preg_split("#N#m", $numpres);
 
   $unica   = false;
   if (sizeof($numpres) < 2) {
-    $numpres = array ("0" => "0", "1" => $numpre_unica.'P000');
+    $numpres =  ["0" => "0", "1" => $numpre_unica.'P000'];
     $unica   = true;
   } else {
-    if (isset ($HTTP_POST_VARS["numpre_unica"])) {
+    if (isset ($_POST["numpre_unica"])) {
       $unica = true;
     }
   }
 
   for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
-    $codigos = split("P", $numpres[$volta]);
+    $codigos = preg_split("#P#m", (string) $numpres[$volta]);
   }
 
   $resultunica = db_query("select j23_anousu from iptucalc inner join iptunump on j20_anousu = j23_anousu and j20_matric = j23_matric where j20_numpre = $numpre_unica");
@@ -210,7 +193,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
   $pdf2->iptj23_anousu = $j23_anousu;
 
   $resultunica = db_query("select * from recibounica where k00_numpre = $numpre_unica");
-  if (pg_numrows($resultunica) > 0) {
+  if (pg_num_rows($resultunica) > 0) {
     db_fieldsmemory($resultunica, 0);
     $vencunica = db_formatar($k00_dtvenc, "d");
   } else {
@@ -261,7 +244,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
     where k00_matric = $matric 
     and k00_dtvenc < '".date("Y-m-d", db_getsession("DB_datausu"))."' limit 1";
   $rsResulant = db_query($sql);
-  $numlin     = pg_numrows($rsResulant);
+  $numlin     = pg_num_rows($rsResulant);
   if ($numlin > 0) {
     $pdf2->iptdebant = "Há Débitos Anteriores, favor procurar Setor de Dívida Ativa";
   } else {
@@ -279,14 +262,14 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
 
     $linha = 220;
     $resultfin = db_query($sql) or die($sql);
-    if ($resultfin != false && pg_numrows($resultfin) > 0) {
+    if ($resultfin != false && pg_num_rows($resultfin) > 0) {
       db_fieldsmemory($resultfin, 0);
 
-      $uvlrhis      = substr($fc_calcula,1,13);
-      $uvlrcor      = substr($fc_calcula,14,13);
-      $uvlrjuros    = substr($fc_calcula,27,13);
-      $uvlrmulta    = substr($fc_calcula,40,13);
-      $uvlrdesconto = substr($fc_calcula,53,13);
+      $uvlrhis      = substr((string) $fc_calcula,1,13);
+      $uvlrcor      = substr((string) $fc_calcula,14,13);
+      $uvlrjuros    = substr((string) $fc_calcula,27,13);
+      $uvlrmulta    = substr((string) $fc_calcula,40,13);
+      $uvlrdesconto = substr((string) $fc_calcula,53,13);
 
       $utotal       = @$uvlrcor+@$uvlrjuro+@$uvlrmulta-@$uvlrdesconto;
 
@@ -333,7 +316,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
     where j22_anousu = $j23_anousu 
     and j22_matric = $matric";
   $sqlres = db_query($sql);
-  if (pg_numrows($sqlres) > 0) {
+  if (pg_num_rows($sqlres) > 0) {
     db_fieldsmemory($sqlres, 0);
   } else {
     $vlredi = 0;
@@ -341,7 +324,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
 
   $sql    = "select j23_vlrter, j23_aliq from iptucalc where j23_anousu = $j23_anousu and j23_matric = $matric";
   $sqlres = db_query($sql);
-  if (pg_numrows($sqlres) > 0) {
+  if (pg_num_rows($sqlres) > 0) {
     db_fieldsmemory($sqlres, 0);
     $pdf2->iptj23_aliq = $j23_aliq;
   } else {
@@ -422,7 +405,7 @@ include(modification("classes/db_listadoc_classe.php"));
 include(modification("model/convenio.model.php"));
 include(modification("model/regraEmissao.model.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $cliptucalc    = new cl_iptucalc;
 $cliptuender   = new cl_iptuender;
@@ -446,33 +429,16 @@ $nomeinst2 = $prefeitura;
 
 $sOrder = null;
 
-switch ($ordem)  {
-
-  case "endereco":
-    $sOrder = "j23_ender, j23_bairro, j23_numero, j23_compl";
-  break;
-  case "bairroender":
-    $sOrder = "j23_bairro, j23_ender, j23_numero, j23_compl";
-  break;
-  case "alfabetica":
-    $sOrder = "z01_nome";
-  break;
-  case "zonaentrega": 
-    $sOrder = "j86_iptucadzonaentrega";       
-  break;
-  case "refant":
-    $sOrder = "j40_refant";
-  break;
-  case "setorquadralote":
-    $sOrder = "j34_setor, j34_quadra, j34_lote";
-  break;
-  case "bairroalfa":
-    $sOrder = " j23_bairro ";
-  break;  
-  default : 
-  $sOrder = "z01_nome";
-  break;
-}
+$sOrder = match ($ordem) {
+    "endereco" => "j23_ender, j23_bairro, j23_numero, j23_compl",
+    "bairroender" => "j23_bairro, j23_ender, j23_numero, j23_compl",
+    "alfabetica" => "z01_nome",
+    "zonaentrega" => "j86_iptucadzonaentrega",
+    "refant" => "j40_refant",
+    "setorquadralote" => "j34_setor, j34_quadra, j34_lote",
+    "bairroalfa" => " j23_bairro ",
+    default => "z01_nome",
+};
 
 $sql  = " select j20_matric,";
 $sql .= "        j23_vlrter, ";
@@ -521,7 +487,7 @@ $sql .= "         where iptucalc.j23_anousu = $anousu $wheretipo " . ($quantidad
 $sql .= " order by $sOrder "; 
 
 $rsUnica = db_query($sql) or die($sql);
-$numrowsunica = pg_numrows($rsUnica);
+$numrowsunica = pg_num_rows($rsUnica);
 if ($numrowsunica == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existe calculo para o IPTU '.$anousu);
   exit;
@@ -546,7 +512,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
    $numpre_unica = $j20_numpre;
    $numpres      = "";
    $cliptubase   = new cl_iptubase;
-   $vt           = $HTTP_POST_VARS;
+   $vt           = $_POST;
    $tam          = sizeof($vt);
    reset($vt);
   
@@ -556,20 +522,20 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
     }
     next($vt);
   }
-  $numpres = split("N", $numpres);
+  $numpres = preg_split("#N#m", $numpres);
   
   $unica   = false;
   if (sizeof($numpres) < 2) {
-    $numpres = array ("0" => "0", "1" => $numpre_unica.'P000');
+    $numpres =  ["0" => "0", "1" => $numpre_unica.'P000'];
     $unica   = true;
   } else {
-    if (isset ($HTTP_POST_VARS["numpre_unica"])) {
+    if (isset ($_POST["numpre_unica"])) {
       $unica = true;
     }
   }
   
   for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
-    $codigos = split("P", $numpres[$volta]);
+    $codigos = preg_split("#P#m", (string) $numpres[$volta]);
   }
   
   $resultunica = db_query("select j23_anousu from iptucalc inner join iptunump on j20_anousu = j23_anousu and j20_matric = j23_matric where j20_numpre = $numpre_unica");
@@ -577,7 +543,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
   $pdf2->iptj23_anousu = $j23_anousu;
   
   $resultunica = db_query("select * from recibounica where k00_numpre = $numpre_unica");
-  if (pg_numrows($resultunica) > 0) {
+  if (pg_num_rows($resultunica) > 0) {
     db_fieldsmemory($resultunica, 0);
     $vencunica = db_formatar($k00_dtvenc, "d");
   } else {
@@ -628,7 +594,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
 		  where k00_matric = $matric 
 		    and k00_dtvenc < '".date("Y-m-d", db_getsession("DB_datausu"))."' limit 1";
   $rsResulant = db_query($sql);
-  $numlin     = pg_numrows($rsResulant);
+  $numlin     = pg_num_rows($rsResulant);
   if ($numlin > 0) {
     $pdf2->iptdebant = "Há Débitos Anteriores, favor procurar Setor de Dívida Ativa";
   } else {
@@ -646,14 +612,14 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
 
     $linha = 220;
     $resultfin = db_query($sql) or die($sql);
-    if ($resultfin != false && pg_numrows($resultfin) > 0) {
+    if ($resultfin != false && pg_num_rows($resultfin) > 0) {
       db_fieldsmemory($resultfin, 0);
 
-      $uvlrhis      = substr($fc_calcula,1,13);
-      $uvlrcor      = substr($fc_calcula,14,13);
-      $uvlrjuros    = substr($fc_calcula,27,13);
-      $uvlrmulta    = substr($fc_calcula,40,13);
-      $uvlrdesconto = substr($fc_calcula,53,13);
+      $uvlrhis      = substr((string) $fc_calcula,1,13);
+      $uvlrcor      = substr((string) $fc_calcula,14,13);
+      $uvlrjuros    = substr((string) $fc_calcula,27,13);
+      $uvlrmulta    = substr((string) $fc_calcula,40,13);
+      $uvlrdesconto = substr((string) $fc_calcula,53,13);
 
       $utotal       = @$uvlrcor+@$uvlrjuro+@$uvlrmulta-@$uvlrdesconto;
       
@@ -694,7 +660,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
           where j22_anousu = $j23_anousu 
             and j22_matric = $matric";
   $sqlres = db_query($sql);
-  if (pg_numrows($sqlres) > 0) {
+  if (pg_num_rows($sqlres) > 0) {
     db_fieldsmemory($sqlres, 0);
   } else {
     $vlredi = 0;
@@ -702,7 +668,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
   
   $sql    = "select j23_vlrter, j23_aliq from iptucalc where j23_anousu = $j23_anousu and j23_matric = $matric";
   $sqlres = db_query($sql);
-  if (pg_numrows($sqlres) > 0) {
+  if (pg_num_rows($sqlres) > 0) {
     db_fieldsmemory($sqlres, 0);
     $pdf2->iptj23_aliq = $j23_aliq;
   } else {

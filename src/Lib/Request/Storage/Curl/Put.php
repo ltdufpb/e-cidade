@@ -49,15 +49,13 @@ class Put
         "signers",
         "signers_signed"
     ];
-    private $autenticacao;
     private $file_id;
 
     /**
      * @throws Exception
      */
-    public function __construct(Autenticacao $autenticacao)
+    public function __construct(private readonly Autenticacao $autenticacao)
     {
-        $this->autenticacao = $autenticacao;
         $this->autenticacao->execute();
     }
 

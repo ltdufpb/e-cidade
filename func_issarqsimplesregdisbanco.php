@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issarqsimplesregdisbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissarqsimplesregdisbanco = new cl_issarqsimplesregdisbanco;
 $clissarqsimplesregdisbanco->rotulo->label("q44_sequencial");
 $clissarqsimplesregdisbanco->rotulo->label("q44_issarqsimplesreg");
@@ -98,9 +98,9 @@ $clissarqsimplesregdisbanco->rotulo->label("q44_issarqsimplesreg");
         }else{
            $sql = $clissarqsimplesregdisbanco->sql_query("",$campos,"q44_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q44_issarqsimplesreg)){
-          $repassa = array("chave_q44_sequencial"=>$chave_q44_sequencial,"chave_q44_issarqsimplesreg"=>$chave_q44_issarqsimplesreg);
+          $repassa = ["chave_q44_sequencial"=>$chave_q44_sequencial,"chave_q44_issarqsimplesreg"=>$chave_q44_issarqsimplesreg];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

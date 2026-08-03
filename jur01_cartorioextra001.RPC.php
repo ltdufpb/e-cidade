@@ -42,7 +42,7 @@
     $post = db_utils::postMemory($_REQUEST);
     $post->json = str_replace("\\", "", $post->json);
     $parametro = JSON::create()->parse($post->json);
-    $retorno = (object)array('erro' => false, 'mensagem' => '');
+    $retorno = (object)['erro' => false, 'mensagem' => ''];
 
     try {
         db_inicio_transacao();
@@ -69,7 +69,7 @@
 
                 $cartorioextratipoRepository->setDefaultCondition($cartorioextratipo)->delete();
 
-                $aTipos = explode(",", $parametro->sTipos);
+                $aTipos = explode(",", (string) $parametro->sTipos);
 
                 foreach ($aTipos as $iTipo) {
                     $cartorioextratipo->setTiposcartorioextra($iTipo);

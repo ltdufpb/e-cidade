@@ -31,9 +31,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if(!isset($pesquisar))
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str((string) $_SERVER["QUERY_STRING"]);
 $clcgm = new cl_cgm;
 $clrotulo = new rotulocampo;
 $clcgm->rotulo->label("z01_numcgm");
@@ -133,7 +133,7 @@ if(!isset($pesquisa_chave)){
   }
   $clnome = new cl_cgm;
   if (isset($nomeDigitadoParaPesquisa) && ($nomeDigitadoParaPesquisa!="") ){
-	$nomeDigitadoParaPesquisa = strtoupper($nomeDigitadoParaPesquisa);
+	$nomeDigitadoParaPesquisa = strtoupper((string) $nomeDigitadoParaPesquisa);
 	$sql = $clnome->sqlnome($nomeDigitadoParaPesquisa,$campos);
   }else if(isset($numcgmDigitadoParaPesquisa) && $numcgmDigitadoParaPesquisa != ""){
     $sql = $clnome->sql_query($numcgmDigitadoParaPesquisa,$campos);
@@ -148,7 +148,7 @@ if(!isset($pesquisa_chave)){
 }else{
    if($pesquisa_chave!=""){
      $result = $clcgm->sql_record($clcgm->sql_query($pesquisa_chave));
-     if(($result!=false) && (pg_numrows($result) != 0)){
+     if(($result!=false) && (pg_num_rows($result) != 0)){
         db_fieldsmemory($result,0);
         echo "<script>".$funcao_js."(false,\"$z01_nome\");</script>";
      }else{

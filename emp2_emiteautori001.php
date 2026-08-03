@@ -110,8 +110,8 @@ function js_abre(){
          <td align-"right"><b>Informações adicionais:</b></td>
          <td>
   <?php 
-    $matriz = array("PC"=>"Mostrar autorização de processo de compras",
-                    "AU"=>"Mostrar somente autorização");
+    $matriz = ["PC"=>"Mostrar autorização de processo de compras",
+                    "AU"=>"Mostrar somente autorização"];
     db_select("informa_adic", $matriz,true,$db_opcao);
   ?>
          </td>

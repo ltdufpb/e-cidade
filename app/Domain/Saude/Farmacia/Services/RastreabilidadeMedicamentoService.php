@@ -20,6 +20,7 @@ class RastreabilidadeMedicamentoService extends RastreabilidadeMaterialService
     /**
      * @return \Illuminate\Database\Eloquent\Collection
      */
+    #[\Override]
     public function buscarDados()
     {
         $repository = new MaterialEstoqueItemRepository;
@@ -37,6 +38,7 @@ class RastreabilidadeMedicamentoService extends RastreabilidadeMaterialService
     /**
      * @return \Closure
      */
+    #[\Override]
     protected function getFiltros()
     {
         return function ($query) {
@@ -53,6 +55,7 @@ class RastreabilidadeMedicamentoService extends RastreabilidadeMaterialService
      * @param \Illuminate\Database\Eloquent\Collection $estoques
      * @return array
      */
+    #[\Override]
     protected function formatar(\Illuminate\Database\Eloquent\Collection $estoques)
     {
         $builder = new RastreabilidadeMedicamentoBuilder;

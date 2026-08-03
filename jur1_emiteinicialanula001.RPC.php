@@ -60,7 +60,7 @@ switch ($oParam->sExec) {
     
     if ($oDaoInicialCert->numrows > 0) {
       
-      $oRetorno->aDadosIniciais = array();
+      $oRetorno->aDadosIniciais = [];
       
       foreach (db_utils::getCollectionByRecord($rsInicialCert) as $oDadosInicial) {
   
@@ -95,7 +95,7 @@ switch ($oParam->sExec) {
       
       db_inicio_transacao();
       
-      $oRetorno->aLogIniciais   = array();
+      $oRetorno->aLogIniciais   = [];
       
       for ($iIndice = 0; $iIndice < count($aIniciasSelecionadas); $iIndice++) {
       

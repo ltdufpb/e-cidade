@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_sysfuncoescliente_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_sysfuncoescliente = new cl_db_sysfuncoescliente;
 $cldb_sysfuncoescliente->rotulo->label("db41_sysfuncoescliente");
 $cldb_sysfuncoescliente->rotulo->label("db41_cliente");
@@ -98,9 +98,9 @@ $cldb_sysfuncoescliente->rotulo->label("db41_cliente");
         }else{
            $sql = $cldb_sysfuncoescliente->sql_query("",$campos,"db41_sysfuncoescliente","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db41_cliente)){
-          $repassa = array("chave_db41_sysfuncoescliente"=>$chave_db41_sysfuncoescliente,"chave_db41_cliente"=>$chave_db41_cliente);
+          $repassa = ["chave_db41_sysfuncoescliente"=>$chave_db41_sysfuncoescliente,"chave_db41_cliente"=>$chave_db41_cliente];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

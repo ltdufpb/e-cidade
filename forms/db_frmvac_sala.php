@@ -76,7 +76,7 @@ $clrotulo->label("descrdepto");
     </td>
     <td> 
      <?php  
-       $aTipos= Array("1"=>"ATIVO","2"=>"INATIVO");
+       $aTipos= ["1"=>"ATIVO","2"=>"INATIVO"];
        db_select("vc01_i_situacao",$aTipos,$Ivc01_i_situacao,$db_opcao,"");
      ?>
     </td>
@@ -99,7 +99,7 @@ $clrotulo->label("descrdepto");
 <br><br>
 
 <?php 
-  $chavepri                                = array("vc01_i_codigo"=>@$vc01_i_codigo);
+  $chavepri                                = ["vc01_i_codigo"=>@$vc01_i_codigo];
   $cliframe_alterar_excluir->chavepri      = $chavepri;
   $cliframe_alterar_excluir->sql           = $clvac_sala->sql_query(null,'*',null,"");
   $cliframe_alterar_excluir->legenda       = "Registros Salas de vacinação";
@@ -180,7 +180,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_vac_sala.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_modcarnepadraocobranca_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmodcarnepadraocobranca = new cl_modcarnepadraocobranca;
 $clmodcarnepadraocobranca->rotulo->label("k22_sequencial");
 $clmodcarnepadraocobranca->rotulo->label("k22_modcarnepadrao");
@@ -98,9 +98,9 @@ $clmodcarnepadraocobranca->rotulo->label("k22_modcarnepadrao");
         }else{
            $sql = $clmodcarnepadraocobranca->sql_query("",$campos,"k22_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k22_modcarnepadrao)){
-          $repassa = array("chave_k22_sequencial"=>$chave_k22_sequencial,"chave_k22_modcarnepadrao"=>$chave_k22_modcarnepadrao);
+          $repassa = ["chave_k22_sequencial"=>$chave_k22_sequencial,"chave_k22_modcarnepadrao"=>$chave_k22_modcarnepadrao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

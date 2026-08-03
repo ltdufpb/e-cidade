@@ -40,9 +40,6 @@ use ParameterException;
 
 class AfastamentoTemporarioService
 {
-    private $servidorId;
-    private $assentamentoId;
-
     /**
      * @var \Avaliacao
      */
@@ -53,10 +50,8 @@ class AfastamentoTemporarioService
      * @param $servidorId
      * @param $assentamentoId
      */
-    public function __construct($servidorId, $assentamentoId)
+    public function __construct(private $servidorId, private $assentamentoId)
     {
-        $this->servidorId = $servidorId;
-        $this->assentamentoId = $assentamentoId;
     }
 
     /**
@@ -163,11 +158,11 @@ class AfastamentoTemporarioService
 
         $this->getPreenchimendo($vinculo);
 
-        $parametros = array(
+        $parametros = [
             'iCodigoPreenchimento' => $this->getAvaliacao()->getAvaliacaoGrupo(),
             'vinculo' => $vinculo,
             'matricula' => $this->servidorId
-        );
+        ];
 
         $oAvaliacaoESocial = new AvaliacaoESocial();
         $oAvaliacaoESocial->setAvaliacao($this->getAvaliacao());

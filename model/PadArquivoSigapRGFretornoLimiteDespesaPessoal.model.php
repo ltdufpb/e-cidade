@@ -41,7 +41,7 @@ final class PadArquivoSigapRGFretornoLimiteDespesaPessoal extends PadArquivoSiga
   public function __construct() {
     
     $this->sNomeArquivo = "RGFRetornoLimiteDespesaPessoal";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapRGFretornoLimiteDespesaPessoal extends PadArquivoSiga
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao  = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
 
@@ -78,7 +78,7 @@ final class PadArquivoSigapRGFretornoLimiteDespesaPessoal extends PadArquivoSiga
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                          "ldpCodigoEntidade",
                          "ldpMesAnoMovimento",
                          "ldpSinal",
@@ -95,7 +95,7 @@ final class PadArquivoSigapRGFretornoLimiteDespesaPessoal extends PadArquivoSiga
                          "ldpOcorrenciaQuadExcedente",
                          "ldpOcorrenciaPorcentagemDTP",
                          "ldpDataOcorrenciaExcedente"
-                       );
+                       ];
     return $aElementos;  
   }
   

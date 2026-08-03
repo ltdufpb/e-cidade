@@ -67,7 +67,7 @@ class logbaixaalvara {
    * 
    * @var array;
    */
-  private $aIssBaseLog = array();
+  private $aIssBaseLog = [];
   
   public function __construct(){
     
@@ -105,7 +105,7 @@ class logbaixaalvara {
    * @param integer $iLogTipo codigo do tipo de log
    * @param integer $iAtividade codigo da atividade
    */
-  public function identificaAlteracao($iInscricao = null, $iOpcao, $iLogTipo = null, $iAtividade = null) {
+  public function identificaAlteracao($iInscricao = null, $iOpcao = null, $iLogTipo = null, $iAtividade = null) {
     
     if ($iInscricao == null) {
       throw  new Exception("Erro: Inscrição não informada.");

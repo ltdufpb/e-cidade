@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE zonafator
 class cl_zonafator { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j110_sequencial = 0; 
-   var $j110_zona = 0; 
-   var $j110_fator = 0; 
-   var $j110_anousu = 0; 
+   public $j110_sequencial = 0; 
+   public $j110_zona = 0; 
+   public $j110_fator = 0; 
+   public $j110_anousu = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j110_sequencial = int4 = Sequencial 
                  j110_zona = int4 = Zona 
                  j110_fator = float8 = Fator 
                  j110_anousu = int4 = Ano Uso 
                  ";
    //funcao construtor da classe 
-   function cl_zonafator() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("zonafator"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_zonafator {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j110_sequencial = pg_result($result,0,0); 
+       $this->j110_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from zonafator_j110_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j110_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j110_sequencial)){
          $this->erro_sql = " Campo j110_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_zonafator {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Zona Fator ($this->j110_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Zona Fator já Cadastrado";
@@ -180,13 +180,13 @@ class cl_zonafator {
      $resaco = $this->sql_record($this->sql_query_file($this->j110_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15093,'$this->j110_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2654,15093,'','".AddSlashes(pg_result($resaco,0,'j110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2654,15094,'','".AddSlashes(pg_result($resaco,0,'j110_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2654,15095,'','".AddSlashes(pg_result($resaco,0,'j110_fator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2654,15096,'','".AddSlashes(pg_result($resaco,0,'j110_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2654,15093,'','".AddSlashes(pg_fetch_result($resaco,0,'j110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2654,15094,'','".AddSlashes(pg_fetch_result($resaco,0,'j110_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2654,15095,'','".AddSlashes(pg_fetch_result($resaco,0,'j110_fator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2654,15096,'','".AddSlashes(pg_fetch_result($resaco,0,'j110_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_zonafator {
       $this->atualizacampos();
      $sql = " update zonafator set ";
      $virgula = "";
-     if(trim($this->j110_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j110_sequencial"])){ 
+     if(trim((string) $this->j110_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j110_sequencial"])){ 
        $sql  .= $virgula." j110_sequencial = $this->j110_sequencial ";
        $virgula = ",";
-       if(trim($this->j110_sequencial) == null ){ 
+       if(trim((string) $this->j110_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j110_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_zonafator {
          return false;
        }
      }
-     if(trim($this->j110_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j110_zona"])){ 
+     if(trim((string) $this->j110_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j110_zona"])){ 
        $sql  .= $virgula." j110_zona = $this->j110_zona ";
        $virgula = ",";
-       if(trim($this->j110_zona) == null ){ 
+       if(trim((string) $this->j110_zona) == null ){ 
          $this->erro_sql = " Campo Zona nao Informado.";
          $this->erro_campo = "j110_zona";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_zonafator {
          return false;
        }
      }
-     if(trim($this->j110_fator)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j110_fator"])){ 
+     if(trim((string) $this->j110_fator)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j110_fator"])){ 
        $sql  .= $virgula." j110_fator = $this->j110_fator ";
        $virgula = ",";
-       if(trim($this->j110_fator) == null ){ 
+       if(trim((string) $this->j110_fator) == null ){ 
          $this->erro_sql = " Campo Fator nao Informado.";
          $this->erro_campo = "j110_fator";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_zonafator {
          return false;
        }
      }
-     if(trim($this->j110_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j110_anousu"])){ 
+     if(trim((string) $this->j110_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j110_anousu"])){ 
        $sql  .= $virgula." j110_anousu = $this->j110_anousu ";
        $virgula = ",";
-       if(trim($this->j110_anousu) == null ){ 
+       if(trim((string) $this->j110_anousu) == null ){ 
          $this->erro_sql = " Campo Ano Uso nao Informado.";
          $this->erro_campo = "j110_anousu";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_zonafator {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15093,'$this->j110_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j110_sequencial"]) || $this->j110_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2654,15093,'".AddSlashes(pg_result($resaco,$conresaco,'j110_sequencial'))."','$this->j110_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2654,15093,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j110_sequencial'))."','$this->j110_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j110_zona"]) || $this->j110_zona != "")
-           $resac = db_query("insert into db_acount values($acount,2654,15094,'".AddSlashes(pg_result($resaco,$conresaco,'j110_zona'))."','$this->j110_zona',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2654,15094,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j110_zona'))."','$this->j110_zona',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j110_fator"]) || $this->j110_fator != "")
-           $resac = db_query("insert into db_acount values($acount,2654,15095,'".AddSlashes(pg_result($resaco,$conresaco,'j110_fator'))."','$this->j110_fator',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2654,15095,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j110_fator'))."','$this->j110_fator',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j110_anousu"]) || $this->j110_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,2654,15096,'".AddSlashes(pg_result($resaco,$conresaco,'j110_anousu'))."','$this->j110_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2654,15096,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j110_anousu'))."','$this->j110_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_zonafator {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15093,'$j110_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2654,15093,'','".AddSlashes(pg_result($resaco,$iresaco,'j110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2654,15094,'','".AddSlashes(pg_result($resaco,$iresaco,'j110_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2654,15095,'','".AddSlashes(pg_result($resaco,$iresaco,'j110_fator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2654,15096,'','".AddSlashes(pg_result($resaco,$iresaco,'j110_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2654,15093,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j110_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2654,15094,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j110_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2654,15095,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j110_fator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2654,15096,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j110_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from zonafator
@@ -376,7 +376,7 @@ class cl_zonafator {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:zonafator";
@@ -391,7 +391,7 @@ class cl_zonafator {
    function sql_query ( $j110_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_zonafator {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_zonafator {
    function sql_query_file ( $j110_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_zonafator {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

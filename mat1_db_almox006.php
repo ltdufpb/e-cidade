@@ -38,7 +38,7 @@ include(modification("classes/db_matrequi_classe.php"));
 $cldb_almox      = new cl_db_almox;
 $cldb_almoxdepto = new cl_db_almoxdepto;
 $cl_matrequi     = new cl_matrequi;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 33;
 $db_botao = false;

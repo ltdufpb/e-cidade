@@ -33,11 +33,11 @@ namespace ECidade\Financeiro\Orcamento;
 class EsferaOrcamentaria
 {
 
-    private static $itens = array(
+    private static $itens = [
         "10" => "F - Orçamento Fiscal",
         "20" => "S - Orçamento da Seguridade Social",
         "30" => "I - Orçamento de Investimento"
-    );
+    ];
 
     public static function getAll()
     {

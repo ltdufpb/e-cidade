@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_medreferenciamed_classe.php"));
 include(modification("classes/db_far_medreferencia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_medreferenciamed = new cl_far_medreferenciamed;
 $clfar_medreferencia = new cl_far_medreferencia;
 $clfar_medreferenciamed->rotulo->label("fa34_i_codigo");
@@ -100,9 +100,9 @@ $clfar_medreferencia->rotulo->label("fa19_c_medreferencia");
         }else{
            $sql = $clfar_medreferenciamed->sql_query("",$campos,"fa19_c_medreferencia","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa34_i_codigo)){
-          $repassa = array("chave_fa34_i_codigo"=>$chave_fa34_i_codigo,"chave_fa34_i_codigo"=>$chave_fa34_i_codigo);
+          $repassa = ["chave_fa34_i_codigo"=>$chave_fa34_i_codigo,"chave_fa34_i_codigo"=>$chave_fa34_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

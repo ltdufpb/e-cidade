@@ -112,7 +112,7 @@ for ($s=0; $s < $clmer_restriitem->numrows; $s++) {
     $pdf->setfont('arial','',8);
     $pdf->setfillcolor(240);
     $pdf->cell(20,4,$ed47_i_codigo,1,0,"L",1);
-    $pdf->cell(80,4,substr($ed47_v_nome,0,80),1,0,"L",1);
+    $pdf->cell(80,4,substr((string) $ed47_v_nome,0,80),1,0,"L",1);
     $pdf->cell(25,4,$ed57_c_descr,1,0,"L",1);
     $pdf->cell(20,4,$ed11_c_descr,1,0,"L",1); 
     $pdf->cell(65,4,"",1,0,"L",1);   
@@ -131,7 +131,7 @@ for ($s=0; $s < $clmer_restriitem->numrows; $s++) {
         db_fieldsmemory($result3,$v);          
         $pdf->setfont('arial','b',8);  
         $pdf->cell(35,4,"Intolerância Alimentar : ",0,0,"L",0);        
-        $pdf->cell(35,4,substr($me33_c_descr,0,40),0,1,"L",0);
+        $pdf->cell(35,4,substr((string) $me33_c_descr,0,40),0,1,"L",0);
         
     }
     
@@ -142,8 +142,8 @@ for ($s=0; $s < $clmer_restriitem->numrows; $s++) {
   $pdf->cell(25,4,"",0,0,"L",0);
   $pdf->cell(10,4,"",0,0,"L",0);  
   $pdf->cell(60,4,"",0,0,"L",0); 
-  $pdf->cell(65,4,substr($me35_c_nomealimento,0,40),0,0,"L",0);
-  $pdf->cell(65,4,substr($sub,0,40),0,1,"L",0);      
+  $pdf->cell(65,4,substr((string) $me35_c_nomealimento,0,40),0,0,"L",0);
+  $pdf->cell(65,4,substr((string) $sub,0,40),0,1,"L",0);      
   $cont++;
 }
 

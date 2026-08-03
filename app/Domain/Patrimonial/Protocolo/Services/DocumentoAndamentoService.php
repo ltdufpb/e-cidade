@@ -245,7 +245,7 @@ abstract class DocumentoAndamentoService
      */
     protected function buscarPrimeiraAtividade()
     {
-        return (new ProcessoAtividadeExecucaoRepository())->scopeProcesso($this->processo)->first();
+        return new ProcessoAtividadeExecucaoRepository()->scopeProcesso($this->processo)->first();
     }
 
     /**
@@ -255,7 +255,7 @@ abstract class DocumentoAndamentoService
      */
     protected function buscarProximaAtividade($ordem)
     {
-        return (new ProcessoAtividadeExecucaoRepository())
+        return new ProcessoAtividadeExecucaoRepository()
             ->scopeOrdem(++$ordem)
             ->scopeProcesso($this->processo)
             ->first();
@@ -268,7 +268,7 @@ abstract class DocumentoAndamentoService
      */
     private function buscarAtividadeAnderior($ordem)
     {
-        return (new ProcessoAtividadeExecucaoRepository())
+        return new ProcessoAtividadeExecucaoRepository()
             ->scopeOrdem(--$ordem)
             ->scopeProcesso($this->processo)
             ->first();

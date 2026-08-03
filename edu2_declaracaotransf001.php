@@ -256,7 +256,7 @@ if (isset($incluirobs)) {
   <td colspan="3">
    <b>Auxílio Brasil:</b>
    <?php 
-     $x = array("1"=>"NÃO","2"=>"SIM");
+     $x = ["1"=>"NÃO","2"=>"SIM"];
      db_select('ed283_c_bolsafamilia',$x,true,@$db_opcao,"");
    ?>
   </td>

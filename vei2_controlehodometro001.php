@@ -72,7 +72,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                     <td width="110px"><label class="bold" for="tipo_relatorio">Tipo de Impressão:</label></td>
                     <td>
                       <?php
-                      $aOpcoes = array(0 => "PDF", 1 => "CSV");
+                      $aOpcoes = [0 => "PDF", 1 => "CSV"];
                       db_select("tipo_relatorio", $aOpcoes, true, 1, 'style="width:100px;"');
                       ?>
                     </td>

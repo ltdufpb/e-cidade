@@ -598,16 +598,16 @@ class M11094PreenchimentoFormularioServidor extends PostgresMigration
 
     private function upTabelaDependentesPlug()
     {
-        $this->table('rhdependeplug', array(
+        $this->table('rhdependeplug', [
             'schema' => 'pessoal',
             'id' => 'dp01_codigo'
-        ))
+        ])
             ->addColumn('dp01_rhdepend', 'integer')
             ->addColumn('dp01_regist', 'integer')
-            ->addColumn('dp01_processo', 'integer', array('null' => true))
-            ->addColumn('dp01_instit', 'integer', array('null' => true))
-            ->addColumn('dp01_cpf', 'string', array('limit' => 14, 'null' => true))
-            ->addColumn('dp01_sexo', 'string', array('limit' => 1, 'null' => true))
+            ->addColumn('dp01_processo', 'integer', ['null' => true])
+            ->addColumn('dp01_instit', 'integer', ['null' => true])
+            ->addColumn('dp01_cpf', 'string', ['limit' => 14, 'null' => true])
+            ->addColumn('dp01_sexo', 'string', ['limit' => 1, 'null' => true])
             ->addForeignKey('dp01_rhdepend', 'rhdepend', 'rh31_codigo')
             ->addForeignKey('dp01_regist', 'rhpessoal', 'rh01_regist')
             ->addForeignKey('dp01_instit', 'db_config', 'codigo')
@@ -616,7 +616,7 @@ class M11094PreenchimentoFormularioServidor extends PostgresMigration
 
     private function downTabelaDependentesPlug()
     {
-        $this->table('rhdependeplug', array('schema' => 'pessoal'))
+        $this->table('rhdependeplug', ['schema' => 'pessoal'])
             ->drop();
     }
 

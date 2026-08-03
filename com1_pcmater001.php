@@ -34,9 +34,9 @@ include(modification("classes/db_pcmaterele_classe.php"));
 include(modification("classes/db_pcgrupo_classe.php"));
 include(modification("classes/db_pcsubgrupo_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
-$pc01_descrmater = stripslashes($pc01_descrmater);
+db_postmemory($_GET);
+db_postmemory($_POST);
+$pc01_descrmater = stripslashes((string) $pc01_descrmater);
 
 $clpcmater = new cl_pcmater;
 $clpcmaterele = new cl_pcmaterele;
@@ -44,7 +44,7 @@ $clpcgrupo = new cl_pcgrupo;
 $clpcsubgrupo = new cl_pcsubgrupo;
 $db_opcao = 1;
 $db_botao = true;
-if(((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir")){	
+if(((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir")){	
   db_inicio_transacao();
   $sqlerro=false;  
   $clpcmater->pc01_descrmater = pg_escape_string(trim(@$pc01_descrmater));
@@ -58,11 +58,11 @@ if(((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Inclui
     $codmater =  $clpcmater->pc01_codmater;
   }
   if($sqlerro==false){
-    $arr =  split("XX",$codeles);
+    $arr =  preg_split("#XX#m",$codeles);
     for($i=0; $i<count($arr); $i++ ){
       if($sqlerro==false){
         $elemento = $arr[$i];  
-        if(trim($elemento)!=""){
+        if(trim((string) $elemento)!=""){
           $clpcmaterele->pc07_codmater = $codmater;
           $clpcmaterele->pc07_codele = $elemento;
   	      $clpcmaterele->incluir($codmater,$elemento); 
@@ -130,7 +130,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clpcmater->erro_status=="0"){
     $clpcmater->erro(true,false);
     $db_botao=true;
@@ -153,7 +153,7 @@ if($db_opcao=="3"){
     document.form1.db_opcao.disabled=false;
   }
   ";
-}else if($db_opcao=="1" && !(isset($HTTP_POST_VARS["db_opcao"])) && !isset($impmater) && !isset($codigomater) && !isset($pc01_codmater)){  
+}else if($db_opcao=="1" && !(isset($_POST["db_opcao"])) && !isset($impmater) && !isset($codigomater) && !isset($pc01_codmater)){  
   echo "
   <script>
     document.form1.importar.click();

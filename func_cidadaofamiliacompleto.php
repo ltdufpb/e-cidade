@@ -134,7 +134,7 @@ $oRotuloCampo->label("as15_codigofamiliarcadastrounico");
       if (!isset($pesquisa_chave)) {
         
         
-        $aWhere = array();
+        $aWhere = [];
         /**
          * Adiciona os filtros informados em um array
          */
@@ -177,7 +177,7 @@ $oRotuloCampo->label("as15_codigofamiliarcadastrounico");
         
         $sWhere  = implode(" and ", $aWhere);
         $sSql    = $clcidadaofamilia->sql_query_completa(null, $campos, $sOrder, $sWhere);
-        $repassa = array();
+        $repassa = [];
 
         db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

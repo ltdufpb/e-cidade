@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE pcfornecertif
 class cl_pcfornecertif { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc74_codigo = 0; 
-   var $pc74_pcforne = 0; 
-   var $pc74_pctipocertif = 0; 
-   var $pc74_solicitante = null; 
-   var $pc74_usuario = 0; 
-   var $pc74_data_dia = null; 
-   var $pc74_data_mes = null; 
-   var $pc74_data_ano = null; 
-   var $pc74_data = null; 
-   var $pc74_hora = null; 
-   var $pc74_coddepto = 0; 
-   var $pc74_validade_dia = null; 
-   var $pc74_validade_mes = null; 
-   var $pc74_validade_ano = null; 
-   var $pc74_validade = null; 
+   public $pc74_codigo = 0; 
+   public $pc74_pcforne = 0; 
+   public $pc74_pctipocertif = 0; 
+   public $pc74_solicitante = null; 
+   public $pc74_usuario = 0; 
+   public $pc74_data_dia = null; 
+   public $pc74_data_mes = null; 
+   public $pc74_data_ano = null; 
+   public $pc74_data = null; 
+   public $pc74_hora = null; 
+   public $pc74_coddepto = 0; 
+   public $pc74_validade_dia = null; 
+   public $pc74_validade_mes = null; 
+   public $pc74_validade_ano = null; 
+   public $pc74_validade = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc74_codigo = int4 = Cod. Certificado 
                  pc74_pcforne = int4 = Fornecedor 
                  pc74_pctipocertif = int4 = Cod. Tipo Certificado 
@@ -70,10 +70,10 @@ class cl_pcfornecertif {
                  pc74_validade = date = Data de Validade 
                  ";
    //funcao construtor da classe 
-   function cl_pcfornecertif() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcfornecertif"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -190,10 +190,10 @@ class cl_pcfornecertif {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc74_codigo = pg_result($result,0,0); 
+       $this->pc74_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pcfornecertif_pc74_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc74_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc74_codigo)){
          $this->erro_sql = " Campo pc74_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -237,7 +237,7 @@ class cl_pcfornecertif {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "certificados de um fornecedor ($this->pc74_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "certificados de um fornecedor já Cadastrado";
@@ -261,18 +261,18 @@ class cl_pcfornecertif {
      $resaco = $this->sql_record($this->sql_query_file($this->pc74_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7795,'$this->pc74_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1305,7795,'','".AddSlashes(pg_result($resaco,0,'pc74_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1305,7796,'','".AddSlashes(pg_result($resaco,0,'pc74_pcforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1305,7797,'','".AddSlashes(pg_result($resaco,0,'pc74_pctipocertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1305,7798,'','".AddSlashes(pg_result($resaco,0,'pc74_solicitante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1305,7801,'','".AddSlashes(pg_result($resaco,0,'pc74_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1305,7799,'','".AddSlashes(pg_result($resaco,0,'pc74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1305,7800,'','".AddSlashes(pg_result($resaco,0,'pc74_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1305,16549,'','".AddSlashes(pg_result($resaco,0,'pc74_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1305,16550,'','".AddSlashes(pg_result($resaco,0,'pc74_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1305,7795,'','".AddSlashes(pg_fetch_result($resaco,0,'pc74_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1305,7796,'','".AddSlashes(pg_fetch_result($resaco,0,'pc74_pcforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1305,7797,'','".AddSlashes(pg_fetch_result($resaco,0,'pc74_pctipocertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1305,7798,'','".AddSlashes(pg_fetch_result($resaco,0,'pc74_solicitante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1305,7801,'','".AddSlashes(pg_fetch_result($resaco,0,'pc74_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1305,7799,'','".AddSlashes(pg_fetch_result($resaco,0,'pc74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1305,7800,'','".AddSlashes(pg_fetch_result($resaco,0,'pc74_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1305,16549,'','".AddSlashes(pg_fetch_result($resaco,0,'pc74_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1305,16550,'','".AddSlashes(pg_fetch_result($resaco,0,'pc74_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -281,10 +281,10 @@ class cl_pcfornecertif {
       $this->atualizacampos();
      $sql = " update pcfornecertif set ";
      $virgula = "";
-     if(trim($this->pc74_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_codigo"])){ 
+     if(trim((string) $this->pc74_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_codigo"])){ 
        $sql  .= $virgula." pc74_codigo = $this->pc74_codigo ";
        $virgula = ",";
-       if(trim($this->pc74_codigo) == null ){ 
+       if(trim((string) $this->pc74_codigo) == null ){ 
          $this->erro_sql = " Campo Cod. Certificado nao Informado.";
          $this->erro_campo = "pc74_codigo";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_pcforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_pcforne"])){ 
+     if(trim((string) $this->pc74_pcforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_pcforne"])){ 
        $sql  .= $virgula." pc74_pcforne = $this->pc74_pcforne ";
        $virgula = ",";
-       if(trim($this->pc74_pcforne) == null ){ 
+       if(trim((string) $this->pc74_pcforne) == null ){ 
          $this->erro_sql = " Campo Fornecedor nao Informado.";
          $this->erro_campo = "pc74_pcforne";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_pctipocertif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_pctipocertif"])){ 
+     if(trim((string) $this->pc74_pctipocertif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_pctipocertif"])){ 
        $sql  .= $virgula." pc74_pctipocertif = $this->pc74_pctipocertif ";
        $virgula = ",";
-       if(trim($this->pc74_pctipocertif) == null ){ 
+       if(trim((string) $this->pc74_pctipocertif) == null ){ 
          $this->erro_sql = " Campo Cod. Tipo Certificado nao Informado.";
          $this->erro_campo = "pc74_pctipocertif";
          $this->erro_banco = "";
@@ -320,14 +320,14 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_solicitante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_solicitante"])){ 
+     if(trim((string) $this->pc74_solicitante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_solicitante"])){ 
        $sql  .= $virgula." pc74_solicitante = '$this->pc74_solicitante' ";
        $virgula = ",";
      }
-     if(trim($this->pc74_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_usuario"])){ 
+     if(trim((string) $this->pc74_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_usuario"])){ 
        $sql  .= $virgula." pc74_usuario = $this->pc74_usuario ";
        $virgula = ",";
-       if(trim($this->pc74_usuario) == null ){ 
+       if(trim((string) $this->pc74_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "pc74_usuario";
          $this->erro_banco = "";
@@ -337,10 +337,10 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"] !="") ){ 
+     if(trim((string) $this->pc74_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"] !="") ){ 
        $sql  .= $virgula." pc74_data = '$this->pc74_data' ";
        $virgula = ",";
-       if(trim($this->pc74_data) == null ){ 
+       if(trim((string) $this->pc74_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "pc74_data_dia";
          $this->erro_banco = "";
@@ -353,7 +353,7 @@ class cl_pcfornecertif {
        if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"])){ 
          $sql  .= $virgula." pc74_data = null ";
          $virgula = ",";
-         if(trim($this->pc74_data) == null ){ 
+         if(trim((string) $this->pc74_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "pc74_data_dia";
            $this->erro_banco = "";
@@ -364,10 +364,10 @@ class cl_pcfornecertif {
          }
        }
      }
-     if(trim($this->pc74_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_hora"])){ 
+     if(trim((string) $this->pc74_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_hora"])){ 
        $sql  .= $virgula." pc74_hora = '$this->pc74_hora' ";
        $virgula = ",";
-       if(trim($this->pc74_hora) == null ){ 
+       if(trim((string) $this->pc74_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "pc74_hora";
          $this->erro_banco = "";
@@ -377,10 +377,10 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_coddepto"])){ 
+     if(trim((string) $this->pc74_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_coddepto"])){ 
        $sql  .= $virgula." pc74_coddepto = $this->pc74_coddepto ";
        $virgula = ",";
-       if(trim($this->pc74_coddepto) == null ){ 
+       if(trim((string) $this->pc74_coddepto) == null ){ 
          $this->erro_sql = " Campo Departamento nao Informado.";
          $this->erro_campo = "pc74_coddepto";
          $this->erro_banco = "";
@@ -390,7 +390,7 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_validade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_validade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc74_validade_dia"] !="") ){ 
+     if(trim((string) $this->pc74_validade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_validade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc74_validade_dia"] !="") ){ 
        $sql  .= $virgula." pc74_validade = '$this->pc74_validade' ";
        $virgula = ",";
      }     else{ 
@@ -407,27 +407,27 @@ class cl_pcfornecertif {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7795,'$this->pc74_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_codigo"]) || $this->pc74_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,1305,7795,'".AddSlashes(pg_result($resaco,$conresaco,'pc74_codigo'))."','$this->pc74_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1305,7795,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc74_codigo'))."','$this->pc74_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_pcforne"]) || $this->pc74_pcforne != "")
-           $resac = db_query("insert into db_acount values($acount,1305,7796,'".AddSlashes(pg_result($resaco,$conresaco,'pc74_pcforne'))."','$this->pc74_pcforne',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1305,7796,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc74_pcforne'))."','$this->pc74_pcforne',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_pctipocertif"]) || $this->pc74_pctipocertif != "")
-           $resac = db_query("insert into db_acount values($acount,1305,7797,'".AddSlashes(pg_result($resaco,$conresaco,'pc74_pctipocertif'))."','$this->pc74_pctipocertif',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1305,7797,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc74_pctipocertif'))."','$this->pc74_pctipocertif',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_solicitante"]) || $this->pc74_solicitante != "")
-           $resac = db_query("insert into db_acount values($acount,1305,7798,'".AddSlashes(pg_result($resaco,$conresaco,'pc74_solicitante'))."','$this->pc74_solicitante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1305,7798,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc74_solicitante'))."','$this->pc74_solicitante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_usuario"]) || $this->pc74_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,1305,7801,'".AddSlashes(pg_result($resaco,$conresaco,'pc74_usuario'))."','$this->pc74_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1305,7801,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc74_usuario'))."','$this->pc74_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_data"]) || $this->pc74_data != "")
-           $resac = db_query("insert into db_acount values($acount,1305,7799,'".AddSlashes(pg_result($resaco,$conresaco,'pc74_data'))."','$this->pc74_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1305,7799,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc74_data'))."','$this->pc74_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_hora"]) || $this->pc74_hora != "")
-           $resac = db_query("insert into db_acount values($acount,1305,7800,'".AddSlashes(pg_result($resaco,$conresaco,'pc74_hora'))."','$this->pc74_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1305,7800,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc74_hora'))."','$this->pc74_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_coddepto"]) || $this->pc74_coddepto != "")
-           $resac = db_query("insert into db_acount values($acount,1305,16549,'".AddSlashes(pg_result($resaco,$conresaco,'pc74_coddepto'))."','$this->pc74_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1305,16549,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc74_coddepto'))."','$this->pc74_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_validade"]) || $this->pc74_validade != "")
-           $resac = db_query("insert into db_acount values($acount,1305,16550,'".AddSlashes(pg_result($resaco,$conresaco,'pc74_validade'))."','$this->pc74_validade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1305,16550,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc74_validade'))."','$this->pc74_validade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -472,18 +472,18 @@ class cl_pcfornecertif {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7795,'$pc74_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1305,7795,'','".AddSlashes(pg_result($resaco,$iresaco,'pc74_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1305,7796,'','".AddSlashes(pg_result($resaco,$iresaco,'pc74_pcforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1305,7797,'','".AddSlashes(pg_result($resaco,$iresaco,'pc74_pctipocertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1305,7798,'','".AddSlashes(pg_result($resaco,$iresaco,'pc74_solicitante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1305,7801,'','".AddSlashes(pg_result($resaco,$iresaco,'pc74_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1305,7799,'','".AddSlashes(pg_result($resaco,$iresaco,'pc74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1305,7800,'','".AddSlashes(pg_result($resaco,$iresaco,'pc74_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1305,16549,'','".AddSlashes(pg_result($resaco,$iresaco,'pc74_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1305,16550,'','".AddSlashes(pg_result($resaco,$iresaco,'pc74_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1305,7795,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc74_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1305,7796,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc74_pcforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1305,7797,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc74_pctipocertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1305,7798,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc74_solicitante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1305,7801,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc74_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1305,7799,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1305,7800,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc74_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1305,16549,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc74_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1305,16550,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc74_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pcfornecertif
@@ -543,7 +543,7 @@ class cl_pcfornecertif {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcfornecertif";
@@ -558,7 +558,7 @@ class cl_pcfornecertif {
    function sql_query ( $pc74_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -586,7 +586,7 @@ class cl_pcfornecertif {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -599,7 +599,7 @@ class cl_pcfornecertif {
    function sql_query_file ( $pc74_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -620,7 +620,7 @@ class cl_pcfornecertif {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

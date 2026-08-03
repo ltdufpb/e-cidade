@@ -34,8 +34,8 @@ include(modification("classes/db_pcmaterele_classe.php"));
 include(modification("classes/db_pcgrupo_classe.php"));
 include(modification("classes/db_pcsubgrupo_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clpcmater = new cl_pcmater;
 $clpcmaterele = new cl_pcmaterele;
 $clpcgrupo = new cl_pcgrupo;
@@ -43,7 +43,7 @@ $clpcsubgrupo = new cl_pcsubgrupo;
 $db_opcao = 22;
 $db_botao = false;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $sqlerro=false;
   $db_opcao = 2;
@@ -66,10 +66,10 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   }
 
   if($sqlerro==false){
-    $arr =  split("XX",$codeles);
+    $arr =  preg_split("#XX#m",$codeles);
     for($i=0; $i<count($arr); $i++ ){
        $elemento = $arr[$i];  
-       if(trim($elemento)!=""){
+       if(trim((string) $elemento)!=""){
 	 $result_matele = $clpcmaterele->sql_record($clpcmaterele->sql_query_file($codmater,$elemento));
 	 if($clpcmaterele->numrows==0){
 	   $clpcmaterele->pc07_codmater = $codmater;
@@ -137,7 +137,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clpcmater->erro_status=="0"){
     $clpcmater->erro(true,false);
     $db_botao=true;

@@ -46,7 +46,7 @@ include(modification("classes/db_atendcadarea_classe.php"));
 include(modification("classes/db_atendareatec_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_tipoatend_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cltipoatend              = new cl_tipoatend;
 $clatendimento_top        = new cl_atendimento_top;
@@ -158,9 +158,9 @@ if (isset($alterar)&&$alterar!=""){
 								if ($clatendarea->erro_status=="0"){
 									$sqlerro=true;				
 								}	
-								
+
 							}
-						
+
 						/*
 						if ($area>0){
 							db_msgbox("area > 0...$at28_sequencial");

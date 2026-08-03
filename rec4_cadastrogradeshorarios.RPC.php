@@ -45,7 +45,7 @@ $oRetorno->message = '';
 try {
     switch ($oParametros->exec) {
         case 'getInformacoesGradeDia':
-            $aJornadaHorarios         = array();
+            $aJornadaHorarios         = [];
             $oDaoGradeHorarioJornadas = new cl_gradeshorariosjornada();
 
             $sCamposGradeHorarioJornadas  = "  gradeshorariosjornada.rh191_ordemhorario as ordemhorario";
@@ -67,7 +67,7 @@ try {
 
                 $oJornada->iOrdem         = $oGradeHorarioJornada->ordemhorario;
                 $oJornada->iCodigoJornada = $oGradeHorarioJornada->jornada;
-                $oJornada->sDescricao     = urlEncode($oGradeHorarioJornada->descricao);
+                $oJornada->sDescricao     = urlEncode((string) $oGradeHorarioJornada->descricao);
 
                 $aJornadaHorarios[]       = $oJornada;
             }
@@ -76,7 +76,7 @@ try {
             break;
 
         case 'getInformacoesGrade':
-            $aJornadaHorarios         = array();
+            $aJornadaHorarios         = [];
             $oDaoGradeHorarioJornadas = new cl_gradeshorariosjornada();
 
             $sCamposGradeHorarioJornadas  = "  gradeshorariosjornada.rh191_ordemhorario as ordemhorario";
@@ -97,7 +97,7 @@ try {
 
                 $oJornada->iOrdem         = $oGradeHorarioJornada->ordemhorario;
                 $oJornada->iCodigoJornada = $oGradeHorarioJornada->jornada;
-                $oJornada->sDescricao     = urlEncode($oGradeHorarioJornada->descricao);
+                $oJornada->sDescricao     = urlEncode((string) $oGradeHorarioJornada->descricao);
 
                 $aJornadaHorarios[]       = $oJornada;
             }
@@ -161,7 +161,7 @@ try {
             }
 
             $oRetorno->iCodigoGradeHorarios = $iCodigo;
-            $oRetorno->message = utf8_encode("Salvo com sucesso.\n Código: " .  $oRetorno->iCodigoGradeHorarios);
+            $oRetorno->message = mb_convert_encoding("Salvo com sucesso.\n Código: " .  $oRetorno->iCodigoGradeHorarios, 'UTF-8', 'ISO-8859-1');
 
             db_fim_transacao();
             break;

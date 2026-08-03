@@ -64,9 +64,9 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array("f"=>"Não",
+            $x = ["f"=>"Não",
                        "t"=>"Sim"
-                       );
+                       ];
             db_select('j18_logradauto',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -77,7 +77,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array('f'=>'Não','t'=>'Sim');
+            $x = ['f'=>'Não','t'=>'Sim'];
             db_select('j18_utilizaloc',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -88,7 +88,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array('f'=>'Não','t'=>'Sim');
+            $x = ['f'=>'Não','t'=>'Sim'];
             db_select('j18_permitectmcgf',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -99,7 +99,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array('1'=>'Segunda Via','2'=>'Carne');
+            $x = ['1'=>'Segunda Via','2'=>'Carne'];
             db_select('j18_segundavia',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -110,9 +110,9 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array('0'=>'Proprietario',
+            $x = ['0'=>'Proprietario',
                        '1'=>'Promitente'
-                       );
+                       ];
             db_select('j18_dadoscertisen',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -123,9 +123,9 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array('0'=>'Somente Números',
+            $x = ['0'=>'Somente Números',
                        '1'=>'Letras e Números'
-                       );
+                       ];
             db_select('j18_formatsetor',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -136,9 +136,9 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array('0'=>'Somente Números',
+            $x = ['0'=>'Somente Números',
                        '1'=>'Letras e Números'
-                       );
+                       ];
             db_select('j18_formatquadra',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -149,7 +149,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array('0'=>'Somente Números','1'=>'Letras e Números');
+            $x = ['0'=>'Somente Números','1'=>'Letras e Números'];
             db_select('j18_formatlote',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -170,14 +170,14 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array(
+            $x = [
                        '1' => 'imobiliaria, zona de entrega, endereco de entrega, endereco do cgm, endereco da construcao (predial)',
                        '2' => 'imobiliaria, zona de entrega, endereco de entrega, endereco da construcao (predial), endereco do cgm',
                        '3' => 'imobiliaria, zona de entrega, endereco de entrega, endereco da construcao (predial)',
                        '4' => 'imobiliaria, zona de entrega, endereco do cgm, endereco da construcao (predial)',
                        '5' => 'endereco de entrega, endereco da construcao (predial), endereco do cgm',
                        '6' => 'endereco de entrega, endereco do cgm, endereco da construcao (predial)',
-                       '7' => 'Baldio = Endereço do Terreno, Predial = Endereço da Construção');
+                       '7' => 'Baldio = Endereço do Terreno, Predial = Endereço da Construção'];
             db_select('j18_ordendent',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -281,7 +281,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array("f"=>"Não","t"=>"Sim");
+            $x = ["f"=>"Não","t"=>"Sim"];
             db_select('j18_utilizasetfisc',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -292,7 +292,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array("f"=>"Não","t"=>"Sim");
+            $x = ["f"=>"Não","t"=>"Sim"];
             db_select('j18_utilizaareaprivativa',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -303,7 +303,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array("f"=>"Não","t"=>"Sim");
+            $x = ["f"=>"Não","t"=>"Sim"];
             db_select('j18_testadanumero',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -314,7 +314,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array('f'=>'Não','t'=>'Sim');
+            $x = ['f'=>'Não','t'=>'Sim'];
             db_select('j18_excconscalc',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -325,7 +325,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array("f"=>"Não","t"=>"Sim");
+            $x = ["f"=>"Não","t"=>"Sim"];
             db_select('j18_utidadosdiver',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -336,8 +336,8 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array('0'=>'Não
-            ','1'=>'Sim');
+            $x = ['0'=>'Não
+            ','1'=>'Sim'];
             db_select('j18_utilpontos',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -406,7 +406,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php
-              $array_opcoes = array("0"=>"Não", "1"=>"Sim");
+              $array_opcoes = ["0"=>"Não", "1"=>"Sim"];
               db_select('j18_taxaseparada', $array_opcoes, true, $db_opcao, "");
             ?>
           </td>
@@ -478,10 +478,10 @@ $clrotulo->label("db82_descricao");
          </td>
          <td align="left">
            <?php
-             $arr_opcoes = Array(
+             $arr_opcoes = [
                                 "0" =>"Sim",
                                 "1" =>"Não"
-                                );
+                                ];
              db_select("utilizadocpadrao",$arr_opcoes,true,$db_opcao, "onchange='js_template(this.value);'");
            ?>
          <td>
@@ -511,7 +511,7 @@ $clrotulo->label("db82_descricao");
           </td>
           <td>
             <?php 
-            $x = array('f'=>'Não','t'=>'Sim');
+            $x = ['f'=>'Não','t'=>'Sim'];
             db_select('j18_bicmarcasigilo',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -790,7 +790,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cfiptu.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

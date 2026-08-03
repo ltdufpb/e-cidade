@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_acountkey
 class cl_db_acountkey { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $id_acount = 0; 
-   var $id_codcam = 0; 
-   var $campotext = null; 
-   var $actipo = null; 
+   public $id_acount = 0; 
+   public $id_codcam = 0; 
+   public $campotext = null; 
+   public $actipo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  id_acount = int4 = Código do Registro 
                  id_codcam = int4 = Código 
                  campotext = text = Texto Chave 
                  actipo = char(1) = Chave de Pesquisa 
                  ";
    //funcao construtor da classe 
-   function cl_db_acountkey() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_acountkey"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -132,7 +132,7 @@ class cl_db_acountkey {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Chave de pesquisa dos logs () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Chave de pesquisa dos logs já Cadastrado";
@@ -159,10 +159,10 @@ class cl_db_acountkey {
       $this->atualizacampos();
      $sql = " update db_acountkey set ";
      $virgula = "";
-     if(trim($this->id_acount)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_acount"])){ 
+     if(trim((string) $this->id_acount)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_acount"])){ 
        $sql  .= $virgula." id_acount = $this->id_acount ";
        $virgula = ",";
-       if(trim($this->id_acount) == null ){ 
+       if(trim((string) $this->id_acount) == null ){ 
          $this->erro_sql = " Campo Código do Registro nao Informado.";
          $this->erro_campo = "id_acount";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_db_acountkey {
          return false;
        }
      }
-     if(trim($this->id_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_codcam"])){ 
+     if(trim((string) $this->id_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_codcam"])){ 
        $sql  .= $virgula." id_codcam = $this->id_codcam ";
        $virgula = ",";
-       if(trim($this->id_codcam) == null ){ 
+       if(trim((string) $this->id_codcam) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "id_codcam";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_db_acountkey {
          return false;
        }
      }
-     if(trim($this->campotext)!="" || isset($GLOBALS["HTTP_POST_VARS"]["campotext"])){ 
+     if(trim((string) $this->campotext)!="" || isset($GLOBALS["HTTP_POST_VARS"]["campotext"])){ 
        $sql  .= $virgula." campotext = '$this->campotext' ";
        $virgula = ",";
-       if(trim($this->campotext) == null ){ 
+       if(trim((string) $this->campotext) == null ){ 
          $this->erro_sql = " Campo Texto Chave nao Informado.";
          $this->erro_campo = "campotext";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_db_acountkey {
          return false;
        }
      }
-     if(trim($this->actipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["actipo"])){ 
+     if(trim((string) $this->actipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["actipo"])){ 
        $sql  .= $virgula." actipo = '$this->actipo' ";
        $virgula = ",";
-       if(trim($this->actipo) == null ){ 
+       if(trim((string) $this->actipo) == null ){ 
          $this->erro_sql = " Campo Chave de Pesquisa nao Informado.";
          $this->erro_campo = "actipo";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_acountkey";

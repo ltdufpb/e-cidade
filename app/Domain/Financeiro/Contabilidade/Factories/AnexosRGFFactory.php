@@ -45,16 +45,12 @@ class AnexosRGFFactory
      */
     public static function getPrograma($anexo, $exercicio)
     {
-        switch ($anexo) {
-            case 1:
-                return self::getDadosViewAnexoI($exercicio);
-            case 2:
-                return self::getDadosViewAnexoII($exercicio);
-            case 5:
-                return self::getDadosViewAnexoV($exercicio);
-            default:
-                throw new Exception('Relatório não encotrado.');
-        }
+        return match ($anexo) {
+            1 => self::getDadosViewAnexoI($exercicio),
+            2 => self::getDadosViewAnexoII($exercicio),
+            5 => self::getDadosViewAnexoV($exercicio),
+            default => throw new Exception('Relatório não encotrado.'),
+        };
     }
 
     private static function getDadosViewAnexoI($exercicio)

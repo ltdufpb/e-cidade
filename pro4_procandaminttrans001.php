@@ -50,18 +50,18 @@ $clrotulo->label("p79_usuario");
 $clrotulo->label("nome");
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (isset($incluir)){
   
   db_inicio_transacao();
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+    if(str_starts_with((string) $chave, "CHECK")){
+      $dados=preg_split("#_#m",(string) $chave); 
       $result1=$clprotprocesso->sql_record($clprotprocesso->sql_query_file($dados[1],"p58_codandam"));
       db_fieldsmemory($result1,0);
       $data= date("Y-m-d",db_getsession("DB_datausu"));
@@ -167,7 +167,7 @@ db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
 				   where ( p61_coddepto = ".db_getsession("DB_coddepto").")  ) as x																	                   
 				   where   x.p68_codproc is null";
        $result=db_query($sql);
-       $numrows=pg_numrows($result);
+       $numrows=pg_num_rows($result);
        if($numrows>0){ 
           echo "
 	  <br><br>

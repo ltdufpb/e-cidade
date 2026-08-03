@@ -8,10 +8,8 @@ final class Container extends ContainerAbstract
 {
     public function charge()
     {
-        $this->content = array(
-            'InicialRepository' => function ($container) {
-                return \ECidade\Tributario\Juridico\Inicial\Repository\Inicial::getInstance();
-            },
+        $this->content = [
+            'InicialRepository' => fn($container) => (new \ECidade\Tributario\Juridico\Inicial\Repository\Inicial())->getInstance(),
             'InicialMovRepository' => function ($container) {
 
                 $dataBase = $container->get('DataBase');
@@ -26,9 +24,7 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Juridico\Inicial\Repository\InicialCert($dataBase, $dao);
             },
-            'InicialNumpreRepository' => function ($container) {
-                return new \ECidade\Tributario\Juridico\Inicial\Repository\InicialNumpreRepository();
-            }
-        );
+            'InicialNumpreRepository' => fn($container) => new \ECidade\Tributario\Juridico\Inicial\Repository\InicialNumpreRepository()
+        ];
     }
 }

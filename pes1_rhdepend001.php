@@ -39,8 +39,8 @@ require_once modification('classes/db_rhpessoal_classe.php');
 require_once modification('classes/db_rhdependeplug_classe.php');
 require_once modification('dbforms/db_funcoes.php');
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clrhdepend = new cl_rhdepend;
 $clrhpessoal = new cl_rhpessoal;
 $clrhdependeplug = new cl_rhdependeplug;
@@ -49,14 +49,14 @@ $db_botao = true;
 
 try {
     if (isset($incluir) || isset($alterar)) {
-        $nome = empty($rh31_nome) ? '' : trim($rh31_nome);
+        $nome = empty($rh31_nome) ? '' : trim((string) $rh31_nome);
 
         if (DBString::comprimento($nome) > 70) {
             throw new Exception('O "Nome do Dependente" não pode ser maior que 70 caracteres.');
         }
 
-        $irf = empty($rh31_irf) ? '' : trim($rh31_irf);
-        $cpf = empty($dp01_cpf) ? '' : trim($dp01_cpf);
+        $irf = empty($rh31_irf) ? '' : trim((string) $rh31_irf);
+        $cpf = empty($dp01_cpf) ? '' : trim((string) $dp01_cpf);
         if ($rh31_irf && empty($cpf)) {
             throw new Exception('O "CPF" é obrigatório quando o campo "IRF" está informado.');
         }
@@ -80,7 +80,7 @@ try {
         $clrhdepend->rh31_especi = $rh31_especi;
         $clrhdepend->rh31_fins_previdenciarios = $rh31_fins_previdenciarios == 't'?'t':'f';
 
-        (new S2405($rh31_regist))->salvarDataAlteracao();
+        new S2405($rh31_regist)->salvarDataAlteracao();
 
         $clrhdepend->incluir(null);
         if ($clrhdepend->erro_status == "0") {
@@ -129,7 +129,7 @@ try {
              * Seta a dtAlteração para o S2405.
              */
             $where = "rh31_codigo = {$rh31_codigo}";
-            (new S2405($rh31_regist))->validarS2405('rhdepend', $clrhdepend, $where);
+            new S2405($rh31_regist)->validarS2405('rhdepend', $clrhdepend, $where);
 
             $clrhdepend->alterar($rh31_codigo);
             if ($clrhdepend->erro_status == "0") {
@@ -150,7 +150,7 @@ try {
                 $proclinhas = pg_num_rows($proc);
                 
                 // Valida a dtAlteração de acordo com os campos extra do dependente.
-                (new S2405($rh31_regist))->validarS2405('rhdependplug', $clrhdependeplug, null, $sqlDependplug);
+                new S2405($rh31_regist)->validarS2405('rhdependplug', $clrhdependeplug, null, $sqlDependplug);
 
                 if ($proclinhas == 0) {
                     $clrhdependeplug->incluir();
@@ -171,7 +171,7 @@ try {
 
                 $where = "dp01_rhdepend = {$rh31_codigo} AND dp01_regist = {$rh31_regist}";
 
-                (new S2405($rh31_regist))->salvarDataAlteracao();
+                new S2405($rh31_regist)->salvarDataAlteracao();
                 $clrhdependeplug->excluir(null, $where);
                 if ($clrhdependeplug->erro_status == "0") {
                     $erro_msg = "Erro ao excluir as informações do dependente.";
@@ -295,7 +295,7 @@ if (isset($incluir) || isset($alterar) || isset($excluir)) {
 
 function alteracaoS2205($rh31_regist, $rh31_dtnasc, $rh31_codigo, &$clrhdepend, &$sqlerro, &$erro_msg) {
 
-    $nasc = explode('/', $rh31_dtnasc);
+    $nasc = explode('/', (string) $rh31_dtnasc);
     $dtmin = strtotime('1890-01-01');
     $dtnasc = strtotime($nasc[2] . '-' . $nasc[1] . '-' . $nasc[0]);
 
@@ -311,9 +311,9 @@ function alteracaoS2205($rh31_regist, $rh31_dtnasc, $rh31_codigo, &$clrhdepend, 
 
     // Registra alteração para envio do formulário S2205
     foreach(S2205::getCamposControleAlteracao() as $campo){
-        if(isset($$campo)){
+        if(isset(${$campo})){
             if(isset($dadosAtuais->$campo)){
-                if( $dadosAtuais->$campo != $$campo){
+                if( $dadosAtuais->$campo != ${$campo}){
                     $servidorAlteracao = ServidorAlteracao::findMatriculaByLayout($rh31_regist, Tipo::S2205);
                     $servidorAlteracao->setDataS2205(new DBDate(date('Y-m-d')));
                     $servidorAlteracao->save();

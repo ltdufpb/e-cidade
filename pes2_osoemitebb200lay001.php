@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rharqbanco_classe.php"));
 require_once(modification("classes/db_rhgeracaofolha_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo     = new rotulocampo;
 $clfolha = new cl_rhgeracaofolha;
@@ -212,10 +212,10 @@ if (isset($emite2)) {
     </td>
     <td>
       <?php 
-      $arr_vinculo = Array(
+      $arr_vinculo = [
                           "A"=>"Ativo",
                           "I"=>"Inativo",
-                         );
+                         ];
       db_select("vinculo", $arr_vinculo, true, 1, "");
       ?>
     </td>

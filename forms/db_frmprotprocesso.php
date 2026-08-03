@@ -133,7 +133,7 @@ function js_testa(opcao) {
     <td>
      <?php 
        $sql = "select nome from db_usuarios where id_usuario = ".$sDbIdUsuario;
-       echo pg_result(db_query($sql),0,"nome");
+       echo pg_fetch_result(db_query($sql),0,"nome");
      ?>
     </td>
   </tr>
@@ -385,38 +385,38 @@ if ($clprocvar->numrows > 0) {
           $sql1 = "select p55_conteudo from proctipovar where p55_codproc = $p58_codproc and p55_codcam = $p54_codcam";
           $rsq = db_query($sql1);
           if (pg_num_rows($rsq) > 0){
-              $$nomecam = pg_result($rsq,0,"p55_conteudo");
+              ${$nomecam} = pg_fetch_result($rsq,0,"p55_conteudo");
           }
        }
        $jl = "L".$nomecam;
        echo "<tr>";
-       echo "<td>".$$jl."</td>";
+       echo "<td>".${$jl}."</td>";
        $xc = $conteudo;
        $ji = "I$nomecam";
-       if (substr($xc,0,4)!="date"){
-          if ( (substr($xc,0,3)=="cha") || ( substr($xc,0,3)=="var") || (substr($xc,0,3)=="flo") ){
+       if (!str_starts_with((string) $xc, "date")){
+          if ( (str_starts_with((string) $xc, "cha")) || ( str_starts_with((string) $xc, "var")) || (str_starts_with((string) $xc, "flo")) ){
             echo "<td>";
-            db_input("$nomecam",$tamanho,$$ji,true,'text',$db_opcao,$funcaojava);
+            db_input("$nomecam",$tamanho,${$ji},true,'text',$db_opcao,$funcaojava);
             echo "</td></tr>";
-          }else if (substr($xc,0,3)=="boo"){
-		      $x = array("f"=>"NAO","t"=>"SIM");
+          }else if (str_starts_with((string) $xc, "boo")){
+		      $x = ["f"=>"NAO","t"=>"SIM"];
               echo "<td>";
 		      db_select("$nomecam",$x,true,$db_opcao,$funcaojava);
               echo "</td></tr>";
-          }else if (substr($xc,0,3)=="tex"){
+          }else if (str_starts_with((string) $xc, "tex")){
              echo "<td>";
-             db_textarea("$nomecam",0,0,$$ji,true,'text',$db_opcao,$funcaojava);
+             db_textarea("$nomecam",0,0,${$ji},true,'text',$db_opcao,$funcaojava);
              echo "</td></tr>";
 	  }else{
                echo "<td>";
-               db_input("$nomecam",$tamanho,$$ji,true,'text',$db_opcao,$funcaojava);
+               db_input("$nomecam",$tamanho,${$ji},true,'text',$db_opcao,$funcaojava);
                echo "</td></tr>";
           }
 
        }else{
-          $dia = @substr($$nomecam,0,2);
-          $mes = @substr($$nomecam,3,2);
-          $ano = @substr($$nomecam,6,4);
+          $dia = @substr((string) ${$nomecam},0,2);
+          $mes = @substr((string) ${$nomecam},3,2);
+          $ano = @substr((string) ${$nomecam},6,4);
           echo "<td>";
 	         db_inputdata("$nomecam",@$dia,@$mes,@$ano,true,'text',$db_opcao,$funcaojava);
           echo "</td></tr>";
@@ -732,7 +732,7 @@ function js_pesquisadpto() {
 
 function js_preenchepesquisa(chave) {
     db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
   parent.document.formaba.dadosprocesso.disabled      = false;
   parent.document.formaba.processosapensados.disabled = true;
 }

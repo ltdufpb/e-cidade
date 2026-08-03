@@ -216,7 +216,7 @@ class MatrizSaldoContabilLancamento
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'matrizSaldoContabil' => $this->getMatrizSaldoContabil()->toArray(),
             'estrutural' => $this->getEstrutural(),
@@ -227,7 +227,7 @@ class MatrizSaldoContabilLancamento
             'endingBalance' => $this->getEndingBalance(),
             'naturezaInicial' => $this->getNaturezaInicial(),
             'naturezaFinal' => $this->getNaturezaFinal()
-        );
+        ];
     }
 
     /**

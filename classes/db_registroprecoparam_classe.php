@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE registroprecoparam
 class cl_registroprecoparam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc08_instit = 0; 
-   var $pc08_incluiritemestimativa = 'f'; 
-   var $pc08_alteraabertura = 'f'; 
-   var $pc08_percentuquantmax = 0; 
-   var $pc08_ordemitensestimativa = 0; 
+   public $pc08_instit = 0; 
+   public $pc08_incluiritemestimativa = 'f'; 
+   public $pc08_alteraabertura = 'f'; 
+   public $pc08_percentuquantmax = 0; 
+   public $pc08_ordemitensestimativa = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc08_instit = int4 = Código da Instituição 
                  pc08_incluiritemestimativa = bool = Permite Incluir Itens na Estimativa 
                  pc08_alteraabertura = bool = Permite a Alteração da Abertura 
@@ -56,10 +56,10 @@ class cl_registroprecoparam {
                  pc08_ordemitensestimativa = int4 = Ordenação dos Itens na Estimativa 
                  ";
    //funcao construtor da classe 
-   function cl_registroprecoparam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("registroprecoparam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -123,7 +123,7 @@ class cl_registroprecoparam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parametros do registro de Preço ($this->pc08_instit) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parametros do registro de Preço já Cadastrado";
@@ -147,14 +147,14 @@ class cl_registroprecoparam {
      $resaco = $this->sql_record($this->sql_query_file($this->pc08_instit));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17496,'$this->pc08_instit','I')");
-       $resac = db_query("insert into db_acount values($acount,3092,17496,'','".AddSlashes(pg_result($resaco,0,'pc08_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3092,17497,'','".AddSlashes(pg_result($resaco,0,'pc08_incluiritemestimativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3092,17499,'','".AddSlashes(pg_result($resaco,0,'pc08_alteraabertura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3092,17500,'','".AddSlashes(pg_result($resaco,0,'pc08_percentuquantmax'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3092,17501,'','".AddSlashes(pg_result($resaco,0,'pc08_ordemitensestimativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3092,17496,'','".AddSlashes(pg_fetch_result($resaco,0,'pc08_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3092,17497,'','".AddSlashes(pg_fetch_result($resaco,0,'pc08_incluiritemestimativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3092,17499,'','".AddSlashes(pg_fetch_result($resaco,0,'pc08_alteraabertura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3092,17500,'','".AddSlashes(pg_fetch_result($resaco,0,'pc08_percentuquantmax'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3092,17501,'','".AddSlashes(pg_fetch_result($resaco,0,'pc08_ordemitensestimativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -163,10 +163,10 @@ class cl_registroprecoparam {
       $this->atualizacampos();
      $sql = " update registroprecoparam set ";
      $virgula = "";
-     if(trim($this->pc08_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc08_instit"])){ 
+     if(trim((string) $this->pc08_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc08_instit"])){ 
        $sql  .= $virgula." pc08_instit = $this->pc08_instit ";
        $virgula = ",";
-       if(trim($this->pc08_instit) == null ){ 
+       if(trim((string) $this->pc08_instit) == null ){ 
          $this->erro_sql = " Campo Código da Instituição nao Informado.";
          $this->erro_campo = "pc08_instit";
          $this->erro_banco = "";
@@ -176,23 +176,23 @@ class cl_registroprecoparam {
          return false;
        }
      }
-     if(trim($this->pc08_incluiritemestimativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc08_incluiritemestimativa"])){ 
+     if(trim((string) $this->pc08_incluiritemestimativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc08_incluiritemestimativa"])){ 
        $sql  .= $virgula." pc08_incluiritemestimativa = '$this->pc08_incluiritemestimativa' ";
        $virgula = ",";
      }
-     if(trim($this->pc08_alteraabertura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc08_alteraabertura"])){ 
+     if(trim((string) $this->pc08_alteraabertura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc08_alteraabertura"])){ 
        $sql  .= $virgula." pc08_alteraabertura = '$this->pc08_alteraabertura' ";
        $virgula = ",";
      }
-     if(trim($this->pc08_percentuquantmax)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc08_percentuquantmax"])){ 
-        if(trim($this->pc08_percentuquantmax)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc08_percentuquantmax"])){ 
+     if(trim((string) $this->pc08_percentuquantmax)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc08_percentuquantmax"])){ 
+        if(trim((string) $this->pc08_percentuquantmax)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc08_percentuquantmax"])){ 
            $this->pc08_percentuquantmax = "0" ; 
         } 
        $sql  .= $virgula." pc08_percentuquantmax = $this->pc08_percentuquantmax ";
        $virgula = ",";
      }
-     if(trim($this->pc08_ordemitensestimativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc08_ordemitensestimativa"])){ 
-        if(trim($this->pc08_ordemitensestimativa)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc08_ordemitensestimativa"])){ 
+     if(trim((string) $this->pc08_ordemitensestimativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc08_ordemitensestimativa"])){ 
+        if(trim((string) $this->pc08_ordemitensestimativa)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc08_ordemitensestimativa"])){ 
            $this->pc08_ordemitensestimativa = "0" ; 
         } 
        $sql  .= $virgula." pc08_ordemitensestimativa = $this->pc08_ordemitensestimativa ";
@@ -206,19 +206,19 @@ class cl_registroprecoparam {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17496,'$this->pc08_instit','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc08_instit"]) || $this->pc08_instit != "")
-           $resac = db_query("insert into db_acount values($acount,3092,17496,'".AddSlashes(pg_result($resaco,$conresaco,'pc08_instit'))."','$this->pc08_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3092,17496,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc08_instit'))."','$this->pc08_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc08_incluiritemestimativa"]) || $this->pc08_incluiritemestimativa != "")
-           $resac = db_query("insert into db_acount values($acount,3092,17497,'".AddSlashes(pg_result($resaco,$conresaco,'pc08_incluiritemestimativa'))."','$this->pc08_incluiritemestimativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3092,17497,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc08_incluiritemestimativa'))."','$this->pc08_incluiritemestimativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc08_alteraabertura"]) || $this->pc08_alteraabertura != "")
-           $resac = db_query("insert into db_acount values($acount,3092,17499,'".AddSlashes(pg_result($resaco,$conresaco,'pc08_alteraabertura'))."','$this->pc08_alteraabertura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3092,17499,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc08_alteraabertura'))."','$this->pc08_alteraabertura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc08_percentuquantmax"]) || $this->pc08_percentuquantmax != "")
-           $resac = db_query("insert into db_acount values($acount,3092,17500,'".AddSlashes(pg_result($resaco,$conresaco,'pc08_percentuquantmax'))."','$this->pc08_percentuquantmax',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3092,17500,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc08_percentuquantmax'))."','$this->pc08_percentuquantmax',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc08_ordemitensestimativa"]) || $this->pc08_ordemitensestimativa != "")
-           $resac = db_query("insert into db_acount values($acount,3092,17501,'".AddSlashes(pg_result($resaco,$conresaco,'pc08_ordemitensestimativa'))."','$this->pc08_ordemitensestimativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3092,17501,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc08_ordemitensestimativa'))."','$this->pc08_ordemitensestimativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -263,14 +263,14 @@ class cl_registroprecoparam {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17496,'$pc08_instit','E')");
-         $resac = db_query("insert into db_acount values($acount,3092,17496,'','".AddSlashes(pg_result($resaco,$iresaco,'pc08_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3092,17497,'','".AddSlashes(pg_result($resaco,$iresaco,'pc08_incluiritemestimativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3092,17499,'','".AddSlashes(pg_result($resaco,$iresaco,'pc08_alteraabertura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3092,17500,'','".AddSlashes(pg_result($resaco,$iresaco,'pc08_percentuquantmax'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3092,17501,'','".AddSlashes(pg_result($resaco,$iresaco,'pc08_ordemitensestimativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3092,17496,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc08_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3092,17497,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc08_incluiritemestimativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3092,17499,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc08_alteraabertura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3092,17500,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc08_percentuquantmax'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3092,17501,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc08_ordemitensestimativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from registroprecoparam
@@ -330,7 +330,7 @@ class cl_registroprecoparam {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:registroprecoparam";
@@ -345,7 +345,7 @@ class cl_registroprecoparam {
    function sql_query ( $pc08_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -369,7 +369,7 @@ class cl_registroprecoparam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_registroprecoparam {
    function sql_query_file ( $pc08_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -403,7 +403,7 @@ class cl_registroprecoparam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

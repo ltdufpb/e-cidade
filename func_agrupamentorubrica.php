@@ -34,9 +34,9 @@ require_once(modification("classes/db_agrupamentorubrica_classe.php"));
 
 use ECidade\RecursosHumanos\Pessoal\Repository\TipoAgrupamentoRubricaRepository;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clagrupamentorubrica = new cl_agrupamentorubrica;
 $clagrupamentorubrica->rotulo->label("rh113_sequencial");
@@ -45,9 +45,9 @@ $clagrupamentorubrica->rotulo->label("rh113_descricao");
 $clagrupamentorubrica->rotulo->label("rh113_tipo");
 $clagrupamentorubrica->rotulo->label("rh113_tipogrupo");
 
-$aTipo    = array(''  => 'Todos',
+$aTipo    = [''  => 'Todos',
                   '1' => 'Provento', 
-                  '2' => 'Desconto');
+                  '2' => 'Desconto'];
 ?>
 <html>
 <head>
@@ -103,7 +103,7 @@ $aTipo    = array(''  => 'Todos',
             </td>
             <td nowrap title="<?php echo $Trh113_tipogrupo; ?>">
               <?php
-              $aTiposGrupos = array( 0 => 'Todos');
+              $aTiposGrupos = [ 0 => 'Todos'];
               foreach (TipoAgrupamentoRubricaRepository::findAll() as $tipoAgrupamento) {
                   $aTiposGrupos[$tipoAgrupamento->getSequencial()] = $tipoAgrupamento->getDescricao();
               }
@@ -136,7 +136,7 @@ $aTipo    = array(''  => 'Todos',
           }
         }
 
-        $aWhere = array();
+        $aWhere = [];
 
         if ( !empty($chave_rh113_codigo) ) {
           $aWhere[] = "rh113_codigo like '%$chave_rh113_codigo%'";
@@ -162,12 +162,12 @@ $aTipo    = array(''  => 'Todos',
           $sql = $clagrupamentorubrica->sql_query(null,  $campos, "rh113_sequencial", $sWhere);
         }
 
-        $repassa = array();
+        $repassa = [];
         
         if ( isset($chave_rh113_sequencial) ) {
-          $repassa = array(
+          $repassa = [
             "chave_rh113_sequencial" => $chave_rh113_sequencial
-          );
+          ];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

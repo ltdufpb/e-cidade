@@ -69,7 +69,7 @@ function imprime_cabecalho($alt,$pdf){
 $classinatura  = new cl_assinatura;
 $clorcelemento = new cl_orcelemento;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 //db_postmemory($HTTP_POST_VARS,2); exit;
 
@@ -89,14 +89,14 @@ if (!isset($db_selinstit)) {
   $db_selinstit = db_getsession("DB_instit");
 }
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $nomeinstabrev)) > 0) {
     $descr_inst .= $xvirg.$nomeinstabrev;
     $flag_abrev  = true;
   } else {
@@ -121,9 +121,9 @@ $sele_work = $clselorcdotacao->getDadosComplemento();
 
 $clselorcdotacao->instit = "(".db_getsession("DB_instit").")";
 
-$xinstit    = split("-",$db_selinstit);
+$xinstit    = preg_split("#\\-#m",$db_selinstit);
 
-$arr_niveis = split(",",$vernivel);
+$arr_niveis = preg_split("#,#m",(string) $vernivel);
 
 //$nivela = substr($nivel,0,1);
 $sele_work = $sele_work.' and w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
@@ -289,11 +289,11 @@ $totrecurso_atual_a_pagar_liquidado = 0;
 $codele = "";
 
 $ultimo = count($arr_niveis)-1;
-$nivelb = substr($arr_niveis[$ultimo],0,1);
+$nivelb = substr((string) $arr_niveis[$ultimo],0,1);
 
 $flag_grupo = false;
 for ($i = 0; $i < count($arr_niveis); $i++) {
-  if (substr($arr_niveis[$i],0,1) == "9") {
+  if (str_starts_with((string) $arr_niveis[$i], "9")) {
     $flag_grupo = true;
     break;
   }
@@ -314,7 +314,7 @@ $selecao = "";
 $agrupar = "";
 $ordem   = "";
 for ($i = 0; $i < count($arr_niveis); $i++) {
-  $nivel = substr($arr_niveis[$i],0,1);
+  $nivel = substr((string) $arr_niveis[$i],0,1);
 
   if ($nivel == 1) {
     // Orgao
@@ -511,7 +511,7 @@ $projativ  = "";
 $elemento  = "";
 $codigo    = "";
 
-for ($i=0; $i < pg_numrows($result); $i++) {
+for ($i=0; $i < pg_num_rows($result); $i++) {
   if ($selecao == "") {
     break;
   }
@@ -569,7 +569,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
   //
   //
 
-  if (trim(@$o58_orgao) != "") {
+  if (trim((string) @$o58_orgao) != "") {
     if ($nivelb == 1) {
       // Ultimo nivel que deve ser impresso
       $flag_imp = true;
@@ -620,7 +620,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totrecurso_pago_acumulado          = 0;
       $totrecurso_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     if ($elemento != "" && $elemento != $o58_elemento &&
@@ -684,7 +684,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totelemento_pago_acumulado          = 0;
       $totelemento_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     if ($projativ != "" && $projativ != $o58_projativ &&
@@ -732,7 +732,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totprojativ_pago_acumulado          = 0;
       $totprojativ_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     if ($programa != "" && $programa != $o58_programa &&
@@ -780,7 +780,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totprograma_pago_acumulado          = 0;
       $totprograma_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     if ($subfuncao != "" && $subfuncao != $o58_subfuncao &&
@@ -828,7 +828,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totsubfuncao_pago_acumulado          = 0;
       $totsubfuncao_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     if ($funcao != "" && $funcao != $o58_funcao &&
@@ -875,7 +875,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totfuncao_pago_acumulado          = 0;
       $totfuncao_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     if ($unidade != "" && $orgao != $o58_orgao &&
@@ -925,7 +925,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
 
       $flag_imp = true;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     if ($orgao  != $o58_orgao &&
@@ -972,7 +972,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totorgao_pago_acumulado          = 0;
       $totorgao_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     $descricao = "ORGAO: ";
@@ -1006,7 +1006,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
     $mult_nivel++;
   }
 
-  if (trim(@$o58_unidade) != "") {
+  if (trim((string) @$o58_unidade) != "") {
     if ($nivelb == 2) {
       $flag_imp = true;
     }
@@ -1070,7 +1070,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
 
       $flag_imp = true;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     $descricao = "UNIDADE: ";
@@ -1118,7 +1118,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
     $mult_nivel++;
   }
 
-  if (trim(@$o58_funcao) != "") {
+  if (trim((string) @$o58_funcao) != "") {
     if ($nivelb == 3) {
       $flag_imp = true;
     }
@@ -1180,7 +1180,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totsubfuncao_pago_acumulado          = 0;
       $totsubfuncao_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     if ($funcao != ""      && $funcao != $o58_funcao &&
@@ -1240,7 +1240,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totfuncao_pago_acumulado          = 0;
       $totfuncao_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     $descricao = "FUNCAO: ";
@@ -1262,7 +1262,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       }
     }
 
-    imprime_cabecalho($alt,$pdf);
+    imprime_cabecalho($alt);
 
     $totfuncao_dot_ini                 += $dot_ini;
     $totfuncao_suplementado_acumulado  += $suplementado_acumulado;
@@ -1283,7 +1283,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
     $mult_nivel++;
   }
 
-  if (trim(@$o58_subfuncao) != "") {
+  if (trim((string) @$o58_subfuncao) != "") {
     if ($nivelb == 4) {
       $flag_imp = true;
     }
@@ -1344,7 +1344,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totsubfuncao_pago_acumulado          = 0;
       $totsubfuncao_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     $descricao = "SUBFUNCAO: ";
@@ -1384,7 +1384,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
     $mult_nivel++;
   }
 
-  if (trim(@$o58_programa) != "") {
+  if (trim((string) @$o58_programa) != "") {
     if ($nivelb == 5) {
       $flag_imp = true;
     }
@@ -1445,7 +1445,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totprograma_pago_acumulado          = 0;
       $totprograma_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     $descricao = "PROGRAMA: ";
@@ -1485,7 +1485,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
     $mult_nivel++;
   }
 
-  if (trim(@$o58_projativ) != "") {
+  if (trim((string) @$o58_projativ) != "") {
     if ($nivelb == 6) {
       $flag_imp = true;
     }
@@ -1546,7 +1546,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totprojativ_pago_acumulado          = 0;
       $totprojativ_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     $descricao = "PROJ./ATIV.: ";
@@ -1586,7 +1586,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
     $mult_nivel++;
   }
 
-  if (trim(@$o58_elemento) != "") {
+  if (trim((string) @$o58_elemento) != "") {
     if ($nivelb == 7 && $nivela == 0) {
       $flag_imp = true;
     }
@@ -1662,7 +1662,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totelemento_pago_acumulado          = 0;
       $totelemento_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
     $descricao = "ELEMENTO: ";
@@ -1702,7 +1702,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
     $mult_nivel++;
   }
 
-  if (trim(@$o58_codigo) != "") {
+  if (trim((string) @$o58_codigo) != "") {
     if ($nivelb == 8) {
       $flag_imp = true;
     }
@@ -1764,7 +1764,7 @@ for ($i=0; $i < pg_numrows($result); $i++) {
       $totrecurso_pago_acumulado          = 0;
       $totrecurso_atual_a_pagar_liquidado = 0;
 
-      imprime_cabecalho($alt,$pdf);
+      imprime_cabecalho($alt);
     }
 
 //    if (FONTE_RECURSO_UNIAO) {
@@ -2068,13 +2068,13 @@ if ($nivela > 0) {
   $totalpago_acumulado               = 0;
   $totalatual_a_pagar_liquidado      = 0;
 
-  if (pg_numrows($result) != 0){
+  if (pg_num_rows($result) != 0){
     db_fieldsmemory($result,0);
     $pdf->ln(3);
   }
 
   $retorno = $o58_elemento;
-  for ($i=0; $i<pg_numrows($result); $i++) {
+  for ($i=0; $i<pg_num_rows($result); $i++) {
     db_fieldsmemory($result,$i);
 
     if ($pdf->gety() > $pdf->h-40 || $pagina == 1) {
@@ -2124,8 +2124,8 @@ if ($nivela > 0) {
     $totalpago_acumulado          += $pago_acumulado;
     $totalatual_a_pagar_liquidado += $liquidado_acumulado-$pago_acumulado;
 
-    if (substr($retorno,0,3) != substr($o58_elemento,0,3)){
-      $res_elemento = $clorcelemento->sql_record($clorcelemento->sql_query_file(null,null,"o56_elemento,o56_descr",null,"o56_anousu = ".db_getsession("DB_anousu")." and o56_elemento = '".substr($retorno,0,3)."0000000000' limit 1"));
+    if (substr((string) $retorno,0,3) != substr((string) $o58_elemento,0,3)){
+      $res_elemento = $clorcelemento->sql_record($clorcelemento->sql_query_file(null,null,"o56_elemento,o56_descr",null,"o56_anousu = ".db_getsession("DB_anousu")." and o56_elemento = '".substr((string) $retorno,0,3)."0000000000' limit 1"));
 //      if ($clorcelemento->numrows > 0){
         db_fieldsmemory($res_elemento,0);
 

@@ -42,7 +42,7 @@
           $iMes = str_pad(DBPessoal::getMesFolha(), 2, "0", STR_PAD_LEFT);
           $sCompetencia = $iAno . ' / ' . $iMes;
         }
-        if (pg_numrows($rsInstituicao) > 0){
+        if (pg_num_rows($rsInstituicao) > 0){
         db_fieldsmemory($rsInstituicao, 0);
       ?>
 
@@ -99,11 +99,11 @@
 
             for($i = 0;$i < $iNumRowsModulos;$i++) {
 
-              $sNomeImagem = trim( pg_result($rsModulos,$i,"imagem") );
+              $sNomeImagem = trim( pg_fetch_result($rsModulos,$i,"imagem") );
 
               if ( $sNomeImagem == "" ) {
 
-                $sNomeModulo = pg_result( $rsModulos, $i, "nome_modulo" );
+                $sNomeModulo = pg_fetch_result( $rsModulos, $i, "nome_modulo" );
                 $sNomeImagem = "img.php?nome=" . base64_encode(urlencode( $sNomeModulo ));
               }
 
@@ -112,10 +112,10 @@
                       <tr>
                   <td>
                           <table border=\"0\" style=\"border: 3px outset #666666; border-left: 2px outset #333333; border-top: 2px outset #333333\" cellspacing=\"0\" cellpadding=\"0\">
-                            <tr><td align=\"center\" valign=\"middle\"><a  title='".pg_result($rsModulos,$i,"help")."' id=\"link\" href=\"modulos.php?".base64_encode("anousu=".pg_result($rsModulos,$i,"anousu")."&modulo=".pg_result($rsModulos,$i,"id_item")."&nomemod=".pg_result($rsModulos,$i,"nome_modulo"))."\"><img src=\"imagens/modulos/". $sNomeImagem ." \" alt=\"".pg_result($rsModulos,$i,"help")."\" onmouseover=\"js_msg_status(this.alt)\" onmouseout=\"js_msg_status('Selecione o módulo clicando na figura.')\" border=\"0\" width=\"100\" height=\"100\"></a></td></tr>
+                            <tr><td align=\"center\" valign=\"middle\"><a  title='".pg_fetch_result($rsModulos,$i,"help")."' id=\"link\" href=\"modulos.php?".base64_encode("anousu=".pg_fetch_result($rsModulos,$i,"anousu")."&modulo=".pg_fetch_result($rsModulos,$i,"id_item")."&nomemod=".pg_fetch_result($rsModulos,$i,"nome_modulo"))."\"><img src=\"imagens/modulos/". $sNomeImagem ." \" alt=\"".pg_fetch_result($rsModulos,$i,"help")."\" onmouseover=\"js_msg_status(this.alt)\" onmouseout=\"js_msg_status('Selecione o módulo clicando na figura.')\" border=\"0\" width=\"100\" height=\"100\"></a></td></tr>
                       <tr><td>
                               <table width=\"100%\" style=\"border: 1px solid #666666;\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
-                          <tr><td align=\"center\" valign=\"middle\"><a href=\"modulos.php?".base64_encode("anousu=".pg_result($rsModulos,$i,"anousu")."&modulo=".pg_result($rsModulos,$i,"id_item")."&nomemod=".pg_result($rsModulos,$i,"nome_modulo"))."\" title=\"".pg_result($rsModulos,$i,"help")."\"  onmouseover=\"js_msg_status(this.title)\" onmouseout=\"js_msg_status('Selecione o módulo clicando na figura.')\">".pg_result($rsModulos,$i,"descr_modulo")."</a></td></tr>
+                          <tr><td align=\"center\" valign=\"middle\"><a href=\"modulos.php?".base64_encode("anousu=".pg_fetch_result($rsModulos,$i,"anousu")."&modulo=".pg_fetch_result($rsModulos,$i,"id_item")."&nomemod=".pg_fetch_result($rsModulos,$i,"nome_modulo"))."\" title=\"".pg_fetch_result($rsModulos,$i,"help")."\"  onmouseover=\"js_msg_status(this.title)\" onmouseout=\"js_msg_status('Selecione o módulo clicando na figura.')\">".pg_fetch_result($rsModulos,$i,"descr_modulo")."</a></td></tr>
                         </table>
                 </td></tr>
               </table>
@@ -136,6 +136,6 @@
 </body>
 <script>
   parent.bstatus.document.getElementById('st').innerHTML = '&nbsp;&nbsp;Selecione o módulo clicando na figura.';
-  parent.bstatus.document.getElementById('dtatual').innerHTML  = '<?=(isset($HTTP_SESSION_VARS["DB_datausu"])?date("d/m/Y",db_getsession("DB_datausu")):date("d/m/Y"))  ?>';
+  parent.bstatus.document.getElementById('dtatual').innerHTML  = '<?=(isset($_SESSION["DB_datausu"])?date("d/m/Y",db_getsession("DB_datausu")):date("d/m/Y"))  ?>';
   parent.bstatus.document.getElementById('dtanousu').innerHTML = '<?=(isset($HTTP_SESSION_yARS["DB_anousu"])?db_getsession("DB_anousu"):date("Y"))  ?>';
 </script>

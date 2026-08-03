@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_portaria_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrotulo   = new rotulocampo;
 $clportaria = new cl_portaria;
@@ -192,12 +192,12 @@ $clrotulo->label("h42_descr");
             }
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h42_descr)||isset($chave_h31_numero)){
-          $repassa = array(
+          $repassa = [
             "chave_h31_numero" => $chave_h31_numero,
             "chave_h42_descr" => $chave_h42_descr
-          );
+          ];
         }
        
 

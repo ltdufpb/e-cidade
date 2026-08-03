@@ -33,8 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cfpatri_classe.php"));
 include(modification("classes/db_bens_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $clcfpatri       = new cl_cfpatri;
 $clbens          = new cl_bens;
@@ -53,7 +53,7 @@ if (isset($alterar)) {
      
      $clcfpatri->t06_codcla                   = $t06_codcla;
      $clcfpatri->t06_pesqorgao                = $t06_pesqorgao;
-     $clcfpatri->t06_bensmodeloetiqueta       = trim($t06_bensmodeloetiqueta);
+     $clcfpatri->t06_bensmodeloetiqueta       = trim((string) $t06_bensmodeloetiqueta);
      $clcfpatri->t06_controlaplacainstituicao = $t06_controlaplacainstituicao;
      $clcfpatri->alterarModeloEtiquetaNulo($t06_codcla); 
      

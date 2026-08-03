@@ -69,9 +69,9 @@ SQL_BUSCA;
 
 
             $stdDados = db_utils::fieldsMemory($resBusca, 0);
-            $oRetorno->nota_liquidacao = (object)array(
+            $oRetorno->nota_liquidacao = (object)[
                 'historico' => $stdDados->historico,
-            );
+            ];
             $hash = "HISTORICO_PAGAMENTO_{$oParam->codigo_movimento}";
             if (!empty($_SESSION[$hash])) {
                 $oRetorno->nota_liquidacao->historico = $_SESSION[$hash];

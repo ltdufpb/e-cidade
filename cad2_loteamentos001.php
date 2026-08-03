@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 ?>
 <html>
 <head>
@@ -84,7 +84,7 @@ function js_emite() {
                 </td>
                 <td align="left">&nbsp;&nbsp;&nbsp;
                   <?php 
-                    $aListaResponsaveis = array("s"=>"Sim","n"=>"Não");
+                    $aListaResponsaveis = ["s"=>"Sim","n"=>"Não"];
                     db_select('listaresponsaveis',$aListaResponsaveis,true,4,"");
                   ?>
                 </td>
@@ -95,7 +95,7 @@ function js_emite() {
 								</td>
 								<td align="left">&nbsp;&nbsp;&nbsp;
 									<?php 
-										$aOrdem = array("a"=>"Alfabética","n"=>"Numérica");
+										$aOrdem = ["a"=>"Alfabética","n"=>"Numérica"];
 										db_select('ordem',$aOrdem,true,4,"");
 									?>
 								</td>

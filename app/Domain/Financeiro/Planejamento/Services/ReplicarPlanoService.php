@@ -50,14 +50,6 @@ use Illuminate\Support\Collection;
 class ReplicarPlanoService
 {
     /**
-     * @var Planejamento
-     */
-    private $novoPlano;
-    /**
-     * @var Planejamento
-     */
-    private $planoOriginal;
-    /**
      * @var array
      */
     private $deParaObjetivoPrograma = [];
@@ -82,11 +74,9 @@ class ReplicarPlanoService
      * @param Planejamento $novoPlano
      * @param Planejamento $planoOriginal
      */
-    public function __construct(Planejamento $novoPlano, Planejamento $planoOriginal)
+    public function __construct(private readonly Planejamento $novoPlano, private readonly Planejamento $planoOriginal)
     {
-        $this->novoPlano = $novoPlano;
         $this->exercicios = $this->novoPlano->execiciosPlanejamento();
-        $this->planoOriginal = $planoOriginal;
     }
 
     public function replicar()
@@ -144,16 +134,12 @@ class ReplicarPlanoService
         $this->replicarIniciativasPrograma($programa->iniciativas, $novoPrograma);
 
         if ($this->planoOriginal->pl2_composicao === 2) {
-            $idsNovasAreaResultado = $programa->areasResultado->map(function (AreaResultado $areaResultado) {
-                return $this->deParaAreaResultado[$areaResultado->pl4_codigo];
-            });
+            $idsNovasAreaResultado = $programa->areasResultado->map(fn(AreaResultado $areaResultado) => $this->deParaAreaResultado[$areaResultado->pl4_codigo]);
             $novoPrograma->areasResultado()->sync($idsNovasAreaResultado);
         }
 
         if ($this->planoOriginal->pl2_composicao === 3) {
-            $idsNovosObjetivos = $programa->objetivosEstrategicos->map(function (ObjetivoEstrategico $objetivo) {
-                return $this->deParaObjetivoEstrategico[$objetivo->pl5_codigo];
-            });
+            $idsNovosObjetivos = $programa->objetivosEstrategicos->map(fn(ObjetivoEstrategico $objetivo) => $this->deParaObjetivoEstrategico[$objetivo->pl5_codigo]);
 
             $novoPrograma->objetivosEstrategicos()->sync($idsNovosObjetivos);
         }
@@ -295,22 +281,16 @@ class ReplicarPlanoService
         $this->replicarMetasIniciativa($iniciativa->metas, $novaIniciativa);
 
         $novaIniciativa->regionalizacoes()->sync(
-            $iniciativa->regionalizacoes->map(function (Subtitulo $regionalizacao) {
-                return $regionalizacao->o11_sequencial;
-            })
+            $iniciativa->regionalizacoes->map(fn(Subtitulo $regionalizacao) => $regionalizacao->o11_sequencial)
         );
 
         $novaIniciativa->abrangencias()->sync(
-            $iniciativa->abrangencias->map(function (Abrangencia $abrangencia) {
-                return $abrangencia->pl18_codigo;
-            })
+            $iniciativa->abrangencias->map(fn(Abrangencia $abrangencia) => $abrangencia->pl18_codigo)
         );
 
         $this->replicarDetalhamento($iniciativa->detalhamentoDespesa, $novaIniciativa);
 
-        $idsNovosObjetivos = $iniciativa->objetivos->map(function (ObjetivoProgramaEstrategico $objetivoPrograma) {
-            return $this->deParaObjetivoPrograma[$objetivoPrograma->pl11_codigo];
-        });
+        $idsNovosObjetivos = $iniciativa->objetivos->map(fn(ObjetivoProgramaEstrategico $objetivoPrograma) => $this->deParaObjetivoPrograma[$objetivoPrograma->pl11_codigo]);
 
         $novaIniciativa->objetivos()->sync($idsNovosObjetivos);
     }

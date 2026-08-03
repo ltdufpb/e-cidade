@@ -106,10 +106,10 @@ class M23143ProcessosTrabalhistas extends Migration
 
         // $this->downEstruturaTabelaRhpessoalProcessoRemuneracao();
         // $this->downDicionarioTabelaRhpessoalProcessoRemuneracao();
-        
+
         // $this->downEstruturaTabelaRhpessoalProcessoServidor();
         // $this->downDicionarioTabelaRhpessoalProcessoServidor();
-        
+
         // $this->downEstruturaTabelaRhpessoalProcessoJudicialEsocial();
         // $this->downDicionarioTabelaRhpessoalProcessoJudicialEsocial();
 

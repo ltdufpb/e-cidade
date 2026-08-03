@@ -37,6 +37,7 @@ class AnexoII extends AnexoII2018
     /**
      * @throws Exception
      */
+    #[\Override]
     public function processar()
     {
         if (empty($this->aLinhas)) {
@@ -109,7 +110,7 @@ class AnexoII extends AnexoII2018
             $this->aLinhasConsistencia[$linhaMSC]->saldo_exercicio_anterior = $dadosMSC[$linhaMSC]->saldo_exercicio_anterior;
         }
 
-        $aLinhaProcessarManual = array(
+        $aLinhaProcessarManual = [
             static::LINHA_DIVIDA_CONSOLIDADA_DC_I,
             static::LINHA_DIVIDA_CONTRATUAL,
             static::LINHA_EMPRESTIMOS,
@@ -122,7 +123,7 @@ class AnexoII extends AnexoII2018
             static::LINHA_PERCENTUAL_DA_DCL_SOBRE_A_RCL_III_RCL,
             static::LINHA_LIMITE_DEFINIDO_POR_RESOLUCAO_DO_SENADO_FEDERAL_120,
             static::LINHA_LIMITE_DE_ALERTA_108
-        );
+        ];
 
         foreach ($aLinhaProcessarManual as $aLinha) {
             $this->processarFormulaDaLinha($aLinha);

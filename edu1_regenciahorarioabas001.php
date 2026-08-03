@@ -44,7 +44,7 @@ $result   = $clturmaserieregimemat->sql_record(
 if($clturmaserieregimemat->numrows == 1) {
 
   db_fieldsmemory($result, 0);
-  db_redireciona("edu1_regenciahorario001.php?ed59_i_turma=$ed59_i_turma&ed59_i_serie=$ed223_i_serie&ed11_c_descr=" . rawurlencode($ed11_c_descr) ."&ed57_c_descr=" . rawurlencode($ed57_c_descr) . "&ed57_i_turno=$ed57_i_turno");
+  db_redireciona("edu1_regenciahorario001.php?ed59_i_turma=$ed59_i_turma&ed59_i_serie=$ed223_i_serie&ed11_c_descr=" . rawurlencode((string) $ed11_c_descr) ."&ed57_c_descr=" . rawurlencode((string) $ed57_c_descr) . "&ed57_i_turno=$ed57_i_turno");
 } else {
 
   for($x = 0; $x < $clturmaserieregimemat->numrows; $x++) {
@@ -54,7 +54,7 @@ if($clturmaserieregimemat->numrows == 1) {
     $num               = $x + 1;
     $ident["b$num"]    = $ed11_c_descr;
     $tamcampo["b$num"] = 11;
-    $pagina["b$num"]   = "edu1_regenciahorario001.php?ed59_i_turma=$ed59_i_turma&ed59_i_serie=$ed223_i_serie&ed11_c_descr=" .rawurlencode($ed11_c_descr) ."&ed57_c_descr=".rawurlencode($ed57_c_descr)."&ed57_i_turno=$ed57_i_turno";
+    $pagina["b$num"]   = "edu1_regenciahorario001.php?ed59_i_turma=$ed59_i_turma&ed59_i_serie=$ed223_i_serie&ed11_c_descr=" .rawurlencode((string) $ed11_c_descr) ."&ed57_c_descr=".rawurlencode((string) $ed57_c_descr)."&ed57_i_turno=$ed57_i_turno";
   }
   ?>
   <html>

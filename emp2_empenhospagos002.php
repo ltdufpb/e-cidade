@@ -40,13 +40,13 @@ $iAnoUsoSessao      = db_getsession("DB_anousu");
 $iInstituicaoSessao = db_getsession("DB_instit");
 $oGet               = db_utils::postMemory($_GET);
 
-$dtDataInicialBanco = implode("-", array_reverse(explode("/", $oGet->dtDataInicial)));
-$dtDataFinalBanco   = implode("-", array_reverse(explode("/", $oGet->dtDataFinal)));
+$dtDataInicialBanco = implode("-", array_reverse(explode("/", (string) $oGet->dtDataInicial)));
+$dtDataFinalBanco   = implode("-", array_reverse(explode("/", (string) $oGet->dtDataFinal)));
 $oGet->lQuebraConta == "t" ? $oGet->lQuebraConta = true : $oGet->lQuebraConta = false;
 
-$aOrderBy    = array();
-$aWhere      = array();
-$aWhereConta = array();
+$aOrderBy    = [];
+$aWhere      = [];
+$aWhereConta = [];
 
 if ($oGet->sTipoOrdem == "empenho") {
 	if ($oGet->lQuebraConta) {
@@ -176,7 +176,7 @@ if ($iLinhasRetornadasBuscaEmpenho == 0) {
 
 $total = 0;
 
-$aDadosImprimir = array();
+$aDadosImprimir = [];
 for ($iRowBusca = 0; $iRowBusca < $iLinhasRetornadasBuscaEmpenho; $iRowBusca++) {
   
   $oDadoEmpenho = db_utils::fieldsMemory($rsExecutaBuscaEmpenho, $iRowBusca);
@@ -191,7 +191,7 @@ for ($iRowBusca = 0; $iRowBusca < $iLinhasRetornadasBuscaEmpenho; $iRowBusca++) 
     $sSqlBuscaOrdemNota = $oDaoPagOrdemNota->sql_query($oDadoEmpenho->e50_codord,null,'e69_numero');
     $rsBuscaOrdemNota   = $oDaoPagOrdemNota->sql_record($sSqlBuscaOrdemNota);
     $iTotalOrdemNota    = $oDaoPagOrdemNota->numrows;
-    $aNotasEncontradas  = array();
+    $aNotasEncontradas  = [];
   	if( $oDaoPagOrdemNota->numrows > 0 ) {
   	  for ($iRowOrdem = 0; $iRowOrdem < $iTotalOrdemNota; $iRowOrdem++ ) {
     		$iNumeroOrdem        = db_utils::fieldsMemory($rsBuscaOrdemNota, $iRowOrdem)->e69_numero;
@@ -268,9 +268,9 @@ foreach ($aDadosImprimir as $iIndice => $oDadoEmpenho) {
   $oPdf->cell(20,$iAltura,db_formatar($oDadoEmpenho->k12_data, 'd'),0,0,"C",0);
   $oPdf->cell(15,$iAltura,$oDadoEmpenho->k12_autent,0,0,"C",0);
   $oPdf->cell(15,$iAltura,$oDadoEmpenho->k13_conta,0,0,"C",0);
-  $oPdf->cell(40,$iAltura,substr($oDadoEmpenho->k13_descr,0,25),0,0,"L",0);
+  $oPdf->cell(40,$iAltura,substr((string) $oDadoEmpenho->k13_descr,0,25),0,0,"L",0);
   $oPdf->cell(18,$iAltura,$oDadoEmpenho->k12_empen,0,0,"C",0);
-  $oPdf->cell(15,$iAltura,trim($oDadoEmpenho->e60_codemp).'/'.$oDadoEmpenho->e60_anousu,0,0,"C",0);
+  $oPdf->cell(15,$iAltura,trim((string) $oDadoEmpenho->e60_codemp).'/'.$oDadoEmpenho->e60_anousu,0,0,"C",0);
   $oPdf->cell(15,$iAltura,$oDadoEmpenho->e50_codord,0,0,"C",0);
 
   if (count($oDadoEmpenho->aNotas) > 0) {

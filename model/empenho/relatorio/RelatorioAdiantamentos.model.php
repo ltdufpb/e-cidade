@@ -59,11 +59,6 @@ class RelatorioAdiantamentos {
   private $iModelo = null;
 
   /**
-   * @var Instituicao
-   */
-  private $oInstituicao = null;
-
-  /**
    * @var integer
    */
   private $iExercicio = null;
@@ -89,7 +84,7 @@ class RelatorioAdiantamentos {
    * @param DBDate  $oDataFim
    * @param integer $iModelo
    */
-  public function __construct(DBDate $oDataInicio, DBDate $oDataFim, Instituicao $oInstituicao, $iModelo) {
+  public function __construct(DBDate $oDataInicio, DBDate $oDataFim, private Instituicao $oInstituicao, $iModelo) {
 
     if ($iModelo != self::MODELO_SUBVENCOES_AUXILIOS && $iModelo != self::MODELO_ADIANTAMENTOS_CONCEDIDOS) {
       throw new Exception("Modelo informado é inválido.");
@@ -97,7 +92,6 @@ class RelatorioAdiantamentos {
 
     $this->oDataInicio  = $oDataInicio;
     $this->oDataFim     = $oDataFim;
-    $this->oInstituicao = $oInstituicao;
     $this->iModelo      = $iModelo;
   }
 
@@ -230,7 +224,7 @@ class RelatorioAdiantamentos {
      */
     $iWidth = $oPdf->getAvailWidth();
 
-    $aTamanhos = array();
+    $aTamanhos = [];
     $aTamanhos[] = ($iModelo == self::MODELO_ADIANTAMENTOS_CONCEDIDOS ? 27 : 36);
     $aTamanhos[] = 9;
     $aTamanhos[] = 9;
@@ -251,7 +245,7 @@ class RelatorioAdiantamentos {
     /**
      * Seta os Alinhamentos
      */
-    $aAlinhamentos = array();
+    $aAlinhamentos = [];
     $aAlinhamentos[] = PDFDocument::ALIGN_LEFT;
     $aAlinhamentos[] = PDFDocument::ALIGN_RIGHT;
     $aAlinhamentos[] = PDFDocument::ALIGN_LEFT;
@@ -276,7 +270,7 @@ class RelatorioAdiantamentos {
     /**
      * Seta as colunas que terão Multicell
      */
-    $aMulticell = array(0);
+    $aMulticell = [0];
 
     if ($iModelo == self::MODELO_ADIANTAMENTOS_CONCEDIDOS) {
       $aMulticell[] = 8;
@@ -307,7 +301,7 @@ class RelatorioAdiantamentos {
     for ($iRow = 0; $iRow < pg_num_rows($rsDados); $iRow++) {
 
       $oDados      = db_utils::fieldsMemory($rsDados, $iRow);
-      $aDadosLinha = array();
+      $aDadosLinha = [];
 
       if ($iModelo == self::MODELO_ADIANTAMENTOS_CONCEDIDOS) {
         $aDadosLinha[] = "Nome: {$oDados->z01_nome}\nMatrícula: " . db_formatar($oDados->z01_cgccpf, 'cpf');
@@ -330,7 +324,7 @@ class RelatorioAdiantamentos {
       if ($iModelo == self::MODELO_SUBVENCOES_AUXILIOS) {
         $aDadosLinha[] = $this->oDataRemessa->getDate(DBDate::DATA_PTBR);
       } else {
-        $aDadosLinha[] = substr($oDados->e45_obs, 0, 100);
+        $aDadosLinha[] = substr((string) $oDados->e45_obs, 0, 100);
       }
 
       $this->oPdf->addLineInformation($aDadosLinha);

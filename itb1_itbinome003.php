@@ -33,15 +33,15 @@ require_once(modification("classes/db_itbinome_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_itbinomecgm_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clitbinome    = new cl_itbinome;
 $clitbinomecgm = new cl_itbinomecgm;
 $sqlerro       = false;
 
-if((isset($HTTP_POST_VARS["bt_opcao"]) && $HTTP_POST_VARS["bt_opcao"])=="Excluir"){
+if((isset($_POST["bt_opcao"]) && $_POST["bt_opcao"])=="Excluir"){
 
   $result = $clitbinomecgm->sql_record($clitbinomecgm->sql_query_file(null,"*",null," it21_itbinome  = $it03_seq "));
   if($clitbinomecgm->numrows > 0){
@@ -103,7 +103,7 @@ if((isset($HTTP_POST_VARS["bt_opcao"]) && $HTTP_POST_VARS["bt_opcao"])=="Excluir
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 
   if($clitbinome->erro_status=="0"){
     $clitbinome->erro(true,false);

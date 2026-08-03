@@ -62,7 +62,7 @@ final class custoPlanilhaServicoPessoaJuridica implements iCustoPlanilha {
    *
    * @var array
    */
-  protected $aCustos = array();
+  protected $aCustos = [];
   /**
    *  
    * 

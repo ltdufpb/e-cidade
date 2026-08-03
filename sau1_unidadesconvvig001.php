@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_sau_vinculosus_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas     = new cl_criaabas;
 $clunidades = new cl_unidades;
 $clsau_vinculosus = new cl_sau_vinculosus;
@@ -68,9 +68,9 @@ if( $result2  ){
    <center>
    <?php 
    $clcriaabas->abas_top   = "50";
-   $clcriaabas->identifica = array("b1"=>"Vínculo com o SUS","b2"=>"Vigilância Sanitária");
-   $clcriaabas->sizecampo  = array("b1"=>"30","b2"=>"30");
-   $clcriaabas->src        = array("b1"=>$arquivo."sd50_i_unidade=$sd02_i_codigo&descrdepto=$descrdepto","b2"=>"sau1_unidadesalvara001.php?chavepesquisa=$sd02_i_codigo&descrdepto=$descrdepto");
+   $clcriaabas->identifica = ["b1"=>"Vínculo com o SUS","b2"=>"Vigilância Sanitária"];
+   $clcriaabas->sizecampo  = ["b1"=>"30","b2"=>"30"];
+   $clcriaabas->src        = ["b1"=>$arquivo."sd50_i_unidade=$sd02_i_codigo&descrdepto=$descrdepto","b2"=>"sau1_unidadesalvara001.php?chavepesquisa=$sd02_i_codigo&descrdepto=$descrdepto"];
    $clcriaabas->iframe_height= "350";
    $clcriaabas->iframe_width= "90%";
    $clcriaabas->scrolling     = "no";

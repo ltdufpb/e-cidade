@@ -127,7 +127,7 @@ try {
       }
       
       $oDBDepartamento                  = DBDepartamentoRepository::getDBDepartamentoByCodigo($iDepartamento);
-      $oRetorno->sDescricaoDepartamento = urlencode($oDBDepartamento->getNomeDepartamento());
+      $oRetorno->sDescricaoDepartamento = urlencode((string) $oDBDepartamento->getNomeDepartamento());
       
       DBDepartamentoRepository::removerDBDepartamento($oDBDepartamento);
       break;
@@ -144,17 +144,7 @@ try {
       $oRetorno->message = urlencode("Dados do Local de Atendimento removido.");
       break;
   }
-} catch (ParameterException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (DBException $oErro) {
+} catch (ParameterException|BusinessException|DBException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->status  = 2;

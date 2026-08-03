@@ -68,7 +68,7 @@ $dataini = db_getsession("DB_anousu").'-'.'01'.'-'.'01';
 $datafin = db_getsession("DB_anousu").'-'.$mes.'-'.date('t',mktime(0,0,0,$mes,'01',db_getsession("DB_anousu")));
 
 //-------------------------------------------------------------------------------------------------------------------------------------------//
-$aVariacoesPatrimoniais = array();
+$aVariacoesPatrimoniais = [];
 $aVariacoesPatrimoniais = db_varPatrimoniaisRpps($anousu,$dataini,$datafin,$oInstit->codigo);
 
 // echo "<pre>"; 
@@ -321,7 +321,7 @@ $pdf->cell(25,$alt,db_formatar($aVariacoesPatrimoniais['TotaisAtivo']['TotalAtiv
 $pdf->cell(70,$alt,"TOTAL"            ,"1",0,"L",1);
 $pdf->cell(25,$alt,db_formatar($aVariacoesPatrimoniais['TotaisPassivo']['TotalPassivo'],'f')	,"BTL",1,"R",1);
 
-notasExplicativas(&$pdf,54,($mes>9?$mes:"0".$mes),190);
+notasExplicativas($pdf,54,($mes>9?$mes:"0".$mes),190);
 
 $pdf->Ln(14);
 $pdf->setfont('arial','',8);

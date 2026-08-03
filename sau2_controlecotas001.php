@@ -61,10 +61,10 @@ $oRotulo->label('s163_i_anocomp');
               </td>
               <td>
                 <?php 
-                $aX = array('1' => 'JANEIRO', '2' => 'FEVEREIRO', '3' => 'MARÇO', '4' => 'ABRIL',
+                $aX = ['1' => 'JANEIRO', '2' => 'FEVEREIRO', '3' => 'MARÇO', '4' => 'ABRIL',
                             '5' => 'MAIO', '6' => 'JUNHO', '7' => 'JULHO', '8' => 'AGOSTO',
                             '9' => 'SETEMBRO', '10' => 'OUTUBRO', '11' => 'NOVEMBRO', '12' => 'DEZEMBRO'
-                           );
+                           ];
                 db_select('iMes', $aX, true, 1, '');
                 ?>
               </td>

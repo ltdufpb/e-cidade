@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_itbi_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_itbi = new cl_db_itbi;
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
@@ -70,7 +70,7 @@ if(isset($j34_setor) && (trim($j34_setor)!="") ){
   $result = $cldb_itbi->sql_record($sql);
   if($cldb_itbi->numrows == 1){
     db_fieldsmemory($result,0);
-    $funcao = split("\\|",$funcao_js);
+    $funcao = preg_split("#\\|#m",$funcao_js);
     echo "<script>".$funcao[0]."('$j01_matric');</script>";
     echo "<script>parent.db_iframe_consultaitbi.hide();</script>";
     exit;

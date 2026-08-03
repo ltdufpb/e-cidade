@@ -39,6 +39,7 @@ class EFDServicosTomadosFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);
@@ -49,8 +50,8 @@ class EFDServicosTomadosFormatter extends Formatter
     {
         $this->unsetEmpty($dadosFormatado);
         $novosDados = new \stdClass();
-        $novosDados->infoProcRetPr = array();
-        $novosDados->infoProcRetAd = array();
+        $novosDados->infoProcRetPr = [];
+        $novosDados->infoProcRetAd = [];
         foreach ($dadosFormatado as &$stdLinha) {
             foreach($stdLinha['infoProcRet'] as $infoProcRet) {
                 if($infoProcRet['tipo'] == 1) {

@@ -60,7 +60,7 @@
    * Coleção de instancias de VinculoServidor
    * @var VinculoServidor[]
    */
-  private $aColecao = array();
+  private $aColecao = [];
 
 
   /**

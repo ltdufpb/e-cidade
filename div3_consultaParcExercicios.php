@@ -130,14 +130,14 @@ if ( $cltermo->numrows > 0 ) {
         $arrayTot["v01_valor"]  = "v01_valor";
         $arrayTot["totalgeral"] = "v03_descr";
         
-        $array = array("s"=>"Exerc&iacute;cio","a"=>"Numpre e parcela");
+        $array = ["s"=>"Exerc&iacute;cio","a"=>"Numpre e parcela"];
 
         echo "<form name='form1'>";
         echo "<b>Agrupar por : </b>";
         db_select('tipoFiltro',$array,true,"1","onChange='js_mudaFiltro(this.value);'");
         echo "</form>";
 
-        db_lovrot($sqlDividas,15,"()","","$funcao_js","","NoMe", array("parcelamento"=>"{$oGet->parcelamento}"),false, $arrayTot);
+        db_lovrot($sqlDividas,15,"()","","$funcao_js","","NoMe", ["parcelamento"=>"{$oGet->parcelamento}"],false, $arrayTot);
 
       ?>
      </td>

@@ -8,32 +8,32 @@ final class Localizacao extends Layout
 {
     public function __construct ()
     {
-        $this->fields = array(
-            'SEQUENCIALSETORLOCALIZACAO' => array(
+        $this->fields = [
+            'SEQUENCIALSETORLOCALIZACAO' => [
                 'name'            => 'SEQUENCIALSETORLOCALIZACAO'
                 ,'description'     => 'SEQUENCIAL DO SETOR DE LOCALIZACAO'
                 ,'size'            => 10
-            )
-            ,'CODIGOPROPRIOSETORLOCALIZACAO' => array(
+            ]
+            ,'CODIGOPROPRIOSETORLOCALIZACAO' => [
                 'name'            => 'CODPROPRIOSETORLOCALIZACAO'
                 ,'description'     => 'CODIGO PROPRIO DO SETOR DE LOCALIZACAO'
                 ,'size'            => 10
-            )
-            ,'DESCRICAOSETORLOCALIZACAO' => array(
+            ]
+            ,'DESCRICAOSETORLOCALIZACAO' => [
                 'name'            => 'DESCRSETORLOCALIZACAO'
                 ,'description'     => 'DESCRICAO DO SETOR DE LOCALIZACAO'
                 ,'size'            => 40
-            )
-            ,'QUADRALOCALIZACAO' => array(
+            ]
+            ,'QUADRALOCALIZACAO' => [
                 'name'            => 'QUADRALOCALIZACAO'
                 ,'description'     => 'QUADRA DE LOCALIZACAO'
                 ,'size'            => 10
-            )
-            ,'LOTELOCALIZACAO' => array(
+            ]
+            ,'LOTELOCALIZACAO' => [
                 'name'            => 'LOTELOCALIZACAO'
                 ,'description'     => 'LOTE DE LOCALIZACAO'
                 ,'size'            => 10
-            )
-        );
+            ]
+        ];
     }
 }

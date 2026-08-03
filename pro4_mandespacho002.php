@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_protprocesso_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprotprocesso = new cl_protprocesso();
 $rotulo = new rotulocampo();
 $db_opcao = 2;
@@ -54,14 +54,14 @@ $sql2 = "select p58_despacho,z01_nome,p51_descr,p61_coddepto
 //echo $sql2;
 $rs = db_query($sql2);
 //db_criatabela($rs);exit;
-if(pg_numrows($rs)==0){
+if(pg_num_rows($rs)==0){
   $p58_despacho = "";
   $p61_coddepto = 0;
 
 }else{
 
-  $p58_despacho = pg_result($rs,0,"p58_despacho");
-  $p61_coddepto = pg_result($rs,0,"p61_coddepto");
+  $p58_despacho = pg_fetch_result($rs,0,"p58_despacho");
+  $p61_coddepto = pg_fetch_result($rs,0,"p61_coddepto");
 }
 if($p61_coddepto != db_getsession("DB_coddepto")){
   $db_opcao = 3;
@@ -102,11 +102,11 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
     </tr>
     <tr>
       <td><b>Requerente:</b></td>
-      <td><?=@pg_result($rs,0,"z01_nome");?></td>
+      <td><?=@pg_fetch_result($rs,0,"z01_nome");?></td>
     </tr>
     <tr>
       <td><b>Tipo:</b></td>
-      <td><?=@pg_result($rs,0,"p51_descr");?></td>
+      <td><?=@pg_fetch_result($rs,0,"p51_descr");?></td>
     </tr>
     <tr>
       <td title="<?=$Tp58_despacho;?>">
@@ -123,7 +123,7 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
     </td>
     <td>
 	       <?php 
-               $x = array("t"=>"Sim","f"=>"Não");
+               $x = ["t"=>"Sim","f"=>"Não"];
                db_select('p58_publico',$x,true,1,"");
 	       
                ?>

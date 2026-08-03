@@ -28,7 +28,7 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if(isset($pesquisar)){
   $sqlmunic = "select munic from db_config where codigo = 1";
@@ -59,7 +59,7 @@ if(isset($pesquisar)){
       exit;
     }		
     $result = db_query($sql);
-    if(pg_numrows($result)==0){
+    if(pg_num_rows($result)==0){
       db_redireciona('db_erros.php?db_erro=Código de Divida não Encontrado.&pagina_retorno=cai4_arrecada008.php');
       exit;     
     }

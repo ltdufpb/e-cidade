@@ -39,7 +39,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 db_app::import('exceptions.*');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cldb_config = new cl_db_config();
 $clCadBan = new cl_cadban();
@@ -292,9 +292,9 @@ if (isset ($processar)) {
          * Verifica banco e agencia
          */
         db_postmemory($_FILES["arqret"]);
-        $arq_name    = basename($name);
+        $arq_name    = basename((string) $name);
         $arq_type    = $type;
-        $arq_tmpname = basename($tmp_name);
+        $arq_tmpname = basename((string) $tmp_name);
         $arq_size    = $size;
         $arq_array   = file($tmp_name);
 
@@ -337,7 +337,7 @@ if (isset ($processar)) {
         $atipo       = substr($arq_array[0], 0, 3);
         $totalproc   = sizeof($arq_array) - 2;
         $priregistro = 1;
-        $acodbco     = substr($arq_array[0], substr($k15_posbco, 0, 3), substr($k15_posbco, 3, 3));
+        $acodbco     = substr($arq_array[0], substr((string) $k15_posbco, 0, 3), substr((string) $k15_posbco, 3, 3));
 
         // if ($cgc == '88073291000199') { // bage
 
@@ -409,7 +409,7 @@ if (isset ($processar)) {
             /**
              * Ignora linhas referentes a Débito de Tarifas/Custas, para os segmentos T e U do convênio SIGCB com registro
              */
-            if (in_array($sCodigoSegmento, array('T', 'U')) && $sCodigoRetorno != '06') {
+            if (in_array($sCodigoSegmento, ['T', 'U']) && $sCodigoRetorno != '06') {
                 continue;
             }
 
@@ -425,54 +425,54 @@ if (isset ($processar)) {
                 }
             } elseif ($k15_taman == 402) {
 
-                if (substr($arq_array[$i], 0, 1) == '9') {
+                if (str_starts_with($arq_array[$i], '9')) {
                     continue;
                 }
             } elseif ($k15_taman == 90) {
 
-                if (substr($arq_array[$i], 0, 5) <> 'BSJI2') {
+                if (!str_starts_with($arq_array[$i], 'BSJI2')) {
                     continue;
                 }
-            } elseif (substr($arq_array[$i], 0, 1) <> "G") {
+            } elseif (!str_starts_with($arq_array[$i], "G")) {
 
-                if (substr($arq_array[$i], 0, 3) <> "104" && substr($arq_array[$i], 0, 3) <> "BSJ") {
+                if (!str_starts_with($arq_array[$i], "104") && !str_starts_with($arq_array[$i], "BSJ")) {
                     continue;
                 }
             }
 
-            if (substr($arq_array[$i], 0, 4) == 'BSJI') {
+            if (str_starts_with($arq_array[$i], 'BSJI')) {
 
-                if (substr($arq_array[0], 0, 5) == 'BSJI0' && $i == 1) {
+                if (str_starts_with($arq_array[0], 'BSJI0') && $i == 1) {
 
-                    if (substr($k15_plano, 3, 3) == '002') {
-                        $dtarq = '20' . substr($arq_array[0], substr($k15_plano, 0, 3) - 1, substr($k15_plano, 3, 3));
+                    if (substr((string) $k15_plano, 3, 3) == '002') {
+                        $dtarq = '20' . substr($arq_array[0], substr((string) $k15_plano, 0, 3) - 1, substr((string) $k15_plano, 3, 3));
                     } else {
-                        $dtarq = substr($arq_array[0], substr($k15_plano, 0, 3) - 1, substr($k15_plano, 3, 3));
+                        $dtarq = substr($arq_array[0], substr((string) $k15_plano, 0, 3) - 1, substr((string) $k15_plano, 3, 3));
                     }
 
                     $dtarq .= "-" . substr($arq_array[0], substr($k15_plmes, 0, 3) - 1, substr($k15_plmes, 3, 3));
-                    $dtarq .= "-" . substr($arq_array[0], substr($k15_poslan, 0, 3) - 1, substr($k15_poslan, 3, 3));
+                    $dtarq .= "-" . substr($arq_array[0], substr((string) $k15_poslan, 0, 3) - 1, substr((string) $k15_poslan, 3, 3));
                 }
             } else {
 
-                if (substr($k15_plano, 3, 3) == '002') {
-                    $dtarq = '20' . substr($arq_array[$i], substr($k15_plano, 0, 3) - 1, substr($k15_plano, 3, 3));
+                if (substr((string) $k15_plano, 3, 3) == '002') {
+                    $dtarq = '20' . substr($arq_array[$i], substr((string) $k15_plano, 0, 3) - 1, substr((string) $k15_plano, 3, 3));
                 } else {
-                    $dtarq = substr($arq_array[$i], substr($k15_plano, 0, 3) - 1, substr($k15_plano, 3, 3));
+                    $dtarq = substr($arq_array[$i], substr((string) $k15_plano, 0, 3) - 1, substr((string) $k15_plano, 3, 3));
                 }
 
                 $dtarq .= "-" . substr($arq_array[$i], substr($k15_plmes, 0, 3) - 1, substr($k15_plmes, 3, 3));
-                $dtarq .= "-" . substr($arq_array[$i], substr($k15_poslan, 0, 3) - 1, substr($k15_poslan, 3, 3));
+                $dtarq .= "-" . substr($arq_array[$i], substr((string) $k15_poslan, 0, 3) - 1, substr((string) $k15_poslan, 3, 3));
             }
 
-            if (substr($k15_ppano, 3, 3) == '002') {
-                $dtpago = '20' . substr($arq_array[$i], substr($k15_ppano, 0, 3) - 1, substr($k15_ppano, 3, 3));
+            if (substr((string) $k15_ppano, 3, 3) == '002') {
+                $dtpago = '20' . substr($arq_array[$i], substr((string) $k15_ppano, 0, 3) - 1, substr((string) $k15_ppano, 3, 3));
             } else {
-                $dtpago = substr($arq_array[$i], substr($k15_ppano, 0, 3) - 1, substr($k15_ppano, 3, 3));
+                $dtpago = substr($arq_array[$i], substr((string) $k15_ppano, 0, 3) - 1, substr((string) $k15_ppano, 3, 3));
             }
 
             $dtpago .= "-" . substr($arq_array[$i], substr($k15_ppmes, 0, 3) - 1, substr($k15_ppmes, 3, 3));
-            $dtpago .= "-" . substr($arq_array[$i], substr($k15_pospag, 0, 3) - 1, substr($k15_pospag, 3, 3));
+            $dtpago .= "-" . substr($arq_array[$i], substr((string) $k15_pospag, 0, 3) - 1, substr((string) $k15_pospag, 3, 3));
 
             if ($dtpago == '0000-00-00') {
 
@@ -480,29 +480,29 @@ if (isset ($processar)) {
                 $dtarq = $dtarquivo;
             }
 
-            if (substr($k15_anocredito, 3, 3) == '002') {
-                $dtcredito = '20' . substr($arq_array[$i], substr($k15_anocredito, 0, 3) - 1,
-                    substr($k15_anocredito, 3, 3));
+            if (substr((string) $k15_anocredito, 3, 3) == '002') {
+                $dtcredito = '20' . substr($arq_array[$i], substr((string) $k15_anocredito, 0, 3) - 1,
+                    substr((string) $k15_anocredito, 3, 3));
             } else {
-                $dtcredito = substr($arq_array[$i], substr($k15_anocredito, 0, 3) - 1, substr($k15_anocredito, 3, 3));
+                $dtcredito = substr($arq_array[$i], substr((string) $k15_anocredito, 0, 3) - 1, substr((string) $k15_anocredito, 3, 3));
             }
 
-            $dtcredito .= "-" . substr($arq_array[$i], substr($k15_mescredito, 0, 3) - 1,
-                substr($k15_mescredito, 3, 3));
-            $dtcredito .= "-" . substr($arq_array[$i], substr($k15_diacredito, 0, 3) - 1,
-                substr($k15_diacredito, 3, 3));
+            $dtcredito .= "-" . substr($arq_array[$i], substr((string) $k15_mescredito, 0, 3) - 1,
+                substr((string) $k15_mescredito, 3, 3));
+            $dtcredito .= "-" . substr($arq_array[$i], substr((string) $k15_diacredito, 0, 3) - 1,
+                substr((string) $k15_diacredito, 3, 3));
 
             if (empty($dtcredito) || $dtcredito == '0000-00-00') {
                 $dtcredito = $dtpago;
             }
 
-            $vlrpago = (substr($arq_array[$i], substr($k15_posvlr, 0, 3) - 1, substr($k15_posvlr, 3, 3)) / 100) + 0;
-            $vlrjuros = (substr($arq_array[$i], substr($k15_posjur, 0, 3) - 1, substr($k15_posjur, 3, 3)) / 100) + 0;
-            $vlrmulta = (substr($arq_array[$i], substr($k15_posmul, 0, 3) - 1, substr($k15_posmul, 3, 3)) / 100) + 0;
-            $vlracres = (substr($arq_array[$i], substr($k15_posacr, 0, 3) - 1, substr($k15_posacr, 3, 3)) / 100) + 0;
+            $vlrpago = (substr($arq_array[$i], substr((string) $k15_posvlr, 0, 3) - 1, substr((string) $k15_posvlr, 3, 3)) / 100) + 0;
+            $vlrjuros = (substr($arq_array[$i], substr((string) $k15_posjur, 0, 3) - 1, substr((string) $k15_posjur, 3, 3)) / 100) + 0;
+            $vlrmulta = (substr($arq_array[$i], substr((string) $k15_posmul, 0, 3) - 1, substr((string) $k15_posmul, 3, 3)) / 100) + 0;
+            $vlracres = (substr($arq_array[$i], substr((string) $k15_posacr, 0, 3) - 1, substr((string) $k15_posacr, 3, 3)) / 100) + 0;
             $vlrdesco = (substr($arq_array[$i], substr($k15_posdes, 0, 3) - 1, substr($k15_posdes, 3, 3)) / 100) + 0;
-            $convenio = substr($arq_array[$i], substr($k15_poscon, 0, 3) - 1, substr($k15_poscon, 3, 3));
-            $cedente = substr($arq_array[$i], substr($k15_posced, 0, 3) - 1, substr($k15_posced, 3, 3));
+            $convenio = substr($arq_array[$i], substr((string) $k15_poscon, 0, 3) - 1, substr((string) $k15_poscon, 3, 3));
+            $cedente = substr($arq_array[$i], substr((string) $k15_posced, 0, 3) - 1, substr((string) $k15_posced, 3, 3));
 
             $totalvalorpago += $vlrpago;
         }
@@ -619,14 +619,14 @@ if ($situacao == 2) {
         }
         
         
-        if (substr($k15_pdano, 3, 3) == '002') {
-            $dtarquivo = '20' . substr($arq_array[0], substr($k15_pdano, 0, 3) - 1, substr($k15_pdano, 3, 3));
+        if (substr((string) $k15_pdano, 3, 3) == '002') {
+            $dtarquivo = '20' . substr((string) $arq_array[0], substr((string) $k15_pdano, 0, 3) - 1, substr((string) $k15_pdano, 3, 3));
         } else {
-            $dtarquivo = substr($arq_array[0], substr($k15_pdano, 0, 3) - 1, substr($k15_pdano, 3, 3));
+            $dtarquivo = substr((string) $arq_array[0], substr((string) $k15_pdano, 0, 3) - 1, substr((string) $k15_pdano, 3, 3));
         }
 
-        $dtarquivo .= "-" . substr($arq_array[0], substr($k15_pdmes, 0, 3) - 1, substr($k15_pdmes, 3, 3));
-        $dtarquivo .= "-" . substr($arq_array[0], substr($k15_posdta, 0, 3) - 1, substr($k15_posdta, 3, 3));
+        $dtarquivo .= "-" . substr((string) $arq_array[0], substr($k15_pdmes, 0, 3) - 1, substr($k15_pdmes, 3, 3));
+        $dtarquivo .= "-" . substr((string) $arq_array[0], substr((string) $k15_posdta, 0, 3) - 1, substr((string) $k15_posdta, 3, 3));
 
         // if ($cgc == '88073291000199') { // bage
         // 	if (substr($arqname, 0, 4) == "daeb") {
@@ -697,7 +697,7 @@ if ($situacao == 2) {
            if($k15_codbco == "237") {
    
                $ocorrenciapagamento = "06";
-               if(substr($arq_array[$i], 108, 2) !== $ocorrenciapagamento) {
+               if(substr((string) $arq_array[$i], 108, 2) !== $ocorrenciapagamento) {
                  continue;
                }
             }
@@ -714,8 +714,8 @@ if ($situacao == 2) {
              */
             if ($k15_taman == 242) {
 
-                if (substr($arq_array[$i], 7, 1) != '3' && (substr($arq_array[$i], 13,
-                      1) != 'U' && substr($arq_array[$i], 13, 1) != 'T')) {
+                if (substr((string) $arq_array[$i], 7, 1) != '3' && (substr((string) $arq_array[$i], 13,
+                      1) != 'U' && substr((string) $arq_array[$i], 13, 1) != 'T')) {
 
                     if ($lDebugAtivo == true) {
                         echo "   continuando 1.00110011...<br/>";
@@ -725,18 +725,18 @@ if ($situacao == 2) {
 
             } elseif ($k15_taman == 402) {
 
-                if (substr($arq_array[$i], 0, 1) == '9') {
+                if (str_starts_with((string) $arq_array[$i], '9')) {
                     continue;
                 }
 
             } elseif ($k15_taman == 90) {
 
-                if (substr($arq_array[$i], 0, 5) <> 'BSJI2') {
+                if (!str_starts_with((string) $arq_array[$i], 'BSJI2')) {
                     continue;
                 }
-            } elseif (substr($arq_array[$i], 0, 1) <> "G") {
+            } elseif (!str_starts_with((string) $arq_array[$i], "G")) {
 
-                if (substr($arq_array[$i], 0, 3) <> "104" && substr($arq_array[$i], 0, 3) <> "BSJ") {
+                if (!str_starts_with((string) $arq_array[$i], "104") && !str_starts_with((string) $arq_array[$i], "BSJ")) {
                     continue;
                 }
             }
@@ -747,13 +747,13 @@ if ($situacao == 2) {
                 $lArquivoArrecadacao = true;
             }
 
-            $sCodigoSegmento = substr($arq_array[$i], 13, 1);
-            $sCodigoRetorno = substr($arq_array[$i], 15, 2);
+            $sCodigoSegmento = substr((string) $arq_array[$i], 13, 1);
+            $sCodigoRetorno = substr((string) $arq_array[$i], 15, 2);
 
             /**
              * Importação do retorno da cobrança registrada
              */
-            if (in_array($sCodigoSegmento, array('T', 'U')) && $sCodigoRetorno != '06') {
+            if (in_array($sCodigoSegmento, ['T', 'U']) && $sCodigoRetorno != '06') {
 
                 if (($sCodigoSegmento != 'T')
                   or ($sCodigoRetorno != '02' and $sCodigoRetorno != '03' and $sCodigoRetorno != '09')
@@ -769,9 +769,9 @@ if ($situacao == 2) {
                 }
 
                 $iCodigoMovimento = $oLinha->codigo_movimento;
-                $aOcorrencia = Array();
+                $aOcorrencia = [];
 
-                preg_match_all("/\w{2}/", $oLinha->motivo, $aOcorrencia, PREG_PATTERN_ORDER);
+                preg_match_all("/\w{2}/", (string) $oLinha->motivo, $aOcorrencia, PREG_PATTERN_ORDER);
                 $aOcorrencia = $aOcorrencia[0];
 
                 if (empty($aOcorrencia)) {
@@ -789,7 +789,7 @@ if ($situacao == 2) {
             if($k15_codbco == "237") {
 
                 $ocorrenciapagamento = "06";
-                if(substr($arq_array[$i], 108, 2) !== $ocorrenciapagamento) {
+                if(substr((string) $arq_array[$i], 108, 2) !== $ocorrenciapagamento) {
                   continue;
                 }
              }
@@ -800,8 +800,8 @@ if ($situacao == 2) {
             $k15_numpar = $k15_numparori;
 
             if (@$numpre == "") {
-                $numpre = substr($arq_array[$i], substr($k15_numpre, 0, 3) - 1, substr($k15_numpre, 3, 3));
-                $numpar = substr($arq_array[$i], substr($k15_numpar, 0, 3) - 1, substr($k15_numpar, 3, 3));
+                $numpre = substr((string) $arq_array[$i], substr((string) $k15_numpre, 0, 3) - 1, substr((string) $k15_numpre, 3, 3));
+                $numpar = substr((string) $arq_array[$i], substr((string) $k15_numpar, 0, 3) - 1, substr((string) $k15_numpar, 3, 3));
             }
 
             // bage
@@ -824,7 +824,7 @@ if ($situacao == 2) {
             // itaqui
             if ($cgc == '88120662000146') {
 
-                if (substr($numpre, 0, 2) == "00") {
+                if (str_starts_with((string) $numpre, "00")) {
 
                     $k15_numpre = "071008";
                     $k15_numpar = "079003";
@@ -834,7 +834,7 @@ if ($situacao == 2) {
             // osorio
             if ($cgc == '88814181000130') {
 
-                if (substr($numpre, 0, 2) == "00") {
+                if (str_starts_with((string) $numpre, "00")) {
 
                     $k15_numpre = "052008";
                     $k15_numpar = "060003";
@@ -845,7 +845,7 @@ if ($situacao == 2) {
             if ($cgc == '91103093000135') {
 
                 // numpre do sistema novo
-                if (substr($numpre, 0, 2) == "00") {
+                if (str_starts_with((string) $numpre, "00")) {
 
                     $k15_numpre = "071008";
                     $k15_numpar = "079003";
@@ -856,7 +856,7 @@ if ($situacao == 2) {
             if ($cgc == '01610503000141') {
 
                 // numpre do sistema novo
-                if (substr($numpre, 0, 2) == "00") {
+                if (str_starts_with((string) $numpre, "00")) {
 
                     $k15_numpre = "071008";
                     $k15_numpar = "079003";
@@ -867,15 +867,15 @@ if ($situacao == 2) {
             if ($cgc == '88601943000110') {
 
                 // numpre do sistema novo
-                if ((int)substr($numpre, 0, 4) == 0) {
+                if ((int)substr((string) $numpre, 0, 4) == 0) {
 
                     $k15_numpre = "071008";
                     $k15_numpar = "079003";
                     $k15_numbco = "";
                 } else { // sistema antigo
 
-                    $teste_numpre = (int)substr($arq_array[$i], 65, 1);
-                    $xxx = substr($arq_array[$i], 60, 10);
+                    $teste_numpre = (int)substr((string) $arq_array[$i], 65, 1);
+                    $xxx = substr((string) $arq_array[$i], 60, 10);
 
                     if ($teste_numpre == 0) {
 
@@ -892,17 +892,17 @@ if ($situacao == 2) {
                 $k15_seq = "";
                 $convenio = "";
 
-                if ($k15_codbco != 399 || ($k15_codbco == 399 && strcmp(trim($k15_codage), "1252") == 0)) {
+                if ($k15_codbco != 399 || ($k15_codbco == 399 && strcmp(trim((string) $k15_codage), "1252") == 0)) {
 
                     $numbco = "";
 
                     // verificar se numpre eh do nosso sistema ou do anterior, posicao 65,5
-                    $isNumpre = (substr($arq_array[$i], 64, 5) === "00000");
+                    $isNumpre = (substr((string) $arq_array[$i], 64, 5) === "00000");
 
                     // Se nao eh numpre do e-cidade...
                     if (!$isNumpre) {
 
-                        $iTipo = (int)substr($arq_array[$i], 64, 3);
+                        $iTipo = (int)substr((string) $arq_array[$i], 64, 3);
 
                         // Verifica se eh DAM do sistema anterior
                         $isDam = ($iTipo == 803);
@@ -912,7 +912,7 @@ if ($situacao == 2) {
                             $k15_numpre = "068014";
                             $k15_numbco = $k15_numpre;
 
-                            $numbco = substr($arq_array[$i], substr($k15_numbco, 0, 3) - 1, substr($k15_numbco, 3, 3));
+                            $numbco = substr((string) $arq_array[$i], substr($k15_numbco, 0, 3) - 1, substr($k15_numbco, 3, 3));
                             $k15_seq = "";
                             $convenio = "";
 
@@ -926,7 +926,7 @@ if ($situacao == 2) {
 
                                 $k15_numpre = "072008";
 
-                                $numpre = substr($arq_array[$i], substr($k15_numpre, 0, 3) - 1,
+                                $numpre = substr((string) $arq_array[$i], substr($k15_numpre, 0, 3) - 1,
                                   substr($k15_numpre, 3, 3));
                                 $numpar = (200 - $iTipo);
 
@@ -935,9 +935,9 @@ if ($situacao == 2) {
                                 $k15_numpre = "072008";
                                 $k15_numpar = "080002";
 
-                                $numpre = substr($arq_array[$i], substr($k15_numpre, 0, 3) - 1,
+                                $numpre = substr((string) $arq_array[$i], substr($k15_numpre, 0, 3) - 1,
                                   substr($k15_numpre, 3, 3));
-                                $numpar = substr($arq_array[$i], substr($k15_numpar, 0, 3) - 1,
+                                $numpar = substr((string) $arq_array[$i], substr($k15_numpar, 0, 3) - 1,
                                   substr($k15_numpar, 3, 3));
                             }
 
@@ -951,9 +951,9 @@ if ($situacao == 2) {
             if ($cgc == '12198693000158') {
 
                 // arapiraca
-                if (substr($arq_array[$i], 13, 1) == 'T') {
+                if (substr((string) $arq_array[$i], 13, 1) == 'T') {
 
-                    if ($k15_codage == '542-8' && substr($numpre, 0, 3) != '000') {
+                    if ($k15_codage == '542-8' && !str_starts_with((string) $numpre, '000')) {
 
                         if ($lDebugAtivo == true) {
                             echo "   continuando 1.001 === 542-8...<br/>";
@@ -967,13 +967,13 @@ if ($situacao == 2) {
             // coruripe sigcb
             if ($cgc == '12264230000147') {
 
-                if (substr($arq_array[$i], 13, 1) == 'T') {
+                if (substr((string) $arq_array[$i], 13, 1) == 'T') {
 
                     if ($lDebugAtivo == true) {
                         echo "   continuando 1.002001 === numpre: $numpre...<br/>";
                     }
 
-                    if ($k15_codage == '2117S' && substr($numpre, 0, 3) != '000') {
+                    if ($k15_codage == '2117S' && !str_starts_with((string) $numpre, '000')) {
 
                         if ($lDebugAtivo == true) {
                             echo "   continuando 1.002002 === 2117S...<br/>";
@@ -995,7 +995,7 @@ if ($situacao == 2) {
             if ($cgc == '87366159000102') {
 
                 // sapiranga
-                if (substr($arq_array[$i], 13, 1) == 'T' || substr($arq_array[$i], 13, 1) == 'U') {
+                if (substr((string) $arq_array[$i], 13, 1) == 'T' || substr((string) $arq_array[$i], 13, 1) == 'U') {
 
                     if ($lDebugAtivo == true) {
                         echo "      continuando 1.1 - k15_codage: $k15_codage<br/>";
@@ -1014,13 +1014,13 @@ if ($situacao == 2) {
             // SIGCB - k15_contat
             if ($k15_contat == 'BDL' && $k15_contat == 'SIGCB') {
 
-                if (substr($arq_array[$i], 13, 1) == 'T' || substr($arq_array[$i], 13, 1) == 'U') {
+                if (substr((string) $arq_array[$i], 13, 1) == 'T' || substr((string) $arq_array[$i], 13, 1) == 'U') {
 
-                    $tipo_convenio = strtolower($k15_contat);
+                    $tipo_convenio = strtolower((string) $k15_contat);
                     $passou_pelo_t = false;
                 }
 
-                if (substr($arq_array[$i], 13, 1) == 'U' && substr($arq_array[$i], 15, 2) == '50') {
+                if (substr((string) $arq_array[$i], 13, 1) == 'U' && substr((string) $arq_array[$i], 15, 2) == '50') {
 
                     $numpre = "";
                     $numpar = "";
@@ -1032,7 +1032,7 @@ if ($situacao == 2) {
             // itaqui sigcb
             if ($cgc == '88120662000146') {
 
-                if (substr($arq_array[$i], 13, 1) == 'T' || substr($arq_array[$i], 13, 1) == 'U') {
+                if (substr((string) $arq_array[$i], 13, 1) == 'T' || substr((string) $arq_array[$i], 13, 1) == 'U') {
 
                     if ($lDebugAtivo == true) {
 
@@ -1040,7 +1040,7 @@ if ($situacao == 2) {
                         echo "   continuando 1.003003 === ITAQUI ( 104/0484X )... - tipo_convenio: $tipo_convenio<br/>";
                     }
 
-                    if ($k15_codage == '0484X' && substr($numpre, 0, 3) != '000') {
+                    if ($k15_codage == '0484X' && !str_starts_with((string) $numpre, '000')) {
                         $tipo_convenio = "sigcb";
                     }
                 }
@@ -1053,7 +1053,7 @@ if ($situacao == 2) {
                     echo "      continuando 1.3<br/>";
                 }
 
-                if (substr($arq_array[$i], 13, 1) == 'T' || substr($arq_array[$i], 13, 1) == 'U') {
+                if (substr((string) $arq_array[$i], 13, 1) == 'T' || substr((string) $arq_array[$i], 13, 1) == 'U') {
 
                     if ($lDebugAtivo == true) {
                         echo "      continuando 1.4 - k15_codage: $k15_codage<br/>";
@@ -1076,7 +1076,7 @@ if ($situacao == 2) {
                     echo "      continuando 1.5<br/>";
                 }
 
-                if (substr($arq_array[$i], 13, 1) == 'T' || substr($arq_array[$i], 13, 1) == 'U') {
+                if (substr((string) $arq_array[$i], 13, 1) == 'T' || substr((string) $arq_array[$i], 13, 1) == 'U') {
 
                     if ($lDebugAtivo == true) {
                         echo "      continuando 1.6 - k15_codage: $k15_codage<br/>";
@@ -1094,13 +1094,13 @@ if ($situacao == 2) {
 
             if ($k15_taman == 242) {
 
-                if (substr($arq_array[$i], 13, 1) == 'T') {
+                if (substr((string) $arq_array[$i], 13, 1) == 'T') {
 
-                    $numbco = substr($arq_array[$i], substr($k15_numbco, 0, 3) - 1, substr($k15_numbco, 3, 3));
-                    $convenio = substr($arq_array[$i], substr($k15_poscon, 0, 3) - 1, substr($k15_poscon, 3, 3));
+                    $numbco = substr((string) $arq_array[$i], substr((string) $k15_numbco, 0, 3) - 1, substr((string) $k15_numbco, 3, 3));
+                    $convenio = substr((string) $arq_array[$i], substr((string) $k15_poscon, 0, 3) - 1, substr((string) $k15_poscon, 3, 3));
                     
-                    $bancoPagamento = substr($arq_array[$i], substr($k15_bancopagamento, 0, 3) - 1, substr($k15_bancopagamento, 3, 3));
-                    $agenciaPagamento = substr($arq_array[$i], substr($k15_agenciapagamento, 0, 3) - 1, substr($k15_agenciapagamento, 3, 3));
+                    $bancoPagamento = substr((string) $arq_array[$i], substr((string) $k15_bancopagamento, 0, 3) - 1, substr((string) $k15_bancopagamento, 3, 3));
+                    $agenciaPagamento = substr((string) $arq_array[$i], substr((string) $k15_agenciapagamento, 0, 3) - 1, substr((string) $k15_agenciapagamento, 3, 3));
 
                     if ($lDebugAtivo == true) {
                         echo "   continuando 5...<br/>";
@@ -1110,22 +1110,22 @@ if ($situacao == 2) {
 
             } else {
 
-                $convenio = substr($arq_array[$i], substr($k15_poscon, 0, 3) - 1, substr($k15_poscon, 3, 3));
-                $numbco = substr($arq_array[$i], substr($k15_numbco, 0, 3) - 1, substr($k15_numbco, 3, 3));
+                $convenio = substr((string) $arq_array[$i], substr((string) $k15_poscon, 0, 3) - 1, substr((string) $k15_poscon, 3, 3));
+                $numbco = substr((string) $arq_array[$i], substr((string) $k15_numbco, 0, 3) - 1, substr((string) $k15_numbco, 3, 3));
             }
 
             // dom feliciano
             if ($cgc == '88601943000110') {
 
                 // numpre do sistema antigo
-                if ((int)substr($numpre, 0, 4) != 0) {
+                if ((int)substr((string) $numpre, 0, 4) != 0) {
 
-                    $teste_numpre = (int)substr($arq_array[$i], 65, 1);
+                    $teste_numpre = (int)substr((string) $arq_array[$i], 65, 1);
 
                     if ($teste_numpre == 0) {
 
                         $k15_numbco = "071011";
-                        $numbco = substr($arq_array[$i], substr($k15_numbco, 0, 3) - 1, substr($k15_numbco, 3, 3));
+                        $numbco = substr((string) $arq_array[$i], substr($k15_numbco, 0, 3) - 1, substr($k15_numbco, 3, 3));
                     }
                 }
             }
@@ -1143,7 +1143,7 @@ if ($situacao == 2) {
                 $numbco = $k15_seq . $convenio . $numbco;
 
                 /* @note: substitui o X por 1 quando vem X no numbanco */
-                if (strpos($numbco, 'X') !== false) {
+                if (str_contains($numbco, 'X')) {
                     $numbco = str_replace('X', '1', $numbco);
                 }
                 $numbcoFormatado = $numbco;
@@ -1163,7 +1163,7 @@ if ($situacao == 2) {
                 $sSqlBuscaArrebanco .= "   and arreinstit.k00_instit = $iInstitSessao                                ";
                 $rsArrebanco = db_query($sSqlBuscaArrebanco);
 
-                if (pg_numrows($rsArrebanco) != 0) {
+                if (pg_num_rows($rsArrebanco) != 0) {
                     db_fieldsmemory($rsArrebanco, 0);
                 }
 
@@ -1209,8 +1209,8 @@ if ($situacao == 2) {
 
                 if ($processaposnumpre == true) {
 
-                    $numpre = substr($arq_array[$i], substr($k15_numpre, 0, 3) - 1, substr($k15_numpre, 3, 3));
-                    $numpar = substr($arq_array[$i], substr($k15_numpar, 0, 3) - 1, substr($k15_numpar, 3, 3));
+                    $numpre = substr((string) $arq_array[$i], substr((string) $k15_numpre, 0, 3) - 1, substr((string) $k15_numpre, 3, 3));
+                    $numpar = substr((string) $arq_array[$i], substr((string) $k15_numpar, 0, 3) - 1, substr((string) $k15_numpar, 3, 3));
                 }
 
             }
@@ -1224,15 +1224,15 @@ if ($situacao == 2) {
                 $sqlbanco = "select arrebanco.k00_numpre, arrebanco.k00_numpar                            ";
                 $sqlbanco .= "  from arrebanco                                                             ";
                 $sqlbanco .= "       inner join arreinstit on arreinstit.k00_numpre = arrebanco.k00_numpre ";
-                $sqlbanco .= " where arrebanco.k00_numbco  = '" . substr($arq_array[$i],
-                    ((int)substr($k15_numbco, 0, 3)) - 1, ((int)substr($k15_numbco, 3, 3))) . "'";
+                $sqlbanco .= " where arrebanco.k00_numbco  = '" . substr((string) $arq_array[$i],
+                    ((int)substr((string) $k15_numbco, 0, 3)) - 1, ((int)substr((string) $k15_numbco, 3, 3))) . "'";
                 $sqlbanco .= "   and arreinstit.k00_instit = $iInstitSessao ";
                 $resultbanco = db_query($sqlbanco) or die($sqlbanco);
 
-                if (pg_numrows($resultbanco) == 0) {
+                if (pg_num_rows($resultbanco) == 0) {
 
                     $oParametrosMsg = new stdClass();
-                    $oParametrosMsg->iNumBanco = substr($arq_array[$i], 6, 13);
+                    $oParametrosMsg->iNumBanco = substr((string) $arq_array[$i], 6, 13);
                     $sMsg = _M(MENSAGENS . 'erro_numbanco_nao_encontrado', $oParametrosMsg);
                     echo "<script>alert('" . $sMsg . "');</script>";
                 } else {
@@ -1249,12 +1249,12 @@ if ($situacao == 2) {
                     $sqlbanco = "select arrebanco.k00_numpre, arrebanco.k00_numpar                            ";
                     $sqlbanco .= "  from arrebanco                                                             ";
                     $sqlbanco .= "       inner join arreinstit on arreinstit.k00_numpre = arrebanco.k00_numpre ";
-                    $sqlbanco .= " where arrebanco.k00_numbco  = '" . substr($arq_array[$i],
-                        ((int)substr($k15_numbco, 0, 3)) - 1, ((int)substr($k15_numbco, 3, 3))) . "'";
+                    $sqlbanco .= " where arrebanco.k00_numbco  = '" . substr((string) $arq_array[$i],
+                        ((int)substr((string) $k15_numbco, 0, 3)) - 1, ((int)substr((string) $k15_numbco, 3, 3))) . "'";
                     $sqlbanco .= "   and arreinstit.k00_instit = $iInstitSessao ";
                     $resultbanco = db_query($sqlbanco) or die($sqlbanco);
 
-                    if (pg_numrows($resultbanco) == 0) {
+                    if (pg_num_rows($resultbanco) == 0) {
 
                         $oParametrosMsg = new stdClass();
                         $oParametrosMsg->iNumBanco = $numbco;
@@ -1286,7 +1286,7 @@ if ($situacao == 2) {
                     $sSqlArrebanco .= "   and arreinstit.k00_instit = $iInstitSessao                                ";
                     $rsArrebanco = db_query($sSqlArrebanco);
 
-                    if (pg_numrows($rsArrebanco) == 0) {
+                    if (pg_num_rows($rsArrebanco) == 0) {
 
                         $oParametrosMsg = new stdClass();
                         $oParametrosMsg->iNumBanco = $numbco;
@@ -1306,38 +1306,38 @@ if ($situacao == 2) {
                 }
             }
 
-            if (substr($arq_array[0], 0, 5) == 'BSJI0') {
+            if (str_starts_with((string) $arq_array[0], 'BSJI0')) {
 
-                if (substr($k15_plano, 3, 3) == '002') {
-                    $dtarq = '20' . substr($arq_array[0], substr($k15_plano, 0, 3) - 1, substr($k15_plano, 3, 3));
+                if (substr((string) $k15_plano, 3, 3) == '002') {
+                    $dtarq = '20' . substr((string) $arq_array[0], substr((string) $k15_plano, 0, 3) - 1, substr((string) $k15_plano, 3, 3));
                 } else {
-                    $dtarq = substr($arq_array[0], substr($k15_plano, 0, 3) - 1, substr($k15_plano, 3, 3));
+                    $dtarq = substr((string) $arq_array[0], substr((string) $k15_plano, 0, 3) - 1, substr((string) $k15_plano, 3, 3));
                 }
 
-                $dtarq .= "-" . substr($arq_array[0], substr($k15_plmes, 0, 3) - 1, substr($k15_plmes, 3, 3));
-                $dtarq .= "-" . substr($arq_array[0], substr($k15_poslan, 0, 3) - 1, substr($k15_poslan, 3, 3));
+                $dtarq .= "-" . substr((string) $arq_array[0], substr($k15_plmes, 0, 3) - 1, substr($k15_plmes, 3, 3));
+                $dtarq .= "-" . substr((string) $arq_array[0], substr((string) $k15_poslan, 0, 3) - 1, substr((string) $k15_poslan, 3, 3));
 
             } else {
 
-                if (substr($k15_plano, 3, 3) == '002') {
-                    $dtarq = '20' . substr($arq_array[$i], substr($k15_plano, 0, 3) - 1, substr($k15_plano, 3, 3));
+                if (substr((string) $k15_plano, 3, 3) == '002') {
+                    $dtarq = '20' . substr((string) $arq_array[$i], substr((string) $k15_plano, 0, 3) - 1, substr((string) $k15_plano, 3, 3));
                 } else {
-                    $dtarq = substr($arq_array[$i], substr($k15_plano, 0, 3) - 1, substr($k15_plano, 3, 3));
+                    $dtarq = substr((string) $arq_array[$i], substr((string) $k15_plano, 0, 3) - 1, substr((string) $k15_plano, 3, 3));
                 }
 
-                $dtarq .= "-" . substr($arq_array[$i], substr($k15_plmes, 0, 3) - 1, substr($k15_plmes, 3, 3));
-                $dtarq .= "-" . substr($arq_array[$i], substr($k15_poslan, 0, 3) - 1, substr($k15_poslan, 3, 3));
+                $dtarq .= "-" . substr((string) $arq_array[$i], substr($k15_plmes, 0, 3) - 1, substr($k15_plmes, 3, 3));
+                $dtarq .= "-" . substr((string) $arq_array[$i], substr((string) $k15_poslan, 0, 3) - 1, substr((string) $k15_poslan, 3, 3));
 
             }
 
-            if (substr($k15_ppano, 3, 3) == '002') {
-                $dtpago = '20' . substr($arq_array[$i], substr($k15_ppano, 0, 3) - 1, substr($k15_ppano, 3, 3));
+            if (substr((string) $k15_ppano, 3, 3) == '002') {
+                $dtpago = '20' . substr((string) $arq_array[$i], substr((string) $k15_ppano, 0, 3) - 1, substr((string) $k15_ppano, 3, 3));
             } else {
-                $dtpago = substr($arq_array[$i], substr($k15_ppano, 0, 3) - 1, substr($k15_ppano, 3, 3));
+                $dtpago = substr((string) $arq_array[$i], substr((string) $k15_ppano, 0, 3) - 1, substr((string) $k15_ppano, 3, 3));
             }
 
-            $dtpago .= "-" . substr($arq_array[$i], substr($k15_ppmes, 0, 3) - 1, substr($k15_ppmes, 3, 3));
-            $dtpago .= "-" . substr($arq_array[$i], substr($k15_pospag, 0, 3) - 1, substr($k15_pospag, 3, 3));
+            $dtpago .= "-" . substr((string) $arq_array[$i], substr($k15_ppmes, 0, 3) - 1, substr($k15_ppmes, 3, 3));
+            $dtpago .= "-" . substr((string) $arq_array[$i], substr((string) $k15_pospag, 0, 3) - 1, substr((string) $k15_pospag, 3, 3));
 
             if ($dtpago == '0000-00-00') {
 
@@ -1345,28 +1345,28 @@ if ($situacao == 2) {
                 $dtarq = $dtarquivo;
             }
 
-            if (substr($k15_anocredito, 3, 3) == '002') {
-                $dtcredito = '20' . substr($arq_array[$i], substr($k15_anocredito, 0, 3) - 1,
-                    substr($k15_anocredito, 3, 3));
+            if (substr((string) $k15_anocredito, 3, 3) == '002') {
+                $dtcredito = '20' . substr((string) $arq_array[$i], substr((string) $k15_anocredito, 0, 3) - 1,
+                    substr((string) $k15_anocredito, 3, 3));
             } else {
-                $dtcredito = substr($arq_array[$i], substr($k15_anocredito, 0, 3) - 1, substr($k15_anocredito, 3, 3));
+                $dtcredito = substr((string) $arq_array[$i], substr((string) $k15_anocredito, 0, 3) - 1, substr((string) $k15_anocredito, 3, 3));
             }
 
-            $dtcredito .= "-" . substr($arq_array[$i], substr($k15_mescredito, 0, 3) - 1,
-                substr($k15_mescredito, 3, 3));
-            $dtcredito .= "-" . substr($arq_array[$i], substr($k15_diacredito, 0, 3) - 1,
-                substr($k15_diacredito, 3, 3));
+            $dtcredito .= "-" . substr((string) $arq_array[$i], substr((string) $k15_mescredito, 0, 3) - 1,
+                substr((string) $k15_mescredito, 3, 3));
+            $dtcredito .= "-" . substr((string) $arq_array[$i], substr((string) $k15_diacredito, 0, 3) - 1,
+                substr((string) $k15_diacredito, 3, 3));
 
 
             if (empty($dtcredito) || $dtcredito == '0000-00-00') {
                 $dtcredito = $dtpago;
             }
 
-            $vlrpago = (substr($arq_array[$i], substr($k15_posvlr, 0, 3) - 1, substr($k15_posvlr, 3, 3)) / 100) + 0;
-            $vlrjuros = (substr($arq_array[$i], substr($k15_posjur, 0, 3) - 1, substr($k15_posjur, 3, 3)) / 100) + 0;
-            $vlrmulta = (substr($arq_array[$i], substr($k15_posmul, 0, 3) - 1, substr($k15_posmul, 3, 3)) / 100) + 0;
-            $vlracres = (substr($arq_array[$i], substr($k15_posacr, 0, 3) - 1, substr($k15_posacr, 3, 3)) / 100) + 0;
-            $vlrdesco = (substr($arq_array[$i], substr($k15_posdes, 0, 3) - 1, substr($k15_posdes, 3, 3)) / 100) + 0;
+            $vlrpago = (substr((string) $arq_array[$i], substr((string) $k15_posvlr, 0, 3) - 1, substr((string) $k15_posvlr, 3, 3)) / 100) + 0;
+            $vlrjuros = (substr((string) $arq_array[$i], substr((string) $k15_posjur, 0, 3) - 1, substr((string) $k15_posjur, 3, 3)) / 100) + 0;
+            $vlrmulta = (substr((string) $arq_array[$i], substr((string) $k15_posmul, 0, 3) - 1, substr((string) $k15_posmul, 3, 3)) / 100) + 0;
+            $vlracres = (substr((string) $arq_array[$i], substr((string) $k15_posacr, 0, 3) - 1, substr((string) $k15_posacr, 3, 3)) / 100) + 0;
+            $vlrdesco = (substr((string) $arq_array[$i], substr($k15_posdes, 0, 3) - 1, substr($k15_posdes, 3, 3)) / 100) + 0;
             $cedente = $convenio;
             $convenio = "";
 
@@ -1399,8 +1399,8 @@ if ($situacao == 2) {
                     $sql_recibo = "select k00_numpre from recibopaga where k00_numnov = $numpre_procura limit 1";
                     $result_recibo = db_query($sql_recibo);
 
-                    if (pg_numrows($result_recibo) > 0) {
-                        $numpre_procura = pg_result($result_recibo, 0);
+                    if (pg_num_rows($result_recibo) > 0) {
+                        $numpre_procura = pg_fetch_result($result_recibo, 0);
                     }
 
                     $sql_arretipo = " (select k00_tipo from arrecad    where k00_numpre = $numpre_procura limit 1) ";
@@ -1416,8 +1416,8 @@ if ($situacao == 2) {
                     $sql_arretipo .= " (select k00_tipo from recibo     where k00_numpre = $numpre_procura limit 1) ";
                     $result_arretipo = db_query($sql_arretipo);
 
-                    if (pg_numrows($result_arretipo) > 0) {
-                        $k00_tipo = pg_result($result_arretipo, 0);
+                    if (pg_num_rows($result_arretipo) > 0) {
+                        $k00_tipo = pg_fetch_result($result_arretipo, 0);
                     } else {
 
                         /**
@@ -1442,7 +1442,7 @@ if ($situacao == 2) {
                         $iAnoPagamento = $oData->getAno();
                         $rsTxParItbi = db_query($oDaoParITBI->sql_query($iAnoPagamento, 'it24_taxabancaria'));
 
-                        if (pg_numrows($rsTxParItbi) > 0) {
+                        if (pg_num_rows($rsTxParItbi) > 0) {
                             $k00_txban = db_utils::fieldsMemory($rsTxParItbi, 0)->it24_taxabancaria;
                         } else {
                             $k00_txban = 0;
@@ -1453,8 +1453,8 @@ if ($situacao == 2) {
                         $sql_arretipo = "select k00_txban from arretipo where k00_tipo = $k00_tipo and k00_instit = $iInstitSessao";
                         $result_arretipo = db_query($sql_arretipo);
 
-                        if (pg_numrows($result_arretipo) > 0) {
-                            $k00_txban = pg_result($result_arretipo, 0);
+                        if (pg_num_rows($result_arretipo) > 0) {
+                            $k00_txban = pg_fetch_result($result_arretipo, 0);
                         } else {
                             $k00_txban = 0;
                         }
@@ -1557,10 +1557,10 @@ if ($situacao == 2) {
                  */
                 if ($lArquivoArrecadacao) {
 
-                    $nValorTarifaBanco = substr($arq_array[$i], 93, 7);
+                    $nValorTarifaBanco = substr((string) $arq_array[$i], 93, 7);
                     $nValorTarifaBanco = (float)chunk_split($nValorTarifaBanco, 5, '.');
 
-                    $sFormaArrecadacao = trim(substr($arq_array[$i], 116, 1));
+                    $sFormaArrecadacao = trim(substr((string) $arq_array[$i], 116, 1));
 
                     if (!empty($sFormaArrecadacao)) {
 
@@ -1636,7 +1636,7 @@ if ($situacao == 2) {
 
         $total = 0;
 
-        for ($x = 0; $x < pg_numrows($result); $x++) {
+        for ($x = 0; $x < pg_num_rows($result); $x++) {
 
             db_fieldsmemory($result, $x, true);
             echo "Data: $dtarq - Valor: " . db_formatar($sum, "f") . "<br/>";

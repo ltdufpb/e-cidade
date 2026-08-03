@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("iptucalcpadrao"=>"iptucalcpadrao","iptucalcpadraoconstr"=>"iptucalcpadraoconstr","iptutaxamatric"=>"iptutaxamatric"); 
-	 $clcriaabas->src = array("iptucalcpadrao"=>"cad1_iptucalcpadrao005.php");
-	 $clcriaabas->disabled   =  array("iptucalcpadraoconstr"=>"true","iptutaxamatric"=>"true"); 
+	 $clcriaabas->identifica = ["iptucalcpadrao"=>"iptucalcpadrao","iptucalcpadraoconstr"=>"iptucalcpadraoconstr","iptutaxamatric"=>"iptutaxamatric"]; 
+	 $clcriaabas->src = ["iptucalcpadrao"=>"cad1_iptucalcpadrao005.php"];
+	 $clcriaabas->disabled   =  ["iptucalcpadraoconstr"=>"true","iptutaxamatric"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

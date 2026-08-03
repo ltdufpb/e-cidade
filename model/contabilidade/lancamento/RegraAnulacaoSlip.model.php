@@ -54,7 +54,7 @@ class RegraAnulacaoSlip {
 
     $rsTransacao   = $oDaoTransacao->sql_record($sSqlTransacao);
 
-    $aDocumentosEstorno = array(121, 131, 141, 152, 153, 162, 163);
+    $aDocumentosEstorno = [121, 131, 141, 152, 153, 162, 163];
 
     /**
      * Verificamos se existe somente uma conta cadastrada para o lancamento. Caso exista mais de uma conta

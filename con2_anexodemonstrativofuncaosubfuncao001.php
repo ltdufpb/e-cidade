@@ -43,10 +43,10 @@ $oRotulo->label('DBtxt21');
 $oRotulo->label('DBtxt22');
 
 
-$aAbas    = array();
-$aTitulos = array();
-$aFontes  = array();
-$aTamanho  = array();
+$aAbas    = [];
+$aTitulos = [];
+$aFontes  = [];
+$aTamanho  = [];
 $dtAnousu = db_getsession("DB_anousu");
 $iCodigoRelatorio = 96;
 
@@ -75,18 +75,18 @@ $iCodigoRelatorio = 96;
     <?php 
     if ($dtAnousu <= 2007) {
 
-      $oAbas->identifica = array("relatorio"=>"Relatório");
-      $oAbas->title      = array("relatorio"=>"Relatório");
-      $oAbas->src        = array("relatorio"=>"con2_anexodemonstrativofuncaosubfuncao011.php");
-      $oAbas->sizecampo  = array("relatorio"=>"23");
+      $oAbas->identifica = ["relatorio"=>"Relatório"];
+      $oAbas->title      = ["relatorio"=>"Relatório"];
+      $oAbas->src        = ["relatorio"=>"con2_anexodemonstrativofuncaosubfuncao011.php"];
+      $oAbas->sizecampo  = ["relatorio"=>"23"];
 
     } else {
 
-      $oAbas->identifica = array("relatorio"=>"Relatório","notas"=>"Fonte/Notas Explicativas");
-      $oAbas->title      = array("relatorio"=>"Relatório","notas"=>"Fonte/Notas Explicativas");
-      $oAbas->src        = array("relatorio"=>"con2_anexodemonstrativofuncaosubfuncao011.php",
-                                 "notas"    =>"con2_conrelnotas.php?c83_codrel={$iCodigoRelatorio}");
-      $oAbas->sizecampo  = array("relatorio"=>"23","notas"=>"23");
+      $oAbas->identifica = ["relatorio"=>"Relatório","notas"=>"Fonte/Notas Explicativas"];
+      $oAbas->title      = ["relatorio"=>"Relatório","notas"=>"Fonte/Notas Explicativas"];
+      $oAbas->src        = ["relatorio"=>"con2_anexodemonstrativofuncaosubfuncao011.php",
+                                 "notas"    =>"con2_conrelnotas.php?c83_codrel={$iCodigoRelatorio}"];
+      $oAbas->sizecampo  = ["relatorio"=>"23","notas"=>"23"];
     }
 
     $oAbas->cria_abas();

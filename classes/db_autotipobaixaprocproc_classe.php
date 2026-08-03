@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE autotipobaixaprocproc
 class cl_autotipobaixaprocproc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y114_sequencial = 0; 
-   var $y114_baixaproc = 0; 
-   var $y114_processo = 0; 
+   public $y114_sequencial = 0; 
+   public $y114_baixaproc = 0; 
+   public $y114_processo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y114_sequencial = int4 = Sequencial 
                  y114_baixaproc = int4 = Codigo da Baixa da Procedência do auto 
                  y114_processo = int8 = Processo 
                  ";
    //funcao construtor da classe 
-   function cl_autotipobaixaprocproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autotipobaixaprocproc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_autotipobaixaprocproc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y114_sequencial = pg_result($result,0,0); 
+       $this->y114_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from autotipobaixaprocproc_y114_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y114_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y114_sequencial)){
          $this->erro_sql = " Campo y114_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_autotipobaixaprocproc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Processo de protocolo na baixa de auto de infracao ($this->y114_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Processo de protocolo na baixa de auto de infracao já Cadastrado";
@@ -166,12 +166,12 @@ class cl_autotipobaixaprocproc {
      $resaco = $this->sql_record($this->sql_query_file($this->y114_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16035,'$this->y114_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2812,16035,'','".AddSlashes(pg_result($resaco,0,'y114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2812,16036,'','".AddSlashes(pg_result($resaco,0,'y114_baixaproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2812,16037,'','".AddSlashes(pg_result($resaco,0,'y114_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2812,16035,'','".AddSlashes(pg_fetch_result($resaco,0,'y114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2812,16036,'','".AddSlashes(pg_fetch_result($resaco,0,'y114_baixaproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2812,16037,'','".AddSlashes(pg_fetch_result($resaco,0,'y114_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_autotipobaixaprocproc {
       $this->atualizacampos();
      $sql = " update autotipobaixaprocproc set ";
      $virgula = "";
-     if(trim($this->y114_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y114_sequencial"])){ 
+     if(trim((string) $this->y114_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y114_sequencial"])){ 
        $sql  .= $virgula." y114_sequencial = $this->y114_sequencial ";
        $virgula = ",";
-       if(trim($this->y114_sequencial) == null ){ 
+       if(trim((string) $this->y114_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "y114_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_autotipobaixaprocproc {
          return false;
        }
      }
-     if(trim($this->y114_baixaproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y114_baixaproc"])){ 
+     if(trim((string) $this->y114_baixaproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y114_baixaproc"])){ 
        $sql  .= $virgula." y114_baixaproc = $this->y114_baixaproc ";
        $virgula = ",";
-       if(trim($this->y114_baixaproc) == null ){ 
+       if(trim((string) $this->y114_baixaproc) == null ){ 
          $this->erro_sql = " Campo Codigo da Baixa da Procedência do auto nao Informado.";
          $this->erro_campo = "y114_baixaproc";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_autotipobaixaprocproc {
          return false;
        }
      }
-     if(trim($this->y114_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y114_processo"])){ 
+     if(trim((string) $this->y114_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y114_processo"])){ 
        $sql  .= $virgula." y114_processo = $this->y114_processo ";
        $virgula = ",";
-       if(trim($this->y114_processo) == null ){ 
+       if(trim((string) $this->y114_processo) == null ){ 
          $this->erro_sql = " Campo Processo nao Informado.";
          $this->erro_campo = "y114_processo";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_autotipobaixaprocproc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16035,'$this->y114_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y114_sequencial"]) || $this->y114_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2812,16035,'".AddSlashes(pg_result($resaco,$conresaco,'y114_sequencial'))."','$this->y114_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2812,16035,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y114_sequencial'))."','$this->y114_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y114_baixaproc"]) || $this->y114_baixaproc != "")
-           $resac = db_query("insert into db_acount values($acount,2812,16036,'".AddSlashes(pg_result($resaco,$conresaco,'y114_baixaproc'))."','$this->y114_baixaproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2812,16036,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y114_baixaproc'))."','$this->y114_baixaproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y114_processo"]) || $this->y114_processo != "")
-           $resac = db_query("insert into db_acount values($acount,2812,16037,'".AddSlashes(pg_result($resaco,$conresaco,'y114_processo'))."','$this->y114_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2812,16037,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y114_processo'))."','$this->y114_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_autotipobaixaprocproc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16035,'$y114_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2812,16035,'','".AddSlashes(pg_result($resaco,$iresaco,'y114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2812,16036,'','".AddSlashes(pg_result($resaco,$iresaco,'y114_baixaproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2812,16037,'','".AddSlashes(pg_result($resaco,$iresaco,'y114_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2812,16035,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2812,16036,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y114_baixaproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2812,16037,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y114_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from autotipobaixaprocproc
@@ -345,7 +345,7 @@ class cl_autotipobaixaprocproc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:autotipobaixaprocproc";
@@ -360,7 +360,7 @@ class cl_autotipobaixaprocproc {
    function sql_query ( $y114_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,7 +389,7 @@ class cl_autotipobaixaprocproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_autotipobaixaprocproc {
    function sql_query_file ( $y114_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,7 +423,7 @@ class cl_autotipobaixaprocproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -28,7 +28,7 @@
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if($iSituacao > 1){
   $sqlSit = " AND d63_statusatual = $iSituacao ";
@@ -81,7 +81,7 @@ $sql = "SELECT *, (SELECT arqret from disarq where codret = codretatual) as nome
 
 //echo $sql; exit;
 $result = db_query($sql) or die("Erro realizando consulta : ".$sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos o período de '.db_formatar($iDatai, 'd').' a '.db_formatar($iDataf, 'd'));
 }
@@ -91,7 +91,7 @@ $head3 = "POR BANCO E AGÊNCIA";
 $head4 = "Banco: $iBco - Agência: $iAgencia";
 $head5 = "Período : ".db_formatar($iDatai, 'd')." a ".db_formatar($iDataf, 'd');
 $head6 = "Situação: $nSit";
-$head7 = "Usuário: ".pg_result($result,0,11);
+$head7 = "Usuário: ".pg_fetch_result($result,0,11);
 
 $pdf->ln(2);
 $pdf->AddPage();
@@ -165,10 +165,10 @@ for ($i = 0; $i < $xxnum; $i ++) {
   $pdf->Cell(16, 6, $d63_contaatual                     , 1, 0, "R", 0);
   $pdf->Cell(13, 6, $codretatual                        , 1, 0, "R", 0);
   $pdf->SetFont('Arial', '', 7);
-  $pdf->Cell(45, 6, substr($nomearqatual,0,28)          , 1, 0, "L", 0);
+  $pdf->Cell(45, 6, substr((string) $nomearqatual,0,28)          , 1, 0, "L", 0);
   $pdf->SetFont('Arial', '', 8);
 
-  $arr_ant = explode("||", $anterior);
+  $arr_ant = explode("||", (string) $anterior);
 
     if($arr_ant[1] == 1) {
       $statusant = "PEND";

@@ -42,10 +42,10 @@ class Thread {
    * possible errors
    * @var array
    */
-  private $errors = array(
+  private $errors = [
       Thread::FUNCTION_NOT_CALLABLE   => 'You must specify a valid function name that can be called from the current scope.',
       Thread::COULD_NOT_FORK          => 'pcntl_fork() returned a status of -1. No new process was created',
-      );
+      ];
 
   /**
    * callback for the function that should
@@ -74,17 +74,10 @@ class Thread {
    * @return boolean
    */
   public static function available() {
-    $required_functions = array(
+    $required_functions = [
         'pcntl_fork',
-        );
-
-    foreach( $required_functions as $function ) {
-      if ( !function_exists( $function ) ) {
-        return false;
-      }
-    }
-
-    return true;
+        ];
+    return array_all($required_functions, fn($function) => function_exists( $function ));
   }
 
   /**
@@ -174,7 +167,7 @@ class Thread {
       $this->pid = $pid;
     } else {
       // child
-      pcntl_signal( SIGTERM, array( $this, 'signalHandler' ) );
+      pcntl_signal( SIGTERM, $this->signalHandler(...) );
       $arguments = func_get_args();
       if ( !empty( $arguments ) ) {
         call_user_func_array( $this->runnable, $arguments );

@@ -65,7 +65,7 @@ class TipoAquisicaoProducaoRuralRepository extends BaseRepository
 
         if ($tipo) {
             $tipo = (int) $tipo;
-            return (new EnumTipoAquisicaoProducaoRural($tipo))->name();
+            return new EnumTipoAquisicaoProducaoRural($tipo)->name();
         }
 
         if (!empty($tipoPessoa)) {
@@ -90,14 +90,10 @@ class TipoAquisicaoProducaoRuralRepository extends BaseRepository
 
         switch ($tipoPessoa) {
             case 'pj':
-                $labelFiltered = array_filter($labels, function ($item) use ($pjLabels) {
-                    return in_array($item['value'], $pjLabels);
-                });
+                $labelFiltered = array_filter($labels, fn($item) => in_array($item['value'], $pjLabels));
                 break;
             case 'pf':
-                $labelFiltered = array_filter($labels, function ($item) use ($pfLabels) {
-                    return in_array($item['value'], $pfLabels);
-                });
+                $labelFiltered = array_filter($labels, fn($item) => in_array($item['value'], $pfLabels));
                 break;
         }
 

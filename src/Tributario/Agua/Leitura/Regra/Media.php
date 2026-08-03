@@ -7,13 +7,13 @@ use BusinessException;
 
 class Media implements RegraInterface {
 
-  /**
-   * @var ResumoMensal[]
-   */
-  private $aLeituras;
-
-  public function __construct(array $aLeituras) {
-    $this->aLeituras = $aLeituras;
+  public function __construct(
+      /**
+       * @var ResumoMensal[]
+       */
+      private readonly array $aLeituras
+  )
+  {
   }
 
   /**

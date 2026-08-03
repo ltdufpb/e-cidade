@@ -37,10 +37,11 @@ class AnexoDemonstrativoReceitaPublica extends RelatoriosLegaisBase {
     parent::__construct($iAnoUsu, $iCodigoRelatorio, $iCodigoPeriodo);
   }
   
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $aLinhasRelatorio = $this->oRelatorioLegal->getLinhasCompleto();
-    $aLinhasRetorno   = array();
+    $aLinhasRetorno   = [];
 
     for ($iLinha = 1; $iLinha <= count($aLinhasRelatorio); $iLinha++ ) {
       
@@ -50,7 +51,7 @@ class AnexoDemonstrativoReceitaPublica extends RelatoriosLegaisBase {
       $oLinha->descricao  = $aLinhasRelatorio[$iLinha]->getDescricaoLinha();
       $oLinha->colunas    = $aColunasRelatorio; 
       $oLinha->desdobrar  = false;
-      $oLinha->contas     = array();
+      $oLinha->contas     = [];
       $oLinha->nivellinha = $aLinhasRelatorio[$iLinha]->getNivel();
       foreach ($aColunasRelatorio as $oColuna) {
        
@@ -68,7 +69,7 @@ class AnexoDemonstrativoReceitaPublica extends RelatoriosLegaisBase {
             throw new Exception("Nenhuma linha configurada para este relatório.");
           }
           
-          $oLinha->dadoslinha = array();
+          $oLinha->dadoslinha = [];
           foreach ($aColunaValor as $oDadosColuna) { 
             
             $oDadosUsuario             = new stdClass();
@@ -113,7 +114,7 @@ class AnexoDemonstrativoReceitaPublica extends RelatoriosLegaisBase {
 
         foreach ($oLinha->colunas as $iColuna => $oColuna) {
            
-          if (trim($oColuna->o116_formula) != "") {
+          if (trim((string) $oColuna->o116_formula) != "") {
              
             $sFormulaOriginal = ($oColuna->o116_formula);
             $sFormula         = $this->oRelatorioLegal->parseFormula('aLinhasRetorno', $sFormulaOriginal, $iColuna, $aLinhasRetorno);
@@ -122,7 +123,7 @@ class AnexoDemonstrativoReceitaPublica extends RelatoriosLegaisBase {
             eval($evaluate);
             $sRetorno = ob_get_contents();
             ob_clean();
-            if (strpos(strtolower($sRetorno), "parse error") > 0 || strpos(strtolower($sRetorno), "undefined" > 0)) {
+            if (strpos(strtolower($sRetorno), "parse error") > 0 || strpos(strtolower($sRetorno), (string) (0 > 0))) {
               
               $sMsg =  "Linha {$iLinha} com erro no cadastro da formula<br>{$oColuna->o116_formula}";
               throw new Exception($sMsg);

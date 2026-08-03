@@ -33,22 +33,6 @@ class tceLivroDiarioGeral extends tceEstruturaBasica
     const  NOME_ARQUIVO = 'TCE_4111.TXT';
     const  CODIGO_ARQUIVO = 33;
     /**
-     * @var string
-     */
-    private $dataInicio;
-    /**
-     * @var string
-     */
-    private $dataFim;
-    /**
-     * @var string
-     */
-    private $codigosInstituicoes;
-    /**
-     * @var stdClass
-     */
-    private $cabecalho;
-    /**
      * @var array
      */
     private $numerosLotesGerados;
@@ -62,7 +46,7 @@ class tceLivroDiarioGeral extends tceEstruturaBasica
      * @param string $codigosInstituicoes
      * @param stdClass $cabecalho
      */
-    public function __construct($dataInicio, $dataFim, $codigosInstituicoes, $cabecalho)
+    public function __construct(private $dataInicio, private $dataFim, private $codigosInstituicoes, private $cabecalho)
     {
 
         $daoLayoutCampos = new \cl_db_layoutcampos();
@@ -94,12 +78,7 @@ class tceLivroDiarioGeral extends tceEstruturaBasica
         } catch (Exception $e) {
             throw $e;
         }
-
-        $this->dataInicio = $dataInicio;
-        $this->dataFim = $dataFim;
-        $this->codigosInstituicoes = $codigosInstituicoes;
-        $this->cabecalho = $cabecalho;
-        $this->numerosLotesGerados = array();
+        $this->numerosLotesGerados = [];
     }
 
     /**
@@ -131,14 +110,14 @@ class tceLivroDiarioGeral extends tceEstruturaBasica
             $oLancamento = db_utils::fieldsMemory($rsLancamentos, $i);
 
             $oLancamento->codigorecursovinculado = str_pad(
-                $oLancamento->codigorecursovinculado,
+                (string) $oLancamento->codigorecursovinculado,
                 4,
                 0,
                 STR_PAD_LEFT
             );
 
             if (db_getsession("DB_anousu") >= 2020) {
-                $oLancamento->complemento_recurso = str_pad($oLancamento->complemento_recurso, 4, 0, STR_PAD_LEFT);
+                $oLancamento->complemento_recurso = str_pad((string) $oLancamento->complemento_recurso, 4, 0, STR_PAD_LEFT);
             }
             $this->validaLote($oLancamento->numerolote);
             $this->oTxtLayout->setByLineOfDBUtils($oLancamento, 3);
@@ -320,7 +299,7 @@ class tceLivroDiarioGeral extends tceEstruturaBasica
      */
     private function validaLote(&$numeroLote)
     {
-        if (!preg_match('/^\d+$/', $numeroLote)) {
+        if (!preg_match('/^\d+$/', (string) $numeroLote)) {
             if (!array_key_exists($numeroLote, $this->numerosLotesGerados)) {
                 $this->numerosLotesGerados[$numeroLote] = $this->gerarNumeroLote();
             }

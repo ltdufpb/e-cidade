@@ -55,12 +55,10 @@ class VincularPlanoOrcamentarioDespesaService extends VincularPlanoOrcamentario
                     $planoOrcamentario->contas_ecidade = $planoOrcamentario
                         ->contasEcidade()
                         ->get()
-                        ->map(function (ConplanoOrcamento $conplanoOrcamento) {
-                            return MapaPlanoContasOrcamentarioResource::toData(
-                                $conplanoOrcamento,
-                                true
-                            );
-                        });
+                        ->map(fn(ConplanoOrcamento $conplanoOrcamento) => MapaPlanoContasOrcamentarioResource::toData(
+                            $conplanoOrcamento,
+                            true
+                        ));
                     $planoOrcamentario->tem_vinculo = $planoOrcamentario->contas_ecidade->count();
                 }
 
@@ -68,6 +66,7 @@ class VincularPlanoOrcamentarioDespesaService extends VincularPlanoOrcamentario
             });
     }
 
+    #[\Override]
     public function getContasConplanoOrcamento(array $filtros)
     {
         $filtrar = [];
@@ -91,6 +90,7 @@ class VincularPlanoOrcamentarioDespesaService extends VincularPlanoOrcamentario
         return PlanoDespesa::find($id);
     }
 
+    #[\Override]
     public function vincular($planoOrcamentario, array $idsContasEcidade)
     {
         $existe = DB::table('contabilidade.planodespesaconplanoorcamento')
@@ -117,9 +117,7 @@ class VincularPlanoOrcamentarioDespesaService extends VincularPlanoOrcamentario
         foreach ($contasPadrao as $planoOrcamentario) {
             $filtrar = ["c60_estrut like '3{$planoOrcamentario->conta}%'"];
             $idsContasEcidade = ConplanoOrcamento::contasDespesaAPartirElemento($filtros['exercicio'], $filtrar)
-                ->map(function (ConplanoOrcamento $conplanoOrcamento) {
-                    return $conplanoOrcamento->c60_codigo;
-                })->toArray();
+                ->map(fn(ConplanoOrcamento $conplanoOrcamento) => $conplanoOrcamento->c60_codigo)->toArray();
 
             if (!empty($idsContasEcidade)) {
                 $this->vincular($planoOrcamentario, $idsContasEcidade);

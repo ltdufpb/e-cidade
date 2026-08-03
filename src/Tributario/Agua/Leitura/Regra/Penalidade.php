@@ -32,17 +32,14 @@ use ECidade\Tributario\Agua\Leitura\ResumoMensal;
 
 class Penalidade implements RegraInterface {
 
-  private $aLeituras;
-
   private $aLeiturasMensuradas;
 
   private $iMetragemCubicaEfetivamenteConsumida;
 
   private $iMetragemCubicaCobrada;
 
-  public function __construct(array $aLeituras) {
-
-    $this->aLeituras = $aLeituras;
+  public function __construct(private array $aLeituras)
+  {
   }
 
 
@@ -52,10 +49,10 @@ class Penalidade implements RegraInterface {
       throw new ParameterException('Nenhuma leitura informada para cálculo de penalidade.');
     }
 
-    $aRegrasLeiturasReais = array(
+    $aRegrasLeiturasReais = [
       Situacao::REGRA_NORMAL,
       Situacao::REGRA_MEDIA_PENALIDADE
-    );
+    ];
 
 
     $oUltimaLeitura = array_shift($this->aLeituras);

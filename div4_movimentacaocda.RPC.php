@@ -38,8 +38,8 @@ $oParametros                 = $oJson->decode( str_replace("\\", "", $_POST["jso
 $oRetorno                    = new stdClass();
 $oRetorno->erro              = false;
 $oRetorno->sMensagem         = '';
-$oRetorno->aInconsistencias  = array();
-$oRetorno->aCertidoesValidas = array();
+$oRetorno->aInconsistencias  = [];
+$oRetorno->aCertidoesValidas = [];
 
 $oDataMovimentacao = new DBDate( $oParametros->dDataMovimentacao );
 $sDataMovimentacao = $oDataMovimentacao->getDate();
@@ -67,11 +67,11 @@ try {
 
         if ( is_null( $oCertidao->getSequencial() ) ) {
 
-          $oRetorno->aInconsistencias[] = array(
+          $oRetorno->aInconsistencias[] = [
             "iCertidao"       => $iCodigo,
             "sInconsistencia" => urlencode( _M( MENSAGENS . "certidao_inexistente" ) ),
             "lIsErro"         => true
-          );
+          ];
 
           continue;
         }
@@ -79,11 +79,11 @@ try {
         $aCertidaoArrecad = $oCertidao->getArrecad("certid.v13_certid");
         if ( empty($aCertidaoArrecad) ) {
 
-          $oRetorno->aInconsistencias[] = array(
+          $oRetorno->aInconsistencias[] = [
             "iCertidao"       => $iCodigo,
             "sInconsistencia" => urlencode( _M( MENSAGENS . "certidao_fechada" ) ),
             "lIsErro"         => true
-          );
+          ];
 
           continue;
         }
@@ -92,11 +92,11 @@ try {
         $iCodigoCertidao   = $oCertidaoCartorio->getCertidao();
         if ( empty($iCodigoCertidao) ) {
 
-          $oRetorno->aInconsistencias[] = array(
+          $oRetorno->aInconsistencias[] = [
             "iCertidao"       => $iCodigo,
             "sInconsistencia" => urlencode( _M( MENSAGENS . "certidao_nao_cobrada" ) ),
             "lIsErro"         => true
-          );
+          ];
 
           continue;
         }
@@ -107,22 +107,22 @@ try {
           $oStdMensagemErro                           = new stdClass();
           $oStdMensagemErro->data_ultima_movimentacao = $sDataUltimaMovimentacao;
 
-          $oRetorno->aInconsistencias[] = array(
+          $oRetorno->aInconsistencias[] = [
             "iCertidao"       => $iCodigo,
             "sInconsistencia" => urlencode( _M( MENSAGENS . "data_movimentacao_invalida", $oStdMensagemErro ) ),
             "lIsErro"         => true
-          );
+          ];
 
           continue;
         }
 
         if ( !$oCertidao->validaTipoMovimentacao( $oParametros->iTipoMovimentacao ) ) {
 
-          $oRetorno->aInconsistencias[] = array(
+          $oRetorno->aInconsistencias[] = [
             "iCertidao"       => $iCodigo,
             "sInconsistencia" => urlencode( _M( MENSAGENS . "tipo_movimentacao_invalida" ) ),
             "lIsErro"         => true
-          );
+          ];
 
           continue;
         }
@@ -147,7 +147,7 @@ try {
           $oCertidMovimentacao->incluir();
 
           $oRetorno->sMensagem = urlencode( _M( MENSAGENS. "sucesso_movimentacao" ) );
-        } catch ( Exception $oErro ) {
+        } catch ( Exception ) {
           throw new Exception( _M( MENSAGENS . "erro_inclusao_movimentacao" ) );
         }
       }

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhestagioresultado_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhestagioresultado = new cl_rhestagioresultado;
 $clrhestagioresultado->rotulo->label("h65_sequencial");
 $clrhestagioresultado->rotulo->label("h65_data");
@@ -108,9 +108,9 @@ $clrhestagioresultado->rotulo->label("h65_data");
         }else{
            $sql = $clrhestagioresultado->sql_query_resultado("",$campos,"{$sOrder}"," 1=1 {$sGroup}");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h65_data)){
-          $repassa = array("chave_h65_sequencial"=>$chave_h65_sequencial,"chave_h65_data"=>$chave_h65_data);
+          $repassa = ["chave_h65_sequencial"=>$chave_h65_sequencial,"chave_h65_data"=>$chave_h65_data];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -166,7 +166,7 @@ class LancamentoItbiService
              ->setTipotransacao($dadosImovel->tipoTransacao)
              ->setAreaterreno($dadosImovel->areaTotal)
              ->setAreaedificada("0")
-             ->setObs(isset($dadosImovel->observacoes) ? $dadosImovel->observacoes : "")
+             ->setObs($dadosImovel->observacoes ?? "")
              ->setValortransacao($this->removeMascaraValorMonetario($dadosImovel->valorTotal))
              ->setAreatrans($dadosImovel->areaTrans)
              ->setMail($dadosImovel->emailContato)
@@ -182,7 +182,7 @@ class LancamentoItbiService
              ->setProcesso("{$this->processo->getNumero()}/{$this->processo->getAno()}")
              ->setTituprocesso(null)
              ->setDtprocesso(null)
-             ->setCartorioextra((isset($dadosImovel->cartorio) ? $dadosImovel->cartorio : null));
+             ->setCartorioextra(($dadosImovel->cartorio ?? null));
 
         $this->numeroGuia = $itbiRepository->salvar($itbi);
     }
@@ -291,7 +291,7 @@ class LancamentoItbiService
         $itbirural->setProf($dadosImovel->profundidade);
         $itbirural->setLocalimovel($dadosImovel->localizacao);
         $itbirural->setDistcidade($dadosImovel->distanciaCidade);
-        $itbirural->setNomelograd(isset($dadosImovel->nomeLograd) ? $dadosImovel->nomeLograd : "");
+        $itbirural->setNomelograd($dadosImovel->nomeLograd ?? "");
         $itbirural->setArea($dadosImovel->areaTotal);
         $itbirural->setCoordenadas($dadosImovel->coordenadas);
 
@@ -348,10 +348,10 @@ class LancamentoItbiService
         foreach ($intermediadores as $intermediador) {
             $itbiintermediador->setSequencial(null);
             $itbiintermediador->setItbi($this->numeroGuia);
-            $itbiintermediador->setCgm((isset($intermediador->numcgm) ? $intermediador->numcgm : null));
+            $itbiintermediador->setCgm(($intermediador->numcgm ?? null));
             $itbiintermediador->setNome($intermediador->nome);
             $itbiintermediador->setCnpjCpf($intermediador->cpfCnpj);
-            $itbiintermediador->setCreci((isset($intermediador->creci) ? $intermediador->creci : null));
+            $itbiintermediador->setCreci(($intermediador->creci ?? null));
             $itbiintermediador->setPrincipal(($intermediador->principal ? "t" : "f"));
 
             $itbiintermediadorRepository->salvar($itbiintermediador);
@@ -383,20 +383,20 @@ class LancamentoItbiService
         foreach ($aTransmitentesAdquirentes as $oDados) {
             $itbinome->setSeq(null);
             $itbinome->setGuia($this->numeroGuia);
-            $itbinome->setTipo(substr($oDados->tipo, 0, 1));
+            $itbinome->setTipo(substr((string) $oDados->tipo, 0, 1));
             $itbinome->setPrinc(($oDados->principal == 1 ? "t" : "f"));
-            $itbinome->setNome(substr($oDados->nome, 0, 40));
-            $itbinome->setSexo((!empty(trim($oDados->sexo)) ? $oDados->sexo : "F"));
-            $itbinome->setCpfcnpj(substr($oDados->cpfCnpj, 0, 14));
-            $itbinome->setEndereco(substr($oDados->endereco, 0, 100));
+            $itbinome->setNome(substr((string) $oDados->nome, 0, 40));
+            $itbinome->setSexo((!empty(trim((string) $oDados->sexo)) ? $oDados->sexo : "F"));
+            $itbinome->setCpfcnpj(substr((string) $oDados->cpfCnpj, 0, 14));
+            $itbinome->setEndereco(substr((string) $oDados->endereco, 0, 100));
             $itbinome->setNumero($oDados->numero);
-            $itbinome->setCompl((!empty($oDados->complemento)) ? substr($oDados->complemento, 0, 100) : "");
-            $itbinome->setCxpostal((!empty($oDados->caixaPostal)) ? substr($oDados->caixaPostal, 0, 20) : "");
-            $itbinome->setBairro(substr($oDados->bairro, 0, 40));
-            $itbinome->setMunic(substr($oDados->municipio, 0, 40));
-            $itbinome->setUf(substr($oDados->uf, 0, 2));
-            $itbinome->setCep(substr($oDados->cep, 0, 8));
-            $itbinome->setMail(substr($oDados->email, 0, 50));
+            $itbinome->setCompl((!empty($oDados->complemento)) ? substr((string) $oDados->complemento, 0, 100) : "");
+            $itbinome->setCxpostal((!empty($oDados->caixaPostal)) ? substr((string) $oDados->caixaPostal, 0, 20) : "");
+            $itbinome->setBairro(substr((string) $oDados->bairro, 0, 40));
+            $itbinome->setMunic(substr((string) $oDados->municipio, 0, 40));
+            $itbinome->setUf(substr((string) $oDados->uf, 0, 2));
+            $itbinome->setCep(substr((string) $oDados->cep, 0, 8));
+            $itbinome->setMail(substr((string) $oDados->email, 0, 50));
 
             $sequencial = $itbinomeRepository->salvar($itbinome);
 
@@ -409,25 +409,25 @@ class LancamentoItbiService
             }
 
             if (empty($oCgm)) {
-                if (strlen(trim($oDados->cpfCnpj)) == '11') {
+                if (strlen(trim((string) $oDados->cpfCnpj)) == '11') {
                     $oCgm = \CgmFactory::getInstanceByType(\CgmFactory::FISICO);
                     $oCgm->setCpf($oDados->cpfCnpj);
                 } else {
-                    if (strlen(trim($oDados->cpfCnpj)) == '14') {
+                    if (strlen(trim((string) $oDados->cpfCnpj)) == '14') {
                         $oCgm = \CgmFactory::getInstanceByType(\CgmFactory::JURIDICO);
                         $oCgm->setCnpj($oDados->cpfCnpj);
                     }
                 }
             }
 
-            $oCgm->setNome(mb_strtoupper($oDados->nome));
-            $oCgm->setNomeCompleto(mb_strtoupper($oDados->nome));
-            $oCgm->setUf(mb_strtoupper($oDados->uf));
-            $oCgm->setMunicipio(mb_strtoupper($oDados->municipio));
-            $oCgm->setCep(mb_strtoupper($oDados->cep));
-            $oCgm->setBairro(mb_strtoupper($oDados->bairro));
-            $oCgm->setNumero(mb_strtoupper($oDados->numero));
-            $oCgm->setLogradouro(mb_strtoupper($oDados->endereco));
+            $oCgm->setNome(mb_strtoupper((string) $oDados->nome));
+            $oCgm->setNomeCompleto(mb_strtoupper((string) $oDados->nome));
+            $oCgm->setUf(mb_strtoupper((string) $oDados->uf));
+            $oCgm->setMunicipio(mb_strtoupper((string) $oDados->municipio));
+            $oCgm->setCep(mb_strtoupper((string) $oDados->cep));
+            $oCgm->setBairro(mb_strtoupper((string) $oDados->bairro));
+            $oCgm->setNumero(mb_strtoupper((string) $oDados->numero));
+            $oCgm->setLogradouro(mb_strtoupper((string) $oDados->endereco));
             $oCgm->setComplemento(mb_strtoupper((!empty($oDados->complemento)) ? $oDados->complemento : ""));
             $oCgm->save();
 
@@ -476,8 +476,8 @@ class LancamentoItbiService
             $itbiconstr->setArea($benfeitoria->area);
             $itbiconstr->setAreatrans($benfeitoria->areaTrans);
             $itbiconstr->setAno($benfeitoria->ano);
-            $itbiconstr->setObs(isset($benfeitoria->observacoes) ? $benfeitoria->observacoes : "");
-            $itbiconstr->setCoordenadas((isset($benfeitoria->coordenadas) ? $benfeitoria->coordenadas : null));
+            $itbiconstr->setObs($benfeitoria->observacoes ?? "");
+            $itbiconstr->setCoordenadas(($benfeitoria->coordenadas ?? null));
             $sequencial = $itbiconstrRepository->salvar($itbiconstr);
 
             if (isset($benfeitoria->tipo) && !empty($benfeitoria->tipo)) {

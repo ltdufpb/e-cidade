@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_conplanoexe_classe.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 
 $clconplanoexe = new cl_conplanoexe;
@@ -76,8 +76,8 @@ if(isset($codred)){
   $result = db_query($campos);
   // db_criatabela($result);exit;
   db_fieldsmemory($result,0);
-  $funcao_js = split("\|",$funcao_js);
-    $sinal_final = trim($sinal_final);
+  $funcao_js = preg_split("#\\|#m",$funcao_js);
+    $sinal_final = trim((string) $sinal_final);
   echo "<script>".$funcao_js[0]."('$codred','$c60_descr','".trim(db_formatar($saldo_final,'f'))."','$sinal_final');</script>";
 }
 
@@ -172,7 +172,7 @@ if(isset($codred)){
             file_put_contents('/tmp/sql.sql', $campos);
             $result = db_query($campos);
             db_fieldsmemory($result,0);
-              $sinal_final = trim($sinal_final);
+              $sinal_final = trim((string) $sinal_final);
             echo "<script>".$funcao_js."('$c60_descr',false,'".trim(db_formatar($saldo_final,'f'))."','$sinal_final', '$c60_estrut');</script>";
           }else{
             echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";

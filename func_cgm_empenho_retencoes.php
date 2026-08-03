@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cl_retencaoreceitas = new cl_retencaoreceitas();
 $rotulo = new rotulocampo();
@@ -85,10 +85,10 @@ $rotulo->label("z01_nome");
       <td align="center" valign="top">
           <?php
           $campos = 'z01_numcgm, z01_nome';
-          $where = array();
+          $where = [];
           $ordem = 'z01_nome, z01_numcgm';
           $groupBy = 'z01_numcgm, z01_nome';
-          $withWhere = array();
+          $withWhere = [];
           $withWhere[] = "e21_retencaotipocalc in (3, 4, 7)";
           $withWhere[] = "e23_ativo is true";
 
@@ -105,12 +105,12 @@ $rotulo->label("z01_nome");
 
               $sql = $cl_retencaoreceitas->sql_query_retencoes_cgm($campos, $campos, $withWhere, $where, $groupBy, $ordem);
               
-              $repassa = array();
+              $repassa = [];
               if(isset($chave_z01_numcgm) && isset($chave_z01_nome)) {
-                  $repassa = array(
+                  $repassa = [
                     "chave_z01_numcgm" => $chave_z01_numcgm,
                     "chave_z01_nome" => $chave_z01_nome
-                  );
+                  ];
               }
                 echo '<div class="container" style="min-width: 750px;">';
                 echo '  <fieldset>';

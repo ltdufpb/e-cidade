@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -141,7 +141,7 @@ if(isset($confirma)){
   //echo ("select * from pontofs where r10_anousu = $DBtxt23 and r10_anousu = $DBtxt25 and r10_rubric = '0290'");
   $res_cons = db_query("select * from pontofs where r10_anousu = $DBtxt23 and r10_mesusu = $DBtxt25 and r10_rubric = '0290'");
   
-  if(pg_numrows($res_cons) > 0){
+  if(pg_num_rows($res_cons) > 0){
     db_query("delete from pontofs where  r10_anousu = $DBtxt23 and r10_mesusu = $DBtxt25 and r10_rubric = '0290'");
   }
   
@@ -173,7 +173,7 @@ if(isset($confirma)){
   ";
   db_query("begin");
   $result = db_query($sql);
-  for($x = 0; $x < pg_numrows($result);$x++){
+  for($x = 0; $x < pg_num_rows($result);$x++){
      db_fieldsmemory($result,$x);
      $sql_exec = "insert into pontofs values($r14_anousu,
                                   $r14_mesusu,

@@ -10,17 +10,11 @@ use Exception;
 class ReciboAvulso
 {
     /**
-     * @var ReciboAvulsoRepository
-     */
-    private $repositorio;
-
-    /**
      * ReciboAvulso constructor.
-     * @param ReciboAvulsoRepository $reciboAvulsoRepository
+     * @param ReciboAvulsoRepository $repositorio
      */
-    public function __construct(ReciboAvulsoRepository $reciboAvulsoRepository)
+    public function __construct(private readonly ReciboAvulsoRepository $repositorio)
     {
-        $this->repositorio = $reciboAvulsoRepository;
     }
 
     /**

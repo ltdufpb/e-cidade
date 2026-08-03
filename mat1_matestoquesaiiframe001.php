@@ -35,8 +35,8 @@ include(modification("classes/db_matestoqueini_classe.php"));
 include(modification("classes/db_matestoqueinimei_classe.php"));
 include(modification("classes/db_db_depart_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clmatestoque = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;
 $clmatestoque2 = new cl_matestoque;
@@ -56,11 +56,11 @@ $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   db_inicio_transacao();
-  $arr_valores = split(",",$valores);
+  $arr_valores = preg_split("#,#m",$valores);
   $sqlerro     = false;
   for($i=0;$i<count($arr_valores);$i++){
     $nomecampo    = $arr_valores[$i];
-    $separacampo  = split("_",$arr_valores[$i]);
+    $separacampo  = preg_split("#_#m",(string) $arr_valores[$i]);
     $m70_codigo   = $separacampo[1];
     $m70_coddepto = $separacampo[2];
     $m80_codtipo  = 5;      // matestoquetipo = 4 - Saída manual
@@ -73,10 +73,10 @@ if(isset($incluir)){
     $result_matestoque  = $clmatestoqueitem->sql_record($clmatestoqueitem->sql_query(null,"distinct m70_codigo,m70_codmatmater,m70_quant,m70_valor,m70_coddepto,m71_codlanc,m71_valor,m71_quant,m71_quantatend,m71_data as dataimprime,m71_valor as valorimprime","m71_data desc","m70_codigo=$m70_codigo and m70_coddepto=$m70_coddepto and m71_quant>m71_quantatend"));
     $numrows_matestoque = $clmatestoqueitem->numrows;
     
-    $arr_oqueaindafalta = $$nomecampo;
-    $arr_estoquediminui = Array();
-    $arr_vlorquediminui = Array();
-    if($sqlerro == false && trim($m82_matestoqueini)==""){
+    $arr_oqueaindafalta = ${$nomecampo};
+    $arr_estoquediminui = [];
+    $arr_vlorquediminui = [];
+    if($sqlerro == false && trim((string) $m82_matestoqueini)==""){
       $clmatestoqueini->m80_login          = $m80_login;
       $clmatestoqueini->m80_data           = $m80_data;
       $clmatestoqueini->m80_hora           = $m80_hora;
@@ -267,7 +267,7 @@ if(isset($msgalert) && trim($msgalert)!=""){
     <td nowrap class='bordas' align='center'>
     ";
     $matitem = "cod_".$m70_codigo."_".$coddepto."_".$i;
-    $$matitem=$m70_quant;
+    ${$matitem}=$m70_quant;
     if($i==0){
       $rcbfoco = "cod_".$m70_codigo."_".$coddepto."_".$i;
     }

@@ -37,7 +37,7 @@ use ECidade\Tributario\Arrecadacao\Repository\TaxasLancadasRepository;
 class TipoRecolhimento
 {
 
-    protected static $itens = array();
+    protected static $itens = [];
   /**
    * Retorna os dados do tipo de recolhimento por codigo
    * @param $codigo
@@ -81,7 +81,7 @@ class TipoRecolhimento
         if (!$rsRecolhimentos) {
             throw new \DBException('Erro ao pesquisar recolhimentos vinculados a unidade gestora');
         }
-        $aRetorno     = array();
+        $aRetorno     = [];
         $iTotalLinhas = pg_num_rows($rsRecolhimentos);
         for ($iRecolhimento = 0; $iRecolhimento < $iTotalLinhas; $iRecolhimento++) {
             $oDadosRecolhimento = \db_utils::fieldsMemory($rsRecolhimentos, $iRecolhimento);
@@ -103,9 +103,7 @@ class TipoRecolhimento
 
         $aTaxasUg = db_utils::getColectionByRecord($rsTaxasUg);
 
-        $aTaxas = array_map(function ($oTaxa) {
-            return $oTaxa->ar44_sequencial;
-        }, $aTaxasUg);
+        $aTaxas = array_map(fn($oTaxa) => $oTaxa->ar44_sequencial, $aTaxasUg);
 
         foreach ($aTaxas as $taxa) {
             $oTaxa = $taxasLancadasRepository->getTaxa($taxa);
@@ -148,30 +146,26 @@ class TipoRecolhimento
         $oTipoRecolhimento = new TipoRecolhimentoModel();
 
         $oTipoRecolhimento->setCodigo(
-            (isset($oDados->k172_sequencial) ? $oDados->k172_sequencial
-                : (isset($oDados->ar44_sequencial) ? $oDados->ar44_sequencial : ""))
+            ($oDados->k172_sequencial ?? $oDados->ar44_sequencial ?? "")
         );
 
         $oTipoRecolhimento->setCodigoRecolhimento(
-            (isset($oDados->k172_codigorecolhimento) ? $oDados->k172_codigorecolhimento
-                : (isset($oDados->ar44_sequencial) ? $oDados->ar44_sequencial : ""))
+            ($oDados->k172_codigorecolhimento ?? $oDados->ar44_sequencial ?? "")
         );
 
         $oTipoRecolhimento->setNome(
-            (isset($oDados->k172_nome) ? $oDados->k172_nome
-                : (isset($oDados->ar44_descricao) ? $oDados->ar44_descricao : ""))
+            ($oDados->k172_nome ?? $oDados->ar44_descricao ?? "")
         );
 
         $oTipoRecolhimento->setTituloReduzido(
-            (isset($oDados->k172_tituloreduzido) ? $oDados->k172_tituloreduzido
-                : (isset($oDados->ar44_descricao) ? $oDados->ar44_descricao : ""))
+            ($oDados->k172_tituloreduzido ?? $oDados->ar44_descricao ?? "")
         );
 
         $oTipoRecolhimento->setEspecieIngresso(
-            (isset($oDados->k172_especieingresso) ? $oDados->k172_especieingresso : 1)
+            ($oDados->k172_especieingresso ?? 1)
         );
 
-        $oTipoRecolhimento->setTipoPessoa((isset($oDados->k172_tipopessoa) ? $oDados->k172_tipopessoa : 3));
+        $oTipoRecolhimento->setTipoPessoa(($oDados->k172_tipopessoa ?? 3));
 
         $oTipoRecolhimento->setObrigaNumeroReferencia(
             (isset($oDados->k172_obriganumeroreferencia) ? $oDados->k172_obriganumeroreferencia == 't' : false)
@@ -188,7 +182,7 @@ class TipoRecolhimento
             (isset($oDados->k172_outrasdeducoes) ? $oDados->k172_outrasdeducoes == 't' : false)
         );
 
-        $oTipoRecolhimento->setInstrucoes((isset($oDados->k172_instrucoes) ? $oDados->k172_instrucoes : ""));
+        $oTipoRecolhimento->setInstrucoes(($oDados->k172_instrucoes ?? ""));
         $oTipoRecolhimento->setData($oDados);
         return $oTipoRecolhimento;
     }
@@ -285,7 +279,7 @@ class TipoRecolhimento
         $dadosRecibo = $oRecibo->getRecibosDoTipoDeRecolhimento($tipoRecolhimento);
 
         $boVinculado = false;
-        $arVinculado = array();
+        $arVinculado = [];
         if (count($dadosRecibo)) {
             $boVinculado = true;
             $arVinculado[] = 'Recibo';

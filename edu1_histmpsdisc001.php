@@ -38,7 +38,7 @@ $oDaoHistoricoMps = db_utils::getDao("historicomps");
 $oDaoAlunoCurso   = db_utils::getDao("alunocurso");
 $oDaoDisciplina   = db_utils::getDao("disciplina");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 

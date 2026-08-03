@@ -44,8 +44,8 @@ function db_calculaLinhasTexto22($texto){
  
    $linha = 1;
    $caracter = 0;
-   for ($i = 0;$i < strlen($texto); $i++){
-       if ($caracter == 59 or substr($texto,$i,1) == "\n"){
+   for ($i = 0;$i < strlen((string) $texto); $i++){
+       if ($caracter == 59 or substr((string) $texto,$i,1) == "\n"){
          $linha++;
          $caracter = 0;
        }
@@ -61,7 +61,7 @@ $get                    = db_utils::postmemory($_GET);
 $post                   = db_utils::postmemory($_POST);
 $db_opcao               = 22;
 $db_botao               = false;
-$q62_notaavulsa         = isset($post->q62_issnotaavulsa)?$post->q62_issnotaavulsa:$get->q51_sequencial;
+$q62_notaavulsa         = $post->q62_issnotaavulsa ?? $get->q51_sequencial;
 $lGeraNota              = false;
 $emitenota              = true;    
 $rsPar                  = $clparissqn->sql_record($clparissqn->sql_query(null,"*"));
@@ -91,7 +91,7 @@ $clissnotaavulsaservico->q62_obs = $q62_obs;
 			 insert na db_reciboweb
        fc_recibo
 
-  
+
 */
 }
 if(isset($post->incluir)){
@@ -157,7 +157,7 @@ if (isset($post->recibo)){
       //Codigo numpre do Recibo 
 			$rsNumnov   = db_query("select nextval('numpref_k03_numpre_seq') as k03_numnov");
 			$oNumnov    = db_utils::fieldsMemory($rsNumnov,0);
-      $aDataPgto  = explode("-",$oNot->q51_dtemiss);
+      $aDataPgto  = explode("-",(string) $oNot->q51_dtemiss);
       $dataPagto  = date("Y-m-d",mktime(0,0,0,$aDataPgto[1],$aDataPgto[2]+$oPar->q60_notaavulsadiasprazo,$aDataPgto[0]));
       $clarrecad->k00_numpre = $oNum->k03_numpre;
 			$clarrecad->k00_numpar = 1;

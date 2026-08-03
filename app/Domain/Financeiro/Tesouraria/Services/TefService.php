@@ -33,9 +33,7 @@ class TefService
     public function linhasNaoProcessadas()
     {
         $linhas = $this->repository->scopeNaoProcessado()->scopeConsistente()->getLinhaTefOperacaoRealizada();
-        return collect($linhas)->map(function (LinhaTef $linhaTef) {
-            return $linhaTef->toArray();
-        });
+        return collect($linhas)->map(fn(LinhaTef $linhaTef) => $linhaTef->toArray());
     }
 
     /**
@@ -50,7 +48,7 @@ class TefService
 
             $operacao = Operacoesrealizadastef::query()
                 ->where('k198_nsuautorizadora', '=', $linhaTef->getNumeroCv())
-                ->where('k198_codigoaprovacao', '=', str_pad($linhaTef->getNumeroAutorizacao(), 6, "0", STR_PAD_LEFT))
+                ->where('k198_codigoaprovacao', '=', str_pad((string) $linhaTef->getNumeroAutorizacao(), 6, "0", STR_PAD_LEFT))
                 ->first();
 
             $observacao = sprintf(

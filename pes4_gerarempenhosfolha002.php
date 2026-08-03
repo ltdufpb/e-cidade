@@ -66,7 +66,7 @@ $oRotulo->label("o200_descricao");
 $oJson = new Services_JSON();
 $oParam = $oJson->decode(str_replace("\\", "", $_GET["json"]));
 
-$aSiglas = explode(',', $oParam->sSigla);
+$aSiglas = explode(',', (string) $oParam->sSigla);
 
 /**
  * Verificamos se a rotina foi liberada pela folha
@@ -333,7 +333,7 @@ foreach ($aSiglas as $sSigla) {
                             </td>
                             <td>
                                 <?php
-                                db_select("rh72_unidade", array(), true, 1, "onchange='js_getDotacoes();'");
+                                db_select("rh72_unidade", [], true, 1, "onchange='js_getDotacoes();'");
                                 ?>
                             </td>
                         </tr>
@@ -439,7 +439,7 @@ foreach ($aSiglas as $sSigla) {
                             </td>
                             <td>
                                 <?php
-                                db_select("rh72_coddot", array(), true, 1);
+                                db_select("rh72_coddot", [], true, 1);
                                 ?>
                             </td>
                         </tr>

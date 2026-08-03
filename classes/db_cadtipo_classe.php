@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE cadtipo
 class cl_cadtipo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k03_tipo = 0; 
-   var $k03_descr = null; 
-   var $k03_parcano = 'f'; 
-   var $k03_parcelamento = 'f'; 
-   var $k03_permparc = 'f'; 
+   public $k03_tipo = 0; 
+   public $k03_descr = null; 
+   public $k03_parcano = 'f'; 
+   public $k03_parcelamento = 'f'; 
+   public $k03_permparc = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k03_tipo = int4 = Grupo de  Débito 
                  k03_descr = varchar(40) = Descrição do Tipo Débito 
                  k03_parcano = bool = Se parcela débito somente no ano atual ou nao 
@@ -56,10 +56,10 @@ class cl_cadtipo {
                  k03_permparc = bool = Se permite parcelar este tipo de débito 
                  ";
    //funcao construtor da classe 
-   function cl_cadtipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadtipo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -147,7 +147,7 @@ class cl_cadtipo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro dos Tipos Débitos ($this->k03_tipo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro dos Tipos Débitos já Cadastrado";
@@ -171,14 +171,14 @@ class cl_cadtipo {
      $resaco = $this->sql_record($this->sql_query_file($this->k03_tipo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,2482,'$this->k03_tipo','I')");
-       $resac = db_query("insert into db_acount values($acount,410,2482,'','".AddSlashes(pg_result($resaco,0,'k03_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,410,2483,'','".AddSlashes(pg_result($resaco,0,'k03_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,410,5193,'','".AddSlashes(pg_result($resaco,0,'k03_parcano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,410,5194,'','".AddSlashes(pg_result($resaco,0,'k03_parcelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,410,5196,'','".AddSlashes(pg_result($resaco,0,'k03_permparc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,410,2482,'','".AddSlashes(pg_fetch_result($resaco,0,'k03_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,410,2483,'','".AddSlashes(pg_fetch_result($resaco,0,'k03_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,410,5193,'','".AddSlashes(pg_fetch_result($resaco,0,'k03_parcano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,410,5194,'','".AddSlashes(pg_fetch_result($resaco,0,'k03_parcelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,410,5196,'','".AddSlashes(pg_fetch_result($resaco,0,'k03_permparc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -187,10 +187,10 @@ class cl_cadtipo {
       $this->atualizacampos();
      $sql = " update cadtipo set ";
      $virgula = "";
-     if(trim($this->k03_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k03_tipo"])){ 
+     if(trim((string) $this->k03_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k03_tipo"])){ 
        $sql  .= $virgula." k03_tipo = $this->k03_tipo ";
        $virgula = ",";
-       if(trim($this->k03_tipo) == null ){ 
+       if(trim((string) $this->k03_tipo) == null ){ 
          $this->erro_sql = " Campo Grupo de  Débito nao Informado.";
          $this->erro_campo = "k03_tipo";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_cadtipo {
          return false;
        }
      }
-     if(trim($this->k03_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k03_descr"])){ 
+     if(trim((string) $this->k03_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k03_descr"])){ 
        $sql  .= $virgula." k03_descr = '$this->k03_descr' ";
        $virgula = ",";
-       if(trim($this->k03_descr) == null ){ 
+       if(trim((string) $this->k03_descr) == null ){ 
          $this->erro_sql = " Campo Descrição do Tipo Débito nao Informado.";
          $this->erro_campo = "k03_descr";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_cadtipo {
          return false;
        }
      }
-     if(trim($this->k03_parcano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k03_parcano"])){ 
+     if(trim((string) $this->k03_parcano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k03_parcano"])){ 
        $sql  .= $virgula." k03_parcano = '$this->k03_parcano' ";
        $virgula = ",";
-       if(trim($this->k03_parcano) == null ){ 
+       if(trim((string) $this->k03_parcano) == null ){ 
          $this->erro_sql = " Campo Se parcela débito somente no ano atual ou nao nao Informado.";
          $this->erro_campo = "k03_parcano";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_cadtipo {
          return false;
        }
      }
-     if(trim($this->k03_parcelamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k03_parcelamento"])){ 
+     if(trim((string) $this->k03_parcelamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k03_parcelamento"])){ 
        $sql  .= $virgula." k03_parcelamento = '$this->k03_parcelamento' ";
        $virgula = ",";
-       if(trim($this->k03_parcelamento) == null ){ 
+       if(trim((string) $this->k03_parcelamento) == null ){ 
          $this->erro_sql = " Campo Se tipo de débito é parcelamento ou não nao Informado.";
          $this->erro_campo = "k03_parcelamento";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_cadtipo {
          return false;
        }
      }
-     if(trim($this->k03_permparc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k03_permparc"])){ 
+     if(trim((string) $this->k03_permparc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k03_permparc"])){ 
        $sql  .= $virgula." k03_permparc = '$this->k03_permparc' ";
        $virgula = ",";
-       if(trim($this->k03_permparc) == null ){ 
+       if(trim((string) $this->k03_permparc) == null ){ 
          $this->erro_sql = " Campo Se permite parcelar este tipo de débito nao Informado.";
          $this->erro_campo = "k03_permparc";
          $this->erro_banco = "";
@@ -260,19 +260,19 @@ class cl_cadtipo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2482,'$this->k03_tipo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k03_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,410,2482,'".AddSlashes(pg_result($resaco,$conresaco,'k03_tipo'))."','$this->k03_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,410,2482,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k03_tipo'))."','$this->k03_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k03_descr"]))
-           $resac = db_query("insert into db_acount values($acount,410,2483,'".AddSlashes(pg_result($resaco,$conresaco,'k03_descr'))."','$this->k03_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,410,2483,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k03_descr'))."','$this->k03_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k03_parcano"]))
-           $resac = db_query("insert into db_acount values($acount,410,5193,'".AddSlashes(pg_result($resaco,$conresaco,'k03_parcano'))."','$this->k03_parcano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,410,5193,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k03_parcano'))."','$this->k03_parcano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k03_parcelamento"]))
-           $resac = db_query("insert into db_acount values($acount,410,5194,'".AddSlashes(pg_result($resaco,$conresaco,'k03_parcelamento'))."','$this->k03_parcelamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,410,5194,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k03_parcelamento'))."','$this->k03_parcelamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k03_permparc"]))
-           $resac = db_query("insert into db_acount values($acount,410,5196,'".AddSlashes(pg_result($resaco,$conresaco,'k03_permparc'))."','$this->k03_permparc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,410,5196,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k03_permparc'))."','$this->k03_permparc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -317,14 +317,14 @@ class cl_cadtipo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2482,'$k03_tipo','E')");
-         $resac = db_query("insert into db_acount values($acount,410,2482,'','".AddSlashes(pg_result($resaco,$iresaco,'k03_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,410,2483,'','".AddSlashes(pg_result($resaco,$iresaco,'k03_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,410,5193,'','".AddSlashes(pg_result($resaco,$iresaco,'k03_parcano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,410,5194,'','".AddSlashes(pg_result($resaco,$iresaco,'k03_parcelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,410,5196,'','".AddSlashes(pg_result($resaco,$iresaco,'k03_permparc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,410,2482,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k03_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,410,2483,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k03_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,410,5193,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k03_parcano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,410,5194,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k03_parcelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,410,5196,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k03_permparc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cadtipo
@@ -384,7 +384,7 @@ class cl_cadtipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cadtipo";
@@ -398,7 +398,7 @@ class cl_cadtipo {
    function sql_query ( $k03_tipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_cadtipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,7 +431,7 @@ class cl_cadtipo {
    function sql_query_file ( $k03_tipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,7 +452,7 @@ class cl_cadtipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

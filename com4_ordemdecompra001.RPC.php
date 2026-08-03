@@ -44,7 +44,7 @@ $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
 $oRetorno->erro         = false;
 
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 try {
   switch ($oParam->exec) {
 
@@ -56,9 +56,9 @@ try {
       $oDadosOrdem->iCodigoOrdem  = $oOrdemCompra->getCodigoOrdem();
       $oDadosOrdem->dEmissao      = db_formatar($oOrdemCompra->getEmissao()->getDate(),'d');
       $oDadosOrdem->iDepto        = $oOrdemCompra->getDepartamento()->getCodigo();
-      $oDadosOrdem->sDepto        = urlencode($oOrdemCompra->getDepartamento()->getNomeDepartamento());
+      $oDadosOrdem->sDepto        = urlencode((string) $oOrdemCompra->getDepartamento()->getNomeDepartamento());
       $oDadosOrdem->iCgm          = $oOrdemCompra->getFornecedor()->getCodigo();
-      $oDadosOrdem->sCgm          = urlencode($oOrdemCompra->getFornecedor()->getNome());
+      $oDadosOrdem->sCgm          = urlencode((string) $oOrdemCompra->getFornecedor()->getNome());
       $oDadosOrdem->sObservacao   = urlencode($oOrdemCompra->getObservacao());
       $oDadosOrdem->dAnulacao     = '';
       $oDadosOrdem->iTipoCompra   = $oOrdemCompra->getTipoCompra();
@@ -78,7 +78,7 @@ try {
 
       $oOrdemCompra          = new OrdemDeCompra($oParam->iOrdemCompra);
       $aItensOrdem           = $oOrdemCompra->getItens();
-      $oRetorno->aItensOrdem = array();
+      $oRetorno->aItensOrdem = [];
 
       foreach ($aItensOrdem as $oItemOrdemDeCompra) {
 
@@ -96,7 +96,7 @@ try {
         $oDadosItem->iCodigoMaterial       = $oEmpenhoItem->getItemMaterialCompras()->getMaterial();
         $oDadosItem->sDescricaoMaterial    = $oEmpenhoItem->getItemMaterialCompras()->getDescricao();
         $oDadosItem->iSequencia            = $oEmpenhoItem->getSequencialAutorizacaoItem();
-        $oDadosItem->sDescricaoSolicitacao = urlencode($oEmpenhoItem->getDescricao());
+        $oDadosItem->sDescricaoSolicitacao = urlencode((string) $oEmpenhoItem->getDescricao());
         $oDadosItem->iQuantidade           = $oItemOrdemDeCompra->getQuantidade();
         $oDadosItem->nValorUnitario        = db_formatar($oItemOrdemDeCompra->getValorUnitario(), 'f');
         $oDadosItem->nValorTotal           = db_formatar($oItemOrdemDeCompra->getValor(), 'f');
@@ -110,18 +110,18 @@ try {
 
       $oOrdemCompra        = new OrdemDeCompra($oParam->iOrdemCompra);
       $aEntradas           = $oOrdemCompra->getEntradas();
-      $aDadosEntrada       = array();
+      $aDadosEntrada       = [];
 
       foreach ($aEntradas as $iEntradas => $oEntradas) {
 
         $oDados = new stdClass();
         $oDados->iMaterial         = $oEntradas->getItem()->getCodigo();
-        $oDados->sMaterial         = urlencode($oEntradas->getItem()->getNome());
+        $oDados->sMaterial         = urlencode((string) $oEntradas->getItem()->getNome());
         $oDados->iQuantidade       = $oEntradas->getQuantidade();
         $oDados->iQuantidadeEntrada= $oEntradas->getQuantidadeEntrada();
         $oDados->iValor            = db_formatar($oEntradas->getValor(), "f");
         $oDados->sAlmoxarifado     = $oEntradas->getAlmoxarifado()->getNomeDepartamento();
-        $oDados->sTipoMovimentacao = urlencode($oEntradas->getTipoMovimentacao()->getDescricao());
+        $oDados->sTipoMovimentacao = urlencode((string) $oEntradas->getTipoMovimentacao()->getDescricao());
         $oDados->dMovimentacao = $oEntradas->getData()->getDate(DBDate::DATA_PTBR);
 
         $aDadosEntrada[]           = $oDados;

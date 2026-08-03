@@ -31,11 +31,11 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 global $db_config;
 db_selectmax("db_config","select lower(trim(munic)) as d08_carnes , cgc from db_config where codigo = ".db_getsession("DB_instit"));
 
-if(trim($db_config[0]["cgc"]) == "90940172000138"){
+if(trim((string) $db_config[0]["cgc"]) == "90940172000138"){
      $d08_carnes = "daeb";
 }else{
      $d08_carnes = $db_config[0]["d08_carnes"];
@@ -121,7 +121,7 @@ function js_detectaarquivo(arquivo,pdf){
           $sqlanomes = "select max(r11_anousu||lpad(r11_mesusu,2,0)) from cfpess";
           $resultanomes = db_query($sqlanomes);
           db_fieldsmemory($resultanomes,0);
-          $ano_base = substr($max,0,4)-1;
+          $ano_base = substr((string) $max,0,4)-1;
             db_input('ano_base',4,'',true,'text',2,'')
           ?>
         </td>
@@ -143,7 +143,7 @@ function js_detectaarquivo(arquivo,pdf){
         </td>
         <td align="left">
           <?php 
-           $xy = array("O"=>"Original","R"=>"Retificadora");
+           $xy = ["O"=>"Original","R"=>"Retificadora"];
            db_select('oriret',$xy,true,4,"");
 	        ?>
         </td>
@@ -157,7 +157,7 @@ function js_detectaarquivo(arquivo,pdf){
 	</td>  
         <td align="left">
           <?php 
-          $arr_ = array('p'=>'Pref','f'=>'Funpas','t'=>'Todos');
+          $arr_ = ['p'=>'Pref','f'=>'Funpas','t'=>'Todos'];
           db_select("pref_fun", $arr_, true, 1);
           ?>                             
         </td>                            

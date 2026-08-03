@@ -33,8 +33,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $resultedu = eduparametros(db_getsession("DB_coddepto"));
 $escola    = db_getsession("DB_coddepto");
@@ -131,7 +131,7 @@ if (!isset($incluir)) {
             $sSqlOrigem      = $oDaoRegencia->sql_query("", $sCamposOrigem, $sOrderByOrigem, $sWhereOrigem);
             $rsOrigem        = $oDaoRegencia->sql_record($sSqlOrigem);
 
-            $procorigem      = pg_result($rsOrigem, 0, 'procorigem');
+            $procorigem      = pg_fetch_result($rsOrigem, 0, 'procorigem');
             $linhas          = $oDaoRegencia->numrows;
 
             $sCamposDestino  = " ed59_i_codigo as regdestino,ed232_i_codigo as coddestino,ed232_c_descr as descrdestino, ";
@@ -142,19 +142,19 @@ if (!isset($incluir)) {
             $sSqlDestino     = $oDaoRegencia->sql_query("", $sCamposDestino, $sOrderByDestino, $sWhereDestino);
             $rsDestino       = $oDaoRegencia->sql_record($sSqlDestino);
 
-            $procdestino     = pg_result($rsDestino, 0, 'procdestino');
+            $procdestino     = pg_fetch_result($rsDestino, 0, 'procdestino');
             $linhas1         = $oDaoRegencia->numrows;
           ?>
           <tr>
             <td colspan="2" width="48%" valign="top" bgcolor="#CCCCCC">
-              <b>TURMA DE ORIGEM: ( <?=pg_result($rsOrigem, 0, 'ed57_c_descr')?>&nbsp;&nbsp;&nbsp;
-                 <?=pg_result($rsOrigem, 0, 'ed11_c_descr')?> - Escola: <?=pg_result($rsOrigem, 0, 'ed57_i_escola')?> )
+              <b>TURMA DE ORIGEM: ( <?=pg_fetch_result($rsOrigem, 0, 'ed57_c_descr')?>&nbsp;&nbsp;&nbsp;
+                 <?=pg_fetch_result($rsOrigem, 0, 'ed11_c_descr')?> - Escola: <?=pg_fetch_result($rsOrigem, 0, 'ed57_i_escola')?> )
               </b>
             </td>
             <td></td>
             <td colspan="2" width="48%" valign="top" bgcolor="#CCCCCC">
-              <b>TURMA ATUAL: ( <?=pg_result($result1,0,'ed57_c_descrdest')?>&nbsp;&nbsp;&nbsp;
-                 <?=pg_result($rsDestino, 0, 'ed11_c_descrdest')?> - Escola: <?=pg_result($rsDestino, 0, 'ed57_i_escoladest')?> )
+              <b>TURMA ATUAL: ( <?=pg_fetch_result($result1,0,'ed57_c_descrdest')?>&nbsp;&nbsp;&nbsp;
+                 <?=pg_fetch_result($rsDestino, 0, 'ed11_c_descrdest')?> - Escola: <?=pg_fetch_result($rsDestino, 0, 'ed57_i_escoladest')?> )
               </b>
             </td>
           </tr>
@@ -189,7 +189,7 @@ if (!isset($incluir)) {
                     for ($iCont = 0; $iCont < $oDaoDiarioAvaliacao->numrows; $iCont++) {
 
                       db_fieldsmemory($rsDiario, $iCont);
-                      if (trim($ed37_c_tipo) == "NOTA") {
+                      if (trim((string) $ed37_c_tipo) == "NOTA") {
 
                         if ($resultedu == 'S') {
                           $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 2, ",", ".") : "";
@@ -197,7 +197,7 @@ if (!isset($incluir)) {
                           $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 0) : "";
                         }
 
-                      } elseif (trim($ed37_c_tipo) == "NIVEL") {
+                      } elseif (trim((string) $ed37_c_tipo) == "NIVEL") {
                         $aproveitamento = $ed72_c_valorconceito;
                       } else {
                         $aproveitamento = "";
@@ -312,7 +312,7 @@ if (!isset($incluir)) {
 
                       db_fieldsmemory($rsDiario, $iCont);
 
-                      if (trim($ed37_c_tipo) == "NOTA") {
+                      if (trim((string) $ed37_c_tipo) == "NOTA") {
 
                         if ($resultedu == 'S') {
                           $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota,2,",",".") : "";
@@ -320,7 +320,7 @@ if (!isset($incluir)) {
                           $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 0) : "";
                         }
 
-                      } elseif (trim($ed37_c_tipo) == "NIVEL") {
+                      } elseif (trim((string) $ed37_c_tipo) == "NIVEL") {
                         $aproveitamento = $ed72_c_valorconceito;
                       } else {
                         $aproveitamento = "";
@@ -920,7 +920,7 @@ if (isset($incluir)) {
   $result  = $oDaoTurma->sql_record($sSql);
 
   db_fieldsmemory($result,0);
-  $periodos = explode("X",$perequiv);
+  $periodos = explode("X",(string) $perequiv);
   $msg_conversao = "";
   $sep_conversao = "";
 
@@ -943,8 +943,8 @@ if (isset($incluir)) {
     $result_per1 = $oDaoProcAvaliacao->sql_record($sSql);
     db_fieldsmemory($result_per1,0);
 
-    if (trim($tipoorigem) != trim($tipodestino)
-        || (trim($tipoorigem) == trim($tipodestino)
+    if (trim((string) $tipoorigem) != trim((string) $tipodestino)
+        || (trim((string) $tipoorigem) == trim((string) $tipodestino)
         && $mvorigem != $mvdestino) ) {
 
       $msg_conversao .= $sep_conversao." ".$perdestdescricao;
@@ -958,7 +958,7 @@ if (isset($incluir)) {
     $result_fimper = $oDaoPeriodoCalendario->sql_record($sSql);
     db_fieldsmemory($result_fimper,0);
 
-    $regencias = explode("X",$regequiv);
+    $regencias = explode("X",(string) $regequiv);
 
     for ($r = 0; $r < count($regencias); $r++) {
 
@@ -1064,8 +1064,8 @@ if (isset($incluir)) {
 
       }
 
-      if (trim($tipoorigem) != trim($tipodestino)
-          || (trim($tipoorigem) == trim($tipodestino)
+      if (trim((string) $tipoorigem) != trim((string) $tipodestino)
+          || (trim((string) $tipoorigem) == trim((string) $tipodestino)
           && $mvorigem != $mvdestino) ) {
         $ed72_c_convertido = "S";
       } else {

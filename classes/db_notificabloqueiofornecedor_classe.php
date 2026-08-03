@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE notificabloqueiofornecedor
 class cl_notificabloqueiofornecedor { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc86_sequencial = 0; 
-   var $pc86_numcgm = 0; 
-   var $pc86_id_usuario = 0; 
-   var $pc86_data_dia = null; 
-   var $pc86_data_mes = null; 
-   var $pc86_data_ano = null; 
-   var $pc86_data = null; 
-   var $pc86_hora = null; 
-   var $pc86_origem = 0; 
-   var $pc86_observacao = null; 
-   var $pc86_departamento = 0; 
+   public $pc86_sequencial = 0; 
+   public $pc86_numcgm = 0; 
+   public $pc86_id_usuario = 0; 
+   public $pc86_data_dia = null; 
+   public $pc86_data_mes = null; 
+   public $pc86_data_ano = null; 
+   public $pc86_data = null; 
+   public $pc86_hora = null; 
+   public $pc86_origem = 0; 
+   public $pc86_observacao = null; 
+   public $pc86_departamento = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc86_sequencial = int4 = Código Sequencial 
                  pc86_numcgm = int4 = Código do cgm do fornecedor 
                  pc86_id_usuario = int4 = Código do Usuário 
@@ -65,10 +65,10 @@ class cl_notificabloqueiofornecedor {
                  pc86_departamento = int4 = Departameto 
                  ";
    //funcao construtor da classe 
-   function cl_notificabloqueiofornecedor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notificabloqueiofornecedor"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -168,10 +168,10 @@ class cl_notificabloqueiofornecedor {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc86_sequencial = pg_result($result,0,0); 
+       $this->pc86_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from notificabloqueiofornecedor_pc86_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc86_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc86_sequencial)){
          $this->erro_sql = " Campo pc86_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -213,7 +213,7 @@ class cl_notificabloqueiofornecedor {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "notificabloqueiofornecedor ($this->pc86_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "notificabloqueiofornecedor já Cadastrado";
@@ -237,17 +237,17 @@ class cl_notificabloqueiofornecedor {
      $resaco = $this->sql_record($this->sql_query_file($this->pc86_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17639,'$this->pc86_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3115,17639,'','".AddSlashes(pg_result($resaco,0,'pc86_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3115,17640,'','".AddSlashes(pg_result($resaco,0,'pc86_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3115,17641,'','".AddSlashes(pg_result($resaco,0,'pc86_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3115,17642,'','".AddSlashes(pg_result($resaco,0,'pc86_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3115,17643,'','".AddSlashes(pg_result($resaco,0,'pc86_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3115,17644,'','".AddSlashes(pg_result($resaco,0,'pc86_origem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3115,17645,'','".AddSlashes(pg_result($resaco,0,'pc86_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3115,17646,'','".AddSlashes(pg_result($resaco,0,'pc86_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3115,17639,'','".AddSlashes(pg_fetch_result($resaco,0,'pc86_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3115,17640,'','".AddSlashes(pg_fetch_result($resaco,0,'pc86_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3115,17641,'','".AddSlashes(pg_fetch_result($resaco,0,'pc86_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3115,17642,'','".AddSlashes(pg_fetch_result($resaco,0,'pc86_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3115,17643,'','".AddSlashes(pg_fetch_result($resaco,0,'pc86_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3115,17644,'','".AddSlashes(pg_fetch_result($resaco,0,'pc86_origem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3115,17645,'','".AddSlashes(pg_fetch_result($resaco,0,'pc86_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3115,17646,'','".AddSlashes(pg_fetch_result($resaco,0,'pc86_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -256,10 +256,10 @@ class cl_notificabloqueiofornecedor {
       $this->atualizacampos();
      $sql = " update notificabloqueiofornecedor set ";
      $virgula = "";
-     if(trim($this->pc86_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_sequencial"])){ 
+     if(trim((string) $this->pc86_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_sequencial"])){ 
        $sql  .= $virgula." pc86_sequencial = $this->pc86_sequencial ";
        $virgula = ",";
-       if(trim($this->pc86_sequencial) == null ){ 
+       if(trim((string) $this->pc86_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "pc86_sequencial";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_notificabloqueiofornecedor {
          return false;
        }
      }
-     if(trim($this->pc86_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_numcgm"])){ 
+     if(trim((string) $this->pc86_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_numcgm"])){ 
        $sql  .= $virgula." pc86_numcgm = $this->pc86_numcgm ";
        $virgula = ",";
-       if(trim($this->pc86_numcgm) == null ){ 
+       if(trim((string) $this->pc86_numcgm) == null ){ 
          $this->erro_sql = " Campo Código do cgm do fornecedor nao Informado.";
          $this->erro_campo = "pc86_numcgm";
          $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_notificabloqueiofornecedor {
          return false;
        }
      }
-     if(trim($this->pc86_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_id_usuario"])){ 
+     if(trim((string) $this->pc86_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_id_usuario"])){ 
        $sql  .= $virgula." pc86_id_usuario = $this->pc86_id_usuario ";
        $virgula = ",";
-       if(trim($this->pc86_id_usuario) == null ){ 
+       if(trim((string) $this->pc86_id_usuario) == null ){ 
          $this->erro_sql = " Campo Código do Usuário nao Informado.";
          $this->erro_campo = "pc86_id_usuario";
          $this->erro_banco = "";
@@ -295,10 +295,10 @@ class cl_notificabloqueiofornecedor {
          return false;
        }
      }
-     if(trim($this->pc86_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc86_data_dia"] !="") ){ 
+     if(trim((string) $this->pc86_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc86_data_dia"] !="") ){ 
        $sql  .= $virgula." pc86_data = '$this->pc86_data' ";
        $virgula = ",";
-       if(trim($this->pc86_data) == null ){ 
+       if(trim((string) $this->pc86_data) == null ){ 
          $this->erro_sql = " Campo Data da movimentação nao Informado.";
          $this->erro_campo = "pc86_data_dia";
          $this->erro_banco = "";
@@ -311,7 +311,7 @@ class cl_notificabloqueiofornecedor {
        if(isset($GLOBALS["HTTP_POST_VARS"]["pc86_data_dia"])){ 
          $sql  .= $virgula." pc86_data = null ";
          $virgula = ",";
-         if(trim($this->pc86_data) == null ){ 
+         if(trim((string) $this->pc86_data) == null ){ 
            $this->erro_sql = " Campo Data da movimentação nao Informado.";
            $this->erro_campo = "pc86_data_dia";
            $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_notificabloqueiofornecedor {
          }
        }
      }
-     if(trim($this->pc86_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_hora"])){ 
+     if(trim((string) $this->pc86_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_hora"])){ 
        $sql  .= $virgula." pc86_hora = '$this->pc86_hora' ";
        $virgula = ",";
-       if(trim($this->pc86_hora) == null ){ 
+       if(trim((string) $this->pc86_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "pc86_hora";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_notificabloqueiofornecedor {
          return false;
        }
      }
-     if(trim($this->pc86_origem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_origem"])){ 
+     if(trim((string) $this->pc86_origem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_origem"])){ 
        $sql  .= $virgula." pc86_origem = $this->pc86_origem ";
        $virgula = ",";
-       if(trim($this->pc86_origem) == null ){ 
+       if(trim((string) $this->pc86_origem) == null ){ 
          $this->erro_sql = " Campo Origem da notificação nao Informado.";
          $this->erro_campo = "pc86_origem";
          $this->erro_banco = "";
@@ -348,14 +348,14 @@ class cl_notificabloqueiofornecedor {
          return false;
        }
      }
-     if(trim($this->pc86_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_observacao"])){ 
+     if(trim((string) $this->pc86_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_observacao"])){ 
        $sql  .= $virgula." pc86_observacao = '$this->pc86_observacao' ";
        $virgula = ",";
      }
-     if(trim($this->pc86_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_departamento"])){ 
+     if(trim((string) $this->pc86_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc86_departamento"])){ 
        $sql  .= $virgula." pc86_departamento = $this->pc86_departamento ";
        $virgula = ",";
-       if(trim($this->pc86_departamento) == null ){ 
+       if(trim((string) $this->pc86_departamento) == null ){ 
          $this->erro_sql = " Campo Departameto nao Informado.";
          $this->erro_campo = "pc86_departamento";
          $this->erro_banco = "";
@@ -373,25 +373,25 @@ class cl_notificabloqueiofornecedor {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17639,'$this->pc86_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc86_sequencial"]) || $this->pc86_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3115,17639,'".AddSlashes(pg_result($resaco,$conresaco,'pc86_sequencial'))."','$this->pc86_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3115,17639,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc86_sequencial'))."','$this->pc86_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc86_numcgm"]) || $this->pc86_numcgm != "")
-           $resac = db_query("insert into db_acount values($acount,3115,17640,'".AddSlashes(pg_result($resaco,$conresaco,'pc86_numcgm'))."','$this->pc86_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3115,17640,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc86_numcgm'))."','$this->pc86_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc86_id_usuario"]) || $this->pc86_id_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3115,17641,'".AddSlashes(pg_result($resaco,$conresaco,'pc86_id_usuario'))."','$this->pc86_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3115,17641,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc86_id_usuario'))."','$this->pc86_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc86_data"]) || $this->pc86_data != "")
-           $resac = db_query("insert into db_acount values($acount,3115,17642,'".AddSlashes(pg_result($resaco,$conresaco,'pc86_data'))."','$this->pc86_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3115,17642,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc86_data'))."','$this->pc86_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc86_hora"]) || $this->pc86_hora != "")
-           $resac = db_query("insert into db_acount values($acount,3115,17643,'".AddSlashes(pg_result($resaco,$conresaco,'pc86_hora'))."','$this->pc86_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3115,17643,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc86_hora'))."','$this->pc86_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc86_origem"]) || $this->pc86_origem != "")
-           $resac = db_query("insert into db_acount values($acount,3115,17644,'".AddSlashes(pg_result($resaco,$conresaco,'pc86_origem'))."','$this->pc86_origem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3115,17644,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc86_origem'))."','$this->pc86_origem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc86_observacao"]) || $this->pc86_observacao != "")
-           $resac = db_query("insert into db_acount values($acount,3115,17645,'".AddSlashes(pg_result($resaco,$conresaco,'pc86_observacao'))."','$this->pc86_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3115,17645,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc86_observacao'))."','$this->pc86_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc86_departamento"]) || $this->pc86_departamento != "")
-           $resac = db_query("insert into db_acount values($acount,3115,17646,'".AddSlashes(pg_result($resaco,$conresaco,'pc86_departamento'))."','$this->pc86_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3115,17646,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc86_departamento'))."','$this->pc86_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -436,17 +436,17 @@ class cl_notificabloqueiofornecedor {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17639,'$pc86_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3115,17639,'','".AddSlashes(pg_result($resaco,$iresaco,'pc86_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3115,17640,'','".AddSlashes(pg_result($resaco,$iresaco,'pc86_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3115,17641,'','".AddSlashes(pg_result($resaco,$iresaco,'pc86_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3115,17642,'','".AddSlashes(pg_result($resaco,$iresaco,'pc86_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3115,17643,'','".AddSlashes(pg_result($resaco,$iresaco,'pc86_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3115,17644,'','".AddSlashes(pg_result($resaco,$iresaco,'pc86_origem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3115,17645,'','".AddSlashes(pg_result($resaco,$iresaco,'pc86_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3115,17646,'','".AddSlashes(pg_result($resaco,$iresaco,'pc86_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3115,17639,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc86_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3115,17640,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc86_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3115,17641,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc86_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3115,17642,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc86_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3115,17643,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc86_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3115,17644,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc86_origem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3115,17645,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc86_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3115,17646,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc86_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from notificabloqueiofornecedor
@@ -506,7 +506,7 @@ class cl_notificabloqueiofornecedor {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:notificabloqueiofornecedor";
@@ -521,7 +521,7 @@ class cl_notificabloqueiofornecedor {
    function sql_query ( $pc86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -546,7 +546,7 @@ class cl_notificabloqueiofornecedor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -559,7 +559,7 @@ class cl_notificabloqueiofornecedor {
    function sql_query_file ( $pc86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -580,7 +580,7 @@ class cl_notificabloqueiofornecedor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -593,7 +593,7 @@ class cl_notificabloqueiofornecedor {
    function sql_debitos_notificados( $pc86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -622,7 +622,7 @@ class cl_notificabloqueiofornecedor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

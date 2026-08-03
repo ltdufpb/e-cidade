@@ -42,14 +42,14 @@ class CalculoConsumoTest extends TestCase
         ];
 
         $aEstruturas = $this->getEstruturasTarifarias($aFaixas);
-        return array(
-            array($aEstruturas[0], 5, 3.75),
-            array($aEstruturas[1], 17, 2.40),
-            array($aEstruturas[2], 29, 7.20),
-            array($aEstruturas[3], 40, 11.00),
-            array($aEstruturas[4], 49, 11.20),
-            array($aEstruturas[5], 65, 30.00)
-        );
+        return [
+            [$aEstruturas[0], 5, 3.75],
+            [$aEstruturas[1], 17, 2.40],
+            [$aEstruturas[2], 29, 7.20],
+            [$aEstruturas[3], 40, 11.00],
+            [$aEstruturas[4], 49, 11.20],
+            [$aEstruturas[5], 65, 30.00]
+        ];
     }
 
     /**
@@ -61,7 +61,7 @@ class CalculoConsumoTest extends TestCase
      */
     private function getEstruturasTarifarias($aFaixas)
     {
-        $aEstruturas = array();
+        $aEstruturas = [];
 
         foreach ($aFaixas as $aFaixa) {
             $oEstrutura = new AguaEstruturaTarifaria;

@@ -91,7 +91,7 @@ $clrotulo->label("c53_descr");
   </tr>
   <tr>
     <td nowrap title="<?=@$To48_superavit?>"><?=@$Lo48_superavit?></td>
-    <td><?php   $x = array("f"=>"NAO","t"=>"SIM");
+    <td><?php   $x = ["f"=>"NAO","t"=>"SIM"];
             db_select('o48_superavit',$x,true,$db_opcao,"");
         ?>
     </td>
@@ -136,7 +136,7 @@ function js_preenchepesquisa(chave){
   db_iframe_orcsuplemtipo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

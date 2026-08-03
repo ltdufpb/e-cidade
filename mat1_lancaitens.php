@@ -35,7 +35,7 @@ include(modification("classes/db_matordemitement_classe.php"));
 
 $clmatordemitement = new cl_matordemitement;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_GET_VARS,2);
 
 if (isset($incluir)&&$incluir!=""){

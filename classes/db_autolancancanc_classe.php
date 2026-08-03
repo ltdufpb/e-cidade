@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE autolancancanc
 class cl_autolancancanc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y89_codtermo = 0; 
-   var $y89_datacanc_dia = null; 
-   var $y89_datacanc_mes = null; 
-   var $y89_datacanc_ano = null; 
-   var $y89_datacanc = null; 
-   var $y89_motivo = null; 
+   public $y89_codtermo = 0; 
+   public $y89_datacanc_dia = null; 
+   public $y89_datacanc_mes = null; 
+   public $y89_datacanc_ano = null; 
+   public $y89_datacanc = null; 
+   public $y89_motivo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y89_codtermo = int4 = Código Termo 
                  y89_datacanc = date = Data do cancelamento 
                  y89_motivo = text = Motivo cancelamento 
                  ";
    //funcao construtor da classe 
-   function cl_autolancancanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autolancancanc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -128,7 +128,7 @@ class cl_autolancancanc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cancelamento de auto de lançamento () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cancelamento de auto de lançamento já Cadastrado";
@@ -155,10 +155,10 @@ class cl_autolancancanc {
       $this->atualizacampos();
      $sql = " update autolancancanc set ";
      $virgula = "";
-     if(trim($this->y89_codtermo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y89_codtermo"])){ 
+     if(trim((string) $this->y89_codtermo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y89_codtermo"])){ 
        $sql  .= $virgula." y89_codtermo = $this->y89_codtermo ";
        $virgula = ",";
-       if(trim($this->y89_codtermo) == null ){ 
+       if(trim((string) $this->y89_codtermo) == null ){ 
          $this->erro_sql = " Campo Código Termo nao Informado.";
          $this->erro_campo = "y89_codtermo";
          $this->erro_banco = "";
@@ -168,10 +168,10 @@ class cl_autolancancanc {
          return false;
        }
      }
-     if(trim($this->y89_datacanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y89_datacanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y89_datacanc_dia"] !="") ){ 
+     if(trim((string) $this->y89_datacanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y89_datacanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y89_datacanc_dia"] !="") ){ 
        $sql  .= $virgula." y89_datacanc = '$this->y89_datacanc' ";
        $virgula = ",";
-       if(trim($this->y89_datacanc) == null ){ 
+       if(trim((string) $this->y89_datacanc) == null ){ 
          $this->erro_sql = " Campo Data do cancelamento nao Informado.";
          $this->erro_campo = "y89_datacanc_dia";
          $this->erro_banco = "";
@@ -184,7 +184,7 @@ class cl_autolancancanc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["y89_datacanc_dia"])){ 
          $sql  .= $virgula." y89_datacanc = null ";
          $virgula = ",";
-         if(trim($this->y89_datacanc) == null ){ 
+         if(trim((string) $this->y89_datacanc) == null ){ 
            $this->erro_sql = " Campo Data do cancelamento nao Informado.";
            $this->erro_campo = "y89_datacanc_dia";
            $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_autolancancanc {
          }
        }
      }
-     if(trim($this->y89_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y89_motivo"])){ 
+     if(trim((string) $this->y89_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y89_motivo"])){ 
        $sql  .= $virgula." y89_motivo = '$this->y89_motivo' ";
        $virgula = ",";
-       if(trim($this->y89_motivo) == null ){ 
+       if(trim((string) $this->y89_motivo) == null ){ 
          $this->erro_sql = " Campo Motivo cancelamento nao Informado.";
          $this->erro_campo = "y89_motivo";
          $this->erro_banco = "";
@@ -289,7 +289,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:autolancancanc";

@@ -57,7 +57,7 @@ try {
                  if ($clpredio->numrows > 0) {
  
                     $iTotalPredios = $clpredio->numrows;
-                    $aPredios = array();
+                    $aPredios = [];
  
                     for  ($i = 0; $i < $iTotalPredios; $i++)	{
              
@@ -92,7 +92,7 @@ try {
              	$sProprietario = "";
              }
              $oDadosRetorno = new stdClass();
-             $oDadosRetorno->sProprietario = urlencode($sProprietario);
+             $oDadosRetorno->sProprietario = urlencode((string) $sProprietario);
              $oDadosRetorno->sCampo = $oParametro->sCampo;
              $oRetorno->oDados = $oDadosRetorno;
              break;

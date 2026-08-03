@@ -35,8 +35,8 @@
  */
 class ProcedimentoSaudeRepository {
 
-  private $aProcedimentoSaude      = array();
-  private $aProcedimentoEstrutural = array();
+  private $aProcedimentoSaude      = [];
+  private $aProcedimentoEstrutural = [];
 
   private static $oInstance;
 
@@ -128,6 +128,6 @@ class ProcedimentoSaudeRepository {
   public static function removeAll() {
 
     unset(self::getInstance()->aProcedimentoSaude);
-    self::getInstance()->aProcedimentoSaude = array();
+    self::getInstance()->aProcedimentoSaude = [];
   }
 }

@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clportaria              = new cl_portaria;
@@ -115,7 +115,7 @@ try {
 
       if(is_array($aListaInformacoesExternas)){
 
-        $aTiposAssentamentoConfigurados = array();
+        $aTiposAssentamentoConfigurados = [];
         foreach ($aListaInformacoesExternas as $oInformacoesExternas) {
           $aTiposAssentamentoConfigurados[] = $oInformacoesExternas->getTipoAssentamento()->getCodigo();
         }
@@ -193,7 +193,7 @@ try {
       }
     }
 
-    if ($result && pg_numrows($result) > 0) {
+    if ($result && pg_num_rows($result) > 0) {
     
       $res_portariaassenta = $clportariaassenta->sql_record($clportariaassenta->sql_query_file(null,"h33_assenta",null,"h33_portaria = {$h31_sequencial}"));
 

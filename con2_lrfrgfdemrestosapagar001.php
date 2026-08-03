@@ -59,23 +59,23 @@ $clrotulo    = new rotulocampo;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <?php 
-	    $clcriaabas->identifica = array("relatorio" => "Relatório",
+	    $clcriaabas->identifica = ["relatorio" => "Relatório",
 	                                    "notas"     => "Fonte/Notas Explicativas",
 	                                    "parametro" => "Parâmetros"
-	                                   );
-	    $clcriaabas->title      = array("relatorio" => "Relatório",
+	                                   ];
+	    $clcriaabas->title      = ["relatorio" => "Relatório",
 	                                     "notas"    => "Fonte/Notas Explicativas",
-	                                     "parametro"=> "Parâmetros");
+	                                     "parametro"=> "Parâmetros"];
 
-	    $clcriaabas->src        = array("relatorio" => "con2_lrfrgfdemrestosapagar002.php?codrel=109",
+	    $clcriaabas->src        = ["relatorio" => "con2_lrfrgfdemrestosapagar002.php?codrel=109",
 	                                    "notas"     => "con2_conrelnotas.php?c83_codrel=109",
 	                                    "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=109"
-	                             );
+	                             ];
 
-	    $clcriaabas->sizecampo  = array("relatorio" => "23",
+	    $clcriaabas->sizecampo  = ["relatorio" => "23",
 	                                    "notas"     => "23",
 	                                    "parametro" => "23"
-	                              );
+	                              ];
 	    $clcriaabas->cria_abas();
     ?>
     </center>

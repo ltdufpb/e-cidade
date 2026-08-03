@@ -31,8 +31,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $escola = db_getsession("DB_coddepto");
 if (!isset($fim)) {
 	
@@ -51,9 +51,9 @@ if (!isset($fim)) {
   $fim_mes    = substr($fim,5,2);
   $fim_ano    = substr($fim,0,4);
   $fim        = $fim_dia."/".$fim_mes."/".$fim_ano;
-  $inicio_dia = substr($inicio,8,2);
-  $inicio_mes = substr($inicio,5,2);
-  $inicio_ano = substr($inicio,0,4);
+  $inicio_dia = substr((string) $inicio,8,2);
+  $inicio_mes = substr((string) $inicio,5,2);
+  $inicio_ano = substr((string) $inicio,0,4);
   $inicio     = $inicio_dia."/".$inicio_mes."/".$inicio_ano;
   
 }

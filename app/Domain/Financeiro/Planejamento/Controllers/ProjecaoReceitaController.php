@@ -42,14 +42,8 @@ use Exception;
  */
 class ProjecaoReceitaController extends Controller
 {
-    /**
-     * @var ProjecaoReceitaService
-     */
-    private $service;
-
-    public function __construct(ProjecaoReceitaService $service)
+    public function __construct(private readonly ProjecaoReceitaService $service)
     {
-        $this->service = $service;
     }
 
     /**

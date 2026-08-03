@@ -136,7 +136,7 @@ class RegraLancamentoControleLiquidacao implements IRegraLancamentoContabil
      */
     private function getReduzidoPlanoContaPCASP(ContaOrcamento $oContaOrcamento)
     {
-        if (in_array($this->iCodigoDocumento, array(33, 34))) {
+        if (in_array($this->iCodigoDocumento, [33, 34])) {
 
 
             $sEstrutural = $oContaOrcamento->getEstrutural();

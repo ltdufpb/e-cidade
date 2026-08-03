@@ -32,7 +32,7 @@ require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 require_once modification("dbforms/db_classesgenericas.php");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
   <head>
@@ -49,17 +49,17 @@ db_postmemory($HTTP_POST_VARS);
       $clcriaabas->scrolling = "yes";
 
       if (db_getsession("DB_anousu") <= 2007){
-        $clcriaabas->identifica = array("g1"=>"Principal","g2"=>"Credor","filtro"=>"Filtro");
-        $clcriaabas->title      = array("g1"=>"Principal","g2"=>"Selecionar credores","filtro"=>"Filtro");
-        $clcriaabas->src        = array("g1"=>"emp2_relemprestoexecucao011.php","g2"=>"emp2_relemprestocredor001.php","filtro"=>"func_selorcdotacao_aba.php?desdobramento=true");
-        $clcriaabas->funcao_js  = array("g1"=>"","g2"=>"","filtro"=>"js_atualizar_instit();");
-        $clcriaabas->sizecampo  = array("g1"=>"20","g2"=>"20","filtro"=>"20");
+        $clcriaabas->identifica = ["g1"=>"Principal","g2"=>"Credor","filtro"=>"Filtro"];
+        $clcriaabas->title      = ["g1"=>"Principal","g2"=>"Selecionar credores","filtro"=>"Filtro"];
+        $clcriaabas->src        = ["g1"=>"emp2_relemprestoexecucao011.php","g2"=>"emp2_relemprestocredor001.php","filtro"=>"func_selorcdotacao_aba.php?desdobramento=true"];
+        $clcriaabas->funcao_js  = ["g1"=>"","g2"=>"","filtro"=>"js_atualizar_instit();"];
+        $clcriaabas->sizecampo  = ["g1"=>"20","g2"=>"20","filtro"=>"20"];
       } else {
-        $clcriaabas->identifica = array("g1"=>"Principal","g2"=>"Credor","filtro"=>"Filtro");
-        $clcriaabas->title      = array("g1"=>"Principal","g2"=>"Selecionar credores","filtro"=>"Filtro");
-        $clcriaabas->src        = array("g1"=>"emp2_relemprestoexecucao011.php","g2"=>"emp2_relempcredor001.php","filtro"=>"func_selorcdotacao_aba.php?desdobramento=true");
-        $clcriaabas->funcao_js  = array("g1"=>"","g2"=>"","filtro"=>"js_atualizar_instit();");
-        $clcriaabas->sizecampo  = array("g1"=>"20","g2"=>"20","filtro"=>"20");
+        $clcriaabas->identifica = ["g1"=>"Principal","g2"=>"Credor","filtro"=>"Filtro"];
+        $clcriaabas->title      = ["g1"=>"Principal","g2"=>"Selecionar credores","filtro"=>"Filtro"];
+        $clcriaabas->src        = ["g1"=>"emp2_relemprestoexecucao011.php","g2"=>"emp2_relempcredor001.php","filtro"=>"func_selorcdotacao_aba.php?desdobramento=true"];
+        $clcriaabas->funcao_js  = ["g1"=>"","g2"=>"","filtro"=>"js_atualizar_instit();"];
+        $clcriaabas->sizecampo  = ["g1"=>"20","g2"=>"20","filtro"=>"20"];
       }
 
       $clcriaabas->cria_abas();

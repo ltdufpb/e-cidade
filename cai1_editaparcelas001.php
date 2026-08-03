@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 $valor_disabled = '';
@@ -55,18 +55,18 @@ if($k40_permdataparc == 'f'){
 }
 
 if(isset($incluir)){
-  $array = array();
+  $array = [];
   for($i=0;$i < $parcelas;$i++){
     $parcela = $i + 1;
     $k189_data = 'k189_data'.$parcela;
     $k189_valor = 'k189_valor'.$parcela;
 
-    if (is_null($$k189_valor)) {
+    if (is_null(${$k189_valor})) {
         $k189_valor = 'k189_valorparcela'.$parcela;
     }
 
-    $array[$i]['data']  = $$k189_data;
-    $array[$i]['valor'] = $$k189_valor;
+    $array[$i]['data']  = ${$k189_data};
+    $array[$i]['valor'] = ${$k189_valor};
     $array[$i]['numpar'] = $parcela;
   }
   db_putsession('DB_parcelaseditadas', $array);
@@ -106,9 +106,9 @@ if(isset($incluir)){
 
                   db_fieldsmemory($resultvenc,0);
 
-                  $k189_data_dia = substr($venc,8,2);
-                  $k189_data_mes = substr($venc,5,2);
-                  $k189_data_ano = substr($venc,0,4);
+                  $k189_data_dia = substr((string) $venc,8,2);
+                  $k189_data_mes = substr((string) $venc,5,2);
+                  $k189_data_ano = substr((string) $venc,0,4);
 
                   $k189_valor = 'k189_valor'.$parcela;
 

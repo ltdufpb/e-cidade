@@ -7,7 +7,7 @@
 
 LogCalculoFolha::write('Deletando R919, R914 ou R915 para servidores que possuem moléstia e são Inativos ou Pensionistas $opcao_geral:' . $opcao_geral);
 
-$aFolhasNoCalculo = array(1, 3, 4, 5, 8); // Folhas
+$aFolhasNoCalculo = [1, 3, 4, 5, 8]; // Folhas
 
 switch ($opcao_geral) {
     case 1:

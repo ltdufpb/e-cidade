@@ -34,7 +34,7 @@ $clrotulo->label('rh27_descr');
 $clrotulo->label('rh27_elemen');
 $clrotulo->label('rh27_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sqlpref = "select * from db_config where codigo = ".db_getsession("DB_instit");
 $resultpref = db_query($sqlpref);
@@ -71,7 +71,7 @@ order by r30_regist,
        ";
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dados no período de '.$mes.' / '.$ano);
 
@@ -91,16 +91,16 @@ $alt = 4;
 $head1 = 'DEPARTAMENTO DE PESSOAL';
 
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();
-      $parag1 = $z01_nome.', abaixo assinado, servidor desta Prefeitura Municipal, exercendo o cargo de '.$r37_descr.' vem mui respeitosamente, requerer a V. Sa., as férias referentes ao período de '.substr($r30_perai,8,2).' de '.db_mes(substr($r30_perai,5,2)).' de '.substr($r30_perai,0,4).' à '.substr($r30_peraf,8,2).' de '.db_mes(substr($r30_peraf,5,2)).' de '.substr($r30_peraf,0,4).' a serem gozadas a partir de '.substr($gozoi,8,2).' de '.db_mes(substr($gozoi,5,2)).' de '.substr($gozoi,0,4).' à '.substr($gozof,8,2).' de '.db_mes(substr($gozof,5,2)).' de '.substr($gozof,0,4).'.';
+      $parag1 = $z01_nome.', abaixo assinado, servidor desta Prefeitura Municipal, exercendo o cargo de '.$r37_descr.' vem mui respeitosamente, requerer a V. Sa., as férias referentes ao período de '.substr((string) $r30_perai,8,2).' de '.db_mes(substr((string) $r30_perai,5,2)).' de '.substr((string) $r30_perai,0,4).' à '.substr((string) $r30_peraf,8,2).' de '.db_mes(substr((string) $r30_peraf,5,2)).' de '.substr((string) $r30_peraf,0,4).' a serem gozadas a partir de '.substr((string) $gozoi,8,2).' de '.db_mes(substr((string) $gozoi,5,2)).' de '.substr((string) $gozoi,0,4).' à '.substr((string) $gozof,8,2).' de '.db_mes(substr((string) $gozof,5,2)).' de '.substr((string) $gozof,0,4).'.';
       $pdf->setfont('arial','',12);
       $pdf->ln(10);
       $pdf->cell(40,5,'NOME :  '.$z01_nome.'      MATRÍCULA :  '.$r30_regist,0,1,"L",0);
       $pdf->ln(10);
-      $pdf->multicell(0,5,'PROVENIENTE : de '.$r30_dias1.' de férias, referente ao período de '.substr($r30_perai,8,2).' de '.db_mes(substr($r30_perai,5,2)).' de '.substr($r30_perai,0,4).' à '.substr($r30_peraf,8,2).' de '.db_mes(substr($r30_peraf,5,2)).' de '.substr($r30_peraf,0,4).' a serem gozadas a partir de '.substr($gozoi,8,2).' de '.db_mes(substr($gozoi,5,2)).' de '.substr($gozoi,0,4).' à '.substr($gozof,8,2).' de '.db_mes(substr($gozof,5,2)).' de '.substr($gozof,0,4).'.',0,"J",0);
+      $pdf->multicell(0,5,'PROVENIENTE : de '.$r30_dias1.' de férias, referente ao período de '.substr((string) $r30_perai,8,2).' de '.db_mes(substr((string) $r30_perai,5,2)).' de '.substr((string) $r30_perai,0,4).' à '.substr((string) $r30_peraf,8,2).' de '.db_mes(substr((string) $r30_peraf,5,2)).' de '.substr((string) $r30_peraf,0,4).' a serem gozadas a partir de '.substr((string) $gozoi,8,2).' de '.db_mes(substr((string) $gozoi,5,2)).' de '.substr((string) $gozoi,0,4).' à '.substr((string) $gozof,8,2).' de '.db_mes(substr((string) $gozof,5,2)).' de '.substr((string) $gozof,0,4).'.',0,"J",0);
 
 $sql1 = 
 
@@ -147,7 +147,7 @@ $result1 = db_query($sql1);
 $tot_prov = 0;
 $tot_desc = 0;
 
-     if(pg_numrows($result1) > 0){
+     if(pg_num_rows($result1) > 0){
       $pdf->setfont('arial','B',10);
       $pdf->ln(10);
        $pdf->cell(100,5,'VALORES : ',0,1,"L",0);
@@ -158,7 +158,7 @@ $tot_desc = 0;
        $pdf->cell(30,5,'DESCONTO',1,1,"C",1);
      }
      $pdf->setfont('arial','',10);
-     for($xx = 0;$xx < pg_numrows($result1);$xx++){
+     for($xx = 0;$xx < pg_num_rows($result1);$xx++){
        db_fieldsmemory($result1,$xx);
        $pdf->cell(20,5,$rubrica,1,0,"C",0);
        $pdf->cell(70,5,$rh27_descr,1,0,"L",0);

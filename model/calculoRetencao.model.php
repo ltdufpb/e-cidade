@@ -31,9 +31,6 @@
  */
 class calculoRetencao {
 
-  private $iTipoCalculo = 0;
-  private $iCpfCnpj     = null;
-
   /**
    * Objeto do calculo da retencao;
    *
@@ -44,10 +41,8 @@ class calculoRetencao {
   /**
    * metodo construtor
    */
-  function __construct($iTipoCalculo, $iCpfCnpj) {
+  function __construct(private $iTipoCalculo, private $iCpfCnpj) {
 
-    $this->iTipoCalculo = $iTipoCalculo;
-    $this->iCpfCnpj     = $iCpfCnpj;
     $this->setObjetoCalculo();
 
   }

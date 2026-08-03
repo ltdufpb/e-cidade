@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habittipogrupoprograma_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabittipogrupoprograma = new cl_habittipogrupoprograma;
 $clhabittipogrupoprograma->rotulo->label("ht02_sequencial");
 $clhabittipogrupoprograma->rotulo->label("ht02_descricao");
@@ -98,9 +98,9 @@ $clhabittipogrupoprograma->rotulo->label("ht02_descricao");
         }else{
            $sql = $clhabittipogrupoprograma->sql_query("",$campos,"ht02_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht02_descricao)){
-          $repassa = array("chave_ht02_sequencial"=>$chave_ht02_sequencial,"chave_ht02_descricao"=>$chave_ht02_descricao);
+          $repassa = ["chave_ht02_sequencial"=>$chave_ht02_sequencial,"chave_ht02_descricao"=>$chave_ht02_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

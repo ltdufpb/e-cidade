@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -94,10 +94,10 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
           <td><strong>Vínculo:</strong></td>
           <td>
             <?php 
-              $aVinculos = array (
+              $aVinculos =  [
                                   's'  => 'Servidores',
                                   'f' => 'Folha'
-                                  );
+                                  ];
               db_select("vinculo",$aVinculos,true,1);
             ?>
           </td>        
@@ -106,7 +106,7 @@ $bancos["104"]['arquivo'] = 'pes4_geracalcatuarialcef.php';
           <td><strong>Usa Separdor de Campo:</strong></td>
           <td>
             <?php 
-              $aSeparadorCampo = array('N' => 'Não', 'S' => 'Sim');
+              $aSeparadorCampo = ['N' => 'Não', 'S' => 'Sim'];
               db_select("separador",$aSeparadorCampo,true,1);
             ?>
           </td>

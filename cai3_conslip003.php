@@ -179,12 +179,12 @@ $codigoRecursoCredito = '';
 $descricaoRecursoCredito = '';
 
 $oSlipRecursosContas = new cl_sliprecursocontas();
-$campos = implode(',', array(
+$campos = implode(',', [
         'recursodebito.o15_codigo as codigo_recurso_debito',
         'recursodebito.o15_descr as descricao_recurso_debito',
         'recursocredito.o15_codigo as codigo_recurso_credito',
         'recursocredito.o15_descr as descricao_recurso_credito',
-    )
+    ]
 );
 $buscaRecursos = $oSlipRecursosContas->sql_query(null, $campos, null, "k181_slip = {$oSlip->k17_codigo}");
 $buscaRecursos = db_query($buscaRecursos);

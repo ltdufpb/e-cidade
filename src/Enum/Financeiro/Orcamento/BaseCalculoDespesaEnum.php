@@ -14,6 +14,7 @@ class BaseCalculoDespesaEnum extends BaseCalculoEnum
      * @return string
      * @throws Exception
      */
+    #[\Override]
     public function name()
     {
         $data = [

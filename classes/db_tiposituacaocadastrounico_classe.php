@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE tiposituacaocadastrounico
 class cl_tiposituacaocadastrounico { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $as11_sequencial = 0; 
-   var $as11_situacao = null; 
+   public $as11_sequencial = 0; 
+   public $as11_situacao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  as11_sequencial = int4 = Sequencial 
                  as11_situacao = varchar(60) = Situação 
                  ";
    //funcao construtor da classe 
-   function cl_tiposituacaocadastrounico() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tiposituacaocadastrounico"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_tiposituacaocadastrounico {
          $this->erro_status = "0";
          return false; 
        }
-       $this->as11_sequencial = pg_result($result,0,0); 
+       $this->as11_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tiposituacaocadastrounico_as11_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $as11_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $as11_sequencial)){
          $this->erro_sql = " Campo as11_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_tiposituacaocadastrounico {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo SItuação Cadastro Único ($this->as11_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo SItuação Cadastro Único já Cadastrado";
@@ -157,11 +157,11 @@ class cl_tiposituacaocadastrounico {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19918,'$this->as11_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3568,19918,'','".AddSlashes(pg_result($resaco,0,'as11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3568,19919,'','".AddSlashes(pg_result($resaco,0,'as11_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3568,19918,'','".AddSlashes(pg_fetch_result($resaco,0,'as11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3568,19919,'','".AddSlashes(pg_fetch_result($resaco,0,'as11_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -171,10 +171,10 @@ class cl_tiposituacaocadastrounico {
       $this->atualizacampos();
      $sql = " update tiposituacaocadastrounico set ";
      $virgula = "";
-     if(trim($this->as11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as11_sequencial"])){ 
+     if(trim((string) $this->as11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as11_sequencial"])){ 
        $sql  .= $virgula." as11_sequencial = $this->as11_sequencial ";
        $virgula = ",";
-       if(trim($this->as11_sequencial) == null ){ 
+       if(trim((string) $this->as11_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "as11_sequencial";
          $this->erro_banco = "";
@@ -184,10 +184,10 @@ class cl_tiposituacaocadastrounico {
          return false;
        }
      }
-     if(trim($this->as11_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as11_situacao"])){ 
+     if(trim((string) $this->as11_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as11_situacao"])){ 
        $sql  .= $virgula." as11_situacao = '$this->as11_situacao' ";
        $virgula = ",";
-       if(trim($this->as11_situacao) == null ){ 
+       if(trim((string) $this->as11_situacao) == null ){ 
          $this->erro_sql = " Campo Situação nao Informado.";
          $this->erro_campo = "as11_situacao";
          $this->erro_banco = "";
@@ -211,13 +211,13 @@ class cl_tiposituacaocadastrounico {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19918,'$this->as11_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as11_sequencial"]) || $this->as11_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3568,19918,'".AddSlashes(pg_result($resaco,$conresaco,'as11_sequencial'))."','$this->as11_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3568,19918,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as11_sequencial'))."','$this->as11_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as11_situacao"]) || $this->as11_situacao != "")
-             $resac = db_query("insert into db_acount values($acount,3568,19919,'".AddSlashes(pg_result($resaco,$conresaco,'as11_situacao'))."','$this->as11_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3568,19919,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as11_situacao'))."','$this->as11_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -271,11 +271,11 @@ class cl_tiposituacaocadastrounico {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19918,'$as11_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3568,19918,'','".AddSlashes(pg_result($resaco,$iresaco,'as11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3568,19919,'','".AddSlashes(pg_result($resaco,$iresaco,'as11_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3568,19918,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3568,19919,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as11_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -336,7 +336,7 @@ class cl_tiposituacaocadastrounico {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tiposituacaocadastrounico";
@@ -351,7 +351,7 @@ class cl_tiposituacaocadastrounico {
    function sql_query ( $as11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -372,7 +372,7 @@ class cl_tiposituacaocadastrounico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_tiposituacaocadastrounico {
    function sql_query_file ( $as11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,7 +406,7 @@ class cl_tiposituacaocadastrounico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

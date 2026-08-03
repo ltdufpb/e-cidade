@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_testada_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltestada = new cl_testada;
 $clrotulo = new rotulocampo;
 $clrotulo->label("j34_idbql");
@@ -161,7 +161,7 @@ function js_label(liga,evt,descr,quant,vlr){
           </tr>
         <?php          
 	  $re=db_query("select d03_tipos,d03_descr,d04_quant,d04_vlrcal,d04_vlrval,d04_mult from editalserv inner join editaltipo on d03_tipos=d04_tipos where d04_contri=$d02_contri");
-          $numlinhas= pg_numrows($re);
+          $numlinhas= pg_num_rows($re);
 	    $dad="";
  	    for($f=0; $f<$numlinhas; $f++){
 	       db_fieldsmemory($re,$f);
@@ -173,7 +173,7 @@ function js_label(liga,evt,descr,quant,vlr){
 	       $d04_mult=$GLOBALS["d04_mult"];
                echo "<tr><td  style='cursor:help; font-weight:bold;' onMouseOut='js_label(false);' onMouseOver='js_label(true,event,\"$d03_descr\",$d04_quant,$d04_vlrcal,$d04_vlrval);'>Serviço ".($f+1)."</td>";
 	       $x= "j36_testad_".$f;
-               $$x=$j36_testad;
+               ${$x}=$j36_testad;
 	       echo "<td style='cursor:help; font-weight:bold;' onMouseOut='js_label(false);' onMouseOver='js_label(true,event,\"$d03_descr\",$d04_quant,$d04_vlrcal);'>";
                db_input("j36_testad",4,$Ij36_testad,true,'text',1,'',"j36_testad_".$f);
 	       echo "</td></tr>";

@@ -55,14 +55,14 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("custocriteriorateio"               => "Rateio",
+	 $clcriaabas->identifica = ["custocriteriorateio"               => "Rateio",
 	                                 "custoplanoanaliticacriteriorateio" => "Plano de Custos",
 	                                 "custocriteriopcmater"              => "Materiais"
-	                                );
-	 $clcriaabas->src = array("custocriteriorateio"=> "Cus1_custocriteriorateio006.php");
-	 $clcriaabas->disabled   = array("custoplanoanaliticacriteriorateio" => "true",
+	                                ];
+	 $clcriaabas->src = ["custocriteriorateio"=> "Cus1_custocriteriorateio006.php"];
+	 $clcriaabas->disabled   = ["custoplanoanaliticacriteriorateio" => "true",
 	                                 "custocriteriopcmater"              => "true"
-	                                 );
+	                                 ];
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

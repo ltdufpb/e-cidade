@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE debcontapedido
 class cl_debcontapedido {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $d63_codigo = 0;
-   var $d63_instit = 0;
-   var $d63_banco = 0;
-   var $d63_agencia = null;
-   var $d63_conta = null;
-   var $d63_datalanc_dia = null;
-   var $d63_datalanc_mes = null;
-   var $d63_datalanc_ano = null;
-   var $d63_datalanc = null;
-   var $d63_horalanc = null;
-   var $d63_status = 0;
-   var $d63_idempresa = null;
+   public $d63_codigo = 0;
+   public $d63_instit = 0;
+   public $d63_banco = 0;
+   public $d63_agencia = null;
+   public $d63_conta = null;
+   public $d63_datalanc_dia = null;
+   public $d63_datalanc_mes = null;
+   public $d63_datalanc_ano = null;
+   public $d63_datalanc = null;
+   public $d63_horalanc = null;
+   public $d63_status = 0;
+   public $d63_idempresa = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  d63_codigo = int4 = Codigo sequencial
                  d63_instit = int4 = codigo da instituicao
                  d63_banco = int4 = codigo do banco
@@ -67,10 +67,10 @@ class cl_debcontapedido {
                  d63_idempresa = varchar(25) = Id Empresa
                  ";
    //funcao construtor da classe
-   function cl_debcontapedido() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontapedido");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -180,10 +180,10 @@ class cl_debcontapedido {
          $this->erro_status = "0";
          return false;
        }
-       $this->d63_codigo = pg_result($result,0,0);
+       $this->d63_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from debcontapedido_d63_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $d63_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $d63_codigo)){
          $this->erro_sql = " Campo d63_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -227,7 +227,7 @@ class cl_debcontapedido {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Pedido do debito em conta ($this->d63_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Pedido do debito em conta já Cadastrado";
@@ -251,18 +251,18 @@ class cl_debcontapedido {
      $resaco = $this->sql_record($this->sql_query_file($this->d63_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7941,'$this->d63_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1330,7941,'','".AddSlashes(pg_result($resaco,0,'d63_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1330,7944,'','".AddSlashes(pg_result($resaco,0,'d63_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1330,7945,'','".AddSlashes(pg_result($resaco,0,'d63_banco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1330,7946,'','".AddSlashes(pg_result($resaco,0,'d63_agencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1330,7947,'','".AddSlashes(pg_result($resaco,0,'d63_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1330,7948,'','".AddSlashes(pg_result($resaco,0,'d63_datalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1330,7949,'','".AddSlashes(pg_result($resaco,0,'d63_horalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1330,7950,'','".AddSlashes(pg_result($resaco,0,'d63_status'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1330,8829,'','".AddSlashes(pg_result($resaco,0,'d63_idempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1330,7941,'','".AddSlashes(pg_fetch_result($resaco,0,'d63_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1330,7944,'','".AddSlashes(pg_fetch_result($resaco,0,'d63_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1330,7945,'','".AddSlashes(pg_fetch_result($resaco,0,'d63_banco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1330,7946,'','".AddSlashes(pg_fetch_result($resaco,0,'d63_agencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1330,7947,'','".AddSlashes(pg_fetch_result($resaco,0,'d63_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1330,7948,'','".AddSlashes(pg_fetch_result($resaco,0,'d63_datalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1330,7949,'','".AddSlashes(pg_fetch_result($resaco,0,'d63_horalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1330,7950,'','".AddSlashes(pg_fetch_result($resaco,0,'d63_status'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1330,8829,'','".AddSlashes(pg_fetch_result($resaco,0,'d63_idempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -271,10 +271,10 @@ class cl_debcontapedido {
       $this->atualizacampos();
      $sql = " update debcontapedido set ";
      $virgula = "";
-     if(trim($this->d63_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_codigo"])){
+     if(trim((string) $this->d63_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_codigo"])){
        $sql  .= $virgula." d63_codigo = $this->d63_codigo ";
        $virgula = ",";
-       if(trim($this->d63_codigo) == null ){
+       if(trim((string) $this->d63_codigo) == null ){
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "d63_codigo";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_debcontapedido {
          return false;
        }
      }
-     if(trim($this->d63_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_instit"])){
+     if(trim((string) $this->d63_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_instit"])){
        $sql  .= $virgula." d63_instit = $this->d63_instit ";
        $virgula = ",";
-       if(trim($this->d63_instit) == null ){
+       if(trim((string) $this->d63_instit) == null ){
          $this->erro_sql = " Campo codigo da instituicao nao Informado.";
          $this->erro_campo = "d63_instit";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_debcontapedido {
          return false;
        }
      }
-     if(trim($this->d63_banco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_banco"])){
+     if(trim((string) $this->d63_banco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_banco"])){
        $sql  .= $virgula." d63_banco = $this->d63_banco ";
        $virgula = ",";
-       if(trim($this->d63_banco) == null ){
+       if(trim((string) $this->d63_banco) == null ){
          $this->erro_sql = " Campo codigo do banco nao Informado.";
          $this->erro_campo = "d63_banco";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_debcontapedido {
          return false;
        }
      }
-     if(trim($this->d63_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_agencia"])){
+     if(trim((string) $this->d63_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_agencia"])){
        $sql  .= $virgula." d63_agencia = '$this->d63_agencia' ";
        $virgula = ",";
-       if(trim($this->d63_agencia) == null ){
+       if(trim((string) $this->d63_agencia) == null ){
          $this->erro_sql = " Campo Agencia nao Informado.";
          $this->erro_campo = "d63_agencia";
          $this->erro_banco = "";
@@ -323,10 +323,10 @@ class cl_debcontapedido {
          return false;
        }
      }
-     if(trim($this->d63_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_conta"])){
+     if(trim((string) $this->d63_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_conta"])){
        $sql  .= $virgula." d63_conta = '$this->d63_conta' ";
        $virgula = ",";
-       if(trim($this->d63_conta) == null ){
+       if(trim((string) $this->d63_conta) == null ){
          $this->erro_sql = " Campo Conta nao Informado.";
          $this->erro_campo = "d63_conta";
          $this->erro_banco = "";
@@ -336,10 +336,10 @@ class cl_debcontapedido {
          return false;
        }
      }
-     if(trim($this->d63_datalanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_datalanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["d63_datalanc_dia"] !="") ){
+     if(trim((string) $this->d63_datalanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_datalanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["d63_datalanc_dia"] !="") ){
        $sql  .= $virgula." d63_datalanc = '$this->d63_datalanc' ";
        $virgula = ",";
-       if(trim($this->d63_datalanc) == null ){
+       if(trim((string) $this->d63_datalanc) == null ){
          $this->erro_sql = " Campo Data de lancamento nao Informado.";
          $this->erro_campo = "d63_datalanc_dia";
          $this->erro_banco = "";
@@ -352,7 +352,7 @@ class cl_debcontapedido {
        if(isset($GLOBALS["HTTP_POST_VARS"]["d63_datalanc_dia"])){
          $sql  .= $virgula." d63_datalanc = null ";
          $virgula = ",";
-         if(trim($this->d63_datalanc) == null ){
+         if(trim((string) $this->d63_datalanc) == null ){
            $this->erro_sql = " Campo Data de lancamento nao Informado.";
            $this->erro_campo = "d63_datalanc_dia";
            $this->erro_banco = "";
@@ -363,10 +363,10 @@ class cl_debcontapedido {
          }
        }
      }
-     if(trim($this->d63_horalanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_horalanc"])){
+     if(trim((string) $this->d63_horalanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_horalanc"])){
        $sql  .= $virgula." d63_horalanc = '$this->d63_horalanc' ";
        $virgula = ",";
-       if(trim($this->d63_horalanc) == null ){
+       if(trim((string) $this->d63_horalanc) == null ){
          $this->erro_sql = " Campo Hora de lancamento nao Informado.";
          $this->erro_campo = "d63_horalanc";
          $this->erro_banco = "";
@@ -376,10 +376,10 @@ class cl_debcontapedido {
          return false;
        }
      }
-     if(trim($this->d63_status)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_status"])){
+     if(trim((string) $this->d63_status)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_status"])){
        $sql  .= $virgula." d63_status = $this->d63_status ";
        $virgula = ",";
-       if(trim($this->d63_status) == null ){
+       if(trim((string) $this->d63_status) == null ){
          $this->erro_sql = " Campo Status nao Informado.";
          $this->erro_campo = "d63_status";
          $this->erro_banco = "";
@@ -389,7 +389,7 @@ class cl_debcontapedido {
          return false;
        }
      }
-     if(trim($this->d63_idempresa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_idempresa"])){
+     if(trim((string) $this->d63_idempresa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d63_idempresa"])){
        $sql  .= $virgula." d63_idempresa = '$this->d63_idempresa' ";
        $virgula = ",";
      }
@@ -401,27 +401,27 @@ class cl_debcontapedido {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7941,'$this->d63_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d63_codigo"]) || $this->d63_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,1330,7941,'".AddSlashes(pg_result($resaco,$conresaco,'d63_codigo'))."','$this->d63_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1330,7941,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d63_codigo'))."','$this->d63_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d63_instit"]) || $this->d63_instit != "")
-           $resac = db_query("insert into db_acount values($acount,1330,7944,'".AddSlashes(pg_result($resaco,$conresaco,'d63_instit'))."','$this->d63_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1330,7944,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d63_instit'))."','$this->d63_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d63_banco"]) || $this->d63_banco != "")
-           $resac = db_query("insert into db_acount values($acount,1330,7945,'".AddSlashes(pg_result($resaco,$conresaco,'d63_banco'))."','$this->d63_banco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1330,7945,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d63_banco'))."','$this->d63_banco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d63_agencia"]) || $this->d63_agencia != "")
-           $resac = db_query("insert into db_acount values($acount,1330,7946,'".AddSlashes(pg_result($resaco,$conresaco,'d63_agencia'))."','$this->d63_agencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1330,7946,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d63_agencia'))."','$this->d63_agencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d63_conta"]) || $this->d63_conta != "")
-           $resac = db_query("insert into db_acount values($acount,1330,7947,'".AddSlashes(pg_result($resaco,$conresaco,'d63_conta'))."','$this->d63_conta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1330,7947,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d63_conta'))."','$this->d63_conta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d63_datalanc"]) || $this->d63_datalanc != "")
-           $resac = db_query("insert into db_acount values($acount,1330,7948,'".AddSlashes(pg_result($resaco,$conresaco,'d63_datalanc'))."','$this->d63_datalanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1330,7948,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d63_datalanc'))."','$this->d63_datalanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d63_horalanc"]) || $this->d63_horalanc != "")
-           $resac = db_query("insert into db_acount values($acount,1330,7949,'".AddSlashes(pg_result($resaco,$conresaco,'d63_horalanc'))."','$this->d63_horalanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1330,7949,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d63_horalanc'))."','$this->d63_horalanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d63_status"]) || $this->d63_status != "")
-           $resac = db_query("insert into db_acount values($acount,1330,7950,'".AddSlashes(pg_result($resaco,$conresaco,'d63_status'))."','$this->d63_status',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1330,7950,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d63_status'))."','$this->d63_status',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d63_idempresa"]) || $this->d63_idempresa != "")
-           $resac = db_query("insert into db_acount values($acount,1330,8829,'".AddSlashes(pg_result($resaco,$conresaco,'d63_idempresa'))."','$this->d63_idempresa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1330,8829,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d63_idempresa'))."','$this->d63_idempresa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -466,18 +466,18 @@ class cl_debcontapedido {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7941,'$d63_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1330,7941,'','".AddSlashes(pg_result($resaco,$iresaco,'d63_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1330,7944,'','".AddSlashes(pg_result($resaco,$iresaco,'d63_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1330,7945,'','".AddSlashes(pg_result($resaco,$iresaco,'d63_banco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1330,7946,'','".AddSlashes(pg_result($resaco,$iresaco,'d63_agencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1330,7947,'','".AddSlashes(pg_result($resaco,$iresaco,'d63_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1330,7948,'','".AddSlashes(pg_result($resaco,$iresaco,'d63_datalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1330,7949,'','".AddSlashes(pg_result($resaco,$iresaco,'d63_horalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1330,7950,'','".AddSlashes(pg_result($resaco,$iresaco,'d63_status'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1330,8829,'','".AddSlashes(pg_result($resaco,$iresaco,'d63_idempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1330,7941,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d63_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1330,7944,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d63_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1330,7945,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d63_banco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1330,7946,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d63_agencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1330,7947,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d63_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1330,7948,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d63_datalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1330,7949,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d63_horalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1330,7950,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d63_status'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1330,8829,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d63_idempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from debcontapedido
@@ -537,7 +537,7 @@ class cl_debcontapedido {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:debcontapedido";
@@ -552,7 +552,7 @@ class cl_debcontapedido {
    function sql_query ( $d63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -576,7 +576,7 @@ class cl_debcontapedido {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -589,7 +589,7 @@ class cl_debcontapedido {
    function sql_query_file ( $d63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -610,7 +610,7 @@ class cl_debcontapedido {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -622,7 +622,7 @@ class cl_debcontapedido {
    function sql_query_info ( $d63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -651,7 +651,7 @@ class cl_debcontapedido {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -664,7 +664,7 @@ class cl_debcontapedido {
   function sql_query_deb_conta($d63_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -687,7 +687,7 @@ class cl_debcontapedido {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -699,7 +699,7 @@ class cl_debcontapedido {
 
   public function sql_query_pedido_agua($sCampos = '*', $sWhere = null, $sOrder = null)
   {
-    $aSql = array();
+    $aSql = [];
 
     $aSql[] = "select {$sCampos}";
     $aSql[] = "from debcontapedido";

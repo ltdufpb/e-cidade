@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE emprestimo
 class cl_emprestimo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $bi18_codigo = 0; 
-   var $bi18_retirada_dia = null; 
-   var $bi18_retirada_mes = null; 
-   var $bi18_retirada_ano = null; 
-   var $bi18_retirada = null; 
-   var $bi18_devolucao_dia = null; 
-   var $bi18_devolucao_mes = null; 
-   var $bi18_devolucao_ano = null; 
-   var $bi18_devolucao = null; 
-   var $bi18_carteira = 0; 
-   var $bi18_usuario = 0; 
+   public $bi18_codigo = 0; 
+   public $bi18_retirada_dia = null; 
+   public $bi18_retirada_mes = null; 
+   public $bi18_retirada_ano = null; 
+   public $bi18_retirada = null; 
+   public $bi18_devolucao_dia = null; 
+   public $bi18_devolucao_mes = null; 
+   public $bi18_devolucao_ano = null; 
+   public $bi18_devolucao = null; 
+   public $bi18_carteira = 0; 
+   public $bi18_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  bi18_codigo = int8 = Código 
                  bi18_retirada = date = Datade retirada 
                  bi18_devolucao = date = Data de devolução 
@@ -62,10 +62,10 @@ class cl_emprestimo {
                  bi18_usuario = int8 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_emprestimo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("emprestimo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -151,10 +151,10 @@ class cl_emprestimo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->bi18_codigo = pg_result($result,0,0); 
+       $this->bi18_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from emprestimo_bi18_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $bi18_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $bi18_codigo)){
          $this->erro_sql = " Campo bi18_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,7 +190,7 @@ class cl_emprestimo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Empréstimo ($this->bi18_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Empréstimo já Cadastrado";
@@ -214,14 +214,14 @@ class cl_emprestimo {
      $resaco = $this->sql_record($this->sql_query_file($this->bi18_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1008129,'$this->bi18_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1008023,1008129,'','".AddSlashes(pg_result($resaco,0,'bi18_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008023,1008130,'','".AddSlashes(pg_result($resaco,0,'bi18_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008023,1008131,'','".AddSlashes(pg_result($resaco,0,'bi18_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008023,1008132,'','".AddSlashes(pg_result($resaco,0,'bi18_carteira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008023,1008935,'','".AddSlashes(pg_result($resaco,0,'bi18_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008023,1008129,'','".AddSlashes(pg_fetch_result($resaco,0,'bi18_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008023,1008130,'','".AddSlashes(pg_fetch_result($resaco,0,'bi18_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008023,1008131,'','".AddSlashes(pg_fetch_result($resaco,0,'bi18_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008023,1008132,'','".AddSlashes(pg_fetch_result($resaco,0,'bi18_carteira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008023,1008935,'','".AddSlashes(pg_fetch_result($resaco,0,'bi18_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -230,10 +230,10 @@ class cl_emprestimo {
       $this->atualizacampos();
      $sql = " update emprestimo set ";
      $virgula = "";
-     if(trim($this->bi18_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi18_codigo"])){ 
+     if(trim((string) $this->bi18_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi18_codigo"])){ 
        $sql  .= $virgula." bi18_codigo = $this->bi18_codigo ";
        $virgula = ",";
-       if(trim($this->bi18_codigo) == null ){ 
+       if(trim((string) $this->bi18_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "bi18_codigo";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_emprestimo {
          return false;
        }
      }
-     if(trim($this->bi18_retirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi18_retirada_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi18_retirada_dia"] !="") ){ 
+     if(trim((string) $this->bi18_retirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi18_retirada_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi18_retirada_dia"] !="") ){ 
        $sql  .= $virgula." bi18_retirada = '$this->bi18_retirada' ";
        $virgula = ",";
-       if(trim($this->bi18_retirada) == null ){ 
+       if(trim((string) $this->bi18_retirada) == null ){ 
          $this->erro_sql = " Campo Datade retirada nao Informado.";
          $this->erro_campo = "bi18_retirada_dia";
          $this->erro_banco = "";
@@ -259,7 +259,7 @@ class cl_emprestimo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["bi18_retirada_dia"])){ 
          $sql  .= $virgula." bi18_retirada = null ";
          $virgula = ",";
-         if(trim($this->bi18_retirada) == null ){ 
+         if(trim((string) $this->bi18_retirada) == null ){ 
            $this->erro_sql = " Campo Datade retirada nao Informado.";
            $this->erro_campo = "bi18_retirada_dia";
            $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_emprestimo {
          }
        }
      }
-     if(trim($this->bi18_devolucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi18_devolucao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi18_devolucao_dia"] !="") ){ 
+     if(trim((string) $this->bi18_devolucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi18_devolucao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi18_devolucao_dia"] !="") ){ 
        $sql  .= $virgula." bi18_devolucao = '$this->bi18_devolucao' ";
        $virgula = ",";
-       if(trim($this->bi18_devolucao) == null ){ 
+       if(trim((string) $this->bi18_devolucao) == null ){ 
          $this->erro_sql = " Campo Data de devolução nao Informado.";
          $this->erro_campo = "bi18_devolucao_dia";
          $this->erro_banco = "";
@@ -286,7 +286,7 @@ class cl_emprestimo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["bi18_devolucao_dia"])){ 
          $sql  .= $virgula." bi18_devolucao = null ";
          $virgula = ",";
-         if(trim($this->bi18_devolucao) == null ){ 
+         if(trim((string) $this->bi18_devolucao) == null ){ 
            $this->erro_sql = " Campo Data de devolução nao Informado.";
            $this->erro_campo = "bi18_devolucao_dia";
            $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_emprestimo {
          }
        }
      }
-     if(trim($this->bi18_carteira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi18_carteira"])){ 
+     if(trim((string) $this->bi18_carteira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi18_carteira"])){ 
        $sql  .= $virgula." bi18_carteira = $this->bi18_carteira ";
        $virgula = ",";
-       if(trim($this->bi18_carteira) == null ){ 
+       if(trim((string) $this->bi18_carteira) == null ){ 
          $this->erro_sql = " Campo Carteira nao Informado.";
          $this->erro_campo = "bi18_carteira";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_emprestimo {
          return false;
        }
      }
-     if(trim($this->bi18_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi18_usuario"])){ 
+     if(trim((string) $this->bi18_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi18_usuario"])){ 
        $sql  .= $virgula." bi18_usuario = $this->bi18_usuario ";
        $virgula = ",";
-       if(trim($this->bi18_usuario) == null ){ 
+       if(trim((string) $this->bi18_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "bi18_usuario";
          $this->erro_banco = "";
@@ -331,19 +331,19 @@ class cl_emprestimo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008129,'$this->bi18_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi18_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1008023,1008129,'".AddSlashes(pg_result($resaco,$conresaco,'bi18_codigo'))."','$this->bi18_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008023,1008129,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi18_codigo'))."','$this->bi18_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi18_retirada"]))
-           $resac = db_query("insert into db_acount values($acount,1008023,1008130,'".AddSlashes(pg_result($resaco,$conresaco,'bi18_retirada'))."','$this->bi18_retirada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008023,1008130,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi18_retirada'))."','$this->bi18_retirada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi18_devolucao"]))
-           $resac = db_query("insert into db_acount values($acount,1008023,1008131,'".AddSlashes(pg_result($resaco,$conresaco,'bi18_devolucao'))."','$this->bi18_devolucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008023,1008131,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi18_devolucao'))."','$this->bi18_devolucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi18_carteira"]))
-           $resac = db_query("insert into db_acount values($acount,1008023,1008132,'".AddSlashes(pg_result($resaco,$conresaco,'bi18_carteira'))."','$this->bi18_carteira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008023,1008132,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi18_carteira'))."','$this->bi18_carteira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi18_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1008023,1008935,'".AddSlashes(pg_result($resaco,$conresaco,'bi18_usuario'))."','$this->bi18_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008023,1008935,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi18_usuario'))."','$this->bi18_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -388,14 +388,14 @@ class cl_emprestimo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008129,'$bi18_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1008023,1008129,'','".AddSlashes(pg_result($resaco,$iresaco,'bi18_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008023,1008130,'','".AddSlashes(pg_result($resaco,$iresaco,'bi18_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008023,1008131,'','".AddSlashes(pg_result($resaco,$iresaco,'bi18_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008023,1008132,'','".AddSlashes(pg_result($resaco,$iresaco,'bi18_carteira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008023,1008935,'','".AddSlashes(pg_result($resaco,$iresaco,'bi18_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008023,1008129,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi18_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008023,1008130,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi18_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008023,1008131,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi18_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008023,1008132,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi18_carteira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008023,1008935,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi18_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from emprestimo
@@ -455,7 +455,7 @@ class cl_emprestimo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:emprestimo";
@@ -469,7 +469,7 @@ class cl_emprestimo {
    function sql_query ( $bi18_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,7 +503,7 @@ class cl_emprestimo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_emprestimo {
    function sql_query_file ( $bi18_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_emprestimo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

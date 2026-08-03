@@ -108,7 +108,7 @@ if (isset($get->q51_sequencial)){
 
       	$oNota           = db_utils::fieldsmemory($rsNota,0);
         $q51_numnota     = $oNota->q51_numnota;
-				$q51_dtemiss     = split("-",$oNota->q51_dtemiss);
+				$q51_dtemiss     = preg_split("#\\-#m",(string) $oNota->q51_dtemiss);
         $q51_dtemiss_dia = $q51_dtemiss[2];
         $q51_dtemiss_mes = $q51_dtemiss[1];
         $q51_dtemiss_ano = $q51_dtemiss[0];
@@ -140,7 +140,7 @@ if (isset($get->q51_sequencial)){
 					 $q53_email         = $oTom->z01_email;
 					 $q53_sequencial    = $oTom->q53_sequencial;
 					 $q53_fone          = $oTom->z01_telef;
-					 $q53_dtservico     = explode("-",$oTom->q53_dtservico);
+					 $q53_dtservico     = explode("-",(string) $oTom->q53_dtservico);
            $q53_dtservico_dia = $q53_dtservico[2];
            $q53_dtservico_mes = $q53_dtservico[1];
            $q53_dtservico_ano = $q53_dtservico[0];

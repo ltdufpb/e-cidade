@@ -37,8 +37,8 @@ require_once(modification("classes/db_andpadrao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once("model/protocolo/ProcessoProtocoloNumeracao.model.php");
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $clproctransfer = new cl_proctransfer;
 $clproctransfer = new cl_proctransfer;

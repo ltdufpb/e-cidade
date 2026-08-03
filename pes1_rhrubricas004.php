@@ -44,7 +44,7 @@ $clbasesr                 = new cl_basesr();
 $clrhtipomedia            = new cl_rhtipomedia();
 $clrhrubricasadiantamento = new cl_rhrubricasadiantamento();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -62,10 +62,10 @@ if(isset($incluir) || isset($novasrubricas)){
   $clrhrubricas->rh27_formq            = str_replace("\\","",$rh27_formq);
   // $clrhrubricas->rh27_cond2         = str_replace("\\","",$rh27_cond2);
   // $clrhrubricas->rh27_cond3         = str_replace("\\","",$rh27_cond3);
-  $clrhrubricas->rh27_cond2            = stripslashes($rh27_cond2);
-  $clrhrubricas->rh27_cond3            = stripslashes($rh27_cond3);
-  $clrhrubricas->rh27_cond2            = addslashes($rh27_cond2);
-  $clrhrubricas->rh27_cond3            = addslashes($rh27_cond3);
+  $clrhrubricas->rh27_cond2            = stripslashes((string) $rh27_cond2);
+  $clrhrubricas->rh27_cond3            = stripslashes((string) $rh27_cond3);
+  $clrhrubricas->rh27_cond2            = addslashes((string) $rh27_cond2);
+  $clrhrubricas->rh27_cond3            = addslashes((string) $rh27_cond3);
   $clrhrubricas->rh27_obs              = str_replace("\\","",$rh27_obs);
   $clrhrubricas->rh27_valorpadrao      = str_replace("\\","",$rh27_valorpadrao);
   $clrhrubricas->rh27_quantidadepadrao = str_replace("\\","",$rh27_quantidadepadrao);
@@ -98,7 +98,7 @@ if(isset($incluir) || isset($novasrubricas)){
       }
     }
   }else{
-    $arr_codigos = split(",",$novasrubricas);
+    $arr_codigos = preg_split("#,#m",$novasrubricas);
 
     for($i=0; $i<count($arr_codigos); $i++){
       $rubricainclui = $arr_codigos[$i];

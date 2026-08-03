@@ -48,18 +48,18 @@ $db_opcao    = 1;
   <tr> 
     <td> 
      <?php
-	    $clcriaabas->identifica = array( "prestador"      =>"Prestador",
+	    $clcriaabas->identifica = [ "prestador"      =>"Prestador",
 	                                     "profissionais"  =>"Profissionais",
-	                                     "servicos"       =>"Servicos");
+	                                     "servicos"       =>"Servicos"];
 	      
-	    $clcriaabas->src        = array( "prestador"      =>"fum4_prestadores004.php?db_opcao=1");
+	    $clcriaabas->src        = [ "prestador"      =>"fum4_prestadores004.php?db_opcao=1"];
 
-      $clcriaabas->sizecampo  = array( "prestador"      =>"23",
+      $clcriaabas->sizecampo  = [ "prestador"      =>"23",
                                        "profissionais"  =>"23",
-                                       "servicos"       =>"23");
+                                       "servicos"       =>"23"];
 	     
-	    $clcriaabas->disabled   = array( "profissionais"  =>"true",
-                                       "servicos"       =>"true");
+	    $clcriaabas->disabled   = [ "profissionais"  =>"true",
+                                       "servicos"       =>"true"];
 
 	    $clcriaabas->cria_abas(); 
      ?> 

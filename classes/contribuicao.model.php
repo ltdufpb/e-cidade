@@ -28,26 +28,15 @@
 
 class contribuicaoModel {
   
-  /*
-   * @description Método Construtor
-   *
-   * @param   integer  $iContribuicao  codigo da contribuição de melhoria
-   * @return  void
-   *
-   */
+  public $sErroMsg           = "";
+  public $lSqlErro           = false;
+  public $oContribuicaoDAO   = null;
+  public $aMatriculasContrib = [];
+  public $aServicos          = [];
+  public $nTotalTestada      = 0;  
   
-  var $iContribuicao      = "";
-  var $sErroMsg           = "";
-  var $lSqlErro           = false;
-  var $oContribuicaoDAO   = null;
-  var $aMatriculasContrib = array();
-  var $aServicos          = array();
-  var $nTotalTestada      = 0;  
-  
-  function contribuicaoModel($iContribuicao) {
+  function __construct(public $iContribuicao) {
     
-    $this->iContribuicao = $iContribuicao;
-
     require_once(modification("libs/db_utils.php"));
     $this->oContribuicaoDAO = db_utils::getDao('contrib');
     

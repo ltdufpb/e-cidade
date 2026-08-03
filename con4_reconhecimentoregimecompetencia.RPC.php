@@ -74,7 +74,7 @@ try {
         $reconhecimentos = $oReconhecimentoRepository->getReconhecimentosAbertosAteCompetencia($instituicao, $oCompetenciaAtual, $oAcordo);
       } 
 
-      $aDadosReconhecimentos = array();
+      $aDadosReconhecimentos = [];
 
       foreach ($reconhecimentos as $codigo => $reconhecimento) {
 

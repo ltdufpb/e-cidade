@@ -75,7 +75,7 @@ abstract class Xls implements XlsAnexo
 
     public function setVariavel($variavel, $valor)
     {
-        $this->parser->addVariable($variavel, utf8_encode($valor));
+        $this->parser->addVariable($variavel, mb_convert_encoding($valor, 'UTF-8', 'ISO-8859-1'));
     }
 
     public function addImage($image, $position, $options = [])

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_turnohora_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_turnohora = new cl_lab_turnohora;
 $cllab_turnohora->rotulo->label("la07_i_codigo");
 $cllab_turnohora->rotulo->label("la07_i_codigo");
@@ -98,9 +98,9 @@ $cllab_turnohora->rotulo->label("la07_i_codigo");
         }else{
            $sql = $cllab_turnohora->sql_query("",$campos,"la07_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la07_i_codigo)){
-          $repassa = array("chave_la07_i_codigo"=>$chave_la07_i_codigo,"chave_la07_i_codigo"=>$chave_la07_i_codigo);
+          $repassa = ["chave_la07_i_codigo"=>$chave_la07_i_codigo,"chave_la07_i_codigo"=>$chave_la07_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

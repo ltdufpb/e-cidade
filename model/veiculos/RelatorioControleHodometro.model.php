@@ -58,16 +58,6 @@ class RelatorioControleHodometro {
   private $oArquivo;
 
   /**
-   * @var Instituicao
-   */
-  private $oInstituicao;
-
-  /**
-   * @var DBDepartamento
-   */
-  private $oDepartamento;
-
-  /**
    * Objeto para controle da emissão PDF.
    * @var PDFDocument
    */
@@ -126,12 +116,10 @@ class RelatorioControleHodometro {
    * @param Instituicao    $oInstituicao
    * @param DBDepartamento $oDepartamento
    */
-  public function __construct(DBDate $oDataInicial, DBDate $oDataFinal, Instituicao $oInstituicao, DBDepartamento $oDepartamento) {
+  public function __construct(DBDate $oDataInicial, DBDate $oDataFinal, private readonly Instituicao $oInstituicao, private readonly DBDepartamento $oDepartamento) {
 
     $this->oDataInicial  = $oDataInicial;
     $this->oDataFinal    = $oDataFinal;
-    $this->oInstituicao  = $oInstituicao;
-    $this->oDepartamento = $oDepartamento;
 
     $this->iTotalDias = DBDate::getIntervaloEntreDatas($oDataInicial, $oDataFinal)->days;
   }
@@ -171,7 +159,7 @@ class RelatorioControleHodometro {
 
     foreach ($aLinhas as $oLinha) {
 
-      $aLinha   = array();
+      $aLinha   = [];
       $aLinha[] = "{$oLinha->modelo} / {$oLinha->placa}";
       $nValorAnterior = 0;
       foreach ($oLinha->dias as $nValor) {
@@ -337,11 +325,11 @@ class RelatorioControleHodometro {
 
     $sMesAno = "/" . $this->oDataFinal->getMes() . "/" . $this->oDataFinal->getAno();
 
-    $aLinha    = array();
+    $aLinha    = [];
     $aLinha[0] = "VEÍCULOS";
     foreach ($this->aDias as $iDia) {
 
-      $sDia          = str_pad($iDia, 2, "0", STR_PAD_LEFT);
+      $sDia          = str_pad((string) $iDia, 2, "0", STR_PAD_LEFT);
       $aLinha[$iDia] = $sDia . $sMesAno;
     }
     return $aLinha;
@@ -361,7 +349,7 @@ class RelatorioControleHodometro {
     $sDataFinal   = $this->oDataFinal->getDate();
     $oDaoVeiculos = new cl_veiculos();
 
-    $this->aDias = array();
+    $this->aDias = [];
     for ($iDia = $this->oDataInicial->getDia(); $iDia <= $this->oDataFinal->getDia(); $iDia++) {
       $this->aDias[] = $iDia;
     }
@@ -390,7 +378,7 @@ class RelatorioControleHodometro {
       throw new Exception("Não foram encontrados veículos com movimentações para os filtros informados.");
     }
 
-    $aVeiculos = array();
+    $aVeiculos = [];
     for ($iVeiculo = 0; $iVeiculo < $oDaoVeiculos->numrows; $iVeiculo++) {
 
       $oVeiculo    = db_utils::fieldsMemory($rsVeiculos, $iVeiculo);
@@ -399,7 +387,7 @@ class RelatorioControleHodometro {
 
     foreach ($aVeiculos as $oVeiculo) {
 
-      $oVeiculo->dias = array();
+      $oVeiculo->dias = [];
       foreach($this->aDias as $iDia) {
 
         $nUltimaMedida = 0;
@@ -424,6 +412,6 @@ class RelatorioControleHodometro {
    * @param array $aLinha
    */
   private function escreverNoArquivo($rsArquivo, $aLinha) {
-    fputcsv($rsArquivo, $aLinha, ';', '"');
+    fputcsv($rsArquivo, $aLinha, ';', '"', escape: '\\');
   }
 }

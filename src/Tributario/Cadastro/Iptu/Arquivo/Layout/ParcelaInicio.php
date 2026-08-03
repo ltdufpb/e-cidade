@@ -8,27 +8,27 @@ final class ParcelaInicio extends Layout
 {
     public function __construct ()
     {
-        $this->fields = array(
-            'TOTALPARCELAS'  => array(
+        $this->fields = [
+            'TOTALPARCELAS'  => [
                 'name'           => 'TOTPARC'
                 ,'description'   => 'QUANTIDADE TOTAL DE PARCELAS'
                 ,'size'          => 3
-            )
-            ,'EXPRESAOPARCELADOS'  => array(
+            ]
+            ,'EXPRESAOPARCELADOS'  => [
                 'name'           => 'EXP_PARCELADOS'
                 ,'description'   => 'EXPRESSAO PARCELADOS'
                 ,'size'          => 10
-            )
-            ,'PERCENTUALMESJUROATRASO'  => array(
+            ]
+            ,'PERCENTUALMESJUROATRASO'  => [
                 'name'           => 'PERCMESJURATRASO'
                 ,'description'   => 'PERCENTUAL POR MES DE JUROS POR ATRASO'
                 ,'size'          => 15
-            )
-            ,'PERCENTUALGERALMULTAATRASO'  => array(
+            ]
+            ,'PERCENTUALGERALMULTAATRASO'  => [
                 'name'           => 'PERCGERMULATRASO'
                 ,'description'   => 'PERCENTUAL GERAL DE MULTA POR ATRASO'
                 ,'size'          => 15
-            )
-        );
+            ]
+        ];
     }
 }

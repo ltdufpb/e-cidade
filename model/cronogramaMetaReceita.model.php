@@ -28,13 +28,13 @@
 
 final class cronogramaMetaReceita {
 
-  const MENSAGENS = 'financeiro.orcamento.cronogramaMetaReceita.';
+  const string MENSAGENS = 'financeiro.orcamento.cronogramaMetaReceita.';
 
   protected $iReceita;
 
   protected $iPerspectiva;
 
-  protected $aAnos = array();
+  protected $aAnos = [];
 
   protected $oReceita ;
 
@@ -174,8 +174,8 @@ final class cronogramaMetaReceita {
 
   function getMetas() {
 
-    $this->aMeses       = array();
-    $aDadosBases        = array();
+    $this->aMeses       = [];
+    $aDadosBases        = [];
     $oDaoCronogramaMeta = db_utils::getDao("cronogramametareceita");
     $sSqlDadosMeta      = $oDaoCronogramaMeta->sql_query_file(null,
                                                                 "*",
@@ -292,7 +292,7 @@ final class cronogramaMetaReceita {
       $sReceitas = implode(',',$oStdReceita->aReceitas);
     }
 
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = "cronogramaperspectiva.o124_tipo          = ".cronogramaFinanceiro::TIPO_CRONOGRAMA;
     $aWhere[] = "cronogramaperspectiva.o124_situacao      = ".cronogramaFinanceiro::SITUACAO_HOMOLOGADO;
     $aWhere[] = "cronogramaperspectivareceita.o126_codrec in ({$sReceitas})";

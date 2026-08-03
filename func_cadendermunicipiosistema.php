@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clcadendermunicipiosistema = new cl_cadendermunicipiosistema;
 $clcadendermunicipiosistema->rotulo->label("db125_sequencial");
@@ -107,7 +107,7 @@ $oDaoRotulo->label( 'db125_codigosistema' );
         <td>
           <?php
           $sCampos = "db125_sequencial, db72_descricao, db71_sigla, db125_codigosistema";
-          $aWhere  = array();
+          $aWhere  = [];
           $sWhere  = '';
 
           if( isset( $iTipoSistema ) && !empty( $iTipoSistema ) ) {
@@ -132,15 +132,15 @@ $oDaoRotulo->label( 'db125_codigosistema' );
               $aWhere[] = "db125_codigosistema ilike '{$chave_db125_codigosistema}%'";
             }
 
-            $repassa = array();
+            $repassa = [];
             if( isset( $chave_db125_sequencial ) ) {
 
-              $repassa = array(
+              $repassa = [
                 "chave_db125_sequencial"    => $chave_db125_sequencial,
                 "chave_db72_descricao"      => $chave_db72_descricao,
                 "chave_db71_sigla"          => $chave_db71_sigla,
                 "chave_db125_codigosistema" => $chave_db125_codigosistema
-              );
+              ];
             }
 
             $sWhere = implode( " and ", $aWhere );

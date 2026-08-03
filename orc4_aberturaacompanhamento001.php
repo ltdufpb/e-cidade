@@ -65,7 +65,7 @@ $oGet = db_utils::postMemory($_GET);
               <td class="headerLabel"><label for="mes">Mês:</label></td>
               <td colspan="3">
                 <?php
-                $meses = array(
+                $meses = [
                     0  => 'Selecione',
                     1  => 'Janeiro',
                     2  => 'Fevereiro',
@@ -79,7 +79,7 @@ $oGet = db_utils::postMemory($_GET);
                     10 => 'Outubro',
                     11 => 'Novembro',
                     12 => 'Dezembro',
-                );
+                ];
                 db_select('mes', $meses, true, 1, 'style="width: 20%"');
                 ?>
               </td>

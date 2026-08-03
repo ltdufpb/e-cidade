@@ -207,8 +207,8 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 		      </td>
 		      <td>
 	          <?php 
-	            $aAtivo = array("t"=>"Sim",
-	                            "f"=>"Não");
+	            $aAtivo = ["t"=>"Sim",
+	                            "f"=>"Não"];
 	            db_select('it25_ativo',$aAtivo,true,1,' style="width: 91"');
 	          ?>	      
 		      </td>
@@ -231,10 +231,10 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
         <tr>
           <td valign="top"  align="center">  
             <?php 
-              $aChavePri = array( "it25_sequencial"         => @$it25_sequencial,
+              $aChavePri = [ "it25_sequencial"         => @$it25_sequencial,
                                   "it25_itbitransacao"      => @$it25_itbitransacao,
                                   "it25_itbiformapagamento" => @$it25_itbiformapagamento,
-                                  "it25_ativo"              => @$it25_ativo );
+                                  "it25_ativo"              => @$it25_ativo ];
         
               $cliframe_alterar_excluir->chavepri      = $aChavePri;
               $cliframe_alterar_excluir->sql           = $clitbitransacaoformapag->sql_query(null,"*","it25_sequencial"," it25_itbitransacao = {$it25_itbitransacao}");

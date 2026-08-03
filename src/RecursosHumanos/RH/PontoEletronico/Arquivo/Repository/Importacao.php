@@ -89,12 +89,10 @@ class Importacao {
     }
 
     if(pg_num_rows($rsMatriculasProcessar) == 0) {
-      return array();
+      return [];
     }
 
-    return \db_utils::makeCollectionFromRecord($rsMatriculasProcessar, function ($oRetornoMatriculasProcessar) {
-      return $oRetornoMatriculasProcessar->matricula;
-    });
+    return \db_utils::makeCollectionFromRecord($rsMatriculasProcessar, fn($oRetornoMatriculasProcessar) => $oRetornoMatriculasProcessar->matricula);
   }
 
   /**
@@ -121,12 +119,10 @@ class Importacao {
     }
 
     if(pg_num_rows($rsMatriculasProcessar) == 0) {
-      return array();
+      return [];
     }
 
-    return \db_utils::makeCollectionFromRecord($rsMatriculasProcessar, function ($oRetornoMatriculasProcessar) {
-      return $oRetornoMatriculasProcessar->matricula;
-    });
+    return \db_utils::makeCollectionFromRecord($rsMatriculasProcessar, fn($oRetornoMatriculasProcessar) => $oRetornoMatriculasProcessar->matricula);
   }
 
   /**
@@ -156,11 +152,9 @@ class Importacao {
     }
 
     if(pg_num_rows($rsPontoEletronicoArquivoData) == 0) {
-      return array();
+      return [];
     }
 
-    return \db_utils::makeCollectionFromRecord($rsPontoEletronicoArquivoData, function ($oRetorno) {
-      return $oRetorno->rh197_data;
-    });
+    return \db_utils::makeCollectionFromRecord($rsPontoEletronicoArquivoData, fn($oRetorno) => $oRetorno->rh197_data);
   }
 }

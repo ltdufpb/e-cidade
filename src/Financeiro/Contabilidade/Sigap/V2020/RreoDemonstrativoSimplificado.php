@@ -29,6 +29,7 @@ class RreoDemonstrativoSimplificado extends ArquivoSigapFiscal
     /**
      * @return mixed
      */
+    #[\Override]
     public function getNotasExplicativas()
     {
         return $this->notasExplicativas;
@@ -245,8 +246,8 @@ class RreoDemonstrativoSimplificado extends ArquivoSigapFiscal
 
     private function projetoAtuarialRegimesPrevidencia(array $linha)
     {
-        $linha_ecidade = substr($linha['linha_ecidade'], 0, 2);
-        $coluna = substr($linha['linha_ecidade'], 3, 1);
+        $linha_ecidade = substr((string) $linha['linha_ecidade'], 0, 2);
+        $coluna = substr((string) $linha['linha_ecidade'], 3, 1);
 
         $linhaProcessada = $this->linhasProcessadas[$linha_ecidade];
 

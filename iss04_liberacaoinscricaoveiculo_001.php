@@ -38,8 +38,8 @@ $oRotulo->label("q120_issalvara");
 $oRotulo->label("q123_inscr");
 $oRotulo->label("z01_nome");
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet = db_utils::postMemory($_GET);
@@ -87,7 +87,7 @@ if (isset($liberar)) {
 
 		$oAlvara         = new Alvara($q120_issalvara);
 		$oLiberarAlvara  = $oAlvara->incluirMovimentacao( MovimentacaoAlvara::TIPO_LIBERACAO );
-		$aDocumentos     = Array();
+		$aDocumentos     = [];
 
 	    $oLiberarAlvara->setDataMovimentacao( date("Y-m-d", db_getsession("DB_datausu")));
 	    $oLiberarAlvara->setValidadeAlvara($oPost->q120_validadealvara);
@@ -97,7 +97,7 @@ if (isset($liberar)) {
 
 	    if ($oPost->documentos != "" && !isset($oGet->aba)) {
 
-	     	$aDocumentos = explode(",", $oPost->documentos);
+	     	$aDocumentos = explode(",", (string) $oPost->documentos);
 
 	      	foreach($aDocumentos as $iIndice => $oValor){
 	        	$oAlvara->addDocumento($oValor);

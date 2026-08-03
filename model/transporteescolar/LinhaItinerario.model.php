@@ -55,13 +55,13 @@ class LinhaItinerario {
    * Array de instâncias de logradouros
    * @var array
    */
-  protected $aLogradouros = array();
+  protected $aLogradouros = [];
 
   /**
    * Array de instâncias de horários
    * @var array
    */
-  protected $aHorarios = array();
+  protected $aHorarios = [];
 
   /**
    * Tipo de itinerário
@@ -77,10 +77,10 @@ class LinhaItinerario {
    */
   protected $oLinhaTransporte = null;
 
-  static private $aTipos = array(
+  static private $aTipos = [
     self::IDA   => "Ida",
     self::VOLTA => "Retorno",
-  );
+  ];
 
   /**
    * Instancia uma linha itinerário

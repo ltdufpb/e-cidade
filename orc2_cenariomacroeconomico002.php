@@ -49,7 +49,7 @@ $sCampos		  .= "o03_valorparam    	";
 $sSqlCenario 	   = $clorccenarioeconomicoparam->sql_query("",$sCampos,"o03_sequencial", $sWhere);
 $rsConsultaCenario = $clorccenarioeconomicoparam->sql_record($sSqlCenario); 
 $iLinhasCenario	   = $clorccenarioeconomicoparam->numrows;   
-$aDadosCenario     = array();
+$aDadosCenario     = [];
 
 if ( $iLinhasCenario > 0    ) {
 	

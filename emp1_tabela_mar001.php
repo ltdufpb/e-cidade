@@ -33,11 +33,11 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_tabela_mar_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltabela_mar = new cl_tabela_mar;
 $db_opcao = 1;
 $db_botao = true;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
   $cltabela_mar->incluir($m89_codigo);
   db_fim_transacao();
@@ -77,7 +77,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($cltabela_mar->erro_status=="0"){
     $cltabela_mar->erro(true,false);
     $db_botao=true;

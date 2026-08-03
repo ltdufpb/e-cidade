@@ -40,7 +40,7 @@ if (! isset($arqinclude)) { // se este arquivo não esta incluido por outro
   require_once(modification("libs/db_utils.php"));
   require_once(modification("model/linhaRelatorioContabil.model.php"));
   require_once(modification("model/relatorioContabil.model.php"));
-  parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
+  parse_str((string) $_SERVER ['QUERY_STRING'], $result);
   db_postmemory($_GET);
 
   $classinatura  = new cl_assinatura();
@@ -74,8 +74,8 @@ if ($sSiglaPeriodo == '1S' || $sSiglaPeriodo == '2S') {
 } else {
 
   $dados  = data_periodo($anousu,$sSiglaPeriodo);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini = preg_split("#\\-#m",(string) $dados[0]);
+  $perfin = preg_split("#\\-#m",(string) $dados[1]);
 
   $mesini    = strtoupper(db_mes($perini[1]));
   $mesfin    = strtoupper(db_mes($perfin[1]));
@@ -136,7 +136,7 @@ $sListaInstituicoes = db_getsession("DB_instit");
 ///////////////////////////////////////////////////////////////////
 // 15 linhas de receita
 
-$aReceitasIgnorar = array(0,3,6);
+$aReceitasIgnorar = [0,3,6];
 $iParam = 1;
 for ($iLinha = 0; $iLinha <= 13; $iLinha++) {
 
@@ -273,11 +273,11 @@ $dt_ini2 = $anousu . "-01-01";
 
 $sqlperiodo  = $clempresto->sql_rp_novo($anousu, $sele_work, $dt_ini2, $dt_fin, $sele_work1, $sql_where_externo, "$sql_order ");
 $result_restos_mde1 = @db_query($sqlperiodo);
-$numrows_restos_mde1 = @pg_numrows($result_restos_mde1);
+$numrows_restos_mde1 = @pg_num_rows($result_restos_mde1);
 
 $saldo     = 0;
 $cancelado = 0;
-for($i = 0; $i < pg_numrows($result_restos_mde1); $i ++) {
+for($i = 0; $i < pg_num_rows($result_restos_mde1); $i ++) {
   db_fieldsmemory($result_restos_mde1, $i);
 
 //  Total de RP processado .....:  ($e91_vlrliq - $e91_vlrpag);
@@ -462,7 +462,7 @@ $total_ini  = 0;
 $total_atu  = 0;
 $total_rp   = 0;
 
-for($i = 0; $i < pg_numrows($result_despesa); $i ++) {
+for($i = 0; $i < pg_num_rows($result_despesa); $i ++) {
 
   $oDespesa = db_utils::fieldsmemory($result_despesa, $i);
   for ($iLinha = 1; $iLinha <= 7; $iLinha++) {
@@ -512,9 +512,9 @@ $descr_inst = '';
 db_fieldsmemory($resultinst, 0);
 $descr_inst = $munic;
 
-$vdt_fin = split("-", $dt_fin);
+$vdt_fin = preg_split("#\\-#m", (string) $dt_fin);
 
-$head1 = "MUNICÍPIO DE " . strtoupper($descr_inst);
+$head1 = "MUNICÍPIO DE " . strtoupper((string) $descr_inst);
 $head2 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
 $head3 = "DEMONSTRATIVO DA RECEITA DE IMPOSTOS LÍQUIDA E DAS DESPESAS PRÓPRIAS COM AÇÕES E SERVIÇOS PÚBLICOS DE SAÚDE";
 $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";

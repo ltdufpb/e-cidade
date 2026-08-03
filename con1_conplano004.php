@@ -48,8 +48,8 @@ require_once(modification("classes/db_pcmaterele_classe.php"));
 require_once(modification("classes/db_emprestotipo_classe.php"));
 require_once(modification("classes/db_db_config_classe.php"));
 require_once modification("model/transacaoContabilLancamento.model.php");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 
@@ -99,7 +99,7 @@ if ($clconplano->numrows > 0) {
   db_fieldsmemory($res_conplano,0);
 }
 
-$sConta = substr($c60_estrut, 0,5);
+$sConta = substr((string) $c60_estrut, 0,5);
 $iAno   = $anousu;
 $sSqlGrupoConta  = "select fc_conplano_grupo({$iAno},'{$sConta}%',9005) as grupo_rp_processado,";
 $sSqlGrupoConta .= "fc_conplano_grupo({$iAno},'$sConta%',9006) as grupo_rp_nao_processado";
@@ -124,16 +124,16 @@ if (isset($incluir) && $incluir == "Incluir") {
   $res = $clconplanoreduz->sql_record($clconplanoreduz->sql_query_file(null,null, "*", null, "c61_instit=$c61_instit and c61_codcon=$c60_codcon and c61_anousu=$anousu"));
   if ($clconplanoreduz->numrows > 0) {
     db_msgbox("Já existe nessa Instituição uma conta reduzida! ");
-    db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+    db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
   }
 
   $res_plano = $clconplano->sql_record($clconplano->sql_query_file($c60_codcon,$anousu,"c60_estrut,c60_descr,c60_codsis"));
   if ($clconplano->numrows > 0) {
     db_fieldsmemory($res_plano,0);
-    if (substr($c60_estrut,0,1)=="3") {
+    if (str_starts_with((string) $c60_estrut, "3")) {
       if ($c61_contrapartida==0||$c61_contrapartida=="") {
         db_msgbox("Contra Partida para esta conta despesa é obrigatória");
-        db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+        db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
       }
     }
   }
@@ -282,7 +282,7 @@ if (isset($incluir) && $incluir == "Incluir") {
 
     $clsaltes->k13_datvlr        = $dtAtualizacao;
     $clsaltes->k13_dtimplantacao = date("Y-m-d",db_getsession("DB_datausu"));
-    $clsaltes->k13_descr         = substr($c60_descr,0,40);
+    $clsaltes->k13_descr         = substr((string) $c60_descr,0,40);
     $clsaltes->k13_limite        = null;
 
     $clsaltes->incluir($clconplanoreduz->c61_reduz);
@@ -331,10 +331,10 @@ if (isset($incluir) && $incluir == "Incluir") {
   $c60_codcon = $clconplanoreduz->c61_codcon;
   // um furo
 
-  if (isset($c60_estrut) && substr(@$c60_estrut,0,1) == "3") {
+  if (isset($c60_estrut) && str_starts_with(@$c60_estrut, "3")) {
     if ($c61_contrapartida==0||$c61_contrapartida=="") {
       db_msgbox("Contra Partida para esta conta despesa é obrigatória");
-      db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+      db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
     }
   }
 
@@ -363,7 +363,7 @@ if (isset($incluir) && $incluir == "Incluir") {
         $aLancamentos = $oTransacao->getLancamentos();
         foreach ($aLancamentos as $oLancamento) {
 
-          if (strtolower(substr($oLancamento->getObservacao(),0,3)) != "pri") {
+          if (strtolower(substr((string) $oLancamento->getObservacao(),0,3)) != "pri") {
 
             $aContas      = $oLancamento->getContas();
             $oUltimaConta = end($aContas);
@@ -437,16 +437,16 @@ if (isset($alterar) && $alterar == "Alterar") {
     if ($clconplanoreduz->numrows > 0) {
 
       db_msgbox("Alteração Cancelada : já existe nessa instituição uma conta analítica com esse recurso ! ");
-      db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+      db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
     }
 
     $res_plano = $clconplano->sql_record($clconplano->sql_query_file($c60_codcon,$iAno,"c60_estrut"));
     if ($clconplano->numrows > 0) {
       db_fieldsmemory($res_plano,0);
-      if (substr($c60_estrut,0,1)=="3") {
+      if (str_starts_with((string) $c60_estrut, "3")) {
         if ($c61_contrapartida==0||$c61_contrapartida=="") {
           db_msgbox("Contra Partida para esta conta despesa é obrigatória");
-          db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+          db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
         }
       }
     }
@@ -626,7 +626,7 @@ if (isset($excluir) && $excluir == "Excluir") {
       if ($clconlancamval->numrows > 0) {
 
         db_msgbox("Conta possui lançamentos, não pode ser excluida ! ");
-        db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+        db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
         exit;
 
       }
@@ -644,7 +644,7 @@ if (isset($excluir) && $excluir == "Excluir") {
         $sMsg .= "exclusão, você deverá excluir ou substituir esta receita no menu: ";
         $sMsg .= "ORÇAMENTO > PROCEDIMENTOS > PPA > RECEITAS DO PPA > ALTERAÇÃO DE RECEITAS";
         db_msgbox($sMsg);
-        db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+        db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
         exit;
 
       }
@@ -659,7 +659,7 @@ if (isset($excluir) && $excluir == "Excluir") {
       if ($clconplanoexe->numrows >0 ) {
 
         db_msgbox("Não posso excluir esta conta porque ela possui saldo inicial lançado ! ");
-        db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+        db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
         exit;
 
       }
@@ -680,11 +680,11 @@ if (isset($excluir) && $excluir == "Excluir") {
     //die($sql_saltes);
 
           $res_saltes = @db_query($sql_saltes);
-          $numrows    = @pg_numrows($res_saltes);
+          $numrows    = @pg_num_rows($res_saltes);
           if ($numrows > 0) {
 
             db_msgbox("Conta não pode ser excluida. Conta com movimentacao!");
-            db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+            db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
             exit;
 
           }
@@ -694,7 +694,7 @@ if (isset($excluir) && $excluir == "Excluir") {
         if (!$rsUpdateSaltes) {
 
           db_msgbox("Conta não pode ser excluida. Erro ao  desativar a conta na Tesouraria!".pg_last_error());
-          db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+          db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
           exit;
 
         }
@@ -702,11 +702,11 @@ if (isset($excluir) && $excluir == "Excluir") {
     //die($sql_saltes);
 
           $res_saltes = @db_query($sql_saltes);
-          $numrows    = @pg_numrows($res_saltes);
+          $numrows    = @pg_num_rows($res_saltes);
           if ($numrows > 0) {
 
             db_msgbox("Conta não pode ser excluida. Conta com movimentacao!");
-            db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+            db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
             exit;
 
           }
@@ -721,7 +721,7 @@ if (isset($excluir) && $excluir == "Excluir") {
         if ($clempautitem->numrows > 0) {
 
           db_msgbox("Não é possível excluir este reduzido, pois seu código consta em Autorizações de Empenho. Verifique.");
-          db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+          db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
           exit;
 
         }
@@ -737,7 +737,7 @@ if (isset($excluir) && $excluir == "Excluir") {
         if ($clsolicitemele->numrows > 0) {
 
           db_msgbox("Não é possível excluir este reduzido, pois seu código consta em Solicitações de Compra. Verifique.");
-          db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
+          db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?c60_codcon=$c60_codcon");
           exit;
 
         }
@@ -1104,7 +1104,7 @@ if (isset ($c60_codcon)) {
    * Verificamos se a conta é uma conta de RP pelo Grupo 9005, ou 9006
    * 9005 é RP processado, e 9006 e RP nao Processado
    */
-    $sConta = substr($c60_estrut, 0,5);
+    $sConta = substr((string) $c60_estrut, 0,5);
     $iAno   = db_getsession("DB_anousu");
     $sSqlGrupoConta  = "select fc_conplano_grupo({$iAno},'{$sConta}%',9007) as grupo_rp_processado,";
     $sSqlGrupoConta .= "fc_conplano_grupo({$iAno},'$sConta%',9008) as grupo_rp_nao_processado";
@@ -1198,7 +1198,7 @@ if (isset ($c60_codcon)) {
     $clconplanoreduz = db_utils::getDao('conplanoorcamentoanalitica');
   }
 
-	$chavepri = array ("c60_codcon" => $c60_codcon,"c61_anousu" => @ $c61_anousu , "c61_reduz" => @ $c61_reduz);
+	$chavepri =  ["c60_codcon" => $c60_codcon,"c61_anousu" => @ $c61_anousu , "c61_reduz" => @ $c61_reduz];
 	$cliframe_alterar_excluir->chavepri = $chavepri;
 	$cliframe_alterar_excluir->sql = $clconplanoreduz->sql_query("","", "*", "", "c60_codcon=$c60_codcon and c60_anousu=$anousu");
 	$cliframe_alterar_excluir->campos = "c61_codcon,c61_reduz,c61_instit,nomeinst,c61_codigo,o15_descr,c61_contrapartida";

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vistoriaandam_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clvistoriaandam = new cl_vistoriaandam;
 $clvistoriaandam->rotulo->label("y68_codvist");
 $clvistoriaandam->rotulo->label("y68_codandam");
@@ -109,9 +109,9 @@ $clvistoriaandam->rotulo->label("y68_codandam");
         }else{
            $sql = $clvistoriaandam->sql_query("","",$campos,"y68_codvist#y68_codandam"," y70_instit = ".db_getsession('DB_instit') );
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_y68_codandam)){
-          $repassa = array("chave_y68_codvist"=>$chave_y68_codvist,"chave_y68_codandam"=>$chave_y68_codandam);
+          $repassa = ["chave_y68_codvist"=>$chave_y68_codvist,"chave_y68_codandam"=>$chave_y68_codandam];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

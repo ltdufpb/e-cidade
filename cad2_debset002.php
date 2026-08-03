@@ -33,11 +33,11 @@ $clrotulo->label('id_usuario');
 $clrotulo->label('nome');
 $clrotulo->label('descrdepto');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $instit         = db_getsession("DB_instit");
 $result_ultdata = db_query("select k22_data from debitos where k22_instit = $instit order by k22_data desc limit 1");
-if ( pg_numrows($result_ultdata) == 0 ){
+if ( pg_num_rows($result_ultdata) == 0 ){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros na tabela debitos.');
 }
 db_fieldsmemory($result_ultdata,0);
@@ -74,7 +74,7 @@ if($ordem == "s") {
 
 if(isset($setor) && $setor != ""){
 
-  $arr_setor = split(",",$setor);
+  $arr_setor = preg_split("#,#m",(string) $setor);
   $vir       = "";
   $set       = "";
   for($i = 0; $i < count($arr_setor); $i++){
@@ -88,7 +88,7 @@ if(isset($setor) && $setor != ""){
 
 if(isset($quadra) && $quadra != ""){
 
-  $arr_quadra = split(",",$quadra);
+  $arr_quadra = preg_split("#,#m",(string) $quadra);
   $vir        = "";
   $qua        = "";
   for($i = 0; $i < count($arr_quadra); $i++){
@@ -167,7 +167,7 @@ $sql = "select iptubase.j01_matric,
 		  				 $order_by";
 
 $result  = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 if ($numrows == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 }
@@ -182,7 +182,7 @@ $troca    = 1;
 $alt      = 4;
 $totalreg = 0;
 $totalval = 0;
-$arr_tipo =  array();
+$arr_tipo =  [];
 $p = 0;
 $matric_ant=0;
 $totalmat1=0;
@@ -307,7 +307,7 @@ for($x = 0; $x < $numrows;$x++){
 		 $pdf->cell(180,$alt,"",0,1,"C",$p);
      $p = 1;
 		 $pdf->cell(30,$alt,$j01_matric,0,0,"C",$p);
-		 $pdf->cell(100,$alt,substr($z01_nome,0,90),0,0,"L",$p);
+		 $pdf->cell(100,$alt,substr((string) $z01_nome,0,90),0,0,"L",$p);
 		 $pdf->cell(50,$alt,$j34_setor."/".$j34_quadra."/"."$j34_lote",0,0,"C",$p);
 		 $pdf->cell(100,$alt,substr($nomepri.", ".$j39_numero.". ".$j39_compl.". ".$j13_descr,0,90),0,1,"L",$p);
      $p = 0;
@@ -317,7 +317,7 @@ for($x = 0; $x < $numrows;$x++){
 	 $pdf->setfont('arial','',7);
 	 $total = $k22_vlrcor + $k22_juros + $k22_multa - $k22_desconto;
    $pdf->cell(15,$alt,$k22_tipo,0,0,"C",$p);
-	 $pdf->cell(70,$alt,substr($k00_descr,0,55),0,0,"L",$p);
+	 $pdf->cell(70,$alt,substr((string) $k00_descr,0,55),0,0,"L",$p);
 	 $pdf->cell(20,$alt,$k22_exerc,0,0,"C",$p);
 	 $pdf->cell(20,$alt,$k22_numpar ,0,0,"C",$p);
 	 $pdf->cell(25,$alt,db_formatar($k22_vlrhis,'f')     ,0,0,"R",$p);
@@ -408,7 +408,7 @@ foreach ($arr_tipo as $key => $value) {
 		$troca = 0;
 		$p = 0;
   }
-	$arr_dados = split("-",$key);
+	$arr_dados = preg_split("#\\-#m",$key);
   $pdf->cell(40,$alt,$arr_dados[0],0,0,"C",$p);
   $pdf->cell(70,$alt,$arr_dados[1],0,0,"L",$p);
   $pdf->cell(60,$alt,db_formatar($value,'f')     ,0,1,"R",$p);

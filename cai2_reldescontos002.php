@@ -96,12 +96,12 @@ for ( $iInd = 0; $iInd < $oDaoArrepaga->numrows; $iInd++ ) {
     	$aResumos[$sDescrAgrupa][$oDesconto->$sCampo]['nValorPago']  += $oDesconto->valor_pago;
     	$aResumos[$sDescrAgrupa][$oDesconto->$sCampo]['nDesconto']   += $oDesconto->desconto;
     } else {
-    	
+
     	$aResumos[$sDescrAgrupa][$oDesconto->$sCampo]['sDescricao']  = $sDescricao;
     	$aResumos[$sDescrAgrupa][$oDesconto->$sCampo]['nValorPagar'] = $oDesconto->valor_pagar;
     	$aResumos[$sDescrAgrupa][$oDesconto->$sCampo]['nValorPago']  = $oDesconto->valor_pago;
     	$aResumos[$sDescrAgrupa][$oDesconto->$sCampo]['nDesconto']   = $oDesconto->desconto;
-    	
+
       /*$aResumos[$sDescrAgrupa][$oDesconto->$sCampo]['sDescricao'] = $sDescricao;
       $aResumos[$sDescrAgrupa][$oDesconto->$sCampo]['nVlrHist']   = $oDesconto->vlrhist;
       $aResumos[$sDescrAgrupa][$oDesconto->$sCampo]['nVlrCorr']   = $oDesconto->vlrcorr;

@@ -93,7 +93,7 @@ try {
       $rsFechamento      = db_query( $sSqlFechamento );
 
       $iLinhas     = pg_num_rows( $rsFechamento );
-      $aFechamento = array();
+      $aFechamento = [];
 
       if ( $iLinhas > 0 ) {
 
@@ -112,7 +112,7 @@ try {
           $oDados->dtInicio          = $oCompetencia->getPeriodoInicial()->convertTo(DBDate::DATA_PTBR);
           $oDados->dtFim             = $oCompetencia->getPeriodoFinal()->convertTo(DBDate::DATA_PTBR);
           $oDados->sDescricao        = urlencode($oCompetencia->getDescricao());
-          $oDados->sUsuario          = urlencode($oCompetencia->getUsuario()->getNome());
+          $oDados->sUsuario          = urlencode((string) $oCompetencia->getUsuario()->getNome());
           $oDados->lGerouArquivo     = $oDadosFechamento->gero_arquivo == 't';
           $aFechamento[]             = $oDados;
         }
@@ -161,14 +161,14 @@ try {
 
     case 'buscaLaboratorios':
 
-      $oRetorno->aLaboratorios = array();
+      $oRetorno->aLaboratorios = [];
       $aLaboratorios           = LaboratorioRepository::getLaboratorios();
 
       foreach( $aLaboratorios as $oLaboratorio ) {
 
         $oDadosLaboratorio             = new stdClass();
         $oDadosLaboratorio->iCodigo    = $oLaboratorio->getCodigo();
-        $oDadosLaboratorio->sDescricao = urlencode( $oLaboratorio->getDescricao() );
+        $oDadosLaboratorio->sDescricao = urlencode( (string) $oLaboratorio->getDescricao() );
         $oRetorno->aLaboratorios[]     = $oDadosLaboratorio;
       }
 

@@ -69,14 +69,14 @@ $clprocdoc->rotulo->label();
                         </td>
                         <td>
                             <?php
-                            $opcoes = array(
+                            $opcoes = [
                               '' => 'Selecione...',
                               1 => 'TEXTO LIVRE',
                               2 => 'NUMÉRICO',
                               3 => 'VALOR',
                               4 => 'ENDEREÇO',
                               5 => 'ARQUIVO'
-                            );
+                            ];
                             db_select('p56_ouvidoriatipodado', $opcoes, true, $db_opcao);
                             ?>
                         </td>
@@ -106,7 +106,7 @@ $clprocdoc->rotulo->label();
 
     function js_preenchepesquisa(chave) {
       db_iframe.hide();
-      location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?chavepesquisa=" + chave;
+      location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?chavepesquisa=" + chave;
     }
 
     $('p56_coddoc').addClassName('field-size2');

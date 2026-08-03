@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcfornetipoidentificacaocredorgenerica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpcfornetipoidentificacaocredorgenerica = new cl_pcfornetipoidentificacaocredorgenerica;
 $clpcfornetipoidentificacaocredorgenerica->rotulo->label("c26_sequencial");
 $clpcfornetipoidentificacaocredorgenerica->rotulo->label("c26_pcforne");
@@ -98,9 +98,9 @@ $clpcfornetipoidentificacaocredorgenerica->rotulo->label("c26_pcforne");
         }else{
            $sql = $clpcfornetipoidentificacaocredorgenerica->sql_query("",$campos,"c26_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c26_pcforne)){
-          $repassa = array("chave_c26_sequencial"=>$chave_c26_sequencial,"chave_c26_pcforne"=>$chave_c26_pcforne);
+          $repassa = ["chave_c26_sequencial"=>$chave_c26_sequencial,"chave_c26_pcforne"=>$chave_c26_pcforne];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

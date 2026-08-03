@@ -34,7 +34,7 @@ include(modification("classes/db_atendusucli_classe.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
 $clatendusucli = new cl_atendusucli;
 $cldb_usuarios = new cl_db_usuarios;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 $sqlerro=false;

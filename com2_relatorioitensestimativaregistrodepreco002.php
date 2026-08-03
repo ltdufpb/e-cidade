@@ -45,7 +45,7 @@ $oEstimativaRegistroPreco  = new estimativaRegistroPreco($pc10_numero);
 $oAberturaRegistroPreco    = new aberturaRegistroPreco($oEstimativaRegistroPreco->getCodigoAbertura());
 $aCompilacoesRegistroPreco = $oAberturaRegistroPreco->getCompilacoes(true);
 
-$aCodigoCompilacoesRegistroPreco = array();
+$aCodigoCompilacoesRegistroPreco = [];
 
 if ($aCompilacoesRegistroPreco) {
 	foreach ($aCompilacoesRegistroPreco as $oCompilacaoRegistroPreco) {
@@ -99,7 +99,7 @@ foreach ($aDados as $oIt) {
   $nQtdEmpenhada  += $oQtdDisponiveis->empenhada;  // R
   $nQtdeExecedido += $oQtdDisponiveis->execedente; // R*/
 
-  $sDescricao = substr ( urldecode( $oIt->getDescricaoMaterial() ), 0, 50 );
+  $sDescricao = substr ( urldecode( (string) $oIt->getDescricaoMaterial() ), 0, 50 );
 
   $oPdf->cell(10, $iAlt, $iSequencial , 1, 0, "C", false);
   $oPdf->cell(20, $iAlt, $oIt->getCodigoMaterial()    , 1, 0, "C", false);

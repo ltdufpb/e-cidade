@@ -93,7 +93,7 @@ class InscricaoController extends Controller
 
             return new DBJsonResponse([
                 'success' => true,
-                'message' => utf8_encode("Comprovante gerado com sucesso!"),
+                'message' => mb_convert_encoding("Comprovante gerado com sucesso!", 'UTF-8', 'ISO-8859-1'),
                 'body' => [
                     'protocolo' => $inscricao->getProtocolo(),
                     'path' => $comprovante

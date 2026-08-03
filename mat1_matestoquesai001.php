@@ -51,7 +51,7 @@ db_app::import("contabilidade.lancamento.*");
 db_app::import("Dotacao");
 db_app::import("contabilidade.planoconta.*");
 db_app::import("contabilidade.contacorrente.*");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatestoque = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;
 $clmatestoqueini = new cl_matestoqueini;
@@ -59,10 +59,10 @@ $clmatestoqueinimei = new cl_matestoqueinimei;
 $cldb_depart = new cl_db_depart;
 $db_opcao = 1;
 $db_botao = true;
-$aParamKeys = array(
+$aParamKeys = [
                     "cc09_anousu" => db_getsession("DB_anousu"),
                     "cc09_instit" => db_getsession("DB_instit"),
-                   );
+                   ];
 $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
 $iTipoControleCustos = 0;
 

@@ -37,8 +37,8 @@ $mes1 = date("m");
 $ano1 = date("Y");
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //---- instancia classes
 $cl_protprocesso = new cl_protprocesso;
@@ -119,9 +119,9 @@ legend {
 				                  <td><b>Tipo:</b> </td>
 				                  <td>
 				                  <?php 
-				                    $aTipos = array ('n' => 'Somente os em andamento',
+				                    $aTipos =  ['n' => 'Somente os em andamento',
 				                                     'a' => 'Somente os arquivados',
-				                                     't' => 'Todos');
+				                                     't' => 'Todos'];
 				                    db_select('tipo', $aTipos, true, 1);
 				                  ?>
 				                  </td>
@@ -135,13 +135,13 @@ legend {
 					                <td><b>Ordem:</b></td>
 					                <td>
 					                <?php 
-					                  $aOrdem = array (1 => 'Processos',
+					                  $aOrdem =  [1 => 'Processos',
 					                                   2 => 'Tipo de Processo',
 					                                   3 => 'Data / Hora',
 					                                   4 => 'Usuário',
 					                                   5 => 'Requerente',
 					                                   6 => 'Departamento Inicial',
-					                                   7 => 'Departamento Atual');
+					                                   7 => 'Departamento Atual'];
     					             db_select('ordem', $aOrdem, true, 1);
 		    			           ?>
 				    	           </td>
@@ -151,7 +151,7 @@ legend {
 					               <td>
 					               <?php 
 					                 // Array com valores do select
-					                 $aTitulares = array (1 => 'Requerente', 2 => 'Titular');
+					                 $aTitulares =  [1 => 'Requerente', 2 => 'Titular'];
 					                 db_select ('cboTitularProcesso', $aTitulares, true, 1);
 					               ?>
 					               </td>
@@ -160,9 +160,9 @@ legend {
 					                <td><b>Observação:</b></td>
                           <td>
                           <?php 
-                            $aObs = array (1 => 'Sim',
+                            $aObs =  [1 => 'Sim',
                                            2 => 'Não'
-                                          );
+                                          ];
                            db_select('observacao', $aObs, true, 1);
                          ?>
                          </td>

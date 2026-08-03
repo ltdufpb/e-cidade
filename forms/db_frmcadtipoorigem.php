@@ -104,7 +104,7 @@ db_input('k33_descr',40,$Ik33_descr,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("k14_sequencial"=>@$k14_sequencial);
+	 $chavepri= ["k14_sequencial"=>@$k14_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 //	 echo $clcadtipoorigem->sql_query_file(null,"*",null," k14_cadtipo = $k14_cadtipo ");
 	 $cliframe_alterar_excluir->sql     = $clcadtipoorigem->sql_query_file(null,"*",null," k14_cadtipo = $k14_cadtipo ");

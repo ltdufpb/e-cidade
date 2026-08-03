@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcfornereprlegal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpcfornereprlegal = new cl_pcfornereprlegal;
 $clpcfornereprlegal->rotulo->label("pc81_sequencia");
 $clpcfornereprlegal->rotulo->label("pc81_cgmforn");
@@ -98,9 +98,9 @@ $clpcfornereprlegal->rotulo->label("pc81_cgmforn");
         }else{
            $sql = $clpcfornereprlegal->sql_query("",$campos,"pc81_sequencia","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_pc81_cgmforn)){
-          $repassa = array("chave_pc81_sequencia"=>$chave_pc81_sequencia,"chave_pc81_cgmforn"=>$chave_pc81_cgmforn);
+          $repassa = ["chave_pc81_sequencia"=>$chave_pc81_sequencia,"chave_pc81_cgmforn"=>$chave_pc81_cgmforn];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

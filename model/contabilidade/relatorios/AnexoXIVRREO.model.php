@@ -109,12 +109,13 @@ class AnexoXIVRREO extends RelatoriosLegaisBase  {
    * 
    * @return array - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
   	
      $oRetorno                        = new stdClass();
-     $oRetorno->quadroreceitas        = array();
-     $oRetorno->quadrodespesas        = array();
-     $oRetorno->quadrosaldofinanceiro = array();
+     $oRetorno->quadroreceitas        = [];
+     $oRetorno->quadrodespesas        = [];
+     $oRetorno->quadrosaldofinanceiro = [];
      
      /**
       * verificamos e somamos as linhas da receita, que atualmente são as linhas de 1-2 (na configuracao)
@@ -155,7 +156,7 @@ class AnexoXIVRREO extends RelatoriosLegaisBase  {
        $oLinhaRelatorio->setPeriodo($this->iCodigoPeriodo);
        $aValoresColunasLinhas = $oLinhaRelatorio->getValoresColunas(null, null, $this->getInstituicoes(), $this->iAnoUsu);
        foreach ($aValoresColunasLinhas as $oColuna) {
-       	 
+
          $oLinha->previsaoatualizada += $oColuna->colunas[0]->o117_valor;
          $oLinha->receitaatualizada  += $oColuna->colunas[1]->o117_valor;
          /**

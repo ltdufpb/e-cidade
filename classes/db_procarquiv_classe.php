@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE procarquiv
 class cl_procarquiv {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $p67_codproc = 0;
-   var $p67_dtarq_dia = null;
-   var $p67_dtarq_mes = null;
-   var $p67_dtarq_ano = null;
-   var $p67_dtarq = null;
-   var $p67_historico = null;
-   var $p67_id_usuario = 0;
-   var $p67_coddepto = 0;
-   var $p67_codarquiv = 0;
+   public $p67_codproc = 0;
+   public $p67_dtarq_dia = null;
+   public $p67_dtarq_mes = null;
+   public $p67_dtarq_ano = null;
+   public $p67_dtarq = null;
+   public $p67_historico = null;
+   public $p67_id_usuario = 0;
+   public $p67_coddepto = 0;
+   public $p67_codarquiv = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  p67_codproc = int4 = Código do processo
                  p67_dtarq = date = Data do Arquivamento
                  p67_historico = text = Histórico do Arquivamento
@@ -64,7 +64,7 @@ class cl_procarquiv {
    function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procarquiv");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -153,10 +153,10 @@ class cl_procarquiv {
          $this->erro_status = "0";
          return false;
        }
-       $this->p67_codarquiv = pg_result($result,0,0);
+       $this->p67_codarquiv = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from procarquiv_p67_codarquiv_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p67_codarquiv)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p67_codarquiv)){
          $this->erro_sql = " Campo p67_codarquiv maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_procarquiv {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Arquivamento dos Processos ($this->p67_codarquiv) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Arquivamento dos Processos já Cadastrado";
@@ -218,15 +218,15 @@ class cl_procarquiv {
      $resaco = $this->sql_record($this->sql_query_file($this->p67_codarquiv));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4682,'$this->p67_codarquiv','I')");
-       $resac = db_query("insert into db_acount values($acount,615,4677,'','".AddSlashes(pg_result($resaco,0,'p67_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,615,4678,'','".AddSlashes(pg_result($resaco,0,'p67_dtarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,615,4679,'','".AddSlashes(pg_result($resaco,0,'p67_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,615,4680,'','".AddSlashes(pg_result($resaco,0,'p67_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,615,4681,'','".AddSlashes(pg_result($resaco,0,'p67_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,615,4682,'','".AddSlashes(pg_result($resaco,0,'p67_codarquiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,615,4677,'','".AddSlashes(pg_fetch_result($resaco,0,'p67_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,615,4678,'','".AddSlashes(pg_fetch_result($resaco,0,'p67_dtarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,615,4679,'','".AddSlashes(pg_fetch_result($resaco,0,'p67_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,615,4680,'','".AddSlashes(pg_fetch_result($resaco,0,'p67_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,615,4681,'','".AddSlashes(pg_fetch_result($resaco,0,'p67_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,615,4682,'','".AddSlashes(pg_fetch_result($resaco,0,'p67_codarquiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -235,10 +235,10 @@ class cl_procarquiv {
       $this->atualizacampos();
      $sql = " update procarquiv set ";
      $virgula = "";
-     if(trim($this->p67_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_codproc"])){
+     if(trim((string) $this->p67_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_codproc"])){
        $sql  .= $virgula." p67_codproc = $this->p67_codproc ";
        $virgula = ",";
-       if(trim($this->p67_codproc) == null ){
+       if(trim((string) $this->p67_codproc) == null ){
          $this->erro_sql = " Campo Código do processo nao Informado.";
          $this->erro_campo = "p67_codproc";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_procarquiv {
          return false;
        }
      }
-     if(trim($this->p67_dtarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_dtarq_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p67_dtarq_dia"] !="") ){
+     if(trim((string) $this->p67_dtarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_dtarq_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p67_dtarq_dia"] !="") ){
        $sql  .= $virgula." p67_dtarq = '$this->p67_dtarq' ";
        $virgula = ",";
-       if(trim($this->p67_dtarq) == null ){
+       if(trim((string) $this->p67_dtarq) == null ){
          $this->erro_sql = " Campo Data do Arquivamento nao Informado.";
          $this->erro_campo = "p67_dtarq_dia";
          $this->erro_banco = "";
@@ -264,7 +264,7 @@ class cl_procarquiv {
        if(isset($GLOBALS["HTTP_POST_VARS"]["p67_dtarq_dia"])){
          $sql  .= $virgula." p67_dtarq = null ";
          $virgula = ",";
-         if(trim($this->p67_dtarq) == null ){
+         if(trim((string) $this->p67_dtarq) == null ){
            $this->erro_sql = " Campo Data do Arquivamento nao Informado.";
            $this->erro_campo = "p67_dtarq_dia";
            $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_procarquiv {
          }
        }
      }
-     if(trim($this->p67_historico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_historico"])){
+     if(trim((string) $this->p67_historico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_historico"])){
        $sql  .= $virgula." p67_historico = '$this->p67_historico' ";
        $virgula = ",";
-       if(trim($this->p67_historico) == null ){
+       if(trim((string) $this->p67_historico) == null ){
          $this->erro_sql = " Campo Histórico do Arquivamento nao Informado.";
          $this->erro_campo = "p67_historico";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_procarquiv {
          return false;
        }
      }
-     if(trim($this->p67_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_id_usuario"])){
+     if(trim((string) $this->p67_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_id_usuario"])){
        $sql  .= $virgula." p67_id_usuario = $this->p67_id_usuario ";
        $virgula = ",";
-       if(trim($this->p67_id_usuario) == null ){
+       if(trim((string) $this->p67_id_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "p67_id_usuario";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_procarquiv {
          return false;
        }
      }
-     if(trim($this->p67_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_coddepto"])){
+     if(trim((string) $this->p67_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_coddepto"])){
        $sql  .= $virgula." p67_coddepto = $this->p67_coddepto ";
        $virgula = ",";
-       if(trim($this->p67_coddepto) == null ){
+       if(trim((string) $this->p67_coddepto) == null ){
          $this->erro_sql = " Campo Departamento nao Informado.";
          $this->erro_campo = "p67_coddepto";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_procarquiv {
          return false;
        }
      }
-     if(trim($this->p67_codarquiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_codarquiv"])){
+     if(trim((string) $this->p67_codarquiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p67_codarquiv"])){
        $sql  .= $virgula." p67_codarquiv = $this->p67_codarquiv ";
        $virgula = ",";
-       if(trim($this->p67_codarquiv) == null ){
+       if(trim((string) $this->p67_codarquiv) == null ){
          $this->erro_sql = " Campo Código  do Arquivamento nao Informado.";
          $this->erro_campo = "p67_codarquiv";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_procarquiv {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4682,'$this->p67_codarquiv','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p67_codproc"]))
-           $resac = db_query("insert into db_acount values($acount,615,4677,'".AddSlashes(pg_result($resaco,$conresaco,'p67_codproc'))."','$this->p67_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,615,4677,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p67_codproc'))."','$this->p67_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p67_dtarq"]))
-           $resac = db_query("insert into db_acount values($acount,615,4678,'".AddSlashes(pg_result($resaco,$conresaco,'p67_dtarq'))."','$this->p67_dtarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,615,4678,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p67_dtarq'))."','$this->p67_dtarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p67_historico"]))
-           $resac = db_query("insert into db_acount values($acount,615,4679,'".AddSlashes(pg_result($resaco,$conresaco,'p67_historico'))."','$this->p67_historico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,615,4679,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p67_historico'))."','$this->p67_historico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p67_id_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,615,4680,'".AddSlashes(pg_result($resaco,$conresaco,'p67_id_usuario'))."','$this->p67_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,615,4680,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p67_id_usuario'))."','$this->p67_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p67_coddepto"]))
-           $resac = db_query("insert into db_acount values($acount,615,4681,'".AddSlashes(pg_result($resaco,$conresaco,'p67_coddepto'))."','$this->p67_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,615,4681,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p67_coddepto'))."','$this->p67_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p67_codarquiv"]))
-           $resac = db_query("insert into db_acount values($acount,615,4682,'".AddSlashes(pg_result($resaco,$conresaco,'p67_codarquiv'))."','$this->p67_codarquiv',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,615,4682,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p67_codarquiv'))."','$this->p67_codarquiv',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_procarquiv {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4682,'$p67_codarquiv','E')");
-         $resac = db_query("insert into db_acount values($acount,615,4677,'','".AddSlashes(pg_result($resaco,$iresaco,'p67_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,615,4678,'','".AddSlashes(pg_result($resaco,$iresaco,'p67_dtarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,615,4679,'','".AddSlashes(pg_result($resaco,$iresaco,'p67_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,615,4680,'','".AddSlashes(pg_result($resaco,$iresaco,'p67_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,615,4681,'','".AddSlashes(pg_result($resaco,$iresaco,'p67_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,615,4682,'','".AddSlashes(pg_result($resaco,$iresaco,'p67_codarquiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,615,4677,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p67_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,615,4678,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p67_dtarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,615,4679,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p67_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,615,4680,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p67_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,615,4681,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p67_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,615,4682,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p67_codarquiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from procarquiv
@@ -462,7 +462,7 @@ class cl_procarquiv {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procarquiv";
@@ -476,7 +476,7 @@ class cl_procarquiv {
    function sql_query ( $p67_codarquiv=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -498,7 +498,7 @@ class cl_procarquiv {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,7 +510,7 @@ class cl_procarquiv {
    function sql_query_file ( $p67_codarquiv=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -531,7 +531,7 @@ class cl_procarquiv {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,7 +544,7 @@ class cl_procarquiv {
   function sql_query_ouvprocarquivado ( $p67_codarquiv=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -572,7 +572,7 @@ class cl_procarquiv {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

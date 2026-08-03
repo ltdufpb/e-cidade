@@ -57,8 +57,8 @@ $clrotulo->label("e54_tipol");
 $clrotulo->label("pc10_numero");
 $clrotulo->label("pc10_resumo");
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $action   = "";
 $erro     = false;
 $db_botao = true;
@@ -186,7 +186,7 @@ if ($clpcparam->numrows > 0){
 		                         solandam.pc43_depto = ".db_getsession("DB_coddepto");
 
                $result_andam = @db_query($sql);
-               $numrows      = @pg_numrows($result_andam);
+               $numrows      = @pg_num_rows($result_andam);
 
                if ($numrows == 0){
                     $db_botao = false;     
@@ -452,7 +452,7 @@ if($verifica==0){
          $result_solicita = $clsolicita->sql_record($clsolicita->sql_query_solicita($pc10_numero,"pc10_resumo"));
          if($clsolicita->numrows > 0){
               db_fieldsmemory($result_solicita,0);
-               $clsolicita->pc10_resumo = stripslashes(addslashes(chop($pc10_resumo)));
+               $clsolicita->pc10_resumo = stripslashes(addslashes(chop((string) $pc10_resumo)));
         
    ?>
    <tr>
@@ -461,7 +461,7 @@ if($verifica==0){
    </td>
    <td>
    <?php 
-     @$pc10_resumo = stripslashes($pc10_resumo);
+     @$pc10_resumo = stripslashes((string) $pc10_resumo);
      db_textarea('pc10_resumo',7,80,$Ipc10_resumo,true,'text',2,"");
                                                                        
     }
@@ -478,7 +478,7 @@ if ($verifica>0)
       if($clsolicita->numrows> 0)
           {
            db_fieldsmemory($result_solicita,0);
-           $clsolicita->pc10_resumo = chop($pc10_resumo); 
+           $clsolicita->pc10_resumo = chop((string) $pc10_resumo); 
            }
     ?>
 
@@ -488,7 +488,7 @@ if ($verifica>0)
         </td>
         <td>
      <?php 
-     @$pc10_resumo = stripslashes($pc10_resumo);
+     @$pc10_resumo = stripslashes((string) $pc10_resumo);
      db_textarea('pc10_resumo',7,80,$Ipc10_resumo,true,'text',2,"");
           }
       }

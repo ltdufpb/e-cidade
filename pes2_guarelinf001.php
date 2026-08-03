@@ -34,7 +34,7 @@ include(modification("classes/db_rhpessoalmov_classe.php"));
 include(modification("classes/db_rhregime_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $aux = new cl_arquivo_auxiliar;
 $clrhpessoal = new cl_rhpessoal;
 $clrhpessoalmov = new cl_rhpessoalmov;
@@ -152,7 +152,7 @@ function js_emite(){
       <td align="center" colspan="2">
         <?php 
         $result_regime = $clrhregime->sql_record($clrhregime->sql_query_file(null, "rh30_codreg,rh30_codreg || ' - ' ||  rh30_descr as rh30_descr", "rh30_codreg"));
-        db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
+        db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, [], 5, 250);
         ?>
       </td>
     </tr>

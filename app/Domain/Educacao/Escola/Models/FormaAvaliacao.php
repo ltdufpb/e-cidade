@@ -26,6 +26,6 @@ class FormaAvaliacao extends Model
 
     public function getEd37CTipoAttribute()
     {
-        return trim($this->attributes['ed37_c_tipo']);
+        return trim((string) $this->attributes['ed37_c_tipo']);
     }
 }

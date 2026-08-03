@@ -98,7 +98,7 @@ db_input('db95_compl',40,$Idb95_compl,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("db95_codigo"=>@$db95_codigo);
+	 $chavepri= ["db95_codigo"=>@$db95_codigo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_relatcabec->sql_query_file($db95_codigo);
 	 $cliframe_alterar_excluir->campos  ="db95_codigo,db95_codrel,db95_compl";

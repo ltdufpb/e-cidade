@@ -57,27 +57,27 @@ $db_opcao   = 2;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
 	<?php 
-      $clcriaabas->identifica = array("veiccadcentral"          => "Dados da central",
+      $clcriaabas->identifica = ["veiccadcentral"          => "Dados da central",
                                       "veiccadcentraldepart"    => "Departamentos",
                                       "veicmotoristascentral"   => "Motoristas",
-                                      "veiccadcentralveiculo"   => "Veiculos");
+                                      "veiccadcentralveiculo"   => "Veiculos"];
 
-      $clcriaabas->title      = array("veiccadcentral"          => "Dados da central",
+      $clcriaabas->title      = ["veiccadcentral"          => "Dados da central",
                                       "veiccadcentraldepart"    => "Departamentos",
                                       "veicmotoristascentral"   => "Motoristas",
-                                      "veiccadcentralveiculo"   => "Veiculos");
+                                      "veiccadcentralveiculo"   => "Veiculos"];
 
-      $clcriaabas->src        = array("veiccadcentral"          => "vei1_veiccadcentral005.php");
+      $clcriaabas->src        = ["veiccadcentral"          => "vei1_veiccadcentral005.php"];
 
-      $clcriaabas->disabled   = array("veiccadcentral"          => "false",
+      $clcriaabas->disabled   = ["veiccadcentral"          => "false",
                                       "veiccadcentraldepart"    => "false",
                                       "veicmotoristascentral"   => "false",
-                                      "veiccadcentralveiculo"   => "false");    
+                                      "veiccadcentralveiculo"   => "false"];    
 
-      $clcriaabas->sizecampo  = array("veiccadcentral"          => "23",
+      $clcriaabas->sizecampo  = ["veiccadcentral"          => "23",
                                       "veiccadcentraldepart"    => "23",
                                       "veicmotoristascentral"   => "23",
-                                      "veiccadcentralveiculo"   => "23");
+                                      "veiccadcentralveiculo"   => "23"];
 
       $clcriaabas->cria_abas();    
 	?>

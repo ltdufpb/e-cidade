@@ -28,8 +28,8 @@
 include(modification("libs/db_sql.php"));
 //include(modification("fpdf151/fpdf.php"));
 require_once(modification('fpdf151/PDF_Label.php'));
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $inicial = 1000;
 $final   = 1100;
@@ -47,7 +47,7 @@ $final   = 1100;
 //height	= altura da etiqueta
 //font-size	= tamanho da fonte
 
-$pdf = new PDF_Label (array('name'=>'5164','paper-size'=>'a3','metric'=>'mm','marginLeft'=>20,'marginTop'=>0,'NX'=>2,'NY'=>12,'SpaceX'=>2,'SpaceY'=>6,'width'=>81,'height'=>26,'font-size'=>9),1,1);
+$pdf = new PDF_Label (['name'=>'5164','paper-size'=>'a3','metric'=>'mm','marginLeft'=>20,'marginTop'=>0,'NX'=>2,'NY'=>12,'SpaceX'=>2,'SpaceY'=>6,'width'=>81,'height'=>26,'font-size'=>9],1,1);
 //$pdf = new PDF_Label('8600', 'mm', 2, 12);
 $pdf->Open();
 $pdf->_Line_Height = 6 ;

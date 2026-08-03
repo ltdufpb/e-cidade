@@ -102,7 +102,7 @@ class InstituicaoService
             db_fim_transacao();
         } catch (\Exception $erro) {
             db_fim_transacao(true);
-            $this->oRetorno->setDescricaoErro(utf8_encode($erro->getMessage()));
+            $this->oRetorno->setDescricaoErro(mb_convert_encoding($erro->getMessage(), 'UTF-8', 'ISO-8859-1'));
             $this->oRetorno->organizaRetorno();
             return $this->oRetorno->getXmlRetorno()->asXML();
         }
@@ -142,7 +142,7 @@ class InstituicaoService
 
         $qsas = $processaQSA->getQsa();
 
-        $codigos = array();
+        $codigos = [];
 
         $processaCgm = new ProcessaCgm($this->oRegin);
         $processaCgm->setGrupoPrincipal(Regin::EMPRESA);

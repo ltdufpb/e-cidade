@@ -139,7 +139,7 @@
 	       	$this->objpdf->setx(15);
 	        $obs = $this->obsativ;
 	        $this->objpdf->Cell(15,4,"",0,0,"C",0);
-	        $this->objpdf->Cell(164,4,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,1,"L",0);
+	        $this->objpdf->Cell(164,4,"OBS: ".substr((string) $obs,0,65).(strlen((string) $obs) > 65 ? "...":""),0,1,"L",0);
 	        }else{
 		    	$this->objpdf->setx(15);
 		     	$this->objpdf->Cell(15,4,"",0,0,"C",0);
@@ -177,7 +177,7 @@
 	              $atv_perman = "f";
 	            }
 	          }
-	         
+
 	       	 if($atv_perman == 'f'){
 	       	    $this->objpdf->Cell(24,5,"FINAL",0,1,"C",0);
 	       	 }else{
@@ -224,14 +224,14 @@
 				         $this->objpdf->Cell(40,4,"e outras ...",0,1,"L",0);
 		             $imprime_linha = 'f';
 		           }
-		         
-		       
+
+
 		       if($imprime_linha=='t'){
 	           $yyy = $this->objpdf->gety();
 				     $chave=key($this->outrasativs);
 				     $this->objpdf->SetFont('Arial','',11);
 				     $this->objpdf->setx(15);
-				     
+
 				     if ($this->impcodativ == 't'){
 					     $codativ=$this->outrasativs[$i]["codativ"];
 					     $this->objpdf->Cell(15,4,$codativ,0,0,"C",0);
@@ -240,7 +240,7 @@
 				     }
 				     $descr=$this->outrasativs[$i]["descr"];
 				     $this->objpdf->Cell(120,4,$descr,0,$quebradescr,"L",0);
-				     
+
 				     if ($this->impdatas == 't'){
 					     $datain=$this->outrasativs[$i]["datain"];
 					     $this->objpdf->Cell(24,4,db_formatar($datain,'d'),0,0,"C",0);
@@ -256,8 +256,8 @@
 			       		$this->objpdf->Cell(24,5,"",0,1,"C",0);
 				     }
 		     }
-	       
-		     
+
+
 		     if ($this->impobsativ == 't'){
 		       $linhasec = $linhasec +1;
 		       if($linhasec<6){
@@ -266,12 +266,12 @@
 				        $obs = $this->q03_atmemo[$descr];
 				        $this->objpdf->Cell(15,4,"",0,0,"C",0);
 				        $this->objpdf->Cell(164,4,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,$quebraobs,"L",0);
-				        
+
 				     }else{ 
 				        $this->objpdf->setx(15);
 				     	  $this->objpdf->Cell(15,4,"",0,0,"C",0);
 				        $this->objpdf->Cell(164,4,"OBS: Sem observação ...",0,$quebraobs,"L",0);
-				     	  
+
 				     }
 		       }
 		     }
@@ -282,9 +282,9 @@
 			     if  ($yyyatual >= 200){ 
 			         break;
 			     }  
-		   
+
 		   }
-		   
+
 //=====================================================================================================================================================	   
     $this->objpdf->roundedrect($coluna-2,$y,187,35,2,'1234'); // descricao da atividade secundaria
  	}
@@ -305,7 +305,7 @@
 	  }
 	}
     $data= date("Y-m-d",db_getsession("DB_datausu"));
-    $dataex = split("-",$data);
+    $dataex = preg_split("#\\-#m",$data);
     $dia= $dataex[2];
     $mes= $dataex[1];
     $ano= $dataex[0];
@@ -335,7 +335,7 @@ $resultass = db_query($sqlass);
 $linhasass = pg_num_rows($resultass);
 if ($linhasass>0){
 	//db_fieldsmemory($resultass,0);
-	$ass= pg_result($resultass,0,'db02_texto');
+	$ass= pg_fetch_result($resultass,0,'db02_texto');
 	eval($ass);
 }else{
 // QUANDO NÃO TIVER "ASSINATURAS_CODIGOPHP" CADASTRADAS NA DB_DOCUMENTOS pegar o modo antigo.
@@ -353,11 +353,11 @@ if ($linhasass>0){
 //		db_criatabela($resparag);exit;
 //		die($sqlparag);
 
-		if (pg_numrows($resparag) == 0) {
+		if (pg_num_rows($resparag) == 0) {
 			db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do alvara!');
 			exit;
 		}
-		$numrows = pg_numrows($resparag);
+		$numrows = pg_num_rows($resparag);
 		
 		$linha  = $this->objpdf->getY()+10;
 		$colpri = $coluna;

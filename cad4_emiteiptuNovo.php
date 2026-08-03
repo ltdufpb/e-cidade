@@ -62,7 +62,7 @@ if (isset($emissaoGeralPadrao) && $emissaoGeralPadrao) {
 $oPost = \db_utils::postMemory($_POST);
 $oEmissaoRepository = new Repository();
 $aEmissoes          = $oEmissaoRepository->getEmissoesPorTipo(1, $emissaoGeralPadrao);
-$tipoEmissoes = array(0 => "Nova Geração");
+$tipoEmissoes = [0 => "Nova Geração"];
 foreach ($aEmissoes as $iIndice => $oEmissao) {
 
     $descricao = $oEmissao->getCodigo()." - ".$oEmissao->getData()->getDate(DBDate::DATA_PTBR). " - ".$oEmissao->getHora();
@@ -117,7 +117,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Quantidade de registros do select:</strong>
               </td>
               <td nowrap>
-                <input type='text' size="20px;" id='quantidade' name='quantidade' value=<?=(isset($quantidade)?$quantidade:1000)?>>
+                <input type='text' size="20px;" id='quantidade' name='quantidade' value=<?=($quantidade ?? 1000)?>>
               </td>
             </tr>
 
@@ -127,13 +127,13 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
               </td>
               <td>
                 <?php 
-                   $aOrdem = array ( "endereco"        => "Cidade / Logradouro",
+                   $aOrdem =  [ "endereco"        => "Cidade / Logradouro",
                                      "bairroender"     => "Bairro / Logradouro",
                                      "alfabetica"      => "Alfabética / Nome",
                                      "zonaentrega"     => "Zona de entrega",
                                      "refant"          => "Referência Anterior",
                                      "setorquadralote" => "Setor / Quadra / Lote",
-                                     "bairroalfa"      => "Bairro / Alfabética" );
+                                     "bairroalfa"      => "Bairro / Alfabética" ];
                    db_select('ordem', $aOrdem, true, 2,"style='width:165px;'");
                 ?>
               </td>
@@ -162,9 +162,9 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
               </td>
               <td>
                 <?php 
-                  $aEspecie = array ( "todos"       => "Todos",
+                  $aEspecie =  [ "todos"       => "Todos",
                                       "predial"     => "Somente Predial",
-                                      "territorial" => "Somente Territorial" );
+                                      "territorial" => "Somente Territorial" ];
                   db_select('especie', $aEspecie, true, 1);
                 ?>
               </td>
@@ -199,9 +199,9 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Valor Mínimo de:</strong>
               </td>
               <td>
-                <input type='text' id='vlrmin' size='10' name='vlrmin' value=<?=(isset($vlrmin)?$vlrmin:0)?>>
+                <input type='text' id='vlrmin' size='10' name='vlrmin' value=<?=($vlrmin ?? 0)?>>
                 <strong>à</strong>
-                <input type='text' id='vlrmax' size='10' name='vlrmax' value=<?=(isset($vlrmax)?$vlrmax:999999999)?>>
+                <input type='text' id='vlrmax' size='10' name='vlrmax' value=<?=($vlrmax ?? 999999999)?>>
               </td>
             </tr>
 
@@ -210,12 +210,12 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Valor de Intervalo para Parcelado:</strong>
               </td>
               <td>
-                <input type='text' id='vlrminunica' name='vlrminunica' size='10' value=<?=(isset($vlrminunica)?$vlrminunica:0)?>><strong> à </strong>
-                <input type='text' id='vlrmaxunica' name='vlrmaxunica' size='10' value=<?=(isset($vlrmaxunica)?$vlrmaxunica:999999999)?>>
+                <input type='text' id='vlrminunica' name='vlrminunica' size='10' value=<?=($vlrminunica ?? 0)?>><strong> à </strong>
+                <input type='text' id='vlrmaxunica' name='vlrmaxunica' size='10' value=<?=($vlrmaxunica ?? 999999999)?>>
                 <?php 
-                  $aIntervaloParcelamento = array ( "desconsiderar" => "Desconsiderar intervalo",
+                  $aIntervaloParcelamento =  [ "desconsiderar" => "Desconsiderar intervalo",
                                                     "gerar"         => "Gerar para os que estiverem no intervalo",
-                                                    "naogerar"      => "Nao gerar para os que estiverem no intervalo" );
+                                                    "naogerar"      => "Nao gerar para os que estiverem no intervalo" ];
                   db_select('intervalo', $aIntervaloParcelamento, true, 1,"style='width:276px;'");
                 ?>
               </td>
@@ -227,9 +227,9 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
               </td>
               <td>
                 <?php 
-                  $aFiltroPrincipal = array ( "normal"  => "Normal",
+                  $aFiltroPrincipal =  [ "normal"  => "Normal",
                                               "compgto" => "Somente sem parcelas em atraso",
-                                              "sempgto" => "Somente os registros sem pagamentos" );
+                                              "sempgto" => "Somente os registros sem pagamentos" ];
                   db_select('filtroprinc', $aFiltroPrincipal, true, 1,"style='width:480px;'");
                 ?>
               </td>
@@ -241,9 +241,9 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
               </td>
               <td>
                 <?php 
-                  $aVinculoImobiliaria = array ( "todos" => "Imprimir todos os registros, independente do vinculo com imobiliaria",
+                  $aVinculoImobiliaria =  [ "todos" => "Imprimir todos os registros, independente do vinculo com imobiliaria",
                                                  "com"   => "Somente os que tenham vinculo com imobiliaria",
-                                                 "sem"   => "Somente os que nao tenham vinculo com imobiliaria" );
+                                                 "sem"   => "Somente os que nao tenham vinculo com imobiliaria" ];
                   db_select('imobiliaria', $aVinculoImobiliaria, true, 1,"style='width:480px;'");
                 ?>
               </td>
@@ -254,9 +254,9 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
               </td>
               <td>
                 <?php 
-                  $aVinculoLoteamentos = array ( "todos" => "Imprimir todos os registros, independente do vinculo com loteamento",
+                  $aVinculoLoteamentos =  [ "todos" => "Imprimir todos os registros, independente do vinculo com loteamento",
                                                  "com"   => "Somente os que tenham vinculo com loteamento",
-                                                 "sem"   => "Somente os que nao tenham vinculo com loteamento" );
+                                                 "sem"   => "Somente os que nao tenham vinculo com loteamento" ];
                   db_select('loteamento', $aVinculoLoteamentos, true, 1,"style='width:480px;'");
                 ?>
               </td>
@@ -267,9 +267,9 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
               </td>
               <td>
                 <?php 
-                  $aIsencao = array ( "todos" => "Imprimir todos os registros, independente de possuir ou não isenção parcial",
+                  $aIsencao =  [ "todos" => "Imprimir todos os registros, independente de possuir ou não isenção parcial",
                                                  "com"   => "Somente os registros que possuam isenção parcial",
-                                                 "sem"   => "Somente os registros que nao possuam isenção parcial" );
+                                                 "sem"   => "Somente os registros que nao possuam isenção parcial" ];
                   db_select('isencao', $aIsencao, true, 1,"style='width:480px;'");
                 ?>
               </td>
@@ -290,7 +290,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
 
               <td>
                 <?php 
-                  $aTercDigBarraUnicas = array ("seis" => "6 (seis)", "sete" => "7 (sete)");
+                  $aTercDigBarraUnicas =  ["seis" => "6 (seis)", "sete" => "7 (sete)"];
                   db_select('barrasunica', $aTercDigBarraUnicas, true, 1,"style='width:165px;'");
                 ?>
               </td>
@@ -303,7 +303,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
 
               <td>
                 <?php 
-                  $aTercDigBarraParcelados = array ("seis" => "6 (seis)", "sete" => "7 (sete)");
+                  $aTercDigBarraParcelados =  ["seis" => "6 (seis)", "sete" => "7 (sete)"];
                   db_select('barrasparc', $aTercDigBarraParcelados, true, 1,"style='width:165px;'");
                 ?>
               </td>
@@ -315,7 +315,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
               </td>
               <td>
                 <?php
-                  $aImpCapa = array ("n" => "Não", "s" => "Sim");
+                  $aImpCapa =  ["n" => "Não", "s" => "Sim"];
                   db_select('imprimecapa', $aImpCapa, true, 1,"style='width:165px;'");
                 ?>
               </td>
@@ -326,7 +326,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Considerar Movimento nos Anos:</strong>
               </td>
               <td nowrap>
-                <input type='text' size="20px;" name='processarmovimentacao' id='processarmovimentacao' value=<?=(isset($processarmovimentacao)?$processarmovimentacao:"")?>>
+                <input type='text' size="20px;" name='processarmovimentacao' id='processarmovimentacao' value=<?=($processarmovimentacao ?? "")?>>
               </td>
             </tr>
 
@@ -335,7 +335,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Parcela Obrigatória em Aberto:</strong>
               </td>
               <td>
-                <input type='text' id='parcobrig' name='parcobrig' value=<?=(isset($parcobrig)?$parcobrig:"")?>>
+                <input type='text' id='parcobrig' name='parcobrig' value=<?=($parcobrig ?? "")?>>
               </td>
             </tr>
 
@@ -344,7 +344,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Quantidade total de parcelas:</strong>
               </td>
               <td>
-                <input type='text' id='quantidadeparcelas' name='quantidadeparcelas' value=<?=(isset($quantidadeparcelas)?$quantidadeparcelas:"")?>>
+                <input type='text' id='quantidadeparcelas' name='quantidadeparcelas' value=<?=($quantidadeparcelas ?? "")?>>
               </td>
             </tr>
 
@@ -353,7 +353,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Gerar Apenas para as Matrículas:</strong>
               </td>
               <td>
-                <input type='text' id='listamatrics' name='listamatrics' value=<?=(isset($listamatrics)?$listamatrics:"")?>>
+                <input type='text' id='listamatrics' name='listamatrics' value=<?=($listamatrics ?? "")?>>
               </td>
             </tr>
 
@@ -401,15 +401,15 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <?php
                   $result = db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
 
-                  if (pg_numrows($result) > 0) {
+                  if (pg_num_rows($result) > 0) {
 
                     echo "<select id='anousu' name='anousu' onChange='document.form1.submit();' style='width:165px;'>";
 
                     if(!isset($anousu)) {
-                      $anousu = pg_result($result, 0, "j18_anousu");
+                      $anousu = pg_fetch_result($result, 0, "j18_anousu");
                     }
 
-                    for ($i = 0; $i < pg_numrows($result); $i ++) {
+                    for ($i = 0; $i < pg_num_rows($result); $i ++) {
                       db_fieldsmemory($result, $i);
 
                       echo "<option value='{$j18_anousu}' " ;
@@ -452,7 +452,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
         ?>
       </fieldset>
 
-      <input name="totcheck"  type="hidden" id="totcheck" value="<?=pg_numrows($result)?>" />
+      <input name="totcheck"  type="hidden" id="totcheck" value="<?=pg_num_rows($result)?>" />
       <input name="processar" type="submit" id="processar" value="Processar" onclick="js_getUnicas();"/>
       <input type="hidden"    value="" name="listaUnicas" id="listaUnicas" />
     </div>
@@ -467,8 +467,8 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
           </td>
           <td>
             <?php 
-              $aTipos = array ( "txt"    => "TXT",
-                                "txtbsj" => "TXT BSJ");
+              $aTipos =  [ "txt"    => "TXT",
+                                "txtbsj" => "TXT BSJ"];
               db_select('tipo', $aTipos, true, 1,"onChange='js_mostracapa();js_mostraOpVenc();' style='width:165px;'");
             ?>
           </td>
@@ -479,7 +479,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
             <strong>Quantidade de registros a gerar no txt:</strong>
           </td>
           <td nowrap>
-            <input type='text' size="20px;" id='quantidade_registros_real' name='quantidade_registros_real' value=<?=(isset($quantidade_registros_real)?$quantidade_registros_real:"")?>>
+            <input type='text' size="20px;" id='quantidade_registros_real' name='quantidade_registros_real' value=<?=($quantidade_registros_real ?? "")?>>
           </td>
         </tr>
 
@@ -489,7 +489,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
           </td>
           <td>
             <?php 
-              $aMsgDebitosAnt = array ("n" => "Não", "s" => "Sim");
+              $aMsgDebitosAnt =  ["n" => "Não", "s" => "Sim"];
               db_select('mensagemanosanteriores', $aMsgDebitosAnt, true, 1,"style='width:165px;'");
             ?>
           </td>
@@ -501,7 +501,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
           </td>
           <td>
             <?php 
-              $aOpVenc = array ("0" => "Não", "1" => "Sim");
+              $aOpVenc =  ["0" => "Não", "1" => "Sim"];
               db_select('opVenc', $aOpVenc, true, 2,"style='width:165px;'");
             ?>
           </td>

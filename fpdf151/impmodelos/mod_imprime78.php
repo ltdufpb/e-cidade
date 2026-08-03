@@ -10,7 +10,7 @@ $nTotalDescontos = 0;
 $iRecurso        = '';
 $nTotalRecDesc   = 0;
 $nTotalRec       = 0;
-$aRubricasDesc   = array();
+$aRubricasDesc   = [];
 
 foreach ($this->aLinhasRelatorio as $iInd => $oLinhaRelatorio) {
 
@@ -43,7 +43,7 @@ foreach ($this->aLinhasRelatorio as $iInd => $oLinhaRelatorio) {
 			$nTotalRec     = 0;
 
 			unset($aRubricasDesc);
-			$aRubricasDesc   = array();
+			$aRubricasDesc   = [];
 
 		}
 
@@ -71,10 +71,10 @@ foreach ($this->aLinhasRelatorio as $iInd => $oLinhaRelatorio) {
 		$iNumeroEmpenho = "{$oLinhaRelatorio->e60_codemp}/{$oLinhaRelatorio->e60_anousu}";
 	}
 
-	$sLocalizacao  = str_pad($oLinhaRelatorio->rh72_orgao       ,2,"0",STR_PAD_LEFT);
-	$sLocalizacao .= ".".str_pad($oLinhaRelatorio->rh72_unidade ,2,"0",STR_PAD_LEFT);
-	$sLocalizacao .= ".".str_pad($oLinhaRelatorio->rh72_projativ,4,"0",STR_PAD_LEFT);
-	$sLocalizacao .= ".".str_pad($oLinhaRelatorio->o15_recurso ,4,"0",STR_PAD_LEFT);
+	$sLocalizacao  = str_pad((string) $oLinhaRelatorio->rh72_orgao       ,2,"0",STR_PAD_LEFT);
+	$sLocalizacao .= ".".str_pad((string) $oLinhaRelatorio->rh72_unidade ,2,"0",STR_PAD_LEFT);
+	$sLocalizacao .= ".".str_pad((string) $oLinhaRelatorio->rh72_projativ,4,"0",STR_PAD_LEFT);
+	$sLocalizacao .= ".".str_pad((string) $oLinhaRelatorio->o15_recurso ,4,"0",STR_PAD_LEFT);
 
 	$this->objpdf->SetFont($sFonte,"",$iFonte);
 	$this->objpdf->cell(8, $iAlt, $i, "TBR", 0, "R");

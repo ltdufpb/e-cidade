@@ -87,7 +87,7 @@ $clrotulo->label("j32_descr");
           </td>
           <td>
             <?php
-              $matriz = array('N'=>"NAO",'S'=>"SIM");
+              $matriz = ['N'=>"NAO",'S'=>"SIM"];
               db_select('j33_codcaracter',$matriz,true,$db_opcao);
               db_input('padrao',4,"padrao",true,'hidden',1,"")
             ?>
@@ -102,7 +102,7 @@ $clrotulo->label("j32_descr");
 </form>
 <script>
 function js_volta(chave){
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>';
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>';
 }
 function js_pesquisaj31_grupo(mostra){
   if(mostra==true){
@@ -134,7 +134,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

@@ -30,10 +30,10 @@ namespace ECidade\RecursosHumanos\ESocial\Mapeadores\Tabelas;
 
 class Sexo implements TabelasInterface
 {
-    protected $sexo = array(
+    protected $sexo = [
        'M' => 'M',
        'F' => 'F'
-    );
+    ];
 
     /**
      * Retorna o valor da tabela do esocial equivalente ao valor de um dado no e-cidade
@@ -42,7 +42,7 @@ class Sexo implements TabelasInterface
      */
     public function getValue($valor)
     {
-        $valor = mb_strtoupper($valor);
+        $valor = mb_strtoupper((string) $valor);
         if (array_key_exists($valor, $this->sexo)) {
             return $this->sexo[$valor];
         }

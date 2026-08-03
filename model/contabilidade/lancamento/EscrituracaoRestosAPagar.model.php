@@ -35,12 +35,6 @@
 class EscrituracaoRestosAPagar {
 
   /**
-   * Ano da Escrituracao
-   * @var integer
-   */
-  private $iAno;
-
-  /**
    * Tipo do resto a pagar (Processado / Não Processado)
    * @type int
    */
@@ -57,10 +51,13 @@ class EscrituracaoRestosAPagar {
    *
    * @param $iAno
    * @param $iInstituicao
+   * @param int $iAno
    */
-  public function __construct($iAno, $iInstituicao) {
+  public function __construct(/**
+   * Ano da Escrituracao
+   */
+  private $iAno, $iInstituicao) {
 
-    $this->iAno         = $iAno;
     $this->oInstituicao = new Instituicao($iInstituicao);
   }
 

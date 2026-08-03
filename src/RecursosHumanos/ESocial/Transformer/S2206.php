@@ -40,7 +40,7 @@ class S2206 extends Sugestao
     /**
      * @var array
      */
-    protected $deParaESocial = array(
+    protected $deParaESocial = [
         'tpregprev',
         'matricula',
         'cpftrab',
@@ -59,12 +59,12 @@ class S2206 extends Sugestao
         'codcargo',
         'codfuncao',
         'localtrabgeral_desccomp'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $deParaCamposSimples = array(
+    protected $deParaCamposSimples = [
         'codcargo' => 'codCargo',
         'codfuncao' => 'codFuncao',
         'tpregtrab' => 'tpRegTrab',
@@ -82,33 +82,28 @@ class S2206 extends Sugestao
         'vrsalfx' => 'vrSalFx',
         'desccomp' => 'descComp',
         'localtrabgeral_desccomp' => 'localTrabGeral_descComp'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $deParaCamposComplexos = array(
-        'tpregprev' => array(
-            'tpRegPrev' => array(
+    protected $deParaCamposComplexos = [
+        'tpregprev' => [
+            'tpRegPrev' => [
                 1 => 'tpRegPrev_1',
                 2 => 'tpRegPrev_2',
                 3 => 'tpRegPrev_3'
-            )
-        ),
-        'undsalfixo' => array(
-            'undSalFixo' => array(
+            ]
+        ],
+        'undsalfixo' => [
+            'undSalFixo' => [
                 "M" => 'undSalFixo_5',
                 "Q" => 'undSalFixo_4',
                 "D" => 'undSalFixo_2',
                 "H" => 'undSalFixo_1',
-            )
-        )
-    );
-
-    /**
-     * @var int
-     */
-    private $matricula;
+            ]
+        ]
+    ];
 
     /**
      * @var CgmBase
@@ -120,9 +115,8 @@ class S2206 extends Sugestao
      * @param int $matricula
      * @param CgmBase $cgmEmpregador
      */
-    public function __construct($matricula, $cgmEmpregador)
+    public function __construct(private $matricula, $cgmEmpregador)
     {
-        $this->matricula = $matricula;
         $this->cgmEmpregador = $cgmEmpregador;
     }
 
@@ -144,9 +138,9 @@ class S2206 extends Sugestao
      */
     protected function posProcessamento()
     {
-        $this->dados['tpRegJor'] = array("option" => "tpRegJor_1");
-        $this->dados['natAtividade'] = array("option" => "natAtividade_1");
-        $this->dados['tpContr'] = array("option" => "tpContr_1");
+        $this->dados['tpRegJor'] = ["option" => "tpRegJor_1"];
+        $this->dados['natAtividade'] = ["option" => "natAtividade_1"];
+        $this->dados['tpContr'] = ["option" => "tpContr_1"];
 
         if ($this->dados['tpRegTrab'] !== "2") {
             unset($this->dados['tpRegJor']);
@@ -185,7 +179,7 @@ class S2206 extends Sugestao
             );
         }
 
-        if (pg_numrows($rs) > 0) {
+        if (pg_num_rows($rs) > 0) {
             return true;
         }
 

@@ -43,7 +43,7 @@ $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 $r07_codigo = '';
 $rh67_rhtipovale = '';
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if (isset($gera)){
     
   $arq = "/tmp/recarga{$grupo}.txt";
@@ -66,15 +66,15 @@ if (isset($gera)){
   }
 
   $xgrupo = '';
-  if(trim($grupo) != '' && trim($grupo) != 'todos' ) {
+  if(trim((string) $grupo) != '' && trim((string) $grupo) != 'todos' ) {
     $where .= " and rh67_grupo = $grupo ";
   }
 
   $result = $clrhteutri->sql_record($clrhteutri->sql_query(null,"rh67_regist,rh67_dias, rh67_vales, z01_nome, z01_cgccpf ",$xordem,$where));
-  $xxnum = pg_numrows($result);
+  $xxnum = pg_num_rows($result);
 
-  if($rh67_rhtipovale == 1){
-    for($x = 0;$x < pg_numrows($result);$x++){
+  if(0 == 1){
+    for($x = 0;$x < pg_num_rows($result);$x++){
       db_fieldsmemory($result,$x);
 
       $sLinha = db_formatar($rh67_regist,'s',' ',15, 'e',0).db_formatar($rh67_dias,'s','0',2,'e',0)."\r\n";
@@ -114,7 +114,7 @@ if (isset($gera)){
       db_fieldsmemory($res_diverso,0);
     }
     fputs($arquivo,"0200"."\r\n");
-    for($x = 0;$x < pg_numrows($result);$x++){
+    for($x = 0;$x < pg_num_rows($result);$x++){
       db_fieldsmemory($result,$x);
       fputs($arquivo,db_formatar($z01_cgccpf,'s',' ',11,'e',0).'|'.$rh67_dias.'|'.trim(str_replace(',','',db_formatar($r07_valor*$rh67_vales,'f'))).'|'.$z01_nome."\r\n");
     }
@@ -186,7 +186,7 @@ if (isset($gera)){
                       </td>
                       <td>
                         <?php 
-                        $xy = array("a"=>"Ativos","t"=>"Todos","i"=>"Inativos");
+                        $xy = ["a"=>"Ativos","t"=>"Todos","i"=>"Inativos"];
                         db_select('tipo',$xy,true,1,"");
                         ?>
                       </td>
@@ -197,7 +197,7 @@ if (isset($gera)){
                       </td>
                       <td>
                         <?php 
-                        $aTipoEmissao = array("dias"=>"Quantidade de dias", "valor"=>"Valor Recarga");
+                        $aTipoEmissao = ["dias"=>"Quantidade de dias", "valor"=>"Valor Recarga"];
                         db_select('tipo_emissao',$aTipoEmissao, true, 1, "");
                         ?>
                       </td>
@@ -209,7 +209,7 @@ if (isset($gera)){
                       </td>
                       <td>
                         <?php 
-                        $x = array("n"=>"Numérica","a"=>"Alfabética");
+                        $x = ["n"=>"Numérica","a"=>"Alfabética"];
                         db_select('ordem',$x,true,1,"");
                         ?>
                       </td>

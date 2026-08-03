@@ -29,17 +29,17 @@
     include(modification("dbforms/db_funcoes.php"));
     include(modification("dbforms/db_classesgenericas.php"));
 
-if( isset($HTTP_GET_VARS["ano"]) && isset( $HTTP_GET_VARS["mes"])){
+if( isset($_GET["ano"]) && isset( $_GET["mes"])){
      
-    $aTipos = array('1' => 'No financeiro',
+    $aTipos = ['1' => 'No financeiro',
                     '2' => 'Anulado',
                     '3' => 'Cancelado',
                     '4' => 'Já Pago',
                     '5' => 'Suspenso',
                     '6' => 'Em Digitação',  
-                    );
-    db_postmemory($HTTP_POST_VARS);
-    db_postmemory($HTTP_GET_VARS);
+                    ];
+    db_postmemory($_POST);
+    db_postmemory($_GET);
     $sOrder  = '';
     switch ($ordem) {
       
@@ -184,8 +184,8 @@ if( isset($HTTP_GET_VARS["ano"]) && isset( $HTTP_GET_VARS["mes"])){
 
     $pag = 1;
     $iTotalLinhas = 0;
-    $aTotalizadores = array();
-    for ($x = 0 ; $x < pg_numrows($result);$x++){
+    $aTotalizadores = [];
+    for ($x = 0 ; $x < pg_num_rows($result);$x++){
         db_fieldsmemory($result,$x);
         if (($pdf->gety() > $pdf->h - 30) || $pag == 1 ){
             $pdf->addpage();

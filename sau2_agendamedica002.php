@@ -36,7 +36,7 @@ define("BORDA",  true);
 define("FUNDO",  true);
 
 $oGet                 = db_utils::postMemory($_GET);
-$parametros           = JSON::create()->parse(urldecode($oGet->parametros));
+$parametros           = JSON::create()->parse(urldecode((string) $oGet->parametros));
 $oDao                 = new cl_undmedhorario();
 $parametros->dtInicio = new DBDate($parametros->dtInicio);
 $parametros->dtFim    = new DBDate($parametros->dtFim);
@@ -53,9 +53,7 @@ $rsDados = db_query($sSql = $oDao->sql_query_agenda_medico(
   $parametros->dtFim->getDate(),
   $parametros->iProfissional,
   db_getsession("DB_coddepto"),
-  array_map(function($oDadosEspecialidade){
-    return $oDadosEspecialidade->iEspecialidade;
-  }, $parametros->aEspecialidades)
+  array_map(fn($oDadosEspecialidade) => $oDadosEspecialidade->iEspecialidade, $parametros->aEspecialidades)
 ));
 
 if (!$rsDados) {
@@ -120,7 +118,7 @@ function criarCabecalho(&$pdf, $especialidade = null) {
   $pdf->setfont('arial', 'B', 8);
   $pdf->cell(tamanhoColuna("10%"), ALTURA, 'ESPECIALIDADE:', "TBL", !QUEBRA, "L", FUNDO);
   $pdf->setfont('arial', '', 8);
-  $pdf->cell(tamanhoColuna("90%"), ALTURA, mb_strtoupper($ultimoUtilizado), "TBR", QUEBRA ,"L", FUNDO);
+  $pdf->cell(tamanhoColuna("90%"), ALTURA, mb_strtoupper((string) $ultimoUtilizado), "TBR", QUEBRA ,"L", FUNDO);
   /**
    * Cabeçalho das informações
    */
@@ -176,13 +174,13 @@ function tamanhoColuna($percentual) {
 
 function tratarDados($rsDados) {
 
-  $dados = array();
+  $dados = [];
   db_utils::makeCollectionFromRecord($rsDados, function($registro) use (&$dados) {
 
-     $dados[$registro->especialidade][] = array(
+     $dados[$registro->especialidade][] = [
 
       "data"        => trim(db_formatar($registro->data_atendimento, "d") . " - " . $registro->dia_semana),
-      "tipo_ficha"  => trim($registro->tipo_ficha),
+      "tipo_ficha"  => trim((string) $registro->tipo_ficha),
       "hora_inicio" => $registro->hora_inicial,
       "hora_fim"    => $registro->hora_final,
       "fichas"      => $registro->fichas,
@@ -191,7 +189,7 @@ function tratarDados($rsDados) {
       // $registro->data_afastamento,
       // $registro->hora_inicio_afastamento,
       // $registro->hora_fim_afastamento,
-    );
+    ];
   });
   return $dados;
 }

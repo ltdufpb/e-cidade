@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 /** Extensao : Inicio [integracao-icad] */
 /** Extensao : Fim [integracao-icad] */
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $clrotulo = new rotulocampo;
 $clrotulo->label('q02_inscr');
 $clrotulo->label('z01_nome');

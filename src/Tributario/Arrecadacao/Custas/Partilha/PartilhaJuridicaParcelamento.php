@@ -64,8 +64,8 @@ abstract class PartilhaJuridicaParcelamento extends PartilhaJuridica
         parent::__construct($calculo, $validador, $processoForo);
 
         $this->termo = $termo;
-        $this->termoTaxaParcelaRepository = TermoTaxaParcela::getInstance();
-        $this->taxasParcelas = array();
+        $this->termoTaxaParcelaRepository = (new TermoTaxaParcela())->getInstance();
+        $this->taxasParcelas = [];
     }
 
     protected function processarGeracaoPartilha(array $taxasEmissao)
@@ -106,7 +106,7 @@ abstract class PartilhaJuridicaParcelamento extends PartilhaJuridica
     {
         $termoTaxasParcelas = $this->termoTaxaParcelaRepository->getByInstituicao();
 
-        $taxasParcela = array();
+        $taxasParcela = [];
 
         foreach ($termoTaxasParcelas as $termoTaxaParcela) {
             $parcela = $termoTaxaParcela->getNumpar();

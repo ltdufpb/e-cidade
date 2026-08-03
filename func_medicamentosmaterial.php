@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $oDaoFarMaterSaude = new cl_far_matersaude();
 ?>
@@ -81,7 +81,7 @@ $oDaoFarMaterSaude = new cl_far_matersaude();
   </div>
   <div class="container">
     <?php
-    $aWhere = array();
+    $aWhere = [];
 
     $sCampos  = "fa01_i_codigo, m60_descr";
     $sCampos .= ", case ";
@@ -112,7 +112,7 @@ $oDaoFarMaterSaude = new cl_far_matersaude();
         $aWhere[] = "m60_descr ilike '{$nomeMedicamento}%'";
       }
 
-      $repassa = array();
+      $repassa = [];
 
       $sWhere  = implode( ' AND ', $aWhere );
       $sSql    = $oDaoFarMaterSaude->sql_query_medicamentos( null, $sCampos, $sOrdenacao, $sWhere );

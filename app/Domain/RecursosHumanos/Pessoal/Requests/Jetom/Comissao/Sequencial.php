@@ -10,6 +10,7 @@ class Sequencial extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -31,20 +32,21 @@ class Sequencial extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "id.required" => utf8_encode("Código da comissão não informado."),
-            "id.filled" => utf8_encode("O código da comissão informado está vazio."),
-            "id.integer" => utf8_encode("Código inválido da comissão."),
-            "id.exists" => utf8_encode("Comissão não encontrada."),
+            "id.required" => mb_convert_encoding("Código da comissão não informado.", 'UTF-8', 'ISO-8859-1'),
+            "id.filled" => mb_convert_encoding("O código da comissão informado está vazio.", 'UTF-8', 'ISO-8859-1'),
+            "id.integer" => mb_convert_encoding("Código inválido da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "id.exists" => mb_convert_encoding("Comissão não encontrada.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

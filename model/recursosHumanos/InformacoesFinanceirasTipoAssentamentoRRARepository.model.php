@@ -51,7 +51,7 @@ class InformacoesFinanceirasTipoAssentamentoRRARepository {
    *
    * @var $aInformacoesFinanceirasRRA;
    */
-  private static $aInformacoesFinanceirasRRA = array();
+  private static $aInformacoesFinanceirasRRA = [];
 
 
   /**

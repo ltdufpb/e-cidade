@@ -29,21 +29,21 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 
-if(isset($HTTP_POST_VARS["enviar"])) {
-  db_query("update atendmedexa set resultado = '".$HTTP_POST_VARS["resultado"]."'
+if(isset($_POST["enviar"])) {
+  db_query("update atendmedexa set resultado = '".$_POST["resultado"]."'
            where codate = ".db_getsession("COD_atendimento")."
-		   and id_exame = ".$HTTP_POST_VARS["id_exame"]) or die("Erro atualizando atendmedexa");
+		   and id_exame = ".$_POST["id_exame"]) or die("Erro atualizando atendmedexa");
   echo "<script>  parent.document.getElementById('Iresultado').style.visibility = 'hidden'; parent.location.href = 'ipa4_atenmed0045.php';  </script>\n";
 }
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $result = db_query("select resultado 
                    from atendmedexa 
 				   where codate = ".db_getsession("COD_atendimento")."
 				   and id_exame = $id_exame");
-if(pg_numrows($result) > 0)
-  $resultado = pg_result($result,0,0);
+if(pg_num_rows($result) > 0)
+  $resultado = pg_fetch_result($result,0,0);
 else
   $resultado = "";
 ?>

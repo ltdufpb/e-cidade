@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_processoforopartilhacusta_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocessoforopartilhacusta = new cl_processoforopartilhacusta;
 $clprocessoforopartilhacusta->rotulo->label("v77_sequencial");
 $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
@@ -98,9 +98,9 @@ $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
         }else{
            $sql = $clprocessoforopartilhacusta->sql_query("",$campos,"v77_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v77_processoforopartilha)){
-          $repassa = array("chave_v77_sequencial"=>$chave_v77_sequencial,"chave_v77_processoforopartilha"=>$chave_v77_processoforopartilha);
+          $repassa = ["chave_v77_sequencial"=>$chave_v77_sequencial,"chave_v77_processoforopartilha"=>$chave_v77_processoforopartilha];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

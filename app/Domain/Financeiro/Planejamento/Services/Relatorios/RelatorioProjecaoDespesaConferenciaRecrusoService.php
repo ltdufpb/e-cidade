@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class RelatorioProjecaoDespesaConferenciaRecrusoService extends RelatorioProjecaoDespesaAgrupadaService
 {
+    #[\Override]
     protected function processar(array $filtros)
     {
         $this->planejamento = Planejamento::find($filtros['planejamento_id']);
@@ -21,6 +22,7 @@ class RelatorioProjecaoDespesaConferenciaRecrusoService extends RelatorioProjeca
         $this->removeZerados();
     }
 
+    #[\Override]
     public function emitirPdf()
     {
         $pdf = new ConferenciaRecursoProjecaoDespesaPdf();
@@ -28,6 +30,7 @@ class RelatorioProjecaoDespesaConferenciaRecrusoService extends RelatorioProjeca
         return $pdf->emitir();
     }
 
+    #[\Override]
     protected function buscarRecursos()
     {
         $recursos = [];

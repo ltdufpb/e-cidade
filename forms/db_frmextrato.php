@@ -114,7 +114,7 @@ db_input('k85_nomearq',255,$Ik85_nomearq,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Automatica','2'=>'Manual');
+$x = ['1'=>'Automatica','2'=>'Manual'];
 db_select('k85_tipoinclusao',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -142,7 +142,7 @@ function js_preenchepesquisa(chave){
   db_iframe_extrato.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

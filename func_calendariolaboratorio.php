@@ -32,16 +32,16 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("model/controleexameslaboratorio.model.php"));
 
-parse_str($_SERVER['QUERY_STRING'], $queryString); // ta com o globals desativado no php -- Crestani
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString); // ta com o globals desativado no php -- Crestani
 
 class calendario
 {
-    var $sem;//Array com os dias da semana como índice
-    var $mes;//Array com os meses do ano
-    var $nome_objeto_data;
-    var $shutdown_function = '';
-    var $centralagenda = 'N';
-    var $oControleExames = null;
+    public $sem;//Array com os dias da semana como índice
+    public $mes;//Array com os meses do ano
+    public $nome_objeto_data;
+    public $shutdown_function = '';
+    public $centralagenda = 'N';
+    public $oControleExames = null;
 
     function __construct()
     {
@@ -50,7 +50,7 @@ class calendario
 
     function inicializa()
     {//Atribui valores para $sem e $mes.
-        $this->sem = array(
+        $this->sem = [
           'Sun' => 1,
           'Mon' => 2,
           'Tue' => 3,
@@ -58,9 +58,9 @@ class calendario
           'Thu' => 5,
           'Fri' => 6,
           'Sat' => 7
-        );
+        ];
 
-        $this->mes = array(
+        $this->mes = [
           '1'  => 'JANEIRO',
           '2'  => 'FEVEREIRO',
           '3'  => 'MARÇO',
@@ -73,7 +73,7 @@ class calendario
           '10' => 'OUTUBRO',
           '11' => 'NOVEMBRO',
           '12' => 'DEZEMBRO'
-        );
+        ];
     }
 
     function aux($i)
@@ -98,7 +98,7 @@ class calendario
         return false;
     }
 
-    function cria($dia, $mes, $ano, $marca = 0, $str_where, $result_diassemana, $fechar = false, $iQuantidade)
+    function cria($dia, $mes, $ano, $marca = 0, $str_where = null, $result_diassemana = null, $fechar = false, $iQuantidade = null)
     {
         $this->inicializa();
 
@@ -231,7 +231,7 @@ class calendario
                     } else {
                         if (!isset($oInfoControle) || $oInfoControle == null
                           || (!empty($oInfoControle->la56_d_fim)
-                            && strtotime($oInfoControle->la56_d_fim) < strtotime("$ano-$mes-$s"))) {
+                            && strtotime((string) $oInfoControle->la56_d_fim) < strtotime("$ano-$mes-$s"))) {
                             $oInfoControle = $this->oControleExames->getInfoControle("$ano-$mes-$s");
                         }
 
@@ -444,7 +444,7 @@ if (isset($la09_i_codigo) && (int)$la09_i_codigo != 0) {
         $fechar = isset($fechar) ? true : 0;
 
         $clcalendario->cria(date("d", db_getsession("DB_datausu")), date("$mes_solicitado"),
-          date("$ano_solicitado"), 1, $str_where, $result, $fechar, $iQuantidade);
+          date("$ano_solicitado"), 1);
     } else {
         echo "Nehuma informação encontrada!";
     }

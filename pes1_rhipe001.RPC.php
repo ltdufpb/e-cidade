@@ -39,7 +39,7 @@ $oParam = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 $oRetorno = new stdClass();
 $oRetorno->hasMatricula = true;
 $oErro = new stdClass();
-$aDadosRetorno = array();
+$aDadosRetorno = [];
 
 try {
 
@@ -58,7 +58,7 @@ try {
             break;
     }
 
-    $oRetorno->sMessage = urlencode($oRetorno->sMessage);
+    $oRetorno->sMessage = urlencode((string) $oRetorno->sMessage);
     echo $oJson->encode($oRetorno);
 
 } catch (Exception $eErro) {

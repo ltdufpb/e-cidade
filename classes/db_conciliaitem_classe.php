@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE conciliaitem
 class cl_conciliaitem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k83_sequencial = 0; 
-   var $k83_conciliatipo = 0; 
-   var $k83_concilia = 0; 
-   var $k83_hora = null; 
-   var $k83_usuario = 0; 
+   public $k83_sequencial = 0; 
+   public $k83_conciliatipo = 0; 
+   public $k83_concilia = 0; 
+   public $k83_hora = null; 
+   public $k83_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k83_sequencial = int4 = Codigo sequencial 
                  k83_conciliatipo = int4 = Tipo de conciliacao 
                  k83_concilia = int4 = Codigo da conciliação 
@@ -56,10 +56,10 @@ class cl_conciliaitem {
                  k83_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_conciliaitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conciliaitem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_conciliaitem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k83_sequencial = pg_result($result,0,0); 
+       $this->k83_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from conciliaitem_k83_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k83_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k83_sequencial)){
          $this->erro_sql = " Campo k83_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_conciliaitem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de itens da conciliação ($this->k83_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de itens da conciliação já Cadastrado";
@@ -194,14 +194,14 @@ class cl_conciliaitem {
      $resaco = $this->sql_record($this->sql_query_file($this->k83_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10061,'$this->k83_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1731,10061,'','".AddSlashes(pg_result($resaco,0,'k83_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1731,10065,'','".AddSlashes(pg_result($resaco,0,'k83_conciliatipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1731,10071,'','".AddSlashes(pg_result($resaco,0,'k83_concilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1731,10072,'','".AddSlashes(pg_result($resaco,0,'k83_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1731,10073,'','".AddSlashes(pg_result($resaco,0,'k83_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1731,10061,'','".AddSlashes(pg_fetch_result($resaco,0,'k83_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1731,10065,'','".AddSlashes(pg_fetch_result($resaco,0,'k83_conciliatipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1731,10071,'','".AddSlashes(pg_fetch_result($resaco,0,'k83_concilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1731,10072,'','".AddSlashes(pg_fetch_result($resaco,0,'k83_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1731,10073,'','".AddSlashes(pg_fetch_result($resaco,0,'k83_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_conciliaitem {
       $this->atualizacampos();
      $sql = " update conciliaitem set ";
      $virgula = "";
-     if(trim($this->k83_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k83_sequencial"])){ 
+     if(trim((string) $this->k83_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k83_sequencial"])){ 
        $sql  .= $virgula." k83_sequencial = $this->k83_sequencial ";
        $virgula = ",";
-       if(trim($this->k83_sequencial) == null ){ 
+       if(trim((string) $this->k83_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "k83_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_conciliaitem {
          return false;
        }
      }
-     if(trim($this->k83_conciliatipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k83_conciliatipo"])){ 
+     if(trim((string) $this->k83_conciliatipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k83_conciliatipo"])){ 
        $sql  .= $virgula." k83_conciliatipo = $this->k83_conciliatipo ";
        $virgula = ",";
-       if(trim($this->k83_conciliatipo) == null ){ 
+       if(trim((string) $this->k83_conciliatipo) == null ){ 
          $this->erro_sql = " Campo Tipo de conciliacao nao Informado.";
          $this->erro_campo = "k83_conciliatipo";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_conciliaitem {
          return false;
        }
      }
-     if(trim($this->k83_concilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k83_concilia"])){ 
+     if(trim((string) $this->k83_concilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k83_concilia"])){ 
        $sql  .= $virgula." k83_concilia = $this->k83_concilia ";
        $virgula = ",";
-       if(trim($this->k83_concilia) == null ){ 
+       if(trim((string) $this->k83_concilia) == null ){ 
          $this->erro_sql = " Campo Codigo da conciliação nao Informado.";
          $this->erro_campo = "k83_concilia";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_conciliaitem {
          return false;
        }
      }
-     if(trim($this->k83_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k83_hora"])){ 
+     if(trim((string) $this->k83_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k83_hora"])){ 
        $sql  .= $virgula." k83_hora = '$this->k83_hora' ";
        $virgula = ",";
-       if(trim($this->k83_hora) == null ){ 
+       if(trim((string) $this->k83_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "k83_hora";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_conciliaitem {
          return false;
        }
      }
-     if(trim($this->k83_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k83_usuario"])){ 
+     if(trim((string) $this->k83_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k83_usuario"])){ 
        $sql  .= $virgula." k83_usuario = $this->k83_usuario ";
        $virgula = ",";
-       if(trim($this->k83_usuario) == null ){ 
+       if(trim((string) $this->k83_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "k83_usuario";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_conciliaitem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10061,'$this->k83_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k83_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1731,10061,'".AddSlashes(pg_result($resaco,$conresaco,'k83_sequencial'))."','$this->k83_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1731,10061,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k83_sequencial'))."','$this->k83_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k83_conciliatipo"]))
-           $resac = db_query("insert into db_acount values($acount,1731,10065,'".AddSlashes(pg_result($resaco,$conresaco,'k83_conciliatipo'))."','$this->k83_conciliatipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1731,10065,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k83_conciliatipo'))."','$this->k83_conciliatipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k83_concilia"]))
-           $resac = db_query("insert into db_acount values($acount,1731,10071,'".AddSlashes(pg_result($resaco,$conresaco,'k83_concilia'))."','$this->k83_concilia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1731,10071,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k83_concilia'))."','$this->k83_concilia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k83_hora"]))
-           $resac = db_query("insert into db_acount values($acount,1731,10072,'".AddSlashes(pg_result($resaco,$conresaco,'k83_hora'))."','$this->k83_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1731,10072,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k83_hora'))."','$this->k83_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k83_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1731,10073,'".AddSlashes(pg_result($resaco,$conresaco,'k83_usuario'))."','$this->k83_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1731,10073,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k83_usuario'))."','$this->k83_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_conciliaitem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10061,'$k83_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1731,10061,'','".AddSlashes(pg_result($resaco,$iresaco,'k83_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1731,10065,'','".AddSlashes(pg_result($resaco,$iresaco,'k83_conciliatipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1731,10071,'','".AddSlashes(pg_result($resaco,$iresaco,'k83_concilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1731,10072,'','".AddSlashes(pg_result($resaco,$iresaco,'k83_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1731,10073,'','".AddSlashes(pg_result($resaco,$iresaco,'k83_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1731,10061,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k83_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1731,10065,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k83_conciliatipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1731,10071,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k83_concilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1731,10072,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k83_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1731,10073,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k83_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from conciliaitem
@@ -407,7 +407,7 @@ class cl_conciliaitem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conciliaitem";
@@ -421,7 +421,7 @@ class cl_conciliaitem {
    function sql_query ( $k83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,7 +444,7 @@ class cl_conciliaitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,7 +456,7 @@ class cl_conciliaitem {
    function sql_query_file ( $k83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,7 +477,7 @@ class cl_conciliaitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

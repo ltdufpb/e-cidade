@@ -94,7 +94,7 @@ try {
   }
 
   $iLinhas           = pg_num_rows( $rsTipoSanguineo );
-  $aTiposSanguineos  = array();
+  $aTiposSanguineos  = [];
 
   if ( $iLinhas > 0) {
 
@@ -129,18 +129,18 @@ try {
 
     $oPdf->cell(3, 4 , "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(35,  4, strip_tags($Led47_v_nome), 0, 0, "L", 0);
+    $oPdf->cell(35,  4, strip_tags((string) $Led47_v_nome), 0, 0, "L", 0);
     $oPdf->setfont('arial',  'b', 7);
     $oPdf->cell(120,  4, $ed47_v_nome, 0, 0, "L", 0);
     $oPdf->cell(2,  4, "", "R", 1, "C", 0);
 
     $oPdf->cell(3,  4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial',  '', 7);
-    $oPdf->cell(35,  4, strip_tags($Led47_i_codigo), 0, 0, "L", 0);
+    $oPdf->cell(35,  4, strip_tags((string) $Led47_i_codigo), 0, 0, "L", 0);
     $oPdf->setfont('arial',  'b', 7);
     $oPdf->cell(20,  4, $ed47_i_codigo, 0, 0, "L", 0);
     $oPdf->setfont('arial',  '', 7);
-    $oPdf->cell(30,  4, strip_tags($Led47_c_codigoinep), 0, 0, "R", 0);
+    $oPdf->cell(30,  4, strip_tags((string) $Led47_c_codigoinep), 0, 0, "R", 0);
     $oPdf->setfont('arial',  'b', 7);
     $oPdf->cell(20,  4, $ed47_c_codigoinep, 0, 0, "L", 0);
     $oPdf->setfont('arial',  '', 7);
@@ -162,15 +162,15 @@ try {
 
     $oPdf->cell(3,  4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial',  '', 7);
-    $oPdf->cell(35,  4, strip_tags($Led47_d_nasc), 0, 0, "L", 0);
+    $oPdf->cell(35,  4, strip_tags((string) $Led47_d_nasc), 0, 0, "L", 0);
     $oPdf->setfont('arial',  'b', 7);
     $oPdf->cell(20,  4, db_formatar($ed47_d_nasc, 'd'), 0, 0, "L", 0);
     $oPdf->setfont('arial',  '', 7);
-    $oPdf->cell(30,  4, strip_tags($Led47_v_sexo), 0, 0, "R", 0);
+    $oPdf->cell(30,  4, strip_tags((string) $Led47_v_sexo), 0, 0, "R", 0);
     $oPdf->setfont('arial',  'b', 7);
     $oPdf->cell(20,  4, $ed47_v_sexo=="M"?"MASCULINO":"FEMININO", 0, 0, "L", 0);
     $oPdf->setfont('arial',  '', 7);
-    $oPdf->cell(25,  4, strip_tags($Led47_i_estciv), 0, 0, "R", 0);
+    $oPdf->cell(25,  4, strip_tags((string) $Led47_i_estciv), 0, 0, "R", 0);
 
     if ($ed47_i_estciv == 1) {
       $ed47_i_estciv = "SOLTEIRO";
@@ -187,17 +187,17 @@ try {
     $oPdf->cell(2,  4, "", "R", 1, "C", 0);
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(35,  4,  strip_tags($Led47_tiposanguineo),  0,  0,  "L",  0);
+    $oPdf->cell(35,  4,  strip_tags((string) $Led47_tiposanguineo),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b', 7);
     $oPdf->cell(65,  4,  $ed47_tiposanguineo == "" ? "NÃO INFORMADO" : $aTiposSanguineos[$ed47_tiposanguineo], 0, 0, "L", 0);
     $oPdf->setfont('arial' , '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_c_raca),  0,  0,  "R",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_c_raca),  0,  0,  "R",  0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(25,  4,  $ed47_c_raca,  0,  0,  "L",  0);
     $oPdf->cell(2,  4,  "",  "R",  1,  "C",  0);
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(35,  4,  strip_tags($Led47_i_filiacao),  0,  0,  "L",  0);
+    $oPdf->cell(35,  4,  strip_tags((string) $Led47_i_filiacao),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b', 7);
     $oPdf->cell(120,  4,  $ed47_i_filiacao == "0" ? "NÃO DECLARADO / IGNORADO" : "PAI E/OU MÃE", 0, 0, "L", 0);
     $oPdf->cell(2,  4,  "",  "R",  1,  "C",  0);
@@ -205,34 +205,34 @@ try {
     $oPdf->setfont('arial',  '',  7);
 
 
-    $oPdf->cell(35,  4,  strip_tags($Led47_v_mae),  0,  0,  "L",  0);
+    $oPdf->cell(35,  4,  strip_tags((string) $Led47_v_mae),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(120,  4,  $ed47_v_mae,  0,  0,  "L",  0);
     $oPdf->cell(2,  4,  "",  "R",  1,  "C",  0);
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(35,  4,  strip_tags($Led47_v_pai),  0,  0,  "L",  0);
+    $oPdf->cell(35,  4,  strip_tags((string) $Led47_v_pai),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(120,  4,  $ed47_v_pai,  0,  0,  "L",  0);
     $oPdf->cell(2,  4,  "",  "R",  1,  "C",  0);
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(35,  4,  strip_tags($Led47_c_nomeresp),  0,  0,  "L",  0);
+    $oPdf->cell(35,  4,  strip_tags((string) $Led47_c_nomeresp),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(120,  4,  $ed47_c_nomeresp,  0,  0,  "L",  0);
     $oPdf->cell(2,  4,  "",  "R",  1,  "C",  0);
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(35,  4,  strip_tags($Led47_c_emailresp),  0,  0,  "L",  0);
+    $oPdf->cell(35,  4,  strip_tags((string) $Led47_c_emailresp),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(122,  4,  $ed47_c_emailresp,  'R',  0,  "L",  0);
     $oPdf->Ln();
 
     $oPdf->setfont('arial',  '',  7);
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
-    $oPdf->cell(35,  4,  strip_tags($Led47_celularresponsavel),  0,  0,  "L",  0);
+    $oPdf->cell(35,  4,  strip_tags((string) $Led47_celularresponsavel),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(120,  4,  $ed47_celularresponsavel,  0,  0,  "L",  0);
     $oPdf->cell(2,  4,  "",  "R",  1,  "C",  0);
@@ -247,67 +247,67 @@ try {
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_v_ender),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_v_ender),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
-    $oPdf->cell(40,  4,  substr($ed47_v_ender,  0,  37),  0,  0,  "L",  0);
+    $oPdf->cell(40,  4,  substr((string) $ed47_v_ender,  0,  37),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_c_numero),  0,  0,  "R",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_c_numero),  0,  0,  "R",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(30,  4,  $ed47_c_numero,  0,  0,  "L",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(25,  4,  strip_tags($Led47_v_compl),  0,  0,  "R",  0);
+    $oPdf->cell(25,  4,  strip_tags((string) $Led47_v_compl),  0,  0,  "R",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(35,  4,  $ed47_v_compl,  0,  0,  "L",  0);
     $oPdf->cell(1,  4,  "",  "R",  1,  "C",  0);
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_i_censoufend),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_i_censoufend),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(40,  4,  $ufend,  0,  0,  "L",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_i_censomunicend),  0,  0,  "R",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_i_censomunicend),  0,  0,  "R",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(30,  4,  $municend,  0,  0,  "L",  0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(25, 4, strip_tags($Led47_v_bairro), 0, 0, "R", 0);
+    $oPdf->cell(25, 4, strip_tags((string) $Led47_v_bairro), 0, 0, "R", 0);
     $oPdf->setfont('arial',  'b',  7);
-    $oPdf->cell(35,  4,  substr($ed47_v_bairro,  0,  23),  0,  0,  "L",  0);
+    $oPdf->cell(35,  4,  substr((string) $ed47_v_bairro,  0,  23),  0,  0,  "L",  0);
     $oPdf->cell(1,  4,  "",  "R",  1,  "C",  0);
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_c_zona),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_c_zona),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(40,  4,  $ed47_c_zona,  0,  0,  "L",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_v_cep),  0,  0,  "R",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_v_cep),  0,  0,  "R",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(90,  4,  $ed47_v_cep,  0,  0,  "L",  0);
     $oPdf->cell(1,  4,  "",  "R",  1,  "C",  0);
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_v_telef),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_v_telef),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(40,  4,  $ed47_v_telef,  0,  0,  "L",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_v_telcel),  0,  0,  "R",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_v_telcel),  0,  0,  "R",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(30,  4,  $ed47_v_telcel,  0,  0,  "L",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(25,  4,  strip_tags($Led47_v_fax),  0,  0,  "R",  0);
+    $oPdf->cell(25,  4,  strip_tags((string) $Led47_v_fax),  0,  0,  "R",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(35,  4,  $ed47_v_fax,  0,  0,  "L",  0);
     $oPdf->cell(1,  4,  "",  "R",  1,  "C",  0);
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_v_email),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_v_email),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(40,  4,  $ed47_v_email,  0,  0,  "L",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_v_cxpostal),  0,  0,  "R",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_v_cxpostal),  0,  0,  "R",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(90,  4,  $ed47_v_cxpostal,  0,  0,  "L",  0);
     $oPdf->cell(1,  4,  "",  "R",  1,  "C",  0);
@@ -320,7 +320,7 @@ try {
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_i_nacion),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_i_nacion),  0,  0,  "L",  0);
 
     if ($ed47_i_nacion == 1) {
       $ed47_i_nacion = "BRASILEIRA";
@@ -340,22 +340,22 @@ try {
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_i_censoufnat),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_i_censoufnat),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(40,  4,  $ufnat,  0,  0,  "L",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_i_censomunicnat),  0,  0,  "R",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_i_censomunicnat),  0,  0,  "R",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(90,  4,  $municnat,  0,  0,  "L",  0);
     $oPdf->cell(1,  4,  "",  "R",  1,  "C",  0);
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_i_transpublico),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_i_transpublico),  0,  0,  "L",  0);
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(40, 4, $ed47_i_transpublico=="0"?"NÃO UTILIZA":"UTILIZA", 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_c_transporte), 0, 0, "R", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_c_transporte), 0, 0, "R", 0);
 
     if ($ed47_c_transporte == 1) {
       $ed47_c_transporte = "ESTADUAL";
@@ -371,11 +371,11 @@ try {
 
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_c_bolsafamilia), 0, 0, "L", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_c_bolsafamilia), 0, 0, "L", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(23, 4, $ed47_c_bolsafamilia=='N'?'NÃO':'SIM', 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(47, 4, strip_tags($Led47_c_atenddifer), 0, 0, "L", 0);
+    $oPdf->cell(47, 4, strip_tags((string) $Led47_c_atenddifer), 0, 0, "L", 0);
 
     if ($ed47_c_atenddifer == 1) {
       $ed47_c_atenddifer = "EM HOSPITAL";
@@ -415,14 +415,14 @@ try {
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led76_i_escola),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led76_i_escola),  0,  0,  "L",  0);
     $oPdf->setfont('arial', 'b',  7);
-    $oPdf->cell(160,  4,  substr($nomeescola,  0,  30),  0,  0,  "L",  0);
+    $oPdf->cell(160,  4,  substr((string) $nomeescola,  0,  30),  0,  0,  "L",  0);
     $oPdf->cell(1,  4,  "",  "R",  1,  "C",  0);
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led76_d_data),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led76_d_data),  0,  0,  "L",  0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(160,  4,  db_formatar($ed76_d_data, 'd'),  0,  0,  "L",  0);
     $oPdf->cell(1,  4,  "",  "R",  1,  "C",  0);
@@ -435,7 +435,7 @@ try {
 
     $oPdf->cell(3,  4,  "",  "L",  0,  "C",  0);
     $oPdf->setfont('arial',  '',  7);
-    $oPdf->cell(30,  4,  strip_tags($Led47_c_certidaotipo),  0,  0,  "L",  0);
+    $oPdf->cell(30,  4,  strip_tags((string) $Led47_c_certidaotipo),  0,  0,  "L",  0);
 
     if ($ed47_c_certidaotipo == "N") {
       $ed47_c_certidaotipo = "NASCIMENTO";
@@ -448,42 +448,42 @@ try {
     $oPdf->setfont('arial',  'b',  7);
     $oPdf->cell(40,  4,  $ed47_c_certidaotipo,  0,  0,  "L",  0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_c_certidaonum), 0, 0, "R", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_c_certidaonum), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(90, 4, $ed47_c_certidaonum, 0, 0, "L", 0);
     $oPdf->cell(1, 4, "", "R", 1, "C", 0);
 
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_c_certidaofolha), 0, 0, "L", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_c_certidaofolha), 0, 0, "L", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(40, 4, $ed47_c_certidaofolha, 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_c_certidaolivro), 0, 0, "R", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_c_certidaolivro), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(30, 4, $ed47_c_certidaolivro, 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(25, 4, strip_tags($Led47_c_certidaodata), 0, 0, "R", 0);
+    $oPdf->cell(25, 4, strip_tags((string) $Led47_c_certidaodata), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(35, 4, db_formatar($ed47_c_certidaodata, 'd'), 0, 0, "L", 0);
     $oPdf->cell(1, 4, "", "R", 1, "C", 0);
 
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_i_censoufcert), 0, 0, "L", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_i_censoufcert), 0, 0, "L", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(40, 4, $ufcert, 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_i_censomuniccert), 0, 0, "R", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_i_censomuniccert), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(90, 4, $municcert, 0, 0, "L", 0);
     $oPdf->cell(1, 4, "", "R", 1, "C", 0);
 
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_c_certidaocart), 0, 0, "L", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_c_certidaocart), 0, 0, "L", 0);
     $oPdf->setfont('arial', 'b', 7);
-    $oPdf->cell(160, 4, substr($ed47_c_certidaocart, 0, 90), 0, 0, "L", 0);
+    $oPdf->cell(160, 4, substr((string) $ed47_c_certidaocart, 0, 90), 0, 0, "L", 0);
     $oPdf->cell(1, 4, "", "R", 1, "C", 0);
 
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
@@ -492,26 +492,26 @@ try {
 
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_v_ident), 0, 0, "L", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_v_ident), 0, 0, "L", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(40, 4, $ed47_v_ident, 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_v_identcompl), 0, 0, "R", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_v_identcompl), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(30, 4, $ed47_v_identcompl, 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(25, 4, strip_tags($Led47_i_censoufident), 0, 0, "R", 0);
+    $oPdf->cell(25, 4, strip_tags((string) $Led47_i_censoufident), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(35, 4, $ufident, 0, 0, "L", 0);
     $oPdf->cell(1, 4, "", "R", 1, "C", 0);
 
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_i_censoorgemissrg), 0, 0, "L", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_i_censoorgemissrg), 0, 0, "L", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(100, 4, $orgemissrg, 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(25, 4, strip_tags($Led47_d_identdtexp), 0, 0, "R", 0);
+    $oPdf->cell(25, 4, strip_tags((string) $Led47_d_identdtexp), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(35, 4, db_formatar($ed47_d_identdtexp, 'd'), 0, 0, "L", 0);
     $oPdf->cell(1, 4, "", "R", 1, "C", 0);
@@ -522,26 +522,26 @@ try {
 
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_v_cnh), 0, 0, "L", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_v_cnh), 0, 0, "L", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(40, 4, $ed47_v_cnh, 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_v_categoria), 0, 0, "R", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_v_categoria), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(90, 4, $ed47_v_categoria, 0, 0, "L", 0);
     $oPdf->cell(1, 4, "", "R", 1, "C", 0);
 
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_d_dtemissao), 0, 0, "L", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_d_dtemissao), 0, 0, "L", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(40, 4, db_formatar($ed47_d_dtemissao, 'd'), 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_d_dthabilitacao), 0, 0, "R", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_d_dthabilitacao), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(30, 4, db_formatar($ed47_d_dthabilitacao, 'd'), 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(25, 4, strip_tags($Led47_d_dtvencimento), 0, 0, "R", 0);
+    $oPdf->cell(25, 4, strip_tags((string) $Led47_d_dtvencimento), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(35, 4, db_formatar($ed47_d_dtvencimento, 'd'), 0, 0, "L", 0);
     $oPdf->cell(1, 4, "", "R", 1, "C", 0);
@@ -552,11 +552,11 @@ try {
 
     $oPdf->cell(3, 4, "", "L", 0, "C", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_v_cpf), 0, 0, "L", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_v_cpf), 0, 0, "L", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(40, 4, $ed47_v_cpf, 0, 0, "L", 0);
     $oPdf->setfont('arial', '', 7);
-    $oPdf->cell(30, 4, strip_tags($Led47_c_passaporte), 0, 0, "R", 0);
+    $oPdf->cell(30, 4, strip_tags((string) $Led47_c_passaporte), 0, 0, "R", 0);
     $oPdf->setfont('arial', 'b', 7);
     $oPdf->cell(35, 4, $ed47_c_passaporte, 0, 0, "L", 0);
 
@@ -635,7 +635,7 @@ try {
 
     $oPdf->setXY(107, $alt_obs);
     $oPdf->cell(3, 50, "", "L", 0, "C", 0);
-    $oPdf->multicell(91, 4, trim($ed47_v_contato) == "" ? "Nenhum registro." : substr(trim($ed47_v_contato), 0, 600), 0, "J", 0, 0);
+    $oPdf->multicell(91, 4, trim((string) $ed47_v_contato) == "" ? "Nenhum registro." : substr(trim((string) $ed47_v_contato), 0, 600), 0, "J", 0, 0);
     $oPdf->setXY(201, $alt_obs);
     $oPdf->cell(3, 50, "", "R", 1, "C", 0);
 
@@ -650,7 +650,7 @@ try {
       $oPdf->cell(74, 4, "..............................................................................".
                          "........................", 0, 1, "L", 0);
       $oPdf->cell(120, 4, "", 0, 0, "L", 0);
-      $oPdf->cell(74, 4, trim($ed47_c_nomeresp)!=""?trim($ed47_c_nomeresp):"", 0, 1, "C", 0);
+      $oPdf->cell(74, 4, trim((string) $ed47_c_nomeresp)!=""?trim((string) $ed47_c_nomeresp):"", 0, 1, "C", 0);
     }
 
    //////////////////////////////////////////////////////////
@@ -747,7 +747,7 @@ try {
           $oPdf->cell(30, 4, "Situação:", 0, 0, "L", 1);
           $oPdf->setfont('arial', 'b', 7);
 
-          if (trim($ed60_c_situacao) == "AVANÇADO" || trim($ed60_c_situacao) == "CLASSIFICADO") {
+          if (trim((string) $ed60_c_situacao) == "AVANÇADO" || trim((string) $ed60_c_situacao) == "CLASSIFICADO") {
             $sitt = 'Aprovado através de progressão';
           } else {
 
@@ -822,8 +822,8 @@ try {
                && $oMatricula->getTurma()->getBaseCurricular()->getCurso()->getEnsino()->isInfantil()
             ) {
 
-            $aDescricaoTurno = array();
-            $aTurnoReferente = array( 1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE' );
+            $aDescricaoTurno = [];
+            $aTurnoReferente = [ 1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE' ];
 
             foreach ( $oMatricula->getTurnosVinculados() as $oTurnoReferente ) {
               $aDescricaoTurno[] = $aTurnoReferente[ $oTurnoReferente->ed336_turnoreferente ];
@@ -870,8 +870,8 @@ try {
 
           $iLinhasAprovCons = pg_num_rows( $rsAprovConselho );
 
-          $aAprovadoBaixaFrequencia   = array();
-          $aAprovadoConselhoRegimento = array();
+          $aAprovadoBaixaFrequencia   = [];
+          $aAprovadoConselhoRegimento = [];
 
           if( $iLinhasAprovCons > 0 ) {
 
@@ -896,7 +896,7 @@ try {
                   $oDadosObservacao              = new stdClass();
                   $oDadosObservacao->aParagrafos = $oDocumento->getDocParagrafos();
 
-                  if( trim( $oDadosObservacao->aParagrafos[1]->oParag->db02_texto ) != '' ) {
+                  if( trim( (string) $oDadosObservacao->aParagrafos[1]->oParag->db02_texto ) != '' ) {
                     $aAprovadoConselhoRegimento[]  = "- {$oDadosObservacao->aParagrafos[1]->oParag->db02_texto}";
                   }
                   break;
@@ -910,7 +910,7 @@ try {
                   if ( !isset( $aAprovadoBaixaFrequencia[$sHashSerieAno] ) ) {
                     $aAprovadoBaixaFrequencia[$sHashSerieAno] = $oDadosAprovConselho;
                   }
-                  continue;
+                  break;
                   break;
 
                 /**
@@ -982,7 +982,7 @@ try {
         $oPdf->cell(60, 4, "Assinatura do Responsável:", 0, 0, "R", 0);
         $oPdf->cell(70, 4, ".................................................................................................", 0, 1, "L", 0);
         $oPdf->cell(120, 4, "", 0, 0, "L", 0);
-        $oPdf->cell(70, 4, trim($ed47_c_nomeresp)!=""?trim($ed47_c_nomeresp):"", 0, 1, "C", 0);
+        $oPdf->cell(70, 4, trim((string) $ed47_c_nomeresp)!=""?trim((string) $ed47_c_nomeresp):"", 0, 1, "C", 0);
         $oPdf->setfont('arial', 'b', 7);
       }
     } else {
@@ -1113,7 +1113,7 @@ try {
           $oPdf->setY($alt_geral);
           $oPdf->setX(125);
           $oPdf->setfont('arial', 'b', 7);
-          $oPdf->cell(70, 4, substr($ed18_c_nome, 0, 45), "RT", 2, "L", 0);
+          $oPdf->cell(70, 4, substr((string) $ed18_c_nome, 0, 45), "RT", 2, "L", 0);
           $oPdf->cell(70, 4,               $ed62_i_qtdch, "RB", 2, "L", 0);
           $oPdf->setY($alt_geral);
           $oPdf->setX(195);
@@ -1164,16 +1164,16 @@ try {
                     $sCor = $sCor1;
                   }
 
-                  if (trim($ed65_c_situacao) == "AMPARADO") {
+                  if (trim((string) $ed65_c_situacao) == "AMPARADO") {
                     $ed65_t_resultobtido = "";
                   } else if ($ed65_c_tiporesultado == 'N') {
                     $ed65_t_resultobtido = $ed65_t_resultobtido;
                   }
 
-                  $iAlt = ceil(strlen($ed232_c_descr)/45)*4;
+                  $iAlt = ceil(strlen((string) $ed232_c_descr)/45)*4;
                   $oPdf->cell(5, $iAlt, "", "L", 0, "C", 0);
 
-                  $aDados = array();
+                  $aDados = [];
 
                   $aDados[0] = $ed232_c_descr;
                   $aDados[1] = $ed65_c_situacao;
@@ -1204,10 +1204,10 @@ try {
                     $ed65_i_qtdch = db_formatar($ed65_i_qtdch, 'p');
                   }
 
-                  $aDados[4] = $ed65_i_qtdch == "" ? 0 : (int)trim( $ed65_i_qtdch );
+                  $aDados[4] = $ed65_i_qtdch == "" ? 0 : (int)trim( (string) $ed65_i_qtdch );
 
-                  $oPdf->SetWidths(array(85, 30, 30, 25, 10, 30));
-                  $oPdf->SetAligns(array("L", "C", "C", "C", "C", "C"));
+                  $oPdf->SetWidths([85, 30, 30, 25, 10, 30]);
+                  $oPdf->SetAligns(["L", "C", "C", "C", "C", "C"]);
                   $alturaRow = $oPdf->h - 32;
                   $oPdf->Row_multicell($aDados,  3.8,  true,  4,  0,  false,  true,  2,  $alturaRow,  0);
 
@@ -1263,16 +1263,16 @@ try {
                 for ($iCont = 0; $iCont < $iLinhasResultadoForaHistorico; $iCont++) {
 
                   db_fieldsmemory($rsResult22, $iCont);
-                  if (trim($ed100_c_situacao) == "AMPARADO") {
+                  if (trim((string) $ed100_c_situacao) == "AMPARADO") {
                     $ed100_t_resultobtido = "&nbsp;";
                   } else if ($ed100_c_tiporesultado == 'N') {
                     $ed100_t_resultobtido = $ed100_t_resultobtido;
                   }
 
-                  $iAlt = ceil(strlen($ed232_c_descr)/45)*4;
+                  $iAlt = ceil(strlen((string) $ed232_c_descr)/45)*4;
                   $oPdf->cell(5, $iAlt, "", "L", 0, "C", 0);
 
-                  $aDados = array();
+                  $aDados = [];
 
                   $aDados[0] = $ed232_c_descr;
                   $aDados[1] = $ed100_c_situacao;
@@ -1301,8 +1301,8 @@ try {
 
                   $aDados[4] = $ed100_i_qtdch == "" ? 0 : $ed100_i_qtdch;
 
-                  $oPdf->SetWidths(array(85, 30, 30, 25, 10, 30));
-                  $oPdf->SetAligns(array("L", "C", "C", "C", "C", "C"));
+                  $oPdf->SetWidths([85, 30, 30, 25, 10, 30]);
+                  $oPdf->SetAligns(["L", "C", "C", "C", "C", "C"]);
                   $alturaRow = $oPdf->h - 32;
                   $oPdf->Row_multicell($aDados,  3.8,  true,  4,  0,  false,  true,  2,  $alturaRow,  0);
 
@@ -1346,7 +1346,7 @@ try {
         $oPdf->cell(60, 4, "Assinatura do Responsável:", 0, 0, "R", 0);
         $oPdf->cell(70, 4, "..................................................................................................", 0, 1, "L", 0);
         $oPdf->cell(120, 4, "", 0, 0, "L", 0);
-        $oPdf->cell(70, 4, trim($ed47_c_nomeresp)!=""?trim($ed47_c_nomeresp):"", 0, 1, "C", 0);
+        $oPdf->cell(70, 4, trim((string) $ed47_c_nomeresp)!=""?trim((string) $ed47_c_nomeresp):"", 0, 1, "C", 0);
       }
     } else {
       $iLinhas3 = 0;
@@ -1373,7 +1373,7 @@ try {
       $oPdf->setfont('arial', '', 7);
       $oPdf->cell(190, 4, "", "LR", 1, "C", 0);
       $iAltInicio = $oPdf->getY();
-      $aArrayMov  = array();
+      $aArrayMov  = [];
 
       $sCampos    = "ed229_i_codigo, ed229_d_dataevento, ed18_i_codigo, ed18_c_nome, ";
       $sCampos   .= "ed60_i_codigo, ed57_c_descr, ed52_i_ano, ed60_matricula,";
@@ -1401,9 +1401,9 @@ try {
           $aArrayMov[]  = str_replace("-", "", $ed229_d_dataevento).$ed229_i_codigo;
           $iContador    = count($aArrayMov)-1;
 
-          $aArrayMov[$iContador] .= "|".db_formatar($ed229_d_dataevento, 'd')."#".$ed18_i_codigo." - ".substr($ed18_c_nome, 0, 30);
+          $aArrayMov[$iContador] .= "|".db_formatar($ed229_d_dataevento, 'd')."#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome, 0, 30);
           $aArrayMov[$iContador] .= "#".$ed60_matricula."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
-          $aArrayMov[$iContador] .="#".substr($ed229_c_procedimento, 0, 35)."#".$ed229_t_descr;
+          $aArrayMov[$iContador] .="#".substr((string) $ed229_c_procedimento, 0, 35)."#".$ed229_t_descr;
         }
       }
 
@@ -1427,8 +1427,8 @@ try {
         db_fieldsmemory($rsResult1, 0);
         $aArrayMov[] = str_replace("-", "", $ed229_d_dataevento).$ed229_i_codigo."|".db_formatar($ed229_d_dataevento, 'd');
         $iContador    = count($aArrayMov)-1;
-        $aArrayMov[$iContador] .="#".$ed18_i_codigo." - ".substr($ed18_c_nome, 0, 30)."#".$ed60_matricula."#".$ed57_c_descr;
-        $aArrayMov[$iContador] .= "#".$ed52_i_ano."#".$ed11_c_descr."#".substr($ed229_c_procedimento, 0, 35)."#".$ed229_t_descr;
+        $aArrayMov[$iContador] .="#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome, 0, 30)."#".$ed60_matricula."#".$ed57_c_descr;
+        $aArrayMov[$iContador] .= "#".$ed52_i_ano."#".$ed11_c_descr."#".substr((string) $ed229_c_procedimento, 0, 35)."#".$ed229_t_descr;
       }
 
       $sCamposMat  = "ed229_i_codigo, ed229_d_dataevento, ed18_i_codigo, ed18_c_nome, ed60_i_codigo, ed57_c_descr, ";
@@ -1450,8 +1450,8 @@ try {
         db_fieldsmemory($rsResult2, 0);
         $aArrayMov[]  = str_replace("-", "", $ed229_d_dataevento).$ed229_i_codigo."|".db_formatar($ed229_d_dataevento, 'd');
         $iContador    = count($aArrayMov)-1;
-        $aArrayMov[$iContador] .= "#".$ed18_i_codigo." - ".substr($ed18_c_nome, 0, 30)."#".$ed60_matricula."#".$ed57_c_descr;
-        $aArrayMov[$iContador] .= "#".$ed52_i_ano."#".$ed11_c_descr."#".substr($ed229_c_procedimento, 0, 35)."#".$ed229_t_descr;
+        $aArrayMov[$iContador] .= "#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome, 0, 30)."#".$ed60_matricula."#".$ed57_c_descr;
+        $aArrayMov[$iContador] .= "#".$ed52_i_ano."#".$ed11_c_descr."#".substr((string) $ed229_c_procedimento, 0, 35)."#".$ed229_t_descr;
       }
 
       $aArrayOrdem = SORT_ASC;
@@ -1522,7 +1522,7 @@ try {
       $oPdf->cell(70, 4, "......................................................................".
                          "...........................", 0, 1, "L", 0);
       $oPdf->cell(120, 4, "", 0, 0, "L", 0);
-      $oPdf->cell(70, 4, trim($ed47_c_nomeresp) != "" ? trim($ed47_c_nomeresp) : "", 0, 1, "C", 0);
+      $oPdf->cell(70, 4, trim((string) $ed47_c_nomeresp) != "" ? trim((string) $ed47_c_nomeresp) : "", 0, 1, "C", 0);
     }
   }
 

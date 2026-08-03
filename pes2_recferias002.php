@@ -40,7 +40,7 @@ $oPost = db_utils::postMemory($_GET);
 
 $sTipo = $oPost->tipo;
 $iAno  = $oPost->ano;
-if(strlen($oPost->mes)==1){
+if(strlen((string) $oPost->mes)==1){
 	$iMes  = '0'.$oPost->mes;	
 } else {
 	$iMes  = $oPost->mes;

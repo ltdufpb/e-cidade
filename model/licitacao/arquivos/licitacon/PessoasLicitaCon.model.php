@@ -87,7 +87,7 @@ class PessoasLicitaCon extends ArquivoLicitaCon {
             throw new DBException("Não foi possível buscar informações para o arquivo {$this->sNomeArquivo} no LicitaCon.");
         }
 
-        $aCgms = array();
+        $aCgms = [];
         for ($i = 0; $i < pg_num_rows($rsCgm); $i++) {
 
             $oStdClass = db_utils::fieldsMemory($rsCgm, $i);

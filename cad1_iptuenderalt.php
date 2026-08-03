@@ -32,8 +32,8 @@ require_once modification("libs/db_sessoes.php");
 require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $db_botao_excluir = false;
 $db_botao = true;
@@ -100,7 +100,7 @@ if (isset($atualizar)) {
     db_fieldsmemory($rsBusca ,0);
     $db_botao_excluir = true;
 
-    $lMunicipio = mb_strtoupper($oPrefeitura->getUf()) == $j43_uf && mb_strtoupper($oPrefeitura->getMunicipio()) == mb_strtoupper($j43_munic);
+    $lMunicipio = mb_strtoupper((string) $oPrefeitura->getUf()) == $j43_uf && mb_strtoupper((string) $oPrefeitura->getMunicipio()) == mb_strtoupper((string) $j43_munic);
     $iEnderecoMunicipio = $lMunicipio ? 1 : 0;
 
   } else {

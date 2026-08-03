@@ -69,7 +69,7 @@ switch ($oParam->exec) {
 
     $oRetorno->iTotalDocumentos = pg_num_rows($rsSqlDocumentos);
     
-    $oRetorno->aDocumentos = array();
+    $oRetorno->aDocumentos = [];
     
     if ($oRetorno->iTotalDocumentos > 0) {
       $oRetorno->aDocumentos = db_utils::getCollectionByRecord($rsSqlDocumentos, false, false, true);

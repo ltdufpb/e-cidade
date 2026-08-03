@@ -62,9 +62,9 @@ if (isset($rh01_regist) && !empty($rh01_regist)) {
 
     $oRecisao = db_utils::fieldsMemory($rsRhpesrescisao, 0);
 
-    $datai_dia = date('d', strtotime($oRecisao->rh05_recis));
-    $datai_mes = date('m', strtotime($oRecisao->rh05_recis));
-    $datai_ano = date('Y', strtotime($oRecisao->rh05_recis));
+    $datai_dia = date('d', strtotime((string) $oRecisao->rh05_recis));
+    $datai_mes = date('m', strtotime((string) $oRecisao->rh05_recis));
+    $datai_ano = date('Y', strtotime((string) $oRecisao->rh05_recis));
   } else {
 
     $datai_dia = date('d', db_getsession('DB_datausu'));

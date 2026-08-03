@@ -42,10 +42,8 @@ use Exception;
  */
 class ArquivosFactory
 {
-    private $ano;
-    public function __construct($ano)
+    public function __construct(private $ano)
     {
-        $this->ano = $ano;
     }
 
     /**
@@ -57,58 +55,50 @@ class ArquivosFactory
      */
     public function get($arquivo, $params, array $codigoInstituicoes, $codigoTCE)
     {
-        switch ($arquivo) {
-            case 'Servidores':
-                return new Servidores(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            case 'Matricula':
-                return new Matricula(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            case 'Cargos':
-                return new Cargos(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            case 'HistoricoFuncional':
-                return new HistoricoFuncionalSagres(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            case 'CodigoVantagensDescontos':
-                return new CodigoVantagensDescontos(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            case 'FolhaPagamento':
-                return new FolhaPagamento(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            case 'CodigoAgrupamentoFolhaPagamento':
-                return new CodigoAgrupamentoFolhaPagamento(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            default:
-                throw new Exception("Classe {$arquivo} não implementada.");
-        }
+        return match ($arquivo) {
+            'Servidores' => new Servidores(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            'Matricula' => new Matricula(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            'Cargos' => new Cargos(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            'HistoricoFuncional' => new HistoricoFuncionalSagres(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            'CodigoVantagensDescontos' => new CodigoVantagensDescontos(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            'FolhaPagamento' => new FolhaPagamento(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            'CodigoAgrupamentoFolhaPagamento' => new CodigoAgrupamentoFolhaPagamento(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            default => throw new Exception("Classe {$arquivo} não implementada."),
+        };
     }
 }

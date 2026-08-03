@@ -103,7 +103,7 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
             $sSql       = $oDaoUnidades->sql_query("","sd02_i_codigo,descrdepto");
             $rsUnidades = $oDaoUnidades->sql_record($sSql);
             db_multiploselect("sd02_i_codigo", "descrdepto", "nSelecionados", "sSelecionados", $rsUnidades,
-                              array(), 5, 250);
+                              [], 5, 250);
           ?>
         </fieldset>
         

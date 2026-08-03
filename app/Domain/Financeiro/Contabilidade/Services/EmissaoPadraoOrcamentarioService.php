@@ -16,16 +16,6 @@ class EmissaoPadraoOrcamentarioService
     private $uniao;
 
     /**
-     * Receita ou Despesa
-     * @var string
-     */
-    private $origem;
-    /**
-     * @var integer
-     */
-    private $exercicio;
-
-    /**
      * @var array
      */
     protected $dados = [];
@@ -35,11 +25,12 @@ class EmissaoPadraoOrcamentarioService
      * @param string $origem
      * @param integer $exercicio
      */
-    public function __construct($tipoPlano, $origem, $exercicio)
+    public function __construct($tipoPlano, /**
+     * Receita ou Despesa
+     */
+    private $origem, private $exercicio)
     {
         $this->uniao = $tipoPlano === PlanoContas::PLANO_UNIAO;
-        $this->origem = $origem;
-        $this->exercicio = $exercicio;
     }
 
 

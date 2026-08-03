@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE contrinot
 class cl_contrinot { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $d08_sequencial = 0; 
-   var $d08_contricalc = 0; 
-   var $d08_notif = 0; 
+   public $d08_sequencial = 0; 
+   public $d08_contricalc = 0; 
+   public $d08_notif = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  d08_sequencial = int4 = Codigo 
                  d08_contricalc = int4 = Codigo 
                  d08_notif = int4 = Notifiicacao 
                  ";
    //funcao construtor da classe 
-   function cl_contrinot() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contrinot"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_contrinot {
          $this->erro_status = "0";
          return false; 
        }
-       $this->d08_sequencial = pg_result($result,0,0); 
+       $this->d08_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from contrinot_d08_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $d08_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $d08_sequencial)){
          $this->erro_sql = " Campo d08_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_contrinot {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->d08_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -166,12 +166,12 @@ class cl_contrinot {
      $resaco = $this->sql_record($this->sql_query_file($this->d08_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10255,'$this->d08_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,133,10255,'','".AddSlashes(pg_result($resaco,0,'d08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,133,10254,'','".AddSlashes(pg_result($resaco,0,'d08_contricalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,133,715,'','".AddSlashes(pg_result($resaco,0,'d08_notif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,133,10255,'','".AddSlashes(pg_fetch_result($resaco,0,'d08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,133,10254,'','".AddSlashes(pg_fetch_result($resaco,0,'d08_contricalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,133,715,'','".AddSlashes(pg_fetch_result($resaco,0,'d08_notif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_contrinot {
       $this->atualizacampos();
      $sql = " update contrinot set ";
      $virgula = "";
-     if(trim($this->d08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d08_sequencial"])){ 
+     if(trim((string) $this->d08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d08_sequencial"])){ 
        $sql  .= $virgula." d08_sequencial = $this->d08_sequencial ";
        $virgula = ",";
-       if(trim($this->d08_sequencial) == null ){ 
+       if(trim((string) $this->d08_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "d08_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_contrinot {
          return false;
        }
      }
-     if(trim($this->d08_contricalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d08_contricalc"])){ 
+     if(trim((string) $this->d08_contricalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d08_contricalc"])){ 
        $sql  .= $virgula." d08_contricalc = $this->d08_contricalc ";
        $virgula = ",";
-       if(trim($this->d08_contricalc) == null ){ 
+       if(trim((string) $this->d08_contricalc) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "d08_contricalc";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_contrinot {
          return false;
        }
      }
-     if(trim($this->d08_notif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d08_notif"])){ 
+     if(trim((string) $this->d08_notif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d08_notif"])){ 
        $sql  .= $virgula." d08_notif = $this->d08_notif ";
        $virgula = ",";
-       if(trim($this->d08_notif) == null ){ 
+       if(trim((string) $this->d08_notif) == null ){ 
          $this->erro_sql = " Campo Notifiicacao nao Informado.";
          $this->erro_campo = "d08_notif";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_contrinot {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10255,'$this->d08_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d08_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,133,10255,'".AddSlashes(pg_result($resaco,$conresaco,'d08_sequencial'))."','$this->d08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,133,10255,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d08_sequencial'))."','$this->d08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d08_contricalc"]))
-           $resac = db_query("insert into db_acount values($acount,133,10254,'".AddSlashes(pg_result($resaco,$conresaco,'d08_contricalc'))."','$this->d08_contricalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,133,10254,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d08_contricalc'))."','$this->d08_contricalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d08_notif"]))
-           $resac = db_query("insert into db_acount values($acount,133,715,'".AddSlashes(pg_result($resaco,$conresaco,'d08_notif'))."','$this->d08_notif',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,133,715,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d08_notif'))."','$this->d08_notif',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_contrinot {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10255,'$d08_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,133,10255,'','".AddSlashes(pg_result($resaco,$iresaco,'d08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,133,10254,'','".AddSlashes(pg_result($resaco,$iresaco,'d08_contricalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,133,715,'','".AddSlashes(pg_result($resaco,$iresaco,'d08_notif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,133,10255,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,133,10254,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d08_contricalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,133,715,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d08_notif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from contrinot
@@ -345,7 +345,7 @@ class cl_contrinot {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:contrinot";
@@ -359,7 +359,7 @@ class cl_contrinot {
    function sql_query ( $d08_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_contrinot {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_contrinot {
    function sql_query_file ( $d08_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_contrinot {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

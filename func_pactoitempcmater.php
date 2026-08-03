@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pactoitempcmater_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpactoitempcmater = new cl_pactoitempcmater;
 $clpactoitempcmater->rotulo->label("o89_sequencial");
 $clpactoitempcmater->rotulo->label("o89_pactoitem");
@@ -98,9 +98,9 @@ $clpactoitempcmater->rotulo->label("o89_pactoitem");
         }else{
            $sql = $clpactoitempcmater->sql_query("",$campos,"o89_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o89_pactoitem)){
-          $repassa = array("chave_o89_sequencial"=>$chave_o89_sequencial,"chave_o89_pactoitem"=>$chave_o89_pactoitem);
+          $repassa = ["chave_o89_sequencial"=>$chave_o89_sequencial,"chave_o89_pactoitem"=>$chave_o89_pactoitem];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

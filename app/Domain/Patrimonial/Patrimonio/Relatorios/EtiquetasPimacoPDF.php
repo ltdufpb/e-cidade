@@ -8,12 +8,9 @@ use Proner\PhpPimaco\Tag;
 
 class EtiquetasPimacoPDF extends Pimaco implements Etiqueta
 {
-    private $dados = [];
-
-    public function __construct($dados, $template, $path_template = null)
+    public function __construct(private $dados, $template, $path_template = null)
     {
         parent::__construct($template, $path_template);
-        $this->dados = $dados;
     }
 
     public function gerar()

@@ -44,8 +44,8 @@ if (!isset($arqinclude)){
   $classinatura = new cl_assinatura;
   $orcparamrel  = new cl_orcparamrel;
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
 }
 
@@ -114,7 +114,7 @@ $iYInicio = $pdf->getY();
 $iMaxLinha = $iYInicio;
 $iYLinha =  $iMaxLinha;
   //leitura das 3 primeira linhas do array
-	$aLinhasRelatorio = array();
+	$aLinhasRelatorio = [];
 	//Variáveis para armazenar o total da coluna da linha
 	$totalReceitasCapital_c1 = 0;
 	$totalReceitasCapital_c2 = 0;
@@ -148,7 +148,7 @@ $iYLinha =  $iMaxLinha;
   	$iYLinha =  $iMaxLinha;
   	$pdf->SetY($iMaxLinha);
   	$iMaxLinha = $pdf->getY();
-		$pdf->MultiCell(70,$alt,trim($aLinhasRelatorio[$i]["coluna"][0]),'T',"J",0);
+		$pdf->MultiCell(70,$alt,trim((string) $aLinhasRelatorio[$i]["coluna"][0]),'T',"J",0);
 		if ($iMaxLinha < $pdf->GetY()) {
 	    $iMaxLinha = $pdf->GetY();
 	  }
@@ -158,7 +158,7 @@ $iYLinha =  $iMaxLinha;
 	    $iMaxLinha = $pdf->GetY();
 	  }
 	  $pdf->SetXY(105,$iYLinha);
-	  $pdf->MultiCell(70,$alt,trim($aLinhasRelatorio[$i]["coluna"][2]),'TL',"L",0);
+	  $pdf->MultiCell(70,$alt,trim((string) $aLinhasRelatorio[$i]["coluna"][2]),'TL',"L",0);
 	  if ($iMaxLinha < $pdf->GetY()) {
 	    $iMaxLinha = $pdf->GetY();
 	  }

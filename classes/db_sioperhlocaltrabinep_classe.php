@@ -29,7 +29,7 @@ class cl_sioperhlocaltrabinep
     public function __construct()
     {
         $this->rotulo = new rotulo("sioperhlocaltrabinep"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -96,7 +96,7 @@ class cl_sioperhlocaltrabinep
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "sioperhlocaltrabinep ($this->si05_rhlocaltrab) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "sioperhlocaltrabinep já Cadastrado";
@@ -125,12 +125,12 @@ class cl_sioperhlocaltrabinep
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,262347194,'$this->si05_rhlocaltrab','I')");
-         $resac = db_query("insert into db_acount values($acount,111279381,262347194,'','".AddSlashes(pg_result($resaco,0,'si05_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,111279381,239460891,'','".AddSlashes(pg_result($resaco,0,'si05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,111279381,203460522,'','".AddSlashes(pg_result($resaco,0,'si05_inep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,111279381,262347194,'','".AddSlashes(pg_fetch_result($resaco,0,'si05_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,111279381,239460891,'','".AddSlashes(pg_fetch_result($resaco,0,'si05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,111279381,203460522,'','".AddSlashes(pg_fetch_result($resaco,0,'si05_inep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -141,10 +141,10 @@ class cl_sioperhlocaltrabinep
       $this->atualizacampos();
      $sql = " update sioperhlocaltrabinep set ";
      $virgula = "";
-     if(trim($this->si05_rhlocaltrab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si05_rhlocaltrab"])){ 
+     if(trim((string) $this->si05_rhlocaltrab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si05_rhlocaltrab"])){ 
        $sql  .= $virgula." si05_rhlocaltrab = $this->si05_rhlocaltrab ";
        $virgula = ",";
-       if(trim($this->si05_rhlocaltrab) == null ){ 
+       if(trim((string) $this->si05_rhlocaltrab) == null ){ 
          $this->erro_sql = " Campo Local de Trabalho não informado.";
          $this->erro_campo = "si05_rhlocaltrab";
          $this->erro_banco = "";
@@ -154,10 +154,10 @@ class cl_sioperhlocaltrabinep
          return false;
        }
      }
-     if(trim($this->si05_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si05_instit"])){ 
+     if(trim((string) $this->si05_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si05_instit"])){ 
        $sql  .= $virgula." si05_instit = $this->si05_instit ";
        $virgula = ",";
-       if(trim($this->si05_instit) == null ){ 
+       if(trim((string) $this->si05_instit) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "si05_instit";
          $this->erro_banco = "";
@@ -167,10 +167,10 @@ class cl_sioperhlocaltrabinep
          return false;
        }
      }
-     if(trim($this->si05_inep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si05_inep"])){ 
+     if(trim((string) $this->si05_inep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si05_inep"])){ 
        $sql  .= $virgula." si05_inep = $this->si05_inep ";
        $virgula = ",";
-       if(trim($this->si05_inep) == null ){ 
+       if(trim((string) $this->si05_inep) == null ){ 
          $this->erro_sql = " Campo Código do Inep não informado.";
          $this->erro_campo = "si05_inep";
          $this->erro_banco = "";
@@ -194,15 +194,15 @@ class cl_sioperhlocaltrabinep
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,262347194,'$this->si05_rhlocaltrab','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["si05_rhlocaltrab"]) || $this->si05_rhlocaltrab != "")
-             $resac = db_query("insert into db_acount values($acount,111279381,262347194,'".AddSlashes(pg_result($resaco,$conresaco,'si05_rhlocaltrab'))."','$this->si05_rhlocaltrab',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,111279381,262347194,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'si05_rhlocaltrab'))."','$this->si05_rhlocaltrab',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["si05_instit"]) || $this->si05_instit != "")
-             $resac = db_query("insert into db_acount values($acount,111279381,239460891,'".AddSlashes(pg_result($resaco,$conresaco,'si05_instit'))."','$this->si05_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,111279381,239460891,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'si05_instit'))."','$this->si05_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["si05_inep"]) || $this->si05_inep != "")
-             $resac = db_query("insert into db_acount values($acount,111279381,203460522,'".AddSlashes(pg_result($resaco,$conresaco,'si05_inep'))."','$this->si05_inep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,111279381,203460522,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'si05_inep'))."','$this->si05_inep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -256,12 +256,12 @@ class cl_sioperhlocaltrabinep
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,262347194,'$si05_rhlocaltrab','E')");
-           $resac  = db_query("insert into db_acount values($acount,111279381,262347194,'','".AddSlashes(pg_result($resaco,$iresaco,'si05_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,111279381,239460891,'','".AddSlashes(pg_result($resaco,$iresaco,'si05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,111279381,203460522,'','".AddSlashes(pg_result($resaco,$iresaco,'si05_inep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,111279381,262347194,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'si05_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,111279381,239460891,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'si05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,111279381,203460522,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'si05_inep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

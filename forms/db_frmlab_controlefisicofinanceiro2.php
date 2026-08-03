@@ -165,7 +165,7 @@ $oRotulo->label('sd62_c_nome');
             <td nowrap title="<?= @$Tla56_i_teto ?>" colspan="2">
                 <?php
                 echo $Lla56_i_teto;
-                $aX = array('1' => 'FÍSICO', '2' => 'FINANCEIRO');
+                $aX = ['1' => 'FÍSICO', '2' => 'FINANCEIRO'];
                 db_select('la56_i_teto', $aX, true, $db_opcao, '');
                 echo $Lla56_n_limite;
 
@@ -180,7 +180,7 @@ $oRotulo->label('sd62_c_nome');
                     $db_opcao2,
                     'onchange="listenerLimite(this)"');
                 echo $Lla56_i_periodo;
-                $aX = array('1' => 'DIÁRIO', '2' => 'MENSAL');
+                $aX = ['1' => 'DIÁRIO', '2' => 'MENSAL'];
                 db_select('la56_i_periodo', $aX, true, $db_opcao, '');
                 ?>
             </td>
@@ -231,7 +231,7 @@ $oRotulo->label('sd62_c_nome');
                                     <tr>
                                         <td nowrap title="<?= @$Tla56_i_liberarequisicaosemsaldo ?>">
                                             <?php
-                                            $aX = array(2 => 'NÃO LIBERAR REQUISIÇÃO', 1 => 'LIBERAR REQUISIÇÃO');
+                                            $aX = [2 => 'NÃO LIBERAR REQUISIÇÃO', 1 => 'LIBERAR REQUISIÇÃO'];
                                             db_select('la56_i_liberarequisicaosemsaldo', $aX, true, $db_opcao2, '');
                                             ?>
                                         </td>

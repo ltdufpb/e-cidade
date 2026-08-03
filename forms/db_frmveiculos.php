@@ -293,7 +293,7 @@ if ($clveicparam->numrows>0){
 
                 if ($clveiculoscomb->numrows > 0){
                   $virgula   = "";
-                  $vet_comb  = array(array("descr","padrao"));
+                  $vet_comb  = [["descr","padrao"]];
                   $cont_comb = 0;
                   for($x = 0; $x < $clveiculoscomb->numrows; $x++){
                     db_fieldsmemory($res_veiculoscomb,$x);
@@ -409,7 +409,7 @@ if ($clveicparam->numrows>0){
             </td>
             <td> 
         <?php
-        $x = array('1'=>'Sim','0'=>'Não');
+        $x = ['1'=>'Sim','0'=>'Não'];
         db_select('ve01_ativo',$x,true,$db_opcao,"");
         ?>
             </td>
@@ -574,7 +574,7 @@ function js_preenchepesquisa(chave){
   db_iframe_veiculos.hide();
   <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

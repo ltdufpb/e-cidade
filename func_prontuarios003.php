@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_prontuarios_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprontuarios = new cl_prontuarios;
 $clprontuarios->rotulo->label();
 
@@ -62,7 +62,7 @@ $todos="";
                   inner join unidades on unidades.sd02_i_codigo= unidademedicos.sd04_i_unidade
                   where sd02_i_codigo = $chave_sd24_i_unidade and db_usuacgm.id_usuario= $usuario
                   ";
- $query1 = db_query($sql1) or die(pg_errormessage());
+ $query1 = db_query($sql1) or die(pg_last_error());
  $linhas1 = pg_num_rows($query1);
 if($linhas1>0){
 db_fieldsmemory($query1,0);
@@ -127,7 +127,7 @@ db_fieldsmemory($query1,0);
 				}
 			}
 
-			$repassa = array();
+			$repassa = [];
 
 			$sql = "select distinct sd24_i_codigo,sd24_i_numcgs, z01_v_nome, sd03_i_codigo,z01_nome, sd24_i_unidade, descrdepto, sd59_i_lote, z01_d_nasc
                     from prontuarios
@@ -159,7 +159,7 @@ db_fieldsmemory($query1,0);
 							                                       where sau_lotepront.sd59_i_prontuario = prontuarios.sd24_i_codigo
 							                                    )
                                                   ");
-				$repassa = array("chave_z01_v_nome"=>$chave_z01_v_nome);
+				$repassa = ["chave_z01_v_nome"=>$chave_z01_v_nome];
 			}else if(isset($chave_sd24_i_codigo) && (trim($chave_sd24_i_codigo)!="") ){
 				$sql = $clprontuarios->sql_query($chave_sd24_i_codigo,$campos,"sd24_i_codigo",
                                                  "

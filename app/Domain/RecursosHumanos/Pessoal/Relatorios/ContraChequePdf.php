@@ -12,11 +12,6 @@ use Exception;
 
 class ContraChequePdf
 {
-    private $matricula;
-    private $ano;
-    private $mes;
-    private $folha;
-    private $numero;
     /**
      * @var int
      */
@@ -25,7 +20,6 @@ class ContraChequePdf
      * @var string|null
      */
     private $urlAutenticidade;
-    private $instituicao;
 
     /**
      * @param $matricula
@@ -35,15 +29,8 @@ class ContraChequePdf
      * @param $numero
      * @param $instituicao
      */
-    public function __construct($matricula, $ano, $mes, $folha, $numero, $instituicao)
+    public function __construct(private $matricula, private $ano, private $mes, private $folha, private $numero, private $instituicao)
     {
-        $this->matricula = $matricula;
-        $this->ano = $ano;
-        $this->mes = $mes;
-        $this->folha = $folha;
-        $this->numero = $numero;
-        $this->instituicao = $instituicao;
-
         /**
          * Carregar URL do processo eletrônico
          */
@@ -324,10 +311,10 @@ class ContraChequePdf
         foreach ($aServidores as $iIndex => $oServidor) {
             $rsResult = db_query("SELECT nextval('rhemitecontracheque_rh85_sequencial_seq') AS sequencial");
             $oSeqContraCheque = db_utils::fieldsMemory($rsResult, 0);
-            $iSequencial = str_pad($oSeqContraCheque->sequencial, 6, '0', STR_PAD_LEFT);
+            $iSequencial = str_pad((string) $oSeqContraCheque->sequencial, 6, '0', STR_PAD_LEFT);
 
-            $iMes = str_pad($this->mes, 2, '0', STR_PAD_LEFT);
-            $iMatricula = str_pad($oServidor->matricula, 6, '0', STR_PAD_LEFT);
+            $iMes = str_pad((string) $this->mes, 2, '0', STR_PAD_LEFT);
+            $iMatricula = str_pad((string) $oServidor->matricula, 6, '0', STR_PAD_LEFT);
             $iMod1 = db_CalculaDV($iMatricula);
             $iMod2 = db_CalculaDV($iMatricula . $iMod1 . $iMes . $this->ano . $iSequencial);
 

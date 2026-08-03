@@ -38,9 +38,9 @@ require_once(modification("classes/db_obrasconstr_classe.php"));
 require_once(modification("classes/db_obrasalvara_classe.php"));
 require_once(modification("classes/db_obrasender_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clobrasconstr = new cl_obrasconstr;
 $clobrasalvara = new cl_obrasalvara;
@@ -49,7 +49,7 @@ $clobrasender  = new cl_obrasender;
 $db_opcao = 22;
 $db_botao = false;
 $sqlerro = false;
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $clobrasconstr->alterar($ob08_codconstr);
@@ -77,7 +77,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar")
 }else if(isset($chavepesquisa)){
    $db_opcao = 2;
    $result = $clobrasconstr->sql_record($clobrasconstr->sql_query($chavepesquisa)); 
-   if ( pg_numrows($result) > 0){
+   if ( pg_num_rows($result) > 0){
       db_fieldsmemory($result,0);
    }
    $result = $clobrasender->sql_record($clobrasender->sql_query($chavepesquisa)); 
@@ -120,7 +120,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar")
 </body>
 </html>
 <?php 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
   if($sqlerro==true){
     db_msgbox($erro_msg);
     $db_botao=true;

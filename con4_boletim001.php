@@ -56,7 +56,7 @@ include(modification("classes/db_conlancamcorgrupocorrente_classe.php"));
 include(modification("classes/db_conplanoconplanoorcamento_classe.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clsaltes = new cl_saltes;
 $clorcreceita = new cl_orcreceita;
 $clorcreceitaval = new cl_orcreceitaval;
@@ -188,17 +188,17 @@ if( isset($processar) || isset($desprocessar) ){
     }*/
     
     if ( $executar == true ){
-      
+
       // select para todas as receitas orçamentarias
       $arrecada_boletim = true;
-      
+
       /* agrupa os registros sem historico lançado  */
       $sql ="       
 			select	xxx.*, 
 							orcreceita.o70_codigo from (
       select *
       from (
-      
+
       select 
       k12_conta,
       k02_codrec,
@@ -221,15 +221,15 @@ if( isset($processar) || isset($desprocessar) ){
       (select k00_numcgm from arrecad  where k00_numpre= x.k12_numpre and 
       k00_numpar= x.k12_numpar 
       limit 1) as cgm_estornado,
-      
+
       (select k12_codcla from corcla   where k12_id    = x.k12_id and 
       k12_data  ='".$data."' and
       k12_autent= x.k12_autent limit 1) as k12_codcla,				       
       arrecada,
       estorna
-      
+
       from (";
-      
+
         $sql .= " select corrente.k12_id,
                          corrente.k12_autent,
                          k12_conta,
@@ -253,31 +253,31 @@ if( isset($processar) || isset($desprocessar) ){
                          inner join taborc  on taborc.k02_codigo = tabrec.k02_codigo 
                                            and taborc.k02_anousu=".db_getsession("DB_anousu");
       if (USE_PCASP)  {
-          
+
         $sql .= " inner join orcreceita on orcreceita.o70_codrec = taborc.k02_codrec ";
         $sql .= "                      and orcreceita.o70_anousu = taborc.k02_anousu ";
         $sql .= " inner join orcfontes  on orcfontes.o57_codfon =  orcreceita.o70_codfon ";
         $sql .= "                      and orcfontes.o57_anousu =  orcreceita.o70_anousu ";
-        
+
         $sql .= " inner join conplanoorcamento on conplanoorcamento.c60_codcon = orcfontes.o57_codfon";
         $sql .= "                             and conplanoorcamento.c60_anousu = orcfontes.o57_anousu";
         $sql .= " inner join conplanoconplanoorcamento on conplanoconplanoorcamento.c72_conplanoorcamento = conplanoorcamento.c60_codcon";
         $sql .= "                                     and conplanoconplanoorcamento.c72_anousu = conplanoorcamento.c60_anousu";
-        
+
         $sql .= " inner join conplano on conplano.c60_codcon = conplanoconplanoorcamento.c72_conplano";
         $sql .= "                    and conplano.c60_anousu = conplanoconplanoorcamento.c72_anousu";
         $sql .= " inner join conplanoreduz on conplano.c60_codcon = conplanoreduz.c61_codcon ";
         $sql .= "                         and conplano.c60_anousu = conplanoreduz.c61_anousu ";
         $sql .= " inner join conplanoexe on conplanoreduz.c61_reduz = c62_reduz ";
         $sql .= "                       and c62_anousu   = conplanoreduz.c61_anousu ";
-        
+
       } else {
-        
+
         $sql .= " inner join conplanoexe on k12_conta    = c62_reduz ";
         $sql .= "                       and c62_anousu   = taborc.k02_anousu ";
         $sql .= "  inner join conplanoreduz on c61_reduz  = c62_reduz ";
         $sql .= "                          and c61_anousu = c62_anousu ";
-        
+
       }
       $sql .= "   where corrente.k12_data  = '".$data."' 
                     and taborc.k02_anousu=".db_getsession('DB_anousu')." 
@@ -302,12 +302,12 @@ if( isset($processar) || isset($desprocessar) ){
       k12_histcor,
       k12_id,
       k12_autent
-      
-      
+
+
   ) as xxx
-      
+
       union all ";
-      
+
      $sql .= " select 
       k12_conta,
       k02_codrec,
@@ -329,7 +329,7 @@ if( isset($processar) || isset($desprocessar) ){
       (select k00_numcgm from arrecad  where k00_numpre= x.k12_numpre and 
       k00_numpar= x.k12_numpar 
       limit 1) as cgm_estornado,
-      
+
       (select k12_codcla from corcla   where k12_id    = x.k12_id and 
       k12_data  ='".$data."' and
       k12_autent= x.k12_autent limit 1) as k12_codcla,				       
@@ -337,7 +337,7 @@ if( isset($processar) || isset($desprocessar) ){
       estorna,
       k12_id,
       k12_autent
-      
+
       from (
       select corrente.k12_id,
       corrente.k12_autent,
@@ -349,68 +349,68 @@ if( isset($processar) || isset($desprocessar) ){
       cornump.k12_numpre,
       cornump.k12_numpar
       from corrente
-      
+
       inner join cornump  on corrente.k12_id     = cornump.k12_id   and     
       corrente.k12_data   = cornump.k12_data     and
       corrente.k12_autent = cornump.k12_autent 
-      
+
       left outer join corhist on corrente.k12_id = corhist.k12_id and      
       corrente.k12_data   = corhist.k12_data    and 
       corrente.k12_autent = corhist.k12_autent 
-      
+
       inner join tabrec  on k12_receit = tabrec.k02_codigo 
-      
+
       inner join taborc on taborc.k02_codigo = tabrec.k02_codigo and 
       taborc.k02_anousu=".db_getsession("DB_anousu");
     if (USE_PCASP)  {
-          
+
         $sql .= " inner join orcreceita on orcreceita.o70_codrec = taborc.k02_codrec ";
         $sql .= "                      and orcreceita.o70_anousu = taborc.k02_anousu ";
         $sql .= " inner join orcfontes  on orcfontes.o57_codfon =  orcreceita.o70_codfon ";
         $sql .= "                      and orcfontes.o57_anousu =  orcreceita.o70_anousu ";
-        
+
         $sql .= " inner join conplanoorcamento on conplanoorcamento.c60_codcon = orcfontes.o57_codfon";
         $sql .= "                             and conplanoorcamento.c60_anousu = orcfontes.o57_anousu";
         $sql .= " inner join conplanoconplanoorcamento on conplanoconplanoorcamento.c72_conplanoorcamento = conplanoorcamento.c60_codcon";
         $sql .= "                                     and conplanoconplanoorcamento.c72_anousu = conplanoorcamento.c60_anousu";
-        
+
         $sql .= " inner join conplano on conplano.c60_codcon = conplanoconplanoorcamento.c72_conplano";
         $sql .= "                    and conplano.c60_anousu = conplanoconplanoorcamento.c72_anousu";
         $sql .= " inner join conplanoreduz on conplano.c60_codcon = conplanoreduz.c61_codcon ";
         $sql .= "                         and conplano.c60_anousu = conplanoreduz.c61_anousu ";
         $sql .= " inner join conplanoexe on conplanoreduz.c61_reduz = c62_reduz ";
         $sql .= "                       and c62_anousu   = conplanoreduz.c61_anousu ";
-        
+
       } else {
-        
+
         $sql .= " inner join conplanoexe on k12_conta    = c62_reduz ";
         $sql .= "                       and c62_anousu   = taborc.k02_anousu ";
         $sql .= "  inner join conplanoreduz on c61_reduz  = c62_reduz ";
         $sql .= "                          and c61_anousu = c62_anousu ";
-        
+
       }
-      
+
       $sql .= "where 
                  corrente.k12_data  = '".$data."' and
       taborc.k02_anousu=".db_getsession('DB_anousu')." and
       conplanoreduz.c61_instit =  ".db_getsession('DB_instit')." and
       corhist.k12_id is not null
-      
+
       ) as x
       ) as xx
 			) as xxx
 			inner join orcreceita on o70_anousu = " . db_getsession('DB_anousu') . " and o70_codrec = k02_codrec
       ";
-      
+
       $resultorcamentaria = db_query($sql) or die($sql);
-      
+
       if ($debug==true){
         echo $sql; 
         db_criatabela($resultorcamentaria);
         exit;
       }	
-      
-      
+
+
       include(modification("con4_boletim004.php"));
       //if(pg_numrows($resultorcamentaria)!=0){
         // include(modification("con4_boletim004.php"));

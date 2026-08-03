@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoVacina      = db_utils::getdao('vac_vacina');
 $oDaoCgsUnd      = db_utils::getdao('cgs_und');
 $db_opcao        = 1;
@@ -81,7 +81,7 @@ db_app::load("scripts.js, grid.style.css");
       </td>
       <td>
         <?php 
-          $x       = array();
+          $x       = [];
           $sSql    = $oDaoVacina->sql_query_file(null,"vc06_i_codigo,vc06_c_descr");
           $rsDados = $oDaoVacina->sql_record($sSql);
           $x[0]    = 'Todos';
@@ -102,7 +102,7 @@ db_app::load("scripts.js, grid.style.css");
       </td>
       <td>
         <?php 
-        $x = array();
+        $x = [];
         $sSql     = $oDaoCgsUnd->sql_query_file(null,"z01_v_bairro");
         $sSql    .= " group by z01_v_bairro ";
         $rsDados  = $oDaoCgsUnd->sql_record($sSql);

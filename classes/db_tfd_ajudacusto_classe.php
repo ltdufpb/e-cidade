@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE tfd_ajudacusto
 class cl_tfd_ajudacusto { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tf12_i_codigo = 0; 
-   var $tf12_i_procedimento = 0; 
-   var $tf12_f_valor = 0; 
-   var $tf12_d_validadeini_dia = null; 
-   var $tf12_d_validadeini_mes = null; 
-   var $tf12_d_validadeini_ano = null; 
-   var $tf12_d_validadeini = null; 
-   var $tf12_d_validadefim_dia = null; 
-   var $tf12_d_validadefim_mes = null; 
-   var $tf12_d_validadefim_ano = null; 
-   var $tf12_d_validadefim = null; 
-   var $tf12_faturabpa = 'f'; 
-   var $tf12_descricao = null; 
-   var $tf12_acompanhente = 'f'; 
+   public $tf12_i_codigo = 0; 
+   public $tf12_i_procedimento = 0; 
+   public $tf12_f_valor = 0; 
+   public $tf12_d_validadeini_dia = null; 
+   public $tf12_d_validadeini_mes = null; 
+   public $tf12_d_validadeini_ano = null; 
+   public $tf12_d_validadeini = null; 
+   public $tf12_d_validadefim_dia = null; 
+   public $tf12_d_validadefim_mes = null; 
+   public $tf12_d_validadefim_ano = null; 
+   public $tf12_d_validadefim = null; 
+   public $tf12_faturabpa = 'f'; 
+   public $tf12_descricao = null; 
+   public $tf12_acompanhente = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tf12_i_codigo = int4 = Código 
                  tf12_i_procedimento = int8 = Procedimento 
                  tf12_f_valor = float4 = Valor Unitário 
@@ -68,10 +68,10 @@ class cl_tfd_ajudacusto {
                  tf12_acompanhente = bool = Paciente 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_ajudacusto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_ajudacusto"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -154,10 +154,10 @@ class cl_tfd_ajudacusto {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tf12_i_codigo = pg_result($result,0,0); 
+       $this->tf12_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tfd_ajudacusto_tf12_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf12_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf12_i_codigo)){
          $this->erro_sql = " Campo tf12_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -199,7 +199,7 @@ class cl_tfd_ajudacusto {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tfd_ajudacusto ($this->tf12_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tfd_ajudacusto já Cadastrado";
@@ -228,17 +228,17 @@ class cl_tfd_ajudacusto {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16373,'$this->tf12_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,2868,16373,'','".AddSlashes(pg_result($resaco,0,'tf12_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2868,16374,'','".AddSlashes(pg_result($resaco,0,'tf12_i_procedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2868,16375,'','".AddSlashes(pg_result($resaco,0,'tf12_f_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2868,16377,'','".AddSlashes(pg_result($resaco,0,'tf12_d_validadeini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2868,16378,'','".AddSlashes(pg_result($resaco,0,'tf12_d_validadefim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2868,18274,'','".AddSlashes(pg_result($resaco,0,'tf12_faturabpa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2868,18273,'','".AddSlashes(pg_result($resaco,0,'tf12_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2868,20337,'','".AddSlashes(pg_result($resaco,0,'tf12_acompanhente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2868,16373,'','".AddSlashes(pg_fetch_result($resaco,0,'tf12_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2868,16374,'','".AddSlashes(pg_fetch_result($resaco,0,'tf12_i_procedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2868,16375,'','".AddSlashes(pg_fetch_result($resaco,0,'tf12_f_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2868,16377,'','".AddSlashes(pg_fetch_result($resaco,0,'tf12_d_validadeini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2868,16378,'','".AddSlashes(pg_fetch_result($resaco,0,'tf12_d_validadefim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2868,18274,'','".AddSlashes(pg_fetch_result($resaco,0,'tf12_faturabpa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2868,18273,'','".AddSlashes(pg_fetch_result($resaco,0,'tf12_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2868,20337,'','".AddSlashes(pg_fetch_result($resaco,0,'tf12_acompanhente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -248,10 +248,10 @@ class cl_tfd_ajudacusto {
       $this->atualizacampos();
      $sql = " update tfd_ajudacusto set ";
      $virgula = "";
-     if(trim($this->tf12_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_i_codigo"])){ 
+     if(trim((string) $this->tf12_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_i_codigo"])){ 
        $sql  .= $virgula." tf12_i_codigo = $this->tf12_i_codigo ";
        $virgula = ",";
-       if(trim($this->tf12_i_codigo) == null ){ 
+       if(trim((string) $this->tf12_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "tf12_i_codigo";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_tfd_ajudacusto {
          return false;
        }
      }
-     if(trim($this->tf12_i_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_i_procedimento"])){ 
+     if(trim((string) $this->tf12_i_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_i_procedimento"])){ 
        $sql  .= $virgula." tf12_i_procedimento = $this->tf12_i_procedimento ";
        $virgula = ",";
-       if(trim($this->tf12_i_procedimento) == null ){ 
+       if(trim((string) $this->tf12_i_procedimento) == null ){ 
          $this->erro_sql = " Campo Procedimento não informado.";
          $this->erro_campo = "tf12_i_procedimento";
          $this->erro_banco = "";
@@ -274,17 +274,17 @@ class cl_tfd_ajudacusto {
          return false;
        }
      }
-     if(trim($this->tf12_f_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_f_valor"])){ 
-        if(trim($this->tf12_f_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tf12_f_valor"])){ 
+     if(trim((string) $this->tf12_f_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_f_valor"])){ 
+        if(trim((string) $this->tf12_f_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tf12_f_valor"])){ 
            $this->tf12_f_valor = "0" ; 
         } 
        $sql  .= $virgula." tf12_f_valor = $this->tf12_f_valor ";
        $virgula = ",";
      }
-     if(trim($this->tf12_d_validadeini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadeini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadeini_dia"] !="") ){ 
+     if(trim((string) $this->tf12_d_validadeini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadeini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadeini_dia"] !="") ){ 
        $sql  .= $virgula." tf12_d_validadeini = '$this->tf12_d_validadeini' ";
        $virgula = ",";
-       if(trim($this->tf12_d_validadeini) == null ){ 
+       if(trim((string) $this->tf12_d_validadeini) == null ){ 
          $this->erro_sql = " Campo Início não informado.";
          $this->erro_campo = "tf12_d_validadeini_dia";
          $this->erro_banco = "";
@@ -297,7 +297,7 @@ class cl_tfd_ajudacusto {
        if(isset($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadeini_dia"])){ 
          $sql  .= $virgula." tf12_d_validadeini = null ";
          $virgula = ",";
-         if(trim($this->tf12_d_validadeini) == null ){ 
+         if(trim((string) $this->tf12_d_validadeini) == null ){ 
            $this->erro_sql = " Campo Início não informado.";
            $this->erro_campo = "tf12_d_validadeini_dia";
            $this->erro_banco = "";
@@ -308,7 +308,7 @@ class cl_tfd_ajudacusto {
          }
        }
      }
-     if(trim($this->tf12_d_validadefim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadefim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadefim_dia"] !="") ){ 
+     if(trim((string) $this->tf12_d_validadefim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadefim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadefim_dia"] !="") ){ 
        $sql  .= $virgula." tf12_d_validadefim = '$this->tf12_d_validadefim' ";
        $virgula = ",";
      }     else{ 
@@ -317,15 +317,15 @@ class cl_tfd_ajudacusto {
          $virgula = ",";
        }
      }
-     if(trim($this->tf12_faturabpa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_faturabpa"])){ 
+     if(trim((string) $this->tf12_faturabpa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_faturabpa"])){ 
        $sql  .= $virgula." tf12_faturabpa = '$this->tf12_faturabpa' ";
        $virgula = ",";
      }
-     if(trim($this->tf12_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_descricao"])){ 
+     if(trim((string) $this->tf12_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_descricao"])){ 
        $sql  .= $virgula." tf12_descricao = '$this->tf12_descricao' ";
        $virgula = ",";
      }
-     if(trim($this->tf12_acompanhente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_acompanhente"])){ 
+     if(trim((string) $this->tf12_acompanhente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf12_acompanhente"])){ 
        $sql  .= $virgula." tf12_acompanhente = '$this->tf12_acompanhente' ";
        $virgula = ",";
      }
@@ -343,25 +343,25 @@ class cl_tfd_ajudacusto {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,16373,'$this->tf12_i_codigo','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf12_i_codigo"]) || $this->tf12_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,2868,16373,'".AddSlashes(pg_result($resaco,$conresaco,'tf12_i_codigo'))."','$this->tf12_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2868,16373,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf12_i_codigo'))."','$this->tf12_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf12_i_procedimento"]) || $this->tf12_i_procedimento != "")
-             $resac = db_query("insert into db_acount values($acount,2868,16374,'".AddSlashes(pg_result($resaco,$conresaco,'tf12_i_procedimento'))."','$this->tf12_i_procedimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2868,16374,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf12_i_procedimento'))."','$this->tf12_i_procedimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf12_f_valor"]) || $this->tf12_f_valor != "")
-             $resac = db_query("insert into db_acount values($acount,2868,16375,'".AddSlashes(pg_result($resaco,$conresaco,'tf12_f_valor'))."','$this->tf12_f_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2868,16375,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf12_f_valor'))."','$this->tf12_f_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadeini"]) || $this->tf12_d_validadeini != "")
-             $resac = db_query("insert into db_acount values($acount,2868,16377,'".AddSlashes(pg_result($resaco,$conresaco,'tf12_d_validadeini'))."','$this->tf12_d_validadeini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2868,16377,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf12_d_validadeini'))."','$this->tf12_d_validadeini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf12_d_validadefim"]) || $this->tf12_d_validadefim != "")
-             $resac = db_query("insert into db_acount values($acount,2868,16378,'".AddSlashes(pg_result($resaco,$conresaco,'tf12_d_validadefim'))."','$this->tf12_d_validadefim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2868,16378,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf12_d_validadefim'))."','$this->tf12_d_validadefim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf12_faturabpa"]) || $this->tf12_faturabpa != "")
-             $resac = db_query("insert into db_acount values($acount,2868,18274,'".AddSlashes(pg_result($resaco,$conresaco,'tf12_faturabpa'))."','$this->tf12_faturabpa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2868,18274,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf12_faturabpa'))."','$this->tf12_faturabpa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf12_descricao"]) || $this->tf12_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,2868,18273,'".AddSlashes(pg_result($resaco,$conresaco,'tf12_descricao'))."','$this->tf12_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2868,18273,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf12_descricao'))."','$this->tf12_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tf12_acompanhente"]) || $this->tf12_acompanhente != "")
-             $resac = db_query("insert into db_acount values($acount,2868,20337,'".AddSlashes(pg_result($resaco,$conresaco,'tf12_acompanhente'))."','$this->tf12_acompanhente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2868,20337,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf12_acompanhente'))."','$this->tf12_acompanhente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -415,17 +415,17 @@ class cl_tfd_ajudacusto {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,16373,'$tf12_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,2868,16373,'','".AddSlashes(pg_result($resaco,$iresaco,'tf12_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2868,16374,'','".AddSlashes(pg_result($resaco,$iresaco,'tf12_i_procedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2868,16375,'','".AddSlashes(pg_result($resaco,$iresaco,'tf12_f_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2868,16377,'','".AddSlashes(pg_result($resaco,$iresaco,'tf12_d_validadeini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2868,16378,'','".AddSlashes(pg_result($resaco,$iresaco,'tf12_d_validadefim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2868,18274,'','".AddSlashes(pg_result($resaco,$iresaco,'tf12_faturabpa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2868,18273,'','".AddSlashes(pg_result($resaco,$iresaco,'tf12_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2868,20337,'','".AddSlashes(pg_result($resaco,$iresaco,'tf12_acompanhente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2868,16373,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf12_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2868,16374,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf12_i_procedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2868,16375,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf12_f_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2868,16377,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf12_d_validadeini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2868,16378,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf12_d_validadefim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2868,18274,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf12_faturabpa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2868,18273,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf12_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2868,20337,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf12_acompanhente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -486,7 +486,7 @@ class cl_tfd_ajudacusto {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tfd_ajudacusto";
@@ -501,7 +501,7 @@ class cl_tfd_ajudacusto {
    function sql_query ( $tf12_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -526,7 +526,7 @@ class cl_tfd_ajudacusto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -539,7 +539,7 @@ class cl_tfd_ajudacusto {
    function sql_query_file ( $tf12_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -560,7 +560,7 @@ class cl_tfd_ajudacusto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -572,7 +572,7 @@ class cl_tfd_ajudacusto {
    function sql_query2 ( $tf12_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -594,7 +594,7 @@ class cl_tfd_ajudacusto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -608,7 +608,7 @@ class cl_tfd_ajudacusto {
                                      a.sd63_i_anocomp desc, a.sd63_i_mescomp desc',$dbwhere="") { 
      $sql = "select distinct on (tf12_i_codigo) ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -631,7 +631,7 @@ class cl_tfd_ajudacusto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

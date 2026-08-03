@@ -42,7 +42,7 @@ include(modification("classes/db_itbidadosimovel_classe.php"));
 include(modification("classes/db_itbinome_classe.php"));
 include(modification("classes/db_itbinomecgm_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 db_postmemory($_POST);
 
 if(!isset($abas)){
@@ -50,7 +50,7 @@ if(!isset($abas)){
   exit;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clitbi            = new cl_itbi;
 $clitbimatric      = new cl_itbimatric;
 $clitbipropriold   = new cl_itbipropriold;
@@ -71,7 +71,7 @@ global $tipo;
 
 $sqlerro = false;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
 
   $clitbi->it01_data       = date("Y-m-d",db_getsession("DB_datausu"));
@@ -99,8 +99,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
       $sqlerro = true;
     }
     if(isset($codigo) && isset($valor) && $codigo != "" && $valor != "" && $sqlerro == false){
-      $cod = split(",",$codigo);
-      $val = split(",",$valor);
+      $cod = preg_split("#,#m",(string) $codigo);
+      $val = preg_split("#,#m",(string) $valor);
       for($i=0;$i<sizeof($cod);$i++){
         $clitbiruralcaract->it19_guia = $clitbi->it01_guia;
         $clitbiruralcaract->it19_codigo = $cod[$i];
@@ -158,7 +158,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 		$rsdadosimovel =  db_query("select * from proprietario
                    						  inner join itbimatric on it06_matric = j01_matric
 				                   	where it06_guia = ".$clitbi->it01_guia);
-		$numdados = pg_numrows($rsdadosimovel);
+		$numdados = pg_num_rows($rsdadosimovel);
 		if($numdados > 0){
 			db_fieldsmemory($rsdadosimovel,0);
 			$clitbidadosimovel->it22_itbi        = $clitbi->it01_guia;
@@ -179,7 +179,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 																	inner join iptubase on it06_matric = j01_matric
 																	inner join cgm on z01_numcgm = j01_numcgm
 															where it06_guia = ".$clitbi->it01_guia);
-			$numdados = pg_numrows($rsdadosimovel);
+			$numdados = pg_num_rows($rsdadosimovel);
 			if($numdados > 0){
 				db_fieldsmemory($rsdadosimovel,0);
 			}
@@ -187,14 +187,14 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 		  $clitbinome->it03_guia     = $clitbi->it01_guia;
 		  $clitbinome->it03_tipo     = 'T';
 		  $clitbinome->it03_princ    = 'true';
-		  $clitbinome->it03_nome     = addslashes($z01_nome);
+		  $clitbinome->it03_nome     = addslashes((string) $z01_nome);
 		  $clitbinome->it03_sexo     = 'm';
 		  $clitbinome->it03_cpfcnpj  = $z01_cgccpf;
-		  $clitbinome->it03_endereco = addslashes($z01_ender);
+		  $clitbinome->it03_endereco = addslashes((string) $z01_ender);
 		  $clitbinome->it03_numero   = $z01_numero;
 		  $clitbinome->it03_compl    = $z01_compl;
 		  $clitbinome->it03_cxpostal = $z01_cxpostal;
-		  $clitbinome->it03_bairro   = addslashes($z01_bairro);
+		  $clitbinome->it03_bairro   = addslashes((string) $z01_bairro);
 		  $clitbinome->it03_munic    = $z01_munic;
 		  $clitbinome->it03_uf       = $z01_uf;
 		  $clitbinome->it03_cep      = $z01_cep;
@@ -221,21 +221,21 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
                  					  inner join itbimatric on it06_matric = j42_matric
                             inner join cgm        on z01_numcgm  = j42_numcgm
 				               	where it06_guia = ".$clitbi->it01_guia);
-		$numoutros = pg_numrows($rsoutros);
+		$numoutros = pg_num_rows($rsoutros);
 		if($numdados > 0){
         for($i=0;$i<$numoutros;$i++){
 				db_fieldsmemory($rsoutros,$i);
 				$clitbinome->it03_guia     = $clitbi->it01_guia;
 				$clitbinome->it03_tipo     = 'T';
 				$clitbinome->it03_princ    = 'false';
-				$clitbinome->it03_nome     = addslashes($z01_nome);
+				$clitbinome->it03_nome     = addslashes((string) $z01_nome);
 				$clitbinome->it03_sexo     = 'm';
 				$clitbinome->it03_cpfcnpj  = $z01_cgccpf;
-				$clitbinome->it03_endereco = addslashes($z01_ender);
+				$clitbinome->it03_endereco = addslashes((string) $z01_ender);
 				$clitbinome->it03_numero   = $z01_numero;
 				$clitbinome->it03_compl    = $z01_compl;
 				$clitbinome->it03_cxpostal = $z01_cxpostal;
-				$clitbinome->it03_bairro   = addslashes($z01_bairro);
+				$clitbinome->it03_bairro   = addslashes((string) $z01_bairro);
 				$clitbinome->it03_munic    = "";
 				$clitbinome->it03_uf       = $z01_uf;
 				$clitbinome->it03_cep      = $z01_cep;
@@ -317,7 +317,7 @@ if(isset($pri) && $tipo != "rural" && !isset($incluir) && !isset($alterar)){
 }
 
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($sqlerro == true){
     db_msgbox($erro);
     if($clitbi->erro_campo!=""){

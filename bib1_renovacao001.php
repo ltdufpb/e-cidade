@@ -37,7 +37,7 @@ require_once(modification("classes/db_bib_parametros_classe.php"));
 require_once(modification("classes/db_reserva_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldevolucaoacervo  = new cl_devolucaoacervo;
 $clemprestimo       = new cl_emprestimo;
 $clemprestimoacervo = new cl_emprestimoacervo;
@@ -68,7 +68,7 @@ if (isset($submitrenovar)) {
 	
   db_inicio_transacao();
   //fecha emprestimo anterior
-  $array_devolve = explode("|",$renovaemprestimo);
+  $array_devolve = explode("|",(string) $renovaemprestimo);
   for ($x = 0; $x < count($array_devolve); $x++) {
   	 
     $array_x = explode(";",$array_devolve[$x]);
@@ -90,7 +90,7 @@ if (isset($submitrenovar)) {
   $bi19_emprestimo = $clemprestimo->bi18_codigo;
   
   //grava novo emprestimoacervo
-  $array_emprestimo = explode("|", $renovaemprestimo);
+  $array_emprestimo = explode("|", (string) $renovaemprestimo);
   
   for ($i = 0; $i < count($array_emprestimo); $i++) {
   	
@@ -133,7 +133,7 @@ if (isset($submitrenovar)) {
    <center>
    <fieldset style="width:95%"><legend><b>Renovação de Empréstimo</b></legend>
    <?php 
-   $cod_emprest = explode("|",trim($renovaemprestimo));
+   $cod_emprest = explode("|",trim((string) $renovaemprestimo));
    $cod_exemp   = "";
    $sep_exemp   = "";
    $codacervos  = '';
@@ -173,7 +173,7 @@ if (isset($submitrenovar)) {
                                               where bi14_acervo in ($codacervos) AND bi14_retirada is null
                                             )";
    $result = $cldevolucaoacervo->sql_record($sSqlDevolucaoAcervo);
-   echo pg_errormessage();
+   echo pg_last_error();
    
    $sSqlReserva = $clreserva->sql_query("", 
                                         "bi14_acervo,bi06_titulo", 
@@ -219,7 +219,7 @@ if (isset($submitrenovar)) {
           db_fieldsmemory($result, $x);
           ?>
           <tr>
-           <td><?=trim($nome)?></td>
+           <td><?=trim((string) $nome)?></td>
            <td><?=$bi23_codigo?></td>
            <td><?=$bi23_codbarras?></td>
            <td><?=$bi06_titulo?></td>
@@ -278,7 +278,7 @@ if (isset($submitrenovar)) {
        <input type="submit" name="submitrenovar" value="Confirmar Renovação" onclick="return js_valida();">
        <input type="hidden" name="renovaemprestimo" value="<?=$renovaemprestimo?>">
        <input type="hidden" name="leitor" value="<?=@$leitor?>">
-       <input type="hidden" name="nome" value="<?=trim(@$nome)?>">
+       <input type="hidden" name="nome" value="<?=trim((string) @$nome)?>">
        </form>
       </fieldset>
      </td>

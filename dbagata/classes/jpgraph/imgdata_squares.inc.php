@@ -9,17 +9,17 @@
 //========================================================================
 
 class ImgData_Squares extends ImgData {
-    var $name = 'Squares';
-    var $an = array(MARK_IMG_SQUARE =>'imgdata');
+    public $name = 'Squares';
+    public $an = [MARK_IMG_SQUARE =>'imgdata'];
     
-    var $colors = array('bluegreen','blue','green', 
-			'lightblue','orange','purple','red','yellow');
-    var $index  = array('bluegreen' =>2,'blue'=>5,'green'=>6, 
-			'lightblue'=>0,'orange'=>7,'purple'=>4,'red'=>3,'yellow'=>1);
-    var $maxidx = 7 ;
-    var $imgdata ;
+    public $colors = ['bluegreen','blue','green', 
+			'lightblue','orange','purple','red','yellow'];
+    public $index  = ['bluegreen' =>2,'blue'=>5,'green'=>6, 
+			'lightblue'=>0,'orange'=>7,'purple'=>4,'red'=>3,'yellow'=>1];
+    public $maxidx = 7 ;
+    public $imgdata ;
 
-    function ImgData_Squares () {
+    function __construct () {
 //==========================================================
 //sq_lblue.png
 //==========================================================

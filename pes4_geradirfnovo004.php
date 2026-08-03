@@ -32,11 +32,11 @@ require_once(modification("libs/db_libpessoal.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 global $db_config;
 db_selectmax("db_config","select lower(trim(munic)) as d08_carnes , cgc from db_config where codigo = ".db_getsession("DB_instit"));
 
-if(trim($db_config[0]["cgc"]) == "90940172000138"){
+if(trim((string) $db_config[0]["cgc"]) == "90940172000138"){
      $d08_carnes = "daeb";
 }else{
      $d08_carnes = $db_config[0]["d08_carnes"];
@@ -133,7 +133,7 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              $aTipoProcessamento = array("1" => "Geral", "2" => "Selecionados");
+              $aTipoProcessamento = ["1" => "Geral", "2" => "Selecionados"];
               db_select("iTipoProcessamento", $aTipoProcessamento, true, 1, "onchange='return js_tipoProcessamento();' style='width: 100%;'");
               ?>
             </td>
@@ -143,7 +143,7 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              $arr_acima = array("S"=>"Sim","N"=>"Não");
+              $arr_acima = ["S"=>"Sim","N"=>"Não"];
               db_select('acima6000',$arr_acima,true,4,"");
               ?>
             </td>
@@ -161,7 +161,7 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              db_select('ano_base',array(),true,4,'onChange="js_buscaValor()"');
+              db_select('ano_base',[],true,4,'onChange="js_buscaValor()"');
               ?>
             </td>
           </tr>
@@ -171,7 +171,7 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              $xy = array("O"=>"Original","R"=>"Retificadora");
+              $xy = ["O"=>"Original","R"=>"Retificadora"];
               db_select('oriret',$xy,true,4,"");
               ?>
             </td>
@@ -304,7 +304,7 @@ $clrotulo->label("rh50_oid");
             </td>
             <td>
               <?php
-              $arr = array('s' => 'Sim','n'=>'Não');
+              $arr = ['s' => 'Sim','n'=>'Não'];
               db_select("dadosfinanceiros",$arr,true,$db_opcao,"");
               ?>
             </td>

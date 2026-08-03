@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadcentral_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveiccadcentral = new cl_veiccadcentral;
 $clveiccadcentral->rotulo->label("ve36_sequencial");
 $clveiccadcentral->rotulo->label("ve36_coddepto");
@@ -101,9 +101,9 @@ $clveiccadcentral->rotulo->label("ve36_coddepto");
            $sql = $clveiccadcentral->sql_query("",$campos,"ve36_sequencial","$where");
            
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve36_coddepto)){
-          $repassa = array("chave_ve36_sequencial"=>$chave_ve36_sequencial,"chave_ve36_coddepto"=>$chave_ve36_coddepto);
+          $repassa = ["chave_ve36_sequencial"=>$chave_ve36_sequencial,"chave_ve36_coddepto"=>$chave_ve36_coddepto];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -7,17 +7,11 @@ use Exception;
 abstract class BaseService
 {
     /**
-     * @var BaseRepository
-     */
-    private $repository;
-
-    /**
      * BaseService constructor.
      * @param BaseRepository $repository
      * @throws Exception
      */
-    public function __construct(BaseRepository $repository)
+    public function __construct(private readonly BaseRepository $repository)
     {
-        $this->repository = $repository;
     }
 }

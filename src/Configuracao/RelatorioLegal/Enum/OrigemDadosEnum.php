@@ -16,7 +16,7 @@ class OrigemDadosEnum
     /**
      * @var array
      */
-    private static $descricoes = array(
+    private static $descricoes = [
         self::SEM_ORIGEM => 'Sem Origem',
         self::BALANCETE_RECEITA => 'Balancete da Receita',
         self::BALANCETE_DESPESA => 'Balancete da Despesa',
@@ -24,7 +24,7 @@ class OrigemDadosEnum
         self::RESTOS_PAGAR => 'Restos à Pagar',
         self::MSC => 'Matriz Saldo Contábil',
         self::BALANCETE_DESPESA_DESDOBRAMENTO => 'Balancete da Despesa por Desdobramento'
-    );
+    ];
 
     /**
      * @param mixed $chave

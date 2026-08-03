@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clreserva  = new cl_reserva;
 $clcarteira = new cl_carteira;
 
@@ -72,7 +72,7 @@ if (isset($incluir)) {
     <?php 
     $erro = true;
   } else if (   $bi14_carteira != "" && $clcarteira->numrows > 0 
-             && str_replace("-", "", pg_result($resultY, 0, 'bi16_validade')) - date("Ymd") < 0) {
+             && str_replace("-", "", pg_fetch_result($resultY, 0, 'bi16_validade')) - date("Ymd") < 0) {
 
     db_fieldsmemory($resultY,0);
     ?>

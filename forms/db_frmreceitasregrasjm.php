@@ -110,7 +110,7 @@ if($db_opcao != 1){
 	$dbwhere .= " and k04_sequencial <> ".$k04_sequencial;
       }
       $sql = $cltabrecregrasjm->sql_query_tabrec(null,"k04_sequencial, k04_codjm, k04_dtini, k04_dtfim","k04_dtfim desc",$dbwhere);
-      $chavepri= array("k04_sequencial"=>@$k04_sequencial);
+      $chavepri= ["k04_sequencial"=>@$k04_sequencial];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       $cliframe_alterar_excluir->opcoes  = 1;
       $cliframe_alterar_excluir->sql     = $sql;

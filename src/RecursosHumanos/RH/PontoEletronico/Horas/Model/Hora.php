@@ -104,10 +104,10 @@ class Hora
      */
     public function validaTipo($tipo)
     {
-        return in_array($tipo, array(
+        return in_array($tipo, [
             self::EXTRA50,
             self::EXTRA75,
             self::EXTRA100
-        ));
+        ]);
     }
 }

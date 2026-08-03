@@ -69,7 +69,7 @@ if ($oPost->sAction == 'PesquisaTurma_e_Refeicao') {
   if ($oPost->escola=="") {
 
     $oJson    = new services_json();
-    echo $oJson->encode(array(array(),array()));
+    echo $oJson->encode([[],[]]);
     return false;
     
   }
@@ -140,7 +140,7 @@ if ($oPost->sAction == 'PesquisaTurma_e_Refeicao') {
   $aResult1 = db_utils::getCollectionByRecord($result1, false, false, true);
   $aResult2 = db_utils::getCollectionByRecord($result2, false, false, true);
   $oJson    = new services_json();
-  echo $oJson->encode(array($aResult1,$aResult2));
+  echo $oJson->encode([$aResult1,$aResult2]);
  
 }
 
@@ -205,7 +205,7 @@ if ($oPost->sAction == 'PesquisaAluno') {
   $aResult2 = db_utils::getCollectionByRecord($result2, false, false, true);
   $aResult3 = db_utils::getCollectionByRecord($result3, false, false, true);  
   $oJson    = new services_json();
-  echo $oJson->encode(array($aResult1,$aResult2,$aResult3));
+  echo $oJson->encode([$aResult1,$aResult2,$aResult3]);
   
 }
 
@@ -229,9 +229,9 @@ if ($oPost->sAction == 'InclusaoCardapiodia') {
                                   and me11_i_matricula in (select ed60_i_codigo from matricula 
                                                            where ed60_i_turma = {$oPost->turma}
                                                           )");
-  if (trim($oPost->cod_alunos) != "") {
+  if (trim((string) $oPost->cod_alunos) != "") {
   	
-    $cod_matricula = explode(",",$oPost->cod_alunos);
+    $cod_matricula = explode(",",(string) $oPost->cod_alunos);
     for ($x=0;$x<count($cod_matricula);$x++) {
     	
       $clmer_cardapioaluno->me11_d_data        = date("Y-m-d",db_getsession("DB_datausu"));
@@ -244,7 +244,7 @@ if ($oPost->sAction == 'InclusaoCardapiodia') {
     
   }
   $clmer_cardapioalunorepet->excluir(""," me40_i_cardapiodia = {$oPost->cardapiodia} and me40_i_turma = {$oPost->turma}");
-  if ($oPost->repeticao!="" && trim($oPost->cod_alunos) != "") {
+  if ($oPost->repeticao!="" && trim((string) $oPost->cod_alunos) != "") {
         
     $clmer_cardapioalunorepet->me40_i_cardapiodia = $oPost->cardapiodia;
     $clmer_cardapioalunorepet->me40_i_repeticao = $oPost->repeticao;

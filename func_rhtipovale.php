@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhtipovale_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhtipovale = new cl_rhtipovale;
 $clrhtipovale->rotulo->label("rh68_sequencial");
 $clrhtipovale->rotulo->label("rh68_descr");
@@ -98,9 +98,9 @@ $clrhtipovale->rotulo->label("rh68_descr");
         }else{
            $sql = $clrhtipovale->sql_query("",$campos,"rh68_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh68_descr)){
-          $repassa = array("chave_rh68_sequencial"=>$chave_rh68_sequencial,"chave_rh68_descr"=>$chave_rh68_descr);
+          $repassa = ["chave_rh68_sequencial"=>$chave_rh68_sequencial,"chave_rh68_descr"=>$chave_rh68_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

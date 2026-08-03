@@ -43,19 +43,11 @@ class Arquivo
      */
     public static function getPorTipo($tipo)
     {
-        switch ($tipo) {
-            case Parametros::PEDIDOS:
-                $arquivo = Parametros::JSON_PEDIDOS;
-                break;
-
-            case Parametros::RESULTADOS:
-                $arquivo = Parametros::JSON_RESULTADOS;
-                break;
-
-            default:
-                throw new Exception('Tipo não encontrado.');
-                break;
-        }
+        $arquivo = match ($tipo) {
+            Parametros::PEDIDOS => Parametros::JSON_PEDIDOS,
+            Parametros::RESULTADOS => Parametros::JSON_RESULTADOS,
+            default => throw new Exception('Tipo não encontrado.'),
+        };
 
         return $arquivo;
     }

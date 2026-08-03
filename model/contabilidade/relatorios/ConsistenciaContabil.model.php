@@ -37,7 +37,8 @@ class ConsistenciaContabil extends RelatoriosLegaisBase
    * Retorna os dados da consistencia processados, em forma de uma array
    * @return stdClass[]
    */
-    public function getDados()
+    #[\Override]
+    public function getDados($trazerConfiguracaoPadrao = \true)
     {
         $this->aLinhasConsistencia = $this->getLinhasRelatorio();
         $this->executarBalancetesNecessarios();
@@ -54,7 +55,7 @@ class ConsistenciaContabil extends RelatoriosLegaisBase
     {
         foreach ($this->aLinhasConsistencia as $oLinha) {
             $aColunas      = $oLinha->colunas;
-            $aLinhaColunas = array();
+            $aLinhaColunas = [];
             foreach ($aColunas as $oColuna) {
                 $oColunaNova            = new stdClass();
                 $oColunaNova->descricao = $oColuna->o115_descricao;
@@ -81,7 +82,7 @@ class ConsistenciaContabil extends RelatoriosLegaisBase
         if (count($this->aLinhasConsistencia) == 0) {
             $aLinhas = $this->getDados();
         }
-        $aHeader                = array("Linha");
+        $aHeader                = ["Linha"];
         $aColunasPrimeiraLinhas = $aLinhas[1]->colunas;
 
         foreach ($aColunasPrimeiraLinhas as $aColuna) {
@@ -91,7 +92,7 @@ class ConsistenciaContabil extends RelatoriosLegaisBase
         $rsArquivo = fopen($sNomeArquivo, 'w');
         fputs($rsArquivo, implode(';', $aHeader)."\n");
         foreach ($aLinhas as $oLinha) {
-            $aLinhaCSV = array($oLinha->descricao);
+            $aLinhaCSV = [$oLinha->descricao];
             foreach ($oLinha->colunas as $oColuna) {
                 array_push($aLinhaCSV, round($oColuna->valor, 2));
             }

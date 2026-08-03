@@ -38,7 +38,7 @@ class Controller {
     return $this->view;
   }
 
-  public function render($view = null, $params = array()) {
+  public function render($view = null, $params = []) {
     return $this->view->render($view, $params);
   }
 

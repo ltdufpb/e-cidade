@@ -45,7 +45,7 @@ class cl_conplanoconta
     public function __construct()
     {
         $this->rotulo = new rotulo("conplanoconta");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -179,7 +179,7 @@ class cl_conplanoconta
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Banco da Conta do Plano ($this->c63_codcon."-".$this->c63_anousu) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Banco da Conta do Plano já Cadastrado";
@@ -209,10 +209,10 @@ class cl_conplanoconta
       $this->atualizacampos();
      $sql = " update conplanoconta set ";
      $virgula = "";
-     if(trim($this->c63_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_codcon"])){
+     if(trim((string) $this->c63_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_codcon"])){
        $sql  .= $virgula." c63_codcon = $this->c63_codcon ";
        $virgula = ",";
-       if(trim($this->c63_codcon) == null ){
+       if(trim((string) $this->c63_codcon) == null ){
          $this->erro_sql = " Campo Reduzido não informado.";
          $this->erro_campo = "c63_codcon";
          $this->erro_banco = "";
@@ -222,10 +222,10 @@ class cl_conplanoconta
          return false;
        }
      }
-     if(trim($this->c63_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_anousu"])){
+     if(trim((string) $this->c63_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_anousu"])){
        $sql  .= $virgula." c63_anousu = $this->c63_anousu ";
        $virgula = ",";
-       if(trim($this->c63_anousu) == null ){
+       if(trim((string) $this->c63_anousu) == null ){
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "c63_anousu";
          $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_conplanoconta
          return false;
        }
      }
-     if(trim($this->c63_banco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_banco"])){
+     if(trim((string) $this->c63_banco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_banco"])){
        $sql  .= $virgula." c63_banco = '$this->c63_banco' ";
        $virgula = ",";
-       if(trim($this->c63_banco) == null ){
+       if(trim((string) $this->c63_banco) == null ){
          $this->erro_sql = " Campo Banco não informado.";
          $this->erro_campo = "c63_banco";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_conplanoconta
          return false;
        }
      }
-     if(trim($this->c63_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_agencia"])){
+     if(trim((string) $this->c63_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_agencia"])){
        $sql  .= $virgula." c63_agencia = '$this->c63_agencia' ";
        $virgula = ",";
-       if(trim($this->c63_agencia) == null ){
+       if(trim((string) $this->c63_agencia) == null ){
          $this->erro_sql = " Campo Agência não informado.";
          $this->erro_campo = "c63_agencia";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_conplanoconta
          return false;
        }
      }
-     if(trim($this->c63_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_conta"])){
+     if(trim((string) $this->c63_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_conta"])){
        $sql  .= $virgula." c63_conta = '$this->c63_conta' ";
        $virgula = ",";
-       if(trim($this->c63_conta) == null ){
+       if(trim((string) $this->c63_conta) == null ){
          $this->erro_sql = " Campo Conta Bancária não informado.";
          $this->erro_campo = "c63_conta";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_conplanoconta
          return false;
        }
      }
-     if(trim($this->c63_dvconta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_dvconta"])){
+     if(trim((string) $this->c63_dvconta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_dvconta"])){
        $sql  .= $virgula." c63_dvconta = '$this->c63_dvconta' ";
        $virgula = ",";
-       if(trim($this->c63_dvconta) == null ){
+       if(trim((string) $this->c63_dvconta) == null ){
          $this->erro_sql = " Campo DV não informado.";
          $this->erro_campo = "c63_dvconta";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_conplanoconta
          return false;
        }
      }
-     if(trim($this->c63_dvagencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_dvagencia"])){
+     if(trim((string) $this->c63_dvagencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_dvagencia"])){
        $sql  .= $virgula." c63_dvagencia = '$this->c63_dvagencia' ";
        $virgula = ",";
-       if(trim($this->c63_dvagencia) == null ){
+       if(trim((string) $this->c63_dvagencia) == null ){
          $this->erro_sql = " Campo DV não informado.";
          $this->erro_campo = "c63_dvagencia";
          $this->erro_banco = "";
@@ -300,25 +300,25 @@ class cl_conplanoconta
          return false;
        }
      }
-     if(trim($this->c63_identificador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_identificador"])){
+     if(trim((string) $this->c63_identificador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_identificador"])){
        $sql  .= $virgula." c63_identificador = '$this->c63_identificador' ";
        $virgula = ",";
      }
-     if(trim($this->c63_codigooperacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_codigooperacao"])){
+     if(trim((string) $this->c63_codigooperacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_codigooperacao"])){
        $sql  .= $virgula." c63_codigooperacao = '$this->c63_codigooperacao' ";
        $virgula = ",";
      }
-     if(trim($this->c63_tipoconta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_tipoconta"])){
-        if(trim($this->c63_tipoconta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["c63_tipoconta"])){
+     if(trim((string) $this->c63_tipoconta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_tipoconta"])){
+        if(trim((string) $this->c63_tipoconta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["c63_tipoconta"])){
            $this->c63_tipoconta = "0" ;
         }
        $sql  .= $virgula." c63_tipoconta = $this->c63_tipoconta ";
        $virgula = ",";
      }
-     if(trim($this->c63_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_reduz"])){
+     if(trim((string) $this->c63_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c63_reduz"])){
        $sql  .= $virgula." c63_reduz = $this->c63_reduz ";
        $virgula = ",";
-       if(trim($this->c63_reduz) == null ){
+       if(trim((string) $this->c63_reduz) == null ){
          $this->erro_sql = " Campo Reduzido não informado.";
          $this->erro_campo = "c63_reduz";
          $this->erro_banco = "";
@@ -451,7 +451,7 @@ class cl_conplanoconta
     function sql_query ( $c63_codcon=null,$c63_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = preg_split("#\\##m",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -487,7 +487,7 @@ class cl_conplanoconta
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -527,7 +527,7 @@ class cl_conplanoconta
    function sql_query_razao ( $c63_codcon=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -557,7 +557,7 @@ class cl_conplanoconta
 
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

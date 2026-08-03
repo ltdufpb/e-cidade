@@ -47,7 +47,7 @@ try {
 
     switch ($parametros->exec) {
         case 'buscarContasReduzidasPorLancamento':
-            $contasReduzidas = array();
+            $contasReduzidas = [];
             $codigoLancamento = $parametros->codigoLancamento;
             $contaReduzida = ContaReduzida::getInstance();
             $contaReduzida->getAnoLancamento($codigoLancamento);

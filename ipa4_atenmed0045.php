@@ -29,19 +29,19 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if(isset($exclexame)) {
   db_query("delete from atendmedexa where id_exame = $exclexame") or die("Erro(8) excluindo atendmedexa");
 }
 
-if(isset($HTTP_POST_VARS["gerarexame"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["gerarexame"])) {
+  db_postmemory($_POST);
   include(modification("ipa4_atenmed0145.php"));
   exit;
 }
-if(isset($HTTP_POST_VARS["incluirexame"])) {
+if(isset($_POST["incluirexame"])) {
   $result = db_query("select max(id_exame) + 1 from atendmedexa");
-  $id_exame = pg_result($result,0,0);
+  $id_exame = pg_fetch_result($result,0,0);
   $id_exame = $id_exame==""?"1":$id_exame;
   $codate = db_getsession("COD_atendimento");
   if(db_getsession("w03_codigo") != "") {
@@ -51,7 +51,7 @@ if(isset($HTTP_POST_VARS["incluirexame"])) {
     $depen = '0';
     $codpaciente = db_getsession("w01_regist");
   }
-  $codespec = $HTTP_POST_VARS["favoritos"];
+  $codespec = $_POST["favoritos"];
   $data = date("Y-m-d",db_getsession("DB_datausu"));	
   $codmed = db_getsession("codmed");
   //$motivo = $HTTP_POST_VARS["motivo"];
@@ -66,8 +66,8 @@ if(isset($HTTP_POST_VARS["incluirexame"])) {
   db_query("commit");
   */
 }
-if(isset($HTTP_POST_VARS["excluirexames"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["excluirexames"])) {
+  db_postmemory($_POST);
   $tam = sizeof($exames);
   db_query("begin");
   for($i = 0;$i < $tam;$i++) 	
@@ -75,15 +75,15 @@ if(isset($HTTP_POST_VARS["excluirexames"])) {
   db_query("commit");
 }
 
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $result = db_query("select max(codexa) + 1 from exames");
-  $codexa = pg_result($result,0,0);
+  $codexa = pg_fetch_result($result,0,0);
   $codexa = $codexa==""?"1":$codexa;
   db_query("insert into exames values($codexa,".db_getsession("DB_id_usuario").",'$descr')") or die("Erro(12) inserindo em exames");
 }
-if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from exames where codexa = ".$HTTP_POST_VARS["favoritos"]) or die("Erro(15) deletando tabela exames");
+if(isset($_POST["excluir"])) {
+  db_query("delete from exames where codexa = ".$_POST["favoritos"]) or die("Erro(15) deletando tabela exames");
 }
 ?>
 <html>
@@ -208,10 +208,10 @@ input {
 			  $result = db_query("select codexa,descr 
 			                     from exames 
 								 where codmed = ".db_getsession("DB_id_usuario")." order by upper(descr)");
-			  $numrows = pg_numrows($result);
+			  $numrows = pg_num_rows($result);
 			  for($i = 0;$i < $numrows;$i++) {
 			    db_fieldsmemory($result,$i);
-			    echo "<option value=\"".$codexa."\">".trim($descr)."</option>\n";
+			    echo "<option value=\"".$codexa."\">".trim((string) $descr)."</option>\n";
 			  }
 			  ?>
               </select> <br> <input style="width:136px" name="descr" type="text" id="descr2" maxlength="100"> 
@@ -245,7 +245,7 @@ input {
 							   on c.w01_numcgi = cg.j01_numero
 							   where trim(e.codpaciente) = trim('$codpaciente')
 							   order by data desc");
-			$numrows = pg_numrows($result);
+			$numrows = pg_num_rows($result);
 			if($numrows > 0) {
 			  echo "<table border=\"0\" cellspacing=\"1\" cellpadding=\"2\">\n";
 			  echo "<tr bgcolor=\"#FDB393\">

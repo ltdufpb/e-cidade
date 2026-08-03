@@ -49,7 +49,7 @@ $oArquivosManad = new manad();
 $sArqName       = "tmp/{$oFormDados->sNomeArquivo}sva.txt";
 $oLayoutTxt     = new db_layouttxt(73, $sArqName);
 
-$aEscape        = array("\r\n", "\n", "\r", "\t");
+$aEscape        = ["\r\n", "\n", "\r", "\t"];
 
 ?>
 <html>
@@ -67,9 +67,9 @@ db_criatermometro('termometro','Concluido...','blue',1);
 flush();
 
   
-$aDataIni = explode("/", $oFormDados->sDataini);
+$aDataIni = explode("/", (string) $oFormDados->sDataini);
 $sDtIni   = str_replace('/','',$oFormDados->sDataini);
-$aDataFim = explode("/", $oFormDados->sDatafim);
+$aDataFim = explode("/", (string) $oFormDados->sDatafim);
 $sDtFim   = str_replace('/','',$oFormDados->sDatafim);
 $iAnoInicio      = $aDataIni[2]; 
 
@@ -85,10 +85,10 @@ if ($rsAnoEmpenho) {
 }
 
 $sDtIni   = $aDataIni[0].$aDataIni[1].$iAnoInicio;
-$sDataIniParametro = implode("-",array_reverse(explode("/",$oFormDados->sDataini)));
-$sDataFimParametro = implode("-",array_reverse(explode("/",$oFormDados->sDatafim)));
-$aLinhasArquivo  = array();
-$aLinhasArquivoT = array();
+$sDataIniParametro = implode("-",array_reverse(explode("/",(string) $oFormDados->sDataini)));
+$sDataFimParametro = implode("-",array_reverse(explode("/",(string) $oFormDados->sDatafim)));
+$aLinhasArquivo  = [];
+$aLinhasArquivoT = [];
 
 $sSql0000 = $oArquivosManad->getSql0000(db_getsession('DB_instit'),
                                         $oFormDados->sMunic,
@@ -147,7 +147,7 @@ $aLinhasArquivo[252]['tipolinha'] = 3;
 			
 $iContadorGeral    = 0;
 $iTotalizadorGeral = 0;
-$aTotaisPorLinha   = array();
+$aTotaisPorLinha   = [];
 //$aLinhasArquivo = array();
 foreach ($aLinhasArquivo as $chave => $aValor) {
 	
@@ -204,12 +204,12 @@ foreach ($aEmpenhos as $oEmpenho) {
     $oEmpenho->cod_progr = '000';
   }
   if (!isset($oArquivosManad->aCredores[$oEmpenho->cod_credor])) {
-    $oArquivosManad->aCredores[$oEmpenho->cod_credor] = array(); 
+    $oArquivosManad->aCredores[$oEmpenho->cod_credor] = []; 
   }
   if (!in_array($oEmpenho->e60_anousu, $oArquivosManad->aCredores[$oEmpenho->cod_credor])) {
     $oArquivosManad->aCredores[$oEmpenho->cod_credor][] = $oEmpenho->e60_anousu;  
   }
-  if (trim($oEmpenho->hist_emp) == '') {
+  if (trim((string) $oEmpenho->hist_emp) == '') {
     $oEmpenho->hist_emp = 'Sem historico';
   }
 
@@ -302,7 +302,7 @@ foreach ($aDecretos as $oDecreto) {
 
 unset($aDecretos);
 
-$aArquivosAuxiliares = array();
+$aArquivosAuxiliares = [];
 $aArquivosAuxiliares[350]['metodo']    = "getDadosOrgao";  
 $aArquivosAuxiliares[350]['ident']     = "L350";
 $aArquivosAuxiliares[350]['tipolinha'] = 3;
@@ -442,7 +442,7 @@ echo "  listagem = '$nomearquivos';";
 echo "  parent.js_montarlista(listagem,'form1');";
 echo "</script>";
 
-fechaJanela("Arquivos gerados com sucesso !");
+fechaJanela();
 
 /**
  * Funcao para fechar a janela e mostrar uma mensagem ao usuario

@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -79,12 +79,12 @@ function js_emite(){
 	  $sqlanomes = "select max(cast(r11_anousu as text)||lpad(cast(r11_mesusu as text),2,'0')) from cfpess";
 	  $resultanomes = db_query($sqlanomes);
 	  db_fieldsmemory($resultanomes,0);
-	  $DBtxt23 = substr($max,0,4);
+	  $DBtxt23 = substr((string) $max,0,4);
             db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
 	  &nbsp;/&nbsp;
           <?php 
-	  $DBtxt25 = substr($max,4,2);
+	  $DBtxt25 = substr((string) $max,4,2);
             db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
         </td>
@@ -93,7 +93,7 @@ function js_emite(){
         <td ><b>Previdência</b</td>
         <td >
          <?php 
-           $x = array("1"=>"INSS","2"=>"FAPS","0"=>"FGTS","3"=>"CONSELHEIROS");
+           $x = ["1"=>"INSS","2"=>"FAPS","0"=>"FGTS","3"=>"CONSELHEIROS"];
            db_select('prev',$x,true,4,"");
          ?>
 	
@@ -103,7 +103,7 @@ function js_emite(){
         <td ><b>Tipo</b</td>
         <td >
          <?php 
-           $xy = array("s"=>"Salário","d"=>"13o. Salário");
+           $xy = ["s"=>"Salário","d"=>"13o. Salário"];
            db_select('tipo',$xy,true,4,"");
          ?>
 	

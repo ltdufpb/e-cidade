@@ -35,8 +35,6 @@ use \db_utils;
 
 class RemessaTemporaryService
 {
-    private $oRemessaRepository;
-
     private $sTempTable;
 
     private $sTempTableExportacao;
@@ -57,9 +55,8 @@ class RemessaTemporaryService
 
     private $sDataEmissao;
 
-    public function __construct(RemessaRepository $oRemessaRepository)
+    public function __construct(private readonly RemessaRepository $oRemessaRepository)
     {
-        $this->oRemessaRepository = $oRemessaRepository;
         $this->sTempTable = "w_recibopaga_cobrancaregistrada_" . time();
         $this->sTempTableExportacao = "w_cobranca_registrada_exportacao_" . time();
     }
@@ -249,7 +246,7 @@ class RemessaTemporaryService
             $sqlCpfProprietario = "case when $this->sTempTable.sacado[2] is not null and {$this->iRegraCgmIptu} = 0 and (array_length(cgm, 1) < 2) = true then cgm_matricula.z01_cgccpf when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_cgccpf else cgm.z01_cgccpf end as cpf_cnpj";
         }
 
-        $aCamposEndereco = array(
+        $aCamposEndereco = [
           "$this->sTempTable.*",
           $sqlCpfProprietario,
           $sqlNomeProprietario,
@@ -260,7 +257,7 @@ class RemessaTemporaryService
           "case when $this->sTempTable.sacado[3] is not null then (case when issruas.z01_cep is not null then issruas.z01_cep else cgm_inscricao.z01_cep end) else cgm.z01_cep end as cep",
           "case when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_munic else cgm.z01_munic end as municipio",
           "case when $this->sTempTable.sacado[3] is not null then cgm_inscricao.z01_uf else cgm.z01_uf end as uf",
-        );
+        ];
 
         $sSql = " select " . implode(", ", $aCamposEndereco) . " from $this->sTempTable";
         $sSql .= "        left join issbase on issbase.q02_inscr = $this->sTempTable.sacado[3] and $this->sTempTable.sacado[3] is not null";

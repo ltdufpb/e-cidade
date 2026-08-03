@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_censodisciplina_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcensodisciplina = new cl_censodisciplina;
 $clcensodisciplina->rotulo->label("ed265_i_codigo");
 $clcensodisciplina->rotulo->label("ed265_c_descr");
@@ -94,9 +94,9 @@ $clcensodisciplina->rotulo->label("ed265_c_descr");
     }else{
      $sql = $clcensodisciplina->sql_query("",$campos,"ed265_i_codigo","");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed265_i_codigo)){
-     $repassa = array("chave_ed265_i_codigo"=>$chave_ed265_i_codigo,"chave_ed265_c_descr"=>$chave_ed265_c_descr);
+     $repassa = ["chave_ed265_i_codigo"=>$chave_ed265_i_codigo,"chave_ed265_c_descr"=>$chave_ed265_c_descr];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{
